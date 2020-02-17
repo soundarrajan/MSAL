@@ -4,14 +4,14 @@ import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-req
 export class LoadReportListAction {
   static readonly type = '[QC.Report.List] Load Report List';
 
-  constructor(public serverGridInfo: IServerGridInfo) {
-  }
+  constructor(public serverGridInfo: IServerGridInfo) {}
 
   public log(): any {
     return {
       serverGridInfo: nullable(this.serverGridInfo)?.pagination,
       searchText: nullable(this.serverGridInfo)?.searchText,
-      hasFilters: (nullable(this.serverGridInfo)?.pageFilters?.filters ?? []).length,
+      hasFilters: (nullable(this.serverGridInfo)?.pageFilters?.filters ?? [])
+        .length,
       hasSorts: (nullable(this.serverGridInfo)?.sortList?.sortList || []).length
     };
   }
@@ -20,8 +20,12 @@ export class LoadReportListAction {
 export class LoadReportListSuccessfulAction {
   static readonly type = '[QC.Report.List] Load Report List Successful';
 
-  constructor(public nbOfMatched: number, public nbOfNotMatched: number, public nbOfMatchedWithinLimit: number, public totalCount: number) {
-  }
+  constructor(
+    public nbOfMatched: number,
+    public nbOfNotMatched: number,
+    public nbOfMatchedWithinLimit: number,
+    public totalCount: number
+  ) {}
 
   public log(): any {
     return {
@@ -36,8 +40,7 @@ export class LoadReportListSuccessfulAction {
 export class LoadReportListFailedAction {
   static readonly type = '[QC.Report.List] Load Report List Failed';
 
-  constructor() {
-  }
+  constructor() {}
 
   public log(): any {
     return {};

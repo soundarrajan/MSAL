@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output
+} from '@angular/core';
 import { SelectItem } from 'primeng/api';
 
 export interface IPageSizeOption {
@@ -18,8 +25,11 @@ export class PageSizeSelectorComponent implements OnInit {
   @Input() selectedOption: number;
   @Output() selectedOptionChange = new EventEmitter<number>();
 
-  get formattedOptions():SelectItem[] {
-    return (this.options || []).map(option => ({label: option.toString(), value: option}))
+  get formattedOptions(): SelectItem[] {
+    return (this.options || []).map(option => ({
+      label: option.toString(),
+      value: option
+    }));
   }
   constructor() {}
 

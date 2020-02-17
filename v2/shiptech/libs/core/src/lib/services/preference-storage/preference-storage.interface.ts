@@ -11,7 +11,9 @@ export interface IPreferenceStorage {
   removeAll(): Observable<any>;
 }
 
-export const PREFERENCE_STORAGE = new InjectionToken<IPreferenceStorage>('IPreferenceStorage');
+export const PREFERENCE_STORAGE = new InjectionToken<IPreferenceStorage>(
+  'IPreferenceStorage'
+);
 
 export function getDefaultStorage(defaultStorage: any): any {
   return defaultStorage;

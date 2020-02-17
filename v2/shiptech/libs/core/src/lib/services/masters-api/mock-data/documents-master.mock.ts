@@ -1,15 +1,10 @@
-import {range} from "lodash";
-import {IDocumentsMasterDto} from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-master.dto";
-import {Chance} from 'chance';
+import { range } from 'lodash';
+import { IDocumentsMasterDto } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-master.dto';
+import { Chance } from 'chance';
 
 const chance = new Chance();
 
-export function getMockDocumentsMaster(n: number): IDocumentsMasterDto[] {
-  return range(1, n).map(id => getMockDocumentMasterItem(id));
-}
-
 export function getMockDocumentMasterItem(id: number): IDocumentsMasterDto {
-
   return {
     id,
     name: chance.name(),
@@ -28,4 +23,8 @@ export function getMockDocumentMasterItem(id: number): IDocumentsMasterDto {
     lastModifiedOn: chance.date().toISOString(),
     isDeleted: chance.bool()
   };
+}
+
+export function getMockDocumentsMaster(n: number): IDocumentsMasterDto[] {
+  return range(1, n).map(id => getMockDocumentMasterItem(id));
 }

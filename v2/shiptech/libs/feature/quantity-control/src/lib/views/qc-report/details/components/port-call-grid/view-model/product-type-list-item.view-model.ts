@@ -14,15 +14,30 @@ export class ProductTypeListItemViewModelFactory {
   private deliverySettings: IDeliveryTenantSettings;
   private readonly quantityPrecision: number;
 
-  constructor(private tenantSettingsService: TenantSettingsService, private reconStatusLookups: ReconStatusLookup) {
+  constructor(
+    private tenantSettingsService: TenantSettingsService,
+    private reconStatusLookups: ReconStatusLookup
+  ) {
     const generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
 
-    this.quantityPrecision = generalTenantSettings.defaultValues.quantityPrecision;
-    this.deliverySettings = tenantSettingsService.getModuleTenantSettings<IDeliveryTenantSettings>(TenantSettingsModuleName.Delivery);
+    this.quantityPrecision =
+      generalTenantSettings.defaultValues.quantityPrecision;
+    this.deliverySettings = tenantSettingsService.getModuleTenantSettings<
+      IDeliveryTenantSettings
+    >(TenantSettingsModuleName.Delivery);
   }
 
-  build(itemState: QcProductTypeListItemStateModel): ProductTypeListItemViewModel {
-    return new ProductTypeListItemViewModel(itemState, this.deliverySettings.qcMinToleranceLimit, this.deliverySettings.qcMaxToleranceLimit, this.quantityPrecision, this.reconStatusLookups);
+  build(
+    itemState: QcProductTypeListItemStateModel
+  ): ProductTypeListItemViewModel {
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    return new ProductTypeListItemViewModel(
+      itemState,
+      this.deliverySettings.qcMinToleranceLimit,
+      this.deliverySettings.qcMaxToleranceLimit,
+      this.quantityPrecision,
+      this.reconStatusLookups
+    );
   }
 }
 
@@ -45,31 +60,95 @@ export class ProductTypeListItemViewModel {
 
   isSludge: boolean;
 
-  constructor(item: QcProductTypeListItemStateModel, minToleranceLimit: number, maxToleranceLimit: number, private quantityPrecision: number, reconStatusLookups: ReconStatusLookup) {
+  constructor(
+    item: QcProductTypeListItemStateModel,
+    minToleranceLimit: number,
+    maxToleranceLimit: number,
+    private quantityPrecision: number,
+    reconStatusLookups: ReconStatusLookup
+  ) {
     this.productType = item.productType;
     this.productType = item.productType;
     this.isSludge = item.isSludge;
 
-    this.robBeforeDeliveryLogBookROB = roundDecimals(item.robBeforeDeliveryLogBookROB, quantityPrecision);
-    this.robBeforeDeliveryMeasuredROB = roundDecimals(item.robBeforeDeliveryMeasuredROB, quantityPrecision);
-    this.deliveredQuantityBdnQty = roundDecimals(item.deliveredQuantityBdnQty, quantityPrecision);
-    this.measuredDeliveredQty = roundDecimals(item.measuredDeliveredQty, quantityPrecision);
-    this.robAfterDeliveryLogBookROB = roundDecimals(item.robAfterDeliveryLogBookROB, quantityPrecision);
-    this.robAfterDeliveryMeasuredROB = roundDecimals(item.robAfterDeliveryMeasuredROB, quantityPrecision);
+    this.robBeforeDeliveryLogBookROB = roundDecimals(
+      item.robBeforeDeliveryLogBookROB,
+      quantityPrecision
+    );
+    this.robBeforeDeliveryMeasuredROB = roundDecimals(
+      item.robBeforeDeliveryMeasuredROB,
+      quantityPrecision
+    );
+    this.deliveredQuantityBdnQty = roundDecimals(
+      item.deliveredQuantityBdnQty,
+      quantityPrecision
+    );
+    this.measuredDeliveredQty = roundDecimals(
+      item.measuredDeliveredQty,
+      quantityPrecision
+    );
+    this.robAfterDeliveryLogBookROB = roundDecimals(
+      item.robAfterDeliveryLogBookROB,
+      quantityPrecision
+    );
+    this.robAfterDeliveryMeasuredROB = roundDecimals(
+      item.robAfterDeliveryMeasuredROB,
+      quantityPrecision
+    );
 
-    this.robBeforeDiffStatus = reconStatusLookups.toReconStatus(QcReportState.getMatchStatus(this.robBeforeDeliveryLogBookROB, this.robBeforeDeliveryMeasuredROB, minToleranceLimit, maxToleranceLimit));
-    this.deliveredDiffStatus = reconStatusLookups.toReconStatus(QcReportState.getMatchStatus(this.deliveredQuantityBdnQty, this.measuredDeliveredQty, minToleranceLimit, maxToleranceLimit));
-    this.robAfterDiffStatus = reconStatusLookups.toReconStatus(!this.isSludge ? QcReportState.getMatchStatus(this.robAfterDeliveryLogBookROB, this.robAfterDeliveryMeasuredROB, minToleranceLimit, maxToleranceLimit) : undefined);
+    this.robBeforeDiffStatus = reconStatusLookups.toReconStatus(
+      QcReportState.getMatchStatus(
+        this.robBeforeDeliveryLogBookROB,
+        this.robBeforeDeliveryMeasuredROB,
+        minToleranceLimit,
+        maxToleranceLimit
+      )
+    );
+    this.deliveredDiffStatus = reconStatusLookups.toReconStatus(
+      QcReportState.getMatchStatus(
+        this.deliveredQuantityBdnQty,
+        this.measuredDeliveredQty,
+        minToleranceLimit,
+        maxToleranceLimit
+      )
+    );
+    this.robAfterDiffStatus = reconStatusLookups.toReconStatus(
+      !this.isSludge
+        ? QcReportState.getMatchStatus(
+            this.robAfterDeliveryLogBookROB,
+            this.robAfterDeliveryMeasuredROB,
+            minToleranceLimit,
+            maxToleranceLimit
+          )
+        : undefined
+    );
 
-    this.robBeforeDiff = this.safeDiff(this.robBeforeDeliveryLogBookROB, this.robBeforeDeliveryMeasuredROB);
-    this.deliveredDiff = this.safeDiff(this.deliveredQuantityBdnQty, this.measuredDeliveredQty);
-    this.robAfterDiff = this.safeDiff(this.robAfterDeliveryLogBookROB, this.robAfterDeliveryMeasuredROB);
+    this.robBeforeDiff = this.safeDiff(
+      this.robBeforeDeliveryLogBookROB,
+      this.robBeforeDeliveryMeasuredROB
+    );
+    this.deliveredDiff = this.safeDiff(
+      this.deliveredQuantityBdnQty,
+      this.measuredDeliveredQty
+    );
+    this.robAfterDiff = this.safeDiff(
+      this.robAfterDeliveryLogBookROB,
+      this.robAfterDeliveryMeasuredROB
+    );
   }
 
   private safeDiff(left: number, right: number): number {
-    if ((left === null || left === undefined) || (right === null || right === undefined))
+    if (
+      left === null ||
+      left === undefined ||
+      right === null ||
+      right === undefined
+    )
       return undefined;
 
-    return roundDecimals(roundDecimals(left ?? 0, this.quantityPrecision) - (right ?? 0), this.quantityPrecision);
+    return roundDecimals(
+      roundDecimals(left ?? 0, this.quantityPrecision) - (right ?? 0),
+      this.quantityPrecision
+    );
   }
 }

@@ -10,16 +10,17 @@ import { Observable } from 'rxjs';
   selector: 'shiptech-port-call-grid',
   templateUrl: './product-details.component.html',
   styleUrls: ['./product-details.component.scss'],
-  providers: [ProductDetailsViewModel, ProductDetailsGridViewModel, ProductTypeListItemViewModelFactory],
+  providers: [
+    ProductDetailsViewModel,
+    ProductDetailsGridViewModel,
+    ProductTypeListItemViewModelFactory
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductDetailsComponent implements OnInit {
-
   @Select(QcReportState.isReadOnly) isReadOnly$: Observable<boolean>;
 
-  constructor(public viewModel: ProductDetailsViewModel) {
-  }
+  constructor(public viewModel: ProductDetailsViewModel) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 }

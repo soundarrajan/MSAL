@@ -1,10 +1,22 @@
 import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { GridOptions, IServerSideGetRowsParams } from '@ag-grid-community/core';
-import { ITypedColDef, RowModelType, RowSelection, TypedRowNode } from '@shiptech/core/ui/components/ag-grid/type.definition';
+import {
+  ITypedColDef,
+  RowModelType,
+  RowSelection,
+  TypedRowNode
+} from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
-import { QcReportsListColumns, QcReportsListColumnServerKeys, QcReportsListColumnsLabels } from './qc-reports-list.columns';
-import { IQcReportsListItemDto, IToleranceUomDto } from '../../../services/api/dto/qc-reports-list-item.dto';
+import {
+  QcReportsListColumns,
+  QcReportsListColumnServerKeys,
+  QcReportsListColumnsLabels
+} from './qc-reports-list.columns';
+import {
+  IQcReportsListItemDto,
+  IToleranceUomDto
+} from '../../../services/api/dto/qc-reports-list-item.dto';
 import { StatusLookupEnum } from '@shiptech/core/lookups/known-lookups/status/status-lookup.enum';
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { ModuleLoggerFactory } from '../../../core/logging/module-logger-factory';
@@ -29,14 +41,12 @@ function model(prop: keyof IQcReportsListItemDto): keyof IQcReportsListItemDto {
 
 @Injectable()
 export class QcReportsListGridViewModel extends BaseGridViewModel {
-
-  private defaultColFilterParams = {
+  public searchText: string;
+  public defaultColFilterParams = {
     clearButton: true,
     applyButton: true,
     precision: () => this.format.quantityPrecision
   };
-
-  public searchText: string;
   gridOptions: GridOptions = {
     groupHeaderHeight: 20,
     headerHeight: 40,
@@ -52,10 +62,12 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
 
     multiSortKey: 'ctrl',
 
-    isRowSelectable: (params: TypedRowNode<IQcReportsListItemDto>) => params.data?.surveyStatus?.name !== StatusLookupEnum.Verified,
+    isRowSelectable: (params: TypedRowNode<IQcReportsListItemDto>) =>
+      params.data?.surveyStatus?.name !== StatusLookupEnum.Verified,
     enableBrowserTooltips: true,
     singleClickEdit: true,
-    getRowNodeId: (data: IQcReportsListItemDto) => data?.id?.toString() ?? Math.random().toString(),
+    getRowNodeId: (data: IQcReportsListItemDto) =>
+      data?.id?.toString() ?? Math.random().toString(),
     defaultColDef: {
       sortable: true,
       resizable: true,
@@ -69,7 +81,8 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     width: 50,
     ...AgCheckBoxHeaderComponent.withParams({}),
     ...AgCheckBoxRendererComponent.withParams<IQcReportsListItemDto>({
-      isVisible: params => params.data?.surveyStatus?.name !== StatusLookupEnum.Verified
+      isVisible: params =>
+        params.data?.surveyStatus?.name !== StatusLookupEnum.Verified
     }),
     editable: false,
     filter: false,
@@ -94,7 +107,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     colId: QcReportsListColumns.portCallId,
     field: model('portCallId'),
     cellRendererFramework: AgCellTemplateComponent,
-    width: 200,
+    width: 200
   };
 
   portNameCol: ITypedColDef<IQcReportsListItemDto, string> = {
@@ -126,13 +139,19 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     field: model('surveyStatus'),
     valueFormatter: params => params.value?.displayName,
     cellStyle: params => ({
-      backgroundColor: this.statusLookup.getStatus(params.data?.surveyStatus).code,
-      color: this.statusLookup.getStatus(params.data?.surveyStatus).id ? '#fff' : '#333'
+      backgroundColor: this.statusLookup.getStatus(params.data?.surveyStatus)
+        .code,
+      color: this.statusLookup.getStatus(params.data?.surveyStatus).id
+        ? '#fff'
+        : '#333'
     }),
     width: 85
   };
 
-  qtyMatchedStatusCol: ITypedColDef<IQcReportsListItemDto, IReconStatusLookupDto> = {
+  qtyMatchedStatusCol: ITypedColDef<
+    IQcReportsListItemDto,
+    IReconStatusLookupDto
+  > = {
     headerName: QcReportsListColumnsLabels.qtyMatchedStatus,
     colId: QcReportsListColumns.qtyMatchedStatus,
     field: model('qtyMatchedStatus'),
@@ -168,11 +187,18 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     field: model('diffRobBeforeDelivery'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
-    cellStyle: params => this.toleranceMatchStyle(params.data?.diffRobBeforeDelivery, params.data?.qtyBeforeDeliveryUom),
+    cellStyle: params =>
+      this.toleranceMatchStyle(
+        params.data?.diffRobBeforeDelivery,
+        params.data?.qtyBeforeDeliveryUom
+      ),
     width: 140
   };
 
-  qtyBeforeDeliveryUomCol: ITypedColDef<IQcReportsListItemDto, IToleranceUomDto> = {
+  qtyBeforeDeliveryUomCol: ITypedColDef<
+    IQcReportsListItemDto,
+    IToleranceUomDto
+  > = {
     headerName: QcReportsListColumnsLabels.qtyBeforeDeliveryUom,
     colId: QcReportsListColumns.qtyBeforeDeliveryUom,
     field: model('qtyBeforeDeliveryUom'),
@@ -201,7 +227,11 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     field: model('diffDeliveredQty'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
-    cellStyle: params => this.toleranceMatchStyle(params.data?.diffDeliveredQty, params.data?.qtyDeliveredUom)
+    cellStyle: params =>
+      this.toleranceMatchStyle(
+        params.data?.diffDeliveredQty,
+        params.data?.qtyDeliveredUom
+      )
   };
 
   qtyDeliveredUomCol: ITypedColDef<IQcReportsListItemDto, IToleranceUomDto> = {
@@ -233,17 +263,27 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     field: model('diffRobAfterDelivery'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
-    cellStyle: params => this.toleranceMatchStyle(params.data?.diffRobAfterDelivery, params?.data?.qtyAfterDeliveryUom)
+    cellStyle: params =>
+      this.toleranceMatchStyle(
+        params.data?.diffRobAfterDelivery,
+        params?.data?.qtyAfterDeliveryUom
+      )
   };
 
-  qtyAfterDeliveryUomCol: ITypedColDef<IQcReportsListItemDto, IToleranceUomDto> = {
+  qtyAfterDeliveryUomCol: ITypedColDef<
+    IQcReportsListItemDto,
+    IToleranceUomDto
+  > = {
     headerName: QcReportsListColumnsLabels.qtyAfterDeliveryUom,
     colId: QcReportsListColumns.qtyAfterDeliveryUom,
     field: model('qtyAfterDeliveryUom'),
     valueFormatter: params => params.value?.name
   };
 
-  logBookSludgeRobBeforeDischargeCol: ITypedColDef<IQcReportsListItemDto, number> = {
+  logBookSludgeRobBeforeDischargeCol: ITypedColDef<
+    IQcReportsListItemDto,
+    number
+  > = {
     headerName: QcReportsListColumnsLabels.logBookSludgeRobBeforeDischarge,
     colId: QcReportsListColumns.logBookSludgeRobBeforeDischarge,
     field: model('logBookSludgeRobBeforeDischarge'),
@@ -251,7 +291,10 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     valueFormatter: params => this.format.quantity(params.value)
   };
 
-  measuredSludgeRobBeforeDischargeCol: ITypedColDef<IQcReportsListItemDto, number> = {
+  measuredSludgeRobBeforeDischargeCol: ITypedColDef<
+    IQcReportsListItemDto,
+    number
+  > = {
     headerName: QcReportsListColumnsLabels.measuredSludgeRobBeforeDischarge,
     colId: QcReportsListColumns.measuredSludgeRobBeforeDischarge,
     field: model('measuredSludgeRobBeforeDischarge'),
@@ -259,13 +302,20 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     valueFormatter: params => this.format.quantity(params.value)
   };
 
-  diffSludgeRobBeforeDischargeCol: ITypedColDef<IQcReportsListItemDto, number> = {
+  diffSludgeRobBeforeDischargeCol: ITypedColDef<
+    IQcReportsListItemDto,
+    number
+  > = {
     headerName: QcReportsListColumnsLabels.diffSludgeRobBeforeDischarge,
     colId: QcReportsListColumns.diffSludgeRobBeforeDischarge,
     field: model('diffSludgeRobBeforeDischarge'),
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
-    cellStyle: params => this.toleranceMatchStyle(params.data?.diffSludgeRobBeforeDischarge, params?.data?.qtySludgeDischargedUom)
+    cellStyle: params =>
+      this.toleranceMatchStyle(
+        params.data?.diffSludgeRobBeforeDischarge,
+        params?.data?.qtySludgeDischargedUom
+      )
   };
 
   sludgeDischargedQtyCol: ITypedColDef<IQcReportsListItemDto, number> = {
@@ -276,7 +326,10 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     valueFormatter: params => this.format.quantity(params.value)
   };
 
-  qtySludgeDischargedUomCol: ITypedColDef<IQcReportsListItemDto, IToleranceUomDto> = {
+  qtySludgeDischargedUomCol: ITypedColDef<
+    IQcReportsListItemDto,
+    IToleranceUomDto
+  > = {
     headerName: QcReportsListColumnsLabels.qtySludgeDischargedUom,
     colId: QcReportsListColumns.qtySludgeDischargedUom,
     field: model('qtySludgeDischargedUom'),
@@ -312,7 +365,12 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     private appErrorHandler: AppErrorHandler,
     private statusLookup: StatusLookup
   ) {
-    super('quantity-control-grid', columnPreferences, changeDetector, loggerFactory.createLogger(QcReportsListGridViewModel.name));
+    super(
+      'quantity-control-grid',
+      columnPreferences,
+      changeDetector,
+      loggerFactory.createLogger(QcReportsListGridViewModel.name)
+    );
     this.init(this.gridOptions, true);
   }
 
@@ -353,18 +411,37 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    this.reportService.getReportsList$(transformLocalToServeGridInfo(this.gridApi, params, QcReportsListColumnServerKeys, this.searchText))
+    this.reportService
+      .getReportsList$(
+        transformLocalToServeGridInfo(
+          this.gridApi,
+          params,
+          QcReportsListColumnServerKeys,
+          this.searchText
+        )
+      )
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         response => params.successCallback(response.items, response.totalCount),
         () => {
-          this.appErrorHandler.handleError(AppError.FailedToLoadMastersData('vessel'));
+          this.appErrorHandler.handleError(
+            AppError.FailedToLoadMastersData('vessel')
+          );
           params.failCallback();
-        });
+        }
+      );
   }
 
-  private toleranceMatchStyle(value: number, toleranceUom: IToleranceUomDto): Partial<CSSStyleDeclaration> {
-    if (value === null || value === undefined || toleranceUom === null || toleranceUom === undefined)
+  private toleranceMatchStyle(
+    value: number,
+    toleranceUom: IToleranceUomDto
+  ): Partial<CSSStyleDeclaration> {
+    if (
+      value === null ||
+      value === undefined ||
+      toleranceUom === null ||
+      toleranceUom === undefined
+    )
       return {
         backgroundColor: 'inherit',
         color: 'inherit'
@@ -375,11 +452,15 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     if (Math.abs(value) >= toleranceUom.maxTolerance)
       status = this.reconStatusLookups.notMatched;
 
-    if (Math.abs(value) > toleranceUom.minTolerance && Math.abs(value) < toleranceUom.maxTolerance)
+    if (
+      Math.abs(value) > toleranceUom.minTolerance &&
+      Math.abs(value) < toleranceUom.maxTolerance
+    )
       status = this.reconStatusLookups.withinLimit;
 
     return {
-      backgroundColor: status.name === ReconStatusLookupEnum.Matched ? 'inherit' : status.code,
+      backgroundColor:
+        status.name === ReconStatusLookupEnum.Matched ? 'inherit' : status.code,
       color: status.name === ReconStatusLookupEnum.Matched ? 'inherit' : '#fff'
     };
   }

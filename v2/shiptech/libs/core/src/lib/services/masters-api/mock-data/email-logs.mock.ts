@@ -1,13 +1,12 @@
-import {IEmailLogsItemDto} from "@shiptech/core/services/masters-api/request-response-dtos/email-logs.dto";
-import {range} from "lodash";
-import {MockStatusLookupEnumMap, StatusLookupEnum} from "@shiptech/core/lookups/known-lookups/status/status-lookup.enum";
-import {Chance} from 'chance';
+import { IEmailLogsItemDto } from '@shiptech/core/services/masters-api/request-response-dtos/email-logs.dto';
+import { range } from 'lodash';
+import {
+  MockStatusLookupEnumMap,
+  StatusLookupEnum
+} from '@shiptech/core/lookups/known-lookups/status/status-lookup.enum';
+import { Chance } from 'chance';
 
 const chance = new Chance();
-
-export function getMockEmailLogs(n: number): IEmailLogsItemDto[] {
-  return range(1, n).map(id => getMockEmailLogsItem(id));
-}
 
 export function getMockEmailLogsItem(id: number): IEmailLogsItemDto {
   return {
@@ -27,4 +26,8 @@ export function getMockEmailLogsItem(id: number): IEmailLogsItemDto {
     subject: chance.word(),
     sentAt: chance.date().toISOString()
   };
+}
+
+export function getMockEmailLogs(n: number): IEmailLogsItemDto[] {
+  return range(1, n).map(id => getMockEmailLogsItem(id));
 }

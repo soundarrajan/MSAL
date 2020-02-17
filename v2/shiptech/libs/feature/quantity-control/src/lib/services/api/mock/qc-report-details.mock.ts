@@ -1,10 +1,16 @@
-import { IQcReportDetailsDto, IQcReportDetailsProductTypeDto } from "../dto/qc-report-details.dto";
-import { mockUomsLookup } from "@shiptech/core/services/masters-api/mock-data/uoms.mock";
-import { MockProductsLookup } from "@shiptech/core/services/masters-api/mock-data/products.mock";
-import { IDisplayLookupDto } from "@shiptech/core/lookups/display-lookup-dto.interface";
-import { MockVesselsLookup } from "@shiptech/core/services/masters-api/mock-data/vessels.mock";
-import { roundDecimals } from "@shiptech/core/utils/math";
-import { MockStatusLookupEnumMap, StatusLookupEnum } from "@shiptech/core/lookups/known-lookups/status/status-lookup.enum";
+import {
+  IQcReportDetailsDto,
+  IQcReportDetailsProductTypeDto
+} from '../dto/qc-report-details.dto';
+import { mockUomsLookup } from '@shiptech/core/services/masters-api/mock-data/uoms.mock';
+import { MockProductsLookup } from '@shiptech/core/services/masters-api/mock-data/products.mock';
+import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+import { MockVesselsLookup } from '@shiptech/core/services/masters-api/mock-data/vessels.mock';
+import { roundDecimals } from '@shiptech/core/utils/math';
+import {
+  MockStatusLookupEnumMap,
+  StatusLookupEnum
+} from '@shiptech/core/lookups/known-lookups/status/status-lookup.enum';
 import { last, sample, values, range } from 'lodash';
 import { Chance } from 'chance';
 
@@ -15,20 +21,84 @@ const mockDecimals = 3;
 export const mockCategoriesLookup: IDisplayLookupDto[] = [
   {
     id: 1,
-    name: "GeneralEmail",
-    displayName: "General Email"
+    name: 'GeneralEmail',
+    displayName: 'General Email'
   },
   {
     id: 2,
-    name: "Complaint",
-    displayName: "Complaint"
+    name: 'Complaint',
+    displayName: 'Complaint'
   }
 ];
+
+export function getMockQcReportProductTypes(
+  n: number,
+  isNew: boolean = false
+): IQcReportDetailsProductTypeDto[] {
+  return range(1, n).map(id => {
+    const product = MockProductsLookup.find(s => s.id === id) ?? {
+      ...sample(MockProductsLookup),
+      id: id
+    };
+    return {
+      id: product.id, // Note: Only used for BE
+      productType: product,
+      deliveredQty: {
+        bdnQuantity: !isNew
+          ? roundDecimals(
+              chance.integer({ max: 500 }) + Math.random(),
+              mockDecimals
+            )
+          : undefined,
+        measuredQty: !isNew
+          ? roundDecimals(
+              chance.integer({ max: 400 }) + Math.random(),
+              mockDecimals
+            )
+          : undefined,
+        difference: 0
+      },
+      robAfterDelivery: {
+        logBookROB: !isNew
+          ? roundDecimals(
+              chance.integer({ max: 500 }) + Math.random(),
+              mockDecimals
+            )
+          : undefined,
+        measuredROB: !isNew
+          ? roundDecimals(
+              chance.integer({ max: 500 }) + Math.random(),
+              mockDecimals
+            )
+          : undefined,
+        difference: 0
+      },
+      robBeforeDelivery: {
+        logBookROB: !isNew
+          ? roundDecimals(
+              chance.integer({ max: 500 }) + Math.random(),
+              mockDecimals
+            )
+          : undefined,
+        measuredROB: !isNew
+          ? roundDecimals(
+              chance.integer({ max: 500 }) + Math.random(),
+              mockDecimals
+            )
+          : undefined,
+        difference: 0
+      }
+    };
+  });
+}
 
 export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
   const isNew = !id;
 
-  const productTypeCategories = getMockQcReportProductTypes(chance.integer({ min: 5, max: 5 }), true);
+  const productTypeCategories = getMockQcReportProductTypes(
+    chance.integer({ min: 5, max: 5 }),
+    true
+  );
   const sludgeProductType = last(productTypeCategories)?.productType;
 
   if (isNew) {
@@ -54,8 +124,12 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
     id: id,
     vessel: sample(MockVesselsLookup),
     portCall: {
-      portCallId: chance.string({alpha: true, numeric: true, length: 5}).toUpperCase(),
-      voyageReference: chance.string({alpha: true, numeric: true, length: 5}).toUpperCase(),
+      portCallId: chance
+        .string({ alpha: true, numeric: true, length: 5 })
+        .toUpperCase(),
+      voyageReference: chance
+        .string({ alpha: true, numeric: true, length: 5 })
+        .toUpperCase(),
       vesselVoyageDetailId: chance.d100()
     },
     nbOfClaims: chance.d100(),
@@ -86,29 +160,4 @@ export function getQcReportDetailsCall(id: number): IQcReportDetailsDto {
     hasSentEmail: chance.bool(),
     emailTransactionTypeId: chance.d100()
   };
-}
-
-export function getMockQcReportProductTypes(n: number, isNew: boolean = false): IQcReportDetailsProductTypeDto[] {
-  return range(1, n).map(id => {
-    const product = MockProductsLookup.find(s => s.id === id) ?? { ...sample(MockProductsLookup), id: id };
-    return {
-      id: product.id, // Note: Only used for BE
-      productType: product,
-      deliveredQty: {
-        bdnQuantity: !isNew ? roundDecimals(chance.integer({max: 500}) + Math.random(), mockDecimals) : undefined,
-        measuredQty: !isNew ? roundDecimals(chance.integer({max: 400}) + Math.random(), mockDecimals) : undefined,
-        difference: 0
-      },
-      robAfterDelivery: {
-        logBookROB: !isNew ? roundDecimals(chance.integer({max: 500}) + Math.random(), mockDecimals) : undefined,
-        measuredROB: !isNew ? roundDecimals(chance.integer({max: 500}) + Math.random(), mockDecimals) : undefined,
-        difference: 0
-      },
-      robBeforeDelivery: {
-        logBookROB: !isNew ? roundDecimals(chance.integer({max: 500}) + Math.random(), mockDecimals) : undefined,
-        measuredROB: !isNew ? roundDecimals(chance.integer({max: 500}) + Math.random(), mockDecimals) : undefined,
-        difference: 0
-      }
-    };
-  });
 }

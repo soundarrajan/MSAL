@@ -10,7 +10,11 @@ import { LegacyLookupsDatabase } from './legacy-cache/legacy-lookups-database.se
 import { AuthenticationService } from './authentication/authentication.service';
 import { EMPTY$ } from './utils/rxjs-operators';
 import { ILegacyAppConfig } from './config/legacy-app-config';
-import { ILoggerSettings, LOGGER_SETTINGS, LoggerFactory } from './logging/logger-factory.service';
+import {
+  ILoggerSettings,
+  LOGGER_SETTINGS,
+  LoggerFactory
+} from './logging/logger-factory.service';
 import { TenantSettingsService } from './services/tenant-settings/tenant-settings.service';
 import { TenantSettingsModuleName } from './store/states/tenant/tenant-settings.interface';
 import { environment } from '@shiptech/environment';
@@ -21,32 +25,31 @@ import { UserProfileService } from '@shiptech/core/services/user-profile/user-pr
 import { StatusLookup } from '@shiptech/core/lookups/known-lookups/status/status-lookup.service';
 import { ReconStatusLookup } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.service';
 import { fromPromise } from 'rxjs/internal-compatibility';
-import { EmailStatusLookup } from "@shiptech/core/lookups/known-lookups/email-status/email-status-lookup.service";
+import { EmailStatusLookup } from '@shiptech/core/lookups/known-lookups/email-status/email-status-lookup.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BootstrapService {
-
   get initialized(): Observable<void> {
     return this._initialized;
   }
 
   private _initialized = new ReplaySubject<void>(1);
 
-  constructor(private appConfig: AppConfig,
-              private legacyCache: LookupsCacheService,
-              private adal: AdalService,
-              private http: HttpClient,
-              private authService: AuthenticationService,
-              private legacyLookupsDatabase: LegacyLookupsDatabase,
-              private loggerFactory: LoggerFactory,
-              private injector: Injector,
-              private appErrorHandler: AppErrorHandler,
-              private urlService: UrlService,
-              @Inject(LOGGER_SETTINGS) private loggerSettings: ILoggerSettings
-  ) {
-  }
+  constructor(
+    private appConfig: AppConfig,
+    private legacyCache: LookupsCacheService,
+    private adal: AdalService,
+    private http: HttpClient,
+    private authService: AuthenticationService,
+    private legacyLookupsDatabase: LegacyLookupsDatabase,
+    private loggerFactory: LoggerFactory,
+    private injector: Injector,
+    private appErrorHandler: AppErrorHandler,
+    private urlService: UrlService,
+    @Inject(LOGGER_SETTINGS) private loggerSettings: ILoggerSettings
+  ) {}
 
   initApp(): Observable<any> {
     // TODO: Implement proper logging here
@@ -67,7 +70,10 @@ export class BootstrapService {
   }
 
   private setupLogging(): void {
-    this.loggerFactory.init({ ...this.loggerSettings, serverSideUrl: this.appConfig.loggingApi });
+    this.loggerFactory.init({
+      ...this.loggerSettings,
+      serverSideUrl: this.appConfig.loggingApi
+    });
   }
 
   private setupAgGrid(): void {
@@ -82,16 +88,17 @@ export class BootstrapService {
     return forkJoin(
       this.http.get<ILegacyAppConfig>(legacySettingsUrl),
       this.http.get<IAppConfig>(runtimeSettingsUrl)
-    ).pipe(map(([legacyConfig, appConfig]) => {
-      Object.assign(this.appConfig, appConfig);
-      this.appConfig.v1 = legacyConfig;
+    ).pipe(
+      map(([legacyConfig, appConfig]) => {
+        Object.assign(this.appConfig, appConfig);
+        this.appConfig.v1 = legacyConfig;
 
-      return this.appConfig;
-    }));
+        return this.appConfig;
+      })
+    );
   }
 
   private setupAuthentication(): Observable<void> {
-
     this.authService.init(this.appConfig.v1.auth);
 
     if (this.authService.isAuthenticated) {
@@ -113,38 +120,44 @@ export class BootstrapService {
     // Note: UserProfileService instance needs to be created after app config is loaded because of the tenant setting api url
     const userProfileService = this.injector.get(UserProfileService);
 
-    return userProfileService.load().pipe(catchError(error => {
-      // TODO: Refactor this pipe and share it with loadGeneralTenantSettings
-      if (environment.production) {
-        return throwError(error);
-      } else {
-        // Note: For development, if the user profile service is mocked, the developer toolbar will not be shown
-        // Note: because the app init has failed, thus we should swallow this exception, and manually show the error to the dev.
-        this.appErrorHandler.handleError(error);
+    return userProfileService.load().pipe(
+      catchError(error => {
+        // TODO: Refactor this pipe and share it with loadGeneralTenantSettings
+        if (environment.production) {
+          return throwError(error);
+        } else {
+          // Note: For development, if the user profile service is mocked, the developer toolbar will not be shown
+          // Note: because the app init has failed, thus we should swallow this exception, and manually show the error to the dev.
+          this.appErrorHandler.handleError(error);
 
-        return EMPTY$;
-      }
-    }));
+          return EMPTY$;
+        }
+      })
+    );
   }
 
   private loadGeneralTenantSettings(): Observable<void> {
     // Note: TenantSettingsService instance needs to be created after app config is loaded because of the tenant setting api url
     const tenantSettingsService = this.injector.get(TenantSettingsService);
 
-    return tenantSettingsService.loadModule(TenantSettingsModuleName.General).pipe(catchError(error => {
-      if (environment.production) {
-        return throwError(error);
-      } else {
-        // Note: For development, if the tenant settings service is mocked, the developer toolbar will not be shown
-        // Note: because the app init has failed, thus we should swallow this exception, and manually show the error to the dev.
-        this.appErrorHandler.handleError(error);
+    return tenantSettingsService
+      .loadModule(TenantSettingsModuleName.General)
+      .pipe(
+        catchError(error => {
+          if (environment.production) {
+            return throwError(error);
+          } else {
+            // Note: For development, if the tenant settings service is mocked, the developer toolbar will not be shown
+            // Note: because the app init has failed, thus we should swallow this exception, and manually show the error to the dev.
+            this.appErrorHandler.handleError(error);
 
-        return EMPTY$;
-      }
-    }));
+            return EMPTY$;
+          }
+        })
+      );
   }
 
-  private loadKnownLookups(): Observable<unknown>{
+  private loadKnownLookups(): Observable<unknown> {
     const surveyStatusLookups = this.injector.get(StatusLookup);
     const reconStatusLookups = this.injector.get(ReconStatusLookup);
     const emailStatusLookups = this.injector.get(EmailStatusLookup);
@@ -157,6 +170,8 @@ export class BootstrapService {
   }
 }
 
-export function bootstrapApplication(bootstrapService: BootstrapService): () => Promise<any> {
+export function bootstrapApplication(
+  bootstrapService: BootstrapService
+): () => Promise<any> {
   return () => bootstrapService.initApp().toPromise();
 }

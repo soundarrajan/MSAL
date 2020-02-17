@@ -3,8 +3,11 @@ import { QcProductTypeEditableProps } from '../../../../views/qc-report/details/
 export class UpdateProductTypeAction {
   static readonly type = '[Qc.Report.Details] - Update product type';
 
-  constructor(public productTypeId: number, public prop: QcProductTypeEditableProps, public value: number) {
-  }
+  constructor(
+    public productTypeId: number,
+    public prop: QcProductTypeEditableProps,
+    public value: number
+  ) {}
 
   public log(): any {
     return {

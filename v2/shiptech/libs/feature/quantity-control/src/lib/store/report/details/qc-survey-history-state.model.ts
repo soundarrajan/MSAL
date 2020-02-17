@@ -2,7 +2,7 @@ import { BaseModel } from '../models/base.sub-state';
 import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-request-response';
 
 export class QcSurveyHistoryStateModel extends BaseModel {
-  gridInfo: IServerGridInfo = {  };
+  gridInfo: IServerGridInfo = {};
   nbOfMatched: number;
   nbOfNotMatched: number;
   nbOfMatchedWithinLimit: number;
@@ -14,5 +14,4 @@ export class QcSurveyHistoryStateModel extends BaseModel {
   }
 }
 
-export interface IQcSurveyHistoryState extends QcSurveyHistoryStateModel {
-}
+export interface IQcSurveyHistoryState extends QcSurveyHistoryStateModel {}

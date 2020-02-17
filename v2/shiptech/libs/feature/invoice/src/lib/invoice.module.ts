@@ -17,7 +17,10 @@ import { ModuleLoggerFactory } from '../../../quantity-control/src/lib/core/logg
 import { environment } from '@shiptech/environment';
 import { InvoiceRoutingModule } from './invoice-routing.module';
 import { InvoiceCompleteService } from './services/invoice-complete.service';
-import { INVOICE_COMPLETE_API_SERVICE, InvoiceCompleteApi } from './services/api/invoice-complete-api';
+import {
+  INVOICE_COMPLETE_API_SERVICE,
+  InvoiceCompleteApi
+} from './services/api/invoice-complete-api';
 import { InvoiceCompleteApiMock } from './services/api/invoice-complete-api.mock';
 import { FeatureInvoiceModuleResolver } from './invoice-route.resolver';
 import { InvoiceCompleteListComponent } from './views/invoice-complete-list/invoice-complete-list.component';
@@ -34,7 +37,7 @@ import { WunderBarModule } from '@shiptech/core/ui/components/wonder-bar/wunder-
 import { AgAsyncBackgroundFillComponent } from '@shiptech/core/ui/components/ag-grid/ag-async-background-fill/ag-async-background-fill.component';
 import { MessagesModule } from 'primeng/messages';
 import { ButtonModule } from 'primeng/button';
-import {AgGridModule} from "@ag-grid-community/angular";
+import { AgGridModule } from '@ag-grid-community/angular';
 
 @NgModule({
   imports: [
@@ -52,7 +55,13 @@ import {AgGridModule} from "@ag-grid-community/angular";
     NgxsResetPluginModule.forRoot(),
     AgGridExtensionsModule,
     AgGridModule.withComponents([
-      AgCellTemplateComponent, AgColumnHeaderComponent, AgColumnGroupHeaderComponent, AgDatePickerComponent, AgCheckBoxHeaderComponent, AgCheckBoxRendererComponent, AgAsyncBackgroundFillComponent
+      AgCellTemplateComponent,
+      AgColumnHeaderComponent,
+      AgColumnGroupHeaderComponent,
+      AgDatePickerComponent,
+      AgCheckBoxHeaderComponent,
+      AgCheckBoxRendererComponent,
+      AgAsyncBackgroundFillComponent
     ]),
     AgFilterDisplayModule,
     AgFooterModule,
@@ -71,10 +80,11 @@ import {AgGridModule} from "@ag-grid-community/angular";
     FeatureInvoiceModuleResolver,
     {
       provide: INVOICE_COMPLETE_API_SERVICE,
-      useClass: environment.production ? InvoiceCompleteApi : InvoiceCompleteApiMock
+      useClass: environment.production
+        ? InvoiceCompleteApi
+        : InvoiceCompleteApiMock
     },
     InvoiceCompleteService
   ]
 })
-export class InvoiceModule {
-}
+export class InvoiceModule {}

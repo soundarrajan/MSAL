@@ -7,22 +7,11 @@ import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler
 import { UIModule } from '@shiptech/core/ui/ui.module';
 
 @NgModule({
-  declarations: [
-    ToastrLogComponent
-  ],
-  providers: [
-    { provide: ErrorHandler, useClass: AppErrorHandler }
-  ],
-  imports: [
-    CommonModule,
-    MaterialModule,
-    UIModule,
-    ToastrModule
-  ],
+  declarations: [ToastrLogComponent],
+  providers: [{ provide: ErrorHandler, useClass: AppErrorHandler }],
+  imports: [CommonModule, MaterialModule, UIModule, ToastrModule],
   entryComponents: [ToastrLogComponent]
 })
 export class AppErrorHandlingModule {
-  constructor() {
-  }
-
+  constructor() {}
 }

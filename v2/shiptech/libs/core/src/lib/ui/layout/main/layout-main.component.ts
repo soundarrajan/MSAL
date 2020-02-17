@@ -1,6 +1,7 @@
-import { AfterViewInit, Component, ViewEncapsulation } from "@angular/core";
+import { AfterViewInit, Component } from '@angular/core';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'layout-main',
   templateUrl: './layout-main.component.html'
 })
@@ -42,8 +43,7 @@ export class LayoutMainComponent implements AfterViewInit {
   isRTL: boolean;
   moduleLoaded: any;
 
-  constructor() {
-  }
+  constructor() {}
 
   onLayoutClick(): void {
     if (!this.userMenuClick) {
@@ -59,8 +59,7 @@ export class LayoutMainComponent implements AfterViewInit {
     }
 
     if (!this.menuClick) {
-      if (this.isHorizontal() || this.isSlim()
-      ) {
+      if (this.isHorizontal() || this.isSlim()) {
         this.resetMenu = true;
       }
 
@@ -190,11 +189,15 @@ export class LayoutMainComponent implements AfterViewInit {
     if (document.body.classList) {
       document.body.classList.remove('blocked-scroll');
     } else {
-      document.body.className = document.body.className.replace(new RegExp('(^|\\b)' +
-        'blocked-scroll'.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+      document.body.className = document.body.className.replace(
+        new RegExp(
+          '(^|\\b)' + 'blocked-scroll'.split(' ').join('|') + '(\\b|$)',
+          'gi'
+        ),
+        ' '
+      );
     }
   }
 
-  ngAfterViewInit(): void {
-  }
+  ngAfterViewInit(): void {}
 }

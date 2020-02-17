@@ -1,17 +1,29 @@
-import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, forwardRef, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {ToastrService} from 'ngx-toastr';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  forwardRef,
+  Injector,
+  Input,
+  OnInit,
+  Output,
+  ViewEncapsulation
+} from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import _ from 'lodash';
-import {RowSelection} from '@shiptech/core/ui/components/ag-grid/type.definition';
-import {DocumentsMasterSelectorGridViewModel} from '@shiptech/core/ui/components/master-selector/view-models/documents-model/documents-master-selector-grid.view-model';
-import {IDocumentsMasterDto} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-master.dto';
-import {VesselMasterSelectorGridViewModel} from '@shiptech/core/ui/components/master-selector/view-models/vessel-model/vessel-master-selector-grid.view-model';
-import {knownMastersAutocomplete} from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
-import {IVesselMasterDto} from '@shiptech/core/services/masters-api/request-response-dtos/vessel';
-import {VesselPortCallsMasterSelectorGridViewModel} from '@shiptech/core/ui/components/master-selector/view-models/vessel-port-calls-model/vessel-port-calls-master-selector-grid.view-model';
-import {IVesselPortCallMasterDto} from '@shiptech/core/services/masters-api/request-response-dtos/vessel-port-call';
-import {throwError} from 'rxjs';
-import {IMasterModelInterface} from '@shiptech/core/ui/components/master-selector/view-models/master-model.interface';
+import { RowSelection } from '@shiptech/core/ui/components/ag-grid/type.definition';
+import { DocumentsMasterSelectorGridViewModel } from '@shiptech/core/ui/components/master-selector/view-models/documents-model/documents-master-selector-grid.view-model';
+import { IDocumentsMasterDto } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-master.dto';
+import { VesselMasterSelectorGridViewModel } from '@shiptech/core/ui/components/master-selector/view-models/vessel-model/vessel-master-selector-grid.view-model';
+import { knownMastersAutocomplete } from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
+import { IVesselMasterDto } from '@shiptech/core/services/masters-api/request-response-dtos/vessel';
+import { VesselPortCallsMasterSelectorGridViewModel } from '@shiptech/core/ui/components/master-selector/view-models/vessel-port-calls-model/vessel-port-calls-master-selector-grid.view-model';
+import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/request-response-dtos/vessel-port-call';
+import { throwError } from 'rxjs';
+import { IMasterModelInterface } from '@shiptech/core/ui/components/master-selector/view-models/master-model.interface';
 
 @Component({
   selector: 'shiptech-shared-master-selector',
@@ -20,6 +32,7 @@ import {IMasterModelInterface} from '@shiptech/core/ui/components/master-selecto
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
       useExisting: forwardRef(() => SelectorComponent),
       multi: true
     },
@@ -31,29 +44,8 @@ import {IMasterModelInterface} from '@shiptech/core/ui/components/master-selecto
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class SelectorComponent implements OnInit, ControlValueAccessor, AfterViewInit {
-  private _entityId: number;
-  private _entityName: string;
-  private _vesselId: number;
-
-  @Input() _selectorType: string;
-
-  @Input() disabled: boolean = false;
-  @Input() readonly: boolean = false;
-  @Input() multiple: boolean = false;
-  @Input() selected: IDocumentsMasterDto | IVesselMasterDto | IVesselPortCallMasterDto | (IVesselPortCallMasterDto | IVesselMasterDto | IDocumentsMasterDto)[];
-
-  gridViewModel: IMasterModelInterface;
-
-  @Output() selectedChange = new EventEmitter<IDocumentsMasterDto | IVesselMasterDto | IVesselPortCallMasterDto | (IVesselPortCallMasterDto | IVesselMasterDto | IDocumentsMasterDto)[]>();
-
-  constructor(private gridViewModelDocuments: DocumentsMasterSelectorGridViewModel,
-              private gridViewModelVessel: VesselMasterSelectorGridViewModel,
-              private gridViewModelVesselPort: VesselPortCallsMasterSelectorGridViewModel,
-              private toastr: ToastrService,
-              private changeDetector: ChangeDetectorRef) {
-  }
-
+export class SelectorComponent
+  implements OnInit, ControlValueAccessor, AfterViewInit {
   get entityId(): number {
     return this._entityId;
   }
@@ -91,36 +83,73 @@ export class SelectorComponent implements OnInit, ControlValueAccessor, AfterVie
     }
   }
 
+  @Input() _selectorType: string;
+
+  @Input() disabled: boolean = false;
+  @Input() readonly: boolean = false;
+  @Input() multiple: boolean = false;
+  @Input() selected:
+    | IDocumentsMasterDto
+    | IVesselMasterDto
+    | IVesselPortCallMasterDto
+    | (IVesselPortCallMasterDto | IVesselMasterDto | IDocumentsMasterDto)[];
+
+  gridViewModel: IMasterModelInterface;
+
+  @Output() selectedChange = new EventEmitter<
+    | IDocumentsMasterDto
+    | IVesselMasterDto
+    | IVesselPortCallMasterDto
+    | (IVesselPortCallMasterDto | IVesselMasterDto | IDocumentsMasterDto)[]
+  >();
+  private _entityId: number;
+  private _entityName: string;
+  private _vesselId: number;
+
+  constructor(
+    private injector: Injector,
+    private toastr: ToastrService,
+    private changeDetector: ChangeDetectorRef
+  ) {}
+
   setGridModelType(): void {
     switch (this.selectorType) {
       case knownMastersAutocomplete.documents: {
-        this.gridViewModel = this.gridViewModelDocuments;
+        this.gridViewModel = this.injector.get(
+          DocumentsMasterSelectorGridViewModel
+        );
         this.gridViewModel.entityId = this.entityId;
         this.gridViewModel.entityName = this.entityName;
         break;
       }
       case knownMastersAutocomplete.vessel: {
-        this.gridViewModel = this.gridViewModelVessel;
+        this.gridViewModel = this.injector.get(
+          VesselMasterSelectorGridViewModel
+        );
         break;
       }
       case knownMastersAutocomplete.vesselPort: {
-        this.gridViewModel = this.gridViewModelVesselPort;
+        this.gridViewModel = this.injector.get(
+          VesselPortCallsMasterSelectorGridViewModel
+        );
         this.gridViewModel.vesselId = this.vesselId;
         break;
       }
       default:
-        throwError(`${SelectorComponent.name} hasn't defined the selector type`);
+        throwError(
+          `${SelectorComponent.name} hasn't defined the selector type`
+        );
     }
   }
 
-  onModelChange: Function = () => {
-  };
+  onModelChange: Function = () => {};
 
-  onModelTouched: Function = () => {
-  };
+  onModelTouched: Function = () => {};
 
   ngOnInit(): void {
-    this.gridViewModel.gridOptions.rowSelection = this.multiple ? RowSelection.Multiple : RowSelection.Single;
+    this.gridViewModel.gridOptions.rowSelection = this.multiple
+      ? RowSelection.Multiple
+      : RowSelection.Single;
   }
 
   registerOnChange(fn: any): void {
@@ -145,10 +174,18 @@ export class SelectorComponent implements OnInit, ControlValueAccessor, AfterVie
     const gridApi = this.gridViewModel.gridOptions.api;
     const selectedNodes = gridApi.getSelectedNodes() || [];
 
-    const entity = selectedNodes.map((n: { data: IDocumentsMasterDto | IVesselMasterDto | IVesselPortCallMasterDto }) => n.data);
+    const entity = selectedNodes.map(
+      (n: {
+        data: IDocumentsMasterDto | IVesselMasterDto | IVesselPortCallMasterDto;
+      }) => n.data
+    );
 
     if (entity.length !== 1) {
-      this.toastr.warning(this.multiple ? 'Please select at least one row first.' : 'Please select at one row first.');
+      this.toastr.warning(
+        this.multiple
+          ? 'Please select at least one row first.'
+          : 'Please select at one row first.'
+      );
       return;
     }
 
@@ -160,8 +197,7 @@ export class SelectorComponent implements OnInit, ControlValueAccessor, AfterVie
     this.changeDetector.markForCheck();
   }
 
-  ngAfterViewInit(): void {
-  }
+  ngAfterViewInit(): void {}
 
   onPageChange(page: number): void {
     this.gridViewModel.page = page;

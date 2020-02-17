@@ -4,16 +4,18 @@ import { MainLazyLoadComponent } from './views/main-lazy-load.component';
 import { LazyViewComponent } from './views/lazy-view/lazy-view.component';
 import { LazyLoadPocRouteResolver } from './lazy-load-poc-route.resolver';
 
-let routes: Routes = [
+const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
     component: MainLazyLoadComponent,
-    children: [{
-      path: '',
-      resolve: { test: LazyLoadPocRouteResolver},
-      component: LazyViewComponent
-    }]
+    children: [
+      {
+        path: '',
+        resolve: { test: LazyLoadPocRouteResolver },
+        component: LazyViewComponent
+      }
+    ]
   }
 ];
 
@@ -21,5 +23,4 @@ let routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class LazyLoadPocRoutingModule {
-}
+export class LazyLoadPocRoutingModule {}

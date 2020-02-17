@@ -13,14 +13,18 @@ import {
 } from './request-response';
 import { IUserSettingsApiService } from './user-settings-api.interface';
 import { UserSettingsApiService } from './user-settings-api.service';
-import { ApiCall, ApiCallForwardTo } from '../../utils/decorators/api-call.decorator';
+import {
+  ApiCall,
+  ApiCallForwardTo
+} from '../../utils/decorators/api-call.decorator';
 import { IPreferenceStorage } from '../preference-storage/preference-storage.interface';
 import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserSettingsApiServiceMock implements IUserSettingsApiService, IPreferenceStorage {
+export class UserSettingsApiServiceMock
+  implements IUserSettingsApiService, IPreferenceStorage {
   @ApiCallForwardTo() realService: UserSettingsApiService;
 
   constructor(realService: UserSettingsApiService) {
@@ -28,21 +32,27 @@ export class UserSettingsApiServiceMock implements IUserSettingsApiService, IPre
   }
 
   @ApiCall()
-  delete(request: IDeleteUserSettingRequest): Observable<IDeleteUserSettingResponse> {
+  delete(
+    request: IDeleteUserSettingRequest
+  ): Observable<IDeleteUserSettingResponse> {
     return of({
       success: true
     });
   }
 
   @ApiCall()
-  purge(request: IPurgeUserSettingsRequest): Observable<IPurgeUserSettingsResponse> {
+  purge(
+    request: IPurgeUserSettingsRequest
+  ): Observable<IPurgeUserSettingsResponse> {
     return of({
       success: true
     });
   }
 
   @ApiCall()
-  getByKey(request: IUserSettingByKeyRequest): Observable<IUserSettingResponse> {
+  getByKey(
+    request: IUserSettingByKeyRequest
+  ): Observable<IUserSettingResponse> {
     return of();
   }
 
@@ -52,7 +62,9 @@ export class UserSettingsApiServiceMock implements IUserSettingsApiService, IPre
   }
 
   @ApiCall()
-  save(request: IUpsertUserSettingRequest): Observable<IUpsertUserSettingResponse> {
+  save(
+    request: IUpsertUserSettingRequest
+  ): Observable<IUpsertUserSettingResponse> {
     return of({
       success: true
     });
@@ -81,6 +93,9 @@ export class UserSettingsApiServiceMock implements IUserSettingsApiService, IPre
 
   @ApiCall()
   set(key: string, value: any): Observable<any> {
-    return this.save({ key, value: typeof value === 'string' ? value : JSON.stringify(value) });
+    return this.save({
+      key,
+      value: typeof value === 'string' ? value : JSON.stringify(value)
+    });
   }
 }

@@ -9,24 +9,30 @@ export type TenantNumberFormatType = 'price' | 'quantity';
   selector: 'p-spinner[tenant-format]'
 })
 export class PSpinnerTenantFormatDirective implements OnInit {
-
-  private _formatStyle: TenantNumberFormatType = 'quantity';
-
   get formatStyle(): TenantNumberFormatType {
     return this._formatStyle;
   }
 
   @Input('tenant-format') set tenantFormat(value: TenantNumberFormatType) {
     this._formatStyle = value;
-    this.spinner.precision = this.formatStyle === 'quantity' ? this.format.quantityPrecision : this.format.pricePrecision;
+    this.spinner.precision =
+      this.formatStyle === 'quantity'
+        ? this.format.quantityPrecision
+        : this.format.pricePrecision;
     this.spinner.formatValue();
   }
+  private _formatStyle: TenantNumberFormatType = 'quantity';
 
-  constructor(private spinner: Spinner, private format: TenantFormattingService) {
+  constructor(
+    private spinner: Spinner,
+    private format: TenantFormattingService
+  ) {
     this.spinner.step = 0;
     this.spinner.formatInput = true;
     this.spinner.formatValue = this.formatValue.bind(this);
   }
+
+  ngOnInit(): void {}
 
   /**
    * formatValue monkey patched, due to precision being dependent on step, and also not adding trailing zeros
@@ -37,7 +43,10 @@ export class PSpinnerTenantFormatDirective implements OnInit {
 
     if (value !== null && value !== undefined) {
       if (this.spinner.formatInput) {
-        value = this.formatStyle === 'quantity' ? this.format.quantity(value) : this.format.price(value);
+        value =
+          this.formatStyle === 'quantity'
+            ? this.format.quantity(value)
+            : this.format.price(value);
       }
 
       this.spinner.formattedValue = value?.toString();
@@ -45,12 +54,11 @@ export class PSpinnerTenantFormatDirective implements OnInit {
       this.spinner.formattedValue = null;
     }
 
-    if (this.spinner.inputfieldViewChild && this.spinner.inputfieldViewChild.nativeElement) {
+    if (
+      this.spinner.inputfieldViewChild &&
+      this.spinner.inputfieldViewChild.nativeElement
+    ) {
       this.spinner.inputfieldViewChild.nativeElement.value = this.spinner.formattedValue;
     }
-  }
-
-
-  ngOnInit(): void {
   }
 }

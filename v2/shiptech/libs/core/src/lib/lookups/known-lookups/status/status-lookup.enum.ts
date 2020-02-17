@@ -6,8 +6,21 @@ export enum StatusLookupEnum {
   New = 'New'
 }
 
-export const MockStatusLookupEnumMap: Record<StatusLookupEnum, IStatusLookupDto> = {
-  [StatusLookupEnum.Verified]:{ id: 1, name: 'Verified', displayName: 'Verified', code: ''},
-  [StatusLookupEnum.Pending]:{ id: 1, name: 'Pending', displayName: 'Pending', code: '#ff6978'},
-  [StatusLookupEnum.New]:{ id: 1, name: 'New', displayName: 'New', code: ''},
+export const MockStatusLookupEnumMap: Record<
+  StatusLookupEnum,
+  IStatusLookupDto
+> = {
+  [StatusLookupEnum.Verified]: {
+    id: 1,
+    name: 'Verified',
+    displayName: 'Verified',
+    code: ''
+  },
+  [StatusLookupEnum.Pending]: {
+    id: 1,
+    name: 'Pending',
+    displayName: 'Pending',
+    code: '#ff6978'
+  },
+  [StatusLookupEnum.New]: { id: 1, name: 'New', displayName: 'New', code: '' }
 };

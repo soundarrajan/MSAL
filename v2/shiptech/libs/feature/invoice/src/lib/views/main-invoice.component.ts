@@ -10,8 +10,7 @@ import { Subject } from 'rxjs';
 export class MainInvoiceComponent implements OnDestroy {
   private _destroy$ = new Subject();
 
-  constructor() {
-  }
+  constructor() {}
 
   ngOnDestroy(): void {
     this._destroy$.next();

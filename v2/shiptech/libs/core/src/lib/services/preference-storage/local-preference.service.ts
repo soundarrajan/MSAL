@@ -62,7 +62,10 @@ export class LocalPreferenceService implements IPreferenceStorage {
   set(key: string, value: any): Observable<any> {
     return defer(() => {
       try {
-        localStorage.setItem(key, typeof value === 'string' ? value : JSON.stringify(value));
+        localStorage.setItem(
+          key,
+          typeof value === 'string' ? value : JSON.stringify(value)
+        );
         return EMPTY;
       } catch (e) {
         return throwError(e);

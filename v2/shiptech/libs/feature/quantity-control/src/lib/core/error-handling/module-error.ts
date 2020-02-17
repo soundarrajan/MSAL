@@ -25,13 +25,13 @@ export class ModuleError<T = any> extends AppError<T> {
 
   static readonly PortCallIsRequired = new ModuleError({
     code: ErrorCode.PortCallIsRequired,
-    treatAsWarning:true,
+    treatAsWarning: true,
     message: 'Port Call is required.'
   });
 
   static readonly VesselIsRequired = new ModuleError({
     code: ErrorCode.VesselIsRequired,
-    treatAsWarning:true,
+    treatAsWarning: true,
     message: 'Vessel is required.'
   });
 
@@ -52,14 +52,21 @@ export class ModuleError<T = any> extends AppError<T> {
 
   static RevertVerifyReportFailed = new ModuleError({
     code: ErrorCode.RevertVerifyReportFailed,
-    message: 'Revert report for verification has failed. Please try again later.'
+    message:
+      'Revert report for verification has failed. Please try again later.'
   });
+
+  constructor(appError: Partial<IAppError> = {}) {
+    super(appError);
+  }
 
   static QcReportNotFound(reportId?: number): ModuleError {
     return new ModuleError({
       code: ErrorCode.PortCallNotFound,
       treatAsWarning: true,
-      message: `Port Call${reportId ? ` with id ${reportId} ` : ' '}was not found.`
+      message: `Port Call${
+        reportId ? ` with id ${reportId} ` : ' '
+      }was not found.`
     });
   }
 
@@ -77,9 +84,5 @@ export class ModuleError<T = any> extends AppError<T> {
       treatAsWarning: true,
       message: `Could not load details for Port Call with id '${reportId}'.`
     });
-  }
-
-  constructor(appError: Partial<IAppError> = {}) {
-    super(appError);
   }
 }

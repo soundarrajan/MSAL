@@ -3,7 +3,7 @@ export enum EmailLogsListColumns {
   status = 'status',
   to = 'to',
   subject = 'subject',
-  sentAt = 'sentAt',
+  sentAt = 'sentAt'
 }
 
 export enum EmailLogsListColumnsLabels {
@@ -11,13 +11,16 @@ export enum EmailLogsListColumnsLabels {
   status = 'Status',
   to = 'Mail sent to',
   subject = 'Subject',
-  sentAt = 'Mail date',
+  sentAt = 'Mail date'
 }
 
 /**
  * The map serves the purposes of easily renaming columns on the front-end without affecting back-end filtering/sorting.
  */
-export const EmailLogsListColumnServerKeys: Record<EmailLogsListColumns, string> = {
+export const EmailLogsListColumnServerKeys: Record<
+  EmailLogsListColumns,
+  string
+> = {
   [EmailLogsListColumns.from]: 'from',
   [EmailLogsListColumns.status]: 'Status_Name',
   [EmailLogsListColumns.to]: 'to',

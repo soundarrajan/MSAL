@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import {
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest
+} from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { LoggerFactory } from '../logging/logger-factory.service';
@@ -15,8 +20,15 @@ export class LoggingInterceptor implements HttpInterceptor {
     this.logger = loggerFactory.createLogger(LoggingInterceptor.name);
   }
 
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const newRequest = request.headers.has(LoggingInterceptorHeader) ? request.clone({ headers: request.headers.delete(LoggingInterceptorHeader) }) : request;
+  intercept(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
+    const newRequest = request.headers.has(LoggingInterceptorHeader)
+      ? request.clone({
+          headers: request.headers.delete(LoggingInterceptorHeader)
+        })
+      : request;
     const hasExceptionStatusCodes = request !== newRequest;
 
     return next.handle(newRequest).pipe(
@@ -38,11 +50,18 @@ export class LoggingInterceptor implements HttpInterceptor {
             return response;
           }
 
-          return this.logger.error('Failed HTTP {Method} request with {StatusCode} ({StatusText}) for {Url}.', request.method, response.status, response.statusText, request.urlWithParams, {
-            request,
-            response,
-            destructure: true
-          });
+          return this.logger.error(
+            'Failed HTTP {Method} request with {StatusCode} ({StatusText}) for {Url}.',
+            request.method,
+            response.status,
+            response.statusText,
+            request.urlWithParams,
+            {
+              request,
+              response,
+              destructure: true
+            }
+          );
         }
       )
     );

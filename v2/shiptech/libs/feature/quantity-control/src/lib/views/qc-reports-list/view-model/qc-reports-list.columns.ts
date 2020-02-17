@@ -58,7 +58,10 @@ export enum QcReportsListColumnsLabels {
 /**
  * The map serves the purposes of easily renaming columns on the front-end without affecting back-end filtering/sorting.
  */
-export const QcReportsListColumnServerKeys: Record<QcReportsListColumns, string> = {
+export const QcReportsListColumnServerKeys: Record<
+  QcReportsListColumns,
+  string
+> = {
   [QcReportsListColumns.selection]: undefined,
   [QcReportsListColumns.portCallId]: 'portCallId',
   [QcReportsListColumns.portName]: 'portName',
@@ -78,9 +81,12 @@ export const QcReportsListColumnServerKeys: Record<QcReportsListColumns, string>
   [QcReportsListColumns.measuredRobAfterDelivery]: 'measuredRobAfterDelivery',
   [QcReportsListColumns.diffRobAfterDelivery]: 'diffRobAfterDelivery',
   [QcReportsListColumns.qtyAfterDeliveryUom]: 'QtyAfterDeliveryUom_Name',
-  [QcReportsListColumns.logBookSludgeRobBeforeDischarge]: 'logBookSludgeRobBeforeDischarge',
-  [QcReportsListColumns.measuredSludgeRobBeforeDischarge]: 'measuredSludgeRobBeforeDischarge',
-  [QcReportsListColumns.diffSludgeRobBeforeDischarge]: 'diffSludgeRobBeforeDischarge',
+  [QcReportsListColumns.logBookSludgeRobBeforeDischarge]:
+    'logBookSludgeRobBeforeDischarge',
+  [QcReportsListColumns.measuredSludgeRobBeforeDischarge]:
+    'measuredSludgeRobBeforeDischarge',
+  [QcReportsListColumns.diffSludgeRobBeforeDischarge]:
+    'diffSludgeRobBeforeDischarge',
   [QcReportsListColumns.sludgeDischargedQty]: 'sludgeDischargedQty',
   [QcReportsListColumns.qtySludgeDischargedUom]: 'QtySludgeDischargedUom_Name',
   [QcReportsListColumns.comment]: 'comment',

@@ -1,9 +1,9 @@
 import { EntityTypeIdField } from '@shiptech/core/services/entity-related-links/api/entity-related-links.api.model';
 
 export interface IEntityRelatedLink {
-  type: EntityType,
-  id: any,
-  url: string
+  type: EntityType;
+  id: any;
+  url: string;
 }
 
 export enum EntityType {
@@ -15,7 +15,7 @@ export enum EntityType {
   Lab = 'Lab',
   Claim = 'Claim',
   Invoice = 'Invoice',
-  Recon = 'Recon',
+  Recon = 'Recon'
 }
 
 export const AllEntityTypes: EntityType[] = [
@@ -27,18 +27,17 @@ export const AllEntityTypes: EntityType[] = [
   EntityType.Lab,
   EntityType.Claim,
   EntityType.Invoice,
-  EntityType.Recon,
+  EntityType.Recon
 ];
 
 export const EntityToEntityIdFieldMap: Record<EntityType, EntityTypeIdField> = {
-  [EntityType.Request] : EntityTypeIdField.Request,
-  [EntityType.Offer] : EntityTypeIdField.Offer,
-  [EntityType.Order] : EntityTypeIdField.Order,
-  [EntityType.Delivery] : EntityTypeIdField.Delivery,
-  [EntityType.PortCall] : EntityTypeIdField.PortCall,
-  [EntityType.Lab] : EntityTypeIdField.Lab,
-  [EntityType.Claim] : EntityTypeIdField.Claim,
-  [EntityType.Invoice] : EntityTypeIdField.Invoice,
-  [EntityType.Recon] : EntityTypeIdField.Recon,
+  [EntityType.Request]: EntityTypeIdField.Request,
+  [EntityType.Offer]: EntityTypeIdField.Offer,
+  [EntityType.Order]: EntityTypeIdField.Order,
+  [EntityType.Delivery]: EntityTypeIdField.Delivery,
+  [EntityType.PortCall]: EntityTypeIdField.PortCall,
+  [EntityType.Lab]: EntityTypeIdField.Lab,
+  [EntityType.Claim]: EntityTypeIdField.Claim,
+  [EntityType.Invoice]: EntityTypeIdField.Invoice,
+  [EntityType.Recon]: EntityTypeIdField.Recon
 };
-

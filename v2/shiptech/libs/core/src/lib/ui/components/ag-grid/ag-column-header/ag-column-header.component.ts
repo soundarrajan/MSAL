@@ -1,16 +1,22 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, TemplateRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  TemplateRef
+} from '@angular/core';
 import { ICellRendererParams } from '@ag-grid-community/core';
 import { HeaderRendererConfig } from '@shiptech/core/ui/components/ag-grid/type.definition';
-import {IHeaderAngularComp} from "@ag-grid-community/angular";
+import { IHeaderAngularComp } from '@ag-grid-community/angular';
 
-export interface IAgColumnHeaderParams extends Partial<ICellRendererParams> {
-}
+export interface IAgColumnHeaderParams extends Partial<ICellRendererParams> {}
 
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'ag-column-header',
   template: `
-      <ng-container *ngTemplateOutlet="template; context: templateContext"></ng-container>
+    <ng-container
+      *ngTemplateOutlet="template; context: templateContext"
+    ></ng-container>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -19,8 +25,7 @@ export class AgColumnHeaderComponent implements IHeaderAngularComp {
   public template: TemplateRef<any>;
   public templateContext;
 
-  constructor(private changeDetector: ChangeDetectorRef) {
-  }
+  constructor(private changeDetector: ChangeDetectorRef) {}
 
   static withParams(params: IAgColumnHeaderParams): HeaderRendererConfig {
     return {
@@ -32,8 +37,7 @@ export class AgColumnHeaderComponent implements IHeaderAngularComp {
   agInit(params: IAgColumnHeaderParams): void {
     this.params = params;
 
-    this.templateContext = {
-    };
+    this.templateContext = {};
     this.template = this.params.ngTemplate;
 
     this.changeDetector.markForCheck();

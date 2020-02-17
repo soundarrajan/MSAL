@@ -1,7 +1,15 @@
-﻿commit 1f34c78f9474c51e67064580eb2482b0fa119f02
-Author: Pavithra <pavithra.m@inatech.com>
-Date:   Mon Feb 17 16:04:13 2020 +0530
+﻿commit c7c4ca1137d6d8d407741cfc0cbeb3734f87f75c
+Author: Sergiu.vasui <Sergiu.vasui@24software.ro>
+Date:   Mon Feb 17 13:48:56 2020 +0000
 
-    Header alignment
+    Merged PR 3003: Angular 9 & ESLint upgrade
+    
+    Upgrades to the project:
+    _From -> To_
+    Angular 8 -> Angular 9 (And almost all packages that were installed were upgraded) - fixed vulnerability issues
+    TSLint -> ESLint (configured) - TSLint is deprecated and ESLint is the tool recommended by Typescript and TSLint to be used
+    Performance improvement branch included
+    
+    Related work items: #20895
 
 branch: master

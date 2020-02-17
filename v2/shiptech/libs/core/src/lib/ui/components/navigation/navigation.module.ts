@@ -8,7 +8,6 @@ import { AccessDeniedComponent } from '../access-denied/access-denied.component'
 import { RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
-import {PrimeNGModule} from "@shiptech/core/ui/primeng.module";
 
 @NgModule({
   declarations: [
@@ -18,13 +17,7 @@ import {PrimeNGModule} from "@shiptech/core/ui/primeng.module";
     BlankComponent,
     AccessDeniedComponent
   ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    PrimeNGModule,
-    ButtonModule,
-    ScrollPanelModule
-  ],
+  imports: [CommonModule, RouterModule, ButtonModule, ScrollPanelModule],
   exports: [
     SidebarComponent,
     AppSubMenuComponent,
@@ -33,5 +26,4 @@ import {PrimeNGModule} from "@shiptech/core/ui/primeng.module";
     AccessDeniedComponent
   ]
 })
-export class NavigationModule {
-}
+export class NavigationModule {}

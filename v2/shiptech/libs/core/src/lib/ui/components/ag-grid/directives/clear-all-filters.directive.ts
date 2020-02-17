@@ -2,7 +2,7 @@ import { Directive, OnDestroy } from '@angular/core';
 import { takeUntil, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { AgGridGeneralMenuItemsStorage } from '@shiptech/core/ui/components/ag-grid/directives/general-menu-items-storage.service';
-import {AgGridAngular} from "@ag-grid-community/angular";
+import { AgGridAngular } from '@ag-grid-community/angular';
 
 @Directive({
   // tslint:disable-next-line:directive-selector
@@ -11,16 +11,30 @@ import {AgGridAngular} from "@ag-grid-community/angular";
 export class AgGridClearAllFiltersDirective implements OnDestroy {
   private _destroy$: Subject<any> = new Subject();
 
-  constructor(private agGrid: AgGridAngular, private generalMenuItems: AgGridGeneralMenuItemsStorage) {
-    generalMenuItems.menuItems.set(this.agGrid, [...generalMenuItems.menuItems.get(this.agGrid) ?? [], {
-      name: 'Clear All Filters',
-      action: () => this.agGrid.api.setFilterModel({})
-    }]);
+  constructor(
+    private agGrid: AgGridAngular,
+    private generalMenuItems: AgGridGeneralMenuItemsStorage
+  ) {
+    generalMenuItems.menuItems.set(this.agGrid, [
+      ...(generalMenuItems.menuItems.get(this.agGrid) ?? []),
+      {
+        name: 'Clear All Filters',
+        action: () => this.agGrid.api.setFilterModel({})
+      }
+    ]);
 
-    this.agGrid.gridReady.pipe(
-      tap(() => this.agGrid.gridOptions.getMainMenuItems = params => [...params.defaultItems ?? [], ...generalMenuItems.menuItems.get(this.agGrid) ?? []]),
-      takeUntil(this._destroy$)
-    ).subscribe();
+    this.agGrid.gridReady
+      .pipe(
+        tap(
+          () =>
+            (this.agGrid.gridOptions.getMainMenuItems = params => [
+              ...(params.defaultItems ?? []),
+              ...(generalMenuItems.menuItems.get(this.agGrid) ?? [])
+            ])
+        ),
+        takeUntil(this._destroy$)
+      )
+      .subscribe();
   }
 
   ngOnDestroy(): void {

@@ -1,9 +1,22 @@
-import { Action, createSelector, Selector, State, StateContext } from '@ngxs/store';
+import {
+  Action,
+  createSelector,
+  Selector,
+  State,
+  StateContext
+} from '@ngxs/store';
 import { nameof } from '../../../utils/type-definitions';
 import { TenantSettingsModel } from './tenant-settings.model';
 import { IAppState } from '../app.state.interface';
-import { LoadTenantSettingsAction, LoadTenantSettingsFailedAction, LoadTenantSettingsSuccessfulAction } from './load-tenant.actions';
-import { IModuleTenantSettings, TenantSettingsModuleName } from './tenant-settings.interface';
+import {
+  LoadTenantSettingsAction,
+  LoadTenantSettingsFailedAction,
+  LoadTenantSettingsSuccessfulAction
+} from './load-tenant.actions';
+import {
+  IModuleTenantSettings,
+  TenantSettingsModuleName
+} from './tenant-settings.interface';
 import { LoggerFactory } from '../../../logging/logger-factory.service';
 import { ILogger } from '../../../logging/logger';
 import { isAction } from '../../../utils/ngxs-utils';
@@ -14,6 +27,7 @@ import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/
 // @dynamic
 @State<ITenantSettingsState>({
   name: nameof<IAppState>('tenantSettings'),
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
   defaults: TenantSettingsState.default
 })
 @Injectable()
@@ -27,7 +41,9 @@ export class TenantSettingsState {
   }
 
   @Selector([TenantSettingsState])
-  static byModule<T extends IModuleTenantSettings>(module: TenantSettingsModuleName): (...args: any[]) => T {
+  static byModule<T extends IModuleTenantSettings>(
+    module: TenantSettingsModuleName
+  ): (...args: any[]) => T {
     return createSelector(
       [TenantSettingsState],
       (state: IAppState) => <T>(state.tenantSettings[module] || {})
@@ -40,7 +56,10 @@ export class TenantSettingsState {
   }
 
   @Action(LoadTenantSettingsAction)
-  loadTenantState({ getState, patchState }: StateContext<ITenantSettingsState>, { moduleName }: LoadTenantSettingsAction): void {
+  loadTenantState(
+    { getState, patchState }: StateContext<ITenantSettingsState>,
+    { moduleName }: LoadTenantSettingsAction
+  ): void {
     patchState({
       [moduleName]: {
         _isLoading: true,
@@ -50,13 +69,19 @@ export class TenantSettingsState {
   }
 
   @Action([LoadTenantSettingsSuccessfulAction, LoadTenantSettingsFailedAction])
-  loadTenantStateFinished({ getState, patchState }: StateContext<TenantSettingsState>, action: LoadTenantSettingsSuccessfulAction | LoadTenantSettingsFailedAction): void {
+  loadTenantStateFinished(
+    { getState, patchState }: StateContext<TenantSettingsState>,
+    action: LoadTenantSettingsSuccessfulAction | LoadTenantSettingsFailedAction
+  ): void {
     if (isAction(action, LoadTenantSettingsSuccessfulAction)) {
       const state = getState();
       const success = <LoadTenantSettingsSuccessfulAction>action;
 
       if (!success.settings) {
-        this.logger.warn(`TenantSettings for module: {ModuleName} returned falsy.`, action.moduleName);
+        this.logger.warn(
+          `TenantSettings for module: {ModuleName} returned falsy.`,
+          action.moduleName
+        );
         // TODO: we should probably throw here, if the tenant settings are not loaded
       }
       patchState({

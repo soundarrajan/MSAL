@@ -7,17 +7,9 @@ import { LazyViewComponent } from './views/lazy-view/lazy-view.component';
 import { LazyLoadPocRouteResolver } from './lazy-load-poc-route.resolver';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    LazyLoadPocRoutingModule,
-    UIModule
-  ],
+  imports: [CommonModule, LazyLoadPocRoutingModule, UIModule],
   declarations: [MainLazyLoadComponent, LazyViewComponent],
   providers: [LazyLoadPocRouteResolver],
-  exports:[MainLazyLoadComponent]
+  exports: [MainLazyLoadComponent]
 })
-export class LazyLoadPocModule {
-}
-
-
-
+export class LazyLoadPocModule {}

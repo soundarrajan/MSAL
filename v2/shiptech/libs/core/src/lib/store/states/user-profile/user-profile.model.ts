@@ -10,5 +10,4 @@ export class UserProfileModel {
   }
 }
 
-export interface IUserProfileState extends UserProfileModel {
-}
+export interface IUserProfileState extends UserProfileModel {}

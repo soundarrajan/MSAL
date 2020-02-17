@@ -1,8 +1,7 @@
 export class QcRevertVerifyReportAction {
   static readonly type = '[Qc.Report.Details] - Revert Verify';
 
-  constructor() {
-  }
+  constructor() {}
 
   public log(): any {
     return {};
@@ -12,8 +11,7 @@ export class QcRevertVerifyReportAction {
 export class QcRevertVerifyReportSuccessfulAction {
   static readonly type = '[Qc.Report.Details] - Revert Verify Successful';
 
-  constructor() {
-  }
+  constructor() {}
 
   public log(): any {
     return {};
@@ -23,8 +21,7 @@ export class QcRevertVerifyReportSuccessfulAction {
 export class QcRevertVerifyReportFailedAction {
   static readonly type = '[Qc.Report.Details] - Revert Verify Failed';
 
-  constructor() {
-  }
+  constructor() {}
 
   public log(): any {
     return {};

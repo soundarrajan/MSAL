@@ -1,6 +1,6 @@
-import { IDisplayLookupDto } from "@shiptech/core/lookups/display-lookup-dto.interface";
-import { IServerGridInfo } from "@shiptech/core/grid/server-grid/server-grid-request-response";
-import { IReconStatusLookupDto } from "@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.interface";
+import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-request-response';
+import { IReconStatusLookupDto } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.interface';
 
 export interface IEmailLogsItemDto {
   id: number;
@@ -16,8 +16,7 @@ export interface IEmailLogsItemDto {
   sentAt: Date | string;
 }
 
-export interface IEmailLogsRequest extends IServerGridInfo {
-}
+export interface IEmailLogsRequest extends IServerGridInfo {}
 
 export interface IEmailLogsResponse {
   payload: IEmailLogsItemDto[];

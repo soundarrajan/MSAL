@@ -22,7 +22,10 @@ import {
 import { getMockQcReportsList } from './mock/qc-reports-list.mock';
 import { QuantityControlApi } from './quantity-control-api';
 import { getQcReportDetailsCall } from './mock/qc-report-details.mock';
-import { ApiCall, ApiCallForwardTo } from '@shiptech/core/utils/decorators/api-call.decorator';
+import {
+  ApiCall,
+  ApiCallForwardTo
+} from '@shiptech/core/utils/decorators/api-call.decorator';
 import { getMockQcSoundingReportList } from './mock/qc-sounding-report-list.mock';
 import { getMockQcSoundingReportDetails } from './mock/qc-sounding-report-details.mock';
 import { nullable } from '@shiptech/core/utils/nullable';
@@ -31,7 +34,10 @@ import {
   IGetQcSurveyHistoryListResponse
 } from './request-response/qc-survey-history-list.request-response';
 import { getMockQcSurveyHistoryList } from './mock/qc-survey-history-list.mock';
-import { IGetEventsLogRequest, IGetEventsLogResponse } from './request-response/events-log.request-response';
+import {
+  IGetEventsLogRequest,
+  IGetEventsLogResponse
+} from './request-response/events-log.request-response';
 import { getMockQcEventsLog } from './mock/qc-events-log.mock';
 import {
   ISaveReportDetailsRequest,
@@ -65,7 +71,6 @@ const chance = new Chance();
   providedIn: 'root'
 })
 export class QuantityControlApiMock implements IQuantityControlApiService {
-
   @ApiCallForwardTo() realService: QuantityControlApi;
 
   constructor(realService: QuantityControlApi) {
@@ -73,9 +78,11 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   }
 
   @ApiCall()
-  getReportList(request: IGetQcReportsListRequest): Observable<IGetQcReportsListResponse> {
+  getReportList(
+    request: IGetQcReportsListRequest
+  ): Observable<IGetQcReportsListResponse> {
     const items = getMockQcReportsList(request.pagination.take) || [];
-    const firstItem = (_.first(items) || <IQcReportsListItemDto>{});
+    const firstItem = _.first(items) || <IQcReportsListItemDto>{};
 
     return of({
       items: items,
@@ -87,9 +94,11 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   }
 
   @ApiCall()
-  getSurveyHistoryList(request: IGetQcSurveyHistoryListRequest): Observable<IGetQcSurveyHistoryListResponse> {
+  getSurveyHistoryList(
+    request: IGetQcSurveyHistoryListRequest
+  ): Observable<IGetQcSurveyHistoryListResponse> {
     const items = getMockQcSurveyHistoryList(request.pagination.take) || [];
-    const firstItem = (_.first(items) || <IQcSurveyHistoryListItemDto>{});
+    const firstItem = _.first(items) || <IQcSurveyHistoryListItemDto>{};
 
     return of({
       items: items,
@@ -101,24 +110,34 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   }
 
   @ApiCall()
-  getReportDetails(request: IQcReportDetailsRequest): Observable<IQcReportDetailsResponse> {
+  getReportDetails(
+    request: IQcReportDetailsRequest
+  ): Observable<IQcReportDetailsResponse> {
     return of(getQcReportDetailsCall(request.id));
   }
 
   @ApiCall()
-  saveReportDetails(request: ISaveReportDetailsRequest): Observable<ISaveReportDetailsResponse> {
+  saveReportDetails(
+    request: ISaveReportDetailsRequest
+  ): Observable<ISaveReportDetailsResponse> {
     return of({
       reportId: 2,
       emailTransactionTypeId: 1,
       productTypes: request.details.map(s => ({
         id: s.id,
-        productType: { id: s.productTypeId, name: 'not used', displayName: 'not used' }
+        productType: {
+          id: s.productTypeId,
+          name: 'not used',
+          displayName: 'not used'
+        }
       }))
     });
   }
 
   @ApiCall()
-  getSoundingReportList(request: IGetSoundingReportListRequest): Observable<IGetSoundingReportListResponse> {
+  getSoundingReportList(
+    request: IGetSoundingReportListRequest
+  ): Observable<IGetSoundingReportListResponse> {
     return of({
       items: getMockQcSoundingReportList(request.pagination.take ?? 10),
       totalCount: (request?.pagination?.take ?? 10) * 5
@@ -126,30 +145,42 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   }
 
   @ApiCall()
-  getSoundingReportDetails(request: IGetSoundingReportDetailsRequest): Observable<IGetSoundingReportDetailsResponse> {
+  getSoundingReportDetails(
+    request: IGetSoundingReportDetailsRequest
+  ): Observable<IGetSoundingReportDetailsResponse> {
     return of({
-      items: getMockQcSoundingReportDetails(nullable(request.pagination).take || 10),
+      items: getMockQcSoundingReportDetails(
+        nullable(request.pagination).take || 10
+      ),
       totalCount: (request?.pagination?.take ?? 10) * 5
     });
   }
 
   @ApiCall()
-  getOrderProductsList(request: IGetOrderProductsListRequest): Observable<IGetOrderProductsListResponse> {
+  getOrderProductsList(
+    request: IGetOrderProductsListRequest
+  ): Observable<IGetOrderProductsListResponse> {
     return of({ items: getQcOrderProductsList(10), totalCount: 10 });
   }
 
   @ApiCall()
-  verifyReports(request: IQcVerifyReportsRequest): Observable<IQcVerifyReportsResponse> {
+  verifyReports(
+    request: IQcVerifyReportsRequest
+  ): Observable<IQcVerifyReportsResponse> {
     return of({});
   }
 
   @ApiCall()
-  revertVerifyVessel(request: IQcRevertVerifyReportsRequest): Observable<IQcRevertVerifyReportsResponse> {
+  revertVerifyVessel(
+    request: IQcRevertVerifyReportsRequest
+  ): Observable<IQcRevertVerifyReportsResponse> {
     return of({});
   }
 
   @ApiCall()
-  getEventsLog(request: IGetEventsLogRequest): Observable<IGetEventsLogResponse> {
+  getEventsLog(
+    request: IGetEventsLogRequest
+  ): Observable<IGetEventsLogResponse> {
     const items = getMockQcEventsLog(3);
     return of({
       items: items,
@@ -158,12 +189,16 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   }
 
   @ApiCall()
-  markSludgeVerification(request: IQcMarkSludgeVerificationRequest): Observable<IQcMarkSludgeVerificationResponse> {
+  markSludgeVerification(
+    request: IQcMarkSludgeVerificationRequest
+  ): Observable<IQcMarkSludgeVerificationResponse> {
     return of({});
   }
 
   @ApiCall()
-  loadPortCallBdn(request: IQcLoadPortCallBdnRequest): Observable<IQcLoadPortCallBdnResponse> {
+  loadPortCallBdn(
+    request: IQcLoadPortCallBdnRequest
+  ): Observable<IQcLoadPortCallBdnResponse> {
     return of({
       vesselVoyageDetailsId: request.vesselVoyageDetailsId,
       productTypes: getQcReportDetailsCall(1).productTypeCategories.map(p => ({
@@ -174,5 +209,4 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
       nbOfDeliveries: chance.integer({ min: 0, max: 50 })
     });
   }
-
 }
