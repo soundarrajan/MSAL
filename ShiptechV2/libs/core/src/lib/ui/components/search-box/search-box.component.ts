@@ -1,7 +1,20 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {FormControl} from '@angular/forms';
-import {debounceTime, distinctUntilChanged, takeUntil, tap} from 'rxjs/operators';
-import {Subject} from 'rxjs';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output
+} from '@angular/core';
+import { FormControl } from '@angular/forms';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  takeUntil,
+  tap
+} from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'shiptech-search-box',
@@ -30,8 +43,7 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   onSearch(): void {
     this.search$.next(this.searchTextField.value);

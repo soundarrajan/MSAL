@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import {IUserSettingResponse} from './request-response';
+import { IUserSettingResponse } from './request-response';
 
 export function getFilterModels(n: number = 5): any {
   const presets = [

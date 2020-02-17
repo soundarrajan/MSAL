@@ -94,9 +94,7 @@ export class UserSettingsApiService
     const requestUrl = `${this._apiUrl}/${UserSettingsApiPaths.purge()}`;
     return this.http
       .post<IPurgeUserSettingsResponse>(requestUrl, { payload: false })
-      .pipe(
-        catchError(() => throwError(AppError.FailedToPurgeUserSettings))
-      );
+      .pipe(catchError(() => throwError(AppError.FailedToPurgeUserSettings)));
   }
 
   @ObservableException()

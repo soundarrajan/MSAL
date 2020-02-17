@@ -5,8 +5,8 @@ import {
   Input,
   Output
 } from '@angular/core';
-import { SelectItem } from 'primeng/api';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+import { SelectItem } from 'primeng/api';
 
 @Component({
   selector: 'shiptech-uom-selector',
