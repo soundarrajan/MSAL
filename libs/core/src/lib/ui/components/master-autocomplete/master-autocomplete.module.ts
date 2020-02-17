@@ -6,6 +6,7 @@ import { MasterSelectorModule } from '@shiptech/core/ui/components/master-select
 import { ButtonModule } from 'primeng/button';
 import { PortalModule } from '@angular/cdk/portal';
 import {AutocompleteComponent} from "@shiptech/core/ui/components/master-autocomplete/autocomplete/autocomplete.component";
+import {PrimeNGModule} from "@shiptech/core/ui/primeng.module";
 
 export function getDefaultStorage(defaultStorage: any): any {
   return defaultStorage;
@@ -17,6 +18,7 @@ export function getDefaultStorage(defaultStorage: any): any {
     FormsModule,
     ReactiveFormsModule,
     UIModule,
+    PrimeNGModule,
     MasterSelectorModule,
     ButtonModule,
     PortalModule

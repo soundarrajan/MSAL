@@ -6,12 +6,14 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import {ConfirmationService} from "primeng/api";
+import {PrimeNGModule} from "@shiptech/core/ui/primeng.module";
 
 @NgModule({
   imports: [
     CommonModule,
     NavigationModule,
     BreadcrumbsModule,
+    PrimeNGModule,
     RouterModule,
     ConfirmDialogModule
   ],

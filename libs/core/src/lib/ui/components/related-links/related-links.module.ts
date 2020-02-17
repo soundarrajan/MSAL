@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RelatedLinksComponent } from './related-links.component';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import {PrimeNGModule} from "@shiptech/core/ui/primeng.module";
 
 @NgModule({
 
@@ -11,6 +12,7 @@ import { CommonModule } from '@angular/common';
   providers: [],
   imports: [
     RouterModule,
+    PrimeNGModule,
     CommonModule
   ],
   exports: [RelatedLinksComponent]
