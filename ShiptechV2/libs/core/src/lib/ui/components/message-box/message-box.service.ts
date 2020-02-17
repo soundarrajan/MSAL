@@ -1,9 +1,9 @@
 import { Injectable, TemplateRef } from '@angular/core';
-import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
 import { ComponentType } from '@angular/cdk/portal';
 import { DefaultDialogComponent } from './dialog/default-pop-up/default-dialog.component';
 import { ConfirmationDialogComponent } from './dialog/confirmation-pop-up/confirmation-dialog.component';
 import { AlertDialogComponent } from './dialog/alert-pop-up/alert-dialog.component';
+import {MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
 
 const defaultDialogConfig = {
   maxHeight: '400px',
