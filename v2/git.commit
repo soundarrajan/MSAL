@@ -1,15 +1,11 @@
-﻿commit c7c4ca1137d6d8d407741cfc0cbeb3734f87f75c
+﻿commit f366cbee9838d8b9a252a1f4c8db941c1b75c38d
 Author: Sergiu.vasui <Sergiu.vasui@24software.ro>
-Date:   Mon Feb 17 13:48:56 2020 +0000
+Date:   Mon Feb 17 15:27:01 2020 +0000
 
-    Merged PR 3003: Angular 9 & ESLint upgrade
+    Merged PR 3006: Quantity Control - View Vessel response and Verify the survey report
     
-    Upgrades to the project:
-    _From -> To_
-    Angular 8 -> Angular 9 (And almost all packages that were installed were upgraded) - fixed vulnerability issues
-    TSLint -> ESLint (configured) - TSLint is deprecated and ESLint is the tool recommended by Typescript and TSLint to be used
-    Performance improvement branch included
+    Modified max length of 3 fields and renamed VesselPortCallsMasterListColumnServerKeys
     
-    Related work items: #20895
+    Related work items: #17834
 
 branch: master
