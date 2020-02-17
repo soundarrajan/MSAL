@@ -518,13 +518,23 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         }
 
         var buildTimeline = function(data) {
-            var timelineData = computeData(data);
-            var groups = new vis.DataSet(timelineData.groups);
-            var voyages = new vis.DataSet(timelineData.voyages);
+            var cls = "vis-voyage-content vis-voyage-content-sap";
             var voyagesArray = [];
+            var timelineData = computeData(data);
             for (var i = 0; i < timelineData.voyages.length; i++) {
                 voyagesArray.push(timelineData.voyages[i]);
+                var hasStrategy = _.find(timelineData.voyages[i].additionalStops, function(obj) {
+                                            return obj.voyageDetail.hasStrategy == true;
+                                        });
+                if (hasStrategy) {
+                    var contentChange = timelineData.voyages[i].content.split("cell-identifier");
+                    var newContent = '<span class="' + cls + '" cell-identifier' + contentChange[1] + '" cell-identifier' + contentChange[2];
+                    timelineData.voyages[i].content = newContent;
+                    
+                }
             }
+            var groups = new vis.DataSet(timelineData.groups);
+            var voyages = new vis.DataSet(timelineData.voyages);
             var startDateObject = { 'start': ctrl.startDate.format('YYYY-MM-DD'), 'end': ctrl.endDate.format('YYYY-MM-DD')};
             voyagesArray.push(startDateObject);
             minDate = _.minBy(voyagesArray, function(item) {

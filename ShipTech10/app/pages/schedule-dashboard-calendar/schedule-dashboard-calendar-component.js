@@ -1533,13 +1533,14 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
 
 		ctrl.checkIfHasSAPStrategy = function(voyageStops) {
 			hasStrategy = false;
-			$.each(voyageStops, function(k,v){
-				$.each(ctrl.bunkerDetails[v.id], function(k2,v2){
-					if (v2.bunkerPlan.supplyStrategy) {
-						hasStrategy = true;
-					}
-				})
-			})
+            $.each(voyageStops, function(k,v){
+                $.each(ctrl.bunkerDetails[v.id], function(k2,v2){
+                    if (v2.hasStrategy) {
+                        hasStrategy = true;
+                    }
+                })
+            })
+
 			return hasStrategy;
 		}
 		ctrl.checkIfHasSludge = function(voyageStops) {
