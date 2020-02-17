@@ -21,6 +21,7 @@ import { FlexModule } from "@angular/flex-layout";
 import {AgAsyncBackgroundFillComponent} from "@shiptech/core/ui/components/ag-grid/ag-async-background-fill/ag-async-background-fill.component";
 import { CalendarModule } from 'primeng/calendar';
 import {MatCheckboxModule} from "@angular/material/checkbox";
+import {PrimeNGModule} from "@shiptech/core/ui/primeng.module";
 
 const COMPONENTS = [
   AgCellTemplateComponent,
@@ -49,6 +50,7 @@ const COMPONENTS = [
     FormsModule,
     ReactiveFormsModule,
     AgPagingModule,
+    PrimeNGModule,
     MatCheckboxModule,
     FlexModule,
     CalendarModule
