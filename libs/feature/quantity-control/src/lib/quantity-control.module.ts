@@ -53,13 +53,15 @@ import { TabMenuModule } from 'primeng/tabmenu';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { PanelModule } from 'primeng/panel';
 import { SpinnerModule } from 'primeng/spinner';
-import { PSpinnerDisableKeysSpinDirective } from '@shiptech/core/ui/directives/p-spinner-disable-keys-spin.directive';
-import { PSpinnerTenantFormatDirective } from '@shiptech/core/ui/directives/p-spinner-tenant-format.directive';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { AccordionModule } from 'primeng/accordion';
 import { DropdownModule } from 'primeng/dropdown';
 import { MessagesModule } from 'primeng/messages';
+import { PSpinnerDisableKeysSpinDirective } from '@shiptech/core/ui/directives/p-spinner-disable-keys-spin.directive';
+import { PSpinnerTenantFormatDirective } from '@shiptech/core/ui/directives/p-spinner-tenant-format.directive';
+import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @NgModule({
   imports: [
@@ -75,6 +77,7 @@ import { MessagesModule } from 'primeng/messages';
     MessageBoxModule,
     RelatedLinksModule,
     EntityStatusModule,
+    DynamicDialogModule,
     NgxsModule.forFeature([
       QuantityControlState,
       QcReportsListState,
@@ -134,7 +137,10 @@ import { MessagesModule } from 'primeng/messages';
         : QuantityControlApiMock
     },
     QcReportDetailsUnsavedChangesGuard,
-    QcReportService
+    QcReportService,
+    DialogService,
+    MessageService,
+    ConfirmationService
   ]
 })
 export class QuantityControlModule {}

@@ -39,7 +39,8 @@ import { IReconStatusLookupDto } from '@shiptech/core/lookups/known-lookups/reco
 import { StatusLookupEnum } from '@shiptech/core/lookups/known-lookups/status/status-lookup.enum';
 import { StatusLookup } from '@shiptech/core/lookups/known-lookups/status/status-lookup.service';
 import { knownMastersAutocomplete } from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
-import { ConfirmationService, DialogService } from 'primeng';
+import { ConfirmationService } from 'primeng/api';
+import { DialogService } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'shiptech-port-call',

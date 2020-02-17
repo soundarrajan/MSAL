@@ -1,6 +1,6 @@
-import {IServerGridInfo} from '@shiptech/core/grid/server-grid/server-grid-request-response';
-import {ILookupDto} from '@shiptech/core/lookups/lookup-dto.interface';
-import {IScheduleDashboardLabelConfigurationDto} from '@shiptech/core/lookups/schedule-dashboard-label-configuration.dto.interface';
+import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-request-response';
+import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
+import { IScheduleDashboardLabelConfigurationDto } from '@shiptech/core/lookups/schedule-dashboard-label-configuration.dto.interface';
 
 export interface ICompleteListItemDto {
   id: number;

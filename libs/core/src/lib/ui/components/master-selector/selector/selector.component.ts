@@ -35,7 +35,10 @@ import { IMasterModelInterface } from '@shiptech/core/ui/components/master-selec
       // eslint-disable-next-line @typescript-eslint/no-use-before-define
       useExisting: forwardRef(() => SelectorComponent),
       multi: true
-    }
+    },
+    DocumentsMasterSelectorGridViewModel,
+    VesselMasterSelectorGridViewModel,
+    VesselPortCallsMasterSelectorGridViewModel
   ],
   exportAs: 'sharedMasterSelector',
   changeDetection: ChangeDetectionStrategy.OnPush,

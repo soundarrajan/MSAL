@@ -1,4 +1,4 @@
-import {AfterViewInit, Component} from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -43,8 +43,7 @@ export class LayoutMainComponent implements AfterViewInit {
   isRTL: boolean;
   moduleLoaded: any;
 
-  constructor() {
-  }
+  constructor() {}
 
   onLayoutClick(): void {
     if (!this.userMenuClick) {
@@ -200,6 +199,5 @@ export class LayoutMainComponent implements AfterViewInit {
     }
   }
 
-  ngAfterViewInit(): void {
-  }
+  ngAfterViewInit(): void {}
 }

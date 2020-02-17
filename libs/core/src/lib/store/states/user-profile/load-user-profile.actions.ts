@@ -9,8 +9,7 @@ export class LoadUserProfileAction {
 export class LoadUserProfileSuccessfulAction {
   static readonly type = '[User-Profile] Load User Profile Successful';
 
-  constructor(public userProfile: UserProfileModel) {
-  }
+  constructor(public userProfile: UserProfileModel) {}
 
   public log(): any {
     return {
