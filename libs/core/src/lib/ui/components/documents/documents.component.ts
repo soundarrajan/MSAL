@@ -1,41 +1,43 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, Inject, Input, OnDestroy, OnInit, ViewChild } from "@angular/core";
-import { Subject } from "rxjs";
-import { DocumentsGridViewModel } from "./view-model/documents-grid-view-model.service";
-import { DOCUMENTS_API_SERVICE } from "@shiptech/core/services/masters-api/documents-api.service";
-import { IDocumentsApiService } from "@shiptech/core/services/masters-api/documents-api.service.interface";
-import { AppErrorHandler } from "@shiptech/core/error-handling/app-error-handler";
-import { IDocumentsUpdateIsVerifiedRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto";
-import { IDocumentsDeleteRequest } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto";
-import { IDocumentsItemDto } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto";
-import { DocumentViewEditNotesComponent } from "@shiptech/core/ui/components/documents/document-view-edit-notes/document-view-edit-notes.component";
-import { IDisplayLookupDto } from "@shiptech/core/lookups/display-lookup-dto.interface";
-import { IDocumentsCreateUploadDetailsDto, IDocumentsCreateUploadDto } from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto";
-import { ToastrService } from "ngx-toastr";
-import { FileSaverService } from "ngx-filesaver";
-import { ModuleError } from "@shiptech/core/ui/components/documents/error-handling/module-error";
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild
+} from '@angular/core';
+import { Subject } from 'rxjs';
+import { DocumentsGridViewModel } from './view-model/documents-grid-view-model.service';
+import { DOCUMENTS_API_SERVICE } from '@shiptech/core/services/masters-api/documents-api.service';
+import { IDocumentsApiService } from '@shiptech/core/services/masters-api/documents-api.service.interface';
+import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
+import { IDocumentsUpdateIsVerifiedRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto';
+import { IDocumentsDeleteRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto';
+import { IDocumentsItemDto } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto';
+import { DocumentViewEditNotesComponent } from '@shiptech/core/ui/components/documents/document-view-edit-notes/document-view-edit-notes.component';
+import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+import {
+  IDocumentsCreateUploadDetailsDto,
+  IDocumentsCreateUploadDto
+} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto';
+import { ToastrService } from 'ngx-toastr';
+import { FileSaverService } from 'ngx-filesaver';
+import { ModuleError } from '@shiptech/core/ui/components/documents/error-handling/module-error';
 import { FileUpload } from 'primeng/fileupload';
-import { ConfirmationService, DialogService } from 'primeng/api';
-import { knownMastersAutocomplete } from "@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum";
+import { knownMastersAutocomplete } from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
+import { ConfirmationService } from 'primeng/api';
+import { DialogService } from 'primeng/dynamicdialog';
 
 @Component({
-  selector: "shiptech-documents",
-  templateUrl: "./documents.component.html",
-  styleUrls: ["./documents.component.scss"],
+  selector: 'shiptech-documents',
+  templateUrl: './documents.component.html',
+  styleUrls: ['./documents.component.scss'],
   providers: [DocumentsGridViewModel, DialogService, ConfirmationService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DocumentsComponent implements OnInit, OnDestroy, AfterViewInit {
-
-  private _destroy$ = new Subject();
-  private _entityId: number;
-  private _entityName: string;
-  selectedDocumentType: IDisplayLookupDto;
-  isReadOnly: boolean;
-
-  autocompleteDocuments: string;
-
-  @ViewChild("uploadComponent", { static: false }) uploadedFiles: FileUpload;
-
   get entityId(): number {
     return this._entityId;
   }
@@ -53,14 +55,24 @@ export class DocumentsComponent implements OnInit, OnDestroy, AfterViewInit {
     this._entityName = value;
     this.gridViewModel.entityName = this.entityName;
   }
+  selectedDocumentType: IDisplayLookupDto;
+  isReadOnly: boolean;
 
-  constructor(public gridViewModel: DocumentsGridViewModel,
-              @Inject(DOCUMENTS_API_SERVICE) private mastersApi: IDocumentsApiService,
-              private appErrorHandler: AppErrorHandler,
-              private toastrService: ToastrService,
-              private confirmationService: ConfirmationService,
-              private dialogService: DialogService,
-              private _FileSaverService: FileSaverService
+  autocompleteDocuments: string;
+
+  @ViewChild('uploadComponent', { static: false }) uploadedFiles: FileUpload;
+  private _destroy$ = new Subject();
+  private _entityId: number;
+  private _entityName: string;
+
+  constructor(
+    public gridViewModel: DocumentsGridViewModel,
+    @Inject(DOCUMENTS_API_SERVICE) private mastersApi: IDocumentsApiService,
+    private appErrorHandler: AppErrorHandler,
+    private toastrService: ToastrService,
+    private confirmationService: ConfirmationService,
+    private dialogService: DialogService,
+    private _FileSaverService: FileSaverService
   ) {
     this.autocompleteDocuments = knownMastersAutocomplete.documents;
   }
@@ -89,11 +101,14 @@ export class DocumentsComponent implements OnInit, OnDestroy, AfterViewInit {
     const request = {
       Payload: id
     };
-    this.mastersApi.downloadDocument(request).subscribe((response) => {
-      this._FileSaverService.save(response, name);
-    }, () => {
-      this.appErrorHandler.handleError(ModuleError.DocumentDownloadError);
-    });
+    this.mastersApi.downloadDocument(request).subscribe(
+      response => {
+        this._FileSaverService.save(response, name);
+      },
+      () => {
+        this.appErrorHandler.handleError(ModuleError.DocumentDownloadError);
+      }
+    );
   }
 
   updateIsVerifiedDocument(item: IDocumentsItemDto, isChecked: boolean): void {
@@ -103,48 +118,60 @@ export class DocumentsComponent implements OnInit, OnDestroy, AfterViewInit {
       isVerified: isChecked
     };
     this.mastersApi.updateIsVerifiedDocument(request).subscribe(
+      () => {},
       () => {
+        this.appErrorHandler.handleError(
+          ModuleError.UpdateIsVerifiedDocumentFailed
+        );
+        item.isVerified = !isChecked;
+        this.gridViewModel.gridOptions.api
+          .getRowNode(item.id.toString(10))
+          .setData(item);
+        this.gridViewModel.gridOptions.api.redrawRows({
+          rowNodes: [
+            this.gridViewModel.gridOptions.api.getRowNode(item.id.toString(10))
+          ]
+        });
+        this.isReadOnly = false;
       },
       () => {
-        this.appErrorHandler.handleError(ModuleError.UpdateIsVerifiedDocumentFailed);
-        item.isVerified = !isChecked;
-        this.gridViewModel.gridOptions.api.getRowNode(item.id.toString(10)).setData(item);
-        this.gridViewModel.gridOptions.api.redrawRows({ rowNodes: [this.gridViewModel.gridOptions.api.getRowNode(item.id.toString(10))] });
-        this.isReadOnly = false;
-      }, () => {
         this.gridViewModel.gridOptions.api.purgeServerSideCache([]);
         this.isReadOnly = false;
-      });
+      }
+    );
   }
 
   updateNotesDocument(item: IDocumentsItemDto): void {
     const ref = this.dialogService.open(DocumentViewEditNotesComponent, {
       data: item,
-      width: "580px",
+      width: '580px',
       showHeader: true,
-      header: "Comments"
+      header: 'Comments'
     });
     ref.onClose.subscribe((newItem: IDocumentsItemDto) => {
       if (newItem) {
-        this.gridViewModel.gridOptions.api.getRowNode(newItem.id.toString(10)).setData(newItem);
+        this.gridViewModel.gridOptions.api
+          .getRowNode(newItem.id.toString(10))
+          .setData(newItem);
       }
     });
   }
 
   deleteDocument(id: number): void {
     this.confirmationService.confirm({
-      header: "Confirm",
-      message: "Are you sure you want to delete the document ?",
+      header: 'Confirm',
+      message: 'Are you sure you want to delete the document ?',
       accept: () => {
         const request: IDocumentsDeleteRequest = { id };
         this.mastersApi.deleteDocument(request).subscribe(
           () => {
-            this.toastrService.success("Delete done");
+            this.toastrService.success('Delete done');
             this.gridViewModel.gridOptions.api.purgeServerSideCache([]);
           },
           () => {
             this.appErrorHandler.handleError(ModuleError.DeleteDocumentFailed);
-          });
+          }
+        );
       }
     });
   }
@@ -152,12 +179,9 @@ export class DocumentsComponent implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit(): void {
     this.uploadedFiles.uploadHandler.subscribe((event: FileUpload) => {
       if (!this.selectedDocumentType) {
-
         this.appErrorHandler.handleError(ModuleError.DocumentTypeNotSelected);
         this.clearUploadedFiles();
-
       } else {
-
         const requestPayload: IDocumentsCreateUploadDto = {
           Payload: <IDocumentsCreateUploadDetailsDto>{
             name: event.files[0].name,
@@ -173,19 +197,21 @@ export class DocumentsComponent implements OnInit, OnDestroy, AfterViewInit {
         };
         const formRequest: FormData = new FormData();
 
-        formRequest.append("file", event.files[0]);
-        formRequest.append("request", JSON.stringify(requestPayload));
+        formRequest.append('file', event.files[0]);
+        formRequest.append('request', JSON.stringify(requestPayload));
 
-        this.mastersApi.uploadFile(formRequest).subscribe(() => {
-          this.toastrService.success("Document saved !");
-          this.gridViewModel.gridOptions.api.purgeServerSideCache([]);
-        }, () => {
-          this.appErrorHandler.handleError(ModuleError.UploadDocumentFailed);
-        });
+        this.mastersApi.uploadFile(formRequest).subscribe(
+          () => {
+            this.toastrService.success('Document saved !');
+            this.gridViewModel.gridOptions.api.purgeServerSideCache([]);
+          },
+          () => {
+            this.appErrorHandler.handleError(ModuleError.UploadDocumentFailed);
+          }
+        );
 
         this.clearUploadedFiles();
         this.selectedDocumentType = undefined;
-
       }
     });
   }
@@ -194,5 +220,4 @@ export class DocumentsComponent implements OnInit, OnDestroy, AfterViewInit {
     this._destroy$.next();
     this._destroy$.complete();
   }
-
 }

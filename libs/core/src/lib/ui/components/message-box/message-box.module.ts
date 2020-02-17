@@ -8,20 +8,13 @@ import { DefaultDialogComponent } from '@shiptech/core/ui/components/message-box
 import { MessageBoxService } from '@shiptech/core/ui/components/message-box/message-box.service';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MaterialModule
-  ],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, MaterialModule],
   declarations: [
     AlertDialogComponent,
     ConfirmationDialogComponent,
     DefaultDialogComponent
   ],
-  providers: [
-    MessageBoxService
-  ],
+  providers: [MessageBoxService],
   exports: [
     AlertDialogComponent,
     ConfirmationDialogComponent,
@@ -33,5 +26,4 @@ import { MessageBoxService } from '@shiptech/core/ui/components/message-box/mess
     DefaultDialogComponent
   ]
 })
-export class MessageBoxModule {
-}
+export class MessageBoxModule {}

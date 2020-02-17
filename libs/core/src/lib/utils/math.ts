@@ -31,15 +31,15 @@ export function truncateDecimals(value: number, decimals: number): number {
   return parseFloat(numberArr.join('.'));
 }
 
-export function roundDecimals(value: number, decimals: number):number {
-  if(value === undefined || value === null)
-    return value;
+export function roundDecimals(value: number, decimals: number): number {
+  if (value === undefined || value === null) return value;
 
-  return Math.round(value * Math.pow(10, decimals)) / (Math.pow(10, decimals));
+  return Math.round(value * Math.pow(10, decimals)) / Math.pow(10, decimals);
 }
 
-
-export function safeDecimal(value: number | null | undefined): Decimal | undefined {
+export function safeDecimal(
+  value: number | null | undefined
+): Decimal | undefined {
   if (value === null || value === undefined) {
     return undefined;
   }

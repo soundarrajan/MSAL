@@ -15,54 +15,69 @@ import {
   ValueGetterParams
 } from '@ag-grid-community/core';
 
-export type CellRendererConfig = Pick<ColDef, 'cellRendererFramework' | 'cellRendererParams'>;
-export type CellEditorConfig = Pick<ColDef, 'cellEditorFramework' | 'cellEditorParams'>;
-export type HeaderRendererConfig = Pick<ColDef, 'headerComponentFramework' | 'headerComponentParams'>;
+export type CellRendererConfig = Pick<
+  ColDef,
+  'cellRendererFramework' | 'cellRendererParams'
+>;
+export type CellEditorConfig = Pick<
+  ColDef,
+  'cellEditorFramework' | 'cellEditorParams'
+>;
+export type HeaderRendererConfig = Pick<
+  ColDef,
+  'headerComponentFramework' | 'headerComponentParams'
+>;
 
 export type ICellRendererParamsExtended<T> = T & ICellRendererParams;
 export type ICellEditorParamsExtended<T> = T & ICellEditorParams;
 
 export type FilterConfig = Pick<ColDef, 'filter' | 'filterParams'>;
 
-export interface ITypedCellRendererColDef<TCellRendererParams = any> extends ColDef {
+export interface ITypedCellRendererColDef<TCellRendererParams = any>
+  extends ColDef {
   cellRendererParams?: TCellRendererParams;
 }
 
-export interface ITypedValueFormatterParams<T> extends IBaseWithValueColDefParams {
-
-}
+export interface ITypedValueFormatterParams<T>
+  extends IBaseWithValueColDefParams {}
 
 export interface ITypedValueGetterParams<T> extends IBaseColDefParams {
   getValue: (field: string) => any;
 }
 
-export interface ITypedCellRendererParams<TData = any, TField = any> extends Omit<ICellRendererParams, 'data' | 'value'> {
+export interface ITypedCellRendererParams<TData = any, TField = any>
+  extends Omit<ICellRendererParams, 'data' | 'value'> {
   data: TData;
   value: TField;
 }
 
-export interface ITypedBaseColDefParams<TData = any, TField = any> extends Omit<IBaseColDefParams, 'data' | 'value'> {
+export interface ITypedBaseColDefParams<TData = any, TField = any>
+  extends Omit<IBaseColDefParams, 'data' | 'value'> {
   data: TData;
 }
 
-export interface ITypedNewValueParams<TData = any, TField = any> extends Omit<NewValueParams, 'data' | 'value' | 'oldValue' | 'newValue'> {
+export interface ITypedNewValueParams<TData = any, TField = any>
+  extends Omit<NewValueParams, 'data' | 'value' | 'oldValue' | 'newValue'> {
   oldValue: TField;
   newValue: TField;
 }
 
-export interface ITypedValueParams<TData = any, TField = any> extends Omit<CellClassParams, 'data' | 'value'> {
+export interface ITypedValueParams<TData = any, TField = any>
+  extends Omit<CellClassParams, 'data' | 'value'> {
   data: TData;
   value: TField;
 }
 
-export interface ITypedRowModel<TData = any> extends Omit<IRowModel, 'getRow' | 'getRowNode'> {
+export interface ITypedRowModel<TData = any>
+  extends Omit<IRowModel, 'getRow' | 'getRowNode'> {
   getRow(index: number): TypedRowNode<TData> | null;
 
   /** Returns the rowNode for given id. */
   getRowNode(id: string): TypedRowNode<TData> | null;
 }
 
-export interface TypedFilterParams<TData = any, TField = any> extends Omit<Partial<IFilterParams>, 'colDef' | 'rowModel' | 'valueGetter'> {
+export interface TypedFilterParams<TData = any, TField = any>
+  extends Omit<Partial<IFilterParams>, 'colDef' | 'rowModel' | 'valueGetter'> {
   colDef?: ITypedColDef<TData, TField>;
   rowModel?: ITypedRowModel<TData>;
   clearButton?: boolean;
@@ -71,16 +86,23 @@ export interface TypedFilterParams<TData = any, TField = any> extends Omit<Parti
 }
 
 export interface IAgGridCellClassRules<TData = any, TField = any> {
-  [cssClassName: string]: ((params: ITypedValueParams<TData, TField>) => boolean) | string;
+  [cssClassName: string]:
+    | ((params: ITypedValueParams<TData, TField>) => boolean)
+    | string;
 }
 
-export interface ITypedColDef<TData = any, TField = any> extends Omit<ColDef, 'field' | 'filterParams'> {
+export interface ITypedColDef<TData = any, TField = any>
+  extends Omit<ColDef, 'field' | 'filterParams'> {
   valueFormatter?: (params: ValueFormatterParams) => string;
   valueGetter?: ((params: ValueGetterParams) => any) | string;
   cellClassRules?: IAgGridCellClassRules;
-  cellStyle?: (params: ITypedValueParams<TData, TField>) => Partial<CSSStyleDeclaration>;
-  field?: keyof TData,
-  cellRendererSelector?: (params: ITypedCellRendererParams<TData, TField>) => ITypedComponentSelectorResult;
+  cellStyle?: (
+    params: ITypedValueParams<TData, TField>
+  ) => Partial<CSSStyleDeclaration>;
+  field?: keyof TData;
+  cellRendererSelector?: (
+    params: ITypedCellRendererParams<TData, TField>
+  ) => ITypedComponentSelectorResult;
   onCellValueChanged?: (params: ITypedValueParams<TData, TField>) => void;
   filterParams?: TypedFilterParams<TData, TField>;
 }
@@ -90,10 +112,12 @@ export interface ITypedColGroupDef extends Omit<ColGroupDef, 'children'> {
 }
 
 export interface TypedRowNode<TData = any> extends Omit<RowNode, 'data'> {
-  data: TData
+  data: TData;
 }
 
-export function getColDef<T = any>(colDef: ITypedCellRendererColDef<T>): ITypedCellRendererColDef<T> {
+export function getColDef<T = any>(
+  colDef: ITypedCellRendererColDef<T>
+): ITypedCellRendererColDef<T> {
   return colDef;
 }
 
@@ -101,8 +125,7 @@ export interface IGridColumns {
   [id: string]: ColDef;
 }
 
-export class PdsListColumnDefinitions<T> {
-}
+export class PdsListColumnDefinitions<T> {}
 
 export enum RowModelType {
   Infinite = 'infinite',
@@ -136,10 +159,13 @@ export enum AgGridConditionTypeEnum {
 
 export enum AgGridOperatorEnum {
   OR = 'OR',
-  AND = 'AND',
+  AND = 'AND'
 }
 
-export const AgGridConditionTypeLabels: Record<AgGridConditionTypeEnum, string> = {
+export const AgGridConditionTypeLabels: Record<
+  AgGridConditionTypeEnum,
+  string
+> = {
   [AgGridConditionTypeEnum.YES]: 'is true',
   [AgGridConditionTypeEnum.NO]: 'is false',
   [AgGridConditionTypeEnum.NULL]: 'is null',
@@ -159,12 +185,12 @@ export const AgGridConditionTypeLabels: Record<AgGridConditionTypeEnum, string> 
 
 export interface IAgGridBaseFilter {
   filterType: AgGridKnownFilterTypes;
-  type: AgGridConditionTypeEnum
+  type: AgGridConditionTypeEnum;
 }
 
 export interface IAgGridConditionFilter extends IAgGridBaseFilter {
-  condition1?: IAgGridDateFilter | IAgGridTextFilter
-  condition2?: IAgGridDateFilter | IAgGridTextFilter
+  condition1?: IAgGridDateFilter | IAgGridTextFilter;
+  condition2?: IAgGridDateFilter | IAgGridTextFilter;
   operator?: AgGridOperatorEnum;
 }
 
@@ -188,7 +214,8 @@ export enum AgGridKnownFilterTypes {
   Number = 'number'
 }
 
-export type AgGridFilterModel = IAgGridBaseFilter & Partial<IAgGridConditionFilter>;
+export type AgGridFilterModel = IAgGridBaseFilter &
+  Partial<IAgGridConditionFilter>;
 
 export interface ITypedFilterOptionDef {
   displayKey: string;
@@ -288,6 +315,6 @@ export interface ITypedColumnState {
   aggFunc?: string | ((input: any[]) => any) | null;
   width?: number;
   pivotIndex?: number | null;
-  pinned?: boolean | string | "left" | "right";
+  pinned?: boolean | string | 'left' | 'right';
   rowGroupIndex?: number | null;
 }

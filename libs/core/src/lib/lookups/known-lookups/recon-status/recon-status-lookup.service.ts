@@ -28,27 +28,44 @@ export class ReconStatusLookup {
   private _matched: IReconStatusLookupDto;
   private _notMatched: IReconStatusLookupDto;
 
-  constructor(private legacyLookupsDatabase: LegacyLookupsDatabase) {
-
-  }
+  constructor(private legacyLookupsDatabase: LegacyLookupsDatabase) {}
 
   public async load(): Promise<any> {
-    this._withinLimit = await this.legacyLookupsDatabase.reconMatch.where(nameField).equals(ReconStatusLookupEnum.WithinLimit).first();
+    this._withinLimit = await this.legacyLookupsDatabase.reconMatch
+      .where(nameField)
+      .equals(ReconStatusLookupEnum.WithinLimit)
+      .first();
     if (!this._withinLimit)
-      throw AppError.MissingLookupKey(nameof<LegacyLookupsDatabase>('reconMatch'), ReconStatusLookupEnum.WithinLimit);
+      throw AppError.MissingLookupKey(
+        nameof<LegacyLookupsDatabase>('reconMatch'),
+        ReconStatusLookupEnum.WithinLimit
+      );
 
-    this._matched = await this.legacyLookupsDatabase.reconMatch.where(nameField).equals(ReconStatusLookupEnum.Matched).first();
+    this._matched = await this.legacyLookupsDatabase.reconMatch
+      .where(nameField)
+      .equals(ReconStatusLookupEnum.Matched)
+      .first();
     if (!this._matched)
-      throw AppError.MissingLookupKey(nameof<LegacyLookupsDatabase>('reconMatch'), ReconStatusLookupEnum.Matched);
+      throw AppError.MissingLookupKey(
+        nameof<LegacyLookupsDatabase>('reconMatch'),
+        ReconStatusLookupEnum.Matched
+      );
 
-    this._notMatched = await this.legacyLookupsDatabase.reconMatch.where(nameField).equals(ReconStatusLookupEnum.NotMatched).first();
+    this._notMatched = await this.legacyLookupsDatabase.reconMatch
+      .where(nameField)
+      .equals(ReconStatusLookupEnum.NotMatched)
+      .first();
     if (!this._notMatched)
-      throw AppError.MissingLookupKey(nameof<LegacyLookupsDatabase>('reconMatch'), ReconStatusLookupEnum.NotMatched);
+      throw AppError.MissingLookupKey(
+        nameof<LegacyLookupsDatabase>('reconMatch'),
+        ReconStatusLookupEnum.NotMatched
+      );
   }
 
-  public toReconStatus(status: ReconStatusLookupEnum): IReconStatusLookupDto | undefined {
-    if (status === null || status === undefined)
-      return undefined;
+  public toReconStatus(
+    status: ReconStatusLookupEnum
+  ): IReconStatusLookupDto | undefined {
+    if (status === null || status === undefined) return undefined;
 
     switch (status) {
       case ReconStatusLookupEnum.Matched:

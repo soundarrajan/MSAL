@@ -35,7 +35,9 @@ export class StructuredConsoleAppender implements JSNLogAppender {
   private fallBackAppender: JSNLogAppender;
 
   constructor(public appenderName: string) {
-    this.fallBackAppender = JL.createConsoleAppender(`${appenderName}-fallback`) as JSNLogAppender;
+    this.fallBackAppender = JL.createConsoleAppender(
+      `${appenderName}-fallback`
+    ) as JSNLogAppender;
   }
 
   sendBatch(): void {}
@@ -61,23 +63,55 @@ export class StructuredConsoleAppender implements JSNLogAppender {
    message - log item. If the user logged an object, this is the JSON string.  Not used by Winston transports.
    loggerName: name of the logger.  Not used by Winston transports.
    */
-  public log(level: string, msg: string, meta: ILogItem, callback: () => void, levelNbr: number, message: string, loggerName: string): void {
+  public log(
+    level: string,
+    msg: string,
+    meta: ILogItem,
+    callback: () => void,
+    levelNbr: number,
+    message: string,
+    loggerName: string
+  ): void {
     try {
       this.handleLog(level, msg, meta, callback, levelNbr, message, loggerName);
     } catch (e) {
       console.error(`${StructuredConsoleAppender.name} log failure: %o`, e);
-      this.fallBackAppender.log(level, msg, meta, callback, levelNbr, message, loggerName);
+      this.fallBackAppender.log(
+        level,
+        msg,
+        meta,
+        callback,
+        levelNbr,
+        message,
+        loggerName
+      );
     }
   }
 
-  private handleLog(level: string, msg: string, meta: ILogItem, callback: () => void, levelNbr: number, message: string, loggerName: string): void {
+  private handleLog(
+    level: string,
+    msg: string,
+    meta: ILogItem,
+    callback: () => void,
+    levelNbr: number,
+    message: string,
+    loggerName: string
+  ): void {
     // Note: if there is an exception, jsnlog passes a different format in meta param
     // Note: Left here as a reminder but we "disabled" this by adding the exception to the args.
     const logItem = meta['logData'] || meta;
 
     // Note: JSNLog has changed log format and we don't know how to handle it
     if (!logItem) {
-      this.fallBackAppender.log(level, msg, meta, callback, levelNbr, message, loggerName);
+      this.fallBackAppender.log(
+        level,
+        msg,
+        meta,
+        callback,
+        levelNbr,
+        message,
+        loggerName
+      );
       return;
     }
 
@@ -101,43 +135,52 @@ export class StructuredConsoleAppender implements JSNLogAppender {
 
     if (typeof logItem.messageTemplate === 'string') {
       let i = 0;
-      consoleLogMessage = logItem.messageTemplate.replace(msgExtractArgsRegex, (match: string) => {
-        const arg = logItem.args[i];
-        const renderArgsJson = match.includes('@');
+      consoleLogMessage = logItem.messageTemplate.replace(
+        msgExtractArgsRegex,
+        (match: string) => {
+          const arg = logItem.args[i];
+          const renderArgsJson = match.includes('@');
 
-        // Note: More arguments then named args present, e.g logger.info("some log {test1} and {test2}", 1)
-        if (i >= logItem.args.length) {
-          return '';
-        }
-        i++;
-        // Note: match comes as {arg1} or {arg1:format}
-        const argName: string = match.slice(1, -1).split(':')[0];
+          // Note: More arguments then named args present, e.g logger.info("some log {test1} and {test2}", 1)
+          if (i >= logItem.args.length) {
+            return '';
+          }
+          i++;
+          // Note: match comes as {arg1} or {arg1:format}
+          const argName: string = match.slice(1, -1).split(':')[0];
 
-        // Note: Discard empty named args, e.g {}
-        if (!argName) {
-          return '';
-        }
-
-        props[argName] = arg;
-
-        if (renderArgsJson) {
-          consoleLogArgs.push(arg);
-          return '%o';
-        } else {
-          if (typeof arg === 'string') {
-            return `'${arg}'`;
+          // Note: Discard empty named args, e.g {}
+          if (!argName) {
+            return '';
           }
 
-          return arg === null ? '(null)' : arg === undefined ? '(undefined)' : arg.toString();
+          props[argName] = arg;
+
+          if (renderArgsJson) {
+            consoleLogArgs.push(arg);
+            return '%o';
+          } else {
+            if (typeof arg === 'string') {
+              return `'${arg}'`;
+            }
+
+            return arg === null
+              ? '(null)'
+              : arg === undefined
+              ? '(undefined)'
+              : arg.toString();
+          }
         }
-      });
+      );
     } else {
       consoleLogMessage = '%o';
       consoleLogArgs.push(logItem.args);
     }
 
     // Note: Added additional property check, args props can be undefined
-    logItem.args.filter(s => s && s.destructure === true).forEach(o => (props = { ...props, ...o }));
+    logItem.args
+      .filter(s => s && s.destructure === true)
+      .forEach(o => (props = { ...props, ...o }));
 
     if (logItem.exception) {
       props.exception = logItem.exception;
@@ -148,9 +191,11 @@ export class StructuredConsoleAppender implements JSNLogAppender {
 
     if (logItem.level <= JL.getDebugLevel()) {
       color = 'color: gray;';
+      // eslint-disable-next-line no-console
       writeConsole = console.debug;
     } else if (logItem.level <= JL.getInfoLevel()) {
       color = 'color: black;';
+      // eslint-disable-next-line no-console
       writeConsole = console.info;
     } else if (logItem.level <= JL.getWarnLevel()) {
       color = 'color: #d2d201;';
@@ -160,7 +205,9 @@ export class StructuredConsoleAppender implements JSNLogAppender {
       writeConsole = console.error;
     }
 
-    console.groupCollapsed(...['%c' + consoleLogMessage, color, ...consoleLogArgs]);
+    console.groupCollapsed(
+      ...['%c' + consoleLogMessage, color, ...consoleLogArgs]
+    );
     writeConsole(props);
     console.groupEnd();
   }

@@ -8,10 +8,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { AutosizeDirective } from '@shiptech/core/ui/directives/autosize.directive';
 
 @NgModule({
-  imports: [
-    MaterialModule,
-    LayoutMainModule,
-  ],
+  imports: [MaterialModule, LayoutMainModule],
   declarations: [
     CopyToClipboardDirective,
     AgGridExternalSearchDirective,
@@ -25,5 +22,4 @@ import { AutosizeDirective } from '@shiptech/core/ui/directives/autosize.directi
     FlexLayoutModule
   ]
 })
-export class UIModule {
-}
+export class UIModule {}

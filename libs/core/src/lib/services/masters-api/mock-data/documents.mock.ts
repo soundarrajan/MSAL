@@ -1,15 +1,10 @@
-import {range} from "lodash";
-import {IDocumentsItemDto} from "@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto";
-import {Chance} from 'chance';
+import { range } from 'lodash';
+import { IDocumentsItemDto } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto';
+import { Chance } from 'chance';
 
 const chance = new Chance();
 
-export function getMockDocuments(n: number): IDocumentsItemDto[] {
-  return range(1, n).map(id => getMockDocumentItem(id));
-}
-
 export function getMockDocumentItem(id: number): IDocumentsItemDto {
-
   return {
     id,
     name: chance.word(),
@@ -61,4 +56,8 @@ export function getMockDocumentItem(id: number): IDocumentsItemDto {
     clientIpAddress: chance.ipv6(),
     userAction: chance.word()
   };
+}
+
+export function getMockDocuments(n: number): IDocumentsItemDto[] {
+  return range(1, n).map(id => getMockDocumentItem(id));
 }

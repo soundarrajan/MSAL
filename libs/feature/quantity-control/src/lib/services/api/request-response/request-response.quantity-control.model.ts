@@ -1,6 +1,3 @@
-export interface IBaseQuantityControlRequest {
-}
+export interface IBaseQuantityControlRequest {}
 
-export interface IBaseQuantityControlResponse {
-}
-
+export interface IBaseQuantityControlResponse {}

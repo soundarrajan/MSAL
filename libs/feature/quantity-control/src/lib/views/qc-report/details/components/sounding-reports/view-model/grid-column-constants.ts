@@ -7,7 +7,7 @@ export enum QcSoundingReportDetailsColumns {
   tankCapacity = 'tankCapacity',
   fuelTemp = 'fuelTemp',
   tankUnpumpableVolume = 'tankUnpumpableVolume',
-  fuelMass = 'fuelMass',
+  fuelMass = 'fuelMass'
 }
 
 export enum QcSoundingReportDetailsColumnsLabels {
@@ -19,7 +19,7 @@ export enum QcSoundingReportDetailsColumnsLabels {
   tankCapacity = 'Tank Capacity',
   fuelTemp = 'Fuel Temp',
   tankUnpumpableVolume = 'Tank Unpumpable Volume',
-  fuelMass = 'Fuel Mass',
+  fuelMass = 'Fuel Mass'
 }
 
 export enum QcSoundingReportListColumns {
@@ -38,7 +38,7 @@ export enum QcSoundingReportListColumns {
   robLsfoDiff = 'robLsfoDiff',
   computedRobDogo = 'computedRobDogo',
   measuredRobDogo = 'measuredRobDogo',
-  robDogoDiff = 'robDogoDiff',
+  robDogoDiff = 'robDogoDiff'
 }
 
 export enum QcSoundingReportListColumnsLabels {
@@ -57,5 +57,5 @@ export enum QcSoundingReportListColumnsLabels {
   robLsfoDiff = 'ROB LSFO Diff',
   computedRobDogo = 'Computed ROB DOGO',
   measuredRobDogo = 'Measured ROB LSFO',
-  robDogoDiff = 'ROB LSFO Diff',
+  robDogoDiff = 'ROB LSFO Diff'
 }

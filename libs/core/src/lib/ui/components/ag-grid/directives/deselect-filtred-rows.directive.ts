@@ -3,9 +3,12 @@ import { GridApi, RowNode } from '@ag-grid-community/core';
 import { switchMap, takeUntil, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import * as _ from 'lodash';
-import { AgGridEventsEnum, fromGridEvent } from '@shiptech/core/ui/components/ag-grid/ag-grid.events';
+import {
+  AgGridEventsEnum,
+  fromGridEvent
+} from '@shiptech/core/ui/components/ag-grid/ag-grid.events';
 import { nameof } from '@shiptech/core/utils/type-definitions';
-import {AgGridAngular} from "@ag-grid-community/angular";
+import { AgGridAngular } from '@ag-grid-community/angular';
 
 @Directive({
   // tslint:disable-next-line:directive-selector
@@ -20,7 +23,9 @@ export class AgGridDeselectFilteredRowsDirective implements OnDestroy {
     this.agGrid.gridReady
       .pipe(
         tap(() => (this.gridApi = this.agGrid.api)),
-        switchMap(() => fromGridEvent(this.gridApi, AgGridEventsEnum.filterChanged)),
+        switchMap(() =>
+          fromGridEvent(this.gridApi, AgGridEventsEnum.filterChanged)
+        ),
         tap(() => {
           const selectedAfterFilter = [];
           this.gridApi.forEachNodeAfterFilter(node => {
@@ -29,7 +34,11 @@ export class AgGridDeselectFilteredRowsDirective implements OnDestroy {
             }
           });
 
-          _.pullAllBy(this.gridApi.getSelectedNodes(), selectedAfterFilter, nameof<RowNode>('id')).forEach(node => this.gridApi.deselectNode(node));
+          _.pullAllBy(
+            this.gridApi.getSelectedNodes(),
+            selectedAfterFilter,
+            nameof<RowNode>('id')
+          ).forEach(node => this.gridApi.deselectNode(node));
         }),
 
         takeUntil(this._destroy$)

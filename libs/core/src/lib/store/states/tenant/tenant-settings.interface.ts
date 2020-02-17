@@ -1,8 +1,7 @@
 export interface IModuleTenantSettings {
+  [key: string]: any;
   _isLoading?: boolean;
   _hasLoaded?: boolean;
-
-  [key: string]: any;
 }
 
 export enum TenantSettingsModuleName {

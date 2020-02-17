@@ -9,14 +9,15 @@ import { QuantityControlModuleResolver } from './quantiy-control-route.resolver'
 import { QcReportDetailsRouteResolver } from './views/qc-report/details/qc-report-details-route.resolver';
 import { KnownQuantityControlRoutes } from './known-quantity-control.routes';
 import { QcReportDetailsUnsavedChangesGuard } from './guards/qc-report-details-unsaved-changes-guard.service';
-import { QcReportDetailsEmailLogsComponent } from "./views/qc-report/email-logs/qc-report-details-email-logs.component";
-import { QcReportDetailsAuditLogsComponent } from "./views/qc-report/audit-logs/qc-report-details-audit-logs.component";
-import { QcReportDetailsDocumentsComponent } from "./views/qc-report/documents/qc-report-details-documents.component";
+import { QcReportDetailsEmailLogsComponent } from './views/qc-report/email-logs/qc-report-details-email-logs.component';
+import { QcReportDetailsAuditLogsComponent } from './views/qc-report/audit-logs/qc-report-details-audit-logs.component';
+import { QcReportDetailsDocumentsComponent } from './views/qc-report/documents/qc-report-details-documents.component';
 
-
- interface IQcReportDetailsRouteData {
-   [KnownQuantityControlRoutes.ReportIdParam]: Type<QcReportDetailsRouteResolver>;
- }
+interface IQcReportDetailsRouteData {
+  [KnownQuantityControlRoutes.ReportIdParam]: Type<
+    QcReportDetailsRouteResolver
+  >;
+}
 
 const routes: Routes = [
   {
@@ -27,7 +28,7 @@ const routes: Routes = [
       {
         path: '',
         data: {
-          breadcrumb: 'Quantity Control List',
+          breadcrumb: 'Quantity Control List'
         },
         children: [
           {
@@ -46,7 +47,7 @@ const routes: Routes = [
               {
                 path: '',
                 redirectTo: KnownQuantityControlRoutes.ReportDetails,
-                pathMatch: 'full',
+                pathMatch: 'full'
               },
               {
                 path: KnownQuantityControlRoutes.ReportDetails,
@@ -54,30 +55,42 @@ const routes: Routes = [
                 component: QcReportDetailsComponent,
                 resolve: <IQcReportDetailsRouteData>{
                   // Note: ReportId is expected in child routes in the data.
-                  reportId: QcReportDetailsRouteResolver,
+                  reportId: QcReportDetailsRouteResolver
                 },
-                data: { title: 'Quantity Control - Vessel', breadcrumb: 'Vessel Details' }
+                data: {
+                  title: 'Quantity Control - Vessel',
+                  breadcrumb: 'Vessel Details'
+                }
               },
               {
                 path: KnownQuantityControlRoutes.ReportDocumentsPath,
                 component: QcReportDetailsDocumentsComponent,
-                data: { title: 'Quantity Control - Documents', breadcrumb: 'Documents' }
+                data: {
+                  title: 'Quantity Control - Documents',
+                  breadcrumb: 'Documents'
+                }
               },
               {
                 path: KnownQuantityControlRoutes.ReportEmailLogPath,
                 component: QcReportDetailsEmailLogsComponent,
-                data: { title: 'Quantity Control - Email Log', breadcrumb: 'Email Log' }
+                data: {
+                  title: 'Quantity Control - Email Log',
+                  breadcrumb: 'Email Log'
+                }
               },
               {
                 path: KnownQuantityControlRoutes.ReportAuditPath,
                 component: QcReportDetailsAuditLogsComponent,
-                data: { title: 'Quantity Control - Audit Log', breadcrumb: 'Audit Log' }
+                data: {
+                  title: 'Quantity Control - Audit Log',
+                  breadcrumb: 'Audit Log'
+                }
               },
               {
                 path: '',
                 outlet: KnownNamedRouterOutlets.topbar,
                 component: EntityStatusComponent
-              },
+              }
               // Note: Left here just for reference, QC does not have related links.
               // relatedLinksRouteDefinition(EntityType.PortCall, KnownQuantityControlRoutes.ReportIdParam)
             ]
@@ -88,11 +101,8 @@ const routes: Routes = [
   }
 ];
 
-
-
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class QuantityControlRoutingModule {
-}
+export class QuantityControlRoutingModule {}

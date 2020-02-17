@@ -3,8 +3,7 @@ import { IQcPortCallProductTypeBdnDto } from '../../../../services/api/dto/qc-po
 export class QcUpdatePortCallAction {
   static readonly type = '[Qc.Report.Details] - Update Port Call';
 
-  constructor() {
-  }
+  constructor() {}
 
   public log(): any {
     return {};
@@ -14,15 +13,19 @@ export class QcUpdatePortCallAction {
 export class QcUpdatePortCallSuccessfulAction {
   static readonly type = '[Qc.Report.Details] - Update Port Call Successful';
 
-  constructor(public portCallId: string, public productTypes: IQcPortCallProductTypeBdnDto[], public nbOfClaims: number, public nbOfDeliveries: number) {
-  }
+  constructor(
+    public portCallId: string,
+    public productTypes: IQcPortCallProductTypeBdnDto[],
+    public nbOfClaims: number,
+    public nbOfDeliveries: number
+  ) {}
 
   public log(): any {
     return {
       portCallId: this.portCallId,
       productTypesCount: this.productTypes?.length,
       nbOfClaims: this.nbOfClaims,
-      nbOfDeliveries: this.nbOfDeliveries,
+      nbOfDeliveries: this.nbOfDeliveries
     };
   }
 }
@@ -30,20 +33,17 @@ export class QcUpdatePortCallSuccessfulAction {
 export class QcClearPortCallBdnAction {
   static readonly type = '[Qc.Report.Details] - Clear Port Call';
 
-  constructor() {
-  }
+  constructor() {}
 
   public log(): any {
-    return {
-    };
+    return {};
   }
 }
 
 export class QcUpdatePortCallFailedAction {
   static readonly type = '[Qc.Report.Details] - Update Port Call Failed';
 
-  constructor() {
-  }
+  constructor() {}
 
   public log(): any {
     return {};

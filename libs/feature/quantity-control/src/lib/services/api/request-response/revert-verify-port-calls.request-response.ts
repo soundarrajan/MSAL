@@ -1,8 +1,12 @@
-import { IBaseQuantityControlRequest, IBaseQuantityControlResponse } from './request-response.quantity-control.model';
+import {
+  IBaseQuantityControlRequest,
+  IBaseQuantityControlResponse
+} from './request-response.quantity-control.model';
 
-export interface IQcRevertVerifyReportsRequest extends IBaseQuantityControlRequest {
-  reportIds: number[]
+export interface IQcRevertVerifyReportsRequest
+  extends IBaseQuantityControlRequest {
+  reportIds: number[];
 }
 
-export interface IQcRevertVerifyReportsResponse extends IBaseQuantityControlResponse {
-}
+export interface IQcRevertVerifyReportsResponse
+  extends IBaseQuantityControlResponse {}

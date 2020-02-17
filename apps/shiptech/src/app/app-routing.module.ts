@@ -12,7 +12,7 @@ const routes: Routes = [
     pathMatch: 'full',
     data: {
       title: 'Shiptech'
-    },
+    }
   },
   {
     path: '',
@@ -25,7 +25,10 @@ const routes: Routes = [
       {
         path: KnownPrimaryRoutes.QuantityControl,
         canActivate: [AuthenticationGuard],
-        loadChildren: () => import('@shiptech/feature/quantity-control').then(m => m.QuantityControlModule)
+        loadChildren: () =>
+          import('@shiptech/feature/quantity-control').then(
+            m => m.QuantityControlModule
+          )
       }
     ]
   },
@@ -40,26 +43,23 @@ const routes: Routes = [
       {
         path: KnownPrimaryRoutes.Invoices,
         canActivate: [AuthenticationGuard],
-        loadChildren: () => import('@shiptech/feature/invoice').then(m => m.InvoiceModule)
+        loadChildren: () =>
+          import('@shiptech/feature/invoice').then(m => m.InvoiceModule)
       }
     ]
   },
   {
     path: KnownPrimaryRoutes.LazyLoad,
     canActivate: [AuthenticationGuard],
-    loadChildren: () => import('@shiptech/feature/lazy-load-poc').then(m => m.LazyLoadPocModule)
+    loadChildren: () =>
+      import('@shiptech/feature/lazy-load-poc').then(m => m.LazyLoadPocModule)
   },
-  { path: '**', redirectTo: '' },
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({
-  providers: [
-    AdalGuard
-  ],
-  imports: [
-    RouterModule.forRoot(routes)
-  ],
+  providers: [AdalGuard],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}

@@ -34,5 +34,4 @@ import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-
   ],
   providers: []
 })
-export class CoreModule {
-}
+export class CoreModule {}

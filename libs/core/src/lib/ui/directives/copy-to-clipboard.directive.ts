@@ -1,4 +1,10 @@
-import { Directive, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import {
+  Directive,
+  EventEmitter,
+  HostListener,
+  Input,
+  Output
+} from '@angular/core';
 import { copyIntoClipoard } from '../../utils/clipboard.utils';
 import { ToastrService } from 'ngx-toastr';
 
@@ -23,7 +29,9 @@ export class CopyToClipboardDirective {
     copyIntoClipoard(value);
 
     if (this.showNotifications) {
-      this.toastr.info(`${this.propertyName || 'Property'} has been copied to clipboard`);
+      this.toastr.info(
+        `${this.propertyName || 'Property'} has been copied to clipboard`
+      );
     }
 
     this.addedToClipboard.emit(this.value);

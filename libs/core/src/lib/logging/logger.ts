@@ -25,7 +25,11 @@ export type IGetDynamicEnrichParams = () => Record<string, any>;
 export class Logger {
   protected dynamicEnrichParams = {};
 
-  constructor(protected jsnLogger: JL.JSNLogLogger, protected enrich?: Record<string, any>, getDynamicEnrichParams?: IGetDynamicEnrichParams) {
+  constructor(
+    protected jsnLogger: JL.JSNLogLogger,
+    protected enrich?: Record<string, any>,
+    getDynamicEnrichParams?: IGetDynamicEnrichParams
+  ) {
     if (getDynamicEnrichParams) {
       this.dynamicEnrichParams = getDynamicEnrichParams();
     }
@@ -36,7 +40,10 @@ export class Logger {
     return this;
   }
 
-  trace$<T>(messageTemplate: string, ...args: any[]): MonoTypeOperatorFunction<T> {
+  trace$<T>(
+    messageTemplate: string,
+    ...args: any[]
+  ): MonoTypeOperatorFunction<T> {
     return tap<T>(() => this.trace(messageTemplate, args));
   }
 
@@ -45,7 +52,10 @@ export class Logger {
     return this;
   }
 
-  debug$<T>(messageTemplate: string, ...args: any[]): MonoTypeOperatorFunction<T> {
+  debug$<T>(
+    messageTemplate: string,
+    ...args: any[]
+  ): MonoTypeOperatorFunction<T> {
     return tap<T>(() => this.debug(messageTemplate, args));
   }
 
@@ -54,9 +64,20 @@ export class Logger {
     return this;
   }
 
-  info$<T>(messageTemplate: string, args?: (payload: T) => any[]): MonoTypeOperatorFunction<T>;
-  info$<T>(messageTemplate: string, ...args: any[]): MonoTypeOperatorFunction<T> {
-    return tap<T>(payload => this.info.apply(this, [messageTemplate, ...(args.length === 0 ? [] : args[0](payload))]));
+  info$<T>(
+    messageTemplate: string,
+    args?: (payload: T) => any[]
+  ): MonoTypeOperatorFunction<T>;
+  info$<T>(
+    messageTemplate: string,
+    ...args: any[]
+  ): MonoTypeOperatorFunction<T> {
+    return tap<T>(payload =>
+      this.info.apply(this, [
+        messageTemplate,
+        ...(args.length === 0 ? [] : args[0](payload))
+      ])
+    );
   }
 
   warn(messageTemplate: string, ...args: any[]): Logger {
@@ -64,7 +85,10 @@ export class Logger {
     return this;
   }
 
-  warn$<T>(messageTemplate: string, ...args: any[]): MonoTypeOperatorFunction<T> {
+  warn$<T>(
+    messageTemplate: string,
+    ...args: any[]
+  ): MonoTypeOperatorFunction<T> {
     return tap<T>(() => this.warn(messageTemplate, args));
   }
 
@@ -73,7 +97,10 @@ export class Logger {
     return this;
   }
 
-  error$<T>(messageTemplate: string, ...args: any[]): MonoTypeOperatorFunction<T> {
+  error$<T>(
+    messageTemplate: string,
+    ...args: any[]
+  ): MonoTypeOperatorFunction<T> {
     return tap<T>(() => this.error(messageTemplate, args));
   }
 
@@ -83,20 +110,36 @@ export class Logger {
     return this;
   }
 
-  fatal$<T>(messageTemplate: string, ...args: any[]): MonoTypeOperatorFunction<T> {
+  fatal$<T>(
+    messageTemplate: string,
+    ...args: any[]
+  ): MonoTypeOperatorFunction<T> {
     return tap<T>(() => this.fatal(messageTemplate, args));
   }
 
-  fatalException(exception: any, messageTemplate: string, ...args: any[]): Logger {
+  fatalException(
+    exception: any,
+    messageTemplate: string,
+    ...args: any[]
+  ): Logger {
     this.log(LogLevel.Fatal, exception, messageTemplate, args);
     return this;
   }
 
-  fatalException$<T>(exception: any, messageTemplate: string, ...args: any[]): MonoTypeOperatorFunction<T> {
+  fatalException$<T>(
+    exception: any,
+    messageTemplate: string,
+    ...args: any[]
+  ): MonoTypeOperatorFunction<T> {
     return tap<T>(() => this.fatalException$(exception, messageTemplate, args));
   }
 
-  log(level: LogLevel, exception: any, messageTemplate: string, args: any[]): Logger {
+  log(
+    level: LogLevel,
+    exception: any,
+    messageTemplate: string,
+    args: any[]
+  ): Logger {
     const model: ILogItem = {
       messageTemplate,
       args,
@@ -117,7 +160,12 @@ export class Logger {
     return this;
   }
 
-  log$<T>(level: LogLevel, exception: any, messageTemplate: string, args: any[]): MonoTypeOperatorFunction<T> {
+  log$<T>(
+    level: LogLevel,
+    exception: any,
+    messageTemplate: string,
+    args: any[]
+  ): MonoTypeOperatorFunction<T> {
     return tap<T>(() => this.log(level, exception, messageTemplate, args));
   }
 }

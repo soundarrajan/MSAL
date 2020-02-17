@@ -4,7 +4,6 @@ import { ReplaySubject } from 'rxjs';
 import { ILogger, Logger } from './logger';
 import { AppContext } from '../app-context/app-context';
 import { LazyAjaxAppender } from './appenders/lazy-ajax.appender';
-import { KnownHeadersEnum } from './known-headers.enum';
 import { StructuredConsoleAppender } from './appenders/structured-console.appender';
 
 export interface ILoggerFactory {
@@ -16,21 +15,28 @@ export interface ILoggerSettings {
   serverSideUrl?: string;
 }
 
-export const LOGGER_SETTINGS = new InjectionToken<ILoggerSettings>('LoggerSettings');
+export const LOGGER_SETTINGS = new InjectionToken<ILoggerSettings>(
+  'LoggerSettings'
+);
 export const LoggerSettings: ILoggerSettings = {
   developmentMode: false
 };
 
-const rootAjaxAppenderReady = new ReplaySubject<JL.JSNLogAjaxAppenderOptions>(1);
-const rootAjaxAppender = new LazyAjaxAppender('GlobalAjaxAppender', rootAjaxAppenderReady);
+const rootAjaxAppenderReady = new ReplaySubject<JL.JSNLogAjaxAppenderOptions>(
+  1
+);
+const rootAjaxAppender = new LazyAjaxAppender(
+  'GlobalAjaxAppender',
+  rootAjaxAppenderReady
+);
 const rootConsoleAppender = new StructuredConsoleAppender('StructuredConsole');
 
 function createRootLogger(): JL.JSNLogLogger {
   const logger = JL();
 
-   logger.setOptions({
-     appenders: [rootConsoleAppender]
-   });
+  logger.setOptions({
+    appenders: [rootConsoleAppender]
+  });
 
   return logger;
 }
@@ -71,16 +77,26 @@ export class LoggerFactory implements ILoggerFactory {
 // NOTE : JsnLog if it doesn't find any handler for window.onerror it adds it's own handler
 // NOTE : The handler added by JsnLog doesn't have a proper message format for the error
 
-window.onerror = (error: any, url: any, lineNumber: any, column: any, errorObj: any) => {
+window.onerror = (
+  error: any,
+  url: any,
+  lineNumber: any,
+  column: any,
+  errorObj: any
+) => {
   if (!LoggerSettings.developmentMode) {
     // Use errorMsg.message if available, so Angular 4 template errors will be logged.
-    RootLogger.error('Browser error {ErrorMessage} occurred', error ? (<any>error).message || error : '', {
-      lineNumber,
-      column,
-      errorObj,
-      errorMsg: error,
-      destructure: true
-    });
+    RootLogger.error(
+      'Browser error {ErrorMessage} occurred',
+      error ? (<any>error).message || error : '',
+      {
+        lineNumber,
+        column,
+        errorObj,
+        errorMsg: error,
+        destructure: true
+      }
+    );
   }
 
   // Tell browser to run its own error handler as well
@@ -90,6 +106,9 @@ window.onerror = (error: any, url: any, lineNumber: any, column: any, errorObj: 
 // Deal with unhandled exceptions thrown in promises
 (<any>window).onunhandledrejection = function(event: any): void {
   if (!LoggerSettings.developmentMode) {
-    RootLogger.error('Browser error in Promise has occurred. Reason: {Reason}', event.reason ? event.reason.message : event.message || null);
+    RootLogger.error(
+      'Browser error in Promise has occurred. Reason: {Reason}',
+      event.reason ? event.reason.message : event.message || null
+    );
   }
 };

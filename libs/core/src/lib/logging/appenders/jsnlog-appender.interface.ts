@@ -18,5 +18,13 @@ export interface JSNLogAppender extends JL.JSNLogAppender {
    message - log item. If the user logged an object, this is the JSON string.  Not used by Winston transports.
    loggerName: name of the logger.  Not used by Winston transports.
    */
-  log(level: string, msg: string, meta: ILogItem, callback: () => void, levelNbr: number, message: string, loggerName: string): void;
+  log(
+    level: string,
+    msg: string,
+    meta: ILogItem,
+    callback: () => void,
+    levelNbr: number,
+    message: string,
+    loggerName: string
+  ): void;
 }

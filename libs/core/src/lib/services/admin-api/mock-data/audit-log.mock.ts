@@ -1,12 +1,8 @@
-import {IAuditLogItemDto} from '@shiptech/core/services/admin-api/request-response-dtos/audit-log.dto';
-import {range} from 'lodash';
+import { IAuditLogItemDto } from '@shiptech/core/services/admin-api/request-response-dtos/audit-log.dto';
+import { range } from 'lodash';
 import { Chance } from 'chance';
 
 const chance = new Chance();
-
-export function getMockAuditLog(n: number): IAuditLogItemDto[] {
-  return range(1, n).map(id => getMockAuditLogItem(id));
-}
 
 export function getMockAuditLogItem(id: number): IAuditLogItemDto {
   return {
@@ -29,4 +25,8 @@ export function getMockAuditLogItem(id: number): IAuditLogItemDto {
     clientIpAddress: chance.ip(),
     userAction: chance.string()
   };
+}
+
+export function getMockAuditLog(n: number): IAuditLogItemDto[] {
+  return range(1, n).map(id => getMockAuditLogItem(id));
 }

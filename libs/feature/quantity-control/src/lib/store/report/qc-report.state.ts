@@ -1,22 +1,34 @@
-import { Action, Selector, State, StateContext, Store } from "@ngxs/store";
-import { IQuantityControlState } from "../quantity-control.state";
-import { isAction } from "@shiptech/core/utils/ngxs-utils";
-import { LoadReportDetailsAction, LoadReportDetailsFailedAction, LoadReportDetailsSuccessfulAction, ResetQcReportDetailsStateAction } from "./qc-report-details.actions";
-import { nameof } from "@shiptech/core/utils/type-definitions";
-import { keyBy, filter, values } from "lodash";
-import { IQcReportState, QcReportStateModel } from "./qc-report.state.model";
-import { QcVesselResponsesStateModel } from "./details/qc-vessel-responses.state";
-import { IQcProductTypeListItemState, QcProductTypeListItemStateModel } from "./details/qc-product-type-list-item-state.model";
-import { UpdateProductTypeAction } from "./details/actions/update-product-type.actions";
+import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
+import { IQuantityControlState } from '../quantity-control.state';
+import { isAction } from '@shiptech/core/utils/ngxs-utils';
+import {
+  LoadReportDetailsAction,
+  LoadReportDetailsFailedAction,
+  LoadReportDetailsSuccessfulAction,
+  ResetQcReportDetailsStateAction
+} from './qc-report-details.actions';
+import { nameof } from '@shiptech/core/utils/type-definitions';
+import { keyBy, filter, values } from 'lodash';
+import { IQcReportState, QcReportStateModel } from './qc-report.state.model';
+import { QcVesselResponsesStateModel } from './details/qc-vessel-responses.state';
+import {
+  IQcProductTypeListItemState,
+  QcProductTypeListItemStateModel
+} from './details/qc-product-type-list-item-state.model';
+import { UpdateProductTypeAction } from './details/actions/update-product-type.actions';
 import {
   SwitchActiveBunkerResponseAction,
   SwitchActiveSludgeResponseAction,
   UpdateActiveBunkerVesselResponseAction,
   UpdateActiveSludgeVesselResponseAction
-} from "./details/actions/qc-vessel-response.actions";
-import { UpdateQcReportComment } from "./details/actions/qc-comment.action";
-import { QcReportDetailsModel } from "./details/qc-report-details.model";
-import { SwitchUomForDeliveredQuantityAction, SwitchUomForRobAfterDelivery, SwitchUomForRobBeforeDeliveryAction } from "./details/actions/qc-uom.actions";
+} from './details/actions/qc-vessel-response.actions';
+import { UpdateQcReportComment } from './details/actions/qc-comment.action';
+import { QcReportDetailsModel } from './details/qc-report-details.model';
+import {
+  SwitchUomForDeliveredQuantityAction,
+  SwitchUomForRobAfterDelivery,
+  SwitchUomForRobBeforeDeliveryAction
+} from './details/actions/qc-uom.actions';
 import {
   QcAddEventLogAction,
   QcLoadEventsLogAction,
@@ -25,37 +37,63 @@ import {
   QcRemoveEventLogAction,
   QcUpdateEventLogAction
 } from './details/actions/qc-events-log.action';
-import { IQcEventsLogItemState, QcEventsLogItemStateModel } from './details/qc-events-log-state.model';
-import { QcSaveReportDetailsAction, QcSaveReportDetailsFailedAction, QcSaveReportDetailsSuccessfulAction } from './details/actions/save-report.actions';
-import { QcVerifyReportAction, QcVerifyReportFailedAction, QcVerifyReportSuccessfulAction } from './details/actions/verify-report.actions';
-import { LoadReportSurveyHistoryAction, LoadReportSurveyHistoryFailedAction, LoadReportSurveyHistorySuccessfulAction } from './qc-report-survey-history.actions';
-import { QcRevertVerifyReportAction, QcRevertVerifyReportFailedAction, QcRevertVerifyReportSuccessfulAction } from './details/actions/revert-verify-report.actions';
+import {
+  IQcEventsLogItemState,
+  QcEventsLogItemStateModel
+} from './details/qc-events-log-state.model';
+import {
+  QcSaveReportDetailsAction,
+  QcSaveReportDetailsFailedAction,
+  QcSaveReportDetailsSuccessfulAction
+} from './details/actions/save-report.actions';
+import {
+  QcVerifyReportAction,
+  QcVerifyReportFailedAction,
+  QcVerifyReportSuccessfulAction
+} from './details/actions/verify-report.actions';
+import {
+  LoadReportSurveyHistoryAction,
+  LoadReportSurveyHistoryFailedAction,
+  LoadReportSurveyHistorySuccessfulAction
+} from './qc-report-survey-history.actions';
+import {
+  QcRevertVerifyReportAction,
+  QcRevertVerifyReportFailedAction,
+  QcRevertVerifyReportSuccessfulAction
+} from './details/actions/revert-verify-report.actions';
 import { StatusLookup } from '@shiptech/core/lookups/known-lookups/status/status-lookup.service';
 import { IDeliveryTenantSettings } from '../../core/settings/delivery-tenant-settings';
 import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
 import { TenantSettingsState } from '@shiptech/core/store/states/tenant/tenant-settings.state';
-import { UpdateQcReportPortCall, UpdateQcReportVessel } from './details/actions/qc-vessel.action';
+import {
+  UpdateQcReportPortCall,
+  UpdateQcReportVessel
+} from './details/actions/qc-vessel.action';
 import { Injectable } from '@angular/core';
 import { fromLegacyLookup } from '@shiptech/core/lookups/utils';
-import { QcClearPortCallBdnAction, QcUpdatePortCallAction, QcUpdatePortCallFailedAction, QcUpdatePortCallSuccessfulAction } from './details/actions/update-port-call-bdn.actions';
+import {
+  QcClearPortCallBdnAction,
+  QcUpdatePortCallAction,
+  QcUpdatePortCallFailedAction,
+  QcUpdatePortCallSuccessfulAction
+} from './details/actions/update-port-call-bdn.actions';
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
 import { ReconStatusLookupEnum } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.enum';
 import { StatusLookupEnum } from '@shiptech/core/lookups/known-lookups/status/status-lookup.enum';
 
 @State<IQcReportState>({
   name: nameof<IQuantityControlState>('report'),
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
   defaults: QcReportState.default
 })
 @Injectable()
 export class QcReportState {
-
   static default = new QcReportStateModel();
 
   constructor(
     private store: Store,
     private surveyStatusLookups: StatusLookup
-  ) {
-  }
+  ) {}
 
   @Selector([QcReportState])
   static isBusy(state: IQcReportState): boolean {
@@ -95,7 +133,9 @@ export class QcReportState {
   }
 
   @Selector([QcReportState])
-  static eventLogsItemsById(state: IQcReportState): Record<number, IQcEventsLogItemState> {
+  static eventLogsItemsById(
+    state: IQcReportState
+  ): Record<number, IQcEventsLogItemState> {
     return state.details?.eventsLog?.itemsById;
   }
 
@@ -105,12 +145,17 @@ export class QcReportState {
   }
 
   @Selector([QcReportState.eventLogsItemsById, QcReportState.eventLogsItemIds])
-  static eventLogsItems(itemsById: Record<number, IQcEventsLogItemState>, items: number[]): IQcEventsLogItemState[] {
+  static eventLogsItems(
+    itemsById: Record<number, IQcEventsLogItemState>,
+    items: number[]
+  ): IQcEventsLogItemState[] {
     return (items || []).map(i => itemsById?.[i]);
   }
 
   @Selector([QcReportState])
-  static productTypesById(state: IQcReportState): Record<number, IQcProductTypeListItemState> {
+  static productTypesById(
+    state: IQcReportState
+  ): Record<number, IQcProductTypeListItemState> {
     return state.details?.productTypesById;
   }
 
@@ -120,7 +165,10 @@ export class QcReportState {
   }
 
   @Selector([QcReportState.productTypesById, QcReportState.productTypesIds])
-  static productTypes(itemsById: Record<number, IQcProductTypeListItemState>, items: number[]): IQcProductTypeListItemState[] {
+  static productTypes(
+    itemsById: Record<number, IQcProductTypeListItemState>,
+    items: number[]
+  ): IQcProductTypeListItemState[] {
     return (items || []).map(i => itemsById?.[i]);
   }
 
@@ -139,23 +187,39 @@ export class QcReportState {
     return state.details?.surveyHistory?.nbOfNotMatched;
   }
 
-  static getMatchStatus(left: number, right: number, minTolerance: number, maxTolerance: number): ReconStatusLookupEnum | undefined {
-    if (left === null || left === undefined || right === null || right === undefined)
+  static getMatchStatus(
+    left: number,
+    right: number,
+    minTolerance: number,
+    maxTolerance: number
+  ): ReconStatusLookupEnum | undefined {
+    if (
+      left === null ||
+      left === undefined ||
+      right === null ||
+      right === undefined
+    )
       return undefined;
 
     const diff = Math.abs(left - right);
 
-    if (diff >= maxTolerance)
-      return ReconStatusLookupEnum.NotMatched;
+    if (diff >= maxTolerance) return ReconStatusLookupEnum.NotMatched;
 
-    if (diff <= minTolerance)
-      return ReconStatusLookupEnum.Matched;
+    if (diff <= minTolerance) return ReconStatusLookupEnum.Matched;
 
     return ReconStatusLookupEnum.WithinLimit;
   }
 
-  @Selector([QcReportState.productTypes, TenantSettingsState.byModule<IDeliveryTenantSettings>(TenantSettingsModuleName.Delivery)])
-  static matchStatus(items: IQcProductTypeListItemState[], deliverySettings: IDeliveryTenantSettings): ReconStatusLookupEnum | undefined {
+  @Selector([
+    QcReportState.productTypes,
+    TenantSettingsState.byModule<IDeliveryTenantSettings>(
+      TenantSettingsModuleName.Delivery
+    )
+  ])
+  static matchStatus(
+    items: IQcProductTypeListItemState[],
+    deliverySettings: IDeliveryTenantSettings
+  ): ReconStatusLookupEnum | undefined {
     // Note: This method is called very often, so we specifically use another selector and we don't insert state!!
 
     const minToleranceLimit = deliverySettings.qcMinToleranceLimit;
@@ -166,31 +230,59 @@ export class QcReportState {
 
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
-      const robBeforeDiff = QcReportState.getMatchStatus(item.robBeforeDeliveryLogBookROB, item.robBeforeDeliveryMeasuredROB, minToleranceLimit, maxToleranceLimit);
-      const deliveredDiff = QcReportState.getMatchStatus(item.deliveredQuantityBdnQty, item.measuredDeliveredQty, minToleranceLimit, maxToleranceLimit);
-      const robAfterDiff = !item.isSludge ? QcReportState.getMatchStatus(item.robAfterDeliveryLogBookROB, item.robAfterDeliveryMeasuredROB, minToleranceLimit, maxToleranceLimit) : undefined;
+      const robBeforeDiff = QcReportState.getMatchStatus(
+        item.robBeforeDeliveryLogBookROB,
+        item.robBeforeDeliveryMeasuredROB,
+        minToleranceLimit,
+        maxToleranceLimit
+      );
+      const deliveredDiff = QcReportState.getMatchStatus(
+        item.deliveredQuantityBdnQty,
+        item.measuredDeliveredQty,
+        minToleranceLimit,
+        maxToleranceLimit
+      );
+      const robAfterDiff = !item.isSludge
+        ? QcReportState.getMatchStatus(
+            item.robAfterDeliveryLogBookROB,
+            item.robAfterDeliveryMeasuredROB,
+            minToleranceLimit,
+            maxToleranceLimit
+          )
+        : undefined;
 
-      if (!robBeforeDiff && !deliveredDiff && !robAfterDiff)
-        continue;
+      if (!robBeforeDiff && !deliveredDiff && !robAfterDiff) continue;
 
       atleastOneItemHasStatus = true;
 
-      if (robBeforeDiff === ReconStatusLookupEnum.NotMatched || deliveredDiff === ReconStatusLookupEnum.NotMatched || robAfterDiff === ReconStatusLookupEnum.NotMatched)
+      if (
+        robBeforeDiff === ReconStatusLookupEnum.NotMatched ||
+        deliveredDiff === ReconStatusLookupEnum.NotMatched ||
+        robAfterDiff === ReconStatusLookupEnum.NotMatched
+      )
         return ReconStatusLookupEnum.NotMatched;
 
-      if (robBeforeDiff === ReconStatusLookupEnum.WithinLimit || deliveredDiff === ReconStatusLookupEnum.WithinLimit || robAfterDiff === ReconStatusLookupEnum.WithinLimit)
+      if (
+        robBeforeDiff === ReconStatusLookupEnum.WithinLimit ||
+        deliveredDiff === ReconStatusLookupEnum.WithinLimit ||
+        robAfterDiff === ReconStatusLookupEnum.WithinLimit
+      )
         hasWithinLimit = true;
     }
 
     // Note: For new, there is nothing yet filled in so we don't show a status.
-    if (!atleastOneItemHasStatus)
-      return undefined;
+    if (!atleastOneItemHasStatus) return undefined;
 
-    return hasWithinLimit ? ReconStatusLookupEnum.WithinLimit : ReconStatusLookupEnum.Matched;
+    return hasWithinLimit
+      ? ReconStatusLookupEnum.WithinLimit
+      : ReconStatusLookupEnum.Matched;
   }
 
   @Action(LoadReportDetailsAction)
-  loadPortCallDetails({getState, patchState}: StateContext<IQcReportState>, {reportId}: LoadReportDetailsAction): void {
+  loadPortCallDetails(
+    { getState, patchState }: StateContext<IQcReportState>,
+    { reportId }: LoadReportDetailsAction
+  ): void {
     const state = getState();
     patchState({
       details: {
@@ -203,7 +295,10 @@ export class QcReportState {
   }
 
   @Action(UpdateProductTypeAction)
-  updateProductType({getState, patchState}: StateContext<IQcReportState>, {productTypeId, prop, value}: UpdateProductTypeAction): void {
+  updateProductType(
+    { getState, patchState }: StateContext<IQcReportState>,
+    { productTypeId, prop, value }: UpdateProductTypeAction
+  ): void {
     const state = getState();
     if (!state.details.productTypesById[productTypeId]) {
       return;
@@ -227,7 +322,10 @@ export class QcReportState {
   }
 
   @Action(UpdateActiveSludgeVesselResponseAction)
-  updateSludgeVesselResponse({getState, patchState}: StateContext<IQcReportState>, {prop, value}: UpdateActiveSludgeVesselResponseAction): void {
+  updateSludgeVesselResponse(
+    { getState, patchState }: StateContext<IQcReportState>,
+    { prop, value }: UpdateActiveSludgeVesselResponseAction
+  ): void {
     const state = getState();
 
     patchState({
@@ -246,7 +344,10 @@ export class QcReportState {
   }
 
   @Action(SwitchActiveSludgeResponseAction)
-  switchActiveSludgeVesselResponse({getState, patchState}: StateContext<IQcReportState>, {category}: SwitchActiveSludgeResponseAction): void {
+  switchActiveSludgeVesselResponse(
+    { getState, patchState }: StateContext<IQcReportState>,
+    { category }: SwitchActiveSludgeResponseAction
+  ): void {
     const state = getState();
 
     patchState({
@@ -265,7 +366,10 @@ export class QcReportState {
   }
 
   @Action(UpdateActiveBunkerVesselResponseAction)
-  updateBunkerVesselResponse({getState, patchState}: StateContext<IQcReportState>, {prop, value}: UpdateActiveBunkerVesselResponseAction): void {
+  updateBunkerVesselResponse(
+    { getState, patchState }: StateContext<IQcReportState>,
+    { prop, value }: UpdateActiveBunkerVesselResponseAction
+  ): void {
     const state = getState();
 
     patchState({
@@ -284,7 +388,10 @@ export class QcReportState {
   }
 
   @Action(SwitchActiveBunkerResponseAction)
-  switchActiveBunkerVesselResponse({getState, patchState}: StateContext<IQcReportState>, {category}: SwitchActiveBunkerResponseAction): void {
+  switchActiveBunkerVesselResponse(
+    { getState, patchState }: StateContext<IQcReportState>,
+    { category }: SwitchActiveBunkerResponseAction
+  ): void {
     const state = getState();
 
     patchState({
@@ -302,43 +409,53 @@ export class QcReportState {
     });
   }
 
-  @Action([SwitchUomForRobBeforeDeliveryAction, SwitchUomForRobAfterDelivery, SwitchUomForDeliveredQuantityAction])
-  switchUom({getState, patchState}: StateContext<IQcReportState>, action: SwitchUomForRobBeforeDeliveryAction | SwitchUomForRobAfterDelivery | SwitchUomForDeliveredQuantityAction): void {
+  @Action([
+    SwitchUomForRobBeforeDeliveryAction,
+    SwitchUomForRobAfterDelivery,
+    SwitchUomForDeliveredQuantityAction
+  ])
+  switchUom(
+    { getState, patchState }: StateContext<IQcReportState>,
+    action:
+      | SwitchUomForRobBeforeDeliveryAction
+      | SwitchUomForRobAfterDelivery
+      | SwitchUomForDeliveredQuantityAction
+  ): void {
     const state = getState();
 
     if (isAction(action, SwitchUomForRobBeforeDeliveryAction)) {
       patchState({
-          details: {
-            ...state.details,
-            robBeforeDeliveryUom: {...action.uom}
-          }
+        details: {
+          ...state.details,
+          robBeforeDeliveryUom: { ...action.uom }
         }
-      );
+      });
     }
 
     if (isAction(action, SwitchUomForRobAfterDelivery)) {
       patchState({
-          details: {
-            ...state.details,
-            robAfterDeliveryUom: {...action.uom}
-          }
+        details: {
+          ...state.details,
+          robAfterDeliveryUom: { ...action.uom }
         }
-      );
+      });
     }
 
     if (isAction(action, SwitchUomForDeliveredQuantityAction)) {
       patchState({
-          details: {
-            ...state.details,
-            deliveredQtyUom: {...action.uom}
-          }
+        details: {
+          ...state.details,
+          deliveredQtyUom: { ...action.uom }
         }
-      );
+      });
     }
   }
 
   @Action(UpdateQcReportComment)
-  updateQcReportComment({getState, patchState}: StateContext<IQcReportState>, {comment}: UpdateQcReportComment): void {
+  updateQcReportComment(
+    { getState, patchState }: StateContext<IQcReportState>,
+    { comment }: UpdateQcReportComment
+  ): void {
     const state = getState();
     patchState({
       details: {
@@ -350,16 +467,30 @@ export class QcReportState {
   }
 
   @Action([LoadReportDetailsSuccessfulAction, LoadReportDetailsFailedAction])
-  loadReportDetailsFinished({getState, patchState}: StateContext<IQcReportState>, action: LoadReportDetailsSuccessfulAction | LoadReportDetailsFailedAction): void {
+  loadReportDetailsFinished(
+    { getState, patchState }: StateContext<IQcReportState>,
+    action: LoadReportDetailsSuccessfulAction | LoadReportDetailsFailedAction
+  ): void {
     const state = getState();
     // Note: We could have use also TenantSettingService
-    const defaultUom = fromLegacyLookup(this.store.selectSnapshot(TenantSettingsState.general).tenantFormats.uom);
+    const defaultUom = fromLegacyLookup(
+      this.store.selectSnapshot(TenantSettingsState.general).tenantFormats.uom
+    );
 
     if (isAction(action, LoadReportDetailsSuccessfulAction)) {
       const success = <LoadReportDetailsSuccessfulAction>action;
 
       const detailsDto = success.dto;
-      const productTypesMap = keyBy((detailsDto.productTypeCategories || []).map(productTypeItem => new QcProductTypeListItemStateModel(productTypeItem, detailsDto.sludgeProductType.id === productTypeItem.productType.id)), s => s.productType.id);
+      const productTypesMap = keyBy(
+        (detailsDto.productTypeCategories || []).map(
+          productTypeItem =>
+            new QcProductTypeListItemStateModel(
+              productTypeItem,
+              detailsDto.sludgeProductType.id === productTypeItem.productType.id
+            )
+        ),
+        s => s.productType.id
+      );
 
       patchState({
         details: new QcReportDetailsModel({
@@ -368,21 +499,26 @@ export class QcReportState {
           _hasLoaded: true,
           id: detailsDto.id,
           status: detailsDto.status,
-          vessel: detailsDto.vessel || undefined,// Note: BE returns null, we want to stay consistent and not trigger any selectors
+          vessel: detailsDto.vessel || undefined, // Note: BE returns null, we want to stay consistent and not trigger any selectors
           portCall: detailsDto.portCall || undefined, // Note: BE returns null, we want to stay consistent and not trigger any selectors
-          productTypes: detailsDto.productTypeCategories.map(c => c.productType.id),
+          productTypes: detailsDto.productTypeCategories.map(
+            c => c.productType.id
+          ),
           hasSentEmail: detailsDto.hasSentEmail,
           productTypesById: productTypesMap,
           uoms: detailsDto.uoms.options,
           comment: detailsDto.comments,
-          vesselResponse: new QcVesselResponsesStateModel(detailsDto.vesselResponses),
+          vesselResponse: new QcVesselResponsesStateModel(
+            detailsDto.vesselResponses
+          ),
           nbOfClaims: detailsDto.nbOfClaims,
           nbOfDeliveries: detailsDto.nbOfDeliveries,
-          robBeforeDeliveryUom: detailsDto.uoms.robBeforeDeliveryUom ?? defaultUom,
-          robAfterDeliveryUom: detailsDto.uoms.robAfterDeliveryUom ?? defaultUom,
+          robBeforeDeliveryUom:
+            detailsDto.uoms.robBeforeDeliveryUom ?? defaultUom,
+          robAfterDeliveryUom:
+            detailsDto.uoms.robAfterDeliveryUom ?? defaultUom,
           deliveredQtyUom: detailsDto.uoms.deliveredQtyUom ?? defaultUom,
           emailTransactionTypeId: detailsDto.emailTransactionTypeId
-
         })
       });
     } else if (isAction(action, LoadReportDetailsFailedAction)) {
@@ -398,7 +534,10 @@ export class QcReportState {
   }
 
   @Action(QcLoadEventsLogAction)
-  loadEventsLog({getState, patchState}: StateContext<IQcReportState>, __: QcLoadEventsLogAction): void {
+  loadEventsLog(
+    { getState, patchState }: StateContext<IQcReportState>,
+    __: QcLoadEventsLogAction
+  ): void {
     const state = getState();
 
     patchState({
@@ -414,7 +553,10 @@ export class QcReportState {
   }
 
   @Action([QcLoadEventsLogSuccessfulAction, QcLoadEventsLogFailedAction])
-  loadEventsLogFinished({getState, patchState}: StateContext<IQcReportState>, action: QcLoadEventsLogSuccessfulAction | QcLoadEventsLogFailedAction): void {
+  loadEventsLogFinished(
+    { getState, patchState }: StateContext<IQcReportState>,
+    action: QcLoadEventsLogSuccessfulAction | QcLoadEventsLogFailedAction
+  ): void {
     const state = getState();
     if (isAction(action, QcLoadEventsLogSuccessfulAction)) {
       const success = <QcLoadEventsLogSuccessfulAction>action;
@@ -425,7 +567,10 @@ export class QcReportState {
           eventsLog: {
             ...state.details.eventsLog,
             items: (success.items || []).map(e => e.id),
-            itemsById: keyBy((success.items || []).map(e => new QcEventsLogItemStateModel(e)), e => e.id),
+            itemsById: keyBy(
+              (success.items || []).map(e => new QcEventsLogItemStateModel(e)),
+              e => e.id
+            ),
             _isLoading: false,
             _hasLoaded: true
           }
@@ -446,7 +591,10 @@ export class QcReportState {
   }
 
   @Action(QcAddEventLogAction)
-  addEventLogAction({getState, patchState}: StateContext<IQcReportState>, {eventDetails}: QcAddEventLogAction): void {
+  addEventLogAction(
+    { getState, patchState }: StateContext<IQcReportState>,
+    { eventDetails }: QcAddEventLogAction
+  ): void {
     const state = getState();
 
     const newEventLogId = -Math.random();
@@ -473,7 +621,10 @@ export class QcReportState {
   }
 
   @Action(QcRemoveEventLogAction)
-  removeEventLogAction({getState, patchState}: StateContext<IQcReportState>, {id}: QcRemoveEventLogAction): void {
+  removeEventLogAction(
+    { getState, patchState }: StateContext<IQcReportState>,
+    { id }: QcRemoveEventLogAction
+  ): void {
     const state = getState();
 
     const { [id]: __, ...itemsById } = state.details.eventsLog.itemsById;
@@ -487,7 +638,11 @@ export class QcReportState {
           ...state.details.eventsLog,
           items: items,
           // Note: deletedItemIds will be sent to server, if the user creates and deletes notes without saving, we don't want to send these to the BE
-          deletedItemIds: !(state.details.eventsLog.itemsById[id]?.isNew ?? true) ? [...(state.details.eventsLog.deletedItemIds ?? []), id] : state.details.eventsLog.deletedItemIds,
+          deletedItemIds: !(
+            state.details.eventsLog.itemsById[id]?.isNew ?? true
+          )
+            ? [...(state.details.eventsLog.deletedItemIds ?? []), id]
+            : state.details.eventsLog.deletedItemIds,
           itemsById: itemsById
         }
       }
@@ -495,7 +650,10 @@ export class QcReportState {
   }
 
   @Action(QcUpdateEventLogAction)
-  updateEventLogAction({getState, patchState}: StateContext<IQcReportState>, {id, eventDetails}: QcUpdateEventLogAction): void {
+  updateEventLogAction(
+    { getState, patchState }: StateContext<IQcReportState>,
+    { id, eventDetails }: QcUpdateEventLogAction
+  ): void {
     const state = getState();
 
     patchState({
@@ -518,7 +676,10 @@ export class QcReportState {
   }
 
   @Action(QcSaveReportDetailsAction)
-  saveReportDetailsAction({getState, patchState}: StateContext<IQcReportState>, __: QcSaveReportDetailsAction): void {
+  saveReportDetailsAction(
+    { getState, patchState }: StateContext<IQcReportState>,
+    __: QcSaveReportDetailsAction
+  ): void {
     const state = getState();
 
     patchState({
@@ -529,17 +690,27 @@ export class QcReportState {
     });
   }
 
-  @Action([QcSaveReportDetailsSuccessfulAction, QcSaveReportDetailsFailedAction])
-  saveReportDetailsSuccessfulAction({getState, patchState}: StateContext<IQcReportState>, action: QcSaveReportDetailsSuccessfulAction | QcSaveReportDetailsFailedAction): void {
+  @Action([
+    QcSaveReportDetailsSuccessfulAction,
+    QcSaveReportDetailsFailedAction
+  ])
+  saveReportDetailsSuccessfulAction(
+    { getState, patchState }: StateContext<IQcReportState>,
+    action:
+      | QcSaveReportDetailsSuccessfulAction
+      | QcSaveReportDetailsFailedAction
+  ): void {
     const state = getState();
     if (isAction(action, QcSaveReportDetailsSuccessfulAction)) {
-
       const success = <QcSaveReportDetailsSuccessfulAction>action;
 
       // Note: For New Reports we need to save the id of each product type row. This id is not used in front-end, we track by productTypes.productType.id, it's used in backend to update rows in db
-      const productTypes = values(state.details.productTypesById).map(p => {
-        return { ...state.details.productTypesById[p.productType.id], id: success.productTypes.find(s => s.productType.id === p.productType.id)?.id ?? p.id };
-      });
+      const productTypes = values(state.details.productTypesById).map(p => ({
+        ...state.details.productTypesById[p.productType.id],
+        id:
+          success.productTypes.find(s => s.productType.id === p.productType.id)
+            ?.id ?? p.id
+      }));
 
       patchState({
         details: {
@@ -552,7 +723,12 @@ export class QcReportState {
           isSaving: false,
           eventsLog: {
             ...state.details.eventsLog,
-            itemsById: keyBy(values(state.details.eventsLog.itemsById).map(s => (<IQcEventsLogItemState>{ ...s, isNew: false })), s => s.id),
+            itemsById: keyBy(
+              values(state.details.eventsLog.itemsById).map(
+                s => <IQcEventsLogItemState>{ ...s, isNew: false }
+              ),
+              s => s.id
+            ),
             deletedItemIds: undefined
           }
         }
@@ -568,19 +744,32 @@ export class QcReportState {
   }
 
   @Action(ResetQcReportDetailsStateAction)
-  resetQcReportDetailsStateAction({patchState}: StateContext<IQcReportState>, __: ResetQcReportDetailsStateAction): void {
+  resetQcReportDetailsStateAction(
+    { patchState }: StateContext<IQcReportState>,
+    __: ResetQcReportDetailsStateAction
+  ): void {
     patchState({
       details: new QcReportDetailsModel()
     });
   }
 
-  @Action([QcVerifyReportAction, QcVerifyReportSuccessfulAction, QcVerifyReportFailedAction])
-  verifyReportAction({getState, patchState}: StateContext<IQcReportState>, action: QcVerifyReportAction | QcVerifyReportSuccessfulAction | QcVerifyReportFailedAction): void {
+  @Action([
+    QcVerifyReportAction,
+    QcVerifyReportSuccessfulAction,
+    QcVerifyReportFailedAction
+  ])
+  verifyReportAction(
+    { getState, patchState }: StateContext<IQcReportState>,
+    action:
+      | QcVerifyReportAction
+      | QcVerifyReportSuccessfulAction
+      | QcVerifyReportFailedAction
+  ): void {
     const state = getState();
 
     if (isAction(action, QcVerifyReportAction)) {
       patchState({
-        details: {...state.details, isVerifying: true}
+        details: { ...state.details, isVerifying: true }
       });
     } else {
       patchState({
@@ -593,19 +782,31 @@ export class QcReportState {
     }
   }
 
-  @Action([QcRevertVerifyReportAction, QcRevertVerifyReportSuccessfulAction, QcRevertVerifyReportFailedAction])
-  revertVerifyReportAction({getState, patchState}: StateContext<IQcReportState>, action: QcRevertVerifyReportAction | QcRevertVerifyReportSuccessfulAction | QcRevertVerifyReportFailedAction): void {
+  @Action([
+    QcRevertVerifyReportAction,
+    QcRevertVerifyReportSuccessfulAction,
+    QcRevertVerifyReportFailedAction
+  ])
+  revertVerifyReportAction(
+    { getState, patchState }: StateContext<IQcReportState>,
+    action:
+      | QcRevertVerifyReportAction
+      | QcRevertVerifyReportSuccessfulAction
+      | QcRevertVerifyReportFailedAction
+  ): void {
     const state = getState();
 
     if (isAction(action, QcRevertVerifyReportAction)) {
       patchState({
-        details: {...state.details, isRevertVerifying: true}
+        details: { ...state.details, isRevertVerifying: true }
       });
     } else {
       patchState({
         details: {
           ...state.details,
-          status: state.details.hasSentEmail ? this.surveyStatusLookups.pending : this.surveyStatusLookups.new,
+          status: state.details.hasSentEmail
+            ? this.surveyStatusLookups.pending
+            : this.surveyStatusLookups.new,
           isRevertVerifying: false
         }
       });
@@ -613,55 +814,74 @@ export class QcReportState {
   }
 
   @Action(UpdateQcReportVessel)
-  updateQcReportVessel({getState, patchState}: StateContext<IQcReportState>, {vessel}: UpdateQcReportVessel): void {
+  updateQcReportVessel(
+    { getState, patchState }: StateContext<IQcReportState>,
+    { vessel }: UpdateQcReportVessel
+  ): void {
     const state = getState();
-    patchState(
-      {
-        details: {
-          ...state.details,
-          hasChanges: true,
-          vessel: vessel,
-          portCall: undefined
-        }
-      });
+    patchState({
+      details: {
+        ...state.details,
+        hasChanges: true,
+        vessel: vessel,
+        portCall: undefined
+      }
+    });
   }
 
   @Action(UpdateQcReportPortCall)
-  updateQcReportPortCall({getState, patchState}: StateContext<IQcReportState>, {portCall}: UpdateQcReportPortCall): void {
+  updateQcReportPortCall(
+    { getState, patchState }: StateContext<IQcReportState>,
+    { portCall }: UpdateQcReportPortCall
+  ): void {
     const state = getState();
-    patchState(
-      {
-        details: {
-          ...state.details,
-          hasChanges: true,
-          portCall: portCall
-        }
-      });
+    patchState({
+      details: {
+        ...state.details,
+        hasChanges: true,
+        portCall: portCall
+      }
+    });
   }
 
   @Action(LoadReportSurveyHistoryAction)
-  loadReportSurveyHistoryAction({getState, patchState}: StateContext<IQcReportState>, {serverGridInfo}: LoadReportSurveyHistoryAction): void {
+  loadReportSurveyHistoryAction(
+    { getState, patchState }: StateContext<IQcReportState>,
+    { serverGridInfo }: LoadReportSurveyHistoryAction
+  ): void {
     const state = getState();
-    patchState(
-      {
-        details: {
-          ...state.details,
-          surveyHistory: {
-            ...state.details.surveyHistory,
-            gridInfo: serverGridInfo,
-            _isLoading: true,
-            _hasLoaded: false
-          }
+    patchState({
+      details: {
+        ...state.details,
+        surveyHistory: {
+          ...state.details.surveyHistory,
+          gridInfo: serverGridInfo,
+          _isLoading: true,
+          _hasLoaded: false
         }
-      });
+      }
+    });
   }
 
-  @Action([LoadReportSurveyHistorySuccessfulAction, LoadReportSurveyHistoryFailedAction])
-  loadReportSurveyHistoryActionFinished({getState, patchState}: StateContext<IQcReportState>, action: LoadReportSurveyHistorySuccessfulAction | LoadReportSurveyHistoryFailedAction): void {
+  @Action([
+    LoadReportSurveyHistorySuccessfulAction,
+    LoadReportSurveyHistoryFailedAction
+  ])
+  loadReportSurveyHistoryActionFinished(
+    { getState, patchState }: StateContext<IQcReportState>,
+    action:
+      | LoadReportSurveyHistorySuccessfulAction
+      | LoadReportSurveyHistoryFailedAction
+  ): void {
     const state = getState();
 
     if (isAction(action, LoadReportSurveyHistorySuccessfulAction)) {
-      const {nbOfMatched, nbOfMatchedWithinLimit, nbOfNotMatched, totalCount} = <LoadReportSurveyHistorySuccessfulAction>action;
+      const {
+        nbOfMatched,
+        nbOfMatchedWithinLimit,
+        nbOfNotMatched,
+        totalCount
+      } = <LoadReportSurveyHistorySuccessfulAction>action;
       patchState({
         details: {
           ...state.details,
@@ -691,15 +911,21 @@ export class QcReportState {
   }
 
   @Action([QcClearPortCallBdnAction])
-  clearPortCallBdnAction({getState, patchState}: StateContext<IQcReportState>, action: QcClearPortCallBdnAction): void {
+  clearPortCallBdnAction(
+    { getState, patchState }: StateContext<IQcReportState>,
+    action: QcClearPortCallBdnAction
+  ): void {
     const state = getState();
 
-    const productTypesById = {...state.details.productTypesById};
+    const productTypesById = { ...state.details.productTypesById };
 
     values(productTypesById).forEach(p => {
       const productType = productTypesById[p.productType.id];
 
-      productTypesById[p.productType.id] = {...productType, deliveredQuantityBdnQty: undefined};
+      productTypesById[p.productType.id] = {
+        ...productType,
+        deliveredQuantityBdnQty: undefined
+      };
     });
 
     patchState({
@@ -712,20 +938,33 @@ export class QcReportState {
     });
   }
 
-  @Action([QcUpdatePortCallAction, QcUpdatePortCallSuccessfulAction, QcUpdatePortCallFailedAction])
-  updatePortCallBdnActionFinished({getState, patchState}: StateContext<IQcReportState>, action: QcUpdatePortCallAction | QcUpdatePortCallSuccessfulAction | QcUpdatePortCallFailedAction): void {
+  @Action([
+    QcUpdatePortCallAction,
+    QcUpdatePortCallSuccessfulAction,
+    QcUpdatePortCallFailedAction
+  ])
+  updatePortCallBdnActionFinished(
+    { getState, patchState }: StateContext<IQcReportState>,
+    action:
+      | QcUpdatePortCallAction
+      | QcUpdatePortCallSuccessfulAction
+      | QcUpdatePortCallFailedAction
+  ): void {
     const state = getState();
 
     if (isAction(action, QcUpdatePortCallSuccessfulAction)) {
       const success = <QcUpdatePortCallSuccessfulAction>action;
 
-      const productTypesById = {...state.details.productTypesById};
+      const productTypesById = { ...state.details.productTypesById };
 
       (success.productTypes ?? []).forEach(p => {
         const productType = productTypesById[p.productType.id];
         if (!productType) return;
 
-        productTypesById[p.productType.id] = { ...productType, deliveredQuantityBdnQty: p.bdnQuantity };
+        productTypesById[p.productType.id] = {
+          ...productType,
+          deliveredQuantityBdnQty: p.bdnQuantity
+        };
       });
 
       patchState({
@@ -753,5 +992,4 @@ export class QcReportState {
       });
     }
   }
-
 }

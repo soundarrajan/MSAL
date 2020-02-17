@@ -15,7 +15,10 @@ export function serializeException(exception: any): SerializeException {
     return { __type: 'unknown' };
   }
 
-  const formattedException = { ...exception, __type: exception.constructor.name };
+  const formattedException = {
+    ...exception,
+    __type: exception.constructor.name
+  };
 
   // Note: Check if this is a browser error, e.g TypeError.
   // Note: calling JSON.stringify(TypeError) does not render all props.

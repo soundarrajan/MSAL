@@ -13,9 +13,15 @@ import {
 export interface IUserSettingsApiService {
   getByKey(request: IUserSettingByKeyRequest): Observable<IUserSettingResponse>;
 
-  save(request: IUpsertUserSettingRequest): Observable<IUpsertUserSettingResponse>;
+  save(
+    request: IUpsertUserSettingRequest
+  ): Observable<IUpsertUserSettingResponse>;
 
-  delete(request: IDeleteUserSettingRequest): Observable<IDeleteUserSettingResponse>;
+  delete(
+    request: IDeleteUserSettingRequest
+  ): Observable<IDeleteUserSettingResponse>;
 
-  purge(request: IPurgeUserSettingsRequest): Observable<IPurgeUserSettingsResponse>;
+  purge(
+    request: IPurgeUserSettingsRequest
+  ): Observable<IPurgeUserSettingsResponse>;
 }

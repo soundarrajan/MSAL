@@ -90,13 +90,16 @@ export enum VesselMasterListColumnsLabels {
   createdBy = 'Created By',
   lastModifiedOn = 'Last Modified On',
   lastModifiedBy = 'Last Modified By',
-  hfoSpecs = 'HFO Specs',
+  hfoSpecs = 'HFO Specs'
 }
 
 /**
  * The map serves the purposes of easily renaming columns on the front-end without affecting back-end filtering/sorting.
  */
-export const VesselMasterListColumnServerKeys: Record<VesselMasterListColumns, string> = {
+export const VesselMasterListColumnServerKeys: Record<
+  VesselMasterListColumns,
+  string
+> = {
   [VesselMasterListColumns.selection]: undefined,
   [VesselMasterListColumns.averageSpeedNmPerHour]: 'averageSpeed',
   [VesselMasterListColumns.buyer]: 'buyer',
@@ -141,5 +144,5 @@ export const VesselMasterListColumnServerKeys: Record<VesselMasterListColumns, s
   [VesselMasterListColumns.vesselFlag]: 'vesselFlag',
   [VesselMasterListColumns.vesselType]: 'vesselType',
   [VesselMasterListColumns.voyageUpdatedDate]: 'updatedDate',
-  [VesselMasterListColumns.hfoSpecs]: 'FuelSpecGroup_Name',
+  [VesselMasterListColumns.hfoSpecs]: 'FuelSpecGroup_Name'
 };

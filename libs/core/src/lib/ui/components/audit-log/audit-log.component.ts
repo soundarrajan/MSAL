@@ -1,6 +1,12 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from "@angular/core";
-import {AuditLogGridViewModel} from "./view-model/audit-log-grid-view-model.service";
-import {Subject} from "rxjs";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
+import { AuditLogGridViewModel } from './view-model/audit-log-grid-view-model.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'shiptech-audit-log',
@@ -30,8 +36,7 @@ export class AuditLogComponent implements OnInit, OnDestroy {
     this._entityName = value;
     this.gridViewModel.entityName = this.entityName;
   }
-  constructor(public gridViewModel: AuditLogGridViewModel) {
-  }
+  constructor(public gridViewModel: AuditLogGridViewModel) {}
 
   onPageChange(page: number): void {
     this.gridViewModel.page = page;
@@ -41,8 +46,7 @@ export class AuditLogComponent implements OnInit, OnDestroy {
     this.gridViewModel.pageSize = pageSize;
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this._destroy$.next();

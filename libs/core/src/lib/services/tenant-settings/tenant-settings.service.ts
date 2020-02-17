@@ -2,29 +2,36 @@ import { Inject, Injectable } from '@angular/core';
 import { defer, Observable } from 'rxjs';
 import { ObservableException } from '../../utils/decorators/observable-exception.decorator';
 import { Store } from '@ngxs/store';
-import { LoadTenantSettingsAction, LoadTenantSettingsFailedAction, LoadTenantSettingsSuccessfulAction } from '../../store/states/tenant/load-tenant.actions';
+import {
+  LoadTenantSettingsAction,
+  LoadTenantSettingsFailedAction,
+  LoadTenantSettingsSuccessfulAction
+} from '../../store/states/tenant/load-tenant.actions';
 import { AppError } from '../../error-handling/app-error';
 import { SKIP$ } from '../../utils/rxjs-operators';
 import { IAppState } from '../../store/states/app.state.interface';
 import { LoggerFactory } from '../../logging/logger-factory.service';
 import { BaseStoreService } from '../base-store.service';
-import { IModuleTenantSettings, TenantSettingsModuleName } from '../../store/states/tenant/tenant-settings.interface';
+import {
+  IModuleTenantSettings,
+  TenantSettingsModuleName
+} from '../../store/states/tenant/tenant-settings.interface';
 import { TENANT_SETTINGS_API } from '@shiptech/core/services/tenant-settings/api/tenant-settings-api.service';
 import { ITenantSettingsApi } from '@shiptech/core/services/tenant-settings/api/tenant-settings-api.interface';
 import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/general-tenant-settings.interface';
 import { TenantSettingsState } from '@shiptech/core/store/states/tenant/tenant-settings.state';
-import { tap } from 'rxjs/operators';
 
 /*
-* // Note: TenantSettingsService instance needs to be created after app config is loaded because of the tenant setting api url
-*/
+ * // Note: TenantSettingsService instance needs to be created after app config is loaded because of the tenant setting api url
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class TenantSettingsService extends BaseStoreService {
-
-  constructor(protected store: Store, loggerFactory: LoggerFactory,
-              @Inject(TENANT_SETTINGS_API) private tenantSettingsApi: ITenantSettingsApi
+  constructor(
+    protected store: Store,
+    loggerFactory: LoggerFactory,
+    @Inject(TENANT_SETTINGS_API) private tenantSettingsApi: ITenantSettingsApi
   ) {
     super(store, loggerFactory.createLogger(TenantSettingsService.name));
   }
@@ -40,17 +47,23 @@ export class TenantSettingsService extends BaseStoreService {
       // Note: This was added as an investigation to see if there is a race condition between
       // Note: state being initialized and TenantSettings Service begin called to early and RootComponent.Resolve()
       if (!appState || !appState.tenantSettings) {
-        this.logger.warn(`TenantSetting.loadModule. AppState or AppState.tenantSettings was null or undefined`);
+        this.logger.warn(
+          `TenantSetting.loadModule. AppState or AppState.tenantSettings was null or undefined`
+        );
       }
 
-      const moduleTenantSettings = ((appState || <IAppState>{}).tenantSettings || {})[moduleName];
+      const moduleTenantSettings = ((appState || <IAppState>{})
+        .tenantSettings || {})[moduleName];
 
-      const shouldLoadTenantSettings = !(moduleTenantSettings && moduleTenantSettings._hasLoaded);
+      const shouldLoadTenantSettings = !(
+        moduleTenantSettings && moduleTenantSettings._hasLoaded
+      );
 
       const apiDispatch$ = this.apiDispatch(
         () => this.tenantSettingsApi.get(moduleName),
         new LoadTenantSettingsAction(moduleName),
-        response => new LoadTenantSettingsSuccessfulAction(moduleName, response.payload),
+        response =>
+          new LoadTenantSettingsSuccessfulAction(moduleName, response.payload),
         new LoadTenantSettingsFailedAction(moduleName),
         AppError.LoadTenantSettingsFailed(moduleName)
       );
@@ -60,7 +73,11 @@ export class TenantSettingsService extends BaseStoreService {
   }
 
   getGeneralTenantSettings(): IGeneralTenantSettings {
-    const generalSettings = this.store.selectSnapshot(TenantSettingsState.byModule<IGeneralTenantSettings>(TenantSettingsModuleName.General));
+    const generalSettings = this.store.selectSnapshot(
+      TenantSettingsState.byModule<IGeneralTenantSettings>(
+        TenantSettingsModuleName.General
+      )
+    );
 
     if (!generalSettings._hasLoaded)
       throw AppError.GeneralTenantSettingsNotLoaded;
@@ -68,8 +85,12 @@ export class TenantSettingsService extends BaseStoreService {
     return generalSettings;
   }
 
-  getModuleTenantSettings<T extends IModuleTenantSettings>(moduleName: TenantSettingsModuleName): T {
-    const moduleSettings = this.store.selectSnapshot(TenantSettingsState.byModule<T>(moduleName));
+  getModuleTenantSettings<T extends IModuleTenantSettings>(
+    moduleName: TenantSettingsModuleName
+  ): T {
+    const moduleSettings = this.store.selectSnapshot(
+      TenantSettingsState.byModule<T>(moduleName)
+    );
 
     if (!moduleSettings._hasLoaded)
       throw AppError.ModuleTenantSettingsNotLoaded(moduleName);

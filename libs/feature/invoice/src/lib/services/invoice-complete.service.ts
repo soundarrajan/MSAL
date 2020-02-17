@@ -11,21 +11,28 @@ import { ModuleLoggerFactory } from '../core/logging/module-logger-factory';
 import { IGetInvoiceListResponse } from './api/dto/invoice-list-item.dto';
 
 @Injectable()
-export class InvoiceCompleteService extends BaseStoreService implements OnDestroy {
+export class InvoiceCompleteService extends BaseStoreService
+  implements OnDestroy {
   constructor(
     protected store: Store,
     loggerFactory: ModuleLoggerFactory,
-    @Inject(INVOICE_COMPLETE_API_SERVICE) private api: IInvoiceCompleteApiService) {
+    @Inject(INVOICE_COMPLETE_API_SERVICE)
+    private api: IInvoiceCompleteApiService
+  ) {
     super(store, loggerFactory.createLogger(InvoiceCompleteService.name));
   }
 
   @ObservableException()
-  getReportsList$(gridRequest: IServerGridInfo): Observable<IGetInvoiceCompletesListResponse> {
+  getReportsList$(
+    gridRequest: IServerGridInfo
+  ): Observable<IGetInvoiceCompletesListResponse> {
     return this.api.getReportList({ ...gridRequest });
   }
 
   @ObservableException()
-  getInvoiceList$(gridRequest: IServerGridInfo): Observable<IGetInvoiceListResponse> {
+  getInvoiceList$(
+    gridRequest: IServerGridInfo
+  ): Observable<IGetInvoiceListResponse> {
     return this.api.getInvoiceList({ ...gridRequest });
   }
 

@@ -4,8 +4,7 @@ import { IQcVesselPortCallDto } from '../../../../services/api/dto/qc-vessel-por
 export class UpdateQcReportVessel {
   static readonly type = '[Qc.Report.Details] - Update report vessel';
 
-  constructor(public vessel: IDisplayLookupDto) {
-  }
+  constructor(public vessel: IDisplayLookupDto) {}
 
   public log(): any {
     return {
@@ -17,8 +16,7 @@ export class UpdateQcReportVessel {
 export class UpdateQcReportPortCall {
   static readonly type = '[Qc.Report.Details] - Update report port call';
 
-  constructor(public portCall: IQcVesselPortCallDto) {
-  }
+  constructor(public portCall: IQcVesselPortCallDto) {}
 
   public log(): any {
     return {

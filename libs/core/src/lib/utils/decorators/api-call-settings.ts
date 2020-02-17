@@ -1,7 +1,10 @@
 import { Observable } from 'rxjs';
 
 export const RANDOM_DELAY = -1;
-export const defaultCannnedResponse: ICannedResponse = { name: 'Default', response: undefined };
+export const defaultCannnedResponse: ICannedResponse = {
+  name: 'Default',
+  response: undefined
+};
 const DefaultForwardToRead = true;
 
 export class ApiCallSettings {
@@ -14,13 +17,24 @@ export class ApiCallSettings {
   forwardToReal = DefaultForwardToRead; // environment.production;
   apiUrl: string;
 
-  constructor({ delay, delayMin, delayMax, throwError, cannedResponses, forwardToReal, apiUrl }: Partial<IApiCallSettings> = {}) {
+  constructor({
+    delay,
+    delayMin,
+    delayMax,
+    throwError,
+    cannedResponses,
+    forwardToReal,
+    apiUrl
+  }: Partial<IApiCallSettings> = {}) {
     this.delay = delay || 0;
     this.delayMax = delayMax || 300;
     this.delayMin = delayMin || 50;
     this.throwError = throwError === undefined ? false : throwError;
-    this.forwardToReal = forwardToReal !== undefined ? forwardToReal : DefaultForwardToRead;
-    this.cannedResponses = cannedResponses ? [defaultCannnedResponse, ...cannedResponses] : [defaultCannnedResponse];
+    this.forwardToReal =
+      forwardToReal !== undefined ? forwardToReal : DefaultForwardToRead;
+    this.cannedResponses = cannedResponses
+      ? [defaultCannnedResponse, ...cannedResponses]
+      : [defaultCannnedResponse];
     this.apiUrl = apiUrl;
   }
 }

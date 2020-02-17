@@ -1,8 +1,6 @@
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 
-export interface IUomLookupDto extends IDisplayLookupDto {
-
-}
+export interface IUomLookupDto extends IDisplayLookupDto {}
 
 export const mockUomsLookup: IDisplayLookupDto[] = [
   {

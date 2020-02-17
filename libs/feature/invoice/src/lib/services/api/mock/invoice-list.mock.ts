@@ -1,13 +1,9 @@
-import {range, sample, values} from 'lodash';
-import {MockStatusLookupEnumMap} from '@shiptech/core/lookups/known-lookups/status/status-lookup.enum';
-import {IInvoiceListItemDto} from '../dto/invoice-list-item.dto';
-import {Chance} from 'chance';
+import { range, sample, values } from 'lodash';
+import { MockStatusLookupEnumMap } from '@shiptech/core/lookups/known-lookups/status/status-lookup.enum';
+import { IInvoiceListItemDto } from '../dto/invoice-list-item.dto';
+import { Chance } from 'chance';
 
 const chance = new Chance();
-
-export function getMockInvoiceList(n: number): IInvoiceListItemDto[] {
-  return range(1, n).map(id => getMockInvoiceListItem(id));
-}
 
 export function getMockInvoiceListItem(id: number): IInvoiceListItemDto {
   return {
@@ -68,4 +64,8 @@ export function getMockInvoiceListItem(id: number): IInvoiceListItemDto {
       name: chance.name()
     }
   };
+}
+
+export function getMockInvoiceList(n: number): IInvoiceListItemDto[] {
+  return range(1, n).map(id => getMockInvoiceListItem(id));
 }
