@@ -9,6 +9,12 @@ angular.module('shiptech.models').factory('lookupResource', ['$resource', '$stat
                 verb: 'get'
             }
         },
+        'getForRequest': {
+            method: 'POST',
+            params: {
+                verb: 'getForRequest'
+            }
+        },
         'getCounterpartiesAutocomplete': {
             method: 'POST',
             params: {

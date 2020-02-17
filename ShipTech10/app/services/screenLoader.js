@@ -57,6 +57,8 @@ angular.module("shiptech").config([
 			"api/procurement/request/searchForPopup",
 			"api/mail/templates/listByTypeAndProcess",
 			"uib/template/typeahead/typeahead-popup.html",
+			"api/procurement/request/bestContract",
+			"api/masters/specGroups/getByProduct",
 			"mail/templates/listByTypeAndProcess",
 			"api/masters/companies/download",
 			"api/recon/invoicecost",
@@ -122,8 +124,14 @@ angular.module("shiptech").config([
                     return deferredResult.promise;
                 }
 
+
+				function loaderIsOpen(){
+					return $('.screen-loader').css("display") != "none";
+				}
+
                 return {
                     request: function name(request) {
+
 
                         if (appInsightsInstance) {
                             request.trackAjaxTelemetryId = '|' + appInsightsInstance.context.telemetryTrace.traceID + '.' + Microsoft.ApplicationInsights.Util.newId();
@@ -135,18 +143,23 @@ angular.module("shiptech").config([
                         }
                         
                     	routeCall = request.url;
-						if(window.openedScreenLoaders <= 0 || typeof(window.openedScreenLoaders) == 'undefined') {
-							window.screenLoaderStartTime = Date.now();
-						}
+
                     	if (request.url.indexOf("/api/") != -1) {
 	                    	routeCall = 'api/' + request.url.split("/api/")[1];
                     	}
+
+
                     	if (routeCall.indexOf('invoice/list') != -1 ) {
                     		// debugger;
                     	}
                     	if (routeExceptions.indexOf(routeCall) == -1) {
-	                    	// console.log("screenLoader OPEN:" + routeCall);
-	                    	// console.log("***** request:" + window.openedScreenLoaders + "  url : " + routeCall);
+                    		/*APP INSIGHTS LOGGER Start Timer*/
+	                    	if (!loaderIsOpen()) {
+	                    		window.firstApiCallStartTime = Date.now();
+	                			console.log("First Start : ==============: ", window.firstApiCallStartTime);
+	                    	}
+                    		/*END APP INSIGHTS LOGGER Start Timer*/
+
 	                    	$('.screen-loader').fadeIn(200);
 	                    	$('clc-table-list tbody').css("transition", "0.3s");
 	                    	$('clc-table-list tbody').css("opacity", 0);
@@ -187,33 +200,43 @@ angular.module("shiptech").config([
                             });
                         }
 
+
                         routeCall = config.config.url;
 
                     	if (config.config.url.indexOf("/api/") != -1) {
 	                    	routeCall = 'api/' + config.config.url.split("/api/")[1];
                     	}
                         if (routeExceptions.indexOf(routeCall) == -1) {
-	                    	window.openedScreenLoaders -= 1;
-		                    	if (window.openedScreenLoaders <= 0) {
-		                    		console.log("**** set timeout for loader");
-			                    	setTimeout(function(){
-			                    		// console.log("***** enter timeout for loader");
-				                    	if (window.openedScreenLoaders <= 0) {
-					                    	// console.log("screenLoader CLOSE:" + routeCall);
-					                    	$('.screen-loader').fadeOut(200);
-                                            $('clc-table-list tbody').css("opacity", 1);
-
-                                            if (appInsightsInstance)
-                                                appInsightsInstance.trackMetric({ name: 'Page data loading duration', average: Date.now() - window.screenLoaderStartTime }, window.location);
-                                            //applicationInsightsService.trackMetric('Page data loading duration', Date.now() - window.screenLoaderStartTime, window.location);
+	                        
+	                        /*APP INSIGHTS LOGGER*/
+	                        if (typeof(window.intervalLoaderWatch) == "undefined" || !window.intervalLoaderWatch) {
+	                        	window.intervalLoaderWatch = setInterval(function(){
+	                        		if (!loaderIsOpen()) {
+	                        			console.log("Last End: ==============: ", Date.now() - window.firstApiCallStartTime);
+                                        if (appInsightsInstance) {
+                                            appInsightsInstance.trackMetric({ name: 'Page data loading duration', total: Date.now() - window.firstApiCallStartTime }, window.location);
                                         }
-			                    	},50);
-		                    	}
-		                    	// console.log("response timeout:" + window.openedScreenLoaders);
-	                    	// console.log("***** response:" + window.openedScreenLoaders);
+			                    		delete window.firstApiCallStartTime;
+	                        			clearInterval(window.intervalLoaderWatch);
+	                        			window.intervalLoaderWatch = false;
+	                        		}
+	                        	},50)
+	                        }
+	                    	if (!loaderIsOpen()) {
+	                			clearInterval(window.intervalLoaderWatch);
+	                			window.intervalLoaderWatch = false;
+	                    	}
+	                        /*END APP INSIGHTS LOGGER*/
+
+
+	                    	window.openedScreenLoaders -= 1;
+	                    	setTimeout(function(){
+		                    	if (window.openedScreenLoaders <= 0) {
+			                    	$('.screen-loader').fadeOut(200);
+                                    $('clc-table-list tbody').css("opacity", 1);
+                                }
+	                    	},50);
                     	}
-						// applicationInsightsService.trackMetric('Requests in que on response', window.openedScreenLoaders, config);
-                    	// //console.log(config);
                         return config;
                     },
                     responseError: function name(config) {
@@ -257,20 +280,35 @@ angular.module("shiptech").config([
 	                    			toastr.error("An error has occured");
                     			}
                     		}
+
+
+	                        /*APP INSIGHTS LOGGER*/
+	                        if (typeof(window.intervalLoaderWatch) == "undefined" || !window.intervalLoaderWatch) {
+	                        	window.intervalLoaderWatch = setInterval(function(){
+	                        		if (!loaderIsOpen()) {
+	                        			console.log("Last End on Error: ==============: ", Date.now() - window.firstApiCallStartTime);
+                                        if (appInsightsInstance) {
+                                            appInsightsInstance.trackMetric({ name: 'Page data loading duration', total: Date.now() - window.firstApiCallStartTime }, window.location);
+                                        }
+			                    		delete window.firstApiCallStartTime;
+	                        			clearInterval(window.intervalLoaderWatch);
+	                        			window.intervalLoaderWatch = false;
+	                        		}
+	                        	},50)
+	                        }
+	                    	if (!loaderIsOpen()) {
+	                			clearInterval(window.intervalLoaderWatch);
+	                			window.intervalLoaderWatch = false;
+	                    	}
+	                        /*END APP INSIGHTS LOGGER*/                    		
+
 	                    	if (window.openedScreenLoaders <= 0) {
 								setTimeout(function(){
 			                    	if (window.openedScreenLoaders <= 0) {
 										$('.screen-loader').fadeOut(200);
                                         $('clc-table-list tbody').css("opacity", 1);
-
-                                        if (appInsightsInstance)
-                                            appInsightsInstance.trackMetric({ name: 'Page data loading duration', average: Date.now() - window.screenLoaderStartTime }, window.location);
-										//applicationInsightsService.trackMetric('Page data loading duration', Date.now() - window.screenLoaderStartTime, window.location);
                                     }
-
-                                    if (appInsightsInstance)
-                                        appInsightsInstance.trackTrace({ message: 'Page data loaded with an exception' }, config);
-                                    //applicationInsightsService.trackTraceMessage('Page data loaded with an exception', config);
+                                    console.warn("LOADER CLOSED ON ERROR: " + window.location.href);
                                 },50)
 	                    	}
 

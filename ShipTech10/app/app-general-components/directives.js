@@ -661,7 +661,19 @@ window.increment = 0;
                                         $(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.gridData = callback.rows;
                                         console.log("GRID DATA", $(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.gridData);
                                         $rootScope.$broadcast("gridDataDone", CLC.tableParams);
-                                        
+
+                                        /*RESET SELECTED DATA AFTER LIST CHANGE*/
+                                        if (scope.id == "deliveries_transactionstobeinvoiced") {
+	                                        scope.selectedProductIds = [];
+	                                        scope.rowsProduct = [];
+	                                        scope.selectedOrderAdditionalCostId = [];
+	                                        $('#flat_invoices_app_deliveries_list').jqGrid.Ascensys.selectedProductIds = [];
+	                                        $('#flat_invoices_app_deliveries_list').jqGrid.Ascensys.selectedOrderAdditionalCostId = [];
+	                                        $('#flat_invoices_app_deliveries_list').jqGrid.Ascensys.rowsProduct = [];
+                                        }
+                                        /*(END) RESET SELECTED DATA AFTER LIST CHANGE*/
+
+
                                         // VERTICALS SCROLLBAR
                                         // $(".ui-jqgrid-bdiv")css("width", "100%");
 	                                        $(".ui-jqgrid-view").on("scroll", function(){
@@ -926,6 +938,7 @@ window.increment = 0;
                                 if (status == true) {
                                     if (scope.selectedOrderId != allRowData.order.id || scope.selectedCounterpartyId != allRowData.counterparty.id) {
                                         scope.selectedProductIds = [];
+                                        scope.rowsProduct = [];
                                         scope.selectedOrderAdditionalCostId = [];
                                         scope.selectedOrderId = allRowData.order.id;
                                         currentSelectedRows = $("#" + Elements.settings[table_id].table).jqGrid("getGridParam", "selarrrow");
@@ -950,6 +963,8 @@ window.increment = 0;
                                         if (scope.selectedProductIds.indexOf(productId) < 0) {
                                             if (productId) {
                                                 scope.selectedProductIds.push(productId);
+                                                scope.rowsProduct.push(rowid);
+
                                             }
                                         }
                                         if (scope.selectedOrderAdditionalCostId.indexOf(orderAdditionalCostId) < 0) {
@@ -960,6 +975,8 @@ window.increment = 0;
                                     } else {
                                         if (productId) {
                                             scope.selectedProductIds.push(productId);
+                                            scope.rowsProduct.push(rowid);
+
                                         }
                                         if (orderAdditionalCostId) {
                                             scope.selectedOrderAdditionalCostId.push(orderAdditionalCostId);
@@ -968,6 +985,8 @@ window.increment = 0;
                                 } else {
                                 	if (productId) {
 	                                    scope.selectedProductIds.splice(scope.selectedProductIds.indexOf(productId), 1);
+                                        scope.rowsProduct.splice(scope.rowsProduct.indexOf(rowid), 1);
+
 	                                    if (scope.selectedProductIds.length == 0) {
 											scope.selectedOrderId = null;
 											scope.selectedCounterpartyId = null;
@@ -982,7 +1001,9 @@ window.increment = 0;
                                 	}
                                 }
                                 $(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.selectedProductIds = scope.selectedProductIds;
+                                $(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.rowsProduct = scope.rowsProduct;
                                 $(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.selectedOrderAdditionalCostId = scope.selectedOrderAdditionalCostId;
+                                console.log(scope.rowsProduct);
                                 console.log(scope.selectedProductIds, scope.selectedOrderAdditionalCostId);
                             };
                         }

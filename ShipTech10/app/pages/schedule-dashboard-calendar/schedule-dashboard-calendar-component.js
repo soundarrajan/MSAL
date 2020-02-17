@@ -1654,6 +1654,28 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
 			// $compile($("#schedule_calendar_table"))($scope)
 		}
  
+		ctrl.checkIfHasStrategyOptimized = function(dataJSONVessels){
+			var vesselsStrategy = [];
+       		if (dataJSONVessels) {
+       			$.each(dataJSONVessels, function(k,v){
+					if (v.voyageDetail.hasStrategy) {
+			       		vesselsStrategy[v.voyageDetail.id] = true;
+					}
+       			})
+       		} else {
+	       		$.each(ctrl.calendarDataRows, function(k, calData){
+	       			$.each(calData.calendar, function(k2, cal){
+	           			$.each(cal, function(k2, voyage){
+							if (v.voyageDetail.hasStrategy) {
+					       		vesselsStrategy[voyage.id] = true;
+							}
+	           			})
+	       			})
+	       		})			
+       		}
+       		return vesselsStrategy;
+		}
+ 
 
         function removePopups() {
             $("body > .morePortsPopup").remove();

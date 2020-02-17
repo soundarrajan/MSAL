@@ -167,7 +167,7 @@ a.btn[disabled]:hover {
 
 .ui-jqgrid span.jqgrid-ng-action.remove, 
 .ui-jqgrid span.jqgrid-ng-action.delete {
-    background-image: url('/img/icon-delete.jpg');
+    background: #dde5ec;
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;

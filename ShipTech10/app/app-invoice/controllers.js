@@ -1201,7 +1201,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
         $scope.$watch("formValues", function(data) {
             $rootScope.formValues = data;
         });
-        
+   
         $scope.selectedModalValue = function(element) {
             // if (!element)return
             if (!element) {
@@ -1402,7 +1402,9 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
         
         vm.trustAsHtmlField = function(data) {
             if (data && _.has($scope, 'formValues.' + data.Unique_ID)) {
-                return $sce.trustAsHtml(_.get($scope, 'formValues.' + data.Unique_ID).replace(/\n/g, "<br/>"));
+            	if (_.get($scope, 'formValues.' + data.Unique_ID)) {
+	                return $sce.trustAsHtml(_.get($scope, 'formValues.' + data.Unique_ID).replace(/\n/g, "<br/>"));
+            	}
             }
         };
         
@@ -1431,7 +1433,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
             if (typeof(vm.filteredCostTypesByAdditionalCost) == 'undefined') {
 	            vm.filteredCostTypesByAdditionalCost = []
             }
-
+            var costType = null;
             currentCost = cost;
             if (!$rootScope.additionalCostsComponentTypes) {return}
             $.each($rootScope.additionalCostsComponentTypes, function(k, v) {
@@ -1441,21 +1443,23 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
             });
             
 			availableCosts = [];
-            $.each(vm.listsCache.CostType, function(ack, acv){
-                
-				if (acv) {
-					if (costType == 1 || costType == 2) {
-		                if (acv.id == 1 || acv.id == 2) {
-	                        availableCosts.push(acv);
-		                }
-					}
-					if (costType == 3) {
-		                if (acv.id == 3) {
-	                        availableCosts.push(acv);
-		                }                    	
-					}
-				}
-            })
+            if (costType) {
+                $.each(vm.listsCache.CostType, function(ack, acv){
+                    if (acv) {
+                        if (costType == 1 || costType == 2) {
+                            if (acv.id == 1 || acv.id == 2) {
+                                availableCosts.push(acv);
+                            }
+                        }
+                        if (costType == 3) {
+                            if (acv.id == 3) {
+                                availableCosts.push(acv);
+                            }                       
+                        }
+                    }
+                })
+            }
+          
             return availableCosts
         };
 
@@ -1616,7 +1620,6 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
 		return statusColors.getColorCodeFromLabels(statusObj, vm.listsCache.ScheduleDashboardLabelConfiguration);
 	}
 
-	vm.getAdditionalCostsComponentTypes();
     $scope.initInvoiceScreen = function() {
 		vm.getAdditionalCostsComponentTypes();
         if(!$scope.formValues.paymentDate) {
@@ -1760,8 +1763,8 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
             $scope.dtMasterSource.applyFor = [];
             if (typeof $scope.formValues.orderDetails != 'undefined') {
                 var order_id = $scope.formValues.orderDetails.order.id;
-                // if (typeof($rootScope.called_get_apply_for_list) == 'undefined') {
-					// $rootScope.called_get_apply_for_list = 1;
+
+				if (window.location.href.indexOf("invoices/claims") == -1) {
                     Factory_Master.get_apply_for_list(order_id, function(callback) {
                         if (callback.status == true) {
                             callback.data.forEach(function(val, key) {
@@ -1783,23 +1786,20 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
                                 $scope.dtMasterSource.applyFor.push(element);
                             });
                             for (var i = $scope.formValues.costDetails.length - 1; i >= 0; i--) {
-                            	// $scope.formValues[$scope.formValues.costDetails.i];
                             	$scope.invoiceConvertUom('cost', i, $scope.formValues)
                             }
-                            // $rootScope.$broadcast("setInvoiceApplicableFor", $scope.dtMasterSource.applyFor)
-                        } else {
-                            // toastr.error(callback.message);
                         }
-				        $.each($scope.dtMasterSource.applyFor, function(key,val){
-					        $scope.getUomConversionFactor(val.productId, val.finalQuantityAmount, val.finalQuantityAmountUomId, $tenantSettings.tenantFormats.uom.id, function (response) {
-								val.convertedFinalQuantityAmount = response
-							});
-				        })
+                        if (!$rootScope.reloadPage) {
+                            $.each($scope.dtMasterSource.applyFor, function(key,val){
+                                $scope.getUomConversionFactor(val.productId, val.finalQuantityAmount, val.finalQuantityAmountUomId, $tenantSettings.tenantFormats.uom.id, function (response) {
+                                    val.convertedFinalQuantityAmount = response
+                                });
+                            })
+                        }
+				       
                     });
-                // }
-                if ($scope.dtMasterSource.applyFor) {
-			        // $rootScope.$broadcast("setInvoiceApplicableFor", $scope.dtMasterSource.applyFor)
-                }
+				}
+
             }
 
         // });
@@ -1812,117 +1812,120 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
      }
      $scope.triggerChangeFieldsAppSpecific = function(name, id) {
         dueDate = $scope.formValues.dueDate;
-        $scope.computeInvoiceTotalConversion(vm.conversionRoe, vm.conversionTo)
-        if (name == "DueDate") {
-        	if (vm.initialDueDate) {
-	    		if (vm.initialDueDate.split("T")[0] != $scope.formValues.dueDate) {
-		        	$scope.formValues.manualDueDate = $scope.formValues.dueDate;
-	    		} else {
-	    			$scope.formValues.manualDueDate = null;
-	    		}
-        	} else {
-	        	$scope.formValues.manualDueDate = $scope.formValues.dueDate;
-        	}
-            if (parseFloat(dueDate.split("-")[0]) < 1753) {
-            	return;
-	        }
-            Factory_Master.get_working_due_date(dueDate, function(response) {
-                $scope.formValues.workingDueDate = response.data;
-                if (!$scope.initialHasManualPaymentDate) {
-		        	$scope.formValues.hasManualPaymentDate = false
-	                $scope.formValues.paymentDate = response.data;
-	            	$scope.manualPaymentDateReference = angular.copy($scope.formValues.paymentDate);
+        var array = ["DueDate", "PaymentDate", "costType", "InvoiceRateCurrency", "invoiceSummaryDeductions", "documentNo", "PaymentTerm", "DeliveryDate"];
+        if (array.indexOf(name) != -1) {
+            $scope.computeInvoiceTotalConversion(vm.conversionRoe, vm.conversionTo)
+                if (name == "DueDate") {
+                	if (vm.initialDueDate) {
+        	    		if (vm.initialDueDate.split("T")[0] != $scope.formValues.dueDate) {
+        		        	$scope.formValues.manualDueDate = $scope.formValues.dueDate;
+        	    		} else {
+        	    			$scope.formValues.manualDueDate = null;
+        	    		}
+                	} else {
+        	        	$scope.formValues.manualDueDate = $scope.formValues.dueDate;
+                	}
+                    if (parseFloat(dueDate.split("-")[0]) < 1753) {
+                    	return;
+        	        }
+                    Factory_Master.get_working_due_date(dueDate, function(response) {
+                        $scope.formValues.workingDueDate = response.data;
+                        if (!$scope.initialHasManualPaymentDate) {
+        		        	$scope.formValues.hasManualPaymentDate = false
+        	                $scope.formValues.paymentDate = response.data;
+        	            	$scope.manualPaymentDateReference = angular.copy($scope.formValues.paymentDate);
+                        }
+                    });
                 }
-            });
-        }
-        if (name == "PaymentDate") {
-            if (!$scope.initialHasManualPaymentDate) {
-	        	$scope.formValues.hasManualPaymentDate = false
-	        	if ($scope.manualPaymentDateReference) {
-	            	if ($scope.manualPaymentDateReference.split("T")[0] != $scope.formValues.paymentDate.split("T")[0]) {
-			        	$scope.formValues.hasManualPaymentDate = true
-	            	}
-	        	}
-            }
-        }
-        if (name == "costType") {
-        	if ($scope.formValues.costDetails.length > 0) {
-	            if ($scope.formValues.costDetails[id].costType.name == "Flat") {
-	                $scope.formValues.costDetails[id].invoiceQuantity = 1;
-	            } else {
-	                $scope.formValues.costDetails[id].invoiceQuantity = '';
-	            }
-        	}
-        }
-        if (name == "InvoiceRateCurrency") {
-            $.each($scope.formValues.productDetails, function(key, value) {
-                value.invoiceRateCurrency = $scope.formValues.invoiceRateCurrency;
-            })
-            $.each($scope.formValues.costDetails, function(key, value) {
-                value.invoiceRateCurrency = $scope.formValues.invoiceRateCurrency;
-            })
-            if (window.location.href.indexOf("invoices/claims")) {
-                console.log(window.location.href);
-                $.each($scope.formValues.invoiceClaimDetails, function(key, value) {
-                    exchangeDate = $scope.formValues.createdAt;
-                    if ($scope.formValues.createdAt == '0001-01-01T00:00:00') {
-                        exchangeDate = null;
+                if (name == "PaymentDate") {
+                    if (!$scope.initialHasManualPaymentDate) {
+        	        	$scope.formValues.hasManualPaymentDate = false
+        	        	if ($scope.manualPaymentDateReference) {
+        	            	if ($scope.manualPaymentDateReference.split("T")[0] != $scope.formValues.paymentDate.split("T")[0]) {
+        			        	$scope.formValues.hasManualPaymentDate = true
+        	            	}
+        	        	}
                     }
-                    if (value.invoiceAmountCurrency.id != $scope.formValues.invoiceRateCurrency.id) {
-                        // $scope.convertCurrency(value.baseInvoiceAmountCurrency.id, $scope.formValues.invoiceRateCurrency.id, exchangeDate, value.invoiceAmount, function(response) {
-                        //     if (response != 0) {
-	                       //      value.invoiceAmount = response;
-                        //     }
-                        // });
-                        value.invoiceAmountCurrency = $scope.formValues.invoiceRateCurrency;
+                }
+                if (name == "costType") {
+                	if ($scope.formValues.costDetails.length > 0) {
+        	            if ($scope.formValues.costDetails[id].costType.name == "Flat") {
+        	                $scope.formValues.costDetails[id].invoiceQuantity = 1;
+        	            } else {
+        	                $scope.formValues.costDetails[id].invoiceQuantity = '';
+        	            }
+                	}
+                }
+                if (name == "InvoiceRateCurrency") {
+                    $.each($scope.formValues.productDetails, function(key, value) {
+                        value.invoiceRateCurrency = $scope.formValues.invoiceRateCurrency;
+                    })
+                    $.each($scope.formValues.costDetails, function(key, value) {
+                        value.invoiceRateCurrency = $scope.formValues.invoiceRateCurrency;
+                    })
+                    if (window.location.href.indexOf("invoices/claims")) {
+                        console.log(window.location.href);
+                        $.each($scope.formValues.invoiceClaimDetails, function(key, value) {
+                            exchangeDate = $scope.formValues.createdAt;
+                            if ($scope.formValues.createdAt == '0001-01-01T00:00:00') {
+                                exchangeDate = null;
+                            }
+                            if (value.invoiceAmountCurrency.id != $scope.formValues.invoiceRateCurrency.id) {
+                                // $scope.convertCurrency(value.baseInvoiceAmountCurrency.id, $scope.formValues.invoiceRateCurrency.id, exchangeDate, value.invoiceAmount, function(response) {
+                                //     if (response != 0) {
+        	                       //      value.invoiceAmount = response;
+                                //     }
+                                // });
+                                value.invoiceAmountCurrency = $scope.formValues.invoiceRateCurrency;
+                            }
+                        })
                     }
-                })
+
+                    // this is triggered after formValues are received
+                    $scope.recalcultateAdditionalCost();
+                }
+                if (name == 'invoiceSummaryDeductions') {
+                    $scope.invoiceConvertUom(null, null, $scope.formValues);
+                }
+                if (name == 'documentNo'){
+                    $scope.formValues.documentNo = parseInt($scope.formValues.documentNo);
+                }
+
+                if (name == "PaymentTerm" || name == "DeliveryDate") {
+                	if (!$scope.formValues.id) {
+                		return;
+                	}
+                	payload = {"Payload":{
+        	        		"InvoiceId":$scope.formValues.id,
+        	        		"PaymentTermId":$scope.formValues.counterpartyDetails.paymentTerm.id,
+        	        		"InvoiceDeliveryDate":$scope.formValues.deliveryDate,
+        	        		"ManualDueDate":$scope.formValues.manualDueDate
+                		}
+                	}
+        	        Factory_Master.dueDateWithoutSave(payload, function(callback) {
+        	        	if (callback.status == true) {
+        					// if (!callback.data.manualDueDate) { return }
+        					if (!callback.data.dueDate) { return }
+        					if (!callback.data.paymentDate) { return }
+        					if (!callback.data.workingDueDate) { return }
+        					// $scope.formValues.manualDueDate = callback.data.manualDueDate;	
+        					$scope.formValues.dueDate = callback.data.dueDate;	
+        					if (!$scope.initialHasManualPaymentDate) {
+        						$scope.formValues.paymentDate = callback.data.paymentDate;	
+        						$scope.manualPaymentDateReference = angular.copy($scope.formValues.paymentDate);
+        					}
+        					$scope.formValues.workingDueDate = callback.data.workingDueDate;	
+                            /*
+        					$('.date-picker [name="Workingduedate"]').parent().datetimepicker('setDate', new Date( callback.data.workingDueDate ) )	
+        					$('.date-picker [name="DueDate"]').parent().datetimepicker('setDate', new Date( callback.data.dueDate ) )	
+        					$('.date-picker [name="PaymentDate"]').parent().datetimepicker('setDate', new Date( callback.data.paymentDate ) )	
+                            */
+        	        	}
+        		    	// api/invoice/dueDateWithoutSave
+        	        });
+                	
+                }
             }
-
-            // this is triggered after formValues are received
-            $scope.recalcultateAdditionalCost();
-        }
-        if (name == 'invoiceSummaryDeductions') {
-            $scope.invoiceConvertUom(null, null, $scope.formValues);
-        }
-        if (name == 'documentNo'){
-            $scope.formValues.documentNo = parseInt($scope.formValues.documentNo);
-        }
-
-        if (name == "PaymentTerm" || name == "DeliveryDate") {
-        	if (!$scope.formValues.id) {
-        		return;
-        	}
-        	payload = {"Payload":{
-	        		"InvoiceId":$scope.formValues.id,
-	        		"PaymentTermId":$scope.formValues.counterpartyDetails.paymentTerm.id,
-	        		"InvoiceDeliveryDate":$scope.formValues.deliveryDate,
-	        		"ManualDueDate":$scope.formValues.manualDueDate
-        		}
-        	}
-	        Factory_Master.dueDateWithoutSave(payload, function(callback) {
-	        	if (callback.status == true) {
-					// if (!callback.data.manualDueDate) { return }
-					if (!callback.data.dueDate) { return }
-					if (!callback.data.paymentDate) { return }
-					if (!callback.data.workingDueDate) { return }
-					// $scope.formValues.manualDueDate = callback.data.manualDueDate;	
-					$scope.formValues.dueDate = callback.data.dueDate;	
-					if (!$scope.initialHasManualPaymentDate) {
-						$scope.formValues.paymentDate = callback.data.paymentDate;	
-						$scope.manualPaymentDateReference = angular.copy($scope.formValues.paymentDate);
-					}
-					$scope.formValues.workingDueDate = callback.data.workingDueDate;	
-                    /*
-					$('.date-picker [name="Workingduedate"]').parent().datetimepicker('setDate', new Date( callback.data.workingDueDate ) )	
-					$('.date-picker [name="DueDate"]').parent().datetimepicker('setDate', new Date( callback.data.dueDate ) )	
-					$('.date-picker [name="PaymentDate"]').parent().datetimepicker('setDate', new Date( callback.data.paymentDate ) )	
-                    */
-	        	}
-		    	// api/invoice/dueDateWithoutSave
-	        });
-        	
-        }
 
     }
 
@@ -2440,7 +2443,9 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
   
     $scope.invoiceConvertUom = function(type, rowIndex, formValues, oneTimeRun) {
     	currentRowIndex = rowIndex;
-
+        if ($rootScope.reloadPage){
+                return;
+        }
     	if ($('form[name="CM.editInstance"]').hasClass("ng-pristine") ) {
     		if (!window.compiledinvoiceConvertUom) {
     			window.compiledinvoiceConvertUom = [];
@@ -2455,9 +2460,6 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
     		// return;
     	}
 		calculateGrand(formValues);
-        if (typeof($rootScope.additionalCostsData) == 'undefined') {
-            $rootScope.additionalCostsData = $scope.getAdditionalCostsData();
-        }
         vm.type = type;
         if (vm.type == 'product') {
             product = formValues.productDetails[currentRowIndex];
@@ -2874,8 +2876,8 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
         selectedRows = [];
         $.each(CLC.jqGrid.Ascensys.selectedProductIds, function(k1, v1) {
             $.each(CLC.jqGrid.Ascensys.gridObject.rows, function(k2, v2) {
-                if (v1 == v2.deliveryProductId) {
-                    selectedRows.push(v2);
+                if (v1 == v2.deliveryProductId && CLC.jqGrid.Ascensys.rowsProduct[k1] - 1 == k2) {
+                    selectedRows.push(v2); 
                 }
             });
         });
@@ -3070,7 +3072,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
 		if (!$scope.formValues.invoiceSummary) {
 			return;
 		}
-
+       
     	payloadData = {
 		     "Amount" : $scope.formValues.invoiceSummary.invoiceAmountGrandTotal,
 		     "CurrencyId": $scope.formValues.invoiceRateCurrency.id,

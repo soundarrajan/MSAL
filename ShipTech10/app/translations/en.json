@@ -260,6 +260,7 @@
         "NEW_ORDER": {
             "VESSEL": "Vessel",
             "VESSEL_IMO_NO": "IMO",
+            "EMAIL_COMMENTS": "Email Comments",
             "SERVICE_CODE": "Service Code",
             "OPERATOR_CODE": "Operator Code",
             "BUYER_CODE": "Buyer",

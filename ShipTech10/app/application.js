@@ -132,27 +132,22 @@ angular
                 }
 
                 var query = [
-                    $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Admin/api/admin/generalConfiguration/get", {
+                    $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Admin/api/admin/tenantConfiguration/get", {
                         Payload: false
                     }),
                 ]
-
-                query.push(
-                    $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/filters", {
-                        Payload: false
-                    })
-                )
 
                 function makeQueries(query) {
                     return $q.all(query).then(
                         function(response) {
                             if (response[0].status == 200) {
-                                angular.module("shiptech").value("$tenantSettings", response[0].data.payload);
+                                angular.module("shiptech").value("$tenantSettings", response[0].data.generalConfiguration);
+                                angular.module("shiptech").value("$tenantConfiguration", response[0].data);
                             }
-                            if (query.length === 3) {
-                                if (response[2].status == 200) {
+                            if (query.length === 2) {
+                                if (response[1].status == 200) {
                                     var lists = new Object();
-                                    response[2].data.forEach(function(entry) {
+                                    response[1].data.forEach(function(entry) {
                                         lists[entry.name] = entry.items;
                                     });
                                     angular.module("shiptech").value("$listsCache", lists);
@@ -165,14 +160,6 @@ angular
                                     }
                                     delete lists;
                                 }
-                                if (response[1].status == 200) {
-                                    angular.module("shiptech").value("$filtersData", response[1].data);
-                                }
-                            } else {
-                                if (response[1].status == 200) {
-                                    angular.module("shiptech").value("$filtersData", response[1].data);
-                                }
-
                             }
                             bootstrapApplication();
                         },
@@ -192,12 +179,28 @@ angular
                     );
                 }
 
+                function getAndSetStaticFilters() {
+                    $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/filters", {
+                        Payload: false
+                    }).then(function(response){
+                    	angular.module("shiptech").value("$filtersData", response.data);
+	                    if (window.indexedDB) {
+	                        try {
+	                            db.staticFilters.add({data: response.data, id: 1}).catch(function(err) { console.log(err); });
+	                        } catch (err) {
+	                            // To nothing
+	                        }
+	                    }
+                    })                 	
+                }
+
                 if (window.indexedDB) {
                     try {
                         db = new window.Dexie('Shiptech');
 
                         db.version(1).stores({
                             listsCache: '++id, data',
+                            staticFilters: '++id, data',
                             listsHash: '++id, data'
                         });
 
@@ -218,6 +221,7 @@ angular
                                     Payload: false
                                 })
                             )
+							getAndSetStaticFilters(); 
                             makeQueries(query);
                             return;
                         } else {
@@ -237,10 +241,15 @@ angular
                                             Payload: false
                                         })
                                     )
+									getAndSetStaticFilters()                                   
                                     makeQueries(query);
                                     return;
                                 } else {
-                                    db.transaction("rw", db.listsCache, db.listsHash, function () {
+                                    db.transaction("rw", db.listsCache, db.listsHash, db.staticFilters, function () {
+                                    	db.staticFilters.get(1).then(function(staticFiltersDB) {
+                                    		var staticFilters = staticFiltersDB;
+											angular.module("shiptech").value("$filtersData", staticFilters.data);
+                                    	})
                                         db.listsCache.get(1).then(function(listsCacheDB) {
                                             if (listsCacheDB) {
                                                 listsCache = listsCacheDB.data;
@@ -264,6 +273,10 @@ angular
                                                                     listsToUpdate.push(v.name);
                                                                 }
                                                             });
+                                                            if (listsToUpdate.indexOf("StaticFilters") != -1) {
+                                                            	listsToUpdate.splice(listsToUpdate.indexOf("StaticFilters"));	
+																getAndSetStaticFilters()
+                                                            }
                                                             $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists", {
                                                                 Payload: listsToUpdate
                                                             }).then(function(res) {
@@ -291,6 +304,7 @@ angular
                                                         Payload: false
                                                     })
                                                 )
+                        	                    getAndSetStaticFilters();                                                
                                                 makeQueries(query);
                                             }
                                         }).catch(function(err) {
@@ -299,6 +313,7 @@ angular
                                                     Payload: false
                                                 })
                                             )
+                    	                    getAndSetStaticFilters();                                            
                                             makeQueries(query);
                                         });
                                     });
@@ -311,6 +326,7 @@ angular
                                 Payload: false
                             })
                         )
+	                    getAndSetStaticFilters();                 
                         makeQueries(query);
                     }
                 } else {
@@ -319,6 +335,7 @@ angular
                             Payload: false
                         })
                     )
+                    getAndSetStaticFilters();                    
                     makeQueries(query);
                 }
             }

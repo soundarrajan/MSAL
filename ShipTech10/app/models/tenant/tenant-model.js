@@ -1,6 +1,6 @@
 angular.module('shiptech.models')
-.factory('tenantModel', ['tenantResource', 'tenantSupplierPortalResource', 'tenantGlobalConfigurationResource', 'tenantGlobalConfigurationSupplierPortalResource', 'payloadDataModel','tenantCheckBrowser','tenantScheduleDashboardConfiguration','tenantEmailConfiguration',
-    function (tenantResource, tenantSupplierPortalResource, tenantGlobalConfigurationResource, tenantGlobalConfigurationSupplierPortalResource, payloadDataModel,tenantCheckBrowser,tenantScheduleDashboardConfiguration, tenantEmailConfiguration) {
+.factory('tenantModel', ['$q', 'tenantResource', '$tenantConfiguration', 'tenantSupplierPortalResource', 'tenantGlobalConfigurationResource', 'tenantGlobalConfigurationSupplierPortalResource', 'payloadDataModel','tenantCheckBrowser','tenantScheduleDashboardConfiguration','tenantEmailConfiguration',
+    function ($q, tenantResource, $tenantConfiguration, tenantSupplierPortalResource, tenantGlobalConfigurationResource, tenantGlobalConfigurationSupplierPortalResource, payloadDataModel,tenantCheckBrowser,tenantScheduleDashboardConfiguration, tenantEmailConfiguration) {
 
     var request_data;
 
@@ -18,16 +18,10 @@ angular.module('shiptech.models')
     * @return {object} all lists.
     */
     function get() {
-        if (!tenant) {
-            request_data = payloadDataModel.create();
-
-            return tenantResource.get(request_data).$promise.then(function (data) {
-                tenant = data;
-                return data;
-            });
-        } else {
-            return tenant;
-        }
+		deferred = $q.defer();
+		response = {"payload" : $tenantConfiguration.procurementConfiguration}
+		deferred.resolve(response);
+		return deferred.promise;
     }
 
     /**
@@ -68,49 +62,23 @@ angular.module('shiptech.models')
     * Gets the global tenant configuration.
     */
     function getGlobalConfiguration() {
-        if (!globalConfiguration) {
-            request_data = {
-                Payload: false
-            };
-
-            return tenantGlobalConfigurationResource.get(request_data).$promise.then(function (data) {
-                globalConfiguration = data;
-                return data;
-            });
-        } else {
-            return globalConfiguration;
-        }
+		deferred = $q.defer();
+		response = {"payload" : $tenantConfiguration.generalConfiguration}
+		deferred.resolve(response);
+		return deferred.promise;
     }
     function getEmailConfiguration() {
-        if (!emailConfiguration) {    
-            request_data = {
-                Payload: false
-            };
-
-            return tenantEmailConfiguration.get(request_data).$promise.then(function (data) {
-                emailConfiguration = data;
-                return data;
-            });
-        } else {
-            return emailConfiguration;
-        }
+		deferred = $q.defer();
+		response = {"payload" : $tenantConfiguration.emailConfiguration}
+		deferred.resolve(response);
+		return deferred.promise;
     }
 
     function getScheduleDashboardConfiguration() {
-        if (!scheduleDashboardConfiguration) {
-            request_data = {
-                Payload: false
-            };
-
-            return tenantScheduleDashboardConfiguration.get(request_data).$promise.then(function (data) {
-            	window.scheduleDashboardConfiguration = data;
-                scheduleDashboardConfiguration = data;
-                return data;
-            });
-            
-        } else {
-            return scheduleDashboardConfiguration;
-        }
+		deferred = $q.defer();
+		response = {"payload" : $tenantConfiguration.scheduleDashboardConfiguration}
+		deferred.resolve(response);
+		return deferred.promise;
     }
 
     /**

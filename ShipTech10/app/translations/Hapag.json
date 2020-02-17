@@ -261,6 +261,7 @@
                   "VESSEL": "Vessel",
                   "VESSEL_IMO_NO": "IMO",
                   "SERVICE_CODE": "Service Code",
+                  "EMAIL_COMMENTS": "Email Comments",
                   "OPERATOR_CODE": "Operator Code",
                   "BUYER_CODE": "Buyer",
                   "REQUEST_COMMENTS": "Request Comments",

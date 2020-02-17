@@ -360,8 +360,10 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
         // }
 
         //set all data mappings
+        getOrderListForRequest();
         function loadData(data) {
             ctrl.data = data.payload;
+
 
             $.each(ctrl.data.products, function(k, v) {
                 if ((!v.physicalSupplier || !_.get(v, 'physicalSupplier.id')) && _.get(v, 'status.name') !== 'Cancelled') {

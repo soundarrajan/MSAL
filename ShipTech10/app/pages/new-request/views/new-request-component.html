@@ -152,7 +152,7 @@
                                         <i class="fa fa-search"></i>
                                         <!-- ng-click="$ctrl.setDialogType($ctrl.vesselDetailsFields.Vessel.name)" -->
                                     </span>
-                                    <span class="input-group-addon" data-toggle="modal"  href="#route_schedule" data-html="true" tooltip data-original-title="View Vessel Voyage" ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-disabled="!$ctrl.request.vesselDetails.vessel || $ctrl.disableAllFields">
+                                    <span class="input-group-addon" data-toggle="modal" ng-click="$ctrl.getVesselSchedules()"  href="#route_schedule" data-html="true" tooltip data-original-title="View Vessel Voyage" ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-disabled="!$ctrl.request.vesselDetails.vessel || $ctrl.disableAllFields">
                                         <i class="fa fa-anchor"></i>
                                     </span>
                                 </div>
@@ -531,7 +531,8 @@
                     <form class="form-inline st-new-request-form ports" name="forms.portsForm" novalidate autocomplete="off">
                         <div class="form-group-sm00 row">
                             <div class="input-group col-md-3">
-                                <label class="control-label col-md-5" ng-init='CM.getOptions({"Name": "BunkerablePort","masterSource": "masters_locations"})'>
+                            	<span class="hidden" ng-if="!$ctrl.isNewRequest" ng-init='CM.getOptions({"Name": "BunkerablePort","masterSource": "masters_locations"})'></span>
+                                <label class="control-label col-md-5" > 
                                     Select Bunkerable Port
                                 </label>
                                 <div class="form-group-sm00">
@@ -732,7 +733,7 @@
 	                                        </div>
 	                                       <!-- END DELIVERYWINDOWDISPLAY -->
 	                                        <!-- <span ng-init="$ctrl.productInfoFields.DestinationPort.visible = true"></span> -->
-	                                        <div ng-if="$ctrl.productInfoFields.DestinationPort.visible" class="col-md-4" ng-init='CM.getOptions({"Name": "BunkerablePort","masterSource": "masters_locations"}); $ctrl.getLowestEtaForDestinationInLocation(locationIdx);'>
+	                                        <div ng-if="$ctrl.productInfoFields.DestinationPort.visible" class="col-md-4" ng-init=' $ctrl.getLowestEtaForDestinationInLocation(locationIdx);'>
 	                                            <div class="row">
 	                                                <label class="control-label col-md-4">
 	                                                    {{ $ctrl.productInfoFields.DestinationPort.caption | translate }}
@@ -788,7 +789,7 @@
 												</div>
 
 	                                        </div>
-	                                        <div ng-if="$ctrl.productInfoFields.Buyer.visible" class="col-md-4" ng-init='CM.getOptions({"Name": "Buyer","masterSource": "procurement_buyerslist", filters: $ctrl.request.vesselDetails.vessel})'>
+	                                        <div ng-if="$ctrl.productInfoFields.Buyer.visible" class="col-md-4">
 	                                            <div class="row">
 	                                                <label class="control-label col-md-4">
 	                                                    {{ $ctrl.productInfoFields.Buyer.caption | translate }}
@@ -1134,7 +1135,7 @@
 <!-- <pre>{{$ctrl.requiredQty }}</pre> -->
 <lookup-dialog class="modal fade in" id="lookup_dialog" aria-hidden="true" data-width="80%" lookup-type="$ctrl.lookupType" vessel-id="$ctrl.request.vesselId" args="$ctrl.voyageId" on-vessel-select="$ctrl.selectVessel(vessel)" on-company-select="$ctrl.selectCompany(company)" on-location-select="$ctrl.selectPort(location, extraDetails)" on-product-select="$ctrl.selectProduct(product)" on-service-select="$ctrl.selectService(service)" on-buyer-select="$ctrl.selectBuyer(buyer)"></lookup-dialog>
 <sellers-dialog class="modal fade in sellers-dialog" id="agents" aria-hidden="true" data-width="90%" seller-types="$ctrl.agentCounterpartyTypeId" on-seller-select="$ctrl.selectAgent(sellerId)"></sellers-dialog>
-<vessel-schedule class="modal fade in" id="route_schedule" aria-hidden="true" data-width="66%" vessel-id="$ctrl.request.vesselId" on-vessel-schedules-select="$ctrl.selectVesselSchedules(locations)"></vessel-schedule>
+<vessel-schedule class="modal fade in requestScreen" id="route_schedule" aria-hidden="true" data-width="66%" vessel-id="$ctrl.request.vesselId" on-vessel-schedules-select="$ctrl.selectVesselSchedules(locations)"></vessel-schedule>
 <amend-dialog class="modal fade in" id="amend" aria-hidden="true" on-amend="$ctrl.amendRFQ()" on-reload="$ctrl.reloadRequest()"></amend-dialog>
 <spec-group-edit class="modal fade in" aria-hidden="true" data-width="66%">
     <span ng-controller="Controller_Master as CM">

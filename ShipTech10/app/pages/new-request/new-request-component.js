@@ -80,31 +80,34 @@ angular.module("shiptech.pages").controller("NewRequestController", [
         } else {
             $state.params.title = "New Request";
         }
-        tenantService.tenantSettings.then(function(settings) {
-            ctrl.numberPrecision = settings.payload.defaultValues;
-        });
-        tenantService.procurementSettings.then(function(settings) {
-            ctrl.requestTenantSettings = settings.payload.request;
-        });
+
+        if (!ctrl.numberPrecision) {
+        	ctrl.numberPrecision = {};
+			ctrl.numberPrecision.quantityPrecision = 3;
+			ctrl.numberPrecision.pricePrecision = 3;
+			ctrl.numberPrecision.amountPrecision = 3;
+        }
+
+		$rootScope.$on("tenantConfiguration", function(event, value){
+			ctrl.numberPrecision = value.general.defaultValues;
+            ctrl.requestTenantSettings = value.procurement.request;
+        	ctrl.emailSettings = value.email;
+		});
+
+        // tenantService.tenantSettings.then(function(settings) {
+        //     ctrl.numberPrecision = settings.payload.defaultValues;
+        // });
+        // tenantService.procurementSettings.then(function(settings) {
+        //     ctrl.requestTenantSettings = settings.payload.request;
+        // });
+        // tenantService.emailSettings.then(function(settings){
+        // 	ctrl.emailSettings = settings.payload;
+        // })
         ctrl.previewEmailDisabled = false;
 
         screenLoader.showLoader();
 
         ctrl.disableAllFields = false;
-        tenantService.emailSettings.then(function(settings){
-        	ctrl.emailSettings = settings.payload;
-        	// $.each(settings.payload, function(k,v){
-        	// 	if (v.process == 'Standard' && v.transactionType.name == "PreRequest" && v.emailType.name == "Manual") {
-        	// 		ctrl.sendQuestionnaireEmailType = v.emailType.name;
-        	// 		ctrl.sendQuestionnaireEmailTemplate = v.template;
-        	// 	}
-        	// })
-        })
-        emailModel.getTemplates(ctrl.emailTransactionTypeId).then(function(data) {
-            if (data.payload.length == 0) {
-                ctrl.previewEmailDisabled = true;
-            }
-        });
 
         Factory_Master.get_master_entity(1, "configuration", "admin", function(callback2) {
             if (callback2) {
@@ -359,7 +362,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                             ctrl.disableAllFields = false;
                             if(typeof ctrl.request.requestCompleted != 'undefined'){
                                 if(ctrl.request.requestCompleted != null){
-                                    ctrl.disableAllFields = ctrl.request.requestCompleted; // disable all fields if request is completed
+                                    ctrl.disableAllFields = ctrl.request.requestCompleted; // disable all fields if request is completed 
                                 }
                             }
 
@@ -397,26 +400,38 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                                 	ctrl.request.locations[j].products[i].uniqueIdUI = Math.random().toString(36).substring(7);
                                     if (ctrl.request.locations[j].products[i].product) {
                                     	// ctrl.request.locations[j].products[i].product.name = ctrl.request.locations[j].products[i].requestIndex + ' - ' + ctrl.request.locations[j].products[i].product.name;
-                                        listsModel.getProductTypeByProduct(ctrl.request.locations[j].products[i].product.id, j, i).then(function(server_data) {
-                                            ctrl.request.locations[server_data.id].products[server_data.id2].productType = server_data.data.payload;
-                                        	$scope.productTypesLoadedPerLocation.loadedProducts += 1;
-                                        });
+                                    	if (ctrl.request.locations[j].products[i].productTypeId) {
+                                    			ctrl.request.locations[j].products[i].productType = ctrl.getProductTypeObjById(ctrl.request.locations[j].products[i].productTypeId);
+	                                        	$scope.productTypesLoadedPerLocation.loadedProducts += 1;
+                                    	} else {
+	                                        listsModel.getProductTypeByProduct(ctrl.request.locations[j].products[i].product.id, j, i).then(function(server_data) {
+	                                            ctrl.request.locations[server_data.id].products[server_data.id2].productType = server_data.data.payload;
+	                                        	$scope.productTypesLoadedPerLocation.loadedProducts += 1;
+	                                        });
+                                    	}
                                     }
                                 }
 					            _.each(ctrl.request.locations[j].products, function(value, key) {
 					                value.product.name = String(key + 1) + ' - ' + value.product.name;
 					            });                             
                             }
-                            newRequestModel.getDefaultBuyer(ctrl.request.vesselId).then(function(buyer) {
-                                ctrl.buyer = buyer.payload;
-                            });
+                            // newRequestModel.getDefaultBuyer(ctrl.request.vesselId).then(function(buyer) {
+                            //     ctrl.buyer = buyer.payload;
+                            // });
                             addDefaultProducts();
                             ctrl.calculateScreenActions();
                             if (ctrl.request.vesselDetails.vessel.id) ctrl.selectVessel(ctrl.request.vesselDetails.vessel.id, true);
                             ctrl.isNewRequest = false;
-                            if (ctrl.request.requestStatus.id == ctrl.STATUS.STEMMED.id) ctrl.isReadonlyForm = true;
-                            if (ctrl.request.requestStatus.id == ctrl.STATUS.PARTIALLY_STEMMED.id) ctrl.canComplete = true;
+
+                            // if (ctrl.request.requestStatus.id == ctrl.STATUS.STEMMED.id) ctrl.isReadonlyForm = true;
+                            // if (ctrl.request.requestStatus.id == ctrl.STATUS.PARTIALLY_STEMMED.id) ctrl.canComplete = true;
+
                             ctrl.getCurrentProductsCurrentIds();
+					        emailModel.getTemplates(ctrl.emailTransactionTypeId).then(function(data) {
+					            if (data.payload.length == 0) {
+					                ctrl.previewEmailDisabled = true;
+					            }
+					        });                            
                            
                         });
                     } else {
@@ -424,6 +439,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                             ctrl.request = newRequestData.payload;
                             ctrl.request.locations.length = 0;
                             addDefaultProducts();
+                            ctrl.previewEmailDisabled = true;
                             ctrl.calculateScreenActions();
                             ctrl.isNewRequest = true;
                             $timeout(function() {
@@ -481,23 +497,27 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                         }
                         for (var i = 0; i < ctrl.request.locations[j].products.length; i++) {
                             ctrl.request.locations[j].products[i].name = String(i + 1) + ' - ' + ctrl.request.locations[j].products[i].name;
-                            listsModel.getSpecGroupByProductAndVessel(ctrl.request.locations[j].products[i].product.id, ctrl.request.vesselDetails.vessel.id, j, i).then(function(server_data) {
-                                ctrl.request.locations[server_data.id].products[server_data.id2].specGroups = server_data.data.payload;
-                                var isInList = false;
-                                $.each(ctrl.request.locations[server_data.id].products[server_data.id2].specGroups, function(k,v){
-                                    $.each(ctrl.request.locations[server_data.id].products[server_data.id2].specGroups, function(k,v){
-                                        if (v.id == ctrl.request.locations[server_data.id].products[server_data.id2].specGroup.id) {
-                                            isInList = true;
-                                        }
-                                        if (v.isDefault) {
-                                        	ctrl.request.locations[server_data.id].products[server_data.id2].specGroup = v;
-                                        }
-                                    });  
-                                });
-                                if (!isInList) {
-                                    ctrl.request.locations[server_data.id].products[server_data.id2].specGroup = null;
-                                }                                               
-                            });
+                            if (ctrl.request.locations[j].products[i] > 0) {
+
+                            } else {
+	                            listsModel.getSpecGroupByProductAndVessel(ctrl.request.locations[j].products[i].product.id, ctrl.request.vesselDetails.vessel.id, j, i).then(function(server_data) {
+	                                ctrl.request.locations[server_data.id].products[server_data.id2].specGroups = server_data.data.payload;
+	                                var isInList = false;
+	                                $.each(ctrl.request.locations[server_data.id].products[server_data.id2].specGroups, function(k,v){
+	                                    $.each(ctrl.request.locations[server_data.id].products[server_data.id2].specGroups, function(k,v){
+	                                        if (v.id == ctrl.request.locations[server_data.id].products[server_data.id2].specGroup.id) {
+	                                            isInList = true;
+	                                        }
+	                                        if (v.isDefault) {
+	                                        	ctrl.request.locations[server_data.id].products[server_data.id2].specGroup = v;
+	                                        }
+	                                    });  
+	                                });
+	                                if (!isInList) {
+	                                    ctrl.request.locations[server_data.id].products[server_data.id2].specGroup = null;
+	                                }                                               
+	                            });
+                            }
                         }
 					}
 	        	}
@@ -510,13 +530,15 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             $.each(ctrl.request.locations, function(lk, lv) {
                 $.each(lv.products, function(pk, pv) {
                     if (addedProductRequestIds.indexOf(pv.id) == -1) {
-                        if (pv.contract.contract) {
-                            obj = {
-                                contractId: pv.contract.contract.id,
-                                requestProductId: pv.id
-                            };
-                            addedProductRequestIds.push(pv.id);
-                            ctrl.productsContractIds.push(obj);
+                        if (pv.contract) {
+	                        if (pv.contract.contract) {
+	                            obj = {
+	                                contractId: pv.contract.contract.id,
+	                                requestProductId: pv.id
+	                            };
+	                            addedProductRequestIds.push(pv.id);
+	                            ctrl.productsContractIds.push(obj);
+	                        }
                         }
                     }
                 });
@@ -934,8 +956,10 @@ angular.module("shiptech.pages").controller("NewRequestController", [
 						if (response.payload) {
 							$.each(response.payload, function(k,v){
 								if (v.productTypeDto.id == newProduct.productType.id) {
-									newProduct.minQuantity = v.supplyQuantity
-									newProduct.maxQuantity = v.supplyQuantity
+									if (v.supplyQuantity != 0) {
+										newProduct.minQuantity = v.supplyQuantity
+										newProduct.maxQuantity = v.supplyQuantity
+									}
 									newProduct.uom = v.supplyUom
 								}
 							})
@@ -1284,7 +1308,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             var location, productList;
             var agent = null;
             var deferred = $q.defer();
-            lookupModel.get(LOOKUP_TYPE.LOCATIONS, locationId).then(
+            lookupModel.getForRequest(LOOKUP_TYPE.LOCATIONS, locationId).then(
                 function(server_data) {
                     location = server_data.payload;
                     var agent = {};
@@ -1385,7 +1409,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                         }
                     } else {
                         if (ctrl.request.vesselId) {
-                            lookupModel.get(LOOKUP_TYPE.VESSEL, ctrl.request.vesselId).then(function(server_data) {
+                            lookupModel.getForRequest(LOOKUP_TYPE.VESSEL, ctrl.request.vesselId).then(function(server_data) {
                                 ctrl.selectedVessel = server_data.payload;
                                 if (ctrl.selectedVessel.defaultFuelOilProduct !== null) {
                                     ctrl.addProductAndSpecGroupToList(ctrl.selectedVessel.defaultFuelOilProduct, ctrl.selectedVessel.fuelOilSpecGroup, ctrl.selectedVessel.defaultFuelOilProductTypeId, productList, extraInfo);
@@ -1581,7 +1605,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             var vessel;
             if (vesselId == null) return;
 
-            lookupModel.get(LOOKUP_TYPE.VESSEL, vesselId).then(function(server_data) {
+            lookupModel.getForRequest(LOOKUP_TYPE.VESSEL, vesselId).then(function(server_data) {
                 vessel = server_data.payload;
                 //keep vesselDTO for later use
                 ctrl.selectedVessel = vessel;
@@ -1611,7 +1635,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                 	if (vessel.operatingCompany) {
                     	companyToDefault = vessel.operatingCompany;
                 	} else {
-                		if (vessel.voyages) {
+                		if (vessel.voyages.length > 0) {
                 			if (vessel.voyages[0].voyageDetails) {
                 				if (vessel.voyages[0].voyageDetails[0].company) {
 		                        	// companyToDefault = vessel.voyages[0].voyageDetails[0].company;
@@ -1697,7 +1721,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
         };
         ctrl.selectServiceInLocation = function(itemId, locationIndex) {
             var service;
-            lookupModel.get(LOOKUP_TYPE.SERVICES, itemId).then(function(server_data) {
+            lookupModel.getForRequest(LOOKUP_TYPE.SERVICES, itemId).then(function(server_data) {
                 service = server_data.payload;
                 if (!ctrl.request.locations[locationIndex].service) {
                     ctrl.request.locations[locationIndex].service = {};
@@ -2183,7 +2207,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             if (!serviceId) {
                 return;
             }
-            lookupModel.get(LOOKUP_TYPE.SERVICES, serviceId).then(function(server_data) {
+            lookupModel.getForRequest(LOOKUP_TYPE.SERVICES, serviceId).then(function(server_data) {
                 service = server_data.payload;
                 console.log(service);
                 if (!ctrl.request.vesselDetails.service) {
@@ -2487,8 +2511,10 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             }
             new_locations = [];
             for (var i = 0; i < new_request.locations.length; i++) {
-            	if (new_request.locations[i].portStatus.name !== 'Cancelled') {
-        			new_locations.push(new_request.locations[i]);
+            	if (new_request.locations[i].portStatus) {
+	            	if (new_request.locations[i].portStatus.name !== 'Cancelled') {
+	        			new_locations.push(new_request.locations[i]);
+	            	}
             	}
             }
             new_request.locations = new_locations;
@@ -2750,6 +2776,9 @@ angular.module("shiptech.pages").controller("NewRequestController", [
         };
 
         $scope.updateDestinations = function(val, index, location) {
+        	if (val.length < 2) {
+        		return;
+        	}
             var IsDestinationPort = false;
             var voyageIdToSend = angular.copy($stateParams.voyageId);
             if (index == 'DestinationPort') {
@@ -3130,7 +3159,9 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                 function() {}
             );
         };
-        ctrl.getRequestStatusesOrdered();
+        if (ctrl.requestId) {
+	        ctrl.getRequestStatusesOrdered();
+        }
 
         ctrl.savePageSize = function(size) {
             ctrl.tableLength.layout = size;
@@ -3247,24 +3278,24 @@ angular.module("shiptech.pages").controller("NewRequestController", [
 
 		ctrl.selectDestinationPort = function(data,locationIdx) {
 			var nextAvailableDestinationIndex = "";
-			if (!ctrl.request.locations[locationIdx].destination4) {nextAvailableDestinationIndex = 4}
-			if (!ctrl.request.locations[locationIdx].destination3) {nextAvailableDestinationIndex = 3}
-			if (!ctrl.request.locations[locationIdx].destination2) {nextAvailableDestinationIndex = 2}
-			if (!ctrl.request.locations[locationIdx].destination1) {nextAvailableDestinationIndex = 1}
+            if (!ctrl.request.locations[locationIdx].destination4) {nextAvailableDestinationIndex = 4}
+            if (!ctrl.request.locations[locationIdx].destination3) {nextAvailableDestinationIndex = 3}
+            if (!ctrl.request.locations[locationIdx].destination2) {nextAvailableDestinationIndex = 2}
+            if (!ctrl.request.locations[locationIdx].destination1) {nextAvailableDestinationIndex = 1}
             if (!ctrl.request.locations[locationIdx].destination) {nextAvailableDestinationIndex = ""}
-	        ctrl.request.locations[locationIdx].destinationInput = null;
+            ctrl.request.locations[locationIdx].destinationInput = null;
 
-			if (
-				ctrl.request.locations[locationIdx].destination && 
-				ctrl.request.locations[locationIdx].destination1 && 
-				ctrl.request.locations[locationIdx].destination2 && 
-				ctrl.request.locations[locationIdx].destination3 && 
-				ctrl.request.locations[locationIdx].destination4 
-			) {
-				toastr.warning("You can select up to 5 Destination Ports");
-				ctrl.getLowestEtaForDestinationInLocation(locationIdx)
-				return;
-			}	
+            if (
+                ctrl.request.locations[locationIdx].destination && 
+                ctrl.request.locations[locationIdx].destination1 && 
+                ctrl.request.locations[locationIdx].destination2 && 
+                ctrl.request.locations[locationIdx].destination3 && 
+                ctrl.request.locations[locationIdx].destination4 
+            ) {
+                toastr.warning("You can select up to 5 Destination Ports");
+                ctrl.getLowestEtaForDestinationInLocation(locationIdx)
+                return;
+            }   
 
 			allDestinations = [
 				ctrl.request.locations[locationIdx].destination ? ctrl.request.locations[locationIdx].destination : undefined,
@@ -3297,7 +3328,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             ctrl.request.locations[locationIdx]["destination" + nextAvailableDestinationIndex + "VesselVoyageDetailId"] = data.vesselVoyageDetailId;
             ctrl.request.locations[locationIdx]["destination" + nextAvailableDestinationIndex + "Eta"] = data.eta;
 
-			ctrl.getLowestEtaForDestinationInLocation(locationIdx)											
+            ctrl.getLowestEtaForDestinationInLocation(locationIdx)  									
 
 		}
 
@@ -3409,6 +3440,14 @@ angular.module("shiptech.pages").controller("NewRequestController", [
         	console.log(event);
         }
 
+
+        ctrl.getVesselSchedules = function(){
+        	if (ctrl.request.vesselDetails.vessel) {
+	        	if (ctrl.request.vesselDetails.vessel.id) {
+					$scope.$broadcast("getVesselSchedules", ctrl.request.vesselDetails.vessel.id);        	
+	        	}
+        	}
+        }
 
       
 

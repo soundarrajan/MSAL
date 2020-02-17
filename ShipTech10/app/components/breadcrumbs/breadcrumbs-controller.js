@@ -1,9 +1,10 @@
 angular.module('shiptech').controller('BreadcrumbsController', ['$rootScope', '$timeout', '$scope', '$state', '$filter', 'STATE', 'CUSTOM_EVENTS', 'VIEW_TYPES',
-    'scheduleDashboardCalendarModel', 'statusColors', '$listsCache',
-    function($rootScope, $timeout, $scope, $state, $filter, STATE, CUSTOM_EVENTS, VIEW_TYPES, scheduleDashboardCalendarModel, statusColors, $listsCache) {
+    'scheduleDashboardCalendarModel', 'statusColors', '$listsCache', '$tenantConfiguration',
+    function($rootScope, $timeout, $scope, $state, $filter, STATE, CUSTOM_EVENTS, VIEW_TYPES, scheduleDashboardCalendarModel, statusColors, $listsCache, $tenantConfiguration) {
 
         $scope.state = $state;
         $scope.STATE = STATE;
+		window.scheduleDashboardConfiguration = {payload: $tenantConfiguration.scheduleDashboardConfiguration};
 
         $scope.setStateParamsPath = function(toParams) {
             var pathMap = {

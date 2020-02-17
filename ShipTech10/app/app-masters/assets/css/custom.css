@@ -1033,9 +1033,6 @@ div#tabs_navigation {
     height: 300px;
 }
 
-#tab_8 > div.col-md-12.portlet.light {
-    height: 470px;
-}
 
 #grid_voyages > div.ui-grid-contents-wrapper > div.ui-grid-render-container > div > div > div > div > div.ui-grid-header-cell-wrapper > div.ui-grid-header-cell-row > div.ui-grid-header-cell > div > div.ui-grid-cell-contents {
     word-wrap: break-word;

@@ -12,14 +12,24 @@ angular.module('shiptech').controller('VesselScheduleController', ['$scope', '$s
             });
         };
         ctrl.$onChanges = function(changes) {
-            if (changes.vesselId.isFirstChange()) {
+            if (changes.vesselId.isFirstChange() || changes.vesselId.currentValue == 0) {
                 return false;
             }
+
+        };
+
+	    $scope.$on('getVesselSchedules', function(evt, value) {
+        // console.log(value);
+        // $scope.accessSelection = value;
+ 	       if (value == 0) {
+                return false;
+            }
+
             lookupModel.getList(LOOKUP_TYPE.VESSEL_SCHEDULE, null, null, {
                 ColumnName: 'Id',
                 OperationType: 0,
                 ValueType: 5,
-                Value: changes.vesselId.currentValue
+                Value: value
             }).then(function(data) {
                 ctrl.data = data.payload;
                 $.each(ctrl.data, function(k, v) {
@@ -37,7 +47,7 @@ angular.module('shiptech').controller('VesselScheduleController', ['$scope', '$s
                     });
                 });
             });
-        };
+        });
         $scope.formatDateToMomentFormat = function( dateFormat ){
             dbFormat = dateFormat;
             hasDayOfWeek = false;

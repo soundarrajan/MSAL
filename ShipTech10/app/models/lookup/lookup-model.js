@@ -131,6 +131,18 @@ angular.module('shiptech.models').factory('lookupModel', ['lookupResource', 'loo
                 return data;
             });
         }
+
+        function getForRequest(type, id) {
+            var request_data = payloadDataModel.create(id);
+            return lookupResource.getForRequest({
+                type: type
+            }, request_data).
+            $promise.
+            then(function(data) {
+                return data;
+            });
+        }
+
         /**
          * Get data via the associated resource.
          * @param {*} requestData - Payload request data, request-specific.
@@ -455,6 +467,7 @@ angular.module('shiptech.models').factory('lookupModel', ['lookupResource', 'loo
         return {
             get: get,
             getList: getList,
+            getForRequest: getForRequest,
             substrMatcher: substrMatcher,
             getSellerAutocompleteList: getSellerAutocompleteList,
             getSellerList: getSellerList,

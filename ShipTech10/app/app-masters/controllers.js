@@ -126,6 +126,7 @@ APP_MASTERS.controller("Controller_Master", [
         $scope.host = $location.$$host;
         $scope.changedFields = 0;
         $scope.submitedAction = false;
+        $scope.reloadPage = false;
         $scope.submitedAcc = function(act) {
             $timeout(function() {
                 if (act != "save_master_changes()") {
@@ -150,7 +151,6 @@ APP_MASTERS.controller("Controller_Master", [
                         // console.log("from Master done");
                         vm.adminConfiguration = callback2;
                         $rootScope.adminConfiguration = callback2;
-                        $scope.getAdminConfigurationGH(callback2);
                     }
                 });
             }
@@ -7260,31 +7260,50 @@ APP_MASTERS.controller("Controller_Master", [
         	}
         	return parseFloat(numberToReturn);
         }
+        $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams){
+            if (toParams.screen_id == "invoice") {
+                if (toParams.entity_id != "") {
+                    $rootScope.reloadPage = true;
+                } else {
+                    $rootScope.reloadPage = false;
+                    vm.getAdditionalCostsComponentTypes();
 
+                }
+                window.initialUomConversionDone = {
+                        "product" : 0,
+                        "cost" : 0
+                };
+            }
 
+        });
+        
+        $scope.invoiceKeyPress = function(type) {
+            $rootScope.reloadPage = false;
+        }
 		$scope.invoiceConvertUom = function(type, rowIndex, formValues, oneTimeRun) {
+            if ($rootScope.reloadPage){
+                return;
+            }
 	    	currentRowIndex = rowIndex;
-
-	    	if ($('form[name="CM.editInstance"]').hasClass("ng-pristine") ) {
-	    		if (!window.compiledinvoiceConvertUom) {
-	    			window.compiledinvoiceConvertUom = [];
-	    		}
-	    		if (!(window.compiledinvoiceConvertUom[type + "-" + currentRowIndex] < 2)) {
-	    			window.compiledinvoiceConvertUom[type + "-" + currentRowIndex] += 1;
-					// myScope.$apply();
-	    		} else {
-	    			return;
-	    		}
-	    		// $scope.$apply();	
-	    		// return;
+	    	if (!window.initialUomConversionDone) {
+	    		window.initialUomConversionDone = {
+		    		"product" : 0,
+		    		"cost" : 0
+	    		};
 	    	}
-
-	        if (typeof($rootScope.additionalCostsData) == 'undefined') {
-	            $rootScope.additionalCostsData = $scope.getAdditionalCostsData();
-	        }
+            if (window.initialUomConversionDone.product != 0) {
+                if (formValues.productDetails.length == window.initialUomConversionDone.product && $('form[name="CM.editInstance"]').hasClass("ng-pristine")) {
+                    return;
+                }
+            } else  if (window.initialUomConversionDone.cost != 0) {
+                if (formValues.costDetails.length == window.initialUomConversionDone.cost && $('form[name="CM.editInstance"]').hasClass("ng-pristine")) {
+                    return;
+                }
+            }
 	        calculateGrand(formValues);
 	        vm.type = type;
 	        if (vm.type == 'product') {
+                window.initialUomConversionDone.product++
 	            product = formValues.productDetails[currentRowIndex];
 	            if (typeof(product.product) != 'undefined' && typeof(product.invoiceQuantityUom) != 'undefined' && typeof(product.invoiceRateUom) !== 'undefined') {
 	                if (product.invoiceQuantityUom == null || product.invoiceRateUom == null /*|| typeof(product.invoiceAmount) == 'undefined'*/) {
@@ -7311,8 +7330,7 @@ APP_MASTERS.controller("Controller_Master", [
 	            // recalculatePercentAdditionalCosts(formValues);
 	        }
 	        if (vm.type == 'cost') {
-
-	         
+                window.initialUomConversionDone.cost++
 	            vm.old_cost = formValues.costDetails[currentRowIndex];
 	            if (formValues.costDetails[currentRowIndex].product) {
 	            	if (formValues.costDetails[currentRowIndex].product.id == -1) {
@@ -7437,6 +7455,7 @@ APP_MASTERS.controller("Controller_Master", [
 	        }
 
 	        function calculateProductRecon() {
+
 				if (!product.invoiceRateCurrency || !product.estimatedRateCurrency) {
 	        		return false;
 				}

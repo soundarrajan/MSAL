@@ -283,6 +283,21 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
 		                    v.reconStatus = null;
 		                    v.amountInInvoice = null;
 		                })
+		                $scope.formValues.counterpartyDetails.paymentTerm = callback2.counterpartyDetails.orderPaymentTerm;
+						$scope.formValues.deliveryDate = callback2.orderDeliveryDate;
+						$scope.formValues.orderDetails.carrierCompany = callback2.orderDetails.orderCarrierCompany;
+						$scope.formValues.orderDetails.paymentCompany = callback2.orderDetails.orderPaymentCompany;
+
+						$.each($scope.formValues.productDetails, function(ik,iv){
+						 	$scope.formValues.productDetails[ik].pricingDate = callback2.productDetails[ik].orderProductPricingDate;		
+						})
+						for (var i = 0; i < callback2.productDetails.length; i++) {
+							if (callback2.productDetails[i].currency) {
+				                $scope.formValues.invoiceRateCurrency = callback2.productDetails[i].currency;
+				                $scope.triggerChangeFields("InvoiceRateCurrency");
+				                break;
+							}
+						}
 		                $.each($scope.formValues.costDetails, function(k, v) {
 		                    v.id = 0;
 		                })
@@ -323,51 +338,6 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
 		                        $scope.formValues.paymentDate = callback3.paymentDate;
 		                        $scope.formValues.workingDueDate = callback3.workingDueDate;
 		                    }
-		                    orderModel.get($scope.formValues.orderDetails.order.id).then(function (callback4) {
-								$scope.formValues.counterpartyDetails.paymentTerm = callback4.payload.paymentTerm;
-
-							    $scope.formValues.orderDetails.orderDate = callback4.payload.orderDate;
-							    $scope.formValues.deliveryDate = callback4.payload.deliveryDate;
-							    $scope.formValues.orderDetails.carrierCompany = callback4.payload.carrierCompany;
-							    $scope.formValues.orderDetails.paymentCompany = callback4.payload.paymentCompany;
-							    if (callback4.payload.vessel) {
-								    $scope.formValues.orderDetails.vesselName = callback4.payload.vessel.name;
-							    } else {
-								    $scope.formValues.orderDetails.vesselName = null;
-							    }
-							    $scope.formValues.orderDetails.vesselCode = callback4.payload.vesselCode;
-
-							    // $scope.formValues.orderDetails.portName = callback4.payload;
-
-							    $scope.formValues.orderDetails.eta = callback4.payload.eta;
-
-							    if (callback4.payload.buyer) {
-								    $scope.formValues.orderDetails.buyerName = callback4.payload.buyer.name;
-							    } else {
-								    $scope.formValues.orderDetails.buyerName = null;
-							    }
-							    if (callback4.payload.trader) {
-								    $scope.formValues.orderDetails.traderName = callback4.payload.trader.name;
-							    } else {
-								    $scope.formValues.orderDetails.traderName = null;
-							    }
-							    $.each($scope.formValues.productDetails, function(ik,iv){
-								    $.each(callback4.payload.products, function(ok,ov){
-										if (iv.orderProductId == ov.id) {
-											$scope.formValues.productDetails[ik].pricingDate = ov.pricingDate;
-										}
-								    })
-							    })
-							    //$scope.formValues.orderDetails.frontOfficeComments = callback4.payload;
-
-								for (var i = 0; i < callback4.payload.products.length; i++) {
-									if (callback4.payload.products[i].currency) {
-						                $scope.formValues.invoiceRateCurrency = callback4.payload.products[i].currency;
-						                $scope.triggerChangeFields("InvoiceRateCurrency");
-						                break;
-									}
-								}
-		                    });
 		                });
 		            }
 		        });
@@ -448,7 +418,7 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
 
 	            var data = angular.copy(JSON.parse(localStorage.getItem("invoice_createInvoiceFromEdit")));
 				$scope.formValues = data;
-                
+                $rootScope.additionalCostsComponentTypes = $scope.formValues.costDetails;
 			    $.each($scope.formValues.productDetails, function(ik,iv){
 					$scope.formValues.productDetails[ik].pricingDate = null;
 			    })                
@@ -468,57 +438,36 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
                         $scope.formValues.paymentDate = callback3.paymentDate;
                         $scope.formValues.workingDueDate = callback3.workingDueDate;
                     }
-                    orderModel.get($scope.formValues.orderDetails.order.id).then(function (callback4) {
-						$scope.formValues.counterpartyDetails.paymentTerm = callback4.payload.paymentTerm;
-
-					    $scope.formValues.orderDetails.orderDate = callback4.payload.orderDate;
-					    $scope.formValues.deliveryDate = callback4.payload.deliveryDate;
-					    $scope.formValues.orderDetails.carrierCompany = callback4.payload.carrierCompany;
-					    $scope.formValues.orderDetails.paymentCompany = callback4.payload.paymentCompany;
-					    if (callback4.payload.vessel) {
-						    $scope.formValues.orderDetails.vesselName = callback4.payload.vessel.name;
-					    } else {
-						    $scope.formValues.orderDetails.vesselName = null;
-					    }
-					    $scope.formValues.orderDetails.vesselCode = callback4.payload.vesselCode;
-
-					    // $scope.formValues.orderDetails.portName = callback4.payload;
-
-					    $scope.formValues.orderDetails.eta = callback4.payload.eta;
-
-					    if (callback4.payload.buyer) {
-						    $scope.formValues.orderDetails.buyerName = callback4.payload.buyer.name;
-					    } else {
-						    $scope.formValues.orderDetails.buyerName = null;
-					    }
-					    if (callback4.payload.trader) {
-						    $scope.formValues.orderDetails.traderName = callback4.payload.trader.name;
-					    } else {
-						    $scope.formValues.orderDetails.traderName = null;
-					    }
-					    $.each($scope.formValues.productDetails, function(ik,iv){
-						    $.each(callback4.payload.products, function(ok,ov){
-								if (iv.orderProductId == ov.id) {
-									$scope.formValues.productDetails[ik].pricingDate = ov.pricingDate;
-								}
-						    })
-					    })
-					    //$scope.formValues.orderDetails.frontOfficeComments = callback4.payload;
-
-						for (var i = 0; i < callback4.payload.products.length; i++) {
-							if (callback4.payload.products[i].currency) {
-				                $scope.formValues.invoiceRateCurrency = callback4.payload.products[i].currency;
-				                $scope.triggerChangeFields("InvoiceRateCurrency");
-				                break;
-							}
-						}
-                    });
                 });
+                $scope.formValues.counterpartyDetails.paymentTerm = $scope.formValues.counterpartyDetails.orderPaymentTerm;
+				$scope.formValues.deliveryDate = $scope.formValues.orderDeliveryDate;
+				$scope.formValues.orderDetails.carrierCompany = $scope.formValues.orderDetails.orderCarrierCompany;
+				$scope.formValues.orderDetails.paymentCompany = $scope.formValues.orderDetails.orderPaymentCompany;
+            	$.each($scope.formValues.productDetails, function(ik,iv){
+					$scope.formValues.productDetails[ik].pricingDate = $scope.formValues.productDetails[ik].orderProductPricingDate;
+				});
+				for (var i = 0; i < $scope.formValues.productDetails.length; i++) {
+					if ($scope.formValues.productDetails[i].currency) {
+		                $scope.formValues.invoiceRateCurrency = $scope.formValues.productDetails[i].currency;
+		                $scope.triggerChangeFields("InvoiceRateCurrency");
+		                break;
+					}
+				}
+
                 localStorage.removeItem('invoice_createInvoiceFromEdit');
          	}
 
-
-            vm.get_master_structure(screenChild);
+         	if (screenChild != "entity_documents") {
+	            vm.get_master_structure(screenChild);
+         	} else {
+         		$rootScope.$on("documentsScreenLayout", function(e, callback){
+         			callback = callback.layout;
+					$scope.formFields = callback;
+                    if (callback.children) {
+                        $scope.formFields = callback.children[screenChild];
+                    }
+         		})
+         	}
             // console.log(screenChild);
             setTimeout(function() {
                 vm.addHeadeActions();
@@ -762,6 +711,7 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
 
 
 				                    if (vm.app_id == "invoices" && vm.screen_id == "invoice") {
+				                    	$rootScope.reloadPage = true;
 				                        $scope.triggerChangeFields("InvoiceRateCurrency");
 				                        if ($scope.formValues.costDetails.length > 0) {
 				                            $.each($scope.formValues.costDetails, function(k, v) {
@@ -1072,7 +1022,6 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
                         // console.log("from Master done");
                         vm.adminConfiguration = callback2;
                         $rootScope.adminConfiguration = callback2;
-                        $scope.getAdminConfigurationGH(callback2);
                     }
                 });
             }

@@ -4,6 +4,7 @@
 APP_API.factory("$Api_Service", [
     "$listsCache",
     "$tenantSettings",
+    "$tenantConfiguration",
     "tenantModel",
     "API",
     "$q",
@@ -14,7 +15,7 @@ APP_API.factory("$Api_Service", [
     "dataProcessors",
     "$rootScope",
     "screenLoader",
-    function($listsCache, $tenantSettings, tenantModel, API, $q, $http, $state, $translate, $cacheFactory, dataProcessors, $rootScope, screenLoader) {
+    function($listsCache, $tenantSettings, $tenantConfiguration, tenantModel, API, $q, $http, $state, $translate, $cacheFactory, dataProcessors, $rootScope, screenLoader) {
         var _debug = true;
         var api_map = {
             general: {
@@ -4277,11 +4278,15 @@ APP_API.factory("$Api_Service", [
                     //     return;
                     // }
                     // console.log('really returned');
-
                     $http.post(api_map[param.app][param.screen]["layout"]["get"]["endpoint"], api_map[param.app][param.screen]["layout"]["get"]["json"]).then(
                         function successCallback(response) {
                             if (response.data) {
                                 // debugger;
+
+                                if (param.app == "invoices" && param.screen == "invoice") {
+                                	$rootScope.screenLayoutData = response.data;
+                                }
+
                                 var jsonDATA = null;
                                 if (param.generic) {
                                     // jsonDATA = response.data.genericLayouts;
@@ -4325,6 +4330,9 @@ APP_API.factory("$Api_Service", [
                                 var result = parse("formatters", jsonDATA);
                                 console.log("$APIService screen.get got response:");
                                 console.log(result);
+                                if (param.clc_id == "entity_documents") {
+	                         		$rootScope.$broadcast("documentsScreenLayout", result);
+                                }
                                 callback(result);
                             } else {
                                 callback(false);
@@ -5483,6 +5491,9 @@ APP_API.factory("$Api_Service", [
                     //     });
                     //     return;
                     // }
+					if (param.app == "invoices" && param.screen == "invoice" && param.child == "entity_documents" ) {
+						return
+					}
                     if (param.app == "admin" && param.screen == "sellerrating") {
                         var apiJSON = {
                             Payload: {
@@ -5529,84 +5540,20 @@ APP_API.factory("$Api_Service", [
                     //     });
                     //     return;
                     // }
-                    if (param.app == "admin" && param.screen == "configuration") {
-                        if (window.location.href.indexOf("admin") === -1) {
-                            var delivery = $http.post(API.BASE_URL_DATA_ADMIN + "/api/admin/deliveryConfiguration/getCached", {
-                                Payload: true
-                            });
-                        } else {
-                            var delivery = $http.post(API.BASE_URL_DATA_ADMIN + "/api/admin/deliveryConfiguration/get", {
-                                Payload: true
-                            });
-                        }
-                        param.id = 0;
-                        var contract = $http.post(API.BASE_URL_DATA_ADMIN + "/api/admin/contractConfiguration/get", {
-                            Payload: true
-                        });
-                        var email = $http.post(API.BASE_URL_DATA_ADMIN + "/api/admin/emailConfiguration/get", {
-                            Payload: true
-                        });
-                        var general = $http.post(API.BASE_URL_DATA_ADMIN + "/api/admin/generalConfiguration/get", {
-                            Payload: true
-                        });
-                        var procurement = $http.post(API.BASE_URL_DATA_ADMIN + "/api/admin/procurementConfiguration/get", {
-                            Payload: true
-                        });
-                        // var schedule = $http.post(API.BASE_URL_DATA_ADMIN + "/api/admin/scheduleDashboardConfiguration/get", {
-                        //     Payload: true
-                        // });
-                        var invoice = $http.post(API.BASE_URL_DATA_ADMIN + "/api/admin/invoiceConfiguration/get", {
-                            Payload: true
-                        });
-                        var reports = $http.post(API.BASE_URL_DATA_ADMIN + "/api/admin/reportConfiguration/get", {
-                            Payload: true
-                        });                        
-                        $q.all([contract, email, general, procurement, /*schedule,*/ delivery, invoice, reports]).then(function(responses) {
+                    if (param.app == "admin" && param.screen == "configuration") {     
                             var result = {};
-                            if (responses[0].status == 200) {
-                                result["contract"] = responses[0].data.payload;
-                            } else {
-                                result["contract"] = [];
-                            }
-                            if (responses[1].status == 200) {
-                                result["email"] = responses[1].data.payload;
-                            } else {
-                                result["email"] = [];
-                            }
-                            if (responses[2].status == 200) {
-                                result["general"] = responses[2].data.payload;
-                            } else {
-                                result["general"] = [];
-                            }
-                            if (responses[3].status == 200) {
-                                result["procurement"] = responses[3].data.payload;
-                            } else {
-                                result["procurement"] = [];
-                            }
-                            // if (responses[4].status == 200) {
-                            //     result["schedule"] = responses[4].data.payload;
-                            // } else {
-                            //     result["schedule"] = [];
-                            // }
-                            result["schedule"] = tenantModel.getScheduleDashboardConfiguration().payload;
-                            if (responses[4].status == 200) {
-                                result["delivery"] = responses[4].data.payload;
-                            } else {
-                                result["delivery"] = [];
-                            }
-                            if (responses[5].status == 200) {
-                                result["invoice"] = responses[5].data.payload;
-                            } else {
-                                result["invoice"] = [];
-                            }
-                            if (responses[6].status == 200) {
-                                result["report"] = responses[6].data.payload;
-                            } else {
-                                result["report"] = [];
-                            }                            
+							result["contract"] = $tenantConfiguration.contractConfiguration;
+							result["email"] = $tenantConfiguration.emailConfiguration;
+							result["general"] = $tenantConfiguration.generalConfiguration;
+							result["procurement"] = $tenantConfiguration.procurementConfiguration;
+						    result["schedule"] = $tenantConfiguration.scheduleDashboardConfiguration;
+							result["delivery"] = $tenantConfiguration.deliveryConfiguration;
+							result["invoice"] = $tenantConfiguration.invoiceConfiguration;
+							result["report"] = $tenantConfiguration.reportConfiguration;
+							$rootScope.$broadcast("tenantConfiguration", result);
+                            $rootScope.tenantConfigurationResponseData = result;
                             callback(result);
-                        });
-                        return;
+	                        return;
                     }
                     if (param.app == "admin" && param.screen == "role") {
                         function deepmerge(foo, bar) {

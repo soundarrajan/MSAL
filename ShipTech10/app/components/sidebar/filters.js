@@ -625,7 +625,8 @@ angular.module("shiptech.components").controller("FiltersController", [
                 }
             }
         };
-        $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
+
+        var deregisterStateChangeStart = $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
             $rootScope.clc_loaded = false;   
                 $scope.globalFilters = [];
                 $rootScope.listOfAppliedFiltersString = [];
@@ -633,7 +634,8 @@ angular.module("shiptech.components").controller("FiltersController", [
                 $scope.createFilters();
                 $scope.getDefaultFiltersConfiguration();
                 $scope.getFiltersConfigurations();
-       
+
+                deregisterStateChangeStart();
         });
 	    angular.element(document).ready(function () {
 		    // $rootScope.clc_loaded = false;   
@@ -673,6 +675,9 @@ angular.module("shiptech.components").controller("FiltersController", [
             }
         };
         $scope.getDefaultFiltersConfiguration = function(fromSave) {
+            if ($scope.currentList.contains("invoices/invoice/")) {
+                return;
+            }
         	if (localStorage.getItem("persistentGlobalFilters") || (!fromSave && $scope.defaultConfiguration)) {
         		return;
         	}
@@ -775,7 +780,27 @@ angular.module("shiptech.components").controller("FiltersController", [
                 var data = $scope.currentList;
                 // $scope.filtersConfigurations = null;
                 filterConfigurationModel.getFiltersConfigurations(data).then(function(response) {
-                    $scope.filtersConfigurations = response.payload;
+                    var data = response.payload;
+                    if ($scope.currentList.contains("invoices/invoice/")) {
+                        var responseGet = response.payload;
+                        if (responseGet) {
+                            for (var i = 0; i < responseGet.length; i++) {
+                                if (responseGet[i] && responseGet[i].isDefault == true) {
+                                    $scope.defaultConfiguration = responseGet[i];
+                                    break;
+                                }
+                            }
+                        }
+                        if (!responseGet) {
+                            $rootScope.$broadcast("filters-applied", []);
+                        } 
+                        if ($scope.defaultConfiguration != null) {
+                            retVal = $scope.applyDefaultConfiguration($scope.defaultConfiguration, true);
+                            $scope.selectedConfig = $scope.defaultConfiguration;
+                            $scope.enableDisableDeleteLayout($scope.selectedConfig);
+                        } 
+                    } 
+                    $scope.filtersConfigurations = data;
                     $scope.filtersConfigurations.unshift({
                         id: 0,
                         route: $scope.currentList,

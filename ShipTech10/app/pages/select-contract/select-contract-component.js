@@ -104,9 +104,9 @@ angular.module("shiptech.pages").controller("SelectContractController", ["$windo
             $scope.$emit('selectedContracts', ctrl.selectedRows);
         }
         
-        selectContractModel.getContractsAutocomplete().then(function(data) {
-            ctrl.contractList = data.payload;
-        });
+//        selectContractModel.getContractsAutocomplete().then(function(data) {
+//            ctrl.contractList = data.payload;
+//        });
 
 
 

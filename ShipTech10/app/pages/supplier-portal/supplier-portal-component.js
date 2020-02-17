@@ -39,9 +39,9 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
         }
         ctrl.loadedData = false;
         if ($state.current.name == "default.group-of-requests") {
-            ctrl.numberPrecision = tenantSupplierPortalService.tenantSettings.payload.defaultValues;
-            ctrl.currency = tenantSupplierPortalService.tenantSettings.payload.tenantFormats.currency;
-            ctrl.tenantDefaultUom = tenantSupplierPortalService.tenantSettings.payload.tenantFormats.uom;
+            ctrl.numberPrecision = tenantSupplierPortalService.tenantSettings.$$state.value.payload.defaultValues;
+            ctrl.currency = tenantSupplierPortalService.tenantSettings.$$state.value.payload.tenantFormats.currency;
+            ctrl.tenantDefaultUom = tenantSupplierPortalService.tenantSettings.$$state.value.payload.tenantFormats.uom;
         } else {
             tenantSupplierPortalService.tenantSettings.then(function(settings) {
                 ctrl.numberPrecision = settings.payload.defaultValues;

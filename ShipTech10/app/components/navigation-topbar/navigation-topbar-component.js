@@ -187,7 +187,10 @@ angular.module('shiptech').controller('NavigationTopBarController', ['$rootScope
 				$scope.shouldDisplayNavigationBar = true
 
 				//console.error('navigation payload', navigationPayload)
-
+				if (navigationPayload.InvoiceId == "") {
+					return;
+				}
+				
 				$http({
 					method: "POST",
 					url: API.BASE_URL_DATA_INFRASTRUCTURE + '/api/infrastructure/navbar/navbaridslist',

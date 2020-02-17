@@ -604,25 +604,32 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
         };
 
         $scope.deleteDocumentFromList = function(id) {
+            Payload = null;
             $('[id*="documents_list"]').jqGrid.Ascensys.gridData.forEach(function(val, key) {
                 if (id == val.id) {
-                    Payload = val;
+                    Payload = {
+                            "id": val.id
+                    }
                 }
             });
-            Factory_General_Components.entity_delete(id, Payload, function(callback) {
+            if (Payload) {
+                Factory_General_Components.entity_delete(id, Payload, function(callback) {
                 // var confirm = window.confirm('Delete File "' + Payload.name + '"?');
-                if (confirm) {
-                    if (callback) {
-                    	toastr.remove();
-                        toastr.success("Delete done");
-                        $('[id*="documents_list"]').trigger("reloadGrid");
+                    if (confirm) {
+                        if (callback) {
+                            toastr.remove();
+                            toastr.success("Delete done");
+                            $('[id*="documents_list"]').trigger("reloadGrid");
+                        } else {
+                            toastr.error("Error occured");
+                        }
                     } else {
-                        toastr.error("Error occured");
+                        toastr.info("Delete cancelled!");
                     }
-                } else {
-                    toastr.info("Delete cancelled!");
-                }
-            });         
+                });         
+
+            }
+            
         }
 
 
@@ -4105,53 +4112,51 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
             console.log("email preview req data", data);
 
 
-            $rootScope.$watch("formValuesLoaded", function() {
-                if (typeof $rootScope.formValuesLoaded != "undefined") {
-                    if ($rootScope.formValuesLoaded.screenActions) {
-                        Factory_Master.getScreenActions(data, function(response) {
-                            if (response) {
-                                screenButtons = [];
+            $rootScope.$watchGroup(["formValuesLoaded", "screenLayoutData"], function(newVal, oldVal) {
+            	if (newVal[0] && newVal[1]) {
+            		screenLayoutActions = newVal[1].screenButtons;
+            		console.log("BOTH LOADED")
+                    if (screenLayoutActions) {
+                        screenButtons = [];
 
-                                console.log("email preview response ", response);
-                                $.each(response, function(key, value) {
-                                    if (value.isCrosschekRequired == false) {
-                                        if (vm.app_id == "invoices") {
-                                            obj = vm.mapInvoiceActions(value, false);
-                                            if (value.mappedScreenActionName == "CreateFinalInvoice") {
-                                                obj = {
-                                                    action: "createFinalInvoice()",
-                                                    disabled: !$rootScope.formValuesLoaded.canCreateFinalInvoice,
-                                                    label: "CreateFinalInvoice"
-                                                };
-                                            }
-                                        }
-                                        if (obj != null) {
-                                            screenButtons.push(obj);
-                                        }
-                                    } else {
-                                        if (vm.app_id == "invoices") {
-                                            obj = vm.mapInvoiceActions(value, true);
-                                        }
-                                        if (obj != null) {
-                                            screenButtons.push(obj);
-                                        }
+                        console.log("email preview response ", screenLayoutActions);
+                        $.each(screenLayoutActions, function(key, value) {
+                            if (value.isCrosschekRequired == false) {
+                                if (vm.app_id == "invoices") {
+                                    obj = vm.mapInvoiceActions(value, false);
+                                    if (value.mappedScreenActionName == "CreateFinalInvoice") {
+                                        obj = {
+                                            action: "createFinalInvoice()",
+                                            disabled: !$rootScope.formValuesLoaded.canCreateFinalInvoice,
+                                            label: "CreateFinalInvoice"
+                                        };
                                     }
-                                    if (value.mappedScreenActionName == "ApproveInvoice") {
-                                        approveInvoiceIndex = key;
-                                    }
-                                });
+                                }
+                                if (obj != null) {
+                                    screenButtons.push(obj);
+                                }
                             } else {
-                                toastr.error("An error has occured!");
+                                if (vm.app_id == "invoices") {
+                                    obj = vm.mapInvoiceActions(value, true);
+                                }
+                                if (obj != null) {
+                                    screenButtons.push(obj);
+                                }
                             }
-
-                            if (approveInvoiceIndex) {
-                                screenButtons = array_move(screenButtons, approveInvoiceIndex, 0);
+                            if (value.mappedScreenActionName == "ApproveInvoice") {
+                                approveInvoiceIndex = key;
                             }
-                            $scope.screenButtons = screenButtons;
-                            $rootScope.screenButtons = screenButtons;
                         });
+                    } else {
+                        toastr.error("An error has occured!");
                     }
-                }
+
+                    if (approveInvoiceIndex) {
+                        screenButtons = array_move(screenButtons, approveInvoiceIndex, 0);
+                    }
+                    $scope.screenButtons = screenButtons;
+                    $rootScope.screenButtons = screenButtons;
+            	}
             });
         };
         vm.mapInvoiceActions = function(action, requireCheck) {
