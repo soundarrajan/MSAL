@@ -76,7 +76,14 @@
 
     }
   }
-
+//header icon check box position center alignment
+  .ag-shiptech-coloumnheader{
+    app-ag-check-box-header{
+      position: relative;
+      left:50%;
+      transform: translateX(-50%);
+    }    
+  }
   /*Grid with sub grid*/
   .shiptech-panel-theme {
     .ag-header {
@@ -254,6 +261,7 @@
 
   /*Main Grid */
   .ag-shiptech-theme {
+
     .ag-header {
       font-weight: 500;
       font-size: 14px !important;

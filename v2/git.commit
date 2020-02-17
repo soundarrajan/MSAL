@@ -1,11 +1,7 @@
-﻿commit 0d534b6c39eb17ec6bc93735ff45cc78c29b97db
-Author: Narcis Dumitrescu <narcis.dumitrescu@24software.ro>
-Date:   Mon Feb 17 09:25:49 2020 +0000
+﻿commit 1f34c78f9474c51e67064580eb2482b0fa119f02
+Author: Pavithra <pavithra.m@inatech.com>
+Date:   Mon Feb 17 16:04:13 2020 +0530
 
-    Merged PR 2988: Fixed angular material imports
-    
-    Fixed angular material imports
-    
-    Related work items: #16333
+    Header alignment
 
 branch: master

@@ -17,6 +17,9 @@
     background-repeat: no-repeat;
     background-color: transparent !important;
     border-color: transparent !important;
+    &:hover{
+      filter: grayscale(100%);
+    }
   
     span {
       margin-top: -8px;
@@ -34,6 +37,9 @@
     background-repeat: no-repeat;
     background-color: transparent !important;
     border-color: transparent !important;
+    &:hover{
+      filter: grayscale(100%);
+    }
   
     span {
       margin-top: -8px;
@@ -52,6 +58,9 @@
     background-repeat: no-repeat;
     background-color: transparent !important;
     border-color: transparent !important;
+    &:hover{
+      filter: grayscale(100%);
+    }
   
     span {
       margin-top: -8px;
@@ -71,6 +80,9 @@
     background-repeat: no-repeat;
     background-color: transparent !important;
     border-color: transparent !important;
+    &:hover{
+      filter: grayscale(100%);
+    }
   
     span {
       margin-top: -8px;
@@ -90,6 +102,9 @@
     background-repeat: no-repeat;
     background-color: transparent !important;
     border-color: transparent !important;
+   &:hover{
+      filter: grayscale(100%);
+    }
   
     span {
       margin-top: -8px;
@@ -100,6 +115,8 @@
     }
   
   }
+  
+  
 
   .save-icon {
     width: 24px;
@@ -109,6 +126,9 @@
     background-repeat: no-repeat;
     background-color: transparent !important;
     border-color: transparent !important;
+    &:hover{
+      filter: grayscale(100%);
+    }
   
     span {
       margin-top: -8px;
@@ -128,6 +148,9 @@
     background-repeat: no-repeat;
     background-color: transparent !important;
     border-color: transparent !important;
+    &:hover{
+      filter: grayscale(100%);
+    }
   
     span {
       margin-top: -8px;
@@ -138,3 +161,4 @@
     }
   
   }
+  
