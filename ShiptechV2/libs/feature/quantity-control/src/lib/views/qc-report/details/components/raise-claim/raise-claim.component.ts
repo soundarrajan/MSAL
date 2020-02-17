@@ -3,7 +3,7 @@ import { QcOrderProductsListGridViewModel } from './view-model/qc-order-products
 import { IQcOrderProductsListItemDto } from '../../../../../services/api/dto/qc-order-products-list-item.dto';
 import { QcReportService } from '../../../../../services/qc-report.service';
 import { ToastrService } from 'ngx-toastr';
-import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/api';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng';
 
 @Component({
   selector: 'shiptech-raise-claim',

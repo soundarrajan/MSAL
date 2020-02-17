@@ -26,8 +26,8 @@ import { ToastrService } from 'ngx-toastr';
 import { FileSaverService } from 'ngx-filesaver';
 import { ModuleError } from '@shiptech/core/ui/components/documents/error-handling/module-error';
 import { FileUpload } from 'primeng/fileupload';
-import { ConfirmationService, DialogService } from 'primeng/api';
 import { knownMastersAutocomplete } from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
+import { ConfirmationService, DialogService } from 'primeng';
 
 @Component({
   selector: 'shiptech-documents',

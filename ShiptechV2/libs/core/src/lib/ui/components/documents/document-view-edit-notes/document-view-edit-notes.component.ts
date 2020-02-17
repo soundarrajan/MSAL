@@ -11,7 +11,7 @@ import { IDocumentsApiService } from '@shiptech/core/services/masters-api/docume
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
 import { ToastrService } from 'ngx-toastr';
 import { IDocumentsItemDto } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto';
-import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/api';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng';
 
 @Component({
   selector: 'shiptech-document-view-edit-notes',
