@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import * as _ from 'lodash';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material';
 import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { CharactersNotAllowed, EmptyFilterName, FilterExists, ToastPosition } from '../filter-preferences-messages';
 import { FilterPreferenceViewModel } from '../../../../services/user-settings/filter-preference.interface';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   // tslint:disable-next-line:component-selector

@@ -1,13 +1,13 @@
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
-import { getApiCallUrlValue, IMethodApiCallSettings } from '../../../../../../libs/core/src/lib/utils/decorators/api-call.decorator';
-import { MatCheckboxChange } from '@angular/material';
-import { RANDOM_DELAY } from '../../../../../../libs/core/src/lib/utils/decorators/api-call-settings';
+import { getApiCallUrlValue, IMethodApiCallSettings } from '@shiptech/core/utils/decorators/api-call.decorator';
+import { RANDOM_DELAY } from '@shiptech/core/utils/decorators/api-call-settings';
 import { Observable, Subscription } from 'rxjs';
-import { ILookupDto } from '../../../../../../libs/core/src/lib/lookups/lookup-dto.interface';
+import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
 import { DeveloperToolbarService } from '@shiptech/core/developer-toolbar/developer-toolbar.service';
 import { IApiService } from '@shiptech/core/developer-toolbar/api-service-settings/api-service.interface';
 import { IApiServiceSettings } from '@shiptech/core/developer-toolbar/api-service-settings/api-service-settings.inteface';
 import { ServiceStatusesEnum } from '@shiptech/core/developer-toolbar/api-service-settings/service-statuses.enum';
+import {MatCheckboxChange} from "@angular/material/checkbox";
 
 export const DelayOptions = [
   { id: 0, name: 'None' },
@@ -23,6 +23,7 @@ export const DelayOptions = [
 ];
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'app-api-service-settings',
   templateUrl: './api-service-settings.component.html',
   styleUrls: ['./api-service-settings.component.scss']
