@@ -64,7 +64,8 @@ import {
   ToolbarModule,
   TooltipModule,
   TreeModule,
-  TreeTableModule, TriStateCheckboxModule
+  TreeTableModule,
+  TriStateCheckboxModule
 } from 'primeng/primeng';
 import { PortalModule } from '@angular/cdk/portal';
 import { TableModule } from 'primeng/table';
@@ -74,7 +75,6 @@ import { DataViewModule } from 'primeng/dataview';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { PSpinnerDisableKeysSpinDirective } from '@shiptech/core/ui/directives/p-spinner-disable-keys-spin.directive';
 import { PSpinnerTenantFormatDirective } from '@shiptech/core/ui/directives/p-spinner-tenant-format.directive';
-
 
 const MODULES = [
   CommonModule,
@@ -148,20 +148,16 @@ const MODULES = [
 ];
 
 @NgModule({
-  imports: [
-    ...MODULES
+  imports: [...MODULES],
+  providers: [DialogService, MessageService, ConfirmationService],
+  declarations: [
+    PSpinnerDisableKeysSpinDirective,
+    PSpinnerTenantFormatDirective
   ],
-  providers: [
-    DialogService,
-    MessageService,
-    ConfirmationService
-  ],
-  declarations: [PSpinnerDisableKeysSpinDirective, PSpinnerTenantFormatDirective],
   exports: [
     ...MODULES,
     PSpinnerDisableKeysSpinDirective,
     PSpinnerTenantFormatDirective
   ]
 })
-export class PrimeNGModule {
-}
+export class PrimeNGModule {}
