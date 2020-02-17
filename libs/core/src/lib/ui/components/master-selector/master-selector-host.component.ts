@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { CdkPortal } from '@angular/cdk/portal';
-import { DynamicDialogConfig } from 'primeng/api';
+import { DynamicDialogConfig } from 'primeng';
 
 @Component({
   template: '<ng-template [cdkPortalOutlet]="masterPortal"></ng-template>',
