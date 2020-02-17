@@ -164,6 +164,18 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     return obj.voyageDetail.eta.split("T")[0] + ' <> ' + objGroupString;
                 }
             });
+            voyageDaysWithSludge = [];
+			$.each(vessels, function(k,detail){
+				hasSludge = false;
+				voyageDetailId = detail.voyageDetail.id;
+				if (detail.voyageDetail.request.requestDetail.isSludgeProduct) {
+					hasSludge = true;
+				}
+				if (typeof(voyageDaysWithSludge[voyageDetailId]) == "undefined" || !voyageDaysWithSludge[voyageDetailId]) {
+					voyageDaysWithSludge[voyageDetailId] = hasSludge;		
+				}
+			})
+
             if (!$scope.stopsGroupedByDayAndGroup["undefined"]) {
                 $.each($scope.stopsGroupedByDayAndGroup, function(k, v) {
                     var minVoyageEta =  _.minBy(v, function(item) {
@@ -219,6 +231,9 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
                 if (vessels[i].voyageDetail.hasStrategy) {
                     cls += " vis-voyage-content-sap";
+                }
+                if (vessels[i].voyageDetail.request.requestDetail.isSludgeProduct) {
+                    cls += " vis-voyage-sludge-product";
                 }
                 // if (!vessels[i].voyageDetail.portStatus.id) {
                 //     cls += " no-request";

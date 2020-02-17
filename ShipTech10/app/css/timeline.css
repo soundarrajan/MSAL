@@ -344,3 +344,17 @@ span.vesselName {
     height: 15px;
     line-height: 15px;
 }
+
+
+span.vis-voyage-content.vis-voyage-sludge-product:after {
+    content: "";
+    display: block;
+    width: 100%;
+    position: absolute;
+    background: #fff;
+    height: 15px;
+    z-index: -1;
+}
+span.vis-voyage-content.vis-voyage-sludge-product {
+	color: #000;
+}
