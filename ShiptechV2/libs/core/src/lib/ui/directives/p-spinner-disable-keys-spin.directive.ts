@@ -6,7 +6,6 @@ import { Spinner } from 'primeng/spinner';
   selector: 'p-spinner[disable-keys-spin]'
 })
 export class PSpinnerDisableKeysSpinDirective {
-
   constructor(private spinner: Spinner) {
     spinner.onInputKeydown = (event: KeyboardEvent) => {
       if (event.code === 'ArrowUp' || event.code === 'ArrowDown') {
@@ -14,5 +13,4 @@ export class PSpinnerDisableKeysSpinDirective {
       }
     };
   }
-
 }

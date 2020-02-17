@@ -3,7 +3,11 @@ import 'reflect-metadata';
 export const METHOD_NAME_KEY = Symbol('methodNameParameter');
 
 // noinspection JSUnusedGlobalSymbols
-export function MethodName(target: any, propertyKey: string | symbol, descriptor: PropertyDescriptor): PropertyDescriptor {
+export function MethodName(
+  target: any,
+  propertyKey: string | symbol,
+  descriptor: PropertyDescriptor
+): PropertyDescriptor {
   // save a reference to the original method this way we keep the values currently in the
   // descriptor and don't overwrite what another decorator might have done to the descriptor.
   if (descriptor === undefined) {
@@ -12,7 +16,8 @@ export function MethodName(target: any, propertyKey: string | symbol, descriptor
   const originalMethod = descriptor.value;
 
   // Pull the signature's metadata
-  const parameterMetadata: Array<number> = Reflect.getOwnMetadata(METHOD_NAME_KEY, target, propertyKey) || [];
+  const parameterMetadata: Array<number> =
+    Reflect.getOwnMetadata(METHOD_NAME_KEY, target, propertyKey) || [];
 
   descriptor.value = function(): any {
     const args = Array.from(arguments);
@@ -32,14 +37,24 @@ export function MethodName(target: any, propertyKey: string | symbol, descriptor
  * @param propertyKey
  * @param parameterIndex
  */
-export function MethodNameParam(target: any, propertyKey: string | symbol, parameterIndex: number): void {
+export function MethodNameParam(
+  target: any,
+  propertyKey: string | symbol,
+  parameterIndex: number
+): void {
   // Pull existing parameters for this method or create an empty array
-  const methodNameParams = Reflect.getOwnMetadata(METHOD_NAME_KEY, target, propertyKey) || [];
+  const methodNameParams =
+    Reflect.getOwnMetadata(METHOD_NAME_KEY, target, propertyKey) || [];
   // Add this parameter
   methodNameParams.push(parameterIndex);
   // Ensure regular order
   methodNameParams.sort();
-  Reflect.defineMetadata(METHOD_NAME_KEY, methodNameParams, target, propertyKey);
+  Reflect.defineMetadata(
+    METHOD_NAME_KEY,
+    methodNameParams,
+    target,
+    propertyKey
+  );
 }
 
 /**

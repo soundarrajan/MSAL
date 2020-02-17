@@ -18,40 +18,48 @@ export class TenantFormattingService {
     const generalTenantSettings = tenantSettings.getGeneralTenantSettings();
 
     this.dateFormat = generalTenantSettings.tenantFormats.dateFormat.name;
-    this.quantityPrecision = generalTenantSettings.defaultValues.quantityPrecision;
+    this.quantityPrecision =
+      generalTenantSettings.defaultValues.quantityPrecision;
     this.pricePrecision = generalTenantSettings.defaultValues.pricePrecision;
 
-    this.quantityFormatter = new Intl.NumberFormat('en', { minimumFractionDigits: this.quantityPrecision, maximumFractionDigits: this.quantityPrecision });
-    this.priceFormatter = new Intl.NumberFormat('en', { minimumFractionDigits: this.pricePrecision, maximumFractionDigits: this.pricePrecision });
+    this.quantityFormatter = new Intl.NumberFormat('en', {
+      minimumFractionDigits: this.quantityPrecision,
+      maximumFractionDigits: this.quantityPrecision
+    });
+    this.priceFormatter = new Intl.NumberFormat('en', {
+      minimumFractionDigits: this.pricePrecision,
+      maximumFractionDigits: this.pricePrecision
+    });
   }
 
   public quantity(value: number | string): string | undefined {
-    if (value === null || value === undefined)
-      return undefined;
+    if (value === null || value === undefined) return undefined;
 
-    const actualValue = typeof value !== 'number' ? parseFloat(value.toString().replace(',', '')) : value;
+    const actualValue =
+      typeof value !== 'number'
+        ? parseFloat(value.toString().replace(',', ''))
+        : value;
 
-    if (isNaN(actualValue))
-      return undefined;
+    if (isNaN(actualValue)) return undefined;
 
     return this.quantityFormatter.format(actualValue);
   }
 
   public price(value: number | string): string | undefined {
-    if (value === null || value === undefined)
-      return undefined;
+    if (value === null || value === undefined) return undefined;
 
-    const actualValue = typeof value !== 'number' ? parseFloat(value.toString().replace(',', '')) : value;
+    const actualValue =
+      typeof value !== 'number'
+        ? parseFloat(value.toString().replace(',', ''))
+        : value;
 
-    if (isNaN(actualValue))
-      return undefined;
+    if (isNaN(actualValue)) return undefined;
 
     return this.priceFormatter.format(actualValue);
   }
 
   public date(value: string): string | undefined {
-    if (value === null || value === undefined)
-      return undefined;
+    if (value === null || value === undefined) return undefined;
 
     return moment(value).format(dateTimeAdapter.fromDotNet(this.dateFormat));
   }

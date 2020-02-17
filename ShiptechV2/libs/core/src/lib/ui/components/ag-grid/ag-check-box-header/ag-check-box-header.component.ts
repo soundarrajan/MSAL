@@ -1,12 +1,26 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { GridApi, IAfterGuiAttachedParams, IHeaderParams, RowNode } from '@ag-grid-community/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
+import {
+  GridApi,
+  IAfterGuiAttachedParams,
+  IHeaderParams,
+  RowNode
+} from '@ag-grid-community/core';
 import { IAgCheckBoxRendererParams } from '../ag-check-box-renderer/ag-check-box-renderer.component';
 import { HeaderRendererConfig } from '../type.definition';
 import { AgGridEventsEnum } from '../ag-grid.events';
-import {IHeaderAngularComp} from "@ag-grid-community/angular";
+import { IHeaderAngularComp } from '@ag-grid-community/angular';
 
 export interface IAgCheckBoxHeaderParams extends Partial<IHeaderParams> {
-  selectionChange?: (isSelected: boolean, params?: IAgCheckBoxHeaderParams) => void;
+  selectionChange?: (
+    isSelected: boolean,
+    params?: IAgCheckBoxHeaderParams
+  ) => void;
 }
 
 @Component({
@@ -19,24 +33,24 @@ export interface IAgCheckBoxHeaderParams extends Partial<IHeaderParams> {
   // ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AgCheckBoxHeaderComponent implements OnInit, OnDestroy, IHeaderAngularComp {
+export class AgCheckBoxHeaderComponent
+  implements OnInit, OnDestroy, IHeaderAngularComp {
   get isSelected(): boolean {
     return this._isSelected;
   }
-
-  indeterminate: boolean = false;
 
   set isSelected(value: boolean) {
     this._isSelected = value;
     this.indeterminate = this.isSelected === undefined;
   }
 
+  indeterminate: boolean = false;
+
   private _isSelected: boolean = false;
   private initParams: IAgCheckBoxHeaderParams;
   private gridApi: GridApi;
 
-  constructor(private changeDetector: ChangeDetectorRef) {
-  }
+  constructor(private changeDetector: ChangeDetectorRef) {}
 
   static withParams(params: IAgCheckBoxHeaderParams): HeaderRendererConfig {
     return {
@@ -45,29 +59,14 @@ export class AgCheckBoxHeaderComponent implements OnInit, OnDestroy, IHeaderAngu
     };
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   agInit(params: IAgCheckBoxRendererParams): void {
     this.initParams = params;
     this.gridApi = params.api;
-
+    // eslint-disable-next-line no-unused-expressions
     this.initParams?.selectionChange?.(this._isSelected);
     this.subscribeToGridEvents();
-  }
-
-  private subscribeToGridEvents(): void {
-    this.gridApi.addEventListener(AgGridEventsEnum.selectionChanged, this.selectionChanged.bind(this));
-    this.gridApi.addEventListener(AgGridEventsEnum.viewportChanged, this.viewportChanged.bind(this));
-    this.gridApi.addEventListener(AgGridEventsEnum.modelUpdated, this.modelUpdated.bind(this));
-    this.gridApi.addEventListener(AgGridEventsEnum.filterChanged, this.onFilterChange.bind(this));
-  }
-
-  private UnsubscribeToGridEvents(): void {
-    this.gridApi.removeEventListener(AgGridEventsEnum.selectionChanged, this.selectionChanged);
-    this.gridApi.removeEventListener(AgGridEventsEnum.viewportChanged, this.viewportChanged);
-    this.gridApi.removeEventListener(AgGridEventsEnum.modelUpdated, this.modelUpdated);
-    this.gridApi.removeEventListener(AgGridEventsEnum.filterChanged, this.onFilterChange);
   }
 
   selectionChanged(): void {
@@ -87,7 +86,52 @@ export class AgCheckBoxHeaderComponent implements OnInit, OnDestroy, IHeaderAngu
 
     this.setAllVisibleNodes(selected);
 
+    // eslint-disable-next-line no-unused-expressions
     this.initParams?.selectionChange?.(this.isSelected);
+  }
+
+  afterGuiAttached(params?: IAfterGuiAttachedParams): void {}
+
+  ngOnDestroy(): void {
+    this.UnsubscribeToGridEvents();
+  }
+
+  private subscribeToGridEvents(): void {
+    this.gridApi.addEventListener(
+      AgGridEventsEnum.selectionChanged,
+      this.selectionChanged.bind(this)
+    );
+    this.gridApi.addEventListener(
+      AgGridEventsEnum.viewportChanged,
+      this.viewportChanged.bind(this)
+    );
+    this.gridApi.addEventListener(
+      AgGridEventsEnum.modelUpdated,
+      this.modelUpdated.bind(this)
+    );
+    this.gridApi.addEventListener(
+      AgGridEventsEnum.filterChanged,
+      this.onFilterChange.bind(this)
+    );
+  }
+
+  private UnsubscribeToGridEvents(): void {
+    this.gridApi.removeEventListener(
+      AgGridEventsEnum.selectionChanged,
+      this.selectionChanged
+    );
+    this.gridApi.removeEventListener(
+      AgGridEventsEnum.viewportChanged,
+      this.viewportChanged
+    );
+    this.gridApi.removeEventListener(
+      AgGridEventsEnum.modelUpdated,
+      this.modelUpdated
+    );
+    this.gridApi.removeEventListener(
+      AgGridEventsEnum.filterChanged,
+      this.onFilterChange
+    );
   }
 
   private recheckGridSelection(): void {
@@ -96,6 +140,7 @@ export class AgCheckBoxHeaderComponent implements OnInit, OnDestroy, IHeaderAngu
     if (this.isSelected !== allRowSelected) {
       this.isSelected = allRowSelected;
 
+      // eslint-disable-next-line no-unused-expressions
       this.initParams?.selectionChange?.(this.isSelected);
     }
 
@@ -105,10 +150,8 @@ export class AgCheckBoxHeaderComponent implements OnInit, OnDestroy, IHeaderAngu
   // NOTE: On filter change the selection must be reset because there might be rows who are not displayed that remain selected
   private onFilterChange(): void {
     this.isSelected = false;
+    // eslint-disable-next-line no-unused-expressions
     this.initParams?.selectionChange?.(this.isSelected);
-  }
-
-  afterGuiAttached(params?: IAfterGuiAttachedParams): void {
   }
 
   private setAllVisibleNodes(selected: boolean): void {
@@ -116,7 +159,7 @@ export class AgCheckBoxHeaderComponent implements OnInit, OnDestroy, IHeaderAngu
     // Note: Loading rows are called stubs.
 
     if (this.gridApi) {
-      this.gridApi.forEachNode((node, index) => {
+      this.gridApi.forEachNode(node => {
         if (!node.stub && node.selectable) {
           node.setSelected(selected, false);
         }
@@ -128,15 +171,12 @@ export class AgCheckBoxHeaderComponent implements OnInit, OnDestroy, IHeaderAngu
     const rowNodes: RowNode[] = [];
 
     if (this.gridApi) {
-
-      this.gridApi.forEachNode((node, index) => {
-        if (!node.stub && node.selectable)
-          rowNodes.push(node);
+      this.gridApi.forEachNode(node => {
+        if (!node.stub && node.selectable) rowNodes.push(node);
       });
     }
 
-    if (rowNodes.length === 0)
-      return false;
+    if (rowNodes.length === 0) return false;
     else if (rowNodes.every(n => n.isSelected())) {
       return true;
     } else if (rowNodes.every(n => !n.isSelected())) {
@@ -145,9 +185,4 @@ export class AgCheckBoxHeaderComponent implements OnInit, OnDestroy, IHeaderAngu
 
     return undefined;
   }
-
-  ngOnDestroy(): void {
-    this.UnsubscribeToGridEvents();
-  }
-
 }

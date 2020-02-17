@@ -1,7 +1,11 @@
 import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { GridOptions, IServerSideGetRowsParams } from '@ag-grid-community/core';
-import { ITypedColDef, RowModelType, RowSelection } from '@shiptech/core/ui/components/ag-grid/type.definition';
+import {
+  ITypedColDef,
+  RowModelType,
+  RowSelection
+} from '@shiptech/core/ui/components/ag-grid/type.definition';
 import {
   InvoiceListColumns,
   InvoiceListColumnServerKeys,
@@ -19,8 +23,8 @@ import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag
 import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
 import { IStatusLookupDto } from '@shiptech/core/lookups/known-lookups/status/status-lookup.interface';
 import { ModuleError } from '../../../core/error-handling/module-error';
-import {AgAsyncBackgroundFillComponent} from "@shiptech/core/ui/components/ag-grid/ag-async-background-fill/ag-async-background-fill.component";
-import {IScheduleDashboardLabelConfigurationDto} from "@shiptech/core/lookups/schedule-dashboard-label-configuration.dto.interface";
+import { AgAsyncBackgroundFillComponent } from '@shiptech/core/ui/components/ag-grid/ag-async-background-fill/ag-async-background-fill.component';
+import { IScheduleDashboardLabelConfigurationDto } from '@shiptech/core/lookups/schedule-dashboard-label-configuration.dto.interface';
 
 function model(prop: keyof ICompleteListItemDto): keyof ICompleteListItemDto {
   return prop;
@@ -28,14 +32,12 @@ function model(prop: keyof ICompleteListItemDto): keyof ICompleteListItemDto {
 
 @Injectable()
 export class CompleteListGridViewModel extends BaseGridViewModel {
-
-  private defaultColFilterParams = {
+  public searchText: string;
+  public defaultColFilterParams = {
     clearButton: true,
     applyButton: true,
     precision: () => this.format.quantityPrecision
   };
-
-  public searchText: string;
   gridOptions: GridOptions = {
     groupHeaderHeight: 20,
     headerHeight: 40,
@@ -53,7 +55,8 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
 
     enableBrowserTooltips: true,
     singleClickEdit: true,
-    getRowNodeId: (data: ICompleteListItemDto) => data?.id?.toString() ?? Math.random().toString(),
+    getRowNodeId: (data: ICompleteListItemDto) =>
+      data?.id?.toString() ?? Math.random().toString(),
     defaultColDef: {
       sortable: true,
       resizable: true,
@@ -122,7 +125,10 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
     width: 110
   };
 
-  orderProductStatusCol: ITypedColDef<ICompleteListItemDto, IScheduleDashboardLabelConfigurationDto> = {
+  orderProductStatusCol: ITypedColDef<
+    ICompleteListItemDto,
+    IScheduleDashboardLabelConfigurationDto
+  > = {
     headerName: InvoiceListColumnsLabels.orderProductStatus,
     colId: InvoiceListColumns.orderProductStatus,
     field: model('orderProductStatus'),
@@ -331,7 +337,10 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
     width: 110
   };
 
-  invoiceProductAmountInOrderCurrencyCol: ITypedColDef<ICompleteListItemDto, number> = {
+  invoiceProductAmountInOrderCurrencyCol: ITypedColDef<
+    ICompleteListItemDto,
+    number
+  > = {
     headerName: InvoiceListColumnsLabels.invoiceProductAmountInOrderCurrency,
     colId: InvoiceListColumns.invoiceProductAmountInOrderCurrency,
     field: model('invoiceProductAmountInOrderCurrency'),
@@ -506,7 +515,10 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
     width: 110
   };
 
-  orderStatusCol: ITypedColDef<ICompleteListItemDto, IScheduleDashboardLabelConfigurationDto> = {
+  orderStatusCol: ITypedColDef<
+    ICompleteListItemDto,
+    IScheduleDashboardLabelConfigurationDto
+  > = {
     headerName: InvoiceListColumnsLabels.orderStatus,
     colId: InvoiceListColumns.orderStatus,
     field: model('orderStatus'),
@@ -515,7 +527,10 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
     width: 110
   };
 
-  invoiceStatusCol: ITypedColDef<ICompleteListItemDto, IScheduleDashboardLabelConfigurationDto> = {
+  invoiceStatusCol: ITypedColDef<
+    ICompleteListItemDto,
+    IScheduleDashboardLabelConfigurationDto
+  > = {
     headerName: InvoiceListColumnsLabels.invoiceStatus,
     colId: InvoiceListColumns.invoiceStatus,
     field: model('invoiceStatus'),
@@ -548,7 +563,10 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
     width: 110
   };
 
-  invoiceApprovalStatusCol: ITypedColDef<ICompleteListItemDto, IScheduleDashboardLabelConfigurationDto> = {
+  invoiceApprovalStatusCol: ITypedColDef<
+    ICompleteListItemDto,
+    IScheduleDashboardLabelConfigurationDto
+  > = {
     headerName: InvoiceListColumnsLabels.invoiceApprovalStatus,
     colId: InvoiceListColumns.invoiceApprovalStatus,
     field: model('invoiceApprovalStatus'),
@@ -565,7 +583,12 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
     private reportService: InvoiceCompleteService,
     private appErrorHandler: AppErrorHandler
   ) {
-    super('invoice-complete-list-list-grid', columnPreferences, changeDetector, loggerFactory.createLogger(CompleteListGridViewModel.name));
+    super(
+      'invoice-complete-list-list-grid',
+      columnPreferences,
+      changeDetector,
+      loggerFactory.createLogger(CompleteListGridViewModel.name)
+    );
     this.init(this.gridOptions, true);
   }
 
@@ -641,14 +664,25 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    this.reportService.getReportsList$(transformLocalToServeGridInfo(this.gridApi, params, InvoiceListColumnServerKeys, this.searchText))
+    this.reportService
+      .getReportsList$(
+        transformLocalToServeGridInfo(
+          this.gridApi,
+          params,
+          InvoiceListColumnServerKeys,
+          this.searchText
+        )
+      )
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-        response => params.successCallback(response.payload, response.matchedCount),
+        response =>
+          params.successCallback(response.payload, response.matchedCount),
         () => {
-          this.appErrorHandler.handleError(ModuleError.LoadInvoiceCompleteViewListFailed);
+          this.appErrorHandler.handleError(
+            ModuleError.LoadInvoiceCompleteViewListFailed
+          );
           params.failCallback();
-        });
+        }
+      );
   }
-
 }

@@ -1,10 +1,12 @@
-import { IModuleTenantSettings, TenantSettingsModuleName } from './tenant-settings.interface';
+import {
+  IModuleTenantSettings,
+  TenantSettingsModuleName
+} from './tenant-settings.interface';
 
 export class LoadTenantSettingsAction {
   static readonly type = '[Settings] Load Tenant Settings';
 
-  constructor(public moduleName: TenantSettingsModuleName) {
-  }
+  constructor(public moduleName: TenantSettingsModuleName) {}
 
   public log(): any {
     return {
@@ -16,8 +18,10 @@ export class LoadTenantSettingsAction {
 export class LoadTenantSettingsSuccessfulAction {
   static readonly type = '[Settings] Load Tenant Settings Successful';
 
-  constructor(public moduleName: TenantSettingsModuleName, public settings: IModuleTenantSettings) {
-  }
+  constructor(
+    public moduleName: TenantSettingsModuleName,
+    public settings: IModuleTenantSettings
+  ) {}
 
   public log(): any {
     return {
@@ -29,8 +33,7 @@ export class LoadTenantSettingsSuccessfulAction {
 export class LoadTenantSettingsFailedAction {
   static readonly type = '[Settings] Load Tenant Failed';
 
-  constructor(public moduleName: TenantSettingsModuleName) {
-  }
+  constructor(public moduleName: TenantSettingsModuleName) {}
 
   public log(): any {
     return {

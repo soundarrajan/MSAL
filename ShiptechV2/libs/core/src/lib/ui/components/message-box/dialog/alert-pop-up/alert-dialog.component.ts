@@ -1,5 +1,10 @@
-import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  OnInit
+} from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -12,7 +17,10 @@ export class AlertDialogComponent implements OnInit {
   title: string = 'Alert';
   message: string = 'This is an alert pop up?';
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<AlertDialogComponent>) {}
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<AlertDialogComponent>
+  ) {}
 
   ngOnInit(): void {
     if (this.data) {

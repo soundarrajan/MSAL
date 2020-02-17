@@ -12,16 +12,16 @@ import { TitleService } from '@shiptech/core/services/title/title.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TopbarComponent {
-
   public pageTitle$: Observable<string>;
 
   @Select(UserProfileState.displayName) displayName$: Observable<string>;
   @Select(UserProfileState.username) username$: Observable<string>;
 
-  constructor(public app: LayoutMainComponent,
-              public authService: AuthenticationService,
-              titleService: TitleService) {
+  constructor(
+    public app: LayoutMainComponent,
+    public authService: AuthenticationService,
+    titleService: TitleService
+  ) {
     this.pageTitle$ = titleService.title$;
   }
-
 }

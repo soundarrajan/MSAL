@@ -1,8 +1,10 @@
-import { IBaseQuantityControlRequest, IBaseQuantityControlResponse } from './request-response.quantity-control.model';
+import {
+  IBaseQuantityControlRequest,
+  IBaseQuantityControlResponse
+} from './request-response.quantity-control.model';
 
 export interface IWatchVesselRequest extends IBaseQuantityControlRequest {
   reportId: number;
 }
 
-export interface IWatchVesselResponse extends IBaseQuantityControlResponse {
-}
+export interface IWatchVesselResponse extends IBaseQuantityControlResponse {}

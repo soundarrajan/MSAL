@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
 import { CompleteListGridViewModel } from './view-model/invoice-complete-list-grid.view-model';
 import { Subject } from 'rxjs';
 import { AppConfig } from '@shiptech/core/config/app-config';
@@ -11,14 +16,13 @@ import { UrlService } from '@shiptech/core/services/url/url.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InvoiceCompleteListComponent implements OnInit, OnDestroy {
-
   private _destroy$ = new Subject();
 
-  constructor(public gridViewModel: CompleteListGridViewModel,
-              public appConfig: AppConfig,
-              private urlService: UrlService
-  ) {
-  }
+  constructor(
+    public gridViewModel: CompleteListGridViewModel,
+    public appConfig: AppConfig,
+    private urlService: UrlService
+  ) {}
 
   onPageChange(page: number): void {
     this.gridViewModel.page = page;
@@ -29,23 +33,34 @@ export class InvoiceCompleteListComponent implements OnInit, OnDestroy {
   }
 
   openEditOrder(orderId: number): void {
-    window.open(this.urlService.editOrder(orderId), this.appConfig.openLinksInNewTab ? '_blank' : '_self');
+    window.open(
+      this.urlService.editOrder(orderId),
+      this.appConfig.openLinksInNewTab ? '_blank' : '_self'
+    );
   }
 
   openEditDelivery(deliveryId: number): void {
-    window.open(this.urlService.editDelivery(deliveryId), this.appConfig.openLinksInNewTab ? '_blank' : '_self');
+    window.open(
+      this.urlService.editDelivery(deliveryId),
+      this.appConfig.openLinksInNewTab ? '_blank' : '_self'
+    );
   }
 
   openEditInvoice(invoiceId: number): void {
-    window.open(this.urlService.editInvoice(invoiceId), this.appConfig.openLinksInNewTab ? '_blank' : '_self');
+    window.open(
+      this.urlService.editInvoice(invoiceId),
+      this.appConfig.openLinksInNewTab ? '_blank' : '_self'
+    );
   }
 
   openEditContract(contractId: number): void {
-    window.open(this.urlService.editContract(contractId), this.appConfig.openLinksInNewTab ? '_blank' : '_self');
+    window.open(
+      this.urlService.editContract(contractId),
+      this.appConfig.openLinksInNewTab ? '_blank' : '_self'
+    );
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this._destroy$.next();

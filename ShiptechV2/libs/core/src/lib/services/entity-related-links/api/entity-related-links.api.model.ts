@@ -1,12 +1,12 @@
 export type EntityRelatedLinksRequest = {
-  [K in EntityTypeIdField]?: number
+  [K in EntityTypeIdField]?: number;
 };
 
 export type EntityRelatedLinksResponse = {
-  [K in EntityTypeIdField]?: string | number
+  [K in EntityTypeIdField]?: string | number;
 } & {
-  hasQuote?: boolean
-}
+  hasQuote?: boolean;
+};
 
 export enum EntityTypeIdField {
   Request = 'requestId',
@@ -17,5 +17,5 @@ export enum EntityTypeIdField {
   Lab = 'labId',
   Claim = 'claimId',
   Invoice = 'invoiceId',
-  Recon = 'orderId',
+  Recon = 'orderId'
 }

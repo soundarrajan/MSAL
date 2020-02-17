@@ -2,7 +2,6 @@ import * as _ from 'lodash';
 import { Omit } from '@shiptech/core/utils/type-definitions';
 import { MenuItem } from 'primeng/api';
 
-
 export interface OrderedMenuItem extends MenuItem {
   order?: number;
 }
@@ -14,14 +13,16 @@ export interface KeyedMenuItem extends Omit<OrderedMenuItem, 'items'> {
 }
 
 //TODO: Rename file, move to where it's supposed to be
-export function transformMenu(baseMenu: KeyedMenuItems, patchMenu: KeyedMenuItems): MenuItem[] {
-
+export function transformMenu(
+  baseMenu: KeyedMenuItems,
+  patchMenu: KeyedMenuItems
+): MenuItem[] {
   const mergedMenu: KeyedMenuItems = _.merge(baseMenu, patchMenu);
 
-  let itemsToArray: (obj: KeyedMenuItems) => MenuItem[];
-
-  itemsToArray = (obj: KeyedMenuItems) => {
-    return _.values(obj).map(i => {
+  const itemsToArray: (obj: KeyedMenuItems) => MenuItem[] = (
+    obj: KeyedMenuItems
+  ) =>
+    _.values(obj).map(i => {
       const children = itemsToArray(i.items);
       const { items: __, ...menuItemProps } = i;
 
@@ -31,7 +32,6 @@ export function transformMenu(baseMenu: KeyedMenuItems, patchMenu: KeyedMenuItem
       }
       return menuItemProps;
     });
-  };
 
   return itemsToArray(mergedMenu);
 }

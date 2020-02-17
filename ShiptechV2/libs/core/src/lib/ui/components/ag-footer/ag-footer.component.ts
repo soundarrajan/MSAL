@@ -1,13 +1,18 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output
+} from '@angular/core';
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: "app-ag-footer",
-  templateUrl: "./ag-footer.component.html",
+  selector: 'app-ag-footer',
+  templateUrl: './ag-footer.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AgFooterComponent {
-
   _count: number = 0;
   _page: number = 1;
   _size: number = 0;
@@ -51,5 +56,4 @@ export class AgFooterComponent {
       page
     });
   }
-
 }

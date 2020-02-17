@@ -10,18 +10,21 @@ import { map } from 'rxjs/operators';
 import { nullable } from '@shiptech/core/utils/nullable';
 import { USER_PROFILE_API } from '@shiptech/core/services/user-profile/api/user-profile-api.service';
 import { IUserProfileApi } from '@shiptech/core/services/user-profile/api/user-profile-api.interface';
-import { LoadUserProfileAction, LoadUserProfileFailedAction, LoadUserProfileSuccessfulAction } from '@shiptech/core/store/states/user-profile/load-user-profile.actions';
+import {
+  LoadUserProfileAction,
+  LoadUserProfileFailedAction,
+  LoadUserProfileSuccessfulAction
+} from '@shiptech/core/store/states/user-profile/load-user-profile.actions';
 import { UserProfileModel } from '@shiptech/core/store/states/user-profile/user-profile.model';
-
-;
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserProfileService extends BaseStoreService {
-
-  constructor(protected store: Store, loggerFactory: LoggerFactory,
-              @Inject(USER_PROFILE_API) private userProfileApi: IUserProfileApi
+  constructor(
+    protected store: Store,
+    loggerFactory: LoggerFactory,
+    @Inject(USER_PROFILE_API) private userProfileApi: IUserProfileApi
   ) {
     super(store, loggerFactory.createLogger(UserProfileService.name));
   }
@@ -38,8 +41,9 @@ export class UserProfileService extends BaseStoreService {
       const apiDispatch$ = this.apiDispatch(
         () => this.userProfileApi.get().pipe(map(response => response.payload)),
         LoadUserProfileAction,
-        response => new LoadUserProfileSuccessfulAction(new UserProfileModel(response)),
-        new LoadUserProfileFailedAction,
+        response =>
+          new LoadUserProfileSuccessfulAction(new UserProfileModel(response)),
+        new LoadUserProfileFailedAction(),
         AppError.LoadUserProfileFailed
       );
 

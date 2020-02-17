@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
 import _ from 'lodash';
@@ -14,7 +21,7 @@ import {
   IAgGridTextFilter
 } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
-import {AgGridAngular} from "@ag-grid-community/angular";
+import { AgGridAngular } from '@ag-grid-community/angular';
 
 enum ConditionType {
   and = 'and',
@@ -37,12 +44,18 @@ interface IFilterPart extends IPart {
 }
 
 interface IConditionPart extends IPart {
-  type: PartType.logicalOp
+  type: PartType.logicalOp;
   value: ConditionType;
 }
 
-const AndConditionPart: IConditionPart = { type: PartType.logicalOp, value: ConditionType.and };
-const OrConditionPart: IConditionPart = { type: PartType.logicalOp, value: ConditionType.or };
+const AndConditionPart: IConditionPart = {
+  type: PartType.logicalOp,
+  value: ConditionType.and
+};
+const OrConditionPart: IConditionPart = {
+  type: PartType.logicalOp,
+  value: ConditionType.or
+};
 
 type FilterPart = IFilterPart | IConditionPart;
 
@@ -63,56 +76,102 @@ export class AgFilterDisplayComponent implements OnInit, OnDestroy {
 
   private _destroy$: Subject<any> = new Subject();
 
-  constructor(private changeDetector: ChangeDetectorRef, private tenantFormat: TenantFormattingService) {
-  }
+  constructor(
+    private changeDetector: ChangeDetectorRef,
+    private tenantFormat: TenantFormattingService
+  ) {}
 
   ngOnInit(): void {
-    this.grid.filterChanged.pipe(
-      tap(() => {
-        this.filterParts = _.transform(this.grid.api.getFilterModel(), (result: FilterPart[], filterModel: AgGridFilterModel, columnId: any) => {
-          const column = this.grid.columnApi.getColumn(columnId);
+    this.grid.filterChanged
+      .pipe(
+        tap(() => {
+          this.filterParts = _.transform(
+            this.grid.api.getFilterModel(),
+            (
+              result: FilterPart[],
+              filterModel: AgGridFilterModel,
+              columnId: any
+            ) => {
+              const column = this.grid.columnApi.getColumn(columnId);
 
-          if (result.length > 0)
-            result.push(AndConditionPart);
+              if (result.length > 0) result.push(AndConditionPart);
 
-          if (filterModel.operator !== undefined && filterModel.operator !== null) {
-            result.push({
-              column: column.getDefinition().headerName,
-              condition: AgGridConditionTypeLabels[filterModel.condition1.type],
-              value: this.extractFilterValue(filterModel.filterType, filterModel.condition1.type, filterModel.condition1),
-              type: PartType.filter
-            });
+              if (
+                filterModel.operator !== undefined &&
+                filterModel.operator !== null
+              ) {
+                result.push({
+                  column: column.getDefinition().headerName,
+                  condition:
+                    AgGridConditionTypeLabels[filterModel.condition1.type],
+                  value: this.extractFilterValue(
+                    filterModel.filterType,
+                    filterModel.condition1.type,
+                    filterModel.condition1
+                  ),
+                  type: PartType.filter
+                });
 
-            result.push(filterModel.operator === AgGridOperatorEnum.AND ? AndConditionPart : OrConditionPart);
+                result.push(
+                  filterModel.operator === AgGridOperatorEnum.AND
+                    ? AndConditionPart
+                    : OrConditionPart
+                );
 
-            result.push({
-              column: column.getDefinition().headerName,
-              condition: AgGridConditionTypeLabels[filterModel.condition2.type],
-              value: this.extractFilterValue(filterModel.filterType, filterModel.condition2.type, filterModel.condition2),
-              type: PartType.filter
-            });
+                result.push({
+                  column: column.getDefinition().headerName,
+                  condition:
+                    AgGridConditionTypeLabels[filterModel.condition2.type],
+                  value: this.extractFilterValue(
+                    filterModel.filterType,
+                    filterModel.condition2.type,
+                    filterModel.condition2
+                  ),
+                  type: PartType.filter
+                });
+              } else {
+                result.push({
+                  column: column.getDefinition().headerName,
+                  condition: AgGridConditionTypeLabels[filterModel.type],
+                  value: this.extractFilterValue(
+                    filterModel.filterType,
+                    filterModel.type,
+                    filterModel
+                  ),
+                  type: PartType.filter
+                });
+              }
+            },
+            []
+          );
 
-          } else {
-            result.push({
-              column: column.getDefinition().headerName,
-              condition: AgGridConditionTypeLabels[filterModel.type],
-              value: this.extractFilterValue(filterModel.filterType, filterModel.type, filterModel),
-              type: PartType.filter
-            });
-          }
-        }, []);
-
-        this.changeDetector.markForCheck();
-      }),
-      takeUntil(this._destroy$)
-    ).subscribe();
+          this.changeDetector.markForCheck();
+        }),
+        takeUntil(this._destroy$)
+      )
+      .subscribe();
   }
 
-  private extractFilterValue(filterType: AgGridKnownFilterTypes, condition: AgGridConditionTypeEnum, value: IAgGridBaseFilter): string | undefined {
-    if (condition === AgGridConditionTypeEnum.NOT_NULL || condition === AgGridConditionTypeEnum.NULL)
+  ngOnDestroy(): void {
+    this._destroy$.next();
+    this._destroy$.complete();
+  }
+
+  private extractFilterValue(
+    filterType: AgGridKnownFilterTypes,
+    condition: AgGridConditionTypeEnum,
+    value: IAgGridBaseFilter
+  ): string | undefined {
+    if (
+      condition === AgGridConditionTypeEnum.NOT_NULL ||
+      condition === AgGridConditionTypeEnum.NULL
+    )
       return undefined;
 
-    if (condition === AgGridConditionTypeEnum.YES || condition === AgGridConditionTypeEnum.NO)
+    if (
+      condition === AgGridConditionTypeEnum.YES ||
+      condition === AgGridConditionTypeEnum.NO
+    )
       return undefined;
 
     switch (filterType) {
@@ -121,18 +180,17 @@ export class AgFilterDisplayComponent implements OnInit, OnDestroy {
 
       case AgGridKnownFilterTypes.Date:
         return condition === AgGridConditionTypeEnum.IN_RANGE
-          ? `${this.tenantFormat.date((<IAgGridDateFilter>value).dateFrom)} - ${this.tenantFormat.date((<IAgGridDateFilter>value).dateTo)}`
+          ? `${this.tenantFormat.date(
+              (<IAgGridDateFilter>value).dateFrom
+            )} - ${this.tenantFormat.date((<IAgGridDateFilter>value).dateTo)}`
           : this.tenantFormat.date((<IAgGridDateFilter>value).dateFrom);
 
       case AgGridKnownFilterTypes.Number:
         return condition === AgGridConditionTypeEnum.IN_RANGE
-          ? `${(<IAgGridNumberFilter>value).filter} - ${(<IAgGridNumberFilter>value).filterTo}`
+          ? `${(<IAgGridNumberFilter>value).filter} - ${
+              (<IAgGridNumberFilter>value).filterTo
+            }`
           : (<IAgGridNumberFilter>value).filter.toString();
     }
-  }
-
-  ngOnDestroy(): void {
-    this._destroy$.next();
-    this._destroy$.complete();
   }
 }

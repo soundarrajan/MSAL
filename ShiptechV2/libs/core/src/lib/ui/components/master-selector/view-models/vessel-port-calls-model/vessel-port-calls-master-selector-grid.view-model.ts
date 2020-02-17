@@ -1,11 +1,18 @@
 import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
 import { ChangeDetectorRef, Inject, Injectable } from '@angular/core';
 import { GridOptions, IServerSideGetRowsParams } from '@ag-grid-community/core';
-import { RowModelType, RowSelection, ITypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
+import {
+  RowModelType,
+  RowSelection,
+  ITypedColDef
+} from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { LoggerFactory } from '@shiptech/core/logging/logger-factory.service';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
-import { IVesselMastersApi, VESSEL_MASTERS_API_SERVICE } from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
+import {
+  IVesselMastersApi,
+  VESSEL_MASTERS_API_SERVICE
+} from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
 import { transformLocalToServeGridInfo } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters';
 import {
   VesselPortCallsMasterListColumns,
@@ -16,21 +23,21 @@ import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/re
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { takeUntil } from 'rxjs/operators';
 
-function model(prop: keyof IVesselPortCallMasterDto): keyof IVesselPortCallMasterDto {
+function model(
+  prop: keyof IVesselPortCallMasterDto
+): keyof IVesselPortCallMasterDto {
   return prop;
 }
 
 @Injectable()
 export class VesselPortCallsMasterSelectorGridViewModel extends BaseGridViewModel {
+  public searchText: string;
 
-  private defaultColFilterParams = {
+  public defaultColFilterParams = {
     clearButton: true,
     applyButton: true,
     precision: () => this.format.quantityPrecision
   };
-
-  public searchText: string;
-
   gridOptions: GridOptions = {
     groupHeaderHeight: 20,
     headerHeight: 40,
@@ -45,7 +52,8 @@ export class VesselPortCallsMasterSelectorGridViewModel extends BaseGridViewMode
 
     enableBrowserTooltips: true,
     singleClickEdit: true,
-    getRowNodeId: (data: any) => data?.id?.toString() ?? Math.random().toString(),
+    getRowNodeId: (data: any) =>
+      data?.id?.toString() ?? Math.random().toString(),
     defaultColDef: {
       sortable: true,
       resizable: true,
@@ -136,7 +144,14 @@ export class VesselPortCallsMasterSelectorGridViewModel extends BaseGridViewMode
     private format: TenantFormattingService,
     @Inject(VESSEL_MASTERS_API_SERVICE) private mastersApi: IVesselMastersApi
   ) {
-    super('vessel-port-calls-master-selector-grid', columnPreferences, changeDetector, loggerFactory.createLogger(VesselPortCallsMasterSelectorGridViewModel.name));
+    super(
+      'vessel-port-calls-master-selector-grid',
+      columnPreferences,
+      changeDetector,
+      loggerFactory.createLogger(
+        VesselPortCallsMasterSelectorGridViewModel.name
+      )
+    );
     this.init(this.gridOptions, true);
   }
 
@@ -159,10 +174,20 @@ export class VesselPortCallsMasterSelectorGridViewModel extends BaseGridViewMode
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    this.mastersApi.getVesselPortCalls({ id: this.vesselId, ...transformLocalToServeGridInfo(this.gridApi, params, VesselPortCallsMasterListColumnServerKeys, this.searchText) })
+    this.mastersApi
+      .getVesselPortCalls({
+        id: this.vesselId,
+        ...transformLocalToServeGridInfo(
+          this.gridApi,
+          params,
+          VesselPortCallsMasterListColumnServerKeys,
+          this.searchText
+        )
+      })
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-      response => params.successCallback(response.items, response.totalCount),
-      () => params.failCallback());
+        response => params.successCallback(response.items, response.totalCount),
+        () => params.failCallback()
+      );
   }
 }

@@ -2,8 +2,14 @@ import { throwError } from 'rxjs';
 import { MethodDecoratorFactory } from '../type-definitions';
 import { environment } from '@shiptech/environment';
 
-export function ObservableException<T = unknown>(overrideError?: T): MethodDecoratorFactory {
-  return (target: any, methodName: string, descriptor: PropertyDescriptor): PropertyDescriptor => {
+export function ObservableException<T = unknown>(
+  overrideError?: T
+): MethodDecoratorFactory {
+  return (
+    target: any,
+    methodName: string,
+    descriptor: PropertyDescriptor
+  ): PropertyDescriptor => {
     const oldMethod = descriptor.value;
 
     descriptor.value = function(...args: any[]): any {

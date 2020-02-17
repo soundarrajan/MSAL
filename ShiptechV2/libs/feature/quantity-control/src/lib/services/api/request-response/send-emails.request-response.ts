@@ -1,7 +1,8 @@
-import { IBaseQuantityControlRequest, IBaseQuantityControlResponse } from './request-response.quantity-control.model';
+import {
+  IBaseQuantityControlRequest,
+  IBaseQuantityControlResponse
+} from './request-response.quantity-control.model';
 
-export interface ISendEmailsRequest extends IBaseQuantityControlRequest {
-}
+export interface ISendEmailsRequest extends IBaseQuantityControlRequest {}
 
-export interface ISendEmailsResponse extends IBaseQuantityControlResponse {
-}
+export interface ISendEmailsResponse extends IBaseQuantityControlResponse {}

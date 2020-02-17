@@ -2,8 +2,10 @@ import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-req
 import { DefaultPageSize } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
 import { BaseModel } from '../report/models/base.sub-state';
 
-export class QcReportsListStateModel extends BaseModel{
-  gridInfo: IServerGridInfo = { pagination: { skip: 0, take: DefaultPageSize } };
+export class QcReportsListStateModel extends BaseModel {
+  gridInfo: IServerGridInfo = {
+    pagination: { skip: 0, take: DefaultPageSize }
+  };
 
   nbOfMatched: number;
   nbOfNotMatched: number;
@@ -16,5 +18,4 @@ export class QcReportsListStateModel extends BaseModel{
   }
 }
 
-export interface IQcReportsListState extends QcReportsListStateModel {
-}
+export interface IQcReportsListState extends QcReportsListStateModel {}

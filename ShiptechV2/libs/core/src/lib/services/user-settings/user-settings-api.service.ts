@@ -15,7 +15,13 @@ import {
 import { fromEvent, Observable, of, Subject, throwError } from 'rxjs';
 import { ObservableException } from '../../utils/decorators/observable-exception.decorator';
 import { IPreferenceStorage } from '../preference-storage/preference-storage.interface';
-import { catchError, finalize, map, switchMap, takeUntil } from 'rxjs/operators';
+import {
+  catchError,
+  finalize,
+  map,
+  switchMap,
+  takeUntil
+} from 'rxjs/operators';
 import { AppError } from '../../error-handling/app-error';
 import { AppConfig } from '../../config/app-config';
 import { LoggingInterceptorHeader } from '../../interceptors/logging-http-interceptor.service';
@@ -32,7 +38,8 @@ export namespace UserSettingsApiPaths {
   providedIn: 'root'
 })
 // noinspection JSUnusedGlobalSymbols
-export class UserSettingsApiService implements IUserSettingsApiService, IPreferenceStorage, OnDestroy {
+export class UserSettingsApiService
+  implements IUserSettingsApiService, IPreferenceStorage, OnDestroy {
   @ApiCallUrl()
   protected _apiUrl = this.appConfig.v1.API.BASE_URL_DATA_INFRASTRUCTURE;
   private _destroy$ = new Subject();
@@ -45,30 +52,49 @@ export class UserSettingsApiService implements IUserSettingsApiService, IPrefere
   }
 
   @ObservableException()
-  getByKey(request: IUserSettingByKeyRequest): Observable<IUserSettingResponse> {
-    const requestUrl = `${this._apiUrl}/${UserSettingsApiPaths.get(request.key)}`;
-    return this.getSettingsCached(requestUrl).pipe(catchError((e) => {
-        return throwError(AppError.FailedToLoadUserSettings(e));
-      }
-    ));
+  getByKey(
+    request: IUserSettingByKeyRequest
+  ): Observable<IUserSettingResponse> {
+    const requestUrl = `${this._apiUrl}/${UserSettingsApiPaths.get(
+      request.key
+    )}`;
+    return this.getSettingsCached(requestUrl).pipe(
+      catchError(e => throwError(AppError.FailedToLoadUserSettings(e)))
+    );
   }
 
   @ObservableException()
-  save(request: IUpsertUserSettingRequest): Observable<IUpsertUserSettingResponse> {
-    const requestUrl = `${this._apiUrl}/${UserSettingsApiPaths.save(request.key)}`;
-    return this.http.post<IUpsertUserSettingResponse>(requestUrl, { Payload: request }).pipe(catchError(() => throwError(AppError.FailedToSaveUserSettings)));
+  save(
+    request: IUpsertUserSettingRequest
+  ): Observable<IUpsertUserSettingResponse> {
+    const requestUrl = `${this._apiUrl}/${UserSettingsApiPaths.save(
+      request.key
+    )}`;
+    return this.http
+      .post<IUpsertUserSettingResponse>(requestUrl, { Payload: request })
+      .pipe(catchError(() => throwError(AppError.FailedToSaveUserSettings)));
   }
 
   @ObservableException()
-  delete(request: IDeleteUserSettingRequest): Observable<IDeleteUserSettingResponse> {
-    const requestUrl = `${this._apiUrl}/${UserSettingsApiPaths.$delete(request.key)}`;
-    return this.http.post<IDeleteUserSettingResponse>(requestUrl, { payload: false});
+  delete(
+    request: IDeleteUserSettingRequest
+  ): Observable<IDeleteUserSettingResponse> {
+    const requestUrl = `${this._apiUrl}/${UserSettingsApiPaths.$delete(
+      request.key
+    )}`;
+    return this.http.post<IDeleteUserSettingResponse>(requestUrl, {
+      payload: false
+    });
   }
 
   @ObservableException()
-  purge(request: IPurgeUserSettingsRequest): Observable<IPurgeUserSettingsResponse> {
+  purge(
+    request: IPurgeUserSettingsRequest
+  ): Observable<IPurgeUserSettingsResponse> {
     const requestUrl = `${this._apiUrl}/${UserSettingsApiPaths.purge()}`;
-    return this.http.post<IPurgeUserSettingsResponse>(requestUrl, { payload: false}).pipe(catchError(error => throwError(AppError.FailedToPurgeUserSettings)));
+    return this.http
+      .post<IPurgeUserSettingsResponse>(requestUrl, { payload: false })
+      .pipe(catchError(() => throwError(AppError.FailedToPurgeUserSettings)));
   }
 
   @ObservableException()
@@ -88,12 +114,21 @@ export class UserSettingsApiService implements IUserSettingsApiService, IPrefere
 
   @ObservableException()
   set(key: string, value: any): Observable<any> {
-    return this.save({ key, value: typeof value === 'string' ? value as string : JSON.stringify(value) });
+    return this.save({
+      key,
+      value:
+        typeof value === 'string' ? (value as string) : JSON.stringify(value)
+    });
   }
 
   // TODO: Remove from here, create a UserSettingService
   onKeyPress(event: KeyboardEvent): void {
-    if (event.ctrlKey && event.altKey && event.shiftKey && event.code === 'KeyR') {
+    if (
+      event.ctrlKey &&
+      event.altKey &&
+      event.shiftKey &&
+      event.code === 'KeyR'
+    ) {
       if (confirm('Are you sure you want to clear all user settings?')) {
         this.removeAll()
           .pipe(finalize(() => window.location.reload()))
@@ -128,21 +163,27 @@ export class UserSettingsApiService implements IUserSettingsApiService, IPrefere
   //   maxCacheCount: 100
   // })
   protected getSettingsCached(url: string): Observable<IUserSettingResponse> {
-    return this.http.get<IUserSettingResponse>(url, {
-      observe: 'response',
-      // Note: If the interceptor is not installed, the header will go through which might break CORS allowed headers
-      headers: { [LoggingInterceptorHeader]: '404' }
-    }).pipe(
-      catchError(response =>
-        // Note: 404 is a valid response, the key is missing in the user settings.
-        response.status === 404 ? of(response) : throwError(response)),
-      switchMap(response => {
-        return !response.body || !response.body.value
-          // Note: We need to map a 404 status code to the <IUserSettingResponse> { value: any } format.
-          ? of({ value: undefined })
-          : of(response.body);
-      }));
+    return this.http
+      .get<IUserSettingResponse>(url, {
+        observe: 'response',
+        // Note: If the interceptor is not installed, the header will go through which might break CORS allowed headers
+        headers: { [LoggingInterceptorHeader]: '404' }
+      })
+      .pipe(
+        catchError(response =>
+          // Note: 404 is a valid response, the key is missing in the user settings.
+          response.status === 404 ? of(response) : throwError(response)
+        ),
+        switchMap(response =>
+          !response.body || !response.body.value
+            ? // Note: We need to map a 404 status code to the <IUserSettingResponse> { value: any } format.
+              of({ value: undefined })
+            : of(response.body)
+        )
+      );
   }
 }
 
-export const USER_SETTINGS_API_SERVICE = new InjectionToken<IUserSettingsApiService>('IUserSettingsApiService');
+export const USER_SETTINGS_API_SERVICE = new InjectionToken<
+  IUserSettingsApiService
+>('IUserSettingsApiService');

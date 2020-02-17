@@ -20,11 +20,14 @@ export class AuthenticationService {
   }
 
   get isAuthenticated(): boolean {
-    return ((this.adalService || <AdalService>{}).userInfo || <adal.User>{}).authenticated;
+    return ((this.adalService || <AdalService>{}).userInfo || <adal.User>{})
+      .authenticated;
   }
 
-  constructor(private adalService: AdalService, public authenticationContext: AuthenticationContext) {
-  }
+  constructor(
+    private adalService: AdalService,
+    public authenticationContext: AuthenticationContext
+  ) {}
 
   public init(configOptions: adal.Config): void {
     this.adalService.init(configOptions);
@@ -33,7 +36,7 @@ export class AuthenticationService {
 
     this.adalService.handleWindowCallback();
 
-    if(this.isAuthenticated){
+    if (this.isAuthenticated) {
       this.authenticationContext.userId = this.userInfo?.userName;
       this.authenticationContext.isAuthenticated = this.isAuthenticated;
     }
@@ -56,5 +59,5 @@ export class AuthenticationService {
 
   public getResourceForEndpoint(endpoint: string): string | null {
     return this.adalService.getResourceForEndpoint(endpoint);
-  };
+  }
 }

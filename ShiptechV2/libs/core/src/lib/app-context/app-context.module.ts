@@ -38,5 +38,5 @@ export class AppContextModule {
         ToastrService
       ]
     };
-  };
+  }
 }

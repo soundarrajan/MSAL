@@ -13,12 +13,7 @@ import { InputTextModule } from 'primeng/inputtext';
     CommonModule,
     SelectTextOnFocusDirectiveModule
   ],
-  declarations: [
-    SearchBoxComponent
-  ],
-  exports: [
-    SearchBoxComponent
-  ]
+  declarations: [SearchBoxComponent],
+  exports: [SearchBoxComponent]
 })
-export class SearchBoxModule {
-}
+export class SearchBoxModule {}

@@ -1,6 +1,6 @@
-import {IServerGridInfo} from '@shiptech/core/grid/server-grid/server-grid-request-response';
-import {IDisplayLookupDto} from '@shiptech/core/lookups/display-lookup-dto.interface';
-import {IScheduleDashboardLabelConfigurationDto} from "@shiptech/core/lookups/schedule-dashboard-label-configuration.dto.interface";
+import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-request-response';
+import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+import { IScheduleDashboardLabelConfigurationDto } from '@shiptech/core/lookups/schedule-dashboard-label-configuration.dto.interface';
 
 export interface IInvoiceListItemDto {
   id: number;
@@ -40,8 +40,7 @@ export interface IInvoiceListItemDto {
   invoiceApprovalStatus: IScheduleDashboardLabelConfigurationDto;
 }
 
-export interface IGetInvoiceListRequest extends IServerGridInfo {
-}
+export interface IGetInvoiceListRequest extends IServerGridInfo {}
 
 export interface IGetInvoiceListResponse {
   payload: IInvoiceListItemDto[];

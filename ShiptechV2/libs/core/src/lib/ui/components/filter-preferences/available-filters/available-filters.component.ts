@@ -1,10 +1,28 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  OnDestroy,
+  OnInit,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import * as _ from 'lodash';
 import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { CharactersNotAllowed, EmptyFilterName, FilterExists, ToastPosition } from '../filter-preferences-messages';
+import {
+  CharactersNotAllowed,
+  EmptyFilterName,
+  FilterExists,
+  ToastPosition
+} from '../filter-preferences-messages';
 import { FilterPreferenceViewModel } from '../../../../services/user-settings/filter-preference.interface';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogRef
+} from '@angular/material/dialog';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -16,7 +34,8 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog
 export class AvailableFiltersComponent implements OnInit, OnDestroy {
   _destroy$: Subject<any> = new Subject();
 
-  @ViewChild('deleteFilter', {static: false}) deleteFilterTemplate: TemplateRef<any>;
+  @ViewChild('deleteFilter', { static: false })
+  deleteFilterTemplate: TemplateRef<any>;
 
   isEditing: boolean = false;
   deleteFilterDialog: any;
@@ -26,7 +45,13 @@ export class AvailableFiltersComponent implements OnInit, OnDestroy {
   maxPinnedItems: number;
   filterToBeDeleted: FilterPreferenceViewModel;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private toastr: ToastrService, public matDialog: MatDialog, public dialogRef: MatDialogRef<AvailableFiltersComponent>, private changeDetector: ChangeDetectorRef) {}
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private toastr: ToastrService,
+    public matDialog: MatDialog,
+    public dialogRef: MatDialogRef<AvailableFiltersComponent>,
+    private changeDetector: ChangeDetectorRef
+  ) {}
 
   updateAllFilters(): void {
     if (this.validateFilterItems()) {
@@ -51,7 +76,12 @@ export class AvailableFiltersComponent implements OnInit, OnDestroy {
       return true;
     }
 
-    if (_.filter(_.map(_.keyBy(this.filterItems, 'id'), item => item.name.toLowerCase()), (val, i, iteratee) => _.includes(iteratee, val, i + 1)).length) {
+    if (
+      _.filter(
+        _.map(_.keyBy(this.filterItems, 'id'), item => item.name.toLowerCase()),
+        (val, i, iteratee) => _.includes(iteratee, val, i + 1)
+      ).length
+    ) {
       this.toastr.info(FilterExists, '', ToastPosition);
       return true;
     }
@@ -70,7 +100,9 @@ export class AvailableFiltersComponent implements OnInit, OnDestroy {
 
   setPinned(id: string): void {
     // NOTE: There can't be more than 3 pinned filters at a time so we have to remove one of them every time a new one is pinned
-    const pinnedPresets = this.filterItems.filter(preset => preset.isPinned && !preset.isDefault && !preset.isClear);
+    const pinnedPresets = this.filterItems.filter(
+      preset => preset.isPinned && !preset.isDefault && !preset.isClear
+    );
     const presetToUpdate = this.filterItems.find(filter => filter.id === id);
     const selectedItemIsPinned = presetToUpdate.isPinned;
 
@@ -97,7 +129,9 @@ export class AvailableFiltersComponent implements OnInit, OnDestroy {
       this.filterItems.find(filter => filter.isClear).isActive = true;
     }
     this.filterItems = this.filterItems.filter(filter => filter.id !== id);
-    this.hasAvailableFilterItems = !this.filterItems.some(item => !item.isDefault && !item.isClear);
+    this.hasAvailableFilterItems = !this.filterItems.some(
+      item => !item.isDefault && !item.isClear
+    );
 
     this.deleteFilterDialog.close();
     this.changeDetector.markForCheck();
@@ -106,7 +140,9 @@ export class AvailableFiltersComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (this.data) {
       this.filterItems = _.cloneDeep(this.data.filterPresets); // .sort((x, y) => (x.isPinned !== y.isPinned) ? 0 : x ? -1 : 1);
-      this.hasAvailableFilterItems = !this.filterItems.some(item => !item.isDefault && !item.isClear);
+      this.hasAvailableFilterItems = !this.filterItems.some(
+        item => !item.isDefault && !item.isClear
+      );
       this.maxPinnedItems = this.data.maxPinnedItems;
     }
   }

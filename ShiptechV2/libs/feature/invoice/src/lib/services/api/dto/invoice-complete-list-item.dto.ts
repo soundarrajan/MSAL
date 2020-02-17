@@ -1,7 +1,6 @@
 import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-request-response';
 import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
-import {IDisplayLookupDto} from "@shiptech/core/lookups/display-lookup-dto.interface";
-import {IScheduleDashboardLabelConfigurationDto} from "@shiptech/core/lookups/schedule-dashboard-label-configuration.dto.interface";
+import { IScheduleDashboardLabelConfigurationDto } from '@shiptech/core/lookups/schedule-dashboard-label-configuration.dto.interface';
 
 export interface ICompleteListItemDto {
   id: number;
@@ -71,8 +70,7 @@ export interface ICompleteListItemDto {
   invoiceApprovalStatus: IScheduleDashboardLabelConfigurationDto;
 }
 
-export interface IGetInvoiceCompletesListRequest extends IServerGridInfo {
-}
+export interface IGetInvoiceCompletesListRequest extends IServerGridInfo {}
 
 export interface IGetInvoiceCompletesListResponse {
   payload: ICompleteListItemDto[];

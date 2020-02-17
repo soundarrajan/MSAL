@@ -1,7 +1,11 @@
 import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
 import { ChangeDetectorRef, Inject, Injectable } from '@angular/core';
 import { GridOptions, IServerSideGetRowsParams } from '@ag-grid-community/core';
-import { RowModelType, RowSelection, ITypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
+import {
+  RowModelType,
+  RowSelection,
+  ITypedColDef
+} from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { LoggerFactory } from '@shiptech/core/logging/logger-factory.service';
 import { IVesselMasterDto } from '@shiptech/core/services/masters-api/request-response-dtos/vessel';
@@ -11,7 +15,10 @@ import {
   VesselMasterListColumnsLabels
 } from '@shiptech/core/ui/components/master-selector/view-models/vessel-model/vessel-master-list.columns';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
-import { IVesselMastersApi, VESSEL_MASTERS_API_SERVICE } from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
+import {
+  IVesselMastersApi,
+  VESSEL_MASTERS_API_SERVICE
+} from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
 import { transformLocalToServeGridInfo } from '@shiptech/core/grid/server-grid/mappers/shiptech-grid-filters';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { takeUntil } from 'rxjs/operators';
@@ -22,13 +29,12 @@ function model(prop: keyof IVesselMasterDto): keyof IVesselMasterDto {
 
 @Injectable()
 export class VesselMasterSelectorGridViewModel extends BaseGridViewModel {
-  private defaultColFilterParams = {
+  public searchText: string;
+  public defaultColFilterParams = {
     clearButton: true,
     applyButton: true,
     precision: () => this.format.quantityPrecision
   };
-
-  public searchText: string;
   gridOptions: GridOptions = {
     groupHeaderHeight: 20,
     headerHeight: 40,
@@ -43,7 +49,8 @@ export class VesselMasterSelectorGridViewModel extends BaseGridViewModel {
 
     enableBrowserTooltips: true,
     singleClickEdit: true,
-    getRowNodeId: (data: any) => data?.id?.toString() ?? Math.random().toString(),
+    getRowNodeId: (data: any) =>
+      data?.id?.toString() ?? Math.random().toString(),
     defaultColDef: {
       sortable: true,
       resizable: true,
@@ -305,10 +312,10 @@ export class VesselMasterSelectorGridViewModel extends BaseGridViewModel {
     headerName: VesselMasterListColumnsLabels.flowMeterAvailable,
     colId: VesselMasterListColumns.flowMeterAvailable,
     field: model('isFlowMeterAvailable'),
-    valueFormatter: params => params.value ? 'YES' : 'NO',  // TODO hardcoded values
+    valueFormatter: params => (params.value ? 'YES' : 'NO'), // TODO hardcoded values
     cellClass: 'cell-background',
     cellClassRules: {
-      'bad': params => !(params.data?.isFlowMeterAvailable ?? false)
+      bad: params => !(params.data?.isFlowMeterAvailable ?? false)
     }
   };
 
@@ -345,11 +352,11 @@ export class VesselMasterSelectorGridViewModel extends BaseGridViewModel {
     headerName: VesselMasterListColumnsLabels.status,
     colId: VesselMasterListColumns.status,
     field: model('isDeleted'),
-    valueFormatter: params => params.value ? 'INACTIVE' : 'ACTIVE', // TODO hardcoded values
+    valueFormatter: params => (params.value ? 'INACTIVE' : 'ACTIVE'), // TODO hardcoded values
     cellClass: 'vessel-master-cell-background',
     cellClassRules: {
-      'active': params => !(params.data?.isDeleted ?? false),
-      'inactive': params => (params.data?.isDeleted ?? false)
+      active: params => !(params.data?.isDeleted ?? false),
+      inactive: params => params.data?.isDeleted ?? false
     }
   };
 
@@ -390,7 +397,12 @@ export class VesselMasterSelectorGridViewModel extends BaseGridViewModel {
     private format: TenantFormattingService,
     @Inject(VESSEL_MASTERS_API_SERVICE) private mastersApi: IVesselMastersApi
   ) {
-    super('vessel-master-selector-grid', columnPreferences, changeDetector, loggerFactory.createLogger(VesselMasterSelectorGridViewModel.name));
+    super(
+      'vessel-master-selector-grid',
+      columnPreferences,
+      changeDetector,
+      loggerFactory.createLogger(VesselMasterSelectorGridViewModel.name)
+    );
     this.init(this.gridOptions, true);
   }
 
@@ -450,10 +462,19 @@ export class VesselMasterSelectorGridViewModel extends BaseGridViewModel {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    this.mastersApi.getVessels(transformLocalToServeGridInfo(this.gridApi, params, VesselMasterListColumnServerKeys, this.searchText))
+    this.mastersApi
+      .getVessels(
+        transformLocalToServeGridInfo(
+          this.gridApi,
+          params,
+          VesselMasterListColumnServerKeys,
+          this.searchText
+        )
+      )
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-      response => params.successCallback(response.items, response.totalCount),
-      () => params.failCallback());
+        response => params.successCallback(response.items, response.totalCount),
+        () => params.failCallback()
+      );
   }
 }

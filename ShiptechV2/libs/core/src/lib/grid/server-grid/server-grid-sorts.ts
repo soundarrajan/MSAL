@@ -8,5 +8,5 @@ export interface IServerGridSorts {
 }
 
 export interface IServerGridSortsDto {
-  sortList: IServerGridSorts[]
+  sortList: IServerGridSorts[];
 }

@@ -1,7 +1,10 @@
 import { actionMatcher } from '@ngxs/store';
 import { Type } from '@angular/core';
 
-export function isAction<T>(actionInstance: any, actionType: T): actionType is T {
+export function isAction<T>(
+  actionInstance: any,
+  actionType: T
+): actionType is T {
   return actionMatcher(actionInstance)(actionType);
 }
 

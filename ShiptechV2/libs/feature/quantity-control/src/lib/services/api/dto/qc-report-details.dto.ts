@@ -4,9 +4,9 @@ import { IQcVesselPortCallDto } from './qc-vessel-port-call.interface';
 import { IStatusLookupDto } from '@shiptech/core/lookups/known-lookups/status/status-lookup.interface';
 
 export interface IQcReportDetailsDto {
-  id: number
+  id: number;
   portCall?: IQcVesselPortCallDto;
-  vessel?: IDisplayLookupDto,
+  vessel?: IDisplayLookupDto;
   nbOfClaims: number;
   nbOfDeliveries: number;
   productTypeCategories: IQcReportDetailsProductTypeDto[];
@@ -44,8 +44,8 @@ export interface IQcReportDetailsRob {
 }
 
 export interface IQcReportDetailsUoms {
-  robBeforeDeliveryUom?: IDisplayLookupDto,
-  robAfterDeliveryUom?: IDisplayLookupDto,
-  deliveredQtyUom?: IDisplayLookupDto
-  options: IDisplayLookupDto[]
+  robBeforeDeliveryUom?: IDisplayLookupDto;
+  robAfterDeliveryUom?: IDisplayLookupDto;
+  deliveredQtyUom?: IDisplayLookupDto;
+  options: IDisplayLookupDto[];
 }

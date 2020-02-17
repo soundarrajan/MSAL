@@ -12,20 +12,25 @@ export class QcProductTypeListItemStateModel {
   robAfterDeliveryMeasuredROB: number;
   isSludge: boolean;
 
-  constructor(productType: IQcReportDetailsProductTypeDto, isSludge: boolean = false) {
+  constructor(
+    productType: IQcReportDetailsProductTypeDto,
+    isSludge: boolean = false
+  ) {
     this.id = productType.id;
     this.productType = productType.productType;
     this.isSludge = isSludge;
 
-    this.robBeforeDeliveryLogBookROB = productType.robBeforeDelivery?.logBookROB;
-    this.robBeforeDeliveryMeasuredROB = productType.robBeforeDelivery?.measuredROB;
+    this.robBeforeDeliveryLogBookROB =
+      productType.robBeforeDelivery?.logBookROB;
+    this.robBeforeDeliveryMeasuredROB =
+      productType.robBeforeDelivery?.measuredROB;
     this.deliveredQuantityBdnQty = productType.deliveredQty?.bdnQuantity;
     this.measuredDeliveredQty = productType.deliveredQty?.measuredQty;
     this.robAfterDeliveryLogBookROB = productType.robAfterDelivery?.logBookROB;
-    this.robAfterDeliveryMeasuredROB = productType.robAfterDelivery?.measuredROB;
+    this.robAfterDeliveryMeasuredROB =
+      productType.robAfterDelivery?.measuredROB;
   }
 }
 
-export interface IQcProductTypeListItemState extends QcProductTypeListItemStateModel {
-
-}
+export interface IQcProductTypeListItemState
+  extends QcProductTypeListItemStateModel {}

@@ -21,7 +21,10 @@ export enum DocumentsMasterListColumnsLabels {
   status = 'Status'
 }
 
-export const DocumentsMasterListColumnServerKeys: Record<DocumentsMasterListColumns, string> = {
+export const DocumentsMasterListColumnServerKeys: Record<
+  DocumentsMasterListColumns,
+  string
+> = {
   [DocumentsMasterListColumns.selection]: undefined,
   [DocumentsMasterListColumns.id]: 'id',
   [DocumentsMasterListColumns.documentTypeName]: 'name',
@@ -30,5 +33,5 @@ export const DocumentsMasterListColumnServerKeys: Record<DocumentsMasterListColu
   [DocumentsMasterListColumns.createdOn]: 'createdOn',
   [DocumentsMasterListColumns.lastModifiedBy]: 'lastModifiedBy',
   [DocumentsMasterListColumns.lastModifiedOn]: 'lastModifiedOn',
-  [DocumentsMasterListColumns.status]: 'isDeleted',
+  [DocumentsMasterListColumns.status]: 'isDeleted'
 };

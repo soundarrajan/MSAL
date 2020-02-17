@@ -18,7 +18,10 @@ export function copyIntoClipoard(value: any): void {
 
 export function copyToClipboardCtrlAltE(): Observable<any> {
   return fromEvent(window, 'keydown').pipe(
-    filter((event: KeyboardEvent) => event.ctrlKey && event.altKey && event.code === 'KeyE'),
+    filter(
+      (event: KeyboardEvent) =>
+        event.ctrlKey && event.altKey && event.code === 'KeyE'
+    ),
     tap(() => copyIntoClipoard(AppContext.instance.sessionId))
   );
 }

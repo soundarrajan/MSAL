@@ -14,5 +14,4 @@ export enum AppErrorCode {
   FailedToLoadMastersData = 108,
 
   LoadUserProfileFailed = 200
-
 }

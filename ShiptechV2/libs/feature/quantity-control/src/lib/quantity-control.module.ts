@@ -2,7 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoggingModule } from '@shiptech/core/logging/logging.module';
 import { ModuleLoggerFactory } from './core/logging/module-logger-factory';
-import { QUANTITY_CONTROL_API_SERVICE, QuantityControlApi } from './services/api/quantity-control-api';
+import {
+  QUANTITY_CONTROL_API_SERVICE,
+  QuantityControlApi
+} from './services/api/quantity-control-api';
 import { SearchBoxModule } from '@shiptech/core/ui/components/search-box/search-box.module';
 import { FilterPresetsModule } from '@shiptech/core/ui/components/filter-preferences/filter-presets.module';
 import { UIModule } from '@shiptech/core/ui/ui.module';
@@ -50,14 +53,15 @@ import { TabMenuModule } from 'primeng/tabmenu';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { PanelModule } from 'primeng/panel';
 import { SpinnerModule } from 'primeng/spinner';
-import { PSpinnerDisableKeysSpinDirective } from '@shiptech/core/ui/directives/p-spinner-disable-keys-spin.directive';
-import { PSpinnerTenantFormatDirective } from '@shiptech/core/ui/directives/p-spinner-tenant-format.directive';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { AccordionModule } from 'primeng/accordion';
 import { DropdownModule } from 'primeng/dropdown';
 import { MessagesModule } from 'primeng/messages';
-import {PrimeNGModule} from "@shiptech/core/ui/primeng.module";
+import { PSpinnerDisableKeysSpinDirective } from '@shiptech/core/ui/directives/p-spinner-disable-keys-spin.directive';
+import { PSpinnerTenantFormatDirective } from '@shiptech/core/ui/directives/p-spinner-tenant-format.directive';
+import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @NgModule({
   imports: [
@@ -73,8 +77,12 @@ import {PrimeNGModule} from "@shiptech/core/ui/primeng.module";
     MessageBoxModule,
     RelatedLinksModule,
     EntityStatusModule,
-    PrimeNGModule,
-    NgxsModule.forFeature([QuantityControlState, QcReportsListState, QcReportState]),
+    DynamicDialogModule,
+    NgxsModule.forFeature([
+      QuantityControlState,
+      QcReportsListState,
+      QcReportState
+    ]),
     NgxsResetPluginModule.forRoot(),
     AgFilterDisplayModule,
     AgFooterModule,
@@ -108,13 +116,15 @@ import {PrimeNGModule} from "@shiptech/core/ui/primeng.module";
     QcReportDetailsAuditLogsComponent,
     QcReportDetailsDocumentsComponent,
     UomSelectorComponent,
-    RaiseClaimComponent
+    RaiseClaimComponent,
+    PSpinnerDisableKeysSpinDirective,
+    PSpinnerTenantFormatDirective
   ],
-  entryComponents: [
-    RaiseClaimComponent
-  ],
+  entryComponents: [RaiseClaimComponent],
   exports: [
-    MainQuantityControlComponent
+    MainQuantityControlComponent,
+    PSpinnerDisableKeysSpinDirective,
+    PSpinnerTenantFormatDirective
   ],
   providers: [
     ModuleLoggerFactory,
@@ -122,11 +132,15 @@ import {PrimeNGModule} from "@shiptech/core/ui/primeng.module";
     QcReportDetailsRouteResolver,
     {
       provide: QUANTITY_CONTROL_API_SERVICE,
-      useClass: environment.production ? QuantityControlApi : QuantityControlApiMock
+      useClass: environment.production
+        ? QuantityControlApi
+        : QuantityControlApiMock
     },
     QcReportDetailsUnsavedChangesGuard,
-    QcReportService
+    QcReportService,
+    DialogService,
+    MessageService,
+    ConfirmationService
   ]
 })
-export class QuantityControlModule {
-}
+export class QuantityControlModule {}

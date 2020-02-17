@@ -11,11 +11,8 @@ export class AppConfig implements IAppConfig {
   baseOrigin: string;
   robApi: string;
   v1ConfigPath: string;
-  openLinksInNewTab =  true;
+  openLinksInNewTab = true;
 }
 
 // tslint:disable-next-line:no-empty-interface
-export interface IAppConfig extends AppConfig {
-}
-
-
+export interface IAppConfig extends AppConfig {}

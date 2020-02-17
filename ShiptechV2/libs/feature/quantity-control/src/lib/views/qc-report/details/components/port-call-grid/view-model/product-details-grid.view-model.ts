@@ -2,8 +2,16 @@ import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.gri
 import { AgColumnPreferencesService } from '@shiptech/core/ui/components/ag-grid/ag-column-preferences/ag-column-preferences.service';
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { ColGroupDef, GridOptions } from '@ag-grid-community/core';
-import { ITypedColDef, RowSelection } from '@shiptech/core/ui/components/ag-grid/type.definition';
-import { ProductDetailsColGroupsEnum, ProductDetailsColGroupsLabels, ProductDetailsColumns, ProductDetailsColumnsLabels } from './product-details.columns';
+import {
+  ITypedColDef,
+  RowSelection
+} from '@shiptech/core/ui/components/ag-grid/type.definition';
+import {
+  ProductDetailsColGroupsEnum,
+  ProductDetailsColGroupsLabels,
+  ProductDetailsColumns,
+  ProductDetailsColumnsLabels
+} from './product-details.columns';
 import { ModuleLoggerFactory } from '../../../../../../core/logging/module-logger-factory';
 import { QcReportService } from '../../../../../../services/qc-report.service';
 import { AgCellTemplateComponent } from '@shiptech/core/ui/components/ag-grid/ag-cell-template/ag-cell-template.component';
@@ -11,7 +19,11 @@ import { AgColumnGroupHeaderComponent } from '@shiptech/core/ui/components/ag-gr
 import { ProductTypeListItemViewModel } from './product-type-list-item.view-model';
 import { Store } from '@ngxs/store';
 import { Observable, throwError } from 'rxjs';
-import { SwitchUomForDeliveredQuantityAction, SwitchUomForRobAfterDelivery, SwitchUomForRobBeforeDeliveryAction } from '../../../../../../store/report/details/actions/qc-uom.actions';
+import {
+  SwitchUomForDeliveredQuantityAction,
+  SwitchUomForRobAfterDelivery,
+  SwitchUomForRobBeforeDeliveryAction
+} from '../../../../../../store/report/details/actions/qc-uom.actions';
 import { IQcReportDetailsState } from '../../../../../../store/report/details/qc-report-details.model';
 import { IAppState } from '@shiptech/core/store/states/app.state.interface';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
@@ -22,15 +34,18 @@ import { ReconStatusLookupEnum } from '@shiptech/core/lookups/known-lookups/reco
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { IReconStatusLookupDto } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.interface';
 
-function model(prop: keyof ProductTypeListItemViewModel): keyof ProductTypeListItemViewModel {
+function model(
+  prop: keyof ProductTypeListItemViewModel
+): keyof ProductTypeListItemViewModel {
   return prop;
 }
 
 @Injectable()
 export class ProductDetailsGridViewModel extends BaseGridViewModel {
-
-  private readonly minToleranceLimit;
-  private readonly maxToleranceLimit;
+  protected get reportDetailsState(): IQcReportDetailsState {
+    // Note: Always get a fresh reference to the state.
+    return (<IAppState>this.store.snapshot()).quantityControl.report.details;
+  }
 
   gridOptions: GridOptions = {
     groupHeaderHeight: 25,
@@ -45,12 +60,12 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     rowDragManaged: true,
     suppressRowClickSelection: true,
     multiSortKey: 'ctrl',
-    getRowNodeId: (data: ProductTypeListItemViewModel) => data?.productType?.id?.toString(),
+    getRowNodeId: (data: ProductTypeListItemViewModel) =>
+      data?.productType?.id?.toString(),
     enableBrowserTooltips: true,
     suppressContextMenu: true,
     suppressMovableColumns: true,
     defaultColDef: {
-
       editable: false,
       sortable: false,
       filter: false,
@@ -61,7 +76,10 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     }
   };
 
-  productTypeCol: ITypedColDef<ProductTypeListItemViewModel, IDisplayLookupDto> = {
+  productTypeCol: ITypedColDef<
+    ProductTypeListItemViewModel,
+    IDisplayLookupDto
+  > = {
     headerName: ProductDetailsColumnsLabels.ProductTypeName,
     colId: ProductDetailsColumns.ProductTypeName,
     field: model('productType'),
@@ -70,7 +88,10 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     flex: 2
   };
 
-  logBookBeforeDeliveryCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
+  logBookBeforeDeliveryCol: ITypedColDef<
+    ProductTypeListItemViewModel,
+    number
+  > = {
     headerName: ProductDetailsColumnsLabels.LogBookRobBeforeDelivery,
     colId: ProductDetailsColumns.LogBookRobBeforeDelivery,
     field: model('robBeforeDeliveryLogBookROB'),
@@ -79,7 +100,10 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     minWidth: 125
   };
 
-  measuredRobBeforeDeliveryCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
+  measuredRobBeforeDeliveryCol: ITypedColDef<
+    ProductTypeListItemViewModel,
+    number
+  > = {
     headerName: ProductDetailsColumnsLabels.MeasuredRobBeforeDelivery,
     colId: ProductDetailsColumns.MeasuredRobBeforeDelivery,
     field: model('robBeforeDeliveryMeasuredROB'),
@@ -88,16 +112,23 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     minWidth: 125
   };
 
-  differenceRobBeforeDeliveryCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
+  differenceRobBeforeDeliveryCol: ITypedColDef<
+    ProductTypeListItemViewModel,
+    number
+  > = {
     headerName: ProductDetailsColumnsLabels.RobBeforeDeliveryDifference,
     colId: ProductDetailsColumns.RobBeforeDeliveryDifference,
     field: model('robBeforeDiff'),
     valueFormatter: params => this.format.quantity(params.value),
-    cellStyle: params => this.toleranceMatchStyle(params.data?.robBeforeDiffStatus),
+    cellStyle: params =>
+      this.toleranceMatchStyle(params.data?.robBeforeDiffStatus),
     minWidth: 100
   };
 
-  bdnDeliveredQuantityCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
+  bdnDeliveredQuantityCol: ITypedColDef<
+    ProductTypeListItemViewModel,
+    number
+  > = {
     headerName: ProductDetailsColumnsLabels.BdnQty,
     colId: ProductDetailsColumns.BdnQty,
     field: model('deliveredQuantityBdnQty'),
@@ -106,7 +137,10 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     minWidth: 90
   };
 
-  measuredDeliveredQuantityCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
+  measuredDeliveredQuantityCol: ITypedColDef<
+    ProductTypeListItemViewModel,
+    number
+  > = {
     headerName: ProductDetailsColumnsLabels.MessuredDeliveredQty,
     colId: ProductDetailsColumns.MessuredDeliveredQty,
     field: model('measuredDeliveredQty'),
@@ -115,15 +149,22 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     minWidth: 115
   };
 
-  differenceDeliveredQuantityCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
+  differenceDeliveredQuantityCol: ITypedColDef<
+    ProductTypeListItemViewModel,
+    number
+  > = {
     headerName: ProductDetailsColumnsLabels.DeliveredQuantityDiffernce,
     colId: ProductDetailsColumns.DeliveredQuantityDiffernce,
     field: model('deliveredDiff'),
-    cellStyle: params => this.toleranceMatchStyle(params.data?.deliveredDiffStatus),
+    cellStyle: params =>
+      this.toleranceMatchStyle(params.data?.deliveredDiffStatus),
     minWidth: 100
   };
 
-  logBookAfterDeliveryCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
+  logBookAfterDeliveryCol: ITypedColDef<
+    ProductTypeListItemViewModel,
+    number
+  > = {
     headerName: ProductDetailsColumnsLabels.LogBookRobAfterDelivery,
     colId: ProductDetailsColumns.LogBookRobAfterDelivery,
     field: model('robAfterDeliveryLogBookROB'),
@@ -132,7 +173,10 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     minWidth: 125
   };
 
-  measuredRobAfterDeliveryCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
+  measuredRobAfterDeliveryCol: ITypedColDef<
+    ProductTypeListItemViewModel,
+    number
+  > = {
     headerName: ProductDetailsColumnsLabels.MeasuredRobAfterDelivery,
     colId: ProductDetailsColumns.MeasuredRobAfterDelivery,
     field: model('robAfterDeliveryMeasuredROB'),
@@ -141,12 +185,16 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     minWidth: 125
   };
 
-  differenceRobAfterDeliveryCol: ITypedColDef<ProductTypeListItemViewModel, number> = {
+  differenceRobAfterDeliveryCol: ITypedColDef<
+    ProductTypeListItemViewModel,
+    number
+  > = {
     headerName: ProductDetailsColumnsLabels.RobAfterDeliveryDifference,
     colId: ProductDetailsColumns.RobAfterDeliveryDifference,
     field: model('robAfterDiff'),
     valueFormatter: params => this.format.quantity(params.value),
-    cellStyle: params => this.toleranceMatchStyle(params.data?.robAfterDiffStatus),
+    cellStyle: params =>
+      this.toleranceMatchStyle(params.data?.robAfterDiffStatus),
     minWidth: 100
   };
 
@@ -156,9 +204,12 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     headerName: ProductDetailsColGroupsLabels.RobAfterDelivery,
     headerGroupComponentFramework: AgColumnGroupHeaderComponent,
     marryChildren: true,
-    children: [this.logBookAfterDeliveryCol, this.measuredRobAfterDeliveryCol, this.differenceRobAfterDeliveryCol]
+    children: [
+      this.logBookAfterDeliveryCol,
+      this.measuredRobAfterDeliveryCol,
+      this.differenceRobAfterDeliveryCol
+    ]
   };
-
 
   productsColGroup: ColGroupDef = {
     groupId: ProductDetailsColGroupsEnum.Products,
@@ -173,7 +224,11 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     headerName: ProductDetailsColGroupsLabels.RobBeforeDelivery,
     headerGroupComponentFramework: AgColumnGroupHeaderComponent,
     marryChildren: true,
-    children: [this.logBookBeforeDeliveryCol, this.measuredRobBeforeDeliveryCol, this.differenceRobBeforeDeliveryCol]
+    children: [
+      this.logBookBeforeDeliveryCol,
+      this.measuredRobBeforeDeliveryCol,
+      this.differenceRobBeforeDeliveryCol
+    ]
   };
   deliveredQuantityColGroup: ColGroupDef = {
     groupId: ProductDetailsColGroupsEnum.DeliveredQuantity,
@@ -181,12 +236,18 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     headerName: ProductDetailsColGroupsLabels.DeliveredQuantity,
     headerGroupComponentFramework: AgColumnGroupHeaderComponent,
     marryChildren: true,
-    children: [this.bdnDeliveredQuantityCol, this.measuredDeliveredQuantityCol, this.differenceDeliveredQuantityCol]
+    children: [
+      this.bdnDeliveredQuantityCol,
+      this.measuredDeliveredQuantityCol,
+      this.differenceDeliveredQuantityCol
+    ]
   };
 
   robUomBeforeDelivery$: Observable<IDisplayLookupDto>;
   robUomAfterDelivery$: Observable<IDisplayLookupDto>;
   deliveredQtyUom$: Observable<IDisplayLookupDto>;
+  private readonly minToleranceLimit;
+  private readonly maxToleranceLimit;
 
   constructor(
     columnPreferences: AgColumnPreferencesService,
@@ -195,33 +256,45 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     tenantSettings: TenantSettingsService,
     public format: TenantFormattingService,
     private quantityControlService: QcReportService,
-    private store: Store) {
-    super('quantity-control-product-details-grid', columnPreferences, changeDetector, loggerFactory.createLogger(ProductDetailsGridViewModel.name));
+    private store: Store
+  ) {
+    super(
+      'quantity-control-product-details-grid',
+      columnPreferences,
+      changeDetector,
+      loggerFactory.createLogger(ProductDetailsGridViewModel.name)
+    );
     this.init(this.gridOptions);
 
-    const deliveryTenantSettings = tenantSettings.getModuleTenantSettings<IDeliveryTenantSettings>(TenantSettingsModuleName.Delivery);
+    const deliveryTenantSettings = tenantSettings.getModuleTenantSettings<
+      IDeliveryTenantSettings
+    >(TenantSettingsModuleName.Delivery);
     this.minToleranceLimit = deliveryTenantSettings.qcMinToleranceLimit;
     this.maxToleranceLimit = deliveryTenantSettings.qcMaxToleranceLimit;
 
-    this.robUomBeforeDelivery$ = this.selectReportDetails(state => state.robBeforeDeliveryUom);
-    this.robUomAfterDelivery$ = this.selectReportDetails(state => state.robAfterDeliveryUom);
-    this.deliveredQtyUom$ = this.selectReportDetails(state => state.deliveredQtyUom);
-  }
-
-  protected get reportDetailsState(): IQcReportDetailsState {
-    // Note: Always get a fresh reference to the state.
-    return (<IAppState>this.store.snapshot()).quantityControl.report.details;
-  }
-
-  private selectReportDetails<T>(select: ((state: IQcReportDetailsState) => T)): Observable<T> {
-    return this.store.select((appState: IAppState) => select(appState?.quantityControl?.report?.details));
+    this.robUomBeforeDelivery$ = this.selectReportDetails(
+      state => state.robBeforeDeliveryUom
+    );
+    this.robUomAfterDelivery$ = this.selectReportDetails(
+      state => state.robAfterDeliveryUom
+    );
+    this.deliveredQtyUom$ = this.selectReportDetails(
+      state => state.deliveredQtyUom
+    );
   }
 
   getColumnsDefs(): ITypedColDef[] {
-    return [this.productsColGroup, this.robBeforeDeliveryColGroup, this.deliveredQuantityColGroup, this.robAfterDeliveryColGroup];
+    return [
+      this.productsColGroup,
+      this.robBeforeDeliveryColGroup,
+      this.deliveredQuantityColGroup,
+      this.robAfterDeliveryColGroup
+    ];
   }
 
-  getSelectedUomValue$(groupId: ProductDetailsColGroupsEnum): Observable<IDisplayLookupDto> {
+  getSelectedUomValue$(
+    groupId: ProductDetailsColGroupsEnum
+  ): Observable<IDisplayLookupDto> {
     switch (groupId) {
       case ProductDetailsColGroupsEnum.RobBeforeDelivery: {
         return this.robUomBeforeDelivery$;
@@ -238,7 +311,10 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     }
   }
 
-  switchSelectedUom(groupId: ProductDetailsColGroupsEnum, value: IDisplayLookupDto): void {
+  switchSelectedUom(
+    groupId: ProductDetailsColGroupsEnum,
+    value: IDisplayLookupDto
+  ): void {
     switch (groupId) {
       case ProductDetailsColGroupsEnum.RobBeforeDelivery: {
         this.store.dispatch(new SwitchUomForRobBeforeDeliveryAction(value));
@@ -262,11 +338,22 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     }
   }
 
-  private toleranceMatchStyle(status: IReconStatusLookupDto): Partial<CSSStyleDeclaration> {
-    const statusName = status?.name ??  ReconStatusLookupEnum.Matched; // Default no color (Matched)
+  private selectReportDetails<T>(
+    select: (state: IQcReportDetailsState) => T
+  ): Observable<T> {
+    return this.store.select((appState: IAppState) =>
+      select(appState?.quantityControl?.report?.details)
+    );
+  }
+
+  private toleranceMatchStyle(
+    status: IReconStatusLookupDto
+  ): Partial<CSSStyleDeclaration> {
+    const statusName = status?.name ?? ReconStatusLookupEnum.Matched; // Default no color (Matched)
 
     return {
-      backgroundColor: statusName === ReconStatusLookupEnum.Matched ? 'inherit' : status.code,
+      backgroundColor:
+        statusName === ReconStatusLookupEnum.Matched ? 'inherit' : status.code,
       color: statusName === ReconStatusLookupEnum.Matched ? 'inherit' : '#fff'
     };
   }

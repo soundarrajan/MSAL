@@ -14,8 +14,7 @@ export class QcEventsLogItemStateModel implements IQcEventLogListItemDto {
   }
 }
 
-export interface IQcEventsLogItemState extends QcEventsLogItemStateModel {
-}
+export interface IQcEventsLogItemState extends QcEventsLogItemStateModel {}
 
 export class QcEventsLogStateModel extends BaseModel {
   items: number[] = [];
@@ -23,5 +22,4 @@ export class QcEventsLogStateModel extends BaseModel {
   itemsById: Record<number, IQcEventsLogItemState>;
 }
 
-export interface IQcEventsLogState extends QcEventsLogStateModel {
-}
+export interface IQcEventsLogState extends QcEventsLogStateModel {}

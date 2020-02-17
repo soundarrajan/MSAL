@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
 import { EventsLogGridViewModel } from './view-model/events-log-grid.view-model';
 import { IQcEventsLogItemState } from '../../../../../store/report/details/qc-events-log-state.model';
 import { Select } from '@ngxs/store';
@@ -15,17 +20,16 @@ import { ToastrService } from 'ngx-toastr';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EventsLogComponent implements OnInit, OnDestroy {
+  @Select(QcReportState.isReadOnly) isReadOnly$: Observable<boolean>;
   private _destroy$ = new Subject();
 
-  @Select(QcReportState.isReadOnly) isReadOnly$: Observable<boolean>;
+  constructor(
+    public gridViewModel: EventsLogGridViewModel,
+    private detailsService: QcReportService,
+    private toastr: ToastrService
+  ) {}
 
-  constructor(public gridViewModel: EventsLogGridViewModel,
-              private detailsService: QcReportService,
-              private toastr: ToastrService) {
-  }
-
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   update(item: IQcEventsLogItemState, newEventDetails: string): void {
     this.detailsService.updateEventLog(item.id, newEventDetails);
@@ -37,7 +41,9 @@ export class EventsLogComponent implements OnInit, OnDestroy {
 
   add(): void {
     if (this.gridViewModel.gridOptions.api.isAnyFilterPresent()) {
-      this.toastr.info('Events grid has an active filter, new rows may not appear.');
+      this.toastr.info(
+        'Events grid has an active filter, new rows may not appear.'
+      );
     }
 
     this.detailsService.addEventLog();

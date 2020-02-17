@@ -1,5 +1,11 @@
 import { Component, Input } from '@angular/core';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger
+} from '@angular/animations';
 import { LayoutMainComponent } from '@shiptech/core/ui/layout/main/layout-main.component';
 import { SidebarComponent } from '../sidebar.component';
 import { MenuItem } from 'primeng/api';
@@ -12,27 +18,44 @@ import { AppConfig } from '@shiptech/core/config/app-config';
   templateUrl: './menu-items.component.html',
   animations: [
     trigger('children', [
-      state('hiddenAnimated', style({
-        height: '0px'
-      })),
-      state('visibleAnimated', style({
-        height: '*'
-      })),
-      state('visible', style({
-        height: '*',
-        'z-index': 100
-      })),
-      state('hidden', style({
-        height: '0px',
-        'z-index': '*'
-      })),
-      transition('visibleAnimated => hiddenAnimated', animate('400ms cubic-bezier(0.86, 0, 0.07, 1)')),
-      transition('hiddenAnimated => visibleAnimated', animate('400ms cubic-bezier(0.86, 0, 0.07, 1)'))
+      state(
+        'hiddenAnimated',
+        style({
+          height: '0px'
+        })
+      ),
+      state(
+        'visibleAnimated',
+        style({
+          height: '*'
+        })
+      ),
+      state(
+        'visible',
+        style({
+          height: '*',
+          'z-index': 100
+        })
+      ),
+      state(
+        'hidden',
+        style({
+          height: '0px',
+          'z-index': '*'
+        })
+      ),
+      transition(
+        'visibleAnimated => hiddenAnimated',
+        animate('400ms cubic-bezier(0.86, 0, 0.07, 1)')
+      ),
+      transition(
+        'hiddenAnimated => visibleAnimated',
+        animate('400ms cubic-bezier(0.86, 0, 0.07, 1)')
+      )
     ])
   ]
 })
 export class AppSubMenuComponent {
-
   @Input() item: MenuItem;
 
   @Input() root: boolean;
@@ -45,8 +68,11 @@ export class AppSubMenuComponent {
 
   activeIndex: number;
 
-  constructor(public app: LayoutMainComponent, public appMenu: SidebarComponent, public appConfig: AppConfig) {
-  }
+  constructor(
+    public app: LayoutMainComponent,
+    public appMenu: SidebarComponent,
+    public appConfig: AppConfig
+  ) {}
 
   itemClick(event: Event, item: MenuItem, index: number): boolean {
     if (this.root) {
@@ -60,7 +86,7 @@ export class AppSubMenuComponent {
     }
 
     // activate current item and deactivate active sibling if any
-    this.activeIndex = (this.activeIndex === index) ? null : index;
+    this.activeIndex = this.activeIndex === index ? null : index;
 
     // execute command
     if (item.command) {
@@ -88,8 +114,13 @@ export class AppSubMenuComponent {
   }
 
   onMouseEnter(index: number): void {
-    if (this.root && this.app.menuHoverActive && (this.app.isHorizontal() || this.app.isSlim())
-      && !this.app.isMobile() && !this.app.isTablet()) {
+    if (
+      this.root &&
+      this.app.menuHoverActive &&
+      (this.app.isHorizontal() || this.app.isSlim()) &&
+      !this.app.isMobile() &&
+      !this.app.isTablet()
+    ) {
       this.activeIndex = index;
     }
   }
