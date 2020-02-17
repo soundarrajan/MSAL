@@ -8,6 +8,7 @@ import { AccessDeniedComponent } from '../access-denied/access-denied.component'
 import { RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
+import {PrimeNGModule} from "@shiptech/core/ui/primeng.module";
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { ScrollPanelModule } from 'primeng/scrollpanel';
   imports: [
     CommonModule,
     RouterModule,
+    PrimeNGModule,
     ButtonModule,
     ScrollPanelModule
   ],
