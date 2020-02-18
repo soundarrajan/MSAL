@@ -1,11 +1,12 @@
-﻿commit f366cbee9838d8b9a252a1f4c8db941c1b75c38d
+﻿commit 1c413026eca8b23b5aac97de6be97a16ae4bc1aa
 Author: Sergiu.vasui <Sergiu.vasui@24software.ro>
-Date:   Mon Feb 17 15:27:01 2020 +0000
+Date:   Tue Feb 18 12:21:25 2020 +0000
 
-    Merged PR 3006: Quantity Control - View Vessel response and Verify the survey report
+    Merged PR 3021: #20468
     
-    Modified max length of 3 fields and renamed VesselPortCallsMasterListColumnServerKeys
+    #20468
+    Fixed issue 1 and 2
     
-    Related work items: #17834
+    Related work items: #20468
 
 branch: master
