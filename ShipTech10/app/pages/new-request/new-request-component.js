@@ -3449,6 +3449,20 @@ angular.module("shiptech.pages").controller("NewRequestController", [
         	}
         }
 
+        $(document).on('keyup', '.typeahead', function(ev, suggestion) {
+			$("[uib-typeahead-popup]").css("top", "");
+			$("[uib-typeahead-popup]").css("left", "");
+        	if ($("[uib-typeahead-popup]").is(":visible")) {
+        		if ($(ev.target).attr("typeahead-append-to") == "'body'") {
+        			currentTargetTopPosition = $(ev.target).offset().top;
+        			currentTargetLeftPosition = $(ev.target).offset().left;
+        			currentTargetHeight = parseFloat($(ev.target).css("height"));
+        			$("[uib-typeahead-popup]").css("top", currentTargetTopPosition+currentTargetHeight);
+        			$("[uib-typeahead-popup]").css("left", currentTargetLeftPosition);
+        		}
+        	}
+        });
+
       
 
     }
