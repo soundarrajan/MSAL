@@ -28,7 +28,7 @@
 <ng-template [columnDef]="[gridViewModel.actionsColumn]"
              appAgCellTemplate let-item="data">
   <ng-container>
-    <div fxLayout="row" fxLayoutAlign="center center"  class="event-minus">
+    <div fxLayout="row" fxLayoutAlign="center center"  class="event-minus cell-minus">
       <p-button (onClick)="remove(item)" icon="fa fa-minus" iconPos="left" [disabled]="isReadOnly$ | async"></p-button>
     </div>
   </ng-container>
