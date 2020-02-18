@@ -64,7 +64,7 @@ export class EventsLogGridViewModel extends BaseGridViewModel
 
   actionsColumn: ITypedColDef<IQcEventsLogItemState> = {
     colId: EventsLogColumns.Actions,
-    width: 50,
+    width: 57,
     hide: false,
     resizable: false,
     sortable: false,
@@ -83,7 +83,7 @@ export class EventsLogGridViewModel extends BaseGridViewModel
     headerName: EventsLogColumnsLabels.EventDetails,
     colId: EventsLogColumns.EventDetails,
     field: model('eventDetails'),
-    width: 800,
+    width: 904,
     autoHeight: true,
     cellRendererSelector: params =>
       params.data?.isNew
@@ -98,6 +98,7 @@ export class EventsLogGridViewModel extends BaseGridViewModel
     headerName: EventsLogColumnsLabels.CreatedBy,
     colId: EventsLogColumns.CreatedBy,
     field: model('createdBy'),
+    width: 377,
     valueFormatter: params => params.value?.displayName ?? params.value?.name,
     filterParams: {
       valueGetter: rowModel =>
@@ -109,6 +110,7 @@ export class EventsLogGridViewModel extends BaseGridViewModel
     headerName: EventsLogColumnsLabels.Created,
     colId: EventsLogColumns.Created,
     field: model('createdOn'),
+    width: 507,
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.date(params.value)
   };
