@@ -29,13 +29,18 @@
   .p-r-5 {
     padding-right: 5px !important;
   }
-  
+  .p-r-20{
+    padding-right:20px;
+  }
   .m-t-m-15 {
     margin-top: -15px;
   }
   
   .m-t-m-2 {
     margin-top: -2px;
+  }
+  .m-t-4{
+    margin-top:4px !important;
   }
   
   .m-t-7 {
@@ -72,6 +77,12 @@
   
   .color-gray {
     color: $line-graycolor;
+  }
+  .afterelementcolor{
+    color:$afterelementcolor;
+  }
+  .f-s-12{
+    font-size: $font-small;
   }
     
   .f-s-14 {

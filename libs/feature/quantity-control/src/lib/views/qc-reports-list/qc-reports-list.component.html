@@ -4,21 +4,21 @@
       <shiptech-presets-menu-dropdown></shiptech-presets-menu-dropdown>
       <app-filter-preferences appAgGridFilterPresets groupId="qc-report-list-filter-presets" id="qc-report-list" (presetsLoaded)="gridViewModel.markServerSideDataSourceReady()"></app-filter-preferences>
     </div>
-    <div class="col-6">
+    <div class="col-6  p-r-20">
       <div style="float:right">
-        <shiptech-search-box appExternalSearch [placeholder]="'Search something'" class="mr-1"  (search)="gridViewModel.onSearch($event)" [gridId]="search.id"></shiptech-search-box>
+        <shiptech-search-box appExternalSearch [placeholder]="'Search '" class="mr-1"  (search)="gridViewModel.onSearch($event)" [gridId]="search.id"></shiptech-search-box>
 
         <!-- TODO: refactor this into a component -->
-        <button class="ui-button mr-15  xl-icon mail-icon-position" label="" pButton type="button"></button>
+        <button class="ui-button mr-15  xl-icon mail-icon-position m-t-4" label="" pButton type="button"></button>
 
-        <button class="ui-button mr-15  csv-icon mail-icon-position" label="" pButton type="button"></button>
+        <button class="ui-button mr-15  csv-icon mail-icon-position m-t-4" label="" pButton type="button"></button>
 
-        <button class="ui-button mr-15 pdf-icon mail-icon-position" label="" pButton type="button"></button>
+        <button class="ui-button mr-15 pdf-icon mail-icon-position m-t-4" label="" pButton type="button"></button>
 
-        <button class="ui-button mr-15  print-icon mail-icon-position" label="" pButton type="button" (click)="print()"></button>
+        <button class="ui-button mr-15  print-icon mail-icon-position m-t-4" label="" pButton type="button" (click)="print()"></button>
         <button (click)="openEmailPreview()" class="ui-button mr-1 mail-icon send-icon-position" label="" pButton
                 type="button"></button>
-        <button (click)="newReport()" class="ui-button-success mr-1 btn-i-success" label="New Report" pButton
+        <button (click)="newReport()" class="ui-button-success mr-1 btn-i-yellow" label="New Report" pButton
           type="button"></button>
         <button (click)="verifyVessels()" class="ui-button-success mr-1 btn-i-success" label="Verify" pButton
           type="button"></button>
@@ -83,6 +83,7 @@
     appAgGridEmptyFilterOption
     #search="search-id"
     groupId="qc-report-list-filter-presets"
+    [suppressMenuHide]="true"
     id="qc-report-list-grid" class="ag-theme-balham ag-shiptech-theme ag-shiptech-coloumnheader" style="height:calc( 100vh - 352px );"
     [gridOptions]="gridViewModel.gridOptions">
   </ag-grid-angular>
