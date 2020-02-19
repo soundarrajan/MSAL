@@ -976,7 +976,7 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
         }
         ctrl.calculateFixedColumnsWidth = function() {
         	if (!ctrl.scheduleDashboardConfiguration) {return}
-        	mainWidth = 228;
+        	mainWidth = 338;
         	if (ctrl.displayedColumns["Buyer of the Vessel"]) {
 	        	mainWidth += 90;
         	}

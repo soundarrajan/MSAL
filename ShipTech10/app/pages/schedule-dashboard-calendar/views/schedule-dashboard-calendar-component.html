@@ -72,7 +72,7 @@
 	                        		<i ng-if="$ctrl.currentColSort == '-serviceName' " class="fa fa-caret-down font-grey-salt"></i>
 	                        		<i ng-if="$ctrl.currentColSort == 'serviceName' " class="fa fa-caret-up font-grey-salt"></i>
 	                        		{{tenantSettings.serviceDisplayName.name == "Operator" ? "Operator" : "Service" }}</div>
-								<div style="width:130px" ng-click="$ctrl.setCurrentColSort('vesselName')" class="cellContent pull-left text-left">
+								<div style="width:240px" ng-click="$ctrl.setCurrentColSort('vesselName')" class="cellContent pull-left text-left">
 	                        		<i ng-if="$ctrl.currentColSort == '-vesselName' " class="fa fa-caret-down font-grey-salt"></i>
 	                        		<i ng-if="$ctrl.currentColSort == 'vesselName' " class="fa fa-caret-up font-grey-salt"></i>								
 									Vessel
@@ -121,7 +121,7 @@
 	                        <td class="calendarDataRowsLabelGrouped" style="width:{{$ctrl.fixedColumnsWidth}}; padding:0!important">
 	                            <div style="width:98px" class="serviceName cellContent pull-left" tooltip data-original-title="{{ row.serviceName }}">{{row.serviceName}}</div>
 	                            <!-- <div class="fakeColContent">********************</div> -->
-	                            <div style="width:130px" class="vesselName pull-left" cellContent  tooltip data-original-title="{{ row.vesselName }} : {{ row.defaultFuel }} : {{ row.defaultDistillate }}" >{{ row.vesselName }}</div>
+	                            <div style="width:240px" class="vesselName pull-left" cellContent  tooltip data-original-title="{{ row.vesselName }} : {{ row.defaultFuel }} : {{ row.defaultDistillate }}" >{{ row.vesselName }}</div>
 	                            <div  style="width:90px" ng-if="$ctrl.displayedColumns['Buyer of the Vessel'] " class="buyerName cellContent pull-left" tooltip data-original-title="{{ row.buyerName }}" >{{ row.buyerName }}</div>
 	                            <div style="width:90px" ng-if="$ctrl.displayedColumns['Company'] " class="companyName cellContent pull-left" tooltip data-original-title="{{ row.companyName }}" >{{ row.companyName }}</div>
 	                        </td>
