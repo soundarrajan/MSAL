@@ -1063,7 +1063,7 @@ APP_MASTERS.controller("Controller_Master", [
                 });
 	            if (vm.app_id == "claims" && vm.screen_id == "claims") {
 	                var type = $scope.filterFromData.claimType.claimType.name;
-	                if (type != "Debunker") {
+	                if (type.toLowerCase() != "debunker") {
 	                	$scope.filterFromData.claimDebunkerDetails = null;
 	                }
 	            }
