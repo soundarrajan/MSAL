@@ -221,6 +221,7 @@ button:focus {
   margin-right: 10px;
   height: 30px;
   min-width: 85px;
+  font-size: 12px !important;
 }
 
 .btn-i-success {
@@ -230,6 +231,7 @@ button:focus {
   margin-right: 10px;
   height: 30px;
   min-width: 80px;
+  font-size: 12px !important;
 
 }
 
@@ -259,10 +261,10 @@ button:focus {
 //search component -end
 
 //Quality Control Main Page
-.select-option {
-  height: 28px;
-  margin-top: 2px;
-}
+// .select-option {
+//   height: 28px;
+//   margin-top: 2px;
+// }
 
 .widget-title {
   font-weight: 500;
@@ -334,6 +336,15 @@ button:focus {
 }
 
 //Port CALL ID Vesselpage
+.badge-danger{
+  font-weight: bold;
+}
+.badge-default{
+  color: #1FBBE6 !important;
+  background-color: #F0F8FF !important;
+  font-weight: bold;
+
+}
 .portcallbadge {
   .badge {
     text-align: center;
@@ -376,6 +387,8 @@ button:focus {
   font-family: Roboto;
   font-style: normal;
   font-size: $font-small;
+  margin:5px;
+  border-radius: 21px !important;
 
   &.red {
     background: $label-bgcolor-danger !important;
@@ -472,7 +485,7 @@ p-panel {
 
 .mail-icon-position {
   float: left;
-  margin-top: 7px !important;
+  margin-top: 7px ;
 
   span {
     &:after {
@@ -501,7 +514,7 @@ p-panel {
 
 .send-icon-position {
   float: left;
-  margin-top: 10px !important;
+  margin-top: 7px !important;
 }
 
 .trash-icon {
@@ -530,4 +543,17 @@ p-panel {
   margin: 10px 10px 0px 10px !important;
   position: relative;
   top: 4px;
+}
+.search-square-button{
+  border: 1px solid #C2CAD7 !important;
+  border-left: none;
+  background-color: #ffffff !important;
+  
+    color: #345285!important;
+  
+}
+.shiptech-searchbox{
+  .ui-corner-all{
+    border: 1px solid #C2CAD7 !important;
+  }
 }
