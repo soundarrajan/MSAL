@@ -7252,6 +7252,25 @@ ctrl.setProductData = function(data, loc) {
             $("#negotiation-table-fixed-container").css("overflow", "initial");
         }
 
+        $(document).on('keyup', '.typeahead', function(ev, suggestion) {
+			$("[uib-typeahead-popup]").css("top", "");
+			$("[uib-typeahead-popup]").css("left", "");
+        	if ($("[uib-typeahead-popup]").is(":visible")) {
+        		if ($(ev.target).attr("typeahead-append-to") == "'body'") {
+        			parentZoom = 1;
+        			if ($("#negotiation-table-fixed-container").length > 0) {
+	        			parentZoom = $("#negotiation-table-fixed-container").css("zoom");
+        			}
+        			currentTargetTopPosition = $(ev.target).offset().top * parentZoom;
+        			currentTargetLeftPosition = $(ev.target).offset().left * parentZoom;
+        			currentTargetHeight = parseFloat($(ev.target).css("height"));
+        			$("[uib-typeahead-popup]").css("top", currentTargetTopPosition+currentTargetHeight);
+        			$("[uib-typeahead-popup]").css("left", currentTargetLeftPosition);
+        		}
+        	}
+        });
+
+
     }
 ]);
 angular.module("shiptech.pages").component("groupOfRequests", {

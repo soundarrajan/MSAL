@@ -1,4 +1,4 @@
-﻿<div ng-controller="Controller_Contract as CC" ng-init='CM.getOptions({"Name": "Currency", "Type": "simpleLookup", "masterSource": "Currency"})'>
+<div ng-controller="Controller_Contract as CC" ng-init='CM.getOptions({"Name": "Currency", "Type": "simpleLookup", "masterSource": "Currency"})'>
 
     <span ng-if="formValues.status.name == 'Confirmed' ">
         {{disableFieldsIfConfirmed()}}
@@ -85,7 +85,7 @@
                                             </span>
                                         </label>
                                         <span class="hide">
-                                            <inpuut ng-model="formValues.products[$index].conversionFactors">
+                                            <input ng-model="formValues.products[$index].conversionFactors">
                                         </span>
                                         <div class="input-group form_input" tooltip tooltiptrigger="hover" data-original-title="{{ getProductTooltipByProductId(formValues.products[$index].product.id) }}">
                                             <input ng-model="formValues.products[$index].product" uib-typeahead="item as item.name for item in options.Product | filter:{name:$viewValue} | limitTo:10"

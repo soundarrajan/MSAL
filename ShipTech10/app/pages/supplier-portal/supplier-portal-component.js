@@ -2325,6 +2325,35 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
 			});        	
 			return mappedSpecParamKeys;
         }
+        
+        $(document).on('keyup', '.typeahead', function(ev, suggestion) {
+			$("[uib-typeahead-popup]").css("top", "");
+			$("[uib-typeahead-popup]").css("left", "");
+        	if ($("[uib-typeahead-popup]").is(":visible")) {
+        		if ($(ev.target).attr("typeahead-append-to") == "'body'") {
+        			currentTargetTopPosition = $(ev.target).offset().top;
+        			currentTargetLeftPosition = $(ev.target).offset().left;
+        			currentTargetHeight = parseFloat($(ev.target).css("height"));
+        			$("[uib-typeahead-popup]").css("top", currentTargetTopPosition+currentTargetHeight);
+        			$("[uib-typeahead-popup]").css("left", currentTargetLeftPosition);
+        		}
+        	}
+        });
+        $(".blade-column.main-content-column").on("scroll", function(){
+        	if ($("[uib-typeahead-popup]").is(":visible")) {
+        		activeInput = $("[aria-owns='"+ $("[uib-typeahead-popup]:visible").attr("id") +"']")
+        		if ($(activeInput).attr("typeahead-append-to") == "'body'") {
+        			console.log("^^^^^^^");
+        			currentTargetTopPosition = $(activeInput).offset().top;
+        			currentTargetLeftPosition = $(activeInput).offset().left;
+        			currentTargetHeight = parseFloat($(activeInput).css("height"));
+        			$("[uib-typeahead-popup]").css("top", currentTargetTopPosition+currentTargetHeight);
+        			$("[uib-typeahead-popup]").css("left", currentTargetLeftPosition);
+	        		// currentTopPosition = parseFloat($("[uib-typeahead-popup]").css("top"));
+	        		// $("[uib-typeahead-popup]").css("top", currentTopPosition - $(this).scrollTop()); 
+        		}
+        	}
+        })
 
 
     }
