@@ -3496,7 +3496,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                                 vsc.contract = CLC.jqGrid.Ascensys.gridData[ parseFloat(objectKey.split("row-")[1]) - 1 ].contract;
                             }
                             // vsc.contract = CLC.jqGrid.Ascensys.gridData[ parseFloat(objectKey.split("row-")[1]) - 1 ].contract;
-                            vsc.comment = value.comment ? value.comment : null;
+                            if (typeof value.comment != "undefined") {
+                                vsc.comment = value.comment ? value.comment : null;
+                            }
                             vsc.agreementType = value.agreementType;
                             vsc.product = value.product;
                             if (typeof(value.contractProductId) != 'undefined') {

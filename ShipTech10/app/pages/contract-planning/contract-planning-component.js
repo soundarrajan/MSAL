@@ -402,7 +402,9 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
                     if (_.filter(listsCache.AgreementType, function(o) { return o.id == value.agreementType.id; }).length > 0) {
                     	rowObject.agreementType = 	_.filter(listsCache.AgreementType, function(o) { return o.id == value.agreementType.id; })[0];
                     }
-                    rowObject.comment = value.comment ? value.comment : null;
+                    if (typeof value.comment != "undefined") {
+                        rowObject.comment = value.comment ? value.comment : null;
+                    }
                     rowObject.product = value.product;
                     rowObject.contractProductId = value.contractProductId;
                 }
@@ -427,7 +429,9 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
 		                    } else {
 		                        rowObject.contract = CLC.jqGrid.Ascensys.gridData[ parseFloat(objectKey.split("row-")[1]) - 1 ].contract;
 		                    }
-		                    rowObject.comment = value.comment ? value.comment : null;
+                            if (typeof value.comment != "undefined") {
+                                rowObject.comment = value.comment ? value.comment : null;
+                            }
 		                    rowObject.agreementType = value.agreementType;
 		                    rowObject.product = value.product;
 		                    rowObject.contractProductId = value.contractProductId;
