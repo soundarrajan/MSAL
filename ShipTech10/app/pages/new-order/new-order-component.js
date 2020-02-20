@@ -306,6 +306,10 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 { 
                     ColumnName: "OrderProductId", 
                     Value: product.id
+                },                
+                { 
+                    ColumnName: "OrderProductUomId", 
+                    Value: product.priceUom.id
                 },
                 { 
                     ColumnName: "SellerId", 
@@ -341,10 +345,10 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                     if(callback.length){
                         ctrl.orderContractOptions[product.product.id] = angular.copy(callback);
                     }else{
-                        ctrl.orderContractOptions[product.product.id].push({
+                        ctrl.orderContractOptions[product.product.id] = [{
                             id: -1,
                             searchString: "No options available!"
-                        })
+                        }]
                     }
                 }
             });
@@ -1560,6 +1564,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
         }
         ctrl.productUomChanged = function (product) {
             productUomChg(product);
+            ctrl.getAllOrderContractOptions();
         };
 
         function productUomChg(product) {
