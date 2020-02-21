@@ -40,6 +40,7 @@ export interface IVesselMasterDto extends IDisplayLookupDto {
   robHsfoRedeliveryQuantity: number;
   robLsfoDeliveryQuantity: number;
   robLsfoRedeliveryQuantity: number;
+  vesselToWatchFlag: boolean;
   service: string;
   teuNominal: number;
   totalCount: number;

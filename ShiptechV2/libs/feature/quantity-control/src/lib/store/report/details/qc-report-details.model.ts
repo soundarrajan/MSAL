@@ -8,7 +8,10 @@ import {
   IQcSurveyHistoryState,
   QcSurveyHistoryStateModel
 } from './qc-survey-history-state.model';
-import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+import {
+  IDisplayLookupDto,
+  IVesselToWatchLookupDto
+} from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { IQcVesselPortCallDto } from '../../../services/api/dto/qc-vessel-port-call.interface';
 import { IStatusLookupDto } from '@shiptech/core/lookups/known-lookups/status/status-lookup.interface';
 
@@ -16,7 +19,7 @@ export class QcReportDetailsModel {
   isNew: boolean;
   id: number;
   portCall: IQcVesselPortCallDto;
-  vessel: IDisplayLookupDto;
+  vessel: IVesselToWatchLookupDto;
   status: IStatusLookupDto;
 
   hasSentEmail: boolean;
