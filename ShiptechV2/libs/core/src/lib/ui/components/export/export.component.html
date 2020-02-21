@@ -1,0 +1,8 @@
+<button class="ui-button mr-15  xl-icon mail-icon-position" label="" pButton type="button"></button>
+
+<button class="ui-button mr-15  csv-icon mail-icon-position" label="" pButton type="button"></button>
+
+<button class="ui-button mr-15 pdf-icon mail-icon-position" label="" pButton type="button"></button>
+
+<button class="ui-button mr-15  print-icon" [ngClass]="{'send-icon-position m-t-7': !hasEmailPreview, 'mail-icon-position': hasEmailPreview}" label="" pButton type="button" (click)="print()"></button>
+<button class="ui-button mr-1 mail-icon send-icon-position" label="" pButton type="button" *ngIf="hasEmailPreview"></button>
