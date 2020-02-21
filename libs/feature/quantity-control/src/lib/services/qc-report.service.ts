@@ -74,7 +74,7 @@ import {
   QcRevertVerifyReportSuccessfulAction
 } from '../store/report/details/actions/revert-verify-report.actions';
 import { IQcReportState } from '../store/report/qc-report.state.model';
-import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+import { IVesselToWatchLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import {
   UpdateQcReportPortCall,
   UpdateQcReportVessel
@@ -88,6 +88,11 @@ import {
   QcUpdatePortCallFailedAction,
   QcUpdatePortCallSuccessfulAction
 } from '../store/report/details/actions/update-port-call-bdn.actions';
+import {
+  UpdateVesselToWatchAction,
+  UpdateVesselToWatchFailedAction,
+  UpdateVesselToWatchSuccessfulAction
+} from '../store/report/details/actions/update-vessel-to-watch.action';
 
 @Injectable()
 export class QcReportService extends BaseStoreService implements OnDestroy {
@@ -226,7 +231,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
   }
 
   @ObservableException()
-  updateVessel$(vessel: IDisplayLookupDto): Observable<unknown> {
+  updateVessel$(vessel: IVesselToWatchLookupDto): Observable<unknown> {
     return this.store.dispatch(new UpdateQcReportVessel(vessel));
   }
 
@@ -343,6 +348,29 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
   @ObservableException()
   updateEventLog$(id: number, newEventDetails: string): Observable<unknown> {
     return this.store.dispatch(new QcUpdateEventLogAction(id, newEventDetails));
+  }
+
+  // updateVesselToWatch(id: number, vesselToWatchFlag: boolean): void {
+  //   this.updateVesselToWatch$(id, vesselToWatchFlag).subscribe();
+  // }
+
+  @ObservableException()
+  updateVesselToWatch$(
+    newVessel: IVesselToWatchLookupDto
+  ): Observable<unknown> {
+    return this.apiDispatch(
+      () => {
+        const toSend = {
+          id: newVessel.id,
+          vesselToWatch: newVessel.vesselToWatchFlag
+        };
+        return this.api.updateVesselToWatch(toSend);
+      },
+      new UpdateVesselToWatchAction(),
+      () => new UpdateVesselToWatchSuccessfulAction(newVessel),
+      new UpdateVesselToWatchFailedAction(),
+      ModuleError.UpdateVesselToWatch
+    );
   }
 
   saveReport(): void {

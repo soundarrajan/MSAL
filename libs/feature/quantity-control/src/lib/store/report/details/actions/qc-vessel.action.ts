@@ -1,10 +1,10 @@
-import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+import { IVesselToWatchLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { IQcVesselPortCallDto } from '../../../../services/api/dto/qc-vessel-port-call.interface';
 
 export class UpdateQcReportVessel {
   static readonly type = '[Qc.Report.Details] - Update report vessel';
 
-  constructor(public vessel: IDisplayLookupDto) {}
+  constructor(public vessel: IVesselToWatchLookupDto) {}
 
   public log(): any {
     return {
