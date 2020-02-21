@@ -20,7 +20,10 @@ import {
   IVesselMastersApi,
   VESSEL_MASTERS_API_SERVICE
 } from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
-import { knownMastersAutocomplete } from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
+import {
+  knowMastersAutocompleteHeaderName,
+  knownMastersAutocomplete
+} from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
 import { DefaultPageSize } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
 import { ServerGridSortParametersEnum } from '@shiptech/core/grid/server-grid/server-grid-sort-parameters.enum';
 import { map } from 'rxjs/operators';
@@ -71,6 +74,19 @@ export class AutocompleteComponent extends MasterAutocompleteComponent
     super(changeDetectorRef);
   }
 
+  getHeaderNameSelector(): string {
+    switch (this._autocompleteType) {
+      case knownMastersAutocomplete.documents:
+        return knowMastersAutocompleteHeaderName.documents;
+      case knownMastersAutocomplete.vessel:
+        return knowMastersAutocompleteHeaderName.vessel;
+      case knownMastersAutocomplete.vesselPort:
+        return knowMastersAutocompleteHeaderName.vesselPort;
+      default:
+        return knowMastersAutocompleteHeaderName.documents;
+    }
+  }
+
   ngOnInit(): void {
     if (this.autocompleteType === knownMastersAutocomplete.vesselPort) {
       this.field = nameof<IVesselPortCallMasterDto>('portCallId');
@@ -80,7 +96,7 @@ export class AutocompleteComponent extends MasterAutocompleteComponent
 
   protected getFilterResults(query: string): Observable<IDisplayLookupDto[]> {
     switch (this._autocompleteType) {
-      case knownMastersAutocomplete.documents:
+      case knownMastersAutocomplete.documents: {
         return this.filterOp === ServerGridConditionFilterEnum.STARTS_WITH
           ? fromPromise(
               this.legacyLookupsDatabase.documentType
@@ -93,7 +109,8 @@ export class AutocompleteComponent extends MasterAutocompleteComponent
                 ServerGridConditionFilterEnum.STARTS_WITH
               } values for ${nameof<MasterAutocompleteComponent>('field')}`
             );
-      case knownMastersAutocomplete.vessel:
+      }
+      case knownMastersAutocomplete.vessel: {
         return this.filterOp === ServerGridConditionFilterEnum.STARTS_WITH
           ? fromPromise(
               this.legacyLookupsDatabase.vessel
@@ -106,7 +123,8 @@ export class AutocompleteComponent extends MasterAutocompleteComponent
                 ServerGridConditionFilterEnum.STARTS_WITH
               } values for ${nameof<MasterAutocompleteComponent>('field')}`
             );
-      case knownMastersAutocomplete.vesselPort:
+      }
+      case knownMastersAutocomplete.vesselPort: {
         return this.mastersApi
           .getVesselPortCalls({
             id: this.vesselId,
@@ -133,6 +151,7 @@ export class AutocompleteComponent extends MasterAutocompleteComponent
             }
           })
           .pipe(map(response => response.items));
+      }
       default:
         throwError(
           `${MasterAutocompleteComponent.name} hasn't defined the autocomplete type`

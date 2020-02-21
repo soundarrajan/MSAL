@@ -88,6 +88,7 @@ export class SelectorComponent
   @Input() disabled: boolean = false;
   @Input() readonly: boolean = false;
   @Input() multiple: boolean = false;
+  @Input() headerName: string;
   @Input() selected:
     | IDocumentsMasterDto
     | IVesselMasterDto
@@ -102,6 +103,7 @@ export class SelectorComponent
     | IVesselPortCallMasterDto
     | (IVesselPortCallMasterDto | IVesselMasterDto | IDocumentsMasterDto)[]
   >();
+  @Output() shouldCloseModal = new EventEmitter<void>();
   private _entityId: number;
   private _entityName: string;
   private _vesselId: number;
@@ -209,5 +211,9 @@ export class SelectorComponent
     this.gridViewModel.pageSize = pageSize;
 
     this.changeDetector.markForCheck();
+  }
+
+  closeModal(): void {
+    this.shouldCloseModal.emit();
   }
 }
