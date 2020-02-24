@@ -121,6 +121,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.vesselName,
     colId: QcReportsListColumns.vesselName,
     field: model('vesselName'),
+    cellRendererFramework: AgCellTemplateComponent,
     width: 129
   };
 
