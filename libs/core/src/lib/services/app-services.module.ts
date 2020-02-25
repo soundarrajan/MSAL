@@ -45,6 +45,11 @@ import {
   DocumentsApi
 } from '@shiptech/core/services/masters-api/documents-api.service';
 import { DocumentsApiMock } from '@shiptech/core/services/masters-api/documents-api.service.mock';
+import {
+  EXPORT_API_SERVICE,
+  ExportApiService
+} from '@shiptech/core/ui/components/export/api/export-api.service';
+import { ExportApiServiceMock } from '@shiptech/core/ui/components/export/api/export-api.service.mock';
 
 @NgModule({
   imports: [],
@@ -100,6 +105,10 @@ export class AppServicesModule {
         {
           provide: DOCUMENTS_API_SERVICE,
           useClass: environment.production ? DocumentsApi : DocumentsApiMock
+        },
+        {
+          provide: EXPORT_API_SERVICE,
+          useClass: environment.production ? ExportApiService : ExportApiService
         },
         {
           provide: RouteReuseStrategy,

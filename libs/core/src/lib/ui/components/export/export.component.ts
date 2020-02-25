@@ -20,13 +20,13 @@ import {
   ExportApiService
 } from '@shiptech/core/ui/components/export/api/export-api.service';
 import { IExportApiService } from '@shiptech/core/ui/components/export/api/export-api.service.interface';
+import {FileSaverService} from "ngx-filesaver";
 
 @Component({
   selector: 'shiptech-export',
   templateUrl: './export.component.html',
   styleUrls: ['./export.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [ExportApiService]
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ExportComponent implements OnInit, OnDestroy {
   @Input() hasEmailPreview: boolean = false;
@@ -41,7 +41,8 @@ export class ExportComponent implements OnInit, OnDestroy {
 
   constructor(
     private tenantSettings: TenantSettingsService,
-    @Inject(EXPORT_API_SERVICE) private exportApiService: IExportApiService
+    @Inject(EXPORT_API_SERVICE) private exportApiService: IExportApiService,
+    private _FileSaverService: FileSaverService
   ) {}
 
   mapColumns(gridColumns: ITypedColDef[]): IColumnsMapping[] {
@@ -78,7 +79,9 @@ export class ExportComponent implements OnInit, OnDestroy {
       'http://mail.24software.ro:8081/Integration1060/Shiptech10.Api.Invoice/api/invoice/export';
     this.exportApiService
       .exportDocument(url, requestToSend)
-      .subscribe(result => {});
+      .subscribe(result => {
+        this._FileSaverService.save(result);
+      });
   }
 
   print(): void {

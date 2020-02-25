@@ -15,13 +15,16 @@ export class ExportApiService implements IExportApiService {
   constructor(private http: HttpClient) {}
 
   @ObservableException()
-  exportDocument(
-    url: string,
-    request: IExportDocumentRequestInterface
-  ): Observable<any> {
-    return this.http.post<IDocumentsListResponse>(url, {
-      payload: { ...request }
-    });
+  exportDocument(url: string, request: IExportDocumentRequestInterface): any {
+    return this.http.post(
+      url,
+      {
+        payload: { ...request }
+      },
+      {
+        responseType: 'blob'
+      }
+    );
   }
 }
 
