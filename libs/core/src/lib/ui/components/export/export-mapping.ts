@@ -3,3 +3,8 @@ export enum KnownExportType {
   exportToCsv = 2,
   exportToPdf = 3
 }
+
+export interface IColumnsMapping {
+  dtoPath: string;
+  label: string;
+}

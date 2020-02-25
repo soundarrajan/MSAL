@@ -2,12 +2,22 @@
         *ngIf="hasExportToExcel"
         [ngClass]="{'send-icon-position m-t-7': !hasExportToCsv, 'mail-icon-position': (hasExportToCsv || hasExportToPdf || hasExportToPrint || hasEmailPreview)}"
         label="" pButton type="button"
-        (click)="exportTo(1)"
+        (click)="exportTo('exportToExcel')"
 ></button>
 
-<button class="ui-button mr-15  csv-icon mail-icon-position" *ngIf="hasExportToCsv" [ngClass]="{'send-icon-position m-t-7': !hasExportToPdf, 'mail-icon-position': (hasExportToPdf || hasExportToPrint || hasEmailPreview)}" label="" pButton type="button"></button>
+<button class="ui-button mr-15  csv-icon mail-icon-position"
+        *ngIf="hasExportToCsv"
+        [ngClass]="{'send-icon-position m-t-7': !hasExportToPdf, 'mail-icon-position': (hasExportToPdf || hasExportToPrint || hasEmailPreview)}"
+        label="" pButton type="button"
+        (click)="exportTo('exportToCsv')"
+></button>
 
-<button class="ui-button mr-15 pdf-icon mail-icon-position" *ngIf="hasExportToPdf" [ngClass]="{'send-icon-position m-t-7': !hasExportToPrint, 'mail-icon-position': hasExportToPrint || hasEmailPreview}" label="" pButton type="button"></button>
+<button class="ui-button mr-15 pdf-icon mail-icon-position"
+        *ngIf="hasExportToPdf"
+        [ngClass]="{'send-icon-position m-t-7': !hasExportToPrint, 'mail-icon-position': hasExportToPrint || hasEmailPreview}"
+        label="" pButton type="button"
+        (click)="exportTo('exportToPdf')"
+></button>
 
 <button class="ui-button mr-15  print-icon" *ngIf="hasExportToPrint" [ngClass]="{'send-icon-position m-t-7': !hasEmailPreview, 'mail-icon-position': hasEmailPreview}" label="" pButton type="button" (click)="print()"></button>
 <button class="ui-button mr-1 mail-icon send-icon-position" label="" pButton type="button" *ngIf="hasEmailPreview"></button>
