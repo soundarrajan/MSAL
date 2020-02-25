@@ -430,6 +430,7 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
+    this.paramsServerSide = params;
     this.reportService
       .getInvoiceList$(
         transformLocalToServeGridInfo(
