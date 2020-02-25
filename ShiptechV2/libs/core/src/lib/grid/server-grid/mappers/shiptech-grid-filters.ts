@@ -136,7 +136,7 @@ export function transformLocalToServeGridInfo(
   serverColumnKeyMap: Record<string, string>,
   searchText?: string
 ): IServerGridInfo {
-  const result = {
+  return {
     pagination: getShiptechFormatPagination(gridApi, params),
     sortList: getShiptechFormatSorts(gridApi, params, serverColumnKeyMap),
     pageFilters: {
@@ -144,6 +144,4 @@ export function transformLocalToServeGridInfo(
     },
     searchText: searchText
   };
-  localStorage.setItem('exportData', JSON.stringify(result));
-  return result;
 }

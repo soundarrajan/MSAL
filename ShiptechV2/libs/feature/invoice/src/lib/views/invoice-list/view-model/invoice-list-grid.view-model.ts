@@ -226,7 +226,8 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
     colId: InvoiceListColumns.sumOfCosts,
     field: model('sumOfCosts'),
     filter: 'agNumberColumnFilter',
-    width: 110
+    width: 110,
+    type: 'amount'
   };
 
   invoiceAmountCol: ITypedColDef<IInvoiceListItemDto, number> = {

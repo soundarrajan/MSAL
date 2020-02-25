@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs';
+
 export interface IExportDocumentRequestInterface {
   exportType: number;
   SearchText: string;
@@ -7,4 +9,11 @@ export interface IExportDocumentRequestInterface {
   timezone: string;
   PageFilters: any;
   SortList: any;
+}
+
+export interface IExportApiService {
+  exportDocument(
+    url: string,
+    request: IExportDocumentRequestInterface
+  ): Observable<any>;
 }

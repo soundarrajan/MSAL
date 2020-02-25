@@ -41,6 +41,7 @@ function model(prop: keyof IQcReportsListItemDto): keyof IQcReportsListItemDto {
 
 @Injectable()
 export class QcReportsListGridViewModel extends BaseGridViewModel {
+  public paramsServerSide: IServerSideGetRowsParams;
   public searchText: string;
   public defaultColFilterParams = {
     clearButton: true,
@@ -121,7 +122,8 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.vesselName,
     colId: QcReportsListColumns.vesselName,
     field: model('vesselName'),
-    width: 129
+    width: 129,
+    type: 'Text'
   };
 
   surveyDateCol: ITypedColDef<IQcReportsListItemDto, string> = {
@@ -411,6 +413,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
+    this.paramsServerSide = params;
     this.reportService
       .getReportsList$(
         transformLocalToServeGridInfo(

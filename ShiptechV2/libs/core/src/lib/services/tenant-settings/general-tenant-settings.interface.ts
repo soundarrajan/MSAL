@@ -8,6 +8,7 @@ export interface IShiptechDateFormat {
 export interface ITenantFormatsSettings {
   dateFormat: IShiptechDateFormat;
   uom: IDisplayLookupDto;
+  timeZone: IDisplayLookupDto;
 }
 
 export interface ITenantDefaultValuesSettings {
