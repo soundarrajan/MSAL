@@ -241,6 +241,7 @@ export abstract class BaseGridViewModel implements OnDestroy {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
+    this.paramsServerSide = params;
     // Note: To be overridden in derived class
     throw Error(
       `${nameof<BaseGridViewModel>(

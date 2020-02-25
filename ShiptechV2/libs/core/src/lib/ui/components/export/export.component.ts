@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  Inject,
   Input,
   OnDestroy,
   OnInit
@@ -14,12 +15,18 @@ import {
 } from '@shiptech/core/ui/components/export/export-mapping';
 import { ITypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
+import {
+  EXPORT_API_SERVICE,
+  ExportApiService
+} from '@shiptech/core/ui/components/export/api/export-api.service';
+import { IExportApiService } from '@shiptech/core/ui/components/export/api/export-api.service.interface';
 
 @Component({
   selector: 'shiptech-export',
   templateUrl: './export.component.html',
   styleUrls: ['./export.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [ExportApiService]
 })
 export class ExportComponent implements OnInit, OnDestroy {
   @Input() hasEmailPreview: boolean = false;
@@ -32,7 +39,10 @@ export class ExportComponent implements OnInit, OnDestroy {
 
   private _destroy$ = new Subject();
 
-  constructor(private tenantSettings: TenantSettingsService) {}
+  constructor(
+    private tenantSettings: TenantSettingsService,
+    @Inject(EXPORT_API_SERVICE) private exportApiService: IExportApiService
+  ) {}
 
   mapColumns(gridColumns: ITypedColDef[]): IColumnsMapping[] {
     const arr = [];
@@ -64,6 +74,11 @@ export class ExportComponent implements OnInit, OnDestroy {
       PageFilters: serverParams.pageFilters,
       SortList: serverParams.sortList
     };
+    const url =
+      'http://mail.24software.ro:8081/Integration1060/Shiptech10.Api.Invoice/api/invoice/export';
+    this.exportApiService
+      .exportDocument(url, requestToSend)
+      .subscribe(result => {});
   }
 
   print(): void {

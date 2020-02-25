@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, InjectionToken } from '@angular/core';
 import {
   IExportApiService,
   IExportDocumentRequestInterface
@@ -24,3 +24,7 @@ export class ExportApiService implements IExportApiService {
     });
   }
 }
+
+export const EXPORT_API_SERVICE = new InjectionToken<IExportApiService>(
+  'EXPORT_API_SERVICE'
+);
