@@ -413,7 +413,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    this.paramsServerSide = params;
+    // this.paramsServerSide = params;
     this.reportService
       .getReportsList$(
         transformLocalToServeGridInfo(

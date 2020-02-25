@@ -1,9 +1,10 @@
 import { Observable } from 'rxjs';
+import { IServerGridPagination } from '@shiptech/core/grid/server-grid/server-grid-pagination';
 
 export interface IExportDocumentRequestInterface {
   exportType: number;
   SearchText: string;
-  Pagination: number;
+  Pagination: IServerGridPagination;
   columns: any[];
   dateTimeOffset: number;
   timezone: string;
