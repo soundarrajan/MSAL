@@ -17,29 +17,31 @@ export class VesselToWatchModel {
   }
 
   set result(value: IVesselToWatchLookupDto) {
-    Object.defineProperty(this._result, 'id', {
-      value: value.id,
-      writable: true,
-      configurable: true,
-      enumerable: true
-    });
-    Object.defineProperty(this._result, 'name', {
-      value: value.name,
-      writable: true,
-      configurable: true,
-      enumerable: true
-    });
-    Object.defineProperty(this._result, 'displayName', {
-      value: value.displayName,
-      writable: true,
-      configurable: true,
-      enumerable: true
-    });
-    Object.defineProperty(this._result, 'vesselToWatchFlag', {
-      value: value.vesselToWatchFlag,
-      writable: true,
-      configurable: true,
-      enumerable: true
-    });
+    if (value) {
+      Object.defineProperty(this._result, 'id', {
+        value: value.id,
+        writable: true,
+        configurable: true,
+        enumerable: true
+      });
+      Object.defineProperty(this._result, 'name', {
+        value: value.name,
+        writable: true,
+        configurable: true,
+        enumerable: true
+      });
+      Object.defineProperty(this._result, 'displayName', {
+        value: value.displayName,
+        writable: true,
+        configurable: true,
+        enumerable: true
+      });
+      Object.defineProperty(this._result, 'vesselToWatchFlag', {
+        value: value.vesselToWatchFlag,
+        writable: true,
+        configurable: true,
+        enumerable: true
+      });
+    }
   }
 }
