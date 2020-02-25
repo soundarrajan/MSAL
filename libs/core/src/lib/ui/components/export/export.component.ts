@@ -15,10 +15,20 @@ import { Subject } from 'rxjs';
 })
 export class ExportComponent implements OnInit, OnDestroy {
   @Input() hasEmailPreview: boolean = false;
+  @Input() hasExportToExcel: boolean = true;
+  @Input() hasExportToCsv: boolean = true;
+  @Input() hasExportToPdf: boolean = true;
+  @Input() hasExportToPrint: boolean = true;
   @Input() gridColumns: any;
+  @Input() gridApi: any;
   private _destroy$ = new Subject();
 
   constructor() {}
+
+  exportTo(type: number): void {
+    // console.log(JSON.parse(localStorage.getItem('exportData')));
+    console.log(this.gridApi);
+  }
 
   print(): void {
     window.print();
@@ -43,9 +53,7 @@ export class ExportComponent implements OnInit, OnDestroy {
   //     .subscribe();
   // }
 
-  ngOnInit(): void {
-    console.log(this.gridColumns);
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this._destroy$.next();
