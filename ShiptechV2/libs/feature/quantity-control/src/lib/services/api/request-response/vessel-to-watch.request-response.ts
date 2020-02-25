@@ -1,6 +1,6 @@
 export interface IVesselToWatchRequest {
   id: number;
-  vesselToWatch: boolean;
+  vesselToWatchFlag: boolean;
 }
 
 export interface IVesselToWatchResponse {}
