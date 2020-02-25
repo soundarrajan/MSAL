@@ -362,7 +362,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
       () => {
         const toSend = {
           id: newVessel.id,
-          vesselToWatch: newVessel.vesselToWatchFlag
+          vesselToWatchFlag: newVessel.vesselToWatchFlag
         };
         return this.api.updateVesselToWatch(toSend);
       },
