@@ -8,3 +8,7 @@ export interface IColumnsMapping {
   dtoPath: string;
   label: string;
 }
+
+export interface IExportModuleTypes {
+  apiUrl: string;
+}

@@ -6,7 +6,6 @@ export interface IExportDocumentRequestInterface {
   SearchText: string;
   Pagination: IServerGridPagination;
   columns: any[];
-  dateTimeOffset: number;
   timezone: string;
   PageFilters: any;
   SortList: any;

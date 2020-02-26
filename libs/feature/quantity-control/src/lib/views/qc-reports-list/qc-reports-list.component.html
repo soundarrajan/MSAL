@@ -19,8 +19,9 @@
 <!--        <button (click)="openEmailPreview()" class="ui-button mr-1 mail-icon send-icon-position" label="" pButton-->
 <!--                type="button"></button>-->
         <shiptech-export
-          [gridColumns]="gridViewModel.getColumnsDefs()"
           [gridModel]="gridViewModel"
+          [gridId]="'qc-report-list-grid'"
+          [serverKeys]="qcReportListServerKeys"
         ></shiptech-export>
         <button (click)="newReport()" class="ui-button-success mr-1 btn-i-success" label="New Report" pButton
           type="button"></button>

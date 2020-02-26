@@ -46,17 +46,7 @@ import { ScrollPanel } from 'primeng/scrollpanel';
       )
     ])
   ],
-  styles: [
-    `
-      .menu-title {
-        color: #75808e;
-        font-size: 15px;
-        font-weight: 600;
-        margin: 17px 10px;
-        display: inline-block;
-      }
-    `
-  ]
+  styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit, AfterContentInit {
   @Input() reset: boolean;

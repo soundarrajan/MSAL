@@ -15,15 +15,12 @@ import {
 } from '@shiptech/core/ui/components/export/export-mapping';
 import { ITypedColDef } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
-import {
-  EXPORT_API_SERVICE,
-  ExportApiService
-} from '@shiptech/core/ui/components/export/api/export-api.service';
+import { EXPORT_API_SERVICE } from '@shiptech/core/ui/components/export/api/export-api.service';
 import { IExportApiService } from '@shiptech/core/ui/components/export/api/export-api.service.interface';
-import {FileSaverService} from "ngx-filesaver";
+import { FileSaverService } from 'ngx-filesaver';
 
 @Component({
-  selector: 'shiptech-export',
+  selector: 'shiptech-export[exportModuleType][gridModel][serverKeys][gridId]',
   templateUrl: './export.component.html',
   styleUrls: ['./export.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -34,8 +31,10 @@ export class ExportComponent implements OnInit, OnDestroy {
   @Input() hasExportToCsv: boolean = true;
   @Input() hasExportToPdf: boolean = true;
   @Input() hasExportToPrint: boolean = true;
-  @Input() gridColumns: any;
-  @Input() gridModel: BaseGridViewModel;
+  @Input() exportModuleType: string;
+  @Input() private gridModel: BaseGridViewModel;
+  @Input() private serverKeys: Record<string, string>;
+  @Input() private gridId: string;
 
   private _destroy$ = new Subject();
 
@@ -60,7 +59,7 @@ export class ExportComponent implements OnInit, OnDestroy {
     const serverParams = transformLocalToServeGridInfo(
       this.gridModel.gridApi,
       this.gridModel.paramsServerSide,
-      this.gridColumns,
+      this.serverKeys,
       this.gridModel.searchText
     );
 
@@ -68,8 +67,7 @@ export class ExportComponent implements OnInit, OnDestroy {
       exportType: KnownExportType[type],
       SearchText: this.gridModel.searchText,
       Pagination: serverParams.pagination,
-      columns: this.mapColumns(this.gridColumns),
-      dateTimeOffset: -120,
+      columns: this.mapColumns(this.gridModel.getColumnsDefs()),
       timezone: this.tenantSettings.getGeneralTenantSettings().tenantFormats
         .timeZone.name,
       PageFilters: serverParams.pageFilters,
@@ -85,7 +83,15 @@ export class ExportComponent implements OnInit, OnDestroy {
   }
 
   print(): void {
-    window.print();
+    document.getElementById(this.gridId).style.width = '';
+    document.getElementById(this.gridId).style.height = '';
+    this.gridModel.gridApi.setDomLayout('print');
+    setTimeout(() => {
+      window.print();
+      document.getElementById(this.gridId).style.height =
+        'calc( 100vh - 352px )';
+      this.gridModel.gridApi.setDomLayout(null);
+    }, 1000);
   }
 
   // openEmailPreview(): void {

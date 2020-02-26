@@ -5,3 +5,11 @@
   border-bottom: 4px solid #d5d5d5;
   position: relative;
 }
+
+@media print
+{
+  .no-print, .no-print *
+  {
+    display: none !important;
+  }
+}
