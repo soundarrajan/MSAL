@@ -51,6 +51,10 @@ import {
   IQcLoadPortCallBdnRequest,
   IQcLoadPortCallBdnResponse
 } from './request-response/load-bdn-port-call.request-response';
+import {
+  IVesselToWatchRequest,
+  IVesselToWatchResponse
+} from './request-response/vessel-to-watch.request-response';
 
 export namespace RobApiPaths {
   export const allRequests = 'api/procurement/request/tableView';
@@ -69,12 +73,19 @@ export namespace RobApiPaths {
     `api/quantityControlReport/getRelatedVoyageOrders`;
 }
 
+enum VesselMastersApiPaths {
+  updateVesselToWatch = `api/masters/vessels/updateVesselToWatch`
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class QuantityControlApi implements IQuantityControlApiService {
   @ApiCallUrl()
   private _apiUrl = this.appConfig.robApi;
+
+  @ApiCallUrl()
+  private _apiUrlMasters = this.appConfig.v1.API.BASE_URL_DATA_MASTERS;
 
   constructor(private http: HttpClient, private appConfig: AppConfig) {}
 
@@ -194,6 +205,16 @@ export class QuantityControlApi implements IQuantityControlApiService {
   ): Observable<IQcLoadPortCallBdnResponse> {
     return this.http.post<IQcLoadPortCallBdnResponse>(
       `${this._apiUrl}/${RobApiPaths.loadPortCallBdn()}`,
+      { payload: request }
+    );
+  }
+
+  @ObservableException()
+  updateVesselToWatch(
+    request: IVesselToWatchRequest
+  ): Observable<IVesselToWatchResponse> {
+    return this.http.post<IVesselToWatchResponse>(
+      `${this._apiUrlMasters}/${VesselMastersApiPaths.updateVesselToWatch}`,
       { payload: request }
     );
   }

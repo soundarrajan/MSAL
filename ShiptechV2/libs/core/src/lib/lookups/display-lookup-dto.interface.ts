@@ -6,3 +6,7 @@ export interface IDisplayLookupDto<TId = number, TName = string>
   name: TName;
   displayName: string;
 }
+
+export interface IVesselToWatchLookupDto extends IDisplayLookupDto {
+  vesselToWatchFlag: boolean;
+}
