@@ -172,7 +172,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             // $.each(ctrl.lists.AdditionalCost, function (key, val) {
             // })
         }
-
+        
         ctrl.changedProductContract = function(){
 
             function checkDeleted(key){
@@ -422,6 +422,10 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                     ctrl.data.products[server_data.id].specGroups = server_data.data.payload;
                 });
             }
+
+            for (var j = 0; j < ctrl.data.products.length; j++) {
+                ctrl.data.products[j].uniqueIdUI = Math.random().toString(36).substring(7);
+            }
             ctrl.globalAdditionalCosts = ctrl.data.additionalCosts;
    
             ctrl.screenActions = screenActionsModel.intersectActionLists(ctrl.defaultScreenActions, ctrl.data.screenActions);
@@ -473,6 +477,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                     ctrl.data.emailToSurvSent = true;
 				}
             }
+
 
             addFirstAdditionalCost();
             updatePageTitle(); //this is for page title
