@@ -25,7 +25,7 @@ angular.module('shiptech')
 					    //             label: 'Schedule Dashboard',
 					    //             uisref: STATE.DASHBOARD_CALENDAR
 					    //         }],
-					    title: 'Schedule Dashboard',
+					    title: 'Schedule Dashboard Timeline',
 					    timescale: TIMESCALE.DEFAULT
 					},
                     // template: '<schedule-dashboard-calendar></schedule-dashboard-calendar>'
@@ -40,13 +40,13 @@ angular.module('shiptech')
                                     uisref: STATE.HOME
                                 },
                                 {
-                                    label: 'Dashboard',
+                                    label: 'Schedule Dashboard Timeline',
                                     uisref: STATE.HOME
                                 }],
-                       title: 'Schedule Dashboard',
+                       title: 'Schedule Dashboard Timeline',
                     },
                     url: '/',
-                    template: '<home-page></home-page>',
+                    template: '<schedule-dashboard-timeline></schedule-dashboard-timeline>',
                 })
                  .state('default.test', {
                     params: {

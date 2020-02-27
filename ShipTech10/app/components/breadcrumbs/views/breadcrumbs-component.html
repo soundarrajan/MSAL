@@ -38,7 +38,6 @@
     </div>
 
     <navigation-topbar class="pull-right"></navigation-topbar>
-
     <div class="page-toolbar" ng-class="state.is(STATE.DASHBOARD_TABLE) ||
                                         state.is(STATE.DASHBOARD_CALENDAR) ||
                                         state.is(STATE.DASHBOARD_TIMELINE) ||
@@ -46,8 +45,7 @@
 
         <div class="st-breadcrumbs-pins"
              ng-if="state.is(STATE.DASHBOARD_TABLE) ||
-                    state.is(STATE.DASHBOARD_CALENDAR) ||
-                    state.is(STATE.HOME)"
+                    state.is(STATE.DASHBOARD_CALENDAR)"
              ng-init="getCalendarStatus()">
             <span class="hide" ng-if="!calendarStatuses && !adminDashboardStatuses">{{getCalendarStatus()}}</span>
             <ul class="page-breadcrumb" style="width: 100%; padding: 0;">
@@ -67,8 +65,7 @@
                 </li>
             </ul>
         </div>
-
-        <div class="st-breadcrumbs-pins" ng-if="timelineStatusList && state.is(STATE.DASHBOARD_TIMELINE)">
+        <div class="st-breadcrumbs-pins" ng-if="timelineStatusList && (state.is(STATE.DASHBOARD_TIMELINE) || state.is(STATE.HOME))">
             <span class="hide" ng-if="!calendarStatuses && !adminDashboardStatuses">{{getCalendarStatus()}}</span>
             <ul class="page-breadcrumb" style="width: 100%; padding: 0;">
                 {{ statusesCount = calculateTimelineStatusesCount() }}

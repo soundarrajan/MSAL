@@ -627,7 +627,7 @@ angular.module("shiptech.components").controller("FiltersController", [
         };
 
         $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
-            var array = ["Schedule Dashboard", "Schedule Dashboard"];
+            var array = ["Schedule Dashboard", "Schedule Dashboard", "Schedule Dashboard Timeline"];
             if (array.indexOf(toParams.path[1].label) != -1 && $rootScope.startView) {
                 $rootScope.clc_loaded = false;
                 $scope.globalFilters = [];
@@ -650,6 +650,17 @@ angular.module("shiptech.components").controller("FiltersController", [
                 $scope.getFiltersConfigurations();
 
                 deregisterStateChangeStart();
+        });
+
+        $rootScope.$on("filtersTimelineDefault", function(){
+            $rootScope.clc_loaded = false;
+            $scope.globalFilters = [];
+            $rootScope.listOfAppliedFiltersString = [];
+            $rootScope.rawFilters = [];
+            $scope.createFilters();
+            $scope.getDefaultFiltersConfiguration();
+            $scope.getFiltersConfigurations();
+
         });
 
 	    angular.element(document).ready(function () {
@@ -702,6 +713,9 @@ angular.module("shiptech.components").controller("FiltersController", [
             filterConfigurationModel
                 .getDefaultFiltersConfiguration(data)
                 .then(function(response) {
+                    console.log("----");
+                    console.log("Filters");
+                    $rootScope.isRefresh = true;
                     $scope.defaultConfiguration = response.payload;
                     if (!response.payload && !fromSave) {
                     	$rootScope.$broadcast("filters-applied", []);

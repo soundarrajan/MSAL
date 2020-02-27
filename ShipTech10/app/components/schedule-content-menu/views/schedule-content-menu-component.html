@@ -1,9 +1,9 @@
 <div class="row">
     <div class="st-main-content-menu st-displaceable-menu tabbable-line">
         <ul class="nav nav-tabs pull-left">
-            <li ng-class="{open : state.is(STATE.DASHBOARD_CALENDAR)  || state.is(STATE.HOME)}">
-                <a ui-sref="default.dashboard-calendar">
-                    Calendar View
+            <li ng-class="{open : state.is(STATE.DASHBOARD_TIMELINE) || state.is(STATE.HOME)}">
+                <a ui-sref="default.dashboard-timeline">
+                    Timeline View
                 </a>
             </li>
             <li ng-class="{open : state.is(STATE.DASHBOARD_TABLE)}">
@@ -11,14 +11,14 @@
                     Table View
                 </a>
             </li>
-			<li ng-class="{open : state.is(STATE.DASHBOARD_TIMELINE)}">
-                <a ui-sref="default.dashboard-timeline">
-                    Timeline View
+            <li ng-class="{open : state.is(STATE.DASHBOARD_CALENDAR)}">
+                <a ui-sref="default.dashboard-calendar">
+                    Calendar View
                 </a>
             </li>
         </ul>
         <div class="form-inline pull-right">
-            <div ng-if="state.is(STATE.DASHBOARD_CALENDAR) || state.is(STATE.HOME)">
+            <div ng-if="state.is(STATE.DASHBOARD_CALENDAR)">
                 <div class="btn-group calendar-select">
                     <button type="button" class="btn btn-default calendar-selected">
                         {{ $ctrl.timeScale }}
@@ -58,7 +58,7 @@
                 </div>
             </div>
 
-            <div ng-if="state.is(STATE.DASHBOARD_TIMELINE)">
+            <div ng-if="state.is(STATE.DASHBOARD_TIMELINE) || state.is(STATE.HOME)">
                 <div class="form-group">
                     <div class="input-group st-content-search-box">
                         <div id="search_box_dummy1">
