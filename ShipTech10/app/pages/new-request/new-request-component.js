@@ -2941,12 +2941,6 @@ angular.module("shiptech.pages").controller("NewRequestController", [
             })
 
             if (!ctrl.request.hasBestContract || !hasValidatedProduct) {return false;}
-            selectContractModel.getBestContract(ctrl.requestId, pagination, search).then(function(data) {
-                processData(data);
-                ctrl.bestContractsList = data.payload;
-                ctrl.selectDefaultContracts();
-                ctrl.showAllContracts = false;
-            });
         };
         ctrl.displayAllContracts = function(pagination, search) {
             if (!pagination) {

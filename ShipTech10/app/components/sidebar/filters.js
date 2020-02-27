@@ -626,10 +626,24 @@ angular.module("shiptech.components").controller("FiltersController", [
             }
         };
 
+        $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
+            var array = ["Schedule Dashboard", "Schedule Dashboard"];
+            if (array.indexOf(toParams.path[1].label) != -1 && $rootScope.startView) {
+                $rootScope.clc_loaded = false;
+                $scope.globalFilters = [];
+                $rootScope.listOfAppliedFiltersString = [];
+                $rootScope.rawFilters = [];
+                $scope.createFilters();
+                $scope.getDefaultFiltersConfiguration();
+                $scope.getFiltersConfigurations();
+            }
+        });
+
         var deregisterStateChangeStart = $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
             $rootScope.clc_loaded = false;   
                 $scope.globalFilters = [];
                 $rootScope.listOfAppliedFiltersString = [];
+                $rootScope.startView = true;
                 $rootScope.rawFilters = [];
                 $scope.createFilters();
                 $scope.getDefaultFiltersConfiguration();
@@ -637,6 +651,7 @@ angular.module("shiptech.components").controller("FiltersController", [
 
                 deregisterStateChangeStart();
         });
+
 	    angular.element(document).ready(function () {
 		    // $rootScope.clc_loaded = false;   
             // $scope.globalFilters = [{}];
@@ -657,6 +672,7 @@ angular.module("shiptech.components").controller("FiltersController", [
             $scope.noDefault = null;
             $scope.packedFilters = [];
         });
+
   
         $scope.formatDate = function(elem, dateFormat) {
             // console.log(1)

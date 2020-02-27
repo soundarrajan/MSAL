@@ -5542,18 +5542,41 @@ APP_API.factory("$Api_Service", [
                     // }
                     if (param.app == "admin" && param.screen == "configuration") {     
                             var result = {};
-							result["contract"] = $tenantConfiguration.contractConfiguration;
-							result["email"] = $tenantConfiguration.emailConfiguration;
-							result["general"] = $tenantConfiguration.generalConfiguration;
-							result["procurement"] = $tenantConfiguration.procurementConfiguration;
-						    result["schedule"] = $tenantConfiguration.scheduleDashboardConfiguration;
-							result["delivery"] = $tenantConfiguration.deliveryConfiguration;
-							result["invoice"] = $tenantConfiguration.invoiceConfiguration;
-							result["report"] = $tenantConfiguration.reportConfiguration;
-							$rootScope.$broadcast("tenantConfiguration", result);
-                            $rootScope.tenantConfigurationResponseData = result;
-                            callback(result);
-	                        return;
+                            if ($rootScope.reloadTenantConfiguration) {
+                                $rootScope.reloadTenantConfiguration = false;
+                                $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Admin/api/admin/tenantConfiguration/get", {
+                                          Payload: false
+                                    }).then(function (response) {
+                                        if (response.status == 200) {
+                                            angular.module("shiptech").value("$tenantSettings", response.data.generalConfiguration);
+                                            angular.module("shiptech").value("$tenantConfiguration", response.data);
+                                            result["contract"] = response.data.contractConfiguration;
+                                            result["email"] = response.data.emailConfiguration;
+                                            result["general"] = response.data.generalConfiguration;
+                                            result["procurement"] = response.data.procurementConfiguration;
+                                            result["schedule"] = response.data.scheduleDashboardConfiguration;
+                                            result["delivery"] = response.data.deliveryConfiguration;
+                                            result["invoice"] = response.data.invoiceConfiguration;
+                                            result["report"] = response.data.reportConfiguration;
+                                            $rootScope.$broadcast("tenantConfiguration", result);
+                                            $rootScope.tenantConfigurationResponseData = result;
+                                            callback(result);
+                                        }
+                                }); 
+                            } else {
+    							result["contract"] = $tenantConfiguration.contractConfiguration;
+    							result["email"] = $tenantConfiguration.emailConfiguration;
+    							result["general"] = $tenantConfiguration.generalConfiguration;
+    							result["procurement"] = $tenantConfiguration.procurementConfiguration;
+    						    result["schedule"] = $tenantConfiguration.scheduleDashboardConfiguration;
+    							result["delivery"] = $tenantConfiguration.deliveryConfiguration;
+    							result["invoice"] = $tenantConfiguration.invoiceConfiguration;
+    							result["report"] = $tenantConfiguration.reportConfiguration;
+    							$rootScope.$broadcast("tenantConfiguration", result);
+                                $rootScope.tenantConfigurationResponseData = result;
+                                callback(result);
+    	                        return;
+                            }
                     }
                     if (param.app == "admin" && param.screen == "role") {
                         function deepmerge(foo, bar) {
@@ -5709,6 +5732,11 @@ APP_API.factory("$Api_Service", [
                                         id: -1,
                                         name: "No Parent"
                                     };
+                                }
+                                if (param.app == "invoices" && param.screen == "invoice") {
+                                	if (res.invoiceChecks) {
+                                		delete res.invoiceChecks;
+                                	}
                                 }
                                 //End Customizari
                                 // if (_debug) console.log("$APIService entity.get answer:", res);

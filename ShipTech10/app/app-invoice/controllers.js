@@ -1115,8 +1115,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
 							    row.isDeleted = true;
 								$scope.save_master_changes();
 							} else {
-							    obj.splice(index, 1);
-							    $scope.$apply();
+							    row.isDeleted = true;
 							}
                 	 	}
                 	 });
@@ -1429,10 +1428,12 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
             }
         };
 
-		$scope.filterCostTypesByAdditionalCostInvoice = function(cost, rowRenderIndex) {
+		$scope.filterCostTypesByAdditionalCostInvoice = function(rowRenderIndex) {
             if (typeof(vm.filteredCostTypesByAdditionalCost) == 'undefined') {
 	            vm.filteredCostTypesByAdditionalCost = []
             }
+            if (!$scope.grid.appScope.fVal().formValues.costDetails[rowRenderIndex]) {return};
+            cost = $scope.grid.appScope.fVal().formValues.costDetails[rowRenderIndex].costName.id;
             var costType = null;
             currentCost = cost;
             if (!$rootScope.additionalCostsComponentTypes) {return}
@@ -1443,22 +1444,21 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
             });
             
 			availableCosts = [];
-            if (costType) {
-                $.each(vm.listsCache.CostType, function(ack, acv){
-                    if (acv) {
-                        if (costType == 1 || costType == 2) {
-                            if (acv.id == 1 || acv.id == 2) {
-                                availableCosts.push(acv);
-                            }
-                        }
-                        if (costType == 3) {
-                            if (acv.id == 3) {
-                                availableCosts.push(acv);
-                            }                       
+            $.each(vm.listsCache.CostType, function(ack, acv){
+                if (acv) {
+                    if (costType == 1 || costType == 2) {
+                        if (acv.id == 1 || acv.id == 2) {
+                            availableCosts.push(acv);
                         }
                     }
-                })
-            }
+                    if (costType == 3) {
+                        if (acv.id == 3) {
+                            availableCosts.push(acv);
+                        }                       
+                    }
+                }
+            })
+          
           
             return availableCosts
         };
@@ -1535,9 +1535,11 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
 
         	$(".sweetConfirmModal .sweetConfirmModalYes").on("click", function() {
         		callback(true);
+                $(".sweetConfirmModal .sweetConfirmModalYes").off('click');
         	})
         	$(".sweetConfirmModal .sweetConfirmModalNo").on("click", function() {
         		callback(false);
+                $(".sweetConfirmModal .sweetConfirmModalNo").off('click');
         	})
         }
 
@@ -1849,11 +1851,13 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
                 }
                 if (name == "costType") {
                 	if ($scope.formValues.costDetails.length > 0) {
-        	            if ($scope.formValues.costDetails[id].costType.name == "Flat") {
-        	                $scope.formValues.costDetails[id].invoiceQuantity = 1;
-        	            } else {
-        	                $scope.formValues.costDetails[id].invoiceQuantity = '';
-        	            }
+                		if ($scope.formValues.costDetails[id]) {
+	        	            if ($scope.formValues.costDetails[id].costType.name == "Flat") {
+	        	                $scope.formValues.costDetails[id].invoiceQuantity = 1;
+	        	            } else {
+	        	                $scope.formValues.costDetails[id].invoiceQuantity = '';
+	        	            }
+                		}
                 	}
                 }
                 if (name == "InvoiceRateCurrency") {
@@ -2971,15 +2975,25 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
             }
             if (rowData.costName) {
                 alreadyExists = false;
+                alreadyExistsKey = false;
                 $.each($scope.formValues.costDetails, function(idx, val) {
                     if (rowData.orderAdditionalCostId == val.orderAdditionalCostId) {
                         alreadyExists = true;
+                        alreadyExistsKey = idx;
                     }
                 });
                 if (!alreadyExists) {
                     $scope.formValues.costDetails.push(transactionstobeinvoiced_dtRow);
                 } else {
-                    toastr.error("Selected cost already exists");
+                	if (alreadyExistsKey !== false) {
+	                	if ($scope.formValues.costDetails[alreadyExistsKey].isDeleted && !$scope.formValues.costDetails[alreadyExistsKey].id) {
+		                    $scope.formValues.costDetails[alreadyExistsKey] = transactionstobeinvoiced_dtRow;
+	                	} else {
+		                    toastr.error("Selected cost already exists");
+	                	}
+                	} else {
+	                    toastr.error("Selected cost already exists");
+                	}
                 }
             }
             if (rowData.delivery) {

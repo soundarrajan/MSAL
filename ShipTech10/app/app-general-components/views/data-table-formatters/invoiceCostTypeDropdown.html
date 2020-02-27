@@ -4,14 +4,13 @@
 	<span ng-if="CM.chg == true" class="hidden">{{grid.appScope.fVal().formValues = changedFVal}}</span>
 
 <!-- {{grid.appScope.fVal().formValues.costDetails[rowRenderIndex]}} -->
-
             <select class="form-control bs-select changeIT "
             name="{{ col.colDef.displayName }}_{{rowRenderIndex}}"
             id="{{ grid.element[0].id }}_{{ col.colDef.name }}_{{rowRenderIndex}}"
             data-container="body"
             ng-class="'colt' + col.uid"
             ng-change="grid.appScope.fVal().triggerChangeFields(col.colDef.name, rowRenderIndex); $eval(col.colDef.cellObject.changeEvent)"
-            ng-options="item as item.name for item in filterCostTypesByAdditionalCostInvoice(grid.appScope.fVal().formValues.costDetails[rowRenderIndex].costName.id) track by item.id | unique:'id'"
+            ng-options="item as item.name for item in filterCostTypesByAdditionalCostInvoice(rowRenderIndex) track by item.id | unique:'id'"
             ng-model="MODEL_COL_FIELD" 
             ng-required="$eval(col.colDef.cellObject.Required) || $eval(col.colDef.cellObject.required) > 0 || col.colDef.cellObject.required == true ? true : false"
             ng-disabled="$eval(col.colDef.cellObject.Disabled)">

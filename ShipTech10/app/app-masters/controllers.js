@@ -144,6 +144,9 @@ APP_MASTERS.controller("Controller_Master", [
             if (!$rootScope.getAdminConfigurationCall) {
                 // console.log("from Master");
                 $rootScope.getAdminConfigurationCall = true;
+                if (vm.app_id == "admin" && vm.screen_id == "configuration") {
+                    return;
+                }
                 Factory_Master.get_master_entity(1, "configuration", "admin", function(callback2) {
                     if (callback2) {
                     	$rootScope.$broadcast("adminConfiguration", callback2)
@@ -864,6 +867,9 @@ APP_MASTERS.controller("Controller_Master", [
                     vm.editInstance.$valid = false; 
                     return false;               	
                 }
+                if (!vm.entity_id || vm.entity_id == "") {
+                	$scope.formValues.internalName = angular.copy($scope.formValues.name);
+                }
 
             }            
             if (vm.app_id == "masters" && vm.screen_id == "location") {
@@ -1277,6 +1283,8 @@ APP_MASTERS.controller("Controller_Master", [
                             $scope.loaded = true;
                             if (vm.app_id == "admin" && vm.screen_id == "configuration") {
                                 vm.entity_id = 0;
+                                $rootScope.reloadTenantConfiguration = true;
+
                             }
                             setTimeout(function() {
                                 $scope.submitedAction = false;
@@ -1287,6 +1295,7 @@ APP_MASTERS.controller("Controller_Master", [
                             if(noReload == undefined || typeof noReload == undefined || !noReload){
                                 toastr.success(callback.message);
                                 //alert('reloading');
+                                $tenantConfiguration = null;
                                 $state.reload();
                                 screenLoader.hideLoader();
                             } else {
@@ -7280,6 +7289,7 @@ APP_MASTERS.controller("Controller_Master", [
         $scope.invoiceKeyPress = function(type) {
             $rootScope.reloadPage = false;
         }
+
 		$scope.invoiceConvertUom = function(type, rowIndex, formValues, oneTimeRun) {
             if ($rootScope.reloadPage){
                 return;
@@ -7292,7 +7302,7 @@ APP_MASTERS.controller("Controller_Master", [
 	    		};
 	    	}
             if (window.initialUomConversionDone.product != 0) {
-                if (formValues.productDetails.length == window.initialUomConversionDone.product && $('form[name="CM.editInstance"]').hasClass("ng-pristine")) {
+                if (formValues.productDetails.length == window.initialUomConversionDone.product && $('form[name="CM.editInstance"]').hasClass("ng-pristine") && $('form[name="CM.editInstance"]').hasClass("ng-invalid")) {
                     return;
                 }
             } else  if (window.initialUomConversionDone.cost != 0) {
@@ -7349,8 +7359,8 @@ APP_MASTERS.controller("Controller_Master", [
 	                        calculate(vm.old_cost, response.data.payload[1].id, vm.old_costType)
 	                    });
 	                } else {
-	                    if (!$scope.grid.appScope.fVal().dtMasterSource.applyFor[1]) return;
-	                    calculate(vm.old_cost, $scope.grid.appScope.fVal().dtMasterSource.applyFor[1].id, vm.old_costType)
+	                   if (!formValues.productDetails[0].invoicedProduct) return;
+                       calculate(vm.old_cost, formValues.productDetails[0].invoicedProduct.id, vm.old_costType)
 	                }
 	            } else {
 	                calculate(vm.old_cost, vm.old_product, vm.old_costType)
@@ -7399,7 +7409,7 @@ APP_MASTERS.controller("Controller_Master", [
 	                    calculateGrand(formValues);
 	                    return;
 	                }
-	                $scope.getUomConversionFactor(vm.product, 1, quantityUom, rateUom, function(response) {
+	                $scope.getUomConversionFactor(vm.product, 1, rateUom, quantityUom, function(response) {
 	                    if (vm.costType) {
 	                        if (vm.costType.name == 'Unit') {
 	                            formValues.costDetails[rowIndex].invoiceAmount = response * convertDecimalSeparatorStringToNumber(vm.cost.invoiceRate) * convertDecimalSeparatorStringToNumber(vm.cost.invoiceQuantity);

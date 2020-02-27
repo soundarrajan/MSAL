@@ -126,7 +126,9 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
          	if (localStorage.getItem("invoiceFromDelivery")) {
          		// $rootScope.transportData = angular.copy(JSON.parse(localStorage.getItem("invoiceFromDelivery")));
 
-		        Factory_Master.create_invoice_from_delivery(angular.copy(JSON.parse(localStorage.getItem("invoiceFromDelivery"))), function(response) {
+				var lsInvoiceFromDelivery = angular.copy(JSON.parse(localStorage.getItem("invoiceFromDelivery")));
+				localStorage.removeItem("invoiceFromDelivery");
+		        Factory_Master.create_invoice_from_delivery(lsInvoiceFromDelivery, function(response) {
 		            if (response) {
 		                if (response.status == true) {
 		                    $scope.loaded = true;
@@ -161,7 +163,6 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
 		                }
 		            }
                     $rootScope.transportData = null;
-					localStorage.removeItem("invoiceFromDelivery");
 		        })
 
          	}
@@ -954,14 +955,16 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
                     // {end} multiple layouts
                     $scope.sortableGroups = [];
                     if (vm.app_id == "invoices") {
-                        if ($state.params.screen_id == "claims") {
-                            delete $scope.formFields["CostDetails"];
-                            delete $scope.formFields["ProductDetails"];
-                            delete $scope.formFields["InvoiceSummary"];
-                        }
-                        if ($state.params.screen_id == "invoice") {
-                            delete $scope.formFields["ClaimDetails"];
-                        }
+                    	if (window.location.href.indexOf("structure") == -1) {
+	                        if ($state.params.screen_id == "claims") {
+	                            delete $scope.formFields["CostDetails"];
+	                            delete $scope.formFields["ProductDetails"];
+	                            delete $scope.formFields["InvoiceSummary"];
+	                        }
+	                        if ($state.params.screen_id == "invoice") {
+	                            delete $scope.formFields["ClaimDetails"];
+	                        }
+                    	}
                     }
                     if (vm.app_id == "masters" && vm.screen_id == "additionalcost") {
 	                    if($scope.formValues.costType.name == 'Flat' || $scope.formValues.costType.name == 'Unit') {
