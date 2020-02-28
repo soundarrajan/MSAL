@@ -108,6 +108,7 @@ export abstract class BaseGridViewModel implements OnDestroy {
   public enablePreServerSideDataSourcePipe: boolean = false;
   public paramsServerSide: IServerSideGetRowsParams;
   public searchText: string;
+  public exportUrl: string;
   public gridApi: GridApi;
   public gridColumnApi: ColumnApi;
   public gridOptions: GridOptions;

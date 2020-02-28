@@ -17,6 +17,8 @@ import {
 export namespace InvoiceApiPaths {
   export const getCompletesList = () => `api/invoice/completeViewList`;
   export const getInvoicesList = () => `api/invoice/list`;
+  export const getCompletesListExport = () => 'api/invoice/exportCompleteView';
+  export const getInvoicesListExport = () => `api/invoice/export`;
 }
 
 @Injectable({
@@ -46,6 +48,14 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
       `${this._apiUrl}/${InvoiceApiPaths.getInvoicesList()}`,
       { payload: request }
     );
+  }
+
+  getReportListExportUrl(): string {
+    return `${this._apiUrl}/${InvoiceApiPaths.getCompletesListExport()}`;
+  }
+
+  getInvoiceListExportUrl(): string {
+    return `${this._apiUrl}/${InvoiceApiPaths.getInvoicesListExport()}`;
   }
 }
 

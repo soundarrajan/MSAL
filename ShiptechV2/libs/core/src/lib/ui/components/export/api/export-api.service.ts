@@ -4,8 +4,6 @@ import {
   IExportDocumentRequestInterface
 } from '@shiptech/core/ui/components/export/api/export-api.service.interface';
 import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
-import { IDocumentsListResponse } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto';
-import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({

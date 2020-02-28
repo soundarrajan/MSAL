@@ -440,6 +440,11 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
     );
   }
 
+  @ObservableException()
+  getQcReportListExportUrl(): string {
+    return this.api.getReportListExportUrl();
+  }
+
   ngOnDestroy(): void {
     super.onDestroy();
   }

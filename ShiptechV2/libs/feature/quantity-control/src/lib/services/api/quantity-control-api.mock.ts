@@ -209,4 +209,9 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
       nbOfDeliveries: chance.integer({ min: 0, max: 50 })
     });
   }
+
+  @ApiCall()
+  getReportListExportUrl(): string {
+    return '';
+  }
 }

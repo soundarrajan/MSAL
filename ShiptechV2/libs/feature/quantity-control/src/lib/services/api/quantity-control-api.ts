@@ -67,6 +67,8 @@ export namespace RobApiPaths {
   export const revertVerify = () => `api/quantityControlReport/revertVerify`;
   export const getRelatedVoyageOrders = () =>
     `api/quantityControlReport/getRelatedVoyageOrders`;
+  export const getReportsListExportUrl = () =>
+    'api/quantityControlReport/export';
 }
 
 @Injectable({
@@ -196,6 +198,11 @@ export class QuantityControlApi implements IQuantityControlApiService {
       `${this._apiUrl}/${RobApiPaths.loadPortCallBdn()}`,
       { payload: request }
     );
+  }
+
+  @ObservableException()
+  getReportListExportUrl(): string {
+    return `${this._apiUrl}/${RobApiPaths.getReportsListExportUrl()}`;
   }
 }
 

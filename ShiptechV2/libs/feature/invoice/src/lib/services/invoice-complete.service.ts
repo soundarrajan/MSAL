@@ -36,6 +36,16 @@ export class InvoiceCompleteService extends BaseStoreService
     return this.api.getInvoiceList({ ...gridRequest });
   }
 
+  @ObservableException()
+  getInvoiceListExportUrl(): string {
+    return this.api.getInvoiceListExportUrl();
+  }
+
+  @ObservableException()
+  getCompleteViewListExportUrl(): string {
+    return this.api.getReportListExportUrl();
+  }
+
   ngOnDestroy(): void {
     super.onDestroy();
   }
