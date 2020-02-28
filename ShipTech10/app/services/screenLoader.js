@@ -213,8 +213,8 @@ angular.module("shiptech").config([
 	                        	window.intervalLoaderWatch = setInterval(function(){
 	                        		if (!loaderIsOpen()) {
 	                        			console.log("Last End: ==============: ", Date.now() - window.firstApiCallStartTime);
-                                        if (appInsightsInstance) {
-                                            appInsightsInstance.trackMetric({ name: 'Page data loading duration', total: Date.now() - window.firstApiCallStartTime }, window.location);
+                                        if (appInsightsInstance) { 
+                                            appInsightsInstance.trackMetric({ name: 'Page data loading duration', average: Date.now() - window.firstApiCallStartTime }, window.location);
                                         }
 			                    		delete window.firstApiCallStartTime;
 	                        			clearInterval(window.intervalLoaderWatch);
@@ -288,7 +288,7 @@ angular.module("shiptech").config([
 	                        		if (!loaderIsOpen()) {
 	                        			console.log("Last End on Error: ==============: ", Date.now() - window.firstApiCallStartTime);
                                         if (appInsightsInstance) {
-                                            appInsightsInstance.trackMetric({ name: 'Page data loading duration', total: Date.now() - window.firstApiCallStartTime }, window.location);
+                                            appInsightsInstance.trackMetric({ name: 'Page data loading duration', average: Date.now() - window.firstApiCallStartTime }, window.location);
                                         }
 			                    		delete window.firstApiCallStartTime;
 	                        			clearInterval(window.intervalLoaderWatch);

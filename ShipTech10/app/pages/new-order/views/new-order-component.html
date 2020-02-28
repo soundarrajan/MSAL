@@ -346,6 +346,10 @@
                                                             <span class="orange-txt">
                                                                 *
                                                             </span>
+                                                            &nbsp;
+                                                            <span ng-if="$ctrl.data.vessel.vesselToWatchFlag">
+                                                            	<i class="fa fa-flag vesselToWatchFlag"></i>
+                                                            </span>
                                                         </label>
                                                         <div class="form_input form_input_{{ $ctrl.sellerDetails.VesselImoNo.name }} input-group">
 							                                <div class="input-group">
@@ -401,7 +405,7 @@
                                                             <span class="input-group-addon ng-scope"
                                                                   ng-click="triggerModal('general', 'masters_companylist', 'Carrier' ,'carrier',null,null,null,'bargeList');"
                                                                   ng-controller="Controller_Master as CM"
-                                                                  ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Confirmed'].id">
+                                                                  ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Invoiced'].id || $ctrl.data.status.id === $ctrl.STATUS['PartiallyInvoiced'].id">
                                                                 <a class=" btn default" href="">
                                                                     <i class="fa fa-search"></i>
                                                                 </a>

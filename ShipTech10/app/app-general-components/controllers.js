@@ -2402,10 +2402,10 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 vm.paymentDateHistory[currentRow.id].paymentDate = changedData.paymentDate
                 vm.paymentDateHistory[currentRow.id].accountancyDate = changedData.accountancyDate
             }
+            var rowDatePicker = "#clc_" + entityId + "_accountancyDate_dateinput";
             Factory_General_Components.updateTreasuryInfo(payload, function(callback) {
                 if (callback.isSuccess) {
                     // toastr.success("Saved successfully");
-                    $(".datepicker").hide();
                     var theCLC = $("#flat_invoices_app_complete_view_list");
                     var rowData = CLC.jqGrid.Ascensys.gridObject.rows;
                     $.each(rowData, function(k, v) {
