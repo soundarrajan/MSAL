@@ -80,6 +80,11 @@ import {
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
 import { ReconStatusLookupEnum } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.enum';
 import { StatusLookupEnum } from '@shiptech/core/lookups/known-lookups/status/status-lookup.enum';
+import {
+  UpdateVesselToWatchAction,
+  UpdateVesselToWatchFailedAction,
+  UpdateVesselToWatchSuccessfulAction
+} from './details/actions/update-vessel-to-watch.action';
 
 @State<IQcReportState>({
   name: nameof<IQuantityControlState>('report'),
@@ -753,6 +758,49 @@ export class QcReportState {
     });
   }
 
+  @Action(UpdateVesselToWatchAction)
+  updateVesselToWatchAction(
+    { getState, patchState }: StateContext<IQcReportState>,
+    __: UpdateVesselToWatchAction
+  ): void {
+    const state = getState();
+    patchState({
+      details: {
+        ...state.details,
+        hasChanges: true
+      }
+    });
+  }
+
+  @Action(UpdateVesselToWatchSuccessfulAction)
+  updateVesselToWatchActionSuccessful(
+    { getState, patchState }: StateContext<IQcReportState>,
+    { newVessel }: UpdateVesselToWatchSuccessfulAction
+  ): void {
+    const state = getState();
+    patchState({
+      details: {
+        ...state.details,
+        vessel: newVessel,
+        hasChanges: false
+      }
+    });
+  }
+
+  @Action(UpdateVesselToWatchFailedAction)
+  updateVesselToWatchFailed(
+    { getState, patchState }: StateContext<IQcReportState>,
+    __: UpdateVesselToWatchAction
+  ): void {
+    const state = getState();
+    patchState({
+      details: {
+        ...state.details,
+        hasChanges: false
+      }
+    });
+  }
+
   @Action([
     QcVerifyReportAction,
     QcVerifyReportSuccessfulAction,
@@ -913,7 +961,7 @@ export class QcReportState {
   @Action([QcClearPortCallBdnAction])
   clearPortCallBdnAction(
     { getState, patchState }: StateContext<IQcReportState>,
-    action: QcClearPortCallBdnAction
+    _: QcClearPortCallBdnAction
   ): void {
     const state = getState();
 

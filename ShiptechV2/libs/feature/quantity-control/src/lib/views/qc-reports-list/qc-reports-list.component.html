@@ -4,16 +4,9 @@
       <shiptech-presets-menu-dropdown></shiptech-presets-menu-dropdown>
       <app-filter-preferences appAgGridFilterPresets groupId="qc-report-list-filter-presets" id="qc-report-list" (presetsLoaded)="gridViewModel.markServerSideDataSourceReady()"></app-filter-preferences>
     </div>
-    <div class="col-6">
+    <div class="col-6 p-r-20">
       <div style="float:right">
-        <shiptech-search-box appExternalSearch [placeholder]="'Search something'" class="mr-1"  (search)="gridViewModel.onSearch($event)" [gridId]="search.id"></shiptech-search-box>
-
-        <!-- TODO: refactor this into a component -->
-<!--        <button class="ui-button mr-15  xl-icon mail-icon-position" label="" pButton type="button"></button>-->
-
-<!--        <button class="ui-button mr-15  csv-icon mail-icon-position" label="" pButton type="button"></button>-->
-
-<!--        <button class="ui-button mr-15 pdf-icon mail-icon-position" label="" pButton type="button"></button>-->
+        <shiptech-search-box appExternalSearch [placeholder]="'Search '" class="mr-1"  (search)="gridViewModel.onSearch($event)" [gridId]="search.id"></shiptech-search-box>
 
 <!--        <button class="ui-button mr-15  print-icon mail-icon-position" label="" pButton type="button" (click)="print()"></button>-->
 <!--        <button (click)="openEmailPreview()" class="ui-button mr-1 mail-icon send-icon-position" label="" pButton-->
@@ -88,6 +81,7 @@
     appAgGridEmptyFilterOption
     #search="search-id"
     groupId="qc-report-list-filter-presets"
+    [suppressMenuHide]="true"
     id="qc-report-list-grid" class="ag-theme-balham ag-shiptech-theme ag-shiptech-coloumnheader" style="height:calc( 100vh - 352px );"
     [gridOptions]="gridViewModel.gridOptions">
   </ag-grid-angular>
@@ -105,6 +99,12 @@
   <a *ngIf="data && data.id" [routerLink]="[reportDetailsRoutePath, data.id]" href="#" [target]="appConfig.openLinksInNewTab ? '_blank' : '_self'">{{data?.portCallId}}</a>
 </ng-template>
 
+<ng-template [columnDef]="[gridViewModel.vesselNameCol]" appAgCellTemplate let-data="data" let-value="value">
+  <p *ngIf="value">
+    {{ data?.vesselName }}
+    <span class="badge badge-pill badge-flag" *ngIf="data?.vesselToWatchFlag"><i class="fas fa-flag fa-xs"></i></span>
+  </p>
+</ng-template>
 
 <ng-template [columnDef]="[gridViewModel.isVerifiedSludgeQtyCol]" appAgCellTemplate let-data="data" let-value="value">
   <div fxLayout="row" fxLayoutAlign="center center">

@@ -26,7 +26,7 @@
       <p-panel class="headerh1 blue">
         <p-header>
           <div fxLayout="row">
-            <div fxLayout="row" fxLayoutGap="20px">
+            <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="center center">
               <span>QUANTITY CONTROL REPORT</span>
               <shiptech-autocomplete [autocompleteType]="autocompleteVessel" [disabled]="(isReadOnly$ | async) || !(isNew$ | async)" #vesselAutoComplete>
                 <p-autoComplete (onSelect)="updateVessel($event)"
@@ -63,10 +63,16 @@
               </shiptech-autocomplete>
             </div>
             <div style="margin-left: auto">
-              <span class="badge" *ngIf="(matchStatus$ | async) !== null && (matchStatus$ | async) !== undefined"
+              <span class="badge badge-danger" *ngIf="(matchStatus$ | async) !== null && (matchStatus$ | async) !== undefined"
                     [ngStyle]="{ backgroundColor: (matchStatus$ | async)?.code }">{{ (matchStatus$ | async)?.displayName }}</span>
-              <span class="badge" *ngIf="(nbOfClaims$ | async) >= 0">Claims: {{nbOfClaims$ | async}}</span>
-              <span class="badge" *ngIf="(nbOfDeliveries$ | async) >= 0">Deliveries: {{nbOfDeliveries$ | async}}</span>
+                    <span class="f-s-12 afterelementcolor">|</span>
+              <span class="badge  badge-default" *ngIf="(nbOfClaims$ | async) >= 0">Claims: {{nbOfClaims$ | async}}</span>
+              <span class="f-s-12 afterelementcolor">|</span>
+              <span class="badge  badge-default" *ngIf="(nbOfDeliveries$ | async) >= 0">Deliveries: {{nbOfDeliveries$ | async}}</span>
+              <span class="f-s-12 afterelementcolor">|</span>
+              <span class="badge" [ngClass]="{'badge-flag-false': !(vessel$ | async)?.vesselToWatchFlag, 'badge-flag-true': (vessel$ | async)?.vesselToWatchFlag}"
+                                  (click)="updateVesselToWatch()"
+              >Vessel to Watch<i class="fas fa-flag badge-flag-icon"></i></span>
             </div>
           </div>
 
@@ -118,7 +124,7 @@
         <hr class="line line-margin-left">
 
         <div class="row m-b-7">
-          <div class="col-2">
+          <div class="col-2  f-s-14-roboto">
             Category
           </div>
           <div class="col-10">
@@ -132,7 +138,7 @@
         </div>
 
         <div class="row mt-1">
-          <div class="col-2">
+          <div class="col-2  f-s-14-roboto">
             Description
           </div>
           <div class="col-10">
@@ -196,7 +202,7 @@
       <p-panel [toggleable]="false" class="headerh1 blue" header="COMMENT">
         <hr class="line m-t-m-20 m-b-14">
         <div class="row mt-1">
-          <div class="col-1 f-s-14">
+          <div class="col-1  f-s-14-roboto">
             Internal Comment
           </div>
           <div class="col-11">

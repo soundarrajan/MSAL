@@ -56,6 +56,11 @@ export class ModuleError<T = any> extends AppError<T> {
       'Revert report for verification has failed. Please try again later.'
   });
 
+  static UpdateVesselToWatch = new ModuleError({
+    code: ErrorCode.UpdateVesselToWatch,
+    message: 'Update Vessel to Watch has failed. Please try again later.'
+  });
+
   constructor(appError: Partial<IAppError> = {}) {
     super(appError);
   }
