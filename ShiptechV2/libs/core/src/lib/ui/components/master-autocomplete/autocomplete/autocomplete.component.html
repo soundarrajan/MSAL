@@ -1,6 +1,6 @@
-<div class="ui-inputgroup">
+<div class="ui-inputgroup shiptech-searchbox">
   <ng-content></ng-content>
-  <button pButton type="button" icon="pi pi-search" class="ui-button-warn" [disabled]="disabled"
+  <button pButton type="button" icon="pi pi-search" class="ui-button-warn search-square-button" [disabled]="disabled"
           appMasterSelectorTrigger [masterSelector]="masterSelector" #masterSelectorTrigger="masterSelectorTrigger" [header]="getHeaderNameSelector()">
   </button>
   <ng-template cdkPortal #masterSelector="cdkPortal" >
