@@ -10,6 +10,7 @@ import { Subject } from 'rxjs';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { InvoiceListGridViewModel } from './view-model/invoice-list-grid.view-model';
 import { UrlService } from '@shiptech/core/services/url/url.service';
+import { InvoiceListColumnServerKeys } from '../view-model/invoice-list.columns';
 
 @Component({
   selector: 'shiptech-invoice-list',
@@ -19,6 +20,7 @@ import { UrlService } from '@shiptech/core/services/url/url.service';
 })
 export class InvoiceListComponent implements OnInit, OnDestroy {
   @ViewChild('popup', { static: false }) popupTemplate: TemplateRef<any>;
+  invoiceListServerKeys = InvoiceListColumnServerKeys;
   private _destroy$ = new Subject();
 
   constructor(

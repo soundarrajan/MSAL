@@ -20,7 +20,7 @@ import { IExportApiService } from '@shiptech/core/ui/components/export/api/expor
 import { FileSaverService } from 'ngx-filesaver';
 
 @Component({
-  selector: 'shiptech-export[exportModuleType][gridModel][serverKeys][gridId]',
+  selector: 'shiptech-export[gridModel][serverKeys][gridId]',
   templateUrl: './export.component.html',
   styleUrls: ['./export.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

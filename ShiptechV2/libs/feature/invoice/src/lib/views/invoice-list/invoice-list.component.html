@@ -15,7 +15,9 @@
 
 <!--        <button class="ui-button mr-15 pdf-icon mail-icon-position" label="" pButton type="button"></button>-->
         <shiptech-export
+          [gridId]="'invoice-list-grid'"
           [gridModel]="gridViewModel"
+          [serverKeys]="invoiceListServerKeys"
         ></shiptech-export>
 
       </div>
