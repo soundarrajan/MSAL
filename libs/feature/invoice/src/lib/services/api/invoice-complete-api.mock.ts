@@ -50,4 +50,14 @@ export class InvoiceCompleteApiMock implements IInvoiceCompleteApiService {
       matchedCount: items.length
     });
   }
+
+  @ApiCall()
+  getReportListExportUrl(): string {
+    return '';
+  }
+
+  @ApiCall()
+  getInvoiceListExportUrl(): string {
+    return '';
+  }
 }

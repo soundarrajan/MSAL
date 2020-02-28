@@ -94,4 +94,6 @@ export interface IQuantityControlApiService {
   getEventsLog(
     request: IGetEventsLogRequest
   ): Observable<IGetEventsLogResponse>;
+
+  getReportListExportUrl(): string;
 }

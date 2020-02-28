@@ -1,7 +1,11 @@
 export enum KnownExportType {
-  exportToExcel = 1,
-  exportToCsv = 2,
-  exportToPdf = 3
+  exportToExcel = 'exportToExcel',
+  exportToCsv = 'exportToCsv',
+  exportToPdf = 'exportToPdf'
+}
+
+export interface IKnownExportType {
+  type: number;
 }
 
 export interface IColumnsMapping {
@@ -9,6 +13,17 @@ export interface IColumnsMapping {
   label: string;
 }
 
-export interface IExportModuleTypes {
-  apiUrl: string;
-}
+export const KnownExportTypeLookupEnum: Record<
+  KnownExportType,
+  IKnownExportType
+> = {
+  [KnownExportType.exportToExcel]: {
+    type: 1
+  },
+  [KnownExportType.exportToCsv]: {
+    type: 2
+  },
+  [KnownExportType.exportToPdf]: {
+    type: 3
+  }
+};

@@ -17,6 +17,11 @@ export class ModuleError<T = any> extends AppError<T> {
     message: 'Could not export document as PDF. Please try again later.'
   });
 
+  static readonly ExportGeneralFailed = new AppError({
+    code: ErrorCodeEnum.ExportGeneralFailed,
+    message: 'Could not export document. Please try again later.'
+  });
+
   constructor(appError: Partial<IAppError> = {}) {
     super(appError);
   }

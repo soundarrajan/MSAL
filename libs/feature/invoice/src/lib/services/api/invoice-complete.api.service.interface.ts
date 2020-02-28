@@ -16,4 +16,8 @@ export interface IInvoiceCompleteApiService {
   getInvoiceList(
     request: IGetInvoiceListRequest
   ): Observable<IGetInvoiceListResponse>;
+
+  getReportListExportUrl(): string;
+
+  getInvoiceListExportUrl(): string;
 }

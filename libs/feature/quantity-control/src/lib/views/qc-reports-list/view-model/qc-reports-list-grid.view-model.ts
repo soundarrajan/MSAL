@@ -43,6 +43,7 @@ function model(prop: keyof IQcReportsListItemDto): keyof IQcReportsListItemDto {
 export class QcReportsListGridViewModel extends BaseGridViewModel {
   public paramsServerSide: IServerSideGetRowsParams;
   public searchText: string;
+  public exportUrl: string;
   public defaultColFilterParams = {
     clearButton: true,
     applyButton: true,
@@ -414,6 +415,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     this.paramsServerSide = params;
+    this.exportUrl = this.reportService.getQcReportListExportUrl();
     this.reportService
       .getReportsList$(
         transformLocalToServeGridInfo(

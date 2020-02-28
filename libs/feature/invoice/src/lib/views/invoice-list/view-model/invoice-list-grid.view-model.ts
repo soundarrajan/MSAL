@@ -34,6 +34,7 @@ function model(prop: keyof IInvoiceListItemDto): keyof IInvoiceListItemDto {
 @Injectable()
 export class InvoiceListGridViewModel extends BaseGridViewModel {
   public searchText: string;
+  public exportUrl: string;
   public defaultColFilterParams = {
     clearButton: true,
     applyButton: true,
@@ -431,6 +432,7 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     this.paramsServerSide = params;
+    this.exportUrl = this.reportService.getInvoiceListExportUrl();
     this.reportService
       .getInvoiceList$(
         transformLocalToServeGridInfo(
