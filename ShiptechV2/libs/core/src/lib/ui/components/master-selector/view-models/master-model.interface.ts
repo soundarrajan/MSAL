@@ -20,7 +20,7 @@ export interface IMasterModelInterface {
   gridReady$: ReplaySubject<any>;
   totalItems: number;
   gridOptions: GridOptions;
-  pageSizeOptions?: IPageSizeOption;
+  pageSizeOption?: IPageSizeOption;
   DocumentsMasterSelectorGridViewModel?: DocumentsMasterSelectorGridViewModel;
   VesselMasterSelectorGridViewModel?: VesselMasterSelectorGridViewModel;
   VesselPortCallsMasterSelectorGridViewModel?: VesselPortCallsMasterSelectorGridViewModel;

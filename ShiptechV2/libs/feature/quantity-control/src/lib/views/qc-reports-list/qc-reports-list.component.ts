@@ -21,7 +21,7 @@ import { RowNode } from '@ag-grid-community/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { ReconStatusLookup } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.service';
-import {QcReportsListColumnServerKeys} from "./view-model/qc-reports-list.columns";
+import { QcReportsListColumnServerKeys } from './view-model/qc-reports-list.columns';
 
 @Component({
   selector: 'shiptech-port-calls-list',
