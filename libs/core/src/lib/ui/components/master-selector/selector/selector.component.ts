@@ -23,7 +23,6 @@ import { IVesselMasterDto } from '@shiptech/core/services/masters-api/request-re
 import { VesselPortCallsMasterSelectorGridViewModel } from '@shiptech/core/ui/components/master-selector/view-models/vessel-port-calls-model/vessel-port-calls-master-selector-grid.view-model';
 import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/request-response-dtos/vessel-port-call';
 import { throwError } from 'rxjs';
-import { IMasterModelInterface } from '@shiptech/core/ui/components/master-selector/view-models/master-model.interface';
 
 @Component({
   selector: 'shiptech-shared-master-selector',
@@ -95,7 +94,7 @@ export class SelectorComponent
     | IVesselPortCallMasterDto
     | (IVesselPortCallMasterDto | IVesselMasterDto | IDocumentsMasterDto)[];
 
-  gridViewModel: IMasterModelInterface;
+  gridViewModel: any;
 
   @Output() selectedChange = new EventEmitter<
     | IDocumentsMasterDto
