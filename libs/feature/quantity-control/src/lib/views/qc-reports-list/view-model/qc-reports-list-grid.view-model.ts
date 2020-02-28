@@ -123,8 +123,8 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.vesselName,
     colId: QcReportsListColumns.vesselName,
     field: model('vesselName'),
-    width: 129,
-    type: 'Text'
+    cellRendererFramework: AgCellTemplateComponent,
+    width: 129
   };
 
   surveyDateCol: ITypedColDef<IQcReportsListItemDto, string> = {

@@ -45,6 +45,10 @@ import {
   IQcLoadPortCallBdnRequest,
   IQcLoadPortCallBdnResponse
 } from './request-response/load-bdn-port-call.request-response';
+import {
+  IVesselToWatchRequest,
+  IVesselToWatchResponse
+} from './request-response/vessel-to-watch.request-response';
 
 export interface IQuantityControlApiService {
   getReportList(
@@ -94,6 +98,10 @@ export interface IQuantityControlApiService {
   getEventsLog(
     request: IGetEventsLogRequest
   ): Observable<IGetEventsLogResponse>;
+
+  updateVesselToWatch(
+    request: IVesselToWatchRequest
+  ): Observable<IVesselToWatchResponse>;
 
   getReportListExportUrl(): string;
 }

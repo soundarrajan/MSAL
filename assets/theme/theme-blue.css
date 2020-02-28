@@ -2997,6 +2997,7 @@ body .ui-breadcrumb {
   background-color: #ffffff;
   border: 1px solid #d8d8dc;
   padding: 0.571em 1em;
+  padding-left:23px !important;
 }
 body .ui-breadcrumb ul li {
   float: none;
@@ -3041,7 +3042,7 @@ body .ui-breadcrumb ul li:first-child a {
   padding: 0;
 }
 body .ui-breadcrumb ul li .ui-menuitem-icon {
-  color: #65656a;
+  color: #FCFCFE;
 }
 body .ui-steps {
   position: relative;

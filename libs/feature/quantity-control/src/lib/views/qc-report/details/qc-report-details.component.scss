@@ -23,3 +23,26 @@
     }
   }
 }
+
+.badge-flag-false {
+  background-color: #F1F8FF;
+  color: black;
+  font-weight: 600;
+  cursor: pointer;
+
+  .badge-flag-icon {
+    margin-left: 4px;
+    color: #C3C9D7;
+  }
+}
+
+.badge-flag-true {
+  background-color: darkred;
+  color: white;
+  cursor: pointer;
+
+  .badge-flag-icon {
+    margin-left: 1px;
+    color: white;
+  }
+}

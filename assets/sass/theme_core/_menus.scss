@@ -3,6 +3,7 @@ body {
       background-color: $breadcrumbBackgroundColor;
         //border: $panelContentBorder;
         padding: $panelContentPadding;
+        padding-left:23px !important;
 
         ul {
             li {
@@ -44,7 +45,7 @@ body {
                     margin-bottom: 0;
 
                     a {
-                        font-size: $fontSize + 4;
+                        // font-size: $fontSize + 4;
                         color: $breadcrumbTextColor;
                         margin: 0;
                         padding: 0;
@@ -52,7 +53,7 @@ body {
                 }
 
                 .ui-menuitem-icon {
-                    color: $textSecondaryColor;
+                    color:white;
                 }
             }
         }

@@ -68,7 +68,8 @@ export function getMockQcReportsListItem(id: number): IQcReportsListItemDto {
     comment: chance.word(),
     isVerifiedSludgeQty: chance.bool(),
     totalCount: chance.integer({ max: 20 }),
-    emailTransactionTypeId: chance.integer({ max: 500 })
+    emailTransactionTypeId: chance.integer({ max: 500 }),
+    vesselToWatchFlag: chance.bool()
   };
 }
 

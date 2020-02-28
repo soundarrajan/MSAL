@@ -21,19 +21,21 @@ import {
   QcVesselResponseBunkerStateModel,
   QcVesselResponseSludgeStateModel
 } from '../../../store/report/details/qc-vessel-responses.state';
-import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+import {
+  IDisplayLookupDto,
+  IVesselToWatchLookupDto
+} from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { IAppState } from '@shiptech/core/store/states/app.state.interface';
 import { IQcReportDetailsState } from '../../../store/report/details/qc-report-details.model';
 import { roundDecimals } from '@shiptech/core/utils/math';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { IQcVesselPortCallDto } from '../../../services/api/dto/qc-vessel-port-call.interface';
 import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/request-response-dtos/vessel-port-call';
-import { IVesselMasterDto } from '@shiptech/core/services/masters-api/request-response-dtos/vessel';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
 import { KnownQuantityControlRoutes } from '../../../known-quantity-control.routes';
-import { fromLegacyLookup } from '@shiptech/core/lookups/utils';
+import { fromLegacyLookupVesselToWatch } from '@shiptech/core/lookups/utils';
 import { ReconStatusLookup } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.service';
 import { IReconStatusLookupDto } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.interface';
 import { StatusLookupEnum } from '@shiptech/core/lookups/known-lookups/status/status-lookup.enum';
@@ -41,6 +43,7 @@ import { StatusLookup } from '@shiptech/core/lookups/known-lookups/status/status
 import { knownMastersAutocomplete } from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
 import { ConfirmationService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
+import { VesselToWatchModel } from '../../../store/report/models/vessel-to-watch.model';
 
 @Component({
   selector: 'shiptech-port-call',
@@ -54,6 +57,8 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
 
   autocompleteVessel: string;
   autocompleteVesselPort: string;
+  vesselToWatch: VesselToWatchModel;
+  vesselToWatchSubscriber: any;
 
   bunkerSelectedCategory$: Observable<IDisplayLookupDto>;
   bunkerDescription$: Observable<string>;
@@ -67,7 +72,7 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
   nbOfDeliveries$: Observable<number>;
   comment$: Observable<string>;
 
-  vessel$: Observable<IDisplayLookupDto>;
+  vessel$: Observable<IVesselToWatchLookupDto>;
   portCall$: Observable<IQcVesselPortCallDto>;
 
   matchStatus$: Observable<IReconStatusLookupDto>;
@@ -208,8 +213,10 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
     this.reportService.updateReportComment$(content).subscribe();
   }
 
-  updateVessel(newVessel: IVesselMasterDto): void {
-    this.reportService.updateVessel$(fromLegacyLookup(newVessel)).subscribe();
+  updateVessel(newVessel: any): void {
+    this.reportService
+      .updateVessel$(fromLegacyLookupVesselToWatch(newVessel))
+      .subscribe();
   }
 
   updatePortCall(newPortCall: IVesselPortCallMasterDto): void {
@@ -227,6 +234,20 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
           : undefined
       )
       .subscribe();
+  }
+
+  updateVesselToWatch(): void {
+    this.vesselToWatchSubscriber = this.vessel$.subscribe(result => {
+      this.vesselToWatch = new VesselToWatchModel();
+      this.vesselToWatch.result = result;
+    });
+    this.vesselToWatch.result.vesselToWatchFlag = !this.vesselToWatch.result
+      .vesselToWatchFlag;
+    this.reportService
+      .updateVesselToWatch$(this.vesselToWatch.result)
+      .subscribe(() => {
+        this.toastrService.success('Vessel to Watch saved successfully');
+      });
   }
 
   openEmailPreview(): void {
@@ -279,7 +300,9 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.hasVerifiedStatus$.complete();
-
+    if (this.vesselToWatchSubscriber) {
+      this.vesselToWatchSubscriber.complete();
+    }
     this._destroy$.next();
     this._destroy$.complete();
 
