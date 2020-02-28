@@ -64,6 +64,10 @@ import {
   IQcLoadPortCallBdnResponse
 } from './request-response/load-bdn-port-call.request-response';
 import { Chance } from 'chance';
+import {
+  IVesselToWatchRequest,
+  IVesselToWatchResponse
+} from './request-response/vessel-to-watch.request-response';
 
 const chance = new Chance();
 
@@ -208,5 +212,12 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
       nbOfClaims: chance.integer({ min: 0, max: 50 }),
       nbOfDeliveries: chance.integer({ min: 0, max: 50 })
     });
+  }
+
+  @ApiCall()
+  updateVesselToWatch(
+    request: IVesselToWatchRequest
+  ): Observable<IVesselToWatchResponse> {
+    return;
   }
 }

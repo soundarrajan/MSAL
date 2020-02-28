@@ -1,7 +1,12 @@
-﻿commit 890ff946c7196a3e3ef6f1f267839a3f202b1ec4
-Author: Pavithra <pavithra.m@inatech.com>
-Date:   Wed Feb 19 14:19:14 2020 +0530
+﻿commit 41996f4049aebe24a33276b20221b02448d0c579
+Author: Sergiu.vasui <Sergiu.vasui@24software.ro>
+Date:   Fri Feb 28 10:25:53 2020 +0000
 
-    Shiptech 10 UI Design Update
+    Merged PR 3144: 21757
+    
+    21757
+    Removed toggle button for comment section
+    
+    Related work items: #21757
 
 branch: master

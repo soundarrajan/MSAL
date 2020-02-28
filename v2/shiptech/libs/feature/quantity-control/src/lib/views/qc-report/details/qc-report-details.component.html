@@ -69,6 +69,10 @@
               <span class="badge  badge-default" *ngIf="(nbOfClaims$ | async) >= 0">Claims: {{nbOfClaims$ | async}}</span>
               <span class="f-s-12 afterelementcolor">|</span>
               <span class="badge  badge-default" *ngIf="(nbOfDeliveries$ | async) >= 0">Deliveries: {{nbOfDeliveries$ | async}}</span>
+              <span class="f-s-12 afterelementcolor">|</span>
+              <span class="badge" [ngClass]="{'badge-flag-false': !(vessel$ | async)?.vesselToWatchFlag, 'badge-flag-true': (vessel$ | async)?.vesselToWatchFlag}"
+                                  (click)="updateVesselToWatch()"
+              >Vessel to Watch<i class="fas fa-flag badge-flag-icon"></i></span>
             </div>
           </div>
 
@@ -195,7 +199,7 @@
 
   <div class="row m-b-4">
     <div class="col-12">
-      <p-panel [toggleable]="true" class="headerh1 blue" header="COMMENT">
+      <p-panel [toggleable]="false" class="headerh1 blue" header="COMMENT">
         <hr class="line m-t-m-20 m-b-14">
         <div class="row mt-1">
           <div class="col-1  f-s-14-roboto">

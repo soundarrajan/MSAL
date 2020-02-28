@@ -101,6 +101,12 @@
   <a *ngIf="data && data.id" [routerLink]="[reportDetailsRoutePath, data.id]" href="#" [target]="appConfig.openLinksInNewTab ? '_blank' : '_self'">{{data?.portCallId}}</a>
 </ng-template>
 
+<ng-template [columnDef]="[gridViewModel.vesselNameCol]" appAgCellTemplate let-data="data" let-value="value">
+  <p *ngIf="value">
+    {{ data?.vesselName }}
+    <span class="badge badge-pill badge-flag" *ngIf="data?.vesselToWatchFlag"><i class="fas fa-flag fa-xs"></i></span>
+  </p>
+</ng-template>
 
 <ng-template [columnDef]="[gridViewModel.isVerifiedSludgeQtyCol]" appAgCellTemplate let-data="data" let-value="value">
   <div fxLayout="row" fxLayoutAlign="center center">
