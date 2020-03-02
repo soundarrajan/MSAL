@@ -4907,3 +4907,15 @@ table.energyCalculationBlade tr.border-green-jungle{
 .vis-timeline .earliestEtaDashed .expand-voyages {
 	display: none;
 }
+
+.vesselToWatchFlag {
+	color: #fff;
+    background: #f29b4e;
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    text-align: center;
+    line-height: 20px !important;
+    border-radius: 1000px;
+    font-size: 12px;
+}

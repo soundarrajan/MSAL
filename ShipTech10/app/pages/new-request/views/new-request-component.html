@@ -144,6 +144,9 @@
                         <div class="row" >
                             <label class="control-label col-md-5">
                                 {{ $ctrl.vesselDetailsFields.Vessel.caption | translate }}
+                                <span ng-if="$ctrl.request.vesselDetails.vessel.vesselToWatchFlag">
+                                	<i class="fa fa-flag vesselToWatchFlag"></i>
+                                </span>
                             </label>
                             <div class="form-group-sm00">
                                 <div class="input-group col-md-7" >

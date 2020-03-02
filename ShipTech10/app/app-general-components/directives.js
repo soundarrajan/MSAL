@@ -293,6 +293,9 @@ window.increment = 0;
                                             if (typeof usr_val.width != "undefined") newCol.width = usr_val.width;
                                             if (typeof usr_val.label != "undefined") newCol.label = def_val.label;
                                             if (typeof usr_val.hidden != "undefined") newCol.hidden = usr_val.hidden;
+                                            if (def_val.cellFormat) {
+	                                            newCol.cellFormat = def_val.cellFormat;
+                                            }
                                             matchedCol.push(newCol);
                                         } else {
                                             // erase from user's configuration ie don't push to new configurations

@@ -827,11 +827,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     return "";
                 }
 
-                var vesselToWatchFlag = function(cellValue, options, rowObject){
-                    return cellValue;
-                }                
-
-                var scheduleDashboard_formatPortStatus = function(cellValue, options, rowObject) {
+	            var scheduleDashboard_formatPortStatus = function(cellValue, options, rowObject) {
                     var label,
                         color,
                         status;
@@ -1612,6 +1608,24 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
            
                     return tpl;
                 };
+
+                var vesselToWatchFlag = function(cellValue, options, rowObject){
+                    response = cellValue;
+                	hasVesselToWatchFlag = false;
+                    if (rowObject.vesselToWatchFlag) {
+                    	hasVesselToWatchFlag = true;
+                    }
+                    if (rowObject.vessel) {
+                    	if (rowObject.vessel.vesselToWatchFlag) {
+	                    	hasVesselToWatchFlag = true;
+                    	}
+                    }
+                    if (hasVesselToWatchFlag) {
+                    	response += '<i class="fa fa-flag vesselToWatchFlag"></i>';
+                    }
+                    return response;
+                }  
+
                 var edit_request_link_from_delivery = function(cellValue, options, rowObject) {
                     cellValue == null ? (cellValue = "") : "";
                     tpl = " ";

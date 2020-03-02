@@ -3490,6 +3490,9 @@ APP_MASTERS.controller("Controller_Master", [
             };
         };
         $scope.initBoostrapTagsInputTooltip = function(){
+        	if ($(".bootstrap-tagsinput .tag").length == 0) {
+        		return;
+        	}
 			$(".bootstrap-tagsinput .tag").each(function(k, v) {
 				if ($(v).is(":visible") && !$(v).hasClass("tooltip") ) {
                     $(this).attr("tooltip", "");
