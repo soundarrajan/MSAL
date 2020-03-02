@@ -3444,10 +3444,10 @@ angular.module("shiptech.pages").controller("NewRequestController", [
         }
 
         $(document).on('keyup', '.typeahead', function(ev, suggestion) {
-			$("[uib-typeahead-popup]").css("top", "");
-			$("[uib-typeahead-popup]").css("left", "");
         	if ($("[uib-typeahead-popup]").is(":visible")) {
         		if ($(ev.target).attr("typeahead-append-to") == "'body'") {
+                    $("[uib-typeahead-popup]").css("top", "");
+                    $("[uib-typeahead-popup]").css("left", "");
         			currentTargetTopPosition = $(ev.target).offset().top;
         			currentTargetLeftPosition = $(ev.target).offset().left;
         			currentTargetHeight = parseFloat($(ev.target).css("height"));

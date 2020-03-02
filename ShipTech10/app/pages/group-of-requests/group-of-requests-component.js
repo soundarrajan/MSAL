@@ -7253,10 +7253,10 @@ ctrl.setProductData = function(data, loc) {
         }
 
         $(document).on('keyup', '.typeahead', function(ev, suggestion) {
-			$("[uib-typeahead-popup]").css("top", "");
-			$("[uib-typeahead-popup]").css("left", "");
         	if ($("[uib-typeahead-popup]").is(":visible")) {
         		if ($(ev.target).attr("typeahead-append-to") == "'body'") {
+                    $("[uib-typeahead-popup]").css("top", "");
+                    $("[uib-typeahead-popup]").css("left", "");
         			parentZoom = 1;
         			if ($("#negotiation-table-fixed-container").length > 0) {
 	        			parentZoom = $("#negotiation-table-fixed-container").css("zoom");
