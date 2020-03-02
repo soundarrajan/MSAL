@@ -357,6 +357,11 @@ angular.module("shiptech.components").controller("FiltersController", [
             $scope.applyFilters(data, true, true);
         })  
 
+        $scope.$on("applyDefaultConfiguration", function(event, data, loadDef) {
+            $scope.selectedConfig = data;
+            $scope.applyDefaultConfiguration(data, loadDef);
+        });
+
         $scope.applyDefaultConfiguration = function(data, loadDef) {
             if (ctrl.saveFilterActionEvent) {return}
             $scope.globalFilters = [];
@@ -630,6 +635,11 @@ angular.module("shiptech.components").controller("FiltersController", [
             var array = ["Schedule Dashboard", "Schedule Dashboard", "Schedule Dashboard Timeline"];
             if (array.indexOf(toParams.path[1].label) != -1 && $rootScope.startView) {
                 $rootScope.clc_loaded = false;
+                if (toParams.path[1].label == "Schedule Dashboard Timeline") {
+                    $rootScope.isTimelineFiltersDefault = true;
+                } else {
+                    $rootScope.isTimelineFiltersDefault = false;
+                }
                 $scope.globalFilters = [];
                 $rootScope.listOfAppliedFiltersString = [];
                 $rootScope.rawFilters = [];
@@ -708,6 +718,12 @@ angular.module("shiptech.components").controller("FiltersController", [
         	if (localStorage.getItem("persistentGlobalFilters") || (!fromSave && $scope.defaultConfiguration)) {
         		return;
         	}
+
+            if ($rootScope.isTimelineFiltersDefault) {
+                $rootScope.isTimelineFiltersDefault = false;
+                return;
+            }
+
             var data = $scope.currentList;
             $scope.defaultConfiguration = null;
             filterConfigurationModel
@@ -1109,6 +1125,10 @@ angular.module("shiptech.components").controller("FiltersController", [
         	}
         	
         }
+
+        $rootScope.$on("enableDisableDeleteLayout", function(event, isDisabled) {
+            $scope.enableDisableDeleteLayout(isDisabled);
+        })
                  
         // $scope.getDefaultFiltersConfiguration()
 

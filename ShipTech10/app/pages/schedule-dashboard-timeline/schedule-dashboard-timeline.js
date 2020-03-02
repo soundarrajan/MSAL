@@ -1,5 +1,5 @@
-angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$scope", "$rootScope", "$listsCache", "scheduleDashboardTimelineModel", "statusColors", "$filter", 'tenantService', '$tenantSettings', 'CUSTOM_EVENTS', '$filtersData', '$compile', '$templateCache', '$state', '$timeout', 'STATE',
-    function ($scope, $rootScope, $listsCache, scheduleDashboardTimelineModel, statusColors, $filter, tenantService, $tenantSettings, CUSTOM_EVENTS, $filtersData, $compile, $templateCache, $state, $timeout, STATE) {
+angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$scope", "$rootScope", "$listsCache",  "scheduleDashboardTimelineModel", "statusColors", "$filter",   "filterConfigurationModel", 'tenantService', '$tenantSettings', 'CUSTOM_EVENTS', '$filtersData', '$compile', '$templateCache', '$state', '$timeout', 'STATE',
+    function ($scope, $rootScope, $listsCache, scheduleDashboardTimelineModel,  statusColors, $filter, filterConfigurationModel, tenantService, $tenantSettings, CUSTOM_EVENTS, $filtersData, $compile, $templateCache, $state, $timeout, STATE) {
 
         var ctrl = this;
         $scope.numberPrecision = $tenantSettings.defaultValues;
@@ -767,6 +767,54 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             })
         };
 
+         async function getDefaultFiltersConfiguration(fromSave) {
+            return await new Promise(resolve => { 
+                if (localStorage.getItem("persistentGlobalFilters") || (!fromSave && $scope.defaultConfiguration)) {
+                    return;
+                }
+                $rootScope.isTimelineFiltersDefault = true;
+                var data = "schedule-dashboard-calendar";
+                $scope.defaultConfiguration = null;
+                filterConfigurationModel
+                    .getDefaultFiltersConfiguration(data)
+                    .then(function(response) {
+                        console.log("----");
+                        console.log("Filters timeline");
+                        $rootScope.isRefresh = true;
+                        $scope.defaultConfiguration = response.payload;
+                        if (!response.payload && !fromSave) {
+                            $rootScope.$broadcast("filters-applied", []);
+                        } 
+                        if ($scope.defaultConfiguration != null) {
+                            $rootScope.clearDefaultFilters = true;
+                            $rootScope.$broadcast("applyDefaultConfiguration", $scope.defaultConfiguration, true);
+                            $rootScope.savedDefaultFilters = $scope.defaultConfiguration.filters;
+                            $scope.selectedConfig = $scope.defaultConfiguration;
+                            $rootScope.isDefaultConfig = $scope.selectedConfig;
+                            if ($state.current.name == "default.dashboard-timeline" || $state.current.name == "default.home") {
+                                $rootScope.saveFiltersDefaultTimeline = $scope.defaultConfiguration.filtersList;
+                            }
+                            $rootScope.$broadcast("enableDisableDeleteLayout", $scope.selectedConfig);
+                            //selected != default
+                            //but if default exists, set as selected initially
+                        } else {
+                            // $scope.selectedConfig = {
+                            //     id: 0
+                            // };
+                            $scope.noDefault = true;
+                        }
+                        resolve($rootScope.saveFiltersDefaultTimeline);
+
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+            });
+        };
+
+
+
+
         async function getData(payload) {
             return await new Promise(resolve => {
                 var isDefault = true;
@@ -790,7 +838,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
         // Get data and initialize timeline
         async function doTimeline() {
-            Promise.all([getStatuses(), getConfiguration()]).then(function(res) {
+            Promise.all([getStatuses(), getConfiguration(), getDefaultFiltersConfiguration()]).then(function(res) {
                 getData().then(function(data) {
                     createFilters();
                     $rootScope.timelineStatusList = timelineStatusList;
