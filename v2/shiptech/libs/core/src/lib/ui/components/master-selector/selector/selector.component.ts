@@ -23,7 +23,6 @@ import { IVesselMasterDto } from '@shiptech/core/services/masters-api/request-re
 import { VesselPortCallsMasterSelectorGridViewModel } from '@shiptech/core/ui/components/master-selector/view-models/vessel-port-calls-model/vessel-port-calls-master-selector-grid.view-model';
 import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/request-response-dtos/vessel-port-call';
 import { throwError } from 'rxjs';
-import { IMasterModelInterface } from '@shiptech/core/ui/components/master-selector/view-models/master-model.interface';
 
 @Component({
   selector: 'shiptech-shared-master-selector',
@@ -88,13 +87,14 @@ export class SelectorComponent
   @Input() disabled: boolean = false;
   @Input() readonly: boolean = false;
   @Input() multiple: boolean = false;
+  @Input() headerName: string;
   @Input() selected:
     | IDocumentsMasterDto
     | IVesselMasterDto
     | IVesselPortCallMasterDto
     | (IVesselPortCallMasterDto | IVesselMasterDto | IDocumentsMasterDto)[];
 
-  gridViewModel: IMasterModelInterface;
+  gridViewModel: any;
 
   @Output() selectedChange = new EventEmitter<
     | IDocumentsMasterDto
@@ -102,6 +102,7 @@ export class SelectorComponent
     | IVesselPortCallMasterDto
     | (IVesselPortCallMasterDto | IVesselMasterDto | IDocumentsMasterDto)[]
   >();
+  @Output() shouldCloseModal = new EventEmitter<void>();
   private _entityId: number;
   private _entityName: string;
   private _vesselId: number;
@@ -209,5 +210,9 @@ export class SelectorComponent
     this.gridViewModel.pageSize = pageSize;
 
     this.changeDetector.markForCheck();
+  }
+
+  closeModal(): void {
+    this.shouldCloseModal.emit();
   }
 }

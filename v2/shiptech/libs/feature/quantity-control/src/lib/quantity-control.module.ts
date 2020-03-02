@@ -62,6 +62,7 @@ import { PSpinnerDisableKeysSpinDirective } from '@shiptech/core/ui/directives/p
 import { PSpinnerTenantFormatDirective } from '@shiptech/core/ui/directives/p-spinner-tenant-format.directive';
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { ExportModule } from '@shiptech/core/ui/components/export/export.module';
 
 @NgModule({
   imports: [
@@ -78,6 +79,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
     RelatedLinksModule,
     EntityStatusModule,
     DynamicDialogModule,
+    ExportModule,
     NgxsModule.forFeature([
       QuantityControlState,
       QcReportsListState,

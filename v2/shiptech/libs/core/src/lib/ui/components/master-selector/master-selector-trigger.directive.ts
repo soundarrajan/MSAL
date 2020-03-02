@@ -33,7 +33,7 @@ export class MasterSelectorTriggerDirective {
       {
         width: this.width,
         height: this.height,
-        showHeader: true,
+        showHeader: false,
         closeOnEscape: true,
         baseZIndex: 500,
         header: this.header,

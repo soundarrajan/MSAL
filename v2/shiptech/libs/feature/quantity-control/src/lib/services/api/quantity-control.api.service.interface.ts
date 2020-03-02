@@ -102,4 +102,6 @@ export interface IQuantityControlApiService {
   updateVesselToWatch(
     request: IVesselToWatchRequest
   ): Observable<IVesselToWatchResponse>;
+
+  getReportListExportUrl(): string;
 }

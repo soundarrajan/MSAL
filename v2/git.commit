@@ -1,12 +1,9 @@
-﻿commit 41996f4049aebe24a33276b20221b02448d0c579
+﻿commit 4d98805a273da1e45b8bf6e2e57911df0d9e5551
 Author: Sergiu.vasui <Sergiu.vasui@24software.ro>
-Date:   Fri Feb 28 10:25:53 2020 +0000
+Date:   Mon Mar 2 12:17:22 2020 +0000
 
-    Merged PR 3144: 21757
+    Merged PR 3149: Export module
     
-    21757
-    Removed toggle button for comment section
-    
-    Related work items: #21757
+    Developed one single export module
 
 branch: master

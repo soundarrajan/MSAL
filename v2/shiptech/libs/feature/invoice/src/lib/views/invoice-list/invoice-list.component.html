@@ -9,11 +9,16 @@
         <shiptech-search-box appExternalSearch [placeholder]="'Search '" class="mr-1"  (search)="gridViewModel.onSearch($event)" [gridId]="search.id"></shiptech-search-box>
 
         <!-- TODO: refactor this into a component -->
-        <button class="ui-button mr-15  xl-icon mail-icon-position" label="" pButton type="button"></button>
+<!--        <button class="ui-button mr-15  xl-icon mail-icon-position" label="" pButton type="button"></button>-->
 
-        <button class="ui-button mr-15  csv-icon mail-icon-position" label="" pButton type="button"></button>
+<!--        <button class="ui-button mr-15  csv-icon mail-icon-position" label="" pButton type="button"></button>-->
 
-        <button class="ui-button mr-15 pdf-icon mail-icon-position" label="" pButton type="button"></button>
+<!--        <button class="ui-button mr-15 pdf-icon mail-icon-position" label="" pButton type="button"></button>-->
+        <shiptech-export
+          [gridId]="'invoice-list-grid'"
+          [gridModel]="gridViewModel"
+          [serverKeys]="invoiceListServerKeys"
+        ></shiptech-export>
 
       </div>
     </div>

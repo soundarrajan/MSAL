@@ -1,5 +1,8 @@
-<div class="row" style="margin: 5px 0;">
-  <div class="col-6 d-flex">
+<div class="row header-container">
+  <div class="col-6 d-flex header-title-container">
+    <span class="ui-dialog-title header-title">{{ headerName }}</span>
+  </div>
+  <div class="col-3 d-flex">
     <shiptech-presets-menu-dropdown></shiptech-presets-menu-dropdown>
     <app-filter-preferences appAgGridFilterPresets groupId="shared-master-filter-presets" id="shared-master-selector"
                             (presetsLoaded)="gridViewModel.markServerSideDataSourceReady()"></app-filter-preferences>
@@ -8,8 +11,18 @@
     <shiptech-search-box appExternalSearch [placeholder]="'Search'" class="mr-1" [gridId]="search.id" (search)="gridViewModel.onSearch($event)"></shiptech-search-box>
   </div>
   <button type="button" class="ui-button-warn btn-select" (click)="select()" pButton label="Select" [disabled]="disabled || readonly"></button>
+  <a role="button" tabindex="0" class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all close-button" (click)="closeModal()">
+    <span class="pi pi-times cl-content"></span>
+  </a>
 </div>
 
+<div class="row mb-2">
+  <div class="col-md-6">
+    <app-page-size-selector (selectedOptionChange)="onPageSizeChange($event)"
+                            [options]="gridViewModel?.pageSizeOptions" [selectedOption]="gridViewModel?.pageSize">
+    </app-page-size-selector>
+  </div>
+</div>
 
 <app-ag-filter-display [grid]="agGridAngular"></app-ag-filter-display>
 <ag-grid-angular #agGridAngular
