@@ -4430,7 +4430,7 @@ table#new_order_products td {
     height: 19px;
     border: 1px solid #d5d5d5;
     position: relative;
-    /* left: 9px; */
+    left: -1px;
     margin: 0 auto;
     display: block;
 }
