@@ -71,6 +71,8 @@ export namespace RobApiPaths {
   export const revertVerify = () => `api/quantityControlReport/revertVerify`;
   export const getRelatedVoyageOrders = () =>
     `api/quantityControlReport/getRelatedVoyageOrders`;
+  export const getReportsListExportUrl = () =>
+    'api/quantityControlReport/export';
 }
 
 enum VesselMastersApiPaths {
@@ -217,6 +219,11 @@ export class QuantityControlApi implements IQuantityControlApiService {
       `${this._apiUrlMasters}/${VesselMastersApiPaths.updateVesselToWatch}`,
       { payload: request }
     );
+  }
+
+  @ObservableException()
+  getReportListExportUrl(): string {
+    return `${this._apiUrl}/${RobApiPaths.getReportsListExportUrl()}`;
   }
 }
 

@@ -8,6 +8,7 @@ import { CompleteListGridViewModel } from './view-model/invoice-complete-list-gr
 import { Subject } from 'rxjs';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { UrlService } from '@shiptech/core/services/url/url.service';
+import { InvoiceListColumnServerKeys } from '../view-model/invoice-list.columns';
 
 @Component({
   selector: 'shiptech-invoice-complete-list',
@@ -16,6 +17,7 @@ import { UrlService } from '@shiptech/core/services/url/url.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InvoiceCompleteListComponent implements OnInit, OnDestroy {
+  completeListServerKeys = InvoiceListColumnServerKeys;
   private _destroy$ = new Subject();
 
   constructor(

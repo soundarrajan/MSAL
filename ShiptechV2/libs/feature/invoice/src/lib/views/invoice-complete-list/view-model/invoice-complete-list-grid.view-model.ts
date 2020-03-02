@@ -33,6 +33,8 @@ function model(prop: keyof ICompleteListItemDto): keyof ICompleteListItemDto {
 @Injectable()
 export class CompleteListGridViewModel extends BaseGridViewModel {
   public searchText: string;
+  public paramsServerSide: IServerSideGetRowsParams;
+  public exportUrl: string;
   public defaultColFilterParams = {
     clearButton: true,
     applyButton: true,
@@ -664,6 +666,8 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
+    this.paramsServerSide = params;
+    this.exportUrl = this.reportService.getCompleteViewListExportUrl();
     this.reportService
       .getReportsList$(
         transformLocalToServeGridInfo(

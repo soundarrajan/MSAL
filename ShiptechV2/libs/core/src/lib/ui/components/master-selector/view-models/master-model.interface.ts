@@ -3,6 +3,7 @@ import { GridOptions } from '@ag-grid-community/core';
 import { DocumentsMasterSelectorGridViewModel } from '@shiptech/core/ui/components/master-selector/view-models/documents-model/documents-master-selector-grid.view-model';
 import { VesselMasterSelectorGridViewModel } from '@shiptech/core/ui/components/master-selector/view-models/vessel-model/vessel-master-selector-grid.view-model';
 import { VesselPortCallsMasterSelectorGridViewModel } from '@shiptech/core/ui/components/master-selector/view-models/vessel-port-calls-model/vessel-port-calls-master-selector-grid.view-model';
+import { IPageSizeOption } from '@shiptech/core/ui/components/page-size-selector/page-size-selector.component';
 
 export interface IMasterModelInterface {
   entityId?: number;
@@ -19,6 +20,7 @@ export interface IMasterModelInterface {
   gridReady$: ReplaySubject<any>;
   totalItems: number;
   gridOptions: GridOptions;
+  pageSizeOption?: IPageSizeOption;
   DocumentsMasterSelectorGridViewModel?: DocumentsMasterSelectorGridViewModel;
   VesselMasterSelectorGridViewModel?: VesselMasterSelectorGridViewModel;
   VesselPortCallsMasterSelectorGridViewModel?: VesselPortCallsMasterSelectorGridViewModel;

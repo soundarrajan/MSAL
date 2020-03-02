@@ -40,3 +40,34 @@
   }
 
 }
+
+.header-container {
+  padding-bottom: 1.5em;
+  justify-content: space-between;
+  border-bottom: 1px solid #dce3eb;
+  margin: 5px 0 1.5em 0;
+
+  .header-title-container {
+    padding: 0;
+
+    .header-title {
+      font-weight: 500;
+      color: #252529;
+      font-size: 21px;
+    }
+  }
+
+
+  .close-button {
+    float: right;
+    color: #65656a;
+
+    .cl-content {
+      padding-top: 5px;
+    }
+  }
+
+  .close-button:hover {
+    color: #252529;
+  }
+}

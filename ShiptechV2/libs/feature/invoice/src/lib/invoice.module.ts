@@ -38,6 +38,7 @@ import { AgAsyncBackgroundFillComponent } from '@shiptech/core/ui/components/ag-
 import { MessagesModule } from 'primeng/messages';
 import { ButtonModule } from 'primeng/button';
 import { AgGridModule } from '@ag-grid-community/angular';
+import { ExportModule } from '@shiptech/core/ui/components/export/export.module';
 
 @NgModule({
   imports: [
@@ -68,7 +69,8 @@ import { AgGridModule } from '@ag-grid-community/angular';
     SelectTextOnFocusDirectiveModule,
     WunderBarModule,
     ButtonModule,
-    MessagesModule
+    MessagesModule,
+    ExportModule
   ],
   declarations: [
     MainInvoiceComponent,

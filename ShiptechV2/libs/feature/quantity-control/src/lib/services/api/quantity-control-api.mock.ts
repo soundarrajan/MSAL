@@ -220,4 +220,9 @@ export class QuantityControlApiMock implements IQuantityControlApiService {
   ): Observable<IVesselToWatchResponse> {
     return;
   }
+
+  @ApiCall()
+  getReportListExportUrl(): string {
+    return '';
+  }
 }
