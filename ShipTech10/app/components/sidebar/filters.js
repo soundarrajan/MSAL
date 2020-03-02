@@ -718,8 +718,8 @@ angular.module("shiptech.components").controller("FiltersController", [
         	if (localStorage.getItem("persistentGlobalFilters") || (!fromSave && $scope.defaultConfiguration)) {
         		return;
         	}
-
-            if ($rootScope.isTimelineFiltersDefault) {
+            
+            if ($rootScope.isTimelineFiltersDefault)  {
                 $rootScope.isTimelineFiltersDefault = false;
                 return;
             }
@@ -862,6 +862,9 @@ angular.module("shiptech.components").controller("FiltersController", [
             }
         };
         $scope.deleteConfig = function(selectedConfig) {
+            if ($state.current.name == "default.dashboard-timeline" || $state.current.name == "default.home") {
+                $rootScope.deleteTimelineConfiguration = true;
+            }
             var data = selectedConfig.id;
 			$scope.filtersConfigurations = null;
             $rootScope.timelineSaved =  null;

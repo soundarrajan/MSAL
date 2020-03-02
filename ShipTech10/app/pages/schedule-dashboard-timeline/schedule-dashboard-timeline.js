@@ -772,6 +772,12 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 if (localStorage.getItem("persistentGlobalFilters") || (!fromSave && $scope.defaultConfiguration)) {
                     return;
                 }
+                if ($rootScope.deleteTimelineConfiguration) {
+                    $rootScope.deleteTimelineConfiguration = false;
+                    resolve(null);
+                    return;
+                }
+
                 $rootScope.isTimelineFiltersDefault = true;
                 var data = "schedule-dashboard-calendar";
                 $scope.defaultConfiguration = null;
