@@ -827,6 +827,10 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     return "";
                 }
 
+                var vesselToWatchFlag = function(cellValue, options, rowObject){
+                    return cellValue;
+                }                
+
                 var scheduleDashboard_formatPortStatus = function(cellValue, options, rowObject) {
                     var label,
                         color,
