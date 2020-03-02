@@ -651,13 +651,18 @@ angular.module("shiptech.components").controller("FiltersController", [
 
         var deregisterStateChangeStart = $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
             $rootScope.clc_loaded = false;   
-                $scope.globalFilters = [];
-                $rootScope.listOfAppliedFiltersString = [];
-                $rootScope.startView = true;
-                $rootScope.rawFilters = [];
-                $scope.createFilters();
-                $scope.getDefaultFiltersConfiguration();
-                $scope.getFiltersConfigurations();
+            if (toParams.path[1].label == "Schedule Dashboard Timeline") {
+                $rootScope.isTimelineFiltersDefault = true;
+            } else {
+                $rootScope.isTimelineFiltersDefault = false;
+            }
+            $scope.globalFilters = [];
+            $rootScope.listOfAppliedFiltersString = [];
+            $rootScope.startView = true;
+            $rootScope.rawFilters = [];
+            $scope.createFilters();
+            $scope.getDefaultFiltersConfiguration();
+            $scope.getFiltersConfigurations();
 
                 deregisterStateChangeStart();
         });
@@ -718,7 +723,7 @@ angular.module("shiptech.components").controller("FiltersController", [
         	if (localStorage.getItem("persistentGlobalFilters") || (!fromSave && $scope.defaultConfiguration)) {
         		return;
         	}
-            
+
             if ($rootScope.isTimelineFiltersDefault)  {
                 $rootScope.isTimelineFiltersDefault = false;
                 return;
