@@ -3455,6 +3455,10 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 ColumnName: "RequestId",
                 Value: request.requestId
             });
+            newFilters.push({
+                ColumnName: "Eta",
+                Value: request.bunkeringEta
+            });
             if (typeof vm.contractPlanningContractTypeaheadOptions == "undefined") {
                 vm.contractPlanningContractTypeaheadOptions = [];
             }
