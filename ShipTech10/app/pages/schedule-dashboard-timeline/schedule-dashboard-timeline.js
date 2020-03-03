@@ -1186,7 +1186,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 html += '</div> </div>';
                 var rightClickPopoverData = {
                     'object': _.map(object, 'voyageDetail'),
-                    'vsVal': _.map(object, 'voyageDetail')[0]
+                    'vsVal': _.map(object, 'voyageDetail')[0] ? _.map(object, 'voyageDetail')[0] : {}
                 };
                 try {
                     rightClickPopoverData.vsVal.style = ctrl.bunkerDetails[voyageDetailId][0].voyage.style;
