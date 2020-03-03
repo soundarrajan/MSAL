@@ -35,10 +35,18 @@
   background-color: transparent !important;
 }
 
-//ul {
-//  padding-left: 1% !important;
-//  margin: auto;
-//}
+:host {
+  ::ng-deep .ui-spinner-up {
+    display: none;
+  }
+  ::ng-deep .ui-spinner-down {
+    display: none;
+  }
+  ::ng-deep .ui-spinner-input {
+    text-align: center;
+    padding: 0.5em!important;
+  }
+}
 
 ul {
   margin: 0;
