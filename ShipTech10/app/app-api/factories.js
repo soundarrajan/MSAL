@@ -2462,7 +2462,7 @@ APP_API.factory("$Api_Service", [
                     },
                     entity: {
                         list: {
-                            endpoint: API.BASE_URL_DATA_MASTERS + "/api/masters/currencies/list"
+                            endpoint: API.BASE_URL_DATA_MASTERS + "/api/masters/currencies/codesList"
                         },
                         get: {
                             endpoint: API.BASE_URL_DATA_MASTERS + "/api/masters/currencies/get"
@@ -5362,7 +5362,7 @@ APP_API.factory("$Api_Service", [
                     if(url == "") url = api_map[param.app][param.screen]["entity"]["list"]["endpoint"];
            
                     if (param.params.modal) {
-                        url = url.replace("listMasters", "list");
+                        url = url.replace("listMasters", "codesList");
                     }
 
 
@@ -7783,6 +7783,9 @@ APP_API.factory("$Api_Service", [
                         );
                         return;
                     }
+                    if (param.app == "masters" && param.screen == "currency" && param.field.masterSource == "CurrencyIso") {
+                        var url =  API.BASE_URL_DATA_MASTERS + "/api/masters/currencies/codesList";
+                    }   
                     if (param.app == "masters" && param.screen == "documenttype" && param.field.masterSource == "DocumentTypeTemplates") {
                         var url = API.BASE_URL_DATA_EMAIL + "/api/mail/templates/listByTransactionType";
                         var apiJSON = {
@@ -7941,7 +7944,8 @@ APP_API.factory("$Api_Service", [
                     	$listsCache["VesselProductFilteredType"] = angular.copy($listsCache["Product"]);
 						callback($listsCache["VesselProductFilteredType"]);
 						return;
-					}					
+					}	
+
 
                     //End Custom implementations
                     if (typeof $listsCache[param.field.masterSource] != "undefined") callback($listsCache[param.field.masterSource]);

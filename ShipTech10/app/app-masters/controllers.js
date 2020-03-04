@@ -7761,7 +7761,7 @@ APP_MASTERS.controller("Controller_Master", [
             
             var data = {
                 app: "masters",
-                screen: "currencylist",
+                screen: "currency",
                 clc_id: "masters_currencylist",
                 params: {
                     UIFilters: {},
