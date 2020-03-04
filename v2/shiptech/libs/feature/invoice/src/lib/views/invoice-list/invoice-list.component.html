@@ -34,14 +34,16 @@
                               [options]="gridViewModel.pageSizeOptions" [selectedOption]="gridViewModel.pageSize">
       </app-page-size-selector>
     </div>
-    <div class="col-md-6">
+    <div class="col-1 d-flex">
       <div class="match-status" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="5px">
 
       </div>
     </div>
+    <div class="col-5 d-flex p-t-4">
+      <app-ag-filter-display [grid]="agGridAngular"></app-ag-filter-display>
+    </div>
   </div>
 
-  <app-ag-filter-display [grid]="agGridAngular"></app-ag-filter-display>
   <ag-grid-angular
     #agGridAngular
     appAgGridFirstColumnLocked

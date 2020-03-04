@@ -1,12 +1,11 @@
-﻿commit 3276d63ba15c722af7e305fb28247169b93daeb5
+﻿commit 0e35bd11919b46d9a3260367e158723dc9d7fbb1
 Author: Sergiu.vasui <Sergiu.vasui@24software.ro>
-Date:   Tue Mar 3 13:00:40 2020 +0000
+Date:   Wed Mar 4 10:09:45 2020 +0000
 
-    Merged PR 3179: 21758 fix
+    Merged PR 3182: Put the filter text inline with the pager component above the grids
     
-    21758 fix
-    Export module css fixes
+    Put the filter text inline with the pager component above the grids
     
-    Related work items: #21758
+    Related work items: #20510, #21758
 
 branch: master
