@@ -5361,8 +5361,10 @@ APP_API.factory("$Api_Service", [
                     // if url is still not set
                     if(url == "") url = api_map[param.app][param.screen]["entity"]["list"]["endpoint"];
            
-                    if (param.params.modal) {
+                    if (param.params.modal && param.screen == "currencylist") {
                         url = url.replace("listMasters", "codesList");
+                    } else if (param.params.modal){
+                        url = url.replace("listMasters", "list");
                     }
 
 
@@ -7782,9 +7784,6 @@ APP_API.factory("$Api_Service", [
                             }
                         );
                         return;
-                    }
-                    if (param.app == "masters" && param.screen == "currency" && param.field.masterSource == "CurrencyIso") {
-                        var url =  API.BASE_URL_DATA_MASTERS + "/api/masters/currencies/codesList";
                     }   
                     if (param.app == "masters" && param.screen == "documenttype" && param.field.masterSource == "DocumentTypeTemplates") {
                         var url = API.BASE_URL_DATA_EMAIL + "/api/mail/templates/listByTransactionType";
