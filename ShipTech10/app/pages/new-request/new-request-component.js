@@ -2673,17 +2673,18 @@ angular.module("shiptech.pages").controller("NewRequestController", [
 
                 var hasError = false;
                 var errorMessage = '';
-
-                if (moment.utc(ctrl.request.locations[locationIdx].etb).isBefore(moment.utc(ctrl.request.locations[locationIdx].eta))) {
-                    errorMessage = "ETA must be lower or equal to ETB.";
-                    toastr.error(errorMessage);
-                    toggleInvalid(locationIdx + '_etb', 'add');
-                    ctrl.requestDateFieldsErrors[locationIdx + '_etb'] = errorMessage;
-                    hasError = true;
-                } else {
-                    if (ctrl.request.locations[locationIdx].etb) {
-                        toggleInvalid(locationIdx + '_etb', 'remove');
-                        ctrl.requestDateFieldsErrors[locationIdx + '_etb'] = null;
+                if (!ctrl.request.locations[locationIdx].recentEta) {
+                    if (moment.utc(ctrl.request.locations[locationIdx].etb).isBefore(moment.utc(ctrl.request.locations[locationIdx].eta))) {
+                        errorMessage = "ETA must be lower or equal to ETB.";
+                        toastr.error(errorMessage);
+                        toggleInvalid(locationIdx + '_etb', 'add');
+                        ctrl.requestDateFieldsErrors[locationIdx + '_etb'] = errorMessage;
+                        hasError = true;
+                    } else {
+                        if (ctrl.request.locations[locationIdx].etb) {
+                            toggleInvalid(locationIdx + '_etb', 'remove');
+                            ctrl.requestDateFieldsErrors[locationIdx + '_etb'] = null;
+                        }
                     }
                 }
                 if (moment.utc(ctrl.request.locations[locationIdx].etd).isBefore(moment.utc(ctrl.request.locations[locationIdx].eta))) {
@@ -2698,6 +2699,7 @@ angular.module("shiptech.pages").controller("NewRequestController", [
                         ctrl.requestDateFieldsErrors[locationIdx + '_etd'] = null;
                     }
                 }
+
 
                 if (hasError) {
                     toggleInvalid(locationIdx + '_eta', 'add');
