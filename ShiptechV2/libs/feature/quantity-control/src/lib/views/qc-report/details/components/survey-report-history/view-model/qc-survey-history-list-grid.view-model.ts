@@ -70,6 +70,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     rowModelType: RowModelType.ServerSide,
     pagination: true,
     animateRows: true,
+    gridAutoHeight: true,
 
     rowSelection: RowSelection.Multiple,
     suppressRowClickSelection: true,
