@@ -21,6 +21,14 @@ angular
         function($rootScope, adalService, $http, $q, $window, $interval) {
             // angular.module("shiptech").value("$cacheDefaultFilterConfigurations", {});
             // angular.module("shiptech").value("$cacheFilterConfigurations", {});
+            
+			$rootScope.$on('$routeChangeStart', function () {
+			});
+		    $rootScope.$on("$locationChangeStart", function(event, next, current) { 
+				var activePage = window.location.href.replace("/#/", "/");
+				window['strum']('routeChange', activePage);
+		    });
+
             console.log(adalService);
             console.log("adal:application refresh");
             if (typeof adalService.userInfo.isAuthenticated == "boolean" && typeof adalService.userInfo.loginError == "string") {
@@ -339,6 +347,9 @@ angular
                     makeQueries(query);
                 }
             }
+
+
+
             // console.log(WebWorkerService);
             // WebWorkerService.test();
         }
