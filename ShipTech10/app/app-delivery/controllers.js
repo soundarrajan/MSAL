@@ -976,13 +976,13 @@ APP_DELIVERY.controller('Controller_Delivery', ['$scope', '$rootScope', '$Api_Se
 		    		$.each(typeV.specParams, function(specK,specV) {
 						if (specV.isSelected) {
 					    	specParamsIds.push(specV.id);
-					    	claimTypeId = typeV.id;
+					    	claimTypeId = typeV.claim.id;
 						}
 		    		})
 		    	}) 
 		    	$.each($scope.CM.availableClaimTypes, function(k,v){
 		    		if (v.isTypeSelected) {
-		    			claimTypeId = v.id;		
+		    			claimTypeId = v.claim.id;		
 		    		}
 		    	})
 		    	if(!claimTypeId) {
