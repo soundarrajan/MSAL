@@ -199,10 +199,11 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 //     return false;
                 // }
                 // vm.hasChangedOn_page_filter = true;
-                if (Elements.settings[table_id]) {
+
+                if (window.Elements && window.Elements.settings[table_id]) {
                     // $(Elements.table[Elements.settings[table_id].table]).jqGrid(Elements.settings[table_id].source);
                     if (payload.raw || payload.sortList) {
-                            Elements.settings[table_id].source.on_page_filter(payload);
+                            window.Elements.settings[table_id].source.on_page_filter(payload);
                     }
                 }
                 // console.log(Elements.settings[$rootScope.listTableSelector].source)

@@ -8,10 +8,11 @@ var useref = require('gulp-useref'),
     lazypipe = require('lazypipe'),
     slash = require('gulp-slash'),
     babel = require('gulp-babel'),
-	gulpif = require('gulp-if');
+    terser = require('gulp-terser'),
+    gulpif = require('gulp-if');
 
 module.exports = function(gulp, config) {
-    return function () {
+    return function (done) {
 
         var updir = '../';
         var splitter = '/app/assets/';
@@ -19,10 +20,10 @@ module.exports = function(gulp, config) {
 
 
         /**
-        * Go up by one dir on a given path (rewind it).
-        * @param {String} path - The path to rewind.
-        * @return {String} The rewound path.
-        */
+         * Go up by one dir on a given path (rewind it).
+         * @param {String} path - The path to rewind.
+         * @return {String} The rewound path.
+         */
         function rewindPath(path) {
             parts = path.split('/');
             parts.pop();
@@ -32,11 +33,11 @@ module.exports = function(gulp, config) {
 
 
         /**
-        * Check if a path is a relative path.
-        * @param {String} path - The path to check.
-        * @return {Boolean} True if the path is a relative path.
-        * TODO: This may need to account for more markers of relativity, such as  './'.
-        */
+         * Check if a path is a relative path.
+         * @param {String} path - The path to check.
+         * @return {Boolean} True if the path is a relative path.
+         * TODO: This may need to account for more markers of relativity, such as  './'.
+         */
         function isRelativePath(path) {
             return path.indexOf(updir) >= 0;
         }
@@ -49,57 +50,71 @@ module.exports = function(gulp, config) {
         };
 
         /**
-        * Create pipe for rebasing relative asset URLs in CSS files.
-        */
+         * Create pipe for rebasing relative asset URLs in CSS files.
+         */
         var rebasePipe = lazypipe()
-                        .pipe(
-                            function() {
-                                return gulpif('*.css',
-                                            cssrewrite({
-                                                        destination: dest,
+            .pipe(
+                function() {
+                    return gulpif('*.css',
+                        cssrewrite({
+                            destination: dest,
 
-                                                        adaptPath: function(context) {
+                            adaptPath: function(context) {
 
-                                                            var parts = slash(context.sourceDir).split(splitter);
+                                var parts = slash(context.sourceDir).split(splitter);
 
-                                                            var path = parts[1];
+                                var path = parts[1];
 
-                                                            if(isRelativePath(context.targetFile)) {
+                                if(isRelativePath(context.targetFile)) {
 
-                                                                if(path) {
-                                                                    path = rewindPath(path);
-                                                                }
+                                    if(path) {
+                                        path = rewindPath(path);
+                                    }
 
-                                                                context.targetFile = context.targetFile.replace('../', dest + path + '/');
+                                    context.targetFile = context.targetFile.replace('../', dest + path + '/');
 
-                                                            } else {
+                                } else {
 
-                                                                if(path) {
-                                                                    context.targetFile = dest + path + '/' + context.targetFile;
-                                                                }
-                                                            }
+                                    if(path) {
+                                        context.targetFile = dest + path + '/' + context.targetFile;
+                                    }
+                                }
 
-                                                            return context.targetFile;
-                                                        }
-                                                    })
-                                    );
+                                return context.targetFile;
                             }
-                        ).pipe(
-                            function() {
-                                return gulpif(isBabelFile,
-                                    babel({
-                                        presets: [['babel-preset-env']],
-                                           plugins: ['babel-polyfill'],
-                                           parserOpts: { strictMode: false }
-                                        }));
-                            }
-                        );
+                        })
+                    );
+                }
+            ).pipe(
+                function() {
+                    return gulpif(isBabelFile,
+                        babel({
+                            presets: ['@babel/preset-env', 'es2015']
+                        }));
+                }
+            );
 
-        return gulp.src(['app/*.html', '!app/assets/'])
-                        .pipe(useref({}, rebasePipe))
-                        .pipe(gulpif('*.html', htmlmin({ collapseWhitespace: true })))
-                        .pipe(gulpif('*.js', uglify({mangle:false})))
-                        .pipe(gulpif('*.css', css()))
-                        .pipe(gulp.dest(config.dist_dir));
+        function buildJs() {
+            return gulp.src(['app/*.js'])
+                .pipe(useref({}, rebasePipe))
+                .pipe(gulpif('*.js', terser({mangle:true, keep_fnames: false, toplevel: true})))
+                .pipe(gulp.dest(config.dist_dir));
+        }
+
+        function buildHtml() {
+            return gulp.src(['app/index.html'])
+                .pipe(htmlmin({ collapseWhitespace: true }))
+                .pipe(gulp.dest(config.dist_dir));
+        }
+
+        function buildCss() {
+            return gulp.src(['app/*.css'])
+                .pipe(useref({}, rebasePipe))
+                .pipe(css())
+                .pipe(gulp.dest(config.dist_dir));
+        }
+
+        return gulp.series(buildHtml, buildJs, buildCss)(done);
+
     };
 };

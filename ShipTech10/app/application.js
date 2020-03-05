@@ -166,7 +166,7 @@ angular
                                             // To nothing
                                         }
                                     }
-                                    delete lists;
+                                    // delete lists;
                                 }
                             }
                             bootstrapApplication();

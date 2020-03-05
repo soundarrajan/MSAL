@@ -229,8 +229,8 @@ APP_MASTERS.run(['$state', '$rootScope', 'MASTER_STATE', '$tenantSettings', func
     $rootScope.$on('$includeContentLoaded', function() {
         changeTitle();
     });
-    $rootScope.$on('$stateChangeSuccess', function() {
 
+    $rootScope.$on('$stateChangeSuccess', function() {
             changeTitle();
             // alert('yolo');
             window.Elements = {

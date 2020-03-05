@@ -48,7 +48,7 @@ window.increment = 0;
                     $rootScope.listTableSelector = "flat_" + scope.screen.replace("list", "_list");
                     $rootScope.sortList = null;
                     // console.log(CLC);
-                    if (typeof Elements.scope[scope.id] === "undefined") {
+                    if (window.Elements && typeof window.Elements.scope[scope.id] === "undefined") {
                         // console.log(scope);
                         Elements.scope[scope.id] = {};
                         Elements.scope[scope.id].id = scope.id;
@@ -113,7 +113,7 @@ window.increment = 0;
 
                     function checkCanBuildTable(table_id, checkProcurement) {
                         isDev = 0;
-                        if (typeof Elements.scope[table_id].controls !== "undefined" && typeof Elements.scope[table_id].screen !== "undefined" && typeof Elements.scope[table_id].id !== "undefined" && typeof Elements.scope[table_id].app !== "undefined") {
+                        if (window.Elements && typeof window.Elements.scope[table_id].controls !== "undefined" && typeof Elements.scope[table_id].screen !== "undefined" && typeof Elements.scope[table_id].id !== "undefined" && typeof Elements.scope[table_id].app !== "undefined") {
                             id = scope.modal ? "/" + table_id : "";
 
                             if (checkProcurement >= 0) {
