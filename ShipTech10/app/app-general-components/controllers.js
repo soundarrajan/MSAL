@@ -4098,9 +4098,18 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
             } else {
                 vm.searched = false;
             }
-            var table_id = Elements.settings[Object.keys(Elements.settings)[0]].source.table_id;
-            var table_url = Elements.settings[Object.keys(Elements.settings)[0]].source.url;
-            $("#" + Elements.settings[Object.keys(Elements.settings)[0]].table).jqGrid.table_config.on_general_search(val);
+            
+            setTimeout(function() {
+                if (typeof $(".jqgrid_component>.ui-jqgrid").attr("id") != "undefined") {
+                    var table_id = $(".jqgrid_component>.ui-jqgrid")
+                        .attr("id")
+                        .replace("gbox_", "");
+                }
+                if (Elements.settings[table_id]) {
+                    Elements.settings[table_id].source.on_general_search(val);
+                }
+            });
+            
         };
         vm.taxi = {
             url: "",
