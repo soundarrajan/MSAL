@@ -4457,3 +4457,31 @@ th#flat_available_contracts_checkbox > * {
     top: 30%;
     transform: translate(-50%);
 }
+
+
+clc-table-list[hasloader="true"] {
+	position: relative;
+}
+clc-table-list[hasloader="true"].loading:before {
+	/*background: #ffffffa8 !important;*/
+    content: "\f1ce";
+    position: absolute;
+    display: flex;
+    left: 50%;
+    top: 50%;
+    z-index: 9999;
+    font-family: FontAwesome;
+    vertical-align: middle;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px;
+    color: #78b0fd;
+    animation-name: spin, depth;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-duration: 1.3s;
+}
+@keyframes spin {
+  from { transform: rotateZ(0deg); }
+  to { transform: rotateZ(360deg); }
+}

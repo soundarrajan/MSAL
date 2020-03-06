@@ -35,6 +35,7 @@ window.increment = 0;
                     controls: "=",
                     filters: "=",
                     rowactions: "=",
+                    hasloader: "=",
                     modal: "="
                 },
                 link: function(scope, element, attrs, CLC) {
@@ -42,11 +43,11 @@ window.increment = 0;
 					tenantService.procurementSettings.then(function(settings) {
 						procurementSettings = settings.payload;
 					});
-
                     $rootScope.isModal = scope.modal;
                     $rootScope.modalTableId = scope.id;
                     $rootScope.listTableSelector = "flat_" + scope.screen.replace("list", "_list");
                     $rootScope.sortList = null;
+					console.log(scope.hasloader);
                     // console.log(CLC);
                     if (window.Elements && typeof window.Elements.scope[scope.id] === "undefined") {
                         // console.log(scope);
@@ -641,9 +642,15 @@ window.increment = 0;
                                 }
                             })
                             $rootScope.lastLoadedListPayload = JSON.stringify(listPayload);
+							if (scope.hasloader) {
 
+							}
+							if (scope.hasloader) {
+								$(Elements.table[Elements.settings[table_id].table]).parents("clc-table-list").addClass("loading");
+							}
                             $Api_Service.entity.list(listPayload,
                                 function(callback) {
+									$(Elements.table[Elements.settings[table_id].table]).parents("clc-table-list").removeClass("loading");
                                     if (callback) {
                                         if(table_id === "flat_email_log_list") {
                                           $.each(callback.rows, function(k, v) {
