@@ -94,27 +94,36 @@ module.exports = function(gulp, config) {
                 }
             );
 
+        // 'app/*.html', '!app/assets/'
         function buildJs() {
             return gulp.src(['app/*.js'])
                 .pipe(useref({}, rebasePipe))
-                .pipe(gulpif('*.js', terser({mangle:true, keep_fnames: false, toplevel: true})))
+                .pipe(babel({
+                    presets: ['@babel/preset-env', 'es2015']
+                }))
+                .pipe(gulpif('*.js', uglify({mangle:false})))
                 .pipe(gulp.dest(config.dist_dir));
         }
 
         function buildHtml() {
-            return gulp.src(['app/index.html'])
+            return gulp.src(['!app/assets/','app/*.html'])
                 .pipe(htmlmin({ collapseWhitespace: true }))
                 .pipe(gulp.dest(config.dist_dir));
         }
 
         function buildCss() {
-            return gulp.src(['app/*.css'])
+            return gulp.src(['!app/assets/','app/*.html'])
                 .pipe(useref({}, rebasePipe))
                 .pipe(css())
                 .pipe(gulp.dest(config.dist_dir));
         }
 
-        return gulp.series(buildHtml, buildJs, buildCss)(done);
+        // return gulp.series(buildHtml, buildJs, buildCss)(done);
+        return gulp.src(['app/*.html', '!app/assets/'])
+            .pipe(useref({}, rebasePipe))
+            .pipe(gulpif('*.html', htmlmin({ collapseWhitespace: true })))
+            .pipe(gulpif('*.css', css()))
+            .pipe(gulp.dest(config.dist_dir));
 
     };
 };
