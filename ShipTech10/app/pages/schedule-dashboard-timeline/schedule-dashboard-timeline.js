@@ -1395,7 +1395,13 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     }               
                     preHtml += "</b></p>";
                     html =  html + preHtml;
-                    html += '<table class="table table-striped table-hover table-bordered table-condensed"> <thead> <th>Request ID</th> <th>Vessel</th> <th>Product</th> <th>UOM</th> <th>Min. Quantity</th> <th>Max. Quantity</th> <th>Agreement Type</th> <th>Product Status</th> </thead> <tbody>';
+                    if (ctrl.scheduleDashboardConfiguration.productTypeInSchedule.name == "Yes") {
+                        html += '<table class="table table-striped table-hover table-bordered table-condensed"> <thead> <th>Request ID</th> <th>Vessel</th> <th>Product</th> <th> Product Type </th> <th>UOM</th> <th>Min. Quantity</th> <th>Max. Quantity</th> <th>Agreement Type</th> <th>Product Status</th> </thead> <tbody>';
+
+                    } else {
+                        html += '<table class="table table-striped table-hover table-bordered table-condensed"> <thead> <th>Request ID</th> <th>Vessel</th> <th>Product</th> <th>UOM</th> <th>Min. Quantity</th> <th>Max. Quantity</th> <th>Agreement Type</th> <th>Product Status</th> </thead> <tbody>';
+
+                    }
 
 	                $.each(v1, function(k,v) {
 	                    var voyage = v.voyageDetail;
@@ -1405,13 +1411,19 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 	                        row_vesselName = voyage.request.vesselName || '-';
 	                        //row_location = voyage.request.requestDetail.location || '-';
 	                        row_fuelOilOfRequest = voyage.request.requestDetail.fuelOilOfRequest || '-';
+                            row_productType = voyage.request.requestDetail.fuelOilOfRequestType.name;
 	                        row_uom = voyage.request.requestDetail.uom || '-';
 	                        row_fuelMinQuantity = $filter('number')(voyage.request.requestDetail.fuelMinQuantity, $scope.numberPrecision.amountPrecision) || '-';
 	                        row_fuelMaxQuantity = $filter('number')(voyage.request.requestDetail.fuelMaxQuantity, $scope.numberPrecision.amountPrecision) || '-';
 	                        row_agreementType = voyage.request.requestDetail.agreementType || '-';
 	                        row_statusCode = voyage.request.requestDetail.statusCode || '-';
 	                        if (voyage.request.requestDetail.fuelOilOfRequest) {
-	                            html += '<tr><td>' + row_requestName + '</td> <td>' + row_vesselName + '</td> <td>' + row_fuelOilOfRequest + '</td> <td>' + row_uom + '</td> <td>' + row_fuelMinQuantity + '</td> <td>' + row_fuelMaxQuantity + '</td> <td>' + row_agreementType + '</td> <td>' + row_statusCode + '</td></tr>';
+                                if (ctrl.scheduleDashboardConfiguration.productTypeInSchedule.name == "Yes") {
+                                    html += '<tr><td>' + row_requestName + '</td> <td>' + row_vesselName + '</td> <td>' + row_fuelOilOfRequest + '</td> <td>' + row_productType + '</td> <td>' + row_uom + '</td> <td>' + row_fuelMinQuantity + '</td> <td>' + row_fuelMaxQuantity + '</td> <td>' + row_agreementType + '</td> <td>' + row_statusCode + '</td></tr>';
+                                } else {
+                                    html += '<tr><td>' + row_requestName + '</td> <td>' + row_vesselName + '</td> <td>' + row_fuelOilOfRequest + '</td> <td>' + row_uom + '</td> <td>' + row_fuelMinQuantity + '</td> <td>' + row_fuelMaxQuantity + '</td> <td>' + row_agreementType + '</td> <td>' + row_statusCode + '</td></tr>';
+
+                                }
 	                        }
 	                    }
 	                });

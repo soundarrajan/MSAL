@@ -1294,7 +1294,12 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
             	// debugger;
             }
             var popoverId = ctrl.makePopoverId(rowId, voyageStopId, voyageStopDay);
-            html = '<table class="table table-striped table-hover table-bordered table-condensed"> <thead> <th>Request ID</th> <th>Vessel</th> <th>Port</th> <th>Product</th> <th>UOM</th> <th>Min. Quantity</th> <th>Max. Quantity</th> <th>Agreement Type</th> <th>Product Status</th> </thead> <tbody>';
+            if (ctrl.scheduleDashboardConfiguration.productTypeInSchedule.name == "Yes") {
+                html = '<table class="table table-striped table-hover table-bordered table-condensed"> <thead> <th>Request ID</th> <th>Vessel</th> <th>Port</th> <th>Product</th> <th>Product Type</th> <th>UOM</th> <th>Min. Quantity</th> <th>Max. Quantity</th> <th>Agreement Type</th> <th>Product Status</th> </thead> <tbody>';
+            } else {
+                html = '<table class="table table-striped table-hover table-bordered table-condensed"> <thead> <th>Request ID</th> <th>Vessel</th> <th>Port</th> <th>Product</th> <th>UOM</th> <th>Min. Quantity</th> <th>Max. Quantity</th> <th>Agreement Type</th> <th>Product Status</th> </thead> <tbody>';
+
+            }
             if (voyageStop.request && voyageStop.request.requestDetail) {
             	voyageStop.request.requestDetail = _.uniqBy(voyageStop.request.requestDetail, 'Id');
                 if (voyageStop.request.requestDetail && voyageStop.request.requestDetail.length > 0) {
@@ -1304,11 +1309,16 @@ angular.module("shiptech.pages").controller("ScheduleCalendarController", ["$roo
                         row_location = row.location || '-';
                         row_fuelOilOfRequest = row.fuelOilOfRequest || '-';
                         row_uom = row.uom || '-';
+                        row_productType = row.fuelOilOfRequestType.name;
                         row_fuelMinQuantity = $filter('number')(row.fuelMinQuantity, $scope.numberPrecision.amountPrecision) || '-';
                         row_fuelMaxQuantity = $filter('number')(row.fuelMaxQuantity, $scope.numberPrecision.amountPrecision) || '-';
                         row_agreementType = row.agreementType || '-';
                         row_statusCode = row.statusCode || '-';
+                        if (ctrl.scheduleDashboardConfiguration.productTypeInSchedule.name == "Yes") {
+                            html += '<tr><td>' + row_requestName + '</td> <td>' + row_vesselName + '</td> <td >' + row_location + '</td> <td>' + row_fuelOilOfRequest + '</td> <td>' +  row_productType + '</td> <td>'  + row_uom + '</td> <td>' + row_fuelMinQuantity + '</td> <td>' + row_fuelMaxQuantity + '</td> <td>' + row_agreementType + '</td> <td>' + row_statusCode + '</td></tr>';
+                        } else {
                             html += '<tr><td>' + row_requestName + '</td> <td>' + row_vesselName + '</td> <td >' + row_location + '</td> <td>' + row_fuelOilOfRequest + '</td> <td>' + row_uom + '</td> <td>' + row_fuelMinQuantity + '</td> <td>' + row_fuelMaxQuantity + '</td> <td>' + row_agreementType + '</td> <td>' + row_statusCode + '</td></tr>';
+                        }
                         // if (row.fuelOilOfRequest) {
                         // }
                     })
