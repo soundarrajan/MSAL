@@ -22,9 +22,9 @@ export const MockCounterparties: ICounterpartyLookupDto[] = [
     id: i,
     name: `Person ${i}`,
     displayName: `Person ${i}`,
-    contactId: Math.floor(Math.random() * 100000000),
+    contactId: Math.floor(window.crypto.getRandomValues( new Uint8Array(1)) * 100000000),
     contact: 'Contact Name' + i,
-    phone: (10000000 + Math.floor(Math.random() * 100000000)).toString(),
-    email: Math.floor(Math.random() * 100000000) + '@inatech.com'
+    phone: (10000000 + Math.floor(window.crypto.getRandomValues( new Uint8Array(1)) * 100000000)).toString(),
+    email: Math.floor(window.crypto.getRandomValues( new Uint8Array(1)) * 100000000) + '@inatech.com'
   }))
 ];

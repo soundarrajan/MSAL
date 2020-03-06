@@ -75,7 +75,7 @@ export class AuditLogGridViewModel extends BaseGridViewModel {
 
     enableBrowserTooltips: true,
     getRowNodeId: (data: IAuditLogItemDto) =>
-      data?.id?.toString() ?? Math.random().toString(),
+      data?.id?.toString() ?? window.crypto.getRandomValues( new Uint8Array(1)).toString(),
     defaultColDef: {
       sortable: true,
       resizable: true,

@@ -4,7 +4,7 @@ var _firstNameList = ['Foo', 'Toto', 'Louis', 'Cartman', 'Luke', 'Zed', 'Superma
     _lastNameList = ['Bar', 'Titi', 'Someone Last Name', 'Kyle', 'Yoda', 'Lara', 'Moliku', 'Whateveryournameis'];
 
 var _randomNumber = function(maxNumber) {
-    return Math.floor(Math.random() * maxNumber);
+    return Math.floor(window.crypto.getRandomValues( new Uint8Array(1)) * maxNumber);
 };
 var _randomInArray = function(array) {
     return array[_randomNumber(array.length)];

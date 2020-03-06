@@ -1109,11 +1109,11 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
             if (result) {
                 if (result.length > 0) {
                 	strLog = "";
-                	$.each(result, function(k,v){
-                		if (v.additionalCost != null)
-				        	strLog += v.additionalCost.name + ";";
-                	})
-                	// console.log(strLog);
+                	$.each(result, function(k,v) {
+                		if (v.additionalCost != null) {
+                            strLog += v.additionalCost.name + ";";
+                        }
+                	});
                     if (result[0].fakeId) {
 						result =  $filter('orderBy')(result, 'fakeId', true);
                         ctrl.additionalCostsList = result;

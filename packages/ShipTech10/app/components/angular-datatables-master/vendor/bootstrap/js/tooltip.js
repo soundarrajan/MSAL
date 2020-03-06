@@ -393,7 +393,7 @@
   }
 
   Tooltip.prototype.getUID = function (prefix) {
-    do prefix += ~~(Math.random() * 1000000)
+    do prefix += ~~(window.crypto.getRandomValues( new Uint8Array(1)) * 1000000)
     while (document.getElementById(prefix))
     return prefix
   }

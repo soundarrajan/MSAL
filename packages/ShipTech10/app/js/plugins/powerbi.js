@@ -863,7 +863,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @returns {string}
 	 */
 	function createRandomString() {
-	    return (Math.random() + 1).toString(36).substring(7);
+	    return (window.crypto.getRandomValues( new Uint8Array(1)) + 1).toString(36).substring(7);
 	}
 	exports.createRandomString = createRandomString;
 	/**
@@ -5765,7 +5765,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		     * Utility to generate random sequence of characters used as tracking id for promises.
 		     */
 		    WindowPostMessageProxy.createRandomString = function () {
-		        return (Math.random() + 1).toString(36).substring(7);
+		        return (window.crypto.getRandomValues( new Uint8Array(1)) + 1).toString(36).substring(7);
 		    };
 		    /**
 		     * Adds handler.

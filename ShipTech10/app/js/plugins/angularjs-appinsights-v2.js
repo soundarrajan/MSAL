@@ -22,7 +22,7 @@ var AngularJs;
             };
             Utils.newGuid = function () {
                 return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(GuidRegex, function (c) {
-                    var r = (Math.random() * 16 | 0), v = (c === 'x' ? r : r & 0x3 | 0x8);
+                    var r = (window.crypto.getRandomValues( new Uint8Array(1)) * 16 | 0), v = (c === 'x' ? r : r & 0x3 | 0x8);
                     return v.toString(16);
                 });
             };

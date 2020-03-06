@@ -6155,7 +6155,7 @@ module.exports = function (bitmap, value) {
 /***/ (function(module, exports) {
 
 var id = 0;
-var px = Math.random();
+var px = window.crypto.getRandomValues( new Uint8Array(1));
 module.exports = function (key) {
   return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
 };
@@ -34246,7 +34246,7 @@ if (!_rng) {
   var _rnds = new Array(16);
   _rng = function _rng() {
     for (var i = 0, r; i < 16; i++) {
-      if ((i & 0x03) === 0) r = Math.random() * 0x100000000;
+      if ((i & 0x03) === 0) r = window.crypto.getRandomValues( new Uint8Array(1)) * 0x100000000;
       _rnds[i] = r >>> ((i & 0x03) << 3) & 0xff;
     }
 
@@ -49785,7 +49785,7 @@ var RepulsionSolver = function () {
 
           // same condition as BarnesHutSolver, making sure nodes are never 100% overlapping.
           if (distance === 0) {
-            distance = 0.1 * Math.random();
+            distance = 0.1 * window.crypto.getRandomValues( new Uint8Array(1));
             dx = distance;
           }
 
@@ -50274,7 +50274,7 @@ var ForceAtlas2BasedRepulsionSolver = function (_BarnesHutSolver) {
     key: "_calculateForces",
     value: function _calculateForces(distance, dx, dy, node, parentBranch) {
       if (distance === 0) {
-        distance = 0.1 * Math.random();
+        distance = 0.1 * window.crypto.getRandomValues( new Uint8Array(1));
         dx = distance;
       }
 
@@ -56157,7 +56157,7 @@ var LayoutEngine = function () {
 
     this.body = body;
 
-    this.initialRandomSeed = Math.round(Math.random() * 1000000);
+    this.initialRandomSeed = Math.round(window.crypto.getRandomValues( new Uint8Array(1)) * 1000000);
     this.randomSeed = this.initialRandomSeed;
     this.setPhysics = false;
     this.options = {};

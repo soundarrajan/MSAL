@@ -944,7 +944,7 @@ var App = function() {
         },
 
         getUniqueID: function(prefix) {
-            return 'prefix_' + Math.floor(Math.random() * (new Date()).getTime());
+            return 'prefix_' + Math.floor(window.crypto.getRandomValues( new Uint8Array(1)) * (new Date()).getTime());
         },
 
         // check IE8 mode

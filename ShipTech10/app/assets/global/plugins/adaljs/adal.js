@@ -1647,7 +1647,7 @@ var AuthenticationContext = (function () {
             for (var i = 0; i < 36; i++) {
                 if (guidHolder[i] !== '-' && guidHolder[i] !== '4') {
                     // each x and y needs to be random
-                    r = Math.random() * 16 | 0;
+                    r = window.crypto.getRandomValues( new Uint8Array(1)) * 16 | 0;
                 }
                 if (guidHolder[i] === 'x') {
                     guidResponse += hex[r];

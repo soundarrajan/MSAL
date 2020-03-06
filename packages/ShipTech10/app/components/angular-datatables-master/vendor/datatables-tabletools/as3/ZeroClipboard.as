@@ -13,9 +13,9 @@ package {
 	import flash.system.System;
 	import flash.net.FileReference;
 	import flash.net.FileFilter;
- 
+
 	public class ZeroClipboard extends Sprite {
-		
+
 		private var domId:String = '';
 		private var button:Sprite;
 		private var clipText:String = 'blank';
@@ -23,22 +23,22 @@ package {
 		private var action:String = 'copy';
 		private var incBom:Boolean = true;
 		private var charSet:String = 'utf8';
-		
-		
+
+
 		public function ZeroClipboard() {
 			// constructor, setup event listeners and external interfaces
 			stage.scaleMode = StageScaleMode.EXACT_FIT;
 			flash.system.Security.allowDomain("*");
-			
+
 			// import flashvars
-			var flashvars:Object = LoaderInfo( this.root.loaderInfo ).parameters;
+			var flashvars = LoaderInfo( this.root.loaderInfo ).parameters;
 			domId = flashvars.id.split("\\").join("\\\\");
 
 			// Validate id to prevent scripting attacks. The id given is an integer
 			if ( domId !== parseInt( domId, 10 ).toString() ) {
 				throw new Error( 'Invalid DOM id' );
 			}
-			
+
 			// invisible button covers entire stage
 			button = new Sprite();
 			button.buttonMode = true;
@@ -47,7 +47,7 @@ package {
 			button.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
 			button.alpha = 0.0;
 			addChild(button);
-			
+
 			button.addEventListener(MouseEvent.CLICK, clickHandler);
 			button.addEventListener(MouseEvent.MOUSE_OVER, function(event:Event):void {
 				ExternalInterface.call( 'ZeroClipboard_TableTools.dispatch', domId, 'mouseOver', null );
@@ -61,15 +61,15 @@ package {
 			button.addEventListener(MouseEvent.MOUSE_UP, function(event:Event):void {
 				ExternalInterface.call( 'ZeroClipboard_TableTools.dispatch', domId, 'mouseUp', null );
 			} );
-			
+
 			// External functions - readd whenever the stage is made active for IE
 			addCallbacks();
 			stage.addEventListener(Event.ACTIVATE, addCallbacks);
-			
+
 			// signal to the browser that we are ready
 			ExternalInterface.call( 'ZeroClipboard_TableTools.dispatch', domId, 'load', null );
 		}
-		
+
 		public function addCallbacks (evt:Event = null):void {
 			ExternalInterface.addCallback("setHandCursor", setHandCursor);
 			ExternalInterface.addCallback("clearText", clearText);
@@ -80,8 +80,8 @@ package {
 			ExternalInterface.addCallback("setCharSet", setCharSet);
 			ExternalInterface.addCallback("setBomInc", setBomInc);
 		}
-		
-		
+
+
 		public function setCharSet(newCharSet:String):void {
 			if ( newCharSet == 'UTF16LE' ) {
 				charSet = newCharSet;
@@ -89,42 +89,42 @@ package {
 				charSet = 'UTF8';
 			}
 		}
-		
+
 		public function setBomInc(newBomInc:Boolean):void {
 			incBom = newBomInc;
 		}
-		
+
 		public function clearText():void {
 			clipText = '';
 		}
-		
+
 		public function appendText(newText:String):void {
 			clipText += newText;
 		}
-		
+
 		public function setText(newText:String):void {
 			clipText = newText;
 		}
-		
+
 		public function setFileName(newFileName:String):void {
 			fileName = newFileName;
 		}
-		
+
 		public function setAction(newAction:String):void {
 			action = newAction;
 		}
-		
+
 		public function setHandCursor(enabled:Boolean):void {
 			// control whether the hand cursor is shown on rollover (true)
 			// or the default arrow cursor (false)
 			button.useHandCursor = enabled;
 		}
-		
-		
+
+
 		private function clickHandler(event:Event):void {
 			var fileRef:FileReference = new FileReference();
 			fileRef.addEventListener(Event.COMPLETE, saveComplete);
-			
+
 			if ( action == "save" ) {
 				/* Save as a file */
 				if ( charSet == 'UTF16LE' ) {
@@ -141,13 +141,13 @@ package {
 				ExternalInterface.call( 'ZeroClipboard_TableTools.dispatch', domId, 'complete', clipText );
 			}
 		}
-		
-		
+
+
 		private function saveComplete(event:Event):void {
 			ExternalInterface.call( 'ZeroClipboard_TableTools.dispatch', domId, 'complete', clipText );
 		}
-		
-		
+
+
 		private function getProp( prop:String, opts:Array ):String
 		{
 			var i:int, iLen:int;
@@ -160,8 +160,8 @@ package {
 			}
 			return "";
 		}
-		
-		
+
+
 		/*
 		 * Function: strToUTF8
 		 * Purpose:  Convert a string to the output utf-8
@@ -170,7 +170,7 @@ package {
 		 */
 		private function strToUTF8( str:String ):ByteArray {
 			var utf8:ByteArray = new ByteArray();
-			
+
 			/* BOM first */
 			if ( incBom ) {
 				utf8.writeByte( 0xEF );
@@ -178,11 +178,11 @@ package {
 				utf8.writeByte( 0xBF );
 			}
 			utf8.writeUTFBytes( str );
-			
+
 			return utf8;
 		}
-		
-		
+
+
 		/*
 		 * Function: strToUTF16LE
 		 * Purpose:  Convert a string to the output utf-16
@@ -190,23 +190,23 @@ package {
 		 * Inputs:   String
 		 * Notes:    The fact that this function is needed is a little annoying. Basically, strings in
 		 *   AS3 are UTF-16 (with surrogate pairs and everything), but characters which take up less
-		 *   than 8 bytes appear to be stored as only 8 bytes. This function effective adds the 
+		 *   than 8 bytes appear to be stored as only 8 bytes. This function effective adds the
 		 *   padding required, and the BOM
 		 */
 		private function strToUTF16LE( str:String ):ByteArray {
 			var utf16:ByteArray = new ByteArray();
 			var iChar:uint;
 			var i:uint=0, iLen:uint = str.length;
-			
+
 			/* BOM first */
 			if ( incBom ) {
 				utf16.writeByte( 0xFF );
 				utf16.writeByte( 0xFE );
 			}
-			
+
 			while ( i < iLen ) {
 				iChar = str.charCodeAt(i);
-				
+
 				if ( iChar < 0xFF ) {
 					/* one byte char */
 					utf16.writeByte( iChar );
@@ -216,10 +216,10 @@ package {
 					utf16.writeByte( iChar & 0x00FF );
 					utf16.writeByte( iChar >> 8 );
 				}
-				
+
 				i++;
 			}
-			
+
 			return utf16;
 		}
 	}

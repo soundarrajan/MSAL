@@ -9,7 +9,7 @@ export class AppContext {
 
   constructor() {
     this.sessionId = Md5.hashStr(
-      Math.random().toString() + Date.now().toString()
+      window.crypto.getRandomValues( new Uint8Array(1)).toString() + Date.now().toString()
     ).toString();
   }
 

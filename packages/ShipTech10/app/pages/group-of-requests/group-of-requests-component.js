@@ -874,7 +874,7 @@ ctrl.setProductData = function(data, loc) {
                     groupOfRequestsModel.getSellersSorted(counterpatyIds, productIds, ctrl.sellerSortOrder).then(function (data) {
                         ctrl.sellers = normalizeArrayToHash(data.payload, "counterpartyId");
                         ctrl.sellerOrder = getSellerOrder(data.payload);
-                        randomUnique = Math.random()
+                        randomUnique = window.crypto.getRandomValues( new Uint8Array(1))
                             .toString(36)
                             .substr(2, 6);
                         newCounterparty = {};
@@ -3179,7 +3179,7 @@ ctrl.setProductData = function(data, loc) {
                     locations.push(v);
                 }
             });
-            randomUnique = Math.random()
+            randomUnique = window.crypto.getRandomValues( new Uint8Array(1))
                 .toString(36)
                 .substr(2, 6);
             for (var i = 0; i < locations.length; i++) {

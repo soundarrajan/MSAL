@@ -3434,22 +3434,15 @@
 
 
             if (!$rootScope.formValues.documentType) requiredFields.push("Document Type");
-            if(verifiedRequired[$state.current.name])
-                // if(!$rootScope.formValues.isVerified)
-                //     requiredFields.push("Is Verified");
-            if(requiredFields.length){
+            if(verifiedRequired[$state.current.name] && requiredFields.length){
                 var error = "Please fill in required fields: ";
-                $.each(requiredFields, function (key,val){
+                $.each(requiredFields, function (key,val) {
                     error += val + ",";
-                })
+                });
                 error = error.slice(0, -1);
                 toastr.error(error);
                 return false;
             }
-             // if (!$rootScope.formValues.documentType || !$rootScope.formValues.isVerified) {
-            // 	toastr.error("Please fill in required fields");
-            // 	return false;
-            // }
             data.request.Payload.referenceNo = $state.params.entity_id;
             if ($state.params.requestId) data.request.Payload.referenceNo = $state.params.requestId;
 

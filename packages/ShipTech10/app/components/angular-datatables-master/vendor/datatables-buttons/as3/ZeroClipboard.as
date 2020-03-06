@@ -13,7 +13,7 @@ package {
 	import flash.system.System;
 	import flash.net.FileReference;
 	import flash.net.FileFilter;
-	
+
 	/* PDF imports */
 	import org.alivepdf.pdf.PDF;
 	import org.alivepdf.data.Grid;
@@ -30,7 +30,7 @@ package {
 
 	/* ZIP  imports */
 	import deng.fzip.*;
- 
+
 	public class ZeroClipboard extends Sprite
 	{
 		private var domId:String = '';
@@ -38,23 +38,23 @@ package {
 		private var clipText:String = 'blank';
 		private var fileName:String = '';
 		private var action:String = 'copy';
-		private var sheetData:Object = {};
+		private var sheetData = {};
 
 
 		public function ZeroClipboard() {
 			// constructor, setup event listeners and external interfaces
 			stage.scaleMode = StageScaleMode.EXACT_FIT;
 			flash.system.Security.allowDomain("*");
-			
+
 			// import flashvars
-			var flashvars:Object = LoaderInfo( this.root.loaderInfo ).parameters;
+			var flashvars = LoaderInfo( this.root.loaderInfo ).parameters;
 			domId = flashvars.id.split("\\").join("\\\\");
 
 			// Validate id to prevent scripting attacks. The id given is an integer
 			if ( domId !== parseInt( domId, 10 ).toString() ) {
 				throw new Error( 'Invalid DOM id' );
 			}
-			
+
 			// invisible button covers entire stage
 			button = new Sprite();
 			button.buttonMode = true;
@@ -63,7 +63,7 @@ package {
 			button.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
 			button.alpha = 0.0;
 			addChild(button);
-			
+
 			button.addEventListener(MouseEvent.CLICK, function(event:Event):void {
 				clickHandler(event);
 			} );
@@ -79,7 +79,7 @@ package {
 			button.addEventListener(MouseEvent.MOUSE_UP, function(event:Event):void {
 				ExternalInterface.call( 'ZeroClipboard_TableTools.dispatch', domId, 'mouseUp', null );
 			} );
-			
+
 			// External functions - readd whenever the stage is made active for IE
 			addCallbacks();
 			stage.addEventListener(Event.ACTIVATE, addCallbacks);
@@ -92,7 +92,7 @@ package {
 		{
 			ExternalInterface.call( 'ZeroClipboard_TableTools.log', str, null );
 		}
-		
+
 
 		public function addCallbacks (evt:Event = null):void
 		{
@@ -148,7 +148,7 @@ package {
 		{
 			var fileRef:FileReference = new FileReference();
 			fileRef.addEventListener(Event.COMPLETE, saveComplete);
-			
+
 			if ( action == "csv" ) {
 				// Simple save of the inbound data
 				var bytes:ByteArray = new ByteArray();
@@ -178,17 +178,17 @@ package {
 				ExternalInterface.call( 'ZeroClipboard_TableTools.dispatch', domId, 'complete', clipText );
 			}
 		}
-		
-		
+
+
 		private function saveComplete(event:Event):void
 		{
 			ExternalInterface.call( 'ZeroClipboard_TableTools.dispatch', domId, 'complete', clipText );
 		}
-		
-		
+
+
 		private function configPdf():PDF
 		{
-			var json:Object   = JSON.parse( clipText );
+			var json = JSON.parse( clipText );
 			var columns:Array = [];
 
 			// Create the PDF
@@ -202,14 +202,14 @@ package {
 			pdf.addPage();
 
 			var pageWidth:int = pdf.getCurrentPage().w-20;
-			
+
 			// Add the title / message if there is one
 			pdf.textStyle( new RGBColor(0), 1 );
 			pdf.setFont( new CoreFont(FontFamily.HELVETICA), 14 );
 			if ( json.title != "" ) {
 				pdf.writeText(11, json.title+"\n");
 			}
-			
+
 			pdf.setFont( new CoreFont(FontFamily.HELVETICA), 11 );
 			if ( json.message != "" ) {
 				pdf.writeText(11, json.message+"\n");
@@ -223,7 +223,7 @@ package {
 					'C'                         // align
 				) );
 			}
-			
+
 			var grid:Grid = new Grid(
 				json.body,                /* 1. data */
 				pageWidth,                /* 2. width */
@@ -236,7 +236,7 @@ package {
 				null,                     /* 9. joins */
 				columns                   /* 10. columns */
 			);
-			
+
 			pdf.addGrid( grid, 0, 0 );
 			return pdf;
 		}

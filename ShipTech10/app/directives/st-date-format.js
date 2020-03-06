@@ -131,7 +131,7 @@ angular.module('shiptech.pages').directive("editableDateWithMask", [ '$injector'
                 // window.dateTimeFormat = dateFormat;
             }
 
-            $(element).attr("uniqueIdentifier", Math.random().toString(36).substring(7));
+            $(element).attr("uniqueIdentifier", window.crypto.getRandomValues( new Uint8Array(1)).toString(36).substring(7));
             
             $(element).parent().before("<input uniqueIdentifier='"+$(element).attr("uniqueIdentifier")+"' placeholder='"+dateFormat+"' date-format='"+dateFormat+"' class='editableDateInputWithMask form-control' />");
 

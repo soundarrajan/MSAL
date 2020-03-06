@@ -50,7 +50,7 @@ export class VesselMasterSelectorGridViewModel extends BaseGridViewModel {
     enableBrowserTooltips: true,
     singleClickEdit: true,
     getRowNodeId: (data: any) =>
-      data?.id?.toString() ?? Math.random().toString(),
+      data?.id?.toString() ?? window.crypto.getRandomValues( new Uint8Array(1)).toString(),
     defaultColDef: {
       sortable: true,
       resizable: true,

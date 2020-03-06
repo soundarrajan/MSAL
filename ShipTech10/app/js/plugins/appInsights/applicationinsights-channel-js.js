@@ -128,7 +128,7 @@
         };
         CoreUtils.newGuid = function () {
             return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(GuidRegex, function (c) {
-                var r = (Math.random() * 16 | 0), v = (c === 'x' ? r : r & 0x3 | 0x8);
+                var r = (window.crypto.getRandomValues( new Uint8Array(1)) * 16 | 0), v = (c === 'x' ? r : r & 0x3 | 0x8);
                 return v.toString(16);
             });
         };
@@ -1303,7 +1303,7 @@
             var base64chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
             var result = "";
             // tslint:disable-next-line:insecure-random
-            var random = Math.random() * 1073741824; // 5 symbols in base64, almost maxint
+            var random = window.crypto.getRandomValues( new Uint8Array(1)) * 1073741824; // 5 symbols in base64, almost maxint
             while (random > 0) {
                 var char = base64chars.charAt(random % 64);
                 result += char;
@@ -1315,7 +1315,7 @@
          * generate a random 32bit number (-0x80000000..0x7FFFFFFF).
          */
         Util.random32 = function () {
-            return (0x100000000 * Math.random()) | 0;
+            return (0x100000000 * window.crypto.getRandomValues( new Uint8Array(1))) | 0;
         };
         /**
          * generate W3C trace id
@@ -1337,7 +1337,7 @@
                         hexValues[tmp >> 28 & 0xF];
             }
             // "Set the two most significant bits (bits 6 and 7) of the clock_seq_hi_and_reserved to zero and one, respectively"
-            var clockSequenceHi = hexValues[8 + (Math.random() * 4) | 0];
+            var clockSequenceHi = hexValues[8 + (window.crypto.getRandomValues( new Uint8Array(1)) * 4) | 0];
             return oct.substr(0, 8) + oct.substr(9, 4) + "4" + oct.substr(13, 3) + clockSequenceHi + oct.substr(16, 3) + oct.substr(19, 12);
         };
         /**
@@ -3244,7 +3244,7 @@
             }
             else {
                 // tslint:disable-next-line:insecure-random
-                score = (Math.random() * 100);
+                score = (window.crypto.getRandomValues( new Uint8Array(1)) * 100);
             }
             return score;
         };
@@ -3758,7 +3758,7 @@
             else {
                 var backOffSlot = (Math.pow(2, this._consecutiveErrors) - 1) / 2;
                 // tslint:disable-next-line:insecure-random
-                var backOffDelay = Math.floor(Math.random() * backOffSlot * SlotDelayInSeconds) + 1;
+                var backOffDelay = Math.floor(window.crypto.getRandomValues( new Uint8Array(1)) * backOffSlot * SlotDelayInSeconds) + 1;
                 backOffDelay = linearFactor * backOffDelay;
                 delayInSeconds = Math.max(Math.min(backOffDelay, 3600), SlotDelayInSeconds);
             }

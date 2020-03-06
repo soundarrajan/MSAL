@@ -737,14 +737,13 @@ angular.module('ngResource', ['ng']).
 
             forEach(action, function(value, key) {
               switch (key) {
-                default:
-                  httpConfig[key] = copy(value);
-                  break;
                 case 'params':
                 case 'isArray':
                 case 'interceptor':
                 case 'cancellable':
                   break;
+                default:
+                  httpConfig[key] = copy(value);
               }
             });
 

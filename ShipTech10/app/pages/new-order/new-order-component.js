@@ -424,7 +424,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             }
 
             for (var j = 0; j < ctrl.data.products.length; j++) {
-                ctrl.data.products[j].uniqueIdUI = Math.random().toString(36).substring(7);
+                ctrl.data.products[j].uniqueIdUI = window.crypto.getRandomValues( new Uint8Array(1)).toString(36).substring(7);
             }
             ctrl.globalAdditionalCosts = ctrl.data.additionalCosts;
    
