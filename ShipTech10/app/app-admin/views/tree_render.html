@@ -8,7 +8,6 @@
             <span ng-click="itemSelect(item,this)"></span>
         </label>
             {{ ::item.name }}
-        <!-- <input type="checkbox"  data-checklist-model="formValues.vesselAcces" data-checklist-value="item" checklist-comparator=".id" indeterminate-checkbox node="item"/> -->
     </span>
 </div>
 <ol ui-tree-nodes="options" ng-model="item.children" ng-class="{hidden: collapsed,displayed:!collapsed}">

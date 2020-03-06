@@ -24,36 +24,7 @@
             </div>
         </div>
     </div>
-    <!-- <div class="row st-supplier-portal-halves">
-            <div class="col-md-6 no-padding-right">
-                <div class="portlet light stretch-vertical">
-                    <div class="portlet-title">
-                        <span class="caption-subject">
-                            BUNKERABLE PORTS
-                        </span>
-                    </div>
-                    <div class="portlet-body">
-                        <form class="form-inline st-supplier-portal-bunkerable-ports">
-                            <div class="form-group-sm">
-                                <label class="control-label">
-                                    {{ $ctrl.bunkerablePortsFields.quoteFor.caption | translate }}
-                                </label>
-                                <ng-repeat ng-repeat="location in $ctrl.request.locations">
-                                    <label class="mt-checkbox mt-checkbox-outline">
-                                        <input type="checkbox" id="location_{{ location.location.name }}" ng-model="$ctrl.selectedLocationIds[location.location.id]"/>
-                                        <span></span>
-                                    </label>
-                                    <label class="control-label clickable" for="location_{{ location.location.name }}">
-                                        {{ location.location.name }}
-                                    </label>
-                                </ng-repeat>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
 
-        </div> -->
     <lookup-dialog class="modal fade in"  id="lookupSeller" aria-hidden="true" data-width="80%" lookup-type="$ctrl.lookupType" supplier-portal="$ctrl.sellerPortalModule" supplier-portal-token="$ctrl.token" on-product-select="$ctrl.selectQuotedProduct(product)"></lookup-dialog>
     <sellers-dialog class="modal fade in sellers-dialog" id="counterparties" aria-hidden="true" data-width="90%" seller-types="$ctrl.counterpartyTypeId" trigger='$ctrl.supplierPlace' supplier-portal="true", supplier-portal-token="$ctrl.token" on-seller-select="$ctrl.selectCounterparty(sellerId)" on-supplier-select="$ctrl.selectSupplier(seller)"></sellers-dialog>
     <last-offer-prices-dialog class="modal fade in"  id="last_offer_prices" aria-hidden="true" args="{token: $ctrl.latestOfferToken, location: $ctrl.latestOfferLocation, seller: $ctrl.latestOfferSeller, random: $ctrl.randomOfferRefreshToken}" data-width="40%"></last-offer-prices-dialog>

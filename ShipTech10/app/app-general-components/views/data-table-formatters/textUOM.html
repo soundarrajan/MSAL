@@ -21,10 +21,7 @@
 			</span>            
     	</span>
     	<span class="hidden">
-	    	<!-- {{numberPrecision = 2}} -->
-<!--     		{{MODEL_COL_FIELD.toLowerCase().indexOf("amount") != -1 ? numberPrecision = CM.tenantSetting.defaultValues.amountPrecision : ''}}	
-    		{{MODEL_COL_FIELD.toLowerCase().indexOf("price") != -1 ? numberPrecision = CM.tenantSetting.defaultValues.pricePrecision : ''}}	
-    		{{MODEL_COL_FIELD.toLowerCase().indexOf("quantity") != -1 ? numberPrecision = CM.tenantSetting.defaultValues.quantityPrecision : ''}} -->	
+
     	</span>
     	{{$eval(col.colDef.cellObject.format)}}
         <input ng-if="col.colDef.name != 'invoiceQuantity' &&  col.colDef.name  != 'invoiceRate' " ng-readonly="col.colDef.cellObject.uomBindSource" type="text" id="{{ grid.element[0].id }}_{{ col.colDef.name }}_{{ rowRenderIndex }}" name="{{ col.colDef.name }}" ng-model="MODEL_COL_FIELD" class="form-control uomInput" ng-required='field.Required && isVisible(field.Name + field.UOMType)' ng-class="CM.invalid_form ? 'ng-touched' : ''" ng-disabled="$eval(col.colDef.cellObject.Disabled)"  
@@ -67,11 +64,7 @@
                         <option></option>
                     </select>
                 </span>
-<!--                 <span ng-if="col.colDef.cellObject.masterSource == 'Currency'" >
-                    <select id="{{ col.colDef.name }}_1" class="bs-select" data-container="body" ng-model="row['entity'][col.colDef.cellObject.UniqueId]" ng-options="item as item.code for item in grid.appScope.fVal().options[col.colDef.cellObject.Name] track by item.id" ng-disabled="$eval(col.colDef.cellObject.Disabled); col.colDef.cellObject.UomDisabled" ng-change="$eval(col.colDef.cellObject.changeEvent)" ng-required="col.colDef.cellObject.UomRequired">
-                        <option></option>
-                    </select>
-                </span> -->
+
             </span>
             <span ng-if="!col.colDef.cellObject.UniqueId">
                 <span ng-if="col.colDef.cellObject.masterSource != 'Currency'">
@@ -79,15 +72,10 @@
                         <option></option>
                     </select>
                 </span>
-<!--                 <span ng-if="col.colDef.cellObject.masterSource == 'Currency'">
-                    <select id="{{ col.colDef.name }}_3" class="bs-select" data-container="body" ng-model="grid.appScope.fVal().formValues.order" ng-options="item as item.code for item in grid.appScope.fVal().options[col.colDef.cellObject.Name] track by item.id" ng-disabled="$eval(col.colDef.cellObject.Disabled)" ng-required="col.colDef.cellObject.UomRequired">
-                        <option></option>
-                    </select>
-                </span> -->
+
             </span>
         </span>
         {{$eval(col.colDef.cellObject.UomRequired)}}
         <span ng-if="col.colDef.cellObject.uomBindSource" class="input-group-addon bg-grey border-grey-salsa" id="{{ grid.element[0].id }}_basic-addon1_{{ rowRenderIndex }}" style="border: 1px solid;padding: 0 5px;">{{grid.appScope.fVal().formValues.temp[col.colDef.cellObject.uomBindSource].name}}</span>
-        <!-- <input ng-if="col.colDef.cellObject.uomBindSource" type="text" disabled class="form-control uom-disabled input-group-addon"  ng-value="grid.appScope.fVal().formValues.temp[col.colDef.cellObject.uomBindSource].name"/> -->
     </div>
 </span>

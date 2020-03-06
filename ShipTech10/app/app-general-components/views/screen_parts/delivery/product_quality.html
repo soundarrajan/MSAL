@@ -1,5 +1,5 @@
 
-<!-- (productIndex, product) in formValues.deliveryProducts -->
+
 <div class="portlet">
     <div class="portlet-title">
         <div class="tools">
@@ -25,7 +25,6 @@
         <div class="row margin-top-10">
 
             <!--  current product: -->
-            <!-- formValues.deliveryProducts[productIndex].qualityHeader.analysedOn -->
   
             <div class="col-xs-4">
                 <div class="form-group row">
@@ -135,14 +134,12 @@
                             <td width="12%">
                                 <span>
                                     <input ng-disabled="formValues.deliveryStatus.name == 'Verified'" type="text" class="form-control" ng-model="value2.bdnValue" name="Product_{{ productIndex }}_{{ value2.specParameter.name }}_BDN" ng-change="value2.qualityMatch = setQualityMatch(value2.bdnValue, value2.surveyValue,value2.min,value2.max)"  />
-                                    <!-- ng-required="value2.min != null || value2.max != null ? true : false"  -->
                                     {{Number(value2.bdnValue)}}
                                 </span>
                             </td>
                             <td width="12%">
                                 <span>
                                     <input type="text" class="form-control" ng-model="value2.surveyValue" name="Product_{{ productIndex }}_{{ value2.specParameter.name }}_BDN" ng-change="value2.qualityMatch = setQualityMatch(value2.bdnValue, value2.surveyValue,value2.min,value2.max)"   />
-                                    <!-- ng-required="value2.min != null || value2.max != null ? true : false" -->
                                 </span>
                             </td>
                             <td width="12%" class="padding">
@@ -151,18 +148,18 @@
                                 <span ng-if="value2.surveyValue == null && value2.bdnValue == null"> - </span>
                             </td>
                             <td width="12%" class="padding text-center">
-                                <!-- <span ng-if="value2.min != null || value2.max != null" class="width100"> -->
-                                    <span ng-show="value2.qualityMatch.id == '2'" class="quality_table_data_false">
-                                        <b>
-                                            Failed
-                                        </b>
-                                    </span>
-                                    <span ng-show="value2.qualityMatch.id == '1'" class="quality_table_data_true">
-                                        <b>
-                                            Passed
-                                        </b>
-                                    </span>
-                                <!-- </span> -->
+
+                                <span ng-show="value2.qualityMatch.id == '2'" class="quality_table_data_false">
+                                    <b>
+                                        Failed
+                                    </b>
+                                </span>
+                                <span ng-show="value2.qualityMatch.id == '1'" class="quality_table_data_true">
+                                    <b>
+                                        Passed
+                                    </b>
+                                </span>
+
                             </td>
                             <td width="12%" class="padding text-center">
                                 <span ng-show="!value2.claim" class="quality_table_data_false">

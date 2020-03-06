@@ -1,17 +1,15 @@
-<div ng-controller="Controller_Contract as CC" ng-init='CM.getOptions({"Name": "Currency", "Type": "simpleLookup", "masterSource": "Currency"})'>
+﻿<div ng-controller="Controller_Contract as CC" ng-init='CM.getOptions({"Name": "Currency", "Type": "simpleLookup", "masterSource": "Currency"})'>
 
     <span ng-if="formValues.status.name == 'Confirmed' ">
         {{disableFieldsIfConfirmed()}}
     </span>
 
-    <!-- <span ng-if="isCreate" ng-init="CC.addProductToContract()"></span> -->
     <span ng-if="formValues.products" ng-model="formValues.products" ng-change="CC.initOnLoad()" ng-init="CC.initOnLoad()"></span>
     <div class="row top-tab-section">
         <div class="products-tabs">
             <div class="products-tabs-inner">
                 <span class="product-item accordion-toggle {{ !isAccordionView ? 'tab-view' : '' }}" data-toggle="collapse" data-parent="#accordion1"
                     href="#collapse_{{ $index }}" ng-repeat="(key, value) in formValues.products" ng-show="!formValues.products[key].isDeleted">
-                    <!-- ng-if="formValues.products[key].isDeleted == false" -->
                     <div class="tab-item-inner" style="white-space: normal;">
                         <div class="tab-item-inner-content">
                             <div class="product-name">
@@ -265,12 +263,7 @@
 
                                     </label>
                                     <div class="input-group pull-left form_input" ng-init='CM.getOptions({"Name": "Barge", "Type": "simpleLookup", "masterSource": "Barge"})'>
-                                        <!-- <select class="form-control select2 changeIT" id="barges_{{ $index }}" name="Product_{{ index_0 + 1 }}_Barges" ng-model="dummyModel" ng-init="CM.initTypeahead('Barge', formValues.products[$index].product);CM.multiTagsContractProducts(formValues.products[$index].barges, $index, 'barges_'+$index, 'barges')" ng-class="CM.invalid_form ? 'ng-touched' : ''">
-                                            <option value="" style="display: none"></option>
-                                            <option value="{{ value }}" ng-repeat="(key, value) in options.Barge  ">
-                                                {{ value.name }}
-                                            </option>
-                                        </select> -->
+
                                         <input ng-model="barges_[$index]" id="barges_{{ $index }}" name="Product_{{ index_0 + 1 }}_Barges" uib-typeahead="item as item.name for item in options.Barge | filter:{name:$viewValue} | limitTo:10"
                                             class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
                                             typeahead-wait-ms="300" id="{{ field.Unique_ID }}" data-uniqueid="{{ field.Unique_ID }}"
@@ -365,10 +358,7 @@
                                             <span ng-if="isEdit && formValues.products[$index].formula != null" ng-init="formValues.products[$index].formula.isContractReference = formValues.products[$index].isPriceFormulaContractReference"></span>
                                             <span ng-if="formValues.products[index_0].fixedPrice" ng-init="formValues.products[$index].formula = null"></span>
                                             <label for="priceFormula{{ $index }}" class="priceFormula" class="simpleLookupLabel">
-                                                <!-- <span ng-if="!formValues.products[$index].formula.isContractReference">
-                                                    {{ CM.app_id + '.PRICE_FORMULA' | translate }}
-                                                </span> -->
-                                                <!-- ng-if="formValues.products[$index].formula.isContractReference" -->
+
                                                 <a ng-class="{'disabled' : !formValues.products[$index].formula.id}" ng-click="goToFormulaScreen(formValues.products[$index].formula.id)" >
                                                     {{ CM.app_id + '.PRICE_FORMULA' | translate }}
                                                 </a>
@@ -379,7 +369,7 @@
                                                     typeahead-wait-ms="100" id="priceFormula{{ $index }}" name="Product_{{ index_0 + 1 }}_Price_Formula"
                                                     ng-model="formValues.products[$index].formula" autocomplete="off" ng-disabled="formValues.status.name == 'Cancelled' || formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered' "
                                                 />
-                                                <!-- {{formValues.products[$index].formula}} -->
+
                                                 <span class="input-group-addon">
                                                     <button class=" btn default" ng-click="triggerModal('formula', 'masters_formulalist', 'masters.PRICE_FORMULA' | translate , 'formValues.products.'+$index+'.formula', null, $index);"
                                                         ng-disabled="formValues.status.name == 'Cancelled' || formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered' ">
@@ -451,7 +441,7 @@
                                                     typeahead-wait-ms="100" id="MTMpriceFormula{{ $index }}" name="Product_{{ index_0 + 1 }}_MTM_Price_Formula"
                                                     ng-model="formValues.products[$index].mtmFormula" autocomplete="off" ng-disabled="formValues.status.name == 'Cancelled' || formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered' "
                                                 />
-                                                <!-- {{formValues.products[$index].mtmFormula}} -->
+
                                                 <span class="input-group-addon">
                                                     <button class=" btn default" ng-click="triggerModal('formula', 'masters_formulalist', 'masters.PRICE_FORMULA' | translate , 'formValues.products.'+$index+'.mtmFormula');"
                                                         ng-disabled="formValues.status.name == 'Cancelled' || formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered' ">

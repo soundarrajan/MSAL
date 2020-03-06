@@ -1,10 +1,4 @@
-<!-- <pre>
-{{$ctrl.requirementRequestProductIds}}
-</pre> -->
-<!-- <pre>
-{{$ctrl.requirements}}
-</pre> -->
-<!-- <pre>{{$ctrl.requests}}</pre> -->
+
 <div style="position: relative; zoom:0.75; overflow: auto" id="negotiation-table-fixed-container">
 
 
@@ -49,7 +43,7 @@
     
                 <!-- Expanded request tab -->
                 <th ng-show="!$ctrl.isRequestTabExpanded($index) && !request.isDeleted" colspan="{{request.newProductCount*2 + 1 }}" class="border-blue request-tab-expanded {{$index == 0 ? 'left-border' : ''}} border-selected-top bg-blue" style="padding-left:7px !important; border-top:none; border-left:4px solid #d1d8dd !important">
-                    <!-- {{request.newProductCount}} -->
+
                     <span ng-if="$index == 0" class="font-white text-uppercase" style="font-weight: initial;font-size: 16px;padding: 5px 5px;display: block;">
                         Negotiation Details
                     </span>
@@ -160,9 +154,7 @@
                             </select>
                             <div class="input-group">
                                 <input  ng-disabled="!$ctrl.sellerTypesAreSelected" ng-model="$ctrl.newSeller[0]" placeholder="Seller" uib-typeahead="seller as seller.name for seller in $ctrl.sellerAutocompleteList  | filter:$viewValue | limitTo:10" class="form-control" typeahead-on-select="$ctrl.addSellerToAllLocations($ctrl.newSeller[0].id, $ctrl.locations)" ng-click="$ctrl.setLookupInput(null)" typeahead-editable="false" >
-                                <!-- <span class="input-group-addon {{$ctrl.sellerTypesAreSelected ? '' : 'disabled'}}" data-toggle="modal" href="#sellers" ng-click="$ctrl.setLookupInput(null)">
-                                    <i class="fa fa-search"></i>
-                                </span> -->
+
                                 <span ng-controller="Controller_Master as CM" class="input-group-addon {{$ctrl.sellerTypesAreSelected ? '' : 'disabled'}}" ng-click="$ctrl.setLookupInput(null); triggerModal('general', 'procurement_requestcounterpartytypes', 'seller', 'seller','','', '', $ctrl.sellerTypeIds)">
                                     <i class="fa fa-search"></i>
                                 </span>
@@ -178,7 +170,7 @@
                     <div class="pull-left energy-content-cell" style="width:100px; height: 100%; border-right: none">Port Seller Comments</div>
                 </th>
                 <!-- collapsed history tab -->
-                <!-- <th ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" rowspan="2" colspan="1" class="left-border"></th> -->
+
                 <th ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" colspan="3" >
                 	<div style="margin-bottom: 10px">Volume</div>
                 	<div class="text-center">
@@ -214,9 +206,7 @@
                 <th ng-show="!$ctrl.isRequestTabExpanded($index)" rowspan="2" class="left-border border-selected-left" style="background: #f1f5f8; width: 20px;">
                     <!-- Actions -->
                 </th>
-                <!-- <th ng-show="$ctrl.counterpartyDetailsIsExpanded && !$ctrl.isRequestTabExpanded($index)" rowspan="2" class="border-selected-left" style="background: #f1f5f8;">
-                    Validity
-                </th> -->
+
                 <th ng-show="!$ctrl.isRequestTabExpanded($index)" rowspan="2" class="border-selected-left" style="display: none">
                     Incoterm
                 </th>
@@ -235,13 +225,9 @@
     
 
                 <th ng-repeat-end style="background: #f1f5f8 !important; padding: 0 !important; border-left: 2px solid #86cdd8; position: relative;   " ng-if="!$ctrl.isRequestTabExpanded($parent.$index)">
-                        <!-- {{$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey] ? 'max-width:100px; width:100px;' : ''}} -->
+
                         <div class="wrapper" ng-show="!$ctrl.isRequestTabExpanded($parent.$parent.$index)"  >
                             <span ng-init="$ctrl.priceDetailsDefaultView.id == 1 ? $ctrl.priceExpanded['prod'+product.requestId+reqProdKey] = true : $ctrl.priceExpanded['prod'+product.requestId+reqProdKey] = false "> <!-- if Expanded --> </span>
-                            <!-- <div ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">CCAI</div> -->
-                            <!-- <div ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">Computed Price</div> -->
-                            <!-- <div ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">Specific Energy</div> -->
-                            <!-- <div ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">Price/Spec Energy</div> -->
                             <div ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">Price Diff</div>
                             <div ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">TCO</div>
                             <div ng-show="$ctrl.priceExpanded['prod'+product.requestId+reqProdKey] || $ctrl.isEnergyCalculationRequired" ng-if="$ctrl.displayAdditionalCostColumn" style="width:100px;min-width: 100px;" class="energy-content-cell">Add. Cost</div>
@@ -260,12 +246,7 @@
                             </a>                            
                         </div>
                         
-                        <!-- <div style="width:50px; padding:0" class="energy-content-cell icon">
-                            <a ng-click="$ctrl.toggleEnergyContentTab(product, reqProdKey);" class="pull-right" style="line-height: 70px;    display: block;    padding: 0 8px;    background: #fff;">
-                                <i class="fa fa-2x fa-angle-right" ng-show="!$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey] && !$ctrl.priceExpanded['prod'+product.requestId+reqProdKey]"></i>
-                                <i class="fa fa-2x fa-angle-left" ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey] || $ctrl.priceExpanded['prod'+product.requestId+reqProdKey]"></i>
-                            </a>
-                        </div> -->
+
                 </th>
 
                 <th ng-repeat-end ng-hide="true"></th>
@@ -287,20 +268,11 @@
                 <th ng-repeat-start="requestProducts in $ctrl.products track by $index" ng-hide="true"></th>
     
     
-                <!-- <th ng-repeat-start="product in requestProducts" ng-show="!$ctrl.isRequestTabExpanded($parent.$index)"> -->
+
                 </th>
                 <th ng-repeat-end  ng-show="!$ctrl.isRequestTabExpanded($parent.$index)" style="padding: 0px !important; font-weight:600;">
     
-    <!--                <span ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey]">
-                        <div style="width:100px" class="energy-content-cell">CCAI</div>
-                        <div style="width:100px" class="energy-content-cell">Computed Price</div>
-                        <div style="width:100px" class="energy-content-cell">Specific Energy</div>
-                        <div style="width:100px" class="energy-content-cell">Price per Specific Energy</div>
-                        <div style="width:100px" class="energy-content-cell">Price Diff</div>
-                        <div style="width:100px" class="energy-content-cell">TCO</div>
-                        <div style="width:50px" class="energy-content-cell icon"></div>
-                    </span> -->
-                </th>
+                   </th>
                 <th ng-repeat-end ng-hide="true"></th>
                 <!-- End Expanded request tab -->
             </tr>
@@ -345,16 +317,14 @@
     
                 <!-- Expanded request tab -->
                 <th ng-show="!$ctrl.isRequestTabExpanded($index)" class="left-border no-top-border border-selected-left"></th>
-                <!-- <th ng-show="$ctrl.counterpartyDetailsIsExpanded && !$ctrl.isRequestTabExpanded($index)" class="no-top-border border-selected-left"></th> -->
                 <th ng-show="!$ctrl.isRequestTabExpanded($index)" class="no-top-border border-selected-left" style="display: none">incoterm</th>
                 <th ng-show="!$ctrl.isRequestTabExpanded($index)" class="no-top-border border-selected-left" ng-class="{fakeHideColumn : $ctrl.totalColumnIsHidden == true}" ></th>
                 <th ng-repeat-start="productTop in requestProducts" class="negotiationProductTh" ng-show="!$ctrl.isRequestTabExpanded($parent.$index)" class="no-top-border">
                     <span ng-init="productTop.productLocations['L' + location[0].uniqueLocationIdentifier] ? product = productTop.productLocations['L' + location[0].uniqueLocationIdentifier] : ''">
-    <!--                 	***{{product.id}}*** -->
-                    <!-- <span ng-init="product = $ctrl.setProductData(productTop, location) "> -->
+
                     <span ng-if="product">
                         </span>
-                        <!-- {{location[0].uniqueLocationIdentifier}} -->
+
                         <span class="hidden">
                             {{maxQuantity = $ctrl.getProductMaxQuantityOnLocation(product, location)['qty']}}
                             {{maxQuantityUom = $ctrl.getProductMaxQuantityOnLocation(product, location)['uom']}}
@@ -375,10 +345,7 @@
     
                 <th ng-repeat-end ng-show="!$ctrl.isRequestTabExpanded($parent.$index)" style="padding: 0px !important; font-weight:600; border-top: none">
                     <span ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey]">
-                        <!-- <div style="width:100px" class="energy-content-cell"><span style="opacity:0">CCAI</span></div> -->
-                        <!-- <div style="width:100px" class="energy-content-cell"><span style="opacity:0">Computed Price</span></div> -->
-                        <!-- <div style="width:100px" class="energy-content-cell"><span style="opacity:0">Specific Energy</span></div> -->
-                        <!-- <div style="width:100px" class="energy-content-cell"><span style="opacity:0">Price Diff</span></div> -->
+
                         <div style="width:100px" class="energy-content-cell"><span style="opacity:0">Price Diff</span></div>
                         <div style="width:100px" class="energy-content-cell"><span style="opacity:0">Price Diff</span></div>
                         <div style="width:50px" class="energy-content-cell icon text-center"></div>
@@ -409,9 +376,7 @@
                             <span>Counterparty &nbsp;&nbsp;</span>
                             <div class="input-group">
                                 <input ng-disabled="!$ctrl.sellerTypesAreSelected" ng-model="$ctrl.newSeller[location.id]" placeholder="Add counterparty" uib-typeahead="seller as seller.name for seller in $ctrl.sellerAutocompleteList | filter:$viewValue | limitTo:10" class="form-control" typeahead-on-select="$ctrl.addSellerToLocations($ctrl.newSeller[location.id].id, location)" ng-click="$ctrl.setLookupInput(location);" typeahead-editable="false"  ng-keypress="$ctrl.keyPress()">
-                                <!-- <span class="input-group-addon {{$ctrl.sellerTypesAreSelected ? '' : 'disabled' }}"  data-toggle="modal" href="#sellers" ng-click="$ctrl.setLookupInput(location); $ctrl.supplierPlace = 'gorSeller'">
-                                    <i class="fa fa-search"></i>
-                                </span> -->
+
                                     
                                 <span ng-controller="Controller_Master as CM" class="input-group-addon {{$ctrl.sellerTypesAreSelected ? '' : 'disabled' }}" ng-click="$ctrl.newSellerLocation = location; $ctrl.setLookupInput(location); triggerModal('general', 'procurement_requestcounterpartytypes', 'counterparty', 'counterparty','','', '', $ctrl.sellerTypeIds)">
                                     <i class="fa fa-search"></i>
@@ -426,7 +391,7 @@
                 </th>
                 <td ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" colspan="{{$ctrl.isSellerHistoryExpanded ? 10 : 4}}" class="text-uppercase left-border border-selected-left"></td>
     
-    <!--  -->
+
     <!-- Collapsed request tab -->
                 <td ng-repeat-start="requestProducts in $ctrl.products track by $index"
                     ng-show="$ctrl.isRequestTabExpanded($index)"
@@ -460,8 +425,7 @@
                                     disabled
                                     st-date-format>
                         </b>
-                        <!-- <div class="input-group" style="max-width: 140px;">
-                        </div> -->
+
                     </div>
                 </td>
     
@@ -479,21 +443,13 @@
                         </span>
                     </span>
                 </td>
-    <!--             <td ng-show="!$ctrl.isRequestTabExpanded($parent.$index)" class="text-nowrap" style="min-width:100px">
-    
-                </td>
-                <td ng-show="!$ctrl.isRequestTabExpanded($parent.$index)">
-    
-                </td>
-                <td ng-show="!$ctrl.isRequestTabExpanded($parent.$index)" class="table-amount">
-    
-                </td> -->
+
                 <td ng-repeat-end ng-show="!$ctrl.isRequestTabExpanded($parent.$index)" style="padding: 0px !important;">
     
                 </td>
                 <td ng-repeat-end ng-hide="true"></td>
                 <!-- End expanded request tab -->
-    <!--  -->
+
     
             </tr>
     
@@ -504,19 +460,12 @@
                 class="bg-white {{seller.packageType == 'seller' ? 'pkgSellerRow' : '' }} {{seller.packageType == 'buyer' ? 'pkgBuyerRow' : '' }} "
                 >
                 <td style="text-align: center;">
-                    <!-- {{seller.packageType}} -->
-<!--                     {{seller.randUniquePkg}} * 
-                    {{location[0].uniqueLocationIdentifier}} -->
-                    <!-- *{{seller.selected}}* -->
+
                     <span class="hidden">{{ seller.shouldBeVisible = $ctrl.calculateSellerIsVisible(key, seller, location) }}</span>
-                    <!-- <span class="hidden">{{ seller.hasRevokedRFQs = $ctrl.checkIfHasRevokedRFQs(seller, location) }}</span> -->
-                    <!-- {{seller.hasRevokedRFQs}} -->
-    
+
                     <span ng-if="seller.packageType != 'seller' && seller.packageType != 'buyer' ">
                         <span>&nbsp;</span>
-                        <!-- <a class="st-btn-icon" ng-if="!seller.hasRevokedRFQs" ng-click="$ctrl.removeSellerFromLocation(seller, location); $ctrl.removeSellerRevokedRFQsFromLocation(seller, location)"
-                        ng-class="{'disabled' : !seller.isCloned}"><i class="fa fa-minus"></i></a> -->
-                        <!-- !$ctrl.canDeleteSeller(seller, location) &&  -->
+
                     </span>
     
     				<div style="display: flex;align-items: center;justify-content: space-around;font-size: 14px;height: 100%;margin-top: -10px;">
@@ -527,10 +476,7 @@
 							<b>-</b>
 						</a>
     				</div>
-    <!--                 {{seller.packageType}} -
-                    {{seller.hasRevokedRFQs}} -
-                    {{$ctrl.canDeleteSeller(seller, location)}} -
-                    {{seller.isCloned}} -->
+
     
                     <span class="hidden">
                         {{sellerDetails = $ctrl.sellers[seller.sellerCounterparty.id]}}
@@ -539,7 +485,7 @@
                 </td>
                 <td>
                     <label class="mt-checkbox mt-checkbox-outline" ng-if="seller.packageType == 'individual' ">
-                    	<!-- {{location[0].id}} + {{seller.randUniquePkg}} -->
+
                         <input  type="checkbox" ng-checked="$ctrl.hasCounterpartyAllRowRequirements(seller.sellerCounterparty.id, location, seller, location[0].uniqueLocationIdentifier, seller.randUniquePkg)"
                             ng-click="$ctrl.createSellerRequirements(seller, location, $event, location[0].uniqueLocationIdentifier, seller.randUniquePkg, $event)" uniqueLocationIdentifier="{{location[0].uniqueLocationIdentifier}}"/>
                         <span style="left: 6px;"></span>
@@ -549,9 +495,8 @@
                         <input  type="checkbox" ng-checked="$ctrl.hasPackageRequirement(seller)" uniqueLocationIdentifier="{{location[0].uniqueLocationIdentifier}}"
                             ng-click="$ctrl.hasPackageRequirement(seller) ? $ctrl.removePackageRequirements(seller, location, productOffer.packageId) : $ctrl.createSellerRequirementsForProductPackage(seller, location)" />
                         <span style="left: 6px;"></span>
-                        <!-- $ctrl.removePackageRequirements(seller, location, productOffer.packageId) : $ctrl.createSellerRequirementsForProductPackage(seller, location) -->
                     </label>
-                    <!-- {{seller.sellerCounterparty.id}}-{{ seller.offers[0].physicalSupplierCounterparty.id}} * {{seller.randUnique}} -->
+
     
                 </td>
                 <td style="max-width:160px; min-width: 160px;">
@@ -563,9 +508,7 @@
                     </div>
                 </td>
                 <td style="position: relative;">
-                	<!-- ng-show="$ctrl.counterpartyDetailsIsExpanded" -->
-                    <div class="input-group physicalSupplier" style="min-width:200px; padding-top: 1px; display: inline-block; float: none; {{$ctrl.packagesConfigurationEnabled && (seller.packageType == 'buyer' || seller.packageType == 'seller') ? 'margin-right: 30px;' : '';}}" ng-if="!$ctrl.fieldVisibility.isPhysicalSupplierHidden" ng-click="$ctrl.checkIfPhysicalSupplierChanged(seller.offers[0].physicalSupplierCounterparty, seller)" >
-                     <!-- ng-show="seller.isCloned" ng-hide="seller.randUnique.indexOf('null') > 0" -->
+                	<div class="input-group physicalSupplier" style="min-width:200px; padding-top: 1px; display: inline-block; float: none; {{$ctrl.packagesConfigurationEnabled && (seller.packageType == 'buyer' || seller.packageType == 'seller') ? 'margin-right: 30px;' : '';}}" ng-if="!$ctrl.fieldVisibility.isPhysicalSupplierHidden" ng-click="$ctrl.checkIfPhysicalSupplierChanged(seller.offers[0].physicalSupplierCounterparty, seller)" >
                         <span ng-init="seller.oldPhysicalSupplier = seller.offers[0].physicalSupplierCounterparty"></span>
                         <input ng-model="seller.offers[0].physicalSupplierCounterparty"
                         class="form-control"
@@ -577,21 +520,7 @@
                         ng-disabled="$ctrl.disablePhysicalSupplierLookup"
                         style="width: calc(100% - 40px);" 
                         ng-keypress="$ctrl.keyPress()" >
-                        <!-- {{seller.offers[0].physicalSupplierCounterparty}} -->
-                        <!-- typeahead-on-select="$ctrl.updatePhysicalSupplierForSellers(seller, seller.offers[0].physicalSupplierCounterparty, location)" -->
-    
-    
-    
-                        <!--  this was prev ph supplier modal used -->
-                        <!-- <span class="input-group-addon" style="line-height: 20px;" ng-show="!$ctrl.disablePhysicalSupplierLookup;" data-toggle="modal" href="#sellers" ng-click="$ctrl.physicalSupplierOpenModalData = {'seller':seller, 'location': location}; $ctrl.supplierPlace = 'supplier'">
-                            <i class="fa fa-search"></i>
-                        </span> -->
-                        <!-- end here -->
-    
-    
-                        <!-- <span class="input-group-addon" data-toggle="modal" href="#suppliers" ng-click="$ctrl.physicalSupplierOpenModalData = {'seller':seller, 'location': location}">
-                            <i class="fa fa-search"></i>
-                        </span> -->
+
     
                         <!--  new phy supplier modal -->
                         <span ng-controller="Controller_Master as CM"  ng-show="!$ctrl.disablePhysicalSupplierLookup;"  class="input-group-addon" style="line-height: 20px;" ng-click="$ctrl.setLookupInput(null); seller.oldPhysicalSupplier = seller.offers[0].physicalSupplierCounterparty; $ctrl.physicalSupplierUpdate = {'sellerKey': key, 'location': location}; $ctrl.setLookupInput(location); triggerModal('general', 'procurement_requestcounterpartytypes', 'physical_supplier', 'physical_supplier','','', '', [1])">
@@ -600,7 +529,7 @@
                         <!-- end new phy supplier modal-->
                     </div>
     
-                        <!-- ng-blur="$ctrl.updateBrokerForSellers(seller, seller.offers[0].brokerCounterparty, location)" -->
+
                     <div class="input-group" style="min-width:250px; padding-top: 1px; display: inline-block; float: none; {{$ctrl.packagesConfigurationEnabled && (seller.packageType == 'buyer' || seller.packageType == 'seller') ? 'margin-right: 30px;' : '';}}" ng-if="!$ctrl.fieldVisibility.isBrokerHidden" ng-show="$ctrl.counterpartyDetailsIsExpanded">
                         <span ng-init="seller.oldBroker = seller.offers[0].brokerCounterparty"></span>
                         <input ng-model="seller.offers[0].brokerCounterparty"
@@ -614,9 +543,7 @@
                         style="width: calc(100% - 40px);">
      
     
-                        <!-- <span class="input-group-addon" style="line-height: 20px;" ng-class="{'disabled': !seller.id}" data-toggle="modal" href="#sellers" ng-click="$ctrl.physicalSupplierOpenModalData = {'seller':seller, 'location': location}; $ctrl.supplierPlace = 'broker' ">
-                            <i class="fa fa-search"></i>
-                        </span> -->
+
     
                          <!--  new broker modal -->
                          <span ng-controller="Controller_Master as CM"  ng-class="{'disabled': !seller.id}"  class="input-group-addon" style="line-height: 20px;" ng-click="$ctrl.setLookupInput(null); seller.oldBroker = seller.offers[0].brokerCounterparty; $ctrl.brokerUpdate = {'sellerKey': key, 'location': location}; $ctrl.setLookupInput(location); triggerModal('general', 'procurement_requestcounterpartytypes', 'broker', 'broker','','', '', [3])">
@@ -641,21 +568,19 @@
                         </span>
     
                           <!--  new contact modal -->
-                          <!-- <span ng-controller="Controller_Master as CM"  ng-class="{'disabled': $ctrl.disableContactLookup}"  class="input-group-addon" style="line-height: 20px;" ng-click="$ctrl.setLookupInput(null); seller.oldContact = seller.offers[0].contactCounterparty; $ctrl.contactUpdate = {'sellerKey': key, 'location': location}; $ctrl.setLookupInput(location); triggerModal('general', 'procurement_contact', 'contact', 'contact','','', '', seller.id)">
-                            <i class="fa fa-search"></i>
-                        </span> -->
+
                         <!-- end contact modal-->
                     </div>
     
                     <span class="rowOfferInfo" ng-if="$ctrl.packagesConfigurationEnabled">
-                        <!-- <span ng-if="seller.packageType == 'individual' ">I</span> -->
+
                         <span ng-if="seller.packageType == 'buyer' ">O</span>
                         <span ng-if="seller.packageType == 'seller' ">P{{$ctrl.countUniqueVessels(seller.randUniquePkg)}}</span>
                     </span>
     
                 </td>
                 <td class="text-center" style="max-width: 65px">
-                    <!-- tooltip tooltiptrigger="hover" data-placement="top" data-original-title="{{seller.isNotInterested == true ? seller.notInterestedComments : ''}}" -->
+
                     <span class="{{seller.id ? '' : 'font-default'}}"  style="font-size: 15px; position:relative; color: #2f353b; cursor: pointer" ng-click="seller.id ? $ctrl.openSellerInterstedModal(seller, location) : '' " ng-mouseover="tooltip['seller.id'] = true; $ctrl.calculateTooltipPosition($event);" ng-mouseleave="tooltip['seller.id'] = false;">
                         <i class="fa fa-ban" style="position: absolute;left: -2px;font-size: 29px;top: 3px; opacity:0.9" ng-if="seller.isNotInterested == true"></i>
                         <i class="fa fa-user"></i>
@@ -677,10 +602,10 @@
                     </div>
                 </td>
                 <td style="text-align: center;">
-                    <!-- {{location}} -->
+
                     <i style="margin-right: 8px;" class="glyphicon glyphicon-envelope clickable {{ $ctrl.checkIfSellerHasRFQ(seller.randUniquePkg, location) }}" ng-click="$ctrl.previewEmail(seller, location)" ></i>
                
-                        <!-- ng-show="!seller.isCloned"  -->
+
                     <i class="fa fa-refresh clickable" data-toggle="modal" href="#requote"
                         ng-class="{'font-grey' : !$ctrl.hasSellerRequirements(seller.sellerCounterparty.id, location, seller)}"
                         ng-click="$ctrl.hasSellerRequirements(seller.sellerCounterparty.id, location, seller) ? $ctrl.viewRequote(seller, location, true) : '' "
@@ -693,7 +618,6 @@
     
                     
                 <td ng-if="$ctrl.counterpartyCommentsVisibility == 1" ng-show="$ctrl.allExpanded" style="padding:0 !important">
-                    <!-- <div class="pull-left energy-content-cell" style="width:100px; height: 100%; height: 100%;">{{seller.generalSellerStatus}}</div> -->
 
                     <div ng-mouseover="generalSellerStatustooltip['seller.id'] = true; $ctrl.setWidthTooltip(seller)" ng-mouseout="generalSellerStatustooltip['seller.id'] = false" class="pull-left energy-content-cell" style="position:relative; width:100px; height: 100%;overflow:visible;">
                     	<span style="max-width: 100%; overflow: hidden;display: block; text-overflow: ellipsis;">{{seller.generalSellerStatus}}</span>
@@ -712,10 +636,7 @@
                     	<span style="max-width: 100%; overflow: hidden;display: block; text-overflow: ellipsis;">{{seller.portSellerComment}}</span>
 						<span class="groupOfRequestTableTooltip" ng-show="portSellerCommenttooltip['seller.id'] && seller.portSellerComment">{{seller.portSellerComment}}</span>
                     </div>                    
-                    <!-- <div ng-mouseover="portSellerCommenttooltip['seller.id'] = true" ng-mouseout="portSellerCommenttooltip['seller.id'] = false" tooltip-trigger="click" data-original-title="{{seller.portSellerComment}}" class="pull-left energy-content-cell" style="position:relative; width:100px; height: 100%; height: 100%;overflow:visible; border-right: none">
-                    	<span style="max-width: 100%; overflow: hidden;">{{seller.portSellerComment}}</span>
-                    						<span class="groupOfRequestTableTooltip" ng-show="portSellerCommenttooltip['seller.id'] && seller.portSellerComment">{{seller.portSellerComment}}</span>
-                    </div> -->
+
                 </td>
                 <!-- collapsed history tab -->
              
@@ -754,8 +675,7 @@
                 <!-- average drop value -->
                 <td ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" ng-class="{'bg-baby-blue-light': $index % 2 != 0, 'bg-baby-blue-dark': $index % 2 == 0}" title="averageDropValue">{{sellerDetails.averageDropValue}}</td>
     
-                <!-- <td ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" ><span ng-init="term = $ctrl.getOfferPaymentTerm(seller)">{{term.name}}</span> </td> -->
-    
+
                     <!-- win rate-->
                 <td ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" ng-class="{'bg-baby-blue-light': $index % 2 != 0, 'bg-baby-blue-dark': $index % 2 == 0}" title="winRate12mValue">{{sellerDetails.winRate12mValue}}</td>
     
@@ -763,9 +683,9 @@
                
     
                 <td ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" ng-class="{'bg-baby-blue-light': $index % 2 != 0, 'bg-baby-blue-dark': $index % 2 == 0}" title="sellerPaymentTerm" colspan="3">
-                    <!-- {{sellerDetails.creditPeriodValue}} -->
+
                     {{sellerDetails.sellerPaymentTerm}}
-                    <!-- {{sellerDetails}} -->
+
                 </td>
                 <!-- end expanded history tab -->
     
@@ -780,9 +700,9 @@
                     <span ng-if="seller.isCloned">-</span>
                     <span ng-if="!seller.isCloned">
                         <span class="hidden">
-                            <!-- {{total = $ctrl.getSellerProductTotalOnLocation(requestProducts, location, seller.sellerCounterparty.id)}} -->
+
                             {{seller.totalAmountInRequest = $ctrl.calculateTotalAmountForProductsPerRequestperSeller(requestProducts, location, seller)}}
-                           <!-- {{total = $ctrl.calculateTotalAmountForProductsPerRequestperSeller(requestProducts, location, seller) }} -->
+
                         </span>
                             {{ seller.totalAmountInRequest > 0 ? (seller.totalAmountInRequest | number : $ctrl.numberPrecision.amountPrecision) : "-" }}
     
@@ -803,31 +723,22 @@
 
 
 						<span class="groupOfRequestTableTooltip" ng-show="tooltip[seller.id + '-' + location[0].uniqueLocationIdentifier + '-' + location[0].requestId]">{{$ctrl.getRequestComment(requestProducts, product, location, seller.sellerCounterparty.id, seller)}}</span>
-    <!-- {{tooltip[seller.id + '-' + location[0].uniqueLocationIdentifier + '-' + location[0].requestId]}} -->
+
                         <a ng-click="$ctrl.viewSupplierCardBlade(seller, location, requestProducts); $ctrl.supplierCardActiveRequestId = requestProducts[0].requestId" ng-show="$ctrl.getRequestComment(requestProducts, product, location, seller.sellerCounterparty.id, seller)" class="font-dark" ng-mouseover="tooltip[seller.id + '-' + location[0].uniqueLocationIdentifier + '-' + location[0].requestId] = true" ng-mouseout="tooltip[seller.id + '-' + location[0].uniqueLocationIdentifier + '-' + location[0].requestId] = false" data-original-title="{{$ctrl.getRequestComment(requestProducts, product, location, seller.sellerCounterparty.id, seller)}}">
                             <b>
                                 <i class="fa fa-clone" style="color: #e8a404;text-shadow: 1px 1px 0px;font-weight: bold;"></i>
                             </b>
                         </a>
-    <!--
-                        &nbsp;&nbsp;
-                        <i ng-show="$ctrl.getRequestComment(requestProducts[0].requestId)" class="fa fa-comment-o" tooltip tooltiptrigger="hover" data-placement="top" data-original-title="{{$ctrl.getRequestComment(requestProducts[0].requestId)}}" >
-                        </i> -->
+
                     </span>&nbsp;&nbsp;
                 </td>
-                <!-- <td ng-show="$ctrl.counterpartyDetailsIsExpanded && !$ctrl.isRequestTabExpanded($index)" class="border-selected-left">
-                <td ng-show="!$ctrl.isRequestTabExpanded($index)" class="border-selected-left">
-                    <span ng-init="validity = $ctrl.calculateMinValidity(seller, requestProducts, location)"></span>
-                  {{validity}}
-                    <span ng-init="count = $ctrl.countdown(validity)">{{$ctrl.validityArray[count].displayString}}</span>
-                </td> -->
+
                 <td ng-show="!$ctrl.isRequestTabExpanded($index)" class="border-selected-left" style="display: none">
                     <!-- ??Terms?? -->
-                    <!-- <span ng-init="term = $ctrl.getOfferPaymentTerm(seller)">{{term.name}}</span> -->
+
                     <div class="input-group" style="min-width:180px; display: inline-block; float: none;">
                         <span ng-init="incoterm = $ctrl.getIncoterm(requestProducts[0].requestId, location, seller)"></span>
-                        <!-- <pre>{{incoterm}}</pre> -->
-                        <!-- {{incoterm}} -->
+
                         <select ng-options="defaultIncoterm as defaultIncoterm.name for defaultIncoterm in $ctrl.lists.Incoterm track by defaultIncoterm.id" class="select form-control" ng-model="incoterm.incoterm" title="{{incoterm.incoterm.id}}" ng-change="$ctrl.updateIncoterm(incoterm.incoterm, location, seller, requestProducts[0].requestId)" ng-disabled="incoterm.hasSellerOffer == 0"></select>
                     </div>
                 </td>
@@ -855,38 +766,18 @@
                             {{productStatus = $ctrl.getSellerProductStatusOnLocation(product, location, seller)}}
                             {{requestStatus = $ctrl.getSellerRequestStatusOnLocation(product, location, seller)}}
                         </span>
-                        <!-- ///---{{requestStatus}} -->
-                        <!-- {{productOffer.id}} -->
-                        <!-- **{{productOffer.requestSellerId}}** -->
-                            <!-- {{productOffer.id}} <br> -->
+
                             <span class="hidden">
                                 {{productOffer.id ? seller.isCloned = false : ''}}
                         </span>
                             <form class="form-inline" style="position: relative; width: 100%;">
-                            	<!-- {{$ctrl.checkIfIsPrefferedProductForSeller(product.product.id, seller) ? "TRUE" : "FALSE"}} -->
-                                <div class="form-group GORpriceCheckbox {{$ctrl.checkIfIsPrefferedProductForSeller(product.product.id, seller) ? 'isPreferredProduct' : 'isNotPreferredProduct' }} {{productOffer.id ? 'hasOffer' : '' }} " ng-mouseover="quotedProductTooltip['productOffer.id'] = true" ng-mouseout="quotedProductTooltip['productOffer.id'] = false" style="width: 100%; height: 34px; position: absolute; top: -16px;display: flex;align-items:center; justify-content: start; flex-direction: row;">
-                                    <!-- {{!productAvailable}} * {{productStatus}} *  {{productOffer.hasNoQuote}} * {{!productStatus}} * {{productOffer}} * -->
-                                    <!-- individual action -->
-                                    <!-- {{ $ctrl.sellerShouldBeCheckedOnInit(location[0].location.id, product.id, seller.sellerCounterparty.id) }} * -->
-                                    
-                                    <!-- old validations -->
-                                    <!-- {{(['Quoted', 'Stemmed'].indexOf(requestStatus) == - 1)}} * -->
-                                    <!-- old validations -->
 
-                                    <!-- {{location[0].location.id}} - {{product.id}} - {{seller.sellerCounterparty.id}} -->
-                                    <!-- ** {{seller.randUniquePkg}} -->
-                                    <!-- {{requestStatus}} -->
-                                    <!-- {{location[0].uniqueLocationIdentifier}}-{{seller.randUniquePkg}} -->
+                                <div class="form-group GORpriceCheckbox {{$ctrl.checkIfIsPrefferedProductForSeller(product.product.id, seller) ? 'isPreferredProduct' : 'isNotPreferredProduct' }} {{productOffer.id ? 'hasOffer' : '' }} " ng-mouseover="quotedProductTooltip['productOffer.id'] = true" ng-mouseout="quotedProductTooltip['productOffer.id'] = false" style="width: 100%; height: 34px; position: absolute; top: -16px;display: flex;align-items:center; justify-content: start; flex-direction: row;">
+
                                     <span ng-if="$ctrl.resetSellerInitChecks" ng-init="($ctrl.sellerShouldBeCheckedOnInit(location[0].location.id, product.id, seller.sellerCounterparty.id, seller.randUniquePkg, location[0].uniqueLocationIdentifier)) ? $ctrl.createSellerRequirementsForProduct(seller, location, product, location[0].uniqueLocationIdentifier, seller.randUniquePkg) : ''" class="hidden"></span>
-                                    <!-- --{{$ctrl.resetSellerInitChecks}}** -->
-                                    <!-- {{location[0].location.id +"-"+ product.id +"-"+ seller.sellerCounterparty.id}}  *  -->
-                                    <!-- {{seller.randUniquePkg + " - " + location[0].uniqueLocationIdentifier}} -->
-	                                <!-- {{$ctrl.sellerShouldBeCheckedOnInit(location[0].location.id, product.id, seller.sellerCounterparty.id, seller.randUniquePkg, location[0].uniqueLocationIdentifier)}} -->
-                                    <!-- ***{{!productAvailable || productStatus == 'Stemmed' || productOffer.hasNoQuote}} -->
-                                    <!-- ++{{$ctrl.hasSellerProductRequirements(seller, location, seller.offers[0].physicalSupplierCounterparty.id, product, productOffer)}} -->
+
 									<span ng-if="!$ctrl.prefferedSellerCheckbox" ng-init="($ctrl.sellerShouldBeCheckedOnInit(location[0].location.id, product.id, seller.sellerCounterparty.id, seller.randUniquePkg, location[0].uniqueLocationIdentifier)) ? $ctrl.createSellerRequirementsForProduct(seller, location, product, location[0].uniqueLocationIdentifier, seller.randUniquePkg) : '' "></span>
                                     <label style="margin-left:5px" class="mt-checkbox mt-checkbox-outline pull-left" ng-hide="!productAvailable || productStatus == 'Stemmed' || productOffer.hasNoQuote" ng-if="seller.packageType == 'individual' ">
-                                        <!-- {{!productAvailable}}..{{productStatus == 'Stemmed'}}**{{productOffer.hasNoQuote}}++{{!productStatus}} --> 
                                         <input unique-row-identifier="{{seller.randUniquePkg}}-{{location[0].uniqueLocationIdentifier}}" type="checkbox" ng-disabled="!productAvailable || productStatus == 'Stemmed' || productOffer.hasNoQuote" class="checkSlr"ng-checked="$ctrl.hasSellerProductRequirements(seller, location, seller.offers[0].physicalSupplierCounterparty.id, product, productOffer)"
                                         ng-click="$ctrl.createSellerRequirementsForProduct(seller, location, product, location[0].uniqueLocationIdentifier, seller.randUniquePkg, $event)"/>
                                         <span style="height: 23px;width: 23px; top: -1px"></span>
@@ -917,29 +808,14 @@
     
                 <td ng-repeat-end ng-show="!$ctrl.isRequestTabExpanded($parent.$index)" ng-attr-style="padding: 0px !important; {{!productOffer.id && !seller.isCloned && seller.packageId ? 'opacity: 0.5' : '';}};"  >
                     <span ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+pkey]">
-                        <!-- <div style="width:100px" class="energy-content-cell">
-                            {{productOffer.energyParameterValues.ccai == 'NaN' || !productOffer.energyParameterValues.ccai ? '-' : (productOffer.energyParameterValues.ccai | number : $ctrl.numberPrecision.amountPrecision )}}
-                        </div> -->
-                        <!-- <div style="width:100px" class="energy-content-cell computedPrice">
-                            {{productOffer.energyParameterValues.computedPrice ? (productOffer.energyParameterValues.computedPrice | number : $ctrl.numberPrecision.amountPrecision ) : "-"}}
-                        </div> -->
-                        <!-- <div style="width:100px" class="energy-content-cell specificEnergy">
-                            {{productOffer.energyParameterValues.specificEnergy ? (productOffer.energyParameterValues.specificEnergy | number : $ctrl.numberPrecision.amountPrecision ) : "-"}}
-                        </div> -->
-                        <!-- <div style="width:100px" class="energy-content-cell pricePerSpecificEnergy">
-                            {{productOffer.energyParameterValues.pricePerSpecificEnergy ? ( productOffer.energyParameterValues.pricePerSpecificEnergy | number : $ctrl.numberPrecision.amountPrecision) : '-'}}
-                        </div> -->
+
                         <div style="width:100px" class="energy-content-cell priceGap">
                             {{productOffer.energyParameterValues.priceGap ? ( productOffer.energyParameterValues.priceGap  | number : $ctrl.numberPrecision.amountPrecision ): '-'}}
                         </div>
                         <div style="width:100px" class="energy-content-cell tco {{ ($ctrl.isMinimumAmountOrTco(productOffer) && productOffer.totalAmount && productOffer.energyParameterValues.tco) ? 'bg-green-jungle' : '' }}">
                             {{productOffer.energyParameterValues.tco ? (productOffer.energyParameterValues.tco | number : $ctrl.numberPrecision.amountPrecision) : '-'}}
                         </div>
-<!--                         <div style="width:50px" class="energy-content-cell icon text-center">
-                            <span ng-show="productOffer.id && !seller.isCloned && product.isEnergyCalculationRequired" >
-                                <a href="" ng-click="$ctrl.viewEnergyContentBlade(seller, location, requestProducts, productOffer);$ctrl.getSellerOffers(seller, location);"><i class="fa fa-table font-dark"></i></a>
-                            </span>
-                        </div> -->
+
                     </span>
                     <span ng-show="$ctrl.priceExpanded['prod'+product.requestId+pkey] || $ctrl.isEnergyCalculationRequired">
                         <div style="width:100px;" class="energy-content-cell" ng-if="$ctrl.displayAdditionalCostColumn">
@@ -952,8 +828,7 @@
                         </div>                    
                         <div style="width:100px" class="energy-content-cell ">
                             <!-- amount -->
-                            <!-- {{$ctrl.negotiationDisplayDecimal}} -->
-                            <!-- {{productOffer.totalAmount}} -->
+
 	                        <span ng-if="$ctrl.negotiationDisplayDecimal">
 	                            {{( (!productOffer.totalAmount) ? (0 | number : $ctrl.numberPrecision.amountPrecision) : (productOffer.totalAmount | number : $ctrl.numberPrecision.amountPrecision))}}
 	                        </span>

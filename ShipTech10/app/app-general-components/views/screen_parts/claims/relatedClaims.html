@@ -1,6 +1,6 @@
 <div class="row" ng-controller="Controller_Claims as CC">
 
-	<!-- <span ng-if=""></span> -->
+
 	<span  ng-if="formValues.orderDetails.order.id" ng-init="CC.getRelatedClaims(formValues.orderDetails.order.id)"></span>
 
 	<div class="pull-left related-entity-item" ng-if="!CC.relatedClaims || CC.relatedClaims.length == 0">

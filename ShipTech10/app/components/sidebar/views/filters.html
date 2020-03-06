@@ -1,7 +1,5 @@
 <div class="page-quick-sidebar-chat-user sidebar-filters">
-  
-    <!-- <pre>  {{globalFilters}}</pre> -->
-   <!-- ng-if="!$ctrl.isSellerPortal" -->
+
     <div class="row">
         <div class="left col-xs-12">
             <span class="caption-subject filters_configuration" ng-init="getFiltersConfigurations(); getDefaultFiltersConfiguration()" ng-if="!$ctrl.isSellerPortal" >
@@ -10,7 +8,6 @@
         </div>
         <div class="left col-xs-6">
             <div class="form_input">
-                <!-- <pre></pre> -->
                 <select  tabindex="-1" ng-model="selectedConfig" class="form-control bs-select" name="configurations_list" id="configurations_list" ng-options="item as item.name for item in filtersConfigurations track by item.id" ng-change="loadSelectedConfig(false);"></select>
             </div>
         </div>
@@ -25,26 +22,7 @@
                     </span>
                 </div>
 
-                <!-- dynamic-pattern="{{ globalFilters[key].column.columnType }}" -->
 
-
-                <!-- <div class="right col-md-6">
-                    <div class="form_input">
-                        <select ng-model="filterTemplates" class="form-control bs-select" name="filterTemplates" id="filterTemplates" ng-options="item as item.name for item in $ctrl.filterTemplates track by item.id" ng-change="globalFilters = filterTemplates.data" ng-hide="true"></select>
-                    </div>
-                    <br/>
-                    <div class="btn_group">
-                        <a  class="btn btn-default  btn-outline mt-ladda-btn ladda-button orange" ng-click="applyFilters(globalFilters);">
-                            Apply
-                        </a>
-                        <a  class="btn btn-default btn-default" ng-click="clearFilters();">
-                            Clear
-                        </a>
-                        <a  class="btn btn-default btn-default" ng-hide="true">
-                            Save
-                        </a>
-                    </div>
-                </div> -->
             </div>
             <div class="right-menu-content">
                 <span class="caption-subject">
@@ -57,9 +35,7 @@
                             <!-- parameter -->
                             <div class="col-sm-4">
                                 <div class="form_input">
-                                    <!-- ng-options="item as item.columnName disable when (item.columnRoute == 'schedule-dashboard-calendar' && item.columnName == 'Port Status') for item in currentColumns track by item.columnValue" -->
-                                    <!-- ng-disabled="value.column.columnRoute == 'schedule-dashboard-calendar' && value.column.columnName == 'Port Status'" -->
-                                    <select tabindex="-1" ng-model="globalFilters[key].column" class="form-control bs-select" name="rule_{{ key }}_parameter" id="rule_{{ key }}_parameter" ng-options="item as item.columnName for item in currentColumns track by item.columnValue" required ng-change="(value.column.columnRoute == 'schedule-dashboard-calendar' && value.column.columnName == 'Port Status') ? clearCurrentLine(key,'column') : return;" ></select>
+                                   <select tabindex="-1" ng-model="globalFilters[key].column" class="form-control bs-select" name="rule_{{ key }}_parameter" id="rule_{{ key }}_parameter" ng-options="item as item.columnName for item in currentColumns track by item.columnValue" required ng-change="(value.column.columnRoute == 'schedule-dashboard-calendar' && value.column.columnName == 'Port Status') ? clearCurrentLine(key,'column') : return;" ></select>
                                     <div class="hidden">
                                         {{value.column.columnName == 'Port Status' ? globalFilters[key].condition.conditionValue = '=' : ''}}
                                     </div>
@@ -75,12 +51,10 @@
                                     ? renderColumnType = 'Number' 
                                     : renderColumnType = globalFilters[key].column.columnType}}
                                     </span>
-                                    <!-- || (value.column.columnRoute == 'schedule-dashboard-calendar' && value.column.columnName == 'Port Status') -->
                                     <select tabindex="-1" ng-model="globalFilters[key].condition" class="form-control bs-select" name="rule_{{ key }}_condition" id="rule_{{ key }}_condition" ng-options="item as item.conditionName for item in (conditions | filter:{conditionApplicable:renderColumnType}) track by item.conditionValue " ng-disabled="!globalFilters[key].column || value.column.columnName == 'Port Status'" required ng-change="clearCurrentLine(key,'condition');"></select>
                                 </div>
                             </div>
-                            <!-- {{$ctrl.filter_conditions }} -->
-                            <!-- value -->
+                           <!-- value -->
                             <div ng-class="globalFilters[key].column.columnType == 'Date' ? 'col-sm-12' : 'col-sm-4'">
                                 <div class="form_input">
                                     <span ng-switch="globalFilters[key].condition.conditionNrOfValues">
@@ -120,7 +94,6 @@
                                         </span>
                                         <span ng-switch-when="1">
                                             <div class="form_input no-label">
-                                                <!-- ng-disabled="value.column.columnRoute == 'schedule-dashboard-calendar' && value.column.columnName == 'Request Product Status'" -->
                                                 <div ng-if="globalFilters[key].column.columnType != 'Date'">
 
                                                     <input tabindex="-1" type="text" id="filter{{ key }}_{{ globalFilters[key].column.columnType }}0" class="form-control" ng-model="globalFilters[key].value[0]" name="condition_value_{{ key }}" id="condition_value_{{ key }}" required  format="{{globalFilters[key].column.columnType == 'Number' ? 'number:3' : ''}}" />
@@ -190,7 +163,7 @@
                 <span>Configuration Actions</span>
             </div>
             <div class="configuration_name">
-                <!-- <span ng-if="selectedConfiguration.id ==" -->
+
                 <label for="configuration_name"> Configuration Name </label>
                 <input  tabindex="-1" type="text" id="configuration_name" class="form-control " ng-model="selectedConfig.name" name="configuration_name"  ng-required="true"/>
             </div>
@@ -215,11 +188,4 @@
     </div>
 </div>
 
-
-<!-- <pre>
-    {{ globalFilters }}
-</pre>
- -->
-
-<!--  <pre style="margin-top: 30px"> {{selectedConfig}} </pre> -->
 

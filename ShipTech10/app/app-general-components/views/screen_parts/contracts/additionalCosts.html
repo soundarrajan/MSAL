@@ -1,106 +1,4 @@
-﻿<!-- <div class="custom-hardcoded-table additional-costs" >
-    <table  class="table-body" width="100%">
-        <thead>
-            <tr>
-                <td  style="min-width: 50px" ></td>
-                <td  style="min-width: 50px" >
-                    <span class="insert" ng-click="formValues.products[index_0].additionalCosts.push({'id':0})"></span>
-                </td>
-                <td  style="min-width: 100px" >
-                    <b>
-                        Type
-                    </b>
-                </td>
-                <td  style="min-width: 150px" >
-                    <b>
-                        Item Name
-                    </b>
-                </td>
-                <td  style="min-width: 100px" >
-                    <b>
-                        Amount
-                    </b>
-                </td>
-                <td  style="max-width: 100px" >
-                    <b>
-                        Currency
-                    </b>
-                </td>
-                <td  style="max-width: 100px" >
-                    <b>
-                        Price UOM
-                    </b>
-                </td>
-                <td  style="min-width: 75px" >
-                    <b>
-                        Extra%
-                    </b>
-                </td>
-                <td  style="min-width: 250px" >
-                    <b>
-                        Comment
-                    </b>
-                </td>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="(key, value) in formValues.products[index_0].additionalCosts" ng-if="value.isDeleted != true">
-                <td  class="action">
-                    <span class="remove" ng-click="CM.softDelete(formValues.products[index_0].additionalCosts, key)" style="opacity:1; pointer-events: initial"></span>
-                </td>
-                <td  class="action">
-                    <span class="insert" ng-click="formValues.products[index_0].additionalCosts.push({'id':0})"></span>
-                </td>
-                <td>
-                    <div class=" " ng-controller="Controller_Master as CM" ng-init='options.CostType ? return : CM.getOptions({"Name": "CostType", "Type": "simpleLookup", "masterSource": "CostType"});'>
-                        <select name="Product_{{ index_0+1 }}_Additional_Costs_{{ key+1 }}_Item_Name" class="form-control bs-select changeIT" ng-class="'colt' + col.uid" ng-options="item as item.name for item in options.CostType track by item.id" ng-model="value.costType" data-container="body">
-                            <option></option>
-                        </select>
-                    </div>
-                </td>
-                <td>
-                    <div class=" " ng-init='options.AdditionalCost ? return : CM.getOptions({"Name": "AdditionalCost", "Type": "simpleLookup", "masterSource": "AdditionalCost"});'>
-                        <select name="Product_{{ index_0+1 }}_Additional_Costs_{{ key+1 }}_Item_Name" class="form-control bs-select changeIT" ng-class="'colt' + col.uid" ng-options="item as item.name for item in options.AdditionalCost track by item.id" ng-model="value.additionalCost"  data-container="body" ng-change="getDefaultCostType(index_0, key, value.additionalCost)">
-                            <option></option>
-                        </select>
-                    </div>
-                </td>
-                <td>
-                    <input name="Product_{{ index_0+1 }}_Additional_Costs_{{ key+1 }}_Amount" type="text" class="form-control " ng-model="value.amount" format="number"/>
-                </td>
-                <td>
-                    <div class="input-group " ng-init='options.Currency ? return : CM.getOptions({"Name": "Currency", "Type": "simpleLookup", "masterSource": "Currency"});'>
-                        <input ng-model="value.currency"  ng-class="'colt' + col.uid"  name="Product_{{ index_0+1 }}_Additional_Costs_{{ key+1 }}_Currency"  uib-typeahead="item as item.name for item in options.Currency | filter:{name:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" autocomplete="off"/>
-                        <span class="input-group-addon"  ng-click="triggerModal('general', 'masters_currencylist', 'Currency' , 'formValues.products.'+index_0+'.additionalCosts.'+key+'.currency');">
-                            <a   class=" btn default">
-                                <i class="fa fa-search"></i>
-                            </a>
-                        </span>
-                    </div>
-                </td>
-                <td>
-                <span ng-if="value.costType.name == 'Flat' || value.costType.name == 'Percent'" ng-init="value.uom = null"></span>
-                    <div class="input-group " ng-init='options.Uom ? return : CM.getOptions({"Name": "Uom", "Type": "simpleLookup", "masterSource": "Uom"});'>
-                        <input ng-model="value.uom"  ng-class="'colt' + col.uid"  name="Product_{{ index_0+1 }}_Additional_Costs_{{ key+1 }}_Price_UOM"  uib-typeahead="item as item.name for item in options.Uom | filter:{name:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100"  ng-disabled="value.costType.name == 'Flat' || value.costType.name == 'Percent'" ng-required="value.costType.name == 'Unit'" autocomplete="off"/>
-                        <span class="input-group-addon" ng-class="value.costType.name == 'Flat' || value.costType.name == 'Percent' ? 'disabled' : '' " ng-click="triggerModal('general', 'masters_uomlist', 'uom' , 'formValues.products.'+index_0+'.additionalCosts.'+key+'.uom');">
-                            <a   class=" btn default">
-                                <i class="fa fa-search"></i>
-                            </a>
-                        </span>
-                        <span ng-if="value.costType.name == 'Flat'" ng-init="value.uom=null"></span>
-                    </div>
-                </td>
-                <td>
-                    <input type="number" name="Product_{{ index_0+1 }}_Additional_Costs_{{ key+1 }}_Extra" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" class="form-control " ng-model="value.extras" ng-trim="false" dynamic-condition="{{ col.colDef.cellCondition }}" dynamic-condition-type="{{ col.colDef.cellConditionType }}" step="0.0001"/>
-                </td>
-                <td>
-                    <input name="Product_{{ index_0+1 }}_Additional_Costs_{{ key+1 }}_Comment" type="text" class="form-control " ng-model="value.comments" ng-trim="false" step="0.0001"/>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div> -->
-
+﻿
  <div class="custom-hardcoded-table ng-scope" ng-init="CM.getAdditionalCostsComponentTypes()">
     <table class="table-body" width="100%">
         <thead>
@@ -170,7 +68,7 @@
                 </td>
                 <td width="12%">
                     <input name="Extra" type="number" format="number" class="form-control" ng-model="value.extras">
-                    <!-- <input name="Extra" type="number" format="number" class="form-control" ng-model="value.extrasPercentage"> -->
+
                 </td>
                 <td width="12%">
 					<select name="Currency" class="form-control" ng-required="!value.isDeleted" ng-options="item as item.name for item in CM.listsCache.Currency track by item.id " ng-model="value.currency"></select>

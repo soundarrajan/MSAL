@@ -1,4 +1,4 @@
-<!-- <span> delivery products quantity</span> -->
+
 <span ng-if="formValues.deliveryProducts" ng-init="getDeliveryConfigurations()"></span>
 <span ng-if="formValues.id == 0" ng-init="getDeliveryConfigurations()"></span>
 <div class="row">
@@ -21,7 +21,7 @@
                        autocomplete="off"
                        ng-required="true"
                        ng-disabled="!CM.isEditable"/>
-                <!-- ng-model="formValues.deliveryProducts[key].product" -->
+
                 <span class="input-group-addon" ng-click="triggerModal('general', 'orders_orders', 'Order' , 'formValues.order','','','OrderNumber', '');" ng-class="!CM.isEditable ? 'disabled' : ''">
                     <a   class=" btn default">
                         <i class="fa fa-search"></i>
@@ -32,15 +32,13 @@
         </div>
     </div>
     <span ng-init='CM.getOptions({"Name": "Buyer", "Type": "dropdown", "masterSource": "QuantityCategory"})'></span>
-<!--     {{formValues.temp.buyerPrecedenceRule}}
-    {{formValues.temp.sellerPrecedenceRule}} -->
+
     <div class="col-xs-4" ng-if="!formValues.temp.hiddenFields.buyerQty">
         <div class="form-group row">
             <label for="buyerQuantity" class="simpleLookupLabel" style="max-height: initial;">
                 {{ CM.app_id + '.BUYER_QUANTITY' | translate }}
             </label>
             <div class="input-group form_input form_input_buyerQuantity" ng-init="formValues.temp.buyerPrecedenceRule = options['QuantityCategory'][0]">
-            <!-- ng-init="formValues.temp.buyerPrecedence.buyerQTY = options['QuantityCategory'][0]" -->
                 <select class="form-control bs-select changeIT"  ng-options="item as item.name + ' Quantity' for item in options.Buyer track by item.id" ng-required="true" id="buyerQuantity" ng-model="formValues.temp.buyerPrecedenceRule" ng-change="setVarianceQty('buyer',formValues.temp.buyerPrecedenceRule)" ng-disabled="formValues.deliveryStatus.id == 3"></select>
                 <span ng-if="formValues.temp.buyerPrecedenceRule" ng-init="setVarianceQty('buyer',formValues.temp.buyerPrecedenceRule)"></span>
             </div>
@@ -54,8 +52,7 @@
             </label>
             <div class="input-group form_input form_input_sellerQuantity" ng-init="formValues.temp.sellerPrecedenceRule = options['QuantityCategory'][0]">
                 <select class="form-control bs-select changeIT" ng-options="item as item.name + ' Quantity' for item in options.Seller track by item.id" ng-required="true" id="sellerQuantity" ng-model="formValues.temp.sellerPrecedenceRule" ng-change="setVarianceQty('seller',formValues.temp.sellerPrecedenceRule)" ng-disabled="formValues.deliveryStatus.id == 3"></select>
-                <!-- ng-change="calculateVarianceAndReconStatus(key)" -->
-                <span ng-if="formValues.temp.sellerPrecedenceRule" ng-init="setVarianceQty('seller',formValues.temp.sellerPrecedenceRule)"></span>
+               <span ng-if="formValues.temp.sellerPrecedenceRule" ng-init="setVarianceQty('seller',formValues.temp.sellerPrecedenceRule)"></span>
             </div>
         </div>
     </div>
@@ -67,8 +64,7 @@
                 <tr>
                     <td></td>
                     <td ng-repeat="(key, value) in formValues.deliveryProducts">
-                        <span><!-- {{ CM.app_id + '.DELIVERY' | translate }} --> Delivery {{formValues.deliveryNumber}} -
-                              <!-- {{ CM.app_id + '.PRODUCT' | translate }} --> {{value.product.name}}
+                        <span>Delivery {{formValues.deliveryNumber}} - {{value.product.name}}
                         </span>
                         <span class="physical">{{value.physicalSupplier ? value.physicalSupplier.name : 'Physical Supplier: - '}}</span>
                     </td>
@@ -123,8 +119,6 @@
               
                     <td ng-repeat="(key, value) in formValues.deliveryProducts" class="delivery_variance {{ formValues.temp.variances['color_' + key] }}">
                         <span>
-                            <!-- <pre>{{formValues.temp.variances['color_' + key]}}</pre> -->
-                             <!-- {{formValues.temp.variances['product_' + key]}} -->
 
                             {{formValues.temp.variances['product_' + key] != null ? formValues.temp.variances['product_' + key] : '-'}}
                         </span>
@@ -136,7 +130,7 @@
                     <td ng-repeat="(key, value) in formValues.deliveryProducts" class="delivery_variance {{ formValues.temp.variances['mfm_color_' + key] }}">
                         <span>
 
-                        <!-- {{formValues.temp.variances['mfm_product_' + key]}} -->
+
                             {{formValues.temp.variances['mfm_product_' + key] ? formValues.temp.variances['mfm_product_' + key] : '-'}}
                         </span>
                         <span class="mt">{{formValues.temp.variances['mfm_uom_' + key]}}</span>
@@ -144,7 +138,7 @@
                 </tr>
             </tbody>
         </table>
-        <!-- <pre>{{formValues.temp}}</pre> -->
+
     </div>
 </div>
 <div class="row margin-top-10">

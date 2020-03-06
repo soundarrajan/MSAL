@@ -25,7 +25,7 @@
                         <div class="collapse in" id="{{ key }}" ng-if="key != 'customFields'">
                             <div  data-ng-model="dragElements" class="sortable-stdFields">
                                 <div draggable="true" class="dragElement-wrapper" data-ng-repeat="ele in value">
-                                    <!-- <input type="text" ng-model="ele.Unique_ID"/> -->
+
                                     <div class="drag-element" data-ng-click="addElement(ele)">
                                         {{ ele.Label }}
                                     </div>

@@ -7,9 +7,7 @@
     </label>
     <div class="form_input form_input_{{ field.Name }}" ng-class="!field.Label ? 'no-label' : ''">
         <span ng-switch="field.Name">
-         <!--    <span ng-switch-when='ClaimType'>
-                <select ng-model="dummyModel"  id="{{ field.masterSource }}{{ field.Name }}" name="{{ field.Name }}" class="form-control bs-select" dynamic-model="'formValues.' + field.Unique_ID " ng-options="item as item.displayName disable when item.disabled for item in options[field.Name] track by item.id" ng-disabled="$eval(field.Disabled) == true || field.Disabled == true ? true : false" ng-required="$eval(field.Required) > 0 || field.Required == true ? true : false  && isVisible(field.masterSource + field.Name)" ng-change="triggerChangeFields(field.Name, field.Unique_ID); temp[field.Name] = dummyModel" dynamic-condition="{{ ::field.Conditional }}" dynamic-condition-type="{{ ::field.ConditionalType }}" ><option value="" disabled></option></select>
-            </span> -->
+
             <span ng-switch-when='Product'>
                 <!--  order products by productTypeId -->
                 <select ng-model="dummyModel"  id="{{ field.masterSource }}{{ field.Name }}" name="{{ field.Name }}" class="form-control bs-select" dynamic-model="'formValues.' + field.Unique_ID " ng-options="item as item.name disable when item.disabled for item in options[field.Name] | orderBy : 'payload.productTypeId' track by item.id" ng-disabled="$eval(field.Disabled) == true || field.Disabled == true ? true : false" ng-required="$eval(field.Required) > 0 || field.Required == true ? true : false  && isVisible(field.masterSource + field.Name)" ng-change="triggerChangeFields(field.Name, field.Unique_ID); temp[field.Name] = dummyModel" dynamic-condition="{{ ::field.Conditional }}" dynamic-condition-type="{{ ::field.ConditionalType }}" ><option value="" disabled></option></select>

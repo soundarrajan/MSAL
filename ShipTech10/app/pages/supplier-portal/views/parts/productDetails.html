@@ -1,11 +1,6 @@
-<!--
-    {{ $ctrl.displayLocations | filter:{requestId:$ctrl.active_req} }}
--->
-<!-- <div  ng-repeat="location in $ctrl.individuals | filter:{requestId:$ctrl.active_req} track by $index" ng-if="$ctrl.selectedLocationIds[location.location.id]" class="row"> -->
-
 
 <div  ng-repeat="(k,location) in $ctrl.individuals track by $index" class="row">
-	 <!-- {{location}} -->
+
     <div class="col-md-12" ng-show="location.request.id == $ctrl.active_req">
         <!-- PRODUCT TABLE -->
         <div class="portlet light stretch-vertical grey_portlet">
@@ -39,13 +34,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="col-md-9 text-right">
-                                    <span class="caption-subject">
-                                        TOTAL PRODUCT: {{ $ctrl.sumProductAmounts(location.products) | number:2 }} |
-                                        ADD. COST: {{ $ctrl.additionalCostTotalAmountSums[location.id] | number:2 }} |
-                                        GRAND TOTAL: {{ $ctrl.getGrandTotal(location) | number:2 }}
-                                    </span>
-                                </div> -->
+
             </div>
             <form class="st-new-request-form form-horizontal" id="products" name="forms[{{$index}}].products" autocomplete="off" >
                 <div class="row">
@@ -110,25 +99,21 @@
                                 <input type="checkbox" ng-model="$ctrl.productTableNoQuoteCheckAll[location.rand]" ng-change="$ctrl.productTableNoQuoteCheckAllChanged(location, $ctrl.productTableNoQuoteCheckAll[location.rand])"/>
                                 <span></span>
                             </label>
-                            <!-- <pre>{{location}}</pre> -->
+
                             <div class="input-group form_input ">
                                 <div class="input-group">
                                     <select ng-options="reason as reason.name for reason in $ctrl.reasons track by reason.id" ng-model="$ctrl.noQuoteReason[location.rand]" class="form-control" ng-disabled="!$ctrl.productTableNoQuoteCheckAll[location.rand]" ng-change="$ctrl.mainReasonChanged($ctrl.noQuoteReason[location.rand], location)" ng-required="$ctrl.productTableNoQuoteCheckAll[location.rand]" name="Location no quote reason - {{location.location.name}}"><option value=""></option></select>
                                 </div>
                        		</div>
-                        <!-- <a data-toggle="modal" href="#last_offer_prices" ng-click="$ctrl.setLatestOfferParams(location)">
-                             <u>
-                                 Price History
-                             </u>
-                         </a> -->
+
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-9">
                         <div class="row">
-                            <!-- {{location.products}} -->
+
                             <div class="col-sm-4 mb" ng-repeat="(skey, svalue)  in location.products " >
-                                <!-- <pre>{{svalue}}</pre> -->
+
                                 <div class="small-card bg-grey-steel orange-border">
                                     <p>
                                         <b>
@@ -146,9 +131,9 @@
                                             {{ svalue.sellers[0].offers[0].currency.code }} {{ $ctrl.stripDecimals(svalue.totalAmount) }}
                                         </b>
                                         <br>
-                                        <!-- {{svalue.totalAdditionalCostPerProductAll}} **  -->
+
                                     </h4>
-                                    <!-- Including Addl. Cost {{ location.products[0].sellers[0].offers[0].currency.code }} : {{svalue.totalAdditionalCostPerProduct}} -->
+
                                 </div>
                             </div>
                         </div>
@@ -180,7 +165,7 @@
                         <div class="portlet-title">
                             <div class="tools">
                             	<a data-toggle="collapse" href="#location_prod{{ $index }}" class="collapse" aria-expanded="true"></a>
-                                <!-- <a data-toggle="collapse" href="#location_prod" class="expand collapsed" aria-expanded="true"></a> -->
+
                             </div>
                             <div class="caption">
                                 <span class="caption-subject">
@@ -205,7 +190,7 @@
 
                                         <tr ng-repeat="product in location.products">
                                             <td>
-                                            	<!-- ng-change="$ctrl.productPriceChanged(product, location)" -->
+
                                                 <label class="mt-checkbox mt-checkbox-outline">
                                                     <input type="checkbox" ng-model="product.sellers[0].offers[0].hasNoQuote" ng-change="$ctrl.noQuoteChanged(location, product); $ctrl.productPriceChanged(product, location)" format="number:{{ $ctrl.numberPrecision.pricePrecision }}" />
                                                     <span></span>
@@ -273,17 +258,7 @@
                                                     </div>
                                                     <input style="min-width: 80px" class="form-control" type="text" ng-model="product.sellers[0].offers[0].price" ng-focus="oldPrice = product.sellers[0].offers[0].price" ng-blur="$ctrl.checkPrice(oldPrice, product.sellers[0].offers[0].price, product) !== false ? product.sellers[0].offers[0].price =  $ctrl.checkPrice(oldPrice, product.sellers[0].offers[0].price, product, true) : $ctrl.productPriceChanged(product, location)" ng-required="!product.sellers[0].offers[0].hasNoQuote && product.productStatus.name != 'Stemmed'" name="{{location.request.name}} - {{product.product.name}} - Price" ng-disabled=" $ctrl.tenantQuoteDisabled || product.sellers[0].offers[0].hasNoQuote || product.productStatus.name == 'Stemmed'" format="number:{{ $ctrl.numberPrecision.pricePrecision }}" />
                                                     <div class="input-group-btn">
-<!--                                                         <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ng-disabled="{{ $ctrl.tenantQuoteDisabled }}">
-                                                            {{ product.sellers[0].offers[0].priceQuantityUom.name }}
-                                                            <span class="caret"></span>
-                                                        </button>
-                                                        <ul class="dropdown-menu pull-right">
-                                                            <li ng-repeat="uom in $ctrl.lists.Uom" ng-click="$ctrl.updateModel(product.sellers[0].offers[0].priceQuantityUom, uom);$ctrl.productUomChanged(product, location)">
-                                                                <a>
-                                                                    {{ uom.name }}
-                                                                </a>
-                                                            </li>
-                                                        </ul> -->
+
                                                         <select name="" id="" class="form-control no-padding"
                                                         ng-model="product.sellers[0].offers[0].priceQuantityUom"
                                                         ng-options="uom as uom.name for uom in $ctrl.lists.Uom track by uom.id"
@@ -309,16 +284,7 @@
                                             <td style="min-width: 150px">
                                                 <select ng-options="pricingType as pricingType.name for pricingType in $ctrl.lists.PricingType track by pricingType.id" ng-model="product.pricingType" class="form-control" readonly disabled></select>
                                             </td>
-                                           <!--  <td style="min-width: 150px">
-                                                <input type="text" class="form-control" ng-model="product.sellers[0].offers[0].formulaDescription" name="{{ $ctrl.productColumns.Formula.name }}" ng-required="product.pricingType.id === $ctrl.PRICING_TYPE_FORMULA_ID" ng-disabled="product.pricingType.id !== $ctrl.PRICING_TYPE_FORMULA_ID"/>
-                                            </td> -->
-                                           <!--  <td style="min-width: 150px">
 
-                                                {{ product.comments }}
-                                            </td> -->
-<!--                                             <td>
-                                                <input type="text" class="form-control" ng-model="product.sellers[0].offers[0].sellerComments" name="{{ $ctrl.productColumns.SupplierComment.name }}" ng-required="product.product.id !== product.sellers[0].offers[0].quotedProduct.id"/>
-                                            </td> -->
                                             <td style="min-width: 150px">
 
                                                               <select ng-options="reason as reason.name for reason in $ctrl.reasons track by reason.id" ng-model="product.sellers[0].offers[0].noQuoteReason" class="form-control"  ng-required="product.sellers[0].offers[0].hasNoQuote" name="Product no quote reason - {{product.sellers[0].offers[0].quotedProduct.name}}" ng-change="$ctrl.productReasonChanged(product.sellers[0].offers[0].noQuoteReason,product, location)" ng-disabled="!product.sellers[0].offers[0].hasNoQuote"><option value=""></option></select>
@@ -344,10 +310,10 @@
                     </div>
                     <div class="portlet-body overflowAuto" aria-expanded="true"  id="addCost{{ $index }}">
                         <form id="additionalCosts" name="forms[{{$index}}].additionalCosts">
-                        <!-- <pre>{{$ctrl.getAdditionalCosts(location)}}</pre> -->
+
 							<span ng-init="$ctrl.getAdditionalCosts(location)"></span>
                             <table class="table table-striped table-hover table-bordered table-condensed st-product-info-table extraSpacedTable" id="product_add_cost_table_{{ $index + 1 }}">
-                            <!-- | orderBy: 'additionalCost.id'  -->
+
                                 <thead>
                                     <tr>
                                         <th>
@@ -362,11 +328,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                	<!-- <tr>
-                                		<td>{{$ctrl.getAdditionalCosts(location)}}</td>
-                                	</tr> -->
+
                                     <tr ng-repeat="additionalCost in $ctrl.getAdditionalCosts(location)  track by $index" ng-if="!additionalCost.isDeleted">
-	                                	<!-- | orderBy: 'fakeIdOrdering' -->
+
                                         <td>
                                             <span class="st-btn-icon" ng-click="$ctrl.addAdditionalCost(location)">
                                                 <i class="fa fa-plus clickable"></i>
@@ -381,7 +345,7 @@
                                             <select class="form-control" ng-disabled="$ctrl.disableCostBasedOnApplicableProductStatus(additionalCost.parentProductId, location.products)" ng-options="addCost as addCost.name for addCost in $ctrl.lists.AdditionalCost track by addCost.id" ng-model="additionalCost.additionalCost" ng-change="$ctrl.additionalCostNameChanged(additionalCost, location)" ng-required="additionalCost.price"></select>
                                         </td>
                                         <td style="min-width: 150px" >
-                                        	<!-- {{additionalCost.costType}} -->
+
                                             <select class=" form-control"
                                             ng-options="costType as costType.name for costType in $ctrl.getAllowedCostTypes(additionalCost) track by costType.id "
                                             ng-model="additionalCost.costType"
@@ -390,17 +354,10 @@
                                             ng-disabled="$ctrl.disableCostBasedOnApplicableProductStatus(additionalCost.parentProductId, location.products)"
                                             style="min-width: 80px">
                                             </select>   
-<!--                                             <select class="select2 form-control"
-                                            ng-model="additionalCost.costType"
-                                            name="{{ $ctrl.additionalCostColumns.type.name }}"
-                                            ng-required="additionalCost.additionalCost"
-                                            style="min-width: 80px">
-                                                <option ng-value="ctv.id" ng-repeat="(ctk, ctv) in $ctrl.lists.CostType" ng-show="additionalCost.allowedCostTypes.indexOf(ctv.id) != -1"
-                                                ng-checked="ctv.id == additionalCost.costType.id">{{ctv.name}}</option>
-                                            </select> -->
+
                                         </td>
                                         <td style="min-width: 150px">
-                                        	<!-- {{$ctrl.disableCostBasedOnApplicableProductStatus(additionalCost.parentProductId, location.products)}} -->
+
                                             <div class="input-group">
                                                 <input class="form-control" value="{{ additionalCost.maxQuantity | number: $ctrl.numberPrecision.quantityPrecision }}" readonly disabled/>
                                                 <div class="input-group-btn">
@@ -445,18 +402,7 @@
                                             </div>
                                         </td>
                                         <td style="min-width: 150px">									
-											<!-- ** {{$ctrl.additionalCostApplicableFor[additionalCost.fakeId] }} -->
-											<div class="hidden">
-												<span ng-if="(additionalCost.isTaxComponent && additionalCost.costType.name == 'Percent')">{{ $ctrl.applicableForChange(additionalCost, null, location) }}</span>
-												<!-- <span ng-if="additionalCost.costType.name == 'Flat'">{{ $ctrl.applicableForChange(additionalCost, null, location, "flat") }}</span> -->
-											</div>
-											<!-- {{additionalCost.costType.name}} *
-											{{additionalCost.isTaxComponent}} -->
-											<!-- {{$ctrl.additionalCostApplicableFor[additionalCost.fakeId]}} -->
-											<!-- <span ng-repeat="product in location.proiducts">
-												{{product.product.product.name}}
-											</span>
-											 -->
+
 											<span ng-if="$ctrl.additionalCostApplicableFor[additionalCost.fakeId].productStatus.name == 'Stemmed' && additionalCost.id">
 												<input class="form-control" disabled ng-model="$ctrl.additionalCostApplicableFor[additionalCost.fakeId].product.name"/>
 											</span>
@@ -473,7 +419,7 @@
                                             <!-- || additionalCost.costType.name == 'Flat'  -->
                                                 <option value="" >
                                                     All
-                                                    <!-- ng-show="(location.products | filter: {productStatus:{name: 'Stemmed'} }).length == 0" -->
+
                                                 </option>
                                             </select>
                                         </td>
@@ -610,9 +556,7 @@
                         </table>
                     </div>
                 </div>
-          <!--       <pre>
-                    {{ location }}
-                </pre> -->
+
                 <div class="portlet light stretch-vertical ">
                     <div class="portlet-title">
                         <div class="tools">

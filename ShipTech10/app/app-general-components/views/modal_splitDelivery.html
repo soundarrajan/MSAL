@@ -18,12 +18,10 @@
             <!-- delivery products -->
             <div class="row" ng-repeat="(index,product) in formValues.splitDelivery.items">
                 <div class="col-xs-12">
-                    <!-- <span> {{ CM.app_id + '.PRODUCT' | translate }} </span> -->
+
                     <span class="caption-subject"> {{ product.name }} </span>
                 </div>
-              <!--   <div classs="col-xs-12">
-                 {{product}}
-                </div> -->
+
                 <div class="col-xs-6 remove-padding">
                     <div class="form-group row">
                         <label for="" class="price_label">
@@ -65,29 +63,3 @@
     </div>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-  <!--   <div class="row">
-                <div class="col-xs-8">
-                    <div class="form-group row">
-                        <div class="form_input form_input_update">
-                            <div class="">
-                                <label class="mt-checkbox">
-                                    <input type="checkbox" name="VRSVerified" id="VRSVerified" ng-model="formValues.splitDelivery.update" /> {{ CM.app_id + '.UPDATE_CONFIRMED_AMOUNT' | translate }}
-                                    <span></span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->

@@ -28,9 +28,7 @@
                     <table class="table table-striped table-hover table-bordered" id="view_rfq_table">
                         <thead>
                             <tr>
-                                <!-- <th ng-repeat="column in $cntrl.ui.rfqTable.columns track by $index">
-                                                                {{column.caption | translate}}
-                                                            </th> -->
+
                                 <th></th>
                                 <th>
                                     RFQ ID
@@ -164,27 +162,7 @@
                                 <label class="col-md-1 control-label">
                                     {{ 'PAGES.PREVIEW_EMAIL.TO' | translate }}
                                 </label>
-                                <!-- <div class="col-md-11 row">
-                                                                    <div class="col-md-6">
-                                                                        <div class="input-group">
-                                                                            <input class="typeahead form-control" uib-typeahead="to as to.name for to in $ctrl.email.toList | filter:$viewValue | limitTo:5" ng-model="$ctrl.toEmail"/>
-                                                                            <span class="input-group-addon clickable" ng-click="$ctrl.addEmail($ctrl.toEmail, $ctrl.email.to)">
-                                                                                <i class="fa fa-plus"></i>
-                                                                            </span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-6 label-list">
-                                                                        <div class="bootstrap-tagsinput" ng-class="{expanded : ctrl.openToList}">
-                                                                            <span ng-show="$ctrl.email.to.length> $ctrl.shownEmailNr" class="tag label label-info clickable st-hide-tags"  ng-click="ctrl.openToList = !ctrl.openToList">
-                                                                                &hellip;
-                                                                            </span>
-                                                                            <span ng-repeat="toEmail in $ctrl.email.to track by $index" class="tag label label-info"  ng-show="$index < $ctrl.shownEmailNr || ctrl.openToList">
-                                                                                <i ng-click="$ctrl.removeEmail($index, $ctrl.email.to)" class="fa fa-close clickable"></i>
-                                                                                {{ toEmail.name }}
-                                                                            </span>
-                                                                        </div>
-                                                                    </div>
-                                                                </div> -->
+
                                 <div class="col-md-11 ">
                                     <div class="input-group border-default" style="border: 1px solid;display: block;padding:0 5px;float: left;width: 100%; cursor: text" ng-click="$ctrl.focusInnerInput($event)">
                                         <div ng-repeat="toEmail in $ctrl.email.to track by $index" tooltip data-original-title="{{toEmail.idEmailAddress}}" class="tag label label-info pull-left font-dark bg-default" style="margin-top: 5px; margin-right: 5px;">
@@ -193,17 +171,7 @@
                                         </div>
                                         <input class="typeahead form-control pull-left" uib-typeahead="to as to.name for to in $ctrl.email.toList | filter:$viewValue | limitTo:5" ng-model="$ctrl.toEmail" typeahead-on-select="$ctrl.addEmail($ctrl.toEmail, $ctrl.email.to)" ng-blur="$ctrl.clearEmailInputs()" style="max-width:100px; border: none"/>
                                     </div>
-                                    <!--                                <div class="col-md-6 label-list">
-                                                                            <div class="bootstrap-tagsinput" ng-class="{expanded : ctrl.openToList}">
-                                                                                <span ng-show="$ctrl.email.to.length> $ctrl.shownEmailNr" class="tag label label-info clickable st-hide-tags"  ng-click="ctrl.openToList = !ctrl.openToList">
-                                                                                    &hellip;
-                                                                                </span>
-                                                                                <span ng-repeat="toEmail in $ctrl.email.to track by $index" class="tag label label-info"  ng-show="$index < $ctrl.shownEmailNr || ctrl.openToList">
-                                                                                    <i ng-click="$ctrl.removeEmail($index, $ctrl.email.to)" class="fa fa-close clickable"></i>
-                                                                                    {{ toEmail.name }}
-                                                                                </span>
-                                                                            </div>
-                                                                        </div> -->
+
                                 </div>
                             </div>
                             <div class="form-group form-group-sm st-email-input">
@@ -211,25 +179,7 @@
                                     {{ 'PAGES.PREVIEW_EMAIL.CC' | translate }}
                                 </label>
                                 <div class="col-md-11">
-                                    <!--                                <div class="col-md-6">
-                                                                            <div class="input-group">
-                                                                                <input class="typeahead form-control" uib-typeahead="cc as cc.name for cc in $ctrl.email.ccList | filter:$viewValue | limitTo:5" ng-model="$ctrl.ccEmail"/>
-                                                                                <span class="input-group-addon clickable" ng-click="$ctrl.addEmail($ctrl.ccEmail, $ctrl.email.cc)">
-                                                                                    <i class="fa fa-plus"></i>
-                                                                                </span>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-md-6 label-list">
-                                                                            <div class="bootstrap-tagsinput" ng-class="{expanded : ctrl.openCcList}">
-                                                                                <span ng-show="$ctrl.email.cc.length> $ctrl.shownEmailNr" class="tag label label-info clickable st-hide-tags"  ng-click="ctrl.openCcList = !ctrl.openCcList">
-                                                                                    &hellip;
-                                                                                </span>
-                                                                                <span ng-repeat="ccEmail in $ctrl.email.cc track by $index" class="tag label label-info" ng-show="$index < $ctrl.shownEmailNr || ctrl.openCcList">
-                                                                                    <i ng-click="$ctrl.removeEmail($index, $ctrl.email.cc)" class="fa fa-close clickable"></i>
-                                                                                    {{ ccEmail.name }}
-                                                                                </span>
-                                                                            </div>
-                                                                        </div> -->
+
                                     <div class="input-group border-default" style="border: 1px solid;display: block;padding:0 5px;float: left;width: 100%; cursor: text" ng-click="$ctrl.focusInnerInput($event)">
                                         <div ng-repeat="ccEmail in $ctrl.email.cc track by $index" tooltip data-original-title="{{ccEmail.idEmailAddress}}" class="tag label label-info pull-left font-dark bg-default" style="margin-top: 5px; margin-right: 5px;">
                                             <i ng-click="$ctrl.removeEmail($index, $ctrl.email.cc)" class="fa fa-close clickable"></i>

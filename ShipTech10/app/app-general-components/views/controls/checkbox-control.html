@@ -14,9 +14,9 @@
                 *
             </span>
         </label>
-        <!-- {{options[field.Name]}} -->
+
         <label class="mt-checkbox" ng-repeat="(key, value) in options[field.Name]"  ng-if="options[field.Name]" unique-id="{{field.Unique_ID}}">
-            <!--{{options[field.Name][key].id}}-->
+
             <input type="checkbox" name="{{ field.Name }}" id="inlineCheckbox{{ value.name }}" data-checklist-model="formValues[field.Unique_ID]" data-checklist-value="value" checklist-comparator=".id" ng-disabled="($eval(field.Disabled) == true || field.Disabled == true) ? true : false" />
             <span></span>
             {{ value.name }}

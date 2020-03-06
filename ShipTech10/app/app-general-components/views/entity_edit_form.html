@@ -1,8 +1,4 @@
 ﻿
-
-<!-- <div ng-dynamic-controller="SLC.dynamicController"> -->
-	
-
 	<span ng-if="structure" ng-init="CM.load_eef_config(structure);"></span>
 	<span ng-if="!structure" ng-init="CM.get_master_entity(screenchild);"></span>
 	<div class=" text-center " id="main-content" ng-init="checkIfTab();">
@@ -57,11 +53,7 @@
                                 <div ng-if="CM.screen_id == 'invoice' && CM.app_id == 'invoices' && parents.name == 'Related Invoices'" class="pull-right">
                                 	<em>Invoices Created : {{formValues.relatedInvoices.length}}</em>
                                 </div>	
-                                <!-- <div class="caption">
-                                    <h4 class="font-blue-madison">
-                                        {{ parents.name }}
-                                    </h4>
-                                </div> -->
+
                                 <div ng-include="'app-general-components/views/screen_parts/deliveryApp_block_custom_headers.html'"></div>
                                 <div ng-include="'app-general-components/views/screen_parts/invoicesApp_block_custom_headers.html'"></div>
                                 <div ng-include="'app-general-components/views/screen_parts/reconApp_block_custom_headers.html'"></div>
@@ -81,7 +73,7 @@
                                     </a>
                                 </div>
                                 <div ng-if="parents.name == 'General Information' && CM.screen_id == 'labresult'" style="float: right;  margin-top: 10px;">
-                                    <!-- <span ng-include="'app-general-components/views/screen_parts/result.html'"></span> -->
+
                                 </div>
                             </div>
                             <div class="portlet-title" ng-if="parents.name == 'General' && CM.screen_id == 'treasuryreport' && CM.app_id == 'invoices'">
@@ -185,9 +177,7 @@
                                             <span ng-include="'app-general-components/views/screen_parts/masters/preferredLocationsGroup.html'"></span>
                                         </span>
                                         <span ng-switch-when="labTestResultsGroup">
-                                            <!-- <div class=" group_{{ field.Unique_ID }}">
-                                                <span ng-include="'app-general-components/views/controls/dataTable.html'"></span>
-                                                                                       </div> -->
+
                                             <span ng-include="'app-labs/views/components/lab_test_results.html'"></span>
                                         </span>               
 
@@ -254,9 +244,7 @@
                                             <span ng-switch-when="preferredSellers">
                                               <span ng-include="'app-general-components/views/screen_parts/masters/locationPrefferedSellers.html'"></span>
                                             </span>
-                                        <!--      <span ng-switch-when="result">
-                                                 <span ng-include="'app-general-components/views/screen_parts/result.html'"></span>
-                                             </span> -->
+
                                              <span ng-switch-when="quantityRecon">
                                                 <span ng-include="'app-general-components/views/screen_parts/quantityRecon.html'"></span>
                                             </span>
@@ -336,13 +324,7 @@
                 </div>
             </div>
         </form>
-        <!-- <span ng-include="'app-general-components/views/controls/dataTable.html'"></span> -->
-        <!-- <pre ng-show="host == 'localhost'">
-            {{ formValues }}
-        </pre> -->
-        <!-- <pre ng-show="host == 'localhost'">
-            {{ formFields }}
-        </pre> -->
+
     </div>
 
 	<div class="sweetConfirmModal fade bs-modal hide" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
@@ -384,9 +366,3 @@
 		</div>
 	</div>
 	</div>
-
-
-
-
-
-<!-- </div> -->

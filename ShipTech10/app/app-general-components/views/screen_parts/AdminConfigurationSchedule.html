@@ -43,32 +43,7 @@
         </div>
     </div>
 </div>
-<!-- <div class="col-md-6">
-    <div class="form-group row">
-        <label for="scheduleBuyerDisplay" class="simpleLookupLabel">
-           {{ CM.app_id + '.BUYER_DISPLAY' | translate }}
-            <span class="orange-txt">
-                *
-            </span>
-        </label>
-        <div class="input-group form_input form_input_scheduleBuyerDisplay">
-            <select class="form-control bs-select changeIT" name="scheduleBuyerDisplay" id="scheduleBuyerDisplay" ng-required="true" ng-options="item as item.name for item in CM.listsCache.YesNoOptions track by item.id" ng-model="formValues.schedule.scheduleBuyerDisplay"></select>
-        </div>
-    </div>
-</div> -->
-<!-- <div class="col-md-6">
-    <div class="form-group row">
-        <label for="scheduleCompanyDisplay" class="simpleLookupLabel">
-           {{ CM.app_id + '.COMPANY_DISPLAY' | translate }}
-            <span class="orange-txt">
-                *
-            </span>
-        </label>
-        <div class="input-group form_input form_input_scheduleCompanyDisplay">
-            <select class="form-control bs-select changeIT" name="scheduleCompanyDisplay" id="scheduleCompanyDisplay" ng-required="true" ng-options="item as item.name for item in CM.listsCache.YesNoOptions track by item.id" ng-model="formValues.schedule.scheduleCompanyDisplay"></select>
-        </div>
-    </div>
-</div> -->
+
 <div class="col-md-6">
     <div class="form-group row">
         <label for="productTypeInSchedule" class="simpleLookupLabel">
@@ -155,10 +130,9 @@
 	                 	</td>
 	                    <td width="20%"><input type="text" class="form-control " name="{{val.status.name}}_label" ng-model="val.label"></td>
 	                    <td width="15%" class="text-center">
-							<!-- <input ng-model="val.colorCode" type="color" name="{{val.status.name}}_colour_code"> -->
-	                    	<!-- {{initMinicolors()}} -->
+
 							<input ng-init="initMinicolors()" ng-model="val.colorCode" class="form-control demo minicolors-input" value="{{val.colorCode}}" size="15" >
-							<!-- {{val.colorCode}} -->
+
 	                    </td>
 	                    <td ng-init="val.tempDisplayOrder = val.displayOrder">
 	                    	<select class="form-control" ng-model="val.tempDisplayOrder" ng-change="changeScheduleStatusDisplayOrder(val.tempDisplayOrder, val.displayOrder)" ng-options="item as item for item in createRange(1,formValues.schedule.labels.length) track by item">
@@ -169,10 +143,7 @@
 		                    	<input type="checkbox"  ng-model="val.displayInDashboard">
 		                    	<span></span>
 		                    </label>
-		                   <!--  <label ng-if="!val.displayInSchedule" ng-click="throwToastrError('This status cannot be displayed in the Schedule dashboard.')" class="mt-checkbox" style="margin-bottom:20px;">
-		                    	<span></span>
-		                    </label> -->		                    
-	                    	<!-- {{val.displayInSchedule}} -->
+
                     	</td>
 	                </tr>
             	</tbody>

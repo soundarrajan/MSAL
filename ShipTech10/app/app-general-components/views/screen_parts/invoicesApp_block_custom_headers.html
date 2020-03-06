@@ -2,8 +2,7 @@
     <div class="pull-right">
         <div class="form-inline">
             <div class="form-group">
-                <!-- <a class="btn btn-default default btn-outline" ng-click="add_delivery_product()"> -->
-                <a class="btn btn-default default btn-outline orange" ng-click="triggerModal('general', 'deliveries_transactionstobeinvoiced', 'Transaction', 'formValues.productDetails', null, null, 'foobar', 'filter__invoices_order_id')" style="margin: 9px 0px 0px 30px;">
+                 <a class="btn btn-default default btn-outline orange" ng-click="triggerModal('general', 'deliveries_transactionstobeinvoiced', 'Transaction', 'formValues.productDetails', null, null, 'foobar', 'filter__invoices_order_id')" style="margin: 9px 0px 0px 30px;">
                     Add Transaction
                 </a>
             </div>
@@ -15,16 +14,6 @@
 		</div>	
 	</div>
 </div>
-
-<!-- <div ng-if="parents.name == 'Invoice Total' && CM.app_id == 'invoices'">
-    <div class="pull-right">
-        <div class="form-inline">
-            <div class="form-group">
-                <span class="caption-subject">Related Invoice</span>
-            </div>
-        </div>
-    </div>
-</div> -->
 
 
 <div ng-if="parents.name == 'Cost Details' && CM.app_id == 'invoices'">
@@ -42,12 +31,7 @@
                 <select name="" class="form-control bs-select" id="" ng-model="INV_SELECTED_COST">
                     <option value=""></option>
                     <option ng-repeat="(key, value) in additionalCostsList" value="{{ value.id }}">{{ value.name }}</option>
-                    <!-- <option value="1">
-                        Cost option 1
-                    </option>
-                    <option value="2">
-                        Cost option 2
-                    </option> -->
+
                 </select>
 
             </div>
@@ -60,7 +44,6 @@
 		<a class="btn btn-default default btn-outline orange pull-right" ng-click="createInvoiceFromEdit(invoiceTypeCreate)">
 	        Create Invoice
 	    </a>
-                <!-- ng-options="item as item.name for item in CM.listsCache.InvoiceType track by item.id" -->
 		<select class="form-control pull-right" style="width:200px;margin-right: 10px;" name="createInvoiceType" id="createInvoiceType" ng-model="invoiceTypeCreate" >
 			<option value="{{value}}" ng-repeat="(key, value) in CM.listsCache.InvoiceType" ng-disabled="value.name == 'FinalInvoice' && !formValues.canCreateFinalInvoice">{{value.name}}</option>
 		</select>

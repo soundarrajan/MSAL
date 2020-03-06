@@ -1,8 +1,7 @@
-<!-- <span ng-if="formValues.name" ng-init="setHeaderTitle()"></span> -->
+
 <span ng-if="formValues.order.id" ng-init="getRelatedDeliveries(formValues.order.id)"></span>
 <span ng-if="!formValues.order.id && !CM.entity_id" ng-init="getRelatedDeliveries(0,'new_delivery'); CM.selectedDelivery = 0"></span>
 
-<!-- {{relatedDeliveries}} -->
 <span ng-if="relatedDeliveries.length > 0" ng-init="setSelectedDelivery()"></span>
 <div class="deliveries_list">
     <div class="row" ng-init="end = CM.initCarouselStep('end'); start = CM.initCarouselStep('start')">
@@ -18,8 +17,7 @@
                 <div class="col-xs-6 col-md-3" ng-repeat="(key,delivery) in relatedDeliveries"  ng-show="$index >= start && $index < end+start">
                     <a ng-href="{{getRelatedDeliveryLink(delivery.deliveryId)}}">
                         <div class="order_tab" ng-class="CM.selectedDelivery == delivery.deliveryId ? 'selected' : ''" style="overflow: hidden;">
-                        <!-- <span ng-if="delivery.deliveryId == 0" ng-init="CM.selectedDelivery = delivery.deliveryId"></span> -->
-                        <!-- ng-click="CM.setSelectedDelivery(delivery.deliveryId)" -->
+
                             <div class="row">
                                 <div class="col-xs-12">
                                     <span>{{ CM.app_id + '.ORDER_ID' | translate }}</span>
@@ -31,7 +29,7 @@
                                 <div class="col-xs-12">
                                     <span>{{ CM.app_id + '.DELIVERY_ID' | translate }}</span>
                                     <span>{{delivery.deliveryNumber}}</span>
-                                    <!-- <span>{{delivery.deliveryId}}</span> -->
+
                                 </div>
                                 <div class="col-xs-12" ng-repeat="product in delivery.products">
                                     <span>{{ CM.app_id + '.PRODUCT' | translate }}</span>
@@ -40,7 +38,7 @@
                                 </div>
                                 <div class="col-xs-12">
                                     <span>{{ CM.app_id + '.DELIVERY_STATUS' | translate }}</span>
-                                    <!-- <span class="table_data bg-yellow-lemon bg-font-yellow-lemon delivery_result" ng-if="delivery.deliveryStatus">{{delivery.deliveryStatus}}</span> -->
+
                                     <span class="table_data delivery_result" style="background: {{ CM.getColorCodeFromLabels(delivery.deliveryStatus) }}" ng-if="delivery.deliveryStatus.displayName">{{delivery.deliveryStatus.displayName}}</span>
                                 </div>
                             </div>

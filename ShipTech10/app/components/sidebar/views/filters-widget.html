@@ -1,12 +1,10 @@
 <div id="filters-widget-scope" >
 
-<!-- <pre>{{$root.modal}}</pre> -->
     <span class="caption-subject filters_configuration" ng-init="getFiltersConfigurations(); getDefaultFiltersConfiguration()">
         Default Filters:
     </span>
 
     <div class="form_input">
-        <!-- <pre></pre> -->
         <select  tabindex="-1" ng-model="selectedConfig" class="form-control bs-select" name="configurations_list" id="configurations_list" ng-options="item as item.name for item in filtersConfigurations track by item.id"
             ng-change="loadSelectedConfig(true)">
             <option value="" disabled></option>
@@ -29,14 +27,5 @@
             </label>
         </div>
     </div>
-    <!-- <div class="buttons form_input">
-        <a class="btn btn-default  btn-outline mt-ladda-btn ladda-button orange" ng-click="createAndUpdateFilterConfig(selectedConfig.id,selectedConfig.name,$root.rawFilters,selectedConfig.isDefault,true);">
-            Save
-        </a>
-    </div> -->
-            <!-- <a class="btn btn-default  btn-outline mt-ladda-btn ladda-button orange" ng-click="deleteConfig(selectedConfig);">
-                Delete
-            </a>
- -->
 
 </div>

@@ -41,7 +41,7 @@
                 {{ 'Reports' | translate }}
             </a>
         </li>        
-        <!--         <li role="presentation"><a href="#ftp" aria-controls="home" role="tab" data-toggle="tab" ng-click="config_tab = 8">{{'FTP' | translate}}</a></li> -->
+
     </ul>
     <!-- Tab panes -->
 
@@ -132,7 +132,6 @@
                         <div class="form_input form_input_dateFormat" ng-init='options.TransactionDate ? return : CM.getOptions({"Name": "TransactionDate", "Type": "dropdown", "masterSource": "TransactionDate"})'>
                             <select name="dateFormat" class="form-control bs-select changeIT" id="dateFormat" ng-required="true" ng-options="item as item.name for item in options.TransactionDate track by item.id"
                                     ng-model="formValues.general.tenantFormats.dateFormat"></select>
-                            <!-- <input type="text" ng-required="true" class="form-control " name="dateFormat" id="dateFormat" ng-model="formValues.general.tenantFormats.dateFormat"/> -->
                         </div>
                     </div>
                 </div>
@@ -147,7 +146,6 @@
                         <div class="form_input form_input_emailDateFormat" ng-init='options.EmailDate ? return : CM.getOptions({"Name": "EmailDate", "Type": "dropdown", "masterSource": "EmailDate"})'>
                             <select name="emailDateFormat" class="form-control bs-select changeIT" id="emailDateFormat" ng-required="true" ng-options="item as item.name for item in options.EmailDate track by item.id"
                                     ng-model="formValues.general.tenantFormats.emailDateFormat"></select>
-                            <!-- <input type="text" ng-required="true" class="form-control " name="emailDateFormat" id="emailDateFormat" ng-model="formValues.general.tenantFormats.emailDateFormat"/> -->
                         </div>
                     </div>
                 </div>
@@ -178,7 +176,6 @@
                         <div class="input-group form_input form_input_csvDelimiter" ng-init='options.CsvDelimiter ? return : CM.getOptions({"Name": "CsvDelimiter", "Type": "dropdown", "masterSource": "CsvDelimiter"})'>
                             <select name="CsvDelimiter" class="form-control bs-select changeIT" id="CsvDelimiter" ng-required="true" ng-options="item as item.name for item in options.CsvDelimiter track by item.id"
                                     ng-model="formValues.general.tenantFormats.csvDelimiter"></select>
-                            <!-- <input type="text" name="csvDelimiter" class="form-control" ng-required="true" id="csvDelimiter"  ng-model="formValues.general.tenantFormats.csvDelimiter"/> -->
                         </div>
                     </div>
                 </div>
@@ -263,8 +260,7 @@
                                    typeahead-wait-ms="100" ng-required="true" name="uom" autocomplete="off" />
                             <span class="input-group-addon" ng-click="triggerModal('general', 'masters_uomlist', 'UOM', 'formValues.general.tenantFormats.uom');"
                                   ng-init="modal = false">
-                                <!-- triggerModal('general', 'masters_productlist', 'Product' , 'formValues.products.'+index_0+'.product'); -->
-                                <a class=" btn default">
+                               <a class=" btn default">
                                     <i class="fa fa-search"></i>
                                 </a>
                             </span>
@@ -822,19 +818,7 @@
                         </div>
                     </div>
                 </div>
-                <!--  <div class="col-md-4">
-                    <div class="form-group row">
-                        <label for="display" class="simpleLookupLabel" style="max-height: initial;">
-                            {{ CM.app_id + '.DISPLAY_NO_OF_SELLERS' | translate }}
-                            <span class="orange-txt">
-                                *
-                            </span>
-                        </label>
-                        <div class="input-group form_input form_input_display">
-                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in CM.listsCache.ItemsToDisplay track by item.id" ng-required="true" id="noOfSellersForDisplay" ng-model="formValues.procurement.offer.noOfSellersForDisplay"></select>
-                        </div>
-                    </div>
-                </div> -->
+
             </div>
             <div class="row">
                 <div class="col-md-4">
@@ -923,11 +907,7 @@
                                 class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-limit="5"
                                 typeahead-append-to-body="true" typeahead-wait-ms="100" name="counterpartyTypeFilterItemsInput"
                                 autocomplete="off" />
-                            <!-- <span class="input-group-addon" ng-click="triggerModal('general', 'masters_counterpartylist', 'Counterparty' , 'formValues.sellers.'+key+'.counterparty');" ng-init="modal = false">
-                                                                    <a   class=" btn default">
-                                                                        <i class="fa fa-search"></i>
-                                                                    </a>
-                                                                </span> -->
+
                             <span class="input-group-addon bg-default" ng-click="addCounterpartyTypeFilterItem(counterpartyTypeFilterItemsInput) ? '' : counterpartyTypeFilterItemsInput = null"
                                 style="border: 1px solid #c5cdda; cursor: pointer">
                                 &nbsp;&nbsp;
@@ -1023,10 +1003,7 @@
                                         </label>
                                     </td>
                                     <td class="padding">
-                                        <!-- <label class="mt-checkbox">
-                                            <input type="checkbox" ng-model="formValues.procurement.fieldVisibility.isBrokerMandatory" ng-click="formValues.procurement.fieldVisibility.isBrokerHidden = false"/>
-                                            <span></span>
-                                        </label> -->
+
                                     </td>
                                 </tr>
                                 <tr>
@@ -1223,15 +1200,14 @@
                                 typeahead-wait-ms="100" ng-required="true" name="Default Payment Company" autocomplete="off" />
                             <span class="input-group-addon" ng-click="triggerModal('general', 'masters_companylist', 'Company', 'formValues.procurement.order.defaultPaymentCompany');"
                                 ng-init="modal = false">
-                                <!-- triggerModal('general', 'masters_productlist', 'Product' , 'formValues.products.'+index_0+'.product'); -->
+
                                 <a   class=" btn default">
                                     <i class="fa fa-search"></i>
                                 </a>
                             </span>	
 
 
-            				<!-- <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.defaultCarrierIfNotPaymentCompany track by item.id"
-            				ng-required="true" id="defaultCarrierIfNotPaymentCompany" ng-model="formValues.procurement.order.defaultCarrierIfNotPaymentCompany"></select> -->
+
             			</div>
             		</div>
             	</div>
@@ -1324,22 +1300,6 @@
             </div>
         
 
-                <!-- <div class="col-md-4 ">
-                    <div class="form-group row">
-                        <label for="hideMinMax" class="simpleLookupLabel" style="max-height: initial;">
-                            {{ CM.app_id + '.HIDE_MIN_MAX' | translate }}
-                            <span class="orange-txt">
-                                *
-                            </span>
-                        </label>
-                        <div class="input-group form_input form_input_hideMinMax" ng-init='CM.getOptions({"Name": "hideMinMax", "Type": "dropdown", "masterSource": "YesNoOptions"})'>
-                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.hideMinMax track by item.id"
-                                ng-required="true" id="hideMinMax" ng-model="formValues.procurement.order.orderHideMinMax"></select>
-                        </div>
-                    </div>
-                </div> -->
-                <!-- needConfirmationEmail -->
-            <!-- </div> -->
             <div class="portlet">
                 <div class="portlet-title">
                     <span class="caption-subject ">

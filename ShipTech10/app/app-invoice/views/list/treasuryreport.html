@@ -12,9 +12,6 @@
     ],
     search: true,
 }"></general-header>
-<!--     primary: [
-    	{label: 'Save', special: true, url: '#', type: 'goto', method: 'saveTreasury()', extern: true}
-    ], -->
 
 <entity-edit-form elements='' structure=''></entity-edit-form>
 <div class="row row-invoice-amount-treasuryreport">
@@ -23,7 +20,6 @@
 		<span class="form-control" style="display: inline-flex; width: 200px;">
 			{{treasurySubtotal|number:3}}
 		</span>
-		<!-- <input class="form-input form-control" style="display:inline; width: auto" filter="number:3" ng-controller="Controller_Configurable_List_Control as CLC" ng-model="treasurySubtotal" readonly/> -->
 	</div>
 </div>
 <clc-table-list id="'invoices_treasuryreport'" app="'invoices'" screen="'treasuryreport'" controls="'[entries, columns, info, pager]'"></clc-table-list>

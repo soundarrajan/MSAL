@@ -10,7 +10,6 @@
                     <option></option>
                 </select>
             </div>
-            <!-- ng-change="calculateVarianceAndReconStatus(key)" -->
         </div>
     </div>
 
@@ -108,16 +107,14 @@
         </div>
     </div>
 
-	<!-- <span class="hidden">
-    	{{formValues.bargePumpingRateEndTime < formValues.bargePumpingRateStartTime ? formValues.bargePumpingRateEndTime = formValues.bargePumpingRateStartTime : ''}}
-	</span> -->
+
     <!-- pumping end -->
     <div class="col-md-4">
         <div class="form-group row">
             <label for="pumpingEnd" class="pumping_end_label">
                 {{ CM.app_id + '.PUMPING_END' | translate }}
             </label>
-             <!-- <span ng-init="setLimitForPickers('pumpingEnd',formValues.bargePumpingRateEndTime)" ng-if="formValues.bargePumpingRateEndTime"></span> -->
+
             <div class="form_input form_input_pumping_end">
                 <div class="input-group w100">
                     <input
@@ -147,7 +144,6 @@
             <label for="pumpingDuration" class="pumping_duration_label">
                 {{ CM.app_id + '.PUMPING_DURATION' | translate }}
 
-                <!-- {{ formValues.pumpingDuration }} -->
             </label>
             <div class="hidden">
 	            {{formValues.pumpingDuration = getTimeBetweenDates(formValues.bargePumpingRateStartTime, formValues.bargePumpingRateEndTime)}}

@@ -9,8 +9,7 @@
                 <div class="custom-form-group">
                     <label ng-if="field.Label" for="{{ field.Name }}" class="{{ field.Name }}_label">
 	                	<a ng-if="formValues.contacts.length > 1" class="st-btn-icon ng-scope pull-left" ng-click="CM.deleteContactFromMasterEdit(key,value,'counterparty')"><i class="fa fa-minus"></i></a>
-                        <!-- ng-click="value.id ? value.isDeleted = true : formValues.contacts.splice(key,1)" -->
-	                	&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;
                         {{ CM.app_id + '.CONTACT' | translate }}
                         <span  class="orange-txt ">
 			                *
@@ -37,9 +36,7 @@
                             </a>
                         </span>
                     </div>
-                    <!-- <div class="multi_lookup_tags tagsFor{{ field.Unique_ID }}">
-                        <input type="text" name="{{ field.Unique_ID }}{{$index}}" class="input-as-label form-control typeahead object_tagsinput_{{ field.Unique_ID }}" dynamic-model="'formValues.' + field.Unique_ID +'.id'"  ng-required='field.Required'/>
-                    </div> -->
+
                 </div>
             </div>
             <div class="col-md-4">
@@ -53,11 +50,7 @@
                     <div class="form_input form_input_{{ field.Unique_ID }}">
                         <div ng-class="$index == 0 ? 'input-group' : ''" class="w100">
                             <input type="text" class="form-control w100" id="Email" ng-model="formValues.contacts[$index]['email']" name="email_{{ $index }}" ng-blur="formValues.contacts[$index]['email'] = validateEmailPattern(formValues.contacts[$index]['email'])" ng-required="true"/>
-                        <!--     <span class="input-group-btn"  ng-if="$index == 0">
-                                <a   ng-click="formValues.contacts.push({isActive: true})" class="btn default">
-                                    <i class="fa fa-plus"></i>
-                                </a>
-                            </span> -->
+
                         </div>
                     </div>
                 <div class="contacts_btn">

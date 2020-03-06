@@ -28,8 +28,7 @@
                                             {{ CM.app_id + '.RESULT' | translate }}
                                         </label>
                                         <div class="input-group form_input form_input_price text-danger">
-                                            <!-- <h4><b>{{formValues.temp.variances['product_'+key]}}</b></h4> -->
-                                            <span class="form-control border-green-jungle bg-green-jungle bg-font-green-jungle" ng-if="formValues.temp.reconStatus['product_'+key] == 1">
+                                           <span class="form-control border-green-jungle bg-green-jungle bg-font-green-jungle" ng-if="formValues.temp.reconStatus['product_'+key] == 1">
                                                 Matched
                                             </span>
                                             <span class="form-control border-yellow-lemon bg-yellow-lemon bg-font-yellow-lemon" ng-if="formValues.temp.reconStatus['product_'+key] == 2">
@@ -83,7 +82,6 @@
                                         <div class="input-group form_input form_input_Product">
                                             <input  uib-typeahead="item as item.name for item in options.Product | filter:{name:$viewValue} | limitTo:10"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" id="{{ field.masterSource }}Product" name="Product_{{ key + 1 }}_delivered_product" ng-model="formValues.deliveryProducts[key].product"  autocomplete="off" ng-required="true"/>
                                             <span class="input-group-addon"  ng-click="triggerModal('general', 'masters_productlist', 'Product' , 'formValues.deliveryProducts.'+key+'.product','','',product, '');">
-                                                <!-- ng-click="triggerModal('general', 'masters_productlist', 'Product' , 'formValues.deliveryProducts.'+index_0+'.product');" -->
                                                 <a   class=" btn default">
                                                     <i class="fa fa-search"></i>
                                                 </a>

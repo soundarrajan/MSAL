@@ -220,26 +220,10 @@
 
 	<div class="row">
 	    <div class="portlet light stretch-vertical" style="padding-bottom: 0px;">
-	        <!--             <general-header actions="
-	            { primary: [ {label: 'Create rule', special: 'true', url: '#', method: 'triggerModal(\'alerts\')', extern:true}, ],
-	            secondary: [],
-	                icons: [
-	                    {class: 'export-xls', action: 'export_xls'},
-	                    {class: 'export-csv', action: 'export_csv'},
-	                    {class: 'export-pdf', action: 'export_pdf'},
-	                    {class: 'print', action: 'print'},
-	                ]
-	             }
-	            "></general-header> -->
+
 				
 				    <clc-table-list id="'procurement_contractplanning'" app="'procurement'" screen="'contractplanning'" controls="'[entries, columns, info, pager]'"></clc-table-list>
-				<!-- <div class="contract-planning-component-template" ng-if="$ctrl.resetContractPlaning"> -->
-				<!-- </div> -->
 
-	        <!--     <general-header actions="{ primary: [ {label: 'Create rule', special: 'true', url: '#', method: 'triggerModal(\'alerts\')', extern:true}, ], secondary: [], }" color="'white'"></general-header>
-	            <div ng-controller="Controller_Master as CM">
-	                <div ng-init="CM.delayaddHeadeActions()"></div> -->
-	        <!-- </div> -->
 	    </div>
 	</div>
 
@@ -247,9 +231,7 @@
 	<div class="row">
 	    <div class="st-main-content-menu bottom-menu">
 	        <div class="pull-right buttons">
-	            <!-- <a class="btn btn-default" ng-class="{'disabled': $ctrl.buttonsDisabled}" ng-click="$ctrl.sendContractPlanningEmail()">
-	                Send Email
-	            </a> -->
+
 	            <a class="btn btn-outline orange" ng-class="{'disabled': $ctrl.buttonsDisabled}" ng-click="$ctrl.saveContractPlanning(true, true)">
 	                Save and Send
 	            </a>
@@ -266,9 +248,7 @@
 
 	<contract-select-dialog class="modal fade in" id="selectContract" aria-hidden="true" data-width="80%" filters="$ctrl.contractFilters" on-contract-select="$ctrl.selectContract(contract)"></contract-select-dialog>
 	<product-select-dialog class="modal fade in" id="selectProduct" aria-hidden="true" data-width="80%" filters="$ctrl.productFilters" on-product-select="$ctrl.selectProduct(product)"></product-select-dialog>
-	<!--  this was commented from the start-->
-	<!-- <sellers-dialog class="modal fade in sellers-dialog"  id="sellers" aria-hidden="true" data-width="90%" seller-types="$ctrl.sellerTypeIds" filters="$ctrl.sellerFilters" on-seller-contract-select="$ctrl.selectSellerContract(sellerContract)"></sellers-dialog> -->
-	<!-- end this waas commented -->
+
 
 	<div class="modal fade in minmax-dialog" ng-controller="ContractPlanningController" id="minMaxModal" aria-hidden="true" data-width="40%">
 	    <div class="portlet light">

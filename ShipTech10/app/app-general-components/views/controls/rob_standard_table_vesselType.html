@@ -14,7 +14,7 @@
                 <div class="form-group row w100">
                     <div class="form_input no-label" class="w100">
                         <input ng-model="element.minQty" type="text" class="form-control " format="number:{{tenantSetting.defaultValues.quantityPrecision}}" name="hsfo_min" id="hsfo_min"  ng-change="triggerChangeFields(field.Name, field.Unique_ID)" >
-                        <!-- format="number:{{tenantSetting.defaultValues.quantityPrecision}}" -->
+
                     </div>
                 </div>                
             </td>
@@ -22,7 +22,7 @@
                 <div class="form-group row w100"> 
                     <div class="form_input no-label">
                         <input ng-model="element.maxQty" format="number:{{tenantSetting.defaultValues.quantityPrecision}}" type="text" class="form-control " name="hsfo_max" id="hsfo_max"  ng-change="triggerChangeFields(field.Name, field.Unique_ID)" >
-                        <!-- format="number:{{tenantSetting.defaultValues.quantityPrecision}}" -->
+
                     </div>
                 </div>         
             </td>
@@ -37,48 +37,5 @@
             </td>
         </tr>
     </table>
-    <!-- show this for new elements (force some rows, because for new elements you don't have any) -->
-    <!--
-    <table ng-if="!formValues.robs.keys" ng-init="initRobTable();">
-            <tr>
-                
-            </tr>
-            <tr>
-                <th></th>
-                <th class="rob-standard-head">Min QTY</th>
-                <th class="rob-standard-head">Max QTY</th>
-                <th class="rob-standard-head">UOM</th>
-            </tr>
-            <tr ng-repeat="(key,element) in formValues.robs;" >
-                    <td style="padding-right: 50px;">{{element.productType.name}}</td>
-                    <td>
-                        <div class="form-group row w100">
-                            <div class="form_input" class="w100">
-                                <input ng-required="1" ng-model=formValues.robs[key].minQty type="text" class="form-control " name={{element.productType.name}}_min id={{element.productType.name}}_min  ng-change="triggerChangeFields(field.Name, field.Unique_ID)" format="{{field.Filter}}">
-                            </div>
-                        </div>                
-                    </td>
-                    <td>
-                        <div class="form-group row w100"> 
-                            <div class="form_input">
-                                <input ng-required="1" ng-model=formValues.robs[key].maxQty type="text" class="form-control"  name={{element.productType.name}}_max id={{element.productType.name}}_min  ng-change="triggerChangeFields(field.Name, field.Unique_ID)" format="{{field.Filter}}">
-                            </div>
-                        </div>         
-                    </td>
-                    <td>
-                        <div class="form-group row">
-                            <select ng-required="true" ng-model=formValues.robs[key].uom.id  name={{element.productType.name}}_uom id={{element.productType.name}}_uom class="w100 form-control" ng-options="element.id as element.name for element in CM.listsCache.Uom">
-                                <option value={{element.id}}>
-                                    {{element.name}}
-                                </option>
-                            </select>
-                           
-                        </div>
-                    </td>
-                    <td>
-                      
-                    </td>
-                </tr>
-        </table>
-    -->
+
 </div>

@@ -15,7 +15,7 @@
 					<div><b class="col-sm-3">Address</b><div class="col-sm-9">{{$ctrl.blade.counterpartyData.address.addressLine1}}</div></div>
 					<div class="clearfix"></div>
 					<br>
-					<!-- <div><b class="col-sm-3">Phone</b><div class="col-sm-9">{{$ctrl.blade.counterpartyData.phone}}</div></div> -->
+
 				</div>
 			</div>
 			<div class="row">
@@ -57,7 +57,7 @@
 							            </span>
 								    </label>
 								    <div class="form_input col-sm-8 " >
-								        <!-- <input type="text" ng-model="CM.newContact.name" class="form-control" ng-required="true"> -->
+
 
 									<div class="input-group form_input form_input_ContactType">
 										<span ng-init="CM.newContact.contactType = {'id' : 1, 'name' : 'Trading'}"></span>
@@ -208,29 +208,26 @@
 					<div class="row ">
 						<div class="col-sm-8">
 							<div><b class="col-sm-3">Name</b><div class="col-sm-9">{{contact.name}}</div></div>
-							<div class="clearfix"></div><!-- <br> -->
+							<div class="clearfix"></div>
 							<div><b class="col-sm-3">Designation</b><div class="col-sm-9">{{contact.contactType.name}}</div></div>
-							<div class="clearfix"></div><!-- <br> -->
+							<div class="clearfix"></div>
 							<div><b class="col-sm-3">Email</b><div class="col-sm-9">{{contact.email}}</div></div>
-							<div class="clearfix"></div><!-- <br> -->
+							<div class="clearfix"></div>
 							<div><b class="col-sm-3">Phone</b><div class="col-sm-9">{{contact.phoneNo}}</div></div>
-							<div class="clearfix"></div><!-- <br> -->
+							<div class="clearfix"></div>
 							<div><b class="col-sm-3">Mobile</b><div class="col-sm-9">{{contact.mobileNo}}</div></div>
-							<div class="clearfix"></div><!-- <br> -->
+							<div class="clearfix"></div>
 							<div><b class="col-sm-3">IM</b><div class="col-sm-9">{{contact.instantMessengerAddress}}</div></div>
 						</div>
 						<div class="col-sm-4">
 					        <label class="mt-checkbox">
-					            <!--{{options[field.Name][key].id}}-->
+
 					            <input type="checkbox" ng-disabled="!CM.addNewContact" ng-model="contact.emailContact" />
 					            <span></span>
 					            Email contact
 					        </label>
-							<div class="clearfix"></div><!-- <br> -->
-					        <!-- <label class="mt-checkbox">
-					            <input type="checkbox" ng-disabled="!addNewContact"/>
-					            <span></span>
-					        </label> -->
+							<div class="clearfix"></div>
+
 						</div>
 					</div>
 				</div>

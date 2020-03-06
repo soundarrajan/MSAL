@@ -1,13 +1,9 @@
-<!--
-    {{ $ctrl.displayLocations | filter:{requestId:$ctrl.active_req} }}
--->
-<!-- {{$ctrl.activeRFQ}} -->
-<!-- {{$ctrl.activeRFQ}} -->
+
 <div ng-repeat="(k,package) in $ctrl.packagesOffers  track by $index" class="row">
        <div class="col-md-12">
               <!-- PRODUCT TABLE -->
               <div class="portlet light stretch-vertical grey_portlet" ng-repeat="rfq in package.rfqs" ng-if="$ctrl.activeRFQ == rfq.rfq.id || ($ctrl.activeRFQ == 'surrogate' && rfq.rfq == null )">
-                     <!-- ## {{rfq.rfq.id}} ## -->
+
 
            <span >
               <div class="portlet-title">
@@ -38,7 +34,7 @@
                                   </div>
 
                                    </span>
-                                   <!--     <b> - {{package.rand}}</b> -->
+
                             </span>
                      </div>
               </div>
@@ -110,24 +106,20 @@
                                                         <input type="checkbox" ng-model="$ctrl.productTableNoQuoteCheckAll[req.request.locations[0].rand]" ng-change="$ctrl.productTableNoQuoteCheckAllChanged(req.request.locations[0], $ctrl.productTableNoQuoteCheckAll[req.request.locations[0].rand])" />
                                                         <span></span>
                                                  </label>
-                                                 <!-- <pre>{{req.request.locations[0].rand}}</pre> -->
+
                                                  <div class="input-group form_input ">
                                                         <div class="input-group">
                                                                <select ng-options="reason as reason.name for reason in $ctrl.reasons track by reason.id" ng-model="$ctrl.noQuoteReason[req.request.locations[0].rand]" class="form-control" ng-disabled="!$ctrl.productTableNoQuoteCheckAll[req.request.locations[0].rand]" ng-change="$ctrl.mainReasonChanged($ctrl.noQuoteReason[req.request.locations[0].rand], req.request.locations[0])" ng-required="$ctrl.productTableNoQuoteCheckAll[req.request.locations[0].rand]"></select>
                                                         </div>
                                                  </div>
-                    <!-- <a data-toggle="modal" href="#last_offer_prices" ng-click="$ctrl.setLatestOfferParams(req.request.locations[0])">
-                                 <u>
-                                     Price History
-                                 </u>
-                          </a> -->
+
                    </div>
             </div>
             <div class="row">
               <div class="col-sm-9">
                      <div class="row">
                             <div class="col-sm-4 mb" ng-repeat="(skey, svalue)  in req.request.locations[0].products ">
-                                   <!-- <pre>{{svalue}}</pre> -->
+
                                    <div class="small-card bg-grey-steel orange-border">
                                           <p>
                                                  <b>
@@ -249,17 +241,6 @@
                                                                <div class="input-group">
                                                                       <input class="form-control" type="number" ng-model="product.sellers[0].offers[0].price" st-number-format="{{ $ctrl.numberPrecision.pricePrecision }}" ng-change="$ctrl.productPriceChanged(product, req.request.locations[0])" ng-required="!product.sellers[0].offers[0].hasNoQuote" name="{{ $ctrl.productColumns.Price.name }}" ng-disabled="$ctrl.tenantQuoteDisabled || product.sellers[0].offers[0].hasNoQuote" />
                                                                       <div class="input-group-btn">
-<!--                                                                                       <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ng-disabled="{{ $ctrl.tenantQuoteDisabled }}">
-                                                                                                  {{ product.sellers[0].offers[0].priceQuantityUom.name }}
-                                                                                                  <span class="caret"></span>
-                                                                                           </button>
-                                                                                           <ul class="dropdown-menu pull-right">
-                                                                                                  <li ng-repeat="uom in $ctrl.lists.Uom" ng-click="$ctrl.updateModel(product.sellers[0].offers[0].priceQuantityUom, uom);$ctrl.productUomChanged(product, req.request.locations[0])">
-                                                                                                         <a>
-                                                                                                                {{ uom.name }}
-                                                                                                         </a>
-                                                                                                  </li>
-                                                                                           </ul> -->
                                                                                            <select name="" id="" class="form-control no-padding"
                                                                                            ng-model="product.sellers[0].offers[0].priceQuantityUom"
                                                                                            ng-options="uom as uom.name for uom in $ctrl.lists.Uom track by uom.id"

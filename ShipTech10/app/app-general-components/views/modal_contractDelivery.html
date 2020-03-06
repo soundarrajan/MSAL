@@ -1,5 +1,4 @@
 <div class="clearfix"></div>
-<!-- {{selectedRowData}} -->
 
 
 <span ng-if="triggerContractDeliveryModalType == 'mtm' || triggerContractDeliveryModalType == 'price' ">
@@ -10,8 +9,7 @@
 		<li class="last-item" style="float: right;">
 			<span ng-if="config_tab == 1"><b>Last evaluation date <span ng-bind="CM.formatDateTime(contractProductDeliveryPriceModalData.lastEvaluationDate, null, 'default')"></span></b></span>
 			<span ng-if="config_tab == 2"><b>Last evaluation date <span ng-bind="CM.formatDateTime(contractProductDeliveryMtmModalData.lastEvaluationDate, null, 'default')"></span></b></span>
-			<!-- {{selectedRowData.deliveryId}} -->
-			<!-- {{selectedRowData}} -->
+
 			<span class="btn btn-default  btn-outline mt-ladda-btn ladda-button ng-scope" ng-disabled="selectedRowData.deliveryId != null" ng-click="selectedRowData.deliveryId != null ? '' : saveContractDeliveryModal(config_tab)">Save</span>
 			<button type="button" style="margin-left: 25px;" class="close" ng-click="prettyCloseModal()" aria-hidden="true"></button>
 		</li>	
@@ -25,11 +23,7 @@
 			<div class="form-group">
 				<label for="systemInstruments" class="control-label" style="float: left; margin-right: 25px;">Instrument Name</label>
 				<b>{{contractProductDeliveryPriceModalData.systemInstruments}}</b>
-				
-				<!-- <div class="input-group form_input">
-					<select name="systemInstruments"   id="systemInstruments" class="form-control" ng-model="selectedSystemInstrumentPrice" ng-options="item as item.systemInstrument.name for item in contractProductDeliveryPriceModalData.systemInstruments track by item.systemInstrument.id">
-					</select>
-				</div> -->
+
 			</div>
 			<div class="custom-hardcoded-table">
 				<table  class="table-body" width="100%">
@@ -47,7 +41,7 @@
 						<tr ng-repeat="(key, value) in contractProductDeliveryPriceModalData.schedule">
 							<td class="padding">
 								{{ CM.formatSimpleDate(value.quantity.quoteDate) }}
-								<!-- <span ng-bind="CM.formatDateTime(value.quantity.quoteDate, null, 'default')" ></span> -->
+
 							</td>
 							<td ng-class="selectedRowData.deliveryId != 0 ? '' : 'padding' ">
 								<span ng-if="selectedRowData.deliveryId == 0">{{value.quantity.splittedQuantity| number : 3 }}</span>
@@ -96,10 +90,7 @@
 			<div class="form-group">
 				<label for="systemInstruments" class="control-label" style="float: left; margin-right: 25px;">Instrument Name</label>
 				<b>{{contractProductDeliveryMtmModalData.systemInstruments}}</b>
-				<!-- <div class="input-group form_input">
-					<select name="systemInstruments" ng-change="convertProductDeliveryQuantities('mtm', selectedSystemInstrumentMtm)" id="systemInstruments" class="form-control" ng-model="selectedSystemInstrumentMtm" ng-options="item as item.systemInstrument.name for item in contractProductDeliveryMtmModalData.systemInstruments track by item.systemInstrument.id">
-					</select>
-				</div> -->
+
 			</div>
 			<div class="custom-hardcoded-table">
 				<table  class="table-body" width="100%">
@@ -117,7 +108,7 @@
 						<tr ng-repeat="(key, value) in contractProductDeliveryMtmModalData.schedule">
 							<td class="padding">
 								{{ CM.formatSimpleDate(value.quantity.quoteDate) }}
-								<!-- <span ng-bind="CM.formatDateTime(value.quantity.quoteDate, null, 'default')"></span> -->
+
 							</td>
 							<td ng-class="selectedRowData.deliveryId != 0 ? '' : 'padding' ">
 								<span ng-if="selectedRowData.deliveryId == 0">{{value.quantity.splittedQuantity}}</span>
@@ -176,7 +167,7 @@
 		<hr>		
 	</span>
 	<span ng-init="currentPage = 1; getContractProductDeliveryExposureModalData(selectedRowData, currentPage)"></span>
-	<!-- {{contractProductDeliveryExposureModalData}} -->
+
 			<div class="custom-hardcoded-table">
 				<table  class="table-body">
 					<thead>
@@ -218,7 +209,5 @@
 					</tbody>
 				</table>
 			</div>
-<!-- 			{{exposureMtmQuantitiesSystemInstruments}} **
-			<br>
-			{{exposurePriceQuantitiesSystemInstruments}} -->
+
 </span>

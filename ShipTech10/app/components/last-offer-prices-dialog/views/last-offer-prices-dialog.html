@@ -40,8 +40,7 @@
 	        	<span class="hidden" ng-if="!$ctrl.hasOmittedProduct">
 		        	{{$ctrl.data[0].sellerComments = null}}
 	        	</span>
-	            <!-- <textarea rows="3" class="form-control" style="max-width:100%; min-width: 100%;">{{$ctrl.selectedItem.sellerComments}}</textarea> -->
-	            <textarea rows="3" ng-disabled="!$ctrl.hasOmittedProduct" class="form-control" style="max-width:100%; min-width: 100%;" ng-model="$ctrl.omittedSellerComments"></textarea>
+	           <textarea rows="3" ng-disabled="!$ctrl.hasOmittedProduct" class="form-control" style="max-width:100%; min-width: 100%;" ng-model="$ctrl.omittedSellerComments"></textarea>
 	        </div>
     	</div>
     </div>

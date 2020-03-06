@@ -1,7 +1,6 @@
 <div class="blade-column-title main text-uppercase">
     Energy Content
 </div>
-<!-- {{$ctrl.active_prod.products[0]}} -->
 
 <div class="dynamic_form_editor"  >
     <div class="portlet light"  style="margin-bottom:0">
@@ -25,7 +24,6 @@
         </div>
 
         <div class="portlet-body" ng-init="display=3;offset=0;ctrl.req_cards = 'small'">
-            <!-- {{ $ctrl.requests[0].locations | filter : {location:{id:$ctrl.active_req } }; }} -->
             <span ng-include="'components/blade/templates/req_cards.html'"></span>
             <div class="energy_input_group  ">
                 <div class="row energy_disabled">
@@ -152,11 +150,7 @@
                             6 Months History
                         </a>
                     </li>
-<!--                     <li>
-                        <a data-toggle="tab" href="#comm">
-                            Comments
-                        </a>
-                    </li> -->
+
                 </ul>
                 <div class="tab-content">
                     <div id="prod_det" class="tab-pane fade in active" ng-init="field={id:'paramsBlade'}">

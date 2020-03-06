@@ -26,7 +26,6 @@
                state.is(STATE.DASHBOARD_CALENDAR) || 
                state.is(STATE.DASHBOARD_TIMELINE) || 
                state.is(STATE.HOME)">
-        <!-- <a class="btn btn-fit-height dropdown-toggle" ng-show="visibleSidebarToggle()"> -->
 
             <span class="hidden">{{CheckForFilters}}</span>
         <span class="refresh-icon"><a ng-click="broadcastRefreshData()"><i class="fa fa-refresh fa-2x"></i></a></span>
@@ -59,7 +58,7 @@
                         </span>
                     </div>
                     <div class="caption clickable center-line" ng-class="{'center-line': status.statusDisplayName.indexOf(' ') < 0}" style="margin-bottom: 10px;" >
-                        <!--{{status.name}}-->
+
                          {{status.statusDisplayName}} 
                     </div>
                 </li>
@@ -75,7 +74,7 @@
                             {{ status.count }}
                         </span>
                     </div>                    <div class="caption clickable center-line" ng-class="{'center-line': status.statusDisplayName.indexOf(' ') < 0}" style="margin-bottom: 10px;">
-                        <!--{{status.name}}-->
+
                         {{ status.statusDisplayName }}
                     </div>
                 </li>

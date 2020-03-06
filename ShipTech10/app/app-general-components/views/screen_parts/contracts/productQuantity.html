@@ -57,14 +57,9 @@
                 </td>
                 <td width="16%">
                     <div class=" " ng-init='options.Uom ? return : CM.getOptions({"Name": "Uom", "Type": "dropdowm", "masterSource": "Uom"});'>
-                    	<!-- {{options.Uom}} -->
+
                         <select name="Product_{{ index_0 }}_Product_Quantity_{{ key+1 }}_UOM" ng-model="value.uom"  data-container="body" class="form-control bs-select changeIT" ng-options="item as item.name for item in CM.listsCache.Uom track by item.id"></select>
-                        <!--  <input name="Product_{{ index_0 }}_Product_Quantity_{{ key+1 }}_UOM" ng-model="value.uom" uib-typeahead="item as item.name for item in options.Uom | filter:{name:$viewValue}"  class="form-control w100" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" ng-required="true" name="{{ field.Name }}"  autocomplete="off"/>
-                                                <span class="input-group-addon" ng-click="triggerModal('general', 'masters_uomlist', 'uom' , 'formValues.products.'+index_0+'.details.'+key+'.uom');">
-                                                    <a   class=" btn default">
-                                                        <i class="fa fa-search"></i>
-                                                    </a>
-                                                </span>  -->
+
                     </div>
                 </td>
                 <td width="16%">

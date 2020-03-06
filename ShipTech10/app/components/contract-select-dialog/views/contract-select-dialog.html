@@ -3,14 +3,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
         <div class="form-inline pull-right">
             <a href="" class="link-underline-light" ng-click="state.go(STATE.CONTRACT_EVALUATION)"  data-dismiss="modal">Go to Contracts Evaluation</a>
-            <!-- <div class="form-group">
-                <div class="input-group st-content-search-box">
-                    <div id="search_box_dummy_contract"></div>
-                    <span class="input-group-addon">
-                        <i class="fa fa-search"></i>
-                    </span>
-                </div>
-            </div> -->
+
             <div class="form-group" style="margin-right: 15px">
                 <a class="btn btn-outline orange" ng-click="$ctrl.confirmContractSelection()" data-dismiss="modal">Select</a>
             </div>
@@ -28,7 +21,7 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- {{ctr.data[0].contractName}} -->
+
                 <tr ng-repeat="row in $ctrl.data track by $index">
                         <td>
                             <label class="mt-checkbox mt-checkbox-outline">

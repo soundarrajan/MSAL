@@ -1,6 +1,5 @@
 <div class="ui-grid-cell-contents status" ng-controller="Controller_Master as CM" ng-init="rIndex = grid.appScope.rowIdx(row) ? grid.appScope.rowIdx(row) : 0; rowObj =  grid.appScope.fVal().formValues.labTestResults[rIndex]" style="background: {{ CM.getColorCodeFromLabels(rowObj.claimsRaisedStatus) }}">
   <div>
-    <!-- {{rowObj}} -->
     <!-- new -->
     <div ng-if="rowObj">
       <span class="formatter lab_recon_status labs_result">

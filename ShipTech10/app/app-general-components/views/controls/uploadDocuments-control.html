@@ -1,18 +1,4 @@
-<!--
-    <div class="form-group  form-inline ">
-        <div  id="{{ field.Name }}" class="pull-left" style="position:relative; width: 100%">
-            <input type='file' id="fileUpload" class="inputfile" ng-model='logo' ng-click="updateFileUploadControl(logo)" style="opacity: 0"/>
-            <label for="fileUpload">
-                <p class="col-sm-3">
-                    Choose File
-                </p>
-                <span class="col-sm-9">
-                    ...
-                </span>
-            </label>
-        </div>
-    </div>
--->
+
 <div class="form-group  form-inline " ng-init="CM.getDocumentTypesFiltered();">
     <div class="col-sm-6"  ng-click="clickUpload()">
         <div class="dropzone-file-area" id="{{ field.Name }}" imagedrop  on-image-drop="dropDocument(uploadedFile )">
@@ -24,9 +10,7 @@
     <div class="col-md-6">
         <input type='file' id="fileUpload" class="inputfile" ng-model='droppedDoc' style="opacity: 0"/>
         <label for="fileUpload">
-            <!--        <p class="col-sm-3">
-                       Choose File
-                   </p> -->
+
             <div class="col-sm-9">
                 <div class="fileNameLabel">
                     {{ droppedDoc.name }}

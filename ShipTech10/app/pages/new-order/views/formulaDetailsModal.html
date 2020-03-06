@@ -8,7 +8,7 @@
         </div>
         <hr />
     </span>
-    <!-- {{$ctrl.formulaDetailsData}} -->
+
     <div class="row">
         <div class="col-sm-4">
             <b>
@@ -24,7 +24,7 @@
         <div class="col-sm-4">
             <b>
             	ETA : 
-                <!-- {{ 'PAGES.NEW_ORDER.ETA' | translate }} : -->
+
             </b>
             <span ng-controller="Controller_Master as CM">
                 {{ CM.formatDateTime($ctrl.formulaDetailsData.eta,null,'eta') }}
@@ -55,16 +55,7 @@
             {{ $ctrl.formulaDetailsData.formula.name }}
         </div>
     </div>
-    <!--     <div class="row">
-            <div class="col-sm-4">
-                <b>
-                    {{ 'PAGES.NEW_ORDER.PRICING_DATE' | translate }} :
-                </b>
-                <span ng-controller="Controller_Master as CM">
-                    {{ CM.formatSimpleDate($ctrl.formulaDetailsData.pricingDate) }}
-                </span>
-            </div>
-        </div> -->
+
     <br />
     <br />
     <div class="row">
@@ -121,32 +112,7 @@
                     </td>
                 </tr>
             </thead>
-           <!--  <tbody>
-                <tr ng-repeat="(key, value) in $ctrl.productPrices">
-                    <td class="padding">
-                        <span ng-controller="Controller_Master as CM">
-                            {{ CM.formatSimpleDate(value.quantity.quoteDate) }}
-                        </span>
-                    </td>
-                    <td class="padding">
-                        {{ value.price| number : $ctrl.pricePrecision }}
-                    </td>
-                    <td class="padding">
-                        {{ value.premium| number : $ctrl.pricePrecision }}
-                    </td>
-                    <td class="padding">
-                        {{ value.premium + value.price | number : $ctrl.pricePrecision }}
-                    </td>
-                    <td class="padding">
-                        {{ value.quantity.splittedQuantity | number : $ctrl.quantityPrecision }} {{ $ctrl.formulaDetailsData.quantityUom.name }}
-                    </td>
-                    <td class="padding">
-                        <span ng-controller="Controller_Master as CM">
-                            {{ CM.formatSimpleDate(value.data.pricingDate) }}
-                        </span>
-                    </td>
-                </tr>
-            </tbody> -->
+
             <tbody>
                 <tr ng-repeat="(key, value) in $ctrl.productPrices">
                     <td class="padding">

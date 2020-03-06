@@ -53,7 +53,7 @@
                     </td>
                     <td>
                         {{ item.confirmedQuantity * (item.conversionFactorToUomOfPriceFromContract ? item.conversionFactorToUomOfPriceFromContract * item.offerPrice : item.offerPrice)| number:3 }}
-                        <!-- {{item}} -->
+
                     </td>
                     <td>
                         {{ item.physicalSupplierName }}
@@ -76,7 +76,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="item in $ctrl.availableContractItems track by $index" ng-if="$index < 10">
-                        <!-- <td>{{$index}}</td> -->
+
                         <td>
                             {{ item.seller.name }}
                         </td>
@@ -140,30 +140,10 @@
         </h4>
     </div>
     <div class="modal-body">
-    	 <!-- {{ctrl.BEvalidationMessages}} -->
-    	<!-- <div ng-repeat="(key, message) in $ctrl.BEvalidationMessages">{{message}}</div> -->
+
+
     	<div ng-repeat="message in $ctrl.BEvalidationMessages track by $index">{{message}}</div>
-<!--         <div id="termCtrWarning">
-            Term Contracts are available for this Port & Product. Do you still want to confirm this Offer?
-        </div>
-        <div id="betterOffWarning">
-            Better Offer available for this Port & Product. Do you still want to confirm this Offer?
-        </div>
-        <div id="lessMinWarning">
-            Confirmed quantity is less than the Min Qty. Do you still want to confirm this Offer?
-        </div>
-        <div id="grMaxWarning">
-            Confirmed quantity is greater than the Max Qty. Do you still want to confirm this Offer?
-        </div>
-        <div id="grMaxWarningS">
-            Validity of the offer is expired. Do you still want to confirm this Offer?
-        </div>
-        <div id="grMaxWarningH">
-            Validity of the offer is expired. You cannot confirm the offer!
-        </div>
-        <div id="grAvailableQty">
-            Confirmed quantity is greater than the term contract available quantity. Do you still want to confirm this Offer?
-        </div> -->
+
     </div>
     <div class="modal-footer" ng-show="!$ctrl.isHardStop">
         <button type="button" data-dismiss="modal" class="btn btn-outline orange" ng-click="$ctrl.confirmOffers(false);" ng-disabled="$ctrl.buttonsDisabled">

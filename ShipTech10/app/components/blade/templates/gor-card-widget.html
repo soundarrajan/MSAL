@@ -19,23 +19,12 @@
             </span>
 
             {{ $ctrl.sellers[$ctrl.blade.counterpartyActiveSeller.sellerCounterparty.id].sellerRating }}
-            <!-- <span style="position:relative">
-                <a>
-                    <i class="fa fa-users font-dark" ng-click="showContactNo = !showContactNo"></i>
-                </a>
-                <span ng-click="showContactNo = !showContactNo" ng-if="showContactNo" class="showContactNoToolTip">
-                    Contact: Name
-                    <b>
-                        987.64.31
-                    </b>
-                </span>
-            </span> -->
+
         </div>
 
     </div>
 </div>
 
-<!-- <seller-card source="$ctrl.blade.supplierCardData" activerequestid="$ctrl.supplierCardActiveRequestId"></seller-card>		 -->
 <span ng-if="!$ctrl.cannotViewSellerCard">
 	<supplier-portal source="$ctrl.blade.supplierCardData" initdata="$ctrl.blade.cardInitData"></supplier-portal>		
 </span>

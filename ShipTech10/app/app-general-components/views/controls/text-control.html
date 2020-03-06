@@ -17,5 +17,3 @@
         <input type="text" compute-formula="$eval(field.Formula)" class="form-control " name="{{ field.Name }}" id="{{ field.Name }}"  dynamic-model="'formValues.' + field.Unique_ID " ng-required='$eval(field.Required) > 0 || field.Required == true ? true : false  && isVisible(field.masterSource + field.Name)' dynamic-condition="{{field.Conditional}}" dynamic-condition-type="{{field.ConditionalType}}" ng-class="CM.invalid_form ? 'ng-touched' : ''" ng-disabled="$eval(field.Disabled) == true || field.Disabled == true ? true : false"  dynamic-pattern="{{field.Pattern}}"  ng-change="triggerChangeFields(field.Name, field.Unique_ID)" format="{{field.Filter}}" unique-id="{{field.Unique_ID}}">
     </div>
 </div>
-
-<!-- <div id="field-errors" ng-if="CM.editInstance[field.Name].$error.pattern" ng-init="triggerError(  CM.app_id + '.'+ field.Label | translate, CM.editInstance[field.Name])"></div> -->

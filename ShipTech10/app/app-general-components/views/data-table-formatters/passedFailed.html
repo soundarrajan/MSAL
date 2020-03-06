@@ -16,12 +16,11 @@
                     </span>
                 </span>
             </div>
-            <!-- </div> -->
+
 
         </div>
         <div ng-if="col.colDef.template == 2" class="ui-grid-cell-contents" ng-init="rowObj =  grid.appScope.fVal().formValues.orderRelatedLabResults[rIndex]">
-            <!-- <div ng-controller="Controller_Master as CM"> -->
-            <!-- {{rowObj}} -->
+
             <div ng-if="rowObj">
                 <span class="formatter lab_recon_status labs_result passed" ng-if="rowObj.reconStatus.id == 1">
                     <span ng-repeat="(key,val) in CM.listsCache.QualityMatch" ng-if="val.name == 'Passed'">

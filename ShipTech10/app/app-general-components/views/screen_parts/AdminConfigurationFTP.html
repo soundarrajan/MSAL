@@ -40,8 +40,7 @@
                                     {{ CM.app_id + '.SCREEN' | translate }}
                                 </label>
                                 <div class="input-group form_input form_input_screen">
-                                    <!-- <select class="form-control bs-select changeIT" ng-init='CM.getOptions({"Name": "Screen", "Type": "dropdown", "masterSource": "Screen"})'ng-options="item as item.name for item in (options.Screen | filter:{ application: formValues.FTP.Upload.Module })[0].transactions track by item.id " ng-required="true" id="screen" ng-model="formValues.FTP.Upload.Screen"></select> -->
-                                    <select class="form-control bs-select changeIT" ng-options="item as item.name for item in formValues.FTP.Upload.Module.transactions track by item.id " ng-required="true" id="screen" ng-model="formValues.FTP.Upload.Screen"></select>
+                                   <select class="form-control bs-select changeIT" ng-options="item as item.name for item in formValues.FTP.Upload.Module.transactions track by item.id " ng-required="true" id="screen" ng-model="formValues.FTP.Upload.Screen"></select>
                                 </div>
                             </div>
                         </div>
@@ -83,7 +82,6 @@
                 </span>
             </div>
         </div>
-        <!-- <div class="col-sm-12" ng-init="CM.datepickers('ftpdate',false,'date')"> -->
         <div class="col-sm-12" ng-init="setFTPDatepickers()">
             <div class="row">
                 <div class="col-md-3">
@@ -96,7 +94,6 @@
                             <div class="input-group date-picker date form_meridian_datetime" ng-class="field.disabled ? 'disabled' : ''" id="firstDateDP">
                                 <input class="form-control" type="text" id="uploadFirstDate" ng-model="formValues.FTP.Upload.AddSchedule.FirstDate" ng-required="true" ng-change="firstDateChange();"/>
                                 <span class="formatted-date">{{formValues.FTP.Upload.AddSchedule.FirstDate | date : 'shortDate'}}</span>
-                                <!-- "CM.formatDateTime(formValues.FTP.Upload.AddSchedule.FirstDate,'yyyy-mm-dd')" -->
                                 <span class="input-group-btn">
                                     <button class="btn default date-set" type="button">
                                         <i class="fa fa-calendar"></i>
@@ -120,8 +117,7 @@
                             <div class="input-group date-picker date form_meridian_datetime" ng-class="field.disabled ? 'disabled' : ''" id="exDateDP">
                                 <input class="form-control" type="text" id="uploadExDate" ng-model="formValues.FTP.Upload.AddSchedule.ExDate" ng-required="true"/>
                                 <span class="formatted-date">{{formValues.FTP.Upload.AddSchedule.ExDate | date : 'shortDate'}}</span>
-                                 <!-- ng-bind="CM.formatDateTime(formValues.FTP.Upload.AddSchedule.ExDate, 'mediumDate')" -->
-                                <span class="input-group-btn">
+                                 <span class="input-group-btn">
                                     <button class="btn default date-set" type="button">
                                         <i class="fa fa-calendar"></i>
                                     </button>
@@ -145,20 +141,13 @@
                                 <input class="form-control" type="text" id="time" ng-model="formValues.FTP.Upload.AddSchedule.Time" ng-required="true"/>
                                 <span class="formatted-date">
                                 {{formValues.FTP.Upload.AddSchedule.Time  | date : 'h:mm a'}}</span>
-                                <!-- "CM.formatDateTime(formValues.FTP.Upload.AddSchedule.Time,'h:mm a')" -->
-                                <span class="input-group-btn">
+                               <span class="input-group-btn">
                                     <button class="btn default date-set" type="button">
                                         <i class="fa fa-clock-o" aria-hidden="true"></i>
                                     </button>
                                 </span>
                             </div>
-                            <!-- <div class="input-group form_input"  class="simpleLookupLabel">
-                                <div class="form-control" time-picker ng-model="formValues.FTP.Upload.AddSchedule.Time" ng-change="schedulerTimeChange()">
-                                    <input type="number" class="hours" min="0" max="23" class="form-control"/>
-                                    :
-                                    <input type="number" class="minutes" min="0" max="59" class="form-control"/>
-                                </div>
-                            </div> -->
+
                             <span class="help-block">
                                 {{ field.Description }}
                             </span>
@@ -245,7 +234,6 @@
                                         {{ CM.app_id + '.SCREEN' | translate }}
                                     </label>
                                     <div class="input-group form_input form_input_screen">
-                                        <!-- <select class="form-control bs-select changeIT" ng-options="item as item.name for item in (options.Screen | filter:{ application.name: formValues.FTP.Download.Module.application.name })[0].transactions track by item.id " ng-required="true" id="screen" ng-model="formValues.FTP.Download.Screen" ng-change='CM.getOptions({"Name": "TransactionStatus", "Type": "dropdown", "masterSource": "TransactionStatus", "application": formValues.FTP.Download.Module, "transaction": formValues.FTP.Download.Screen})'></select> -->
                                         <select class="form-control bs-select changeIT" ng-options="item as item.name for item in formValues.FTP.Download.Module.transactions track by item.id " ng-required="true" id="screen" ng-model="formValues.FTP.Download.Screen" ng-change='CM.getOptions({"Name": "TransactionStatus", "Type": "dropdown", "masterSource": "TransactionStatus", "application": formValues.FTP.Download.Module, "transaction": formValues.FTP.Download.Screen})'></select>
                                     </div>
                                 </div>
@@ -324,11 +312,7 @@
                                 </div>
                                 <!-- end transaction status -->
                             </div>
-                            <!-- <div class="col-md-12">
-                                <button type="submit" class="downlodownloadFtpFormad-btn btn btn-default btn-outline orange" ng-disabled="downloadFtpForm.$invalid" ng-click="downloadFTP(formValues.FTP.Download, tenantSetting.tenantFormats.timeZone.name)">Download</button>
-                                Invalid form: {{downloadFtpForm.$invalid}}
-                                <button class="cancel-btn btn btn-default btn-outline gray">Cancel</button>
-                            </div> -->
+
                         </div>
                     </div>
                 </div>

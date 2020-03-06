@@ -36,11 +36,7 @@
                         Currency
                     </b>
                 </td>
-<!--                 <td width="12%">
-                    <b>
-                        Comment
-                    </b>
-                </td>  -->                               
+
             </tr>
         </thead>
         <tbody>
@@ -50,7 +46,7 @@
                 </td>
                 <td width="2%">
                     <span class="insert" ng-click="formValues.additionalCosts.push({id:0})"></span>
-                    <!-- {{value.id}} -->
+
                 </td>
                 <td width="12%">
                     <select name="Item Name" class="form-control" ng-options="item as item.name for item in CM.listsCache.AdditionalCost track by item.id " ng-change="value.costType = setDefaultCostType(value.additionalCost)" ng-model="value.additionalCost"></select>
@@ -73,9 +69,7 @@
                 <td width="12%">
 					<select name="Currency" class="form-control" ng-options="item as item.name for item in CM.listsCache.Currency track by item.id " ng-model="value.currency"></select>
                 </td>
-                <!-- <td width="12%">
-                                                    <input name="Comment" class="form-control" ng-model="value.comment">
-                                                </td> -->                                
+
             </tr>
         </tbody>
     </table>

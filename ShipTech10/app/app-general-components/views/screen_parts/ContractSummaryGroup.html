@@ -7,7 +7,7 @@
                 </div>
                 <h2>
                 <!-- Confirmed -->
-                <!--    {{formValues.status.name}} -->
+
                 {{formValues.status.displayName}}
                 </h2>
             </span>
@@ -23,12 +23,7 @@
             <h2>
                 {{ formValues.summary.plannedQuantity| number:tenantSetting.defaultValues.quantityPrecision }} {{ formValues.summary.uom }}
             </h2>
-<!--             <div>
-                Ordered Qty
-            </div>
-            <h2>
-                {{ formValues.summary.orderedQuantity | number:tenantSetting.defaultValues.quantityPrecision}} {{ formValues.summary.uom }}
-            </h2> -->
+
             <div>
                 Utilised Qty
             </div>
@@ -85,9 +80,6 @@
                         <p>
                             Planned Qty: {{ value.summary.plannedQuantity | number:tenantSetting.defaultValues.quantityPrecision}} {{value.summary.uom}}
                         </p>
-                        <!-- <p>
-                            Ordered Qty: {{ value.summary.orderedQuantity | number:tenantSetting.defaultValues.quantityPrecision}} {{value.summary.uom}}
-                        </p> -->
                         <p>
                             Utilised Qty: {{ value.summary.utilizedQuantity | number:tenantSetting.defaultValues.quantityPrecision}} {{value.summary.uom}}
                         </p>

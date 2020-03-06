@@ -1,5 +1,5 @@
 <div class="custom-hardcoded-table fixed-header ng-scope" style="max-height: 500px;">
-		<!-- <span class="hidden" ng-if="formValues.email" ng-init="initEmailTemplateTypeahead()"></span> -->
+
 		    <table class="table-body" width="99.9%">
 		        <thead>
 		            <tr>
@@ -51,19 +51,19 @@
 							<input type="text" class="form-control" ng-model="value.replyTo">
 						</td>
 						<td class="">
-							<!-- <div ng-controller="Controller_Master as CM"> -->
+
 								<multiselect ng-model="value.toEmailsConfiguration" options="CM.listsCache['EmailAddressTypes']" id-prop="id" display-prop="name" show-search="true"></multiselect>
-							<!-- </div> -->
+
 						</td>
 						<td class="">
-							<!-- <div ng-controller="Controller_Master as CM"> -->
+
 								<multiselect ng-model="value.ccEmailsConfiguration" options="CM.listsCache['EmailAddressTypes']" id-prop="id" display-prop="name" show-search="true"></multiselect>
-							<!-- </div>							 -->
+
 						</td>						
 						<td class="">
-							<!-- <div ng-controller="Controller_Master as CM"> -->
+
 								<multiselect ng-model="value.attachmentDocumentTypes" ng-disabled="!value.isEmailAttachmentRequired" options="CM.listsCache['DocumentType']" id-prop="id" display-prop="name" show-search="true"></multiselect>
-							<!-- </div>								 -->
+
 						</td>
 						<td class="">
 							<label class="mt-checkbox">
@@ -75,10 +75,3 @@
 		        </tbody>
 		    </table>
 		</div>
-
-
-
-<!-- <div ng-if="config_tab == 4" ui-grid="gridOptions.adminConfigurationEmail" id="grid_adminConfigurationEmail" class="dataGrid"
-    style="height: initial" ng-init="initGridDropdowns('adminConfigurationEmail')">
-    <div class="clearfix"></div>
-</div> -->

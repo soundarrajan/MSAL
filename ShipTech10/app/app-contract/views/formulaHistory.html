@@ -15,7 +15,6 @@
 		    <table class="table-body" width="100%">
 		        <thead>
 		            <tr>
-		            	<!-- <td class="padding">S.no</td> -->
 		            	<td class="padding">Effective From</td>
 		            	<td class="padding">Effective To</td>
 		            	<td class="padding">Contract ID</td>
@@ -29,7 +28,6 @@
 		        </thead>
 		        <tbody>
 		            <tr ng-repeat="(key, value) in formulaHistoryDataResponse" ng-if="value.isDeleted != true" class="ng-scope">
-						<!-- <td class="padding">{{value.id}}</td> -->
 						<td class="padding" ng-controller="Controller_Master as CM">{{CM.formatDate(value.effectiveFrom, 'dd/MM/yyyy') }}</td>
 						<td class="padding" ng-controller="Controller_Master as CM">{{CM.formatDate(value.effectiveTo, 'dd/MM/yyyy') }}</td>
 						<td class="padding">{{value.contractId}}</td>

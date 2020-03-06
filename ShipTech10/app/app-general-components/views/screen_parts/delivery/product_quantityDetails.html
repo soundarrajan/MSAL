@@ -47,13 +47,13 @@
                             </label>
                             <div class="input-group form_input form_input_physicalSupplier">
                                 <input uib-typeahead="item as item.name for item in CM.listsCache.Supplier | filter:{name:$viewValue} | limitTo:10" class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" id="{{ field.masterSource }}Product" name="Product_{{productIndex}}_physical_supplier" ng-model="product.physicalSupplier" autocomplete="off" />
-                                <!-- ng-model="product.product" -->
+
                                 <span class="input-group-addon" ng-click="triggerModal('general', 'masters_counterpartylist_physicalsuppliers', 'Physical Supplier' , 'formValues.deliveryProducts.'+$index+'.physicalSupplier','','','Counterparty', 'supplierList');"  >
                                     <a   class=" btn default">
                                         <i class="fa fa-search"></i>
                                     </a>
                                 </span>
-                                 <!-- ng-class="!CM.isEditable ? 'disabled' : ''" -->
+
                             </div>
                         </div>
                     </div>
@@ -177,11 +177,9 @@
                             <label for="Product_{{ productIndex }}_final_quantity" class="final_quantity_label">
                                 {{ CM.app_id + '.FINAL_QUANTITY' | translate }}
                             </label>
-                            <!-- <span ng-if="!formValues.deliveryProducts[productIndex].finalQuantityUom" ng-init="formValues.deliveryProducts[productIndex].finalQuantityUom = confirmedQuantityUom"></span> -->
                             <div class="input-group form_input form_input_final_quantity">
                                 <input type="text" name="Product_{{ productIndex }}_final_quantity" class="form-control final_quantity" ng-model="formValues.deliveryProducts[productIndex].finalQuantityAmount" ng-class="CM.invalid_form ? 'ng-touched' : ''"  format="number:{{tenantSetting.defaultValues.quantityPrecision }}"   disabled="true" id="Product_{{ productIndex }}_finalQuantity" />
                                 <!-- view-model-sync -->
-                                <!-- ng-model-options="{ updateOn: 'default blur'}" -->
                                 <span class="input-group-addon uom_group pseudoSelect">
                                     <select class="bs-select"
                                             ng-required="formValues.deliveryProducts[productIndex].finalQuantityAmount != null && formValues.deliveryProducts[productIndex].finalQuantityAmount != ''"
@@ -195,12 +193,10 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <span ng-init="product.deliveredVolumeUom = CM.listsCache.UomVolume[0]" ng-if="!product.deliveredVolumeUom"></span> -->
                     <div class="col-md-4">
                         <div class="form-group row">
                             <label for="Product_{{ productIndex }}_delivered_volume" class="final_quantity_label">
                                 {{ CM.app_id + '.DELIVERED_VOLUME' | translate }}
-                                <!-- {{product.deliveredVolume}} -->
                             </label>
                             <div class="input-group form_input form_input_mfm_quantity">
                                 <input type="text" name="Product_{{ productIndex }}_delivered_volume" class="form-control final_quantity" ng-model="formValues.deliveryProducts[productIndex].deliveredVolume" ng-class="CM.invalid_form ? 'ng-touched' : ''"   format="number:{{tenantSetting.defaultValues.quantityPrecision }}" ng-required="false"  ng-model-options="{ updateOn: 'default'}"/>

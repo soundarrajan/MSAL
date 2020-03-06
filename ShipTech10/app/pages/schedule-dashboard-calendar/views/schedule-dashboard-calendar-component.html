@@ -44,29 +44,9 @@
         	<div class="schedule-table-wrapper">
 	            <table ng-if="$ctrl.scheduleDashboardCalendarColumns && $ctrl.calendarDataRows" class="table table-striped table-hover table-bordered table-condensed st-schedule-calendar-table" id="schedule_calendar_table" width="100%" style="calc(100vh - 470px);">
 	                <thead>
-	<!--                     <tr>
-	                        <th data-orderable="false" colspan="{{1 - $ctrl.hiddenCalendarColumns}}">
-	                        </th>
-	                        <th data-orderable="false" colspan="{{ $ctrl.timeframeSelectorColspan }}">
-	                            <span class="btn btn-xs" ng-click="$ctrl.timeframeScrollClick($ctrl.SCROLL_DIRECTIONS.left)">
-	                                <i class="fa fa-caret-left font-grey-salt"></i>
-	                            </span>
-	                            <span>
-	                                {{ $ctrl.startDateString }}
-	                                <span ng-if="$ctrl.timeScale !== $ctrl.TIMESCALE.DAY">
-	                                    To
-	                                    {{ $ctrl.endDateString }}
-	                                </span>
-	                            </span>
-	                            <span class="btn btn-xs" ng-click="$ctrl.timeframeScrollClick($ctrl.SCROLL_DIRECTIONS.right)">
-	                                <i class="fa fa-caret-right font-grey-salt"></i>
-	                            </span>
-	                        </th>
-	                    </tr> -->
+
 	                    <tr>
-	                        <!-- <th class="calendarDataRowsLabel" ng-repeat="column in $ctrl.scheduleDashboardCalendarColumns">
-	                            {{ column.caption | translate }}
-	                        </th> -->
+
 	                        <th class="calendarDataRowsLabelGrouped no-padding text-left" style="width:{{$ctrl.fixedColumnsWidth}};">
 	                        	<div style="width:98px" ng-click="$ctrl.setCurrentColSort('serviceName')" class="cellContent pull-left text-left">
 	                        		<i ng-if="$ctrl.currentColSort == '-serviceName' " class="fa fa-caret-down font-grey-salt"></i>
@@ -88,20 +68,14 @@
 	                        		{{tenantSettings.companyDisplayName.name == "Pool" ? "Pool" : "Company" }}
 	                        	</div>
 	                        </th>
-	                        <!-- <th class="calendarDataRowsLabel no-padding vesselName" style="width:90px; max-width:90px;"><div class="cellContent">Vessel</div></th>
-	                        <th class="calendarDataRowsLabel no-padding buyerName" style="width:90px; max-width:90px;" ng-if="$ctrl.scheduleDashboardConfiguration.scheduleBuyerDisplay.name != 'No' ">
-	                        	<div ng-if="$ctrl.scheduleDashboardConfiguration.scheduleBuyerDisplay.name != 'No' " class="cellContent">Buyer</div>
-	                        </th>
-	                        <th class="calendarDataRowsLabel no-padding companyName" style="width:90px; max-width:90px;" ng-if="$ctrl.scheduleDashboardConfiguration.scheduleCompanyDisplay.name != 'No' " >
-	                        	<div class="cellContent">{{tenantSettings.companyDisplayName.name == "Pool" ? "Pool" : "Company" }}</div>
-	                        </th> -->
+
 
 	                        <th ng-if="$ctrl.timeScale === $ctrl.TIMESCALE.DAY" ng-repeat="date in $ctrl.calendarDates track by $index" data-sortable="false" class="date" ng-class="{'today': $ctrl.calendarDates[$index].isNow}">
-	                            <!-- **{{$index}}  -->
+
 	                            {{ $ctrl.calendarDates[$index].hour }}
 	                        </th>
 	                        <th ng-if="$ctrl.timeScale !== $ctrl.TIMESCALE.DAY" ng-repeat="date in $ctrl.calendarDates track by $index" data-sortable="false" class="date dayColumn" ng-class="{'weekend': $ctrl.calendarDates[$index].isWeekend, 'today': $ctrl.calendarDates[$index].isNow}" style="width: 44px">
-	                            <!-- ****{{$index}}  -->
+
 	                            {{ $ctrl.calendarDates[$index].month }}
 	                            <br ng-show="$ctrl.timeScale === $ctrl.TIMESCALE.DEFAULT"/>
 	                            <span ng-show="$ctrl.timeScale === $ctrl.TIMESCALE.WEEK">
@@ -120,7 +94,7 @@
 	                    <tr role="row" ng-repeat="row in $ctrl.calendarDataRows track by $index">
 	                        <td class="calendarDataRowsLabelGrouped" style="width:{{$ctrl.fixedColumnsWidth}}; padding:0!important">
 	                            <div style="width:98px" class="serviceName cellContent pull-left" tooltip data-original-title="{{ row.serviceName }}">{{row.serviceName}}</div>
-	                            <!-- <div class="fakeColContent">********************</div> -->
+
 	                            <div style="width:240px" class="vesselName pull-left" cellContent  tooltip data-original-title="{{ row.vesselName }} : {{ row.defaultFuel }} : {{ row.defaultDistillate }}" >{{ row.vesselName }}</div>
 	                            <div  style="width:90px" ng-if="$ctrl.displayedColumns['Buyer of the Vessel'] " class="buyerName cellContent pull-left" tooltip data-original-title="{{ row.buyerName }}" >{{ row.buyerName }}</div>
 	                            <div style="width:90px" ng-if="$ctrl.displayedColumns['Company'] " class="companyName cellContent pull-left" tooltip data-original-title="{{ row.companyName }}" >{{ row.companyName }}</div>
@@ -130,10 +104,7 @@
 	                            <span ng-class="{'isSapStrategy': vsVal.hasComputedStrategy}" id="{{ vsVal.id }}" ng-mouseover="$ctrl.hidePopovers(); $ctrl.initPopover(vsVal.id);" ng-repeat="(vsKey, vsVal) in voyageStop  | limitTo: 1 track by $index" data-toggle="popover"  data-content="{{ $ctrl.getPopoverMarkup($index, vsVal.id, vsVal.day, vsVal, voyageStop) }}" ng-style="vsVal.style" class="voyageStopItem pull-left" ng-right-click="$ctrl.showContextMenu($event, voyageStop, vsVal)">
 	                                <span hidden>{{vsVal.hasComputedStrategy = $ctrl.checkIfHasSAPStrategy(voyageStop)}}</span>
 	                                <span hidden>{{vsVal.hasSludge = $ctrl.checkIfHasSludge(voyageStop)}}</span>
-	                                <!-- {{vsVal.hasComputedStrategy}} -->
-	                                <!-- <span ng-if="vsVal.hasComputedStrategy" class="isSapStrategy" >
-	                                										*
-	                                </span> -->
+
 	                                <span ng-if="voyageStop.length > 1" class="expandPorts" ng-click="$ctrl.showMorePortsPopup($event, voyageStop)">
 	                                    +
 	                                </span>
@@ -149,25 +120,7 @@
                 <div class="dataTables_info" id="all_requests_table_info" role="status" aria-live="polite">
                     Showing {{ $ctrl.tableOptions.paginationStart + 1 }} to {{ Math.min($ctrl.tableOptions.paginationStart + $ctrl.tableOptions.pageLength,$ctrl.tableOptions.totalRows) }} of {{ $ctrl.tableOptions.totalRows }} entries
                 </div>
-                <!-- <div class="dataTables_paginate paging_input" id="all_requests_table_paginate">
-                    <span class="first paginate_button" id="all_requests_table_first">
-                        First
-                    </span>
-                    <span class="paginate_page">
-                        Page
-                    </span>
-                    <span class="previous paginate_button" id="all_requests_table_previous" ng-click="$ctrl.setPage($ctrl.tableOptions.currentPage - 1)">
-                        &lt;
-                    </span>
-                    <input class="paginate_input" type="text" ng-model="$ctrl.tableOptions.currentPage" ng-change="$ctrl.setPage($ctrl.tableOptions.currentPage)" ng-model-options='{ debounce: 1000 }'/>
-                    <span class="next paginate_button" id="all_requests_table_next" ng-click="$ctrl.setPage($ctrl.tableOptions.currentPage + 1)">
-                        &gt;
-                    </span>
-                    <span class="paginate_of"></span>
-                    <span class="last paginate_button" id="all_requests_table_last">
-                        Last
-                    </span> 
-                </div> -->
+
             </div>
         </div>
     </div>

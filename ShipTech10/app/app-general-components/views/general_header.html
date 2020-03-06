@@ -12,15 +12,11 @@
                     <label  for="multiple"  class="select_visible_sections_label">
                         Display:
                     </label>
-                    <!-- ng-change="showHideSections(visible_sections)" -->
+
                     <select id="multiple" ng-model="visible_sections" class="form-control selectpicker col-md-8 visibleSectionsFilter" multiple ng-options="item.id as item.name for item in formFieldsNew" multi-select data-selected-text-format="count> 3"  data-min-options="1" ng-change="showHideSections(visible_sections)">
                         <option value="" disabled=""></option>
                     </select>
-                    <!--    <label class="mt-checkbox" ng-repeat="(key, value) in formFields">
-                                                                <input type="checkbox"  ng-model="visible_sections[value.id]"/>
-                                                                <span></span>
-                                                                {{value.name}}
-                                                            </label> -->
+
                     <label class="mt-checkbox" ng-hide="GH.hideMoreInformations">
                         <input type="checkbox" ng-model="GH.moreInformations" ng-init="formFieldsNew ? GH.moreInformations = true : '' "/>
                         <span></span>
@@ -49,7 +45,7 @@
                     <div class="filters-box" ng-if="actions.search">
                         <filters-widget></fitlers-widget>
                     </div>
-                    <!-- Available icons: edit | export-xls | export-csv | export-pdf | export-doc | print | email -->
+
                     <span ng-if="actions.icons">
                         <div class="st-content-action-icons">
                             <a ng-repeat="(key, icon) in actions.icons" class="btn {{icon.action}}" ng-click="GH.export(icon)" id="{{ icon.action }}">
@@ -83,14 +79,13 @@
                             </span>
                         </span>
                         <span ng-if="action.html_element == 'ordertoinvoice'">
-                            <!-- <span ng-controller="Controller_Master as CM"> -->
-                              <!-- {{action.html_element}} -->
+
                                 <a ng-disabled="!formValues.id" class="btn btn-default btn-outline " ng-show="{{tenantSetting.defaultValues.isSSRSReports}}"  ng-href="#/reports/{{action.html_element}}/IID={{formValues.id}}" target="blank">
                                         {{ action.label }}
                                 </a>
-                            <!-- </span> -->
+
                         </span>
-                        <!-- CUSTOM ACTIONS -->
+
                         <span ng-if="action.html_element == 'customActionButton'">
                             <span ng-repeat="(key, value) in screenButtons" ng-if="key < 1">
                                 {{ formValuesLoaded }}
@@ -123,7 +118,7 @@
                                 </ul>
                             </span>
                         </span>
-                        <!-- CUSTOM ACTIONS -->
+
                         <span ng-if="action.html_element == 'contractPreviewDdw'">
                             <div class="input-group form_input">
                                 <span ng-controller="Controller_Master as CM">
@@ -131,13 +126,13 @@
                                         <span ng-if="emailTemplates" ng-init="selContractTemplate = emailTemplates[0]; previewContract(emailTemplates[0].id, emailTemplates[0].name);">
                                             <select style="height: 31px;" ng-model="selContractTemplate" class="form-control bs-select changeIT" ng-options="item as item.displayName for item in emailTemplates track by item.id" ng-change="previewContract(emailTemplates[0].id, emailTemplates[0].name)">
                                             </span>
-                                            <!-- <option value="0"> </option> -->
+
                                         </select>
                                     </span>
                                 </span>
                             </div>
                         </span>
-                        <!-- printContractPreview -->
+
                         <span ng-if="action.html_element == 'printContractPreview'">
                             <div class="st-content-action-icons" ng-controller="Controller_Master as CM">
                                 <a class="btn">
@@ -162,7 +157,7 @@
                             <div class="input-group form_input">
                                 <span ng-controller="Controller_Master as CM">
                                     <span ng-init="CM.screen_id='claims';CM.formValues = CM.get_master_entity('claim');"></span>
-                                    <!-- {{formValues}} -->
+
                                     <span ng-if="formValues.claimType" ng-init="getEmailTransactionType('Claims');">
                                         <select style="height: 31px;" id="ClaimEmailTemplate" ng-if="ClaimEmailTemplate" ng-model="ClaimEmailTemplate" ng-change="changeClaimEmailTemplate(ClaimEmailTemplate)" class="form-control bs-select changeIT" ng-options="item as item.displayName for item in emailTemplates track by item.id"></select>
                                     </span>

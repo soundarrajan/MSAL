@@ -18,9 +18,7 @@
                         <option selected value="products">
                             Products
                         </option>
-                        <!-- <option value="third_party" selected>
-                            3rd Party Nomination
-                        </option> -->
+
                     </select>
                     <label class="mt-checkbox" ng-init="more=true">
                         <input ng-model="more" type="checkbox"/> More Information
@@ -81,8 +79,7 @@
                            ng-if="['None','Automatic'].indexOf($ctrl.orderConfirmationEmailToSurveyor.name) == -1">
                             Email to Surveyor
                         </a>
-                        <!-- ng&#45;class="{'disabled': !$ctrl.data.id || $ctrl.buttonsDisabled || !$ctrl.hasAction($ctrl.SCREEN_ACTIONS.CONFIRM), 'green&#45;jungle': $ctrl.data.emailToSellerSent}" ng&#45;click="$ctrl.sendOrderCommand($ctrl.ORDER_COMMANDS.CONFIRM_TO_SELLER, $ctrl.data.id)" -->
-                        <a class="btn orange btn-outline"
+                       <a class="btn orange btn-outline"
                            ng-class="{'disabled': $ctrl.buttonsDisabled || !$ctrl.hasAction($ctrl.SCREEN_ACTIONS.SUBMITFORAPPROVAL)}"
                            ng-click="$ctrl.sendOrderCommand($ctrl.ORDER_COMMANDS.SUBMIT_FOR_APPROVAL, $ctrl.data.id)">
                             Submit for Approval
@@ -195,14 +192,7 @@
                     </div>
                 </div>
                 <div class="portlet-body">
-                    <!-- <div class="pull-left related-entity-item">
-                                        <div class="col-sm-12">
-                                            <div class="note note-related active">
-                                                <p><b>Order ID</b>: 11</p>
-                                                <p><b>Status</b>: Old</p>
-                                                                </div>
-                                        </div>
-                                    </div> -->
+
                     <div class="pull-left related-entity-item"
                          ng-if="!$ctrl.relatedOrders || $ctrl.relatedOrders.length == 0">
                         <div class="col-sm-12">
@@ -282,7 +272,7 @@
                     <div class="clearfix"></div>
                 </div>
             </div>
-            <!-- //////////////////// -->
+
         </div>
 <!--        ORDER DETAILS-->
         <div class="col-md-12 no-padding-left" ng-hide="visible_sections.indexOf('order_details') < 0">
@@ -331,9 +321,7 @@
 
                                     <span class="clearfix"></span>
                                     <div class="portlet-body">
-                                        <!-- <div sorted-form field-ids="" get-from-id="vesselDetails">
 
-                                                        </div> -->
                                         <form autocomplete="off" class="form-horizontal st-new-order-form"
                                               id="vesselDetails" name="forms.vesselDetailsForm">
 
@@ -416,7 +404,7 @@
                                                     <div class="form-group row">
                                                         <label class="{{ $ctrl.portFields.paymentCompany.name }}_label"
                                                                for="{{ $ctrl.portFields.paymentCompany.name }}">
-                                                            <!-- {{ $ctrl.portFields.paymentCompany.caption | translate }} -->
+
                                                             {{ "Payment " + $ctrl.tenantSettings.companyDisplayName.name | translate }}
                                                             <span class="orange-txt">
                                                                 *
@@ -800,12 +788,7 @@
                                                                    typeahead-on-select="$ctrl.data.broker = $ctrl.setTypeahedVal($ctrl.data.broker, $item, false)"
                                                                    uib-typeahead="broker as broker.name for broker in $ctrl.lists.Broker | filter:$viewValue | limitTo:10"
                                                             />
-                                                            <!-- <span class="input-group-addon" ng-class="{'disabled': $ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id}" data-toggle="modal"
-                                                                href="#agents" ng-click="$ctrl.setSellerDialogType($ctrl.nominationFields.broker.name, $ctrl.data.broker)">
-                                                                <a href="" class=" btn default">
-                                                                    <i class="fa fa-search"></i>
-                                                                </a>
-                                                            </span> -->
+
                                                             <span class="input-group-addon ng-scope"
                                                                   ng-click="triggerModal('general', 'masters_counterpartylist_broker', 'Broker' ,'broker',null,null,null,'brokerlist');"
                                                                   ng-controller="Controller_Master as CM"
@@ -906,7 +889,7 @@
                                                                for="{{ $ctrl.nominationFields.lab.name }}">
                                                             {{ $ctrl.nominationFields.lab.caption | translate }}
                                                         </label>
-                                                        <!-- {{$ctrl.data.lab}} -->
+
                                                         <div class="input-group input_group input_group_{{ $ctrl.nominationFields.lab.name }}">
                                                             <input class="typeahead form-control"
                                                                    id="id_{{ $ctrl.nominationFields.lab.name }}"
@@ -993,7 +976,7 @@
                                                                    for="{{ $ctrl.portFields.comments.name }}">
                                                                 <!-- Comment -->
                                                                 {{'PAGES.NEW_ORDER.COMMENTS' | translate}}
-                                                                <!-- {{ $ctrl.portFields.comments.caption | translate }} -->
+
                                                             </label>
                                                             <div class="input-group form_input form_input_{{ $ctrl.portFields.deliveryDate.name }}">
                                                                 <textarea
@@ -1010,7 +993,7 @@
                                                                for="{{ $ctrl.portFields.comments.name }}">
                                                         	 <!-- Comment -->
                                                         	 {{'PAGES.NEW_ORDER.COMMENTS_STRATEGY' | translate}}
-                                                            <!-- {{ $ctrl.portFields.comments.caption | translate }} -->
+
                                                         </label>
                                                         <div class="input-group form_input form_input_{{ $ctrl.portFields.deliveryDate.name }}">
                                                             <textarea class="col-md-12 form-control" maxlength="500"
@@ -1025,7 +1008,7 @@
                                                                    for="{{ $ctrl.portFields.comments.name }}">
                                                                  <!-- Comment -->
                                                                  {{'PAGES.NEW_ORDER.COMMENTS_OFTHEPRICE' | translate}}
-                                                                <!-- {{ $ctrl.portFields.comments.caption | translate }} -->
+
                                                             </label>
                                                             <div class="input-group form_input form_input_{{ $ctrl.portFields.deliveryDate.name }}">
 										                    <textarea class="col-md-12 form-control" maxlength="500"
@@ -1086,7 +1069,7 @@
                     </div>
                 </div>
 
-                <!-- ***{{$ctrl.data.orderDate}}*** -->
+
                 <div class="portlet-body">
                     <form autocomplete="off" class="" name="forms.productsForm" novalidate>
                         <table class="table table-hover table-bordered table-stripped" id="new_order_products">
@@ -1107,12 +1090,12 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <!-- | orderBy : 'productType.id' -->
+
                             <tr ng-init="$ctrl.disabledProduct[product.id] = $ctrl.isDisabledProduct(product)"
                                 ng-repeat="(key, product) in $ctrl.data.products">
                                 <td ng-if="!$ctrl.data.id || $ctrl.data.status.id == $ctrl.STATUS['Confirmed'].id || $ctrl.data.status.id == $ctrl.STATUS['Amended'].id || $ctrl.data.status.id == $ctrl.STATUS['Stemmed'].id || $ctrl.data.status.id == $ctrl.STATUS['WaitingForApproval'].id || $ctrl.data.status.id == $ctrl.STATUS['Approved'].id || $ctrl.data.status.id == $ctrl.STATUS['Rejected'].id"
                                     style="vertical-align: middle;">
-                                    <!-- {{product.uniqueIdUI}} -->
+
                                     <span class="clickable" id="product_addRow_{{ $index }}"
                                           ng-click="$ctrl.addNewProduct()">
                                             <i class="fa fa-plus st-btn-icon"></i>
@@ -1319,7 +1302,6 @@
                                 <td style="max-width: 200px;min-width: 200px">
                                     <div class="input-group">
                                         <!-- price -->
-                                        <!-- ( product.contractProductId && !product.formula.id && ['Stemmed','Invoiced','PartiallyInvoiced'].indexOf(product.status.name) == -1)  -->
                                         <input class="form-control"
                                                format="number:{{ $ctrl.numberPrecision.pricePrecision }}"
                                                id="product_price_{{ $index }}"
@@ -1330,7 +1312,6 @@
                                                ng-required="true && product.status.id != $ctrl.STATUS['Cancelled'].id && !(product.contractProductId != null  || product.agreementType.name.toLowerCase() == 'contract' || product.pricingType.id == 1 || $ctrl.disabledProduct[product.id])"
                                                style="min-width:80px"
                                                type="text"/>
-                                        <!-- {{product.pricingType.id !== $ctrl.PRICING_TYPE_FORMULA_ID ? product.price = null : ''}} -->
 
                                         <!-- price uom -->
                                         <div class="input-group-btn"
@@ -1369,31 +1350,26 @@
                                                   tooltip>
                                     			{{product.formulaDescription ? product.formulaDescription : product.formula.name}}
                                     		</span>
-                                    <!-- <input class="form-control" name="{{ $ctrl.productColumns.formulaDescription.name }}" ng-model="product.formulaDescription"
-                                        ng-required="product.requiredFields['formulaDescription']"
-                                        disabled="disabled"
-                                        id="product_formulaDescription_{{ $index }}" /> -->
+
                                     {{product.pricingType.id !== $ctrl.PRICING_TYPE_FORMULA_ID ?
                                     product.formulaDescription = null : ''}}
-                                    <!-- ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || product.pricingType.id !== $ctrl.PRICING_TYPE_FORMULA_ID" -->
+
                                 </td>
                                 <td style="max-width: 180px;min-width: 140px">
                                     <a ng-click="$ctrl.triggerFormulaDetailsModal(product)"
                                        ng-if="(product.formulaDescription || product.formula) && $ctrl.orderId">Pricing
                                         Details</a>
-                                    <!-- ng-disabled="$ctrl.disabledProduct[product.id]" -->
+
                                 </td>
                                 <td style="max-width: 120px;min-width: 120px">
-                                    <!-- {{product.totalAmount}} *  -->
-                                    <!-- {{product.amount}} -->
+
                                     {{product.totalAmount ? (product.totalAmount |
                                     number:$ctrl.numberPrecision.amountPrecision) : (product.amount |
                                     number:$ctrl.numberPrecision.amountPrecision)
                                     }}
                                 </td>
                                 <td style="max-width: 180px;min-width: 140px">
-                                    <!-- {{$ctrl.contractAgreementTypesList }} -->
-                                    <!-- {{$ctrl.spotAgreementTypesList}} -->
+
                                     <select class="form-control"
                                             id="product_agreementType_{{ $index }}"
                                             name="{{ $ctrl.productColumns.agreementType.name }}"
@@ -1406,7 +1382,7 @@
 
                                 </td>
                                 <td style="max-width: 180px;min-width: 140px">
-                                    <!-- {{ product.status.name }} -->
+
                                     {{ product.status.displayName ? product.status.displayName : product.status.name}}
                                 </td>
                                 <td ng-init="!product.pricingType ? product.pricingType.id = 1 : '' "
@@ -1423,7 +1399,7 @@
                                             ng-disabled="$ctrl.disabledProduct[product.id] || disabledPricingType[product.id]"
                                             ng-model="product.pricingType"
                                             ng-options="pricingType as pricingType.name for pricingType in $ctrl.lists.PricingType track by pricingType.id"></select>
-                                    <!-- ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id" -->
+
                                 </td>
                                 <td style="max-width: 180px;min-width: 140px; overflow: hidden;">
                                     <span class="orderProductTable" data-original-title="{{ product.comments }}"
@@ -1464,12 +1440,7 @@
                                 </td>
                                 <td ng-if="$ctrl.enableManualPricingDateOverride"
                                     style="max-width: 180px;min-width: 140px">
-                                    <!-- ng-show="$ctrl.dtoHasAction('ManualPricingDateOverride')" -->
-                                    <!-- 1 -  {{ product.manualPricingDateOverride }}
-                                    2 -  {{ product.manualPricingDateOverrideBool }}
-                                    $ctrl -  {{ $ctrl.manualPricingDateOverride }} -->
 
-                                    <!--  if new order, init to pricing config, transform from yes/no to bool  -->
 
                                     <span ng-if="!$ctrl.data.id && $ctrl.data.products"
                                           ng-init="$ctrl.manualPricingDateOverride.id ? ($ctrl.manualPricingDateOverride.id == 1 ? product.manualPricingDateOverride = true : product.manualPricingDateOverride = false) : ''"></span>
@@ -1488,7 +1459,7 @@
                                 <td style="max-width: 180px;min-width: 140px">
                                     <div class="form-group">
                                         <div class="input-group form-input table-formatted-input">
-                                            <!-- ng-repeat="(key, product) in $ctrl.data.products  -->
+
                                             <input
                                                     class="form-control date-mask new-date-picker"
                                                     id="product_pricingDate_{{ $index }}"
@@ -1505,7 +1476,7 @@
                                         <span ng-if="!product.nominationDate"
                                               ng-init="product.nominationDate = $ctrl.data.orderDate;"></span>
                                         <div class="input-group form-input table-formatted-input">
-                                            <!-- ng-repeat="(key, product) in $ctrl.data.products  -->
+
                                             <input
                                                     class="form-control date-mask new-date-picker"
                                                     id="nominationDate_{{ $index }}"
@@ -1571,15 +1542,7 @@
                         <div class="caption-subject">
                             ADDITIONAL COSTS
                         </div>
-                        <!-- <div class="col-md-3">
-                        <div class="tabbable-line">
-                            <ul class="nav nav-tabs">
-                                <li class="active">
-                                    Cost
-                                </li>
-                            </ul>
-                        </div>
-                    </div> -->
+
                     </form>
                     <div class="clearfix"></div>
                     <form class="" name="forms.additionalCostsForm" novalidate>
@@ -1604,7 +1567,7 @@
                             <tr ng-if="!additionalCost.isDeleted"
                                 ng-repeat="additionalCost in $ctrl.getAdditionalCosts() | orderBy: '-fakeId' track by $index">
                                 <td>
-                                    <!-- {{$ctrl.data.status.name}} -->
+
                                     <span class="clickable"
                                           id="addCost_addRow_{{ $index }}"
                                           ng-click="$ctrl.addAdditionalCost()"
@@ -1621,7 +1584,7 @@
                                         </span>
                                 </td>
                                 <td>
-                                    <!-- ng-disabled="['Delivered', 'PartiallyDelivered', 'Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) != -1" -->
+
                                     <!-- additional cost -->
 
                                     <select class="select2 form-control"
@@ -1669,9 +1632,9 @@
                                 <td>
                                     <!--  cost -->
                                     <div class="input-group">
-                                        <!-- <span ng-init="$ctrl.allowNegativeAdditionalCost[$index] = true"></span> -->
+
                                         <!--  cost value -->
-                                        <!-- **{{additionalCost.additionalCost}}** -->
+
                                         <input class="form-control"
                                                format="number:{{ $ctrl.numberPrecision.pricePrecision }}"
                                                id="additional_cost_price_{{ $index }}"
@@ -1688,7 +1651,7 @@
                                         <div class="input-group-btn">
                                                 <span ng-if="!(!$ctrl.additionalCostPriceUomEnabled(additionalCost) || $ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id) && !additionalCost.priceUom.id"
                                                       ng-init="additionalCost.priceUom = $ctrl.tenantUom"></span>
-                                            <!-- ng-change="$ctrl.addPriceUomChg(additionalCost)" -->
+
                                             <select class="bs-select pull-right uomWidth" id=""
                                                     id="additional_cost_priceUom_{{ $index }}"
                                                     name=""
@@ -1719,16 +1682,10 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <!-- {{additionalCost.isTaxComponent}} -->
+
                                     {{additionalCost.isTaxComponent ?
                                     $ctrl.additionalCostApplicableFor[additionalCost.fakeId] = null : ''}}
-                                    <!-- <br>
-                                    {{additionalCost.id> 0}} -- {{!additionalCost.additionalCost}} -- {{additionalCost.disabledApplicableFor}} -- {{(additionalCost.isTaxComponent && additionalCost.costType.name == 'Percent')}} -->
-                                    <!--                                         {{(additionalCost.id> 0 && additionalCost.costLineChanged != true) }} **
-                                                                            {{ !additionalCost.additionalCost }} **
-                                                                            {{ $ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id }} **
-                                                                            {{ additionalCost.disabledApplicableFor }} **
-                                                                            {{ (additionalCost.isTaxComponent && additionalCost.costType.name == 'Percent') }} -->
+
                                     <select class="form-control"
                                             id="{{ $ctrl.additionalCostColumns.ApplicableFor.name + '_' + $index }}"
                                             name="{{ $ctrl.additionalCostColumns.ApplicableFor.name }}"
@@ -1851,25 +1808,7 @@
                     <div class="clearfix"></div>
                 </div>
             </div>
-            <!-- <div class="portlet light stretch-vertical" ng-hide="visible_sections.indexOf('third_party') < 0">
-                <div class="portlet-title">
-                    <div class="tools">
-                        <a href="" class="collapse" data-original-title="" title=""></a>
-                    </div>
-                    <div class="caption">
-                        <div class="caption-subject">
-                            3RD PARTY NOMINATION &amp; COMMUNICATION
-                        </div>
-                    </div>
-                    <div class="pull-right form-inline text-right">
-                        <a href="" class="btn btn-sm font-grey-cascade" ng-click="$ctrl.orderConfirmationPreviewEmail()">
-                            <i class="glyphicon glyphicon-envelope st-larger-glyph"></i>
-                        </a>
 
-                    </div>
-                </div>
-
-            </div> -->
         </div>
     </div>
 
@@ -1879,9 +1818,7 @@
              ng-hide="visible_sections.indexOf('order_details') < 0">
             <div class="portlet">
                 <div class="portlet-title" style="margin-bottom: 10px;">
-                    <!-- <div class="tools">
-                                                <a href="" class="collapse" data-original-title="" title=""></a>
-                                            </div> -->
+
                     <div class="caption">
                         <div class="caption-subject">
                             ORDER SUMMARY
@@ -1966,26 +1903,7 @@
                    ng-if="$ctrl.dtoHasAction($ctrl.SCREEN_ACTIONS.CONFIRMALLEMAIL)">
                     Confirm to Vessel
                 </a>
-                <!-- ng-if="($ctrl.needsTransactionLimitApproval && $ctrl.data.status.name == 'Approved') || (!$ctrl.needsTransactionLimitApproval && $ctrl.data.status.name == 'Stemmed')" -->
 
-                <!--  Email to Seller / Email to Labs
-                
-                - always disabled
-                - enabled if:
-                    - mail set to manual
-                    - lab/surveyor exists
-                    - ($ctrl.needsTransactionLimitApproval && $ctrl.data.status.name == 'Approved')
-                    - (!$ctrl.needsTransactionLimitApproval && $ctrl.data.status.name == 'Stemmed')
-                
-                -->
-
-                <!-- needsApproval {{ $ctrl.needsTransactionLimitApproval }}
-                status {{ $ctrl.data.status.name }}
-
-                ==
-
-                labs email: {{ $ctrl.orderConfirmationEmailToLabs.name  }}
-                surv email: {{ $ctrl.orderConfirmationEmailToSurveyor.name }} -->
                 <a class="btn btn-sm btn-default hover-orange" href=""
                    ng-class="{'green-jungle': $ctrl.data.emailToLabsSent && !EmailToLabsDisabled}"
                    ng-click="$ctrl.sendOrderCommand($ctrl.ORDER_COMMANDS.CONFIRM_TO_LABS, $ctrl.data.id)"
@@ -2004,7 +1922,6 @@
                    ng-if="['None','Automatic'].indexOf($ctrl.orderConfirmationEmailToSurveyor.name) == -1">
                     Email to Surveyor
                 </a>
-                <!-- ng&#45;class="{'disabled': !$ctrl.data.id || $ctrl.buttonsDisabled || !$ctrl.hasAction($ctrl.SCREEN_ACTIONS.CONFIRM), 'green&#45;jungle': $ctrl.data.emailToSellerSent}" ng&#45;click="$ctrl.sendOrderCommand($ctrl.ORDER_COMMANDS.CONFIRM_TO_SELLER, $ctrl.data.id)" -->
                 <a class="btn orange btn-outline"
                    ng-class="{'disabled': $ctrl.buttonsDisabled || !$ctrl.hasAction($ctrl.SCREEN_ACTIONS.SUBMITFORAPPROVAL)}"
                    ng-click="$ctrl.sendOrderCommand($ctrl.ORDER_COMMANDS.SUBMIT_FOR_APPROVAL, $ctrl.data.id)">
@@ -2086,9 +2003,7 @@
                                for="{{ $ctrl.portFields.comments.name }}"
                                style="width: 189.8px; float: left; color: black; font-weight: bold;">
                             Reason for cancelling order
-                            <!--  <span class="orange-txt" style="color: orange; position: absolute;  font-size: 9px;  margin-left: 3px;">
-                                 *
-                             </span> -->
+
                         </label>
                         <select id="cancel_reason_cancel_reason_{{ $index }}"
                                 name="cancelReason"
@@ -2105,8 +2020,7 @@
                                        for="{{ $ctrl.portFields.comments.name }}"
                                        style="width: 125px; float: left; padding-right: 3px; color: black; font-weight: bold;">
                                     <!-- Comment -->
-                                    <!-- {{'PAGES.NEW_ORDER.COMMENTS_OFTHEPRICE' | translate}} -->
-                                    <!-- {{ $ctrl.portFields.comments.caption | translate }} -->
+
                                     Comments
                                 </label>
                                 <div class="input-group form_input form_input_{{ $ctrl.portFields.deliveryDate.name }}">

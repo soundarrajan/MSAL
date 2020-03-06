@@ -12,8 +12,6 @@
 	secondary: [],
 	search: true
 }"></general-header>
-
-<!-- <clc-table-list id="'labs_documents'" app="'labs'" screen="'documents'" controls="'[entries, columns, info, pager]'"></clc-table-list> -->
 <div  ng-controller="Controller_Master as CM">
 
 	<span ng-init="initNotificationsPage()"></span>
@@ -29,7 +27,6 @@
 				<span ng-init="selectedNotifications = null"></span>
 					<label class="mt-checkbox">
 						<input type="checkbox" ng-model="notification.checked" ng-checked="selectedNotifications != notification[key]" ng-change="selectNotification(notification.checked, notification.id)" >
-						<!-- <input type="checkbox" ng-model="notification[key]" ng-checked= ng-change="selectedNotification = notification.id" >    -->
 						<span style="background:#fff; border: 1px solid #dedede;"></span>
 						{{notification[key]}}
 					</label>

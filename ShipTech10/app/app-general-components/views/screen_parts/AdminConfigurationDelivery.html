@@ -37,7 +37,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <input type="time" class="form-control" ng-model="formValues.delivery.autoVerifyTime"> -->
+
                 </div>
                 <div class="col-md-6">
                     <div class="form-group row" ng-init='options.Timezone ? return : CM.getOptions({"Name": "TimeZone", "Type": "dropdown", "masterSource": "TimeZone"})'>
@@ -98,48 +98,6 @@
         </div>
     </div>
     <div class="row">
-        <!-- <div class="col-sm-12">
-            <div dropdown-ordering ng-model="formValues.delivery.buyerPrecedenceLogicRules" class="form-group row">
-                <label class="pull-left">
-                    {{ CM.app_id + '.BUYER' | translate }}
-                </label>
-                <span class="ordering-list pull-right">
-                    <span class="ordering-element" unique-id="{{ value.precedenceRule.name }}" ng-repeat="(key, value) in formValues.delivery.buyerPrecedenceLogicRules">
-                        <span  class="comparator">
-                            <i class="fa fa-angle-right"></i>
-                        </span>
-                        <span class="moveBack">
-                            <i class="fa fa-angle-left"></i>
-                        </span>
-                        {{ value.precedenceRule.name }}
-                        <span class="moveFwd">
-                            <i class="fa fa-angle-right"></i>
-                        </span>
-                    </span>
-                </span>
-            </div>
-        </div>
-        <div class="col-sm-12">
-            <div dropdown-ordering ng-model="formValues.delivery.sellerPrecedenceLogicRules" class="form-group row">
-                <label class="pull-left">
-                    {{ CM.app_id + '.SELLER' | translate }}
-                </label>
-                <span class="ordering-list pull-right">
-                    <span class="ordering-element" unique-id="{{ value.precedenceRule.name }}" ng-repeat="(key, value) in formValues.delivery.sellerPrecedenceLogicRules">
-                        <span  class="comparator">
-                            <i class="fa fa-angle-right"></i>
-                        </span>
-                        <span class="moveBack">
-                            <i class="fa fa-angle-left"></i>
-                        </span>
-                        {{ value.precedenceRule.name }}
-                        <span class="moveFwd">
-                            <i class="fa fa-angle-right"></i>
-                        </span>
-                    </span>
-                </span>
-            </div>
-        </div> -->
 
 		<span ng-init='CM.getOptions({"Name": "QuantityCategory", "Type": "dropdown", "masterSource": "QuantityCategory"})'></span>
 		<span ng-init="initAdminPrecedenceRules()" ng-if="formValues.delivery"></span>

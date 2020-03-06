@@ -14,7 +14,7 @@
             <div class="portlet-title">
                 <div class="caption">
 	                <span class="hidden">{{incoterm = (!$ctrl.getPackageIncoterm(package.id) ? $ctrl.individuals["0"].products["0"].sellers["0"].defaultIncoterm : $ctrl.getPackageIncoterm(package.id))}}</span>
-	                <!-- <pre>{{package}}</pre> -->
+
 					<select style="max-width: 200px;" ng-if="!$ctrl.token" ng-options="defaultIncoterm as defaultIncoterm.name for defaultIncoterm in $ctrl.lists.Incoterm track by defaultIncoterm.id" class="select form-control pull-right" ng-model="incoterm" title="{{incoterm.incoterm.id}}" ng-change="$ctrl.updateIncotermInPackage(package.id, incoterm)" ng-disabled="incoterm.hasSellerOffer == 0"></select>
 	                <b class="pull-right">Incoterm &nbsp;&nbsp;</b>
 
@@ -266,15 +266,7 @@
                                             <td style="min-width: 150px">
                                                 <select ng-options="pricingType as pricingType.name for pricingType in $ctrl.lists.PricingType track by pricingType.id" ng-model="product.pricingType" class="form-control" readonly disabled></select>
                                             </td>
-                                            <!-- <td style="min-width: 150px">
-                                                <input type="text" class="form-control" ng-model="product.sellers[0].offers[0].formulaDescription" name="{{ $ctrl.productColumns.Formula.name }}" ng-required="product.pricingType.id === $ctrl.PRICING_TYPE_FORMULA_ID" ng-disabled="product.pricingType.id !== $ctrl.PRICING_TYPE_FORMULA_ID" />
-                                            </td> -->
-                                     <!--        <td style="min-width: 150px">
-                                                {{ product.buyerComments }}
-                                            </td> -->
-<!--                                             <td style="min-width: 150px">
-                                                <input type="text" class="form-control" ng-model="product.sellers[0].offers[0].sellerComments" name="{{ $ctrl.productColumns.SupplierComment.name }}" ng-required="product.product.id !== product.sellers[0].offers[0].quotedProduct.id" />
-                                            </td> -->
+
                                             <td style="min-width: 150px">
                                                 <select ng-options="reason as reason.name for reason in $ctrl.reasons track by reason.id" ng-model="product.sellers[0].offers[0].noQuoteReason" class="form-control" ng-required="product.sellers[0].offers[0].hasNoQuote" ng-change="$ctrl.productReasonChanged(product.sellers[0].offers[0].noQuoteReason,product, req.request.locations[0])" ng-disabled="!product.sellers[0].offers[0].hasNoQuote" name="Product no quote reason - {{product.sellers[0].offers[0].quotedProduct.name}}">
                                                     <option value=""></option>
@@ -454,27 +446,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- <tr ng-repeat="(specKey, spec) in req.specParameters">
-                            <td>
-                                {{ spec.name }}
-                            </td>
-                            <td class="hidden" ng-repeat-start="product in req.request.locations[0].products | filter:{isEnergyCalculationRequired:true}"></td>
-                            <td>
-                                {{ product.specParameters[specKey].min }}
-                            </td>
-                            <td>
-                                {{ product.specParameters[specKey].max }}
-                            </td>
-                            <td>
-                                <div class="form_input form_input_name" ng-init="$ctrl.returnParamIndex(product.specParameters[specKey].specParameter, specKey); sellerKey =  $ctrl.getSellerKey(req.request.locations[0], product)">
-                                    <input type="text" ng-model="product.sellers[sellerKey].offers[0].energyParameterValues[$ctrl.specIndex[specKey]].specValue" class="form-control  " name="offer{{ specKey }}" id="offer{{ specKey }}" format="number:3" ng-if="$ctrl.specIndex[specKey]" ng-disabled="product.productStatus.name == 'Stemmed'"/>
-                                </div>
-                            </td>
-                            <td>
-                                {{ product.specParameters[specKey].uom }}
-                            </td>
-                            <td class="hidden" ng-repeat-end></td>
-                        </tr> -->
+
                         <tr ng-repeat="(specKey, spec) in req.specParameters">
                                     <td>
                                         {{ spec.name }}
@@ -495,7 +467,7 @@
 
                                         </div>
                                        </span>
-                                        <!-- {{product.specParameters}} -->
+
                                     </td>
                                     <td><span ng-repeat="(specKey2, spec2) in product.specParameters" ng-if="spec2.specParameter.id == spec.id">
                                         {{ spec2.uom }}</span>

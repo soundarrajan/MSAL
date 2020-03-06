@@ -44,7 +44,7 @@
 		                        </b>
 	                    	</div>
 	                    	<div class="col-sm-6">
-	                    	<!-- {{val1.selectedScreenTemplate}} -->
+
 	                    	<span ng-init="!val1.selectedScreenTemplate ? val1.selectedScreenTemplate = val1.definedScreenTemplates[0] : '' "></span>
 		                        <select class="form-control" ng-model="val1.selectedScreenTemplate" ng-options="item as item.name for item in val1.definedScreenTemplates track by item.id" name="{{key}}_{{ key1 }}_screenTemplate" id="{{key}}_{{ key1 }}_screenTemplate" ng-required="false" style="float:right" >
 		                        </select>

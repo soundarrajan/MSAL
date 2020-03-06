@@ -8,12 +8,6 @@
     <div class="input-group pull-left form_input form_input_{{ field.Name }}" >
         <input ng-model="dummyModel" uib-typeahead="item as item.name for item in options[field.Name] | filter:{name:$viewValue} | limitTo:10"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="300" id="{{ field.Unique_ID }}" data-uniqueid="{{ field.Unique_ID }}" data-value="{{dummyModel.id}}" ng-init="CM.multiTags(field.Unique_ID,'false', field.Name)" autocomplete="off" dynamic-condition="{{ field.Conditional }}" dynamic-condition-type="{{ field.ConditionalType }}" ng-blur="showMultiLookupWarning(dummyModel)" ng-disabled="{{field.Disabled}}" unique-id="{{field.Unique_ID}}">
 
-<!--         <span class="input-group-addon" ng-hide="{{field.Disabled}}">
-            <a   class="object_tagsinput_add_{{ field.Unique_ID }} btn default">
-                <i class="fa fa-plus"></i>
-            </a>
-        </span>
- -->
 <!-- TESTING -->
         <span class="input-group-addon" ng-hide="{{field.Disabled}}" unique-id="{{field.Unique_ID}}">
             <a   class="object_tagsinput_add_{{ field.Unique_ID }} btn default" ng-click="addTagToMulti(field.Unique_ID, dummyModel)">
@@ -23,8 +17,7 @@
 
     </div>
     <div class="multi_lookup_tags tagsFor{{ field.Name }}" multi-tags name="{{ field.Name }}" unique-id="{{field.Unique_ID}}">
-<!-- 	    <span ng-if="formValues[field.Unique_ID]" ng-init="initMultiTags(field.Unique_ID); CM.multiTags(field.Unique_ID,'false', field.Name)"></span>
-	    <span ng-init="initMultiTags(field.Unique_ID); CM.multiTags(field.Unique_ID,'false', field.Name)"></span> -->
+
         <input name="{{ field.Name }}" unique-id="{{field.Unique_ID}}" type="text"  class="input-as-label form-control typeahead object_tagsinput_{{ field.Unique_ID }}" dynamic-model="'formValues.' + field.Name +'.id'"   ng-required='{{field.Required}} && isVisible(field.Name)' ng-change="dummyModel = null"/>
     </div>
 </div>

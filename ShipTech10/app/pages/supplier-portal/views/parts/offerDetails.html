@@ -25,37 +25,10 @@
                     </div>
                     <div class="col-xs-10">
                         <span ng-if="$ctrl.packages" ng-init="$ctrl.initUniqueAvailableRFQsForPkg()"></span>
-                        <!-- <span ng-if="$ctrl.packages" ng-init="$ctrl.initSellersCardNavigation()"></span> -->
+
                         <div class="row" id="sellerCardsItems">
                             <!-- FOR SELLER CARD -->
-<!--                             <div class="card-carousel-item" ng-repeat="(key,val) in $ctrl.uniqueAvailableRFQsForPkg" ng-if="!$ctrl.token && $ctrl.packagesConfigurationEnabled" ng-class="$ctrl.token ? 'col-md-3' : 'col-md-4'">
-                                <div class="req-card"  ng-click="$ctrl.tabType='package'; $ctrl.activeRFQ = val; $ctrl.isPackageOffer = true" ng-class="$ctrl.tabType =='package' &&  $ctrl.activeRFQ == val &&$ctrl.isPackageOffer == true ? 'active_req' : ''">
-                                    <div>
-                                        <p>
-                                            <span style="font-weight: 600;">
-                                                Packages
-                                                <span ng-if="$ctrl.token">
-                                                    {{ $ctrl.packages.length }}
-                                                </span>
-                                            </span>
-                                            <br/>
-                                            <span style="font-weight: 600;">
-                                                RFQ ID : {{ val }}
-                                            </span>
-                                            <br/>
-                                            Requests:
-                                            <span ng-repeat="(key, value) in $ctrl.getAllRequestsInPackage(val) ">
-                                                {{ value }},
-                                            </span>
-                                            <br/>
-                                            Products:
-                                            <span ng-repeat="(p, pc) in $ctrl.getAllProductsinRFQPackage(val)">
-                                                {{ pc.name }},
-                                            </span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div> -->
+
                             <!--  END FOR SELLER CARD -->
                             <span ng-if="$ctrl.packagesOffers && $ctrl.enableOffers">
                                 <div class="card-carousel-item" ng-if="$ctrl.token && $ctrl.packagesConfigurationEnabled" ng-class="$ctrl.token ? 'col-md-3' : 'col-md-4'" ng-init="$ctrl.activeRFQ = $ctrl.packagesOffers[0].rfqs[0].rfq.id">
@@ -80,9 +53,7 @@
                                     </div>
                                 </div>
                             </span>
-                            <!-- {{ $ctrl.requests}} -->
-                            <!-- {{$ctrl.active_req}} ** {{$ctrl.tabType}} -->
-                            <div class="card-carousel-item" ng-repeat="(key, value) in $ctrl.requests" ng-class="$ctrl.token ? 'col-md-3' : 'col-md-4'">
+                          in $ctrl.requests" ng-class="$ctrl.token ? 'col-md-3' : 'col-md-4'">
                                 <div class="req-card"  ng-class="$ctrl.active_req == value.id && $ctrl.tabType=='individual' ? 'active_req' : ''"  ng-click="$ctrl.tabType='individual';$ctrl.active_req = value.id; $ctrl.onTabClick(value);">
                                     <div ng-init="vesselDetails = $ctrl.getVesselDetailsByRequestId(value.id)">
                                         <p>
@@ -90,15 +61,11 @@
                                                 {{ value.name }}
                                             </span>
                                             <br/>
-                                            <!-- {{vesselDetails}} -->
+
                                             Vessel Name: {{ vesselDetails .vessel.name }} - IMO: {{ vesselDetails .vesselImoNo }}
                                             <br/>
                                             Locations:
-                                            <!-- <span ng-repeat="(k, v) in $ctrl.individuals | filter:{request:{id:value.id}} |  limitTo:4">
-                                                {{ v.location.name }}
-                                                - {{ v.physicalSupplier.name }}
-                                                <br/>
-                                            </span> -->
+
                                             <span ng-init="distinctLocations = $ctrl.getDistinctLocationsInRequest(value.id)">
                                             	<span ng-repeat="(k,v) in distinctLocations">
                                             		{{v}}
@@ -134,7 +101,7 @@
                                                 {{ value }},
                                             </span>
                                             <br/>
-                                            <!-- {{val}}      -->
+
                                             Products:
                                             <span ng-repeat="(p, pc) in $ctrl.getAllProductsinRFQPackage(val)">
                                                 {{ pc.name }},
@@ -199,12 +166,12 @@
             </div>
         </div>
 
-        <!-- <p>{{$ctrl.tabType}}</p> -->
+
         <span ng-include="'pages/supplier-portal/views/parts/productDetails.html'" ng-show="$ctrl.tabType == 'individual'"></span>
         <span ng-include="'pages/supplier-portal/views/parts/packageDetails.html'" ng-show="$ctrl.tabType == 'package'"></span>
         <span ng-include="'pages/supplier-portal/views/parts/packagesOffersDetails.html'" ng-show="$ctrl.tabType == 'packagesOffers'"></span>
         <div class="" style="margin-top: 10px; padding: 15px 0px 5px 20px; border: 1px solid #dde4ec;" ng-if="$ctrl.token">
-            <!-- <div class="row mb" ng-if="$ctrl.token && $ctrl.tabType != 'packagesOffers'"> -->
+
             <div class="col-md-3">
                 <div class="form-group row">
                     <label for="" class="price_label ">
@@ -233,14 +200,9 @@
                     </span>
                 </button>
             </div>
-        <!-- </div> -->
 
-            <!-- <div class="col-md-6" style="padding-left: 0px;margin-top: 15px;">
-                Please provide offer for all the requests before building the package.
-            </div> -->
             <div class="clear"></div>
         </div>
     </div>
-    <!--     <pre>{{$ctrl.individuals}}</pre>
-        <pre>{{$ctrl.packages}}</pre> -->
+
 </div>

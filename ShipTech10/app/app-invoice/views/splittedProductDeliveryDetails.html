@@ -16,7 +16,6 @@
             </tr>
         </thead>
         <tbody>
-        	<!-- | orderBy: 'productTypeId' -->
             <tr ng-repeat="(key, value) in formValues.productDetails" ng-if="value.isDeleted != true" class="ng-scope">
 				<td  style="min-width: 120px;" class="padding">{{value.orderedProduct.name}}</td>
                 <td  style="min-width: 120px;" ng-bind="getProductTypeById(value.productTypeId)" class="padding"></td>
@@ -44,12 +43,7 @@
 				<td style="min-width: 120px;" >
                             <div class="input-group form_input form_input_physicalSupplier">
                                 <input uib-typeahead="item as item.name for item in CM.listsCache.Supplier | filter:{name:$viewValue}" class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" id="Product_{{ $index }}" name="Product_{{ $index }}_physical_supplier" ng-model="value.physicalSupplierCounterparty" autocomplete="off" />
-                                <!-- ng-model="product.product" -->
-                                <!-- <span class="input-group-addon" ng-click="triggerModal('general', 'masters_counterpartylist_suppliers', 'Physical Supplier' , 'formValues.productDetails.'+$index+'.physicalSupplierCounterparty','','','Counterparty', '');">
-                                    <a   class=" btn default">
-                                        <i class="fa fa-search"></i>
-                                    </a>
-                                </span> -->
+
                                 <span class="input-group-addon ng-scope" ng-click="triggerModal('general', 'masters_counterpartylist', 'Physical Supplier' , 'formValues.productDetails.'+$index+'.physicalSupplierCounterparty');">
                                 	<a   class=" btn default">
                                 		<i class="fa fa-search"></i>

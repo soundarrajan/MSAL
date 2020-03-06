@@ -66,7 +66,7 @@
                 {{ CM.app_id + '.PRODUCT' | translate }}
             </label>
             <div class="input-group form_input form_input_product">
-			    <!-- {{formValues.temp.deliverysummary.products}}  -->
+
                 <select class="form-control bs-select changeIT" ng-options="item as (sumThose(index, 1) + ' - ' + item.product.name ) for (index, item) in formValues.temp.deliverysummary.products | orderBy : 'productType.id'" id="addProductToDeliverySelect" ng-model="selectedProductToAddInDelivery"></select>
             </div>
         </div>
@@ -86,7 +86,7 @@
 	<div class="row bg-grey-steel margin-top-10 delivery_product_details">
 	    <div class="col-xs-12">
 	        <span ng-include="'app-general-components/views/screen_parts/delivery/product_quality.html'"></span>
-	        <!-- <span ng-include="'app-general-components/views/screen_parts/delivery/deliveryQuality.html'"></span> -->
+
 	    </div>
 	</div>
 	<div class="row bg-grey-steel margin-top-10 delivery_product_details" ng-if="formValues.temp.isShowQuantityReconciliationSection">
