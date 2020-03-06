@@ -1630,7 +1630,7 @@ ctrl.setProductData = function(data, loc) {
         };
         ctrl.setDelinkIds = function () {
             var selectedRequestIds = [];
-            Object.keys(ctrl.requestCheckboxes).map(function (key, value) {
+            Object.keys(ctrl.requestCheckboxes).forEach(function (key) {
                 if (ctrl.requestCheckboxes[key]) {
                     selectedRequestIds.push(key);
                 }
@@ -1658,7 +1658,7 @@ ctrl.setProductData = function(data, loc) {
         };
         ctrl.noRequestsSelected = function () {
             var selectedRequestIds = [];
-            Object.keys(ctrl.requestCheckboxes).map(function (key, value) {
+            Object.keys(ctrl.requestCheckboxes).forEach(function (key) {
                 if (ctrl.requestCheckboxes[key]) {
                     selectedRequestIds.push(key);
                 }
@@ -2805,7 +2805,7 @@ ctrl.setProductData = function(data, loc) {
             var selectedRequestIds = [];
             var requestProductActions, products;
             var canDelink = false;
-            Object.keys(ctrl.requestCheckboxes).map(function (key, value) {
+            Object.keys(ctrl.requestCheckboxes).forEach(function (key) {
                 if (ctrl.requestCheckboxes[key]) {
                     selectedRequestIds.push(key);
                 }

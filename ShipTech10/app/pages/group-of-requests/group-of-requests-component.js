@@ -2207,7 +2207,7 @@ ctrl.setProductData = function(data, loc) {
         };
         ctrl.setDelinkIds = function () {
             var selectedRequestIds = [];
-            Object.keys(ctrl.requestCheckboxes).map(function (key, value) {
+            Object.keys(ctrl.requestCheckboxes).forEach(function (key) {
                 if (ctrl.requestCheckboxes[key]) {
                     selectedRequestIds.push(key);
                 }
@@ -2236,7 +2236,7 @@ ctrl.setProductData = function(data, loc) {
         };
         ctrl.noRequestsSelected = function () {
             var selectedRequestIds = [];
-            Object.keys(ctrl.requestCheckboxes).map(function (key, value) {
+            Object.keys(ctrl.requestCheckboxes).forEach(function (key) {
                 if (ctrl.requestCheckboxes[key]) {
                     selectedRequestIds.push(key);
                 }
@@ -2356,7 +2356,7 @@ ctrl.setProductData = function(data, loc) {
 	            console.log(ctrl.selectedNoQuoteItems);
 	            if ($($event.target).prop("checked") == false && ctrl.selectedNoQuoteItems) {
 	            	newSelectedNoQuoteItems = angular.copy(ctrl.selectedNoQuoteItems);
-		            Object.keys(newSelectedNoQuoteItems).map(function (key, value) {
+		            Object.keys(newSelectedNoQuoteItems).forEach(function (key) {
 		                if (newSelectedNoQuoteItems[key]) {
 	            	 		newSelectedNoQuoteItems[key] = false;
 		                }
@@ -3593,7 +3593,7 @@ ctrl.setProductData = function(data, loc) {
             var selectedRequestIds = [];
             var requestProductActions, products;
             var canDelink = false;
-            Object.keys(ctrl.requestCheckboxes).map(function (key, value) {
+            Object.keys(ctrl.requestCheckboxes).forEach(function (key) {
                 if (ctrl.requestCheckboxes[key]) {
                     selectedRequestIds.push(key);
                 }
@@ -6937,7 +6937,7 @@ ctrl.setProductData = function(data, loc) {
 			}
         	selectedNoQuotableItems = [];
         	if (ctrl.selectedNoQuoteItems) {
-				Object.keys(ctrl.selectedNoQuoteItems).map(function (key, value) {
+				Object.keys(ctrl.selectedNoQuoteItems).forEach(function (key) {
 				    if (ctrl.selectedNoQuoteItems[key]) {
 				    	selectedNoQuotableItems.push(key.split('nq')[1])
 						hasNoQuotableSelected = true; 		

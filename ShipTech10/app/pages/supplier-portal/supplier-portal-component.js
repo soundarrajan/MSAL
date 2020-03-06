@@ -2315,7 +2315,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
         ctrl.mapSpecParamKeyById = function(product) {
         	var mappedSpecParamKeys = [];
         	var object = product.sellers[0].offers[0].energyParameterValues;
-			Object.keys(object).map(function(objectKey, index) {
+			Object.keys(object).forEach(function(objectKey) {
 			    var value = object[objectKey];
 			    if (value) {
 				    if (value.specParameterId) {

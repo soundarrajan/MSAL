@@ -97,7 +97,7 @@ angular.module("shiptech.pages").controller("ScheduleTableController", [
             var request;
             var isGrouped = false;
             if (ctrl.selectedRequests) {
-                Object.keys(ctrl.selectedRequests).map(function(key, value) {
+                Object.keys(ctrl.selectedRequests).forEach(function(key) {
                     if (ctrl.selectedRequests[key]) {
                         request = $filter("filter")(ctrl.tableData.tableData.rows, {
                             requestId: key
@@ -112,7 +112,7 @@ angular.module("shiptech.pages").controller("ScheduleTableController", [
         };
         ctrl.groupRequests = function() {
             var selectedRequestIds = [];
-            Object.keys(ctrl.selectedRequests).map(function(key, value) {
+            Object.keys(ctrl.selectedRequests).forEach(function(key) {
                 if (ctrl.selectedRequests[key]) {
                     selectedRequestIds.push(key);
                 }

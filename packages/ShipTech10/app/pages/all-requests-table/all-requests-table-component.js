@@ -344,7 +344,7 @@ angular.module('shiptech.pages').controller('AllRequestsTableController', ['$sco
         };
         ctrl.groupRequests = function() {
             var selectedRequestIds = [];
-            Object.keys(ctrl.selectedRequests).map(function(key, value) {
+            Object.keys(ctrl.selectedRequests).forEach(function(key) {
                 if (ctrl.selectedRequests[key]) {
                     selectedRequestIds.push(key);
                 }
@@ -366,7 +366,7 @@ angular.module('shiptech.pages').controller('AllRequestsTableController', ['$sco
             var isGrouped = false;
             var noRequestsSelected = true;
             if (ctrl.selectedRequests) {
-                Object.keys(ctrl.selectedRequests).map(function(key, value) {
+                Object.keys(ctrl.selectedRequests).forEach(function(key) {
                     if (ctrl.selectedRequests[key]) {
                         noRequestsSelected = false;
                         request = $filter('filter')(ctrl.tableData.tableData.rows, {

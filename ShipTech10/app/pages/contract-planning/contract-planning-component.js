@@ -390,7 +390,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
 
             listsCache = ctrl.lists;
 
-            Object.keys($rootScope.editableCProwsModel).map(function(objectKey, index) {
+            Object.keys($rootScope.editableCProwsModel).forEach(function(objectKey) {
                 var value = $rootScope.editableCProwsModel[objectKey];
                 if ("row-" + parseFloat(rowIndex + 1) == objectKey) {
                     if (value.contractChanged) {
@@ -421,7 +421,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
 
         	newRequestModel.contractPlanningAutoSave(rowObject).then(function(response) {
         		if (response.payload) {
-		            Object.keys($rootScope.editableCProwsModel).map(function(objectKey, index) {
+		            Object.keys($rootScope.editableCProwsModel).forEach(function(objectKey) {
 		                var value = $rootScope.editableCProwsModel[objectKey];
 		                if ("row-" + parseFloat(rowIndex + 1) == objectKey) {
 		                    if (value.contractChanged) {

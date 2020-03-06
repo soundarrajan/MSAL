@@ -3139,7 +3139,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 }
                 $.each($scope.selectedContractPlanningRows, function(ksc, vsc) {
                     if (typeof $rootScope.editableCProwsModel != "undefined") {
-                        Object.keys($rootScope.editableCProwsModel).map(function(objectKey, index) {
+                        Object.keys($rootScope.editableCProwsModel).forEach(function(objectKey) {
                             var value = $rootScope.editableCProwsModel[objectKey];
                             if ("row-" + vsc.rowIndex == objectKey) {
                                 if (value.contractChanged) {
@@ -3509,7 +3509,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             }
             $.each($scope.selectedContractPlanningRows, function(ksc, vsc) {
                 if (typeof $rootScope.editableCProwsModel != "undefined") {
-                    Object.keys($rootScope.editableCProwsModel).map(function(objectKey, index) {
+                    Object.keys($rootScope.editableCProwsModel).forEach(function(objectKey) {
                         var value = $rootScope.editableCProwsModel[objectKey];
                         if ("row-" + vsc.rowIndex == objectKey) {
                             if (value.contractChanged) {
@@ -3517,7 +3517,6 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                             } else {
                                 vsc.contract = CLC.jqGrid.Ascensys.gridData[ parseFloat(objectKey.split("row-")[1]) - 1 ].contract;
                             }
-                            // vsc.contract = CLC.jqGrid.Ascensys.gridData[ parseFloat(objectKey.split("row-")[1]) - 1 ].contract;
                             if (typeof value.comment != "undefined") {
                                 vsc.comment = value.comment ? value.comment : null;
                             }
@@ -3526,10 +3525,6 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                             if (typeof(value.contractProductId) != 'undefined') {
                                 vsc.contractProductId = value.contractProductId;
                             }
-                            // if (value.agreementType != null) {
-                            //     vsc.agreementType = {};
-                            //     vsc.agreementType.id = value.agreementType;
-                            // }
                         }
                     });
                 }

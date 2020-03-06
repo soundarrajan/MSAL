@@ -2679,7 +2679,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             }
             $.each($scope.selectedContractPlanningRows, function(ksc, vsc) {
                 if (typeof $rootScope.editableCProwsModel != "undefined") {
-                    Object.keys($rootScope.editableCProwsModel).map(function(objectKey, index) {
+                    Object.keys($rootScope.editableCProwsModel).forEach(function(objectKey) {
                         var value = $rootScope.editableCProwsModel[objectKey];
                         if ("row-" + vsc.rowIndex == objectKey) {
                             vsc.contract = value.contract;
