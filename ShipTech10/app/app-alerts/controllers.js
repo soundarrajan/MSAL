@@ -251,7 +251,7 @@ APP_ALERTS.controller('Controller_Alerts', ['$scope', '$rootScope', '$Api_Servic
         // caretPosition = $scope.caretPosition;
         if ($scope.caretPosition == 0 || typeof($scope.caretPosition) == 'undefined') {
             $scope.placeCaretAtEnd($(targetElement).get(0));
-        } else {}
+        }
         $scope.moveCaret(window, $scope.caretPosition)
         if (!value) {
             return

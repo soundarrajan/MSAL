@@ -1563,7 +1563,6 @@ APP_MASTERS.controller("Controller_Datatables", [
                     {
                         name: "emailTemplate",
                         displayName: "Template",
-                        cellTemplate: $scope.dataTableTemplates.lookup,
                         cellCondition: "!grid.appScope.fVal().formValues.templates[grid.appScope.rowIdx(row)].transactionType.id",
                         cellConditionType: "ng-disabled",
                         cellTemplate: $scope.dataTableTemplates.lookup_adminTemplates,
@@ -2196,8 +2195,7 @@ APP_MASTERS.controller("Controller_Datatables", [
                         // count = Object.keys(obj).length;
                         count = 0;
                         $.each(obj, function(key,val){
-                             if(val.isDeleted){
-                             }else{
+                             if(!val.isDeleted){
                                 count++;
                              }
                         })

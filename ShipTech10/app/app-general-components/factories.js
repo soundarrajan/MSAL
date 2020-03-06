@@ -284,9 +284,6 @@ APP_GENERAL_COMPONENTS.factory('Factory_App_Dates_Processing', ['$tenantSettings
     }
     function findSeparator(str){
     	return null;
-        var idx = 0;
-        while(charCodes[str[idx].charCodeAt(0)] === undefined) idx++;
-        return str[idx];
     }
     function calculateDatePositions(format){
         format = format.toLowerCase();
@@ -312,7 +309,7 @@ APP_GENERAL_COMPONENTS.factory('Factory_App_Dates_Processing', ['$tenantSettings
     }
     function formMaskFormat(format, dateOnly){
         // debugger;
-        var idx = 0;
+        var idx;
         var mask = "";  
         format = format.toLowerCase();
         if(format.indexOf('mmm') < 0){
@@ -321,7 +318,7 @@ APP_GENERAL_COMPONENTS.factory('Factory_App_Dates_Processing', ['$tenantSettings
                 if(format.charCodeAt(idx) >= 97 && format.charCodeAt(idx) <= 122){ // is letter
                     mask = mask + "0"; // allow any number
                 }else{
-                mask = mask + format[idx];
+                    mask = mask + format[idx];
                 }
             }
         }else{

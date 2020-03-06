@@ -298,7 +298,7 @@
 				var year = o.defaultViewDate.year || new Date().getFullYear();
 				var month = o.defaultViewDate.month || 0;
 				var day = o.defaultViewDate.day || 1;
-				o.defaultViewDate = UTCDate(year, month, day);
+				o.defaultViewDate = new UTCDate(year, month, day);
 			} else {
 				o.defaultViewDate = UTCToday();
 			}
@@ -1715,15 +1715,15 @@
 				format = DPGlobal.parseFormat(format);
 			if (format.toValue)
                 return format.toValue(date, format, language);
-            var part_re = /([\-+]\d+)([dmwy])/,
-				parts = date.match(/([\-+]\d+)([dmwy])/g),
-				fn_map = {
+            var part_re = /([\-+]\d+)([dmwy])/;
+			var	parts = date.match(/([\-+]\d+)([dmwy])/g);
+			var	fn_map = {
 					d: 'moveDay',
 					m: 'moveMonth',
 					w: 'moveWeek',
 					y: 'moveYear'
-				},
-				part, dir, i, fn;
+				};
+			var	part, dir, i, fn;
 			if (/^[\-+]\d+[dmwy]([\s,]+[\-+]\d+[dmwy])*$/.test(date)){
 				date = new Date();
 				for (i=0; i < parts.length; i++){
@@ -1814,8 +1814,9 @@
 				return '';
 			if (typeof format === 'string')
 				format = DPGlobal.parseFormat(format);
-			if (format.toDisplay)
-                return format.toDisplay(date, format, language);
+			if (format.toDisplay) {
+				return format.toDisplay(date, format, language);
+			}
             var val = {
 				d: date.getUTCDate(),
 				D: dates[language].daysShort[date.getUTCDay()],

@@ -700,54 +700,45 @@ APP_MASTERS.controller("Controller_Master", [
                 }
             }
             vm.invalid_form = false;
-            if (1 == 1) {
-            
-                $rootScope.filterFromData = {};
-                $.each($rootScope.formValues, function(key, val) {
-                    if (!angular.equals(val, [{}])) {
-                        $rootScope.filterFromData[key] = val;
+            $rootScope.filterFromData = {};
+            $.each($rootScope.formValues, function(key, val) {
+                if (!angular.equals(val, [{}])) {
+                    $rootScope.filterFromData[key] = val;
+                }
+            });
+
+            vm.fields = angular.toJson($rootScope.filterFromData);
+            if ($rootScope.filterFromData.id > 0) {
+                Factory_Master.save_master_changes(app, screen, vm.fields, function(callback) {
+                    if (callback.status == true) {
+                        toastr.success(callback.message);
+                        $("table.ui-jqgrid-btable").trigger("reloadGrid");
+                        $scope.prettyCloseModal();
+                        // $scope.modalInstance.close();
+                    } else {
+                        if (callback.message) {
+                            toastr.error(callback.message);
+                        } else {
+                            toastr.error("An error has occured, please check the fields");
+                        }
                     }
                 });
-              
-                vm.fields = angular.toJson($rootScope.filterFromData);
-                if ($rootScope.filterFromData.id > 0) {
-                    Factory_Master.save_master_changes(app, screen, vm.fields, function(callback) {
-                        if (callback.status == true) {
-                            toastr.success(callback.message);
-                            $("table.ui-jqgrid-btable").trigger("reloadGrid");
-                            $scope.prettyCloseModal();
-                            // $scope.modalInstance.close();
-                        } else {
-                            if (callback.message) {
-                                toastr.error(callback.message);
-                            } else {
-                                toastr.error("An error has occured, please check the fields");
-                            }
-                        }
-                    });
-                } else {
-                    Factory_Master.create_master_entity(app, screen, vm.fields, function(callback) {
-                        if (callback.status == true) {
-                            toastr.success(callback.message);
-                            $("table.ui-jqgrid-btable").trigger("reloadGrid");
-                            $scope.prettyCloseModal();
-                        } else {
-                            if (callback.message) {
-                                toastr.error(callback.message);
-                            } else {
-                                toastr.error("An error has occured, please check the fields");
-                            }
-                        }
-                    });
-                }
             } else {
-                vm.invalid_form = true;
-                var message = "Please fill in required fields:";
-                $.each(vm.editInstance.$error.required, function(key, val) {
-                    message += "<br>" + val.$name;
+                Factory_Master.create_master_entity(app, screen, vm.fields, function(callback) {
+                    if (callback.status == true) {
+                        toastr.success(callback.message);
+                        $("table.ui-jqgrid-btable").trigger("reloadGrid");
+                        $scope.prettyCloseModal();
+                    } else {
+                        if (callback.message) {
+                            toastr.error(callback.message);
+                        } else {
+                            toastr.error("An error has occured, please check the fields");
+                        }
+                    }
                 });
-                toastr.error(message);
             }
+
         };
 
         $scope.save_master_changes = function(ev, sendEmails, noReload, completeCallback) {
@@ -2689,7 +2680,6 @@ APP_MASTERS.controller("Controller_Master", [
                 //get values from listsCache, put in options obj for specific dropdowns
                 //get options for request status
                 if (field.Name == "etaFreezeStatus" && field.masterSource) {
-                    $scope.options["etaFreezeStatus"] = [];
                     $scope.options["etaFreezeStatus"] = angular.copy($scope.listsCache.RequestStatus);
                 }
                 if (field.Name == "numberOfCounterpartiesToDisplay") {
@@ -6550,7 +6540,6 @@ APP_MASTERS.controller("Controller_Master", [
                 "id": $rootScope.previewEmail.comment ? $rootScope.previewEmail.comment.id : 0,
                 "name": $rootScope.previewEmail.comment.name,
                 "emailTemplate":  $rootScope.currentEmailTemplate,
-                "emailTemplate":  $rootScope.currentEmailTemplate,
                 "businessId": vm.entity_id,
                 "secondBusinessId": null,
                 "thirdBusinessId": null,
@@ -6903,8 +6892,6 @@ APP_MASTERS.controller("Controller_Master", [
                 if($scope.droppedDoc){
                     availableFile = true;
                     fileLocation = "dropped";
-                }else{
-                    availableFile = false;
                 }
             }
 
@@ -7362,8 +7349,11 @@ APP_MASTERS.controller("Controller_Master", [
 	                        calculate(vm.old_cost, response.data.payload[1].id, vm.old_costType)
 	                    });
 	                } else {
-	                   if (!formValues.productDetails[0].invoicedProduct) return;
-                       calculate(vm.old_cost, formValues.productDetails[0].invoicedProduct.id, vm.old_costType)
+	                   if (!formValues.productDetails[0].invoicedProduct){
+                           return;
+                       } else{
+                           calculate(vm.old_cost, formValues.productDetails[0].invoicedProduct.id, vm.old_costType);
+                       }
 	                }
 	            } else {
 	                calculate(vm.old_cost, vm.old_product, vm.old_costType)

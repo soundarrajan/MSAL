@@ -30,8 +30,8 @@
     },
     maxOptionsText: function (numAll, numGroup) {
       return [
-        (numAll == 1) ? 'Limit aşıldı (maksimum {n} sayıda öğe )' : 'Limit aşıldı (maksimum {n} sayıda öğe)',
-        (numGroup == 1) ? 'Grup limiti aşıldı (maksimum {n} sayıda öğe)' : 'Grup limiti aşıldı (maksimum {n} sayıda öğe)'
+        'Limit aşıldı (maksimum {n} sayıda öğe )',
+        'Grup limiti aşıldı (maksimum {n} sayıda öğe)'
       ];
     },
     selectAllText: 'Tümünü Seç',

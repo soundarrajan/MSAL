@@ -1327,8 +1327,10 @@ var AuthenticationContext = (function () {
             else if (window.parent && window.parent._adalInstance) {
                 self = window.parent._adalInstance;
             }
+            if(typeof self != 'undefined'){
+                var requestInfo = self.getRequestInfo(hash);
+            }
 
-            var requestInfo = self.getRequestInfo(hash);
             var token, tokenReceivedCallback, tokenType = null;
 
             if (isPopup || window.parent !== window) {

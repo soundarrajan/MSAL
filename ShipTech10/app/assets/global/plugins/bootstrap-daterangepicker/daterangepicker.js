@@ -859,7 +859,7 @@
 
             for (var i = start; i <= end; i++) {
                 var i_in_24 = i;
-                if (!this.timePicker24Hour)
+                if (!this.timePicker24Hour && typeof selected != 'undefined')
                     i_in_24 = selected.hour() >= 12 ? (i == 12 ? 12 : i + 12) : (i == 12 ? 0 : i);
 
                 var time = selected.clone().hour(i_in_24);

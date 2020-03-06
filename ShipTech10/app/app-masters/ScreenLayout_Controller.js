@@ -262,16 +262,10 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
 		                // $scope.formValues.paymentDetails.paidAmount = $scope.formValues.invoiceSummary.provisionalInvoiceAmount;
                         // $scope.formValues.paymentDetails.paidAmount = null;
 		           
-		                if (tempformValues.invoiceSummary.invoiceAmountGrandTotal == null) {
-		                    invoiceAmountGrandTotal = 0
-		                } else {
-		                    invoiceAmountGrandTotal = 0
-		                }
-		                if (tempformValues.invoiceSummary.deductions == null) {
-		                    deductions = 0
-		                } else {
-		                    deductions = 0
-		                }
+
+						invoiceAmountGrandTotal = 0;
+						deductions = 0;
+
 		                $scope.formValues.invoiceSummary.netPayable = invoiceAmountGrandTotal - deductions;
 		                $.each($scope.formValues.productDetails, function(k, v) {
 		                    v.id = 0;
@@ -383,21 +377,10 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
                         $scope.formValues.paymentDetails.paidAmount = null;
                         // $scope.formValues.paymentDetails.paidAmount = $scope.formValues.invoiceSummary.provisionalInvoiceAmount;
 		           
-		                if (tempformValues.invoiceSummary.invoiceAmountGrandTotal == null) {
-		                    invoiceAmountGrandTotal = 0
-		                } else {
-		                    invoiceAmountGrandTotal = 0
-		                }
-		                if (tempformValues.invoiceSummary.provisionalInvoiceAmount == null) {
-		                    provisionalInvoiceAmount = 0
-		                } else {
-		                    provisionalInvoiceAmount = 0
-		                }
-		                if (tempformValues.invoiceSummary.deductions == null) {
-		                    deductions = 0
-		                } else {
-		                    deductions = 0
-		                }
+						invoiceAmountGrandTotal = 0;
+						provisionalInvoiceAmount = 0;
+						deductions = 0;
+
 		                $scope.formValues.invoiceSummary.netPayable = invoiceAmountGrandTotal - deductions;
 		                $scope.formValues.costDetails = [];
 		                $scope.formValues.productDetails = [];
@@ -514,8 +497,7 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
 	            }
         	}
 
-            if (vm.entity_id == "0") {
-            } else {
+            if (vm.entity_id != "0") {
                 // $rootScope.transportData este variabila globala folosita pentru cazurile in care avem nevoie
                 // sa populam un ecran de create, atunci cand datele vin in urma unei actiuni.
                 if ($rootScope.transportData != null) {
@@ -565,7 +547,7 @@ APP_MASTERS.controller("ScreenLayout_Controller", [
                                     $.each($scope.formValues, function(key, val) {
                                         if (val && angular.isArray(val)) {
                                             $.each(val, function(key1, val1) {
-                                                if (val && val1 && val1.hasOwnProperty("isDeleted")) {
+                                                if (val1 && val1.hasOwnProperty("isDeleted")) {
                                                 	if (vm.app_id == "labs" && vm.screen_id == "labresult") {
                                                 		response[key][0].id = 0;
                                                 	} else if (vm.screen_id != "company" && vm.app_id != "contracts" && vm.screen_id != "contract" && vm.app_id != "admin" && vm.screen_id != "users" && vm.screen_id != "marketinstrument" && vm.screen_id != "systeminstrument") {

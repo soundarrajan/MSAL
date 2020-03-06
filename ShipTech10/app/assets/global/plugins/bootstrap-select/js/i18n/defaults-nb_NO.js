@@ -53,8 +53,8 @@
     },
     maxOptionsText: function (numAll, numGroup) {
       return [
-        (numAll == 1) ? 'Grense nådd (maks {n} valg)' : 'Grense nådd (maks {n} valg)',
-        (numGroup == 1) ? 'Grense for grupper nådd (maks {n} grupper)' : 'Grense for grupper nådd (maks {n} grupper)'
+        'Grense nådd (maks {n} valg)',
+        'Grense for grupper nådd (maks {n} grupper)'
       ];
     },
     selectAllText: 'Merk alle',

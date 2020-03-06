@@ -2467,9 +2467,6 @@ APP_API.factory("$Api_Service", [
                         get: {
                             endpoint: API.BASE_URL_DATA_MASTERS + "/api/masters/currencies/get"
                         },
-                        export: {
-                            endpoint: API.BASE_URL_DATA_MASTERS + "/api/masters/currencies/export"
-                        },
                         create: {
                             endpoint: API.BASE_URL_DATA_MASTERS + "/api/masters/currencies/create"
                         },
@@ -5621,36 +5618,39 @@ APP_API.factory("$Api_Service", [
                                 console.log("Error retrieving role checks!");
                             }
                             var modules = {};
-                            res2.forEach(function(entry) {
-                                var name = entry.name;
-                                var screens = {};
-                                // if (entry.screens.length > 0) {
-                                entry.screens.forEach(function(entry2) {
-                                    var screenActions = {
-                                        screen: {
-                                            id: entry2.id,
-                                            name: entry2.name
-                                        },
-                                        definedScreenTemplates: entry2.definedScreenTemplates
-                                    };
-                                    entry2.screenActions.forEach(function(entry3) {
-                                        screenActions[entry3.id] = {
-                                            name: entry3.name
+                            if(typeof(res2) != 'undefined'){
+                                res2.forEach(function(entry) {
+                                    var name = entry.name;
+                                    var screens = {};
+                                    // if (entry.screens.length > 0) {
+                                    entry.screens.forEach(function(entry2) {
+                                        var screenActions = {
+                                            screen: {
+                                                id: entry2.id,
+                                                name: entry2.name
+                                            },
+                                            definedScreenTemplates: entry2.definedScreenTemplates
                                         };
+                                        entry2.screenActions.forEach(function(entry3) {
+                                            screenActions[entry3.id] = {
+                                                name: entry3.name
+                                            };
+                                        });
+                                        screens[entry2.name] = screenActions;
                                     });
-                                    screens[entry2.name] = screenActions;
+                                    screens["module"] = {
+                                        id: entry.id,
+                                        name: entry.name
+                                    };
+                                    modules[entry.name] = screens;
+                                    // } else {
+                                    // modules[entry.name] = [];
+                                    // }
                                 });
-                                screens["module"] = {
-                                    id: entry.id,
-                                    name: entry.name
-                                };
-                                modules[entry.name] = screens;
-                                // } else {
-                                // modules[entry.name] = [];
-                                // }
-                            });
+                            }
+
                             var checks = {};
-                            if (param.id != "") {
+                            if (param.id != "" && typeof(res1) != 'undefined') {
                                 res1.rights.forEach(function(entry) {
                                     var screens = {};
                                     entry.moduleScreenConfigurations.forEach(function(entry2) {
@@ -6751,8 +6751,6 @@ APP_API.factory("$Api_Service", [
                             }
                         );
                         return;
-                    }
-                    if (param.app == "invoices" && param.screen == "invoice" && param.field.masterSource == "costApplyFor") {
                     }
                     if (param.app == "alerts" && param.screen == "alerts") {
                         console.log(param.field.masterSource);
@@ -8733,16 +8731,6 @@ APP_API.factory("$Api_Service", [
                     var url = API.BASE_URL_DATA_DELIVERY + "/api/delivery/getDeliverySpecParameters";
                     $http.post(url, apiJSON).then(function success(response) {
                         if (response.status == 200) {
-                            var res = new Array();
-                            response.data.payload.forEach(function(entry) {
-                                var i = new Object();
-                                i.specParameter = entry.specParameter;
-                                i.claimTypeId = entry.claimTypeId;
-                                i.min = entry.min;
-                                i.max = entry.max;
-                                i.uom = entry.uom;
-                                res.push(i);
-                            });
                             callback(response.data.payload);
                         } else {
                             console.log("Error retrieving spec parameters for product");
@@ -8757,17 +8745,6 @@ APP_API.factory("$Api_Service", [
                     var url = API.BASE_URL_DATA_DELIVERY + "/api/delivery/getDeliveryQuantityParameters";
                     $http.post(url, apiJSON).then(function success(response) {
                         if (response.status == 200) {
-                            var res = new Array();
-                            response.data.payload.forEach(function(entry) {
-                                var i = new Object();
-                                i = entry;
-                                // i.specParameter = entry.specParameter;
-                                // i.claimTypeId = entry.claimTypeId;
-                                // i.min = entry.min;
-                                // i.max = entry.max;
-                                // i.uom = entry.uom;
-                                res.push(i);
-                            });
                             console.log(response);
                             callback(response.data.payload);
                         } else {
@@ -8783,17 +8760,6 @@ APP_API.factory("$Api_Service", [
                     var url = API.BASE_URL_DATA_DELIVERY + "/api/delivery/getDeliverySplitLimits";
                     $http.post(url, apiJSON).then(function success(response) {
                         if (response.status == 200) {
-                            var res = new Array();
-                            response.data.payload.forEach(function(entry) {
-                                var i = new Object();
-                                i = entry;
-                                // i.specParameter = entry.specParameter;
-                                // i.claimTypeId = entry.claimTypeId;
-                                // i.min = entry.min;
-                                // i.max = entry.max;
-                                // i.uom = entry.uom;
-                                res.push(i);
-                            });
                             console.log(response);
                             callback(response.data.payload);
                         } else {

@@ -30,8 +30,8 @@
     },
     maxOptionsText: function (numAll, numGroup) {
       return [
-        (numAll == 1) ? 'Valintojen maksimimäärä ({n} saavutettu)' : 'Valintojen maksimimäärä ({n} saavutettu)',
-        (numGroup == 1) ? 'Ryhmän maksimimäärä ({n} saavutettu)' : 'Ryhmän maksimimäärä ({n} saavutettu)'
+        'Valintojen maksimimäärä ({n} saavutettu)',
+        'Ryhmän maksimimäärä ({n} saavutettu)'
       ];
     },
     selectAllText: 'Valitse kaikki',

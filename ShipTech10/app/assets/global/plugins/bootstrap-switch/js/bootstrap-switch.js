@@ -668,7 +668,8 @@
     })();
     $.fn.bootstrapSwitch = function() {
       var args, option, ret;
-      option = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+      option = arguments[0];
+      args = (2 <= arguments.length) ? __slice.call(arguments, 1) : [];
       ret = this;
       this.each(function() {
         var $this, data;

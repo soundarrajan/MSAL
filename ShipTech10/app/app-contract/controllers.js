@@ -373,11 +373,11 @@ APP_CONTRACT.controller('Controller_Contract', ['$scope','$rootScope', '$Api_Ser
     		            hasTotalContractualQuantity = true;
     		        }
                 }
-	    	}
-	    	if (v.minContractQuantity && v.maxContractQuantity) {
-	    		if (convertDecimalSeparatorStringToNumber(v.minContractQuantity) > convertDecimalSeparatorStringToNumber(v.maxContractQuantity)) {
-			    	minQuyanityValidationError = true;
-	    		}
+                if ( v.minContractQuantity && v.maxContractQuantity) {
+                    if (convertDecimalSeparatorStringToNumber(v.minContractQuantity) > convertDecimalSeparatorStringToNumber(v.maxContractQuantity)) {
+                        minQuyanityValidationError = true;
+                    }
+                }
 	    	}
 	    })
 	    if (minQuyanityValidationError) {
@@ -397,153 +397,152 @@ APP_CONTRACT.controller('Controller_Contract', ['$scope','$rootScope', '$Api_Ser
             return;
         }
 
-	    if (/*$scope.formValues.productQuantityRequired ==*/ true) {
-	        $scope.formValues.products.forEach(function(product, index) {
-	            var productQtyDetails = product.details;
-	            var selectedQtyTypes = [];
-	            if ((true == product.isFormula) && (!product.formula)) {
-	                toastr.error('Product ' + parseFloat(index + 1) + ' has an error: Formula type selected but no formula is assigned');
-	                vm.editInstance.$valid = false;
-	            }
+        $scope.formValues.products.forEach(function(product, index) {
+            var productQtyDetails = product.details;
+            var selectedQtyTypes = [];
+            if ((true == product.isFormula) && (!product.formula)) {
+                toastr.error('Product ' + parseFloat(index + 1) + ' has an error: Formula type selected but no formula is assigned');
+                vm.editInstance.$valid = false;
+            }
 
-	            if (((true == product.isMtmFormula) && (!product.mtmFormula)) || ((false==product.isMtmFormula) && (!product.mtmPrice))) {
-	                toastr.error('Product ' + parseFloat(index + 1) + ' has an error: Either Price or MTM Formula should be assigned with a valid value');
-	                vm.editInstance.$valid = false;
-	            }
+            if (((true == product.isMtmFormula) && (!product.mtmFormula)) || ((false==product.isMtmFormula) && (!product.mtmPrice))) {
+                toastr.error('Product ' + parseFloat(index + 1) + ' has an error: Either Price or MTM Formula should be assigned with a valid value');
+                vm.editInstance.$valid = false;
+            }
 
-	            if ($scope.formValues.productQuantityRequired == true) {
-	                $scope.formValues.products[index].details.forEach(function (detail, detailIdx) {
-	                    if (parseFloat($scope.formValues.products[index].details[detailIdx].minContractQuantity) > parseFloat($scope.formValues.products[index].details[detailIdx].maxContractQuantity)) {
-	                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: Min Qty must me smaller than Max Qty on: ' + $scope.formValues.products[index].details[detailIdx].contractualQuantityOption.name);
-	                        vm.editInstance.$valid = false;
-	                    }
-	                    if (typeof ($scope.formValues.products[index].details[detailIdx].contractualQuantityOption) != 'undefined') {
-	                        selectedQtyTypes.push($scope.formValues.products[index].details[detailIdx].contractualQuantityOption.name);
-	                    }
-	                    if (typeof ($scope.formValues.products[index].details[detailIdx].contractualQuantityOption) != 'undefined') {
-	                        if ($scope.formValues.products[index].details[detailIdx].contractualQuantityOption.name == 'TotalContractualQuantity') {
-	                            $($scope.formValues.details).each(function (contractDetailIdx) {
-	                                if (typeof ($scope.formValues.details[contractDetailIdx].contractualQuantityOption) != 'undefined') {
-	                                    if ($scope.formValues.details[contractDetailIdx].contractualQuantityOption.name == 'Total') {
-	                                        if ($scope.formValues.details[contractDetailIdx].maxContractQuantity < $scope.formValues.products[index].details[detailIdx].maxContractQuantity) {
-	                                            toastr.error('Product ' + parseFloat(index + 1) + 'has an error: max Quantity must be smaller that max Quantity from Contract');
-	                                            vm.editInstance.$valid = false;
-	                                        }
-	                                        if (parseFloat($scope.formValues.details[contractDetailIdx].minContractQuantity) < parseFloat($scope.formValues.products[index].details[detailIdx].minContractQuantity)) {
-	                                            toastr.error('Product ' + parseFloat(index + 1) + 'has an error: min Quantity must be smaller that min Quantity from Contract');
-	                                            vm.editInstance.$valid = false;
-	                                        }
-	                                    }
-	                                }
-	                            })
-	                        }
-	                    }
-	                })
-	                var isDuplicate = selectedQtyTypes.some(function (item, idx) {
-	                    return selectedQtyTypes.indexOf(item) != idx
-	                });
-	                if (isDuplicate == true) {
-	                    toastr.error('Product ' + parseFloat(index + 1) + ' has an error: One of the quantity types is duplicated');
-	                    vm.editInstance.$valid = false;
-	                } else {
-	                    compProductQtyDetails = [];
-	                    productQtyDetails.forEach(function (detail, index2) {
-	                        if (typeof (detail.contractualQuantityOption) != 'undefined') {
-	                            compProductQtyDetails[detail.contractualQuantityOption.name] = [detail.minContractQuantity, detail.maxContractQuantity];
-	                        } else {
-	                            toastr.error('Product ' + parseFloat(index + 1) + ' has an error: Please select Quant. Type');
-	                            vm.editInstance.$valid = false;
-	                        }
-	                    })
-	                    // console.log(compProductQtyDetails);
-	                    /* min qty*/
-	                    if (compProductQtyDetails.PerLift && compProductQtyDetails.PerDay && parseFloat(compProductQtyDetails.PerLift[0]) > parseFloat(compProductQtyDetails.PerDay[0])) {
-	                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerLift Min Qty is bigger than PerDay');
-	                        vm.editInstance.$valid = false;
-	                    }
-	                    if (compProductQtyDetails.PerLift && compProductQtyDetails.PerWeek && parseFloat(compProductQtyDetails.PerLift[0]) > parseFloat(compProductQtyDetails.PerWeek[0])) {
-	                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerLift Min Qty is bigger than PerWeek');
-	                        vm.editInstance.$valid = false;
-	                    }
-	                    if (compProductQtyDetails.PerLift && compProductQtyDetails.PerMonth && parseFloat(compProductQtyDetails.PerLift[0]) > parseFloat(compProductQtyDetails.PerMonth[0])) {
-	                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerLift Min Qty is bigger than PerMonth');
-	                        vm.editInstance.$valid = false;
-	                    }
-	                    if (compProductQtyDetails.PerLift && compProductQtyDetails.TotalContractualQuantity && parseFloat(compProductQtyDetails.PerLift[0]) > parseFloat(compProductQtyDetails.TotalContractualQuantity[0])) {
-	                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerLift Min Qty is bigger than TotalContractualQuantity');
-	                        vm.editInstance.$valid = false;
-	                    }
-	                    if (compProductQtyDetails.PerDay && compProductQtyDetails.PerWeek && parseFloat(compProductQtyDetails.PerDay[0]) > parseFloat(compProductQtyDetails.PerWeek[0])) {
-	                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerDay Min Qty is bigger than PerWeek');
-	                        vm.editInstance.$valid = false;
-	                    }
-	                    if (compProductQtyDetails.PerDay && compProductQtyDetails.PerMonth && parseFloat(compProductQtyDetails.PerDay[0]) > parseFloat(compProductQtyDetails.PerMonth[0])) {
-	                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerDay Min Qty is bigger than PerMonth');
-	                        vm.editInstance.$valid = false;
-	                    }
-	                    if (compProductQtyDetails.PerDay && compProductQtyDetails.TotalContractualQuantity && parseFloat(compProductQtyDetails.PerDay[0]) > parseFloat(compProductQtyDetails.TotalContractualQuantity[0])) {
-	                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerDay Min Qty is bigger than TotalContractualQuantity');
-	                        vm.editInstance.$valid = false;
-	                    }
-	                    if (compProductQtyDetails.PerWeek && compProductQtyDetails.PerMonth && parseFloat(compProductQtyDetails.PerWeek[0]) > parseFloat(compProductQtyDetails.PerMonth[0])) {
-	                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerWeek Min Qty is bigger than PerMonth');
-	                        vm.editInstance.$valid = false;
-	                    }
-	                    if (compProductQtyDetails.PerWeek && compProductQtyDetails.TotalContractualQuantity && parseFloat(compProductQtyDetails.PerWeek[0]) > parseFloat(compProductQtyDetails.TotalContractualQuantity[0])) {
-	                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerWeek Min Qty is bigger than TotalContractualQuantity');
-	                        vm.editInstance.$valid = false;
-	                    }
-	                    if (compProductQtyDetails.PerMonth && compProductQtyDetails.TotalContractualQuantity && parseFloat(compProductQtyDetails.PerMonth[0]) > parseFloat(compProductQtyDetails.TotalContractualQuantity[0])) {
-	                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerMOnth Min Qty is bigger than TotalContractualQuantity');
-	                        vm.editInstance.$valid = false;
-	                    }
-	                    /* end min qty*/
-	                    /* max qty*/
-	                    if (compProductQtyDetails.PerLift && compProductQtyDetails.PerDay && parseFloat(compProductQtyDetails.PerLift[1]) > parseFloat(compProductQtyDetails.PerDay[1])) {
-	                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerLift Max Qty is bigger than PerDay');
-	                        vm.editInstance.$valid = false;
-	                    }
-	                    if (compProductQtyDetails.PerLift && compProductQtyDetails.PerWeek && parseFloat(compProductQtyDetails.PerLift[1]) > parseFloat(compProductQtyDetails.PerWeek[1])) {
-	                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerLift Max Qty is bigger than PerWeek');
-	                        vm.editInstance.$valid = false;
-	                    }
-	                    if (compProductQtyDetails.PerLift && compProductQtyDetails.PerMonth && parseFloat(compProductQtyDetails.PerLift[1]) > parseFloat(compProductQtyDetails.PerMonth[1])) {
-	                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerLift Max Qty is bigger than PerMonth');
-	                        vm.editInstance.$valid = false;
-	                    }
-	                    if (compProductQtyDetails.PerLift && compProductQtyDetails.TotalContractualQuantity && parseFloat(compProductQtyDetails.PerLift[1]) > parseFloat(compProductQtyDetails.TotalContractualQuantity[1])) {
-	                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerLift Max Qty is bigger than TotalContractualQuantity');
-	                        vm.editInstance.$valid = false;
-	                    }
-	                    if (compProductQtyDetails.PerDay && compProductQtyDetails.PerWeek && parseFloat(compProductQtyDetails.PerDay[1]) > parseFloat(compProductQtyDetails.PerWeek[1])) {
-	                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerDay Max Qty is bigger than PerWeek');
-	                        vm.editInstance.$valid = false;
-	                    }
-	                    if (compProductQtyDetails.PerDay && compProductQtyDetails.PerMonth && parseFloat(compProductQtyDetails.PerDay[1]) > parseFloat(compProductQtyDetails.PerMonth[1])) {
-	                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerDay Max Qty is bigger than PerMonth');
-	                        vm.editInstance.$valid = false;
-	                    }
-	                    if (compProductQtyDetails.PerDay && compProductQtyDetails.TotalContractualQuantity && parseFloat(compProductQtyDetails.PerDay[1]) > parseFloat(compProductQtyDetails.TotalContractualQuantity[1])) {
-	                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerDay Max Qty is bigger than TotalContractualQuantity');
-	                        vm.editInstance.$valid = false;
-	                    }
-	                    if (compProductQtyDetails.PerWeek && compProductQtyDetails.PerMonth && parseFloat(compProductQtyDetails.PerWeek[1]) > parseFloat(compProductQtyDetails.PerMonth[1])) {
-	                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerWeek Max Qty is bigger than PerMonth');
-	                        vm.editInstance.$valid = false;
-	                    }
-	                    if (compProductQtyDetails.PerWeek && compProductQtyDetails.TotalContractualQuantity && parseFloat(compProductQtyDetails.PerWeek[1]) > parseFloat(compProductQtyDetails.TotalContractualQuantity[1])) {
-	                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerWeek Max Qty is bigger than TotalContractualQuantity');
-	                        vm.editInstance.$valid = false;
-	                    }
-	                    if (compProductQtyDetails.PerMonth && compProductQtyDetails.TotalContractualQuantity && parseFloat(compProductQtyDetails.PerMonth[1]) > parseFloat(compProductQtyDetails.TotalContractualQuantity[1])) {
-	                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerMOnth Max Qty is bigger than TotalContractualQuantity');
-	                        vm.editInstance.$valid = false;
-	                    }
-	                    /* end max qty*/
-	                }
-	            }
-	        })
-	    };
+            if ($scope.formValues.productQuantityRequired == true) {
+                $scope.formValues.products[index].details.forEach(function (detail, detailIdx) {
+                    if (parseFloat($scope.formValues.products[index].details[detailIdx].minContractQuantity) > parseFloat($scope.formValues.products[index].details[detailIdx].maxContractQuantity)) {
+                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: Min Qty must me smaller than Max Qty on: ' + $scope.formValues.products[index].details[detailIdx].contractualQuantityOption.name);
+                        vm.editInstance.$valid = false;
+                    }
+                    if (typeof ($scope.formValues.products[index].details[detailIdx].contractualQuantityOption) != 'undefined') {
+                        selectedQtyTypes.push($scope.formValues.products[index].details[detailIdx].contractualQuantityOption.name);
+                    }
+                    if (typeof ($scope.formValues.products[index].details[detailIdx].contractualQuantityOption) != 'undefined') {
+                        if ($scope.formValues.products[index].details[detailIdx].contractualQuantityOption.name == 'TotalContractualQuantity') {
+                            $($scope.formValues.details).each(function (contractDetailIdx) {
+                                if (typeof ($scope.formValues.details[contractDetailIdx].contractualQuantityOption) != 'undefined') {
+                                    if ($scope.formValues.details[contractDetailIdx].contractualQuantityOption.name == 'Total') {
+                                        if ($scope.formValues.details[contractDetailIdx].maxContractQuantity < $scope.formValues.products[index].details[detailIdx].maxContractQuantity) {
+                                            toastr.error('Product ' + parseFloat(index + 1) + 'has an error: max Quantity must be smaller that max Quantity from Contract');
+                                            vm.editInstance.$valid = false;
+                                        }
+                                        if (parseFloat($scope.formValues.details[contractDetailIdx].minContractQuantity) < parseFloat($scope.formValues.products[index].details[detailIdx].minContractQuantity)) {
+                                            toastr.error('Product ' + parseFloat(index + 1) + 'has an error: min Quantity must be smaller that min Quantity from Contract');
+                                            vm.editInstance.$valid = false;
+                                        }
+                                    }
+                                }
+                            })
+                        }
+                    }
+                })
+                var isDuplicate = selectedQtyTypes.some(function (item, idx) {
+                    return selectedQtyTypes.indexOf(item) != idx
+                });
+                if (isDuplicate == true) {
+                    toastr.error('Product ' + parseFloat(index + 1) + ' has an error: One of the quantity types is duplicated');
+                    vm.editInstance.$valid = false;
+                } else {
+                    compProductQtyDetails = [];
+                    productQtyDetails.forEach(function (detail, index2) {
+                        if (typeof (detail.contractualQuantityOption) != 'undefined') {
+                            compProductQtyDetails[detail.contractualQuantityOption.name] = [detail.minContractQuantity, detail.maxContractQuantity];
+                        } else {
+                            toastr.error('Product ' + parseFloat(index + 1) + ' has an error: Please select Quant. Type');
+                            vm.editInstance.$valid = false;
+                        }
+                    })
+                    // console.log(compProductQtyDetails);
+                    /* min qty*/
+                    if (compProductQtyDetails.PerLift && compProductQtyDetails.PerDay && parseFloat(compProductQtyDetails.PerLift[0]) > parseFloat(compProductQtyDetails.PerDay[0])) {
+                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerLift Min Qty is bigger than PerDay');
+                        vm.editInstance.$valid = false;
+                    }
+                    if (compProductQtyDetails.PerLift && compProductQtyDetails.PerWeek && parseFloat(compProductQtyDetails.PerLift[0]) > parseFloat(compProductQtyDetails.PerWeek[0])) {
+                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerLift Min Qty is bigger than PerWeek');
+                        vm.editInstance.$valid = false;
+                    }
+                    if (compProductQtyDetails.PerLift && compProductQtyDetails.PerMonth && parseFloat(compProductQtyDetails.PerLift[0]) > parseFloat(compProductQtyDetails.PerMonth[0])) {
+                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerLift Min Qty is bigger than PerMonth');
+                        vm.editInstance.$valid = false;
+                    }
+                    if (compProductQtyDetails.PerLift && compProductQtyDetails.TotalContractualQuantity && parseFloat(compProductQtyDetails.PerLift[0]) > parseFloat(compProductQtyDetails.TotalContractualQuantity[0])) {
+                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerLift Min Qty is bigger than TotalContractualQuantity');
+                        vm.editInstance.$valid = false;
+                    }
+                    if (compProductQtyDetails.PerDay && compProductQtyDetails.PerWeek && parseFloat(compProductQtyDetails.PerDay[0]) > parseFloat(compProductQtyDetails.PerWeek[0])) {
+                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerDay Min Qty is bigger than PerWeek');
+                        vm.editInstance.$valid = false;
+                    }
+                    if (compProductQtyDetails.PerDay && compProductQtyDetails.PerMonth && parseFloat(compProductQtyDetails.PerDay[0]) > parseFloat(compProductQtyDetails.PerMonth[0])) {
+                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerDay Min Qty is bigger than PerMonth');
+                        vm.editInstance.$valid = false;
+                    }
+                    if (compProductQtyDetails.PerDay && compProductQtyDetails.TotalContractualQuantity && parseFloat(compProductQtyDetails.PerDay[0]) > parseFloat(compProductQtyDetails.TotalContractualQuantity[0])) {
+                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerDay Min Qty is bigger than TotalContractualQuantity');
+                        vm.editInstance.$valid = false;
+                    }
+                    if (compProductQtyDetails.PerWeek && compProductQtyDetails.PerMonth && parseFloat(compProductQtyDetails.PerWeek[0]) > parseFloat(compProductQtyDetails.PerMonth[0])) {
+                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerWeek Min Qty is bigger than PerMonth');
+                        vm.editInstance.$valid = false;
+                    }
+                    if (compProductQtyDetails.PerWeek && compProductQtyDetails.TotalContractualQuantity && parseFloat(compProductQtyDetails.PerWeek[0]) > parseFloat(compProductQtyDetails.TotalContractualQuantity[0])) {
+                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerWeek Min Qty is bigger than TotalContractualQuantity');
+                        vm.editInstance.$valid = false;
+                    }
+                    if (compProductQtyDetails.PerMonth && compProductQtyDetails.TotalContractualQuantity && parseFloat(compProductQtyDetails.PerMonth[0]) > parseFloat(compProductQtyDetails.TotalContractualQuantity[0])) {
+                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerMOnth Min Qty is bigger than TotalContractualQuantity');
+                        vm.editInstance.$valid = false;
+                    }
+                    /* end min qty*/
+                    /* max qty*/
+                    if (compProductQtyDetails.PerLift && compProductQtyDetails.PerDay && parseFloat(compProductQtyDetails.PerLift[1]) > parseFloat(compProductQtyDetails.PerDay[1])) {
+                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerLift Max Qty is bigger than PerDay');
+                        vm.editInstance.$valid = false;
+                    }
+                    if (compProductQtyDetails.PerLift && compProductQtyDetails.PerWeek && parseFloat(compProductQtyDetails.PerLift[1]) > parseFloat(compProductQtyDetails.PerWeek[1])) {
+                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerLift Max Qty is bigger than PerWeek');
+                        vm.editInstance.$valid = false;
+                    }
+                    if (compProductQtyDetails.PerLift && compProductQtyDetails.PerMonth && parseFloat(compProductQtyDetails.PerLift[1]) > parseFloat(compProductQtyDetails.PerMonth[1])) {
+                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerLift Max Qty is bigger than PerMonth');
+                        vm.editInstance.$valid = false;
+                    }
+                    if (compProductQtyDetails.PerLift && compProductQtyDetails.TotalContractualQuantity && parseFloat(compProductQtyDetails.PerLift[1]) > parseFloat(compProductQtyDetails.TotalContractualQuantity[1])) {
+                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerLift Max Qty is bigger than TotalContractualQuantity');
+                        vm.editInstance.$valid = false;
+                    }
+                    if (compProductQtyDetails.PerDay && compProductQtyDetails.PerWeek && parseFloat(compProductQtyDetails.PerDay[1]) > parseFloat(compProductQtyDetails.PerWeek[1])) {
+                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerDay Max Qty is bigger than PerWeek');
+                        vm.editInstance.$valid = false;
+                    }
+                    if (compProductQtyDetails.PerDay && compProductQtyDetails.PerMonth && parseFloat(compProductQtyDetails.PerDay[1]) > parseFloat(compProductQtyDetails.PerMonth[1])) {
+                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerDay Max Qty is bigger than PerMonth');
+                        vm.editInstance.$valid = false;
+                    }
+                    if (compProductQtyDetails.PerDay && compProductQtyDetails.TotalContractualQuantity && parseFloat(compProductQtyDetails.PerDay[1]) > parseFloat(compProductQtyDetails.TotalContractualQuantity[1])) {
+                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerDay Max Qty is bigger than TotalContractualQuantity');
+                        vm.editInstance.$valid = false;
+                    }
+                    if (compProductQtyDetails.PerWeek && compProductQtyDetails.PerMonth && parseFloat(compProductQtyDetails.PerWeek[1]) > parseFloat(compProductQtyDetails.PerMonth[1])) {
+                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerWeek Max Qty is bigger than PerMonth');
+                        vm.editInstance.$valid = false;
+                    }
+                    if (compProductQtyDetails.PerWeek && compProductQtyDetails.TotalContractualQuantity && parseFloat(compProductQtyDetails.PerWeek[1]) > parseFloat(compProductQtyDetails.TotalContractualQuantity[1])) {
+                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerWeek Max Qty is bigger than TotalContractualQuantity');
+                        vm.editInstance.$valid = false;
+                    }
+                    if (compProductQtyDetails.PerMonth && compProductQtyDetails.TotalContractualQuantity && parseFloat(compProductQtyDetails.PerMonth[1]) > parseFloat(compProductQtyDetails.TotalContractualQuantity[1])) {
+                        toastr.error('Product ' + parseFloat(index + 1) + ' has an error: PerMOnth Max Qty is bigger than TotalContractualQuantity');
+                        vm.editInstance.$valid = false;
+                    }
+                    /* end max qty*/
+                }
+            }
+        })
+
 
         if(!vm.editInstance.$valid){
             $scope.submitedAction = false;

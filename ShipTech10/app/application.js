@@ -38,9 +38,7 @@ angular
                     }
                     AuthenticationContext.prototype._saveItem("adal.idtoken", "");
                 }
-                //if (adalService.userInfo.isAuthenticated != true)
-                {
-                }
+
             }
             $rootScope.$on("adal:notAuthorized", function(event, token) {
                 console.log(event);

@@ -1,7 +1,7 @@
 /**
  * Invoice Controller
  */
-APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Factory_Invoice', '$state', '$location', '$q', '$compile', '$timeout', 'Factory_Master', '$listsCache', '$http', 'API', 'statusColors', '$tenantSettings', 'screenLoader', 'COMPONENT_TYPE_IDS', 'COST_TYPE_IDS', 'lookupModel', '$controller', '$filter', 'uiGridConstants', '$sce', function(API, $scope, $rootScope, Factory_Invoice, $state, $location, $q, $compile, $timeout, Factory_Master, $listsCache, $http, API, statusColors, $tenantSettings, screenLoader, COMPONENT_TYPE_IDS,COST_TYPE_IDS, lookupModel, $controller, $filter, uiGridConstants, $sce) {
+APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Factory_Invoice', '$state', '$location', '$q', '$compile', '$timeout', 'Factory_Master', '$listsCache', '$http', 'statusColors', '$tenantSettings', 'screenLoader', 'COMPONENT_TYPE_IDS', 'COST_TYPE_IDS', 'lookupModel', '$controller', '$filter', 'uiGridConstants', '$sce', function(API, $scope, $rootScope, Factory_Invoice, $state, $location, $q, $compile, $timeout, Factory_Master, $listsCache, $http, statusColors, $tenantSettings, screenLoader, COMPONENT_TYPE_IDS,COST_TYPE_IDS, lookupModel, $controller, $filter, uiGridConstants, $sce) {
     var vm = this;
     var guid = '';
     if ($state.params.path) {
@@ -152,53 +152,44 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
                 }
             }
             vm.invalid_form = false;
-            if (1 == 1) {
-            
-                $rootScope.filterFromData = {};
-                $.each($rootScope.formValues, function(key, val) {
-                    if (!angular.equals(val, [{}])) {
-                        $rootScope.filterFromData[key] = val;
+
+            $rootScope.filterFromData = {};
+            $.each($rootScope.formValues, function(key, val) {
+                if (!angular.equals(val, [{}])) {
+                    $rootScope.filterFromData[key] = val;
+                }
+            });
+
+            vm.fields = angular.toJson($rootScope.filterFromData);
+            if ($rootScope.filterFromData.id > 0) {
+                Factory_Master.save_master_changes(app, screen, vm.fields, function(callback) {
+                    if (callback.status == true) {
+                        toastr.success(callback.message);
+                        $("table.ui-jqgrid-btable").trigger("reloadGrid");
+                        $scope.prettyCloseModal();
+                        // $scope.modalInstance.close();
+                    } else {
+                        if (callback.message) {
+                            toastr.error(callback.message);
+                        } else {
+                            toastr.error("An error has occured, please check the fields");
+                        }
                     }
                 });
-              
-                vm.fields = angular.toJson($rootScope.filterFromData);
-                if ($rootScope.filterFromData.id > 0) {
-                    Factory_Master.save_master_changes(app, screen, vm.fields, function(callback) {
-                        if (callback.status == true) {
-                            toastr.success(callback.message);
-                            $("table.ui-jqgrid-btable").trigger("reloadGrid");
-                            $scope.prettyCloseModal();
-                            // $scope.modalInstance.close();
-                        } else {
-                            if (callback.message) {
-                                toastr.error(callback.message);
-                            } else {
-                                toastr.error("An error has occured, please check the fields");
-                            }
-                        }
-                    });
-                } else {
-                    Factory_Master.create_master_entity(app, screen, vm.fields, function(callback) {
-                        if (callback.status == true) {
-                            toastr.success(callback.message);
-                            $("table.ui-jqgrid-btable").trigger("reloadGrid");
-                            $scope.prettyCloseModal();
-                        } else {
-                            if (callback.message) {
-                                toastr.error(callback.message);
-                            } else {
-                                toastr.error("An error has occured, please check the fields");
-                            }
-                        }
-                    });
-                }
             } else {
-                vm.invalid_form = true;
-                var message = "Please fill in required fields:";
-                $.each(vm.editInstance.$error.required, function(key, val) {
-                    message += "<br>" + val.$name;
+                Factory_Master.create_master_entity(app, screen, vm.fields, function(callback) {
+                    if (callback.status == true) {
+                        toastr.success(callback.message);
+                        $("table.ui-jqgrid-btable").trigger("reloadGrid");
+                        $scope.prettyCloseModal();
+                    } else {
+                        if (callback.message) {
+                            toastr.error(callback.message);
+                        } else {
+                            toastr.error("An error has occured, please check the fields");
+                        }
+                    }
                 });
-                toastr.error(message);
             }
         };
 
@@ -649,7 +640,6 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
                 //get values from listsCache, put in options obj for specific dropdowns
                 //get options for request status
                 if (field.Name == "etaFreezeStatus" && field.masterSource) {
-                    $scope.options["etaFreezeStatus"] = [];
                     $scope.options["etaFreezeStatus"] = angular.copy($scope.listsCache.RequestStatus);
                 }
                 if (field.Name == "numberOfCounterpartiesToDisplay") {
@@ -1130,19 +1120,10 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
                 return;
             }
 
-
-            if (length > 1) {
-                if (row.id > 0) {
-                    row.isDeleted = true;
-                } else {
-                    obj.splice(index, 1);
-                }
+            if (row.id > 0) {
+                row.isDeleted = true;
             } else {
-                if (row.id > 0) {
-                    row.isDeleted = true;
-                } else {
-                    obj.splice(index, 1);
-                }
+                obj.splice(index, 1);
             }
         };
         $scope.showRow = function(row, grid) {
@@ -2741,23 +2722,11 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
         $rootScope.transportData.sellerName = null;        
 
         $rootScope.transportData.paymentDetails = {};     
-        // $rootScope.transportData.paymentDetails.paidAmount = $rootScope.transportData.invoiceSummary.provisionalInvoiceAmount;
-   
-        if ($rootScope.transportData.invoiceSummary.invoiceAmountGrandTotal == null) {
-            invoiceAmountGrandTotal = 0
-        } else {
-            invoiceAmountGrandTotal = 0
-        }
-        if ($rootScope.transportData.invoiceSummary.provisionalInvoiceAmount == null) {
-            provisionalInvoiceAmount = 0
-        } else {
-            provisionalInvoiceAmount = 0
-        }
-        if ($rootScope.transportData.invoiceSummary.deductions == null) {
-            deductions = 0
-        } else {
-            deductions = 0
-        }
+
+        invoiceAmountGrandTotal = 0;
+        provisionalInvoiceAmount = 0;
+        deductions = 0;
+
         $rootScope.transportData.invoiceSummary.netPayable = invoiceAmountGrandTotal - deductions;
         $.each($rootScope.transportData.productDetails, function(k, v) {
             v.id = 0;
@@ -3221,7 +3190,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
         if (vm.additionalCostTypes[additionalCost.costName.id].componentType) {
             additionalCost.isTaxComponent = (vm.additionalCostTypes[additionalCost.costName.id].componentType.id === COMPONENT_TYPE_IDS.TAX_COMPONENT);
             return ctrl.additionalCostTypes[additionalCost.costName.id].componentType.id === COMPONENT_TYPE_IDS.PRODUCT_COMPONENT;
-        } else { }
+        }
         return null;
     }
 

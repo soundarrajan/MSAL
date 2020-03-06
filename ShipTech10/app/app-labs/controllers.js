@@ -617,7 +617,7 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
                     for (var i = $scope.relatedLabs.length - 1; i >= 0; i--) {
                         claim = $scope.relatedLabs[i];
                         if (claim.id == claimId) {
-                            $scope.relatedLabs.splice[i, 1];
+                            $scope.relatedLabs.splice(i, 1);
                         }
                     }
                     if (vm.entity_id == labId) {

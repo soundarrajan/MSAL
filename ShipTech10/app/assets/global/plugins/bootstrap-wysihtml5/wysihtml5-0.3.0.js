@@ -941,8 +941,6 @@ rangy.createModule("DomUtil", function(api, module) {
             } else {
                 if (current.parentNode) {
                     current.parentNode.removeChild(current);
-                } else {
-
                 }
             }
         },
@@ -3395,7 +3393,7 @@ wysihtml5.browser = (function() {
       isOpera     = userAgent.indexOf("Opera/")       !== -1;
   
   function iosVersion(userAgent) {
-    return ((/ipad|iphone|ipod/.test(userAgent) && userAgent.match(/ os (\d+).+? like mac os x/)) || [, 0])[1];
+    return ((/ipad|iphone|ipod/.test(userAgent) && userAgent.match(/ os (\d+).+? like mac os x/)) || ['', 0])[1];
   }
   
   return {
@@ -3704,7 +3702,7 @@ wysihtml5.browser = (function() {
      *    }
      */
     supportsSpeechApiOn: function(input) {
-      var chromeVersion = userAgent.match(/Chrome\/(\d+)/) || [, 0];
+      var chromeVersion = userAgent.match(/Chrome\/(\d+)/) || ['', 0];
       return chromeVersion[1] >= 11 && ("onwebkitspeechchange" in input || "speech" in input);
     },
     
@@ -3827,7 +3825,7 @@ wysihtml5.browser = (function() {
         handlers,
         newHandlers;
     if (eventName) {
-      handlers    = this.events[eventName] || [],
+      handlers    = this.events[eventName] || [];
       newHandlers = [];
       for (; i<handlers.length; i++) {
         if (handlers[i] !== handler && handler) {
@@ -4818,7 +4816,7 @@ wysihtml5.dom.parse = (function() {
       return null;
     }
     
-    for (i=0; i<oldChildsLength; i++) {
+    for (; i<oldChildsLength; i++) {
       newChild = _convert(oldChilds[i], cleanUp);
       if (newChild) {
         newNode.appendChild(newChild);

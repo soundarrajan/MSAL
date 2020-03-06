@@ -1482,9 +1482,6 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     //default
                     var content = "";
                     var cssFormatting = "";
-                    if (cellValue == "") {
-                        content = "";
-                    }
                     if (cellValue == true) {
                         content = "Yes";
                         cssFormatting = "succes lowercase";
@@ -1985,7 +1982,6 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     var input = '<input class="text_input x" name="x" id="x" value=":text_input_value" />';
                     if (cellValue) {
                         input = var_bind(":text_input_value", cellValue, input);
-                    } else {
                     }
                     input = var_bind(":text_input_value", "", input);
                     element = var_bind(":class", name, element);
@@ -2036,7 +2032,6 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     var input = '<input type="number" class="text_input x" name="x" id="x" value=":text_input_value" />';
                     if (cellValue) {
                         input = var_bind(":text_input_value", cellValue, input);
-                    } else {
                     }
                     input = var_bind(":text_input_value", "", input);
                     element = var_bind(":class", name, element);
@@ -2079,7 +2074,6 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     var input = '<input type="checkbox" class="checkbox_input x" name="x" id="x" :checked />';
                     if (cellValue) {
                         input = var_bind(":checked", cellValue, input);
-                    } else {
                     }
                     input = var_bind(":checked", "", input);
                     element = var_bind(":class", name, element);
@@ -2092,7 +2086,6 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     var input = '<label class="mt-checkbox"><span></span></label>';
                     if (cellValue) {
                         input = var_bind(":checked", cellValue, input);
-                    } else {
                     }
                     input = var_bind(":checked", "", input);
                     element = var_bind(":class", name, element);
@@ -2390,17 +2383,33 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 }
             }
 
-            payload = {
-                InvoiceId: currentRow.invoice ? currentRow.invoice.id : null,
-                DeliveryId: currentRow.delivery_Id,
-                OrderId: currentRow.order.id,
-                DueDate: currentRow.dueDate,
-                PaymentDate: changedData.paymentDate ? changedData.paymentDate : null,
-                BackOfficeComments: changedData.backOfficeComments,
-                PaymentStatus: changedData.paymentStatus ? changedData.paymentStatus : null,
-                AccountancyDate: changedData.accountancyDate ? changedData.accountancyDate : null,
-                IsChecked: changedData.isChecked ? changedData.isChecked : null
-            };
+            if (typeof(currentRow) == "undefined") {
+                payload = {
+                    InvoiceId: null,
+                    DeliveryId: null,
+                    OrderId: null,
+                    DueDate: null,
+                    PaymentDate: null,
+                    BackOfficeComments: null,
+                    PaymentStatus: null,
+                    AccountancyDate: null,
+                    IsChecked: null
+                };
+            } else{
+                payload = {
+                    InvoiceId: currentRow.invoice ? currentRow.invoice.id : null,
+                    DeliveryId: currentRow.delivery_Id,
+                    OrderId: currentRow.order.id,
+                    DueDate: currentRow.dueDate,
+                    PaymentDate: changedData.paymentDate ? changedData.paymentDate : null,
+                    BackOfficeComments: changedData.backOfficeComments,
+                    PaymentStatus: changedData.paymentStatus ? changedData.paymentStatus : null,
+                    AccountancyDate: changedData.accountancyDate ? changedData.accountancyDate : null,
+                    IsChecked: changedData.isChecked ? changedData.isChecked : null
+                };
+
+            }
+
             if (typeof(vm.paymentDateHistory) == "undefined") {
                 vm.paymentDateHistory = [];
             }
@@ -3070,7 +3079,6 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     // $("#flat_contract_planning").jqGrid("setCell", rowIdx, columnKey, value);
                     // console.log($("#invoices_treasuryreport").jqGrid.Ascensys.gridObject.rows[rowIdx-1]);
                 }
-            } else {
             }
             $.each($scope.selectedContractPlanningRows, function(k,v){
                 if (v.rowIndex == rowIdx) {
@@ -3279,7 +3287,6 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 $rootScope.editableCProwsModel['row-'+rowId]['contractProductId'] = null;
                 $rootScope.editableCProwsModel['row-'+rowId]['seller'] = null;
                 $rootScope.editableCProwsModel['row-'+rowId]['formulaDescription'] = null;
-                $rootScope.editableCProwsModel['row-'+rowId]['deliveryPrice'] = null;
                 $rootScope.editableCProwsModel['row-'+rowId]['deliveryPrice'] = null;
                 $rootScope.editableCProwsModel['row-'+rowId]['premiumDiscount'] = null;
                 $rootScope.editableCProwsModel['row-'+rowId]['noOfDaysBeforeExpiry'] = null;

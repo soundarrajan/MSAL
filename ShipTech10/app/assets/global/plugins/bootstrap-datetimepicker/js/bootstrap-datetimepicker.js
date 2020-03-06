@@ -29,7 +29,7 @@
 	}
 	function UTCToday(){
 		var today = new Date();
-		return UTCDate(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate(), today.getUTCHours(), today.getUTCMinutes(), today.getUTCSeconds(), 0);
+		return new UTCDate(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate(), today.getUTCHours(), today.getUTCMinutes(), today.getUTCSeconds(), 0);
 	}
 
 	// Picker object
@@ -593,7 +593,9 @@
 			this.picker.find('.datetimepicker-hours td').html(html.join(''));
 
 			html = [];
-						txt = '', meridian = '', meridianOld = '';
+			txt = '';
+			meridian = '';
+			meridianOld = '';
 			for(var i=0;i<60;i+=this.minuteStep) {
 				var actual = UTCDate(year, month, dayMonth, hours, i, 0);
 				clsName = '';
@@ -918,16 +920,16 @@
 									month += 1;
 								}
 							}
-														this.viewDate.setUTCFullYear(year);
-														this.viewDate.setUTCMonth(month);
-														this.viewDate.setUTCDate(day);
-														this.element.trigger({
-																type: 'changeDay',
-																date: this.viewDate
-														});
-														if (this.viewSelect >= 2) {
-									this._setDate(UTCDate(year, month, day, hours, minutes, seconds, 0));
-														}
+							this.viewDate.setUTCFullYear(year);
+							this.viewDate.setUTCMonth(month);
+							this.viewDate.setUTCDate(day);
+							this.element.trigger({
+									type: 'changeDay',
+									date: this.viewDate
+							});
+							if (this.viewSelect >= 2) {
+								this._setDate(new UTCDate(year, month, day, hours, minutes, seconds, 0));
+							}
 						}
 						var oldViewMode = this.viewMode;
 						this.showMode(-1);

@@ -19799,33 +19799,36 @@ module.filter('px', function() {
             columns = leftColumns.concat(bodyColumns,rightColumns);
           }
 
-          rows.forEach( function( row, index ) {
+          if(typeof rows != 'undefined'){
+              rows.forEach( function( row, index ) {
 
-            if (row.exporterEnableExporting !== false) {
-              var extractedRow = [];
+                  if (row.exporterEnableExporting !== false) {
+                      var extractedRow = [];
 
 
-              columns.forEach( function( gridCol, index ) {
-              // $$hashKey check since when grouping and sorting programmatically this ends up in export. Filtering it out
-              if ( (gridCol.visible || colTypes === uiGridExporterConstants.ALL ) &&
-                   gridCol.colDef.exporterSuppressExport !== true && gridCol.field !== '$$hashKey' &&
-                   grid.options.exporterSuppressColumns.indexOf( gridCol.name ) === -1 ){
-                  var cellValue = applyCellFilters ? grid.getCellDisplayValue( row, gridCol ) : grid.getCellValue( row, gridCol );
-                  var extractedField = { value: grid.options.exporterFieldCallback( grid, row, gridCol, cellValue ) };
-                  var extension = grid.options.exporterFieldFormatCallback( grid, row, gridCol, cellValue );
-                  if (extension) {
-                    Object.assign(extractedField, extension);
+                      columns.forEach( function( gridCol, index ) {
+                          // $$hashKey check since when grouping and sorting programmatically this ends up in export. Filtering it out
+                          if ( (gridCol.visible || colTypes === uiGridExporterConstants.ALL ) &&
+                              gridCol.colDef.exporterSuppressExport !== true && gridCol.field !== '$$hashKey' &&
+                              grid.options.exporterSuppressColumns.indexOf( gridCol.name ) === -1 ){
+                              var cellValue = applyCellFilters ? grid.getCellDisplayValue( row, gridCol ) : grid.getCellValue( row, gridCol );
+                              var extractedField = { value: grid.options.exporterFieldCallback( grid, row, gridCol, cellValue ) };
+                              var extension = grid.options.exporterFieldFormatCallback( grid, row, gridCol, cellValue );
+                              if (extension) {
+                                  Object.assign(extractedField, extension);
+                              }
+                              if ( gridCol.colDef.exporterPdfAlign ) {
+                                  extractedField.alignment = gridCol.colDef.exporterPdfAlign;
+                              }
+                              extractedRow.push(extractedField);
+                          }
+                      });
+
+                      data.push(extractedRow);
                   }
-                  if ( gridCol.colDef.exporterPdfAlign ) {
-                    extractedField.alignment = gridCol.colDef.exporterPdfAlign;
-                  }
-                  extractedRow.push(extractedField);
-                }
               });
+          }
 
-              data.push(extractedRow);
-            }
-          });
 
           return data;
         },
@@ -21350,15 +21353,15 @@ module.filter('px', function() {
 
         var groupArray = [];
         var sortArray = [];
-
-        grid.columns.forEach( function(column, index){
-          if ( typeof(column.grouping) !== 'undefined' && typeof(column.grouping.groupPriority) !== 'undefined' && column.grouping.groupPriority >= 0){
-            groupArray.push(column);
-          } else if ( typeof(column.sort) !== 'undefined' && typeof(column.sort.priority) !== 'undefined' && column.sort.priority >= 0){
-            sortArray.push(column);
-          }
-        });
-
+        if(typeof rows != 'undefined') {
+          grid.columns.forEach(function (column, index) {
+              if (typeof (column.grouping) !== 'undefined' && typeof (column.grouping.groupPriority) !== 'undefined' && column.grouping.groupPriority >= 0) {
+                  groupArray.push(column);
+              } else if (typeof (column.sort) !== 'undefined' && typeof (column.sort.priority) !== 'undefined' && column.sort.priority >= 0) {
+                  sortArray.push(column);
+              }
+          });
+        }
         groupArray.sort(function(a, b){ return a.grouping.groupPriority - b.grouping.groupPriority; });
         groupArray.forEach( function(column, index){
           column.grouping.groupPriority = index;

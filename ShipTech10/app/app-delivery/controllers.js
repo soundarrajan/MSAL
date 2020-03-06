@@ -655,16 +655,13 @@ APP_DELIVERY.controller('Controller_Delivery', ['$scope', '$rootScope', '$Api_Se
         console.log(data);
     }
     $scope.raiseNoteOfProtest = function($event, productIndex, type) {
-        var DeliveryProductId = $scope.formValues.deliveryProducts[productIndex].id
-        var DeliveryQualityParameterIds = [];
+        var DeliveryProductId = $scope.formValues.deliveryProducts[productIndex].id;
         if (type == 'quantity') {
             var ClaimTypeId = 1;
         }
         if (type == 'quality') {
             var ClaimTypeId = $scope["product" + productIndex + "claimId"];
-            $.each($scope.formValues.deliveryProducts[productIndex].qualityParameters, function(key, val) {
-                DeliveryQualityParameterIds.push(val.specParameter.id);
-            })
+
         }
         var data = {
             "LabTestResultIds": [],
@@ -759,8 +756,6 @@ APP_DELIVERY.controller('Controller_Delivery', ['$scope', '$rootScope', '$Api_Se
         	if (!product.finalQuantityAmount) {
         		hasFinalQuantityError = true;
         		toastr.error("Please make sure that Quantity to be invoiced for "+product.product.name+" is computed based on seller/buyer quantity");
-        	} else {
-
         	}
         })
         if (hasFinalQuantityError) {
@@ -905,7 +900,7 @@ APP_DELIVERY.controller('Controller_Delivery', ['$scope', '$rootScope', '$Api_Se
             console.log('$scope.CM.listsCache.ClaimType', $scope.CM.listsCache.ClaimType);
             $.each($scope.CM.listsCache.ClaimType, function(ind, val) {
                 //only allow these 3 types of claim
-                if (val.id == 1 || val.id == 3 || val.id == 6 || val.id == 2) {} else {
+                if (val.id != 1 && val.id != 3 && val.id != 6 && val.id != 2) {
                     return;
                 }
                 params = [];
