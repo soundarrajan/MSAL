@@ -1,41 +1,41 @@
 ﻿
  <div class="custom-hardcoded-table ng-scope" ng-init="CM.getAdditionalCostsComponentTypes()">
-    <table class="table-body" width="100%">
+    <table class="table-body" style="width:100%">
         <thead>
             <tr>
-                <td width="2%"></td>
-                <td width="2%"><span class="insert" ng-click="formValues.products[index_0].additionalCosts.push({'id':0, 'currency': tenantSetting.tenantFormats.currency})"></span></td>
-                <td width="12%">
+                <td style="width:2%"></td>
+                <td style="width:2%"><span class="insert" ng-click="formValues.products[index_0].additionalCosts.push({'id':0, 'currency': tenantSetting.tenantFormats.currency})"></span></td>
+                <td style="width:12%">
                     <b>
                         Item Name
                     </b>
                 </td>
-                <td width="12%">
+                <td style="width:12%">
                     <b>
                         Type
                     </b>
                 </td>
-                <td width="12%">
+                <td style="width:12%">
                     <b>
                         Amount
                     </b>
                 </td>
-                <td width="12%">
+                <td style="width:12%">
                     <b>
                        Price UOM
                     </b>
                 </td>
-                <td width="12%">
+                <td style="width:12%">
                     <b>
                         Extra %
                     </b>
                 </td>
-                <td width="12%">
+                <td style="width:12%">
                     <b>
                         Currency
                     </b>
                 </td>
-                <td width="12%">
+                <td style="width:12%">
                     <b>
                         Comment
                     </b>
@@ -44,36 +44,36 @@
         </thead>
         <tbody>
             <tr ng-repeat="(key, value) in formValues.products[index_0].additionalCosts" ng-if="value.isDeleted != true" class="ng-scope">
-                <td width="2%">
+                <td style="width:2%">
                     <span class="remove" ng-click="CM.deleteAdditionalCost(index_0, key, false)" style="opacity:1; pointer-events: initial"></span>
                 </td>
-                <td width="2%">
+                <td style="width:2%">
 					 <span class="insert" ng-click="formValues.products[index_0].additionalCosts.push({'id':0, 'currency': tenantSetting.tenantFormats.currency})"></span>
                 </td>
-                <td width="12%">
+                <td style="width:12%">
                     <select name="Item Name" class="form-control" ng-options="item as item.name for item in CM.listsCache.AdditionalCost track by item.id " ng-change="value.costType = setDefaultCostType(value.additionalCost); resetUom(index_0,key)" ng-model="value.additionalCost" ng-required="!value.isDeleted"></select>
                 </td>
-                <td width="12%">
+                <td style="width:12%">
                     <select name="Type" class="form-control" ng-options="item as item.name for item in filterCostTypesByAdditionalCost(value.additionalCost.id) track by item.id " ng-model="value.costType" ng-change="resetUom(index_0,key)" ng-required="!value.isDeleted"></select>
                 </td>
-                <td width="12%">
+                <td style="width:12%">
                     <input name="Amount" type="text" class="form-control" ng-model="value.amount" format="number" ng-required="!value.isDeleted">
                 </td>
-                <td width="12%">
+                <td style="width:12%">
                 	<span ng-if="value.costType.name == 'Percent'" ng-init="value.uom = null"></span>
                     <select name="Price UOM" class="form-control" ng-options="item as item.name for item in CM.listsCache.Uom track by item.id " ng-model="value.uom"
 					ng-disabled="value.costType.name != 'Unit'"
 					ng-required="value.costType.name == 'Unit' && !value.isDeleted"
                     ></select>
                 </td>
-                <td width="12%">
+                <td style="width:12%">
                     <input name="Extra" type="number" format="number" class="form-control" ng-model="value.extras">
 
                 </td>
-                <td width="12%">
+                <td style="width:12%">
 					<select name="Currency" class="form-control" ng-required="!value.isDeleted" ng-options="item as item.name for item in CM.listsCache.Currency track by item.id " ng-model="value.currency"></select>
                 </td>
-                <td width="12%">
+                <td style="width:12%">
                     <input name="Comment" class="form-control" ng-model="value.comments">
                 </td>
             </tr>

@@ -87,17 +87,17 @@
 	<div class="row">
 		<div class="col-md-6">
 			<div class="custom-hardcoded-table admin">
-				<table class="table-body" width="100%" style="min-width:initial">
+				<table class="table-body" style="width:100%;min-width:initial">
 					<thead>
 						<tr>
-							<td width="25%"><b>Parameter</b></td>
-							<td width="25%"><b>Percent</b></td>
+							<td style="width:25%"><b>Parameter</b></td>
+							<td style="width:25%"><b>Percent</b></td>
 						</tr>
 					</thead>
 					<tbody>
 						<tr ng-repeat="(key, val) in formValues.contract.contractEvaluation">
-							<td width="25%">{{val.parameter.name}}</td>
-							<td width="25%"><input type="number" min="0" max="100" class="form-control " name="{{val.status.name}}_label" ng-model="val.weightPercentValue"></td>
+							<td style="width:25%">{{val.parameter.name}}</td>
+							<td style="width:25%"><input type="number" min="0" max="100" class="form-control " name="{{val.status.name}}_label" ng-model="val.weightPercentValue"></td>
 						</tr>
 					</tbody>
 				</table>

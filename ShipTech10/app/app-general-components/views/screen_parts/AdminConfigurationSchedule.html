@@ -75,7 +75,7 @@
 	<div class="container-fluid">
 	    <div class="col-sm-6">
 	        <div class="custom-hardcoded-table admin schedule-columns">
-	            <table class="table-body" width="100%;">
+	            <table class="table-body" style="width:100%;">
 	                <thead class="table-head">
 	                    <tr style="background-color: #fff">
 	                        <td>
@@ -109,27 +109,27 @@
 
 <div class="col-sm-12" >
         <div class="custom-hardcoded-table admin">
-            <table class="table-body" width="100%">
+            <table class="table-body" style="width:100%">
             	<thead>
 	                <tr>
-	                    <td class="padding" width="20%"><b>System Status</b></td>
-	                    <td class="padding" width="15%"><b>Trasaction</b></td>
-	                    <td class="padding" width="20%"><b>Label</b></td>
-	                    <td class="padding" width="20%"><b>Colour code</b></td>
-	                    <td class="padding" width="15%"><b>Display Order</b></td>
-	                    <td class="padding" width="10%"><b>Display in dashboard</b></td>
+	                    <td class="padding" style="width:20%"><b>System Status</b></td>
+	                    <td class="padding" style="width:15%"><b>Trasaction</b></td>
+	                    <td class="padding" style="width:20%"><b>Label</b></td>
+	                    <td class="padding" style="width:20%"><b>Colour code</b></td>
+	                    <td class="padding" style="width:15%"><b>Display Order</b></td>
+	                    <td class="padding" style="width:10%"><b>Display in dashboard</b></td>
 	                </tr>
             	</thead>
             	<tbody>
 	                <tr ng-repeat="(key, val) in formValues.schedule.labels | orderBy : 'displayOrder'">
-	                    <td width="20%">
+	                    <td style="width:20%">
 	                    	 {{val.status.displayName ? val.status.displayName : val.label}}
 	                 	</td>
-	                    <td width="20%">
+	                    <td style="width:20%">
 	                 		{{val.transactionType.name}}
 	                 	</td>
-	                    <td width="20%"><input type="text" class="form-control " name="{{val.status.name}}_label" ng-model="val.label"></td>
-	                    <td width="15%" class="text-center">
+	                    <td style="width:20%"><input type="text" class="form-control " name="{{val.status.name}}_label" ng-model="val.label"></td>
+	                    <td style="width:15%" class="text-center">
 
 							<input ng-init="initMinicolors()" ng-model="val.colorCode" class="form-control demo minicolors-input" value="{{val.colorCode}}" size="15" >
 
@@ -138,7 +138,7 @@
 	                    	<select class="form-control" ng-model="val.tempDisplayOrder" ng-change="changeScheduleStatusDisplayOrder(val.tempDisplayOrder, val.displayOrder)" ng-options="item as item for item in createRange(1,formValues.schedule.labels.length) track by item">
 	                    	</select>
 	                    </td>
-	                    <td width="10%" class="text-center">
+	                    <td style="width:10%" class="text-center">
 		                    <label ng-if="val.displayInSchedule" class="mt-checkbox" style="margin-bottom:20px;">
 		                    	<input type="checkbox"  ng-model="val.displayInDashboard">
 		                    	<span></span>

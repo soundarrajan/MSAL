@@ -26,7 +26,7 @@
 
 			</div>
 			<div class="custom-hardcoded-table">
-				<table  class="table-body" width="100%">
+				<table  class="table-body" style="width:100%">
 					<thead>
 						<tr>
 							<td class="padding"> <b>Pricing Day</b></td>
@@ -93,7 +93,7 @@
 
 			</div>
 			<div class="custom-hardcoded-table">
-				<table  class="table-body" width="100%">
+				<table  class="table-body" style="width:100%">
 					<thead>
 						<tr>
 							<td class="padding"> <b>Pricing Day</b></td>
@@ -172,37 +172,37 @@
 				<table  class="table-body">
 					<thead>
 						<tr>
-							<td width="400px"></td>
-							<td width="400px" class="padding" width="200px" ng-repeat="(key, value) in contractProductDeliveryExposureModalData.exposure" >
+							<td style="width:400px"></td>
+							<td style="width:200px" class="padding" ng-repeat="(key, value) in contractProductDeliveryExposureModalData.exposure" >
 								<span ng-bind="CM.formatDate(value.quoteDate, 'DD/MM/YYYY')"></span>
 							</td>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
-							<td width="200px"></td>
-							<td class="padding" width="200px" ng-repeat="(key, value) in contractProductDeliveryExposureModalData.exposure">
+							<td style="width:200px"></td>
+							<td class="padding" style="width:200px" ng-repeat="(key, value) in contractProductDeliveryExposureModalData.exposure">
 								<b ng-bind="value.isPriced ? 'Priced' : 'Unpriced' "></b>
 								<span class="uom" style="background: #eee;padding: 3px 10px;border: 1px solid #c1c1c1; display: block; float: right">{{value.uom}}</span>
 							</td>
 						</tr>
 						<tr>
-							<td width="200px" class="padding"><b>Pricing Position</b></td>
-							<td width="200px" class="padding" ng-repeat="(key, value) in contractProductDeliveryExposureModalData.exposure"><b>{{value.priceTotal | number : 3}}</b></td>
+							<td style="width:200px" class="padding"><b>Pricing Position</b></td>
+							<td style="width:200px" class="padding" ng-repeat="(key, value) in contractProductDeliveryExposureModalData.exposure"><b>{{value.priceTotal | number : 3}}</b></td>
 						</tr>
 						<tr ng-repeat="(key, value) in exposurePriceQuantitiesSystemInstruments">
-							<td width="200px" class="padding">{{key}}</td>
-							<td class="padding" width="200px" ng-repeat="(k, v) in contractProductDeliveryExposureModalData.exposure">
+							<td style="width:200px" class="padding">{{key}}</td>
+							<td class="padding" style="width:200px" ng-repeat="(k, v) in contractProductDeliveryExposureModalData.exposure">
 								<span>{{v.newPriceQuantities[key].quantity | number : 3}}</span>
 							</td>
 						</tr>
 						<tr>
-							<td width="200px" class="padding"><b>MTM Position</b></td>
-							<td width="200px" class="padding" width="200px" ng-repeat="(key, value) in contractProductDeliveryExposureModalData.exposure"><b>{{value.mtmTotal | number : 3}}</b></td>
+							<td style="width:200px" class="padding"><b>MTM Position</b></td>
+							<td style="width:200px" class="padding" ng-repeat="(key, value) in contractProductDeliveryExposureModalData.exposure"><b>{{value.mtmTotal | number : 3}}</b></td>
 						</tr>
 						<tr ng-repeat="(key, value) in exposureMtmQuantitiesSystemInstruments">
-							<td class="padding" width="200px">{{key}}</td>
-							<td class="padding" width="200px" ng-repeat="(k, v) in contractProductDeliveryExposureModalData.exposure">
+							<td class="padding" style="width:200px">{{key}}</td>
+							<td class="padding" style="width:200px" ng-repeat="(k, v) in contractProductDeliveryExposureModalData.exposure">
 								<span>{{v.newMtmQuantities[key].quantity | number : 3}}</span>
 							</td>
 						</tr>

@@ -1,20 +1,20 @@
 <div class="custom-hardcoded-table admin">
-	<table class="table-body" width="100%" style="min-width:initial">
+	<table class="table-body" style="width:100%;min-width:initial">
 		<thead>
 			<tr>
-				<td width="5%" class="padding"></td>
-				<td width="5%" class="padding"><span class="insert" ng-click="formValues.counterpartyLocations ? formValues.counterpartyLocations.push({id:0}) : formValues.counterpartyLocations=[{id:0}]"></span></td>
-				<td width="20%" class="padding"><b>Location</b></td>
-				<td width="20%" class="padding"><b>Preferred Products</b></td>
-				<td width="20%" class="padding"><b>Status</b></td>
-				<td width="30%" class="padding"><b>Comments</b></td>
+				<td style="width:5%"  class="padding"></td>
+				<td style="width:5%" class="padding"><span class="insert" ng-click="formValues.counterpartyLocations ? formValues.counterpartyLocations.push({id:0}) : formValues.counterpartyLocations=[{id:0}]"></span></td>
+				<td style="width:20%" class="padding"><b>Location</b></td>
+				<td style="width:20%" class="padding"><b>Preferred Products</b></td>
+				<td style="width:20%" class="padding"><b>Status</b></td>
+				<td style="width:30%" class="padding"><b>Comments</b></td>
 			</tr>
 		</thead>
 		<tbody>
 			<tr ng-repeat="(key, value) in formValues.counterpartyLocations" ng-if="!value.isDeleted">
-				<td width="5%"><span class="remove" style="display: block;pointer-events: all; opacity: 1" ng-click="value.id == 0 ? formValues.counterpartyLocations.splice(key,1) : value.isDeleted = true"></span></td>
-				<td width="5%"><span class="insert" ng-click="formValues.counterpartyLocations.push({id:0})"></span></td>
-				<td width="20%">
+				<td style="width:5%"><span class="remove" style="display: block;pointer-events: all; opacity: 1" ng-click="value.id == 0 ? formValues.counterpartyLocations.splice(key,1) : value.isDeleted = true"></span></td>
+				<td style="width:5%"><span class="insert" ng-click="formValues.counterpartyLocations.push({id:0})"></span></td>
+				<td style="width:20%">
 					<div class="input-group">
 	                    <input ng-model="value.location" uib-typeahead="item as item.name for item in CM.listsCache.Location | filter:{name:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-limit="5" typeahead-append-to-body="true" typeahead-wait-ms="100" name="PrefferedSeller_{{ key }}" autocomplete="off" />
 	                    <span class="input-group-addon" ng-click="triggerModal('general', 'masters_locationlist', 'Location' , 'formValues.counterpartyLocations.'+key+'.location');" ng-init="modal = false">
@@ -29,7 +29,7 @@
 	                    </span>				
 					</div>
 				</td>
-				<td width="20%">
+				<td style="width:20%">
 					<div class="location-preffered-sellers">
 	                    <span ng-repeat="(key2,product) in value.products" ng-hide="product.isDeleted">
                             <span ng-if="key2 != 0">,</span>
@@ -37,10 +37,10 @@
                         </span>			
 					</div>
 				</td>
-				<td width="20%">
+				<td style="width:20%">
 					<select name="Item Name" class="form-control" ng-options="item as item.name for item in CM.listsCache.CounterpartyStatus track by item.id " ng-model="value.status"></select>
 				</td>
-				<td width="30%"><input class="form-control" type="text" ng-model="value.comments"></td>
+				<td style="width:30%"><input class="form-control" type="text" ng-model="value.comments"></td>
 			</tr>
 		</tbody>
 	</table>

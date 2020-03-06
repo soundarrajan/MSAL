@@ -21,9 +21,9 @@
 				Notifications
 			</div>
 		</div>
-		<table id="notifications-table" class="notifications" width="100%">
+		<table id="notifications-table" class="notifications" style="width:100%">
 			<tr ng-repeat="(key, notification) in notificationList">
-				<td width="50px">
+				<td style="width:50px">
 				<span ng-init="selectedNotifications = null"></span>
 					<label class="mt-checkbox">
 						<input type="checkbox" ng-model="notification.checked" ng-checked="selectedNotifications != notification[key]" ng-change="selectNotification(notification.checked, notification.id)" >
@@ -34,7 +34,7 @@
 				<td >
 					<b>{{notification.message}}</b>
 				</td>
-				<td width="150px" class="notification-date" ng-bind="CM.formatDate(notification.addedAt, '{{tenantSetting.tenantFormats.dateFormat.name}}')"></td>
+				<td style="width:150px" class="notification-date" ng-bind="CM.formatDate(notification.addedAt, '{{tenantSetting.tenantFormats.dateFormat.name}}')"></td>
 			</tr>
 
 		</table>

@@ -18,57 +18,57 @@
 			    </div>        	
 				<div class="clearfix"></div>
 				<div class="custom-hardcoded-table ng-scope" style="max-height: 500px;">
-				    <table class="table-body energyCalculationBlade" width="100%">
+				    <table class="table-body energyCalculationBlade" style="width:100%">
 				        <thead>
 				            <tr>
-				            	<td width="50px" class="padding bold">Counterparty</td>
-				            	<td width="50px" class="padding bold">Physical Supplier</td>
+				            	<td style="width:50px" class="padding bold">Counterparty</td>
+				            	<td style="width:50px" class="padding bold">Physical Supplier</td>
 				            	<td style="max-width: 60px" class="padding bold">Price</td>
 				            	<td style="max-width: 60px" class="padding bold">Viscosity</td>
 				            	<td style="max-width: 60px" class="padding bold">Sulphur</td>
 				            	<td style="max-width: 60px" class="padding bold">Density</td>
 				            	<td style="max-width: 60px" class="padding bold">Ash</td>
 				            	<td style="max-width: 60px" class="padding bold">Water</td>
-				            	<td width="50px" class="padding bold">CCAI</td>
-				            	<td width="50px" class="padding bold">Net Spec<br>Energy Offered</td>
-				            	<td width="50px" class="padding bold">Net Spec Energy<br>Dlvd (6 month avg.)</td>
-				            	<td width="50px" class="padding bold">$ Diff based on<br> Specific Energy</td>
-				            	<td width="50px" class="padding bold">Price Difference</td>
-				            	<td width="50px" class="padding bold">Total Computed<br>Price</td>
+				            	<td style="width:50px" class="padding bold">CCAI</td>
+				            	<td style="width:50px" class="padding bold">Net Spec<br>Energy Offered</td>
+				            	<td style="width:50px" class="padding bold">Net Spec Energy<br>Dlvd (6 month avg.)</td>
+				            	<td style="width:50px" class="padding bold">$ Diff based on<br> Specific Energy</td>
+				            	<td style="width:50px" class="padding bold">Price Difference</td>
+				            	<td style="width:50px" class="padding bold">Total Computed<br>Price</td>
 				            </tr>
 				        </thead>
 				        <tbody>
 				            <tr ng-repeat="counterparty in location.counterparties" ng-class="{'border-green-jungle': counterparty.isMinPrice}">
 				            	<td><input class="form-control" tooltip data-original-title="{{counterparty.seller.displayName ? counterparty.seller.displayName : counterparty.seller.name}}" readonly ng-model="counterparty.seller.name"></td><!--  Counterparty -->
 				            	<td><input class="form-control" tooltip data-original-title="{{counterparty.physicalSupplier.displayName ? counterparty.physicalSupplier.displayName : counterparty.physicalSupplier.name}}" readonly ng-model="counterparty.physicalSupplier.name"></td><!--  Physical Supplier -->
-				            	<td width="50px">
+				            	<td style="width:50px">
 				            		<input ng-disabled="counterparty.hasNoQuote || counterparty.requestProductStatus.name == 'Stemmed' " ng-class="{'border-red' : (!location.allowZeroPricing && (counterparty.price <= 0) && counterparty.price )}" format="number:{{$ctrl.pricePrecision}}" class="form-control" type="text" ng-model="counterparty.price" ng-change="$ctrl.priceChanged()" ng-blur="$ctrl.deletePrice(counterparty)">
 				            	</td><!--  Price -->
-				            	<td width="50px">
+				            	<td style="width:50px">
 				            		<input class="form-control" 
 				            		type="text" 
 				            		format="number:{{$ctrl.quantityPrecision}}"
 				            		ng-class="{'bg-red-pink' : $ctrl.checkIfIsOffspec(counterparty.energyParameterValues.viscosity.specValue, counterparty.minMaxSpecs.viscosity)}" 
 				            		ng-model="counterparty.energyParameterValues.viscosity.specValue"></td><!--  Viscosity -->
-				            	<td width="50px">
+				            	<td style="width:50px">
 				            		<input class="form-control" 
 				            		type="text" 
 				            		format="number:{{$ctrl.quantityPrecision}}"
 				            		ng-class="{'bg-red-pink' : $ctrl.checkIfIsOffspec(counterparty.energyParameterValues.sulphur.specValue, counterparty.minMaxSpecs.sulphur)}" 
 				            		ng-model="counterparty.energyParameterValues.sulphur.specValue"></td><!--  Sulphur -->
-				            	<td width="50px">
+				            	<td style="width:50px">
 				            		<input class="form-control" 
 				            		type="text" 
 				            		format="number:{{$ctrl.quantityPrecision}}"
 				            		ng-class="{'bg-red-pink' : $ctrl.checkIfIsOffspec(counterparty.energyParameterValues.density.specValue, counterparty.minMaxSpecs.density)}" 
 				            		ng-model="counterparty.energyParameterValues.density.specValue"></td><!--  Density -->
-				            	<td width="50px">
+				            	<td style="width:50px">
 				            		<input class="form-control" 
 				            		type="text" 
 				            		format="number:{{$ctrl.quantityPrecision}}"
 				            		ng-class="{'bg-red-pink' : $ctrl.checkIfIsOffspec(counterparty.energyParameterValues.ash.specValue, counterparty.minMaxSpecs.ash)}" 
 				            		ng-model="counterparty.energyParameterValues.ash.specValue"></td><!--  Ash -->
-				            	<td width="50px">
+				            	<td style="width:50px">
 				            		<input class="form-control" 
 				            		type="text" 
 				            		format="number:{{$ctrl.quantityPrecision}}"

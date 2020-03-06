@@ -1,65 +1,65 @@
 <div style="max-width: 100%; margin-bottom: 30px;" class="col-sm-12 custom-hardcoded-table-wrapper">
     <div class="row custom-hardcoded-table tableheader" style="overflow: auto;">
-        <table id="params_history_table" class="table-body" width="100%" style="min-width: 1190px;">
+        <table id="params_history_table" class="table-body" style="width:100%;min-width: 1190px;">
             <thead>
                 <tr style="border: 1px solid #e2e6ea;">
-                    <th style="max-width: 25px" width="25px" class="padding border border-grey"></th>
-                    <th style="max-width: 80px" width="80px" class="padding border border-grey">Order Spec Parameter</th>
-                    <th style="max-width: 50px" width="50px" class="padding border border-grey">UOM</th>
-                    <th style="max-width: 50px" width="50px" class="padding border border-grey">Min</th>
-                    <th style="max-width: 50px" width="50px" class="padding border border-grey">Max</th>
-                    <th style="max-width: 50px" width="50px" class="padding border border-grey">Offer Spec Parameter</th>
-                    <th style="max-width: 50px" width="50px" class="padding border border-grey">Labs</th>
-                    <th style="max-width: 50px" width="50px" class="padding border border-grey">BDN</th>
-                    <th style="max-width: 50px" width="50px" class="padding border border-grey">Passed/Failed</th>
-                    <th style="max-width: 50px" width="50px" class="padding border border-grey">Claim</th>
-                    <th style="max-width: 25px" width="25px" class="padding border border-grey">No Action</th>
+                    <th style="max-width: 25px;width:25px" class="padding border border-grey"></th>
+                    <th style="max-width: 80px;width:80px" class="padding border border-grey">Order Spec Parameter</th>
+                    <th style="max-width: 50px;width:50px" class="padding border border-grey">UOM</th>
+                    <th style="max-width: 50px;width:50px" class="padding border border-grey">Min</th>
+                    <th style="max-width: 50px;width:50px" class="padding border border-grey">Max</th>
+                    <th style="max-width: 50px;width:50px" class="padding border border-grey">Offer Spec Parameter</th>
+                    <th style="max-width: 50px;width:50px" class="padding border border-grey">Labs</th>
+                    <th style="max-width: 50px;width:50px" class="padding border border-grey">BDN</th>
+                    <th style="max-width: 50px;width:50px" class="padding border border-grey">Passed/Failed</th>
+                    <th style="max-width: 50px;width:50px" class="padding border border-grey">Claim</th>
+                    <th style="max-width: 25px;width:25px" class="padding border border-grey">No Action</th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="row in formValues.labTestResults" ng-if="!row.isDeleted">
-                    <td style="max-width: 20px" width="20px" class="padding">
+                    <td style="max-width: 20px;width:20px" class="padding">
 				        <label class="mt-checkbox">
 				            <input type="checkbox" ng-disabled="row.disableCheckbox;" ng-change="calculateQualityClaimType(row)" name="Selection-{{$index}}" id="Selection-{{$index}}" ng-model="row.isSelected;"/>
 				            <span></span>
 				        </label>	                    	
                     </td> <!-- Select -->
-                    <td style="max-width: 80px" width="80px" class="padding">
+                    <td style="max-width: 80px;width:80px" class="padding">
                     	<a href="#/masters/specparameter/edit/{{row.specParameter.id}}" target="_blank">{{row.specParameter.name}}</a>
                     </td>
-                    <td style="max-width: 50px" width="50px" class="padding">
+                    <td style="max-width: 50px;width:50px" class="padding">
                     	{{row.uom}}
                     </td>
-                    <td style="max-width: 50px" width="50px" class="padding">
+                    <td style="max-width: 50px;width:50px" class="padding">
                     	{{row.min}}
                     </td>
-                    <td style="max-width: 50px" width="50px" class="padding">
+                    <td style="max-width: 50px;width:50px" class="padding">
                     	{{row.max}}
                     </td>
-                    <td style="max-width: 50px" width="50px" class="padding">
+                    <td style="max-width: 50px;width:50px" class="padding">
                     	{{row.offerSpecParameter | number:tenantSetting.defaultValues.quantityPrecision}}
                     </td>
-                    <td style="max-width: 50px" width="50px" class="">
+                    <td style="max-width: 50px;width:50px" class="">
                     	<input type="text" class="form-control" ng-model="row.value" ng-change="calculatePassedFailedInLab(row)" format="number:{{tenantSetting.defaultValues.quantityPrecision}}" ng-disabled="formValues.status.name == 'Verified'">
                     </td>
-                    <td style="max-width: 50px" width="50px" class="" tooltip data-original-title="{{row.displayShortageTooltip ? 'Short By ' + row.quantityShortage + ' - ' + row.quantityShortageUomName : '' }}">
+                    <td style="max-width: 50px;width:50px" class="" tooltip data-original-title="{{row.displayShortageTooltip ? 'Short By ' + row.quantityShortage + ' - ' + row.quantityShortageUomName : '' }}">
                     	<input style="{{row.displayShortageTooltip ? 'color:red' : '' ;}}" type="text" class="form-control" ng-model="row.bdnValue" ng-change="calculatePassedFailedInLab(row)" format="number:{{tenantSetting.defaultValues.quantityPrecision}}" ng-disabled="formValues.status.name == 'Verified'" >
                     </td>
-                    <td style="max-width: 50px" width="50px" class="">
+                    <td style="max-width: 50px;width:50px" class="">
                     	<div class="status text-center" style="background: {{ CM.getColorCodeFromLabels(row.qualityMatch) }}; padding: 8px 0;">
 						    <span class="font-white ">
 						    	{{row.qualityMatch.displayName ? row.qualityMatch.displayName : row.qualityMatch.name}}
 						    </span>
 						</div>
                     </td>
-                    <td style="max-width: 50px" width="50px" class="">
+                    <td style="max-width: 50px;width:50px" class="">
                     	<div class="status text-center" style="background: {{ CM.getColorCodeFromLabels(row.claimsRaisedStatus) }}; padding: 8px 0;">
 						    <span class="font-white ">
 						    	{{row.claimsRaisedStatus.displayName ? row.claimsRaisedStatus.displayName : row.claimsRaisedStatus.name}}
 						    </span>
 						</div>                    	
                     </td>
-                    <td style="max-width: 25px" width="25px" class="padding">
+                    <td style="max-width: 25px;width:25px" class="padding">
 				        <label class="mt-checkbox">
 				            <input type="checkbox" ng-disabled="row.disableCheckbox;" ng-change="calculateQualityClaimType(row)" name="Selection-{{$index}}" id="Selection-{{$index}}" ng-model="row.noAction;"/>
 				            <span></span>

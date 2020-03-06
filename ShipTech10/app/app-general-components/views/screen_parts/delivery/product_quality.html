@@ -84,70 +84,70 @@
                 <table class="product_quality_table table table-stripped table-hover">
                     <thead>
                         <tr>
-                            <td width="4%"></td>
-                            <td width="12%">
+                            <td style="width:4%"></td>
+                            <td style="width:12%">
                                 <span>{{ CM.app_id + '.PARAMETERS' | translate }}</span>
                             </td>
-                            <td width="7%">
+                            <td style="width:7%">
                                 <span>Min</span>
                             </td>
-                            <td width="7%">
+                            <td style="width:7%">
                                 <span>Max</span>
                             </td>
-                            <td width="12%">
+                            <td style="width:12%">
                                 <span>UOM</span>
                             </td>
-                            <td width="12%">
+                            <td style="width:12%">
                                 <span>BDN</span>
                             </td>
-                            <td width="12%">
+                            <td style="width:12%">
                                 <span>{{ CM.app_id + '.SURVEY_ANALYSIS' | translate }}</span>
                             </td>
-                            <td width="12%">
+                            <td style="width:12%">
                                 <span>{{ CM.app_id + '.VARIANCE' | translate }}</span>
                             </td>
-                            <td width="12%">
+                            <td style="width:12%">
                                 <span>{{ CM.app_id + '.RECON_STATUS' | translate }}</span>
                             </td>
-                            <td width="12%">
+                            <td style="width:12%">
                                 <span>{{ CM.app_id + '.CLAIM' | translate }}</span>
                             </td>
                         </tr>
                     </thead>
                     <tbody ng-init="key = 1">
                         <tr ng-repeat="(key2, value2) in product.qualityParameters" ng-if="value2.isDeleted == false || !value2.isDeleted">
-                            <td width="4%" class="text-center padding">
+                            <td style="width:4%" class="text-center padding">
                                 <span></span>
                             </td>
-                            <td width="12%" class="padding">
+                            <td style="width:12%" class="padding">
                                 <span>{{ value2.specParameter.name }}</span>
                             </td>
-                            <td width="12%" class="padding">
+                            <td style="width:12%" class="padding">
                                <span>{{ value2.min }}</span>
                             </td>
-                            <td width="12%" class="padding">
+                            <td style="width:12%" class="padding">
                                 <span>{{ value2.max }}</span>
                             </td>
-                            <td width="12%" class="padding">
+                            <td style="width:12%" class="padding">
                                <span>{{ value2.uom }}</span>
                             </td>
-                            <td width="12%">
+                            <td style="width:12%">
                                 <span>
                                     <input ng-disabled="formValues.deliveryStatus.name == 'Verified'" type="text" class="form-control" ng-model="value2.bdnValue" name="Product_{{ productIndex }}_{{ value2.specParameter.name }}_BDN" ng-change="value2.qualityMatch = setQualityMatch(value2.bdnValue, value2.surveyValue,value2.min,value2.max)"  />
                                     {{Number(value2.bdnValue)}}
                                 </span>
                             </td>
-                            <td width="12%">
+                            <td style="width:12%">
                                 <span>
                                     <input type="text" class="form-control" ng-model="value2.surveyValue" name="Product_{{ productIndex }}_{{ value2.specParameter.name }}_BDN" ng-change="value2.qualityMatch = setQualityMatch(value2.bdnValue, value2.surveyValue,value2.min,value2.max)"   />
                                 </span>
                             </td>
-                            <td width="12%" class="padding">
+                            <td style="width:12%" class="padding">
                                 <!-- Variance = Survey Analysis Value – BDN Value -->
                                 <span ng-if="!(value2.surveyValue == null && value2.bdnValue == null)">{{ value2.surveyValue - value2.bdnValue | number:tenantSetting.defaultValues.quantityPrecision}}</span>
                                 <span ng-if="value2.surveyValue == null && value2.bdnValue == null"> - </span>
                             </td>
-                            <td width="12%" class="padding text-center">
+                            <td style="width:12%" class="padding text-center">
 
                                 <span ng-show="value2.qualityMatch.id == '2'" class="quality_table_data_false">
                                     <b>
@@ -161,7 +161,7 @@
                                 </span>
 
                             </td>
-                            <td width="12%" class="padding text-center">
+                            <td style="width:12%" class="padding text-center">
                                 <span ng-show="!value2.claim" class="quality_table_data_false">
                                     <b>
                                         No

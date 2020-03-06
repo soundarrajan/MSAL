@@ -4,7 +4,7 @@
 	</h4>
 </div>
 <div class="custom-hardcoded-table ng-scope" ng-init="CM.getAdditionalCostsComponentTypes()">
-    <table class="table-body" width="100%">
+    <table class="table-body" style="width:100%">
         <thead>
             <tr>
 				<td class="padding"><b>Product</b></td>
@@ -26,7 +26,7 @@
         		<td>
         			<select name="Product {{$index}} mass UOM" ng-model="value.volumeUom" ng-options="item as item.name for item in vm.listsCache.UomVolume track by item.id" class="form-control"></select>
         		</td>
-        		<td width="160px">
+        		<td style="width:160px">
         			<label class="mt-checkbox" style="margin-bottom: 15px;margin-left: 10px;">
 	        			<input type="checkbox" ng-model="value.isDefault">	
         				<span></span>

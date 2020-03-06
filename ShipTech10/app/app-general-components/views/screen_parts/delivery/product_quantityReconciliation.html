@@ -50,7 +50,7 @@
             </div>
         </div>
          <div class="custom-hardcoded-table">
-            <table  class="table-body" width="100%">
+            <table  class="table-body" style="width:100%">
                 </thead>
                 <tbody>
                 </tbody>
@@ -58,35 +58,35 @@
         </div>
         <div class="row margin-top-10 custom-hardcoded-table">
             <div class="col-xs-12">
-                <table class="table-body" width="100%">
+                <table class="table-body" style="width:100%">
                     <thead>
                         <tr>
-                            <td class="padding" width="17%">
+                            <td class="padding" style="width:17%">
                                 <b>{{ CM.app_id + '.PARAMETERS' | translate }}</b>
                             </td>
-                            <td class="padding" width="8%">
+                            <td class="padding" style="width:8%">
                                 <b>UOM</b>
                             </td>
-                            <td class="padding" width="25%">
+                            <td class="padding" style="width:25%">
                                 <b>{{ CM.app_id + '.BDN_VALUE' | translate }}</b>
                             </td>
-                            <td class="padding" width="25%">
+                            <td class="padding" style="width:25%">
                                 <b>{{ CM.app_id + '.LAB_VALUE' | translate }}</b>
                             </td>
-                            <td class="padding" width="10%">
+                            <td class="padding" style="width:10%">
                                 <b>{{ CM.app_id + '.VARIANCE' | translate }}</b>
                             </td>
-                            <td class="padding" width="15%">
+                            <td class="padding" style="width:15%">
                                 <b>%{{ CM.app_id + '.DEVIATION' | translate }}</b>
                             </td>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="parameter in product.quantityParameters">
-                            <td class="padding" width="17%">
+                            <td class="padding" style="width:17%">
                                 <span>{{parameter.parameter.name}}</span>
                             </td>
-                            <td class="padding" width="8%">
+                            <td class="padding" style="width:8%">
                                 <span>{{parameter.uom}}</span>
                             </td>
                             <td wclass="padding" idth="25%">
@@ -95,12 +95,12 @@
                                     <input type="text" class="form-control" ng-model="parameter.bdn" name="Product_{{ productIndex }}_{{ value2.specParameter.name }}_BDN" format="number:{{tenantSetting.defaultValues.quantityPrecision }}" />
                                 </span>
                             </td>
-                            <td class="padding" width="25%">
+                            <td class="padding" style="width:25%">
                                 <span>
                                     {{parameter.lab}}
                                 </span>
                             </td>
-                            <td class="padding" width="10%">
+                            <td class="padding" style="width:10%">
                                 <!-- Difference in BDR = Lab value – BDN value -->
                                 <span ng-if="(parameter.parameter.id != 3)">
                                     <span ng-if="parameter.bdn != null && parameter.lab != null">
@@ -109,7 +109,7 @@
                                 </span>
                                 <span ng-if="!(parameter.bdn != null && parameter.lab != null) || (parameter.parameter.id == 3)"> – </span>
                             </td>
-                            <td class="padding" width="15%">
+                            <td class="padding" style="width:15%">
                                 <!-- % of Deviation = Difference in BDR / BDN Value -->
                                 <span ng-if="(parameter.parameter.id != 2) && (parameter.parameter.id != 3)">
                                     <span ng-if="parameter.bdn">

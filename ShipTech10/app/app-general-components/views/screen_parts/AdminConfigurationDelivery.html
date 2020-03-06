@@ -275,20 +275,20 @@
             <table id="delivery_config_fields">
                 <thead>
                     <tr>
-                        <td width="70%">
+                        <td style="width:70%">
                             <span>Field</span>
                         </td>
-                        <td width="30%">
+                        <td style="width:30%">
                             <span>Hide</span>
                         </td>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="field in formValues.delivery.hiddenFields">
-                        <td width="70%">
+                        <td style="width:70%">
                             <span> {{ field.option.name }} </span>
                         </td>
-                        <td width="30%">
+                        <td style="width:30%">
                             <span class="text-center">
                                 <label class="mt-checkbox">
                                     <input type="checkbox" name="hidden_ield_{{field.option.id}}" id="hidden_field_{{field.option.id}}" ng-model="field.hidden"/>

@@ -7,28 +7,28 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="custom-hardcoded-table" style="max-height: 500px;">
-                <table  class="table-body table table-stripped table-hover" width="100%">
+                <table  class="table-body table table-stripped table-hover" style="width:100%">
                     <thead>
                         <tr>
-                            <td class="padding" width="2%" class="text-center" ng-if="modalSpecGroupParametersEditable">
+                            <td class="padding" style="width:2%" class="text-center" ng-if="modalSpecGroupParametersEditable">
                                 <span ng-if="modalSpecGroupParametersEditable" class="insert" ng-click="modalSpecGroupParameters.push({'editable': true, 'id':0})"></span>
                             </td>
-                            <td class="padding" width="12%">
+                            <td class="padding" style="width:12%">
                                 <b>
                                     Spec Parameter
                                 </b>
                             </td>
-                            <td class="padding" width="7%">
+                            <td class="padding" style="width:7%">
                                 <b>
                                     Min
                                 </b>
                             </td>
-                            <td class="padding" width="7%">
+                            <td class="padding" style="width:7%">
                                 <b>
                                     Max
                                 </b>
                             </td>
-                            <td class="padding" width="12%">
+                            <td class="padding" style="width:12%">
                                 <b>
                                     UOM
                                 </b>
@@ -37,37 +37,37 @@
                     </thead>
                     <tbody ng-if="!modalSpecGroupParametersEditable">
                         <tr ng-repeat="(key2, value2) in modalSpecGroupParameters" ng-if="value2.isDeleted == false || !value2.isDeleted">
-                            <td width="12%" class="padding">
+                            <td style="width:12%" class="padding">
                                 {{ value2.specParameter.name }}
                             </td>
-                            <td width="12%" class="padding">
+                            <td style="width:12%" class="padding">
                                 {{ value2.min }}
                             </td>
-                            <td width="12%" class="padding">
+                            <td style="width:12%" class="padding">
                                 {{ value2.max }}
                             </td>
-                            <td width="12%" class="padding">
+                            <td style="width:12%" class="padding">
                                 {{ value2.uom }}
                             </td>
                         </tr>
                     </tbody>
                     <tbody ng-if="modalSpecGroupParametersEditable">
                         <tr ng-repeat="(key2, value2) in modalSpecGroupParameters" ng-if="value2.isDeleted == false || !value2.isDeleted">
-                            <td width="2%" class="text-center padding">
+                            <td style="width:2%" class="text-center padding">
                                 <span ng-if="value2.editable == true" class="remove" ng-click="modalSpecGroupParameters.splice(key2, 1)" style="opacity:1; pointer-events: initial"></span>
                                 <span ng-if="value2.editable != true" class="remove" ng-click="value2.isDeleted = true" style="opacity:1; pointer-events: initial"></span>
                             </td>
-                            <td width="12%">
+                            <td style="width:12%">
                                 <input ng-if="value2.editable == true" ng-model="value2.specParameter" ng-controller="Controller_Master as CM"  uib-typeahead="item as item.name for item in CM.listsCache['SpecParameter'] | filter:{name:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="300" id="specParameter" data-uniqueid="specParameter" data-value="{{ specParameter.id }}" autocomplete="off" typeahead-on-select="modalSpecGroupParametersUpdateUom(value2.specParameter, key2)"/>
                                 <input type="text" disabled class="form-control" ng-if="value2.editable != true" ng-model="value2.specParameter.name"/>
                             </td>
-                            <td width="12%">
+                            <td style="width:12%">
                                 <input type="number" class="form-control w100" ng-model="value2.min"/>
                             </td>
-                            <td width="12%">
+                            <td style="width:12%">
                                 <input type="number" class="form-control w100" ng-model="value2.max"/>
                             </td>
-                            <td width="12%" class="padding">
+                            <td style="width:12%" class="padding">
                                 {{ value2.uom }}
                             </td>
                         </tr>

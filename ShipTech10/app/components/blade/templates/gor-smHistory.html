@@ -44,51 +44,42 @@
     <hr>
     <div style="max-width: 100%; margin-bottom: 30px;" class="col-sm-12 custom-hardcoded-table-wrapper">
 	    <div class="row custom-hardcoded-table tableheader" style="overflow: hidden;">
-	        <table id="params_history_table" class="table-body" width="100%">
+	        <table id="params_history_table" class="table-body" style="width:100%">
 	            <thead>
 	                <tr>
-	                    <th style="max-width: 20px" width="20px" class="padding">Select</th>
-	                    <th style="max-width: 50px" width="50px" class="padding">Order</th>
-	                    <th style="max-width: 50px" width="50px" class="padding">Order Date</th>
-	                    <th style="max-width: 50px" width="50px" class="padding">Lab Result ID</th>
-	                    <th style="max-width: 50px" width="50px" class="padding">Lab Date</th>
-	                    <th style="max-width: 50px" width="50px" class="padding">Net MJ/KG</th>
-	                    <th style="max-width: 2px" width="10px" class=""></th> <!-- scroll offset -->
+	                    <th style="max-width: 20px;width:20px" class="padding">Select</th>
+	                    <th style="max-width: 50px;width:50px" class="padding">Order</th>
+	                    <th style="max-width: 50px;width:50px" class="padding">Order Date</th>
+	                    <th style="max-width: 50px;width:50px" class="padding">Lab Result ID</th>
+	                    <th style="max-width: 50px;width:50px" class="padding">Lab Date</th>
+	                    <th style="max-width: 50px;width:50px" class="padding">Net MJ/KG</th>
+	                    <th style="max-width: 2px;width:10px" class=""></th> <!-- scroll offset -->
 	                </tr>
 	            </thead>
 	        </table>
 	    </div>
 		<div class="row custom-hardcoded-table tablebody"  style="height: {{$ctrl.computedTableHeight}};overflow-x: scroll;">
-	        <table id="params_history_table" width="100%" class="table-body">
-	            <!-- <thead>
-	                <tr>
-	                    <th width="50px" class="padding">Select</th>
-	                    <th width="50px" class="padding">Order</th>
-	                    <th width="50px" class="padding">Order Date</th>
-	                    <th width="50px" class="padding">Lab Result ID</th>
-	                    <th width="50px" class="padding">Lab Date</th>
-	                    <th width="50px" class="padding">Net MJ/KG</th>
-	                </tr>
-	            </thead> -->
+	        <table id="params_history_table" style="width:100%" class="table-body">
+
 	            <tbody>
 	                <tr ng-repeat="row in $ctrl.sixMonthsHistoryData">
-	                    <td style="max-width: 20px" width="20px" class="padding">
+	                    <td style="max-width: 20px;width:20px" class="padding">
 					        <label class="mt-checkbox">
 					            <input type="checkbox" ng-change="$ctrl.countSelectedItems()" name="Selection-{{$index}}" id="Selection-{{$index}}" ng-model="row.isSelected;"/>
 					            <span></span>
 					        </label>	                    	
 	                    </td> <!-- Select -->
-	                    <td style="max-width: 50px" width="50px" class="padding">{{row.orderId}}</td> <!-- Order -->
-	                    <td style="max-width: 50px" width="50px" class="padding">{{ $ctrl.formatDate(row.orderDate) }}</td> <!-- Order Date -->
-	                    <td style="max-width: 50px" width="50px" class="padding">{{row.labResultId}}</td> <!-- Lab Result ID -->
-	                    <td style="max-width: 50px" width="50px" class="padding">{{ $ctrl.formatDate(row.labResultCreatedOn) }}</td> <!-- Lab Date -->
-	                    <td style="max-width: 50px" width="50px" class="padding">{{row.netSpecificEnergyValue}}</td> <!-- Net MJ/KG -->
+	                    <td style="max-width: 50px;width:50px" class="padding">{{row.orderId}}</td> <!-- Order -->
+	                    <td style="max-width: 50px;width:50px" class="padding">{{ $ctrl.formatDate(row.orderDate) }}</td> <!-- Order Date -->
+	                    <td style="max-width: 50px;width:50px" class="padding">{{row.labResultId}}</td> <!-- Lab Result ID -->
+	                    <td style="max-width: 50px;width:50px" class="padding">{{ $ctrl.formatDate(row.labResultCreatedOn) }}</td> <!-- Lab Date -->
+	                    <td style="max-width: 50px;width:50px" class="padding">{{row.netSpecificEnergyValue}}</td> <!-- Net MJ/KG -->
 	                </tr>
 	            </tbody>
 	        </table>
 	    </div>
 	    <div class="row custom-hardcoded-table tableheader" style="overflow: hidden;">
-	        <table id="params_history_table" class="table-body" width="100%">
+	        <table id="params_history_table" class="table-body" style="width:100%">
 	            <thead>
 	                <tr>
 	                    <th colspan="6" class="padding bg-blue-dark font-white">
