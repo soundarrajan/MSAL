@@ -321,8 +321,8 @@ Inbox Page
 .inbox-compose .mail-to .inbox-bcc {
   margin-left: 5px; }
 
-.inbox-compose .mail-to inbox-cc:hover,
-.inbox-compose .mail-to inbox-bcc:hover {
+.inbox-compose .mail-to .inbox-cc:hover,
+.inbox-compose .mail-to .inbox-bcc:hover {
   color: #777; }
 
 .inbox-compose .wysihtml5 {

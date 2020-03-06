@@ -48,7 +48,7 @@
     define(['jquery', 'datatables-light-columnfilter', 'datepicker'], factory);
   } else if (typeof exports === 'object') {
     // Node/CommonJS
-    factory(require('jquery'), require('datatables-light-columnfilter'), require('datepicker'));
+    factory(require('jquery'), require('datatables-light-columnfilter'));
   } else if (jQuery) {
     // Otherwise simply initialise as normal, stopping multiple evaluation
     factory(jQuery, jQuery.fn.dataTable.ColumnFilter);

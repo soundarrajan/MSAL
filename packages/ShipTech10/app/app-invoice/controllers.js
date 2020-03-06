@@ -726,7 +726,7 @@ APP_INVOICE.controller('Controller_Invoice', ['$scope', '$rootScope', '$Api_Serv
              
                     calculateGrand(formValues);
                     if (product) {
-                        calculateProductRecon(product)
+                        calculateProductRecon()
                     }
                 });
             }

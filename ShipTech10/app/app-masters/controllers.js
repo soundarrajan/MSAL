@@ -3979,10 +3979,7 @@ APP_MASTERS.controller("Controller_Master", [
 
 
             if (!$rootScope.formValues.documentType) requiredFields.push("Document Type");
-            if(verifiedRequired[$state.current.name])
-                // if(!$rootScope.formValues.isVerified)
-                //     requiredFields.push("Is Verified");
-            if(requiredFields.length){
+            if(verifiedRequired[$state.current.name] && requiredFields.length){
                 var error = "Please fill in required fields: ";
                 $.each(requiredFields, function (key,val){
                     error += val + ",";
@@ -7323,7 +7320,7 @@ APP_MASTERS.controller("Controller_Master", [
 	             
 	                    calculateGrand(formValues);
 	                    if (formValues.productDetails[currentRowIndex]) {
-	                        calculateProductRecon(formValues.productDetails[currentRowIndex])
+	                        calculateProductRecon();
 	                    }
 	                });
 	            }

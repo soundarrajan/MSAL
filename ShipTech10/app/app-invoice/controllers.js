@@ -2465,7 +2465,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
              
                     calculateGrand(formValues);
                     if (formValues.productDetails[currentRowIndex]) {
-                        calculateProductRecon(formValues.productDetails[currentRowIndex])
+                        calculateProductRecon();
                     }
                 });
             }

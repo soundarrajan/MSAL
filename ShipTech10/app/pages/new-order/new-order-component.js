@@ -1441,7 +1441,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                    defaultFromInput(data);
                    break;
                 case 'init':
-                   initMaxQtyFromConfirmed(data);
+                   initMaxQtyFromConfirmed();
                    break;
                 case 'offer':
                    defaultFromOffer();
@@ -2196,10 +2196,10 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                     $state.go(STATE.EDIT_ORDER, {
                         orderId: ctrl.orderId
                     });
-                    addFirstAdditionalCost(null);
+                    addFirstAdditionalCost();
                 }).catch(function (err) {
                     ctrl.buttonsDisabled = false;
-                    addFirstAdditionalCost(null);
+                    addFirstAdditionalCost();
                 });
             } else {
                 orderModel.create(payload).then(function (responseData) {
@@ -2207,10 +2207,10 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                     $state.go(STATE.EDIT_ORDER, {
                         orderId: responseData.payload.id
                     });
-                    addFirstAdditionalCost(null);
+                    addFirstAdditionalCost();
                 }).catch(function (err) {
                     ctrl.buttonsDisabled = false;
-                    addFirstAdditionalCost(null);
+                    addFirstAdditionalCost();
                 });
             }
 

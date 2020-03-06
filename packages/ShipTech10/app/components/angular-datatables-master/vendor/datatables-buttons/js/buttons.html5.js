@@ -673,7 +673,7 @@ var excelStrings = {
 			'<sheetData/>'+
 		'</worksheet>',
 
-	"xl/styles.xml": 
+	"xl/styles.xml":
 		'<?xml version="1.0" encoding="UTF-8"?>'+
 		'<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="x14ac" xmlns:x14ac="http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac">'+
 			'<fonts count="5" x14ac:knownFonts="1">'+
@@ -1104,16 +1104,16 @@ DataTable.ext.buttons.excelHtml5 = {
 		}
 
 		if ( config.header ) {
-			addRow( data.header, rowPos );
+			addRow( data.header);
 			$('row c', rels).attr( 's', '2' ); // bold
 		}
 
 		for ( var n=0, ie=data.body.length ; n<ie ; n++ ) {
-			addRow( data.body[n], rowPos );
+			addRow( data.body[n]);
 		}
 
 		if ( config.footer && data.footer ) {
-			addRow( data.footer, rowPos);
+			addRow( data.footer);
 			$('row:last c', rels).attr( 's', '2' ); // bold
 		}
 
@@ -1270,7 +1270,7 @@ DataTable.ext.buttons.pdfHtml5 = {
 
 		if ( config.title ) {
 			doc.content.unshift( {
-				text: _title( config, false ),
+				text: _title( config),
 				style: 'title',
 				margin: [ 0, 0, 0, 12 ]
 			} );

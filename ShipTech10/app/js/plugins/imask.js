@@ -690,14 +690,13 @@
     } catch (err) {
       _d = true;
       _e = err;
-    } finally {
-      try {
-        if (!_n && _i["return"] != null) _i["return"]();
-      } finally {
-        if (_d) throw _e;
+      if (!_n && _i["return"] != null) {
+        _i["return"]();
+      } else {
+        if (_d)
+          throw _e;
       }
     }
-
     return _arr;
   }
 

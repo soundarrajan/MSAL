@@ -1923,7 +1923,7 @@ function Dexie(dbName, options) {
                     else {
                         upgradeTransaction.onerror = eventRejectHandler(reject);
                         var oldVer = e.oldVersion > Math.pow(2, 62) ? 0 : e.oldVersion; // Safari 8 fix.
-                        runUpgraders(oldVer / 10, upgradeTransaction, reject, req);
+                        runUpgraders(oldVer / 10, upgradeTransaction, reject);
                     }
                 }, reject);
                 req.onsuccess = wrap(function () {

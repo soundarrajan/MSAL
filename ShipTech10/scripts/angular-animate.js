@@ -1485,7 +1485,7 @@ angular.module('ngAnimate', ['ng'])
                 $$asyncCallback(function() {
                   var data = element.data(NG_ANIMATE_STATE) || {};
                   if (localAnimationCount == data.index) {
-                    cleanup(element, className, animationEvent);
+                    cleanup(element, className);
                   }
                 });
                 element.data(NG_ANIMATE_STATE, data);

@@ -91,7 +91,7 @@
   background: #f3f3f3;
   background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ffffff), color-stop(1, #ffffff));
   background: -ms-linear-gradient(bottom, #ffffff, #ffffff);
-  background: -moz-linear-gradient(center bottom, #ffffff 0%, #ffffff 100%);
+  background: -moz-linear-gradient(bottom, #ffffff 0%, #ffffff 100%);
   background: -o-linear-gradient(#ffffff, #ffffff);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ffffff', GradientType=0);
 }
@@ -106,7 +106,7 @@
   background: #f3f3f3;
   background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ffffff), color-stop(1, #ffffff));
   background: -ms-linear-gradient(bottom, #ffffff, #ffffff);
-  background: -moz-linear-gradient(center bottom, #ffffff 0%, #ffffff 100%);
+  background: -moz-linear-gradient(bottom, #ffffff 0%, #ffffff 100%);
   background: -o-linear-gradient(#ffffff, #ffffff);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ffffff', GradientType=0);
   -webkit-border-top-right-radius: -1px;
@@ -383,7 +383,7 @@ select.ui-grid-filter-select:hover {
   background: #f3f3f3;
   background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ffffff), color-stop(1, #ffffff));
   background: -ms-linear-gradient(bottom, #ffffff, #ffffff);
-  background: -moz-linear-gradient(center bottom, #ffffff 0%, #ffffff 100%);
+  background: -moz-linear-gradient(bottom, #ffffff 0%, #ffffff 100%);
   background: -o-linear-gradient(#ffffff, #ffffff);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ffffff', GradientType=0);
   -webkit-border-top-right-radius: 0px;
@@ -476,7 +476,7 @@ select.ui-grid-filter-select:hover {
   background: #f3f3f3;
   background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ffffff), color-stop(1, #ffffff));
   background: -ms-linear-gradient(bottom, #ffffff, #ffffff);
-  background: -moz-linear-gradient(center bottom, #ffffff 0%, #ffffff 100%);
+  background: -moz-linear-gradient(bottom, #ffffff 0%, #ffffff 100%);
   background: -o-linear-gradient(#ffffff, #ffffff);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ffffff', GradientType=0);
 }
@@ -489,7 +489,7 @@ select.ui-grid-filter-select:hover {
   background: #f3f3f3;
   background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ffffff), color-stop(1, #ffffff));
   background: -ms-linear-gradient(bottom, #ffffff, #ffffff);
-  background: -moz-linear-gradient(center bottom, #ffffff 0%, #ffffff 100%);
+  background: -moz-linear-gradient(bottom, #ffffff 0%, #ffffff 100%);
   background: -o-linear-gradient(#ffffff, #ffffff);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ffffff', GradientType=0);
   -webkit-border-top-right-radius: -1px;

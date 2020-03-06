@@ -8,7 +8,7 @@
   display: none !important;
 }
 
-ng\:form {
+[ng\:form] {
   display: block;
 }
 

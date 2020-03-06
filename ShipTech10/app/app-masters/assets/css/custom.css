@@ -741,7 +741,6 @@ span.variance {
     position: fixed;
     width: 90% !important;
     left: 5%;
-    margin-bottom: 50px;
     margin: 0 auto;
     /*padding: 0 15px !important;*/
     z-index: 10000 !important;
@@ -1076,13 +1075,13 @@ display: flex;
  /*   max-width: 220px;*/
 }
 
-//vessel master
-#tabs_navigation .nav-tabs > li{
+/*vessel master*/
+#tabs_navigation .nav-tabs > li {
     margin-bottom: -10px !important;
     padding: 20px 10px 10px 10px !important;
 }
 
-//payment term master
+/*payment term master*/
 .form_input.form_input_paymentConditionType .mt-radio-list label.mt-radio{
     width: 280px !important;
 }

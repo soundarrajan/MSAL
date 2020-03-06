@@ -1742,16 +1742,13 @@ exports.topMost = function (pile, accessors) {
   } catch (err) {
     _didIteratorError = true;
     _iteratorError = err;
-  } finally {
-    try {
       if (!_iteratorNormalCompletion && _iterator['return']) {
-        _iterator['return']();
+          _iterator['return']();
+      } else {
+          if (_didIteratorError) {
+              throw _iteratorError;
+          }
       }
-    } finally {
-      if (_didIteratorError) {
-        throw _iteratorError;
-      }
-    }
   }
 
   return candidate;
@@ -4700,14 +4697,12 @@ exports.default = function () {
     } catch (err) {
       _d = true;
       _e = err;
-    } finally {
-      try {
-        if (!_n && _i["return"]) _i["return"]();
-      } finally {
-        if (_d) throw _e;
-      }
+        if (!_n && _i["return"]) {
+            _i["return"]();
+        } else {
+            if (_d) throw _e;
+        }
     }
-
     return _arr;
   }
 
@@ -33330,7 +33325,7 @@ addRegexToken('Do', function (isStrict, locale) {
 
 addParseToken(['D', 'DD'], DATE);
 addParseToken('Do', function (input, array) {
-    array[DATE] = toInt(input.match(match1to2)[0], 10);
+    array[DATE] = toInt(input.match(match1to2)[0]);
 });
 
 // MOMENTS
