@@ -1,6 +1,7 @@
 <div id="offer" class="confirm-offers-dialog">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" ng-click="$ctrl.enableButtons()" aria-hidden="true" ng-if="isRequest()"></button>
+        <button type="button" class="close" data-dismiss="modal" ng-click="$ctrl.enableButtons()" aria-hidden="true" ng-if="!isRequest()"></button>
         <a class="closeBlade pull-right font-white" ng-click="closeBlade()" ng-controller="BladeController">
             <i class="fa  fa-close font-white"></i>
         </a>
@@ -124,7 +125,7 @@
         <button type="button" data-dismiss="modal" ng-click="$ctrl.enableButtons()" class="btn btn-default" ng-if="isRequest()">
             No
         </button>
-        <button type="button" ng-if="!isRequest()" ng-click="closeBlade()" ng-controller="BladeController" class="btn btn-default">
+        <button type="button"  data-dismiss="modal" ng-if="!isRequest()" ng-click="$ctrl.enableButtons()"  class="btn btn-default">
             No
         </button>
     </div>

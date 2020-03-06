@@ -1,5 +1,5 @@
-angular.module("shiptech.pages").controller("SelectContractController", ["$window", "$scope", "$rootScope", "$element", "$attrs", "$timeout", "$filter", '$state', "listsModel", "uiApiModel", 'selectContractModel', 'orderModel', 'STATE', 'LOOKUP_TYPE',
-    function($window, $scope,  $rootScope, $element, $attrs, $timeout, $filter, $state, listsModel, uiApiModel, selectContractModel, orderModel, STATE, LOOKUP_TYPE) {
+angular.module("shiptech.pages").controller("SelectContractController", ["$window", "$scope", "$rootScope", "$element", "$attrs", "$timeout", "$filter", '$state', "listsModel", "uiApiModel", 'selectContractModel', 'orderModel', 'newRequestModel', 'STATE', 'LOOKUP_TYPE',
+    function($window, $scope,  $rootScope, $element, $attrs, $timeout, $filter, $state, listsModel, uiApiModel, selectContractModel, orderModel, newRequestModel, STATE, LOOKUP_TYPE) {
         var ctrl = this;
         ctrl.STATE = STATE;
         // ctrl.contracts = [];
@@ -240,61 +240,77 @@ angular.module("shiptech.pages").controller("SelectContractController", ["$windo
                         $('#confirm').modal('show');
                         responseOrders = null;
                     } else {
-                        selectedProductsRequestLocationIds = []
-                        $.each(ctrl.request.locations, function(locK, locV) {
-                            $.each(locV.products, function(prodK, prodV) {
-                                $.each(requestProductIds, function(pk, pv) {
-                                    if (pv == prodV.id) {
-                                        if (selectedProductsRequestLocationIds.indexOf(locV.id) == -1) {
-                                            selectedProductsRequestLocationIds.push(locV.id);
-                                        }
+                        selectedProductsRequestLocationIds = [];
+                        $.each(responseOrderData, function(locK, locV) {
+                            $.each(ctrl.selectedContracts, function(ck, cv) {
+                                if (cv.requestLocationId == locV.requestLocationId) {
+                                    if (selectedProductsRequestLocationIds.indexOf(locV.requestLocationId) == -1) {
+                                        selectedProductsRequestLocationIds.push(locV.requestLocationId);
                                     }
-                                })
-                            })
-                        })
+                                }
+                            });
+                            // $.each(locV.products, function(prodK, prodV) {
+                            // })
+                        });
                         responseOrders = [];
                         $.each(responseOrderData, function(rdk, rdv) {
                             if (selectedProductsRequestLocationIds.indexOf(rdv.requestLocationId) != -1) {
                                 responseOrders.push(rdv);
                             }
-                        })
+                        });
                         // selectedContracts, selectedProducts, orderFromResponse
-                        hasError = false;
-                        errorMessages = [];
-                        errorType = [];
-                        if (responseOrders.length > 0) {
-                            if (ctrl.selectedContracts[0].currency.id != responseOrders[0].products[0].currency.id) {
-                                hasError = true;
-                                errorType.push("Currency")
-                            }
-                            // 259200000 is 3 days in miliseconds
-                            if (new Date($scope.getProductLocationETAByRequestProductId(requestProductIds[0])) - new Date(responseOrders[0].orderEta) > 259200000 || new Date($scope.getProductLocationETAByRequestProductId(requestProductIds[0])) - new Date(responseOrders[0].orderEta) < -259200000) {
-                                hasError = true;
-                                errorType.push("ETA Difference")
-                            }
-                            if (responseOrders[0].seller) {
-                                if (ctrl.selectedContracts[0].seller.id != responseOrders[0].seller.id) {
-                                    hasError = true;
-                                    errorType.push("Seller")
+                        ordersWithErrorsIdx = [];
+                        $.each(ctrl.selectedContracts, function(selConK, selConV) {
+                            $.each(responseOrders, function(respOrdK, respOrdV) {
+                                if (ctrl.selectedContracts[selConK].requestLocationId == responseOrders[respOrdK].requestLocationId) {
+                                    hasError = false;
+                                    errorMessages = [];
+                                    errorType = [];
+                                    if (responseOrders.length > 0) {
+                                        if (ctrl.selectedContracts[selConK].currency.id != responseOrders[respOrdK].products[0].currency.id) {
+                                            hasError = true;
+                                            errorType.push("Currency");
+                                        }
+                                        newRequestModel.getRequest(ctrl.requestId).then(function(newRequestData) {
+                                            ctrl.request = newRequestData.payload;
+                                            // 259200000 is 3 days in miliseconds
+                                            if (new Date($scope.getProductLocationETAByRequestProductId(selConV.requestProductId)) - new Date(responseOrders[respOrdK].orderEta) > 259200000 || new Date($scope.getProductLocationETAByRequestProductId(selConV.requestProductId)) - new Date(responseOrders[respOrdK].orderEta) < -259200000) {
+                                                hasError = true;
+                                                errorType.push("ETA Difference");
+                                            }
+                                            if (responseOrders[respOrdK].seller) {
+                                                if (ctrl.selectedContracts[selConK].seller.id != responseOrders[respOrdK].seller.id) {
+                                                    hasError = true;
+                                                    errorType.push("Seller");
+                                                }
+                                            } else {
+                                                hasError = true;
+                                            }
+                                            if (hasError) {
+                                                errorTypes = errorType.join(" and ");
+                                                if (errorTypes) {
+                                                    errorMessage = "Unable to add " + $scope.getProductNameByRequestProductId(selConV.requestProductId) + " for " + ctrl.request.vesselDetails.vessel.name + " in existing stemmed order " + responseOrders[respOrdK].id + " due to conflicting " + errorTypes + ". New order will be created." + errorTypes + " will be only that did not met the criteria for extending the order";
+                                                }
+                                                ordersWithErrorsIdx.push(respOrdK);
+                                                // responseOrders = null;
+                                                // alert(errorMessage);
+                                                toastr.info(errorMessage, "", {
+                                                    timeOut: 500
+                                                });
+                                            } else {
+                                                errorMessage = null;
+                                            }
+                                        });
+                                       
+                                    }
+                                  
                                 }
-                            } else {
-                                hasError = true
-                            }
-                        }
-                        if (hasError) {
-                            errorTypes = errorType.join(", ");
-                            if (errorTypes) {
-                                errorMessage = "Unable to add " + $scope.getProductNameByRequestProductId(requestProductIds[0]) + " for " + ctrl.request.vesselDetails.vessel.name + " in existing stemmed order " + responseOrders[0].id + " due to conflicting " + errorTypes + ". New order will be created." + errorTypes + " will be only that did not met the criteria for extending the order";
-                            }
-                            responseOrders = null;
-                            // alert(errorMessage);
-                            toastr.info(errorMessage, '', {
-                                timeOut: 10000
                             });
-                        } else {
-                            errorMessage = null;
+                        });
+                        for (var i = ordersWithErrorsIdx.length - 1; i >= 0; i--) {
+                            responseOrders.splice(ordersWithErrorsIdx[i], 1);
                         }
-                        $('#confirm').modal('show');
+                        $("#confirm").modal("show");
                     }
                     ctrl.confirmationProductOrders = {
                         "requestId": ctrl.requestId,
@@ -314,8 +330,34 @@ angular.module("shiptech.pages").controller("SelectContractController", ["$windo
                 ctrl.buttonsDisabled = false;
             }
         }
+
+        $scope.getProductLocationETAByRequestProductId = function(rpid) {
+            $.each(ctrl.request.locations, function(locK, locV) {
+                $.each(locV.products, function(prodK, prodV) {
+                    if (prodV.id == rpid) {
+                        foundProduct = locV.eta;
+                    }
+                });
+            });
+            return foundProduct;
+        };
+
+        $scope.getProductNameByRequestProductId = function(rpid) {
+            $.each(ctrl.request.locations, function(locK, locV) {
+                $.each(locV.products, function(prodK, prodV) {
+                    if (prodV.id == rpid) {
+                        foundProduct = prodV.product.name;
+                    }
+                });
+            });
+            return foundProduct;
+        };
         ctrl.showProceedButton = function(noneSelected) {
-    
+            if (!ctrl.contracts) {
+                var CLC = $('#flat_available_contracts');
+                ctrl.contracts = CLC.jqGrid.Ascensys.gridObject.rows
+            }
+        
             selected = 0;
 
             //if some contracts are selected, check if they match (by requestProductId)
@@ -358,6 +400,7 @@ angular.module("shiptech.pages").controller("SelectContractController", ["$windo
 
         ctrl.goBack = function() {
             $window.history.back();
+           
         };
 
         // --------------------------------------------- betty 25.07
@@ -379,7 +422,7 @@ angular.module('shiptech.pages').component('selectContract', {
     bindings: {
         selectedProducts: '<',
         contracts: '<',
-        contractHasProduct: '=',
-        selectedContracts: '='
+        contractHasProduct: '<',
+        selectedContracts: '<'
     }
 });

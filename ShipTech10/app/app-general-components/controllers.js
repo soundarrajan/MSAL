@@ -2636,7 +2636,6 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 } else {
                     allSelected = false;
                     vm.treasury_checkbox_header = false;
-                    $scope.$apply();
                 }
             });
             if (allSelected) {
@@ -4099,7 +4098,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
             } else {
                 vm.searched = false;
             }
-            
+
             setTimeout(function() {
                 if (typeof $(".jqgrid_component>.ui-jqgrid").attr("id") != "undefined") {
                     var table_id = $(".jqgrid_component>.ui-jqgrid")
