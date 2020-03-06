@@ -408,6 +408,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
                     rowObject.product = value.product;
                     rowObject.contractProductId = value.contractProductId;
                 }
+                return;
             });
 
 
@@ -437,6 +438,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
 		                    rowObject.contractProductId = value.contractProductId;
 		                    rowObject.preplanningDetailId = response.payload;
 		                }
+		                return;
 		            });        			
         		}
             }).catch(function(error) {

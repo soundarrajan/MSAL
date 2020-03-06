@@ -348,6 +348,7 @@ angular.module('shiptech.pages').controller('AllRequestsTableController', ['$sco
                 if (ctrl.selectedRequests[key]) {
                     selectedRequestIds.push(key);
                 }
+                return;
             });
             ctrl.buttonsDisabled = true;
             groupOfRequestsModel.groupRequests(selectedRequestIds).then(function(data) {
@@ -376,6 +377,7 @@ angular.module('shiptech.pages').controller('AllRequestsTableController', ['$sco
                             isGrouped = true;
                         }
                     }
+                    return;
                 });
             }
             return noRequestsSelected || isGrouped;

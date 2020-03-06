@@ -2322,6 +2322,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', ['$scope
 					    mappedSpecParamKeys[value.specParameterId] = objectKey;
 				    }
 			    }
+			    return;
 			});        	
 			return mappedSpecParamKeys;
         }

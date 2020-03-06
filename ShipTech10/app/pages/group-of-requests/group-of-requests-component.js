@@ -2211,6 +2211,7 @@ ctrl.setProductData = function(data, loc) {
                 if (ctrl.requestCheckboxes[key]) {
                     selectedRequestIds.push(key);
                 }
+                return;
             });
             ctrl.delinkIds = {
                 selectedRequestIds: selectedRequestIds,
@@ -2240,6 +2241,7 @@ ctrl.setProductData = function(data, loc) {
                 if (ctrl.requestCheckboxes[key]) {
                     selectedRequestIds.push(key);
                 }
+                return;
             });
             return selectedRequestIds.length <= 0;
         };
@@ -2360,6 +2362,7 @@ ctrl.setProductData = function(data, loc) {
 		                if (newSelectedNoQuoteItems[key]) {
 	            	 		newSelectedNoQuoteItems[key] = false;
 		                }
+		                return;
 		            });
 		            setTimeout(function(){
 			            console.log(ctrl.selectedNoQuoteItems);
@@ -3597,6 +3600,7 @@ ctrl.setProductData = function(data, loc) {
                 if (ctrl.requestCheckboxes[key]) {
                     selectedRequestIds.push(key);
                 }
+                return;
             });
             if (ctrl.requests && selectedRequestIds.length == ctrl.requests.length) {
 	        	var delinkableRequests = 0;
@@ -6942,6 +6946,7 @@ ctrl.setProductData = function(data, loc) {
 				    	selectedNoQuotableItems.push(key.split('nq')[1])
 						hasNoQuotableSelected = true; 		
 				    }
+				    return;
 				});        	
         	}
         	// $.each(ctrl.selectedNoQuoteItems, function(nqKey, nqVal){

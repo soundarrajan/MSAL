@@ -3156,6 +3156,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                                     vsc.contract = CLC.jqGrid.Ascensys.gridData[ parseFloat(objectKey.split("row-")[1]) - 1 ].contract;
                                 }
                             }
+                            return;
                         });
                     }
                 });  
@@ -3533,6 +3534,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                                 vsc.contractProductId = value.contractProductId;
                             }
                         }
+                        return;
                     });
                 }
             });
