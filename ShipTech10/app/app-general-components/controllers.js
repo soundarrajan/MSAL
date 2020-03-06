@@ -874,8 +874,8 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 }
               
                 var formatDate = function(cellValue, options, rowObject) {
-                    var tpl = '<span class="formatter">:content</span>';
-                    var element = tpl;
+                    var tpl2 = '<span class="formatter">:content</span>';
+                    var element = tpl2;
                     // console.log($scope.tenantSettings);
                     dateFormat = $scope.tenantSettings.tenantFormats.dateFormat.name;
                     var hasDayOfWeek = false;
@@ -905,9 +905,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     return "";
                 };
                 var contract_planning_checkbox = function(cellValue, options, rowObject) {
-                    var tpl = '<label class="mt-checkbox mt-checkbox-outline" style="padding-left: 5px;">' + '<input type="checkbox" class="contract_planning_checkbox" rowId="' + options.rowId + '" ng-disabled="!CLC.cpCtr[' + options.rowId + ']" ng-model="selectContracts[' + options.rowId + ']"  ng-click="selectContractPlanningRow(' + options.rowId + ",selectContracts[" + options.rowId + '])"/><span></span></label>';
-
-                    return tpl;
+                    return '<label class="mt-checkbox mt-checkbox-outline" style="padding-left: 5px;">' + '<input type="checkbox" class="contract_planning_checkbox" rowId="' + options.rowId + '" ng-disabled="!CLC.cpCtr[' + options.rowId + ']" ng-model="selectContracts[' + options.rowId + ']"  ng-click="selectContractPlanningRow(' + options.rowId + ",selectContracts[" + options.rowId + '])"/><span></span></label>';
                 };
                 var order_list_checkbox = function(cellValue, options, rowObject) {
                     var isVerifiedLine = false;
@@ -921,18 +919,16 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     }
                     if (procurementSettings.order.orderVerificationReq.id == 1) {
                         if (isVerifiedLine == true) {
-                            var tpl = '<label class="mt-checkbox mt-checkbox-outline" style="padding-left: 5px;">' + '<input type="checkbox" class="order_list_checkbox ng-pristine ng-untouched ng-valid ng-empty" rowId="' + options.rowId + '"ng-disabled="true" " ng-model="selectOrders[' + options.rowId + ']"  ng-click="selectOrderListRow(' + options.rowId + ",selectOrders[" + options.rowId + '])"/><span></span></label>';
+                            return '<label class="mt-checkbox mt-checkbox-outline" style="padding-left: 5px;">' + '<input type="checkbox" class="order_list_checkbox ng-pristine ng-untouched ng-valid ng-empty" rowId="' + options.rowId + '"ng-disabled="true" " ng-model="selectOrders[' + options.rowId + ']"  ng-click="selectOrderListRow(' + options.rowId + ",selectOrders[" + options.rowId + '])"/><span></span></label>';
                         } else {
-                         var tpl = '<label class="mt-checkbox mt-checkbox-outline" style="padding-left: 5px;">' + '<input type="checkbox" class="order_list_checkbox" rowId="' + options.rowId + '"" ng-model="selectOrders[' + options.rowId + ']"  ng-click="selectOrderListRow(' + options.rowId + ",selectOrders[" + options.rowId + '])"/><span></span></label>';
+                         return  '<label class="mt-checkbox mt-checkbox-outline" style="padding-left: 5px;">' + '<input type="checkbox" class="order_list_checkbox" rowId="' + options.rowId + '"" ng-model="selectOrders[' + options.rowId + ']"  ng-click="selectOrderListRow(' + options.rowId + ",selectOrders[" + options.rowId + '])"/><span></span></label>';
                         }
-                       return tpl;
                     }
         
                 };
                 var contract_planning_email = function(cellValue, options, rowObject) {
-                    var tpl = '<a class="font-grey-cascade" ng-click="contractPlanningEmail(' + rowObject.id + ')"><i class="glyphicon glyphicon-envelope"></i></a>';
+                    return '<a class="font-grey-cascade" ng-click="contractPlanningEmail(' + rowObject.id + ')"><i class="glyphicon glyphicon-envelope"></i></a>';
 
-                    return tpl;
                 };
                 var contract_planning_min_max_qty = function(cellValue, options, rowObject) {
                     // return rowObject.minQuantity;
@@ -1095,24 +1091,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         currentValue = 2;
                     }
                     tpl = '<select rowId="' + options.rowId + '" ng-change="CLC.changeCPRowModel(agrementType[' + options.rowId + "], " + options.rowId + "," + columnKey + ', false);" ng-init="agrementType[' + options.rowId + '].id = '+currentValue+'; CLC.changeCPRowModel(agrementType[' + options.rowId + "], " + options.rowId + "," + columnKey + ', true);" ng-model="agrementType[' + options.rowId + ']" ng-options="item as item.name for item in CLC.listsCache.AgreementType track by item.id" class="form-control w100 contract_planning_agreementtype">';
-                    // tpl += '<option value="null"></option>';
-                    // $.each($listsCache.AgreementType, function(key, val) {
-                    //     if (rowObject.agreementType) {
-                    //         if (rowObject.agreementType.id == val.id) {
-                    //             selected = true;
-                    //         } else {
-                    //             selected = false;
-                    //         }
-                    //     } else {
-                    //         selected = false;
-                    //     }
-                    //     if (selected == true) {
-                    //         tpl += '<option  selected="true" value="' + val.id + '">' + val.name + "</option>";
-                    //     } else {
-                    //         tpl += '<option  value="' + val.id + '">' + val.name + "</option>";
-                    //     }
-                    // });
-                    tpl += "</select>";
+                        tpl += "</select>";
                     return tpl;
                 };
                 var contract_planning_comments = function(cellValue, options, rowObject) {
@@ -1122,8 +1101,8 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         textVal = rowObject.comment.replace(new RegExp("'","g"), "\\'");
                         textVal = textVal.replace(new RegExp('"',"g"), "\\'");
                     }
-                    var tpl = '<textarea class="contract_planning_comments"  ng-blur="CLC.changeCPRowModel(cpcomment[' + options.rowId + "], " + options.rowId + "," + columnKey + ', false);" ng-model="cpcomment[' + options.rowId + ']" ng-init="cpcomment[' + options.rowId + '] = \''+textVal+'\'" rowId="' + options.rowId + '" cols="30" rows="1" style="width: 100px; max-width: 100px; min-width: 100px; min-height: 30px" >' + textVal + '</textarea>';
-                    return tpl;
+                    return '<textarea class="contract_planning_comments"  ng-blur="CLC.changeCPRowModel(cpcomment[' + options.rowId + "], " + options.rowId + "," + columnKey + ', false);" ng-model="cpcomment[' + options.rowId + ']" ng-init="cpcomment[' + options.rowId + '] = \''+textVal+'\'" rowId="' + options.rowId + '" cols="30" rows="1" style="width: 100px; max-width: 100px; min-width: 100px; min-height: 30px" >' + textVal + '</textarea>';
+
                 };
                 var order_comments = function(cellValue, options, rowObject) {
                     // var tpl = '<span tooltip data-original-title="' + cellValue + '" class="formatter" data-placement="left"> :content </span>';
@@ -1133,15 +1112,14 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     return cellValue;
                 };
                 var formatOnlyDate = function(cellValue, options, rowObject) {
-                    var tpl = '<span class="formatter">:content</span>';
-                    var element = tpl;
-                    var dateFormat = $scope.tenantSettings.tenantFormats.dateFormat.name;
+
+                    var dateFormat2 = $scope.tenantSettings.tenantFormats.dateFormat.name;
                     var hasDayOfWeek = false;
-                    if (dateFormat.startsWith("DDD ")) {
+                    if (dateFormat2.startsWith("DDD ")) {
                         hasDayOfWeek = true;
-                        dateFormat = dateFormat.split("DDD ")[1];
+                        dateFormat2 = dateFormat2.split("DDD ")[1];
                     }                     
-                    formattedDate = $filter("date")(cellValue, dateFormat.split(" ")[0], "UTC");
+                    formattedDate = $filter("date")(cellValue, dateFormat2.split(" ")[0], "UTC");
                     if (formattedDate) {
                         if (formattedDate.indexOf("0001") != -1) {
                             formattedDate = "";
@@ -1159,19 +1137,16 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     return "";
                 };               
                 var formatDateUtc = function(cellValue, options, rowObject) {
-                    var tpl = '<span class="formatter">:content</span>';
-                    var element = tpl;
-                    // console.log($scope.tenantSettings);
-                    var dateFormat = $scope.tenantSettings.tenantFormats.dateFormat.name;
+                    var dateFormat3 = $scope.tenantSettings.tenantFormats.dateFormat.name;
                     var hasDayOfWeek = false;
-                    if (dateFormat.startsWith("DDD ")) {
+                    if (dateFormat3.startsWith("DDD ")) {
                         hasDayOfWeek = true;
-                        dateFormat = dateFormat.split("DDD ")[1];
+                        dateFormat3 = dateFormat3.split("DDD ")[1];
                     }                    
-                    dateFormat = dateFormat.replace(/D/g, "d").replace(/Y/g, "y");
-                    formattedDate = $filter("date")(cellValue, dateFormat, "UTC");
+                    dateFormat3 = dateFormat3.replace(/D/g, "d").replace(/Y/g, "y");
+                    formattedDate = $filter("date")(cellValue, dateFormat3, "UTC");
                     if (options.colModel.label == "Due Date" || options.colModel.label == "Working Due Date" || options.colModel.label == "Seller Due Date" || options.colModel.label == "Order Date") {
-                        formattedDate = $filter("date")(cellValue, dateFormat.split(" ")[0], "UTC");
+                        formattedDate = $filter("date")(cellValue, dateFormat3.split(" ")[0], "UTC");
                     } else {
                         if (formattedDate) {
                             if (formattedDate.split(" ")[1] == "00:00") {
@@ -1197,43 +1172,42 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     return "";
                 };
                 var table_modal = function(cellValue, options, rowObject) {
-                    var tpl = '<span class="jqgrid-ng-action copy centeredIcon" ng-click="CLC.openNotes(' + rowObject.id + ',\'table_modal\')" title="Copy">Copy</span>';
-                    return tpl;
+                    return '<span class="jqgrid-ng-action copy centeredIcon" ng-click="CLC.openNotes(' + rowObject.id + ',\'table_modal\')" title="Copy">Copy</span>';
+
                 };
                 var documents_verified_checkbox = function(cellValue, options, rowObject) {
                     console.log(cellValue, options);
                     console.log(rowObject);
                     $scope["doc_verify_"+rowObject.id] = cellValue;
-                    var tpl = '<span class=""><label class="mt-custom-checkbox" for="doc_verify_' + rowObject.id + '"><input type="checkbox" ng-model="doc_verify_' + rowObject.id + '" name="documents_verified" id="doc_verify_' + rowObject.id + '" ng-change="CLC.verifyDocument(' + rowObject.id + ',' + options.rowId + ')"/><span></span></label></span>';
-                    return tpl;
+                    return '<span class=""><label class="mt-custom-checkbox" for="doc_verify_' + rowObject.id + '"><input type="checkbox" ng-model="doc_verify_' + rowObject.id + '" name="documents_verified" id="doc_verify_' + rowObject.id + '" ng-change="CLC.verifyDocument(' + rowObject.id + ',' + options.rowId + ')"/><span></span></label></span>';
+
                 };
                 var documents_notes_modal = function(cellValue, options, rowObject) {
                     // rowObject.notes = "asdasdasdasdasd";
-                    var tpl = '<span class="jqgrid-ng-action centeredIcon" notes-row-id="' + rowObject.id + '" notes-row-value="' + rowObject.notes + '" ng-click="CLC.openNotes(' + rowObject.id + ', \'documents_notes_modal\')" title="Open"><i class="fa fa-comments" aria-hidden="true" style="font-size:14px"></i></span>';
-                    return tpl;
+                    return  '<span class="jqgrid-ng-action centeredIcon" notes-row-id="' + rowObject.id + '" notes-row-value="' + rowObject.notes + '" ng-click="CLC.openNotes(' + rowObject.id + ', \'documents_notes_modal\')" title="Open"><i class="fa fa-comments" aria-hidden="true" style="font-size:14px"></i></span>';
+
                 };
                 var editLocationLink = function(cellValue, options, rowObject) {
-                    var tpl = '<a href="/#/masters/location/edit/' + cellValue + '"><span class="formatter edit_link">' + cellValue + "</span></a>";
-                    return tpl;
+                    return '<a href="/#/masters/location/edit/' + cellValue + '"><span class="formatter edit_link">' + cellValue + "</span></a>";
+
                 };
 
                 var schedule_type = function(cellValue, options, rowObject) {
-                    var tpl = '<span class="centeredIcon ' + cellValue + '-scheduleIcon"><i class="fa fa-clock-o" aria-hidden="true"></i></span>';
-                    return tpl;
+                    return  '<span class="centeredIcon ' + cellValue + '-scheduleIcon"><i class="fa fa-clock-o" aria-hidden="true"></i></span>';
+
                 };
                 var time_only = function(cellValue, options, rowObject) {
                     var time = $filter("date")(cellValue, "shortTime");
-                    var tpl = "<span>" + time + "</span>";
-                    return tpl;
+                    return  "<span>" + time + "</span>";
+
                 };
                 var date_only = function(cellValue, options, rowObject) {
-                    var date = $filter("date")(cellValue, "shortDate");
-                    var tpl = "<span>" + date + "</span>";
-                    return tpl;
+                    return  "<span>" + $filter("date")(cellValue, "shortDate") + "</span>";
+
                 };
                 var delete_upload_log = function(cellValue, options, rowObject) {
-                    var tpl = '<span class="jqgrid-ng-action delete centeredIcon" ng-click="CLC.deleteUploadLog(' + rowObject.id + ')" title="Delete"></span>';
-                    return tpl;
+                    return  '<span class="jqgrid-ng-action delete centeredIcon" ng-click="CLC.deleteUploadLog(' + rowObject.id + ')" title="Delete"></span>';
+
                 };
                 //masters_isdeleted Active/Inactive
                 var masters_isdeleted = function(cellValue, options, rowObject) {

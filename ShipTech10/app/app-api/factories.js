@@ -4284,33 +4284,33 @@ APP_API.factory("$Api_Service", [
                                 	$rootScope.screenLayoutData = response.data;
                                 }
 
-                                var jsonDATA = null;
+                                var jsonDATA2 = null;
                                 if (param.generic) {
                                     // jsonDATA = response.data.genericLayouts;
                                     //1. get the generic layout you need, genericLayout is an array w. multiple layouts
                                     // var genericLayouts = angular.copy(response.data.genericLayouts);
-                                    jsonDATA = JSON.parse(parse("getGenericLayout",{ name: param.generic.layout,
+                                    jsonDATA2 = JSON.parse(parse("getGenericLayout",{ name: param.generic.layout,
                                                                                      list: response.data.genericLayouts }));
 
                                     //2. cache the layout for later user
-                                    $Generic_Layout.cacheLayout(param.generic.layout, jsonDATA);
+                                    $Generic_Layout.cacheLayout(param.generic.layout, jsonDATA2);
                                 }else{
-                                    jsonDATA = JSON.parse(response.data.layout);
+                                    jsonDATA2 = JSON.parse(response.data.layout);
                                 }
                                 
                                 
                                 if ((api_map[param.app][param.screen]["layout"]["get"]["path"]) || 
                                    (param.clc && api_map[param.app][param.screen]["layout"]["get"]["path_clc"])){
-                                    var paths = api_map[param.app][param.screen]["layout"]["get"]["path"];
-                                    if(!paths) paths = api_map[param.app][param.screen]["layout"]["get"]["path_clc"];
-                                    var lastKeyIndex = paths.length - 1;
-                                    for (var i = 0; i < lastKeyIndex; ++i) {
-                                        key = paths[i];
-                                        next_key = paths[i + 1];
-                                        jsonDATA = jsonDATA[key];
+                                    var paths2 = api_map[param.app][param.screen]["layout"]["get"]["path"];
+                                    if(!paths2) paths2 = api_map[param.app][param.screen]["layout"]["get"]["path_clc"];
+                                    var lastKeyIndex2 = paths2.length - 1;
+                                    for (var i1 = 0; i1 < lastKeyIndex2; ++i1) {
+                                        key = paths2[i1];
+                                        next_key = paths2[i1 + 1];
+                                        jsonDATA2 = jsonDATA2[key];
                                     }
-                                    jsonDATA = {
-                                        clc: jsonDATA[paths[lastKeyIndex]]
+                                    jsonDATA2 = {
+                                        clc: jsonDATA2[paths2[lastKeyIndex2]]
                                     };
                                 }
                       
@@ -4319,18 +4319,18 @@ APP_API.factory("$Api_Service", [
                                         param.clc_id = param.clc_id.split("_");
                                         param.clc_id = param.clc_id[0] + "_" + param.clc_id[1];
                                     }
-                                    if (typeof jsonDATA.clc[param.clc_id] != "undefined") {
-                                        var singleCLC = jsonDATA.clc[param.clc_id];
-                                        jsonDATA.clc = singleCLC;
+                                    if (typeof jsonDATA2.clc[param.clc_id] != "undefined") {
+                                        var singleCLC = jsonDATA2.clc[param.clc_id];
+                                        jsonDATA2.clc = singleCLC;
                                     }
                                 }
-                                var result = parse("formatters", jsonDATA);
+                                var result2 = parse("formatters", jsonDATA2);
                                 console.log("$APIService screen.get got response:");
-                                console.log(result);
+                                console.log(result2);
                                 if (param.clc_id == "entity_documents") {
-	                         		$rootScope.$broadcast("documentsScreenLayout", result);
+	                         		$rootScope.$broadcast("documentsScreenLayout", result2);
                                 }
-                                callback(result);
+                                callback(result2);
                             } else {
                                 callback(false);
                             }
@@ -5670,14 +5670,12 @@ APP_API.factory("$Api_Service", [
                                     checks[entry.module.name] = screens;
                                 });
                             }
-                            var result = {
+                            callback({
                                 roles: res1,
                                 moduleScreenActions: res2,
                                 deepmerge: deepmerge(modules, checks),
                                 isDeleted: res1.isDeleted
-                            };
-                            // callback(res1);
-                            callback(result);
+                            });
                         });
                         return;
                     }
@@ -5838,10 +5836,10 @@ APP_API.factory("$Api_Service", [
                             },
                             function errorCallback(response) {
                                 console.log("HTTP ERROR");
-                                var res = new Object();
-                                res.message = "HTTP Error!";
-                                if (_debug) res.message = response.data.message;
-                                callback(res);
+                                var res3 = new Object();
+                                res3.message = "HTTP Error!";
+                                if (_debug) res3.message = response.data.message;
+                                callback(res3);
                                 return;
                             }
                         );
@@ -5852,25 +5850,25 @@ APP_API.factory("$Api_Service", [
                             Payload: data
                         };
                         var url = api_map[param.app][param.screen]["entity"]["update"]["endpoint"];
-                        var res = new Object();
-                        res.status = true;
-                        res.message = "Success!";
+                        var res4 = new Object();
+                        res4.status = true;
+                        res4.message = "Success!";
                         $http.post(url, apiJSON).then(
                             function succcessCallback(response) {
                                 if (response.status == 200) {
-                                    callback(res);
+                                    callback(res4);
                                 } else {
                                     console.log("HTTP ERROR while updating Seller Rating");
-                                    res.status = false;
-                                    res.message = "Failed!";
-                                    callback(res);
+                                    res4.status = false;
+                                    res4.message = "Failed!";
+                                    callback(res4);
                                 }
                             },
                             function failCallback(response) {
                                 console.log("HTTP ERROR while retrieving Seller Rating");
-                                res.status = false;
-                                res.message = "Failed!";
-                                callback(res);
+                                res4.status = false;
+                                res4.message = "Failed!";
+                                callback(res4);
                             }
                         );
                         return;

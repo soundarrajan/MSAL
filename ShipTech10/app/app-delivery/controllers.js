@@ -266,7 +266,7 @@ APP_DELIVERY.controller('Controller_Delivery', ['$scope', '$rootScope', '$Api_Se
     }
     vm.setProductsPhysicalSupplier = function() {
         $.each($scope.formValues.deliveryProducts, function(_, deliveryProd) {
-            $.each($scope.formValues.temp.deliverysummary.products, function(_, summaryProd) {
+            $.each($scope.formValues.temp.deliverysummary.products, function(key, summaryProd) {
                 if (deliveryProd.orderProductId == summaryProd.id) {
                 	if (!deliveryProd.physicalSupplier && !$scope.formValues.id) {
 	                    deliveryProd.physicalSupplier = angular.copy(summaryProd.physicalSupplier);
@@ -277,7 +277,7 @@ APP_DELIVERY.controller('Controller_Delivery', ['$scope', '$rootScope', '$Api_Se
     }
     vm.setQtyUoms = function() {
         $.each($scope.formValues.deliveryProducts, function(_, deliveryProd) {
-            $.each($scope.formValues.temp.deliverysummary.products, function(_, summaryProd) {
+            $.each($scope.formValues.temp.deliverysummary.products, function(key, summaryProd) {
                 if (summaryProd.id == deliveryProd.orderProductId) {
                     if (!deliveryProd.surveyorQuantityUom) deliveryProd.surveyorQuantityUom = summaryProd.orderedQuantity.uom;
                     if (!deliveryProd.vesselQuantityUom) deliveryProd.vesselQuantityUom = summaryProd.orderedQuantity.uom;
@@ -291,7 +291,7 @@ APP_DELIVERY.controller('Controller_Delivery', ['$scope', '$rootScope', '$Api_Se
     }
     vm.setSpecParams = function() {
         $.each($scope.formValues.deliveryProducts, function(_, deliveryProd) {
-            $.each($scope.formValues.temp.deliverysummary.products, function(_, summaryProd) {
+            $.each($scope.formValues.temp.deliverysummary.products, function(key, summaryProd) {
                 if (summaryProd.id == deliveryProd.orderProductId) {
                     deliveryProd.specGroup = angular.copy(summaryProd.specGroup);
             
@@ -1076,7 +1076,7 @@ APP_DELIVERY.controller('Controller_Delivery', ['$scope', '$rootScope', '$Api_Se
             $(selectedParamRadioId)[0].checked = true;
             $.each($scope.CM.availableClaimTypes, function(_, claimVal) {
                 if (claimVal.id != selectedClaimId) {
-                    $.each(claimVal.specParams, function(_, paramVal) {
+                    $.each(claimVal.specParams, function(key, paramVal) {
                         paramVal.disabled = 'true';
                     });
                 }
@@ -1091,7 +1091,7 @@ APP_DELIVERY.controller('Controller_Delivery', ['$scope', '$rootScope', '$Api_Se
                     //remove restrictions if unchecked all params
                     if ($rootScope.raiseClaimInfo.currentSpecParamIds.length == 0) {
                         $.each($scope.CM.availableClaimTypes, function(_, claimVal) {
-                            $.each(claimVal.specParams, function(_, paramVal) {
+                            $.each(claimVal.specParams, function(key, paramVal) {
                                 paramVal.disabled = 'false';
                             });
                         });
@@ -1114,14 +1114,14 @@ APP_DELIVERY.controller('Controller_Delivery', ['$scope', '$rootScope', '$Api_Se
         $.each($scope.CM.availableClaimTypes, function(_, claimVal) {
             if (claimVal.id != $rootScope.raiseClaimInfo.currentClaimId) {
                 //uncheck checkboxes that do not fit & disable them
-                $.each(claimVal.specParams, function(_, paramVal) {
+                $.each(claimVal.specParams, function(key, paramVal) {
                     id = "#claim_info_checkbox_" + paramVal.specParameter.id;
                     $(id)[0].checked = false;
                     paramVal.disabled = 'true';
                 });
             } else {
                 //check current claim boxes & make available
-                $.each(claimVal.specParams, function(_, paramVal) {
+                $.each(claimVal.specParams, function(key, paramVal) {
                     paramVal.disabled = 'false';
                     id = "#claim_info_checkbox_" + paramVal.specParameter.id;
                     $(id)[0].checked = true;
@@ -1564,11 +1564,11 @@ APP_DELIVERY.controller('Controller_Delivery', ['$scope', '$rootScope', '$Api_Se
                 if (response.status == true) {
                     toastr.success("Delivery deleted!");
                     console.log($scope.relatedDeliveries);
-                    var path = "/delivery/delivery/edit/" + redirect;
-                    if ($location.$$path == path) {
+                    var path2 = "/delivery/delivery/edit/" + redirect;
+                    if ($location.$$path == path2) {
                     	$state.reload();
                     } else {
-	                    $location.path(path);
+	                    $location.path(path2);
                     }
                 } else {
                     toastr.error(response.message);
@@ -1588,8 +1588,8 @@ APP_DELIVERY.controller('Controller_Delivery', ['$scope', '$rootScope', '$Api_Se
         }
         if (vm.entity_id) {
             var found = false;
-            $.each($scope.relatedDeliveries, function(key, val) {
-                if (val.deliveryId == vm.entity_id) {
+            $.each($scope.relatedDeliveries, function(key, val2) {
+                if (val2.deliveryId == vm.entity_id) {
                     $scope.CM.selectedDelivery = vm.entity_id;
                     found = true;
                 }
@@ -1778,7 +1778,7 @@ APP_DELIVERY.controller('Controller_Delivery', ['$scope', '$rootScope', '$Api_Se
             $scope.formValues.splittedDeliveryId = data.splitDelivery.splittedDeliveryId;
             //set confirmed amount
             $.each($scope.formValues.deliveryProducts, function(_, deliveryProd) {
-                $.each(data.splitDelivery.items, function(_, splitProd) {
+                $.each(data.splitDelivery.items, function(key, splitProd) {
                     if (splitProd.orderProductId == deliveryProd.orderProductId) {
                         deliveryProd.confirmedQuantityAmount = splitProd.remainingConfirmedAmount;
                         deliveryProd.confirmedQuantityUom = splitProd.remainingConfirmedUom;
@@ -1787,7 +1787,7 @@ APP_DELIVERY.controller('Controller_Delivery', ['$scope', '$rootScope', '$Api_Se
             })
             //set quality & qty params
             $.each(data.temp.deliverysummary.products, function(_, summaryProd) {
-                $.each($scope.formValues.deliveryProducts, function(_, deliveryProd) {
+                $.each($scope.formValues.deliveryProducts, function(key, deliveryProd) {
                     if (summaryProd.id == deliveryProd.orderProductId) {
                         
                         deliveryProd.orderProductId = summaryProd.id;
@@ -1827,7 +1827,7 @@ APP_DELIVERY.controller('Controller_Delivery', ['$scope', '$rootScope', '$Api_Se
             // remove products with 0 qty
             var newProductsList = [];
             $.each($scope.formValues.splitDelivery.items, function(_,split_val){
-                $.each($scope.formValues.deliveryProducts, function(_, prod_val){
+                $.each($scope.formValues.deliveryProducts, function(key, prod_val){
                         if(split_val.deliveryProductId == prod_val.id){
                             if(split_val.remainingConfirmedAmount != 0){
                                 newProductsList.push(prod_val);

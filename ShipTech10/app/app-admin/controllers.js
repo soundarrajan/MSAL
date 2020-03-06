@@ -365,7 +365,7 @@ APP_ADMIN.controller('Controller_Admin', ['$rootScope', '$scope', '$Api_Service'
             if (typeof($scope.formValues.temp[rule.tempMapping]) == 'undefined') {
                 $scope.formValues.temp[rule.tempMapping] = {};
             }
-            $.each($scope.formValues.delivery[rule.name], function(_, value) {
+            $.each($scope.formValues.delivery[rule.name], function(key, value) {
                 $scope.formValues.temp[rule.tempMapping][rule.valueName + value.ord] = value.precedenceRule;
             })
         })
@@ -472,11 +472,11 @@ APP_ADMIN.controller('Controller_Admin', ['$rootScope', '$scope', '$Api_Service'
             dataOrd = $(this).attr("data-ord");
             entityItem = $(this);
             entityItem.children("option").removeAttr("disabled");
-            for (var k1 in $scope.formValues.temp[ruleType + 'Precedence']) {
+            for (var k2 in $scope.formValues.temp[ruleType + 'Precedence']) {
                 objIdx = k1.split("_")[1];
                 if (objIdx < dataOrd) {
-                    if($scope.formValues.temp[ruleType + 'Precedence'][k1]){
-                        alreadySelected = $scope.formValues.temp[ruleType + 'Precedence'][k1].id;
+                    if($scope.formValues.temp[ruleType + 'Precedence'][k2]){
+                        alreadySelected = $scope.formValues.temp[ruleType + 'Precedence'][k2].id;
                         selectOptions = entityItem.children("option");
                         $.each(selectOptions, function(k2, v2) {
                             if ($(v2).attr("value") == alreadySelected) {
@@ -549,8 +549,8 @@ APP_ADMIN.controller('Controller_Admin', ['$rootScope', '$scope', '$Api_Service'
         if (file) {
             formData.append('file', file);
         } else if ($('#FTPFileUpload')[0].files) {
-            $.each($('#FTPFileUpload')[0].files, function(i, file) {
-                formData.append('file', file);
+            $.each($('#FTPFileUpload')[0].files, function(i, file2) {
+                formData.append('file', file2);
             });
         }
         Factory_Master.uploadSchedulerConfiguration(formData, function(callback) {
@@ -571,8 +571,8 @@ APP_ADMIN.controller('Controller_Admin', ['$rootScope', '$scope', '$Api_Service'
         if (file) {
             formData.append('file', file);
         } else if ($('#FTPFileUpload')[0].files) {
-            $.each($('#FTPFileUpload')[0].files, function(i, file) {
-                formData.append('file', file);
+            $.each($('#FTPFileUpload')[0].files, function(i, file2) {
+                formData.append('file', file2);
             });
         }
         Factory_Master.uploadFTPFile(formData, function(callback) {

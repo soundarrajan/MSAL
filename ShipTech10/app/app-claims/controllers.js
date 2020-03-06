@@ -400,14 +400,14 @@ APP_CLAIMS.controller("Controller_Claims", [
                         if (!$scope.formValues.claimDetails.estimatedSettlementAmountCurrency) {
                             $scope.formValues.claimDetails.estimatedSettlementAmountCurrency = $scope.tenantCurrency;
                         }
-                        var field = new Object();
-                        field = vm.formFieldSearch($scope.formFields, "orderDetails.deliveryNo");
-                        if (field) vm.getOptions(field);
-                        field = vm.formFieldSearch($scope.formFields, "orderDetails.labResult");
-                        if (field) vm.getOptions(field);
-                        field = vm.formFieldSearch($scope.formFields, "orderDetails.product");
-                        if (field) vm.getOptions(field);
-                        delete field;
+                        var field2 = new Object();
+                        field2 = vm.formFieldSearch($scope.formFields, "orderDetails.deliveryNo");
+                        if (field2) vm.getOptions(field2);
+                        field2 = vm.formFieldSearch($scope.formFields, "orderDetails.labResult");
+                        if (field2) vm.getOptions(field2);
+                        field2 = vm.formFieldSearch($scope.formFields, "orderDetails.product");
+                        if (field2) vm.getOptions(field2);
+                        delete field2;
                     }
                 });
             }
@@ -744,8 +744,8 @@ APP_CLAIMS.controller("Controller_Claims", [
                 };
             }
             specParameters = [];
-            $.each($rootScope.formValues.qualitySubtypes, function(key, value) {
-                specParameters.push(value.specParameter.id);
+            $.each($rootScope.formValues.qualitySubtypes, function(key, value2) {
+                specParameters.push(value2.specParameter.id);
             });
             specParameters = specParameters.toString();
             if (value.name == "ClaimQualityEmail") {
