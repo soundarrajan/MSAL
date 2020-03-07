@@ -1071,7 +1071,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
                         if (entry.ValueFrom == null) return;
                         var temp = 0;
                         try {
-                            temp = eval('$scope.formValues.' + entry.ValueFrom);
+                            temp = $scope.formValues[entry.ValueFrom];
                         } catch (error) {}
                         entry.Value = temp;
                     });

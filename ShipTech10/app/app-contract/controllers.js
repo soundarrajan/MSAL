@@ -283,7 +283,7 @@ APP_CONTRACT.controller('Controller_Contract', ['$scope','$rootScope', '$Api_Ser
                     if (entry.ValueFrom == null) return;
                     var temp = 0;
                     try {
-                        temp = eval('$scope.formValues.' + entry.ValueFrom);
+                        temp = $scope.formValues[entry.ValueFrom];
                     } catch (error) {}
                     entry.Value = temp;
                 });
@@ -586,7 +586,7 @@ APP_CONTRACT.controller('Controller_Contract', ['$scope','$rootScope', '$Api_Ser
             $scope.$watch("formValues", function() {
                 if (!angular.equals($scope.formValues, {})) {
                     try {
-                        $scope.predefinedVal[name] = eval('$scope.' + val);
+                        $scope.predefinedVal[name] = $scope[val];
                     } catch (e) {
                     }
                 }

@@ -1608,23 +1608,22 @@ window.increment = 0;
     ]);
     APP_GENERAL_COMPONENTS.directive("dynamicPattern", [
         "$compile",
-
         function($compile) {
             return {
                 require: 're2',
-                link: function(scope, element, attrs, re2) {
+                link: function(scope, element, attrs) {
                     // scope.$watch(attrs.dynamicPattern, function(dynamicPattern) {
                     if (!attrs.dynamicPattern) return;
                     pattern = "";
                     if (attrs.dynamicPattern == "decimalNumber" || attrs.dynamicPattern == "Number") {
-                        pattern = re2(/^[-,+]*\d{1,6}(,\d{3})*(\.\d*)?$/);
+                        pattern = /^[-,+]*\d{1,6}(,\d{3})*(\.\d*)?$/;
                     } else if (attrs.dynamicPattern == "longNumber") {
-                        pattern = re2(/^[-,+]*\d{1,15}(,\d{3})*(\.\d*)?$/);
+                        pattern = /^[-,+]*\d{1,15}(,\d{3})*(\.\d*)?$/;
                     } else if (attrs.dynamicPattern == "website") {
-                        pattern = (/^((https?|ftp):\/\/)?([a-z]+[.])?[a-z0-9-]+([.][a-z]{1,20}){1,20}(\/.*[?].*)?[.]?$/);
+                        pattern = /^((https?|ftp):\/\/)?([a-z]+[.])?[a-z0-9-]+([.][a-z]{1,20}){1,20}(\/.*[?].*)?[.]?$/;
                     } else if (attrs.dynamicPattern == "email") {
                         // pattern = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-][.]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-                        pattern = re2(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+                        pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                     } else {
                         element.removeAttr("ng-pattern");
                     }

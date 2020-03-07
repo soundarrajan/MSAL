@@ -272,7 +272,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
 
 
             // console.log(eval('$scope.doc_verify_' + documentId));
-            $scope['doc_verify_'+ documentId] = eval('$scope.doc_verify_' + documentId);
+            $scope['doc_verify_' + documentId] = !!$scope['doc_verify_' + documentId];
             var payload = angular.copy(vm.lastCallTableData.tableData.rows[rowIdx]);
             if(typeof $scope.documentNotesTemp != 'undefined'){
             	if ($scope.documentNotesTemp[documentId]) {
@@ -281,7 +281,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
 	                }
             	}
             }
-            payload.isVerified = eval('$scope.doc_verify_' + documentId);
+            payload.isVerified = !!$scope['doc_verify_' + documentId];
             payload.verifiedBy = null;
             payload.verifiedOn = null;
 

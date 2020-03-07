@@ -558,7 +558,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
                             if (entry.ValueFrom == null) return;
                             var temp = 0;
                             try {
-                                temp = eval("$scope.formValues." + entry.ValueFrom);
+                                temp = $scope.formValues[entry.ValueFrom];
                             } catch (error) {}
                             entry.Value = temp;
                         });
@@ -1075,13 +1075,13 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
             return $scope;
         };
         $scope.addData = function(obj) {
-            obj = eval("$scope." + obj);
+            obj = $scope[obj];
             obj.push({
                 id: 0
             });
         };
         $scope.remData = function(obj, row, idx) {
-            obj = eval("$scope." + obj);
+            obj = $scope[obj];
             index = obj.indexOf(row);
             length = 0;
             $.each(Object.values(obj), function(key, val) {
@@ -1268,7 +1268,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
             // Check if modal triggered from datatable
             if (!formvalue) {
                 if (vm.app_id == "invoices" && element.name != "Physical Supplier") {
-                    check = eval("$scope." + element.source);
+                    check = $scope[element.source];
                     if (Array.isArray(check)) {
                         $scope.target_element = element.source + "." + check.length;
                         element.source = element.source + "." + check.length;
@@ -2138,7 +2138,7 @@ APP_INVOICE.controller('Controller_Invoice', ['API', '$scope', '$rootScope', 'Fa
                         if (entry.ValueFrom == null) return;
                         var temp = 0;
                         try {
-                            temp = eval('$scope.formValues.' + entry.ValueFrom);
+                            temp = $scope.formValues[entry.ValueFrom];
                         } catch (error) {}
                         entry.Value = temp;
                     });

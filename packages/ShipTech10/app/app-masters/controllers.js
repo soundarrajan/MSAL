@@ -1946,7 +1946,7 @@
                     param = {
                         app: vm.app_id,
                         screen: vm.screen_id,
-                        MarketInstrument: eval("$scope.formValues." + id + ".id")
+                        MarketInstrument: ($scope.formValues[id])['id']
                     };
                     Factory_Master.get_custom_dropdown(param, function(callback) {
                         if (callback) {
@@ -2052,7 +2052,7 @@
                             if (entry.ValueFrom == null) return;
                             var temp = 0;
                             try {
-                                temp = eval("$scope.formValues." + entry.ValueFrom);
+                                temp = $scope.formValues[entry.ValueFrom];
                             } catch (error) {}
                             entry.Value = temp;
                         });
@@ -3177,7 +3177,7 @@
             }
         };
         $scope.addData = function(obj) {
-            obj = eval("$scope." + obj);
+            obj = $scope[obj];
             obj.push({
                 id: 0
             });
@@ -3198,7 +3198,7 @@
             }
         };
         $scope.remData = function(obj, row, idx) {
-            obj = eval("$scope." + obj);
+            obj = $scope[obj];
             index = obj.indexOf(row);
             length = 0;
             $.each(Object.values(obj), function(key, val) {
@@ -3794,7 +3794,7 @@
             // Check if modal triggered from datatable
             if (!formvalue) {
                 if (vm.app_id == "invoices" && element.name != "Physical Supplier") {
-                    check = eval("$scope." + element.source);
+                    check = $scope[element.source];
                     if (Array.isArray(check)) {
                         $scope.target_element = element.source + "." + check.length;
                         element.source = element.source + "." + check.length;
@@ -4339,7 +4339,7 @@
                 vm.delayaddModalActions();
             });
         $scope.addEmailAddressInPreview = function(model, value) {
-            currentValues = eval("$rootScope." + model);
+            currentValues = $rootScope[model];
             isDuplicate = false;
             $.each(currentValues, function(key, currentVal) {
                 if (currentVal.name == value.name && currentVal.idEmailAddress == value.idEmailAddress) {

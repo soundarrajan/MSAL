@@ -129,7 +129,7 @@ APP_CLAIMS.controller("Controller_Claims", [
                         if (entry.ValueFrom == null) return;
                         var temp = 0;
                         try {
-                            temp = eval("$scope.formValues." + entry.ValueFrom);
+                            temp = $scope.formValues[entry.ValueFrom];
                         } catch (error) {}
                         entry.Value = temp;
                     });
