@@ -199,7 +199,6 @@ APP_CONTRACT.controller('Controller_Contract', ['$scope','$rootScope', '$Api_Ser
 
 	$scope.triggerChangeFieldsAppSpecific = function(name, id) {
         if (name == 'Seller') {
-            var field = new Object;
             vm.getOptions({
                 "Name": "primaryContact",
                 "Type": "dropdown",

@@ -400,7 +400,7 @@ APP_CLAIMS.controller("Controller_Claims", [
                         if (!$scope.formValues.claimDetails.estimatedSettlementAmountCurrency) {
                             $scope.formValues.claimDetails.estimatedSettlementAmountCurrency = $scope.tenantCurrency;
                         }
-                        var field2 = new Object();
+                        var field2;
                         field2 = vm.formFieldSearch($scope.formFields, "orderDetails.deliveryNo");
                         if (field2) vm.getOptions(field2);
                         field2 = vm.formFieldSearch($scope.formFields, "orderDetails.labResult");
@@ -418,7 +418,7 @@ APP_CLAIMS.controller("Controller_Claims", [
                     }
                     var id = $scope.formValues.orderDetails.deliveryNo.id;
                     angular.merge($scope.formValues, $scope.formValues.orderDetails.deliveryNo.payload);
-                    var field = new Object();
+                    var field;
                     field = vm.formFieldSearch($scope.formFields, "orderDetails.labResult");
                     if (field) vm.getOptions(field);
                     field = vm.formFieldSearch($scope.formFields, "orderDetails.product");
@@ -452,7 +452,7 @@ APP_CLAIMS.controller("Controller_Claims", [
                     }
                     var id = $scope.formValues.orderDetails.labResult.id;
                     angular.merge($scope.formValues, $scope.formValues.orderDetails.labResult.payload);
-                    var field = new Object();
+                    var field;
                     field = vm.formFieldSearch($scope.formFields, "orderDetails.product");
                     if (field) vm.getOptions(field);
                     delete $scope.formValues.orderDetails.labResult.payload;

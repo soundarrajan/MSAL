@@ -546,7 +546,6 @@ APP_DELIVERY.controller('Controller_Delivery', ['$scope', '$rootScope', '$Api_Se
     /*delivery quantity variance and status calculations*/
     vm.setBuyerSellerQuantityAndUom = function(qtyToChange) {
         if (qtyToChange == 'seller') {
-            var rule = $scope.formValues.temp.sellerPrecedenceRule;
             var sellerQty = $scope.formValues.temp.sellerPrecedenceRule.name;
             if (sellerQty == "Surveyor") {
                 $.each($scope.formValues.deliveryProducts, function(key, val) {
@@ -580,7 +579,6 @@ APP_DELIVERY.controller('Controller_Delivery', ['$scope', '$rootScope', '$Api_Se
             }
         }
         if (qtyToChange == 'buyer') {
-            var rule = $scope.formValues.temp.buyerPrecedenceRule;
             var buyerQty = $scope.formValues.temp.buyerPrecedenceRule.name;
             if (buyerQty == "Surveyor") {
                 $.each($scope.formValues.deliveryProducts, function(key, val) {
@@ -851,9 +849,6 @@ APP_DELIVERY.controller('Controller_Delivery', ['$scope', '$rootScope', '$Api_Se
         })
     }
     $scope.viewLabs = function() {
-        var data = {
-            "DeliveryId": vm.entity_id,
-        }
         $rootScope.deliveryIDlabs = vm.entity_id;
         $location.path('labs/labresult');
     }

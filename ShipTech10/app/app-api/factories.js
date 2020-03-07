@@ -4624,8 +4624,6 @@ APP_API.factory("$Api_Service", [
                         var apiJSON = {
                             Payload: param.data
                         };
-                        var entity = $http.post(API.BASE_URL_DATA_LABS + "/api/labs/update", apiJSON1);
-                        var testResults = $http.post(API.BASE_URL_DATA_LABS + "/api/labs/tests/bulksave", apiJSON2);
                         $http.post(API.BASE_URL_DATA_LABS + "/api/labs/tests/bulksave", apiJSON).then(function success(response) {
                             if (response.status == 200) {
                                 var res = new Object();
@@ -5620,9 +5618,7 @@ APP_API.factory("$Api_Service", [
                             var modules = {};
                             if(typeof(res2) != 'undefined'){
                                 res2.forEach(function(entry) {
-                                    var name = entry.name;
                                     var screens = {};
-                                    // if (entry.screens.length > 0) {
                                     entry.screens.forEach(function(entry2) {
                                         var screenActions = {
                                             screen: {
@@ -5714,7 +5710,7 @@ APP_API.factory("$Api_Service", [
                     $http.post(url, data).then(
                         function successCallback(response) {
                             if (response.data) {
-                                var res = new Object();
+                                var res;
                                 //Customizari...poate le mutam altundeva?
                                 if (param.app == "admin" && param.screen == "role") res = response.data;
                                 else res = response.data.payload;
@@ -6209,7 +6205,6 @@ APP_API.factory("$Api_Service", [
                             payload.columns.push(obj);
                         }
                     });
-                    var res = new Object();
 
                     function downloadURI(uri, name) {
                         var link = document.createElement("a");
@@ -6265,7 +6260,7 @@ APP_API.factory("$Api_Service", [
                         // console.log(data.headers());
                         // console.log(filename);
                         filename = data.headers("filename");
-                        var fileOfBlob = new File([data.data], filename);
+                        new File([data.data], filename);
                         var objectUrl = URL.createObjectURL(blob);
                         // Create link.
                         a = document.createElement("a");
@@ -6752,7 +6747,7 @@ APP_API.factory("$Api_Service", [
                     }
                     if (param.app == "alerts" && param.screen == "alerts") {
                         console.log(param.field.masterSource);
-                        var apiJSON = {
+                        apiJSON = {
                             Payload: param.unique_id
                         };
                         var url = api_map["alerts"]["alerts"]["entity"]["get"]["endpointDrop"] + param.field.masterSource;
@@ -7363,7 +7358,7 @@ APP_API.factory("$Api_Service", [
                     //Custom implementations
                     if (param.app == "alerts" && param.screen == "alerts") {
                         console.log(param.field.masterSource);
-                        var apiJSON = {
+                        apiJSON = {
                             Payload: param.unique_id
                         };
                         var url = api_map["alerts"]["alerts"]["entity"]["get"]["endpointDrop"] + param.field.masterSource;

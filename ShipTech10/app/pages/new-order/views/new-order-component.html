@@ -1195,13 +1195,6 @@
                                 </td>
                                 <td ng-if="$ctrl.productColumns.minQuantity.visible"
                                     style="max-width: 250px;min-width: 150px">
-                                    <!-- min & max qty:
-                                        - always visible
-                                        - disabled & not required
-                                            - product cancelled
-                                            - capture conf qty == "Offer"
-                                    -->
-
                                     <div class="input-group">
                                         <input class="form-control"
                                                format="number:{{ $ctrl.numberPrecision.quantityPrecision }}"
@@ -1258,18 +1251,6 @@
                                     </div>
                                 </td>
                                 <td style="max-width: initial; min-width: 150px;">
-                                    <!-- confirmed qty:
-                                        - always visible in order
-                                        - disabled & not required
-                                            - capture conf qty == "Offer"
-                                            - product cancelled
-                                        - required only if:
-                                            - capture conf qty == "Order"
-                                                - confirnm order
-                                                - after order confirmed
-                                            AND
-                                            - not disabled
-                                    -->
                                     <div class="input-group">
                                         <input class="form-control"
                                                format="number:{{ $ctrl.numberPrecision.quantityPrecision }}"

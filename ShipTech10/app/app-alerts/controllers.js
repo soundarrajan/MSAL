@@ -19,7 +19,6 @@ APP_ALERTS.controller('Controller_Alerts', ['$scope', '$rootScope', '$Api_Servic
     vm.ids = '';
     vm.formSteps = function() {
         setTimeout(function() {
-            var form = $('#main-content form');
             $('#formBuilderContent').bootstrapWizard({
                 'nextSelector': '.button-next',
                 'previousSelector': '.button-previous',
@@ -31,7 +30,6 @@ APP_ALERTS.controller('Controller_Alerts', ['$scope', '$rootScope', '$Api_Servic
                 },
                 onPrevious: function(tab, navigation, index) {},
                 onTabShow: function(tab, navigation, index) {
-                    var total = navigation.find('li').length;
                     var current = index + 1;
                     if (current >= 1) {
                         $('.button-previous').removeClass('disabled')
@@ -59,9 +57,7 @@ APP_ALERTS.controller('Controller_Alerts', ['$scope', '$rootScope', '$Api_Servic
                 var jobHub = $.connection.notificationsHub;
                 $.connection.hub.logging = true;
                 $.connection.hub.url = API.BASE_URL_DATA_HANGFIRE + "/signalr/hubs";
-                //var originalHeaderValue = API.BASE_URL_DATA_HANGFIRE; //Original Header-ul care il folositi pentru API
-                $rootScope.liveNotificationsList = []
-                var originalHeaderValue = API.BASE_HEADER_FOR_NOTIFICATIONS; //Original Header-ul care il folositi pentru API
+                $rootScope.liveNotificationsList = [];
                 jobHub.client.update = function(message, addedAt, id) {
                     // console.log(message, addedAt, id);
                     notificationExists = false
@@ -76,19 +72,8 @@ APP_ALERTS.controller('Controller_Alerts', ['$scope', '$rootScope', '$Api_Servic
 	                    });
                     }
                     vm.liveNotificationsList = $rootScope.liveNotificationsList;
-                    if (message) {
-                        // $scope.getNotificationsList();
-                    }
                     console.log($rootScope.liveNotificationsList);
                 };
-                var jsOptions = {
-                    withCredentials: false
-                };
-                // $.connection.hub.start(jsOptions).done(function() {
-                //     console.log("tenantId:" + $scope.initSignalRData.tenantId);
-                //     console.log("userId:" + $scope.initSignalRData.userId);
-                //     jobHub.server.subscribe($scope.initSignalRData.tenantId, $scope.initSignalRData.userId);
-                // });
             }
         })
     }

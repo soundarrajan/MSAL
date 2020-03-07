@@ -2,7 +2,6 @@
 <!--[if IE 8]> <html lang="en" class="ie8 no-js" data-ng-app="shiptech"> <![endif]-->
 <!--[if IE 9]> <html lang="en" class="ie9 no-js" data-ng-app="shiptech"> <![endif]-->
 <!--[if !IE]><!-->
-<!-- <html lang="en" data-ng-app="shiptech"> -->
 <html lang="en">
 <!--<![endif]-->
 <!-- BEGIN HEAD -->
@@ -27,16 +26,13 @@
     />
     <link href="assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/global/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css" />
-    <!--<link href="assets/global/plugins/icheck/skins/all.css" rel="stylesheet" type="text/css" />-->
     <link href="assets/global/plugins/angular-ui-grid/custom_style.css" rel="stylesheet" type="text/css" />
     <link href="vendors/gridstack.min.css" rel="stylesheet" type="text/css" />
     <link href="vendors/gridstack-extra.min.css" rel="stylesheet" type="text/css" />
 
     <!-- END GLOBAL MANDATORY STYLES -->
     <!-- endbuild -->
-    <!-- BEGIN DYNAMICALLY LOADED CSS FILES(all plugin and page related styles must be loaded between GLOBAL and THEME css files ) -->
-    <!-- <link id="ng_load_plugins_before" /> -->
-    <!-- END DYNAMICALLY LOADED CSS FILES -->
+
     <!-- build:css theme.css -->
     <!-- BEGIN THEME STYLES -->
     <!-- DOC: To use 'rounded corners' style just load 'components-rounded.css' stylesheet instead of 'components.css' in the below style tag -->
@@ -55,7 +51,6 @@
     <link href="assets/global/plugins/dropzone/dropzone.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/global/plugins/dropzone/basic.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.css" rel="stylesheet" type="text/css" />
-    <!-- <link href="assets/global/plugins/bootstrap-wysihtml5/wysiwyg-color.css" rel="stylesheet" type="text/css" /> -->
     <link href="assets/global/plugins/typeahead/typeahead.css" rel="stylesheet" type="text/css" />
     <link href="assets/global/plugins/minicolors/jquery.minicolors.css" rel="stylesheet" type="text/css" />
     <link href="assets/global/plugins/angular-visjs/vis.min.css" rel="stylesheet" type="text/css" />
@@ -114,9 +109,7 @@
             <div class="page-content-wrapper">
                 <div class="page-content" ng-controller="appCtrl" ng-class="pageClass">
                     <div data-ng-include="'components/breadcrumbs/views/breadcrumbs-component.html'" ng-controller="BreadcrumbsController"></div>
-                    <!-- BEGIN STYLE CUSTOMIZER(optional) -->
-                    <!-- <div data-ng-include="'layouts/theme-panel.html'" data-ng-controller="ThemePanelController" class="theme-panel hidden-xs hidden-sm"> </div> -->
-                    <!-- END STYLE CUSTOMIZER -->
+
                     <!-- BEGIN ACTUAL CONTENT -->
                     <div ui-view class="fade-in-up inside_content">
                         <div class="fade-in-up h100">
@@ -147,7 +140,6 @@
         </div>
 
         <!-- END CONTAINER -->
-        <!-- <script src="config/loadConfig.js"></script> -->
 
         <!-- BEGIN FOOTER -->
         <div data-ng-include="'layouts/footer.html'" class="page-footer"></div>
@@ -194,8 +186,6 @@
     <script src="vendors/ui-bootstrap.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular-route.js"></script>
-    <!--    <script src="js/plugins/angularjs-appinsights-v2.js"></script>-->
-    <!--<script src="js/plugins/angular-applicationinsights.min.js"></script>-->
 
     <script src="js/plugins/appInsights/applicationinsights-analytics-js.min.js"></script>
     <script src="js/plugins/appInsights/applicationinsights-channel-js.min.js"></script>
@@ -205,16 +195,12 @@
     <script src="js/plugins/appInsights/applicationinsights-properties-js.min.js"></script>
     <script src="js/plugins/appInsights/applicationinsights-web.min.js"></script>
 
-    <!-- <script src="https://cdn.jsdelivr.net/npm/angular-applicationinsights@0.3.1/dist/angular-applicationinsights.min.js"></script> -->
-
-
     <script src="vendors/ui-bootstrap-tpls.js"></script>
     <script src="vendors/lodash.min.js"></script>
     <script src="vendors/gridstack.min.js"></script>
     <script src="vendors/sortable.js"></script>
     <script src="vendors/angular-translate.min.js"></script>
     <script src="vendors/angular-translate-loader-static-files.min.js"></script>
-    <!-- <script src="vendors/FileSaver.min.js"></script> -->
     <script src="vendors/angular-filter.min.js"></script>
     <script src="js/plugins/gridstack-angular.min.js"></script>
     <script src="js/plugins/angular-clock.min.js"></script>
@@ -224,9 +210,6 @@
     <script src="js/plugins/jquery.floatHead.min.js"></script>
     <script src="js/plugins/draganddrop.min.js"></script>
     <script src="js/plugins/angular-vs-repeat.min.js"></script>
-    <!-- <script src="js/plugins/ng-mask.js"></script>
-    <script src="js/angular-input-masks/releases/angular-input-masks-standalone.js"></script> -->
-    <!-- <script src="js/plugins/jquery.maskedinput.js"></script> -->
     <script src="js/plugins/jquery.mask.js"></script>
     <!-- END ANGULARJS SCRIPTS -->
     <!-- BEGIN API SCRIPTS (angular) -->
@@ -294,10 +277,6 @@
     <script src="directives/st-number-format.js"></script>
 
     <script src="directives/multiselect/angular-bootstrap-multiselect.js"></script>
-
-    <!-- <script src="https://raw.githubusercontent.com/bentorfs/angular-bootstrap-multiselect/master/dist/angular-bootstrap-multiselect-templates.js"></script> -->
-    <!-- <script src="https://raw.githubusercontent.com/bentorfs/angular-bootstrap-multiselect/master/dist/angular-bootstrap-multiselect.js"></script> -->
-    <!-- <script src="directives/multiselect/angular-bootstrap-multiselect-templates.js"></script> -->
     <!-- END APP LEVEL ANGULARJS SCRIPTS -->
     <!-- Auth Adal.js -->
 
@@ -383,8 +362,6 @@
     <script src="js/plugins/datatables-input.js"></script>
     <script src="js/plugins/dataTables.colResize.js"></script>
     <script src="js/plugins/imask.js"></script>
-    <!-- <script src="js/plugins/angular-timer.js"></script> -->
-    <!-- <script src="js/custom/datatables.js"></script> -->
     <script src="js/tags-select.js"></script>
     <script src="js/custom/port-select2.js"></script>
     <script src="js/datatables/datatable-schedule-dashboard-table.js"></script>
@@ -414,7 +391,6 @@
     <script src="assets/global/plugins/fecha-date-format.js"></script>
     <script src="assets/global/plugins/checklist-model.js"></script>
     <script src="assets/global/plugins/jquery.multi-select.js"></script>
-    <!-- <script src="js/visjs/vis.min.js"></script> -->
     <script src="js/visjs/vis-timeline-graph2d.min.js"></script>
     <script src="assets/global/plugins/angular-visjs/angular-vis.js"></script>
     <!-- END APP LEVEL JQUERY SCRIPTS -->
@@ -523,12 +499,8 @@
     <script id="signalrsrc" src="http://mail.24software.ro:8081/Integration1060/Shiptech10.Api.Procurement/signalr/hubs"></script>
     <!--End signalR cutom generated script-->
     <div id="auth">
-        <!-- <span ng-controller="authCtrl as AU"></span> -->
     </div>
 
-
-
-    <!--</div>-->
     <div class="global_elements" ng-controller="appCtrl" ng-class="recordingStatus == 'Stop screen recording' ? 'blink' : ''">
         <div class="elements_actions">
             <span class="build_no">
@@ -549,14 +521,6 @@
     <script type="text/javascript">
     	strum('config', { token: 'a7ee69d3-2362-450e-b0cb-dc5b533e8e78', 'receiverUrl': 'https://rum-receiver.eu.sematext.com' });
     </script>
-
-    <!-- <script>
-        if (location.href.indexOf('localhost') != -1) {
-            window.onbeforeunload = function() {
-                return "No leave?";
-            }
-        }
-    </script> -->
 </body>
 <!-- END BODY -->
 

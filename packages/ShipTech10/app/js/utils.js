@@ -127,10 +127,10 @@ function browserInfo() {
     var mobile = /Mobile|mini|Fennec|Android|iP(ad|od|hone)/.test(nVer);
     // cookie
     var cookieEnabled = (navigator.cookieEnabled) ? true : false;
-    if (typeof navigator.cookieEnabled == 'undefined' && !cookieEnabled) {
-        document.cookie = 'testcookie';
-        cookieEnabled = (document.cookie.indexOf('testcookie') != -1) ? true : false;
-    }
+    // if (typeof navigator.cookieEnabled == 'undefined' && !cookieEnabled) {
+    //     document.cookie = 'testcookie';
+    //     cookieEnabled = (document.cookie.indexOf('testcookie') != -1) ? true : false;
+    // }
     // system
     var os = unknown;
     var clientStrings = [{

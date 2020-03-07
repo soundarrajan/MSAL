@@ -414,9 +414,6 @@
                                             ng-change="$ctrl.applicableForChange(additionalCost, $ctrl.additionalCostApplicableFor[additionalCost.fakeId], location); $ctrl.additionalCostNameChanged(additionalCost, location, true);" 
                                             class="form-control" 
                                             ng-disabled="$ctrl.disableCostBasedOnApplicableProductStatus(additionalCost.parentProductId, location.products) || !additionalCost.additionalCost || (additionalCost.isTaxComponent && additionalCost.costType.name == 'Percent') ">
-                                            <!-- additionalCost.id> 0 || -->
-
-                                            <!-- || additionalCost.costType.name == 'Flat'  -->
                                                 <option value="" >
                                                     All
 

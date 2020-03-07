@@ -819,10 +819,10 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                             label = status.displayName ? status.displayName : status.name;
 
                             color =  $scope.getStatusColor(null, status);
-    
+
                             if (label && color) {
                                 return '<span class="label formatStatus" style="overflow:hidden; text-overflow:ellipsis; display:block; background-color:' + color + '" >' + label + "</span>";
-                            } 
+                            }
                         }
                     }
                     return "";
@@ -840,7 +840,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
 
                             if (label && color) {
                                 return '<span class="label formatStatus" style="overflow:hidden; text-overflow:ellipsis; display:block; background-color:' + color + '" >' + label + "</span>";
-                            } 
+                            }
                         }
                     }
                     return "";
@@ -855,7 +855,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     if(rowObject.voyageDetail){
                         if(rowObject.voyageDetail.request){
                             if(rowObject.voyageDetail.request.requestDetail){
-                       
+
                                 var max = rowObject.voyageDetail.request.requestDetail[ options.colModel.schQuantitySource + "MaxQuantity" ];
                                 max = max ? max : "";
                                 var min = rowObject.voyageDetail.request.requestDetail[ options.colModel.schQuantitySource + "MinQuantity" ];
@@ -865,14 +865,14 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                                 }
                                 if (max) {
                                     max = $filter("number")(max, $scope.tenantSettings.defaultValues.quantityPrecision);
-                                } 
+                                }
                                 return min + " - " + max;
                             }
                         }
                     }
                     return "";
                 }
-              
+
                 var formatDate = function(cellValue, options, rowObject) {
                     var tpl2 = '<span class="formatter">:content</span>';
                     var element = tpl2;
@@ -894,9 +894,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         }
                     }
                     if (cellValue != null) {
-                        if (hasDayOfWeek) { 
+                        if (hasDayOfWeek) {
                             formattedDate = moment.utc(cellValue).format("ddd") + " " + formattedDate;
-                        } 
+                        }
                         return "<div formatter='formatDate'>" + formattedDate + "<div>";
                         // formattedDate = vm.formatDate(cellValue, $scope.tenantSettings.tenantFormats.dateFormat);
                         // element = var_bind(':content', formattedDate, element);
@@ -924,7 +924,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                          return  '<label class="mt-checkbox mt-checkbox-outline" style="padding-left: 5px;">' + '<input type="checkbox" class="order_list_checkbox" rowId="' + options.rowId + '"" ng-model="selectOrders[' + options.rowId + ']"  ng-click="selectOrderListRow(' + options.rowId + ",selectOrders[" + options.rowId + '])"/><span></span></label>';
                         }
                     }
-        
+
                 };
                 var contract_planning_email = function(cellValue, options, rowObject) {
                     return '<a class="font-grey-cascade" ng-click="contractPlanningEmail(' + rowObject.id + ')"><i class="glyphicon glyphicon-envelope"></i></a>';
@@ -960,7 +960,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         if (rowObject.requestStatus.name != "Planned" && rowObject.requestStatus.name != "Created" && rowObject.requestStatus.name != "Questionnaire" && rowObject.requestStatus.name != "Validated") {
                             fieldDisabled = true;
                         }
-                    }                    
+                    }
 
                     if (options.colModel.dataFrom == "base") {
                         if (!fieldDisabled) {
@@ -1050,7 +1050,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
 
 
                 var contract_planning_product = function(cellValue, options, rowObject) {
-                    // tpl = "<div>";   
+                    // tpl = "<div>";
                     tpl = '<div class="input-group input-group-sm contractPlanningContractTypeahead" style="display: flex;">';
 
                     columnKey = "'product'";
@@ -1065,11 +1065,11 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         if (rowObject.requestStatus.name != "Planned" && rowObject.requestStatus.name != "Created" && rowObject.requestStatus.name != "Questionnaire" && rowObject.requestStatus.name != "Validated") {
                             fieldDisabled = true;
                         }
-                    }   
+                    }
 
                     tpl += '<div style="width: 197px;"><select ng-disabled="'+fieldDisabled+'" id="contract_planning_product_select_' + options.rowId + '" rowId="' + options.rowId + '" ng-change="CLC.changeCPRowModel(CLC.product[' + options.rowId + "], " + options.rowId + "," + columnKey + ');" ng-init="CLC.product[' + options.rowId + '].id = '+currentValue+'; CLC.changeCPRowModel(CLC.product[' + options.rowId + "], " + options.rowId + "," + columnKey + ", true" + ');" ng-model="CLC.product[' + options.rowId + ']" ng-options="item as item.name for item in CLC.listsCache.Product track by item.id" class="form-control input-group-addon contract_planning_product"></select></div>';
 
-                    // tpl +='<span ng-controller="Controller_Master as CM" class="input-group-addon " ng-click="triggerModal(\'general\', \'masters_productlist\', \'\' , \'  cpPr['+options.rowId +']\',\'\',\'\', \'Product\' )" ><i class="fa fa-search"></i></span> ';           
+                    // tpl +='<span ng-controller="Controller_Master as CM" class="input-group-addon " ng-click="triggerModal(\'general\', \'masters_productlist\', \'\' , \'  cpPr['+options.rowId +']\',\'\',\'\', \'Product\' )" ><i class="fa fa-search"></i></span> ';
 
                     if (fieldDisabled) {
                         tpl += '<i disabled class="fa fa-search clickable form-control contract_planning_product" style="height: 30px; border-radius: 0;"><span hidden="true">&nbsp;</span></i>';
@@ -1118,7 +1118,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     if (dateFormat2.startsWith("DDD ")) {
                         hasDayOfWeek = true;
                         dateFormat2 = dateFormat2.split("DDD ")[1];
-                    }                     
+                    }
                     formattedDate = $filter("date")(cellValue, dateFormat2.split(" ")[0], "UTC");
                     if (formattedDate) {
                         if (formattedDate.indexOf("0001") != -1) {
@@ -1126,23 +1126,23 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         }
                     }
                     if (cellValue != null) {
-                        if (hasDayOfWeek) { 
+                        if (hasDayOfWeek) {
                             formattedDate = moment.utc(cellValue).format("ddd") + " " + formattedDate;
-                        } 
+                        }
                         return "<div formatter='formatOnlyDate'>" + formattedDate + "<div>";
                         // formattedDate = vm.formatDate(cellValue, $scope.tenantSettings.tenantFormats.dateFormat);
                         // element = var_bind(':content', formattedDate, element);
                         // return formattedDate;
                     }
                     return "";
-                };               
+                };
                 var formatDateUtc = function(cellValue, options, rowObject) {
                     var dateFormat3 = $scope.tenantSettings.tenantFormats.dateFormat.name;
                     var hasDayOfWeek = false;
                     if (dateFormat3.startsWith("DDD ")) {
                         hasDayOfWeek = true;
                         dateFormat3 = dateFormat3.split("DDD ")[1];
-                    }                    
+                    }
                     dateFormat3 = dateFormat3.replace(/D/g, "d").replace(/Y/g, "y");
                     formattedDate = $filter("date")(cellValue, dateFormat3, "UTC");
                     if (options.colModel.label == "Due Date" || options.colModel.label == "Working Due Date" || options.colModel.label == "Seller Due Date" || options.colModel.label == "Order Date") {
@@ -1161,9 +1161,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     }
                     if (cellValue != null) {
 
-                        if (hasDayOfWeek) { 
+                        if (hasDayOfWeek) {
                             formattedDate = moment.utc(cellValue).format("ddd") + " " + formattedDate;
-                        } 
+                        }
                         return "<div formatter='formatDateUtc' >" + formattedDate + "<div>";
                         // formattedDate = vm.formatDate(cellValue, $scope.tenantSettings.tenantFormats.dateFormat);
                         // element = var_bind(':content', formattedDate, element);
@@ -1559,7 +1559,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         var tpl = '  <a  style="width: calc(100% - 20px); target="_blank""><span class="formatter edit_link" style="white-space:none" data-formatter-type="status">' + cellValue + "</span></a>";
                     }
                     return tpl;
-                };                
+                };
                 var edit_request_link_from_schedule_table = function(cellValue, options, rowObject) {
                     cellValue == null ? (cellValue = "") : "";
                     tpl = " ";
@@ -1577,7 +1577,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         var tpl = '  <a  style="width: calc(100% - 20px);"><span class="formatter edit_link" style="white-space:none" data-formatter-type="status">' + cellValue + "</span></a>";
                     }
 
-           
+
                     return tpl;
                 };
 
@@ -1596,7 +1596,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     	response += '<i class="fa fa-flag vesselToWatchFlag"></i>';
                     }
                     return response;
-                }  
+                }
 
                 var edit_request_link_from_delivery = function(cellValue, options, rowObject) {
                     cellValue == null ? (cellValue = "") : "";
@@ -1615,7 +1615,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         var tpl = '  <a  style="width: calc(100% - 20px);"><span class="formatter edit_link" style="white-space:none" data-formatter-type="status">' + cellValue + "</span></a>";
                     }
 
-           
+
                     return tpl;
                 }; // edit_order_link  - add edit lionk to column
                 var edit_invoice_link = function(cellValue, options, rowObject) {
