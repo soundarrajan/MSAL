@@ -202,7 +202,7 @@ angular.module('ui.bootstrap.accordion', ['ui.bootstrap.collapse'])
         }
       };
 
-      var id = 'accordiongroup-' + scope.$id + '-' + Math.floor(Math.random() * 10000);
+      var id = 'accordiongroup-' + scope.$id + '-' + Math.floor(window.crypto.getRandomValues( new Uint8Array(1)) * 10000);
       scope.headingId = id + '-tab';
       scope.panelId = id + '-panel';
     }
@@ -1449,7 +1449,7 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
     }
   });
 
-  $scope.uniqueId = 'datepicker-' + $scope.$id + '-' + Math.floor(Math.random() * 10000);
+  $scope.uniqueId = 'datepicker-' + $scope.$id + '-' + Math.floor(window.crypto.getRandomValues( new Uint8Array(1)) * 10000);
 
   $scope.disabled = angular.isDefined($attrs.disabled) || false;
   if (angular.isDefined($attrs.ngDisabled)) {
@@ -6368,7 +6368,7 @@ angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.debounce', 'ui.bootstrap
     scope.$on('$destroy', offDestroy);
 
     // WAI-ARIA
-    var popupId = 'typeahead-' + scope.$id + '-' + Math.floor(Math.random() * 10000);
+    var popupId = 'typeahead-' + scope.$id + '-' + Math.floor(window.crypto.getRandomValues( new Uint8Array(1)) * 10000);
     element.attr({
       'aria-autocomplete': 'list',
       'aria-expanded': false,

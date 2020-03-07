@@ -1092,7 +1092,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                     ctrl.data.products.length = 0;
                     productList = ctrl.data.products;
                     for (var product in productList) {
-                    	product.uniqueIdUI = Math.random().toString(36).substring(7)
+                    	product.uniqueIdUI = window.crypto.getRandomValues( new Uint8Array(1)).toString(36).substring(7)
                         if ($.isEmptyObject(productList[product].physicalSupplier)) {
                             angular.copy(ctrl.data.seller, productList[product].physicalSupplier);
                         }
@@ -1145,7 +1145,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
                 priceUom: {},
                 confirmedQtyPrice: null,
                 confirmedQtyProdZ: null,
-                uniqueIdUI: Math.random().toString(36).substring(7)
+                uniqueIdUI: window.crypto.getRandomValues( new Uint8Array(1)).toString(36).substring(7)
             };
             products.push(product);
         };
@@ -2880,7 +2880,7 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
 
         ctrl.addNewProduct= function() {
         	newProduct = {
-  				uniqueIdUI: Math.random().toString(36).substring(7),
+  				uniqueIdUI: window.crypto.getRandomValues( new Uint8Array(1)).toString(36).substring(7),
   				// physicalSupplier: angular.copy(ctrl.data.seller),
   				deliveryOption : angular.copy(ctrl.defaultDeliveryOption),
         	}

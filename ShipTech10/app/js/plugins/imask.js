@@ -106,7 +106,7 @@
   };
 
   var id = 0;
-  var px = Math.random();
+  var px = window.crypto.getRandomValues( new Uint8Array(1));
   var _uid = function (key) {
     return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
   };
