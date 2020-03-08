@@ -1258,9 +1258,7 @@ APP_MASTERS.controller('Controller_Master', [
                 }
 
                 vm.fields = angular.toJson($scope.filterFromData);
-                if (vm.entity_id) {
-                    vm.entity_id = vm.entity_id;
-                } else {
+                if (!vm.entity_id) {
                     vm.entity_id = 0;
                 }
                 if (vm.entity_id > 0) {

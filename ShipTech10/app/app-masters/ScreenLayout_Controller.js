@@ -450,8 +450,6 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                 vm.entity_id = '';
             } else if ($scope.entity > 0) {
                 vm.entity_id = $scope.entity;
-            } else {
-                vm.entity_id = vm.entity_id;
             }
         	if (vm.entity_id == '') {
         		if (vm.app_id == 'masters' && vm.screen_id == 'location') {

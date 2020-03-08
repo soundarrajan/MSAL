@@ -2128,7 +2128,6 @@
                 //get values from listsCache, put in options obj for specific dropdowns
                 //get options for request status
                 if (field.Name == "etaFreezeStatus" && field.masterSource) {
-                    $scope.options["etaFreezeStatus"] = [];
                     $scope.options["etaFreezeStatus"] = angular.copy($scope.listsCache.RequestStatus);
                 }
                 if (field.Name == "numberOfCounterpartiesToDisplay") {

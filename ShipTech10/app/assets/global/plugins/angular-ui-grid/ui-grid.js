@@ -7060,12 +7060,8 @@ angular.module('ui.grid')
       self[propName] = colDef[propName];
     }
     // Otherwise use our own if it's set
-    else if (typeof(self[propName]) !== 'undefined') {
-      self[propName] = self[propName];
-    }
-    // Default to empty object for the filter
-    else {
-      self[propName] = defaultValue ? defaultValue : {};
+    else if (typeof(self[propName]) === 'undefined') {
+        self[propName] = defaultValue ? defaultValue : {};
     }
   };
 

@@ -2183,7 +2183,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
         };
         ctrl.hasPackageRequirement = function(seller) {
             hasRequirement = false;
-            $.each(ctrl.requirements, function(rV, rV) {
+            $.each(ctrl.requirements, function(rV, rK) {
                 if (rV.randUniquePkg == seller.randUniquePkg) {
                     hasRequirement = true;
                 }

@@ -447,10 +447,6 @@ APP_CLAIMS.controller('Controller_Claims', [
                     if ($scope.formValues.claimDetails.physicalSupplier) {
                         $scope.formValues.claimDetails.physicalSupplier = null;
                     }
-                } else {
-                    $timeout(() => {
-                        $scope.formValues.deliveryDate = $scope.formValues.deliveryDate;
-                    });
                 }
             }
             if (name == 'labResultID') {

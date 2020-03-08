@@ -3301,7 +3301,7 @@ Base.prototype = {
 			var ancestor = this[source];
 			if (ancestor && (typeof value == "function") && // overriding a method?
 				// the valueOf() comparison is to avoid circular references
-				(!ancestor.valueOf || ancestor.valueOf() != value.valueOf()) &&
+				(!ancestor.valueOf || (ancestor.valueOf() != value.valueOf())) &&
 				/\bbase\b/.test(value)) {
 				// get the underlying method
 				var method = value.valueOf();

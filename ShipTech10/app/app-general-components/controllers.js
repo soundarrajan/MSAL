@@ -480,9 +480,6 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     if (typeof $state.params.screen_id == "undefined") {
                         $state.params.screen_id = "";
                     }
-                    if (typeof $state.params.screen_id !== "undefined") {
-                        $state.params.screen_id = $state.params.screen_id;
-                    }
                     screen_id = $state.params.screen_id;
                     if ($scope.tenantSettings.companyDisplayName.name == "Pool" && $state.params.screen_id == "company") {
                         screen_id = "pool";
@@ -518,9 +515,6 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     }
                     if (typeof $state.params.screen_id == "undefined") {
                         $state.params.screen_id = "";
-                    }
-                    if (typeof $state.params.screen_id !== "undefined") {
-                        $state.params.screen_id = $state.params.screen_id;
                     }
                     // console.log(vm.app_id )
                     // break;

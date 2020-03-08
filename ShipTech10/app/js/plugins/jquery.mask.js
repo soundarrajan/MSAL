@@ -151,7 +151,7 @@
                             maskChunks.push(mask.charAt(i));
                             oRecursive = {digit: mask.charAt(i), pattern: pattern};
                         } else {
-                            maskChunks.push(!optional && !recursive ? pattern : (pattern + '?'));
+                            maskChunks.push(!optional ? pattern : (pattern + '?'));
                         }
 
                     } else {

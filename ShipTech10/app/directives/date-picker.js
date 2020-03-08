@@ -371,7 +371,7 @@ angular.module('shiptech.pages').directive('newDatePicker', [ 'tenantModel', '$w
                 $(`#${ dateInputId}`).on('dp.change', (e) => {
                     if (moment(e.oldDate).format(currentFormat) != moment(e.date).format(currentFormat)) {
                         let newVal = moment(e.date).format(currentFormat);
-                        if ((!e.oldDate && !hasTyped) | wasReset) {
+                        if ((!e.oldDate && !hasTyped) || wasReset) {
                             newVal = `${newVal.split(' ')[0] } 00:00`;
                             wasReset = false;
                         }

@@ -275,9 +275,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                 }
             }
             vm.fields = angular.toJson($scope.filterFromData);
-            if (vm.entity_id) {
-                vm.entity_id = vm.entity_id;
-            } else {
+            if (!vm.entity_id) {
                 vm.entity_id = 0;
             }
             if (vm.entity_id > 0) {

@@ -63,8 +63,6 @@ angular.module('shiptech.components')
                 });
                 ctrl.selectedLocations = [ defaultLocation ];
 
-
-                ctrl.enSixMhReferenceDate = ctrl.enSixMhReferenceDate;
                 ctrl.requestGroupId = ctrl.sixMonthPayload.requestGroupId;
                 ctrl.sellerCounterpartyId = ctrl.sixMonthPayload.sellerCounterpartyId;
                 ctrl.physicalSupplierCounterpartyId = ctrl.sixMonthPayload.physicalSupplierCounterpartyId;
@@ -126,7 +124,6 @@ angular.module('shiptech.components')
             ctrl.$onInit = function() {
                 console.log(ctrl.sixMonthPayload);
                 console.log(ctrl.activeProduct);
-                ctrl.enSixMhReferenceDate = ctrl.enSixMhReferenceDate;
                 ctrl.requestGroupId = ctrl.sixMonthPayload.requestGroupId;
                 ctrl.sellerCounterpartyId = ctrl.sixMonthPayload.sellerCounterpartyId;
                 ctrl.physicalSupplierCounterpartyId = ctrl.sixMonthPayload.physicalSupplierCounterpartyId;

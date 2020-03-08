@@ -855,7 +855,6 @@ angular.module('shiptech.pages').controller('ScheduleCalendarController', [ '$ro
 	                                voyageDetail: event.voyageDetail,
 	                            };
 	                            if (portDetails.request.id > 0) {
-	                                portDetails.request.id = portDetails.request.id;
                                     event.voyageDetail.request.requestDetail.requestName = event.voyageDetail.request.requestName;
                                     requestDetail.push(event.voyageDetail.request.requestDetail);
 	                            }
@@ -893,9 +892,6 @@ angular.module('shiptech.pages').controller('ScheduleCalendarController', [ '$ro
                                     break;
                                 }
                                 index++;
-                                if (index > 1) {
-                                    index = index;
-                                }
                             }
                         }
                     }

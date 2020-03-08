@@ -36,7 +36,7 @@ var jstz = function () {
 	 * @returns {Boolean}
 	 */
 	function date_is_dst(date) {
-		var base_offset = ((date.getMonth() > 5 ? get_june_offset() : get_january_offset())),
+		var base_offset = (date.getMonth() > 5 ? get_june_offset() : get_january_offset()),
 			date_offset = get_date_offset(date); 
 		return (base_offset - date_offset) !== 0;
 	};
