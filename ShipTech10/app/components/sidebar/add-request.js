@@ -1,7 +1,5 @@
 function AddRequestController() {
-
-console.log('addRequestCtrl');
-
+    console.log('addRequestCtrl');
 };
 
 angular.module('shiptech').component('addRequest', {

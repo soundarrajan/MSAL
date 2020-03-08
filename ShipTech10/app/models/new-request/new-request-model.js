@@ -1,117 +1,124 @@
-angular.module('shiptech.models').factory('newRequestModel', ['newRequestResource', 'payloadDataModel','newRequestResourceMasters', 'screenLoader',
+angular.module('shiptech.models').factory('newRequestModel', [ 'newRequestResource', 'payloadDataModel', 'newRequestResourceMasters', 'screenLoader',
     function(newRequestResource, payloadDataModel, newRequestResourceMasters, screenLoader) {
         this.saved = false;
 
         function newRequestModel(data) {
             angular.extend(this, data);
         }
+
         /**
          * Retrieve a pre-populated request
          * @param {Integer} data - request Id
-         * @return {object} pre-populated request objects.
+         * @returns {object} pre-populated request objects.
          */
         function getRequest(data) {
             request_data = payloadDataModel.create(data);
             screenLoader.showLoader();
-            return newRequestResource.get(request_data).$promise.then(function(data) {
+            return newRequestResource.get(request_data).$promise.then((data) => {
                 return new newRequestModel(data);
-            }).finally(function(){
-              screenLoader.hideLoader();
+            }).finally(() => {
+                screenLoader.hideLoader();
             });
         }
+
         /**
          * Create a request
          * @param {Integer} data - vesseldetails Id
-         * @return {object} pre-populated request objects.
+         * @returns {object} pre-populated request objects.
          */
         function newRequest(data) {
             request_data = payloadDataModel.create(data);
-            return newRequestResource.new(request_data).$promise.then(function(data) {
+            return newRequestResource.new(request_data).$promise.then((data) => {
                 return new newRequestModel(data);
             });
         }
+
         /**
          * Create an empty request
-         * @return {object} pre-populated request objects.
+         * @returns {object} pre-populated request objects.
          */
         function getEmptyRequest() {
             request_data = payloadDataModel.create();
-            return newRequestResource.getEmpty(request_data).$promise.then(function(data) {
+            return newRequestResource.getEmpty(request_data).$promise.then((data) => {
                 return new newRequestModel(data);
             });
         }
+
         /**
          * Update a request
          * @param {Integer} data - vesseldetails Id
-         * @return {object} pre-populated request objects.
+         * @returns {object} pre-populated request objects.
          */
         function updateRequest(data) {
             this.saved = true;
             request_data = payloadDataModel.create(data);
-            return newRequestResource.update(request_data).$promise.then(function(data) {
+            return newRequestResource.update(request_data).$promise.then((data) => {
                 return new newRequestModel(data);
             });
         }
+
         /**
          * Save a request
          * @param {Integer} data - vesseldetails Id
-         * @return {object} pre-populated request objects.
+         * @returns {object} pre-populated request objects.
          */
         function createRequest(data) {
             this.saved = true;
             request_data = payloadDataModel.create(data);
-            return newRequestResource.create(request_data).$promise.then(function(data) {
+            return newRequestResource.create(request_data).$promise.then((data) => {
                 return new newRequestModel(data);
             });
         }
+
         /**
          * cancel a request product
          * @param {Integer} data - vesseldetails Id
          */
         function cancelProduct(data) {
             request_data = payloadDataModel.create(data);
-            return newRequestResource.cancelProduct(request_data).$promise.then(function(data) {
+            return newRequestResource.cancelProduct(request_data).$promise.then((data) => {
                 return new newRequestModel(data);
             });
         }
+
         /**
          * cancel a request
          * @param {Integer} data - vesseldetails Id
          */
         function cancelRequest(data) {
             request_data = payloadDataModel.create(data);
-            return newRequestResource.cancel(request_data).$promise.then(function(data) {
+            return newRequestResource.cancel(request_data).$promise.then((data) => {
                 return new newRequestModel(data);
             });
         }
+
         /**
          * cancel a request product
          * @param {Integer} data - vesseldetails Id
          */
         function cancelLocation(data) {
             request_data = payloadDataModel.create(data);
-            return newRequestResource.cancelLocation(request_data).$promise.then(function(data) {
+            return newRequestResource.cancelLocation(request_data).$promise.then((data) => {
                 return new newRequestModel(data);
             });
         }
+
         /**
          * completes a request
          * @param {Integer} data - request Id
          */
 
         function completeRequest(data) {
-
             request_data = payloadDataModel.create(data);
-            return newRequestResource.complete(request_data).$promise.then(function(data) {
+            return newRequestResource.complete(request_data).$promise.then((data) => {
                 return new newRequestModel(data);
             });
-
         }
 
-        //returns default vessel buyer
+        // returns default vessel buyer
         function getDefaultBuyer(data) {
             request_data = payloadDataModel.create(data);
-            return newRequestResource.getDefaultBuyer(request_data).$promise.then(function(data) {
+            return newRequestResource.getDefaultBuyer(request_data).$promise.then((data) => {
                 return data;
             });
         }
@@ -119,223 +126,225 @@ angular.module('shiptech.models').factory('newRequestModel', ['newRequestResourc
         function search(filters) {
             request_data = payloadDataModel.create({});
             request_data.Payload.Filters = filters;
-            return newRequestResource.search(request_data).$promise.then(function(data) {
+            return newRequestResource.search(request_data).$promise.then((data) => {
                 return data;
             });
         }
+
         /**
          * validate a request
          * @param {Integer} data - ?
          */
         function validate(data) {
             request_data = payloadDataModel.create(data);
-            return newRequestResource.validate(request_data).$promise.then(function(data) {
+            return newRequestResource.validate(request_data).$promise.then((data) => {
                 return new newRequestModel(data);
             });
         }
+
         /**
          * sends pre-request questionnnaire
          * @param {Integer} data - ?
          */
         function sendPrerequest(data) {
             request_data = payloadDataModel.create(data);
-            return newRequestResource.sendPrerequest(request_data).$promise.then(function(data) {
+            return newRequestResource.sendPrerequest(request_data).$promise.then((data) => {
                 return new newRequestModel(data);
             });
         }
 
-       function contractPlanningAutoSave(data) {
+        function contractPlanningAutoSave(data) {
             request_data = payloadDataModel.create(data);
-            return newRequestResource.contractPlanningAutoSave(request_data).$promise.then(function(data) {
+            return newRequestResource.contractPlanningAutoSave(request_data).$promise.then((data) => {
                 return new newRequestModel(data);
             });
-
-        } 
+        }
 
         function getLatestOffer(product, seller) {
         	physicalSupplierId = null;
-        	if(seller.offers[0].physicalSupplierCounterparty != null){
-        		physicalSupplierId = seller.offers[0].physicalSupplierCounterparty.id
+        	if(seller.offers[0].physicalSupplierCounterparty != null) {
+        		physicalSupplierId = seller.offers[0].physicalSupplierCounterparty.id;
         	}
             request_data = payloadDataModel.create();
             request_data.Payload = {
-                "Order": null,
-                "Filters": [{
-                    ColumnName: "RequestProductId",
+                Order: null,
+                Filters: [ {
+                    ColumnName: 'RequestProductId',
                     OperationType: 0,
                     ValueType: 5,
                     Value: product.id
-                }],
-                "Pagination": {
+                } ],
+                Pagination: {
                     Skip: 0,
                     Take: 10
                 }
             };
             if (seller !== null) {
                 request_data.Payload.Filters.push({
-                    ColumnName: "RequestSellerId",
+                    ColumnName: 'RequestSellerId',
                     OperationType: 0,
                     ValueType: 5,
                     Value: seller.id
                 });
                 request_data.Payload.Filters.push({
-                    ColumnName: "PhysicalSupplierId",
+                    ColumnName: 'PhysicalSupplierId',
                     OperationType: 0,
                     ValueType: 5,
                     Value: physicalSupplierId
                 });
             }
-            return newRequestResource.getLatestOffer(request_data).$promise.then(function(data) {
+            return newRequestResource.getLatestOffer(request_data).$promise.then((data) => {
                 return new newRequestModel(data);
             });
         }
+
         /**
          * Saves the contract planning data.
          */
         function saveContractPlanning(data) {
             request_data = payloadDataModel.create(data);
-            return newRequestResource.contractPlanning(request_data).
-            $promise.
-            then(function(data) {
-                return new newRequestModel(data);
-            });
+            return newRequestResource.contractPlanning(request_data)
+                .$promise
+                .then((data) => {
+                    return new newRequestModel(data);
+                });
         }
         function contractPlanningSaveAndSend(data) {
             request_data = payloadDataModel.create(data);
-            return newRequestResource.contractPlanningSaveAndSend(request_data).
-            $promise.
-            then(function(data) {
-                return new newRequestModel(data);
-            });
-        }        
+            return newRequestResource.contractPlanningSaveAndSend(request_data)
+                .$promise
+                .then((data) => {
+                    return new newRequestModel(data);
+                });
+        }
 
         function getRequestEmailTemplate(emailData, template, transactionTypeId) {
-            var templateId = 0;
-            var templateName = null;
-            if (typeof template != "undefined" && template !== null) {
+            let templateId = 0;
+            let templateName = null;
+            if (typeof template != 'undefined' && template !== null) {
                 templateId = template.id;
                 templateName = template.name;
             }
-            var payload = {
-                "Filters": [{
-                    "ColumnName": "RequestId",
-                    "Value": emailData.requestId
+            let payload = {
+                Filters: [ {
+                    ColumnName: 'RequestId',
+                    Value: emailData.requestId
                 }, {
-                    "ColumnName": "TemplateId",
-                    "Value": templateId
+                    ColumnName: 'TemplateId',
+                    Value: templateId
                 }, {
-                    "ColumnName": "TransactionTypeId",
-                    "Value": transactionTypeId
+                    ColumnName: 'TransactionTypeId',
+                    Value: transactionTypeId
                 }, {
-                    "ColumnName": "TemplateName",
-                    "Value": templateName
-                }]
+                    ColumnName: 'TemplateName',
+                    Value: templateName
+                } ]
             };
             request_data = payloadDataModel.create(payload);
-            return newRequestResource.getRequestEmailTemplate(request_data).
-            $promise.
-            then(function(data) {
-                return data;
-            });
+            return newRequestResource.getRequestEmailTemplate(request_data)
+                .$promise
+                .then((data) => {
+                    return data;
+                });
         }
         // Update destination port list on type
         function getDestinations(val, vesselId, destinationId, IsDestinationPort) {
             if (destinationId) {
                 dest = destinationId;
             } else {
-                dest = null
+                dest = null;
             }
             if (vesselId) {
                 vess = vesselId;
             } else {
-                vess = null
+                vess = null;
             }
-            var payload = {
-                "Pagination": {
-                    "Skip ": 1,
-                    "Take": 10
+            let payload = {
+                Pagination: {
+                    'Skip ': 1,
+                    'Take': 10
                 },
-                "Filters": [{
-                    "ColumnName": "VesselId",
-                    "Value": vess
+                Filters: [ {
+                    ColumnName: 'VesselId',
+                    Value: vess
                 }, {
-                    "ColumnName": "VesselVoyageDetailId",
-                    "Value": dest
+                    ColumnName: 'VesselVoyageDetailId',
+                    Value: dest
                 }, {
-                    "ColumnName": "IsDestinationList",
-                    "Value": IsDestinationPort
-                }],
-                "SearchText": val
+                    ColumnName: 'IsDestinationList',
+                    Value: IsDestinationPort
+                } ],
+                SearchText: val
             };
             request_data = payloadDataModel.create(payload);
-            return newRequestResourceMasters.getDestinations(request_data).
-            $promise.
-            then(function(data) {
-                return data;
-            });
+            return newRequestResourceMasters.getDestinations(request_data)
+                .$promise
+                .then((data) => {
+                    return data;
+                });
         }
 
         function getContractPlanningEmailTemplate(emailData) {
-        	if (!emailData.templateName){
-        		templateName = 'ContractPlanningEmailTemplate'
+        	if (!emailData.templateName) {
+        		templateName = 'ContractPlanningEmailTemplate';
         	} else {
         		templateName = emailData.templateName;
         	}
-            var payload = {
-                "Filters": [{
-                    "ColumnName": "RequestId",
-                    "Value": emailData.requestId
+            let payload = {
+                Filters: [ {
+                    ColumnName: 'RequestId',
+                    Value: emailData.requestId
                 }, {
-                    "ColumnName": "LocationId",
-                    "Value": emailData.locationId
+                    ColumnName: 'LocationId',
+                    Value: emailData.locationId
                 }, {
-                    "ColumnName": "RequestProductId",
-                    "Value": emailData.requestProductId
+                    ColumnName: 'RequestProductId',
+                    Value: emailData.requestProductId
                 }, {
-                    "ColumnName": "TemplateName",
-                    "Value": templateName
+                    ColumnName: 'TemplateName',
+                    Value: templateName
                 }
                 ]
             };
             request_data = payloadDataModel.create(payload);
-            return newRequestResource.previewContractPlanning(request_data).
-            $promise.
-            then(function(data) {
-                return data;
-            });
+            return newRequestResource.previewContractPlanning(request_data)
+                .$promise
+                .then((data) => {
+                    return data;
+                });
         }
 
         function omitOffer(data) {
             request_data = payloadDataModel.create(data);
-            return newRequestResource.omitOffer(request_data).$promise.then(function(data) {
+            return newRequestResource.omitOffer(request_data).$promise.then((data) => {
                 return new newRequestModel(data);
             });
         }
         function canBeCancelled(data) {
             request_data = payloadDataModel.create(data);
-            return newRequestResource.canBeCancelled(request_data).$promise.then(function(data) {
+            return newRequestResource.canBeCancelled(request_data).$promise.then((data) => {
                 return data;
             });
         }
 
-        function getRequestStatusesOrdered(){
+        function getRequestStatusesOrdered() {
             request_data = payloadDataModel.create(null);
-            return newRequestResource.getRequestStatusesOrdered(request_data).$promise.then(function(data) {
+            return newRequestResource.getRequestStatusesOrdered(request_data).$promise.then((data) => {
                 return data;
             });
         }
 
-        function questionnaireStatus(data){
+        function questionnaireStatus(data) {
             request_data = payloadDataModel.create(data);
             console.log('request_data: ', request_data);
-            return newRequestResource.questionnaireStatus(request_data).$promise.then(function(data) {
+            return newRequestResource.questionnaireStatus(request_data).$promise.then((data) => {
                 return data;
             });
-        }        
+        }
 
-        function getBunkerPlansForVesselVoyageDetailId(data){
+        function getBunkerPlansForVesselVoyageDetailId(data) {
             request_data = payloadDataModel.create(data);
-            return newRequestResource.getBunkerPlansForVesselVoyageDetailId(request_data).$promise.then(function(data) {
+            return newRequestResource.getBunkerPlansForVesselVoyageDetailId(request_data).$promise.then((data) => {
                 return data;
             });
         }

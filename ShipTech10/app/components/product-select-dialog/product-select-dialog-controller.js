@@ -1,8 +1,8 @@
-angular.module('shiptech').controller('ProductSelectDialogController', ['$scope', '$timeout', '$state', 'STATE', 'MOCKUP_MAP', 'uiApiModel', '$listsCache', '$Api_Service',
+angular.module('shiptech').controller('ProductSelectDialogController', [ '$scope', '$timeout', '$state', 'STATE', 'MOCKUP_MAP', 'uiApiModel', '$listsCache', '$Api_Service',
     function($scope, $timeout, $state, STATE, MOCKUP_MAP, uiApiModel, $listsCache, $Api_Service) {
         $scope.state = $state;
         $scope.STATE = STATE;
-        var ctrl = this;
+        let ctrl = this;
         ctrl.selectedRow = null;
         ctrl.checkboxes = [];
         ctrl.tableOptions = {};
@@ -11,106 +11,106 @@ angular.module('shiptech').controller('ProductSelectDialogController', ['$scope'
         ctrl.tableOptions.paginationStart = 0;
         ctrl.tableOptions.currentPage = 1;
         ctrl.tableOptions.totalRows = 0;
-        $scope.$on('selectedProduct', function() {
+        $scope.$on('selectedProduct', () => {
             console.log('mass');
         });
         ctrl.$onInit = function() {
-            var endpoint = MOCKUP_MAP['unrouted.select-product-dialog'];
-            //uiApiModel.get(endpoint).then(function(data) {
-                //ctrl.ui = data;
+            let endpoint = MOCKUP_MAP['unrouted.select-product-dialog'];
+            // uiApiModel.get(endpoint).then(function(data) {
+            // ctrl.ui = data;
             // });
-			payload = {
-			  "app": "masters",
-			  "screen": "productlist",
-			  "clc_id": "masters_productlist",
-			  "params": {
-			    "page": 1,
-			    "sort": "",
-			    "col": "",
-			    "rows": 999,
-			    "shrinkToFit": true,
-			    "query": "",
-			    "UIFilters": {},
-			    "filters": [],
-			    "modal": "true",
+            payload = {
+			  app: 'masters',
+			  screen: 'productlist',
+			  clc_id: 'masters_productlist',
+			  params: {
+			    page: 1,
+			    sort: '',
+			    col: '',
+			    rows: 999,
+			    shrinkToFit: true,
+			    query: '',
+			    UIFilters: {},
+			    filters: [],
+			    modal: 'true',
 			  }
-			}
-            $Api_Service.entity.list(payload,function(callback) {
+            };
+            $Api_Service.entity.list(payload, (callback) => {
                 console.log(callback);
-                filteredActiveProducts = []
-                $.each(callback.rows, function(k,v){
+                filteredActiveProducts = [];
+                $.each(callback.rows, (k, v) => {
                 	if (!v.isDeleted) {
-		                filteredActiveProducts.push(v)
+		                filteredActiveProducts.push(v);
                 	}
-                })
+                });
                 ctrl.data = callback.rows;
             });
             ctrl.ui = {
-                "products": {
-                    "columns": [
+                products: {
+                    columns: [
                         {
-                            "name": "checkbox",
-                            "caption": "",
-                            "skipRendering": true,
-                            "alwaysVisible": true,
-                            "sortable": false,
-                            "sortableName": ""
+                            name: 'checkbox',
+                            caption: '',
+                            skipRendering: true,
+                            alwaysVisible: true,
+                            sortable: false,
+                            sortableName: ''
                         },
                         {
-                            "name": "productId",
-                            "caption": "Product ID",
-                            "visible": true,
-                            "sortable": true,
-                            "sortableName": "productId"
+                            name: 'productId',
+                            caption: 'Product ID',
+                            visible: true,
+                            sortable: true,
+                            sortableName: 'productId'
                         },
                         {
-                            "name": "displayName",
-                            "caption": "Name",
-                            "visible": true,
-                            "sortable": true,
-                            "sortableName": "displayName"
+                            name: 'displayName',
+                            caption: 'Name',
+                            visible: true,
+                            sortable: true,
+                            sortableName: 'displayName'
                         },
                         {
-                            "name": "productType",
-                            "caption": "Type",
-                            "visible": true,
-                            "sortable": true,
-                            "sortableName": "productType.name"
+                            name: 'productType',
+                            caption: 'Type',
+                            visible: true,
+                            sortable: true,
+                            sortableName: 'productType.name'
                         },
                         {
-                            "name": "createdBy",
-                            "caption": "Created by",
-                            "visible": true,
-                            "sortable": true,
-                            "sortableName": "createdBy"
+                            name: 'createdBy',
+                            caption: 'Created by',
+                            visible: true,
+                            sortable: true,
+                            sortableName: 'createdBy'
                         },
                         {
-                            "name": "createdOn",
-                            "caption": "Created on",
-                            "visible": true,
-                            "sortable": true,
-                            "sortableName": "createdOn"
+                            name: 'createdOn',
+                            caption: 'Created on',
+                            visible: true,
+                            sortable: true,
+                            sortableName: 'createdOn'
                         },
                         {
-                            "name": "lastModifiedBy",
-                            "caption": "Last modified by",
-                            "visible": true,
-                            "sortable": true,
-                            "sortableName": "lastModifiedBy"
+                            name: 'lastModifiedBy',
+                            caption: 'Last modified by',
+                            visible: true,
+                            sortable: true,
+                            sortableName: 'lastModifiedBy'
                         },
                         {
-                            "name": "lastModifiedOn",
-                            "caption": "Last modified on",
-                            "visible": true,
-                            "sortable": true,
-                            "sortableName": "lastModifiedOn"
+                            name: 'lastModifiedOn',
+                            caption: 'Last modified on',
+                            visible: true,
+                            sortable: true,
+                            sortableName: 'lastModifiedOn'
                         },
                         {
-                            "name": "isDeleted",
-                            "caption": "Status",
-                            "visible": true,
-                            "sortable": true,
-                            "sortableName": "isDeleted"
+                            name: 'isDeleted',
+                            caption: 'Status',
+                            visible: true,
+                            sortable: true,
+                            sortableName: 'isDeleted'
                         },
                     ]
                 }
@@ -119,12 +119,12 @@ angular.module('shiptech').controller('ProductSelectDialogController', ['$scope'
             destroyDataTable();
 
             ctrl.table = initDatatable('#product_select');
-            var info = ctrl.table.page.info();
+            let info = ctrl.table.page.info();
             ctrl.tableOptions.totalRows = ctrl.data.length;
         };
 
         ctrl.toggleSelection = function(index, row) {
-            for (var i = 0; i < ctrl.checkboxes.length; i++) {
+            for (let i = 0; i < ctrl.checkboxes.length; i++) {
                 ctrl.checkboxes[i] = false;
             }
             ctrl.checkboxes[index] = true;
@@ -136,7 +136,6 @@ angular.module('shiptech').controller('ProductSelectDialogController', ['$scope'
             }
             ctrl.selectedCheckbox = null;
             ctrl.filters = changes.filters.currentValue;
-
         };
 
         function destroyDataTable(clearHtml) {
@@ -151,21 +150,22 @@ angular.module('shiptech').controller('ProductSelectDialogController', ['$scope'
                 ctrl.table = null;
             }
         }
+
         /**
          * Initializes the product select datatable.
          * @param {JSON} - The settings to use for DataTable initialization.
          * Must be JSON-normalized to the DataTables settings format!
-         * @return {Object} - The resulting DataTable object.
+         * @returns {Object} - The resulting DataTable object.
          */
         function initDatatable(selector, settings) {
             // Bind and initialize the DataTable.
-            var table = ProductSelectDataTable.init({
+            let table = ProductSelectDataTable.init({
                 selector: selector,
                 dom: 'Bflrt',
-                columnDefs: [{
-                    targets: [0],
+                columnDefs: [ {
+                    targets: [ 0 ],
                     sortable: false
-                }]
+                } ]
             });
             // Re-place (move) the datatable searchbox in the main content menu, as per spec.
             replaceDataTableSearchBox('#product_select_filter', '#search_box_dummy_product');
@@ -175,7 +175,7 @@ angular.module('shiptech').controller('ProductSelectDialogController', ['$scope'
             if (!ctrl.selectedRow) {
                 return;
             }
-            var product = {
+            let product = {
                 product: {
                     name: ctrl.selectedRow.name,
                     id: ctrl.selectedRow.id,

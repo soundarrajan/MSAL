@@ -1,5 +1,5 @@
-angular.module('shiptech.models').factory('filterConfigurationResource', ['$resource', '$state', 'API', 'MOCKUP_MAP', function($resource, $state, API, MOCKUP_MAP) {
-    return $resource(API.BASE_URL_DATA_MASTERS + '/api/masters/:type/:verb', null, {
+angular.module('shiptech.models').factory('filterConfigurationResource', [ '$resource', '$state', 'API', 'MOCKUP_MAP', function($resource, $state, API, MOCKUP_MAP) {
+    return $resource(`${API.BASE_URL_DATA_MASTERS }/api/masters/:type/:verb`, null, {
         // 'getList': {
         //     method: 'POST'
         // },
@@ -9,28 +9,28 @@ angular.module('shiptech.models').factory('filterConfigurationResource', ['$reso
         //         verb: 'get'
         //     }
         // },
-        'getDefaultFiltersConfiguration': {
+        getDefaultFiltersConfiguration: {
             method: 'POST',
             params: {
                 type: 'filterconfigurations',
                 verb: 'get'
             }
         },
-        'saveConfiguration': {
+        saveConfiguration: {
             method: 'POST',
             params: {
                 type: 'filterconfigurations',
                 verb: 'save'
             }
         },
-        'deleteConfiguration': {
+        deleteConfiguration: {
             method: 'POST',
             params: {
                 type: 'filterconfigurations',
                 verb: 'delete'
             }
         },
-        'getFiltersConfigurations': {
+        getFiltersConfigurations: {
             method: 'POST',
             params: {
                 type: 'filterconfigurations',
@@ -38,4 +38,4 @@ angular.module('shiptech.models').factory('filterConfigurationResource', ['$reso
             }
         }
     });
-}])
+} ]);

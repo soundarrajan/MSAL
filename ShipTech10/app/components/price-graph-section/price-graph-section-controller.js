@@ -1,15 +1,15 @@
-angular.module('shiptech').controller('PriceGraphController', ['$scope', '$state', 'STATE', 'groupOfRequestsModel', '$listsCache', 'screenLoader', '$tenantSettings',
+angular.module('shiptech').controller('PriceGraphController', [ '$scope', '$state', 'STATE', 'groupOfRequestsModel', '$listsCache', 'screenLoader', '$tenantSettings',
     function($scope, $state, STATE, groupOfRequestsModel, $listsCache, screenLoader, $tenantSettings) {
         $scope.state = $state;
         $scope.STATE = STATE;
         $scope.logs = {};
-        var ctrl = this;
+        let ctrl = this;
         ctrl.listsCache = $listsCache;
         ctrl.timelineresults = 0;
         ctrl.tenantSettings = $tenantSettings;
         ctrl.find_obj_by_name = function(obj, key, path) {
             // if (!(obj instanceof Array)) return [];
-            
+
             // if (path) {
             //     myObj = angular.copy(obj[path]);
             // } else {
@@ -18,9 +18,9 @@ angular.module('shiptech').controller('PriceGraphController', ['$scope', '$state
             // if (!myObj || !key) return [];
             // if (key in myObj) return [myObj[key]];
             // var res = [];
-           
+
             // _.forEach(myObj, function(v, k) {
-         
+
             //         if (typeof v == "object" && (v = ctrl.find_obj_by_name(v, key)).length) {
             //             if (v[0] != null) {
             //                 if (_.findIndex(res, function(o) {
@@ -30,25 +30,24 @@ angular.module('shiptech').controller('PriceGraphController', ['$scope', '$state
             //                 }
             //             }
             //         }
-                
+
             // });
             // return _.uniqBy(res, 'id');
-            
-            productsList = []
-            $.each(obj.locations, function(locK, locV) {
-                $.each(locV.products, function(prodK, prodV) {
-                	currentProduct = angular.copy(prodV.product);
-                	currentProduct.id = prodV.id
-                    productsList.push(currentProduct);
-                })
-            })
-            return _.uniqBy(productsList, 'id');
 
-        }
+            productsList = [];
+            $.each(obj.locations, (locK, locV) => {
+                $.each(locV.products, (prodK, prodV) => {
+                	currentProduct = angular.copy(prodV.product);
+                	currentProduct.id = prodV.id;
+                    productsList.push(currentProduct);
+                });
+            });
+            return _.uniqBy(productsList, 'id');
+        };
         ctrl.$onChanges = function(changes) {
             ctrl.timelineresults = 0;
-        }
-        var options = {
+        };
+        let options = {
             align: 'center',
             autoResize: true,
             editable: false,
@@ -69,29 +68,27 @@ angular.module('shiptech').controller('PriceGraphController', ['$scope', '$state
         };
 
         $scope.filterSellersLatestOffer = function(timelineData) {
-        	latestOffers = []
-        	$.each(timelineData, function(tdk,tdv){
+        	latestOffers = [];
+        	$.each(timelineData, (tdk, tdv) => {
         		currentSellerHasOffer = 0;
-        		currentSellerId = tdv.seller.id
-        		$.each(latestOffers, function(lok,lov){
+        		currentSellerId = tdv.seller.id;
+        		$.each(latestOffers, (lok, lov) => {
         			if (lov.seller.id == currentSellerId) {
 		        		currentSellerHasOffer = lok;
         			}
-        		})
+        		});
         		if (!currentSellerHasOffer) {
         			latestOffers.push(tdv);
-        		} else {
-        			if (tdv.date > latestOffers[currentSellerHasOffer].date) {
+        		} else if (tdv.date > latestOffers[currentSellerHasOffer].date) {
 	        			latestOffers[currentSellerHasOffer] = tdv;
         			}
-        		}
-        	})	
+        	});
         	return latestOffers;
-        }
+        };
 
         ctrl.generateTimeline = function(request, product, uom, addlCost) {
         	// groupOfRequestsModel.getRequests();
-            groupOfRequestsModel.getPriceTimeline(request, product, uom).then(function(data) {
+            groupOfRequestsModel.getPriceTimeline(request, product, uom).then((data) => {
                 ctrl.timelineresults = data.payload.items.length;
                 if (ctrl.timelineresults > 0) {
                     groups = [];
@@ -99,35 +96,35 @@ angular.module('shiptech').controller('PriceGraphController', ['$scope', '$state
                     timelineData = data.payload.items;
                     price = addlCost ? 'totalPrice' : 'price';
                     baseData = [];
-                    $.each(timelineData, function(k,v){
-                        v.sellerLocationId = v.seller.id + '_' + v.location.id;
-                        baseData.push(v)
-                    })
+                    $.each(timelineData, (k, v) => {
+                        v.sellerLocationId = `${v.seller.id }_${ v.location.id}`;
+                        baseData.push(v);
+                    });
                     groupedItems = _.uniqBy(baseData, 'sellerLocationId');
 
-					latestSellerOfferTimelineData = $scope.filterSellersLatestOffer(timelineData);
+                    latestSellerOfferTimelineData = $scope.filterSellersLatestOffer(timelineData);
 
-                    minimumPrice = _.minBy(latestSellerOfferTimelineData, function(o) {
-                        return o[price]
+                    minimumPrice = _.minBy(latestSellerOfferTimelineData, (o) => {
+                        return o[price];
                     })[price];
-                    _.forEach(groupedItems, function(value) {
+                    _.forEach(groupedItems, (value) => {
                         item = {
                             id: value.sellerLocationId,
                             className: 'groupTable',
-                            content: '<div class="timelineRow"><div class="timelineCell"><b>' + value.seller.name + '</b></div><div class="timelineCell"><b>' + value.location.name + '</b></div></div>',
-                        }
-                        groups.push(item)
-                    }); 
-                    _.forEach(timelineData, function(value, key) {
+                            content: `<div class="timelineRow"><div class="timelineCell"><b>${ value.seller.name }</b></div><div class="timelineCell"><b>${ value.location.name }</b></div></div>`,
+                        };
+                        groups.push(item);
+                    });
+                    _.forEach(timelineData, (value, key) => {
                         item = {
                             id: key,
                             group: value.sellerLocationId,
                             className: minimumPrice == value[price] ? 'minimumPrice' : '',
-                            content: '<b>' + value[price].toString() + '</b>',
+                            content: `<b>${ value[price].toString() }</b>`,
                             start: value.date,
-                            type: "box"
-                        }
-                        items.push(item)
+                            type: 'box'
+                        };
+                        items.push(item);
                     });
                     groups = new vis.DataSet(groups);
                     items = new vis.DataSet(items);
@@ -137,9 +134,9 @@ angular.module('shiptech').controller('PriceGraphController', ['$scope', '$state
                     };
                     ctrl.options = angular.extend(options);
                 } else {
-                    toastr.error('Price Timeline isn`t available for current selection')
+                    toastr.error('Price Timeline isn`t available for current selection');
                 }
             });
-        }
+        };
     }
 ]);

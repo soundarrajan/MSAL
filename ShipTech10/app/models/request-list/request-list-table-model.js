@@ -1,13 +1,13 @@
-angular.module('shiptech.models').factory('requestListTableModel', ['requestListTableResource', 'payloadDataModel',
+angular.module('shiptech.models').factory('requestListTableModel', [ 'requestListTableResource', 'payloadDataModel',
     function(requestListTableResource, payloadDataModel) {
-        var request_data;
-        var payload = {
-            "Order": {"ColumnName": "requestId", "SortOrder": "desc"},
-            "Filters": [],
-            "SearchText": null,
-            "Pagination": {
-                "Skip": 0,
-                "Take": 25
+        let request_data;
+        let payload = {
+            Order: { ColumnName: 'requestId', SortOrder: 'desc' },
+            Filters: [],
+            SearchText: null,
+            Pagination: {
+                Skip: 0,
+                Take: 25
             }
         };
         // var currentModel = new requestListTableModel();
@@ -17,109 +17,115 @@ angular.module('shiptech.models').factory('requestListTableModel', ['requestList
         // }
         /**
          * Retrieve a list of table rows
-         * @return {Object} A requestlistTableModel object
+         * @returns {Object} A requestlistTableModel object
          */
         function getTable(order, pagination, filters, search) {
-            console.log(search)
-            if (typeof order != "undefined" && order !== null) {
+            console.log(search);
+            if (typeof order != 'undefined' && order !== null) {
                 payload.Order = {
-                    "ColumnName": order.column,
-                    "SortOrder": order.order
+                    ColumnName: order.column,
+                    SortOrder: order.order
                 };
             }
-            if (typeof filters != "undefined" && filters !== null) {
+            if (typeof filters != 'undefined' && filters !== null) {
                 payload.PageFilters = {
-                    "Filters": []
+                    Filters: []
                 };
                 payload.PageFilters.Filters = filters;
             }
-            if (typeof search != "undefined" && search !== null) {
+            if (typeof search != 'undefined' && search !== null) {
                 payload.SearchText = search;
             } else {
                 payload.SearchText = null;
             }
-            if (typeof pagination != "undefined" && pagination !== null) {
+            if (typeof pagination != 'undefined' && pagination !== null) {
                 // Pagination
                 payload.Pagination = {
-                    "Skip": pagination.start,
-                    "Take": pagination.length
+                    Skip: pagination.start,
+                    Take: pagination.length
                 };
-            } else payload.Pagination = {
-                "Skip": 0,
-                "Take": 25
-            };
+            } else {
+                payload.Pagination = {
+                    Skip: 0,
+                    Take: 25
+                };
+            }
             request_data = payloadDataModel.create(payload);
-            //TODO: send request data to resource
-            return requestListTableResource.fetchTable(request_data).$promise.then(function(data) {
+            // TODO: send request data to resource
+            return requestListTableResource.fetchTable(request_data).$promise.then((data) => {
                 return data;
             });
         }
+
         /**
          * Retrieve a list of panels
-         * @return {Array} A requestlistTableModel object
+         * @returns {Array} A requestlistTableModel object
          */
         function getPanels(order, pagination) {
-            if (typeof order != "undefined" && order !== null) {
+            if (typeof order != 'undefined' && order !== null) {
                 payload.Order = {
-                    "ColumnName": order.column,
-                    "SortOrder": order.order
+                    ColumnName: order.column,
+                    SortOrder: order.order
                 };
             }
-            if (typeof pagination != "undefined" && pagination !== null) {
+            if (typeof pagination != 'undefined' && pagination !== null) {
                 // Pagination
                 payload.Pagination = {
-                    "Skip": pagination.start,
-                    "Take": pagination.length
+                    Skip: pagination.start,
+                    Take: pagination.length
                 };
             }
             request_data = payloadDataModel.create(payload);
-            //TODO: send request data to resource
-            return requestListTableResource.fetchPanel(request_data).$promise.then(function(data) {
+            // TODO: send request data to resource
+            return requestListTableResource.fetchPanel(request_data).$promise.then((data) => {
                 return new requestListTableModel(data);
             });
         }
+
         /**
          * Export the list of table rows.
-         * @return {Object} A requestlistTableModel object
+         * @returns {Object} A requestlistTableModel object
          */
         function exportList(order, pagination, columns, fileType, filters, search) {
-            var listPayload = angular.copy(payload);
-            if (typeof fileType !== "undefined" && fileType !== null) {
+            let listPayload = angular.copy(payload);
+            if (typeof fileType !== 'undefined' && fileType !== null) {
                 listPayload.ExportType = fileType;
             } else {
                 return $q.reject();
             }
-            if (typeof order != "undefined" && order !== null) {
+            if (typeof order != 'undefined' && order !== null) {
                 listPayload.Order = {
-                    "ColumnName": order.column,
-                    "SortOrder": order.order
+                    ColumnName: order.column,
+                    SortOrder: order.order
                 };
             }
-            if (typeof pagination != "undefined" && pagination !== null) {
+            if (typeof pagination != 'undefined' && pagination !== null) {
                 // Pagination
                 listPayload.Pagination = {
-                    "Skip": pagination.start,
-                    "Take": pagination.length
+                    Skip: pagination.start,
+                    Take: pagination.length
                 };
-            } else listPayload.Pagination = {
-                "Skip": 0,
-                "Take": 10
-            };
-            if (typeof columns != "undefined" && columns !== null) {
+            } else {
+                listPayload.Pagination = {
+                    Skip: 0,
+                    Take: 10
+                };
+            }
+            if (typeof columns != 'undefined' && columns !== null) {
                 listPayload.Columns = columns;
             }
-            var timeZone = jstz().timezone_name;
+            let timeZone = jstz().timezone_name;
             listPayload.timeZone = timeZone;
-            var request_data = payloadDataModel.create(listPayload);
-            return requestListTableResource.export(request_data).$promise.then(function(data) {
+            let request_data = payloadDataModel.create(listPayload);
+            return requestListTableResource.export(request_data).$promise.then((data) => {
                 return data;
-            }).catch(function(error) {
-                //convert error from arraybuffer to string
-                var charCodeArray = Array.apply(null, new Uint8Array(error.data.data));
-                var result = '';
+            }).catch((error) => {
+                // convert error from arraybuffer to string
+                let charCodeArray = Array.apply(null, new Uint8Array(error.data.data));
+                let result = '';
                 for (i = 0, len = charCodeArray.length; i < len; i++) {
                     code = charCodeArray[i];
-                    result += String.fromCharCode(code);
+                    result = result + String.fromCharCode(code);
                 }
             });
         }

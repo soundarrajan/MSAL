@@ -1,27 +1,25 @@
-var HomeWidgetDatatable = function () {
+var HomeWidgetDatatable = (function() {
+    let initTable = function(options) {
+        let table = $(options.selector);
 
-    var initTable = function (options) {
+        let oTable = table.dataTable({
 
-        var table = $(options.selector);
+            paging: true,
 
-        var oTable = table.dataTable({
+            pagingType: 'input',
 
-            "paging": true,
+            pageLength: options.pageLength || 6,
 
-            "pagingType": "input",
+            lengthChange: false,
 
-            "pageLength": options.pageLength || 6,
+            info: true,
 
-            "lengthChange": false,
+            searching: false,
 
-            "info": true,
-
-            "searching": false,
-
-            "language": {
-                "paginate": {
-                    "previous": "&lt;",
-                    "next": "&gt;"
+            language: {
+                paginate: {
+                    previous: '&lt;',
+                    next: '&gt;'
                 }
             },
 
@@ -33,9 +31,8 @@ var HomeWidgetDatatable = function () {
 
     return {
 
-        //main function to initiate the module
-        init: function (options) {
-
+        // main function to initiate the module
+        init: function(options) {
             if (!jQuery().dataTable) {
                 return;
             }
@@ -44,5 +41,4 @@ var HomeWidgetDatatable = function () {
         }
 
     };
-
-}();
+}());

@@ -1,7 +1,5 @@
 function WorksheetsController() {
-
-console.log('WorksheetsController');
-
+    console.log('WorksheetsController');
 }
 
 angular.module('shiptech').component('worksheets', {

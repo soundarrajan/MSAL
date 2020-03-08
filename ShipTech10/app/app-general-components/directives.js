@@ -3,53 +3,52 @@
  * Directives
  */
 window.increment = 0;
-+(function() {
+Number(function() {
     /**
      * Configurable List Control (CLC)
      * {table list} directive
      */
-    APP_GENERAL_COMPONENTS.directive("clcTableList", [
-        "$templateRequest",
-        "$tenantSettings",
-        "$compile",
-        "$Api_Service",
-        "$timeout",
-        "Factory_General_Components",
-        "$http",
-        "$rootScope",
-        "uiApiModel",
-        "dataProcessors",
-        "getExternalFilters",
-        "screenLoader",
-        "tenantService",
-        "$state",
+    APP_GENERAL_COMPONENTS.directive('clcTableList', [
+        '$templateRequest',
+        '$tenantSettings',
+        '$compile',
+        '$Api_Service',
+        '$timeout',
+        'Factory_General_Components',
+        '$http',
+        '$rootScope',
+        'uiApiModel',
+        'dataProcessors',
+        'getExternalFilters',
+        'screenLoader',
+        'tenantService',
+        '$state',
         function($templateRequest, $tenantSettings, $compile, $Api_Service, $timeout, Factory_General_Components, $http, $rootScope, uiApiModel, dataProcessors, getExternalFilters, screenLoader, tenantService, $state) {
             return {
-                restrict: "E",
-                controller: "Controller_Configurable_List_Control as CLC",
+                restrict: 'E',
+                controller: 'Controller_Configurable_List_Control as CLC',
                 scope: {
-                    id: "=",
-                    source: "=",
-                    app: "=",
-                    screen: "=",
-                    controls: "=",
-                    filters: "=",
-                    rowactions: "=",
-                    hasloader: "=",
-                    modal: "="
+                    id: '=',
+                    source: '=',
+                    app: '=',
+                    screen: '=',
+                    controls: '=',
+                    filters: '=',
+                    rowactions: '=',
+                    hasloader: '=',
+                    modal: '='
                 },
                 link: function(scope, element, attrs, CLC) {
-
-					tenantService.procurementSettings.then(function(settings) {
-						procurementSettings = settings.payload;
-					});
+                    tenantService.procurementSettings.then((settings) => {
+                        procurementSettings = settings.payload;
+                    });
                     $rootScope.isModal = scope.modal;
                     $rootScope.modalTableId = scope.id;
-                    $rootScope.listTableSelector = "flat_" + scope.screen.replace("list", "_list");
+                    $rootScope.listTableSelector = `flat_${ scope.screen.replace('list', '_list')}`;
                     $rootScope.sortList = null;
-					console.log(scope.hasloader);
+                    console.log(scope.hasloader);
                     // console.log(CLC);
-                    if (window.Elements && typeof window.Elements.scope[scope.id] === "undefined") {
+                    if (window.Elements && typeof window.Elements.scope[scope.id] === 'undefined') {
                         // console.log(scope);
                         Elements.scope[scope.id] = {};
                         Elements.scope[scope.id].id = scope.id;
@@ -66,69 +65,68 @@ window.increment = 0;
                     scope.tenantSetting = $tenantSettings;
                     CLC.tableParams.PageFilters = {};
                     $rootScope.rawFilters = [];
-                    scope.$on("$stateChangeSuccess", function () {
+                    scope.$on('$stateChangeSuccess', () => {
 	                    CLC.tableParams.PageFilters = {};
-						$rootScope.lastLoadedListPayload = null;
-                        console.log("stateChangeSuccess");
+                        $rootScope.lastLoadedListPayload = null;
+                        console.log('stateChangeSuccess');
                     });
                     checkProcurement = -1;
-                    //else return;
-                    var procurement_apps = [
+                    // else return;
+                    let procurement_apps = [
                         {
-                            name: "requestslist",
-                            editPath: "/edit-request/",
-                            screen: "all-requests-table"
+                            name: 'requestslist',
+                            editPath: '/edit-request/',
+                            screen: 'all-requests-table'
                         },
                         {
-                            name: "scheduleDashboardTable",
-                            editPath: "/edit-request/",
-                            screen: "schedule-dashboard-table"
+                            name: 'scheduleDashboardTable',
+                            editPath: '/edit-request/',
+                            screen: 'schedule-dashboard-table'
                         },
                         {
-                            name: "orderlist",
-                            editPath: "/edit-order/",
-                            screen: "order-list"
+                            name: 'orderlist',
+                            editPath: '/edit-order/',
+                            screen: 'order-list'
                         },
                         {
-                            name: "contractplanning",
-                            screen: "contract-planning"
+                            name: 'contractplanning',
+                            screen: 'contract-planning'
                         }
                     ];
-                    checkProcurement = _.findIndex(procurement_apps, function(o) {
+                    checkProcurement = _.findIndex(procurement_apps, (o) => {
                         return o.name == scope.screen;
                     });
 
-                    var generic_layout = [
+                    let generic_layout = [
                         'entity_documents'
                     ];
-                    checkGenericLayout = _.findIndex(generic_layout, function(s){
+                    checkGenericLayout = _.findIndex(generic_layout, (s) => {
                         return s == scope.id;
                     });
                     // checkGenericLayout = -1;
 
                     scope.initialLayout = {};
 
-                    setTimeout(function(){
+                    setTimeout(() => {
 	                    checkCanBuildTable(scope.id, checkProcurement);
-                    })
+                    });
 
                     function checkCanBuildTable(table_id, checkProcurement) {
                         isDev = 0;
-                        if (window.Elements && typeof window.Elements.scope[table_id].controls !== "undefined" && typeof Elements.scope[table_id].screen !== "undefined" && typeof Elements.scope[table_id].id !== "undefined" && typeof Elements.scope[table_id].app !== "undefined") {
-                            id = scope.modal ? "/" + table_id : "";
+                        if (window.Elements && typeof window.Elements.scope[table_id].controls !== 'undefined' && typeof Elements.scope[table_id].screen !== 'undefined' && typeof Elements.scope[table_id].id !== 'undefined' && typeof Elements.scope[table_id].app !== 'undefined') {
+                            id = scope.modal ? `/${ table_id}` : '';
 
                             if (checkProcurement >= 0) {
                                 appScreen = procurement_apps[checkProcurement].screen;
-                            } else if (table_id == "contractplanning_contractlist") {
-                                appScreen = "contractplanning_contractlist";
+                            } else if (table_id == 'contractplanning_contractlist') {
+                                appScreen = 'contractplanning_contractlist';
                             } else {
-                                appScreen = window.location.hash.replace(/[0-9,\/,#/]/g, "") + id;
+                                appScreen = window.location.hash.replace(/[0-9,\/,#/]/g, '') + id;
                             }
-              
-                            if(checkGenericLayout < 0) {
 
+                            if(checkGenericLayout < 0) {
                                 uiApiModel.getListLayout(appScreen).then(
-                                    function(data) {
+                                    (data) => {
                                         if (data.payload) {
                                             response = data.payload;
                                             layout = JSON.parse(response.layout);
@@ -141,27 +139,27 @@ window.increment = 0;
                                                     clc_id: Elements.scope[table_id].id,
                                                     modal: Elements.scope[table_id].modal
                                                 },
-                                                function(callback) {
+                                                (callback) => {
                                                     if (callback && callback.clc) {
-														if (scope.source) {
-															callback.clc = angular.copy(scope.source);
-														}
-        	                                            $.each(callback.clc.colModel, function(k, v) {
-			                                                v.label = v.label.replace("Service", scope.tenantSetting.serviceDisplayName.name);
-			                                                v.label = v.label.replace("Company", scope.tenantSetting.companyDisplayName.name);
+                                                        if (scope.source) {
+                                                            callback.clc = angular.copy(scope.source);
+                                                        }
+        	                                            $.each(callback.clc.colModel, (k, v) => {
+			                                                v.label = v.label.replace('Service', scope.tenantSetting.serviceDisplayName.name);
+			                                                v.label = v.label.replace('Company', scope.tenantSetting.companyDisplayName.name);
 				                                            if (scope.tenantSetting.companyDisplayName.name == 'Pool') {
-					                                            v.label = v.label.replace("Carrier", scope.tenantSetting.companyDisplayName.name);
+					                                            v.label = v.label.replace('Carrier', scope.tenantSetting.companyDisplayName.name);
 				                                            }
 			                                            });
-                                                        $rootScope.$broadcast("tableLayoutLoaded", initialLayout);
+                                                        $rootScope.$broadcast('tableLayoutLoaded', initialLayout);
                                                         Layout = layout.clc;
                                                         if (!Layout.rowActions) {
                                                         	Layout.rowActions = [];
                                                         }
                                                         Layout.rowActions = Layout.rowActions.concat(callback.clc.rowActions);
-                                                        Layout.rowActions = _.uniqBy(Layout.rowActions, "label");
-                                                        Layout.table_id = Layout.view_type + "_" + Layout.table_name.replace(/ /g, "_").toLowerCase();
-                                                        Layout.pager_id = Layout.view_type + "_" + Layout.table_name.replace(/ /g, "_").toLowerCase() + "_pager";
+                                                        Layout.rowActions = _.uniqBy(Layout.rowActions, 'label');
+                                                        Layout.table_id = `${Layout.view_type }_${ Layout.table_name.replace(/ /g, '_').toLowerCase()}`;
+                                                        Layout.pager_id = `${Layout.view_type }_${ Layout.table_name.replace(/ /g, '_').toLowerCase() }_pager`;
                                                         Layout.defaultColumnList = callback.clc.colModel;
                                                         Layout.matchedColumnList = doLayoutsMatching(initialLayout, callback);
                                                         console.log(Layout.matchedColumnList);
@@ -178,7 +176,7 @@ window.increment = 0;
                                         }
                                         // console.log(data)
                                     },
-                                    function(reason) {
+                                    (reason) => {
                                         // console.log(reason)
                                         loadDefaultUi();
                                     }
@@ -191,34 +189,34 @@ window.increment = 0;
                             // loadDefaultUi()
                             // }
                             function loadDefaultUi() {
-                                if (Elements.scope[table_id].id == "masters_counterpartylist_surveyors" || Elements.scope[table_id].id == "masters_counterpartylist_labs" || Elements.scope[table_id].id == "masters_counterpartylist_physicalsuppliers" || Elements.scope[table_id].id == "masters_counterpartylist_seller" || Elements.scope[table_id].id == "masters_counterpartylist_broker" || Elements.scope[table_id].id == "masters_counterpartylist_barge") {
-                                    id = "masters_counterpartylist";
+                                if (Elements.scope[table_id].id == 'masters_counterpartylist_surveyors' || Elements.scope[table_id].id == 'masters_counterpartylist_labs' || Elements.scope[table_id].id == 'masters_counterpartylist_physicalsuppliers' || Elements.scope[table_id].id == 'masters_counterpartylist_seller' || Elements.scope[table_id].id == 'masters_counterpartylist_broker' || Elements.scope[table_id].id == 'masters_counterpartylist_barge') {
+                                    id = 'masters_counterpartylist';
                                 } else {
                                     id = Elements.scope[table_id].id;
                                 }
                                 // debugger;
-                                var generic_layout = false;
-                                if(id == "entity_documents") {
+                                let generic_layout = false;
+                                if(id == 'entity_documents') {
                                     generic_layout = {
                                         needed: true,
-                                        layout: "entity_documents"
-                                    }
+                                        layout: 'entity_documents'
+                                    };
                                 }
-                                if(id == "entity_audit_log") {
+                                if(id == 'entity_audit_log') {
                                     generic_layout = {
                                         needed: true,
-                                        layout: "entity_audit_log"
-                                    }
-                                }                                
+                                        layout: 'entity_audit_log'
+                                    };
+                                }
                                 $Api_Service.screen.get(
                                     {
                                         app: Elements.scope[table_id].app,
                                         screen: Elements.scope[table_id].screen,
                                         clc_id: id,
                                         generic: generic_layout
-                                        //clc_id: Elements.scope[table_id].selector.split("'")[1]
+                                        // clc_id: Elements.scope[table_id].selector.split("'")[1]
                                     },
-                                    function(cb) {
+                                    (cb) => {
                                         callback = angular.copy(cb);
                                         if (callback && callback.clc) {
                                             callback.id = null;
@@ -227,34 +225,34 @@ window.increment = 0;
                                             }
 	                                    	if ($rootScope.adminConfiguration) {
 		                                    	if ($rootScope.adminConfiguration.contract.hideAllowedProduct) {
-		                                    		if (callback.clc.table_name == "Available Contracts") {
-		                                    			for (var i = callback.clc.colModel.length - 1; i >= 0; i--) {
-		                                    				callback.clc.colModel[i]
-		                                    				if (callback.clc.colModel[i].label == "Allowed Products") {
-		                                    					callback.clc.colModel.splice(i,1);
+		                                    		if (callback.clc.table_name == 'Available Contracts') {
+		                                    			for (let i = callback.clc.colModel.length - 1; i >= 0; i--) {
+		                                    				callback.clc.colModel[i];
+		                                    				if (callback.clc.colModel[i].label == 'Allowed Products') {
+		                                    					callback.clc.colModel.splice(i, 1);
 		                                    				}
 		                                    			}
 		                                    			// $.each(callback.clc.colModel, function(k,v){
 		                                    			// })
 		                                    		}
-		                                    	}                                            
-	                                    	}                                            
-                                            $.each(callback.clc.colModel, function(k, v) {
-                                                v.label = v.label.replace("Service", scope.tenantSetting.serviceDisplayName.name);
-                                                v.label = v.label.replace("Company", scope.tenantSetting.companyDisplayName.name);
+		                                    	}
+	                                    	}
+                                            $.each(callback.clc.colModel, (k, v) => {
+                                                v.label = v.label.replace('Service', scope.tenantSetting.serviceDisplayName.name);
+                                                v.label = v.label.replace('Company', scope.tenantSetting.companyDisplayName.name);
 	                                            if (scope.tenantSetting.companyDisplayName.name == 'Pool') {
-		                                            v.label = v.label.replace("Carrier", scope.tenantSetting.companyDisplayName.name);
+		                                            v.label = v.label.replace('Carrier', scope.tenantSetting.companyDisplayName.name);
 	                                            }
                                             });
                                             initialLayout = angular.copy(callback);
-                                            var Layout = "";
+                                            let Layout = '';
                                             Layout = callback.clc;
                                             // $.each(initialLayout.clc.colModel, function(k, v) {
                                             //     v.cellFormat = v.formatter;
                                             // })
-                                            $rootScope.$broadcast("tableLayoutLoaded", initialLayout);
-                                            Layout.table_id = Layout.view_type + "_" + Layout.table_name.replace(/ /g, "_").toLowerCase();
-                                            Layout.pager_id = Layout.view_type + "_" + Layout.table_name.replace(/ /g, "_").toLowerCase() + "_pager";
+                                            $rootScope.$broadcast('tableLayoutLoaded', initialLayout);
+                                            Layout.table_id = `${Layout.view_type }_${ Layout.table_name.replace(/ /g, '_').toLowerCase()}`;
+                                            Layout.pager_id = `${Layout.view_type }_${ Layout.table_name.replace(/ /g, '_').toLowerCase() }_pager`;
                                             buildTable(Layout, Elements.scope[table_id], false, initialLayout);
                                         }
                                     }
@@ -264,36 +262,54 @@ window.increment = 0;
                             function doLayoutsMatching(userColumns, defaultColumns) {
                                 // console.log(userColumns.clc.colModel);
                                 // console.log(defaultColumns.clc.colModel);
-                                //1. define new col model
-                                var matchedCol = [];
-                                var found = false;
-                                var newCol = null;
+                                // 1. define new col model
+                                let matchedCol = [];
+                                let found = false;
+                                let newCol = null;
                                 if (userColumns.clc.table_name != defaultColumns.clc.table_name) {
                                 	// $state.reload();
 	                            	userColumns.clc.table_name = defaultColumns.clc.table_name;
-                                	toastr.error("The previously saved list configurations is no longer valid therefore the system default configuration has been loaded. Please configure your list preferences again.");
+                                	toastr.error('The previously saved list configurations is no longer valid therefore the system default configuration has been loaded. Please configure your list preferences again.');
                                 	return;
                                 }
-                                if ( scope.source) {
+                                if (scope.source) {
                                 	defaultColumns.clc.colModel = angular.copy(scope.source.colModel);
                                 }
 
-                                //debugger;
-                                //2. loop custom col mod el & match default ones (to keep column order)
-                                $.each(userColumns.clc.colModel, function(_, usr_val) {
-                                    //2.1 check for match in default (based on index or name)
-                                    $.each(defaultColumns.clc.colModel, function(_, def_val) {
+                                // debugger;
+                                // 2. loop custom col mod el & match default ones (to keep column order)
+                                $.each(userColumns.clc.colModel, (_, usr_val) => {
+                                    // 2.1 check for match in default (based on index or name)
+                                    $.each(defaultColumns.clc.colModel, (_, def_val) => {
                                         found = false;
                                         // index
-                                        if (typeof usr_val.index != "undefined") if (typeof def_val.index != "undefined") if (usr_val.index == def_val.index) found = true;
+                                        if (typeof usr_val.index != 'undefined') {
+                                            if (typeof def_val.index != 'undefined') {
+                                                if (usr_val.index == def_val.index) {
+                                                    found = true;
+                                                }
+                                            }
+                                        }
                                         // name
-                                        if (typeof usr_val.name != "undefined") if (typeof def_val.name != "undefined") if (usr_val.name == def_val.name) found = true;
+                                        if (typeof usr_val.name != 'undefined') {
+                                            if (typeof def_val.name != 'undefined') {
+                                                if (usr_val.name == def_val.name) {
+                                                    found = true;
+                                                }
+                                            }
+                                        }
                                         if (found) {
-                                            //keep configuration from users configuration (width / hidden)
+                                            // keep configuration from users configuration (width / hidden)
                                             newCol = angular.copy(usr_val);
-                                            if (typeof usr_val.width != "undefined") newCol.width = usr_val.width;
-                                            if (typeof usr_val.label != "undefined") newCol.label = def_val.label;
-                                            if (typeof usr_val.hidden != "undefined") newCol.hidden = usr_val.hidden;
+                                            if (typeof usr_val.width != 'undefined') {
+                                                newCol.width = usr_val.width;
+                                            }
+                                            if (typeof usr_val.label != 'undefined') {
+                                                newCol.label = def_val.label;
+                                            }
+                                            if (typeof usr_val.hidden != 'undefined') {
+                                                newCol.hidden = usr_val.hidden;
+                                            }
                                             if (def_val.cellFormat) {
 	                                            newCol.cellFormat = def_val.cellFormat;
                                             }
@@ -303,16 +319,28 @@ window.increment = 0;
                                         }
                                     });
                                 });
-                                //3. loop default col model to add new columns
-                                var additionalCols = [];
-                                $.each(defaultColumns.clc.colModel, function(def_key, def_val) {
-                                    //2. check for match in created col model (not to add twice)
+                                // 3. loop default col model to add new columns
+                                let additionalCols = [];
+                                $.each(defaultColumns.clc.colModel, (def_key, def_val) => {
+                                    // 2. check for match in created col model (not to add twice)
                                     found = false;
-                                    $.each(matchedCol, function(new_key, new_val) {
+                                    $.each(matchedCol, (new_key, new_val) => {
                                         // index
-                                        if (typeof def_val.index != "undefined") if (typeof new_val.index != "undefined") if (def_val.index == new_val.index) found = true;
+                                        if (typeof def_val.index != 'undefined') {
+                                            if (typeof new_val.index != 'undefined') {
+                                                if (def_val.index == new_val.index) {
+                                                    found = true;
+                                                }
+                                            }
+                                        }
                                         // name
-                                        if (typeof def_val.name != "undefined") if (typeof new_val.name != "undefined") if (def_val.name == new_val.name) found = true;
+                                        if (typeof def_val.name != 'undefined') {
+                                            if (typeof new_val.name != 'undefined') {
+                                                if (def_val.name == new_val.name) {
+                                                    found = true;
+                                                }
+                                            }
+                                        }
                                     });
                                     if (found) {
                                         // column is already there
@@ -325,22 +353,22 @@ window.increment = 0;
                                 });
                                 // concat
                                 matchedCol = matchedCol.concat(additionalCols);
-                                matchedCol = _.uniqBy(matchedCol, "name");
+                                matchedCol = _.uniqBy(matchedCol, 'name');
                                 // in matched we have matched col model, return it
                                 return matchedCol;
                             }
                         }
                     }
                     // RUN directire after loading ALL dependencies
-                    $timeout(function() {
+                    $timeout(() => {
                         return;
                         isDev = 0;
 
-                        $.each(Elements.scope, function(key, params) {
-                            if (params.id == "masters_counterpartylist_surveyors" || params.id == "masters_counterpartylist_labs" || params.id == "masters_counterpartylist_barge" || params.id == "masters_counterpartylist_physicalsuppliers" || params.id == "masters_counterpartylist_seller" || params.id == "masters_counterpartylist_broker") {
-                                params.id = "masters_counterpartylist";
+                        $.each(Elements.scope, (key, params) => {
+                            if (params.id == 'masters_counterpartylist_surveyors' || params.id == 'masters_counterpartylist_labs' || params.id == 'masters_counterpartylist_barge' || params.id == 'masters_counterpartylist_physicalsuppliers' || params.id == 'masters_counterpartylist_seller' || params.id == 'masters_counterpartylist_broker') {
+                                params.id = 'masters_counterpartylist';
                             }
-                       
+
                             $Api_Service.screen.get(
                                 {
                                     app: params.app,
@@ -348,34 +376,34 @@ window.increment = 0;
                                     clc_id: params.id,
                                     modal: params.modal
                                 },
-                                function(callback) {
-                                    var Layout = "";
+                                (callback) => {
+                                    let Layout = '';
                                     if (scope.source) {
                                     	callback.clc = angular.copy(scope.source);
                                     }
                                     Layout = callback.clc;
                                     if (callback && callback.clc) {
-                                        $.each(callback.clc.colModel, function(k, v) {
-                                            v.label = v.label.replace("Service", scope.tenantSetting.serviceDisplayName.name);
-                                            v.label = v.label.replace("Company", scope.tenantSetting.companyDisplayName.name);
+                                        $.each(callback.clc.colModel, (k, v) => {
+                                            v.label = v.label.replace('Service', scope.tenantSetting.serviceDisplayName.name);
+                                            v.label = v.label.replace('Company', scope.tenantSetting.companyDisplayName.name);
                                             if (scope.tenantSetting.companyDisplayName.name == 'Pool') {
-	                                            v.label = v.label.replace("Carrier", scope.tenantSetting.companyDisplayName.name);
+	                                            v.label = v.label.replace('Carrier', scope.tenantSetting.companyDisplayName.name);
                                             }
                                         });
                                     	if ($rootScope.adminConfiguration) {
 	                                    	if ($rootScope.adminConfiguration.contract.hideAllowedProduct) {
-	                                    		if (callback.clc.table_name == "Available Contracts") {
-	                                    			$.each(callback.clc.colModel, function(k,v){
-	                                    				if (v.label == "Allowed Products") {
-	                                    					callback.clc.colModel.splice(k,1);
+	                                    		if (callback.clc.table_name == 'Available Contracts') {
+	                                    			$.each(callback.clc.colModel, (k, v) => {
+	                                    				if (v.label == 'Allowed Products') {
+	                                    					callback.clc.colModel.splice(k, 1);
 	                                    				}
-	                                    			})
+	                                    			});
 	                                    		}
 	                                    	}
                                     	}
 
-                                        Layout.table_id = Layout.view_type + "_" + Layout.table_name.replace(/ /g, "_").toLowerCase();
-                                        Layout.pager_id = Layout.view_type + "_" + Layout.table_name.replace(/ /g, "_").toLowerCase() + "_pager";
+                                        Layout.table_id = `${Layout.view_type }_${ Layout.table_name.replace(/ /g, '_').toLowerCase()}`;
+                                        Layout.pager_id = `${Layout.view_type }_${ Layout.table_name.replace(/ /g, '_').toLowerCase() }_pager`;
                                         buildTable(Layout, params);
                                     }
                                 }
@@ -384,51 +412,49 @@ window.increment = 0;
                     });
 
                     function buildTable(newValue, attrs, customLayout, initialLayout) {
-                   
                         if (newValue.matchedColumnList) {
                             // if there is a matched column list, build table with that
                             newValue.colModel = newValue.matchedColumnList;
                             // toastr.info('The default layout for this page has changed. Please check additional columns from settings and save your new layout.');
                         }
 
-                    	if (attrs.screen == "scheduleDashboardTable") {
+                    	if (attrs.screen == 'scheduleDashboardTable') {
                     		for (var i = newValue.colModel.length - 1; i >= 0; i--) {
-                    			if (newValue.colModel[i].name == "voyageDetail.deliveryFrom" || newValue.colModel[i].name == "voyageDetail.deliveryTo") {
+                    			if (newValue.colModel[i].name == 'voyageDetail.deliveryFrom' || newValue.colModel[i].name == 'voyageDetail.deliveryTo') {
                     				if (procurementSettings.request.deliveryWindowDisplay.id == 2) {
-	                					newValue.colModel.splice(i,1);
+	                					newValue.colModel.splice(i, 1);
                     				}
                     			}
                     		}
                     	}
-                        if (attrs.screen == "orderlist") {
+                        if (attrs.screen == 'orderlist') {
                             for (var i = newValue.colModel.length - 1; i >= 0; i--) {
-                                if (newValue.colModel[i].name == "isVerified.name" || newValue.colModel[i].name == "verifiedBy.displayName"  || newValue.colModel[i].name == "verifiedOn" ) {
+                                if (newValue.colModel[i].name == 'isVerified.name' || newValue.colModel[i].name == 'verifiedBy.displayName' || newValue.colModel[i].name == 'verifiedOn') {
                                     if (procurementSettings.order.orderVerificationReq.id == 2) {
-                                        newValue.colModel.splice(i,1);
+                                        newValue.colModel.splice(i, 1);
                                     }
                                 }
                             }
                             for (var i = newValue.rowActions.length - 1; i >= 0; i--) {
-                                if (newValue.rowActions[i].name == "") {
+                                if (newValue.rowActions[i].name == '') {
                                     if (procurementSettings.order.orderVerificationReq.id == 2) {
-                                        newValue.rowActions.splice(i,1);
+                                        newValue.rowActions.splice(i, 1);
                                     }
                                 }
-
                             }
                         }
 
                         if (scope.source) {
-                            console.log("clc static src:", scope.source);
+                            console.log('clc static src:', scope.source);
                             // newValue = scope.source;
                         }
                         // console.log(attrs.modal)
                         CLC.tableParams.modal = attrs.modal;
                         // {end} load static layout from source (#dev)
                         // disable row actions -- @liviu.m
-                        if (scope.rowactions == "false") {
-                            console.log("CLC SCOPE", scope.rowactions);
-                            console.log("CLC VAL", newValue);
+                        if (scope.rowactions == 'false') {
+                            console.log('CLC SCOPE', scope.rowactions);
+                            console.log('CLC VAL', newValue);
                             newValue.rowActions = [];
                         } else {
                             // show actions :)
@@ -449,18 +475,18 @@ window.increment = 0;
                         // });
 
                         // }
-                        //CLC.tableConfig();
+                        // CLC.tableConfig();
                         // current view && next view
-              
-                        var table_view = newValue.view_type;
+
+                        let table_view = newValue.view_type;
                         // IDs
-                        var table_id = newValue.table_id;
-                        var pager_id = newValue.pager_id;
+                        let table_id = newValue.table_id;
+                        let pager_id = newValue.pager_id;
                         // Add settings
                         Elements.settings[table_id] = {
-                            table: "",
-                            pager: "",
-                            source: ""
+                            table: '',
+                            pager: '',
+                            source: ''
                         };
                         // Update settings
                         Elements.settings[table_id].shrinkToFit = false;
@@ -472,134 +498,132 @@ window.increment = 0;
                         Elements.settings[table_id].caption = Elements.settings[table_id].source.table_name;
                         Elements.settings[table_id].table = table_id;
                         // Elements.settings[table_id].PageFilters = CLC.tableParams.PageFilters;
-                        //Elements.settings[table_id].pager = pager_id;
-                        //Elements.settings[table_id].source.url = 'http://shiptech.dev.ascensys.ro/clc2/' + Elements.settings[table_id].source.url;
+                        // Elements.settings[table_id].pager = pager_id;
+                        // Elements.settings[table_id].source.url = 'http://shiptech.dev.ascensys.ro/clc2/' + Elements.settings[table_id].source.url;
                         Elements.settings[table_id].source.multiSort = true;
                         Elements.settings[table_id].source.datastr = [];
                         // Update jQgrid Object
-                    
+
                         if (Elements.scope[attrs.id].modal) {
                             Elements.settings[table_id].source.height = window.innerHeight / 1.8;
                             if (scope.id != 'procurement_rfqrequestslist') {
 	                            Elements.settings[table_id].source.colModel.unshift({
-	                                label: "Actions-checkboxes",
-	                                name: "actions-checkboxes",
+	                                label: 'Actions-checkboxes',
+	                                name: 'actions-checkboxes',
 	                                key: true,
 	                                width: 32,
 	                                sortable: false,
 	                                resizable: false,
 	                                frozen: true,
 	                                fixed: true,
-	                                cellFormat: "modal_check"
+	                                cellFormat: 'modal_check'
 	                            });
 	                            Elements.settings[table_id].source.radioselect = true;
                             } else {
 	                            Elements.settings[table_id].source.multiselect = true;
                             }
                         } else {
-                            Elements.settings[table_id].source.height = "50vh";
-                        	if (table_id != "flat_available_contracts") {
-	                            Elements.settings[table_id].source.height = "calc(100vh - 400px)";
-                        	} 
-                        	if (table_id == "flat_audit_log") {
-	                            Elements.settings[table_id].source.height = "calc(100vh - 340px)";
+                            Elements.settings[table_id].source.height = '50vh';
+                        	if (table_id != 'flat_available_contracts') {
+	                            Elements.settings[table_id].source.height = 'calc(100vh - 400px)';
+                        	}
+                        	if (table_id == 'flat_audit_log') {
+	                            Elements.settings[table_id].source.height = 'calc(100vh - 340px)';
                         	}
                         }
-                 
-                        Elements.settings[table_id].source.pager = "#" + Elements.settings[table_id].pager;
+
+                        Elements.settings[table_id].source.pager = `#${ Elements.settings[table_id].pager}`;
 
                         Elements.settings[table_id].source.colModel = dataProcessors.formatClcColumns(Elements.settings[table_id].source.colModel, CLC, scope.tenantSetting);
 
                         function initAfterLoad(params) {
-                            
                             // set items per page
-                            if ($(Elements.table[Elements.settings[table_id].table]).jqGrid("getGridParam", "rowNum") > 9999) {
-                                $(Elements.table[Elements.settings[table_id].table]).jqGrid("setGridParam", {
+                            if ($(Elements.table[Elements.settings[table_id].table]).jqGrid('getGridParam', 'rowNum') > 9999) {
+                                $(Elements.table[Elements.settings[table_id].table]).jqGrid('setGridParam', {
                                     rowNum: Elements.settings[table_id].source.rowNum
                                 });
                             }
                             if (Elements.scope[attrs.id].modal) {
-                                $(Elements.table[Elements.settings[table_id].table]).jqGrid("setGridParam", {
+                                $(Elements.table[Elements.settings[table_id].table]).jqGrid('setGridParam', {
                                     // multiselect: true,
                                 });
                             }
-                            $(Elements.table[Elements.settings[table_id].table]).jqGrid("setGridParam", {
+                            $(Elements.table[Elements.settings[table_id].table]).jqGrid('setGridParam', {
                                 customList: Layout.defaultColumnList
                             });
                             // API GET DATA
-                            str_app = attrs.app.replace(/'/g, "");
+                            str_app = attrs.app.replace(/'/g, '');
                             if (scope.filters) {
                                 CLC.tableParams.filters = scope.filters;
                             }
                             if (scope.Filters) {
                                 CLC.tableParams.Filters = scope.Filters;
                             }
-                            if (scope.id == "admin_userlist" && scope.$root.currentColumnRoute.indexOf("claims") != -1) {
+                            if (scope.id == 'admin_userlist' && scope.$root.currentColumnRoute.indexOf('claims') != -1) {
                                 if (CLC.tableParams.PageFilters.length == 0) {
-                                        CLC.tableParams.PageFilters =  [
-                                            {                   
-                                                "ColumnName": "IsDeleted",
-                                                "ColumnType": "Bool",
-                                                "ColumnValue": "IsDeleted",
-                                                "ConditionValue": "=",
-                                                "Values": ["0"],
-                                                "FilterOperator": 0,
-                                                "isComputedColumn": false
-                                            }
-                                        ];
+                                    CLC.tableParams.PageFilters = [
+                                        {
+                                            ColumnName: 'IsDeleted',
+                                            ColumnType: 'Bool',
+                                            ColumnValue: 'IsDeleted',
+                                            ConditionValue: '=',
+                                            Values: [ '0' ],
+                                            FilterOperator: 0,
+                                            isComputedColumn: false
+                                        }
+                                    ];
                                 } else {
-                                    var obj = 
-                                            {                   
-                                                "ColumnName": "IsDeleted",
-                                                "ColumnType": "Bool",
-                                                "ColumnValue": "IsDeleted",
-                                                "ConditionValue": "=",
-                                                "Values": ["0"],
-                                                "FilterOperator": 0,
-                                                "isComputedColumn": false
-                                            }
-                        
+                                    let obj =
+                                            {
+                                                ColumnName: 'IsDeleted',
+                                                ColumnType: 'Bool',
+                                                ColumnValue: 'IsDeleted',
+                                                ConditionValue: '=',
+                                                Values: [ '0' ],
+                                                FilterOperator: 0,
+                                                isComputedColumn: false
+                                            };
+
                                     CLC.tableParams.PageFilters.push(obj);
                                 }
-
                             }
-                            // console.log(CLC) 
+                            // console.log(CLC)
                             // if (CLC.tableParams.PageFilters) {
 
                             // $rootScope.sortList = []task
                             if (CLC.tableParams.PageFilters && CLC.tableParams.PageFilters.sortList) {
                                 $rootScope.sortList = CLC.tableParams.PageFilters.sortList;
                             } else {
-                                var sortList = [];
-                                if ($(Elements.table[Elements.settings[table_id].table]).jqGrid("getGridParam", "sortname")) {
-                                    var col = $(Elements.table[Elements.settings[table_id].table]).jqGrid("getGridParam", "sortname");
-                                    var sort = $(Elements.table[Elements.settings[table_id].table]).jqGrid("getGridParam", "sortorder");
-                                    var directionsNames = { asc: 1, desc: 2, none: 0 };
+                                let sortList = [];
+                                if ($(Elements.table[Elements.settings[table_id].table]).jqGrid('getGridParam', 'sortname')) {
+                                    let col = $(Elements.table[Elements.settings[table_id].table]).jqGrid('getGridParam', 'sortname');
+                                    let sort = $(Elements.table[Elements.settings[table_id].table]).jqGrid('getGridParam', 'sortorder');
+                                    let directionsNames = { asc: 1, desc: 2, none: 0 };
                                     // $.each(existingSortName, function(k, v) {
                                     if (directionsNames[sort] > 0) {
                                         console.log(121);
-                                        sortList.push({ columnValue: col.replace(/\./g, "_").toLowerCase(), sortIndex: 0, sortParameter: directionsNames[sort] });
+                                        sortList.push({ columnValue: col.replace(/\./g, '_').toLowerCase(), sortIndex: 0, sortParameter: directionsNames[sort] });
                                     }
                                     // });
                                     if (!CLC.tableParams.PageFilters) {
-                                    	CLC.tableParams.PageFilters = {}
+                                    	CLC.tableParams.PageFilters = {};
                                     }
                                     CLC.tableParams.PageFilters.sortList = sortList;
                                 }
                                 $rootScope.sortList = sortList;
                             }
-                            if (localStorage.getItem("scheduleDates")) {
-                                startDate = JSON.parse(localStorage.getItem("scheduleDates"))["start"];
-                                endDate = JSON.parse(localStorage.getItem("scheduleDates"))["end"];
+                            if (localStorage.getItem('scheduleDates')) {
+                                startDate = JSON.parse(localStorage.getItem('scheduleDates')).start;
+                                endDate = JSON.parse(localStorage.getItem('scheduleDates')).end;
                                 CLC.tableParams.dates = {
                                     startDate: startDate,
                                     endDate: endDate
                                 };
                             }
 
-                            if (localStorage.getItem("scheduleDatesTable")) {
-                                startDate = JSON.parse(localStorage.getItem("scheduleDatesTable"))["start"];
-                                endDate = JSON.parse(localStorage.getItem("scheduleDatesTable"))["end"];
+                            if (localStorage.getItem('scheduleDatesTable')) {
+                                startDate = JSON.parse(localStorage.getItem('scheduleDatesTable')).start;
+                                endDate = JSON.parse(localStorage.getItem('scheduleDatesTable')).end;
                                 CLC.tableParams.tableDates = {
                                     startDate: startDate,
                                     endDate: endDate
@@ -607,73 +631,73 @@ window.increment = 0;
                             }
                             $rootScope.$broadcast('colModel', Elements.settings[table_id].source.colModel);
                             if (Elements.settings[table_id].source.rowNum) {
-                            	CLC.tableParams.rows = Elements.settings[table_id].source.rowNum
+                            	CLC.tableParams.rows = Elements.settings[table_id].source.rowNum;
                             }
-                            if ($(Elements.table[Elements.settings[table_id].table]).jqGrid("getGridParam", "rowNum")) {
-                            	CLC.tableParams.rows = $(Elements.table[Elements.settings[table_id].table]).jqGrid("getGridParam", "rowNum")
+                            if ($(Elements.table[Elements.settings[table_id].table]).jqGrid('getGridParam', 'rowNum')) {
+                            	CLC.tableParams.rows = $(Elements.table[Elements.settings[table_id].table]).jqGrid('getGridParam', 'rowNum');
                             }
-                           screenLoader.showLoader();
-                           if ($('[data-entries-select]').length > 0) {
+                            screenLoader.showLoader();
+                            if ($('[data-entries-select]').length > 0) {
 	                           if (parseFloat($('[data-entries-select]').val()) != CLC.tableParams.rows) {
 		                           	CLC.tableParams.rows = $('[data-entries-select]').val();
 	                           }
-                           }
+                            }
 
-                            var listPayload = {
+                            let listPayload = {
                                 app: attrs.app,
                                 screen: attrs.screen,
                                 clc_id: attrs.id,
                                 params: CLC.tableParams
                             };
 
-                            if ((JSON.stringify(listPayload) === $rootScope.lastLoadedListPayload) && !Elements.scope[attrs.id].modal) {
+                            if (JSON.stringify(listPayload) === $rootScope.lastLoadedListPayload && !Elements.scope[attrs.id].modal) {
                                 return;
                             }
-                            $.each(listPayload.params.PageFilters, function(k, v) {
-                                if (typeof listPayload.params.PageFilters[k] != "undefined") {
-                                    if (listPayload.params.PageFilters[k].columnValue == "IsVerified_Name") {
-                                        listPayload.params.PageFilters[k].ColumnType = "YesNo";
-                                        if (listPayload.params.PageFilters[k].Values[0] == "1") {
-                                            listPayload.params.PageFilters[k].Values[0] = "Yes";
-                                        } else if(listPayload.params.PageFilters[k].Values[0] == "0") {
-                                             listPayload.params.PageFilters[k].Values[0] = "No";
+                            $.each(listPayload.params.PageFilters, (k, v) => {
+                                if (typeof listPayload.params.PageFilters[k] != 'undefined') {
+                                    if (listPayload.params.PageFilters[k].columnValue == 'IsVerified_Name') {
+                                        listPayload.params.PageFilters[k].ColumnType = 'YesNo';
+                                        if (listPayload.params.PageFilters[k].Values[0] == '1') {
+                                            listPayload.params.PageFilters[k].Values[0] = 'Yes';
+                                        } else if(listPayload.params.PageFilters[k].Values[0] == '0') {
+                                            listPayload.params.PageFilters[k].Values[0] = 'No';
                                         }
-                                     }
+                                    }
                                 }
-                            })
+                            });
                             $rootScope.lastLoadedListPayload = JSON.stringify(listPayload);
-							if (scope.hasloader) {
+                            if (scope.hasloader) {
 
-							}
-							if (scope.hasloader) {
-								$(Elements.table[Elements.settings[table_id].table]).parents("clc-table-list").addClass("loading");
-							}
+                            }
+                            if (scope.hasloader) {
+                                $(Elements.table[Elements.settings[table_id].table]).parents('clc-table-list').addClass('loading');
+                            }
                             $Api_Service.entity.list(listPayload,
-                                function(callback) {
-									$(Elements.table[Elements.settings[table_id].table]).parents("clc-table-list").removeClass("loading");
+                                (callback) => {
+                                    $(Elements.table[Elements.settings[table_id].table]).parents('clc-table-list').removeClass('loading');
                                     if (callback) {
-                                        if(table_id === "flat_email_log_list") {
-                                          $.each(callback.rows, function(k, v) {
-                                            if(v.to && typeof(v.to) === 'string') {
-                                              v.to = v.to.replace(/,/g, ';');
-                                            }
-                                            if(v.cc && typeof(v.cc) === 'string') {
-                                              v.cc = v.cc.replace(/,/g, ';');
-                                            }
-                                            if(v.bcc && typeof(v.bcc) === 'string') {
-                                              v.bcc = v.bcc.replace(/,/g, ';');
-                                            }
-                                          });
+                                        if(table_id === 'flat_email_log_list') {
+                                            $.each(callback.rows, (k, v) => {
+                                                if(v.to && typeof v.to === 'string') {
+                                                    v.to = v.to.replace(/,/g, ';');
+                                                }
+                                                if(v.cc && typeof v.cc === 'string') {
+                                                    v.cc = v.cc.replace(/,/g, ';');
+                                                }
+                                                if(v.bcc && typeof v.bcc === 'string') {
+                                                    v.bcc = v.bcc.replace(/,/g, ';');
+                                                }
+                                            });
                                         }
                                         oldTableParams = angular.copy(CLC.tableParams);
                                         // debugger;
                                         // store all grid data (rows)
                                         $(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.gridData = callback.rows;
-                                        console.log("GRID DATA", $(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.gridData);
-                                        $rootScope.$broadcast("gridDataDone", CLC.tableParams);
+                                        console.log('GRID DATA', $(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.gridData);
+                                        $rootScope.$broadcast('gridDataDone', CLC.tableParams);
 
-                                        /*RESET SELECTED DATA AFTER LIST CHANGE*/
-                                        if (scope.id == "deliveries_transactionstobeinvoiced") {
+                                        /* RESET SELECTED DATA AFTER LIST CHANGE*/
+                                        if (scope.id == 'deliveries_transactionstobeinvoiced') {
 	                                        scope.selectedProductIds = [];
 	                                        scope.rowsProduct = [];
 	                                        scope.selectedOrderAdditionalCostId = [];
@@ -681,41 +705,42 @@ window.increment = 0;
 	                                        $('#flat_invoices_app_deliveries_list').jqGrid.Ascensys.selectedOrderAdditionalCostId = [];
 	                                        $('#flat_invoices_app_deliveries_list').jqGrid.Ascensys.rowsProduct = [];
                                         }
-                                        /*(END) RESET SELECTED DATA AFTER LIST CHANGE*/
+
+                                        /* (END) RESET SELECTED DATA AFTER LIST CHANGE*/
 
 
                                         // VERTICALS SCROLLBAR
                                         // $(".ui-jqgrid-bdiv")css("width", "100%");
-	                                        $(".ui-jqgrid-view").on("scroll", function(){
-	                                        	offsetChild = $(this).children(".ui-jqgrid-bdiv").offset().left - $(this).children(".ui-jqgrid-bdiv").offsetParent().offset().left
-	                                        	$(this).children(".ui-jqgrid-bdiv").css("min-width", parseFloat($(this).css("width")) - parseFloat(offsetChild) + "px");
-	                                        })
-				                        	if (table_id == "flat_available_contracts") { 
-		                                        $(".ui-jqgrid-bdiv").css("max-height", $(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.gridData.length * 60 + 15 + "px")
+	                                        $('.ui-jqgrid-view').on('scroll', function() {
+	                                        	offsetChild = $(this).children('.ui-jqgrid-bdiv').offset().left - $(this).children('.ui-jqgrid-bdiv').offsetParent().offset().left;
+	                                        	$(this).children('.ui-jqgrid-bdiv').css('min-width', `${parseFloat($(this).css('width')) - parseFloat(offsetChild) }px`);
+	                                        });
+				                        	if (table_id == 'flat_available_contracts') {
+		                                        $('.ui-jqgrid-bdiv').css('max-height', `${$(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.gridData.length * 60 + 15 }px`);
 				                        	} else {
 		                                        // $(".ui-jqgrid-bdiv").css("max-height", $(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.gridData.length * 37 + 15 + "px")
 				                        	}
                                         // END VERTICALS SCROLLBAR
-                                        // 
+                                        //
                                         // REMOVE MASTER LINKS FROM LOOKUPS
-	                                        setTimeout(function(){
-												var styles = {
-													pointerEvents : "none",
-													color: "#333",
-													cursor: "default",
-													textDecoration: "none"
-												}
-	 	                                        $(".modal-content td .formatter.edit_link").parent("a").removeAttr("href");
-		                                        $(".modal-content td .formatter.edit_link").parent("a").css(styles);
-		                                        $(".modal-content td a .formatter.edit_link").css(styles);
-	                                        })
+	                                        setTimeout(() => {
+                                            let styles = {
+                                                pointerEvents : 'none',
+                                                color: '#333',
+                                                cursor: 'default',
+                                                textDecoration: 'none'
+                                            };
+	 	                                        $('.modal-content td .formatter.edit_link').parent('a').removeAttr('href');
+		                                        $('.modal-content td .formatter.edit_link').parent('a').css(styles);
+		                                        $('.modal-content td a .formatter.edit_link').css(styles);
+	                                        });
                                         // REMOVE MASTER LINKS FROM LOOKUPS
-										Elements.settings[table_id].source.height = "10vh";
+                                        Elements.settings[table_id].source.height = '10vh';
 
                                         // apply hstyle
-                                        $.each(Elements.settings[table_id].source.colModel, function(key, obj) {
-                                        	if (obj.formatter.name == "order_list_checkbox") {
-                                        		$('th[id*="' + obj.name + '"]').addClass("order_list_checkbox");
+                                        $.each(Elements.settings[table_id].source.colModel, (key, obj) => {
+                                        	if (obj.formatter.name == 'order_list_checkbox') {
+                                        		$(`th[id*="${ obj.name }"]`).addClass('order_list_checkbox');
                         		            	if (procurementSettings.order.orderVerificationReq.id == 1) {
 									            		// $rootScope.selectedOrderListRows = [];
 									            		// $scope.selectOrders = []
@@ -727,24 +752,24 @@ window.increment = 0;
 								            	}
                                         	}
                                             if (obj.hstyle) {
-                                                $('th[id*="' + obj.name + '"]').addClass("hstyle-color-" + obj.hstyle.color);
-                                                $('th[id*="' + obj.name + '"]').addClass("hstyle-background-" + obj.hstyle.background);
+                                                $(`th[id*="${ obj.name }"]`).addClass(`hstyle-color-${ obj.hstyle.color}`);
+                                                $(`th[id*="${ obj.name }"]`).addClass(`hstyle-background-${ obj.hstyle.background}`);
                                             }
                                         });
                                         // console.log(CLC);
                                         // console.log($rootScope);
 
                                         // if (CLC.tableParams) {
-                                    
-                                        if ($rootScope.sortList) {
-                                            $(".colMenu")
-                                                .parent()
-                                                .removeClass("sortednone sortedasc sorteddesc");
-                                            $.each($rootScope.sortList, function(k, v) {
-                                                var directionsNames = ["none", "asc", "desc"];
 
-                                                var column = v.columnValue;
-                                                var sort = v.sortParameter;
+                                        if ($rootScope.sortList) {
+                                            $('.colMenu')
+                                                .parent()
+                                                .removeClass('sortednone sortedasc sorteddesc');
+                                            $.each($rootScope.sortList, (k, v) => {
+                                                let directionsNames = [ 'none', 'asc', 'desc' ];
+
+                                                let column = v.columnValue;
+                                                let sort = v.sortParameter;
 
                                                 if (column == '[open]') {
                                                     column = 'open';
@@ -757,11 +782,11 @@ window.increment = 0;
                                                 if (v.col) {
                                                     column = v.col;
                                                 }
-                                      
+
                                                 // console.log(column, directionsNames[sort]);
-                                                $('.colMenu[data-sortCol="' + column.toLowerCase() + '"]')
+                                                $(`.colMenu[data-sortCol="${ column.toLowerCase() }"]`)
                                                     .parent()
-                                                    .addClass("sorted" + directionsNames[sort]);
+                                                    .addClass(`sorted${ directionsNames[sort]}`);
                                             });
                                         }
 
@@ -769,30 +794,30 @@ window.increment = 0;
                                         // -end- apply hstyle
                                         Elements.settings[table_id].source.datastr = callback.rows;
                                         // Elements.settings[table_id].source.tableParams = angular.copy(CLC.tableParams);
-                                        $(Elements.table[Elements.settings[table_id].table]).jqGrid("Ascensys.setPages", {
+                                        $(Elements.table[Elements.settings[table_id].table]).jqGrid('Ascensys.setPages', {
                                             page: CLC.tableParams.page,
                                             total: callback.total
                                         });
-                                        $.each(Object.keys(Elements.settings), function(key, val) {
-                                            $(Elements.table[Elements.settings[val].table]).jqGrid("clearGridData");
-                                            for (var i = 0; i < Elements.settings[val].source.datastr.length; i++) {
+                                        $.each(Object.keys(Elements.settings), (key, val) => {
+                                            $(Elements.table[Elements.settings[val].table]).jqGrid('clearGridData');
+                                            for (let i = 0; i < Elements.settings[val].source.datastr.length; i++) {
                                                 try {
-                                                    $(Elements.table[Elements.settings[val].table]).jqGrid("addRowData", i + 1, Elements.settings[val].source.datastr[i]);
+                                                    $(Elements.table[Elements.settings[val].table]).jqGrid('addRowData', i + 1, Elements.settings[val].source.datastr[i]);
                                                 } catch (e) {
                                                     console.log(e);
                                                 }
                                             }
                                         });
 
-                                        if (typeof Elements.scope[scope.id].controls !== "undefined" && Elements.scope[scope.id].controls !== "") {
-                                            $(Elements.table[Elements.settings[table_id].table]).jqGrid("Ascensys.selectControls", Elements.scope[scope.id].controls);
+                                        if (typeof Elements.scope[scope.id].controls !== 'undefined' && Elements.scope[scope.id].controls !== '') {
+                                            $(Elements.table[Elements.settings[table_id].table]).jqGrid('Ascensys.selectControls', Elements.scope[scope.id].controls);
                                         }
-                                        $(Elements.table[Elements.settings[table_id].table]).jqGrid("Ascensys.storeGridObject", callback);
-                                        $(Elements.table[Elements.settings[table_id].table]).jqGrid("Ascensys.load");
+                                        $(Elements.table[Elements.settings[table_id].table]).jqGrid('Ascensys.storeGridObject', callback);
+                                        $(Elements.table[Elements.settings[table_id].table]).jqGrid('Ascensys.load');
                                         $rootScope.clc_loaded = true;
                                         // console.log(scope);
-                                        $("clc-table-list > *").unbind();
-                                        $compile($("clc-table-list > *"))(scope);
+                                        $('clc-table-list > *').unbind();
+                                        $compile($('clc-table-list > *'))(scope);
                                         CLC.search_table = table_id;
                                         MCScustom.load();
                                         // if (!customLayout) resizeTableWidth();
@@ -808,26 +833,26 @@ window.increment = 0;
                                             tableData: callback
                                             // layout: scope.initialLayout
                                         };
-                                        $rootScope.$broadcast("tableLoaded", triggePayload);
+                                        $rootScope.$broadcast('tableLoaded', triggePayload);
                                         $rootScope.lastLoadedListPayload = null;
                                         $('select[name="asc_jqgrid__entries-entries"]').val(oldTableParams.rows);
-                                        
-                                        $rootScope.getGlobalFilters().then(function(data) {
+
+                                        $rootScope.getGlobalFilters().then((data) => {
                                             if (data) {
-                                                $(Elements.table[Elements.settings[table_id].table]).jqGrid("Ascensys.columnFilters", data);
+                                                $(Elements.table[Elements.settings[table_id].table]).jqGrid('Ascensys.columnFilters', data);
                                                 CLC.tableParams.unpackedFilters = data;
                                             }
                                         });
 
-                                        $('select[name="asc_jqgrid__entries-entries"] option[value="999999"]').text("All");
+                                        $('select[name="asc_jqgrid__entries-entries"] option[value="999999"]').text('All');
                                     }
                                 }
                             );
                         }
                         // On Load Complete
                         Elements.settings[table_id].source.loadComplete = function(params) {
-                            if ($rootScope.getConfigurationForTableLoad && typeof $rootScope.getConfigurationForTableLoad == "function") {
-                                $rootScope.getConfigurationForTableLoad().then(function(data) {
+                            if ($rootScope.getConfigurationForTableLoad && typeof $rootScope.getConfigurationForTableLoad == 'function') {
+                                $rootScope.getConfigurationForTableLoad().then((data) => {
                                     if (data) {
                                         if (!jQuery.isEmptyObject(data)) {
                                             console.log(data);
@@ -845,82 +870,83 @@ window.increment = 0;
                             }
                         };
 
-        
+
                         Elements.settings[table_id].source.resizeStop = function(width, index) {
-                            $(".ui-jqgrid-view,.ui-jqgrid-bdiv,.ui-jqgrid-hdiv").width($(Elements.table[Elements.settings[table_id].table]).width());
+                            $('.ui-jqgrid-view,.ui-jqgrid-bdiv,.ui-jqgrid-hdiv').width($(Elements.table[Elements.settings[table_id].table]).width());
                             MCScustom.load();
                         };
                         Elements.settings[table_id].source.sortupdate = function(index, iCol, sortorder) {
-                        	$(Elements.table[Elements.settings[settings_keys[i]].table]).jqGrid("setGridWidth", Elements.settings[settings_keys[i]].source.width, true);
+                        	$(Elements.table[Elements.settings[settings_keys[i]].table]).jqGrid('setGridWidth', Elements.settings[settings_keys[i]].source.width, true);
                         };
                         Elements.settings[table_id].source.on_page_change = function(data) {
                             CLC.tableParams.page = data.page;
                             CLC.tableParams.PageFilters.sortList = CLC.tableParams.sortList;
-                            $(Elements.table[Elements.settings[table_id].table]).trigger("reloadGrid");
+                            $(Elements.table[Elements.settings[table_id].table]).trigger('reloadGrid');
                             reloadGridPlugins();
                         };
                         Elements.settings[table_id].source.on_rows_change = function(data) {
                             // console.log(data)
                             CLC.tableParams.rows = data.rows;
-                            $(Elements.table[Elements.settings[table_id].table]).jqGrid("setGridParam", {"rowNum": data.rows})
+                            $(Elements.table[Elements.settings[table_id].table]).jqGrid('setGridParam', { rowNum: data.rows });
                             CLC.tableParams.page = 1;
-                            $(Elements.table[Elements.settings[table_id].table]).trigger("reloadGrid");
+                            $(Elements.table[Elements.settings[table_id].table]).trigger('reloadGrid');
                             reloadGridPlugins();
                         };
                         Elements.settings[table_id].source.on_general_search = function(data) {
                             CLC.tableParams.SearchText = data;
                             CLC.tableParams.page = 1;
-                            $(Elements.table[Elements.settings[table_id].table]).trigger("reloadGrid");
+                            $(Elements.table[Elements.settings[table_id].table]).trigger('reloadGrid');
                             reloadGridPlugins();
                         };
                         Elements.settings[table_id].source.on_ui_filter = function(data) {
                             CLC.tableParams.UIFilters = data;
-                            console.log("ON PAYLOAD FILTERS", CLC.tableParams.UIFilters);
-                            $(Elements.table[Elements.settings[table_id].table]).trigger("reloadGrid");
+                            console.log('ON PAYLOAD FILTERS', CLC.tableParams.UIFilters);
+                            $(Elements.table[Elements.settings[table_id].table]).trigger('reloadGrid');
                             reloadGridPlugins();
                         };
                         Elements.settings[table_id].source.on_page_filter = function(data) {
                             CLC.tableParams.PageFilters = data;
                             CLC.tableParams.sortList = data.sortList;
                             CLC.tableParams.page = 1;
-                            console.log("ON Page FILTERS", CLC.tableParams.PageFilters);
+                            console.log('ON Page FILTERS', CLC.tableParams.PageFilters);
 
                             if (data.sortList) {
-                                $(Elements.table[Elements.settings[table_id].table]).jqGrid("setGridParam", { sortname: null });
+                                $(Elements.table[Elements.settings[table_id].table]).jqGrid('setGridParam', { sortname: null });
                             }
                             if (data.raw) {
-                                $(Elements.table[Elements.settings[table_id].table]).jqGrid("Ascensys.columnFilters", data.raw);
+                                $(Elements.table[Elements.settings[table_id].table]).jqGrid('Ascensys.columnFilters', data.raw);
                             }
-                            $(Elements.table[Elements.settings[table_id].table]).trigger("reloadGrid");
+                            $(Elements.table[Elements.settings[table_id].table]).trigger('reloadGrid');
                             reloadGridPlugins();
                         };
                         Elements.settings[table_id].source.on_payload_filter = function(data) {
-                            console.log("yolo", data);
+                            console.log('yolo', data);
                             CLC.tableParams.filters = data;
-                            console.log("ON PAYLOAD FILTERS", CLC.tableParams.filters);
-                            $(Elements.table[Elements.settings[table_id].table]).trigger("reloadGrid");
+                            console.log('ON PAYLOAD FILTERS', CLC.tableParams.filters);
+                            $(Elements.table[Elements.settings[table_id].table]).trigger('reloadGrid');
                             reloadGridPlugins();
                         };
+
                         /* RADIO SELECT */
                         // console.log(Elements.settings[table_id].source.radioselect)
                         //
                         var reloadGridPlugins = function() {
-                            $(".jqgrid_component .jqgrow td:not(:has(span, a))").tooltip({
-                                container: "body",
-                                placement: "auto"
+                            $('.jqgrid_component .jqgrow td:not(:has(span, a))').tooltip({
+                                container: 'body',
+                                placement: 'auto'
                             });
                         };
-                        if (Elements.settings[table_id].source.radioselect == true || table_id == "flat_invoices_app_deliveries_list") {
+                        if (Elements.settings[table_id].source.radioselect == true || table_id == 'flat_invoices_app_deliveries_list') {
                             Elements.settings[table_id].source.onSelectRow = function(rowid, status, e) {
-                                var allRowData = Elements.settings[table_id].source.datastr[rowid - 1];
-                                if (typeof scope.selected == "undefined") {
+                                let allRowData = Elements.settings[table_id].source.datastr[rowid - 1];
+                                if (typeof scope.selected == 'undefined') {
                                     scope.selected = 0;
                                 }
                                 if (status == true) {
                                     if (scope.selected != rowid) {
-                                        $(this).jqGrid("resetSelection");
+                                        $(this).jqGrid('resetSelection');
                                         scope.selected = rowid;
-                                        $("#" + Elements.settings[table_id].table).jqGrid("setSelection", rowid);
+                                        $(`#${ Elements.settings[table_id].table}`).jqGrid('setSelection', rowid);
                                     }
                                 } else {
                                     allRowData = null;
@@ -928,20 +954,21 @@ window.increment = 0;
                                 $(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.selectedRowData = allRowData;
                             };
                         }
+
                         /* RADIO SELECT */
-                        /*transactions to be invoiced*/
-                        if (scope.app == "invoices" && scope.id == "deliveries_transactionstobeinvoiced") {
+                        /* transactions to be invoiced*/
+                        if (scope.app == 'invoices' && scope.id == 'deliveries_transactionstobeinvoiced') {
                             Elements.settings[table_id].source.onSelectRow = function(rowid, status, e) {
-                                var allRowData = Elements.settings[table_id].source.datastr[rowid - 1];
-                                var orderAdditionalCostId = allRowData.orderAdditionalCostId;
+                                let allRowData = Elements.settings[table_id].source.datastr[rowid - 1];
+                                let orderAdditionalCostId = allRowData.orderAdditionalCostId;
                                 var productId = null;
                                 if (!orderAdditionalCostId) {
 	                                var productId = allRowData.deliveryProductId;
                                 }
-                                if (typeof scope.selectedProductIds == "undefined") {
+                                if (typeof scope.selectedProductIds == 'undefined') {
                                     scope.selectedProductIds = [];
                                 }
-                                if (typeof scope.selectedOrderAdditionalCostId == "undefined") {
+                                if (typeof scope.selectedOrderAdditionalCostId == 'undefined') {
                                     scope.selectedOrderAdditionalCostId = [];
                                 }
                                 // console.log(status);
@@ -951,30 +978,29 @@ window.increment = 0;
                                         scope.rowsProduct = [];
                                         scope.selectedOrderAdditionalCostId = [];
                                         scope.selectedOrderId = allRowData.order.id;
-                                        currentSelectedRows = $("#" + Elements.settings[table_id].table).jqGrid("getGridParam", "selarrrow");
+                                        currentSelectedRows = $(`#${ Elements.settings[table_id].table}`).jqGrid('getGridParam', 'selarrrow');
                                         selectedOrderChanged = false;
-                                        $.each(currentSelectedRows, function(k, v) {
+                                        $.each(currentSelectedRows, (k, v) => {
                                             if (Elements.settings[table_id].source.datastr[k - 1] != scope.selectedOrderId) {
                                                 selectedOrderChanged = true;
                                             }
                                         });
                                         if (selectedOrderChanged) {
-                                            $(this).jqGrid("resetSelection");
+                                            $(this).jqGrid('resetSelection');
                                         }
                                         scope.selectedCounterpartyId = allRowData.counterparty.id;
                                         // if (typeof(e) == 'undefined') {
-                                        $.each(Elements.settings[table_id].source.datastr, function(k, v) {
+                                        $.each(Elements.settings[table_id].source.datastr, (k, v) => {
                                             if (v.order.id == scope.selectedOrderId && k != rowid - 1) {
-                                                $("#" + Elements.settings[table_id].table).jqGrid("setSelection", k + 1);
+                                                $(`#${ Elements.settings[table_id].table}`).jqGrid('setSelection', k + 1);
                                             }
                                         });
                                         // }
-                                        $("#" + Elements.settings[table_id].table).jqGrid("setSelection", rowid);
+                                        $(`#${ Elements.settings[table_id].table}`).jqGrid('setSelection', rowid);
                                         if (scope.selectedProductIds.indexOf(productId) < 0) {
                                             if (productId) {
                                                 scope.selectedProductIds.push(productId);
                                                 scope.rowsProduct.push(rowid);
-
                                             }
                                         }
                                         if (scope.selectedOrderAdditionalCostId.indexOf(orderAdditionalCostId) < 0) {
@@ -986,7 +1012,6 @@ window.increment = 0;
                                         if (productId) {
                                             scope.selectedProductIds.push(productId);
                                             scope.rowsProduct.push(rowid);
-
                                         }
                                         if (orderAdditionalCostId) {
                                             scope.selectedOrderAdditionalCostId.push(orderAdditionalCostId);
@@ -998,16 +1023,16 @@ window.increment = 0;
                                         scope.rowsProduct.splice(scope.rowsProduct.indexOf(rowid), 1);
 
 	                                    if (scope.selectedProductIds.length == 0) {
-											scope.selectedOrderId = null;
-											scope.selectedCounterpartyId = null;
+                                            scope.selectedOrderId = null;
+                                            scope.selectedCounterpartyId = null;
 	                                    }
                                 	}
                                 	if (orderAdditionalCostId) {
 	                                    scope.selectedOrderAdditionalCostId.splice(scope.selectedOrderAdditionalCostId.indexOf(orderAdditionalCostId), 1);
 	                                    if (scope.selectedOrderAdditionalCostId.length == 0) {
-											scope.selectedOrderId = null;
-											scope.selectedCounterpartyId = null;
-	                                    }	                                    
+                                            scope.selectedOrderId = null;
+                                            scope.selectedCounterpartyId = null;
+	                                    }
                                 	}
                                 }
                                 $(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.selectedProductIds = scope.selectedProductIds;
@@ -1017,21 +1042,23 @@ window.increment = 0;
                                 console.log(scope.selectedProductIds, scope.selectedOrderAdditionalCostId);
                             };
                         }
-                        if ((scope.app == "delivery" && scope.id == "delivery_deliverylist") || (scope.app == "delivery" && scope.id == "delivery_ordersdeliverylist")) {
+                        if (scope.app == 'delivery' && scope.id == 'delivery_deliverylist' || scope.app == 'delivery' && scope.id == 'delivery_ordersdeliverylist') {
                             Elements.settings[table_id].source.beforeSelectRow = function(rowid, e) {
-                                if (typeof $rootScope.selectedRowId == "undefined") {
+                                if (typeof $rootScope.selectedRowId == 'undefined') {
                                     $rootScope.selectedRowId = null;
                                 }
                                 // if ($rootScope.selectedRowId != rowid && $rootScope.selectedRowId != null) {
                                 //     $("#" + Elements.settings[table_id].table).jqGrid('resetSelection');
                                 // }
-                                if (typeof $rootScope.selectDeliveryRows == "undefined") $rootScope.selectDeliveryRows = [];
-                                var selectedRowsIds = $("#" + Elements.settings[table_id].table).jqGrid("getGridParam", "selarrrow");
+                                if (typeof $rootScope.selectDeliveryRows == 'undefined') {
+                                    $rootScope.selectDeliveryRows = [];
+                                }
+                                let selectedRowsIds = $(`#${ Elements.settings[table_id].table}`).jqGrid('getGridParam', 'selarrrow');
                                 if (selectedRowsIds.length > 0) {
                                     rowData = Elements.settings[table_id].source.datastr[selectedRowsIds[0] - 1];
                                     selectionData = Elements.settings[table_id].source.datastr[rowid - 1];
                                     if (rowData.order.id != selectionData.order.id) {
-                                        $("#" + Elements.settings[table_id].table).jqGrid("resetSelection");
+                                        $(`#${ Elements.settings[table_id].table}`).jqGrid('resetSelection');
                                         $rootScope.selectDeliveryRows = [];
                                     }
                                 }
@@ -1039,64 +1066,66 @@ window.increment = 0;
                             Elements.settings[table_id].source.onSelectRow = function(rowid, status, e) {
                                 if (status == true) {
                                     $rootScope.selectedRowId = rowid;
-                                    var allRowData = Elements.settings[table_id].source.datastr[rowid - 1];
+                                    let allRowData = Elements.settings[table_id].source.datastr[rowid - 1];
                                     $rootScope.selectDeliveryRows = allRowData;
                                     console.log(allRowData);
-                                    ///
-                                    if (typeof $rootScope.selectDeliveryRows == "undefined") $rootScope.selectDeliveryRows = [];
-                                    var selectedRowsIds = $("#" + Elements.settings[table_id].table).jqGrid("getGridParam", "selarrrow");
-                                    console.log("selectedRowsIds", selectedRowsIds);
+                                    // /
+                                    if (typeof $rootScope.selectDeliveryRows == 'undefined') {
+                                        $rootScope.selectDeliveryRows = [];
+                                    }
+                                    let selectedRowsIds = $(`#${ Elements.settings[table_id].table}`).jqGrid('getGridParam', 'selarrrow');
+                                    console.log('selectedRowsIds', selectedRowsIds);
                                     $rootScope.selectDeliveryRows = [];
-                                    $.each(selectedRowsIds, function(key, val) {
+                                    $.each(selectedRowsIds, (key, val) => {
                                         rowData = Elements.settings[table_id].source.datastr[val - 1];
                                         $rootScope.selectDeliveryRows.push(rowData);
                                     });
                                 } else {
                                     $rootScope.selectedRowId = null;
                                     $rootScope.selectDeliveryRow = null;
-                                    if (typeof $rootScope.selectDeliveryRows != "undefined") {
+                                    if (typeof $rootScope.selectDeliveryRows != 'undefined') {
                                         removeSel = Elements.settings[table_id].source.datastr[rowid - 1];
-                                        $.each($rootScope.selectDeliveryRows, function(key, val) {
+                                        $.each($rootScope.selectDeliveryRows, (key, val) => {
                                             if (val.id == removeSel.id) {
                                                 $rootScope.selectDeliveryRows.splice(key, 1);
-                                                return false; //return false to break from $.each
+                                                return false; // return false to break from $.each
                                             }
                                         });
                                     }
                                 }
                             };
-                        } else {
-                            if (checkProcurement >= 0) {
-                                Elements.settings[table_id].source.beforeSelectRow = function(rowid, e) {
-                                    return $(e.target).is("input[type=checkbox]");
-                                };
-                            }
+                        } else if (checkProcurement >= 0) {
+                            Elements.settings[table_id].source.beforeSelectRow = function(rowid, e) {
+                                return $(e.target).is('input[type=checkbox]');
+                            };
                         }
 
                         function resizeTableWidth() {
-                            if (typeof Elements.settings[table_id] != "undefined") {
-                                var jqgrid_element = $(Elements.table[Elements.settings[table_id].table]).parents(".jqgrid_component");
+                            if (typeof Elements.settings[table_id] != 'undefined') {
+                                var jqgrid_element = $(Elements.table[Elements.settings[table_id].table]).parents('.jqgrid_component');
                             }
-                            var old_size = 0;
-                            var new_size = 0;
-                            var matches = 0;
-                            if (typeof matchCheckInterval !== "undefined") {
+                            let old_size = 0;
+                            let new_size = 0;
+                            let matches = 0;
+                            if (typeof matchCheckInterval !== 'undefined') {
                                 clearInterval(matchCheckInterval);
                             }
-                            window.matchCheckInterval = setInterval(function() {
+                            window.matchCheckInterval = setInterval(() => {
                                 if (matches >= 2) {
                                     clearInterval(matchCheckInterval);
                                     return;
                                 }
                                 {
-                                    var overWidth = 0;
-                                    var hScrollWidth = $(".ui-jqgrid").width();
-                                    var settings_keys = Object.keys(Elements.settings);
-                                    for (var i = 0; i < settings_keys.length; i++) {
-                                        jqgrid_element = $(Elements.table[Elements.settings[settings_keys[i]].table]).parents(".jqgrid_component");
+                                    let overWidth = 0;
+                                    let hScrollWidth = $('.ui-jqgrid').width();
+                                    let settings_keys = Object.keys(Elements.settings);
+                                    for (let i = 0; i < settings_keys.length; i++) {
+                                        jqgrid_element = $(Elements.table[Elements.settings[settings_keys[i]].table]).parents('.jqgrid_component');
                                         columnsNo = 0;
-                                        if (typeof Elements.table[Elements.settings[settings_keys[i]].table] != "undefined") columns = Elements.table[Elements.settings[settings_keys[i]].table].jqGrid("getGridParam", "colModel");
-                                        $.each(columns, function(key, val) {
+                                        if (typeof Elements.table[Elements.settings[settings_keys[i]].table] != 'undefined') {
+                                            columns = Elements.table[Elements.settings[settings_keys[i]].table].jqGrid('getGridParam', 'colModel');
+                                        }
+                                        $.each(columns, (key, val) => {
                                             if (!val.hidden) {
                                                 columnsNo++;
                                             }
@@ -1107,7 +1136,7 @@ window.increment = 0;
                                             // jqgrid_element.find('.ui-jqgrid-view').addClass('border-scroll');
                                             overWidth = 1;
                                         } else {
-                                            jqgrid_element.find(".ui-jqgrid-view").removeClass("border-scroll");
+                                            jqgrid_element.find('.ui-jqgrid-view').removeClass('border-scroll');
                                             if (columnsNo * 100 <= jqgrid_element.width()) {
                                                 Elements.settings[settings_keys[i]].source.width = jqgrid_element.width();
                                             } else {
@@ -1115,38 +1144,38 @@ window.increment = 0;
                                             }
                                         }
                                         Elements.settings[settings_keys[i]].source.width = Elements.settings[settings_keys[i]].source.width - overWidth;
-                                        
-                                        var screenCssPixelRatio = (window.outerWidth - 8) / window.innerWidth;
-										if (screenCssPixelRatio >= .46 && screenCssPixelRatio <= .54) {
-										  zoomLevel = "-4";
-										} else if (screenCssPixelRatio <= .64) {
-										  zoomLevel = "-3";
-										} else if (screenCssPixelRatio <= .76) {
-										  zoomLevel = "-2";
-										} else if (screenCssPixelRatio <= .92) {
-										  zoomLevel = "-1";
-										} else if (screenCssPixelRatio <= 1.10) {
-										  zoomLevel = "0";
-										} else if (screenCssPixelRatio <= 1.32) {
-										  zoomLevel = "1";
-										} else if (screenCssPixelRatio <= 1.58) {
-										  zoomLevel = "2";
-										} else if (screenCssPixelRatio <= 1.90) {
-										  zoomLevel = "3";
-										} else if (screenCssPixelRatio <= 2.28) {
-										  zoomLevel = "4";
-										} else if (screenCssPixelRatio <= 2.70) {
-										  zoomLevel = "5";
-										} else {
-										  zoomLevel = "unknown";
-										}
-										// if (zoomLevel == "0") {
-	                                        $(Elements.table[Elements.settings[settings_keys[i]].table]).jqGrid("setGridWidth", Elements.settings[settings_keys[i]].source.width, true);
-										// }
+
+                                        let screenCssPixelRatio = (window.outerWidth - 8) / window.innerWidth;
+                                        if (screenCssPixelRatio >= 0.46 && screenCssPixelRatio <= 0.54) {
+										  zoomLevel = '-4';
+                                        } else if (screenCssPixelRatio <= 0.64) {
+										  zoomLevel = '-3';
+                                        } else if (screenCssPixelRatio <= 0.76) {
+										  zoomLevel = '-2';
+                                        } else if (screenCssPixelRatio <= 0.92) {
+										  zoomLevel = '-1';
+                                        } else if (screenCssPixelRatio <= 1.10) {
+										  zoomLevel = '0';
+                                        } else if (screenCssPixelRatio <= 1.32) {
+										  zoomLevel = '1';
+                                        } else if (screenCssPixelRatio <= 1.58) {
+										  zoomLevel = '2';
+                                        } else if (screenCssPixelRatio <= 1.90) {
+										  zoomLevel = '3';
+                                        } else if (screenCssPixelRatio <= 2.28) {
+										  zoomLevel = '4';
+                                        } else if (screenCssPixelRatio <= 2.70) {
+										  zoomLevel = '5';
+                                        } else {
+										  zoomLevel = 'unknown';
+                                        }
+                                        // if (zoomLevel == "0") {
+	                                        $(Elements.table[Elements.settings[settings_keys[i]].table]).jqGrid('setGridWidth', Elements.settings[settings_keys[i]].source.width, true);
+                                        // }
                                     }
                                     MCScustom.load();
                                 }
-                                if (typeof jqgrid_element != "undefined") {
+                                if (typeof jqgrid_element != 'undefined') {
                                     old_size = new_size;
                                     new_size = jqgrid_element.width();
                                     if (new_size == old_size) {
@@ -1160,13 +1189,13 @@ window.increment = 0;
                         // Row Actions
                         // console.log(scope.rowActions)
                         if (Elements.settings[table_id].source.rowActions) {
-                            if (Elements.settings[table_id].source.colModel[0].name.indexOf("actions") < 0) {
-                                $.each(Elements.settings[table_id].source.rowActions, function(i, v) {
+                            if (Elements.settings[table_id].source.colModel[0].name.indexOf('actions') < 0) {
+                                $.each(Elements.settings[table_id].source.rowActions, (i, v) => {
                                     // var actionObj = v;
-                                    var column = {
+                                    let column = {
                                         action_index: i,
-                                        label: "Actions-" + i,
-                                        name: "actions-" + i,
+                                        label: `Actions-${ i}`,
+                                        name: `actions-${ i}`,
                                         key: true,
                                         width: v.width ? v.width : 32,
                                         sortable: false,
@@ -1174,82 +1203,80 @@ window.increment = 0;
                                         frozen: true,
                                         fixed: true,
                                         exclude: true,
-                                        formatter: v.formatter
-                                            ? CLC.get_formatter(v.formatter)
-                                            : function(cellvalue, options, rowObject) {
-                                            	var actions = "";
-                                            	var rowID = 0;
+                                        formatter: v.formatter ?
+                                            CLC.get_formatter(v.formatter) :
+                                            function(cellvalue, options, rowObject) {
+                                            	let actions = '';
+                                            	let rowID = 0;
 
 
-                                            	if (typeof v.idSrc != "undefined") {
-                                            		if(v.idSrc == "voyageDetail.request.id"){
-                                            			if(rowObject.voyageDetail){
-                                            				if(rowObject.voyageDetail.request){
+                                            	if (typeof v.idSrc != 'undefined') {
+                                            		if(v.idSrc == 'voyageDetail.request.id') {
+                                            			if(rowObject.voyageDetail) {
+                                            				if(rowObject.voyageDetail.request) {
                                             					rowID = rowObject.voyageDetail.request.id;
-                                                                if (Elements.settings[table_id].source.table_name == "Table Schedule Dashboard") {
+                                                                if (Elements.settings[table_id].source.table_name == 'Table Schedule Dashboard') {
                                                                     if (rowID != 0) {
-                                                                        return '<a  href="/#/edit-request/' + rowID + '"><span style="display: block; margin-left: 7px !important;" title="Edit" class="jqgrid-ng-action edit" >Edit</span></a>';
-                                                                    } else  {
-                                                                        return '<a disabled="true" style="display: block; height: 35px; width: 30px;" href="/#/edit-request/' + rowID + '"><span style="position: relative; display: block; margin-left: 7px !important; top: 6px !important;" title="Edit" class="jqgrid-ng-action edit" >Edit</span></a>'
+                                                                        return `<a  href="/#/edit-request/${ rowID }"><span style="display: block; margin-left: 7px !important;" title="Edit" class="jqgrid-ng-action edit" >Edit</span></a>`;
                                                                     }
-                                                                } else {
-                                                                    return '<a href="/#/edit-request/' + rowID + '"><span title="Edit" class="jqgrid-ng-action edit" >Edit</span></a>';
+                                                                    return `<a disabled="true" style="display: block; height: 35px; width: 30px;" href="/#/edit-request/${ rowID }"><span style="position: relative; display: block; margin-left: 7px !important; top: 6px !important;" title="Edit" class="jqgrid-ng-action edit" >Edit</span></a>`;
                                                                 }
-                                            				}else{
-                                            					rowID = rowObject.voyageDetail.id;
-                                            					return '<a href="/#/new-request/' + rowID + '"><span title="Edit" class="jqgrid-ng-action edit" >Edit</span></a>';
+                                                                return `<a href="/#/edit-request/${ rowID }"><span title="Edit" class="jqgrid-ng-action edit" >Edit</span></a>`;
                                             				}
+                                            					rowID = rowObject.voyageDetail.id;
+                                            					return `<a href="/#/new-request/${ rowID }"><span title="Edit" class="jqgrid-ng-action edit" >Edit</span></a>`;
                                             			}
-                                            		}else if (typeof rowObject[v.idSrc] == "object") {
+                                            		}else if (typeof rowObject[v.idSrc] == 'object') {
                                             			rowID = rowObject[v.idSrc].id;
                                             		} else {
                                             			rowID = rowObject[v.idSrc];
-                                            			if (!rowID && v.altId) return '<a href="/#/new-request/' + rowObject[v.altId] + '"><span title="Edit" class="jqgrid-ng-action edit" >Edit</span></a>';
-                                            			if (!rowID && !v.altId) return "";
+                                            			if (!rowID && v.altId) {
+                                                            return `<a href="/#/new-request/${ rowObject[v.altId] }"><span title="Edit" class="jqgrid-ng-action edit" >Edit</span></a>`;
+                                                        }
+                                            			if (!rowID && !v.altId) {
+                                                            return '';
+                                                        }
                                             		}
-                                            	} else {
-                                            		if (rowObject.id) {
+                                            	} else if (rowObject.id) {
                                             			rowID = rowObject.id;
-                                                          // console.log('idSRC: default (id)');
-                                                      }
-                                                  }
-                                                  // console.log('JQGRID EDIT ACTION ID: ', rowID);
-                                                  var i = options.colModel.action_index;
-                                                  rowId = "";
-                                                  if (typeof rowObject[v.url] !== "undefined") {
+                                                    // console.log('idSRC: default (id)');
+                                                }
+                                                // console.log('JQGRID EDIT ACTION ID: ', rowID);
+                                                let i = options.colModel.action_index;
+                                                rowId = '';
+                                                if (typeof rowObject[v.url] !== 'undefined') {
                                                   	if (rowObject[v.url]) {
                                                   		rowId = rowObject[v.url].id;
                                                   	}
-                                                  }
-                                                  if (table_id == "flat_invoices_app_invoice_list") {
+                                                }
+                                                if (table_id == 'flat_invoices_app_invoice_list') {
                                                   	if (rowObject.isClaimSybtype) {
-                                                  		actions = '<a href="/#/invoices/claims/edit/' + rowObject.invoice.id + '" ><span class="jqgrid-ng-action ' + v.class + '" title="' + v.label + '">' + v.label + "</span></a>";
+                                                  		actions = `<a href="/#/invoices/claims/edit/${ rowObject.invoice.id }" ><span class="jqgrid-ng-action ${ v.class }" title="${ v.label }">${ v.label }</span></a>`;
                                                   		return actions;
                                                   	}
-                                                  	if (typeof rowObject.invoiceType != "undefined" && rowObject.invoiceType) {
-                                                  		if (rowObject.invoiceType.name == "CreditNote" || rowObject.invoiceType.name == "DebitNote") {
-                                                  			actions = '<a href="/#/invoices/claims/edit/' + rowObject.invoice.id + '" ><span class="jqgrid-ng-action ' + v.class + '" title="' + v.label + '">' + v.label + "</span></a>";
-                                                  			return actions;
-                                                  		} else {
-                                                  			actions = '<a href="/#/invoices/invoice/edit/' + rowObject.invoice.id + '" ><span class="jqgrid-ng-action ' + v.class + '" title="' + v.label + '">' + v.label + "</span></a>";
+                                                  	if (typeof rowObject.invoiceType != 'undefined' && rowObject.invoiceType) {
+                                                  		if (rowObject.invoiceType.name == 'CreditNote' || rowObject.invoiceType.name == 'DebitNote') {
+                                                  			actions = `<a href="/#/invoices/claims/edit/${ rowObject.invoice.id }" ><span class="jqgrid-ng-action ${ v.class }" title="${ v.label }">${ v.label }</span></a>`;
                                                   			return actions;
                                                   		}
+                                                  			actions = `<a href="/#/invoices/invoice/edit/${ rowObject.invoice.id }" ><span class="jqgrid-ng-action ${ v.class }" title="${ v.label }">${ v.label }</span></a>`;
+                                                  			return actions;
                                                   	}
-                                                  }
-                                                  if (table_id == "flat_email_log_list") {
+                                                }
+                                                if (table_id == 'flat_email_log_list') {
                                                   	index = parseFloat(options.rowId) - 1;
-													rowObject = Elements.settings[table_id].source.datastr[index];
-													actions = '<a href="/#/masters/emaillogs/edit/' + rowObject.id + '" target="_blank" ><span class="jqgrid-ng-action edit"></span></a>';
-													return actions;
-                                                  }
-                                                  if (v.data_attributes) {
-                                                  	cellAttrs = '<a ng-disabled ="!' + eval(v.disabled) + '"' + v.data_attributes + " ng-click=\"CLC.dataAction('" + v.action + "', '" + encodeURIComponent(JSON.stringify(rowObject)) + '\')" class=" ' + v.class + '">' + v.label + "</a>";
-                                                  } else {
-                                                  	cellAttrs = '<span title="' + v.label + '" class="jqgrid-ng-action ' + v.class + '" ng-click="CLC.do_entity_action(\'' + v.class + "', '" + rowID + "', '" + rowId + "', null, '" + checkProcurement + "')\">" + v.label + "</span>";
-                                                  }
-                                                  actions = cellAttrs;
-                                                  return actions;
-                                              }
+                                                    rowObject = Elements.settings[table_id].source.datastr[index];
+                                                    actions = `<a href="/#/masters/emaillogs/edit/${ rowObject.id }" target="_blank" ><span class="jqgrid-ng-action edit"></span></a>`;
+                                                    return actions;
+                                                }
+                                                if (v.data_attributes) {
+                                                  	cellAttrs = `<a ng-disabled ="!${ eval(v.disabled) }"${ v.data_attributes } ng-click="CLC.dataAction('${ v.action }', '${ encodeURIComponent(JSON.stringify(rowObject)) }')" class=" ${ v.class }">${ v.label }</a>`;
+                                                } else {
+                                                  	cellAttrs = `<span title="${ v.label }" class="jqgrid-ng-action ${ v.class }" ng-click="CLC.do_entity_action('${ v.class }', '${ rowID }', '${ rowId }', null, '${ checkProcurement }')">${ v.label }</span>`;
+                                                }
+                                                actions = cellAttrs;
+                                                return actions;
+                                            }
                                     };
                                     if (v.last) {
                                         Elements.settings[table_id].source.colModel.push(column);
@@ -1264,7 +1291,7 @@ window.increment = 0;
                             if (Elements.settings[table_id].source.tenantData.hiddenColumns) {
                                 for (var i = 0; i < Elements.settings[table_id].source.tenantData.hiddenColumns.length; i++) {
                                     if (!Elements.scope[attrs.id].modal) {
-                                        Elements.settings[table_id].source.colModel[Elements.settings[table_id].source.tenantData.hiddenColumns[i]]["hidden"] = true;
+                                        Elements.settings[table_id].source.colModel[Elements.settings[table_id].source.tenantData.hiddenColumns[i]].hidden = true;
                                     }
                                 }
                             }
@@ -1272,14 +1299,14 @@ window.increment = 0;
                         // rowList
                         Elements.settings[table_id].source.tenantData.rowList = Elements.settings[table_id].source.rowList;
                         // -start- TABLE
-                        $timeout(function() {
+                        $timeout(() => {
                             {
-                                $('[id*="' + attrs.selector + '"]').html("");
+                                $(`[id*="${ attrs.selector }"]`).html('');
                                 // define elements
-                                Elements.container = angular.element('<div class="jqgrid_component" data-view-type="' + table_view + '"></div>');
-                                Elements.table[Elements.settings[table_id].table] = angular.element('<table id="' + Elements.settings[table_id].table + '"></table>');
-                                Elements.pager[Elements.settings[table_id].pager] = angular.element('<div id="' + Elements.settings[table_id].pager + '"></div>');
-                                $('[id*="' + attrs.selector + '"]').html(Elements.container);
+                                Elements.container = angular.element(`<div class="jqgrid_component" data-view-type="${ table_view }"></div>`);
+                                Elements.table[Elements.settings[table_id].table] = angular.element(`<table id="${ Elements.settings[table_id].table }"></table>`);
+                                Elements.pager[Elements.settings[table_id].pager] = angular.element(`<div id="${ Elements.settings[table_id].pager }"></div>`);
+                                $(`[id*="${ attrs.selector }"]`).html(Elements.container);
                                 Elements.container.append(Elements.table[Elements.settings[table_id].table]);
                                 Elements.container.append(Elements.pager[Elements.settings[table_id].pager]);
                                 // Load JQGRID
@@ -1288,78 +1315,72 @@ window.increment = 0;
                                 // $.each(CLC.tableParams.tableColumnFilters, function(k, v) {
 
                                 console.log(table_id);
-                                if("flat_schedule_dashboard_table" === table_id){
+                                if(table_id === 'flat_schedule_dashboard_table') {
+                                    $('#flat_schedule_dashboard_table')
+                                        .closest('div.ui-jqgrid-view')
+                                        .find('div.ui-jqgrid-hdiv table.ui-jqgrid-htable tr.ui-jqgrid-labels > th.ui-th-column')
+                                        .each(function() {
+                                            let colId = $(this)
+                                                .attr('id')
+                                                .replace(/\./g, '_')
+                                                .replace(/ /g, '');
+                                            let col = colId.replace(`${table_id }_`, '');
+                                            let sortCol = col.toLowerCase();
 
-                                    $("#flat_schedule_dashboard_table")
-                                        .closest("div.ui-jqgrid-view")
-                                        .find("div.ui-jqgrid-hdiv table.ui-jqgrid-htable tr.ui-jqgrid-labels > th.ui-th-column")
-                                        .each(function(){
-                                            var colId = $(this)
-                                                .attr("id")
-                                                .replace(/\./g, "_")
-                                                .replace(/ /g, "");
-                                            var col = colId.replace(table_id + "_", "");
-                                            var sortCol = col.toLowerCase();
-                                
-    
-                                            $(this).attr("id",colId);
-                                            $(this).find("div").attr("id",colId);
+
+                                            $(this).attr('id', colId);
+                                            $(this).find('div').attr('id', colId);
 
                                             console.log(colId);
                                             console.log(sortCol, col);
 
 
-                                            if((colId != "flat_schedule_dashboard_table_voyageDetail_request_requestDetail_fuelMaxQuantity") && 
-                                                (colId != "flat_schedule_dashboard_table_voyageDetail_request_requestDetail_contractMaxQuantity")){
-                                                //min - max quantity columns should not have sorting
-                                                if($(this).hasClass('ui-sortable-handle')){
-                                                    helperCoulmnTitle = $rootScope.currentColumnRoute + " : " + col;
+                                            if(colId != 'flat_schedule_dashboard_table_voyageDetail_request_requestDetail_fuelMaxQuantity' &&
+                                                colId != 'flat_schedule_dashboard_table_voyageDetail_request_requestDetail_contractMaxQuantity') {
+                                                // min - max quantity columns should not have sorting
+                                                if($(this).hasClass('ui-sortable-handle')) {
+                                                    helperCoulmnTitle = `${$rootScope.currentColumnRoute } : ${ col}`;
                                                     $(this)
-                                                    .append('<a class="colMenu" title="' + helperCoulmnTitle + '" data-column="' + col + '" data-table="' + table_id + ' data-sortCol="' + sortCol + '"><i class="fa fa-caret-down"></i></a>');
+                                                        .append(`<a class="colMenu" title="${ helperCoulmnTitle }" data-column="${ col }" data-table="${ table_id } data-sortCol="${ sortCol }"><i class="fa fa-caret-down"></i></a>`);
                                                 }
                                             }
-
-
-
                                         });
                                 }else{
-                                    
-                                    $("#" + table_id)
-                                        .closest("div.ui-jqgrid-view")
-                                        .find("div.ui-jqgrid-hdiv table.ui-jqgrid-htable tr.ui-jqgrid-labels > th.ui-th-column > span.ui-jqgrid-resize")
+                                    $(`#${ table_id}`)
+                                        .closest('div.ui-jqgrid-view')
+                                        .find('div.ui-jqgrid-hdiv table.ui-jqgrid-htable tr.ui-jqgrid-labels > th.ui-th-column > span.ui-jqgrid-resize')
                                         .each(function() {
-                                
-                                            var sortCol = $(this)
-                                                .siblings("div")
-                                                .attr("id")
-                                                .replace("jqgh_" + table_id + "_", "")
-                                                .replace(/\./g, "0")
-                                                .replace(/0/g, "_")
-                                                .replace(/ /g, "");
-                                            var col = _
+                                            let sortCol = $(this)
+                                                .siblings('div')
+                                                .attr('id')
+                                                .replace(`jqgh_${ table_id }_`, '')
+                                                .replace(/\./g, '0')
+                                                .replace(/0/g, '_')
+                                                .replace(/ /g, '');
+                                            let col = _
                                                 .startCase(
                                                     $(this)
-                                                        .siblings("div")
-                                                        .attr("id")
-                                                        .replace("jqgh_" + table_id + "_", "")
-                                                        .replace(/\./g, "0")
+                                                        .siblings('div')
+                                                        .attr('id')
+                                                        .replace(`jqgh_${ table_id }_`, '')
+                                                        .replace(/\./g, '0')
                                                 )
-                                                .replace(/0/g, "_")
-                                                .replace(/ /g, "");
-                                            //console.log(col);
+                                                .replace(/0/g, '_')
+                                                .replace(/ /g, '');
+                                            // console.log(col);
                                             // if (v.columnValue == col) {
-    
-                                            //console.log(col,sortCol);
 
-											helperCoulmnTitle = $rootScope.currentColumnRoute + " : " + col;
-                                            var toAppend = '<a class="colMenu" title="' + helperCoulmnTitle + '" data-column="' + col + '" data-table="' + table_id + '"><i class="fa fa-caret-down"></i></a>';
+                                            // console.log(col,sortCol);
+
+                                            helperCoulmnTitle = `${$rootScope.currentColumnRoute } : ${ col}`;
+                                            let toAppend = `<a class="colMenu" title="${ helperCoulmnTitle }" data-column="${ col }" data-table="${ table_id }"><i class="fa fa-caret-down"></i></a>`;
                                             $(this)
                                                 .parent()
-                                                .append($(toAppend).attr("data-sortCol", sortCol.toLowerCase()));
+                                                .append($(toAppend).attr('data-sortCol', sortCol.toLowerCase()));
                                             // .append('<input type="checkbox">');
                                             // }
-    
-                                            if ($(this).parent("#flat_invoices_app_complete_view_list_isChecked").length > 0) {
+
+                                            if ($(this).parent('#flat_invoices_app_complete_view_list_isChecked').length > 0) {
                                                 $(this)
                                                     .parent()
                                                     .append('<input class="treasury_checkbox" id="treasury_checkbox_header" type="checkbox" ng-model="CLC.treasury_checkbox_header" ng-change="CLC.selectAllTreasuryRows()" ng-init="CLC.calculateSubtotal()"><label class="treasury_checkbox header" for="treasury_checkbox_header"><i class="fa fa-check"></i></label>');
@@ -1371,22 +1392,21 @@ window.increment = 0;
 
 
                                 // });
-                                $(".colMenu").on("click", function($event) {
+                                $('.colMenu').on('click', function($event) {
                                     $event.preventDefault();
 
-                                   
 
-                                    $("custom-popover").remove();
-                                    var left = $event.pageX < window.innerWidth - 350 ? $event.pageX : $event.pageX - 260;
-                                    $("custom-popover").unbind();
-                                    angular.element("body").append($compile('<custom-popover style="left:' + left + "px;top:" + ($event.pageY + 20) + 'px" column = "\'' + $(this).data("column") + "'\" table = \"'" + $(this).data("table") + "'\" sortcol = \"'" + $(this).data("sortcol") + "'\"></custom-popover>")(scope));
-                                    setTimeout(function() {
-                                        MCScustom.load(); 
+                                    $('custom-popover').remove();
+                                    let left = $event.pageX < window.innerWidth - 350 ? $event.pageX : $event.pageX - 260;
+                                    $('custom-popover').unbind();
+                                    angular.element('body').append($compile(`<custom-popover style="left:${ left }px;top:${ $event.pageY + 20 }px" column = "'${ $(this).data('column') }'" table = "'${ $(this).data('table') }'" sortcol = "'${ $(this).data('sortcol') }'"></custom-popover>`)(scope));
+                                    setTimeout(() => {
+                                        MCScustom.load();
                                     });
                                 });
                                 // }
 
-                                $(Elements.table[Elements.settings[table_id].table]).jqGrid("navGrid", "#" + Elements.settings[table_id].pager, {
+                                $(Elements.table[Elements.settings[table_id].table]).jqGrid('navGrid', `#${ Elements.settings[table_id].pager}`, {
                                     edit: false,
                                     add: false,
                                     del: false,
@@ -1403,40 +1423,40 @@ window.increment = 0;
                         //   scrollId: 'scrollArea',
                         //   contentId: 'contentArea'
                         // });
-
                     }
                 }
             };
         }
     ]);
+
     /**
      * Entity Edit Control (EEC)
      * {form} directive
      */
-    APP_GENERAL_COMPONENTS.directive("entityEditForm", [
-        "$templateRequest",
-        "$compile",
+    APP_GENERAL_COMPONENTS.directive('entityEditForm', [
+        '$templateRequest',
+        '$compile',
         function($templateRequest, $compile) {
             return {
-                restrict: "E",
+                restrict: 'E',
                 // controller: "Controller_Master as CM",
                 // controller: "ScreenLayout_Controller as SLC",
                 scope: {
-                    structure: "=",
-                    type: "=",
-                    screen: "=",
-                    entity: "=",
-                    editAction: "=",
-                    app: "=",
-                    screenchild: "="
+                    structure: '=',
+                    type: '=',
+                    screen: '=',
+                    entity: '=',
+                    editAction: '=',
+                    app: '=',
+                    screenchild: '='
                 },
                 link: function(scope, element, attrs) {
                     // Load Template
-                    $templateRequest("app-general-components/views/entity_edit_form.html").then(function(html) {
-                    	wrappedHtml = "<div ng-controller='Controller_Master as CM'>"+html+"</div>"
+                    $templateRequest('app-general-components/views/entity_edit_form.html').then((html) => {
+                    	wrappedHtml = `<div ng-controller='Controller_Master as CM'>${html }</div>`;
                     	if (attrs.specificController) {
-	                    	wrappedHtml = "<div ng-controller='"+attrs.specificController+"'>"+html+"</div>"
-                    	} 
+	                    	wrappedHtml = `<div ng-controller='${attrs.specificController }'>${ html }</div>`;
+                    	}
                         element.append($compile(wrappedHtml)(scope));
                     });
                 }
@@ -1444,42 +1464,44 @@ window.increment = 0;
         }
 
     ]);
+
     /**
      * Dynamic Layout Control (DLC)
      * {structure list} directive
      */
-    APP_GENERAL_COMPONENTS.directive("dinamicLayoutControl", [
-        "$templateRequest",
-        "$compile",
+    APP_GENERAL_COMPONENTS.directive('dinamicLayoutControl', [
+        '$templateRequest',
+        '$compile',
         function($templateRequest, $compile) {
             return {
-                restrict: "E",
-                controller: "Controller_Master as CM",
+                restrict: 'E',
+                controller: 'Controller_Master as CM',
                 scope: {
-                    structure: "=",
-                    elements: "=",
-                    screen: "="
+                    structure: '=',
+                    elements: '=',
+                    screen: '='
                 },
                 link: function(scope, element, attrs) {
                     // Load Template
-                    $templateRequest("app-general-components/views/dinamic_layout_control.html").then(function(html) {
+                    $templateRequest('app-general-components/views/dinamic_layout_control.html').then((html) => {
                         element.append($compile(html)(scope));
                     });
                     // scope watch : structure
-                    scope.$watch("structure", function(newValue) {
+                    scope.$watch('structure', (newValue) => {
                         scope.structure = newValue;
                     });
                     // scope watch : elements
-                    scope.$watch("elements", function(newValue) {
+                    scope.$watch('elements', (newValue) => {
                         scope.elements = newValue;
                     });
-                    scope.$watch("app", function(newValue) {
+                    scope.$watch('app', (newValue) => {
                         scope.app = newValue;
                     });
                 }
             };
         }
     ]);
+
     /**
      * Data Tables custom Directive
      *
@@ -1506,34 +1528,34 @@ window.increment = 0;
      * General Header
      * used for actions and searchbar
      */
-    APP_GENERAL_COMPONENTS.directive("generalHeader", [
-        "$templateRequest",
-        "$compile",
+    APP_GENERAL_COMPONENTS.directive('generalHeader', [
+        '$templateRequest',
+        '$compile',
         function($templateRequest, $compile) {
             return {
-                restrict: "E",
-                controller: "Controller_General_Header as GH",
+                restrict: 'E',
+                controller: 'Controller_General_Header as GH',
                 scope: {
-                    actions: "=",
-                    color: "="
+                    actions: '=',
+                    color: '='
                 },
                 link: function(scope, element, attrs) {
                     // Load Template
-                    $templateRequest("app-general-components/views/general_header.html").then(function(html) {
+                    $templateRequest('app-general-components/views/general_header.html').then((html) => {
                         element.append($compile(html)(scope));
                     });
                     // scope watch actions
                     // label | special | type | method | url
-                    scope.$watch("actions", function(newValue) {
+                    scope.$watch('actions', (newValue) => {
                         scope.actions = newValue;
                     });
                     // scope watch color
-                    scope.$watch("color", function(newValue) {
+                    scope.$watch('color', (newValue) => {
                         if (newValue) {
-                            if (newValue == "white") {
-                                scope.color = "white";
+                            if (newValue == 'white') {
+                                scope.color = 'white';
                             } else {
-                                scope.color = "gray";
+                                scope.color = 'gray';
                             }
                         }
                     });
@@ -1542,19 +1564,21 @@ window.increment = 0;
         }
     ]);
     // Create dynamic model
-    APP_GENERAL_COMPONENTS.directive("dynamicModel", [
-        "$compile",
-        "$parse",
+    APP_GENERAL_COMPONENTS.directive('dynamicModel', [
+        '$compile',
+        '$parse',
         function($compile, $parse) {
             return {
-                restrict: "A",
+                restrict: 'A',
                 terminal: true,
                 priority: 100000,
                 link: function(scope, elem, attrs) {
-                    if (!attrs.dynamicModel) return;
-                    var name = $parse(attrs.dynamicModel)(scope);
-                    elem.removeAttr("dynamic-model");
-                    elem.attr("ng-model", name);
+                    if (!attrs.dynamicModel) {
+                        return;
+                    }
+                    let name = $parse(attrs.dynamicModel)(scope);
+                    elem.removeAttr('dynamic-model');
+                    elem.attr('ng-model', name);
                     $compile(elem)(scope);
                 }
             };
@@ -1562,16 +1586,18 @@ window.increment = 0;
     ]); // Create dynamic conditions
     // Create dynamic conditions
     // Dynamic condition for non-repeating elements
-    APP_GENERAL_COMPONENTS.directive("dynamicCondition", [
-        "$compile",
+    APP_GENERAL_COMPONENTS.directive('dynamicCondition', [
+        '$compile',
         function($compile) {
             return {
                 link: function(scope, element, attrs) {
                     // scope.$watchGroup([attrs.dynamicCondition, attrs.dynamicConditionType], function(dynamicCondition) {
-                    if (!attrs.dynamicConditionType || !attrs.dynamicCondition) return;
+                    if (!attrs.dynamicConditionType || !attrs.dynamicCondition) {
+                        return;
+                    }
                     // console.log('test')
-                    element.removeAttr("dynamic-condition");
-                    element.removeAttr("dynamic-condition-type");
+                    element.removeAttr('dynamic-condition');
+                    element.removeAttr('dynamic-condition-type');
                     element.attr(attrs.dynamicConditionType, attrs.dynamicCondition);
                     element.unbind();
                     $compile(element)(scope);
@@ -1580,17 +1606,19 @@ window.increment = 0;
             };
         }
     ]);
-    //Dynamic condition for elements with ng-repeat/ng-options/.. child nodes
-    APP_GENERAL_COMPONENTS.directive("dynamicConditionRepeat", [
-        "$compile",
+    // Dynamic condition for elements with ng-repeat/ng-options/.. child nodes
+    APP_GENERAL_COMPONENTS.directive('dynamicConditionRepeat', [
+        '$compile',
         function($compile) {
             return {
                 link: function(scope, element, attrs) {
                     // scope.$watchGroup([attrs.dynamicCondition, attrs.dynamicConditionType], function(dynamicCondition) {
-                    if (!attrs.dynamicConditionType || !attrs.dynamicCondition) return;
+                    if (!attrs.dynamicConditionType || !attrs.dynamicCondition) {
+                        return;
+                    }
                     // console.log('test')
-                    element.removeAttr("dynamic-condition-repeat");
-                    element.removeAttr("dynamic-condition-repeat-type");
+                    element.removeAttr('dynamic-condition-repeat');
+                    element.removeAttr('dynamic-condition-repeat-type');
                     element.attr(attrs.dynamicConditionType, attrs.dynamicCondition);
                     element.unbind();
                     // $compile(element)(scope);
@@ -1606,29 +1634,31 @@ window.increment = 0;
             };
         }
     ]);
-    APP_GENERAL_COMPONENTS.directive("dynamicPattern", [
-        "$compile",
+    APP_GENERAL_COMPONENTS.directive('dynamicPattern', [
+        '$compile',
         function($compile) {
             return {
                 require: 're2',
                 link: function(scope, element, attrs) {
                     // scope.$watch(attrs.dynamicPattern, function(dynamicPattern) {
-                    if (!attrs.dynamicPattern) return;
-                    pattern = "";
-                    if (attrs.dynamicPattern == "decimalNumber" || attrs.dynamicPattern == "Number") {
+                    if (!attrs.dynamicPattern) {
+                        return;
+                    }
+                    pattern = '';
+                    if (attrs.dynamicPattern == 'decimalNumber' || attrs.dynamicPattern == 'Number') {
                         pattern = /^[-,+]*\d{1,6}(,\d{3})*(\.\d*)?$/;
-                    } else if (attrs.dynamicPattern == "longNumber") {
+                    } else if (attrs.dynamicPattern == 'longNumber') {
                         pattern = /^[-,+]*\d{1,15}(,\d{3})*(\.\d*)?$/;
-                    } else if (attrs.dynamicPattern == "website") {
+                    } else if (attrs.dynamicPattern == 'website') {
                         pattern = /^((https?|ftp):\/\/)?([a-z]+[.])?[a-z0-9-]+([.][a-z]{1,20}){1,20}(\/.*[?].*)?[.]?$/;
-                    } else if (attrs.dynamicPattern == "email") {
+                    } else if (attrs.dynamicPattern == 'email') {
                         // pattern = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-][.]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
                         pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                     } else {
-                        element.removeAttr("ng-pattern");
+                        element.removeAttr('ng-pattern');
                     }
-                    element.attr("ng-pattern", pattern);
-                    element.removeAttr("dynamic-pattern");
+                    element.attr('ng-pattern', pattern);
+                    element.removeAttr('dynamic-pattern');
                     element.unbind();
                     $compile(element)(scope);
                     // });
@@ -1651,143 +1681,143 @@ window.increment = 0;
     //         }
     //     };
     // }]);
-    APP_GENERAL_COMPONENTS.directive("computeFormula", [
-        "$filter",
+    APP_GENERAL_COMPONENTS.directive('computeFormula', [
+        '$filter',
         function($filter) {
             return {
-                restrict: "A",
+                restrict: 'A',
                 scope: {
-                    computeFormula: "="
+                    computeFormula: '='
                 },
                 link: function(scope, element, attrs) {
                     // set the initial value of the textbox
                     //
                     element.val(scope.computeFormula);
-                    element.data("old-value", scope.computeFormula);
+                    element.data('old-value', scope.computeFormula);
                     // detect outside changes and update our input
-                    if (isNaN(scope.computeFormula) || typeof scope.computeFormula === "undefined") {
+                    if (isNaN(scope.computeFormula) || typeof scope.computeFormula === 'undefined') {
                         return;
-                    } else {
-                        scope.$watch("computeFormula", function(val) {
-                            element.val($filter("number")(scope.computeFormula, 3));
-                            element.change();
-                        });
-                        // on blur, update the value in scope
                     }
-                    setTimeout(function() {
+                    scope.$watch('computeFormula', (val) => {
+                        element.val($filter('number')(scope.computeFormula, 3));
+                        element.change();
+                    });
+                    // on blur, update the value in scope
+
+                    setTimeout(() => {
                         element.change();
                     }, 10);
                 }
             };
         }
     ]);
-    APP_GENERAL_COMPONENTS.directive("contenteditable", function() {
+    APP_GENERAL_COMPONENTS.directive('contenteditable', () => {
         return {
-            restrict: "A",
-            require: "ngModel",
+            restrict: 'A',
+            require: 'ngModel',
             link: function(scope, element, attrs, ngModel) {
                 function read() {
                     ngModel.$setViewValue(element.html());
                 }
                 ngModel.$render = function() {
-                    element.html(ngModel.$viewValue || "");
+                    element.html(ngModel.$viewValue || '');
                 };
-                element.bind("blur keyup change", function() {
+                element.bind('blur keyup change', () => {
                     scope.$apply(read);
                 });
             }
         };
     });
-    APP_GENERAL_COMPONENTS.directive("backButton", function() {
+    APP_GENERAL_COMPONENTS.directive('backButton', () => {
         return {
-            restrict: "A",
+            restrict: 'A',
             link: function(scope, element, attrs) {
-                element.bind("click", function() {
+                element.bind('click', () => {
                     history.back();
                     scope.$apply();
                 });
             }
         };
     });
-    APP_GENERAL_COMPONENTS.directive("starRating", function() {
+    APP_GENERAL_COMPONENTS.directive('starRating', () => {
         // var template = ''
         return {
-            restrict: "EA",
-            require: "ngModel",
+            restrict: 'EA',
+            require: 'ngModel',
             scope: {},
-            templateUrl: "app-general-components/views/controls/starRating.html",
+            templateUrl: 'app-general-components/views/controls/starRating.html',
             link: function(scope, element, attrs, ngModel) {
-                var unregister = scope.$watch(function() {
+                let unregister = scope.$watch(() => {
                     return ngModel.$modelValue;
                 }, initialize);
 
                 function initialize(value) {
-                    var filledStars = $(element).find(".filled");
-                    filledStars.css("width", ngModel.$viewValue * 20 + "%");
+                    let filledStars = $(element).find('.filled');
+                    filledStars.css('width', `${ngModel.$viewValue * 20 }%`);
                     $(element)
-                        .find("input")
+                        .find('input')
                         .val(ngModel.$viewValue);
                     unregister();
                 }
                 scope.$watch(
-                    function() {
+                    () => {
                         return ngModel.$modelValue;
                     },
-                    function(newValue) {
-                        var currentWidth = newValue * 20;
+                    (newValue) => {
+                        let currentWidth = newValue * 20;
                         $(element)
-                            .find(".filled")
-                            .css("width", currentWidth + "%");
+                            .find('.filled')
+                            .css('width', `${currentWidth }%`);
                         $(element)
-                            .find("input")
+                            .find('input')
                             .val(newValue);
                     }
                 );
                 $(element)
-                    .children(".stars")
-                    .on("mouseleave", function(event) {
-                        var target = event.currentTarget;
-                        var initialWidth = ngModel.$viewValue * 20;
+                    .children('.stars')
+                    .on('mouseleave', (event) => {
+                        let target = event.currentTarget;
+                        let initialWidth = ngModel.$viewValue * 20;
                         $(target)
-                            .children(".filled")
-                            .css("width", initialWidth + "%");
+                            .children('.filled')
+                            .css('width', `${initialWidth }%`);
                         $(target)
-                            .children(".filled")
-                            .css("opacity", 1);
+                            .children('.filled')
+                            .css('opacity', 1);
                         // console.log(ngModel.$viewValue);
                     });
                 scope.previewRating = function(event) {
-                    var target = event.currentTarget;
-                    var parentWidth = $(target).context.offsetWidth;
-                    var ratingPercent = (event.offsetX / parentWidth) * 100;
-                    var starRating = (ratingPercent * 5) / 100;
-                    var roundedStarRating = Math.ceil(starRating * 2) / 2;
-                    var filledWidth = roundedStarRating * 20;
+                    let target = event.currentTarget;
+                    let parentWidth = $(target).context.offsetWidth;
+                    let ratingPercent = event.offsetX / parentWidth * 100;
+                    let starRating = ratingPercent * 5 / 100;
+                    let roundedStarRating = Math.ceil(starRating * 2) / 2;
+                    let filledWidth = roundedStarRating * 20;
                     $(target)
-                        .children(".filled")
-                        .css("opacity", 0.5);
+                        .children('.filled')
+                        .css('opacity', 0.5);
                     $(target)
-                        .children(".filled")
-                        .css("width", filledWidth + "%");
+                        .children('.filled')
+                        .css('width', `${filledWidth }%`);
                 };
                 scope.calculateRating = function(event) {
-                    var target = event.currentTarget;
-                    var parentWidth = $(target).context.offsetWidth;
+                    let target = event.currentTarget;
+                    let parentWidth = $(target).context.offsetWidth;
                     // var clickPos = event.offsetX;
-                    var ratingPercent = (event.offsetX / parentWidth) * 100;
-                    var starRating = (ratingPercent * 5) / 100;
-                    var roundedStarRating = Math.ceil(starRating * 2) / 2;
-                    var filledWidth = roundedStarRating * 20;
+                    let ratingPercent = event.offsetX / parentWidth * 100;
+                    let starRating = ratingPercent * 5 / 100;
+                    let roundedStarRating = Math.ceil(starRating * 2) / 2;
+                    let filledWidth = roundedStarRating * 20;
                     ngModel.$setViewValue(roundedStarRating);
                     $(target)
-                        .next("input")
+                        .next('input')
                         .val(ngModel.$viewValue);
                     // $(target).next('input').attr('ng-model',ngModel);
                     $(target)
-                        .children(".filled")
+                        .children('.filled')
                         .animate(
                             {
-                                width: filledWidth + "%"
+                                width: `${filledWidth }%`
                             },
                             300
                         );
@@ -1796,27 +1826,27 @@ window.increment = 0;
             }
         };
     });
-    APP_GENERAL_COMPONENTS.directive("imagedrop", [
-        "$parse",
-        "$document",
+    APP_GENERAL_COMPONENTS.directive('imagedrop', [
+        '$parse',
+        '$document',
         function($parse, $document) {
             return {
-                restrict: "A",
+                restrict: 'A',
                 // controller: 'Controller_Master as CM',
                 link: function(scope, element, attrs) {
-                    var onImageDrop = $parse(attrs.onImageDrop);
-                    //When an item is dragged over the document
-                    var onDragOver = function(e) {
+                    let onImageDrop = $parse(attrs.onImageDrop);
+                    // When an item is dragged over the document
+                    let onDragOver = function(e) {
                         e.preventDefault();
-                        angular.element("body").addClass("dragOver");
+                        angular.element('body').addClass('dragOver');
                     };
-                    //When the user leaves the window, cancels the drag or drops the item
-                    var onDragEnd = function(e) {
+                    // When the user leaves the window, cancels the drag or drops the item
+                    let onDragEnd = function(e) {
                         e.preventDefault();
-                        angular.element("body").removeClass("dragOver");
+                        angular.element('body').removeClass('dragOver');
                     };
-                    //When a file is dropped
-                    var loadFile = function(file) {
+                    // When a file is dropped
+                    let loadFile = function(file) {
                         scope.uploadedFile = file;
                         scope.$apply(onImageDrop(scope));
                         console.log(file);
@@ -1828,10 +1858,10 @@ window.increment = 0;
                         // };
                         // reader.readAsDataURL(file);
                     };
-                    //Dragging begins on the document
-                    $document.bind("dragover", onDragOver);
-                    //Dragging ends on the overlay, which takes the whole window
-                    element.bind("dragleave", onDragEnd).bind("drop", function(e) {
+                    // Dragging begins on the document
+                    $document.bind('dragover', onDragOver);
+                    // Dragging ends on the overlay, which takes the whole window
+                    element.bind('dragleave', onDragEnd).bind('drop', (e) => {
                         onDragEnd(e);
                         loadFile(e.originalEvent.dataTransfer.files[0]);
                     });
@@ -1839,77 +1869,81 @@ window.increment = 0;
             };
         }
     ]);
-    APP_GENERAL_COMPONENTS.directive("contenteditable", function() {
+    APP_GENERAL_COMPONENTS.directive('contenteditable', () => {
         return {
-            restrict: "A",
-            require: "ngModel",
+            restrict: 'A',
+            require: 'ngModel',
             link: function(scope, element, attrs, ngModel) {
                 function read() {
                     ngModel.$setViewValue(element.html());
                 }
                 ngModel.$render = function() {
-                    element.html(ngModel.$viewValue || "");
+                    element.html(ngModel.$viewValue || '');
                 };
-                element.bind("blur keyup change", function() {
+                element.bind('blur keyup change', () => {
                     scope.$apply(read);
                 });
             }
         };
     });
-    APP_GENERAL_COMPONENTS.directive("changeviewmodel", function() {
+    APP_GENERAL_COMPONENTS.directive('changeviewmodel', () => {
         return {
-            restrict: "A",
-            require: "ngModel",
+            restrict: 'A',
+            require: 'ngModel',
             link: function(scope, element, attrs, ngModel) {
-                //format text going to user (model to view)
-                ngModel.$formatters.push(function(value) {
+                // format text going to user (model to view)
+                ngModel.$formatters.push((value) => {
                     // console.log(ngModel)
-                    return ngModel.$modelValue.replace("##order##", '<span class="tag label label-info" style="clear: none;">Request<span data-role="remove"></span></span>');
+                    return ngModel.$modelValue.replace('##order##', '<span class="tag label label-info" style="clear: none;">Request<span data-role="remove"></span></span>');
                 });
             }
         };
     });
-    APP_GENERAL_COMPONENTS.directive("multiTags", function() {
+    APP_GENERAL_COMPONENTS.directive('multiTags', () => {
         return {
-            restrict: "A",
+            restrict: 'A',
             link: function(scope, element, attrs) {
                 scope.$watch(
-                    "formValues",
-                    function(newValue, oldValue) {
-                        if (newValue) scope.multiTags(attrs.uniqueId, -1, attrs.name);
+                    'formValues',
+                    (newValue, oldValue) => {
+                        if (newValue) {
+                            scope.multiTags(attrs.uniqueId, -1, attrs.name);
+                        }
                     },
                     true
                 );
             }
         };
     });
-    APP_GENERAL_COMPONENTS.directive("multiSelect", function() {
+    APP_GENERAL_COMPONENTS.directive('multiSelect', () => {
         return {
-            restrict: "A",
+            restrict: 'A',
             link: function(scope, element, attrs) {
                 element.selectpicker({
-                    iconBase: "fa",
-                    tickIcon: "fa-check",
-                    container: "body"
+                    iconBase: 'fa',
+                    tickIcon: 'fa-check',
+                    container: 'body'
                 });
-                element.selectpicker("refresh").selectpicker("selectAll");
-                setTimeout(function() {
+                element.selectpicker('refresh').selectpicker('selectAll');
+                setTimeout(() => {
                     element.change();
                 }, 1);
                 scope.$watch(
-                    "formFieldsNew",
-                    function(newValue, oldValue) {
-                        if (newValue) element.selectpicker("refresh").selectpicker("selectAll");
-                        setTimeout(function() {
+                    'formFieldsNew',
+                    (newValue, oldValue) => {
+                        if (newValue) {
+                            element.selectpicker('refresh').selectpicker('selectAll');
+                        }
+                        setTimeout(() => {
                             element.change();
                         }, 1);
                     },
                     true
                 );
-                scope.$on("lastValueDeselected", function(ev, args) {
-                    value = "string:" + args.value;
-                    element.selectpicker("val", value);
-                    element.selectpicker("render");
+                scope.$on('lastValueDeselected', (ev, args) => {
+                    value = `string:${ args.value}`;
+                    element.selectpicker('val', value);
+                    element.selectpicker('render');
                 });
                 // scope.$watch('formValues', function(newValue, oldValue) {
                 //     if (newValue) scope.multiTags(attrs.uniqueId, -1, attrs.name);
@@ -1917,14 +1951,14 @@ window.increment = 0;
             }
         };
     });
-    APP_GENERAL_COMPONENTS.directive("timePicker", function() {
+    APP_GENERAL_COMPONENTS.directive('timePicker', () => {
         // var template = ''
         return {
-            restrict: "EA",
-            require: "ngModel",
+            restrict: 'EA',
+            require: 'ngModel',
             scope: {},
             link: function(scope, element, attrs, ngModel) {
-                var unregister = scope.$watch(function() {
+                let unregister = scope.$watch(() => {
                     return ngModel.$modelValue;
                 }, initialize);
 
@@ -1932,54 +1966,54 @@ window.increment = 0;
                     unregister();
                 }
                 scope.$watch(
-                    function() {
+                    () => {
                         return ngModel.$modelValue;
                     },
-                    function() {
-                        var minutes = ngModel.$viewValue % 60;
-                        var hours = (ngModel.$viewValue - minutes) / 60;
+                    () => {
+                        let minutes = ngModel.$viewValue % 60;
+                        let hours = (ngModel.$viewValue - minutes) / 60;
                         if (hours < 10) {
-                            hours = "0" + hours;
+                            hours = `0${ hours}`;
                         }
                         if (minutes < 10) {
-                            minutes = "0" + minutes;
+                            minutes = `0${ minutes}`;
                         }
                         $(element)
-                            .find(".hours")
+                            .find('.hours')
                             .val(hours);
                         $(element)
-                            .find(".minutes")
+                            .find('.minutes')
                             .val(minutes);
                     }
                 );
                 $(element)
-                    .find(".hours")
-                    .on("change", function() {
+                    .find('.hours')
+                    .on('change', function() {
                         if ($(this).val() > 23) {
                             $(this).val(23);
                         }
                         if ($(this).val() < 10) {
-                            $(this).val("0" + $(this).val());
+                            $(this).val(`0${ $(this).val()}`);
                         }
                         hours = $(this).val();
                         minutes = $(element)
-                            .find(".minutes")
+                            .find('.minutes')
                             .val();
                         newTime = parseFloat(hours * 60) + parseFloat(minutes);
                         ngModel.$setViewValue(newTime);
                     });
                 $(element)
-                    .find(".minutes")
-                    .on("change", function() {
+                    .find('.minutes')
+                    .on('change', function() {
                         if ($(this).val() > 59) {
                             $(this).val(59);
                         }
                         if ($(this).val() < 10) {
-                            $(this).val("0" + $(this).val());
+                            $(this).val(`0${ $(this).val()}`);
                         }
                         minutes = $(this).val();
                         hours = $(element)
-                            .find(".hours")
+                            .find('.hours')
                             .val();
                         newTime = parseFloat(hours * 60) + parseFloat(minutes);
                         ngModel.$setViewValue(newTime);
@@ -1987,45 +2021,45 @@ window.increment = 0;
             }
         };
     });
-    APP_GENERAL_COMPONENTS.directive("richTextEditor", function() {
+    APP_GENERAL_COMPONENTS.directive('richTextEditor', () => {
         return {
-            restrict: "A",
-            require: "ngModel",
-            //replace : true,
+            restrict: 'A',
+            require: 'ngModel',
+            // replace : true,
             transclude: true,
-            //template : '<div><textarea></textarea></div>',
+            // template : '<div><textarea></textarea></div>',
             link: function(scope, element, attrs, ctrl) {
-                var textarea = element.wysihtml5({
+                let textarea = element.wysihtml5({
                     html: false,
                     image: false
                 });
-                var editor = textarea.data("wysihtml5").editor;
+                let editor = textarea.data('wysihtml5').editor;
                 synchronize = function() {
                     if (editor.getValue()) {
-                        scope.$apply(function() {
+                        scope.$apply(() => {
                             ctrl.$setViewValue(editor.getValue());
                         });
                     } else {
-                    	setTimeout(function(){
-                    		if ($(editor.textareaElement).hasClass("ng-dirty")) {
-		                        scope.$apply(function() {
+                    	setTimeout(() => {
+                    		if ($(editor.textareaElement).hasClass('ng-dirty')) {
+		                        scope.$apply(() => {
 		                            ctrl.$setViewValue(null);
 		                        });
                     		}
-                    	})
+                    	});
                     }
                 };
-                editor.on("redo:composer", synchronize);
-                editor.on("undo:composer", synchronize);
-                editor.on("paste", synchronize);
-                editor.on("aftercommand:composer", synchronize);
-                editor.on("change", synchronize);
+                editor.on('redo:composer', synchronize);
+                editor.on('undo:composer', synchronize);
+                editor.on('paste', synchronize);
+                editor.on('aftercommand:composer', synchronize);
+                editor.on('change', synchronize);
                 // the secret sauce to update every keystroke, may be cheating but it works
                 // editor.on('load', function() {
                 //     wysihtml5.dom.observe(editor.currentView.iframe.contentDocument.body, ['keyup'], synchronize);
                 // });
                 // handle changes to model from outside the editor
-                scope.$watch(attrs.ngModel, function(newValue) {
+                scope.$watch(attrs.ngModel, (newValue) => {
                     // necessary to prevent thrashing
                     if (newValue && newValue !== editor.getValue()) {
                         element.html(newValue);
@@ -2046,63 +2080,68 @@ window.increment = 0;
             }
         };
     });
-    APP_GENERAL_COMPONENTS.filter("duration", function() {
+    APP_GENERAL_COMPONENTS.filter('duration', () => {
         return function(number, fraction) {
             // Ensure that the passed in data is a number
             if (isNaN(number) || number < 1) {
                 // If the data is not a number or is less than one (thus not having a cardinal value) return it unmodified.
-                return "";
-            } else {
-                // If the data we are applying the filter to is a number, perform the actions to check it's ordinal suffix and apply it.
-                //
-                hrs = parseInt(number / 60);
-                mins = number - hrs * 60;
-                if (mins < 10) {
-                    mins = "0" + mins;
-                }
-                if (hrs < 10) {
-                    hrs = "0" + hrs;
-                }
-                return hrs + " : " + mins;
+                return '';
             }
+            // If the data we are applying the filter to is a number, perform the actions to check it's ordinal suffix and apply it.
+            //
+            hrs = parseInt(number / 60);
+            mins = number - hrs * 60;
+            if (mins < 10) {
+                mins = `0${ mins}`;
+            }
+            if (hrs < 10) {
+                hrs = `0${ hrs}`;
+            }
+            return `${hrs } : ${ mins}`;
         };
     });
-    APP_GENERAL_COMPONENTS.directive("format", [
-        "$filter",
+    APP_GENERAL_COMPONENTS.directive('format', [
+        '$filter',
         function($filter) {
             return {
                 // restrict: 'A',
                 // ret
-                require: "ngModel",
+                require: 'ngModel',
                 link: function(scope, elem, attrs, ctrl) {
-                    if (!ctrl) return;
-                    if (!attrs.format) return;
-                    ctrl.$formatters.unshift(function(a) {
-                        if (attrs.format.split(":")[1]) {
-                            filter = attrs.format.split(":")[0];
-                            fraction = attrs.format.split(":")[1];
+                    if (!ctrl) {
+                        return;
+                    }
+                    if (!attrs.format) {
+                        return;
+                    }
+                    ctrl.$formatters.unshift((a) => {
+                        if (attrs.format.split(':')[1]) {
+                            filter = attrs.format.split(':')[0];
+                            fraction = attrs.format.split(':')[1];
                         } else {
                             filter = attrs.format;
                             fraction = 3;
                         }
-                        if (filter.endsWith(":")) {
-                            filter = attrs.format.split(":")[0];
+                        if (filter.endsWith(':')) {
+                            filter = attrs.format.split(':')[0];
                         }
-                        if (filter == "duration") {
-                            elem.bind("focus", function(e) {
+                        if (filter == 'duration') {
+                            elem.bind('focus', (e) => {
                                 if (!elem.val()) {
-                                    elem.val("");
+                                    elem.val('');
                                 }
                             });
                         }
-                        if(fraction == 0){
-                            if (parseInt(ctrl.$modelValue) == 0) return null;
+                        if(fraction == 0) {
+                            if (parseInt(ctrl.$modelValue) == 0) {
+                                return null;
+                            }
                             return parseInt(ctrl.$modelValue);
                         }
                         returnData = null;
-                        if (ctrl.$modelValue != null && ctrl.$modelValue != "" && typeof(ctrl.$modelValue) != 'undefined') {
+                        if (ctrl.$modelValue != null && ctrl.$modelValue != '' && typeof ctrl.$modelValue != 'undefined') {
                         	try {
-		                        returnData = $filter(filter)(ctrl.$modelValue, fraction); 
+		                        returnData = $filter(filter)(ctrl.$modelValue, fraction);
                         	} catch(error) {
                         		console.error(error);
                         		debugger;
@@ -2111,28 +2150,27 @@ window.increment = 0;
                         return returnData;
                         elem.unbind();
                     });
-                    ctrl.$parsers.unshift(function(viewValue) {
-                        if (attrs.format.split(":")[1]) {
-                            filter = attrs.format.split(":")[0];
-                            fraction = attrs.format.split(":")[1];
+                    ctrl.$parsers.unshift((viewValue) => {
+                        if (attrs.format.split(':')[1]) {
+                            filter = attrs.format.split(':')[0];
+                            fraction = attrs.format.split(':')[1];
                         } else {
                             filter = attrs.format;
                             fraction = 3;
                         }
-                        if (filter == "duration") {
-                            elem.bind("focus", function(e) {
-                                elem.val("");
+                        if (filter == 'duration') {
+                            elem.bind('focus', (e) => {
+                                elem.val('');
                             });
                         }
-                        elem.bind("blur", function(e) {
-                            viewValue = angular.copy(ctrl.$viewValue) + "";
-                            var plainNumber = viewValue.replace(/[^\d|\-+|\.+]/g, "");
-                           
+                        elem.bind('blur', (e) => {
+                            viewValue = `${angular.copy(ctrl.$viewValue) }`;
+                            let plainNumber = viewValue.replace(/[^\d|\-+|\.+]/g, '');
+
                             if (plainNumber) {
-                                if(fraction == 0){
+                                if(fraction == 0) {
                                     elem.val(parseInt(plainNumber));
                                 } else{
-
                                     elem.val($filter(filter)(plainNumber, fraction));
                                 }
                             } else {
@@ -2146,28 +2184,28 @@ window.increment = 0;
             };
         }
     ]);
-    APP_GENERAL_COMPONENTS.directive("tooltip", function() {
+    APP_GENERAL_COMPONENTS.directive('tooltip', () => {
         return {
-            restrict: "A",
+            restrict: 'A',
             link: function(scope, element, attrs) {
                 if (!attrs.tooltip) {
-                    container = "body";
+                    container = 'body';
                 } else {
                     container = false;
                 }
-                triggerAction = "hover";
-                if (attrs.tooltiptrigger == "click") {
-                    triggerAction = "click";
+                triggerAction = 'hover';
+                if (attrs.tooltiptrigger == 'click') {
+                    triggerAction = 'click';
                 }
                 $(element).tooltip({
                     trigger: triggerAction,
                     container: container
                 });
                 $(element).hover(
-                    function() {
+                    () => {
                         // on mouseenter
                     },
-                    function() {
+                    () => {
                         // on mouseleave
                         // $(element).tooltip('hide');
                     }
@@ -2175,27 +2213,27 @@ window.increment = 0;
             }
         };
     });
-    APP_GENERAL_COMPONENTS.directive("dropdownOrdering", function() {
+    APP_GENERAL_COMPONENTS.directive('dropdownOrdering', () => {
         // var template = ''
         return {
-            restrict: "EA",
-            require: "ngModel",
+            restrict: 'EA',
+            require: 'ngModel',
             scope: {},
             link: function(scope, element, attrs, ngModel) {
-                var unregister = scope.$watch(function() {
+                let unregister = scope.$watch(() => {
                     return ngModel.$modelValue;
                 }, initialize);
 
                 function initialize(value) {
-                    setTimeout(function() {
+                    setTimeout(() => {
                         currentOrder = [];
-                        objArray = $(element).find(".ordering-element");
+                        objArray = $(element).find('.ordering-element');
                         $.each(objArray, function() {
-                            currentOrder.push($(this).attr("unique-id"));
+                            currentOrder.push($(this).attr('unique-id'));
                         });
                         console.log(currentOrder);
-                        $.each(currentOrder, function(index, value) {
-                            $.each(ngModel.$modelValue, function(idx, val) {
+                        $.each(currentOrder, (index, value) => {
+                            $.each(ngModel.$modelValue, (idx, val) => {
                                 if (value == val.precedenceRule.name) {
                                     val.ord = parseFloat(index) + 1;
                                 }
@@ -2206,74 +2244,74 @@ window.increment = 0;
                     unregister();
                 }
                 scope.$watch(
-                    function() {
+                    () => {
                         return ngModel.$modelValue;
                     },
-                    function() {
-                        fwdBtn = $(element).find(".moveFwd");
-                        backBtn = $(element).find(".moveBack");
-                        fwdBtn.on("click", function() {
+                    () => {
+                        fwdBtn = $(element).find('.moveFwd');
+                        backBtn = $(element).find('.moveBack');
+                        fwdBtn.on('click', function() {
                             activeElement = $(this)
-                                .parents(".ordering-element")
-                                .attr("unique-id");
-                            $.each($(element).find(".ordering-element"), function(key, value) {
-                                if ($(this).attr("unique-id") == activeElement) {
+                                .parents('.ordering-element')
+                                .attr('unique-id');
+                            $.each($(element).find('.ordering-element'), function(key, value) {
+                                if ($(this).attr('unique-id') == activeElement) {
                                     activeIndex = key;
                                 }
                             });
-                            objArray = $(element).find(".ordering-element");
+                            objArray = $(element).find('.ordering-element');
                             nextElemIdx = parseFloat(activeIndex) + 1;
                             currentElement = $(objArray)[activeIndex];
                             targetElement = $(objArray)[nextElemIdx];
                             $(currentElement).css({
-                                transform: "translateX(100%) scale(1.1)",
+                                transform: 'translateX(100%) scale(1.1)',
                                 opacity: 0
                             });
                             $(targetElement).css({
-                                transform: "scale(0.1)",
+                                transform: 'scale(0.1)',
                                 opacity: 0
                             });
-                            setTimeout(function() {
+                            setTimeout(() => {
                                 $(currentElement).css({
-                                    transform: "translateX(0%) scale(1)",
+                                    transform: 'translateX(0%) scale(1)',
                                     opacity: 1
                                 });
                                 $(targetElement).css({
-                                    transform: "scale(1)",
+                                    transform: 'scale(1)',
                                     opacity: 1
                                 });
                                 $(currentElement).insertAfter($(targetElement));
                                 updateModel();
                             }, 500);
                         });
-                        backBtn.on("click", function() {
+                        backBtn.on('click', function() {
                             activeElement = $(this)
-                                .parents(".ordering-element")
-                                .attr("unique-id");
-                            $.each($(element).find(".ordering-element"), function(key, value) {
-                                if ($(this).attr("unique-id") == activeElement) {
+                                .parents('.ordering-element')
+                                .attr('unique-id');
+                            $.each($(element).find('.ordering-element'), function(key, value) {
+                                if ($(this).attr('unique-id') == activeElement) {
                                     activeIndex = key;
                                 }
                             });
-                            objArray = $(element).find(".ordering-element");
+                            objArray = $(element).find('.ordering-element');
                             nextElemIdx = parseFloat(activeIndex) - 1;
                             currentElement = $(objArray)[activeIndex];
                             targetElement = $(objArray)[nextElemIdx];
                             $(currentElement).css({
-                                transform: "translateX(-100%) scale(1.1)",
+                                transform: 'translateX(-100%) scale(1.1)',
                                 opacity: 0
                             });
                             $(targetElement).css({
-                                transform: "scale(0.1)",
+                                transform: 'scale(0.1)',
                                 opacity: 0
                             });
-                            setTimeout(function() {
+                            setTimeout(() => {
                                 $(currentElement).css({
-                                    transform: "translateX(0%) scale(1)",
+                                    transform: 'translateX(0%) scale(1)',
                                     opacity: 1
                                 });
                                 $(targetElement).css({
-                                    transform: "scale(1)",
+                                    transform: 'scale(1)',
                                     opacity: 1
                                 });
                                 $(currentElement).insertBefore($(targetElement));
@@ -2283,12 +2321,12 @@ window.increment = 0;
 
                         function updateModel() {
                             currentOrder = [];
-                            objArray = $(element).find(".ordering-element");
+                            objArray = $(element).find('.ordering-element');
                             $.each(objArray, function() {
-                                currentOrder.push($(this).attr("unique-id"));
+                                currentOrder.push($(this).attr('unique-id'));
                             });
-                            $.each(currentOrder, function(index, value) {
-                                $.each(ngModel.$modelValue, function(idx, val) {
+                            $.each(currentOrder, (index, value) => {
+                                $.each(ngModel.$modelValue, (idx, val) => {
                                     if (value == val.precedenceRule.name) {
                                         val.ord = parseFloat(index) + 1;
                                     }
@@ -2300,12 +2338,14 @@ window.increment = 0;
             }
         };
     });
-    APP_GENERAL_COMPONENTS.filter("sumOfValueArray", function() {
+    APP_GENERAL_COMPONENTS.filter('sumOfValueArray', () => {
         return function(data, key) {
             // debugger;
-            if (angular.isUndefined(data) || angular.isUndefined(key)) return 0;
-            var sum = 0;
-            angular.forEach(data, function(v, k) {
+            if (angular.isUndefined(data) || angular.isUndefined(key)) {
+                return 0;
+            }
+            let sum = 0;
+            angular.forEach(data, (v, k) => {
                 if (v[key]) {
                     sum = sum + v[key];
                 }
@@ -2313,11 +2353,13 @@ window.increment = 0;
             return sum;
         };
     });
-    APP_GENERAL_COMPONENTS.filter("sumOfValueObject", function() {
+    APP_GENERAL_COMPONENTS.filter('sumOfValueObject', () => {
         return function(data, key) {
-            if (angular.isUndefined(data) || angular.isUndefined(key)) return 0;
-            var sum = 0;
-            angular.forEach(data, function(v, k) {
+            if (angular.isUndefined(data) || angular.isUndefined(key)) {
+                return 0;
+            }
+            let sum = 0;
+            angular.forEach(data, (v, k) => {
                 if (k == key && v) {
                     sum = sum + v;
                 }
@@ -2325,24 +2367,24 @@ window.increment = 0;
             return sum;
         };
     });
-    APP_GENERAL_COMPONENTS.directive("bindOnce", function() {
+    APP_GENERAL_COMPONENTS.directive('bindOnce', () => {
         return {
             scope: true,
             link: function($scope, $element) {
-                setTimeout(function() {
+                setTimeout(() => {
                     $scope.$destroy();
-                    $element.removeClass("ng-binding ng-scope");
+                    $element.removeClass('ng-binding ng-scope');
                 }, 0);
             }
         };
     });
-    APP_GENERAL_COMPONENTS.directive("ngRightClick", [
-        "$parse",
+    APP_GENERAL_COMPONENTS.directive('ngRightClick', [
+        '$parse',
         function($parse) {
             return function(scope, element, attrs) {
-                var fn = $parse(attrs.ngRightClick);
-                element.bind("contextmenu", function(event) {
-                    scope.$apply(function() {
+                let fn = $parse(attrs.ngRightClick);
+                element.bind('contextmenu', (event) => {
+                    scope.$apply(() => {
                         event.preventDefault();
                         fn(scope, {
                             $event: event
@@ -2352,32 +2394,36 @@ window.increment = 0;
             };
         }
     ]);
-    APP_GENERAL_COMPONENTS.directive("ejDateFormat", [
-        "$window",
-        "$injector",
+    APP_GENERAL_COMPONENTS.directive('ejDateFormat', [
+        '$window',
+        '$injector',
         function($window, $injector) {
             return {
-                require: "^ngModel",
-                restrict: "A",
+                require: '^ngModel',
+                restrict: 'A',
                 link: function(scope, elm, attrs, ctrl) {
-                    var moment = $window.moment;
-                    var tenantService, dateFormat;
-                    if (attrs.stDateFormat === "supplierPortal") {
-                        tenantService = $injector.get("tenantSupplierPortalService");
+                    let moment = $window.moment;
+                    let tenantService, dateFormat;
+                    if (attrs.stDateFormat === 'supplierPortal') {
+                        tenantService = $injector.get('tenantSupplierPortalService');
                     } else {
-                        tenantService = $injector.get("tenantService");
+                        tenantService = $injector.get('tenantService');
                     }
                     dateFormat = tenantService.getDateFormat();
-                    console.log(elm["0"].attributes[10].nodeValue);
-                    ctrl.$formatters.unshift(function(modelValue) {
-                        if (!dateFormat || !modelValue) return "";
-                        var retVal;
+                    console.log(elm['0'].attributes[10].nodeValue);
+                    ctrl.$formatters.unshift((modelValue) => {
+                        if (!dateFormat || !modelValue) {
+                            return '';
+                        }
+                        let retVal;
                         // We're getting UTC dates from server.
                         // moment.js uses by default local timezone (http://momentjs.com/docs/#/parsing/utc/).
                         // We want to display server time (UTC), unless specifically
                         // required to display local time, via the st-date-to-local
                         // custom attribute.
-                        if (!dateFormat) dateFormat = tenantService.getDateFormat();
+                        if (!dateFormat) {
+                            dateFormat = tenantService.getDateFormat();
+                        }
                         if (attrs.stDateToLocal !== undefined) {
                             // moment.js default behavior: return date in LOCAL TIME.
                             retVal = moment
@@ -2390,26 +2436,28 @@ window.increment = 0;
                         }
                         return retVal;
                     });
-                    ctrl.$parsers.unshift(function(viewValue) {
-                        if (!dateFormat) dateFormat = tenantService.getDateFormat();
+                    ctrl.$parsers.unshift((viewValue) => {
+                        if (!dateFormat) {
+                            dateFormat = tenantService.getDateFormat();
+                        }
                         // When parsing the model value, always use UTC, since this goes to the server.
-                        var date = moment.utc(viewValue, dateFormat);
-                        return date.format("YYYY-MM-DD[T]HH:mm:ss.SSSZZ");
+                        let date = moment.utc(viewValue, dateFormat);
+                        return date.format('YYYY-MM-DD[T]HH:mm:ss.SSSZZ');
                     });
                 }
             };
         }
     ]);
 
-    APP_GENERAL_COMPONENTS.directive("customPopover", function() {
+    APP_GENERAL_COMPONENTS.directive('customPopover', () => {
         return {
-            templateUrl: "app-general-components/views/columnFiltersPopover.html",
-            controller: "FiltersController",
+            templateUrl: 'app-general-components/views/columnFiltersPopover.html',
+            controller: 'FiltersController',
             scope: {
-                column: "=",
-                sortcol: "=",
-                table: "=",
-                globalFilters: "="
+                column: '=',
+                sortcol: '=',
+                table: '=',
+                globalFilters: '='
             },
             link: function(scope, element, attrs) {
                 // console.log(scope);
@@ -2417,8 +2465,8 @@ window.increment = 0;
             }
         };
     });
-    APP_GENERAL_COMPONENTS.filter("srcurl", [
-        "$sce",
+    APP_GENERAL_COMPONENTS.filter('srcurl', [
+        '$sce',
         function($sce) {
             return function(text) {
                 // text = text.replace("watch?v=", "embed/");
@@ -2427,7 +2475,7 @@ window.increment = 0;
         }
     ]);
 
-	APP_GENERAL_COMPONENTS.directive('ngDynamicController', ['$compile', '$parse',function($compile, $parse) {
+    APP_GENERAL_COMPONENTS.directive('ngDynamicController', [ '$compile', '$parse', function($compile, $parse) {
 	  return {
 	      scope: {
 	          name: '=ngDynamicController'
@@ -2442,6 +2490,5 @@ window.increment = 0;
 	          $compile(elem)(scope);
 	      }
 	  };
-	}]);
-
-})();
+    } ]);
+}());

@@ -1,48 +1,48 @@
-angular.module("shiptech.components").controller("FiltersController", [
-    "$q",
-    "$rootScope",
-    "$scope",
-    "$state",
-    "$stateParams",
-    "$filtersData",
-    "$timeout",
-    "filterConfigurationModel",
-    "$compile",
-    "$listsCache",
-    "$tenantSettings",
+angular.module('shiptech.components').controller('FiltersController', [
+    '$q',
+    '$rootScope',
+    '$scope',
+    '$state',
+    '$stateParams',
+    '$filtersData',
+    '$timeout',
+    'filterConfigurationModel',
+    '$compile',
+    '$listsCache',
+    '$tenantSettings',
     'CUSTOM_EVENTS',
     'tenantService',
     function($q, $rootScope, $scope, $state, $stateParams, $filtersData, $timeout, filterConfigurationModel, $compile, $listsCache, $tenantSettings, CUSTOM_EVENTS, tenantService) {
         $scope.filtersData = $filtersData;
         $scope.listsCache = $listsCache;
         $scope.tenantSettings = $tenantSettings;
-		tenantService.procurementSettings.then(function(settings) {
-			ctrl.procurementSettings = settings.payload;
-			if ($scope.currentList == "schedule-dashboard-calendar" && ctrl.procurementSettings.request.deliveryWindowDisplay.id == 2) {
-				if ($scope.currentColumns) {
-					for (var i = $scope.currentColumns.length - 1; i >= 0; i--) {
-						if ($scope.currentColumns[i].columnValue == "VoyageDetail_DeliveryFrom" || $scope.currentColumns[i].columnValue == "VoyageDetail_DeliveryTo") {
-							$scope.currentColumns.splice(i,1)
-						}
-					}
-				}
-			}
-		});
+        tenantService.procurementSettings.then((settings) => {
+            ctrl.procurementSettings = settings.payload;
+            if ($scope.currentList == 'schedule-dashboard-calendar' && ctrl.procurementSettings.request.deliveryWindowDisplay.id == 2) {
+                if ($scope.currentColumns) {
+                    for (let i = $scope.currentColumns.length - 1; i >= 0; i--) {
+                        if ($scope.currentColumns[i].columnValue == 'VoyageDetail_DeliveryFrom' || $scope.currentColumns[i].columnValue == 'VoyageDetail_DeliveryTo') {
+                            $scope.currentColumns.splice(i, 1);
+                        }
+                    }
+                }
+            }
+        });
 
-        console.log("init");
+        console.log('init');
         $scope.noDefault = null;
         ctrl = this;
         $rootScope.isDefaultConfig = null;
-        ctrl.isSellerPortal = window.location.hash.indexOf("supplier-portal") > 0;
-        $scope.$on("savedLayout", function() {
-            if ($scope.$$listenerCount["savedLayout"] > 1) {
-                $scope.$$listenerCount["savedLayout"] = 0;
+        ctrl.isSellerPortal = window.location.hash.indexOf('supplier-portal') > 0;
+        $scope.$on('savedLayout', () => {
+            if ($scope.$$listenerCount.savedLayout > 1) {
+                $scope.$$listenerCount.savedLayout = 0;
             }
             if ($scope.selectedConfig) {
                 $scope.createAndUpdateFilterConfig($scope.selectedConfig.id, $scope.selectedConfig.name, $rootScope.rawFilters, $scope.selectedConfig.isDefault, true);
             }
             $rootScope.clc_loaded = false;
-            setTimeout(function(){
+            setTimeout(() => {
                 $rootScope.lastLoadedListPayload = null;
 	            $state.reload();
             });
@@ -50,16 +50,16 @@ angular.module("shiptech.components").controller("FiltersController", [
 
         ctrl.hideSidebar = function() {
             QuickSidebar.hide();
-        }; 
+        };
 
-        $scope.$on('colModel', function(e, data) {
+        $scope.$on('colModel', (e, data) => {
           	$scope.colModel = data;
-        });        
-        $scope.$on('applyRawFilters', function(e, data) {
-			$scope.applyFilters($rootScope.rawFilters);
+        });
+        $scope.$on('applyRawFilters', (e, data) => {
+            $scope.applyFilters($rootScope.rawFilters);
         });
 
-        $rootScope.$on("breadcrumbs-filter-applied", function(event, packedFilter) {
+        $rootScope.$on('breadcrumbs-filter-applied', (event, packedFilter) => {
             // First filter applied
             $scope.appliedFiltersFromBreadcrumb = true;
         	if (!$scope.globalFilters) {
@@ -80,7 +80,7 @@ angular.module("shiptech.components").controller("FiltersController", [
         	if ($rootScope.listOfAppliedFiltersString.indexOf(packedFilter.value[0].toLowerCase()) == -1) {
                 $scope.globalFilters.push(packedFilter);
         	} else {
-        		for (var i = $scope.globalFilters.length - 1; i >= 0; i--) {
+        		for (let i = $scope.globalFilters.length - 1; i >= 0; i--) {
         			if ($scope.globalFilters[i].value.length > 0) {
 		        		if ($scope.globalFilters[i].value[0].toLowerCase() == packedFilter.value[0].toLowerCase()) {
 	                        $scope.globalFilters.splice(i, 1);
@@ -92,31 +92,31 @@ angular.module("shiptech.components").controller("FiltersController", [
             $scope.applyFilters($scope.globalFilters);
         });
 
-        $scope.applyFilters = function (data, noSlide, fromcol, column, defaultConf) {
+        $scope.applyFilters = function(data, noSlide, fromcol, column, defaultConf) {
             // $scope.currentList = $state.current.url.replace(":screen_id", $state.params.screen_id).replace("/", "");
 
-            if (typeof($rootScope.lastFilterApplied) == 'undefined') {
+            if (typeof $rootScope.lastFilterApplied == 'undefined') {
             	$rootScope.lastFilterApplied = 0;
             }
-            var difference = new Date().getTime() - $rootScope.lastFilterApplied;
-            console.log("-----------------" + difference);
+            let difference = new Date().getTime() - $rootScope.lastFilterApplied;
+            console.log(`-----------------${ difference}`);
             if (difference < 1000) {
             	return false;
             }
             $rootScope.lastFilterApplied = new Date().getTime();
 
-            //console.log("_____________________", $scope.currentList);
-			console.log(localStorage.getItem("persistentGlobalFilters"));
-			if (localStorage.getItem("persistentGlobalFilters")) {
-				data = angular.copy(JSON.parse(localStorage.getItem("persistentGlobalFilters")));
-				$scope.globalFilters = angular.copy(JSON.parse(localStorage.getItem("persistentGlobalFilters")));
-				localStorage.removeItem("persistentGlobalFilters");
-			}
+            // console.log("_____________________", $scope.currentList);
+            console.log(localStorage.getItem('persistentGlobalFilters'));
+            if (localStorage.getItem('persistentGlobalFilters')) {
+                data = angular.copy(JSON.parse(localStorage.getItem('persistentGlobalFilters')));
+                $scope.globalFilters = angular.copy(JSON.parse(localStorage.getItem('persistentGlobalFilters')));
+                localStorage.removeItem('persistentGlobalFilters');
+            }
 
-            $rootScope.listOfAppliedFiltersString = []
-        	hasRequestProductStatusFilter = false;	
+            $rootScope.listOfAppliedFiltersString = [];
+        	hasRequestProductStatusFilter = false;
         	if ($scope.globalFilters) {
-        		for (var i = 0; i < $scope.globalFilters.length; i++) {
+        		for (let i = 0; i < $scope.globalFilters.length; i++) {
         			if ($scope.globalFilters[i].column && $scope.globalFilters[i].column.columnName == 'Port Status') {
         				$rootScope.listOfAppliedFiltersString.push($scope.globalFilters[i].value[0].toLowerCase());
         				if (!hasRequestProductStatusFilter) {
@@ -125,27 +125,28 @@ angular.module("shiptech.components").controller("FiltersController", [
     							$scope.appliedFiltersFromBreadcrumb = false;
         					}
         				}
-        				hasRequestProductStatusFilter = true;	
+        				hasRequestProductStatusFilter = true;
         			}
         		}
         	}
             if (!hasRequestProductStatusFilter && !$scope.appliedFiltersFromBreadcrumb) {
                 $rootScope.activeBreadcrumbFilters = null;
             }
-            console.log("$rootScope.listOfAppliedFiltersString : "+ $rootScope.listOfAppliedFiltersString);
+            console.log(`$rootScope.listOfAppliedFiltersString : ${ $rootScope.listOfAppliedFiltersString}`);
 
-            if(data){
-            	
-                if(data.clear) data = [];
-                
+            if(data) {
+                if(data.clear) {
+                    data = [];
+                }
+
                 var loopList = [];
-                if($scope.currentList === "schedule-dashboard-calendar"){
+                if($scope.currentList === 'schedule-dashboard-calendar') {
                     loopList = data.Filters;
-               }else{
+                }else{
                     loopList = data;
                 }
-                $.each(loopList, function(_, v) {
-                    $.each($scope.colModel, function(_, v1) {
+                $.each(loopList, (_, v) => {
+                    $.each($scope.colModel, (_, v1) => {
                         if(v.column.columnName.toLowerCase().replace(' ', '.') === v1.name.toLowerCase()) {
                             v.column.columnName = v1.label;
                         }
@@ -153,23 +154,23 @@ angular.module("shiptech.components").controller("FiltersController", [
                 });
             }
 
-            var isInvalidValue = false;
-            $.each(loopList, function(k, v) {
-                if (v.condition.conditionNrOfValues && (!v.value || v.value == "Invalid date")) {
+            let isInvalidValue = false;
+            $.each(loopList, (k, v) => {
+                if (v.condition.conditionNrOfValues && (!v.value || v.value == 'Invalid date')) {
                     isInvalidValue = true;
                 }
-                $.each(v.value, function(k1,v1){
-                	if (typeof(v1) != 'undefined') {
+                $.each(v.value, (k1, v1) => {
+                	if (typeof v1 != 'undefined') {
                 		if (!v1) {
 		                    isInvalidValue = true;
                 		}
                 	} else {
 	                    isInvalidValue = true;
                 	}
-                })
+                });
             });
             if (isInvalidValue) {
-                toastr.error("Please enter a value");
+                toastr.error('Please enter a value');
             	return false;
             }
 
@@ -193,7 +194,7 @@ angular.module("shiptech.components").controller("FiltersController", [
 	            		}
 	            	})
 	            	return hasInvalidDate;
-	            } 
+	            }
 			});
 			if (invalidDateFilters.length > 0) {
 				toastr.error("Please enter correct date format")
@@ -201,38 +202,37 @@ angular.module("shiptech.components").controller("FiltersController", [
 			}
             */
 
-          // console.log('applied filters');
+            // console.log('applied filters');
             console.log('data: ', data);
             // console.log(sortList)
             // console.log(data);
-            if (typeof $scope.packedFilters == "undefined") {
+            if (typeof $scope.packedFilters == 'undefined') {
                 $scope.packedFilters = {};
             }
             if (data && data.length > 0) {
                 if (fromcol) {
-                    $.each(data, function(k, v) {
+                    $.each(data, (k, v) => {
                         v.unSaved = true;
                     });
                     if ($rootScope.rawFilters) {
-
                         differentColumns = [];
-                        var checkColumn = data[0].column.columnValue;
+                        let checkColumn = data[0].column.columnValue;
                         if ($rootScope.rawFilters.length > 0) {
-                            //differentColumns = _.find($rootScope.rawFilters, function(o) {  return o && o.column.columnValue != checkColumn });
-                            differentColumns = $rootScope.rawFilters.filter(function(o) {
+                            // differentColumns = _.find($rootScope.rawFilters, function(o) {  return o && o.column.columnValue != checkColumn });
+                            differentColumns = $rootScope.rawFilters.filter((o) => {
                                 return o && o.column.columnValue != checkColumn;
                             });
-                            $.each(differentColumns, function(k,v){
-                            	v.isDuplicate = false;	
-                            	$.each(data, function(k1,v1){
+                            $.each(differentColumns, (k, v) => {
+                            	v.isDuplicate = false;
+                            	$.each(data, (k1, v1) => {
                             		if (v.column.columnName == v1.column.columnName && v.condition.conditionName == v1.condition.conditionName && JSON.stringify(v.value) == JSON.stringify(v1.value)) {
-		                            	v.isDuplicate = true;	
+		                            	v.isDuplicate = true;
                             		}
-                            	})
+                            	});
                             	if (!v.isDuplicate) {
                             		data.push(v);
                             	}
-                            })
+                            });
                             // if (differentColumns) {
                             //     data = data.concat(differentColumns);
                             // }
@@ -248,7 +248,7 @@ angular.module("shiptech.components").controller("FiltersController", [
                         //     // console.log(1,$rootScope.rawFilters);
                     }
                     if (column) {
-                        $.each(data, function(k, v) {
+                        $.each(data, (k, v) => {
                             if (v) {
                                 if (v.column.columnValue == column) {
                                     data.splice(k, 1);
@@ -256,13 +256,13 @@ angular.module("shiptech.components").controller("FiltersController", [
                             }
                         });
                     }
-                    $.each(data, function(k, v) {
-                        if (v && v.column && v.column.columnType.toLowerCase() == "date") {
-                            if (["eta", "etb"].indexOf(v.column.columnValue.toLowerCase()) < 0) {
-                                v.column.dateType = "server";
+                    $.each(data, (k, v) => {
+                        if (v && v.column && v.column.columnType.toLowerCase() == 'date') {
+                            if ([ 'eta', 'etb' ].indexOf(v.column.columnValue.toLowerCase()) < 0) {
+                                v.column.dateType = 'server';
                             }
-                            if (v.column.columnValue.toLowerCase().indexOf("created") != -1 || v.column.columnValue.toLowerCase().indexOf("modified") != -1) {
-                                v.column.dateType = "subtractTimezone";
+                            if (v.column.columnValue.toLowerCase().indexOf('created') != -1 || v.column.columnValue.toLowerCase().indexOf('modified') != -1) {
+                                v.column.dateType = 'subtractTimezone';
                             }
                         }
                     });
@@ -270,7 +270,7 @@ angular.module("shiptech.components").controller("FiltersController", [
                 // console.log(data);
                 // console.log(2,);
             } else {
-                data = []
+                data = [];
             }
             $scope.packedFilters = $scope.packFilters(data);
             $scope.packedFilters.raw = $rootScope.rawFilters;
@@ -284,88 +284,92 @@ angular.module("shiptech.components").controller("FiltersController", [
             if ($rootScope.sortList) {
                 $scope.packedFilters.sortList = $rootScope.sortList;
             }
-            if (($scope.packedFilters && !defaultConf) || ($scope.packedFilters && defaultConf && !column)) {
+            if ($scope.packedFilters && !defaultConf || $scope.packedFilters && defaultConf && !column) {
                 if ($rootScope.clc_loaded) {
                     // console.log(123)
                     if (!ctrl.saveFilterActionEvent) {
-	                    $rootScope.$broadcast("filters-applied", $scope.packedFilters);
+	                    $rootScope.$broadcast('filters-applied', $scope.packedFilters);
                     } else {
-						ctrl.saveFilterActionEvent = false;
+                        ctrl.saveFilterActionEvent = false;
                     }
                 }
             }
-            if (noSlide != true) ctrl.hideSidebar();
+            if (noSlide != true) {
+                ctrl.hideSidebar();
+            }
         };
 
         $scope.formatHeaders = function(data) {
-            $(".colMenu")
+            $('.colMenu')
                 .parent()
-                .removeClass("unsavedFilteredColumn");
-            $.each(data, function(k, v) {
+                .removeClass('unsavedFilteredColumn');
+            $.each(data, (k, v) => {
                 if (v.unSaved) {
-                    $('.colMenu[data-column="' + v.column.columnValue + '"]')
+                    $(`.colMenu[data-column="${ v.column.columnValue }"]`)
                         .parent()
-                        .addClass("unsavedFilteredColumn");
+                        .addClass('unsavedFilteredColumn');
                 }
             });
         };
 
-        jQuery(document).on("click", "#clearUnsavedFilters", function() {
+        jQuery(document).on('click', '#clearUnsavedFilters', () => {
         	if ($state.current.url == '/schedule-dashboard-table') {
         		if (!$scope.selectedConfig) {
-	        		angular.element($(".clearFiltersSidebar")).scope().clearFilters();
+	        		angular.element($('.clearFiltersSidebar')).scope().clearFilters();
         		}
         	} else {
-	        	$scope.clearUnsavedFilters()
+	        	$scope.clearUnsavedFilters();
         	}
-        })
+        });
 
         $scope.clearUnsavedFilters = function() {
-    		console.log("$scope.clearUnsavedFilters" , new Date() - window.lastclearUnsavedFiltersCall)
+    		console.log('$scope.clearUnsavedFilters', new Date() - window.lastclearUnsavedFiltersCall);
         	if (new Date() - window.lastclearUnsavedFiltersCall < 5000) {
         		return;
         	}
         	window.lastclearUnsavedFiltersCall = new Date();
-            var clearedFilters = [];
-            $.each($rootScope.rawFilters, function(k, v) {
+            let clearedFilters = [];
+            $.each($rootScope.rawFilters, (k, v) => {
                 if (!v.unSaved || v.fromTreasurySummary) {
                     clearedFilters.push(v);
                 }
             });
             $rootScope.rawFilters = clearedFilters;
-            $timeout(function(){
+            $timeout(() => {
 	            $scope.applyFilters($rootScope.rawFilters, true);
-            })
+            });
         };
 
-        $scope.$on("clearUnsavedFilters", function (event) {
+        $scope.$on('clearUnsavedFilters', (event) => {
             // This should only be applied from schedule dashboard calendar
             if ($scope.selectedConfig && $scope.selectedConfig.id != 0) {
 	            $scope.loadSelectedConfig();
             } else {
             	$state.reload();
             }
-        })
+        });
 
-        $scope.$on("treasurySummaryFilters", function (event, data) {
+        $scope.$on('treasurySummaryFilters', (event, data) => {
             // This should only be applied from schedule dashboard calendar
             // $rootScope.$broadcast("filters-applied", data)
-            $scope.globalFilters = _.filter($scope.globalFilters, function(v){
+            $scope.globalFilters = _.filter($scope.globalFilters, (v) => {
             	return !v.fromTreasurySummary;
-            })
+            });
             console.log($rootScope.rawFilters);
             $scope.applyFilters(data, true, true);
-        })  
+        });
 
-        $scope.$on("applyDefaultConfiguration", function(event, data, loadDef) {
+        $scope.$on('applyDefaultConfiguration', (event, data, loadDef) => {
             $scope.selectedConfig = data;
             $scope.applyDefaultConfiguration(data, loadDef);
         });
 
         $scope.applyDefaultConfiguration = function(data, loadDef) {
-            if (ctrl.saveFilterActionEvent) {return}
+            if (ctrl.saveFilterActionEvent) {
+                return;
+            }
             $scope.globalFilters = [];
-            //if new configuration, return
+            // if new configuration, return
             if (!data) {
                 $scope.globalFilters.push({});
                 $scope.clearUnsavedFilters();
@@ -393,39 +397,39 @@ angular.module("shiptech.components").controller("FiltersController", [
             filtersList = data.filtersList;
             sortList = data.sortList;
 
-            $.each(filtersList, function(key, val) {
+            $.each(filtersList, (key, val) => {
                 if (val.columnValue == '[Open]') {
                     val.columnValue = 'Open';
                 }
                 if (val.columnValue == '[Close]') {
                     val.columnValue = 'Close';
                 }
-           
-                var newFilter = {
+
+                let newFilter = {
                     column: null,
                     condition: null,
                     filterOperator: val.filterOperator,
                     value: []
                 };
 
-                //check in current columns
-                $.each($scope.currentColumns, function(key2, val2) {
+                // check in current columns
+                $.each($scope.currentColumns, (key2, val2) => {
                     if (val2.columnValue == val.columnValue) {
                         newFilter.column = val2;
                     }
                 });
-                //check values
-                $.each($scope.conditions, function(key2, val2) {
+                // check values
+                $.each($scope.conditions, (key2, val2) => {
                     if (val2.conditionValue == val.conditionValue) {
                         newFilter.condition = val2;
                     }
                 });
-                //add values
-                $.each(val.values, function(key2, val2) {
+                // add values
+                $.each(val.values, (key2, val2) => {
                     newFilter.value.push(val2);
                 });
                 $scope.globalFilters.push(newFilter);
-                if (newFilter.column.columnRoute === 'schedule-dashboard-calendar' && (newFilter.column.columnName == 'Port Status')) {
+                if (newFilter.column.columnRoute === 'schedule-dashboard-calendar' && newFilter.column.columnName == 'Port Status') {
                     $rootScope.activeBreadcrumbFilters = newFilter.value[0];
                     // $rootScope.$broadcast(CUSTOM_EVENTS.BREADCRUMB_FILTER_STATUS, newFilter.value[0], 0);
                 }
@@ -442,31 +446,30 @@ angular.module("shiptech.components").controller("FiltersController", [
         };
 
         $scope.initGlobalFilters = function() {
-        	$scope.globalFilters = [{}];
-        	if (localStorage.getItem("persistentGlobalFilters")) {
-	        	$scope.globalFilters = angular.copy(JSON.parse(localStorage.getItem("persistentGlobalFilters")));
+        	$scope.globalFilters = [ {} ];
+        	if (localStorage.getItem('persistentGlobalFilters')) {
+	        	$scope.globalFilters = angular.copy(JSON.parse(localStorage.getItem('persistentGlobalFilters')));
 	        	$scope.applyFilters($scope.globalFilters);
         	}
-        }
+        };
 
-        $scope.$watch('selectedConfig',function(){
+        $scope.$watch('selectedConfig', () => {
         	// $rootScope.persistentGlobalFilters = angular.copy($scope.globalFilters);
-        	
+
         	if (!$scope.selectedConfig) {
         		// debugger;
         	}
-        },true);
+        }, true);
 
-        $rootScope.$on("changeTimeScale", function(){
+        $rootScope.$on('changeTimeScale', () => {
         	if ($scope.globalFilters) {
         		if (!_.isEmpty($scope.globalFilters[0].column)) {
-		        	localStorage.setItem("persistentGlobalFilters", JSON.stringify(angular.copy($scope.globalFilters)) );
+		        	localStorage.setItem('persistentGlobalFilters', JSON.stringify(angular.copy($scope.globalFilters)));
         		}
         	}
-        })
+        });
 
         $scope.loadSelectedConfig = function(load, isDefault) {
-        	
             if (!load) {
                 load = true;
             }
@@ -478,14 +481,15 @@ angular.module("shiptech.components").controller("FiltersController", [
             if (!ctrl.saveFilterActionEvent && $scope.selectedConfig) {
 	            $scope.applyDefaultConfiguration($scope.selectedConfig, load);
             }
-            setTimeout(function(){
+            setTimeout(() => {
 	            ctrl.saveFilterActionEvent = false;
             	$scope.$apply();
-
-            })
+            });
         };
         $scope.packFilters = function(data) {
-            if (!data) data = [];
+            if (!data) {
+                data = [];
+            }
             $rootScope.rawFilters = angular.copy(data);
             packedFilters = [];
             if (data.clear) {
@@ -498,10 +502,10 @@ angular.module("shiptech.components").controller("FiltersController", [
                 //     // data = _.pull(data, 'sortlist');
                 //     console.log(data)
                 // }
-                $.each(data, function(key, val) {
+                $.each(data, (key, val) => {
                     if (!_.isEmpty(val) && !_.isEmpty(val.column)) {
                         // console.log(val);
-                        var filter = {
+                        let filter = {
                             columnValue: val.column.columnValue,
                             fromTreasurySummary: val.fromTreasurySummary,
                             ColumnType: val.column.columnType,
@@ -511,17 +515,15 @@ angular.module("shiptech.components").controller("FiltersController", [
                         };
 
                         if(filter.columnValue === 'Open' || filter.columnValue === 'Close') {
-                            filter.columnValue = '[' + filter.columnValue + ']';
+                            filter.columnValue = `[${ filter.columnValue }]`;
                         }
 
                         if(val.filterOperator) {
                             filter.FilterOperator = val.filterOperator;
+                        } else if(key === 0) {
+                            filter.FilterOperator = 0;
                         } else {
-                            if(key === 0) {
-                                filter.FilterOperator = 0;
-                            } else {
-                                filter.FilterOperator = 1;
-                            }
+                            filter.FilterOperator = 1;
                         }
                         if (val.column.dateType) {
                             filter.dateType = val.column.dateType;
@@ -541,52 +543,58 @@ angular.module("shiptech.components").controller("FiltersController", [
         //     $scope.createFilters();
         // },true);
         $scope.createFilters = function() {
-            if ($state.current.url.indexOf(":screen_id") > -1) {
-                $scope.currentList = $state.current.url.replace(":screen_id", $state.params.screen_id).replace("/", "");
+            if ($state.current.url.indexOf(':screen_id') > -1) {
+                $scope.currentList = $state.current.url.replace(':screen_id', $state.params.screen_id).replace('/', '');
             } else {
-                $scope.currentList = $state.current.url.replace("/", "");
+                $scope.currentList = $state.current.url.replace('/', '');
             }
 
             if ($rootScope.isModal) {
-                list = $scope.currentList.split("/")[0];
-                $scope.currentList = list + "/" + $rootScope.modalTableId;
+                list = $scope.currentList.split('/')[0];
+                $scope.currentList = `${list }/${ $rootScope.modalTableId}`;
             }
             // console.log(modalTableId)
-            if ($state.current.name == "default.home" || $state.current.name == "default.dashboard-timeline") {
-                $scope.currentList = "schedule-dashboard-calendar";
+            if ($state.current.name == 'default.home' || $state.current.name == 'default.dashboard-timeline') {
+                $scope.currentList = 'schedule-dashboard-calendar';
             }
-            if ($scope.currentList == "contract-planning/") $scope.currentList = "contract-planning";
-            if ($scope.currentList.indexOf("contract-planning") >= 0) $scope.currentList = "contract-planning";
-            if ($scope.currentList.indexOf(":entity_id") > -1) {
-                $scope.currentList = $scope.currentList.replace("/:entity_id", "");
+            if ($scope.currentList == 'contract-planning/') {
+                $scope.currentList = 'contract-planning';
             }
-            if ($scope.currentList.indexOf("/:") && $scope.currentList != "edit-request/:requestId") {
-                $scope.currentList = $scope.currentList.split("/:")[0];
+            if ($scope.currentList.indexOf('contract-planning') >= 0) {
+                $scope.currentList = 'contract-planning';
             }
-            console.log("currentList", $scope.currentList);
+            if ($scope.currentList.indexOf(':entity_id') > -1) {
+                $scope.currentList = $scope.currentList.replace('/:entity_id', '');
+            }
+            if ($scope.currentList.indexOf('/:') && $scope.currentList != 'edit-request/:requestId') {
+                $scope.currentList = $scope.currentList.split('/:')[0];
+            }
+            console.log('currentList', $scope.currentList);
             // console.log('$scope.filtersData',$scope.filtersData);
             $scope.currentColumns = [];
-            if($rootScope.rawFilters === undefined) $rootScope.rawFilters = [];
+            if($rootScope.rawFilters === undefined) {
+                $rootScope.rawFilters = [];
+            }
             $rootScope.CheckForFilters = 0;
             $scope.conditions = $scope.filtersData.filterConditions;
-            $.each($scope.filtersData.filterColumns, function(key, value) {
+            $.each($scope.filtersData.filterColumns, (key, value) => {
                 if (value.columnRoute == $scope.currentList) {
                     // if(value.columnType == 'Number') value.columnType = 'longNumber';
-                    // 
-                    if ($scope.tenantSettings.companyDisplayName == "Pool") {
-						value.columnName = value.columnName.replace("Carrier", $scope.tenantSettings.companyDisplayName.name);
+                    //
+                    if ($scope.tenantSettings.companyDisplayName == 'Pool') {
+                        value.columnName = value.columnName.replace('Carrier', $scope.tenantSettings.companyDisplayName.name);
                     }
-					value.columnName = value.columnName.replace("Company", $scope.tenantSettings.companyDisplayName.name);
-					value.columnName = value.columnName.replace("Service", $scope.tenantSettings.serviceDisplayName.name);
-					if (value.columnRoute == "schedule-dashboard-calendar" && (value.columnValue == "VoyageDetail_DeliveryFrom" || value.columnValue == "VoyageDetail_DeliveryTo")  ) {
-						if (ctrl.procurementSettings) {
-							if (ctrl.procurementSettings.request.deliveryWindowDisplay.id == 2) {
-								return;
-							}
-						}
-					}
+                    value.columnName = value.columnName.replace('Company', $scope.tenantSettings.companyDisplayName.name);
+                    value.columnName = value.columnName.replace('Service', $scope.tenantSettings.serviceDisplayName.name);
+                    if (value.columnRoute == 'schedule-dashboard-calendar' && (value.columnValue == 'VoyageDetail_DeliveryFrom' || value.columnValue == 'VoyageDetail_DeliveryTo')) {
+                        if (ctrl.procurementSettings) {
+                            if (ctrl.procurementSettings.request.deliveryWindowDisplay.id == 2) {
+                                return;
+                            }
+                        }
+                    }
                     $scope.currentColumns.push(value);
-                   // $rootScope.rawFilters[value.columnName] = value;
+                    // $rootScope.rawFilters[value.columnName] = value;
                     $rootScope.CheckForFilters++;
                 } else if (value.columnRoute === 'view-order-auditlog' && $scope.currentList.indexOf('masters') > -1) {
                     // Filters for all masters routes
@@ -596,23 +604,24 @@ angular.module("shiptech.components").controller("FiltersController", [
                 }
             });
             if ($rootScope.CheckForFilters == 0) {
-                $timeout(function() {
-                    if(typeof ctrl.hideSidebar == 'function')
+                $timeout(() => {
+                    if(typeof ctrl.hideSidebar == 'function') {
                         ctrl.hideSidebar();
+                    }
                 });
             }
-            console.log("$rootScope.CheckForFilters", $rootScope.CheckForFilters);
+            console.log('$rootScope.CheckForFilters', $rootScope.CheckForFilters);
         };
         $scope.createFilters();
         $scope.clearFilters = function(noSlide) {
             $scope.globalFilters = [];
             $rootScope.isDefaultConfig = $scope.selectedConfig;
             $scope.selectedConfig = null;
-            $rootScope.timelineSaved =  null;
+            $rootScope.timelineSaved = null;
             $rootScope.saveFiltersTimeline = $rootScope.saveFiltersDefaultTimeline;
             $rootScope.saveFiltersDefaultTimeline = null;
             $rootScope.activeBreadcrumbFilters = null;
-            var data = {
+            let data = {
                 clear: true
             };
             $scope.applyFilters(data, noSlide);
@@ -620,22 +629,24 @@ angular.module("shiptech.components").controller("FiltersController", [
         $scope.clearCurrentLine = function(index, where, column) {
             if (column) {
                 $scope.pageFilters[column][index].value = [];
-                if (where == "column") $scope.pageFilters[column][index].condition = {};
-            } else {
-                if ($scope.globalFilters[index]) {
-                    //delecte condition value if column/condition is changed
-                    $scope.globalFilters[index].value = [];
-                    //delete contition when column name is changed
-                    if (where == "column") $scope.globalFilters[index].condition = {};
+                if (where == 'column') {
+                    $scope.pageFilters[column][index].condition = {};
+                }
+            } else if ($scope.globalFilters[index]) {
+                // delecte condition value if column/condition is changed
+                $scope.globalFilters[index].value = [];
+                // delete contition when column name is changed
+                if (where == 'column') {
+                    $scope.globalFilters[index].condition = {};
                 }
             }
         };
 
-        $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
-            var array = ["Schedule Dashboard", "Schedule Dashboard", "Schedule Dashboard Timeline"];
+        $rootScope.$on('$stateChangeSuccess', (event, toState, toParams, fromState, fromParams) => {
+            let array = [ 'Schedule Dashboard', 'Schedule Dashboard', 'Schedule Dashboard Timeline' ];
             if (array.indexOf(toParams.path[1].label) != -1 && $rootScope.startView) {
                 $rootScope.clc_loaded = false;
-                if (toParams.path[1].label == "Schedule Dashboard Timeline") {
+                if (toParams.path[1].label == 'Schedule Dashboard Timeline') {
                     $rootScope.isTimelineFiltersDefault = true;
                 } else {
                     $rootScope.isTimelineFiltersDefault = false;
@@ -649,9 +660,9 @@ angular.module("shiptech.components").controller("FiltersController", [
             }
         });
 
-        var deregisterStateChangeStart = $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
-            $rootScope.clc_loaded = false;   
-            if (toParams.path[1].label == "Schedule Dashboard Timeline") {
+        var deregisterStateChangeStart = $rootScope.$on('$stateChangeSuccess', (event, toState, toParams, fromState, fromParams) => {
+            $rootScope.clc_loaded = false;
+            if (toParams.path[1].label == 'Schedule Dashboard Timeline') {
                 $rootScope.isTimelineFiltersDefault = true;
             } else {
                 $rootScope.isTimelineFiltersDefault = false;
@@ -664,10 +675,10 @@ angular.module("shiptech.components").controller("FiltersController", [
             $scope.getDefaultFiltersConfiguration();
             $scope.getFiltersConfigurations();
 
-                deregisterStateChangeStart();
+            deregisterStateChangeStart();
         });
 
-        $rootScope.$on("filtersTimelineDefault", function(){
+        $rootScope.$on('filtersTimelineDefault', () => {
             $rootScope.clc_loaded = false;
             $scope.globalFilters = [];
             $rootScope.listOfAppliedFiltersString = [];
@@ -675,41 +686,40 @@ angular.module("shiptech.components").controller("FiltersController", [
             $scope.createFilters();
             $scope.getDefaultFiltersConfiguration();
             $scope.getFiltersConfigurations();
-
         });
 
-	    angular.element(document).ready(function () {
-		    // $rootScope.clc_loaded = false;   
+	    angular.element(document).ready(() => {
+		    // $rootScope.clc_loaded = false;
             // $scope.globalFilters = [{}];
             // console.log("$rootScope.rawFilters", $rootScope.rawFilters);
             // $rootScope.rawFilters = [];
             $scope.createFilters();
-            if (typeof($scope.getDefaultFiltersConfiguration) == 'function') {
+            if (typeof $scope.getDefaultFiltersConfiguration == 'function') {
 	            $scope.getDefaultFiltersConfiguration();
             }
-            if (typeof($scope.getFiltersConfigurations) == 'function') {
+            if (typeof $scope.getFiltersConfigurations == 'function') {
 	            $scope.getFiltersConfigurations();
             }
             // $rootScope.CheckForFilters = 1
-	    });        
-        $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
+	    });
+        $rootScope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
         	$scope.filtersConfigurations = null;
         	$scope.defaultConfiguration = null;
             $scope.noDefault = null;
             $scope.packedFilters = [];
         });
 
-  
+
         $scope.formatDate = function(elem, dateFormat) {
             // console.log(1)
             if (elem) {
                 formattedDate = elem;
-                var date = Date.parse(elem);
+                let date = Date.parse(elem);
                 date = new Date(date);
                 if (date) {
-                    var utc = date.getTime() + date.getTimezoneOffset() * 60000;
-                    //return utc;
-                    dateFormat = dateFormat.replace(/d/g, "D").replace(/y/g, "Y");
+                    let utc = date.getTime() + date.getTimezoneOffset() * 60000;
+                    // return utc;
+                    dateFormat = dateFormat.replace(/d/g, 'D').replace(/y/g, 'Y');
                     formattedDate = fecha.format(utc, dateFormat);
                 }
                 // console.log(formattedDate)
@@ -717,42 +727,42 @@ angular.module("shiptech.components").controller("FiltersController", [
             }
         };
         $scope.getDefaultFiltersConfiguration = function(fromSave) {
-            if ($scope.currentList.contains("invoices/invoice/")) {
+            if ($scope.currentList.contains('invoices/invoice/')) {
                 return;
             }
-        	if (localStorage.getItem("persistentGlobalFilters") || (!fromSave && $scope.defaultConfiguration)) {
+        	if (localStorage.getItem('persistentGlobalFilters') || !fromSave && $scope.defaultConfiguration) {
         		return;
         	}
 
-            if ($rootScope.isTimelineFiltersDefault)  {
+            if ($rootScope.isTimelineFiltersDefault) {
                 $rootScope.isTimelineFiltersDefault = false;
                 return;
             }
 
-            var data = $scope.currentList;
+            let data = $scope.currentList;
             $scope.defaultConfiguration = null;
             filterConfigurationModel
                 .getDefaultFiltersConfiguration(data)
-                .then(function(response) {
-                    console.log("----");
-                    console.log("Filters");
+                .then((response) => {
+                    console.log('----');
+                    console.log('Filters');
                     $rootScope.isRefresh = true;
                     $scope.defaultConfiguration = response.payload;
                     if (!response.payload && !fromSave) {
-                    	$rootScope.$broadcast("filters-applied", []);
-                    } 
+                    	$rootScope.$broadcast('filters-applied', []);
+                    }
                     if ($scope.defaultConfiguration != null) {
                         $rootScope.clearDefaultFilters = true;
                         retVal = $scope.applyDefaultConfiguration($scope.defaultConfiguration, true);
                         $rootScope.savedDefaultFilters = $scope.defaultConfiguration.filters;
                         $scope.selectedConfig = $scope.defaultConfiguration;
                         $rootScope.isDefaultConfig = $scope.selectedConfig;
-                        if ($state.current.name == "default.dashboard-timeline" || $state.current.name == "default.dashboard-calendar") {
+                        if ($state.current.name == 'default.dashboard-timeline' || $state.current.name == 'default.dashboard-calendar') {
                             $rootScope.saveFiltersDefaultTimeline = $scope.defaultConfiguration.filtersList;
                         }
                         $scope.enableDisableDeleteLayout($scope.selectedConfig);
-                        //selected != default
-                        //but if default exists, set as selected initially
+                        // selected != default
+                        // but if default exists, set as selected initially
                     } else {
                         // $scope.selectedConfig = {
                         //     id: 0
@@ -760,21 +770,21 @@ angular.module("shiptech.components").controller("FiltersController", [
                         $scope.noDefault = true;
                     }
                 })
-                .catch(function(error) {
+                .catch((error) => {
                     console.log(error);
                 });
         };
 
         $scope.clearValues = function(column, key) {
-        	setTimeout(function(){
-	        	$scope.$apply(function(){
-		        	$scope.columnFilters[column][key]["value"] = null;
-	        	})
-        	})
+        	setTimeout(() => {
+	        	$scope.$apply(() => {
+		        	$scope.columnFilters[column][key].value = null;
+	        	});
+        	});
         };
 
         $scope.createAndUpdateFilterConfig = function(id, name, data, isDefault, menuZone, table) {
-            //configuration must have at least one filter
+            // configuration must have at least one filter
             console.log($rootScope);
             // console.log($scope.$parent.CLC.tableParams)
             if (!table) {
@@ -782,22 +792,22 @@ angular.module("shiptech.components").controller("FiltersController", [
             }
             if (data) {
                 if (data.length == 0 && !menuZone) {
-                    toastr.error("Configuration must have at least one filter");
+                    toastr.error('Configuration must have at least one filter');
                     return;
                 }
                 filtersList = $scope.packFilters(data);
             } else {
                 filtersList = [];
             }
-            if (name == "Add new configuration") {
+            if (name == 'Add new configuration') {
                 no = $scope.filtersConfigurations.length - 1;
-                name = "Configuration " + no;
+                name = `Configuration ${ no}`;
                 // name = 'Test Configuration ';
             }
-            var route = $scope.currentList;
+            let route = $scope.currentList;
             sortList = $rootScope.sortList;
 
-            //form payload
+            // form payload
             var data = {
                 Id: id,
                 Name: name,
@@ -810,9 +820,9 @@ angular.module("shiptech.components").controller("FiltersController", [
             ctrl.saveFilterActionEvent = true;
             filterConfigurationModel
                 .saveConfiguration(data)
-                .then(function(response) {
+                .then((response) => {
                     console.log(response);
-                    toastr.success("Configuration saved!");
+                    toastr.success('Configuration saved!');
 
                     // $state.reload();globalFilters
                     if (route == 'schedule-dashboard-calendar' || route == 'schedule-dashboard-table') {
@@ -821,21 +831,21 @@ angular.module("shiptech.components").controller("FiltersController", [
                         $scope.getDefaultFiltersConfiguration(true);
                     }
                 })
-                .catch(function(error) {
+                .catch((error) => {
 		            ctrl.saveFilterActionEvent = false;
                     console.log(error);
                 });
         };
         $scope.getFiltersConfigurations = function() {
             if (!$scope.filtersConfigurations) {
-                var data = $scope.currentList;
+                let data = $scope.currentList;
                 // $scope.filtersConfigurations = null;
-                filterConfigurationModel.getFiltersConfigurations(data).then(function(response) {
-                    var data = response.payload;
-                    if ($scope.currentList.contains("invoices/invoice/")) {
-                        var responseGet = response.payload;
+                filterConfigurationModel.getFiltersConfigurations(data).then((response) => {
+                    let data = response.payload;
+                    if ($scope.currentList.contains('invoices/invoice/')) {
+                        let responseGet = response.payload;
                         if (responseGet) {
-                            for (var i = 0; i < responseGet.length; i++) {
+                            for (let i = 0; i < responseGet.length; i++) {
                                 if (responseGet[i] && responseGet[i].isDefault == true) {
                                     $scope.defaultConfiguration = responseGet[i];
                                     break;
@@ -843,19 +853,19 @@ angular.module("shiptech.components").controller("FiltersController", [
                             }
                         }
                         if (!responseGet) {
-                            $rootScope.$broadcast("filters-applied", []);
-                        } 
+                            $rootScope.$broadcast('filters-applied', []);
+                        }
                         if ($scope.defaultConfiguration != null) {
                             retVal = $scope.applyDefaultConfiguration($scope.defaultConfiguration, true);
                             $scope.selectedConfig = $scope.defaultConfiguration;
                             $scope.enableDisableDeleteLayout($scope.selectedConfig);
-                        } 
-                    } 
+                        }
+                    }
                     $scope.filtersConfigurations = data;
                     $scope.filtersConfigurations.unshift({
                         id: 0,
                         route: $scope.currentList,
-                        name: "Add new configuration"
+                        name: 'Add new configuration'
                     });
                     // $scope.filtersConfigurations.unshift({
                     //     id: -1,
@@ -867,23 +877,23 @@ angular.module("shiptech.components").controller("FiltersController", [
             }
         };
         $scope.deleteConfig = function(selectedConfig) {
-            if ($state.current.name == "default.dashboard-timeline" || $state.current.name == "default.home") {
+            if ($state.current.name == 'default.dashboard-timeline' || $state.current.name == 'default.home') {
                 $rootScope.deleteTimelineConfiguration = true;
             }
-            var data = selectedConfig.id;
-			$scope.filtersConfigurations = null;
-            $rootScope.timelineSaved =  null;
+            let data = selectedConfig.id;
+            $scope.filtersConfigurations = null;
+            $rootScope.timelineSaved = null;
             $rootScope.saveFiltersDefaultTimeline = null;
             filterConfigurationModel
                 .deleteConfiguration(data)
-                .then(function(response) {
+                .then((response) => {
                     console.log(response);
-                    toastr.success("Configuration deleted!");
-                    $timeout(function() {
+                    toastr.success('Configuration deleted!');
+                    $timeout(() => {
                         $state.reload();
                     }, 1000);
                 })
-                .catch(function(error) {
+                .catch((error) => {
                     console.log(error);
                 });
         };
@@ -894,10 +904,10 @@ angular.module("shiptech.components").controller("FiltersController", [
         //     }
         // })
         $rootScope.getConfigurationForTableLoad = function() {
-            return $q(function(resolve, reject) {
+            return $q((resolve, reject) => {
                 // send default config to table build
                 // no default config, send false
-                
+
                 if ($rootScope.rawFilters && $state.current.url != '/schedule-dashboard-table') {
 			            $scope.packedFilters = $scope.packFilters($rootScope.rawFilters);
 			            $scope.packedFilters.raw = $rootScope.rawFilters;
@@ -922,10 +932,10 @@ angular.module("shiptech.components").controller("FiltersController", [
             });
         };
         $rootScope.getListFilters = function() {
-            return $q(function(resolve, reject) {
+            return $q((resolve, reject) => {
                 // send default config to table build
                 // no default config, send false
-                $scope.$watch("currentColumns", function(newVal) {
+                $scope.$watch('currentColumns', (newVal) => {
                     // if (newVal != null) {
                     // console.log(newVal)
                     resolve(newVal);
@@ -935,47 +945,46 @@ angular.module("shiptech.components").controller("FiltersController", [
             });
         };
         $rootScope.getGlobalFilters = function() {
-            return $q(function(resolve, reject) {
+            return $q((resolve, reject) => {
                 // send default config to table build
                 // no default config, send false
-                $scope.$watch("globalFilters", function(newVal) {
+                $scope.$watch('globalFilters', (newVal) => {
                     // if (newVal != null) {
                     // console.log(newVal)
                     console.log($rootScope.rawFilters);
-                    $.each($rootScope.rawFilters, function(k,v){
+                    $.each($rootScope.rawFilters, (k, v) => {
                     	if (v.fromTreasurySummary) {
-                    		newVal.push(v);		
+                    		newVal.push(v);
                     	}
-                    })
+                    });
                     resolve(newVal);
 
                     // }
                 });
             });
         };
-        $(document).on("mousedown", function(e) {
+        $(document).on('mousedown', (e) => {
             // check that your clicked
             // element has no id=info
             // and is not child of info
             // console.log(e.target)
             // console.log($("#customPopover").find(e.target).length)
-            if (!$(e.target).hasClass("colMenu")) {
-                if (e.target.id != "customPopover" && !$("#customPopover").find(e.target).length && !$(e.target).hasClass("miunsAct")) {
+            if (!$(e.target).hasClass('colMenu')) {
+                if (e.target.id != 'customPopover' && !$('#customPopover').find(e.target).length && !$(e.target).hasClass('miunsAct')) {
                     $scope.hidePopover();
                 }
             }
         });
-        $scope.hidePopover = function() { 
-        	$("custom-popover").remove();
-            $(".bootstrap-datetimepicker-widget").remove();
-            $("*:not([tooltip])").tooltip("destroy");
-            $("[tooltip][data-original-title]").tooltip({
-                container: "body",
-                placement: "auto"
+        $scope.hidePopover = function() {
+        	$('custom-popover').remove();
+            $('.bootstrap-datetimepicker-widget').remove();
+            $('*:not([tooltip])').tooltip('destroy');
+            $('[tooltip][data-original-title]').tooltip({
+                container: 'body',
+                placement: 'auto'
             });
         };
         $scope.columnSort = function(table, column, order, sortColumn, columnObj) {
-
             if (!column || column === 'undefined') {
                 column = _.get(columnObj, 'column.columnValue');
             }
@@ -984,7 +993,7 @@ angular.module("shiptech.components").controller("FiltersController", [
                 sortColumn = _.get(columnObj, 'column.columnValue');
             }
 
-            $.each($rootScope.sortList, function(k, v) {
+            $.each($rootScope.sortList, (k, v) => {
                 if (v.columnValue == '[open]') {
                     v.columnValue = 'open';
                 }
@@ -994,31 +1003,29 @@ angular.module("shiptech.components").controller("FiltersController", [
             });
 
             if ($rootScope.sortList && $rootScope.sortList.length > 0) {
-                $.each($rootScope.sortList, function(k, v) {
+                $.each($rootScope.sortList, (k, v) => {
                     if (v) {
                         if (sortColumn) {
-                            if ((v.sortColumnValue && v.sortColumnValue.toLowerCase() == sortColumn.toLowerCase()) || v.columnValue.toLowerCase() == sortColumn.toLowerCase()) {
+                            if (v.sortColumnValue && v.sortColumnValue.toLowerCase() == sortColumn.toLowerCase() || v.columnValue.toLowerCase() == sortColumn.toLowerCase()) {
                                 $rootScope.sortList.splice(k, 1);
                             }
-                        } else {
-                            if (v.columnValue.toLowerCase() == column.toLowerCase()) {
-                                $rootScope.sortList.splice(k, 1);
-                            }
+                        } else if (v.columnValue.toLowerCase() == column.toLowerCase()) {
+                            $rootScope.sortList.splice(k, 1);
                         }
                     }
                 });
             }
 
-            idx = $rootScope.sortList && $rootScope.sortList.length > 0 ? _.maxBy($rootScope.sortList, "sortIndex").sortIndex + 1 : 0;
+            idx = $rootScope.sortList && $rootScope.sortList.length > 0 ? _.maxBy($rootScope.sortList, 'sortIndex').sortIndex + 1 : 0;
 
             if (order > 0) {
                 if (sortColumn) {
-                    $rootScope.sortList.push({ 
-                    	columnValue: sortColumn.replace(/\./g, "_").toLowerCase(), 
-                    	sortIndex: idx, 
-                    	isComputedColumn: columnObj.column.isComputedColumn, 
-                    	sortParameter: order, 
-                    	col: column.replace(/\./g, "_").toLowerCase() 
+                    $rootScope.sortList.push({
+                    	columnValue: sortColumn.replace(/\./g, '_').toLowerCase(),
+                    	sortIndex: idx,
+                    	isComputedColumn: columnObj.column.isComputedColumn,
+                    	sortParameter: order,
+                    	col: column.replace(/\./g, '_').toLowerCase()
                     });
                 } else {
                 	isComputedColumn = false;
@@ -1027,18 +1034,18 @@ angular.module("shiptech.components").controller("FiltersController", [
 		                	isComputedColumn = true;
                 		}
                 	}
-                    $rootScope.sortList.push({ 
-                    	columnValue: column.replace(/\./g, "_").toLowerCase(), 
-                    	sortIndex: idx, 
-                    	isComputedColumn: isComputedColumn, 
-                    	sortParameter: order 
+                    $rootScope.sortList.push({
+                    	columnValue: column.replace(/\./g, '_').toLowerCase(),
+                    	sortIndex: idx,
+                    	isComputedColumn: isComputedColumn,
+                    	sortParameter: order
                     });
                 }
             }
 
-            $.each($rootScope.sortList, function(k, v) {
+            $.each($rootScope.sortList, (k, v) => {
                 if (v.columnValue == 'open' || v.columnValue == 'close') {
-                    v.columnValue = '[' + v.columnValue + ']';
+                    v.columnValue = `[${ v.columnValue }]`;
                 }
             });
 
@@ -1047,20 +1054,20 @@ angular.module("shiptech.components").controller("FiltersController", [
             $scope.hidePopover();
         };
         $scope.appendFilters = function(obj) {
-            $timeout(function() {
-                $scope.$apply(function() {
+            $timeout(() => {
+                $scope.$apply(() => {
                     $scope.globalFilters.push(data);
                 });
             });
         };
         $scope.checkColumnFilters = function(column) {
-            if (typeof $scope.columnFilters == "undefined") {
+            if (typeof $scope.columnFilters == 'undefined') {
                 $scope.columnFilters = {};
                 $scope.columnFilters[column] = [];
             }
             filters = $rootScope.rawFilters;
-           
-            $.each(filters, function(k, v) {
+
+            $.each(filters, (k, v) => {
                 if (v.column.columnValue == column) {
                     $scope.columnFilters[column].push(v);
                 }
@@ -1068,11 +1075,11 @@ angular.module("shiptech.components").controller("FiltersController", [
             if ($scope.columnFilters[column].length == 0) {
                 $scope.columnFilters[column].push({});
             }
-           //  setTimeout(function(){
+            //  setTimeout(function(){
 	          //   if ($(".popover-filter-date").length > 0) {
 			        // $compile($(".popover-filter-date"))(angular.element($(".popover-filter-date")).scope());
 	          //   }
-           //  })
+            //  })
             console.log($scope.columnFilters[column]);
         };
         $scope.removeFilterRow = function(index, column) {
@@ -1081,7 +1088,7 @@ angular.module("shiptech.components").controller("FiltersController", [
         $scope.removeFilterColumn = function(column) {
             $scope.columnFilters[column] = [];
             newFilter = [];
-            $.each($rootScope.rawFilters, function(k, v) {
+            $.each($rootScope.rawFilters, (k, v) => {
                 if (v.column.columnValue != column) {
                     newFilter.push(v);
                 }
@@ -1090,80 +1097,77 @@ angular.module("shiptech.components").controller("FiltersController", [
             $scope.applyFilters($rootScope.rawFilters);
         };
 
-        $scope.setDefaultConditionType = function(column, key){
+        $scope.setDefaultConditionType = function(column, key) {
             // console.log($scope.columnFilters[column][key]);
             // debugger;
             // only type text
 
-            if (column == "IsVerified_Name") {
-                $scope.columnFilters[column][key].column.columnType = "Bool";
+            if (column == 'IsVerified_Name') {
+                $scope.columnFilters[column][key].column.columnType = 'Bool';
             }
 
             if ($scope.columnFilters[column][key].column) {
-		        if($scope.columnFilters[column][key].column.columnType == 'Text'){
+		        if($scope.columnFilters[column][key].column.columnType == 'Text') {
 		            // if the filter doesn't come from a configuration / filter isn't already set -> default only empty filters
 		            if(!$scope.columnFilters[column][key].value && !$scope.columnFilters[column][key].condition) {
-
-		                //find 'Contains' for type Tex and set that condition as default
-		                $.each($scope.conditions, function(key_cond,val_cond){
-		                    if(val_cond.conditionApplicable == "Text" && val_cond.conditionNrOfValues > 0) {
-		                        if(val_cond.conditionName == "Contains") {
+		                // find 'Contains' for type Tex and set that condition as default
+		                $.each($scope.conditions, (key_cond, val_cond) => {
+		                    if(val_cond.conditionApplicable == 'Text' && val_cond.conditionNrOfValues > 0) {
+		                        if(val_cond.conditionName == 'Contains') {
 		                            $scope.columnFilters[column][key].condition = angular.copy(val_cond);
                                 }
                             }
 		                });
 		            }
-		        } 
+		        }
             }
-        }
+        };
 
-        $scope.enableDisableDeleteLayout = function(isDisabled){
-
+        $scope.enableDisableDeleteLayout = function(isDisabled) {
         	if (isDisabled) {
         		if (isDisabled.id != 0) {
-        			$(".st-content-action-icons .delete_layout").css("opacity", 1)
-        			$(".st-content-action-icons .delete_layout").css("pointer-events", "initial");
+        			$('.st-content-action-icons .delete_layout').css('opacity', 1);
+        			$('.st-content-action-icons .delete_layout').css('pointer-events', 'initial');
         		} else {
-        			$(".st-content-action-icons .delete_layout").css("opacity", 0.3)
-        			$(".st-content-action-icons .delete_layout").css("pointer-events", "none");
+        			$('.st-content-action-icons .delete_layout').css('opacity', 0.3);
+        			$('.st-content-action-icons .delete_layout').css('pointer-events', 'none');
         		}
         	} else {
-        			$(".st-content-action-icons .delete_layout").css("opacity", 0.3)
-        			$(".st-content-action-icons .delete_layout").css("pointer-events", "none");
+        			$('.st-content-action-icons .delete_layout').css('opacity', 0.3);
+        			$('.st-content-action-icons .delete_layout').css('pointer-events', 'none');
         	}
-        	
-        }
+        };
 
-        $rootScope.$on("enableDisableDeleteLayout", function(event, isDisabled) {
+        $rootScope.$on('enableDisableDeleteLayout', (event, isDisabled) => {
             $scope.enableDisableDeleteLayout(isDisabled);
-        })
-                 
+        });
+
         // $scope.getDefaultFiltersConfiguration()
 
-		$rootScope.applyFiltersOnEnter = function(){
-			$(document).keypress(function(event){
-				var keycode = (event.keyCode ? event.keyCode : event.which);
-				if(keycode == '13'){
-					if ($('custom-popover').is(":visible")) {
-						if (typeof $rootScope.applyFiltersOnEnter == 'function') {
-							$rootScope.applyFiltersOnEnter = null;	
-							$("custom-popover .applyFilters").trigger("click");
-							$scope.hidePopover();
-						}
-					}
-				}
-			});
-		}
-		if (typeof $rootScope.applyFiltersOnEnter == 'function') {
-			$rootScope.applyFiltersOnEnter();
-		}
+        $rootScope.applyFiltersOnEnter = function() {
+            $(document).keypress((event) => {
+                let keycode = event.keyCode ? event.keyCode : event.which;
+                if(keycode == '13') {
+                    if ($('custom-popover').is(':visible')) {
+                        if (typeof $rootScope.applyFiltersOnEnter == 'function') {
+                            $rootScope.applyFiltersOnEnter = null;
+                            $('custom-popover .applyFilters').trigger('click');
+                            $scope.hidePopover();
+                        }
+                    }
+                }
+            });
+        };
+        if (typeof $rootScope.applyFiltersOnEnter == 'function') {
+            $rootScope.applyFiltersOnEnter();
+        }
     }
 ]);
-angular.module("shiptech.components").component("filters", {
-    templateUrl: "components/sidebar/views/filters.html",
-    controller: "FiltersController",
+angular.module('shiptech.components').component('filters', {
+    templateUrl: 'components/sidebar/views/filters.html',
+    controller: 'FiltersController',
     bindings: {
-        settings: "="
+        settings: '='
     }
 });
 // angular.module("shiptech.components").component("filtersWidget", {
@@ -1173,9 +1177,9 @@ angular.module("shiptech.components").component("filters", {
 //         settings: "="
 //     }
 // });
-angular.module("shiptech").directive("filtersWidget", function() {
+angular.module('shiptech').directive('filtersWidget', () => {
     return {
-        templateUrl: "components/sidebar/views/filters-widget.html",
-        controller: "FiltersController"
+        templateUrl: 'components/sidebar/views/filters-widget.html',
+        controller: 'FiltersController'
     };
 });

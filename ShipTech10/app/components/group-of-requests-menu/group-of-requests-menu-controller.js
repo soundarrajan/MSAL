@@ -1,6 +1,6 @@
-angular.module('shiptech').controller('GroupOfRequestsMenuController', ['$scope', '$state', 'STATE',
+angular.module('shiptech').controller('GroupOfRequestsMenuController', [ '$scope', '$state', 'STATE',
     function($scope, $state, STATE) {
-        var ctrl = this;
+        let ctrl = this;
     	if ($state.params.groupId) {
 	        $scope.entity_id = $state.params.groupId;
     	} else if ($state.params.requestId) {
@@ -8,6 +8,6 @@ angular.module('shiptech').controller('GroupOfRequestsMenuController', ['$scope'
     	}
         $scope.state = $state;
         $scope.STATE = STATE;
-        ctrl.groupId =     $scope.entity_id ;
+        ctrl.groupId = $scope.entity_id;
     }
 ]);

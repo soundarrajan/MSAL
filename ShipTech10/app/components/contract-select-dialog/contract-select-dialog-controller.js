@@ -1,8 +1,8 @@
-angular.module('shiptech').controller('ContractSelectDialogController', ['$scope', '$timeout', '$state', 'STATE', 'selectContractModel', 'MOCKUP_MAP', 'uiApiModel', 'screenLoader', '$tenantSettings',
+angular.module('shiptech').controller('ContractSelectDialogController', [ '$scope', '$timeout', '$state', 'STATE', 'selectContractModel', 'MOCKUP_MAP', 'uiApiModel', 'screenLoader', '$tenantSettings',
     function($scope, $timeout, $state, STATE, selectContractModel, MOCKUP_MAP, uiApiModel, screenLoader, $tenantSettings) {
         $scope.state = $state;
         $scope.STATE = STATE;
-        var ctrl = this;
+        let ctrl = this;
         ctrl.selectedRow = null;
         ctrl.checkboxes = [];
         ctrl.tableOptions = {};
@@ -12,17 +12,17 @@ angular.module('shiptech').controller('ContractSelectDialogController', ['$scope
         ctrl.tableOptions.currentPage = 1;
         ctrl.tableOptions.totalRows = 0;
         ctrl.tenantSettings = $tenantSettings;
-        $scope.$on('selectedContarct', function() {
+        $scope.$on('selectedContarct', () => {
             console.log('mass');
         });
         ctrl.$onInit = function() {
-            var endpoint = MOCKUP_MAP['unrouted.select-contract-dialog'];
-            uiApiModel.get(endpoint).then(function(data) {
+            let endpoint = MOCKUP_MAP['unrouted.select-contract-dialog'];
+            uiApiModel.get(endpoint).then((data) => {
                 ctrl.ui = data;
             });
         };
         ctrl.toggleSelection = function(index, row) {
-            for (var i = 0; i < ctrl.checkboxes.length; i++) {
+            for (let i = 0; i < ctrl.checkboxes.length; i++) {
                 ctrl.checkboxes[i] = false;
             }
             ctrl.checkboxes[index] = true;
@@ -34,37 +34,36 @@ angular.module('shiptech').controller('ContractSelectDialogController', ['$scope
             }
             ctrl.filters = changes.filters.currentValue;
             ctrl.data = null;
-			$("contract-select-dialog").css({
-				top: "45%",
-			})	
-			screenLoader.isLoading();
-			$("contract-select-dialog").css("opacity", "0")
-			$("contract-select-dialog").css("margin-top", "-100px");
-			ctrl.refreshedSelectDialog = false;
-			ctrl.toggleSelection(null, null);
-            selectContractModel.getSuggestedContracts(null, null, ctrl.filters).then(function(server_data) {
-				
-				ctrl.refreshedSelectDialog = true;
-				ctrl.selectedCheckbox = null;
-				ctrl.selectedRow = null;
-				ctrl.toggleSelection(null, null);
-                
+            $('contract-select-dialog').css({
+                top: '45%',
+            });
+            screenLoader.isLoading();
+            $('contract-select-dialog').css('opacity', '0');
+            $('contract-select-dialog').css('margin-top', '-100px');
+            ctrl.refreshedSelectDialog = false;
+            ctrl.toggleSelection(null, null);
+            selectContractModel.getSuggestedContracts(null, null, ctrl.filters).then((server_data) => {
+                ctrl.refreshedSelectDialog = true;
+                ctrl.selectedCheckbox = null;
+                ctrl.selectedRow = null;
+                ctrl.toggleSelection(null, null);
+
                 // destroyDataTable();
-				screenLoader.finishLoading();
+                screenLoader.finishLoading();
                 ctrl.data = server_data.payload;
-				$("contract-select-dialog").css({
-					top: "0",
-					marginTop: "15px",
-				})	
+                $('contract-select-dialog').css({
+                    top: '0',
+                    marginTop: '15px',
+                });
                 // if (ctrl.data.length == 0) {
                 // }
-                	setTimeout(function(){
-    					$("contract-select-dialog").css({
-							top: "0",
-							marginTop: "15px",
-							opacity: "1",
-						})		
-                	},500)
+                	setTimeout(() => {
+    					$('contract-select-dialog').css({
+                        top: '0',
+                        marginTop: '15px',
+                        opacity: '1',
+                    });
+                	}, 500);
                 // $timeout(function() {
                 //     // ctrl.table = initDatatable('#contract_select');
                 //     // var info = ctrl.table.page.info();
@@ -72,15 +71,15 @@ angular.module('shiptech').controller('ContractSelectDialogController', ['$scope
                 //     // ctrl.tableOptions.totalRows = server_data.matchedCount;
                 //     // handleTableEvents();
                 // });
-            }, function(){
-            	setTimeout(function(){
-					screenLoader.finishLoading();
-					$("contract-select-dialog").css({
-						top: "0",
-						marginTop: "15px",
-						opacity: "1",
-					})	
-            	},500)
+            }, () => {
+            	setTimeout(() => {
+                    screenLoader.finishLoading();
+                    $('contract-select-dialog').css({
+                        top: '0',
+                        marginTop: '15px',
+                        opacity: '1',
+                    });
+            	}, 500);
             });
         };
 
@@ -96,21 +95,22 @@ angular.module('shiptech').controller('ContractSelectDialogController', ['$scope
                 ctrl.table = null;
             }
         }
+
         /**
          * Initializes the contract select datatable.
          * @param {JSON} - The settings to use for DataTable initialization.
          * Must be JSON-normalized to the DataTables settings format!
-         * @return {Object} - The resulting DataTable object.
+         * @returns {Object} - The resulting DataTable object.
          */
         function initDatatable(selector, settings) {
             // Bind and initialize the DataTable.
-            var table = ContractSelectDataTable.init({
+            let table = ContractSelectDataTable.init({
                 selector: selector,
                 dom: 'Bflrt',
-                columnDefs: [{
-                    targets: [0],
+                columnDefs: [ {
+                    targets: [ 0 ],
                     sortable: false
-                }]
+                } ]
             });
             // Re-place (move) the datatable searchbox in the main content menu, as per spec.
             replaceDataTableSearchBox('#contract_select_filter', '#search_box_dummy_contract');
@@ -120,7 +120,7 @@ angular.module('shiptech').controller('ContractSelectDialogController', ['$scope
             if (!ctrl.selectedRow) {
                 return;
             }
-            var contract = {
+            let contract = {
                 contract: {
                     name: ctrl.selectedRow.contractName,
                     id: ctrl.selectedRow.id1,
@@ -140,10 +140,9 @@ angular.module('shiptech').controller('ContractSelectDialogController', ['$scope
             ctrl.checkboxes = [];
         };
 
-		$('contract-select-dialog').on('hidden.bs.modal', function () {
+        $('contract-select-dialog').on('hidden.bs.modal', () => {
 		    // ctrl.checkboxes = null;
 		    // ctrl.selectedRow = null;
-		});
-
+        });
     }
 ]);

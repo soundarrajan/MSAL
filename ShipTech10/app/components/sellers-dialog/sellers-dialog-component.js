@@ -1,16 +1,16 @@
-angular.module('shiptech').controller('SellersDialogController', ['$scope', '$state', '$timeout', 'STATE', 'MOCKUP_MAP', 'LOOKUP_TYPE', 'uiApiModel', 'lookupModel',
+angular.module('shiptech').controller('SellersDialogController', [ '$scope', '$state', '$timeout', 'STATE', 'MOCKUP_MAP', 'LOOKUP_TYPE', 'uiApiModel', 'lookupModel',
     function($scope, $state, $timeout, STATE, MOCKUP_MAP, LOOKUP_TYPE, uiApiModel, lookupModel) {
         $scope.state = $state;
         $scope.STATE = STATE;
-        var ctrl = this;
-        var tableSelector = '#sellers_table';
+        let ctrl = this;
+        let tableSelector = '#sellers_table';
         ctrl.table = null;
         ctrl.tableData = [];
         ctrl.checkboxes = [];
         ctrl.selectedRow = null;
         ctrl.tableOptions = {};
         ctrl.tableOptions.order = [
-            [0, 'asc']
+            [ 0, 'asc' ]
         ];
         ctrl.tableOptions.pageLength = 25;
         ctrl.tableOptions.paginationStart = 0;
@@ -19,10 +19,10 @@ angular.module('shiptech').controller('SellersDialogController', ['$scope', '$st
         ctrl.sellerTypes = null;
         ctrl.trigger = null;
         ctrl.filters = null;
-        var sellersDialogEndpoint = MOCKUP_MAP['unrouted.sellers-dialog'];
+        let sellersDialogEndpoint = MOCKUP_MAP['unrouted.sellers-dialog'];
 
         function initDatatable() {
-            var table = LookupDialogDataTable.init({
+            let table = LookupDialogDataTable.init({
                 dom: 'Bflrt',
                 selector: tableSelector,
                 pageLength: ctrl.tableOptions.pageLength,
@@ -33,7 +33,7 @@ angular.module('shiptech').controller('SellersDialogController', ['$scope', '$st
             return table;
         }
         ctrl.$onInit = function() {
-            uiApiModel.get(sellersDialogEndpoint).then(function(data) {
+            uiApiModel.get(sellersDialogEndpoint).then((data) => {
                 ctrl.ui = data;
             });
         };
@@ -41,21 +41,21 @@ angular.module('shiptech').controller('SellersDialogController', ['$scope', '$st
             if (!ctrl.ui) {
                 return;
             }
-            var call;
+            let call;
             if (changes.sellerTypes) {
                 ctrl.sellerTypes = changes.sellerTypes.currentValue;
             }
             if (changes.trigger) {
                 ctrl.trigger = changes.trigger;
                 if (changes.trigger.currentValue == 'supplier') {
-                	ctrl.sellerTypes = [1];
-                	ctrl.ui.sellersDialog.title = 'Physical Suppliers'
+                	ctrl.sellerTypes = [ 1 ];
+                	ctrl.ui.sellersDialog.title = 'Physical Suppliers';
                 } else if(changes.trigger.currentValue == 'broker') {
-                	ctrl.sellerTypes = [3];
-                	ctrl.ui.sellersDialog.title = 'Sellers'
+                	ctrl.sellerTypes = [ 3 ];
+                	ctrl.ui.sellersDialog.title = 'Sellers';
                 } else if(changes.trigger.currentValue == 'seller') {
-                	ctrl.sellerTypes = [2,3,1];
-                	ctrl.ui.sellersDialog.title = 'Sellers'
+                	ctrl.sellerTypes = [ 2, 3, 1 ];
+                	ctrl.ui.sellersDialog.title = 'Sellers';
                 }
             }
 
@@ -63,15 +63,14 @@ angular.module('shiptech').controller('SellersDialogController', ['$scope', '$st
                 return false;
             }
             switch (ctrl.sellerTypes[0]) {
-                case 3: ctrl.ui.sellersDialog.title = "Brokers"; break;
-                case 6: ctrl.ui.sellersDialog.title = "Surveyors"; break;
-                case 7: ctrl.ui.sellersDialog.title = "Barges"; break;
-                case 8: ctrl.ui.sellersDialog.title = "Labs"; break;
-                case 5: ctrl.ui.sellersDialog.title = "Agents"; break;
-                case 1: ctrl.ui.sellersDialog.title = "Physical Suppliers"; break;
-                default: ctrl.ui.sellersDialog.title = "Sellers";
-
-        }
+            case 3: ctrl.ui.sellersDialog.title = 'Brokers'; break;
+            case 6: ctrl.ui.sellersDialog.title = 'Surveyors'; break;
+            case 7: ctrl.ui.sellersDialog.title = 'Barges'; break;
+            case 8: ctrl.ui.sellersDialog.title = 'Labs'; break;
+            case 5: ctrl.ui.sellersDialog.title = 'Agents'; break;
+            case 1: ctrl.ui.sellersDialog.title = 'Physical Suppliers'; break;
+            default: ctrl.ui.sellersDialog.title = 'Sellers';
+            }
 
             if (typeof changes.filters !== 'undefined' && changes.filters.isFirstChange()) {
                 return false;
@@ -84,16 +83,17 @@ angular.module('shiptech').controller('SellersDialogController', ['$scope', '$st
             } else {
                 call = lookupModel.getSellerList(ctrl.sellerTypes, null, null, ctrl.filters);
             }
-            call.then(function(server_data) {
+            call.then((server_data) => {
                 destroyDataTable();
                 ctrl.tableData = server_data.payload;
-                $timeout(function() {
+                $timeout(() => {
                     ctrl.checkboxes = [];
                     ctrl.table = initDatatable();
-                    var info = $(tableSelector).DataTable().page.info();
+                    let info = $(tableSelector).DataTable().page.info();
                     if (ctrl.table) {
-                        if(typeof info != 'undefined')
+                        if(typeof info != 'undefined') {
                             setTableVars(info.length, info.start, angular.copy(ctrl.table.order().slice(0)));
+                        }
                     }
                     ctrl.tableOptions.totalRows = server_data.matchedCount;
                     handleTableEvents();
@@ -101,7 +101,7 @@ angular.module('shiptech').controller('SellersDialogController', ['$scope', '$st
             });
         };
         ctrl.toggleSelection = function(index, row) {
-            for (var i = 0; i < ctrl.checkboxes.length; i++) {
+            for (let i = 0; i < ctrl.checkboxes.length; i++) {
                 if (index !== i) {
                     ctrl.checkboxes[i] = false;
                 }
@@ -111,7 +111,7 @@ angular.module('shiptech').controller('SellersDialogController', ['$scope', '$st
         };
 
         function destroyDataTable() {
-            //different destroy handling from lookup since we cannot re-create the sellers table if datatables completely deletes it
+            // different destroy handling from lookup since we cannot re-create the sellers table if datatables completely deletes it
             if (ctrl.table) {
                 ctrl.table.off('order.dt');
                 ctrl.table.off('length.dt');
@@ -120,18 +120,18 @@ angular.module('shiptech').controller('SellersDialogController', ['$scope', '$st
             }
         }
         ctrl.confirmSellersSelection = function() {
-            //hackish way to determine if we should return the whole seller object for contract planning or just the id
+            // hackish way to determine if we should return the whole seller object for contract planning or just the id
 
             if (ctrl.trigger.currentValue == 'supplier') {
                 console.log(ctrl.trigger.currentValue, ctrl.selectedRow);
-                ctrl.onSupplierSelect({seller: ctrl.selectedRow});
+                ctrl.onSupplierSelect({ seller: ctrl.selectedRow });
                 return;
             }
             if (ctrl.trigger.currentValue == 'broker') {
                 console.log(ctrl.trigger.currentValue, ctrl.selectedRow);
-                ctrl.onBrokerSelect({seller: ctrl.selectedRow});
+                ctrl.onBrokerSelect({ seller: ctrl.selectedRow });
                 return;
-            }            
+            }
             if (ctrl.trigger.currentValue == 'product') {
                 if (typeof ctrl.selectedRow.counterparty != 'undefined' && ctrl.selectedRow.counterparty !== null) {
                     ctrl.onSellerContractSelect({
@@ -149,18 +149,20 @@ angular.module('shiptech').controller('SellersDialogController', ['$scope', '$st
             }
             ctrl.checkboxes = [];
         };
+
         /**
          * Change datatable order to match server required format
          * @param {Array} - The order format from datatables.
-         * @return {Object} - normalized object representing a human-readable table order
+         * @returns {Object} - normalized object representing a human-readable table order
          */
         function normalizeDatatablesOrder(datatablesOrderArray) {
-            var tableOrder = {};
+            let tableOrder = {};
             datatablesOrderArray = datatablesOrderArray[0];
             tableOrder.column = $(ctrl.table.column(datatablesOrderArray[0]).header()).data('columnName');
             tableOrder.order = datatablesOrderArray[1];
             return tableOrder;
         }
+
         /**
          * Set table parameters
          * @param {int} length - count of items on each page of the table.
@@ -168,27 +170,28 @@ angular.module('shiptech').controller('SellersDialogController', ['$scope', '$st
          * @param {Object} order - sort order of the table.
          */
         function setTableVars(length, start, order) {
-            if (typeof length != "undefined" && length !== null) {
+            if (typeof length != 'undefined' && length !== null) {
                 ctrl.tableOptions.pageLength = length;
             }
-            if (typeof start != "undefined" && start !== null) {
+            if (typeof start != 'undefined' && start !== null) {
                 ctrl.tableOptions.paginationStart = start;
             }
-            if (typeof order != "undefined" && order !== null) {
+            if (typeof order != 'undefined' && order !== null) {
                 ctrl.tableOptions.order = order;
             }
             ctrl.tableOptions.currentPage = ctrl.tableOptions.paginationStart / ctrl.tableOptions.pageLength + 1;
         }
+
         /**
          * Go to table page taking into account current table options
          * @param {int} page - page to switch to.
          */
         ctrl.setPage = function(page) {
-            var call;
+            let call;
             if (page < 1 || page >= ctrl.tableOptions.totalRows / ctrl.tableOptions.pageLength + 1) {
                 return false;
             }
-            var tablePagination = {};
+            let tablePagination = {};
             tablePagination.start = (page - 1) * ctrl.tableOptions.pageLength;
             tablePagination.length = ctrl.tableOptions.pageLength;
             tableOrder = normalizeDatatablesOrder(ctrl.tableOptions.order);
@@ -198,25 +201,26 @@ angular.module('shiptech').controller('SellersDialogController', ['$scope', '$st
             } else {
                 call = lookupModel.getSellerList(ctrl.sellerTypes, tableOrder, tablePagination, ctrl.filters);
             }
-            call.then(function(server_data) {
+            call.then((server_data) => {
                 ctrl.tableData = server_data.payload;
                 ctrl.checkboxes = [];
-                $timeout(function() {
+                $timeout(() => {
                     ctrl.table.columns.adjust();
                 });
             });
         };
+
         /**
          * Initializes all user events on the table (pagination, sorting, searching)
          */
         function handleTableEvents() {
-            var table = $(tableSelector),
+            let table = $(tableSelector),
                 call;
-            table.on('order.dt', function(e) {
-                var neworder = angular.copy(ctrl.table.order().slice(0));
-                var tableOrder;
-                //reset pagination
-                var tablePagination = {};
+            table.on('order.dt', (e) => {
+                let neworder = angular.copy(ctrl.table.order().slice(0));
+                let tableOrder;
+                // reset pagination
+                let tablePagination = {};
                 tablePagination.start = 0;
                 tablePagination.length = ctrl.tableOptions.pageLength;
                 tableOrder = normalizeDatatablesOrder(neworder);
@@ -225,18 +229,18 @@ angular.module('shiptech').controller('SellersDialogController', ['$scope', '$st
                 } else {
                     call = lookupModel.getSellerList(ctrl.sellerTypes, tableOrder, tablePagination, ctrl.filters);
                 }
-                call.then(function(server_data) {
+                call.then((server_data) => {
                     destroyDataTable();
                     ctrl.tableData = server_data.payload;
                     setTableVars(ctrl.tableOptions.pageLength, 0, neworder);
-                    $timeout(function() {
+                    $timeout(() => {
                         ctrl.table = initDatatable();
                         handleTableEvents();
                     });
                 });
             });
-            table.on('length.dt', function(e, settings, len) {
-                var info = ctrl.table.page.info(),
+            table.on('length.dt', (e, settings, len) => {
+                let info = ctrl.table.page.info(),
                     tablePagination = {},
                     call;
                 tablePagination.start = info.start;
@@ -249,10 +253,10 @@ angular.module('shiptech').controller('SellersDialogController', ['$scope', '$st
                 } else {
                     call = lookupModel.getSellerList(ctrl.sellerTypes, tableOrder, tablePagination, ctrl.filters);
                 }
-                call.then(function(server_data) {
+                call.then((server_data) => {
                     destroyDataTable();
                     ctrl.tableData = server_data.payload;
-                    $timeout(function() {
+                    $timeout(() => {
                         ctrl.table = initDatatable();
                         handleTableEvents();
                     });

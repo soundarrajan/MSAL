@@ -1,68 +1,67 @@
 // Auth Module
 angular
-    .module("auth", ["ngRoute", "AdalAngular"])
+    .module('auth', [ 'ngRoute', 'AdalAngular' ])
     .config([
-        "$routeProvider",
-        "$httpProvider",
-        "adalAuthenticationServiceProvider",
-        "$locationProvider",
+        '$routeProvider',
+        '$httpProvider',
+        'adalAuthenticationServiceProvider',
+        '$locationProvider',
         function($routeProvide, $httpProvider, adalProvider, $locationProvider) {
-            $locationProvider.hashPrefix("");
+            $locationProvider.hashPrefix('');
             adalProvider.init(appConfig.auth, $httpProvider);
         }
     ])
     .run([
-        "$rootScope",
-        "adalAuthenticationService",
-        "$http",
-        "$q",
-        "$window",
-        "$interval",
+        '$rootScope',
+        'adalAuthenticationService',
+        '$http',
+        '$q',
+        '$window',
+        '$interval',
         function($rootScope, adalService, $http, $q, $window, $interval) {
             // angular.module("shiptech").value("$cacheDefaultFilterConfigurations", {});
             // angular.module("shiptech").value("$cacheFilterConfigurations", {});
-            
-			$rootScope.$on('$routeChangeStart', function () {
-			});
-		    $rootScope.$on("$locationChangeStart", function(event, next, current) { 
-				var activePage = window.location.href.replace("/#/", "/");
-				window['strum']('routeChange', activePage);
+
+            $rootScope.$on('$routeChangeStart', () => {
+            });
+		    $rootScope.$on('$locationChangeStart', (event, next, current) => {
+                let activePage = window.location.href.replace('/#/', '/');
+                window.strum('routeChange', activePage);
 		    });
 
             console.log(adalService);
-            console.log("adal:application refresh");
-            if (typeof adalService.userInfo.isAuthenticated == "boolean" && typeof adalService.userInfo.loginError == "string") {
+            console.log('adal:application refresh');
+            if (typeof adalService.userInfo.isAuthenticated == 'boolean' && typeof adalService.userInfo.loginError == 'string') {
                 if (adalService.userInfo.loginError.length > 0) {
-                    if (adalService.userInfo.loginError.indexOf("Nonce is not same as") < 0) {
+                    if (adalService.userInfo.loginError.indexOf('Nonce is not same as') < 0) {
                         window.location.reload();
                     }
-                    AuthenticationContext.prototype._saveItem("adal.idtoken", "");
+                    AuthenticationContext.prototype._saveItem('adal.idtoken', '');
                 }
-
             }
-            $rootScope.$on("adal:notAuthorized", function(event, token) {
+            $rootScope.$on('adal:notAuthorized', (event, token) => {
                 console.log(event);
                 adalService.login();
             });
-            $rootScope.$on("adal:acquireTokenSuccess", function(event, token) {
+            $rootScope.$on('adal:acquireTokenSuccess', (event, token) => {
                 console.log(event);
-                console.log("adal:error - " + AuthenticationContext.prototype._getItem("adal.login.error"));
-                if (AuthenticationContext.prototype._getItem("adal.login.error")) {
-                    if (AuthenticationContext.prototype._getItem("adal.login.error").length > 0) {
-                        AuthenticationContext.prototype._saveItem("adal.idtoken", "");
+                console.log(`adal:error - ${ AuthenticationContext.prototype._getItem('adal.login.error')}`);
+                if (AuthenticationContext.prototype._getItem('adal.login.error')) {
+                    if (AuthenticationContext.prototype._getItem('adal.login.error').length > 0) {
+                        AuthenticationContext.prototype._saveItem('adal.idtoken', '');
                     }
                 }
             });
-            $rootScope.$on("adal:loginSuccess", function(event, token) {
+            $rootScope.$on('adal:loginSuccess', (event, token) => {
                 console.log(event);
-                console.log("adal:error - " + AuthenticationContext.prototype._getItem("adal.login.error"));
-                AuthenticationContext.prototype._saveItem("adal_auth_errors", 0);
+                console.log(`adal:error - ${ AuthenticationContext.prototype._getItem('adal.login.error')}`);
+                AuthenticationContext.prototype._saveItem('adal_auth_errors', 0);
                 getSData();
             });
-            $rootScope.$on("adal:acquireTokenFailure", handleAuthError);
-            $rootScope.$on("adal:loginFailure", handleAuthError);
-            $rootScope.$on("adal:stateMismatch", handleAuthError);
-            $rootScope.$on("adal:errorResponse", handleAuthError);
+            $rootScope.$on('adal:acquireTokenFailure', handleAuthError);
+            $rootScope.$on('adal:loginFailure', handleAuthError);
+            $rootScope.$on('adal:stateMismatch', handleAuthError);
+            $rootScope.$on('adal:errorResponse', handleAuthError);
 
             function handleAuthError(event, token) {
                 // console.log(1213)
@@ -76,15 +75,18 @@ angular
                 // })
                 // return
                 console.log(event);
-                console.log("adal:error - " + AuthenticationContext.prototype._getItem("adal.login.error"));
-                adalErrors = AuthenticationContext.prototype._getItem("adal_auth_errors");
-                if (adalErrors > 0) adalErrors++;
-                else adalErrors = 1;
-                AuthenticationContext.prototype._saveItem("adal_auth_errors", adalErrors);
-                console.log("adal:auth errors: " + adalErrors);
+                console.log(`adal:error - ${ AuthenticationContext.prototype._getItem('adal.login.error')}`);
+                adalErrors = AuthenticationContext.prototype._getItem('adal_auth_errors');
+                if (adalErrors > 0) {
+                    adalErrors++;
+                } else {
+                    adalErrors = 1;
+                }
+                AuthenticationContext.prototype._saveItem('adal_auth_errors', adalErrors);
+                console.log(`adal:auth errors: ${ adalErrors}`);
                 if (adalErrors > 3) {
-                    AuthenticationContext.prototype._saveItem("adal.idtoken", "");
-                    AuthenticationContext.prototype._saveItem("adal_auth_errors", 0);
+                    AuthenticationContext.prototype._saveItem('adal.idtoken', '');
+                    AuthenticationContext.prototype._saveItem('adal_auth_errors', 0);
                 }
                 try {
                     // console.log( $window)
@@ -101,65 +103,64 @@ angular
             // }
             //     }
             // });
-            if (adalService.userInfo.loginError == "Nonce is not same as undefined") {
+            if (adalService.userInfo.loginError == 'Nonce is not same as undefined') {
                 getSData();
-            } else {
-                if (adalService.userInfo.isAuthenticated == false) {
-                    if (window.location.hash.indexOf("#/id_token") > -1 || window.location.hash.indexOf("#id_token") > -1) {
-                        // window.location.hash = '#';
-                        // $window.location.href = '/';
-                        // getSData().then(bootstrapApplication);
-                        try {
-                            if (typeof adalService.config.loginResource == "undefined") {
-                                adalService.login();
-                            } else {
-                                adalService.acquireToken(adalService.config.loginResource);
-                            }
-                        } catch (e) {
-                            console.log(e);
+            } else if (adalService.userInfo.isAuthenticated == false) {
+                if (window.location.hash.indexOf('#/id_token') > -1 || window.location.hash.indexOf('#id_token') > -1) {
+                    // window.location.hash = '#';
+                    // $window.location.href = '/';
+                    // getSData().then(bootstrapApplication);
+                    try {
+                        if (typeof adalService.config.loginResource == 'undefined') {
+                            adalService.login();
+                        } else {
+                            adalService.acquireToken(adalService.config.loginResource);
                         }
-                    } else {
-                        adalService.login();
-
-                        // adalService.logOut();
+                    } catch (e) {
+                        console.log(e);
                     }
                 } else {
-                    console.log(adalService.config);
-                    adalService.acquireToken(adalService.config.loginResource);
-                    getSData();
+                    adalService.login();
+
+                    // adalService.logOut();
                 }
+            } else {
+                console.log(adalService.config);
+                adalService.acquireToken(adalService.config.loginResource);
+                getSData();
             }
-            AuthenticationContext.prototype._saveItem("adal.login.error", "");
+            AuthenticationContext.prototype._saveItem('adal.login.error', '');
 
             function getSData() {
-
-                if (localStorage.getItem("loggedOut")) {
-                    localStorage.removeItem("loggedOut");
+                if (localStorage.getItem('loggedOut')) {
+                    localStorage.removeItem('loggedOut');
                 }
 
-                var query = [
-                    $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Admin/api/admin/tenantConfiguration/get", {
+                let query = [
+                    $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Admin/api/admin/tenantConfiguration/get`, {
                         Payload: false
                     }),
-                ]
+                ];
 
                 function makeQueries(query) {
                     return $q.all(query).then(
-                        function(response) {
+                        (response) => {
                             if (response[0].status == 200) {
-                                angular.module("shiptech").value("$tenantSettings", response[0].data.generalConfiguration);
-                                angular.module("shiptech").value("$tenantConfiguration", response[0].data);
+                                angular.module('shiptech').value('$tenantSettings', response[0].data.generalConfiguration);
+                                angular.module('shiptech').value('$tenantConfiguration', response[0].data);
                             }
                             if (query.length === 2) {
                                 if (response[1].status == 200) {
-                                    var lists = new Object();
-                                    response[1].data.forEach(function(entry) {
+                                    let lists = new Object();
+                                    response[1].data.forEach((entry) => {
                                         lists[entry.name] = entry.items;
                                     });
-                                    angular.module("shiptech").value("$listsCache", lists);
+                                    angular.module('shiptech').value('$listsCache', lists);
                                     if (window.indexedDB) {
                                         try {
-                                            db.listsCache.add({data: lists, id: 1}).catch(function(err) { console.log(err); });
+                                            db.listsCache.add({ data: lists, id: 1 }).catch((err) => {
+                                                console.log(err);
+                                            });
                                         } catch (err) {
                                             // To nothing
                                         }
@@ -169,35 +170,37 @@ angular
                             }
                             bootstrapApplication();
                         },
-                        function(errorResponse) {
+                        (errorResponse) => {
                             if (errorResponse.status == 401) {
                                 console.log(errorResponse.statusText);
                                 adalService.logOut();
-                                if (!localStorage.getItem("loggedOut")) {
-                                    localStorage.setItem("loggedOut", true);
+                                if (!localStorage.getItem('loggedOut')) {
+                                    localStorage.setItem('loggedOut', true);
                                 }
                                 sessionStorage.clear();
                             } else {
                                 console.log(errorResponse);
-                                console.log("Async initialisation of tenant settings and cache lists failed!");
+                                console.log('Async initialisation of tenant settings and cache lists failed!');
                             }
                         }
                     );
                 }
 
                 function getAndSetStaticFilters() {
-                    $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/filters", {
+                    $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Infrastructure/api/infrastructure/static/filters`, {
                         Payload: false
-                    }).then(function(response){
-                    	angular.module("shiptech").value("$filtersData", response.data);
+                    }).then((response) => {
+                    	angular.module('shiptech').value('$filtersData', response.data);
 	                    if (window.indexedDB) {
 	                        try {
-	                            db.staticFilters.add({data: response.data, id: 1}).catch(function(err) { console.log(err); });
+	                            db.staticFilters.add({ data: response.data, id: 1 }).catch((err) => {
+                                    console.log(err);
+                                });
 	                        } catch (err) {
 	                            // To nothing
 	                        }
 	                    }
-                    })                 	
+                    });
                 }
 
                 if (window.indexedDB) {
@@ -211,178 +214,176 @@ angular
                         });
 
                         if (!window.localStorage.getItem('listsInitTime')) {
-                            $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/listsHash", {
+                            $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Infrastructure/api/infrastructure/static/listsHash`, {
                                 Payload: false
-                            }).then(function(data) {
+                            }).then((data) => {
                                 db.delete();
                                 db.open();
 
-                                db.transaction("rw", db.listsHash, function () {
-                                    db.listsHash.add({data: data.data, id: 1});
+                                db.transaction('rw', db.listsHash, () => {
+                                    db.listsHash.add({ data: data.data, id: 1 });
                                 });
                                 localStorage.setItem('listsInitTime', String(data.data.initTime));
                             });
                             query.push(
-                                $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists", {
+                                $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists`, {
                                     Payload: false
                                 })
-                            )
-							getAndSetStaticFilters(); 
+                            );
+                            getAndSetStaticFilters();
                             makeQueries(query);
                             return;
-                        } else {
-                            db.open();
-                            $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/listsHash", {
-                                Payload: false
-                            }).then(function(data) {
-                                if (new Date(data.data.initTime) > new Date(localStorage.getItem('listsInitTime'))) {
-                                    db.delete();
-                                    db.open();
-                                    db.transaction("rw", db.listsHash, function () {
-                                        db.listsHash.update(1, {data: data.data});
-                                    });
-                                    localStorage.setItem('listsInitTime', String(data.data.initTime));
-                                    query.push(
-                                        $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists", {
-                                            Payload: false
-                                        })
-                                    )
-									getAndSetStaticFilters()                                   
-                                    makeQueries(query);
-                                    return;
-                                } else {
-                                    db.transaction("rw", db.listsCache, db.listsHash, db.staticFilters, function () {
-                                    	db.staticFilters.get(1).then(function(staticFiltersDB) {
-                                    		var staticFilters = staticFiltersDB;
-											angular.module("shiptech").value("$filtersData", staticFilters.data);
-                                    	})
-                                        db.listsCache.get(1).then(function(listsCacheDB) {
-                                            if (listsCacheDB) {
-                                                listsCache = listsCacheDB.data;
-                                                db.listsHash.get(1).then(function(listsHashDB) {
-                                                    if (listsHashDB) {
-                                                        currentLists = listsHashDB.data;
+                        }
+                        db.open();
+                        $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Infrastructure/api/infrastructure/static/listsHash`, {
+                            Payload: false
+                        }).then((data) => {
+                            if (new Date(data.data.initTime) > new Date(localStorage.getItem('listsInitTime'))) {
+                                db.delete();
+                                db.open();
+                                db.transaction('rw', db.listsHash, () => {
+                                    db.listsHash.update(1, { data: data.data });
+                                });
+                                localStorage.setItem('listsInitTime', String(data.data.initTime));
+                                query.push(
+                                    $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists`, {
+                                        Payload: false
+                                    })
+                                );
+                                getAndSetStaticFilters();
+                                makeQueries(query);
+                                return;
+                            }
+                            db.transaction('rw', db.listsCache, db.listsHash, db.staticFilters, () => {
+                                    	db.staticFilters.get(1).then((staticFiltersDB) => {
+                                    		let staticFilters = staticFiltersDB;
+                                    angular.module('shiptech').value('$filtersData', staticFilters.data);
+                                    	});
+                                db.listsCache.get(1).then((listsCacheDB) => {
+                                    if (listsCacheDB) {
+                                        listsCache = listsCacheDB.data;
+                                        db.listsHash.get(1).then((listsHashDB) => {
+                                            if (listsHashDB) {
+                                                currentLists = listsHashDB.data;
 
-                                                        if (currentLists && !(JSON.stringify(data.data) === JSON.stringify(currentLists))) {
-                                                            listsToUpdate = [];
-                                                            $.each(data.data.selectListTimestamps, function(k, v) {
+                                                if (currentLists && !(JSON.stringify(data.data) === JSON.stringify(currentLists))) {
+                                                    listsToUpdate = [];
+                                                    $.each(data.data.selectListTimestamps, (k, v) => {
 	                                                            listFound = false;
-                                                                $.each(currentLists.selectListTimestamps, function(k1, v1) {
-                                                                    if (v1.name === v.name) {
-                                                                        listFound = true;
+                                                        $.each(currentLists.selectListTimestamps, (k1, v1) => {
+                                                            if (v1.name === v.name) {
+                                                                listFound = true;
                                                                     	if (v1.lastModificationDate !== v.lastModificationDate) {
 	                                                                        listsToUpdate.push(v1.name);
                                                                     	}
-                                                                    }
-                                                                });
-                                                                if (!listFound) {
-                                                                    listsToUpdate.push(v.name);
-                                                                }
-                                                            });
-                                                            if (listsToUpdate.indexOf("StaticFilters") != -1) {
-                                                            	listsToUpdate.splice(listsToUpdate.indexOf("StaticFilters"));	
-																getAndSetStaticFilters()
                                                             }
-                                                            $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists", {
-                                                                Payload: listsToUpdate
-                                                            }).then(function(res) {
-                                                                $.each(res.data, function(k, v) {
-                                                                    listsCache[v.name] = v.items;
-                                                                });
-                                                                db.listsCache.update(1, {data: listsCache}).then(function() {
-                                                                    db.listsHash.update(1, {data: data.data});
-                                                                });
-                                                                makeQueries(query);
-                                                            });
-                                                        } else {
-                                                            makeQueries(query);
+                                                        });
+                                                        if (!listFound) {
+                                                            listsToUpdate.push(v.name);
                                                         }
-                                                    } else {
-                                                        db.listsHash.add({data: data.data, id: 1});
-                                                        // db.listsCache.update(1, {data: listsCache});
-                                                        makeQueries(query);
+                                                    });
+                                                    if (listsToUpdate.indexOf('StaticFilters') != -1) {
+                                                            	listsToUpdate.splice(listsToUpdate.indexOf('StaticFilters'));
+                                                        getAndSetStaticFilters();
                                                     }
-                                                });
-                                                angular.module("shiptech").value("$listsCache", listsCache);
+                                                    $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists`, {
+                                                        Payload: listsToUpdate
+                                                    }).then((res) => {
+                                                        $.each(res.data, (k, v) => {
+                                                            listsCache[v.name] = v.items;
+                                                        });
+                                                        db.listsCache.update(1, { data: listsCache }).then(() => {
+                                                            db.listsHash.update(1, { data: data.data });
+                                                        });
+                                                        makeQueries(query);
+                                                    });
+                                                } else {
+                                                    makeQueries(query);
+                                                }
                                             } else {
-                                                query.push(
-                                                    $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists", {
-                                                        Payload: false
-                                                    })
-                                                )
-                        	                    getAndSetStaticFilters();                                                
+                                                db.listsHash.add({ data: data.data, id: 1 });
+                                                // db.listsCache.update(1, {data: listsCache});
                                                 makeQueries(query);
                                             }
-                                        }).catch(function(err) {
-                                            query.push(
-                                                $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists", {
-                                                    Payload: false
-                                                })
-                                            )
-                    	                    getAndSetStaticFilters();                                            
-                                            makeQueries(query);
                                         });
-                                    });
-                                }
+                                        angular.module('shiptech').value('$listsCache', listsCache);
+                                    } else {
+                                        query.push(
+                                            $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists`, {
+                                                Payload: false
+                                            })
+                                        );
+                        	                    getAndSetStaticFilters();
+                                        makeQueries(query);
+                                    }
+                                }).catch((err) => {
+                                    query.push(
+                                        $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists`, {
+                                            Payload: false
+                                        })
+                                    );
+                    	                    getAndSetStaticFilters();
+                                    makeQueries(query);
+                                });
                             });
-                        }
+                        });
                     } catch (err) {
                         query.push(
-                            $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists", {
+                            $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists`, {
                                 Payload: false
                             })
-                        )
-	                    getAndSetStaticFilters();                 
+                        );
+	                    getAndSetStaticFilters();
                         makeQueries(query);
                     }
                 } else {
                     query.push(
-                        $http.post(appConfig.API.BASE_URL + "/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists", {
+                        $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists`, {
                             Payload: false
                         })
-                    )
-                    getAndSetStaticFilters();                    
+                    );
+                    getAndSetStaticFilters();
                     makeQueries(query);
                 }
             }
-
 
 
             // console.log(WebWorkerService);
             // WebWorkerService.test();
         }
     ]);
+
 /**
  *  Main application module to hold the module
  */
 angular
-    .module("shiptech", [
+    .module('shiptech', [
         // 3rd party
-        "ui.router",
-        "ui.bootstrap",
-        "ngResource",
-        "pascalprecht.translate",
-        "gridstack-angular",
-        "ds.clock",
-        "ngSanitize",
-        "angular.filter",
-        "ngRoute",
-        "AdalAngular",
+        'ui.router',
+        'ui.bootstrap',
+        'ngResource',
+        'pascalprecht.translate',
+        'gridstack-angular',
+        'ds.clock',
+        'ngSanitize',
+        'angular.filter',
+        'ngRoute',
+        'AdalAngular',
         // Specific modules
-        "shiptech.models",
-        "shiptech.templates",
-        "shiptech.components",
-        "shiptech.pages",
-        "ngVis"
+        'shiptech.models',
+        'shiptech.templates',
+        'shiptech.components',
+        'shiptech.pages',
+        'ngVis'
     ])
-    .controller("appCtrl", [
-        "$scope",
-        "$rootScope",
-        "adalAuthenticationService",
-        "$http",
-        "$document",
-        "screenLoader",
-        "$compile",
+    .controller('appCtrl', [
+        '$scope',
+        '$rootScope',
+        'adalAuthenticationService',
+        '$http',
+        '$document',
+        'screenLoader',
+        '$compile',
         'tenantService',
         'appInsightsInstance',
         function($scope, $rootScope, adalService, $http, $document, screenLoader, $compile, tenantService, appInsightsInstance) {
@@ -392,114 +393,112 @@ angular
                 preventOpenDuplicates: true,
                 preventDuplicates: true
             };
-            toastr.subscribe(function(args){
+            toastr.subscribe((args) => {
                 screenLoader.hideLoader();
             });
 
-            jQuery(document).ready(function(){
+            jQuery(document).ready(() => {
                 if (!window.tenantFormatsDateFormat) {
-                    tenantService.tenantSettings.then(function(settings) {
+                    tenantService.tenantSettings.then((settings) => {
                         window.tenantFormatsDateFormat = settings.payload.tenantFormats.dateFormat.name;
                     });
                 }
-                $(document).on("blur", ".formatted-date-input", function(){
+                $(document).on('blur', '.formatted-date-input', function() {
                     currentEl = this;
-                    setTimeout(function(){
+                    setTimeout(() => {
                         // $(currentEl).attr("ng-invalid", "false");
                         dateFormat = angular.copy(window.tenantFormatsDateFormat);
-                        dateFormat = dateFormat.replace(/y/g, "Y");
+                        dateFormat = dateFormat.replace(/y/g, 'Y');
                         // console.log(window.tenantFormatsDateFormat);
                         invalidDate = false;
                         if (dateFormat) {
-                            if ($(currentEl).hasClass("date-only")) {
-                                dateFormat = dateFormat.split(" ")[0];
+                            if ($(currentEl).hasClass('date-only')) {
+                                dateFormat = dateFormat.split(' ')[0];
                             }
                             if (moment($(currentEl).val(), dateFormat).year() < 1753) {
                                 invalidDate = true;
                             }
                         }
-                        $(currentEl).removeClass("invalid")
-                        if ($(currentEl).attr("ng-invalid") == "true" || invalidDate) {
+                        $(currentEl).removeClass('invalid');
+                        if ($(currentEl).attr('ng-invalid') == 'true' || invalidDate) {
                             if (invalidDate) {
-                                $(currentEl).addClass("invalid");
-                                oldInputVal =  $(currentEl).val();
-                                $(currentEl).val("");
-                                $(currentEl).trigger("change");
+                                $(currentEl).addClass('invalid');
+                                oldInputVal = $(currentEl).val();
+                                $(currentEl).val('');
+                                $(currentEl).trigger('change');
                                 $(currentEl).val(oldInputVal);
                             }
                             // $(currentEl).attr("ng-invalid", "true");
-                            if (!$(currentEl).attr("error-shown")) {
-                                toastr.error("Please enter correct date format");
-                                $(currentEl).attr("error-shown", "true");
+                            if (!$(currentEl).attr('error-shown')) {
+                                toastr.error('Please enter correct date format');
+                                $(currentEl).attr('error-shown', 'true');
                             }
                         } else {
-                            $(currentEl).attr("ng-invalid", "false");
+                            $(currentEl).attr('ng-invalid', 'false');
                         }
-                        setTimeout(function(){
-                            $(currentEl).removeAttr("error-shown");
-                        },300)
-                    })
+                        setTimeout(() => {
+                            $(currentEl).removeAttr('error-shown');
+                        }, 300);
+                    });
                     // $(this).$valid;
                     // $compile($(this));
-                })
+                });
 
-                $(document).on("focusin", "input, textarea", function () {$(this).select();});
+                $(document).on('focusin', 'input, textarea', function() {
+                    $(this).select();
+                });
+            });
 
-            })
-
-            $scope.pagetitle = "";
-            $scope.pageClass = "";
+            $scope.pagetitle = '';
+            $scope.pageClass = '';
             window.onerror = function(message, url, line) {
-                console.log("error : " + message + " *** " + url + " *** " + line);
+                console.log(`error : ${ message } *** ${ url } *** ${ line}`);
             };
-            $scope.recordingStatus = "Enable screen capture";
+            $scope.recordingStatus = 'Enable screen capture';
             $scope.toggleRecording = function() {
-                if ($scope.recordingStatus == "Stop screen recording") {
-                    toastr.info("Saving recording...");
-                    setTimeout(function() {
+                if ($scope.recordingStatus == 'Stop screen recording') {
+                    toastr.info('Saving recording...');
+                    setTimeout(() => {
                         window.location.reload();
                     }, 3000);
                 } else {
                     text =
                         '<!-- MouseStats:Begin --> <script type="text/javascript">var MouseStats_Commands=MouseStats_Commands?MouseStats_Commands:[]; (function(){function b(){if(void 0==document.getElementById("__mstrkscpt")){var a=document.createElement("script");a.type="text/javascript";a.id="__mstrkscpt";a.src=("https:"==document.location.protocol?"https://ssl":"http://www2")+".mousestats.com/js/5/7/5749710969322164449.js?"+Math.floor((new Date).getTime()/6E5);a.async=!0;a.defer=!0;(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}}window.attachEvent?window.attachEvent("onload",b):window.addEventListener("load", b,!1);"complete"===document.readyState&&b()})(); </script> <!-- MouseStats:End -->';
-                    $("body").append(text);
-                    $scope.recordingStatus = "Stop screen recording";
+                    $('body').append(text);
+                    $scope.recordingStatus = 'Stop screen recording';
                     if (adalService.userInfo) {
-                        if (!adalService.userInfo.profile) return;
-                        MouseStats_Commands.push(["identify", adalService.userInfo.profile.unique_name]);
+                        if (!adalService.userInfo.profile) {
+                            return;
+                        }
+                        MouseStats_Commands.push([ 'identify', adalService.userInfo.profile.unique_name ]);
                     }
                     // console.log(smartlook)
                 }
             };
             state = null;
 
-            var pageTitleMap = {};
-            pageTitleMap["Contracts :: Edit "] = 'New Contract';
-            pageTitleMap["Delivery Entity Edit"] = 'New Delivery';
-            pageTitleMap["Dashboard"] = 'Schedule Dashboard';
-            pageTitleMap["Labs Edit"] = 'New Labs Result';
-            pageTitleMap["Transactions to be invoiced List"] = 'Transactions to be Invoiced List';
+            let pageTitleMap = {};
+            pageTitleMap['Contracts :: Edit '] = 'New Contract';
+            pageTitleMap['Delivery Entity Edit'] = 'New Delivery';
+            pageTitleMap.Dashboard = 'Schedule Dashboard';
+            pageTitleMap['Labs Edit'] = 'New Labs Result';
+            pageTitleMap['Transactions to be invoiced List'] = 'Transactions to be Invoiced List';
             // pageTitleMap["Admin Screen Entity Edit"] = 'Transactions to be Invoiced List';
 
-            $scope.setPageTitle = function(title){
-
-                if(pageTitleMap[title]){
+            $scope.setPageTitle = function(title) {
+                if(pageTitleMap[title]) {
                     $scope.pagetitle = pageTitleMap[title];
+                }else if(title.indexOf('::') > -1) {
+                    $scope.pagetitle = title.split('::')[0];
                 }else{
-
-                    if(title.indexOf("::") > -1){
-                        $scope.pagetitle = title.split("::")[0];
-                    }else{
-                        $scope.pagetitle = title;
-                    }
+                    $scope.pagetitle = title;
                 }
 
                 console.log($scope.pagetitle);
-            }
+            };
 
 
-            $scope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
-
+            $scope.$on('$stateChangeSuccess', (event, toState, toParams, fromState, fromParams) => {
                 if (toParams.title) {
                     $scope.setPageTitle(toParams.title);
                 } else {
@@ -510,7 +509,7 @@ angular
                     state = toState;
                 }
 
-                $scope.pageClass = $scope.pagetitle.toLowerCase().replace(/[^0-9a-zA-Z]/g, "");
+                $scope.pageClass = $scope.pagetitle.toLowerCase().replace(/[^0-9a-zA-Z]/g, '');
                 if (state != toState) {
                     // updateLists();
                     state = toState;
@@ -539,12 +538,12 @@ angular
                 }
             });
 
-            $scope.$on("$changePageTitle", function(event, pageData){
-
-                if(pageData.title){
+            $scope.$on('$changePageTitle', (event, pageData) => {
+                if(pageData.title) {
                     $scope.setPageTitle(pageData.title);
                 }
-            })
+            });
+
             /*
             function updateLists() {
                 angular.module("shiptech").value("$listsCache", null);
@@ -577,14 +576,14 @@ angular
             }
             */
             this.settings = {
-                layoutPath: "assets/layouts/layout",
+                layoutPath: 'assets/layouts/layout',
                 layout: {
                     pageContentWhite: false
                 }
             };
 
             $rootScope.lastLoggedUri = '';
-            $rootScope.$on('$locationChangeSuccess', function (e, uri) {
+            $rootScope.$on('$locationChangeSuccess', (e, uri) => {
                 if (uri !== $rootScope.lastLoggedUri) {
                     $rootScope.lastLoggedUri = uri;
                     $rootScope.pageViewTelemetryId = Microsoft.ApplicationInsights.Util.generateW3CId();
@@ -599,58 +598,59 @@ angular
                         });
                     }
 
-                    if (performance && performance.clearResourceTimings)
+                    if (performance && performance.clearResourceTimings) {
                         performance.clearResourceTimings();
+                    }
                 }
             });
         }
     ]);
-angular.module("shiptech").config([
-    "$routeProvider",
-    "$httpProvider",
-    "adalAuthenticationServiceProvider",
+angular.module('shiptech').config([
+    '$routeProvider',
+    '$httpProvider',
+    'adalAuthenticationServiceProvider',
     function($routeProvide, $httpProvider, adalProvider) {
         // var testDomains = [];
-        //contstants not accessible in config method
-        var VALIDATION_MESSAGES = appConfig.VALIDATION_MESSAGES;
+        // contstants not accessible in config method
+        let VALIDATION_MESSAGES = appConfig.VALIDATION_MESSAGES;
         // if (window.localStorage.getItem('start')) {
         //     window.localStorage.removeItem('start')
         // }
         // window.localStorage.setItem('start', window.location.hash + '_' + Math.random());
         // callAscensys();
         $httpProvider.interceptors.push([
-            "$q",
+            '$q',
             function($q) {
                 return {
                     request: function name(config) {
-                        if (localStorage.getItem("loggedOut")) {
+                        if (localStorage.getItem('loggedOut')) {
                             sessionStorage.clear();
                             location.reload();
                         }
                         return config;
                     },
                     responseError: function(response) {
-                        if (!response.config) return;
-                        if (response.config.url.indexOf("getByStrategyAndProduct") > 0 || response.config.url.indexOf("recon/invoicecost") > 0 || response.config.url.indexOf("powerbi") > 0 || response.config.url.indexOf("companies/download") > 0) return $q.reject(response);
+                        if (!response.config) {
+                            return;
+                        }
+                        if (response.config.url.indexOf('getByStrategyAndProduct') > 0 || response.config.url.indexOf('recon/invoicecost') > 0 || response.config.url.indexOf('powerbi') > 0 || response.config.url.indexOf('companies/download') > 0) {
+                            return $q.reject(response);
+                        }
                         if (response.data) {
-                            response.data.ErrorCode ? (ErrorCode = response.data.ErrorCode) : (ErrorCode = response.data.errorCode);
-                            response.data.ErrorMessage ? (ErrorMessage = response.data.ErrorMessage) : (ErrorMessage = response.data.errorMessage);
-                            response.data.Reference ? (Reference = response.data.Reference) : (Reference = response.data.reference);
+                            response.data.ErrorCode ? ErrorCode = response.data.ErrorCode : ErrorCode = response.data.errorCode;
+                            response.data.ErrorMessage ? ErrorMessage = response.data.ErrorMessage : ErrorMessage = response.data.errorMessage;
+                            response.data.Reference ? Reference = response.data.Reference : Reference = response.data.reference;
                             if (ErrorCode && ErrorMessage && Reference) {
-                                toastr.error(ErrorCode + "<br/>" + ErrorMessage + "<br/>" + Reference);
-                            } else {
-                                if (response.status == 401) {
-                                    toastr.error(VALIDATION_MESSAGES.UNAUTHORIZED);
-                                } else {
-                                    toastr.error(VALIDATION_MESSAGES.GENERAL_ERROR);
-                                }
-                            }
-                        } else {
-                            if (response.status == 401) {
+                                toastr.error(`${ErrorCode }<br/>${ ErrorMessage }<br/>${ Reference}`);
+                            } else if (response.status == 401) {
                                 toastr.error(VALIDATION_MESSAGES.UNAUTHORIZED);
                             } else {
                                 toastr.error(VALIDATION_MESSAGES.GENERAL_ERROR);
                             }
+                        } else if (response.status == 401) {
+                            toastr.error(VALIDATION_MESSAGES.UNAUTHORIZED);
+                        } else {
+                            toastr.error(VALIDATION_MESSAGES.GENERAL_ERROR);
                         }
                         return $q.reject(response);
                     }
@@ -670,10 +670,10 @@ angular.module("shiptech").config([
 ]);
 
 /* Setup Layout Part - Quick Sidebar */
-angular.module("shiptech").controller("QuickSidebarController", [
-    "$scope",
-    "$state",
-    "STATE",
+angular.module('shiptech').controller('QuickSidebarController', [
+    '$scope',
+    '$state',
+    'STATE',
     function($scope, $state, STATE) {
         // $scope.$on("$includeContentLoaded", function() {
         //     setTimeout(function() {
@@ -683,13 +683,13 @@ angular.module("shiptech").controller("QuickSidebarController", [
         // console.log($state)
         $scope.state = $state;
 
-        $scope.$on("$stateChangeStart", function() {
+        $scope.$on('$stateChangeStart', () => {
             QuickSidebar.hide();
-            $("*").tooltip("destroy");
+            $('*').tooltip('destroy');
         });
         this.tab = 2;
         this.hideFilters = function() {
-            return window.location.hash.indexOf("edit");
+            return window.location.hash.indexOf('edit');
         };
         this.selectTab = function(setTab) {
             this.tab = setTab;
@@ -700,25 +700,25 @@ angular.module("shiptech").controller("QuickSidebarController", [
     }
 ]);
 
-angular.module("shiptech").controller("BladeController", [
-    "$scope",
-    "$rootScope",
-    "$state",
+angular.module('shiptech').controller('BladeController', [
+    '$scope',
+    '$rootScope',
+    '$state',
     function($scope, $rootScope, $state) {
         $scope.closeBlade = function() {
-            $(".bladeEntity").removeClass("open");
-            $("body").css("overflow-y", "auto");
-            setTimeout(function() {
-                $rootScope.bladeTemplateUrl = "";
+            $('.bladeEntity').removeClass('open');
+            $('body').css('overflow-y', 'auto');
+            setTimeout(() => {
+                $rootScope.bladeTemplateUrl = '';
             }, 500);
             if ($scope.bladeDataChanged) {
                 $state.reload();
             }
         };
-        $scope.$on("$stateChangeStart", function() {
+        $scope.$on('$stateChangeStart', () => {
             $bladeEntity.close();
         });
-        $rootScope.$on("bladeDataChanged", function(event, data) {
+        $rootScope.$on('bladeDataChanged', (event, data) => {
             console.log();
             $scope.bladeDataChanged = data;
         });
@@ -726,41 +726,44 @@ angular.module("shiptech").controller("BladeController", [
 ]);
 $bladeEntity = {
     close: function() {
-
-        $(".bladeEntity").removeClass("open");
-        $("body").css("overflow-y", "initial");
-        setTimeout(function() {
-            if (typeof $rootScope != "undefined") {
-                $rootScope.bladeTemplateUrl = "";
+        $('.bladeEntity').removeClass('open');
+        $('body').css('overflow-y', 'initial');
+        setTimeout(() => {
+            if (typeof $rootScope != 'undefined') {
+                $rootScope.bladeTemplateUrl = '';
             }
         }, 500);
     },
     open: function(id) {
         if (id) {
-            bladeEntity = $(".bladeEntity#" + id);
+            bladeEntity = $(`.bladeEntity#${ id}`);
         } else {
-            bladeEntity = $(".bladeEntity");
+            bladeEntity = $('.bladeEntity');
         }
-        bladeEntity.addClass("open");
-        $("body").css("overflow-y", "hidden");
+        bladeEntity.addClass('open');
+        $('body').css('overflow-y', 'hidden');
     }
 };
+
 /**
  * Templates module
  */
-angular.module("shiptech.templates", []);
+angular.module('shiptech.templates', []);
+
 /**
  * Components module
  */
-angular.module("shiptech.components", []);
+angular.module('shiptech.components', []);
+
 /**
  * Pages module
  */
-angular.module("shiptech.pages", []);
+angular.module('shiptech.pages', []);
+
 /**
  * Models module
  */
-angular.module("shiptech.models", []);
+angular.module('shiptech.models', []);
 i = 0;
 
 var hostName = window.location.hostname;
@@ -771,7 +774,7 @@ var hostName = window.location.hostname;
 function bootstrapApplication() {
     if (i == 0) {
         // angular.element(document).ready(function() {
-        angular.bootstrap(document, ["shiptech", "shiptech.app.alerts", "shiptech.app.rating", "shiptech.app.masters", "shiptech.app.admin", "shiptech.app.labs", "shiptech.app.delivery", "shiptech.app.claims", "shiptech.app.recon", "shiptech.app.invoice", "shiptech.app.contract"], {
+        angular.bootstrap(document, [ 'shiptech', 'shiptech.app.alerts', 'shiptech.app.rating', 'shiptech.app.masters', 'shiptech.app.admin', 'shiptech.app.labs', 'shiptech.app.delivery', 'shiptech.app.claims', 'shiptech.app.recon', 'shiptech.app.invoice', 'shiptech.app.contract' ], {
             strictDi: true
         });
         // });
@@ -779,79 +782,76 @@ function bootstrapApplication() {
     }
 }
 
-angular.element(document).ready(function() {
+angular.element(document).ready(() => {
     // loadScript(config, function() {
     // });
-	$.ajax({
-		url: "config/config.json",
-		dataType: "json",
-		method: "GET",   
-		success:function(response){
-			appConfig = response; 
+    $.ajax({
+        url: 'config/config.json',
+        dataType: 'json',
+        method: 'GET',
+        success:function(response) {
+            appConfig = response;
 	        angular
-	            .module("shiptech")
-	            .constant("tenantConfigs", appConfig.tenantConfigs)
-	            .constant("STATE", appConfig.STATE)
-	            .constant("VIEW_TYPES", appConfig.VIEW_TYPES)
-	            .constant("API", appConfig.API)
-	            .constant("SCREEN_LAYOUTS", appConfig.SCREEN_LAYOUTS)
-	            .constant("TIMESCALE", appConfig.TIMESCALE)
-	            .constant("CUSTOM_EVENTS", appConfig.CUSTOM_EVENTS)
-	            .constant("LOOKUP_TYPE", appConfig.LOOKUP_TYPE)
-	            .constant("LOOKUP_MAP", appConfig.LOOKUP_MAP)
-	            .constant("SCREEN_ACTIONS", appConfig.SCREEN_ACTIONS)
-	            .constant("IDS", appConfig.IDS)
-	            .constant("VALIDATION_MESSAGES", appConfig.VALIDATION_MESSAGES)
-	            .constant("ORDER_COMMANDS", appConfig.ORDER_COMMANDS)
-	            .constant("STATUS", appConfig.STATUS)
-	            .constant("COST_TYPE_IDS", appConfig.COST_TYPE_IDS)
-	            .constant("COMPONENT_TYPE_IDS", appConfig.COMPONENT_TYPE_IDS)
-	            .constant("SELLER_SORT_ORDER", appConfig.SELLER_SORT_ORDER)
-	            .constant("PRODUCT_STATUS_IDS", appConfig.PRODUCT_STATUS_IDS)
-	            .constant("EXPORT_FILETYPE", appConfig.EXPORT_FILETYPE)
-	            .constant("VALIDATION_STOP_TYPE_IDS", appConfig.VALIDATION_STOP_TYPE_IDS)
-	            .constant("EXPORT_FILETYPE_EXTENSION", appConfig.EXPORT_FILETYPE_EXTENSION)
-	            .constant("PACKAGES_CONFIGURATION", appConfig.PACKAGES_CONFIGURATION)
-	            .constant("EMAIL_TRANSACTION", appConfig.EMAIL_TRANSACTION)
+	            .module('shiptech')
+	            .constant('tenantConfigs', appConfig.tenantConfigs)
+	            .constant('STATE', appConfig.STATE)
+	            .constant('VIEW_TYPES', appConfig.VIEW_TYPES)
+	            .constant('API', appConfig.API)
+	            .constant('SCREEN_LAYOUTS', appConfig.SCREEN_LAYOUTS)
+	            .constant('TIMESCALE', appConfig.TIMESCALE)
+	            .constant('CUSTOM_EVENTS', appConfig.CUSTOM_EVENTS)
+	            .constant('LOOKUP_TYPE', appConfig.LOOKUP_TYPE)
+	            .constant('LOOKUP_MAP', appConfig.LOOKUP_MAP)
+	            .constant('SCREEN_ACTIONS', appConfig.SCREEN_ACTIONS)
+	            .constant('IDS', appConfig.IDS)
+	            .constant('VALIDATION_MESSAGES', appConfig.VALIDATION_MESSAGES)
+	            .constant('ORDER_COMMANDS', appConfig.ORDER_COMMANDS)
+	            .constant('STATUS', appConfig.STATUS)
+	            .constant('COST_TYPE_IDS', appConfig.COST_TYPE_IDS)
+	            .constant('COMPONENT_TYPE_IDS', appConfig.COMPONENT_TYPE_IDS)
+	            .constant('SELLER_SORT_ORDER', appConfig.SELLER_SORT_ORDER)
+	            .constant('PRODUCT_STATUS_IDS', appConfig.PRODUCT_STATUS_IDS)
+	            .constant('EXPORT_FILETYPE', appConfig.EXPORT_FILETYPE)
+	            .constant('VALIDATION_STOP_TYPE_IDS', appConfig.VALIDATION_STOP_TYPE_IDS)
+	            .constant('EXPORT_FILETYPE_EXTENSION', appConfig.EXPORT_FILETYPE_EXTENSION)
+	            .constant('PACKAGES_CONFIGURATION', appConfig.PACKAGES_CONFIGURATION)
+	            .constant('EMAIL_TRANSACTION', appConfig.EMAIL_TRANSACTION)
 	            .constant('appInsightsInstance', appInsightsInstanceProvider(appConfig.INSTRUMENTATION_KEY));
-	        if (window.location.hash.indexOf("supplier-portal") > 0) {
-	            angular.module("shiptech").value("$tenantSettings", {});
-	            angular.module("shiptech").value("$listsCache", {});
-	            angular.module("shiptech").value("$filtersData", {});
+	        if (window.location.hash.indexOf('supplier-portal') > 0) {
+	            angular.module('shiptech').value('$tenantSettings', {});
+	            angular.module('shiptech').value('$listsCache', {});
+	            angular.module('shiptech').value('$filtersData', {});
 	            bootstrapApplication();
 	        } else {
-	            angular.bootstrap(auth, ["auth"], {
+	            angular.bootstrap(auth, [ 'auth' ], {
 	                strictDi: true
 	            });
 	        }
-		},
-		async:false
-	});
-    	
+        },
+        async:false
+    });
 });
 
 
-
-
-angular.module('shiptech').factory('httpRequestInterceptor', function () {
+angular.module('shiptech').factory('httpRequestInterceptor', () => {
     return {
-        request: function (config) {
-
+        request: function(config) {
             config.headers['X-Originating-Page'] = window.location.href;
 
             return config;
         }
     };
-})
-angular.module('shiptech').config(['$httpProvider', function ($httpProvider) {
+});
+angular.module('shiptech').config([ '$httpProvider', function($httpProvider) {
     $httpProvider.interceptors.push('httpRequestInterceptor');
-}])
+} ]);
 
 function appInsightsInstanceProvider(instrumentationKey) {
-    if (!instrumentationKey)
+    if (!instrumentationKey) {
         return null;
+    }
 
-    var snippet = {
+    let snippet = {
         version: 2.0,
         config: {
             appId: 'shiptech',

@@ -1,9 +1,9 @@
-angular.module('shiptech.pages').controller('ContractPlanningController', ['$scope', '$rootScope', '$element', '$attrs', '$timeout','$sce','$filter','$compile', '$state', '$stateParams', 'STATE', 'LOOKUP_MAP', 'uiApiModel', 'selectContractModel', 'newRequestModel', 'tenantService', 'IDS', 'EMAIL_TRANSACTION', 'emailModel', 'EXPORT_FILETYPE', 'EXPORT_FILETYPE_EXTENSION', 'groupOfRequestsModel', '$uibModal','scheduleDashboardStatusResource', 'ContractPlanningDataSharing','Factory_Master', '$listsCache',
-    function($scope, $rootScope, $element, $attrs, $timeout, $sce, $filter,$compile, $state, $stateParams, STATE, LOOKUP_MAP, uiApiModel, selectContractModel, newRequestModel, tenantService, IDS, EMAIL_TRANSACTION, emailModel, EXPORT_FILETYPE, EXPORT_FILETYPE_EXTENSION, groupOfRequestsModel, $uibModal, scheduleDashboardStatusResource, ContractPlanningDataSharing, Factory_Master, $listsCache) {
+angular.module('shiptech.pages').controller('ContractPlanningController', [ '$scope', '$rootScope', '$element', '$attrs', '$timeout', '$sce', '$filter', '$compile', '$state', '$stateParams', 'STATE', 'LOOKUP_MAP', 'uiApiModel', 'selectContractModel', 'newRequestModel', 'tenantService', 'IDS', 'EMAIL_TRANSACTION', 'emailModel', 'EXPORT_FILETYPE', 'EXPORT_FILETYPE_EXTENSION', 'groupOfRequestsModel', '$uibModal', 'scheduleDashboardStatusResource', 'ContractPlanningDataSharing', 'Factory_Master', '$listsCache',
+    function($scope, $rootScope, $element, $attrs, $timeout, $sce, $filter, $compile, $state, $stateParams, STATE, LOOKUP_MAP, uiApiModel, selectContractModel, newRequestModel, tenantService, IDS, EMAIL_TRANSACTION, emailModel, EXPORT_FILETYPE, EXPORT_FILETYPE_EXTENSION, groupOfRequestsModel, $uibModal, scheduleDashboardStatusResource, ContractPlanningDataSharing, Factory_Master, $listsCache) {
         $scope.STATE = STATE;
         $scope.Math = window.Math;
-        var ctrl = this;
-        var tableSelector = '#contract_planning';
+        let ctrl = this;
+        let tableSelector = '#contract_planning';
         ctrl.sellerTypeIds = IDS.FAKE_SELLER_TYPE_ID;
         ctrl.EXPORT_FILETYPE = EXPORT_FILETYPE;
         ctrl.sellerFilters = [];
@@ -15,7 +15,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
         ctrl.currentRequest = null;
         ctrl.groupId = $stateParams.groupId;
         ctrl.tenantUOM = null;
-        tenantService.tenantSettings.then(function(settings) {
+        tenantService.tenantSettings.then((settings) => {
             ctrl.tenantSettings = settings.payload;
             ctrl.numberPrecision = settings.payload.defaultValues;
             ctrl.tenantUOM = settings.payload.tenantFormats.uom;
@@ -23,7 +23,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
         });
         ctrl.tableOptions = {};
         ctrl.tableOptions.order = [
-            [2, 'asc']
+            [ 2, 'asc' ]
         ];
         ctrl.tableOptions.pageLength = 25;
         ctrl.tableOptions.paginationStart = 0;
@@ -72,7 +72,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
         // }
         $scope.testscheduleDashboardVesselVoyages = function() {
             // console.log($rootScope.scheduleDashboardVesselVoyages);
-        }
+        };
         // ctrl.$onInit = function() {
         //     console.log($rootScope.scheduleDashboardVesselVoyages);
         //     listsModel.get().then(function(data) {
@@ -173,8 +173,8 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
                 ctrl.currentRequest.premiumDiscount = null;
                 ctrl.currentRequest.noOfDaysBeforeExpiry = null;
             }
-        }
-        ctrl.minQtyBlur = function () {
+        };
+        ctrl.minQtyBlur = function() {
             if (parseFloat($scope.minMaxModalEdit.maxQuantity) < parseFloat($scope.minMaxModalEdit.minQuantity) || !parseFloat($scope.minMaxModalEdit.maxQuantity)) {
                 $scope.minMaxModalEdit.maxQuantity = $scope.minMaxModalEdit.minQuantity;
             }
@@ -182,24 +182,24 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
         ctrl.selectContract = function(contract) {
             ctrl.currentRequest.contractMinQuantity = contract.minQuantity;
             ctrl.currentRequest.contractMaxQuantity = contract.maxQuantity;
-        	$rootScope.$broadcast("selectedContractFromModal", contract);
+        	$rootScope.$broadcast('selectedContractFromModal', contract);
             return;
             ctrl.currentRequest.contract = contract.contract;
             ctrl.currentRequest.contractProductId = contract.contractProductId;
             ctrl.currentRequest.seller = contract.seller;
-            ctrl.currentRequest.contractProductId = contract.contractProductId;            
+            ctrl.currentRequest.contractProductId = contract.contractProductId;
             ctrl.currentRequest.formulaDescription = contract.formulaDescription;
             ctrl.currentRequest.deliveryPrice = contract.deliveryPrice;
             ctrl.currentRequest.premiumDiscount = contract.premiumDiscount;
             ctrl.currentRequest.noOfDaysBeforeExpiry = contract.noOfDaysBeforeExpiry;
             $scope.contractPlanningHasChangesMade = true;
-            setTimeout(function() {
+            setTimeout(() => {
                 $(tableSelector).dataTable().fnAdjustColumnSizing(false);
             }, 10);
         };
 
         ctrl.selectProduct = function(product) {
-            $rootScope.$broadcast("selectedProductFromModal", product);
+            $rootScope.$broadcast('selectedProductFromModal', product);
             return;
         };
 
@@ -208,17 +208,17 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
             ctrl.currentRequest.seller = sellerContractObject.counterparty;
         };
         ctrl.setSellerFilters = function(request) {
-            var newFilters = [];
+            let newFilters = [];
             if (request.bunkeringLocation) {
                 newFilters.push({
-                    'ColumnName': 'LocationId',
-                    'Value': request.bunkeringLocation.id
+                    ColumnName: 'LocationId',
+                    Value: request.bunkeringLocation.id
                 });
             }
             if (request.product) {
                 newFilters.push({
-                    'ColumnName': 'ProductId',
-                    'Value': request.product.id
+                    ColumnName: 'ProductId',
+                    Value: request.product.id
                 });
             }
             ctrl.sellerFilters = angular.copy(newFilters);
@@ -226,45 +226,46 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
         };
         ctrl.setContractFilters = function(request) {
             // request = JSON.parse(setContractFilters);
-            var newFilters = [];
+            let newFilters = [];
             if (request.bunkeringLocation) {
                 newFilters.push({
-                    'ColumnName': 'LocationId',
-                    'Value': request.bunkeringLocation.id
+                    ColumnName: 'LocationId',
+                    Value: request.bunkeringLocation.id
                 });
             }
             if (request.product) {
                 newFilters.push({
-                    'ColumnName': 'ProductId',
-                    'Value': request.product.id
+                    ColumnName: 'ProductId',
+                    Value: request.product.id
                 });
             }
-            //if (request.seller) {
+            // if (request.seller) {
             //    newFilters.push({
             //        'ColumnName': 'SellerId',
             //        'Value': request.seller.id
             //    });
-            //} else {
+            // } else {
             console.log(request);
             newFilters.push({
-                'ColumnName': 'SellerId',
-                'Value': 0
+                ColumnName: 'SellerId',
+                Value: 0
             });
             newFilters.push({
-                'ColumnName': 'RequestId',
-                'Value': request.requestId
+                ColumnName: 'RequestId',
+                Value: request.requestId
             });
-            //}
+            // }
             ctrl.contractFilters = angular.copy(newFilters);
             ctrl.saveCurrentRequest(request);
         };
+
         /**
          * Retrieves and sets the lookup lists for the Suggested Contracts and Seller columns.
          */
         ctrl.getLookupLists = function(request, index) {
             ctrl.setContractFilters(request);
-            if (typeof ctrl.lookupLists[index] == "undefined" || ctrl.lookupLists[index] === null) {
-                newRequestModel.search(ctrl.contractFilters).then(function(data) {
+            if (typeof ctrl.lookupLists[index] == 'undefined' || ctrl.lookupLists[index] === null) {
+                newRequestModel.search(ctrl.contractFilters).then((data) => {
                     ctrl.lookupLists[index] = data.payload;
                 });
             }
@@ -274,45 +275,48 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
             ctrl.tableData = ctrl.CLC.jqGrid.Ascensys.gridObject.rows;
             request = ctrl.tableData[rowId];
             ctrl.setContractFilters(request);
-            if (typeof ctrl.lookupLists[index] == "undefined" || ctrl.lookupLists[index] === null) {
-                newRequestModel.search(ctrl.contractFilters).then(function(data) {
+            if (typeof ctrl.lookupLists[index] == 'undefined' || ctrl.lookupLists[index] === null) {
+                newRequestModel.search(ctrl.contractFilters).then((data) => {
                     ctrl.lookupLists[index] = data.payload;
                 });
             }
         };
 
         ctrl.resetContractPlaning = false;
-        $timeout(function(){ctrl.resetContractPlaning = true;},50);
+        $timeout(() => {
+            ctrl.resetContractPlaning = true;
+        }, 50);
+
         /**
          * Saves contract planning data.
          */
-        $rootScope.$on("contractPlanningSelectedRows", function(data,res){
+        $rootScope.$on('contractPlanningSelectedRows', (data, res) => {
             ctrl.contractPlanningSelectedRows = res;
             // ctrl.saveContractPlanning();
-        })
-        $rootScope.$on("gridDataDone", function(data,res){
+        });
+        $rootScope.$on('gridDataDone', (data, res) => {
             ctrl.contractPlanningSelectedRows = [];
         });
-        $rootScope.$on("contractModalData", function(data,res){
+        $rootScope.$on('contractModalData', (data, res) => {
             ctrl.setContractFilters(res);
         });
 
         ctrl.saveContractPlanning = function(manual, saveAndSend) {
-            var contractList = ctrl.contractPlanningSelectedRows;
+            let contractList = ctrl.contractPlanningSelectedRows;
             ctrl.CLC = $('#flat_contract_planning');
             ctrl.tableData = ctrl.CLC.jqGrid.Ascensys.gridObject.rows;
 
 
-            /*OLD*/
+            /* OLD*/
             // for (var i = 0; i < ctrl.selectedContracts.length; i++) {
             //     if (ctrl.selectedContracts[i]) {
             //         contractList.push(ctrl.data[i]);
             //     }
             // }
-            /*OLD*/
+            /* OLD*/
 
             if (contractList.length < 1) {
-                toastr.error("Please select the rows to be saved !");
+                toastr.error('Please select the rows to be saved !');
                 return;
             }
             noContractAssigned = '';
@@ -321,36 +325,35 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
             }
             noAgreementType = '';
             requestStatusError = '';
-            $.each(contractList, function(k, v) {
+            $.each(contractList, (k, v) => {
                 if (v.requestId == 0 && v.contract == null) {
-                    noContractAssigned += v.vessel.name + ", ";
+                    noContractAssigned = `${noContractAssigned }${v.vessel.name }, `;
                 }
                 if (manual && (v.minQuantity == null || v.maxQuantity == null || v.minQuantity == 0 || v.maxQuantity == 0)) {
-                    noMinMaxQuantity += v.vessel.name + ", ";
+                    noMinMaxQuantity = `${noMinMaxQuantity }${v.vessel.name }, `;
                 }
                 if (v.agreementType == null) {
-                    noAgreementType += v.vessel.name + ", ";
+                    noAgreementType = `${noAgreementType }${v.vessel.name }, `;
                 }
                 if (v.requestStatus) {
-		            if (v.requestStatus.name != "Planned" && v.requestStatus.name != "Created" && v.requestStatus.name != "Questionnaire" && v.requestStatus.name != "Validated") {
-	                    requestStatusError += v.vessel.name + ", ";
+		            if (v.requestStatus.name != 'Planned' && v.requestStatus.name != 'Created' && v.requestStatus.name != 'Questionnaire' && v.requestStatus.name != 'Validated') {
+	                    requestStatusError = `${requestStatusError }${v.vessel.name }, `;
 		            }
                 }
-
-            })
-            if (noContractAssigned.length > 0 || (manual && noMinMaxQuantity.length > 0) || noAgreementType.length > 0) {
+            });
+            if (noContractAssigned.length > 0 || manual && noMinMaxQuantity.length > 0 || noAgreementType.length > 0) {
                 displayError = '';
                 if (noContractAssigned.length > 0) {
-                    displayError += "The following vessels: " + noContractAssigned + " have no contract assigned\r\n";
+                    displayError = `${displayError }The following vessels: ${ noContractAssigned } have no contract assigned\r\n`;
                 }
                 if (manual && noMinMaxQuantity.length > 0) {
-                    displayError += "The following vessels: " + noMinMaxQuantity + " have invalid Min-Max Quantities\r\n";
+                    displayError = `${displayError }The following vessels: ${ noMinMaxQuantity } have invalid Min-Max Quantities\r\n`;
                 }
                 if (noAgreementType.length > 0) {
-                    displayError += "The following vessels: " + noAgreementType + " have no Agreement Types selected";
+                    displayError = `${displayError }The following vessels: ${ noAgreementType } have no Agreement Types selected`;
                 }
                 if (requestStatusError.length > 0) {
-                    displayError += "For the following vessels: " + requestStatusError + " request must be in 'Planned', 'Created', 'Questionnaire' or 'Validated' status";
+                    displayError = `${displayError }For the following vessels: ${ requestStatusError } request must be in 'Planned', 'Created', 'Questionnaire' or 'Validated' status`;
                 }
                 toastr.error(displayError);
                 return;
@@ -359,30 +362,31 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
 
             ctrl.buttonsDisabled = true;
             if (saveAndSend) {
-                newRequestModel.contractPlanningSaveAndSend(contractList).then(function(response) {
+                newRequestModel.contractPlanningSaveAndSend(contractList).then((response) => {
                     ctrl.buttonsDisabled = false;
                     $rootScope.scheduleDashboardVesselVoyages = null;
                     $state.reload();
-                }).catch(function(error) {
+                }).catch((error) => {
                     ctrl.buttonsDisabled = false;
                     // $state.reload();
                 });
             } else {
-                newRequestModel.saveContractPlanning(contractList).then(function(response) {
+                newRequestModel.saveContractPlanning(contractList).then((response) => {
                     ctrl.buttonsDisabled = false;
                     $rootScope.scheduleDashboardVesselVoyages = null;
                     $state.reload();
-                }).catch(function(error) {
+                }).catch((error) => {
                     ctrl.buttonsDisabled = false;
                     // $state.reload();
                 });
             }
         };
 
-		$timeout(function(){$scope.resetContractPlaning = true;},50);
+        $timeout(() => {
+            $scope.resetContractPlaning = true;
+        }, 50);
 
         ctrl.contractPlanningAutoSave = function(rowIndex) {
-
             CLC = $('#flat_contract_planning');
             rowObject = CLC.jqGrid.Ascensys.gridObject.rows[rowIndex];
 
@@ -390,19 +394,23 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
 
             listsCache = ctrl.lists;
 
-            Object.keys($rootScope.editableCProwsModel).forEach(function(objectKey) {
-                var value = $rootScope.editableCProwsModel[objectKey];
-                if ("row-" + parseFloat(rowIndex + 1) == objectKey) {
+            Object.keys($rootScope.editableCProwsModel).forEach((objectKey) => {
+                let value = $rootScope.editableCProwsModel[objectKey];
+                if (`row-${ parseFloat(rowIndex + 1)}` == objectKey) {
                     if (value.contractChanged) {
                         rowObject.contract = value.contract;
                     } else {
-                        rowObject.contract = CLC.jqGrid.Ascensys.gridData[ parseFloat(objectKey.split("row-")[1]) - 1 ].contract;
+                        rowObject.contract = CLC.jqGrid.Ascensys.gridData[parseFloat(objectKey.split('row-')[1]) - 1].contract;
                     }
                     rowObject.agreementType = null;
-                    if (_.filter(listsCache.AgreementType, function(o) { return o.id == value.agreementType.id; }).length > 0) {
-                    	rowObject.agreementType = 	_.filter(listsCache.AgreementType, function(o) { return o.id == value.agreementType.id; })[0];
+                    if (_.filter(listsCache.AgreementType, (o) => {
+                        return o.id == value.agreementType.id;
+                    }).length > 0) {
+                    	rowObject.agreementType = 	_.filter(listsCache.AgreementType, (o) => {
+                            return o.id == value.agreementType.id;
+                        })[0];
                     }
-                    if (typeof value.comment != "undefined") {
+                    if (typeof value.comment != 'undefined') {
                         rowObject.comment = value.comment ? value.comment : null;
                     }
                     rowObject.product = value.product;
@@ -412,25 +420,24 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
             });
 
 
-
             if (rowObject.requestStatus) {
-                if (rowObject.requestStatus.name != "Planned" && rowObject.requestStatus.name != "Created" && rowObject.requestStatus.name != "Questionnaire" && rowObject.requestStatus.name != "Validated") {
-                    toastr.info("Request must be in 'Planned', 'Created', 'Questionnaire' or 'Validated' status to autosave ")
+                if (rowObject.requestStatus.name != 'Planned' && rowObject.requestStatus.name != 'Created' && rowObject.requestStatus.name != 'Questionnaire' && rowObject.requestStatus.name != 'Validated') {
+                    toastr.info('Request must be in \'Planned\', \'Created\', \'Questionnaire\' or \'Validated\' status to autosave ');
                     return;
                 }
             }
 
-        	newRequestModel.contractPlanningAutoSave(rowObject).then(function(response) {
+        	newRequestModel.contractPlanningAutoSave(rowObject).then((response) => {
         		if (response.payload) {
-		            Object.keys($rootScope.editableCProwsModel).forEach(function(objectKey) {
-		                var value = $rootScope.editableCProwsModel[objectKey];
-		                if ("row-" + parseFloat(rowIndex + 1) == objectKey) {
+		            Object.keys($rootScope.editableCProwsModel).forEach((objectKey) => {
+		                let value = $rootScope.editableCProwsModel[objectKey];
+		                if (`row-${ parseFloat(rowIndex + 1)}` == objectKey) {
 		                    if (value.contractChanged) {
 		                        rowObject.contract = value.contract;
 		                    } else {
-		                        rowObject.contract = CLC.jqGrid.Ascensys.gridData[ parseFloat(objectKey.split("row-")[1]) - 1 ].contract;
+		                        rowObject.contract = CLC.jqGrid.Ascensys.gridData[parseFloat(objectKey.split('row-')[1]) - 1].contract;
 		                    }
-                            if (typeof value.comment != "undefined") {
+                            if (typeof value.comment != 'undefined') {
                                 rowObject.comment = value.comment ? value.comment : null;
                             }
 		                    rowObject.agreementType = value.agreementType;
@@ -439,23 +446,23 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
 		                    rowObject.preplanningDetailId = response.payload;
 		                }
 		                return;
-		            });        			
+		            });
         		}
-            }).catch(function(error) {
+            }).catch((error) => {
 
             });
-        }
+        };
 
         $rootScope.contractPreviewEmail = function(contract) {
-            //debugger;
+            // debugger;
             ctrl.selectedContracts = ctrl.contractPlanningSelectedRows;
             if (_.uniqBy(ctrl.selectedContracts, 'seller.id').length > 1) {
-                toastr.error("You cannot preview email of multiple sellers at once");
-                return;             
+                toastr.error('You cannot preview email of multiple sellers at once');
+                return;
             }
-            var contractList = ctrl.contractPlanningSelectedRows;
+            let contractList = ctrl.contractPlanningSelectedRows;
             if ($scope.contractPlanningHasChangesMade) {
-                toastr.error("Please save the changes first!");
+                toastr.error('Please save the changes first!');
                 return;
             }
             // var contractList = [];
@@ -465,12 +472,12 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
             //     }
             // }
             previewEmailIsInvalid = false;
-            $.each(ctrl.selectedContracts, function(k, v) {
+            $.each(ctrl.selectedContracts, (k, v) => {
                 if (v.requestId == 0) {
-                    previewEmailIsInvalid = true
-                    toastr.error("One of the selected contracts is not saved yet!");
+                    previewEmailIsInvalid = true;
+                    toastr.error('One of the selected contracts is not saved yet!');
                 }
-            })
+            });
             if (previewEmailIsInvalid) {
                 return;
             }
@@ -478,24 +485,24 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
             sameSeller = true;
             noAssociatedContract = false;
             dataError = false;
-            requestIds = []
-            locationIds = []
+            requestIds = [];
+            locationIds = [];
             productIds = [];
             requestProductIds = [];
             sellerIds = {};
             noSellerContract = false;
             if (ctrl.selectedContracts.length == 0 || !ctrl.selectedContracts) {
-                toastr.error("Please select at least one contract");
+                toastr.error('Please select at least one contract');
                 return;
             }
-            $.each(ctrl.selectedContracts, function(k, contract) {
+            $.each(ctrl.selectedContracts, (k, contract) => {
                 if (!contract.seller) {
                     noSellerContract = true;
                     // sameSeller = false;
                     return;
                 }
                 uniqueSlrId = contract.seller.id;
-                if (typeof(uniqueSlrId) != 'undefined') {
+                if (typeof uniqueSlrId != 'undefined') {
                     if (uniqueSlrId != contract.seller.id) {
                         sameSeller = false;
                     }
@@ -510,26 +517,26 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
                     productIds.push(contract.product.id);
                     requestProductIds.push(contract.requestProductId);
                 } else {
-                    dataError = true
+                    dataError = true;
                 }
-            })
+            });
             if (sameSeller == false) {
                 toastr.error('The contracts should have the same seller');
                 return;
             }
             if (noSellerContract) {
-                toastr.error("The selected contract doesn't have a seller");
+                toastr.error('The selected contract doesn\'t have a seller');
                 return;
             }
             if (noAssociatedContract) {
-                toastr.error("one of the selected rows doesn't have an associated contract");
+                toastr.error('one of the selected rows doesn\'t have an associated contract');
                 return;
             }
             if (dataError) {
                 toastr.error('an error has occured');
                 return;
             }
-            var data = {
+            let data = {
                 requestId: requestIds.join(),
                 locationId: locationIds.join(),
                 productId: productIds.join(),
@@ -538,7 +545,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
             };
             // templateName: 'ContractPlanningEmailTemplate',
             console.log(data);
-            ctrl.selectedContracts = []
+            ctrl.selectedContracts = [];
             $state.go(STATE.PREVIEW_EMAIL, {
                 data: data,
                 transaction: EMAIL_TRANSACTION.CONTRACT_PLANNING
@@ -546,9 +553,9 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
         };
         ctrl.sendContractPlanningEmail = function() {
             noAssociatedContract = false;
-            ctrl.selectedContracts = ctrl.contractPlanningSelectedRows
+            ctrl.selectedContracts = ctrl.contractPlanningSelectedRows;
             if ($scope.contractPlanningHasChangesMade) {
-                toastr.error("Please save the changes first!");
+                toastr.error('Please save the changes first!');
                 return;
             }
             // var contractList = [];
@@ -559,21 +566,21 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
             // }
             // console.log(contractList);
             dataError = false;
-            requestIds = []
-            locationIds = []
+            requestIds = [];
+            locationIds = [];
             productIds = [];
             requestProductIds = [];
             if (ctrl.selectedContracts.length == 0 || !ctrl.selectedContracts) {
-                toastr.error("Please select at least one contract");
+                toastr.error('Please select at least one contract');
                 return;
             }
-            $.each(ctrl.selectedContracts, function(k, contract) {
+            $.each(ctrl.selectedContracts, (k, contract) => {
                 if (!contract.contract) {
                     noAssociatedContract = true;
                     return;
                 }
                 if (noAssociatedContract) {
-                    toastr.error("one of the selected rows doesn't have an associated contract");
+                    toastr.error('one of the selected rows doesn\'t have an associated contract');
                     return;
                 }
                 if (contract.requestId && contract.product && contract.bunkeringLocation) {
@@ -582,18 +589,18 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
                     productIds.push(contract.product.id);
                     requestProductIds.push(contract.requestProductId);
                 } else {
-                    dataError = true
+                    dataError = true;
                 }
-            })
+            });
             if (noAssociatedContract) {
-                toastr.error("one of the selected rows doesn't have an associated contract");
+                toastr.error('one of the selected rows doesn\'t have an associated contract');
                 return;
             }
             if (dataError) {
                 toastr.error('an error has occured');
                 return;
             }
-            var data = {
+            let data = {
                 requestId: requestIds.join(),
                 locationId: locationIds.join(),
                 // productId: productIds.join()
@@ -601,9 +608,10 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
             };
             // templateName: 'ContractPlanningEmailTemplate',
             console.log(data);
-            ctrl.selectedContracts = []
+            ctrl.selectedContracts = [];
             emailModel.sendContractPlanningEmail(data);
         };
+
         /**
          * Go to table page taking into account current table options
          * @param {int} page - page to switch to.
@@ -625,96 +633,111 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
         //     });
         // };
         ctrl.prepareTableForPrint = function(tableWidth) {
-            var beforePrint = function(tableWidth){
-                 if($('clc-table-list')){
-                    //1017px = default page landscape width
+            let beforePrint = function(tableWidth) {
+                if($('clc-table-list')) {
+                    // 1017px = default page landscape width
                     // var tableWidth = $('clc-table-list').width();
                     // console.log('clc-table-list',tableWidth);
-                    var percentWidth = 101700 / tableWidth;
+                    let percentWidth = 101700 / tableWidth;
                     console.log('proc', percentWidth);
-                    if(percentWidth < 100){
-                        //resize only when print is smaller
-                        zoomP = 100 - parseFloat(percentWidth).toFixed(2) + "%";
-                        $('div.inside_content ui-view').css("zoom", zoomP);
+                    if(percentWidth < 100) {
+                        // resize only when print is smaller
+                        zoomP = `${100 - parseFloat(percentWidth).toFixed(2) }%`;
+                        $('div.inside_content ui-view').css('zoom', zoomP);
                     }
                 }
-            }
-            var afterPrint = function(){
-                $('div.inside_content ui-view').css("zoom", "100%");
-            }
+            };
+            let afterPrint = function() {
+                $('div.inside_content ui-view').css('zoom', '100%');
+            };
             if ('matchMedia' in window) {
-                window.matchMedia('print').addListener(function (media) {
-                    //matches is true before print and false after
-                    if(media.matches){  beforePrint(tableWidth); }
-                    else{ afterPrint(); }
+                window.matchMedia('print').addListener((media) => {
+                    // matches is true before print and false after
+                    if(media.matches) {
+                        beforePrint(tableWidth);
+                    } else{
+                        afterPrint();
+                    }
                 });
             } else {
-                window.onbeforeprint = function () { beforePrint(); }
-                window.onafterprint  = function(){ afterPrint(); }
+                window.onbeforeprint = function() {
+                    beforePrint();
+                };
+                window.onafterprint = function() {
+                    afterPrint();
+                };
             }
-        }
+        };
         ctrl.export = function(fileType) {
-            if(fileType == 0){
-                //get table width here, it gets altered later
-                var tableWidth = $('#contract_planning_wrapper').width();
+            if(fileType == 0) {
+                // get table width here, it gets altered later
+                let tableWidth = $('#contract_planning_wrapper').width();
                 ctrl.prepareTableForPrint(tableWidth);
                 window.print();
                 return;
             }
-            var tableOrder = normalizeDatatablesOrder(ctrl.tableOptions.order);
-            var tableFilters = angular.copy(ctrl.tableOptions.filters);
-            var tableColumnList = ctrl.table.columns();
-            var columns = [];
-            var columnData = {};
-            for (var i = 0; i < tableColumnList[0].length; i++) {
+            let tableOrder = normalizeDatatablesOrder(ctrl.tableOptions.order);
+            let tableFilters = angular.copy(ctrl.tableOptions.filters);
+            let tableColumnList = ctrl.table.columns();
+            let columns = [];
+            let columnData = {};
+            for (let i = 0; i < tableColumnList[0].length; i++) {
                 if (ctrl.table.columns(i).visible()[0]) {
                     columnData = {};
                     columnData.DtoPath = $(ctrl.table.column(i).header()).data('dtoPath');
 
-                    //customizations for dtoPath when status is mapped
-                    if(columnData.DtoPath == 'requestProductStatus') columnData.DtoPath = 'requestProductStatusDisplayName';
-                    if(columnData.DtoPath == 'requestStatus') columnData.DtoPath = 'requestStatusDisplayName';
-                    if(columnData.DtoPath == 'agreementType') columnData.DtoPath = 'agreementType.name';
-                    if(columnData.DtoPath == 'noOfDaysBeforeExpiry') columnData.DtoPath = 'noOfDaysBeforeExpiry';
+                    // customizations for dtoPath when status is mapped
+                    if(columnData.DtoPath == 'requestProductStatus') {
+                        columnData.DtoPath = 'requestProductStatusDisplayName';
+                    }
+                    if(columnData.DtoPath == 'requestStatus') {
+                        columnData.DtoPath = 'requestStatusDisplayName';
+                    }
+                    if(columnData.DtoPath == 'agreementType') {
+                        columnData.DtoPath = 'agreementType.name';
+                    }
+                    if(columnData.DtoPath == 'noOfDaysBeforeExpiry') {
+                        columnData.DtoPath = 'noOfDaysBeforeExpiry';
+                    }
 
 
                     columnData.Label = $(ctrl.table.column(i).header()).text().trim();
-                    if (columnData.Label !== "" && columnData.DtoPath) {
+                    if (columnData.Label !== '' && columnData.DtoPath) {
                         columns.push(columnData);
                     }
                 }
             }
-            var tablePagination = {};
+            let tablePagination = {};
             tablePagination.start = (ctrl.tableOptions.currentPage - 1) * ctrl.tableOptions.pageLength;
             tablePagination.length = ctrl.tableOptions.pageLength;
-            selectContractModel.getContractPlanningExport(tableOrder, tableFilters, tablePagination, columns, fileType).then(function(result) {
+            selectContractModel.getContractPlanningExport(tableOrder, tableFilters, tablePagination, columns, fileType).then((result) => {
                 if (!result) {
                     return false;
                 }
                 if (!result.filename) {
-                    result.filename = "Contract." + EXPORT_FILETYPE_EXTENSION[fileType];
+                    result.filename = `Contract.${ EXPORT_FILETYPE_EXTENSION[fileType]}`;
                 }
                 // var blob = new Blob([result.data]);
                 // saveAs(blob, result.filename);
 
-                var blob = new Blob([result.data], {
+                let blob = new Blob([ result.data ], {
                     type: result.headers.ContentType
                 });
 
-                var a = document.createElement("a");
-                a.style = "display: none";
+                let a = document.createElement('a');
+                a.style = 'display: none';
                 document.body.appendChild(a);
-                //Create a DOMString representing the blob and point the link element towards it
-                var url = window.URL.createObjectURL(blob);
+                // Create a DOMString representing the blob and point the link element towards it
+                let url = window.URL.createObjectURL(blob);
                 a.href = url;
                 a.download = result.filename;
-                //programatically click the link to trigger the download
+                // programatically click the link to trigger the download
                 a.click();
-                //release the reference to the file by revoking the Object URL
+                // release the reference to the file by revoking the Object URL
                 window.URL.revokeObjectURL(url);
-
             });
         };
+
         /**
          * Initializes all user events on the table (pagination, sorting, searching)
          */
@@ -814,28 +837,28 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
         //     }
         //     return tableOrder;
         // }
-        $rootScope.$on('openMinMaxModal', function(event, data){
+        $rootScope.$on('openMinMaxModal', (event, data) => {
             ctrl.CLC = $('#flat_contract_planning');
-            ctrl.tableData = ctrl.CLC.jqGrid.Ascensys.gridObject.rows
-            ctrl.currentRowData = ctrl.tableData[data-1]
-            ctrl.currentRowIndex = data
+            ctrl.tableData = ctrl.CLC.jqGrid.Ascensys.gridObject.rows;
+            ctrl.currentRowData = ctrl.tableData[data - 1];
+            ctrl.currentRowIndex = data;
             ctrl.openMinMaxModalEdit(ctrl.currentRowData);
 
             // alert(data);
         });
-        $rootScope.$on('contractPlanningDataChanged', function(event, data){
+        $rootScope.$on('contractPlanningDataChanged', (event, data) => {
             ctrl.contractPlanningDataChanged = true;
         });
 
-        $rootScope.$on('procurementContractPlanningSummary', function(event, data){
+        $rootScope.$on('procurementContractPlanningSummary', (event, data) => {
         	ctrl.procurementContractPlanningSummary = data;
-        });        
+        });
 
 
-        $rootScope.$on('contractPlanningChange', function(event, data){
+        $rootScope.$on('contractPlanningChange', (event, data) => {
             ctrl.CLC = $('#flat_contract_planning');
-            ctrl.tableData = ctrl.CLC.jqGrid.Ascensys.gridObject.rows
-            ctrl.currentRowData = ctrl.tableData[data-1]
+            ctrl.tableData = ctrl.CLC.jqGrid.Ascensys.gridObject.rows;
+            ctrl.currentRowData = ctrl.tableData[data - 1];
             ctrl.currentRowIndex = data;
             // ctrl.CLC.jqGrid("clearGridData");
             // $.each(ctrl.tableData, function(k,v){
@@ -846,79 +869,78 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
 
         ctrl.openMinMaxModalEdit = function(rowData) {
             console.log(rowData);
-            $timeout(function() {
+            $timeout(() => {
 	            $scope.minMaxModalEdit = null;
-            },50)
+            }, 50);
             // $scope.minMaxModalEdit = $scope.minMaxModalEdit;
-            $timeout(function() {
-                $scope.minMaxModalEdit = rowData
+            $timeout(() => {
+                $scope.minMaxModalEdit = rowData;
                 if (!$scope.minMaxModalEdit.qtyUom) {
                     $scope.minMaxModalEdit.qtyUom = ctrl.tenantUOM;
                 }
-                $scope.$apply(function() {
-                    $compile($("#minMaxModal"))($scope)
-                    $("#minMaxModal").modal();
-                })
-            },100)
-        }
-        $("body").on("click",".contract_planning_min_max_qty_wrap a", function(e){
-            e.preventDefault()
-            rowIndex = $(this).attr("rowId");
+                $scope.$apply(() => {
+                    $compile($('#minMaxModal'))($scope);
+                    $('#minMaxModal').modal();
+                });
+            }, 100);
+        };
+        $('body').on('click', '.contract_planning_min_max_qty_wrap a', function(e) {
+            e.preventDefault();
+            rowIndex = $(this).attr('rowId');
             rowData = $('#flat_contract_planning').jqGrid.Ascensys.gridObject.rows[parseFloat(rowIndex) - 1];
             // $rootScope.$broadcast('contractPlanningChange', $rootScope.contractPlanningChange);
-			$scope.minMaxModalEdit = null;
-            $timeout(function(){
-                ctrl.currentRowData = rowData
+            $scope.minMaxModalEdit = null;
+            $timeout(() => {
+                ctrl.currentRowData = rowData;
                 ctrl.currentRowIndex = parseFloat(rowIndex);
 
-                $scope.minMaxModalEdit = rowData
+                $scope.minMaxModalEdit = rowData;
                 if (!$scope.minMaxModalEdit.qtyUom) {
                     $scope.minMaxModalEdit.qtyUom = ctrl.tenantUOM;
-                }            
-                $("#minMaxModal").modal();
-            })
+                }
+                $('#minMaxModal').modal();
+            });
 
-            // ctrl.openMinMaxModalEdit(rowData) 
-
-        })
+            // ctrl.openMinMaxModalEdit(rowData)
+        });
         ctrl.saveMinMaxModal = function(minEdit, maxEdit, qtyUom) {
             if (!qtyUom) {
-                toastr.error("Please select Quantity UOM");
+                toastr.error('Please select Quantity UOM');
                 return;
             }
             if (parseFloat(minEdit) > parseFloat(maxEdit)) {
-                toastr.error("Min Quantity can't be greater than max Quantity");
+                toastr.error('Min Quantity can\'t be greater than max Quantity');
                 return;
             }
 
-    // ctrl.CLC.jqGrid('clearGridData')
-    //     .jqGrid('setGridParam', { data: results })
-    //     .trigger('reloadGrid', [{ page: 1}]);
-        
+            // ctrl.CLC.jqGrid('clearGridData')
+            //     .jqGrid('setGridParam', { data: results })
+            //     .trigger('reloadGrid', [{ page: 1}]);
+
             ctrl.CLC = $('#flat_contract_planning');
             ctrl.tableData = ctrl.CLC.jqGrid.Ascensys.gridObject.rows;
     		if (!ctrl.currentRowData) {
-    			ctrl.currentRowData = {}
+    			ctrl.currentRowData = {};
     		}
     		ctrl.CLC = $('#flat_contract_planning');
             ctrl.tableData = ctrl.CLC.jqGrid.Ascensys.gridObject.rows;
         	ctrl.currentRowData.minQuantity = minEdit;
         	ctrl.currentRowData.maxQuantity = maxEdit;
-        	ctrl.tableData[ctrl.currentRowIndex-1].qtyUom = qtyUom;
-        	ctrl.tableData[ctrl.currentRowIndex-1].minQuantity = ctrl.currentRowData.minQuantity;
-        	ctrl.tableData[ctrl.currentRowIndex-1].maxQuantity = ctrl.currentRowData.maxQuantity;
-        	$('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "maxQuantity", maxEdit )
-        	$('#flat_contract_planning').jqGrid("setCell", ctrl.currentRowIndex, "minQuantity", minEdit)
+        	ctrl.tableData[ctrl.currentRowIndex - 1].qtyUom = qtyUom;
+        	ctrl.tableData[ctrl.currentRowIndex - 1].minQuantity = ctrl.currentRowData.minQuantity;
+        	ctrl.tableData[ctrl.currentRowIndex - 1].maxQuantity = ctrl.currentRowData.maxQuantity;
+        	$('#flat_contract_planning').jqGrid('setCell', ctrl.currentRowIndex, 'maxQuantity', maxEdit);
+        	$('#flat_contract_planning').jqGrid('setCell', ctrl.currentRowIndex, 'minQuantity', minEdit);
 
-            textForMinEdit = $filter("number")(minEdit, ctrl.numberPrecision.quantityPrecision) != "" ? $filter("number")(minEdit, ctrl.numberPrecision.quantityPrecision) : minEdit;
-            textForMaxEdit = $filter("number")(maxEdit, ctrl.numberPrecision.quantityPrecision) != "" ? $filter("number")(maxEdit, ctrl.numberPrecision.quantityPrecision) : maxEdit;
+            textForMinEdit = $filter('number')(minEdit, ctrl.numberPrecision.quantityPrecision) != '' ? $filter('number')(minEdit, ctrl.numberPrecision.quantityPrecision) : minEdit;
+            textForMaxEdit = $filter('number')(maxEdit, ctrl.numberPrecision.quantityPrecision) != '' ? $filter('number')(maxEdit, ctrl.numberPrecision.quantityPrecision) : maxEdit;
 
-        	$(".contract_planning_min_max_qty_wrap[rowid="+ctrl.currentRowIndex+"] span.values").text(textForMinEdit +" - "+ textForMaxEdit);
+        	$(`.contract_planning_min_max_qty_wrap[rowid=${ctrl.currentRowIndex }] span.values`).text(`${textForMinEdit } - ${ textForMaxEdit}`);
 
         	// $(".contract_planning_min_max_qty_wrap[rowid="+ctrl.currentRowIndex+"] span.values").text($filter("number")(minEdit, ( ctrl.numberPrecision.quantityPrecision || 3 )) +" - "+ $filter("number")(maxEdit, ( ctrl.numberPrecision.quantityPrecision || 3 )))
         	// $scope.$apply();
         	$compile($('.contract_planning_min_max_qty_wrap'))($scope);
-        	ctrl.contractPlanningAutoSave(ctrl.currentRowIndex-1);
+        	ctrl.contractPlanningAutoSave(ctrl.currentRowIndex - 1);
         	// contract_planning_min_max_qty
         	// ctrl.CLC.jqGrid("clearGridData");
         	// $.each(ctrl.tableData, function(k,v){
@@ -926,150 +948,156 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
         	// });
         	// $rootScope.$broadcast('contractPlanningDataChanged', true);
         	// ctrl.CLC.trigger("reload");
-            /*$scope.minMaxModalEdit.qtyUom = qtyUom
+            /* $scope.minMaxModalEdit.qtyUom = qtyUom
             $scope.minMaxModalEdit.minQuantity = minEdit;
             $scope.minMaxModalEdit.maxQuantity = maxEdit;*/
-        }
+        };
         ctrl.contractPlanningHasChanges = function() {
             $scope.contractPlanningHasChangesMade = true;
-        }
+        };
         ctrl.hideEmptyRow = function(bool) {
             if (bool == true) {
-                $(".dataTables_empty").hide();
+                $('.dataTables_empty').hide();
             } else {
-                $(".dataTables_empty").show();
+                $('.dataTables_empty').show();
             }
-        }
+        };
         ctrl.trustAsHtml = function(data) {
             data = $filter('translate')(data);
-            return $sce.trustAsHtml(data)
-        }
+            return $sce.trustAsHtml(data);
+        };
 
         ctrl.getStatuses = function() {
-            var requestData = {"Payload":true};
-            return scheduleDashboardStatusResource.fetch(requestData).$promise.then(function(data) {
+            let requestData = { Payload:true };
+            return scheduleDashboardStatusResource.fetch(requestData).$promise.then((data) => {
                 ctrl.statuses = data.payload.labels;
             });
-        }
+        };
         ctrl.getStatuses();
         ctrl.getStatusColor = function(statusName) {
             statusColor = null;
-            $.each(ctrl.statuses, function(k,v) {
+            $.each(ctrl.statuses, (k, v) => {
                 if (v.status.name == statusName) {
-                    statusColor = v.colorCode
+                    statusColor = v.colorCode;
                 }
-            })
+            });
             return statusColor;
-        }
+        };
 
-        ctrl.formatDate = function(elem,dateFormat){
+        ctrl.formatDate = function(elem, dateFormat) {
             // date = new Date(data).getTime();
             // return moment(data).format(format);
 
             if (elem) {
                 formattedDate = elem;
-                var date = Date.parse(elem);
+                let date = Date.parse(elem);
                 date = new Date(date);
                 if (date) {
-                    var utc = date.getTime() + date.getTimezoneOffset() * 60000;
+                    let utc = date.getTime() + date.getTimezoneOffset() * 60000;
                     // var utc = date.getTime();
                     if (dateFormat.name) {
-                        dateFormat = dateFormat.name.replace(/d/g, "D").replace(/y/g, "Y");
+                        dateFormat = dateFormat.name.replace(/d/g, 'D').replace(/y/g, 'Y');
                     } else {
-                        dateFormat = dateFormat.replace(/d/g, "D").replace(/y/g, "Y");
+                        dateFormat = dateFormat.replace(/d/g, 'D').replace(/y/g, 'Y');
                     }
                     formattedDate = fecha.format(utc, dateFormat);
                 }
                 return formattedDate;
             }
-        }
+        };
 
 
-
-
-
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // /////////////////////////////////////////////////////////////////////////////////////////////////////////
         //  CHANGED LOOKUPS  //
-        //////////////////////
+        // ////////////////////
 
-        ctrl.getListFilters = function(rowObj){
+        ctrl.getListFilters = function(rowObj) {
             // 1. if any is null, set id: 0 to send to api
-            if(rowObj.bunkeringLocation == null) rowObj.bunkeringLocation = {id: 0};
-            if(rowObj.product == null) rowObj.product = {id: 0};
-            if(rowObj.seller == null) rowObj.seller = {id: 0};
-            if(rowObj.requestId == null) rowObj.requestId = 0;
+            if(rowObj.bunkeringLocation == null) {
+                rowObj.bunkeringLocation = { id: 0 };
+            }
+            if(rowObj.product == null) {
+                rowObj.product = { id: 0 };
+            }
+            if(rowObj.seller == null) {
+                rowObj.seller = { id: 0 };
+            }
+            if(rowObj.requestId == null) {
+                rowObj.requestId = 0;
+            }
 
             // 2. filters array
-            var filters = [
-                { ColumnName: "LocationId", Value: rowObj.bunkeringLocation.id},
-                { ColumnName: "ProductId", Value: rowObj.product.id},
-                { ColumnName: "SellerId", Value: rowObj.seller.id},
-                { ColumnName: "RequestId", Value: rowObj.requestId},
+            let filters = [
+                { ColumnName: 'LocationId', Value: rowObj.bunkeringLocation.id },
+                { ColumnName: 'ProductId', Value: rowObj.product.id },
+                { ColumnName: 'SellerId', Value: rowObj.seller.id },
+                { ColumnName: 'RequestId', Value: rowObj.requestId },
             ];
 
             return filters;
-        }
+        };
 
-        ctrl.triggerModalForTable = function(rowObj, idx){
+        ctrl.triggerModalForTable = function(rowObj, idx) {
             // form filters for lookup
-            var filters = ctrl.getListFilters(rowObj);
+            let filters = ctrl.getListFilters(rowObj);
 
             // only lookup list to get from contract planning is contract
             data = {
                 template: 'general',
                 clc: 'contractplanning_contractlist',
                 name: 'Contract',
-                id: 'Contract_' + idx,
+                id: `Contract_${ idx}`,
                 formvalue: '',
                 idx: '',
-                field_name: 'Contract_' + idx,
+                field_name: `Contract_${ idx}`,
                 filter: filters
-            }
+            };
 
             // call trigger modal function with data
             ctrl.triggerModal(data.template, data.clc, data.name, data.id, data.formvalue, data.idx, data.field_name, data.filter);
-        }
+        };
 
         // this function only broadcasts data to open modal with, function is handled by controller master
         ctrl.triggerModal = function(template, clc, name, id, formvalue, idx, field_name, filter) {
             data = {
-                'template': template,
-                'clc': clc,
-                'name': name,
-                'id': id,
-                'formvalue': formvalue,
-                'idx': idx,
-                'field_name': field_name,
-                'filter': filter
-            }
+                template: template,
+                clc: clc,
+                name: name,
+                id: id,
+                formvalue: formvalue,
+                idx: idx,
+                field_name: field_name,
+                filter: filter
+            };
             // $scope.$emit('triggerListModal',{'listOptions': data });
-            $rootScope.$broadcast('triggerListModal',{'listOptions': data });
-        }
+            $rootScope.$broadcast('triggerListModal', { listOptions: data });
+        };
 
-        ctrl.initOptions = function(field,rowObj, idx){
+        ctrl.initOptions = function(field, rowObj, idx) {
             // idx = row index
-            if(field.field == 'contract'){
+            if(field.field == 'contract') {
                 // for each contract planning row, get typeahead options
                 // store in $scope.options.Contract_idx
-               // form filters for typeahead
-                var filters = ctrl.getListFilters(rowObj);
-                ctrl.getOptions({"Name": "Contract_" + idx, "masterSource": "contractplanning_contractlist"}, filters);
+                // form filters for typeahead
+                let filters = ctrl.getListFilters(rowObj);
+                ctrl.getOptions({ Name: `Contract_${ idx}`, masterSource: 'contractplanning_contractlist' }, filters);
             }
 
-            if(field.field == 'agreementType'){
-                ctrl.getOptions({"Name": "AgreementType", "masterSource": "AgreementType"});
+            if(field.field == 'agreementType') {
+                ctrl.getOptions({ Name: 'AgreementType', masterSource: 'AgreementType' });
             }
-
-        }
+        };
 
         ctrl.getOptions = function(field, filters) {
             // get options for lookup typeahead
             // debugger;
             if (field) {
-                if (field.Filter && typeof($scope.formValues) != 'undefined') {
-                    field.Filter.forEach(function(entry) {
-                        if (entry.ValueFrom == null) return;
-                        var temp = 0;
+                if (field.Filter && typeof $scope.formValues != 'undefined') {
+                    field.Filter.forEach((entry) => {
+                        if (entry.ValueFrom == null) {
+                            return;
+                        }
+                        let temp = 0;
                         try {
                             temp = $scope.formValues[entry.ValueFrom];
                         } catch (error) {}
@@ -1077,8 +1105,8 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
                     });
                 }
                 // add contract filters
-                if(field.Name.indexOf("Contract") >= 0){
-                    if(filters != null){
+                if(field.Name.indexOf('Contract') >= 0) {
+                    if(filters != null) {
                         // filters with big F
                         field.Filters = angular.copy(filters);
                     }
@@ -1088,13 +1116,12 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
                     $rootScope.cp_options = [];
                 }
 
-                Factory_Master.get_master_list('procuremenet', 'contract-planning', field, function(callback) {
+                Factory_Master.get_master_list('procuremenet', 'contract-planning', field, (callback) => {
                     if (callback) {
-
                         $rootScope.cp_options[field.Name] = callback;
                         ContractPlanningDataSharing.options = {
                             optArray: $rootScope.cp_options
-                        }
+                        };
                         ContractPlanningDataSharing.updatedOptions();
 
 
@@ -1116,48 +1143,45 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
         };
 
 
-
-        ////////////////////////////
+        // //////////////////////////
         //   END CHANGED LOOKUPS  //
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         // call functions from ContractPlanningDataSharing service
-        $scope.$watch(function(){
+        $scope.$watch(() => {
             return ContractPlanningDataSharing.callFunction;
-        }, function(newVal, oldVal){
+        }, (newVal, oldVal) => {
             // first, check function hasn't been triggered yet (watch happens twice)
-            var ok = true;
+            let ok = true;
             // if(newVal.functionName == 'initTypeaheadOptions' || newVal.functionName == 'triggerModal'){
             //     if(newVal.params[1] == oldVal.params[1]){
             //         ok = false;
             //     }
             // }
-            if(ok){
-                switch(newVal.functionName){
-                    case 'selectContract':
-                        ctrl.selectedContracts[newVal.params[1]] = newVal.params[0];
-                        break
-                    case 'contractPreviewEmail':
-                        $rootScope.contractPreviewEmail();
-                        break;
-                    case 'initOptions':
-                        ctrl.initOptions(newVal.params[0], newVal.params[1], newVal.params[2]);
-                        break;
-                    case 'triggerModal':
-                        ctrl.triggerModalForTable(newVal.params[0], newVal.params[1]);
-                        break;
-                    default:
-                        console.log('Contract planning function not found!');
+            if(ok) {
+                switch(newVal.functionName) {
+                case 'selectContract':
+                    ctrl.selectedContracts[newVal.params[1]] = newVal.params[0];
+                    break;
+                case 'contractPreviewEmail':
+                    $rootScope.contractPreviewEmail();
+                    break;
+                case 'initOptions':
+                    ctrl.initOptions(newVal.params[0], newVal.params[1], newVal.params[2]);
+                    break;
+                case 'triggerModal':
+                    ctrl.triggerModalForTable(newVal.params[0], newVal.params[1]);
+                    break;
+                default:
+                    console.log('Contract planning function not found!');
                 }
 
                 ContractPlanningDataSharing.callFunction = {
                     functionName: null,
                     params: []
-                }
+                };
             }
-
         }, true);
-
 
 
         // table interaction functions
@@ -1165,8 +1189,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', ['$sco
         //     ctrl.selectedContracts[index] = true;
         // }
 
-        //end table interaction functions
-
+        // end table interaction functions
     }
 ]);
 angular.module('shiptech.pages').component('contractPlanning', {
@@ -1180,7 +1203,7 @@ angular.module('shiptech.pages').service('ContractPlanningDataSharing', function
     this.callFunction = {
         functionName: null,
         params: []
-    }
+    };
     this.options = {
         optArray: []
     };
@@ -1195,28 +1218,28 @@ angular.module('shiptech.pages').service('ContractPlanningDataSharing', function
         this.callFunction.params = data;
     };
 
-    this.contractPreviewEmail = function(){
+    this.contractPreviewEmail = function() {
         this.callFunction.functionName = 'contractPreviewEmail';
         this.callFunction.params = [];
-    }
+    };
 
-    this.getLookupList = function(data){
+    this.getLookupList = function(data) {
         this.callFunction.functionName = 'getLookupList';
         this.callFunction.params = data;
-    }
+    };
 
-    this.initOptions = function(data){
+    this.initOptions = function(data) {
         this.callFunction.functionName = 'initOptions';
         this.callFunction.params = data;
-    }
+    };
 
-    this.contractplanningTriggerModal = function(data){
-            this.callFunction.functionName = 'triggerModal';
-            this.callFunction.params = data;
-    }
+    this.contractplanningTriggerModal = function(data) {
+        this.callFunction.functionName = 'triggerModal';
+        this.callFunction.params = data;
+    };
 
-    this.updatedOptions = function(){
+    this.updatedOptions = function() {
         this.callFunction.functionName = 'updatedOptions';
         this.callFunction.params = this.options;
-    }
+    };
 });

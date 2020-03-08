@@ -1,5 +1,4 @@
-angular.module('shiptech.pages').directive('sortedForm', function(){
-
+angular.module('shiptech.pages').directive('sortedForm', () => {
     function link(scope, element, attrs, controller, transcludeFn) {
         // console.log(attrs);
         // var source = angular.element(attrs.getFromId);
@@ -11,7 +10,7 @@ angular.module('shiptech.pages').directive('sortedForm', function(){
     return {
         restrict: 'AE',
         scope: {
-            fieldIds: "=",
+            fieldIds: '=',
             getFromId: '='
         },
         link: link

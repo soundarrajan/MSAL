@@ -1,7 +1,5 @@
 function CounterpartyController() {
-
-console.log('CounterpartyController');
-
+    console.log('CounterpartyController');
 }
 
 angular.module('shiptech').component('counterparty', {

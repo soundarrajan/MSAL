@@ -1,7 +1,5 @@
 function MarketPricesController() {
-
-console.log('MarketPricesController');
-
+    console.log('MarketPricesController');
 }
 
 angular.module('shiptech').component('marketPrices', {

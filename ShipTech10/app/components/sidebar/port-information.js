@@ -1,7 +1,5 @@
 function PortInformationController() {
-
-console.log('PortInformationController');
-
+    console.log('PortInformationController');
 }
 
 angular.module('shiptech').component('portInformation', {

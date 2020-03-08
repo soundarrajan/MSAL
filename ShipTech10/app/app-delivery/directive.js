@@ -2,41 +2,42 @@
  * APP MASTERS (Shiptech)
  * Directives
  */
-+(function() {
+Number(function() {
     /**
      * Configurable Masters Structure
      */
-    APP_DELIVERY.directive('elementDraggable', ['$document', function($document) {
+    APP_DELIVERY.directive('elementDraggable', [ '$document', function($document) {
         return {
             link: function(scope, element, attr) {
-                element.on('dragstart', function(event) {
-                   // console.log('test');
+                element.on('dragstart', (event) => {
+                    // console.log('test');
                     event.originalEvent.dataTransfer.setData('templateIdx', $(element).data('index'));
                 });
             }
         };
-    }]);
-    APP_DELIVERY.directive('elementDrop', ['$document', function($document) {
+    } ]);
+    APP_DELIVERY.directive('elementDrop', [ '$document', function($document) {
         return {
             link: function(scope, element, attr) {
-                element.on('dragover', function(event) {
+                element.on('dragover', (event) => {
                     event.preventDefault();
                 });
-                $('.drop').on('dragenter', function(event) {
+                $('.drop').on('dragenter', (event) => {
                     event.preventDefault();
-                })
+                });
                 element.on('drop', function(event) {
                     event.stopPropagation();
-                    var self = $(this);
-                    scope.$apply(function() {
-                        var idx = event.originalEvent.dataTransfer.getData('templateIdx');
-                        var insertIdx = self.data('index')
+                    let self = $(this);
+                    scope.$apply(() => {
+                        let idx = event.originalEvent.dataTransfer.getData('templateIdx');
+                        let insertIdx = self.data('index');
                         scope.addElement(scope.dragElements[idx], insertIdx);
                     });
                 });
             }
         };
-    }]);
+    } ]);
+
     /*    APP_MASTERS.directive('initializeProperty', function() {
             return {
                 restrict: 'A',
@@ -49,7 +50,7 @@
                 }
             };
         });*/
-    APP_DELIVERY.directive('initializeProperty', function() {
+    APP_DELIVERY.directive('initializeProperty', () => {
         return {
             require: 'ngModel',
             link: function(scope, element, attr, mCtrl) {
@@ -65,4 +66,4 @@
             }
         };
     });
-})();
+}());

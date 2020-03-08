@@ -1,52 +1,51 @@
 /**
  * Master Controller
- */ 
-APP_MASTERS.controller("Controller_Master", [
-    "API",
-    "$tenantSettings",
-    "tenantService",
-    "$scope",
-    "$rootScope",
-    "$sce",
-    "$Api_Service",
-    "Factory_Master",
-    "$state",
-    "$location",
-    "$q",
-    "$compile",
-    "$timeout",
-    "$interval",
-    "$templateCache",
-    "$listsCache",
-    "$uibModal",
-    "uibDateParser",
-    "uiGridConstants",
-    "$filter",
-    "$http",
-    "$window",
-    "$controller",
-    "payloadDataModel",
-    "statusColors",
-    "screenLoader",
-    "$parse",
-    "EMAIL_TRANSACTION",
-    "STATE",
-    "orderModel",
+ */
+APP_MASTERS.controller('Controller_Master', [
+    'API',
+    '$tenantSettings',
+    'tenantService',
+    '$scope',
+    '$rootScope',
+    '$sce',
+    '$Api_Service',
+    'Factory_Master',
+    '$state',
+    '$location',
+    '$q',
+    '$compile',
+    '$timeout',
+    '$interval',
+    '$templateCache',
+    '$listsCache',
+    '$uibModal',
+    'uibDateParser',
+    'uiGridConstants',
+    '$filter',
+    '$http',
+    '$window',
+    '$controller',
+    'payloadDataModel',
+    'statusColors',
+    'screenLoader',
+    '$parse',
+    'EMAIL_TRANSACTION',
+    'STATE',
+    'orderModel',
     function(API, $tenantSettings, tenantService, $scope, $rootScope, $sce, $Api_Service, Factory_Master, $state, $location, $q, $compile, $timeout, $interval, $templateCache, $listsCache, $uibModal, uibDateParser, uiGridConstants, $filter, $http, $window, $controller, payloadDataModel, statusColors, screenLoader, $parse, EMAIL_TRANSACTION, STATE, orderModel) {
-       
     	// extendScreenLayout(window.masterCTRL, this, statusColors);
 
-		$scope.vm = this;
-        $controller("ScreenLayout_Controller", {
+        $scope.vm = this;
+        $controller('ScreenLayout_Controller', {
             $scope: $scope
         });
 
         // console.log("--------", onlyInScreenLayout_Controller);
 
-        var vm = this;
+        let vm = this;
         vm.scope = $scope;
         if ($state.params.path) {
-            vm.app_id = $state.params.path[0].uisref.split(".")[0];
+            vm.app_id = $state.params.path[0].uisref.split('.')[0];
         }
         if ($scope.screen) {
             vm.screen_id = $scope.screen;
@@ -57,17 +56,18 @@ APP_MASTERS.controller("Controller_Master", [
             return typeof argument;
         };
         $scope.copiedId = 0;
-        $rootScope.$broadcast("editInstance", vm.editInstance);
+        $rootScope.$broadcast('editInstance', vm.editInstance);
         // APP SPECIFIC CONTROLLER INSERTION
-        $controller("Controller_Datatables", {
+        $controller('Controller_Datatables', {
             $scope: $scope
-        }); //This works
+        }); // This works
         // $controller('Controller_General_Header', { $scope: $scope });
-        if (vm.app_id == "alerts") {
-            $controller("Controller_Alerts", {
+        if (vm.app_id == 'alerts') {
+            $controller('Controller_Alerts', {
                 $scope: $scope
             });
         }
+
         /*
         if (vm.app_id == "invoices") {
             $controller("Controller_Invoice", {
@@ -75,61 +75,61 @@ APP_MASTERS.controller("Controller_Master", [
             });
         }
         */
-        if (vm.app_id == "delivery") {
-            $controller("Controller_Delivery", {
+        if (vm.app_id == 'delivery') {
+            $controller('Controller_Delivery', {
                 $scope: $scope
             });
         }
-        if (vm.app_id == "admin") {
-            $controller("Controller_Admin", {
+        if (vm.app_id == 'admin') {
+            $controller('Controller_Admin', {
                 $scope: $scope
             });
         }
-        if (vm.app_id == "contracts") {
-            $controller("Controller_Contract", {
+        if (vm.app_id == 'contracts') {
+            $controller('Controller_Contract', {
                 $scope: $scope
             });
         }
-        if (vm.app_id == "claims") {
-            $controller("Controller_Claims", {
+        if (vm.app_id == 'claims') {
+            $controller('Controller_Claims', {
                 $scope: $scope
             });
         }
-        if (vm.app_id == "labs") {
-            $controller("Controller_Labs", {
+        if (vm.app_id == 'labs') {
+            $controller('Controller_Labs', {
                 $scope: $scope
             });
         }
-        if (vm.app_id == "recon") {
-            $controller("Controller_Recon", {
+        if (vm.app_id == 'recon') {
+            $controller('Controller_Recon', {
                 $scope: $scope
             });
         }
 
         if (!vm.overrideInvalidDate) {
-            vm.overrideInvalidDate = {}
+            vm.overrideInvalidDate = {};
         }
 
-		// angular.element(document).ready(function () {
-		// 	setTimeout(function(){
-		// 		screenLoader.hideLoader();
-		// 	},7000)		    
-		// });
+        // angular.element(document).ready(function () {
+        // 	setTimeout(function(){
+        // 		screenLoader.hideLoader();
+        // 	},7000)
+        // });
 
         // END APP SPECIFIC CONTROLLER INSERTION
         vm.entity_id = $state.params.entity_id;
         $rootScope.entity_id = $state.params.entity_id;
         vm.isDev = 0;
         vm.listsCache = $listsCache;
-     
+
         vm.formValues = $rootScope.formValues;
         $scope.host = $location.$$host;
         $scope.changedFields = 0;
         $scope.submitedAction = false;
         $scope.reloadPage = false;
         $scope.submitedAcc = function(act) {
-            $timeout(function() {
-                if (act != "save_master_changes()") {
+            $timeout(() => {
+                if (act != 'save_master_changes()') {
                     $scope.submitedAction = false;
                 } else {
                     // $timeout(function() {
@@ -144,12 +144,12 @@ APP_MASTERS.controller("Controller_Master", [
             if (!$rootScope.getAdminConfigurationCall) {
                 // console.log("from Master");
                 $rootScope.getAdminConfigurationCall = true;
-                if (vm.app_id == "admin" && vm.screen_id == "configuration") {
+                if (vm.app_id == 'admin' && vm.screen_id == 'configuration') {
                     return;
                 }
-                Factory_Master.get_master_entity(1, "configuration", "admin", function(callback2) {
+                Factory_Master.get_master_entity(1, 'configuration', 'admin', (callback2) => {
                     if (callback2) {
-                    	$rootScope.$broadcast("adminConfiguration", callback2)
+                    	$rootScope.$broadcast('adminConfiguration', callback2);
                         $rootScope.getAdminConfigurationCall = false;
                         // console.log("from Master done");
                         vm.adminConfiguration = callback2;
@@ -168,18 +168,18 @@ APP_MASTERS.controller("Controller_Master", [
             $scope.isCreate = false;
         }
 
-      vm.getColorCodeFromLabels = function(statusObj) {
-        return statusColors.getColorCodeFromLabels(statusObj, vm.listsCache.ScheduleDashboardLabelConfiguration);
-      }
+        vm.getColorCodeFromLabels = function(statusObj) {
+            return statusColors.getColorCodeFromLabels(statusObj, vm.listsCache.ScheduleDashboardLabelConfiguration);
+        };
 
         vm.getStatusColor = function(statusName, cell) {
-            var statusColor = statusColors.getDefaultColor();
+            let statusColor = statusColors.getDefaultColor();
             if(statusName) {
                 statusColor = statusColors.getColorCode(statusName);
             }
             if(cell && cell.displayName) {
                 statusColor = statusColors.getColorCode(cell.displayName);
-                $.each(vm.listsCache.ScheduleDashboardLabelConfiguration, function(k, v) {
+                $.each(vm.listsCache.ScheduleDashboardLabelConfiguration, (k, v) => {
                     if(cell.id === v.id && cell.transactionTypeId === v.transactionTypeId) {
                         statusColor = v.code;
                         return false;
@@ -187,145 +187,146 @@ APP_MASTERS.controller("Controller_Master", [
                 });
             }
             return statusColor;
-        }
-        $scope.$on("visible_sections", function(event, object) {
+        };
+        $scope.$on('visible_sections', (event, object) => {
             // console.log(12)
             $scope.visible_sections = object;
-            if (vm.app_id == "contracts") {
+            if (vm.app_id == 'contracts') {
                 if ($rootScope.formValues.productQuantityRequired) {
-                    vm.equalizeColumnsHeightGrouped(".group_ContractSummary", ".group_General_Contract, .group_contact");
+                    vm.equalizeColumnsHeightGrouped('.group_ContractSummary', '.group_General_Contract, .group_contact');
                 } else {
-                    vm.equalizeColumnsHeightGrouped(".group_ContractSummary", ".group_General_Contract, .group_contact, .group_contractualQuantity, .group_ProductDetails, .group_AdditionalCosts, .group_Penalty");
+                    vm.equalizeColumnsHeightGrouped('.group_ContractSummary', '.group_General_Contract, .group_contact, .group_contractualQuantity, .group_ProductDetails, .group_AdditionalCosts, .group_Penalty');
                 }
             }
         });
         vm.isMobile = (function() {
-            var check = false;
+            let check = false;
             (function(a) {
                 if (
-                    /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(a) ||
-                    /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(
+                    (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i).test(a) ||
+                    (/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i).test(
                         a.substr(0, 4)
                     )
-                )
+                ) {
                     check = true;
-            })(navigator.userAgent || navigator.vendor || window.opera);
+                }
+            }(navigator.userAgent || navigator.vendor || window.opera));
             return check;
-        })();
+        }());
         vm.mime_types = {
-            "application/postscript": "ps",
-            "audio/x-aiff": "aiff",
-            "text/plain": "txt",
-            "application/atom+xml": "atom",
-            "audio/basic": "snd",
-            "video/x-msvideo": "avi",
-            "application/x-bcpio": "bcpio",
-            "application/octet-stream": "so",
-            "image/bmp": "bmp",
-            "application/x-netcdf": "nc",
-            "image/cgm": "cgm",
-            "application/x-cpio": "cpio",
-            "application/mac-compactpro": "cpt",
-            "application/x-csh": "csh",
-            "text/css": "css",
-            "text/csv": "csv",
-            "application/x-director": "dxr",
-            "image/vnd.djvu": "djvu",
-            "application/msword": "doc",
-            "application/xml-dtd": "dtd",
-            "application/x-dvi": "dvi",
-            "text/x-setext": "etx",
-            "application/andrew-inset": "ez",
-            "image/gif": "gif",
-            "application/srgs": "gram",
-            "application/srgs+xml": "grxml",
-            "application/x-gtar": "gtar",
-            "application/x-hdf": "hdf",
-            "application/mac-binhex40": "hqx",
-            "text/html": "html",
-            "x-conference/x-cooltalk": "ice",
-            "image/x-icon": "ico",
-            "text/calendar": "ifb",
-            "image/ief": "ief",
-            "model/iges": "igs",
-            "image/jpeg": "jpg",
-            "application/x-javascript": "js",
-            "application/json": "json",
-            "audio/midi": "midi",
-            "application/x-latex": "latex",
-            "audio/x-mpegurl": "m3u",
-            "application/x-troff-man": "man",
-            "application/mathml+xml": "mathml",
-            "application/x-troff-me": "me",
-            "model/mesh": "silo",
-            "application/vnd.mif": "mif",
-            "video/quicktime": "qt",
-            "video/x-sgi-movie": "movie",
-            "audio/mpeg": "mpga",
-            "video/mpeg": "mpg",
-            "application/x-troff-ms": "ms",
-            "video/vnd.mpegurl": "mxu",
-            "application/oda": "oda",
-            "application/ogg": "ogg",
-            "image/x-portable-bitmap": "pbm",
-            "chemical/x-pdb": "pdb",
-            "application/pdf": "pdf",
-            "image/x-portable-graymap": "pgm",
-            "application/x-chess-pgn": "pgn",
-            "image/png": "png",
-            "image/x-portable-anymap": "pnm",
-            "image/x-portable-pixmap": "ppm",
-            "application/vnd.ms-powerpoint": "ppt",
-            "audio/x-pn-realaudio": "ram",
-            "image/x-cmu-raster": "ras",
-            "application/rdf+xml": "rdf",
-            "image/x-rgb": "rgb",
-            "application/vnd.rn-realmedia": "rm",
-            "application/x-troff": "tr",
-            "application/rss+xml": "rss",
-            "text/rtf": "rtf",
-            "text/richtext": "rtx",
-            "text/sgml": "sgml",
-            "application/x-sh": "sh",
-            "application/x-shar": "shar",
-            "application/x-stuffit": "sit",
-            "application/x-koan": "skt",
-            "application/smil": "smil",
-            "application/x-futuresplash": "spl",
-            "application/x-wais-source": "src",
-            "application/x-sv4cpio": "sv4cpio",
-            "application/x-sv4crc": "sv4crc",
-            "image/svg+xml": "svgz",
-            "application/x-shockwave-flash": "swf",
-            "application/x-tar": "tar",
-            "application/x-tcl": "tcl",
-            "application/x-tex": "tex",
-            "application/x-texinfo": "texinfo",
-            "image/tiff": "tiff",
-            "text/tab-separated-values": "tsv",
-            "application/x-ustar": "ustar",
-            "application/x-cdlink": "vcd",
-            "model/vrml": "wrl",
-            "application/voicexml+xml": "vxml",
-            "audio/x-wav": "wav",
-            "image/vnd.wap.wbmp": "wbmp",
-            "application/vnd.wap.wbxml": "wbxml",
-            "text/vnd.wap.wml": "wml",
-            "application/vnd.wap.wmlc": "wmlc",
-            "text/vnd.wap.wmlscript": "wmls",
-            "application/vnd.wap.wmlscriptc": "wmlsc",
-            "image/x-xbitmap": "xbm",
-            "application/xhtml+xml": "xhtml",
-            "application/vnd.ms-excel": "xls",
-            "application/xml": "xsl",
-            "image/x-xpixmap": "xpm",
-            "application/xslt+xml": "xslt",
-            "application/vnd.mozilla.xul+xml": "xul",
-            "image/x-xwindowdump": "xwd",
-            "chemical/x-xyz": "xyz",
-            "application/zip": "zip"
+            'application/postscript': 'ps',
+            'audio/x-aiff': 'aiff',
+            'text/plain': 'txt',
+            'application/atom+xml': 'atom',
+            'audio/basic': 'snd',
+            'video/x-msvideo': 'avi',
+            'application/x-bcpio': 'bcpio',
+            'application/octet-stream': 'so',
+            'image/bmp': 'bmp',
+            'application/x-netcdf': 'nc',
+            'image/cgm': 'cgm',
+            'application/x-cpio': 'cpio',
+            'application/mac-compactpro': 'cpt',
+            'application/x-csh': 'csh',
+            'text/css': 'css',
+            'text/csv': 'csv',
+            'application/x-director': 'dxr',
+            'image/vnd.djvu': 'djvu',
+            'application/msword': 'doc',
+            'application/xml-dtd': 'dtd',
+            'application/x-dvi': 'dvi',
+            'text/x-setext': 'etx',
+            'application/andrew-inset': 'ez',
+            'image/gif': 'gif',
+            'application/srgs': 'gram',
+            'application/srgs+xml': 'grxml',
+            'application/x-gtar': 'gtar',
+            'application/x-hdf': 'hdf',
+            'application/mac-binhex40': 'hqx',
+            'text/html': 'html',
+            'x-conference/x-cooltalk': 'ice',
+            'image/x-icon': 'ico',
+            'text/calendar': 'ifb',
+            'image/ief': 'ief',
+            'model/iges': 'igs',
+            'image/jpeg': 'jpg',
+            'application/x-javascript': 'js',
+            'application/json': 'json',
+            'audio/midi': 'midi',
+            'application/x-latex': 'latex',
+            'audio/x-mpegurl': 'm3u',
+            'application/x-troff-man': 'man',
+            'application/mathml+xml': 'mathml',
+            'application/x-troff-me': 'me',
+            'model/mesh': 'silo',
+            'application/vnd.mif': 'mif',
+            'video/quicktime': 'qt',
+            'video/x-sgi-movie': 'movie',
+            'audio/mpeg': 'mpga',
+            'video/mpeg': 'mpg',
+            'application/x-troff-ms': 'ms',
+            'video/vnd.mpegurl': 'mxu',
+            'application/oda': 'oda',
+            'application/ogg': 'ogg',
+            'image/x-portable-bitmap': 'pbm',
+            'chemical/x-pdb': 'pdb',
+            'application/pdf': 'pdf',
+            'image/x-portable-graymap': 'pgm',
+            'application/x-chess-pgn': 'pgn',
+            'image/png': 'png',
+            'image/x-portable-anymap': 'pnm',
+            'image/x-portable-pixmap': 'ppm',
+            'application/vnd.ms-powerpoint': 'ppt',
+            'audio/x-pn-realaudio': 'ram',
+            'image/x-cmu-raster': 'ras',
+            'application/rdf+xml': 'rdf',
+            'image/x-rgb': 'rgb',
+            'application/vnd.rn-realmedia': 'rm',
+            'application/x-troff': 'tr',
+            'application/rss+xml': 'rss',
+            'text/rtf': 'rtf',
+            'text/richtext': 'rtx',
+            'text/sgml': 'sgml',
+            'application/x-sh': 'sh',
+            'application/x-shar': 'shar',
+            'application/x-stuffit': 'sit',
+            'application/x-koan': 'skt',
+            'application/smil': 'smil',
+            'application/x-futuresplash': 'spl',
+            'application/x-wais-source': 'src',
+            'application/x-sv4cpio': 'sv4cpio',
+            'application/x-sv4crc': 'sv4crc',
+            'image/svg+xml': 'svgz',
+            'application/x-shockwave-flash': 'swf',
+            'application/x-tar': 'tar',
+            'application/x-tcl': 'tcl',
+            'application/x-tex': 'tex',
+            'application/x-texinfo': 'texinfo',
+            'image/tiff': 'tiff',
+            'text/tab-separated-values': 'tsv',
+            'application/x-ustar': 'ustar',
+            'application/x-cdlink': 'vcd',
+            'model/vrml': 'wrl',
+            'application/voicexml+xml': 'vxml',
+            'audio/x-wav': 'wav',
+            'image/vnd.wap.wbmp': 'wbmp',
+            'application/vnd.wap.wbxml': 'wbxml',
+            'text/vnd.wap.wml': 'wml',
+            'application/vnd.wap.wmlc': 'wmlc',
+            'text/vnd.wap.wmlscript': 'wmls',
+            'application/vnd.wap.wmlscriptc': 'wmlsc',
+            'image/x-xbitmap': 'xbm',
+            'application/xhtml+xml': 'xhtml',
+            'application/vnd.ms-excel': 'xls',
+            'application/xml': 'xsl',
+            'image/x-xpixmap': 'xpm',
+            'application/xslt+xml': 'xslt',
+            'application/vnd.mozilla.xul+xml': 'xul',
+            'image/x-xwindowdump': 'xwd',
+            'chemical/x-xyz': 'xyz',
+            'application/zip': 'zip'
         };
-        $scope.systemInstrumentCurrency = "";
+        $scope.systemInstrumentCurrency = '';
         $scope.refreshValue = 0;
         $scope.tenantSetting = $tenantSettings;
         vm.tenantSetting = $tenantSettings;
@@ -335,7 +336,7 @@ APP_MASTERS.controller("Controller_Master", [
         $scope.formValues = new Object();
         $scope.locationReload = function() {
             if ($scope.copiedId > 0) {
-                localStorage.setItem(vm.app_id + vm.screen_id + "_copy", $scope.copiedId);
+                localStorage.setItem(`${vm.app_id + vm.screen_id }_copy`, $scope.copiedId);
                 $state.reload();
             } else {
                 $scope.formValues = {};
@@ -345,13 +346,13 @@ APP_MASTERS.controller("Controller_Master", [
             return $scope.tenantSetting.tenantFormats.uom;
         };
         vm.getTranslations = function() {
-            Factory_Master.getTranslations(function(callback) {
+            Factory_Master.getTranslations((callback) => {
                 if (callback) {
                     $scope.translations = callback;
                 }
             });
         };
-      
+
         // vm.get_master_structure = function(screenChild) {
         //     screenLoader.showLoader();
         //     $scope.getAdminConfiguration();
@@ -359,14 +360,14 @@ APP_MASTERS.controller("Controller_Master", [
         //         vm.get_master_elements(screenChild);
         //     }
         //     var generic_layout = false;
-        
+
         //     console.log('get_master_structure',$state);
-        
-          
+
+
         //     //load default screen and app
         //     var app_id = vm.app_id;
         //     var screen_id = vm.screen_id;
-        
+
 
         //     //you might not need to change app & screen, but load entity_documents
         //     if(screenChild == 'entity_documents'){
@@ -480,14 +481,14 @@ APP_MASTERS.controller("Controller_Master", [
         //     });
         // };
         vm.formFieldSearch = function(formFields, Unique_ID) {
-            for (var key in formFields) {
-                if (typeof formFields[key] == "string") {
-                    if (key == "Unique_ID" && formFields[key] == Unique_ID) {
+            for (let key in formFields) {
+                if (typeof formFields[key] == 'string') {
+                    if (key == 'Unique_ID' && formFields[key] == Unique_ID) {
                         return formFields;
                     }
                     continue;
                 }
-                var aux = vm.formFieldSearch(formFields[key], Unique_ID);
+                let aux = vm.formFieldSearch(formFields[key], Unique_ID);
                 if (aux) {
                     return aux;
                 }
@@ -495,19 +496,20 @@ APP_MASTERS.controller("Controller_Master", [
             return false;
         };
 
-		$scope.createCreditNote = function() {
-	        var selectedRowData = $('#invoices_app_deliveries_list').jqGrid.Ascensys.selectedRowData;
+        $scope.createCreditNote = function() {
+	        let selectedRowData = $('#invoices_app_deliveries_list').jqGrid.Ascensys.selectedRowData;
 	        if (selectedRowData) {
-	            var claimSettlementType = selectedRowData.settlementType.name;
-	            var actualSettlementAmount = selectedRowData.actualSettlementAmount;
-	            var claimType = selectedRowData.claimType.name;
-	            var claimId = selectedRowData.id;
+	            let claimSettlementType = selectedRowData.settlementType.name;
+	            let actualSettlementAmount = selectedRowData.actualSettlementAmount;
+	            let claimType = selectedRowData.claimType.name;
+	            let claimId = selectedRowData.id;
 	            if (selectedRowData.claimsPossibleActions.canCreateCreditNote) {
-                    var data = {
-                        "ClaimId": claimId
+                    let data = {
+                        ClaimId: claimId
                     };
-                    localStorage.setItem("createCreditNoteFromInvoiceClaims", JSON.stringify(data));
-                    window.open("/#/" + vm.app_id + '/' + 'claims' + '/edit/', '_blank');
+                    localStorage.setItem('createCreditNoteFromInvoiceClaims', JSON.stringify(data));
+                    window.open(`/#/${ vm.app_id }/` + 'claims' + '/edit/', '_blank');
+
                     /*
 	                Factory_Master.create_credit_note(data, function(response) {
 	                    if (response) {
@@ -524,28 +526,29 @@ APP_MASTERS.controller("Controller_Master", [
 	                })
                     */
 	            } else {
-	                toastr.error("You can't create credit note for this claim");
+	                toastr.error('You can\'t create credit note for this claim');
 	            }
 	            // $('#invoices_app_deliveries_list').jqGrid.Ascensys.selectedRowData = null
 	        } else {
-	            toastr.error("Please select one claim");
+	            toastr.error('Please select one claim');
 	        }
-	    }
+	    };
 
-		$scope.createDebunkerCreditNote = function() {
-		    var selectedRowData = $('#invoices_app_deliveries_list').jqGrid.Ascensys.selectedRowData;
+        $scope.createDebunkerCreditNote = function() {
+		    let selectedRowData = $('#invoices_app_deliveries_list').jqGrid.Ascensys.selectedRowData;
 		    if (selectedRowData) {
-		        var claimSettlementType = selectedRowData.settlementType.name;
-		        var actualSettlementAmount = selectedRowData.actualSettlementAmount;
-		        var claimType = selectedRowData.claimType.name;
-		        var claimId = selectedRowData.id;
+		        let claimSettlementType = selectedRowData.settlementType.name;
+		        let actualSettlementAmount = selectedRowData.actualSettlementAmount;
+		        let claimType = selectedRowData.claimType.name;
+		        let claimId = selectedRowData.id;
 		        if (selectedRowData.claimsPossibleActions.canCreateDebunkerCreditNote) {
-		            var data = {
-		                "ClaimId": claimId,
-		                "IsDebunker": 1
-		            }
-                    localStorage.setItem("createDebunkerCreditNoteFromInvoiceClaims", JSON.stringify(data));
-                    window.open("/#/" + vm.app_id + '/' + 'claims' + '/edit/', '_blank');
+		            let data = {
+		                ClaimId: claimId,
+		                IsDebunker: 1
+		            };
+                    localStorage.setItem('createDebunkerCreditNoteFromInvoiceClaims', JSON.stringify(data));
+                    window.open(`/#/${ vm.app_id }/` + 'claims' + '/edit/', '_blank');
+
                     /*
 		            Factory_Master.create_credit_note(data, function(response) {
 		                if (response) {
@@ -562,27 +565,27 @@ APP_MASTERS.controller("Controller_Master", [
 		            })
                     */
 		        } else {
-		            toastr.error("You can't create debunker credit note for this claim");
+		            toastr.error('You can\'t create debunker credit note for this claim');
 		        }
 		    } else {
-		        toastr.error("Please select one claim");
+		        toastr.error('Please select one claim');
 		    }
-		}
+        };
         $scope.createResaleCreditNote = function() {
-            var selectedRowData = $('#invoices_app_deliveries_list').jqGrid.Ascensys.selectedRowData;
+            let selectedRowData = $('#invoices_app_deliveries_list').jqGrid.Ascensys.selectedRowData;
             if (selectedRowData) {
-                var claimSettlementType = selectedRowData.settlementType.name;
-                var actualSettlementAmount = selectedRowData.actualSettlementAmount;
-                var resaleAmount = selectedRowData.resaleAmount;
-                var claimType = selectedRowData.claimType.name;
-                var claimId = selectedRowData.id;
+                let claimSettlementType = selectedRowData.settlementType.name;
+                let actualSettlementAmount = selectedRowData.actualSettlementAmount;
+                let resaleAmount = selectedRowData.resaleAmount;
+                let claimType = selectedRowData.claimType.name;
+                let claimId = selectedRowData.id;
                 if (selectedRowData.claimsPossibleActions.canCreateResaleCreditNote) {
-                    var data = {
-                        "ClaimId": claimId,
-                        "IsResale": 1
-                    }
-                    localStorage.setItem("createResaleCreditNoteFromInvoiceClaims", JSON.stringify(data));
-                    window.open("/#/" + vm.app_id + '/' + 'claims' + '/edit/', '_blank');
+                    let data = {
+                        ClaimId: claimId,
+                        IsResale: 1
+                    };
+                    localStorage.setItem('createResaleCreditNoteFromInvoiceClaims', JSON.stringify(data));
+                    window.open(`/#/${ vm.app_id }/` + 'claims' + '/edit/', '_blank');
 
                     /*
                     Factory_Master.create_credit_note(data, function(response) {
@@ -600,52 +603,51 @@ APP_MASTERS.controller("Controller_Master", [
                     })
                     */
                 } else {
-                    toastr.error("You can't create resale credit note for this claim");
+                    toastr.error('You can\'t create resale credit note for this claim');
                 }
             } else {
-                toastr.error("Please select one claim");
+                toastr.error('Please select one claim');
             }
-        }
+        };
 
-		$scope.createInvoiceFromDelivery = function() {
-	        var productIds = $('#flat_invoices_app_deliveries_list').jqGrid.Ascensys.selectedProductIds;
-	        var orderAdditionalCostId = $('#flat_invoices_app_deliveries_list').jqGrid.Ascensys.selectedOrderAdditionalCostId;
-	        var invoiceType = $("#newInvoiceType").val();
+        $scope.createInvoiceFromDelivery = function() {
+	        let productIds = $('#flat_invoices_app_deliveries_list').jqGrid.Ascensys.selectedProductIds;
+	        let orderAdditionalCostId = $('#flat_invoices_app_deliveries_list').jqGrid.Ascensys.selectedOrderAdditionalCostId;
+	        let invoiceType = $('#newInvoiceType').val();
 	        if (!invoiceType) {
-	            toastr.error("Please select invoice type");
+	            toastr.error('Please select invoice type');
 	            return;
 	        }
 	        if (!orderAdditionalCostId) {
-	            toastr.error("Please select at least one row");
+	            toastr.error('Please select at least one row');
 	            return;
 	        }
 	        if (productIds.length == 0 && orderAdditionalCostId.length == 0) {
-	            toastr.error("Please select at least one row");
+	            toastr.error('Please select at least one row');
 	            return;
 	        }
-	        var data = {
-	            "DeliveryProductIds": productIds,
-	            "OrderAdditionalCostIds": orderAdditionalCostId,
-	            "InvoiceTypeName": invoiceType,
-	        }
+	        let data = {
+	            DeliveryProductIds: productIds,
+	            OrderAdditionalCostIds: orderAdditionalCostId,
+	            InvoiceTypeName: invoiceType,
+	        };
 	        localStorage.setItem('invoiceFromDelivery', angular.toJson(data));
-	        window.open("/#/" + vm.app_id + '/' + 'invoice' + '/edit/', '_blank');
-
-	    }
+	        window.open(`/#/${ vm.app_id }/` + 'invoice' + '/edit/', '_blank');
+	    };
 
         vm.checkLabelsHeight = function() {
-            setTimeout(function() {
-                $.each($(".form-group label:not(.mt-checkbox)"), function(key, val) {
+            setTimeout(() => {
+                $.each($('.form-group label:not(.mt-checkbox)'), function(key, val) {
                     if (this.offsetHeight > 26) {
                         $(this)
-                            .css("height", 30)
-                            .css("padding-top", 0);
+                            .css('height', 30)
+                            .css('padding-top', 0);
                     }
                 });
             }, 1);
         };
         vm.get_master_elements = function(screenChild) {
-            Factory_Master.get_master_elements(vm.app_id, vm.screen_id, vm.isDev, function(callback) {
+            Factory_Master.get_master_elements(vm.app_id, vm.screen_id, vm.isDev, (callback) => {
                 if (callback) {
                     $scope.dragElements = callback;
                 }
@@ -653,18 +655,18 @@ APP_MASTERS.controller("Controller_Master", [
         };
         $scope.save_master_structure = function() {
             vm.structure = angular.toJson($scope.formFields);
-            Factory_Master.save_master_structure(vm.app_id, vm.screen_id, $scope.formFields, function(callback, response) {
+            Factory_Master.save_master_structure(vm.app_id, vm.screen_id, $scope.formFields, (callback, response) => {
                 if (response != false) {
                     toastr.success(callback);
                     $scope.loaded = true;
                 } else {
-                    toastr.error("Error occured");
+                    toastr.error('Error occured');
                 }
             });
         };
         $scope.reset_form = function(ev) {
             if ($scope.copiedId > 0) {
-                localStorage.setItem(vm.app_id + vm.screen_id + "_copy", $scope.copiedId);
+                localStorage.setItem(`${vm.app_id + vm.screen_id }_copy`, $scope.copiedId);
                 $state.reload();
             } else {
                 $state.reload();
@@ -674,9 +676,11 @@ APP_MASTERS.controller("Controller_Master", [
             if (vm.editInstance) {
                 vm.editInstance.$pristine = true;
                 vm.editInstance.$dirty = false;
-                angular.forEach(vm.editInstance, function(input, key) {
-                    if (typeof input == "object" && input.$name) {
-                        if (input.$pristine) input.$pristine = true;
+                angular.forEach(vm.editInstance, (input, key) => {
+                    if (typeof input == 'object' && input.$name) {
+                        if (input.$pristine) {
+                            input.$pristine = true;
+                        }
                         if (input.$dirty) {
                             input.$dirty = false;
                         }
@@ -685,70 +689,65 @@ APP_MASTERS.controller("Controller_Master", [
             }
         };
         $scope.save_modal_entity = function(app, screen) {
-            if (app == "alerts" && screen == "alerts") {
-                if ($rootScope.formValues.isRecurrent && (typeof $rootScope.formValues.statusId == "undefined" || $rootScope.formValues.statusId == null)) {
-                    toastr.error("Until status cannot be null if Remind Every is checked");
+            if (app == 'alerts' && screen == 'alerts') {
+                if ($rootScope.formValues.isRecurrent && (typeof $rootScope.formValues.statusId == 'undefined' || $rootScope.formValues.statusId == null)) {
+                    toastr.error('Until status cannot be null if Remind Every is checked');
                     return;
                 }
                 if ($rootScope.formValues.temp.dummyActivateOn && !$rootScope.formValues.activateOn) {
-                    toastr.error("Please select a date for activate on");
+                    toastr.error('Please select a date for activate on');
                     return;
                 }
                 if ($rootScope.formValues.temp.dummyDeactivateOn && !$rootScope.formValues.deactivateOn) {
-                    toastr.error("Please select a date for deactivate on");
+                    toastr.error('Please select a date for deactivate on');
                     return;
                 }
             }
             vm.invalid_form = false;
             $rootScope.filterFromData = {};
-            $.each($rootScope.formValues, function(key, val) {
-                if (!angular.equals(val, [{}])) {
+            $.each($rootScope.formValues, (key, val) => {
+                if (!angular.equals(val, [ {} ])) {
                     $rootScope.filterFromData[key] = val;
                 }
             });
 
             vm.fields = angular.toJson($rootScope.filterFromData);
             if ($rootScope.filterFromData.id > 0) {
-                Factory_Master.save_master_changes(app, screen, vm.fields, function(callback) {
+                Factory_Master.save_master_changes(app, screen, vm.fields, (callback) => {
                     if (callback.status == true) {
                         toastr.success(callback.message);
-                        $("table.ui-jqgrid-btable").trigger("reloadGrid");
+                        $('table.ui-jqgrid-btable').trigger('reloadGrid');
                         $scope.prettyCloseModal();
                         // $scope.modalInstance.close();
+                    } else if (callback.message) {
+                        toastr.error(callback.message);
                     } else {
-                        if (callback.message) {
-                            toastr.error(callback.message);
-                        } else {
-                            toastr.error("An error has occured, please check the fields");
-                        }
+                        toastr.error('An error has occured, please check the fields');
                     }
                 });
             } else {
-                Factory_Master.create_master_entity(app, screen, vm.fields, function(callback) {
+                Factory_Master.create_master_entity(app, screen, vm.fields, (callback) => {
                     if (callback.status == true) {
                         toastr.success(callback.message);
-                        $("table.ui-jqgrid-btable").trigger("reloadGrid");
+                        $('table.ui-jqgrid-btable').trigger('reloadGrid');
                         $scope.prettyCloseModal();
+                    } else if (callback.message) {
+                        toastr.error(callback.message);
                     } else {
-                        if (callback.message) {
-                            toastr.error(callback.message);
-                        } else {
-                            toastr.error("An error has occured, please check the fields");
-                        }
+                        toastr.error('An error has occured, please check the fields');
                     }
                 });
             }
-
         };
 
         $scope.save_master_changes = function(ev, sendEmails, noReload, completeCallback) {
             screenLoader.showLoader();
-            $("form").addClass("submitted");
+            $('form').addClass('submitted');
             vm.invalid_form = false;
             // console.log(vm.editInstance);
-            
+
             if(vm.app_id == 'masters' && vm.screen_id == 'systeminstrument') {
-                var periods = [];
+                let periods = [];
                 if($scope.formValues && $scope.formValues.periods) {
                     for (var i = 0; i < $scope.formValues.periods.length; i++) {
                         if ($scope.formValues.periods[i].period && $scope.formValues.periods[i].validFrom && $scope.formValues.periods[i].validTo) {
@@ -761,8 +760,8 @@ APP_MASTERS.controller("Controller_Master", [
 
             if(vm.app_id == 'masters' && vm.screen_id == 'counterparty') {
                 if($scope.formValues && $scope.formValues.counterpartyTypes) {
-                    var validCounterpartyTypes = [];
-                    $.each($scope.formValues.counterpartyTypes, function(k, v) {
+                    let validCounterpartyTypes = [];
+                    $.each($scope.formValues.counterpartyTypes, (k, v) => {
                         if(v.id != 0) {
                             validCounterpartyTypes.push(v);
                         }
@@ -777,11 +776,9 @@ APP_MASTERS.controller("Controller_Master", [
 	            		$scope.formValues.code = null;
 	            	}
             		if ($scope.formValues.hasNoMoreChildren) {
-
-                        if($scope.formValues.user){
-
-                            $scope.formValues.name = $scope.formValues.user.displayName;
-                        }
+                    if($scope.formValues.user) {
+                        $scope.formValues.name = $scope.formValues.user.displayName;
+                    }
             		} else {
             			// $scope.formValues.name = $scope.formValues.tempName;
             		}
@@ -789,19 +786,23 @@ APP_MASTERS.controller("Controller_Master", [
         			// $scope.formValues.name = $scope.formValues.code;
             	// }
             }
-            if (vm.app_id == "masters" && vm.screen_id == "vessel") {
-            	if ($scope.formValues.earliestRedelivery == "0000-00-00T00:00+00:00") {$scope.formValues.earliestRedelivery = null};
-            	if ($scope.formValues.latestRedelivery == "0000-00-00T00:00+00:00") {$scope.formValues.latestRedelivery = null};
+            if (vm.app_id == 'masters' && vm.screen_id == 'vessel') {
+            	if ($scope.formValues.earliestRedelivery == '0000-00-00T00:00+00:00') {
+                    $scope.formValues.earliestRedelivery = null;
+                };
+            	if ($scope.formValues.latestRedelivery == '0000-00-00T00:00+00:00') {
+                    $scope.formValues.latestRedelivery = null;
+                };
                 if ($scope.formValues.earliestRedelivery >= $scope.formValues.latestRedelivery && $scope.formValues.earliestRedelivery != null && $scope.formValues.latestRedelivery != null) {
-                    toastr.error("Latest Redelivery Date can't be lower than Earliest redelivery date");
-                    setTimeout(function() {
+                    toastr.error('Latest Redelivery Date can\'t be lower than Earliest redelivery date');
+                    setTimeout(() => {
                         $scope.submitedAction = false;
                     }, 100);
                     return;
                     vm.editInstance.$valid = false;
                 }
-                
-		// disabled on 03.01.2019 - de la Teo
+
+                // disabled on 03.01.2019 - de la Teo
                 // tankErrors = false;
                 // $.each($scope.formValues.tanks, function(k, v) {
                 //     if (!v.name) {
@@ -819,52 +820,49 @@ APP_MASTERS.controller("Controller_Master", [
                 // }
 
                 minMaxError = false;
-                $.each($scope.formValues.robs, function(k,v) {
+                $.each($scope.formValues.robs, (k, v) => {
                 	if (v.minQty > v.maxQty) {
 		                minMaxError = true;
                 	}
-                })
+                });
                 if (minMaxError) {
-                    toastr.error("Please check min max values for errors");
-                    setTimeout(function() {
+                    toastr.error('Please check min max values for errors');
+                    setTimeout(() => {
                         $scope.submitedAction = false;
                     }, 100);
-                    vm.editInstance.$valid = false;                	
-                    return false;               	
+                    vm.editInstance.$valid = false;
+                    return false;
                 }
-                $.each($scope.formValues.voyages, function(k,v){
-                	if (v.voyageUpdated == "0000-00-00T00:00+00:00") {
+                $.each($scope.formValues.voyages, (k, v) => {
+                	if (v.voyageUpdated == '0000-00-00T00:00+00:00') {
                 		v.voyageUpdated = null;
                 	}
                 	if (v.voyageUpdated == null) {
-						delete v.voyageUpdated;
+                        delete v.voyageUpdated;
                 	}
-                })
-
+                });
             }
-            if (vm.app_id == "masters" && vm.screen_id == "vesseltype") {
-
+            if (vm.app_id == 'masters' && vm.screen_id == 'vesseltype') {
                 minMaxError = false;
-                $.each($scope.formValues.robs, function(k,v) {
+                $.each($scope.formValues.robs, (k, v) => {
                 	if (v.minQty > v.maxQty) {
 		                minMaxError = true;
                 	}
-                })
+                });
                 if (minMaxError) {
-                    toastr.error("Please check min max values for errors");
-                    setTimeout(function() {
+                    toastr.error('Please check min max values for errors');
+                    setTimeout(() => {
                         $scope.submitedAction = false;
                     }, 100);
-                    vm.editInstance.$valid = false; 
-                    return false;               	
+                    vm.editInstance.$valid = false;
+                    return false;
                 }
-                if (!vm.entity_id || vm.entity_id == "") {
+                if (!vm.entity_id || vm.entity_id == '') {
                 	$scope.formValues.internalName = angular.copy($scope.formValues.name);
                 }
-
-            }            
-            if (vm.app_id == "masters" && vm.screen_id == "location") {
-                if (typeof $scope.formValues.productsSystemInstruments[0] != "undefined") {
+            }
+            if (vm.app_id == 'masters' && vm.screen_id == 'location') {
+                if (typeof $scope.formValues.productsSystemInstruments[0] != 'undefined') {
                     if (!$scope.formValues.productsSystemInstruments[0].product && !$scope.formValues.productsSystemInstruments[0].systemInstrument) {
                         $scope.formValues.productsSystemInstruments = [];
                     }
@@ -872,41 +870,40 @@ APP_MASTERS.controller("Controller_Master", [
                     $scope.formValues.productsSystemInstruments = [];
                 }
             }
+
             /* Contract Validations*/
-            if (typeof $scope.save_master_changes_controllerSpecific === "function") {
+            if (typeof $scope.save_master_changes_controllerSpecific === 'function') {
                 if (!$scope.save_master_changes_controllerSpecific(ev, vm.editInstance)) {
                     return;
                 }
             }
-            if (vm.app_id == "masters" && vm.screen_id == "specgroup") {
+            if (vm.app_id == 'masters' && vm.screen_id == 'specgroup') {
                 hasError = false;
-                $.each($scope.formValues.specGroupParameters, function(k, v) {
+                $.each($scope.formValues.specGroupParameters, (k, v) => {
                     if (!v.min && !v.max) {
                         // vm.editInstance.$valid = false
-                    } else {
-                        if (v.min != null && v.max != null) {
-                            if (Number(v.min) > Number(v.max)) {
-                                hasError = true;
-                            }
+                    } else if (v.min != null && v.max != null) {
+                        if (Number(v.min) > Number(v.max)) {
+                            hasError = true;
                         }
                     }
                 });
                 if (hasError) {
-                    toastr.error("Min value can't be greater than Max value");
-                    setTimeout(function() {
+                    toastr.error('Min value can\'t be greater than Max value');
+                    setTimeout(() => {
                         $scope.submitedAction = false;
                     }, 100);
                     return;
                 }
             }
-            if (vm.app_id == "masters" && vm.screen_id == "product") {
+            if (vm.app_id == 'masters' && vm.screen_id == 'product') {
                 if (!$scope.formValues.defaultSpecGroup) {
-                    toastr.warning("Please create a Spec Group for the product in the Spec Group master and then select a default Spec Group");
+                    toastr.warning('Please create a Spec Group for the product in the Spec Group master and then select a default Spec Group');
                 }
-                var newEnergyFormulaProducts = [];
+                let newEnergyFormulaProducts = [];
                 if ($scope.formValues.isEnergyCalculationRequired) {
                     if (_.get($scope, 'formValues.energyFormulaSpecific.id')) {
-                        var energyFormulaSpecific = {
+                        let energyFormulaSpecific = {
                             product: {
                                 id: Number(vm.entity_id),
                             },
@@ -916,9 +913,9 @@ APP_MASTERS.controller("Controller_Master", [
                             energyFormulaTypeName: 'SpecificEnergyCalculation'
                         };
 
-                        var energyFormulaSpecificId = 0;
+                        let energyFormulaSpecificId = 0;
 
-                        _.each($scope.formValues.energyFormulaProducts, function(value, key) {
+                        _.each($scope.formValues.energyFormulaProducts, (value, key) => {
                             if (value.energyFormulaTypeName === 'SpecificEnergyCalculation') {
                                 energyFormulaSpecificId = value.id;
                             }
@@ -932,7 +929,7 @@ APP_MASTERS.controller("Controller_Master", [
                     }
 
                     if (_.get($scope, 'formValues.energyFormulaCCAI.id')) {
-                        var energyFormulaCCAI = {
+                        let energyFormulaCCAI = {
                             product: {
                                 id: Number(vm.entity_id),
                             },
@@ -942,9 +939,9 @@ APP_MASTERS.controller("Controller_Master", [
                             energyFormulaTypeName: 'CCAI'
                         };
 
-                        var energyFormulaCCAIId = 0;
+                        let energyFormulaCCAIId = 0;
 
-                        _.each($scope.formValues.energyFormulaProducts, function(value, key) {
+                        _.each($scope.formValues.energyFormulaProducts, (value, key) => {
                             if (value.energyFormulaTypeName === 'CCAI') {
                                 energyFormulaCCAIId = value.id;
                             }
@@ -952,87 +949,87 @@ APP_MASTERS.controller("Controller_Master", [
 
                         energyFormulaCCAI.id = energyFormulaCCAIId;
                         newEnergyFormulaProducts.push(energyFormulaCCAI);
-                    } 
+                    }
                 }
 
                 $scope.formValues.energyFormulaProducts = newEnergyFormulaProducts;
             }
-            if (vm.app_id == "contracts" && vm.screen_id == "contract") {
-                //chech for product location to be obj
+            if (vm.app_id == 'contracts' && vm.screen_id == 'contract') {
+                // chech for product location to be obj
                 ret = false;
-                $.each($scope.formValues.products, function(key, val) {
-                    if (typeof val.location != "object") {
-                        //toastr error is shown from app-contract controller - save_master_changes_controllerSpecific
+                $.each($scope.formValues.products, (key, val) => {
+                    if (typeof val.location != 'object') {
+                        // toastr error is shown from app-contract controller - save_master_changes_controllerSpecific
                         ret = true;
                     }
                 });
                 if (ret) {
                     vm.editInstance.$valid = false;
-                    setTimeout(function() {
+                    setTimeout(() => {
                         $scope.submitedAction = false;
                     }, 100);
                     return;
                 }
             }
-            if (vm.app_id == "admin" && vm.screen_id == "users") {
+            if (vm.app_id == 'admin' && vm.screen_id == 'users') {
                 if ($scope.formValues.contactInformation.email) {
                 	if (!$scope.validateEmailPattern($scope.formValues.contactInformation.email)) {
-	                    toastr.error("Invalid email address");
-	                    return;
-                	}
-                }
-            }            
-
-            if (vm.app_id == "admin" && vm.screen_id == "users") {
-                if ($scope.formValues.contactInformation.email) {
-                	if (!$scope.validateEmailPattern($scope.formValues.contactInformation.email)) {
-	                    toastr.error("Invalid email address");
+	                    toastr.error('Invalid email address');
 	                    return;
                 	}
                 }
             }
 
-            if (vm.app_id == "admin" && vm.screen_id == "configuration") {
-                //chech for product location to be obj
-                $.each($scope.formValues.email, function(key, val) {
-                	if (typeof(val.toEmailsConfiguration) == "string") {
-                		val.toEmailsConfiguration = val.toEmailsConfiguration.split(",")
+            if (vm.app_id == 'admin' && vm.screen_id == 'users') {
+                if ($scope.formValues.contactInformation.email) {
+                	if (!$scope.validateEmailPattern($scope.formValues.contactInformation.email)) {
+	                    toastr.error('Invalid email address');
+	                    return;
                 	}
-					if (typeof(val.ccEmailsConfiguration) == "string") {
-						val.ccEmailsConfiguration = val.ccEmailsConfiguration.split(",")
-					}
-					if (typeof(val.attachmentDocumentTypes) == "string") {
-						val.attachmentDocumentTypes = val.attachmentDocumentTypes.split(",")
-					}
+                }
+            }
 
-	                toEmailsConfigurationSimplified = []
-	                ccEmailsConfigurationSimplified = []
-	                attachmentDocumentTypesSimplified = []
+            if (vm.app_id == 'admin' && vm.screen_id == 'configuration') {
+                // chech for product location to be obj
+                $.each($scope.formValues.email, (key, val) => {
+                	if (typeof val.toEmailsConfiguration == 'string') {
+                		val.toEmailsConfiguration = val.toEmailsConfiguration.split(',');
+                	}
+                    if (typeof val.ccEmailsConfiguration == 'string') {
+                        val.ccEmailsConfiguration = val.ccEmailsConfiguration.split(',');
+                    }
+                    if (typeof val.attachmentDocumentTypes == 'string') {
+                        val.attachmentDocumentTypes = val.attachmentDocumentTypes.split(',');
+                    }
+
+	                toEmailsConfigurationSimplified = [];
+	                ccEmailsConfigurationSimplified = [];
+	                attachmentDocumentTypesSimplified = [];
                 	if (val.toEmailsConfiguration) {
 	                	if (val.toEmailsConfiguration.length > 0) {
-	                		$.each(val.toEmailsConfiguration, function(tok,tov){
+	                		$.each(val.toEmailsConfiguration, (tok, tov) => {
 				                toEmailsConfigurationSimplified.push(tov.id);
-	                		})
+	                		});
 	                	}
                 	}
                 	if (val.ccEmailsConfiguration) {
 	                	if (val.ccEmailsConfiguration.length > 0) {
-	                		$.each(val.ccEmailsConfiguration, function(cck,ccv){
+	                		$.each(val.ccEmailsConfiguration, (cck, ccv) => {
 				                ccEmailsConfigurationSimplified.push(ccv.id);
-	                		})
-	                	}  
-                	}  
+	                		});
+	                	}
+                	}
 
                   	if (val.attachmentDocumentTypes) {
 	                	if (val.attachmentDocumentTypes.length > 0) {
-	                		$.each(val.attachmentDocumentTypes, function(cck,ccv){
+	                		$.each(val.attachmentDocumentTypes, (cck, ccv) => {
 				                attachmentDocumentTypesSimplified.push(ccv.id);
-	                		})
-	                	}  
-                	}  
-                	val.toEmailsConfiguration = toEmailsConfigurationSimplified.length > 0 ? toEmailsConfigurationSimplified.join(",") : null;              	
-                	val.ccEmailsConfiguration = ccEmailsConfigurationSimplified.length > 0 ? ccEmailsConfigurationSimplified.join(",") : null;              	
-                	val.attachmentDocumentTypes = attachmentDocumentTypesSimplified.length > 0 ? attachmentDocumentTypesSimplified.join(",") : null;              	
+	                		});
+	                	}
+                	}
+                	val.toEmailsConfiguration = toEmailsConfigurationSimplified.length > 0 ? toEmailsConfigurationSimplified.join(',') : null;
+                	val.ccEmailsConfiguration = ccEmailsConfigurationSimplified.length > 0 ? ccEmailsConfigurationSimplified.join(',') : null;
+                	val.attachmentDocumentTypes = attachmentDocumentTypesSimplified.length > 0 ? attachmentDocumentTypesSimplified.join(',') : null;
                 });
             }
 
@@ -1040,39 +1037,39 @@ APP_MASTERS.controller("Controller_Master", [
             if (vm.editInstance.$valid) {
                 $scope.filterFromData = {};
                 $scope.submitedAction = true;
-                $.each($scope.formValues, function(key, val) {
-                    if (!angular.equals(val, [{}])) {
+                $.each($scope.formValues, (key, val) => {
+                    if (!angular.equals(val, [ {} ])) {
                         $scope.filterFromData[key] = angular.copy(val);
                     }
                     if (val && val.id && angular.equals(val.id, -1)) {
                         $scope.filterFromData[key] = null;
                     }
-                    if (vm.screen_id == "formula" || vm.screen_id == "labresult") {
+                    if (vm.screen_id == 'formula' || vm.screen_id == 'labresult') {
                         if (angular.equals(val, {})) {
                             $scope.filterFromData[key] = null;
                         }
-                        if (key == "pricingScheduleOptionSpecificDate") {
-                            if (val && val.dates && angular.equals(val.dates, [{}])) {
+                        if (key == 'pricingScheduleOptionSpecificDate') {
+                            if (val && val.dates && angular.equals(val.dates, [ {} ])) {
                                 $scope.filterFromData[key] = null;
                             }
                         }
                     }
                 });
-	            if (vm.app_id == "claims" && vm.screen_id == "claims") {
-	                var type = $scope.filterFromData.claimType.claimType.name;
-	                if (type.toLowerCase() != "debunker") {
+	            if (vm.app_id == 'claims' && vm.screen_id == 'claims') {
+	                let type = $scope.filterFromData.claimType.claimType.name;
+	                if (type.toLowerCase() != 'debunker') {
 	                	$scope.filterFromData.claimDebunkerDetails = null;
 	                }
 	            }
-                if (vm.app_id == "contracts" && vm.screen_id == "contract") {
-                    if ($scope.filterFromData.productQuantityRequired == false || typeof $scope.filterFromData.productQuantityRequired == "undefined") {
-                        $.each($scope.filterFromData.products, function(key, val) {
+                if (vm.app_id == 'contracts' && vm.screen_id == 'contract') {
+                    if ($scope.filterFromData.productQuantityRequired == false || typeof $scope.filterFromData.productQuantityRequired == 'undefined') {
+                        $.each($scope.filterFromData.products, (key, val) => {
                             $scope.filterFromData.products[key].details = null;
                         });
                     }
-                    if (typeof $scope.filterFromData != "undefined") {
-                        if (typeof $scope.filterFromData.products != "undefined") {
-                            $scope.filterFromData.products.forEach(function(product, index) {
+                    if (typeof $scope.filterFromData != 'undefined') {
+                        if (typeof $scope.filterFromData.products != 'undefined') {
+                            $scope.filterFromData.products.forEach((product, index) => {
                                 if (product.additionalCosts != null) {
                                     if (product.additionalCosts.length == 1 && !product.additionalCosts[0].costType) {
                                         $scope.filterFromData.products[index].additionalCosts = null;
@@ -1084,51 +1081,52 @@ APP_MASTERS.controller("Controller_Master", [
                         return;
                     }
                 }
-				if (vm.app_id == "masters" && vm.screen_id == "vessel") {
-					if ($scope.filterFromData.usingVesselTypeRob) {
-						$scope.filterFromData.robs = null;
-					}
-				} 
-				if (vm.app_id == "admin" && vm.screen_id == "users") {
-					if (!$("#Signature").val()) {
-						$scope.filterFromData.signature = null;
-					}
-				}      
-                if (vm.app_id == "masters" && vm.screen_id == "price") {
+                if (vm.app_id == 'masters' && vm.screen_id == 'vessel') {
+                    if ($scope.filterFromData.usingVesselTypeRob) {
+                        $scope.filterFromData.robs = null;
+                    }
+                }
+                if (vm.app_id == 'admin' && vm.screen_id == 'users') {
+                    if (!$('#Signature').val()) {
+                        $scope.filterFromData.signature = null;
+                    }
+                }
+                if (vm.app_id == 'masters' && vm.screen_id == 'price') {
                 	tempMarketPrices = [];
-                    $.each($scope.filterFromData.marketPrices, function(key, val) {
+                    $.each($scope.filterFromData.marketPrices, (key, val) => {
                     	if (!(val.id == 0 && !val.quotePrice)) {
 		                	tempMarketPrices.push(val);
                     	}
                     });
                     $scope.filterFromData.marketPrices = tempMarketPrices;
-                }		
-                if (vm.app_id == "masters" && vm.screen_id == "formula" && (!vm.entity_id || vm.entity_id == "")) {
-                    $.each($scope.filterFromData.complexFormulaQuoteLines, function(key, val) {
-	                    $.each(val.systemInstruments, function(key2, val2) {
-                            if (typeof val2.complexFormulaQuoteLine != "undefined" && 
-                                val2.complexFormulaQuoteLine !== null)
+                }
+                if (vm.app_id == 'masters' && vm.screen_id == 'formula' && (!vm.entity_id || vm.entity_id == '')) {
+                    $.each($scope.filterFromData.complexFormulaQuoteLines, (key, val) => {
+	                    $.each(val.systemInstruments, (key2, val2) => {
+                            if (typeof val2.complexFormulaQuoteLine != 'undefined' &&
+                                val2.complexFormulaQuoteLine !== null) {
                                 val2.complexFormulaQuoteLine.id = 0;
+                            }
 	                    });
                     });
-                }                		          
-                if (vm.app_id == "admin" && vm.screen_id == "role") {
+                }
+                if (vm.app_id == 'admin' && vm.screen_id == 'role') {
                     console.log($scope.formValues.deepmerge);
                     roles = $scope.formValues.roles;
-                    $.each(roles.rights, function(key, module) {
-                        $.each(module.moduleScreenConfigurations, function(key2, screen) {
-                           // screen.id = null;
+                    $.each(roles.rights, (key, module) => {
+                        $.each(module.moduleScreenConfigurations, (key2, screen) => {
+                            // screen.id = null;
                             screen.actions = [];
                         });
                     });
                     $scope.formValues.roles.rights = [];
-                    $.each($scope.formValues.deepmerge, function(key, deepModule) {
+                    $.each($scope.formValues.deepmerge, (key, deepModule) => {
                         obj = {};
                         obj.moduleScreenConfigurations = [];
-                        $.each(deepModule, function(key2, deepScreen) {
+                        $.each(deepModule, (key2, deepScreen) => {
                             actions = [];
-                            $.each(deepScreen, function(key3, deepAction) {
-                                if (key3 != "screen" && key3 != "definedScreenTemplates" && key3 != "selectedScreenTemplate") {
+                            $.each(deepScreen, (key3, deepAction) => {
+                                if (key3 != 'screen' && key3 != 'definedScreenTemplates' && key3 != 'selectedScreenTemplate') {
                                     if (deepAction.isSelected) {
                                         actions.push({
                                             id: key3,
@@ -1137,7 +1135,7 @@ APP_MASTERS.controller("Controller_Master", [
                                     }
                                 }
                             });
-                            if($scope.formValues.id != 0){
+                            if($scope.formValues.id != 0) {
                                 obj.id = deepModule.module.idSrv;
                             }else{
                                 obj.id = 0;
@@ -1147,20 +1145,20 @@ APP_MASTERS.controller("Controller_Master", [
                                 name: deepModule.module.name
                             };
                             screen = {};
-                            if (typeof deepScreen.screen != "undefined") {
+                            if (typeof deepScreen.screen != 'undefined') {
                                 screen = {
                                     id: deepScreen.screen.id,
                                     name: deepScreen.screen.name
                                 };
                             }
                             selectedScreenTemplate = {};
-                            if (typeof deepScreen.selectedScreenTemplate != "undefined") {
+                            if (typeof deepScreen.selectedScreenTemplate != 'undefined') {
                                 selectedScreenTemplate = deepScreen.selectedScreenTemplate;
                             }
                             obj.module = module;
                             if (screen.id && selectedScreenTemplate.id) {
                                 obj.moduleScreenConfigurations.push({
-                                    id: vm.entity_id == "" ? 0 : deepScreen.idSrv,
+                                    id: vm.entity_id == '' ? 0 : deepScreen.idSrv,
                                     screen: screen,
                                     screenTemplate: selectedScreenTemplate,
                                     actions: actions
@@ -1171,21 +1169,21 @@ APP_MASTERS.controller("Controller_Master", [
                     });
                     $scope.filterFromData = roles;
                 }
-                if (vm.app_id == "invoices" && vm.screen_id == "invoice") {
+                if (vm.app_id == 'invoices' && vm.screen_id == 'invoice') {
                 	// if ($scope.paymentDateWasManuallyChanged && !$scope.filterFromData.hasManualPaymentDate) {
 	                // 	if ($scope.manualPaymentDateReference.split("T")[0] == $scope.filterFromData.paymentDate.split("T")[0]) {
-		               //  	$scope.filterFromData.hasManualPaymentDate = true;	
-		               //  	$scope.filterFromData.hasManualPaymentDate = false;	
+		               //  	$scope.filterFromData.hasManualPaymentDate = true;
+		               //  	$scope.filterFromData.hasManualPaymentDate = false;
 	                // 	}
                 	// }
-                	validCostDetails = []
+                	validCostDetails = [];
                     if ($scope.filterFromData.costDetails.length > 0) {
-                        $.each($scope.filterFromData.costDetails, function(k, v) {
-                            if (typeof v.product != "undefined" && v.product != null) {
+                        $.each($scope.filterFromData.costDetails, (k, v) => {
+                            if (typeof v.product != 'undefined' && v.product != null) {
                                 if (v.product.id == -1) {
                                     v.product = null;
                                     v.deliveryProductId = null;
-                                } else  {
+                                } else {
                                 	if (v.product.productId) {
 	                                    v.product.id = v.product.productId;
                                 	}
@@ -1195,7 +1193,7 @@ APP_MASTERS.controller("Controller_Master", [
 	                            	v.isAllProductsCost = false;
 	                            }
                             }
-	                        if ((!!v.id && !(v.id == 0 && v.isDeleted)) || (!v.Id && !v.isDeleted)) {
+	                        if (Boolean(v.id) && !(v.id == 0 && v.isDeleted) || !v.Id && !v.isDeleted) {
                                 // v.isDeleted = false;
 	                        	validCostDetails.push(v);
 	                        }
@@ -1210,53 +1208,53 @@ APP_MASTERS.controller("Controller_Master", [
                     	}
                     }
                     if (costTypeError) {
-                        toastr.error("Please select Cost type");
+                        toastr.error('Please select Cost type');
                         $scope.submitedAction = false;
                         return false;
                     }
-                    if ($state.params.screen_id != "claims") {
-                        if ($filter('filter')($scope.filterFromData.productDetails, {isDeleted: false}).length == 0 && $filter('filter')($scope.filterFromData.costDetails, {isDeleted: false}).length == 0) {
-                            toastr.error("Please add at least one product or one cost");
+                    if ($state.params.screen_id != 'claims') {
+                        if ($filter('filter')($scope.filterFromData.productDetails, { isDeleted: false }).length == 0 && $filter('filter')($scope.filterFromData.costDetails, { isDeleted: false }).length == 0) {
+                            toastr.error('Please add at least one product or one cost');
                             $scope.submitedAction = false;
                             return false;
                         }
                     }
                 }
-                if (vm.app_id == "masters" && vm.screen_id == "documenttype") {
-                    if((typeof $scope.formValues.id == 'undefined') || ($scope.formValues.id == 0)){
-                       $scope.filterFromData.name = $scope.filterFromData.displayName;
+                if (vm.app_id == 'masters' && vm.screen_id == 'documenttype') {
+                    if(typeof $scope.formValues.id == 'undefined' || $scope.formValues.id == 0) {
+                        $scope.filterFromData.name = $scope.filterFromData.displayName;
                     }
                 }
-                if (vm.app_id == "delivery" && vm.screen_id == "delivery") {
-                     $.each($scope.filterFromData.deliveryProducts, function(key, value) {
-                        if ($scope.filterFromData.deliveryProducts[key].agreedQuantityAmount == null || $scope.filterFromData.deliveryProducts[key].agreedQuantityAmount == "") {
+                if (vm.app_id == 'delivery' && vm.screen_id == 'delivery') {
+                    $.each($scope.filterFromData.deliveryProducts, (key, value) => {
+                        if ($scope.filterFromData.deliveryProducts[key].agreedQuantityAmount == null || $scope.filterFromData.deliveryProducts[key].agreedQuantityAmount == '') {
                             $scope.filterFromData.deliveryProducts[key].agreedQuantityUom = null;
-                        } 
-                        if ($scope.filterFromData.deliveryProducts[key].vesselQuantityAmount == null || $scope.filterFromData.deliveryProducts[key].vesselQuantityAmount == "") {
+                        }
+                        if ($scope.filterFromData.deliveryProducts[key].vesselQuantityAmount == null || $scope.filterFromData.deliveryProducts[key].vesselQuantityAmount == '') {
                             $scope.filterFromData.deliveryProducts[key].vesselQuantityUom = null;
-                        }  
-                        if ($scope.filterFromData.deliveryProducts[key].fuelManifoldTemperature == null || $scope.filterFromData.deliveryProducts[key].fuelManifoldTemperature == "") {
+                        }
+                        if ($scope.filterFromData.deliveryProducts[key].fuelManifoldTemperature == null || $scope.filterFromData.deliveryProducts[key].fuelManifoldTemperature == '') {
                             $scope.filterFromData.deliveryProducts[key].fuelManifoldTemperatureUom = null;
-                        } 
-                        if ($scope.filterFromData.deliveryProducts[key].confirmedQuantityAmount == null || $scope.filterFromData.deliveryProducts[key].confirmedQuant == "") {
+                        }
+                        if ($scope.filterFromData.deliveryProducts[key].confirmedQuantityAmount == null || $scope.filterFromData.deliveryProducts[key].confirmedQuant == '') {
                             $scope.filterFromData.deliveryProducts[key].confirmedQuantityUom = null;
-                        }  
-                        if ($scope.filterFromData.deliveryProducts[key].deliveredVolume == null || $scope.filterFromData.deliveryProducts[key].deliveredVolume == "") {
+                        }
+                        if ($scope.filterFromData.deliveryProducts[key].deliveredVolume == null || $scope.filterFromData.deliveryProducts[key].deliveredVolume == '') {
                             $scope.filterFromData.deliveryProducts[key].deliveredVolumeUom = null;
                         }
-                        if ($scope.filterFromData.deliveryProducts[key].buyerQuantityAmount == null || $scope.filterFromData.deliveryProducts[key].buyerQuantityAmount == "") {
+                        if ($scope.filterFromData.deliveryProducts[key].buyerQuantityAmount == null || $scope.filterFromData.deliveryProducts[key].buyerQuantityAmount == '') {
                             $scope.filterFromData.deliveryProducts[key].buyerQuantityUom = null;
                         }
-                        if ($scope.filterFromData.deliveryProducts[key].sellerQuantityAmount == null || $scope.filterFromData.deliveryProducts[key].sellerQuantityAmount == "") {
+                        if ($scope.filterFromData.deliveryProducts[key].sellerQuantityAmount == null || $scope.filterFromData.deliveryProducts[key].sellerQuantityAmount == '') {
                             $scope.filterFromData.deliveryProducts[key].sellerQuantityUom = null;
                         }
-                        if ($scope.filterFromData.deliveryProducts[key].surveyorQuantityAmount == null || $scope.filterFromData.deliveryProducts[key].surveyorQuantityAmount == "") {
+                        if ($scope.filterFromData.deliveryProducts[key].surveyorQuantityAmount == null || $scope.filterFromData.deliveryProducts[key].surveyorQuantityAmount == '') {
                             $scope.filterFromData.deliveryProducts[key].surveyorQuantityUom = null;
                         }
-                        if ($scope.filterFromData.deliveryProducts[key].vesselFlowMeterQuantityAmount == null || $scope.filterFromData.deliveryProducts[key].vesselFlowMeterQuantityAmount == "") {
+                        if ($scope.filterFromData.deliveryProducts[key].vesselFlowMeterQuantityAmount == null || $scope.filterFromData.deliveryProducts[key].vesselFlowMeterQuantityAmount == '') {
                             $scope.filterFromData.deliveryProducts[key].vesselFlowMeterQuantityUom = null;
                         }
-                     });
+                    });
                 }
 
                 vm.fields = angular.toJson($scope.filterFromData);
@@ -1266,128 +1264,118 @@ APP_MASTERS.controller("Controller_Master", [
                     vm.entity_id = 0;
                 }
                 if (vm.entity_id > 0) {
-                    Factory_Master.save_master_changes(vm.app_id, vm.screen_id, vm.fields, function(callback) {
+                    Factory_Master.save_master_changes(vm.app_id, vm.screen_id, vm.fields, (callback) => {
                         screenLoader.showLoader();
-                        //alert('no reload');
+                        // alert('no reload');
                         if (callback.status == true) {
-                            
                             $scope.loaded = true;
-                            if (vm.app_id == "admin" && vm.screen_id == "configuration") {
+                            if (vm.app_id == 'admin' && vm.screen_id == 'configuration') {
                                 vm.entity_id = 0;
                                 $rootScope.reloadTenantConfiguration = true;
-
                             }
-                            setTimeout(function() {
+                            setTimeout(() => {
                                 $scope.submitedAction = false;
                             }, 100);
                             if (sendEmails) {
                                 $scope.sendEmails();
                             }
-                            if(noReload == undefined || typeof noReload == undefined || !noReload){
+                            if(noReload == undefined || typeof noReload == undefined || !noReload) {
                                 toastr.success(callback.message);
-                                //alert('reloading');
+                                // alert('reloading');
                                 $tenantConfiguration = null;
                                 $state.reload();
                                 screenLoader.hideLoader();
-                            } else {
-                                if(completeCallback){
-                                    toastr.success('Saved');
-                                    toastr.warning('Preparing to complete');
-                                    completeCallback();
-                                }
+                            } else if(completeCallback) {
+                                toastr.success('Saved');
+                                toastr.warning('Preparing to complete');
+                                completeCallback();
                             }
-                            
                         } else {
                             // toastr.error(callback.message);
-                            setTimeout(function() {
+                            setTimeout(() => {
                                 $scope.submitedAction = false;
                             }, 100);
 
-                            if (vm.app_id == "invoices" && vm.screen_id == "invoice") {
+                            if (vm.app_id == 'invoices' && vm.screen_id == 'invoice') {
                                 if ($scope.filterFromData.costDetails.length > 0) {
-                                    $.each($scope.filterFromData.costDetails, function(k, v) {
-                                        if (v.product == null)
-                                            if (v.associatedOrderProduct == "All" || v.isAllProductsCost) {
+                                    $.each($scope.filterFromData.costDetails, (k, v) => {
+                                        if (v.product == null) {
+                                            if (v.associatedOrderProduct == 'All' || v.isAllProductsCost) {
                                                 v.product = {
                                                     id: -1
                                                 };
                                             }
+                                        }
                                     });
                                 }
                             }
                         }
-
                     });
                 } else {
-                    Factory_Master.create_master_entity(vm.app_id, vm.screen_id, vm.fields, function(callback) {
-
+                    Factory_Master.create_master_entity(vm.app_id, vm.screen_id, vm.fields, (callback) => {
                         if (callback.status == true) {
                             toastr.success(callback.message);
-                            if (vm.app_id == "admin" && vm.screen_id == "configuration") {
+                            if (vm.app_id == 'admin' && vm.screen_id == 'configuration') {
                                 vm.entity_id = 0;
-                                Factory_Master.get_master_entity(vm.entity_id, vm.screen_id, vm.app_id, function(callback2) {
+                                Factory_Master.get_master_entity(vm.entity_id, vm.screen_id, vm.app_id, (callback2) => {
                                     if (callback2) {
                                         $scope.formValues = callback2;
                                     }
                                 });
                             } else {
-                                if ($location.path().slice(-2) == "/0") {
+                                if ($location.path().slice(-2) == '/0') {
                                     locationPath = $location.path().slice(0, -1);
                                 } else {
                                     locationPath = $location.path();
                                 }
-                                if (vm.app_id == "admin"){
-                                    if(vm.screen_id == "sellerrating"){
-                                        //do nothing
-                                    }else{
-                                        if (sendEmails) {
-                                            $location.path(locationPath + callback.id).hash("mail");
-                                        } else {
-                                            $location.path(locationPath + callback.id);
-                                        }
-                                    }
-                                }else{
-                                    if (sendEmails) {
-                                        $location.path(locationPath + callback.id).hash("mail");
+                                if (vm.app_id == 'admin') {
+                                    if(vm.screen_id == 'sellerrating') {
+                                        // do nothing
+                                    }else if (sendEmails) {
+                                        $location.path(locationPath + callback.id).hash('mail');
                                     } else {
                                         $location.path(locationPath + callback.id);
                                     }
+                                }else if (sendEmails) {
+                                    $location.path(locationPath + callback.id).hash('mail');
+                                } else {
+                                    $location.path(locationPath + callback.id);
                                 }
                             }
-                            setTimeout(function() {
+                            setTimeout(() => {
                                 $scope.submitedAction = false;
                             }, 100);
                         } else {
                             // toastr.error(callback.message);
-                            setTimeout(function() {
+                            setTimeout(() => {
                                 $scope.submitedAction = false;
                             }, 1000);
                             $scope.submitedAction = false;
                         }
                     });
                 }
-                //$scope.refreshSelect();
+                // $scope.refreshSelect();
             } else {
                 $scope.submitedAction = false;
                 vm.invalid_form = true;
-                var message = "Please fill in required fields:";
-                var names = [];
-                $.each(vm.editInstance.$error.required, function(key, val) {
+                let message = 'Please fill in required fields:';
+                let names = [];
+                $.each(vm.editInstance.$error.required, (key, val) => {
                     if (names.indexOf(val.$name) == -1) {
-                        message += "<br>" + (val.$name ? val.$name : val.$$attr.id);
+                        message = `${message }<br>${ val.$name ? val.$name : val.$$attr.id}`;
                     }
-                    names += (val.$name ? val.$name : val.$$attr.id);
+                    names = names + (val.$name ? val.$name : val.$$attr.id);
                 });
                 i = 0;
-                $.each(vm.editInstance.$error.pattern, function(key, val) {
+                $.each(vm.editInstance.$error.pattern, (key, val) => {
                     i++;
                     if (i === 1) {
-                        message += "<br>Please check format:";
+                        message = `${message }<br>Please check format:`;
                     }
-                    message += "<br>" + val.$name;
+                    message = `${message }<br>${ val.$name}`;
                 });
                 toastr.error(message);
-                setTimeout(function() {
+                setTimeout(() => {
                     $scope.submitedAction = false;
                 }, 100);
             }
@@ -1396,7 +1384,7 @@ APP_MASTERS.controller("Controller_Master", [
             //  console.log(id);
             //  console.log(vm.entity_id);
             // console.log($scope.formValues)
-            Factory_Master.save_terms_and_conditions(id, $scope.formValues.termsAndConditions, function(response) {
+            Factory_Master.save_terms_and_conditions(id, $scope.formValues.termsAndConditions, (response) => {
                 if (response) {
                     if (response.status == true) {
                         console.log(response.data);
@@ -1408,11 +1396,11 @@ APP_MASTERS.controller("Controller_Master", [
             });
         };
         $scope.copyEntity = function() {
-            localStorage.setItem(vm.app_id + vm.screen_id + "_copy", vm.entity_id);
-            $location.path("/" + vm.app_id + "/" + vm.screen_id + "/edit/");
+            localStorage.setItem(`${vm.app_id + vm.screen_id }_copy`, vm.entity_id);
+            $location.path(`/${ vm.app_id }/${ vm.screen_id }/edit/`);
         };
         $scope.triggerError = function(name, errors) {
-            if (errors.$viewValue != "NaN") {
+            if (errors.$viewValue != 'NaN') {
                 toastr.error(name);
             }
         };
@@ -1426,21 +1414,23 @@ APP_MASTERS.controller("Controller_Master", [
             if (!entityId) {
                 entityId = vm.entity_id;
             }
-            if ($rootScope.sellerRatingFunctionDone) return;
+            if ($rootScope.sellerRatingFunctionDone) {
+                return;
+            }
             $rootScope.sellerRatingFunctionDone = true;
-            Factory_Master.get_seller_rating(app, screen, entityId, function(response) {
+            Factory_Master.get_seller_rating(app, screen, entityId, (response) => {
                 $rootScope.sellerRatingFunctionDone = false;
                 if (response.error) {
                     toastr.error(response.message);
                 } else {
                     $scope.sellerRating = response;
-                    tpl = $templateCache.get("app-general-components/views/modal_sellerrating.html");
+                    tpl = $templateCache.get('app-general-components/views/modal_sellerrating.html');
                     $scope.modalInstance = $uibModal.open({
                         template: tpl,
-                        size: "full",
-                        appendTo: angular.element(document.getElementsByClassName("page-container")),
-                        windowTopClass: "fullWidthModal",
-                        scope: $scope //passed current scope to the modal
+                        size: 'full',
+                        appendTo: angular.element(document.getElementsByClassName('page-container')),
+                        windowTopClass: 'fullWidthModal',
+                        scope: $scope // passed current scope to the modal
                     });
                 }
             });
@@ -1448,23 +1438,23 @@ APP_MASTERS.controller("Controller_Master", [
         // SPEC GROUP MODAL
         $scope.modalSpecGroupEdit = function(product, entityId, application, orderData) {
             vm.activeProductForSpecGroupEdit = product;
-            if (application == "request" || application == "order") {
+            if (application == 'request' || application == 'order') {
                 $scope.canChangeSpec = false;
                 $scope.modalSpecGroupParametersEditable = true;
             } else {
                 $scope.modalSpecGroupParametersEditable = false;
             }
             if (!product.specGroup) {
-                toastr.error("Please select a spec group!");
+                toastr.error('Please select a spec group!');
                 return;
             }
-            if (application == "request" || application == "supplier") {
+            if (application == 'request' || application == 'supplier') {
                 if (!entityId) {
                     $scope.modalSpecGroupParametersEditable = false;
                 }
-                if (typeof product.productStatus != "undefined" && product.productStatus != null) {
+                if (typeof product.productStatus != 'undefined' && product.productStatus != null) {
                     status = product.productStatus.name;
-                    if (status == "Created" || status == "Questionnaire" || status == "Validated" || status == "ReOpen" || status == "PartiallyInquired" || status == "Inquired") {
+                    if (status == 'Created' || status == 'Questionnaire' || status == 'Validated' || status == 'ReOpen' || status == 'PartiallyInquired' || status == 'Inquired') {
                         $scope.modalSpecGroupParametersEditable = true;
                     } else {
                         $scope.modalSpecGroupParametersEditable = false;
@@ -1472,50 +1462,50 @@ APP_MASTERS.controller("Controller_Master", [
                 } else {
                     $scope.modalSpecGroupParametersEditable = false;
                 }
-                if (application == "supplier") {
+                if (application == 'supplier') {
                     $scope.modalSpecGroupParametersEditable = false;
                 }
-                $.each(product.screenActions, function(key, val) {
-                    if (val.name == "ChangeSpecParameters") {
+                $.each(product.screenActions, (key, val) => {
+                    if (val.name == 'ChangeSpecParameters') {
                         $scope.canChangeSpec = true;
                     }
                 });
                 productId = product.product.id;
-                if (application == "request") {
+                if (application == 'request') {
                     data = {
                         Payload: {
                             Filters: [
                                 {
-                                    ColumnName: "RequestProductId",
+                                    ColumnName: 'RequestProductId',
                                     Value: product.id
                                 },
                                 {
-                                    ColumnName: "SpecGroupId",
+                                    ColumnName: 'SpecGroupId',
                                     Value: product.specGroup.id
                                 },
                                 {
-                                    ColumnName: "ProductId",
+                                    ColumnName: 'ProductId',
                                     Value: productId
                                 }
                             ]
                         }
                     };
                 }
-                if (application == "supplier") {
+                if (application == 'supplier') {
                     data = {
                         Token: $state.params.token,
                         Parameters: {
                             Filters: [
                                 {
-                                    ColumnName: "RequestProductId",
+                                    ColumnName: 'RequestProductId',
                                     Value: product.id
                                 },
                                 {
-                                    ColumnName: "SpecGroupId",
+                                    ColumnName: 'SpecGroupId',
                                     Value: product.specGroup.id
                                 },
                                 {
-                                    ColumnName: "ProductId",
+                                    ColumnName: 'ProductId',
                                     Value: productId
                                 }
                             ]
@@ -1523,9 +1513,9 @@ APP_MASTERS.controller("Controller_Master", [
                     };
                 }
             }
-            if (application == "order") {
-                $.each(orderData.screenActions, function(key, val) {
-                    if (val.name == "ChangeSpecParameters") {
+            if (application == 'order') {
+                $.each(orderData.screenActions, (key, val) => {
+                    if (val.name == 'ChangeSpecParameters') {
                         $scope.canChangeSpec = true;
                     }
                 });
@@ -1534,68 +1524,68 @@ APP_MASTERS.controller("Controller_Master", [
                     Payload: {
                         Filters: [
                             {
-                                ColumnName: "OrderProductId",
+                                ColumnName: 'OrderProductId',
                                 Value: product.id
                             },
                             {
-                                ColumnName: "SpecGroupId",
+                                ColumnName: 'SpecGroupId',
                                 Value: product.specGroup.id
                             },
                             {
-                                ColumnName: "ProductId",
+                                ColumnName: 'ProductId',
                                 Value: productId
                             }
                         ]
                     }
                 };
             }
-            if (application == "contract") {
+            if (application == 'contract') {
                 productId = product.product.id;
                 data = {
                     Payload: {
                         Filters: [
                             {
-                                ColumnName: "ContractProductId",
+                                ColumnName: 'ContractProductId',
                                 Value: product.id ? product.id : null
                             },
                             {
-                                ColumnName: "SpecGroupId",
+                                ColumnName: 'SpecGroupId',
                                 Value: product.specGroup.id
                             },
                             {
-                                ColumnName: "ProductId",
+                                ColumnName: 'ProductId',
                                 Value: productId
                             }
                         ]
                     }
                 };
-                if (vm.isEdit && $scope.formValues.status.name != "Confirmed" && product.id != 0) {
+                if (vm.isEdit && $scope.formValues.status.name != 'Confirmed' && product.id != 0) {
                     $scope.modalSpecGroupParametersEditable = true;
                     $scope.canChangeSpec = true;
                 }
             }
-            tpl = $templateCache.get("app-general-components/views/modalSpecGroupEdit.html");
-            Factory_Master.getSpecForProcurement(data, application, function(response) {
+            tpl = $templateCache.get('app-general-components/views/modalSpecGroupEdit.html');
+            Factory_Master.getSpecForProcurement(data, application, (response) => {
                 if (response) {
                     $scope.modalSpecGroupParameters = response.data.payload;
                     $scope.application = application;
                     $scope.product = product;
                     $scope.modalInstance = $uibModal.open({
                         template: tpl,
-                        size: "full",
-                        appendTo: angular.element(document.getElementsByClassName("page-container")),
-                        windowTopClass: "fullWidthModal",
+                        size: 'full',
+                        appendTo: angular.element(document.getElementsByClassName('page-container')),
+                        windowTopClass: 'fullWidthModal',
                         scope: $scope
                     });
                 } else {
-                    toastr.error("An error has occured");
+                    toastr.error('An error has occured');
                 }
             });
         };
         $scope.modalSpecGroupParametersUpdateUom = function(specParamId, index) {
             console.log(specParamId);
             console.log(index);
-            Factory_Master.get_master_entity(specParamId.id, "specparameter", "masters", function(response) {
+            Factory_Master.get_master_entity(specParamId.id, 'specparameter', 'masters', (response) => {
                 if (response) {
                     $scope.modalSpecGroupParameters[index].uom = response.uom;
                     $scope.modalSpecGroupParameters[index].energyParameterTypeId = response.energyParameterType.id;
@@ -1606,22 +1596,22 @@ APP_MASTERS.controller("Controller_Master", [
             console.log(application);
             console.log(vm.activeProductForSpecGroupEdit);
             console.log(data);
-            if (application == "request") {
-                $.each(data, function(key, spec) {
+            if (application == 'request') {
+                $.each(data, (key, spec) => {
                     data[key].requestProduct = {};
                     data[key].specGroup = {};
                     data[key].requestProduct.id = vm.activeProductForSpecGroupEdit.id;
                     data[key].specGroup.id = vm.activeProductForSpecGroupEdit.specGroup.id;
                 });
             }
-            if (application == "order") {
-                $.each(data, function(key, spec) {
+            if (application == 'order') {
+                $.each(data, (key, spec) => {
                     spec.orderProduct = data[0].orderProduct;
                     spec.specGroup = data[0].specGroup;
                 });
             }
-            if (application == "contract") {
-                $.each(data, function(key, spec) {
+            if (application == 'contract') {
+                $.each(data, (key, spec) => {
                     spec.contractProduct = data[0].contractProduct;
                     spec.specGroup = data[0].specGroup;
                 });
@@ -1630,11 +1620,11 @@ APP_MASTERS.controller("Controller_Master", [
                 ProductId: vm.activeProductForSpecGroupEdit.product.id,
                 SpecParameters: data
             };
-            Factory_Master.saveSpecForProcurement(objToSend, application, function(response) {
+            Factory_Master.saveSpecForProcurement(objToSend, application, (response) => {
                 if (response) {
                     if (response.status) {
-                        toastr.success("Saved succesfully");
-                        setTimeout(function() {
+                        toastr.success('Saved succesfully');
+                        setTimeout(() => {
                             $scope.prettyCloseModal();
                         }, 500);
                     } else {
@@ -1642,7 +1632,7 @@ APP_MASTERS.controller("Controller_Master", [
                     }
                     console.log(response);
                 } else {
-                    toastr.error("An error has occured");
+                    toastr.error('An error has occured');
                 }
             });
         };
@@ -1658,299 +1648,299 @@ APP_MASTERS.controller("Controller_Master", [
             $rootScope.modalParams = obj;
             // return obj
         };
-      //   $scope.triggerModal = function(template, clc, name, id, formvalue, idx, field_name, filter) {
-      //       tpl = "";
-      //       if (template == "formula") {
-      //           $scope.modal = {
-      //               clc: "masters_formulalist",
-      //               app: "masters",
-      //               screen: "formulalist",
-      //               name: name,
-      //               source: id,
-      //               field_name: field_name
-      //           };
-      //           if (formvalue) {
-      //               $scope.modal.formvalue = formvalue;
-      //               $scope.modal.idx = idx;
-      //           }
-      //           if (vm.app_id == "contracts") {
-      //               $scope.modal.filters = [
-      //                   {
-      //                       ColumnName: "ContractId",
-      //                       Value: vm.entity_id ? vm.entity_id : null
-      //                   }
-      //               ];
-      //           }
-      //           tpl = $templateCache.get("app-general-components/views/modal_formula.html");
-      //       } else if (template == "alerts") {
-      //           tpl = $templateCache.get("app-general-components/views/modal_alerts.html");
-      //           $scope.modal = {
-      //               source: clc
-      //           };
-      //       } else if (template == "general") {
-      //           tpl = $templateCache.get("app-general-components/views/modal_general_lookup.html");
-      //           if (clc == "deliveries_transactionstobeinvoiced") {
-      //               clcs = ["invoices", "transactionstobeinvoiced"];
-      //           } else if (clc == "payableTo") {
-      //               clcs = ["invoices", "payableTo"];
-      //           } else if (clc == "contactplanning_contractlist") {
-      //               // clcs = ['procurement','contractplanning_contractlist'];
-      //           } else {
-      //               if (typeof clc != "undefined") {
-      //                   clcs = clc.split("_");
-      //               } else {
-      //                   console.log("CLC not defined for modal!");
-      //                   return;
-      //               }
-      //           }
-      //           $scope.modal = {
-      //               clc: clc,
-      //               app: clcs[0],
-      //               screen: clcs[1],
-      //               name: name,
-      //               source: id,
-      //               field_name: field_name
-      //           };
-      //           if (clc == "payableTo") {
-      //               $scope.modal.app = "masters";
-      //               $scope.modal.screen = "counterpartylist";
-      //           }
-      //           if (clc == "contactplanning_contractlist") {
-      //               $scope.modal.filters = filter;
-      //           }
-      //           if (clc == "procurement_bunkerableport" || clc == "procurement_destinationport") {
-      //               $scope.modal.filters = [
-      //                   {
-      //                       ColumnName: "VesselId",
-      //                       Value: filter.id
-      //                   },
-      //                   {
-      //                       ColumnName: "VesselVoyageDetailId",
-      //                       Value: null
-      //                   }
-      //               ];
-      //           }
-      //           if (clc == "procurement_requestcounterpartytypes") {
-      //               var filterString = "";
-      //               $.each(filter, function(key, val) {
-      //                   filterString += val;
-      //                   filterString += ",";
-      //               });
-      //               filterString = filterString.slice(0, -1);
-      //               $scope.modal.filters = [
-      //                   {
-      //                       ColumnName: "CounterpartyTypes",
-      //                       Value: filterString
-      //                   }
-      //               ];
-      //           }
-      //           if (clc == "procurement_buyerlist") {
-      //               $scope.modal.filters = [
-      //                   {
-      //                       ColumnName: "VesselId",
-      //                       Value: filter.id
-      //                   },
-      //                   {
-      //                       ColumnName: "VesselVoyageDetailId",
-      //                       Value: null
-      //                   }
-      //               ];
-      //           }
-      //           if(clc == "procurement_productcontractlist"){
-      //               $scope.modal.filters = filter;
-      //           }
-      //           if (filter == "filter__invoices_order_id") {
-      //               $scope.modal.filters = [
-      //                   {
-      //                       ColumnName: "Order_Id",
-      //                       Value: $scope.formValues.orderDetails ? $scope.formValues.orderDetails.order.id : ""
-      //                   }
-      //               ];
-      //           }
-      //           if (filter == "mass") {
-      //               $scope.modal.filters = [
-      //                   {
-      //                       ColumnName: "UomType",
-      //                       Value: 2
-      //                   }
-      //               ];
-      //           }
-      //           if (filter == "volume") {
-      //               $scope.modal.filters = [
-      //                   {
-      //                       ColumnName: "UomType",
-      //                       Value: 3
-      //                   }
-      //               ];
-      //           }
-      //           if (filter == "sellerList") {
-      //               $scope.modal.filters = [
-      //                   {
-      //                       ColumnName: "CounterpartyTypes",
-      //                       Value: "2, 11"
-      //                   }
-      //               ];
-      //               $scope.modal.clc = "masters_counterpartylist_seller";
-      //           }
-      //           if (filter == "agentList") {
-      //               $scope.modal.filters = [
-      //                   {
-      //                       ColumnName: "CounterpartyTypes",
-      //                       Value: 5
-      //                   }
-      //               ];
-      //           }
-      //           if (filter == "brokerList") {
-      //               $scope.modal.clc = "masters_counterpartylist_broker";
-      //           }
-      //           if (filter == "supplierList") {
-      //               $scope.modal.filters = [
-      //                   {
-      //                       ColumnName: "CounterpartyTypes",
-      //                       Value: 1
-      //                   }
-      //               ];
-      //           }
-      //           if (filter == "surveyorList") {
-      //               $scope.modal.filters = [
-      //                   {
-      //                       ColumnName: "CounterpartyTypes",
-      //                       Value: 6
-      //                   }
-      //               ];
-      //           }
-      //           if (filter == "labsList") {
-      //               $scope.modal.filters = [
-      //                   {
-      //                       ColumnName: "CounterpartyTypes",
-      //                       Value: 8
-      //                   }
-      //               ];
-      //           }
-      //           if (filter == "bargeList") {
-      //               $scope.modal.filters = [
-      //                   {
-      //                       ColumnName: "CounterpartyTypes",
-      //                       Value: 7
-      //                   }
-      //               ];
-      //           }
-      //           if (filter == "price_period_filter") {
-      //               $scope.modal.filters = [
-      //                   {
-      //                       ColumnName: "SystemInstrumentId",
-      //                       Value: $scope.formValues.systemInstrument.id
-      //                   }
-      //               ];
-      //           }
-      //           if (filter == "filter__vessel_defaultFuelOilProduct") {
-      //               $scope.modal.filters = [
-      //                   {
-      //                       ColumnName: "ProductId",
-      //                       Value: $scope.formValues.defaultFuelOilProduct.id
-      //                   }
-      //               ];
-      //           }
+        //   $scope.triggerModal = function(template, clc, name, id, formvalue, idx, field_name, filter) {
+        //       tpl = "";
+        //       if (template == "formula") {
+        //           $scope.modal = {
+        //               clc: "masters_formulalist",
+        //               app: "masters",
+        //               screen: "formulalist",
+        //               name: name,
+        //               source: id,
+        //               field_name: field_name
+        //           };
+        //           if (formvalue) {
+        //               $scope.modal.formvalue = formvalue;
+        //               $scope.modal.idx = idx;
+        //           }
+        //           if (vm.app_id == "contracts") {
+        //               $scope.modal.filters = [
+        //                   {
+        //                       ColumnName: "ContractId",
+        //                       Value: vm.entity_id ? vm.entity_id : null
+        //                   }
+        //               ];
+        //           }
+        //           tpl = $templateCache.get("app-general-components/views/modal_formula.html");
+        //       } else if (template == "alerts") {
+        //           tpl = $templateCache.get("app-general-components/views/modal_alerts.html");
+        //           $scope.modal = {
+        //               source: clc
+        //           };
+        //       } else if (template == "general") {
+        //           tpl = $templateCache.get("app-general-components/views/modal_general_lookup.html");
+        //           if (clc == "deliveries_transactionstobeinvoiced") {
+        //               clcs = ["invoices", "transactionstobeinvoiced"];
+        //           } else if (clc == "payableTo") {
+        //               clcs = ["invoices", "payableTo"];
+        //           } else if (clc == "contactplanning_contractlist") {
+        //               // clcs = ['procurement','contractplanning_contractlist'];
+        //           } else {
+        //               if (typeof clc != "undefined") {
+        //                   clcs = clc.split("_");
+        //               } else {
+        //                   console.log("CLC not defined for modal!");
+        //                   return;
+        //               }
+        //           }
+        //           $scope.modal = {
+        //               clc: clc,
+        //               app: clcs[0],
+        //               screen: clcs[1],
+        //               name: name,
+        //               source: id,
+        //               field_name: field_name
+        //           };
+        //           if (clc == "payableTo") {
+        //               $scope.modal.app = "masters";
+        //               $scope.modal.screen = "counterpartylist";
+        //           }
+        //           if (clc == "contactplanning_contractlist") {
+        //               $scope.modal.filters = filter;
+        //           }
+        //           if (clc == "procurement_bunkerableport" || clc == "procurement_destinationport") {
+        //               $scope.modal.filters = [
+        //                   {
+        //                       ColumnName: "VesselId",
+        //                       Value: filter.id
+        //                   },
+        //                   {
+        //                       ColumnName: "VesselVoyageDetailId",
+        //                       Value: null
+        //                   }
+        //               ];
+        //           }
+        //           if (clc == "procurement_requestcounterpartytypes") {
+        //               var filterString = "";
+        //               $.each(filter, function(key, val) {
+        //                   filterString += val;
+        //                   filterString += ",";
+        //               });
+        //               filterString = filterString.slice(0, -1);
+        //               $scope.modal.filters = [
+        //                   {
+        //                       ColumnName: "CounterpartyTypes",
+        //                       Value: filterString
+        //                   }
+        //               ];
+        //           }
+        //           if (clc == "procurement_buyerlist") {
+        //               $scope.modal.filters = [
+        //                   {
+        //                       ColumnName: "VesselId",
+        //                       Value: filter.id
+        //                   },
+        //                   {
+        //                       ColumnName: "VesselVoyageDetailId",
+        //                       Value: null
+        //                   }
+        //               ];
+        //           }
+        //           if(clc == "procurement_productcontractlist"){
+        //               $scope.modal.filters = filter;
+        //           }
+        //           if (filter == "filter__invoices_order_id") {
+        //               $scope.modal.filters = [
+        //                   {
+        //                       ColumnName: "Order_Id",
+        //                       Value: $scope.formValues.orderDetails ? $scope.formValues.orderDetails.order.id : ""
+        //                   }
+        //               ];
+        //           }
+        //           if (filter == "mass") {
+        //               $scope.modal.filters = [
+        //                   {
+        //                       ColumnName: "UomType",
+        //                       Value: 2
+        //                   }
+        //               ];
+        //           }
+        //           if (filter == "volume") {
+        //               $scope.modal.filters = [
+        //                   {
+        //                       ColumnName: "UomType",
+        //                       Value: 3
+        //                   }
+        //               ];
+        //           }
+        //           if (filter == "sellerList") {
+        //               $scope.modal.filters = [
+        //                   {
+        //                       ColumnName: "CounterpartyTypes",
+        //                       Value: "2, 11"
+        //                   }
+        //               ];
+        //               $scope.modal.clc = "masters_counterpartylist_seller";
+        //           }
+        //           if (filter == "agentList") {
+        //               $scope.modal.filters = [
+        //                   {
+        //                       ColumnName: "CounterpartyTypes",
+        //                       Value: 5
+        //                   }
+        //               ];
+        //           }
+        //           if (filter == "brokerList") {
+        //               $scope.modal.clc = "masters_counterpartylist_broker";
+        //           }
+        //           if (filter == "supplierList") {
+        //               $scope.modal.filters = [
+        //                   {
+        //                       ColumnName: "CounterpartyTypes",
+        //                       Value: 1
+        //                   }
+        //               ];
+        //           }
+        //           if (filter == "surveyorList") {
+        //               $scope.modal.filters = [
+        //                   {
+        //                       ColumnName: "CounterpartyTypes",
+        //                       Value: 6
+        //                   }
+        //               ];
+        //           }
+        //           if (filter == "labsList") {
+        //               $scope.modal.filters = [
+        //                   {
+        //                       ColumnName: "CounterpartyTypes",
+        //                       Value: 8
+        //                   }
+        //               ];
+        //           }
+        //           if (filter == "bargeList") {
+        //               $scope.modal.filters = [
+        //                   {
+        //                       ColumnName: "CounterpartyTypes",
+        //                       Value: 7
+        //                   }
+        //               ];
+        //           }
+        //           if (filter == "price_period_filter") {
+        //               $scope.modal.filters = [
+        //                   {
+        //                       ColumnName: "SystemInstrumentId",
+        //                       Value: $scope.formValues.systemInstrument.id
+        //                   }
+        //               ];
+        //           }
+        //           if (filter == "filter__vessel_defaultFuelOilProduct") {
+        //               $scope.modal.filters = [
+        //                   {
+        //                       ColumnName: "ProductId",
+        //                       Value: $scope.formValues.defaultFuelOilProduct.id
+        //                   }
+        //               ];
+        //           }
 
-      //           if (filter == "filter__vessel_defaultDistillateProduct") {
-      //               $scope.modal.filters = [
-      //                   {
-      //                       ColumnName: "ProductId",
-      //                       Value: $scope.formValues.defaultDistillateProduct.id
-      //                   }
-      //               ];
-      //           }
-      //           if (filter == "filter__vessel_defaultLsfoProduct") {
-      //               $scope.modal.filters = [
-      //                   {
-      //                       ColumnName: "ProductId",
-      //                       Value: $scope.formValues.defaultLsfoProduct.id
-      //                   }
-      //               ];
-      //           }
-      //           if (filter == "filter__productDefaultSpec") {
-      //               $scope.modal.filters = [
-      //                   {
-      //                       ColumnName: "ProductId",
-      //                       Value: $scope.formValues.id
-      //                   }
-      //               ];
-      //           }
-      //           if (filter == "delivery_order_filter") {
-      //               $scope.modal.filters = [
-      //                   {
-      //                       ColumnName: "id",
-      //                       Value: "7"
-      //                   }
-      //               ];
-      //           }
-      //           if (filter == "filter__admin_templates") {
-      //               $scope.modal.filters = [
-      //                   {
-      //                       ColumnName: "EmailTransactionTypeId",
-      //                       Value: $scope.grid ? $scope.grid.appScope.fVal().formValues.email[idx].transactionType.id : $scope.formValues.email[idx].transactionType.id
-      //                   },
-      //                   {
-      //                       ColumnName: "Process",
-      //                       Value: $scope.grid ? $scope.grid.appScope.fVal().formValues.email[idx].process : $scope.formValues.email[idx].process 
-      //                   }
-      //               ];
-      //           }
-      //           if (filter == "filter__master_documenttypetemplates") {
-      //               $scope.modal.filters = [
-      //                   {
-      //                       ColumnName: "EmailTransactionTypeId",
-      //                       Value: $scope.grid.appScope.fVal().formValues.templates[idx].transactionType.id
-      //                   }
-      //               ];
-      //           }
-      //           if (filter == "filter__vessel_tankProduct") {
-      //               $scope.modal.filters = [
-						// {columnValue: "ProductType_Id", ColumnType: "Number", ConditionValue: "=", Values: [$scope.formValues.temp.tanks.productType.id], FilterOperator: 0}
-						// // {columnValue: "ProductType_Name", ColumnType: "Text", ConditionValue: "LIKE", Values: [$scope.formValues.temp.tanks.productType.name], FilterOperator: 0}
-      //               ];
-      //               localStorage.setItem("uniqueModalTableIdentifier", "productsInVesselMaster");
-      //           }                
-      //           if (clc == "masters_marketinstrumentlist") {
-      //               $scope.modal.screen = "marketinstrument";
-      //           }
-      //           if (formvalue) {
-      //               $scope.modal.formvalue = formvalue;
-      //               $scope.modal.idx = idx;
-      //           }
-      //       } else if (template == "sellerrating") {
-      //           $scope.getSellerRating();
-      //           tpl = $templateCache.get("app-general-components/views/modal_sellerrating.html");
-      //       } else if (template == "setResetPassword") {
-      //           tpl = $templateCache.get("app-general-components/views/modal_setPassword.html");
-      //       } else if (template == "labsResultRecon") {
-      //           tpl = $templateCache.get("app-general-components/views/modal_labsResultRecon.html");
-      //       } else if (template == "raiseClaimType") {
-      //           tpl = $templateCache.get("app-general-components/views/modal_raiseClaimType.html");
-      //       } else if (template == "splitDeliveryModal") {
-      //           tpl = $templateCache.get("app-general-components/views/modal_splitDelivery.html");
-      //       }
-      //       if (template == "splitDeliveryModal" || template == "raiseClaimType") {
-      //           $scope.modalInstance = $uibModal.open({
-      //               template: tpl,
-      //               size: "full",
-      //               appendTo: angular.element(document.getElementsByClassName("page-container")),
-      //               windowTopClass: "fullWidthModal smallModal",
-      //               scope: $scope //passed current scope to the modal
-      //           });
-      //           return;
-      //       }
-      //       $scope.modalInstance = $uibModal.open({
-      //           template: tpl,
-      //           size: "full",
-      //           appendTo: angular.element(document.getElementsByClassName("page-container")),
-      //           windowTopClass: "fullWidthModal",
-      //           scope: $scope //passed current scope to the modal
-      //       });
-      //   };
-        $scope.$on("modal.closing", function(event, reason, closed) {
+        //           if (filter == "filter__vessel_defaultDistillateProduct") {
+        //               $scope.modal.filters = [
+        //                   {
+        //                       ColumnName: "ProductId",
+        //                       Value: $scope.formValues.defaultDistillateProduct.id
+        //                   }
+        //               ];
+        //           }
+        //           if (filter == "filter__vessel_defaultLsfoProduct") {
+        //               $scope.modal.filters = [
+        //                   {
+        //                       ColumnName: "ProductId",
+        //                       Value: $scope.formValues.defaultLsfoProduct.id
+        //                   }
+        //               ];
+        //           }
+        //           if (filter == "filter__productDefaultSpec") {
+        //               $scope.modal.filters = [
+        //                   {
+        //                       ColumnName: "ProductId",
+        //                       Value: $scope.formValues.id
+        //                   }
+        //               ];
+        //           }
+        //           if (filter == "delivery_order_filter") {
+        //               $scope.modal.filters = [
+        //                   {
+        //                       ColumnName: "id",
+        //                       Value: "7"
+        //                   }
+        //               ];
+        //           }
+        //           if (filter == "filter__admin_templates") {
+        //               $scope.modal.filters = [
+        //                   {
+        //                       ColumnName: "EmailTransactionTypeId",
+        //                       Value: $scope.grid ? $scope.grid.appScope.fVal().formValues.email[idx].transactionType.id : $scope.formValues.email[idx].transactionType.id
+        //                   },
+        //                   {
+        //                       ColumnName: "Process",
+        //                       Value: $scope.grid ? $scope.grid.appScope.fVal().formValues.email[idx].process : $scope.formValues.email[idx].process
+        //                   }
+        //               ];
+        //           }
+        //           if (filter == "filter__master_documenttypetemplates") {
+        //               $scope.modal.filters = [
+        //                   {
+        //                       ColumnName: "EmailTransactionTypeId",
+        //                       Value: $scope.grid.appScope.fVal().formValues.templates[idx].transactionType.id
+        //                   }
+        //               ];
+        //           }
+        //           if (filter == "filter__vessel_tankProduct") {
+        //               $scope.modal.filters = [
+        // {columnValue: "ProductType_Id", ColumnType: "Number", ConditionValue: "=", Values: [$scope.formValues.temp.tanks.productType.id], FilterOperator: 0}
+        // // {columnValue: "ProductType_Name", ColumnType: "Text", ConditionValue: "LIKE", Values: [$scope.formValues.temp.tanks.productType.name], FilterOperator: 0}
+        //               ];
+        //               localStorage.setItem("uniqueModalTableIdentifier", "productsInVesselMaster");
+        //           }
+        //           if (clc == "masters_marketinstrumentlist") {
+        //               $scope.modal.screen = "marketinstrument";
+        //           }
+        //           if (formvalue) {
+        //               $scope.modal.formvalue = formvalue;
+        //               $scope.modal.idx = idx;
+        //           }
+        //       } else if (template == "sellerrating") {
+        //           $scope.getSellerRating();
+        //           tpl = $templateCache.get("app-general-components/views/modal_sellerrating.html");
+        //       } else if (template == "setResetPassword") {
+        //           tpl = $templateCache.get("app-general-components/views/modal_setPassword.html");
+        //       } else if (template == "labsResultRecon") {
+        //           tpl = $templateCache.get("app-general-components/views/modal_labsResultRecon.html");
+        //       } else if (template == "raiseClaimType") {
+        //           tpl = $templateCache.get("app-general-components/views/modal_raiseClaimType.html");
+        //       } else if (template == "splitDeliveryModal") {
+        //           tpl = $templateCache.get("app-general-components/views/modal_splitDelivery.html");
+        //       }
+        //       if (template == "splitDeliveryModal" || template == "raiseClaimType") {
+        //           $scope.modalInstance = $uibModal.open({
+        //               template: tpl,
+        //               size: "full",
+        //               appendTo: angular.element(document.getElementsByClassName("page-container")),
+        //               windowTopClass: "fullWidthModal smallModal",
+        //               scope: $scope //passed current scope to the modal
+        //           });
+        //           return;
+        //       }
+        //       $scope.modalInstance = $uibModal.open({
+        //           template: tpl,
+        //           size: "full",
+        //           appendTo: angular.element(document.getElementsByClassName("page-container")),
+        //           windowTopClass: "fullWidthModal",
+        //           scope: $scope //passed current scope to the modal
+        //       });
+        //   };
+        $scope.$on('modal.closing', (event, reason, closed) => {
             if (!$scope.modalClosed) {
-                if (typeof $scope.modalInstance != "undefined") {
+                if (typeof $scope.modalInstance != 'undefined') {
                     event.preventDefault();
                     console.log($rootScope.modalInstance);
                     console.log($scope.modalInstance);
@@ -1960,18 +1950,18 @@ APP_MASTERS.controller("Controller_Master", [
             }
         });
         $scope.prettyCloseModal = function() {
-            var modalStyles = {
-                transition: "0.3s",
-                opacity: "0",
-                transform: "translateY(-50px)"
+            let modalStyles = {
+                transition: '0.3s',
+                opacity: '0',
+                transform: 'translateY(-50px)'
             };
-            var bckStyles = {
-                opacity: "0",
-                transition: "0.3s"
+            let bckStyles = {
+                opacity: '0',
+                transition: '0.3s'
             };
-            $("[modal-render='true']").css(modalStyles);
-            $(".modal-backdrop").css(bckStyles);
-            setTimeout(function() {
+            $('[modal-render=\'true\']').css(modalStyles);
+            $('.modal-backdrop').css(bckStyles);
+            setTimeout(() => {
                 if ($scope.modalInstance) {
                     $scope.modalInstance.close();
                 }
@@ -1984,20 +1974,20 @@ APP_MASTERS.controller("Controller_Master", [
             return Factory_Master.list_table(vm.screen_id);
         };
         vm.mastersCatalog = function() {
-            Factory_Master.mastersTree(function(callback, response) {
+            Factory_Master.mastersTree((callback, response) => {
                 vm.mastersTree = callback;
             });
         };
         vm.selectMaster = function(id, name) {
-            $location.path("/masters/" + id);
+            $location.path(`/masters/${ id}`);
             $scope.master_name = name;
         };
         vm.editMasterStructure = function() {
-            $location.path("/masters/" + vm.screen_id + "/structure");
+            $location.path(`/masters/${ vm.screen_id }/structure`);
         };
-     //    vm.get_master_entity = function(screenChild) {
-     //     	if (localStorage.getItem("invoiceFromDelivery")) {
-     //     		// $rootScope.transportData = angular.copy(JSON.parse(localStorage.getItem("invoiceFromDelivery")));
+        //    vm.get_master_entity = function(screenChild) {
+        //     	if (localStorage.getItem("invoiceFromDelivery")) {
+        //     		// $rootScope.transportData = angular.copy(JSON.parse(localStorage.getItem("invoiceFromDelivery")));
 
 		   //      Factory_Master.create_invoice_from_delivery(angular.copy(JSON.parse(localStorage.getItem("invoiceFromDelivery"))), function(response) {
 		   //          if (response) {
@@ -2007,7 +1997,7 @@ APP_MASTERS.controller("Controller_Master", [
 		   //                  if(!$rootScope.transportData.paymentDate) {
 		   //                      $rootScope.transportData.paymentDate = $rootScope.transportData.workingDueDate;
 		   //                  }
-     //                        $scope.formValues = angular.copy($rootScope.transportData);
+        //                        $scope.formValues = angular.copy($rootScope.transportData);
 	    //                     $scope.triggerChangeFields("InvoiceRateCurrency");
 	    //                     if ($scope.formValues.costDetails) {
 		   //                      if ($scope.formValues.costDetails.length > 0) {
@@ -2019,59 +2009,58 @@ APP_MASTERS.controller("Controller_Master", [
 		   //                                  };
 		   //                              }
 		   //                              if (v.product.id != -1) {
-					// 	                	v.product.productId = angular.copy(v.product.id);
-					// 	                	if (v.deliveryProductId) {
-					// 		                	v.product.id = v.deliveryProductId;
-					// 	                	}
+        // 	                	v.product.productId = angular.copy(v.product.id);
+        // 	                	if (v.deliveryProductId) {
+        // 		                	v.product.id = v.deliveryProductId;
+        // 	                	}
 
-					// 	                }
+        // 	                }
 		   //                          });
 		   //                      }
-	    //                     }		                    
+	    //                     }
 		   //              } else {
 		   //                  $scope.loaded = true;
 		   //                  toastr.error(response.message);
 		   //              }
 		   //          }
-     //                $rootScope.transportData = null;
-					// localStorage.removeItem("invoiceFromDelivery");
+        //                $rootScope.transportData = null;
+        // localStorage.removeItem("invoiceFromDelivery");
 		   //      })
 
-     //     	}
+        //     	}
 
-     //        vm.get_master_structure(screenChild);
-     //        // console.log(screenChild);
-     //        setTimeout(function() {
-     //            vm.addHeadeActions();
-     //        }, 10);
-     //        if ($scope.entity == -1) {
-     //            vm.entity_id = "";
-     //        } else if ($scope.entity > 0) {
-     //            vm.entity_id = $scope.entity;
-     //        } else {
-     //            vm.entity_id = vm.entity_id;
-     //        }
-     //    	if (vm.entity_id == "") {
-     //    		if (vm.app_id == "masters" && vm.screen_id == "location") {
-     //    			$scope.formValues.portType = {id: 1};
-     //    			$scope.formValues.displayPortInMap = true;
-     //    		}
-     //    	}
+        //        vm.get_master_structure(screenChild);
+        //        // console.log(screenChild);
+        //        setTimeout(function() {
+        //            vm.addHeadeActions();
+        //        }, 10);
+        //        if ($scope.entity == -1) {
+        //            vm.entity_id = "";
+        //        } else if ($scope.entity > 0) {
+        //            vm.entity_id = $scope.entity;
+        //        } else {
+        //            vm.entity_id = vm.entity_id;
+        //        }
+        //    	if (vm.entity_id == "") {
+        //    		if (vm.app_id == "masters" && vm.screen_id == "location") {
+        //    			$scope.formValues.portType = {id: 1};
+        //    			$scope.formValues.displayPortInMap = true;
+        //    		}
+        //    	}
 
 
-     //        if (vm.entity_id == "0") {
-     //        } else {
-     //            // $rootScope.transportData este variabila globala folosita pentru cazurile in care avem nevoie
-     //            // sa populam un ecran de create, atunci cand datele vin in urma unei actiuni.
-     //            if ($rootScope.transportData != null) {
-     //                $scope.isCopiedEntity = true;
-     //                $scope.formValues = $rootScope.transportData;
-     //                $rootScope.transportData = null;
+        //        if (vm.entity_id == "0") {
+        //        } else {
+        //            // $rootScope.transportData este variabila globala folosita pentru cazurile in care avem nevoie
+        //            // sa populam un ecran de create, atunci cand datele vin in urma unei actiuni.
+        //            if ($rootScope.transportData != null) {
+        //                $scope.isCopiedEntity = true;
+        //                $scope.formValues = $rootScope.transportData;
+        //                $rootScope.transportData = null;
 
-                   
-               
-     //                if (vm.app_id == "invoices" && vm.screen_id == "invoice") {
-					// 		$scope.triggerChangeFields("InvoiceRateCurrency");
+
+        //                if (vm.app_id == "invoices" && vm.screen_id == "invoice") {
+        // 		$scope.triggerChangeFields("InvoiceRateCurrency");
 	    //                     if ($scope.formValues.costDetails) {
 		   //                      if ($scope.formValues.costDetails.length > 0) {
 		   //                          $.each($scope.formValues.costDetails, function(k, v) {
@@ -2081,140 +2070,138 @@ APP_MASTERS.controller("Controller_Master", [
 		   //                                      name: "All"
 		   //                                  };
 		   //                              } else {
-					// 	                	if (v.product.id != v.deliveryProductId) {
-					// 		                	v.product.productId = angular.copy(v.product.id);
-					// 		                	v.product.id = angular.copy(v.deliveryProductId);
-					// 	                	}						                	
+        // 	                	if (v.product.id != v.deliveryProductId) {
+        // 		                	v.product.productId = angular.copy(v.product.id);
+        // 		                	v.product.id = angular.copy(v.deliveryProductId);
+        // 	                	}
 		   //                              }
 		   //                          });
 		   //                      }
-	    //                     }	
-     //                }
-     //            } else {
-     //                if (localStorage.getItem(vm.app_id + vm.screen_id + "_copy")) {
-     //                    id = localStorage.getItem(vm.app_id + vm.screen_id + "_copy");
-     //                    if (id > 0) {
-     //                        $scope.copiedId = id;
-                            
-     //                        Factory_Master.get_master_entity(id, vm.screen_id, vm.app_id, function(response) {
-     //                            if (response) {
-     //                                $scope.formValues = response;
-                                
-     //                                $.each($scope.formValues, function(key, val) {
-     //                                    if (val && angular.isArray(val)) {
-     //                                        $.each(val, function(key1, val1) {
-     //                                            if (val && val1 && val1.hasOwnProperty("isDeleted")) {
-     //                                                if (vm.app_id != "contracts" && vm.screen_id != "contract" &&
-     //                                                	vm.app_id != "admin" && vm.screen_id != "users") {
-     //                                                    response[key][key1].id = 0;
-     //                                                }
-     //                                            }
-     //                                        });
-     //                                    }
-     //                                });
-     //                                $scope.formValues.id = 0;
-     //                                if (typeof $scope.formValues.name != "undefined") {
-     //                                    $scope.formValues.name = null;
-     //                                }
-     //                                if ($scope.formValues.conversionFactor) {
-     //                                    $scope.formValues.conversionFactor.id = 0;
-     //                                }
-     //                                // reset contract status
-     //                                if (vm.app_id == "contracts" && vm.screen_id == "contract") {
-     //                                    $scope.formValues.status = null;
-     //                                    $.each($scope.formValues.details, function(k, v) {
-     //                                        v.id = 0;
-     //                                    });
-     //                                    $.each($scope.formValues.products, function(k, v) {
-     //                                        v.id = 0;
-     //                                        $.each(v.details, function(k1, v1) {
-     //                                            v1.id = 0;
-     //                                        });
-     //                                        $.each(v.additionalCosts, function(k1, v1) {
-     //                                            v1.id = 0;
-     //                                        });                                            
-     //                                        v.formula = null;
-     //                                        v.mtmFormula = null;
-     //                                        v.price = null;
-     //                                        v.mtmPrice = null;
-     //                                    });
-     //                                    $scope.formValues.summary.plannedQuantity = 0;
-     //                                    $scope.formValues.summary.utilizedQuantity = 0;
-     //                                    $scope.formValues.summary.availableQuantity = $scope.formValues.summary.contractedQuantity;
-     //                                    $scope.formValues.summary.copiedContract = true;
-     //                                    $scope.formValues.createdBy = null;
-     //                                    toastr.info($filter("translate")("Formula and MTM Formula was reset for all products"));
-     //                                }
-     //                                if (vm.app_id == "admin" && vm.screen_id == "users") {
-     //                                    $scope.formValues.contactInformation.id = 0;
-     //                                    $scope.formValues.contactInformation.address.id = 0;
-     //                                }
-     //                                if (vm.app_id == "admin" && vm.screen_id == "role") {
-     //                                    $scope.formValues.roles.id = 0;
-     //                                    $.each($scope.formValues.roles.rights, function(key,val){
-     //                                        $scope.formValues.roles.rights[key].id = 0;
-     //                                    });
-     //                                }
-     //                                if (vm.app_id == "masters" && vm.screen_id == "product") {
-     //                                    $scope.formValues.defaultSpecGroup = null;
-     //                                }
-     //                                if (vm.app_id == "claims" && vm.screen_id == "claims") {
-     //                                    $scope.formValues = {};
-     //                                    $scope.formValues.claimsPossibleActions = null;
-     //                                    $scope.formValues.isEditable = true;
-     //                                    $scope.formValues.orderDetails = response.orderDetails;
-     //                                    $scope.formValues.deliveryDate = response.deliveryDate;
-     //                                    $scope.triggerChangeFields("OrderID", "orderDetails.order");
-     //                                }
-     //                                if (vm.app_id == "labs" && vm.screen_id == "labresult") {
-     //                                    vm.checkVerifiedDeliveryFromLabs("loadedData");
-     //                                }
-     //                                if (vm.app_id == "masters" && vm.screen_id == "paymentterm") {
-     //                                    vm.checkVerifiedDeliveryFromLabs("loadedData");
-     //                                    $.each($scope.formValues.conditions, function(k,v){
-	    //                                     v.paymentTerm = null	
-     //                                    })
-     //                                }                                    
-     //                                toastr.success("Entity copied");
-     //                                localStorage.removeItem(vm.app_id + vm.screen_id + "_copy");
-     //                                $scope.$emit("formValues", $scope.formValues);
-     //                            }
-     //                        });
-     //                    }
-     //                } else {
-     //                    if(vm.entity_id){
-     //                        screenLoader.showLoader();
-     //                    }
-     //                    Factory_Master.get_master_entity(
-     //                        vm.entity_id,
-     //                        vm.screen_id,
-     //                        vm.app_id,
-     //                        function(callback) {
-     //                            screenLoader.hideLoader();
-     //                            if (callback) {
-                                    
-     //                                $scope.formValues = callback;
-     //                                if(vm.screen_id === 'emaillogs') {
-     //                                    if($scope.formValues.to && typeof($scope.formValues.to) === 'string') {
-     //                                      $scope.formValues.to = $scope.formValues.to.replace(/,/g, ';');
-     //                                    }
-     //                                    if($scope.formValues.cc && typeof($scope.formValues.cc) === 'string') {
-     //                                      $scope.formValues.cc = $scope.formValues.cc.replace(/,/g, ';');
-     //                                    }
-     //                                    if($scope.formValues.bcc && typeof($scope.formValues.bcc) === 'string') {
-     //                                      $scope.formValues.bcc = $scope.formValues.bcc.replace(/,/g, ';');
-     //                                    }
-     //                                }
+	    //                     }
+        //                }
+        //            } else {
+        //                if (localStorage.getItem(vm.app_id + vm.screen_id + "_copy")) {
+        //                    id = localStorage.getItem(vm.app_id + vm.screen_id + "_copy");
+        //                    if (id > 0) {
+        //                        $scope.copiedId = id;
 
-     //                                if(vm.app_id === 'masters' && vm.screen_id === 'buyer') {
-     //                                  $scope.formValues.showCode = !!$scope.formValues.code;
-     //                                }
-     //                                if(vm.app_id === 'masters' && vm.screen_id === 'vessel') {
-     //                                	$scope.flattenVesselVoyages();
-					// 					$scope.initRobTable();
-     //                                }  
+        //                        Factory_Master.get_master_entity(id, vm.screen_id, vm.app_id, function(response) {
+        //                            if (response) {
+        //                                $scope.formValues = response;
 
+        //                                $.each($scope.formValues, function(key, val) {
+        //                                    if (val && angular.isArray(val)) {
+        //                                        $.each(val, function(key1, val1) {
+        //                                            if (val && val1 && val1.hasOwnProperty("isDeleted")) {
+        //                                                if (vm.app_id != "contracts" && vm.screen_id != "contract" &&
+        //                                                	vm.app_id != "admin" && vm.screen_id != "users") {
+        //                                                    response[key][key1].id = 0;
+        //                                                }
+        //                                            }
+        //                                        });
+        //                                    }
+        //                                });
+        //                                $scope.formValues.id = 0;
+        //                                if (typeof $scope.formValues.name != "undefined") {
+        //                                    $scope.formValues.name = null;
+        //                                }
+        //                                if ($scope.formValues.conversionFactor) {
+        //                                    $scope.formValues.conversionFactor.id = 0;
+        //                                }
+        //                                // reset contract status
+        //                                if (vm.app_id == "contracts" && vm.screen_id == "contract") {
+        //                                    $scope.formValues.status = null;
+        //                                    $.each($scope.formValues.details, function(k, v) {
+        //                                        v.id = 0;
+        //                                    });
+        //                                    $.each($scope.formValues.products, function(k, v) {
+        //                                        v.id = 0;
+        //                                        $.each(v.details, function(k1, v1) {
+        //                                            v1.id = 0;
+        //                                        });
+        //                                        $.each(v.additionalCosts, function(k1, v1) {
+        //                                            v1.id = 0;
+        //                                        });
+        //                                        v.formula = null;
+        //                                        v.mtmFormula = null;
+        //                                        v.price = null;
+        //                                        v.mtmPrice = null;
+        //                                    });
+        //                                    $scope.formValues.summary.plannedQuantity = 0;
+        //                                    $scope.formValues.summary.utilizedQuantity = 0;
+        //                                    $scope.formValues.summary.availableQuantity = $scope.formValues.summary.contractedQuantity;
+        //                                    $scope.formValues.summary.copiedContract = true;
+        //                                    $scope.formValues.createdBy = null;
+        //                                    toastr.info($filter("translate")("Formula and MTM Formula was reset for all products"));
+        //                                }
+        //                                if (vm.app_id == "admin" && vm.screen_id == "users") {
+        //                                    $scope.formValues.contactInformation.id = 0;
+        //                                    $scope.formValues.contactInformation.address.id = 0;
+        //                                }
+        //                                if (vm.app_id == "admin" && vm.screen_id == "role") {
+        //                                    $scope.formValues.roles.id = 0;
+        //                                    $.each($scope.formValues.roles.rights, function(key,val){
+        //                                        $scope.formValues.roles.rights[key].id = 0;
+        //                                    });
+        //                                }
+        //                                if (vm.app_id == "masters" && vm.screen_id == "product") {
+        //                                    $scope.formValues.defaultSpecGroup = null;
+        //                                }
+        //                                if (vm.app_id == "claims" && vm.screen_id == "claims") {
+        //                                    $scope.formValues = {};
+        //                                    $scope.formValues.claimsPossibleActions = null;
+        //                                    $scope.formValues.isEditable = true;
+        //                                    $scope.formValues.orderDetails = response.orderDetails;
+        //                                    $scope.formValues.deliveryDate = response.deliveryDate;
+        //                                    $scope.triggerChangeFields("OrderID", "orderDetails.order");
+        //                                }
+        //                                if (vm.app_id == "labs" && vm.screen_id == "labresult") {
+        //                                    vm.checkVerifiedDeliveryFromLabs("loadedData");
+        //                                }
+        //                                if (vm.app_id == "masters" && vm.screen_id == "paymentterm") {
+        //                                    vm.checkVerifiedDeliveryFromLabs("loadedData");
+        //                                    $.each($scope.formValues.conditions, function(k,v){
+	    //                                     v.paymentTerm = null
+        //                                    })
+        //                                }
+        //                                toastr.success("Entity copied");
+        //                                localStorage.removeItem(vm.app_id + vm.screen_id + "_copy");
+        //                                $scope.$emit("formValues", $scope.formValues);
+        //                            }
+        //                        });
+        //                    }
+        //                } else {
+        //                    if(vm.entity_id){
+        //                        screenLoader.showLoader();
+        //                    }
+        //                    Factory_Master.get_master_entity(
+        //                        vm.entity_id,
+        //                        vm.screen_id,
+        //                        vm.app_id,
+        //                        function(callback) {
+        //                            screenLoader.hideLoader();
+        //                            if (callback) {
 
+        //                                $scope.formValues = callback;
+        //                                if(vm.screen_id === 'emaillogs') {
+        //                                    if($scope.formValues.to && typeof($scope.formValues.to) === 'string') {
+        //                                      $scope.formValues.to = $scope.formValues.to.replace(/,/g, ';');
+        //                                    }
+        //                                    if($scope.formValues.cc && typeof($scope.formValues.cc) === 'string') {
+        //                                      $scope.formValues.cc = $scope.formValues.cc.replace(/,/g, ';');
+        //                                    }
+        //                                    if($scope.formValues.bcc && typeof($scope.formValues.bcc) === 'string') {
+        //                                      $scope.formValues.bcc = $scope.formValues.bcc.replace(/,/g, ';');
+        //                                    }
+        //                                }
+
+        //                                if(vm.app_id === 'masters' && vm.screen_id === 'buyer') {
+        //                                  $scope.formValues.showCode = !!$scope.formValues.code;
+        //                                }
+        //                                if(vm.app_id === 'masters' && vm.screen_id === 'vessel') {
+        //                                	$scope.flattenVesselVoyages();
+        // 					$scope.initRobTable();
+        //                                }
 
 
 				 //                    if (vm.app_id == "invoices" && vm.screen_id == "invoice") {
@@ -2228,52 +2215,52 @@ APP_MASTERS.controller("Controller_Master", [
 				 //                                    };
 				 //                                }
 				 //                                if (v.product.id != -1) {
-					// 			                	v.product.productId = angular.copy(v.product.id);
-					// 			                	// v.product.id = angular.copy(v.deliveryProductId);
-					// 			                }
+        // 			                	v.product.productId = angular.copy(v.product.id);
+        // 			                	// v.product.id = angular.copy(v.deliveryProductId);
+        // 			                }
 				 //                            });
 				 //                        }
 				 //                    }
 
-     //                                $rootScope.$broadcast("formValues", $scope.formValues);
-     //                                $scope.refreshSelect();
-     //                                $rootScope.formValuesLoaded = callback;
-     //                                if (vm.screen_id == "invoice" && vm.app_id == "invoices") {
-     //                                  if(!$scope.formValues.paymentDate) {
-     //                                    $scope.formValues.paymentDate = $scope.formValues.workingDueDate;
-     //                                  }
-     //                                    if ($scope.formValues.costDetails.length > 0) {
-     //                                        $.each($scope.formValues.costDetails, function(k, v) {
-     //                                            if (v.product == null || v.isAllProductsCost) {
-     //                                                v.product = {
-     //                                                    id: -1,
-     //                                                    name: "All"
-     //                                                };
-     //                                            }
-     //                                        });
-     //                                    }
-     //                                    $.each($scope.formValues.productDetails, function(k, v) {
-     //                                    	if (v.sapInvoiceAmount) {
-     //                                    		v.invoiceAmount = v.sapInvoiceAmount;
-     //                                    	} else {
-     //                                    		v.invoiceAmount = v.invoiceComputedAmount;
-     //                                    	}
-     //                                    });
-     //                                }
-     //                                if (vm.app_id == "labs" && vm.screen_id == "labresult") {
-     //                                    vm.checkVerifiedDeliveryFromLabs("loadedData");
-     //                                }
-     //                                if (vm.app_id == "invoices") {
-     //                                    $scope.initInvoiceScreen();
-     //                                }
-     //                                if (vm.app_id == "contracts") {
-     //                                    $scope.initContractScreen();
-     //                                }
-     //                                if ($location.hash() == "mail") {
-     //                                    $scope.sendEmails();
-     //                                    $location.hash("");
-     //                                }
-     //                                if (vm.app_id == "admin" && vm.screen_id == "configuration") {
+        //                                $rootScope.$broadcast("formValues", $scope.formValues);
+        //                                $scope.refreshSelect();
+        //                                $rootScope.formValuesLoaded = callback;
+        //                                if (vm.screen_id == "invoice" && vm.app_id == "invoices") {
+        //                                  if(!$scope.formValues.paymentDate) {
+        //                                    $scope.formValues.paymentDate = $scope.formValues.workingDueDate;
+        //                                  }
+        //                                    if ($scope.formValues.costDetails.length > 0) {
+        //                                        $.each($scope.formValues.costDetails, function(k, v) {
+        //                                            if (v.product == null || v.isAllProductsCost) {
+        //                                                v.product = {
+        //                                                    id: -1,
+        //                                                    name: "All"
+        //                                                };
+        //                                            }
+        //                                        });
+        //                                    }
+        //                                    $.each($scope.formValues.productDetails, function(k, v) {
+        //                                    	if (v.sapInvoiceAmount) {
+        //                                    		v.invoiceAmount = v.sapInvoiceAmount;
+        //                                    	} else {
+        //                                    		v.invoiceAmount = v.invoiceComputedAmount;
+        //                                    	}
+        //                                    });
+        //                                }
+        //                                if (vm.app_id == "labs" && vm.screen_id == "labresult") {
+        //                                    vm.checkVerifiedDeliveryFromLabs("loadedData");
+        //                                }
+        //                                if (vm.app_id == "invoices") {
+        //                                    $scope.initInvoiceScreen();
+        //                                }
+        //                                if (vm.app_id == "contracts") {
+        //                                    $scope.initContractScreen();
+        //                                }
+        //                                if ($location.hash() == "mail") {
+        //                                    $scope.sendEmails();
+        //                                    $location.hash("");
+        //                                }
+        //                                if (vm.app_id == "admin" && vm.screen_id == "configuration") {
     	//                             	$.each($scope.formValues.email, function(k,v){
 		   //                          		if (v.toEmailsConfiguration) {
 		   //                          			v.toEmailsConfiguration = v.toEmailsConfiguration.split(",");
@@ -2290,65 +2277,65 @@ APP_MASTERS.controller("Controller_Master", [
 			  //                           			tempCcEmailsConfiguration.push({"id" : parseFloat(tov)});
 		   //                          			})
 		   //                      				$scope.formValues.email[k].ccEmailsConfiguration = tempCcEmailsConfiguration;
-		   //                          		}                            		
+		   //                          		}
 		   //                          	})
-     //                                }
+        //                                }
 
-     //                            }
-     //                        },
-     //                        screenChild
-     //                    );
-     //                }
-     //                if (localStorage.getItem(vm.app_id + vm.screen_id + "_newEntity")) {
-     //                    screenLoader.hideLoader();
-     //                    data = angular.fromJson(localStorage.getItem(vm.app_id + vm.screen_id + "_newEntity"));
-     //                    localStorage.removeItem(vm.app_id + vm.screen_id + "_newEntity");
-     //                    $scope.formValues = data;
-     //                }
-     //            }
-     //        }
-     //        $scope.loaded = true;
-     //        $scope.undirtyForm();
-     //    };
+        //                            }
+        //                        },
+        //                        screenChild
+        //                    );
+        //                }
+        //                if (localStorage.getItem(vm.app_id + vm.screen_id + "_newEntity")) {
+        //                    screenLoader.hideLoader();
+        //                    data = angular.fromJson(localStorage.getItem(vm.app_id + vm.screen_id + "_newEntity"));
+        //                    localStorage.removeItem(vm.app_id + vm.screen_id + "_newEntity");
+        //                    $scope.formValues = data;
+        //                }
+        //            }
+        //        }
+        //        $scope.loaded = true;
+        //        $scope.undirtyForm();
+        //    };
         vm.addHeadeActions = function() {
             $('.page-content-wrapper a[data-group="extern"]').each(function() {
-                if ($(this).attr("data-compiled") == 0) {
-                    if ($(this).attr("data-method") != "") {
-                        $(this).attr("ng-click", $(this).data("method") + ';submitedAcc("' + $(this).data("method") + '")');
-                        $(this).attr("data-method", "");
-                        $(this).attr("data-compiled", 1);
+                if ($(this).attr('data-compiled') == 0) {
+                    if ($(this).attr('data-method') != '') {
+                        $(this).attr('ng-click', `${$(this).data('method') };submitedAcc("${ $(this).data('method') }")`);
+                        $(this).attr('data-method', '');
+                        $(this).attr('data-compiled', 1);
                         $compile($(this))($scope);
                     }
                 }
             });
-            if (vm.app_id == "masters" && vm.screen_id == "counterparty") {
-                $(".entity_active").attr("ng-model", "formValues.isDeleted");
+            if (vm.app_id == 'masters' && vm.screen_id == 'counterparty') {
+                $('.entity_active').attr('ng-model', 'formValues.isDeleted');
             } else {
-                $(".entity_active")
-                    .attr("ng-checked", "!CM.entity_id || formValues.isDeleted == false")
-                    .attr("ng-true-value", "false")
-                    .attr("ng-false-value", "true")
-                    .attr("ng-model", "formValues.isDeleted");
-                $(".completed").attr("ng-model", "formValues.completed");
-                if (vm.screen_id == "claimtype") {
-                    $(".entity_active").attr("ng-disabled", "formValues.name ? true : false");
+                $('.entity_active')
+                    .attr('ng-checked', '!CM.entity_id || formValues.isDeleted == false')
+                    .attr('ng-true-value', 'false')
+                    .attr('ng-false-value', 'true')
+                    .attr('ng-model', 'formValues.isDeleted');
+                $('.completed').attr('ng-model', 'formValues.completed');
+                if (vm.screen_id == 'claimtype') {
+                    $('.entity_active').attr('ng-disabled', 'formValues.name ? true : false');
                 }
             }
-            $compile($(".entity_active"))($scope);
-            $compile($(".completed"))($scope);
+            $compile($('.entity_active'))($scope);
+            $compile($('.completed'))($scope);
             // added++;
         };
         vm.delayaddHeadeActions = function() {
             return $timeout(vm.addHeadeActions, 100);
         };
         vm.delayaddModalActions = function() {
-            setTimeout(function() {
+            setTimeout(() => {
                 // $(this).unbind();
                 $('.modal-content a[data-group="extern"]').each(function() {
-                    if (!$(this).attr("ng-click")) {
-                        $(this).attr("ng-click", $(this).data("method"));
-                        $(this).attr("data-method", "");
-                        $(this).attr("data-compiled", Number($(this).attr("data-compiled")) + 1);
+                    if (!$(this).attr('ng-click')) {
+                        $(this).attr('ng-click', $(this).data('method'));
+                        $(this).attr('data-method', '');
+                        $(this).attr('data-compiled', Number($(this).attr('data-compiled')) + 1);
                         $compile($(this))($scope);
                     }
                 });
@@ -2360,34 +2347,34 @@ APP_MASTERS.controller("Controller_Master", [
 
         $scope.triggerChangeFields = function(name, id) {
             $rootScope.formDataFields = $scope.formValues;
-            fields = ["OrderID", "labResultID", "deliveryNumber", "Product"];
-            company_id = $("#companylistCompany").val();
-            market_id = $("#MarketInstrumentMarketInstrument").val();
+            fields = [ 'OrderID', 'labResultID', 'deliveryNumber', 'Product' ];
+            company_id = $('#companylistCompany').val();
+            market_id = $('#MarketInstrumentMarketInstrument').val();
 
-            if (typeof $scope.triggerChangeFieldsAppSpecific == "function") {
+            if (typeof $scope.triggerChangeFieldsAppSpecific == 'function') {
                 $scope.triggerChangeFieldsAppSpecific(name, id);
             }
             if (vm.app_id == 'claims' && vm.screen_id == 'claims') {
-              if(name == 'EstimatedSettlementAmount') {
-                if($scope.formValues.claimDetails.estimatedSettlementAmount < 0) {
-                  $.each($scope.options.SettlementType, function(k, v) {
-                    if(v.name === 'Receive') {
-                      $scope.formValues.claimDetails.settlementType = v;
-                      $scope.formValues.claimDetails.estimatedSettlementAmount *= -1;
-                      toastr.info('The estimated settlement amount cannot be negative. The settlement type has been set to "Receive" and the amount is positive.');
+                if(name == 'EstimatedSettlementAmount') {
+                    if($scope.formValues.claimDetails.estimatedSettlementAmount < 0) {
+                        $.each($scope.options.SettlementType, (k, v) => {
+                            if(v.name === 'Receive') {
+                                $scope.formValues.claimDetails.settlementType = v;
+                                $scope.formValues.claimDetails.estimatedSettlementAmount *= -1;
+                                toastr.info('The estimated settlement amount cannot be negative. The settlement type has been set to "Receive" and the amount is positive.');
+                            }
+                        });
                     }
-                  });
                 }
-              }
-              // else if($scope.formValues.claimDetails.estimatedSettlementAmount > 0) {
-              //   $.each($scope.options.SettlementType, function(k, v) {
-              //     if(v.name === 'Pay') {
-              //       $scope.formValues.claimDetails.settlementType = v;
-              //     }
-              //   });
-              // }
+                // else if($scope.formValues.claimDetails.estimatedSettlementAmount > 0) {
+                //   $.each($scope.options.SettlementType, function(k, v) {
+                //     if(v.name === 'Pay') {
+                //       $scope.formValues.claimDetails.settlementType = v;
+                //     }
+                //   });
+                // }
             }
-            if (vm.app_id == "masters") {
+            if (vm.app_id == 'masters') {
                 if (vm.screen_id == 'additionalcost' && name == 'CostType' &&
                     $scope.formValues && $scope.formValues.costType) {
                     if($scope.formValues.costType.name == 'Flat' || $scope.formValues.costType.name == 'Unit') {
@@ -2396,65 +2383,71 @@ APP_MASTERS.controller("Controller_Master", [
                     } else {
                         $('.edit_form_fields_ComponentType_masters').show();
                     }
-                }               
+                }
                 if (vm.screen_id == 'vessel' && id == 'temp.tanks.productType') {
-                	setTimeout(function(){
-	                	 $scope.options["ProductFiltered"] = $filter('filter')(angular.copy($listsCache.Product), {productTypeId:$scope.formValues.temp.tanks.productType.id} );
+                	setTimeout(() => {
+	                	 $scope.options.ProductFiltered = $filter('filter')(angular.copy($listsCache.Product), { productTypeId:$scope.formValues.temp.tanks.productType.id });
 	                	 $scope.formValues.temp.tanks.product = null;
 	                	 $scope.$apply();
-                	},500);
+                	}, 500);
                 }
                 if (vm.screen_id == 'vessel' && id == 'vesselType') {
-                	setTimeout(function(){
+                	setTimeout(() => {
                 		if ($scope.formValues.usingVesselTypeRob) {
-							$.each($scope.formValues.robs, function(rk,rv){
-								rv.minQty = null
-								rv.maxQty = null
-							})
+                            $.each($scope.formValues.robs, (rk, rv) => {
+                                rv.minQty = null;
+                                rv.maxQty = null;
+                            });
 	                		$scope.triggerRobStandard(true);
-							$scope.$apply();
+                            $scope.$apply();
                 		}
-                	},500);
-                }                
-                if (name == 'Buyer' && vm.screen_id == 'buyer') {
-                  if($scope.formValues.user) {
-                    // $scope.formValues.name = $scope.formValues.user.displayName;
-                    Factory_Master.get_master_entity($scope.formValues.user.id, "users", "admin", function(response) {
-                        if (response) {
-                          // $scope.formValues.code = response.displayName;
-                        }
-                    });
-                  }
+                	}, 500);
                 }
-                if (name == "Company" && vm.screen_id == "exchangerate") {
-                    Factory_Master.get_master_entity($scope.formValues.company.id, "company", "masters", function(response) {
+                if (name == 'Buyer' && vm.screen_id == 'buyer') {
+                    if($scope.formValues.user) {
+                    // $scope.formValues.name = $scope.formValues.user.displayName;
+                        Factory_Master.get_master_entity($scope.formValues.user.id, 'users', 'admin', (response) => {
+                            if (response) {
+                                // $scope.formValues.code = response.displayName;
+                            }
+                        });
+                    }
+                }
+                if (name == 'Company' && vm.screen_id == 'exchangerate') {
+                    Factory_Master.get_master_entity($scope.formValues.company.id, 'company', 'masters', (response) => {
                         if (response) {
                             $scope.formValues.baseCurrency = {};
                             $scope.formValues.baseCurrency = response.currencyId;
                         }
                     });
                 }
-                if (name == "DefaultFuelOil" && vm.screen_id == "vessel") {
+                if (name == 'DefaultFuelOil' && vm.screen_id == 'vessel') {
                     var field = new Object();
-                    field = vm.formFieldSearch($scope.formFields, "fuelOilSpecGroup");
-                    if (field) vm.getOptions(field);
+                    field = vm.formFieldSearch($scope.formFields, 'fuelOilSpecGroup');
+                    if (field) {
+                        vm.getOptions(field);
+                    }
                 }
- 
-                if (name == "DefaultDistillate" && vm.screen_id == "vessel") {
+
+                if (name == 'DefaultDistillate' && vm.screen_id == 'vessel') {
                     var field = new Object();
-                    field = vm.formFieldSearch($scope.formFields, "distillateSpecGroup");
-                    if (field) vm.getOptions(field);
+                    field = vm.formFieldSearch($scope.formFields, 'distillateSpecGroup');
+                    if (field) {
+                        vm.getOptions(field);
+                    }
                 }
-                if (name == "defaultLsfoProduct" && vm.screen_id == "vessel") {
+                if (name == 'defaultLsfoProduct' && vm.screen_id == 'vessel') {
                     var field = new Object();
-                    field = vm.formFieldSearch($scope.formFields, "lsfoSpecGroup");
-                    if (field) vm.getOptions(field);
+                    field = vm.formFieldSearch($scope.formFields, 'lsfoSpecGroup');
+                    if (field) {
+                        vm.getOptions(field);
+                    }
                 }
-                if (name == "specParameter" && vm.screen_id == "specgroup") {
-                    row = $('[name= "' + name + '"]').data("row-index");
-                    setTimeout(function() {
-                        val = $('[name= "' + name + '"]').data("cell-id");
-                        Factory_Master.get_master_entity(val, "specparameter", "masters", function(response) {
+                if (name == 'specParameter' && vm.screen_id == 'specgroup') {
+                    row = $(`[name= "${ name }"]`).data('row-index');
+                    setTimeout(() => {
+                        val = $(`[name= "${ name }"]`).data('cell-id');
+                        Factory_Master.get_master_entity(val, 'specparameter', 'masters', (response) => {
                             if (response) {
                                 $scope.formValues = $rootScope.formValuesLoaded;
                                 $scope.formValues.specGroupParameters[row].uom = response.uom;
@@ -2462,22 +2455,22 @@ APP_MASTERS.controller("Controller_Master", [
                         });
                     }, 1);
                 }
-                if (name == "InheritDefault" && vm.screen_id == "product") {
-                    Factory_Master.get_master_entity($scope.formValues.parent.id, "product", "masters", function(response) {
+                if (name == 'InheritDefault' && vm.screen_id == 'product') {
+                    Factory_Master.get_master_entity($scope.formValues.parent.id, 'product', 'masters', (response) => {
                         if (response) {
                             $scope.formValues.defaultSpecGroup = response.defaultSpecGroup;
                         }
                     });
                 }
-                if (name == "systemInstrument" && vm.screen_id == "price") {
+                if (name == 'systemInstrument' && vm.screen_id == 'price') {
                     if ($scope.formValues.systemInstrument) {
-                        Factory_Master.get_master_entity($scope.formValues.systemInstrument.id, "systeminstrument", "masters", function(response) {
+                        Factory_Master.get_master_entity($scope.formValues.systemInstrument.id, 'systeminstrument', 'masters', (response) => {
                             if (response) {
                                 $scope.formValues.marketInstrumentCode = response.marketInstrument.code;
                                 $scope.formValues.code = response.marketInstrument.code;
                                 $scope.formValues.period = null;
                                 obj = [];
-                                $.each(response.periods, function(key, value) {
+                                $.each(response.periods, (key, value) => {
                                     obj.push(value.period);
                                 });
                                 $scope.options.systemInstrumentPeriod = obj;
@@ -2485,13 +2478,13 @@ APP_MASTERS.controller("Controller_Master", [
                         });
                     }
                 }
-                if (name == "MarketInstrument" && vm.screen_id == "systeminstrument") {
+                if (name == 'MarketInstrument' && vm.screen_id == 'systeminstrument') {
                     param = {
                         app: vm.app_id,
                         screen: vm.screen_id,
-                        MarketInstrument: ($scope.formValues[id])['id']
+                        MarketInstrument: $scope.formValues[id].id
                     };
-                    Factory_Master.get_custom_dropdown(param, function(callback) {
+                    Factory_Master.get_custom_dropdown(param, (callback) => {
                         if (callback) {
                             $scope.formValues.calendar = {
                                 name: callback.calendar
@@ -2504,38 +2497,39 @@ APP_MASTERS.controller("Controller_Master", [
                     });
                     return;
                 }
-                if (name == "formulaFlatPercentage" && vm.screen_id == "formula") {
+                if (name == 'formulaFlatPercentage' && vm.screen_id == 'formula') {
                     // set uom as null if formula changed and it's percentage
                     if (id != null) {
-                        if (typeof $scope.formValues.complexFormulaQuoteLines[id].formulaFlatPercentage)
+                        if (typeof $scope.formValues.complexFormulaQuoteLines[id].formulaFlatPercentage) {
                             if ($scope.formValues.complexFormulaQuoteLines[id].formulaFlatPercentage.id == 2) {
                                 $scope.formValues.complexFormulaQuoteLines[id].uom = null;
                             }
+                        }
                     }
                 }
-                if(name == "transactionType" && vm.screen_id == "documenttype"){
-                    var filters = [
+                if(name == 'transactionType' && vm.screen_id == 'documenttype') {
+                    let filters = [
                         {
-                            ColumnName: "EmailTransactionTypeId",
+                            ColumnName: 'EmailTransactionTypeId',
                             Value: $scope.formValues.templates[id].transactionType.id
                         }
                     ];
                     var field = {
-                        Name:"EmailTemplate_" + id,
-                        Type:"lookup",
-                        clc_id:"masters_documenttypetemplates",
+                        Name:`EmailTemplate_${ id}`,
+                        Type:'lookup',
+                        clc_id:'masters_documenttypetemplates',
                         filter: filters,
-                        masterSource:"DocumentTypeTemplates"
-                    }
+                        masterSource:'DocumentTypeTemplates'
+                    };
                     vm.getOptions(field);
                 }
             }
-            if (name == "DocumentType") {
+            if (name == 'DocumentType') {
                 // clone formValues to $rootScope { liviu.m. }
                 $rootScope.formValues = $scope.formValues;
             }
-            if (vm.app_id == "labs" && name == "OrderID" && id == "order") {
-                vm.checkVerifiedDeliveryFromLabs("orderChange");
+            if (vm.app_id == 'labs' && name == 'OrderID' && id == 'order') {
+                vm.checkVerifiedDeliveryFromLabs('orderChange');
             }
         };
 
@@ -2549,16 +2543,16 @@ APP_MASTERS.controller("Controller_Master", [
             }
             if (id) {
                 id = id.toLowerCase();
-                Factory_Master.getDataTable(app, screen, id, data, function(callback) {
+                Factory_Master.getDataTable(app, screen, id, data, (callback) => {
                     if (callback) {
                         $scope.dynamicTable[id] = callback;
-                        if (obj == "labTestResults") {
+                        if (obj == 'labTestResults') {
                             $scope.formValues.labTestResults = [];
                             $scope.formValues.labTestResults = callback;
-                        } else if (obj == "deliveryProducts") {
+                        } else if (obj == 'deliveryProducts') {
                             $scope.formValues.deliveryProducts[idx].qualityParameters = [];
                             angular.merge($scope.formValues.deliveryProducts[idx].qualityParameters, callback);
-                        } else if (obj == "sealNumber") {
+                        } else if (obj == 'sealNumber') {
                             $scope.formValues.labSealNumberInformation = [];
                             $scope.formValues.labSealNumberInformation = callback;
                         }
@@ -2567,23 +2561,26 @@ APP_MASTERS.controller("Controller_Master", [
                 });
             }
         };
-        vm.useDisplayName = function(fieldName){
-            var displayNameList = ['invoiceStatus','ClaimType'];
-            var found = _.indexOf(displayNameList, fieldName);
-            if(found < 0) return false;
+        vm.useDisplayName = function(fieldName) {
+            let displayNameList = [ 'invoiceStatus', 'ClaimType' ];
+            let found = _.indexOf(displayNameList, fieldName);
+            if(found < 0) {
+                return false;
+            }
             return true;
-        }
+        };
         vm.getOptions = function(field, fromListsCache) {
-            //Move this somewhere nice and warm
+            // Move this somewhere nice and warm
             var objectByString = function(obj, string) {
-                if (string.includes(".")) {
-                    return objectByString(obj[string.split(".", 1)], string.replace(string.split(".", 1) + ".", ""));
-                } else {
-                    return obj[string];
+                if (string.includes('.')) {
+                    return objectByString(obj[string.split('.', 1)], string.replace(`${string.split('.', 1) }.`, ''));
                 }
+                return obj[string];
             };
             if (!fromListsCache) {
-                if (field == "agreementType") field = { name: "AgreementType" };
+                if (field == 'agreementType') {
+                    field = { name: 'AgreementType' };
+                }
 
                 if (field) {
                     if (!$scope.options) {
@@ -2591,10 +2588,12 @@ APP_MASTERS.controller("Controller_Master", [
                     }
 
                     // setTimeout(function() {
-                    if (field.Filter && typeof $scope.formValues != "undefined") {
-                        field.Filter.forEach(function(entry) {
-                            if (entry.ValueFrom == null) return;
-                            var temp = 0;
+                    if (field.Filter && typeof $scope.formValues != 'undefined') {
+                        field.Filter.forEach((entry) => {
+                            if (entry.ValueFrom == null) {
+                                return;
+                            }
+                            let temp = 0;
                             try {
                                 temp = $scope.formValues[entry.ValueFrom];
                             } catch (error) {}
@@ -2602,43 +2601,49 @@ APP_MASTERS.controller("Controller_Master", [
                         });
                     }
                     retFunc = false;
-                    if (field.Name == "Product") {
-                        $.each(field.Filter, function(key, val) {
-                            if (val.ColumnName == "OrderId") if (val.Value == 0) retFunc = true;
+                    if (field.Name == 'Product') {
+                        $.each(field.Filter, (key, val) => {
+                            if (val.ColumnName == 'OrderId') {
+                                if (val.Value == 0) {
+                                    retFunc = true;
+                                }
+                            }
                         });
                     }
-                    if (retFunc) return;
+                    if (retFunc) {
+                        return;
+                    }
 
-                    var app_id = vm.app_id;
-                    var screen_id = vm.screen_id;
-                    if ($state.params.title == "New Request" || $state.params.title == "Edit Request") {
-                        app_id = "procurement";
-                        screen_id = "request";
+                    let app_id = vm.app_id;
+                    let screen_id = vm.screen_id;
+                    if ($state.params.title == 'New Request' || $state.params.title == 'Edit Request') {
+                        app_id = 'procurement';
+                        screen_id = 'request';
 
-                        if (field.Name == "BunkerablePort") {
-                            if (typeof field.filters != "undefined" && field.filters != null) {
+                        if (field.Name == 'BunkerablePort') {
+                            if (typeof field.filters != 'undefined' && field.filters != null) {
                                 field.Filters = [
                                     {
-                                        ColumnName: "VesselId",
+                                        ColumnName: 'VesselId',
                                         Value: field.filters.name.id
                                     },
                                     {
-                                        ColumnName: "VesselVoyageDetailId",
+                                        ColumnName: 'VesselVoyageDetailId',
                                         Value: null
                                     }
                                 ];
                                 delete field.filters;
                             }
                         }
-                        if (field.Name == "Buyer") {
-                            if (typeof field.filters != "undefined" && field.filters != null) {
+                        if (field.Name == 'Buyer') {
+                            if (typeof field.filters != 'undefined' && field.filters != null) {
                                 field.Filters = [
                                     {
-                                        ColumnName: "VesselId",
+                                        ColumnName: 'VesselId',
                                         Value: field.filters.name.id
                                     },
                                     {
-                                        ColumnName: "VesselVoyageDetailId",
+                                        ColumnName: 'VesselVoyageDetailId',
                                         Value: null
                                     }
                                 ];
@@ -2653,22 +2658,26 @@ APP_MASTERS.controller("Controller_Master", [
 
                     if (!(JSON.stringify($scope.optionsCache[field.Name]) == JSON.stringify(field))) {
                         $scope.optionsCache[field.Name] = JSON.stringify(field);
-                        Factory_Master.get_master_list(app_id, screen_id, field, function(callback) {
+                        Factory_Master.get_master_list(app_id, screen_id, field, (callback) => {
                             if (callback) {
                                 $scope.options[field.Name] = callback;
-                                if (vm.app_id == "masters" && vm.screen_id == "vessel") vm.checkSpecGroup(field);
-                                if (vm.app_id == "masters" && vm.screen_id == "currency" && field.Name == "CurrencyCode") vm.getCurrencyCodeFiltered();
-                                $scope.$watchGroup([$scope.formValues, $scope.options], function() {
+                                if (vm.app_id == 'masters' && vm.screen_id == 'vessel') {
+                                    vm.checkSpecGroup(field);
+                                }
+                                if (vm.app_id == 'masters' && vm.screen_id == 'currency' && field.Name == 'CurrencyCode') {
+                                    vm.getCurrencyCodeFiltered();
+                                }
+                                $scope.$watchGroup([ $scope.formValues, $scope.options ], () => {
                                     // $timeout(function() {
-	                                    // console.log(' ***** $watchGroup([$scope.formValues, $scope.options]')	
-                                        if (field.Type == "textUOM") {
-                                            id = "#" + field.Name;
-                                        } else {
-                                            id = "#" + field.masterSource + field.Name;
-                                        }
-                                        if ($(id).data("val")) {
-                                            $(id).val($(id).data("val"));
-                                        }
+	                                    // console.log(' ***** $watchGroup([$scope.formValues, $scope.options]')
+                                    if (field.Type == 'textUOM') {
+                                        id = `#${ field.Name}`;
+                                    } else {
+                                        id = `#${ field.masterSource }${field.Name}`;
+                                    }
+                                    if ($(id).data('val')) {
+                                        $(id).val($(id).data('val'));
+                                    }
                                     // }, 50);
                                 });
                             }
@@ -2677,49 +2686,57 @@ APP_MASTERS.controller("Controller_Master", [
                     // }, 1000)
                 }
             } else {
-                //get values from listsCache, put in options obj for specific dropdowns
-                //get options for request status
-                if (field.Name == "etaFreezeStatus" && field.masterSource) {
-                    $scope.options["etaFreezeStatus"] = angular.copy($scope.listsCache.RequestStatus);
+                // get values from listsCache, put in options obj for specific dropdowns
+                // get options for request status
+                if (field.Name == 'etaFreezeStatus' && field.masterSource) {
+                    $scope.options.etaFreezeStatus = angular.copy($scope.listsCache.RequestStatus);
                 }
-                if (field.Name == "numberOfCounterpartiesToDisplay") {
+                if (field.Name == 'numberOfCounterpartiesToDisplay') {
                     console.log(vm.listsCache);
-                    $scope.options["numberOfCounterpartiesToDisplay"] = [];
-                    $.each(vm.listsCache.ItemsToDisplay, function(key, val) {
-                        $scope.options["numberOfCounterpartiesToDisplay"].push(val.name);
+                    $scope.options.numberOfCounterpartiesToDisplay = [];
+                    $.each(vm.listsCache.ItemsToDisplay, (key, val) => {
+                        $scope.options.numberOfCounterpartiesToDisplay.push(val.name);
                     });
                 }
             }
         };
         $scope.$watchGroup(
-            ["formValues.defaultFuelOilProduct", "formValues.defaultDistillateProduct", "formValues.defaultLsfoProduct"],
-            function(newVal, oldVal) {
-                if ($scope.formValues.defaultFuelOilProduct == "" || $scope.formValues.defaultFuelOilProduct == null) {
+            [ 'formValues.defaultFuelOilProduct', 'formValues.defaultDistillateProduct', 'formValues.defaultLsfoProduct' ],
+            (newVal, oldVal) => {
+                if ($scope.formValues.defaultFuelOilProduct == '' || $scope.formValues.defaultFuelOilProduct == null) {
                     $scope.formValues.fuelOilSpecGroup = null;
                 }
-                if ($scope.formValues.defaultDistillateProduct == "" || $scope.formValues.defaultDistillateProduct == null) {
+                if ($scope.formValues.defaultDistillateProduct == '' || $scope.formValues.defaultDistillateProduct == null) {
                     $scope.formValues.distillateSpecGroup = null;
                 }
-                if ($scope.formValues.defaultLsfoProduct == "" || $scope.formValues.defaultLsfoProduct == null) {
+                if ($scope.formValues.defaultLsfoProduct == '' || $scope.formValues.defaultLsfoProduct == null) {
                     $scope.formValues.lsfoSpecGroup = null;
                 }
             },
             true
         );
         vm.checkSpecGroup = function(field) {
-            var map = {
-                FuelOilSpec: "fuelOilSpecGroup",
-                DistillateSpec: "distillateSpecGroup",
-                lsfoSpecGroup: "lsfoSpecGroup"
+            let map = {
+                FuelOilSpec: 'fuelOilSpecGroup',
+                DistillateSpec: 'distillateSpecGroup',
+                lsfoSpecGroup: 'lsfoSpecGroup'
             };
-            if (typeof map[field.Name] == "undefined") return;
-            if (typeof $scope.options[field.Name] != "undefined" && $scope.options[field.Name][0].id != -1 && typeof $scope.formValues != "undefined" && typeof $scope.formValues[map[field.Name]] != "undefined") {
+            if (typeof map[field.Name] == 'undefined') {
+                return;
+            }
+            if (typeof $scope.options[field.Name] != 'undefined' && $scope.options[field.Name][0].id != -1 && typeof $scope.formValues != 'undefined' && typeof $scope.formValues[map[field.Name]] != 'undefined') {
                 if ($scope.options[field.Name].length > 0) {
                     found = false;
-                    $.each($scope.options[field.Name], function(key, val) {
-                        if (typeof val != "undefined") if (val.id == $scope.formValues[map[field.Name]].id) found = true;
+                    $.each($scope.options[field.Name], (key, val) => {
+                        if (typeof val != 'undefined') {
+                            if (val.id == $scope.formValues[map[field.Name]].id) {
+                                found = true;
+                            }
+                        }
                     });
-                    if (!found) $scope.formValues[map[field.Name]] = null;
+                    if (!found) {
+                        $scope.formValues[map[field.Name]] = null;
+                    }
                 } else {
                     $scope.formValues[map[field.Name]] = null;
                 }
@@ -2732,25 +2749,25 @@ APP_MASTERS.controller("Controller_Master", [
             // if(vm.confimContactDelete){
 
             if (confirmed) {
-                if (typeof value.id != "undefined") {
+                if (typeof value.id != 'undefined') {
                     if (value.id == 0) {
                         $scope.formValues.contacts.splice(key, 1);
                     } else {
-                        //fo call and if ok delete from ui too
-                        var payload = {
-                            app: "masters",
+                        // fo call and if ok delete from ui too
+                        let payload = {
+                            app: 'masters',
                             screen: vm.screen_id,
-                            delete_list: "contacts",
+                            delete_list: 'contacts',
                             data: {
                                 id: value.id,
                                 counterpartyId: vm.entity_id,
                                 isDeleted: true
                             }
                         };
-                        Factory_Master.deleteContact(payload, function(response) {
+                        Factory_Master.deleteContact(payload, (response) => {
                             if (response.status) {
                                 $scope.formValues.contacts.splice(key, 1);
-                                toastr.success("Contact deleted!");
+                                toastr.success('Contact deleted!');
                             }
                         });
                     }
@@ -2764,11 +2781,11 @@ APP_MASTERS.controller("Controller_Master", [
                     screen: screen
                 };
                 $scope.modalInstance = $uibModal.open({
-                    templateUrl: "app-general-components/views/modal_confirmDeleteContact.html",
-                    size: "full",
-                    appendTo: angular.element(document.getElementsByClassName("page-container")),
-                    windowTopClass: "fullWidthModal smallModal",
-                    scope: $scope //passed current scope to the modal
+                    templateUrl: 'app-general-components/views/modal_confirmDeleteContact.html',
+                    size: 'full',
+                    appendTo: angular.element(document.getElementsByClassName('page-container')),
+                    windowTopClass: 'fullWidthModal smallModal',
+                    scope: $scope // passed current scope to the modal
                 });
             }
         };
@@ -2792,15 +2809,15 @@ APP_MASTERS.controller("Controller_Master", [
             product_id = $scope.formValues.orderDetails.deliveryProductId;
             field = {
                 Name: master,
-                Type: "dropdown",
+                Type: 'dropdown',
                 masterSource: master
             };
-			claimTypeName = null;
-            $.each(vm.listsCache['ClaimType'], function(k,v){
+            claimTypeName = null;
+            $.each(vm.listsCache.ClaimType, (k, v) => {
             	if (v.id == claimType) {
-					claimTypeName = v.name
+                    claimTypeName = v.name;
             	}
-            })
+            });
             field.param = {
                 OrderId: order_id,
                 DeliveryProductId: product_id,
@@ -2809,7 +2826,7 @@ APP_MASTERS.controller("Controller_Master", [
                 ClaimTypeId: claimType,
                 ClaimTypeName: claimTypeName
             };
-            Factory_Master.get_master_list(vm.app_id, vm.screen_id, field, function(callback) {
+            Factory_Master.get_master_list(vm.app_id, vm.screen_id, field, (callback) => {
                 if (callback) {
                     $scope.claimsOptions = callback;
                 }
@@ -2823,145 +2840,145 @@ APP_MASTERS.controller("Controller_Master", [
                 formattedDate = elem;
                 dateFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
             	hasDayOfWeek = false;
-	            if (dateFormat.startsWith("DDD ")) {
-	            	hasDayOfWeek = true
-	            	dateFormat = dateFormat.split("DDD ")[1];
-	            }                
-                var date = Date.parse(elem);
+	            if (dateFormat.startsWith('DDD ')) {
+	            	hasDayOfWeek = true;
+	            	dateFormat = dateFormat.split('DDD ')[1];
+	            }
+                let date = Date.parse(elem);
                 date = new Date(date);
                 if (date) {
-                    var utc = date.getTime() + date.getTimezoneOffset() * 60000;
+                    let utc = date.getTime() + date.getTimezoneOffset() * 60000;
                     // var utc = date.getTime();
                     if (dateFormat.name) {
-                        dateFormat = dateFormat.name.replace(/d/g, "D").replace(/y/g, "Y");
+                        dateFormat = dateFormat.name.replace(/d/g, 'D').replace(/y/g, 'Y');
                     } else {
-                        dateFormat = dateFormat.replace(/d/g, "D").replace(/y/g, "Y");
+                        dateFormat = dateFormat.replace(/d/g, 'D').replace(/y/g, 'Y');
                     }
                     formattedDate = fecha.format(utc, dateFormat);
                 }
                 if (hasDayOfWeek) {
-                	formattedDate = moment(elem).format("ddd") + " " + formattedDate;	
+                	formattedDate = `${moment(elem).format('ddd') } ${ formattedDate}`;
                 }
                 return formattedDate;
             }
         };
-        $scope.toUTCDate = function (date) {
-            var _utc = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+        $scope.toUTCDate = function(date) {
+            let _utc = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
             return _utc;
         };
-        vm.formatDateTime = function (elem, dateFormat, fieldUniqueId) {
+        vm.formatDateTime = function(elem, dateFormat, fieldUniqueId) {
             // console.log(fieldUniqueId)
             if (elem) {
                 dateFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
-            	var hasDayOfWeek = false;
-	            if (dateFormat.startsWith("DDD ")) {
-	            	hasDayOfWeek = true
-	            	dateFormat = dateFormat.split("DDD ")[1];
+            	let hasDayOfWeek = false;
+	            if (dateFormat.startsWith('DDD ')) {
+	            	hasDayOfWeek = true;
+	            	dateFormat = dateFormat.split('DDD ')[1];
 	            }
-                dateFormat = dateFormat.replace(/D/g, "d").replace(/Y/g, "y");
-                if (typeof fieldUniqueId == "undefined") {
-                    fieldUniqueId = "date";
+                dateFormat = dateFormat.replace(/D/g, 'd').replace(/Y/g, 'y');
+                if (typeof fieldUniqueId == 'undefined') {
+                    fieldUniqueId = 'date';
                 }
-                if (fieldUniqueId == "deliveryDate" && vm.app_id == "recon") {
-                    return vm.formatDate(elem, "dd/MM/yyyy");
+                if (fieldUniqueId == 'deliveryDate' && vm.app_id == 'recon') {
+                    return vm.formatDate(elem, 'dd/MM/yyyy');
                 }
-                if (fieldUniqueId == "invoiceDate" && vm.app_id == "invoices") {
-                    return vm.formatDate(elem, "dd/MM/yyyy");
+                if (fieldUniqueId == 'invoiceDate' && vm.app_id == 'invoices') {
+                    return vm.formatDate(elem, 'dd/MM/yyyy');
                 }
-                if (fieldUniqueId == "eta" || fieldUniqueId == "orderDetails.eta" || fieldUniqueId == "etb" || fieldUniqueId == "etd" || fieldUniqueId.toLowerCase().indexOf("delivery") >= 0 || fieldUniqueId == "pricingDate") {
+                if (fieldUniqueId == 'eta' || fieldUniqueId == 'orderDetails.eta' || fieldUniqueId == 'etb' || fieldUniqueId == 'etd' || fieldUniqueId.toLowerCase().indexOf('delivery') >= 0 || fieldUniqueId == 'pricingDate') {
                     // debugger;
                     // return moment.utc(elem).format($scope.tenantSetting.tenantFormatss.dateFormat.name);
                     utcDate = moment.utc(elem).format();
-                    formattedDate = $filter("date")(utcDate, dateFormat, 'UTC');
+                    formattedDate = $filter('date')(utcDate, dateFormat, 'UTC');
                     // return moment.utc(elem).format(dateFormat);
                 } else {
-                    formattedDate = $filter("date")(elem, dateFormat);
+                    formattedDate = $filter('date')(elem, dateFormat);
                 }
                 if (hasDayOfWeek) {
-                	formattedDate = moment.utc(elem).format("ddd") + " " + formattedDate;
+                	formattedDate = `${moment.utc(elem).format('ddd') } ${ formattedDate}`;
                 }
-                if (formattedDate.endsWith("00:00")) {
-                	formattedDate = formattedDate.split("00:00")[0];
+                if (formattedDate.endsWith('00:00')) {
+                	formattedDate = formattedDate.split('00:00')[0];
                 }
                 return formattedDate;
             }
         };
-        vm.formatSimpleDate = function (date) {
+        vm.formatSimpleDate = function(date) {
             dateFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
             window.tenantFormatsDateFormat = dateFormat;
-            var hasDayOfWeek = false;
-            if (dateFormat.startsWith("DDD ")) {
-            	hasDayOfWeek = true
-            	dateFormat = dateFormat.split("DDD ")[1];
+            let hasDayOfWeek = false;
+            if (dateFormat.startsWith('DDD ')) {
+            	hasDayOfWeek = true;
+            	dateFormat = dateFormat.split('DDD ')[1];
             }
-            dateFormat = dateFormat.replace(/d/g, "D").replace(/y/g, "Y").split(' ')[0];
+            dateFormat = dateFormat.replace(/d/g, 'D').replace(/y/g, 'Y').split(' ')[0];
             if (date) {
             	dateFormatted = moment.utc(date).format(dateFormat);
                 if (hasDayOfWeek) {
-                	dateFormatted = moment.utc(date).format("ddd") + " " + dateFormatted;
+                	dateFormatted = `${moment.utc(date).format('ddd') } ${ dateFormatted}`;
                 }
                 return dateFormatted;
             }
             return;
         };
-        vm.multiTagsContractProducts = function (object, idx, id, uniqueID) {
-            setTimeout(function() {
-                if (vm.app_id == "contracts" && vm.screen_id == "contract") {
-                    var arrayHolder = "products";
+        vm.multiTagsContractProducts = function(object, idx, id, uniqueID) {
+            setTimeout(() => {
+                if (vm.app_id == 'contracts' && vm.screen_id == 'contract') {
+                    var arrayHolder = 'products';
                 }
-                var elt = $(".object_tagsinput_" + id),
-                    elt_plus = $(".object_tagsinput_add_" + id);
+                var elt = $(`.object_tagsinput_${ id}`),
+                    elt_plus = $(`.object_tagsinput_add_${ id}`);
                 elt.tagsinput({
-                    itemValue: "value",
-                    itemText: "text"
+                    itemValue: 'value',
+                    itemText: 'text'
                 });
-                $.each(object, function(index, value) {
-                    elt.tagsinput("add", {
+                $.each(object, (index, value) => {
+                    elt.tagsinput('add', {
                         value: value.id,
                         text: value.name
                     });
                 });
-                var elt = $(".object_tagsinput_" + id),
-                    elt_plus = $(".object_tagsinput_add_" + id);
+                var elt = $(`.object_tagsinput_${ id}`),
+                    elt_plus = $(`.object_tagsinput_add_${ id}`);
                 elt.tagsinput({
-                    itemValue: "value",
-                    itemText: "text"
+                    itemValue: 'value',
+                    itemText: 'text'
                 });
-                $.each($scope.formValues[arrayHolder], function(index, value) {
+                $.each($scope.formValues[arrayHolder], (index, value) => {
                     if (!value[uniqueID]) {
                         value[uniqueID] = [];
                     }
                 });
-                $.each($scope.formValues[arrayHolder][idx][uniqueID], function(index, value) {
-                    elt.tagsinput("add", {
+                $.each($scope.formValues[arrayHolder][idx][uniqueID], (index, value) => {
+                    elt.tagsinput('add', {
                         value: value.id,
                         text: value.name
                     });
                     hideTheChildren();
                 });
-                var added = [];
-                elt_plus.on("click", function() {
-                    var source = $("[id=" + id + "]");
-                    $.each($scope.formValues[arrayHolder][idx][uniqueID], function(index, value) {
+                let added = [];
+                elt_plus.on('click', () => {
+                    let source = $(`[id=${ id }]`);
+                    $.each($scope.formValues[arrayHolder][idx][uniqueID], (index, value) => {
                         if ($.inArray(value.id, added) == -1) {
                             added.push(value.id);
                         }
                     });
-                    objectToAdd = JSON.parse(source.attr("data-value"));
+                    objectToAdd = JSON.parse(source.attr('data-value'));
                     if ($.inArray(objectToAdd.id, added) == -1) {
                         $scope.formValues[arrayHolder][idx][uniqueID].push(objectToAdd);
-                        elt.tagsinput("add", {
+                        elt.tagsinput('add', {
                             value: objectToAdd.id,
                             text: objectToAdd.name
                         });
                     } else {
-                        toastr.error("Field is already added.");
+                        toastr.error('Field is already added.');
                     }
                     hideTheChildren();
                 });
-                $(elt).on("itemRemoved", function(event) {
-                    var idToRemove = event.item.value;
-                    $.each($scope.formValues[arrayHolder][idx][uniqueID], function(index, value) {
+                $(elt).on('itemRemoved', (event) => {
+                    let idToRemove = event.item.value;
+                    $.each($scope.formValues[arrayHolder][idx][uniqueID], (index, value) => {
                         if (value.id == idToRemove) {
                             indexRmv = index;
                         }
@@ -2969,77 +2986,77 @@ APP_MASTERS.controller("Controller_Master", [
                     $scope.formValues[arrayHolder][idx][uniqueID].splice(indexRmv, 1);
                     added.splice(added.indexOf(idToRemove, 1));
                     hideTheChildren();
-                    $(".tooltip").tooltip("hide");
+                    $('.tooltip').tooltip('hide');
                 });
 
                 function hideTheChildren() {
-					$scope.initBoostrapTagsInputTooltip()                	
-                    currentTags = elt.next(".bootstrap-tagsinput").children(".label");
-                    currentTags.removeAttr("big-child");
+                    $scope.initBoostrapTagsInputTooltip();
+                    currentTags = elt.next('.bootstrap-tagsinput').children('.label');
+                    currentTags.removeAttr('big-child');
                     currentTags.show();
-                    currentTags.css("clear", "none");
+                    currentTags.css('clear', 'none');
                     currentTags
-                        .parent(".bootstrap-tagsinput")
-                        .children(".hideTagsChild")
+                        .parent('.bootstrap-tagsinput')
+                        .children('.hideTagsChild')
                         .remove();
                     $.each(currentTags, function(index, value) {
                         if (index > 2) {
                             $(this)
-                                .parent(".bootstrap-tagsinput")
-                                .addClass("expanded");
+                                .parent('.bootstrap-tagsinput')
+                                .addClass('expanded');
                             $(this)
-                                .parents(".multi_lookup_tags")
-                                .addClass("expanded");
+                                .parents('.multi_lookup_tags')
+                                .addClass('expanded');
                             if (index % 3 == 0) {
-                                $(this).css("clear", "both");
+                                $(this).css('clear', 'both');
                             }
-                            $(this).attr("big-child", "true");
-                        }                   
+                            $(this).attr('big-child', 'true');
+                        }
                     });
-                    if (currentTags.length > 3 && !elt.next(".bootstrap-tagsinput").children(".hideTagsChild").length) {
-                        currentTags.parent().prepend("<span class='hideTagsChild'><i class='fa fa-ellipsis-h' aria-hidden='true'></i><span>");
-                        $(".hideTagsChild_" + id).css("float", "right");
+                    if (currentTags.length > 3 && !elt.next('.bootstrap-tagsinput').children('.hideTagsChild').length) {
+                        currentTags.parent().prepend('<span class=\'hideTagsChild\'><i class=\'fa fa-ellipsis-h\' aria-hidden=\'true\'></i><span>');
+                        $(`.hideTagsChild_${ id}`).css('float', 'right');
                     } else {
-                        currentTags.parent(".bootstrap-tagsinput").removeClass("expanded");
-                        currentTags.parents(".multi_lookup_tags").removeClass("expanded");
+                        currentTags.parent('.bootstrap-tagsinput').removeClass('expanded');
+                        currentTags.parents('.multi_lookup_tags').removeClass('expanded');
                     }
                 }
             }, 50);
         };
         $scope.multiTags = function(id, idx, name) {
-            console.log("$scope.multiTags");
-            var elt = $(".object_tagsinput_" + id),
-                elt_plus = $(".object_tagsinput_add_" + id);
+            console.log('$scope.multiTags');
+            let elt = $(`.object_tagsinput_${ id}`),
+                elt_plus = $(`.object_tagsinput_add_${ id}`);
             elt.tagsinput({
-                itemValue: "value",
-                itemText: "text"
+                itemValue: 'value',
+                itemText: 'text'
             });
-            $(elt).on("itemAdded", function(event) {
-                if (id == "agents") {
+            $(elt).on('itemAdded', (event) => {
+                if (id == 'agents') {
                     index = $scope.formValues[id].length - 1;
                     selectDefaultAgent(id, index);
                 }
             });
-            $(elt).on("itemRemoved", function(event) {
-                var idToRemove = event.item.value;
-                $.each($scope.formValues[id], function(index, value) {
-                    if (id == "applications" && vm.screen_id == "sellerrating") {
+            $(elt).on('itemRemoved', (event) => {
+                let idToRemove = event.item.value;
+                $.each($scope.formValues[id], (index, value) => {
+                    if (id == 'applications' && vm.screen_id == 'sellerrating') {
                         if (value.module.id == idToRemove) {
                             indexRmv = index;
                         }
                     } else {
                         indexRmv = null;
-                        if (typeof value == "undefined") {
+                        if (typeof value == 'undefined') {
                             return;
                         }
                         console.log(value.id);
                         console.log(idToRemove);
-                        if (id == "agents") {
-                            comparator = "counterpartyId";
+                        if (id == 'agents') {
+                            comparator = 'counterpartyId';
                             if (value[comparator] == idToRemove) {
                                 indexRmv = index;
                                 console.log($scope.formValues[id][index]);
-                                $("*").tooltip("destroy");
+                                $('*').tooltip('destroy');
                                 if ($scope.formValues[id][index].id > 0) {
                                     $scope.formValues[id][index].isDeleted = true;
                                 } else {
@@ -3047,7 +3064,7 @@ APP_MASTERS.controller("Controller_Master", [
                                 }
                             }
                         } else {
-                            comparator = "id";
+                            comparator = 'id';
                             if (value[comparator] == idToRemove) {
                                 indexRmv = index;
                                 $scope.formValues[id].splice(index, 1);
@@ -3057,17 +3074,17 @@ APP_MASTERS.controller("Controller_Master", [
                 });
                 hideTheChildren();
             });
-            elt_plus.on("click", function() {
+            elt_plus.on('click', () => {
                 if (idx >= 0) {
                     selector = id + idx;
                 } else {
                     selector = id;
                 }
-                if ($("#" + selector).attr("data-value") != "") {
-                    var itemToAdd = {};
-                    if (id == "agents") {
-                        $.each($scope.options.Agents, function(index, value) {
-                            if ($("#agentsVal").val() == value.id) {
+                if ($(`#${ selector}`).attr('data-value') != '') {
+                    let itemToAdd = {};
+                    if (id == 'agents') {
+                        $.each($scope.options.Agents, (index, value) => {
+                            if ($('#agentsVal').val() == value.id) {
                                 itemToAdd = {
                                     counterpartyId: value.id,
                                     counterpartyName: value.name,
@@ -3077,9 +3094,9 @@ APP_MASTERS.controller("Controller_Master", [
                             }
                         });
                     } else {
-                        $.each($scope.options[name], function(index, value) {
-                            selectorElement = $("#" + selector + ':not([data-value^="{{"])');
-                            if (selectorElement.attr("data-value") == value.id) {
+                        $.each($scope.options[name], (index, value) => {
+                            selectorElement = $(`#${ selector }:not([data-value^="{{"])`);
+                            if (selectorElement.attr('data-value') == value.id) {
                                 itemToAdd = {
                                     id: value.id,
                                     name: value.name
@@ -3087,64 +3104,64 @@ APP_MASTERS.controller("Controller_Master", [
                             }
                         });
                     }
-                    if ($scope.formValues[id] == "" || !$scope.formValues[id]) {
+                    if ($scope.formValues[id] == '' || !$scope.formValues[id]) {
                         $scope.formValues[id] = [];
-                        if (id == "agents" && itemToAdd) {
+                        if (id == 'agents' && itemToAdd) {
                             $scope.formValues[id].push(itemToAdd);
-                            elt.tagsinput("add", {
+                            elt.tagsinput('add', {
                                 value: itemToAdd.counterpartyId,
                                 text: itemToAdd.counterpartyName
                             });
-                        } else if (id == "applications" && vm.screen_id == "sellerrating") {
-                            $scope.formValues["applications"].push({
+                        } else if (id == 'applications' && vm.screen_id == 'sellerrating') {
+                            $scope.formValues.applications.push({
                                 module: {
                                     id: itemToAdd.id,
                                     name: itemToAdd.name
                                 }
                             });
-                            elt.tagsinput("add", {
+                            elt.tagsinput('add', {
                                 value: itemToAdd.id,
                                 text: itemToAdd.name
                             });
-                        } else if (id == "allowedCompanies" && vm.screen_id == "contract") {
+                        } else if (id == 'allowedCompanies' && vm.screen_id == 'contract') {
                             if (itemToAdd.id != $scope.formValues.company.id) {
                                 $scope.formValues[id].push(itemToAdd);
                                 // $scope.formValues[id].push('asdaskdnqw');
-                                elt.tagsinput("add", {
+                                elt.tagsinput('add', {
                                     value: itemToAdd.id,
                                     text: itemToAdd.name
                                 });
                             } else {
                             	$('.toast').remove();
-                                toastr.error("This is main company");
+                                toastr.error('This is main company');
                             }
                         }
                     } else {
-                        var added = [];
-                        if (id == "agents") {
-                            $.each($scope.formValues.agents, function(index, value) {
+                        let added = [];
+                        if (id == 'agents') {
+                            $.each($scope.formValues.agents, (index, value) => {
                                 added.push(value.counterpartyId);
                             });
                             console.log(itemToAdd);
                             if ($.inArray(itemToAdd.counterpartyId, added) == -1 && itemToAdd.id >= 0) {
                                 $scope.formValues.agents.push(itemToAdd);
-                                elt.tagsinput("add", {
+                                elt.tagsinput('add', {
                                     value: itemToAdd.counterpartyId,
                                     text: itemToAdd.counterpartyName
                                 });
                             }
-                        } else if (id == "applications" && vm.screen_id == "sellerrating") {
-                            $.each($scope.formValues.applications, function(index, value) {
+                        } else if (id == 'applications' && vm.screen_id == 'sellerrating') {
+                            $.each($scope.formValues.applications, (index, value) => {
                                 added.push(value.module.id);
                             });
                             if ($.inArray(itemToAdd.id, added) == -1) {
-                                $scope.formValues["applications"].push({
+                                $scope.formValues.applications.push({
                                     module: {
                                         id: itemToAdd.id,
                                         name: itemToAdd.name
                                     }
                                 });
-                                elt.tagsinput("add", {
+                                elt.tagsinput('add', {
                                     value: itemToAdd.id,
                                     text: itemToAdd.name
                                 });
@@ -3160,14 +3177,14 @@ APP_MASTERS.controller("Controller_Master", [
                 var values = $scope.formValues[id];
             }
             if (values) {
-                if (id == "agents") {
+                if (id == 'agents') {
                     $.each(values, function(index, value) {
                         if (!value.isDeleted || value.isDeleted == false) {
                             if (index > 2) {
                                 $(this).hide();
                             }
                             console.log(value);
-                            elt.tagsinput("add", {
+                            elt.tagsinput('add', {
                                 value: value.counterpartyId,
                                 text: value.counterpartyName
                             });
@@ -3179,7 +3196,7 @@ APP_MASTERS.controller("Controller_Master", [
                         if (index > 2) {
                             $(this).hide();
                         }
-                        elt.tagsinput("add", {
+                        elt.tagsinput('add', {
                             value: value.id,
                             text: value.name
                         });
@@ -3191,92 +3208,92 @@ APP_MASTERS.controller("Controller_Master", [
 
             function hideTheChildren() {
             	$scope.initBoostrapTagsInputTooltip();
-                currentTags = elt.next(".bootstrap-tagsinput").children(".label");
-                currentTags.removeAttr("big-child");
+                currentTags = elt.next('.bootstrap-tagsinput').children('.label');
+                currentTags.removeAttr('big-child');
                 currentTags.show();
-                currentTags.css("clear", "none");
+                currentTags.css('clear', 'none');
                 currentTags
-                    .parent(".bootstrap-tagsinput")
-                    .children(".hideTagsChild")
+                    .parent('.bootstrap-tagsinput')
+                    .children('.hideTagsChild')
                     .remove();
                 $.each(currentTags, function(index, value) {
                     if (index > 2) {
                         $(this)
-                            .parent(".bootstrap-tagsinput")
-                            .addClass("expanded");
+                            .parent('.bootstrap-tagsinput')
+                            .addClass('expanded');
                         $(this)
-                            .parents(".multi_lookup_tags")
-                            .addClass("expanded");
+                            .parents('.multi_lookup_tags')
+                            .addClass('expanded');
                         if (index % 3 == 0) {
-                            $(this).css("clear", "both");
+                            $(this).css('clear', 'both');
                         }
-                        $(this).attr("big-child", "true");
+                        $(this).attr('big-child', 'true');
                     }
                 });
-                if (currentTags.length > 3 && !elt.next(".bootstrap-tagsinput").children(".hideTagsChild").length) {
-                    currentTags.parent().prepend("<span class='hideTagsChild'><i class='fa fa-ellipsis-h' aria-hidden='true'></i><span>");
-                    $(".hideTagsChild_" + id).css("float", "right");
+                if (currentTags.length > 3 && !elt.next('.bootstrap-tagsinput').children('.hideTagsChild').length) {
+                    currentTags.parent().prepend('<span class=\'hideTagsChild\'><i class=\'fa fa-ellipsis-h\' aria-hidden=\'true\'></i><span>');
+                    $(`.hideTagsChild_${ id}`).css('float', 'right');
                 } else {
-                    currentTags.parent(".bootstrap-tagsinput").removeClass("expanded");
-                    currentTags.parents(".multi_lookup_tags").removeClass("expanded");
+                    currentTags.parent('.bootstrap-tagsinput').removeClass('expanded');
+                    currentTags.parents('.multi_lookup_tags').removeClass('expanded');
                 }
             }
 
             function selectDefaultAgent(id, index, e) {
-                $(".tagsFor" + id + " .bootstrap-tagsinput .tag")
+                $(`.tagsFor${ id } .bootstrap-tagsinput .tag`)
                     .last()
-                    .append('<input class="defaulttag "  type="checkbox"  name="defaulttag[]" ng-model="formValues.agents[' + index + '].isDefault">');
-                $compile($(".defaulttag"))($scope);
+                    .append(`<input class="defaulttag "  type="checkbox"  name="defaulttag[]" ng-model="formValues.agents[${ index }].isDefault">`);
+                $compile($('.defaulttag'))($scope);
                 return;
             }
-            var childExpanded = false;
-            $("body").on("click", ".bootstrap-tagsinput .hideTagsChild", function() {
-				$scope.initBoostrapTagsInputTooltip();           	
+            let childExpanded = false;
+            $('body').on('click', '.bootstrap-tagsinput .hideTagsChild', function() {
+                $scope.initBoostrapTagsInputTooltip();
                 if (childExpanded == true) {
                     $(this)
-                        .parent(".bootstrap-tagsinput")
-                        .children("span.tag[big-child='true']")
+                        .parent('.bootstrap-tagsinput')
+                        .children('span.tag[big-child=\'true\']')
                         .hide();
                     $(this)
-                        .parent(".bootstrap-tagsinput")
-                        .removeClass("expanded");
+                        .parent('.bootstrap-tagsinput')
+                        .removeClass('expanded');
                     $(this)
-                        .parents(".multi_lookup_tags")
-                        .removeClass("expanded");
+                        .parents('.multi_lookup_tags')
+                        .removeClass('expanded');
                     childExpanded = false;
                 } else {
                     $(this)
-                        .parent(".bootstrap-tagsinput")
-                        .children("span.tag[big-child='true']")
+                        .parent('.bootstrap-tagsinput')
+                        .children('span.tag[big-child=\'true\']')
                         .show();
                     $(this)
-                        .parent(".bootstrap-tagsinput")
-                        .addClass("expanded");
+                        .parent('.bootstrap-tagsinput')
+                        .addClass('expanded');
                     $(this)
-                        .parents(".multi_lookup_tags")
-                        .addClass("expanded");
+                        .parents('.multi_lookup_tags')
+                        .addClass('expanded');
                     childExpanded = true;
                 }
             });
         };
         $scope.initMultiTags = function(id) {
-            var elt = $(".object_tagsinput_" + id);
+            let elt = $(`.object_tagsinput_${ id}`);
             elt.tagsinput({
-                itemValue: "value",
-                itemText: "text"
+                itemValue: 'value',
+                itemText: 'text'
             });
-            elt.tagsinput("removeAll");
-            if (vm.screen_id == "sellerrating") {
+            elt.tagsinput('removeAll');
+            if (vm.screen_id == 'sellerrating') {
                 var values = $scope.formValues[id];
                 values = [];
-                $.each($scope.formValues[id], function(index, value) {
+                $.each($scope.formValues[id], (index, value) => {
                     values.push(value.module);
                 });
             } else {
                 var values = $scope.formValues[id];
             }
-            $.each(values, function(index, value) {
-                elt.tagsinput("add", {
+            $.each(values, (index, value) => {
+                elt.tagsinput('add', {
                     value: value.id,
                     text: value.name
                 });
@@ -3284,86 +3301,86 @@ APP_MASTERS.controller("Controller_Master", [
             hideTheChildren();
 
             function hideTheChildren() {
-                currentTags = elt.next(".bootstrap-tagsinput").children(".label");
-                currentTags.removeAttr("big-child");
+                currentTags = elt.next('.bootstrap-tagsinput').children('.label');
+                currentTags.removeAttr('big-child');
                 currentTags.show();
-                currentTags.css("clear", "none");
+                currentTags.css('clear', 'none');
                 currentTags
-                    .parent(".bootstrap-tagsinput")
-                    .children(".hideTagsChild")
+                    .parent('.bootstrap-tagsinput')
+                    .children('.hideTagsChild')
                     .remove();
                 $.each(currentTags, function(index, value) {
                     if (index > 2) {
                         $(this)
-                            .parent(".bootstrap-tagsinput")
-                            .addClass("expanded");
+                            .parent('.bootstrap-tagsinput')
+                            .addClass('expanded');
                         $(this)
-                            .parents(".multi_lookup_tags")
-                            .addClass("expanded");
+                            .parents('.multi_lookup_tags')
+                            .addClass('expanded');
                         if (index % 3 == 0) {
-                            $(this).css("clear", "both");
+                            $(this).css('clear', 'both');
                         }
-                        $(this).attr("big-child", "true");
+                        $(this).attr('big-child', 'true');
                     }
                 });
-                if (currentTags.length > 3 && !elt.next(".bootstrap-tagsinput").children(".hideTagsChild").length) {
-                    currentTags.parent().prepend("<span class='hideTagsChild'><i class='fa fa-ellipsis-h' aria-hidden='true'></i><span>");
-                    $(".hideTagsChild_" + id).css("float", "right");
+                if (currentTags.length > 3 && !elt.next('.bootstrap-tagsinput').children('.hideTagsChild').length) {
+                    currentTags.parent().prepend('<span class=\'hideTagsChild\'><i class=\'fa fa-ellipsis-h\' aria-hidden=\'true\'></i><span>');
+                    $(`.hideTagsChild_${ id}`).css('float', 'right');
                 } else {
-                    currentTags.parent(".bootstrap-tagsinput").removeClass("expanded");
-                    currentTags.parents(".multi_lookup_tags").removeClass("expanded");
+                    currentTags.parent('.bootstrap-tagsinput').removeClass('expanded');
+                    currentTags.parents('.multi_lookup_tags').removeClass('expanded');
                 }
-                setTimeout(function() {
-                    $(".bootstrap-tagsinput")
-                        .children("span.tag[big-child='true']")
+                setTimeout(() => {
+                    $('.bootstrap-tagsinput')
+                        .children('span.tag[big-child=\'true\']')
                         .hide();
-                    $(".bootstrap-tagsinput").removeClass("expanded");
-                    $(".multi_lookup_tags").removeClass("expanded");
+                    $('.bootstrap-tagsinput').removeClass('expanded');
+                    $('.multi_lookup_tags').removeClass('expanded');
                 }, 1);
             }
         };
         $scope.addTagToMulti = function(model, data) {
             vm.plusClickedMultilookup = true;
             alreadyAdded = false;
-            if (!$scope.formValues[model] || typeof $scope.formValues[model] == "undefined") {
+            if (!$scope.formValues[model] || typeof $scope.formValues[model] == 'undefined') {
                 $scope.formValues[model] = [];
             }
-            if (model != "" && typeof $scope.formValues[model] != "undefined") {
-                $.each($scope.formValues[model], function(k, v) {
+            if (model != '' && typeof $scope.formValues[model] != 'undefined') {
+                $.each($scope.formValues[model], (k, v) => {
                     if (v.id == data.id) {
                         alreadyAdded = true;
                     }
                 });
             }
             if (alreadyAdded == true) {
-                toastr.error("Field is already added!");
+                toastr.error('Field is already added!');
             } else {
                 $scope.formValues[model].push(data);
-                setTimeout(function(){
-					$scope.initBoostrapTagsInputTooltip();            	
-                })                
+                setTimeout(() => {
+                    $scope.initBoostrapTagsInputTooltip();
+                });
             }
         };
         vm.initDropZone = function(id) {
-            $timeout(function() {
+            $timeout(() => {
                 Dropzone.autoDiscover = false;
                 // or disable for specific dropzone:
-                $(function() {
+                $(() => {
                     // Now that the DOM is fully loaded, create the dropzone, and setup the
                     // event listeners
-                    var myDropzone = new Dropzone("#" + id, {
-                        url: "#"
+                    let myDropzone = new Dropzone(`#${ id}`, {
+                        url: '#'
                     });
-                    myDropzone.on("addedfile", function(file) {
-                        if (id == "general_information_upload") {
-                            $("#" + id + " input").val(file.name);
+                    myDropzone.on('addedfile', function(file) {
+                        if (id == 'general_information_upload') {
+                            $(`#${ id } input`).val(file.name);
                         }
                         // Create the remove button
-                        var removeButton = Dropzone.createElement("<a href='javascript:;'' class='btn red btn-sm btn-block'>Remove</a>");
+                        let removeButton = Dropzone.createElement('<a href=\'javascript:;\'\' class=\'btn red btn-sm btn-block\'>Remove</a>');
                         // Capture the Dropzone instance as closure.
-                        var _this = this;
+                        let _this = this;
                         // Listen to the click event
-                        removeButton.addEventListener("click", function(e) {
+                        removeButton.addEventListener('click', (e) => {
                             // Make sure the button click doesn't submit the form:
                             e.preventDefault();
                             e.stopPropagation();
@@ -3379,35 +3396,35 @@ APP_MASTERS.controller("Controller_Master", [
             }, 10);
         };
         vm.equalizeColumnsHeight = function(elements) {
-            elementsArray = elements.split(", ");
-            var t = 0; // the height of the highest element (after the function runs)
-            var t_elem; // the highest element (after the function runs)
-            $timeout(function() {
+            elementsArray = elements.split(', ');
+            let t = 0; // the height of the highest element (after the function runs)
+            let t_elem; // the highest element (after the function runs)
+            $timeout(() => {
                 $.each(elementsArray, function(index, value) {
                     if ($(value).innerHeight() > t) {
                         t_elem = this;
                         t = parseFloat($(value).outerHeight() - 25);
                     }
                 });
-                $.each(elementsArray, function(index, value) {
-                    $(value + " .portlet").css("minHeight", t);
+                $.each(elementsArray, (index, value) => {
+                    $(`${value } .portlet`).css('minHeight', t);
                 });
             }, 500);
         };
         vm.equalizeColumnsHeightGrouped = function(element, group) {
-            groupElements = group.split(", ");
-            $timeout(function() {
-                var groupHeight = 0;
-                var groupMargin = 0;
-                $.each(groupElements, function(index, value) {
+            groupElements = group.split(', ');
+            $timeout(() => {
+                let groupHeight = 0;
+                let groupMargin = 0;
+                $.each(groupElements, (index, value) => {
                     if ($(value).length > 0) {
-                        groupHeight += parseFloat($(value).outerHeight());
-                        groupMargin += parseFloat($(value + " .portlet").css("margin-bottom"));
+                        groupHeight = groupHeight + parseFloat($(value).outerHeight());
+                        groupMargin = groupMargin + parseFloat($(`${value } .portlet`).css('margin-bottom'));
                     }
                 });
                 calcHeight = parseFloat(groupHeight - 10);
-                $(element + " .portlet").css("height", calcHeight);
-                $(element + " .portlet").css("overflow", "auto");
+                $(`${element } .portlet`).css('height', calcHeight);
+                $(`${element } .portlet`).css('overflow', 'auto');
             }, 1000);
         };
         vm.cloneEntity = function(group, obj) {
@@ -3417,7 +3434,7 @@ APP_MASTERS.controller("Controller_Master", [
                 new_obj.isActive = true;
                 $scope.formValues[group].push(new_obj);
             } else {
-                var index = Object.keys($scope.formValues[group]).length;
+                let index = Object.keys($scope.formValues[group]).length;
                 $scope.formValues[group][index] = new Object();
             }
         };
@@ -3458,13 +3475,11 @@ APP_MASTERS.controller("Controller_Master", [
             if (!$scope.formValues.products[productId].additionalCosts[key].id || $scope.formValues.products[productId].additionalCosts[key].id == 0) {
                 if ($scope.formValues.products[productId].additionalCosts.length > 0) {
                     $scope.formValues.products[productId].additionalCosts.splice(key, 1);
+                } else if (emptyArray) {
+                    $scope.formValues.products[productId].additionalCosts = [];
+                    console.log($scope.formValues.products[productId].additionalCosts);
                 } else {
-                    if (emptyArray) {
-                        $scope.formValues.products[productId].additionalCosts = [];
-                        console.log($scope.formValues.products[productId].additionalCosts);
-                    } else {
-                        $scope.formValues.products[productId].additionalCosts[key] = {};
-                    }
+                    $scope.formValues.products[productId].additionalCosts[key] = {};
                 }
             } else {
                 $scope.formValues.products[productId].additionalCosts[key].isDeleted = true;
@@ -3474,57 +3489,57 @@ APP_MASTERS.controller("Controller_Master", [
             }
         };
         $scope.current_field = {};
-        var createNewField = function() {
+        let createNewField = function() {
             return {
                 Active: true
             };
         };
-        $scope.initBoostrapTagsInputTooltip = function(){
-        	if ($(".bootstrap-tagsinput .tag").length == 0) {
+        $scope.initBoostrapTagsInputTooltip = function() {
+        	if ($('.bootstrap-tagsinput .tag').length == 0) {
         		return;
         	}
-			$(".bootstrap-tagsinput .tag").each(function(k, v) {
-				if ($(v).is(":visible") && !$(v).hasClass("tooltip") ) {
-                    $(this).attr("tooltip", "");
-                    $(this).attr("data-original-title", $(v).text());
+            $('.bootstrap-tagsinput .tag').each(function(k, v) {
+                if ($(v).is(':visible') && !$(v).hasClass('tooltip')) {
+                    $(this).attr('tooltip', '');
+                    $(this).attr('data-original-title', $(v).text());
                     $(v).tooltip();
-				}
-            })  
-        }        
+                }
+            });
+        };
         $scope.addElement = function(ele, idx) {
             $scope.current_field.Active = false;
-            var returnKey = [];
-            var addedFields = [];
-            $.each($scope.formFields, function(key, info) {
+            let returnKey = [];
+            let addedFields = [];
+            $.each($scope.formFields, (key, info) => {
                 returnKey.push(info.children);
             });
-            $.each(returnKey, function(keys, infos) {
-                $.each(infos, function(key, info) {
+            $.each(returnKey, (keys, infos) => {
+                $.each(infos, (key, info) => {
                     addedFields.push(info.Unique_ID);
                 });
             });
             if ($.inArray(ele.Unique_ID, addedFields) >= 0) {
-                toastr.error("Field is already added. Please clone it!");
+                toastr.error('Field is already added. Please clone it!');
                 return;
             }
             $scope.current_field = createNewField();
             $scope.activeField(ele);
             angular.merge($scope.current_field, ele);
             var group = $scope.current_field.Group;
-            var new_group_id = Object.keys($scope.formFields).length;
+            let new_group_id = Object.keys($scope.formFields).length;
             if (!group) {
-                group = "custom_group" + new_group_id;
+                group = `custom_group${ new_group_id}`;
             }
-            if (typeof $scope.formFields[group] == "undefined") {
+            if (typeof $scope.formFields[group] == 'undefined') {
                 $scope.formFields[group] = {
                     id: group,
                     name: group,
                     children: []
                 };
             }
-            if (typeof idx == "undefined") {
+            if (typeof idx == 'undefined') {
                 if (Object.keys($scope.formFields).indexOf($scope.current_field.Group) < 0) {
-                    $scope.formFields[group].id = $scope.current_field.Group.replace(" ", "_");
+                    $scope.formFields[group].id = $scope.current_field.Group.replace(' ', '_');
                     $scope.formFields[group].name = $scope.current_field.Group;
                     $scope.formFields[group].children.push($scope.current_field);
                 } else {
@@ -3533,7 +3548,7 @@ APP_MASTERS.controller("Controller_Master", [
             } else {
                 var group = $scope.current_field.Group;
                 $scope.formFields[group].splice(idx, 0, $scope.current_field);
-                $("#fieldSettingTab_lnk").tab("show");
+                $('#fieldSettingTab_lnk').tab('show');
             }
         };
         $scope.activeField = function(f) {
@@ -3541,38 +3556,38 @@ APP_MASTERS.controller("Controller_Master", [
             f.Active = false;
             $scope.current_field = f;
             f.Active = true;
-            $("#fieldSettingTab_lnk").tab("show");
+            $('#fieldSettingTab_lnk').tab('show');
         };
         $scope.activeGroup = function(g) {
             $scope.current_group = g;
             $scope.current_group.Active = true;
-            $("#groupSettingTab_lnk").tab("show");
+            $('#groupSettingTab_lnk').tab('show');
         };
         $scope.changeGroup = function() {
-            var new_group = $scope.current_field.Group;
-            var newField = angular.copy($scope.current_field);
+            let new_group = $scope.current_field.Group;
+            let newField = angular.copy($scope.current_field);
             newField.Cloned = true;
             $scope.formFields[$.trim(new_group)].children.push(newField);
         };
         $scope.removeElement = function(parent, idx, unique_id) {
             $scope.formFields[parent].children[idx].Added = false;
             if ($scope.formFields[parent].children[idx].Active) {
-                $("#addFieldTab_lnk").tab("show");
+                $('#addFieldTab_lnk').tab('show');
                 $scope.current_field = {};
             }
             $scope.formFields[parent].children.splice(idx, 1);
             if ($scope.formFields[parent].children.length < 1) {
                 delete $scope.formFields[parent];
             }
-            toastr.success("Field deleted");
+            toastr.success('Field deleted');
         };
         $scope.formbuilderSortableOpts = {
-            "ui-floating": true,
-            connectWith: "ul"
+            'ui-floating': true,
+            'connectWith': 'ul'
         };
         $scope.formbuilderSortableGroups = {
-            "ui-floating": true,
-            connectWith: ".formbuilder-group"
+            'ui-floating': true,
+            'connectWith': '.formbuilder-group'
         };
         if ($state.current.name && $state.current.name != 'default.group-of-requests') {
 	        // setTimeout(function() {
@@ -3597,27 +3612,28 @@ APP_MASTERS.controller("Controller_Master", [
 	        // }, 50);
         }
 
-		vm.testFunction = function(el){
-			console.log(el)
-		}
+        vm.testFunction = function(el) {
+            console.log(el);
+        };
 
         $scope.checkIfTab = function() {
-            $scope.$watch("formFields", function() {
-                $timeout(function() {
-                    tab = $(".grp_unit")
-                        .children(".tab-pane")
+            $scope.$watch('formFields', () => {
+                $timeout(() => {
+                    tab = $('.grp_unit')
+                        .children('.tab-pane')
                         .first()
-                        .addClass("active in");
+                        .addClass('active in');
                     // console.log(tab);
-                    $("#tabs_navigation")
+                    $('#tabs_navigation')
                         .insertBefore(tab)
-                        .removeClass("hidden");
-                    $("#tabs_navigation ul li")
+                        .removeClass('hidden');
+                    $('#tabs_navigation ul li')
                         .first()
-                        .addClass("active");
+                        .addClass('active');
                 }, 10);
             });
         };
+
         /**
          * Load DLC config using object
          */
@@ -3632,8 +3648,8 @@ APP_MASTERS.controller("Controller_Master", [
         //
         // -- {end} data tables masterSource $scope lists --
         // -- Additional Costs SELECT
-        if ($listsCache["AdditionalCost"]) {
-            $scope.additionalCostsList = $listsCache["AdditionalCost"];
+        if ($listsCache.AdditionalCost) {
+            $scope.additionalCostsList = $listsCache.AdditionalCost;
         }
         // -- Additional Costs SELECT
         $scope.getKeysCount = function(obj) {
@@ -3650,32 +3666,32 @@ APP_MASTERS.controller("Controller_Master", [
                     to: newObj
                 }
             };
-            Factory_Master.exchangeRate(param, function(callback) {
+            Factory_Master.exchangeRate(param, (callback) => {
                 // callback = '1.5';
                 if (callback) {
-                    initial_val = $("#" + parent).val();
+                    initial_val = $(`#${ parent}`).val();
                     updated_val = initial_val * callback;
-                    $("#" + parent).val(updated_val);
+                    $(`#${ parent}`).val(updated_val);
                 }
             });
         };
         $scope.isVisible = function(id) {
-            return $("#" + id).is(":visible");
+            return $(`#${ id}`).is(':visible');
         };
         $scope.isParentVisible = function(id) {
-            return $("#" + id).parent().is(":visible");
+            return $(`#${ id}`).parent().is(':visible');
         };
         $scope.fVal = function(id) {
             return $scope;
         };
         $scope.returnSelectName = function(id) {
-            return $.trim($("#" + id + " option:selected").text());
+            return $.trim($(`#${ id } option:selected`).text());
         };
         $scope.showTab = function(id) {
-            setTimeout(function() {
-                $('.nav-tabs a[href="' + id + '"]')
-                    .tab("show")
-                    .trigger("click");
+            setTimeout(() => {
+                $(`.nav-tabs a[href="${ id }"]`)
+                    .tab('show')
+                    .trigger('click');
             }, 1);
         };
         $scope.removeSchedule = function(elem) {
@@ -3683,13 +3699,11 @@ APP_MASTERS.controller("Controller_Master", [
         };
         $scope.addSchedule = function(elem) {
             if ($scope.formValues[elem].id > 0 && $scope.formValues[elem].isDeleted == false) {
-                toastr.error("Schedule already added");
+                toastr.error('Schedule already added');
+            } else if ($scope.formValues[elem].id > 0) {
+                $scope.formValues[elem].isDeleted = false;
             } else {
-                if ($scope.formValues[elem].id > 0) {
-                    $scope.formValues[elem].isDeleted = false;
-                } else {
-                    $scope.formValues[elem].id = 0;
-                }
+                $scope.formValues[elem].id = 0;
             }
         };
         $scope.addData = function(obj) {
@@ -3697,17 +3711,16 @@ APP_MASTERS.controller("Controller_Master", [
             obj.push({
                 id: 0
             });
-            if (vm.app_id == "claims" && vm.screen_id == "claims") {
-                $.each(obj, function(key, val) {
+            if (vm.app_id == 'claims' && vm.screen_id == 'claims') {
+                $.each(obj, (key, val) => {
                     if (val.id == 0) {
-                        if (typeof val.createdBy == "undefined") {
+                        if (typeof val.createdBy == 'undefined') {
                             val.createdBy = $rootScope.user;
                             val.createdBy.displayName = null;
                             val.createdBy.code = null;
                             val.createdBy.collectionName = null;
                         }
-                        if (typeof val.createdOn == "undefined") {
-                       
+                        if (typeof val.createdOn == 'undefined') {
                             val.createdOn = moment().format();
                         }
                     }
@@ -3718,40 +3731,38 @@ APP_MASTERS.controller("Controller_Master", [
             obj = $scope[obj];
             index = obj.indexOf(row);
             length = 0;
-            $.each(Object.values(obj), function(key, val) {
+            $.each(Object.values(obj), (key, val) => {
                 if (!val.isDeleted) {
                     length++;
                 }
             });
-            if (vm.screen_id == "invoice" && vm.app_id == "invoices") {
+            if (vm.screen_id == 'invoice' && vm.app_id == 'invoices') {
             	if ($scope.formValues.status) {
-	                if ($scope.formValues.status.name == "Approved") {
+	                if ($scope.formValues.status.name == 'Approved') {
 	                	if (obj[idx].id) {
-		                    toastr.info("You cannot delete product if invoice status is Approved");
+		                    toastr.info('You cannot delete product if invoice status is Approved');
 		                    return;
 	                	}
 	                }
             	}
                 if (vm.entity_id) {
-                	 $scope.sweetConfirm("Are you sure you want to delete this item?", function(response){
+                	 $scope.sweetConfirm('Are you sure you want to delete this item?', (response) => {
                 	 	if (response == true) {
-							if (row.id > 0) {
+                            if (row.id > 0) {
 							    row.isDeleted = true;
-								$scope.save_master_changes();
-							} else {
+                                $scope.save_master_changes();
+                            } else {
 							    obj.splice(index, 1);
 							    $scope.$apply();
-							}
+                            }
                 	 	}
                 	 });
-                } else {
-                    if (row.id > 0 || !row.id) {
+                } else if (row.id > 0 || !row.id) {
 	                    row.isDeleted = true;
 	                } else {
 	                    // row.isDeleted = true;
 	                    obj.splice(index, 1);
 	                }
-                }
                 return;
             }
 
@@ -3762,58 +3773,55 @@ APP_MASTERS.controller("Controller_Master", [
                 } else {
                     obj.splice(index, 1);
                 }
-            } else {
-                if (row.id > 0) {
-                    row.isDeleted = true;
-                    if(vm.app_id !== 'claims' && vm.screen_id !== 'claims') {
-                      obj.push({
-                          id: 0
-                      });
-                    }
-                } else {
-                    obj.splice(index, 1);
+            } else if (row.id > 0) {
+                row.isDeleted = true;
+                if(vm.app_id !== 'claims' && vm.screen_id !== 'claims') {
+                    obj.push({
+                        id: 0
+                    });
                 }
+            } else {
+                obj.splice(index, 1);
             }
         };
         $scope.showRow = function(row, grid) {
-            if (angular.equals(grid.options.data, "formValues.periods")) {
+            if (angular.equals(grid.options.data, 'formValues.periods')) {
                 return true;
-            } else {
-                return !row.isDeleted;
             }
+            return !row.isDeleted;
         };
         $scope.setDefaultValue = function(id, val) {
-            $timeout(function() {
-                $("#" + id)
+            $timeout(() => {
+                $(`#${ id}`)
                     .val(val)
-                    .trigger("change");
+                    .trigger('change');
             }, 10);
         };
         vm.enableMultiSelect = function(id, fromLabel, toLabel) {
-            $timeout(function() {
-                $("#" + id).multiSelect({
-                    selectableHeader: "<div class='custom-header'>" + fromLabel + "</div>",
-                    selectionHeader: "<div class='custom-header'>" + toLabel + "</div>"
+            $timeout(() => {
+                $(`#${ id}`).multiSelect({
+                    selectableHeader: `<div class='custom-header'>${ fromLabel }</div>`,
+                    selectionHeader: `<div class='custom-header'>${ toLabel }</div>`
                 });
-                $("#" + id)
-                    .parents(".multiSelectSwitch")
-                    .find(".ms-selectable")
+                $(`#${ id}`)
+                    .parents('.multiSelectSwitch')
+                    .find('.ms-selectable')
                     .append('<span class="switches"><span>&gt;&gt;</span><span>&lt;&lt;</span></span>');
             }, 100);
         };
         $scope.mapLocation = function(name, id) {
-            val = $('[name= "' + name + '"]').val();
-            Factory_Master.get_master_entity(val, "location", "masters", function(response) {
+            val = $(`[name= "${ name }"]`).val();
+            Factory_Master.get_master_entity(val, 'location', 'masters', (response) => {
                 if (response) {
                     newSysInst = [];
                     i = 0;
-                    $.each($scope.formValues.productsSystemInstruments, function(key, kval) {
-                        if ((!kval.canBeDeleted && kval.id > 0) || (typeof kval.canBeDeleted === "undefined" && kval.id == 0)) {
+                    $.each($scope.formValues.productsSystemInstruments, (key, kval) => {
+                        if (!kval.canBeDeleted && kval.id > 0 || typeof kval.canBeDeleted === 'undefined' && kval.id == 0) {
                             newSysInst[key] = kval;
                             i++;
                         }
                     });
-                    $.each(response.productsSystemInstruments, function(key, kval1) {
+                    $.each(response.productsSystemInstruments, (key, kval1) => {
                         if (kval1.id) {
                             kval1.id = 0;
                             $scope.formValues.productsSystemInstruments.push(kval1);
@@ -3835,7 +3843,7 @@ APP_MASTERS.controller("Controller_Master", [
             $scope.refreshValue = 1;
         };
         $scope.multiSelectLabTestResult = function(row) {
-            if (typeof $scope.selectedRows == "undefined") {
+            if (typeof $scope.selectedRows == 'undefined') {
                 $scope.selectedRows = [];
             }
             selId = row.entity.id;
@@ -3846,35 +3854,35 @@ APP_MASTERS.controller("Controller_Master", [
             }
         };
         $scope.clickUpload = function() {
-            setTimeout(function() {
-                angular.element("#fileUpload").trigger("click");
-                angular.element("#FTPFileUpload").trigger("click");
+            setTimeout(() => {
+                angular.element('#fileUpload').trigger('click');
+                angular.element('#FTPFileUpload').trigger('click');
             }, 1);
         };
         $scope.uploadFiles = function(name, id, file) {
             if (vm.entity_id > 0) {
-                var formData = new FormData();
-                formData.append("request", '{"Payload":{"Id":' + vm.entity_id + "}}");
-                if (id == "drag") {
-                    formData.append("file", file);
+                let formData = new FormData();
+                formData.append('request', `{"Payload":{"Id":${ vm.entity_id }}}`);
+                if (id == 'drag') {
+                    formData.append('file', file);
                 } else {
-                    $.each($("#fileUpload")[0].files, function(i, file) {
-                        formData.append("file", file);
+                    $.each($('#fileUpload')[0].files, (i, file) => {
+                        formData.append('file', file);
                     });
                 }
-                Factory_Master.upload_file(formData, function(callback) {
+                Factory_Master.upload_file(formData, (callback) => {
                     if (callback) {
                         $scope.getLogo(name);
                         toastr.success(callback);
                     }
                 });
             } else {
-                toastr.error("You must save company first");
+                toastr.error('You must save company first');
             }
         };
-        $scope.$watch("formValues", function(data) {
+        $scope.$watch('formValues', (data) => {
             $rootScope.formValues = data;
-	    	if (vm.entity_id == "") {
+	    	if (vm.entity_id == '') {
 	          	if (vm.app_id === 'masters' && vm.screen_id === 'service') {
 	          		if (!$scope.formValues.hsfoUom) {
 		                $scope.formValues.hsfoUom = $scope.tenantSetting.tenantFormats.uom;
@@ -3886,52 +3894,50 @@ APP_MASTERS.controller("Controller_Master", [
 		                $scope.formValues.lsfoUom = $scope.tenantSetting.tenantFormats.uom;
 	          		}
 	            }
-	    	}              
+	    	}
         });
         $rootScope.droppedDoc = null;
         $scope.dropDocument = function(file) {
             $rootScope.droppedDoc = file;
             $scope.droppedDoc = $rootScope.droppedDoc;
-            if (typeof $scope.formValues.documentType != "undefined") {
-                if ($scope.formValues.documentType.name != "") {
+            if (typeof $scope.formValues.documentType != 'undefined') {
+                if ($scope.formValues.documentType.name != '') {
                     $rootScope.formValues.documentType = $scope.formValues.documentType;
-                    $scope.uploadDocument("#fileUpload");
+                    $scope.uploadDocument('#fileUpload');
                 }
             } else {
-                toastr.warning("Please select a Document Type and upload the file again");
+                toastr.warning('Please select a Document Type and upload the file again');
                 $rootScope.droppedDoc = null;
                 $scope.droppedDoc = null;
             }
-
         };
         $scope.uploadDocument = function(selector) {
-      
-            var data = {
+            let data = {
                 request: {
                     Payload: {
-                        name: "File2",
+                        name: 'File2',
                         documentType: {}, // { "id":1, "name":"BDN","code":"","collectionName":null } (dinamic)
                         size: 100,
-                        fileType: "FileType",
+                        fileType: 'FileType',
                         transactionType: {}, // {"id":1,"name":"Request","code":"","collectionName":null} (dinamic)
                         fileId: 1,
                         uploadedBy: {
                             id: 1,
-                            name: "Admin",
-                            code: "",
+                            name: 'Admin',
+                            code: '',
                             collectionName: null
                         },
-                        uploadedOn: "2017-01-11T14:21:37.96",
-                        notes: "",
+                        uploadedOn: '2017-01-11T14:21:37.96',
+                        notes: '',
                         isVerified: false,
                         referenceNo: 1,
                         createdBy: {
                             id: 1,
-                            name: "Admin",
-                            code: "",
+                            name: 'Admin',
+                            code: '',
                             collectionName: null
                         },
-                        createdOn: "2017-01-11T14:21:37.96",
+                        createdOn: '2017-01-11T14:21:37.96',
                         lastModifiedByUser: null,
                         lastModifiedOn: null,
                         id: 0,
@@ -3940,20 +3946,20 @@ APP_MASTERS.controller("Controller_Master", [
                 },
                 file: {}
             };
-            var FD = new FormData();
+            let FD = new FormData();
             // set data
 
-            if($state.params.screen_id == "documenttype"){
+            if($state.params.screen_id == 'documenttype') {
                 $rootScope.formValues.documentType = {
-                    "id": $state.params.entity_id
-                }
-            }  
-            documentTypeScope = angular.element($(".form_input_DocumentType")).scope(); 
+                    id: $state.params.entity_id
+                };
+            }
+            documentTypeScope = angular.element($('.form_input_DocumentType')).scope();
             $rootScope.formValues.documentType = documentTypeScope.formValues.documentType;
             data.request.Payload.documentType = $rootScope.formValues.documentType;
             data.request.Payload.isVerified = false; // default false
             if (!$rootScope.formValues.documentType) {
-                toastr.error("Please fill in required fields: Document Type.");
+                toastr.error('Please fill in required fields: Document Type.');
                 return false;
             }
             // isVerified = false
@@ -3964,9 +3970,9 @@ APP_MASTERS.controller("Controller_Master", [
             // console.log(vm.app_id);
             // console.log(vm.screen_id);
             // console.log($state.current.name);
-            var verifiedRequired = {
-                "default.view-request-documents": true,
-                "default.view-order-documents": true,
+            let verifiedRequired = {
+                'default.view-request-documents': true,
+                'default.view-order-documents': true,
                 'default.view-group-of-requests-documents': true,
                 'delivery.documents': true,
                 'labs.documents': true,
@@ -3974,35 +3980,39 @@ APP_MASTERS.controller("Controller_Master", [
                 'invoices.documents': true,
                 'contracts.documents': true,
                 'masters.documents': true
+            };
+            let requiredFields = [];
+
+
+            if (!$rootScope.formValues.documentType) {
+                requiredFields.push('Document Type');
             }
-            var requiredFields = [];
-
-
-            if (!$rootScope.formValues.documentType) requiredFields.push("Document Type");
-            if(verifiedRequired[$state.current.name] && requiredFields.length){
-                var error = "Please fill in required fields: ";
-                $.each(requiredFields, function (key,val){
-                    error += val + ",";
-                })
+            if(verifiedRequired[$state.current.name] && requiredFields.length) {
+                let error = 'Please fill in required fields: ';
+                $.each(requiredFields, (key, val) => {
+                    error = `${error }${val },`;
+                });
                 error = error.slice(0, -1);
                 toastr.error(error);
                 return false;
             }
-             // if (!$rootScope.formValues.documentType || !$rootScope.formValues.isVerified) {
+            // if (!$rootScope.formValues.documentType || !$rootScope.formValues.isVerified) {
             // 	toastr.error("Please fill in required fields");
             // 	return false;
             // }
             data.request.Payload.referenceNo = $state.params.entity_id;
-            if ($state.params.requestId) data.request.Payload.referenceNo = $state.params.requestId;
+            if ($state.params.requestId) {
+                data.request.Payload.referenceNo = $state.params.requestId;
+            }
 
-       
-            var transactionType = {
+
+            let transactionType = {
                 id: 0,
-                name: "undefined",
-                code: "",
+                name: 'undefined',
+                code: '',
                 collectionName: null
             };
-            var appPath = $state.current.name;
+            let appPath = $state.current.name;
             // Id, Name
             //  1, Request
             //  2, Offer
@@ -4015,39 +4025,39 @@ APP_MASTERS.controller("Controller_Master", [
             //  9, Contract
             if (appPath.match(/view-request-documents/)) {
                 transactionType.id = 1;
-                transactionType.name = "Request";
+                transactionType.name = 'Request';
             }
             if (appPath.match(/offer/)) {
                 transactionType.id = 2;
-                transactionType.name = "Offer";
+                transactionType.name = 'Offer';
             }
             if (appPath.match(/view-order-documents/)) {
                 transactionType.id = 3;
-                transactionType.name = "Order";
+                transactionType.name = 'Order';
             }
             if (appPath.match(/delivery/)) {
                 transactionType.id = 4;
-                transactionType.name = "Delivery";
+                transactionType.name = 'Delivery';
             }
             if (appPath.match(/invoices/)) {
                 transactionType.id = 5;
-                transactionType.name = "Invoice";
+                transactionType.name = 'Invoice';
             }
             if (appPath.match(/labs/)) {
                 transactionType.id = 6;
-                transactionType.name = "Labs";
+                transactionType.name = 'Labs';
             }
             if (appPath.match(/claims/)) {
                 transactionType.id = 7;
-                transactionType.name = "Claims";
+                transactionType.name = 'Claims';
             }
             if (appPath.match(/masters/)) {
                 transactionType.id = 8;
-                transactionType.name = "Masters";
+                transactionType.name = 'Masters';
             }
             if (appPath.match(/contracts/)) {
                 transactionType.id = 9;
-                transactionType.name = "Contract";
+                transactionType.name = 'Contract';
             }
             // if (appPath.match(/view-group-of-requests-documents/)) {
             //     transactionType.id = 1;
@@ -4055,149 +4065,144 @@ APP_MASTERS.controller("Controller_Master", [
             // }
             if (appPath.match(/default.view-group-of-requests-documents/)) {
                 transactionType.id = 2;
-                transactionType.name = "Offer";
+                transactionType.name = 'Offer';
             }
-  
+
 
             // master screens transaction types
-            var screenTransactionTypeMap = {
-                "additionalcost":     {   "id": 13, "name": "AdditionalCosts"},
-                "agreementtype":        {   "id": 14, "name": "AgreementTypes"},
-                "barge":         {   "id": 15, "name": "Barges"},
-                "buyer":        {   "id": 16, "name": "Buyers"},
-                "calendar":        {   "id": 17, "name": "Calendars"},
-                "claimtype":       {   "id": 18, "name": "ClaimTypes"},
-                "contacttype": {   "id": 20, "name": "ContactTypes"},
-                "company":     {   "id": 19, "name": "Companies"},
-                "pool":     {   "id": 19, "name": "Companies"},
-                "counterparty":    {   "id": 21, "name": "Counterparties"},
-                "country":        {   "id": 22, "name": "Countries"},
-                "deliveryoption":      {   "id": 23, "name": "DeliveryOptions"},
-                "event":       {   "id": 25, "name": "Events"},
-                "exchangerate":     {   "id": 26, "name": "ExchangeRates"},
-                "formula":         {   "id": 27, "name": "Formulas"},
-                "incoterms":        {   "id": 28, "name": "Incoterms"},
-                "location":        {   "id": 29, "name": "Locations"},
-                "paymentterm":      {   "id": 31, "name": "PaymentTerms"},
-                "period":        {   "id": 32, "name": "Periods"},
-                "price":         {   "id": 33, "name": "Prices"},
-                "pricetype":   {"id": 34, "name": "MarketPriceTypes"},
-                "product":    {   "id": 35, "name": "Products"},
-                "service":   {   "id": 36, "name": "Services"},
-                "operator":  {   "id": 36, "name": "Services"},
-                "specgroup":        {   "id": 37, "name": "SpecGroups"},
-                "specparameter":    {   "id": 38, "name": "SpecParameters"},
-                "status":         {   "id": 39, "name": "Statuses"},
-                "strategy":         {   "id": 40, "name": "Strategies"},
-                "systeminstrument":         {   "id": 41, "name": "SystemInstruments"},
-                "uom":    {   "id": 42, "name": "Uoms"},
-                "vessel":        {   "id": 43, "name": "Vessels"},
-                "vesseltype":        {   "id": 44, "name": "VesselTypes"},
-                "currency":         {   "id": 45, "name": "Currencies" }
-            }
+            let screenTransactionTypeMap = {
+                additionalcost:     { id: 13, name: 'AdditionalCosts' },
+                agreementtype:        { id: 14, name: 'AgreementTypes' },
+                barge:         { id: 15, name: 'Barges' },
+                buyer:        { id: 16, name: 'Buyers' },
+                calendar:        { id: 17, name: 'Calendars' },
+                claimtype:       { id: 18, name: 'ClaimTypes' },
+                contacttype: { id: 20, name: 'ContactTypes' },
+                company:     { id: 19, name: 'Companies' },
+                pool:     { id: 19, name: 'Companies' },
+                counterparty:    { id: 21, name: 'Counterparties' },
+                country:        { id: 22, name: 'Countries' },
+                deliveryoption:      { id: 23, name: 'DeliveryOptions' },
+                event:       { id: 25, name: 'Events' },
+                exchangerate:     { id: 26, name: 'ExchangeRates' },
+                formula:         { id: 27, name: 'Formulas' },
+                incoterms:        { id: 28, name: 'Incoterms' },
+                location:        { id: 29, name: 'Locations' },
+                paymentterm:      { id: 31, name: 'PaymentTerms' },
+                period:        { id: 32, name: 'Periods' },
+                price:         { id: 33, name: 'Prices' },
+                pricetype:   { id: 34, name: 'MarketPriceTypes' },
+                product:    { id: 35, name: 'Products' },
+                service:   { id: 36, name: 'Services' },
+                operator:  { id: 36, name: 'Services' },
+                specgroup:        { id: 37, name: 'SpecGroups' },
+                specparameter:    { id: 38, name: 'SpecParameters' },
+                status:         { id: 39, name: 'Statuses' },
+                strategy:         { id: 40, name: 'Strategies' },
+                systeminstrument:         { id: 41, name: 'SystemInstruments' },
+                uom:    { id: 42, name: 'Uoms' },
+                vessel:        { id: 43, name: 'Vessels' },
+                vesseltype:        { id: 44, name: 'VesselTypes' },
+                currency:         { id: 45, name: 'Currencies' }
+            };
 
 
             // "documenttype":     {"id": 24, "name": "DocumentTypes"},
-            if(screenTransactionTypeMap[$state.params.screen_id]){
+            if(screenTransactionTypeMap[$state.params.screen_id]) {
                 transactionType = screenTransactionTypeMap[$state.params.screen_id];
             }
-      
+
 
             // finally set transaction type
             data.request.Payload.transactionType = transactionType;
 
             console.log('$state.params.screen_id', $state.params.screen_id);
-            if($state.current.name == 'masters.documents' && $state.params.screen_id == "documenttype"){
+            if($state.current.name == 'masters.documents' && $state.params.screen_id == 'documenttype') {
+                // for master documenttype (only with documents upload) set referenceNo to a big number
+                data.request.Payload.referenceNo = Number.MAX_SAFE_INTEGER;
 
-              
-                    //for master documenttype (only with documents upload) set referenceNo to a big number
-                    data.request.Payload.referenceNo = Number.MAX_SAFE_INTEGER;
+                // set document type to current document type (if uploading from document type)
+                // data.request.Payload.documentType = {
+                //     "id": $state.params.entity_id
+                // }
 
-                    // set document type to current document type (if uploading from document type)
-                    // data.request.Payload.documentType = {
-                    //     "id": $state.params.entity_id
-                    // }
-    
-                    //se trasaction type from list
-                    Factory_Master.get_master_entity(vm.entity_id, vm.screen_id, vm.app_id, function(callback) {
-                 
-                        if (callback) {
-                            if(typeof $scope.temp == 'undefined') $scope.temp = {};
-                            $scope.temp.formValues = angular.copy(callback);
-    
-                            var transactionTypes = [];
-                    
-                            $.each($scope.temp.formValues.templates, function(key,val){
-                                var transactionType = {
-                                    id: val.transactionType.id,
-                                    name: val.transactionType.name,
-                                    code: "",
-                                    collectionName: null
-                                };
-                                transactionTypes.push(transactionType);
-                            });
-             
-                            //make call for each transaction type in edit
-                            $scope.upload_success = 0;
-                            $.each(transactionTypes, function(key,val){
-            
-                                data.request.Payload.transactionType = angular.copy(val);
-                                if ($rootScope.droppedDoc) {
-                                    file = $rootScope.droppedDoc;
-                                } else {
-                                    file = $(selector)[0].files[0];
-                                }
-                                FD.append("file", file);
-                                // add file
-                                FD.append("request", JSON.stringify(data.request));
-                                Factory_Master.upload_document(FD, function(callback) {
-                                    if (callback) {
-                                        toastr.success("Document saved!");
-                                        $scope.upload_success++;
-                                        // $state.reload();
-                                        // $('.ui-jqgrid-btable').trigger('reloadGrid');
-                                    } else {
-                                        toastr.error("Upload error");
-                                        // $state.reload();
-                                    }
-                                });
-                            })
-    
-                            $scope.$watch('upload_success', function(){
-                                if($scope.upload_success == transactionTypes.length) 
-                                    $state.reload();
-                            })
+                // se trasaction type from list
+                Factory_Master.get_master_entity(vm.entity_id, vm.screen_id, vm.app_id, (callback) => {
+                    if (callback) {
+                        if(typeof $scope.temp == 'undefined') {
+                            $scope.temp = {};
                         }
-                    });
+                        $scope.temp.formValues = angular.copy(callback);
 
+                        let transactionTypes = [];
+
+                        $.each($scope.temp.formValues.templates, (key, val) => {
+                            let transactionType = {
+                                id: val.transactionType.id,
+                                name: val.transactionType.name,
+                                code: '',
+                                collectionName: null
+                            };
+                            transactionTypes.push(transactionType);
+                        });
+
+                        // make call for each transaction type in edit
+                        $scope.upload_success = 0;
+                        $.each(transactionTypes, (key, val) => {
+                            data.request.Payload.transactionType = angular.copy(val);
+                            if ($rootScope.droppedDoc) {
+                                file = $rootScope.droppedDoc;
+                            } else {
+                                file = $(selector)[0].files[0];
+                            }
+                            FD.append('file', file);
+                            // add file
+                            FD.append('request', JSON.stringify(data.request));
+                            Factory_Master.upload_document(FD, (callback) => {
+                                if (callback) {
+                                    toastr.success('Document saved!');
+                                    $scope.upload_success++;
+                                    // $state.reload();
+                                    // $('.ui-jqgrid-btable').trigger('reloadGrid');
+                                } else {
+                                    toastr.error('Upload error');
+                                    // $state.reload();
+                                }
+                            });
+                        });
+
+                        $scope.$watch('upload_success', () => {
+                            if($scope.upload_success == transactionTypes.length) {
+                                $state.reload();
+                            }
+                        });
+                    }
+                });
             }else{
-
                 if ($rootScope.droppedDoc) {
                     file = $rootScope.droppedDoc;
                 } else {
                     file = $(selector)[0].files[0];
                 }
-                FD.append("file", file);
+                FD.append('file', file);
                 // add file
-                FD.append("request", JSON.stringify(data.request));
-                Factory_Master.upload_document(FD, function(callback) {
+                FD.append('request', JSON.stringify(data.request));
+                Factory_Master.upload_document(FD, (callback) => {
                     if (callback) {
-                        toastr.success("Document saved!");
+                        toastr.success('Document saved!');
                         $state.reload();
                         // $('.ui-jqgrid-btable').trigger('reloadGrid');
                         // location.reload();
                     } else {
-                        toastr.error("Upload error");
+                        toastr.error('Upload error');
                         $state.reload();
                         // location.reload();
                     }
                 });
             }
-    
-
         };
         $scope.dropDocumentFile = function(name, id, file) {
-            Factory_Master.newSchedule(data, function(response) {});
+            Factory_Master.newSchedule(data, (response) => {});
         };
         // download document using XHR - { liviu m. }
         $scope.downloadDocument = function(rowId, docName) {
@@ -4205,21 +4210,21 @@ APP_MASTERS.controller("Controller_Master", [
                 {
                     Payload: rowId
                 },
-                function(file, mime) {
+                (file, mime) => {
                     if (file.data) {
-                        var blob = new Blob([file.data], {
+                        let blob = new Blob([ file.data ], {
                             type: mime
                         });
-                        var a = document.createElement("a");
-                        a.style = "display: none";
+                        let a = document.createElement('a');
+                        a.style = 'display: none';
                         document.body.appendChild(a);
-                        //Create a DOMString representing the blob and point the link element towards it
-                        var url = window.URL.createObjectURL(blob);
+                        // Create a DOMString representing the blob and point the link element towards it
+                        let url = window.URL.createObjectURL(blob);
                         a.href = url;
                         a.download = docName;
-                        //programatically click the link to trigger the download
+                        // programatically click the link to trigger the download
                         a.click();
-                        //release the reference to the file by revoking the Object URL
+                        // release the reference to the file by revoking the Object URL
                         window.URL.revokeObjectURL(url);
                     }
                 }
@@ -4227,15 +4232,15 @@ APP_MASTERS.controller("Controller_Master", [
         };
         $scope.getLogo = function(name) {
             if (vm.entity_id > 0) {
-                Factory_Master.get_file(vm.entity_id, function(callback, mime) {
+                Factory_Master.get_file(vm.entity_id, (callback, mime) => {
                     if (callback) {
                         $scope.image = [];
                         $scope.image[name] = {};
-                        var binary = "";
-                        var bytes = new Uint8Array(callback);
-                        var len = bytes.byteLength;
-                        for (var i = 0; i < len; i++) {
-                            binary += String.fromCharCode(bytes[i]);
+                        let binary = '';
+                        let bytes = new Uint8Array(callback);
+                        let len = bytes.byteLength;
+                        for (let i = 0; i < len; i++) {
+                            binary = binary + String.fromCharCode(bytes[i]);
                         }
                         $scope.image[name].stream = window.btoa(binary);
                         $scope.image[name].type = mime;
@@ -4244,18 +4249,18 @@ APP_MASTERS.controller("Controller_Master", [
             }
         };
         $scope.arrayBufferToBase64 = function(buffer) {
-            var binary = "";
-            var bytes = new Uint8Array(buffer);
-            var len = bytes.byteLength;
-            for (var i = 0; i < len; i++) {
-                binary += String.fromCharCode(bytes[i]);
+            let binary = '';
+            let bytes = new Uint8Array(buffer);
+            let len = bytes.byteLength;
+            for (let i = 0; i < len; i++) {
+                binary = binary + String.fromCharCode(bytes[i]);
             }
             return window.btoa(binary);
         };
         $scope.flattenArray = function(obj, find, name) {
             $scope.flattened = {};
             $scope.flattened[name] = [];
-            $.each(obj, function(key, val) {
+            $.each(obj, (key, val) => {
                 $scope.flattened[name].push(val[find]);
             });
         };
@@ -4274,111 +4279,111 @@ APP_MASTERS.controller("Controller_Master", [
             formvalue = element.formvalue;
             idx = element.idx;
             field_name = element.field_name;
-            var CLC = $("#modal_" + id + " table.ui-jqgrid-btable");
-            var rowId = CLC.jqGrid("getGridParam", "selrow");
-            var rowData = CLC.jqGrid.Ascensys.gridObject.rows[rowId - 1];
+            let CLC = $(`#modal_${ id } table.ui-jqgrid-btable`);
+            let rowId = CLC.jqGrid('getGridParam', 'selrow');
+            let rowData = CLC.jqGrid.Ascensys.gridObject.rows[rowId - 1];
 
             $scope.selected_value = {};
-            var transaction_type = "";
-            var transactionstobeinvoiced_dtRow = "";
-            var toastr_msg = "";
-            if (element.screen == "contactlist") {
+            let transaction_type = '';
+            let transactionstobeinvoiced_dtRow = '';
+            let toastr_msg = '';
+            if (element.screen == 'contactlist') {
                 $scope.selected_value = rowData;
-            } else if (element.screen == "transactionstobeinvoiced") {
+            } else if (element.screen == 'transactionstobeinvoiced') {
                 $scope.addTransactionsInInvoice(element);
                 return false;
-            } else if (element.screen == "orders") {
+            } else if (element.screen == 'orders') {
                 $scope.selected_value = {
                     id: rowData.order.id,
                     name: rowData.order.name
                 };
-            } else if (element.screen == "formulalist" && vm.app_id == "contracts") {
+            } else if (element.screen == 'formulalist' && vm.app_id == 'contracts') {
                 $scope.selected_value = {
                     id: rowData.id,
                     name: rowData.name,
                     isContractReference: rowData.isContractReference
                 };
-            } else if (element.screen == "bunkerableport" && vm.app_id == "default") {
+            } else if (element.screen == 'bunkerableport' && vm.app_id == 'default') {
                 $scope.selected_value = angular.copy(rowData);
-                //id from row data is order in table, actual locationId is in rowData.locationId
+                // id from row data is order in table, actual locationId is in rowData.locationId
                 if (!angular.equals($scope.selected_value, {})) {
                     $scope.selected_value.id = $scope.selected_value.locationId;
                 }
-            } else if (element.screen == "destinationport" && vm.app_id == "default") {
+            } else if (element.screen == 'destinationport' && vm.app_id == 'default') {
                 $scope.selected_value = angular.copy(rowData);
                 if (!angular.equals($scope.selected_value, {})) {
-                    $scope.selected_value.id = $scope.selected_value.locationId; 
+                    $scope.selected_value.id = $scope.selected_value.locationId;
                 }
-            } else if (element.screen == "rfqrequestslist" && vm.app_id == "default") {
+            } else if (element.screen == 'rfqrequestslist' && vm.app_id == 'default') {
                 $scope.selected_value = angular.copy(rowData);
                 if (!angular.equals($scope.selected_value, {})) {
                     $scope.selected_value.id = $scope.selected_value.requestId;
                 }
-            } else if (element.screen == "productcontractlist" && vm.app_id == "default"){
+            } else if (element.screen == 'productcontractlist' && vm.app_id == 'default') {
                 $scope.selected_value = angular.copy(rowData);
                 if (!angular.equals($scope.selected_value, {})) {
                     $scope.selected_value.id = $scope.selected_value.contractProductId;
                 }
-            } else if (element.screen == "requestcounterpartytypes" && vm.app_id == "default") {
+            } else if (element.screen == 'requestcounterpartytypes' && vm.app_id == 'default') {
                 $scope.selected_value = angular.copy(rowData);
-            } else if(element.screen == "contractlist" && vm.app_id == "default") {
+            } else if(element.screen == 'contractlist' && vm.app_id == 'default') {
                 $scope.selected_value = angular.copy(rowData);
-            } else if(element.clc == "entity_documents" && element.source == "availableDocumentAttachments") {
+            } else if(element.clc == 'entity_documents' && element.source == 'availableDocumentAttachments') {
                 if (element.screen == 'entity_documents') {
-                    $timeout(function() {
+                    $timeout(() => {
                         rowData.isIncludedInMail = true;
                         $scope.addToAttachments(rowData);
                     });
                 } else {
-                    $timeout(function(){
-                        $rootScope.$broadcast("selectDocumentAttachment", rowData);
+                    $timeout(() => {
+                        $rootScope.$broadcast('selectDocumentAttachment', rowData);
                     });
                 }
                 $scope.prettyCloseModal();
-                $("*").tooltip("destroy");
+                $('*').tooltip('destroy');
                 return;
             } else {
-                $.each(rowData, function(key, val) {
-                    if (key == "id" || key == "name" || key == "code" || key == "displayName") {
+                $.each(rowData, (key, val) => {
+                    if (key == 'id' || key == 'name' || key == 'code' || key == 'displayName') {
                         $scope.selected_value[key] = val;
                     }
                 });
             }
             if (angular.equals($scope.selected_value, {})) {
-                toastr.error("Please select one row");
+                toastr.error('Please select one row');
                 return;
             }
-            if (transaction_type == "delivery") {
-                element.source = "formValues.productDetails";
-                toastr_msg = "Delivery added";
+            if (transaction_type == 'delivery') {
+                element.source = 'formValues.productDetails';
+                toastr_msg = 'Delivery added';
             }
-            if (transaction_type == "cost") {
-                element.source = "formValues.costDetails";
-                toastr_msg = "Cost added";
+            if (transaction_type == 'cost') {
+                element.source = 'formValues.costDetails';
+                toastr_msg = 'Cost added';
             }
             // Check if modal triggered from datatable
             if (!formvalue) {
-                if (vm.app_id == "invoices" && element.name != "Physical Supplier") {
+                if (vm.app_id == 'invoices' && element.name != 'Physical Supplier') {
                     check = $scope[element.source];
                     if (Array.isArray(check)) {
-                        $scope.target_element = element.source + "." + check.length;
-                        element.source = element.source + "." + check.length;
+                        $scope.target_element = `${element.source }.${ check.length}`;
+                        element.source = `${element.source }.${ check.length}`;
                     } else {
                         $scope.target_element = element.source;
                     }
                 } else {
                     $scope.target_element = element.source;
                 }
-                elements = element.source.split(".");
+                elements = element.source.split('.');
             } else {
                 $scope.target_element = element.source;
-                elements = formvalue.split(".");
+                elements = formvalue.split('.');
                 elements.push(idx);
-                if (object.indexOf("[") > -1) {
-                    object = object.replace("[", ".");
-                    object = object.replace("]", "");
-                    object = object.split(".");
-                    $.each(object, function(key, val) {
+                if (object.indexOf('[') > -1) {
+                    object = object.replace('[', '.');
+                    object = object.replace(']', '');
+                    object = object.split('.');
+                    $.each(object, (key, val) => {
                         elements.push(val);
                     });
                 } else {
@@ -4389,26 +4394,24 @@ APP_MASTERS.controller("Controller_Master", [
             // Check if modal triggered from datatable
             if (!formvalue) {
                 $scope.assignObjValue($scope, elements, $scope.selected_value);
-                if (element.screen == "productlist" && element.name == "Product" && element.app == "masters") {
-                    var productIndex = element.source.split('.')[2];
+                if (element.screen == 'productlist' && element.name == 'Product' && element.app == 'masters') {
+                    let productIndex = element.source.split('.')[2];
                     $scope.addProductToConversion(productIndex, null, true);
                 }
-                if (element.screen == "rfqrequestslist") {
+                if (element.screen == 'rfqrequestslist') {
                 	$scope.selected_value = [];
-                	rowsData = CLC.jqGrid('getGridParam','selarrrow')
-                	$.each(rowsData,function(k,v){
+                	rowsData = CLC.jqGrid('getGridParam', 'selarrrow');
+                	$.each(rowsData, (k, v) => {
 	                	$scope.selected_value.push(CLC.jqGrid.Ascensys.gridObject.rows[v - 1]);
-                	})
+                	});
                 }
-                $rootScope.$broadcast("dataListModal", { val: $scope.selected_value, elem: elements });
-            } else {
-            	if ($scope.grid) {
+                $rootScope.$broadcast('dataListModal', { val: $scope.selected_value, elem: elements });
+            } else if ($scope.grid) {
 	                $scope.assignObjValue($scope.grid.appScope.fVal(), elements, $scope.selected_value);
             	} else {
 	                $scope.assignObjValue($scope, elements, $scope.selected_value);
             	}
-            }
-            if (transaction_type == "delivery" || transaction_type == "cost") {
+            if (transaction_type == 'delivery' || transaction_type == 'cost') {
                 toastr.success(toastr_msg);
             }
             // } else {
@@ -4417,52 +4420,55 @@ APP_MASTERS.controller("Controller_Master", [
             //     }
             // }
             $scope.prettyCloseModal();
-            $("*").tooltip("destroy");
+            $('*').tooltip('destroy');
             $scope.triggerChangeFields(field_name, elements[1]);
-
         };
 
         $scope.assignObjValue = function(obj, keyPath, value) {
             lastKeyIndex = keyPath.length - 1;
-            for (var i = 0; i < lastKeyIndex; ++i) {
+            for (let i = 0; i < lastKeyIndex; ++i) {
                 key = keyPath[i];
                 next_key = keyPath[i + 1];
-                if (typeof next_key === "number") {
-                    if (!(key in obj)) obj[key] = [];
-                } else {
-                    if (!(key in obj)) obj[key] = {};
+                if (typeof next_key === 'number') {
+                    if (!(key in obj)) {
+                        obj[key] = [];
+                    }
+                } else if (!(key in obj)) {
+                    obj[key] = {};
                 }
-                if (obj[key] == null) obj[key] = {};
+                if (obj[key] == null) {
+                    obj[key] = {};
+                }
                 obj = obj[key];
             }
             obj[keyPath[lastKeyIndex]] = value;
         };
 
-		$scope.initInvoiceTypeOptions = function() {
+        $scope.initInvoiceTypeOptions = function() {
 	        vm.getOptions({
-	            "Name": "DocumentTypeEnum",
-	            "Type": "dropdown",
-	            "masterSource": "DocumentTypeEnum"
+	            Name: 'DocumentTypeEnum',
+	            Type: 'dropdown',
+	            masterSource: 'DocumentTypeEnum'
 	        });
-	        $('#newInvoiceType').find("option").remove();
+	        $('#newInvoiceType').find('option').remove();
 	        if (!$scope.options) {
 	            $scope.options = [];
 	        }
 	        // vm.listsCache['DocumentTypeEnum'];
-	        $($("[name='newInvoiceType']").parent().parent()[1]).hide();
+	        $($('[name=\'newInvoiceType\']').parent().parent()[1]).hide();
 	        $('#newInvoiceType').append($('<option>', {
-	            value: "",
-	            text: ""
+	            value: '',
+	            text: ''
 	        }));
-	        $.each(vm.listsCache['DocumentTypeEnum'], function(k,v) {
+	        $.each(vm.listsCache.DocumentTypeEnum, (k, v) => {
 	            $('#newInvoiceType').append($('<option>', {
 	                // value: v.name,
 	                value: v.internalName,
-	                internalName: v.internalName + "",
-	                text: v.name + ""
+	                internalName: `${v.internalName }`,
+	                text: `${v.name }`
 	            }));
 	        });
-	    }
+	    };
 
         $scope.addTransactionsInInvoice = function(element) {
             id = element.clc;
@@ -4470,20 +4476,20 @@ APP_MASTERS.controller("Controller_Master", [
             formvalue = element.formvalue;
             idx = element.idx;
             field_name = element.field_name;
-            var CLC = $("#modal_" + id + " table.ui-jqgrid-btable");
-            var rowId = CLC.jqGrid("getGridParam", "selrow");
-            var rowData = CLC.jqGrid.Ascensys.gridObject.rows[rowId - 1];
+            let CLC = $(`#modal_${ id } table.ui-jqgrid-btable`);
+            let rowId = CLC.jqGrid('getGridParam', 'selrow');
+            let rowData = CLC.jqGrid.Ascensys.gridObject.rows[rowId - 1];
             selectedRows = [];
-            $.each(CLC.jqGrid.Ascensys.selectedProductIds, function(k1, v1) {
-                $.each(CLC.jqGrid.Ascensys.gridObject.rows, function(k2, v2) {
+            $.each(CLC.jqGrid.Ascensys.selectedProductIds, (k1, v1) => {
+                $.each(CLC.jqGrid.Ascensys.gridObject.rows, (k2, v2) => {
                     if (v1 == v2.deliveryProductId) {
                         selectedRows.push(v2);
                     }
                 });
             });
             orderAdditionalCostId = [];
-            $.each(CLC.jqGrid.Ascensys.selectedOrderAdditionalCostId, function(k1, v1) {
-                $.each(CLC.jqGrid.Ascensys.gridObject.rows, function(k2, v2) {
+            $.each(CLC.jqGrid.Ascensys.selectedOrderAdditionalCostId, (k1, v1) => {
+                $.each(CLC.jqGrid.Ascensys.gridObject.rows, (k2, v2) => {
                     if (v1 == v2.orderAdditionalCostId) {
                         orderAdditionalCostId.push(v2);
                     }
@@ -4492,10 +4498,10 @@ APP_MASTERS.controller("Controller_Master", [
 
             mixedRows = selectedRows.concat(orderAdditionalCostId);
 
-            $.each(mixedRows, function(k, rowData) {
+            $.each(mixedRows, (k, rowData) => {
                 if (rowData.costName) {
-                    transaction_type = "cost";
-                	rowData.product.productId = rowData.product.id
+                    transaction_type = 'cost';
+                	rowData.product.productId = rowData.product.id;
                     // rowData.product.id = rowData.deliveryProductId;
                     transactionstobeinvoiced_dtRow = {
                         product: rowData.product,
@@ -4517,7 +4523,7 @@ APP_MASTERS.controller("Controller_Master", [
                         invoiceAmount: rowData.invoiceAmount,
                         invoiceTotalAmount: rowData.invoiceTotalAmount,
                         estimatedTotalAmount: rowData.estimatedTotalAmount,
-                        //new on 30.08.2018
+                        // new on 30.08.2018
                         invoiceQuantityUom: rowData.invoiceQuantityUom,
                         invoiceRateUom: rowData.invoiceRateUom,
                         estimatedExtras: rowData.estimatedExtra,
@@ -4526,9 +4532,9 @@ APP_MASTERS.controller("Controller_Master", [
                     };
                 }
                 if (rowData.delivery) {
-                	rowData.product.productId = angular.copy(rowData.product.id)
+                	rowData.product.productId = angular.copy(rowData.product.id);
                     transactionstobeinvoiced_dtRow = {
-                        amountInInvoice: "",
+                        amountInInvoice: '',
                         deliveryNo: rowData.delivery.name,
                         agreementType: rowData.agreementType,
                         deliveryProductId: rowData.deliveryProductId,
@@ -4540,16 +4546,16 @@ APP_MASTERS.controller("Controller_Master", [
                         deliveryQuantityUom: rowData.confirmedQuantityUom,
                         deliveryMFM: rowData.deliveryMFM,
                         sulphurContent: rowData.sulphurContent,
-                        difference: "",
+                        difference: '',
                         estimatedAmount: rowData.estimatedAmount,
                         estimatedAmountCurrency: rowData.estimatedRateCurrency,
                         estimatedRate: rowData.estimatedRate,
                         estimatedRateCurrency: rowData.estimatedRateCurrency,
-                        invoiceAmount: "",
+                        invoiceAmount: '',
                         invoiceAmountCurrency: {},
-                        invoiceQuantity: "",
+                        invoiceQuantity: '',
                         invoiceQuantityUom: {},
-                        invoiceRate: "",
+                        invoiceRate: '',
                         invoiceRateUom: rowData.invoiceRateUom,
                         invoiceRateCurrency: $scope.formValues.invoiceRateCurrency,
                         isDeleted: rowData.isDeleted,
@@ -4560,15 +4566,15 @@ APP_MASTERS.controller("Controller_Master", [
                         pricingScheduleName: rowData.pricingScheduleName,
                         reconStatus: {
                             id: 1,
-                            name: "Matched",
-                            code: "",
+                            name: 'Matched',
+                            code: '',
                             collectionName: null
                         }
                     };
                 }
                 if (rowData.costName) {
                     alreadyExists = false;
-                    $.each($scope.formValues.costDetails, function(idx, val) {
+                    $.each($scope.formValues.costDetails, (idx, val) => {
                         if (rowData.orderAdditionalCostId == val.orderAdditionalCostId) {
                             alreadyExists = true;
                         }
@@ -4576,12 +4582,12 @@ APP_MASTERS.controller("Controller_Master", [
                     if (!alreadyExists) {
                         $scope.formValues.costDetails.push(transactionstobeinvoiced_dtRow);
                     } else {
-                        toastr.error("Selected cost already exists");
+                        toastr.error('Selected cost already exists');
                     }
                 }
                 if (rowData.delivery) {
                     alreadyExists = false;
-                    $.each($scope.formValues.productDetails, function(idx, val) {
+                    $.each($scope.formValues.productDetails, (idx, val) => {
                         if (rowData.deliveryProductId == val.deliveryProductId && !val.isDeleted) {
                             alreadyExists = true;
                         }
@@ -4591,16 +4597,17 @@ APP_MASTERS.controller("Controller_Master", [
                     	transactionstobeinvoiced_dtRow.invoiceQuantityUom = transactionstobeinvoiced_dtRow.deliveryQuantityUom;
                         $scope.formValues.productDetails.push(transactionstobeinvoiced_dtRow);
                     } else {
-                        toastr.error("Selected product already exists");
+                        toastr.error('Selected product already exists');
                     }
                 }
             });
             $scope.modalInstance.close();
         };
-        /*SELLER RATING MODAL*/
+
+        /* SELLER RATING MODAL*/
         $scope.getSellerRating = function() {
             if (!$scope.sellerRating) {
-                Factory_Master.get_seller_rating(vm.app_id, vm.screen_id, vm.entity_id, function(response) {
+                Factory_Master.get_seller_rating(vm.app_id, vm.screen_id, vm.entity_id, (response) => {
                     if (response) {
                         $scope.sellerRating = response;
                     }
@@ -4609,11 +4616,11 @@ APP_MASTERS.controller("Controller_Master", [
         };
         $scope.createSellerRating = function() {
             $scope.modalInstance.close();
-            Factory_Master.create_seller_rating(vm.app_id, vm.screen_id, $scope.sellerRating, function(response) {
+            Factory_Master.create_seller_rating(vm.app_id, vm.screen_id, $scope.sellerRating, (response) => {
                 if (response) {
                     if (response.status == true) {
-                        if (vm.app_id == "default") {
-                            $scope.sellerRatingScreen("Procurement", "Procurement", $state.params.orderId);
+                        if (vm.app_id == 'default') {
+                            $scope.sellerRatingScreen('Procurement', 'Procurement', $state.params.orderId);
                         } else {
                             $scope.sellerRatingScreen(vm.app_id, vm.screen_id, vm.entity_id);
                         }
@@ -4626,36 +4633,37 @@ APP_MASTERS.controller("Controller_Master", [
             });
         };
         $scope.discardSellerRating = function() {
-            $.each($scope.sellerRating.categories, function(key, value) {
-                $.each(value.details, function(key1, value1) {
+            $.each($scope.sellerRating.categories, (key, value) => {
+                $.each(value.details, (key1, value1) => {
                     value1.rating = 0;
                     $scope.discardRating = true;
                 });
             });
         };
-        /*SELLER RATING MODAL*/
-        /*SET RESET PASSWORD*/
+
+        /* SELLER RATING MODAL*/
+        /* SET RESET PASSWORD*/
         $scope.validateAndSetPassword = function(pass1, pass2) {
-            if (typeof pass1 && typeof pass2 != "undefined") {
+            if (typeof pass1 && typeof pass2 != 'undefined') {
                 if (pass1 == pass2) {
                     $scope.formValues.password = pass1;
-                    toastr.success("Password was set");
+                    toastr.success('Password was set');
                     $scope.modalInstance.close();
                 } else {
-                    toastr.error("The passwords do not match!");
+                    toastr.error('The passwords do not match!');
                 }
             } else {
-                toastr.error("Please fill the password fields");
+                toastr.error('Please fill the password fields');
             }
         };
         $scope.validateAndChangePassword = function(pass1, pass2) {
-            if (typeof pass1 && typeof pass2 != "undefined") {
+            if (typeof pass1 && typeof pass2 != 'undefined') {
                 if (pass1 == pass2) {
                     data = {
                         userId: $scope.formValues.id,
                         password: pass1
                     };
-                    Factory_Master.change_password(data, function(response) {
+                    Factory_Master.change_password(data, (response) => {
                         if (response) {
                             if (response.status == true) {
                                 toastr.success(response.message);
@@ -4666,251 +4674,250 @@ APP_MASTERS.controller("Controller_Master", [
                         }
                     });
                 } else {
-                    toastr.error("The passwords do not match!");
+                    toastr.error('The passwords do not match!');
                 }
             } else {
-                toastr.error("Please fill the password fields");
+                toastr.error('Please fill the password fields');
             }
         };
         $scope.cancelSetPassword = function() {
             $scope.formValues.password = null;
             $scope.prettyCloseModal();
         };
+
         /* END SET RESET PASSWORD*/
         // TREASURY REPORT ----
         $scope.treasury_generate_report = function() {
-            var UIFilters = {};
-            var treasurySummaryFilters = [];
+            let UIFilters = {};
+            let treasurySummaryFilters = [];
 
-            var sellerOperator = brokerOperator = companyOperator = paymentStatusOperator = paymentDateOperator = 1;
+            let sellerOperator = brokerOperator = companyOperator = paymentStatusOperator = paymentDateOperator = 1;
 
-			newFilterItem = null
-            for (var i = $rootScope.rawFilters.length - 1; i >= 0; i--) {
+            newFilterItem = null;
+            for (let i = $rootScope.rawFilters.length - 1; i >= 0; i--) {
             	if ($rootScope.rawFilters[i].fromTreasurySummary) {
-	            	$rootScope.rawFilters.splice(i,1);
+	            	$rootScope.rawFilters.splice(i, 1);
             	} else {
-            		if ($rootScope.rawFilters[i].column.columnValue == "Seller_Name") {
-            			sellerOperator = 2
+            		if ($rootScope.rawFilters[i].column.columnValue == 'Seller_Name') {
+            			sellerOperator = 2;
             		}
-            		if ($rootScope.rawFilters[i].column.columnValue == "Broker_Name") {
-            			brokerOperator = 2
+            		if ($rootScope.rawFilters[i].column.columnValue == 'Broker_Name') {
+            			brokerOperator = 2;
             		}
-            		if ($rootScope.rawFilters[i].column.columnValue == "PaymentCompany_Name") {
-            			companyOperator = 2
+            		if ($rootScope.rawFilters[i].column.columnValue == 'PaymentCompany_Name') {
+            			companyOperator = 2;
             		}
-            		if ($rootScope.rawFilters[i].column.columnValue == "PaymentStatus_Name") {
-            			paymentStatusOperator = 2
+            		if ($rootScope.rawFilters[i].column.columnValue == 'PaymentStatus_Name') {
+            			paymentStatusOperator = 2;
             		}
-            		if ($rootScope.rawFilters[i].column.columnValue == "PaymentDate") {
-            			paymentDateOperator = 2
-            		}            		            		            		            		
+            		if ($rootScope.rawFilters[i].column.columnValue == 'PaymentDate') {
+            			paymentDateOperator = 2;
+            		}
             	}
             }
 
-            $.each($scope.formValues.SellerWithInactive, function(sk,sv){
+            $.each($scope.formValues.SellerWithInactive, (sk, sv) => {
             	if (sv.id) {
             		newFilterItem = {
-					    "column": {
-					        "columnRoute": "invoices/treasuryreport",
-					        "columnName": "Seller",
-					        "columnValue": "Seller_Name",
-					        "sortColumnValue": null,
-					        "columnType": "Text",
-					        "isComputedColumn": false
+					    column: {
+					        columnRoute: 'invoices/treasuryreport',
+					        columnName: 'Seller',
+					        columnValue: 'Seller_Name',
+					        sortColumnValue: null,
+					        columnType: 'Text',
+					        isComputedColumn: false
 					    },
-					    "condition": {
-					        "conditionName": "Is equal",
-					        "conditionValue": "=",
-					        "conditionApplicable": "Text",
-					        "conditionNrOfValues": 1
+					    condition: {
+					        conditionName: 'Is equal',
+					        conditionValue: '=',
+					        conditionApplicable: 'Text',
+					        conditionNrOfValues: 1
 					    },
-					    "filterOperator": sk == 0 ? sellerOperator : 2, 
-					    "value": {
-					        "0": sv.name
+					    filterOperator: sk == 0 ? sellerOperator : 2,
+					    value: {
+					        0: sv.name
 					    },
-					    "unSaved": false,
-					    "fromTreasurySummary": true,
-					}
+					    unSaved: false,
+					    fromTreasurySummary: true,
+                    };
             		treasurySummaryFilters.push(newFilterItem);
             	}
-            })
-            $.each($scope.formValues.BrokerWithInactive, function(bk,bv){
+            });
+            $.each($scope.formValues.BrokerWithInactive, (bk, bv) => {
             	if (bv.id) {
             		newFilterItem = {
-					    "column": {
-					        "columnRoute": "invoices/treasuryreport",
-					        "columnName": "Broker",
-					        "columnValue": "Broker_Name",
-					        "sortColumnValue": null,
-					        "columnType": "Text",
-					        "isComputedColumn": false
+					    column: {
+					        columnRoute: 'invoices/treasuryreport',
+					        columnName: 'Broker',
+					        columnValue: 'Broker_Name',
+					        sortColumnValue: null,
+					        columnType: 'Text',
+					        isComputedColumn: false
 					    },
-					    "condition": {
-					        "conditionName": "Is equal",
-					        "conditionValue": "=",
-					        "conditionApplicable": "Text",
-					        "conditionNrOfValues": 1
+					    condition: {
+					        conditionName: 'Is equal',
+					        conditionValue: '=',
+					        conditionApplicable: 'Text',
+					        conditionNrOfValues: 1
 					    },
-					    "filterOperator": bk == 0 ? brokerOperator : 2, 
-					    "value": {
-					        "0": bv.name
+					    filterOperator: bk == 0 ? brokerOperator : 2,
+					    value: {
+					        0: bv.name
 					    },
-					    "unSaved": false,
-					    "fromTreasurySummary": true,
-					}            		
+					    unSaved: false,
+					    fromTreasurySummary: true,
+                    };
             		treasurySummaryFilters.push(newFilterItem);
             	}
-            })   
-            $.each($scope.formValues.CompanyWithInactive, function(ck,cv){
+            });
+            $.each($scope.formValues.CompanyWithInactive, (ck, cv) => {
             	if (cv.id) {
             		newFilterItem = {
-					    "column": {
-					        "columnRoute": "invoices/treasuryreport",
-					        "columnName": "PaymentCompany",
-					        "columnValue": "PaymentCompany_Name",
-					        "sortColumnValue": null,
-					        "columnType": "Text",
-					        "isComputedColumn": false
+					    column: {
+					        columnRoute: 'invoices/treasuryreport',
+					        columnName: 'PaymentCompany',
+					        columnValue: 'PaymentCompany_Name',
+					        sortColumnValue: null,
+					        columnType: 'Text',
+					        isComputedColumn: false
 					    },
-					    "condition": {
-					        "conditionName": "Is equal",
-					        "conditionValue": "=",
-					        "conditionApplicable": "Text",
-					        "conditionNrOfValues": 1
+					    condition: {
+					        conditionName: 'Is equal',
+					        conditionValue: '=',
+					        conditionApplicable: 'Text',
+					        conditionNrOfValues: 1
 					    },
-					    "filterOperator": ck == 0 ? companyOperator : 2, 
-					    "value": {
-					        "0": cv.name
+					    filterOperator: ck == 0 ? companyOperator : 2,
+					    value: {
+					        0: cv.name
 					    },
-					    "unSaved": false,
-					    "fromTreasurySummary": true,
-					}            		
+					    unSaved: false,
+					    fromTreasurySummary: true,
+                    };
             		treasurySummaryFilters.push(newFilterItem);
             	}
-            })            
+            });
         	if ($scope.formValues.PaymentStatus) {
         		newFilterItem = {
-					    "column": {
-					        "columnRoute": "invoices/treasuryreport",
-					        "columnName": "PaymentStatus",
-					        "columnValue": "PaymentStatus_Name",
-					        "sortColumnValue": null,
-					        "columnType": "Text",
-					        "isComputedColumn": false
+					    column: {
+					        columnRoute: 'invoices/treasuryreport',
+					        columnName: 'PaymentStatus',
+					        columnValue: 'PaymentStatus_Name',
+					        sortColumnValue: null,
+					        columnType: 'Text',
+					        isComputedColumn: false
 					    },
-					    "condition": {
-					        "conditionName": "Is equal",
-					        "conditionValue": "=",
-					        "conditionApplicable": "Text",
-					        "conditionNrOfValues": 1
+					    condition: {
+					        conditionName: 'Is equal',
+					        conditionValue: '=',
+					        conditionApplicable: 'Text',
+					        conditionNrOfValues: 1
 					    },
-					    "filterOperator": paymentStatusOperator, 
-					    "value": {
-					        "0": $scope.formValues.PaymentStatus.name
+					    filterOperator: paymentStatusOperator,
+					    value: {
+					        0: $scope.formValues.PaymentStatus.name
 					    },
-					    "unSaved": false,
-					    "fromTreasurySummary": true,
-					}
+					    unSaved: false,
+					    fromTreasurySummary: true,
+                };
         		treasurySummaryFilters.push(newFilterItem);
         	}
 
             if ($scope.formValues.PaymentDateFrom && $scope.formValues.PaymentDateTo) {
-				newFilterItem = {
-				    "column": {
-				        "columnRoute": "invoices/treasuryreport",
-				        "columnName": "Payment Date",
-				        "columnValue": "PaymentDate",
-				        "sortColumnValue": null,
-				        "columnType": "DateOnly",
-				        "isComputedColumn": true
+                newFilterItem = {
+				    column: {
+				        columnRoute: 'invoices/treasuryreport',
+				        columnName: 'Payment Date',
+				        columnValue: 'PaymentDate',
+				        sortColumnValue: null,
+				        columnType: 'DateOnly',
+				        isComputedColumn: true
 				    },
-				    "condition": {
-				        "conditionName": "Is between",
-				        "conditionValue": "between",
-				        "conditionApplicable": "Date",
-				        "conditionNrOfValues": 2
+				    condition: {
+				        conditionName: 'Is between',
+				        conditionValue: 'between',
+				        conditionApplicable: 'Date',
+				        conditionNrOfValues: 2
 				    },
-				    "filterOperator": paymentDateOperator, 
-				    "value": {
-				        "0": $scope.formValues.PaymentDateFrom,
-				        "1": $scope.formValues.PaymentDateTo
+				    filterOperator: paymentDateOperator,
+				    value: {
+				        0: $scope.formValues.PaymentDateFrom,
+				        1: $scope.formValues.PaymentDateTo
 				    },
-				    "unSaved": false,
-				    "fromTreasurySummary": true,
-				}
+				    unSaved: false,
+				    fromTreasurySummary: true,
+                };
         		treasurySummaryFilters.push(newFilterItem);
             } else if ($scope.formValues.PaymentDateFrom) {
             	newFilterItem = {
-				    "column": {
-				        "columnRoute": "invoices/treasuryreport",
-				        "columnName": "Payment Date",
-				        "columnValue": "PaymentDate",
-				        "sortColumnValue": null,
-				        "columnType": "DateOnly",
-				        "isComputedColumn": true
+				    column: {
+				        columnRoute: 'invoices/treasuryreport',
+				        columnName: 'Payment Date',
+				        columnValue: 'PaymentDate',
+				        sortColumnValue: null,
+				        columnType: 'DateOnly',
+				        isComputedColumn: true
 				    },
-				    "condition": {
-				        "conditionName": "Is after or equal to",
-				        "conditionValue": ">=",
-				        "conditionApplicable": "Date",
-				        "conditionNrOfValues": 1
+				    condition: {
+				        conditionName: 'Is after or equal to',
+				        conditionValue: '>=',
+				        conditionApplicable: 'Date',
+				        conditionNrOfValues: 1
 				    },
-				    "filterOperator": paymentDateOperator, 
-				    "value": {
-				        "0": $scope.formValues.PaymentDateFrom
+				    filterOperator: paymentDateOperator,
+				    value: {
+				        0: $scope.formValues.PaymentDateFrom
 				    },
-				    "unSaved": false,
-				    "fromTreasurySummary": true,
-				}
+				    unSaved: false,
+				    fromTreasurySummary: true,
+                };
         		treasurySummaryFilters.push(newFilterItem);
             } else if ($scope.formValues.PaymentDateTo) {
             	newFilterItem = {
-				    "column": {
-				        "columnRoute": "invoices/treasuryreport",
-				        "columnName": "Payment Date",
-				        "columnValue": "PaymentDate",
-				        "sortColumnValue": null,
-				        "columnType": "DateOnly",
-				        "isComputedColumn": true
+				    column: {
+				        columnRoute: 'invoices/treasuryreport',
+				        columnName: 'Payment Date',
+				        columnValue: 'PaymentDate',
+				        sortColumnValue: null,
+				        columnType: 'DateOnly',
+				        isComputedColumn: true
 				    },
-				    "condition": {
-				        "conditionName": "Is before or equal to",
-				        "conditionValue": "<=",
-				        "conditionApplicable": "Date",
-				        "conditionNrOfValues": 1
+				    condition: {
+				        conditionName: 'Is before or equal to',
+				        conditionValue: '<=',
+				        conditionApplicable: 'Date',
+				        conditionNrOfValues: 1
 				    },
-				    "filterOperator": paymentDateOperator, 
-				    "value": {
-				        "0": $scope.formValues.PaymentDateTo
+				    filterOperator: paymentDateOperator,
+				    value: {
+				        0: $scope.formValues.PaymentDateTo
 				    },
-				    "unSaved": false,
-				    "fromTreasurySummary": true,
-				}
-        		treasurySummaryFilters.push(newFilterItem);            	
+				    unSaved: false,
+				    fromTreasurySummary: true,
+                };
+        		treasurySummaryFilters.push(newFilterItem);
             }
 
             console.log($rootScope.rawFilters);
 
-            $.each(treasurySummaryFilters, function(k,v){
-            	$rootScope.rawFilters.push(v);	
-            })
+            $.each(treasurySummaryFilters, (k, v) => {
+            	$rootScope.rawFilters.push(v);
+            });
             treasurySummaryFilters = angular.copy($rootScope.rawFilters);
 
 
-        	$rootScope.$broadcast("treasurySummaryFilters", treasurySummaryFilters);
+        	$rootScope.$broadcast('treasurySummaryFilters', treasurySummaryFilters);
             // $("#" + Elements.settings[Object.keys(Elements.settings)[0]].table).jqGrid.table_config.on_ui_filter(UIFilters);
-
-
         };
 
         $scope.go_report_cashflow = function() {
-            window.open("#/reports/cashflow", "_blank");
+            window.open('#/reports/cashflow', '_blank');
         };
-		
-        
+
+
         $scope.treasury_clear_report = function() {
-        	$timeout(function(){
-        		$('input[ng-model="dummyModel"]').val("");
+        	$timeout(() => {
+        		$('input[ng-model="dummyModel"]').val('');
         		$('.bootstrap-tagsinput span.label').remove();
         		// $('.date-picker-icon').next("input").val("");
 
@@ -4918,34 +4925,35 @@ APP_MASTERS.controller("Controller_Master", [
                 // $('[ng-model="formValues.PaymentDateFrom"]').parent().find("input").val("").trigger("change");
                 // $('[ng-model="formValues.PaymentDateTo"]').parent().find("input").val("").trigger("change");
         		if ($('[ng-model="formValues.PaymentDateFrom"]').next('.datePickerDayOfWeek')) {
-	        		$('[ng-model="formValues.PaymentDateFrom"]').next('.datePickerDayOfWeek').text("")
+	        		$('[ng-model="formValues.PaymentDateFrom"]').next('.datePickerDayOfWeek').text('');
         		}
         		if ($('[ng-model="formValues.PaymentDateTo"]').next('.datePickerDayOfWeek')) {
-	        		$('[ng-model="formValues.PaymentDateTo"]').next('.datePickerDayOfWeek').text("")
+	        		$('[ng-model="formValues.PaymentDateTo"]').next('.datePickerDayOfWeek').text('');
         		}
         		// try refresh datepicker
-        		$('[ng-model="formValues.PaymentDateFrom"]').parent().find("input").val("");
-                $('[ng-model="formValues.PaymentDateTo"]').parent().find("input").val("");
-				$scope.formValues.PaymentStatus = null;
-				$scope.formValues.PaymentDateFrom = null;
-				$scope.formValues.SellerWithInactive = null;
-				$scope.formValues.BrokerWithInactive = null;
-				$scope.formValues.CompanyWithInactive = null;
-				$scope.formValues.PaymentDateTo = null;
-        	})
-        }
+        		$('[ng-model="formValues.PaymentDateFrom"]').parent().find('input').val('');
+                $('[ng-model="formValues.PaymentDateTo"]').parent().find('input').val('');
+                $scope.formValues.PaymentStatus = null;
+                $scope.formValues.PaymentDateFrom = null;
+                $scope.formValues.SellerWithInactive = null;
+                $scope.formValues.BrokerWithInactive = null;
+                $scope.formValues.CompanyWithInactive = null;
+                $scope.formValues.PaymentDateTo = null;
+        	});
+        };
         $scope.invoices_payment_due_date_filter = function() {
-            $("#" + Elements.settings[Object.keys(Elements.settings)[0]].table).jqGrid.table_config.on_ui_filter({
+            $(`#${ Elements.settings[Object.keys(Elements.settings)[0]].table}`).jqGrid.table_config.on_ui_filter({
                 // PaymentDueDate: $("#invoices_payment_due_date_filter").val()
                 PaymentDueDate : $scope.paymentDueDate,
             });
         };
-        /*DELIVERY*/
+
+        /* DELIVERY*/
         $scope.setQualityMatch = function(bdn, survey, min, max) {
             /**
              * Changed function in order to work with new delivery params. For labs bdn= labs value; survey = min value; min = max value. For delivery params are as described
              */
-            if (vm.app_id == "labs") {
+            if (vm.app_id == 'labs') {
                 // labVal = bdn; labMin = survey; labMax = min;
                 // // console.log(typeof(labVal), typeof(null));
                 // if(typeof(labVal) != 'number'){
@@ -4962,9 +4970,15 @@ APP_MASTERS.controller("Controller_Master", [
                 //     if(labVal > labMax) return 2;
                 // return 1;
                 // if (bdn == null) return;
-                if ((typeof bdn == "string" && bdn == "") || bdn == null) return;
-                if (isNaN(bdn)) return;
-                if (isNaN(survey)) return;
+                if (typeof bdn == 'string' && bdn == '' || bdn == null) {
+                    return;
+                }
+                if (isNaN(bdn)) {
+                    return;
+                }
+                if (isNaN(survey)) {
+                    return;
+                }
                 if (bdn < survey && survey != null) {
                     return 2;
                 }
@@ -4972,75 +4986,85 @@ APP_MASTERS.controller("Controller_Master", [
                     return 2;
                 }
                 return 1;
-            } else {
-                if ((typeof bdn == "string" && bdn == "") || bdn == null) return;
-                if ((typeof survey == "string" && survey == "") || survey == null) return;
-                if (isNaN(bdn)) return;
-                if (isNaN(survey)) return;
-                var variance = survey - bdn;
-                // if (min)
-                //     if (variance < min) return $listsCache.QualityMatch[1];
-                // if (max)
-                //     if (variance > max) return $listsCache.QualityMatch[1];
-                // return $listsCache.QualityMatch[0];
-                //changed logic -> passed for exact match, failed otherwise
-                if (variance == 0) return $listsCache.QualityMatch[0];
-                return $listsCache.QualityMatch[1];
             }
+            if (typeof bdn == 'string' && bdn == '' || bdn == null) {
+                return;
+            }
+            if (typeof survey == 'string' && survey == '' || survey == null) {
+                return;
+            }
+            if (isNaN(bdn)) {
+                return;
+            }
+            if (isNaN(survey)) {
+                return;
+            }
+            let variance = survey - bdn;
+            // if (min)
+            //     if (variance < min) return $listsCache.QualityMatch[1];
+            // if (max)
+            //     if (variance > max) return $listsCache.QualityMatch[1];
+            // return $listsCache.QualityMatch[0];
+            // changed logic -> passed for exact match, failed otherwise
+            if (variance == 0) {
+                return $listsCache.QualityMatch[0];
+            }
+            return $listsCache.QualityMatch[1];
         };
-        /*END DELIVERY*/
+
+        /* END DELIVERY*/
         $scope.checkQualityStatus = function() {
-            var status = 0;
-            $.each($scope.formValues.labTestResults, function(key, val) {
-                if (val.qualityMatch && val.qualityMatch.name == "Failed") {
+            let status = 0;
+            $.each($scope.formValues.labTestResults, (key, val) => {
+                if (val.qualityMatch && val.qualityMatch.name == 'Failed') {
                     status++;
                 }
             });
             if (status == 0) {
                 $scope.formValues.reconMatch = {
                     id: 1,
-                    name: "Passed"
+                    name: 'Passed'
                 };
             } else {
                 $scope.formValues.reconMatch = {
                     id: 2,
-                    name: "Failed"
+                    name: 'Failed'
                 };
             }
         };
         $scope.hideAddDataButton = function() {
-            buttons = $(".addData")
-                .parents(".ui-grid-render-container")
-                .find(".addData");
+            buttons = $('.addData')
+                .parents('.ui-grid-render-container')
+                .find('.addData');
             count = buttons.length;
             first = buttons[0];
             if (count > 1) {
-                first.addClass("hidden");
+                first.addClass('hidden');
             }
         };
         // Check default options from layout
         $scope.checkDefaults = function(options, name, id) {
             $scope.formValues[id] = [];
-            $.each(options, function(key, val) {
+            $.each(options, (key, val) => {
                 $scope.formValues[id].push($scope.options[name][val]);
             });
         };
         $scope.reconQualityDispute = function() {
-            var ClaimTypeId = 2;
-            if (typeof ($scope.selectedRows != "undefined") && $scope.selectedRows != null && $scope.selectedRows.length > 0) {
-                var data = {
+            let ClaimTypeId = 2;
+            if (typeof ($scope.selectedRows != 'undefined') && $scope.selectedRows != null && $scope.selectedRows.length > 0) {
+                let data = {
                     LabTestResultIds: $scope.selectedRows,
                     DeliveryQualityParameterIds: [],
                     DeliveryProductId: null,
                     ClaimTypeId: ClaimTypeId
                 };
-                Factory_Master.raise_claim(data, function(response) {
+                Factory_Master.raise_claim(data, (response) => {
                     if (response) {
                         if (response.status == true) {
                             $scope.loaded = true;
                             // toastr.success(response.message);
-                            localStorage.setItem("claimsclaims_newEntity", angular.toJson(response.data));
-                            window.open($location.$$absUrl.replace($location.$$path, "/claims/claim/edit/"), "_blank");
+                            localStorage.setItem('claimsclaims_newEntity', angular.toJson(response.data));
+                            window.open($location.$$absUrl.replace($location.$$path, '/claims/claim/edit/'), '_blank');
                         } else {
                             $scope.loaded = true;
                             toastr.error(response.message);
@@ -5048,97 +5072,97 @@ APP_MASTERS.controller("Controller_Master", [
                     }
                 });
             } else {
-                toastr.error("Please select a parameter!");
+                toastr.error('Please select a parameter!');
             }
         };
         // Email Log Filter
         $scope.emailLogFilter = function(operation) {
-            if (operation == "search") {
+            if (operation == 'search') {
                 // var UIFilters = {} // not used here :)
-                var Filters = [];
+                let Filters = [];
                 if ($rootScope.formDataFields.module) {
                     Filters.push({
-                        ColumnName: "Module",
+                        ColumnName: 'Module',
                         Value: $rootScope.formDataFields.module.id.toString()
                     });
                 }
                 if ($rootScope.formDataFields.sender) {
                     Filters.push({
-                        ColumnName: "Sender",
+                        ColumnName: 'Sender',
                         Value: $rootScope.formDataFields.sender.toString()
                     });
                 }
                 if ($rootScope.formDataFields.status) {
                     Filters.push({
-                        ColumnName: "Status",
+                        ColumnName: 'Status',
                         Value: $rootScope.formDataFields.status.id.toString()
                     });
                 }
                 if ($rootScope.formDataFields.entity) {
                     Filters.push({
-                        ColumnName: "Entity",
+                        ColumnName: 'Entity',
                         Value: $rootScope.formDataFields.entity.id.toString()
                     });
                 }
                 if ($rootScope.formDataFields.subject) {
                     Filters.push({
-                        ColumnName: "Subject",
+                        ColumnName: 'Subject',
                         Value: $rootScope.formDataFields.subject.toString()
                     });
                 }
                 if ($rootScope.formDataFields.emailTo) {
                     Filters.push({
-                        ColumnName: "EmailTo",
+                        ColumnName: 'EmailTo',
                         Value: $rootScope.formDataFields.emailTo.toString()
                     });
                 }
-                $("#" + Elements.settings[Object.keys(Elements.settings)[0]].table).jqGrid.table_config.on_payload_filter(Filters);
-                toastr.success("Search params sent");
+                $(`#${ Elements.settings[Object.keys(Elements.settings)[0]].table}`).jqGrid.table_config.on_payload_filter(Filters);
+                toastr.success('Search params sent');
                 $rootScope.masterEmailLogsFilters = Filters;
             }
-            if (operation == "reset") {
+            if (operation == 'reset') {
                 $state.reload();
-                toastr.success("Reset form cleared");
+                toastr.success('Reset form cleared');
             }
         };
         // {end} Email Log Filter
-        /*Labs PREVIEW*/
+        /* Labs PREVIEW*/
         $scope.getEmailTransactionType = function(valType) {
         	$scope.emailTemplates = null;
         	$rootScope.previewEmail = null;
-            $.each($listsCache["EmailTransactionType"], function(key, val) {
-                if (val["name"] == valType) {
-                    $transactionId = val["id"];
+            $.each($listsCache.EmailTransactionType, (key, val) => {
+                if (val.name == valType) {
+                    $transactionId = val.id;
                 }
             });
-            Factory_Master.list_by_transaction_type($transactionId, function(response) {
+            Factory_Master.list_by_transaction_type($transactionId, (response) => {
                 if (response) {
                     if (response.status == true) {
                         $scope.emailTemplates = response.data;
-                        $.each($scope.emailTemplates, function(k, v) {
+                        $.each($scope.emailTemplates, (k, v) => {
                             if (!v.displayName) {
                                 v.displayName = v.name;
                             }
                         });
-                        if (valType == "Claims") {
+                        if (valType == 'Claims') {
                             keysToRemove = [];
-                            $.each($scope.emailTemplates, function(k, v) {
+                            $.each($scope.emailTemplates, (k, v) => {
                                 entityClaimType = $rootScope.formValues.claimType.claimType.name;
-                                if ($rootScope.formValues.claimType.claimType.name == "Quantity" && $rootScope.formValues.densitySubtypes.length > 0) {
-                                    entityClaimType = "Density";
+                                if ($rootScope.formValues.claimType.claimType.name == 'Quantity' && $rootScope.formValues.densitySubtypes.length > 0) {
+                                    entityClaimType = 'Density';
                                 }
                                 if (v.name.indexOf(entityClaimType) == -1) {
                                     keysToRemove.push(k);
                                 }
                             });
                             keysToRemove.reverse();
-                            $.each(keysToRemove, function(key, val) {
+                            $.each(keysToRemove, (key, val) => {
                                 $scope.emailTemplates.splice(val, 1);
                             });
                             $scope.emailTemplates;
                             $scope.ClaimEmailTemplate = $scope.emailTemplates[0];
-                            setTimeout(function() {
-                                $("#ClaimEmailTemplate").trigger("change");
+                            setTimeout(() => {
+                                $('#ClaimEmailTemplate').trigger('change');
                             }, 100);
                         }
                     }
@@ -5147,33 +5171,31 @@ APP_MASTERS.controller("Controller_Master", [
         };
 
 
-        
-        $scope.formEmailString = function(data){
-            if(typeof data == "object"){
+        $scope.formEmailString = function(data) {
+            if(typeof data == 'object') {
                 // array
-                var emailStr = "";
-                $.each(data, function(_, em){
-                    emailStr += em;
-                })
+                let emailStr = '';
+                $.each(data, (_, em) => {
+                    emailStr = emailStr + em;
+                });
                 return emailStr.substring(0, emailStr.length - 1);
             }
-            if(typeof data == "string"){
+            if(typeof data == 'string') {
                 return data.replace(/,/g, ';');
             }
-        }
-        
-		
+        };
 
-        $scope.$on("previewEmail", function(events, args) {
+
+        $scope.$on('previewEmail', (events, args) => {
             $rootScope.previewEmail = args;
-            $rootScope.previewEmail.to == null ? ($rootScope.previewEmail.to = []) : "";
-            $rootScope.previewEmail.cc == null ? ($rootScope.previewEmail.cc = []) : "";
-            $rootScope.previewEmail.bcc == null ? ($rootScope.previewEmail.bcc = []) : "";
+            $rootScope.previewEmail.to == null ? $rootScope.previewEmail.to = [] : '';
+            $rootScope.previewEmail.cc == null ? $rootScope.previewEmail.cc = [] : '';
+            $rootScope.previewEmail.bcc == null ? $rootScope.previewEmail.bcc = [] : '';
             $rootScope.previewEmail.toEmailOthers = $scope.formEmailString($rootScope.previewEmail.toOthers);
             $rootScope.previewEmail.ccEmailOthers = $scope.formEmailString($rootScope.previewEmail.ccOthers);
-            $.each($rootScope.availableDocumentAttachmentsList, function(k, v) {
+            $.each($rootScope.availableDocumentAttachmentsList, (k, v) => {
                 if (v.isIncludedInMail) {
-                    $.each($rootScope.previewEmail.attachmentsList, function(k1, v1) {
+                    $.each($rootScope.previewEmail.attachmentsList, (k1, v1) => {
                         if (v1.id === v.id) {
                             v1.isIncludedInMail = true;
                         }
@@ -5181,38 +5203,39 @@ APP_MASTERS.controller("Controller_Master", [
                 }
             });
         });
-        if (!$scope.onMyEvent)
-            $scope.onMyEvent = $scope.$on("tableLayoutLoaded", function(e, arg) {
+        if (!$scope.onMyEvent) {
+            $scope.onMyEvent = $scope.$on('tableLayoutLoaded', (e, arg) => {
                 // console.log(1)
                 vm.delayaddModalActions();
             });
+        }
         $scope.addEmailAddressInPreview = function(model, value) {
             currentValues = $rootScope[model];
             isDuplicate = false;
-            $.each(currentValues, function(key, currentVal) {
+            $.each(currentValues, (key, currentVal) => {
                 if (currentVal.name == value.name && currentVal.idEmailAddress == value.idEmailAddress) {
                     isDuplicate = true;
                 }
             });
             if (isDuplicate) {
-                toastr.error("Contact is already added");
+                toastr.error('Contact is already added');
             } else {
                 currentValues.push(value);
             }
         };
         $scope.sendPreviewEmail = function() {
         	// asdasd
-        	
-        	$scope.saveClaimEmail(true, function(resp){
+
+        	$scope.saveClaimEmail(true, (resp) => {
         		if (resp == true) {
         			data = { Payload: $rootScope.previewEmail };
 
-		            var toString = [],
+		            let toString = [],
 		                ccString = [];
-		            $.each($rootScope.previewEmail.to, function(k, v) {
+		            $.each($rootScope.previewEmail.to, (k, v) => {
 		                toString.push(v.idEmailAddress);
 		            });
-		            $.each($rootScope.previewEmail.cc, function(k, v) {
+		            $.each($rootScope.previewEmail.cc, (k, v) => {
 		                ccString.push(v.idEmailAddress);
 		            });
 		            toString = toString.toString();
@@ -5220,39 +5243,39 @@ APP_MASTERS.controller("Controller_Master", [
 
 		            request_data = payloadDataModel.create(data.Payload);
 
-		            var comments = {
-		                "id": $rootScope.previewEmail.comment ? $rootScope.previewEmail.comment.id : 0,
-		                "name": $rootScope.previewEmail.comment.name,
-		                "emailTemplate":  $rootScope.currentEmailTemplate,
-		                "businessId": vm.entity_id,
-		                "secondBusinessId": null,
-		                "thirdBusinessId": null,
-		                "isDeleted": false,
-		                "Content": $rootScope.previewEmail.content,
-		                "To": toString,
-		                "Cc": ccString,
-		                "ToOthers": $rootScope.previewEmail.toOthers,
-		                "CcOthers": $rootScope.previewEmail.ccOthers,
-		                "From": $rootScope.previewEmail.from
+		            let comments = {
+		                id: $rootScope.previewEmail.comment ? $rootScope.previewEmail.comment.id : 0,
+		                name: $rootScope.previewEmail.comment.name,
+		                emailTemplate:  $rootScope.currentEmailTemplate,
+		                businessId: vm.entity_id,
+		                secondBusinessId: null,
+		                thirdBusinessId: null,
+		                isDeleted: false,
+		                Content: $rootScope.previewEmail.content,
+		                To: toString,
+		                Cc: ccString,
+		                ToOthers: $rootScope.previewEmail.toOthers,
+		                CcOthers: $rootScope.previewEmail.ccOthers,
+		                From: $rootScope.previewEmail.from
 		            };
 		            // find email template object
-		            $.each(vm.listsCache.EmailTemplate, function(key,value){
-		                if(value.id == $rootScope.currentEmailTemplate){
-		                    comments.emailTemplate =  angular.copy(value);
+		            $.each(vm.listsCache.EmailTemplate, (key, value) => {
+		                if(value.id == $rootScope.currentEmailTemplate) {
+		                    comments.emailTemplate = angular.copy(value);
 		                    return;
 		                }
-		            })
+		            });
 		            request_data.Payload.comment = angular.copy(comments);
 
 		            if (request_data.warningMessage) {
 		                confirmAction = window.confirm(request_data.warningMessage);
 		                if (confirmAction) {
-		                    Factory_Master.send_email_preview(request_data, function(response) {
+		                    Factory_Master.send_email_preview(request_data, (response) => {
 		                        if (response) {
 		                            if (response.status == true) {
 		                                $scope.loaded = true;
-		                                toastr.success("Email Preview was sent!");
-		                                var url = $state.$current.url.prefix + $state.params.screen_id + "/edit/" + $state.params.entity_id;
+		                                toastr.success('Email Preview was sent!');
+		                                let url = `${$state.$current.url.prefix + $state.params.screen_id }/edit/${ $state.params.entity_id}`;
 		                                $location.path(url);
 		                            } else {
 		                                $scope.loaded = true;
@@ -5262,12 +5285,12 @@ APP_MASTERS.controller("Controller_Master", [
 		                    });
 		                }
 		            } else {
-		                Factory_Master.send_email_preview(request_data, function(response) {
+		                Factory_Master.send_email_preview(request_data, (response) => {
 		                    if (response) {
 		                        if (response.status == true) {
 		                            $scope.loaded = true;
-		                            toastr.success("Email Preview was sent!");
-		                            var url = $state.$current.url.prefix + $state.params.screen_id + "/edit/" + $state.params.entity_id;
+		                            toastr.success('Email Preview was sent!');
+		                            let url = `${$state.$current.url.prefix + $state.params.screen_id }/edit/${ $state.params.entity_id}`;
 		                            $location.path(url);
 		                        } else {
 		                            $scope.loaded = true;
@@ -5277,81 +5300,79 @@ APP_MASTERS.controller("Controller_Master", [
 		                });
 		            }
         		}
-        	})
-            
+        	});
         };
+
         /* END CONTRACT PREVIEW*/
         $scope.goToFormula = function() {
-            window.open("#/masters/formula/edit/", "_blank");
+            window.open('#/masters/formula/edit/', '_blank');
         };
         $scope.addSpecParamsToClaim = function(event) {
-            //check if valid
-            selectedDisabled = event.currentTarget.attributes["ng-disabled"].value;
-            selectedParamId = parseInt(event.currentTarget.attributes["spec-param-id"].value); //specParam.id
-            selectedParamClaimType = parseInt(event.currentTarget.attributes["claim-type"].value); //claim.claim.id (actual id to send)
-            selectedParamRadioId = event.currentTarget.attributes["radio-id"].value; //claim.id (given id for validation)
-            selectedClaimId = selectedParamRadioId.split("_")[3];
+            // check if valid
+            selectedDisabled = event.currentTarget.attributes['ng-disabled'].value;
+            selectedParamId = parseInt(event.currentTarget.attributes['spec-param-id'].value); // specParam.id
+            selectedParamClaimType = parseInt(event.currentTarget.attributes['claim-type'].value); // claim.claim.id (actual id to send)
+            selectedParamRadioId = event.currentTarget.attributes['radio-id'].value; // claim.id (given id for validation)
+            selectedClaimId = selectedParamRadioId.split('_')[3];
             // console.log(selectedClaimId);
-            //cancel selection if disabled
-            if (selectedDisabled == "true") {
+            // cancel selection if disabled
+            if (selectedDisabled == 'true') {
                 event.currentTarget.checked = false;
                 return;
             }
-            //mark parameters disabled
-            if (typeof $rootScope.raiseClaimInfo.currentClaimTypeId == "undefined") {
+            // mark parameters disabled
+            if (typeof $rootScope.raiseClaimInfo.currentClaimTypeId == 'undefined') {
                 $rootScope.raiseClaimInfo.currentClaimTypeId = selectedParamClaimType;
                 $rootScope.raiseClaimInfo.currentClaimId = selectedClaimId;
                 $(selectedParamRadioId)[0].checked = true;
-                $.each(vm.availableClaimTypes, function(claimKey, claimVal) {
+                $.each(vm.availableClaimTypes, (claimKey, claimVal) => {
                     if (claimVal.id != selectedClaimId) {
-                        $.each(claimVal.specParams, function(paramKey, paramVal) {
-                            paramVal.disabled = "true";
+                        $.each(claimVal.specParams, (paramKey, paramVal) => {
+                            paramVal.disabled = 'true';
                         });
                     }
                 });
                 $rootScope.raiseClaimInfo.currentSpecParamIds.push(selectedParamId);
-            } else {
-                if ($rootScope.raiseClaimInfo.currentClaimId == selectedClaimId || $rootScope.raiseClaimInfo.currentSpecParamIds.length == 0) {
-                    //add / erase from array if it fits
-                    i = $.inArray(selectedParamId, $rootScope.raiseClaimInfo.currentSpecParamIds);
-                    if (i >= 0) {
-                        $rootScope.raiseClaimInfo.currentSpecParamIds.splice(i, 1);
-                        //remove restrictions if unchecked all params
-                        if ($rootScope.raiseClaimInfo.currentSpecParamIds.length == 0) {
-                            $.each(vm.availableClaimTypes, function(claimKey, claimVal) {
-                                $.each(claimVal.specParams, function(paramKey, paramVal) {
-                                    paramVal.disabled = "false";
-                                });
+            } else if ($rootScope.raiseClaimInfo.currentClaimId == selectedClaimId || $rootScope.raiseClaimInfo.currentSpecParamIds.length == 0) {
+                // add / erase from array if it fits
+                i = $.inArray(selectedParamId, $rootScope.raiseClaimInfo.currentSpecParamIds);
+                if (i >= 0) {
+                    $rootScope.raiseClaimInfo.currentSpecParamIds.splice(i, 1);
+                    // remove restrictions if unchecked all params
+                    if ($rootScope.raiseClaimInfo.currentSpecParamIds.length == 0) {
+                        $.each(vm.availableClaimTypes, (claimKey, claimVal) => {
+                            $.each(claimVal.specParams, (paramKey, paramVal) => {
+                                paramVal.disabled = 'false';
                             });
-                            $(selectedParamRadioId)[0].checked = false;
-                            delete $rootScope.raiseClaimInfo.currentClaimTypeId;
-                        }
-                    } else {
-                        $rootScope.raiseClaimInfo.currentSpecParamIds.push(selectedParamId);
-                        $rootScope.raiseClaimInfo.currentClaimTypeId = selectedParamClaimType;
+                        });
+                        $(selectedParamRadioId)[0].checked = false;
+                        delete $rootScope.raiseClaimInfo.currentClaimTypeId;
                     }
+                } else {
+                    $rootScope.raiseClaimInfo.currentSpecParamIds.push(selectedParamId);
+                    $rootScope.raiseClaimInfo.currentClaimTypeId = selectedParamClaimType;
                 }
             }
         };
         $scope.selectClaimInfoId = function(claimTypeId, claimId) {
-            //claimId = just for disabling checkboxes
+            // claimId = just for disabling checkboxes
             $rootScope.raiseClaimInfo.currentClaimTypeId = claimTypeId;
             $rootScope.raiseClaimInfo.currentClaimId = claimId;
             paramsSet = false;
             $rootScope.raiseClaimInfo.currentSpecParamIds = [];
-            $.each(vm.availableClaimTypes, function(claimKey, claimVal) {
+            $.each(vm.availableClaimTypes, (claimKey, claimVal) => {
                 if (claimVal.id != $rootScope.raiseClaimInfo.currentClaimId) {
-                    //uncheck checkboxes that do not fit & disable them
-                    $.each(claimVal.specParams, function(paramKey, paramVal) {
-                        id = "#claim_info_checkbox_" + paramVal.specParameter.id;
+                    // uncheck checkboxes that do not fit & disable them
+                    $.each(claimVal.specParams, (paramKey, paramVal) => {
+                        id = `#claim_info_checkbox_${ paramVal.specParameter.id}`;
                         $(id)[0].checked = false;
-                        paramVal.disabled = "true";
+                        paramVal.disabled = 'true';
                     });
                 } else {
-                    //check current claim boxes & make available
-                    $.each(claimVal.specParams, function(paramKey, paramVal) {
-                        paramVal.disabled = "false";
-                        id = "#claim_info_checkbox_" + paramVal.specParameter.id;
+                    // check current claim boxes & make available
+                    $.each(claimVal.specParams, (paramKey, paramVal) => {
+                        paramVal.disabled = 'false';
+                        id = `#claim_info_checkbox_${ paramVal.specParameter.id}`;
                         $(id)[0].checked = true;
                         $rootScope.raiseClaimInfo.currentSpecParamIds.push(paramVal.id);
                         paramsSet = true;
@@ -5368,7 +5389,8 @@ APP_MASTERS.controller("Controller_Master", [
                 console.log($rootScope.deliveryProductChanged);
             }
         };
-        /*DeliveryList*/
+
+        /* DeliveryList*/
         // $scope.createDeliveryFromDeliveryList = function() {
         //     if (typeof($rootScope.selectDeliveryRow) !== 'undefined' && $rootScope.selectDeliveryRow != null) {
         //         if ($rootScope.selectDeliveryRow.delivery != null) {
@@ -5512,31 +5534,31 @@ APP_MASTERS.controller("Controller_Master", [
         //         $scope.getDeliveryOrderSummary($scope.formValues.order.id);
         //     });
         // }
-        /*DeliveryList*/
-        /*Convert Currency*/
+        /* DeliveryList*/
+        /* Convert Currency*/
         $scope.convertCurrency = function(fromCurrencyId, toCurrencyId, exchangeDate, amount, convertCallback) {
-            var d = new Date();
+            let d = new Date();
             month = d.getMonth() + 1;
             day = d.getDate();
             hours = d.getHours();
             minutes = d.getMinutes();
             seconds = d.getSeconds();
             if (month < 10) {
-                month = "0" + month;
+                month = `0${ month}`;
             }
             if (day < 10) {
-                day = "0" + day;
+                day = `0${ day}`;
             }
             if (hours < 10) {
-                hours = "0" + hours;
+                hours = `0${ hours}`;
             }
             if (minutes < 10) {
-                minutes = "0" + minutes;
+                minutes = `0${ minutes}`;
             }
             if (seconds < 10) {
-                seconds = "0" + seconds;
+                seconds = `0${ seconds}`;
             }
-            date = d.getFullYear() + "-" + month + "-" + day + "T" + hours + ":" + minutes + ":" + seconds;
+            date = `${d.getFullYear() }-${ month }-${ day }T${ hours }:${ minutes }:${ seconds}`;
             if (!exchangeDate) {
                 exchangeDate = date;
             }
@@ -5545,19 +5567,19 @@ APP_MASTERS.controller("Controller_Master", [
                     Order: null,
                     Filters: [
                         {
-                            ColumnName: "FromCurrencyId",
+                            ColumnName: 'FromCurrencyId',
                             Value: fromCurrencyId
                         },
                         {
-                            ColumnName: "ToCurrencyId",
+                            ColumnName: 'ToCurrencyId',
                             Value: toCurrencyId
                         },
                         {
-                            ColumnName: "ExchangeDate",
+                            ColumnName: 'ExchangeDate',
                             Value: exchangeDate
                         },
                         {
-                            ColumnName: "Amount",
+                            ColumnName: 'Amount',
                             Value: amount
                         }
                     ],
@@ -5567,7 +5589,7 @@ APP_MASTERS.controller("Controller_Master", [
                     }
                 }
             };
-            Factory_Master.convertCurrency(data, function(callback) {
+            Factory_Master.convertCurrency(data, (callback) => {
                 if (callback) {
                     if (convertCallback) {
                         convertCallback(callback.data);
@@ -5575,34 +5597,37 @@ APP_MASTERS.controller("Controller_Master", [
                 }
             });
         };
-        /*Convert Currency*/
-        /*Print Function*/
+
+        /* Convert Currency*/
+        /* Print Function*/
         $scope.printElem = function(selector) {
-            var mywindow = window.open("", "PRINT", "height=400,width=600");
-            mywindow.document.write("<html><head>");
-            mywindow.document.write("</head><body >");
+            let mywindow = window.open('', 'PRINT', 'height=400,width=600');
+            mywindow.document.write('<html><head>');
+            mywindow.document.write('</head><body >');
             mywindow.document.write($(selector).html());
-            mywindow.document.write("</body></html>");
+            mywindow.document.write('</body></html>');
             mywindow.document.close(); // necessary for IE >= 10
             mywindow.focus(); // necessary for IE >= 10*/
             mywindow.print();
             mywindow.close();
             return true;
         };
-        /*END Print Function*/
+
+        /* END Print Function*/
         $scope.stringToObject = function(string, obj) {
             $scope[obj] = JSON.parse(string);
         };
-        /*END ContractDelivery*/
-        $scope.$on("copyAlertAction", function(event) {
+
+        /* END ContractDelivery*/
+        $scope.$on('copyAlertAction', (event) => {
             console.log($scope.formValues);
             $rootScope.copyAlertAction = true;
         });
         vm.displayStatusInHeader = function() {
-            $rootScope.$watch("formValues", function() {
-                if ($state.params.screen_id == "claim") {
-                    if (typeof $rootScope.formValues != "undefined" && typeof $rootScope.formValues.claimDetails != "undefined" && typeof $rootScope.formValues.claimDetails.status != "undefined") {
-                        if (!$state.params.status || typeof $state.params.status == "undefined") {
+            $rootScope.$watch('formValues', () => {
+                if ($state.params.screen_id == 'claim') {
+                    if (typeof $rootScope.formValues != 'undefined' && typeof $rootScope.formValues.claimDetails != 'undefined' && typeof $rootScope.formValues.claimDetails.status != 'undefined') {
+                        if (!$state.params.status || typeof $state.params.status == 'undefined') {
                             $state.params.status = {};
                         }
                         $state.params.status.name = $rootScope.formValues.claimDetails.status.name;
@@ -5610,47 +5635,46 @@ APP_MASTERS.controller("Controller_Master", [
                         $state.params.status.bg = statusColors.getColorCodeFromLabels(
                             $rootScope.formValues.claimDetails.status,
                             $listsCache.ScheduleDashboardLabelConfiguration);
-                        $state.params.status.color = "white";
+                        $state.params.status.color = 'white';
                     }
                 }
             });
         };
         $scope.saveNewContactCounterparty = function(newContact, counterpartyData) {
-            if (newContact.name == "" || !newContact.name || !newContact.contactType.id || !newContact.email || newContact.email == "") {
-                toastr.error("Please fill the required fields");
+            if (newContact.name == '' || !newContact.name || !newContact.contactType.id || !newContact.email || newContact.email == '') {
+                toastr.error('Please fill the required fields');
                 return;
-            } else {
+            }
 
             	if (!$scope.validateEmailPattern(newContact.email)) {
-                    toastr.error("Invalid email address");
-                    return;
+                toastr.error('Invalid email address');
+                return;
             	}
 
-                $.each(counterpartyData.contacts, function(k, v) {
-                    if (v.id == 0) {
-                        counterpartyData.contacts.splice(k, 1);
-                    }
-                });
-                newContact.id = 0;
-                newContact.emailContact = true;
-                dataToAdd = counterpartyData;
-                dataToAdd.contacts.push(newContact);
-                $rootScope.$broadcast("confirmedBladeNavigation", true)
-                Factory_Master.save_master_changes("masters", "counterparty", dataToAdd, function(callback) {
-		            $(".blade-column.main-content-column .ng-dirty").removeClass("ng-dirty");
-                    vm.newContact = null;
-                    vm.addNewContact = false;
-                    if (callback.status == true) {
-                        toastr.success(callback.message);
-                        // $scope.closeBlade();
-                    } else {
-                        toastr.error(callback.message);
-                    }
-                });
-            }
+            $.each(counterpartyData.contacts, (k, v) => {
+                if (v.id == 0) {
+                    counterpartyData.contacts.splice(k, 1);
+                }
+            });
+            newContact.id = 0;
+            newContact.emailContact = true;
+            dataToAdd = counterpartyData;
+            dataToAdd.contacts.push(newContact);
+            $rootScope.$broadcast('confirmedBladeNavigation', true);
+            Factory_Master.save_master_changes('masters', 'counterparty', dataToAdd, (callback) => {
+		            $('.blade-column.main-content-column .ng-dirty').removeClass('ng-dirty');
+                vm.newContact = null;
+                vm.addNewContact = false;
+                if (callback.status == true) {
+                    toastr.success(callback.message);
+                    // $scope.closeBlade();
+                } else {
+                    toastr.error(callback.message);
+                }
+            });
         };
         $scope.closeBlade = function() {
-        	if ($(".blade-column.main-content-column .ng-dirty").length > 0 && !$rootScope.overrideCloseNavigation) {
+        	if ($('.blade-column.main-content-column .ng-dirty').length > 0 && !$rootScope.overrideCloseNavigation) {
                 if ($('general-energy-calculation').length > 0) {
                     $('.confirmEnergyBladeClose').removeClass('hide');
                     $('.confirmEnergyBladeClose').modal();
@@ -5659,32 +5683,32 @@ APP_MASTERS.controller("Controller_Master", [
                     $('.confirmBladeClose').modal();
                 }
         	} else {
-        		$scope.confirmCloseBlade();		
+        		$scope.confirmCloseBlade();
         	}
         	if ($rootScope.shouldRefreshGroup) {
-        		$rootScope.$broadcast("initScreenAfterSendOrSkipRfq", true);
+        		$rootScope.$broadcast('initScreenAfterSendOrSkipRfq', true);
         	}
         };
-        $scope.confirmCloseBlade = function(){
-            $(".bladeEntity").removeClass("open");
-            $("body").css("overflow-y", "auto");
-            setTimeout(function() {
-                $rootScope.bladeTemplateUrl = "";
+        $scope.confirmCloseBlade = function() {
+            $('.bladeEntity').removeClass('open');
+            $('body').css('overflow-y', 'auto');
+            setTimeout(() => {
+                $rootScope.bladeTemplateUrl = '';
                 if($rootScope.refreshPending) {
                 	$state.reload();
-                  // window.location.reload();
+                    // window.location.reload();
                 }
-                $rootScope.$broadcast("counterpartyBladeClosed", true);
+                $rootScope.$broadcast('counterpartyBladeClosed', true);
                 $rootScope.overrideCloseNavigation = false;
             }, 500);
-        }
+        };
 
-        $scope.confirmSaveBlade = function(){
-            $rootScope.$broadcast("updateEnergySpecValuesByProduct", true);
-        }
+        $scope.confirmSaveBlade = function() {
+            $rootScope.$broadcast('updateEnergySpecValuesByProduct', true);
+        };
 
         $scope.isMeanFormula = function() {
-            $.each($scope.formValues.complexFormulaQuoteLines, function(key, val) {
+            $.each($scope.formValues.complexFormulaQuoteLines, (key, val) => {
                 if ($scope.formValues.complexFormulaQuoteLines[key].formulaOperation) {
                     $scope.formValues.complexFormulaQuoteLines[key].formulaOperation.id = 3;
                 }
@@ -5695,9 +5719,13 @@ APP_MASTERS.controller("Controller_Master", [
         };
         // Delivery App
         vm.initCarouselStep = function(param) {
-            if (param == "start") return 0;
+            if (param == 'start') {
+                return 0;
+            }
             windowWidth = $window.innerWidth;
-            if (windowWidth > 991) return 4;
+            if (windowWidth > 991) {
+                return 4;
+            }
             return 2;
         };
         $scope.getSpecGroupByProduct = function(productId) {
@@ -5705,21 +5733,23 @@ APP_MASTERS.controller("Controller_Master", [
                 Payload: {
                     Filters: [
                         {
-                            ColumnName: "ProductId",
+                            ColumnName: 'ProductId',
                             Value: productId
                         }
                     ]
                 }
             };
-            if (typeof vm.productSpecGroup == "undefined") {
+            if (typeof vm.productSpecGroup == 'undefined') {
                 vm.productSpecGroup = [];
             }
 
-            //if spec group for product exists, do not make call again
-            if (typeof vm.productSpecGroup[productId] != "undefined") return;
+            // if spec group for product exists, do not make call again
+            if (typeof vm.productSpecGroup[productId] != 'undefined') {
+                return;
+            }
             // if(typeof(vm.productSpecGroup[productId]) != []) return;
 
-            Factory_Master.specGroupGetByProduct(data, function(callback) {
+            Factory_Master.specGroupGetByProduct(data, (callback) => {
                 if (callback) {
                     vm.productSpecGroup[productId] = callback.data.payload;
                     // $scope.addProductToConversion(index, false, false);
@@ -5727,37 +5757,36 @@ APP_MASTERS.controller("Controller_Master", [
             });
         };
         vm.getContractConfiguration = function() {
-            console.log("getting contract config");
+            console.log('getting contract config');
         };
 
         vm.trustAsHtml = function(data) {
             return $sce.trustAsHtml(data);
         };
-        
+
         vm.trustAsHtmlField = function(data) {
-            if (data && _.has($scope, 'formValues.' + data.Unique_ID)) {
-                return $sce.trustAsHtml(_.get($scope, 'formValues.' + data.Unique_ID));
+            if (data && _.has($scope, `formValues.${ data.Unique_ID}`)) {
+                return $sce.trustAsHtml(_.get($scope, `formValues.${ data.Unique_ID}`));
             }
         };
 
         $scope.doEntityActionMaster = function(type, url, method, absolute, new_tab) {
-            data = [type, url, method, absolute, new_tab];
-            $rootScope.$broadcast("generalAction", data);
+            data = [ type, url, method, absolute, new_tab ];
+            $rootScope.$broadcast('generalAction', data);
             // $scope.general_action(type, url, method, absolute, new_tab);
         };
 
 
-
-		$rootScope.$on('$stateChangeStart', 
-		function(event, toState, toParams, fromState, fromParams){ 
-		    $rootScope.called_getAdditionalCostsCM  = false
-		})
+        $rootScope.$on('$stateChangeStart',
+            (event, toState, toParams, fromState, fromParams) => {
+		    $rootScope.called_getAdditionalCostsCM = false;
+            });
         vm.getAdditionalCostsComponentTypes = function(callback) {
             if (!vm.additionalCostsComponentTypes) {
 		    	if (!$rootScope.called_getAdditionalCostsCM) {
 		    		$rootScope.called_getAdditionalCostsCM = 1;
-		        	console.log("--- *** --- getAdditionalCostsComponentTypes")
-	                Factory_Master.getAdditionalCosts(0, function(response) {
+		        	console.log('--- *** --- getAdditionalCostsComponentTypes');
+	                Factory_Master.getAdditionalCosts(0, (response) => {
 			    		// $rootScope.called_getAdditionalCostsCM = false;
 	                    console.log(response);
                         vm.additionalCostsComponentTypes = response.data.payload;
@@ -5773,79 +5802,79 @@ APP_MASTERS.controller("Controller_Master", [
         };
 
 
-		$scope.filterCostTypesByAdditionalCostInvoice = function(cost, rowRenderIndex) {
-            if (typeof(vm.filteredCostTypesByAdditionalCost) == 'undefined') {
-	            vm.filteredCostTypesByAdditionalCost = []
+        $scope.filterCostTypesByAdditionalCostInvoice = function(cost, rowRenderIndex) {
+            if (typeof vm.filteredCostTypesByAdditionalCost == 'undefined') {
+	            vm.filteredCostTypesByAdditionalCost = [];
             }
 
             currentCost = cost;
-            if (!$rootScope.additionalCostsComponentTypes) {return}
-            $.each($rootScope.additionalCostsComponentTypes, function(k, v) {
+            if (!$rootScope.additionalCostsComponentTypes) {
+                return;
+            }
+            $.each($rootScope.additionalCostsComponentTypes, (k, v) => {
                 if (v.id == currentCost) {
                     costType = v.costType.id;
                 }
             });
-            
-			availableCosts = [];
-            $.each(vm.listsCache.CostType, function(ack, acv){
-                
-				if (acv) {
-					if (costType == 1 || costType == 2) {
+
+            availableCosts = [];
+            $.each(vm.listsCache.CostType, (ack, acv) => {
+                if (acv) {
+                    if (costType == 1 || costType == 2) {
 		                if (acv.id == 1 || acv.id == 2) {
 	                        availableCosts.push(acv);
 		                }
-					}
-					if (costType == 3) {
+                    }
+                    if (costType == 3) {
 		                if (acv.id == 3) {
 	                        availableCosts.push(acv);
-		                }                    	
-					}
-				}
-            })
-            return availableCosts
+		                }
+                    }
+                }
+            });
+            return availableCosts;
         };
 
         $scope.filterCostTypesByAdditionalCost = function(cost, rowRenderIndex) {
             currentCost = cost;
 
 
-            var doFiltering = function(addCostCompTypes, cost){
+            let doFiltering = function(addCostCompTypes, cost) {
                 costType = null;
-                $.each(addCostCompTypes, function(k, v) {
+                $.each(addCostCompTypes, (k, v) => {
                     if (v.id == currentCost) {
                         costType = v.costType.id;
                     }
                 });
                 availableCosts = [];
                 if (costType == 1 || costType == 2) {
-                    $.each(vm.listsCache.CostType, function(k, v) {
+                    $.each(vm.listsCache.CostType, (k, v) => {
                         if (v.id == 1 || v.id == 2) {
                             availableCosts.push(v);
                         }
                     });
                 }
                 if (costType == 3) {
-                    $.each(vm.listsCache.CostType, function(k, v) {
+                    $.each(vm.listsCache.CostType, (k, v) => {
                         if (v.id == 3) {
                             availableCosts.push(v);
                         }
                     });
                 }
                 return availableCosts;
-            }
+            };
 
-                // return doFiltering(vm.additionalCostsComponentTypes, currentCost);
-            if(vm.additionalCostsComponentTypes === undefined){
-                vm.getAdditionalCostsComponentTypes(function(additionalCostsComponentTypes) {
+            // return doFiltering(vm.additionalCostsComponentTypes, currentCost);
+            if(vm.additionalCostsComponentTypes === undefined) {
+                vm.getAdditionalCostsComponentTypes((additionalCostsComponentTypes) => {
                     return doFiltering(additionalCostsComponentTypes);
                 });
             }else{
                 return doFiltering(vm.additionalCostsComponentTypes);
             }
-           
         };
         $scope.setDefaultCostType = function(additionalCost) {
-            $.each(vm.additionalCostsComponentTypes, function(k, v) {
+            $.each(vm.additionalCostsComponentTypes, (k, v) => {
                 if (v.id == additionalCost.id) {
                     defaultCostType = v.costType;
                 }
@@ -5853,7 +5882,7 @@ APP_MASTERS.controller("Controller_Master", [
             return defaultCostType;
         };
         $scope.resetUom = function(key1, key2) {
-            if ($scope.formValues.products[key1].additionalCosts[key2].costType.name != "Unit") {
+            if ($scope.formValues.products[key1].additionalCosts[key2].costType.name != 'Unit') {
                 $scope.formValues.products[key1].additionalCosts[key2].uom = null;
             } else {
                 $scope.formValues.products[key1].additionalCosts[key2].uom = $scope.tenantSetting.tenantFormats.uom;
@@ -5868,7 +5897,7 @@ APP_MASTERS.controller("Controller_Master", [
         };
         $scope.getProductTooltipByProductId = function(productId) {
             tooltipName = null;
-            $.each($listsCache.Product, function(pk, pv) {
+            $.each($listsCache.Product, (pk, pv) => {
                 if (pv.id == productId) {
                     tooltipName = pv.displayName;
                 }
@@ -5886,41 +5915,45 @@ APP_MASTERS.controller("Controller_Master", [
             // if ($scope.formValues.status.name == "Confirmed" || $scope.formValues.status.name == "Delivered") {
             //     localStorage.setItem("uneditableFormula", id);
             // }
-            $window.open(location.origin + "/#/masters/formula/edit/" + id, "_blank");
+            $window.open(`${location.origin }/#/masters/formula/edit/${ id}`, '_blank');
             // console.log( location.origin + '/#/masters/formula/edit/' + id)
         };
         $scope.checkEditableFormula = function(isEditable) {
-
-                if (!isEditable) {
-                    $scope.submitedAction = true;
-                    toastr.error("Formula cannot be modifed for a Confirmed / Delivered contract");
-
+            if (!isEditable) {
+                $scope.submitedAction = true;
+                toastr.error('Formula cannot be modifed for a Confirmed / Delivered contract');
             }
         };
-        vm.checkVerifiedDelivery = [false, false];
+        vm.checkVerifiedDelivery = [ false, false ];
         vm.checkVerifiedDeliveryFromLabs = function(orderChange) {
-            if (orderChange == "orderChange") {
+            if (orderChange == 'orderChange') {
                 // console.log(orderChange)
-                $("#DeliveryDeliveryID")[0].disabled = "";
-                $("#DeliveryDeliveryID")[0].options[0].text = "";
+                $('#DeliveryDeliveryID')[0].disabled = '';
+                $('#DeliveryDeliveryID')[0].options[0].text = '';
                 return;
             }
-            if (orderChange == "loadedData") vm.checkVerifiedDelivery[1] = true;
-            if (orderChange == "loadedControl") vm.checkVerifiedDelivery[0] = true;
+            if (orderChange == 'loadedData') {
+                vm.checkVerifiedDelivery[1] = true;
+            }
+            if (orderChange == 'loadedControl') {
+                vm.checkVerifiedDelivery[0] = true;
+            }
             if (vm.checkVerifiedDelivery[0]) {
                 if (vm.checkVerifiedDelivery[1]) {
-                    $timeout(function() {
-                        var someValidOption = false;
-                        console.log("#DeliveryDeliveryID", $("#DeliveryDeliveryID"));
-                        $.each($("#DeliveryDeliveryID")[0].options, function(key, val) {
+                    $timeout(() => {
+                        let someValidOption = false;
+                        console.log('#DeliveryDeliveryID', $('#DeliveryDeliveryID'));
+                        $.each($('#DeliveryDeliveryID')[0].options, (key, val) => {
                             console.log(val.value);
-                            if (val.value != "?" && val.value != "" && val.value != " ") someValidOption = true;
+                            if (val.value != '?' && val.value != '' && val.value != ' ') {
+                                someValidOption = true;
+                            }
                         });
                         if (!someValidOption && vm.entity_id > 0) {
-                            console.log("#DeliveryDeliveryID", $("#DeliveryDeliveryID"));
-                            $("#DeliveryDeliveryID")[0].disabled = true;
+                            console.log('#DeliveryDeliveryID', $('#DeliveryDeliveryID'));
+                            $('#DeliveryDeliveryID')[0].disabled = true;
                             if ($scope.formValues.delivery != null) {
-                                $("#DeliveryDeliveryID")[0].options[0].text = $scope.formValues.delivery.name + " is not Verified";
+                                $('#DeliveryDeliveryID')[0].options[0].text = `${$scope.formValues.delivery.name } is not Verified`;
                             }
                         }
                     }, 10);
@@ -5928,10 +5961,10 @@ APP_MASTERS.controller("Controller_Master", [
             }
         };
         $scope.showMultiLookupWarning = function(model) {
-            setTimeout(function() {
+            setTimeout(() => {
                 if (model) {
                     if (model.id && !vm.plusClickedMultilookup) {
-                        toastr.warning("Please click on ‘+’ button to add");
+                        toastr.warning('Please click on ‘+’ button to add');
                     }
                 }
                 vm.plusClickedMultilookup = false;
@@ -5942,67 +5975,62 @@ APP_MASTERS.controller("Controller_Master", [
             resultOk = pattern.test(modelData);
             if (resultOk) {
                 return modelData;
-            } else {
-            	toastr.error("Invalid email address");
-                return null;
             }
+            	toastr.error('Invalid email address');
+            return null;
         };
 
         $scope.validateContactNamePattern = function(modelData) {
-
-			errorMessage = 'The contacts cannot contain the characters ",", ";", "|"';
-			if (modelData.indexOf(",") == -1 && modelData.indexOf(";") == -1 && modelData.indexOf("|") == -1) {
+            errorMessage = 'The contacts cannot contain the characters ",", ";", "|"';
+            if (modelData.indexOf(',') == -1 && modelData.indexOf(';') == -1 && modelData.indexOf('|') == -1) {
                 return modelData;
-            } else {
-            	toastr.error(errorMessage);
-                return null;
             }
+            	toastr.error(errorMessage);
+            return null;
         };
 
-		jQuery(document).ready(function() {
+        jQuery(document).ready(() => {
             if (window.readyOnce) {
                 return;
             }
 
             window.readyOnce = true;
-        	if (/*$state.current.name.indexOf('.documents') != -1 &&*/ typeof($rootScope.setDocumentTimeout) == 'undefined' ) {
+        	if (/* $state.current.name.indexOf('.documents') != -1 &&*/ typeof $rootScope.setDocumentTimeout == 'undefined') {
         		$rootScope.setDocumentTimeout = true;
-	            setTimeout(function() {
-
-
-	            	$(document).on("change", "input.inputfile", function(){
+	            setTimeout(() => {
+	            	$(document).on('change', 'input.inputfile', function() {
 	            		input = $(this);
 	                    // var label = $(input).next();
-                     //    var labelVal = label.innerHTML;
+                        //    var labelVal = label.innerHTML;
 	                    // if (!label) {
 	                    // 	return;
 	                    // }
 	                    currentFile = this.files[0];
-                        var documentTypeValues = this.form[1].value; 
-                        if (documentTypeValues == "") {
-                            toastr.warning("Please select a Document Type and upload the file again");
+                        let documentTypeValues = this.form[1].value;
+                        if (documentTypeValues == '') {
+                            toastr.warning('Please select a Document Type and upload the file again');
                             return;
-                        }                    
-	                    fileScope = angular.element($("input").parent().find(".fileNameLabel")).scope();
+                        }
+	                    fileScope = angular.element($('input').parent().find('.fileNameLabel')).scope();
                         $rootScope.droppedDoc = currentFile;
-                        fileScope.$apply(function() {
+                        fileScope.$apply(() => {
                             fileScope.droppedDoc = currentFile;
                         });
-                        $scope.uploadDocument("#fileUpload");
+                        $scope.uploadDocument('#fileUpload');
                         // $("input").parent().find(".fileNameLabel").text(currentFile.name)
-                        
+
                         // var fileName = "";
                         // if (this.files && this.files.length > 1) {
                         // 	fileName = (this.getAttribute("data-multiple-caption") || "").replace("{count}", this.files.length)
                         // } else {
-	                       //  fileName = $(this).val().split("\\").pop();	
-                        // } 
+	                       //  fileName = $(this).val().split("\\").pop();
+                        // }
                         // if (fileName) {
                         // 	$(label).children("span").innerHTML = fileName
                         // } else {
                         // 	label.innerHTML = labelVal;
                         // }
-	            	})
+	            	});
 
 	                // var inputs = document.querySelectorAll(".inputfile");
 	                // Array.prototype.forEach.call(inputs, function(input) {
@@ -6050,7 +6078,7 @@ APP_MASTERS.controller("Controller_Master", [
         // $('.selectpicker').selectpicker('refresh');
         //      },300)
         //  })
-        $scope.$on("formValues", function() {
+        $scope.$on('formValues', () => {
             // vm.initRobSectionUOM();
             if (vm.screen_id == 'additionalcost') {
                 $scope.triggerChangeFields('CostType', 'costType');
@@ -6067,7 +6095,7 @@ APP_MASTERS.controller("Controller_Master", [
                 }
             }
             if (vm.screen_id == 'product') {
-                _.each($scope.formValues.energyFormulaProducts, function(value, key) {
+                _.each($scope.formValues.energyFormulaProducts, (value, key) => {
                     if (value.energyFormulaTypeName === 'SpecificEnergyCalculation') {
                         $scope.formValues.energyFormulaSpecific = value.energyFormula;
                         $scope.formValues.energyFormulaDescriptionSpecific = value.energyFormula.displayName;
@@ -6079,19 +6107,19 @@ APP_MASTERS.controller("Controller_Master", [
                 });
             }
         });
-		$("body").on("click", function () {
+        $('body').on('click', () => {
 		    $('[role="tooltip"]').remove();
-			$scope.initBoostrapTagsInputTooltip();	    
-		})        
+            $scope.initBoostrapTagsInputTooltip();
+        });
         vm.initRobSectionUOM = function() {
-            if (typeof $scope.formValues != "undefined") {
-                var uomsToPopulate = ["robHsfoDeliveryUom", "robLsfoDeliveryUom", "robDoGoDeliveryUom", "robHsfoRedeliveryUom", "robLsfoRedeliveryUom", "robDoGoRedeliveryUom"];
-                $.each(uomsToPopulate, function(key, val) {
+            if (typeof $scope.formValues != 'undefined') {
+                let uomsToPopulate = [ 'robHsfoDeliveryUom', 'robLsfoDeliveryUom', 'robDoGoDeliveryUom', 'robHsfoRedeliveryUom', 'robLsfoRedeliveryUom', 'robDoGoRedeliveryUom' ];
+                $.each(uomsToPopulate, (key, val) => {
                     // if((typeof $scope.formValues[val] != 'undefined') && ((typeof $scope.formValues[val] != 'object') || ($scope.formValues[val] == null))){
                     //     $scope.formValues[val] = $tenantSettings['tenantFormats']['uom'];
                     // }
-                    if (typeof $scope.formValues[val] == "undefined" || $scope.formValues[val] == null) {
-                        $scope.formValues[val] = $tenantSettings["tenantFormats"]["uom"];
+                    if (typeof $scope.formValues[val] == 'undefined' || $scope.formValues[val] == null) {
+                        $scope.formValues[val] = $tenantSettings.tenantFormats.uom;
                     }
                 });
             }
@@ -6103,17 +6131,17 @@ APP_MASTERS.controller("Controller_Master", [
             //     screen: "counterpartylist",
             //     clc_id: "masters_counterpartylist_labs"
             // }
-            Factory_Master.get_master_list_filtered("masters", "counterpartylist", "masters_counterpartylist_labs", function(response) {
+            Factory_Master.get_master_list_filtered('masters', 'counterpartylist', 'masters_counterpartylist_labs', (response) => {
                 defaultLabOptions = [];
                 if (response) {
                     if (response.rows.length > 0) {
-                        $.each(response.rows, function(k, v) {
+                        $.each(response.rows, (k, v) => {
                             defaultLabOptions.push({
                                 name: v.name,
                                 id: v.id
                             });
                         });
-                        $scope.options["defaultLab"] = defaultLabOptions;
+                        $scope.options.defaultLab = defaultLabOptions;
                     }
                 }
             });
@@ -6137,76 +6165,76 @@ APP_MASTERS.controller("Controller_Master", [
                 $scope.formValues.pricingScheduleOptionEventBasedContinuous.saturdayHolidayRule = $scope.options.HolidayRule[0];
             }
         };
-        /*Location Master Preffered Seller Product Table*/
+
+        /* Location Master Preffered Seller Product Table*/
         $scope.openLocationPreferredSellerProducts = function(currentSellerKey, master) {
         	if (master) {
-        		if (master == "counterpartyMaster") {
-        			objMapping = "counterpartyLocations";
+        		if (master == 'counterpartyMaster') {
+        			objMapping = 'counterpartyLocations';
         		} else {
-        			objMapping = "sellers";
+        			objMapping = 'sellers';
         		}
         	} else {
-				objMapping = "sellers";
+                objMapping = 'sellers';
         	}
             $scope.locationCurrentPreferredSellerKey = currentSellerKey;
-            tpl = $templateCache.get("app-general-components/views/modal_preferredSellersProduct.html");
+            tpl = $templateCache.get('app-general-components/views/modal_preferredSellersProduct.html');
             // payload
             $scope.locationMasterPreferredSellerProductsTableConfig = {};
             getPayload = $scope.createLocationPreferredSellerProductsPayload();
-            if (objMapping == "sellers") {
+            if (objMapping == 'sellers') {
 	            getPreferredProductsForSellerInLocation = {
 	                Payload: {
-	                    LocationId: vm.entity_id != "" ? vm.entity_id : 0,
+	                    LocationId: vm.entity_id != '' ? vm.entity_id : 0,
 	                    SellerId: $scope.formValues[objMapping][currentSellerKey].id
 	                }
 	            };
-            } 
-            if (objMapping == "counterpartyLocations") {
+            }
+            if (objMapping == 'counterpartyLocations') {
 	            getPreferredProductsForSellerInLocation = {
 	                Payload: {
-	                    SellerId: vm.entity_id != "" ? vm.entity_id : 0,
+	                    SellerId: vm.entity_id != '' ? vm.entity_id : 0,
 	                    LocationId: $scope.formValues[objMapping][currentSellerKey].id
 	                }
 	            };
-            }            
-            
+            }
+
             // preferred products
             $scope.preferredProductsForSellerInLocation = [];
             if (!$scope.NOTpreferredProductsForSellerInLocation) {
 	            $scope.NOTpreferredProductsForSellerInLocation = [];
             }
-            $.each($scope.formValues[objMapping][currentSellerKey].products, function(ppk, ppv) {
-                if ($scope.preferredProductsForSellerInLocation.indexOf(ppv.product.id + "") == -1) {
-
-                    //append preffered products to payload
+            $.each($scope.formValues[objMapping][currentSellerKey].products, (ppk, ppv) => {
+                if ($scope.preferredProductsForSellerInLocation.indexOf(`${ppv.product.id }`) == -1) {
+                    // append preffered products to payload
                     getPayload.Payload.SelectedProductIds.push(ppv.product.id); // number needed
                     if (!ppv.isDeleted) {
-	                    $scope.preferredProductsForSellerInLocation.push(ppv.product.id + "");
+	                    $scope.preferredProductsForSellerInLocation.push(`${ppv.product.id }`);
                     }
                 }
             });
 
-            //make SelectedProducts a string
+            // make SelectedProducts a string
             getPayload.Payload.SelectedProductIds = JSON.stringify(getPayload.Payload.SelectedProductIds);
             localStorage.setItem('preferredProducts', getPayload.Payload.SelectedProductIds);
             // $scope.setPrefferedPoductsForSellerInTable();
 
-    
-            Factory_Master.getProductsForSellerInLocation(getPayload, function(response) {
+
+            Factory_Master.getProductsForSellerInLocation(getPayload, (response) => {
                 if (response) {
-                    $.each($scope.NOTpreferredProductsForSellerInLocation, function(k,v){
-                    	$.each(response.data.payload, function(rk,rv){
+                    $.each($scope.NOTpreferredProductsForSellerInLocation, (k, v) => {
+                    	$.each(response.data.payload, (rk, rv) => {
                     		if (rv.id == parseFloat(v)) {
                     			rv.selected = false;
                     			rv.isDeleted = true;
                     		}
-                    	})	
-                    })
+                    	});
+                    });
                     $scope.locationPreferredSellerProductsData = response.data.payload;
 
 
-                    //all products
-                    if(!$scope.locationPreferredSellerProductsDataAllProd){
+                    // all products
+                    if(!$scope.locationPreferredSellerProductsDataAllProd) {
                         $scope.locationPreferredSellerProductsDataAllProd = [];
                     }
                     $scope.locationPreferredSellerProductsDataAllProd = _.union($scope.locationPreferredSellerProductsDataAllProd, response.data.payload);
@@ -6219,10 +6247,10 @@ APP_MASTERS.controller("Controller_Master", [
                     $scope.locationPreferredSellerProductsDataPages = Math.ceil($scope.locationPreferredSellerProductsDataLength / $scope.locationMasterPreferredSellerProductsTableConfig.take);
                     $scope.modalInstance = $uibModal.open({
                         template: tpl,
-                        size: "full",
-                        appendTo: angular.element(document.getElementsByClassName("page-container")),
-                        windowTopClass: "fullWidthModal",
-                        scope: $scope //passed current scope to the modal
+                        size: 'full',
+                        appendTo: angular.element(document.getElementsByClassName('page-container')),
+                        windowTopClass: 'fullWidthModal',
+                        scope: $scope // passed current scope to the modal
                     });
                 }
             });
@@ -6239,17 +6267,17 @@ APP_MASTERS.controller("Controller_Master", [
                 $scope.locationMasterPreferredSellerProductsTableConfig.order = {};
                 sortList = [
                     {
-                        columnValue: "name",
+                        columnValue: 'name',
                         sortParameter: 2
                     }
-                ]                
+                ];
             } else {
             	sortList = [
 	            	{
 	            		columnValue : $scope.locationMasterPreferredSellerProductsTableConfig.order.columnName,
-	            		sortParameter : $scope.locationMasterPreferredSellerProductsTableConfig.order.sortOrder == "asc" ? 1 : 2
+	            		sortParameter : $scope.locationMasterPreferredSellerProductsTableConfig.order.sortOrder == 'asc' ? 1 : 2
 	            	}
-            	]
+            	];
             }
             $scope.locationMasterPreferredSellerProductsTableConfig.skip = ($scope.locationMasterPreferredSellerProductsTableConfig.currentPage - 1) * $scope.locationMasterPreferredSellerProductsTableConfig.take;
             payload = {
@@ -6272,17 +6300,17 @@ APP_MASTERS.controller("Controller_Master", [
                 }
             };
             if (reloadTable) {
-                Factory_Master.getProductsForSellerInLocation(payload, function(response) {
+                Factory_Master.getProductsForSellerInLocation(payload, (response) => {
                     if (response) {
                         $scope.locationPreferredSellerProductsData = response.data.payload;
 
-                        //all products
-                        if(!$scope.locationPreferredSellerProductsDataAllProd){
+                        // all products
+                        if(!$scope.locationPreferredSellerProductsDataAllProd) {
                             $scope.locationPreferredSellerProductsDataAllProd = [];
                         }
                         $scope.locationPreferredSellerProductsDataAllProd = _.union($scope.locationPreferredSellerProductsDataAllProd, response.data.payload);
 
-                        
+
                         $scope.locationPreferredSellerProductsDataLength = response.data.matchedCount;
                         $scope.locationPreferredSellerProductsDataPages = Math.ceil($scope.locationPreferredSellerProductsDataLength / $scope.locationMasterPreferredSellerProductsTableConfig.take);
                     }
@@ -6291,19 +6319,18 @@ APP_MASTERS.controller("Controller_Master", [
             return payload;
         };
         $scope.savePrefferedSellerProducts = function() {
-
-    		if (vm.screen_id == "counterparty") {
-    			objMapping = "counterpartyLocations";
+    		if (vm.screen_id == 'counterparty') {
+    			objMapping = 'counterpartyLocations';
     		} else {
-    			objMapping = "sellers";
+    			objMapping = 'sellers';
     		}
 
             if ($scope.preferredProductsForSellerInLocation.length <= 0) {
-                toastr.error("Please select at least one product");
+                toastr.error('Please select at least one product');
                 return;
             }
             preferredProducts = [];
-            $.each($scope.preferredProductsForSellerInLocation, function(k, v) {
+            $.each($scope.preferredProductsForSellerInLocation, (k, v) => {
                 preferredProducts.push({
                     product: {
                         id: parseFloat(v),
@@ -6311,7 +6338,7 @@ APP_MASTERS.controller("Controller_Master", [
                     isDeleted: false
                 });
             });
-            $.each($scope.NOTpreferredProductsForSellerInLocation, function(k, v) {
+            $.each($scope.NOTpreferredProductsForSellerInLocation, (k, v) => {
                 preferredProducts.push({
                     product: {
                         id: parseFloat(v),
@@ -6320,26 +6347,25 @@ APP_MASTERS.controller("Controller_Master", [
                 });
             });
             $scope.prettyCloseModal();
-            $.each($scope.formValues[objMapping][$scope.locationCurrentPreferredSellerKey].products, function(_, initProdV) {
-            	$.each(preferredProducts, function(_,pv){
+            $.each($scope.formValues[objMapping][$scope.locationCurrentPreferredSellerKey].products, (_, initProdV) => {
+            	$.each(preferredProducts, (_, pv) => {
             		if (pv.product.id == initProdV.product.id) {
-						pv.id = initProdV.id;
+                        pv.id = initProdV.id;
             		}
-            	})
-            })
-          
-            $.each(preferredProducts, function(key1, val1){
-                if(typeof val1.product.name == 'undefined'){
-                    $.each($scope.locationPreferredSellerProductsDataAllProd, function(key2, val2){
-                        if(val2.id == val1.product.id && val2.name){
+            	});
+            });
+
+            $.each(preferredProducts, (key1, val1) => {
+                if(typeof val1.product.name == 'undefined') {
+                    $.each($scope.locationPreferredSellerProductsDataAllProd, (key2, val2) => {
+                        if(val2.id == val1.product.id && val2.name) {
                             val1.product.name = val2.name;
                         }
                     });
                 }
             });
-      
+
             $scope.formValues[objMapping][$scope.locationCurrentPreferredSellerKey].products = preferredProducts;
-            
         };
         $scope.preferredSellersSelectAllProducts = function(selectAll) {
             if (!selectAll) {
@@ -6363,13 +6389,13 @@ APP_MASTERS.controller("Controller_Master", [
                     }
                 }
             };
-            Factory_Master.getProductsForSellerInLocation(payload, function(response) {
+            Factory_Master.getProductsForSellerInLocation(payload, (response) => {
                 if (response) {
                     $scope.preferredProductsForSellerInLocation = [];
                     response.data.payload;
                     $scope.locationPreferredSellerProductsDataAllProd = _.union($scope.locationPreferredSellerProductsDataAllProd, response.data.payload);
-                    $.each(response.data.payload, function(k, v) {
-                        $scope.preferredProductsForSellerInLocation.push(v.id + "");
+                    $.each(response.data.payload, (k, v) => {
+                        $scope.preferredProductsForSellerInLocation.push(`${v.id }`);
                         // $scope.setPrefferedPoductsForSellerInTable();
                     });
                 }
@@ -6379,71 +6405,68 @@ APP_MASTERS.controller("Controller_Master", [
         $scope.changeLocationMasterPreferredSellerProductsTableConfigColumnSorting = function(columnId) {
             if ($scope.locationMasterPreferredSellerProductsTableConfig.order.columnName != columnId) {
                 $scope.locationMasterPreferredSellerProductsTableConfig.order.columnName = columnId;
-                $scope.locationMasterPreferredSellerProductsTableConfig.order.sortOrder = "asc";
+                $scope.locationMasterPreferredSellerProductsTableConfig.order.sortOrder = 'asc';
+            } else if ($scope.locationMasterPreferredSellerProductsTableConfig.order.sortOrder == 'asc') {
+                $scope.locationMasterPreferredSellerProductsTableConfig.order.sortOrder = 'desc';
             } else {
-                if ($scope.locationMasterPreferredSellerProductsTableConfig.order.sortOrder == "asc") {
-                    $scope.locationMasterPreferredSellerProductsTableConfig.order.sortOrder = "desc";
-                } else {
-                    $scope.locationMasterPreferredSellerProductsTableConfig.order.sortOrder = "asc";
-                }
+                $scope.locationMasterPreferredSellerProductsTableConfig.order.sortOrder = 'asc';
             }
         };
         $scope.checkIfIsPrefferedProduct = function(productId) {
             isPreffered = false;
-            if ($scope.preferredProductsForSellerInLocation.indexOf(productId + "") != -1) {
+            if ($scope.preferredProductsForSellerInLocation.indexOf(`${productId }`) != -1) {
                 isPreffered = true;
             }
             return isPreffered;
         };
         $scope.changePrefferedProduct = function(productId) {
             isAlreadyPreferred = -1;
-            $.each($scope.preferredProductsForSellerInLocation, function(ppk, ppv) {
+            $.each($scope.preferredProductsForSellerInLocation, (ppk, ppv) => {
                 if (parseFloat(ppv) == parseFloat(productId)) {
                     isAlreadyPreferred = ppk;
                 }
             });
             if (isAlreadyPreferred == -1) {
-                $scope.preferredProductsForSellerInLocation.push(productId + "");
-                if ($scope.NOTpreferredProductsForSellerInLocation.indexOf(productId+"") != -1) {
-	                $scope.NOTpreferredProductsForSellerInLocation.splice($scope.NOTpreferredProductsForSellerInLocation.indexOf(productId+""), 1);
+                $scope.preferredProductsForSellerInLocation.push(`${productId }`);
+                if ($scope.NOTpreferredProductsForSellerInLocation.indexOf(`${productId}`) != -1) {
+	                $scope.NOTpreferredProductsForSellerInLocation.splice($scope.NOTpreferredProductsForSellerInLocation.indexOf(`${productId}`), 1);
                 }
             } else {
-                if ($scope.preferredProductsForSellerInLocation.indexOf(productId+"") != -1) {
-	                $scope.preferredProductsForSellerInLocation.splice($scope.preferredProductsForSellerInLocation.indexOf(productId+""), 1);
+                if ($scope.preferredProductsForSellerInLocation.indexOf(`${productId}`) != -1) {
+	                $scope.preferredProductsForSellerInLocation.splice($scope.preferredProductsForSellerInLocation.indexOf(`${productId}`), 1);
                 }
-                $scope.NOTpreferredProductsForSellerInLocation.push(productId + "");
+                $scope.NOTpreferredProductsForSellerInLocation.push(`${productId }`);
             }
         };
-        /*Location Master Preffered Seller Product Table*/
+
+        /* Location Master Preffered Seller Product Table*/
         $scope.getEditInstance = function() {
             return vm.editInstance;
         };
         $scope.validateEmails = function(string, key) {
-     
-            if (!string || string.length == 0){
-                $scope.previewEmail[key] = "";
+            if (!string || string.length == 0) {
+                $scope.previewEmail[key] = '';
                 $scope.emailPreview[key].$setValidity(key, true);
             }else{
+                let emailObj = [];
 
-                var emailObj = [];
-         
                 // force copy the string
-                var string_copy = string + '';
-                emailObj = string_copy.replace(/\s/g, "").split(";");
-    
-                emailObj = emailObj.filter(function(e) {
+                let string_copy = `${string }`;
+                emailObj = string_copy.replace(/\s/g, '').split(';');
+
+                emailObj = emailObj.filter((e) => {
                     return e;
                 });
-    
-                emailObj = emailObj.filter(function(e) {
+
+                emailObj = emailObj.filter((e) => {
                     return e;
                 });
                 pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                 if (emailObj.length > 0) {
                     i = 0;
-                    $.each(emailObj, function(k, v) {
+                    $.each(emailObj, (k, v) => {
                         if (!pattern.test(v)) {
-                            toastr.error(v + " is not a valid email address!");
+                            toastr.error(`${v } is not a valid email address!`);
                             i++;
                         }
                     });
@@ -6465,10 +6488,10 @@ APP_MASTERS.controller("Controller_Master", [
                     AttachmentsList : $rootScope.previewEmail.attachmentsList
                 }
             };
-            Factory_Master.discardSavedPreview(data, function(response) {
+            Factory_Master.discardSavedPreview(data, (response) => {
                 if (response) {
                     if (response.status == true) {
-                        toastr.success("Email Preview discarded!");
+                        toastr.success('Email Preview discarded!');
                         $rootScope.previewEmail = null;
                         $state.reload();
                     } else {
@@ -6479,30 +6502,29 @@ APP_MASTERS.controller("Controller_Master", [
             });
         };
         $scope.saveClaimEmail = function(sendEmail, callback) {
-    
-            var toString = [],
+            let toString = [],
                 ccString = [],
                 toOthersString = [],
                 ccOthersString = [];
 
-            $.each($rootScope.previewEmail.to, function(k, v) {
+            $.each($rootScope.previewEmail.to, (k, v) => {
                 toString.push(v.idEmailAddress);
             });
-            $.each($rootScope.previewEmail.cc, function(k, v) {
+            $.each($rootScope.previewEmail.cc, (k, v) => {
                 ccString.push(v.idEmailAddress);
             });
-            if(typeof $rootScope.previewEmail.toOthers == 'string'){
+            if(typeof $rootScope.previewEmail.toOthers == 'string') {
                 toOthersString = $rootScope.previewEmail.toOthers;
             }else{
-                $.each($rootScope.previewEmail.toOthers, function(k, v) {
+                $.each($rootScope.previewEmail.toOthers, (k, v) => {
                     toOthersString.push(v);
                 });
                 toOthersString = toOthersString.toString();
             }
-            if(typeof $rootScope.previewEmail.ccOthers == 'string'){
+            if(typeof $rootScope.previewEmail.ccOthers == 'string') {
                 ccOthersString = $rootScope.previewEmail.ccOthers;
             }else{
-                $.each($rootScope.previewEmail.ccOthers, function(k, v) {
+                $.each($rootScope.previewEmail.ccOthers, (k, v) => {
                     ccOthersString.push(v);
                 });
                 ccOthersString = ccOthersString.toString();
@@ -6512,7 +6534,7 @@ APP_MASTERS.controller("Controller_Master", [
             toString = toString.toString();
             ccString = ccString.toString();
 
-            var data = {
+            let data = {
                 Payload: {
                     Id: $rootScope.previewEmail.comment ? $rootScope.previewEmail.comment.id : 0,
                     Name: $rootScope.previewEmail.comment.name,
@@ -6533,95 +6555,97 @@ APP_MASTERS.controller("Controller_Master", [
 
             request_data = payloadDataModel.create(data.Payload);
 
-            var comments = {
-                "id": $rootScope.previewEmail.comment ? $rootScope.previewEmail.comment.id : 0,
-                "name": $rootScope.previewEmail.comment.name,
-                "emailTemplate":  $rootScope.currentEmailTemplate,
-                "businessId": vm.entity_id,
-                "secondBusinessId": null,
-                "thirdBusinessId": null,
-                "isDeleted": false,
-                "content": $rootScope.previewEmail.content,
-                "to": toString,
-                "cc": ccString,
-                "toOthers": toOthersString,
-                "ccOthers": ccOthersString,
-                "from": $rootScope.previewEmail.from
+            let comments = {
+                id: $rootScope.previewEmail.comment ? $rootScope.previewEmail.comment.id : 0,
+                name: $rootScope.previewEmail.comment.name,
+                emailTemplate:  $rootScope.currentEmailTemplate,
+                businessId: vm.entity_id,
+                secondBusinessId: null,
+                thirdBusinessId: null,
+                isDeleted: false,
+                content: $rootScope.previewEmail.content,
+                to: toString,
+                cc: ccString,
+                toOthers: toOthersString,
+                ccOthers: ccOthersString,
+                from: $rootScope.previewEmail.from
             };
             // find email template object
-            $.each(vm.listsCache.EmailTemplate, function(key,value){
-                if(value.id == $rootScope.currentEmailTemplate){
-                    comments.emailTemplate =  angular.copy(value);
+            $.each(vm.listsCache.EmailTemplate, (key, value) => {
+                if(value.id == $rootScope.currentEmailTemplate) {
+                    comments.emailTemplate = angular.copy(value);
                     return;
                 }
-            })
+            });
             request_data.Payload.comment = angular.copy(comments);
 
-            Factory_Master.save_email_contract(request_data, function(response) {
+            Factory_Master.save_email_contract(request_data, (response) => {
                 if (response) {
                     if (response.status == true) {
-                        toastr.success("Email Preview Saved!");
+                        toastr.success('Email Preview Saved!');
                         if (!sendEmail) {
 	                        $rootScope.previewEmail = null;
 	                        $state.reload();
-                        } else  {
-	                        callback(true)
+                        } else {
+	                        callback(true);
                         }
                     } else {
                         $scope.loaded = true;
                         toastr.error(response.message);
-                        callback(false)
+                        callback(false);
                     }
                 }
             });
         };
         $scope.getIndex = function(arr, string) {
-            return _.findIndex(arr, function(o) { return o.name == string; });
+            return _.findIndex(arr, (o) => {
+                return o.name == string;
+            });
         };
         $scope.sendClaimPreviewEmail = function() {
-        	//$scope.saveClaimEmail(true, function(resp){
-	            var toString = [],
+        	// $scope.saveClaimEmail(true, function(resp){
+	            let toString = [],
 	                ccString = [],
 	                toOthersString = [],
 	                ccOthersString = [];
 
-	            $.each($rootScope.previewEmail.to, function(k, v) {
+	            $.each($rootScope.previewEmail.to, (k, v) => {
 	                toString.push(v.idEmailAddress);
 	            });
-	            $.each($rootScope.previewEmail.cc, function(k, v) {
+	            $.each($rootScope.previewEmail.cc, (k, v) => {
 	                ccString.push(v.idEmailAddress);
 	            });
-	            if(typeof $rootScope.previewEmail.toOthers == 'string'){
+	            if(typeof $rootScope.previewEmail.toOthers == 'string') {
 	                toOthersString = $rootScope.previewEmail.toOthers;
 	            }else{
-	                $.each($rootScope.previewEmail.toOthers, function(k, v) {
+	                $.each($rootScope.previewEmail.toOthers, (k, v) => {
 	                    toOthersString.push(v);
 	                });
 	                toOthersString = toOthersString.toString();
 	            }
-	            if(typeof $rootScope.previewEmail.ccOthers == 'string'){
+	            if(typeof $rootScope.previewEmail.ccOthers == 'string') {
 	                ccOthersString = $rootScope.previewEmail.ccOthers;
 	            }else{
-	                $.each($rootScope.previewEmail.ccOthers, function(k, v) {
+	                $.each($rootScope.previewEmail.ccOthers, (k, v) => {
 	                    ccOthersString.push(v);
 	                });
 	                ccOthersString = ccOthersString.toString();
 	            }
 
-	            var validAttachments = angular.copy($rootScope.previewEmail.attachmentsList);
-	            validAttachments = _.filter(validAttachments, function(el){
+	            let validAttachments = angular.copy($rootScope.previewEmail.attachmentsList);
+	            validAttachments = _.filter(validAttachments, (el) => {
 	            	return el.isIncludedInMail == true || el.isIncludedInMail == false;
-	            })
+	            });
 
 	            toString = toString.toString();
 	            ccString = ccString.toString();
-	            var saveData = {
+	            let saveData = {
 	                Payload: {
 	                    Id: $rootScope.previewEmail.comment ? $rootScope.previewEmail.comment.id : 0,
 	                    Name: $rootScope.previewEmail.comment.name,
 	                    Content: $rootScope.previewEmail.content,
 	                    Subject: $rootScope.previewEmail.subject,
-						AttachmentsList: validAttachments,	                    
+                    AttachmentsList: validAttachments,
 	                    EmailTemplateId: $rootScope.currentEmailTemplate,
 	                    BusinessId: vm.entity_id,
 	                    To: toString,
@@ -6633,36 +6657,36 @@ APP_MASTERS.controller("Controller_Master", [
 	            };
 	            request_data = payloadDataModel.create(saveData.Payload);
 
-	            var comments = {
-	                "id": $rootScope.previewEmail.comment ? $rootScope.previewEmail.comment.id : 0,
-	                "name": $rootScope.previewEmail.comment.name,
-	                "emailTemplate":  $rootScope.currentEmailTemplate,
-	                "businessId": vm.entity_id,
-	                "secondBusinessId": null,
-	                "thirdBusinessId": null,
-	                "isDeleted": false,
-	                "content": $rootScope.previewEmail.content,
-	                "to": toString,
-	                "cc": ccString,
-	                "toOthers": toOthersString,
-	                "ccOthers": ccOthersString,
-	                "from": $rootScope.previewEmail.from
+	            let comments = {
+	                id: $rootScope.previewEmail.comment ? $rootScope.previewEmail.comment.id : 0,
+	                name: $rootScope.previewEmail.comment.name,
+	                emailTemplate:  $rootScope.currentEmailTemplate,
+	                businessId: vm.entity_id,
+	                secondBusinessId: null,
+	                thirdBusinessId: null,
+	                isDeleted: false,
+	                content: $rootScope.previewEmail.content,
+	                to: toString,
+	                cc: ccString,
+	                toOthers: toOthersString,
+	                ccOthers: ccOthersString,
+	                from: $rootScope.previewEmail.from
 	            };
 	            // find email template object
-	            $.each(vm.listsCache.EmailTemplate, function(key,value){
-	                if(value.id == $rootScope.currentEmailTemplate){
-	                    comments.emailTemplate =  angular.copy(value);
+	            $.each(vm.listsCache.EmailTemplate, (key, value) => {
+	                if(value.id == $rootScope.currentEmailTemplate) {
+	                    comments.emailTemplate = angular.copy(value);
 	                    return;
 	                }
-	            })
+	            });
 	            request_data.Payload.comment = angular.copy(comments);
 
-	            Factory_Master.send_email_preview(request_data, function(response) {
+	            Factory_Master.send_email_preview(request_data, (response) => {
 	                if (response) {
 	                    if (response.status == true) {
 	                        $scope.loaded = true;
-	                        toastr.success("Email Preview was sent!");
-	                        var url = $state.$current.url.prefix + $state.params.screen_id + "/edit/" + $state.params.entity_id;
+	                        toastr.success('Email Preview was sent!');
+	                        let url = `${$state.$current.url.prefix + $state.params.screen_id }/edit/${ $state.params.entity_id}`;
 	                        $location.path(url);
 	                    } else {
 	                        $scope.loaded = true;
@@ -6670,7 +6694,7 @@ APP_MASTERS.controller("Controller_Master", [
 	                    }
 	                }
 	            });
-			//})
+            // })
 
             // Factory_Master.save_email_contract(saveData, function(response) {
             //     if (response) {
@@ -6698,55 +6722,59 @@ APP_MASTERS.controller("Controller_Master", [
         };
 
 
-        $scope.sweetConfirm = function(message, callback){
-        	if (!message) { return false}
+        $scope.sweetConfirm = function(message, callback) {
+        	if (!message) {
+                return false;
+            }
         	// confirm = confirm(message);
     		sweetConfirmResponse = {};
-        	$(".sweetConfirmModal").modal();
-        	$(".sweetConfirmModal").removeClass("hide fade");
-        	$(".sweetConfirmModal").css("transform", "translateY(100px)");
-        	$(".sweetConfirmModal .modal-body").text(message);
+        	$('.sweetConfirmModal').modal();
+        	$('.sweetConfirmModal').removeClass('hide fade');
+        	$('.sweetConfirmModal').css('transform', 'translateY(100px)');
+        	$('.sweetConfirmModal .modal-body').text(message);
 
-        	$(".sweetConfirmModal .sweetConfirmModalYes").on("click", function() {
+        	$('.sweetConfirmModal .sweetConfirmModalYes').on('click', () => {
         		callback(true);
         		// sweetConfirmResponse.bool = true
         		// sweetConfirmResponse.action = action
         		// $scope.sweetConfirmHasResponded(sweetConfirmResponse)
-        	})
-        	$(".sweetConfirmModal .sweetConfirmModalNo").on("click", function() {
+        	});
+        	$('.sweetConfirmModal .sweetConfirmModalNo').on('click', () => {
         		callback(false);
         		// sweetConfirmResponse.bool = false
         		// sweetConfirmResponse.action = action
         		// $scope.sweetConfirmHasResponded(sweetConfirmResponse)
-        	})
-        }
-		// $scope.sweetConfirmHasResponded = function(data) {
-		// 	console.log(data);
-		// }
+        	});
+        };
+        // $scope.sweetConfirmHasResponded = function(data) {
+        // 	console.log(data);
+        // }
 
-        vm.useDisplayName = function(fieldName){
-            var displayNameList = ['invoiceStatus', 'customStatus', 'ClaimType'];
-            var found = _.indexOf(displayNameList, fieldName);
-            if(found < 0) return false;
+        vm.useDisplayName = function(fieldName) {
+            let displayNameList = [ 'invoiceStatus', 'customStatus', 'ClaimType' ];
+            let found = _.indexOf(displayNameList, fieldName);
+            if(found < 0) {
+                return false;
+            }
             return true;
-        }
-        $scope.checkUncheckAllRoles = function(list, value){
-            $.each(list, function(k,v){
-                    if(v.name == "ViewOnly" ||
-                        v.name == "CreateNew" ||
-                        v.name == "Edit"
-                        ) {
-                        v.isSelected = value;
-                    }
-            })
+        };
+        $scope.checkUncheckAllRoles = function(list, value) {
+            $.each(list, (k, v) => {
+                if(v.name == 'ViewOnly' ||
+                        v.name == 'CreateNew' ||
+                        v.name == 'Edit'
+                ) {
+                    v.isSelected = value;
+                }
+            });
             return list;
-        }
+        };
 
 
-		$scope.notificationAction = function(type) {
-		    if ($rootScope.selectedNotifications == null || typeof($rootScope.selectedNotifications) == 'undefined') {
+        $scope.notificationAction = function(type) {
+		    if ($rootScope.selectedNotifications == null || typeof $rootScope.selectedNotifications == 'undefined') {
 		        if (type != 'stats') {
-		            toastr.error("Please select a notification!");
+		            toastr.error('Please select a notification!');
 		            return;
 		        }
 		    }
@@ -6754,201 +6782,192 @@ APP_MASTERS.controller("Controller_Master", [
 		    data = {
 		        action: type,
 		        notificationId: $rootScope.selectedNotifications
-		    }
-		    Factory_Master.notificationsActions(data, function(callback) {
+		    };
+		    Factory_Master.notificationsActions(data, (callback) => {
 		        if (callback) {
 		            if (callback.status == true) {
 		                if (type != 'stats') {
-		                    toastr.success("Success!");
+		                    toastr.success('Success!');
 		                    $state.reload();
 		                } else {
 		                    $rootScope.notificationsStats = callback.data.unreadCount;
 		                }
 		            } else {
-		                toastr.error("An error has occured!");
+		                toastr.error('An error has occured!');
 		            }
 		        }
 		    });
-        } 
-        
+        };
 
-        $scope.triggerRobStandard = function(usingStandard){
-        
-            if($scope.formValues.vesselType){
+
+        $scope.triggerRobStandard = function(usingStandard) {
+            if($scope.formValues.vesselType) {
                 vesselTypeId = angular.copy($scope.formValues.vesselType.id);
-            } else {
-            	if (usingStandard) {
-	                toastr.error("No vessel type defined");
+            } else if (usingStandard) {
+	                toastr.error('No vessel type defined');
 	                vesselTypeId = null;
 	                $scope.formValues.usingVesselTypeRob = false;
 	                $scope.initRobTable();
 	                return;
             	}
-            }
 
 
-            
-            if($scope.formValues.id){
+            if($scope.formValues.id) {
                 vesselId = angular.copy($scope.formValues.id);
             } else {
                 vesselId = 0;
             }
 
-            usingStandard = $scope.formValues.usingVesselTypeRob; 
-            if(usingStandard){
+            usingStandard = $scope.formValues.usingVesselTypeRob;
+            if(usingStandard) {
                 vesselId = null;
             } else {
                 vesselTypeId = null;
                 $scope.initRobTable();
             }
 
-            data = {"Payload":{"usingStandard":usingStandard,"vesselTypeId":vesselTypeId,"vesselId":vesselId}};
-          
-            
-            //api/masters/vessels/listRobsVessel
-            Factory_Master.bring_rob_status(data, function(callback) {
+            data = { Payload:{ usingStandard:usingStandard, vesselTypeId:vesselTypeId, vesselId:vesselId } };
+
+
+            // api/masters/vessels/listRobsVessel
+            Factory_Master.bring_rob_status(data, (callback) => {
 		        if (callback) {
                     console.log('rob status', callback);
 		            if (callback.status == true) {
-                        var robValues = callback.data.payload;
+                        let robValues = callback.data.payload;
                         $scope.formValues.robs = robValues;
-                        if(!robValues.length){
-							$scope.initRobTable();
+                        if(!robValues.length) {
+                            $scope.initRobTable();
                         }
 		            } else {
-		                toastr.error("An error has occured!");
+		                toastr.error('An error has occured!');
 		            }
 		        }
             });
-            
         };
 
-		$scope.flattenVesselVoyages = function() {
-			$scope.formValues.flattenedVoyages = []
-			$.each($scope.formValues.voyages, function(vk,vv){
-				$.each(vv.voyageDetails, function(vdk,vdv){
-					voyageDetailRow = {
+        $scope.flattenVesselVoyages = function() {
+            $scope.formValues.flattenedVoyages = [];
+            $.each($scope.formValues.voyages, (vk, vv) => {
+                $.each(vv.voyageDetails, (vdk, vdv) => {
+                    voyageDetailRow = {
                         id : vdv.id,
-						code : vv.code,
-						port : vdv.port,
-						portFunction : vdv.portFunction,
-						country : vdv.country,
-						eta : vdv.eta,
-						etb : vdv.etb,
-						etd : vdv.etd,
-						remarks : vdv.remarks,
+                        code : vv.code,
+                        port : vdv.port,
+                        portFunction : vdv.portFunction,
+                        country : vdv.country,
+                        eta : vdv.eta,
+                        etb : vdv.etb,
+                        etd : vdv.etd,
+                        remarks : vdv.remarks,
                         speed: vdv.speed,
                         distanceStandard: vdv.distanceStandard,
                         distanceECA: vdv.distanceECA,
-					}
-					$scope.formValues.flattenedVoyages.push(voyageDetailRow)
-				})
-			})
-		}
+                    };
+                    $scope.formValues.flattenedVoyages.push(voyageDetailRow);
+                });
+            });
+        };
 
-        $scope.initRobTable = function(){
-          if (!$scope.formValues.robs || $scope.formValues.robs.length == 0) {
-            var defaultUomId = $scope.getDefaultUom().id;
-             $scope.formValues.robs = [
-                {
-                  'productType': {'name': 'HSFO', 'id': 1},
-                  'uom': {
-                    'id': defaultUomId
-                  }
-                }, 
-                {'productType': {'name': 'LSFO', 'id': 3},
-                  'uom': {
-                    'id': defaultUomId
-                  }
-                }, 
-                {'productType': {'name': 'DOGO', 'id': 6},
-                  'uom': {
-                    'id': defaultUomId
-                  }
-                },
-            ]
-          }
-          if ($scope.formValues.usingVesselTypeRob) {
-            $scope.triggerRobStandard($scope.formValues.usingVesselTypeRob)
-          }
-        }
+        $scope.initRobTable = function() {
+            if (!$scope.formValues.robs || $scope.formValues.robs.length == 0) {
+                let defaultUomId = $scope.getDefaultUom().id;
+                $scope.formValues.robs = [
+                    {
+                        productType: { name: 'HSFO', id: 1 },
+                        uom: {
+                            id: defaultUomId
+                        }
+                    },
+                    { productType: { name: 'LSFO', id: 3 },
+                        uom: {
+                            id: defaultUomId
+                        }
+                    },
+                    { productType: { name: 'DOGO', id: 6 },
+                        uom: {
+                            id: defaultUomId
+                        }
+                    },
+                ];
+            }
+            if ($scope.formValues.usingVesselTypeRob) {
+                $scope.triggerRobStandard($scope.formValues.usingVesselTypeRob);
+            }
+        };
 
 
-        $scope.uploadPriceImport = function(){
-
+        $scope.uploadPriceImport = function() {
             $scope.priceDisabledUpload = true;
-  
-            var availableFile = false;
-            var fileLocation = "";
+
+            let availableFile = false;
+            let fileLocation = '';
 
             // check if file is uploaded
-            if($('#fileUpload')[0].files.length > 0){
+            if($('#fileUpload')[0].files.length > 0) {
                 availableFile = true;
-                fileLocation = "input";
-            }else{
-                if($scope.droppedDoc){
-                    availableFile = true;
-                    fileLocation = "dropped";
-                }
+                fileLocation = 'input';
+            }else if($scope.droppedDoc) {
+                availableFile = true;
+                fileLocation = 'dropped';
             }
 
-            if(availableFile){
-                
+            if(availableFile) {
                 // form payload
-                var formData = new FormData();
-                var payload = {
-                    "Payload": {
-                        "name": "File2",
-                        "documentType": {
-                            "transactionTypeId": 0,
-                            "id": 0,
-                            "name": "",
-                            "displayName": null,
-                            "code": "",
-                            "collectionName": null,
-                            "customNonMandatoryAttribute1": ""
+                let formData = new FormData();
+                let payload = {
+                    Payload: {
+                        name: 'File2',
+                        documentType: {
+                            transactionTypeId: 0,
+                            id: 0,
+                            name: '',
+                            displayName: null,
+                            code: '',
+                            collectionName: null,
+                            customNonMandatoryAttribute1: ''
                         },
-                        "size": 100,
-                        "fileType": "FileType",
-                        "transactionType": {
-                            "id": 0,
-                            "name": "",
-                            "code": "",
-                            "collectionName": null
+                        size: 100,
+                        fileType: 'FileType',
+                        transactionType: {
+                            id: 0,
+                            name: '',
+                            code: '',
+                            collectionName: null
                         },
-                        "fileId": 1,
-                        "uploadedBy": {
-                            "id": 0,
-                            "name": "",
-                            "code": "",
-                            "collectionName": null
+                        fileId: 1,
+                        uploadedBy: {
+                            id: 0,
+                            name: '',
+                            code: '',
+                            collectionName: null
                         },
-                        "uploadedOn": "2017-01-11T14:21:37.96",
-                        "notes": "",
-                        "isVerified": false,
-                        "referenceNo": "314",
-                        "createdBy": {
-                            "id": 1,
-                            "name": "Admin",
-                            "code": "",
-                            "collectionName": null
+                        uploadedOn: '2017-01-11T14:21:37.96',
+                        notes: '',
+                        isVerified: false,
+                        referenceNo: '314',
+                        createdBy: {
+                            id: 1,
+                            name: 'Admin',
+                            code: '',
+                            collectionName: null
                         },
-                        "createdOn": "2017-01-11T14:21:37.96",
-                        "lastModifiedByUser": null,
-                        "lastModifiedOn": null,
-                        "id": 0,
-                        "isDeleted": false
+                        createdOn: '2017-01-11T14:21:37.96',
+                        lastModifiedByUser: null,
+                        lastModifiedOn: null,
+                        id: 0,
+                        isDeleted: false
                     }
-                }
+                };
                 formData.append('request', JSON.stringify(payload));
 
                 // append file
-                var invalidFile = false;
-                if(fileLocation == "input"){
+                let invalidFile = false;
+                if(fileLocation == 'input') {
                     if($('#fileUpload')[0].files) {
-                        $.each($('#fileUpload')[0].files, function(i, file) {
+                        $.each($('#fileUpload')[0].files, (i, file) => {
                             console.log(file.type);
-                            if(file.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"){
+                            if(file.type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
                                 formData.append('file', file);
                             }else{
                                 invalidFile = true;
@@ -6956,131 +6975,122 @@ APP_MASTERS.controller("Controller_Master", [
                         });
                     }
                 }
-                if(fileLocation == "dropped"){
+                if(fileLocation == 'dropped') {
                     console.log($scope.droppedDoc.type);
-                    if($scope.droppedDoc.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"){
+                    if($scope.droppedDoc.type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
                         formData.append('file', $scope.droppedDoc);
                     }else{
                         invalidFile = true;
                     }
                 }
-                if(invalidFile){
-                    toastr.error("File type not supported. Please add xls/xlsx.");
+                if(invalidFile) {
+                    toastr.error('File type not supported. Please add xls/xlsx.');
 
                     delete $scope.droppedDoc;
                     delete $rootScope.droppedDoc;
                     $('#fileUpload').val('');
-                    $(".fileUploadName span").text("");
+                    $('.fileUploadName span').text('');
                     $scope.priceDisabledUpload = false;
                     return;
-                }else{
-
-                    //make call to upload file
-                    toastr.info("Uploading...");
-                    Factory_Master.uploadInvoicePrice(formData, function(callback) {
-                        if (callback && callback.status == 200) {
-
-                            toastr.success('File uploaded successfully.');
-                            
-                            if(callback.data)
-                                if(callback.data.message != "")
-                                    toastr.warning(callback.data.message);
-                            
-
-        
-                   
-                            $state.reload();
-                                // $scope.droppedDoc = null;
-                                // $rootScope.droppedDoc = null;
-                                // delete $scope.uploadedFile;
-                                // delete $rootScope.uploadedFile;
-//                                 delete $scope.droppedDoc;
-//                                 delete $rootScope.droppedDoc;
-//                                 $('#fileUpload').val('');
-//                                 $(".fileUploadName span").text("");
-//                                 $scope.priceDisabledUpload = false;
-//                                 $scope.apply();
-                                       
-                          
-                        } else {
-                            
-                                // $scope.droppedDoc = null;
-                                // $rootScope.droppedDoc = null;
-                                // delete $scope.uploadedFile;
-                                // delete $rootScope.uploadedFile;
-                                delete $scope.droppedDoc;
-                                delete $rootScope.droppedDoc;
-                                $('#fileUpload').val('');
-                                $(".fileUploadName span").text("");
-                                $scope.priceDisabledUpload = false;
-                                $scope.apply();
- 
-                        }
-                    });
                 }
 
+                // make call to upload file
+                toastr.info('Uploading...');
+                Factory_Master.uploadInvoicePrice(formData, (callback) => {
+                    if (callback && callback.status == 200) {
+                        toastr.success('File uploaded successfully.');
 
+                        if(callback.data) {
+                            if(callback.data.message != '') {
+                                toastr.warning(callback.data.message);
+                            }
+                        }
+
+
+                        $state.reload();
+                        // $scope.droppedDoc = null;
+                        // $rootScope.droppedDoc = null;
+                        // delete $scope.uploadedFile;
+                        // delete $rootScope.uploadedFile;
+                        //                                 delete $scope.droppedDoc;
+                        //                                 delete $rootScope.droppedDoc;
+                        //                                 $('#fileUpload').val('');
+                        //                                 $(".fileUploadName span").text("");
+                        //                                 $scope.priceDisabledUpload = false;
+                        //                                 $scope.apply();
+                    } else {
+                        // $scope.droppedDoc = null;
+                        // $rootScope.droppedDoc = null;
+                        // delete $scope.uploadedFile;
+                        // delete $rootScope.uploadedFile;
+                        delete $scope.droppedDoc;
+                        delete $rootScope.droppedDoc;
+                        $('#fileUpload').val('');
+                        $('.fileUploadName span').text('');
+                        $scope.priceDisabledUpload = false;
+                        $scope.apply();
+                    }
+                });
             }else{
-                toastr.error("Please add file to import!");
+                toastr.error('Please add file to import!');
                 $scope.priceDisabledUpload = false;
                 return;
             }
-        }
+        };
 
 
-        vm.openEmailPreview = function(url, entity_id){
-            var previewUrl = url + "/" + entity_id;
-            //$window.open(previewUrl, '_blank');
+        vm.openEmailPreview = function(url, entity_id) {
+            let previewUrl = `${url }/${ entity_id}`;
+            // $window.open(previewUrl, '_blank');
             $location.path(previewUrl);
+        };
 
-        }
-
-        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-          var href = _.get(window, 'location.href');
-          if (href && typeof(href) === 'string' && href.indexOf('admin/configuration') === -1) {
-              var target = $(e.target).attr("href") // activated tab
-              setTimeout(function(){
-                $scope.$apply();
-              });
-          }
-		});
-// .custom-hardcoded-table.fixed-header 
-		// $('tbody').on("scroll", function(e) { //detect a scroll event on the tbody
-		// 	$('thead').css("left", -$("tbody").scrollLeft()); //fix the thead relative to the body scrolling
-		// });
+        $('a[data-toggle="tab"]').on('shown.bs.tab', (e) => {
+            let href = _.get(window, 'location.href');
+            if (href && typeof href === 'string' && href.indexOf('admin/configuration') === -1) {
+                let target = $(e.target).attr('href'); // activated tab
+                setTimeout(() => {
+                    $scope.$apply();
+                });
+            }
+        });
+        // .custom-hardcoded-table.fixed-header
+        // $('tbody').on("scroll", function(e) { //detect a scroll event on the tbody
+        // 	$('thead').css("left", -$("tbody").scrollLeft()); //fix the thead relative to the body scrolling
+        // });
 
 
 	    $scope.initEmailTemplateTypeahead = function(rowKey, rowData) {
-	        if (typeof($scope.options['EmailTemplate_' + rowKey]) == 'undefined') {
+	        if (typeof $scope.options[`EmailTemplate_${ rowKey}`] == 'undefined') {
 	            field = {
-	                Name: "EmailTemplate_" + rowKey,
-	                Type: "lookup",
-	                clc_id: "admin_templates",
-	                masterSource: "EmailTemplate",
+	                Name: `EmailTemplate_${ rowKey}`,
+	                Type: 'lookup',
+	                clc_id: 'admin_templates',
+	                masterSource: 'EmailTemplate',
 	                Filter: [
 	                    {
-	                        ColumnName: "EmailTransactionTypeId",
+	                        ColumnName: 'EmailTransactionTypeId',
 	                        Value: rowData.transactionType.id
 	                    },
 	                    {
-	                        ColumnName: "Process",
+	                        ColumnName: 'Process',
 	                        Value: rowData.process
 	                    }
 	                ]
 	            };
 	            vm.getOptions(field);
 	        }
-	    }
+	    };
 
-	    $rootScope.$on("setInvoiceApplicableFor", function(e, data){
+	    $rootScope.$on('setInvoiceApplicableFor', (e, data) => {
 	    	$scope.dtMasterSource.applyFor = data;
 	    	vm.invoiceApplicableForProducts = data;
-        })
+        });
 
 
         // INVOICE ACTIONS IN HEADER
 		    $scope.cancel_invoice = function() {
-		        Factory_Master.cancel_invoice(vm.entity_id, function(callback) {
+		        Factory_Master.cancel_invoice(vm.entity_id, (callback) => {
 		            if (callback.status == true) {
 		                $scope.loaded = true;
 		                toastr.success(callback.message);
@@ -7089,12 +7099,11 @@ APP_MASTERS.controller("Controller_Master", [
 		                toastr.error(callback.message);
 		            }
 		        });
-		    }
+		    };
 		    // Submit Invoice for Review
 		    $scope.submit_invoice_review = function() {
-		 
 		        screenLoader.showLoader();
-		        Factory_Master.submit_invoice_review(vm.entity_id, function(callback) {
+		        Factory_Master.submit_invoice_review(vm.entity_id, (callback) => {
 		            if (callback.status == true) {
 		                $scope.loaded = true;
 		                toastr.success(callback.message);
@@ -7104,11 +7113,11 @@ APP_MASTERS.controller("Controller_Master", [
 		                toastr.error(callback.message);
 		            }
 		        });
-		    }
+		    };
 		    // Accept Invoice
 		    $scope.accept_invoice = function() {
 		        vm.fields = angular.toJson($scope.formValues);
-		        Factory_Master.accept_invoice(vm.entity_id, function(callback) {
+		        Factory_Master.accept_invoice(vm.entity_id, (callback) => {
 		            $scope.loaded = true;
 		            if (callback.status == true) {
 		                toastr.success(callback.message);
@@ -7117,12 +7126,12 @@ APP_MASTERS.controller("Controller_Master", [
 		                toastr.error(callback.message);
 		            }
 		        });
-		    }
+		    };
 		    // Submit Invoice for Approve
 		    $scope.submit_invoice_approve = function() {
 		        vm.fields = angular.toJson($scope.formValues);
 		        screenLoader.showLoader();
-		        Factory_Master.submit_invoice_approve(vm.entity_id, function(callback) {
+		        Factory_Master.submit_invoice_approve(vm.entity_id, (callback) => {
 		            screenLoader.showLoader();
 		            if (callback.status == true) {
 		                $scope.loaded = true;
@@ -7133,39 +7142,39 @@ APP_MASTERS.controller("Controller_Master", [
 		                toastr.error(callback.message);
 		            }
 		        });
-		    }
+		    };
 		    // Approve Invoice
 		    $scope.approve_invoice = function() {
 		        vm.fields = angular.toJson($scope.formValues);
 		        vm.fields = angular.element($('[name="CM.editInstance"]')).scope().formValues;
 
-		        validCostDetails = []
-                if (vm.fields.costDetails.length > 0) {
-                    $.each(vm.fields.costDetails, function(k, v) {
-                        if (typeof v.product != "undefined" && v.product != null) {
-                            if (v.product.id == -1) {
-                                v.product = null;
-                                v.deliveryProductId = null;
-                            } else  {
+		        validCostDetails = [];
+            if (vm.fields.costDetails.length > 0) {
+                $.each(vm.fields.costDetails, (k, v) => {
+                    if (typeof v.product != 'undefined' && v.product != null) {
+                        if (v.product.id == -1) {
+                            v.product = null;
+                            v.deliveryProductId = null;
+                        } else {
                             	if (v.product.productId) {
-                                    v.product.id = v.product.productId;
+                                v.product.id = v.product.productId;
                             	}
                             	if (v.product.deliveryProductId) {
                             		v.deliveryProductId = angular.copy(v.product.deliveryProductId);
                             	}
                             	v.isAllProductsCost = false;
-                            }
                         }
-                        if ((!!v.id && !(v.id == 0 && v.isDeleted)) || (!v.Id && !v.isDeleted)) {
-                            // v.isDeleted = false;
+                    }
+                    if (Boolean(v.id) && !(v.id == 0 && v.isDeleted) || !v.Id && !v.isDeleted) {
+                        // v.isDeleted = false;
                         	validCostDetails.push(v);
-                        }
-                    });
-                }
-                vm.fields.costDetails = validCostDetails
+                    }
+                });
+            }
+            vm.fields.costDetails = validCostDetails;
 
 		        if (angular.element($('[name="CM.editInstance"]')).scope().CM.editInstance.$valid) {
-			        Factory_Master.approve_invoice(vm.fields, function(callback) {
+			        Factory_Master.approve_invoice(vm.fields, (callback) => {
 			            if (callback.status == true) {
 			                $scope.loaded = true;
 			                toastr.success(callback.message);
@@ -7176,21 +7185,21 @@ APP_MASTERS.controller("Controller_Master", [
 			            }
 			        });
 		        } else {
-	                var message = "Please fill in required fields:";
-	                var names = [];
-	                $.each(angular.element($('[name="CM.editInstance"]')).scope().CM.editInstance.$error.required, function(key, val) {
+	                let message = 'Please fill in required fields:';
+	                let names = [];
+	                $.each(angular.element($('[name="CM.editInstance"]')).scope().CM.editInstance.$error.required, (key, val) => {
 	                    if (names.indexOf(val.$name) == -1) {
-	                        message += "<br>" + val.$name;
+	                        message = `${message }<br>${ val.$name}`;
 	                    }
-	                    names += val.$name;
+	                    names = names + val.$name;
 	                });
 	                toastr.error(message);
 		        }
-		    }
+		    };
 		    // Revert Invoice
 		    $scope.revert_invoice = function() {
 		        vm.fields = angular.toJson($scope.formValues);
-		        Factory_Master.revert_invoice(vm.entity_id, function(callback) {
+		        Factory_Master.revert_invoice(vm.entity_id, (callback) => {
 		            if (callback.status == true) {
 		                $scope.loaded = true;
 		                toastr.success(callback.message);
@@ -7199,11 +7208,11 @@ APP_MASTERS.controller("Controller_Master", [
 		                toastr.error(callback.message);
 		            }
 		        });
-		    }      
+		    };
 		    // Reject Invoice
 		    $scope.reject_invoice = function() {
 		        vm.fields = angular.toJson($scope.formValues);
-		        Factory_Master.reject_invoice(vm.entity_id, function(callback) {
+		        Factory_Master.reject_invoice(vm.entity_id, (callback) => {
 		            if (callback.status == true) {
 		                $scope.loaded = true;
 		                toastr.success(callback.message);
@@ -7212,41 +7221,40 @@ APP_MASTERS.controller("Controller_Master", [
 		                toastr.error(callback.message);
 		            }
 		        });
-		    }        
-      
+		    };
+
 
 	    $scope.createFinalInvoice = function(fv) {
 	        invoiceType = {
-	            "id": 2,
-	            "name": "FinalInvoice",
-	            "code": null
-	        }
+	            id: 2,
+	            name: 'FinalInvoice',
+	            code: null
+	        };
 	        data = {
-		        "invoiceType" : invoiceType,
-		        "entityId" : vm.entity_id
-	        }
+		        invoiceType : invoiceType,
+		        entityId : vm.entity_id
+	        };
 
 	        formValues = angular.element($('[name="CM.editInstance"]')).scope().formValues;
-            localStorage.setItem("invoice_createFinalInvoice", angular.toJson(data));
-            window.open("/#/invoices/invoice/edit/", "_blank");
-
-	    }
+            localStorage.setItem('invoice_createFinalInvoice', angular.toJson(data));
+            window.open('/#/invoices/invoice/edit/', '_blank');
+	    };
 
         // INVOICE ACTIONS IN HEADER
 
 
         function convertDecimalSeparatorStringToNumber(number) {
         	numberToReturn = number;
-        	if (typeof(number) == "string") {
-	        	if (number.indexOf(",") != -1 && number.indexOf(".") != -1) {
-	        		if (number.indexOf(",") > number.indexOf(".")) {
-	        			decimalSeparator = ",";
-	        			thousandsSeparator = ".";
+        	if (typeof number == 'string') {
+	        	if (number.indexOf(',') != -1 && number.indexOf('.') != -1) {
+	        		if (number.indexOf(',') > number.indexOf('.')) {
+	        			decimalSeparator = ',';
+	        			thousandsSeparator = '.';
 	        		} else {
-	        			thousandsSeparator = ",";
-	        			decimalSeparator = ".";
+	        			thousandsSeparator = ',';
+	        			decimalSeparator = '.';
 	        		}
-		        	numberToReturn = parseFloat( parseFloat(number.split(decimalSeparator)[0].replace(new RegExp(thousandsSeparator, "g"), '')) + parseFloat("0."+number.split(decimalSeparator)[1]) );
+		        	numberToReturn = parseFloat(parseFloat(number.split(decimalSeparator)[0].replace(new RegExp(thousandsSeparator, 'g'), '')) + parseFloat(`0.${number.split(decimalSeparator)[1]}`));
 	        	} else {
 	        		numberToReturn = parseFloat(number);
 	        	}
@@ -7256,68 +7264,66 @@ APP_MASTERS.controller("Controller_Master", [
         	}
         	return parseFloat(numberToReturn);
         }
-        $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams){
-            if (toParams.screen_id == "invoice") {
-                if (toParams.entity_id != "") {
+        $rootScope.$on('$stateChangeSuccess', (event, toState, toParams, fromState, fromParams) => {
+            if (toParams.screen_id == 'invoice') {
+                if (toParams.entity_id != '') {
                     $rootScope.reloadPage = true;
                 } else {
                     $rootScope.reloadPage = false;
                     vm.getAdditionalCostsComponentTypes();
-
                 }
                 window.initialUomConversionDone = {
-                        "product" : 0,
-                        "cost" : 0
+                    product : 0,
+                    cost : 0
                 };
             }
-
         });
-        
+
         $scope.invoiceKeyPress = function(type) {
             $rootScope.reloadPage = false;
-        }
+        };
 
-		$scope.invoiceConvertUom = function(type, rowIndex, formValues, oneTimeRun) {
-            if ($rootScope.reloadPage){
+        $scope.invoiceConvertUom = function(type, rowIndex, formValues, oneTimeRun) {
+            if ($rootScope.reloadPage) {
                 return;
             }
 	    	currentRowIndex = rowIndex;
 	    	if (!window.initialUomConversionDone) {
 	    		window.initialUomConversionDone = {
-		    		"product" : 0,
-		    		"cost" : 0
+		    		product : 0,
+		    		cost : 0
 	    		};
 	    	}
             if (window.initialUomConversionDone.product != 0) {
-                if (formValues.productDetails.length == window.initialUomConversionDone.product && $('form[name="CM.editInstance"]').hasClass("ng-pristine") && $('form[name="CM.editInstance"]').hasClass("ng-invalid")) {
+                if (formValues.productDetails.length == window.initialUomConversionDone.product && $('form[name="CM.editInstance"]').hasClass('ng-pristine') && $('form[name="CM.editInstance"]').hasClass('ng-invalid')) {
                     return;
                 }
-            } else  if (window.initialUomConversionDone.cost != 0) {
-                if (formValues.costDetails.length == window.initialUomConversionDone.cost && $('form[name="CM.editInstance"]').hasClass("ng-pristine")) {
+            } else if (window.initialUomConversionDone.cost != 0) {
+                if (formValues.costDetails.length == window.initialUomConversionDone.cost && $('form[name="CM.editInstance"]').hasClass('ng-pristine')) {
                     return;
                 }
             }
 	        calculateGrand(formValues);
 	        vm.type = type;
 	        if (vm.type == 'product') {
-                window.initialUomConversionDone.product++
+                window.initialUomConversionDone.product++;
 	            product = formValues.productDetails[currentRowIndex];
-	            if (typeof(product.product) != 'undefined' && typeof(product.invoiceQuantityUom) != 'undefined' && typeof(product.invoiceRateUom) !== 'undefined') {
-	                if (product.invoiceQuantityUom == null || product.invoiceRateUom == null /*|| typeof(product.invoiceAmount) == 'undefined'*/) {
+	            if (typeof product.product != 'undefined' && typeof product.invoiceQuantityUom != 'undefined' && typeof product.invoiceRateUom !== 'undefined') {
+	                if (product.invoiceQuantityUom == null || product.invoiceRateUom == null /* || typeof(product.invoiceAmount) == 'undefined'*/) {
 	                    return;
 	                };
-	                console.log("called getUomConversionFactor with params:" , product.product.id,product.invoiceRateUom.id,product.invoiceQuantityUom.id)
-	                $scope.getUomConversionFactor(product.product.id, 1, product.invoiceRateUom.id, product.invoiceQuantityUom.id, function (response) {
-	                	conversionFactor = response 
+	                console.log('called getUomConversionFactor with params:', product.product.id, product.invoiceRateUom.id, product.invoiceQuantityUom.id);
+	                $scope.getUomConversionFactor(product.product.id, 1, product.invoiceRateUom.id, product.invoiceQuantityUom.id, (response) => {
+	                	conversionFactor = response;
 	                	if (false && formValues.productDetails[currentRowIndex].sapInvoiceAmount) {
 		                    formValues.productDetails[currentRowIndex].invoiceAmount = formValues.productDetails[currentRowIndex].sapInvoiceAmount;
 	                	} else {
-	                		console.log($filter('number')(formValues.productDetails[currentRowIndex].invoiceQuantity,2))
+	                		console.log($filter('number')(formValues.productDetails[currentRowIndex].invoiceQuantity, 2));
 		                    formValues.productDetails[currentRowIndex].invoiceAmount = convertDecimalSeparatorStringToNumber(formValues.productDetails[currentRowIndex].invoiceQuantity) * (convertDecimalSeparatorStringToNumber(formValues.productDetails[currentRowIndex].invoiceRate) / conversionFactor);
 	                	}
 	                    // formValues.productDetails[currentRowIndex].invoiceComputedAmount = formValues.productDetails[currentRowIndex].invoiceAmount;
 	                    formValues.productDetails[currentRowIndex].difference = parseFloat(formValues.productDetails[currentRowIndex].invoiceAmount) - parseFloat(formValues.productDetails[currentRowIndex].estimatedAmount);
-	             
+
 	                    calculateGrand(formValues);
 	                    if (formValues.productDetails[currentRowIndex]) {
 	                        calculateProductRecon();
@@ -7327,7 +7333,7 @@ APP_MASTERS.controller("Controller_Master", [
 	            // recalculatePercentAdditionalCosts(formValues);
 	        }
 	        if (vm.type == 'cost') {
-                window.initialUomConversionDone.cost++
+                window.initialUomConversionDone.cost++;
 	            vm.old_cost = formValues.costDetails[currentRowIndex];
 	            if (formValues.costDetails[currentRowIndex].product) {
 	            	if (formValues.costDetails[currentRowIndex].product.id == -1) {
@@ -7340,33 +7346,32 @@ APP_MASTERS.controller("Controller_Master", [
 	            if (vm.old_product == -1) {
 	                formValues.costDetails[currentRowIndex].isAllProductsCost = true;
 	                if (typeof $scope.grid.appScope.fVal().dtMasterSource.applyFor == 'undefined') {
-	                    $http.post(API.BASE_URL_DATA_INVOICES + '/api/invoice/getApplicableProducts', {
-	                        "Payload": formValues.orderDetails.order.id
-	                    }).then(function successCallback(response) {
-	                        calculate(vm.old_cost, response.data.payload[1].id, vm.old_costType)
+	                    $http.post(`${API.BASE_URL_DATA_INVOICES }/api/invoice/getApplicableProducts`, {
+	                        Payload: formValues.orderDetails.order.id
+	                    }).then((response) => {
+	                        calculate(vm.old_cost, response.data.payload[1].id, vm.old_costType);
 	                    });
 	                } else {
-	                   if (!formValues.productDetails[0].invoicedProduct){
-                           return;
-                       } else{
-                           calculate(vm.old_cost, formValues.productDetails[0].invoicedProduct.id, vm.old_costType);
-                       }
+	                   if (!formValues.productDetails[0].invoicedProduct) {
+                            return;
+                        }
+                        calculate(vm.old_cost, formValues.productDetails[0].invoicedProduct.id, vm.old_costType);
 	                }
 	            } else {
-	                calculate(vm.old_cost, vm.old_product, vm.old_costType)
+	                calculate(vm.old_cost, vm.old_product, vm.old_costType);
 	            }
 
 	            allCostApplyFor = 0;
-	            $.each($scope.grid.appScope.fVal().dtMasterSource.applyFor, function(k,v){
-	            	if (v.name != "All") {
-			            allCostApplyFor += v.convertedFinalQuantityAmount;
+	            $.each($scope.grid.appScope.fVal().dtMasterSource.applyFor, (k, v) => {
+	            	if (v.name != 'All') {
+			            allCostApplyFor = allCostApplyFor + v.convertedFinalQuantityAmount;
 	            	}
-	            })
-	            $.each($scope.grid.appScope.fVal().dtMasterSource.applyFor, function(k,v){
-	            	if (v.name == "All") {
+	            });
+	            $.each($scope.grid.appScope.fVal().dtMasterSource.applyFor, (k, v) => {
+	            	if (v.name == 'All') {
 	            		v.convertedFinalQuantityAmount = allCostApplyFor;
 	            	}
-	            })
+	            });
 
 	            function calculate(cost, product, costType) {
 	                vm.cost = cost;
@@ -7374,22 +7379,24 @@ APP_MASTERS.controller("Controller_Master", [
 	                vm.costType = costType;
 	                // calculate extra
 	                if (!formValues.costDetails[rowIndex].invoiceExtras) {
-	                    formValues.costDetails[rowIndex].invoiceExtras = 0
+	                    formValues.costDetails[rowIndex].invoiceExtras = 0;
 	                }
 	                if (vm.cost.invoiceRateUom) {
-	                    rateUom = vm.cost.invoiceRateUom.id
+	                    rateUom = vm.cost.invoiceRateUom.id;
 	                } else {
-	                    rateUom = null
+	                    rateUom = null;
 	                }
 	                if (vm.cost.invoiceQuantityUom) {
-	                    quantityUom = vm.cost.invoiceQuantityUom.id
+	                    quantityUom = vm.cost.invoiceQuantityUom.id;
 	                } else {
-	                    quantityUom = null
+	                    quantityUom = null;
 	                }
-	                if (!vm.costType) {return}
-						if (vm.costType.name == 'Percent' || vm.costType.name == 'Flat') {
+	                if (!vm.costType) {
+                        return;
+                    }
+                    if (vm.costType.name == 'Percent' || vm.costType.name == 'Flat') {
 		                    rateUom = quantityUom;
-						}
+                    }
 
 
 	                if (vm.costType.name == 'Flat') {
@@ -7399,7 +7406,7 @@ APP_MASTERS.controller("Controller_Master", [
 	                    calculateGrand(formValues);
 	                    return;
 	                }
-	                $scope.getUomConversionFactor(vm.product, 1, rateUom, quantityUom, function(response) {
+	                $scope.getUomConversionFactor(vm.product, 1, rateUom, quantityUom, (response) => {
 	                    if (vm.costType) {
 	                        if (vm.costType.name == 'Unit') {
 	                            formValues.costDetails[rowIndex].invoiceAmount = response * convertDecimalSeparatorStringToNumber(vm.cost.invoiceRate) * convertDecimalSeparatorStringToNumber(vm.cost.invoiceQuantity);
@@ -7409,74 +7416,72 @@ APP_MASTERS.controller("Controller_Master", [
 	                        formValues.costDetails[rowIndex].invoiceTotalAmount = convertDecimalSeparatorStringToNumber(formValues.costDetails[rowIndex].invoiceExtrasAmount) + convertDecimalSeparatorStringToNumber(formValues.costDetails[rowIndex].invoiceAmount);
 	                        formValues.costDetails[rowIndex].difference = convertDecimalSeparatorStringToNumber(formValues.costDetails[rowIndex].invoiceTotalAmount) - convertDecimalSeparatorStringToNumber(formValues.costDetails[rowIndex].estimatedTotalAmount);
 
-	                        formValues.costDetails[rowIndex].deliveryProductId =  formValues.costDetails[rowIndex].product.deliveryProductId ? formValues.costDetails[rowIndex].product.deliveryProductId : formValues.costDetails[rowIndex].deliveryProductId;
-	                        console.log("-----------------------", formValues.costDetails[rowIndex].deliveryProductId);
+	                        formValues.costDetails[rowIndex].deliveryProductId = formValues.costDetails[rowIndex].product.deliveryProductId ? formValues.costDetails[rowIndex].product.deliveryProductId : formValues.costDetails[rowIndex].deliveryProductId;
+	                        console.log('-----------------------', formValues.costDetails[rowIndex].deliveryProductId);
 	                        // calculate grandTotal
 	                        if (vm.cost) {
-	                            calculateCostRecon()
+	                            calculateCostRecon();
 	                        }
 	                        calculateGrand(formValues);
 	                    }
 	                });
 	            }
-				
 	        }
 
-	        function recalculatePercentAdditionalCosts(formValues){
-	    		$.each(formValues.costDetails, function(ck,cv){
-	    			if (cv.costType.name == "Percent") {
-		    			$scope.invoiceConvertUom("cost", ck, formValues, true);	
+	        function recalculatePercentAdditionalCosts(formValues) {
+	    		$.each(formValues.costDetails, (ck, cv) => {
+	    			if (cv.costType.name == 'Percent') {
+		    			$scope.invoiceConvertUom('cost', ck, formValues, true);
 	    			}
-	    		})
+	    		});
 	        }
 
 	        function calculateCostRecon() {
-	            if (!vm.cost.estimatedRate || !vm.cost.invoiceAmount ) {
-	                return
+	            if (!vm.cost.estimatedRate || !vm.cost.invoiceAmount) {
+	                return;
 	            }
 	            // debugger
-	            $http.post(API.BASE_URL_DATA_RECON + '/api/recon/invoicecost', {
+	            $http.post(`${API.BASE_URL_DATA_RECON }/api/recon/invoicecost`, {
 	                payload: vm.cost
-	            }).then(function successCallback(response) {
+	            }).then((response) => {
 	                console.log(response);
 	                if (response.data == 1) {
 	                    obj = {
 	                        id: 1,
-	                        name: "Matched"
-	                    }
+	                        name: 'Matched'
+	                    };
 	                } else {
 	                    obj = {
 	                        id: 2,
-	                        name: "Unmatched"
-	                    }
+	                        name: 'Unmatched'
+	                    };
 	                }
 	                formValues.costDetails[rowIndex].reconStatus = obj;
 	            });
 	        }
 
 	        function calculateProductRecon() {
-
-				if (!product.invoiceRateCurrency || !product.estimatedRateCurrency) {
+                if (!product.invoiceRateCurrency || !product.estimatedRateCurrency) {
 	        		return false;
-				}
+                }
 
 	        	if (!product.invoiceRateCurrency.id || !product.estimatedRateCurrency.id) {
 	        		return false;
 	        	}
-	            $http.post(API.BASE_URL_DATA_RECON + '/api/recon/invoiceproduct', {
+	            $http.post(`${API.BASE_URL_DATA_RECON }/api/recon/invoiceproduct`, {
 	                payload: product
-	            }).then(function successCallback(response) {
+	            }).then((response) => {
 	                console.log(response);
 	                if (response.data == 1) {
 	                    obj = {
 	                        id: 1,
-	                        name: "Matched"
-	                    }
+	                        name: 'Matched'
+	                    };
 	                } else {
 	                    obj = {
 	                        id: 2,
-	                        name: "Unmatched"
-	                    }
+	                        name: 'Unmatched'
+	                    };
 	                }
 	                product.reconStatus = obj;
 	            });
@@ -7484,194 +7489,192 @@ APP_MASTERS.controller("Controller_Master", [
 
 	        function calculateGrand(formValues) {
 	            if (!formValues.invoiceSummary) {
-	                formValues.invoiceSummary = {}
+	                formValues.invoiceSummary = {};
 	            }
 	            // formValues.invoiceSummary.provisionalInvoiceAmount = $scope.calculateprovisionalInvoiceAmount(formValues){}
 	            formValues.invoiceSummary.invoiceAmountGrandTotal = $scope.calculateInvoiceGrandTotal(formValues);
 	            formValues.invoiceSummary.invoiceAmountGrandTotal -= formValues.invoiceSummary.provisionalInvoiceAmount;
 	            formValues.invoiceSummary.estimatedAmountGrandTotal = $scope.calculateInvoiceEstimatedGrandTotal(formValues);
 	            formValues.invoiceSummary.totalDifference = convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.invoiceAmountGrandTotal) - convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.estimatedAmountGrandTotal);
-	            formValues.invoiceSummary.netPayable = convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.invoiceAmountGrandTotal) - convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.deductions) /*- convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.provisionalInvoiceAmount)*/;
+	            formValues.invoiceSummary.netPayable = convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.invoiceAmountGrandTotal) - convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.deductions);
 	            $scope.changedFVal = formValues;
 	        }
-	    }
+	    };
 
-		$scope.getAdditionalCostsData = function() {
+        $scope.getAdditionalCostsData = function() {
 		        data = 0;
-		        Factory_Master.getAdditionalCosts(data, function(response) {
+		        Factory_Master.getAdditionalCosts(data, (response) => {
 		            if (response) {
 		                if (response.status == true) {
 		                    // debugger;
 		                    $rootScope.additionalCostsData = response.data.payload;
-		                  
+
 		                    return response.data.payload;
-		                } else {
-		                    toastr.error("An error has occured!")
 		                }
+		                    toastr.error('An error has occured!');
 		            }
-		        })
-		    }
-		$scope.getUomConversionFactor = function(ProductId, Quantity, FromUomId, ToUomId, callback) {
+		        });
+		    };
+        $scope.getUomConversionFactor = function(ProductId, Quantity, FromUomId, ToUomId, callback) {
 	    	productId = ProductId;
 	    	quantity = Quantity;
 	    	fromUomId = FromUomId;
 	    	toUomId = ToUomId;
 	        data = {
-	            "Payload": {
-	                "ProductId": productId,
-	                "Quantity": quantity,
-	                "FromUomId": fromUomId,
-	                "ToUomId": toUomId
+	            Payload: {
+	                ProductId: productId,
+	                Quantity: quantity,
+	                FromUomId: fromUomId,
+	                ToUomId: toUomId
 	            }
-	        }
-	        if (!productId || !toUomId || !fromUomId  ) {
+	        };
+	        if (!productId || !toUomId || !fromUomId) {
 	        	return;
 	        }
-	        if ( toUomId == fromUomId ) {
+	        if (toUomId == fromUomId) {
 	            callback(1);
 	            return;
 	        }
-	        Factory_Master.getUomConversionFactor(data, function(response) {
+	        Factory_Master.getUomConversionFactor(data, (response) => {
 	            if (response) {
 	                if (response.status == true) {
 	                    callback(response.data.payload);
 	                } else {
-	                    toastr.error("An error has occured!")
+	                    toastr.error('An error has occured!');
 	                }
 	            }
-	        })
-	    }
+	        });
+	    };
 
 	    $scope.calculateprovisionalInvoiceAmount = function(formValues) {
 	        grandTotal = 0;
-	        $.each(formValues.relatedInvoices, function(k, v) {
-	            if (!v.isDeleted && typeof(v.invoiceAmount) != 'undefined' && v.invoiceType.internalName == 'ProvisionalInvoice') {
-	                grandTotal += v.invoiceAmount;
+	        $.each(formValues.relatedInvoices, (k, v) => {
+	            if (!v.isDeleted && typeof v.invoiceAmount != 'undefined' && v.invoiceType.internalName == 'ProvisionalInvoice') {
+	                grandTotal = grandTotal + v.invoiceAmount;
 	            }
-	        })
+	        });
 	        return grandTotal;
-	    }
+	    };
 
 
-		$scope.calculateInvoiceGrandTotal = function(formValues) {
+        $scope.calculateInvoiceGrandTotal = function(formValues) {
 		        grandTotal = 0;
-		        $.each(formValues.productDetails, function(k, v) {
-		            if (!v.isDeleted && typeof(v.invoiceAmount) != 'undefined') {
-		                grandTotal += convertDecimalSeparatorStringToNumber(v.invoiceAmount);
+		        $.each(formValues.productDetails, (k, v) => {
+		            if (!v.isDeleted && typeof v.invoiceAmount != 'undefined') {
+		                grandTotal = grandTotal + convertDecimalSeparatorStringToNumber(v.invoiceAmount);
 		            }
-		        })
-		        $.each(formValues.costDetails, function(k, v) {
+		        });
+		        $.each(formValues.costDetails, (k, v) => {
 		            if (!v.isDeleted) {
-		                if (typeof(v.invoiceTotalAmount) != 'undefined') {
-		                    grandTotal += convertDecimalSeparatorStringToNumber(v.invoiceTotalAmount);
+		                if (typeof v.invoiceTotalAmount != 'undefined') {
+		                    grandTotal = grandTotal + convertDecimalSeparatorStringToNumber(v.invoiceTotalAmount);
 		                }
 		            }
-		        })
+		        });
 		        return grandTotal;
-		    }
-		$scope.calculateInvoiceEstimatedGrandTotal = function(formValues) {
+		    };
+        $scope.calculateInvoiceEstimatedGrandTotal = function(formValues) {
 	        grandTotal = 0;
-	        $.each(formValues.productDetails, function(k, v) {
-	            if (!v.isDeleted && typeof(v.estimatedAmount) != 'undefined') {
-	                grandTotal += v.estimatedAmount;
+	        $.each(formValues.productDetails, (k, v) => {
+	            if (!v.isDeleted && typeof v.estimatedAmount != 'undefined') {
+	                grandTotal = grandTotal + v.estimatedAmount;
 	            }
-	        })
-	        $.each(formValues.costDetails, function(k, v) {
+	        });
+	        $.each(formValues.costDetails, (k, v) => {
 	            if (!v.isDeleted) {
-	                if (typeof(v.estimatedAmount) != 'undefined') {
-	                    grandTotal += v.estimatedAmount;
+	                if (typeof v.estimatedAmount != 'undefined') {
+	                    grandTotal = grandTotal + v.estimatedAmount;
 	                }
 	            }
-	        })
+	        });
 	        return grandTotal;
-	    }
+	    };
 
         $scope.camelCaseToSpaces = function(str) {
-            return str.replace(/([A-Z])/g, ' $1').replace(/^./, function(str) {
+            return str.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => {
                 return str.toUpperCase();
             });
-        }
-        $scope.computeTotalInvoiceAmountOnClaimAmountChange = function(){
+        };
+        $scope.computeTotalInvoiceAmountOnClaimAmountChange = function() {
 	    	costsAmountSum = 0;
-	    	$.each($scope.CM.formValues.invoiceClaimDetails, function(k,v) {
-		    	costsAmountSum += convertDecimalSeparatorStringToNumber(v.invoiceAmount);
-	    	})
+	    	$.each($scope.CM.formValues.invoiceClaimDetails, (k, v) => {
+		    	costsAmountSum = costsAmountSum + convertDecimalSeparatorStringToNumber(v.invoiceAmount);
+	    	});
 	    	$scope.CM.formValues.invoiceSummary.invoiceAmountGrandTotal = costsAmountSum;
-	    }
+	    };
 
-	    $scope.getAavailableDocumentAttachments = function(entityId, transaction){
-	    	var referenceNo = entityId;
-	    	var transactionTypeId = _.find(vm.listsCache["TransactionType"], function(el){
+	    $scope.getAavailableDocumentAttachments = function(entityId, transaction) {
+	    	let referenceNo = entityId;
+	    	let transactionTypeId = _.find(vm.listsCache.TransactionType, (el) => {
 	    		return el.name == transaction;
 	    	}).id;
 	    	payload = {
-	    		"PageFilters": {
-	    			"Filters": []
+	    		PageFilters: {
+	    			Filters: []
 	    		},
-	    		"SortList": {
-	    			"SortList": []
+	    		SortList: {
+	    			SortList: []
 	    		},
-	    		"Filters": [
+	    		Filters: [
 	    		{
-	    			"ColumnName": "ReferenceNo",
-	    			"Value": referenceNo
+	    			ColumnName: 'ReferenceNo',
+	    			Value: referenceNo
 	    		},
 	    		{
-	    			"ColumnName": "TransactionTypeId",
-	    			"Value": transactionTypeId
+	    			ColumnName: 'TransactionTypeId',
+	    			Value: transactionTypeId
 	    		}
 	    		],
-	    		"SearchText": null,
-	    		"Pagination": {
-	    			"Skip": 0,
-	    			"Take": 9999
+	    		SearchText: null,
+	    		Pagination: {
+	    			Skip: 0,
+	    			Take: 9999
 	    		}
-	    	}
-	    	$http.post(API.BASE_URL_DATA_MASTERS + "/api/masters/documentupload/list", {
-	            "Payload": payload
-	        }).then(function successCallback(response) {
+	    	};
+	    	$http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/documentupload/list`, {
+	            Payload: payload
+	        }).then((response) => {
 		    	$rootScope.availableDocumentAttachmentsList = response.data.payload;
-	        	$.each($rootScope.availableDocumentAttachmentsList, function(k,v){
+	        	$.each($rootScope.availableDocumentAttachmentsList, (k, v) => {
 	        		v.isIncludedInMail = true;
 	        	});
 	        });
-	    }
+	    };
 
 	    $scope.addToAttachments = function(el) {
 	    	if (!el) {
-	    		toastr.error("Please select a document");
+	    		toastr.error('Please select a document');
 	    		return;
 	    	}
-	    	var isInList = _.find($scope.previewEmail.attachmentsList, function(v){
-	    		return v.id == el.id
+	    	let isInList = _.find($scope.previewEmail.attachmentsList, (v) => {
+	    		return v.id == el.id;
 	    	});
 	    	if (isInList) {
 	    		if (isInList.isIncludedInMail == false) {
 	    			isInList.isIncludedInMail = true;
 	    		} else {
-		    		toastr.error("Attachment already added");
+		    		toastr.error('Attachment already added');
 	    		}
 	    	} else {
 	    		if (!$scope.previewEmail.attachmentsList) {
-	    			$scope.previewEmail.attachmentsList = []
+	    			$scope.previewEmail.attachmentsList = [];
 	    		}
 	    		$scope.previewEmail.attachmentsList.push(el);
 	    	}
-	    }
+	    };
 
-		$scope.removeProductTypeMasterService = function(rowIndex, productTypeKey) {
-			scope = angular.element($("entity-edit-form > div")).scope();
-			if (scope.formValues.locations[rowIndex].productTypes[productTypeKey].id == 0) {
-				scope.formValues.locations[rowIndex].productTypes.splice(productTypeKey, 1);
-			} else {
-				scope.formValues.locations[rowIndex].productTypes[productTypeKey].isDeleted = true;
-			}			
-		}	    
+        $scope.removeProductTypeMasterService = function(rowIndex, productTypeKey) {
+            scope = angular.element($('entity-edit-form > div')).scope();
+            if (scope.formValues.locations[rowIndex].productTypes[productTypeKey].id == 0) {
+                scope.formValues.locations[rowIndex].productTypes.splice(productTypeKey, 1);
+            } else {
+                scope.formValues.locations[rowIndex].productTypes[productTypeKey].isDeleted = true;
+            }
+        };
 
-		$(document).bind("DOMNodeRemoved", function(e)
-		{
+        $(document).bind('DOMNodeRemoved', (e) => {
 		    // $(".tooltip").tooltip("hide");
-		});
+        });
 
         $scope.previewOrderToBeDeliveredMail = function() {
             if (!$rootScope.selectDeliveryRows || $rootScope.selectDeliveryRows.length === 0) {
@@ -7679,23 +7682,23 @@ APP_MASTERS.controller("Controller_Master", [
                 return;
             }
 
-            var orderId = _.get($rootScope.selectDeliveryRows[0], 'order.id');
-            var orderProductIds = _.map($rootScope.selectDeliveryRows, 'orderProductId');
+            let orderId = _.get($rootScope.selectDeliveryRows[0], 'order.id');
+            let orderProductIds = _.map($rootScope.selectDeliveryRows, 'orderProductId');
 
             if (orderId && orderProductIds) {
-                var previewEmailData = {
+                let previewEmailData = {
                     data: {
                         orderId: orderId,
                         orderProductIds: orderProductIds
                     },
-                    transaction: "OrderNoBDNToVesselEmail"
-                }
-    
-                localStorage.setItem('previewEmailData', JSON.stringify(previewEmailData));
-    
-                var url = $state.href(STATE.PREVIEW_EMAIL);
+                    transaction: 'OrderNoBDNToVesselEmail'
+                };
 
-                $location.path(url.replace("#",""));
+                localStorage.setItem('previewEmailData', JSON.stringify(previewEmailData));
+
+                let url = $state.href(STATE.PREVIEW_EMAIL);
+
+                $location.path(url.replace('#', ''));
             }
         };
 
@@ -7705,24 +7708,23 @@ APP_MASTERS.controller("Controller_Master", [
                 return;
             }
 
-            var orderId = _.get($rootScope.selectDeliveryRows[0], 'order.id');
-            var orderProductIds = _.map($rootScope.selectDeliveryRows, 'orderProductId');
+            let orderId = _.get($rootScope.selectDeliveryRows[0], 'order.id');
+            let orderProductIds = _.map($rootScope.selectDeliveryRows, 'orderProductId');
 
             if (orderId && orderProductIds) {
-                orderModel.sendOrderToBeDeliveredMail(orderId, orderProductIds).then(function() {
+                orderModel.sendOrderToBeDeliveredMail(orderId, orderProductIds).then(() => {
                     toastr.success('Operation completed successfully');
                 });
             }
         };
 
         function emailNoAutomaticType() {
-            var array = [];
+            let array = [];
             if (vm.listsCache.EmailType) {
-                vm.listsCache.EmailType.forEach(function(obj) {
-                    if (obj.name != "Automatic") {
+                vm.listsCache.EmailType.forEach((obj) => {
+                    if (obj.name != 'Automatic') {
                         array.push(obj);
                     }
-
                 });
             }
 
@@ -7730,108 +7732,105 @@ APP_MASTERS.controller("Controller_Master", [
         }
         vm.EmailTypeNoAutomatic = emailNoAutomaticType();
 
-        vm.enabledEmailToVessel = function () {
+        vm.enabledEmailToVessel = function() {
             enabledEmailToVessel = true;
-            if (typeof($rootScope.adminConfiguration) != "undefined") {
-                $rootScope.adminConfiguration.email.forEach(function(obj) {
-                    if (obj.process == "Order No BDN To Vessel Email") {
-                        if (obj.emailType.name == "None") {
+            if (typeof $rootScope.adminConfiguration != 'undefined') {
+                $rootScope.adminConfiguration.email.forEach((obj) => {
+                    if (obj.process == 'Order No BDN To Vessel Email') {
+                        if (obj.emailType.name == 'None') {
                             enabledEmailToVessel = false;
                         }
-                    } 
+                    }
                 });
             }
             return enabledEmailToVessel;
-        }
+        };
         vm.getCurrencyCodeFiltered = function() {
-            console.log("getCurrencyCodeFiltered");  
-            
-            var data = {
-                app: "masters",
-                screen: "currency",
-                clc_id: "masters_currencylist",
+            console.log('getCurrencyCodeFiltered');
+
+            let data = {
+                app: 'masters',
+                screen: 'currency',
+                clc_id: 'masters_currencylist',
                 params: {
                     UIFilters: {},
-                    col: "",
+                    col: '',
                     filters: {},
                     page: 1,
-                    query: "",
+                    query: '',
                     rows: 9999,
                     shrinkToFit: true,
-                    sort: "",
+                    sort: '',
                     modal: true
                 }
             };
 
 
-            $Api_Service.entity.list(data, function(result) {
+            $Api_Service.entity.list(data, (result) => {
                 console.log(result);
-                $scope.options["CurrencyCode"] = result.rows;
+                $scope.options.CurrencyCode = result.rows;
             });
-
-
-        }
+        };
 
         vm.getDocumentTypesFiltered = function() {
-        	console.log("getDocumentTypesFiltered");
+        	console.log('getDocumentTypesFiltered');
 
-			var screen_name = $state.params.screen_id.toLowerCase();
-        	var transactionTypeName = {
+            let screen_name = $state.params.screen_id.toLowerCase();
+        	let transactionTypeName = {
         		// 'claim': 'Claims',
         		// 'contract': 'Contract',
-        		'labresult': 'Labs',
-        		'request_procurement': 'Request',
-        		'request_procurement_documents': 'Offer',
-        		'order_procurement': 'Order',
-        		'counterparty' : 'Counterparties',
-        		'company': 'Companies',
-        		'country': 'Countries',
-        		'strategy': 'Strategies',
-        		'currency': 'Currencies',
-        		'status': 'Statuses'
-        	}
-        	if (transactionTypeName[screen_name] ) {
+        		labresult: 'Labs',
+        		request_procurement: 'Request',
+        		request_procurement_documents: 'Offer',
+        		order_procurement: 'Order',
+        		counterparty : 'Counterparties',
+        		company: 'Companies',
+        		country: 'Countries',
+        		strategy: 'Strategies',
+        		currency: 'Currencies',
+        		status: 'Statuses'
+        	};
+        	if (transactionTypeName[screen_name]) {
         		screen_name = transactionTypeName[screen_name].toLowerCase();
         	}
 
-    	    var transactionTypeId = _.find(vm.listsCache["TransactionType"], function(el){
+    	    let transactionTypeId = _.find(vm.listsCache.TransactionType, (el) => {
     			return el.name.toLowerCase().indexOf(screen_name) > -1;
     		}).id;
 
 	    	documentTypeFilters = [
-	    		{		    		
-	    			"ColumnName": "ReferenceNo",
-	    			"Value": vm.entity_id
+	    		{
+	    			ColumnName: 'ReferenceNo',
+	    			Value: vm.entity_id
 	    		},
 	    		{
-	    			"ColumnName": "TransactionTypeId",
-	    			"Value": transactionTypeId
+	    			ColumnName: 'TransactionTypeId',
+	    			Value: transactionTypeId
 	    		}
-    		]        	
-            
-            var data = {
-                app: "masters",
-                screen: "documenttype",
-                clc_id: "masters_documenttype",
+    		];
+
+            let data = {
+                app: 'masters',
+                screen: 'documenttype',
+                clc_id: 'masters_documenttype',
                 params: {
                     UIFilters: {},
-                    col: "",
+                    col: '',
                     filters: documentTypeFilters,
                     page: 1,
-                    query: "",
+                    query: '',
                     rows: 9999,
                     shrinkToFit: true,
-                    sort: ""
+                    sort: ''
                 }
             };
 
 
-            $Api_Service.entity.list(data, function(result) {
+            $Api_Service.entity.list(data, (result) => {
                 console.log(result);
-            	$scope.options["DocumentType"] = result.rows;
+            	$scope.options.DocumentType = result.rows;
             });
-
-        }
+        };
         $scope.createOrderFromOrderList = function() {
             console.log($rootScope.selectedOrderListRows);
             if ($rootScope.selectedOrderListRows) {
@@ -7841,53 +7840,49 @@ APP_MASTERS.controller("Controller_Master", [
                     localStorage.setItem('ordersFromOrderList', angular.toJson($rootScope.selectedOrderListRows));
                 }
             }
-            var payload = [];
-            $.each($rootScope.selectedOrderListRows, function(k, v) {
+            let payload = [];
+            $.each($rootScope.selectedOrderListRows, (k, v) => {
                 if ($rootScope.selectedOrderListRows[k].order.id) {
-                    var obj = { 
-                                "Id": $rootScope.selectedOrderListRows[k].order.id
-                             };
+                    let obj = {
+                        Id: $rootScope.selectedOrderListRows[k].order.id
+                    };
                     payload.push(obj);
                 }
-                
             });
 
-            orderModel.verifyOrders(payload).then(function (responseData) {
-            	$rootScope.$broadcast("applyRawFilters", true);
-                }).catch(function (err) { 
+            orderModel.verifyOrders(payload).then((responseData) => {
+            	$rootScope.$broadcast('applyRawFilters', true);
+            }).catch((err) => {
             });
-
-
-        }
-        $scope.changeCurrency = function (element) {
-            var elem = "#" + element;
-            var widthTemp = "#width_tmp_option_" + element;
-            var option = "#" + element + " option:selected";
-            var select = "#width_tmp_select_" + "EstimatedSettlementAmount";
+        };
+        $scope.changeCurrency = function(element) {
+            let elem = `#${ element}`;
+            let widthTemp = `#width_tmp_option_${ element}`;
+            let option = `#${ element } option:selected`;
+            let select = '#width_tmp_select_' + 'EstimatedSettlementAmount';
 
             $(widthTemp).html($(option).text());
-            $(elem).width($(select).width());  
-        }
+            $(elem).width($(select).width());
+        };
 
         $scope.changeCurrencyValues = function(element) {
-            var array = ["ActualSettlementAmount", "EstimatedSettlementAmount", "CompromisedAmount", "OrderPrice", "NoClaimAmmount"];
+            let array = [ 'ActualSettlementAmount', 'EstimatedSettlementAmount', 'CompromisedAmount', 'OrderPrice', 'NoClaimAmmount' ];
             if (array.indexOf(element) != -1) {
-                var elem = "#" + element;
-                var widthTemp = "#width_tmp_option_" + element;
-                var option = "#" + element + " option:selected";
-                var select = "#width_tmp_select_" + element;        
-                
+                let elem = `#${ element}`;
+                let widthTemp = `#width_tmp_option_${ element}`;
+                let option = `#${ element } option:selected`;
+                let select = `#width_tmp_select_${ element}`;
+
                 $(widthTemp).html($(option).text());
-                $(elem).width($(select).width());  
-                if (element == "EstimatedSettlementAmount") {
-                    $scope.changeCurrency("ActualSettlementAmount");
-                    $scope.changeCurrency("CompromisedAmount");
-                    $scope.changeCurrency("NoClaimAmmount");
-                 
+                $(elem).width($(select).width());
+                if (element == 'EstimatedSettlementAmount') {
+                    $scope.changeCurrency('ActualSettlementAmount');
+                    $scope.changeCurrency('CompromisedAmount');
+                    $scope.changeCurrency('NoClaimAmmount');
                 }
-            }           
-        }
-        $rootScope.$on("changeCurrencyValues", function (event, res) {
+            }
+        };
+        $rootScope.$on('changeCurrencyValues', (event, res) => {
             $scope.changeCurrencyValues(res);
         });
 
@@ -7895,112 +7890,93 @@ APP_MASTERS.controller("Controller_Master", [
             if (!$scope.formValues.products[index].conversionFactors) {
                 $scope.formValues.products[index].conversionFactors = [];
             }
-            var selectedProduct, isAlreadyAdded = 0, indexDeleted = -1;
-            var  payload;
-            setTimeout(function() {
-                 if (isMainProduct) {
+            let selectedProduct, isAlreadyAdded = 0, indexDeleted = -1;
+            let payload;
+            setTimeout(() => {
+                if (isMainProduct) {
                     selectedProduct = $scope.formValues.products[index];
                     if ($scope.formValues.products[index].conversionFactors.length) {
-                            var allowProducts = $scope.formValues.products[index].allowedProducts;
-                            if (allowProducts.length) {
-                                $scope.formValues.products[index].conversionFactors.forEach(function(value, key) {
-                                    idIndex =  _.findIndex(allowProducts, function(o) { return o.id == value.product.id });
-                                    if (idIndex == -1) {
-                                      if (value.id == 0) {
-                                            $scope.formValues.products[index].conversionFactors.splice(key, 1);
-                                            return;
-
-                                       } else {
-                                             $scope.formValues.products[index].conversionFactors[key].isDeleted = true;
-                                        }
-                                    }
-                                    
+                        var allowProducts = $scope.formValues.products[index].allowedProducts;
+                        if (allowProducts.length) {
+                            $scope.formValues.products[index].conversionFactors.forEach((value, key) => {
+                                idIndex = _.findIndex(allowProducts, (o) => {
+                                    return o.id == value.product.id;
                                 });
-                            } else {
-                                $scope.formValues.products[index].conversionFactors[0].isDeleted = true;
-
-                            }
+                                if (idIndex == -1) {
+                                    if (value.id == 0) {
+                                        $scope.formValues.products[index].conversionFactors.splice(key, 1);
+                                        return;
+                                    }
+                                    $scope.formValues.products[index].conversionFactors[key].isDeleted = true;
+                                }
+                            });
+                        } else {
+                            $scope.formValues.products[index].conversionFactors[0].isDeleted = true;
+                        }
                     }
-                                
-                } else {
-                    if (allowProduct != null) {
-                        selectedProduct = {'product': allowProduct};
-                    } else if (allowProduct == null) {
-                            var allowProducts = $scope.formValues.products[index].allowedProducts;
-                            if (allowProducts.length) {
-                                $scope.formValues.products[index].conversionFactors.forEach(function(value, key) {
-                                    if (value.product.id != $scope.formValues.products[index].product.id) {
-                                        idIndex =  _.findIndex(allowProducts, function(o) {
-                                            console.log(o.id)
-                                             return o.id == value.product.id });
-                                        if (idIndex == -1) {
-                                            indexDeleted = key;
-                                            if (value.id == 0) {
-                                                $scope.formValues.products[index].conversionFactors.splice(indexDeleted, 1);
-                                                return;
-
-                                            } else {
-                                                $scope.formValues.products[index].conversionFactors[indexDeleted].isDeleted = true;
-                                            }
-                                
-                                        }
-                                    }
+                } else if (allowProduct != null) {
+                    selectedProduct = { product: allowProduct };
+                } else if (allowProduct == null) {
+                    var allowProducts = $scope.formValues.products[index].allowedProducts;
+                    if (allowProducts.length) {
+                        $scope.formValues.products[index].conversionFactors.forEach((value, key) => {
+                            if (value.product.id != $scope.formValues.products[index].product.id) {
+                                idIndex = _.findIndex(allowProducts, (o) => {
+                                    console.log(o.id);
+                                    return o.id == value.product.id;
                                 });
-                            } else {
-                                $scope.formValues.products[index].conversionFactors.forEach(function(value, key) {
-                                    if (value.product.id != $scope.formValues.products[index].product.id && !value.isDeleted) {
-                                        if (value.id == 0) {
-                                            $scope.formValues.products[index].conversionFactors.splice(key, 1);
-                                            return;
-
-                                        } else {
-                                                $scope.formValues.products[index].conversionFactors[key].isDeleted = true;
-                                        }
-                                      
-
-                                   }
-                               });
-
-                            }               
-                    }         
+                                if (idIndex == -1) {
+                                    indexDeleted = key;
+                                    if (value.id == 0) {
+                                        $scope.formValues.products[index].conversionFactors.splice(indexDeleted, 1);
+                                        return;
+                                    }
+                                    $scope.formValues.products[index].conversionFactors[indexDeleted].isDeleted = true;
+                                }
+                            }
+                        });
+                    } else {
+                        $scope.formValues.products[index].conversionFactors.forEach((value, key) => {
+                            if (value.product.id != $scope.formValues.products[index].product.id && !value.isDeleted) {
+                                if (value.id == 0) {
+                                    $scope.formValues.products[index].conversionFactors.splice(key, 1);
+                                    return;
+                                }
+                                $scope.formValues.products[index].conversionFactors[key].isDeleted = true;
+                            }
+                        });
+                    }
                 }
                 if ($scope.formValues.products[index].conversionFactors) {
                     if (selectedProduct) {
-                        var indexProduct = _.findIndex($scope.formValues.products[index].conversionFactors, function(o) { return o.product.id == selectedProduct.product.id;});
+                        let indexProduct = _.findIndex($scope.formValues.products[index].conversionFactors, (o) => {
+                            return o.product.id == selectedProduct.product.id;
+                        });
                         if (indexProduct != -1) {
                             if (!$scope.formValues.products[index].conversionFactors[indexProduct].isDeleted) {
-                                toastr.error("Product is already added");
+                                toastr.error('Product is already added');
                                 isAlreadyAdded = 1;
-
                             }
                         }
                     }
                 }
                 if (!isAlreadyAdded && indexDeleted == -1 && selectedProduct) {
-                    payload = {"Payload": selectedProduct.product.id};
-                    $http.post(API.BASE_URL_DATA_MASTERS + '/api/masters/products/getProdDefaultConversionFactors', payload).then(function successCallback(response) {
-                    console.log(response);
-                    if (response.data.payload != 'null') {
-                        var object = {
-                            "id": 0,
-                            "product" : selectedProduct.product ,
-                            "value": response.data.payload.value,
-                            "massUom": response.data.payload.massUom,
-                            "volumeUom": response.data.payload.volumeUom,
+                    payload = { Payload: selectedProduct.product.id };
+                    $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/getProdDefaultConversionFactors`, payload).then((response) => {
+                        console.log(response);
+                        if (response.data.payload != 'null') {
+                            let object = {
+                                id: 0,
+                                product : selectedProduct.product,
+                                value: response.data.payload.value,
+                                massUom: response.data.payload.massUom,
+                                volumeUom: response.data.payload.volumeUom,
+                            };
+                            $scope.formValues.products[index].conversionFactors.push(object);
                         }
-                        $scope.formValues.products[index].conversionFactors.push(object);
-                     
-                    }
-                });
-
+                    });
                 }
-
-            })
-           
-        
-        }
-     
-     
-
+            });
+        };
     }
 ]);

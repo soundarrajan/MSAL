@@ -14,19 +14,16 @@
             {
                 "caption": "Column N",
                 ...
-            }                        
+            }
         ]
-*   } 
+*   }
 */
 function normalizeJSONDataTables(tables) {
-
     // Initialize the result fields.
-    var result = {};
+    let result = {};
 
-    $.each(tables, function(tableName, table) {
-
+    $.each(tables, (tableName, table) => {
         result[tableName] = normalizeJSONDataTable(table);
-
     });
 
     return result;
@@ -34,29 +31,27 @@ function normalizeJSONDataTables(tables) {
 
 
 function normalizeJSONDataTable(table) {
-    var result =  {
-            columnDefs: [],
-            colvisColumns: []
+    let result = {
+        columnDefs: [],
+        colvisColumns: []
     };
 
-    $.each(table.columns, function(index, properties) {
-
-            // Initialize datatable column definition, including visibility, sortability.
-            result.columnDefs.push(
-                { 
-                    targets: [index], 
-                    visible: properties.visible,
-                    sortable: properties.sortable,
-                    type: properties.type
-                }
-            );
-
-            // Only add to colvis button columns those columns that can actually be toggled.
-            if(!properties.alwaysVisible) {
-                result.colvisColumns.push(index);
+    $.each(table.columns, (index, properties) => {
+        // Initialize datatable column definition, including visibility, sortability.
+        result.columnDefs.push(
+            {
+                targets: [ index ],
+                visible: properties.visible,
+                sortable: properties.sortable,
+                type: properties.type
             }
+        );
 
-        });
+        // Only add to colvis button columns those columns that can actually be toggled.
+        if(!properties.alwaysVisible) {
+            result.colvisColumns.push(index);
+        }
+    });
 
     return result;
 }

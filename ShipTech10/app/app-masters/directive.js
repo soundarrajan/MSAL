@@ -2,41 +2,42 @@
  * APP MASTERS (Shiptech)
  * Directives
  */
-+(function() {
+Number(function() {
     /**
      * Configurable Masters Structure
      */
-    APP_MASTERS.directive('elementDraggable', ['$document', function($document) {
+    APP_MASTERS.directive('elementDraggable', [ '$document', function($document) {
         return {
             link: function(scope, element, attr) {
-                element.on('dragstart', function(event) {
+                element.on('dragstart', (event) => {
                     // console.log('test');
                     event.originalEvent.dataTransfer.setData('templateIdx', $(element).data('index'));
                 });
             }
         };
-    }]);
-    APP_MASTERS.directive('elementDrop', ['$document', function($document) {
+    } ]);
+    APP_MASTERS.directive('elementDrop', [ '$document', function($document) {
         return {
             link: function(scope, element, attr) {
-                element.on('dragover', function(event) {
+                element.on('dragover', (event) => {
                     event.preventDefault();
                 });
-                $('.drop').on('dragenter', function(event) {
+                $('.drop').on('dragenter', (event) => {
                     event.preventDefault();
-                })
+                });
                 element.on('drop', function(event) {
                     event.stopPropagation();
-                    var self = $(this);
-                    scope.$apply(function() {
-                        var idx = event.originalEvent.dataTransfer.getData('templateIdx');
-                        var insertIdx = self.data('index')
+                    let self = $(this);
+                    scope.$apply(() => {
+                        let idx = event.originalEvent.dataTransfer.getData('templateIdx');
+                        let insertIdx = self.data('index');
                         scope.addElement(scope.dragElements[idx], insertIdx);
                     });
                 });
             }
         };
-    }]);
+    } ]);
+
     /*    APP_MASTERS.directive('initializeProperty', function() {
             return {
                 restrict: 'A',
@@ -49,7 +50,7 @@
                 }
             };
         });*/
-    APP_MASTERS.directive('initializeProperty', function() {
+    APP_MASTERS.directive('initializeProperty', () => {
         return {
             require: 'ngModel',
             link: function(scope, element, attr, mCtrl) {
@@ -65,28 +66,28 @@
             }
         };
     });
-    APP_MASTERS.directive('indeterminateCheckbox', ['HierarchyNodeService', function(HierarchyNodeService) {
+    APP_MASTERS.directive('indeterminateCheckbox', [ 'HierarchyNodeService', function(HierarchyNodeService) {
         return {
             restrict: 'A',
             scope: {
                 node: '='
             },
             link: function(scope, element, attr) {
-                scope.$watch('node', function(nv) {
-                    var flattenedTree = HierarchyNodeService.getAllChildren(scope.node, []);
-                    flattenedTree = flattenedTree.map(function(n) {
-                        return n.isSelected
+                scope.$watch('node', (nv) => {
+                    let flattenedTree = HierarchyNodeService.getAllChildren(scope.node, []);
+                    flattenedTree = flattenedTree.map((n) => {
+                        return n.isSelected;
                     });
-                    var initalLength = flattenedTree.length;
-                    var compactedTree = _.compact(flattenedTree);
-                    var r = compactedTree.length > 0 && compactedTree.length < flattenedTree.length;
+                    let initalLength = flattenedTree.length;
+                    let compactedTree = _.compact(flattenedTree);
+                    let r = compactedTree.length > 0 && compactedTree.length < flattenedTree.length;
                     element.prop('indeterminate', r);
                 }, true);
             }
-        }
-    }]);
+        };
+    } ]);
     (function() {
-        APP_MASTERS.directive('hierarchySearch', ['HierarchyNodeService', '$timeout', '$templateCache', '$compile', function(HierarchyNodeService, $timeout, $templateCache, $compile) {
+        APP_MASTERS.directive('hierarchySearch', [ 'HierarchyNodeService', '$timeout', '$templateCache', '$compile', function(HierarchyNodeService, $timeout, $templateCache, $compile) {
             return {
                 restrict: 'E',
                 template: $templateCache.get('app-admin/views/hierarchySearch.html'),
@@ -97,24 +98,22 @@
                     screenid: '=',
                     datavalues: '='
                 },
-                controller: ['$rootScope', '$scope', '$compile', function($rootScope, $scope, $compile) {
+                controller: [ '$rootScope', '$scope', '$compile', function($rootScope, $scope, $compile) {
                     $scope.numSelected = 0;
-                    //$scope.list is used by ng-tree, dataset should never be modified
+                    // $scope.list is used by ng-tree, dataset should never be modified
                     $scope.list = angular.copy($scope.dataset);
                     $scope.options = {};
                     $scope.selectedItems = {};
                     dataSrcs = {
-                        'vessel_access': 'accessVessels',
-                        'buyer_access': 'accessBuyers',
-                        'company_access': 'accessCompanies'
+                        vessel_access: 'accessVessels',
+                        buyer_access: 'accessBuyers',
+                        company_access: 'accessCompanies'
                     };
                     if ($scope.datavalues[dataSrcs[$scope.datasrc]]) {
                         if ($scope.datavalues[dataSrcs[$scope.datasrc]].length > 0) {
-                            $.each($scope.datavalues[dataSrcs[$scope.datasrc]], function(k, v) {
+                            $.each($scope.datavalues[dataSrcs[$scope.datasrc]], (k, v) => {
                                 findInObject(v);
-                            })
-
-                            
+                            });
                         }
                     }
                         	// $scope.$apply(function(){
@@ -123,26 +122,24 @@
 		                       //          findInObject(v, $scope.datavalues[dataVal]);
 		                       //      })
 	                        // 	})
-                        	// })	
+                        	// })
 
                     function findInObject(v, list) {
                         if (!list) {
-                            list = $scope.list
+                            list = $scope.list;
                         }
-                        $.each(list, function(ki, item) {
+                        $.each(list, (ki, item) => {
                             if (v.name == item.name) {
                                 item.isSelected = true;
-                            } else {
-                                if (item.children) {
-                                    findInObject(v, item.children)
-                                }
+                            } else if (item.children) {
+                                findInObject(v, item.children);
                             }
-                        })
+                        });
                     }
                     $scope.expandNode = function(n, $event) {
                         $event.stopPropagation();
                         n.toggle();
-                    }
+                    };
                     $scope.filter = function(item, pattern) {
                         if (pattern) {
                             found = 0;
@@ -150,83 +147,85 @@
                                 found = 0;
                                 if (item.children) {
                                     if (item.children.length > 0) {
-                                        $.each(item.children, function(k, v) {
+                                        $.each(item.children, (k, v) => {
                                             if (v.name.toLowerCase().indexOf(pattern.toLowerCase()) > -1) {
                                                 found++;
                                             }
-                                        })
+                                        });
                                     }
                                 }
                                 if (found > 0) {
-                                    return false
-                                } else {
-                                    return true
+                                    return false;
                                 }
+                                return true;
                             }
                         }
-                        return false
-                    }
-                    $scope.selectAll = function(list, val) { 
-                   
-                        console.log(val)
+                        return false;
+                    };
+                    $scope.selectAll = function(list, val) {
+                        console.log(val);
                         if (val) {
-                            $.each(list, function(k, item) {
+                            $.each(list, (k, item) => {
                                 item.isSelected = false;
-                                HierarchyNodeService.selectChildren(item, false)
-                            })
+                                HierarchyNodeService.selectChildren(item, false);
+                            });
                         } else {
-                            $.each(list, function(k, item) {
+                            $.each(list, (k, item) => {
                                 item.isSelected = true;
-                                HierarchyNodeService.selectChildren(item, true)
-                            })
+                                HierarchyNodeService.selectChildren(item, true);
+                            });
                         }
-                    }
+                    };
                     $scope.itemSelect = function(item) {
-                        var rootVal = !item.isSelected;
-                        HierarchyNodeService.selectChildren(item, rootVal)
+                        let rootVal = !item.isSelected;
+                        HierarchyNodeService.selectChildren(item, rootVal);
                         // HierarchyNodeService.findParent($scope.list[0], null, item, selectParent);
-                        var s = _.compact(HierarchyNodeService.getAllChildren($scope.list[0], []).map(function(c) {
+                        let s = _.compact(HierarchyNodeService.getAllChildren($scope.list[0], []).map((c) => {
                             return c.isSelected && !c.children;
                         }));
                         $scope.numSelected = s.length;
                         // $scope.selectItem(item, $scope.datasrc)
                         // console.log($scope.list)
-                    }
+                    };
 
                     function selectParent(parent) {
-                        var children = HierarchyNodeService.getAllChildren(parent, []);
-                        if (!children) return;
-                        children = children.slice(1).map(function(c) {
+                        let children = HierarchyNodeService.getAllChildren(parent, []);
+                        if (!children) {
+                            return;
+                        }
+                        children = children.slice(1).map((c) => {
                             return c.isSelected;
                         });
                         parent.isSelected = children.length === _.compact(children).length && !parent.unSelectable;
-                        HierarchyNodeService.findParent($scope.list[0], null, parent, selectParent)
+                        HierarchyNodeService.findParent($scope.list[0], null, parent, selectParent);
                     }
                     $scope.nodeStatus = function(node) {
-                        var flattenedTree = getAllChildren(node, []);
-                        flattenedTree = flattenedTree.map(function(n) {
-                            return n.isSelected
+                        let flattenedTree = getAllChildren(node, []);
+                        flattenedTree = flattenedTree.map((n) => {
+                            return n.isSelected;
                         });
                         return flattenedTree.length === _.compact(flattenedTree);
-                    }
-                }],
+                    };
+                } ],
                 link: function(scope, el, attr) {
-                    scope.$watch('pastUsersFilter', function(nv) {
-                        if (_.isUndefined(nv)) return;
+                    scope.$watch('pastUsersFilter', (nv) => {
+                        if (_.isUndefined(nv)) {
+                            return;
+                        }
                         if (nv) {
                             HierarchyNodeService.trimLeafs(scope.list[0]);
                         } else {
                             scope.list = angular.copy(scope.dataset);
                         }
                     });
-                    var inputTimeout;
-                    var time = 300;
-                    scope.$watch('searchValue', function(nv) {
+                    let inputTimeout;
+                    let time = 300;
+                    scope.$watch('searchValue', (nv) => {
                         if (!nv && nv !== '') {
                             return;
                         }
-                        var previousDataset = angular.copy(scope.list);
-                        var newData = (scope.searchValue === '') ? angular.copy(scope.dataset) : [HierarchyNodeService.treeSearch(angular.copy(scope.dataset[0]), scope.searchValue)];
+                        let previousDataset = angular.copy(scope.list);
+                        let newData = scope.searchValue === '' ? angular.copy(scope.dataset) : [ HierarchyNodeService.treeSearch(angular.copy(scope.dataset[0]), scope.searchValue) ];
                         if (newData.length === 1 && _.isEmpty(newData[0])) {
                             scope.emptyData = true;
                             return;
@@ -238,15 +237,15 @@
                         }
                         scope.list = newData;
                         $timeout.cancel(inputTimeout);
-                        inputTimeout = $timeout(function() {
-                            var els = document.querySelectorAll('[ui-tree-node]');
-                            Array.prototype.forEach.call(els, function(el) {
+                        inputTimeout = $timeout(() => {
+                            let els = document.querySelectorAll('[ui-tree-node]');
+                            Array.prototype.forEach.call(els, (el) => {
                                 el = angular.element(el);
-                                var elScope = el.scope();
+                                let elScope = el.scope();
                                 if (elScope.$modelValue.match) {
                                     elScope.expand();
-                                    //loop through all parents and keep expanding until no more parents are found
-                                    var p = elScope.$parentNodeScope;
+                                    // loop through all parents and keep expanding until no more parents are found
+                                    let p = elScope.$parentNodeScope;
                                     while (p) {
                                         p.expand();
                                         p = p.$parentNodeScope;
@@ -255,51 +254,52 @@
                             });
                         }, 500);
                     });
-                    scope.$watch('list', function(nv, ov) {
+                    scope.$watch('list', (nv, ov) => {
                         // console.log(nv)
-                        if (!nv) return;
+                        if (!nv) {
+                            return;
+                        }
                         if (nv && !ov) {
                             scope.$apply();
                         }
-                        //UPDATE SELECTED IDs FOR QUERY
-                        //get the root node
+                        // UPDATE SELECTED IDs FOR QUERY
+                        // get the root node
                         //
-                        var rootNode = nv[1];
+                        let rootNode = nv[1];
                         // console.log(nv);
-                        result = []
-                        $.each(nv, function(k, v) {
-                            var a = HierarchyNodeService.getSelected(v, []);
+                        result = [];
+                        $.each(nv, (k, v) => {
+                            let a = HierarchyNodeService.getSelected(v, []);
                             // console.log(a)
                             if (a.length > 0) {
-                                _.each(a, function(itm) {
+                                _.each(a, (itm) => {
                                     if (!itm.unSelectable) {
-                                        result.push(_.pick(itm, "id", "name"))
+                                        result.push(_.pick(itm, 'id', 'name'));
                                     }
                                 });
                                 // scope.selected = scope.changedSelection;
                             }
-                        })
+                        });
             			console.log(scope.sel);
                         if (typeof scope.sel == 'undefined') {
-                            scope.sel = {}
+                            scope.sel = {};
                         } else {
-                        	setTimeout(function(){
+                        	setTimeout(() => {
 	                    		// $compile($(".hierarchy-header"))(scope);
-								scope.$apply();
-                        	},500)
+                                scope.$apply();
+                        	}, 500);
                         }
                         // console.log(scope.dataset.length)
                         // console.log(result.length)
                         // console.log(scope.flattenedTree)
                         if (scope.datasrc == 'vessel_access') {
                             length = 0;
-                            $.each(nv, function(nvk,nvv){
-                            	length+=nvv.children.length	
-                            })
+                            $.each(nv, (nvk, nvv) => {
+                            	length = length + nvv.children.length;
+                            });
                             // length = nv.length;
-                        	
                         } else {
-                            length = scope.dataset[0].totalCount
+                            length = scope.dataset[0].totalCount;
                         }
                         if (length == result.length) {
                             scope.sel[scope.datasrc] = true;
@@ -310,12 +310,12 @@
                         scope.changedSelection[scope.datasrc] = result;
                         // console.log(scope.changedSelection)
                         scope.$emit('changedSelection', scope.changedSelection);
-                        //get all elements where isSelected == true
-                        //get the ids of each element
+                        // get all elements where isSelected == true
+                        // get the ids of each element
                         // console.log(a)
                     }, true);
                 }
-            }
-        }])
+            };
+        } ]);
     }).call(this);
-})();
+}());

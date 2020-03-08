@@ -1,9 +1,9 @@
-angular.module('shiptech.models').factory('payloadDataModel', [function() {
+angular.module('shiptech.models').factory('payloadDataModel', [ function() {
     self = this;
     this.payload_data = {
-        "IsValid": false,
-        "TenantMongoDbUrl": null,
-        "TenantId": null,
+        IsValid: false,
+        TenantMongoDbUrl: null,
+        TenantId: null,
         // "UiFilters": {
         //     "VesselId": null,
         //     "ProductId": null,
@@ -13,12 +13,12 @@ angular.module('shiptech.models').factory('payloadDataModel', [function() {
         //     "BuyerId": null,
         //     "ServiceId": null
         // },
-        "IsAuthorized": false
+        IsAuthorized: false
     };
 
     function create(data) {
-        var payload = angular.copy(self.payload_data);
-        if (typeof data != "undefined" && data !== null) {
+        let payload = angular.copy(self.payload_data);
+        if (typeof data != 'undefined' && data !== null) {
             payload.Payload = data;
         }
         return payload;
@@ -28,4 +28,4 @@ angular.module('shiptech.models').factory('payloadDataModel', [function() {
         payload_data: self.payload_data,
         create: create
     };
-}]);
+} ]);

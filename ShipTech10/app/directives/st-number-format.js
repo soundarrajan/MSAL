@@ -1,32 +1,32 @@
-angular.module('shiptech.pages').directive('stNumberFormat', ['$filter', function ($filter, tenantService) {
+angular.module('shiptech.pages').directive('stNumberFormat', [ '$filter', function($filter, tenantService) {
     return {
         require:'^ngModel',
         restrict:'A',
 
 
-        link: function (scope, element, attrs, ctrl) {
-            var precision = attrs.stNumberFormat,
+        link: function(scope, element, attrs, ctrl) {
+            let precision = attrs.stNumberFormat,
                 decimalSeparator = getDecimalSeparator();
 
 
             function getDecimalSeparator() {
-                var n = 1.1;
+                let n = 1.1;
                 n = n.toLocaleString().substring(1, 2);
                 return n;
             }
 
 
-            ctrl.$formatters.unshift(function (modelValue) {
+            ctrl.$formatters.unshift((modelValue) => {
                 if(!modelValue) {
                     return modelValue;
                 }
-                
+
                 return parseFloat(modelValue).toFixed(precision);
             });
 
 
-            ctrl.$parsers.unshift(function (viewValue) {
-                var parts = viewValue.split(decimalSeparator),
+            ctrl.$parsers.unshift((viewValue) => {
+                let parts = viewValue.split(decimalSeparator),
                     decimalLength = 0;
 
                 if(parts[1]) {
@@ -43,4 +43,4 @@ angular.module('shiptech.pages').directive('stNumberFormat', ['$filter', functio
             });
         }
     };
-}]);
+} ]);

@@ -1,13 +1,13 @@
-angular.module('shiptech').controller('VesselScheduleController', ['$scope', '$state', '$timeout', '$filter',  '$tenantSettings', 'STATE', 'MOCKUP_MAP', 'LOOKUP_TYPE', 'uiApiModel', 'lookupModel',
+angular.module('shiptech').controller('VesselScheduleController', [ '$scope', '$state', '$timeout', '$filter', '$tenantSettings', 'STATE', 'MOCKUP_MAP', 'LOOKUP_TYPE', 'uiApiModel', 'lookupModel',
     function($scope, $state, $timeout, $filter, $tenantSettings, STATE, MOCKUP_MAP, LOOKUP_TYPE, uiApiModel, lookupModel) {
         $scope.state = $state;
         $scope.STATE = STATE;
-        var ctrl = this;
+        let ctrl = this;
         ctrl.table = null;
         ctrl.selectedLocations = [];
-        var vesselScheduleEndpoint = MOCKUP_MAP['unrouted.vessel-schedule'];
+        let vesselScheduleEndpoint = MOCKUP_MAP['unrouted.vessel-schedule'];
         ctrl.$onInit = function() {
-            uiApiModel.get(vesselScheduleEndpoint).then(function(data) {
+            uiApiModel.get(vesselScheduleEndpoint).then((data) => {
                 ctrl.ui = data;
             });
         };
@@ -15,10 +15,9 @@ angular.module('shiptech').controller('VesselScheduleController', ['$scope', '$s
             if (changes.vesselId.isFirstChange() || changes.vesselId.currentValue == 0) {
                 return false;
             }
-
         };
 
-	    $scope.$on('getVesselSchedules', function(evt, value) {
+	    $scope.$on('getVesselSchedules', (evt, value) => {
         // console.log(value);
         // $scope.accessSelection = value;
  	       if (value == 0) {
@@ -30,36 +29,36 @@ angular.module('shiptech').controller('VesselScheduleController', ['$scope', '$s
                 OperationType: 0,
                 ValueType: 5,
                 Value: value
-            }).then(function(data) {
+            }).then((data) => {
                 ctrl.data = data.payload;
-                $.each(ctrl.data, function(k, v) {
+                $.each(ctrl.data, (k, v) => {
                     v.eta = $scope.formatDate(v.eta);
                     v.etb = $scope.formatDate(v.etb);
                     v.etd = $scope.formatDate(v.etd);
-                })
+                });
                 destroyDataTable();
-                $timeout(function() {
+                $timeout(() => {
                     ctrl.table = SimpleDatatable.init({
                         selector: '.simple-datatable',
                         order: [
-                            [0, "asc"]
+                            [ 0, 'asc' ]
                         ]
                     });
                 });
             });
         });
-        $scope.formatDateToMomentFormat = function( dateFormat ){
+        $scope.formatDateToMomentFormat = function(dateFormat) {
             dbFormat = dateFormat;
             hasDayOfWeek = false;
             currentFormat = angular.copy(dateFormat);
-            if (currentFormat.startsWith("DDD ")) {
+            if (currentFormat.startsWith('DDD ')) {
                 hasDayOfWeek = true;
-                currentFormat = currentFormat.split("DDD ")[1];
-            }           
-            currentFormat = currentFormat.replace(/d/g, "D");
-            currentFormat = currentFormat.replace(/y/g, "Y");
+                currentFormat = currentFormat.split('DDD ')[1];
+            }
+            currentFormat = currentFormat.replace(/d/g, 'D');
+            currentFormat = currentFormat.replace(/y/g, 'Y');
             if (hasDayOfWeek) {
-                currentFormat = "ddd " + currentFormat;
+                currentFormat = `ddd ${ currentFormat}`;
             }
             return currentFormat;
         };
@@ -72,44 +71,44 @@ angular.module('shiptech').controller('VesselScheduleController', ['$scope', '$s
             }
         }
         $scope.formatDate = function(cellValue) {
-            var dateFormat = $scope.momentDateFormat;
-            var hasDayOfWeek = false;                  
-            dateFormat = dateFormat.replace(/D/g, "d").replace(/Y/g, "y");
+            let dateFormat = $scope.momentDateFormat;
+            let hasDayOfWeek = false;
+            dateFormat = dateFormat.replace(/D/g, 'd').replace(/Y/g, 'y');
             formattedDate = moment(cellValue).format($scope.momentDateFormat);
             if (formattedDate) {
-                var array = formattedDate.split(" ");
-                var format = [];
-                $.each(array, function(k,v) {
-                    if (array[k] != "00:00") {
-                        format = format + array[k] + " ";
+                let array = formattedDate.split(' ');
+                let format = [];
+                $.each(array, (k, v) => {
+                    if (array[k] != '00:00') {
+                        format = `${format + array[k] } `;
                     }
                 });
                 formattedDate = format;
             }
-     
+
             if (formattedDate) {
-                if (formattedDate.indexOf("0001") != -1) {
-                    formattedDate = "";
+                if (formattedDate.indexOf('0001') != -1) {
+                    formattedDate = '';
                 }
             }
             if (cellValue != null) {
                 return formattedDate;
             }
-            return "";
-        }
+            return '';
+        };
 
         ctrl.confirmVesselSchedulesSelection = function() {
-            var selectedLocations = [];
-            angular.forEach(ctrl.selectedLocations, function(value, key) {
+            let selectedLocations = [];
+            angular.forEach(ctrl.selectedLocations, (value, key) => {
                 if (value) {
-                  // if(ctrl.data[key].destinationVesselVoyageDetailId) {
+                    // if(ctrl.data[key].destinationVesselVoyageDetailId) {
                     ctrl.data[key].destinationName = [
-                      ctrl.data[key].destinationLocationCode,
-                      ctrl.data[key].voyageCode,
-                      ctrl.data[key].destinationEtaFormated,
+                        ctrl.data[key].destinationLocationCode,
+                        ctrl.data[key].voyageCode,
+                        ctrl.data[key].destinationEtaFormated,
                     ].join(' - ');
-                  // }
-                  selectedLocations.push(ctrl.data[key]);
+                    // }
+                    selectedLocations.push(ctrl.data[key]);
                 }
             });
             ctrl.onVesselSchedulesSelect({
@@ -117,7 +116,6 @@ angular.module('shiptech').controller('VesselScheduleController', ['$scope', '$s
             });
             ctrl.selectedLocations = [];
         };
-
     }
 ]);
 angular.module('shiptech.components').component('vesselSchedule', {

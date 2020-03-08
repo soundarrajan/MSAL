@@ -1,36 +1,36 @@
 /**
  * Master Factory
  */
-APP_MASTERS.factory('Factory_Master', ['$window', '$http', '$Api_Service', 'API', 'screenLoader', function($window, $http, $Api_Service, API, screenLoader) {
-    var general_api = '';
+APP_MASTERS.factory('Factory_Master', [ '$window', '$http', '$Api_Service', 'API', 'screenLoader', function($window, $http, $Api_Service, API, screenLoader) {
+    let general_api = '';
     return {
         getVesselVoyageBunkeringDetails: function(data, callback) {
-            var payload = {
-                "Payload": data
+            let payload = {
+                Payload: data
             };
-            var url =  API.BASE_URL_DATA_MASTERS + "/api/masters/vessels/getVesselVoyageBunkeringDetails";
+            let url = `${API.BASE_URL_DATA_MASTERS }/api/masters/vessels/getVesselVoyageBunkeringDetails`;
             $http({
                 method: 'POST',
                 url: url,
                 data: payload
-            }).then(function successCallback(response) {
+            }).then((response) => {
                 callback(response.data);
-            }, function errorCallback(response) {
+            }, (response) => {
                 console.log(response);
             });
         },
         getCounterpartyTypes: function(data, callback) {
-            var payload = {
-                "Payload": data
+            let payload = {
+                Payload: data
             };
-            var url =  API.BASE_URL_DATA_MASTERS + "/api/masters/counterparties/getCounterpartyTypes";
+            let url = `${API.BASE_URL_DATA_MASTERS }/api/masters/counterparties/getCounterpartyTypes`;
             $http({
                 method: 'POST',
                 url: url,
                 data: payload
-            }).then(function successCallback(response) {
+            }).then((response) => {
                 callback(response.data);
-            }, function errorCallback(response) {
+            }, (response) => {
                 console.log(response);
             });
         },
@@ -38,12 +38,12 @@ APP_MASTERS.factory('Factory_Master', ['$window', '$http', '$Api_Service', 'API'
             $http({
                 method: 'GET',
                 url: 'layouts/mastersList.json'
-            }).then(function successCallback(response) {
+            }).then((response) => {
                 // this callback will be called asynchronously
                 // when the response is available
                 callback(response.data);
-            }, function errorCallback(response) {
-                console.log(response)
+            }, (response) => {
+                console.log(response);
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
             });
@@ -53,25 +53,25 @@ APP_MASTERS.factory('Factory_Master', ['$window', '$http', '$Api_Service', 'API'
             $http({
                 method: 'GET',
                 url: 'translations/cma.json'
-            }).then(function successCallback(response) {
+            }).then((response) => {
                 // this callback will be called asynchronously
                 // when the response is available
                 callback(response.data);
-            }, function errorCallback(response) {
-                console.log(response)
+            }, (response) => {
+                console.log(response);
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
             });
         },
         getScreenActions: function(data, callback) {
-            $Api_Service.screen.get_actions(data, function(result) {
+            $Api_Service.screen.get_actions(data, (result) => {
                 callback(result);
             });
         },
         get_master_structure: function(app, master_id, generic_layout, dev, callback) {
             screenLoader.showLoader();
             // debugger;
-            var data = {
+            let data = {
                 app: app,
                 screen: master_id,
                 generic: generic_layout
@@ -79,142 +79,142 @@ APP_MASTERS.factory('Factory_Master', ['$window', '$http', '$Api_Service', 'API'
             if (dev == 1) {
                 $http({
                     method: 'GET',
-                    url: 'layouts/' + data.screen + '.json'
-                }).then(function successCallback(response) {
+                    url: `layouts/${ data.screen }.json`
+                }).then((response) => {
                     // this callback will be called asynchronously
                     // when the response is available
                     callback(response.data.layout);
-                }, function errorCallback(response) {
-                    console.log(response)
+                }, (response) => {
+                    console.log(response);
                     // called asynchronously if an error occurs
                     // or server returns response with an error status.
                 });
                 if (app == 'masters') {
                     data.screen = 'counterparty';
-                    $Api_Service.screen.get(data, function(result) {
+                    $Api_Service.screen.get(data, (result) => {
                         console.log(result.layout);
                     });
                 }
             } else {
-                $Api_Service.screen.get(data, function(result) {
+                $Api_Service.screen.get(data, (result) => {
                     callback(result.layout);
                 });
             }
             return false;
         },
         getPriceTypes: function(app, master_id, callback) {
-            var data = {
+            let data = {
                 app: app,
                 screen: master_id,
                 id: 1
             };
             // console.log(data);
-            $Api_Service.entity.get(data, function(result) {
+            $Api_Service.entity.get(data, (result) => {
                 callback(result);
             });
             return false;
         },
         getContractFormulas: function(data, callback) {
-            $Api_Service.contract.getContractFormulas(data, function(result) {
+            $Api_Service.contract.getContractFormulas(data, (result) => {
                 callback(result);
             });
             return false;
         },
         upload_file: function(fd, callback) {
-            uploadUrl = API.BASE_URL_DATA_MASTERS + '/api/masters/companies/createLogo';
+            uploadUrl = `${API.BASE_URL_DATA_MASTERS }/api/masters/companies/createLogo`;
             $http.post(uploadUrl, fd, {
                 transformRequest: angular.identity,
                 headers: {
                     'Content-Type': undefined
                 }
-            }).then(function successCallback(response) {
-                if (response) {
-                    callback('Success')
-                } else {
-                    callback(false);
-                }
-            }, function errorCallback(response) {
-                console.log('HTTP ERROR');
-                callback(false);
-            });
-        },
-        upload_document: function(data, callback) {
-            var url = API.BASE_URL_DATA_MASTERS + '/api/masters/documentupload/create';
-            $http.post(url, data, {
-                transformRequest: angular.identity,
-                headers: {
-                    'Content-Type': undefined
-                }
-            }).then(function successCallback(response) {
+            }).then((response) => {
                 if (response) {
                     callback('Success');
                 } else {
                     callback(false);
                 }
-            }, function errorCallback(response) {
+            }, (response) => {
+                console.log('HTTP ERROR');
+                callback(false);
+            });
+        },
+        upload_document: function(data, callback) {
+            let url = `${API.BASE_URL_DATA_MASTERS }/api/masters/documentupload/create`;
+            $http.post(url, data, {
+                transformRequest: angular.identity,
+                headers: {
+                    'Content-Type': undefined
+                }
+            }).then((response) => {
+                if (response) {
+                    callback('Success');
+                } else {
+                    callback(false);
+                }
+            }, (response) => {
                 console.log('HTTP ERROR');
                 callback(false);
             });
         },
         get_file: function(id, callback) {
-            getUrl = API.BASE_URL_DATA_MASTERS + '/api/masters/companies/download';
+            getUrl = `${API.BASE_URL_DATA_MASTERS }/api/masters/companies/download`;
             id = {
-                "Payload": id
+                Payload: id
             };
             $http.post(getUrl, id, {
-                responseType: "arraybuffer"
-            }).then(function successCallback(response) {
+                responseType: 'arraybuffer'
+            }).then((response) => {
                 if (response.data) {
-                    mime = response.headers("content-type");
+                    mime = response.headers('content-type');
                     callback(response.data, mime);
                 } else {
                     callback(false);
                 }
-            }, function errorCallback(response) {
+            }, (response) => {
                 console.log('HTTP ERROR');
                 callback(false);
             });
         },
         get_document_file: function(payload, callback) {
-            url = API.BASE_URL_DATA_MASTERS + '/api/masters/documentupload/download';
+            url = `${API.BASE_URL_DATA_MASTERS }/api/masters/documentupload/download`;
             $http({
                 method: 'POST',
                 url: url,
                 data: payload,
-                responseType: "arraybuffer",
+                responseType: 'arraybuffer',
                 headers: {
                     'Origin': 'http://localhost:9000',
                     // 'Content-Type': undefined
                     'Content-Type': 'application/json',
                 }
-            }).then(function success(response) {
+            }).then((response) => {
                 if (response) {
-                    var mime = response.headers("content-type");
+                    let mime = response.headers('content-type');
                     callback(response, mime);
                 }
-            }, function error(response) {
+            }, (response) => {
                 if (response) {
                     callback(response, false);
                 }
             });
         },
         generateTemplate: function(payload, callback) {
-            url = API.BASE_URL_DATA_IMPORTEXPORT + '/api/importExport/upload/generate';
+            url = `${API.BASE_URL_DATA_IMPORTEXPORT }/api/importExport/upload/generate`;
             $http({
                 method: 'POST',
                 url: url,
                 data: payload,
-                responseType: "arraybuffer",
+                responseType: 'arraybuffer',
                 headers: {
                     // 'Origin': 'http://localhost:9001',
                     'Content-Type': 'application/json',
                 }
-            }).then(function success(response) {
+            }).then((response) => {
                 if (response) {
-                    var mime = response.headers("content-type");
+                    let mime = response.headers('content-type');
                     callback(response, mime);
                 }
-            }, function error(response) {
+            }, (response) => {
                 if (response) {
                     callback(response, false);
                 }
@@ -222,22 +222,22 @@ APP_MASTERS.factory('Factory_Master', ['$window', '$http', '$Api_Service', 'API'
         },
         downloadFTP: function(payload, callback) {
             // url = API.BASE_URL_DATA_IMPORTEXPORT + '/api/importExport/download/downloadFile';
-            url = API.BASE_URL + '/Shiptech10.Api.ImportExport/api/importExport/download/downloadFile';
+            url = `${API.BASE_URL }/Shiptech10.Api.ImportExport/api/importExport/download/downloadFile`;
             $http({
                 method: 'POST',
                 url: url,
                 data: payload,
-                responseType: "arraybuffer",
+                responseType: 'arraybuffer',
                 headers: {
                     // 'Origin': 'http://localhost:9001',
                     'Content-Type': 'application/json',
                 }
-            }).then(function success(response) {
+            }).then((response) => {
                 if (response) {
-                    var mime = response.headers("content-type");
+                    let mime = response.headers('content-type');
                     callback(response, mime);
                 }
-            }, function error(response) {
+            }, (response) => {
                 if (response) {
                     callback(response, false);
                 }
@@ -245,32 +245,32 @@ APP_MASTERS.factory('Factory_Master', ['$window', '$http', '$Api_Service', 'API'
         },
         sapExport: function(payload, newExport, callback) {
             if (newExport) {
-                url = API.BASE_URL_DATA_PROCUREMENT + "/api/procurement/order/SAPExport"
+                url = `${API.BASE_URL_DATA_PROCUREMENT }/api/procurement/order/SAPExport`;
             } else {
-                url = API.BASE_URL_DATA_PROCUREMENT + "/api/procurement/order/SAPExportGetFile"
+                url = `${API.BASE_URL_DATA_PROCUREMENT }/api/procurement/order/SAPExportGetFile`;
             }
             $http({
                 method: 'POST',
                 url: url,
                 data: payload,
-                responseType: "arraybuffer",
+                responseType: 'arraybuffer',
                 headers: {
                     // 'Origin': 'http://localhost:9001',
                     'Content-Type': 'application/json',
                 }
-            }).then(function success(response) {
+            }).then((response) => {
                 if (response) {
-                    var mime = response.headers("content-type");
+                    let mime = response.headers('content-type');
                     callback(response, mime);
                 }
-            }, function error(response) {
+            }, (response) => {
                 if (response) {
                     callback(response, false);
                 }
             });
         },
         uploadSchedulerConfiguration: function(payload, callback) {
-            url = API.BASE_URL_DATA_IMPORTEXPORT + '/api/importExport/upload/newschedulerconfiguration';
+            url = `${API.BASE_URL_DATA_IMPORTEXPORT }/api/importExport/upload/newschedulerconfiguration`;
             $http({
                 method: 'POST',
                 url: url,
@@ -279,18 +279,18 @@ APP_MASTERS.factory('Factory_Master', ['$window', '$http', '$Api_Service', 'API'
                 headers: {
                     'Content-Type': undefined
                 }
-            }).then(function success(response) {
+            }).then((response) => {
                 if (response) {
                     callback(response);
                 }
-            }, function error(response) {
+            }, (response) => {
                 if (response) {
                     callback(response, false);
                 }
             });
         },
         uploadFTPFile: function(payload, callback) {
-            url = API.BASE_URL_DATA_IMPORTEXPORT + '/api/importExport/upload/upload';
+            url = `${API.BASE_URL_DATA_IMPORTEXPORT }/api/importExport/upload/upload`;
             $http({
                 method: 'POST',
                 url: url,
@@ -299,103 +299,103 @@ APP_MASTERS.factory('Factory_Master', ['$window', '$http', '$Api_Service', 'API'
                 headers: {
                     'Content-Type': undefined
                 }
-            }).then(function success(response) {
+            }).then((response) => {
                 if (response) {
                     callback(response);
                 }
-            }, function error(response) {
+            }, (response) => {
                 if (response) {
                     callback(response, false);
                 }
             });
         },
         get_master_elements: function(app, master_id, dev, callback) {
-            var data = {
+            let data = {
                 app: app,
                 screen: master_id
             };
             if (dev == 1) {
                 $http({
                     method: 'GET',
-                    url: 'layouts/' + data.screen + '.json'
-                }).then(function successCallback(response) {
+                    url: `layouts/${ data.screen }.json`
+                }).then((response) => {
                     // this callback will be called asynchronously
                     // when the response is available
                     callback(response.data.elements);
-                }, function errorCallback(response) {
-                    console.log(response)
+                }, (response) => {
+                    console.log(response);
                     // called asynchronously if an error occurs
                     // or server returns response with an error status.
                 });
             } else {
-                $Api_Service.entity.structure(data, function(result) {
+                $Api_Service.entity.structure(data, (result) => {
                     callback(result);
                 });
             }
         },
-        get_master_entity: function(entity_id, master_id, app, callback, screenChild) { 
-            var data = {
+        get_master_entity: function(entity_id, master_id, app, callback, screenChild) {
+            let data = {
                 app: app,
                 screen: master_id,
                 id: entity_id,
                 child: screenChild,
             };
             // if(app == "default" && child == "entity_documents") return;
-            $Api_Service.entity.get(data, function(result) {
+            $Api_Service.entity.get(data, (result) => {
                 callback(result);
             });
             return false;
         },
         finalInvoiceDuedates: function(payload, callback) {
-            url = API.BASE_URL_DATA_INVOICES + '/api/invoice/finalInvoiceDueDates';
+            url = `${API.BASE_URL_DATA_INVOICES }/api/invoice/finalInvoiceDueDates`;
             $http({
                 method: 'POST',
                 url: url,
                 data: payload,
                 // responseType: "json",
-            }).then(function success(response) {
+            }).then((response) => {
                 if (response) {
                     callback(response.data.payload);
                 }
-            }, function error(response) {
+            }, (response) => {
                 if (response) {
                     callback(response, false);
                 }
             });
         },
         createDebunker: function(id, callback) {
-            $Api_Service.claim.debunker(id, function(result) {
+            $Api_Service.claim.debunker(id, (result) => {
                 callback(result);
             });
             return false;
         },
         save_terms_and_conditions: function(id, text, callback) {
-            var data = {
-                "Filters": [{
-                    "ColumnName": "ContractId",
-                    "Value": id
+            let data = {
+                Filters: [ {
+                    ColumnName: 'ContractId',
+                    Value: id
                 }, {
-                    "ColumnName": "Terms",
-                    "Value": text
-                }]
-            }
-            $Api_Service.contract.save_terms_and_conditions(data, function(result) {
+                    ColumnName: 'Terms',
+                    Value: text
+                } ]
+            };
+            $Api_Service.contract.save_terms_and_conditions(data, (result) => {
                 callback(result);
             });
             return false;
         },
         get_master_list: function(app, screen, field, callback) {
-            var data = {
+            let data = {
                 app: app,
                 screen: screen,
                 field: field
             };
             if (field.Type == 'dropdown' || field.Type == 'textUOM') {
-                $Api_Service.dropdown.get(data, function(result) {
+                $Api_Service.dropdown.get(data, (result) => {
                     callback(result);
                 });
             } else {
-                $Api_Service.dropdown.lookup(data, function(result) {
+                $Api_Service.dropdown.lookup(data, (result) => {
                     callback(result);
                 });
             }
@@ -408,110 +408,110 @@ APP_MASTERS.factory('Factory_Master', ['$window', '$http', '$Api_Service', 'API'
                 id: id,
                 data: data
             };
-            $Api_Service.datatable.get(data, function(result) {
+            $Api_Service.datatable.get(data, (result) => {
                 callback(result);
             });
             return false;
         },
         exchangeRate: function(param, callback) {
-            $Api_Service.dropdown.custom(param, function(result) {
+            $Api_Service.dropdown.custom(param, (result) => {
                 callback(result);
             });
             return false;
         },
         get_custom_dropdown: function(param, callback) {
-            $Api_Service.dropdown.custom(param, function(result) {
+            $Api_Service.dropdown.custom(param, (result) => {
                 callback(result);
             });
             return false;
         },
         getChangedValues: function(master, order_id, delivery_number, lab_result_id, name, callback) {
-            var data = {
+            let data = {
                 dropdown: master,
                 order_id: order_id,
                 delivery_number: delivery_number,
                 lab_result_id: lab_result_id,
                 dropdown_id: name
             };
-            $Api_Service.dropdown.get(data, function(result) {
+            $Api_Service.dropdown.get(data, (result) => {
                 callback(result);
             });
             return false;
         },
         save_master_structure: function(app, screen, layout, callback) {
-            var data = {
+            let data = {
                 app: app,
                 screen: screen,
                 layout: layout
             };
-            $Api_Service.screen.update(data, function(result) {
+            $Api_Service.screen.update(data, (result) => {
                 callback(result);
             });
         },
         save_master_changes: function(app, screen, fields, callback) {
-            var data = {
+            let data = {
                 app: app,
                 screen: screen,
                 data: fields,
             };
-            $Api_Service.entity.update(data, function(result) {
+            $Api_Service.entity.update(data, (result) => {
                 callback(result);
             });
         },
         labsActions: function(app, screen, id, action, status, callback) {
-            var data = {
+            let data = {
                 app: app,
                 screen: screen,
                 id: id,
                 status: status,
             };
             if (action == 1) {
-                $Api_Service.entity.verify(data, function(result) {
+                $Api_Service.entity.verify(data, (result) => {
                     callback(result);
                 });
             } else if (action == 2) {
-                $Api_Service.entity.revert(data, function(result) {
+                $Api_Service.entity.revert(data, (result) => {
                     callback(result);
                 });
             }
         },
         verify_lab: function(data, callback) {
-			$Api_Service.labs.verify_lab(data, function(result) {
+            $Api_Service.labs.verify_lab(data, (result) => {
                 callback(result);
             });
-        },        
+        },
         create_master_entity: function(app, screen, fields, callback) {
-            var data = {
+            let data = {
                 app: app,
                 screen: screen,
                 data: fields,
             };
-            $Api_Service.entity.create(data, function(result) {
+            $Api_Service.entity.create(data, (result) => {
                 callback(result);
             });
         },
         cancel_claim: function(app, screen, fields, callback) {
-            var data = {
+            let data = {
                 app: app,
                 screen: screen,
                 data: fields,
             };
-            $Api_Service.entity.cancel(data, function(result) {
+            $Api_Service.entity.cancel(data, (result) => {
                 callback(result);
             });
         },
         complete_claim: function(app, screen, fields, callback) {
-            var data = {
+            let data = {
                 app: app,
                 screen: screen,
                 data: fields,
             };
-            $Api_Service.entity.complete(data, function(result) {
+            $Api_Service.entity.complete(data, (result) => {
                 callback(result);
             });
         },
         verify_delivery: function(app, screen, id, deliveryDto, callback) {
-            var data = {
+            let data = {
                 app: app,
                 screen: screen,
                 id: id,
@@ -519,29 +519,29 @@ APP_MASTERS.factory('Factory_Master', ['$window', '$http', '$Api_Service', 'API'
                 bulk: false,
                 verifyAndSave: true
             };
-            $Api_Service.entity.verify(data, function(result) {
+            $Api_Service.entity.verify(data, (result) => {
                 callback(result);
             });
         },
         bulk_verify_delivery: function(app, screen, ids, callback) {
-            var data = {
+            let data = {
                 app: app,
                 screen: screen,
                 payload: ids,
                 id: 42,
                 bulk: true
             };
-            $Api_Service.entity.verify(data, function(result) {
+            $Api_Service.entity.verify(data, (result) => {
                 callback(result);
             });
         },
         get_seller_rating: function(app, screen, id, callback) {
-            var data = {
+            let data = {
                 app: app,
                 screen: screen,
                 id: id,
             };
-            $Api_Service.rating.get(data, function(result) {
+            $Api_Service.rating.get(data, (result) => {
                 callback(result);
             });
         },
@@ -551,467 +551,466 @@ APP_MASTERS.factory('Factory_Master', ['$window', '$http', '$Api_Service', 'API'
                 screen: screen,
                 data: data,
             };
-            $Api_Service.rating.create(data, function(result) {
+            $Api_Service.rating.create(data, (result) => {
                 callback(result);
             });
         },
         create_invoice_from_delivery: function(data, callback) {
-            $Api_Service.invoice.createfromdelivery(data, function(result) {
+            $Api_Service.invoice.createfromdelivery(data, (result) => {
                 callback(result);
             });
         },
         dueDateWithoutSave: function(payload, callback) {
-            $Api_Service.invoice.dueDateWithoutSave(payload, function(res) {
+            $Api_Service.invoice.dueDateWithoutSave(payload, (res) => {
                 callback(res);
             });
         },
         cancel_invoice: function(fields, callback) {
-            $Api_Service.invoice.cancelInvoice(fields, function(res) {
-                console.log(fields)
+            $Api_Service.invoice.cancelInvoice(fields, (res) => {
+                console.log(fields);
                 callback(res);
             });
         },
         submit_invoice_review: function(fields, callback) {
-            $Api_Service.invoice.submitInvoiceReview(fields, function(res) {
+            $Api_Service.invoice.submitInvoiceReview(fields, (res) => {
                 callback(res);
             });
         },
         accept_invoice: function(fields, callback) {
-            $Api_Service.invoice.acceptInvoice(fields, function(res) {
+            $Api_Service.invoice.acceptInvoice(fields, (res) => {
                 callback(res);
             });
         },
         submit_invoice_approve: function(fields, callback) {
-            $Api_Service.invoice.submitInvoiceApprove(fields, function(res) {
+            $Api_Service.invoice.submitInvoiceApprove(fields, (res) => {
                 callback(res);
             });
         },
-        approve_invoice: function(fields, callback) {         
-            $Api_Service.invoice.approveInvoice(fields, function(res) {
+        approve_invoice: function(fields, callback) {
+            $Api_Service.invoice.approveInvoice(fields, (res) => {
                 callback(res);
             });
         },
         revert_invoice: function(fields, callback) {
-            $Api_Service.invoice.revertInvoice(fields, function(res) {
+            $Api_Service.invoice.revertInvoice(fields, (res) => {
                 callback(res);
             });
-        },        
+        },
         reject_invoice: function(fields, callback) {
-            $Api_Service.invoice.rejectInvoice(fields, function(res) {
+            $Api_Service.invoice.rejectInvoice(fields, (res) => {
                 callback(res);
             });
         },
         get_apply_for_list: function(order_id, callback) {
-            $Api_Service.invoice.getApplyForList(order_id, function(res) {
+            $Api_Service.invoice.getApplyForList(order_id, (res) => {
                 callback(res);
             });
         },
         change_password: function(data, callback) {
-            $Api_Service.admin.changePassword(data, function(result) {
+            $Api_Service.admin.changePassword(data, (result) => {
                 callback(result);
             });
         },
         create_credit_note: function(data, callback) {
-            $Api_Service.invoice.createCreditNote(data, function(result) {
+            $Api_Service.invoice.createCreditNote(data, (result) => {
                 callback(result);
             });
         },
         claims_create_credit_note: function(data, callback) {
-            $Api_Service.claim.createCreditNote(data, function(result) {
+            $Api_Service.claim.createCreditNote(data, (result) => {
                 callback(result);
             });
         },
         get_conversion_info: function(data, callback) {
-            $Api_Service.delivery.getConversionInfo(data, function(result) {
+            $Api_Service.delivery.getConversionInfo(data, (result) => {
                 // console.log(result);
                 callback(result);
             });
         },
         raise_claim: function(data, callback) {
-            $Api_Service.delivery.raiseClaim(data, function(result) {
+            $Api_Service.delivery.raiseClaim(data, (result) => {
                 // console.log(result);
                 callback(result);
             });
         },
         send_labs_template_email: function(data, callback) {
-            $Api_Service.delivery.sendLabsTemplateEmail(data, function(result) {
+            $Api_Service.delivery.sendLabsTemplateEmail(data, (result) => {
                 // console.log(result);
                 callback(result);
             });
         },
         revert_verify: function(data, callback) {
-            $Api_Service.delivery.revertVerify(data, function(result) {
+            $Api_Service.delivery.revertVerify(data, (result) => {
                 // console.log(result);
                 callback(result);
             });
         },
         confirm_contract: function(data, callback) {
-            $Api_Service.contract.confirm(data, function(result) {
+            $Api_Service.contract.confirm(data, (result) => {
                 console.log(result);
                 callback(result);
             });
         },
         delete_contract: function(data, callback) {
-            $Api_Service.contract.delete(data, function(result) {
+            $Api_Service.contract.delete(data, (result) => {
                 console.log(result);
                 callback(result);
             });
         },
         cancel_contract: function(data, callback) {
-            $Api_Service.contract.cancel(data, function(result) {
+            $Api_Service.contract.cancel(data, (result) => {
                 callback(result);
             });
         },
         extend_contract: function(data, callback) {
-            $Api_Service.contract.extend(data, function(result) {
+            $Api_Service.contract.extend(data, (result) => {
                 console.log(result);
                 callback(result);
             });
         },
         undo_confirm_contract: function(data, callback) {
-            $Api_Service.contract.undo(data, function(result) {
+            $Api_Service.contract.undo(data, (result) => {
                 console.log(result);
                 callback(result);
             });
         },
         get_working_due_date: function(data, callback) {
-            $Api_Service.invoice.getWorkingDueDate(data, function(result) {
+            $Api_Service.invoice.getWorkingDueDate(data, (result) => {
                 callback(result);
             });
         },
         list_by_transaction_type: function(data, callback) {
-            $Api_Service.mail.list_by_transaction_type(data, function(result) {
+            $Api_Service.mail.list_by_transaction_type(data, (result) => {
                 callback(result);
             });
         },
         contract_preview: function(data, callback) {
-            $Api_Service.contract.previewContract(data, function(result) {
+            $Api_Service.contract.previewContract(data, (result) => {
                 callback(result);
             });
         },
         send_contract_preview: function(data, callback) {
-            $Api_Service.mail.sendPreviewContract(data, function(result) {
+            $Api_Service.mail.sendPreviewContract(data, (result) => {
                 callback(result);
             });
         },
         send_email_preview: function(data, callback) {
-            $Api_Service.mail.sendEmailPreview(data, function(result) {
+            $Api_Service.mail.sendEmailPreview(data, (result) => {
                 callback(result);
             });
         },
         discardSavedPreview: function(data, callback) {
-            $Api_Service.mail.discardSavedPreview(data, function(result) {
+            $Api_Service.mail.discardSavedPreview(data, (result) => {
                 callback(result);
             });
         },
         contract_preview_email: function(data, callback) {
-            $Api_Service.contract.contractPreviewEmail(data, function(result) {
+            $Api_Service.contract.contractPreviewEmail(data, (result) => {
                 callback(result);
             });
         },
         labs_preview_email: function(data, callback) {
-            $Api_Service.labs.labsPreviewEmail(data, function(result) {
+            $Api_Service.labs.labsPreviewEmail(data, (result) => {
                 callback(result);
             });
         },
         invalid_lab: function(data, callback) {
-            $Api_Service.labs.invalid_lab(data, function(result) {
+            $Api_Service.labs.invalid_lab(data, (result) => {
                 callback(result);
             });
         },
         save_email_contract: function(data, callback) {
-            $Api_Service.mail.saveEmailPreview(data, function(result) {
+            $Api_Service.mail.saveEmailPreview(data, (result) => {
                 callback(result);
             });
         },
-        bring_rob_status: function(data, callback){
-            $Api_Service.masters.bring_rob_status(data, function(result) {
+        bring_rob_status: function(data, callback) {
+            $Api_Service.masters.bring_rob_status(data, (result) => {
                 callback(result);
             });
         },
         claim_preview_email: function(data, callback) {
-            $Api_Service.claim.claimPreviewEmail(data, function(result) {
+            $Api_Service.claim.claimPreviewEmail(data, (result) => {
                 callback(result);
             });
         },
         getTransactionsForApp: function(data, callback) {
-            $Api_Service.alerts.getTransactionsForApp(data, function(result) {
+            $Api_Service.alerts.getTransactionsForApp(data, (result) => {
                 callback(result);
             });
         },
         getAlertsParametersForTransaction: function(data, callback) {
-            $Api_Service.alerts.getAlertsParametersForTransaction(data, function(result) {
+            $Api_Service.alerts.getAlertsParametersForTransaction(data, (result) => {
                 callback(result);
             });
         },
         alertsGetRuleCondition: function(data, callback) {
-            $Api_Service.alerts.alertsGetRuleCondition(data, function(result) {
+            $Api_Service.alerts.alertsGetRuleCondition(data, (result) => {
                 callback(result);
             });
         },
         alertsGetRuleOperator: function(data, callback) {
-            $Api_Service.alerts.alertsGetRuleOperator(data, function(result) {
+            $Api_Service.alerts.alertsGetRuleOperator(data, (result) => {
                 callback(result);
             });
         },
         alertsGetTriggerRuleValuesByParamId: function(data, callback) {
-            $Api_Service.alerts.alertsGetTriggerRuleValuesByParamId(data, function(result) {
+            $Api_Service.alerts.alertsGetTriggerRuleValuesByParamId(data, (result) => {
                 callback(result);
             });
         },
         alertsGetRoles: function(data, callback) {
-            $Api_Service.alerts.alertsGetRoles(data, function(result) {
+            $Api_Service.alerts.alertsGetRoles(data, (result) => {
                 callback(result);
             });
         },
         alertsGetUserFromRoles: function(data, callback) {
-            $Api_Service.alerts.alertsGetUserFromRoles(data, function(result) {
+            $Api_Service.alerts.alertsGetUserFromRoles(data, (result) => {
                 callback(result);
             });
         },
         getAlertTypes: function(data, callback) {
-            $Api_Service.alerts.getAlertTypes(data, function(result) {
+            $Api_Service.alerts.getAlertTypes(data, (result) => {
                 callback(result);
             });
         },
         alertsGetActivationDetailsRecurrences: function(data, callback) {
-            $Api_Service.alerts.alertsGetActivationDetailsReccurences(data, function(result) {
+            $Api_Service.alerts.alertsGetActivationDetailsReccurences(data, (result) => {
                 callback(result);
             });
         },
         alertsGetActivationDetailsUntils: function(data, callback) {
-            $Api_Service.alerts.alertsGetActivationDetailsUntils(data, function(result) {
+            $Api_Service.alerts.alertsGetActivationDetailsUntils(data, (result) => {
                 callback(result);
             });
         },
         getSpecParamsDeliveryProduct: function(data, callback) {
-            $Api_Service.delivery.getSpecParamsDeliveryProduct(data, function(result) {
+            $Api_Service.delivery.getSpecParamsDeliveryProduct(data, (result) => {
                 callback(result);
             });
         },
         getQtyParamsDeliveryProsuct: function(data, callback) {
-            $Api_Service.delivery.getQtyParamsDeliveryProsuct(data, function(result) {
+            $Api_Service.delivery.getQtyParamsDeliveryProsuct(data, (result) => {
                 callback(result);
             });
         },
         getSplitDeliveryLimits: function(data, callback) {
-            $Api_Service.delivery.getSplitDeliveryLimits(data, function(result) {
+            $Api_Service.delivery.getSplitDeliveryLimits(data, (result) => {
                 callback(result);
             });
         },
         convertCurrency: function(data, callback) {
-            $Api_Service.masters.convertCurrency(data, function(result) {
+            $Api_Service.masters.convertCurrency(data, (result) => {
                 callback(result);
             });
         },
         getByStrategyAndProduct: function(data, callback) {
-            $Api_Service.contract.getByStrategyAndProduct(data, function(result) {
+            $Api_Service.contract.getByStrategyAndProduct(data, (result) => {
                 callback(result);
             });
         },
         getNotificationsList: function(data, callback) {
-            $Api_Service.alerts.getNotificationsList(data, function(result) {
+            $Api_Service.alerts.getNotificationsList(data, (result) => {
                 callback(result);
             });
         },
         initSignalRParameters: function(callback) {
-            $Api_Service.alerts.initSignalRParameters(function(result) {
+            $Api_Service.alerts.initSignalRParameters((result) => {
                 callback(result);
             });
         },
         raiseNoteOfProtestProduct: function(data, callback) {
-            $Api_Service.delivery.raiseNoteOfProtestProduct(data, function(result) {
+            $Api_Service.delivery.raiseNoteOfProtestProduct(data, (result) => {
                 callback(result);
             });
         },
         notificationsActions: function(data, callback) {
-            $Api_Service.alerts.notificationsActions(data, function(result) {
+            $Api_Service.alerts.notificationsActions(data, (result) => {
                 callback(result);
             });
         },
         contractProductDeliveryActions: function(data, type, callback) {
-            $Api_Service.contract.contractProductDeliveryActions(data, type, function(result) {
+            $Api_Service.contract.contractProductDeliveryActions(data, type, (result) => {
                 callback(result);
             });
         },
         saveContractDeliveryModal: function(data, type, callback) {
-            $Api_Service.contract.saveContractDeliveryModal(data, type, function(result) {
+            $Api_Service.contract.saveContractDeliveryModal(data, type, (result) => {
                 callback(result);
             });
         },
         get_group_requests_ids: function(data, callback) {
-            $Api_Service.request.get_group_requests_ids(data, function(result) {
+            $Api_Service.request.get_group_requests_ids(data, (result) => {
                 callback(result);
             });
         },
         saveTreasuryTableData: function(data, callback) {
-            $Api_Service.invoice.saveTreasuryTableData(data, function(result) {
+            $Api_Service.invoice.saveTreasuryTableData(data, (result) => {
                 callback(result);
             });
         },
         getUomConversionFactor: function(data, callback) {
-            $Api_Service.masters.getUomConversionFactor(data, function(result) {
+            $Api_Service.masters.getUomConversionFactor(data, (result) => {
                 callback(result);
             });
         },
         getAdditionalCosts: function(data, callback) {
-            $Api_Service.masters.getAdditionalCosts(data, function(result) {
+            $Api_Service.masters.getAdditionalCosts(data, (result) => {
                 callback(result);
             });
         },
         getSpecForProcurement: function(data, application, callback) {
-            $Api_Service.procurement.getSpecForProcurement(data, application, function(result) {
+            $Api_Service.procurement.getSpecForProcurement(data, application, (result) => {
                 callback(result);
             });
         },
         saveSpecForProcurement: function(data, application, callback) {
-            $Api_Service.procurement.saveSpecForProcurement(data, application, function(result) {
+            $Api_Service.procurement.saveSpecForProcurement(data, application, (result) => {
                 callback(result);
             });
         },
         getContractFormulaList: function(data, callback) {
-            $Api_Service.contract.getContractFormulaList(data, function(result) {
+            $Api_Service.contract.getContractFormulaList(data, (result) => {
                 callback(result);
             });
         },
         getRelatedDeliveries: function(data, callback) {
-            $Api_Service.delivery.getRelatedDeliveries(data, function(result) {
+            $Api_Service.delivery.getRelatedDeliveries(data, (result) => {
                 callback(result);
             });
         },
         getDeliveryConfigurations: function(data, callback) {
-            $Api_Service.delivery.getDeliveryConfigurations(data, function(result) {
+            $Api_Service.delivery.getDeliveryConfigurations(data, (result) => {
                 callback(result);
             });
         },
         deleteDelivery: function(data, callback) {
-            $Api_Service.delivery.deleteDelivery(data, function(result) {
+            $Api_Service.delivery.deleteDelivery(data, (result) => {
                 callback(result);
             });
         },
         deleteDeliveryProduct: function(data, callback) {
-            $Api_Service.delivery.deleteDeliveryProduct(data, function(result) {
+            $Api_Service.delivery.deleteDeliveryProduct(data, (result) => {
                 callback(result);
             });
         },
         splitDelivery: function(data, callback) {
-            $Api_Service.delivery.splitDelivery(data, function(result) {
+            $Api_Service.delivery.splitDelivery(data, (result) => {
                 callback(result);
             });
         },
         specGroupGetByProduct: function(data, callback) {
-            $Api_Service.masters.specGroupGetByProduct(data, function(result) {
+            $Api_Service.masters.specGroupGetByProduct(data, (result) => {
                 callback(result);
             });
         },
         getSellerBlade: function(data, callback) {
-            $Api_Service.procurement.getSellerBlade(data, function(result) {
+            $Api_Service.procurement.getSellerBlade(data, (result) => {
                 callback(result);
             });
         },
         getEnergyBlade: function(data, callback) {
-            $Api_Service.procurement.getEnergyBlade(data, function(result) {
+            $Api_Service.procurement.getEnergyBlade(data, (result) => {
                 callback(result);
             });
         },
         getLabInfoForOrder: function(data, callback) {
-            $Api_Service.labs.getLabInfoForOrder(data, function(result) {
+            $Api_Service.labs.getLabInfoForOrder(data, (result) => {
                 callback(result);
             });
         },
         deleteLab: function(data, callback) {
-            $Api_Service.labs.deleteLab(data, function(result) {
+            $Api_Service.labs.deleteLab(data, (result) => {
                 callback(result);
             });
         },
         updatePaymentProofDetails: function(data, callback) {
-            $Api_Service.invoice.updatePaymentProofDetails(data, function(result) {
+            $Api_Service.invoice.updatePaymentProofDetails(data, (result) => {
                 callback(result);
             });
         },
         getReportsGroups: function(callback) {
-            $Api_Service.reports.getReportsGroups(function(result) {
+            $Api_Service.reports.getReportsGroups((result) => {
                 callback(result);
             });
         },
         getReportsInGroup: function(data, callback) {
-            $Api_Service.reports.getReportsInGroup(data, function(result) {
+            $Api_Service.reports.getReportsInGroup(data, (result) => {
                 callback(result);
             });
         },
         deleteContact: function(data, callback) {
-            $Api_Service.entity.delete(data, function(result) {
+            $Api_Service.entity.delete(data, (result) => {
                 callback(result);
             });
         },
         getProductsForSellerInLocation: function(data, callback) {
-            $Api_Service.masters.getProductsForSellerInLocation(data, function(result) {
+            $Api_Service.masters.getProductsForSellerInLocation(data, (result) => {
                 callback(result);
             });
         },
         getPreferredProductsForSellerInLocation: function(data, callback) {
-            $Api_Service.masters.getPreferredProductsForSellerInLocation(data, function(result) {
+            $Api_Service.masters.getPreferredProductsForSellerInLocation(data, (result) => {
                 callback(result);
             });
         },
         invoiceTotalConversion: function(data, callback) {
-            $Api_Service.invoice.invoiceTotalConversion(data, function(result) {
+            $Api_Service.invoice.invoiceTotalConversion(data, (result) => {
                 callback(result);
             });
         },
         getReport: function(data, callback) {
-            $Api_Service.reports.getReport(data, function(result) {
+            $Api_Service.reports.getReport(data, (result) => {
                 callback(result);
             });
         },
         selectAllTreasuryReport: function(data, callback) {
-            $Api_Service.invoice.selectAllTreasuryReport(data, function(result) {
+            $Api_Service.invoice.selectAllTreasuryReport(data, (result) => {
                 callback(result);
             });
         },
         contractPlanningGetQuantityAverage: function(data, callback) {
-            $Api_Service.request.contractPlanningGetQuantityAverage(data, function(result) {
+            $Api_Service.request.contractPlanningGetQuantityAverage(data, (result) => {
                 callback(result);
             });
-        },        
+        },
         get_master_list_filtered: function(app, screen, clc_id, callback) {
-            var data = {
+            let data = {
                 app: app,
                 screen: screen,
                 clc_id: clc_id,
                 params: {
                     UIFilters: {},
-                    col: "",
+                    col: '',
                     filters: undefined,
                     page: 1,
-                    query: "",
+                    query: '',
                     rows: 25,
                     shrinkToFit: true,
-                    sort: ""
+                    sort: ''
                 }
             };
-            $Api_Service.entity.list(data, function(result) {
+            $Api_Service.entity.list(data, (result) => {
                 callback(result);
             });
-        },      
-        uploadInvoicePrice: function(fd, callback){
-            var uploadUrl = API.BASE_URL_DATA_MASTERS + '/api/masters/prices/import';
+        },
+        uploadInvoicePrice: function(fd, callback) {
+            let uploadUrl = `${API.BASE_URL_DATA_MASTERS }/api/masters/prices/import`;
             $http.post(uploadUrl, fd, {
                 transformRequest: angular.identity,
                 headers: {
                     'Content-Type': undefined
                 }
-            }).then(function successCallback(response) {
+            }).then((response) => {
                 if (response) {
-                    callback(response)
+                    callback(response);
                 } else {
                     callback(false);
                 }
-            }, function errorCallback(response) {
+            }, (response) => {
                 console.log('HTTP ERROR');
                 callback(false);
             });
-
         }
     };
-}]);
+} ]);

@@ -1,26 +1,24 @@
 angular.module('shiptech.components')
-    .controller('ProceedDialogValidatedController', ['$scope', '$state', '$window', '$element', '$attrs', '$timeout', 'uiApiModel', 'MOCKUP_MAP',  'STATE',
+    .controller('ProceedDialogValidatedController', [ '$scope', '$state', '$window', '$element', '$attrs', '$timeout', 'uiApiModel', 'MOCKUP_MAP', 'STATE',
         function($scope, $state, $window, $element, $attrs, $timeout, uiApiModel, MOCKUP_MAP, STATE) {
+            $scope.STATE = STATE;
 
-            $scope.STATE = STATE; 
-            
-            var ctrl = this;
+            let ctrl = this;
 
             ctrl.$onChanges = function(changes) {
-                
+
             };
 
             ctrl.gotoGroupOfRequests = function(request) {
-                var href = $state.href(STATE.GROUP_OF_REQUESTS, {groupId: request.requestGroupId}, {absolute: false});
+                let href = $state.href(STATE.GROUP_OF_REQUESTS, { groupId: request.requestGroupId }, { absolute: false });
                 $window.open(href);
             };
 
             ctrl.gotoSelectContract = function(request) {
-                var href = $state.href(STATE.SELECT_CONTRACT, {requestId: request.requestId}, {absolute: false});
+                let href = $state.href(STATE.SELECT_CONTRACT, { requestId: request.requestId }, { absolute: false });
                 $window.open(href);
             };
-
-}]);
+        } ]);
 
 
 angular.module('shiptech.components').component('proceedDialogValidated', {

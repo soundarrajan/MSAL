@@ -1,4 +1,4 @@
-angular.module('shiptech.pages').directive('stForm', function(){
+angular.module('shiptech.pages').directive('stForm', () => {
     return {
         restrict: 'E',
         templateUrl: 'directives/st-form.html',

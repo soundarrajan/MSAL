@@ -1,23 +1,22 @@
-angular.module('shiptech.models').factory('uiApiModel', ['uiApiResource', 'uiListLayout',
+angular.module('shiptech.models').factory('uiApiModel', [ 'uiApiResource', 'uiListLayout',
     function(uiApiResource, uiListLayout) {
-        var screenActions = null;
+        let screenActions = null;
 
         function get(endpoint) {
-            var request_data = {
-                "Payload": {
-                    "ScreenType": endpoint
+            let request_data = {
+                Payload: {
+                    ScreenType: endpoint
                 }
             };
-            return uiApiResource.getResource(endpoint).fetch(request_data).
-            $promise.
-            then(function(data) {
-                if (data.layout) {
-                    screenActions = data.screenButtons;
-                    return JSON.parse(data.layout);
-                } else {
+            return uiApiResource.getResource(endpoint).fetch(request_data)
+                .$promise
+                .then((data) => {
+                    if (data.layout) {
+                        screenActions = data.screenButtons;
+                        return JSON.parse(data.layout);
+                    }
                     return data;
-                }
-            });
+                });
         }
 
         function getScreenActions() {
@@ -28,24 +27,24 @@ angular.module('shiptech.models').factory('uiApiModel', ['uiApiResource', 'uiLis
         }
 
         function getListLayout(path) {
-            var request_data = {
-                "Payload": path,
+            let request_data = {
+                Payload: path,
             };
-            return uiListLayout.get(request_data).$promise.then(function(data) {
+            return uiListLayout.get(request_data).$promise.then((data) => {
                 return data;
             });
         }
 
         function saveListLayout(path, layout) {
-            var request_data = {
-                "Payload": {
-                    "Route": path,
-                    "Layout": JSON.stringify(layout),
-                    "PageSize": 10,
-                    "Id": layout.id
+            let request_data = {
+                Payload: {
+                    Route: path,
+                    Layout: JSON.stringify(layout),
+                    PageSize: 10,
+                    Id: layout.id
                 }
             };
-            return uiListLayout.save(request_data).$promise.then(function(data) {
+            return uiListLayout.save(request_data).$promise.then((data) => {
                 return data;
             });
         }

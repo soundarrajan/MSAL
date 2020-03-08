@@ -1,6 +1,5 @@
-angular.module('shiptech.pages').directive('calendarPopover', ['tenantService', function(tenantService) {
-
-    return {        
+angular.module('shiptech.pages').directive('calendarPopover', [ 'tenantService', function(tenantService) {
+    return {
         restrict: 'E',
         templateUrl: 'directives/calendar-popover.html',
         scope: {
@@ -11,4 +10,4 @@ angular.module('shiptech.pages').directive('calendarPopover', ['tenantService', 
             scope.numberPrecision = tenantService.tenantSettings.defaultValues;
         }
     };
-}]);
+} ]);

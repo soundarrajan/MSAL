@@ -1,74 +1,74 @@
-angular.module('shiptech.models').factory('lookupResource', ['$resource', '$state', 'API', 'MOCKUP_MAP', function($resource, $state, API, MOCKUP_MAP) {
-    return $resource(API.BASE_URL_DATA_MASTERS + '/api/masters/:type/:verb', null, {
-        'getList': {
+angular.module('shiptech.models').factory('lookupResource', [ '$resource', '$state', 'API', 'MOCKUP_MAP', function($resource, $state, API, MOCKUP_MAP) {
+    return $resource(`${API.BASE_URL_DATA_MASTERS }/api/masters/:type/:verb`, null, {
+        getList: {
             method: 'POST'
         },
-        'get': {
+        get: {
             method: 'POST',
             params: {
                 verb: 'get'
             }
         },
-        'getForRequest': {
+        getForRequest: {
             method: 'POST',
             params: {
                 verb: 'getForRequest'
             }
         },
-        'getCounterpartiesAutocomplete': {
+        getCounterpartiesAutocomplete: {
             method: 'POST',
             params: {
                 verb: 'listbyTypesAutocomplete'
             }
         },
-        'getCounterparties': {
+        getCounterparties: {
             method: 'POST',
             params: {
                 verb: 'listbyTypes'
             }
         },
-        'counterparties': {
+        counterparties: {
             method: 'POST',
             params: {
                 verb: 'allContacts'
             }
         },
-        'getContractSellers': {
+        getContractSellers: {
             method: 'POST',
             params: {
                 type: 'counterparties',
                 verb: 'getWithContracts'
             }
         },
-        'getAdditionalCostTemplate': {
+        getAdditionalCostTemplate: {
             method: 'POST',
             params: {
                 type: 'additionalcosts',
                 verb: 'get'
             }
         },
-        'getAdditionalCostTypes': {
+        getAdditionalCostTypes: {
             method: 'POST',
             params: {
                 type: 'additionalcosts',
                 verb: 'listApps'
             }
         },
-        'getExchangeRate': {
+        getExchangeRate: {
             method: 'POST',
             params: {
                 type: 'exchangeRates',
                 verb: 'convertDbResult'
             }
         },
-        'getConvertedUOM': {
+        getConvertedUOM: {
             method: 'POST',
             params: {
                 type: 'uoms',
                 verb: 'convertQuantity'
             }
         },
-        'getFilteredSpecGroup': {
+        getFilteredSpecGroup: {
             method: 'POST',
             params: {
                 type: 'specGroups',
@@ -76,9 +76,9 @@ angular.module('shiptech.models').factory('lookupResource', ['$resource', '$stat
             }
         }
     });
-}]).factory('lookupSupplierPortalResource', ['$resource', '$state', 'API', 'MOCKUP_MAP', function($resource, $state, API, MOCKUP_MAP) {
-    return $resource(API.BASE_URL_DATA_SELLER_PORTAL + '/api/sellerPortal/masters/:type/:verb', null, {
-        'getList': {
+} ]).factory('lookupSupplierPortalResource', [ '$resource', '$state', 'API', 'MOCKUP_MAP', function($resource, $state, API, MOCKUP_MAP) {
+    return $resource(`${API.BASE_URL_DATA_SELLER_PORTAL }/api/sellerPortal/masters/:type/:verb`, null, {
+        getList: {
             method: 'POST',
             params: {
                 verb: 'list'
@@ -86,26 +86,26 @@ angular.module('shiptech.models').factory('lookupResource', ['$resource', '$stat
         },
         // 'get': { method:'POST', params:{verb:'get'}},
         // 'getCounterpartiesAutocomplete': {method:'POST', params:{verb:'listbyTypesAutocomplete'}},
-        'getCounterparties': {
+        getCounterparties: {
             method: 'POST',
             params: {
                 verb: 'listbyTypes'
             }
         },
-        'counterparties': {
+        counterparties: {
             method: 'POST',
             params: {
                 verb: 'allContacts'
             }
         },
-        'buyers': {
+        buyers: {
             method: 'POST',
             params: {
-                 type: 'buyers',
+                type: 'buyers',
                 verb: 'allContacts'
             }
         },
-        'noQuoteReason': {
+        noQuoteReason: {
             method: 'POST',
             params: {
                 verb: 'list'
@@ -113,14 +113,14 @@ angular.module('shiptech.models').factory('lookupResource', ['$resource', '$stat
         },
         // 'getContractSellers': {method:'POST', params:{type:'counterparties', verb:'getWithContracts'}},
         // 'getAdditionalCostTemplate': {method:'POST', params:{type:'additionalcosts', verb:'get'}},
-        'getAdditionalCostTypes': {
+        getAdditionalCostTypes: {
             method: 'POST',
             params: {
                 type: 'additionalcosts',
                 verb: 'list'
             }
         },
-        'getConvertedUOM': {
+        getConvertedUOM: {
             method: 'POST',
             params: {
                 type: 'uoms',
@@ -128,13 +128,13 @@ angular.module('shiptech.models').factory('lookupResource', ['$resource', '$stat
             }
         }
     });
-}]).factory('lookupSpecParameterResource', ['$resource', '$state', 'API', 'MOCKUP_MAP', function($resource, $state, API, MOCKUP_MAP) {
-    return $resource(API.BASE_URL_DATA_MASTERS + '/api/masters/specGroups/:verb', null, {
-        'getByProduct': {
+} ]).factory('lookupSpecParameterResource', [ '$resource', '$state', 'API', 'MOCKUP_MAP', function($resource, $state, API, MOCKUP_MAP) {
+    return $resource(`${API.BASE_URL_DATA_MASTERS }/api/masters/specGroups/:verb`, null, {
+        getByProduct: {
             method: 'POST',
             params: {
                 verb: 'getByProduct'
             }
         },
     });
-}]);
+} ]);

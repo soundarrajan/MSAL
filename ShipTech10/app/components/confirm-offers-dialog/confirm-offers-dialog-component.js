@@ -1,21 +1,21 @@
-angular.module('shiptech.components').controller('ConfirmOffersDialogController', ['$scope', '$rootScope', '$state', '$element', '$attrs', '$timeout','tenantService', '$filter', 'uiApiModel', 'MOCKUP_MAP', 'groupOfRequestsModel', 'orderModel', 'STATE',
-    function($scope, $rootScope, $state, $element, $attrs, $timeout,tenantService, $filter, uiApiModel, MOCKUP_MAP, groupOfRequestsModel, orderModel, STATE) {
-        var ctrl = this;
-        console.log('offer')
+angular.module('shiptech.components').controller('ConfirmOffersDialogController', [ '$scope', '$rootScope', '$state', '$element', '$attrs', '$timeout', 'tenantService', '$filter', 'uiApiModel', 'MOCKUP_MAP', 'groupOfRequestsModel', 'orderModel', 'STATE',
+    function($scope, $rootScope, $state, $element, $attrs, $timeout, tenantService, $filter, uiApiModel, MOCKUP_MAP, groupOfRequestsModel, orderModel, STATE) {
+        let ctrl = this;
+        console.log('offer');
         ctrl.requestOfferItems = [];
         ctrl.availableContractItems = [];
         ctrl.requirements = [];
         ctrl.warningValidation = false;
         ctrl.isHardStop = false;
         ctrl.$onInit = function() {
-            var endpoint = MOCKUP_MAP['unrouted.confirm-dialog'];
-            uiApiModel.get(endpoint).then(function(data) {
+            let endpoint = MOCKUP_MAP['unrouted.confirm-dialog'];
+            uiApiModel.get(endpoint).then((data) => {
                 ctrl.ui = data;
             });
         };
-        tenantService.procurementSettings.then(function(settings) {
-            ctrl.captureConfirmedQuantity = settings.payload.order.captureConfirmedQuantity
-        });        
+        tenantService.procurementSettings.then((settings) => {
+            ctrl.captureConfirmedQuantity = settings.payload.order.captureConfirmedQuantity;
+        });
         // setTimeout(function() {
         //     $('#confirm').on('hidden.bs.modal', function() {
         //         $scope.$emit('buttonsEnabled');
@@ -23,24 +23,24 @@ angular.module('shiptech.components').controller('ConfirmOffersDialogController'
         // }, 10);
         ctrl.enableButtons = function() {
             $rootScope.$emit('buttonsDisabled');
-        }
+        };
         ctrl.$onChanges = function(changes) {
             $('#offer').show();
             $('#warning').hide();
             if (changes.confirmationProductOffers.isFirstChange()) {
-                return false; 
+                return false;
             }
-            //get details from GOR page
-            var confirmationProductOfferIds = changes.confirmationProductOffers.currentValue.requestProductIds;
+            // get details from GOR page
+            let confirmationProductOfferIds = changes.confirmationProductOffers.currentValue.requestProductIds;
             ctrl.requirements = changes.confirmationProductOffers.currentValue.requirements;
             ctrl.quoteByDate = changes.confirmationProductOffers.currentValue.quoteByDate;
             ctrl.quoteByCurrencyId = changes.confirmationProductOffers.currentValue.quoteByCurrencyId;
             ctrl.quoteByTimezoneId = changes.confirmationProductOffers.currentValue.quoteByTimeZoneId;
             ctrl.comments = changes.confirmationProductOffers.currentValue.comments;
             ctrl.fullGroupData = changes.confirmationProductOffers.currentValue.fullGroupData;
-            var productIds = [];
-            var offerIds = [];
-            for (var i = 0; i < confirmationProductOfferIds.length; i++) {
+            let productIds = [];
+            let offerIds = [];
+            for (let i = 0; i < confirmationProductOfferIds.length; i++) {
                 if (confirmationProductOfferIds[i].requestProductId) {
                     productIds.push(confirmationProductOfferIds[i].requestProductId);
                 }
@@ -48,11 +48,13 @@ angular.module('shiptech.components').controller('ConfirmOffersDialogController'
                     offerIds.push(confirmationProductOfferIds[i].requestOfferId);
                 }
             }
-            groupOfRequestsModel.confirmOfferView($.unique(productIds).join(","), $.unique(offerIds).join(",")).then(function(data) {
+            groupOfRequestsModel.confirmOfferView($.unique(productIds).join(','), $.unique(offerIds).join(',')).then((data) => {
                 if (data.payload !== null) {
                     ctrl.requestOfferItems = data.payload.requestOfferItems;
                     ctrl.isBestOffer = data.payload.isBestOffer;
-                    for (var offr in ctrl.requestOfferItems) ctrl.requestOfferItems[offr].confirmedQuantity = ctrl.requestOfferItems[offr].maxQuantity;
+                    for (let offr in ctrl.requestOfferItems) {
+                        ctrl.requestOfferItems[offr].confirmedQuantity = ctrl.requestOfferItems[offr].maxQuantity;
+                    }
                     ctrl.availableContractItems = data.payload.availableContractItems;
                 }
             });
@@ -98,26 +100,26 @@ angular.module('shiptech.components').controller('ConfirmOffersDialogController'
             //         }
             //     }
             // }
-            // 
-            // 
-            
+            //
+            //
+
             if (_.uniqBy(ctrl.requestOfferItems, 'quotedProductGroupId').length != 1) {
             	ctrl.buttonsDisabled = false;
-	        	toastr.error("Product types from different groups cannot be stemmed in one order. Please select the products with same group to proceed");
+	        	toastr.error('Product types from different groups cannot be stemmed in one order. Please select the products with same group to proceed');
 		    	return;
             }
 
-            ctrl.BEvalidationMessages = []
-            $.each(ctrl.availableContractItems, function(k,v){
+            ctrl.BEvalidationMessages = [];
+            $.each(ctrl.availableContractItems, (k, v) => {
             	if (v.validationMessage) {
-		            ctrl.BEvalidationMessages.push(v.validationMessage)
+		            ctrl.BEvalidationMessages.push(v.validationMessage);
             	}
-            })
+            });
             if (ctrl.BEvalidationMessages.length > 0) {
-                $("#offer").hide();
-                $("#warning").show();
+                $('#offer').hide();
+                $('#warning').show();
                 return;
-            }            
+            }
             // if (ctrl.warningValidation) {
             //     $('#offer').hide();
             //     $('#warning').show();
@@ -126,62 +128,58 @@ angular.module('shiptech.components').controller('ConfirmOffersDialogController'
             // $('#confirm').modal('hide');
             setConfirmedQuantities();
             requestProductIdsForOrder = [];
-            $.each(ctrl.requirements, function(rqK, rqV) {
+            $.each(ctrl.requirements, (rqK, rqV) => {
                 requestProductIdsForOrder.push(rqV.RequestProductId);
-            })
+            });
             // ctrl.buttonsDisabled = true;
-            orderModel.getExistingOrders(requestProductIdsForOrder.join(',')).then(function(responseData) {
+            orderModel.getExistingOrders(requestProductIdsForOrder.join(',')).then((responseData) => {
                 responseOrderData = responseData.payload;
-                productsWithErrors = []
+                productsWithErrors = [];
                 errorMessages = [];
-                $.each(ctrl.requirements, function(rqK, rqV) {
+                $.each(ctrl.requirements, (rqK, rqV) => {
 	                foundRelatedOrder = false;
                     hasOrder = false;
-                    $.each(responseOrderData, function(rodK, rodV) {
+                    $.each(responseOrderData, (rodK, rodV) => {
                         // hasError = false;
-                        $.each(rodV.products, function(rodProdK, rodProdV) {
-                            if (rodV.requestLocationId == rqV.RequestLocationId /*&& rodProdV.requestProductId == rqV.RequestProductId*/ ) {
+                        $.each(rodV.products, (rodProdK, rodProdV) => {
+                            if (rodV.requestLocationId == rqV.RequestLocationId /* && rodProdV.requestProductId == rqV.RequestProductId*/) {
 			                    hasError = false;
                                 hasOrder = true;
                                 errorType = [];
                                 if (rodV.seller.id != rqV.SellerId) {
                                     if (productsWithErrors.indexOf(rqV.RequestProductId) == -1) {
                                         productsWithErrors.push(rqV.RequestProductId);
-                                        errorType.push("Seller");
+                                        errorType.push('Seller');
                                     }
-                                        hasError = true;
+                                    hasError = true;
                                 }
                                 if (rodProdV.currency.id != rqV.currencyId) {
                                     if (productsWithErrors.indexOf(rqV.RequestProductId) == -1) {
                                         productsWithErrors.push(rqV.RequestProductId);
-                                        errorType.push("Currency");
+                                        errorType.push('Currency');
                                     }
-                                        hasError = true;
+                                    hasError = true;
                                 }
-                                etasDifference = new Date(rqV.vesselETA) - new Date(rodV.orderEta)
+                                etasDifference = new Date(rqV.vesselETA) - new Date(rodV.orderEta);
                                 if (etasDifference > 259200000 || etasDifference < -259200000) {
                                     if (productsWithErrors.indexOf(rqV.RequestProductId) == -1) {
                                         productsWithErrors.push(rqV.RequestProductId);
-                                        errorType.push("ETA Difference");
+                                        errorType.push('ETA Difference');
                                     }
-                                        hasError = true;
+                                    hasError = true;
                                 }
                                 if (!hasError) {
 		                            foundRelatedOrder = rodV.id;
-                                } else {
-                                	if (errorType.length > 0) {
+                                } else if (errorType.length > 0) {
 				                        errorMessages.push(createOrderErrorMessage(rqV.RequestProductId, errorType));
                                 	}
-                                }
                             }
-                        })
-                    })
+                        });
+                    });
                 	if (foundRelatedOrder) {
                         rqV.ExistingOrderId = foundRelatedOrder;
-                    } else {
-                    	if (typeof(errorType) != "undefined" ) {
+                    } else if (typeof errorType != 'undefined') {
                     	}
-                    }
                     // if (!hasOrder) {
                     //  if (productsWithErrors.indexOf(rqV.RequestProductId) == -1) {
                     //      productsWithErrors.push(rqV.RequestProductId);
@@ -194,98 +192,99 @@ angular.module('shiptech.components').controller('ConfirmOffersDialogController'
 
 
                 // if capture conf qty == "Offer", confirmed qty is visible & required
-                if(ctrl.captureConfirmedQuantity.name == 'Offer'){
-                    var errorConf = false;
-                    $.each(ctrl.requestOfferItems, function(key, val){
-                        if(!val.confirmedQuantity){
-                            $scope.requestOfferItems["confirmedQuantity_" + key].$setValidity('required', false);
+                if(ctrl.captureConfirmedQuantity.name == 'Offer') {
+                    let errorConf = false;
+                    $.each(ctrl.requestOfferItems, (key, val) => {
+                        if(!val.confirmedQuantity) {
+                            $scope.requestOfferItems[`confirmedQuantity_${ key}`].$setValidity('required', false);
                             errorConf = true;
                         }
                     });
-                    if(errorConf){
-                        toastr.error("Confirmed Quantity is required!");
+                    if(errorConf) {
+                        toastr.error('Confirmed Quantity is required!');
                         ctrl.buttonsDisabled = false;
                         return;
                     }
                 }
-            
+
 
                 errorMessages = errorMessages.join('\n\n');
                 if (errorMessages.length > 0) {
-                    toastr.error(errorMessages)
+                    toastr.error(errorMessages);
                 }
-                var rfq_data = {
-                    "Requirements": ctrl.requirements,
-                    "QuoteByDate": ctrl.quoteByDate,
-                    "QuoteByCurrencyId": ctrl.quoteByCurrencyId,
-                    "QuoteByTimeZoneId": ctrl.quoteByTimezoneId,
-                    "Comments": ctrl.comments
+                let rfq_data = {
+                    Requirements: ctrl.requirements,
+                    QuoteByDate: ctrl.quoteByDate,
+                    QuoteByCurrencyId: ctrl.quoteByCurrencyId,
+                    QuoteByTimeZoneId: ctrl.quoteByTimezoneId,
+                    Comments: ctrl.comments
                 };
                 // $bladeEntity.close();
                 // ctrl.buttonsDisabled = true;
-                toastr.info("Please wait while the offer is confirmed");
+                toastr.info('Please wait while the offer is confirmed');
                 // return;
-                setTimeout(function() {
-                    groupOfRequestsModel.confirm(rfq_data).then(function(data) {
+                setTimeout(() => {
+                    groupOfRequestsModel.confirm(rfq_data).then((data) => {
                         ctrl.buttonsDisabled = false;
                         receivedOffers = data.payload;
                         $rootScope.tempFilterOrdersFromConfirm = receivedOffers;
                         // if (receivedOffers.length == 1) {
-                            /*
+                        /*
                             $state.go(STATE.EDIT_ORDER, {
                                 orderId: receivedOffers[0]
                             });
                             */
-                           if (receivedOffers.length == 1) {
-	                           	$("a.closeBlade").click();
-	                           	// $rootScope.$broadcast("initScreenAfterSendOrSkipRfq", true);                           	
-                                window.location.href = '/#/edit-order/' + receivedOffers[0];
-                           } else {
-	                           	$("a.closeBlade").click();
-	                           	$rootScope.$broadcast("initScreenAfterSendOrSkipRfq", true);
-                           }
-                            // for (var i = 0; i < receivedOffers.length; i++) {
-                            //     window.open('/#/edit-order/' + receivedOffers[i], '_blank');
-                            // }
+                        if (receivedOffers.length == 1) {
+	                           	$('a.closeBlade').click();
+	                           	// $rootScope.$broadcast("initScreenAfterSendOrSkipRfq", true);
+                            window.location.href = `/#/edit-order/${ receivedOffers[0]}`;
+                        } else {
+	                           	$('a.closeBlade').click();
+	                           	$rootScope.$broadcast('initScreenAfterSendOrSkipRfq', true);
+                        }
+                        // for (var i = 0; i < receivedOffers.length; i++) {
+                        //     window.open('/#/edit-order/' + receivedOffers[i], '_blank');
+                        // }
                         // } else if (receivedOffers.length > 1) {
                         //     $state.go(STATE.ORDER_LIST);
                         // }
-                    }, function(){
+                    }, () => {
                     	ctrl.buttonsDisabled = false;
                     });
-                }, 200)
-            }, function(responseData) {
+                }, 200);
+            }, (responseData) => {
                 ctrl.buttonsDisabled = false;
             });
         };
 
         function createOrderErrorMessage(requestProductId, errorType) {
             errorMessage = null;
-            errorTypes = errorType.join(", ");
+            errorTypes = errorType.join(', ');
             if (!errorType) {
-                return
+                return;
             };
-            $.each(ctrl.fullGroupData, function(gdK, gdV) {
-                $.each(gdV.locations, function(locK, locV) {
-                    $.each(locV.products, function(prodK, prodV) {
+            $.each(ctrl.fullGroupData, (gdK, gdV) => {
+                $.each(gdV.locations, (locK, locV) => {
+                    $.each(locV.products, (prodK, prodV) => {
                         if (prodV.id == requestProductId) {
-                            errorMessage = "Unable to add " + prodV.product.name + " for " + gdV.vesselDetails.vessel.name + " in existing stemmed order due to conflicting " + errorTypes + ". New order will be created. " + errorTypes + " will be only that did not met the criteria for extending the order"
+                            errorMessage = `Unable to add ${ prodV.product.name } for ${ gdV.vesselDetails.vessel.name } in existing stemmed order due to conflicting ${ errorTypes }. New order will be created. ${ errorTypes } will be only that did not met the criteria for extending the order`;
                         }
-                    })
-                })
-            })
+                    });
+                });
+            });
             if (errorMessage) {
                 return errorMessage;
             }
         }
+
         /**
          * Set confirmed quantites on the requirements depending on user input on offers
          */
         function setConfirmedQuantities() {
-            var requirement, offer;
-            for (var i = 0; i < ctrl.requirements.length; i++) {
+            let requirement, offer;
+            for (let i = 0; i < ctrl.requirements.length; i++) {
                 requirement = ctrl.requirements[i];
-                for (var j = 0; j < ctrl.requestOfferItems.length; j++) {
+                for (let j = 0; j < ctrl.requestOfferItems.length; j++) {
                     offer = ctrl.requestOfferItems[i];
                     if (offer && offer.requestId === requirement.RequestId && offer.locationId === requirement.LocationId && offer.productId === requirement.ProductId && offer.sellerId === requirement.SellerId) {
                         requirement.OrderFields = {
@@ -302,6 +301,6 @@ angular.module('shiptech.components').component('confirmOffersDialog', {
     controller: 'ConfirmOffersDialogController',
     bindings: {
         confirmationProductOffers: '<',
-        args: "&"
+        args: '&'
     }
 });

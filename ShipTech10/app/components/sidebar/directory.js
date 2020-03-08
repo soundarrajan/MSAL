@@ -1,7 +1,5 @@
 function DirectoryController() {
-
-console.log('DirectoryController');
-
+    console.log('DirectoryController');
 }
 
 angular.module('shiptech').component('directory', {

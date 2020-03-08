@@ -1,13 +1,13 @@
 /**
  * Recon Controller
  */
-APP_RECON.controller('Controller_Recon', ['$scope', '$rootScope', '$Api_Service', 'Factory_Recon', 'Factory_Master', '$state', '$location', '$q', '$compile', function ($scope, $rootScope, $Api_Service, Factory_Recon, Factory_Master, $state, $location, $q, $compile) {
-    var vm = this;
-    var guid = '';
+APP_RECON.controller('Controller_Recon', [ '$scope', '$rootScope', '$Api_Service', 'Factory_Recon', 'Factory_Master', '$state', '$location', '$q', '$compile', function($scope, $rootScope, $Api_Service, Factory_Recon, Factory_Master, $state, $location, $q, $compile) {
+    let vm = this;
+    let guid = '';
     vm.master_id = $state.params.master_id;
     vm.entity_id = $state.params.entity_id;
-    $scope.addedFields = new Object;
-    vm.response = "";
+    $scope.addedFields = new Object();
+    vm.response = '';
     vm.ids = '';
 
     if ($state.params.path) {
@@ -20,29 +20,29 @@ APP_RECON.controller('Controller_Recon', ['$scope', '$rootScope', '$Api_Service'
     }
 
     vm.reconTree = [];
-    vm.reconCatalog = function () {
+    vm.reconCatalog = function() {
         vm.reconTree = [
 
             { id: 1, title: 'Recon List', slug: 'recon', icon: 'fa fa-folder icon-lg', nodes: 1 }
 
         ];
     };
-    vm.selectReconScreen = function (id, name) {
-        $location.path('/recon/' + id);
+    vm.selectReconScreen = function(id, name) {
+        $location.path(`/recon/${ id}`);
         $scope.recon_screen_name = name;
     };
 
     $scope.reconQuantityDispute = function() {
-        var ClaimTypeId = 1;
+        let ClaimTypeId = 1;
         DeliveryProductId = $scope.selectedReconProduct;
-        if (typeof(DeliveryProductId != 'undefined') && DeliveryProductId != null) {
-            var data = {
-                "LabTestResultIds": [],
-                "DeliveryQualityParameterIds": [],
-                "DeliveryProductId": DeliveryProductId,
-                "ClaimTypeId": ClaimTypeId
-            }
-            localStorage.setItem("reconQuantityDispute", JSON.stringify(data) );
+        if (typeof (DeliveryProductId != 'undefined') && DeliveryProductId != null) {
+            let data = {
+                LabTestResultIds: [],
+                DeliveryQualityParameterIds: [],
+                DeliveryProductId: DeliveryProductId,
+                ClaimTypeId: ClaimTypeId
+            };
+            localStorage.setItem('reconQuantityDispute', JSON.stringify(data));
             window.open($location.$$absUrl.replace($location.$$path, '/claims/claim/edit/'), '_blank');
             // Factory_Master.raise_claim(data, function(response) {
             //     if (response) {
@@ -57,37 +57,32 @@ APP_RECON.controller('Controller_Recon', ['$scope', '$rootScope', '$Api_Service'
             //     }
             // })
         } else {
-            toastr.error("Please select one row in quantity table")
+            toastr.error('Please select one row in quantity table');
         }
-    }
-    $scope.setPageTitle = function(title){
-
+    };
+    $scope.setPageTitle = function(title) {
         $rootScope.$broadcast('$changePageTitle', {
             title: title
-        })
-    }
-    
-    $scope.$on('formValues', function(){
-        if(vm.app_id == "recon"){
-        console.log($scope.formValues);
-               //1. use request id
-            if($scope.formValues.requestInfo){
-                if($scope.formValues.requestInfo.request){
-                    var title = "Recon - " + $scope.formValues.requestInfo.request.name + " - " + $scope.formValues.requestInfo.vesselName;
+        });
+    };
+
+    $scope.$on('formValues', () => {
+        if(vm.app_id == 'recon') {
+            console.log($scope.formValues);
+            // 1. use request id
+            if($scope.formValues.requestInfo) {
+                if($scope.formValues.requestInfo.request) {
+                    var title = `Recon - ${ $scope.formValues.requestInfo.request.name } - ${ $scope.formValues.requestInfo.vesselName}`;
                     $scope.setPageTitle(title);
                     return;
                 }
             }
 
-            //2. use order
-            if($scope.formValues.order){
-                var title = "Recon - " + $scope.formValues.order.name + " - " + $scope.formValues.vesselName;
+            // 2. use order
+            if($scope.formValues.order) {
+                var title = `Recon - ${ $scope.formValues.order.name } - ${ $scope.formValues.vesselName}`;
                 $scope.setPageTitle(title);
             }
-
-            
         }
-
     });
-
-}]);
+} ]);

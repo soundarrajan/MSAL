@@ -1,7 +1,5 @@
 function ClocksController() {
-
-console.log('ClocksController');
-
+    console.log('ClocksController');
 };
 
 angular.module('shiptech').component('clocks', {

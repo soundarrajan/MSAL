@@ -4,23 +4,21 @@
 */
 
 function normalizeJSONLookupData(data) {
-    
-    var result = [];
-    
-    $.each(data, function(index, item){
+    let result = [];
+
+    $.each(data, (index, item) => {
         result.push(item.name);
-    }); 
+    });
 
     return result;
 }
 
 function normalizeJSONRequestsLookupData(data) {
-    
-    var result = [];
-    
-    $.each(data, function(index, item){
+    let result = [];
+
+    $.each(data, (index, item) => {
         result.push(item.name);
-    }); 
+    });
 
     return result;
 }

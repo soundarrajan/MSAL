@@ -1,18 +1,18 @@
-angular.module('shiptech.pages').controller('OrderListController', ['$scope', '$rootScope', '$element', '$attrs', '$timeout', 'uiApiModel', 'orderModel', 'STATE', 'ORDER_COMMANDS', 'screenActionsModel', 'scheduleDashboardCalendarModel', 'tenantService', 'EXPORT_FILETYPE', 'EXPORT_FILETYPE_EXTENSION', 'SCREEN_ACTIONS', '$state',
+angular.module('shiptech.pages').controller('OrderListController', [ '$scope', '$rootScope', '$element', '$attrs', '$timeout', 'uiApiModel', 'orderModel', 'STATE', 'ORDER_COMMANDS', 'screenActionsModel', 'scheduleDashboardCalendarModel', 'tenantService', 'EXPORT_FILETYPE', 'EXPORT_FILETYPE_EXTENSION', 'SCREEN_ACTIONS', '$state',
     function($scope, $rootScope, $element, $attrs, $timeout, uiApiModel, orderModel, STATE, ORDER_COMMANDS, screenActionsModel, scheduleDashboardCalendarModel, tenantService, EXPORT_FILETYPE, EXPORT_FILETYPE_EXTENSION, SCREEN_ACTIONS, $state) {
-        var ctrl = this;
+        let ctrl = this;
         $scope.Math = window.Math;
-        var tableSelector = '#order_list_table';
+        let tableSelector = '#order_list_table';
         ctrl.STATE = STATE;
         ctrl.ORDER_COMMANDS = ORDER_COMMANDS;
         ctrl.EXPORT_FILETYPE = EXPORT_FILETYPE;
         ctrl.statusList = [];
-        ctrl.SCREEN_ACTIONS = SCREEN_ACTIONS; //Stemmed;
+        ctrl.SCREEN_ACTIONS = SCREEN_ACTIONS; // Stemmed;
         // ctrl.CONFIRM_BTN_ACTIVE_STATUS = null;
         ctrl.settings = null;
         ctrl.tableOptions = {};
         ctrl.tableOptions.order = [
-            [0, 'asc']
+            [ 0, 'asc' ]
         ];
         ctrl.tableOptions.pageLength = 25;
         ctrl.tableOptions.paginationStart = 0;
@@ -20,7 +20,7 @@ angular.module('shiptech.pages').controller('OrderListController', ['$scope', '$
         ctrl.tableOptions.totalRows = 0;
         ctrl.tableOptions.searchTerm = null;
         ctrl.buttonsDisabled = false;
-        tenantService.tenantSettings.then(function(settings) {
+        tenantService.tenantSettings.then((settings) => {
             ctrl.numberPrecision = settings.payload.defaultValues;
             window.tenantFormatsDateFormat = settings.payload.tenantFormats.dateFormat.name;
         });
@@ -227,34 +227,35 @@ angular.module('shiptech.pages').controller('OrderListController', ['$scope', '$
         //     }
         //     return tableOrder;
         // }
-        $scope.$on('confirmOrder', function(e, payload) {
+        $scope.$on('confirmOrder', (e, payload) => {
             // ctrl.confirmOrder = function(orderId) {
 
             $('a[name="confirm"]').addClass('disabled');
-            orderModel.sendOrderCommand(ctrl.ORDER_COMMANDS.CONFIRMONLY, payload).then(function(data) {
+            orderModel.sendOrderCommand(ctrl.ORDER_COMMANDS.CONFIRMONLY, payload).then((data) => {
                 $('a[name="confirm"]').removeClass('disabled');
-                $("#flat_orders_list").jqGrid.table_config.on_page_change({
+                $('#flat_orders_list').jqGrid.table_config.on_page_change({
                     page: $('.paginate_input').val()
                 });
-            }, function() {
+            }, () => {
                 $('a[name="confirm"]').removeClass('disabled');
             });
         });
         // })
-        $scope.$on('reconfirmOrder', function(e, data) {
+        $scope.$on('reconfirmOrder', (e, data) => {
             // ctrl.reconfirmOrder = function(orderId) {
-            payload = {"id": data};
+            payload = { id: data };
             $('a[name="reconfirm"]').addClass('disabled');
-            orderModel.sendOrderCommand(ctrl.ORDER_COMMANDS.RECONFIRM, payload).then(function(data) {
+            orderModel.sendOrderCommand(ctrl.ORDER_COMMANDS.RECONFIRM, payload).then((data) => {
                 $('a[name="reconfirm"]').removeClass('disabled');
-                $("#flat_orders_list").jqGrid.table_config.on_page_change({
+                $('#flat_orders_list').jqGrid.table_config.on_page_change({
                     page: $('.paginate_input').val()
                 });
-            }, function() {
+            }, () => {
                 $('a[name="reconfirm"]').removeClass('disabled');
             });
             // };
         });
+
         /**
          * Initializes all user events on the table (pagination, sorting, searching)
          */

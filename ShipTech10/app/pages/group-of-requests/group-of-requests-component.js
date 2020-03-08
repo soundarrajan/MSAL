@@ -1,50 +1,50 @@
-angular.module("shiptech.pages").controller("GroupOfRequestsController", [
-    "$scope",
-    "$rootScope",
-    "$element",
-    "$compile",
-    "$attrs",
-    "$timeout",
-    "$interval",
-    "$uibModal",
-    "$templateCache",
-    "$listsCache",
-    "$filter",
-    "$state",
-    "$stateParams",
-    "$http",
-    "Factory_Master",
-    "STATE",
-    "API",
-    "SCREEN_ACTIONS",
-    "screenActionsModel",
-    "uiApiModel",
-    "lookupModel",
-    "groupOfRequestsModel",
-    "newRequestModel",
-    "tenantService",
-    "LOOKUP_TYPE",
-    "LOOKUP_MAP",
-    "SCREEN_LAYOUTS",
-    "SELLER_SORT_ORDER",
-    "EMAIL_TRANSACTION",
-    "CUSTOM_EVENTS",
-    "MOCKUP_MAP",
-    "PACKAGES_CONFIGURATION",
-    "screenLoader",
-    "listsModel",
-    "$tenantSettings",
-    "$sce",
-    function ($scope, $rootScope, $element, $compile, $attrs, $timeout, $interval, $uibModal, $templateCache, $listsCache, $filter, $state, $stateParams, $http, Factory_Master, STATE, API, SCREEN_ACTIONS, screenActionsModel, uiApiModel, lookupModel, groupOfRequestsModel, newRequestModel, tenantService, LOOKUP_TYPE, LOOKUP_MAP, SCREEN_LAYOUTS, SELLER_SORT_ORDER, EMAIL_TRANSACTION, CUSTOM_EVENTS, MOCKUP_MAP, PACKAGES_CONFIGURATION, screenLoader, listsModel, $tenantSettings, $sce) {
+angular.module('shiptech.pages').controller('GroupOfRequestsController', [
+    '$scope',
+    '$rootScope',
+    '$element',
+    '$compile',
+    '$attrs',
+    '$timeout',
+    '$interval',
+    '$uibModal',
+    '$templateCache',
+    '$listsCache',
+    '$filter',
+    '$state',
+    '$stateParams',
+    '$http',
+    'Factory_Master',
+    'STATE',
+    'API',
+    'SCREEN_ACTIONS',
+    'screenActionsModel',
+    'uiApiModel',
+    'lookupModel',
+    'groupOfRequestsModel',
+    'newRequestModel',
+    'tenantService',
+    'LOOKUP_TYPE',
+    'LOOKUP_MAP',
+    'SCREEN_LAYOUTS',
+    'SELLER_SORT_ORDER',
+    'EMAIL_TRANSACTION',
+    'CUSTOM_EVENTS',
+    'MOCKUP_MAP',
+    'PACKAGES_CONFIGURATION',
+    'screenLoader',
+    'listsModel',
+    '$tenantSettings',
+    '$sce',
+    function($scope, $rootScope, $element, $compile, $attrs, $timeout, $interval, $uibModal, $templateCache, $listsCache, $filter, $state, $stateParams, $http, Factory_Master, STATE, API, SCREEN_ACTIONS, screenActionsModel, uiApiModel, lookupModel, groupOfRequestsModel, newRequestModel, tenantService, LOOKUP_TYPE, LOOKUP_MAP, SCREEN_LAYOUTS, SELLER_SORT_ORDER, EMAIL_TRANSACTION, CUSTOM_EVENTS, MOCKUP_MAP, PACKAGES_CONFIGURATION, screenLoader, listsModel, $tenantSettings, $sce) {
         $scope.STATE = STATE;
-        var ctrl = this;
-        var groupId = $stateParams.groupId;
-        var group = $stateParams.group;
-        var initialValueExternalComments = null;
-        var initialValueInternalComments = null;
+        let ctrl = this;
+        let groupId = $stateParams.groupId;
+        let group = $stateParams.group;
+        let initialValueExternalComments = null;
+        let initialValueInternalComments = null;
         ctrl.groupId = $stateParams.groupId;
-        $state.params.title = "Group of Requests";
-        ctrl.req_cards = "big";
+        $state.params.title = 'Group of Requests';
+        ctrl.req_cards = 'big';
         ctrl.active_prod = {};
         ctrl.LOOKUP_TYPE = LOOKUP_TYPE;
         ctrl.SCREEN_ACTIONS = SCREEN_ACTIONS;
@@ -59,7 +59,7 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
         ctrl.isEnergyCalculationRequired = true;
         $scope.tenantSetting = $tenantSettings;
         ctrl.tenantSetting = $tenantSettings;
-        tenantService.tenantSettings.then(function (settings) {
+        tenantService.tenantSettings.then((settings) => {
             ctrl.quoteByCurrency = settings.payload.tenantFormats.currency;
             ctrl.quoteByTimezone = settings.payload.tenantFormats.timeZone;
             ctrl.numberPrecision = settings.payload.defaultValues;
@@ -67,9 +67,9 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
             ctrl.amountPrecision = settings.payload.defaultValues.amountPrecision;
             ctrl.quantityPrecision = settings.payload.defaultValues.quantityPrecision;
             ctrl.tenantFormats = settings.payload.tenantFormats;
-            //ctrl.needSupplierQuote = settings.payload.
+            // ctrl.needSupplierQuote = settings.payload.
         });
-        tenantService.procurementSettings.then(function (settings) {
+        tenantService.procurementSettings.then((settings) => {
             ctrl.isEnergyCalculationRequired = settings.payload.energyConfiguration.isEnergyCalculationRequired;
             ctrl.sixMonthHistoryFor = settings.payload.energyConfiguration.sixMonthHistoryFor;
             ctrl.includeAverageSurveyorCharge = settings.payload.energyConfiguration.includeAverageSurveyorCharge;
@@ -112,22 +112,22 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
         ctrl.allExpanded = false;
         ctrl.buttonsDisabled = true;
         ctrl.notificationCount = 0;
-        if (typeof ctrl.blade == "undefined") {
+        if (typeof ctrl.blade == 'undefined') {
             ctrl.blade = {};
         }
 
-        var alreadySaved = [];
-  
-        //handler for filtering on request status
-        $scope.$on(CUSTOM_EVENTS.NOTIFICATION_RECEIVED, function (event, notification) {
-            var requestNotification = null;
+        let alreadySaved = [];
+
+        // handler for filtering on request status
+        $scope.$on(CUSTOM_EVENTS.NOTIFICATION_RECEIVED, (event, notification) => {
+            let requestNotification = null;
             ctrl.notificationCount = 0;
-            for (var i = 0; i < notification.length; i++) {
+            for (let i = 0; i < notification.length; i++) {
                 requestNotification = notification[i];
                 if (ctrl.requests) {
-                    for (var j = 0; j < ctrl.requests.length; j++) {
+                    for (let j = 0; j < ctrl.requests.length; j++) {
                         if (ctrl.requests[j].id == requestNotification.RequestId) {
-                            ctrl.notificationCount += requestNotification.TotalNoOfUnreadOffers;
+                            ctrl.notificationCount = ctrl.notificationCount + requestNotification.TotalNoOfUnreadOffers;
                         }
                     }
                 }
@@ -135,215 +135,224 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
         });
 
 
-		ctrl.onSixMonthsUpdate = function(results) {
-			if (results) {
-				// if (results != "-") {
-				// 	if (typeof(ctrl.active_prod.products[0].energyParameterValues.initialSpecificEnergy) == "undefined") {
-				// 		ctrl.active_prod.products[0].energyParameterValues.initialSpecificEnergy = angular.copy(ctrl.active_prod.products[0].energyParameterValues.specificEnergy);
-				// 	}
-				// 	if (!ctrl.active_prod.products[0].energyParameterValues.initialSpecificEnergy) {
-				// 		ctrl.active_prod.products[0].energyParameterValues.specificEnergy = results;
-				// 	}
-				// }
-				$(".blade-column.main-content-column .ng-dirty").removeClass("ng-dirty");
-				ctrl.viewEnergyContentBlade(ctrl.blade.counterpartyActiveSeller, ctrl.blade.counterpartyActiveLocation)	
-			}
-		}
+        ctrl.onSixMonthsUpdate = function(results) {
+            if (results) {
+                // if (results != "-") {
+                // 	if (typeof(ctrl.active_prod.products[0].energyParameterValues.initialSpecificEnergy) == "undefined") {
+                // 		ctrl.active_prod.products[0].energyParameterValues.initialSpecificEnergy = angular.copy(ctrl.active_prod.products[0].energyParameterValues.specificEnergy);
+                // 	}
+                // 	if (!ctrl.active_prod.products[0].energyParameterValues.initialSpecificEnergy) {
+                // 		ctrl.active_prod.products[0].energyParameterValues.specificEnergy = results;
+                // 	}
+                // }
+                $('.blade-column.main-content-column .ng-dirty').removeClass('ng-dirty');
+                ctrl.viewEnergyContentBlade(ctrl.blade.counterpartyActiveSeller, ctrl.blade.counterpartyActiveLocation);
+            }
+        };
 
-		ctrl.isMinimumTotal = function(requestProducts, location,seller) {
-			if (!ctrl.bestTcoData) {
-				return;	
-			}
-			var isMinimumTotal = false;
-			var currentRequestOfferIds = [];
-			$.each(requestProducts, function(k,v){
-            	correctProduct = v.productLocations['L' + location[0].uniqueLocationIdentifier];
+        ctrl.isMinimumTotal = function(requestProducts, location, seller) {
+            if (!ctrl.bestTcoData) {
+                return;
+            }
+            let isMinimumTotal = false;
+            let currentRequestOfferIds = [];
+            $.each(requestProducts, (k, v) => {
+            	correctProduct = v.productLocations[`L${ location[0].uniqueLocationIdentifier}`];
             	if (correctProduct) {
 	                var productOffer = ctrl.getSellerProductOfferOnLocationRewrite(correctProduct, location, seller.sellerCounterparty.id, seller);
             	}
             	if (productOffer) {
-					currentRequestOfferIds.push(productOffer.id);
+                    currentRequestOfferIds.push(productOffer.id);
             	}
-				// if (v.requestLocationId == location[0].id) {
-				// 	$.each(v.sellers, function(k1,v1){
-				// 		if (v1.sellerCounterparty.id == seller.sellerCounterparty.id) {
-				// 			$.each(v1.offers, function(k2,v2){
-				// 				currentRequestOfferIds.push(v2.id);
-				// 			})
-				// 		}
-				// 	})
-				// }
-			})
-			// console.log(currentRequestOfferIds);
-			$.each(ctrl.bestTcoData.bestTotalTCO, function(k,v){
-				$.each(v.products, function(k1,v1){
-					if (currentRequestOfferIds.indexOf(v1.requestOfferId) != -1 ) {
-						isMinimumTotal = true;
-					} 
-				})
-			})
-			return isMinimumTotal;
-		}
+                // if (v.requestLocationId == location[0].id) {
+                // 	$.each(v.sellers, function(k1,v1){
+                // 		if (v1.sellerCounterparty.id == seller.sellerCounterparty.id) {
+                // 			$.each(v1.offers, function(k2,v2){
+                // 				currentRequestOfferIds.push(v2.id);
+                // 			})
+                // 		}
+                // 	})
+                // }
+            });
+            // console.log(currentRequestOfferIds);
+            $.each(ctrl.bestTcoData.bestTotalTCO, (k, v) => {
+                $.each(v.products, (k1, v1) => {
+                    if (currentRequestOfferIds.indexOf(v1.requestOfferId) != -1) {
+                        isMinimumTotal = true;
+                    }
+                });
+            });
+            return isMinimumTotal;
+        };
 
-		ctrl.isMinimumAmountOrTco = function(productOffer) {
-			if (!ctrl.bestTcoData || !productOffer) {
-				return;	
-			}
-			var isMinimumAmountOrTco = false;
-			$.each(ctrl.bestTcoData.bestIndividuals, function(k,v){
-				$.each(v.bestTCO, function(k1,v1){
-					if (v1.requestOfferId == productOffer.id ) {
-						isMinimumAmountOrTco = true;
-					} 
-				})
-			})			
-			return isMinimumAmountOrTco;
-		}
+        ctrl.isMinimumAmountOrTco = function(productOffer) {
+            if (!ctrl.bestTcoData || !productOffer) {
+                return;
+            }
+            let isMinimumAmountOrTco = false;
+            $.each(ctrl.bestTcoData.bestIndividuals, (k, v) => {
+                $.each(v.bestTCO, (k1, v1) => {
+                    if (v1.requestOfferId == productOffer.id) {
+                        isMinimumAmountOrTco = true;
+                    }
+                });
+            });
+            return isMinimumAmountOrTco;
+        };
 
 
         function checkAllCheckboxesDefault() {
-        	$.each($(".checkAllOnLocation"), function(cbk, cbv){
-        		checkAllLocationIdentifier = $(cbv).attr("checkAllUniqueLocationIdentifier");
-        		var checkedItems = 0
-        		$.each($("[uniqueLocationIdentifier]"), function(rowCheckK, rowCheckV){
-        			if ($(rowCheckV).attr("uniqueLocationIdentifier") == checkAllLocationIdentifier) {
-		        		checkedItems--
-		        		if ($(rowCheckV).prop("checked") == true) {
-			        		checkedItems++
+        	$.each($('.checkAllOnLocation'), (cbk, cbv) => {
+        		checkAllLocationIdentifier = $(cbv).attr('checkAllUniqueLocationIdentifier');
+        		let checkedItems = 0;
+        		$.each($('[uniqueLocationIdentifier]'), (rowCheckK, rowCheckV) => {
+        			if ($(rowCheckV).attr('uniqueLocationIdentifier') == checkAllLocationIdentifier) {
+		        		checkedItems--;
+		        		if ($(rowCheckV).prop('checked') == true) {
+			        		checkedItems++;
 		        		}
         			}
-        		})
+        		});
         		if (checkedItems >= 0) {
-		        	$(cbv).prop("checked", true);
+		        	$(cbv).prop('checked', true);
         		} else {
-		        	$(cbv).prop("checked", false);
+		        	$(cbv).prop('checked', false);
         		}
-        	})
+        	});
         }
-        ctrl.isPhysicalSupplierMandatory = function (counterparty) {
+        ctrl.isPhysicalSupplierMandatory = function(counterparty) {
             if (ctrl.fieldVisibility.isPhysicalSupplierMandatory) {
-                if (typeof counterparty.physicalSupplier == "undefined" || counterparty.physicalSupplier == null){
-                    toastr.info("Please make sure you have selected a Physical Supplier before entering price");
+                if (typeof counterparty.physicalSupplier == 'undefined' || counterparty.physicalSupplier == null) {
+                    toastr.info('Please make sure you have selected a Physical Supplier before entering price');
                     counterparty.price = null;
                 }
-                
             }
-        }
+        };
 
         ctrl.initScreenAfterSendOrSkipRfq = function() {
-                // if (action == 'sendRFQ') {
-                //     $state.reload();
-                //     return;
-                // }
-            
-	        	$(".checkAllOnLocation").prop("checked", false);
-                ctrl.requirements = [];
-                ctrl.selectedNoQuoteItems = [];
-                ctrl.requirementRequestProductIds = [];
-                groupOfRequestsModel.getGroup(groupId).then(function (data) {
+            // if (action == 'sendRFQ') {
+            //     $state.reload();
+            //     return;
+            // }
+
+	        	$('.checkAllOnLocation').prop('checked', false);
+            ctrl.requirements = [];
+            ctrl.selectedNoQuoteItems = [];
+            ctrl.requirementRequestProductIds = [];
+            groupOfRequestsModel.getGroup(groupId).then((data) => {
                 	if (data.payload[0].requestGroup.customNonMandatoryAttribute1) {
-                		ctrl.sellerSortOrder = data.payload[0].requestGroup.customNonMandatoryAttribute1
+                		ctrl.sellerSortOrder = data.payload[0].requestGroup.customNonMandatoryAttribute1;
                 	} else {
-                		ctrl.sellerSortOrder = SELLER_SORT_ORDER.ALPHABET
+                		ctrl.sellerSortOrder = SELLER_SORT_ORDER.ALPHABET;
                 	}
-                    parseRequestList(data.payload, false, false, true);
-                    // initializeDataArrays(data.payload);
+                parseRequestList(data.payload, false, false, true);
+                // initializeDataArrays(data.payload);
+                getGroupInfo(groupId);
+                ctrl.priceInputsDisabled = false;
+            });
+
+            function getGroupInfo(groupId) {
+                groupOfRequestsModel.getGroupInfo(groupId).then((data) => {
+                    	if (data.payload.internalComments) {
+                        ctrl.internalComments = data.payload.internalComments.replace(/<br\s?\/?>/g, '\n');
+                        initialValueInternalComments = ctrl.internalComments;
+                    	}
+                    	if (data.payload.externalComments) {
+                        ctrl.externalComments = data.payload.externalComments.replace(/<br\s?\/?>/g, '\n');
+                        initialValueExternalComments = ctrl.externalComments;
+                    	}
+                    console.log(data.payload);
+                    if (data.payload.quoteByCurrency !== null) {
+                        ctrl.setQuoteByCurrency(data.payload.quoteByCurrency.id, data.payload.quoteByCurrency.name);
+                    }
+                    if (data.payload.quoteByTimeZone !== null) {
+                        ctrl.setQuoteByTimezone(data.payload.quoteByTimeZone.id, data.payload.quoteByTimeZone.name);
+                    }
+                    ctrl.en6MHReferenceDate = data.payload.en6MHReferenceDate;
+                    ctrl.quoteByDate = data.payload.quoteByDate;
+                    ctrl.quoteByDateFrom = data.payload.quoteByDateFrom;
+                    if (ctrl.quoteByDateFrom == '' || ctrl.quoteByDateFrom == null) {
+                        let d = new Date();
+                        month = d.getMonth() + 1;
+                        day = d.getDate();
+                        hours = d.getHours();
+                        minutes = d.getMinutes();
+                        seconds = d.getSeconds();
+                        if (month < 10) {
+                            month = `0${ month}`;
+                        }
+                        if (day < 10) {
+                            day = `0${ day}`;
+                        }
+                        if (hours < 10) {
+                            hours = `0${ hours}`;
+                        }
+                        if (minutes < 10) {
+                            minutes = `0${ minutes}`;
+                        }
+                        if (seconds < 10) {
+                            seconds = `0${ seconds}`;
+                        }
+                        if (ctrl.isQuoteDateAutoPopulated) {
+                            ctrl.quoteByDateFrom = `${d.getFullYear() }-${ month }-${ day }T${ hours }:${ minutes }:${ seconds}`;
+                        }
+                    }
+                    ctrl.isReviewed = data.payload.isReviewed;
+                });
+            }
+        };
+
+        // Get the UI settings from server. When complete, get business data.
+        ctrl.initScreen = function() {
+            uiApiModel.get(SCREEN_LAYOUTS.GROUP_OF_REQUESTS).then((data) => {
+                ctrl.ui = data;
+                ctrl.screenActions = uiApiModel.getScreenActions();
+                // Normalize relevant data for use in the template.
+                ctrl.generalInfoFields = normalizeArrayToHash(ctrl.ui.GeneralInformation.fields, 'name');
+                ctrl.bestOfferColumns = normalizeArrayToHash(ctrl.ui.BestOffer.columns, 'name');
+                ctrl.requirements = [];
+                ctrl.requirementRequestProductIds = [];
+                // Get the generic data Lists.
+
+                ctrl.sellerTypeIds = getSellerTypeIds();
+                lookupModel.getSellerAutocompleteList(ctrl.sellerTypeIds).then((server_data) => {
+                    ctrl.sellerAutocompleteList = server_data.payload;
+                });
+                lookupModel.getSellerAutocompleteList([ '1' ]).then((server_data) => {
+                    ctrl.physicalSupplierList = server_data.payload;
+                });
+                lookupModel.getSellerAutocompleteList([ '3' ]).then((server_data) => {
+                    ctrl.brokerList = server_data.payload;
+                });
+                // Get the lookup list for the Request field in the General Information section.
+                groupOfRequestsModel.getRequests().then((data) => {
+                    ctrl.autocompleteRequest = data.payload;
+                    $timeout(() => {
+                        initializeLookupInputs();
+                    });
+                });
+                // Get the business data.
+                groupOfRequestsModel.getGroup(groupId).then((data) => {
+                	if (data.payload[0].requestGroup.customNonMandatoryAttribute1) {
+                		ctrl.sellerSortOrder = data.payload[0].requestGroup.customNonMandatoryAttribute1;
+                	} else {
+                		ctrl.sellerSortOrder = SELLER_SORT_ORDER.ALPHABET;
+                	}
+                    parseRequestList(data.payload, false);
+                    initializeDataArrays(data.payload);
                     getGroupInfo(groupId);
                     ctrl.priceInputsDisabled = false;
                 });
 
                 function getGroupInfo(groupId) {
-                    groupOfRequestsModel.getGroupInfo(groupId).then(function (data) {
+                    groupOfRequestsModel.getGroupInfo(groupId).then((data) => {
+                    	ctrl.en6MHReferenceDate = data.payload.en6MHReferenceDate;
                     	if (data.payload.internalComments) {
-                            ctrl.internalComments = data.payload.internalComments.replace(/<br\s?\/?>/g,"\n");
+                            ctrl.internalComments = data.payload.internalComments.replace(/<br\s?\/?>/g, '\n');
                             initialValueInternalComments = ctrl.internalComments;
                     	}
                     	if (data.payload.externalComments) {
-                            ctrl.externalComments = data.payload.externalComments.replace(/<br\s?\/?>/g,"\n");
-                            initialValueExternalComments  = ctrl.externalComments;
-                    	}
-                        console.log(data.payload);
-                        if (data.payload.quoteByCurrency !== null) {
-                            ctrl.setQuoteByCurrency(data.payload.quoteByCurrency.id, data.payload.quoteByCurrency.name);
-                        }
-                        if (data.payload.quoteByTimeZone !== null) {
-                            ctrl.setQuoteByTimezone(data.payload.quoteByTimeZone.id, data.payload.quoteByTimeZone.name);
-                        }
-                        ctrl.en6MHReferenceDate = data.payload.en6MHReferenceDate;
-                        ctrl.quoteByDate = data.payload.quoteByDate;
-                        ctrl.quoteByDateFrom = data.payload.quoteByDateFrom;
-                        if (ctrl.quoteByDateFrom == "" || ctrl.quoteByDateFrom == null) {
-                            var d = new Date();
-                            month = d.getMonth() + 1;
-                            day = d.getDate();
-                            hours = d.getHours();
-                            minutes = d.getMinutes();
-                            seconds = d.getSeconds();
-                            if (month < 10) month = "0" + month;
-                            if (day < 10) day = "0" + day;
-                            if (hours < 10) hours = "0" + hours;
-                            if (minutes < 10) minutes = "0" + minutes;
-                            if (seconds < 10) seconds = "0" + seconds;
-                            if (ctrl.isQuoteDateAutoPopulated) {
-                                ctrl.quoteByDateFrom = d.getFullYear() + "-" + month + "-" + day + "T" + hours + ":" + minutes + ":" + seconds;
-                            }
-                        }
-                        ctrl.isReviewed = data.payload.isReviewed;
-                    });
-                }
-        }
-
-        // Get the UI settings from server. When complete, get business data.
-        ctrl.initScreen = function () {
-            uiApiModel.get(SCREEN_LAYOUTS.GROUP_OF_REQUESTS).then(function (data) {
-                ctrl.ui = data;
-                ctrl.screenActions = uiApiModel.getScreenActions();
-                //Normalize relevant data for use in the template.
-                ctrl.generalInfoFields = normalizeArrayToHash(ctrl.ui.GeneralInformation.fields, "name");
-                ctrl.bestOfferColumns = normalizeArrayToHash(ctrl.ui.BestOffer.columns, "name");
-                ctrl.requirements = [];
-                ctrl.requirementRequestProductIds = [];
-                // Get the generic data Lists.
-                
-                ctrl.sellerTypeIds = getSellerTypeIds();
-                lookupModel.getSellerAutocompleteList(ctrl.sellerTypeIds).then(function (server_data) {
-                    ctrl.sellerAutocompleteList = server_data.payload;
-                });
-                lookupModel.getSellerAutocompleteList(["1"]).then(function (server_data) {
-                    ctrl.physicalSupplierList = server_data.payload;
-                });
-                lookupModel.getSellerAutocompleteList(["3"]).then(function (server_data) {
-                    ctrl.brokerList = server_data.payload;
-                });
-                // Get the lookup list for the Request field in the General Information section.
-                groupOfRequestsModel.getRequests().then(function (data) {
-                    ctrl.autocompleteRequest = data.payload;
-                    $timeout(function () {
-                        initializeLookupInputs();
-                    });
-                });
-                // Get the business data.
-                groupOfRequestsModel.getGroup(groupId).then(function (data) {
-                	if (data.payload[0].requestGroup.customNonMandatoryAttribute1) {
-                		ctrl.sellerSortOrder = data.payload[0].requestGroup.customNonMandatoryAttribute1
-                	} else {
-                		ctrl.sellerSortOrder = SELLER_SORT_ORDER.ALPHABET
-                	}
-                    parseRequestList(data.payload, false);
-                    initializeDataArrays(data.payload);
-                    getGroupInfo(groupId);
-                    ctrl.priceInputsDisabled = false;                    
-                });
-
-                function getGroupInfo(groupId) {
-                    groupOfRequestsModel.getGroupInfo(groupId).then(function (data) {
-                    	ctrl.en6MHReferenceDate = data.payload.en6MHReferenceDate
-                    	if (data.payload.internalComments) {
-                            ctrl.internalComments = data.payload.internalComments.replace(/<br\s?\/?>/g,"\n");
-                            initialValueInternalComments = ctrl.internalComments;
-                    	}
-                    	if (data.payload.externalComments) {
-                            ctrl.externalComments = data.payload.externalComments.replace(/<br\s?\/?>/g,"\n");
+                            ctrl.externalComments = data.payload.externalComments.replace(/<br\s?\/?>/g, '\n');
                             initialValueExternalComments = ctrl.externalComments;
                     	}
                         console.log(data.payload);
@@ -355,20 +364,30 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
                         }
                         ctrl.quoteByDate = data.payload.quoteByDate;
                         ctrl.quoteByDateFrom = data.payload.quoteByDateFrom;
-                        if (ctrl.quoteByDateFrom == "" || ctrl.quoteByDateFrom == null) {
-                            var d = new Date();
+                        if (ctrl.quoteByDateFrom == '' || ctrl.quoteByDateFrom == null) {
+                            let d = new Date();
                             month = d.getMonth() + 1;
                             day = d.getDate();
                             hours = d.getHours();
                             minutes = d.getMinutes();
                             seconds = d.getSeconds();
-                            if (month < 10) month = "0" + month;
-                            if (day < 10) day = "0" + day;
-                            if (hours < 10) hours = "0" + hours;
-                            if (minutes < 10) minutes = "0" + minutes;
-                            if (seconds < 10) seconds = "0" + seconds;
+                            if (month < 10) {
+                                month = `0${ month}`;
+                            }
+                            if (day < 10) {
+                                day = `0${ day}`;
+                            }
+                            if (hours < 10) {
+                                hours = `0${ hours}`;
+                            }
+                            if (minutes < 10) {
+                                minutes = `0${ minutes}`;
+                            }
+                            if (seconds < 10) {
+                                seconds = `0${ seconds}`;
+                            }
                             if (ctrl.isQuoteDateAutoPopulated) {
-                                ctrl.quoteByDateFrom = d.getFullYear() + "-" + month + "-" + day + "T" + hours + ":" + minutes + ":" + seconds;
+                                ctrl.quoteByDateFrom = `${d.getFullYear() }-${ month }-${ day }T${ hours }:${ minutes }:${ seconds}`;
                             }
                         }
                         ctrl.isReviewed = data.payload.isReviewed;
@@ -377,6 +396,7 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
             });
         };
         ctrl.initScreen();
+
         /**
          * Initializes various data needed by the template, parses request list to group requests.
          * @param {Array} requestList - The list of requests for which we need info.
@@ -393,7 +413,7 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
             // debugger;
             ctrl.requests = requestList;
             ctrl.requestTabs = createRequestTabs(ctrl.requests);
-            //Initialize the ETAs.
+            // Initialize the ETAs.
             ctrl.etas = calcETAs(ctrl.requests);
             // Initialize array of selected requests.
             ctrl.selectedRequests = ctrl.requests;
@@ -402,33 +422,31 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
             //
 
             // initialize the various data arrays needed by the template
-            $.each(ctrl.requests, function (reqK, reqV) {
-                $.each(reqV.locations, function (locK, locV) {
-                    $.each(locV.products, function (prodK, prodV) {
+            $.each(ctrl.requests, (reqK, reqV) => {
+                $.each(reqV.locations, (locK, locV) => {
+                    $.each(locV.products, (prodK, prodV) => {
                         prodV.requestId = reqV.id;
-                        $.each(prodV.sellers, function (sellerK, sellerV) {
+                        $.each(prodV.sellers, (sellerK, sellerV) => {
                             seller = sellerV;
-                            uniqueIdentifier = seller.sellerCounterparty.id + "-null";
-                            packageType = "individual";
-                            if (typeof seller.offers != "undefined") {
+                            uniqueIdentifier = `${seller.sellerCounterparty.id }-null`;
+                            packageType = 'individual';
+                            if (typeof seller.offers != 'undefined') {
                                 if (seller.offers.length > 0) {
                                     if (seller.offers[0].physicalSupplierCounterparty) {
-                                        uniqueIdentifier = seller.sellerCounterparty.id + "-" + seller.offers[0].physicalSupplierCounterparty.id; 
+                                        uniqueIdentifier = `${seller.sellerCounterparty.id }-${ seller.offers[0].physicalSupplierCounterparty.id}`;
                                     }
                                     if (!seller.offers[0].packageId) {
-                                        packageType = "individual";
+                                        packageType = 'individual';
+                                    } else if (seller.offers[0].isSurrogatePackage) {
+                                        packageType = 'buyer';
                                     } else {
-                                        if (seller.offers[0].isSurrogatePackage) {
-                                            packageType = "buyer";
-                                        } else {
-                                            packageType = "seller";
-                                        }
+                                        packageType = 'seller';
                                     }
                                     if (sellerV.offers[0].quotedProduct) {
 	                                    if (sellerV.offers[0].quotedProduct.id != prodV.product.id) {
-								            listsModel.getProductTypeByProduct(sellerV.offers[0].quotedProduct.id).then(function(server_data) {
+								            listsModel.getProductTypeByProduct(sellerV.offers[0].quotedProduct.id).then((server_data) => {
 			                                    sellerV.offers[0].quotedProductGroupId = server_data.data.payload.productTypeGroup.id;
-								            })                                    
+								            });
 	                                    } else {
 		                                    sellerV.offers[0].quotedProductGroupId = prodV.productTypeGroupId;
 	                                    }
@@ -452,7 +470,7 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
 	            // groupOfRequestsModel.getBestOffer(requestGroupProductIds).then(function (data) {
 	            //     ctrl.bestOfferData = data.payload;
 	            // });
-	            groupOfRequestsModel.getBestTco(requestGroupProductIds, ctrl.groupId).then(function (data) {
+	            groupOfRequestsModel.getBestTco(requestGroupProductIds, ctrl.groupId).then((data) => {
 	                ctrl.bestTcoData = data.payload;
 	                ctrl.bestTcoData = $scope.modelBestTCODataForTemplating(ctrl.bestTcoData);
                     ctrl.mySelection = data.payload.mySelection.quotations;
@@ -460,47 +478,47 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
 	            });
             }
 
-			ctrl.recompileDefaultSellerChecks();
+            ctrl.recompileDefaultSellerChecks();
 
             ctrl.setPageTitle();
         }
-        ctrl.calculateRandUniquePkg = function (seller) {
+        ctrl.calculateRandUniquePkg = function(seller) {
             physicalSupplierId = null;
-            packageType = "individual";
+            packageType = 'individual';
             packageId = null;
-            if (typeof seller.offers != "undefined") {
+            if (typeof seller.offers != 'undefined') {
                 if (seller.offers.length > 0) {
                     if (seller.offers[0].physicalSupplierCounterparty) {
                         physicalSupplierId = seller.offers[0].physicalSupplierCounterparty.id;
                     }
                     if (!seller.offers[0].packageId) {
-                        packageType = "individual";
+                        packageType = 'individual';
                     } else {
                         packageId = seller.offers[0].packageId;
                         if (seller.offers[0].isSurrogatePackage) {
-                            packageType = "buyer";
+                            packageType = 'buyer';
                         } else {
-                            packageType = "seller";
+                            packageType = 'seller';
                         }
                     }
                 }
             }
-            randUniquePkg = seller.sellerCounterparty.id + "-" + physicalSupplierId + "-" + packageType + "-" + packageId;
+            randUniquePkg = `${seller.sellerCounterparty.id }-${ physicalSupplierId }-${ packageType }-${ packageId}`;
             return randUniquePkg;
         };
-        $scope.remodelSellersStructure = function (requestList) {
+        $scope.remodelSellersStructure = function(requestList) {
             // return requestList;
             // here we remodel the data to fit current FE implementation after BE structure changes
-            $.each(requestList, function (reqK, reqV) {
-                $.each(reqV.locations, function (locK, locV) {
-                    $.each(locV.products, function (prodK, prodV) {
-                        if (typeof prodV.sellersCopy == "undefined") {
+            $.each(requestList, (reqK, reqV) => {
+                $.each(reqV.locations, (locK, locV) => {
+                    $.each(locV.products, (prodK, prodV) => {
+                        if (typeof prodV.sellersCopy == 'undefined') {
                             prodV.sellersCopy = [];
                         }
-                        $.each(prodV.sellers, function (selK, selV) {
+                        $.each(prodV.sellers, (selK, selV) => {
                             if (selV.offers) {
                                 if (selV.offers.length > 0) {
-                                    $.each(selV.offers, function (offK, offV) {
+                                    $.each(selV.offers, (offK, offV) => {
                                         prodV.sellersCopy.unshift(angular.copy(selV));
                                     });
                                 } else {
@@ -509,18 +527,18 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
                             } else {
                                 prodV.sellersCopy.unshift(angular.copy(selV));
                             }
-                            $.each(prodV.sellersCopy, function (sck, scv) {
+                            $.each(prodV.sellersCopy, (sck, scv) => {
                                 if (scv.id == selV.id) {
                                     scv.offers = [];
                                 }
                             });
                         });
-                        $.each(prodV.sellersCopy, function (sck, scv) {
+                        $.each(prodV.sellersCopy, (sck, scv) => {
                             offersToBeAdded = [];
-                            $.each(prodV.sellers, function (selK, selV) {
+                            $.each(prodV.sellers, (selK, selV) => {
                                 if (selV.offers) {
                                     if (selV.offers.length > 0) {
-                                        $.each(selV.offers, function (offK, offV) {
+                                        $.each(selV.offers, (offK, offV) => {
                                             offersToBeAdded.unshift(angular.copy(offV));
                                         });
                                     }
@@ -529,8 +547,8 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
                                 }
                             });
                         });
-                        $.each(prodV.sellersCopy, function (sck, scv) {
-                            $.each(offersToBeAdded, function (offk, offv) {
+                        $.each(prodV.sellersCopy, (sck, scv) => {
+                            $.each(offersToBeAdded, (offk, offv) => {
                                 if (scv.offers.length == 0 && !offv.wasAdded) {
                                     scv.offers[0] = offv;
                                     offv.wasAdded = true;
@@ -546,31 +564,31 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
         };
 
         ctrl.recompileDefaultSellerChecks = function() {
-        	$timeout(function(){
+        	$timeout(() => {
 	        	if (ctrl.initialSelectedCheckboxesRequirements) {
 	                if (ctrl.initialSelectedCheckboxesRequirements.length != 0 || ctrl.initialSelectedCheckboxesRequirements == true) {
 	                    ctrl.requirements = [];
 	                    ctrl.initedCheckboxes = [];
 	                    ctrl.checkedCounterpartyRows = [];
-	                	$scope.$apply(function(){
+	                	$scope.$apply(() => {
 	        	            ctrl.resetSellerInitChecks = false;
-	                	})
-	                    $timeout(function(){
+	                	});
+	                    $timeout(() => {
 	                        ctrl.resetSellerInitChecks = true;
-	                    },150)
+	                    }, 150);
 	                }
 	            }
         	});
-        }
+        };
 
         function getSellerTypeIds() {
-            var sellerIdList = [];
-            for (var sellerType in ctrl.sellerTypeCheckboxes) {
+            let sellerIdList = [];
+            for (let sellerType in ctrl.sellerTypeCheckboxes) {
                 if (ctrl.sellerTypeCheckboxes[sellerType] === true) {
-                    filtered = $filter("filter")(ctrl.lists.CounterpartyType, {
+                    filtered = $filter('filter')(ctrl.lists.CounterpartyType, {
                         name: sellerType
                     })[0];
-                    if (typeof filtered != "undefined") {
+                    if (typeof filtered != 'undefined') {
                         sellerIdList.push(filtered.id);
                     }
                 }
@@ -585,22 +603,23 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
             }
             return ctrl.requests[0].requestGroup.id;
         }
+
         /**
          * Initializes screenactions (buttons) according to possible actions and request actions
          */
-        ctrl.calculateScreenActions = function () {
+        ctrl.calculateScreenActions = function() {
             if (!ctrl.requests) {
                 return false;
             }
-            var requestProducts = [];
-            var product, requestActions;
+            let requestProducts = [];
+            let product, requestActions;
             // Iterate Requests and their respective locations and products to extract actions.
-            for (var i = 0; i < ctrl.requests.length; i++) {
-                for (var j = 0; j < ctrl.requests[i].locations.length; j++) {
-                    for (var k = 0; k < ctrl.requests[i].locations[j].products.length; k++) {
+            for (let i = 0; i < ctrl.requests.length; i++) {
+                for (let j = 0; j < ctrl.requests[i].locations.length; j++) {
+                    for (let k = 0; k < ctrl.requests[i].locations[j].products.length; k++) {
                         product = ctrl.requests[i].locations[j].products[k];
                         if (
-                            $filter("filter")(requestProducts, {
+                            $filter('filter')(requestProducts, {
                                 id: product.id
                             }).length === 0
                         ) {
@@ -617,17 +636,19 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
             }
             ctrl.buttonsDisabled = false;
         };
+
         /**
          * return a list of all request ids
          * @param {Array} requests - The list of requests for which we need info.
          */
         function getRequestIds(requests) {
-            var requestIds = [];
-            for (var i = 0; i < requests.length; i++) {
+            let requestIds = [];
+            for (let i = 0; i < requests.length; i++) {
                 requestIds.push(requests[i].id);
             }
             return requestIds;
         }
+
         /**
          * Initializes the various data arrays needed by the template.
          * @param {Array} requests - The list of requests for which we need info.
@@ -636,33 +657,35 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
             productIds = getRequestGroupProductIdsCSV(requests);
             counterpatyIds = getRequestGroupCounterpartyIdsCSV(requests);
             if (!skipSellerSorting) {
-	            groupOfRequestsModel.getSellersSorted(counterpatyIds, productIds, ctrl.sellerSortOrder).then(function (data) {
+	            groupOfRequestsModel.getSellersSorted(counterpatyIds, productIds, ctrl.sellerSortOrder).then((data) => {
 	                if (data.payload !== null) {
-	                    ctrl.sellers = normalizeArrayToHash(data.payload, "counterpartyId");
+	                    ctrl.sellers = normalizeArrayToHash(data.payload, 'counterpartyId');
 	                    ctrl.sellerOrder = getSellerOrder(data.payload);
 	                }
 	                ctrl.locations = getLocationsFromRequests(requests);
-	                ctrl.groupLocationsByUniqueLocationIdentifier()
+	                ctrl.groupLocationsByUniqueLocationIdentifier();
 	                ctrl.products = getAllRequestProductList(requests);
 	                setRequestProductCount(requests);
-	                //initialize notifications
+	                // initialize notifications
 	                notificationsModel.stop();
 	                notificationsModel.start(getRequestIds(requests));
-	                //calculates screen actions
+	                // calculates screen actions
 	                ctrl.calculateScreenActions();
 	            });
-			}
+            }
         }
+
         /**
          * Initializes the lookup input fields in the template.
          * TODO: Can this be automated by iterating the UI fields?
          */
         function initializeLookupInputs() {
-            bindTypeahead("#id_Request", normalizeJSONRequestsLookupData(ctrl.autocompleteRequest), requestTypeaheadChange);
+            bindTypeahead('#id_Request', normalizeJSONRequestsLookupData(ctrl.autocompleteRequest), requestTypeaheadChange);
             // bindTypeahead('#id_Seller',
             //              normalizeJSONRequestsLookupData(ctrl.sellerAutocompleteList),
             //              sellerTypeaheadChange);
         }
+
         /**
          * Bind Twitter Typeahead functionality to a given input.
          * @param {*} selector - A valid jQuery selector.
@@ -670,7 +693,7 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
          * @param {function} cb - A callback function to call when user selects an option.
          */
         function bindTypeahead(selector, list, cb) {
-            var element = $(selector);
+            let element = $(selector);
             element
                 .typeahead(
                     {
@@ -683,59 +706,61 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
                         limit: 10
                     }
                 )
-                .bind("typeahead:select", function (event, suggestion) {
+                .bind('typeahead:select', (event, suggestion) => {
                     if (cb) {
                         cb(event, suggestion);
                     }
                 });
         }
 
-        ctrl.displayNumberOfRowsNegTable = function () {
+        ctrl.displayNumberOfRowsNegTable = function() {
             data = [
                 {
                     value: 3,
-                    name: "3"
+                    name: '3'
                 },
                 {
                     value: 5,
-                    name: "5"
+                    name: '5'
                 },
                 {
                     value: 10,
-                    name: "10"
+                    name: '10'
                 },
                 {
                     value: 999,
-                    name: "All"
+                    name: 'All'
                 }
             ];
             return data;
         };
+
         /**
          * Gets a Request object by its name, from the autocompleteRequest array.
          * @param {String} name - The Request name.
-         * @return {Object} - The Request object, if found.
+         * @returns {Object} - The Request object, if found.
          */
         function getRequestByName(name) {
-            for (var i = 0; i < ctrl.autocompleteRequest.length; i++) {
+            for (let i = 0; i < ctrl.autocompleteRequest.length; i++) {
                 if (ctrl.autocompleteRequest[i].name === name) {
                     return ctrl.autocompleteRequest[i];
                 }
             }
         }
+
         /**
          * Adds a Request to the ctrl.selectedRequests array.
          * @param {String} - A Request object name.
          */
         function addRequest(requestsList) {
-            groupOfRequestsModel.getRequests().then(function (data) {
-                payloadRequestList = _.uniq(_.map(requestsList, 'requestId'))
-                
-                if (typeof(requestsList) == "string") {
+            groupOfRequestsModel.getRequests().then((data) => {
+                payloadRequestList = _.uniq(_.map(requestsList, 'requestId'));
+
+                if (typeof requestsList == 'string') {
                 	requestName = requestsList;
 	                ctrl.autocompleteRequest = data.payload;
-	            
-	                if(alreadySaved.indexOf(requestName) != -1){
+
+	                if(alreadySaved.indexOf(requestName) != -1) {
 	                    return;
 	                }
 
@@ -745,15 +770,15 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
 	                if (request.id) {
 	                	var request = request.id;
 	                }
-                	payloadRequestList = [request];
+                	payloadRequestList = [ request ];
                 }
-                
 
-                groupOfRequestsModel.addRequestsToGroup(payloadRequestList, groupId).then(function (newRequestData) {
+
+                groupOfRequestsModel.addRequestsToGroup(payloadRequestList, groupId).then((newRequestData) => {
                     if (newRequestData.payload) {
                         newRequestAddedData = $scope.remodelSellersStructure(newRequestData.payload);
                         // newRequestAddedData = newRequestData.payload;
-                        for (var i = 0; i < newRequestAddedData.length; i++) {
+                        for (let i = 0; i < newRequestAddedData.length; i++) {
                             ctrl.requests.unshift(newRequestAddedData[i]);
                         }
                         ctrl.prefferedSellerCheckbox = true;
@@ -765,21 +790,21 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
                         // },50)
                         ctrl.recompileDefaultSellerChecks();
 
-	                    groupOfRequestsModel.getGroupInfo(groupId).then(function (data) {
-	                    	ctrl.en6MHReferenceDate = data.payload.en6MHReferenceDate
+	                    groupOfRequestsModel.getGroupInfo(groupId).then((data) => {
+	                    	ctrl.en6MHReferenceDate = data.payload.en6MHReferenceDate;
 	                    	if (data.payload.internalComments) {
-	                            ctrl.internalComments = data.payload.internalComments.replace(/<br\s?\/?>/g,"\n");
+	                            ctrl.internalComments = data.payload.internalComments.replace(/<br\s?\/?>/g, '\n');
 	                    	}
 	                    	if (data.payload.externalComments) {
-	                            ctrl.externalComments = data.payload.externalComments.replace(/<br\s?\/?>/g,"\n");
+	                            ctrl.externalComments = data.payload.externalComments.replace(/<br\s?\/?>/g, '\n');
 	                    	}
 	                    });
-
                     }
-                }).finally(function(){
+                }).finally(() => {
                 });
             });
         }
+
         /**
          * Handles changes in the Request input typeahead.
          */
@@ -787,49 +812,52 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
             // Add the request named 'suggestion'.
             addRequest(suggestion);
             // Clear the input.
-            $(event.target).typeahead("val", "");
+            $(event.target).typeahead('val', '');
         }
 
         function sellerTypeaheadChange(event, suggestion) { }
+
         /**
          * Get the minimum and nmaximum ETAs from the group of Requests.
          * @param {Requests[]} requests - An array of Requests to search in.
-         * @return {Object} An object with the "from" and "to" ETAs as properties.
+         * @returns {Object} An object with the "from" and "to" ETAs as properties.
          */
         function calcETAs(requests) {
-            var dates = [];
+            let dates = [];
             // Iterate Requests and their respective locations to extract ETAs.
-            for (var i = 0; i < requests.length; i++) {
-                for (var j = 0; j < requests[i].locations.length; j++) {
+            for (let i = 0; i < requests.length; i++) {
+                for (let j = 0; j < requests[i].locations.length; j++) {
                     dates.push(moment.utc(requests[i].locations[j].eta));
                 }
             }
             return {
-                etaFrom: moment.min(dates).format("MM/DD/YYYY HH:mm"),
-                etaTo: moment.max(dates).format("MM/DD/YYYY HH:mm")
+                etaFrom: moment.min(dates).format('MM/DD/YYYY HH:mm'),
+                etaTo: moment.max(dates).format('MM/DD/YYYY HH:mm')
             };
         }
+
         /**
          * Retrieves a CSV string made of the IDs of the products in all Requests in the Group.
          * @param {Requests[]} requests - An array of Requests (the Requests group).
-         * @return {String} Product IDs as a CSV string.
+         * @returns {String} Product IDs as a CSV string.
          */
         function getRequestGroupProductIdsCSV(requests) {
-            var ids = getRequestGroupProductIds(requests);
-            return ids.join(",");
+            let ids = getRequestGroupProductIds(requests);
+            return ids.join(',');
         }
+
         /**
          * Retrieves an array made of the IDs of the products in all Requests in the Group.
          * @param {Requests[]} requests - An array of Requests (the Requests group).
-         * @return {Array} Product IDs list
+         * @returns {Array} Product IDs list
          */
         function getRequestGroupProductIds(requests) {
-            var ids = [];
+            let ids = [];
             // Iterate Requests and their respective locations and products to extract ETAs.
-            for (var i = 0; i < requests.length; i++) {
+            for (let i = 0; i < requests.length; i++) {
                 if (!requests[i].isDeleted) {
-                    for (var j = 0; j < requests[i].locations.length; j++) {
-                        for (var k = 0; k < requests[i].locations[j].products.length; k++) {
+                    for (let j = 0; j < requests[i].locations.length; j++) {
+                        for (let k = 0; k < requests[i].locations[j].products.length; k++) {
                             ids.push(requests[i].locations[j].products[k].id);
                         }
                     }
@@ -837,21 +865,22 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
             }
             return ids;
         }
+
         /**
          * Retrieves an array made of the IDs of the counterparties in all Requests in the Group.
          * @param {Requests[]} requests - An array of Requests (the Requests group).
-         * @return {Array} Counterparty IDs list
+         * @returns {Array} Counterparty IDs list
          */
         function getRequestGroupCounterpartyIdsCSV(requests) {
-            var ids = [];
-            var counterpartyId = -1;
-            var counterparty = null;
+            let ids = [];
+            let counterpartyId = -1;
+            let counterparty = null;
             // Iterate Requests and their respective locations and products to extract ETAs.
-            for (var i = 0; i < requests.length; i++) {
+            for (let i = 0; i < requests.length; i++) {
                 if (!requests[i].isDeleted) {
-                    for (var j = 0; j < requests[i].locations.length; j++) {
-                        for (var k = 0; k < requests[i].locations[j].products.length; k++) {
-                            for (var m = 0; m < requests[i].locations[j].products[k].sellers.length; m++) {
+                    for (let j = 0; j < requests[i].locations.length; j++) {
+                        for (let k = 0; k < requests[i].locations[j].products.length; k++) {
+                            for (let m = 0; m < requests[i].locations[j].products[k].sellers.length; m++) {
                                 counterparty = requests[i].locations[j].products[k].sellers[m];
                                 if (counterparty) {
                                     counterpartyId = requests[i].locations[j].products[k].sellers[m].sellerCounterparty.id;
@@ -866,13 +895,14 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
             }
             return ids.join();
         }
+
         /**
          * Get the list of locations from the group of Requests.
          * @param {Requests[]} requests - An array of Requests to search in.
-         * @return {Requests[]} locations - A list of locations.
+         * @returns {Requests[]} locations - A list of locations.
          */
         function getLocationsFromRequests(requests) {
-            var buildedLocations = [];
+            let buildedLocations = [];
             ctrl.locations = [];
             for (var i = 0; i < requests.length; i++) {
                 if (!requests[i].isDeleted) {
@@ -883,11 +913,11 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
             }
             locationStart = 1000;
 
-            $.each(requests, function(rk,rv){
-            	rv.locations = $filter("orderBy")(rv.locations, "-recentEta", true);
+            $.each(requests, (rk, rv) => {
+            	rv.locations = $filter('orderBy')(rv.locations, '-recentEta', true);
             	rv.firstRecentEta = rv.locations.length > 0 ? rv.locations[0].recentEta : null;
-            })
-        	requests = $filter("orderBy")(requests, "-firstRecentEta", true);
+            });
+        	requests = $filter('orderBy')(requests, '-firstRecentEta', true);
         	// ctrl.selectedRequests = $filter("orderBy")(ctrl.requests, "-firstRecentEta", true);
 
             // Iterate Requests and their respective locations to extract ETAs.
@@ -896,14 +926,14 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
                     for (var j = 0; j < requests[i].locations.length; j++) {
                         requests[i].locations[j].requestId = requests[i].id;
                         uniqueLocationIdentifier = locationStart.toString();
-                        locationStart ++;
-                            // .toString(36)
-                            // .substr(2, 6);
+                        locationStart++;
+                        // .toString(36)
+                        // .substr(2, 6);
                         requests[i].locations[j].uniqueLocationIdentifier = uniqueLocationIdentifier;
                         availableBuildedLocationKey = -1;
                         if (buildedLocations.length > 0) {
                             isNewLocation = true;
-                            $.each(buildedLocations, function (buildedLocationKey, buildedLocationValue) {
+                            $.each(buildedLocations, (buildedLocationKey, buildedLocationValue) => {
                                 if (buildedLocationValue.location.id == requests[i].locations[j].location.id) {
                                     isNewLocation = false;
                                     if (buildedLocationValue.requestsIds.indexOf(requests[i].locations[j].requestId) == -1) {
@@ -916,7 +946,7 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
                         }
                         console.log(availableBuildedLocationKey);
                         if (availableBuildedLocationKey == -1) {
-                            if (typeof requests[i].locations[j].requestsIds == "undefined") {
+                            if (typeof requests[i].locations[j].requestsIds == 'undefined') {
                                 requests[i].locations[j].requestsIds = [];
                             }
                             requests[i].locations[j].requestsIds.push(requests[i].id);
@@ -930,12 +960,12 @@ angular.module("shiptech.pages").controller("GroupOfRequestsController", [
                     }
                 }
             }
-            return $filter("orderBy")(buildedLocations, "-location.name", true);
+            return $filter('orderBy')(buildedLocations, '-location.name', true);
         }
 
-ctrl.setProductData = function(data, loc) {
-	return data;
-}
+        ctrl.setProductData = function(data, loc) {
+            return data;
+        };
 
 
         /**
@@ -943,46 +973,43 @@ ctrl.setProductData = function(data, loc) {
          * @param {Requests[]} requests - An array of Requests to search in.
          */
         function getAllRequestProductList(requests) {
-            var products = [];
-            var product, requestProducts, productInList;
+            let products = [];
+            let product, requestProducts, productInList;
             // Iterate Requests and their respective locations and products to extract ETAs.
             for (var i = 0; i < requests.length; i++) {
                 if (!requests[i].isDeleted) {
                     requestProducts = [];
                     for (var j = 0; j < requests[i].locations.length; j++) {
                         currentProducts = [];
-                        for (var k = 0; k < requests[i].locations[j].products.length; k++) {
+                        for (let k = 0; k < requests[i].locations[j].products.length; k++) {
                             product = requests[i].locations[j].products[k];
-                            //if product not already in list
+                            // if product not already in list
                             // filter = $filter("filter")(requestProducts, {
                             //     product: {
                             //         name: product.product.name,
                             //         id: product.product.id
                             //     }
                             // });
-                            // filter = $filter("filter")(requestProducts, {id});                            
+                            // filter = $filter("filter")(requestProducts, {id});
                             reuseProductFlag = -1;
-                            $.each(requestProducts, function(rpk,rpv) {
+                            $.each(requestProducts, (rpk, rpv) => {
                                 // check if this product cand be displayed on a column of a previous product
-                                if ((rpv.product.id == product.product.id) && ((rpv.requestLocationId != requests[i].locations[j].location.id)))
-                                {
-                                    if (typeof(rpv.productLocations["L" + requests[i].locations[j].uniqueLocationIdentifier]) == "undefined")
-                                         reuseProductFlag = rpk;
+                                if (rpv.product.id == product.product.id && rpv.requestLocationId != requests[i].locations[j].location.id) {
+                                    if (typeof rpv.productLocations[`L${ requests[i].locations[j].uniqueLocationIdentifier}`] == 'undefined') {
+                                        reuseProductFlag = rpk;
+                                    }
                                 }
                             	currentProducts.push(rpv.id);
-                            })	
+                            });
 
                         	if (currentProducts.indexOf(product.id) == -1) {
-                                if (reuseProductFlag >= 0)
-                                {
+                                if (reuseProductFlag >= 0) {
                                     // add the current product to a previous product column
-                                    requestProducts[reuseProductFlag].productLocations["L" + requests[i].locations[j].uniqueLocationIdentifier] = product;
-                                }
-                                else
-                                {
+                                    requestProducts[reuseProductFlag].productLocations[`L${ requests[i].locations[j].uniqueLocationIdentifier}`] = product;
+                                } else {
                                     product.requestId = requests[i].id;
                                     product.productLocations = [];
-                                    product.productLocations["L" + requests[i].locations[j].uniqueLocationIdentifier] = product;
+                                    product.productLocations[`L${ requests[i].locations[j].uniqueLocationIdentifier}`] = product;
                                     requestProducts.push(product);
                                 }
                         	}
@@ -996,24 +1023,24 @@ ctrl.setProductData = function(data, loc) {
                         }
                     }
                     products.push(requestProducts);
-                    requests[i].newProductCount = requestProducts.length;	
+                    requests[i].newProductCount = requestProducts.length;
                 }
             }
             return products;
         }
-        //set number of distinct products on each request
+        // set number of distinct products on each request
         function setRequestProductCount(requests) {
-            var requestProductList, productCount;
-            for (var i = 0; i < requests.length; i++) {
+            let requestProductList, productCount;
+            for (let i = 0; i < requests.length; i++) {
                 if (!requests[i].isDeleted) {
                     productCount = 0;
                     requestProductList = [];
                     // productsOnLocationsCount = [];
-                    for (var j = 0; j < requests[i].locations.length; j++) {
-                        for (var k = 0; k < requests[i].locations[j].products.length; k++) {
+                    for (let j = 0; j < requests[i].locations.length; j++) {
+                        for (let k = 0; k < requests[i].locations[j].products.length; k++) {
                             product = requests[i].locations[j].products[k];
                             if (
-                                $filter("filter")(requestProductList, {
+                                $filter('filter')(requestProductList, {
                                     id: product.id
                                 }).length === 0
                             ) {
@@ -1029,14 +1056,15 @@ ctrl.setProductData = function(data, loc) {
                 }
             }
         }
+
         /**
          * create a tab object for each request
          * @param {Requests[]} requests - An array of Requests to search in.
          */
         function createRequestTabs(requests) {
-            var tabs = [];
-            var requestTab;
-            for (var i = 0; i < requests.length; i++) {
+            let tabs = [];
+            let requestTab;
+            for (let i = 0; i < requests.length; i++) {
                 if (!requests[i].isDeleted) {
                     requestTab = {
                         name: requests[i].name,
@@ -1047,43 +1075,44 @@ ctrl.setProductData = function(data, loc) {
             }
             return tabs;
         }
+
         /**
          * add a new seller to each product in the locations provided
          * @param {Object} seller - the new seller object
          * @param {Array} locations - the locations
          */
-        ctrl.addSellerToLocations = function (sellerId, locations) {
-            //get seller csv
-            var product, newCounterparty, newSeller;
-            var counterpatyIds = getRequestGroupCounterpartyIdsCSV(ctrl.requests);
-            var productIds = [];
-            $.each(locations[0].products, function (pk, pv) {
+        ctrl.addSellerToLocations = function(sellerId, locations) {
+            // get seller csv
+            let product, newCounterparty, newSeller;
+            let counterpatyIds = getRequestGroupCounterpartyIdsCSV(ctrl.requests);
+            let productIds = [];
+            $.each(locations[0].products, (pk, pv) => {
                 productIds.push(pv.id);
             });
             getSellersSortedPayload = {
-                RequestProductList: productIds.join(","),
+                RequestProductList: productIds.join(','),
                 RequestGroupId: ctrl.groupId,
                 LocationId: locations[0].location.id,
                 RequestSellerId: sellerId
             };
             if (ctrl.sellerIsAlreadyOnLocation(sellerId, locations[0].uniqueLocationIdentifier)) {
-                return toastr.error("The selected seller is already present on that location");
+                return toastr.error('The selected seller is already present on that location');
             }
-            groupOfRequestsModel.addSeller(getSellersSortedPayload).then(function (data) {
+            groupOfRequestsModel.addSeller(getSellersSortedPayload).then((data) => {
                 if (data.isSuccess) {
                     ctrl.newSeller = [];
                     ctrl.initScreen();
                     return false;
-                    counterpatyIds += "," + sellerId;
-                    //get sellers object info
-                    groupOfRequestsModel.getSellersSorted(counterpatyIds, productIds, ctrl.sellerSortOrder).then(function (data) {
-                        ctrl.sellers = normalizeArrayToHash(data.payload, "counterpartyId");
+                    counterpatyIds = `${counterpatyIds },${ sellerId}`;
+                    // get sellers object info
+                    groupOfRequestsModel.getSellersSorted(counterpatyIds, productIds, ctrl.sellerSortOrder).then((data) => {
+                        ctrl.sellers = normalizeArrayToHash(data.payload, 'counterpartyId');
                         ctrl.sellerOrder = getSellerOrder(data.payload);
-                        randomUnique = window.crypto.getRandomValues( new Uint8Array(1))
+                        randomUnique = window.crypto.getRandomValues(new Uint8Array(1))
                             .toString(36)
                             .substr(2, 6);
                         newCounterparty = {};
-                        $.each(data.payload, function (k, v) {
+                        $.each(data.payload, (k, v) => {
                             if (v.counterpartyId == sellerId) {
                                 newCounterparty = v;
                             }
@@ -1093,11 +1122,11 @@ ctrl.setProductData = function(data, loc) {
                         // }));
                         sellerIsAlreadyAddedToLocation = false;
                         if (ctrl.sellerIsAlreadyOnLocation(sellerId, locations[0].uniqueLocationIdentifier)) {
-                            return toastr.error("The selected seller is already present on that location");
+                            return toastr.error('The selected seller is already present on that location');
                         }
                         // if (newCounterparty || typeof(newCounterparty) == 'undefined') {
-                        for (var i = 0; i < locations.length; i++) {
-                            for (var j = 0; j < locations[i].products.length; j++) {
+                        for (let i = 0; i < locations.length; i++) {
+                            for (let j = 0; j < locations[i].products.length; j++) {
                                 product = locations[i].products[j];
                                 // if (!ctrl.productHasSeller(product, newCounterparty.counterpartyId)) {
                                 newSeller = {
@@ -1111,9 +1140,9 @@ ctrl.setProductData = function(data, loc) {
                                         physicalSupplierCounterparty: null
                                     }
                                 ];
-                                newSeller.randUnique = randomUnique + "-null";
-                                newSeller.randUniquePkg = randomUnique + "-null-individual-null";
-                                newSeller.packageType = "individual";
+                                newSeller.randUnique = `${randomUnique }-null`;
+                                newSeller.randUniquePkg = `${randomUnique }-null-individual-null`;
+                                newSeller.packageType = 'individual';
                                 newSeller.sellerCounterparty = {
                                     id: newCounterparty.counterpartyId,
                                     name: newCounterparty.counterpartyName
@@ -1125,7 +1154,7 @@ ctrl.setProductData = function(data, loc) {
                             }
                         }
                         // }
-                        //reset seller inputs template model
+                        // reset seller inputs template model
                         ctrl.newSeller = [];
                         ctrl.recompileDefaultSellerChecks();
                     });
@@ -1133,26 +1162,26 @@ ctrl.setProductData = function(data, loc) {
             });
             ctrl.changeScroll();
         };
-        ctrl.addSellerToAllLocations = function (sellerId, locations) {
-            var product, newCounterparty, newSeller;
-            var counterpatyIds = getRequestGroupCounterpartyIdsCSV(ctrl.requests);
-            var productIds = getRequestGroupProductIdsCSV(ctrl.requests);
+        ctrl.addSellerToAllLocations = function(sellerId, locations) {
+            let product, newCounterparty, newSeller;
+            let counterpatyIds = getRequestGroupCounterpartyIdsCSV(ctrl.requests);
+            let productIds = getRequestGroupProductIdsCSV(ctrl.requests);
             locationsCount = 0;
             ctrl.sellersAddedToAllLocations = 0;
-            $.each(ctrl.locations, function (k, v) {
+            $.each(ctrl.locations, (k, v) => {
                 if (!ctrl.sellerIsAlreadyOnLocation(sellerId, v.uniqueLocationIdentifier)) {
-                    locationsCount += 1;
+                    locationsCount = locationsCount + 1;
                 }
             });
-            $.each(ctrl.locations, function (k, v) {
-                setTimeout(function () {
-					var currentLocationProductIds = [];
-						$.each(v.products, function(k2,v2){
-							currentLocationProductIds.push(v2.id);
-						})
-					// $.each(locations, function(k1,v1){
-					// })                	
-					currentLocationProductIds = currentLocationProductIds.join(",");
+            $.each(ctrl.locations, (k, v) => {
+                setTimeout(() => {
+                    let currentLocationProductIds = [];
+                    $.each(v.products, (k2, v2) => {
+                        currentLocationProductIds.push(v2.id);
+                    });
+                    // $.each(locations, function(k1,v1){
+                    // })
+                    currentLocationProductIds = currentLocationProductIds.join(',');
 
                     getSellersSortedPayload = {
                         RequestProductList: currentLocationProductIds,
@@ -1161,9 +1190,9 @@ ctrl.setProductData = function(data, loc) {
                         RequestSellerId: sellerId
                     };
                     if (!ctrl.sellerIsAlreadyOnLocation(sellerId, v.uniqueLocationIdentifier)) {
-                        groupOfRequestsModel.addSeller(getSellersSortedPayload).then(function (data) {
+                        groupOfRequestsModel.addSeller(getSellersSortedPayload).then((data) => {
                             if (data.isSuccess) {
-                                ctrl.sellersAddedToAllLocations += 1;
+                                ctrl.sellersAddedToAllLocations = ctrl.sellersAddedToAllLocations + 1;
                                 if (ctrl.sellersAddedToAllLocations >= locationsCount) {
                                     ctrl.initScreen();
                                     return false;
@@ -1174,13 +1203,13 @@ ctrl.setProductData = function(data, loc) {
                 }, 100);
             });
         };
-        ctrl.sellerIsAlreadyOnLocation = function (sellerId, locationUnique) {
+        ctrl.sellerIsAlreadyOnLocation = function(sellerId, locationUnique) {
             sellerIsInLocation = false;
-            $.each(ctrl.requests, function (reqK, reqV) {
-                $.each(reqV.locations, function (locK, locV) {
+            $.each(ctrl.requests, (reqK, reqV) => {
+                $.each(reqV.locations, (locK, locV) => {
                     if (locV.uniqueLocationIdentifier == locationUnique) {
-                        $.each(locV.products, function (prodK, prodV) {
-                            $.each(prodV.sellers, function (sellerK, sellerV) {
+                        $.each(locV.products, (prodK, prodV) => {
+                            $.each(prodV.sellers, (sellerK, sellerV) => {
                                 if (sellerV.sellerCounterparty.id == sellerId) {
                                     sellerIsInLocation = true;
                                 }
@@ -1191,23 +1220,24 @@ ctrl.setProductData = function(data, loc) {
             });
             return sellerIsInLocation;
         };
+
         /**
          * callback for selecting a seller from the sellers lookup dialog
          * @param {Object} sellerID - the new seller object id
          */
-        ctrl.onSellerSelect = function (sellerId) {
-            var locations;
-            //get locations
+        ctrl.onSellerSelect = function(sellerId) {
+            let locations;
+            // get locations
             // if no input saved, add to all locations
             if (ctrl.lookupInput === null) {
                 locations = ctrl.locations;
-                //if input has been saved, only add to input model location
+                // if input has been saved, only add to input model location
             } else {
                 locations = ctrl.lookupInput;
             }
             ctrl.addSellerToLocations(sellerId, locations);
         };
-        ctrl.onSupplierSelect = function (newSupplierData) {
+        ctrl.onSupplierSelect = function(newSupplierData) {
             seller = ctrl.physicalSupplierOpenModalData.seller;
             sellerLocation = ctrl.physicalSupplierOpenModalData.location;
             newSupplier = {
@@ -1216,7 +1246,7 @@ ctrl.setProductData = function(data, loc) {
             };
             ctrl.updatePhysicalSupplierForSellers(seller, newSupplier, sellerLocation);
         };
-        ctrl.onBrokerSelect = function (newSupplierData) {
+        ctrl.onBrokerSelect = function(newSupplierData) {
             seller = ctrl.physicalSupplierOpenModalData.seller;
             sellerLocation = ctrl.physicalSupplierOpenModalData.location;
             newSupplier = {
@@ -1225,20 +1255,22 @@ ctrl.setProductData = function(data, loc) {
             };
             ctrl.updateBrokerForSellers(seller, newSupplier, sellerLocation);
         };
-        ctrl.changeSellerTypes = function () {
+        ctrl.changeSellerTypes = function() {
             ctrl.sellerTypeIds = getSellerTypeIds();
-            lookupModel.getSellerAutocompleteList(ctrl.sellerTypeIds).then(function (server_data) {
+            lookupModel.getSellerAutocompleteList(ctrl.sellerTypeIds).then((server_data) => {
                 ctrl.sellerAutocompleteList = server_data.payload;
             });
         };
+
         /**
          * Save latest lookup input model used
          *
          * @param {object} input - the input model we want to save
          */
-        ctrl.setLookupInput = function (input) {
+        ctrl.setLookupInput = function(input) {
             ctrl.lookupInput = input;
         };
+
         /**
          * Get latest product offer from seller
          *
@@ -1246,10 +1278,10 @@ ctrl.setProductData = function(data, loc) {
          * @param {array} locations - currentLocation group as retrieved from the server
          * @param {object} sellerId - sellerId we wish to get offer from
          */
-        ctrl.getSellerProductOfferOnLocation = function (product, locations, sellerId, sellerObj) {
-            var seller;
-            var theLocation;
-            //get correct location from group (the location matching the products request)
+        ctrl.getSellerProductOfferOnLocation = function(product, locations, sellerId, sellerObj) {
+            let seller;
+            let theLocation;
+            // get correct location from group (the location matching the products request)
             for (var i = 0; i < locations.length; i++) { }
             for (var i = 0; i < locations.length; i++) {
                 if (locations[i].requestId === product.requestId) {
@@ -1258,25 +1290,25 @@ ctrl.setProductData = function(data, loc) {
                 }
             }
             physicalSupplierId = null;
-            if (typeof sellerObj.offers != "undefined") {
+            if (typeof sellerObj.offers != 'undefined') {
                 if (sellerObj.offers.length > 0) {
                     if (sellerObj.offers[0].physicalSupplierCounterparty) {
                         physicalSupplierId = sellerObj.offers[0].physicalSupplierCounterparty.id;
                     }
                 }
             }
-            //if there is no matching location. return null offer
+            // if there is no matching location. return null offer
             if (!theLocation) {
                 return null;
             }
             for (i = 0; i < theLocation.products.length; i++) {
-                //productIds should match
+                // productIds should match
                 if (theLocation.products[i].product.id === product.product.id) {
-                    for (var j = 0; j < theLocation.products[i].sellers.length; j++) {
+                    for (let j = 0; j < theLocation.products[i].sellers.length; j++) {
                         seller = theLocation.products[i].sellers[j];
                         if (seller.sellerCounterparty.id == sellerId) {
                             loopPhysicalSupplierId = null;
-                            if (typeof seller.offers != "undefined") {
+                            if (typeof seller.offers != 'undefined') {
                                 if (seller.offers.length > 0) {
                                     if (seller.offers[0].physicalSupplierCounterparty) {
                                         loopPhysicalSupplierId = seller.offers[0].physicalSupplierCounterparty.id;
@@ -1293,16 +1325,16 @@ ctrl.setProductData = function(data, loc) {
             }
             return offer;
         };
-        ctrl.getSellerProductOfferOnLocationRewrite = function (product, locations, sellerId, sellerObj) {
+        ctrl.getSellerProductOfferOnLocationRewrite = function(product, locations, sellerId, sellerObj) {
             offer = null;
-            $.each(ctrl.requests, function (reqK, reqV) {
+            $.each(ctrl.requests, (reqK, reqV) => {
                 if (product.requestId == reqV.id) {
-                    $.each(reqV.locations, function (locK, locV) {
+                    $.each(reqV.locations, (locK, locV) => {
                         if (locV.uniqueLocationIdentifier == locations[0].uniqueLocationIdentifier) {
-                            $.each(locV.products, function (prodK, prodV) {
+                            $.each(locV.products, (prodK, prodV) => {
                                 if (prodV.id == product.id) {
                                     if (prodV.sellers.length > 0) {
-                                        $.each(prodV.sellers, function (selK, selV) {
+                                        $.each(prodV.sellers, (selK, selV) => {
                                             if (selV.randUniquePkg == sellerObj.randUniquePkg) {
                                                 if (selV.offers.length > 0) {
                                                     offer = selV.offers[0];
@@ -1325,16 +1357,16 @@ ctrl.setProductData = function(data, loc) {
             }
             return offer;
         };
-        ctrl.getSellerProductStatusOnLocation = function (product, locations, sellerObj) {
+        ctrl.getSellerProductStatusOnLocation = function(product, locations, sellerObj) {
             productStatus = null;
-            $.each(ctrl.requests, function (reqK, reqV) {
+            $.each(ctrl.requests, (reqK, reqV) => {
                 if (product.requestId == reqV.id) {
-                    $.each(reqV.locations, function (locK, locV) {
+                    $.each(reqV.locations, (locK, locV) => {
                         if (locV.uniqueLocationIdentifier == locations[0].uniqueLocationIdentifier) {
-                            $.each(locV.products, function (prodK, prodV) {
+                            $.each(locV.products, (prodK, prodV) => {
                                 if (prodV.id == product.id) {
                                     if (prodV.sellers.length > 0) {
-                                        $.each(prodV.sellers, function (selK, selV) {
+                                        $.each(prodV.sellers, (selK, selV) => {
                                             if (selV.randUniquePkg == sellerObj.randUniquePkg) {
                                                 productStatus = prodV.productStatus.name;
                                             }
@@ -1348,16 +1380,16 @@ ctrl.setProductData = function(data, loc) {
             });
             return productStatus;
         };
-        ctrl.getSellerRequestStatusOnLocation = function (product, locations, sellerObj) {
+        ctrl.getSellerRequestStatusOnLocation = function(product, locations, sellerObj) {
             requestStatus = null;
-            $.each(ctrl.requests, function (reqK, reqV) {
+            $.each(ctrl.requests, (reqK, reqV) => {
                 if (product.requestId == reqV.id) {
-                    $.each(reqV.locations, function (locK, locV) {
+                    $.each(reqV.locations, (locK, locV) => {
                         if (locV.uniqueLocationIdentifier == locations[0].uniqueLocationIdentifier) {
-                            $.each(locV.products, function (prodK, prodV) {
+                            $.each(locV.products, (prodK, prodV) => {
                                 if (prodV.id == product.id) {
                                     if (prodV.sellers.length > 0) {
-                                        $.each(prodV.sellers, function (selK, selV) {
+                                        $.each(prodV.sellers, (selK, selV) => {
                                             if (selV.randUniquePkg == sellerObj.randUniquePkg) {
                                                 requestStatus = reqV.requestStatus.name;
                                             }
@@ -1370,28 +1402,28 @@ ctrl.setProductData = function(data, loc) {
                 }
             });
             return requestStatus;
-        };        
-        
+        };
+
         /**
          * Get latest product offer from seller
          *
          * @param {object} product - Product DTO object as retrieved from the server
          * @param {array} locations - locations array group
          */
-        ctrl.getProductMaxQuantityOnLocation = function (product, locations) {
+        ctrl.getProductMaxQuantityOnLocation = function(product, locations) {
         	if (!product) {
         		return;
         	}
             data = {};
-            var theLocation;
-            //get correct location from group (the location matching the products request)
-            for (var i = 0; i < locations.length; i++) {
+            let theLocation;
+            // get correct location from group (the location matching the products request)
+            for (let i = 0; i < locations.length; i++) {
                 if (locations[i].requestId === product.requestId) {
                     theLocation = locations[i];
                     break;
                 }
             }
-            //if there is no matching location. return empty quantity
+            // if there is no matching location. return empty quantity
             if (!theLocation) {
                 return 0;
             }
@@ -1401,7 +1433,7 @@ ctrl.setProductData = function(data, loc) {
             //     }
             // });
             productList = [];
-            $.each(theLocation.products, function (k, v) {
+            $.each(theLocation.products, (k, v) => {
                 if (v.id == product.id) {
                     productList.push(v);
                 }
@@ -1411,37 +1443,37 @@ ctrl.setProductData = function(data, loc) {
                 data.uom = productList[0].uom;
                 data.quotePrice = productList[0].quotePrice;
                 return data;
-            } else {
-                return 0;
             }
+            return 0;
         };
+
         /**
          * Get all sellers of products in the specified location.
          *
          * @param {array} locations - array of Location DTO objects with matching location parameter as retrieved from the server
          */
-        ctrl.getSortedLocationSellers = function (locations) {
-            var sellers = [];
-            var counterpartyIds = [];
-            var seller = null;
-            var counterpartyId = -1;
-            var productList = [];
-            if (typeof locations == "undefined") {
+        ctrl.getSortedLocationSellers = function(locations) {
+            let sellers = [];
+            let counterpartyIds = [];
+            let seller = null;
+            let counterpartyId = -1;
+            let productList = [];
+            if (typeof locations == 'undefined') {
                 return false;
             }
-            //get products from grouped locations
+            // get products from grouped locations
             for (var i = 0; i < locations.length; i++) {
                 productList = productList.concat(locations[i].products);
             }
             for (i = 0; i < productList.length; i++) {
-                for (var j = 0; j < productList[i].sellers.length; j++) {
+                for (let j = 0; j < productList[i].sellers.length; j++) {
                     seller = productList[i].sellers[j];
                     if (seller) {
                         uniqueIdentifier = seller.sellerCounterparty.id;
-                        if (typeof seller.offers != "undefined") {
+                        if (typeof seller.offers != 'undefined') {
                             if (seller.offers.length > 0) {
                                 if (seller.offers[0].physicalSupplierCounterparty) {
-                                    uniqueIdentifier = seller.sellerCounterparty.id + "-" + seller.offers[0].physicalSupplierCounterparty.id;
+                                    uniqueIdentifier = `${seller.sellerCounterparty.id }-${ seller.offers[0].physicalSupplierCounterparty.id}`;
                                 }
                             }
                         }
@@ -1458,31 +1490,33 @@ ctrl.setProductData = function(data, loc) {
                     // }
                 }
             }
-            //order array to make sure we respect user sort preference
-            sellers.sort(function (a, b) {
+            // order array to make sure we respect user sort preference
+            sellers.sort((a, b) => {
                 return ctrl.sellerOrder.indexOf(a.sellerCounterparty.id) - ctrl.sellerOrder.indexOf(b.sellerCounterparty.id);
             });
             // ctrl.sortedLocationSellers = sellers
             return sellers;
         };
+
         /**
          * Get correct seller order from counterparty list.
          *
          * @param {object} counterparties - array with counterparty DTOs
          */
         function getSellerOrder(counterparties) {
-            var order = [];
-            for (var i = 0; i < counterparties.length; i++) {
+            let order = [];
+            for (let i = 0; i < counterparties.length; i++) {
                 order.push(counterparties[i].counterpartyId);
             }
             return order;
         }
 
         function getRequestById(requestId) {
-            return $filter("filter")(ctrl.requests, {
+            return $filter('filter')(ctrl.requests, {
                 id: requestId
             })[0];
         }
+
         /**
          * Remove all requirements of seller from location
          *
@@ -1490,10 +1524,10 @@ ctrl.setProductData = function(data, loc) {
          * @param {array} locations - location group list
          */
         function removeSellerRequirementsOnLocation(seller, locations, ignoreUpdate) {
-            var theLocation, req;
-            var productList = [];
-            var currentRowRequirements = [];
-            if (typeof seller == "undefined" && typeof locations == "undefined") {
+            let theLocation, req;
+            let productList = [];
+            let currentRowRequirements = [];
+            if (typeof seller == 'undefined' && typeof locations == 'undefined') {
                 return false;
             }
             physicalSupplierId = null;
@@ -1503,10 +1537,10 @@ ctrl.setProductData = function(data, loc) {
                 }
             }
             for (var i = ctrl.requirements.length - 1; i >= 0; i--) {
-                for (var j = 0; j < locations.length; j++) {
+                for (let j = 0; j < locations.length; j++) {
                     req = ctrl.requirements[i];
                     theLocation = locations[j];
-                    composedUniqueLocationSellerPhysical = theLocation.uniqueLocationIdentifier + "-" + seller.randUnique;
+                    composedUniqueLocationSellerPhysical = `${theLocation.uniqueLocationIdentifier }-${ seller.randUnique}`;
                     if (req.UniqueLocationSellerPhysical.indexOf(composedUniqueLocationSellerPhysical) > -1 && theLocation.id == req.RequestLocationId) {
                         if (req.randUniquePkg == seller.randUniquePkg) {
 				            currentRowRequirements.push(req);
@@ -1516,18 +1550,18 @@ ctrl.setProductData = function(data, loc) {
                     }
                 }
             }
-            //get products from grouped locations
+            // get products from grouped locations
             for (i = 0; i < locations.length; i++) {
                 productList = productList.concat(locations[i].products);
             }
             for (i = 0; i < productList.length; i++) {
                 ctrl.requirementRequestProductIds = removeProductFromRequestProductIds(seller, productList[i], ctrl.requirementRequestProductIds);
             }
-            //calculates screen actions
+            // calculates screen actions
             console.log(currentRowRequirements);
             seller.selected = false;
             if (!ignoreUpdate) {
-	            checkUncheckSellerRowUpdate(seller, locations, currentRowRequirements, false)
+	            checkUncheckSellerRowUpdate(seller, locations, currentRowRequirements, false);
             }
             ctrl.calculateScreenActions();
         }
@@ -1536,54 +1570,58 @@ ctrl.setProductData = function(data, loc) {
         function checkUncheckSellerRowUpdate(seller, locations, currentRowRequirements, checkBool) {
     		if (currentRowRequirements.length > 0) {
 	   //  		activeSeller = seller;
-				// checkValue = checkBool;
-				// activeRequirements = currentRowRequirements;
+                // checkValue = checkBool;
+                // activeRequirements = currentRowRequirements;
 	        	if (checkBool) {
                     // seller.selected = checkBool;
                     // setSelectedBoolOnSellerCheckbox(currentRowRequirements, checkBool)
-	        		payload = createSellerRowCheckPayload(currentRowRequirements, seller, locations, true)
+	        		payload = createSellerRowCheckPayload(currentRowRequirements, seller, locations, true);
 	        	} else {
                     // seller.selected = checkBool;
                     // setSelectedBoolOnSellerCheckbox(currentRowRequirements, checkBool)
-	        		payload = createSellerRowCheckPayload(currentRowRequirements, seller, locations, false)
+	        		payload = createSellerRowCheckPayload(currentRowRequirements, seller, locations, false);
 	        	}
-	        	if (payload == false) {return}
+	        	if (payload == false) {
+                    return;
+                }
 	        	groupOfRequestsModel.checkSellerRow(payload).then(
-	                function (response) {
-	                    setSelectedBoolOnSellerCheckbox(currentRowRequirements, checkBool, response.payload)
+	                (response) => {
+	                    setSelectedBoolOnSellerCheckbox(currentRowRequirements, checkBool, response.payload);
 	                	console.log(response);
 	                }
-	    		)
+	    		);
         	}
         }
 
         function setSelectedBoolOnSellerCheckbox(currentRowRequirements, checkBool, response) {
-        	$.each(currentRowRequirements, function(k, requirement){
+        	$.each(currentRowRequirements, (k, requirement) => {
         		currentRequirement = angular.copy(requirement);
-	            $.each(ctrl.requests, function (reqK, reqV) {
-                    $.each(reqV.locations, function (locK, locV) {
+	            $.each(ctrl.requests, (reqK, reqV) => {
+                    $.each(reqV.locations, (locK, locV) => {
                     	if (locV.id == currentRequirement.RequestLocationId) {
-	                        $.each(locV.products, function (prodK, prodV) {
+	                        $.each(locV.products, (prodK, prodV) => {
 	                        	currentProduct = angular.copy(prodV);
 	                            if (prodV.id == currentRequirement.RequestProductId) {
 					        		// console.log("++++++++ currentRowRequirements:", currentRequirement.RequestProductId, currentRequirement.randUniquePkg);
-				                	activeSellerFromResponse = _.find(response, function(obj){
+				                	activeSellerFromResponse = _.find(response, (obj) => {
 				                		return obj.requestProductId == currentRequirement.RequestProductId;
-				                	})
+				                	});
 				                	if (activeSellerFromResponse.length > 0) {
-				                		activeSellerFromResponse = activeSellerFromResponse[0]
-				                	}	                            	
+				                		activeSellerFromResponse = activeSellerFromResponse[0];
+				                	}
 
-                                    $.each(ctrl.requests, function (reqK, reqV) {
-                                        $.each(reqV.locations, function (locK, locV) {
+                                    $.each(ctrl.requests, (reqK, reqV) => {
+                                        $.each(reqV.locations, (locK, locV) => {
                                             if (locV.id == currentRequirement.RequestLocationId) {
-                                                $.each(locV.products, function (prodK, prodV) {
-                                                    var foundSeller = _.find(prodV.sellers, function(o) { return o.randUniquePkg === currentRequirement.randUniquePkg; });
+                                                $.each(locV.products, (prodK, prodV) => {
+                                                    let foundSeller = _.find(prodV.sellers, (o) => {
+                                                        return o.randUniquePkg === currentRequirement.randUniquePkg;
+                                                    });
                                                     if (foundSeller) {
                                                         fakeSellerObj = angular.copy(foundSeller);
                                                     	if (!currentRequirement.RequestSellerId) {
-                                                    		fakeSellerObj.rfq = null;	
-                                                    		fakeSellerObj.offers = [];	
+                                                    		fakeSellerObj.rfq = null;
+                                                    		fakeSellerObj.offers = [];
                                                     	}
                                                         return;
                                                     }
@@ -1594,7 +1632,7 @@ ctrl.setProductData = function(data, loc) {
 
                                     if (fakeSellerObj) {
                                         fakeSellerObj.id = activeSellerFromResponse.id;
-                                        fakeSellerObj.selected = activeSellerFromResponse.selected;  
+                                        fakeSellerObj.selected = activeSellerFromResponse.selected;
                                     }
 
                                     /*
@@ -1613,7 +1651,7 @@ ctrl.setProductData = function(data, loc) {
 
 	                                foundSeller = false;
 	                                if (prodV.sellers.length > 0) {
-	                                    $.each(prodV.sellers, function (selK, selV) {
+	                                    $.each(prodV.sellers, (selK, selV) => {
 	                                        if (selV.randUniquePkg == currentRequirement.randUniquePkg) {
 	                                        	// console.log("++++++++ found Seller" + selV.randUniquePkg + " on product: " + prodV.id)
 	                                        	foundSeller = true;
@@ -1621,14 +1659,13 @@ ctrl.setProductData = function(data, loc) {
 	                                        }
 	                                    });
 	                                }
-				                	foundSeller = _.find(prodV.sellers, function(obj){
+				                	foundSeller = _.find(prodV.sellers, (obj) => {
 				                		return obj.randUniquePkg == currentRequirement.randUniquePkg;
-				                	})
+				                	});
 				                	// console.log("++++++++ lodash found Seller"+ JSON.stringify(foundSeller) + " *** " + currentRequirement.randUniquePkg + " on product: " + prodV.id)
 				                	if (!foundSeller) {
 				                		prodV.sellers.push(fakeSellerObj);
 				                	};
-
 	                            }
 	                        });
                     	}
@@ -1638,31 +1675,31 @@ ctrl.setProductData = function(data, loc) {
         }
 
         function createSellerRowCheckPayload(requirements, seller, locations, checked) {
-            var productIds = [];
+            let productIds = [];
             hasPriceEnabled = false;
-            $.each(requirements, function (rk, rv) {
+            $.each(requirements, (rk, rv) => {
 	            if (rv.productHasOffer) {
 		            hasPriceEnabled = true;
 	            }
-	            $.each(locations, function(lk,lv){
+	            $.each(locations, (lk, lv) => {
 		            if (rv.RequestLocationId == lv.id) {
 			            productIds.push(rv.RequestProductId);
 		            }
-	            })
+	            });
             });
             if (hasPriceEnabled) {
             	return false;
             }
-            productIds = _.uniqBy(productIds, function (e) {
-				return e;
-			});
-            productIds = productIds.join(",");
+            productIds = _.uniqBy(productIds, (e) => {
+                return e;
+            });
+            productIds = productIds.join(',');
             if (!$scope.shouldSaveToggleCheckboxes()) {
-				productIds = "";
+                productIds = '';
             }
-			if (productIds == "") {
-				return false;
-			}
+            if (productIds == '') {
+                return false;
+            }
             sellersPayload = {
                 RequestProductList: productIds,
                 RequestGroupId: ctrl.groupId,
@@ -1673,48 +1710,47 @@ ctrl.setProductData = function(data, loc) {
             };
             return sellersPayload;
         }
-        
-        $scope.shouldSaveToggleCheckboxes = function(){
-        	var shouldSave = true;
-        	$.each(ctrl.requests, function(k,v){
-        		if (["Inquired","Quoted","Stemmed", "PartiallyQuoted", "PartiallyStemmed", "PartiallyInquired"].indexOf(v.requestStatus.name) != -1) {
+
+        $scope.shouldSaveToggleCheckboxes = function() {
+        	let shouldSave = true;
+        	$.each(ctrl.requests, (k, v) => {
+        		if ([ 'Inquired', 'Quoted', 'Stemmed', 'PartiallyQuoted', 'PartiallyStemmed', 'PartiallyInquired' ].indexOf(v.requestStatus.name) != -1) {
 		        	shouldSave = false;
         		}
-        	})
+        	});
         	return shouldSave;
-        }
+        };
 
         ctrl.sellerShouldBeCheckedOnInit = function(locationLocationId, productId, sellerCounterpartyId, sellerRandUniquePkg, uniqueLocationIdentifier) {
-
-        	var locationId = locationLocationId;
-        	var prodId = productId;
-        	var sellerId = sellerCounterpartyId;
-        	var randUniquePkg = sellerRandUniquePkg;
-        	var locationIdentifier = uniqueLocationIdentifier;
+        	let locationId = locationLocationId;
+        	let prodId = productId;
+        	let sellerId = sellerCounterpartyId;
+        	let randUniquePkg = sellerRandUniquePkg;
+        	let locationIdentifier = uniqueLocationIdentifier;
 
         	// for individual checkbox
-            var isSelected = false;
-            var sellerExistsForProduct = false;
-            $.each(ctrl.requests, function (reqK, reqV) {
+            let isSelected = false;
+            let sellerExistsForProduct = false;
+            $.each(ctrl.requests, (reqK, reqV) => {
             	loopRequest = reqV;
-                $.each(reqV.locations, function (locK, locV) {
+                $.each(reqV.locations, (locK, locV) => {
                 	if (locV.location.id == locationId) {
-	                    $.each(locV.products, function (prodK, prodV) {
+	                    $.each(locV.products, (prodK, prodV) => {
 	                    	if (prodV.id == prodId) {
-		                        $.each(prodV.sellers, function (sellerK, sellerV) {
+		                        $.each(prodV.sellers, (sellerK, sellerV) => {
 		                            if (sellerV.sellerCounterparty.id == sellerId && sellerRandUniquePkg == sellerV.randUniquePkg) {
 							            sellerExistsForProduct = true;
 		           						currentCheckRequestData = loopRequest;
-		           						hasNoQuote = false;                 	
+		           						hasNoQuote = false;
 		                                if (sellerV.offers) {
 		                                    if (sellerV.offers.length > 0) {
 		                                        if (!sellerV.offers[0].hasNoQuote) {
-		                       						hasNoQuote = sellerV.offers[0].hasNoQuote;                 	
+		                       						hasNoQuote = sellerV.offers[0].hasNoQuote;
 		                                        }
 		                                    }
 		                                }
 		                                if (!hasNoQuote) {
-		                                	if (/*(sellerV.isPreferredSeller && sellerV.selected == null) ||*/ (sellerV.selected == true) || sellerV.selected == null) {
+		                                	if (/* (sellerV.isPreferredSeller && sellerV.selected == null) ||*/ sellerV.selected == true || sellerV.selected == null) {
 				                                isSelected = true;
 		                                	}
 		                                }
@@ -1733,44 +1769,48 @@ ctrl.setProductData = function(data, loc) {
             // 	isSelected = false;
             // }
             if (!$scope.shouldSaveToggleCheckboxes()) {
-				isSelected = false;
-            }            
-
-            return isSelected
-
-            if (typeof(ctrl.checkedCounterpartyRows) == "undefined") {
-            	ctrl.checkedCounterpartyRows = []
+                isSelected = false;
             }
-            if (typeof(ctrl.initedCheckboxes) == "undefined") {
-            	ctrl.initedCheckboxes = []
-            }
-            if (ctrl.initedCheckboxes[locationId +"-"+ prodId +"-"+ sellerId]) {return}
-            if (!ctrl.initedCheckboxes[locationId +"-"+ prodId +"-"+ sellerId]) {ctrl.initedCheckboxes[locationId +"-"+ prodId +"-"+ sellerId] = true}
 
-            if (randUniquePkg+" - "+locationIdentifier == "61-null-individual-null - 1001") {
+            return isSelected;
+
+            if (typeof ctrl.checkedCounterpartyRows == 'undefined') {
+            	ctrl.checkedCounterpartyRows = [];
+            }
+            if (typeof ctrl.initedCheckboxes == 'undefined') {
+            	ctrl.initedCheckboxes = [];
+            }
+            if (ctrl.initedCheckboxes[`${locationId }-${ prodId }-${ sellerId}`]) {
+                return;
+            }
+            if (!ctrl.initedCheckboxes[`${locationId }-${ prodId }-${ sellerId}`]) {
+                ctrl.initedCheckboxes[`${locationId }-${ prodId }-${ sellerId}`] = true;
+            }
+
+            if (`${randUniquePkg} - ${locationIdentifier}` == '61-null-individual-null - 1001') {
             	// debugger;
-            }	
+            }
 
-	            if (typeof(ctrl.checkedCounterpartyRows[randUniquePkg+"-"+locationIdentifier]) == 'undefined') {
-		            ctrl.checkedCounterpartyRows[randUniquePkg+"-"+locationIdentifier] = false;
+	            if (typeof ctrl.checkedCounterpartyRows[`${randUniquePkg}-${locationIdentifier}`] == 'undefined') {
+		            ctrl.checkedCounterpartyRows[`${randUniquePkg}-${locationIdentifier}`] = false;
 	            }
-	            $.each(ctrl.requests, function (reqK, reqV) {
-	            	$.each(reqV.locations, function (locK, locV) {
+	            $.each(ctrl.requests, (reqK, reqV) => {
+	            	$.each(reqV.locations, (locK, locV) => {
 	            		if (locationIdentifier == locV.uniqueLocationIdentifier) {
-		            		$.each(locV.products, function (prodK, prodV) {
-		            			$.each(prodV.sellers, function (sellerK, sellerV) {
+		            		$.each(locV.products, (prodK, prodV) => {
+		            			$.each(prodV.sellers, (sellerK, sellerV) => {
 		            				if (sellerV.randUniquePkg == randUniquePkg) {
-		            					hasNoQuote = false;                 	
+		            					hasNoQuote = false;
 		            					if (sellerV.offers) {
 		            						if (sellerV.offers.length > 0) {
 		            							if (!sellerV.offers[0].hasNoQuote) {
-		            								hasNoQuote = sellerV.offers[0].hasNoQuote;                 	
+		            								hasNoQuote = sellerV.offers[0].hasNoQuote;
 		            							}
 		            						}
 		            					}
 		            					if (!hasNoQuote) {
-		            						if ((sellerV.isPreferredSeller && sellerV.selected == null) || (sellerV.selected == true)) {
-		            							ctrl.checkedCounterpartyRows[randUniquePkg+"-"+locationIdentifier] = true;
+		            						if (sellerV.isPreferredSeller && sellerV.selected == null || sellerV.selected == true) {
+		            							ctrl.checkedCounterpartyRows[`${randUniquePkg}-${locationIdentifier}`] = true;
 		            						}
 		            					}
 		            				}
@@ -1779,24 +1819,23 @@ ctrl.setProductData = function(data, loc) {
 	            		}
 	            	});
 	            });
-			// console.log(locationId, prodId, sellerId) ;
-            console.log("*************", locationId +"-"+ prodId +"-"+ sellerId , ctrl.checkedCounterpartyRows[randUniquePkg+"-"+locationIdentifier]);
+            // console.log(locationId, prodId, sellerId) ;
+            console.log('*************', `${locationId }-${ prodId }-${ sellerId}`, ctrl.checkedCounterpartyRows[`${randUniquePkg}-${locationIdentifier}`]);
 
-            setTimeout(function(){
+            setTimeout(() => {
 	            ctrl.initialSelectedCheckboxesRequirements = angular.copy(ctrl.requirements);
 	            console.log(ctrl.initialSelectedCheckboxesRequirements);
-            },250)
-			return ctrl.checkedCounterpartyRows[randUniquePkg+"-"+locationIdentifier];
-
-        }
+            }, 250);
+            return ctrl.checkedCounterpartyRows[`${randUniquePkg}-${locationIdentifier}`];
+        };
 
 
         function removeAllSellerRequirements() {
             ctrl.requirements = [];
         }
-        ctrl.productHasSeller = function (product, sellerId) {
+        ctrl.productHasSeller = function(product, sellerId) {
             return (
-                $filter("filter")(
+                $filter('filter')(
                     product.sellers,
                     {
                         sellerCounterparty: {
@@ -1807,6 +1846,7 @@ ctrl.setProductData = function(data, loc) {
                 ).length > 0
             );
         };
+
         /**
          * Remove product requirements of seller from location
          *
@@ -1815,38 +1855,38 @@ ctrl.setProductData = function(data, loc) {
          * @param {object} product - product object
          */
         function removeSellerProductRequirementsOnLocation(seller, locations, product, event) {
-            var theLocation;
-            if (typeof sellerId == "undefined" && typeof locations == "undefined" && typeof product == "undefined") {
+            let theLocation;
+            if (typeof sellerId == 'undefined' && typeof locations == 'undefined' && typeof product == 'undefined') {
                 return false;
             }
-            //get correct location from group (the location matching the products request)
+            // get correct location from group (the location matching the products request)
             for (var i = 0; i < locations.length; i++) {
                 if (locations[i].requestId === product.requestId) {
                     theLocation = locations[i];
                     break;
                 }
             }
-            //if there is no matching location. product is not available
+            // if there is no matching location. product is not available
             if (!theLocation) {
                 return false;
             }
             for (i = ctrl.requirements.length - 1; i >= 0; i--) {
                 req = ctrl.requirements[i];
-                composedUniqueLocationSellerPhysical = theLocation.uniqueLocationIdentifier + "-" + seller.randUnique;
+                composedUniqueLocationSellerPhysical = `${theLocation.uniqueLocationIdentifier }-${ seller.randUnique}`;
                 if (req.UniqueLocationSellerPhysical.indexOf(composedUniqueLocationSellerPhysical) > -1 && theLocation.id == req.RequestLocationId && product.id == req.RequestProductId) {
                     if (req.randUniquePkg == seller.randUniquePkg) {
-		                if (typeof(event) != 'undefined') {
-				            checkUncheckSellerRowUpdate(seller, locations, [ctrl.requirements[i]], false)
-		                }                        
+		                if (typeof event != 'undefined') {
+				            checkUncheckSellerRowUpdate(seller, locations, [ ctrl.requirements[i] ], false);
+		                }
                         ctrl.requirements.splice(i, 1);
                     }
                 }
             }
             ctrl.requirementRequestProductIds = removeProductFromRequestProductIds(seller, product, ctrl.requirementRequestProductIds);
-            //calculates screen actions
+            // calculates screen actions
             ctrl.calculateScreenActions();
         }
-        ctrl.removePackageRequirements = function (seller, locations, productSample) {
+        ctrl.removePackageRequirements = function(seller, locations, productSample) {
             for (i = ctrl.requirements.length - 1; i >= 0; i--) {
                 req = ctrl.requirements[i];
                 if (req.randUniquePkg == seller.randUniquePkg) {
@@ -1862,53 +1902,56 @@ ctrl.setProductData = function(data, loc) {
         };
 
         function removeProductFromRequestProductIds(seller, product, ids) {
-            var result = ids;
-            for (var i = ids.length - 1; i >= 0; i--) {
+            let result = ids;
+            for (let i = ids.length - 1; i >= 0; i--) {
                 if (ids[i].requestProductId == product.id && ids[i].productSellerId == seller.sellerCounterparty.id) {
                     result.splice(i, 1);
                 }
             }
             return result;
         }
+
         /**
          * Handle selecting a request from lookup
          *
          * @param {object} request - request object to be added
          */
-        ctrl.selectRequest = function (requestList) {
+        ctrl.selectRequest = function(requestList) {
             addRequest(requestList);
         };
-        ctrl.getSellerProductTotalOnLocation = function (products, locations, sellerId) {
-            var total = 0;
-            var seller, offer, product, requestProductsInLocation;
-            var theLocation;
-            //get correct location from group (the location matching the products request)
+        ctrl.getSellerProductTotalOnLocation = function(products, locations, sellerId) {
+            let total = 0;
+            let seller, offer, product, requestProductsInLocation;
+            let theLocation;
+            // get correct location from group (the location matching the products request)
             for (var i = 0; i < locations.length; i++) {
                 if (locations[i].requestId === products[0].requestId) {
                     theLocation = locations[i];
                     break;
                 }
             }
-            //if there is no matching location. return empty total
+            // if there is no matching location. return empty total
             if (!theLocation) {
                 return 0;
             }
             for (i = 0; i < theLocation.products.length; i++) {
                 product = theLocation.products[i];
-                requestProductsInLocation = $filter("filter")(products, {
+                requestProductsInLocation = $filter('filter')(products, {
                     // product: {
                     //     id: product.product.id
                     // }
                     id : product.id
                 });
                 if (requestProductsInLocation.length > 0 && requestProductsInLocation[0].requestId == theLocation.requestId) {
-                    for (var j = 0; j < product.sellers.length; j++) {
+                    for (let j = 0; j < product.sellers.length; j++) {
                         seller = product.sellers[j];
                         if (seller.sellerCounterparty.id == sellerId) {
                             offer = ctrl.getSellerLatestOffer(seller);
                             if (offer) {
-                                total += offer.totalAmount;
-                                if (!total) total = 0;
+                                total = total + offer.totalAmount;
+                                if (!total) {
+                                    total = 0;
+                                }
                             }
                         }
                     }
@@ -1916,19 +1959,20 @@ ctrl.setProductData = function(data, loc) {
             }
             return total;
         };
+
         /**
          * Get latest seller offer from product seller list.
          *
          * @param {object} seller - a product seller object
          */
-        ctrl.getSellerLatestOffer = function (seller) {
+        ctrl.getSellerLatestOffer = function(seller) {
             if (!seller || !seller.offers || seller.offers.length === 0) {
                 return null;
             }
-            var latestDate = moment(seller.offers[0].quoteDate, moment.ISO_8601);
-            var latestOffer = seller.offers[0];
-            var currentDate;
-            for (var i = 0; i < seller.offers.length; i++) {
+            let latestDate = moment(seller.offers[0].quoteDate, moment.ISO_8601);
+            let latestOffer = seller.offers[0];
+            let currentDate;
+            for (let i = 0; i < seller.offers.length; i++) {
                 currentOfferDate = moment(seller.offers[0].quoteDate, moment.ISO_8601);
                 if (currentOfferDate.isAfter(latestDate)) {
                     latestDate = currentOfferDate;
@@ -1937,56 +1981,60 @@ ctrl.setProductData = function(data, loc) {
             }
             return latestOffer;
         };
+
         /**
          * Determine the expanded status of a request tab.
          *
          * @param {integer} index - The request tab index in the ctrl.requestTabs array.
          */
-        ctrl.isRequestTabExpanded = function (index) {
-            if (typeof ctrl.requestTabs[index] != "undefined") {
+        ctrl.isRequestTabExpanded = function(index) {
+            if (typeof ctrl.requestTabs[index] != 'undefined') {
                 return ctrl.requestTabs[index].expanded;
             }
             return false;
         };
+
         /**
          * Toggle the expanded state of a request tab from the Group of Requests table.
          *
          * @param {integer} index - The request tab index in the ctrl.requestTabs array.
          */
-        ctrl.toggleRequestTab = function (index) {
+        ctrl.toggleRequestTab = function(index) {
             ctrl.requestTabs[index].expanded = !ctrl.requestTabs[index].expanded;
         };
-        ctrl.expandAll = function(){
-            //debugger;
-            ctrl.isSellerHistoryExpanded = !ctrl.isSellerHistoryExpanded
-           //ctrl.isRequestTabExpanded = !ctrl.isRequestTabExpanded;
-           ctrl.commentsSectionIsExpanded = !ctrl.commentsSectionIsExpanded;
-           ctrl.counterpartyDetailsIsExpanded = !ctrl.counterpartyDetailsIsExpanded;
-           ctrl.allExpanded = !ctrl.allExpanded;
-        }
-        ctrl.toggleEnergyContentTab = function (product, prodKey) {
+        ctrl.expandAll = function() {
+            // debugger;
+            ctrl.isSellerHistoryExpanded = !ctrl.isSellerHistoryExpanded;
+            // ctrl.isRequestTabExpanded = !ctrl.isRequestTabExpanded;
+            ctrl.commentsSectionIsExpanded = !ctrl.commentsSectionIsExpanded;
+            ctrl.counterpartyDetailsIsExpanded = !ctrl.counterpartyDetailsIsExpanded;
+            ctrl.allExpanded = !ctrl.allExpanded;
+        };
+        ctrl.toggleEnergyContentTab = function(product, prodKey) {
             if (ctrl.isEnergyCalculationRequired) {
                 console.log(product);
-                if (typeof ctrl.energyContentExpanded == "undefined") {
+                if (typeof ctrl.energyContentExpanded == 'undefined') {
                     ctrl.energyContentExpanded = [];
                 }
-                ctrl.energyContentExpanded["prod" + product.requestId + prodKey] = !ctrl.energyContentExpanded["prod" + product.requestId + prodKey];
-                ctrl.priceExpanded["prod" + product.requestId + prodKey] = !ctrl.priceExpanded["prod" + product.requestId + prodKey];
+                ctrl.energyContentExpanded[`prod${ product.requestId }${prodKey}`] = !ctrl.energyContentExpanded[`prod${ product.requestId }${prodKey}`];
+                ctrl.priceExpanded[`prod${ product.requestId }${prodKey}`] = !ctrl.priceExpanded[`prod${ product.requestId }${prodKey}`];
             } else {
-                if (typeof ctrl.priceExpanded == "undefined") {
+                if (typeof ctrl.priceExpanded == 'undefined') {
                     ctrl.priceExpanded = [];
                 }
-                ctrl.priceExpanded["prod" + product.requestId + prodKey] = !ctrl.priceExpanded["prod" + product.requestId + prodKey];
+                ctrl.priceExpanded[`prod${ product.requestId }${prodKey}`] = !ctrl.priceExpanded[`prod${ product.requestId }${prodKey}`];
             }
         };
+
         /**
          * Set lookup dialog variables
          *
          * @param {string} type - The type of content we want the dialog to show
          */
-        ctrl.setDialogType = function (type) {
+        ctrl.setDialogType = function(type) {
             ctrl.lookupType = type;
         };
+
         /**
          * check if requirement has been created for parameter pairings
          *
@@ -1995,20 +2043,20 @@ ctrl.setProductData = function(data, loc) {
          * @param {string} product - requirement product
          * @param {string} productOffer - requirement product offer (if none available, skip product)
          */
-        ctrl.hasSellerProductRequirements = function (sellerObj, locations, physicalSupplierId, product) {
-            var req, locationProduct;
-            var theLocation;
-            if (typeof sellerId == "undefined" && typeof locations == "undefined" && typeof product == "undefined") {
+        ctrl.hasSellerProductRequirements = function(sellerObj, locations, physicalSupplierId, product) {
+            let req, locationProduct;
+            let theLocation;
+            if (typeof sellerId == 'undefined' && typeof locations == 'undefined' && typeof product == 'undefined') {
                 return false;
             }
-            //get correct location from group (the location matching the products request)
+            // get correct location from group (the location matching the products request)
             for (var i = 0; i < locations.length; i++) {
                 if (locations[i].requestId === product.requestId) {
                     theLocation = locations[i];
                     break;
                 }
             }
-            //if there is no matching location. product is not available
+            // if there is no matching location. product is not available
             if (!theLocation) {
                 return false;
             }
@@ -2016,7 +2064,7 @@ ctrl.setProductData = function(data, loc) {
                 req = ctrl.requirements[i];
                 if (req.randUniquePkg == sellerObj.randUniquePkg) {
                     if (theLocation.location.id == req.LocationId && theLocation.id == req.RequestLocationId) {
-                        for (var j = 0; j < theLocation.products.length; j++) {
+                        for (let j = 0; j < theLocation.products.length; j++) {
                             locationProduct = theLocation.products[j];
                             if (product.id == req.RequestProductId && product.requestId == req.RequestId) {
                                 return true;
@@ -2027,64 +2075,67 @@ ctrl.setProductData = function(data, loc) {
             }
             return false;
         };
+
         /**
          * check if requirement has been created for parameter pairings
          *
          * @param {integer} sellerId - requirement seller id
          * @param {array} locations - location group where requirement is created
          */
-        ctrl.hasCounterpartyAllRowRequirements = function (sellerId, locations, sellerObj) {
-            var req;
+        ctrl.hasCounterpartyAllRowRequirements = function(sellerId, locations, sellerObj) {
+            let req;
             physicalSupplierId = null;
 
-			/*rewrite*/
-			    uniqueRowIdentifier = sellerObj.randUniquePkg + "-" + locations[0].uniqueLocationIdentifier
-			    rowCheckboxes = $("[unique-row-identifier='"+uniqueRowIdentifier+"']");
+            /* rewrite*/
+			    uniqueRowIdentifier = `${sellerObj.randUniquePkg }-${ locations[0].uniqueLocationIdentifier}`;
+			    rowCheckboxes = $(`[unique-row-identifier='${uniqueRowIdentifier }']`);
 			    rowCheckboxesLength = rowCheckboxes.length;
 			    checkedRowCheckboxes = 0;
-			    $.each(rowCheckboxes, function(){
-			    	if (!$(this).is(":visible")) {
+			    $.each(rowCheckboxes, function() {
+			    	if (!$(this).is(':visible')) {
 			    		rowCheckboxesLength--;
 			    	}
-			    	if ($(this).prop("checked") == true) {
+			    	if ($(this).prop('checked') == true) {
 			            checkedRowCheckboxes++;
 			    	}
-			    })
+			    });
 			    if (checkedRowCheckboxes >= rowCheckboxesLength) {
-			    	return true
+			    	return true;
 			    }
-			    return false
-			/*rewrite*/        	
-        }        
-        ctrl.hasSellerRequirements = function (sellerId, locations, sellerObj) {
-            var req;
+			    return false;
+
+            /* rewrite*/
+        };
+        ctrl.hasSellerRequirements = function(sellerId, locations, sellerObj) {
+            let req;
             physicalSupplierId = null;
 
-			/*rewrite*/
-			    uniqueRowIdentifier = sellerObj.randUniquePkg + "-" + locations[0].uniqueLocationIdentifier
-			    rowCheckboxes = $("[unique-row-identifier='"+uniqueRowIdentifier+"']");
+            /* rewrite*/
+			    uniqueRowIdentifier = `${sellerObj.randUniquePkg }-${ locations[0].uniqueLocationIdentifier}`;
+			    rowCheckboxes = $(`[unique-row-identifier='${uniqueRowIdentifier }']`);
 			    rowCheckboxesLength = rowCheckboxes.length;
 			    checkedRowCheckboxes = 0;
-			    $.each(rowCheckboxes, function(){
-			    	if (!$(this).is(":visible")) {
+			    $.each(rowCheckboxes, function() {
+			    	if (!$(this).is(':visible')) {
 			    		rowCheckboxesLength--;
 			    	}
-			    	if ($(this).prop("checked") == true) {
+			    	if ($(this).prop('checked') == true) {
 			            checkedRowCheckboxes++;
 			    	}
-			    })
+			    });
 			    if (checkedRowCheckboxes >= rowCheckboxesLength) {
-			    	return true
+			    	return true;
 			    }
-			    return false
-			/*rewrite*/        	
-        }
-        ctrl.hasSellerRequirements = function (sellerId, locations, sellerObj) {
-            var req;
-            var theLocation;
+			    return false;
+
+            /* rewrite*/
+        };
+        ctrl.hasSellerRequirements = function(sellerId, locations, sellerObj) {
+            let req;
+            let theLocation;
             physicalSupplierId = null;
 
-			/*rewrite*/
+            /* rewrite*/
 			    // uniqueRowIdentifier = sellerObj.randUniquePkg + "-" + locations[0].uniqueLocationIdentifier
 			    // rowCheckboxes = $("[unique-row-identifier='"+uniqueRowIdentifier+"']");
 			    // rowCheckboxesLength = rowCheckboxes.length;
@@ -2101,7 +2152,7 @@ ctrl.setProductData = function(data, loc) {
 			    // 	return true
 			    // }
 			    // return false
-			/*rewrite*/
+            /* rewrite*/
 
 
             checkAllCheckboxesDefault();
@@ -2110,17 +2161,17 @@ ctrl.setProductData = function(data, loc) {
                     physicalSupplierId = sellerObj.offers[0].physicalSupplierCounterparty.id;
                 }
             }
-            if (typeof sellerId == "undefined" && typeof locations == "undefined" && typeof physicalSupplierId == "undefined") {
+            if (typeof sellerId == 'undefined' && typeof locations == 'undefined' && typeof physicalSupplierId == 'undefined') {
                 return false;
             }
-            for (var i = 0; i < ctrl.requirements.length; i++) {
-                for (var j = 0; j < locations.length; j++) {
+            for (let i = 0; i < ctrl.requirements.length; i++) {
+                for (let j = 0; j < locations.length; j++) {
                     requirement = ctrl.requirements[i];
                     theLocation = locations[j];
                     // if (sellerId == requirement.SellerId && location.location.id == requirement.LocationId && location.id == requirement.RequestLocationId && physicalSupplierId == requirement.PhysicalSupplierCounterpartyId) {
                     //     return true;
                     // }
-                    composedUniqueLocationSellerPhysical = theLocation.uniqueLocationIdentifier + "-" + sellerObj.randUnique;
+                    composedUniqueLocationSellerPhysical = `${theLocation.uniqueLocationIdentifier }-${ sellerObj.randUnique}`;
                     if (requirement.UniqueLocationSellerPhysical == composedUniqueLocationSellerPhysical && requirement.randUniquePkg == sellerObj.randUniquePkg) {
                         /* update requirementData in case row was checked before making changes on the row */
                         requirement.PhysicalSupplierCounterpartyId = physicalSupplierId;
@@ -2130,32 +2181,33 @@ ctrl.setProductData = function(data, loc) {
             }
             return false;
         };
-        ctrl.hasPackageRequirement = function (seller) {
+        ctrl.hasPackageRequirement = function(seller) {
             hasRequirement = false;
-            $.each(ctrl.requirements, function (rV, rV) {
+            $.each(ctrl.requirements, function(rV, rV) {
                 if (rV.randUniquePkg == seller.randUniquePkg) {
                     hasRequirement = true;
                 }
             });
             return hasRequirement;
         };
+
         /**
          * check if product has requirements created for it
          *
          * @param {integer} productId - requirement product id
          */
         function productHasRequirements(productId) {
-            for (var i = 0; i < ctrl.requirements.length; i++) {
+            for (let i = 0; i < ctrl.requirements.length; i++) {
                 if (productId == ctrl.requirements[i].RequestProductId) {
                     return true;
                 }
             }
             return false;
         }
-        ctrl.calcStackBarStyles = function (left, right) {
+        ctrl.calcStackBarStyles = function(left, right) {
             left = parseFloat(left);
             right = parseFloat(right);
-            var total = left + right,
+            let total = left + right,
                 rightPerc,
                 leftPerc;
             if (total !== 0) {
@@ -2175,23 +2227,24 @@ ctrl.setProductData = function(data, loc) {
                 leftPerc = 70;
             }
             return {
-                left: leftPerc + "%",
-                right: rightPerc + "%"
+                left: `${leftPerc }%`,
+                right: `${rightPerc }%`
             };
         };
+
         /**
          * check if product is available on the location
          *
          * @param {object} product - product object
          * @param {array} locations - location group where seller is checked
          */
-        ctrl.productAvailableOnLocation = function (product, locations) {
+        ctrl.productAvailableOnLocation = function(product, locations) {
             productAvailable = false;
-            $.each(ctrl.requests, function (reqK, reqV) {
+            $.each(ctrl.requests, (reqK, reqV) => {
                 if (reqV.id == product.requestId) {
-                    $.each(reqV.locations, function (locK, locV) {
+                    $.each(reqV.locations, (locK, locV) => {
                         if (locV.uniqueLocationIdentifier == locations[0].uniqueLocationIdentifier) {
-                            $.each(locV.products, function (prodK, prodV) {
+                            $.each(locV.products, (prodK, prodV) => {
                                 if (prodV.product.id == product.product.id) {
                                     productAvailable = true;
                                 }
@@ -2202,12 +2255,12 @@ ctrl.setProductData = function(data, loc) {
             });
             return productAvailable;
         };
-        ctrl.hasAction = function (action) {
+        ctrl.hasAction = function(action) {
             return screenActionsModel.hasAction(action, uiApiModel.getScreenActions());
         };
-        ctrl.setDelinkIds = function () {
-            var selectedRequestIds = [];
-            Object.keys(ctrl.requestCheckboxes).forEach(function (key) {
+        ctrl.setDelinkIds = function() {
+            let selectedRequestIds = [];
+            Object.keys(ctrl.requestCheckboxes).forEach((key) => {
                 if (ctrl.requestCheckboxes[key]) {
                     selectedRequestIds.push(key);
                 }
@@ -2223,21 +2276,21 @@ ctrl.setProductData = function(data, loc) {
             //     ctrl.delinkRequests(selectedRequestIds);
             // });
         };
-        ctrl.delinkRequests = function (requestIds) {
-            for (var i = ctrl.requests.length - 1; i >= 0; i--) {
-                if (requestIds.indexOf("" + ctrl.requests[i].id) != -1) {
+        ctrl.delinkRequests = function(requestIds) {
+            for (let i = ctrl.requests.length - 1; i >= 0; i--) {
+                if (requestIds.indexOf(`${ ctrl.requests[i].id}`) != -1) {
                     ctrl.requests.splice(i, 1);
                 }
             }
             ctrl.requestTabs = createRequestTabs(ctrl.requests);
             initializeDataArrays(ctrl.requests);
         };
-        ctrl.sortSellers = function () {
+        ctrl.sortSellers = function() {
             initializeDataArrays(ctrl.requests);
         };
-        ctrl.noRequestsSelected = function () {
-            var selectedRequestIds = [];
-            Object.keys(ctrl.requestCheckboxes).forEach(function (key) {
+        ctrl.noRequestsSelected = function() {
+            let selectedRequestIds = [];
+            Object.keys(ctrl.requestCheckboxes).forEach((key) => {
                 if (ctrl.requestCheckboxes[key]) {
                     selectedRequestIds.push(key);
                 }
@@ -2245,27 +2298,27 @@ ctrl.setProductData = function(data, loc) {
             });
             return selectedRequestIds.length <= 0;
         };
-        ctrl.requirementsAreCorrect = function () {
-            var requirement;
-            var isCorrect = true;
+        ctrl.requirementsAreCorrect = function() {
+            let requirement;
+            let isCorrect = true;
             if (ctrl.requirements.length == 0 || !ctrl.requirements) {
                 return false;
             }
-            for (var i = 0; i < ctrl.requirements.length; i++) {
+            for (let i = 0; i < ctrl.requirements.length; i++) {
                 requirement = ctrl.requirements[i];
-                if (typeof requirement.PricingTypeId == "undefined" || requirement.PricingTypeId === null) {
+                if (typeof requirement.PricingTypeId == 'undefined' || requirement.PricingTypeId === null) {
                     isCorrect = false;
                     break;
                 }
-                if (typeof requirement.SellerId == "undefined" || requirement.SellerId === null) {
+                if (typeof requirement.SellerId == 'undefined' || requirement.SellerId === null) {
                     isCorrect = false;
                     break;
                 }
-                if (typeof requirement.ProductId == "undefined" || requirement.ProductId === null) {
+                if (typeof requirement.ProductId == 'undefined' || requirement.ProductId === null) {
                     isCorrect = false;
                     break;
                 }
-                if (typeof requirement.RequestLocationId == "undefined" || requirement.RequestLocationId === null) {
+                if (typeof requirement.RequestLocationId == 'undefined' || requirement.RequestLocationId === null) {
                     isCorrect = false;
                     break;
                 }
@@ -2276,24 +2329,24 @@ ctrl.setProductData = function(data, loc) {
             }
             return isCorrect;
         };
-        ctrl.requirementsAreCorrectForConfirm = function () {
-            var requirement;
-            var isCorrect = true;
-            var existingRequestProductIds = [];
+        ctrl.requirementsAreCorrectForConfirm = function() {
+            let requirement;
+            let isCorrect = true;
+            let existingRequestProductIds = [];
             if (ctrl.requirementRequestProductIds.length == 0) {
                 return false;
             }
-            for (var i = 0; i < ctrl.requirementRequestProductIds.length; i++) {
+            for (let i = 0; i < ctrl.requirementRequestProductIds.length; i++) {
                 requirement = ctrl.requirementRequestProductIds[i];
-                if (typeof requirement.requestOfferId == "undefined" || requirement.requestOfferId === null) {
+                if (typeof requirement.requestOfferId == 'undefined' || requirement.requestOfferId === null) {
                     isCorrect = false;
                     break;
                 }
-                if (requirement.productStatus.name == "Amended") {
+                if (requirement.productStatus.name == 'Amended') {
                     isCorrect = false;
                     break;
                 }
-                if (typeof requirement.requestOffer.price == "undefined" || requirement.requestOffer.price === null) {
+                if (typeof requirement.requestOffer.price == 'undefined' || requirement.requestOffer.price === null) {
                     isCorrect = false;
                     break;
                 }
@@ -2305,22 +2358,22 @@ ctrl.setProductData = function(data, loc) {
             }
             return isCorrect;
         };
-        ctrl.requirementsAreCorrectForRevokeAmend = function () {
-            var requirement;
-            var isCorrect = true;
-            for (var i = 0; i < ctrl.requirementRequestProductIds.length; i++) {
+        ctrl.requirementsAreCorrectForRevokeAmend = function() {
+            let requirement;
+            let isCorrect = true;
+            for (let i = 0; i < ctrl.requirementRequestProductIds.length; i++) {
                 requirement = ctrl.requirementRequestProductIds[i];
-                if (typeof requirement.requestOfferId == "undefined" || requirement.requestOfferId === null) {
+                if (typeof requirement.requestOfferId == 'undefined' || requirement.requestOfferId === null) {
                     isCorrect = false;
                     break;
                 }
             }
             return isCorrect;
         };
-        //check all checkbox
-        ctrl.checkAll = function (uniqueLocationIdentifier, event) {
+        // check all checkbox
+        ctrl.checkAll = function(uniqueLocationIdentifier, event) {
             //          console.log(uniqueLocationIdentifier);
-            currentCheckBool = $(event.target).prop("checked");
+            currentCheckBool = $(event.target).prop('checked');
             //          $("input[uniqueLocationIdentifier='"+uniqueLocationIdentifier+"']").click()
             // $.each($("input[uniqueLocationIdentifier='"+uniqueLocationIdentifier+"']"), function(){
             //  if ($(this).prop("checked") != currentCheckBool ) {
@@ -2333,51 +2386,53 @@ ctrl.setProductData = function(data, loc) {
             // $timeout(function () {
             //  $(".locationRowToBeChecked").removeClass("locationRowToBeChecked")
             // }, 1);
-            $("input[uniqueLocationIdentifier]").removeClass("locationRowToBeChecked"); 
-            myCheckInputs = $("input[uniqueLocationIdentifier='" + uniqueLocationIdentifier + "']");
-            $(myCheckInputs).each(function () {
-                if ($(this).prop("checked") != currentCheckBool && !$(this).is(":disabled"))
+            $('input[uniqueLocationIdentifier]').removeClass('locationRowToBeChecked');
+            myCheckInputs = $(`input[uniqueLocationIdentifier='${ uniqueLocationIdentifier }']`);
+            $(myCheckInputs).each(function() {
+                if ($(this).prop('checked') != currentCheckBool && !$(this).is(':disabled')) {
                     $(this)
-                        // .prop("checked", currentCheckBool)
-                        .addClass("locationRowToBeChecked");
+                    // .prop("checked", currentCheckBool)
+                        .addClass('locationRowToBeChecked');
+                }
             });
-            $timeout(function () {
-                $(".locationRowToBeChecked").click();
+            $timeout(() => {
+                $('.locationRowToBeChecked').click();
             }, 1);
         };
-        /*****************************************************************************
+
+        /** ***************************************************************************
          *   EVENT HANDLERS
          ******************************************************************************/
-        ctrl.createSellerRequirements = function (seller, locations, $event, uniqueLocationIdentifier, randUniquePkg, event) {
-            var req, product, locationSeller, productOffer, request, theLocation;
-            var currentRowRequirements = [];
+        ctrl.createSellerRequirements = function(seller, locations, $event, uniqueLocationIdentifier, randUniquePkg, event) {
+            let req, product, locationSeller, productOffer, request, theLocation;
+            let currentRowRequirements = [];
 
-            if ($event && ctrl.selectedNoQuoteItems ) {
+            if ($event && ctrl.selectedNoQuoteItems) {
 	            noQuoteCheckboxes = $($event.target).parents('tr').find('[has-no-quote="true"]');
-	            
+
 	            console.log(ctrl.selectedNoQuoteItems);
-	            if ($($event.target).prop("checked") == false && ctrl.selectedNoQuoteItems) {
+	            if ($($event.target).prop('checked') == false && ctrl.selectedNoQuoteItems) {
 	            	newSelectedNoQuoteItems = angular.copy(ctrl.selectedNoQuoteItems);
-		            Object.keys(newSelectedNoQuoteItems).forEach(function (key) {
+		            Object.keys(newSelectedNoQuoteItems).forEach((key) => {
 		                if (newSelectedNoQuoteItems[key]) {
 	            	 		newSelectedNoQuoteItems[key] = false;
 		                }
 		                return;
 		            });
-		            setTimeout(function(){
+		            setTimeout(() => {
 			            console.log(ctrl.selectedNoQuoteItems);
 			            console.log(newSelectedNoQuoteItems);
-		            	ctrl.selectedNoQuoteItems = newSelectedNoQuoteItems
+		            	ctrl.selectedNoQuoteItems = newSelectedNoQuoteItems;
 			            $scope.$apply();
 			            console.log(ctrl.selectedNoQuoteItems);
-		            })
+		            });
 	            }
-	            $.each($(noQuoteCheckboxes), function(k,v){
+	            $.each($(noQuoteCheckboxes), (k, v) => {
 	            	if (!ctrl.selectedNoQuoteItems) {
-	            		ctrl.selectedNoQuoteItems = []
+	            		ctrl.selectedNoQuoteItems = [];
 	            	}
-	            	ctrl.selectedNoQuoteItems["nq" + $(v).attr("product-offer-id")] = true;
-	            })
+	            	ctrl.selectedNoQuoteItems[`nq${ $(v).attr('product-offer-id')}`] = true;
+	            });
             }
 
             physicalSupplier = {};
@@ -2395,33 +2450,33 @@ ctrl.setProductData = function(data, loc) {
                 }
                 if (seller.offers[0].brokerCounterparty) {
                     brokerCounterparty = seller.offers[0].brokerCounterparty;
-                }                
+                }
                 productHasSeller = true;
             }
             if (ctrl.hasSellerRequirements(seller.sellerCounterparty.id, locations, seller)) {
                 removeSellerRequirementsOnLocation(seller, locations);
-                if (seller.packageType != "individual") {
+                if (seller.packageType != 'individual') {
                     ctrl.removePackageRequirements(seller, locations, productOffer.packageId);
                 }
             } else {
-                for (var i = 0; i < locations.length; i++) {
+                for (let i = 0; i < locations.length; i++) {
                     theLocation = locations[i];
-                    for (var j = 0; j < theLocation.products.length; j++) {
+                    for (let j = 0; j < theLocation.products.length; j++) {
                         product = theLocation.products[j];
-                        //for(var j = 0; j < product.sellers.length; j++) {
-                        //locationSeller = location.products[i].sellers[j];
+                        // for(var j = 0; j < product.sellers.length; j++) {
+                        // locationSeller = location.products[i].sellers[j];
                         // if (seller.sellerCounterparty.id == locationSeller.sellerCounterparty.id){
                         request = getRequestById(theLocation.requestId);
                         prodSeller = null;
-                        for (var k = 0; k < product.sellers.length; k++) {
+                        for (let k = 0; k < product.sellers.length; k++) {
                             if (product.sellers[k].randUniquePkg == seller.randUniquePkg) {
                                 prodSeller = product.sellers[k];
                             }
                         }
-                        $.each(ctrl.requests, function (reqK, reqV) {
-                            $.each(reqV.locations, function (locK, locV) {
-                                $.each(locV.products, function (prodK, prodV) {
-                                    $.each(prodV.sellers, function (sellerK, sellerV) {
+                        $.each(ctrl.requests, (reqK, reqV) => {
+                            $.each(reqV.locations, (locK, locV) => {
+                                $.each(locV.products, (prodK, prodV) => {
+                                    $.each(prodV.sellers, (sellerK, sellerV) => {
                                         // if (typeof(sellerV.uniqueLocationSellerPhysical) != 'undefined' && typeof(prodSeller.uniqueLocationSellerPhysical) != 'undefined') {
                                         //     if (sellerV.uniqueLocationSellerPhysical == prodSeller.uniqueLocationSellerPhysical) {
                                         //         //sellerV.selected = true;
@@ -2432,7 +2487,7 @@ ctrl.setProductData = function(data, loc) {
                             });
                         });
                         ctrl.initialSelectedCheckboxesRequirements = true;
-                        //create RFQ requirements
+                        // create RFQ requirements
                         productOffer = ctrl.getSellerProductOfferOnLocationRewrite(product, locations, seller.sellerCounterparty.id, seller);
                         productHasRFQ = false;
                         if (productOffer) {
@@ -2445,7 +2500,7 @@ ctrl.setProductData = function(data, loc) {
                                 continue;
                             }
                         }
-                        if (product.productStatus.name == "Stemmed" && !seller.packageId) {
+                        if (product.productStatus.name == 'Stemmed' && !seller.packageId) {
                             continue;
                         }
                         productHasOffer = true;
@@ -2454,20 +2509,18 @@ ctrl.setProductData = function(data, loc) {
                         }
                         sellerIsInProduct = false;
                         requestSellerId = null;
-                        $.each(product.sellers, function (selK, selV) {
+                        $.each(product.sellers, (selK, selV) => {
                             if (selV.randUniquePkg == seller.randUniquePkg) {
                                 requestSellerId = selV.id;
                                 sellerIsInProduct = true;
-                                if (typeof selV.offers == "undefined") {
+                                if (typeof selV.offers == 'undefined') {
                                     productHasOffer = false;
-                                } else {
-                                    if (selV.offers == null) {
-                                        productHasOffer = false;
-                                    } else if (selV.offers.length < 1) {
-                                        productHasOffer = false;
-                                    } else if (!selV.offers[0].id) {
-                                        productHasOffer = false;
-                                    }
+                                } else if (selV.offers == null) {
+                                    productHasOffer = false;
+                                } else if (selV.offers.length < 1) {
+                                    productHasOffer = false;
+                                } else if (!selV.offers[0].id) {
+                                    productHasOffer = false;
                                 }
                             }
                         });
@@ -2495,19 +2548,19 @@ ctrl.setProductData = function(data, loc) {
                             ProductTypeId: product.productTypeId,
                             productStatus: product.productStatus,
                             ProductTypeGroupId: product.productTypeGroupId,
-                            QuotedProductGroupId: productOffer !== null && typeof productOffer != "undefined" ? productOffer.quotedProductGroupId : null,
+                            QuotedProductGroupId: productOffer !== null && typeof productOffer != 'undefined' ? productOffer.quotedProductGroupId : null,
                             PhysicalSupplierCounterpartyId: physicalSupplier.id,
                             ContactCounterpartyId: contactCounterparty.id ? contactCounterparty.id : null,
                             BrokerCounterpartyId: brokerCounterparty.id ? brokerCounterparty.id : null,
                             productHasOffer: productHasOffer,
-                            productHasPrice: productOffer ? (productOffer.price ? true : false) : false,
+                            productHasPrice: productOffer ? Boolean(productOffer.price) : false,
                             productHasRFQ: productHasRFQ,
-                            requestOfferId: productOffer !== null && typeof productOffer != "undefined" ? productOffer.id : null,
-                            UniqueLocationSellerPhysical: theLocation.uniqueLocationIdentifier + "-" + seller.randUnique,
-                            rowLocationSellerPhysical: uniqueLocationIdentifier +"-"+ randUniquePkg,
+                            requestOfferId: productOffer !== null && typeof productOffer != 'undefined' ? productOffer.id : null,
+                            UniqueLocationSellerPhysical: `${theLocation.uniqueLocationIdentifier }-${ seller.randUnique}`,
+                            rowLocationSellerPhysical: `${uniqueLocationIdentifier }-${ randUniquePkg}`,
                             randUniquePkg: seller.randUniquePkg,
                             isClonedSeller: seller.isCloned,
-                            currencyId: productOffer ? (productOffer.currency ? productOffer.currency.id : null) : null,
+                            currencyId: productOffer ? productOffer.currency ? productOffer.currency.id : null : null,
                             vesselETA: theLocation.eta,
                             productAllowZeroPricing: product.allowZeroPricing
                         };
@@ -2522,11 +2575,11 @@ ctrl.setProductData = function(data, loc) {
                         // if (product.productStatus.name == "Stemmed" && !seller.packageId) { continue }
                         ctrl.requirements.push(req);
                         currentRowRequirements.push(req);
-                        //create confirmation requirements
+                        // create confirmation requirements
                         ctrl.requirementRequestProductIds.push({
                             requestProductId: product.id,
                             productStatus: product.productStatus,
-                            requestOfferId: productOffer !== null && typeof productOffer != "undefined" ? productOffer.id : null,
+                            requestOfferId: productOffer !== null && typeof productOffer != 'undefined' ? productOffer.id : null,
                             productSellerId: seller.sellerCounterparty.id,
                             requestOffer: productOffer,
                             randUniquePkg: seller.randUniquePkg
@@ -2536,28 +2589,27 @@ ctrl.setProductData = function(data, loc) {
                 }
                 // }
             }
-            //calculates screen actions
+            // calculates screen actions
             console.log(currentRowRequirements);
             // seller.selected = true;
-            if (typeof(event) != 'undefined') {
-	            checkUncheckSellerRowUpdate(seller, locations, currentRowRequirements, true)
+            if (typeof event != 'undefined') {
+	            checkUncheckSellerRowUpdate(seller, locations, currentRowRequirements, true);
             }
             ctrl.calculateScreenActions();
-
         };
-        ctrl.createSellerRequirementsForProduct = function (seller, locations, productSample, uniqueLocationIdentifier, randUniquePkg, event) {
-            var request;
-            var theLocation, requestProductsInLocation;
-            var currentuniqueLocationIdentifier = uniqueLocationIdentifier;
-            var currentrandUniquePkg = randUniquePkg;
-            //get correct location from group (the location matching the products request)
+        ctrl.createSellerRequirementsForProduct = function(seller, locations, productSample, uniqueLocationIdentifier, randUniquePkg, event) {
+            let request;
+            let theLocation, requestProductsInLocation;
+            let currentuniqueLocationIdentifier = uniqueLocationIdentifier;
+            let currentrandUniquePkg = randUniquePkg;
+            // get correct location from group (the location matching the products request)
             for (var i = 0; i < locations.length; i++) {
                 if (locations[i].requestId === productSample.requestId) {
                     theLocation = locations[i];
                     break;
                 }
             }
-            //if there is no matching location. product is not available
+            // if there is no matching location. product is not available
             if (!theLocation) {
                 return false;
             }
@@ -2566,7 +2618,7 @@ ctrl.setProductData = function(data, loc) {
             brokerCounterparty = {};
             physicalSupplier.id = null;
             physicalSupplier.name = null;
-            if (typeof seller.offers != "undefined") {
+            if (typeof seller.offers != 'undefined') {
                 if (seller.offers.length > 0) {
                     if (seller.offers[0].physicalSupplierCounterparty) {
                         physicalSupplier = seller.offers[0].physicalSupplierCounterparty;
@@ -2591,7 +2643,7 @@ ctrl.setProductData = function(data, loc) {
                 //     ctrl.removeSellerProductRequirementsOnLocation(seller, locations, productSample)
                 // }
             } else {
-                //get actual product from location (identified by the productSample)
+                // get actual product from location (identified by the productSample)
                 ctrl.initialSelectedCheckboxesRequirements = true;
                 for (i = 0; i < theLocation.products.length; i++) {
                     if (theLocation.products[i].id === productSample.id) {
@@ -2599,14 +2651,16 @@ ctrl.setProductData = function(data, loc) {
                         break;
                     }
                 }
-                //if there is no matching product, it is not available
+                // if there is no matching product, it is not available
                 if (!product) {
                     return false;
                 }
                 request = getRequestById(theLocation.requestId);
                 prodSeller = null;
-                for (var k = 0; k < product.sellers.length; k++) {
-                    if (product.sellers[k].randUniquePkg == seller.randUniquePkg) prodSeller = product.sellers[k];
+                for (let k = 0; k < product.sellers.length; k++) {
+                    if (product.sellers[k].randUniquePkg == seller.randUniquePkg) {
+                        prodSeller = product.sellers[k];
+                    }
                 }
                 productOffer = ctrl.getSellerProductOfferOnLocationRewrite(product, locations, seller.sellerCounterparty.id, seller);
                 productHasRFQ = false;
@@ -2621,7 +2675,7 @@ ctrl.setProductData = function(data, loc) {
                     }
                 }
                 currentProductStatus = ctrl.getSellerProductStatusOnLocation(productSample, locations, seller);
-                if (currentProductStatus == "Stemmed" && !seller.packageId) {
+                if (currentProductStatus == 'Stemmed' && !seller.packageId) {
                     return false;
                 }
                 productHasOffer = true;
@@ -2630,20 +2684,18 @@ ctrl.setProductData = function(data, loc) {
                 }
                 sellerIsInProduct = false;
                 requestSellerId = null;
-                $.each(product.sellers, function (selK, selV) {
+                $.each(product.sellers, (selK, selV) => {
                     if (selV.randUniquePkg == seller.randUniquePkg) {
                         requestSellerId = selV.id;
                         sellerIsInProduct = true;
-                        if (typeof selV.offers == "undefined") {
+                        if (typeof selV.offers == 'undefined') {
                             productHasOffer = false;
-                        } else {
-                            if (selV.offers == null) {
-                                productHasOffer = false;
-                            } else if (selV.offers.length < 1) {
-                                productHasOffer = false;
-                            } else if (!selV.offers[0].id) {
-                                productHasOffer = false;
-                            }
+                        } else if (selV.offers == null) {
+                            productHasOffer = false;
+                        } else if (selV.offers.length < 1) {
+                            productHasOffer = false;
+                        } else if (!selV.offers[0].id) {
+                            productHasOffer = false;
                         }
                     }
                 });
@@ -2671,19 +2723,19 @@ ctrl.setProductData = function(data, loc) {
                     ProductTypeId: product.productTypeId,
                     productStatus: product.productStatus,
                     ProductTypeGroupId: product.productTypeGroupId,
-					QuotedProductGroupId: productOffer !== null && typeof productOffer != "undefined" ? productOffer.quotedProductGroupId : null,                    
+                    QuotedProductGroupId: productOffer !== null && typeof productOffer != 'undefined' ? productOffer.quotedProductGroupId : null,
                     PhysicalSupplierCounterpartyId: physicalSupplier.id,
                     ContactCounterpartyId: contactCounterparty.id ? contactCounterparty.id : null,
                     BrokerCounterpartyId: brokerCounterparty.id ? brokerCounterparty.id : null,
                     productHasOffer: productHasOffer,
-                     productHasPrice: productOffer ? (productOffer.price ? true : false) : false,
+                    productHasPrice: productOffer ? Boolean(productOffer.price) : false,
                     productHasRFQ: productHasRFQ,
-                    requestOfferId: productOffer !== null && typeof productOffer != "undefined" ? productOffer.id : null,
-                    UniqueLocationSellerPhysical: theLocation.uniqueLocationIdentifier + "-" + seller.randUnique,
-                    rowLocationSellerPhysical: currentuniqueLocationIdentifier +"-"+ currentrandUniquePkg,
+                    requestOfferId: productOffer !== null && typeof productOffer != 'undefined' ? productOffer.id : null,
+                    UniqueLocationSellerPhysical: `${theLocation.uniqueLocationIdentifier }-${ seller.randUnique}`,
+                    rowLocationSellerPhysical: `${currentuniqueLocationIdentifier }-${ currentrandUniquePkg}`,
                     randUniquePkg: seller.randUniquePkg,
                     isClonedSeller: seller.isCloned,
-                    currencyId: productOffer ? (productOffer.currency ? productOffer.currency.id : null) : null,
+                    currencyId: productOffer ? productOffer.currency ? productOffer.currency.id : null : null,
                     vesselETA: theLocation.eta,
                     productAllowZeroPricing: product.allowZeroPricing
                 };
@@ -2694,7 +2746,7 @@ ctrl.setProductData = function(data, loc) {
                 }
                 ctrl.requirements.push(req);
                 currentRowRequirements = req;
-                //create confirmation requirements
+                // create confirmation requirements
                 ctrl.requirementRequestProductIds.push({
                     requestProductId: product.id,
                     productStatus: product.productStatus,
@@ -2703,20 +2755,20 @@ ctrl.setProductData = function(data, loc) {
                     requestOffer: productOffer,
                     randUniquePkg: seller.randUniquePkg
                 });
-                if (typeof(event) != 'undefined') {
-		            checkUncheckSellerRowUpdate(seller, locations, [currentRowRequirements], true)
+                if (typeof event != 'undefined') {
+		            checkUncheckSellerRowUpdate(seller, locations, [ currentRowRequirements ], true);
                 }
             }
-            //calculates screen actions
+            // calculates screen actions
             ctrl.calculateScreenActions();
         };
-        ctrl.createSellerRequirementsForProductPackage = function (seller, locations) {
+        ctrl.createSellerRequirementsForProductPackage = function(seller, locations) {
             matchingPackageIdProducts = [];
-            $.each(ctrl.requests, function (reqK, reqV) {
-                $.each(reqV.locations, function (locK, locV) {
-                    $.each(locV.products, function (prodK, prodV) {
+            $.each(ctrl.requests, (reqK, reqV) => {
+                $.each(reqV.locations, (locK, locV) => {
+                    $.each(locV.products, (prodK, prodV) => {
                         if (prodV.sellers.length > 0) {
-                            $.each(prodV.sellers, function (selK, selV) {
+                            $.each(prodV.sellers, (selK, selV) => {
                                 if (selV.randUniquePkg == seller.randUniquePkg) {
                                     prodV.seller = selV;
                                     matchingPackageIdProducts.push(prodV);
@@ -2726,31 +2778,32 @@ ctrl.setProductData = function(data, loc) {
                     });
                 });
             });
-            $.each(matchingPackageIdProducts, function (key, prodValue) {
+            $.each(matchingPackageIdProducts, (key, prodValue) => {
                 ctrl.createSellerRequirementsForProduct(prodValue.seller, locations, prodValue);
             });
         };
+
         /**
          * check if we should show extra buttons
          */
-        ctrl.extraButtons = function () {
-            return $(".st-extra-buttons").find("li").length === 0;
+        ctrl.extraButtons = function() {
+            return $('.st-extra-buttons').find('li').length === 0;
         };
-        ctrl.deleteRequest = function (request) {
-            for (var i = ctrl.requests.length - 1; i >= 0; i--) {
+        ctrl.deleteRequest = function(request) {
+            for (let i = ctrl.requests.length - 1; i >= 0; i--) {
                 if (ctrl.requests[i].id == request.id) {
                     ctrl.requests.splice(i, 1);
                 }
             }
             initializeDataArrays(ctrl.requests);
         };
-        ctrl.setQuoteByCurrency = function (currencyId, currencyName) {
+        ctrl.setQuoteByCurrency = function(currencyId, currencyName) {
             ctrl.quoteByCurrency = {
                 id: currencyId,
                 name: currencyName
             };
         };
-        ctrl.isCurrencyDisabled = function () {
+        ctrl.isCurrencyDisabled = function() {
             // if (ctrl.bestOfferData && ctrl.bestOfferData.length > 0) {
             //     return true;
             // }
@@ -2759,7 +2812,7 @@ ctrl.setProductData = function(data, loc) {
             }
             return false;
         };
-        ctrl.setQuoteByTimezone = function (timeZoneId, timeZoneName) {
+        ctrl.setQuoteByTimezone = function(timeZoneId, timeZoneName) {
             ctrl.quoteByTimezone = {
                 id: timeZoneId,
                 name: timeZoneName
@@ -2772,33 +2825,33 @@ ctrl.setProductData = function(data, loc) {
 	        	hasNoPrice = true;
 	        	return hasNoPrice;
         	}
-        	$.each(ctrl.requirements, function(k,v){
+        	$.each(ctrl.requirements, (k, v) => {
         		if (!v.productHasPrice) {
 		        	hasNoPrice = true;
         		}
-        	})
+        	});
         	return hasNoPrice;
-        }
+        };
         ctrl.requirementsHasNoRfqId = function() {
         	hasNoRfqId = false;
         	if (ctrl.requirements.length == 0) {
 	        	hasNoRfqId = true;
 	        	return hasNoRfqId;
         	}
-        	$.each(ctrl.requirements, function(k,v){
+        	$.each(ctrl.requirements, (k, v) => {
         		if (!v.RfqId) {
 		        	hasNoRfqId = true;
         		}
-        	})
+        	});
         	return hasNoRfqId;
-        }
-        ctrl.checkSludgeSeller = function () {
-            var i = 0;
-            sludgeMatchSellerProductError = false 
-            var msg= "A Sludge Seller is required for Sludge Product Type";
-            var isSludgeProduct = false;
-            $.each(ctrl.requirements, function (requirementK, requirementV) {
-                var product = _.find(ctrl.locations, { id: requirementV.RequestLocationId });
+        };
+        ctrl.checkSludgeSeller = function() {
+            let i = 0;
+            sludgeMatchSellerProductError = false;
+            let msg = 'A Sludge Seller is required for Sludge Product Type';
+            let isSludgeProduct = false;
+            $.each(ctrl.requirements, (requirementK, requirementV) => {
+                let product = _.find(ctrl.locations, { id: requirementV.RequestLocationId });
                 if (!product || !product.products) {
                     return false;
                 }
@@ -2806,34 +2859,34 @@ ctrl.setProductData = function(data, loc) {
                 if (!product || !product.productTypeId) {
                     return false;
                 }
-                var productTypeId = product.productTypeId;
-                isSludgeProduct = _.find(ctrl.listsCache["ProductTypeGroup"], function(obj){
-                    return obj.name == "Sludge";
+                let productTypeId = product.productTypeId;
+                isSludgeProduct = _.find(ctrl.listsCache.ProductTypeGroup, (obj) => {
+                    return obj.name == 'Sludge';
                 }, 'id').id == product.productTypeGroupId;
 
 
-                var seller = _.find(product.sellers, { sellerCounterparty: { id: requirementV.SellerId } });
-                sellerTypeSludge = false
-                $.each(ctrl.locations, function(lk,lv){
-                    $.each(lv.products, function(pk,pv){
-                        $.each(pv.sellers, function(sk,sv) {
+                let seller = _.find(product.sellers, { sellerCounterparty: { id: requirementV.SellerId } });
+                sellerTypeSludge = false;
+                $.each(ctrl.locations, (lk, lv) => {
+                    $.each(lv.products, (pk, pv) => {
+                        $.each(pv.sellers, (sk, sv) => {
                             if (sv.randUniquePkg == requirementV.randUniquePkg) {
-                                $.each(sv.counterpartyTypes, function(ctk,ctv){
-                                    if (ctv.name == "Sludge") {
-                                        sellerTypeSludge = true
+                                $.each(sv.counterpartyTypes, (ctk, ctv) => {
+                                    if (ctv.name == 'Sludge') {
+                                        sellerTypeSludge = true;
                                     }
-                                })
+                                });
                             }
-                        })
-                    })
-                })
-                
+                        });
+                    });
+                });
+
                 if (isSludgeProduct && !sellerTypeSludge) {
                     toastr.error(msg);
                     return true;
-                } else {
-                    return false;
                 }
+                return false;
+
 
                 /*
                 if (productTypeId == 4) {
@@ -2854,8 +2907,8 @@ ctrl.setProductData = function(data, loc) {
             });
             // if (i == 0) {
         };
-        ctrl.sendRFQ = function (reload) {
-            /*validate unicity for location-seller-physical-supplier*/
+        ctrl.sendRFQ = function(reload) {
+            /* validate unicity for location-seller-physical-supplier*/
             // productTypeId
             duplicatesArray = [];
             console.log(ctrl.requirements);
@@ -2863,16 +2916,16 @@ ctrl.setProductData = function(data, loc) {
             if (ctrl.checkSludgeSeller()) {
                 return false;
             }
-            $.each(ctrl.requirements, function (requirementK, requirementV) {
+            $.each(ctrl.requirements, (requirementK, requirementV) => {
                 if (requirementV.isClonedSeller) {
-                    reqRandUnique = requirementV.SellerId + "-" + requirementV.PhysicalSupplierCounterpartyId;
-                    $.each(ctrl.locations, function (locK, locV) {
+                    reqRandUnique = `${requirementV.SellerId }-${ requirementV.PhysicalSupplierCounterpartyId}`;
+                    $.each(ctrl.locations, (locK, locV) => {
                         valuesSoFar = [];
-                        sellers = ctrl.getSortedLocationSellers([locV]);
-                        $.each(sellers, function (k, v) {
+                        sellers = ctrl.getSortedLocationSellers([ locV ]);
+                        $.each(sellers, (k, v) => {
                             physicalSupplierId = null;
                             physicalSupplierName = null;
-                            if (typeof v.offers != "undefined") {
+                            if (typeof v.offers != 'undefined') {
                                 if (v.offers.length > 0) {
                                     if (v.offers[0].physicalSupplierCounterparty) {
                                         physicalSupplierId = v.offers[0].physicalSupplierCounterparty.id;
@@ -2880,10 +2933,10 @@ ctrl.setProductData = function(data, loc) {
                                     }
                                 }
                             }
-                            composedSellerIds = v.sellerCounterparty.id + "-" + physicalSupplierId;
-                            uniqueStringIdentifier = locV.location.name + "*" + v.sellerCounterparty.name + "*" + physicalSupplierName;
+                            composedSellerIds = `${v.sellerCounterparty.id }-${ physicalSupplierId}`;
+                            uniqueStringIdentifier = `${locV.location.name }*${ v.sellerCounterparty.name }*${ physicalSupplierName}`;
                             if (reqRandUnique == composedSellerIds) {
-                                if (valuesSoFar.indexOf(composedSellerIds) > -1 && v.packageType == "individual") {
+                                if (valuesSoFar.indexOf(composedSellerIds) > -1 && v.packageType == 'individual') {
                                     if (duplicatesArray.indexOf(uniqueStringIdentifier) == -1) {
                                         duplicatesArray.push(uniqueStringIdentifier);
                                     }
@@ -2895,14 +2948,14 @@ ctrl.setProductData = function(data, loc) {
                 }
             });
             if (duplicatesArray.length > 0) {
-                $.each(duplicatesArray, function (k, val) {
-                    locationName = val.split("*")[0];
-                    sellerName = val.split("*")[1];
-                    physicalSupplierName = val.split("*")[2];
-                    if (physicalSupplierName != "null") {
-                        toastr.error("For the location " + locationName + " the seller " + sellerName + " with Physical Supplier " + physicalSupplierName + " already exists ");
+                $.each(duplicatesArray, (k, val) => {
+                    locationName = val.split('*')[0];
+                    sellerName = val.split('*')[1];
+                    physicalSupplierName = val.split('*')[2];
+                    if (physicalSupplierName != 'null') {
+                        toastr.error(`For the location ${ locationName } the seller ${ sellerName } with Physical Supplier ${ physicalSupplierName } already exists `);
                     } else {
-                        toastr.error("For the location " + locationName + " the seller " + sellerName + " with no Physical Supplier already exists ");
+                        toastr.error(`For the location ${ locationName } the seller ${ sellerName } with no Physical Supplier already exists `);
                     }
                 });
                 return false;
@@ -2916,14 +2969,14 @@ ctrl.setProductData = function(data, loc) {
                         // ctrl.quoteByDate = new Date(new Date(ctrl.quoteByDateFrom).getTime() + 30 * 60000 );
                         ctrl.quoteByDate = moment
                             .utc(ctrl.quoteByDateFrom)
-                            .add(30, "minutes")
+                            .add(30, 'minutes')
                             .toJSON();
                     }
                 } else {
                     ctrl.quoteByDate = null;
                 }
             }
-            var rfq_data = {
+            let rfq_data = {
                 Requirements: ctrl.requirements,
                 QuoteByDate: ctrl.quoteByDate,
                 QuoteByDateFrom: ctrl.quoteByDateFrom,
@@ -2935,7 +2988,7 @@ ctrl.setProductData = function(data, loc) {
             // return false;
             ctrl.buttonsDisabled = true;
             groupOfRequestsModel.sendRFQ(rfq_data).then(
-                function (response) {
+                (response) => {
                     ctrl.buttonsDisabled = false;
                     ctrl.rfqSent = true;
                     $stateParams.group = null;
@@ -2946,47 +2999,46 @@ ctrl.setProductData = function(data, loc) {
                     	toastr.info(response.errorMessage);
                     }
                     if (reload) {
-                        angular.element($(".bladeEntity .closeBlade")).scope().closeBlade();
-                        $("body").css("overflow-y", "auto");
-                            setTimeout(function() {
-                                $rootScope.bladeTemplateUrl = "";
-                                if($rootScope.refreshPending) {
-                                    $state.reload();
-                                  // window.location.reload();
-                                }
-                                setTimeout(function() {
-                                    ctrl.initScreenAfterSendOrSkipRfq();
-
-                                }, 10);
+                        angular.element($('.bladeEntity .closeBlade')).scope().closeBlade();
+                        $('body').css('overflow-y', 'auto');
+                        setTimeout(() => {
+                            $rootScope.bladeTemplateUrl = '';
+                            if($rootScope.refreshPending) {
+                                $state.reload();
+                                // window.location.reload();
+                            }
+                            setTimeout(() => {
+                                ctrl.initScreenAfterSendOrSkipRfq();
                             }, 10);
+                        }, 10);
                         $state.reload();
                     }
                     return false;
                 },
-                function () {
+                () => {
                     ctrl.buttonsDisabled = false;
                 }
-            ).finally(function(){
+            ).finally(() => {
             	ctrl.initScreenAfterSendOrSkipRfq();
             });
         };
-        ctrl.skipRFQ = function () {
-            /*validate unicity for location-seller-physical-supplier*/
+        ctrl.skipRFQ = function() {
+            /* validate unicity for location-seller-physical-supplier*/
             duplicatesArray = [];
             console.log(ctrl.requirements);
             if (ctrl.checkSludgeSeller()) {
                 return false;
             }
-            $.each(ctrl.requirements, function (requirementK, requirementV) {
+            $.each(ctrl.requirements, (requirementK, requirementV) => {
                 if (requirementV.isClonedSeller) {
-                    reqRandUnique = requirementV.SellerId + "-" + requirementV.PhysicalSupplierCounterpartyId;
-                    $.each(ctrl.locations, function (locK, locV) {
+                    reqRandUnique = `${requirementV.SellerId }-${ requirementV.PhysicalSupplierCounterpartyId}`;
+                    $.each(ctrl.locations, (locK, locV) => {
                         valuesSoFar = [];
-                        sellers = ctrl.getSortedLocationSellers([locV]);
-                        $.each(sellers, function (k, v) {
+                        sellers = ctrl.getSortedLocationSellers([ locV ]);
+                        $.each(sellers, (k, v) => {
                             physicalSupplierId = null;
                             physicalSupplierName = null;
-                            if (typeof v.offers != "undefined") {
+                            if (typeof v.offers != 'undefined') {
                                 if (v.offers.length > 0) {
                                     if (v.offers[0].physicalSupplierCounterparty) {
                                         physicalSupplierId = v.offers[0].physicalSupplierCounterparty.id;
@@ -2994,10 +3046,10 @@ ctrl.setProductData = function(data, loc) {
                                     }
                                 }
                             }
-                            composedSellerIds = v.sellerCounterparty.id + "-" + physicalSupplierId;
-                            uniqueStringIdentifier = locV.location.name + "*" + v.sellerCounterparty.name + "*" + physicalSupplierName;
+                            composedSellerIds = `${v.sellerCounterparty.id }-${ physicalSupplierId}`;
+                            uniqueStringIdentifier = `${locV.location.name }*${ v.sellerCounterparty.name }*${ physicalSupplierName}`;
                             if (reqRandUnique == composedSellerIds) {
-                                if (valuesSoFar.indexOf(composedSellerIds) > -1 && v.packageType == "individual") {
+                                if (valuesSoFar.indexOf(composedSellerIds) > -1 && v.packageType == 'individual') {
                                     if (duplicatesArray.indexOf(uniqueStringIdentifier) == -1) {
                                         duplicatesArray.push(uniqueStringIdentifier);
                                     }
@@ -3009,14 +3061,14 @@ ctrl.setProductData = function(data, loc) {
                 }
             });
             if (duplicatesArray.length > 0) {
-                $.each(duplicatesArray, function (k, val) {
-                    locationName = val.split("*")[0];
-                    sellerName = val.split("*")[1];
-                    physicalSupplierName = val.split("*")[2];
-                    if (physicalSupplierName != "null") {
-                        toastr.error("For the location " + locationName + " the seller " + sellerName + " with Physical Supplier " + physicalSupplierName + " already exists ");
+                $.each(duplicatesArray, (k, val) => {
+                    locationName = val.split('*')[0];
+                    sellerName = val.split('*')[1];
+                    physicalSupplierName = val.split('*')[2];
+                    if (physicalSupplierName != 'null') {
+                        toastr.error(`For the location ${ locationName } the seller ${ sellerName } with Physical Supplier ${ physicalSupplierName } already exists `);
                     } else {
-                        toastr.error("For the location " + locationName + " the seller " + sellerName + " with no Physical Supplier already exists ");
+                        toastr.error(`For the location ${ locationName } the seller ${ sellerName } with no Physical Supplier already exists `);
                     }
                 });
                 return false;
@@ -3033,7 +3085,7 @@ ctrl.setProductData = function(data, loc) {
                     ctrl.quoteByDate = null;
                 }
             }
-            var rfq_data = {
+            let rfq_data = {
                 Requirements: ctrl.requirements,
                 QuoteByDate: ctrl.quoteByDate,
                 RequestGroupId: ctrl.groupId,
@@ -3043,7 +3095,7 @@ ctrl.setProductData = function(data, loc) {
             };
             ctrl.buttonsDisabled = true;
             groupOfRequestsModel.skipRFQ(rfq_data).then(
-                function (response) {
+                (response) => {
                     ctrl.buttonsDisabled = false;
                     ctrl.rfqSent = true;
                     $stateParams.group = null;
@@ -3058,24 +3110,24 @@ ctrl.setProductData = function(data, loc) {
                     // $stateParams.group = null;
                     newData = response.payload;
                     allClonedFoundSellers = [];
-                    $.each(newData, function (newDataKey, newDataValue) {
-                        newDataPhysicalSupplierId = "null";
-                        if (typeof newDataValue.offers != "undefined") {
+                    $.each(newData, (newDataKey, newDataValue) => {
+                        newDataPhysicalSupplierId = 'null';
+                        if (typeof newDataValue.offers != 'undefined') {
                             if (newDataValue.offers.length > 0) {
                                 if (newDataValue.offers[0].physicalSupplierCounterparty) {
                                     newDataPhysicalSupplierId = newDataValue.offers[0].physicalSupplierCounterparty.id;
                                 }
                             }
                         }
-                        $.each(ctrl.requests, function (reqK, reqV) {
-                            $.each(reqV.locations, function (locK, locV) {
+                        $.each(ctrl.requests, (reqK, reqV) => {
+                            $.each(reqV.locations, (locK, locV) => {
                                 if (locV.id == newDataValue.requestLocationId) {
-                                    $.each(locV.products, function (prodK, prodV) {
+                                    $.each(locV.products, (prodK, prodV) => {
                                         if (prodV.id == newDataValue.requestProductId) {
                                             foundSellerKey = -1;
-                                            $.each(prodV.sellers, function (sellerK, sellerV) {
-                                                physicalSupplierId = "null";
-                                                if (typeof sellerV.offers != "undefined") {
+                                            $.each(prodV.sellers, (sellerK, sellerV) => {
+                                                physicalSupplierId = 'null';
+                                                if (typeof sellerV.offers != 'undefined') {
                                                     if (sellerV.offers.length > 0) {
                                                         if (sellerV.offers[0].physicalSupplierCounterparty) {
                                                             physicalSupplierId = sellerV.offers[0].physicalSupplierCounterparty.id;
@@ -3092,16 +3144,16 @@ ctrl.setProductData = function(data, loc) {
                                                 }
                                             });
                                             if (foundSellerKey == -1) {
-                                                newDataValue.randUnique = newDataValue.sellerCounterparty.id + "-" + newDataPhysicalSupplierId;
-                                                newDataValue.randUniquePkg = newDataValue.sellerCounterparty.id + "-" + newDataPhysicalSupplierId + "-individual-null";
-                                                newDataValue.packageType = "individual";
+                                                newDataValue.randUnique = `${newDataValue.sellerCounterparty.id }-${ newDataPhysicalSupplierId}`;
+                                                newDataValue.randUniquePkg = `${newDataValue.sellerCounterparty.id }-${ newDataPhysicalSupplierId }-individual-null`;
+                                                newDataValue.packageType = 'individual';
                                                 newDataValue.isCloned = false;
                                                 ctrl.requests[reqK].locations[locK].products[prodK].sellers.push(newDataValue);
                                             } else {
                                                 ctrl.requests[reqK].locations[locK].products[prodK].sellers[foundSellerKey] = newDataValue;
-                                                ctrl.requests[reqK].locations[locK].products[prodK].sellers[foundSellerKey].randUnique = foundSellerId + "-" + foundPhysicalSupplierId;
-                                                ctrl.requests[reqK].locations[locK].products[prodK].sellers[foundSellerKey].randUniquePkg = foundSellerId + "-" + foundPhysicalSupplierId + "-individual-null";
-                                                ctrl.requests[reqK].locations[locK].products[prodK].sellers[foundSellerKey].packageType = "individual";
+                                                ctrl.requests[reqK].locations[locK].products[prodK].sellers[foundSellerKey].randUnique = `${foundSellerId }-${ foundPhysicalSupplierId}`;
+                                                ctrl.requests[reqK].locations[locK].products[prodK].sellers[foundSellerKey].randUniquePkg = `${foundSellerId }-${ foundPhysicalSupplierId }-individual-null`;
+                                                ctrl.requests[reqK].locations[locK].products[prodK].sellers[foundSellerKey].packageType = 'individual';
                                                 ctrl.requests[reqK].locations[locK].products[prodK].sellers[foundSellerKey].isCloned = false;
                                             }
                                         }
@@ -3110,13 +3162,13 @@ ctrl.setProductData = function(data, loc) {
                             });
                         });
                     });
-                    $.each(ctrl.requests, function (reqK, reqV) {
-                        $.each(reqV.locations, function (locK, locV) {
-                            $.each(locV.products, function (prodK, prodV) {
-                                $.each(prodV.sellers, function (sellerK, sellerV) {
-                                    if (typeof sellerV != "undefined") {
+                    $.each(ctrl.requests, (reqK, reqV) => {
+                        $.each(reqV.locations, (locK, locV) => {
+                            $.each(locV.products, (prodK, prodV) => {
+                                $.each(prodV.sellers, (sellerK, sellerV) => {
+                                    if (typeof sellerV != 'undefined') {
                                         physicalSupplierId = null;
-                                        if (typeof sellerV.offers != "undefined") {
+                                        if (typeof sellerV.offers != 'undefined') {
                                             if (sellerV.offers.length > 0) {
                                                 if (sellerV.offers[0].physicalSupplierCounterparty) {
                                                     physicalSupplierId = sellerV.offers[0].physicalSupplierCounterparty.id;
@@ -3124,9 +3176,9 @@ ctrl.setProductData = function(data, loc) {
                                             }
                                         }
                                         if (allClonedFoundSellers.indexOf(sellerV.randUnique) != -1) {
-                                            ctrl.requests[reqK].locations[locK].products[prodK].sellers[sellerK].randUnique = sellerV.sellerCounterparty.id + "-" + physicalSupplierId;
-                                            ctrl.requests[reqK].locations[locK].products[prodK].sellers[sellerK].randUniquePkg = sellerV.sellerCounterparty.id + "-" + physicalSupplierId + "-individual-null";
-                                            ctrl.requests[reqK].locations[locK].products[prodK].sellers[sellerK].packageType = "individual";
+                                            ctrl.requests[reqK].locations[locK].products[prodK].sellers[sellerK].randUnique = `${sellerV.sellerCounterparty.id }-${ physicalSupplierId}`;
+                                            ctrl.requests[reqK].locations[locK].products[prodK].sellers[sellerK].randUniquePkg = `${sellerV.sellerCounterparty.id }-${ physicalSupplierId }-individual-null`;
+                                            ctrl.requests[reqK].locations[locK].products[prodK].sellers[sellerK].packageType = 'individual';
                                         }
                                     }
                                 });
@@ -3138,19 +3190,19 @@ ctrl.setProductData = function(data, loc) {
                     // angular.merge(ctrl.requests, newData);
                     // $state.reload();
                 },
-                function () {
+                () => {
                     ctrl.buttonsDisabled = false;
                 }
-            ).finally(function(){
+            ).finally(() => {
             	ctrl.initScreenAfterSendOrSkipRfq();
             });
         };
-        ctrl.countUniqueVessels = function (sellerRandUniquePkg) {
+        ctrl.countUniqueVessels = function(sellerRandUniquePkg) {
             vesselIds = [];
-            $.each(ctrl.requests, function (reqK, reqV) {
-                $.each(reqV.locations, function (locK, locV) {
-                    $.each(locV.products, function (prodK, prodV) {
-                        $.each(prodV.sellers, function (sellerK, sellerV) {
+            $.each(ctrl.requests, (reqK, reqV) => {
+                $.each(reqV.locations, (locK, locV) => {
+                    $.each(locV.products, (prodK, prodV) => {
+                        $.each(prodV.sellers, (sellerK, sellerV) => {
                             if (sellerV.randUniquePkg == sellerRandUniquePkg) {
                                 if (vesselIds.indexOf(reqV.vesselDetails.vessel.id) == -1) {
                                     vesselIds.push(reqV.vesselDetails.vessel.id);
@@ -3162,26 +3214,26 @@ ctrl.setProductData = function(data, loc) {
             });
             return vesselIds.length;
         };
-        ctrl.setConfirmationOffers = function () {
-            var productErrors = [];
-            _.each(ctrl.requirements, function(value, key) {
+        ctrl.setConfirmationOffers = function() {
+            let productErrors = [];
+            _.each(ctrl.requirements, (value, key) => {
                 if(!value.productHasPrice && !value.productAllowZeroPricing) {
-                    productErrors.push("Please enter a price greater than 0 for the selected products");
+                    productErrors.push('Please enter a price greater than 0 for the selected products');
                 }
                 return;
             });
 
             if (_.uniqBy(ctrl.requirements, 'QuotedProductGroupId').length != 1) {
-	        	productErrors.push("Product types from different groups cannot be stemmed in one order. Please select the products with same group to proceed");
+	        	productErrors.push('Product types from different groups cannot be stemmed in one order. Please select the products with same group to proceed');
             }
 
 
             if (ctrl.isOfferReviewMandatory && !ctrl.isReviewed) {
-                productErrors.push("Your tenant configuration require that Group should be Reviewed before confirming an Offer");
+                productErrors.push('Your tenant configuration require that Group should be Reviewed before confirming an Offer');
             }
 
             if (productErrors.length > 0) {
-                _.each(productErrors, function(value, key) {
+                _.each(productErrors, (value, key) => {
                     toastr.error(value);
                 });
                 return false;
@@ -3197,19 +3249,19 @@ ctrl.setProductData = function(data, loc) {
                 fullGroupData: ctrl.requests
             };
 
-            $bladeEntity.open("confirmOffer");
+            $bladeEntity.open('confirmOffer');
         };
-        ctrl.canSendRFQ = function () {
+        ctrl.canSendRFQ = function() {
             ctrl.calculateScreenActions();
             return ctrl.hasAction(ctrl.SCREEN_ACTIONS.SENDRFQ) && ctrl.requirementsAreCorrect();
         };
-        ctrl.canConfirm = function () {
+        ctrl.canConfirm = function() {
             return ctrl.requirementsAreCorrectForConfirm();
         };
-        ctrl.canRevokeAmend = function () {
+        ctrl.canRevokeAmend = function() {
             return ctrl.requirementsAreCorrectForRevokeAmend();
         };
-        ctrl.viewRFQ = function (id) {
+        ctrl.viewRFQ = function(id) {
             $rootScope.bladeRfqGroupId = $stateParams.groupId;
             console.log($stateParams);
             if (!groupId) {
@@ -3222,46 +3274,46 @@ ctrl.setProductData = function(data, loc) {
                 });
             }
         };
-        ctrl.viewBladeRFQ = function (id) {
+        ctrl.viewBladeRFQ = function(id) {
             $rootScope.bladeRfqGroupId = $stateParams.groupId;
         };
-        ctrl.goSpot = function () {
+        ctrl.goSpot = function() {
             $state.go(STATE.GROUP_OF_REQUESTS, {
                 groupId: groupId
             });
         };
-        ctrl.changeRequirementsPricingType = function (product) {
-            var requirement;
-            for (var i = 0; i < ctrl.requirements.length; i++) {
+        ctrl.changeRequirementsPricingType = function(product) {
+            let requirement;
+            for (let i = 0; i < ctrl.requirements.length; i++) {
                 requirement = ctrl.requirements[i];
                 if (requirement.RequestId === product.requestId && requirement.ProductId === product.product.id) {
                     requirement.PricingTypeId = product.pricingType.id;
                 }
             }
         };
-        ctrl.setLatestOfferProduct = function (product, locations, seller) {
-            seller = $filter("filter")(product.sellers, {
+        ctrl.setLatestOfferProduct = function(product, locations, seller) {
+            seller = $filter('filter')(product.sellers, {
                 sellerCounterparty : {
                     id: seller.sellerCounterparty.id
-                } 
+                }
             })[0];
             ctrl.latestOfferProduct = product;
             ctrl.latestOfferSeller = seller;
         };
-        ctrl.setOfferDetailsParams = function (product, seller, theLocation) {
+        ctrl.setOfferDetailsParams = function(product, seller, theLocation) {
             ctrl.offerDetailsLocation = theLocation;
             ctrl.offerDetailsProduct = product;
             ctrl.offerDetails = 0;
             ctrl.offerDetails = ctrl.getSellerProductOfferOnLocation(product, theLocation, seller.sellerCounterparty.id, seller);
-            setTimeout(function () {
+            setTimeout(() => {
                 if (ctrl.offerDetails != 0) {
-                    $bladeEntity.open("offerDetails");
+                    $bladeEntity.open('offerDetails');
                 }
             }, 500);
         };
-        ctrl.updateOffer = function (offer, product) {
-            var seller, currentSeller;
-            for (var m = 0; m < product.sellers.length; m++) {
+        ctrl.updateOffer = function(offer, product) {
+            let seller, currentSeller;
+            for (let m = 0; m < product.sellers.length; m++) {
                 seller = product.sellers[m];
                 if (seller.id == offer.requestSellerId) {
                     currentSeller = seller;
@@ -3274,18 +3326,18 @@ ctrl.setProductData = function(data, loc) {
             return false;
             // $state.reload();
         };
-        ctrl.updateSpecParemeters = function (params) {
+        ctrl.updateSpecParemeters = function(params) {
             $rootScope.shouldRefreshGroup = true;
-            groupOfRequestsModel.updateEnergySpecValues(params).then(function (data) {
+            groupOfRequestsModel.updateEnergySpecValues(params).then((data) => {
             	ctrl.initScreenAfterSendOrSkipRfq();
-            	$rootScope.$broadcast("energySpecParametersUpdated", true);
-            	$(".blade-column.main-content-column .ng-dirty").removeClass("ng-dirty");
-            	ctrl.viewEnergyContentBlade(ctrl.blade.counterpartyActiveSeller, ctrl.blade.counterpartyActiveLocation)	
+            	$rootScope.$broadcast('energySpecParametersUpdated', true);
+            	$('.blade-column.main-content-column .ng-dirty').removeClass('ng-dirty');
+            	ctrl.viewEnergyContentBlade(ctrl.blade.counterpartyActiveSeller, ctrl.blade.counterpartyActiveLocation);
             	ctrl.confirmedBladeNavigation = true;
                 // $("body").css("overflow-y", "visible");
                 // $rootScope.$broadcast("bladeDataChanged", true);
                 // $state.reload();
-                //update CCAI & net specific energy
+                // update CCAI & net specific energy
                 // console.log(data);
                 // console.log(ctrl.active_prod.products[0].energyParameterValues);
                 if (data.payload.id == ctrl.active_prod.products[0].energyParameterValues.id) {
@@ -3296,12 +3348,12 @@ ctrl.setProductData = function(data, loc) {
                 }
             });
         };
-        ctrl.revokeRFQ = function () {
+        ctrl.revokeRFQ = function() {
             if (ctrl.requirements.length === 0) {
-                toastr.error("Please select the Products to Revoke RFQ");
+                toastr.error('Please select the Products to Revoke RFQ');
                 return false;
             }
-            var rfq_data = {
+            let rfq_data = {
                 Requirements: ctrl.requirements,
                 QuoteByTimeZoneId: ctrl.quoteByTimezone.id,
                 QuoteByCurrencyId: ctrl.quoteByCurrency.id,
@@ -3310,11 +3362,11 @@ ctrl.setProductData = function(data, loc) {
             };
             ctrl.buttonsDisabled = true;
             groupOfRequestsModel.revokeRFQ(rfq_data).then(
-                function (data) {
+                (data) => {
                 	if (data.payload) {
 	                	if (data.payload.redirectToRequest) {
 	                		lastRequestId = rfq_data.Requirements[0].RequestId;
-	                		location.href = "/#/edit-request/"+lastRequestId;
+	                		location.href = `/#/edit-request/${lastRequestId}`;
 	                		return;
 	                	}
                 	}
@@ -3322,56 +3374,53 @@ ctrl.setProductData = function(data, loc) {
                     ctrl.initScreenAfterSendOrSkipRfq();
                     return false;
                 },
-                function () {
+                () => {
                     ctrl.buttonsDisabled = false;
                     ctrl.initScreenAfterSendOrSkipRfq();
                     return false;
                 }
             ).finally(
-                function(){
+                () => {
                 }
             );
         };
-        ctrl.amendRFQ = function () {
-         
+        ctrl.amendRFQ = function() {
             if (ctrl.requirements.length === 0) {
-                toastr.error("Please select the Products to Amend RFQ");
+                toastr.error('Please select the Products to Amend RFQ');
                 return false;
             }
-            var rfq_data = ctrl.requirements;
+            let rfq_data = ctrl.requirements;
             ctrl.buttonsDisabled = true;
             groupOfRequestsModel.amendRFQ(rfq_data).then(
-                function (data) {
+                (data) => {
                     ctrl.initScreenAfterSendOrSkipRfq();
                 }
             ).finally(
-                function(){
+                () => {
                 	ctrl.initScreenAfterSendOrSkipRfq();
                 }
             );
-
-
         };
 
         ctrl.triggerCommentsChange = function() {
             $rootScope.overrideCloseNavigation = false;
-        }
+        };
 
-        ctrl.saveComments = function (internalComments, externalComments, fromDate, event) {
-            if (ctrl.quoteByDateFrom == "0000-00-00T00:00+00:00" || (!$("#quoteByDateFrom_dateinput").hasClass("focusedOut") && !ctrl.quoteByDateFrom)  ) {
+        ctrl.saveComments = function(internalComments, externalComments, fromDate, event) {
+            if (ctrl.quoteByDateFrom == '0000-00-00T00:00+00:00' || !$('#quoteByDateFrom_dateinput').hasClass('focusedOut') && !ctrl.quoteByDateFrom) {
                 if (!event) {
 	                return;
-                }	
+                }
             }
             if (fromDate && ctrl.lastSavedQuoteByDateFrom == ctrl.quoteByDateFrom) {
                 return;
             }
             ctrl.lastSavedQuoteByDateFrom = ctrl.quoteByDateFrom;
         	if (internalComments) {
-	        	internalComments = internalComments.replace(/(\r\n|\n)/g, "<br/>");
+	        	internalComments = internalComments.replace(/(\r\n|\n)/g, '<br/>');
         	}
         	if (externalComments) {
-	        	externalComments = externalComments.replace(/(\r\n|\n)/g, "<br/>");
+	        	externalComments = externalComments.replace(/(\r\n|\n)/g, '<br/>');
         	}
             initialValueInternalComments = internalComments;
             initialValueExternalComments = externalComments;
@@ -3379,17 +3428,17 @@ ctrl.setProductData = function(data, loc) {
             $rootScope.overrideCloseNavigation = true;
         };
 
-        //set requote requirements needed by requote dialog
-        ctrl.setRequoteRequirements = function (seller, theLocation) {
+        // set requote requirements needed by requote dialog
+        ctrl.setRequoteRequirements = function(seller, theLocation) {
             ctrl.requirementsToRequote = ctrl.getRequoteRequirements(seller, theLocation);
         };
-        //get requote requirements matching location/seller pair
-        ctrl.getRequoteRequirements = function (seller, locations) {
-            var requoteRequirements = [];
-            var product, req, theLocation;
-            for (var i = 0; i < ctrl.requirements.length; i++) {
+        // get requote requirements matching location/seller pair
+        ctrl.getRequoteRequirements = function(seller, locations) {
+            let requoteRequirements = [];
+            let product, req, theLocation;
+            for (let i = 0; i < ctrl.requirements.length; i++) {
                 req = ctrl.requirements[i];
-            	if (req.randUniquePkg == seller.randUniquePkg && locations[0].uniqueLocationIdentifier == req.rowLocationSellerPhysical.split("-")[0]) {
+            	if (req.randUniquePkg == seller.randUniquePkg && locations[0].uniqueLocationIdentifier == req.rowLocationSellerPhysical.split('-')[0]) {
                     requoteRequirements.push(req);
             	}
                 // $.each(ctrl.requests, function (reqK, reqV) {
@@ -3403,7 +3452,7 @@ ctrl.setProductData = function(data, loc) {
                 //         });
                 //     });
                 // });
-                
+
                 // for (var j = 0; j < locations.length; j++) {
                 //     location = locations[j];
                 //     // if (seller.sellerCounterparty.id == req.SellerId && location.location.id == req.LocationId && location.id == req.RequestLocationId && req.RfqId != null) {
@@ -3427,26 +3476,25 @@ ctrl.setProductData = function(data, loc) {
             }
             return angular.copy(requoteRequirements);
         };
-        ctrl.previewEmail = function (seller, locations) {
-
+        ctrl.previewEmail = function(seller, locations) {
         	ctrl.changeBladeWidgetFunction = null;
-        	if ($(".blade-column.main-content-column .ng-dirty").length > 0 && !ctrl.confirmedBladeNavigation) {
+        	if ($('.blade-column.main-content-column .ng-dirty').length > 0 && !ctrl.confirmedBladeNavigation) {
 	        	$('.confirmNavigateBlade').removeClass('hide');
 	        	$('.confirmNavigateBlade').modal();
 	        	ctrl.changeBladeWidgetFunction = {
 	        		function: 'ctrl.previewEmail',
-	        		params : [seller,locations]
-	        	}
+	        		params : [ seller, locations ]
+	        	};
 	        	return;
         	}
         	ctrl.confirmedBladeNavigation = false;
 
 
         	// removeSellerRequirementsOnLocation(seller, locations, true);
-            var rowRequirements = [];
+            let rowRequirements = [];
 
-			// ctrl.requirements = [];
-			
+            // ctrl.requirements = [];
+
             ctrl.refreshedRFQEmailBlade = false;
             if (locations.location || locations.length > 0) {
                 if (locations.length > 0) {
@@ -3455,14 +3503,14 @@ ctrl.setProductData = function(data, loc) {
                     uniqueLocationIdentifier = locations.uniqueLocationIdentifier;
                 }
                 ctrl.blade.activeWidget = null;
-                $.each(ctrl.requirements, function(reqK, reqV){
+                $.each(ctrl.requirements, (reqK, reqV) => {
                 	if (reqV.randUniquePkg != seller.randUniquePkg) {
 		                // ctrl.requirements = [];
                 	}
-                })
+                });
                 locationsList = [];
-                $.each(ctrl.requests, function (reqK, reqV) {
-                    $.each(reqV.locations, function (locK, locV) {
+                $.each(ctrl.requests, (reqK, reqV) => {
+                    $.each(reqV.locations, (locK, locV) => {
                         if (locV.uniqueLocationIdentifier == uniqueLocationIdentifier) {
                             locationsList.push(locV);
                         }
@@ -3473,37 +3521,37 @@ ctrl.setProductData = function(data, loc) {
 	                ctrl.createSellerRequirements(seller, locations);
                 }
             }
-                ctrl.rfqScreenToDisplayIsMail = false;
+            ctrl.rfqScreenToDisplayIsMail = false;
 
-                for (var i = 0; i < ctrl.requirements.length; i++) {
-                    var req = ctrl.requirements[i];
-                    if (req.randUniquePkg.indexOf(seller.randUniquePkg) != -1) {
-                        rowRequirements.push(req);
-                        if (!req.productHasRFQ) {
-                            ctrl.rfqScreenToDisplayIsMail = true;
-                        }
+            for (let i = 0; i < ctrl.requirements.length; i++) {
+                let req = ctrl.requirements[i];
+                if (req.randUniquePkg.indexOf(seller.randUniquePkg) != -1) {
+                    rowRequirements.push(req);
+                    if (!req.productHasRFQ) {
+                        ctrl.rfqScreenToDisplayIsMail = true;
                     }
                 }
+            }
 
             // Remove SludgeProducts From emailPreview payload
-            requirementsFilteredWithoutSludgeProduct = []
-    		hasSimpleProduct = false
-    		hasSludgeProduct = false
-            var sludgeProductTypeGroup = _.find(ctrl.listsCache.ProductTypeGroup, {'name' : "Sludge"});
-            $.each(rowRequirements, function(k,v){
-                    if (v.ProductTypeGroupId != sludgeProductTypeGroup.id) {
-                        requirementsFilteredWithoutSludgeProduct.push(v);
-                        hasSimpleProduct = true
-                    } else {
-                        hasSludgeProduct = true
-                    }
-            })
+            requirementsFilteredWithoutSludgeProduct = [];
+    		hasSimpleProduct = false;
+    		hasSludgeProduct = false;
+            let sludgeProductTypeGroup = _.find(ctrl.listsCache.ProductTypeGroup, { name : 'Sludge' });
+            $.each(rowRequirements, (k, v) => {
+                if (v.ProductTypeGroupId != sludgeProductTypeGroup.id) {
+                    requirementsFilteredWithoutSludgeProduct.push(v);
+                    hasSimpleProduct = true;
+                } else {
+                    hasSludgeProduct = true;
+                }
+            });
 
             if (hasSimpleProduct && hasSludgeProduct) {
-	            rowRequirements = requirementsFilteredWithoutSludgeProduct
+	            rowRequirements = requirementsFilteredWithoutSludgeProduct;
             }
             if (rowRequirements.length > 0) {
-                var rfq_data = {
+                let rfq_data = {
                     Requirements: rowRequirements,
                     QuoteByDate: ctrl.quoteByDate,
                     QuoteByDateFrom: ctrl.quoteByDateFrom,
@@ -3520,54 +3568,54 @@ ctrl.setProductData = function(data, loc) {
                 $stateParams.transaction = EMAIL_TRANSACTION.GROUP_OF_REQUESTS;
                 // ctrl.blade.email = data.payload;
                 // ctrl.blade.emailContentHtml = $sce.trustAsHtml(ctrl.email.content);
-                ctrl.bladeTemplateUrl = "components/blade/templates/gor-blade-content.html";
+                ctrl.bladeTemplateUrl = 'components/blade/templates/gor-blade-content.html';
                 ctrl.blade.counterpartyData = {
                     id: seller.sellerCounterparty.id
                 };
-                ctrl.blade.activeSeller = seller.requestLocationId + "-" + seller.randUnique;
+                ctrl.blade.activeSeller = `${seller.requestLocationId }-${ seller.randUnique}`;
                 ctrl.blade.counterpartyActiveSeller = seller;
                 theLocation = locations[0];
                 ctrl.blade.counterpartyActiveLocation = theLocation;
 	            $rootScope.bladeFilteredRfq = ctrl.blade.counterpartyActiveSeller;
 	            $rootScope.bladeFilteredRfq.locationData = ctrl.blade.counterpartyActiveLocation;
-                ctrl.blade.colLayout = "double";
-                setTimeout(function () { });
-                ctrl.blade.activeWidget = "email";
-                ctrl.blade.widgetType = "counterparty";
+                ctrl.blade.colLayout = 'double';
+                setTimeout(() => { });
+                ctrl.blade.activeWidget = 'email';
+                ctrl.blade.widgetType = 'counterparty';
                 // if (!ctrl.rfqScreenToDisplayIsMail) {
-                     // ctrl.setBladeCounterpartyActiveSeller();
+                // ctrl.setBladeCounterpartyActiveSeller();
                 // }
-                $bladeEntity.open("groupOfRequestBlade");
+                $bladeEntity.open('groupOfRequestBlade');
                 ctrl.bladeOpened = true;
                 ctrl.dataLoaded = true;
-                setTimeout(function () { }, 1500);
+                setTimeout(() => { }, 1500);
             } else {
-				ctrl.bladeTemplateUrl = "components/blade/templates/gor-blade-content.html";
+                ctrl.bladeTemplateUrl = 'components/blade/templates/gor-blade-content.html';
                 ctrl.blade.counterpartyData = {
                     id: seller.sellerCounterparty.id
                 };
-                ctrl.blade.activeSeller = seller.requestLocationId + "-" + seller.randUnique;
+                ctrl.blade.activeSeller = `${seller.requestLocationId }-${ seller.randUnique}`;
                 ctrl.blade.counterpartyActiveSeller = seller;
             	theLocation = locations[0];
                 ctrl.blade.counterpartyActiveLocation = theLocation;
 	            $rootScope.bladeFilteredRfq = ctrl.blade.counterpartyActiveSeller;
-	            $rootScope.bladeFilteredRfq.locationData = ctrl.blade.counterpartyActiveLocation;                
-                ctrl.blade.colLayout = "double";            	
-                ctrl.blade.activeWidget = "email";
-                ctrl.blade.widgetType = "counterparty";
+	            $rootScope.bladeFilteredRfq.locationData = ctrl.blade.counterpartyActiveLocation;
+                ctrl.blade.colLayout = 'double';
+                ctrl.blade.activeWidget = 'email';
+                ctrl.blade.widgetType = 'counterparty';
                 if (!ctrl.rfqScreenToDisplayIsMail) {
                     ctrl.setBladeCounterpartyActiveSeller();
                 }
-                $bladeEntity.open("groupOfRequestBlade");
+                $bladeEntity.open('groupOfRequestBlade');
                 ctrl.bladeOpened = true;
                 ctrl.dataLoaded = true;
             }
-            setTimeout(function () { 
+            setTimeout(() => {
 	            ctrl.refreshedRFQEmailBlade = true;
 	            $scope.$apply();
             }, 10);
         };
-        ctrl.getSellerOffers = function (seller, loc) {
+        ctrl.getSellerOffers = function(seller, loc) {
             // debugger
             // ctrl.sellerOffers = [];
             // $.each(ctrl.requests, function(reqK, reqV) {
@@ -3592,32 +3640,32 @@ ctrl.setProductData = function(data, loc) {
             // })
             // ctrl.active_prod = ctrl.sellerOffers[0]
         };
-        ctrl.canDelinkRequests = function () {
-            var selectedRequestIds = [];
-            var requestProductActions, products;
-            var canDelink = false;
-            Object.keys(ctrl.requestCheckboxes).forEach(function (key) {
+        ctrl.canDelinkRequests = function() {
+            let selectedRequestIds = [];
+            let requestProductActions, products;
+            let canDelink = false;
+            Object.keys(ctrl.requestCheckboxes).forEach((key) => {
                 if (ctrl.requestCheckboxes[key]) {
                     selectedRequestIds.push(key);
                 }
                 return;
             });
             if (ctrl.requests && selectedRequestIds.length == ctrl.requests.length) {
-	        	var delinkableRequests = 0;
-	        	$.each(ctrl.requests, function(rk,rv){
-	        		if (["Validated", "Reopened", "ReOpen"].indexOf(rv.requestStatus.name) != -1) {
+	        	let delinkableRequests = 0;
+	        	$.each(ctrl.requests, (rk, rv) => {
+	        		if ([ 'Validated', 'Reopened', 'ReOpen' ].indexOf(rv.requestStatus.name) != -1) {
 		            	delinkableRequests++;
 	        		}
-	        	})
+	        	});
 	        	if (delinkableRequests != selectedRequestIds.length) {
 	            	return false;
 	        	}
             }
-            for (var i = 0; i < selectedRequestIds.length; i++) {
+            for (let i = 0; i < selectedRequestIds.length; i++) {
                 if (ctrl.requestCheckboxes[selectedRequestIds[i]]) {
-                    for (var j = 0; j < ctrl.requests.length; j++) {
+                    for (let j = 0; j < ctrl.requests.length; j++) {
                         if (ctrl.requests[j].id == selectedRequestIds[i]) {
-                            products = getAllRequestProductList([ctrl.requests[j]])[0];
+                            products = getAllRequestProductList([ ctrl.requests[j] ])[0];
                             requestProductActions = screenActionsModel.getActionsFromProductList(products);
                             if (screenActionsModel.hasProductAction(SCREEN_ACTIONS.DELINKRFQ, requestProductActions)) {
                                 canDelink = true;
@@ -3634,20 +3682,20 @@ ctrl.setProductData = function(data, loc) {
             }
             return canDelink;
         };
-        //remove seller from location group
-        ctrl.removeSellerFromLocation = function (seller, locations) {
+        // remove seller from location group
+        ctrl.removeSellerFromLocation = function(seller, locations) {
             physicalSupplierId = null;
-            if (typeof seller.offers != "undefined") {
+            if (typeof seller.offers != 'undefined') {
                 if (seller.offers.length > 0) {
                     if (seller.offers[0].physicalSupplierCounterparty) {
                         physicalSupplierId = seller.offers[0].physicalSupplierCounterparty.id;
                     }
                 }
             }
-            $.each(ctrl.requests, function (reqK, reqV) {
-                $.each(reqV.locations, function (locK, locV) {
-                    $.each(locV.products, function (prodK, prodV) {
-                        $.each(prodV.sellers, function (sellerK, sellerV) {
+            $.each(ctrl.requests, (reqK, reqV) => {
+                $.each(reqV.locations, (locK, locV) => {
+                    $.each(locV.products, (prodK, prodV) => {
+                        $.each(prodV.sellers, (sellerK, sellerV) => {
                             if (sellerV) {
                                 if (seller.randUnique == sellerV.randUnique) {
                                     ctrl.requests[reqK].locations[locK].products[prodK].sellers.splice(sellerK, 1);
@@ -3657,8 +3705,8 @@ ctrl.setProductData = function(data, loc) {
                     });
                 });
             });
-            $.each(ctrl.locations, function (locK, locV) {
-                $.each(locV.location.sellers, function (selK, selV) {
+            $.each(ctrl.locations, (locK, locV) => {
+                $.each(locV.location.sellers, (selK, selV) => {
                     if (selV) {
                         if (seller.randUnique == selV.randUnique) {
                             locV.location.sellers.splice(selK, 1);
@@ -3666,7 +3714,7 @@ ctrl.setProductData = function(data, loc) {
                     }
                 });
             });
-            for (var i = ctrl.requirements.length - 1; i >= 0; i--) {
+            for (let i = ctrl.requirements.length - 1; i >= 0; i--) {
                 ctrl.requirements[i];
                 if (ctrl.requirements[i].randUniquePkg == seller.randUniquePkg) {
                     ctrl.requirements.splice(i, 1);
@@ -3677,17 +3725,17 @@ ctrl.setProductData = function(data, loc) {
             // console.log(ctrl.locations);
             // console.log(ctrl.sellers);
         };
-        ctrl.canDeleteSeller = function (seller, locations) {
-            var canDeleteSeller = true;
-            locationLoop: for (var locationIndex = 0; locationIndex < locations.length; locationIndex++) {
-                var theLocation = locations[locationIndex];
-                for (var i = 0; i < theLocation.products.length; i++) {
-                    var product = theLocation.products[i];
-                    for (var j = product.sellers.length - 1; j >= 0; j--) {
+        ctrl.canDeleteSeller = function(seller, locations) {
+            let canDeleteSeller = true;
+            locationLoop: for (let locationIndex = 0; locationIndex < locations.length; locationIndex++) {
+                let theLocation = locations[locationIndex];
+                for (let i = 0; i < theLocation.products.length; i++) {
+                    let product = theLocation.products[i];
+                    for (let j = product.sellers.length - 1; j >= 0; j--) {
                         if (product.sellers[j].randUniquePkg === seller.randUniquePkg) {
                             if (product.sellers[j].offers) {
-                                for (var k = product.sellers[j].offers.length - 1; k >= 0; k--) {
-                                    var offer = product.sellers[j].offers[k];
+                                for (let k = product.sellers[j].offers.length - 1; k >= 0; k--) {
+                                    let offer = product.sellers[j].offers[k];
                                     if (offer.requestSellerId != 0) {
                                         canDeleteSeller = false;
                                         break locationLoop;
@@ -3700,8 +3748,8 @@ ctrl.setProductData = function(data, loc) {
             }
             return canDeleteSeller;
         };
-        ctrl.gotoContractPlanning = function () {
-            var groupId = getGroupId();
+        ctrl.gotoContractPlanning = function() {
+            let groupId = getGroupId();
             if (groupId < 0) {
                 return false;
             }
@@ -3709,65 +3757,64 @@ ctrl.setProductData = function(data, loc) {
                 groupId: groupId
             });
         };
-        ctrl.reloadGroup = function () {
+        ctrl.reloadGroup = function() {
             $state.reload();
         };
-        ctrl.viewEditCounterpartyBlade = function (counterpartyId, theLocation, seller) {
-
+        ctrl.viewEditCounterpartyBlade = function(counterpartyId, theLocation, seller) {
         	ctrl.changeBladeWidgetFunction = null;
-            ctrl.blade.widgetType = "none";
-        	if ($(".blade-column.main-content-column .ng-dirty").length > 0 && !ctrl.confirmedBladeNavigation) {
+            ctrl.blade.widgetType = 'none';
+        	if ($('.blade-column.main-content-column .ng-dirty').length > 0 && !ctrl.confirmedBladeNavigation) {
 	        	$('.confirmNavigateBlade').removeClass('hide');
 	        	$('.confirmNavigateBlade').modal();
 	        	ctrl.changeBladeWidgetFunction = {
 	        		function: 'ctrl.viewEditCounterpartyBlade',
-	        		params : [counterpartyId,theLocation,seller]
-	        	}
+	        		params : [ counterpartyId, theLocation, seller ]
+	        	};
 	        	return;
         	}
         	ctrl.confirmedBladeNavigation = false;
 
-            ctrl.bladeTemplateUrl = "components/blade/templates/gor-blade-content.html";
-            if (typeof ctrl.blade == "undefined") {
+            ctrl.bladeTemplateUrl = 'components/blade/templates/gor-blade-content.html';
+            if (typeof ctrl.blade == 'undefined') {
                 ctrl.blade = {};
             }
             ctrl.blade.counterpartyActiveSeller = seller;
             ctrl.blade.counterpartyActiveLocation = theLocation;
-            Factory_Master.get_master_entity(counterpartyId, "counterparty", "masters", function (callback) {
+            Factory_Master.get_master_entity(counterpartyId, 'counterparty', 'masters', (callback) => {
                 if (callback) {
                     console.log(callback);
                     ctrl.blade.counterpartyData = callback;
                     // ctrl.blade.widgetType = 'general';
-                    ctrl.blade.widgetType = "counterparty";
+                    ctrl.blade.widgetType = 'counterparty';
                     // ctrl.blade.colLayout = 'single';
                     // ctrl.blade.colLayout = 'none';
-                    ctrl.blade.colLayout = "double";
-                    ctrl.blade.activeWidget = "contact";
+                    ctrl.blade.colLayout = 'double';
+                    ctrl.blade.activeWidget = 'contact';
                     ctrl.blade.counterpartyActiveLocation = theLocation;
                     ctrl.blade.counterpartyActiveProducts = theLocation[0].products;
-                    ctrl.blade.activeSeller = seller.requestLocationId + "-" + seller.randUnique;
+                    ctrl.blade.activeSeller = `${seller.requestLocationId }-${ seller.randUnique}`;
                     // $rootScope.counterpartyData = callback;
-                    $bladeEntity.open("groupOfRequestBlade");
+                    $bladeEntity.open('groupOfRequestBlade');
                     ctrl.bladeOpened = true;
                 }
             });
             ctrl.dataLoaded = true;
         };
-        ctrl.viewSupplierCardBlade = function (seller, loc, products, request) {
+        ctrl.viewSupplierCardBlade = function(seller, loc, products, request) {
         	ctrl.changeBladeWidgetFunction = null;
-        	if ($(".blade-column.main-content-column .ng-dirty").length > 0 && !ctrl.confirmedBladeNavigation) {
+        	if ($('.blade-column.main-content-column .ng-dirty').length > 0 && !ctrl.confirmedBladeNavigation) {
 	        	$('.confirmNavigateBlade').removeClass('hide');
 	        	$('.confirmNavigateBlade').modal();
 	        	ctrl.changeBladeWidgetFunction = {
 	        		function: 'ctrl.viewSupplierCardBlade',
-	        		params : [seller,loc,products,request]
-	        	}
+	        		params : [ seller, loc, products, request ]
+	        	};
 	        	return;
         	}
         	ctrl.confirmedBladeNavigation = false;
 
-            ctrl.bladeTemplateUrl = "components/blade/templates/gor-blade-content.html";
-            if (typeof ctrl.blade == "undefined") {
+            ctrl.bladeTemplateUrl = 'components/blade/templates/gor-blade-content.html';
+            if (typeof ctrl.blade == 'undefined') {
                 ctrl.blade = {};
             }
             // ctrl.dataLoaded = false;
@@ -3775,10 +3822,10 @@ ctrl.setProductData = function(data, loc) {
             ctrl.blade.counterpartyActiveLocation = loc;
             ctrl.blade.counterpartyData = seller.sellerCounterparty;
             ctrl.blade.counterpartyActiveSeller = seller;
-            ctrl.blade.widgetType = "counterparty";
-            ctrl.blade.colLayout = "double";
-            ctrl.blade.activeWidget = "card";
-            ctrl.blade.activeSeller = seller.requestLocationId + "-" + seller.randUnique;
+            ctrl.blade.widgetType = 'counterparty';
+            ctrl.blade.colLayout = 'double';
+            ctrl.blade.activeWidget = 'card';
+            ctrl.blade.activeSeller = `${seller.requestLocationId }-${ seller.randUnique}`;
             if (loc) {
                 if (loc.length > 0) {
                     loc = loc[0];
@@ -3786,42 +3833,40 @@ ctrl.setProductData = function(data, loc) {
             }
             activeSellerCardTab = {
                 requestId: products ? products[0].requestId : null,
-                rfqId: seller.packageType == "seller" ? seller.offers["0"].rfq.id : null,
+                rfqId: seller.packageType == 'seller' ? seller.offers['0'].rfq.id : null,
                 packageType: seller.packageType
             };
             ctrl.initSupplierCardData(loc, seller, activeSellerCardTab);
-            uiApiModel.get(MOCKUP_MAP["unrouted.seller-card"]).then(function (data) {
+            uiApiModel.get(MOCKUP_MAP['unrouted.seller-card']).then((data) => {
                 ctrl.blade_ui = data;
-                ctrl.requestDetailsFields = normalizeArrayToHash(ctrl.blade_ui.requestDetails.fields, "name");
-                ctrl.bunkerablePortsFields = normalizeArrayToHash(ctrl.blade_ui.bunkerablePorts.fields, "name");
-                ctrl.commentsFields = normalizeArrayToHash(ctrl.blade_ui.comments.fields, "name");
-                ctrl.productFormFields = normalizeArrayToHash(ctrl.blade_ui.product.fields, "name");
-                ctrl.productColumns = normalizeArrayToHash(ctrl.blade_ui.product.columns, "name");
-                ctrl.additionalCostColumns = normalizeArrayToHash(ctrl.blade_ui.additionalCost.columns, "name");
-                $bladeEntity.open("groupOfRequestBlade");
+                ctrl.requestDetailsFields = normalizeArrayToHash(ctrl.blade_ui.requestDetails.fields, 'name');
+                ctrl.bunkerablePortsFields = normalizeArrayToHash(ctrl.blade_ui.bunkerablePorts.fields, 'name');
+                ctrl.commentsFields = normalizeArrayToHash(ctrl.blade_ui.comments.fields, 'name');
+                ctrl.productFormFields = normalizeArrayToHash(ctrl.blade_ui.product.fields, 'name');
+                ctrl.productColumns = normalizeArrayToHash(ctrl.blade_ui.product.columns, 'name');
+                ctrl.additionalCostColumns = normalizeArrayToHash(ctrl.blade_ui.additionalCost.columns, 'name');
+                $bladeEntity.open('groupOfRequestBlade');
                 ctrl.bladeOpened = true;
             });
         };
-        ctrl.viewEnergyContentBlade = function (seller, loc, products, productOffer) {
-
-
+        ctrl.viewEnergyContentBlade = function(seller, loc, products, productOffer) {
         	ctrl.changeBladeWidgetFunction = null;
-        	if ($(".blade-column.main-content-column .ng-dirty").length > 0 && !ctrl.confirmedBladeNavigation) {
+        	if ($('.blade-column.main-content-column .ng-dirty').length > 0 && !ctrl.confirmedBladeNavigation) {
 	        	$('.confirmNavigateBlade').removeClass('hide');
 	        	$('.confirmNavigateBlade').modal();
 	        	ctrl.changeBladeWidgetFunction = {
 	        		function: 'ctrl.viewEnergyContentBlade',
-	        		params : [seller,loc,products,productOffer]
-	        	}
+	        		params : [ seller, loc, products, productOffer ]
+	        	};
 	        	return;
         	}
         	ctrl.confirmedBladeNavigation = false;
 
-            ctrl.bladeTemplateUrl = "components/blade/templates/gor-blade-content.html";
+            ctrl.bladeTemplateUrl = 'components/blade/templates/gor-blade-content.html';
             if (loc[0]) {
                 loc = loc[0];
             }
-            if (typeof ctrl.blade == "undefined") {
+            if (typeof ctrl.blade == 'undefined') {
                 ctrl.blade = {};
             }
             ctrl.blade.requestId = null;
@@ -3830,9 +3875,9 @@ ctrl.setProductData = function(data, loc) {
                     ctrl.blade.requestId = products[0].requestId;
                 }
             }
-            console.log("!@#");
-     
-            
+            console.log('!@#');
+
+
             ctrl.dataLoaded = false;
             ctrl.blade.counterpartyActiveLocation = loc;
             ctrl.blade.counterpartyActiveSeller = seller;
@@ -3841,25 +3886,24 @@ ctrl.setProductData = function(data, loc) {
             // ctrl.blade.widgetType = 'general';
             // ctrl.blade.colLayout = 'single';
             // ctrl.blade.colLayout = 'none';
-            ctrl.blade.widgetType = "counterparty";
-            ctrl.blade.colLayout = "double";
-            ctrl.blade.activeWidget = "energyContent";
-            ctrl.blade.activeSeller = seller.requestLocationId + "-" + seller.randUnique;
+            ctrl.blade.widgetType = 'counterparty';
+            ctrl.blade.colLayout = 'double';
+            ctrl.blade.activeWidget = 'energyContent';
+            ctrl.blade.activeSeller = `${seller.requestLocationId }-${ seller.randUnique}`;
             ctrl.initEnergyBlade(loc, seller, productOffer);
             // $rootScope.counterpartyData = callback;
-            $bladeEntity.open("groupOfRequestBlade");
+            $bladeEntity.open('groupOfRequestBlade');
             ctrl.bladeOpened = true;
         };
-        ctrl.viewRequote = function (seller, theLocation) {
-
+        ctrl.viewRequote = function(seller, theLocation) {
         	ctrl.changeBladeWidgetFunction = null;
-        	if ($(".blade-column.main-content-column .ng-dirty").length > 0 && !ctrl.confirmedBladeNavigation) {
+        	if ($('.blade-column.main-content-column .ng-dirty').length > 0 && !ctrl.confirmedBladeNavigation) {
 	        	$('.confirmNavigateBlade').removeClass('hide');
 	        	$('.confirmNavigateBlade').modal();
 	        	ctrl.changeBladeWidgetFunction = {
 	        		function: 'ctrl.viewRequote',
-	        		params : [seller,theLocation]
-	        	}
+	        		params : [ seller, theLocation ]
+	        	};
 	        	return;
         	}
         	ctrl.confirmedBladeNavigation = false;
@@ -3869,8 +3913,8 @@ ctrl.setProductData = function(data, loc) {
                 ctrl.blade.activeWidget = null;
                 uniqueLocationIdentifier = theLocation.uniqueLocationIdentifier;
                 locationsList = [];
-                $.each(ctrl.requests, function (reqK, reqV) {
-                    $.each(reqV.locations, function (locK, locV) {
+                $.each(ctrl.requests, (reqK, reqV) => {
+                    $.each(reqV.locations, (locK, locV) => {
                         if (locV.uniqueLocationIdentifier == uniqueLocationIdentifier) {
                             locationsList.push(locV);
                         }
@@ -3894,56 +3938,55 @@ ctrl.setProductData = function(data, loc) {
             }
             */
 
-            ctrl.bladeTemplateUrl = "components/blade/templates/gor-blade-content.html";
-            if (typeof ctrl.blade == "undefined") {
+            ctrl.bladeTemplateUrl = 'components/blade/templates/gor-blade-content.html';
+            if (typeof ctrl.blade == 'undefined') {
                 ctrl.blade = {};
             }
             ctrl.blade.counterpartyActiveLocation = theLocation;
             ctrl.blade.counterpartyData = seller.sellerCounterparty;
             ctrl.blade.counterpartyActiveSeller = seller;
             // ctrl.blade.widgetType = 'general';
-            ctrl.blade.widgetType = "counterparty";
+            ctrl.blade.widgetType = 'counterparty';
             // ctrl.blade.colLayout = 'single';
             // ctrl.blade.colLayout = 'none';
-            ctrl.blade.colLayout = "double";
-            ctrl.blade.activeWidget = "requote";
-            ctrl.blade.activeSeller = seller.requestLocationId + "-" + seller.randUnique;
+            ctrl.blade.colLayout = 'double';
+            ctrl.blade.activeWidget = 'requote';
+            ctrl.blade.activeSeller = `${seller.requestLocationId }-${ seller.randUnique}`;
             // $rootScope.counterpartyData = callback;
             ctrl.requirementsToRequote = ctrl.getRequoteRequirements(seller, theLocation);
 
 
-
-            $bladeEntity.open("groupOfRequestBlade");
+            $bladeEntity.open('groupOfRequestBlade');
             ctrl.bladeOpened = true;
             ctrl.dataLoaded = true;
         };
         ctrl.viewBladeSellerRating = function() {
         	ctrl.changeBladeWidgetFunction = null;
-        	if ($(".blade-column.main-content-column .ng-dirty").length > 0 && !ctrl.confirmedBladeNavigation) {
+        	if ($('.blade-column.main-content-column .ng-dirty').length > 0 && !ctrl.confirmedBladeNavigation) {
 	        	$('.confirmNavigateBlade').removeClass('hide');
 	        	$('.confirmNavigateBlade').modal();
 	        	ctrl.changeBladeWidgetFunction = {
 	        		function: 'ctrl.viewBladeSellerRating',
 	        		params : []
-	        	}
+	        	};
 	        	return;
         	}
         	ctrl.confirmedBladeNavigation = false;
 
-        	ctrl.blade.activeWidget ='rating' ; 
-        	ctrl.blade.colLayout = 'double'
-        }
-        ctrl.changeBladeCounterparty = function (seller, theLocation) {
+        	ctrl.blade.activeWidget = 'rating';
+        	ctrl.blade.colLayout = 'double';
+        };
+        ctrl.changeBladeCounterparty = function(seller, theLocation) {
             // ctrl.dataLoaded = true;
 
         	ctrl.changeBladeWidgetFunction = null;
-        	if ($(".blade-column.main-content-column .ng-dirty").length > 0 && !ctrl.confirmedBladeNavigation) {
+        	if ($('.blade-column.main-content-column .ng-dirty').length > 0 && !ctrl.confirmedBladeNavigation) {
 	        	$('.confirmNavigateBlade').removeClass('hide');
 	        	$('.confirmNavigateBlade').modal();
 	        	ctrl.changeBladeWidgetFunction = {
 	        		function: 'ctrl.changeBladeCounterparty',
-	        		params : [seller,theLocation]
-	        	}
+	        		params : [ seller, theLocation ]
+	        	};
 	        	return;
         	}
         	ctrl.confirmedBladeNavigation = false;
@@ -3953,54 +3996,54 @@ ctrl.setProductData = function(data, loc) {
             ctrl.blade.productSellerId = seller.sellerCounterparty.id;
             ctrl.blade.counterpartyActiveSeller = seller;
             ctrl.blade.counterpartyActiveLocation = theLocation;
-            if (ctrl.blade.activeWidget == "email") {
-	            setTimeout(function(){
+            if (ctrl.blade.activeWidget == 'email') {
+	            setTimeout(() => {
 		            ctrl.refreshedRFQEmailBlade = false;
 		            $scope.$apply();
 		            $scope.$apply();
-	            },50)
-	            setTimeout(function(){
+	            }, 50);
+	            setTimeout(() => {
 	                ctrl.previewEmail(seller, theLocation);
-	            },100)
+	            }, 100);
             }
-            if (ctrl.blade.activeWidget == "card") {
+            if (ctrl.blade.activeWidget == 'card') {
                 ctrl.initSupplierCardData(theLocation, seller);
-                setTimeout(function () {
+                setTimeout(() => {
                     ctrl.initCardDetails(theLocation);
                     ctrl.initSupplierCardData(theLocation, seller);
                 });
             }
-            if (ctrl.blade.activeWidget == "energyContent") {
-                setTimeout(function () {
+            if (ctrl.blade.activeWidget == 'energyContent') {
+                setTimeout(() => {
                     // ctrl.initCardDetails(theLocation);
                     ctrl.initEnergyBlade(theLocation, seller);
                 });
             }
-            if (ctrl.blade.activeWidget == "requote") {
-                setTimeout(function () { });
+            if (ctrl.blade.activeWidget == 'requote') {
+                setTimeout(() => { });
                 ctrl.viewRequote(seller, theLocation);
             }
-            if (ctrl.blade.activeWidget == "contact") {
+            if (ctrl.blade.activeWidget == 'contact') {
             	// ctrl.blade.widgetType = "none";
-            	ctrl.blade.activeWidget = null
-                Factory_Master.get_master_entity(seller.sellerCounterparty.id, "counterparty", "masters", function (callback) {
+            	ctrl.blade.activeWidget = null;
+                Factory_Master.get_master_entity(seller.sellerCounterparty.id, 'counterparty', 'masters', (callback) => {
                     if (callback) {
-		            	ctrl.blade.activeWidget = 'contact'
+		            	ctrl.blade.activeWidget = 'contact';
                         ctrl.blade.counterpartyData = callback;
                         ctrl.dataLoaded = true;
                     }
                 });
             }
         };
-        ctrl.openGeneralWidgetBlade = function (widget, product) {
-            ctrl.bladeTemplateUrl = "components/blade/templates/gor-blade-content.html";
-            ctrl.blade.widgetType = "general";
-            ctrl.blade.colLayout = "single";
+        ctrl.openGeneralWidgetBlade = function(widget, product) {
+            ctrl.bladeTemplateUrl = 'components/blade/templates/gor-blade-content.html';
+            ctrl.blade.widgetType = 'general';
+            ctrl.blade.colLayout = 'single';
             ctrl.blade.activeWidget = widget;
-            $bladeEntity.open("groupOfRequestBlade");
+            $bladeEntity.open('groupOfRequestBlade');
             ctrl.bladeOpened = true;
             ctrl.dataLoaded = true;
-            if (widget == "energyCalculation") {
+            if (widget == 'energyCalculation') {
             	ctrl.initEnergyCalculation(product);
             }
             if (widget == 'comments') {
@@ -4009,23 +4052,22 @@ ctrl.setProductData = function(data, loc) {
         };
 
         ctrl.checkIfCanInitEnergyCalculation = function(product) {
+            let canInitEnergyCalculation = false;
 
-			var canInitEnergyCalculation = false;
-
-			requestId = product.requestId;
-			productId = product.product.id;
-			currentProduct = product;
-			requestProductIds = [];
-            $.each(ctrl.requests, function (reqK, reqV) {
+            requestId = product.requestId;
+            productId = product.product.id;
+            currentProduct = product;
+            requestProductIds = [];
+            $.each(ctrl.requests, (reqK, reqV) => {
             	if (requestId == reqV.id) {
-	                $.each(reqV.locations, function (locK, locV) {
+	                $.each(reqV.locations, (locK, locV) => {
 	                	currentLocation = locV;
-	                    $.each(locV.products, function (prodK, prodV) {
+	                    $.each(locV.products, (prodK, prodV) => {
 	                        if (productId == prodV.product.id) {
-			                    $.each(prodV.sellers, function (sellerK, sellerV) {
+			                    $.each(prodV.sellers, (sellerK, sellerV) => {
 			                    	if (sellerV.offers.length > 0) {
 			                    		if (prodV.isEnergyCalculationRequired && ctrl.isEnergyCalculationRequired) {
-											canInitEnergyCalculation = true;
+                                            canInitEnergyCalculation = true;
 			                    		}
 			                    	}
 			                    });
@@ -4035,18 +4077,18 @@ ctrl.setProductData = function(data, loc) {
             	}
             });
             return canInitEnergyCalculation;
-        }
+        };
 
-        ctrl.initEnergyCalculation = function(product){
-			requestId = product.requestId;
-			productId = product.product.id;
-			currentProduct = product;
-			requestProductIds = [];
-            $.each(ctrl.requests, function (reqK, reqV) {
+        ctrl.initEnergyCalculation = function(product) {
+            requestId = product.requestId;
+            productId = product.product.id;
+            currentProduct = product;
+            requestProductIds = [];
+            $.each(ctrl.requests, (reqK, reqV) => {
             	if (requestId == reqV.id) {
-	                $.each(reqV.locations, function (locK, locV) {
+	                $.each(reqV.locations, (locK, locV) => {
 	                	currentLocation = locV;
-	                    $.each(locV.products, function (prodK, prodV) {
+	                    $.each(locV.products, (prodK, prodV) => {
 	                        if (productId == prodV.product.id) {
                         		requestProductIds.push(prodV.id);
 	                        }
@@ -4054,25 +4096,24 @@ ctrl.setProductData = function(data, loc) {
 	                });
             	}
             });
-			console.log(requestProductIds);
-			payload = {
-				"requestGroupId":ctrl.groupId,
-				"requestProductIds":requestProductIds.join(",")
-			}
-			initData = {
-				"payload" : payload,
-				"currentProduct" : currentProduct
-			}
-			ctrl.energyCalculationBladePayload = null;
-			setTimeout(function(){
-				ctrl.energyCalculationBladePayload = initData;
-			})
-		
-        }
-        ctrl.groupSellersInLocations = function () {
+            console.log(requestProductIds);
+            payload = {
+                requestGroupId:ctrl.groupId,
+                requestProductIds:requestProductIds.join(',')
+            };
+            initData = {
+                payload : payload,
+                currentProduct : currentProduct
+            };
+            ctrl.energyCalculationBladePayload = null;
+            setTimeout(() => {
+                ctrl.energyCalculationBladePayload = initData;
+            });
+        };
+        ctrl.groupSellersInLocations = function() {
             groupedLocationsIds = [];
             groupedLocations = [];
-            $.each(ctrl.locations, function (locationK, locationV) {
+            $.each(ctrl.locations, (locationK, locationV) => {
                 loc = {};
                 if (groupedLocationsIds.indexOf(locationV.uniqueLocationIdentifier) == -1) {
                     groupedLocationsIds.push(locationV.uniqueLocationIdentifier);
@@ -4082,16 +4123,16 @@ ctrl.setProductData = function(data, loc) {
                 }
             });
             // return false;
-            $.each(groupedLocations, function (k, v) {
-                $.each(ctrl.locations, function (locationK, locationV) {
+            $.each(groupedLocations, (k, v) => {
+                $.each(ctrl.locations, (locationK, locationV) => {
                     if (locationV.uniqueLocationIdentifier == v.uniqueLocationIdentifier) {
-                        $.each(locationV.products, function (k1, v1) {
-                            $.each(v1.sellers, function (k2, v2) {
-                                if (typeof groupedLocations[k].sellers == "undefined") {
+                        $.each(locationV.products, (k1, v1) => {
+                            $.each(v1.sellers, (k2, v2) => {
+                                if (typeof groupedLocations[k].sellers == 'undefined') {
                                     groupedLocations[k].sellers = [];
                                 }
                                 // if (!v2.isCloned) {
-                                v2.uniqueLocationSellerPhysical = locationV.location.id + "-" + v2.randUnique;
+                                v2.uniqueLocationSellerPhysical = `${locationV.location.id }-${ v2.randUnique}`;
                                 groupedLocations[k].sellers.push(v2);
                                 // }
                             });
@@ -4104,10 +4145,10 @@ ctrl.setProductData = function(data, loc) {
                     // v.uniqueLocationIdentifier = locationV.uniqueLocationIdentifier;
                 });
             });
-            $.each(groupedLocations, function (k, v) {
+            $.each(groupedLocations, (k, v) => {
                 addedSellers = [];
                 filteredSellers = [];
-                $.each(v.sellers, function (k1, v1) {
+                $.each(v.sellers, (k1, v1) => {
                     if (addedSellers.indexOf(v1.randUnique) == -1) {
                         if (!(v1.packageId && !ctrl.packagesConfigurationEnabled)) {
                             addedSellers.push(v1.randUnique);
@@ -4120,12 +4161,12 @@ ctrl.setProductData = function(data, loc) {
             productIds = getRequestGroupProductIdsCSV(ctrl.requests);
             counterpatyIds = getRequestGroupCounterpartyIdsCSV(ctrl.requests);
             $scope.tempGroupedLocation = angular.copy(groupedLocations);
-            groupOfRequestsModel.getSellersSorted(counterpatyIds, productIds, ctrl.sellerSortOrder).then(function (data) {
-                $.each($scope.tempGroupedLocation, function (vk, vv) {
+            groupOfRequestsModel.getSellersSorted(counterpatyIds, productIds, ctrl.sellerSortOrder).then((data) => {
+                $.each($scope.tempGroupedLocation, (vk, vv) => {
                     addedSellers = [];
-                    $.each(data.payload, function (dk, dv) {
-                        $.each(vv.sellers, function (uosK, uosV) {
-                            if (typeof $scope.tempGroupedLocation[vk].orderedSellers == "undefined") {
+                    $.each(data.payload, (dk, dv) => {
+                        $.each(vv.sellers, (uosK, uosV) => {
+                            if (typeof $scope.tempGroupedLocation[vk].orderedSellers == 'undefined') {
                                 $scope.tempGroupedLocation[vk].orderedSellers = [];
                             }
                             if (dv.counterpartyId == uosV.sellerCounterparty.id) {
@@ -4149,20 +4190,20 @@ ctrl.setProductData = function(data, loc) {
             // ctrl.groupedSellersByLocation = groupedLocations;
             // return ctrl.groupedSellersByLocation;
         };
-        ctrl.duplicateSeller = function (seller, theLocation, event) {
+        ctrl.duplicateSeller = function(seller, theLocation, event) {
             // console.log(seller);
             currentLocationId = theLocation[0].uniqueLocationIdentifier;
             locations = [];
-            $.each(ctrl.locations, function (k, v) {
+            $.each(ctrl.locations, (k, v) => {
                 if (v.uniqueLocationIdentifier == currentLocationId) {
                     locations.push(v);
                 }
             });
-            randomUnique = window.crypto.getRandomValues( new Uint8Array(1))
+            randomUnique = window.crypto.getRandomValues(new Uint8Array(1))
                 .toString(36)
                 .substr(2, 6);
-            for (var i = 0; i < locations.length; i++) {
-                for (var j = 0; j < locations[i].products.length; j++) {
+            for (let i = 0; i < locations.length; i++) {
+                for (let j = 0; j < locations[i].products.length; j++) {
                     product = locations[i].products[j];
                     // if (!productHasSeller(product, seller.sellerCounterparty.id)) {
                     newSeller = {
@@ -4176,13 +4217,13 @@ ctrl.setProductData = function(data, loc) {
                             physicalSupplierCounterparty: null
                         }
                     ];
-                    newSeller.randUnique = randomUnique + "-null";
+                    newSeller.randUnique = `${randomUnique }-null`;
                     newSeller.sellerCounterparty = {
                         id: seller.sellerCounterparty.id,
                         name: seller.sellerCounterparty.name
                     };
-                    newSeller.randUniquePkg = randomUnique + "-null-individual-null";
-                    newSeller.packageType = "individual";
+                    newSeller.randUniquePkg = `${randomUnique }-null-individual-null`;
+                    newSeller.packageType = 'individual';
                     newSeller.packageId = null;
                     product.sellers.push(newSeller);
                     // }
@@ -4190,14 +4231,14 @@ ctrl.setProductData = function(data, loc) {
             }
             ctrl.groupLocationsByUniqueLocationIdentifier();
             // console.log(ctrl.locations);
-            console.log("_____________");
+            console.log('_____________');
             console.log(ctrl.requests);
-            console.log("-------------");
+            console.log('-------------');
         };
-        ctrl.setAsCurrentSelection = function (obj, src) {
+        ctrl.setAsCurrentSelection = function(obj, src) {
             console.log(obj);
-            sellers = "";
-            products = "";
+            sellers = '';
+            products = '';
             offer = [];
             // if (src == 'table') {
             //     $.each(obj, function(key, val) {
@@ -4211,7 +4252,7 @@ ctrl.setProductData = function(data, loc) {
             //         products += separator + val.RequestProductId;
             //     })
             // } else {
-            $.each(obj, function (key, val) {
+            $.each(obj, (key, val) => {
                 if (val.requestOfferId) {
                     offer.push(val.requestOfferId);
                 }
@@ -4219,16 +4260,16 @@ ctrl.setProductData = function(data, loc) {
             offerS = offer.join();
             // }
             groupOfRequestsModel.markCurrentSelection(offerS).then(
-                function (response) {
+                (response) => {
                     mySelectionResponse = response.payload.mySelection.quotations;
                     console.log(ctrl.mySelection);
                     ctrl.mySelection = mySelectionResponse;
                     ctrl.mySelectionSurveyorCost = response.payload.mySelection.averageSurveyorCost;
                     return false;
                     console.log(mySelectionResponse);
-                    $.each(mySelectionResponse, function (myselRespK, myselRespV) {
+                    $.each(mySelectionResponse, (myselRespK, myselRespV) => {
                         responseSelectionIsInCurrentSelection = false;
-                        $.each(ctrl.mySelection, function (myselK, myselV) {
+                        $.each(ctrl.mySelection, (myselK, myselV) => {
                             if (myselV.products[0].request.id == myselRespV.products[0].request.id && myselV.product.id == myselRespV.product.id && myselV.location.id == myselRespV.location.id) {
                                 ctrl.mySelection[myselK] = myselRespV;
                                 responseSelectionIsInCurrentSelection = true;
@@ -4239,7 +4280,7 @@ ctrl.setProductData = function(data, loc) {
                         }
                     });
                 },
-                function (response) {
+                (response) => {
                     console.log(response);
                 }
             );
@@ -4290,7 +4331,7 @@ ctrl.setProductData = function(data, loc) {
             //
             // ctrl.mySelection.concat(obj)
         };
-        ctrl.checkIfPriceChanged = function (value) {
+        ctrl.checkIfPriceChanged = function(value) {
         	if (value) {
 	            ctrl.checkedIfPriceChanged = Math.floor(Number(value));
         	} else {
@@ -4298,24 +4339,24 @@ ctrl.setProductData = function(data, loc) {
         	}
         };
 
-        ctrl.savePriceChange = function (priceValue, requestOfferId, seller, locations, productSample) {
+        ctrl.savePriceChange = function(priceValue, requestOfferId, seller, locations, productSample) {
             if (ctrl.checkedIfPriceChanged === priceValue) {
                 return false;
             }
             $scope.tempRequestOfferId = requestOfferId;
 
 
-            var intPriceValue = Math.floor(Number(priceValue));
-            var priceIsInteger = _.isInteger(intPriceValue);
+            let intPriceValue = Math.floor(Number(priceValue));
+            let priceIsInteger = _.isInteger(intPriceValue);
 
-            if (!((priceIsInteger && intPriceValue > 0) || (priceIsInteger && productSample.allowZeroPricing && intPriceValue === 0))) {
+            if (!(priceIsInteger && intPriceValue > 0 || priceIsInteger && productSample.allowZeroPricing && intPriceValue === 0)) {
                 // Reset price to previous value
-                $.each(ctrl.requests, function (reqK, reqV) {
-                    $.each(reqV.locations, function (locK, locV) {
-                        $.each(locV.products, function (prodK, prodV) {
-                            $.each(prodV.sellers, function (sellerK, sellerV) {
+                $.each(ctrl.requests, (reqK, reqV) => {
+                    $.each(reqV.locations, (locK, locV) => {
+                        $.each(locV.products, (prodK, prodV) => {
+                            $.each(prodV.sellers, (sellerK, sellerV) => {
                                 if (sellerV.offers) {
-                                    $.each(sellerV.offers, function (ofK, ofV) {
+                                    $.each(sellerV.offers, (ofK, ofV) => {
                                         if (ofV.id == $scope.tempRequestOfferId) {
                                             ofV.price = ctrl.checkedIfPriceChanged;
                                         }
@@ -4326,71 +4367,70 @@ ctrl.setProductData = function(data, loc) {
                     });
                 });
                 if (productSample.allowZeroPricing) {
-                    toastr.error("Please enter a valid price");
+                    toastr.error('Please enter a valid price');
                 } else {
-                    toastr.error("Please enter a price greater than 0");
+                    toastr.error('Please enter a price greater than 0');
                 }
                 return false;
             }
 
             payloadLocation = null;
             curentOfferRequestId = productSample.requestId;
-            $.each(ctrl.requests, function(reqK,reqV){
+            $.each(ctrl.requests, (reqK, reqV) => {
             	if (reqV.id == curentOfferRequestId) {
 		            payloadLocation = reqV.locations;
             	}
-            })
+            });
 
             ctrl.priceInputsDisabled = true;
-            toastr.info("Please wait while prices are updating");
+            toastr.info('Please wait while prices are updating');
             priceData = {
-                "RequestOfferId": requestOfferId,
-                "Price": priceValue,
-                "Locations" : payloadLocation
+                RequestOfferId: requestOfferId,
+                Price: priceValue,
+                Locations : payloadLocation
             };
 
             groupOfRequestsModel.updatePrice(priceData).then(
-               
-                function (response) {
 
-                ctrl.priceInputsDisabled = false;
-                ctrl.requirements = [];
-                ctrl.requirementRequestProductIds = [];
-                // ctrl.initScreen();
-             //    groupOfRequestsModel.getBestOffer(getRequestGroupProductIdsCSV(ctrl.requests)).then(function(data) {
+                (response) => {
+                    ctrl.priceInputsDisabled = false;
+                    ctrl.requirements = [];
+                    ctrl.requirementRequestProductIds = [];
+                    // ctrl.initScreen();
+                    //    groupOfRequestsModel.getBestOffer(getRequestGroupProductIdsCSV(ctrl.requests)).then(function(data) {
 	            //     ctrl.bestOfferData = data.payload;
-	            // });    
+	            // });
 	            // groupOfRequestsModel.getBestTco(getRequestGroupProductIdsCSV(ctrl.requests), ctrl.groupId).then(function(data) {
 	            //     ctrl.bestTcoData = data.payload;
 	            //     ctrl.bestTcoData = $scope.modelBestTCODataForTemplating(ctrl.bestTcoData);
 	            //     ctrl.mySelection = data.payload.mySelection.quotations;
 	            //     ctrl.mySelectionSurveyorCost = data.payload.mySelection.averageSurveyorCost;
-	            // });   
+	            // });
 
 	            oldData = angular.copy(ctrl.requests);
-	            $.each(oldData, function(rk,rv){
+	            $.each(oldData, (rk, rv) => {
 	            	if (rv.id == response.payload.id) {
 	            		oldData[rk] = angular.copy(response.payload);
 	            	}
-	            })
+	            });
 	            skipSellerSorting = false;
 	            // ctrl.sortSellers();
 	            parseRequestList(oldData, false, skipSellerSorting);
-                ctrl.locations = getLocationsFromRequests(ctrl.requests);
-                ctrl.products = getAllRequestProductList(ctrl.requests);
-                setRequestProductCount(ctrl.requests);
-                //initialize notifications
-                notificationsModel.stop();
-                notificationsModel.start(getRequestIds(ctrl.requests));
-                //calculates screen actions
-                ctrl.calculateScreenActions();      
-                if (ctrl.nextPriceInput) {
-                	setTimeout(function(){
-	                	$('[productPriceIndexNo='+ctrl.nextPriceInput+']').click();
-	                	$('[productPriceIndexNo='+ctrl.nextPriceInput+']').focus();
-                	},100)
-                }          
-                return false;
+                    ctrl.locations = getLocationsFromRequests(ctrl.requests);
+                    ctrl.products = getAllRequestProductList(ctrl.requests);
+                    setRequestProductCount(ctrl.requests);
+                    // initialize notifications
+                    notificationsModel.stop();
+                    notificationsModel.start(getRequestIds(ctrl.requests));
+                    // calculates screen actions
+                    ctrl.calculateScreenActions();
+                    if (ctrl.nextPriceInput) {
+                	setTimeout(() => {
+	                	$(`[productPriceIndexNo=${ctrl.nextPriceInput}]`).click();
+	                	$(`[productPriceIndexNo=${ctrl.nextPriceInput}]`).focus();
+                	}, 100);
+                    }
+                    return false;
 
 
                     // ctrl.priceInputsDisabled = false;
@@ -4419,14 +4459,14 @@ ctrl.setProductData = function(data, loc) {
                     // parseRequestList(ctrl.requests);
                     // ctrl.checkedIfPriceChanged = null;
                 },
-                function (response) {
+                (response) => {
                     ctrl.priceInputsDisabled = false;
-                    $.each(ctrl.requests, function (reqK, reqV) {
-                        $.each(reqV.locations, function (locK, locV) {
-                            $.each(locV.products, function (prodK, prodV) {
-                                $.each(prodV.sellers, function (sellerK, sellerV) {
+                    $.each(ctrl.requests, (reqK, reqV) => {
+                        $.each(reqV.locations, (locK, locV) => {
+                            $.each(locV.products, (prodK, prodV) => {
+                                $.each(prodV.sellers, (sellerK, sellerV) => {
                                     if (sellerV.offers) {
-                                        $.each(sellerV.offers, function (ofK, ofV) {
+                                        $.each(sellerV.offers, (ofK, ofV) => {
                                             if (ofV.id == $scope.tempRequestOfferId) {
                                                 ofV.price = ctrl.checkedIfPriceChanged;
                                             }
@@ -4444,53 +4484,53 @@ ctrl.setProductData = function(data, loc) {
             );
         };
 
-        ctrl.checkIfPhysicalSupplierChanged = function (oldSupplier, seller) {
+        ctrl.checkIfPhysicalSupplierChanged = function(oldSupplier, seller) {
             ctrl.oldSupplierBeforeChange = oldSupplier;
             requestLocationId = seller.requestLocationId;
             randUnique = seller.randUnique;
             console.log(seller);
         };
-        
-        ctrl.calculateUniqueCounterpartyType = function (seller) {
+
+        ctrl.calculateUniqueCounterpartyType = function(seller) {
             allCounterpartyTypes = [];
-            $.each(seller.counterpartyTypes, function (k, v) {
+            $.each(seller.counterpartyTypes, (k, v) => {
                 allCounterpartyTypes.push(v.name);
             });
             returnData = {};
-            if (allCounterpartyTypes.indexOf("Seller") != -1 && allCounterpartyTypes.indexOf("Supplier") != -1) {
-              returnData.sellerUniqueCounterpartyType = "Supplier";
-              returnData.counterpartyTypeFontClass = "font-yellow-gold";
-              return returnData;
-            }
-            if (allCounterpartyTypes.indexOf("Supplier") != -1) {
-                returnData.sellerUniqueCounterpartyType = "Supplier";
-                returnData.counterpartyTypeFontClass = "font-yellow-lemon";
+            if (allCounterpartyTypes.indexOf('Seller') != -1 && allCounterpartyTypes.indexOf('Supplier') != -1) {
+                returnData.sellerUniqueCounterpartyType = 'Supplier';
+                returnData.counterpartyTypeFontClass = 'font-yellow-gold';
                 return returnData;
             }
-            if (allCounterpartyTypes.indexOf("Seller") != -1) {
-                returnData.sellerUniqueCounterpartyType = "Seller";
-                returnData.counterpartyTypeFontClass = "font-green-jungle";
+            if (allCounterpartyTypes.indexOf('Supplier') != -1) {
+                returnData.sellerUniqueCounterpartyType = 'Supplier';
+                returnData.counterpartyTypeFontClass = 'font-yellow-lemon';
                 return returnData;
             }
-            if (allCounterpartyTypes.indexOf("Broker") != -1) {
-                returnData.sellerUniqueCounterpartyType = "Broker";
-                returnData.counterpartyTypeFontClass = "font-blue";
+            if (allCounterpartyTypes.indexOf('Seller') != -1) {
+                returnData.sellerUniqueCounterpartyType = 'Seller';
+                returnData.counterpartyTypeFontClass = 'font-green-jungle';
+                return returnData;
+            }
+            if (allCounterpartyTypes.indexOf('Broker') != -1) {
+                returnData.sellerUniqueCounterpartyType = 'Broker';
+                returnData.counterpartyTypeFontClass = 'font-blue';
                 return returnData;
             }
         };
-        ctrl.findTotalSellersOnLocation = function (theLocation) {
+        ctrl.findTotalSellersOnLocation = function(theLocation) {
             groupedLocationsIds = [];
             groupedLocations = [];
-            $.each(ctrl.locations, function (locationK, locationV) {
+            $.each(ctrl.locations, (locationK, locationV) => {
                 if (groupedLocationsIds.indexOf(locationV.location.id) == -1) {
                     groupedLocationsIds.push(locationV.location.id);
                     groupedLocations.push(locationV.location);
                 }
-                $.each(groupedLocations, function (k, v) {
+                $.each(groupedLocations, (k, v) => {
                     if (locationV.location.id == v.id) {
-                        $.each(locationV.products, function (k1, v1) {
-                            $.each(v1.sellers, function (k2, v2) {
-                                if (typeof groupedLocations[k].sellers == "undefined") {
+                        $.each(locationV.products, (k1, v1) => {
+                            $.each(v1.sellers, (k2, v2) => {
+                                if (typeof groupedLocations[k].sellers == 'undefined') {
                                     groupedLocations[k].sellers = [];
                                 }
                                 groupedLocations[k].sellers.push(v2);
@@ -4499,19 +4539,19 @@ ctrl.setProductData = function(data, loc) {
                     }
                 });
             });
-            $.each(groupedLocations, function (k, v) {
+            $.each(groupedLocations, (k, v) => {
                 addedSellers = [];
                 filteredSellers = [];
-                $.each(v.sellers, function (k1, v1) {
+                $.each(v.sellers, (k1, v1) => {
                     physicalSupplierId = null;
-                    if (typeof v1.offers != "undefined") {
+                    if (typeof v1.offers != 'undefined') {
                         if (v1.offers.length > 0) {
                             if (v1.offers[0].physicalSupplierCounterparty) {
                                 physicalSupplierId = v1.offers[0].physicalSupplierCounterparty.id;
                             }
                         }
                     }
-                    composedSellerIds = v1.sellerCounterparty.id + " - " + physicalSupplierId;
+                    composedSellerIds = `${v1.sellerCounterparty.id } - ${ physicalSupplierId}`;
                     if (addedSellers.indexOf(composedSellerIds) == -1) {
                         addedSellers.push(composedSellerIds);
                         filteredSellers.push(v1);
@@ -4523,35 +4563,36 @@ ctrl.setProductData = function(data, loc) {
             sellerLocations = groupedLocations;
             data = {};
             // allSellersIds = [];
-            $.each(sellerLocations, function (locK, locV) {
+            $.each(sellerLocations, (locK, locV) => {
                 if (locationId == locV.id) {
                     data.found = 0;
-                    $.each(locV.sellers, function (sellerK, sellerV) {
+                    $.each(locV.sellers, (sellerK, sellerV) => {
                         physicalSupplierName = null;
-                        if (typeof sellerV.offers != "undefined") {
+                        if (typeof sellerV.offers != 'undefined') {
                             if (sellerV.offers.length > 0) {
                                 if (sellerV.offers[0].physicalSupplierCounterparty) {
                                     physicalSupplierName = sellerV.offers[0].physicalSupplierCounterparty.name;
                                 }
                             }
                         }
-                        loopSellerNameComposed = sellerV.sellerCounterparty.name + " " + physicalSupplierName;
+                        loopSellerNameComposed = `${sellerV.sellerCounterparty.name } ${ physicalSupplierName}`;
                         loopSellerNameComposed = loopSellerNameComposed.toLowerCase();
                         if (loopSellerNameComposed.indexOf(ctrl.searchTermNegotiationTable) != -1) {
-                            data.found += 1;
+                            data.found = data.found + 1;
                         }
                     });
                     data.total = locV.sellers.length;
                 }
             });
-            /*rewrite*/
+
+            /* rewrite*/
             uniqueLocationIdentifier = theLocation[0].uniqueLocationIdentifier;
             uniqeSellers = [];
-            $.each(ctrl.requests, function (reqK, reqV) {
-                $.each(reqV.locations, function (locK, locV) {
+            $.each(ctrl.requests, (reqK, reqV) => {
+                $.each(reqV.locations, (locK, locV) => {
                     if (locV.uniqueLocationIdentifier == uniqueLocationIdentifier) {
-                        $.each(locV.products, function (prodK, prodV) {
-                            $.each(prodV.sellers, function (sellerK, sellerV) {
+                        $.each(locV.products, (prodK, prodV) => {
+                            $.each(prodV.sellers, (sellerK, sellerV) => {
                                 if (uniqeSellers.indexOf(sellerV.randUniquePkg) == -1) {
                                     if (!(sellerV.packageId && !ctrl.packagesConfigurationEnabled)) {
                                         uniqeSellers.push(sellerV.randUniquePkg);
@@ -4563,27 +4604,28 @@ ctrl.setProductData = function(data, loc) {
                 });
             });
             data.total = uniqeSellers.length;
-            /*rewrite*/
+
+            /* rewrite*/
             return data;
         };
-        ctrl.performSellersSearchInTable = function (keyword) {
+        ctrl.performSellersSearchInTable = function(keyword) {
             console.log(keyword);
             console.log(ctrl.requests);
             requests = ctrl.requests;
-            $.each(ctrl.requests, function (reqK, reqV) {
-                $.each(reqV.locations, function (locK, locV) {
+            $.each(ctrl.requests, (reqK, reqV) => {
+                $.each(reqV.locations, (locK, locV) => {
                     reqV.locations[locK].foundInSearch = 0;
-                    $.each(locV.products, function (prodK, prodV) {
-                        $.each(prodV.sellers, function (sellerK, sellerV) {
+                    $.each(locV.products, (prodK, prodV) => {
+                        $.each(prodV.sellers, (sellerK, sellerV) => {
                             physicalSupplierName = null;
-                            if (typeof sellerV.offers != "undefined") {
+                            if (typeof sellerV.offers != 'undefined') {
                                 if (sellerV.offers.length > 0) {
                                     if (sellerV.offers[0].physicalSupplierCounterparty) {
                                         physicalSupplierName = sellerV.offers[0].physicalSupplierCounterparty.name;
                                     }
                                 }
                             }
-                            loopSellerNameComposed = sellerV.sellerCounterparty.name + " " + physicalSupplierName;
+                            loopSellerNameComposed = `${sellerV.sellerCounterparty.name } ${ physicalSupplierName}`;
                             loopSellerNameComposed = loopSellerNameComposed.toLowerCase();
                             if (loopSellerNameComposed.indexOf(keyword) == -1) {
                                 sellerV.isInSearch = false;
@@ -4596,7 +4638,7 @@ ctrl.setProductData = function(data, loc) {
                 });
             });
         };
-        ctrl.updatePhysicalSupplierForSellers = function (seller, newSupplier, theLocation, event) {
+        ctrl.updatePhysicalSupplierForSellers = function(seller, newSupplier, theLocation, event) {
             // oldSupplier = ctrl.oldSupplierBeforeChange;
             ctrl.disablePhysicalSupplierLookup = true;
             oldSupplier = seller.oldPhysicalSupplier;
@@ -4611,9 +4653,9 @@ ctrl.setProductData = function(data, loc) {
             }
 
             if (!newSupplier) {
-                $.each(theLocation, function (locK, locV) {
-                    $.each(locV.products, function (prodK, prodV) {
-                        $.each(prodV.sellers, function (sellerK, sellerV) {
+                $.each(theLocation, (locK, locV) => {
+                    $.each(locV.products, (prodK, prodV) => {
+                        $.each(prodV.sellers, (sellerK, sellerV) => {
                             if (sellerV.randUnique == randUnique) {
                             	if (sellerV.offers.length > 0) {
 	                                sellerV.offers[0].physicalSupplierCounterparty = oldSupplier;
@@ -4625,19 +4667,19 @@ ctrl.setProductData = function(data, loc) {
                 console.log();
                 ctrl.disablePhysicalSupplierLookup = false;
                 if (ctrl.fieldVisibility.isPhysicalSupplierMandatory) {
-	                if ($($(event.target).parent(".physicalSupplier")).find($("[uib-typeahead-popup].dropdown-menu")).css("display") == 'none' ) {
-		                toastr.error("You must select a Physical Supplier");
-	                }                
-	                return
+	                if ($($(event.target).parent('.physicalSupplier')).find($('[uib-typeahead-popup].dropdown-menu')).css('display') == 'none') {
+		                toastr.error('You must select a Physical Supplier');
+	                }
+	                return;
                 }
             }
             if (seller.isCloned) {
-                $.each(theLocation, function (locK, locV) {
-                    $.each(locV.products, function (prodK, prodV) {
-                        $.each(prodV.sellers, function (sellerK, sellerV) {
+                $.each(theLocation, (locK, locV) => {
+                    $.each(locV.products, (prodK, prodV) => {
+                        $.each(prodV.sellers, (sellerK, sellerV) => {
                             if (sellerV.randUnique == randUnique) {
                                 console.log(sellerV);
-                                if (typeof sellerV.offers == "undefined") {
+                                if (typeof sellerV.offers == 'undefined') {
                                     sellerV.offers = [
                                         {
                                             physicalSupplierCounterparty: newSupplier
@@ -4654,237 +4696,87 @@ ctrl.setProductData = function(data, loc) {
                     });
                 });
                 ctrl.disablePhysicalSupplierLookup = false;
-            } else {
-                if (typeof newSupplier != "undefined") {
-                    if (newSupplier) {
-                        newSupplierId = newSupplier.id;
-                        newRandUnique = seller.sellerCounterparty.id + "-" + newSupplier.id;
-                    } else {
-                        newSupplierId = null;
-                        newRandUnique = seller.sellerCounterparty.id + "-null";
-                    }
-                    sellerWithSupplierExists = false;
-                    /*****
+            } else if (typeof newSupplier != 'undefined') {
+                if (newSupplier) {
+                    newSupplierId = newSupplier.id;
+                    newRandUnique = `${seller.sellerCounterparty.id }-${ newSupplier.id}`;
+                } else {
+                    newSupplierId = null;
+                    newRandUnique = `${seller.sellerCounterparty.id }-null`;
+                }
+                sellerWithSupplierExists = false;
+
+                /** ***
                     LOGIC FOR PACKAGES ACROSS SAME LOCATION
                     ****/
-                    if (seller.packageType == "individual") {
-                        $.each(theLocation, function (locK, locV) {
-                            $.each(locV.products, function (prodK, prodV) {
-                                $.each(prodV.sellers, function (sellerK, sellerV) {
-                                    if (sellerV.randUnique == newRandUnique && sellerV.packageType == seller.packageType) {
-                                        sellerWithSupplierExists = true;
-                                    }
-                                });
-                            });
-                        });
-                    } else {
-                        activeRandUniquePkg = seller.randUniquePkg;
-                        activeRandUnique = randUnique;
-                        activeLocationId = theLocation[0].location.id;
-                        activePackageType = seller.packageType;
-                        activeRequestProductIds = [];
-                        sameSellerSupplierRequestProductIds = [];
-                        packageRequestSellerIds = [];
-                        $.each(ctrl.requests, function (reqK, reqV) {
-                            $.each(reqV.locations, function (locK, locV) {
-                                $.each(locV.products, function (prodK, prodV) {
-                                    $.each(prodV.sellers, function (selK, selV) {
-                                        if (selV.randUniquePkg == activeRandUniquePkg) {
-                                            if (selV.offers.length > 0) {
-                                                packageRequestSellerIds.push(selV.id);
-                                                activeRequestProductIds.push(prodV.id);
-                                            }
-                                        }
-                                    });
-                                });
-                            });
-                        });
-                        $.each(ctrl.requests, function (reqK, reqV) {
-                            $.each(reqV.locations, function (locK, locV) {
-                                if (locV.location.id == activeLocationId) {
-                                    $.each(locV.products, function (prodK, prodV) {
-                                        $.each(prodV.sellers, function (selK, selV) {
-                                            if (selV.randUnique == newRandUnique && selV.randUniquePkg != activeRandUniquePkg && selV.packageType == activePackageType) {
-                                                if (selV.offers.length > 0) {
-                                                    sameSellerSupplierRequestProductIds.push(prodV.id);
-                                                }
-                                            }
-                                        });
-                                    });
-                                }
-                            });
-                        });
-                        $.each(activeRequestProductIds, function (k, v) {
-                            $.each(sameSellerSupplierRequestProductIds, function (k1, v1) {
-                                if (v == v1) {
+                if (seller.packageType == 'individual') {
+                    $.each(theLocation, (locK, locV) => {
+                        $.each(locV.products, (prodK, prodV) => {
+                            $.each(prodV.sellers, (sellerK, sellerV) => {
+                                if (sellerV.randUnique == newRandUnique && sellerV.packageType == seller.packageType) {
                                     sellerWithSupplierExists = true;
                                 }
                             });
                         });
-                        console.log(activeRequestProductIds);
-                        console.log(sameSellerSupplierRequestProductIds);
-                    }
-                    /*****
-                    LOGIC FOR PACKAGES ACROSS SAME LOCATION
-                    ****/
-                    console.log(sellerWithSupplierExists);
-                    if (sellerWithSupplierExists) {
-                        $.each(theLocation, function (locK, locV) {
-                            $.each(locV.products, function (prodK, prodV) {
-                                $.each(prodV.sellers, function (sellerK, sellerV) {
-                                    if (sellerV.randUnique == randUnique) {
-                                        if (typeof sellerV.offers == "undefined") {
-                                            sellerV.offers = [
-                                                {
-                                                    physicalSupplierCounterparty: oldSupplier
-                                                }
-                                            ];
-                                        } else {
-                                            sellerV.offers[0].physicalSupplierCounterparty = oldSupplier;
+                    });
+                } else {
+                    activeRandUniquePkg = seller.randUniquePkg;
+                    activeRandUnique = randUnique;
+                    activeLocationId = theLocation[0].location.id;
+                    activePackageType = seller.packageType;
+                    activeRequestProductIds = [];
+                    sameSellerSupplierRequestProductIds = [];
+                    packageRequestSellerIds = [];
+                    $.each(ctrl.requests, (reqK, reqV) => {
+                        $.each(reqV.locations, (locK, locV) => {
+                            $.each(locV.products, (prodK, prodV) => {
+                                $.each(prodV.sellers, (selK, selV) => {
+                                    if (selV.randUniquePkg == activeRandUniquePkg) {
+                                        if (selV.offers.length > 0) {
+                                            packageRequestSellerIds.push(selV.id);
+                                            activeRequestProductIds.push(prodV.id);
                                         }
                                     }
                                 });
                             });
                         });
-                        if (newSupplier != oldSupplier) {
-	                        toastr.error("The selected Physical Supplier already exist for that seller on that location");
-                        }
-                    } else {
-                        requestOfferIds = [];
-                        $.each(theLocation, function (locK, locV) {
-                            $.each(locV.products, function (prodK, prodV) {
-                                $.each(prodV.sellers, function (sellerK, sellerV) {
-                                    if (sellerV.randUniquePkg == randUniquePkg) {
-                                        if (sellerV.offers.length > 0) {
-                                            requestOfferIds.push(sellerV.offers[0].id);
-                                        }
-                                    }
-                                });
-                            });
-                        });
-                        // requestSellerIds = JSON.stringify(requestSellerIds)
-                        if (seller.packageType == "seller" || seller.packageType == "buyer") {
-                            requestSellerIds = packageRequestSellerIds;
-                        }
-                        // "RequestSellerIds": requestSellerIds,
-                        data = {
-                            RequestOfferIds: requestOfferIds,
-                            PhysicalSupplierId: newSupplierId
-                        };
-                        if (typeof data.RequestOfferIds[0] != "undefined") {
-                            groupOfRequestsModel.updatePhysicalSupplier(data).then(
-                                function (newRequestData) {
-                                    ctrl.disablePhysicalSupplierLookup = false;
-                                    if (newRequestData.isSuccess) {
-                                        if (seller.packageType == "individual") {
-                                            $.each(theLocation, function (locK, locV) {
-                                                $.each(locV.products, function (prodK, prodV) {
-                                                    $.each(prodV.sellers, function (sellerK, sellerV) {
-                                                        if (sellerV.randUnique == randUnique && sellerV.packageType == seller.packageType) {
-                                                            if (typeof sellerV.offers == "undefined") {
-                                                                sellerV.offers = [
-                                                                    {
-                                                                        physicalSupplierCounterparty: newSupplier
-                                                                    }
-                                                                ];
-                                                            } else {
-                                                                sellerV.offers[0].physicalSupplierCounterparty = newSupplier;
-                                                            }
-                                                            sellerV.randUnique = newRandUnique;
-                                                            sellerV.randUniquePkg = newRandUnique + "-" + seller.packageType + "-" + seller.packageId;
-                                                            sellerV.oldPhysicalSupplier = newSupplier;
-                                                        }
-                                                    });
-                                                });
-                                            });
-                                        } else {
-                                            $.each(ctrl.requests, function (reqK, reqV) {
-                                                $.each(reqV.locations, function (locK, locV) {
-                                                    if (locV.location.id == activeLocationId) {
-                                                        $.each(locV.products, function (prodK, prodV) {
-                                                            $.each(prodV.sellers, function (selK, selV) {
-                                                                if (selV.randUniquePkg == activeRandUniquePkg) {
-                                                                    if (typeof selV.offers == "undefined") {
-                                                                        selV.offers = [
-                                                                            {
-                                                                                physicalSupplierCounterparty: newSupplier
-                                                                            }
-                                                                        ];
-                                                                    } else {
-                                                                        selV.offers[0].physicalSupplierCounterparty = newSupplier;
-                                                                    }
-                                                                    selV.randUnique = newRandUnique;
-                                                                    selV.randUniquePkg = newRandUnique + "-" + seller.packageType + "-" + seller.packageId;
-                                                                    selV.oldPhysicalSupplier = newSupplier;
-                                                                }
-                                                            });
-                                                        });
-                                                    }
-                                                });
-                                            });
-                                        }
-                                    }
-                                    ctrl.initScreen();
-                                    return false;
-                                    // $state.reload();
-                                },
-                                function (response) {
-                                    $.each(theLocation, function (locK, locV) {
-                                        $.each(locV.products, function (prodK, prodV) {
-                                            $.each(prodV.sellers, function (sellerK, sellerV) {
-                                                if (sellerV.randUnique == randUnique && sellerV.packageType == seller.packageType) {
-                                                    if (typeof sellerV.offers == "undefined") {
-                                                        sellerV.offers = [
-                                                            {
-                                                                physicalSupplierCounterparty: oldSupplier
-                                                            }
-                                                        ];
-                                                    } else {
-                                                        sellerV.offers[0].physicalSupplierCounterparty = oldSupplier;
-                                                    }
-                                                }
-                                            });
-                                        });
-                                    });
-                                    ctrl.disablePhysicalSupplierLookup = false;
-                                    ctrl.initScreen();
-                                    return false;
-                                    // $state.reload();
-                                }
-                            );
-                        } else {
-                            $.each(theLocation, function (locK, locV) {
-                                $.each(locV.products, function (prodK, prodV) {
-                                    $.each(prodV.sellers, function (sellerK, sellerV) {
-                                        if (sellerV.randUnique == randUnique && sellerV.packageType == seller.packageType) {
-                                            if (typeof sellerV.offers == "undefined") {
-                                                sellerV.offers = [
-                                                    {
-                                                        physicalSupplierCounterparty: newSupplier
-                                                    }
-                                                ];
-                                            } else if (sellerV.offers.length == 0) {
-                                                sellerV.offers = [
-                                                    {
-                                                        physicalSupplierCounterparty: newSupplier
-                                                    }
-                                                ];
-                                            } else {
-                                                sellerV.offers[0].physicalSupplierCounterparty = newSupplier;
+                    });
+                    $.each(ctrl.requests, (reqK, reqV) => {
+                        $.each(reqV.locations, (locK, locV) => {
+                            if (locV.location.id == activeLocationId) {
+                                $.each(locV.products, (prodK, prodV) => {
+                                    $.each(prodV.sellers, (selK, selV) => {
+                                        if (selV.randUnique == newRandUnique && selV.randUniquePkg != activeRandUniquePkg && selV.packageType == activePackageType) {
+                                            if (selV.offers.length > 0) {
+                                                sameSellerSupplierRequestProductIds.push(prodV.id);
                                             }
                                         }
                                     });
                                 });
-                            });
-                            ctrl.disablePhysicalSupplierLookup = false;
-                        }
-                    }
-                } else {
-                    $.each(theLocation, function (locK, locV) {
-                        $.each(locV.products, function (prodK, prodV) {
-                            $.each(prodV.sellers, function (sellerK, sellerV) {
-                                if (sellerV.randUnique == randUnique && sellerV.packageType == seller.packageType) {
-                                    if (typeof sellerV.offers == "undefined") {
+                            }
+                        });
+                    });
+                    $.each(activeRequestProductIds, (k, v) => {
+                        $.each(sameSellerSupplierRequestProductIds, (k1, v1) => {
+                            if (v == v1) {
+                                sellerWithSupplierExists = true;
+                            }
+                        });
+                    });
+                    console.log(activeRequestProductIds);
+                    console.log(sameSellerSupplierRequestProductIds);
+                }
+
+                /** ***
+                    LOGIC FOR PACKAGES ACROSS SAME LOCATION
+                    ****/
+                console.log(sellerWithSupplierExists);
+                if (sellerWithSupplierExists) {
+                    $.each(theLocation, (locK, locV) => {
+                        $.each(locV.products, (prodK, prodV) => {
+                            $.each(prodV.sellers, (sellerK, sellerV) => {
+                                if (sellerV.randUnique == randUnique) {
+                                    if (typeof sellerV.offers == 'undefined') {
                                         sellerV.offers = [
                                             {
                                                 physicalSupplierCounterparty: oldSupplier
@@ -4897,23 +4789,172 @@ ctrl.setProductData = function(data, loc) {
                             });
                         });
                     });
-                    ctrl.disablePhysicalSupplierLookup = false;
+                    if (newSupplier != oldSupplier) {
+	                        toastr.error('The selected Physical Supplier already exist for that seller on that location');
+                    }
+                } else {
+                    requestOfferIds = [];
+                    $.each(theLocation, (locK, locV) => {
+                        $.each(locV.products, (prodK, prodV) => {
+                            $.each(prodV.sellers, (sellerK, sellerV) => {
+                                if (sellerV.randUniquePkg == randUniquePkg) {
+                                    if (sellerV.offers.length > 0) {
+                                        requestOfferIds.push(sellerV.offers[0].id);
+                                    }
+                                }
+                            });
+                        });
+                    });
+                    // requestSellerIds = JSON.stringify(requestSellerIds)
+                    if (seller.packageType == 'seller' || seller.packageType == 'buyer') {
+                        requestSellerIds = packageRequestSellerIds;
+                    }
+                    // "RequestSellerIds": requestSellerIds,
+                    data = {
+                        RequestOfferIds: requestOfferIds,
+                        PhysicalSupplierId: newSupplierId
+                    };
+                    if (typeof data.RequestOfferIds[0] != 'undefined') {
+                        groupOfRequestsModel.updatePhysicalSupplier(data).then(
+                            (newRequestData) => {
+                                ctrl.disablePhysicalSupplierLookup = false;
+                                if (newRequestData.isSuccess) {
+                                    if (seller.packageType == 'individual') {
+                                        $.each(theLocation, (locK, locV) => {
+                                            $.each(locV.products, (prodK, prodV) => {
+                                                $.each(prodV.sellers, (sellerK, sellerV) => {
+                                                    if (sellerV.randUnique == randUnique && sellerV.packageType == seller.packageType) {
+                                                        if (typeof sellerV.offers == 'undefined') {
+                                                            sellerV.offers = [
+                                                                {
+                                                                    physicalSupplierCounterparty: newSupplier
+                                                                }
+                                                            ];
+                                                        } else {
+                                                            sellerV.offers[0].physicalSupplierCounterparty = newSupplier;
+                                                        }
+                                                        sellerV.randUnique = newRandUnique;
+                                                        sellerV.randUniquePkg = `${newRandUnique }-${ seller.packageType }-${ seller.packageId}`;
+                                                        sellerV.oldPhysicalSupplier = newSupplier;
+                                                    }
+                                                });
+                                            });
+                                        });
+                                    } else {
+                                        $.each(ctrl.requests, (reqK, reqV) => {
+                                            $.each(reqV.locations, (locK, locV) => {
+                                                if (locV.location.id == activeLocationId) {
+                                                    $.each(locV.products, (prodK, prodV) => {
+                                                        $.each(prodV.sellers, (selK, selV) => {
+                                                            if (selV.randUniquePkg == activeRandUniquePkg) {
+                                                                if (typeof selV.offers == 'undefined') {
+                                                                    selV.offers = [
+                                                                        {
+                                                                            physicalSupplierCounterparty: newSupplier
+                                                                        }
+                                                                    ];
+                                                                } else {
+                                                                    selV.offers[0].physicalSupplierCounterparty = newSupplier;
+                                                                }
+                                                                selV.randUnique = newRandUnique;
+                                                                selV.randUniquePkg = `${newRandUnique }-${ seller.packageType }-${ seller.packageId}`;
+                                                                selV.oldPhysicalSupplier = newSupplier;
+                                                            }
+                                                        });
+                                                    });
+                                                }
+                                            });
+                                        });
+                                    }
+                                }
+                                ctrl.initScreen();
+                                return false;
+                                // $state.reload();
+                            },
+                            (response) => {
+                                $.each(theLocation, (locK, locV) => {
+                                    $.each(locV.products, (prodK, prodV) => {
+                                        $.each(prodV.sellers, (sellerK, sellerV) => {
+                                            if (sellerV.randUnique == randUnique && sellerV.packageType == seller.packageType) {
+                                                if (typeof sellerV.offers == 'undefined') {
+                                                    sellerV.offers = [
+                                                        {
+                                                            physicalSupplierCounterparty: oldSupplier
+                                                        }
+                                                    ];
+                                                } else {
+                                                    sellerV.offers[0].physicalSupplierCounterparty = oldSupplier;
+                                                }
+                                            }
+                                        });
+                                    });
+                                });
+                                ctrl.disablePhysicalSupplierLookup = false;
+                                ctrl.initScreen();
+                                return false;
+                                // $state.reload();
+                            }
+                        );
+                    } else {
+                        $.each(theLocation, (locK, locV) => {
+                            $.each(locV.products, (prodK, prodV) => {
+                                $.each(prodV.sellers, (sellerK, sellerV) => {
+                                    if (sellerV.randUnique == randUnique && sellerV.packageType == seller.packageType) {
+                                        if (typeof sellerV.offers == 'undefined') {
+                                            sellerV.offers = [
+                                                {
+                                                    physicalSupplierCounterparty: newSupplier
+                                                }
+                                            ];
+                                        } else if (sellerV.offers.length == 0) {
+                                            sellerV.offers = [
+                                                {
+                                                    physicalSupplierCounterparty: newSupplier
+                                                }
+                                            ];
+                                        } else {
+                                            sellerV.offers[0].physicalSupplierCounterparty = newSupplier;
+                                        }
+                                    }
+                                });
+                            });
+                        });
+                        ctrl.disablePhysicalSupplierLookup = false;
+                    }
                 }
+            } else {
+                $.each(theLocation, (locK, locV) => {
+                    $.each(locV.products, (prodK, prodV) => {
+                        $.each(prodV.sellers, (sellerK, sellerV) => {
+                            if (sellerV.randUnique == randUnique && sellerV.packageType == seller.packageType) {
+                                if (typeof sellerV.offers == 'undefined') {
+                                    sellerV.offers = [
+                                        {
+                                            physicalSupplierCounterparty: oldSupplier
+                                        }
+                                    ];
+                                } else {
+                                    sellerV.offers[0].physicalSupplierCounterparty = oldSupplier;
+                                }
+                            }
+                        });
+                    });
+                });
+                ctrl.disablePhysicalSupplierLookup = false;
             }
             if (ctrl.hasSellerRequirements(seller.sellerCounterparty.id, theLocation, seller)) {
                 ctrl.createSellerRequirements(seller, theLocation, null);
             }
-            setTimeout(function () {
+            setTimeout(() => {
                 ctrl.disablePhysicalSupplierLookup = false;
             }, 3000);
             ctrl.changeScroll();
-
         };
-        ctrl.returnLocationReqOffIds = function (theLocation, randUniquePkg) {
+        ctrl.returnLocationReqOffIds = function(theLocation, randUniquePkg) {
             requestOfferIds = [];
-            $.each(theLocation, function (locK, locV) {
-                $.each(locV.products, function (prodK, prodV) {
-                    $.each(prodV.sellers, function (sellerK, sellerV) {
+            $.each(theLocation, (locK, locV) => {
+                $.each(locV.products, (prodK, prodV) => {
+                    $.each(prodV.sellers, (sellerK, sellerV) => {
                         if (sellerV.randUniquePkg == randUniquePkg) {
                             if (sellerV.offers.length > 0) {
                                 requestOfferIds.push(sellerV.offers[0].id);
@@ -4924,7 +4965,7 @@ ctrl.setProductData = function(data, loc) {
             });
             return requestOfferIds;
         };
-        ctrl.updateBrokerForSellers = function (seller, newBroker, theLocation) {
+        ctrl.updateBrokerForSellers = function(seller, newBroker, theLocation) {
             // oldSupplier = ctrl.oldSupplierBeforeChange;
             ctrl.disableBrokerLookup = true;
             oldBroker = seller.oldBroker;
@@ -4934,12 +4975,12 @@ ctrl.setProductData = function(data, loc) {
                 return false;
             }
             if (seller.isCloned) {
-                $.each(theLocation, function (locK, locV) {
-                    $.each(locV.products, function (prodK, prodV) {
-                        $.each(prodV.sellers, function (sellerK, sellerV) {
+                $.each(theLocation, (locK, locV) => {
+                    $.each(locV.products, (prodK, prodV) => {
+                        $.each(prodV.sellers, (sellerK, sellerV) => {
                             if (sellerV.randUniquePkg == randUniquePkg) {
                                 console.log(sellerV);
-                                if (typeof sellerV.offers == "undefined") {
+                                if (typeof sellerV.offers == 'undefined') {
                                     sellerV.offers = [
                                         {
                                             brokerCounterparty: newBroker
@@ -4947,11 +4988,11 @@ ctrl.setProductData = function(data, loc) {
                                     ];
                                 } else {
                                     sellerV.offers[0].brokerCounterparty = newBroker;
-                                    $.each(ctrl.requirements, function(k,v){
+                                    $.each(ctrl.requirements, (k, v) => {
                                     	if (v.randUniquePkg == sellerV.randUniquePkg) {
                                     		v.BrokerCounterpartyId = newBroker.id;
                                     	}
-                                    })
+                                    });
                                 }
                             }
                         });
@@ -4964,19 +5005,19 @@ ctrl.setProductData = function(data, loc) {
                     RequestOfferIds: requestOfferIds,
                     BrokerId: newBroker ? newBroker.id : null
                 };
-                if (typeof data.RequestOfferIds[0] != "undefined") {
+                if (typeof data.RequestOfferIds[0] != 'undefined') {
                     groupOfRequestsModel.updateBroker(data).then(
-                        function (response) {
+                        (response) => {
                             ctrl.disableBrokerLookup = false;
                             ctrl.initScreen();
                             return false;
                             if (response.isSuccess) {
-                                $.each(theLocation, function (locK, locV) {
-                                    $.each(locV.products, function (prodK, prodV) {
-                                        $.each(prodV.sellers, function (sellerK, sellerV) {
+                                $.each(theLocation, (locK, locV) => {
+                                    $.each(locV.products, (prodK, prodV) => {
+                                        $.each(prodV.sellers, (sellerK, sellerV) => {
                                             if (sellerV.randUniquePkg == randUniquePkg) {
                                                 console.log(sellerV);
-                                                if (typeof sellerV.offers == "undefined") {
+                                                if (typeof sellerV.offers == 'undefined') {
                                                     sellerV.offers = [
                                                         {
                                                             brokerCounterparty: newBroker
@@ -4984,11 +5025,11 @@ ctrl.setProductData = function(data, loc) {
                                                     ];
                                                 } else {
                                                     sellerV.offers[0].brokerCounterparty = newBroker;
-                                                    $.each(ctrl.requirements, function(k,v){
+                                                    $.each(ctrl.requirements, (k, v) => {
                                                     	if (v.randUniquePkg == sellerV.randUniquePkg) {
                                                     		v.BrokerCounterpartyId = newBroker.id;
                                                     	}
-                                                    })
+                                                    });
                                                 }
                                             }
                                         });
@@ -4996,67 +5037,67 @@ ctrl.setProductData = function(data, loc) {
                                 });
                             }
                         },
-                        function () {
+                        () => {
                             ctrl.disableBrokerLookup = false;
                         }
                     );
                 } else {
                     ctrl.disableBrokerLookup = false;
-                    $.each(theLocation, function (locK, locV) {
-                        $.each(locV.products, function (prodK, prodV) {
-                            $.each(prodV.sellers, function (sellerK, sellerV) {
+                    $.each(theLocation, (locK, locV) => {
+                        $.each(locV.products, (prodK, prodV) => {
+                            $.each(prodV.sellers, (sellerK, sellerV) => {
                                 if (seller.sellerCounterparty.id == sellerV.sellerCounterparty.id) {
                                     console.log(sellerV);
-                                    if (typeof sellerV.offers == "undefined") {
+                                    if (typeof sellerV.offers == 'undefined') {
+                                        sellerV.offers = [
+                                            {
+                                                brokerCounterparty: newBroker
+                                            }
+                                        ];
+                                    } else if (sellerV.offers.length == 0) {
                                         sellerV.offers = [
                                             {
                                                 brokerCounterparty: newBroker
                                             }
                                         ];
                                     } else {
-                                        if (sellerV.offers.length == 0) {
-                                            sellerV.offers = [
-                                                {
-                                                    brokerCounterparty: newBroker
-                                                }
-                                            ];
-                                        } else {
-                                            sellerV.offers[0].brokerCounterparty = newBroker;
-                                            $.each(ctrl.requirements, function(k,v){
+                                        sellerV.offers[0].brokerCounterparty = newBroker;
+                                        $.each(ctrl.requirements, (k, v) => {
                                             	if (v.randUniquePkg == sellerV.randUniquePkg) {
                                             		v.BrokerCounterpartyId = newBroker.id;
                                             	}
-                                            })
-                                        }
+                                        });
                                     }
                                 }
                             });
                         });
-                    });                    
+                    });
                 }
             }
-            setTimeout(function () {
+            setTimeout(() => {
                 ctrl.disableBrokerLookup = false;
             }, 3000);
         };
-        ctrl.updateContactForSellers = function (seller, newContact, theLocation) {
+        ctrl.updateContactForSellers = function(seller, newContact, theLocation) {
             // oldSupplier = ctrl.oldSupplierBeforeChange;
             ctrl.disableContactLookup = true;
             oldContact = seller.oldContact;
             randUniquePkg = seller.randUniquePkg;
-            if (newContact)
-                if (oldContact)
+            if (newContact) {
+                if (oldContact) {
                     if (newContact.id === oldContact.id) {
                         ctrl.disableContactLookup = false;
                         return false;
                     }
+                }
+            }
             if (seller.isCloned) {
-                $.each(theLocation, function (locK, locV) {
-                    $.each(locV.products, function (prodK, prodV) {
-                        $.each(prodV.sellers, function (sellerK, sellerV) {
+                $.each(theLocation, (locK, locV) => {
+                    $.each(locV.products, (prodK, prodV) => {
+                        $.each(prodV.sellers, (sellerK, sellerV) => {
                             if (sellerV.randUniquePkg == randUniquePkg) {
                                 console.log(sellerV);
-                                if (typeof sellerV.offers == "undefined") {
+                                if (typeof sellerV.offers == 'undefined') {
                                     sellerV.offers = [
                                         {
                                             contactCounterparty: newContact
@@ -5064,11 +5105,11 @@ ctrl.setProductData = function(data, loc) {
                                     ];
                                 } else {
                                     sellerV.offers[0].contactCounterparty = newContact;
-                                    $.each(ctrl.requirements, function(k,v){
+                                    $.each(ctrl.requirements, (k, v) => {
                                     	if (v.randUniquePkg == sellerV.randUniquePkg) {
                                     		v.ContactCounterpartyId = newContact.id;
                                     	}
-                                    })
+                                    });
                                 }
                             }
                         });
@@ -5077,9 +5118,9 @@ ctrl.setProductData = function(data, loc) {
                 ctrl.disableContactLookup = false;
             } else {
                 requestOfferIds = [];
-                $.each(theLocation, function (locK, locV) {
-                    $.each(locV.products, function (prodK, prodV) {
-                        $.each(prodV.sellers, function (sellerK, sellerV) {
+                $.each(theLocation, (locK, locV) => {
+                    $.each(locV.products, (prodK, prodV) => {
+                        $.each(prodV.sellers, (sellerK, sellerV) => {
                             if (sellerV.sellerCounterparty.id == seller.sellerCounterparty.id) {
                                 if (sellerV.offers.length > 0) {
                                     requestOfferIds.push(sellerV.offers[0].id);
@@ -5092,19 +5133,19 @@ ctrl.setProductData = function(data, loc) {
                     RequestOfferIds: requestOfferIds,
                     SellerContactId: newContact ? newContact.id : null
                 };
-                if (typeof data.RequestOfferIds[0] != "undefined") {
+                if (typeof data.RequestOfferIds[0] != 'undefined') {
                     groupOfRequestsModel.updateContact(data).then(
-                        function (response) {
+                        (response) => {
                             ctrl.disableContactLookup = false;
                             if (response.isSuccess) {
                                 ctrl.initScreen();
                                 return false;
-                                $.each(theLocation, function (locK, locV) {
-                                    $.each(locV.products, function (prodK, prodV) {
-                                        $.each(prodV.sellers, function (sellerK, sellerV) {
+                                $.each(theLocation, (locK, locV) => {
+                                    $.each(locV.products, (prodK, prodV) => {
+                                        $.each(prodV.sellers, (sellerK, sellerV) => {
                                             if (sellerV.randUniquePkg == randUniquePkg) {
                                                 console.log(sellerV);
-                                                if (typeof sellerV.offers == "undefined") {
+                                                if (typeof sellerV.offers == 'undefined') {
                                                     sellerV.offers = [
                                                         {
                                                             contactCounterparty: newContact
@@ -5112,11 +5153,11 @@ ctrl.setProductData = function(data, loc) {
                                                     ];
                                                 } else {
                                                     sellerV.offers[0].contactCounterparty = newContact;
-                                                    $.each(ctrl.requirements, function(k,v){
+                                                    $.each(ctrl.requirements, (k, v) => {
                                                     	if (v.randUniquePkg == sellerV.randUniquePkg) {
                                                     		v.ContactCounterpartyId = newContact.id;
                                                     	}
-                                                    })
+                                                    });
                                                 }
                                             }
                                         });
@@ -5124,38 +5165,36 @@ ctrl.setProductData = function(data, loc) {
                                 });
                             }
                         },
-                        function () {
+                        () => {
                             ctrl.disableContactLookup = false;
                         }
                     );
                 } else {
                     ctrl.disableContactLookup = false;
-                    $.each(theLocation, function (locK, locV) {
-                        $.each(locV.products, function (prodK, prodV) {
-                            $.each(prodV.sellers, function (sellerK, sellerV) {
+                    $.each(theLocation, (locK, locV) => {
+                        $.each(locV.products, (prodK, prodV) => {
+                            $.each(prodV.sellers, (sellerK, sellerV) => {
                                 if (seller.sellerCounterparty.id == sellerV.sellerCounterparty.id) {
                                     console.log(sellerV);
-                                    if (typeof sellerV.offers == "undefined") {
+                                    if (typeof sellerV.offers == 'undefined') {
+                                        sellerV.offers = [
+                                            {
+                                                contactCounterparty: newContact
+                                            }
+                                        ];
+                                    } else if (sellerV.offers.length == 0) {
                                         sellerV.offers = [
                                             {
                                                 contactCounterparty: newContact
                                             }
                                         ];
                                     } else {
-                                        if (sellerV.offers.length == 0) {
-                                            sellerV.offers = [
-                                                {
-                                                    contactCounterparty: newContact
-                                                }
-                                            ];
-                                        } else {
-                                            sellerV.offers[0].contactCounterparty = newContact;
-                                            $.each(ctrl.requirements, function(k,v){
+                                        sellerV.offers[0].contactCounterparty = newContact;
+                                        $.each(ctrl.requirements, (k, v) => {
                                             	if (v.randUniquePkg == sellerV.randUniquePkg) {
                                             		v.ContactCounterpartyId = newContact.id;
                                             	}
-                                            })
-                                        }
+                                        });
                                     }
                                 }
                             });
@@ -5163,43 +5202,41 @@ ctrl.setProductData = function(data, loc) {
                     });
                 }
             }
-            setTimeout(function () {
+            setTimeout(() => {
                 ctrl.disableContactLookup = false;
             }, 3000);
         };
-        ctrl.getContactListForSeller = function (seller, callback) {
-            if (typeof ctrl.sellerContactList == "undefined") {
+        ctrl.getContactListForSeller = function(seller, callback) {
+            if (typeof ctrl.sellerContactList == 'undefined') {
                 ctrl.sellerContactList = [];
             }
             payload = {
                 Payload: seller.sellerCounterparty.id
             };
-            endpoint = API.BASE_URL_DATA_MASTERS + "/api/masters/counterparties/activeEmailContacts";
-            if (!ctrl.sellerContactList["s" + seller.sellerCounterparty.id]) {
-	            $http.post(endpoint, payload).then(function success(response) {
+            endpoint = `${API.BASE_URL_DATA_MASTERS }/api/masters/counterparties/activeEmailContacts`;
+            if (!ctrl.sellerContactList[`s${ seller.sellerCounterparty.id}`]) {
+	            $http.post(endpoint, payload).then((response) => {
 	                if (response.status == 200) {
-	                    ctrl.sellerContactList["s" + seller.sellerCounterparty.id] = response.data.payload;
+	                    ctrl.sellerContactList[`s${ seller.sellerCounterparty.id}`] = response.data.payload;
 	                    if (seller.offers.length == 0 && response.data.payload.length == 1) {
 	                        seller.offers[0] = {};
 	                        seller.offers[0].contactCounterparty = response.data.payload[0];
 	                    }
 	                }
-	                callback(response.data.payload)
+	                callback(response.data.payload);
 	            });
-            } else {
-                if (callback) {
-                    callback(ctrl.sellerContactList["s" + seller.sellerCounterparty.id]);
-                }
+            } else if (callback) {
+                callback(ctrl.sellerContactList[`s${ seller.sellerCounterparty.id}`]);
             }
         };
-        ctrl.diffProducts = function () {
+        ctrl.diffProducts = function() {
             // INIDIVIDUAL
             ctrl.ids = [];
             ctrl.differentProducts = [];
             ctrl.bestTcoData.bestIndividuals.grandTotal = 0;
-            $.each(ctrl.bestTcoData.bestIndividuals, function (key, val) {
+            $.each(ctrl.bestTcoData.bestIndividuals, (key, val) => {
                 val.request.amount = 0;
-                $.each(val.bestTCO, function (skey, sval) {
+                $.each(val.bestTCO, (skey, sval) => {
                     val.request.amount += Number(sval.amount);
                     val.request.vessel = sval.vessel;
                     ctrl.bestTcoData.bestIndividuals.grandTotal += sval.amount;
@@ -5207,9 +5244,9 @@ ctrl.setProductData = function(data, loc) {
                         sval.product.amount = sval.amount;
                         ctrl.differentProducts.push(sval.product);
                     } else {
-                        $.each(ctrl.differentProducts, function (k, v) {
+                        $.each(ctrl.differentProducts, (k, v) => {
                             if (v.id == sval.product.id) {
-                                v.amount += sval.amount;
+                                v.amount = v.amount + sval.amount;
                             }
                         });
                     }
@@ -5218,39 +5255,39 @@ ctrl.setProductData = function(data, loc) {
             });
             // PACKAGES
             ctrl.bestPackagesGrandTotal = 0;
-            $.each(ctrl.bestTcoData.bestPackages, function (key, val) {
-                ctrl.bestPackagesGrandTotal += val.tco;
+            $.each(ctrl.bestTcoData.bestPackages, (key, val) => {
+                ctrl.bestPackagesGrandTotal = ctrl.bestPackagesGrandTotal + val.tco;
             });
             if (ctrl.includeAverageSurveyorChargeChecbox == true) {
-                $.each(ctrl.bestTcoData.bestIndividuals, function (key, val) {
+                $.each(ctrl.bestTcoData.bestIndividuals, (key, val) => {
                     ctrl.bestTcoData.bestIndividuals.grandTotal += val.surveyorCost;
                 });
-                $.each(ctrl.bestTcoData.bestPackages, function (key, val) {
-                    ctrl.bestPackagesGrandTotal += val.surveyorCost;
+                $.each(ctrl.bestTcoData.bestPackages, (key, val) => {
+                    ctrl.bestPackagesGrandTotal = ctrl.bestPackagesGrandTotal + val.surveyorCost;
                 });
             }
             // ctrl.bestTcoData.bestIndividuals.surveyorCost = ctrl.bestTcoData.bestIndividuals.surveyorCost;
         };
-        ctrl.calculateBestTotalTCOGrandTotal = function () {
+        ctrl.calculateBestTotalTCOGrandTotal = function() {
             ctrl.bestTotalTCOGrandTotal = 0;
             ctrl.tcoSurveyorCost = 0;
-            $.each(ctrl.bestTcoData.bestTotalTCO, function (tcoK, tcoV) {
-                $.each(tcoV.products, function (pk, pv) {
-                    ctrl.bestTotalTCOGrandTotal += pv.amount;
+            $.each(ctrl.bestTcoData.bestTotalTCO, (tcoK, tcoV) => {
+                $.each(tcoV.products, (pk, pv) => {
+                    ctrl.bestTotalTCOGrandTotal = ctrl.bestTotalTCOGrandTotal + pv.amount;
                 });
                 if (ctrl.includeAverageSurveyorChargeChecbox == true) {
-                    ctrl.bestTotalTCOGrandTotal += tcoV.surveyorCost;
+                    ctrl.bestTotalTCOGrandTotal = ctrl.bestTotalTCOGrandTotal + tcoV.surveyorCost;
                     if (tcoV.surveyorCost) {
-                        ctrl.tcoSurveyorCost += tcoV.surveyorCost;
+                        ctrl.tcoSurveyorCost = ctrl.tcoSurveyorCost + tcoV.surveyorCost;
                     }
                 }
             });
             return ctrl.bestTotalTCOGrandTotal;
         };
-        ctrl.calculateSellerIsVisible = function (key, seller, theLocation) {
+        ctrl.calculateSellerIsVisible = function(key, seller, theLocation) {
             isVisible = true;
             if (ctrl.displayNoOfSellers) {
-	            if (ctrl.displayNoOfSellers.name == "All") {
+	            if (ctrl.displayNoOfSellers.name == 'All') {
 	                numberOfSellersToDisplay = 9999;
 	            } else {
 	                numberOfSellersToDisplay = parseFloat(ctrl.displayNoOfSellers.name);
@@ -5271,7 +5308,7 @@ ctrl.setProductData = function(data, loc) {
             } else {
                 isVisible = true;
             }
-            if (ctrl.searchTermNegotiationTable == "") {
+            if (ctrl.searchTermNegotiationTable == '') {
                 if (key >= numberOfSellersToDisplay) {
                     isVisible = false;
                 }
@@ -5287,15 +5324,15 @@ ctrl.setProductData = function(data, loc) {
             }
             return isVisible;
         };
-        ctrl.checkIfHasRevokedRFQsAll = function (seller, currentSellerLocation) {
+        ctrl.checkIfHasRevokedRFQsAll = function(seller, currentSellerLocation) {
             AllRFQsAreRevoked = true;
-            $.each(currentSellerLocation, function (locK, locV) {
-                $.each(locV.products, function (prodK, prodV) {
-                    $.each(prodV.sellers, function (sellerK, sellerV) {
+            $.each(currentSellerLocation, (locK, locV) => {
+                $.each(locV.products, (prodK, prodV) => {
+                    $.each(prodV.sellers, (sellerK, sellerV) => {
                         if (seller.randUnique == sellerV.randUnique) {
-                            if (typeof sellerV.offers != "undefined") {
+                            if (typeof sellerV.offers != 'undefined') {
                                 if (sellerV.offers.length > 0) {
-                                    if (sellerV.offers[0].rfqStatus != "Revoked") {
+                                    if (sellerV.offers[0].rfqStatus != 'Revoked') {
                                         AllRFQsAreRevoked = false;
                                     }
                                 }
@@ -5306,7 +5343,7 @@ ctrl.setProductData = function(data, loc) {
             });
             return AllRFQsAreRevoked;
         };
-        ctrl.removeSellerRevokedRFQsFromLocation = function (seller, currentSellerLocation) {
+        ctrl.removeSellerRevokedRFQsFromLocation = function(seller, currentSellerLocation) {
             dataReq = [];
             AllRFQsAreRevoked = ctrl.checkIfHasRevokedRFQsAll(seller, currentSellerLocation);
             if (seller.isCloned) {
@@ -5318,18 +5355,18 @@ ctrl.setProductData = function(data, loc) {
             //     return false;
             // }
             sellerHasOfferOnLocation = false;
-            $.each(ctrl.requests, function (reqK, reqV) {
-                $.each(reqV.locations, function (locK, locV) {
+            $.each(ctrl.requests, (reqK, reqV) => {
+                $.each(reqV.locations, (locK, locV) => {
                     if (locV.uniqueLocationIdentifier == currentSellerLocation[0].uniqueLocationIdentifier) {
-                        $.each(locV.products, function (prodK, prodV) {
-                            $.each(prodV.sellers, function (sellerK, sellerV) {
+                        $.each(locV.products, (prodK, prodV) => {
+                            $.each(prodV.sellers, (sellerK, sellerV) => {
                                 if (seller.randUnique == sellerV.randUnique) {
-                                    if (typeof sellerV.offers != "undefined") {
+                                    if (typeof sellerV.offers != 'undefined') {
                                         if (sellerV.offers.length > 0) {
                                         	if (sellerV.offers[0].id) {
 		                                        sellerHasOfferOnLocation = true;
                                         	}
-                                            if (sellerV.offers[0].rfqStatus == "Revoked") {
+                                            if (sellerV.offers[0].rfqStatus == 'Revoked') {
                                                 if (sellerV.offers[0].physicalSupplierCounterparty != null) {
                                                     physicalSupplierId = sellerV.offers[0].physicalSupplierCounterparty.id;
                                                 } else {
@@ -5361,52 +5398,52 @@ ctrl.setProductData = function(data, loc) {
                 });
             });
             if (sellerHasOfferOnLocation) {
-                toastr.error("Negotiation is in progress for this seller");
+                toastr.error('Negotiation is in progress for this seller');
                 return false;
-            } else {
-                var product, newCounterparty, newSeller;
-                var counterpatyIds = getRequestGroupCounterpartyIdsCSV(ctrl.requests);
-                // var productIds = getRequestGroupProductIdsCSV(ctrl.requests);
-                var productIds = [];
-                $.each(currentSellerLocation[0].products, function (k, v) {
-                    productIds.push(v.id);
-                });
-                productIds = productIds.join(",");
-                getSellersSortedPayload = {
-                    RequestProductList: productIds,
-                    RequestGroupId: ctrl.groupId,
-                    LocationId: currentSellerLocation[0].location.id,
-                    RequestSellerId: seller.sellerCounterparty.id
-                };
-                groupOfRequestsModel.deleteSeller(getSellersSortedPayload).then(
-                    function (data) {
-                        if (data.isSuccess) {
-                            ctrl.initScreen();
-                            return false;
-                        }
-                    },
-                    function (response) {
+            }
+            let product, newCounterparty, newSeller;
+            let counterpatyIds = getRequestGroupCounterpartyIdsCSV(ctrl.requests);
+            // var productIds = getRequestGroupProductIdsCSV(ctrl.requests);
+            let productIds = [];
+            $.each(currentSellerLocation[0].products, (k, v) => {
+                productIds.push(v.id);
+            });
+            productIds = productIds.join(',');
+            getSellersSortedPayload = {
+                RequestProductList: productIds,
+                RequestGroupId: ctrl.groupId,
+                LocationId: currentSellerLocation[0].location.id,
+                RequestSellerId: seller.sellerCounterparty.id
+            };
+            groupOfRequestsModel.deleteSeller(getSellersSortedPayload).then(
+                (data) => {
+                    if (data.isSuccess) {
                         ctrl.initScreen();
                         return false;
                     }
-                );
-                return false;
-            }
+                },
+                (response) => {
+                    ctrl.initScreen();
+                    return false;
+                }
+            );
+            return false;
+
             if (dataReq.length <= 0) {
-                toastr.error("Negotiation is in progress for this seller");
+                toastr.error('Negotiation is in progress for this seller');
                 return false;
             }
             payloadRequirements = {
                 requirements: dataReq
             };
             groupOfRequestsModel.removeRequirements(payloadRequirements).then(
-                function (data) {
+                (data) => {
                     ctrl.initScreen();
                     return false;
                     // console.log(data);
                     // $state.reload();
                 },
-                function (response) {
+                (response) => {
                     ctrl.initScreen();
                     return false;
                     // console.log(response);
@@ -5414,9 +5451,9 @@ ctrl.setProductData = function(data, loc) {
                 }
             );
         };
-        ctrl.calculateMinValidity = function (seller, requestProducts, location) {
+        ctrl.calculateMinValidity = function(seller, requestProducts, location) {
             valitidiesList = [];
-            $.each(requestProducts, function (rpK, rpV) {
+            $.each(requestProducts, (rpK, rpV) => {
                 productOffer = ctrl.getSellerProductOfferOnLocation(rpV, location, seller.sellerCounterparty.id, seller);
                 if (productOffer) {
                     if (productOffer.validity) {
@@ -5427,7 +5464,7 @@ ctrl.setProductData = function(data, loc) {
             maxValidityDate = null;
             if (valitidiesList.length > 0) {
                 maxValidityDate = new Date(valitidiesList[0]).getTime();
-                $.each(valitidiesList, function (vK, vV) {
+                $.each(valitidiesList, (vK, vV) => {
                     if (new Date(vV).getTime() > maxValidityDate) {
                         maxValidityDate = new Date(vV).getTime();
                     }
@@ -5438,50 +5475,50 @@ ctrl.setProductData = function(data, loc) {
                 hoursValidity = msValidity / (1000 * 3600);
                 // return hoursValidity.toFixed();
                 return hoursValidity;
-            } else {
-                return "-";
             }
+            return '-';
+
             return maxValidityDate;
         };
-        ctrl.setBladeCounterpartyActiveSeller = function () {
+        ctrl.setBladeCounterpartyActiveSeller = function() {
         	if (!ctrl.blade.counterpartyActiveSeller) {
         		return false;
         	}
             $rootScope.bladeFilteredRfq = ctrl.blade.counterpartyActiveSeller;
             $rootScope.bladeFilteredRfq.locationData = ctrl.blade.counterpartyActiveLocation;
         };
-        ctrl.calculateMySelectionTotal = function () {
+        ctrl.calculateMySelectionTotal = function() {
             total = 0;
-            $.each(ctrl.mySelection, function (k, v) {
+            $.each(ctrl.mySelection, (k, v) => {
                 if (v.tco) {
-                    total += v.tco;
+                    total = total + v.tco;
                 }
             });
             if (ctrl.includeAverageSurveyorCharge) {
-                total += ctrl.mySelectionSurveyorCost;
+                total = total + ctrl.mySelectionSurveyorCost;
             }
             return total;
         };
-        ctrl.reviewRFQ = function () {
+        ctrl.reviewRFQ = function() {
             ctrl.groupId;
             groupOfRequestsModel.reviewGroup(ctrl.groupId).then(
-                function (data) {
+                (data) => {
                     console.log(data);
                     if (data.isSuccess) {
                         ctrl.isReviewed = true;
                     }
                 },
-                function (response) {
+                (response) => {
                     console.log(response);
                 }
             );
         };
-        ctrl.calculateTotalAmountForProductsPerRequestperSeller = function (requestProducts, currLocation, seller) {
+        ctrl.calculateTotalAmountForProductsPerRequestperSeller = function(requestProducts, currLocation, seller) {
             totalAmount = 0;
-            var hasAtLeastOneRfq = false;
-            var foundNoValidTco = false;
-            $.each(requestProducts, function (k, product) {
-            	correctProduct = product.productLocations['L' + currLocation[0].uniqueLocationIdentifier];
+            let hasAtLeastOneRfq = false;
+            let foundNoValidTco = false;
+            $.each(requestProducts, (k, product) => {
+            	correctProduct = product.productLocations[`L${ currLocation[0].uniqueLocationIdentifier}`];
             	if (correctProduct) {
 	                var productOffer = ctrl.getSellerProductOfferOnLocationRewrite(correctProduct, currLocation, seller.sellerCounterparty.id, seller);
             	}
@@ -5491,43 +5528,38 @@ ctrl.setProductData = function(data, loc) {
                 	}
                     if (productOffer.energyParameterValues && ctrl.isEnergyCalculationRequired) {
                         if (productOffer.energyParameterValues.tco) {
-                            totalAmount += productOffer.energyParameterValues.tco;
-                        } else {
-	                    	if (ctrl.isEnergyCalculationRequired) {
-	                            foundNoValidTco = true; 
+                            totalAmount = totalAmount + productOffer.energyParameterValues.tco;
+                        } else if (ctrl.isEnergyCalculationRequired) {
+	                            foundNoValidTco = true;
 	                    	}
-                        }
+                    } else if (productOffer.totalAmount || productOffer.hasNoQuote) {
+                        totalAmount = totalAmount + (productOffer.totalAmount || 0);
                     } else {
-                        if (productOffer.totalAmount || productOffer.hasNoQuote) {
-                            totalAmount += productOffer.totalAmount || 0;
-                        } else {
-                            // foundNoValidTco = true;
-                        }
+                        // foundNoValidTco = true;
                     }
-                } else {
-                	if (correctProduct) {
+                } else if (correctProduct) {
 	                    foundNoValidTco = true;
                 	}
-                }
             });
             if (ctrl.includeAverageSurveyorCharge && hasAtLeastOneRfq && ctrl.isEnergyCalculationRequired) {
             	if (totalAmount > 0) {
-	                totalAmount += ctrl.averageSurveyorCost;
-            	} 
+	                totalAmount = totalAmount + ctrl.averageSurveyorCost;
+            	}
             }
             return foundNoValidTco ? -1 : totalAmount;
         };
-        /*****************************************************************************
+
+        /** ***************************************************************************
          *   END EVENT HANDLERS
          ******************************************************************************/
         /**
          * Supplier Card specific functions
          */
-        ctrl.initCardDetails = function (activeLocation) {
+        ctrl.initCardDetails = function(activeLocation) {
             ctrl.cardRequests = [];
-            $.each(ctrl.requests, function (reqK, reqV) {
+            $.each(ctrl.requests, (reqK, reqV) => {
                 requestLocation = false;
-                $.each(reqV.locations, function (locK, locV) {
+                $.each(reqV.locations, (locK, locV) => {
                     if (locV.uniqueLocationIdentifier == activeLocation.uniqueLocationIdentifier) {
                         // debugger
                         requestLocation = true;
@@ -5539,10 +5571,10 @@ ctrl.setProductData = function(data, loc) {
             });
             ctrl.active_req_val = ctrl.cardRequests[0];
         };
-        ctrl.initSupplierCardData = function (theLocation, seller, activeSellerCardTab) {
+        ctrl.initSupplierCardData = function(theLocation, seller, activeSellerCardTab) {
             requestLocationIds = [];
-            $.each(ctrl.requests, function (reqK, reqV) {
-                $.each(reqV.locations, function (locK, locV) {
+            $.each(ctrl.requests, (reqK, reqV) => {
+                $.each(reqV.locations, (locK, locV) => {
                     if (locV.uniqueLocationIdentifier == theLocation.uniqueLocationIdentifier) {
                         if (requestLocationIds.indexOf(locV.id) == -1) {
                             requestLocationIds.push(locV.id);
@@ -5555,8 +5587,8 @@ ctrl.setProductData = function(data, loc) {
                     requestGroupId: ctrl.groupId,
                     locationId: theLocation.location.id,
                     sellerCounterpartyId: seller.sellerCounterparty.id,
-                    physicalSupplierId: seller.randUnique.split("-")[1] == "null" ? null : seller.randUnique.split("-")[1],
-                    requestLocationIds: requestLocationIds.join(",")
+                    physicalSupplierId: seller.randUnique.split('-')[1] == 'null' ? null : seller.randUnique.split('-')[1],
+                    requestLocationIds: requestLocationIds.join(',')
                 }
             };
             ctrl.sellerHasBroker(seller, theLocation);
@@ -5568,17 +5600,17 @@ ctrl.setProductData = function(data, loc) {
             // }
             if (!ctrl.sellerHasContact(seller, theLocation)) {
                 ctrl.cannotViewSellerCard = true;
-                ctrl.cannotViewSellerCardMessage = "Please add a contact for the offer before continuing";
+                ctrl.cannotViewSellerCardMessage = 'Please add a contact for the offer before continuing';
             } else if (seller.isCloned || seller.offers.length == 0 || !seller.offers) {
                 ctrl.cannotViewSellerCard = true;
-                ctrl.cannotViewSellerCardMessage = "Please send or skip RFQ before continuing";
+                ctrl.cannotViewSellerCardMessage = 'Please send or skip RFQ before continuing';
             } else {
-                // console.error('card data'); 
+                // console.error('card data');
                 ctrl.dataLoaded = false;
                 ctrl.cannotViewSellerCard = false;
                 Factory_Master.getSellerBlade(
                     ctrl.initDataforCard,
-                    function (callback) {
+                    (callback) => {
                         ctrl.dataLoaded = true;
                         if (callback) {
                             if (callback.status) {
@@ -5592,19 +5624,19 @@ ctrl.setProductData = function(data, loc) {
                             }
                         }
                     },
-                    function () {
+                    () => {
                         ctrl.dataLoaded = true;
                     }
                 );
             }
-            setTimeout(function () {
-                ctrl.cannotViewSellerCard ? (ctrl.dataLoaded = true) : "";
+            setTimeout(() => {
+                ctrl.cannotViewSellerCard ? ctrl.dataLoaded = true : '';
             }, 1000);
         };
-        ctrl.initEnergyBlade = function (theLocation, seller, productOffer) {
+        ctrl.initEnergyBlade = function(theLocation, seller, productOffer) {
             requestLocationIds = [];
-            $.each(ctrl.requests, function (reqK, reqV) {
-                $.each(reqV.locations, function (locK, locV) {
+            $.each(ctrl.requests, (reqK, reqV) => {
+                $.each(reqV.locations, (locK, locV) => {
                     if (locV.uniqueLocationIdentifier == theLocation.uniqueLocationIdentifier) {
                         if (requestLocationIds.indexOf(locV.id) == -1) {
                             requestLocationIds.push(locV.id);
@@ -5617,34 +5649,34 @@ ctrl.setProductData = function(data, loc) {
                     requestGroupId: ctrl.groupId,
                     locationId: theLocation.location.id,
                     sellerCounterpartyId: seller.sellerCounterparty.id,
-                    physicalSupplierId: seller.randUnique.split("-")[1],
-                    requestLocationIds: requestLocationIds.join(",")
+                    physicalSupplierId: seller.randUnique.split('-')[1],
+                    requestLocationIds: requestLocationIds.join(',')
                 }
             };
             $scope.tempProductOffer = productOffer;
             $scope.tempSellerData = seller;
-            Factory_Master.getEnergyBlade(ctrl.initDataforCard, function (callback) {
+            Factory_Master.getEnergyBlade(ctrl.initDataforCard, (callback) => {
                 ctrl.dataLoaded = true;
                 if (callback) {
                     ctrl.sellerOffers = {};
                     ctrl.sellerOffers = callback.data.payload;
                     products = [];
-                    $.each(ctrl.sellerOffers, function (k, v) {
-                        $.each(v.products, function (pk, pv) {
+                    $.each(ctrl.sellerOffers, (k, v) => {
+                        $.each(v.products, (pk, pv) => {
                             if (pv.isEnergyCalculationRequired) {
                                 if (pk > 0) {
                                     prod = angular.copy(v);
-                                    prod.products = [prod.products[pk]];
+                                    prod.products = [ prod.products[pk] ];
                                     ctrl.sellerOffers.push(prod);
                                 }
                             }
                         });
                     });
-                    ctrl.sellerOffers = $filter("orderBy")(ctrl.sellerOffers, "id");
+                    ctrl.sellerOffers = $filter('orderBy')(ctrl.sellerOffers, 'id');
                     console.log($scope.tempProductOffer);
                     // debugger;
                     if (ctrl.lastActiveProdIndex) {
-                    	if (ctrl.lastActiveProdIndex < ctrl.sellerOffers.length ) {
+                    	if (ctrl.lastActiveProdIndex < ctrl.sellerOffers.length) {
 		                    ctrl.active_prod = ctrl.sellerOffers[ctrl.lastActiveProdIndex];
                     	} else {
 		                    ctrl.active_prod = ctrl.sellerOffers[0];
@@ -5656,10 +5688,10 @@ ctrl.setProductData = function(data, loc) {
 		                requestGroupId: ctrl.groupId,
 		                locationIds: theLocation.location.id,
 		                sellerCounterpartyId: seller.sellerCounterparty.id,
-		                physicalSupplierCounterpartyId: seller.randUnique.split("-")[1]
-		            }
-                    $.each(ctrl.sellerOffers, function (k, v) {
-                        $.each(v.products, function (pk, pv) {
+		                physicalSupplierCounterpartyId: seller.randUnique.split('-')[1]
+		            };
+                    $.each(ctrl.sellerOffers, (k, v) => {
+                        $.each(v.products, (pk, pv) => {
                             currentPackageId = null;
                             if (v.package) {
                                 currentPackageId = v.package.id;
@@ -5673,27 +5705,27 @@ ctrl.setProductData = function(data, loc) {
                 }
             });
         };
-	    $rootScope.$on("initScreenAfterSendOrSkipRfq", function (event, res) {
-			ctrl.initScreenAfterSendOrSkipRfq();
-            groupOfRequestsModel.getBestTco(requestGroupProductIds, ctrl.groupId).then(function (data) {
+	    $rootScope.$on('initScreenAfterSendOrSkipRfq', (event, res) => {
+            ctrl.initScreenAfterSendOrSkipRfq();
+            groupOfRequestsModel.getBestTco(requestGroupProductIds, ctrl.groupId).then((data) => {
                 ctrl.bestTcoData = data.payload;
                 ctrl.bestTcoData = $scope.modelBestTCODataForTemplating(ctrl.bestTcoData);
                 ctrl.mySelection = data.payload.mySelection.quotations;
                 ctrl.mySelectionSurveyorCost = data.payload.mySelection.averageSurveyorCost;
             });
             $rootScope.shouldRefreshGroup = false;
-	    })  
-        $rootScope.$on("isPhysicalSupplierMandatory", function (event, res) {
+	    });
+        $rootScope.$on('isPhysicalSupplierMandatory', (event, res) => {
             ctrl.isPhysicalSupplierMandatory(res);
-        })  
+        });
 
-        $rootScope.$on("supplierCardChangedData", function (event, supplierCardData) {
+        $rootScope.$on('supplierCardChangedData', (event, supplierCardData) => {
             console.log(supplierCardData);
             ctrl.initScreen();
             return false;
             $state.reload();
-            $.each(supplierCardData, function (scK, scV) {
-                $.each(scV.locations[0].products, function (scProdK, scProdV) {
+            $.each(supplierCardData, (scK, scV) => {
+                $.each(scV.locations[0].products, (scProdK, scProdV) => {
                     scProductId = scProdV.id;
                     scSellerUniqueId = null;
                     scRequestId = scV.id;
@@ -5703,14 +5735,14 @@ ctrl.setProductData = function(data, loc) {
                             scSellerUniqueId = scProdV.sellers[0].randUnique;
                         }
                     }
-                    $.each(ctrl.requests, function (reqK, reqV) {
+                    $.each(ctrl.requests, (reqK, reqV) => {
                         if (reqV.id == scRequestId) {
-                            $.each(reqV.locations, function (locK, locV) {
+                            $.each(reqV.locations, (locK, locV) => {
                                 if (locV.uniqueLocationIdentifier == scLocationUnique) {
-                                    $.each(locV.products, function (prodK, prodV) {
+                                    $.each(locV.products, (prodK, prodV) => {
                                         if (prodV.id == scProductId) {
                                             if (prodV.sellers.length > 0) {
-                                                $.each(prodV.sellers, function (selK, selV) {
+                                                $.each(prodV.sellers, (selK, selV) => {
                                                     if (selV.randUnique == scSellerUniqueId) {
                                                         selV.offers = scProdV.sellers[0].offers;
                                                     }
@@ -5733,34 +5765,34 @@ ctrl.setProductData = function(data, loc) {
                 droppable: true
             }
         ];
-        ctrl.stopCallback = function (event, ui, elem) {
-            $.each(ctrl.compareLines, function (k, v) {
+        ctrl.stopCallback = function(event, ui, elem) {
+            $.each(ctrl.compareLines, (k, v) => {
                 ctrl.compareLines[k].droppable = true;
             });
         };
-        ctrl.startCallback = function (event, ui, elem) {
-            $.each(ctrl.compareLines, function (k, v) {
+        ctrl.startCallback = function(event, ui, elem) {
+            $.each(ctrl.compareLines, (k, v) => {
                 ctrl.compareLines[k].droppable = true;
-                $.each(v, function (sk, sv) {
+                $.each(v, (sk, sv) => {
                     if (sv.seller) {
                         if (sv == elem) {
-                            console.log("exists");
+                            console.log('exists');
                             ctrl.compareLines[k].droppable = false;
                         }
                     }
                 });
             });
         };
-        ctrl.dropCallback = function (event, ui) {
+        ctrl.dropCallback = function(event, ui) {
             event.target.innerHTML = ui.draggable.context.innerHTML;
             ctrl.draggableProducts = [];
-            $.each(ctrl.compareLines, function (k, v) {
-                $.each(v, function (sk, sv) {
+            $.each(ctrl.compareLines, (k, v) => {
+                $.each(v, (sk, sv) => {
                     if (sv.product) {
                         ctrl.draggableProducts.push(sv.product.id);
                     }
                     if (sv.products) {
-                        $.each(sv.products, function (pk, pv) {
+                        $.each(sv.products, (pk, pv) => {
                             ctrl.draggableProducts.push(pv.product.id);
                         });
                     }
@@ -5770,11 +5802,11 @@ ctrl.setProductData = function(data, loc) {
         };
 
         ctrl.canAmendRFQ = function() {
-            var requirement;
-            var isCorrect = true;
-            for (var i = 0; i < ctrl.requirementRequestProductIds.length; i++) {
+            let requirement;
+            let isCorrect = true;
+            for (let i = 0; i < ctrl.requirementRequestProductIds.length; i++) {
                 requirement = ctrl.requirementRequestProductIds[i];
-                if (typeof requirement.requestOfferId == "undefined" || requirement.requestOfferId === null) {
+                if (typeof requirement.requestOfferId == 'undefined' || requirement.requestOfferId === null) {
                     isCorrect = false;
                     break;
                 }
@@ -5782,7 +5814,7 @@ ctrl.setProductData = function(data, loc) {
             return isCorrect;
         };
 
-        ctrl.canDrag = function (elem) {
+        ctrl.canDrag = function(elem) {
             if (!ctrl.draggableProducts) {
                 return true;
             }
@@ -5791,7 +5823,7 @@ ctrl.setProductData = function(data, loc) {
             }
             if (elem.products) {
                 found = 0;
-                $.each(elem.products, function (k, v) {
+                $.each(elem.products, (k, v) => {
                     if (ctrl.draggableProducts.indexOf(v.product.id) > -1) {
                         found++;
                     }
@@ -5807,71 +5839,72 @@ ctrl.setProductData = function(data, loc) {
             }
             return false;
         };
-        ctrl.compareSelection = function () {
+        ctrl.compareSelection = function() {
             linesTco = [];
             firstLineRefferenceProducts = [];
-            $.each(ctrl.compareLines[0].first.products, function (prodK, prodV) {
+            $.each(ctrl.compareLines[0].first.products, (prodK, prodV) => {
                 if (firstLineRefferenceProducts.indexOf(prodV.product.id) == -1) {
                     firstLineRefferenceProducts.push(prodV.product.id);
                 }
             });
-            $.each(ctrl.compareLines[0].second.products, function (prodK, prodV) {
+            $.each(ctrl.compareLines[0].second.products, (prodK, prodV) => {
                 if (firstLineRefferenceProducts.indexOf(prodV.product.id) == -1) {
                     firstLineRefferenceProducts.push(prodV.product.id);
                 }
             });
-            $.each(ctrl.compareLines[0].third.products, function (prodK, prodV) {
+            $.each(ctrl.compareLines[0].third.products, (prodK, prodV) => {
                 if (firstLineRefferenceProducts.indexOf(prodV.product.id) == -1) {
                     firstLineRefferenceProducts.push(prodV.product.id);
                 }
             });
-            $.each(ctrl.compareLines, function (k, v) {
-                linesTco.push($filter("sumOfValueArray")(v, "tco"));
+            $.each(ctrl.compareLines, (k, v) => {
+                linesTco.push($filter('sumOfValueArray')(v, 'tco'));
             });
             ctrl.minTco = Math.min.apply(Math, linesTco);
         };
-        ctrl.hasParam = function (param) {
+        ctrl.hasParam = function(param) {
             found = false;
-			if (ctrl.active_prod) {
+            if (ctrl.active_prod) {
 			    if (ctrl.active_prod.products) {
-			        $.each(ctrl.active_prod.products[0].specParameters, function (k, v) {
+			        $.each(ctrl.active_prod.products[0].specParameters, (k, v) => {
 			            if (v.specParameter.id == param) {
 			                found = true;
 			            }
 			        });
 			    }
-			}
+            }
             if (found) {
                 return false;
             }
             return true;
         };
-        /*TCO checkboxes*/
-        ctrl.tcoHasPackageRequirements = function (pkgData) {
+
+        /* TCO checkboxes*/
+        ctrl.tcoHasPackageRequirements = function(pkgData) {
             physicalSupplierId = null;
             if (pkgData.isSurrogate) {
-                packageType = "buyer";
+                packageType = 'buyer';
             } else {
-                packageType = "seller";
+                packageType = 'seller';
             }
             if (pkgData.physicalSupplier) {
                 if (pkgData.physicalSupplier.id) {
                     physicalSupplierId = pkgData.physicalSupplier.id;
                 }
             }
-            sellerRandUniquePkg = pkgData.seller.id + "-" + physicalSupplierId + "-" + packageType + "-" + pkgData.packageId;
+            sellerRandUniquePkg = `${pkgData.seller.id }-${ physicalSupplierId }-${ packageType }-${ pkgData.packageId}`;
             pkgData.randUniquePkg = sellerRandUniquePkg;
             return ctrl.hasPackageRequirement(pkgData);
         };
-        ctrl.createTcoSellerRequirementsForProductPackage = function (pkgData) {
+        ctrl.createTcoSellerRequirementsForProductPackage = function(pkgData) {
             matchingPackageIdProducts = [];
             locations = [];
             currentSeller = null;
-            $.each(ctrl.requests, function (reqK, reqV) {
-                $.each(reqV.locations, function (locK, locV) {
-                    $.each(locV.products, function (prodK, prodV) {
+            $.each(ctrl.requests, (reqK, reqV) => {
+                $.each(reqV.locations, (locK, locV) => {
+                    $.each(locV.products, (prodK, prodV) => {
                         if (prodV.sellers.length > 0) {
-                            $.each(prodV.sellers, function (selK, selV) {
+                            $.each(prodV.sellers, (selK, selV) => {
                                 if (selV.randUniquePkg == pkgData.randUniquePkg) {
                                     prodV.seller = selV;
                                     currentSeller = selV;
@@ -5883,20 +5916,20 @@ ctrl.setProductData = function(data, loc) {
                     });
                 });
             });
-            $.each(matchingPackageIdProducts, function (key, prodValue) {
+            $.each(matchingPackageIdProducts, (key, prodValue) => {
                 ctrl.createSellerRequirementsForProduct(currentSeller, locations, prodValue);
             });
         };
-        ctrl.hasTcoSellerProductRequirements = function (requestOfferId) {
+        ctrl.hasTcoSellerProductRequirements = function(requestOfferId) {
             sellerObj = null;
             physicalSupplierId = null;
             product = null;
             locations = [];
-            $.each(ctrl.requests, function (reqK, reqV) {
-                $.each(reqV.locations, function (locK, locV) {
-                    $.each(locV.products, function (prodK, prodV) {
+            $.each(ctrl.requests, (reqK, reqV) => {
+                $.each(reqV.locations, (locK, locV) => {
+                    $.each(locV.products, (prodK, prodV) => {
                         if (prodV.sellers.length > 0) {
-                            $.each(prodV.sellers, function (selK, selV) {
+                            $.each(prodV.sellers, (selK, selV) => {
                                 if (selV.offers) {
                                     if (selV.offers.length > 0) {
                                         if (selV.offers[0].id == requestOfferId) {
@@ -5913,16 +5946,16 @@ ctrl.setProductData = function(data, loc) {
             });
             return ctrl.hasSellerProductRequirements(sellerObj, locations, physicalSupplierId, product);
         };
-        ctrl.createTcoSellerRequirementsForProduct = function (requestOfferId) {
+        ctrl.createTcoSellerRequirementsForProduct = function(requestOfferId) {
             // seller, locations, productSample
             seller = null;
             product = null;
             locations = [];
-            $.each(ctrl.requests, function (reqK, reqV) {
-                $.each(reqV.locations, function (locK, locV) {
-                    $.each(locV.products, function (prodK, prodV) {
+            $.each(ctrl.requests, (reqK, reqV) => {
+                $.each(reqV.locations, (locK, locV) => {
+                    $.each(locV.products, (prodK, prodV) => {
                         if (prodV.sellers.length > 0) {
-                            $.each(prodV.sellers, function (selK, selV) {
+                            $.each(prodV.sellers, (selK, selV) => {
                                 if (selV.offers) {
                                     if (selV.offers.length > 0) {
                                         if (selV.offers[0].id == requestOfferId) {
@@ -5939,7 +5972,7 @@ ctrl.setProductData = function(data, loc) {
             });
             ctrl.createSellerRequirementsForProduct(seller, locations, product);
         };
-        ctrl.isSelectedBestTotalTco = function () {
+        ctrl.isSelectedBestTotalTco = function() {
             if (!ctrl.requirements) {
                 return false;
             }
@@ -5947,25 +5980,25 @@ ctrl.setProductData = function(data, loc) {
                 return false;
             }
             bestTcoRequestOfferIdList = [];
-            $.each(ctrl.bestTcoData.bestTotalTCO, function (tcok, tcov) {
-                $.each(tcov.products, function (pk, pv) {
+            $.each(ctrl.bestTcoData.bestTotalTCO, (tcok, tcov) => {
+                $.each(tcov.products, (pk, pv) => {
                     bestTcoRequestOfferIdList.push(pv.requestOfferId);
                 });
             });
             if (bestTcoRequestOfferIdList.length > ctrl.requirements.length) {
                 return false;
             }
-            $.each(ctrl.requirements, function (requirementK, requirementV) {
+            $.each(ctrl.requirements, (requirementK, requirementV) => {
                 if (bestTcoRequestOfferIdList.indexOf(requirementV.requestOfferId) == -1) {
                     return false;
                 }
             });
             return true;
         };
-        ctrl.selectBestTotalTco = function () {
+        ctrl.selectBestTotalTco = function() {
             requestOfferIdList = [];
-            $.each(ctrl.bestTcoData.bestTotalTCO, function (tcok, tcov) {
-                $.each(tcov.products, function (pk, pv) {
+            $.each(ctrl.bestTcoData.bestTotalTCO, (tcok, tcov) => {
+                $.each(tcov.products, (pk, pv) => {
                     requestOfferIdList.push(pv.requestOfferId);
                 });
             });
@@ -5973,18 +6006,18 @@ ctrl.setProductData = function(data, loc) {
             if (!isCheckSelected) {
                 for (var i = requestOfferIdList.length - 1; i >= 0; i--) {
                     requestOfferIdList[i];
-                    $.each(ctrl.requirements, function (k, v) {
+                    $.each(ctrl.requirements, (k, v) => {
                         if (requestOfferIdList[i] == v.requestOfferId) {
                             requestOfferIdList.splice(i, 1);
                         }
                     });
                 }
             }
-            $.each(requestOfferIdList, function (rk, requestOfferId) {
+            $.each(requestOfferIdList, (rk, requestOfferId) => {
                 ctrl.createTcoSellerRequirementsForProduct(requestOfferId);
             });
         };
-        ctrl.isSelectedMySelection = function () {
+        ctrl.isSelectedMySelection = function() {
             if (!ctrl.requirements) {
                 return false;
             }
@@ -5992,26 +6025,26 @@ ctrl.setProductData = function(data, loc) {
                 return false;
             }
             mySelectionRequestOfferIdList = [];
-            $.each(ctrl.bestTcoData.mySelection.quotations, function (msk, msv) {
+            $.each(ctrl.bestTcoData.mySelection.quotations, (msk, msv) => {
                 // mySelectionRequestOfferIdList.push(msv.requestOfferId);
-                $.each(msv.products, function (pk, pv) {
+                $.each(msv.products, (pk, pv) => {
                     mySelectionRequestOfferIdList.push(pv.requestOfferId);
                 });
             });
             if (mySelectionRequestOfferIdList.length > ctrl.requirements.length) {
                 return false;
             }
-            $.each(ctrl.requirements, function (requirementK, requirementV) {
+            $.each(ctrl.requirements, (requirementK, requirementV) => {
                 if (mySelectionRequestOfferIdList.indexOf(requirementV.requestOfferId) == -1) {
                     return false;
                 }
             });
             return true;
         };
-        ctrl.selectMySelection = function () {
+        ctrl.selectMySelection = function() {
             requestOfferIdList = [];
-            $.each(ctrl.bestTcoData.mySelection.quotations, function (tcok, tcov) {
-                $.each(tcov.products, function (pk, pv) {
+            $.each(ctrl.bestTcoData.mySelection.quotations, (tcok, tcov) => {
+                $.each(tcov.products, (pk, pv) => {
                     requestOfferIdList.push(pv.requestOfferId);
                 });
             });
@@ -6019,7 +6052,7 @@ ctrl.setProductData = function(data, loc) {
             if (!isCheckSelected) {
                 for (var i = requestOfferIdList.length - 1; i >= 0; i--) {
                     requestOfferIdList[i];
-                    $.each(ctrl.requirements, function (k, v) {
+                    $.each(ctrl.requirements, (k, v) => {
                         if (requestOfferIdList[i] == v.requestOfferId) {
                             requestOfferIdList.splice(i, 1);
                         }
@@ -6027,16 +6060,17 @@ ctrl.setProductData = function(data, loc) {
                 }
             }
             // debugger;
-            $.each(requestOfferIdList, function (rk, requestOfferId) {
+            $.each(requestOfferIdList, (rk, requestOfferId) => {
                 ctrl.createTcoSellerRequirementsForProduct(requestOfferId);
             });
         };
-        /*END TCO checkboxes*/
-        ctrl.getPackageRequestIds = function (packageId) {
+
+        /* END TCO checkboxes*/
+        ctrl.getPackageRequestIds = function(packageId) {
             requestIds = [];
-            $.each(ctrl.bestTcoData.bestPackages, function (pk, pg) {
+            $.each(ctrl.bestTcoData.bestPackages, (pk, pg) => {
                 if (pg.packageId == packageId) {
-                    $.each(pg.products, function (prodK, prodV) {
+                    $.each(pg.products, (prodK, prodV) => {
                         if (requestIds.indexOf(prodV.request.id) == -1) {
                             requestIds.push(prodV.request.id);
                         }
@@ -6045,10 +6079,10 @@ ctrl.setProductData = function(data, loc) {
             });
             return requestIds;
         };
-        ctrl.getRequestComment = function (requestProducts, product, location, sellerCounterpartyId, seller) {
-            comments = "";
+        ctrl.getRequestComment = function(requestProducts, product, location, sellerCounterpartyId, seller) {
+            comments = '';
             commentsCount = 0;
-            $.each(requestProducts, function (rk, rv) {
+            $.each(requestProducts, (rk, rv) => {
                 productOffer = ctrl.getSellerProductOfferOnLocationRewrite(rv, location, sellerCounterpartyId, seller);
                 if (productOffer) {
                     if (productOffer.offer) {
@@ -6056,7 +6090,7 @@ ctrl.setProductData = function(data, loc) {
                             comments = productOffer.offer.sellerComments;
                         }
                         if (productOffer.offer.sellerComments) {
-                            commentsCount += 1;
+                            commentsCount = commentsCount + 1;
                         }
                     }
                 }
@@ -6066,13 +6100,13 @@ ctrl.setProductData = function(data, loc) {
             }
             return false;
         };
-        ctrl.calculate6MHistoryAverage = function () {
+        ctrl.calculate6MHistoryAverage = function() {
             console.log(ctrl);
             ctrl.show6MHistoryAverage = true;
         };
-        $scope.modelBestTCODataForTemplating = function (bestTcoData) {
+        $scope.modelBestTCODataForTemplating = function(bestTcoData) {
             ctrl.bestTotalTCOUniqueRequestsList = [];
-            $.each(bestTcoData.bestTotalTCO, function (btk, btv) {
+            $.each(bestTcoData.bestTotalTCO, (btk, btv) => {
                 btv.requestIdForGrouping = btv.products[0].request.id;
                 if (ctrl.bestTotalTCOUniqueRequestsList.indexOf(btv.products[0].request.id) == -1) {
                     ctrl.bestTotalTCOUniqueRequestsList.push(btv.products[0].request.id);
@@ -6080,60 +6114,60 @@ ctrl.setProductData = function(data, loc) {
             });
             return bestTcoData;
         };
-        ctrl.getTotalBestTCOForRequest = function (requestId) {
+        ctrl.getTotalBestTCOForRequest = function(requestId) {
             total = 0;
-            $.each(ctrl.bestTcoData.bestTotalTCO, function (btk, btv) {
+            $.each(ctrl.bestTcoData.bestTotalTCO, (btk, btv) => {
                 if (btv.requestIdForGrouping == requestId) {
-                    total += btv.tco;
+                    total = total + btv.tco;
                 }
             });
             return total;
         };
-        ctrl.getTotalMySelectionForRequest = function (requestId) {
+        ctrl.getTotalMySelectionForRequest = function(requestId) {
             return false;
             total = 0;
-            $.each(ctrl.bestTcoData.mySelection.quotations, function (msk, msv) {
+            $.each(ctrl.bestTcoData.mySelection.quotations, (msk, msv) => {
                 if (msv.request.id == requestId) {
                     if (msv.amount) {
-                        total += msv.amount;
+                        total = total + msv.amount;
                     }
                 }
             });
             return total;
         };
-        ctrl.getVesselByRequestId = function (requestId) {
+        ctrl.getVesselByRequestId = function(requestId) {
             vessel = null;
-            $.each(ctrl.requests, function (rk, rv) {
+            $.each(ctrl.requests, (rk, rv) => {
                 if (rv.id == requestId) {
                     vessel = rv.vesselDetails.vessel;
                 }
             });
             return vessel;
         };
-        $rootScope.$on("bladeDataChanged", function (event, data) {
+        $rootScope.$on('bladeDataChanged', (event, data) => {
             console.log();
             ctrl.confirmedBladeNavigation = true;
             $scope.bladeDataChanged = data;
-            ctrl.viewSupplierCardBlade(ctrl.blade.counterpartyActiveSeller, ctrl.blade.counterpartyActiveLocation, null, null)
+            ctrl.viewSupplierCardBlade(ctrl.blade.counterpartyActiveSeller, ctrl.blade.counterpartyActiveLocation, null, null);
         });
-        $rootScope.$on("confirmedBladeNavigation", function (event, data) {
-	        ctrl.confirmedBladeNavigation = true
+        $rootScope.$on('confirmedBladeNavigation', (event, data) => {
+	        ctrl.confirmedBladeNavigation = true;
         });
 
         // timer for validity count
         ctrl.timerCount = 0;
         ctrl.validityArray = [];
         ctrl.validityArray[ctrl.timerCount] = null;
-        ctrl.getOfferPaymentTerm = function (seller) {
+        ctrl.getOfferPaymentTerm = function(seller) {
             paymentTerm = null;
-            $.each(ctrl.requests, function (reqK, reqV) {
-                $.each(reqV.locations, function (locK, locV) {
-                    $.each(locV.products, function (prodK, prodV) {
-                        $.each(prodV.sellers, function (sellerK, sellerV) {
+            $.each(ctrl.requests, (reqK, reqV) => {
+                $.each(reqV.locations, (locK, locV) => {
+                    $.each(locV.products, (prodK, prodV) => {
+                        $.each(prodV.sellers, (sellerK, sellerV) => {
                             if (seller.id == sellerV.id) {
-                                if (typeof sellerV.offers != "undefined") {
+                                if (typeof sellerV.offers != 'undefined') {
                                     if (sellerV.offers.length > 0) {
-                                        $.each(sellerV.offers, function (ofk, ofv) {
+                                        $.each(sellerV.offers, (ofk, ofv) => {
                                             if (ofv.paymentTerm) {
                                                 paymentTerm = ofv.paymentTerm;
                                             }
@@ -6147,7 +6181,7 @@ ctrl.setProductData = function(data, loc) {
             });
             return paymentTerm;
         };
-        ctrl.countdown = function (time) {
+        ctrl.countdown = function(time) {
         // countdonw not needed anymore
         /*    ctrl.timerCount++;
             // console.log(ctrl.timerCount, time);
@@ -6167,7 +6201,7 @@ ctrl.setProductData = function(data, loc) {
                 ctrl.startTimer = true;
             }, 2000);
             // console.log(ctrl.validityArray);
-        */    
+        */
             return ctrl.timerCount;
         };
         // $interval(function () {
@@ -6187,47 +6221,44 @@ ctrl.setProductData = function(data, loc) {
         //         });
         //     }
         // }, 60000);
-        $scope.showHideSections = function (obj) {
+        $scope.showHideSections = function(obj) {
             if (obj.length > 0) {
                 ctrl.visible_sections_old = ctrl.visible_sections;
-            } else {
-                if (typeof ctrl.visible_sections_old != "undefined") {
-                    ctrl.visible_sections = ctrl.visible_sections_old;
-                    $("select#multiple").selectpicker("val", ctrl.visible_sections_old[0]);
-                    $("select#multiple").selectpicker("render");
-                }
+            } else if (typeof ctrl.visible_sections_old != 'undefined') {
+                ctrl.visible_sections = ctrl.visible_sections_old;
+                $('select#multiple').selectpicker('val', ctrl.visible_sections_old[0]);
+                $('select#multiple').selectpicker('render');
             }
         };
-        jQuery(document).on("focus", "input[type='number']", function () {
+        jQuery(document).on('focus', 'input[type=\'number\']', () => {
             input = $('input[type="number"]');
-            window.addEventListener("mousewheel", function (evt) {
-                if ($(evt.target).prop("tagName") == "INPUT") {
+            window.addEventListener('mousewheel', (evt) => {
+                if ($(evt.target).prop('tagName') == 'INPUT') {
                     evt.preventDefault();
                 } else {
                     return true;
                 }
             });
         });
-        jQuery(document).on("blur", "input[type='number']", function () {
+        jQuery(document).on('blur', 'input[type=\'number\']', () => {
             input = $('input[type="number"]');
-            window.addEventListener("mousewheel", function (evt) {
+            window.addEventListener('mousewheel', (evt) => {
                 return true;
             });
         });
-        ctrl.checkisNaN = function (oldVal, newVal) {
+        ctrl.checkisNaN = function(oldVal, newVal) {
             if (isNaN(newVal)) {
                 if (isNaN(oldVal)) {
                     return null;
                 }
                 return oldVal;
-            } else {
-                return false;
             }
+            return false;
         };
-        ctrl.getMarketPricePopup = function (product, locations) {
+        ctrl.getMarketPricePopup = function(product, locations) {
             data = {};
-            var theLocation;
-            for (var i = 0; i < locations.length; i++) {
+            let theLocation;
+            for (let i = 0; i < locations.length; i++) {
                 if (locations[i].requestId === product.requestId) {
                     theLocation = locations[i];
                     break;
@@ -6237,18 +6268,18 @@ ctrl.setProductData = function(data, loc) {
                 return 0;
             }
             productList = [];
-            $.each(theLocation.products, function (k, v) {
+            $.each(theLocation.products, (k, v) => {
                 if (v.product.id == product.product.id) {
                     product = v;
                 }
             });
-            popupHtml = "";
+            popupHtml = '';
             if (product.quoteName) {
-                popupHtml = product.quoteName + "<br>Quote Date: " + $filter("date")(product.quoteDate, "dd/MM/yyyy");
+                popupHtml = `${product.quoteName }<br>Quote Date: ${ $filter('date')(product.quoteDate, 'dd/MM/yyyy')}`;
             }
             return popupHtml;
         };
-        ctrl.openContactCounterpartyModal = function (seller, theLocation) {
+        ctrl.openContactCounterpartyModal = function(seller, theLocation) {
             // ctrl.OptionsContactCounterpartyModal = ctrl.sellerContactList["s" + seller.id];
             // tpl = $templateCache.get("components/sellers-dialog/views/contactCounterpartyModal.html");
             // ctrl.activeSellerForContactCounterparty = seller;
@@ -6260,23 +6291,23 @@ ctrl.setProductData = function(data, loc) {
             //     windowTopClass: "fullWidthModal",
             //     scope: $scope //passed current scope to the modal
             // });
-            ctrl.getContactListForSeller(seller, function(data){
+            ctrl.getContactListForSeller(seller, (data) => {
 	            ctrl.OptionsContactCounterpartyModal = data;
 	            tpl = $templateCache.get('components/sellers-dialog/views/contactCounterpartyModal.html');
 	            ctrl.activeSellerForContactCounterparty = seller;
 	            ctrl.activeLocationForContactCounterparty = theLocation;
 	            $scope.modalInstance = $uibModal.open({
 	                template: tpl,
-	                appendTo: angular.element(document.getElementsByClassName("page-container")),
+	                appendTo: angular.element(document.getElementsByClassName('page-container')),
 	                size: 'full',
 	                windowTopClass: 'fullWidthModal',
-	                scope: $scope //passed current scope to the modal
-	            })
-            })            
+	                scope: $scope // passed current scope to the modal
+	            });
+            });
         };
-        ctrl.confirmContactCounterpartySelection = function (selectedItem) {
+        ctrl.confirmContactCounterpartySelection = function(selectedItem) {
             if (!selectedItem) {
-                toastr.error("Please select one Contact");
+                toastr.error('Please select one Contact');
                 return false;
             }
             ctrl.updateContactForSellers(ctrl.activeSellerForContactCounterparty, selectedItem, ctrl.activeLocationForContactCounterparty);
@@ -6284,19 +6315,19 @@ ctrl.setProductData = function(data, loc) {
             ctrl.activeLocationForContactCounterparty = null;
             ctrl.prettyCloseModal();
         };
-        ctrl.prettyCloseModal = function () {
-            var modalStyles = {
-                transition: "0.3s",
-                opacity: "0",
-                transform: "translateY(-50px)"
+        ctrl.prettyCloseModal = function() {
+            let modalStyles = {
+                transition: '0.3s',
+                opacity: '0',
+                transform: 'translateY(-50px)'
             };
-            var bckStyles = {
-                opacity: "0",
-                transition: "0.3s"
+            let bckStyles = {
+                opacity: '0',
+                transition: '0.3s'
             };
-            $("[modal-render='true']").css(modalStyles);
-            $(".modal-backdrop").css(bckStyles);
-            setTimeout(function () {
+            $('[modal-render=\'true\']').css(modalStyles);
+            $('.modal-backdrop').css(bckStyles);
+            setTimeout(() => {
                 if ($scope.modalInstance) {
                     $scope.modalInstance.close();
                 }
@@ -6305,17 +6336,17 @@ ctrl.setProductData = function(data, loc) {
                 }
             }, 500);
         };
-        ctrl.sellerHasBroker = function (seller, theLocation) {
+        ctrl.sellerHasBroker = function(seller, theLocation) {
             if (!ctrl.fieldVisibility.isBrokerMandatory) {
                 return true;
             }
             hasBroker = false;
             randUniquePkg = seller.randUniquePkg;
-            $.each(ctrl.requests, function (reqK, reqV) {
-                $.each(reqV.locations, function (locK, locV) {
+            $.each(ctrl.requests, (reqK, reqV) => {
+                $.each(reqV.locations, (locK, locV) => {
                     if (theLocation.uniqueLocationIdentifier == locV.uniqueLocationIdentifier) {
-                        $.each(locV.products, function (prodK, prodV) {
-                            $.each(prodV.sellers, function (sellerK, sellerV) {
+                        $.each(locV.products, (prodK, prodV) => {
+                            $.each(prodV.sellers, (sellerK, sellerV) => {
                                 if (sellerV.randUniquePkg == randUniquePkg) {
                                     if (sellerV.offers) {
                                         if (sellerV.offers.length > 0) {
@@ -6332,17 +6363,17 @@ ctrl.setProductData = function(data, loc) {
             });
             return hasBroker;
         };
-        ctrl.sellerHasPhysicalSupplier = function (seller, theLocation) {
+        ctrl.sellerHasPhysicalSupplier = function(seller, theLocation) {
             if (!ctrl.fieldVisibility.isPhysicalSupplierMandatory) {
                 return true;
             }
             hasSupplier = false;
             randUniquePkg = seller.randUniquePkg;
-            $.each(ctrl.requests, function (reqK, reqV) {
-                $.each(reqV.locations, function (locK, locV) {
+            $.each(ctrl.requests, (reqK, reqV) => {
+                $.each(reqV.locations, (locK, locV) => {
                     if (theLocation.uniqueLocationIdentifier == locV.uniqueLocationIdentifier) {
-                        $.each(locV.products, function (prodK, prodV) {
-                            $.each(prodV.sellers, function (sellerK, sellerV) {
+                        $.each(locV.products, (prodK, prodV) => {
+                            $.each(prodV.sellers, (sellerK, sellerV) => {
                                 if (sellerV.randUniquePkg == randUniquePkg) {
                                     if (sellerV.offers) {
                                         if (sellerV.offers.length > 0) {
@@ -6359,17 +6390,17 @@ ctrl.setProductData = function(data, loc) {
             });
             return hasSupplier;
         };
-        ctrl.sellerHasContact = function (seller, theLocation) {
+        ctrl.sellerHasContact = function(seller, theLocation) {
             if (!ctrl.fieldVisibility.isSellerContactMandatory) {
                 return true;
             }
             hasContact = false;
             randUniquePkg = seller.randUniquePkg;
-            $.each(ctrl.requests, function (reqK, reqV) {
-                $.each(reqV.locations, function (locK, locV) {
+            $.each(ctrl.requests, (reqK, reqV) => {
+                $.each(reqV.locations, (locK, locV) => {
                     if (theLocation.uniqueLocationIdentifier == locV.uniqueLocationIdentifier) {
-                        $.each(locV.products, function (prodK, prodV) {
-                            $.each(prodV.sellers, function (sellerK, sellerV) {
+                        $.each(locV.products, (prodK, prodV) => {
+                            $.each(prodV.sellers, (sellerK, sellerV) => {
                                 if (sellerV.randUniquePkg == randUniquePkg) {
                                     if (sellerV.offers) {
                                         if (sellerV.offers.length > 0) {
@@ -6386,9 +6417,9 @@ ctrl.setProductData = function(data, loc) {
             });
             return hasContact;
         };
-        ctrl.openSellerInterstedModal = function (seller, theLocation) {
+        ctrl.openSellerInterstedModal = function(seller, theLocation) {
             // ctrl.OptionsContactCounterpartyModal = ctrl.sellerContactList['s'+seller.id]
-            tpl = $templateCache.get("pages/group-of-requests/views/not-interested-modal.html");
+            tpl = $templateCache.get('pages/group-of-requests/views/not-interested-modal.html');
             ctrl.notInterstedModalActiveData = {
                 seller: seller,
                 location: theLocation,
@@ -6397,19 +6428,19 @@ ctrl.setProductData = function(data, loc) {
             // ctrl.activeLocationForContactCounterparty = location;
             $scope.modalInstance = $uibModal.open({
                 template: tpl,
-                appendTo: angular.element(document.getElementsByClassName("page-container")),
-                size: "full",
-                windowTopClass: "fullWidthModal smallModal",
-                scope: $scope //passed current scope to the modal
+                appendTo: angular.element(document.getElementsByClassName('page-container')),
+                size: 'full',
+                windowTopClass: 'fullWidthModal smallModal',
+                scope: $scope // passed current scope to the modal
             });
         };
-        ctrl.saveNotInterestedModal = function () {
+        ctrl.saveNotInterestedModal = function() {
             activeRandUniquePkg = ctrl.notInterstedModalActiveData.seller.randUniquePkg;
             requestSellerIds = [];
-            $.each(ctrl.requests, function (reqK, reqV) {
-                $.each(reqV.locations, function (locK, locV) {
-                    $.each(locV.products, function (prodK, prodV) {
-                        $.each(prodV.sellers, function (selK, selV) {
+            $.each(ctrl.requests, (reqK, reqV) => {
+                $.each(reqV.locations, (locK, locV) => {
+                    $.each(locV.products, (prodK, prodV) => {
+                        $.each(prodV.sellers, (selK, selV) => {
                             if (selV.randUniquePkg == activeRandUniquePkg) {
                                 if (selV.offers.length > 0) {
                                     if (selV.id) {
@@ -6424,15 +6455,15 @@ ctrl.setProductData = function(data, loc) {
             data = {
                 Filters: [
                     {
-                        ColumnName: "RequestSellerId",
-                        Value: requestSellerIds.join(",")
+                        ColumnName: 'RequestSellerId',
+                        Value: requestSellerIds.join(',')
                     },
                     {
-                        ColumnName: "Comments",
+                        ColumnName: 'Comments',
                         Value: ctrl.notInterstedModalActiveData.seller.notInterestedComments
                     },
                     {
-                        ColumnName: "NotInterested",
+                        ColumnName: 'NotInterested',
                         Value: ctrl.notInterstedModalActiveData.sellerNotInterested
                     }
                 ]
@@ -6441,11 +6472,11 @@ ctrl.setProductData = function(data, loc) {
             //  toastr.error("Comment is mandatory");
             //  return false;
             // }
-            groupOfRequestsModel.sellerNotInterested(data).then(function (response) {
+            groupOfRequestsModel.sellerNotInterested(data).then((response) => {
                 if (response.isSuccess) {
-                    $.each(ctrl.notInterstedModalActiveData.location, function (locK, locV) {
-                        $.each(locV.products, function (prodK, prodV) {
-                            $.each(prodV.sellers, function (sellerK, sellerV) {
+                    $.each(ctrl.notInterstedModalActiveData.location, (locK, locV) => {
+                        $.each(locV.products, (prodK, prodV) => {
+                            $.each(prodV.sellers, (sellerK, sellerV) => {
                                 if (sellerV.randUniquePkg == ctrl.notInterstedModalActiveData.seller.randUniquePkg) {
                                     sellerV.isNotInterested = angular.copy(ctrl.notInterstedModalActiveData.sellerNotInterested);
                                     sellerV.notInterestedComments = ctrl.notInterstedModalActiveData.seller.notInterestedComments;
@@ -6457,19 +6488,19 @@ ctrl.setProductData = function(data, loc) {
                 }
             });
         };
-        ctrl.getIncoterm = function (request, theLocation, seller, incoterm) {
+        ctrl.getIncoterm = function(request, theLocation, seller, incoterm) {
             // incotermHasSellers = 0;
             baseIncoterm = {
                 hasSellerOffer: 0,
                 incoterm: null
             };
-            $.each(ctrl.requests, function (k, v) {
+            $.each(ctrl.requests, (k, v) => {
                 if (v.id == request) {
-                    $.each(v.locations, function (kl, vl) {
+                    $.each(v.locations, (kl, vl) => {
                         if (vl.uniqueLocationIdentifier == theLocation[0].uniqueLocationIdentifier) {
-                            $.each(vl.products, function (pk, pv) {
+                            $.each(vl.products, (pk, pv) => {
                                 if (pv.sellers.length > 0) {
-                                    $.each(pv.sellers, function (sk, sv) {
+                                    $.each(pv.sellers, (sk, sv) => {
                                         if (sv.randUniquePkg == seller.randUniquePkg) {
                                             if (sv.defaultIncoterm) {
                                                 baseIncoterm.defaultIncoterm = sv.defaultIncoterm;
@@ -6481,7 +6512,7 @@ ctrl.setProductData = function(data, loc) {
                                                     if (sv.offers.length > 0) {
                                                         baseIncoterm.incoterm = sv.offers[0].incoterm;
                                                         if (incoterm) {
-                                                            $.each(sv.offers, function (ok, ov) {
+                                                            $.each(sv.offers, (ok, ov) => {
                                                                 ov.incoterm = incoterm;
                                                             });
                                                         }
@@ -6502,14 +6533,14 @@ ctrl.setProductData = function(data, loc) {
             }
             return baseIncoterm;
         };
-        ctrl.updateIncoterm = function (incoterm, theLocation, seller, request) {
+        ctrl.updateIncoterm = function(incoterm, theLocation, seller, request) {
             // requestOfferIds = ctrl.returnLocationReqOffIds(location, seller.randUniquePkg);
             requestOfferIds = [];
-            $.each(ctrl.requests, function (reqK, reqV) {
+            $.each(ctrl.requests, (reqK, reqV) => {
                 if (reqV.id == request) {
-                    $.each(reqV.locations, function (locK, locV) {
-                        $.each(locV.products, function (prodK, prodV) {
-                            $.each(prodV.sellers, function (sellerK, sellerV) {
+                    $.each(reqV.locations, (locK, locV) => {
+                        $.each(locV.products, (prodK, prodV) => {
+                            $.each(prodV.sellers, (sellerK, sellerV) => {
                                 if (sellerV.randUniquePkg == seller.randUniquePkg) {
                                     if (sellerV.offers) {
                                         if (sellerV.offers[0].id) {
@@ -6526,8 +6557,8 @@ ctrl.setProductData = function(data, loc) {
                 RequestOfferIds: requestOfferIds,
                 IncotermId: incoterm.id
             };
-            if (typeof data.RequestOfferIds[0] != "undefined") {
-                groupOfRequestsModel.updateIncoterm(data).then(function (response) {
+            if (typeof data.RequestOfferIds[0] != 'undefined') {
+                groupOfRequestsModel.updateIncoterm(data).then((response) => {
                     if (response.isSuccess) {
                         ctrl.getIncoterm(request, theLocation, seller, incoterm);
                     }
@@ -6551,30 +6582,30 @@ ctrl.setProductData = function(data, loc) {
         //     return colspan;
         // };
 
-        ctrl.calculateFirsRowColSpan = function () {
+        ctrl.calculateFirsRowColSpan = function() {
             colspan = 7;
-            if(ctrl.allExpanded){
+            if(ctrl.allExpanded) {
                 colspan = 18;
-                if(ctrl.counterpartyCommentsVisibility !== 1){
+                if(ctrl.counterpartyCommentsVisibility !== 1) {
                     colspan = colspan - 1;
                 }
-                if(ctrl.sellerHistoryVisibility !== 1){
+                if(ctrl.sellerHistoryVisibility !== 1) {
                     colspan = colspan - 10;
                 }
-            } 
+            }
             return colspan;
         };
 
-        ctrl.checkIfGroupHasRFQ = function () {
+        ctrl.checkIfGroupHasRFQ = function() {
             groupHasRFQ = false;
-            $.each(ctrl.requests, function (reqK, reqV) {
-                $.each(reqV.locations, function (locK, locV) {
-                    $.each(locV.products, function (prodK, prodV) {
-                        $.each(prodV.sellers, function (selK, selV) {
+            $.each(ctrl.requests, (reqK, reqV) => {
+                $.each(reqV.locations, (locK, locV) => {
+                    $.each(locV.products, (prodK, prodV) => {
+                        $.each(prodV.sellers, (selK, selV) => {
                             if (selV.offers) {
                                 if (selV.offers.length > 0) {
-                                    $.each(selV.offers, function (ofK, ofV) {
-                                        if (ofV.id) { 
+                                    $.each(selV.offers, (ofK, ofV) => {
+                                        if (ofV.id) {
                                             groupHasRFQ = true;
                                         }
                                     });
@@ -6587,39 +6618,38 @@ ctrl.setProductData = function(data, loc) {
             return groupHasRFQ;
         };
 
-        ctrl.checkIfSellerHasRFQ = function (sellerRandUnique, theLocation) {
-            
+        ctrl.checkIfSellerHasRFQ = function(sellerRandUnique, theLocation) {
             availableProductsPerLocation = 0;
             if (theLocation.length > 0) {
                 uniqueLocationIdentifier = theLocation[0].uniqueLocationIdentifier;
             } else {
                 uniqueLocationIdentifier = theLocation.uniqueLocationIdentifier;
             }
-            $.each(ctrl.requests, function (reqK, reqV) {
-                $.each(reqV.locations, function (locK, locV) {
+            $.each(ctrl.requests, (reqK, reqV) => {
+                $.each(reqV.locations, (locK, locV) => {
                     if (locV.uniqueLocationIdentifier == uniqueLocationIdentifier) {
-                        availableProductsPerLocation += locV.products.length;
+                        availableProductsPerLocation = availableProductsPerLocation + locV.products.length;
                     }
                 });
             });
             totalOffersRFQsNo = 0;
             totalSkipped = 0;
-            $.each(ctrl.requests, function (reqK, reqV) {
-                $.each(reqV.locations, function (locK, locV) {
+            $.each(ctrl.requests, (reqK, reqV) => {
+                $.each(reqV.locations, (locK, locV) => {
                 	if (locV.uniqueLocationIdentifier == uniqueLocationIdentifier) {
-	                    $.each(locV.products, function (prodK, prodV) {
-	                        $.each(prodV.sellers, function (selK, selV) {
+	                    $.each(locV.products, (prodK, prodV) => {
+	                        $.each(prodV.sellers, (selK, selV) => {
 	                            if (selV.randUniquePkg == sellerRandUnique) {
 	                                if (selV.offers) {
 	                                    if (selV.offers.length > 0) {
-	                                        $.each(selV.offers, function (ofK, ofV) {
+	                                        $.each(selV.offers, (ofK, ofV) => {
 	                                            if (ofV.id) {
 		                                            if (ofV.rfq) {
-		                                                totalOffersRFQsNo += 1;
+		                                                totalOffersRFQsNo = totalOffersRFQsNo + 1;
 		                                            }
 		                                            if (!ofV.rfq) {
-		                                                totalSkipped += 1;
-		                                            }		                                            
+		                                                totalSkipped = totalSkipped + 1;
+		                                            }
 	                                            }
 	                                        });
 	                                    }
@@ -6630,16 +6660,16 @@ ctrl.setProductData = function(data, loc) {
                 	}
                 });
             });
-            
-            if (sellerRandUnique.indexOf("-individual-") == -1) {
-                return "font-green-jungle";
+
+            if (sellerRandUnique.indexOf('-individual-') == -1) {
+                return 'font-green-jungle';
             } // because is package
-            
+
             if (totalOffersRFQsNo && !totalSkipped) {
-                return "font-green-jungle";
+                return 'font-green-jungle';
             }
             if (totalSkipped) {
-                return "font-grey-salsa";
+                return 'font-grey-salsa';
             }
             if (!totalOffersRFQsNo && !totalSkipped) {
             	return false;
@@ -6648,7 +6678,7 @@ ctrl.setProductData = function(data, loc) {
             // if (totalOffersRFQsNo == 0) {
             //     return false;
             // }
-         
+
             // if (totalOffersRFQsNo == availableProductsPerLocation) {
             //     return "font-green-jungle";
             // }
@@ -6661,59 +6691,59 @@ ctrl.setProductData = function(data, loc) {
             return false;
         };
 
-        ctrl.shouldDisplayCounterpartyTypeFilter = function (counterpartyTypeId) {
+        ctrl.shouldDisplayCounterpartyTypeFilter = function(counterpartyTypeId) {
             if (!ctrl.counterpartyTypeFilters) {
                 return false;
             }
             shouldDisplay = false;
-            $.each(ctrl.counterpartyTypeFilters, function (k, v) {
+            $.each(ctrl.counterpartyTypeFilters, (k, v) => {
                 if (counterpartyTypeId == v.id) {
                     shouldDisplay = true;
                 }
             });
             if (shouldDisplay && counterpartyTypeId == 1) {
-                if (typeof ctrl.sellerTypeCheckboxes.Supplier == "undefined") {
+                if (typeof ctrl.sellerTypeCheckboxes.Supplier == 'undefined') {
                     ctrl.sellerTypeCheckboxes.Supplier = true;
                 }
             }
             if (shouldDisplay && counterpartyTypeId == 2) {
-                if (typeof ctrl.sellerTypeCheckboxes.Seller == "undefined") {
+                if (typeof ctrl.sellerTypeCheckboxes.Seller == 'undefined') {
                     ctrl.sellerTypeCheckboxes.Seller = true;
                 }
             }
             if (shouldDisplay && counterpartyTypeId == 3) {
-                if (typeof ctrl.sellerTypeCheckboxes.Broker == "undefined") {
+                if (typeof ctrl.sellerTypeCheckboxes.Broker == 'undefined') {
                     ctrl.sellerTypeCheckboxes.Broker = true;
                 }
             }
             if (shouldDisplay && counterpartyTypeId == 11) {
-                if (typeof ctrl.sellerTypeCheckboxes["Sludge"] == "undefined") {
-                    ctrl.sellerTypeCheckboxes["Sludge"] = true;
+                if (typeof ctrl.sellerTypeCheckboxes.Sludge == 'undefined') {
+                    ctrl.sellerTypeCheckboxes.Sludge = true;
                 }
             }
             return shouldDisplay;
         };
-        ctrl.checkedSellerTypesSelected = function () {
-            if (!ctrl.sellerTypeCheckboxes.Supplier && !ctrl.sellerTypeCheckboxes.Seller && !ctrl.sellerTypeCheckboxes.Broker && !ctrl.sellerTypeCheckboxes["Sludge"]) {
+        ctrl.checkedSellerTypesSelected = function() {
+            if (!ctrl.sellerTypeCheckboxes.Supplier && !ctrl.sellerTypeCheckboxes.Seller && !ctrl.sellerTypeCheckboxes.Broker && !ctrl.sellerTypeCheckboxes.Sludge) {
                 return false;
             }
             return true;
         };
-        ctrl.selectAllCounterpartyTypeFilters = function (value) {
+        ctrl.selectAllCounterpartyTypeFilters = function(value) {
             if (value) {
                 ctrl.sellerTypeCheckboxes.Supplier = true;
                 ctrl.sellerTypeCheckboxes.Seller = true;
                 ctrl.sellerTypeCheckboxes.Broker = true;
-                ctrl.sellerTypeCheckboxes["Sludge"] = true;
+                ctrl.sellerTypeCheckboxes.Sludge = true;
             } else {
                 ctrl.sellerTypeCheckboxes.Supplier = false;
                 ctrl.sellerTypeCheckboxes.Seller = false;
                 ctrl.sellerTypeCheckboxes.Broker = false;
-                ctrl.sellerTypeCheckboxes["Sludge"] = false;
+                ctrl.sellerTypeCheckboxes.Sludge = false;
             }
             ctrl.changeSellerTypes();
         };
-        ctrl.checkIfIsPrefferedProductForSeller = function (productId, seller) {
+        ctrl.checkIfIsPrefferedProductForSeller = function(productId, seller) {
             if (!seller.preferredProductsIds) {
                 return false;
             }
@@ -6739,8 +6769,8 @@ ctrl.setProductData = function(data, loc) {
             // })
             // return isPrefferedProduct;
         };
-        ctrl.setDefaultNoOfSellers = function () {
-            $.each(ctrl.listsCache.ItemsToDisplay, function (key, val) {
+        ctrl.setDefaultNoOfSellers = function() {
+            $.each(ctrl.listsCache.ItemsToDisplay, (key, val) => {
                 // debugger;
 
                 if (val.name == ctrl.noOfCounterpartiesToDisplay) {
@@ -6748,79 +6778,79 @@ ctrl.setProductData = function(data, loc) {
                 }
             });
         };
-        $rootScope.$on("sendEmailRFQ", function (e, data) {
+        $rootScope.$on('sendEmailRFQ', (e, data) => {
         	if (!$rootScope.onSendEmailRFQDoneGOR) {
 	        	ctrl.confirmedBladeNavigation = true;
 		        	$rootScope.onSendEmailRFQDoneGOR = true;
 		        	ctrl.requirements = data;
 		            ctrl.sendRFQ(true);
         	}
-        	setTimeout(function(){
-				$rootScope.onSendEmailRFQDoneGOR = false;
-        	},2000)
+        	setTimeout(() => {
+                $rootScope.onSendEmailRFQDoneGOR = false;
+        	}, 2000);
         });
 
 
-        $rootScope.$on("reloadGroupPreviewRFQ", function (e, data) {
+        $rootScope.$on('reloadGroupPreviewRFQ', (e, data) => {
         	ctrl.refreshedRFQEmailBlade = false;
-        	setTimeout(function () { 
+        	setTimeout(() => {
         		ctrl.refreshedRFQEmailBlade = true;
         		$scope.$apply();
-        	}, 10); 
+        	}, 10);
         });
 
-        ctrl.stripDecimals = function (value) {
+        ctrl.stripDecimals = function(value) {
             return Math.round(value);
         };
 
-		ctrl.goToNextPriceInput = function(event) {
-			ctrl.nextPriceInput = null; 
-			allPriceIndexes = [];
-			$.each($('input.productOfferPrice'), function(){
-				if ($(this).is(':enabled')) {
-					allPriceIndexes.push($(this).attr('productPriceIndexNo'));
-				}
-			})
-			currentPriceIndex = $(event.currentTarget).attr('productPriceIndexNo');
-			currentPriceIndexInArray = allPriceIndexes.indexOf(currentPriceIndex);
-			if (currentPriceIndexInArray == allPriceIndexes.length-1) {
-				nextItemIndex = allPriceIndexes[0]
-			} else {
-				nextItemIndex = allPriceIndexes[currentPriceIndexInArray+1]
-			}
-			if (event.keyCode == 9) {
-				ctrl.nextPriceInput = nextItemIndex;
-			}
+        ctrl.goToNextPriceInput = function(event) {
+            ctrl.nextPriceInput = null;
+            allPriceIndexes = [];
+            $.each($('input.productOfferPrice'), function() {
+                if ($(this).is(':enabled')) {
+                    allPriceIndexes.push($(this).attr('productPriceIndexNo'));
+                }
+            });
+            currentPriceIndex = $(event.currentTarget).attr('productPriceIndexNo');
+            currentPriceIndexInArray = allPriceIndexes.indexOf(currentPriceIndex);
+            if (currentPriceIndexInArray == allPriceIndexes.length - 1) {
+                nextItemIndex = allPriceIndexes[0];
+            } else {
+                nextItemIndex = allPriceIndexes[currentPriceIndexInArray + 1];
+            }
+            if (event.keyCode == 9) {
+                ctrl.nextPriceInput = nextItemIndex;
+            }
             if (ctrl.nextPriceInput) {
-            	setTimeout(function(){
-                	$('[productPriceIndexNo='+ctrl.nextPriceInput+']').click();
-                	$('[productPriceIndexNo='+ctrl.nextPriceInput+']').focus();
-            	},100)
-            } 			
-		}
+            	setTimeout(() => {
+                	$(`[productPriceIndexNo=${ctrl.nextPriceInput}]`).click();
+                	$(`[productPriceIndexNo=${ctrl.nextPriceInput}]`).focus();
+            	}, 100);
+            }
+        };
 
-        $scope.$on("dataListModal", function (e, a) {
+        $scope.$on('dataListModal', (e, a) => {
             // on-request-select="ctrl.selectRequest(request)"
-            if (typeof a.elem != "undefined") {
-                if (typeof a.val != "undefined") {
-                    if (a.elem[a.elem.length - 1] == "request") {
-                    	selectedReqeustsLists = []
-                    	$.each(a.val, function(key, data){
+            if (typeof a.elem != 'undefined') {
+                if (typeof a.val != 'undefined') {
+                    if (a.elem[a.elem.length - 1] == 'request') {
+                    	selectedReqeustsLists = [];
+                    	$.each(a.val, (key, data) => {
 	                    	selectedReqeustsLists.push(data);
-                    	})
+                    	});
                         ctrl.selectRequest(selectedReqeustsLists);
                     }
-                    if (a.elem[a.elem.length - 1] == "seller") {
+                    if (a.elem[a.elem.length - 1] == 'seller') {
                         ctrl.addSellerToAllLocations(a.val.id, ctrl.locations);
                         // ctrl.onSupplierSelect(a.val.id);
                     }
-                    if (a.elem[a.elem.length - 1].indexOf("counterparty") >= 0) {
+                    if (a.elem[a.elem.length - 1].indexOf('counterparty') >= 0) {
                         ctrl.addSellerToLocations(a.val.id, ctrl.newSellerLocation);
                     }
-                    if (a.elem[a.elem.length - 1] == "physical_supplier") {
+                    if (a.elem[a.elem.length - 1] == 'physical_supplier') {
                         var locationSellers = ctrl.getSortedLocationSellers(ctrl.physicalSupplierUpdate.location);
                         var seller = locationSellers[ctrl.physicalSupplierUpdate.sellerKey];
-                        if (typeof seller.offers[0] == "undefined") {
+                        if (typeof seller.offers[0] == 'undefined') {
                             seller.offers[0] = {
                                 physicalSupplierCounterparty: a.val
                             };
@@ -6830,10 +6860,10 @@ ctrl.setProductData = function(data, loc) {
 
                         ctrl.updatePhysicalSupplierForSellers(seller, seller.offers[0].physicalSupplierCounterparty, ctrl.physicalSupplierUpdate.location);
                     }
-                    if (a.elem[a.elem.length - 1] == "broker") {
+                    if (a.elem[a.elem.length - 1] == 'broker') {
                         var locationSellers = ctrl.getSortedLocationSellers(ctrl.brokerUpdate.location);
                         var seller = locationSellers[ctrl.brokerUpdate.sellerKey];
-                        if (typeof seller.offers[0] == "undefined") {
+                        if (typeof seller.offers[0] == 'undefined') {
                             seller.offers[0] = {
                                 brokerCounterparty: a.val
                             };
@@ -6847,18 +6877,17 @@ ctrl.setProductData = function(data, loc) {
             }
         });
 
-        ctrl.setPageTitle = function(){
-
-            var vesselArr = [];
-            var vesselList = "";
-            $.each(ctrl.requests, function(key,val){
-                if(vesselArr.indexOf(val.vesselDetails.vessel.name) <= 0){
+        ctrl.setPageTitle = function() {
+            let vesselArr = [];
+            let vesselList = '';
+            $.each(ctrl.requests, (key, val) => {
+                if(vesselArr.indexOf(val.vesselDetails.vessel.name) <= 0) {
                     vesselArr.push(val.vesselDetails.vessel.name);
-                    vesselList += val.vesselDetails.vessel.name + ", ";
+                    vesselList = `${vesselList }${val.vesselDetails.vessel.name }, `;
                 }
             });
-            vesselList = vesselList.slice(0,-2);
-            var title = "";
+            vesselList = vesselList.slice(0, -2);
+            let title = '';
 
             if ($state.params.title) {
                 title = $state.params.title;
@@ -6866,88 +6895,88 @@ ctrl.setProductData = function(data, loc) {
                 title = $state.params.path[$state.params.path.length - 1].label;
             }
 
-            if(vesselArr.length == 1){
-                title = title + " - ";
+            if(vesselArr.length == 1) {
+                title = `${title } - `;
             }else{
-                title = title + " - ";
+                title = `${title } - `;
             }
-            title = title +  vesselList;
+            title = title + vesselList;
             $rootScope.$broadcast('$changePageTitle', {
                 title: title
-            })
+            });
             // $rootScope.$emit('$changePageTitle', {
             //     title: title
             // })
-        }
+        };
 
-		ctrl.gorTableRendered = function(rowIdx,theLocation) {
-			locationsLength = 0
-			$.each($filter('groupBy')(ctrl.locations, 'uniqueLocationIdentifier'), function(k,v){
-				if (k) {
-					locationsLength += 1
-				}
-			})
-			console.log("hide loader from gorTableRendered", rowIdx, locationsLength)
-			if (rowIdx+1 == locationsLength) {
-			}
-		}
+        ctrl.gorTableRendered = function(rowIdx, theLocation) {
+            locationsLength = 0;
+            $.each($filter('groupBy')(ctrl.locations, 'uniqueLocationIdentifier'), (k, v) => {
+                if (k) {
+                    locationsLength = locationsLength + 1;
+                }
+            });
+            console.log('hide loader from gorTableRendered', rowIdx, locationsLength);
+            if (rowIdx + 1 == locationsLength) {
+            }
+        };
 
-		ctrl.confirmNavigateBlade = function() {
-			console.log(ctrl.changeBladeWidgetFunction); 
-			ctrl.confirmedBladeNavigation = true;
-			eval(eval(ctrl.changeBladeWidgetFunction.function).apply(null, ctrl.changeBladeWidgetFunction.params) )
-		}
+        ctrl.confirmNavigateBlade = function() {
+            console.log(ctrl.changeBladeWidgetFunction);
+            ctrl.confirmedBladeNavigation = true;
+            eval(eval(ctrl.changeBladeWidgetFunction.function).apply(null, ctrl.changeBladeWidgetFunction.params));
+        };
 
-		$rootScope.$on("counterpartyBladeClosed", function(e,d){
-			if (d) {
-				ctrl.prefferedSellerCheckbox = true;
-				ctrl.requirements = []
-				ctrl.requirementRequestProductIds = []
-				ctrl.groupedSellersByLocation = null;
-				ctrl.bladeOpened = false;
-				ctrl.confirmedBladeNavigation = true;
-				$scope.$apply();
-				ctrl.recompileDefaultSellerChecks();
-				// setTimeout(function(){
-				// 	ctrl.prefferedSellerCheckbox = false;
-				// 	$scope.$apply();
-				// },500)
-			}
-		});
+        $rootScope.$on('counterpartyBladeClosed', (e, d) => {
+            if (d) {
+                ctrl.prefferedSellerCheckbox = true;
+                ctrl.requirements = [];
+                ctrl.requirementRequestProductIds = [];
+                ctrl.groupedSellersByLocation = null;
+                ctrl.bladeOpened = false;
+                ctrl.confirmedBladeNavigation = true;
+                $scope.$apply();
+                ctrl.recompileDefaultSellerChecks();
+                // setTimeout(function(){
+                // 	ctrl.prefferedSellerCheckbox = false;
+                // 	$scope.$apply();
+                // },500)
+            }
+        });
 
         ctrl.sendRequote = function() {
             if (!ctrl.requirements || ctrl.requirements.length <= 0) {
-                toastr.error("You cannot Requote, as No RFQ is associated with Sellers Offer.");
+                toastr.error('You cannot Requote, as No RFQ is associated with Sellers Offer.');
                 return;
             }
-            var rfq_data = {
-                "Requirements": ctrl.requirements,
-                "QuoteByDate": ctrl.quoteByDate,
-                "QuoteByCurrencyId": ctrl.quoteByCurrency.id,
-                "QuoteByTimeZoneId": ctrl.quoteByTimezone.id,
-                "Comments": ctrl.internalComments
+            let rfq_data = {
+                Requirements: ctrl.requirements,
+                QuoteByDate: ctrl.quoteByDate,
+                QuoteByCurrencyId: ctrl.quoteByCurrency.id,
+                QuoteByTimeZoneId: ctrl.quoteByTimezone.id,
+                Comments: ctrl.internalComments
             };
 
-            groupOfRequestsModel.requoteRFQ(rfq_data).then(function(response) {
-				ctrl.requirements = [];
+            groupOfRequestsModel.requoteRFQ(rfq_data).then((response) => {
+                ctrl.requirements = [];
             });
         };
 
         ctrl.checkIfCanSendNoQuote = function() {
-			hasNoQuotableSelected = false;
-			hasQuotableSelected = false;
-			if (ctrl.requirements.length > 0) {
-				hasQuotableSelected = true;
-			}
+            hasNoQuotableSelected = false;
+            hasQuotableSelected = false;
+            if (ctrl.requirements.length > 0) {
+                hasQuotableSelected = true;
+            }
         	selectedNoQuotableItems = [];
         	if (ctrl.selectedNoQuoteItems) {
-				Object.keys(ctrl.selectedNoQuoteItems).forEach(function (key) {
+                Object.keys(ctrl.selectedNoQuoteItems).forEach((key) => {
 				    if (ctrl.selectedNoQuoteItems[key]) {
-				    	selectedNoQuotableItems.push(key.split('nq')[1])
-						hasNoQuotableSelected = true; 		
+				    	selectedNoQuotableItems.push(key.split('nq')[1]);
+                        hasNoQuotableSelected = true;
 				    }
 				    return;
-				});        	
+                });
         	}
         	// $.each(ctrl.selectedNoQuoteItems, function(nqKey, nqVal){
         	// 	if (nqVal) {
@@ -6960,95 +6989,101 @@ ctrl.setProductData = function(data, loc) {
         		return false;
         	}
 
-        	if (hasNoQuotableSelected) {ctrl.sendNoQuoteButtonText = 'Enable Quote';}
-        	if (hasQuotableSelected) {ctrl.sendNoQuoteButtonText = 'No Quote';}
-        	if (!hasNoQuotableSelected && !hasQuotableSelected) {ctrl.sendNoQuoteButtonText = null;}
-        	selectedQuotableItems = []
-        	$.each(ctrl.requirements, function(reqKey, reqVal){
+        	if (hasNoQuotableSelected) {
+                ctrl.sendNoQuoteButtonText = 'Enable Quote';
+            }
+        	if (hasQuotableSelected) {
+                ctrl.sendNoQuoteButtonText = 'No Quote';
+            }
+        	if (!hasNoQuotableSelected && !hasQuotableSelected) {
+                ctrl.sendNoQuoteButtonText = null;
+            }
+        	selectedQuotableItems = [];
+        	$.each(ctrl.requirements, (reqKey, reqVal) => {
 	        	selectedQuotableItems.push(reqVal.requestOfferId);
 	        	if (!reqVal.requestOfferId) {
 	        		ctrl.sendNoQuoteButtonText = null;
 	        	}
         	});
         	if (hasNoQuotableSelected) {
-        		noQuoteBool = false
-        		requestOfferIds = selectedNoQuotableItems
+        		noQuoteBool = false;
+        		requestOfferIds = selectedNoQuotableItems;
         	} else {
-        		noQuoteBool = true
-        		requestOfferIds = selectedQuotableItems
+        		noQuoteBool = true;
+        		requestOfferIds = selectedQuotableItems;
         	}
         	 payload = {
-        	 	"Payload" : {
-        	 		"RequestOfferIds" : requestOfferIds,
-        	 		"NoQuote" : noQuoteBool
+        	 	Payload : {
+        	 		RequestOfferIds : requestOfferIds,
+        	 		NoQuote : noQuoteBool
         	 	}
-        	 }
+        	 };
         	 ctrl.sendNoQuotePayload = payload;
-        }
-        ctrl.sendNoQuote = function(){
-        	/**************
+        };
+        ctrl.sendNoQuote = function() {
+        	/** ************
         	RLS is request -location-seller unique combination
         	 ****************/
 
-        	var validationDataAt_RLS_level = [];
+        	let validationDataAt_RLS_level = [];
 
         	console.log(ctrl.requirements);
 
         	sellerSupplierLocationsOfRequirements = [];
-        	$.each(ctrl.requirements, function(rk,rv){
-        		sslCombined = rv.RequestId +"-"+ rv.SellerId + "-" + rv.PhysicalSupplierCounterpartyId + "-" + rv.RequestLocationId;
-				sellerSupplierLocationsOfRequirements.push(sslCombined);
-        	})
+        	$.each(ctrl.requirements, (rk, rv) => {
+        		sslCombined = `${rv.RequestId }-${ rv.SellerId }-${ rv.PhysicalSupplierCounterpartyId }-${ rv.RequestLocationId}`;
+                sellerSupplierLocationsOfRequirements.push(sslCombined);
+        	});
 
-            $.each(ctrl.requests, function (reqK, reqV) {
+            $.each(ctrl.requests, (reqK, reqV) => {
             	currentRequest = reqV;
-                $.each(reqV.locations, function (locK, locV) {
+                $.each(reqV.locations, (locK, locV) => {
 	            	currentLocation = locV;
-                    $.each(locV.products, function (prodK, prodV) {
-                        $.each(prodV.sellers, function (selK, selV) {
+                    $.each(locV.products, (prodK, prodV) => {
+                        $.each(prodV.sellers, (selK, selV) => {
 			            	currentSeller = selV;
-                            $.each(selV.offers, function (ofK, ofV) {
+                            $.each(selV.offers, (ofK, ofV) => {
                                 if (ofV.id) {
                                 	currentPhysicalSupplierId = null;
                                 	if (ofV.physicalSupplierCounterparty) {
 	                                	currentPhysicalSupplierId = ofV.physicalSupplierCounterparty.id;
                                 	}
-			            			currentRSSL = currentRequest.id +"-"+ currentSeller.sellerCounterparty.id + "-" + currentPhysicalSupplierId + "-" + currentLocation.id
-                        			if (typeof(validationDataAt_RLS_level[currentRSSL]) == "undefined") {
+			            			currentRSSL = `${currentRequest.id }-${ currentSeller.sellerCounterparty.id }-${ currentPhysicalSupplierId }-${ currentLocation.id}`;
+                        			if (typeof validationDataAt_RLS_level[currentRSSL] == 'undefined') {
                         				validationDataAt_RLS_level[currentRSSL] = {
 								        	allWouldBeNoQuote : false,
 								    		totalNoQuoteItems : 0,
 								    		totalOffers : 0,
 								    		hasAdditionalCostsAll : false,
 								    		selectedItemsFromThis_RLS : 0,
-								    		RLScombinationString : "request: " + currentRequest.id + ", location: " + currentLocation.location.name + " seller: " + currentSeller.sellerCounterparty.name,
-								    		hasAdditionalCostsForProduct : false,                                					
-                        				}
+								    		RLScombinationString : `request: ${ currentRequest.id }, location: ${ currentLocation.location.name } seller: ${ currentSeller.sellerCounterparty.name}`,
+								    		hasAdditionalCostsForProduct : false,
+                        				};
                         			}
-                                	if (ctrl.sendNoQuotePayload.Payload.RequestOfferIds.indexOf(ofV.id.toString()) != -1 || 
+                                	if (ctrl.sendNoQuotePayload.Payload.RequestOfferIds.indexOf(ofV.id.toString()) != -1 ||
                                 		ctrl.sendNoQuotePayload.Payload.RequestOfferIds.indexOf(ofV.id) != -1) {
 								    		validationDataAt_RLS_level[currentRSSL].selectedItemsFromThis_RLS++;
 
-							            	$.each(currentRequest.offers, function(ok,ov){
+							            	$.each(currentRequest.offers, (ok, ov) => {
 							            		currentOffer = ov;
-							            		currentOfferRSSL = currentOffer.requestId + "-" + currentOffer.sellerCounterpartyId + "-" +  currentOffer.physicalSupplierCounterpartyId + "-" + currentOffer.requestLocationId;
+							            		currentOfferRSSL = `${currentOffer.requestId }-${ currentOffer.sellerCounterpartyId }-${ currentOffer.physicalSupplierCounterpartyId }-${ currentOffer.requestLocationId}`;
 							            		if (sellerSupplierLocationsOfRequirements.indexOf(currentOfferRSSL) != -1) {
-								            		$.each(ov.additionalCosts, function(ack,acv){
+								            		$.each(ov.additionalCosts, (ack, acv) => {
 								            			if (!acv.isDeleted) {
 												    		validationDataAt_RLS_level[currentRSSL].hasAdditionalCostsAll = true;
 								            			}
-								            		})
+								            		});
 							            		}
-							            	})
-	            		            		$.each(ofV.additionalCosts, function(ack,acv){
+							            	});
+	            		            		$.each(ofV.additionalCosts, (ack, acv) => {
 						            			if (!acv.isDeleted) {
 										    		validationDataAt_RLS_level[currentRSSL].hasAdditionalCostsForProduct = true;
 						            			}
-						            		})
+						            		});
                                 	}
 						    		validationDataAt_RLS_level[currentRSSL].totalOffers++;
                                 	if (ofV.hasNoQuote == true) {
-						        		validationDataAt_RLS_level[currentRSSL].totalNoQuoteItems++
+						        		validationDataAt_RLS_level[currentRSSL].totalNoQuoteItems++;
                                 	}
                                 }
                             });
@@ -7058,94 +7093,94 @@ ctrl.setProductData = function(data, loc) {
             });
 
 
-			allWouldBeNoQuoteError = false;
-        	Object.keys(validationDataAt_RLS_level).forEach(function(key) {
+            allWouldBeNoQuoteError = false;
+        	Object.keys(validationDataAt_RLS_level).forEach((key) => {
         		value = validationDataAt_RLS_level[key];
-	            if ( (ctrl.sendNoQuotePayload.Payload.NoQuote == true && 
-	            	((value.totalNoQuoteItems + value.selectedItemsFromThis_RLS) >= value.totalOffers && (value.hasAdditionalCostsForProduct || value.hasAdditionalCostsAll) ) 
-	            		            	|| (value.hasAdditionalCostsForProduct)) ) {
-		            	errorMessage = "For " + value.RLScombinationString + " are additional costs applied for selected items. Please remove them before sending No Quote";
-						toastr.error(errorMessage);
-						console.log(errorMessage);
-						allWouldBeNoQuoteError = true;
-	            }        		
-			});
+	            if (ctrl.sendNoQuotePayload.Payload.NoQuote == true &&
+	            	(value.totalNoQuoteItems + value.selectedItemsFromThis_RLS >= value.totalOffers && (value.hasAdditionalCostsForProduct || value.hasAdditionalCostsAll)) ||
+	            		            	value.hasAdditionalCostsForProduct) {
+		            	errorMessage = `For ${ value.RLScombinationString } are additional costs applied for selected items. Please remove them before sending No Quote`;
+                    toastr.error(errorMessage);
+                    console.log(errorMessage);
+                    allWouldBeNoQuoteError = true;
+	            }
+            });
 
         	if (allWouldBeNoQuoteError) {
 	            return;
         	}
-            groupOfRequestsModel.switchHasNoQuote(ctrl.sendNoQuotePayload).then(function(response) {
+            groupOfRequestsModel.switchHasNoQuote(ctrl.sendNoQuotePayload).then((response) => {
                 ctrl.initScreenAfterSendOrSkipRfq();
-	            groupOfRequestsModel.getBestTco(requestGroupProductIds, ctrl.groupId).then(function (data) {
+	            groupOfRequestsModel.getBestTco(requestGroupProductIds, ctrl.groupId).then((data) => {
 	                ctrl.bestTcoData = data.payload;
 	                ctrl.bestTcoData = $scope.modelBestTCODataForTemplating(ctrl.bestTcoData);
                     ctrl.mySelection = data.payload.mySelection.quotations;
 	                ctrl.mySelectionSurveyorCost = data.payload.mySelection.averageSurveyorCost;
 	            });
-            });        	
-        }
+            });
+        };
 
         ctrl.calculateProductColumnWidth = function() {
-       //  	numberOfRequests = 0;
-       //  	numberOfProducts = 0;
-       //  	productLocations = [];
-       //  	$.each(ctrl.requests, function (reqK, reqV) {
-       //  		numberOfRequests += 1;
-       //          $.each(reqV.locations, function (locK, locV) {
-       //              $.each(locV.products, function (prodK, prodV) {
-       //              	if (prodV.productLocations) {
+            //  	numberOfRequests = 0;
+            //  	numberOfProducts = 0;
+            //  	productLocations = [];
+            //  	$.each(ctrl.requests, function (reqK, reqV) {
+            //  		numberOfRequests += 1;
+            //          $.each(reqV.locations, function (locK, locV) {
+            //              $.each(locV.products, function (prodK, prodV) {
+            //              	if (prodV.productLocations) {
 	      //               	Object.keys(prodV.productLocations).forEach(function(key) {
-							// 	productLocations.push(key)
-							// });
-       //              	}
+            // 	productLocations.push(key)
+            // });
+            //              	}
 		     //    		numberOfProducts += 1;
-       //              })
-       //          })
-       //      })
-       //      width = null;
-       //      if (numberOfRequests == 1 && numberOfProducts < 5) {
-       //      }
+            //              })
+            //          })
+            //      })
+            //      width = null;
+            //      if (numberOfRequests == 1 && numberOfProducts < 5) {
+            //      }
 
-        	width = 100 / ($(".negotiationProductTh").length / $(".negotiationLocationRowGroup").length)  + "%";
-            return width
-        }
+        	width = `${100 / ($('.negotiationProductTh').length / $('.negotiationLocationRowGroup').length) }%`;
+            return width;
+        };
 
-        ctrl.trustAsHtml = function(html){
+        ctrl.trustAsHtml = function(html) {
         	return $sce.trustAsHtml(html);
-        }
+        };
 
         ctrl.groupLocationsByUniqueLocationIdentifier = function() {
         	ctrl.locationsGroupedByULI = $filter('groupBy')(ctrl.locations, 'uniqueLocationIdentifier');
-        	if (typeof(ctrl.recompileDefaultSellerChecks) == 'function') {
+        	if (typeof ctrl.recompileDefaultSellerChecks == 'function') {
 	        	ctrl.recompileDefaultSellerChecks();
         	}
-        }
+        };
 
 
-		$scope.$watch('ctrl.requests', function(newValue, oldValue) {
-		});
-		$scope.$watch('ctrl.locations', function(newValue, oldValue) {
-			ctrl.groupLocationsByUniqueLocationIdentifier()
-		});	
-		$scope.$watch('ctrl.requirements', function(newValue, oldValue) {
-		});
+        $scope.$watch('ctrl.requests', (newValue, oldValue) => {
+        });
+        $scope.$watch('ctrl.locations', (newValue, oldValue) => {
+            ctrl.groupLocationsByUniqueLocationIdentifier();
+        });
+        $scope.$watch('ctrl.requirements', (newValue, oldValue) => {
+        });
 
 
-		ctrl.goToOrderForProduct = function(product){
-			requestId = product.requestId;
-			productId = product.product.id;
-			foundOffers = [];
-            $.each(ctrl.requests, function (reqK, reqV) {
+        ctrl.goToOrderForProduct = function(product) {
+            requestId = product.requestId;
+            productId = product.product.id;
+            foundOffers = [];
+            $.each(ctrl.requests, (reqK, reqV) => {
             	if (requestId == reqV.id) {
-	                $.each(reqV.locations, function (locK, locV) {
+	                $.each(reqV.locations, (locK, locV) => {
 	                	currentLocation = locV;
-	                    $.each(locV.products, function (prodK, prodV) {
+	                    $.each(locV.products, (prodK, prodV) => {
 	                        if (productId == prodV.product.id) {
 	                        	if (prodV.orderId) {
 	                        		data = {
-	                        			"eta" : currentLocation.eta,
-	                        			"orderId" : prodV.orderId
-	                        		}
+	                        			eta : currentLocation.eta,
+	                        			orderId : prodV.orderId
+	                        		};
 	                        		foundOffers.push(data);
 	                        	}
 	                        }
@@ -7156,26 +7191,26 @@ ctrl.setProductData = function(data, loc) {
             if (foundOffers.length > 0) {
 	            if (_.orderBy(foundOffers, 'eta', 'asc')[0]) {
 	            	earliestEtaOrder = _.orderBy(foundOffers, 'eta', 'asc')[0].orderId;
-	            	window.open("/#/edit-order/"+earliestEtaOrder, '_blank');
+	            	window.open(`/#/edit-order/${earliestEtaOrder}`, '_blank');
 	            }
             }
-			console.log(foundOffers);
-		}
-		ctrl.checkIfProductHasOrder = function(product){
-			requestId = product.requestId;
-			productId = product.product.id;
-			foundOffers = [];
-            $.each(ctrl.requests, function (reqK, reqV) {
+            console.log(foundOffers);
+        };
+        ctrl.checkIfProductHasOrder = function(product) {
+            requestId = product.requestId;
+            productId = product.product.id;
+            foundOffers = [];
+            $.each(ctrl.requests, (reqK, reqV) => {
             	if (requestId == reqV.id) {
-	                $.each(reqV.locations, function (locK, locV) {
+	                $.each(reqV.locations, (locK, locV) => {
 	                	currentLocation = locV;
-	                    $.each(locV.products, function (prodK, prodV) {
+	                    $.each(locV.products, (prodK, prodV) => {
 	                        if (productId == prodV.product.id) {
 	                        	if (prodV.orderId) {
 	                        		data = {
-	                        			"eta" : currentLocation.eta,
-	                        			"orderId" : prodV.orderId
-	                        		}
+	                        			eta : currentLocation.eta,
+	                        			orderId : prodV.orderId
+	                        		};
 	                        		foundOffers.push(data);
 	                        	}
 	                        }
@@ -7187,27 +7222,25 @@ ctrl.setProductData = function(data, loc) {
             	return true;
             }
         	return false;
-			
-		}
+        };
 
-		ctrl.calculateTooltipPosition = function(event) {
-			// var maxHeight = 175;
-			// console.log($(event.target).parents("td").find(".groupOfRequestTableTooltip"));
-		}
-        
+        ctrl.calculateTooltipPosition = function(event) {
+            // var maxHeight = 175;
+            // console.log($(event.target).parents("td").find(".groupOfRequestTableTooltip"));
+        };
+
         ctrl.undoComments = function() {
             if (initialValueExternalComments != null) {
-                 ctrl.externalComments = initialValueExternalComments.replace(/<br\s?\/?>/g,"\n");
+                ctrl.externalComments = initialValueExternalComments.replace(/<br\s?\/?>/g, '\n');
             } else {
-                ctrl.externalComments = "";
-
+                ctrl.externalComments = '';
             }
-            if (initialValueInternalComments != null){
-                ctrl.internalComments = initialValueInternalComments.replace(/<br\s?\/?>/g,"\n");
+            if (initialValueInternalComments != null) {
+                ctrl.internalComments = initialValueInternalComments.replace(/<br\s?\/?>/g, '\n');
             } else {
-                ctrl.internalComments = "";
+                ctrl.internalComments = '';
             }
-        }
+        };
 
         // ctrl.scroll = function(value) {
         //    if (value == true) {
@@ -7219,69 +7252,66 @@ ctrl.setProductData = function(data, loc) {
         //    }
         // }
         ctrl.setWidth = function(element) {
-            $(element).css("opacity", "0");
-                setTimeout(function(){
-                    if ($(element).width() > 400) {
-                        $(element).css("width", "380px");
-                        $(element).css("white-space", "initial");
-                    }
-                    $(element).css("opacity", "1");
+            $(element).css('opacity', '0');
+            setTimeout(() => {
+                if ($(element).width() > 400) {
+                    $(element).css('width', '380px');
+                    $(element).css('white-space', 'initial');
+                }
+                $(element).css('opacity', '1');
             });
-        }
+        };
 
 
         ctrl.setWidthTooltip = function(object) {
-            var elements = $(event.target).parents("td").find(".groupOfRequestTableTooltip ");
-            if (object.generalSellerStatus != ""){
-                var generalSellerStatus = elements[0];
+            let elements = $(event.target).parents('td').find('.groupOfRequestTableTooltip ');
+            if (object.generalSellerStatus != '') {
+                let generalSellerStatus = elements[0];
                 ctrl.setWidth(generalSellerStatus);
             }
-            if (object.generalSellerComment != "") {
-                var generalSellerComments = elements[1];
+            if (object.generalSellerComment != '') {
+                let generalSellerComments = elements[1];
                 ctrl.setWidth(generalSellerComments);
             }
-            if (object.portSellerStatus != "") {
-                var portSellerStatus = elements[2];
+            if (object.portSellerStatus != '') {
+                let portSellerStatus = elements[2];
                 ctrl.setWidth(portSellerStatus);
             }
-            if (object.portSellerComments != "") {
-                var portSellerComments = elements[3];
+            if (object.portSellerComments != '') {
+                let portSellerComments = elements[3];
                 ctrl.setWidth(portSellerComments);
             }
-
-        }
+        };
         ctrl.changeScroll = function() {
-           $("#negotiation-table-fixed-container").css("overflow", "auto");
-        }
+            $('#negotiation-table-fixed-container').css('overflow', 'auto');
+        };
         ctrl.keyPress = function() {
-            $("#negotiation-table-fixed-container").css("overflow", "initial");
-        }
+            $('#negotiation-table-fixed-container').css('overflow', 'initial');
+        };
 
-        $(document).on('keyup', '.typeahead', function(ev, suggestion) {
-        	if ($("[uib-typeahead-popup]").is(":visible")) {
-        		if ($(ev.target).attr("typeahead-append-to") == "'body'") {
-                    $("[uib-typeahead-popup]").css("top", "");
-                    $("[uib-typeahead-popup]").css("left", "");
+        $(document).on('keyup', '.typeahead', (ev, suggestion) => {
+        	if ($('[uib-typeahead-popup]').is(':visible')) {
+        		if ($(ev.target).attr('typeahead-append-to') == '\'body\'') {
+                    $('[uib-typeahead-popup]').css('top', '');
+                    $('[uib-typeahead-popup]').css('left', '');
         			parentZoom = 1;
-        			if ($("#negotiation-table-fixed-container").length > 0) {
-	        			parentZoom = $("#negotiation-table-fixed-container").css("zoom");
+        			if ($('#negotiation-table-fixed-container').length > 0) {
+	        			parentZoom = $('#negotiation-table-fixed-container').css('zoom');
         			}
         			currentTargetTopPosition = $(ev.target).offset().top * parentZoom;
         			currentTargetLeftPosition = $(ev.target).offset().left * parentZoom;
-        			currentTargetHeight = parseFloat($(ev.target).css("height"));
-        			$("[uib-typeahead-popup]").css("top", currentTargetTopPosition+currentTargetHeight);
-        			$("[uib-typeahead-popup]").css("left", currentTargetLeftPosition);
+        			currentTargetHeight = parseFloat($(ev.target).css('height'));
+        			$('[uib-typeahead-popup]').css('top', currentTargetTopPosition + currentTargetHeight);
+        			$('[uib-typeahead-popup]').css('left', currentTargetLeftPosition);
         		}
         	}
         });
-
-
     }
 ]);
-angular.module("shiptech.pages").component("groupOfRequests", {
-    templateUrl: "pages/group-of-requests/views/group-of-requests-component.html",
-    controller: "GroupOfRequestsController",
+angular.module('shiptech.pages').component('groupOfRequests', {
+    templateUrl: 'pages/group-of-requests/views/group-of-requests-component.html',
+    controller: 'GroupOfRequestsController',
     bindings : {
-    	fillMedianSixMonth : "<"
+    	fillMedianSixMonth : '<'
     }
 });

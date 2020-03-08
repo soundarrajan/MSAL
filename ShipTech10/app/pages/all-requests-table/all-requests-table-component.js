@@ -1,9 +1,9 @@
-angular.module('shiptech.pages').controller('AllRequestsTableController', ['$scope', '$element', '$attrs', '$timeout', '$filter', '$state', '$window', 'STATE', 'uiApiModel', 'groupOfRequestsModel', 'requestListTableModel', 'tenantService',  'scheduleDashboardStatusResource', 'tenantScheduleDashboardConfiguration', 'SCREEN_LAYOUTS', 'EXPORT_FILETYPE', 'EXPORT_FILETYPE_EXTENSION', 'CUSTOM_EVENTS',
+angular.module('shiptech.pages').controller('AllRequestsTableController', [ '$scope', '$element', '$attrs', '$timeout', '$filter', '$state', '$window', 'STATE', 'uiApiModel', 'groupOfRequestsModel', 'requestListTableModel', 'tenantService', 'scheduleDashboardStatusResource', 'tenantScheduleDashboardConfiguration', 'SCREEN_LAYOUTS', 'EXPORT_FILETYPE', 'EXPORT_FILETYPE_EXTENSION', 'CUSTOM_EVENTS',
     function($scope, $element, $attrs, $timeout, $filter, $state, $window, STATE, uiApiModel, groupOfRequestsModel, requestListTableModel, tenantService, scheduleDashboardStatusResource, tenantScheduleDashboardConfiguration, SCREEN_LAYOUTS, EXPORT_FILETYPE, EXPORT_FILETYPE_EXTENSION, CUSTOM_EVENTS) {
         //      var tableSelector = '#all_requests_table';
         // $scope.Math = window.Math;
         $scope.STATE = STATE;
-        var ctrl = this;
+        let ctrl = this;
         //      $state.params.title = "All requests"
         //      ctrl.settings = null;
         //      ctrl.buttonsDisabled = false;
@@ -19,81 +19,79 @@ angular.module('shiptech.pages').controller('AllRequestsTableController', ['$sco
         ctrl.proceedRequest = null;
         // ctrl.selectedRequests = null;
         ctrl.EXPORT_FILETYPE = EXPORT_FILETYPE;
-        tenantService.tenantSettings.then(function(settings) {
+        tenantService.tenantSettings.then((settings) => {
             window.tenantFormatsDateFormat = settings.payload.tenantFormats.dateFormat.name;
         });
         //
         //
         // console.log(STATE)
 
-        $scope.$on('proceedFromRequestList', function(e, payload) {
-            
+        $scope.$on('proceedFromRequestList', (e, payload) => {
             // console.log(JSON.parse(decodeURIComponent(payload)))
-            ctrl.setProceedRequest(JSON.parse(decodeURIComponent(payload)))
-        })
-               $scope.$on('tableLoaded', function(e, payload) {
+            ctrl.setProceedRequest(JSON.parse(decodeURIComponent(payload)));
+        });
+        $scope.$on('tableLoaded', (e, payload) => {
             // console.log(payload)
             ctrl.tableData = payload;
-    
-            $("#" + ctrl.tableData.table).click(function(e) {
-                selected = $("#" + ctrl.tableData.table).jqGrid('getGridParam').selarrrow;
-                clicked = $("#" + ctrl.tableData.table).jqGrid('getGridParam').selrow;
-                tableRowIndex = $(e.target).parents("tr").attr("id");
-                clickedRowData = ctrl.tableData.tableData.rows[tableRowIndex - 1];
-                if (!$(e.target).is('input[type=checkbox]')) return;
-                if (!selected) return;
-                console.log($(e.target).prop("checked"));
 
-                if (typeof(ctrl.selectedRequests) == 'undefined') {
-                    ctrl.selectedRequests = []
+            $(`#${ ctrl.tableData.table}`).click((e) => {
+                selected = $(`#${ ctrl.tableData.table}`).jqGrid('getGridParam').selarrrow;
+                clicked = $(`#${ ctrl.tableData.table}`).jqGrid('getGridParam').selrow;
+                tableRowIndex = $(e.target).parents('tr').attr('id');
+                clickedRowData = ctrl.tableData.tableData.rows[tableRowIndex - 1];
+                if (!$(e.target).is('input[type=checkbox]')) {
+                    return;
+                }
+                if (!selected) {
+                    return;
+                }
+                console.log($(e.target).prop('checked'));
+
+                if (typeof ctrl.selectedRequests == 'undefined') {
+                    ctrl.selectedRequests = [];
                 }
 
-                for (var i = selected.length - 1; i >= 0; i--) {
+                for (let i = selected.length - 1; i >= 0; i--) {
                     sv = selected[i];
-                    if ($(e.target).prop("checked")) {
-                    } else  {
-                        if(ctrl.tableData.tableData.rows[Number(sv) - 1].requestId == clickedRowData.requestId) {
-                            selected.splice(i,1)
-                        }
+                    if ($(e.target).prop('checked')) {
+                    } else if(ctrl.tableData.tableData.rows[Number(sv) - 1].requestId == clickedRowData.requestId) {
+                        selected.splice(i, 1);
                     }
                 }
 
-                $scope.$apply(function() {
-                    ctrl.selectedRequestsRows = []
+                $scope.$apply(() => {
+                    ctrl.selectedRequestsRows = [];
                     ctrl.selectedRequestsRows = ctrl.checkSelected(selected, clicked);
                     if (ctrl.selectedRequestsRows) {
                         ctrl.selectedRequests = createRequestIdsModel(ctrl.selectedRequestsRows);
                     }
                 });
-                console.log(ctrl.selectedRequestsRows)
+                console.log(ctrl.selectedRequestsRows);
             });
-        })
-             ctrl.checkSelected = function(selected, clicked) {
+        });
+        ctrl.checkSelected = function(selected, clicked) {
             selectedRequests = [];
-            $("#" + ctrl.tableData.table).jqGrid('resetSelection');
-            $("#" + ctrl.tableData.table + " tr[aria-selected='true'] input").removeAttr("checked");
-            $("#" + ctrl.tableData.table + " tr").attr("aria-selected", "false");
-            $("#" + ctrl.tableData.table + " tr").removeClass("ui-state-highlight");
+            $(`#${ ctrl.tableData.table}`).jqGrid('resetSelection');
+            $(`#${ ctrl.tableData.table } tr[aria-selected='true'] input`).removeAttr('checked');
+            $(`#${ ctrl.tableData.table } tr`).attr('aria-selected', 'false');
+            $(`#${ ctrl.tableData.table } tr`).removeClass('ui-state-highlight');
             // setTimeout(function(){
-                $.each(selected, function(sk, sv) {
-                    selectedRequests.push(ctrl.tableData.tableData.rows[Number(sv) - 1]);
-                })
-                all = []
-                $.each(ctrl.tableData.tableData.rows, function(k, v) {
-
-                        if (_.findIndex(selectedRequests, function(o) {
-                                return o.requestId == v.requestId
-                            }) >= 0) {
-                            $("#" + ctrl.tableData.table).jqGrid('setSelection', k + 1);
-                            all.push(v);
-                        }
-
-                })
-                return all;
+            $.each(selected, (sk, sv) => {
+                selectedRequests.push(ctrl.tableData.tableData.rows[Number(sv) - 1]);
+            });
+            all = [];
+            $.each(ctrl.tableData.tableData.rows, (k, v) => {
+                if (_.findIndex(selectedRequests, (o) => {
+                    return o.requestId == v.requestId;
+                }) >= 0) {
+                    $(`#${ ctrl.tableData.table}`).jqGrid('setSelection', k + 1);
+                    all.push(v);
+                }
+            });
+            return all;
             // },200)
-           // console.log(selected)
-
-        }
+            // console.log(selected)
+        };
         // ctrl.checkInTable = function(checkedRows) {
         //     $("#" + ctrl.tableData.table).jqGrid('resetSelection')
         //     $.each(checkedRows, function(k, v) {
@@ -208,8 +206,8 @@ angular.module('shiptech.pages').controller('AllRequestsTableController', ['$sco
         //       *   the respective checkbox).
         //       */
         function createRequestIdsModel(data) {
-            var result = {};
-            for (var i = 0; i < data.length; i++) {
+            let result = {};
+            for (let i = 0; i < data.length; i++) {
                 result[data[i].requestId] = true;
             }
             return result;
@@ -336,38 +334,38 @@ angular.module('shiptech.pages').controller('AllRequestsTableController', ['$sco
         //          replaceDataTableSearchBox('#all_requests_table_filter');
         //          return table;
         //      }
-        /************************************************************************************
+        /** **********************************************************************************
          *   EVENT HANDLERS
          ************************************************************************************/
         ctrl.setProceedRequest = function(request) {
             ctrl.proceedRequest = request;
         };
         ctrl.groupRequests = function() {
-            var selectedRequestIds = [];
-            Object.keys(ctrl.selectedRequests).forEach(function(key) {
+            let selectedRequestIds = [];
+            Object.keys(ctrl.selectedRequests).forEach((key) => {
                 if (ctrl.selectedRequests[key]) {
                     selectedRequestIds.push(key);
                 }
                 return;
             });
             ctrl.buttonsDisabled = true;
-            groupOfRequestsModel.groupRequests(selectedRequestIds).then(function(data) {
+            groupOfRequestsModel.groupRequests(selectedRequestIds).then((data) => {
                 ctrl.buttonsDisabled = false;
-                //TODO: change way we get groupID
+                // TODO: change way we get groupID
                 requestGroupId = data.payload[0].requestGroup.id;
                 $state.go(STATE.GROUP_OF_REQUESTS, {
                     groupId: requestGroupId
                 });
-            }, function() {
+            }, () => {
                 ctrl.buttonsDisabled = false;
             });
         };
         ctrl.isGroupButtonDisabled = function() {
-            var request;
-            var isGrouped = false;
-            var noRequestsSelected = true;
+            let request;
+            let isGrouped = false;
+            let noRequestsSelected = true;
             if (ctrl.selectedRequests) {
-                Object.keys(ctrl.selectedRequests).forEach(function(key) {
+                Object.keys(ctrl.selectedRequests).forEach((key) => {
                     if (ctrl.selectedRequests[key]) {
                         noRequestsSelected = false;
                         request = $filter('filter')(ctrl.tableData.tableData.rows, {
@@ -383,7 +381,7 @@ angular.module('shiptech.pages').controller('AllRequestsTableController', ['$sco
             return noRequestsSelected || isGrouped;
         };
         ctrl.goToRequest = function(requestID) {
-            var href = $state.href(STATE.EDIT_REQUEST, {
+            let href = $state.href(STATE.EDIT_REQUEST, {
                 requestId: requestID
             }, {
                 absolute: false
@@ -391,7 +389,7 @@ angular.module('shiptech.pages').controller('AllRequestsTableController', ['$sco
             $window.open(href, '_blank');
         };
         ctrl.goToGroupOfRequests = function(groupID) {
-            var href = $state.href(STATE.GROUP_OF_REQUESTS, {
+            let href = $state.href(STATE.GROUP_OF_REQUESTS, {
                 groupId: groupID
             }, {
                 absolute: false
@@ -399,30 +397,30 @@ angular.module('shiptech.pages').controller('AllRequestsTableController', ['$sco
             $window.open(href, '_self');
         };
         ctrl.gotoNewRequest = function() {
-            var href = $state.href(STATE.NEW_REQUEST);
+            let href = $state.href(STATE.NEW_REQUEST);
             $window.open(href, '_self');
         };
         ctrl.prepareTableForPrint = function(tableWidth) {
-            var beforePrint = function(tableWidth) {
+            let beforePrint = function(tableWidth) {
                 if ($('clc-table-list')) {
-                    //1017px = default page landscape width
+                    // 1017px = default page landscape width
                     // var tableWidth = $('clc-table-list').width();
                     // console.log('clc-table-list',tableWidth);
-                    var percentWidth = 101700 / tableWidth;
+                    let percentWidth = 101700 / tableWidth;
                     console.log('proc', percentWidth);
                     if (percentWidth < 100) {
-                        //resize only when print is smaller
-                        zoomP = 100 - parseFloat(percentWidth).toFixed(2) + "%";
-                        $('div.inside_content ui-view').css("zoom", zoomP);
+                        // resize only when print is smaller
+                        zoomP = `${100 - parseFloat(percentWidth).toFixed(2) }%`;
+                        $('div.inside_content ui-view').css('zoom', zoomP);
                     }
                 }
-            }
-            var afterPrint = function() {
-                $('div.inside_content ui-view').css("zoom", "100%");
-            }
+            };
+            let afterPrint = function() {
+                $('div.inside_content ui-view').css('zoom', '100%');
+            };
             if ('matchMedia' in window) {
-                window.matchMedia('print').addListener(function(media) {
-                    //matches is true before print and false after
+                window.matchMedia('print').addListener((media) => {
+                    // matches is true before print and false after
                     if (media.matches) {
                         beforePrint(tableWidth);
                     } else {
@@ -432,88 +430,86 @@ angular.module('shiptech.pages').controller('AllRequestsTableController', ['$sco
             } else {
                 window.onbeforeprint = function() {
                     beforePrint();
-                }
+                };
                 window.onafterprint = function() {
                     afterPrint();
-                }
+                };
             }
-        }
+        };
         ctrl.export = function(fileType) {
             if (fileType == 0) {
-                var tableWidth = $('#gview_flat_requests_list').width();
+                let tableWidth = $('#gview_flat_requests_list').width();
                 ctrl.prepareTableForPrint(tableWidth);
                 window.print();
                 return;
             }
-            var tableOrder = normalizeDatatablesOrder(ctrl.tableOptions.order);
-            var tableColumnList = ctrl.table.columns();
-            var columns = [];
-            var columnData = {};
-            for (var i = 0; i < tableColumnList[0].length; i++) {
+            let tableOrder = normalizeDatatablesOrder(ctrl.tableOptions.order);
+            let tableColumnList = ctrl.table.columns();
+            let columns = [];
+            let columnData = {};
+            for (let i = 0; i < tableColumnList[0].length; i++) {
                 if (ctrl.table.columns(i).visible()[0]) {
                     columnData = {};
                     columnData.DtoPath = $(ctrl.table.column(i).header()).data('dtoPath');
                     columnData.Label = $(ctrl.table.column(i).header()).text().trim();
-                    if (columnData.Label !== "" && columnData.DtoPath) {
+                    if (columnData.Label !== '' && columnData.DtoPath) {
                         columns.push(columnData);
                     }
                 }
             }
-            var tablePagination = {};
+            let tablePagination = {};
             tablePagination.start = (ctrl.tableOptions.currentPage - 1) * ctrl.tableOptions.pageLength;
             tablePagination.length = ctrl.tableOptions.pageLength;
-            requestListTableModel.exportList(tableOrder, tablePagination, columns, fileType, ctrl.tableOptions.filters, ctrl.tableOptions.search).then(function(result) {
+            requestListTableModel.exportList(tableOrder, tablePagination, columns, fileType, ctrl.tableOptions.filters, ctrl.tableOptions.search).then((result) => {
                 if (!result) {
                     return false;
                 }
                 if (!result.filename) {
-                    result.filename = "Request." + EXPORT_FILETYPE_EXTENSION[fileType];
+                    result.filename = `Request.${ EXPORT_FILETYPE_EXTENSION[fileType]}`;
                 }
-                var blob = new Blob([result.data]);
+                let blob = new Blob([ result.data ]);
                 saveAs(blob, result.filename);
             });
         };
         ctrl.setLastOfferArgs = function(request) {
             ctrl.lastOfferArgs = {
-                'product': {
-                    'id': request.productId,
-                    'name': request.productName
+                product: {
+                    id: request.productId,
+                    name: request.productName
                 },
-                'seller': null
+                seller: null
             };
         };
         ctrl.getStatuses = function() {
-        	setTimeout(function(){
-        		// $scope.statuses = tenantModel.getScheduleDashboardConfiguration().payload.labels;	
+        	setTimeout(() => {
+        		// $scope.statuses = tenantModel.getScheduleDashboardConfiguration().payload.labels;
         		if (!window.scheduleDashboardConfiguration) {
-		            var requestData = {
+		            let requestData = {
 		                Payload: true
 		            };
 
-					return tenantScheduleDashboardConfiguration.get(requestData).$promise.then(function (data) {
-						window.scheduleDashboardConfiguration = data;
+                    return tenantScheduleDashboardConfiguration.get(requestData).$promise.then((data) => {
+                        window.scheduleDashboardConfiguration = data;
 					 //    scheduleDashboardConfiguration = data;
 					 //    return data;
 					    ctrl.statuses = data.payload.labels;
-					})
-        		} else {
-				    ctrl.statuses = window.scheduleDashboardConfiguration.payload.labels;
+                    });
         		}
-        	},550)
+				    ctrl.statuses = window.scheduleDashboardConfiguration.payload.labels;
+        	}, 550);
         };
         ctrl.getStatuses();
         ctrl.getStatusColor = function(statusName) {
-            statusColor = "#fff";
-            $.each(ctrl.statuses, function(k, v) {
+            statusColor = '#fff';
+            $.each(ctrl.statuses, (k, v) => {
                 if (v.status.name == statusName) {
-                    statusColor = v.colorCode
+                    statusColor = v.colorCode;
                 }
-            })
+            });
             return statusColor;
+        };
 
-            
-        }
-        /************************************************************************************
+        /** **********************************************************************************
          *   END EVENT HANDLERS
          ************************************************************************************/
     }

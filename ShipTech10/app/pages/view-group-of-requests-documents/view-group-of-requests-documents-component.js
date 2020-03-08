@@ -1,4 +1,4 @@
-angular.module("shiptech.pages").controller("ViewGroupOfRequestsDocumentsController", ["$scope", "$element", "$attrs", "$timeout", "$state", 'STATE', function($scope, $element, $attrs, $timeout, $state, STATE) {
+angular.module('shiptech.pages').controller('ViewGroupOfRequestsDocumentsController', [ '$scope', '$element', '$attrs', '$timeout', '$state', 'STATE', function($scope, $element, $attrs, $timeout, $state, STATE) {
     ctrl = this;
     // $timeout(function(){
     if ($state.params.requestId) {
@@ -17,7 +17,7 @@ angular.module("shiptech.pages").controller("ViewGroupOfRequestsDocumentsControl
         });
     };
     // });
-}]);
+} ]);
 angular.module('shiptech.pages').component('viewGroupOfRequestsDocuments', {
     templateUrl: 'pages/view-group-of-requests-documents/views/view-group-of-requests-documents-component.html',
     controller: 'ViewGroupOfRequestsDocumentsController'
