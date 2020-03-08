@@ -3933,14 +3933,14 @@ APP_API.factory("$Api_Service", [
             return toReturn;
         }
         var parse = function(param, data) {
-         
+            var result;
             if (_debug) console.log("$APIService parse called with ", param, data);
             if (param == "formatters") {
-                var result = formatters(data);
+                result = formatters(data);
                 return result;
             }
             if (param == "getGenericLayout") {
-                var result = getGenericLayout(data.name, data.list);
+                result = getGenericLayout(data.name, data.list);
                 return result;
             }
         };
@@ -3998,12 +3998,12 @@ APP_API.factory("$Api_Service", [
                         return;
                     }
                     if (param.app == "admin" && param.screen == "CONFIGURATION") {
-                        var apiJSON = {
+                        var apiJSON1 = {
                             layout: {},
                             elements: {},
                             clc: {}
                         };
-                        callback(apiJSON);
+                        callback(apiJSON1);
                         return;
                     }
                     if (param.app == "masters" && param.screen == "contactlist") {
@@ -4053,7 +4053,7 @@ APP_API.factory("$Api_Service", [
                         return;
                     }
                     if (param.app == "admin" && param.screen == "ftpUploads") {
-                        var apiJSON = {
+                        var apiJSON1 = {
                             layout: {},
                             elements: {},
                             clc: {
@@ -4171,7 +4171,7 @@ APP_API.factory("$Api_Service", [
                                 }
                             }
                         };
-                        callback(apiJSON);
+                        callback(apiJSON1);
                         return;
                     }
                     if (param.app == "procurement" && param.screen == "productcontractlist"){
@@ -4345,7 +4345,7 @@ APP_API.factory("$Api_Service", [
                    
                     $http.post(api_map[param.app][param.screen]["layout"]["get"]["endpoint"], api_map[param.app][param.screen]["layout"]["get"]["json"]).then(
                         function successCallback(response) {
-                            var newLayout = new Object();
+                            var newLayout = {};
                             newLayout.elements = [];
                             newLayout.layout = {};
                             newLayout.clc = [];
@@ -4358,7 +4358,7 @@ APP_API.factory("$Api_Service", [
                                 jsonDATA.Payload.id = response.data.id;
                                 jsonDATA.Payload.layout = JSON.stringify(newLayout);
                                 $http.post(api_map[param.app][param.screen]["layout"]["update"]["endpoint"], jsonDATA).then(
-                                    function successCallback(response2) {
+                                    function successCallback2(response2) {
                                         if (response2.status == 200) {
                                             callback("Saved");
                                         } else {
@@ -4389,8 +4389,10 @@ APP_API.factory("$Api_Service", [
                         return;
                     }
                     //Customizari
+                    var apiJSON = {};
+                    var url = '';
                     if (param.app == "delivery" && param.screen == "delivery" && param.id == "spec") {
-                        var apiJSON = {
+                        apiJSON = {
                             Payload: {
                                 Order: null,
                                 Filters: [
@@ -4410,12 +4412,12 @@ APP_API.factory("$Api_Service", [
                                 SearchText: null
                             }
                         };
-                        var url = API.BASE_URL_DATA_MASTERS + "/api/masters/specParameters/getLabsSpecParameters";
+                        url = API.BASE_URL_DATA_MASTERS + "/api/masters/specParameters/getLabsSpecParameters";
                         $http.post(url, apiJSON).then(function success(response) {
                             if (response.status == 200) {
-                                var res = new Array();
-                                response.data.payload.forEach(function(entry) {
-                                    var i = new Object();
+                                var res = [];
+                                response.data.payload.forEach(function (entry) {
+                                    var i = {};
                                     i.specParameter = entry.specParameter;
                                     i.claimTypeId = entry.claimTypeId;
                                     i.min = entry.min;
@@ -4432,7 +4434,7 @@ APP_API.factory("$Api_Service", [
                         return;
                     }
                     if (param.app == "labs" && param.screen == "labresult" && param.id == "spec") {
-                        var apiJSON = {
+                         apiJSON = {
                             Payload: {
                                 Order: null,
                                 Filters: [
@@ -4473,7 +4475,7 @@ APP_API.factory("$Api_Service", [
                         return;
                     }
                     if (param.app == "labs" && param.screen == "labresult" && param.id == "sealnumber") {
-                        var apiJSON = {
+                         apiJSON = {
                             Payload: {
                                 Order: null
                             }
@@ -4495,7 +4497,7 @@ APP_API.factory("$Api_Service", [
                         return;
                     }
                     if (param.app == "labs" && param.screen == "labresult" && param.id == "labstestslist") {
-                        var apiJSON = {
+                         apiJSON = {
                             Payload: param.data
                         };
                         $http.post(API.BASE_URL_DATA_LABS + "/api/labs/tests/list", apiJSON).then(
@@ -4515,7 +4517,7 @@ APP_API.factory("$Api_Service", [
                         return;
                     }
                     if (param.app == "recon" && param.screen == "recon" && param.id == "quantity") {
-                        var apiJSON = {
+                         apiJSON = {
                             Payload: {
                                 Pagination: {
                                     Skip: 0,
@@ -4528,7 +4530,7 @@ APP_API.factory("$Api_Service", [
                             }
                         };
                         // "UomId": param.data.uomId,
-                        var url = API.BASE_URL_DATA_RECON + "/api/recon/quantityList";
+                        url = API.BASE_URL_DATA_RECON + "/api/recon/quantityList";
                         $http.post(url, apiJSON).then(
                             function success(response) {
                                 if (response.status == 200) {
@@ -4547,7 +4549,7 @@ APP_API.factory("$Api_Service", [
                     }
                     if (param.app == "recon" && param.screen == "recon" && param.id == "price") {
                         console.log(param);
-                        var apiJSON = {
+                         apiJSON = {
                             Payload: {
                                 Pagination: {
                                     Skip: 0,
@@ -4564,7 +4566,7 @@ APP_API.factory("$Api_Service", [
                         // var apiJSON = {
                         //     "Payload": param.data.orderId
                         // };
-                        var url = API.BASE_URL_DATA_RECON + "/api/recon/priceReconList";
+                        url = API.BASE_URL_DATA_RECON + "/api/recon/priceReconList";
                         $http.post(url, apiJSON).then(
                             function success(response) {
                                 if (response.status == 200) {
@@ -4583,7 +4585,7 @@ APP_API.factory("$Api_Service", [
                     }
                     if (param.app == "recon" && param.screen == "recon" && param.id == "qualityreconlist") {
                         console.log(param);
-                        var apiJSON = {
+                         apiJSON = {
                             Payload: {
                                 Pagination: {
                                     Skip: 0,
@@ -4600,7 +4602,7 @@ APP_API.factory("$Api_Service", [
                         // var apiJSON = {
                         //     "Payload": param.data.orderId
                         // };
-                        var url = API.BASE_URL_DATA_RECON + "/api/recon/qualityReconList";
+                        url = API.BASE_URL_DATA_RECON + "/api/recon/qualityReconList";
                         $http.post(url, apiJSON).then(
                             function success(response) {
                                 if (response.status == 200) {
@@ -4719,19 +4721,18 @@ APP_API.factory("$Api_Service", [
                     var url = API.BASE_URL_DATA_SELLERRATING + "/api/sellerrating/sellerratingreview/create";
                     $http.post(url, apiJSON).then(
                         function success(response) {
+                            var res = {};
                             if (response.status == 200) {
-                                var res = new Object();
                                 res.status = true;
                                 res.message = "Rating saved!";
                                 callback(res);
                             } else {
-                                var res = new Object();
                                 res.status = false;
                                 res.message = "Could not save rating!";
                             }
                         },
                         function failed(response) {
-                            var res = new Object();
+                            var res = {};
                             res.status = false;
                             res.message = "Could not save rating!";
                             console.log("HTTP ERROR while trying to save rating!");
@@ -5454,40 +5455,7 @@ APP_API.factory("$Api_Service", [
                 get: function(param, callback) {
                     // if (_debug) console.log("$APIService entity.get called with the following params:", param);
                     //Customizari
-                    // if (param.app == 'invoices' && param.screen == 'invoice') {
-                    //     $http.post(api_map[param.app][param.screen]['entity']['get']['endpoint'], '{"Payload":' + param.id + '}').then(function successCallback(response) {
-                    //         if (response.status == 200) {
-                    //             var res = new Object;
-                    //             var allCosts = new Object;
-                    //             res = response.data.payload;
-                    //             res.costDetails = new Array;
-                    //             res.productDetails.forEach(function(entry) {
-                    //                 entry.costDetails.forEach(function(entry2) {
-                    //                     if (entry2.isAllProductsCost) {
-                    //                         var varName = costName.id + '-' + costType.id;
-                    //                         if (typeof(allCosts.varName) == undefined) {
-                    //                             allCosts.varName = true;
-                    //                             res.costDetails.push(entry2);
-                    //                         }
-                    //                         return;
-                    //                     }
-                    //                     res.costDetails.push(entry2);
-                    //                 });
-                    //             });
-                    //             if (_debug) console.log("$APIService entity.get answer:", res);
-                    //             callback(res);
-                    //             return;
-                    //         } else {
-                    //             callback(false);
-                    //             return;
-                    //         }
-                    //     }, function errorCallback(response) {
-                    //         console.log('HTTP ERROR');
-                    //         callback(false);
-                    //         return;
-                    //     });
-                    //     return;
-                    // }
+                    var url = '';
 					if (param.app == "invoices" && param.screen == "invoice" && param.child == "entity_documents" ) {
 						return
 					}
@@ -5502,7 +5470,7 @@ APP_API.factory("$Api_Service", [
                                 ]
                             }
                         };
-                        var url = api_map[param.app][param.screen]["entity"]["get"]["endpoint"];
+                        url = api_map[param.app][param.screen]["entity"]["get"]["endpoint"];
                         $http.post(url, apiJSON).then(
                             function succcessCallback(response) {
                                 if (response.status == 200) {
@@ -5519,25 +5487,8 @@ APP_API.factory("$Api_Service", [
                         );
                         return;
                     }
-                    // if (param.app == 'labs' && param.screen == 'labresult') {
-                    //     var apiJSON = {
-                    //         "Payload": param.id
-                    //     }
-                    //     var entity = $http.post(API.BASE_URL_DATA_LABS + "/api/labs/get", apiJSON);
-                    //     var testResults = $http.post(API.BASE_URL_DATA_LABS + "/api/labs/tests/list", apiJSON);
-                    //     $q.all([entity, testResults]).then(function success(responses) {
-                    //         var result = new Object;
-                    //         if (responses[0].status == 200) {
-                    //             result = responses[0].data.payload;
-                    //         }
-                    //         if (responses[1].status == 200) {
-                    //             result.labTestResults = responses[1].data.payload;
-                    //         }
-                    //         callback(result);
-                    //     });
-                    //     return;
-                    // }
-                    if (param.app == "admin" && param.screen == "configuration") {     
+
+                    if (param.app == "admin" && param.screen == "configuration") {
                             var result = {};
                             if ($rootScope.reloadTenantConfiguration) {
                                 $rootScope.reloadTenantConfiguration = false;
@@ -5589,9 +5540,9 @@ APP_API.factory("$Api_Service", [
                                     merged[each] = bar[each];
                                 }
                             }
-                            for (var each in foo) {
-                                if (!(each in bar) && foo.hasOwnProperty(each)) {
-                                    merged[each] = foo[each];
+                            for (var each1 in foo) {
+                                if (!(each1 in bar) && foo.hasOwnProperty(each1)) {
+                                    merged[each1] = foo[each1];
                                 }
                             }
                             return merged;
@@ -5698,7 +5649,7 @@ APP_API.factory("$Api_Service", [
                     if (param.app == "invoices" && param.screen == "treasuryreport") {
                         return;
                     }
-                    var url = api_map[param.app][param.screen]["entity"]["get"]["endpoint"];
+                    url = api_map[param.app][param.screen]["entity"]["get"]["endpoint"];
                     if (param.child && param.child == "entity_documents") {
                         // url = 'http://path_to/documents';
                     }
@@ -5751,10 +5702,11 @@ APP_API.factory("$Api_Service", [
                     );
                 },
                 update: function(param, callback) {
+                    var data;
                     if (typeof param.data !== "object") {
-                        var data = JSON.parse(param.data);
+                        data = JSON.parse(param.data);
                     } else {
-                        var data = param.data;
+                        data = param.data;
                     }
                     if (_debug) console.log("$APIService entity.update called with the following params:", param);
                     if (param.app == "admin" && param.screen == "configuration") {
@@ -5927,10 +5879,8 @@ APP_API.factory("$Api_Service", [
                                 res.status = true;
                                 res.message = "Success!";
                                 callback(res);
-                                return;
                             } else {
                                 callback(res);
-                                return;
                             }
                             return;
                         },
@@ -5946,10 +5896,11 @@ APP_API.factory("$Api_Service", [
                 create: function(param, callback) {
                     if (_debug) console.log("$APIService entity.create called with the following params:");
                     if (_debug) console.log(param);
+                    var data;
                     if (typeof param.data !== "object") {
-                        var data = JSON.parse(param.data);
+                        data = JSON.parse(param.data);
                     } else {
-                        var data = param.data;
+                        data = param.data;
                     }
                     if (param.app == "admin" && param.screen == "configuration") {
                         param.id = 0;
@@ -6010,10 +5961,10 @@ APP_API.factory("$Api_Service", [
                             },
                             function errorCallback(response) {
                                 console.log("HTTP ERROR");
-                                var res = new Object();
-                                res.message = "HTTP Error!";
-                                if (_debug) res.message = response.data.message;
-                                callback(res);
+                                var res1 = {};
+                                res1.message = "HTTP Error!";
+                                if (_debug) res1.message = response.data.message;
+                                callback(res1);
                                 return;
                             }
                         );
@@ -6107,7 +6058,6 @@ APP_API.factory("$Api_Service", [
                                 callback(res);
                                 return;
                             }
-                            return;
                         },
                         function errorCallback(response) {
                             res.status = false;
@@ -6303,10 +6253,11 @@ APP_API.factory("$Api_Service", [
                         message: "Error!"
                     };
                     if (param.app == "claims") {
+                        var data;
                         if (typeof param.data !== "object") {
-                            var data = JSON.parse(param.data);
+                            data = JSON.parse(param.data);
                         } else {
-                            var data = param.data;
+                            data = param.data;
                         }
                         var updateJSON = {
                             Payload: data
@@ -6325,7 +6276,6 @@ APP_API.factory("$Api_Service", [
                                     callback(res);
                                     return;
                                 }
-                                return;
                             },
                             function errorCallback(response) {
                                 res.status = false;
@@ -6390,14 +6340,16 @@ APP_API.factory("$Api_Service", [
                         return;
                     }
                     if (param.app == "delivery" && param.screen == "delivery") {
+                        var apiJSON;
+                        var url;
                         if (param.bulk) {
-                            var apiJSON = {
+                            apiJSON = {
                                 Payload: param.payload
                             };
-                            var url = API.BASE_URL_DATA_DELIVERY + "/api/delivery/bulkVerify";
+                            url = API.BASE_URL_DATA_DELIVERY + "/api/delivery/bulkVerify";
                         } else {
-                            var url = API.BASE_URL_DATA_DELIVERY + "/api/delivery/verify";
-                            var apiJSON = {};
+                            url = API.BASE_URL_DATA_DELIVERY + "/api/delivery/verify";
+                            apiJSON = {};
                             if (param.verifyAndSave) {
                                 apiJSON = {
                                     Payload: JSON.parse(param.payload)
@@ -6576,10 +6528,11 @@ APP_API.factory("$Api_Service", [
                         message: "Error!"
                     };
                     if (param.app == "claims") {
+                        var data;
                         if (typeof param.data !== "object") {
-                            var data = JSON.parse(param.data);
+                            data = JSON.parse(param.data);
                         } else {
-                            var data = param.data;
+                            data = param.data;
                         }
                         var updateJSON = {
                             Payload: data
@@ -6598,7 +6551,6 @@ APP_API.factory("$Api_Service", [
                                     callback(res);
                                     return;
                                 }
-                                return;
                             },
                             function errorCallback(response) {
                                 res.status = false;
@@ -6653,7 +6605,6 @@ APP_API.factory("$Api_Service", [
                                     callback(res);
                                     return;
                                 }
-                                return;
                             },
                             function errorCallback(response) {
                                 res = {};
@@ -6672,11 +6623,13 @@ APP_API.factory("$Api_Service", [
                 get: function(param, callback) {
                     // if (_debug) console.log("$APIService dropdown.get called with:", param);
                     //Custom implementations
+                    var apiJSON;
+                    var url;
                     if (param.app == "admin" && param.screen == "configuration" && param.field.masterSource == "Screen") {
-                        var apiJSON = {
+                        apiJSON = {
                             Payload: false
                         };
-                        var url = API.BASE_URL_DATA_IMPORTEXPORT + "/api/infrastructure/static/ModuleScreen";
+                        url = API.BASE_URL_DATA_IMPORTEXPORT + "/api/infrastructure/static/ModuleScreen";
                         $http.post(url, apiJSON).then(
                             function successCallback(response) {
                                 if (response.status == 200) {
@@ -6694,10 +6647,10 @@ APP_API.factory("$Api_Service", [
                         return;
                     }
                     if (param.app == "admin" && param.screen == "configuration" && param.field.masterSource == "Application") {
-                        var apiJSON = {
+                        apiJSON = {
                             Payload: false
                         };
-                        var url = API.BASE_URL_DATA_IMPORTEXPORT + "/api/infrastructure/static/ModuleScreen";
+                        url = API.BASE_URL_DATA_IMPORTEXPORT + "/api/infrastructure/static/ModuleScreen";
                         $http.post(url, apiJSON).then(
                             function successCallback(response) {
                                 if (response.status == 200) {
@@ -6715,7 +6668,7 @@ APP_API.factory("$Api_Service", [
                     }
                     if (param.app == "admin" && param.screen == "configuration" && param.field.masterSource == "TransactionStatus") {
                         console.log(param);
-                        var apiJSON = {
+                        apiJSON = {
                             Payload: {
                                 Application: {
                                     Id: param.field.application.application.id,
@@ -6729,7 +6682,7 @@ APP_API.factory("$Api_Service", [
                                 // "Screen": { "Id": 5, "Name": "Pre Request" }
                             }
                         };
-                        var url = API.BASE_URL_DATA_IMPORTEXPORT + "/api/infrastructure/static/StatusByScreenAndApplication";
+                        url = API.BASE_URL_DATA_IMPORTEXPORT + "/api/infrastructure/static/StatusByScreenAndApplication";
                         $http.post(url, apiJSON).then(
                             function successCallback(response) {
                                 if (response.status == 200) {
@@ -6750,7 +6703,7 @@ APP_API.factory("$Api_Service", [
                         apiJSON = {
                             Payload: param.unique_id
                         };
-                        var url = api_map["alerts"]["alerts"]["entity"]["get"]["endpointDrop"] + param.field.masterSource;
+                        url = api_map["alerts"]["alerts"]["entity"]["get"]["endpointDrop"] + param.field.masterSource;
                         $http.post(url).then(
                             function successCallback(response) {
                                 if (response.status == 200) {
@@ -6769,7 +6722,7 @@ APP_API.factory("$Api_Service", [
                     if (param.app == "contracts" && param.screen == "contract" && (param.field.masterSource == "contractAgreementTypesList" || param.field.masterSource == "AgreementType")) {
                         console.log(param.field.masterSource);
 			            var payload = {"Payload":{"Order":null,"PageFilters":{"Filters":[]},"SortList":{"SortList":[]},"Filters":[],"SearchText":null,"Pagination":{"Skip":0,"Take":10000}}};
-			            var url =  API.BASE_URL_DATA_MASTERS + "/api/masters/agreementType/individualLists";
+			            url =  API.BASE_URL_DATA_MASTERS + "/api/masters/agreementType/individualLists";
                         $http.post(url, payload).then(
                             function successCallback(response) {
                                 if (response.status == 200) {
@@ -6788,7 +6741,7 @@ APP_API.factory("$Api_Service", [
                     if (param.app == "claims" && param.screen == "claims" && param.field.masterSource == "claimSubtype") {
                         // debugger;
                         if (param.field.param.ClaimTypeName == 'Quantity') {
-                            var apiJSON = {
+                            apiJSON = {
                                 Payload: {
                                     OrderId: param.field.param.OrderId ? param.field.param.OrderId : null,
                                     DeliveryProductId: param.field.param.DeliveryProductId ? param.field.param.DeliveryProductId : null,
@@ -6797,7 +6750,7 @@ APP_API.factory("$Api_Service", [
                                     OrderProductId: param.field.param.OrderProductId ? param.field.param.OrderProductId : null
                                 }
                             };
-                            var url = API.BASE_URL_DATA_CLAIMS + "/api/claims/getQuantitySubtypes";
+                            url = API.BASE_URL_DATA_CLAIMS + "/api/claims/getQuantitySubtypes";
                             $http.post(url, apiJSON).then(
                                 function successCallback(response) {
                                     if (response.status == 200) {
@@ -6825,7 +6778,7 @@ APP_API.factory("$Api_Service", [
                             );
                         }
                         if (param.field.param.ClaimTypeName == 'Quality' || param.field.param.ClaimTypeName == 'Compliance') {
-                            var apiJSON = {
+                            apiJSON = {
                                 Payload: {
                                     OrderId: param.field.param.OrderId ? param.field.param.OrderId : null,
                                     DeliveryProductId: param.field.param.DeliveryProductId ? param.field.param.DeliveryProductId : null,
@@ -6833,7 +6786,7 @@ APP_API.factory("$Api_Service", [
                                     ClaimTypeId: param.field.param.ClaimTypeId ? param.field.param.ClaimTypeId : null
                                 }
                             };
-                            var url = API.BASE_URL_DATA_CLAIMS + "/api/claims/getQualitySubtypes";
+                            url = API.BASE_URL_DATA_CLAIMS + "/api/claims/getQualitySubtypes";
                             $http.post(url, apiJSON).then(
                                 function successCallback(response) {
                                     if (response.status == 200) {
@@ -6887,7 +6840,7 @@ APP_API.factory("$Api_Service", [
                                 if (invalidFilter) {
                                     return false;
                                 }
-                                var apiJSON = {
+                                apiJSON = {
                                     Payload: {
                                         Order: null,
                                         Filters: param.field.Filter,
@@ -6895,9 +6848,9 @@ APP_API.factory("$Api_Service", [
                                     }
                                 };
                                 if (param.app == "labs") {
-                                    var url = API.BASE_URL_DATA_LABS + "/api/labs/getDeliveryLookup";
+                                    url = API.BASE_URL_DATA_LABS + "/api/labs/getDeliveryLookup";
                                 } else {
-                                    var url = API.BASE_URL_DATA_CLAIMS + "/api/claims/getDeliveryLookup";
+                                    url = API.BASE_URL_DATA_CLAIMS + "/api/claims/getDeliveryLookup";
                                 }
                                 $http.post(url, apiJSON).then(function success(response) {
                                     if (response.status == 200) {
@@ -6924,7 +6877,7 @@ APP_API.factory("$Api_Service", [
                                 });
                             }
                             if (param.field.Unique_ID == "product") {
-                                var apiJSON = {
+                                apiJSON = {
                                     Payload: {
                                         Order: null,
                                         Filters: param.field.Filter,
@@ -6942,7 +6895,7 @@ APP_API.factory("$Api_Service", [
                             		return;
                                 }
 
-                                var url = API.BASE_URL_DATA_LABS + "/api/labs/getProductDropdown";
+                                url = API.BASE_URL_DATA_LABS + "/api/labs/getProductDropdown";
                                 $http.post(url, apiJSON).then(function success(response) {
                                     if (response.status == 200) {
                                         var result = [];
@@ -6974,7 +6927,7 @@ APP_API.factory("$Api_Service", [
                         }
                         if (param.app == "contracts" && param.screen == "contract") {
                             if (param.field.Unique_ID == "primaryContact") {
-                                var apiJSON = {
+                                apiJSON = {
                                     Payload: {
                                         Filters: [
                                             {
@@ -6988,7 +6941,7 @@ APP_API.factory("$Api_Service", [
                                         ]
                                     }
                                 };
-                                var url = API.BASE_URL_DATA_MASTERS + "/api/masters/counterparties/contactBySeller";
+                                url = API.BASE_URL_DATA_MASTERS + "/api/masters/counterparties/contactBySeller";
                                 $http.post(url, apiJSON).then(function success(response) {
                                     if (response.status == 200) {
                                         callback(response.data.payload);
@@ -7007,14 +6960,14 @@ APP_API.factory("$Api_Service", [
                         }
                         if (param.app == "claims" && param.screen == "claims") {
                             if (param.field.Unique_ID == "orderDetails.deliveryNo") {
-                                var apiJSON = {
+                                apiJSON = {
                                     Payload: {
                                         Order: null,
                                         Filters: param.field.Filter,
                                         Pagination: null
                                     }
                                 };
-                                var url = API.BASE_URL_DATA_CLAIMS + "/api/claims/getDeliveryLookup";
+                                url = API.BASE_URL_DATA_CLAIMS + "/api/claims/getDeliveryLookup";
                                 $http.post(url, apiJSON).then(function success(response) {
                                     if (response.status == 200) {
                                         var result = [];
@@ -7045,14 +6998,14 @@ APP_API.factory("$Api_Service", [
                                 });
                             }
                             if (param.field.Unique_ID == "orderDetails.labResult") {
-                                var apiJSON = {
+                                apiJSON = {
                                     Payload: {
                                         Order: null,
                                         Filters: param.field.Filter,
                                         Pagination: null
                                     }
                                 };
-                                var url = API.BASE_URL_DATA_CLAIMS + "/api/claims/getLabResultLookup";
+                                url = API.BASE_URL_DATA_CLAIMS + "/api/claims/getLabResultLookup";
                                 $http.post(url, apiJSON).then(function success(response) {
                                     if (response.status == 200) {
                                         var result = [];
@@ -7082,7 +7035,7 @@ APP_API.factory("$Api_Service", [
                                 });
                             }
                             if (param.field.Unique_ID == "orderDetails.product") {
-                                var apiJSON = {
+                                apiJSON = {
                                     Payload: {
                                         Order: null,
                                         Filters: param.field.Filter,
@@ -7090,7 +7043,7 @@ APP_API.factory("$Api_Service", [
                                     }
                                 };
                      
-                                var url = API.BASE_URL_DATA_CLAIMS + "/api/claims/getProductDropdown";
+                                url = API.BASE_URL_DATA_CLAIMS + "/api/claims/getProductDropdown";
                                 if (param.field.Filter[0].Value != 0) {
                                     // console.log(1)
                                     $http.post(url, apiJSON).then(function success(response) {
@@ -7164,7 +7117,7 @@ APP_API.factory("$Api_Service", [
                         }
                     }
                     if (param.dropdown == "exchangerate-company") {
-                        var apiJSON = {
+                        apiJSON = {
                             Payload: param.unique_id
                         };
                         $http.post(api_map["masters"]["company"]["entity"]["get"]["endpoint"], apiJSON).then(

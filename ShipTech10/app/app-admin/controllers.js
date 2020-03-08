@@ -478,7 +478,7 @@ APP_ADMIN.controller('Controller_Admin', ['$rootScope', '$scope', '$Api_Service'
                     if($scope.formValues.temp[ruleType + 'Precedence'][k2]){
                         alreadySelected = $scope.formValues.temp[ruleType + 'Precedence'][k2].id;
                         selectOptions = entityItem.children("option");
-                        $.each(selectOptions, function(k2, v2) {
+                        $.each(selectOptions, function(k3, v2) {
                             if ($(v2).attr("value") == alreadySelected) {
                                 $(v2).attr("disabled", true);
                             }

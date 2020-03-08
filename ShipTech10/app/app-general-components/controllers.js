@@ -2103,9 +2103,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     dateFormat = dateFormat.replace(/D/g, "d").replace(/Y/g, "y");
                     formattedDate = $filter("date")(cellValue, dateFormat);
                     if (cellValue != null) {
-                        if (hasDayOfWeek) { 
+                        if (hasDayOfWeek) {
                             formattedDate = moment.utc(cellValue).format("ddd") + " " + formattedDate;
-                        } 
+                        }
                         return "<div>" + formattedDate + "<div>";
                         // formattedDate = vm.formatDate(cellValue, $scope.tenantSettings.tenantFormats.dateFormat);
                         // element = var_bind(':content', formattedDate, element);
@@ -2114,12 +2114,12 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     return "";
                 };
 
-                
+
                 var best_contract_color = function(cellValue, options, rowObject) {
                     if(cellValue == null) cellValue = "";
 
                     var tpl = '<span class=" best_contract_formatter">' + cellValue + '</span>';
-           
+
                     return tpl;
 
                     // return cellValue;
@@ -2144,7 +2144,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                             className = "isMatch";
                         }
                     }
-             
+
                     var tpl = '<span class=" ' + className + '">' + cellValue + '</span>';
                     return tpl;
                 };
@@ -2156,8 +2156,8 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
 
                             var currency = rowObject.currency.name;
                             var price =  $filter('number')(rowObject.fixedPrice, 3);
-                 
-    
+
+
                             tpl = '<span class="">' + currency + ' ' + price + '</span>';
                         }
                     }
@@ -2170,11 +2170,11 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         if (rowObject.uom != null) {
                             var uom = rowObject.uom.name;
                             var qty = $filter('number')(rowObject[options.colModel.name], 3);
-                            
+
                             console.log(rowObject[options.colModel.name]);
-                      
+
                         }
-    
+
                         tpl = '<span class="">'+ qty + ' ' + uom +'</span>';
                     }
                     return tpl;
@@ -2185,7 +2185,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     currentCellKey = options.colModel.name
                     if (options.colModel.name.indexOf(".name") != -1) {
                         currentCellKey = options.colModel.name.split(".name")[0]
-                    } 
+                    }
 
                     $.each(rowObject[currentCellKey], function(key,val){
                         cellList = cellList + "<div>" + (val.name ? val.name : val);
@@ -2194,9 +2194,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         }else{
                             cellList = cellList + "</div>";
                         }
-                        
+
                     })
-           
+
                     var tpl = '<span class="best_contract_loop"><ul style="overflow:hidden" data-html="true" tooltip data-original-title="'+cellList+'">'+ cellList + '</ul></span>';
                     return tpl;
                 };
@@ -2220,7 +2220,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         $rootScope.defaultSelectedBestContracts = vm.changedfields;
                     }
 
-                  
+
                     var tpl = "<input class='best_contracts_checkbox' id='chk_" + uniqueModel + "' type='checkbox' ng-model='CLC.changedfields[" + entityId + "].isChecked' ng-change='CLC.checkChange(" + entityId + ");' /><label class='best_contracts_checkbox' for='chk_" + uniqueModel + "'><i class='fa fa-check'></i></label>";
 
                     return tpl;
