@@ -47,7 +47,7 @@
 
 	                    <tr>
 
-	                        <th class="calendarDataRowsLabelGrouped no-padding text-left" style="width:{{$ctrl.fixedColumnsWidth}};">
+	                        <th id="generatedThId227" class="calendarDataRowsLabelGrouped no-padding text-left" style="width:{{$ctrl.fixedColumnsWidth}};">
 	                        	<div style="width:98px" ng-click="$ctrl.setCurrentColSort('serviceName')" class="cellContent pull-left text-left">
 	                        		<i ng-if="$ctrl.currentColSort == '-serviceName' " class="fa fa-caret-down font-grey-salt"></i>
 	                        		<i ng-if="$ctrl.currentColSort == 'serviceName' " class="fa fa-caret-up font-grey-salt"></i>
@@ -70,11 +70,11 @@
 	                        </th>
 
 
-	                        <th ng-if="$ctrl.timeScale === $ctrl.TIMESCALE.DAY" ng-repeat="date in $ctrl.calendarDates track by $index" data-sortable="false" class="date" ng-class="{'today': $ctrl.calendarDates[$index].isNow}">
+	                        <th id="generatedThId228" ng-if="$ctrl.timeScale === $ctrl.TIMESCALE.DAY" ng-repeat="date in $ctrl.calendarDates track by $index" data-sortable="false" class="date" ng-class="{'today': $ctrl.calendarDates[$index].isNow}">
 
 	                            {{ $ctrl.calendarDates[$index].hour }}
 	                        </th>
-	                        <th ng-if="$ctrl.timeScale !== $ctrl.TIMESCALE.DAY" ng-repeat="date in $ctrl.calendarDates track by $index" data-sortable="false" class="date dayColumn" ng-class="{'weekend': $ctrl.calendarDates[$index].isWeekend, 'today': $ctrl.calendarDates[$index].isNow}" style="width: 44px">
+	                        <th id="generatedThId229" ng-if="$ctrl.timeScale !== $ctrl.TIMESCALE.DAY" ng-repeat="date in $ctrl.calendarDates track by $index" data-sortable="false" class="date dayColumn" ng-class="{'weekend': $ctrl.calendarDates[$index].isWeekend, 'today': $ctrl.calendarDates[$index].isNow}" style="width: 44px">
 
 	                            {{ $ctrl.calendarDates[$index].month }}
 	                            <br ng-show="$ctrl.timeScale === $ctrl.TIMESCALE.DEFAULT"/>

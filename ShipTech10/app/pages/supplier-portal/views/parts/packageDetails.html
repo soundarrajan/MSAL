@@ -170,10 +170,10 @@
                                 <table class="table table-striped table-hover table-bordered table-condensed st-product-info-table extraSpacedTable" id="product_info_table_{{ $index + 1 }}">
                                     <thead>
                                         <tr>
-                                            <th>
+                                            <th id="generatedThId234">
                                                 No quote
                                             </th>
-                                            <th ng-repeat="column in $ctrl.productColumns">
+                                            <th id="generatedThId235" ng-repeat="column in $ctrl.productColumns">
                                                 {{ column.caption | translate }}
                                             </th>
                                         </tr>
@@ -295,13 +295,13 @@
                     <table class="table table-striped table-hover table-bordered table-condensed st-product-info-table extraSpacedTable" id="product_add_cost_table_{{ $index + 1 }}">
                         <thead>
                             <tr>
-                                <th>
+                                <th id="generatedThId236">
                                     <span class="st-btn-icon" ng-click="$ctrl.addAdditionalCost(req.request.locations[0])">
                                         <i class="fa fa-plus clickable"></i>
                                     </span>
                                 </th>
-                                <th></th>
-                                <th ng-repeat="column in $ctrl.additionalCostColumns">
+                                <th id="generatedThId237"></th>
+                                <th id="generatedThId238" ng-repeat="column in $ctrl.additionalCostColumns">
                                     {{ column.caption | translate }}
                                 </th>
                             </tr>
@@ -424,23 +424,23 @@
                 <table class="table table-hover table-bordered table-stripped">
                     <thead>
                         <tr style="background-color: #eef1f5;">
-                            <th style="border: 3px solid #b3b7bb;"></th>
-                            <th colspan="4" style="text-align: center;border: 3px solid #b3b7bb;" ng-repeat="product in req.request.locations[0].products| filter:{isEnergyCalculationRequired:true}">
+                            <th id="generatedThId239" style="border: 3px solid #b3b7bb;"></th>
+                            <th id="generatedThId240" colspan="4" style="text-align: center;border: 3px solid #b3b7bb;" ng-repeat="product in req.request.locations[0].products| filter:{isEnergyCalculationRequired:true}">
                                 {{ product.product.name }}
                             </th>
                         </tr>
                         <tr>
-                            <th></th>
-                            <th ng-repeat-start="product in req.request.locations[0].products  | filter:{isEnergyCalculationRequired:true}" ng-if="product.isEnergyCalculationRequired">
+                            <th id="generatedThId241"></th>
+                            <th id="generatedThId242" ng-repeat-start="product in req.request.locations[0].products  | filter:{isEnergyCalculationRequired:true}" ng-if="product.isEnergyCalculationRequired">
                                 Min
                             </th>
-                            <th>
+                            <th id="generatedThId243">
                                 Max
                             </th>
-                            <th>
+                            <th id="generatedThId244">
                                 Offer
                             </th>
-                            <th ng-repeat-end>
+                            <th id="generatedThId245" ng-repeat-end>
                                 UOM
                             </th>
                         </tr>

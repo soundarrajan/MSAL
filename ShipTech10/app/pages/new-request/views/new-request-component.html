@@ -848,16 +848,16 @@
 	                                <table class="table table-striped table-hover table-bordered table-condensed st-product-info-table" id="product_info_table_{{ $index + 1 }} new_request_products">
 	                                    <thead>
 	                                        <tr>
-	                                            <th>  &nbsp;
+	                                            <th id="generatedThId199">  &nbsp;
 	                                                <span class="st-btn-icon" ng-show="!$ctrl.isReadonlyForm">
 	                                                    <a id="product_addRow_header" ng-click="$ctrl.addEmptyProduct(location.products, true)" ng-disabled="$ctrl.disableAllFields">
 	                                                        <i class="fa fa-plus clickable" ></i>
 	                                                    </a>
 	                                                </span>
 	                                            </th>
-	                                            <th></th>
+	                                            <th id="generatedThId200"></th>
 
-	                                            <th ng-repeat="column in $ctrl.ui.Locations.columns" ng-if="column.visible">
+	                                            <th id="generatedThId201" ng-repeat="column in $ctrl.ui.Locations.columns" ng-if="column.visible">
 	                                                {{ column.caption | translate }}
 	                                            </th>
 	                                        </tr>

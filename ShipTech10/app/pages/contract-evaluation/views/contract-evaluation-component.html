@@ -35,9 +35,9 @@
                     id="contract_evaluation">
                 <thead>
                     <tr>
-                        <th ng-if="$ctrl.evaluationsColumns.parameter.visible">{{$ctrl.evaluationsColumns.parameter.caption | translate}}</th>
-                        <th ng-if="$ctrl.evaluationsColumns.weight.visible">{{$ctrl.evaluationsColumns.weight.caption | translate}}</th>
-                        <th ng-repeat="contract in $ctrl.data track by $index"
+                        <th id="generatedThId138" ng-if="$ctrl.evaluationsColumns.parameter.visible">{{$ctrl.evaluationsColumns.parameter.caption | translate}}</th>
+                        <th id="generatedThId139" ng-if="$ctrl.evaluationsColumns.weight.visible">{{$ctrl.evaluationsColumns.weight.caption | translate}}</th>
+                        <th id="generatedThId140" ng-repeat="contract in $ctrl.data track by $index"
                             ng-if="$ctrl.getUIContractColumnByIndex($index).visible"
                             data-orderable="false">
                            {{$ctrl.getUIContractColumnByIndex($index).caption | translate}}
@@ -50,7 +50,7 @@
                                 <a class="link-underline-light">{{contract.name}}</a>
                             </div>
                         </th>
-                        <th data-orderable="false">&hellip;</th>
+                        <th id="generatedThId141" data-orderable="false">&hellip;</th>
                     </tr>
                 </thead>
                 <tbody>

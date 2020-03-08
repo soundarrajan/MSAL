@@ -6,7 +6,7 @@
         <thead style="background: #fff;">
             
             <tr>
-                <th  colspan="{{$ctrl.calculateFirsRowColSpan()}}" class="vessel-header text-uppercase font-white" style="background:#557b83; padding: 0px; padding-left: 2px !important; border-top: 6px solid #ffffff;">
+                <th id="generatedThId143"  colspan="{{$ctrl.calculateFirsRowColSpan()}}" class="vessel-header text-uppercase font-white" style="background:#557b83; padding: 0px; padding-left: 2px !important; border-top: 6px solid #ffffff;">
                     
                     <div class="wrap-counterparty-details" style="display: flex;vertical-align: middle;align-items: end;width: 100%;justify-content: space-between;">
 	                    <div style="display: inline-block; vertical-align: middle; padding: 2px; font-weight: initial;font-size: 16px;padding: 5px 5px;">
@@ -33,7 +33,7 @@
                 <!-- End expanded seller history tab -->
     
                 <!-- Collapsed request tab -->
-                <th ng-repeat-start="request in $ctrl.selectedRequests track by $index"
+                <th id="generatedThId144" ng-repeat-start="request in $ctrl.selectedRequests track by $index"
                 ng-show="$ctrl.isRequestTabExpanded($index) && !request.isDeleted" class="request-tab-collapsed {{$index == 0 ? 'left-border' : ''}}  border-selected-top bg-blue" style="padding-left:7px !important; border-top:none; border-left:4px solid #d1d8dd !important; width:100%;">
                     <span ng-if="$index == 0" class="font-white text-uppercase" style="font-weight: initial;font-size: 16px;padding: 5px 5px;display: block;">
                         Negotiation Details
@@ -42,20 +42,20 @@
                 <!-- End collapsed request tab -->
     
                 <!-- Expanded request tab -->
-                <th ng-show="!$ctrl.isRequestTabExpanded($index) && !request.isDeleted" colspan="{{request.newProductCount*2 + 1 }}" class="border-blue request-tab-expanded {{$index == 0 ? 'left-border' : ''}} border-selected-top bg-blue" style="padding-left:7px !important; border-top:none; border-left:4px solid #d1d8dd !important">
+                <th id="generatedThId145" ng-show="!$ctrl.isRequestTabExpanded($index) && !request.isDeleted" colspan="{{request.newProductCount*2 + 1 }}" class="border-blue request-tab-expanded {{$index == 0 ? 'left-border' : ''}} border-selected-top bg-blue" style="padding-left:7px !important; border-top:none; border-left:4px solid #d1d8dd !important">
 
                     <span ng-if="$index == 0" class="font-white text-uppercase" style="font-weight: initial;font-size: 16px;padding: 5px 5px;display: block;">
                         Negotiation Details
                     </span>
                 </th>
     
-                <th ng-repeat-end  style="border-left: 2px solid;" class="border-blue left-border border-selected-top bg-blue">
+                <th id="generatedThId146" ng-repeat-end  style="border-left: 2px solid;" class="border-blue left-border border-selected-top bg-blue">
                 </th>
                 <!-- End expanded request tab -->
             </tr>
     
             <tr>
-                <th colspan="7" style="position: relative; padding-left: 7px !important; padding-top: 7px !important; padding-bottom: 8px !important;">
+                <th id="generatedThId147" colspan="7" style="position: relative; padding-left: 7px !important; padding-top: 7px !important; padding-bottom: 8px !important;">
                     <form class="form-inline">
                         <div class="form-group-sm" style="display: flex;width: 100%;justify-content: space-between;align-items: center;">
                             <label class="mt-checkbox mt-checkbox-outline" ng-if="$ctrl.shouldDisplayCounterpartyTypeFilter(2)" style="white-space: nowrap; margin-bottom: 5px; margin-top: 5px; padding-left: 20px; margin-left:5px; margin-right:15px; padding-right: 15px;">
@@ -101,23 +101,23 @@
                 </th>
     
     
-                <th ng-if="$ctrl.counterpartyCommentsVisibility == 1" ng-show="$ctrl.allExpanded" style="{{$ctrl.counterpartyCommentsVisibility == 1 ? 'min-width: 415px;' : ''}} position:relative;">Comments Section 
+                <th id="generatedThId148" ng-if="$ctrl.counterpartyCommentsVisibility == 1" ng-show="$ctrl.allExpanded" style="{{$ctrl.counterpartyCommentsVisibility == 1 ? 'min-width: 415px;' : ''}} position:relative;">Comments Section
                     <span class="hidden" ng-init="$ctrl.commentsSectionIsExpanded = !$ctrl.checkIfGroupHasRFQ()" ng-if="$ctrl.requests"></span>
     
                 </th>
-                <th colspan="{{$ctrl.isSellerHistoryExpanded ? 10 : 4}}" ng-show="$ctrl.isSellerHistoryExpanded" ng-if="$ctrl.sellerHistoryVisibility == 1" class="text-uppercase">History</th>
+                <th id="generatedThId149" colspan="{{$ctrl.isSellerHistoryExpanded ? 10 : 4}}" ng-show="$ctrl.isSellerHistoryExpanded" ng-if="$ctrl.sellerHistoryVisibility == 1" class="text-uppercase">History</th>
     
     
     
                 <!-- Collapsed request tab -->
-                <th ng-repeat-start="request in $ctrl.selectedRequests track by $index"
+                <th id="generatedThId150" ng-repeat-start="request in $ctrl.selectedRequests track by $index"
                 ng-show="$ctrl.isRequestTabExpanded($index) && !request.isDeleted" class="request-tab-collapsed left-border border-selected-left border-selected-top font-white" style="background: #86cdd8">
                     <form class="form-inline">
                         <label class="control-label">{{request.name}} - {{request.vesselDetails.vessel.name}}</label>
                     </form>
                 </th>
     
-                <th ng-show="$ctrl.isRequestTabExpanded($index) && !request.isDeleted" style="position: relative; width:30px" class="expander right-border border-selected-right border-selected-top">
+                <th id="generatedThId151" ng-show="$ctrl.isRequestTabExpanded($index) && !request.isDeleted" style="position: relative; width:30px" class="expander right-border border-selected-right border-selected-top">
                     <a ng-click="$ctrl.toggleRequestTab($index);">
                         <i class="fa fa-2x fa-angle-right" style="position: absolute;top: 50%;left: 50%;transform:  translate(-50%, -50%);line-height: 50px;" ></i>
                     </a>
@@ -125,13 +125,13 @@
                 <!-- End collapsed request tab -->
     
                 <!-- Expanded request tab -->
-                <th ng-show="!$ctrl.isRequestTabExpanded($index) && !request.isDeleted" colspan="{{request.newProductCount*2 + 1 }}" class="request-tab-expanded left-border border-selected-left border-selected-top font-white" style="background: #86cdd8; position: relative;">
+                <th id="generatedThId152" ng-show="!$ctrl.isRequestTabExpanded($index) && !request.isDeleted" colspan="{{request.newProductCount*2 + 1 }}" class="request-tab-expanded left-border border-selected-left border-selected-top font-white" style="background: #86cdd8; position: relative;">
                     <form class="form-inline" style="position: absolute;height: 100%;top: 0;background: #f1f5f8;left: 0;min-width: 190px;text-align: center;color: #000;box-shadow: 0px 0px 8px 1px #3641504f; padding: 0 5px; font-size:16px;">
                         <label style="height: 100%;padding: 0;margin: 0;position: relative;float: left;display: flex;justify-content: center;align-items: center;" class="control-label"><b>{{request.name}} - {{request.vesselDetails.vessel.name}}</b></label>
                     </form>
                 </th>
     
-                <th ng-repeat-end ng-show="!$ctrl.isRequestTabExpanded($index) && !request.isDeleted" class="expander right-border border-selected-right border-selected-top" style="background: #86cdd8 !important; padding: 0 !important; border-left: 3px solid #86cdd8; position: relative;">
+                <th id="generatedThId153" ng-repeat-end ng-show="!$ctrl.isRequestTabExpanded($index) && !request.isDeleted" class="expander right-border border-selected-right border-selected-top" style="background: #86cdd8 !important; padding: 0 !important; border-left: 3px solid #86cdd8; position: relative;">
                     <a ng-click="$ctrl.toggleRequestTab($index);" class="pull-right" style="position:relative; line-height: 45px;display: block;padding: 0 10px;background: #fff;position: absolute;height: 100%;top: 0;right: 0;">
                         <i class="fa fa-2x fa-angle-left" style="position: absolute;top: 50%;left: 50%;transform:  translate(-50%, -50%);"></i>
                     </a>
@@ -144,7 +144,7 @@
     
             </tr>
             <tr>
-                <th colspan="7" rowspan="2" class="vessel-subheader" style="min-width: 450px;">
+                <th id="generatedThId154" colspan="7" rowspan="2" class="vessel-subheader" style="min-width: 450px;">
                     <form class="form-inline">
                         <div class="form-group-sm">
                             <select ng-model="$ctrl.sellerSortOrder" ng-change="$ctrl.sortSellers()" class="select form-control">
@@ -163,7 +163,7 @@
                         </div>
                     </form>
                 </th>
-                <th ng-if="$ctrl.counterpartyCommentsVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" rowspan="2" style="padding:0 !important">
+                <th id="generatedThId155" ng-if="$ctrl.counterpartyCommentsVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" rowspan="2" style="padding:0 !important">
                     <div class="pull-left energy-content-cell" style="width:100px; height: 100%;">General Seller Status</div>
                     <div class="pull-left energy-content-cell" style="width:100px; height: 100%;">General Seller Comments</div>
                     <div class="pull-left energy-content-cell" style="width:100px; height: 100%;">Port Seller Status</div>
@@ -171,7 +171,7 @@
                 </th>
                 <!-- collapsed history tab -->
 
-                <th ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" colspan="3" >
+                <th id="generatedThId156" ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" colspan="3" >
                 	<div style="margin-bottom: 10px">Volume</div>
                 	<div class="text-center">
                 		<span class="pull-left">3M</span>
@@ -179,19 +179,19 @@
                 		<span class="pull-right">12M</span>
                 	</div>
 	            </th>
-                <th ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" rowspan="2" style="min-width:170px;">
+                <th id="generatedThId157" ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" rowspan="2" style="min-width:170px;">
                 	<div style="margin-bottom: 10px">
 		                Exposure
                 	</div>
 	                (Delivered-Invoiced)
 	            </th>
-                <th ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" rowspan="2" style="min-width:170px;">Claims Last 12m<br/> Close-Open</th>
-                <th ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" colspan="{{$ctrl.isSellerHistoryExpanded ? 1 : 2}}" class="{{$ctrl.isSellerHistoryExpanded ? '' : 'left-border'}}" rowspan="2" >Avg. Drop <br/>(Last-First)<br/> ALL PRODUCTS</th>
-                <th ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" rowspan="2"  style="min-width:85px;" >Win rate <br/> Last 12m %</th>
-                <th ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" colspan="3" rowspan="2" ><!-- CREDIT PERIOD --> Payment term</th>
+                <th id="generatedThId158" ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" rowspan="2" style="min-width:170px;">Claims Last 12m<br/> Close-Open</th>
+                <th id="generatedThId159" ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" colspan="{{$ctrl.isSellerHistoryExpanded ? 1 : 2}}" class="{{$ctrl.isSellerHistoryExpanded ? '' : 'left-border'}}" rowspan="2" >Avg. Drop <br/>(Last-First)<br/> ALL PRODUCTS</th>
+                <th id="generatedThId160" ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" rowspan="2"  style="min-width:85px;" >Win rate <br/> Last 12m %</th>
+                <th id="generatedThId161" ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" colspan="3" rowspan="2" ><!-- CREDIT PERIOD --> Payment term</th>
         
                 <!-- Collapsed request tab -->
-                <th ng-repeat-start="requestProducts in $ctrl.products track by $index" ng-show="$ctrl.isRequestTabExpanded($index)" rowspan="2" colspan="2" class="left-border border-selected-left right-border border-selected-right bg-default" style="min-width: 220px;">
+                <th id="generatedThId162" ng-repeat-start="requestProducts in $ctrl.products track by $index" ng-show="$ctrl.isRequestTabExpanded($index)" rowspan="2" colspan="2" class="left-border border-selected-left right-border border-selected-right bg-default" style="min-width: 220px;">
                     <form class="form-inline">
                         <div ng-repeat="product in requestProducts" class="form-group-sm">
                             
@@ -203,17 +203,17 @@
                 <!-- End collapsed request tab -->
     
                 <!-- Expanded request tab -->
-                <th ng-show="!$ctrl.isRequestTabExpanded($index)" rowspan="2" class="left-border border-selected-left" style="background: #f1f5f8; width: 20px;">
+                <th id="generatedThId163" ng-show="!$ctrl.isRequestTabExpanded($index)" rowspan="2" class="left-border border-selected-left" style="background: #f1f5f8; width: 20px;">
                     <!-- Actions -->
                 </th>
 
-                <th ng-show="!$ctrl.isRequestTabExpanded($index)" rowspan="2" class="border-selected-left" style="display: none">
+                <th id="generatedThId164" ng-show="!$ctrl.isRequestTabExpanded($index)" rowspan="2" class="border-selected-left" style="display: none">
                     Incoterm
                 </th>
-                <th ng-show="!$ctrl.isRequestTabExpanded($index)" ng-class="{fakeHideColumn : $ctrl.totalColumnIsHidden == true}" rowspan="2" class="border-selected-left" style="background: #f1f5f8;">
+                <th id="generatedThId165" ng-show="!$ctrl.isRequestTabExpanded($index)" ng-class="{fakeHideColumn : $ctrl.totalColumnIsHidden == true}" rowspan="2" class="border-selected-left" style="background: #f1f5f8;">
                     TOTAL
                 </th>
-                <th width={{$ctrl.calculateProductColumnWidth()}} ng-repeat-start="(reqProdKey,product) in requestProducts" ng-show="!$ctrl.isRequestTabExpanded($parent.$index)" style="background: #f1f5f8 !important; min-width: 150px; max-width: 160px; position:relative;box-shadow: 0px 0px 8px 1px #3641504f; padding-left: 2px !important;">
+                <th id="generatedThId166" width={{$ctrl.calculateProductColumnWidth()}} ng-repeat-start="(reqProdKey,product) in requestProducts" ng-show="!$ctrl.isRequestTabExpanded($parent.$index)" style="background: #f1f5f8 !important; min-width: 150px; max-width: 160px; position:relative;box-shadow: 0px 0px 8px 1px #3641504f; padding-left: 2px !important;">
                     <form class="form-inline" style="width: calc(100% - 20px); display: flex; align-items: center; height: 35px;justify-content: space-between;">
                         <div class="form-group-sm">
                             
@@ -224,7 +224,7 @@
                 </th>
     
 
-                <th ng-repeat-end style="background: #f1f5f8 !important; padding: 0 !important; border-left: 2px solid #86cdd8; position: relative;   " ng-if="!$ctrl.isRequestTabExpanded($parent.$index)">
+                <th id="generatedThId167" ng-repeat-end style="background: #f1f5f8 !important; padding: 0 !important; border-left: 2px solid #86cdd8; position: relative;   " ng-if="!$ctrl.isRequestTabExpanded($parent.$index)">
 
                         <div class="wrapper" ng-show="!$ctrl.isRequestTabExpanded($parent.$parent.$index)"  >
                             <span ng-init="$ctrl.priceDetailsDefaultView.id == 1 ? $ctrl.priceExpanded['prod'+product.requestId+reqProdKey] = true : $ctrl.priceExpanded['prod'+product.requestId+reqProdKey] = false "> <!-- if Expanded --> </span>
@@ -249,38 +249,38 @@
 
                 </th>
 
-                <th ng-repeat-end ng-hide="true"></th>
+                <th id="generatedThId168" ng-repeat-end ng-hide="true"></th>
                 <!-- End expanded request tab -->
     
             </tr>
 
             <tr class="expanded-request-header hidden">
-                <th ng-if="$ctrl.counterpartyCommentsVisibility == 1" ng-show="$ctrl.allExpanded">
+                <th id="generatedThId169" ng-if="$ctrl.counterpartyCommentsVisibility == 1" ng-show="$ctrl.allExpanded">
                 </th>
-                <th class="forIncoterm"></th>
+                <th id="generatedThId170" class="forIncoterm"></th>
                 <!-- collapsed history tab -->
-                <th ng-show="$ctrl.isSellerHistoryExpanded" style="border-left: none">3m</th>
-                <th ng-show="$ctrl.isSellerHistoryExpanded">6m</th>
-                <th ng-show="$ctrl.isSellerHistoryExpanded">12m</th>
+                <th id="generatedThId171" ng-show="$ctrl.isSellerHistoryExpanded" style="border-left: none">3m</th>
+                <th id="generatedThId172" ng-show="$ctrl.isSellerHistoryExpanded">6m</th>
+                <th id="generatedThId173" ng-show="$ctrl.isSellerHistoryExpanded">12m</th>
                 <!-- End collapsed history tab -->
-                <th ng-if="$ctrl.sellerHistoryVisibility == 1" && ng-show="ctrl.isSellerContactHidden"></th>
+                <th id="generatedThId174" ng-if="$ctrl.sellerHistoryVisibility == 1" && ng-show="ctrl.isSellerContactHidden"></th>
                 <!-- Expanded request tab -->
-                <th ng-repeat-start="requestProducts in $ctrl.products track by $index" ng-hide="true"></th>
+                <th id="generatedThId175" ng-repeat-start="requestProducts in $ctrl.products track by $index" ng-hide="true"></th>
     
     
 
                 </th>
-                <th ng-repeat-end  ng-show="!$ctrl.isRequestTabExpanded($parent.$index)" style="padding: 0px !important; font-weight:600;">
+                <th id="generatedThId176" ng-repeat-end  ng-show="!$ctrl.isRequestTabExpanded($parent.$index)" style="padding: 0px !important; font-weight:600;">
     
                    </th>
-                <th ng-repeat-end ng-hide="true"></th>
+                <th id="generatedThId177" ng-repeat-end ng-hide="true"></th>
                 <!-- End Expanded request tab -->
             </tr>
     
         </thead>
         <tbody>
             <tr ng-repeat-start="(locationKey, location) in $ctrl.locationsGroupedByULI " ng-init="locationIndex = $index">
-                <th colspan="7" class="negotiationLocationRowGroup" style="position: relative;" >
+                <th id="generatedThId178" colspan="7" class="negotiationLocationRowGroup" style="position: relative;" >
                     <span class="">
     
                     </span>
@@ -296,19 +296,19 @@
                     </form>
                 </th>
     
-                <th ng-if="$ctrl.counterpartyCommentsVisibility == 1" ng-show="$ctrl.allExpanded"></th>
+                <th id="generatedThId179" ng-if="$ctrl.counterpartyCommentsVisibility == 1" ng-show="$ctrl.allExpanded"></th>
                 <!-- collapsed history tab -->
-                <th ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" colspan="2" class="left-border"></th>
-                <th ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" ><!-- volume 6m --></th>
-                <th ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" ><!-- terms --></th>
+                <th id="generatedThId180" ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" colspan="2" class="left-border"></th>
+                <th id="generatedThId181" ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" ><!-- volume 6m --></th>
+                <th id="generatedThId182" ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" ><!-- terms --></th>
                 <!-- end collapsed history tab -->
     
                 <!-- expanded history tab -->
-                <th ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" colspan="1" class="left-border"><!-- icons --></th>
-                <th ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" colspan="5" ></th>
+                <th id="generatedThId183" ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" colspan="1" class="left-border"><!-- icons --></th>
+                <th id="generatedThId184" ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" colspan="5" ></th>
                 <!-- end expanded history tab -->
     
-                <th ng-repeat-start="requestProducts in $ctrl.products track by $index" ng-show="$ctrl.isRequestTabExpanded($index)" colspan="2" class="left-border border-selected-left right-border border-selected-right">
+                <th id="generatedThId185" ng-repeat-start="requestProducts in $ctrl.products track by $index" ng-show="$ctrl.isRequestTabExpanded($index)" colspan="2" class="left-border border-selected-left right-border border-selected-right">
     
                 </th>
     
@@ -316,10 +316,10 @@
     
     
                 <!-- Expanded request tab -->
-                <th ng-show="!$ctrl.isRequestTabExpanded($index)" class="left-border no-top-border border-selected-left"></th>
-                <th ng-show="!$ctrl.isRequestTabExpanded($index)" class="no-top-border border-selected-left" style="display: none">incoterm</th>
-                <th ng-show="!$ctrl.isRequestTabExpanded($index)" class="no-top-border border-selected-left" ng-class="{fakeHideColumn : $ctrl.totalColumnIsHidden == true}" ></th>
-                <th ng-repeat-start="productTop in requestProducts" class="negotiationProductTh" ng-show="!$ctrl.isRequestTabExpanded($parent.$index)" class="no-top-border">
+                <th id="generatedThId186" ng-show="!$ctrl.isRequestTabExpanded($index)" class="left-border no-top-border border-selected-left"></th>
+                <th id="generatedThId187" ng-show="!$ctrl.isRequestTabExpanded($index)" class="no-top-border border-selected-left" style="display: none">incoterm</th>
+                <th id="generatedThId188" ng-show="!$ctrl.isRequestTabExpanded($index)" class="no-top-border border-selected-left" ng-class="{fakeHideColumn : $ctrl.totalColumnIsHidden == true}" ></th>
+                <th id="generatedThId189" ng-repeat-start="productTop in requestProducts" class="negotiationProductTh" ng-show="!$ctrl.isRequestTabExpanded($parent.$index)" class="no-top-border">
                     <span ng-init="productTop.productLocations['L' + location[0].uniqueLocationIdentifier] ? product = productTop.productLocations['L' + location[0].uniqueLocationIdentifier] : ''">
 
                     <span ng-if="product">
@@ -343,7 +343,7 @@
                     </span>
                 </th>
     
-                <th ng-repeat-end ng-show="!$ctrl.isRequestTabExpanded($parent.$index)" style="padding: 0px !important; font-weight:600; border-top: none">
+                <th id="generatedThId190" ng-repeat-end ng-show="!$ctrl.isRequestTabExpanded($parent.$index)" style="padding: 0px !important; font-weight:600; border-top: none">
                     <span ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey]">
 
                         <div style="width:100px" class="energy-content-cell"><span style="opacity:0">Price Diff</span></div>
@@ -356,7 +356,7 @@
                         <div style="width:100px" class="energy-content-cell"><span style="opacity:0">Amount</span></div>
                     </span>
                 </th>
-                <th ng-repeat-end ng-hide="true">
+                <th id="generatedThId191" ng-repeat-end ng-hide="true">
                 <!-- End expanded request tab -->
     
             </tr>
@@ -386,7 +386,7 @@
                     </form>
                 </td>
     
-                <th ng-if="$ctrl.counterpartyCommentsVisibility == 1" ng-show="$ctrl.allExpanded">
+                <th id="generatedThId192" ng-if="$ctrl.counterpartyCommentsVisibility == 1" ng-show="$ctrl.allExpanded">
     
                 </th>
                 <td ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" colspan="{{$ctrl.isSellerHistoryExpanded ? 10 : 4}}" class="text-uppercase left-border border-selected-left"></td>

@@ -156,7 +156,7 @@
                                     id="product_info_table_{{$index + 1}}">
                             <thead>
                                 <tr>
-                                    <th ng-repeat="column in $ctrl.productColumns">
+                                    <th id="generatedThId116" ng-repeat="column in $ctrl.productColumns">
                                         <label ng-if="$last" class="mt-checkbox mt-checkbox-outline">
                                             <input type="checkbox"
                                                     ng-model="$ctrl.productTableNoQuoteCheckAll"
@@ -304,9 +304,9 @@
                                     id="product_add_cost_table_{{$index + 1}}">
                             <thead>
                                 <tr>
-                                    <th></th>
-                                    <th></th>
-                                    <th ng-repeat="column in $ctrl.additionalCostColumns">
+                                    <th id="generatedThId117"></th>
+                                    <th id="generatedThId118"></th>
+                                    <th id="generatedThId119" ng-repeat="column in $ctrl.additionalCostColumns">
                                         {{column.caption | translate}}
                                     </th>
                                 </tr>

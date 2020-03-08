@@ -1075,16 +1075,16 @@
                         <table class="table table-hover table-bordered table-stripped" id="new_order_products">
                             <thead>
                             <tr>
-                                <th ng-if="!$ctrl.data.id || $ctrl.data.status.id == $ctrl.STATUS['Confirmed'].id || $ctrl.data.status.id == $ctrl.STATUS['Amended'].id || $ctrl.data.status.id == $ctrl.STATUS['Stemmed'].id || $ctrl.data.status.id == $ctrl.STATUS['WaitingForApproval'].id || $ctrl.data.status.id == $ctrl.STATUS['Approved'].id || $ctrl.data.status.id == $ctrl.STATUS['Rejected'].id"
+                                <th id="generatedThId193" ng-if="!$ctrl.data.id || $ctrl.data.status.id == $ctrl.STATUS['Confirmed'].id || $ctrl.data.status.id == $ctrl.STATUS['Amended'].id || $ctrl.data.status.id == $ctrl.STATUS['Stemmed'].id || $ctrl.data.status.id == $ctrl.STATUS['WaitingForApproval'].id || $ctrl.data.status.id == $ctrl.STATUS['Approved'].id || $ctrl.data.status.id == $ctrl.STATUS['Rejected'].id"
                                     style="vertical-align: middle;">
                                         <span class="clickable" id="product_addRow_header"
                                               ng-click="$ctrl.addNewProduct()">
                                             <i class="fa fa-plus st-btn-icon"></i>
                                         </span>
                                 </th>
-                                <th ng-if="$ctrl.data.status.id != $ctrl.STATUS['Cancelled'].id"
+                                <th id="generatedThId194" ng-if="$ctrl.data.status.id != $ctrl.STATUS['Cancelled'].id"
                                     style="vertical-align: middle;"></th>
-                                <th ng-if="column.visible" ng-repeat="column in $ctrl.productColumns">
+                                <th id="generatedThId195" ng-if="column.visible" ng-repeat="column in $ctrl.productColumns">
                                     {{ column.caption | translate }}
                                 </th>
                             </tr>
@@ -1530,7 +1530,7 @@
                         <table class="table table-hover table-bordered table-stripped" id="new_order_additional_costs">
                             <thead>
                             <tr>
-                                <th>
+                                <th id="generatedThId196">
                                         <span class="clickable"
                                               id="addCost_addRow_header"
                                               ng-click="$ctrl.addAdditionalCost()"
@@ -1538,8 +1538,8 @@
                                             <i class="fa fa-plus st-btn-icon"></i>
                                         </span>
                                 </th>
-                                <th></th>
-                                <th ng-repeat="column in $ctrl.additionalCostColumns">
+                                <th id="generatedThId197"></th>
+                                <th id="generatedThId198" ng-repeat="column in $ctrl.additionalCostColumns">
                                     {{ column.caption | translate }}
                                 </th>
                             </tr>

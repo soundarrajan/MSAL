@@ -10,17 +10,17 @@
 		<table>
 			<thead>
 				<tr ng-if="!voyage.id">
-					<th>
+					<th id="generatedThId224">
 						<span >
 							{{voyage[0].portCode}}
 						</span>
 					</th>
-					<th ng-repeat="(key2, bunkerPlan) in voyage">
+					<th id="generatedThId225" ng-repeat="(key2, bunkerPlan) in voyage">
 						{{bunkerPlan.bunkerPlan.productType}}
 					</th>
 				</tr>
 				<tr ng-if="voyage.id">
-					<th>
+					<th id="generatedThId226">
 						{{voyage.portCode}}
 					</th>
 				</tr>				

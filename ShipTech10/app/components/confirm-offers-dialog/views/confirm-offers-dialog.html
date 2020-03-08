@@ -19,10 +19,10 @@
         <table class="table table-striped table-bordered" ng-class="$ctrl.requestOfferItems.length> 0 ? 'has_data' : 'no_data'" >
             <thead>
                 <tr>
-                    <th ng-repeat="column in $ctrl.ui.offers.columns" ng-if="column.sortableName != 'confirmedQuantity' || (column.sortableName == 'confirmedQuantity' && $ctrl.captureConfirmedQuantity.name == 'Offer')">
+                    <th id="generatedThId100" ng-repeat="column in $ctrl.ui.offers.columns" ng-if="column.sortableName != 'confirmedQuantity' || (column.sortableName == 'confirmedQuantity' && $ctrl.captureConfirmedQuantity.name == 'Offer')">
                         {{ column.caption | translate }}
                     </th>
-                    <th>
+                    <th id="generatedThId101">
                         Physical Supplier
                     </th>
                 </tr>
@@ -69,7 +69,7 @@
             <table class="table table-striped table-bordered" ng-class="$ctrl.availableContractItems.length> 0 ? 'has_data' : 'no_data'">
                 <thead>
                     <tr>
-                        <th ng-repeat="column in $ctrl.ui.contracts.columns">
+                        <th id="generatedThId102" ng-repeat="column in $ctrl.ui.contracts.columns">
                             {{ column.caption | translate }}
                         </th>
                     </tr>

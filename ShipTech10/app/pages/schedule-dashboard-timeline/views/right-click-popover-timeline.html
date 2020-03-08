@@ -14,9 +14,9 @@
 			<table ng-if="$ctrl.groupedVoyages.hasEntity[voyage].hasBunkerPlan || $ctrl.groupedVoyages.hasEntity[voyage].hasRequest || $ctrl.groupedVoyages.hasEntity[voyage].hasOrder" style="border-spacing: 5px 5px;border-collapse: separate;">
 				<thead>
 					<tr>
-						<th style="width: 90px;max-width: 100px; padding-left: 0">
+						<th id="generatedThId232" style="width: 90px;max-width: 100px; padding-left: 0">
 						</th>
-						<th ng-repeat="(key2, productType) in $ctrl.groupedVoyages.allProductTypes[voyage] track by $index" class="productType">
+						<th id="generatedThId233" ng-repeat="(key2, productType) in $ctrl.groupedVoyages.allProductTypes[voyage] track by $index" class="productType">
 							{{productType}}
 						</th>
 					</tr>
