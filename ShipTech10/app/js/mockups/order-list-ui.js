@@ -1,4 +1,4 @@
-{
+export.module = {
     "Orders": {
         "columns": [{
             "caption": "",

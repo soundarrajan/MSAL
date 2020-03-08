@@ -1,4 +1,4 @@
-{
+export.module = {
     "Contracts": {
 	    "columns": [
 	        {

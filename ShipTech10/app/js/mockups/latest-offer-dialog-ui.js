@@ -1,4 +1,4 @@
-{
+export.module = {
     "title": "PAGES.LATEST_OFFER_DIALOG.TITLE",
     "columns": [
         {

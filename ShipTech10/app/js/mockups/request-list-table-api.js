@@ -1,4 +1,4 @@
-{"payload":[{
+export.module = {"payload":[{
   "requestName": "REQ 23",
   "requestDate": "2000-08-29T00:00:00",
   "requestStatus": "Redelivery",

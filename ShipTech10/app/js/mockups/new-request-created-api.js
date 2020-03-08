@@ -1,4 +1,4 @@
-{
+export.module = {
 	"payload": {
 		"vesselDetails": {
 			"vessel": {

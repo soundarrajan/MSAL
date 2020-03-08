@@ -1,4 +1,4 @@
-{
+export.module = {
     "Panels": {
         "columns": [{
             "caption": "",

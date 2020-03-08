@@ -1,4 +1,4 @@
-{
+export.module = {
     "vessels": {
         "title": "Vessel",
         "columns": [{
