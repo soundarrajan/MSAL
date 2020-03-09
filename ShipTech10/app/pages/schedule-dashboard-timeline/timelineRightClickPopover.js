@@ -13,6 +13,7 @@ angular.module('shiptech.components')
 		    ctrl.$onChanges = function(changes) {
 		    	$scope.test = new Date();
 		    	$scope.rightClickPopoverData = changes.rightClickPopoverData.currentValue;
+                var todayVoyages;
 		    	$timeout(() => {
 		    		todayVoyages = changes.rightClickPopoverData.currentValue.todayVoyages;
 		    		if (changes.rightClickPopoverData.currentValue.bunkerDetails) {
@@ -26,9 +27,9 @@ angular.module('shiptech.components')
 		    	ctrl.vesselName = changes.rightClickPopoverData.currentValue.todayVoyages[0].VesselName;
 		    };
 		    $scope.formatDateToMomentFormat = function(dateFormat) {
-	            dbFormat = dateFormat;
-	            hasDayOfWeek = false;
-	            currentFormat = angular.copy(dateFormat);
+	            var dbFormat = dateFormat;
+	            var hasDayOfWeek = false;
+	            var currentFormat = angular.copy(dateFormat);
 	            if (currentFormat.startsWith('DDD ')) {
 	                hasDayOfWeek = true;
 	                currentFormat = currentFormat.split('DDD ')[1];
@@ -41,47 +42,47 @@ angular.module('shiptech.components')
 	            return currentFormat;
       		 };
 
-		    normalizeBunkerDetails = function(bunkerDetails) {
-		    	normalizedBunkerDetails = [];
+		    var normalizeBunkerDetails = function(bunkerDetails) {
+		    	var normalizedBunkerDetails = [];
 		    	$.each(bunkerDetails, (k, v) => {
-		    		itemStructure = {
-					    voyageDetail: {
-					    	request: {
-					    		requestDetail : {
-					    						vesselName: v.vesselName,
-					    						locationCode: v.portCode,
-					    						eta: v.eta
-					    							}
-					    	},
-					        id: v.voyageDetailId,
-					        hasStrategy: v.hasStrategy,
-					        bunkerPlan: v.bunkerPlan
-					    },
-                    };
+    		    	var	itemStructure = {
+    					    voyageDetail: {
+    					    	request: {
+    					    		requestDetail : {
+    					    						vesselName: v.vesselName,
+    					    						locationCode: v.portCode,
+    					    						eta: v.eta
+    					    							}
+    					    	},
+    					        id: v.voyageDetailId,
+    					        hasStrategy: v.hasStrategy,
+    					        bunkerPlan: v.bunkerPlan
+    					    },
+                        };
                     normalizedBunkerDetails.push(itemStructure);
 		    	});
 		    	return normalizedBunkerDetails;
 		    };
 
-		    groupVoyages = function(voyages) {
-		    	groupedVoyages = _.groupBy(voyages, 'voyageDetail.id');
+		    var groupVoyages = function(voyages) {
+		    	var groupedVoyages = _.groupBy(voyages, 'voyageDetail.id');
 
 		    	ctrl.groupedVoyagesDetails = angular.copy(groupedVoyages);
 
-		    	groupedVoyagesBunker = angular.copy(groupedVoyages);
-		    	groupedVoyagesRequest = angular.copy(groupedVoyages);
-		    	groupedVoyagesOrder = angular.copy(groupedVoyages);
-		    	groupedVoyagesAllRequestProductsAreStemmed = [];
-		    	allProductTypes = {};
-	    		orderProductTypes = {};
+		    	var groupedVoyagesBunker = angular.copy(groupedVoyages);
+		    	var groupedVoyagesRequest = angular.copy(groupedVoyages);
+		    	var groupedVoyagesOrder = angular.copy(groupedVoyages);
+		    	var groupedVoyagesAllRequestProductsAreStemmed = [];
+		    	var allProductTypes = {};
+	    		var orderProductTypes = {};
 
-		    	uniqueVoyages = [];
+		    	var uniqueVoyages = [];
 		    	$.each(voyages, (k, v) => {
 		    		uniqueVoyages.push(v.voyageDetail.id);
 		    	});
 		    	uniqueVoyages = _.uniq(uniqueVoyages);
 
-		    	hasEntity = {};
+		    	var hasEntity = {};
 		    	$.each(uniqueVoyages, (k, v) => {
 	    			hasEntity[v] = {
 	    				hasBunkerPlan : false,
@@ -224,7 +225,7 @@ angular.module('shiptech.components')
 		    };
 
 		    ctrl.getPriorityStatus = function(voyage) {
-                highestPriorityStatus = _.maxBy(ctrl.groupedVoyagesDetails[voyage], 'voyageDetail.portStatusPriority');
+                var highestPriorityStatus = _.maxBy(ctrl.groupedVoyagesDetails[voyage], 'voyageDetail.portStatusPriority');
                 if (highestPriorityStatus) {
                     var colorCode = statusColors.getColorCodeFromLabels(highestPriorityStatus.voyageDetail.portStatus, $listsCache.ScheduleDashboardLabelConfiguration);
                     highestPriorityStatus.voyageDetail.portStatus.color = colorCode;
@@ -281,7 +282,7 @@ angular.module('shiptech.components')
 
 	        ctrl.cancelStrategy = function(bunkerPlanId) {
                 let url = `${API.BASE_URL_DATA_MASTERS }/api/masters/vessels/cancelStrategy`;
-                payload = {
+                var payload = {
                     payload : bunkerPlanId
                 };
                 let currentBunkerPlanId = bunkerPlanId;
@@ -299,7 +300,7 @@ angular.module('shiptech.components')
 	            let dateFormat = ctrl.dateFormat;
 	            let hasDayOfWeek = false;
 	            dateFormat = dateFormat.replace(/D/g, 'd').replace(/Y/g, 'y');
-	            formattedDate = moment(cellValue).format(ctrl.dateFormat);
+	            var formattedDate = moment(cellValue).format(ctrl.dateFormat);
 	            if (formattedDate) {
 	                let array = formattedDate.split(' ');
 	                let format = [];

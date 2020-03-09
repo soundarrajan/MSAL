@@ -46,7 +46,7 @@ angular.module('shiptech.pages').controller('SelectContractController', [ '$wind
             ctrl.lookupType = LOOKUP_TYPE.CONTRACT;
         };
         ctrl.contractIsInRequestProducts = function(contract) {
-            isInContract = false;
+            var isInContract = false;
             $.each(ctrl.productsContractIds, (pciK, pciV) => {
                 if (contract.contract.id == pciV.contractId && contract.requestProductId == pciV.requestProductId) {
                     isInContract = true;
@@ -81,7 +81,7 @@ angular.module('shiptech.pages').controller('SelectContractController', [ '$wind
         }
 
         function addProductToSet(product, set) {
-            found = false;
+            var found = false;
             $.each(set, (key, val) => {
                 if (val.id == product.id) {
                     found = true;
@@ -161,7 +161,7 @@ angular.module('shiptech.pages').controller('SelectContractController', [ '$wind
 
         $rootScope.$on('best_contracts_checkbox', (e, arg) => {
             ctrl.checkboxes = []; // reinit array
-            anyChecked = _.reduce(arg, (all, val, key) => {
+            var anyChecked = _.reduce(arg, (all, val, key) => {
                 if(typeof val != 'undefined') {
                     if(val.isChecked) {
                         all = all || val.isChecked; // count true
@@ -216,9 +216,10 @@ angular.module('shiptech.pages').controller('SelectContractController', [ '$wind
         ctrl.confirmContractSelection = function() {
             ctrl.buttonsDisabled = true;
             requestProductIds = [];
-            contractProductIds = [];
-            contractIds = [];
-            errors = 0;
+            var contractProductIds = [];
+            var contractIds = [];
+            var errors = 0;
+            var responseOrders, responseOrderData;
             console.log(ctrl.selectedContracts);
             $.each(ctrl.selectedContracts, (ck, cv) => {
                 if (cv.requestProductId) {
@@ -239,7 +240,7 @@ angular.module('shiptech.pages').controller('SelectContractController', [ '$wind
                         $('#confirm').modal('show');
                         responseOrders = null;
                     } else {
-                        selectedProductsRequestLocationIds = [];
+                        var  selectedProductsRequestLocationIds = [];
                         $.each(responseOrderData, (locK, locV) => {
                             $.each(ctrl.selectedContracts, (ck, cv) => {
                                 if (cv.requestLocationId == locV.requestLocationId) {
@@ -258,12 +259,13 @@ angular.module('shiptech.pages').controller('SelectContractController', [ '$wind
                             }
                         });
                         // selectedContracts, selectedProducts, orderFromResponse
-                        ordersWithErrorsIdx = [];
+                        var ordersWithErrorsIdx = [];
+                        var errorMessage, errorType;
                         $.each(ctrl.selectedContracts, (selConK, selConV) => {
                             $.each(responseOrders, (respOrdK, respOrdV) => {
                                 if (ctrl.selectedContracts[selConK].requestLocationId == responseOrders[respOrdK].requestLocationId) {
-                                    hasError = false;
-                                    errorMessages = [];
+                                    var hasError = false;
+                                    var errorMessages = [];
                                     errorType = [];
                                     if (responseOrders.length > 0) {
                                         if (ctrl.selectedContracts[selConK].currency.id != responseOrders[respOrdK].products[0].currency.id) {
@@ -286,7 +288,7 @@ angular.module('shiptech.pages').controller('SelectContractController', [ '$wind
                                                 hasError = true;
                                             }
                                             if (hasError) {
-                                                errorTypes = errorType.join(' and ');
+                                                var errorTypes = errorType.join(' and ');
                                                 if (errorTypes) {
                                                     errorMessage = `Unable to add ${ $scope.getProductNameByRequestProductId(selConV.requestProductId) } for ${ ctrl.request.vesselDetails.vessel.name } in existing stemmed order ${ responseOrders[respOrdK].id } due to conflicting ${ errorTypes }. New order will be created.${ errorTypes } will be only that did not met the criteria for extending the order`;
                                                 }
@@ -315,7 +317,7 @@ angular.module('shiptech.pages').controller('SelectContractController', [ '$wind
                         contractProductId: contractProductIds.join(','),
                         requestProductId: requestProductIds.join(',')
                     };
-                    broadcastDataConfirmation = {
+                    var broadcastDataConfirmation = {
                         confirmationProductOrders: ctrl.confirmationProductOrders,
                         requestOrder: responseOrders
                     };
@@ -329,6 +331,7 @@ angular.module('shiptech.pages').controller('SelectContractController', [ '$wind
         };
 
         $scope.getProductLocationETAByRequestProductId = function(rpid) {
+            var foundProduct;
             $.each(ctrl.request.locations, (locK, locV) => {
                 $.each(locV.products, (prodK, prodV) => {
                     if (prodV.id == rpid) {
@@ -340,6 +343,7 @@ angular.module('shiptech.pages').controller('SelectContractController', [ '$wind
         };
 
         $scope.getProductNameByRequestProductId = function(rpid) {
+            var foundProduct;
             $.each(ctrl.request.locations, (locK, locV) => {
                 $.each(locV.products, (prodK, prodV) => {
                     if (prodV.id == rpid) {
@@ -355,7 +359,7 @@ angular.module('shiptech.pages').controller('SelectContractController', [ '$wind
                 ctrl.contracts = CLC.jqGrid.Ascensys.gridObject.rows;
             }
 
-            selected = 0;
+            var selected = 0;
 
             // if some contracts are selected, check if they match (by requestProductId)
             ctrl.selectedContracts = [];
@@ -381,7 +385,7 @@ angular.module('shiptech.pages').controller('SelectContractController', [ '$wind
                 ctrl.contractHasProduct = false;
             }
 
-            dataToBroadcast = {
+            var dataToBroadcast = {
             	checkboxes : ctrl.checkboxes,
             };
 

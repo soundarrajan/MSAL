@@ -26,6 +26,7 @@ angular.module('shiptech.pages').controller('SellerCardController', [ '$scope', 
             ctrl.currency = settings.payload.tenantFormats.currency;
         });
         if ($stateParams.token) {
+            var quoteByDateExpired, timeNowUtc, quoteByDateInUtc;
             tenantModel.getForSupplierPortal(ctrl.token).then((data) => {
                 ctrl.tenantSettings = data.payload;
                 // console.log('Tenant Settings: ', ctrl.tenantSettings);
@@ -100,6 +101,7 @@ angular.module('shiptech.pages').controller('SellerCardController', [ '$scope', 
             });
         }
         ctrl.$onChanges = function(change) {
+            var quoteByDateExpired, timeNowUtc, quoteByDateInUtc;
             if (typeof change.source != 'undefined') {
                 if (change.source.currentValue) {
                     tenantModel.get().then((data) => {
@@ -299,8 +301,9 @@ angular.module('shiptech.pages').controller('SellerCardController', [ '$scope', 
          * @returns {var}
          */
         function getLocationsSuppliers() {
-            locPhy = [];
+            var locPhy = [];
             ctrl.suppliers = [];
+            var loc,length uniqueIdentifier, seller;
             // debugger
             $.each(ctrl.request.locations, (locK, locV) => {
                 locV.offer = ctrl.request.offers[0];
@@ -492,8 +495,8 @@ angular.module('shiptech.pages').controller('SellerCardController', [ '$scope', 
         }
 
         function calculateProductAmount(product, loc) {
-            sellerKey = ctrl.getSellerKey(loc, product);
-            currentConfirmedQtyPrice = 1;
+            var sellerKey = ctrl.getSellerKey(loc, product);
+            var currentConfirmedQtyPrice = 1;
             if (typeof product.confirmedQtyPrice != 'undefined') {
                 currentConfirmedQtyPrice = product.confirmedQtyPrice;
             }
@@ -502,6 +505,7 @@ angular.module('shiptech.pages').controller('SellerCardController', [ '$scope', 
 
         function sumProductMaxQuantities(products, additionalCost) {
             let result = 0;
+            var product;
             for (let i = 0; i < products.length; i++) {
                 product = products[i];
                 if (additionalCost.isAllProductsCost || product.id == additionalCost.parentProductId) {
@@ -603,6 +607,7 @@ angular.module('shiptech.pages').controller('SellerCardController', [ '$scope', 
             let nonInputInvalidFields,
                 offers,
                 offerForLocation;
+            var sellerKey;
             if (ctrl.displayLocations[0].products[0].sellers[0].offers[0].contactCounterparty === null) {
                 ctrl.invalidFields = [ 'Quoted By' ];
                 return false;
@@ -733,6 +738,7 @@ angular.module('shiptech.pages').controller('SellerCardController', [ '$scope', 
             if (typeof seller.offers[0] == 'undefined') {
                 return;
             }
+            var currentOfferDate;
             let latestDate = moment(seller.offers[0].quoteDate, moment.ISO_8601);
             let latestOffer = seller.offers[0];
             let currentDate;
@@ -750,6 +756,7 @@ angular.module('shiptech.pages').controller('SellerCardController', [ '$scope', 
         };
 
         function addPriceUomChg(additionalCost, location) {
+            var prod;
             if (!additionalCost.priceUom) {
                 return;
             }
@@ -776,10 +783,10 @@ angular.module('shiptech.pages').controller('SellerCardController', [ '$scope', 
         };
 
         function productUomChg(product, loc) {
-            sellerKey = ctrl.getSellerKey(loc, product);
+            var sellerKey = ctrl.getSellerKey(loc, product);
             if (!$stateParams.token) {
                 if (product.canBeEdited) {
-                    data = {
+                    var data = {
                         Payload: {
                             ProductId: product.product.id,
                             Quantity: 1,
@@ -913,6 +920,7 @@ angular.module('shiptech.pages').controller('SellerCardController', [ '$scope', 
             let i,
                 j,
                 offerForLocation = getOfferForLocation(location);
+            var sellerKey;
             for (i = 0; i < offerForLocation.additionalCosts.length; i++) {
                 if (additionalCost.fakeId === offerForLocation.additionalCosts[i].fakeId) {
                     return {
@@ -1141,6 +1149,7 @@ angular.module('shiptech.pages').controller('SellerCardController', [ '$scope', 
             model[property] = value;
         };
         ctrl.addSupplier = function(supplier) {
+            var newLocation, location_supplier = [];
             error = 0;
             if (typeof location_supplier == 'undefined') {
                 location_supplier = [];
@@ -1224,8 +1233,8 @@ angular.module('shiptech.pages').controller('SellerCardController', [ '$scope', 
             });
         };
         ctrl.productReasonChanged = function(reason, product, location) {
-            productsCount = location.products.length;
-            sameReason = 0;
+            var productsCount = location.products.length;
+            var sameReason = 0;
             $.each(location.products, (k, v) => {
                 if (v.sellers[0].offers[0].noQuoteReason) {
                     if (v.sellers[0].offers[0].noQuoteReason.id == reason.id) {
@@ -1245,6 +1254,7 @@ angular.module('shiptech.pages').controller('SellerCardController', [ '$scope', 
                 offers,
                 offerForLocation;
             ctrl.invalidFields = [];
+            var sellerKey;
             $.each($scope.forms.products, (k, v) => {
                 if (!v.$valid) {
                     ctrl.invalidFields.push(getInvalidFields(v));
