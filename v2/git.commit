@@ -1,11 +1,7 @@
-﻿commit 0e35bd11919b46d9a3260367e158723dc9d7fbb1
-Author: Sergiu.vasui <Sergiu.vasui@24software.ro>
-Date:   Wed Mar 4 10:09:45 2020 +0000
+﻿commit d5b7df0cc5860273a3045b8bf42fa9864dfa47a3
+Author: Pavithra <pavithra.m@inatech.com>
+Date:   Mon Mar 9 16:07:02 2020 +0530
 
-    Merged PR 3182: Put the filter text inline with the pager component above the grids
-    
-    Put the filter text inline with the pager component above the grids
-    
-    Related work items: #20510, #21758
+    Default Filter Styles Update
 
 branch: master

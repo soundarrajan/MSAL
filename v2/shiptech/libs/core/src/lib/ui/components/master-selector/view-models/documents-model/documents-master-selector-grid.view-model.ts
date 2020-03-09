@@ -78,7 +78,7 @@ export class DocumentsMasterSelectorGridViewModel extends BaseGridViewModel {
     enableBrowserTooltips: true,
     singleClickEdit: true,
     getRowNodeId: (data: any) =>
-      data?.id?.toString() ?? window.crypto.getRandomValues( new Uint8Array(1)).toString(),
+      data?.id?.toString() ?? Math.random().toString(),
     defaultColDef: {
       sortable: true,
       resizable: true,

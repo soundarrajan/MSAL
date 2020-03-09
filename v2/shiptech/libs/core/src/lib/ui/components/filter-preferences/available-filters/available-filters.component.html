@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>
+<h2 mat-dialog-title class="m-b-0">
   Available Filters
   <mat-icon matSuffix id="dialogCloseButton" class="float-right" (click)="cancelEditing()">close </mat-icon>
 </h2>
@@ -18,7 +18,7 @@
               matInput
               required
               type="text"
-              class="pt-sm-1 ml-sm-3"
+              class=""
               [ngClass]="{ 'text-ellipsis': !isEditing, 'text-underline': isEditing }"
               [(ngModel)]="filter.name"
               [readonly]="!isEditing"
@@ -36,7 +36,7 @@
       </div>
     </mat-chip-list>
     <div *ngIf="hasAvailableFilterItems">
-      <h5 mat-dialog-title>No Available Filters</h5>
+      <h5 mat-dialog-title class="m-b-0">No Available Filters</h5>
     </div>
   </div>
 </mat-dialog-content>
@@ -44,12 +44,12 @@
   <button mat-button (click)="cancelEditing()">CANCEL</button>
   <button *ngIf="isEditing" class="blue-outline-button" mat-button mat-stroked-button (click)="isEditing = false">DONE</button>
   <button class="blue-outline-button" mat-button mat-stroked-button *ngIf="!isEditing" (click)="enableEditing()">EDIT</button>
-  <button class="blue-button" mat-button cdkFocusInitial (click)="updateAllFilters()">APPLY</button>
+  <button class="blue-button default-button" mat-button cdkFocusInitial (click)="updateAllFilters()">APPLY</button>
 </mat-dialog-actions>
 
 <ng-template #deleteFilter>
   <div id="deleteFilterPopup">
-    <h2 mat-dialog-title>
+    <h2 mat-dialog-title class="m-b-0">
       Are you sure want to delete
       <mat-icon matSuffix id="dialogCloseButtonDl" (click)="deleteFilterDialog.close()" class="float-right cursor-pointer">close </mat-icon>
     </h2>

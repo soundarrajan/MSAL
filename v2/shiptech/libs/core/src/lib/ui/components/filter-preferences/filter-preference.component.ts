@@ -154,7 +154,7 @@ export class FilterPreferencesComponent implements OnDestroy {
     }
     // NOTE: We are creating a new filter preset
     const newFilter = new FilterPreferenceViewModel({
-      id: this.preferenceNameFormControl.value + window.crypto.getRandomValues( new Uint8Array(1)), // NOTE: to discuss how to generate ID
+      id: this.preferenceNameFormControl.value + Math.random(), // NOTE: to discuss how to generate ID
       name: this.preferenceNameFormControl.value,
       filterModels: {}, // NOTE: Filter models will be set for the current preference when it will be saved by getting the filter model from the grid
       isPinned: true,

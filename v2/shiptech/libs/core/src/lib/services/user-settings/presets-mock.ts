@@ -4,7 +4,7 @@ import { IUserSettingResponse } from './request-response';
 export function getFilterModels(n: number = 5): any {
   const presets = [
     ..._.range(1, n).map(() => ({
-      id: window.crypto.getRandomValues( new Uint8Array(1))
+      id: Math.random()
         .toString(36)
         .replace(/[^a-z]+/g, '')
         .substr(0, 5),
@@ -46,7 +46,7 @@ export function getFilterPresets(n: number = 5): any[] {
           id: id + '123123123',
           name: 'test',
           filterModels: {
-            [window.crypto.getRandomValues( new Uint8Array(1))
+            [Math.random()
               .toString(36)
               .replace(/[^a-z]+/g, '')
               .substr(0, 5)]: getFilterModels()

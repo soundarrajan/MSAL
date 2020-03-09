@@ -79,7 +79,7 @@ export class AppBusyService {
 
   @ObservableException()
   public while<T>(observable: Observable<T>): Observable<T> {
-    const id = (window.crypto.getRandomValues( new Uint8Array(1)) + Date.now()).toString();
+    const id = (Math.random() + Date.now()).toString();
     return this.showFor(id).pipe(
       concatMap(() => observable),
       catchError(err =>

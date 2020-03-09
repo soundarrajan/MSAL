@@ -14,8 +14,8 @@
     }
 
     &.notfound {
-      background: url($layoutPath + "/images/pages/error-bg.jpg") no-repeat bottom;
       background-size: cover;
+      background: url($layoutPath + "/images/pages/error-bg.jpg") no-repeat bottom;
 
       .exception-panel {
             border-left: #0f97c7 solid 23px;

@@ -4,7 +4,7 @@ import { Decimal } from 'decimal.js';
  * Returns a random number between min (inclusive) and max (exclusive)
  */
 export function getRandomArbitrary(min: number, max: number): number {
-  return window.crypto.getRandomValues( new Uint8Array(1)) * (max - min) + min;
+  return Math.random() * (max - min) + min;
 }
 
 /**
