@@ -6497,7 +6497,6 @@ APP_API.factory('$Api_Service', [
                             url = `${API.BASE_URL_DATA_DELIVERY }/api/delivery/bulkVerify`;
                         } else {
                             url = `${API.BASE_URL_DATA_DELIVERY }/api/delivery/verify`;
-                            apiJSON = {};
                             if (param.verifyAndSave) {
                                 apiJSON = {
                                     Payload: JSON.parse(param.payload)
@@ -6854,9 +6853,6 @@ APP_API.factory('$Api_Service', [
                     }
                     if (param.app == 'alerts' && param.screen == 'alerts') {
                         console.log(param.field.masterSource);
-                        apiJSON = {
-                            Payload: param.unique_id
-                        };
                         url = api_map.alerts.alerts.entity.get.endpointDrop + param.field.masterSource;
                         $http.post(url).then(
                             (response) => {
@@ -7467,9 +7463,6 @@ APP_API.factory('$Api_Service', [
                     // Custom implementations
                     if (param.app == 'alerts' && param.screen == 'alerts') {
                         console.log(param.field.masterSource);
-                        apiJSON = {
-                            Payload: param.unique_id
-                        };
                         var url = api_map.alerts.alerts.entity.get.endpointDrop + param.field.masterSource;
                         $http.post(url).then(
                             (response) => {

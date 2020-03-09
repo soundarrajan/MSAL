@@ -22,6 +22,11 @@
 			</div>
 		</div>
 		<table id="notifications-table" class="notifications" style="width:100%">
+			<tr style="display: none">
+				<th id="generatedId300">Name</th>
+				<th id="generatedId301" scope="col">Age</th>
+				<th id="generatedId302"></th>
+			</tr>
 			<tr ng-repeat="(key, notification) in notificationList">
 				<td style="width:50px">
 				<span ng-init="selectedNotifications = null"></span>

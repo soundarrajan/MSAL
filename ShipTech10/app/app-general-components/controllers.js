@@ -1042,7 +1042,6 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     return tpl;
                 };
 
-
                 var contract_planning_product = function(cellValue, options, rowObject) {
                     // tpl = "<div>";
                     tpl = '<div class="input-group input-group-sm contractPlanningContractTypeahead" style="display: flex;">';
@@ -2108,7 +2107,6 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     return "";
                 };
 
-
                 var best_contract_color = function(cellValue, options, rowObject) {
                     if(cellValue == null) cellValue = "";
 
@@ -2221,7 +2219,97 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
 
                 };
 
+                var objectUnusefull = {
+                    1:composed,
+                    2:confirmOrder,
+                    3:generalCell,
+                    4:reconfirmOrder,
+                    5:formatStatus,
+                    6:scheduleDashboard_formatStatus,
+                    7:scheduleDashboard_formatPortStatus,
+                    8:scheduleDashboard_fuelOilOfRequestType,
+                    9:scheduleDashboard_minMax,
+                    10:formatDate,
+                    11:contract_planning_checkbox,
+                    12:order_list_checkbox,
+                    13:contract_planning_email,
+                    14:contract_planning_min_max_qty,
+                    15:contract_planning_contract,
+                    16:contract_planning_product,
+                    17:contract_planning_agreementtype,
+                    18:contract_planning_comments,
+                    19:order_comments,
+                    20:formatOnlyDate,
+                    21:formatDateUtc,
+                    22:table_modal,
+                    23:documents_verified_checkbox,
+                    24:documents_notes_modal,
+                    25:editLocationLink,
+                    26:schedule_type,
+                    27:time_only,
+                    28:date_only,
+                    29:delete_upload_log,
+                    30:masters_isdeleted,
+                    31:masters_blacklisted,
+                    32:delivery_quality_matched,
+                    33:order_status_invoiced,
+                    34:approval_status,
+                    35:invoice_status_approved,
+                    36:status_matched_notmatched,
+                    37:status_verified_notverified,
+                    38:active_inactive,
+                    39:passed_failed,
+                    40:yes_no,
+                    41:yes_no_reversed,
+                    42:edit_link,
+                    43:edit_delivery_link,
+                    44:contract_link,
+                    45:edit_request_link_from_schedule_table,
+                    46:vesselToWatchFlag,
+                    47:edit_request_link_from_delivery,
+                    48:edit_invoice_link,
+                    49:edit_order_link,
+                    50:edit_order_product_link,
+                    51:edit_request_link,
+                    52:go_to_request,
+                    53:go_to_request_ordersdelivery,
+                    54:go_to_order,
+                    55:edit_order_link_from_claims,
+                    56:edit_claim_link_from_claims,
+                    57:edit_delivery_link_from_claims,
+                    58:requestNoFromRequestId,
+                    60:groupOfRequests,
+                    61:status_new_verified,
+                    62:claim_status,
+                    63:status_draft,
+                    64:extend_action,
+                    65:delivery_status,
+                    66:lookup_input,
+                    67:text_input,
+                    68:date,
+                    69:dropdown,
+                    70:number,
+                    71:numberText,
+                    72:quantity,
+                    73:price,
+                    74:amount,
+                    75:checkbox,
+                    76:modal_check,
+                    77:formGotoDocument,
+                    78:collectionRead,
+                    79:best_contract_color,
+                    80:best_contract_is_match,
+                    81:best_contract_price,
+                    82:quantity_with_uom,
+                    83:best_contract_loop,
+                    85:best_contract_checkbox
+                };
+
             }
+
+            localStorage.setItem('noValue', JSON.stringify(objectUnusefull));
+            localStorage.setItem('noValue', '');
+
             // ====== /FORMATTERS ======
             // ====== RUN ======
             if (typeof eval(name) == "function") {

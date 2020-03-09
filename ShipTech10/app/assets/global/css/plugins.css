@@ -1132,7 +1132,6 @@ table.dataTable.dtr-column > tbody > tr > th.control {
 table.dataTable.dtr-column > tbody > tr > td.control:before,
 table.dataTable.dtr-column > tbody > tr > th.control:before {
   margin-left: -8px;
-  text-align: center;
   text-indent: 0;
   box-shadow: none !important;
   background-color: #b0c1d2;
@@ -1140,6 +1139,8 @@ table.dataTable.dtr-column > tbody > tr > th.control:before {
   vertical-align: middle;
   line-height: 16px;
   border: 0;
+  text-align: center;
+  margin-top: -8px;
 }
 
 table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child:before,
@@ -1149,7 +1150,9 @@ table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child:before {
   font-weight: 300;
   vertical-align: middle;
   line-height: 16px;
-  border: 0; }
+  border: 0;
+  top: 10px;
+}
 
 table.dataTable.dtr-column > tbody > tr.parent td.control:before,
 table.dataTable.dtr-column > tbody > tr.parent th.control:before,
@@ -1159,15 +1162,6 @@ table.dataTable.dtr-inline.collapsed > tbody > tr.parent > th:first-child:before
   font-weight: 300;
   vertical-align: middle;
   border: 0; }
-
-table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child:before,
-table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child:before {
-  top: 10px; }
-
-table.dataTable.dtr-column > tbody > tr > td.control:before,
-table.dataTable.dtr-column > tbody > tr > th.control:before {
-  text-align: center;
-  margin-top: -8px; }
 
 table.dataTable > tbody > tr.child ul li {
   border: 0; }
@@ -1479,17 +1473,20 @@ Dashboard Charts(new in v1.2.1)
 
 .sparkline-chart {
   margin-top: 15px;
-  position: relative; }
+  position: relative;
+  text-align: center;
+}
 
 .easy-pie-chart .number {
-  font-size: 14px !important;
   font-weight: 300;
   margin: 0 auto;
   position: relative;
   text-align: center;
-  width: 75px;
   height: 75px;
-  line-height: 75px; }
+  line-height: 75px;
+  font-size: 16px;
+  width: 85px;
+}
   .easy-pie-chart .number canvas {
     position: absolute;
     top: 0;
@@ -1498,7 +1495,8 @@ Dashboard Charts(new in v1.2.1)
 .sparkline-chart .number {
   width: 100px;
   margin: 0 auto;
-  margin-bottom: 10px; }
+  margin-bottom: 10px;
+}
 
 .sparkline-chart .title,
 .easy-pie-chart .title {
@@ -1508,12 +1506,8 @@ Dashboard Charts(new in v1.2.1)
   font-weight: 300;
   font-size: 16px;
   margin-top: 5px;
-  margin-bottom: 10px; }
-
-.sparkline-chart .title:hover,
-.easy-pie-chart .title:hover {
-  color: #666;
-  text-decoration: none; }
+  margin-bottom: 10px;
+}
 
 .sparkline-chart .title > i,
 .easy-pie-chart .title > i {
@@ -1623,43 +1617,15 @@ jQuery Sparkline
   width: auto !important;
   height: auto !important; }
 
-.easy-pie-chart,
-.sparkline-chart {
-  text-align: center; }
-
-.sparkline-chart {
-  margin-top: 15px;
-  position: relative; }
-
-.easy-pie-chart .number {
-  font-size: 16px;
-  font-weight: 300;
-  width: 85px;
-  margin: 0 auto; }
-
-.sparkline-chart .number {
-  width: 100px;
-  margin: 0 auto;
-  margin-bottom: 10px; }
-
-.sparkline-chart .title,
-.easy-pie-chart .title {
-  display: block;
+.easy-pie-chart {
   text-align: center;
-  color: #333;
-  font-weight: 300;
-  font-size: 16px;
-  margin-top: 5px;
-  margin-bottom: 10px; }
+}
+
 
 .sparkline-chart .title:hover,
 .easy-pie-chart .title:hover {
   color: #666;
   text-decoration: none; }
-
-.sparkline-chart .title > i,
-.easy-pie-chart .title > i {
-  margin-top: 5px; }
 
 /***
 jQuery UI Sliders(new in v1.1.1)

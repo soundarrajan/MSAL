@@ -1221,14 +1221,11 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
                     } ]
                 }
             };
-            let qualityParams = {};
-            let quantityParams = {};
             Factory_Master.getSpecParamsDeliveryProduct(dataForInfo, (response) => {
                 console.log(response);
                 $scope.formValues.deliveryProducts[0].qualityParameters = response;
             });
             Factory_Master.getQtyParamsDeliveryProsuct(dataForInfo, (response) => {
-                quantityParams = response;
                 $scope.formValues.deliveryProducts[0].quantityParameters = response;
             });
             console.log($scope.formValues.deliveryProducts);
@@ -1991,14 +1988,6 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
         // Berthing Time< Barge alongside < Pumping Start <Pumping End < BDN Date
 
         let pickers = [ 'berthingTimeDP', 'bargeAlongsideDP', 'pumpingStartDP', 'pumpingEndDP', 'bdnDate' ];
-
-        let formValuesMap = {
-            berthingTimeDP: 'berthingTime',
-            bargeAlongsideDP: 'bargeAlongside',
-            pumpingStartDP: 'bargePumpingRateStartTime',
-            pumpingEndDP: 'bargePumpingRateEndTime',
-            bdnDate: 'bdnDate'
-        };
         if($scope.formValues != 'undefined') {
             $.each(pickers, (key, val) => {
                 // if(val == 'berthingTimeDP'){
@@ -2308,7 +2297,6 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
                 }
 
                 // 3. else set delivery name as title
-                var title = `${$scope.formValues.name } -  ${ $scope.formValues.vesselName}`;
                 $scope.setPageTitle($scope.formValues.name);
             }
         }

@@ -1160,7 +1160,8 @@ table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child:before {
   font-weight: 300;
   vertical-align: middle;
   line-height: 16px;
-  border: 0; }
+  border: 0;
+  top: 10px; }
 
 table.dataTable.dtr-column > tbody > tr.parent td.control:before,
 table.dataTable.dtr-column > tbody > tr.parent th.control:before,
@@ -1170,10 +1171,6 @@ table.dataTable.dtr-inline.collapsed > tbody > tr.parent > th:first-child:before
   font-weight: 300;
   vertical-align: middle;
   border: 0; }
-
-table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child:before,
-table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child:before {
-  top: 10px; }
 
 table.dataTable.dtr-column > tbody > tr > td.control:before,
 table.dataTable.dtr-column > tbody > tr > th.control:before {
@@ -1499,7 +1496,9 @@ Dashboard Charts(new in v1.2.1)
 
 .sparkline-chart {
   margin-top: 15px;
-  position: relative; }
+  position: relative;
+  text-align: center;
+}
 
 .easy-pie-chart .number {
   position: relative;
@@ -1646,18 +1645,8 @@ jQuery Sparkline
   width: auto !important;
   height: auto !important; }
 
-.easy-pie-chart,
-.sparkline-chart {
+.easy-pie-chart {
   text-align: center; }
-
-.sparkline-chart {
-  margin-top: 15px;
-  position: relative; }
-
-.sparkline-chart .number {
-  width: 100px;
-  margin: 0 auto;
-  margin-bottom: 10px; }
 
 /***
 jQuery UI Sliders(new in v1.1.1)
