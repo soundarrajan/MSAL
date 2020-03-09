@@ -197,7 +197,7 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
         if (vm.screen_id == 'sellerrating') {
             if (name == 'company') {
                 Factory_Master.get_master_entity($scope.formValues.company.id, vm.screen_id, vm.app_id, (response) => {
-                    newValues = response;
+                    let newValues = response;
                     $scope.formValues.applications = newValues.applications;
                     $scope.formValues.id = newValues.id;
                     setTimeout(() => {
@@ -210,7 +210,7 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
     $scope.createRange = function(min, max) {
         min = parseInt(min);
         max = parseInt(max);
-        input = [];
+        var input = [];
         for (let i = min; i <= max; i++) {
             input.push(i);
         }
@@ -306,7 +306,7 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
     $scope.updateWeightSum = function(applicationIdx, categoryIdx) {
         let weight = 0;
         $.each($scope.formValues.applications[applicationIdx].categories[categoryIdx].details, (key, value) => {
-            currentVal = value.weight;
+            var currentVal = value.weight;
             if (typeof value.weight == 'NaN' || typeof value.weight == 'undefined' || value.weight == null) {
                 currentVal = 0;
             }
@@ -320,7 +320,7 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
         $.each($scope.formValues.applications, (key, value) => {
             $.each(value.categories, (key1, value1) => {
                 $.each(value1.details, (key2, value2) => {
-                    currentVal = value2.weight;
+                    var currentVal = value2.weight;
                     if (typeof value2.weight == 'NaN' || typeof value2.weight == 'undefined' || value2.weight == null) {
                         currentVal = 0;
                     }
@@ -387,12 +387,12 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
             $.each($scope.deliveryPrecedenceRules, (_, rule) => {
                 let selects = $(`.admin-precedence-select[name^=${ rule.dataName }]`);
                 $.each(selects, function() {
-                    dataOrd = $(this).attr('data-ord');
-                    item = $(this);
+                    var dataOrd = $(this).attr('data-ord');
+                    var item = $(this);
                     for (let k1 in $scope.formValues.temp[rule.tempMapping]) {
-                        objIdx = k1.split('_')[1];
+                        var objIdx = k1.split('_')[1];
                         if (objIdx < dataOrd) {
-                            alreadySelected = $scope.formValues.temp[rule.tempMapping][k1].id;
+                            var alreadySelected = $scope.formValues.temp[rule.tempMapping][k1].id;
                             let selectOptions = item.children('option');
                             $.each(selectOptions, (k2, v2) => {
                                 if ($(v2).attr('value') == alreadySelected) {
@@ -473,17 +473,17 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
                 $scope.formValues.temp[`${ruleType }Precedence`][k1] = null;
             }
         }
-        entitySelects = $(`.admin-precedence-select[name^=${ ruleType }-ord-]`);
+        var entitySelects = $(`.admin-precedence-select[name^=${ ruleType }-ord-]`);
         $.each(entitySelects, function(key, value) {
             dataOrd = $(this).attr('data-ord');
-            entityItem = $(this);
+            var entityItem = $(this);
             entityItem.children('option').removeAttr('disabled');
             for (let k2 in $scope.formValues.temp[`${ruleType }Precedence`]) {
                 objIdx = k1.split('_')[1];
                 if (objIdx < dataOrd) {
                     if($scope.formValues.temp[`${ruleType }Precedence`][k2]) {
                         alreadySelected = $scope.formValues.temp[`${ruleType }Precedence`][k2].id;
-                        selectOptions = entityItem.children('option');
+                        var selectOptions = entityItem.children('option');
                         $.each(selectOptions, (k3, v2) => {
                             if ($(v2).attr('value') == alreadySelected) {
                                 $(v2).attr('disabled', true);
@@ -506,8 +506,8 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
             if(rule.tempMapping == currentChange) {
                 $scope.formValues.delivery[rule.name] = [];
                 $.each($scope.formValues.temp[rule.tempMapping], (key, val) => {
-                    ordIdx = key.split('_')[1];
-                    obj = {
+                    var ordIdx = key.split('_')[1];
+                    var obj = {
                         ord: ordIdx,
                         id: ordIdx,
                         precedenceRule: val
@@ -649,7 +649,7 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
                         if (response.payload.length == 1) {
                             $scope.tabData[val.id] = $scope.buildTree(response.payload[0].children);
                         } else {
-                            aligendObject = $scope.setParentUnselectable(response.payload);
+                            var aligendObject = $scope.setParentUnselectable(response.payload);
                             $scope.tabData[val.id] = aligendObject;
                         }
                     } else {
@@ -765,7 +765,7 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
 
 
     $scope.getCounterpartyTypeFilterItems = function() {
-    	itemlist = [];
+    	var itemlist = [];
     	$.each($scope.listsCache.CounterpartyTypeFilter, (k, v) => {
     		itemlist.push(v);
     	});
@@ -773,9 +773,10 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
     };
 
     $scope.addCounterpartyTypeFilterItem = function(item) {
+    	var returnVal = false;
     	if (item.id) {
 	    	console.log(item);
-            isAlreadyAdded = false;
+            var isAlreadyAdded = false;
 	    	$.each($scope.formValues.procurement.request.counterpartyTypeFilters, (k, v) => {
 	    		if (v.id == item.id) {
 	    			isAlreadyAdded = true;
@@ -786,12 +787,12 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
 	    			$scope.formValues.procurement.request.counterpartyTypeFilters = [];
 	    		}
 	    		$scope.formValues.procurement.request.counterpartyTypeFilters.push(item);
-	    		return false;
+	    		returnVal = false;
 	    	}
 	    		toastr.error('Field is already added');
-	    		return false;
+	    		returnVal = false;
     	}
-        return false;
+        return returnVal;
     };
 
     $scope.addSellerRatingApplicabbleApp = function(newApp) {
@@ -805,7 +806,7 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
     		}
     	});
     	if (!isAlreadyAdded) {
-    		newObj = {
+    		var newObj = {
                 module: {
                     id: newApp.id,
                     name: newApp.name

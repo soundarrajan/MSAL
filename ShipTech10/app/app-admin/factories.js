@@ -32,11 +32,11 @@ APP_ADMIN.factory('Factory_Admin', [ '$window', '$http', '$Api_Service', 'API', 
         },
         getTabData: function(tabType, callback) {
             if (tabType == 'vessel_access') {
-                url = `${API.BASE_URL_DATA_MASTERS }/api/masters/vessels/listVesselTypeVessel`;
+                var url = `${API.BASE_URL_DATA_MASTERS }/api/masters/vessels/listVesselTypeVessel`;
             } else if (tabType == 'buyer_access') {
-                url = `${API.BASE_URL_DATA_MASTERS }/api/masters/buyer/listAdmin`;
+                var url = `${API.BASE_URL_DATA_MASTERS }/api/masters/buyer/listAdmin`;
             } else {
-                url = `${API.BASE_URL_DATA_MASTERS }/api/masters/companies/listAdmin`;
+                var url = `${API.BASE_URL_DATA_MASTERS }/api/masters/companies/listAdmin`;
             }
 
             $http({

@@ -116,7 +116,7 @@ APP_CLAIMS.controller('Controller_Claims', [
                     if (callback.status == true) {
                         toastr.success('Claim was deleted successfully');
                         for (let i = $scope.relatedClaims.length - 1; i >= 0; i--) {
-                            claim = $scope.relatedClaims[i];
+                            var claim = $scope.relatedClaims[i];
                             if (claim.id == claimId) {
                                 $scope.relatedClaims.splice[i, 1];
                             }
@@ -178,6 +178,7 @@ APP_CLAIMS.controller('Controller_Claims', [
                         }
                         $scope.$watchGroup([ $scope.formValues, $scope.options ], () => {
                             $timeout(() => {
+                            	var id;
                                 if (field.Type == 'textUOM') {
                                     id = `#${ field.Name}`;
                                 } else {
@@ -340,12 +341,12 @@ APP_CLAIMS.controller('Controller_Claims', [
                                 $scope.formValues.deliveryDate = response.deliveryDate;
                             });
                             if (window.location.href.indexOf('?orderId') != -1) {
-				            	params = window.location.href.split('?')[1];
+				            	var params = window.location.href.split('?')[1];
 				            	params = params.split('&');
-				            	objParams = {};
+				            	var objParams = {};
 				            	$.each(params, (k, v) => {
-				            		key = v.split('=')[0];
-				            		val = parseFloat(v.split('=')[1]);
+				            		var key = v.split('=')[0];
+				            		var val = parseFloat(v.split('=')[1]);
 				            		objParams[key] = val;
 				            	});
 				            	$.each(response.products, (k, v) => {
@@ -356,7 +357,7 @@ APP_CLAIMS.controller('Controller_Claims', [
 				            		}
 				            	});
 
-				            	quantityClaimType = _.find(vm.listsCache.ClaimType, { name : 'Quantity' });
+				            	var quantityClaimType = _.find(vm.listsCache.ClaimType, { name : 'Quantity' });
 				            	if (!$scope.formValues.claimType) {
 				            		$scope.formValues.claimType = {
 						            	claimType : quantityClaimType
@@ -364,7 +365,7 @@ APP_CLAIMS.controller('Controller_Claims', [
 				            	}
 				            	// $scope.formValues.claimType.claimType = quantityClaimType;
 
-                            	newUrl = window.location.href.split('#')[1];
+                            	var newUrl = window.location.href.split('#')[1];
                             	newUrl = newUrl.split('?')[0];
                             	// window.location.replace(window.location.href.split("?")[0]);
                             	// window.history.pushState({}, document.title, "#" + newUrl);
@@ -429,7 +430,7 @@ APP_CLAIMS.controller('Controller_Claims', [
                     }
                     field = vm.formFieldSearch($scope.formFields, 'orderDetails.product');
                     $scope.options.Product = [];
-                    deliveryDateFromDelivery = _.find($scope.options.deliveryNumber, { id:$scope.formValues.orderDetails.deliveryNo.id }).payload.orderDetails.deliveryDate;
+                    var deliveryDateFromDelivery = _.find($scope.options.deliveryNumber, { id:$scope.formValues.orderDetails.deliveryNo.id }).payload.orderDetails.deliveryDate;
 
                     if (deliveryDateFromDelivery) {
                         $timeout(() => {
@@ -468,7 +469,9 @@ APP_CLAIMS.controller('Controller_Claims', [
             if (name == 'Product') {
                 if ($scope.formValues.orderDetails.product) {
                     var id = $scope.formValues.orderDetails.product.id;
-                    angular.merge($scope.formValues.orderDetails, $scope.formValues.orderDetails.product.payload.orderDetails);
+                    if ($scope.formValues.orderDetails.product.payload) {
+	                    angular.merge($scope.formValues.orderDetails, $scope.formValues.orderDetails.product.payload.orderDetails);
+                    }
                     delete $scope.formValues.initialOrderPrice;
                     delete $scope.formValues.orderDetails.product.payload;
                     $scope.formValues.claimDetails.estimatedSettlementAmountCurrency = $scope.formValues.orderDetails.currency;
@@ -489,7 +492,7 @@ APP_CLAIMS.controller('Controller_Claims', [
                     }, 10);
                     // $rootScope.$broadcast("changeCurrencyValues", "OrderPrice");
                     if (typeof $scope.formValues.claimType != 'undefined') {
-                        oldClaimType = angular.copy($scope.formValues.claimType.claimType);
+                        var oldClaimType = angular.copy($scope.formValues.claimType.claimType);
                         $scope.formValues.claimType.claimType = null;
                         $timeout(() => {
                             $scope.formValues.claimType.claimType = oldClaimType;
@@ -537,7 +540,7 @@ APP_CLAIMS.controller('Controller_Claims', [
                 $scope.formValues.claimDebunkerDetails.resaleAmount = $scope.formValues.claimDebunkerDetails.debunkerQuantity * $scope.formValues.claimDebunkerDetails.salePrice;
                 $scope.formValues.claimDebunkerDetails.resaleAmountCurrency = $scope.formValues.claimDebunkerDetails.salePriceCurrency;
                 if ($scope.formValues.orderDetails && $scope.formValues.claimDebunkerDetails.salePriceCurrency) {
-                    salePriceConverted = $scope.convertCurrency($scope.formValues.claimDebunkerDetails.salePriceCurrency.id, $scope.formValues.orderDetails.currency.id, null, $scope.formValues.claimDebunkerDetails.salePrice, (response) => {
+                    var salePriceConverted = $scope.convertCurrency($scope.formValues.claimDebunkerDetails.salePriceCurrency.id, $scope.formValues.orderDetails.currency.id, null, $scope.formValues.claimDebunkerDetails.salePrice, (response) => {
                         salePriceConverted = response;
                         if (salePriceConverted > $scope.formValues.orderDetails.orderPrice) {
                             toastr.error('Debunker Sale Price should not exceed Order Price!');
@@ -596,10 +599,10 @@ APP_CLAIMS.controller('Controller_Claims', [
         };
         $scope.calculateAvailableSubtypesLength = function() {
             if (typeof availableSubtypesLength == 'undefined') {
-                availableSubtypesLength = {};
+                var availableSubtypesLength = {};
             }
 
-            subTypeObjects = [ 'quantitySubtypes', 'densitySubtypes', 'qualitySubtypes', 'complianceSubtypes' ];
+            var subTypeObjects = [ 'quantitySubtypes', 'densitySubtypes', 'qualitySubtypes', 'complianceSubtypes' ];
             $.each(subTypeObjects, (stk, stv) => {
                 availableSubtypesLength[stv] = 0;
                 if ($scope.formValues[stv]) {
@@ -694,7 +697,7 @@ APP_CLAIMS.controller('Controller_Claims', [
             $rootScope.currentEmailTemplate = value.id;
             $rootScope.currentEmailTemplateName = value.name;
             if (value.name == 'ClaimQuantityEmail') {
-                data = {
+                var data = {
                     Payload: {
                         Filters: [
                             {
@@ -745,7 +748,7 @@ APP_CLAIMS.controller('Controller_Claims', [
                     }
                 };
             }
-            specParameters = [];
+            var specParameters = [];
             $.each($rootScope.formValues.qualitySubtypes, (key, value2) => {
                 specParameters.push(value2.specParameter.id);
             });
@@ -977,7 +980,7 @@ APP_CLAIMS.controller('Controller_Claims', [
             if (fval.densitySubtypes[rowIdx].labDensity == '') {
                 fval.densitySubtypes[rowIdx].labDensity = null;
             }
-            quantityShortageScope = angular.element($('[name=\'claimType.quantityShortage\']')).scope();
+            var quantityShortageScope = angular.element($('[name=\'claimType.quantityShortage\']')).scope();
             quantityShortageScope.getQuantityShortage();
         };
 
@@ -1006,20 +1009,19 @@ APP_CLAIMS.controller('Controller_Claims', [
                 $scope.formValues.claimType.quantityShortage = null;
             }
 
-            isQuantitySubtype = false;
-
-            productId = $scope.formValues.orderDetails.product.id;
-            isDensitySubtype = false;
-            specParameterUomConversionFactor = null;
-            BDNQuantity = null;
-            BDNQuantityUom = null;
-            ConfirmedQuantity = null;
-            ConfirmedQuantityUom = null;
-            sellerQuantity = null;
-            buyerQuantity = null;
-            quantityUom = null;
-            densityDifference = null;
-            specParameterId = null;
+            var isQuantitySubtype = false;
+            var productId = $scope.formValues.orderDetails.product.id;
+            var isDensitySubtype = false;
+            var specParameterUomConversionFactor = null;
+            var BDNQuantity = null;
+            var BDNQuantityUom = null;
+            var ConfirmedQuantity = null;
+            var ConfirmedQuantityUom = null;
+            var sellerQuantity = null;
+            var buyerQuantity = null;
+            var quantityUom = null;
+            var densityDifference = null;
+            var specParameterId = null;
 
             let quantity = getIndexAndCount($scope.formValues.quantitySubtypes);
             let density = getIndexAndCount($scope.formValues.densitySubtypes);
@@ -1063,7 +1065,7 @@ APP_CLAIMS.controller('Controller_Claims', [
                 $scope.formValues.claimType.quantityShortageUom = $scope.formValues.densitySubtypes[density.index].bdnQuantityUom;
             }
 
-            payload = {
+            var payload = {
                 Payload: {
                     productId : productId,
                     isDensitySubtype : isDensitySubtype,
@@ -1105,7 +1107,8 @@ APP_CLAIMS.controller('Controller_Claims', [
 
 
         function convertDecimalSeparatorStringToNumber(number) {
-            numberToReturn = number;
+            var numberToReturn = number;
+            var decimalSeparator, thousandsSeparator;
             if (typeof number == 'string') {
                 if (number.indexOf(',') != -1 && number.indexOf('.') != -1) {
                     if (number.indexOf(',') > number.indexOf('.')) {

@@ -60,7 +60,7 @@ APP_ALERTS.controller('Controller_Alerts', [ '$scope', '$rootScope', '$Api_Servi
                 $rootScope.liveNotificationsList = [];
                 jobHub.client.update = function(message, addedAt, id) {
                     // console.log(message, addedAt, id);
-                    notificationExists = false;
+                    var notificationExists = false;
                     $.each($rootScope.liveNotificationsList, (k, v) => {
                     	if (v.id == id) {
                             notificationExists = true;
@@ -80,7 +80,7 @@ APP_ALERTS.controller('Controller_Alerts', [ '$scope', '$rootScope', '$Api_Servi
         });
     };
     $scope.getNotificationsLista = function() {
-        data = {
+        var data = {
             Payload: {
                 Filters: [ {
                     ColumnName: 'IsRead',
@@ -104,14 +104,14 @@ APP_ALERTS.controller('Controller_Alerts', [ '$scope', '$rootScope', '$Api_Servi
     };
     $scope.formatDate = function(elem, dateFormat) {
         if (elem) {
-            messageDate = new Date(elem);
-            nowTime = new Date();
-            difference = (nowTime - messageDate) / 1000;
-            difference = JSON.stringify(difference);
-            secondsPassed = difference.split('.')[0];
-            minutesPassed = JSON.stringify(secondsPassed / 60).split('.')[0];
-            hoursPassed = JSON.stringify(minutesPassed / 60).split('.')[0];
-            daysPassed = JSON.stringify(hoursPassed / 60).split('.')[0];
+            var messageDate = new Date(elem);
+            var nowTime = new Date();
+            var difference = (nowTime - messageDate) / 1000;
+            var difference = JSON.stringify(difference);
+            var secondsPassed = difference.split('.')[0];
+            var minutesPassed = JSON.stringify(secondsPassed / 60).split('.')[0];
+            var hoursPassed = JSON.stringify(minutesPassed / 60).split('.')[0];
+            var daysPassed = JSON.stringify(hoursPassed / 60).split('.')[0];
             if (minutesPassed < 1) {
                 return 'Just Now';
             }
@@ -262,28 +262,28 @@ APP_ALERTS.controller('Controller_Alerts', [ '$scope', '$rootScope', '$Api_Servi
         element = $event.target;
         $scope.formValues.messageTemplate = $(element).text();
         $('#clonedAlertMessage').html($('#alertMessage').html());
-        tags = $('#clonedAlertMessage span.tag');
+        var tags = $('#clonedAlertMessage span.tag');
         $.each(tags, function(key, value) {
             $(this).children('b').text($(this).children('b').attr('parameter-id'));
         });
         $scope.formValues.messageTemplate = $('#clonedAlertMessage').text();
     };
     $scope.initAlertTransform = function() {
-        str = $scope.formValues.messageTemplate;
-        startTag = '<span class="tag" contenteditable="false"><span class="hidden">{</span><b contenteditable="false">';
-        endTag = '</b><span class="hidden">}</span></span>';
+        var str = $scope.formValues.messageTemplate;
+        var startTag = '<span class="tag" contenteditable="false"><span class="hidden">{</span><b contenteditable="false">';
+        var endTag = '</b><span class="hidden">}</span></span>';
         str = str.replace(/{/g, startTag);
         str = str.replace(/}/g, endTag);
-        parameters = [];
+        var parameters = [];
         $.each($scope.formValues.parameters, (key, value) => {
             parameters[value.id] = value.name;
         });
-        targetElement = $('#alertMessage');
+        var targetElement = $('#alertMessage');
         setTimeout(() => {
             targetElement.html(str);
             tags = $('#alertMessage span.tag');
             $.each(tags, function(key, value) {
-                currentText = $(this).children('b').text();
+                let currentText = $(this).children('b').text();
                 $(this).children('b').attr('parameter-id', currentText);
                 $(this).children('b').text(parameters[currentText]);
             });
@@ -297,7 +297,7 @@ APP_ALERTS.controller('Controller_Alerts', [ '$scope', '$rootScope', '$Api_Servi
                     if (copyAlertAction) {
                         $rootScope.formValues.id = 0;
                         $rootScope.formValues.name = null;
-                        copyAlertAction = null;
+                        var copyAlertAction = null;
                     }
                 }
             }
@@ -340,7 +340,7 @@ APP_ALERTS.controller('Controller_Alerts', [ '$scope', '$rootScope', '$Api_Servi
                 toastr.error('Please check that all the fields are filled');
                 return;
             }
-            hasError = false;
+            var hasError = false;
             $.each($rootScope.formValues.triggerRules, (k, v) => {
                 if (!v.parameterId || !v.conditionId) {
                     hasError = true;
@@ -377,7 +377,7 @@ APP_ALERTS.controller('Controller_Alerts', [ '$scope', '$rootScope', '$Api_Servi
         if (typeof $scope.formValues.apps == 'undefined' || $scope.formValues.apps == null) {
             $scope.formValues.apps = [];
         }
-        addedApps = [];
+        var addedApps = [];
         $.each($scope.formValues.apps, (k, v) => {
             addedApps.push(v.id);
         });
@@ -406,7 +406,7 @@ APP_ALERTS.controller('Controller_Alerts', [ '$scope', '$rootScope', '$Api_Servi
         if (typeof $scope.formValues.transactions == 'undefined' || $scope.formValues.transactions == null) {
             $scope.formValues.transactions = [];
         }
-        addedTransactions = [];
+        var addedTransactions = [];
         $.each($scope.formValues.transactions, (k, v) => {
             addedTransactions.push(v.id);
         });
@@ -425,7 +425,7 @@ APP_ALERTS.controller('Controller_Alerts', [ '$scope', '$rootScope', '$Api_Servi
         if (typeof $scope.formValues.roles == 'undefined' || $scope.formValues.roles == null) {
             $scope.formValues.roles = [];
         }
-        addedroles = [];
+        var addedroles = [];
         $.each($scope.formValues.roles, (k, v) => {
             addedroles.push(v.id);
         });
@@ -444,7 +444,7 @@ APP_ALERTS.controller('Controller_Alerts', [ '$scope', '$rootScope', '$Api_Servi
         Factory_Master.getAlertsParametersForTransaction(null, (response) => {
             if (response) {
                 if (response.status == true) {
-                    result = response.data;
+                    var result = response.data;
                     $scope.allParametersData = response.data;
                     $.each(result, (key, value) => {
                         if (typeof $scope.options[`alertsParametersForTransaction${ value.transactionId}`] == 'undefined') {
@@ -517,7 +517,7 @@ APP_ALERTS.controller('Controller_Alerts', [ '$scope', '$rootScope', '$Api_Servi
         if (!objToAdd.id) {
             return;
         }
-        currentParamIds = [];
+        var currentParamIds = [];
         if (typeof $scope.formValues.parameters == 'undefined') {
             $scope.formValues.parameters = [];
         }
@@ -534,24 +534,24 @@ APP_ALERTS.controller('Controller_Alerts', [ '$scope', '$rootScope', '$Api_Servi
     };
     $scope.getTransactionsForApp = function() {
         setTimeout(() => {
-            apps = $scope.formValues.apps;
-            currentTransactions = $scope.formValues.transactions;
+            var apps = $scope.formValues.apps;
+            var currentTransactions = $scope.formValues.transactions;
             Factory_Master.getTransactionsForApp(null, (response) => {
                 if (response) {
                     if (response.status == true) {
-                        availableTransactions = [];
-                        transactions = response.data;
+                        var availableTransactions = [];
+                        var transactions = response.data;
                         $.each(transactions, (key, value) => {
-                            transactionAppId = value.appId;
+                            var transactionAppId = value.appId;
                             $.each(apps, (key2, value2) => {
                                 if (value2.id == transactionAppId) {
                                     availableTransactions.push(value);
                                 }
                             });
                         });
-                        transactionsToRmv = [];
+                        var transactionsToRmv = [];
                         $.each(currentTransactions, (idx, val) => {
-                            inTransactions = false;
+                            var inTransactions = false;
                             $.each(availableTransactions, (idx2, val2) => {
                                 if (val.id == val2.id) {
                                     inTransactions = true;
@@ -620,7 +620,7 @@ APP_ALERTS.controller('Controller_Alerts', [ '$scope', '$rootScope', '$Api_Servi
         if (typeof $scope.formValues.excludedUsers == 'undefined') {
             $scope.formValues.excludedUsers = [];
         }
-        currentRolesIds = [];
+        var currentRolesIds = [];
         Factory_Master.alertsGetUserFromRoles(null, (response) => {
             if (response) {
                 $.each($scope.formValues.roles, (key, value) => {
@@ -628,8 +628,8 @@ APP_ALERTS.controller('Controller_Alerts', [ '$scope', '$rootScope', '$Api_Servi
                 });
                 if (response.status == true) {
                     result = response.data;
-                    availableUsers = [];
-                    availableUsersIds = [];
+                    var availableUsers = [];
+                    var availableUsersIds = [];
                     $.each(result, (key, value) => {
                         $.each(value.roleIds, (k, v) => {
                             if (currentRolesIds.indexOf(v) !== -1) {
@@ -638,14 +638,14 @@ APP_ALERTS.controller('Controller_Alerts', [ '$scope', '$rootScope', '$Api_Servi
                             }
                         });
                     });
-                    includedUsersIds = [];
+                    var includedUsersIds = [];
                     $.each($scope.formValues.includedUsers, (key, val) => {
                         if (availableUsersIds.indexOf(val.id) == -1) {
                             $scope.formValues.includedUsers.splice(key, 1);
                         }
                         includedUsersIds.push(val.id);
                     });
-                    excludedUsersIds = [];
+                    var excludedUsersIds = [];
                     $.each($scope.formValues.excludedUsers, (key, val) => {
                         if (availableUsersIds.indexOf(val.id) == -1) {
                             $scope.formValues.excludedUsers.splice(key, 1);
@@ -691,7 +691,7 @@ APP_ALERTS.controller('Controller_Alerts', [ '$scope', '$rootScope', '$Api_Servi
     $scope.initIncludedEmailUsers = function() {
         typeof $scope.formValues.includedEmailUsers == 'undefined' ? $scope.formValues.includedEmailUsers = [] : '';
         $scope.formValues.excludedEmailUsers = [];
-        includedEmailUsersIds = [];
+        var includedEmailUsersIds = [];
         $.each($scope.formValues.includedEmailUsers, (k, v) => {
             includedEmailUsersIds.push(v.id);
         });
@@ -735,7 +735,7 @@ APP_ALERTS.controller('Controller_Alerts', [ '$scope', '$rootScope', '$Api_Servi
         if (!entries) {
             $scope.entries = 10;
         }
-        skip = $scope.entries * (page - 1);
+        var skip = $scope.entries * (page - 1);
         if ($state.params.title == 'NOTIFICATION') {
             $scope.read = true;
         } else {
@@ -775,10 +775,10 @@ APP_ALERTS.controller('Controller_Alerts', [ '$scope', '$rootScope', '$Api_Servi
     };
     $scope.getNotificationsListPage = function(currentPage, direction) {
         if (direction == 'next') {
-            newPage = currentPage + 1;
+            var newPage = currentPage + 1;
         }
         if (direction == 'prev') {
-            newPage = currentPage - 1;
+            var newPage = currentPage - 1;
         }
         $scope.getNotificationsList(newPage, null);
         $rootScope.selectedNotifications = [];

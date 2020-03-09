@@ -291,6 +291,7 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
                     $scope.options[field.Name] = callback;
                     $scope.$watchGroup([ $scope.formValues, $scope.options ], () => {
                         $timeout(() => {
+                        	var id;
                             if (field.Type == 'textUOM') {
                                 id = `#${ field.Name}`;
                             } else {
@@ -308,7 +309,8 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
 
 
     function convertDecimalSeparatorStringToNumber(number) {
-    	numberToReturn = number;
+    	var numberToReturn = number;
+    	var decimalSeparator, thousandsSeparator;
     	if (typeof number == 'string') {
         	if (number.indexOf(',') != -1 && number.indexOf('.') != -1) {
         		if (number.indexOf(',') > number.indexOf('.')) {
@@ -331,21 +333,21 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
 
     $scope.save_master_changes_controllerSpecific = function(ev, editInstance) {
         vm.editInstance = editInstance;
-	    hasTotalContractualQuantity = false;
+	    var hasTotalContractualQuantity = false;
 	    if (!$scope.formValues.products) {
 	    	toastr.error('You must add at least one product in the contract');
 	    	return;
         }
         // chech for product location to be obj
-        notValidLocation = false;
+        var notValidLocation = false;
         $.each($scope.formValues.products, (key, val) => {
             if(typeof val.location != 'object') {
-                keyno = key + 1;
+                var keyno = key + 1;
                 toastr.error(`Please select a valid location for product ${ keyno }.`);
                 notValidLocation = true;
             } else if (val.isFormula == true && typeof val.formula != 'object' ||
                         val.mtmFixed == false && typeof val.mtmFormula != 'object') {
-                keyno = key + 1;
+                var keyno = key + 1;
                 toastr.error(`Please select a valid Formula for Product ${ keyno }.`);
                 notValidLocation = true;
             }
@@ -358,7 +360,7 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
 	    	toastr.error('You must add at least one product in the contract');
 	    	return;
 	    }
-	    minQuyanityValidationError = false;
+	    var minQuyanityValidationError = false;
 	    $.each($scope.formValues.details, (k, v) => {
 	    	if (typeof v != 'undefined') {
                 if(typeof v.contractualQuantityOption != 'undefined') {
@@ -384,7 +386,7 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
 	    }
 
         // test dates
-        notValid = $scope.testForValidDates();
+        var notValid = $scope.testForValidDates();
         if(notValid) {
             vm.editInstance.$valid = false;
             return;
@@ -438,7 +440,7 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
                     toastr.error(`Product ${ parseFloat(index + 1) } has an error: One of the quantity types is duplicated`);
                     vm.editInstance.$valid = false;
                 } else {
-                    compProductQtyDetails = [];
+                    var compProductQtyDetails = [];
                     productQtyDetails.forEach((detail, index2) => {
                         if (typeof detail.contractualQuantityOption != 'undefined') {
                             compProductQtyDetails[detail.contractualQuantityOption.name] = [ detail.minContractQuantity, detail.maxContractQuantity ];
@@ -555,7 +557,7 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
                     names = names + val.$name;
                 }
             });
-            i = 0;
+            var i = 0;
             $.each(vm.editInstance.$error.pattern, (key, val) => {
                 i++;
                 if (i === 1) {
@@ -613,7 +615,7 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
         return notValidLocation;
     };
     $scope.testForValidDates = function() {
-        notValidDates = false;
+        var notValidDates = false;
         if(!$scope.formValues.evergreen) {
             let start = new Date($scope.formValues.validFrom);
             let startDate = start.getTime();
@@ -628,7 +630,7 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
         return notValidDates;
     };
     $scope.checkAvailableProducts = function() {
-	   	availableProducts = 0;
+	   	var availableProducts = 0;
    		$.each($scope.formValues.products, (k, v) => {
    			if(!v.id || v.isDeleted == false) {
    				availableProducts++;
@@ -702,7 +704,7 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
         });
     };
     $scope.extend_contract = function() {
-    	tpl = $templateCache.get('app-contract/views/extendContractModal.html');
+    	var tpl = $templateCache.get('app-contract/views/extendContractModal.html');
         $scope.modalInstance = $uibModal.open({
             template: tpl,
             appendTo: angular.element(document.getElementsByClassName('page-container')),
@@ -727,7 +729,7 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
         });
     };
     $scope.showFormulaHistory = function(productId) {
-    	data = {
+    	var data = {
     		ContractId :  vm.entity_id,
     		ContractProductId : productId
     	};
@@ -930,7 +932,7 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
     };
     $scope.changeContractLayout = function(param) {
         if (!param) {
-            newSidebarHeight = $('.group_contractualQuantity').offset().top - 173;
+            var newSidebarHeight = $('.group_contractualQuantity').offset().top - 173;
             $('.group_ContractSummary').height(newSidebarHeight);
             $('.group_contractualQuantity, .group_ProductDetails,.group_Penalty ').addClass('col-md-12');
             $scope.CM.equalizeColumnsHeightGrouped('.group_ContractSummary', '.group_General_Contract, .group_contact');
@@ -980,7 +982,7 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
     };
     $scope.getContractProductDeliveryPriceModalData = function(selectedRowData, currentPage) {
         $scope.entries = 5;
-        skip = $scope.entries * (currentPage - 1);
+        var skip = $scope.entries * (currentPage - 1);
         data = {
             Payload: {
                 Filters: [ {
@@ -1017,7 +1019,7 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
                 }
             }
         };
-        type = 'price';
+		var type = 'price';
         $scope.contractProductDeliveryActions(data, type);
         $scope.currentPage = currentPage;
     };
@@ -1171,6 +1173,7 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
                     toastr.success('Saved succesfully');
                     $scope.prettyCloseModal();
                 } else {
+                	var message;
                     if (callback.message) {
                         message = callback.message;
                     } else {

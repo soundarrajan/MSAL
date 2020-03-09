@@ -6353,11 +6353,11 @@ APP_API.factory('$Api_Service', [
                         });
                         // console.log(data.headers());
                         // console.log(filename);
-                        filename = data.headers('filename');
+                        var filename = data.headers('filename');
                         new File([ data.data ], filename);
                         let objectUrl = URL.createObjectURL(blob);
                         // Create link.
-                        a = document.createElement('a');
+                        var a = document.createElement('a');
                         // Set link on DOM.
                         document.body.appendChild(a);
                         // Set link's visibility.
@@ -6745,7 +6745,7 @@ APP_API.factory('$Api_Service', [
                             (response) => {
                                 console.log(response);
                                 if (response.status == 200) {
-                                    res = {};
+                                    var res = {};
                                     res.status = true;
                                     res.message = 'Contact deleted successfully!';
                                     callback(res);
@@ -7038,7 +7038,7 @@ APP_API.factory('$Api_Service', [
                                 hasOrderId = true;
                                 $.each(param.field.Filter, (k, v) => {
                                 	if (v.ColumnName == 'OrderId' && v.Value == 0) {
-		                                hasOrderId = false;
+		                                var hasOrderId = false;
                                 	}
                                 });
                                 if (!hasOrderId) {
@@ -7804,7 +7804,7 @@ APP_API.factory('$Api_Service', [
                             Payload: true
                         };
                         // urls = JSON.stringify(url)
-                        postUrl = api_map[param.app].role.entity.lookup.endpoint;
+                        var postUrl = api_map[param.app].role.entity.lookup.endpoint;
                         $http.post(postUrl, apiJSON).then(
                             (response) => {
                                 console.log(response);
@@ -7829,7 +7829,7 @@ APP_API.factory('$Api_Service', [
                             }
                         };
                         // urls = JSON.stringify(url)
-                        postUrl = api_map[param.app].users.entity.lookup[param.field.masterSource].endpoint;
+                        var postUrl = api_map[param.app].users.entity.lookup[param.field.masterSource].endpoint;
                         $http.post(postUrl, apiJSON).then(
                             (response) => {
                                 console.log(response);
@@ -8026,7 +8026,7 @@ APP_API.factory('$Api_Service', [
 
                     if (param.app == 'invoices' && param.screen == 'treasuryreport' && param.field.Name == 'Seller') {
                     	// merge sellers and Service providers
-                    	mergedList = $listsCache.Seller.concat($listsCache.Sludge);
+                    	var mergedList = $listsCache.Seller.concat($listsCache.Sludge);
                         callback(mergedList);
                         return;
                     }
@@ -9316,6 +9316,7 @@ APP_API.factory('$Api_Service', [
                 },
                 saveContractDeliveryModal: function(param, type, callback) {
                     // if (_debug) console.log("$APIService contract.confirm called with the following params:", param);
+                    var urlParam;
                     let apiJSON = {
                         payload: param
                     };
@@ -10088,6 +10089,7 @@ APP_API.factory('$Api_Service', [
                 },
                 notificationsActions: function(param, callback) {
                     // if (_debug) console.log("$APIService contract.confirm called with the following params:", param);
+                    var urlVar;
                     let apiJSON = {
                         Payload: param.notificationId
                     };
@@ -10255,7 +10257,7 @@ APP_API.factory('$Api_Service', [
                 },
                 getProductsForSellerInLocation: function(param, callback) {
                     if(localStorage.getItem('preferredProducts')) {
-                        preferred = localStorage.getItem('preferredProducts');
+                        var preferred = localStorage.getItem('preferredProducts');
                         param.Payload.SelectedProductIds = preferred;
                     }
 

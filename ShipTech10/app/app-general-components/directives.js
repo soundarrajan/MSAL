@@ -1635,7 +1635,7 @@ Number(function() {
         '$compile',
         function($compile) {
             return {
-                require: 're2',
+                // require: 're2',
                 link: function(scope, element, attrs) {
                     // scope.$watch(attrs.dynamicPattern, function(dynamicPattern) {
                     if (!attrs.dynamicPattern) {
@@ -1657,7 +1657,9 @@ Number(function() {
                     element.attr('ng-pattern', pattern);
                     element.removeAttr('dynamic-pattern');
                     element.unbind();
-                    $compile(element)(scope);
+                    setTimeout(function(){
+	                    $compile(element)(scope);
+                    })
                     // });
                 }
             };
