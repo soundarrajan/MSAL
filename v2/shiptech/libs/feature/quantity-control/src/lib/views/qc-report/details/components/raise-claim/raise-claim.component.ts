@@ -8,7 +8,6 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 @Component({
   selector: 'shiptech-raise-claim',
   templateUrl: './raise-claim.component.html',
-  styleUrls: ['./raise-claim.component.css'],
   providers: [QcOrderProductsListGridViewModel],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

@@ -11,7 +11,6 @@ import { SelectItem } from 'primeng/api';
 @Component({
   selector: 'shiptech-uom-selector',
   templateUrl: './uom-selector.component.html',
-  styleUrls: ['./uom-selector.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UomSelectorComponent {

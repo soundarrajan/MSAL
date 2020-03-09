@@ -11,7 +11,6 @@ import { Subject } from 'rxjs';
 @Component({
   selector: 'shiptech-audit-log',
   templateUrl: './audit-log.component.html',
-  styleUrls: ['./audit-log.component.css'],
   providers: [AuditLogGridViewModel],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

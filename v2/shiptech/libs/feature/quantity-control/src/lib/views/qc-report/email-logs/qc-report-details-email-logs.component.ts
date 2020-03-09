@@ -12,7 +12,6 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'shiptech-qc-report-details-email-logs',
   templateUrl: './qc-report-details-email-logs.component.html',
-  styleUrls: ['./qc-report-details-email-logs.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class QcReportDetailsEmailLogsComponent implements OnInit, OnDestroy {

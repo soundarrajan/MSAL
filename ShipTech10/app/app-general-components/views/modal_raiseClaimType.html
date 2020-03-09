@@ -39,7 +39,7 @@
                     <div class="claimSpecParams" ng-repeat="(key2,val2) in value.specParams track by $index">
 
                         <span>
-                            <label class="mt-checkbox" style="">
+                            <label class="mt-checkbox">
                                 <input type="checkbox" ng-model="val2.isSelected" id="claim_info_checkbox_{{val2.specParameter.id}}" class="claimInfoCheckbox" name="ClaimType_{{ key }}_QualityParameters" ng-disabled="val2.isDisabled" ng-change="selectParamToRaiseClaim(key, key2)" />
                                 {{val2.specParameter.name}}
                                 <span></span>
