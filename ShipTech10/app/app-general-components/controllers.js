@@ -1665,7 +1665,6 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     } else if (rowObject.request) {
                         var tpl = ' <a href="#/edit-request/' + rowObject.request.id + '" style="width: calc(100% + 30px);"> <span class="formatter edit_link" data-formatter-type="link" style="white-space:none">' + rowObject.request.id + "</span></a>";
                     } else {
-                        var tpl = ' <a style="width: calc(100% + 40px);"> <span class="formatter edit_link" data-formatter-type="link" style="white-space:none"> - </span></a>';
                         var tpl = "";
                     }
                     if (rowObject.requestId) {
@@ -2322,39 +2321,39 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
         vm.changedfields = [];
         vm.editable_formatter = function(format, name) {
             var treasury_checkbox = function(cellValue, options, rowObject) {
-            	entityId = rowObject.id;
-                uniqueModel = "checked_" + rowObject.id;
+            	var entityId = rowObject.id;
+                var uniqueModel = "checked_" + rowObject.id;
                 if (vm.changedfields.length > 0) {
                 	if (vm.changedfields[entityId]) {
 		                vm.changedfields[entityId]["isChecked"] = cellValue;
                 	}
                 }
                 // tpl = "<label class='mt-checkbox'><input type='checkbox' ng-model='CLC.changedfields[" + entityId + "].isChecked' ng-change='CLC.checkChange(); CLC.calculateSubtotal(CLC.changedfields[" + entityId + "].isChecked)' /><span></span></label>"
-                tpl = "<input class='treasury_checkbox' id='chk_" + uniqueModel + "' type='checkbox' ng-model='CLC.changedfields[" + entityId + "].isChecked' ng-change='CLC.checkChange(" + entityId + "); CLC.calculateSubtotal(CLC.changedfields[" + entityId + "].isChecked)' /><label class='treasury_checkbox' for='chk_" + uniqueModel + "'><i class='fa fa-check'></i></label>";
+                var tpl = "<input class='treasury_checkbox' id='chk_" + uniqueModel + "' type='checkbox' ng-model='CLC.changedfields[" + entityId + "].isChecked' ng-change='CLC.checkChange(" + entityId + "); CLC.calculateSubtotal(CLC.changedfields[" + entityId + "].isChecked)' /><label class='treasury_checkbox' for='chk_" + uniqueModel + "'><i class='fa fa-check'></i></label>";
                 return tpl;
             };
             var textarea = function(cellValue, options, rowObject) {
                 if (cellValue == null || typeof cellValue == "undefined") {
                     cellValue = "";
                 }
-                entityId = rowObject.id;
+                var entityId = rowObject.id;
                 if (typeof vm.changedfields[entityId] == "undefined") {
                     vm.changedfields[entityId] = {};
                 }
                 vm.changedfields[entityId][name] = cellValue;
-                tpl = "<span title=''><input class='form-control' ng-model='CLC.changedfields[" + entityId + "]." + name + "' ng-focus='CLC.setInitialValue(CLC.changedfields[" + entityId + "]." + name + ", $event)' ng-blur='CLC.checkChange(" + entityId + ", CLC.changedfields[" + entityId + "]." + name + ", $event)' /></span>";
+                var tpl = "<span title=''><input class='form-control' ng-model='CLC.changedfields[" + entityId + "]." + name + "' ng-focus='CLC.setInitialValue(CLC.changedfields[" + entityId + "]." + name + ", $event)' ng-blur='CLC.checkChange(" + entityId + ", CLC.changedfields[" + entityId + "]." + name + ", $event)' /></span>";
                 return tpl;
             };
             var dropdown = function(cellValue, options, rowObject) {
                 if (cellValue == null || typeof cellValue == "undefined") {
                     cellValue = "";
                 }
-                entityId = rowObject.id;
+                var entityId = rowObject.id;
                 if (typeof vm.changedfields[entityId] == "undefined") {
                     vm.changedfields[entityId] = {};
                 }
                 vm.changedfields[entityId]['paymentStatus'] = rowObject.paymentStatus;
-                tpl = "<span title=''><select class='w100 form-control' ng-options='item as item.name for item in CLC.listsCache.PaymentStatus track by item.id' ng-model='CLC.changedfields[" + entityId + "].paymentStatus' ng-change='CLC.checkChange(" + entityId + ")' /></span>";
+                var tpl = "<span title=''><select class='w100 form-control' ng-options='item as item.name for item in CLC.listsCache.PaymentStatus track by item.id' ng-model='CLC.changedfields[" + entityId + "].paymentStatus' ng-change='CLC.checkChange(" + entityId + ")' /></span>";
                 return tpl;
             };
             var date = function(cellValue, options, rowObject) {
@@ -2364,8 +2363,8 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     cellValue = "";
                 }
 
-                entityId = rowObject.id;
-                edit_required = "true";
+                var entityId = rowObject.id;
+                var edit_required = "true";
                 if (typeof options.colModel.edit_required != "undefined")
                     edit_required = options.colModel.edit_required;
                 _.set(vm, 'changedfields['+entityId+']['+name+']', null);
@@ -2374,7 +2373,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 vm.changedfields[entityId][name] = cellValue;
         
                 // wrapper
-                tpl = '<div style="position:relative" class="treasury-datepicker-input">';
+                var tpl = '<div style="position:relative" class="treasury-datepicker-input">';
                 tpl += '<div class="input-group clc-date-input date" style="max-width:90%" ' + 'id="clc_' + entityId + '_' + name + '">';
                        
                 // datepicker
@@ -2396,14 +2395,14 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
 
             };
             var ftpActiveCheckbox = function(cellValue, options, rowObject) {
-                tpl = "<input type='checkbox' ng-init='ftpActive_" + rowObject.id + "=" + cellValue + "' ng-model='ftpActive_" + rowObject.id + "' ng-change='CLC.ftpActiveCheckboxChange(" + rowObject.id + ",ftpActive_" + rowObject.id + ");' /><span></span>";
+                var tpl = "<input type='checkbox' ng-init='ftpActive_" + rowObject.id + "=" + cellValue + "' ng-model='ftpActive_" + rowObject.id + "' ng-change='CLC.ftpActiveCheckboxChange(" + rowObject.id + ",ftpActive_" + rowObject.id + ");' /><span></span>";
                 return tpl;
             };
             var sap_date = function(cellValue, options, rowObject) {
                 // formattedDate = $filter('date')(cellValue, 'short');
-                dateFormat = $scope.tenantSettings.tenantFormats.dateFormat.name;
-                dateFormat = dateFormat.replace(/D/g, "d").replace(/Y/g, "y");
-                formattedDate = $filter("date")(cellValue, dateFormat);
+                var dateFormat = $scope.tenantSettings.tenantFormats.dateFormat.name;
+                var dateFormat = dateFormat.replace(/D/g, "d").replace(/Y/g, "y");
+                var formattedDate = $filter("date")(cellValue, dateFormat);
                 var tpl = '<span ng-controller="SAPExportController as $ctrl"><a   ng-click="$ctrl.sapExport(' + "'" + cellValue + "'" + ')"><span class="formatter">' + formattedDate + "</span></a></span>";
                 return tpl;
             };
@@ -2430,7 +2429,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
         vm.saveTreasuryRowChange = function(entityId, changedData) {
             var CLC = $("#invoices_treasuryreport");
             var tableData = CLC.jqGrid.Ascensys.gridObject.rows;
-
+            var payload = {};
             for (var i = 0; i < tableData.length; i++) {
                 if (tableData[i].id === entityId) {
                     var currentRow = angular.copy(tableData[i]);
@@ -2466,16 +2465,16 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
 
             }
 
-            if (typeof(vm.paymentDateHistory) == "undefined") {
+            if (typeof (vm.paymentDateHistory) == "undefined") {
                 vm.paymentDateHistory = [];
             }
-            if (typeof(vm.paymentDateHistory[currentRow.id]) == 'undefined') {
+            if (typeof (vm.paymentDateHistory[currentRow.id]) == 'undefined') {
                 vm.paymentDateHistory[currentRow.id] = {}
             }
-            if (typeof(vm.paymentDateHistory[currentRow.id].paymentDate) == 'undefined') {
+            if (typeof (vm.paymentDateHistory[currentRow.id].paymentDate) == 'undefined') {
                 vm.paymentDateHistory[currentRow.id].paymentDate = null;
             }
-            if (typeof(vm.paymentDateHistory[currentRow.id].accountancyDate) == 'undefined') {
+            if (typeof (vm.paymentDateHistory[currentRow.id].accountancyDate) == 'undefined') {
                 vm.paymentDateHistory[currentRow.id].accountancyDate = null;
             }      
             // console.log(vm.initialTreasuryData);
@@ -2630,13 +2629,12 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
         vm.calculateSubtotal = function(data) {
             // console.log(data);
             // console.log(vm.changedfields);
-            allRows = vm.changedfields;
-            rowsTocheck = [];
+            var allRows = vm.changedfields;
+            var rowsTocheck = [];
             var CLC = $("#invoices_treasuryreport");
             var rowData = CLC.jqGrid.Ascensys.gridObject.rows;
             Object.keys(allRows).forEach(function(key, index) {
                 if (this[key].isChecked == true) {
-                    selectedData = this[key];
                     $.each(rowData, function(k, v) {
                         if (v.id == key) {
                             rowsTocheck.push(v);
@@ -2683,8 +2681,8 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             }
         })
         $scope.resetTreasuryCheckboxes = function() {
-            allRows = vm.changedfields;
-            rowsTocheck = [];
+            var allRows = vm.changedfields;
+            var rowsTocheck = [];
             $rootScope.treasurySubtotal = 0;
             var CLC = $("#invoices_treasuryreport");
             var rowData = CLC.jqGrid.Ascensys.gridObject.rows;
@@ -2852,7 +2850,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
         };
         /*CONTRACT DELIVERY LIST*/
         $scope.initProductDeliveryList = function() {
-            filters = [
+            var filters = [
                 {
                     ColumnName: "Id",
                     Value: $state.params.entity_id
@@ -2861,6 +2859,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             $("#" + Elements.settings[Object.keys(Elements.settings)[0]].table).jqGrid.table_config.on_payload_filter(filters);
         };
         $scope.newFilterEmailLog = function(type, entity_id) {
+            var transactionTypeId;
             if (type == "request") {
                 transactionTypeId = "1,10,11,12,13,21,16";
             }
@@ -2873,12 +2872,12 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 Factory_Master.get_group_requests_ids(data, function(callback) {
                     if (callback) {
                         console.log(callback.data);
-                        reqIds = [];
+                        var reqIds = [];
                         $.each(callback.data.payload, function(k, v) {
                             reqIds.push(v.id);
                         });
                         reqIds = reqIds.join();
-                        filters = [
+                        var filters = [
                             {
                                 ColumnName: "TransactionTypeId",
                                 Value: "1,10,11,12,13,21"
@@ -3016,7 +3015,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 $rootScope.editableCProwsModel = {};
             }
             if (rowIdx) {
-                keyRow = "row-" + rowIdx;
+                var keyRow = "row-" + rowIdx;
                 if (typeof $rootScope.editableCProwsModel[keyRow] == "undefined") {
                     $rootScope.editableCProwsModel[keyRow] = {};
                 }
@@ -3138,9 +3137,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             }
             $.each($scope.selectedContractPlanningRows, function(k,v){
                 if (v.rowIndex == rowIdx) {
-                    v[columnKey] = value
+                    v[columnKey] = value;
                 }
-            })
+            });
             // console.log($scope.selectedContractPlanningRows);
             // console.log($rootScope.editableCProwsModel);
         };
@@ -3284,7 +3283,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
         }
 
         $rootScope.$on("selectedContractFromModal", function(data,res){
-            obj = {
+            var obj = {
                 "id" : res.contract.id,
                 "name" : res.contract.name,
                 "fullValue" : res,
@@ -3294,7 +3293,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
         });
 
         $rootScope.$on("selectedProductFromModal", function(data,res){
-            obj = {
+            var obj = {
                 "id" : res.product.id,
                 "name" : res.product.name,
                 "fullValue" : res,
@@ -3309,7 +3308,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             // vm.hasChanged = true;
             // tableData = CLC.jqGrid.Ascensys.gridObject.rows
             if (contract) {
-                contractObj = {
+                var contractObj = {
                     "id" : contract.contract.id,
                     "name" : contract.contract.name
                 }
@@ -3380,9 +3379,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             if (typeof $rootScope.editableCProwsModel == "undefined") {
                 $rootScope.editableCProwsModel = {};
             }
-            keyRow = "row-" + parseFloat(rowId);
-            CLC = $("#flat_contract_planning");
-            rowData = CLC.jqGrid.Ascensys.gridObject.rows[rowId];
+            var keyRow = "row-" + parseFloat(rowId);
+            var CLC = $("#flat_contract_planning");
+            var rowData = CLC.jqGrid.Ascensys.gridObject.rows[rowId];
             if (rowData.contract) {
                 if (!$rootScope.editableCProwsModel[keyRow]) {
                     $rootScope.editableCProwsModel[keyRow] = {}
@@ -3490,12 +3489,12 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
         vm.setContractFiltersContractPlanning = function(rowId) {
             // console.log(rowId);
             // return;
-            initialRowId = angular.copy(rowId);
+            var initialRowId = angular.copy(rowId);
             if (!vm.hasChanged) {
                 rowId -= 1;
             }
-            CLC = $("#flat_contract_planning");
-            request = CLC.jqGrid.Ascensys.gridObject.rows[rowId];
+            var CLC = $("#flat_contract_planning");
+            var request = CLC.jqGrid.Ascensys.gridObject.rows[rowId];
             request.product = $rootScope.editableCProwsModel['row-'+ parseFloat(parseFloat(rowId)+1)]['product'];
             console.log(request);
             var newFilters = [];
@@ -3530,7 +3529,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             selectContractModel.getSuggestedContracts(null, null, newFilters).then(function(server_data) {
                 response = [];
                 $.each(server_data.payload, function(k, v) {
-                    obj = {
+                    var obj = {
                         id: v.id1,
                         name: v.contractName,
                         fullValue: v
@@ -3551,13 +3550,13 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
         };
 
         $scope.selectContractPlanningRow = function(rowIdx, value) {
-            CLC = $("#flat_contract_planning");
-            request = CLC.jqGrid.Ascensys.gridObject.rows[rowIdx - 1];
+            var CLC = $("#flat_contract_planning");
+            var request = CLC.jqGrid.Ascensys.gridObject.rows[rowIdx - 1];
             request.rowIndex = rowIdx;
             if (typeof $scope.selectedContractPlanningRows == "undefined") {
                 $scope.selectedContractPlanningRows = [];
             }
-            rowIsAlreadySelected = false;
+            var rowIsAlreadySelected = false;
             $.each($scope.selectedContractPlanningRows, function(k, v) {
                 if (v.rowIndex == rowIdx) {
                     rowIsAlreadySelected = true;
@@ -3626,8 +3625,8 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             }
         }
         $scope.selectOrderListRow = function(rowIdx, value, all) {
-            CLC = $("#flat_orders_list");
-            request = CLC.jqGrid.Ascensys.gridObject.rows[rowIdx - 1];
+            var CLC = $("#flat_orders_list");
+            var request = CLC.jqGrid.Ascensys.gridObject.rows[rowIdx - 1];
             request.rowIndex = rowIdx;
             if (typeof $rootScope.selectedOrderListRows == "undefined") {
                 $rootScope.selectedOrderListRows = [];
@@ -3640,7 +3639,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         request = CLC.jqGrid.Ascensys.gridObject.rows[rowIdx - 1];
                         request.rowIndex = rowIdx;
 
-                        rowIsAlreadySelected = false;
+                        var rowIsAlreadySelected = false;
                         $.each($rootScope.selectedOrderListRows, function(k, v) {
                             if (v.rowIndex == rowIdx) {
                                 rowIsAlreadySelected = true;
@@ -3720,14 +3719,14 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             }
         }
         $scope.openContractPopupInCP = function(rowIdx) {
-            CLC = $("#flat_contract_planning");
-            request = CLC.jqGrid.Ascensys.gridObject.rows[rowIdx - 1];
+            var CLC = $("#flat_contract_planning");
+            var request = CLC.jqGrid.Ascensys.gridObject.rows[rowIdx - 1];
             $scope.openContractModalRowIdx = rowIdx;
             $rootScope.$broadcast("contractModalData", request)
         }
         $scope.openProductPopupInCP = function (rowIdx) {
-            CLC = $("#flat_contract_planning");
-            request = CLC.jqGrid.Ascensys.gridObject.rows[rowIdx - 1];
+            var CLC = $("#flat_contract_planning");
+            var request = CLC.jqGrid.Ascensys.gridObject.rows[rowIdx - 1];
             $scope.openProductModalRowIdx = rowIdx;
             $rootScope.$broadcast("contractProductData", request)
         }
@@ -3962,9 +3961,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
         });
 
         $scope.deleteSelectedConfiguration = function(){
-            selectedConfiguration = $("#configurations_list").val();
+            var selectedConfiguration = $("#configurations_list").val();
             if (selectedConfiguration) {
-                filtersScope = angular.element($("#filters-widget-scope")).scope();
+                var filtersScope = angular.element($("#filters-widget-scope")).scope();
                 filtersScope.deleteConfig({id:selectedConfiguration});
                 return;
             } else {
@@ -4013,7 +4012,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                     toastr.error("Please select configuration to be deleted");
                     return
                 }
-                sweetConfirmScope = angular.element($("clc-table-list div")).scope();
+                var sweetConfirmScope = angular.element($("clc-table-list div")).scope();
                 $scope.confirmModalData = {};
                 $scope.confirmModalData.text = "Do you want to delete the configuration?";
                 sweetConfirmScope.showSweetConfirm("Controller_General_Header", "Do you want to delete the configuration?", "deleteSelectedConfiguration(false)");
@@ -4028,10 +4027,10 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                 //get table width here, it gets altered later
                 // newColModel = Object.values(Elements.table)[0].jqGrid("getGridParam", "colModel");
 
-                newTable = Elements.table[$(Elements.container[0]).find(".ui-jqgrid-bdiv table[role='presentation']").attr("id")];
-                newColModel = newTable.jqGrid("getGridParam", "colModel");
+                var newTable = Elements.table[$(Elements.container[0]).find(".ui-jqgrid-bdiv table[role='presentation']").attr("id")];
+                var newColModel = newTable.jqGrid("getGridParam", "colModel");
 
-                payload = [];
+                var payload = [];
                 $.each(newColModel, function(k, v) {
                     if (!v.exclude && v.label) {
                         v.formatter = null;
@@ -4059,6 +4058,8 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                 });
                 return;
             }
+            var app;
+            var screen;
             if (params) {
                 app = params.app;
                 screen = params.screen;
@@ -4253,8 +4254,8 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
             });
         };
         vm.mapInvoiceActions = function(action, requireCheck) {
-            obj = {};
-            DTOscreenActions = [];
+            var obj = {};
+            var DTOscreenActions = [];
             $.each($rootScope.formValuesLoaded.screenActions, function(key, value) {
                 DTOscreenActions.push(value.id);
             });
@@ -4262,7 +4263,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
             obj.label = action.mappedScreenActionName;
             obj.disabled = true;
             // check if is in payload
-            isInPayload = false;
+            var isInPayload = false;
             if (DTOscreenActions.length > 0) {
                 if (DTOscreenActions.indexOf(action.mappedScreenActionId) != -1) {
                     isInPayload = true;
@@ -4321,9 +4322,10 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
             return obj;
         };
         vm.translateLabel = function(string) {
-            translated = $filter('translate')(string);
+            var translated = $filter('translate')(string);
+            var translatedString;
             if(translated){
-                translatedString = translated
+                translatedString = translated;
             } else {
                 translatedString = "default"
             }
