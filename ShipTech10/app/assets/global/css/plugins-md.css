@@ -45,8 +45,6 @@ Bootstrap Datepaginator
 /***
 Bootstrap Datepicker
 ***/
-.datepicker.dropdown-menu {
-  padding: 5px; }
 
 .datepicker .selected {
   background-color: #909090 !important;
@@ -81,6 +79,7 @@ Bootstrap Datepicker
   font-weight: 400  !important; }
 
 .datepicker.dropdown-menu {
+  padding: 5px;
   box-shadow: 5px 5px rgba(102, 102, 102, 0.1);
   border: 1px solid #efefef; }
 
@@ -273,9 +272,6 @@ Bootstrap Modal
 .modal-open.page-overflow .modal-scrollable {
   overflow-y: auto !important; }
 
-.modal-scrollable {
-  overflow: hidden !important; }
-
 /* BS 3.3.1 fix */
 .modal-backdrop {
   position: fixed;
@@ -434,12 +430,11 @@ Bootstrap Time Picker
 /***
 Toastr Notifications
 ***/
+
 .toast {
   -webkit-box-shadow: none !important;
   -moz-box-shadow: none !important;
-  box-shadow: none !important; }
-
-.toast {
+  box-shadow: none !important;
   background-color: #030303; }
 
 .toast-success {
@@ -1158,14 +1153,6 @@ table.dataTable.dtr-column > tbody > tr > th.control {
   text-align: center;
   width: 14px; }
 
-table.dataTable.dtr-column > tbody > tr > td.control:before, table.dataTable.dtr-column > tbody > tr > th.control:before {
-  margin-left: -8px;
-  text-align: center;
-  text-indent: 0;
-  line-height: 0; }
-
-table.dataTable.dtr-column > tbody > tr > td.control:before,
-table.dataTable.dtr-column > tbody > tr > th.control:before,
 table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child:before,
 table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child:before {
   box-shadow: none !important;
@@ -1190,6 +1177,14 @@ table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child:before {
 
 table.dataTable.dtr-column > tbody > tr > td.control:before,
 table.dataTable.dtr-column > tbody > tr > th.control:before {
+  margin-left: -8px;
+  text-indent: 0;
+  box-shadow: none !important;
+  background-color: #b0c1d2;
+  font-weight: 300;
+  vertical-align: middle;
+  line-height: 16px;
+  border: 0;
   text-align: center;
   margin-top: -8px; }
 
@@ -1400,11 +1395,12 @@ Fullcalendar
   font-weight: 300; }
 
 .portlet.calendar.light .fc-button {
-  top: -60px;
   color: #666;
   text-transform: uppercase;
   font-size: 12px;
-  padding-bottom: 35px; }
+  padding-bottom: 35px;
+  top: -47px;
+}
   .portlet.calendar.light .fc-button .fc-text-arrow {
     margin-top: -6px;
     display: inline-block; }
@@ -1462,9 +1458,6 @@ Fullcalendar
 .portlet.calendar .mobile .fc-content {
   margin-top: 53px; }
 
-.portlet.calendar.light .fc-button {
-  top: -47px; }
-
 /***
 Google Maps
 ***/
@@ -1504,23 +1497,21 @@ Gritter notification modify
 /***
 Dashboard Charts(new in v1.2.1)
 ***/
-.easy-pie-chart,
-.sparkline-chart {
-  text-align: center; }
 
 .sparkline-chart {
   margin-top: 15px;
   position: relative; }
 
 .easy-pie-chart .number {
-  font-size: 14px !important;
-  font-weight: 300;
-  margin: 0 auto;
   position: relative;
   text-align: center;
-  width: 75px;
   height: 75px;
-  line-height: 75px; }
+  line-height: 75px;
+  font-size: 16px;
+  font-weight: 300;
+  width: 85px;
+  margin: 0 auto;
+}
   .easy-pie-chart .number canvas {
     position: absolute;
     top: 0;
@@ -1539,12 +1530,14 @@ Dashboard Charts(new in v1.2.1)
   font-weight: 300;
   font-size: 16px;
   margin-top: 5px;
-  margin-bottom: 10px; }
+  margin-bottom: 10px;
+}
 
 .sparkline-chart .title:hover,
 .easy-pie-chart .title:hover {
   color: #666;
-  text-decoration: none; }
+  text-decoration: none;
+}
 
 .sparkline-chart .title > i,
 .easy-pie-chart .title > i {
@@ -1662,35 +1655,10 @@ jQuery Sparkline
   margin-top: 15px;
   position: relative; }
 
-.easy-pie-chart .number {
-  font-size: 16px;
-  font-weight: 300;
-  width: 85px;
-  margin: 0 auto; }
-
 .sparkline-chart .number {
   width: 100px;
   margin: 0 auto;
   margin-bottom: 10px; }
-
-.sparkline-chart .title,
-.easy-pie-chart .title {
-  display: block;
-  text-align: center;
-  color: #333;
-  font-weight: 300;
-  font-size: 16px;
-  margin-top: 5px;
-  margin-bottom: 10px; }
-
-.sparkline-chart .title:hover,
-.easy-pie-chart .title:hover {
-  color: #666;
-  text-decoration: none; }
-
-.sparkline-chart .title > i,
-.easy-pie-chart .title > i {
-  margin-top: 5px; }
 
 /***
 jQuery UI Sliders(new in v1.1.1)

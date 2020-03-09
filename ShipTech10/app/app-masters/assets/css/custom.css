@@ -574,10 +574,6 @@ span.variance {
     color: black;
 }
 
-.dataGrid {
-    height: 155px;
-}
-
 .group_debunkerDetails {
     display: none;
 }
@@ -716,10 +712,6 @@ span.variance {
 
 .ui-grid-header-cell.ui-grid-clearfix.ui-grid-category.label_false_visible:before {
     display: none;
-}
-
-.ui-grid-header-cell.ui-grid-clearfix.ui-grid-category.label_false_visible [role="columnheader"] {
-    height: 100%;
 }
 
 .ui-grid-header-cell.ui-grid-clearfix.ui-grid-category .parent-header-category {

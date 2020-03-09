@@ -20,11 +20,6 @@ a.btn[disabled]:hover {
     padding: 0 !important;
 }
 
-.general-header.color-white .st-main-content-menu {
-    background: #FFFFFF;
-    border-color: #EEEEEE;
-}
-
 .general-header.color-gray .st-main-content-menu {
 
     background: #EEEEEE;
@@ -36,7 +31,9 @@ a.btn[disabled]:hover {
 }
 
 .general-header.color-white .st-main-content-menu {
-    border-bottom: 0px;
+    background: #FFFFFF;
+    border-color: #EEEEEE;
+    border-bottom: 0;
     margin-top: 10px;
     margin-bottom: 10px;
 }
@@ -222,27 +219,14 @@ a.btn[disabled]:hover {
     font-size: 14px;
 }
 
-.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
-    color: #000000;
-    background: #ffffff;
-}
-
 .ui-jqgrid .ui-jqgrid-htable .ui-th-div {
     font-size: 14px;
-    /*font-size: 12.6px;*/
     font-family: "Open Sans", sans-serif;
     font-weight: 600;
     color: #333333;
-}
-
-.ui-jqgrid .ui-jqgrid-htable .ui-th-div {
-    /*height: 30px;*/
-    /*margin-top: 15px;*/
-    height: auto;
 	white-space: normal;
 	padding: 0 15px;
 	line-height: 100%;
-
     display: flex;
     height: 100%;
     position: initial;
@@ -255,35 +239,27 @@ a.btn[disabled]:hover {
     color: #333333 !important;
 }
 
-span.s-ico {
-    display: initial!important;
-}
-
-.ui-th-column, .ui-jqgrid .ui-jqgrid-htable th.ui-th-column {
-    text-align: left;
-}
-
 span.s-ico:before {
+    color:#fff
     content: "\f0d8";
     display: block;
     font-family: 'fontAwesome';
     position: absolute;
     font-size: 15px;
     font-family: 'fontAwesome';
-    color: #dcdcdc;
     top: -2px;
     right: 6px;
     font-weight: normal;
 }
 
 span.s-ico:after {
+    color:#fff
     content: "\f0d7";
     display: block;
     font-family: 'fontAwesome';
     position: absolute;
     font-size: 15px;
     font-family: 'fontAwesome';
-    color: #dcdcdc;
     top: 6px;
     right: 6px;
     font-weight: normal;
@@ -373,6 +349,8 @@ th#master_list_table_cb .cbox, th#master_list_table_cb .s-ico {
 
 
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+    color: #000000;
+    background: #ffffff;
     border: 1px solid #e7ecf1;
     border-bottom: 0;
 }
@@ -523,10 +501,10 @@ th#master_list_table_cb .cbox, th#master_list_table_cb .s-ico {
 
 .ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
     border: 1px solid #dddddd;
+    background: none;
     background-color: #f0f3f6!important;
     font-weight: bold;
     color: #333333;
-    background: none;
 }
 
 input.cbox:after {
@@ -787,9 +765,9 @@ span.ui-grid-ico-sort.ui-icon-desc.ui-sort-ltr.ui-icon.ui-icon-triangle-1-s:not(
 
 .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
     border: 1px solid #ffffff!important;
+    background: none;
     background-color: #e2e6ea!important;
     /*color: #ffffff;*/
-    background: none;
 }
 
 .ui-dialog[aria-describedby*="colchooser_"] {
@@ -1105,18 +1083,6 @@ span.ui-grid-ico-sort.ui-icon-desc.ui-sort-ltr.ui-icon.ui-icon-triangle-1-s:not(
     background-position: center;
 }
 
-.asc_jqgrid__columns-list {
-    display: none;
-    position: absolute !important;
-    top: 30px !important;
-    right: 1px !important;
-    left: auto !important;
-    width: 175px !important;
-    /* scroll fix */
-    max-height: 80%;
-    overflow: hidden;
-}
-
 .asc_jqgrid__columns-list .mCSB_scrollTools {
     width: 10px;
 }
@@ -1192,11 +1158,6 @@ div.asc_jqgrid__columns-list a.dt-button:not(.active):hover {
 
 .asc_jqgrid__entries {
     font-size: 14px;
-}
-
-.asc_jqgrid__entries select {
-    font-size: 12px;
-    border-radius: 4px !important;
 }
 
 .asc_jqgrid__payment_due_date {
@@ -1905,10 +1866,6 @@ input.defaulttag {
 
 /*tootltip styles*/
 
-.tooltip-inner {
-    background: #536881 !important;
-}
-
 .tooltip-arrow {
     border-top-color: #536881 !important
 }
@@ -1994,21 +1951,6 @@ input.defaulttag {
 .form-group.form-inline.row.users_admin_Signature, .edit_form_fields_Logo_masters .form-group {
     position: absolute!important;
 }
-
-/* Inatech UI Changes 23/08 */
-
-.row.users_admin_Signature ul.wysihtml5-toolbar a.btn.default:not(.btn-outline) {
-    color: #666 !important;
-    background-color: #fff !important;
-}
-
-.row.users_admin_Signature ul.wysihtml5-toolbar a.btn.default:not(.btn-outline):hover i {
-    color: #c9c9c9 !important;
-}
-
-/* end Inatech UI Changes */
-
-
 
 /* Inatech UI Changes 23/08 */
 
@@ -2115,7 +2057,6 @@ span.input-group-addon.im_group {
     height: 18px;
     line-height: 25px;
     display: inline-block;
-    margin-left: 5px;
     font-size: 0px;
     text-align: center;
     cursor: pointer;
@@ -2259,7 +2200,6 @@ span.input-group-addon.im_group {
 
 .multiSelectSwitch .ms-selectable ul, .multiSelectSwitch .ms-selection ul {
     margin-left: 0;
-    padding-left: 0;
     padding: 15px;
     min-height: 300px;
     max-height: 300px;
@@ -2299,11 +2239,6 @@ span.input-group-addon.im_group {
 }
 
 /* END Multi select switch */
-
-.fullWidthModal.in .modal-content {
-    box-shadow: none!important;
-    border: 0!important;
-}
 
 .form-wizard .steps>li>a.step {
     background-color: #337ab7;
@@ -2560,10 +2495,6 @@ span.weightage {
 
 /* simplteTextUOM | data-table-formatter */
 
-.formatter-uom-value {
-    float: right;
-}
-
 .formatter-uom-label.uom {
     float: right;
 }
@@ -2588,7 +2519,6 @@ span.weightage {
 }
 
 .formatter-uom-value {
-    /*width: calc(100% - 80px);*/
     float: none;
     height: 40px;
     line-height: 36px;
@@ -3121,6 +3051,7 @@ td.gridcell input.cbox {
 }
 
 .tooltip-inner {
+    background: #536881 !important;
 	max-width: 350px;
     word-wrap: break-word;
 }
@@ -3133,6 +3064,7 @@ td.gridcell input.cbox {
 }
 
 .asc_jqgrid__entries select {
+    font-size: 12px;
     border-radius: 0px !important;
 }
 
@@ -3399,7 +3331,6 @@ span.negotiation-blade-actions>span {
     position: fixed;
     width: 59% !important;
     left: 20%;
-    margin-bottom: 50px;
     margin: 0 auto;
     z-index: 10000 !important;
     height: 354px;
@@ -3409,7 +3340,6 @@ span.negotiation-blade-actions>span {
     position: fixed;
     width: 30% !important;
     left: 35%;
-    margin-bottom: 50px;
     margin: 0 auto;
     z-index: 10000 !important;
     height: auto;
@@ -3844,14 +3774,14 @@ span.negotiation-blade-actions>span {
     outline: none;
 }
 
-.modal.fade.ng-isolate-scope.fullWidthModal.smallModal.in, .modal.fade.ng-isolate-scope.fullWidthModal.smallModal.in {
+.modal.fade.ng-isolate-scope.fullWidthModal.smallModal.in {
     width: 40% !important;
     margin: auto !important;
     left: 30%;
     top: 20%;
 }
 
-.smallModal #modal_close_bar, .smallModal #modal_close_bar {
+.smallModal #modal_close_bar {
     right: 20px;
     top: 10px;
 }
@@ -3993,11 +3923,6 @@ td[aria-describedby="flat_delivery_list_orderNo"] {
 /* Inatech UI changes */
 
 /*full width table input*/
-
-.ui-grid-cell>div.ng-scope {
-    margin-top: 2px;
-    width: 100%;
-}
 
 select[name="Condition"] {
     width: 100% !important;
@@ -4185,10 +4110,6 @@ span.isMatch {
     vertical-align: middle!important
 }
 
-.ui-jqgrid .ui-jqgrid-resize-ltr {
-    width: 10px;
-}
-
 .group_VesselTankDetailsCLC .ui-grid-canvas .ui-grid-row.active .ui-grid-cell {
     background-color: #cadade;
 }
@@ -4200,10 +4121,8 @@ span.isMatch {
 }
 
 span.s-ico {
-    /*display: none!important;*/
+    display: initial!important;
     position: absolute;
-    /*left: 15px;*/
-	/*top: 3px;*/
     left: 15px;
     top: 30%;
 }
@@ -4243,9 +4162,6 @@ custom-popover[table="'flat_table_schedule_dashboard'"] > div.customPopover > di
 .ui-jqgrid .ui-jqgrid-resize-ltr {
 	width: 30px;
 }
-span.s-ico:before,span.s-ico:after{
-   color:#fff
-}
 .sortedasc span.s-ico:before{
     color:#536881
 }
@@ -4253,6 +4169,7 @@ span.s-ico:before,span.s-ico:after{
     color:#536881
 }
 .ui-th-column, .ui-jqgrid .ui-jqgrid-htable th.ui-th-column {
+    text-align: left;
     position: relative;
 }
 
@@ -4345,6 +4262,13 @@ th.unsavedFilteredColumn {
 	background: #eeeeee!important;
 }
 .asc_jqgrid__columns-list{
+    display: none;
+    position: absolute !important;
+    top: 30px !important;
+    right: 1px !important;
+    left: auto !important;
+    width: 175px !important;
+    overflow: hidden;
     max-height: 680px;
     min-height: 400px
 }
