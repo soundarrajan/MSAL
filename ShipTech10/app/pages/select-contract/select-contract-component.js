@@ -104,7 +104,6 @@ angular.module('shiptech.pages').controller('SelectContractController', [ '$wind
                     }
                 });
             });
-            if (ctrl.selectedRows.length == 1) {}
             $scope.$emit('selectedContracts', ctrl.selectedRows);
         };
 

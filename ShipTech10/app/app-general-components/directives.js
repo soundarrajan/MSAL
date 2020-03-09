@@ -667,9 +667,6 @@ Number(function() {
                             });
                             $rootScope.lastLoadedListPayload = JSON.stringify(listPayload);
                             if (scope.hasloader) {
-
-                            }
-                            if (scope.hasloader) {
                                 $(Elements.table[Elements.settings[table_id].table]).parents('clc-table-list').addClass('loading');
                             }
                             $Api_Service.entity.list(listPayload,

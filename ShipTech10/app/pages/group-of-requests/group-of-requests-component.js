@@ -1282,7 +1282,6 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
             let seller;
             let theLocation;
             // get correct location from group (the location matching the products request)
-            for (var i = 0; i < locations.length; i++) { }
             for (var i = 0; i < locations.length; i++) {
                 if (locations[i].requestId === product.requestId) {
                     theLocation = locations[i];
@@ -6917,8 +6916,6 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                 }
             });
             console.log('hide loader from gorTableRendered', rowIdx, locationsLength);
-            if (rowIdx + 1 == locationsLength) {
-            }
         };
 
         ctrl.confirmNavigateBlade = function() {

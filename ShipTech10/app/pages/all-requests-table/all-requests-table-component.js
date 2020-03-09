@@ -53,8 +53,7 @@ angular.module('shiptech.pages').controller('AllRequestsTableController', [ '$sc
 
                 for (let i = selected.length - 1; i >= 0; i--) {
                     sv = selected[i];
-                    if ($(e.target).prop('checked')) {
-                    } else if(ctrl.tableData.tableData.rows[Number(sv) - 1].requestId == clickedRowData.requestId) {
+                    if (!$(e.target).prop('checked') && (ctrl.tableData.tableData.rows[Number(sv) - 1].requestId == clickedRowData.requestId)) {
                         selected.splice(i, 1);
                     }
                 }

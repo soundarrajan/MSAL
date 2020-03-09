@@ -178,8 +178,7 @@ angular.module('shiptech.components').controller('ConfirmOffersDialogController'
                     });
                 	if (foundRelatedOrder) {
                         rqV.ExistingOrderId = foundRelatedOrder;
-                    } else if (typeof errorType != 'undefined') {
-                    	}
+                    }
                     // if (!hasOrder) {
                     //  if (productsWithErrors.indexOf(rqV.RequestProductId) == -1) {
                     //      productsWithErrors.push(rqV.RequestProductId);

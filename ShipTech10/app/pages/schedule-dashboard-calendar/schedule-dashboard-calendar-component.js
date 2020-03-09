@@ -1585,8 +1585,6 @@ angular.module('shiptech.pages').controller('ScheduleCalendarController', [ '$ro
 		               					voyage.hasStrategy = false;
 		               				}
 	               				}
-	               				if (voyage.voyageDetail.bunkerPlansGrouped) {
-	               				}
                					$.each(ctrl.bunkerDetails[voyage.id], (k4, bp) => {
 		               				if (bp.bunkerPlan.id == currentBunkerPlanId) {
 		               					bp.bunkerPlan.supplyStrategy = false;

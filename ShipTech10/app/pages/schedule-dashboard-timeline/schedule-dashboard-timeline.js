@@ -669,8 +669,6 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     $('#vis-custom-group-columns').width($('.vis-left').width());
                     if (elem.length) {
                         $('#vis-custom-group-columns').css('padding-left', ($('.vis-left')[0].offsetWidth - $('.vis-left')[0].clientWidth) + 'px');
-                    } else {
-
                     }
                 });
             }
@@ -929,16 +927,12 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                         }
                     }
                 }
-                if (payload.length === 0) {
-                } else {
+                if (payload.length !== 0) {
                     if (!$scope.appFilters) {
                         $scope.appFilters = [];
                     }
                     for (var i = 0; i < payload.length; i++) {
-                        if (payload[i].ColumnValue === 'VoyageDetail_PortStatus_DisplayName') {
-                            if ($rootScope.activeBreadcrumbFilters === payload[i].Values[0]) {
-                            }
-                        } else {
+                        if (payload[i].ColumnValue !== 'VoyageDetail_PortStatus_DisplayName') {
                             $scope.appFilters.push(payload[i]);
                         }
                     }
@@ -1027,16 +1021,12 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                         }
                     }
                 }
-                if (payload.length === 0) {
-                } else {
+                if (payload.length !== 0) {
                     if (!$scope.appFilters) {
                         $scope.appFilters = [];
                     }
                     for (var i = 0; i < payload.length; i++) {
-                        if (payload[i].ColumnValue === 'VoyageDetail_PortStatus_DisplayName') {
-                            if ($rootScope.activeBreadcrumbFilters === payload[i].Values[0]) {
-                            }
-                        } else {
+                        if (payload[i].ColumnValue !== 'VoyageDetail_PortStatus_DisplayName') {
                             $scope.appFilters.push(payload[i]);
                         }
                     }

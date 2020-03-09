@@ -2331,10 +2331,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
                 IncotermId: incoterm.id
             };
             if (typeof data.RequestOfferIds[0] != 'undefined') {
-                groupOfRequestsModel.updateIncoterm(data).then((response) => {
-                    if (response.isSuccess) {
-
-                    }
+                groupOfRequestsModel.updateIncoterm(data).then(() => {
                 });
             }
         };

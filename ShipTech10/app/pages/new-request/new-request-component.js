@@ -504,26 +504,24 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         }
                         for (let i = 0; i < ctrl.request.locations[j].products.length; i++) {
                             ctrl.request.locations[j].products[i].name = `${String(i + 1) } - ${ ctrl.request.locations[j].products[i].name}`;
-                            if (ctrl.request.locations[j].products[i] > 0) {
-
-                            } else {
-	                            listsModel.getSpecGroupByProductAndVessel(ctrl.request.locations[j].products[i].product.id, ctrl.request.vesselDetails.vessel.id, j, i).then((server_data) => {
-	                                ctrl.request.locations[server_data.id].products[server_data.id2].specGroups = server_data.data.payload;
-	                                let isInList = false;
-	                                $.each(ctrl.request.locations[server_data.id].products[server_data.id2].specGroups, (k, v) => {
-	                                    $.each(ctrl.request.locations[server_data.id].products[server_data.id2].specGroups, (k, v) => {
-	                                        if (v.id == ctrl.request.locations[server_data.id].products[server_data.id2].specGroup.id) {
-	                                            isInList = true;
-	                                        }
-	                                        if (v.isDefault) {
-	                                        	ctrl.request.locations[server_data.id].products[server_data.id2].specGroup = v;
-	                                        }
-	                                    });
-	                                });
-	                                if (!isInList) {
-	                                    ctrl.request.locations[server_data.id].products[server_data.id2].specGroup = null;
-	                                }
-	                            });
+                            if (ctrl.request.locations[j].products[i] < 1) {
+                                listsModel.getSpecGroupByProductAndVessel(ctrl.request.locations[j].products[i].product.id, ctrl.request.vesselDetails.vessel.id, j, i).then((server_data) => {
+                                    ctrl.request.locations[server_data.id].products[server_data.id2].specGroups = server_data.data.payload;
+                                    let isInList = false;
+                                    $.each(ctrl.request.locations[server_data.id].products[server_data.id2].specGroups, (k, v) => {
+                                        $.each(ctrl.request.locations[server_data.id].products[server_data.id2].specGroups, (k, v) => {
+                                            if (v.id == ctrl.request.locations[server_data.id].products[server_data.id2].specGroup.id) {
+                                                isInList = true;
+                                            }
+                                            if (v.isDefault) {
+                                                ctrl.request.locations[server_data.id].products[server_data.id2].specGroup = v;
+                                            }
+                                        });
+                                    });
+                                    if (!isInList) {
+                                        ctrl.request.locations[server_data.id].products[server_data.id2].specGroup = null;
+                                    }
+                                });
                             }
                         }
                     }

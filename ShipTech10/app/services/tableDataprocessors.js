@@ -83,8 +83,7 @@ angular.module('shiptech').service('dataProcessors', [ '$filtersData', '$state',
 
 
             if (obj.name == 'uploadedOn' || obj.name == 'verifiedOn' || obj.name == 'createdOn' || obj.name == 'modifiedOn' || obj.name == 'lastModifiedOn' || obj.name == 'deliveryLastModifiedOn' || obj.name == 'activateOn' || obj.name == 'deactivateOn' || obj.name == 'validTo' || obj.name == 'validFrom' || obj.name == 'confirmedOn' || obj.name == 'requestDate') {
-                if (obj.name == 'delayInDays' || obj.name.indexOf('delay') > -1) {
-                } else {
+                if (obj.name !== 'delayInDays' && obj.name.indexOf('delay') < 0) {
                     colmodel[key].formatter = CLC.get_formatter('formatDate');
                 }
             }
@@ -98,13 +97,14 @@ angular.module('shiptech').service('dataProcessors', [ '$filtersData', '$state',
 	            }
             }
             if (obj.name == 'claimDate' || obj.name == 'orderDate' || /* obj.name == "requestDate" ||*/ obj.name == 'date' || obj.name == 'quoteDate' || obj.name == 'validTo' || obj.name == 'validFrom' || obj.name.indexOf('Date') > -1 || obj.name.indexOf('date') > -1 || obj.name == 'voyageDetail.deliveryTo' || obj.name == 'voyageDetail.deliveryFrom') {
-                if (obj.name == 'delayInDays' || obj.name.indexOf('delay') > -1) {
-                } else if (obj.label == 'Date (UTC)' || obj.label == 'Due Date' || obj.label == 'Working Due Date' || obj.label == 'Seller Due Date' || obj.label == 'Order Date' || obj.name == 'voyageDetail.deliveryTo' || obj.name == 'voyageDetail.deliveryFrom') {
-                    colmodel[key].formatter = CLC.get_formatter('formatDateUtc');
-                } else if(obj.name == 'requestDate') {
-	                    colmodel[key].formatter = CLC.get_formatter('formatDate');
-                } else {
-                    colmodel[key].formatter = CLC.get_formatter('formatOnlyDate');
+                if (obj.name !== 'delayInDays' && obj.name.indexOf('delay') < 0) {
+                    if (obj.label == 'Date (UTC)' || obj.label == 'Due Date' || obj.label == 'Working Due Date' || obj.label == 'Seller Due Date' || obj.label == 'Order Date' || obj.name == 'voyageDetail.deliveryTo' || obj.name == 'voyageDetail.deliveryFrom') {
+                        colmodel[key].formatter = CLC.get_formatter('formatDateUtc');
+                    } else if(obj.name == 'requestDate') {
+                        colmodel[key].formatter = CLC.get_formatter('formatDate');
+                    } else {
+                        colmodel[key].formatter = CLC.get_formatter('formatOnlyDate');
+                    }
                 }
             }
             // if (obj.name.toLowerCase().indexOf("amount") != -1) {
