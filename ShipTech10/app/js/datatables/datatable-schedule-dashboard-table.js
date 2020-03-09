@@ -70,9 +70,6 @@ var ScheduleDashboardDataTable = (function() {
 
             colResize: options.colResize,
 
-            columnDefs: options.columnDefs,
-
-
             // "dom": "<'row' <'col-md-12'B>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>", // horizobtal scrollable datatable
 
             // Uncomment below line("dom" parameter) to fix the dropdown overflow issue in the datatable cells. The default datatable layout

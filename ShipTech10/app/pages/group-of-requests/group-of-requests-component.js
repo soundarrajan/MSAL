@@ -6894,11 +6894,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                 title = $state.params.path[$state.params.path.length - 1].label;
             }
 
-            if(vesselArr.length == 1) {
-                title = `${title } - `;
-            }else{
-                title = `${title } - `;
-            }
+            title = `${title } - `;
             title = title + vesselList;
             $rootScope.$broadcast('$changePageTitle', {
                 title: title

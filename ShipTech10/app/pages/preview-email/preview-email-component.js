@@ -252,24 +252,14 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
                             break;
                         }
                     }
-                    if (multipleRequests) {
-                        templateFilter = $filter('filter')(
-                            ctrl.templateList,
-                            {
-                                name: 'MultipleRfqNewRFQEmailTemplate'
-                            },
-                            true
-                        );
-                    } else {
-                        templateFilter = $filter('filter')(
-                            ctrl.templateList,
-                            {
-                                // name: "SingleRfqNewRFQEmailTemplate"
-                                name: 'MultipleRfqNewRFQEmailTemplate'
-                            },
-                            true
-                        );
-                    }
+                    templateFilter = $filter('filter')(
+                        ctrl.templateList,
+                        {
+                            // name: "SingleRfqNewRFQEmailTemplate"
+                            name: 'MultipleRfqNewRFQEmailTemplate'
+                        },
+                        true
+                    );
                     if (templateFilter.length > 0) {
                         ctrl.template = templateFilter[0];
                     }
@@ -280,24 +270,14 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
                     ctrl.defaultTemplate = ctrl.templateList[0];
                     break;
                 case EMAIL_TRANSACTION.VIEW_RFQ:
-                    if (ctrl.multipleRequests) {
-                        templateFilter = $filter('filter')(
-                            ctrl.templateList,
-                            {
-                                name: 'MultipleRfqAmendRFQEmailTemplate'
-                            },
-                            true
-                        );
-                    } else {
-                        templateFilter = $filter('filter')(
-                            ctrl.templateList,
-                            {
-                                // name: "SingleRfqRequestChangesEmailTemplate"
-                                name: 'MultipleRfqAmendRFQEmailTemplate'
-                            },
-                            true
-                        );
-                    }
+                    templateFilter = $filter('filter')(
+                        ctrl.templateList,
+                        {
+                            // name: "SingleRfqRequestChangesEmailTemplate"
+                            name: 'MultipleRfqAmendRFQEmailTemplate'
+                        },
+                        true
+                    );
                     if (templateFilter.length > 0) {
                         ctrl.template = templateFilter[0];
                         ctrl.defaultTemplate = templateFilter[0];

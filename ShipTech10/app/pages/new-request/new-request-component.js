@@ -1294,7 +1294,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 // format: "dd MM yyyy - HH:ii P",
                 showMeridian: true,
                 autoclose: true,
-                pickerPosition: App.isRTL() ? 'bottom-left' : 'bottom-left',
+                pickerPosition: 'bottom-left',
                 todayBtn: false
             });
             date.focus();

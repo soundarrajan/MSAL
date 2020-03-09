@@ -677,7 +677,6 @@ angular.module('shiptech.pages').controller('ScheduleCalendarController', [ '$ro
                                 request: v.voyageDetail[v_index].request,
                                 eta: v.voyageDetail[v_index].eta,
                                 style: v.voyageDetail[v_index].portStatus ? getButtonStyle(v.voyageDetail[v_index].portStatus) : null,
-                                request: v.voyageDetail[v_index].request,
                             };
                             // add status to vessel row
                             if (resultRow.statusList.indexOf(v.voyageDetail[v_index].portStatus) == -1) {
@@ -851,7 +850,6 @@ angular.module('shiptech.pages').controller('ScheduleCalendarController', [ '$ro
 	                                request: event.voyageDetail.request,
 	                                eta: event.voyageDetail.eta,
 	                                style: event.voyageDetail.portStatus ? getButtonStyle(event.voyageDetail.portStatus) : null,
-	                                request: event.voyageDetail.request,
 	                                voyageDetail: event.voyageDetail,
 	                            };
 	                            if (portDetails.request.id > 0) {

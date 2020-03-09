@@ -35,7 +35,6 @@ angular.module('shiptech.models')
                 getContractProductAdditionalCosts: { method:'POST', params:{ verb:'getContractProductAdditionalCosts' }, interceptor: resourceInterceptor },
                 cancel: { method:'POST', params:{ verb:'cancel' }, interceptor: resourceInterceptor },
                 reject: { method:'POST', params:{ verb:'reject' }, interceptor: resourceInterceptor },
-                getContractProductAdditionalCosts: { method:'POST', params:{ verb:'getContractProductAdditionalCosts' }, interceptor: resourceInterceptor },
                 approve: { method:'POST', params:{ verb:'approve' }, interceptor: resourceInterceptor },
                 amend: { method:'POST', params:{ verb:'amend' }, interceptor: resourceInterceptor },
                 submitForApproval: { method:'POST', params:{ verb:'submitforapproval' }, interceptor: resourceInterceptor },

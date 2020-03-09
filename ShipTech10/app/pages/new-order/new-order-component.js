@@ -1156,7 +1156,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                 minQuantity: null,
                 maxQuantity: null,
                 uom: null,
-                uom: null,
                 agreementType: null,
                 pricingType: null,
                 buyerComments: null,
@@ -1296,35 +1295,19 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
         ctrl.setPaymentCompany = function() {
             if (ctrl.data) {
             	if (ctrl.data.carrierCompany.name) {
-	            	if (typeof ctrl.data.carrierCompany.name.id == 'undefined') {
-	                    if ($.isEmptyObject(ctrl.data.paymentCompany)) {
-	    	                Factory_Master.get_master_entity(ctrl.data.carrierCompany.id, 'company', 'masters', (response) => {
-	    	                	canDefault = 0;
-	    	                	$.each(response.companyTypes, (k, v) => {
-	    	                		if (v.name == 'OperatingCompany' || v.name == 'PaymentCompany') {
-			    	                	canDefault = canDefault + 1;
-	    	                		}
-	    	                	});
-	    	                	if (canDefault >= 2) {
-			                    	angular.copy(ctrl.procurementSettings.order.defaultPaymentCompany, ctrl.data.paymentCompany);
-	    	                	}
-			                });
-	                    };
-	                } else {
-	                    if ($.isEmptyObject(ctrl.data.paymentCompany)) {
-	    	                Factory_Master.get_master_entity(ctrl.data.carrierCompany.id, 'company', 'masters', (response) => {
-	    	                	canDefault = 0;
-	    	                	$.each(response.companyTypes, (k, v) => {
-	    	                		if (v.name == 'OperatingCompany' || v.name == 'PaymentCompany') {
-			    	                	canDefault = canDefault + 1;
-	    	                		}
-	    	                	});
-	    	                	if (canDefault >= 2) {
-			                    	angular.copy(ctrl.procurementSettings.order.defaultPaymentCompany, ctrl.data.paymentCompany);
-	    	                	}
-			                });
-	                    };
-	                }
+                    if ($.isEmptyObject(ctrl.data.paymentCompany)) {
+                        Factory_Master.get_master_entity(ctrl.data.carrierCompany.id, 'company', 'masters', (response) => {
+                            canDefault = 0;
+                            $.each(response.companyTypes, (k, v) => {
+                                if (v.name == 'OperatingCompany' || v.name == 'PaymentCompany') {
+                                    canDefault = canDefault + 1;
+                                }
+                            });
+                            if (canDefault >= 2) {
+                                angular.copy(ctrl.procurementSettings.order.defaultPaymentCompany, ctrl.data.paymentCompany);
+                            }
+                        });
+                    };
             	} else {
                     if ($.isEmptyObject(ctrl.data.paymentCompany)) {
     	                Factory_Master.get_master_entity(ctrl.data.carrierCompany.id, 'company', 'masters', (response) => {
@@ -3435,22 +3418,8 @@ function AplicableCostForProduct() {
             if(arr.length > 0) {
                 $.each(arr, (_, val) => {
                     if(val) {
-                        if(val.status) {
-                            // if(val.status.name != "Cancelled")
-                            if(val.product) {
-                                if(val.product.name != '') {
-                                    ret.push(val);
-                                }
-                            }
-                        }else{
-                            // console.log('new prod', val);
-
-                            // no status -> new order (or new product)
-                            if(val.product) {
-                                if(val.product.name != '') {
-                                    ret.push(val);
-                                }
-                            }
+                        if(val.product && val.product.name != '') {
+                            ret.push(val);
                         }
                     }
                 });

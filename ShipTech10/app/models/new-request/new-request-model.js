@@ -179,7 +179,7 @@ angular.module('shiptech.models').factory('newRequestModel', [ 'newRequestResour
                     Take: 10
                 }
             };
-            if (seller !== null) {
+            if (seller != null) {
                 request_data.Payload.Filters.push({
                     ColumnName: 'RequestSellerId',
                     OperationType: 0,

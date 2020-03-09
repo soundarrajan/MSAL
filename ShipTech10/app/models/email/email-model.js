@@ -72,7 +72,7 @@ angular.module('shiptech.models').factory('emailModel', [ 'emailResource', 'payl
         }
 
         function saveForBusinessIds(emailData, comment, template, extraFields) {
-            if (typeof comment === 'undefined' && comment === null) {
+            if (typeof comment === 'undefined' && comment == null) {
                 return false;
             }
             let toOthers = null;
@@ -152,7 +152,7 @@ angular.module('shiptech.models').factory('emailModel', [ 'emailResource', 'payl
         }
 
         function sendEmail(email, template) {
-            if (typeof email === 'undefined' && email === null) {
+            if (typeof email === 'undefined' && email == null) {
                 return false;
             }
             if (!email.to) {

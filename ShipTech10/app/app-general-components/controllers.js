@@ -666,7 +666,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
         // Cached columns order (client-side persistent)
         vm.cached_columns_order = function(column_map, table, override) {
             var new_column_map;
-            if (typeof localStorage.getItem(table + "-columns-order") === undefined || localStorage.getItem(table + "-columns-order") === null) {
+            if (typeof localStorage.getItem(table + "-columns-order") == undefined || localStorage.getItem(table + "-columns-order") === null) {
                 new_column_map = column_map;
                 localStorage.setItem(table + "-columns-order", JSON.stringify(column_map));
             } else {
