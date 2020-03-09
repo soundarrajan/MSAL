@@ -303,7 +303,7 @@ angular.module('shiptech.pages').controller('SellerCardController', [ '$scope', 
         function getLocationsSuppliers() {
             var locPhy = [];
             ctrl.suppliers = [];
-            var loc,length uniqueIdentifier, seller;
+            var loc, uniqueIdentifier, seller; 
             // debugger
             $.each(ctrl.request.locations, (locK, locV) => {
                 locV.offer = ctrl.request.offers[0];
