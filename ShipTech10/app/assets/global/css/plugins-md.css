@@ -25,7 +25,7 @@ Bootstrap Colorpicker
 Bootstrap Datepaginator
 ***/
 .datepaginator a {
-  font-family: 'Open Sans';
+  font-family: 'Open Sans', sans-serif;
   font-size: 13px;
   font-weight: 300; }
 
@@ -71,11 +71,11 @@ Bootstrap Datepicker
 .datepicker table td {
   color: #000;
   font-weight: 300  !important;
-  font-family: 'Open Sans' !important; }
+  font-family: 'Open Sans', sans-serif !important; }
 
 .datepicker table th {
   color: #333;
-  font-family: 'Open Sans' !important;
+  font-family: 'Open Sans', sans-serif !important;
   font-weight: 400  !important; }
 
 .datepicker.dropdown-menu {
@@ -161,10 +161,10 @@ Bootstrap  Datetimepicker
 .datetimepicker table td {
   color: #000;
   font-weight: 300  !important;
-  font-family: 'Open Sans' !important; }
+  font-family: 'Open Sans', sans-serif !important; }
 
 .datetimepicker table th {
-  font-family: 'Open Sans' !important;
+  font-family: 'Open Sans', sans-serif !important;
   font-weight: 400  !important; }
 
 .datetimepicker.dropdown-menu {
@@ -336,7 +336,7 @@ Bootstrap Select
 
 .bootstrap-select.btn-group .dropdown-menu > li > dt > .text {
   font-weight: 600;
-  font-family: 'Open Sans';
+  font-family: 'Open Sans', sans-serif;
   font-size: 14px; }
 
 .bootstrap-select.btn-group .dropdown-menu .text-muted {
@@ -352,7 +352,7 @@ Bootstrap Select
   content: "\f107";
   display: inline-block;
   border: 0;
-  font-family: FontAwesome;
+  font-family: FontAwesome, sans-serif;
   font-style: normal;
   font-weight: normal; }
 
@@ -661,9 +661,9 @@ Modify bootstrap-tagsinput plugin's css
 ***/
 .bootstrap-tagsinput .tag [data-role="remove"] {
   box-shadow: none;
-  font-family: arial; }
+  font-family: arial, sans-serif; }
   .bootstrap-tagsinput .tag [data-role="remove"]:after {
-    font-family: arial; }
+    font-family: arial, sans-serif; }
   .bootstrap-tagsinput .tag [data-role="remove"]:hover {
     text-decoration: none;
     box-shadow: none; }
@@ -1336,7 +1336,7 @@ Fullcalendar
   color: #ddd; }
 
 .portlet.calendar .fc-button .fc-icon-left-single-arrow {
-  font-family: FontAwesome;
+  font-family: FontAwesome, sans-serif;
   display: inline-block;
   font-size: 16px; }
   .portlet.calendar .fc-button .fc-icon-left-single-arrow:after {
@@ -1346,7 +1346,7 @@ Fullcalendar
     content: "\f104"; }
 
 .portlet.calendar .fc-button .fc-icon-right-single-arrow {
-  font-family: FontAwesome;
+  font-family: FontAwesome, sans-serif;
   display: inline-block;
   font-size: 16px; }
   .portlet.calendar .fc-button .fc-icon-right-single-arrow:after {
@@ -1489,7 +1489,7 @@ Gritter notification modify
   right: 3px !important; }
 
 .gritter-title {
-  font-family: 'Open Sans';
+  font-family: 'Open Sans', sans-serif;
   font-size: 18px;
   font-weight: 300; }
 
@@ -2065,7 +2065,7 @@ pre[class*="language-"] {
   position: relative;
   top: 1px;
   display: inline-block;
-  font-family: 'socicon';
+  font-family: 'socicon', sans-serif;
   font-style: normal;
   font-weight: normal;
   line-height: 1;
@@ -2078,7 +2078,7 @@ pre[class*="language-"] {
 .socicon-btn {
   position: relative;
   display: inline-block;
-  font-family: 'socicon';
+  font-family: 'socicon', sans-serif;
   font-style: normal;
   font-weight: normal;
   line-height: 1;

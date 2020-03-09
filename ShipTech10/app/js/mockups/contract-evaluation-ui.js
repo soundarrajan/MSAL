@@ -1,4 +1,4 @@
-export.module = {
+{
     "evaluations": {
         "columns": [
             {

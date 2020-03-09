@@ -1,4 +1,4 @@
-export.module = [ {
+[ {
     Id: 'RFQ23',
     Name: null,
     Status: 'Validated',

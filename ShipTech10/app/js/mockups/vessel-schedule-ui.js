@@ -1,4 +1,4 @@
-export.module = {
+{
     "vesselSchedule": {
         "title" : "Request Schedule",
         "columns": [

@@ -1,4 +1,4 @@
-export.module = {
+{
     "offers": {
         "title" : "Confirm Offer",
         "subtitle" : "PAGES.CONFIRM_DIALOG.OFFER_TITLE",

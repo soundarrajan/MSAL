@@ -1,4 +1,4 @@
-export.module = {
+{
     "GeneralInformation": {
         "fields": [
                     {

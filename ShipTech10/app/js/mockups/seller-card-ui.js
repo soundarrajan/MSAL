@@ -1,5 +1,5 @@
-export.module = {
-    "requestDetails": { 
+{
+    "requestDetails": {
         "fields": [{
             "name": "vessel",
             "caption": "PAGES.SELLER_CARD.VESSEL",

@@ -1,4 +1,4 @@
-export.module = {
+{
     "rfqTable": {
         "title" : "General Information",
         "columns": [

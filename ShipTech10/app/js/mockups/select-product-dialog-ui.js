@@ -1,4 +1,4 @@
-export.module = "products": {
+"products": {
     "columns": [
         {
             "name": "checkbox",

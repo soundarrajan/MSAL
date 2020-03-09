@@ -307,7 +307,7 @@ span.vesselName {
 }
 
 #timeline, .vis-timeline-timeselect-container, .timeline-popover-hover {
-	font-family: "Roboto";
+    font-family: "Roboto", sans-serif;
 	font-weight: 400;
 }
 .timeline-popover-hover {
