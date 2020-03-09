@@ -2488,7 +2488,6 @@
     <Content Include="gulp\production\watch.js" />
     <Content Include="app\assets\global\img\social\Thumbs.db" />
     <Content Include="app\assets\layouts\layout\css\custom.css.old" />
-    <Content Include="app\components\footer\styles\footer-component.less" />
     <Content Include="app\components\header\styles\header-component.less" />
     <Content Include="app\core\styles\main.less" />
     <Content Include="app\translations\en.json" />
