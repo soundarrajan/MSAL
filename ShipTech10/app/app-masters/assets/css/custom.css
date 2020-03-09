@@ -445,7 +445,6 @@ textarea#reasonToStopSellerPayment {
         padding: 0 15px;
     }
     .dynamic_form_editor .group_ContractSummary .portlet, .dynamic_form_editor .group_Order_Summary .portlet {
-        height: 100%;
         overflow-y: auto;
         overflow-x: hidden;
         height: calc(100% + 5px);
@@ -601,8 +600,6 @@ span.variance {
     padding-left: 7px;
     z-index: 1;
     border: 1px solid #c2cad8;
-    width: 89%;
-    height: 98%;
     background-color: white;
 	outline: none;
 	width: calc(100% - 40px);

@@ -278,7 +278,6 @@
 input[type="text"].ui-grid-filter-input {
   padding: 0;
   margin: 0;
-  border: 0;
   width: 100%;
   border: 1px solid #e7ecf1;
   -webkit-border-top-right-radius: 0px;
@@ -303,7 +302,6 @@ input[type="text"].ui-grid-filter-input:hover {
 select.ui-grid-filter-select {
   padding: 0;
   margin: 0;
-  border: 0;
   width: 90%;
   border: 1px solid #e7ecf1;
   -webkit-border-top-right-radius: 0px;
@@ -550,7 +548,6 @@ select.ui-grid-filter-select:hover {
 input[type="text"].ui-grid-filter-input {
   padding: 0;
   margin: 0;
-  border: 0;
   width: 100%;
   border: 1px solid #e7ecf1;
   -webkit-border-top-right-radius: 0px;
@@ -626,10 +623,6 @@ input[type="text"].ui-grid-filter-input:hover {
   background-image: none;
   border: 1px solid transparent;
   white-space: nowrap;
-  padding: 6px 12px;
-  font-size: 14px;
-  line-height: 1.42857143;
-  border-radius: 4px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -640,7 +633,6 @@ input[type="text"].ui-grid-filter-input:hover {
   border-radius: 2px;
   color: transparent;
   background-color: transparent;
-  border-color: transparent;
 }
 .ui-grid-menu .ui-grid-menu-inner .ui-grid-menu-close-button:focus,
 .ui-grid-menu .ui-grid-menu-inner .ui-grid-menu-close-button:active:focus,
