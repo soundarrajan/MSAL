@@ -2512,21 +2512,12 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                             if (selV.randUniquePkg == seller.randUniquePkg) {
                                 requestSellerId = selV.id;
                                 sellerIsInProduct = true;
-                                if (typeof selV.offers == 'undefined') {
-                                    productHasOffer = false;
-                                } else if (selV.offers == null) {
-                                    productHasOffer = false;
-                                } else if (selV.offers.length < 1) {
-                                    productHasOffer = false;
-                                } else if (!selV.offers[0].id) {
+                                if (typeof selV.offers == 'undefined' || selV.offers == null || selV.offers.length < 1 || !selV.offers[0].id) {
                                     productHasOffer = false;
                                 }
                             }
                         });
-                        if (!sellerIsInProduct && productHasOffer) {
-                            productHasOffer = false;
-                        }
-                        if (seller.isCloned) {
+                        if ((!sellerIsInProduct && productHasOffer) || seller.isCloned) {
                             productHasOffer = false;
                         }
                         req = {
@@ -2687,21 +2678,12 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                     if (selV.randUniquePkg == seller.randUniquePkg) {
                         requestSellerId = selV.id;
                         sellerIsInProduct = true;
-                        if (typeof selV.offers == 'undefined') {
-                            productHasOffer = false;
-                        } else if (selV.offers == null) {
-                            productHasOffer = false;
-                        } else if (selV.offers.length < 1) {
-                            productHasOffer = false;
-                        } else if (!selV.offers[0].id) {
+                        if (typeof selV.offers == 'undefined' || selV.offers == null || selV.offers.length < 1 || !selV.offers[0].id) {
                             productHasOffer = false;
                         }
                     }
                 });
-                if (!sellerIsInProduct && productHasOffer) {
-                    productHasOffer = false;
-                }
-                if (seller.isCloned) {
+                if ((!sellerIsInProduct && productHasOffer) || seller.isCloned) {
                     productHasOffer = false;
                 }
                 req = {
@@ -5047,13 +5029,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                             $.each(prodV.sellers, (sellerK, sellerV) => {
                                 if (seller.sellerCounterparty.id == sellerV.sellerCounterparty.id) {
                                     console.log(sellerV);
-                                    if (typeof sellerV.offers == 'undefined') {
-                                        sellerV.offers = [
-                                            {
-                                                brokerCounterparty: newBroker
-                                            }
-                                        ];
-                                    } else if (sellerV.offers.length == 0) {
+                                    if (typeof sellerV.offers == 'undefined' || sellerV.offers.length == 0) {
                                         sellerV.offers = [
                                             {
                                                 brokerCounterparty: newBroker

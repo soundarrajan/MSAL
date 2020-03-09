@@ -1635,7 +1635,6 @@ Number(function() {
         '$compile',
         function($compile) {
             return {
-                // require: 're2',
                 link: function(scope, element, attrs) {
                     // scope.$watch(attrs.dynamicPattern, function(dynamicPattern) {
                     if (!attrs.dynamicPattern) {

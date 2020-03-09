@@ -182,9 +182,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                 }
             }
             $.each(ctrl.data.products, (key, value) => {
-                if(value.id == ctrl.productContractSelecting) {
-                    checkDeleted(key);
-                }else if(value.uniqueIdUI == ctrl.productContractSelecting) {
+                if(value.id == ctrl.productContractSelecting || value.uniqueIdUI == ctrl.productContractSelecting) {
                     checkDeleted(key);
                 }
             });
@@ -616,11 +614,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
         function sumProductAmounts() {
             let result = 0;
             for (let i = 0; i < ctrl.data.products.length; i++) {
-            	if (!ctrl.data.products[i].status) {
+            	if (!ctrl.data.products[i].status || ctrl.data.products[i].status.id != ctrl.STATUS.Cancelled.id) {
 		                result = result + ctrl.data.products[i].amount;
-            	} else if(ctrl.data.products[i].status.id != ctrl.STATUS.Cancelled.id) {
-					    result = result + ctrl.data.products[i].amount;
-                }
+            	}
             }
             return result;
         }
@@ -644,7 +640,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                 if (additionalCost.priceUom && additionalCost.prodConv && additionalCost.prodConv.length == ctrl.data.products.length) {
                     for (let i = 0; i < ctrl.data.products.length; i++) {
                         let prod = ctrl.data.products[i];
-                        if (!prod.status) {
+                        if (!prod.status || prod.status.id != ctrl.STATUS.Cancelled.id) {
 	                            confirmedQuantityOrMaxQuantity = prod.confirmedQuantity ? prod.confirmedQuantity : prod.maxQuantity;
 	                            if (additionalCost.isAllProductsCost) {
                                 additionalCost.amount = additionalCost.amount + confirmedQuantityOrMaxQuantity * additionalCost.prodConv[i] * additionalCost.price;
@@ -652,15 +648,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
 	                                if (product === prod) {
                                 additionalCost.amount = confirmedQuantityOrMaxQuantity * additionalCost.prodConv[i] * additionalCost.price;
                             }
-                        } else if (prod.status.id != ctrl.STATUS.Cancelled.id) {
-		                            confirmedQuantityOrMaxQuantity = prod.confirmedQuantity ? prod.confirmedQuantity : prod.maxQuantity;
-		                            if (additionalCost.isAllProductsCost) {
-                                additionalCost.amount = additionalCost.amount + confirmedQuantityOrMaxQuantity * additionalCost.prodConv[i] * additionalCost.price;
-                            } else
-		                                if (product === prod) {
-                                additionalCost.amount = confirmedQuantityOrMaxQuantity * additionalCost.prodConv[i] * additionalCost.price;
-                            }
-	                        	}
+                        }
                     }
                 }
                 // }
@@ -753,13 +741,10 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
         function sumProductConfirmedQuantities(products) {
             let result = 0;
             for (let i = 0; i < products.length; i++) {
-            	if (!products[i].status) {
+            	if (!products[i].status || products[i].status.id != ctrl.STATUS.Cancelled.id) {
 	                confirmedQuantityOrMaxQuantity = products[i].confirmedQuantity ? products[i].confirmedQuantity : products[i].maxQuantity;
 	                result = result + confirmedQuantityOrMaxQuantity * products[i].confirmedQtyProdZ;
-            	} else if (products[i].status.id != ctrl.STATUS.Cancelled.id) {
-		                confirmedQuantityOrMaxQuantity = products[i].confirmedQuantity ? products[i].confirmedQuantity : products[i].maxQuantity;
-		                result = result + confirmedQuantityOrMaxQuantity * products[i].confirmedQtyProdZ;
-            		}
+            	}
             }
             return result;
         }
@@ -1293,36 +1278,18 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
             });
         };
         ctrl.setPaymentCompany = function() {
-            if (ctrl.data) {
-            	if (ctrl.data.carrierCompany.name) {
-                    if ($.isEmptyObject(ctrl.data.paymentCompany)) {
-                        Factory_Master.get_master_entity(ctrl.data.carrierCompany.id, 'company', 'masters', (response) => {
-                            canDefault = 0;
-                            $.each(response.companyTypes, (k, v) => {
-                                if (v.name == 'OperatingCompany' || v.name == 'PaymentCompany') {
-                                    canDefault = canDefault + 1;
-                                }
-                            });
-                            if (canDefault >= 2) {
-                                angular.copy(ctrl.procurementSettings.order.defaultPaymentCompany, ctrl.data.paymentCompany);
-                            }
-                        });
-                    };
-            	} else {
-                    if ($.isEmptyObject(ctrl.data.paymentCompany)) {
-    	                Factory_Master.get_master_entity(ctrl.data.carrierCompany.id, 'company', 'masters', (response) => {
-    	                	canDefault = 0;
-    	                	$.each(response.companyTypes, (k, v) => {
-    	                		if (v.name == 'OperatingCompany' || v.name == 'PaymentCompany') {
-		    	                	canDefault = canDefault + 1;
-    	                		}
-    	                	});
-    	                	if (canDefault >= 2) {
-		                    	angular.copy(ctrl.procurementSettings.order.defaultPaymentCompany, ctrl.data.paymentCompany);
-    	                	}
-		                });
-                    };
-                }
+            if (ctrl.data && $.isEmptyObject(ctrl.data.paymentCompany)) {
+                Factory_Master.get_master_entity(ctrl.data.carrierCompany.id, 'company', 'masters', (response) => {
+                    canDefault = 0;
+                    $.each(response.companyTypes, (k, v) => {
+                        if (v.name == 'OperatingCompany' || v.name == 'PaymentCompany') {
+                            canDefault = canDefault + 1;
+                        }
+                    });
+                    if (canDefault >= 2) {
+                        angular.copy(ctrl.procurementSettings.order.defaultPaymentCompany, ctrl.data.paymentCompany);
+                    }
+                });
             }
         };
         ctrl.clearPhysicalSupplier = function() {

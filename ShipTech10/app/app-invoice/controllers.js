@@ -3073,15 +3073,12 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
         };
 	    Factory_Master.invoiceTotalConversion(payloadData, (callback) => {
 	        if (callback.status == true) {
-	        	if (callback.data.getROE) {
-		        	vm.convertedAmount = callback.data.convertedAmount;
-		        	vm.conversionRoe = callback.data.roe;
-	        	} else if (vm.changedFromCurrency) {
-		        		toastr.warning('There is no conversion rate available for current selection');
-	        		} else {
-			        	vm.convertedAmount = callback.data.convertedAmount;
-			        	vm.conversionRoe = callback.data.roe;
-	        		}
+	        	 if (vm.changedFromCurrency && !callback.data.getROE) {
+                    toastr.warning('There is no conversion rate available for current selection');
+	        	 } else {
+                    vm.convertedAmount = callback.data.convertedAmount;
+                    vm.conversionRoe = callback.data.roe;
+	        	 }
 	        }
 	    });
     	vm.changedFromCurrency = false;

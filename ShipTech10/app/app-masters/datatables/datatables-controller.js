@@ -1704,11 +1704,6 @@ APP_MASTERS.controller('Controller_Datatables', [
                 onRegisterApi: function(api) {
                     setTimeout(() => {
                         api.core.handleWindowResize();
-                        if (angular.equals($scope.formValues, {}) || !$scope.formValues.tanks) {
-                            // $scope.formValues.tanks = [{}]
-                        } else if (angular.equals($scope.formValues.tanks, [])) {
-                            // $scope.formValues.tanks.push({})
-                        }
                         $('.group_VesselTankDetails input').attr('disabled', 'disabled');
                         $('.group_VesselTankDetails select').attr('disabled', 'disabled');
                         $('.group_VesselTankDetails span.input-group-addon').addClass('disabled');
