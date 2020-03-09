@@ -1,4 +1,5 @@
-$dark: #838383;
+$dark:#364150;
+$blue:#1CABE0;
 
 #menu-button {
   width: 30px;
@@ -62,6 +63,22 @@ $dark: #838383;
     }
   }
 }
+@keyframes enlarge {
+  0% {
+      transform: scale(1, 1);
+      background-color: $dark;
+  }
+
+  50% {
+      transform: scale(2, 2);
+      background-color: $blue;
+  }
+
+  100% {
+      transform: scale(1, 1);
+      background-color: #fff;
+  }
+}
 .hideshow {
   border: 1px solid black;
   border-radius: 5px !important;
@@ -90,4 +107,7 @@ $dark: #838383;
   div:hover {
     background: rgba(0, 0, 0, 0.05);
   }
+}
+.mat-menu-content{
+  padding:0px;
 }

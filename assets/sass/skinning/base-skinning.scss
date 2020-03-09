@@ -485,7 +485,7 @@ p-panel {
 
 .mail-icon-position {
   float: left;
-  margin-top: 7px ;
+  margin-top: 4px !important ;
 
   span {
     &:after {
@@ -557,3 +557,27 @@ p-panel {
     border: 1px solid #C2CAD7 !important;
   }
 }
+.default-button{
+  background-color:#364150 ;
+  color:white;
+}
+.mat-chip-list-wrapper{
+  margin:0px !important;
+  .mat-chip{
+    min-height:25px;
+  }
+}:focus{
+  outline:none!important;
+}
+.Preference-menu{
+  .mat-menu-content{
+    padding-top:0px !important;
+    padding-bottom:0px !important;
+  }
+}
+
+.blue-outline-button{
+  color:#1CABE0 ;
+  border-color:#1CABE0!important ;
+}
+

@@ -1,7 +1,7 @@
 export const defaultFilterItems = [
   {
     id: 'clear',
-    name: 'Clear Preference',
+    name: 'Default',
     filterModels: {},
     isPinned: true,
     canPin: false,
