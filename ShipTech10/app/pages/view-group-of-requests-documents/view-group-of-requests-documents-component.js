@@ -1,5 +1,5 @@
 angular.module('shiptech.pages').controller('ViewGroupOfRequestsDocumentsController', [ '$scope', '$element', '$attrs', '$timeout', '$state', 'STATE', function($scope, $element, $attrs, $timeout, $state, STATE) {
-    ctrl = this;
+    var ctrl = this;
     // $timeout(function(){
     if ($state.params.requestId) {
         $state.params.entity_id = $state.params.groupId;

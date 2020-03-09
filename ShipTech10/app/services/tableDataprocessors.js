@@ -186,6 +186,7 @@ angular.module('shiptech').service('dataProcessors', [ '$filtersData', '$state',
             /** ********
             Change formatters for quantity price and amount based on BE columnType
             ***********/
+            var currentList;
         	if ($state.current.url.indexOf(':screen_id') > -1) {
                 currentList = $state.current.url.replace(':screen_id', $state.params.screen_id).replace('/', '');
             } else {
@@ -193,7 +194,7 @@ angular.module('shiptech').service('dataProcessors', [ '$filtersData', '$state',
             }
 
             if ($rootScope.isModal) {
-                list = currentList.split('/')[0];
+                var list = currentList.split('/')[0];
                 currentList = `${list }/${ $rootScope.modalTableId}`;
             }
             // console.log(modalTableId)
@@ -210,8 +211,8 @@ angular.module('shiptech').service('dataProcessors', [ '$filtersData', '$state',
                 currentList = currentList.replace('/:entity_id', '');
             }
 
-            currentColumns = [];
-            conditions = filtersData.filterConditions;
+            var currentColumns = [];
+            var conditions = filtersData.filterConditions;
             $.each(filtersData.filterColumns, (key, value) => {
                 if (value.columnRoute == currentList) {
                     currentColumns.push(value);
@@ -219,7 +220,7 @@ angular.module('shiptech').service('dataProcessors', [ '$filtersData', '$state',
             });
             $rootScope.currentColumnRoute = currentList;
             $.each(currentColumns, (cck, ccv) => {
-            	ccvColumnValue = angular.copy(ccv.columnValue);
+            	var ccvColumnValue = angular.copy(ccv.columnValue);
             	ccvColumnValue = ccvColumnValue.replace(/_/g, '.');
             	if (ccvColumnValue.toLowerCase() == obj.name.toLowerCase()) {
             		if (ccv.columnType.toLowerCase() == 'quantity' ||
@@ -252,7 +253,7 @@ angular.module('shiptech').service('dataProcessors', [ '$filtersData', '$state',
                 voyageStop = dataRow.voyageDetail[j];
                 if (voyageStop.request) {
                     for (let k = 0; k < voyageStop.request.requestDetail.length; k++) {
-                        requestDetail = voyageStop.request.requestDetail[k];
+                        var requestDetail = voyageStop.request.requestDetail[k];
                         resultRow = {};
                         if (voyageStop.request.id != 0) {
                             // resultRow.buttonStyle = getButtonStyle(voyageStop.request.requestStatus);

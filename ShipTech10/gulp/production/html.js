@@ -25,7 +25,7 @@ module.exports = function(gulp, config) {
          * @return {String} The rewound path.
          */
         function rewindPath(path) {
-            parts = path.split('/');
+            var  parts = path.split('/');
             parts.pop();
 
             return parts.join('/');

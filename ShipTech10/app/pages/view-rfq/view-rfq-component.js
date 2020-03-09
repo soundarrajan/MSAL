@@ -25,7 +25,7 @@ angular.module('shiptech.pages')
                         ctrl.quoteByCurrencyId = ctrl.currency.id;
                         ctrl.quoteByCurrency = ctrl.currency.name;
                     });
-
+                var endpoint;
                 if ($rootScope.bladeRfqGroupId) {
                     endpoint = 5;
                 } else {
@@ -40,12 +40,13 @@ angular.module('shiptech.pages')
                         ctrl.groupId = $rootScope.bladeRfqGroupId;
                     }
                     if ($rootScope.bladeFilteredRfq) {
-                        SellerId = $rootScope.bladeFilteredRfq.randUnique.split('-')[0];
-                        PhysicalSupplierId = $rootScope.bladeFilteredRfq.randUnique.split('-')[1];
+                        var SellerId = $rootScope.bladeFilteredRfq.randUnique.split('-')[0];
+                        var PhysicalSupplierId = $rootScope.bladeFilteredRfq.randUnique.split('-')[1];
                         if (PhysicalSupplierId == '') {
                             PhysicalSupplierId = null;
                         }
                         // LocationId = $rootScope.bladeFilteredRfq.requestLocationId;
+                        var locationId;
                         if ($rootScope.bladeFilteredRfq.locationData.location) {
                             LocationId = $rootScope.bladeFilteredRfq.locationData.location.id;
                         } else {
@@ -214,7 +215,7 @@ angular.module('shiptech.pages')
                 groupOfRequestsModel.revokeRFQ(rfq_data).then((data) => {
                     if (data.payload) {
                         if (data.payload.redirectToRequest) {
-                            lastRequestId = rfq_data.Requirements[0].RequestId;
+                            var lastRequestId = rfq_data.Requirements[0].RequestId;
                             location.href = `/#/edit-request/${lastRequestId}`;
                             return;
                         }
@@ -238,6 +239,7 @@ angular.module('shiptech.pages')
             };
 
             ctrl.previewRFQ = function(rfq) {
+                var req;
                 if (!ctrl.requirements) {
                     ctrl.requirements = [];
                 }

@@ -54,7 +54,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
                 ctrl.procurementSettings = settings.payload;
             });
             browser = browserInfo();
-            Payload = {
+            var Payload = {
                 OperatingSystem: `${browser.os } ${ browser.osVersion}`,
                 Build: '',
                 Browser: `${browser.browser } ${ browser.browserMajorVersion}`,
@@ -73,6 +73,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
             });
 
             function bootSellerPortal() {
+                var quoteByDateExpired, timeNowUtc, quoteByDateInUtc, request, req_ids;
                 $scope.display = 3;
                 tenantModel.getForSupplierPortal(ctrl.token).then((data) => {
                     ctrl.tenantSettings = data.payload;
@@ -227,6 +228,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
                 ctrl.negotiationDisplayDecimal = settings.payload.request.negotiationDisplayDecimal.id == 1;
             });
             ctrl.$onChanges = function(change) {
+                var activeRequest, quoteByDateExpired, timeNowUtc, quoteByDateInUtc, req_ids;
                 ctrl.individuals = null;
                 ctrl.packages = null;
                 if (typeof change.source != 'undefined') {
@@ -413,7 +415,8 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
         };
 
         ctrl.initUniqueAvailableRFQsForPkg = function() {
-            uniqueRfqs = [];
+            var uniqueRfqs = [];
+            var rfqObj;
             $.each(ctrl.packages, (pk, pv) => {
                 $.each(pv.rfqs, (rk, rv) => {
                     if (rv.rfq != 'null') {
@@ -430,8 +433,8 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
             // return uniqueRfqs;
         };
         ctrl.getAllProductsinRFQPackage = function(rfqId) {
-            rfqProducts = [];
-            addedPorductsIds = [];
+            var rfqProducts = [];
+            var addedPorductsIds = [];
             $.each(ctrl.packages, (pk, pv) => {
                 $.each(pv.rfqs, (rk, rv) => {
                     if (rv.rfq != 'null') {
@@ -482,7 +485,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
          */
         function getContactCounterparty() {
             // console.log(ctrl.request.locations[0].products[0].sellers[0].sellerCounterparty.id)
-            contactCounterparty = null;
+            var contactCounterparty = null;
             if (ctrl.individuals.length > 0) {
                 contactCounterparty = ctrl.individuals[0].products[0].sellers[0].sellerCounterparty;
             }
@@ -582,7 +585,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
         }
 
         function getDistinctVessels() {
-            vessels = [];
+            var vessels = [];
             $.each(ctrl.individuals, (k, v) => {
                 if (vessels.indexOf(v.vesselDetails.vessel.id) == -1) {
                     vessels.push(v.vesselDetails.vessel.id);
@@ -760,6 +763,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
             if (!additionalCost.additionalCost) {
                 return false;
             }
+            var allowedCostTypes;
             if (ctrl.additionalCostTypes[additionalCost.additionalCost.id].costType) {
                 if (ctrl.additionalCostTypes[additionalCost.additionalCost.id].costType.id == 1 || ctrl.additionalCostTypes[additionalCost.additionalCost.id].costType.id == 2) {
                     allowedCostTypes = [];
@@ -793,8 +797,8 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
         }
 
         function calculateProductAmount(product, loc) {
-            sellerKey = ctrl.getSellerKey(loc, product);
-            currentConfirmedQtyPrice = 1;
+            var sellerKey = ctrl.getSellerKey(loc, product);
+            var currentConfirmedQtyPrice = 1;
             let quotedPrice = 0;
             if (typeof product.confirmedQtyPrice != 'undefined') {
                 currentConfirmedQtyPrice = product.confirmedQtyPrice;
@@ -810,7 +814,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
         function sumProductMaxQuantities(products, additionalCost) {
             let result = 0;
             for (let i = 0; i < products.length; i++) {
-                product = products[i];
+                var  product = products[i];
                 if (additionalCost.isAllProductsCost || product.id == additionalCost.parentProductId) {
                     result = result + product.maxQuantity;
                 }
@@ -921,7 +925,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
                     return false;
                 }
             }
-            validForm = true;
+            var validForm = true;
             ctrl.invalidFields = [];
             $.each($scope.forms, (key, val) => {
                 if (!val.products) {
@@ -970,9 +974,9 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
                 offers = [];
                 offerForLocation = getOfferForLocation(ctrl.locations[i]);
                 for (let j = 0; j < ctrl.locations[i].products.length; j++) {
-                    sellerKey = ctrl.getSellerKey(ctrl.locations[i], ctrl.locations[i].products[j]);
+                    var sellerKey = ctrl.getSellerKey(ctrl.locations[i], ctrl.locations[i].products[j]);
                     offers = offers.concat(ctrl.locations[i].products[j].sellers[sellerKey].offers);
-                    seller = ctrl.locations[i].products[j].sellers[sellerKey];
+                    var seller = ctrl.locations[i].products[j].sellers[sellerKey];
                     ctrl.locations[i].products[j].sellers = [];
                     ctrl.locations[i].products[j].sellers.push(seller);
                 }
@@ -1030,7 +1034,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
             ctrl.additionalCostTotalAmountSums[location.rand] = 0;
             // Set result to th global additional costs array in the DTO,
             // which contains the "All Products" additional costs.
-            gasit = false;
+            var gasit = false;
             for (let a = 0; a < location.products.length; a++) {
 	            location.products[a].totalAdditionalCostPerProductAll = 0;
                 for (let b = 0; b < location.products[a].sellers.length; b++) {
@@ -1142,7 +1146,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
             });
             if (result) {
                 if (result.length > 0) {
-                	strLog = '';
+                	var strLog = '';
                 	$.each(result, (k, v) => {
                 		if (v.additionalCost != null) {
                             strLog = `${strLog }${v.additionalCost.name };`;
@@ -1174,7 +1178,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
             let latestOffer = seller.offers[0];
             let currentDate;
             for (let i = 1; i < seller.offers.length; i++) {
-                currentOfferDate = moment(seller.offers[0].quoteDate, moment.ISO_8601);
+                var currentOfferDate = moment(seller.offers[0].quoteDate, moment.ISO_8601);
                 if (currentOfferDate.isAfter(latestDate)) {
                     latestDate = currentOfferDate;
                     latestOffer = seller.offers[i];
@@ -1192,7 +1196,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
             }
             additionalCost.prodConv = [];
             for (let i = 0; i < location.products.length; i++) {
-                prod = location.products[i];
+                var prod = location.products[i];
                 if (prod.maxQuantity.id == additionalCost.priceUom.id) {
                     additionalCost.prodConv[i] = 1;
                 } else {
@@ -1221,15 +1225,15 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
         };
 
         function productUomChg(product, loc) {
-            sellerKey = ctrl.getSellerKey(loc, product);
+            var sellerKey = ctrl.getSellerKey(loc, product);
             if (!$stateParams.token) {
-                data = {
-                    Payload: {
-                        ProductId: product.product.id,
-                        Quantity: 1,
-                        FromUomId: product.uom.id,
-                        ToUomId: product.sellers[sellerKey].offers[0].priceQuantityUom.id
-                    }
+                var data = {
+                        Payload: {
+                            ProductId: product.product.id,
+                            Quantity: 1,
+                            FromUomId: product.uom.id,
+                            ToUomId: product.sellers[sellerKey].offers[0].priceQuantityUom.id
+                        }
                 };
                 Factory_Master.getUomConversionFactor(data, (server_data) => {
                     if (server_data) {
@@ -1270,7 +1274,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
             }
             let payload = compileOffers();
 
-            allProductsAreNoQuote = true;
+            var allProductsAreNoQuote = true;
 
             let productsWithInvalidPrice = [];
 
@@ -1309,15 +1313,16 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
             }
 
             /* VALIDATION FOR ADDITIONAL COSTS THAT ARE APPLICABLE FOR NO QUOTE PRODUCTS*/
-            noQuoteProductsAndCostsByRequest = [];
+            var noQuoteProductsAndCostsByRequest = [];
             let hasNoQuoteProducts = false;
-            hasAdditionalCostOnNoQuoteProduct = false;
+            var hasActiveCost;
+            var hasAdditionalCostOnNoQuoteProduct = false;
             $.each(ctrl.individuals, (cik, civ) => {
 	        	noQuoteProductsAndCostsByRequest[`r_${ civ.request.id}`] = {
 	        		noQuoteProducts : 0
 	        	};
 	            $.each(civ.products, (pk, pv) => {
-	            	currentProduct = pv;
+	            	var currentProduct = pv;
 	            	noQuoteProductsAndCostsByRequest[`r_${ civ.request.id}`].noQuoteProducts--;
                     $.each(pv.sellers, (sk, sv) => {
                         $.each(sv.offers, (ok, ov) => {
@@ -1526,7 +1531,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
                 }
             }
             for (i = 0; i < location.products.length; i++) {
-                sellerKey = ctrl.getSellerKey(location, location.products[i]);
+                var sellerKey = ctrl.getSellerKey(location, location.products[i]);
                 for (j = 0; j < location.products[i].sellers[sellerKey].offers[0].additionalCosts.length; j++) {
                     if (additionalCost.fakeId === location.products[i].sellers[sellerKey].offers[0].additionalCosts[j].fakeId) {
                         return {
@@ -1723,11 +1728,11 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
         };
         ctrl.noQuoteChanged = function(location, prod) {
             ctrl.productTableNoQuoteCheckAll[location.rand] = areAllProductsNoQuote(location);
-            noQuote = prod.sellers[0].offers[0].hasNoQuote;
+            var noQuote = prod.sellers[0].offers[0].hasNoQuote;
             if (typeof noQuote != 'undefined' && !noQuote) {
                 prod.sellers[0].offers[0].noQuoteReason = null;
             }
-            sellerKey = ctrl.getSellerKey(location, prod);
+            var sellerKey = ctrl.getSellerKey(location, prod);
             prod.sellers[sellerKey].offers[0].price = null;
             ctrl.productPriceChanged(prod, location);
         };
@@ -1773,6 +1778,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
         };
         ctrl.addSupplier = function(supplier, type) {
             error = 0;
+            var location_supplier;
             if (type == 'individual') {
                 if (typeof location_supplier == 'undefined') {
                     location_supplier = [];
@@ -1780,15 +1786,15 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
                 $.each(ctrl.individuals, (key, val) => {
                     location_supplier.push(val.rand);
                 });
-                newLocations = [];
+                var newLocations = [], newLocation;
                 $.each(angular.copy(location_supplier), (key, val) => {
-                    loc = $.extend(true, {}, getLocationById(val));
+                    var loc = $.extend(true, {}, getLocationById(val));
                     if (loc.request.id == ctrl.active_req) {
                         // if (!loc.physicalSupplier) {
                         // console.log(1, loc.rand);
                         // console.log(2, location_supplier);
                         // console.log(3, $.inArray(loc.rand, location_supplier));
-                        supp = loc.rand.split('_')[2];
+                        var supp = loc.rand.split('_')[2];
                         // console.log(4, Number(supp));
                         // console.log(5, supplier.id);
                         if ($.inArray(loc.rand, location_supplier) == -1 || Number(supp) != supplier.id) {
@@ -1810,7 +1816,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
                                 v.sellers[0].offers[0].price = null;
                                 v.totalAmount = 0;
                             });
-                            newOffer = angular.copy(loc.offer);
+                            var newOffer = angular.copy(loc.offer);
                             newOffer.additionalCosts = [];
                             newOffer.id = 0;
                             newOffer.physicalSupplier = supplier;
@@ -1846,12 +1852,13 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
                     toastr.error('Selected physical supplier is already added!');
                 }
             } else {
+                var supplierId;
                 if (supplier) {
                     supplierId = supplier.id;
                 } else {
                     supplierId = null;
                 }
-                suppliersList = [];
+                var suppliersList = [];
                 $.each(ctrl.locations, (k, v) => {
                     suppliersList.push(v.rand);
                 });
@@ -1859,7 +1866,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
                     type = v.split('_')[0];
                     if (type == 'p') {
                         loc = $.extend(true, {}, getLocationById(v));
-                        newLocationRand = `p_${ loc.id }_${ supplierId }_null_${ loc.requestId}`;
+                        var newLocationRand = `p_${ loc.id }_${ supplierId }_null_${ loc.requestId}`;
                         if (suppliersList.indexOf(newLocationRand) > -1) {
                             error++;
                         }
@@ -1905,7 +1912,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
             if (typeof ctrl.specIndex == 'undefined') {
                 ctrl.specIndex = [];
             }
-            paramValues = [];
+            var paramValues = [];
             $.each(ctrl.locations, (k, v) => {
                 $.each(v.products, (k1, v1) => {
                     if (v1.isEnergyCalculationRequired) {
@@ -1932,10 +1939,10 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
             }
         };
         ctrl.getSellerKey = function(loc, product) {
-            sellerKey = 0;
+            var sellerKey = 0;
             return 0;
             // console.log('--',loc)
-            ps = loc.rand.split('_')[2];
+            var ps = loc.rand.split('_')[2];
             $.each(product.sellers, (key, val) => {
                 $.each(val.offers, (keyO, valO) => {
                     if (valO && valO.physicalSupplierCounterparty && ps) {
@@ -1957,8 +1964,8 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
             });
         };
         ctrl.productReasonChanged = function(reason, product, location) {
-            productsCount = location.products.length;
-            sameReason = 0;
+            var productsCount = location.products.length;
+            var sameReason = 0;
             $.each(location.products, (k, v) => {
                 let sellerKey = ctrl.getSellerKey(location, v);
                 if (v.sellers[sellerKey].offers[0].noQuoteReason) {
@@ -1976,7 +1983,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
             console.log(ctrl.noQuoteReason);
         };
         ctrl.getAllRequestsInPackage = function(rfqId) {
-            requestsList = [];
+            var requestsList = [];
             $.each(ctrl.packages, (packK, packV) => {
                 $.each(packV.rfqs, (rfqK, rfqV) => {
                     if (rfqV.rfq) {
@@ -1999,9 +2006,9 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
             return requestsList;
         };
         ctrl.getAllProductsInRequest = function(currentRequest) {
-            currentReqId = currentRequest.id;
-            addedProdIds = [];
-            returnProducts = [];
+            var currentReqId = currentRequest.id;
+            var addedProdIds = [];
+            var returnProducts = [];
             $.each(ctrl.individuals, (indK, indV) => {
                 if (indV.request.id == currentReqId) {
                     $.each(indV.products, (pk, pv) => {
@@ -2060,7 +2067,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
         };
         ctrl.initSellersCardNavigation = function() {
             setTimeout(() => {
-                cards = $('#sellerCardsItems .card-carousel-item');
+                var cards = $('#sellerCardsItems .card-carousel-item');
                 cards.addClass('hidden');
                 $.each($(cards), (k, v) => {
                     if (k <= 2) {
@@ -2073,11 +2080,11 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
             if (typeof ctrl.sellerCardsCurrentOffset == 'undefined') {
                 ctrl.sellerCardsCurrentOffset = 0;
             }
-            itemsToDisplay = 3;
-            cards = $('#sellerCardsItems .card-carousel-item');
-            collectionLength = cards.length;
-            firstElementIndex = ctrl.sellerCardsCurrentOffset;
-            lastElementIndex = firstElementIndex + itemsToDisplay - 1;
+            var itemsToDisplay = 3;
+            var cards = $('#sellerCardsItems .card-carousel-item');
+            var collectionLength = cards.length;
+            var firstElementIndex = ctrl.sellerCardsCurrentOffset;
+            var lastElementIndex = firstElementIndex + itemsToDisplay - 1;
             if (direction == 'next') {
                 if (lastElementIndex >= collectionLength) {
                     return;
@@ -2105,12 +2112,13 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
             if (!supplierId) {
                 return;
             }
-            requestOffersIds = [];
-            found = 0;
-            locationParams = location.rand.split('_');
+            var objProducts, obj;
+            var requestOffersIds = [];
+            var found = 0;
+            var locationParams = location.rand.split('_');
             locationParams[2] = supplierId.id;
-            newLocationRand = locationParams.join('_');
-            isPackage = locationParams[0] == 'p';
+            var newLocationRand = locationParams.join('_');
+            var isPackage = locationParams[0] == 'p';
             if (isPackage) {
                 obj = ctrl.packages;
                 objProducts = location.rfqs[0].requests[0].request.locations[0].products;
@@ -2175,7 +2183,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
             });
         };
         ctrl.getDistinctLocationsInRequest = function(reqId) {
-            locationsNames = [];
+            var locationsNames = [];
             $.each(ctrl.individuals, (indK, indV) => {
                 if (indV.request.id == reqId) {
                     if (locationsNames.indexOf(indV.location.name) == -1) {
@@ -2191,7 +2199,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
             console.log(ctrl.packages[id].physicalSupplier.name);
         };
         ctrl.getVesselDetailsByRequestId = function(requestId) {
-            vesselDetails = null;
+            var vesselDetails = null;
             $.each(ctrl.individuals, (indK, indV) => {
                 if (indV.request.id == requestId) {
                     vesselDetails = indV.vesselDetails;
@@ -2259,7 +2267,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
 
         ctrl.updateIncoterm = function(incoterm, location, seller, request) {
             // requestOfferIds = ctrl.returnLocationReqOffIds(location, seller.randUniquePkg);
-            requestOfferIds = [];
+            var  requestOfferIds = [];
             $.each(location.products, (prodK, prodV) => {
             	$.each(prodV.sellers, (sellerK, sellerV) => {
 	                $.each(prodV.sellers, (sellerK, sellerV) => {
@@ -2286,7 +2294,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
         };
 
         ctrl.getPackageIncoterm = function(packageId) {
-        	incoterm = null;
+        	var incoterm = null;
             $.each(ctrl.packages, (pk, pv) => {
                 if (pv.id == packageId) {
                     $.each(pv.rfqs, (rfk, rfv) => {
@@ -2308,7 +2316,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
         };
         ctrl.updateIncotermInPackage = function(packageId, incoterm) {
             // .payload.packages["0"].rfqs["0"].requests["0"].request.locations["0"].products["0"].sellers["0"].offers["0"].incoterm
-            requestOfferIds = [];
+            var requestOfferIds = [];
             $.each(ctrl.packages, (pk, pv) => {
                 if (pv.id == packageId) {
                     $.each(pv.rfqs, (rfk, rfv) => {
@@ -2337,10 +2345,10 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
         };
 
         ctrl.disableCostBasedOnApplicableProductStatus = function(productId, locationProducts) {
-            statusesToDisableProduct = [ 'Cancelled' ];
-            statusesToDisableAll = [ 'Stemmed' ];
-            allHasDisableStatus = false;
-            productHasDisableStatus = false;
+            var statusesToDisableProduct = [ 'Cancelled' ];
+            var statusesToDisableAll = [ 'Stemmed' ];
+            var allHasDisableStatus = false;
+            var productHasDisableStatus = false;
             $.each(locationProducts, (pk, pv) => {
                 if (pv.productStatus) {
                     if (productId == pv.id) {
@@ -2375,6 +2383,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
         };
 
         $(document).on('keyup', '.typeahead', (ev, suggestion) => {
+            var currentTargetHeight, currentTargetLeftPosition,currentTargetTopPosition;
         	if ($('[uib-typeahead-popup]').is(':visible')) {
         		if ($(ev.target).attr('typeahead-append-to') == '\'body\'') {
                     $('[uib-typeahead-popup]').css('top', '');
@@ -2389,7 +2398,8 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
         });
         $('.blade-column.main-content-column').on('scroll', () => {
         	if ($('[uib-typeahead-popup]').is(':visible')) {
-        		activeInput = $(`[aria-owns='${ $('[uib-typeahead-popup]:visible').attr('id') }']`);
+                var currentTargetHeight, currentTargetLeftPosition,currentTargetTopPosition;
+        		var activeInput = $(`[aria-owns='${ $('[uib-typeahead-popup]:visible').attr('id') }']`);
         		if ($(activeInput).attr('typeahead-append-to') == '\'body\'') {
         			console.log('^^^^^^^');
         			currentTargetTopPosition = $(activeInput).offset().top;

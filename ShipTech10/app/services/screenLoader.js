@@ -135,7 +135,7 @@ angular.module('shiptech').config([
                             request.headers['x-ms-request-id'] = request.trackAjaxTelemetryId;
                         }
 
-                    	routeCall = request.url;
+                    	var routeCall = request.url;
 
                     	if (request.url.indexOf('/api/') != -1) {
 	                    	routeCall = `api/${ request.url.split('/api/')[1]}`;
@@ -240,6 +240,7 @@ angular.module('shiptech').config([
                     	}
                     	if (routeExceptions.indexOf(routeCall) == -1) {
 	                    	window.openedScreenLoaders = window.openedScreenLoaders - 1;
+                            var errorText;
                     		if (config.data.ErrorMessage && config.status != 200) {
                     			errorText = config.data.ErrorMessage;
                     			if (config.data.reference) {
