@@ -742,7 +742,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
             let result = 0;
             for (let i = 0; i < products.length; i++) {
             	if (!products[i].status || products[i].status.id != ctrl.STATUS.Cancelled.id) {
-	                confirmedQuantityOrMaxQuantity = products[i].confirmedQuantity ? products[i].confirmedQuantity : products[i].maxQuantity;
+	                var confirmedQuantityOrMaxQuantity = products[i].confirmedQuantity ? products[i].confirmedQuantity : products[i].maxQuantity;
 	                result = result + confirmedQuantityOrMaxQuantity * products[i].confirmedQtyProdZ;
             	}
             }

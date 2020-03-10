@@ -312,7 +312,7 @@ angular.module('shiptech.models').factory('orderModel', [ '$q', 'orderResource',
                     Value: templateName
                 } ]
             };
-            request_data = payloadDataModel.create(payload);
+            var request_data = payloadDataModel.create(payload);
             return orderResource.preview(request_data)
                 .$promise
                 .then((data) => {

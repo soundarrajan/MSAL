@@ -947,7 +947,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             // add cancel action to new product
             if (addCancel) {
                 // addCancel is true when function called directly from + sign in grid
-                cancelAction = ctrl.getScreenActionByName(ctrl.SCREEN_ACTIONS.CANCEL);
+                var cancelAction = ctrl.getScreenActionByName(ctrl.SCREEN_ACTIONS.CANCEL);
                 if (cancelAction != null) {
                     product.screenActions.push(cancelAction);
                 }
@@ -2216,7 +2216,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             return false;
         };
         ctrl.canQuestionnaire = function() {
-            validProducts = 0;
+            var validProducts = 0;
             $.each(ctrl.request.locations, (lk, lv) => {
                 $.each(lv.products, (pk, pv) => {
                     $.each(pv.screenActions, (sk, sv) => {
@@ -2308,7 +2308,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             return screenActionsModel.hasAction(action, ctrl.screenActions);
         };
         ctrl.checkGoContract = function() {
-            found = 0;
+            var found = 0;
             $.each(ctrl.request.locations, (kl, vl) => {
                 $.each(vl.products, (kp, vp) => {
                     $.each(vp.screenActions, (ks, vs) => {
@@ -2436,7 +2436,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     ctrl.textValue = 'Are you sure you want to cancel this request?';
                 }
             } else {
-                canBeCancelledPayload = {
+                var canBeCancelledPayload = {
                     Filters: [
                         {
                             ColumnName: 'RequestId',

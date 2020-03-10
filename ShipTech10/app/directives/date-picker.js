@@ -326,12 +326,12 @@ angular.module('shiptech.pages').directive('newDatePicker', [ 'tenantModel', '$w
                         });
                         $(`.${ dateInputId }_hour`).click(function() {
                             if (mask.value) {
-                                newVal = `${moment.utc(mask.value, currentFormat).hour(parseInt($(this).text())).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+                                var newVal = `${moment.utc(mask.value, currentFormat).hour(parseInt($(this).text())).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
                                 ngModel.$setViewValue(newVal);
                                 ngModel.$commitViewValue();
                                 wasReset = false;
 
-                                newFormattedValue = moment.utc(newVal).format(currentFormat);
+                                var newFormattedValue = moment.utc(newVal).format(currentFormat);
                                 if (newFormattedValue.split(' ')[1] == '00:00') {
                                     mask.value = newFormattedValue.split(' ')[0];
                                 }

@@ -4238,7 +4238,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                                 }
                             }
                             if (value.mappedScreenActionName == "ApproveInvoice") {
-                                var approveInvoiceIndex = key;
+                                approveInvoiceIndex = key;
                             }
                         });
                     } else {

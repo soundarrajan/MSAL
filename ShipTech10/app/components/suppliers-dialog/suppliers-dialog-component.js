@@ -227,7 +227,7 @@ angular.module('shiptech').controller('SuppliersDialogController', [ '$scope', '
                 tablePagination.start = info.start;
                 tablePagination.length = len;
                 ctrl.pageLength = len;
-                tableOrder = normalizeDatatablesOrder(ctrl.tableOptions.order);
+                var tableOrder = normalizeDatatablesOrder(ctrl.tableOptions.order);
 
                 setTableVars(tablePagination.length, tablePagination.start);
 

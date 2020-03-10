@@ -795,7 +795,7 @@ angular.module('shiptech.components').controller('FiltersController', [
                     toastr.error('Configuration must have at least one filter');
                     return;
                 }
-                filtersList = $scope.packFilters(data);
+                var filtersList = $scope.packFilters(data);
             } else {
                 filtersList = [];
             }
@@ -805,7 +805,7 @@ angular.module('shiptech.components').controller('FiltersController', [
                 // name = 'Test Configuration ';
             }
             let route = $scope.currentList;
-            sortList = $rootScope.sortList;
+            var sortList = $rootScope.sortList;
 
             // form payload
             var data = {
@@ -856,7 +856,7 @@ angular.module('shiptech.components').controller('FiltersController', [
                             $rootScope.$broadcast('filters-applied', []);
                         }
                         if ($scope.defaultConfiguration != null) {
-                            retVal = $scope.applyDefaultConfiguration($scope.defaultConfiguration, true);
+                            var retVal = $scope.applyDefaultConfiguration($scope.defaultConfiguration, true);
                             $scope.selectedConfig = $scope.defaultConfiguration;
                             $scope.enableDisableDeleteLayout($scope.selectedConfig);
                         }

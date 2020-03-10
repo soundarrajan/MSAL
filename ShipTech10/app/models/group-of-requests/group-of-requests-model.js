@@ -511,7 +511,7 @@ angular.module('shiptech.models').factory('groupOfRequestsModel', [ 'groupOfRequ
                     Value: templateName
                 } ]
             };
-            request_data = payloadDataModel.create(payload);
+            var request_data = payloadDataModel.create(payload);
             return groupOfRequestsResource.previewRevokeOrAmend(request_data)
                 .$promise
                 .then((data) => {

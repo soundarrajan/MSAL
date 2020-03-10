@@ -116,7 +116,7 @@ angular.module('shiptech').controller('PriceGraphController', [ '$scope', '$stat
                         groups.push(item);
                     });
                     _.forEach(timelineData, (value, key) => {
-                        item = {
+                        var item = {
                             id: key,
                             group: value.sellerLocationId,
                             className: minimumPrice == value[price] ? 'minimumPrice' : '',

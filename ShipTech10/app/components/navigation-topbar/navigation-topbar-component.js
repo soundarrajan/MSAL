@@ -27,7 +27,7 @@ angular.module('shiptech').controller('NavigationTopBarController', [ '$rootScop
     		return `${$state.$current}&&&${stateParams}`;
     	}, (newVal, oldVal) => {
 			var parameters = newVal.split('&&&');
-		    stateParams = JSON.parse(parameters[1]);
+		    var stateParams = JSON.parse(parameters[1]);
 		    $scope.currentPage = parameters[0];
 		    $scope.entityId = stateParams.requestId;
             $scope.initNavigation();

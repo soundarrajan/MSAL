@@ -1441,7 +1441,7 @@ angular.module('shiptech.pages').controller('ScheduleCalendarController', [ '$ro
                 removePopups();
             });
             $('.contextActionContractPlanning').click(function() {
-                index = $(this).attr('data-index');
+                var index = $(this).attr('data-index');
                 contextActionContractPlanning(object[index]);
                 removePopups();
             });

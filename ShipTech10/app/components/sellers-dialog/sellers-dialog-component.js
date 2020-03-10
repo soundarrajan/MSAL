@@ -246,7 +246,7 @@ angular.module('shiptech').controller('SellersDialogController', [ '$scope', '$s
                 tablePagination.start = info.start;
                 tablePagination.length = len;
                 ctrl.pageLength = len;
-                tableOrder = normalizeDatatablesOrder(ctrl.tableOptions.order);
+                var tableOrder = normalizeDatatablesOrder(ctrl.tableOptions.order);
                 setTableVars(tablePagination.length, tablePagination.start);
                 if (ctrl.supplierPortal) {
                     call = lookupModel.getSellerListForSupplierPortal(ctrl.supplierPortalToken, ctrl.sellerTypes, tableOrder, tablePagination, ctrl.filters);

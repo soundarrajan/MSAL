@@ -58,9 +58,11 @@ angular.module('shiptech.models')
             /**
     * Gets the global tenant configuration.
     */
+            var deferred;
+            var response;
             function getGlobalConfiguration() {
-                var deferred = $q.defer();
-                var response = { payload : $tenantConfiguration.generalConfiguration };
+                deferred = $q.defer();
+                response = { payload : $tenantConfiguration.generalConfiguration };
                 deferred.resolve(response);
                 return deferred.promise;
             }

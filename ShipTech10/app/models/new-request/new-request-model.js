@@ -135,6 +135,7 @@ angular.module('shiptech.models').factory('newRequestModel', [ 'newRequestResour
          * validate a request
          * @param {Integer} data - ?
          */
+        var request_data;
         function validate(data) {
             request_data = payloadDataModel.create(data);
             return newRequestResource.validate(request_data).$promise.then((data) => {

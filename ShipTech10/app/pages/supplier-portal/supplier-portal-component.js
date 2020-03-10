@@ -2334,7 +2334,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
                     });
                 }
             });
-            data = {
+            var data = {
                 RequestOfferIds: _.uniq(requestOfferIds),
                 IncotermId: incoterm.id
             };
