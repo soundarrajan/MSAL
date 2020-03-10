@@ -146,6 +146,9 @@ angular.module('shiptech.models').factory('emailModel', ['emailResource', 'paylo
             if (typeof(email.attachments) != 'undefined') {
                 payload.attachments = email.attachments;
             }
+            if (typeof(email.attachmentsList) != 'undefined') {
+                payload.attachmentsList = email.attachmentsList;
+            }            
             request_data = payloadDataModel.create(payload);
             return emailResource.sendEmail(request_data).$promise.then(function(data) {
                 return data;

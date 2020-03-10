@@ -211,6 +211,9 @@ angular.module('shiptech.models').factory('emailModel', [ 'emailResource', 'payl
             if (typeof email.attachments != 'undefined') {
                 payload.attachments = email.attachments;
             }
+            if (typeof(email.attachmentsList) != 'undefined') {
+                payload.attachmentsList = email.attachmentsList;
+            }             
             request_data = payloadDataModel.create(payload);
             return emailResource.sendEmail(request_data).$promise.then((data) => {
                 return data;
