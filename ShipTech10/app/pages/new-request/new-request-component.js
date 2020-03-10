@@ -256,7 +256,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                                 // ctrl.request.locations[i].destination = null;
                                 ctrl.request.locations[i].requestId = null;
                                 for (let j = 0; j < ctrl.request.locations[i].products.length; j++) {
-                                	ctrl.request.locations[i].products[j].uniqueIdUI = window.crypto.getRandomValues(new Uint8Array(1)).toString(36).substring(7);
+                                	ctrl.request.locations[i].products[j].uniqueIdUI = Math.random().toString(36).substring(7);
                                     ctrl.request.locations[i].products[j].sellers = [];
                                     ctrl.request.locations[i].products[j].productStatus = null;
                                     ctrl.request.locations[i].products[j].workflowId = null;
@@ -334,7 +334,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                                         }
                                     }
 
-                                    ctrl.request.locations[j].products[i].uniqueIdUI = window.crypto.getRandomValues(new Uint8Array(1)).toString(36).substring(7);
+                                    ctrl.request.locations[j].products[i].uniqueIdUI = Math.random().toString(36).substring(7);
                                     if (ctrl.request.locations[j].products[i].product) {
                                         listsModel.getProductTypeByProduct(ctrl.request.locations[j].products[i].product.id, j, i).then((server_data) => {
                                             ctrl.request.locations[server_data.id].products[server_data.id2].productType = server_data.data.payload;
@@ -404,7 +404,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                                 }
 	                            $scope.productTypesLoadedPerLocation.totalProducts += ctrl.request.locations[j].products.length;
                                 for (let i = 0; i < ctrl.request.locations[j].products.length; i++) {
-                                	ctrl.request.locations[j].products[i].uniqueIdUI = window.crypto.getRandomValues(new Uint8Array(1)).toString(36).substring(7);
+                                	ctrl.request.locations[j].products[i].uniqueIdUI = Math.random().toString(36).substring(7); 
                                     if (ctrl.request.locations[j].products[i].product) {
                                     	// ctrl.request.locations[j].products[i].product.name = ctrl.request.locations[j].products[i].requestIndex + ' - ' + ctrl.request.locations[j].products[i].product.name;
                                     	if (ctrl.request.locations[j].products[i].productTypeId) {
@@ -921,7 +921,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             let uomSelection = tenantService.getUom();
             var product = {
                 product: null,
-                uniqueIdUI: window.crypto.getRandomValues(new Uint8Array(1))
+                uniqueIdUI: Math.random()
                     .toString(36)
                     .substring(7),
                 productStatus: null,
@@ -2350,7 +2350,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         };
         ctrl.showCancelRequestConfirm = function(product, location, pIndex, locIndex) {
             ctrl.entityToDelete = 'request';
-            ctrl.deleteDataParams = window.crypto.getRandomValues(new Uint8Array(1))
+            ctrl.deleteDataParams = Math.random()
                 .toString(36)
                 .substring(7);
             $('.confirmModal').modal();

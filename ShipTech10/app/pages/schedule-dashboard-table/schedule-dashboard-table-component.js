@@ -327,7 +327,7 @@ angular.module('shiptech.pages').controller('ScheduleTableController', [
                 obj.requestId =
                     obj.requestId > 0 ?
                         obj.requestId :
-                        window.crypto.getRandomValues(new Uint8Array(1))
+                        Math.random()
                             .toString(36)
                             .substr(2, 5);
                 selectedRequests.push(obj);
