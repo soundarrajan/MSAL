@@ -223,7 +223,7 @@ APP_DELIVERY.run([ '$state', '$rootScope', 'DELIVERY_STATE', function($state, $r
         if (titleMap[$state.current.name]) {
             let newTitle = titleMap[$state.current.name];
             if ($state.params.entity_id < 1) {
-            	deliveryId = 0;
+            	var deliveryId = 0;
                 newTitle = 'New Delivery';
                 $state.params.path[1].label = newTitle;
             } else {

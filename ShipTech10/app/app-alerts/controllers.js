@@ -281,7 +281,7 @@ APP_ALERTS.controller('Controller_Alerts', [ '$scope', '$rootScope', '$Api_Servi
         var targetElement = $('#alertMessage');
         setTimeout(() => {
             targetElement.html(str);
-            tags = $('#alertMessage span.tag');
+            var tags = $('#alertMessage span.tag');
             $.each(tags, function(key, value) {
                 let currentText = $(this).children('b').text();
                 $(this).children('b').attr('parameter-id', currentText);
@@ -478,7 +478,7 @@ APP_ALERTS.controller('Controller_Alerts', [ '$scope', '$rootScope', '$Api_Servi
         Factory_Master.alertsGetRuleCondition(null, (response) => {
             if (response) {
                 if (response.status == true) {
-                    result = response.data;
+                    var result = response.data;
                     $scope.options.alertsCondition = result;
                 } else {
                     toastr.error(response.message);
@@ -741,7 +741,7 @@ APP_ALERTS.controller('Controller_Alerts', [ '$scope', '$rootScope', '$Api_Servi
         } else {
             $scope.read = false;
         }
-        data = {
+        var data = {
             Payload: {
                 Filters: [ {
                     ColumnName: 'IsRead',

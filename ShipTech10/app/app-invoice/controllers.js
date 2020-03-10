@@ -219,7 +219,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
             });
 
             if (vm.app_id == 'invoices' && vm.screen_id == 'invoice') {
-                	validCostDetails = [];
+            	var validCostDetails = [];
                 if ($scope.filterFromData.costDetails.length > 0) {
                     $.each($scope.filterFromData.costDetails, (k, v) => {
                         if (typeof v.product != 'undefined' && v.product != null) {
@@ -244,7 +244,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                 }
                 $scope.filterFromData.costDetails = validCostDetails;
                 // return;
-                costTypeError = false;
+                var costTypeError = false;
                 for (var i = $scope.filterFromData.costDetails.length - 1; i >= 0; i--) {
                     	if (!$scope.filterFromData.costDetails[i].costType) {
 		                    costTypeError = true;
@@ -256,7 +256,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                     return false;
                 }
                 if ($state.params.screen_id != 'claims') {
-                    	availableCostOrProductCount = 0;
+                    	var availableCostOrProductCount = 0;
                     	$.each($scope.filterFromData.productDetails, (k, v) => {
                     		if (!v.isDeleted) {
 		                    	availableCostOrProductCount++;
@@ -336,6 +336,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                                 }
                             });
                         } else {
+                        	var locationPath;
                             if ($location.path().slice(-2) == '/0') {
                                 locationPath = $location.path().slice(0, -1);
                             } else {
@@ -479,9 +480,9 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
     };
     $scope.triggerChangeFields = function(name, id) {
         $rootScope.formDataFields = $scope.formValues;
-        fields = [ 'OrderID', 'labResultID', 'deliveryNumber', 'Product' ];
-        company_id = $('#companylistCompany').val();
-        market_id = $('#MarketInstrumentMarketInstrument').val();
+        var fields = [ 'OrderID', 'labResultID', 'deliveryNumber', 'Product' ];
+        var company_id = $('#companylistCompany').val();
+        var market_id = $('#MarketInstrumentMarketInstrument').val();
         if (typeof $scope.triggerChangeFieldsAppSpecific == 'function') {
             $scope.triggerChangeFieldsAppSpecific(name, id);
         }
@@ -554,7 +555,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                         entry.Value = temp;
                     });
                 }
-                retFunc = false;
+                var retFunc = false;
                 if (field.Name == 'Product') {
                     $.each(field.Filter, (key, val) => {
                         if (val.ColumnName == 'OrderId') {
@@ -620,6 +621,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                             }
                             $scope.$watchGroup([ $scope.formValues, $scope.options ], () => {
                                 $timeout(() => {
+                                    var id;
                                     if (field.Type == 'textUOM') {
                                         id = `#${ field.Name}`;
                                     } else {
@@ -661,13 +663,14 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
         });
         $(elt).on('itemAdded', (event) => {
             if (id == 'agents') {
-                index = $scope.formValues[id].length - 1;
+                var index = $scope.formValues[id].length - 1;
                 selectDefaultAgent(id, index);
             }
         });
         $(elt).on('itemRemoved', (event) => {
             let idToRemove = event.item.value;
             $.each($scope.formValues[id], (index, value) => {
+                var indexRmv;
                 if (id == 'applications' && vm.screen_id == 'sellerrating') {
                     if (value.module.id == idToRemove) {
                         indexRmv = index;
@@ -680,7 +683,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                     console.log(value.id);
                     console.log(idToRemove);
                     if (id == 'agents') {
-                        comparator = 'counterpartyId';
+                        var comparator = 'counterpartyId';
                         if (value[comparator] == idToRemove) {
                             indexRmv = index;
                             console.log($scope.formValues[id][index]);
@@ -703,6 +706,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
             hideTheChildren();
         });
         elt_plus.on('click', () => {
+        	var selector;
             if (idx >= 0) {
                 selector = id + idx;
             } else {
@@ -723,7 +727,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                     });
                 } else {
                     $.each($scope.options[name], (index, value) => {
-                        selectorElement = $(`#${ selector }:not([data-value^="{{"])`);
+                        var selectorElement = $(`#${ selector }:not([data-value^="{{"])`);
                         if (selectorElement.attr('data-value') == value.id) {
                             itemToAdd = {
                                 id: value.id,
@@ -834,7 +838,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
         hideTheChildren();
 
         function hideTheChildren() {
-            currentTags = elt.next('.bootstrap-tagsinput').children('.label');
+            var currentTags = elt.next('.bootstrap-tagsinput').children('.label');
             currentTags.removeAttr('big-child');
             currentTags.show();
             currentTags.css('clear', 'none');
@@ -966,7 +970,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
     };
     $scope.addTagToMulti = function(model, data) {
         vm.plusClickedMultilookup = true;
-        alreadyAdded = false;
+        var alreadyAdded = false;
         if (!$scope.formValues[model] || typeof $scope.formValues[model] == 'undefined') {
             $scope.formValues[model] = [];
         }
@@ -986,7 +990,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
 
     vm.cloneEntity = function(group, obj) {
         if (obj) {
-            new_obj = angular.copy(obj);
+            let new_obj = angular.copy(obj);
             new_obj.id = 0;
             new_obj.isActive = true;
             $scope.formValues[group].push(new_obj);
@@ -1011,8 +1015,8 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
 	            dataDependent = $.unique(dataDependent);
 	            $.each(dataDependent, (key, value) => {
 	                if ($(`input[type='radio'][name*=${ value }]`)) {
-	                    selectedRadioVal = $(`input[type='radio'][name*=${ value }]:checked`).val();
-	                    fieldstoShow = $(`.fe_entity[data-dependent="${ value }"][data-show*="${ selectedRadioVal }"]`);
+	                    var selectedRadioVal = $(`input[type='radio'][name*=${ value }]:checked`).val();
+	                    var fieldstoShow = $(`.fe_entity[data-dependent="${ value }"][data-show*="${ selectedRadioVal }"]`);
 	                    fieldstoShow.show();
 	                }
 	            });
@@ -1022,7 +1026,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
     $scope.checkIfTab = function() {
         $scope.$watch('formFields', () => {
             $timeout(() => {
-                tab = $('.grp_unit')
+                var tab = $('.grp_unit')
                     .children('.tab-pane')
                     .first()
                     .addClass('active in');
@@ -1052,7 +1056,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
     $scope.refreshSelect = function() {};
     $scope.convertValues = function(oldObj, newObj, type, parent) {
         oldObj = eval(oldObj);
-        param = {
+        var param = {
             custom: type,
             data: {
                 from: oldObj,
@@ -1062,8 +1066,8 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
         Factory_Master.exchangeRate(param, (callback) => {
             // callback = '1.5';
             if (callback) {
-                initial_val = $(`#${ parent}`).val();
-                updated_val = initial_val * callback;
+                let initial_val = $(`#${ parent}`).val();
+                let updated_val = initial_val * callback;
                 $(`#${ parent}`).val(updated_val);
             }
         });
@@ -1151,11 +1155,11 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
     };
 
     $scope.mapLocation = function(name, id) {
-        val = $(`[name= "${ name }"]`).val();
+        var val = $(`[name= "${ name }"]`).val();
         Factory_Master.get_master_entity(val, 'location', 'masters', (response) => {
             if (response) {
-                newSysInst = [];
-                i = 0;
+                var newSysInst = [];
+                var i = 0;
                 $.each($scope.formValues.productsSystemInstruments, (key, kval) => {
                     if (!kval.canBeDeleted && kval.id > 0 || typeof kval.canBeDeleted === 'undefined' && kval.id == 0) {
                         newSysInst[key] = kval;
@@ -1189,11 +1193,11 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
             }
         }
         // console.log($rootScope)
-        id = element.clc;
-        object = element.source;
-        formvalue = element.formvalue;
-        idx = element.idx;
-        field_name = element.field_name;
+        var id = element.clc;
+        var object = element.source;
+        var formvalue = element.formvalue;
+        var idx = element.idx;
+        var field_name = element.field_name;
         let CLC = $(`#modal_${ id } table.ui-jqgrid-btable`);
         let rowId = CLC.jqGrid('getGridParam', 'selrow');
         let rowData = CLC.jqGrid.Ascensys.gridObject.rows[rowId - 1];
@@ -1275,10 +1279,10 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
             } else {
                 $scope.target_element = element.source;
             }
-            elements = element.source.split('.');
+            var elements = element.source.split('.');
         } else {
             $scope.target_element = element.source;
-            elements = formvalue.split('.');
+            var elements = formvalue.split('.');
             elements.push(idx);
             if (object.indexOf('[') > -1) {
                 object = object.replace('[', '.');
@@ -1295,7 +1299,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
             $scope.assignObjValue($scope, elements, $scope.selected_value);
             if (element.screen == 'rfqrequestslist') {
                 	$scope.selected_value = [];
-                	rowsData = CLC.jqGrid('getGridParam', 'selarrrow');
+                	var rowsData = CLC.jqGrid('getGridParam', 'selarrrow');
                 	$.each(rowsData, (k, v) => {
 	                	$scope.selected_value.push(CLC.jqGrid.Ascensys.gridObject.rows[v - 1]);
                 	});
@@ -1315,10 +1319,10 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
     };
 
     $scope.assignObjValue = function(obj, keyPath, value) {
-        lastKeyIndex = keyPath.length - 1;
+        var lastKeyIndex = keyPath.length - 1;
         for (let i = 0; i < lastKeyIndex; ++i) {
-            key = keyPath[i];
-            next_key = keyPath[i + 1];
+            var key = keyPath[i];
+            var next_key = keyPath[i + 1];
             if (typeof next_key === 'number') {
                 if (!(key in obj)) {
                     obj[key] = [];
@@ -1413,9 +1417,9 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
         if (!$scope.grid.appScope.fVal().formValues.costDetails[rowRenderIndex]) {
             return;
         };
-        cost = $scope.grid.appScope.fVal().formValues.costDetails[rowRenderIndex].costName.id;
+        var cost = $scope.grid.appScope.fVal().formValues.costDetails[rowRenderIndex].costName.id;
         let costType = null;
-        currentCost = cost;
+        var currentCost = cost;
         if (!$rootScope.additionalCostsComponentTypes) {
             return;
         }
@@ -1425,7 +1429,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
             }
         });
 
-        availableCosts = [];
+        var availableCosts = [];
         $.each(vm.listsCache.CostType, (ack, acv) => {
             if (acv) {
                 if (costType == 1 || costType == 2) {
@@ -1447,7 +1451,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
 
     $scope.filterCostTypesByAdditionalCost = function(cost, rowRenderIndex) {
         let doFiltering = function(addCostCompTypes) {
-            costType = null;
+            var costType = null;
             $.each(addCostCompTypes, (k, v) => {
                 if (v.id == cost) {
                     costType = v.costType.id;
@@ -1510,7 +1514,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
             return false;
         }
         	// confirm = confirm(message);
-    		sweetConfirmResponse = {};
+    		var sweetConfirmResponse = {};
         	$('.sweetConfirmModal').modal();
         	$('.sweetConfirmModal').removeClass('hide fade');
         	$('.sweetConfirmModal').css('transform', 'translateY(100px)');
@@ -1685,9 +1689,9 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
 
     vm.formatDate = function(elem, dateFormat) {
         if (elem) {
-            formattedDate = elem;
+            var formattedDate = elem;
             dateFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
-	    	hasDayOfWeek = false;
+	    	var hasDayOfWeek = false;
             if (dateFormat.startsWith('DDD ')) {
             	hasDayOfWeek = true;
             	dateFormat = dateFormat.split('DDD ')[1].split(' ')[0];
@@ -1733,7 +1737,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
             if (fieldUniqueId == 'eta' || fieldUniqueId == 'orderDetails.eta' || fieldUniqueId == 'etb' || fieldUniqueId == 'etd' || fieldUniqueId.toLowerCase().indexOf('delivery') >= 0 || fieldUniqueId == 'pricingDate') {
                 // debugger;
                 // return moment.utc(elem).format($scope.tenantSetting.tenantFormatss.dateFormat.name);
-                utcDate = moment.utc(elem).format();
+                let utcDate = moment.utc(elem).format();
                 formattedDate = $filter('date')(utcDate, dateFormat, 'UTC');
                 // return moment.utc(elem).format(dateFormat);
             } else {
@@ -1760,6 +1764,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                 Factory_Master.get_apply_for_list(order_id, (callback) => {
                     if (callback.status == true) {
                         callback.data.forEach((val, key) => {
+                        	var itemName;
                             	if (val.name != 'All') {
 	                                itemName = `${key } - ${ val.name}`;
                             	} else {
@@ -1801,7 +1806,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
 	    $scope.triggerChangeFieldsAppSpecific(name, id);
     };
     $scope.triggerChangeFieldsAppSpecific = function(name, id) {
-        dueDate = $scope.formValues.dueDate;
+        var dueDate = $scope.formValues.dueDate;
         let array = [ 'DueDate', 'PaymentDate', 'costType', 'InvoiceRateCurrency', 'invoiceSummaryDeductions', 'documentNo', 'PaymentTerm', 'DeliveryDate' ];
         if (array.indexOf(name) != -1) {
             $scope.computeInvoiceTotalConversion(vm.conversionRoe, vm.conversionTo);
@@ -1858,7 +1863,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                 if (window.location.href.indexOf('invoices/claims')) {
                     console.log(window.location.href);
                     $.each($scope.formValues.invoiceClaimDetails, (key, value) => {
-                        exchangeDate = $scope.formValues.createdAt;
+                        let exchangeDate = $scope.formValues.createdAt;
                         if ($scope.formValues.createdAt == '0001-01-01T00:00:00') {
                             exchangeDate = null;
                         }
@@ -1887,7 +1892,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                 	if (!$scope.formValues.id) {
                 		return;
                 	}
-                	payload = { Payload:{
+                	var payload = { Payload:{
         	        		InvoiceId:$scope.formValues.id,
         	        		PaymentTermId:$scope.formValues.counterpartyDetails.paymentTerm.id,
         	        		InvoiceDeliveryDate:$scope.formValues.deliveryDate,
@@ -1928,11 +1933,11 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
 
     $scope.convertCurrency = function(fromCurrencyId, toCurrencyId, exchangeDate, amount, convertCallback) {
 	    let d = new Date();
-	    month = d.getMonth() + 1;
-	    day = d.getDate();
-	    hours = d.getHours();
-	    minutes = d.getMinutes();
-	    seconds = d.getSeconds();
+	    var month = d.getMonth() + 1;
+	    var day = d.getDate();
+	    var hours = d.getHours();
+	    var minutes = d.getMinutes();
+	    var seconds = d.getSeconds();
 	    if (month < 10) {
 	        month = `0${ month}`;
 	    }
@@ -1948,11 +1953,11 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
 	    if (seconds < 10) {
 	        seconds = `0${ seconds}`;
 	    }
-	    date = `${d.getFullYear() }-${ month }-${ day }T${ hours }:${ minutes }:${ seconds}`;
+	    var date = `${d.getFullYear() }-${ month }-${ day }T${ hours }:${ minutes }:${ seconds}`;
 	    if (!exchangeDate) {
 	        exchangeDate = date;
 	    }
-	    data = {
+	    var data = {
 	        Payload: {
 	            Order: null,
 	            Filters: [
@@ -2087,7 +2092,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
         // console.log(vm.getAdditionalCostsComponentTypes());
         vm.getAdditionalCostsComponentTypes((additionalCostsComponentTypes) => {
             $scope.additionalCostsComponentTypes = additionalCostsComponentTypes;
-            isTaxComponent = false;
+            var isTaxComponent = false;
             $.each(additionalCostsComponentTypes, (k, v) => {
                 if (v.id == data) {
                     if (v.componentType) {
@@ -2374,17 +2379,17 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
 
     /* INVOICES - CLAIMS*/
     $scope.saveTreasury = function() {
-        checkedRows = $rootScope.treasuryChangedfields;
+        var checkedRows = $rootScope.treasuryChangedfields;
         let CLC = $('#invoices_treasuryreport');
         let rowData = CLC.jqGrid.Ascensys.gridObject.rows;
-        rowsToSave = [];
+        var rowsToSave = [];
         if (!checkedRows) {
             toastr.error('Please select at least one row!');
             return;
         }
         Object.keys(checkedRows).forEach(function(key, index) {
             if (this[key].isChecked == true) {
-                selectedData = this[key];
+                var selectedData = this[key];
                 $.each(rowData, (k, v) => {
                     if (v.id == key) {
                         rowsToSave.push(v);
@@ -2421,7 +2426,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
     };
 
     $rootScope.$on('gridDataDone', (data, res) => {
-    	isTreasuryReport = window.location.hash.indexOf('treasuryreport') != -1;
+    	var isTreasuryReport = window.location.hash.indexOf('treasuryreport') != -1;
     	if (isTreasuryReport) {
             // elm = $('#tab_0 > div.col-md-12.portlet.light > div.portlet-body.main-portlet_content > div > div.col-md-12.fe_entity.edit_form_fields_GenerateReport_invoices.conditional_hidden > span > span > div > div').detach();
             // $('#tab_0 > div.col-md-12.portlet.light > div.portlet-title.ng-scope').append(elm);
@@ -2442,7 +2447,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
 
 
     $scope.invoiceConvertUom = function(type, rowIndex, formValues, oneTimeRun) {
-    	currentRowIndex = rowIndex;
+    	var currentRowIndex = rowIndex;
         if ($rootScope.reloadPage) {
             return;
         }
@@ -2462,14 +2467,14 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
         calculateGrand(formValues);
         vm.type = type;
         if (vm.type == 'product') {
-            product = formValues.productDetails[currentRowIndex];
+            var product = formValues.productDetails[currentRowIndex];
             if (typeof product.product != 'undefined' && typeof product.invoiceQuantityUom != 'undefined' && typeof product.invoiceRateUom !== 'undefined') {
                 if (product.invoiceQuantityUom == null || product.invoiceRateUom == null /* || typeof(product.invoiceAmount) == 'undefined'*/) {
                     return;
                 };
                 console.log('called getUomConversionFactor with params:', product.product.id, product.invoiceRateUom.id, product.invoiceQuantityUom.id);
                 $scope.getUomConversionFactor(product.product.id, 1, product.invoiceRateUom.id, product.invoiceQuantityUom.id, (response) => {
-                	conversionFactor = response;
+                	var conversionFactor = response;
                 	if (false && formValues.productDetails[currentRowIndex].sapInvoiceAmount) {
 	                    formValues.productDetails[currentRowIndex].invoiceAmount = formValues.productDetails[currentRowIndex].sapInvoiceAmount;
                 	} else {
@@ -2514,7 +2519,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                 calculate(vm.old_cost, vm.old_product, vm.old_costType);
             }
 
-            allCostApplyFor = 0;
+            var allCostApplyFor = 0;
             $.each($scope.dtMasterSource.applyFor, (k, v) => {
             	if (v.name != 'All') {
 		            allCostApplyFor = allCostApplyFor + v.convertedFinalQuantityAmount;
@@ -2534,6 +2539,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                 if (!formValues.costDetails[rowIndex].invoiceExtras) {
                     formValues.costDetails[rowIndex].invoiceExtras = 0;
                 }
+                var rateUom, quantityUom;
                 if (vm.cost.invoiceRateUom) {
                     rateUom = vm.cost.invoiceRateUom.id;
                 } else {
@@ -2595,6 +2601,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                 payload: vm.cost
             }).then((response) => {
                 console.log(response);
+                var obj;
                 if (response.data == 1) {
                     obj = {
                         id: 1,
@@ -2653,19 +2660,19 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
     $scope.getComponentTypeOfCost = function(costId) {
         $.each($rootScope.additionalCostsData, (k, v) => {
             if (costId == v.id) {
-                costComponentType = v.componentType.id;
+                var costComponentType = v.componentType.id;
             }
         });
         return costComponentType;
     };
     $scope.getCostsProductsAmount = function(formValues) {
-        allProductsAmount = 0;
+        var allProductsAmount = 0;
         $.each(formValues.productDetails, (k, v) => {
             allProductsAmount = allProductsAmount + v.invoiceAmount;
         });
-        allCostsAmount = 0;
+        var allCostsAmount = 0;
         $.each(formValues.costDetails, (k, v) => {
-            ct = $scope.getComponentTypeOfCost(v.costName.id);
+            var ct = $scope.getComponentTypeOfCost(v.costName.id);
             if (ct == 2) {
                 allCostsAmount = allCostsAmount + parseFloat(v.invoiceAmount);
             }
@@ -2679,7 +2686,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
         });
         allCostsAmount = 0;
         $.each(formValues.costDetails, (k, v) => {
-            componentType = $scope.getComponentTypeOfCost(v.costName.id);
+            var componentType = $scope.getComponentTypeOfCost(v.costName.id);
             if (componentType == 2) {
                 allCostsAmount = allCostsAmount + parseFloat(v.invoiceAmount);
             }
@@ -2735,9 +2742,9 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
 
         $rootScope.transportData.paymentDetails = {};
 
-        invoiceAmountGrandTotal = 0;
-        provisionalInvoiceAmount = 0;
-        deductions = 0;
+        var invoiceAmountGrandTotal = 0;
+        var provisionalInvoiceAmount = 0;
+        var deductions = 0;
 
         $rootScope.transportData.invoiceSummary.netPayable = invoiceAmountGrandTotal - deductions;
         $.each($rootScope.transportData.productDetails, (k, v) => {
@@ -2770,13 +2777,13 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
             });
         }
 
-        passedData = angular.copy($rootScope.transportData);
+        var passedData = angular.copy($rootScope.transportData);
         $rootScope.transportData = null;
         localStorage.setItem('invoice_createInvoiceFromEdit', angular.toJson(passedData));
         window.open('/#/invoices/invoice/edit/', '_blank');
     };
     $scope.createFinalInvoiceFromEditPage = function(fv) {
-        invoiceType = {
+        var invoiceType = {
             id: 2,
             name: 'FinalInvoice',
             code: null
@@ -2805,7 +2812,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
         });
     };
     $scope.calculateInvoiceGrandTotal = function(formValues) {
-        grandTotal = 0;
+        var grandTotal = 0;
         $.each(formValues.productDetails, (k, v) => {
             if (!v.isDeleted && typeof v.invoiceAmount != 'undefined') {
                 grandTotal = grandTotal + v.invoiceAmount;
@@ -2855,7 +2862,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
         let CLC = $(`#modal_${ id } table.ui-jqgrid-btable`);
         let rowId = CLC.jqGrid('getGridParam', 'selrow');
         let rowData = CLC.jqGrid.Ascensys.gridObject.rows[rowId - 1];
-        selectedRows = [];
+        var selectedRows = [];
         $.each(CLC.jqGrid.Ascensys.selectedProductIds, (k1, v1) => {
             $.each(CLC.jqGrid.Ascensys.gridObject.rows, (k2, v2) => {
                 if (v1 == v2.deliveryProductId && CLC.jqGrid.Ascensys.rowsProduct[k1] - 1 == k2) {
@@ -2863,7 +2870,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                 }
             });
         });
-        orderAdditionalCostId = [];
+        var orderAdditionalCostId = [];
         $.each(CLC.jqGrid.Ascensys.selectedOrderAdditionalCostId, (k1, v1) => {
             $.each(CLC.jqGrid.Ascensys.gridObject.rows, (k2, v2) => {
                 if (v1 == v2.orderAdditionalCostId) {
@@ -2872,11 +2879,11 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
             });
         });
 
-        mixedRows = selectedRows.concat(orderAdditionalCostId);
+        var mixedRows = selectedRows.concat(orderAdditionalCostId);
 
         $.each(mixedRows, (k, rowData) => {
             if (rowData.costName) {
-                transaction_type = 'cost';
+                var transaction_type = 'cost';
                 let product = angular.copy(rowData.product);
             	product.productId = angular.copy(rowData.product.id);
                 product.id = angular.copy(rowData.deliveryProductId);
@@ -2911,7 +2918,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
             }
             if (rowData.delivery) {
             	rowData.product.productId = angular.copy(rowData.product.id);
-                transactionstobeinvoiced_dtRow = {
+                var transactionstobeinvoiced_dtRow = {
                     amountInInvoice: '',
                     deliveryNo: rowData.delivery.name,
                     agreementType: rowData.agreementType,
@@ -2952,8 +2959,8 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                 };
             }
             if (rowData.costName) {
-                alreadyExists = false;
-                alreadyExistsKey = false;
+                var alreadyExists = false;
+                var alreadyExistsKey = false;
                 $.each($scope.formValues.costDetails, (idx, val) => {
                     if (rowData.orderAdditionalCostId == val.orderAdditionalCostId) {
                         alreadyExists = true;
@@ -2992,11 +2999,11 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
     };
 
     $scope.getUomConversionFactor = function(ProductId, Quantity, FromUomId, ToUomId, callback) {
-    	productId = ProductId;
-    	quantity = Quantity;
-    	fromUomId = FromUomId;
-    	toUomId = ToUomId;
-        data = {
+    	var productId = ProductId;
+    	var quantity = Quantity;
+    	var fromUomId = FromUomId;
+    	var toUomId = ToUomId;
+        var data = {
             Payload: {
                 ProductId: productId,
                 Quantity: quantity,
@@ -3022,7 +3029,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
         });
     };
     $scope.checkIfShowPaymentProofButton = function() {
-        shouldDisplay = false;
+        var shouldDisplay = false;
         $.each($rootScope.screenButtons, (k, v) => {
             if (v.label == 'UpdatePaymentProofDetails') {
                 shouldDisplay = true;
@@ -3063,7 +3070,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
             return;
         }
 
-    	payloadData = {
+    	var payloadData = {
 		     Amount : $scope.formValues.invoiceSummary.invoiceAmountGrandTotal,
 		     CurrencyId: $scope.formValues.invoiceRateCurrency.id,
 		     ROE: conversionRoe,
@@ -3223,7 +3230,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
 
                     if (!prod.status) {
                         // product w. no status
-                        confirmedQuantityOrMaxQuantity = prod.confirmedQuantity ? prod.confirmedQuantity : prod.maxQuantity;
+                        var confirmedQuantityOrMaxQuantity = prod.confirmedQuantity ? prod.confirmedQuantity : prod.maxQuantity;
 
                         if (additionalCost.isAllProductsCost) {
                             // estimatedAmount calculation
@@ -3236,15 +3243,15 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                         }
                     } else {
                         // if status set
-	                        	if (prod.status.id != ctrl.STATUS.Cancelled.id) {
-                            confirmedQuantityOrMaxQuantity = prod.confirmedQuantity ? prod.confirmedQuantity : prod.maxQuantity;
+                        if (prod.status.id != ctrl.STATUS.Cancelled.id) {
+                        	var confirmedQuantityOrMaxQuantity = prod.confirmedQuantity ? prod.confirmedQuantity : prod.maxQuantity;
 
-                            if (additionalCost.isAllProductsCost) {
-                                additionalCost.estimatedAmount = additionalCost.estimatedAmount + confirmedQuantityOrMaxQuantity * additionalCost.prodConv[i] * additionalCost.price;
-                            } else if (product === prod) {
-                                additionalCost.estimatedAmount = confirmedQuantityOrMaxQuantity * additionalCost.prodConv[i] * additionalCost.price;
-                            }
-	                        	}
+                        	if (additionalCost.isAllProductsCost) {
+                        		additionalCost.estimatedAmount = additionalCost.estimatedAmount + confirmedQuantityOrMaxQuantity * additionalCost.prodConv[i] * additionalCost.price;
+                        	} else if (product === prod) {
+                        		additionalCost.estimatedAmount = confirmedQuantityOrMaxQuantity * additionalCost.prodConv[i] * additionalCost.price;
+                        	}
+                        }
                     }
                 }
             }

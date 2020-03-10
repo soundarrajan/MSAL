@@ -141,7 +141,7 @@ APP_GENERAL_COMPONENTS.factory('Factory_General_Components', [ '$http', '$Api_Se
         },
         */
         update_scheduler_configuration: function(payload, callback) {
-            url = `${API.BASE_URL_DATA_IMPORTEXPORT }/api/importExport/upload/updateschedulerconfiguration`;
+            var url = `${API.BASE_URL_DATA_IMPORTEXPORT }/api/importExport/upload/updateschedulerconfiguration`;
 
             $http.post(url, { Payload: payload }, {})
                 .then((response) => {
@@ -432,7 +432,7 @@ APP_GENERAL_COMPONENTS.factory('Factory_App_Dates_Processing', [ '$tenantSetting
 
     // / END FACTORY INITIALIZATION
 
-    formatDateTime = function(elem, dateFormat, fieldUniqueId) {
+    var formatDateTime = function(elem, dateFormat, fieldUniqueId) {
         // console.log(fieldUniqueId)
         if (elem) {
             dateFormat = $tenantSettings.tenantFormats.dateFormat.name;
@@ -455,8 +455,8 @@ APP_GENERAL_COMPONENTS.factory('Factory_App_Dates_Processing', [ '$tenantSetting
                 fieldUniqueId == 'pricingDate') {
                 // debugger;
                 // return moment.utc(elem).format($scope.tenantSetting.tenantFormatss.dateFormat.name);
-                utcDate = moment.utc(elem).format();
-                formattedDate = $filter('date')(utcDate, dateFormat, 'UTC');
+                var utcDate = moment.utc(elem).format();
+                var formattedDate = $filter('date')(utcDate, dateFormat, 'UTC');
                 // return moment.utc(elem).format(dateFormat);
             } else {
                 formattedDate = $filter('date')(elem, dateFormat);
@@ -465,8 +465,8 @@ APP_GENERAL_COMPONENTS.factory('Factory_App_Dates_Processing', [ '$tenantSetting
         }
     };
 
-    formatSimpleDate = function(date) {
-        dateFormat = $tenantSettings.tenantFormats.dateFormat.name;
+    var formatSimpleDate = function(date) {
+        var dateFormat = $tenantSettings.tenantFormats.dateFormat.name;
         window.tenantFormatsDateFormat = dateFormat;
         dateFormat = dateFormat.replace(/d/g, 'D').replace(/y/g, 'Y').split(' ')[0];
         if (date) {
@@ -475,7 +475,7 @@ APP_GENERAL_COMPONENTS.factory('Factory_App_Dates_Processing', [ '$tenantSetting
         return;
     };
 
-    doFilterDatesInitialization = function() {
+    var doFilterDatesInitialization = function() {
         filterFormat = window.tenantFormatsDateFormat;
         if(filterFormat) {
             FILTER_DATE_POSITIONS = calculateDatePositions(filterFormat);

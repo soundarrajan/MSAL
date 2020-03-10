@@ -4269,8 +4269,8 @@ APP_API.factory('$Api_Service', [
                                 let paths = api_map[param.app][param.screen].layout.get.path_clc;
                                 let lastKeyIndex = paths.length - 1;
                                 for (let i = 0; i < lastKeyIndex; ++i) {
-                                    key = paths[i];
-                                    next_key = paths[i + 1];
+                                    var key = paths[i];
+                                    var next_key = paths[i + 1];
                                     jsonDATA = jsonDATA[key];
                                 }
                                 if (!jsonDATA.colModel) {
@@ -4699,8 +4699,8 @@ APP_API.factory('$Api_Service', [
                         recon: 'Recon',
                         Procurement: 'Procurement'
                     };
-                    moduleId = moduleMap[map[param.app]].moduleId;
-                    transactionTypeId = moduleMap[map[param.app]].transactionId;
+                    var moduleId = moduleMap[map[param.app]].moduleId;
+                    var transactionTypeId = moduleMap[map[param.app]].transactionId;
                     if (param.app == 'Procurement') {
                         transactionTypeId = 5;
                     }
@@ -4728,7 +4728,7 @@ APP_API.factory('$Api_Service', [
                             if (response.status == 200) {
                                 callback(response.data.payload);
                             } else {
-                                data = {};
+                                var data = {};
                                 data.error = true;
                                 data.message = response.data.ErrorMessage;
                                 console.log('Error retrieving seller rating!');
@@ -4939,7 +4939,7 @@ APP_API.factory('$Api_Service', [
                         let scheduleDashboardVesselVoyages = JSON.parse(localStorage.getItem('scheduleDashboardVesselVoyages'));
 
                         if (scheduleDashboardVesselVoyages) {
-                            voyageFilter = '';
+                            var voyageFilter = '';
                             $.each(scheduleDashboardVesselVoyages, (k, v) => {
                                 if(v.voyageDetail) {
                                     voyageFilter = `${voyageFilter }${v.voyageDetail.id },`;
@@ -4965,9 +4965,9 @@ APP_API.factory('$Api_Service', [
                         let tempFilterOrdersFromConfirm = JSON.parse(localStorage.getItem('tempFilterOrdersFromConfirm'));
                         if (tempFilterOrdersFromConfirm) {
                             if (tempFilterOrdersFromConfirm.length == 1) {
-                                requestId = tempFilterOrdersFromConfirm[0];
+                                var requestId = tempFilterOrdersFromConfirm[0];
                             } else if (tempFilterOrdersFromConfirm.length > 1) {
-                                orderIds = tempFilterOrdersFromConfirm.join(',');
+                                var orderIds = tempFilterOrdersFromConfirm.join(',');
                             }
                             console.log(requestId);
                             param.params.UIFilters = {
@@ -5025,7 +5025,7 @@ APP_API.factory('$Api_Service', [
                         }
 
                         function processDateFilters(filters) {
-                        	initialDateFilter = angular.copy(filters);
+                        	var initialDateFilter = angular.copy(filters);
                             $.each(initialDateFilter, (k, v) => {
                                 if (v) {
                                     if (typeof v.ColumnType != 'undefined') {
@@ -5127,7 +5127,7 @@ APP_API.factory('$Api_Service', [
                     if (param.app == 'masters' && param.screen == 'counterpartylist' && param.clc_id == 'masters_counterpartylist_seller') {
                         console.log(param);
                         url = `${API.BASE_URL_DATA_MASTERS }/api/masters/counterparties/listByTypes`;
-                        value = '2, 11';
+                        var value = '2, 11';
                         if ($state.params.screen_id == 'contract') {
                             // 11 este serviceProvider
                             value = '2,11';
@@ -5424,10 +5424,10 @@ APP_API.factory('$Api_Service', [
                     }
                     if (param.clc_id == 'procurement_scheduleDashboardTable') {
                     	if (!localStorage.getItem('scheduleDatesTable')) {
-                    		interval = setInterval(() => {
+                    		var interval = setInterval(() => {
                     			if (localStorage.getItem('scheduleDatesTable')) {
                     				param.params.tableDates = {};
-                    				scheduleDatesTable = JSON.parse(localStorage.getItem('scheduleDatesTable'));
+                    				var scheduleDatesTable = JSON.parse(localStorage.getItem('scheduleDatesTable'));
                     				param.params.tableDates.startDate = scheduleDatesTable.start;
                     				param.params.tableDates.endDate = scheduleDatesTable.end;
                                     Elements.settings.flat_table_schedule_dashboard.source.loadComplete();
@@ -5483,7 +5483,7 @@ APP_API.factory('$Api_Service', [
                     }
 
                     if (param.clc_id == 'orders_orders' && [ 'delivery'/* ,"claim","lab"*/ ].indexOf($state.params.screen_id) != -1) {
-                    	defaultFiltering = [
+                    	var defaultFiltering = [
 	                    	{
 	                    		columnValue: 'OrderStatus_DisplayName',
 	                    		ColumnType: 'Text',
@@ -5514,9 +5514,9 @@ APP_API.factory('$Api_Service', [
                         (response) => {
                         	 $rootScope.$broadcast('scheduleDashboardTableGetResponse', response.data);
                             if(param.clc_id == 'procurement_contractplanning') {
-                                plannedQuantitySummary = response.data.payload.plannedQuantitySummary;
-                                unplannedQuantitySummary = response.data.payload.unplannedQuantitySummary;
-                                cpSummary = {
+                                var plannedQuantitySummary = response.data.payload.plannedQuantitySummary;
+                                var unplannedQuantitySummary = response.data.payload.unplannedQuantitySummary;
+                                var cpSummary = {
                                     plannedQuantitySummary : plannedQuantitySummary,
                                     unplannedQuantitySummary : unplannedQuantitySummary
                                 };
@@ -6211,7 +6211,7 @@ APP_API.factory('$Api_Service', [
                     switch (param.action) {
                     case 'export_xls':
                         payload.exportType = 1;
-                        file_type = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+                        var file_type = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
                         break;
                     case 'export_csv':
                         payload.exportType = 2;
@@ -6758,7 +6758,7 @@ APP_API.factory('$Api_Service', [
                                 return;
                             },
                             (response) => {
-                                res = {};
+                                var res = {};
                                 res.status = false;
                                 res.message = 'Contact delete error!';
                                 console.log(`HTTP ERROR ${ response.data.ErrorMessage}`);
@@ -7035,7 +7035,7 @@ APP_API.factory('$Api_Service', [
                                     }
                                 };
 
-                                hasOrderId = true;
+                                var hasOrderId = true;
                                 $.each(param.field.Filter, (k, v) => {
                                 	if (v.ColumnName == 'OrderId' && v.Value == 0) {
 		                                var hasOrderId = false;

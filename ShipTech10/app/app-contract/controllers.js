@@ -604,10 +604,10 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
     };
 
     $scope.testForValidLocation = function() {
-        notValidLocation = false;
+        var notValidLocation = false;
         $.each($scope.formValues.products, (key, val) => {
             if(typeof val.location != 'object') {
-                keyno = key + 1;
+                let keyno = key + 1;
                 toastr.error(`Please select a valid location for product ${ keyno }.`);
                 notValidLocation = true;
             }
@@ -641,7 +641,7 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
 
     /* Contract Actions*/
     $scope.confirm_contract = function() {
-        notValid = $scope.testForValidLocation();
+        var notValid = $scope.testForValidLocation();
         if(notValid) {
             return;
         }
@@ -736,7 +736,7 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
     	Factory_Master.getContractFormulas(data, (response) => {
             if (response) {
                 $scope.formulaHistoryDataResponse = response.data;
-		    	tpl = $templateCache.get('app-contract/views/formulaHistory.html');
+		    	var tpl = $templateCache.get('app-contract/views/formulaHistory.html');
 		        $scope.modalInstance = $uibModal.open({
 		            template: tpl,
 		            appendTo: angular.element(document.getElementsByClassName('page-container')),
@@ -775,7 +775,7 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
     /* Contract Actions*/
 
     $scope.showFormulaHistory = function(productId) {
-    	data = {
+    	var data = {
     		ContractId :  vm.entity_id,
     		ContractProductId : productId
     	};
@@ -1025,7 +1025,7 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
     };
     $scope.getContractProductDeliveryMtmModalData = function(selectedRowData, currentPage) {
         $scope.entries = 10;
-        skip = $scope.entries * (currentPage - 1);
+        var skip = $scope.entries * (currentPage - 1);
         data = {
             Payload: {
                 Filters: [ {
@@ -1062,7 +1062,7 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
                 }
             }
         };
-        type = 'mtm';
+        let type = 'mtm';
         $scope.contractProductDeliveryActions(data, type);
         $scope.currentPage = currentPage;
     };

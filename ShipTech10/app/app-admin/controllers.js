@@ -316,7 +316,7 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
         $scope.totalWeightageCalc();
     };
     $scope.totalWeightageCalc = function() {
-        totalWeightage = 0;
+        var totalWeightage = 0;
         $.each($scope.formValues.applications, (key, value) => {
             $.each(value.categories, (key1, value1) => {
                 $.each(value1.details, (key2, value2) => {
@@ -468,21 +468,21 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
             delete $scope.formValues.temp.sellerPrecedence.sellerOrd_6;
         }
         for (var k1 in $scope.formValues.temp[`${ruleType }Precedence`]) {
-            objIdx = k1.split('_')[1];
+            var objIdx = k1.split('_')[1];
             if (objIdx > changedIdx) {
                 $scope.formValues.temp[`${ruleType }Precedence`][k1] = null;
             }
         }
         var entitySelects = $(`.admin-precedence-select[name^=${ ruleType }-ord-]`);
         $.each(entitySelects, function(key, value) {
-            dataOrd = $(this).attr('data-ord');
+            var dataOrd = $(this).attr('data-ord');
             var entityItem = $(this);
             entityItem.children('option').removeAttr('disabled');
             for (let k2 in $scope.formValues.temp[`${ruleType }Precedence`]) {
-                objIdx = k1.split('_')[1];
+                var objIdx = k1.split('_')[1];
                 if (objIdx < dataOrd) {
                     if($scope.formValues.temp[`${ruleType }Precedence`][k2]) {
-                        alreadySelected = $scope.formValues.temp[`${ruleType }Precedence`][k2].id;
+                        var alreadySelected = $scope.formValues.temp[`${ruleType }Precedence`][k2].id;
                         var selectOptions = entityItem.children('option');
                         $.each(selectOptions, (k3, v2) => {
                             if ($(v2).attr('value') == alreadySelected) {
@@ -799,7 +799,7 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
     	if (!$scope.formValues.applications || typeof $scope.formValues.applications == 'undefined') {
     		$scope.formValues.applications = [];
     	}
-    	isAlreadyAdded = false;
+    	var isAlreadyAdded = false;
     	$.each($scope.formValues.applications, (apk, apv) => {
     		if (apv.module.id == newApp.id) {
 		    	isAlreadyAdded = true;

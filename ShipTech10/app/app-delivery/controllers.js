@@ -226,7 +226,7 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
             }
             $scope.formValues.temp.deliverysummary = response;
             if (!vm.entity_id) {
-                delID = 0;
+                var delID = 0;
                 // new delivery
                 // also set pricing date for delivery to delivery date if null
                 $.each($scope.formValues.deliveryProducts, (_, deliveryProd) => {
@@ -310,9 +310,9 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
                     deliveryProd.specGroup = angular.copy(summaryProd.specGroup);
 
                     // init spec params
-                    orderProductId = summaryProd.id;
-                    orderProductSpecGroupId = summaryProd.specGroup.id;
-                    data = {
+                    var orderProductId = summaryProd.id;
+                    var orderProductSpecGroupId = summaryProd.specGroup.id;
+                    var data = {
                         Payload: {
                             Filters: [ {
                                 ColumnName: 'OrderProductId',
@@ -351,8 +351,9 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
     $scope.calculateVarianceAndReconStatus = function(productIdx) {
         // function called for all quantities, call here calculate final quantity
         $scope.calculateFinalQuantity(productIdx);
-        conversionInfo = $scope.conversionInfoData;
-        activeProduct = $scope.formValues.deliveryProducts[productIdx];
+        var confirmedQuantityUom, vesselQuantityUom, bdnQuantityUom,vesselFlowMeterQuantityUom, surveyorQuantityUom;
+        var conversionInfo = $scope.conversionInfoData;
+        var activeProduct = $scope.formValues.deliveryProducts[productIdx];
         // get fields values and uom
         activeProduct.confirmedQuantityUom == null ? confirmedQuantityUom = null : confirmedQuantityUom = activeProduct.confirmedQuantityUom.name;
         activeProduct.vesselQuantityUom == null ? vesselQuantityUom = null : vesselQuantityUom = activeProduct.vesselQuantityUom.name;
@@ -360,19 +361,19 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
         activeProduct.vesselFlowMeterQuantityUom == null ? vesselFlowMeterQuantityUom = null : vesselFlowMeterQuantityUom = activeProduct.vesselFlowMeterQuantityUom.name;
         // activeProduct.bargeFlowMeterQuantityUom == null ? bargeFlowMeterQuantityUom = null : bargeFlowMeterQuantityUom = activeProduct.bargeFlowMeterQuantityUom.name;
         activeProduct.surveyorQuantityUom == null ? surveyorQuantityUom = null : surveyorQuantityUom = activeProduct.surveyorQuantityUom.name;
-        Confirm = {
+        var Confirm = {
             val: activeProduct.confirmedQuantityAmount,
             uom: confirmedQuantityUom
         };
-        Vessel = {
+        var Vessel = {
             val: activeProduct.vesselQuantityAmount,
             uom: vesselQuantityUom
         };
-        Bdn = {
+        var Bdn = {
             val: activeProduct.bdnQuantityAmount,
             uom: bdnQuantityUom
         };
-        VesselFlowMeter = {
+        var VesselFlowMeter = {
             val: activeProduct.vesselFlowMeterQuantityAmount,
             uom: vesselFlowMeterQuantityUom
         };
@@ -380,11 +381,11 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
         //     'val': activeProduct.bargeFlowMeterQuantityAmount,
         //     'uom': bargeFlowMeterQuantityUom
         // };
-        Surveyor = {
+        var Surveyor = {
             val: activeProduct.surveyorQuantityAmount,
             uom: surveyorQuantityUom
         };
-        currentFieldValues = {
+        var currentFieldValues = {
             Confirm: Confirm,
             Vessel: Vessel,
             Bdn: Bdn,
@@ -392,7 +393,7 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
             Surveyor: Surveyor
         };
         // "BargeFlowMeter": BargeFlowMeter,
-        fieldUoms = {
+        var fieldUoms = {
             Confirm: 'confirmedQuantityUom',
             Vessel: 'vesselQuantityUom',
             Bdn: 'bdnQuantityUom',
@@ -400,9 +401,9 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
             Surveyor: 'surveyorQuantityUom'
         };
         // "BargeFlowMeter": 'bargeFlowMeterQuantityUom',
-        convertedFields = [];
-        baseUom = '';
-        convFact = 1;
+        var convertedFields = [];
+        var baseUom = '';
+        var convFact = 1;
         if (typeof conversionInfo == 'undefined') {
             conversionInfo = {};
         }
@@ -412,7 +413,7 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
         if ($scope.formValues.deliveryProducts[productIdx].sellerQuantityType &&
             typeof $scope.formValues.deliveryProducts[productIdx].sellerQuantityType != 'null' &&
             typeof $scope.formValues.deliveryProducts[productIdx].sellerQuantityType.name != 'undefined') {
-            uomObjId = fieldUoms[$scope.formValues.deliveryProducts[productIdx].sellerQuantityType.name];
+            var uomObjId = fieldUoms[$scope.formValues.deliveryProducts[productIdx].sellerQuantityType.name];
             baseUom = $scope.formValues.deliveryProducts[productIdx][uomObjId];
         }
         if (!baseUom) {
@@ -424,7 +425,7 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
         $.each(currentFieldValues, (fieldKey, fieldVal) => {
             $.each(conversionInfo.uomConversionFactors, (factKey, factVal) => {
                 if (fieldVal.uom == factVal.sourceUom.name) {
-                    convertedValue = fieldVal.val * factVal.conversionFactor;
+                    let convertedValue = fieldVal.val * factVal.conversionFactor;
                     convertedFields[fieldKey] = convertedValue;
                 }
             });
@@ -443,22 +444,22 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
         $scope.formValues.temp.variances[`mfm_product_${ productIdx}`] = null;
         $scope.formValues.temp.variances[`mfm_uom_${ productIdx}`] = null;
         if (activeProduct.vesselFlowMeterQuantityUom && activeProduct.bdnQuantityUom && activeProduct.bdnQuantityAmount && activeProduct.vesselFlowMeterQuantityAmount) {
-            mfm_baseUom = activeProduct.vesselFlowMeterQuantityUom;
+            var mfm_baseUom = activeProduct.vesselFlowMeterQuantityUom;
             if (mfm_baseUom && conversionInfo.toleranceQuantityUom) {
                 if (mfm_baseUom.name != conversionInfo.toleranceQuantityUom.name) {
                     $.each(conversionInfo.uomConversionFactors, (factKey, factVal) => {
                         if (mfm_baseUom.name == factVal.sourceUom.name) {
-                            mfm_convFact = factVal.conversionFactor;
+                            var mfm_convFact = factVal.conversionFactor;
                         }
                     });
                 } else {
                     console.log('same');
-                    mfm_convFact = 1;
+                    var mfm_convFact = 1;
                 }
-                mfm_qty = convertedFields.VesselFlowMeter;
-                bdn_qty = convertedFields.Bdn;
-                variance = parseFloat(mfm_qty - bdn_qty);
-                mfm_variance = (mfm_qty - bdn_qty) / mfm_convFact;
+                var mfm_qty = convertedFields.VesselFlowMeter;
+                var bdn_qty = convertedFields.Bdn;
+                var variance = parseFloat(mfm_qty - bdn_qty);
+                var mfm_variance = (mfm_qty - bdn_qty) / mfm_convFact;
                 $scope.formValues.temp.variances[`mfm_product_${ productIdx}`] = $filter('number')(mfm_variance, 3);
                 $scope.formValues.temp.variances[`mfm_uom_${ productIdx}`] = mfm_baseUom.name;
             }
@@ -469,10 +470,10 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
         if (!activeProduct.sellerQuantityType) {
             return;
         }
-        buyerOption = activeProduct.buyerQuantityType.name;
-        sellerOption = activeProduct.sellerQuantityType.name;
-        buyerConvertedValue = convertedFields[buyerOption];
-        sellerConvertedValue = convertedFields[sellerOption];
+        var buyerOption = activeProduct.buyerQuantityType.name;
+        var sellerOption = activeProduct.sellerQuantityType.name;
+        var buyerConvertedValue = convertedFields[buyerOption];
+        var sellerConvertedValue = convertedFields[sellerOption];
         if (!sellerConvertedValue || !buyerConvertedValue) {
             variance = null;
             $scope.formValues.temp.variances[`product_${ productIdx}`] = variance;
@@ -482,7 +483,7 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
             variance = parseFloat(buyerConvertedValue - sellerConvertedValue);
 
             //
-            varianceDisplay = variance / convFact;
+            var varianceDisplay = variance / convFact;
             $scope.formValues.temp.variances[`product_${ productIdx}`] = $filter('number')(varianceDisplay, 3);
             $scope.formValues.temp.variances[`uom_${ productIdx}`] = baseUom.name;
             $scope.setVarianceColor(productIdx);
@@ -502,8 +503,8 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
                     $scope.formValues.temp.reconStatus[`product_${ productIdx}`] = 3; // Unmatched Red
                 }
             } else {
-                minValue = conversionInfo.minToleranceLimit * $scope.formValues.deliveryProducts[productIdx].confirmedQuantityAmount / 100;
-                maxValue = conversionInfo.maxToleranceLimit * $scope.formValues.deliveryProducts[productIdx].confirmedQuantityAmount / 100;
+                var minValue = conversionInfo.minToleranceLimit * $scope.formValues.deliveryProducts[productIdx].confirmedQuantityAmount / 100;
+                var maxValue = conversionInfo.maxToleranceLimit * $scope.formValues.deliveryProducts[productIdx].confirmedQuantityAmount / 100;
                 if (variance < minValue) {
                     $scope.formValues.temp.reconStatus[`product_${ productIdx}`] = 1; // Matched Green
                 }
@@ -685,12 +686,12 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
     };
     $scope.raiseClaim = function(data) {
     	console.log($scope.CM.availableClaimTypes);
-    	specParamsIds = [];
+    	var specParamsIds = [];
     	$.each($scope.CM.availableClaimTypes, (typeK, typeV) => {
     		$.each(typeV.specParams, (specK, specV) => {
                 if (specV.isSelected) {
 			    	specParamsIds.push(specV.id);
-			    	claimId = typeV.id;
+			    	var claimId = typeV.id;
                 }
     		});
     	});
@@ -739,8 +740,8 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
         } else {
             let selectedRowsData = [];
             $.each(selectedRowsIds, (key, val) => {
-                rowData = CLC.jqGrid.Ascensys.gridObject.rows[val - 1];
-                deliveryID = rowData.delivery.id;
+                var rowData = CLC.jqGrid.Ascensys.gridObject.rows[val - 1];
+                var deliveryID = rowData.delivery.id;
                 selectedRowsData.push({
                     DeliveryId: deliveryID
                 });
@@ -762,7 +763,7 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
         // returns formatted payload
         vm.editInstance = $scope.getEditInstance();
 
-        hasFinalQuantityError = false;
+        var hasFinalQuantityError = false;
         $.each($scope.formValues.deliveryProducts, (k, product) => {
         	if (!product.finalQuantityAmount) {
         		hasFinalQuantityError = true;
@@ -788,7 +789,7 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
                     }
                 });
 
-                fields = angular.toJson($scope.filterFromData);
+                var fields = angular.toJson($scope.filterFromData);
                 return fields;
             }
             $scope.submitedAction = false;
@@ -801,7 +802,7 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
                 }
                 names = names + val.$name;
             });
-            i = 0;
+            var i = 0;
             $.each(vm.editInstance.$error.pattern, (key, val) => {
                 i++;
                 if (i === 1) {
@@ -908,7 +909,7 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
                 if (val.id != 1 && val.id != 3 && val.id != 6 && val.id != 2) {
                     return;
                 }
-                params = [];
+                var params = [];
                 $.each($rootScope.raiseClaimInfo.allSpecParams, (paramKey, paramVal) => {
                     $.each(paramVal.claimTypes, (key, element) => {
                         if (element.id == val.id) {
@@ -974,7 +975,7 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
         }
         if (raiseClaim == 'true') {
             if ($rootScope.raiseClaimInfo) {
-                DeliveryProductId = `${$rootScope.raiseClaimInfo.productId }`;
+                var DeliveryProductId = `${$rootScope.raiseClaimInfo.productId }`;
             	console.log($scope.CM.availableClaimTypes);
 		    	specParamsIds = [];
 		    	$.each($scope.CM.availableClaimTypes, (typeK, typeV) => {
@@ -1016,7 +1017,7 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
     			}
     		});
     	});
-    	selectedSpecsInCurrentClaim = 0;
+    	var selectedSpecsInCurrentClaim = 0;
     	$.each($scope.CM.availableClaimTypes[claimTypeKey].specParams, (specK, specV) => {
             if (specV.isSelected) {
 		    	selectedSpecsInCurrentClaim = selectedSpecsInCurrentClaim + 1;
@@ -1068,11 +1069,11 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
 
     $scope.addSpecParamsToClaim = function(event) {
         // check if valid
-        selectedDisabled = event.currentTarget.attributes['ng-disabled'].value;
-        selectedParamId = parseInt(event.currentTarget.attributes['spec-param-id'].value); // specParam.id
-        selectedParamClaimType = parseInt(event.currentTarget.attributes['claim-type'].value); // claim.claim.id (actual id to send)
-        selectedParamRadioId = event.currentTarget.attributes['radio-id'].value; // claim.id (given id for validation)
-        selectedClaimId = selectedParamRadioId.split('_')[3];
+        var selectedDisabled = event.currentTarget.attributes['ng-disabled'].value;
+        var selectedParamId = parseInt(event.currentTarget.attributes['spec-param-id'].value); // specParam.id
+        var selectedParamClaimType = parseInt(event.currentTarget.attributes['claim-type'].value); // claim.claim.id (actual id to send)
+        var selectedParamRadioId = event.currentTarget.attributes['radio-id'].value; // claim.id (given id for validation)
+        var selectedClaimId = selectedParamRadioId.split('_')[3];
         // console.log(selectedClaimId);
         // cancel selection if disabled
         if (selectedDisabled == 'true') {
@@ -1117,13 +1118,13 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
         // claimId = just for disabling checkboxes
         $rootScope.raiseClaimInfo.currentClaimTypeId = claimTypeId;
         $rootScope.raiseClaimInfo.currentClaimId = claimId;
-        paramsSet = false;
+        var paramsSet = false;
         $rootScope.raiseClaimInfo.currentSpecParamIds = [];
         $.each($scope.CM.availableClaimTypes, (_, claimVal) => {
             if (claimVal.id != $rootScope.raiseClaimInfo.currentClaimId) {
                 // uncheck checkboxes that do not fit & disable them
                 $.each(claimVal.specParams, (key, paramVal) => {
-                    id = `#claim_info_checkbox_${ paramVal.specParameter.id}`;
+                    var id = `#claim_info_checkbox_${ paramVal.specParameter.id}`;
                     $(id)[0].checked = false;
                     paramVal.disabled = 'true';
                 });
@@ -1210,7 +1211,7 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
             // add quality and quantity params for product
             orderProductId = data.orderProductId;
             orderProductSpecGroupId = data.specGroup.id;
-            dataForInfo = {
+            var dataForInfo = {
                 Payload: {
                     Filters: [ {
                         ColumnName: 'OrderProductId',
@@ -1452,10 +1453,10 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
         });
     };
     $scope.getDeliveryProductQuantityAmountFromSummary = function(toReturn, orderProductId) {
-        retValue = null;
+        var retValue = null;
         if ($scope.formValues.temp) {
             if ($scope.formValues.temp.deliverysummary) {
-                orderSummaryProducts = $scope.formValues.temp.deliverysummary.products;
+                var orderSummaryProducts = $scope.formValues.temp.deliverysummary.products;
                 $.each(orderSummaryProducts, (prodK, prodV) => {
                     if (prodV.id == orderProductId) {
                         if (toReturn == 'qty') {
@@ -1475,7 +1476,7 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
         if (!$scope.formValues.deliveryProducts) {
             $scope.formValues.deliveryProducts = [];
         }
-        productAlreadyExist = false;
+        var productAlreadyExist = false;
         $.each($scope.formValues.deliveryProducts, (_, deliveryProduct) => {
             if (deliveryProduct.orderProductId == selectedProductToAddInDelivery.id) {
                 productAlreadyExist = true;
@@ -1485,7 +1486,7 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
             return toastr.error('The selected product is already added to delivery');
         }
 
-        newProductData = {};
+        var newProductData = {};
         orderProductId = selectedProductToAddInDelivery.id;
 
         if(selectedProductToAddInDelivery.specGroup) {
@@ -1543,7 +1544,7 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
             Factory_Master.get_conversion_info(selectedProductToAddInDelivery.product.id, (response) => {
                 $scope.conversionInfoData = response.data;
             });
-            productIndex = $scope.formValues.deliveryProducts.length - 1;
+            var productIndex = $scope.formValues.deliveryProducts.length - 1;
             $scope.calculateVarianceAndReconStatus(productIndex);
             $scope.orderProductsByProductType('deliveryProducts');
             $scope.orderProductsByProductType('summaryProducts');
@@ -1705,7 +1706,7 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
         $scope.formValues.splitDelivery.deliveryId = $scope.formValues.id;
         $scope.formValues.splitDelivery.items = [];
         // var sel = $scope.formValues.deliveryProducts[vm.selectedProduct];
-        delProd = {};
+        var delProd = {};
 
         $.each($scope.formValues.deliveryProducts, (_, value) => {
             delProd = {
@@ -1864,7 +1865,7 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
             $scope.formValues.deliveryProducts = angular.copy(newProductsList);
 
             $scope.formValues.splitDelivery.splittedDeliveryId = $scope.formValues.id;
-            dataToAdd = angular.copy($scope.formValues);
+            var dataToAdd = angular.copy($scope.formValues);
             localStorage.setItem('parentSplitDelivery', angular.toJson(dataToAdd));
             $location.path('delivery/delivery/edit/');
         } else {
@@ -1874,7 +1875,7 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
 
     if (vm.screen_id == 'delivery' && vm.app_id == 'delivery') {
 	    $scope.triggerModal = function(template, clc, name, id, formvalue, idx, field_name, filter, ctrlData) {
-	        tpl = '';
+	        var tpl = '';
 
 	        if (template === 'raiseClaimType') {
 	            tpl = $templateCache.get('app-general-components/views/modal_raiseClaimType.html');
@@ -1893,7 +1894,7 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
 	        }
 	        if (template == 'general') {
 	        	if (typeof clc != 'undefined') {
-	                clcs = clc.split('_');
+	                var clcs = clc.split('_');
 	            }
 	        	tpl = $templateCache.get('app-general-components/views/modal_general_lookup.html');
 	        	$scope.modal = {
@@ -1964,18 +1965,18 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
         if (!end) {
             return;
         }
-        startDate = new Date(start);
-        endDate = new Date(end);
-        timeBetween = endDate - startDate;
+        var startDate = new Date(start);
+        var endDate = new Date(end);
+        var timeBetween = endDate - startDate;
         if (endDate < startDate) {
 	        timeBetween = startDate - endDate;
         }
-        minutes = 0.001 * timeBetween / 60;
-        mins = minutes % 60;
-        hours = (minutes - mins) / 60;
+        var minutes = 0.001 * timeBetween / 60;
+        var mins = minutes % 60;
+        var hours = (minutes - mins) / 60;
         hours = hours < 10 ? `0${ hours}` : hours;
         mins = mins < 10 ? `0${ mins}` : mins;
-        result = `${hours }:${ mins}`;
+        var result = `${hours }:${ mins}`;
         if (result.indexOf('NaN') != -1) {
         	result = null;
         }
@@ -2085,7 +2086,7 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
             $scope.formValues.pumpingRate = '';
             $scope.formValues.pumpingRateUom = '';
         }
-        pumpingTime = (parseInt(timeString.split(':')[0]) * 60 + parseInt(timeString.split(':')[1])) / 60;
+        var pumpingTime = (parseInt(timeString.split(':')[0]) * 60 + parseInt(timeString.split(':')[1])) / 60;
         $scope.formValues.pumpingRate = $scope.formValues.deliveryProducts[prodIndex].bdnQuantityAmount / pumpingTime;
         $.each(vm.listsCache.PumpingRateUom, (key, val) => {
             if (val.name.split('/')[0] == $scope.formValues.deliveryProducts[prodIndex].bdnQuantityUom.name) {

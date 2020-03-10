@@ -410,7 +410,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
        */
         $scope.getStatuses = function() {
 
-        scheduleDashboardConfigurationInterval = setInterval(function(){
+        var scheduleDashboardConfigurationInterval = setInterval(function(){
             if (window.scheduleDashboardConfiguration) {
                 clearInterval(scheduleDashboardConfigurationInterval);
                 $scope.statuses = window.scheduleDashboardConfiguration.payload.labels;
@@ -480,7 +480,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     if (typeof $state.params.screen_id == "undefined") {
                         $state.params.screen_id = "";
                     }
-                    screen_id = $state.params.screen_id;
+                    var screen_id = $state.params.screen_id;
                     if ($scope.tenantSettings.companyDisplayName.name == "Pool" && $state.params.screen_id == "company") {
                         screen_id = "pool";
                     }
@@ -599,7 +599,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
         };
 
         $scope.deleteDocumentFromList = function(id) {
-            Payload = null;
+            var Payload = null;
             $('[id*="documents_list"]').jqGrid.Ascensys.gridData.forEach(function(val, key) {
                 if (id == val.id) {
                     Payload = {
@@ -634,7 +634,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             };
             // "copyAlertAction" : true
             if (copy) {
-                copyAlertAction = true;
+                var copyAlertAction = true;
                 $rootScope.$broadcast("copyAlertAction");
             }
             $rootScope.modalInstance = $uibModal.open({
@@ -680,7 +680,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
         };
         vm.formatDate = function(elem, dateFormat) {
             if (elem) {
-                formattedDate = elem;
+                var formattedDate = elem;
                 var date = Date.parse(elem);
                 date = new Date(date);
                 if (date) {
@@ -703,7 +703,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             return screenActionsModel.hasAction(action, row.screenActions);
         };
         vm.canConfirm = function(row) {
-            canReconfirm = true;
+            var canReconfirm = true;
             $.each(row.screenActions, function(sak, sav) {
                 if (sav) {
                     if (sav.name == "Confirm") {
@@ -771,14 +771,14 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 var formatStatus = function(cellValue, options, rowObject) {
                     if (cellValue != null && cellValue != "") {
                         if (typeof cellValue == "object") {
-                            color = $scope.getStatusColor(cellValue.name);
-                            label = cellValue.displayName ? cellValue.displayName : cellValue.name;
+                            var color = $scope.getStatusColor(cellValue.name);
+                            var label = cellValue.displayName ? cellValue.displayName : cellValue.name;
                         } else {
-                            label = rowObject[options.colModel.displayName || options.colModel.name];
+                            var label = rowObject[options.colModel.displayName || options.colModel.name];
                             // label = rowObject[options.colModel.name.split('.')[0]].name;
                             name = label;
                             label = cellValue;
-                            cell = rowObject[options.colModel.name.split('.')[0]];
+                            var cell = rowObject[options.colModel.name.split('.')[0]];
                             if (options.colModel.findColor) {
                                 name = rowObject[options.colModel.findColor].name;
                                 label = rowObject[options.colModel.findColor].displayName;
@@ -928,7 +928,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     // return rowObject.minQuantity;
                     var minQty = "";
                     var maxQty = "";
-                    theCLC = $("#flat_contract_planning");
+                    var theCLC = $("#flat_contract_planning");
                     if (typeof(theCLC.jqGrid.Ascensys.gridData) != 'undefined') {
                         rowObject.contractMinQuantity = theCLC.jqGrid.Ascensys.gridData[options.rowId - 1].contractMinQuantity;
                         rowObject.contractMaxQuantity = theCLC.jqGrid.Ascensys.gridData[options.rowId - 1].contractMaxQuantity;
@@ -949,7 +949,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                             if (rowObject.maxQuantity != null) maxQty = $filter("number")(rowObject.maxQuantity, $scope.tenantSettings.defaultValues.quantityPrecision);
                         }
                     }
-                    fieldDisabled = false
+                    var fieldDisabled = false
                     if (rowObject.requestStatus) {
                         if (rowObject.requestStatus.name != "Planned" && rowObject.requestStatus.name != "Created" && rowObject.requestStatus.name != "Questionnaire" && rowObject.requestStatus.name != "Validated") {
                             fieldDisabled = true;
@@ -985,9 +985,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     // tpl += '<i class="fa fa-search clickable" data-toggle="modal" href="#selectContract" ng-click="$ctrl.setContractFilters(row)"></i>'
                     // tpl += '</span>'
                     tpl += "</div>";
-                    initialContractValue = rowObject.contract ? "'" + rowObject.contract.name + "'" : rowObject.contract;
+                    var initialContractValue = rowObject.contract ? "'" + rowObject.contract.name + "'" : rowObject.contract;
                     tpl = '<div class="input-group input-group-sm contractPlanningContractTypeahead">';
-                    columnKey = "'contract'";
+                    var columnKey = "'contract'";
                     if (!$rootScope.editableCProwsModel) {
                         $rootScope.editableCProwsModel = [];
                     }
@@ -1047,6 +1047,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     tpl = '<div class="input-group input-group-sm contractPlanningContractTypeahead" style="display: flex;">';
 
                     columnKey = "'product'";
+                    var currentValue;
                     if (rowObject.product) {
                         currentValue = rowObject.product.id
                     } else {
@@ -1088,7 +1089,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     return tpl;
                 };
                 var contract_planning_comments = function(cellValue, options, rowObject) {
-                    textVal = "";
+                    var textVal = "";
                     columnKey = "'comment'";
                     if (rowObject.comment) {
                         textVal = rowObject.comment.replace(new RegExp("'","g"), "\\'");
@@ -1333,7 +1334,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         element = var_bind(":content", "", element);
                     } else {
                         //default
-                        newDisplayName = null;
+                        var newDisplayName = null;
                         $.each($listsCache.QualityMatch, function(key, val) {
                             if (val.name == cellValue) {
                                 if (val.displayName) newDisplayName = val.displayName;
@@ -1575,8 +1576,8 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 };
 
                 var vesselToWatchFlag = function(cellValue, options, rowObject){
-                    response = cellValue;
-                	hasVesselToWatchFlag = false;
+                    var response = cellValue;
+                	var hasVesselToWatchFlag = false;
                     if (rowObject.vesselToWatchFlag) {
                     	hasVesselToWatchFlag = true;
                     }
@@ -1896,19 +1897,19 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     element = var_bind(":type", "status", element);
                     if (typeof cellValue != "undefined") {
                         if (typeof cellValue == "string") {
-                            newCellValue = cellValue;
+                            var newCellValue = cellValue;
                         } else {
                             if (cellValue.displayName) {
-                                newCellValue = cellValue.displayName;
+                                var newCellValue = cellValue.displayName;
                             } else {
-                                newCellValue = cellValue.name;
+                                var newCellValue = cellValue.name;
                             }
                         }
                     }
                     //default
                     element = var_bind(":content", newCellValue, element);
                     if (newCellValue == "") {
-                        element = var_bind(":content", "", element);
+                        var element = var_bind(":content", "", element);
                     }
                     valSet = false;
                     if (parseInt(cellValue) == 1) {
@@ -1957,7 +1958,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 };
                 // date
                 var date = function(cellValue, options, rowObject) {
-                    ngModel = "treasuryRow_" + rowObject.id;
+                    var ngModel = "treasuryRow_" + rowObject.id;
                     var element = tpl;
                     var input = '<div class="input-group date date-picker" data-provide="datepicker" data-date-format="dd/mm/yyyy" data-date-viewmode="years" data-date-minviewmode="months"> <input type="text" class="form-control" readonly="" value=":text_input_value"> <span class="input-group-btn"> <button class="btn default" type="button"> <i class="fa fa-calendar"></i> </button> </span> </div>';
                     //var input = '<input data-provide="datepicker" class="datepicker date_input x" name="x" id="x" value=":text_input_value" />';
@@ -1971,7 +1972,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     element = var_bind(":content", input, element);
                     // newDate = vm.formatDate(d, "DD/mm/yyyy")
                     // element = '<input type=text disabled value="'+d+'" >';
-                    fdate = $filter("date")(cellValue, "dd/MM/yyyy hh:mm", "+0");
+                    var fdate = $filter("date")(cellValue, "dd/MM/yyyy hh:mm", "+0");
                     if (typeof fdate == "undefined" || !fdate) {
                         fdate = "";
                     }
@@ -2173,7 +2174,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
 
                 var best_contract_loop = function(cellValue, options, rowObject) {
                     var cellList = "";
-                    currentCellKey = options.colModel.name
+                    var currentCellKey = options.colModel.name
                     if (options.colModel.name.indexOf(".name") != -1) {
                         currentCellKey = options.colModel.name.split(".name")[0]
                     }
@@ -2507,7 +2508,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
         vm.checkChange = function(entityId, newValue, event) {
             if (vm.screen_id == "treasuryreport") {
                 $rootScope.treasuryChangedfields = vm.changedfields;
-                allSelected = true;
+                var allSelected = true;
                 $.each(vm.changedfields, function(k, v) {
                     if (typeof v != "undefined") {
                         if (typeof vm.changedfields[k] != "undefined") {
@@ -2540,7 +2541,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
 
 
         vm.selectAllTreasuryRows = function() {
-            selectAllTreasuryReportPayload = {
+            var selectAllTreasuryReportPayload = {
             Payload: {
                     Order: null,
                     PageFilters: {
@@ -2575,7 +2576,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                             var CLC = $("#invoices_treasuryreport");
                             var rowData = CLC.jqGrid.Ascensys.gridObject.rows;
 
-                            treasuryTotal = 0;
+                            var treasuryTotal = 0;
                             $.each(rowData, function(k, v) {
                                 if (typeof vm.changedfields[v.id] != "undefined") {
                                     vm.changedfields[v.id].isChecked = false;
@@ -2866,7 +2867,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             if (type == "order") transactionTypeId = 3;
             if (type == "contract") transactionTypeId = 15;
             if (type == "group-request") {
-                data = {
+                var data = {
                     Payload: entity_id
                 };
                 Factory_Master.get_group_requests_ids(data, function(callback) {
@@ -2892,7 +2893,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     }
                 });
             } else {
-                filters = [
+                var filters = [
                     {
                         ColumnName: "TransactionTypeId",
                         Value: transactionTypeId
@@ -2954,7 +2955,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             ctrl.tableData = ctrl.CLC.jqGrid.Ascensys.gridObject.rows
             ctrl.currentRowData = ctrl.tableData[rowIdx-1]
 
-            payload = {'Payload' : {
+            var payload = {'Payload' : {
                     'vesselId': ctrl.currentRowData.vessel ? ctrl.currentRowData.vessel.id : null,
                     'locationId': ctrl.currentRowData.bunkeringLocation ? ctrl.currentRowData.bunkeringLocation.id : null,
                     'productId': productId ? productId : null,
@@ -2965,11 +2966,11 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
 
             Factory_Master.contractPlanningGetQuantityAverage(payload, function(response) {
                 if (response) {
-                    maxEdit = response.data.payload.avgMaxOrderedQuantity;
-                    minEdit = response.data.payload.avgMinOrderedQuantity;
-                    qtyUom = response.data.payload.qtyUom;
-                    specGroup = response.data.payload.productDefaultSpecGroup;
-                    bunkerStrategy = response.data.payload.bunkerStrategy;
+                    var maxEdit = response.data.payload.avgMaxOrderedQuantity;
+                    var minEdit = response.data.payload.avgMinOrderedQuantity;
+                    var qtyUom = response.data.payload.qtyUom;
+                    var specGroup = response.data.payload.productDefaultSpecGroup;
+                    var bunkerStrategy = response.data.payload.bunkerStrategy;
                     ctrl.currentRowIndex = rowIdx;
                     ctrl.currentRowData.minQuantity = minEdit;
                     ctrl.currentRowData.maxQuantity = maxEdit;
@@ -3019,7 +3020,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 if (typeof $rootScope.editableCProwsModel[keyRow] == "undefined") {
                     $rootScope.editableCProwsModel[keyRow] = {};
                 }
-                contractProductId = $("#flat_contract_planning").jqGrid.Ascensys.gridObject.rows[rowIdx - 1].contractProductId
+                var contractProductId = $("#flat_contract_planning").jqGrid.Ascensys.gridObject.rows[rowIdx - 1].contractProductId
                 // $("#flat_contract_planning").jqGrid("setCell", rowIdx, "contractProductId", contractProductId);
                 $rootScope.editableCProwsModel[keyRow]['contractProductId'] = contractProductId;
                 $rootScope.editableCProwsModel[keyRow][columnKey] = value;
@@ -3216,7 +3217,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     }
                 });  
 
-                rowsWithContract = 0;
+                var rowsWithContract = 0;
                 $.each(CLC.jqGrid.Ascensys.gridData, function(gdk, gdv){
                     if (gdv.contract) {
                         rowsWithContract += 1;
@@ -3262,7 +3263,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     }
                 }
             }
-            rowsWithOrder = 0;
+            var rowsWithOrder = 0;
             $.each(theCLC.jqGrid.Ascensys.gridData, function(gdk, gdv){
                 if (gdv.order) {
                     rowsWithOrder += 1;
@@ -3406,7 +3407,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
 
             setTimeout(function(){
                 if ($('[ng-model="CLC.cpCtr['+rowId+']"]').hasClass("ng-dirty")) {
-                    contractValueHasChanged = CLC.jqGrid.Ascensys.gridData[rowId - 1].contract ? CLC.jqGrid.Ascensys.gridData[rowId - 1].contract.name != vm.cpCtr[rowId] : false;
+                    var contractValueHasChanged = CLC.jqGrid.Ascensys.gridData[rowId - 1].contract ? CLC.jqGrid.Ascensys.gridData[rowId - 1].contract.name != vm.cpCtr[rowId] : false;
                     if (vm.cpCtr[rowId]) {
                         if (!vm.cpCtr[rowId].name) {
                             vm.cpCtr[rowId] = null;
@@ -3560,7 +3561,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             $.each($scope.selectedContractPlanningRows, function(k, v) {
                 if (v.rowIndex == rowIdx) {
                     rowIsAlreadySelected = true;
-                    indexInCollection = k;
+                    var indexInCollection = k;
                 }
             });
             if (!rowIsAlreadySelected) {
@@ -3732,8 +3733,8 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
         }
         jQuery(document).ready(function() {
             $(document).on("change", ".contract_planning_agreementtype", function() {
-                rowId = $(this).attr("rowId");
-                newData = $(this).val();
+                var rowId = $(this).attr("rowId");
+                var newData = $(this).val();
                 if (!vm.hasChanged) {
                     rowId -= 1;
                 }
@@ -3930,7 +3931,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                     console.log("proc", percentWidth);
                     if (percentWidth < 100) {
                         //resize only when print is smaller
-                        zoomP = 100 - parseFloat(percentWidth).toFixed(2) + "%";
+                        var zoomP = 100 - parseFloat(percentWidth).toFixed(2) + "%";
                         $("div.inside_content ui-view").css("zoom", zoomP);
                     }
                 }
@@ -3998,7 +3999,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
         vm.export = function(icon, params) {
      
             var table_id = id;
-            id = icon.id ? "/" + icon.id : "";
+            var id = icon.id ? "/" + icon.id : "";
             $scope.currentList = window.location.hash.replace(/[0-9,\/,#/]/g, "") + id;
             if (icon.action == "print") {
                 //get table width here, it gets altered later
@@ -4126,7 +4127,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
             }
 
             if ($scope.currentList == 'contractscontract') {
-                if (typeof(contract_list_columns) == 'undefined') { contract_list_columns = []; }
+                if (typeof(contract_list_columns) == 'undefined') { var contract_list_columns = []; }
                 for(var i = 0; i < $filtersData.filterColumns.length; i++) {
                     if($filtersData.filterColumns[i].columnRoute == 'contracts/contract') {
                         contract_list_columns.push($filtersData.filterColumns[i]);
@@ -4208,16 +4209,16 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
 
             $rootScope.$watchGroup(["formValuesLoaded", "screenLayoutData"], function(newVal, oldVal) {
             	if (newVal[0] && newVal[1]) {
-            		screenLayoutActions = newVal[1].screenButtons;
+            		var screenLayoutActions = newVal[1].screenButtons;
             		console.log("BOTH LOADED")
                     if (screenLayoutActions) {
-                        screenButtons = [];
+                        var screenButtons = [];
 
                         console.log("email preview response ", screenLayoutActions);
                         $.each(screenLayoutActions, function(key, value) {
                             if (value.isCrosschekRequired == false) {
                                 if (vm.app_id == "invoices") {
-                                    obj = vm.mapInvoiceActions(value, false);
+                                    var obj = vm.mapInvoiceActions(value, false);
                                     if (value.mappedScreenActionName == "CreateFinalInvoice") {
                                         obj = {
                                             action: "createFinalInvoice()",
@@ -4238,7 +4239,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                                 }
                             }
                             if (value.mappedScreenActionName == "ApproveInvoice") {
-                                approveInvoiceIndex = key;
+                                var approveInvoiceIndex = key;
                             }
                         });
                     } else {
@@ -4363,7 +4364,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
 								// 		scrollLeft : $(document.activeElement).offset().left - 250
 								// 	},200	
 								// )
-								computedScrollLeft = 0;
+								var computedScrollLeft = 0;
 								// setTimeout(function(){
 									if ($(document.activeElement).offset().left > $(document.activeElement).parents(".ui-jqgrid-view").width() || 
 										$(document.activeElement).offset().left < $(document.activeElement).parents(".ui-jqgrid-view").width()/2

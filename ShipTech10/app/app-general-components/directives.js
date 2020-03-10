@@ -40,7 +40,7 @@ Number(function() {
                 },
                 link: function(scope, element, attrs, CLC) {
                     tenantService.procurementSettings.then((settings) => {
-                        procurementSettings = settings.payload;
+                        var procurementSettings = settings.payload;
                     });
                     $rootScope.isModal = scope.modal;
                     $rootScope.modalTableId = scope.id;
@@ -70,7 +70,7 @@ Number(function() {
                         $rootScope.lastLoadedListPayload = null;
                         console.log('stateChangeSuccess');
                     });
-                    checkProcurement = -1;
+                    var checkProcurement = -1;
                     // else return;
                     let procurement_apps = [
                         {
@@ -100,7 +100,7 @@ Number(function() {
                     let generic_layout = [
                         'entity_documents'
                     ];
-                    checkGenericLayout = _.findIndex(generic_layout, (s) => {
+                    var checkGenericLayout = _.findIndex(generic_layout, (s) => {
                         return s == scope.id;
                     });
                     // checkGenericLayout = -1;
@@ -112,10 +112,11 @@ Number(function() {
                     });
 
                     function checkCanBuildTable(table_id, checkProcurement) {
-                        isDev = 0;
+                        var isDev = 0;
                         if (window.Elements && typeof window.Elements.scope[table_id].controls !== 'undefined' && typeof Elements.scope[table_id].screen !== 'undefined' && typeof Elements.scope[table_id].id !== 'undefined' && typeof Elements.scope[table_id].app !== 'undefined') {
-                            id = scope.modal ? `/${ table_id}` : '';
+                            var id = scope.modal ? `/${ table_id}` : '';
 
+                            var appScreen;
                             if (checkProcurement >= 0) {
                                 appScreen = procurement_apps[checkProcurement].screen;
                             } else if (table_id == 'contractplanning_contractlist') {
@@ -128,10 +129,10 @@ Number(function() {
                                 uiApiModel.getListLayout(appScreen).then(
                                     (data) => {
                                         if (data.payload) {
-                                            response = data.payload;
-                                            layout = JSON.parse(response.layout);
+                                            var response = data.payload;
+                                            var layout = JSON.parse(response.layout);
                                             layout.id = response.id;
-                                            initialLayout = angular.copy(layout);
+                                            var initialLayout = angular.copy(layout);
                                             $Api_Service.screen.get(
                                                 {
                                                     app: Elements.scope[table_id].app,
@@ -152,7 +153,7 @@ Number(function() {
 				                                            }
 			                                            });
                                                         $rootScope.$broadcast('tableLayoutLoaded', initialLayout);
-                                                        Layout = layout.clc;
+                                                        var Layout = layout.clc;
                                                         if (!Layout.rowActions) {
                                                         	Layout.rowActions = [];
                                                         }
@@ -217,7 +218,7 @@ Number(function() {
                                         // clc_id: Elements.scope[table_id].selector.split("'")[1]
                                     },
                                     (cb) => {
-                                        callback = angular.copy(cb);
+                                        var callback = angular.copy(cb);
                                         if (callback && callback.clc) {
                                             callback.id = null;
                                             if (scope.source) {
@@ -552,7 +553,7 @@ Number(function() {
                                 customList: Layout.defaultColumnList
                             });
                             // API GET DATA
-                            str_app = attrs.app.replace(/'/g, '');
+                            var str_app = attrs.app.replace(/'/g, '');
                             if (scope.filters) {
                                 CLC.tableParams.filters = scope.filters;
                             }
@@ -613,8 +614,8 @@ Number(function() {
                                 $rootScope.sortList = sortList;
                             }
                             if (localStorage.getItem('scheduleDates')) {
-                                startDate = JSON.parse(localStorage.getItem('scheduleDates')).start;
-                                endDate = JSON.parse(localStorage.getItem('scheduleDates')).end;
+                                var startDate = JSON.parse(localStorage.getItem('scheduleDates')).start;
+                                var endDate = JSON.parse(localStorage.getItem('scheduleDates')).end;
                                 CLC.tableParams.dates = {
                                     startDate: startDate,
                                     endDate: endDate
@@ -686,7 +687,7 @@ Number(function() {
                                                 }
                                             });
                                         }
-                                        oldTableParams = angular.copy(CLC.tableParams);
+                                        var oldTableParams = angular.copy(CLC.tableParams);
                                         // debugger;
                                         // store all grid data (rows)
                                         $(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.gridData = callback.rows;
@@ -709,7 +710,7 @@ Number(function() {
                                         // VERTICALS SCROLLBAR
                                         // $(".ui-jqgrid-bdiv")css("width", "100%");
 	                                        $('.ui-jqgrid-view').on('scroll', function() {
-	                                        	offsetChild = $(this).children('.ui-jqgrid-bdiv').offset().left - $(this).children('.ui-jqgrid-bdiv').offsetParent().offset().left;
+	                                        	var offsetChild = $(this).children('.ui-jqgrid-bdiv').offset().left - $(this).children('.ui-jqgrid-bdiv').offsetParent().offset().left;
 	                                        	$(this).children('.ui-jqgrid-bdiv').css('min-width', `${parseFloat($(this).css('width')) - parseFloat(offsetChild) }px`);
 	                                        });
 				                        	if (table_id == 'flat_available_contracts') {
@@ -825,7 +826,7 @@ Number(function() {
                                             resizeTableWidth();
                                         }
                                         reloadGridPlugins();
-                                        triggePayload = {
+                                        var triggePayload = {
                                             table: table_id,
                                             tableData: callback
                                             // layout: scope.initialLayout
@@ -975,8 +976,8 @@ Number(function() {
                                         scope.rowsProduct = [];
                                         scope.selectedOrderAdditionalCostId = [];
                                         scope.selectedOrderId = allRowData.order.id;
-                                        currentSelectedRows = $(`#${ Elements.settings[table_id].table}`).jqGrid('getGridParam', 'selarrrow');
-                                        selectedOrderChanged = false;
+                                        var currentSelectedRows = $(`#${ Elements.settings[table_id].table}`).jqGrid('getGridParam', 'selarrrow');
+                                        var selectedOrderChanged = false;
                                         $.each(currentSelectedRows, (k, v) => {
                                             if (Elements.settings[table_id].source.datastr[k - 1] != scope.selectedOrderId) {
                                                 selectedOrderChanged = true;
@@ -1052,8 +1053,8 @@ Number(function() {
                                 }
                                 let selectedRowsIds = $(`#${ Elements.settings[table_id].table}`).jqGrid('getGridParam', 'selarrrow');
                                 if (selectedRowsIds.length > 0) {
-                                    rowData = Elements.settings[table_id].source.datastr[selectedRowsIds[0] - 1];
-                                    selectionData = Elements.settings[table_id].source.datastr[rowid - 1];
+                                    var rowData = Elements.settings[table_id].source.datastr[selectedRowsIds[0] - 1];
+                                    var selectionData = Elements.settings[table_id].source.datastr[rowid - 1];
                                     if (rowData.order.id != selectionData.order.id) {
                                         $(`#${ Elements.settings[table_id].table}`).jqGrid('resetSelection');
                                         $rootScope.selectDeliveryRows = [];
@@ -1081,7 +1082,7 @@ Number(function() {
                                     $rootScope.selectedRowId = null;
                                     $rootScope.selectDeliveryRow = null;
                                     if (typeof $rootScope.selectDeliveryRows != 'undefined') {
-                                        removeSel = Elements.settings[table_id].source.datastr[rowid - 1];
+                                        var removeSel = Elements.settings[table_id].source.datastr[rowid - 1];
                                         $.each($rootScope.selectDeliveryRows, (key, val) => {
                                             if (val.id == removeSel.id) {
                                                 $rootScope.selectDeliveryRows.splice(key, 1);
@@ -1118,9 +1119,9 @@ Number(function() {
                                     let settings_keys = Object.keys(Elements.settings);
                                     for (let i = 0; i < settings_keys.length; i++) {
                                         jqgrid_element = $(Elements.table[Elements.settings[settings_keys[i]].table]).parents('.jqgrid_component');
-                                        columnsNo = 0;
+                                        var columnsNo = 0;
                                         if (typeof Elements.table[Elements.settings[settings_keys[i]].table] != 'undefined') {
-                                            columns = Elements.table[Elements.settings[settings_keys[i]].table].jqGrid('getGridParam', 'colModel');
+                                            var columns = Elements.table[Elements.settings[settings_keys[i]].table].jqGrid('getGridParam', 'colModel');
                                         }
                                         $.each(columns, (key, val) => {
                                             if (!val.hidden) {
@@ -1143,6 +1144,7 @@ Number(function() {
                                         Elements.settings[settings_keys[i]].source.width = Elements.settings[settings_keys[i]].source.width - overWidth;
 
                                         let screenCssPixelRatio = (window.outerWidth - 8) / window.innerWidth;
+                                        var zoomLevel;
                                         if (screenCssPixelRatio >= 0.46 && screenCssPixelRatio <= 0.54) {
 										  zoomLevel = '-4';
                                         } else if (screenCssPixelRatio <= 0.64) {
@@ -1240,7 +1242,7 @@ Number(function() {
                                                 }
                                                 // console.log('JQGRID EDIT ACTION ID: ', rowID);
                                                 let i = options.colModel.action_index;
-                                                rowId = '';
+                                                var rowId = '';
                                                 if (typeof rowObject[v.url] !== 'undefined') {
                                                   	if (rowObject[v.url]) {
                                                   		rowId = rowObject[v.url].id;
@@ -1261,11 +1263,12 @@ Number(function() {
                                                   	}
                                                 }
                                                 if (table_id == 'flat_email_log_list') {
-                                                  	index = parseFloat(options.rowId) - 1;
+                                                  	var index = parseFloat(options.rowId) - 1;
                                                     rowObject = Elements.settings[table_id].source.datastr[index];
                                                     actions = `<a href="/#/masters/emaillogs/edit/${ rowObject.id }" target="_blank" ><span class="jqgrid-ng-action edit"></span></a>`;
                                                     return actions;
                                                 }
+                                                var cellAttrs;
                                                 if (v.data_attributes) {
                                                   	cellAttrs = `<a ng-disabled ="!${ eval(v.disabled) }"${ v.data_attributes } ng-click="CLC.dataAction('${ v.action }', '${ encodeURIComponent(JSON.stringify(rowObject)) }')" class=" ${ v.class }">${ v.label }</a>`;
                                                 } else {
@@ -1336,7 +1339,7 @@ Number(function() {
                                                 colId != 'flat_schedule_dashboard_table_voyageDetail_request_requestDetail_contractMaxQuantity') {
                                                 // min - max quantity columns should not have sorting
                                                 if($(this).hasClass('ui-sortable-handle')) {
-                                                    helperCoulmnTitle = `${$rootScope.currentColumnRoute } : ${ col}`;
+                                                    var helperCoulmnTitle = `${$rootScope.currentColumnRoute } : ${ col}`;
                                                     $(this)
                                                         .append(`<a class="colMenu" title="${ helperCoulmnTitle }" data-column="${ col }" data-table="${ table_id } data-sortCol="${ sortCol }"><i class="fa fa-caret-down"></i></a>`);
                                                 }
@@ -1450,7 +1453,7 @@ Number(function() {
                 link: function(scope, element, attrs) {
                     // Load Template
                     $templateRequest('app-general-components/views/entity_edit_form.html').then((html) => {
-                    	wrappedHtml = `<div ng-controller='Controller_Master as CM'>${html }</div>`;
+                    	let wrappedHtml = `<div ng-controller='Controller_Master as CM'>${html }</div>`;
                     	if (attrs.specificController) {
 	                    	wrappedHtml = `<div ng-controller='${attrs.specificController }'>${ html }</div>`;
                     	}
@@ -1640,7 +1643,7 @@ Number(function() {
                     if (!attrs.dynamicPattern) {
                         return;
                     }
-                    pattern = '';
+                    var pattern = '';
                     if (attrs.dynamicPattern == 'decimalNumber' || attrs.dynamicPattern == 'Number') {
                         pattern = /^[-,+]*\d{1,6}(,\d{3})*(\.\d*)?$/;
                     } else if (attrs.dynamicPattern == 'longNumber') {
@@ -1939,7 +1942,7 @@ Number(function() {
                     true
                 );
                 scope.$on('lastValueDeselected', (ev, args) => {
-                    value = `string:${ args.value}`;
+                    let value = `string:${ args.value}`;
                     element.selectpicker('val', value);
                     element.selectpicker('render');
                 });
@@ -1993,11 +1996,11 @@ Number(function() {
                         if ($(this).val() < 10) {
                             $(this).val(`0${ $(this).val()}`);
                         }
-                        hours = $(this).val();
-                        minutes = $(element)
+                        var hours = $(this).val();
+                        var minutes = $(element)
                             .find('.minutes')
                             .val();
-                        newTime = parseFloat(hours * 60) + parseFloat(minutes);
+                        var newTime = parseFloat(hours * 60) + parseFloat(minutes);
                         ngModel.$setViewValue(newTime);
                     });
                 $(element)
@@ -2032,7 +2035,7 @@ Number(function() {
                     image: false
                 });
                 let editor = textarea.data('wysihtml5').editor;
-                synchronize = function() {
+                var synchronize = function() {
                     if (editor.getValue()) {
                         scope.$apply(() => {
                             ctrl.$setViewValue(editor.getValue());
@@ -2087,8 +2090,8 @@ Number(function() {
             }
             // If the data we are applying the filter to is a number, perform the actions to check it's ordinal suffix and apply it.
             //
-            hrs = parseInt(number / 60);
-            mins = number - hrs * 60;
+            var hrs = parseInt(number / 60);
+            var mins = number - hrs * 60;
             if (mins < 10) {
                 mins = `0${ mins}`;
             }
@@ -2113,6 +2116,7 @@ Number(function() {
                         return;
                     }
                     ctrl.$formatters.unshift((a) => {
+                    	var filter, fraction;
                         if (attrs.format.split(':')[1]) {
                             filter = attrs.format.split(':')[0];
                             fraction = attrs.format.split(':')[1];
@@ -2136,7 +2140,7 @@ Number(function() {
                             }
                             return parseInt(ctrl.$modelValue);
                         }
-                        returnData = null;
+                        var returnData = null;
                         if (ctrl.$modelValue != null && ctrl.$modelValue != '' && typeof ctrl.$modelValue != 'undefined') {
                         	try {
 		                        returnData = $filter(filter)(ctrl.$modelValue, fraction);
@@ -2186,12 +2190,13 @@ Number(function() {
         return {
             restrict: 'A',
             link: function(scope, element, attrs) {
+                var container;
                 if (!attrs.tooltip) {
                     container = 'body';
                 } else {
                     container = false;
                 }
-                triggerAction = 'hover';
+                var triggerAction = 'hover';
                 if (attrs.tooltiptrigger == 'click') {
                     triggerAction = 'click';
                 }
@@ -2224,8 +2229,8 @@ Number(function() {
 
                 function initialize(value) {
                     setTimeout(() => {
-                        currentOrder = [];
-                        objArray = $(element).find('.ordering-element');
+                        var currentOrder = [];
+                        var objArray = $(element).find('.ordering-element');
                         $.each(objArray, function() {
                             currentOrder.push($(this).attr('unique-id'));
                         });
@@ -2246,21 +2251,21 @@ Number(function() {
                         return ngModel.$modelValue;
                     },
                     () => {
-                        fwdBtn = $(element).find('.moveFwd');
-                        backBtn = $(element).find('.moveBack');
+                        var fwdBtn = $(element).find('.moveFwd');
+                        var backBtn = $(element).find('.moveBack');
                         fwdBtn.on('click', function() {
-                            activeElement = $(this)
+                            var activeElement = $(this)
                                 .parents('.ordering-element')
                                 .attr('unique-id');
                             $.each($(element).find('.ordering-element'), function(key, value) {
                                 if ($(this).attr('unique-id') == activeElement) {
-                                    activeIndex = key;
+                                    var activeIndex = key;
                                 }
                             });
                             objArray = $(element).find('.ordering-element');
-                            nextElemIdx = parseFloat(activeIndex) + 1;
-                            currentElement = $(objArray)[activeIndex];
-                            targetElement = $(objArray)[nextElemIdx];
+                            var nextElemIdx = parseFloat(activeIndex) + 1;
+                            var currentElement = $(objArray)[activeIndex];
+                            var targetElement = $(objArray)[nextElemIdx];
                             $(currentElement).css({
                                 transform: 'translateX(100%) scale(1.1)',
                                 opacity: 0
