@@ -314,7 +314,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 
 				                $scope.productTypesLoadedPerLocation.totalProducts += ctrl.request.locations[j].products.length;
                                 for (let i = 0; i < ctrl.request.locations[j].products.length; i++) {
-                                    cancelAction = ctrl.getScreenActionByName(ctrl.SCREEN_ACTIONS.CANCEL);
+                                    var cancelAction = ctrl.getScreenActionByName(ctrl.SCREEN_ACTIONS.CANCEL);
                                     if (cancelAction != null) {
                                         if (ctrl.request.locations[j].products[i].screenActions == null || typeof ctrl.request.locations[j].products[i].screenActions == 'undefined') {
                                             // no actions defined, add cancel
@@ -327,7 +327,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                                             }
                                         } else {
                                             // some actions defined, add cancel too if not there
-                                            found = _.find(ctrl.request.locations[j].products[i].screenActions, [ 'id', cancelAction.id ]);
+                                            var found = _.find(ctrl.request.locations[j].products[i].screenActions, [ 'id', cancelAction.id ]);
                                             if (typeof found == 'undefined') {
                                                 ctrl.request.locations[j].products[i].screenActions.push(cancelAction);
                                             }
@@ -1095,7 +1095,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             // if (ctrl.confirmProductDelete) {
             if (product.product !== null) {
                 if (product.id) {
-                    canBeCancelledPayload = {
+                    var canBeCancelledPayload = {
                         Filters: [
                             {
                                 ColumnName: 'RequestProductId',
@@ -2063,7 +2063,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             $.each(ctrl.request.locations, (locK, locV) => {
                 $.each(locV.products, (prodK, prodV) => {
                     if (prodV.id == rpid) {
-                        foundProduct = locV.eta;
+                        var foundProduct = locV.eta;
                     }
                 });
             });
@@ -2182,7 +2182,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             return validProducts;
         };
         ctrl.checkCancelInProducts = function() {
-            validProducts = 0;
+            var validProducts = 0;
             $.each(ctrl.request.locations, (lk, lv) => {
                 $.each(lv.products, (pk, pv) => {
                     $.each(pv.screenActions, (sk, sv) => {
@@ -2420,7 +2420,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 
             ctrl.buttonsDisabled = true;
             if (ctrl.requestTenantSettings.captureReasonToCancelRequest.id == 1) {
-                tpl = $templateCache.get('app-general-components/views/modal_reasonToCancelRequest.html');
+                var tpl = $templateCache.get('app-general-components/views/modal_reasonToCancelRequest.html');
                 // tpl = $templateCache.get('app-general-components/views/modal_sellerrating.html');
                 $scope.modalInstance = $uibModal.open({
                     template: tpl,
@@ -3082,7 +3082,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         };
         ctrl.parseStatuses();
         ctrl.canCancelProduct = function(product) {
-            canCancel = false;
+            var canCancel = false;
             $.each(product.screenActions, (k, v) => {
                 if (v.name == SCREEN_ACTIONS.CANCEL) {
                     canCancel = true;

@@ -121,7 +121,7 @@ APP_MASTERS.factory('Factory_Master', [ '$window', '$http', '$Api_Service', 'API
             return false;
         },
         upload_file: function(fd, callback) {
-            uploadUrl = `${API.BASE_URL_DATA_MASTERS }/api/masters/companies/createLogo`;
+            var uploadUrl = `${API.BASE_URL_DATA_MASTERS }/api/masters/companies/createLogo`;
             $http.post(uploadUrl, fd, {
                 transformRequest: angular.identity,
                 headers: {
@@ -157,7 +157,7 @@ APP_MASTERS.factory('Factory_Master', [ '$window', '$http', '$Api_Service', 'API
             });
         },
         get_file: function(id, callback) {
-            getUrl = `${API.BASE_URL_DATA_MASTERS }/api/masters/companies/download`;
+            var getUrl = `${API.BASE_URL_DATA_MASTERS }/api/masters/companies/download`;
             id = {
                 Payload: id
             };
@@ -165,7 +165,7 @@ APP_MASTERS.factory('Factory_Master', [ '$window', '$http', '$Api_Service', 'API
                 responseType: 'arraybuffer'
             }).then((response) => {
                 if (response.data) {
-                    mime = response.headers('content-type');
+                    var mime = response.headers('content-type');
                     callback(response.data, mime);
                 } else {
                     callback(false);
@@ -176,7 +176,7 @@ APP_MASTERS.factory('Factory_Master', [ '$window', '$http', '$Api_Service', 'API
             });
         },
         get_document_file: function(payload, callback) {
-            url = `${API.BASE_URL_DATA_MASTERS }/api/masters/documentupload/download`;
+            var url = `${API.BASE_URL_DATA_MASTERS }/api/masters/documentupload/download`;
             $http({
                 method: 'POST',
                 url: url,

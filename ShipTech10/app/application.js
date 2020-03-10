@@ -76,7 +76,7 @@ angular
                 // return
                 console.log(event);
                 console.log(`adal:error - ${ AuthenticationContext.prototype._getItem('adal.login.error')}`);
-                adalErrors = AuthenticationContext.prototype._getItem('adal_auth_errors');
+                var adalErrors = AuthenticationContext.prototype._getItem('adal_auth_errors');
                 if (adalErrors > 0) {
                     adalErrors++;
                 } else {
@@ -261,15 +261,15 @@ angular
                                     	});
                                 db.listsCache.get(1).then((listsCacheDB) => {
                                     if (listsCacheDB) {
-                                        listsCache = listsCacheDB.data;
+                                        var listsCache = listsCacheDB.data;
                                         db.listsHash.get(1).then((listsHashDB) => {
                                             if (listsHashDB) {
-                                                currentLists = listsHashDB.data;
+                                                var currentLists = listsHashDB.data;
 
                                                 if (currentLists && !(JSON.stringify(data.data) === JSON.stringify(currentLists))) {
-                                                    listsToUpdate = [];
+                                                    var listsToUpdate = [];
                                                     $.each(data.data.selectListTimestamps, (k, v) => {
-	                                                            listFound = false;
+                                                        var listFound = false;
                                                         $.each(currentLists.selectListTimestamps, (k1, v1) => {
                                                             if (v1.name === v.name) {
                                                                 listFound = true;
@@ -404,13 +404,13 @@ angular
                     });
                 }
                 $(document).on('blur', '.formatted-date-input', function() {
-                    currentEl = this;
+                    var currentEl = this;
                     setTimeout(() => {
                         // $(currentEl).attr("ng-invalid", "false");
-                        dateFormat = angular.copy(window.tenantFormatsDateFormat);
+                        var dateFormat = angular.copy(window.tenantFormatsDateFormat);
                         dateFormat = dateFormat.replace(/y/g, 'Y');
                         // console.log(window.tenantFormatsDateFormat);
-                        invalidDate = false;
+                        var invalidDate = false;
                         if (dateFormat) {
                             if ($(currentEl).hasClass('date-only')) {
                                 dateFormat = dateFormat.split(' ')[0];
@@ -423,7 +423,7 @@ angular
                         if ($(currentEl).attr('ng-invalid') == 'true' || invalidDate) {
                             if (invalidDate) {
                                 $(currentEl).addClass('invalid');
-                                oldInputVal = $(currentEl).val();
+                                var oldInputVal = $(currentEl).val();
                                 $(currentEl).val('');
                                 $(currentEl).trigger('change');
                                 $(currentEl).val(oldInputVal);
@@ -462,7 +462,7 @@ angular
                         window.location.reload();
                     }, 3000);
                 } else {
-                    text =
+                    var text =
                         '<!-- MouseStats:Begin --> <script type="text/javascript">var MouseStats_Commands=MouseStats_Commands?MouseStats_Commands:[]; (function(){function b(){if(void 0==document.getElementById("__mstrkscpt")){var a=document.createElement("script");a.type="text/javascript";a.id="__mstrkscpt";a.src=("https:"==document.location.protocol?"https://ssl":"http://www2")+".mousestats.com/js/5/7/5749710969322164449.js?"+Math.floor((new Date).getTime()/6E5);a.async=!0;a.defer=!0;(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}}window.attachEvent?window.attachEvent("onload",b):window.addEventListener("load", b,!1);"complete"===document.readyState&&b()})(); </script> <!-- MouseStats:End -->';
                     $('body').append(text);
                     $scope.recordingStatus = 'Stop screen recording';
@@ -475,7 +475,7 @@ angular
                     // console.log(smartlook)
                 }
             };
-            state = null;
+            var state = null;
 
             let pageTitleMap = {};
             pageTitleMap['Contracts :: Edit '] = 'New Contract';
@@ -637,6 +637,9 @@ angular.module('shiptech').config([
                             return $q.reject(response);
                         }
                         if (response.data) {
+                            var ErrorCode;
+                            var ErrorMessage;
+                            var Reference;
                             response.data.ErrorCode ? ErrorCode = response.data.ErrorCode : ErrorCode = response.data.errorCode;
                             response.data.ErrorMessage ? ErrorMessage = response.data.ErrorMessage : ErrorMessage = response.data.errorMessage;
                             response.data.Reference ? Reference = response.data.Reference : Reference = response.data.reference;
@@ -724,7 +727,7 @@ angular.module('shiptech').controller('BladeController', [
         });
     }
 ]);
-$bladeEntity = {
+var $bladeEntity = {
     close: function() {
         $('.bladeEntity').removeClass('open');
         $('body').css('overflow-y', 'initial');
@@ -735,6 +738,7 @@ $bladeEntity = {
         }, 500);
     },
     open: function(id) {
+        var bladeEntity;
         if (id) {
             bladeEntity = $(`.bladeEntity#${ id}`);
         } else {
@@ -764,7 +768,7 @@ angular.module('shiptech.pages', []);
  * Models module
  */
 angular.module('shiptech.models', []);
-i = 0;
+var i = 0;
 
 var hostName = window.location.hostname;
 // var config = "config/config.js";
@@ -790,7 +794,7 @@ angular.element(document).ready(() => {
         dataType: 'json',
         method: 'GET',
         success:function(response) {
-            appConfig = response;
+            var appConfig = response;
 	        angular
 	            .module('shiptech')
 	            .constant('tenantConfigs', appConfig.tenantConfigs)

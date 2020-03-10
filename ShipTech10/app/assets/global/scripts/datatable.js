@@ -264,7 +264,7 @@ var Datatable = function() {
                 ajaxParams[name] = [];
             }
 
-            skip = false;
+            var skip = false;
             for (var i = 0; i < (ajaxParams[name]).length; i++) { // check for duplicates
                 if (ajaxParams[name][i] === value) {
                     skip = true;

@@ -234,7 +234,7 @@ angular.module('shiptech').config([
                         return config;
                     },
                     responseError: function name(config) {
-                    	routeCall = config.config.url;
+                    	var routeCall = config.config.url;
                     	if (config.config.url.indexOf('/api/') != -1) {
 	                    	routeCall = `api/${ config.config.url.split('/api/')[1]}`;
                     	}

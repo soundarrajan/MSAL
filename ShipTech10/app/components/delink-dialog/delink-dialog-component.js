@@ -21,7 +21,7 @@ angular.module('shiptech.components')
             		return false;
             	}
             	groupOfRequestsModel.delinkRequests(ctrl.requestIds, ctrl.groupId).then(() => {
-            		biggestRequest = 0;
+            		var biggestRequest = 0;
                     $.each(ctrl.allRequests, (index, value) => {
             			if (value.id > biggestRequest) {
             				biggestRequest = value.id;

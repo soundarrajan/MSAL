@@ -1,7 +1,7 @@
 angular.module('shiptech').controller('NavigationTopBarController', [ '$rootScope', '$timeout', '$scope', '$state', '$stateParams', '$filter', 'STATE', 'CUSTOM_EVENTS', 'VIEW_TYPES',
     'scheduleDashboardCalendarModel', 'API', '$http',
     function($rootScope, $timeout, $scope, $state, $stateParams, $filter, STATE, CUSTOM_EVENTS, VIEW_TYPES, scheduleDashboardCalendarModel, API, $http) {
-    	ctrl = this;
+		var ctrl = this;
     	ctrl.availableStates = [
     		'default.edit-request', // REQUEST
     		'default.new-request', // REQUEST
@@ -23,10 +23,10 @@ angular.module('shiptech').controller('NavigationTopBarController', [ '$rootScop
         }, 3000);
 
     	$scope.$watch(() => {
-    		stateParams = JSON.stringify($state.params);
+			var stateParams = JSON.stringify($state.params);
     		return `${$state.$current}&&&${stateParams}`;
     	}, (newVal, oldVal) => {
-    		parameters = newVal.split('&&&');
+			var parameters = newVal.split('&&&');
 		    stateParams = JSON.parse(parameters[1]);
 		    $scope.currentPage = parameters[0];
 		    $scope.entityId = stateParams.requestId;
@@ -48,7 +48,7 @@ angular.module('shiptech').controller('NavigationTopBarController', [ '$rootScop
     	});
 
 
-    	createNavigationItems = function(payload) {
+		var createNavigationItems = function(payload) {
             // indexStatus = calculate if is previous, current or next
 
             if(typeof payload != 'undefined') {
@@ -132,10 +132,10 @@ angular.module('shiptech').controller('NavigationTopBarController', [ '$rootScop
             ];
     	};
 
-    	setItemsActiveStatus = function() {
-            activeItemId = null;
+		var setItemsActiveStatus = function() {
+			var activeItemId = null;
 
-            navigationPayload = {};
+			var navigationPayload = {};
 
 
             console.log('_____ $state.params _____', $state.params);
@@ -208,7 +208,7 @@ angular.module('shiptech').controller('NavigationTopBarController', [ '$rootScop
             // })
 
             var markNavigationItems = function() {
-                activeItemIndex = -1;
+				var activeItemIndex = -1;
                 $.each($scope.navigationItems, (itemKey, itemVal) => {
                     if (itemVal.id == activeItemId) {
                         itemVal.indexStatus = 'navigationBar-active';
@@ -229,7 +229,7 @@ angular.module('shiptech').controller('NavigationTopBarController', [ '$rootScop
             markNavigationItems();
     	};
 
-    	setResponsiveItemsNames = function() {
+    	var setResponsiveItemsNames = function() {
     		$.each($scope.navigationItems, (itemKey, itemVal) => {
                 if (window.innerWidth < 960) {
                     itemVal.displayName = itemVal.displayName.substring(0, 3);

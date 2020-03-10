@@ -233,7 +233,7 @@ angular.module('shiptech.components')
                 $.each(ctrl.selectedLocations, (k, v) => {
                     selectedLocationsIds.push(v.id);
                 });
-                payload = {
+                var payload = {
                 	locationsList : selectedLocationsIds,
                 	historySelection : ctrl.sixMonthsHistoryData
                 };

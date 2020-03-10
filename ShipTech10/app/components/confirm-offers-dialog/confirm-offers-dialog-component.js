@@ -127,25 +127,25 @@ angular.module('shiptech.components').controller('ConfirmOffersDialogController'
             // }
             // $('#confirm').modal('hide');
             setConfirmedQuantities();
-            requestProductIdsForOrder = [];
+            var requestProductIdsForOrder = [];
             $.each(ctrl.requirements, (rqK, rqV) => {
                 requestProductIdsForOrder.push(rqV.RequestProductId);
             });
             // ctrl.buttonsDisabled = true;
             orderModel.getExistingOrders(requestProductIdsForOrder.join(',')).then((responseData) => {
-                responseOrderData = responseData.payload;
-                productsWithErrors = [];
-                errorMessages = [];
+                var responseOrderData = responseData.payload;
+                var productsWithErrors = [];
+                var errorMessages = [];
                 $.each(ctrl.requirements, (rqK, rqV) => {
-	                foundRelatedOrder = false;
-                    hasOrder = false;
+                    var foundRelatedOrder = false;
+                    var hasOrder = false;
                     $.each(responseOrderData, (rodK, rodV) => {
                         // hasError = false;
                         $.each(rodV.products, (rodProdK, rodProdV) => {
                             if (rodV.requestLocationId == rqV.RequestLocationId /* && rodProdV.requestProductId == rqV.RequestProductId*/) {
 			                    hasError = false;
                                 hasOrder = true;
-                                errorType = [];
+                                var errorType = [];
                                 if (rodV.seller.id != rqV.SellerId) {
                                     if (productsWithErrors.indexOf(rqV.RequestProductId) == -1) {
                                         productsWithErrors.push(rqV.RequestProductId);
@@ -160,7 +160,7 @@ angular.module('shiptech.components').controller('ConfirmOffersDialogController'
                                     }
                                     hasError = true;
                                 }
-                                etasDifference = new Date(rqV.vesselETA) - new Date(rodV.orderEta);
+                                var etasDifference = new Date(rqV.vesselETA) - new Date(rodV.orderEta);
                                 if (etasDifference > 259200000 || etasDifference < -259200000) {
                                     if (productsWithErrors.indexOf(rqV.RequestProductId) == -1) {
                                         productsWithErrors.push(rqV.RequestProductId);
@@ -225,7 +225,7 @@ angular.module('shiptech.components').controller('ConfirmOffersDialogController'
                 setTimeout(() => {
                     groupOfRequestsModel.confirm(rfq_data).then((data) => {
                         ctrl.buttonsDisabled = false;
-                        receivedOffers = data.payload;
+                        var receivedOffers = data.payload;
                         $rootScope.tempFilterOrdersFromConfirm = receivedOffers;
                         // if (receivedOffers.length == 1) {
                         /*
@@ -257,8 +257,8 @@ angular.module('shiptech.components').controller('ConfirmOffersDialogController'
         };
 
         function createOrderErrorMessage(requestProductId, errorType) {
-            errorMessage = null;
-            errorTypes = errorType.join(', ');
+            var errorMessage = null;
+            var errorTypes = errorType.join(', ');
             if (!errorType) {
                 return;
             };

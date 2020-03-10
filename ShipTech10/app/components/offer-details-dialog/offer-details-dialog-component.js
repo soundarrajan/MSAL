@@ -68,7 +68,7 @@ angular.module('shiptech.components')
 
                         calculateProductsAmountField(ctrl.location);
                         for (var k = 0; k < ctrl.globalAdditionalCosts.length; k++) {
-                            additionalCost = ctrl.globalAdditionalCosts[k];
+                            var additionalCost = ctrl.globalAdditionalCosts[k];
                             addPriceUomChg(additionalCost, ctrl.location);
                         }
                         for (let i = 0; i < ctrl.location.products.length; i++) {
@@ -504,7 +504,7 @@ angular.module('shiptech.components')
                 }
                 additionalCost.prodConv = [];
                 for (let i = 0; i < location.products.length; i++) {
-                    prod = location.products[i];
+                    var prod = location.products[i];
                     if (prod.maxQuantity.id == additionalCost.priceUom.id) {
                         additionalCost.prodConv[i] = 1;
                     } else {
@@ -619,7 +619,7 @@ angular.module('shiptech.components')
             */
             ctrl.saveOffer = function() {
                 let additionalCosts = ctrl.getAdditionalCosts();
-                offers = compileOffers();
+                var offers = compileOffers();
 
                 additionalCosts = removeNullAdditionalCosts(additionalCosts);
 

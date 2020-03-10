@@ -287,7 +287,7 @@ angular.module('shiptech.models').factory('orderModel', [ '$q', 'orderResource',
                 Filters: filters
             };
 
-            request_data = payloadDataModel.create(payload);
+            var request_data = payloadDataModel.create(payload);
             return orderResource.checkIfOrderCanBeCreatedUsingSelectedContract(request_data).$promise.then((data) => {
                 return data;
             });

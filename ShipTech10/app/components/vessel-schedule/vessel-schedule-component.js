@@ -48,9 +48,9 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope', '$
             });
         });
         $scope.formatDateToMomentFormat = function(dateFormat) {
-            dbFormat = dateFormat;
-            hasDayOfWeek = false;
-            currentFormat = angular.copy(dateFormat);
+            var dbFormat = dateFormat;
+            var hasDayOfWeek = false;
+            var currentFormat = angular.copy(dateFormat);
             if (currentFormat.startsWith('DDD ')) {
                 hasDayOfWeek = true;
                 currentFormat = currentFormat.split('DDD ')[1];
@@ -74,7 +74,7 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope', '$
             let dateFormat = $scope.momentDateFormat;
             let hasDayOfWeek = false;
             dateFormat = dateFormat.replace(/D/g, 'd').replace(/Y/g, 'y');
-            formattedDate = moment(cellValue).format($scope.momentDateFormat);
+            var formattedDate = moment(cellValue).format($scope.momentDateFormat);
             if (formattedDate) {
                 let array = formattedDate.split(' ');
                 let format = [];

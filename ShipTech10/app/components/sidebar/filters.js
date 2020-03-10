@@ -31,7 +31,7 @@ angular.module('shiptech.components').controller('FiltersController', [
 
         console.log('init');
         $scope.noDefault = null;
-        ctrl = this;
+        var ctrl = this;
         $rootScope.isDefaultConfig = null;
         ctrl.isSellerPortal = window.location.hash.indexOf('supplier-portal') > 0;
         $scope.$on('savedLayout', () => {
@@ -114,7 +114,7 @@ angular.module('shiptech.components').controller('FiltersController', [
             }
 
             $rootScope.listOfAppliedFiltersString = [];
-        	hasRequestProductStatusFilter = false;
+            var hasRequestProductStatusFilter = false;
         	if ($scope.globalFilters) {
         		for (let i = 0; i < $scope.globalFilters.length; i++) {
         			if ($scope.globalFilters[i].column && $scope.globalFilters[i].column.columnName == 'Port Status') {
@@ -215,7 +215,7 @@ angular.module('shiptech.components').controller('FiltersController', [
                         v.unSaved = true;
                     });
                     if ($rootScope.rawFilters) {
-                        differentColumns = [];
+                        var differentColumns = [];
                         let checkColumn = data[0].column.columnValue;
                         if ($rootScope.rawFilters.length > 0) {
                             // differentColumns = _.find($rootScope.rawFilters, function(o) {  return o && o.column.columnValue != checkColumn });
@@ -394,8 +394,8 @@ angular.module('shiptech.components').controller('FiltersController', [
                 // $rootScope.$broadcast("filters-applied", []);
                 return;
             }
-            filtersList = data.filtersList;
-            sortList = data.sortList;
+            var filtersList = data.filtersList;
+            var sortList = data.sortList;
 
             $.each(filtersList, (key, val) => {
                 if (val.columnValue == '[Open]') {
@@ -491,7 +491,7 @@ angular.module('shiptech.components').controller('FiltersController', [
                 data = [];
             }
             $rootScope.rawFilters = angular.copy(data);
-            packedFilters = [];
+            var packedFilters = [];
             if (data.clear) {
                 packedFilters = [];
             } else {
@@ -550,7 +550,7 @@ angular.module('shiptech.components').controller('FiltersController', [
             }
 
             if ($rootScope.isModal) {
-                list = $scope.currentList.split('/')[0];
+                var list = $scope.currentList.split('/')[0];
                 $scope.currentList = `${list }/${ $rootScope.modalTableId}`;
             }
             // console.log(modalTableId)
@@ -713,7 +713,7 @@ angular.module('shiptech.components').controller('FiltersController', [
         $scope.formatDate = function(elem, dateFormat) {
             // console.log(1)
             if (elem) {
-                formattedDate = elem;
+                var formattedDate = elem;
                 let date = Date.parse(elem);
                 date = new Date(date);
                 if (date) {
@@ -753,7 +753,7 @@ angular.module('shiptech.components').controller('FiltersController', [
                     }
                     if ($scope.defaultConfiguration != null) {
                         $rootScope.clearDefaultFilters = true;
-                        retVal = $scope.applyDefaultConfiguration($scope.defaultConfiguration, true);
+                        var retVal = $scope.applyDefaultConfiguration($scope.defaultConfiguration, true);
                         $rootScope.savedDefaultFilters = $scope.defaultConfiguration.filters;
                         $scope.selectedConfig = $scope.defaultConfiguration;
                         $rootScope.isDefaultConfig = $scope.selectedConfig;
@@ -800,7 +800,7 @@ angular.module('shiptech.components').controller('FiltersController', [
                 filtersList = [];
             }
             if (name == 'Add new configuration') {
-                no = $scope.filtersConfigurations.length - 1;
+                var no = $scope.filtersConfigurations.length - 1;
                 name = `Configuration ${ no}`;
                 // name = 'Test Configuration ';
             }
@@ -1016,7 +1016,7 @@ angular.module('shiptech.components').controller('FiltersController', [
                 });
             }
 
-            idx = $rootScope.sortList && $rootScope.sortList.length > 0 ? _.maxBy($rootScope.sortList, 'sortIndex').sortIndex + 1 : 0;
+            var idx = $rootScope.sortList && $rootScope.sortList.length > 0 ? _.maxBy($rootScope.sortList, 'sortIndex').sortIndex + 1 : 0;
 
             if (order > 0) {
                 if (sortColumn) {
@@ -1028,7 +1028,7 @@ angular.module('shiptech.components').controller('FiltersController', [
                     	col: column.replace(/\./g, '_').toLowerCase()
                     });
                 } else {
-                	isComputedColumn = false;
+                    var isComputedColumn = false;
                 	if (columnObj.column) {
                 		if (columnObj.column.isComputedColumn) {
 		                	isComputedColumn = true;
@@ -1065,7 +1065,7 @@ angular.module('shiptech.components').controller('FiltersController', [
                 $scope.columnFilters = {};
                 $scope.columnFilters[column] = [];
             }
-            filters = $rootScope.rawFilters;
+            var filters = $rootScope.rawFilters;
 
             $.each(filters, (k, v) => {
                 if (v.column.columnValue == column) {
@@ -1087,7 +1087,7 @@ angular.module('shiptech.components').controller('FiltersController', [
         };
         $scope.removeFilterColumn = function(column) {
             $scope.columnFilters[column] = [];
-            newFilter = [];
+            var newFilter = [];
             $.each($rootScope.rawFilters, (k, v) => {
                 if (v.column.columnValue != column) {
                     newFilter.push(v);

@@ -22,6 +22,7 @@ angular.module('shiptech.components').controller('LookupDialogController', [ '$s
 
         $scope.search = function(value) {
             ctrl.tableOptions.searchTerm = value;
+            var call;
             if (ctrl.supplierPortal) {
                 call = lookupModel.getListForSupplierPortal(ctrl.supplierPortalToken, ctrl.lookupType, null, null, ctrl.tableOptions.filters, value);
             } else {
@@ -261,7 +262,7 @@ angular.module('shiptech.components').controller('LookupDialogController', [ '$s
             let tablePagination = {};
             tablePagination.start = (page - 1) * ctrl.tableOptions.pageLength;
             tablePagination.length = ctrl.tableOptions.pageLength;
-            tableOrder = normalizeDatatablesOrder(ctrl.tableOptions.order);
+            var tableOrder = normalizeDatatablesOrder(ctrl.tableOptions.order);
             setTableVars(tablePagination.length, tablePagination.start);
             if (ctrl.supplierPortal) {
                 call = lookupModel.getListForSupplierPortal(ctrl.supplierPortalToken, ctrl.lookupType, tableOrder, tablePagination, ctrl.tableOptions.filters, ctrl.tableOptions.searchTerm);

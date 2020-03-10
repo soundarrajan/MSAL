@@ -34,10 +34,10 @@ angular.module('shiptech').controller('PriceGraphController', [ '$scope', '$stat
             // });
             // return _.uniqBy(res, 'id');
 
-            productsList = [];
+            var productsList = [];
             $.each(obj.locations, (locK, locV) => {
                 $.each(locV.products, (prodK, prodV) => {
-                	currentProduct = angular.copy(prodV.product);
+                    var currentProduct = angular.copy(prodV.product);
                 	currentProduct.id = prodV.id;
                     productsList.push(currentProduct);
                 });
@@ -68,10 +68,10 @@ angular.module('shiptech').controller('PriceGraphController', [ '$scope', '$stat
         };
 
         $scope.filterSellersLatestOffer = function(timelineData) {
-        	latestOffers = [];
+            var latestOffers = [];
         	$.each(timelineData, (tdk, tdv) => {
-        		currentSellerHasOffer = 0;
-        		currentSellerId = tdv.seller.id;
+                var currentSellerHasOffer = 0;
+                var currentSellerId = tdv.seller.id;
         		$.each(latestOffers, (lok, lov) => {
         			if (lov.seller.id == currentSellerId) {
 		        		currentSellerHasOffer = lok;
@@ -91,24 +91,24 @@ angular.module('shiptech').controller('PriceGraphController', [ '$scope', '$stat
             groupOfRequestsModel.getPriceTimeline(request, product, uom).then((data) => {
                 ctrl.timelineresults = data.payload.items.length;
                 if (ctrl.timelineresults > 0) {
-                    groups = [];
-                    items = [];
-                    timelineData = data.payload.items;
-                    price = addlCost ? 'totalPrice' : 'price';
-                    baseData = [];
+                    var groups = [];
+                    var items = [];
+                    var timelineData = data.payload.items;
+                    var price = addlCost ? 'totalPrice' : 'price';
+                    var baseData = [];
                     $.each(timelineData, (k, v) => {
                         v.sellerLocationId = `${v.seller.id }_${ v.location.id}`;
                         baseData.push(v);
                     });
-                    groupedItems = _.uniqBy(baseData, 'sellerLocationId');
+                    var groupedItems = _.uniqBy(baseData, 'sellerLocationId');
 
-                    latestSellerOfferTimelineData = $scope.filterSellersLatestOffer(timelineData);
+                    var latestSellerOfferTimelineData = $scope.filterSellersLatestOffer(timelineData);
 
-                    minimumPrice = _.minBy(latestSellerOfferTimelineData, (o) => {
+                    var minimumPrice = _.minBy(latestSellerOfferTimelineData, (o) => {
                         return o[price];
                     })[price];
                     _.forEach(groupedItems, (value) => {
-                        item = {
+                        var item = {
                             id: value.sellerLocationId,
                             className: 'groupTable',
                             content: `<div class="timelineRow"><div class="timelineCell"><b>${ value.seller.name }</b></div><div class="timelineCell"><b>${ value.location.name }</b></div></div>`,

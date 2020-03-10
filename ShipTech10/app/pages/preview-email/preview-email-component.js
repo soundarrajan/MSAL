@@ -936,7 +936,7 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
 						ctrl.template.name === 'Redelivery' ||
 						ctrl.template.name === 'Standard'
                     ) {
-                        payload = ctrl.data.requestId;
+                        var payload = ctrl.data.requestId;
                         newRequestModel.questionnaireStatus(payload).then(() => {
                             $window.history.back();
                         });

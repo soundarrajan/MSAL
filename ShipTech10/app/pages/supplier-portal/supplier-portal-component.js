@@ -2280,7 +2280,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
                 });
             });
 
-            data = {
+            var data = {
                 RequestOfferIds: requestOfferIds,
                 IncotermId: incoterm.id
             };

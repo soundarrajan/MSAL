@@ -292,7 +292,7 @@ angular.module('shiptech.pages').controller('ScheduleCalendarController', [ '$ro
                 return false;
             }
             let tablePagination = {};
-            filterPayload = $scope.appFilters;
+            var filterPayload = $scope.appFilters;
             tablePagination.start = (page - 1) * ctrl.tableOptions.pageLength;
             tablePagination.length = ctrl.tableOptions.pageLength;
             setTableVars(tablePagination.length, tablePagination.start);
@@ -738,7 +738,7 @@ angular.module('shiptech.pages').controller('ScheduleCalendarController', [ '$ro
         function normalizeCalendarDataFlat(calendarData, calendarDates, calendarUnit, statusFilter) {
         	console.warn('normalizeCalendarDataFlat start :', new Date().getTime() - window.scheduleDashboardCalendarModelGetEndTime);
             // console.log(ctrl.calendarData)
-            data = angular.copy(ctrl.calendarData.scheduleDashboardView);
+            var data = angular.copy(ctrl.calendarData.scheduleDashboardView);
             if (!data) {
             	toastr.warning('No Voyages available for the selected period');
             }
@@ -749,7 +749,7 @@ angular.module('shiptech.pages').controller('ScheduleCalendarController', [ '$ro
             	bunkerPlans = [];
             }
             ctrl.voyagesStrategyGrouped = ctrl.checkIfHasStrategyOptimized(dataJSON.vessels);
-            dates = angular.copy(calendarDates);
+            var dates = angular.copy(calendarDates);
             let result = [],
                 dataRow,
                 resultRow,
@@ -788,7 +788,7 @@ angular.module('shiptech.pages').controller('ScheduleCalendarController', [ '$ro
                 // if (i1 == 236) {
                 // 	debugger
                 // }
-                v = vessels[key];
+                var v = vessels[key];
                 for (var i = 0; i < v.voyage.length; i++) {
                 	if (dataJSON.vessels[v.voyage[i]].voyageDetail.deliveryFrom) {
 	                    dataJSON.vessels[v.voyage[i]].voyageDetail.eta_intts = parseInt(moment(dataJSON.vessels[v.voyage[i]].voyageDetail.deliveryFrom, 'YYYY-MM-DDThh:mm:ssZ').utc().format('X'));
@@ -813,12 +813,12 @@ angular.module('shiptech.pages').controller('ScheduleCalendarController', [ '$ro
                 };
                 let v_index = 0;
                 for (let i2 = 0; i2 < dates.length; i2++) {
-                    v1 = dates[i2];
+                    var v1 = dates[i2];
                     // $.each(dates, function (k1, v1) {
                     // day = moment(v1.timestamp, 'X').utc();
-                    portDetails = null;
-                    portData = [];
-                    originalData = [];
+                    var portDetails = null;
+                    var portData = [];
+                    var originalData = [];
 
                     if (v_index < v.voyage.length) {
                         var index = 0;
@@ -1436,7 +1436,7 @@ angular.module('shiptech.pages').controller('ScheduleCalendarController', [ '$ro
                 $('.contextmenu').removeClass('hidden');
             }
             $('.contextAction').click(function() {
-                index = $(this).attr('data-index');
+                var index = $(this).attr('data-index');
                 contextAction(object[index]);
                 removePopups();
             });
@@ -1571,7 +1571,7 @@ angular.module('shiptech.pages').controller('ScheduleCalendarController', [ '$ro
 
         ctrl.cancelStrategy = function(bunkerPlanId) {
             let url = `${API.BASE_URL_DATA_MASTERS }/api/masters/vessels/cancelStrategy`;
-            payload = {
+            var payload = {
                 payload : bunkerPlanId
             };
             let currentBunkerPlanId = bunkerPlanId;
@@ -1622,10 +1622,10 @@ angular.module('shiptech.pages').controller('ScheduleCalendarController', [ '$ro
             hidePopovers();
             // alert($event.currentTarget);
             $('body > .morePortsPopup').remove();
-            currentElem = $($event.currentTarget);
+            var currentElem = $($event.currentTarget);
             // popup = $($event.currentTarget).children(".morePortsPopup");
             // newPopup = popup.clone();
-            html = '<div class="morePortsPopup hidden" ng-click="$ctrl.closeMorePortsPopup()"> <a class="close" aria-label="close"> &times; </a> <table> <tr> <th> ETA </th> <th> CODE </th> </tr>';
+            var html = '<div class="morePortsPopup hidden" ng-click="$ctrl.closeMorePortsPopup()"> <a class="close" aria-label="close"> &times; </a> <table> <tr> <th> ETA </th> <th> CODE </th> </tr>';
             $.each(object, (k, v) => {
                 html = `${html }<tr> <td>${ ctrl.convertDate(v.eta) } <td class="styler"> ${ v.portCode }</td> </tr> `;
                 if ((!ctrl.breadcrumbsFilter || v.status == ctrl.breadcrumbsFilter) && v.style) {

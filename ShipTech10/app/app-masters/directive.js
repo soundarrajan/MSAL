@@ -104,7 +104,7 @@ Number(function() {
                     $scope.list = angular.copy($scope.dataset);
                     $scope.options = {};
                     $scope.selectedItems = {};
-                    dataSrcs = {
+                    var dataSrcs = {
                         vessel_access: 'accessVessels',
                         buyer_access: 'accessBuyers',
                         company_access: 'accessCompanies'
@@ -142,7 +142,7 @@ Number(function() {
                     };
                     $scope.filter = function(item, pattern) {
                         if (pattern) {
-                            found = 0;
+                            var found = 0;
                             if (item.name.toLowerCase().indexOf(pattern.toLowerCase()) == -1) {
                                 found = 0;
                                 if (item.children) {
@@ -267,7 +267,7 @@ Number(function() {
                         //
                         let rootNode = nv[1];
                         // console.log(nv);
-                        result = [];
+                        var result = [];
                         $.each(nv, (k, v) => {
                             let a = HierarchyNodeService.getSelected(v, []);
                             // console.log(a)

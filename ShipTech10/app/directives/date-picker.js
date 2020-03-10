@@ -93,7 +93,7 @@ angular.module('shiptech.pages').directive('newDatePicker', [ 'tenantModel', '$w
             let prevValue = null;
             let hasDayOfWeek = false;
             if (attrs.screenType === 'supplierPortal') {
-                tenantService = tenantModel.getGlobalConfigurationForSupplierPortal($stateParams.token).payload;
+                var tenantService = tenantModel.getGlobalConfigurationForSupplierPortal($stateParams.token).payload;
                 var currentFormat = tenantService.tenantFormats.dateFormat.name;
                 if (currentFormat.startsWith('DDD ')) {
                     hasDayOfWeek = true;
@@ -192,7 +192,7 @@ angular.module('shiptech.pages').directive('newDatePicker', [ 'tenantModel', '$w
                         return;
                     }
 
-                    inputPattern = currentFormat;
+                    var inputPattern = currentFormat;
                     // inputPattern = "`DD/`MM/`YYYY";
 
                     if (attrs.pickerType == 'dynamic') {
@@ -200,7 +200,8 @@ angular.module('shiptech.pages').directive('newDatePicker', [ 'tenantModel', '$w
                     }
 
                     /* PREVENT DELETION OF CHARS FROM RIGHT */
-                    if (currentFormat.split(' ')[0].indexOf('/') != -1) {
+                    var separator;
+                        if (currentFormat.split(' ')[0].indexOf('/') != -1) {
                         separator = '/';
                     }
                     if (currentFormat.split(' ')[0].indexOf('.') != -1) {
@@ -278,7 +279,7 @@ angular.module('shiptech.pages').directive('newDatePicker', [ 'tenantModel', '$w
                         e.preventDefault();
                         // setTimeout(function(){
                         // })
-                        nextEditableElement = $($($(this)).parents('td').nextAll('td').find('input, textarea, dropdown')[0]);
+                        var nextEditableElement = $($($(this)).parents('td').nextAll('td').find('input, textarea, dropdown')[0]);
                         $('#gview_flat_invoices_app_complete_view_list').animate({
 						    scrollLeft: $(nextEditableElement).offset().left - 200
                         }, 100);
@@ -310,12 +311,12 @@ angular.module('shiptech.pages').directive('newDatePicker', [ 'tenantModel', '$w
 
                         $(`.${ dateInputId }_minute`).click(function() {
                             if (mask.value) {
-                                newVal = `${moment.utc(mask.value, currentFormat).minute(parseInt($(this).text())).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+                                var newVal = `${moment.utc(mask.value, currentFormat).minute(parseInt($(this).text())).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
                                 ngModel.$setViewValue(newVal);
                                 ngModel.$commitViewValue();
                                 wasReset = false;
 
-                                newFormattedValue = moment.utc(newVal).format(currentFormat);
+                                var newFormattedValue = moment.utc(newVal).format(currentFormat);
                                 if (newFormattedValue.split(' ')[1] == '00:00') {
                                     mask.value = newFormattedValue.split(' ')[0];
                                 }
@@ -392,7 +393,7 @@ angular.module('shiptech.pages').directive('newDatePicker', [ 'tenantModel', '$w
                 });
 
                 if (attrs.defaultToday == 'true') {
-                    value = moment();
+                    var value = moment();
                     scope.$apply(() => {
                         ngModel.$setViewValue(`${value.format('YYYY-MM-DDTHH:mm:ss') }+00:00`);
                         ngModel.$commitViewValue();
@@ -461,7 +462,7 @@ angular.module('shiptech.pages').directive('newDatePicker', [ 'tenantModel', '$w
                         }
                     } else if (mask.value) {
                         value = moment.utc(mask.value, currentFormat, true);
-                        formattedValue = value.format(currentFormat);
+                        var formattedValue = value.format(currentFormat);
                         if (formattedValue == 'Invalid date') {
                             value = moment.utc(mask.value.trim(), currentFormat.split(' ')[0], true);
                             formattedValue = moment(value).format(currentFormat.split(' ')[0]);

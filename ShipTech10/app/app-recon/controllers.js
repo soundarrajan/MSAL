@@ -34,7 +34,7 @@ APP_RECON.controller('Controller_Recon', [ '$scope', '$rootScope', '$Api_Service
 
     $scope.reconQuantityDispute = function() {
         let ClaimTypeId = 1;
-        DeliveryProductId = $scope.selectedReconProduct;
+        var DeliveryProductId = $scope.selectedReconProduct;
         if (typeof (DeliveryProductId != 'undefined') && DeliveryProductId != null) {
             let data = {
                 LabTestResultIds: [],

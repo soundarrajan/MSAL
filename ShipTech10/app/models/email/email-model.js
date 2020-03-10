@@ -63,7 +63,7 @@ angular.module('shiptech.models').factory('emailModel', [ 'emailResource', 'payl
                 CcOthers: ccOthers,
                 From: extraFields.from,
             };
-            request_data = payloadDataModel.create(payload);
+            var request_data = payloadDataModel.create(payload);
 
 
             return emailResource.saveComments(request_data).$promise.then((data) => {

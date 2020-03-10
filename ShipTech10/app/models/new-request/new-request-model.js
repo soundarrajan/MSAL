@@ -27,7 +27,7 @@ angular.module('shiptech.models').factory('newRequestModel', [ 'newRequestResour
          * @returns {object} pre-populated request objects.
          */
         function newRequest(data) {
-            request_data = payloadDataModel.create(data);
+            var request_data = payloadDataModel.create(data);
             return newRequestResource.new(request_data).$promise.then((data) => {
                 return new newRequestModel(data);
             });
@@ -38,7 +38,7 @@ angular.module('shiptech.models').factory('newRequestModel', [ 'newRequestResour
          * @returns {object} pre-populated request objects.
          */
         function getEmptyRequest() {
-            request_data = payloadDataModel.create();
+            var request_data = payloadDataModel.create();
             return newRequestResource.getEmpty(request_data).$promise.then((data) => {
                 return new newRequestModel(data);
             });
@@ -51,7 +51,7 @@ angular.module('shiptech.models').factory('newRequestModel', [ 'newRequestResour
          */
         function updateRequest(data) {
             this.saved = true;
-            request_data = payloadDataModel.create(data);
+            var request_data = payloadDataModel.create(data);
             return newRequestResource.update(request_data).$promise.then((data) => {
                 return new newRequestModel(data);
             });
@@ -64,7 +64,7 @@ angular.module('shiptech.models').factory('newRequestModel', [ 'newRequestResour
          */
         function createRequest(data) {
             this.saved = true;
-            request_data = payloadDataModel.create(data);
+            var request_data = payloadDataModel.create(data);
             return newRequestResource.create(request_data).$promise.then((data) => {
                 return new newRequestModel(data);
             });
@@ -75,7 +75,7 @@ angular.module('shiptech.models').factory('newRequestModel', [ 'newRequestResour
          * @param {Integer} data - vesseldetails Id
          */
         function cancelProduct(data) {
-            request_data = payloadDataModel.create(data);
+            var request_data = payloadDataModel.create(data);
             return newRequestResource.cancelProduct(request_data).$promise.then((data) => {
                 return new newRequestModel(data);
             });
@@ -86,7 +86,7 @@ angular.module('shiptech.models').factory('newRequestModel', [ 'newRequestResour
          * @param {Integer} data - vesseldetails Id
          */
         function cancelRequest(data) {
-            request_data = payloadDataModel.create(data);
+            var request_data = payloadDataModel.create(data);
             return newRequestResource.cancel(request_data).$promise.then((data) => {
                 return new newRequestModel(data);
             });
@@ -97,7 +97,7 @@ angular.module('shiptech.models').factory('newRequestModel', [ 'newRequestResour
          * @param {Integer} data - vesseldetails Id
          */
         function cancelLocation(data) {
-            request_data = payloadDataModel.create(data);
+            var request_data = payloadDataModel.create(data);
             return newRequestResource.cancelLocation(request_data).$promise.then((data) => {
                 return new newRequestModel(data);
             });
@@ -109,7 +109,7 @@ angular.module('shiptech.models').factory('newRequestModel', [ 'newRequestResour
          */
 
         function completeRequest(data) {
-            request_data = payloadDataModel.create(data);
+            var request_data = payloadDataModel.create(data);
             return newRequestResource.complete(request_data).$promise.then((data) => {
                 return new newRequestModel(data);
             });
@@ -117,14 +117,14 @@ angular.module('shiptech.models').factory('newRequestModel', [ 'newRequestResour
 
         // returns default vessel buyer
         function getDefaultBuyer(data) {
-            request_data = payloadDataModel.create(data);
+            var request_data = payloadDataModel.create(data);
             return newRequestResource.getDefaultBuyer(request_data).$promise.then((data) => {
                 return data;
             });
         }
 
         function search(filters) {
-            request_data = payloadDataModel.create({});
+            var request_data = payloadDataModel.create({});
             request_data.Payload.Filters = filters;
             return newRequestResource.search(request_data).$promise.then((data) => {
                 return data;

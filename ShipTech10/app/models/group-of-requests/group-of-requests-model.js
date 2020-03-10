@@ -475,7 +475,7 @@ angular.module('shiptech.models').factory('groupOfRequestsModel', [ 'groupOfRequ
 
         function getRfqEmailTemplate(emailData, emailTemplate) {
             emailData.templateName = emailTemplate.name;
-            request_data = payloadDataModel.create(emailData);
+            var request_data = payloadDataModel.create(emailData);
             return groupOfRequestsResource.previewRFQ(request_data)
                 .$promise
                 .then((data) => {
@@ -484,7 +484,7 @@ angular.module('shiptech.models').factory('groupOfRequestsModel', [ 'groupOfRequ
         }
 
         function getRfqRequoteEmailTemplate(emailData) {
-            request_data = payloadDataModel.create(emailData);
+            var request_data = payloadDataModel.create(emailData);
             return groupOfRequestsResource.previewRequote(request_data)
                 .$promise
                 .then((data) => {

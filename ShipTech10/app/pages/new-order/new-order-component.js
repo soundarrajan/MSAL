@@ -641,7 +641,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                     for (let i = 0; i < ctrl.data.products.length; i++) {
                         let prod = ctrl.data.products[i];
                         if (!prod.status || prod.status.id != ctrl.STATUS.Cancelled.id) {
-	                            confirmedQuantityOrMaxQuantity = prod.confirmedQuantity ? prod.confirmedQuantity : prod.maxQuantity;
+                            var confirmedQuantityOrMaxQuantity = prod.confirmedQuantity ? prod.confirmedQuantity : prod.maxQuantity;
 	                            if (additionalCost.isAllProductsCost) {
                                 additionalCost.amount = additionalCost.amount + confirmedQuantityOrMaxQuantity * additionalCost.prodConv[i] * additionalCost.price;
                             } else
@@ -2555,7 +2555,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
         		// toastr.error("Please select a Spec Group for : " + $scope.hasMissingSpecGroup());
         		// return;
             }
-    		hasAdditionalCostError = false;
+            var hasAdditionalCostError = false;
             $.each(ctrl.data.products, (pk, pv) => {
             	if (pv.status) {
 	            	if (pv.status.name == 'Cancelled' && pv.additionalCosts.length > 0) {
@@ -3362,7 +3362,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
         	console.log(ctrl.data.isVerifiedBool);
         };
         ctrl.verifyOrder = function() {
-        	payload = [ { Id: ctrl.orderId } ];
+        	var payload = [ { Id: ctrl.orderId } ];
 	        orderModel.verifyOrders(payload).then((responseData) => {
                 $state.reload();
 	        }).catch((err) => {

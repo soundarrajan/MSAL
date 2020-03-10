@@ -53,6 +53,8 @@ angular.module('shiptech.components').controller('ConfirmOrderDialogController',
             } else {
                 ctrl.orderDataFromRequest = null;
             }
+            // eslint-disable-next-line init-declarations
+            var changedConfirmationProductOrders;
             if (changes.confirmationProductOrders.currentValue.confirmationProductOrders) {
                 changedConfirmationProductOrders = changes.confirmationProductOrders.currentValue.confirmationProductOrders;
             } else {
@@ -165,8 +167,8 @@ angular.module('shiptech.components').controller('ConfirmOrderDialogController',
             $('#confirm').modal('hide');
             $scope.$broadcast('buttonsEnabled');
             ctrl.buttonsDisabled = true;
-            requestProductIds = [];
-            contractIds = [];
+            var requestProductIds = [];
+            var contractIds = [];
             $.each(ctrl.orderList, (ordk, ordv) => {
                 $.each(ordv.products, (prodk, prodv) => {
                     requestProductIds.push(prodv.requestProductId);
@@ -178,7 +180,7 @@ angular.module('shiptech.components').controller('ConfirmOrderDialogController',
             //         contractIds.push(acv.contract.id)
             //     }
             // })
-            checkIfOrderFfilters = [
+            var checkIfOrderFfilters = [
                 {
                     ColumnName: 'RequestProductIds',
                     Value: JSON.stringify(requestProductIds)
@@ -202,7 +204,7 @@ angular.module('shiptech.components').controller('ConfirmOrderDialogController',
                         	$('.modal-header .close').click();
                             // debugger
                             ctrl.buttonsDisabled = false;
-                            receivedOffers = data.payload;
+                            var receivedOffers = data.payload;
                             $rootScope.tempFilterOrdersFromConfirm = [];
                             // if (receivedOffers.length == 1) {
                             $rootScope.tempFilterOrdersFromConfirm = receivedOffers[0];

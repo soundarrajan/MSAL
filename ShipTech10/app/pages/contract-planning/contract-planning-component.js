@@ -552,7 +552,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', [ '$sc
             });
         };
         ctrl.sendContractPlanningEmail = function() {
-            noAssociatedContract = false;
+            var noAssociatedContract = false;
             ctrl.selectedContracts = ctrl.contractPlanningSelectedRows;
             if ($scope.contractPlanningHasChangesMade) {
                 toastr.error('Please save the changes first!');
@@ -565,11 +565,11 @@ angular.module('shiptech.pages').controller('ContractPlanningController', [ '$sc
             //     }
             // }
             // console.log(contractList);
-            dataError = false;
-            requestIds = [];
-            locationIds = [];
-            productIds = [];
-            requestProductIds = [];
+            var dataError = false;
+            var requestIds = [];
+            var locationIds = [];
+            var productIds = [];
+            var requestProductIds = [];
             if (ctrl.selectedContracts.length == 0 || !ctrl.selectedContracts) {
                 toastr.error('Please select at least one contract');
                 return;
@@ -1059,7 +1059,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', [ '$sc
 
         // this function only broadcasts data to open modal with, function is handled by controller master
         ctrl.triggerModal = function(template, clc, name, id, formvalue, idx, field_name, filter) {
-            data = {
+            var data = {
                 template: template,
                 clc: clc,
                 name: name,

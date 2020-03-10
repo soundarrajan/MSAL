@@ -19,7 +19,7 @@ angular.module('shiptech').controller('ProductSelectDialogController', [ '$scope
             // uiApiModel.get(endpoint).then(function(data) {
             // ctrl.ui = data;
             // });
-            payload = {
+            var payload = {
 			  app: 'masters',
 			  screen: 'productlist',
 			  clc_id: 'masters_productlist',
@@ -37,7 +37,7 @@ angular.module('shiptech').controller('ProductSelectDialogController', [ '$scope
             };
             $Api_Service.entity.list(payload, (callback) => {
                 console.log(callback);
-                filteredActiveProducts = [];
+                var filteredActiveProducts = [];
                 $.each(callback.rows, (k, v) => {
                 	if (!v.isDeleted) {
 		                filteredActiveProducts.push(v);

@@ -213,7 +213,7 @@ angular.module('shiptech.pages').directive('editableDateWithMask', [ '$injector'
             ctrl.$formatters.unshift((modelValue) => {
             	siblingElement = $(`.editableDateInputWithMask[uniqueIdentifier='${$(attributes.$$element[0]).attr('uniqueIdentifier') }']`);
             	$(siblingElement).removeClass('invalid');
-            	modelResources = window.editableDateInputWithMaskResources[$(siblingElement).attr('uniqueIdentifier')];
+            	var modelResources = window.editableDateInputWithMaskResources[$(siblingElement).attr('uniqueIdentifier')];
                 if (attributes.onlyDate) {
                     dateFormat = tenantService.getDateFormat();
                     if (dateFormat) {
@@ -222,6 +222,7 @@ angular.module('shiptech.pages').directive('editableDateWithMask', [ '$injector'
                 } else {
                     dateFormat = tenantService.getDateFormat();
                 }
+                var retVal;
                 if (attributes.stDateToLocal !== undefined) {
                     retVal = moment.utc(modelValue, 'YYYY-MM-DDTHH:mm:ss').local().format(dateFormat);
                 } else {

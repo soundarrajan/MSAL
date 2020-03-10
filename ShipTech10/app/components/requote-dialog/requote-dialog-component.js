@@ -33,7 +33,7 @@ angular.module('shiptech.components')
             };
 
             ctrl.actionButtonsEnabled = function() {
-                enabled = true;
+                var enabled = true;
                 $.each(ctrl.requirements, (reqK, reqV) => {
                     if (reqV.RfqId == null) {
                         enabled = false;

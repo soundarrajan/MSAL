@@ -275,7 +275,7 @@ angular.module('shiptech').controller('BreadcrumbsController', [ '$rootScope', '
                             status.display = true;
                         }
                     });
-                statusIsAlreadyAdded = false;
+                var statusIsAlreadyAdded = false;
                 $.each($scope.statusList, (k, v) => {
                     if (v.name == adsv.status.name) {
                         statusIsAlreadyAdded = true;

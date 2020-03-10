@@ -86,7 +86,8 @@ angular.module('shiptech').controller('navigationSidebarController', [ '$scope',
         };
 
         $scope.translateLabel = function(string) {
-            translated = $filter('translate')(string);
+            var translated = $filter('translate')(string);
+            var translatedString;
             if(translated) {
                 translatedString = translated;
             } else {
