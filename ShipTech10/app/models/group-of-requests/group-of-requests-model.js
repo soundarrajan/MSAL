@@ -459,7 +459,7 @@ angular.module('shiptech.models').factory('groupOfRequestsModel', [ 'groupOfRequ
          * @returns {object} Pre-populated request objects.
          */
         function updateOfferDetails(locationId, requestOffers, allProductsAdditionalCosts) {
-            request_data = payloadDataModel.create({
+            var request_data = payloadDataModel.create({
                 Locations: [ {
                     RequestLocationId: locationId,
                     RequestOffers: requestOffers,

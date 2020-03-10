@@ -18,6 +18,8 @@ angular.module('shiptech.models').factory('lookupModel', [ 'lookupResource', 'lo
             let typeForCall = type;
             let verb = 'list';
             if (type === LOOKUP_TYPE.VOYAGES) {
+                var dest;
+                var vess;
                 if (destinationId) {
                     dest = destinationId;
                 } else {
@@ -438,11 +440,11 @@ angular.module('shiptech.models').factory('lookupModel', [ 'lookupResource', 'lo
          */
         function substrMatcher(strings) {
             return function findMatches(q, cb) {
-                let matches, substringRegex;
+                let matches;
                 // an array that will be populated with substring matches
                 matches = [];
                 // regex used to determine if a string contains the substring `q`
-                substrRegex = new RegExp(q, 'i');
+                var substrRegex = new RegExp(q, 'i');
                 // iterate through the pool of strings and for any string that
                 // contains the substring `q`, add it to the `matches` array
                 $.each(strings, (i, str) => {
@@ -456,7 +458,7 @@ angular.module('shiptech.models').factory('lookupModel', [ 'lookupResource', 'lo
 
         function getSpecParameterForRequestProduct(productId) {
             // var request_data = payloadDataModel.create(productId);
-            data = {
+            var data = {
                 Payload: {
                     Filters: [ {
                         ColumnName: 'ProductId',

@@ -273,7 +273,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', [ '$sc
         ctrl.getLookupListsContract = function(rowId, index) {
             ctrl.CLC = $('#flat_contract_planning');
             ctrl.tableData = ctrl.CLC.jqGrid.Ascensys.gridObject.rows;
-            request = ctrl.tableData[rowId];
+            var request = ctrl.tableData[rowId];
             ctrl.setContractFilters(request);
             if (typeof ctrl.lookupLists[index] == 'undefined' || ctrl.lookupLists[index] === null) {
                 newRequestModel.search(ctrl.contractFilters).then((data) => {
@@ -319,12 +319,12 @@ angular.module('shiptech.pages').controller('ContractPlanningController', [ '$sc
                 toastr.error('Please select the rows to be saved !');
                 return;
             }
-            noContractAssigned = '';
+            var noContractAssigned = '';
             if (manual) {
-                noMinMaxQuantity = '';
+                var noMinMaxQuantity = '';
             }
-            noAgreementType = '';
-            requestStatusError = '';
+            var noAgreementType = '';
+            var requestStatusError = '';
             $.each(contractList, (k, v) => {
                 if (v.requestId == 0 && v.contract == null) {
                     noContractAssigned = `${noContractAssigned }${v.vessel.name }, `;
@@ -342,7 +342,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', [ '$sc
                 }
             });
             if (noContractAssigned.length > 0 || manual && noMinMaxQuantity.length > 0 || noAgreementType.length > 0) {
-                displayError = '';
+                var displayError = '';
                 if (noContractAssigned.length > 0) {
                     displayError = `${displayError }The following vessels: ${ noContractAssigned } have no contract assigned\r\n`;
                 }
@@ -387,12 +387,12 @@ angular.module('shiptech.pages').controller('ContractPlanningController', [ '$sc
         }, 50);
 
         ctrl.contractPlanningAutoSave = function(rowIndex) {
-            CLC = $('#flat_contract_planning');
-            rowObject = CLC.jqGrid.Ascensys.gridObject.rows[rowIndex];
+            var CLC = $('#flat_contract_planning');
+            var rowObject = CLC.jqGrid.Ascensys.gridObject.rows[rowIndex];
 
             // CLC.jqGrid('setRowData',rowIndex +1 ,rowObject);
 
-            listsCache = ctrl.lists;
+            var listsCache = ctrl.lists;
 
             Object.keys($rootScope.editableCProwsModel).forEach((objectKey) => {
                 let value = $rootScope.editableCProwsModel[objectKey];
@@ -471,7 +471,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', [ '$sc
             //         contractList.push(ctrl.data[i]);
             //     }
             // }
-            previewEmailIsInvalid = false;
+            var previewEmailIsInvalid = false;
             $.each(ctrl.selectedContracts, (k, v) => {
                 if (v.requestId == 0) {
                     previewEmailIsInvalid = true;
@@ -482,15 +482,15 @@ angular.module('shiptech.pages').controller('ContractPlanningController', [ '$sc
                 return;
             }
             console.log(contractList);
-            sameSeller = true;
-            noAssociatedContract = false;
-            dataError = false;
-            requestIds = [];
-            locationIds = [];
-            productIds = [];
-            requestProductIds = [];
-            sellerIds = {};
-            noSellerContract = false;
+            var sameSeller = true;
+            var noAssociatedContract = false;
+            var dataError = false;
+            var requestIds = [];
+            var locationIds = [];
+            var productIds = [];
+            var requestProductIds = [];
+            var sellerIds = {};
+            var noSellerContract = false;
             if (ctrl.selectedContracts.length == 0 || !ctrl.selectedContracts) {
                 toastr.error('Please select at least one contract');
                 return;
@@ -501,7 +501,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', [ '$sc
                     // sameSeller = false;
                     return;
                 }
-                uniqueSlrId = contract.seller.id;
+                var uniqueSlrId = contract.seller.id;
                 if (typeof uniqueSlrId != 'undefined') {
                     if (uniqueSlrId != contract.seller.id) {
                         sameSeller = false;
@@ -642,7 +642,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', [ '$sc
                     console.log('proc', percentWidth);
                     if(percentWidth < 100) {
                         // resize only when print is smaller
-                        zoomP = `${100 - parseFloat(percentWidth).toFixed(2) }%`;
+                        var zoomP = `${100 - parseFloat(percentWidth).toFixed(2) }%`;
                         $('div.inside_content ui-view').css('zoom', zoomP);
                     }
                 }
@@ -886,8 +886,8 @@ angular.module('shiptech.pages').controller('ContractPlanningController', [ '$sc
         };
         $('body').on('click', '.contract_planning_min_max_qty_wrap a', function(e) {
             e.preventDefault();
-            rowIndex = $(this).attr('rowId');
-            rowData = $('#flat_contract_planning').jqGrid.Ascensys.gridObject.rows[parseFloat(rowIndex) - 1];
+            var rowIndex = $(this).attr('rowId');
+            var rowData = $('#flat_contract_planning').jqGrid.Ascensys.gridObject.rows[parseFloat(rowIndex) - 1];
             // $rootScope.$broadcast('contractPlanningChange', $rootScope.contractPlanningChange);
             $scope.minMaxModalEdit = null;
             $timeout(() => {
@@ -932,8 +932,8 @@ angular.module('shiptech.pages').controller('ContractPlanningController', [ '$sc
         	$('#flat_contract_planning').jqGrid('setCell', ctrl.currentRowIndex, 'maxQuantity', maxEdit);
         	$('#flat_contract_planning').jqGrid('setCell', ctrl.currentRowIndex, 'minQuantity', minEdit);
 
-            textForMinEdit = $filter('number')(minEdit, ctrl.numberPrecision.quantityPrecision) != '' ? $filter('number')(minEdit, ctrl.numberPrecision.quantityPrecision) : minEdit;
-            textForMaxEdit = $filter('number')(maxEdit, ctrl.numberPrecision.quantityPrecision) != '' ? $filter('number')(maxEdit, ctrl.numberPrecision.quantityPrecision) : maxEdit;
+            var textForMinEdit = $filter('number')(minEdit, ctrl.numberPrecision.quantityPrecision) != '' ? $filter('number')(minEdit, ctrl.numberPrecision.quantityPrecision) : minEdit;
+            var textForMaxEdit = $filter('number')(maxEdit, ctrl.numberPrecision.quantityPrecision) != '' ? $filter('number')(maxEdit, ctrl.numberPrecision.quantityPrecision) : maxEdit;
 
         	$(`.contract_planning_min_max_qty_wrap[rowid=${ctrl.currentRowIndex }] span.values`).text(`${textForMinEdit } - ${ textForMaxEdit}`);
 
@@ -975,7 +975,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', [ '$sc
         };
         ctrl.getStatuses();
         ctrl.getStatusColor = function(statusName) {
-            statusColor = null;
+            var statusColor = null;
             $.each(ctrl.statuses, (k, v) => {
                 if (v.status.name == statusName) {
                     statusColor = v.colorCode;
@@ -989,7 +989,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', [ '$sc
             // return moment(data).format(format);
 
             if (elem) {
-                formattedDate = elem;
+                var formattedDate = elem;
                 let date = Date.parse(elem);
                 date = new Date(date);
                 if (date) {
@@ -1042,7 +1042,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', [ '$sc
             let filters = ctrl.getListFilters(rowObj);
 
             // only lookup list to get from contract planning is contract
-            data = {
+            var data = {
                 template: 'general',
                 clc: 'contractplanning_contractlist',
                 name: 'Contract',

@@ -48,8 +48,8 @@ function browserInfo() {
     // screen
     let screenSize = '';
     if (screen.width) {
-        width = screen.width ? screen.width : '';
-        height = screen.height ? screen.height : '';
+        var width = screen.width ? screen.width : '';
+        var height = screen.height ? screen.height : '';
         screenSize = `${screenSize }${ width } x ${ height}`;
     }
     // browser
@@ -252,7 +252,7 @@ function browserInfo() {
             flashVersion = unknown;
         }
     }
-    jscd = {
+    var jscd = {
         screen: screenSize,
         browser: browser,
         browserVersion: version,

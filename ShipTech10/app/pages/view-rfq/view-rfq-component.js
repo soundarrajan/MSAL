@@ -46,7 +46,7 @@ angular.module('shiptech.pages')
                             PhysicalSupplierId = null;
                         }
                         // LocationId = $rootScope.bladeFilteredRfq.requestLocationId;
-                        var locationId;
+                        var LocationId;
                         if ($rootScope.bladeFilteredRfq.locationData.location) {
                             LocationId = $rootScope.bladeFilteredRfq.locationData.location.id;
                         } else {

@@ -69,7 +69,7 @@ angular.module('shiptech.pages').controller('ScheduleTableController', [
         $scope.$on(CUSTOM_EVENTS.BREADCRUMB_FILTER_STATUS, (event, filter, no) => {
             console.log(filter, no);
             if (ctrl.breadcrumbsFilter == filter) {
-                filterPayload = [];
+                var filterPayload = [];
 
                 ctrl.breadcrumbsFilter = null;
                 $rootScope.activeBreadcrumbFilters = null;
@@ -192,7 +192,7 @@ angular.module('shiptech.pages').controller('ScheduleTableController', [
                 (data) => {
                     ctrl.buttonsDisabled = false;
                     // TODO: change way we get groupID
-                    requestGroupId = data.payload[0].requestGroup.id;
+                    var requestGroupId = data.payload[0].requestGroup.id;
                     $state.go(STATE.GROUP_OF_REQUESTS, {
                         groupId: requestGroupId
                     });
@@ -254,7 +254,7 @@ angular.module('shiptech.pages').controller('ScheduleTableController', [
         ctrl.addToContractPrePlanning = function() {
             console.log(ctrl.selectedRequestsRows);
             $rootScope.scheduleDashboardVesselVoyages = [];
-            vesselsWithoutProduct = '';
+            var vesselsWithoutProduct = '';
             for (let key in ctrl.selectedRequestsRows) {
                 if (ctrl.selectedRequestsRows.hasOwnProperty(key)) {
                     $rootScope.scheduleDashboardVesselVoyages.push(ctrl.selectedRequestsRows[key]);
@@ -278,12 +278,12 @@ angular.module('shiptech.pages').controller('ScheduleTableController', [
             // console.log(payload)
             ctrl.tableData = payload;
             $(`#${ ctrl.tableData.table}`).click((e) => {
-                selected = $(`#${ ctrl.tableData.table}`).jqGrid('getGridParam').selarrrow;
-                clicked = $(`#${ ctrl.tableData.table}`).jqGrid('getGridParam').selrow;
-                tableRowIndex = $(e.target)
+                var selected = $(`#${ ctrl.tableData.table}`).jqGrid('getGridParam').selarrrow;
+                var clicked = $(`#${ ctrl.tableData.table}`).jqGrid('getGridParam').selrow;
+                var tableRowIndex = $(e.target)
                     .parents('tr')
                     .attr('id');
-                clickedRowData = ctrl.tableData.tableData.rows[tableRowIndex - 1];
+                var clickedRowData = ctrl.tableData.tableData.rows[tableRowIndex - 1];
                 if (!$(e.target).is('input[type=checkbox]')) {
                     return;
                 }
@@ -297,7 +297,7 @@ angular.module('shiptech.pages').controller('ScheduleTableController', [
                 }
 
                 for (let i = selected.length - 1; i >= 0; i--) {
-                    sv = selected[i];
+                    var sv = selected[i];
                     if (!$(e.target).prop('checked') && (ctrl.tableData.tableData.rows[Number(sv) - 1].requestId == clickedRowData.requestId)) {
                         selected.splice(i, 1);
                     }
@@ -316,7 +316,7 @@ angular.module('shiptech.pages').controller('ScheduleTableController', [
             });
         });
         ctrl.checkSelected = function(selected, clicked) {
-            selectedRequests = [];
+            var selectedRequests = [];
             $(`#${ ctrl.tableData.table}`).jqGrid('resetSelection');
             $(`#${ ctrl.tableData.table } tr[aria-selected='true'] input`).removeAttr('checked');
             $(`#${ ctrl.tableData.table } tr`).attr('aria-selected', 'false');
@@ -334,7 +334,7 @@ angular.module('shiptech.pages').controller('ScheduleTableController', [
             });
             let lastSelectedType = typeof selectedRequests[selectedRequests.length - 1].requestId;
             console.log(lastSelectedType);
-            all = [];
+            var all = [];
             $.each(ctrl.tableData.tableData.rows, (k, v) => {
                 if (
                     _.findIndex(selectedRequests, (o) => {

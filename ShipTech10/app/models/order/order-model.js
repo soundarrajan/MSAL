@@ -21,7 +21,7 @@ angular.module('shiptech.models').factory('orderModel', [ '$q', 'orderResource',
                     }
                 ]
             };
-            request_data = payloadDataModel.create(payload);
+            var request_data = payloadDataModel.create(payload);
             return orderResource.getTemplates(request_data).$promise.then((data) => {
                 return data;
             });
@@ -147,8 +147,8 @@ angular.module('shiptech.models').factory('orderModel', [ '$q', 'orderResource',
                 // convert error from arraybuffer to string
                 let charCodeArray = Array.apply(null, new Uint8Array(error.data.data));
                 let result = '';
-                for (i = 0, len = charCodeArray.length; i < len; i++) {
-                    code = charCodeArray[i];
+                for (var i = 0, len = charCodeArray.length; i < len; i++) {
+                    var code = charCodeArray[i];
                     result = result + String.fromCharCode(code);
                 }
             });

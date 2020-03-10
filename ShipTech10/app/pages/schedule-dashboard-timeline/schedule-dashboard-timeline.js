@@ -555,6 +555,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 var voyages = new vis.DataSet(timelineData.voyages);
                 var startDateObject = { 'start': ctrl.startDate.format('YYYY-MM-DD'), 'end': ctrl.endDate.format('YYYY-MM-DD')};
                 voyagesArray.push(startDateObject);
+                var timestamp;
                 minDate = _.minBy(voyagesArray, function(item) {
                     timestamp = moment(item.start).format('X');
                     if (!item.isRedelivery) {
@@ -1320,7 +1321,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
         /*build hover popover*/
         $(document).on("mouseover", "span[voyage-detail-id]", function(){
-            voyageDetailId = $(this).attr("voyage-detail-id");
+            var voyageDetailId = $(this).attr("voyage-detail-id");
             if (voyageDetailId) {
                 var html = buildHoverPopoverMarkup(voyageDetailId);
                 $(this).attr("data-content", html);

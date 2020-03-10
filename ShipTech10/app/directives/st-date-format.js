@@ -116,12 +116,13 @@ angular.module('shiptech.pages').directive('editableDateWithMask', [ '$injector'
     return {
         require: 'ngModel',
         link: function(scope, element, attributes, ctrl, ngModel) {
-            currentElement = element;
-            currentScope = scope;
-            currentAttrs = attributes;
-            currentModel = currentScope[attributes.ngModel];
-            currentCtrl = ctrl;
-            tenantService = $injector.get('tenantService');
+			var currentElement = element;
+			var currentScope = scope;
+			var currentAttrs = attributes;
+			var currentModel = currentScope[attributes.ngModel];
+			var currentCtrl = ctrl;
+			var tenantService = $injector.get('tenantService');
+			var dateFormat;
             if (attributes.onlyDate) {
                 dateFormat = tenantService.getDateFormat();
                 dateFormat = dateFormat.split(' ')[0];
@@ -148,7 +149,7 @@ angular.module('shiptech.pages').directive('editableDateWithMask', [ '$injector'
                 currentCtrl: currentCtrl,
             };
 
-
+            var siblingElement;
             attributes.$observe('disabled', (value) => {
                 siblingElement = $(`.editableDateInputWithMask[uniqueIdentifier='${$(attributes.$$element[0]).attr('uniqueIdentifier') }']`);
                 $(siblingElement).attr('disabled', value);
@@ -159,10 +160,11 @@ angular.module('shiptech.pages').directive('editableDateWithMask', [ '$injector'
             });
 
             $('.editableDateInputWithMask').on('change', function() {
-            	modelResources = window.editableDateInputWithMaskResources[$(this).attr('uniqueIdentifier')];
-            	modelValue = modelResources.currentScope.$eval(modelResources.currentAttrs.ngModel);
-            	dateFormat = $(this).attr('date-format');
+				var modelResources = window.editableDateInputWithMaskResources[$(this).attr('uniqueIdentifier')];
+				var modelValue = modelResources.currentScope.$eval(modelResources.currentAttrs.ngModel);
+				var dateFormat = $(this).attr('date-format');
             	modelResources.currentValue = $(this).val();
+            	var retVal;
                 if (modelResources.currentAttrs.stDateToLocal !== undefined) {
                     retVal = moment.utc(modelResources.currentValue).local().format(dateFormat);
                 } else {
@@ -193,7 +195,7 @@ angular.module('shiptech.pages').directive('editableDateWithMask', [ '$injector'
 
 
             $('.editableDateInputWithMask').on('blur', function() {
-                currentEl = this;
+				var currentEl = this;
                 setTimeout(() => {
                     if ($(currentEl).hasClass('invalid')) {
                         if (!$(currentEl).attr('error-shown')) {
@@ -253,7 +255,7 @@ angular.module('shiptech.pages').directive('editableDateWithMask', [ '$injector'
                     dateFormat = tenantService.getDateFormat();
                 }
             	if ($(attributes.$$element[0]).parent().data('datepicker')) {
-	            	jsDateVal = $(attributes.$$element[0]).parent().data('datepicker').getDate();
+					var jsDateVal = $(attributes.$$element[0]).parent().data('datepicker').getDate();
 	            	viewValue = moment(jsDateVal).format(dateFormat);
             	}
                 let date;
@@ -271,7 +273,7 @@ angular.module('shiptech.pages').directive('editableDateWithMask', [ '$injector'
             });
 
 
-            initMask = function(selector) {
+			var initMask = function(selector) {
 	            // vm.formatted = "";
 	            // if(!$scope.formatDates)  $scope.formatDates = {};
 
@@ -390,7 +392,7 @@ angular.module('shiptech.pages').directive('editableDateWithMask', [ '$injector'
 	            let maskFormatDateOnly = formMaskFormat(currentFormat, true);
 
 
-	            DATE_OPTIONS = {
+	            var DATE_OPTIONS = {
 	                datePositions: DATE_POSITIONS,
 	                separator: SEPARATOR,
 	                momentFormat: momentFormat,

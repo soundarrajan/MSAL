@@ -14,7 +14,7 @@ angular.module('shiptech.components')
             ctrl.$onInit = function() {
                 console.log(ctrl.energyCalculationBladePayload);
 
-                payload = ctrl.energyCalculationBladePayload.payload;
+                var payload = ctrl.energyCalculationBladePayload.payload;
                 ctrl.energyCalculationBladeData = {
                     product:  ctrl.energyCalculationBladePayload.currentProduct.product
                 };
@@ -38,22 +38,22 @@ angular.module('shiptech.components')
             ctrl.computeDiffBasedOnSpecificEnergy = function() {
                 $.each(ctrl.energyCalculationBladeData.data, (k, loc) => {
                     $.each(loc.counterparties, (k2, counterparty) => {
-                        specificEnergy = counterparty.energyParameterValues.specificEnergy;
-                        specificEnergy6Months = counterparty.energyParameterValues.specificEnergy6Months;
-                        pricePerSpecificEnergy = parseFloat(counterparty.energyParameterValues.pricePerSpecificEnergy);
+                        var specificEnergy = counterparty.energyParameterValues.specificEnergy;
+                        var specificEnergy6Months = counterparty.energyParameterValues.specificEnergy6Months;
+                        var pricePerSpecificEnergy = parseFloat(counterparty.energyParameterValues.pricePerSpecificEnergy);
                         counterparty.energyParameterValues.diffBasedOnSpecificEnergy = specificEnergy * specificEnergy6Months * pricePerSpecificEnergy;
                     });
                 });
             };
 
             ctrl.computeMinPricePerLocations = function() {
-                allPrices = [];
+                var allPrices = [];
                 $.each(ctrl.energyCalculationBladeData.data, (k, loc) => {
                     $.each(loc.counterparties, (k2, counterparty) => {
                         allPrices.push(counterparty.energyParameterValues.totalComputedPrice);
                     });
                 });
-                minPriceFound = _.minBy(allPrices);
+                var minPriceFound = _.minBy(allPrices);
                 $.each(ctrl.energyCalculationBladeData.data, (k, loc) => {
                     $.each(loc.counterparties, (k2, counterparty) => {
                         counterparty.isMinPrice = false;
@@ -90,7 +90,7 @@ angular.module('shiptech.components')
             };
 
             ctrl.updateEnergySpecValuesByProduct = function() {
-                hasInvalidPrice = false;
+                var hasInvalidPrice = false;
                 $.each(ctrl.energyCalculationBladeData.data, (k, loc) => {
                     let allowZeroPricing = loc.allowZeroPricing;
                     $.each(loc.counterparties, (k2, counterparty) => {

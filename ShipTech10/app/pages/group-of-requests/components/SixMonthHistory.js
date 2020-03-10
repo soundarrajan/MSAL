@@ -13,7 +13,7 @@ angular.module('shiptech.components')
 
 
 	        ctrl.formatDate = function(date) {
-    	        dateFormat = $tenantSettings.tenantFormats.dateFormat.name;
+                var dateFormat = $tenantSettings.tenantFormats.dateFormat.name;
 	            let hasDayOfWeek = false;
                 if (dateFormat.startsWith('DDD ')) {
                     hasDayOfWeek = true;
@@ -49,7 +49,7 @@ angular.module('shiptech.components')
                 ctrl.requestOfferId = changes.activeProduct.currentValue.requestOfferId;
 
                 ctrl.saveAverage = false;
-                specParameters = [ 'ash', 'density', 'sulphur', 'viscosity', 'water' ];
+                var specParameters = [ 'ash', 'density', 'sulphur', 'viscosity', 'water' ];
                 $.each(specParameters, (k, v) => {
                     if (changes.activeProduct.currentValue.energyParameterValues[v].specValue == null) {
                         ctrl.saveAverage = true;
@@ -58,7 +58,7 @@ angular.module('shiptech.components')
 
                 ctrl.fillMedianSixMonth = null;
 
-                defaultLocation = _.find(ctrl.listsCache.Location, (o) => {
+                var defaultLocation = _.find(ctrl.listsCache.Location, (o) => {
                     return o.id == ctrl.sixMonthPayload.locationIds;
                 });
                 ctrl.selectedLocations = [ defaultLocation ];
@@ -146,7 +146,7 @@ angular.module('shiptech.components')
                             });
                             ctrl.selectedLocations = [];
                             $.each(response.split(','), (k, v) => {
-                                locationObj = _.find(ctrl.listsCache.Location, (o) => {
+                                var locationObj = _.find(ctrl.listsCache.Location, (o) => {
                                     return o.id == v;
                                 });
                                 ctrl.selectedLocations.push(locationObj);
@@ -191,7 +191,7 @@ angular.module('shiptech.components')
             };
 
             ctrl.reassignEnergy6MonthReferenceDate = function() {
-                payload = {
+                var payload = {
 	                Filters: [
 		                {
 		                	ColumnName:'En6MHReferenceDate',
@@ -347,8 +347,8 @@ angular.module('shiptech.components')
 
             jQuery(document).ready(() => {
                 $('.custom-hardcoded-table-wrapper .tablebody').on('scroll', function() {
-                    hscrollOffset = $(this).offset().left - $(this).find('table').offset().left;
-                    bodyOffset = $(this).find('table').offset().left;
+                    var hscrollOffset = $(this).offset().left - $(this).find('table').offset().left;
+                    var bodyOffset = $(this).find('table').offset().left;
 
                     console.log(hscrollOffset, bodyOffset);
 

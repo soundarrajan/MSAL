@@ -4052,6 +4052,7 @@ var global = module.exports = typeof window != 'undefined' && window.Math == Mat
   ? window : typeof self != 'undefined' && self.Math == Math ? self
   // eslint-disable-next-line no-new-func
   : Function('return this')();
+// eslint-disable-line no-undef
 if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 
 

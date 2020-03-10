@@ -53,7 +53,7 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
             let transactionTypeId = _.find(ctrl.lists.TransactionType, (el) => {
                 return el.name == transaction;
             }).id;
-            payload = {
+            var payload = {
                 PageFilters: {
                     Filters: []
                 },
@@ -196,7 +196,7 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
             let templateFilter;
 
             if (window.location.href.indexOf('reportId')) {
-            	getParams = window.location.href.split('?')[1];
+            	var getParams = window.location.href.split('?')[1];
             	if (getParams) {
 	            	ctrl.emailTransactionTypeId = getParams.split('&')[1].split('=')[1];
 	            	ctrl.reportId = getParams.split('&')[0].split('=')[1];
@@ -401,7 +401,7 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
                     ctrl.initOthers();
 
                     if (ctrl.template.id === 0) {
-                        templateFilter = $filter('filter')(
+                        var templateFilter = $filter('filter')(
                             ctrl.templateList,
                             {
                                 id: ctrl.email.comment.emailTemplate.id
@@ -863,7 +863,7 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
 		            groupOfRequestsModel.revokeAndSend(rfq_data).then((data) => {
                         if (data.payload) {
                             if (data.payload.redirectToRequest) {
-                                lastRequestId = rfq_data.Requirements[0].RequestId;
+                                var lastRequestId = rfq_data.Requirements[0].RequestId;
                                 location.href = `/#/edit-request/${lastRequestId}`;
                                 return;
                             }
@@ -1090,9 +1090,9 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
                 });
 
 
-                pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                var pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                 if (emailObj.length > 0) {
-                    i = 0;
+                    var i = 0;
                     $.each(emailObj, (k, v) => {
                         if (!pattern.test(v)) {
                             toastr.error(`${v } is not a valid email address!`);
@@ -1111,7 +1111,7 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
         };
 
         ctrl.saveAndSendButtonLabel = function() {
-            saveAndSendButtonLabel = 'Save and Send';
+            var saveAndSendButtonLabel = 'Save and Send';
             if ([ 'ContractPlanningEmailTemplate', 'ContractPlanningUpdateEmailTemplate', 'RequoteRFQEmailTemplate' ].indexOf(ctrl.template.name) != -1) {
                 saveAndSendButtonLabel = 'Send Email';
             }

@@ -215,7 +215,7 @@ angular.module('shiptech.pages').controller('SelectContractController', [ '$wind
 
         ctrl.confirmContractSelection = function() {
             ctrl.buttonsDisabled = true;
-            requestProductIds = [];
+            var requestProductIds = [];
             var contractProductIds = [];
             var contractIds = [];
             var errors = 0;

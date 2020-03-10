@@ -12,7 +12,7 @@ angular.module('shiptech.models').factory('newRequestModel', [ 'newRequestResour
          * @returns {object} pre-populated request objects.
          */
         function getRequest(data) {
-            request_data = payloadDataModel.create(data);
+            var request_data = payloadDataModel.create(data);
             screenLoader.showLoader();
             return newRequestResource.get(request_data).$promise.then((data) => {
                 return new newRequestModel(data);
@@ -161,7 +161,7 @@ angular.module('shiptech.models').factory('newRequestModel', [ 'newRequestResour
         }
 
         function getLatestOffer(product, seller) {
-        	physicalSupplierId = null;
+            var physicalSupplierId = null;
         	if(seller.offers[0].physicalSupplierCounterparty != null) {
         		physicalSupplierId = seller.offers[0].physicalSupplierCounterparty.id;
         	}
@@ -249,6 +249,8 @@ angular.module('shiptech.models').factory('newRequestModel', [ 'newRequestResour
         }
         // Update destination port list on type
         function getDestinations(val, vesselId, destinationId, IsDestinationPort) {
+            var dest;
+            var vess;
             if (destinationId) {
                 dest = destinationId;
             } else {
@@ -285,6 +287,7 @@ angular.module('shiptech.models').factory('newRequestModel', [ 'newRequestResour
         }
 
         function getContractPlanningEmailTemplate(emailData) {
+            var templateName;
         	if (!emailData.templateName) {
         		templateName = 'ContractPlanningEmailTemplate';
         	} else {

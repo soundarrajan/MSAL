@@ -194,7 +194,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
             }
 
             if (additionalCost) {
-            	allowNegative = false;
+            	var allowNegative = false;
                 $.each(ctrl.lists.AdditionalCost, (k, v) => {
                     if (v.id == additionalCost.id) {
 		            	allowNegative = v.allowNegative;
@@ -255,7 +255,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
         // 	}
         // });
         ctrl.getAllOrderContractOptions = function(onlyBuildPayload) {
-        	shouldOnlyBuildPayload = onlyBuildPayload;
+        	var shouldOnlyBuildPayload = onlyBuildPayload;
         	setTimeout(() => {
 	        	if (typeof ctrl.data.products != 'undefined') {
 			        $.each(ctrl.data.products, (key, val) => {
@@ -316,7 +316,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
        			return;
        		}
 
-            field = {
+            var field = {
                 Type: 'lookup',
                 Name: 'Contract',
                 masterSource: 'order_contract_autocomplete',
@@ -383,7 +383,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
             $.each(ctrl.data.products, (k, v) => {
             	let physSup = false;
             	if (v.physicalSupplier) {
-            		foundSupplier = _.filter(ctrl.lists.Supplier, [ 'id', v.physicalSupplier.id ]);
+            		var foundSupplier = _.filter(ctrl.lists.Supplier, [ 'id', v.physicalSupplier.id ]);
             		if (foundSupplier) {
 		                physSup = foundSupplier[0];
             		}
@@ -601,7 +601,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
         }
 
         function calculateProductAmount(product) {
-            confirmedQuantityOrMaxQuantity = product.confirmedQuantity;
+            var confirmedQuantityOrMaxQuantity = product.confirmedQuantity;
             if (!product.confirmedQuantity) {
                 confirmedQuantityOrMaxQuantity = product.maxQuantity;
             }
@@ -722,7 +722,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
             let result = 0;
             if (ctrl.additionalCosts) {
                 for (var i = 0; i < ctrl.additionalCosts.length; i++) {
-                	parentProductStatus = 0;
+                	var parentProductStatus = 0;
                 	$.each(ctrl.data.products, (k, v) => {
                 		if (v.id == ctrl.additionalCosts[i].parentProductId) {
 		                	if (v.status) {
@@ -1098,7 +1098,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                     //    ctrl.data.buyer = data.buyer;
                     // }
                     ctrl.data.products.length = 0;
-                    productList = ctrl.data.products;
+                    var productList = ctrl.data.products;
                     for (let product in productList) {
                     	product.uniqueIdUI = window.crypto.getRandomValues(new Uint8Array(1)).toString(36).substring(7);
                         if ($.isEmptyObject(productList[product].physicalSupplier)) {
@@ -1128,7 +1128,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
             });
         };
         ctrl.addEmptyProduct = function(products) {
-            product = {
+            var product = {
                 product: null,
                 currency: ctrl.currency,
                 // productStatus: null,
@@ -1280,7 +1280,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
         ctrl.setPaymentCompany = function() {
             if (ctrl.data && $.isEmptyObject(ctrl.data.paymentCompany)) {
                 Factory_Master.get_master_entity(ctrl.data.carrierCompany.id, 'company', 'masters', (response) => {
-                    canDefault = 0;
+                    var canDefault = 0;
                     $.each(response.companyTypes, (k, v) => {
                         if (v.name == 'OperatingCompany' || v.name == 'PaymentCompany') {
                             canDefault = canDefault + 1;
@@ -1505,7 +1505,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
 	            additionalCost.prodConv = [];
             }
             for (let i = 0; i < ctrl.data.products.length; i++) {
-                prod = ctrl.data.products[i];
+                var prod = ctrl.data.products[i];
                 if (prod.quantityUom.id == additionalCost.priceUom.id) {
                     additionalCost.prodConv[i] = 1;
                 } else {
@@ -1695,13 +1695,13 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                 // ctrl.comfirmCancelOrder = confirm("Are you sure you want to cancel the order?")
             }
             if (command == 'confirmToLab') {
-        		minProductType = _.minBy(ctrl.data.products, (o) => {
+        		var minProductType = _.minBy(ctrl.data.products, (o) => {
                     return o.productType.productTypeGroup.id;
                 });
         		if (minProductType) {
-        			minProductTypeId = minProductType.productType.productTypeGroup.id;
+        			var minProductTypeId = minProductType.productType.productTypeGroup.id;
         		}
-        		foundEmailTemplates = _.filter(ctrl.emailConfiguration, (email) => {
+        		var foundEmailTemplates = _.filter(ctrl.emailConfiguration, (email) => {
         			if (email.productTypeGroup) {
 					    return email.productTypeGroup.id === minProductTypeId && email.process.indexOf('Confirmation to Lab') != -1;
         			}
@@ -1756,7 +1756,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
             }
             if (command == 'confirmToSeller') {
             	// if (ctrl.procurementSettings.order.needConfirmationSellerEmail.name == 'HardStop') {
-            		isContractOrder = false;
+            		var isContractOrder = false;
             		$.each(ctrl.data.products, (k, v) => {
             			if (v.contractId) {
 		            		isContractOrder = true;
@@ -1777,7 +1777,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
             		console.log(foundEmailTemplates);
 
             		if (!isContractOrder) {
-            			defaultTemplate = _.filter(foundEmailTemplates, (email) => {
+            			var defaultTemplate = _.filter(foundEmailTemplates, (email) => {
 						    return email.process.indexOf('Contract') == -1;
                     });
 		            	if (ctrl.confirmToSellerManual) {
@@ -1864,11 +1864,11 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
 	                return false;
             	}
             }
-            currentCommand = command;
+            var currentCommand = command;
 
             if (command != 'cancel') {
                 ctrl.buttonsDisabled = true;
-                payload = {
+                var payload = {
                     id : orderId
                 };
                 if (command == 'confirm') {
@@ -1944,8 +1944,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
         };
         ctrl.orderPreviewEmail = function() {
             if (ctrl.orderId) {
-                canSend = false;
-                canSendStatuses = [ 'Approved', 'Confirmed', 'Amended', 'Delivered', 'PartiallyDelivered', 'Invoiced', 'PartiallyInvoiced', 'Stemmed' ];
+                var canSend = false;
+                var canSendStatuses = [ 'Approved', 'Confirmed', 'Amended', 'Delivered', 'PartiallyDelivered', 'Invoiced', 'PartiallyInvoiced', 'Stemmed' ];
                 if (ctrl.data.status) {
 	                if (ctrl.procurementSettings.order.needsTransactionLimitApproval && canSendStatuses.indexOf(ctrl.data.status.name) != -1) {
                         canSend = true;
@@ -2038,7 +2038,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                 });
 
                 // 2. confirmed qty is only required after order confirm, check stusus
-                confRequired = ctrl.requiredAndDisabledRules('required', 'confirmedQty');
+                var confRequired = ctrl.requiredAndDisabledRules('required', 'confirmedQty');
                 if(confRequired) {
                     $.each(ctrl.data.products, (key, val) => {
                         if(!val.confirmedQuantity) {
@@ -2067,7 +2067,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                 errorMsg = `${errorMsg }Confirmed Quantity is required. \n`;
             }
 
-    		hasAdditionalCostError = false;
+    		var hasAdditionalCostError = false;
             $.each(ctrl.data.products, (pk, pv) => {
             	if (pv.status) {
 	            	if (pv.status.name == 'Cancelled' && pv.additionalCosts.length > 0) {
@@ -2218,7 +2218,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
         };
 
         $scope.checkProductsHaveSameProductType = function() {
-        	currentProductTypes = _.uniqBy(ctrl.data.products, 'productType.productTypeGroup.id');
+        	var currentProductTypes = _.uniqBy(ctrl.data.products, 'productType.productTypeGroup.id');
         	return currentProductTypes.length == 1;
         };
 
@@ -2472,15 +2472,16 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
             }
             // confirm order
             // ctrl.sendOrderCommand(ctrl.ORDER_COMMANDS.CONFIRM, payload);
+            var currentData;
             if (payload) {
                 currentData = payload;
             }
             if (ctrl.data) {
                 currentData = ctrl.data;
             }
-            quantityError = false;
-            minqtyError = false;
-            maxqtyError = false;
+            var quantityError = false;
+            var minqtyError = false;
+            var maxqtyError = false;
             $.each(currentData.products, (k, v) => {
                 if (ctrl.captureConfirmedQuantity.name == 'Offer') {
                     if (!v.confirmedQuantity) {
@@ -2508,7 +2509,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                 }
             });
             if (quantityError || minqtyError || maxqtyError) {
-                message = 'Please fill ';
+                var message = 'Please fill ';
                 if (quantityError) {
                     message = `${message }Confirmed quantity, `;
                 }
@@ -2534,7 +2535,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
         ctrl.confirmOrder = function(checkSpecGroup) {
             $('form').addClass('submitted');
             let errorMsg = '';
-            aggregatedErrorMessages = [];
+            var aggregatedErrorMessages = [];
             var forms_validation = validateForms(),
                 payload = {};
             if (forms_validation !== null) {
@@ -2715,12 +2716,12 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
 
             $.each(ctrl.additionalCostTypes, (_, v) => {
                 if (v.id == additionalCost.additionalCost.id) {
-                    costType = v.costType.id;
+                   var costType = v.costType.id;
                 }
             });
 
             // cost types : 1 - Flat; 2 - Unit; 3 - Percent
-            availableCosts = [];
+            var availableCosts = [];
             if (costType == 1 || costType == 2) {
                 $.each(ctrl.lists.CostType, (_, v) => {
                     if (v.id == 1 || v.id == 2) {
@@ -2773,7 +2774,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
         };
         ctrl.getProductTooltipByProductId = function(productId) {
             // console.log($listsCache);
-            tooltipName = null;
+            var tooltipName = null;
             $.each($listsCache.Product, (pk, pv) => {
                 if (pv.id == productId) {
                     tooltipName = pv.displayName;
@@ -2786,8 +2787,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
         };
         ctrl.triggerFormulaDetailsModal = function(rowData) {
             ctrl.datatest = 'ajsbdbk';
-            tpl = $templateCache.get('pages/new-order/views/formulaDetailsModal.html');
-            payload = {
+            var tpl = $templateCache.get('pages/new-order/views/formulaDetailsModal.html');
+            var payload = {
                 Filters: [ {
                     ColumnName: 'OrderId',
                     Value: ctrl.orderId
@@ -2833,9 +2834,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
             if (!ctrl.data) {
                 return;
             }
-            canReconfirm = true;
-            hasFormula = false;
-            hasContract = false;
+            var canReconfirm = true;
+            var hasFormula = false;
+            var hasContract = false;
             $.each(ctrl.data.products, (k, v) => {
                 if (v.formula) {
                     hasFormula = true;
@@ -2859,7 +2860,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
             if(typeof max == 'string') {
                 max = parseFloat(max);
             }
-            response = {
+            var response = {
                 minQuantity: min,
                 maxQuantity: max
             };
@@ -2916,7 +2917,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
         };
 
         ctrl.addNewProduct = function() {
-        	newProduct = {
+        	var newProduct = {
   				uniqueIdUI: window.crypto.getRandomValues(new Uint8Array(1)).toString(36).substring(7),
   				// physicalSupplier: angular.copy(ctrl.data.seller),
   				deliveryOption : angular.copy(ctrl.defaultDeliveryOption),
@@ -2930,7 +2931,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
         ctrl.deleteProduct = function(product) {
             if(product.id) {
                 let forms_validation = validateForms();
-                filteredFormValidation = []; /* Should exclude validation for Suveyor, Agent, Physical Supplier*/
+                var filteredFormValidation = []; /* Should exclude validation for Suveyor, Agent, Physical Supplier*/
                 if (forms_validation) {
 	                $.each(forms_validation, (k, v) => {
 	                	if (v.length > 0) {
@@ -2965,7 +2966,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
 	            	return;
 	            }
             }
-            countOfCancelledProducts = 0;
+            var countOfCancelledProducts = 0;
             let currentProduct = product;
             $.each(ctrl.data.products, (k, v) => {
                 if (v.status) {
@@ -3106,8 +3107,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
             // // applicable only for new order
             //     		return
             //     	}
-        	cureentContractProductId = contractProductId;
-        	currentProductIndex = productIdx;
+        	var cureentContractProductId = contractProductId;
+        	var currentProductIndex = productIdx;
             orderModel.getContractProductAdditionalCosts(contractProductId).then((response) => {
             	console.log(response);
             	if (!ctrl.data.products[currentProductIndex].additionalCosts) {
@@ -3169,7 +3170,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                         ctrl.selectPaymntTerm(a.val);
                     }
                     if (a.elem == 'productSupplier') {
-                        productProductId = ctrl.physicalSupplierRowUniqueIdUI;
+                       var productProductId = ctrl.physicalSupplierRowUniqueIdUI;
                         // search for product in ctrl.data.products list
                         $.each(ctrl.data.products, (key, product) => {
                             if (product.uniqueIdUI == ctrl.physicalSupplierRowUniqueIdUI) {
@@ -3181,7 +3182,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                     if (a.elem[0] == 'paymentCompany') {
                         ctrl.data.paymentCompany = a.val;
                         lookupModel.get(LOOKUP_TYPE.COMPANY, a.val.id).then((server_data) => {
-                            data = server_data.payload;
+                            var data = server_data.payload;
                             doPaymentCompanyChanged(data);
                         });
                     }

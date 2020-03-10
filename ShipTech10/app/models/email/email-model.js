@@ -7,7 +7,7 @@ angular.module('shiptech.models').factory('emailModel', [ 'emailResource', 'payl
                     Value: transactionId
                 } ]
             };
-            request_data = payloadDataModel.create(payload);
+            var request_data = payloadDataModel.create(payload);
             return emailResource.getTemplates(request_data).$promise.then((data) => {
                 return data;
             }).finally(() => {

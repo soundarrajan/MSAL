@@ -1163,7 +1163,7 @@ angular.module('shiptech.pages').controller('SellerCardController', [ '$scope', 
             });
             $.each(Array.from(new Set(location_supplier)), (key, val) => {
                 console.log(val);
-                loc = $.extend(true, {}, getDisplayLocationById(val.split('_')[0]));
+                var loc = $.extend(true, {}, getDisplayLocationById(val.split('_')[0]));
                 if (loc.requestId == ctrl.active_req) {
                     if (!loc.physicalSupplier) {
                         if (location_supplier.indexOf(`${loc.location.id }_${ supplier.id}`) == -1) {

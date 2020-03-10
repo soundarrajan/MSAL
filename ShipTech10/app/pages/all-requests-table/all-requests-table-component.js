@@ -35,10 +35,10 @@ angular.module('shiptech.pages').controller('AllRequestsTableController', [ '$sc
             ctrl.tableData = payload;
 
             $(`#${ ctrl.tableData.table}`).click((e) => {
-                selected = $(`#${ ctrl.tableData.table}`).jqGrid('getGridParam').selarrrow;
-                clicked = $(`#${ ctrl.tableData.table}`).jqGrid('getGridParam').selrow;
-                tableRowIndex = $(e.target).parents('tr').attr('id');
-                clickedRowData = ctrl.tableData.tableData.rows[tableRowIndex - 1];
+                var selected = $(`#${ ctrl.tableData.table}`).jqGrid('getGridParam').selarrrow;
+                var clicked = $(`#${ ctrl.tableData.table}`).jqGrid('getGridParam').selrow;
+                var tableRowIndex = $(e.target).parents('tr').attr('id');
+                var clickedRowData = ctrl.tableData.tableData.rows[tableRowIndex - 1];
                 if (!$(e.target).is('input[type=checkbox]')) {
                     return;
                 }
@@ -52,7 +52,7 @@ angular.module('shiptech.pages').controller('AllRequestsTableController', [ '$sc
                 }
 
                 for (let i = selected.length - 1; i >= 0; i--) {
-                    sv = selected[i];
+                    var sv = selected[i];
                     if (!$(e.target).prop('checked') && (ctrl.tableData.tableData.rows[Number(sv) - 1].requestId == clickedRowData.requestId)) {
                         selected.splice(i, 1);
                     }
@@ -69,7 +69,7 @@ angular.module('shiptech.pages').controller('AllRequestsTableController', [ '$sc
             });
         });
         ctrl.checkSelected = function(selected, clicked) {
-            selectedRequests = [];
+            var selectedRequests = [];
             $(`#${ ctrl.tableData.table}`).jqGrid('resetSelection');
             $(`#${ ctrl.tableData.table } tr[aria-selected='true'] input`).removeAttr('checked');
             $(`#${ ctrl.tableData.table } tr`).attr('aria-selected', 'false');
@@ -78,7 +78,7 @@ angular.module('shiptech.pages').controller('AllRequestsTableController', [ '$sc
             $.each(selected, (sk, sv) => {
                 selectedRequests.push(ctrl.tableData.tableData.rows[Number(sv) - 1]);
             });
-            all = [];
+            var all = [];
             $.each(ctrl.tableData.tableData.rows, (k, v) => {
                 if (_.findIndex(selectedRequests, (o) => {
                     return o.requestId == v.requestId;
@@ -351,7 +351,7 @@ angular.module('shiptech.pages').controller('AllRequestsTableController', [ '$sc
             groupOfRequestsModel.groupRequests(selectedRequestIds).then((data) => {
                 ctrl.buttonsDisabled = false;
                 // TODO: change way we get groupID
-                requestGroupId = data.payload[0].requestGroup.id;
+                var requestGroupId = data.payload[0].requestGroup.id;
                 $state.go(STATE.GROUP_OF_REQUESTS, {
                     groupId: requestGroupId
                 });
@@ -409,7 +409,7 @@ angular.module('shiptech.pages').controller('AllRequestsTableController', [ '$sc
                     console.log('proc', percentWidth);
                     if (percentWidth < 100) {
                         // resize only when print is smaller
-                        zoomP = `${100 - parseFloat(percentWidth).toFixed(2) }%`;
+                        var zoomP = `${100 - parseFloat(percentWidth).toFixed(2) }%`;
                         $('div.inside_content ui-view').css('zoom', zoomP);
                     }
                 }
@@ -499,7 +499,7 @@ angular.module('shiptech.pages').controller('AllRequestsTableController', [ '$sc
         };
         ctrl.getStatuses();
         ctrl.getStatusColor = function(statusName) {
-            statusColor = '#fff';
+            var statusColor = '#fff';
             $.each(ctrl.statuses, (k, v) => {
                 if (v.status.name == statusName) {
                     statusColor = v.colorCode;

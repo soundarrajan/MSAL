@@ -4,10 +4,10 @@ angular.module('shiptech.models')
             let request_data;
 
             function listsModel(data) {
-                result = {};
+                var result = {};
 
                 for (let i = 0; i < data.length; i++) {
-                    list = data[i];
+                    var list = data[i];
 
                     result[list.name] = list.items;
                 }

@@ -243,7 +243,7 @@ angular.module('shiptech.pages').controller('OrderListController', [ '$scope', '
         // })
         $scope.$on('reconfirmOrder', (e, data) => {
             // ctrl.reconfirmOrder = function(orderId) {
-            payload = { id: data };
+            var payload = { id: data };
             $('a[name="reconfirm"]').addClass('disabled');
             orderModel.sendOrderCommand(ctrl.ORDER_COMMANDS.RECONFIRM, payload).then((data) => {
                 $('a[name="reconfirm"]').removeClass('disabled');

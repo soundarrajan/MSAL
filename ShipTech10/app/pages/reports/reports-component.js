@@ -123,8 +123,8 @@ angular.module('shiptech.pages').controller('ReportsController', [
             });
         };
         ctrl.getStandardReports = function() {
-            reportSrc = 'getStandard';
-            reportType = '';
+            var reportSrc = 'getStandard';
+            var reportType = '';
 
             Factory_Master.getReport({ reportSrc: reportSrc, reportType: reportType.id }, (response) => {
                 ctrl.standardReports = response;
@@ -168,7 +168,7 @@ angular.module('shiptech.pages').controller('ReportsController', [
             ctrl.embedErrorMessage = null;
 
             // create new element to embed powerbi
-            newContainer = document.createElement('div');
+            var newContainer = document.createElement('div');
             newContainer.id = 'reportContainer';
             $('#reportContainerWrapper').empty();
             document.getElementById('reportContainerWrapper').appendChild(newContainer);

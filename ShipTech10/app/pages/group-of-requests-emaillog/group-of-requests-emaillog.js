@@ -1,7 +1,7 @@
 angular.module('shiptech.pages')
     .controller('groupOfRequestsEmaillogController', [ '$scope', '$element', '$attrs', '$timeout', '$state', 'STATE', function($scope, $element, $attrs, $timeout, $state, STATE) {
         // $timeout(function(){
-        ctrl = this;
+        var ctrl = this;
         if ($state.params.requestId) {
             $state.params.entity_id = $state.params.groupId;
             $state.params.screen_id = 'request_procurement';

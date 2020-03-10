@@ -17,8 +17,8 @@ angular.module('shiptech.models')
     * @returns {object} all lists.
     */
             function get() {
-                deferred = $q.defer();
-                response = { payload : $tenantConfiguration.procurementConfiguration };
+                var deferred = $q.defer();
+                var response = { payload : $tenantConfiguration.procurementConfiguration };
                 deferred.resolve(response);
                 return deferred.promise;
             }

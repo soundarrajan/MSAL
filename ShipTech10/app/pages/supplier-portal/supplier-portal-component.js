@@ -314,7 +314,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
                                     // ctrl.request = ctrl.requests[0];
                                     req_ids = [];
                                     $.each(ctrl.individuals, (k, v) => {
-                                        request = v.request;
+                                        var request = v.request;
                                         request.location = v.requestLocation;
                                         if (v.physicalSupplier) {
                                             v.rand = `i_${ v.id }_${ v.physicalSupplier.id}`;
@@ -1865,7 +1865,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
                 $.each(suppliersList, (k, v) => {
                     type = v.split('_')[0];
                     if (type == 'p') {
-                        loc = $.extend(true, {}, getLocationById(v));
+                        var loc = $.extend(true, {}, getLocationById(v));
                         var newLocationRand = `p_${ loc.id }_${ supplierId }_null_${ loc.requestId}`;
                         if (suppliersList.indexOf(newLocationRand) > -1) {
                             error++;
@@ -2022,7 +2022,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
             return returnProducts;
         };
         ctrl.addPackage = function(activeRFQId) {
-            data = angular.copy(ctrl.cardInitData.Payload);
+            var data = angular.copy(ctrl.cardInitData.Payload);
             if (activeRFQId == 'surrogate') {
                 activeRFQId = 'null';
             }

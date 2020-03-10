@@ -265,7 +265,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                                     ctrl.request.locations[i].products[j].contractProductId = null;
                                     ctrl.request.locations[i].products[j].comments = null;
                                     // get cancel action
-                                    cancelAction = ctrl.getScreenActionByName(ctrl.SCREEN_ACTIONS.CANCEL);
+                                    var cancelAction = ctrl.getScreenActionByName(ctrl.SCREEN_ACTIONS.CANCEL);
                                     if (cancelAction != null) {
                                         if (ctrl.request.locations[i].products[j].screenActions == null || typeof ctrl.request.locations[i].products[j].screenActions == 'undefined') {
                                             // no actions defined, add cancel
@@ -273,7 +273,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                                             ctrl.request.locations[i].products[j].screenActions.push(cancelAction);
                                         } else {
                                             // some actions defined, add cancel too if not there
-                                            found = _.find(ctrl.request.locations[i].products[j].screenActions, [ 'id', cancelAction.id ]);
+                                            var found = _.find(ctrl.request.locations[i].products[j].screenActions, [ 'id', cancelAction.id ]);
                                             if (typeof found == 'undefined') {
                                                 ctrl.request.locations[i].products[j].screenActions.push(cancelAction);
                                             }
@@ -531,13 +531,13 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 
         ctrl.getCurrentProductsCurrentIds = function() {
             ctrl.productsContractIds = [];
-            addedProductRequestIds = [];
+            var addedProductRequestIds = [];
             $.each(ctrl.request.locations, (lk, lv) => {
                 $.each(lv.products, (pk, pv) => {
                     if (addedProductRequestIds.indexOf(pv.id) == -1) {
                         if (pv.contract) {
 	                        if (pv.contract.contract) {
-	                            obj = {
+	                            var obj = {
 	                                contractId: pv.contract.contract.id,
 	                                requestProductId: pv.id
 	                            };
@@ -629,7 +629,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             if (verifyContracts) {
                 console.log(ctrl.bestContractsList);
                 console.log(ctrl.checkedProducts);
-                contractExistsForSelection = false;
+                var contractExistsForSelection = false;
                 ctrl.existingContractLocations = [];
                 $.each(ctrl.bestContractsList, (k, v) => {
                     if (ctrl.checkedProducts[v.requestProductId] == true) {
@@ -639,7 +639,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 });
                 ctrl.existingContractLocations = ctrl.existingContractLocations.join(', ');
                 if (contractExistsForSelection) {
-                    tpl = $templateCache.get('pages/new-request/views/goSpotActionPopup.html');
+                    var tpl = $templateCache.get('pages/new-request/views/goSpotActionPopup.html');
                     // tpl = $templateCache.get('app-general-components/views/modal_sellerrating.html');
                     $scope.modalInstance = $uibModal.open({
                         template: tpl,
@@ -662,7 +662,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 groupOfRequestsModel.groupRequests([ ctrl.request.id ]).then(
                     (data) => {
                         ctrl.buttonsDisabled = false;
-                        requestGroup = data.payload;
+                        var requestGroup = data.payload;
                         $state.go(STATE.GROUP_OF_REQUESTS, {
                             // group: requestGroup,
                             groupId: requestGroup[0].requestGroup.id
@@ -727,7 +727,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             if(typeof max == 'string') {
                 max = parseFloat(max);
             }
-            response = {
+            var response = {
                 minQuantity: min,
                 maxQuantity: max
             };
@@ -876,7 +876,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 if (!ctrl.checkProductsActionForCancelLocation(location)) {
                     return;
                 }
-                canBeCancelledPayload = {
+                var canBeCancelledPayload = {
                     Filters: [
                         {
                             ColumnName: 'RequestLocationId',
@@ -919,7 +919,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         ctrl.addEmptyProduct = function(products, addCancel) {
             let agreementType = tenantService.getAgreementType();
             let uomSelection = tenantService.getUom();
-            product = {
+            var product = {
                 product: null,
                 uniqueIdUI: window.crypto.getRandomValues(new Uint8Array(1))
                     .toString(36)
@@ -1026,7 +1026,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             });
         };
         ctrl.getScreenActionByName = function(name) {
-            action = null;
+            var action = null;
             $.each(ctrl.listsCache.ScreenAction, (key, val) => {
                 if (val.name == name) {
                     action = val;
@@ -1115,7 +1115,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         if (data.payload) {
                             ctrl.showCanBeCancelledProductFromLocationConfirm(location, product.id, data.payload);
                         } else {
-                        	message = `Are you sure you want to delete ${ product.product.name } from ${ location.location.name }?`;
+                        	var message = `Are you sure you want to delete ${ product.product.name } from ${ location.location.name }?`;
                             ctrl.showCanBeCancelledProductFromLocationConfirm(location, product.id, message);
                             // newRequestModel.cancelProduct(product.id).then(function(data) {
                             //     $state.reload();
@@ -1785,8 +1785,8 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 if (typeof lv.service != 'undefined') {
                     if (lv.service != null) {
                         $.each(lv.service.contacts, (sck, scv) => {
-                            contactExists = false;
-                            contactEmailExists = false;
+                            var contactExists = false;
+                            var contactEmailExists = false;
                             $.each(ctrl.lists.contacts, (ck, cv) => {
                                 if (cv.id == scv.id) {
                                     contactExists = true;
@@ -1910,7 +1910,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             selectContractModel.getRequestContract(ctrl.requestId, contractId).then((data) => {
                 if (data.payload !== null) {
                     $.each(data.payload, (key, val) => {
-                        contractAlreadyInList = false;
+                        var contractAlreadyInList = false;
                         $.each(ctrl.contracts, (k, v) => {
                             if (v.contract.id == val.contract.id) {
                                 contractAlreadyInList = true;
@@ -1928,10 +1928,10 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         };
         ctrl.confirmContractSelection = function() {
             ctrl.buttonsDisabled = true;
-            requestProductIds = [];
-            contractProductIds = [];
-            contractIds = [];
-            errors = 0;
+            var requestProductIds = [];
+            var contractProductIds = [];
+            var contractIds = [];
+            var errors = 0;
             console.log(ctrl.selectedContracts);
             $.each(ctrl.selectedContracts, (ck, cv) => {
                 if (cv.requestProductId) {
@@ -1948,12 +1948,12 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 orderModel.getExistingOrders(requestProductIds.join(',')).then(
                     (responseData) => {
                         ctrl.buttonsDisabled = false;
-                        responseOrderData = responseData.payload;
+                        var responseOrderData = responseData.payload;
                         if (responseOrderData.length == 0) {
                             $('#confirm').modal('show');
-                            responseOrders = null;
+                            var responseOrders = null;
                         } else {
-                            selectedProductsRequestLocationIds = [];
+                            var selectedProductsRequestLocationIds = [];
                             $.each(responseOrderData, (locK, locV) => {
                                 $.each(ctrl.selectedContracts, (ck, cv) => {
                                     if (cv.requestLocationId == locV.requestLocationId) {
@@ -1972,13 +1972,13 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                                 }
                             });
                             // selectedContracts, selectedProducts, orderFromResponse
-                            ordersWithErrorsIdx = [];
+                            var ordersWithErrorsIdx = [];
                             $.each(ctrl.selectedContracts, (selConK, selConV) => {
                                 $.each(responseOrders, (respOrdK, respOrdV) => {
                                     if (ctrl.selectedContracts[selConK].requestLocationId == responseOrders[respOrdK].requestLocationId) {
-                                        hasError = false;
-                                        errorMessages = [];
-                                        errorType = [];
+                                        var hasError = false;
+                                        var errorMessages = [];
+                                        var errorType = [];
                                         if (responseOrders.length > 0) {
                                             if (ctrl.selectedContracts[selConK].currency.id != responseOrders[respOrdK].products[0].currency.id) {
                                                 hasError = true;
@@ -1999,9 +1999,9 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                                             }
                                         }
                                         if (hasError) {
-                                            errorTypes = errorType.join(' and ');
+                                            var errorTypes = errorType.join(' and ');
                                             if (errorTypes) {
-                                                errorMessage = `Unable to add ${ $scope.getProductNameByRequestProductId(selConV.requestProductId) } for ${ ctrl.request.vesselDetails.vessel.name } in existing stemmed order ${ responseOrders[respOrdK].id } due to conflicting ${ errorTypes }. New order will be created.${ errorTypes } will be only that did not met the criteria for extending the order`;
+                                                var errorMessage = `Unable to add ${ $scope.getProductNameByRequestProductId(selConV.requestProductId) } for ${ ctrl.request.vesselDetails.vessel.name } in existing stemmed order ${ responseOrders[respOrdK].id } due to conflicting ${ errorTypes }. New order will be created.${ errorTypes } will be only that did not met the criteria for extending the order`;
                                             }
                                             ordersWithErrorsIdx.push(respOrdK);
                                             // responseOrders = null;
@@ -2027,7 +2027,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                             requestProductId: requestProductIds.join(','),
                             requestOrder: responseOrders
                         };
-                        broadcastDataConfirmation = {
+                        var broadcastDataConfirmation = {
                             confirmationProductOrders: ctrl.confirmationProductOrders,
                             requestOrder: responseOrders
                         };
@@ -2049,6 +2049,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         //     ctrl.selectedContracts = obj;
         // })
         $scope.getProductNameByRequestProductId = function(rpid) {
+            var foundProduct;
             $.each(ctrl.request.locations, (locK, locV) => {
                 $.each(locV.products, (prodK, prodV) => {
                     if (prodV.id == rpid) {
@@ -2074,7 +2075,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         });
 
         ctrl.showProceedButton = function() {
-            selected = 0;
+            var selected = 0;
             ctrl.selectedContracts = [];
             ctrl.selectedContractHasStemmedProduct = false;
             let CLC = $('#flat_available_contracts');
@@ -2115,9 +2116,9 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         });
         ctrl.selectProduct = function(productId) {
             // var product;
-            locIdx = ctrl.requestProductDataOnChange.location;
-            prodIdx = ctrl.requestProductDataOnChange.product;
-            prodUniqueIdUI = ctrl.requestProductDataOnChange.product;
+            var locIdx = ctrl.requestProductDataOnChange.location;
+            var prodIdx = ctrl.requestProductDataOnChange.product;
+            var prodUniqueIdUI = ctrl.requestProductDataOnChange.product;
             prodUniqueIdUI = ctrl.actveProductUniqueIdUi;
             lookupModel.get(LOOKUP_TYPE.PRODUCTS, productId).then((server_data) => {
                 // product = server_data.payload;
@@ -2168,7 +2169,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             });
         };
         ctrl.canValidate = function() {
-            validProducts = 0;
+            var validProducts = 0;
             $.each(ctrl.request.locations, (lk, lv) => {
                 $.each(lv.products, (pk, pv) => {
                     $.each(pv.screenActions, (sk, sv) => {
@@ -2201,7 +2202,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 return;
             }
             if (ctrl.request.requestStatus.name != 'Cancelled' && ctrl.request.requestStatus.name != 'Stemmed') {
-                canCancel = ctrl.checkCancelInProducts();
+                var canCancel = ctrl.checkCancelInProducts();
                 if (canCancel > 0) {
                     return true;
                 }
@@ -2290,7 +2291,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         };
         ctrl.hasAction = function(action) {
         	if (action == 'GoSpot') {
-	            hasGoSpot = false;
+	            var hasGoSpot = false;
 	            $.each(ctrl.request.locations, (kl, vl) => {
 	                $.each(vl.products, (kp, vp) => {
 	                    $.each(vp.screenActions, (ks, vs) => {
@@ -2331,7 +2332,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     if (ctrl.request.locations[i].products[j].id === null && ctrl.request.locations[i].products[j].isDeleted === false) {
                         return true;
                     }
-                    index = 0;
+                    var index = 0;
                     $.each(ctrl.request.locations[i].products[j].screenActions, (key, val) => {
                         if (val.name == 'SendQuestionnaire') {
                             index++;
@@ -2361,6 +2362,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         };
 
         ctrl.sendCancelRequestAction = function() {
+            var payload;
             if (ctrl.dataReasonCancel) {
                 payload = ctrl.dataReasonCancel;
             } else {
@@ -2540,7 +2542,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 }
                 new_request.locations[i].products = new_products;
             }
-            new_locations = [];
+            var new_locations = [];
             for (var i = 0; i < new_request.locations.length; i++) {
             	if (new_request.locations[i].portStatus) {
 	            	if (new_request.locations[i].portStatus.name !== 'Cancelled') {
@@ -2565,7 +2567,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         };
         ctrl.validatePreRequest = function() {
             // call function to see required fields
-            valid = ctrl.checkValidQuantities();
+            var valid = ctrl.checkValidQuantities();
             $('form').addClass('submitted');
             ctrl.isRequiredMinMax(true);
             ctrl.isSpecGroupIsRequired(true);
@@ -2831,7 +2833,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             if (typeof ctrl.productIds == 'undefined') {
                 ctrl.productIds = [];
             }
-            prodIndex = ctrl.productIds.indexOf(id);
+            var prodIndex = ctrl.productIds.indexOf(id);
             // console.log(prodIndex)
             if (prodIndex == -1) {
                 ctrl.productIds.push(id);
@@ -2843,7 +2845,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         };
         ctrl.getProductTooltipByProductId = function(productId) {
             // console.log($listsCache);
-            tooltipName = null;
+            var tooltipName = null;
             $.each($listsCache.Product, (pk, pv) => {
                 if (pv.id == productId) {
                     tooltipName = pv.displayName;
@@ -2954,7 +2956,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             }
             search = search ? search : '';
 
-            hasValidatedProduct = false;
+            var hasValidatedProduct = false;
             $.each(ctrl.request.locations, (lk, lv) => {
 	            $.each(lv.products, (pk, pv) => {
 	            	if (pv.productStatus.name == 'Validated') {
@@ -2979,15 +2981,15 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 ctrl.showAllContracts = true;
             });
         };
-        processData = function(data, all) {
+        var processData = function(data, all) {
             ctrl.contracts = data.payload;
-            result = ctrl.contracts.length;
+            var result = ctrl.contracts.length;
             if (typeof ctrl.currentPage == 'undefined') {
                 ctrl.currentPage = 1;
             }
             // page = 1;
             ctrl.entries = result;
-            skip = ctrl.entries * (ctrl.currentPage - 1);
+            var skip = ctrl.entries * (ctrl.currentPage - 1);
             ctrl.matchedCount = data.matchedCount;
             // ctrl.currentPage = page;
             ctrl.maxPages = Math.ceil(ctrl.matchedCount / ctrl.tableEntries);
@@ -2996,6 +2998,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             }
         };
         ctrl.getNotificationsListPage = function(currentPage, direction) {
+            var newPage = currentPage;
             if (direction == 'next') {
                 newPage = currentPage + 1;
                 ctrl.changePage(newPage);
@@ -3007,7 +3010,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         };
         ctrl.changePage = function(newPage) {
             ctrl.currentPage = newPage;
-            pagination = {};
+            var pagination = {};
             pagination.start = newPage * ctrl.tableEntries - ctrl.tableEntries;
             pagination.length = ctrl.tableEntries;
             if (ctrl.showAllContracts) {
@@ -3049,7 +3052,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             }, 500);
         };
         ctrl.checkProductsActionForCancelLocation = function(location) {
-            canCancelLocation = false;
+            var canCancelLocation = false;
             $.each(location.products, (pk, pv) => {
                 if (pv.id) {
                     $.each(pv.screenActions, (sak, sav) => {
@@ -3326,7 +3329,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 return;
             }
 
-            allDestinations = [
+            var allDestinations = [
                 ctrl.request.locations[locationIdx].destination ? ctrl.request.locations[locationIdx].destination : undefined,
                 ctrl.request.locations[locationIdx].destination1 ? ctrl.request.locations[locationIdx].destination1 : undefined,
                 ctrl.request.locations[locationIdx].destination2 ? ctrl.request.locations[locationIdx].destination2 : undefined,
@@ -3335,7 +3338,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             ];
 
             allDestinations = _.compact(allDestinations);
-            duplicateDestination = false;
+            var duplicateDestination = false;
             $.each(allDestinations, (k, v) => {
                 if (data.id == v.id) {
                     duplicateDestination = true;
@@ -3498,9 +3501,9 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         		if ($(ev.target).attr('typeahead-append-to') == '\'body\'') {
                     $('[uib-typeahead-popup]').css('top', '');
                     $('[uib-typeahead-popup]').css('left', '');
-        			currentTargetTopPosition = $(ev.target).offset().top;
-        			currentTargetLeftPosition = $(ev.target).offset().left;
-        			currentTargetHeight = parseFloat($(ev.target).css('height'));
+        			var currentTargetTopPosition = $(ev.target).offset().top;
+        			var currentTargetLeftPosition = $(ev.target).offset().left;
+        			var currentTargetHeight = parseFloat($(ev.target).css('height'));
         			$('[uib-typeahead-popup]').css('top', currentTargetTopPosition + currentTargetHeight);
         			$('[uib-typeahead-popup]').css('left', currentTargetLeftPosition);
         		}
