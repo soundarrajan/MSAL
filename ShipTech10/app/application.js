@@ -24,10 +24,10 @@ angular
 
             $rootScope.$on('$routeChangeStart', () => {
             });
-		    $rootScope.$on('$locationChangeStart', (event, next, current) => {
+            $rootScope.$on('$locationChangeStart', (event, next, current) => {
                 let activePage = window.location.href.replace('/#/', '/');
                 window.strum('routeChange', activePage);
-		    });
+            });
 
             console.log(adalService);
             console.log('adal:application refresh');
@@ -190,16 +190,16 @@ angular
                     $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Infrastructure/api/infrastructure/static/filters`, {
                         Payload: false
                     }).then((response) => {
-                    	angular.module('shiptech').value('$filtersData', response.data);
-	                    if (window.indexedDB) {
-	                        try {
-	                            db.staticFilters.add({ data: response.data, id: 1 }).catch((err) => {
+                        angular.module('shiptech').value('$filtersData', response.data);
+                        if (window.indexedDB) {
+                            try {
+                                db.staticFilters.add({ data: response.data, id: 1 }).catch((err) => {
                                     console.log(err);
                                 });
-	                        } catch (err) {
-	                            // To nothing
-	                        }
-	                    }
+                            } catch (err) {
+                                // To nothing
+                            }
+                        }
                     });
                 }
 
@@ -255,10 +255,10 @@ angular
                                 return;
                             }
                             db.transaction('rw', db.listsCache, db.listsHash, db.staticFilters, () => {
-                                    	db.staticFilters.get(1).then((staticFiltersDB) => {
-                                    		let staticFilters = staticFiltersDB;
+                                db.staticFilters.get(1).then((staticFiltersDB) => {
+                                    let staticFilters = staticFiltersDB;
                                     angular.module('shiptech').value('$filtersData', staticFilters.data);
-                                    	});
+                                });
                                 db.listsCache.get(1).then((listsCacheDB) => {
                                     if (listsCacheDB) {
                                         var listsCache = listsCacheDB.data;
@@ -273,9 +273,9 @@ angular
                                                         $.each(currentLists.selectListTimestamps, (k1, v1) => {
                                                             if (v1.name === v.name) {
                                                                 listFound = true;
-                                                                    	if (v1.lastModificationDate !== v.lastModificationDate) {
-	                                                                        listsToUpdate.push(v1.name);
-                                                                    	}
+                                                                if (v1.lastModificationDate !== v.lastModificationDate) {
+                                                                    listsToUpdate.push(v1.name);
+                                                                }
                                                             }
                                                         });
                                                         if (!listFound) {
@@ -283,7 +283,7 @@ angular
                                                         }
                                                     });
                                                     if (listsToUpdate.indexOf('StaticFilters') != -1) {
-                                                            	listsToUpdate.splice(listsToUpdate.indexOf('StaticFilters'));
+                                                        listsToUpdate.splice(listsToUpdate.indexOf('StaticFilters'));
                                                         getAndSetStaticFilters();
                                                     }
                                                     $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists`, {
@@ -313,7 +313,7 @@ angular
                                                 Payload: false
                                             })
                                         );
-                        	                    getAndSetStaticFilters();
+                                        getAndSetStaticFilters();
                                         makeQueries(query);
                                     }
                                 }).catch((err) => {
@@ -322,7 +322,7 @@ angular
                                             Payload: false
                                         })
                                     );
-                    	                    getAndSetStaticFilters();
+                                    getAndSetStaticFilters();
                                     makeQueries(query);
                                 });
                             });
@@ -333,7 +333,7 @@ angular
                                 Payload: false
                             })
                         );
-	                    getAndSetStaticFilters();
+                        getAndSetStaticFilters();
                         makeQueries(query);
                     }
                 } else {
@@ -794,43 +794,43 @@ angular.element(document).ready(() => {
         dataType: 'json',
         method: 'GET',
         success:function(response) {
-            var appConfig = response;
-	        angular
-	            .module('shiptech')
-	            .constant('tenantConfigs', appConfig.tenantConfigs)
-	            .constant('STATE', appConfig.STATE)
-	            .constant('VIEW_TYPES', appConfig.VIEW_TYPES)
-	            .constant('API', appConfig.API)
-	            .constant('SCREEN_LAYOUTS', appConfig.SCREEN_LAYOUTS)
-	            .constant('TIMESCALE', appConfig.TIMESCALE)
-	            .constant('CUSTOM_EVENTS', appConfig.CUSTOM_EVENTS)
-	            .constant('LOOKUP_TYPE', appConfig.LOOKUP_TYPE)
-	            .constant('LOOKUP_MAP', appConfig.LOOKUP_MAP)
-	            .constant('SCREEN_ACTIONS', appConfig.SCREEN_ACTIONS)
-	            .constant('IDS', appConfig.IDS)
-	            .constant('VALIDATION_MESSAGES', appConfig.VALIDATION_MESSAGES)
-	            .constant('ORDER_COMMANDS', appConfig.ORDER_COMMANDS)
-	            .constant('STATUS', appConfig.STATUS)
-	            .constant('COST_TYPE_IDS', appConfig.COST_TYPE_IDS)
-	            .constant('COMPONENT_TYPE_IDS', appConfig.COMPONENT_TYPE_IDS)
-	            .constant('SELLER_SORT_ORDER', appConfig.SELLER_SORT_ORDER)
-	            .constant('PRODUCT_STATUS_IDS', appConfig.PRODUCT_STATUS_IDS)
-	            .constant('EXPORT_FILETYPE', appConfig.EXPORT_FILETYPE)
-	            .constant('VALIDATION_STOP_TYPE_IDS', appConfig.VALIDATION_STOP_TYPE_IDS)
-	            .constant('EXPORT_FILETYPE_EXTENSION', appConfig.EXPORT_FILETYPE_EXTENSION)
-	            .constant('PACKAGES_CONFIGURATION', appConfig.PACKAGES_CONFIGURATION)
-	            .constant('EMAIL_TRANSACTION', appConfig.EMAIL_TRANSACTION)
-	            .constant('appInsightsInstance', appInsightsInstanceProvider(appConfig.INSTRUMENTATION_KEY));
-	        if (window.location.hash.indexOf('supplier-portal') > 0) {
-	            angular.module('shiptech').value('$tenantSettings', {});
-	            angular.module('shiptech').value('$listsCache', {});
-	            angular.module('shiptech').value('$filtersData', {});
-	            bootstrapApplication();
-	        } else {
-	            angular.bootstrap(auth, [ 'auth' ], {
-	                strictDi: true
-	            });
-	        }
+            appConfig = response;
+            angular
+                .module('shiptech')
+                .constant('tenantConfigs', appConfig.tenantConfigs)
+                .constant('STATE', appConfig.STATE)
+                .constant('VIEW_TYPES', appConfig.VIEW_TYPES)
+                .constant('API', appConfig.API)
+                .constant('SCREEN_LAYOUTS', appConfig.SCREEN_LAYOUTS)
+                .constant('TIMESCALE', appConfig.TIMESCALE)
+                .constant('CUSTOM_EVENTS', appConfig.CUSTOM_EVENTS)
+                .constant('LOOKUP_TYPE', appConfig.LOOKUP_TYPE)
+                .constant('LOOKUP_MAP', appConfig.LOOKUP_MAP)
+                .constant('SCREEN_ACTIONS', appConfig.SCREEN_ACTIONS)
+                .constant('IDS', appConfig.IDS)
+                .constant('VALIDATION_MESSAGES', appConfig.VALIDATION_MESSAGES)
+                .constant('ORDER_COMMANDS', appConfig.ORDER_COMMANDS)
+                .constant('STATUS', appConfig.STATUS)
+                .constant('COST_TYPE_IDS', appConfig.COST_TYPE_IDS)
+                .constant('COMPONENT_TYPE_IDS', appConfig.COMPONENT_TYPE_IDS)
+                .constant('SELLER_SORT_ORDER', appConfig.SELLER_SORT_ORDER)
+                .constant('PRODUCT_STATUS_IDS', appConfig.PRODUCT_STATUS_IDS)
+                .constant('EXPORT_FILETYPE', appConfig.EXPORT_FILETYPE)
+                .constant('VALIDATION_STOP_TYPE_IDS', appConfig.VALIDATION_STOP_TYPE_IDS)
+                .constant('EXPORT_FILETYPE_EXTENSION', appConfig.EXPORT_FILETYPE_EXTENSION)
+                .constant('PACKAGES_CONFIGURATION', appConfig.PACKAGES_CONFIGURATION)
+                .constant('EMAIL_TRANSACTION', appConfig.EMAIL_TRANSACTION)
+                .constant('appInsightsInstance', appInsightsInstanceProvider(appConfig.INSTRUMENTATION_KEY));
+            if (window.location.hash.indexOf('supplier-portal') > 0) {
+                angular.module('shiptech').value('$tenantSettings', {});
+                angular.module('shiptech').value('$listsCache', {});
+                angular.module('shiptech').value('$filtersData', {});
+                bootstrapApplication();
+            } else {
+                angular.bootstrap(auth, [ 'auth' ], {
+                    strictDi: true
+                });
+            }
         },
         async:false
     });

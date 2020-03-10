@@ -1152,7 +1152,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                 onRegisterApi: function(api) {
                     setTimeout(() => {
                         $.each(api.grid.rows, (k, v) => {
-                            field = {
+                            var field = {
                                 Name: `EmailTemplate_${ k}`,
                                 Type: 'lookup',
                                 clc_id: 'admin_templates',
@@ -1324,8 +1324,8 @@ APP_MASTERS.controller('Controller_Datatables', [
                     setTimeout(() => {
                         $scope.gridApi = api;
                         api.core.handleWindowResize();
-                        defaultUom = $tenantSettings.tenantFormats.uom;
-                        defaultQuantityType = $listsCache.ContractualQuantityOption[0];
+                        var defaultUom = $tenantSettings.tenantFormats.uom;
+                        var defaultQuantityType = $listsCache.ContractualQuantityOption[0];
                         let firstEntry = {
                             contractualQuantityOption: defaultQuantityType,
                             minContractQuantity: null,
@@ -1666,7 +1666,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                         };
                         $scope.formValues.temp.tanks = row.entity;
                         $scope.formValues.temp.tanks.productType = { id: row.entity.productTypeId };
-                        index = row.grid.rows.indexOf(row);
+                        var index = row.grid.rows.indexOf(row);
                         $($('.group_VesselTankDetailsCLC .ui-grid-canvas .ui-grid-row')[index]).addClass('active');
                         angular.merge($scope.formValues.tanks[index], $scope.formValues.temp.tanks);
                         $scope.refreshValue = 1;
@@ -2187,7 +2187,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                     addData: function(obj, index) {
                         obj = $scope[obj];
                         // count = Object.keys(obj).length;
-                        count = 0;
+                        var count = 0;
                         $.each(obj, (key, val) => {
                             if(!val.isDeleted) {
                                 count++;
@@ -3487,12 +3487,12 @@ APP_MASTERS.controller('Controller_Datatables', [
         		return;
         	}
             spec = angular.fromJson(spec);
-            id = spec.specParameter.id;
+            var id = spec.specParameter.id;
     		if (typeof $scope.formValues[objKey] == 'undefined') {
     			$scope.formValues[objKey] = [];
     		}
             obj = $scope.formValues[objKey];
-            addedAlready = new Array();
+            var addedAlready = new Array();
             $.each(obj, (key, val) => {
                 if (!val.isDeleted) {
                     if (typeof val.specParameter == 'undefined') {
@@ -3518,7 +3518,7 @@ APP_MASTERS.controller('Controller_Datatables', [
         	if (!$scope.formValues.claimDetails.isEstimatedSettlementAmountManual) {
         		$scope.formValues.claimDetails.estimatedSettlementAmount = null;
         	}
-            subTypeObjects = [ 'quantitySubtypes', 'densitySubtypes', 'qualitySubtypes', 'complianceSubtypes' ];
+            var subTypeObjects = [ 'quantitySubtypes', 'densitySubtypes', 'qualitySubtypes', 'complianceSubtypes' ];
             $.each(subTypeObjects, (stk, stv) => {
             	if (stv != objKey) {
 			    		if (typeof $scope.formValues[stv] == 'undefined') {
@@ -3584,8 +3584,8 @@ APP_MASTERS.controller('Controller_Datatables', [
         $scope.getPriceTypes = function() {
             Factory_Master.getPriceTypes(vm.app_id, 'priceTypes', (callback) => {
                 if (callback) {
-                    pricetypesDef = $scope.formValues.marketPrices;
-                    pricetypesNew = [];
+                    var pricetypesDef = $scope.formValues.marketPrices;
+                    var pricetypesNew = [];
                     $.each(callback, (key, val) => {
                         pricetypesNew[key] = {};
                         pricetypesNew[key].marketPriceType = val.marketPriceType;
@@ -3604,20 +3604,20 @@ APP_MASTERS.controller('Controller_Datatables', [
         };
         $scope.calcQualityClaimType = function($event, productIdx, rowRenderIndex) {
         	$rootScope.selectedLabResults_claimId = null;
-            raiseNoteButton = angular.element(document).find(`#Product_${ productIdx }_Raise_Quality_Note`);
-            currentTableCheckboxes = angular.element(document).find('input[name^=\'labResults\']');
+            var raiseNoteButton = angular.element(document).find(`#Product_${ productIdx }_Raise_Quality_Note`);
+            var currentTableCheckboxes = angular.element(document).find('input[name^=\'labResults\']');
             // $scope.labResults_claimId;
-            currentSelectionClaimIds = [];
+            var currentSelectionClaimIds = [];
             $.each($event.entity.claimTypes, (k, v) => {
             	currentSelectionClaimIds.push(v.id);
             });
             // if (typeof($scope.labResults_claimId) == 'undefined') {
             // }
             	$scope.labResults_claimId = [];
-            currentChecksNo = 0;
+            var currentChecksNo = 0;
             $scope.labResults_specParamIds = [];
             $.each(currentTableCheckboxes, function() {
-                loopClaimTypeIds = [];
+                var loopClaimTypeIds = [];
                 if ($(this).attr('spec-selection')) {
                     $.each(JSON.parse($(this).attr('spec-selection')), (k, v) => {
                         loopClaimTypeIds.push(v.id);
@@ -3661,7 +3661,7 @@ APP_MASTERS.controller('Controller_Datatables', [
         };
 
         $scope.checkIfAtLeastOneElementIsInArray = function(needle, haystack) {
-        	isInArray = false;
+            var isInArray = false;
         	$.each(needle, (nk, nv) => {
 	        	$.each(haystack, (hk, hv) => {
 	        		if (nv == hv) {
@@ -3677,7 +3677,7 @@ APP_MASTERS.controller('Controller_Datatables', [
             $scope.isSelectedRow = index;
         };
         $scope.specParamChanged = function(rowIndex, fval) {
-            val = fval.specGroupParameters[rowIndex].specParameter.id;
+            var val = fval.specGroupParameters[rowIndex].specParameter.id;
             Factory_Master.get_master_entity(val, 'specparameter', 'masters', (response) => {
                 if (response) {
                     $scope.formValues = $rootScope.formValuesLoaded;
@@ -3720,7 +3720,7 @@ APP_MASTERS.controller('Controller_Datatables', [
             if (!fVal.locations[rowIdx].productTypes) {
                 fVal.locations[rowIdx].productTypes = [];
             }
-            itemExists = _.find(fVal.locations[rowIdx].productTypes, (el) => {
+            var itemExists = _.find(fVal.locations[rowIdx].productTypes, (el) => {
                 return el.productType.id == item.id;
             });
             if (itemExists) {
@@ -3729,7 +3729,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                     return;
                 }
             }
-            itemToAdd = angular.copy(item);
+            var itemToAdd = angular.copy(item);
             itemToAdd.id = 0;
             itemToAdd.productType = item;
 
@@ -3745,7 +3745,7 @@ APP_MASTERS.controller('Controller_Datatables', [
         };
 
         $scope.removeProductTypeMasterService = function(rowIndex, productTypeKey) {
-            scope = angular.element($('entity-edit-form > div')).scope();
+            var scope = angular.element($('entity-edit-form > div')).scope();
             if (scope.formValues.locations[rowIndex].productTypes[productTypeKey].id == 0) {
                 scope.formValues.locations[rowIndex].productTypes.splice(productTypeKey, 1);
             } else {
@@ -3792,7 +3792,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                         return;
                     }
                     $scope.vesselVoyageDetails = response.payload;
-                    tpl = $templateCache.get('app-masters/views/vessel_voyage_details.html');
+                    var tpl = $templateCache.get('app-masters/views/vessel_voyage_details.html');
                     $scope.modalInstance = $uibModal.open({
                         template: tpl,
                         appendTo: angular.element(document.getElementsByClassName('page-container')),

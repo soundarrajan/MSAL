@@ -3093,7 +3093,7 @@ APP_MASTERS.controller('Controller_Master', [
                         });
                     } else {
                         $.each($scope.options[name], (index, value) => {
-                            selectorElement = $(`#${ selector }:not([data-value^="{{"])`);
+                            var selectorElement = $(`#${ selector }:not([data-value^="{{"])`);
                             if (selectorElement.attr('data-value') == value.id) {
                                 itemToAdd = {
                                     id: value.id,
@@ -3339,7 +3339,7 @@ APP_MASTERS.controller('Controller_Master', [
         };
         $scope.addTagToMulti = function(model, data) {
             vm.plusClickedMultilookup = true;
-            alreadyAdded = false;
+            var alreadyAdded = false;
             if (!$scope.formValues[model] || typeof $scope.formValues[model] == 'undefined') {
                 $scope.formValues[model] = [];
             }
@@ -3394,7 +3394,7 @@ APP_MASTERS.controller('Controller_Master', [
             }, 10);
         };
         vm.equalizeColumnsHeight = function(elements) {
-            elementsArray = elements.split(', ');
+            var elementsArray = elements.split(', ');
             let t = 0; // the height of the highest element (after the function runs)
             let t_elem; // the highest element (after the function runs)
             $timeout(() => {
@@ -3410,7 +3410,7 @@ APP_MASTERS.controller('Controller_Master', [
             }, 500);
         };
         vm.equalizeColumnsHeightGrouped = function(element, group) {
-            groupElements = group.split(', ');
+            var groupElements = group.split(', ');
             $timeout(() => {
                 let groupHeight = 0;
                 let groupMargin = 0;
@@ -3420,14 +3420,14 @@ APP_MASTERS.controller('Controller_Master', [
                         groupMargin = groupMargin + parseFloat($(`${value } .portlet`).css('margin-bottom'));
                     }
                 });
-                calcHeight = parseFloat(groupHeight - 10);
+                var calcHeight = parseFloat(groupHeight - 10);
                 $(`${element } .portlet`).css('height', calcHeight);
                 $(`${element } .portlet`).css('overflow', 'auto');
             }, 1000);
         };
         vm.cloneEntity = function(group, obj) {
             if (obj) {
-                new_obj = angular.copy(obj);
+                var new_obj = angular.copy(obj);
                 new_obj.id = 0;
                 new_obj.isActive = true;
                 $scope.formValues[group].push(new_obj);
@@ -3617,7 +3617,7 @@ APP_MASTERS.controller('Controller_Master', [
         $scope.checkIfTab = function() {
             $scope.$watch('formFields', () => {
                 $timeout(() => {
-                    tab = $('.grp_unit')
+                    var tab = $('.grp_unit')
                         .children('.tab-pane')
                         .first()
                         .addClass('active in');
@@ -3651,7 +3651,7 @@ APP_MASTERS.controller('Controller_Master', [
         }
         // -- Additional Costs SELECT
         $scope.getKeysCount = function(obj) {
-            count = Object.keys(obj).length;
+            var count = Object.keys(obj).length;
             return count;
         };
         $scope.refreshSelect = function() {};
@@ -3667,8 +3667,8 @@ APP_MASTERS.controller('Controller_Master', [
             Factory_Master.exchangeRate(param, (callback) => {
                 // callback = '1.5';
                 if (callback) {
-                    initial_val = $(`#${ parent}`).val();
-                    updated_val = initial_val * callback;
+                    var initial_val = $(`#${ parent}`).val();
+                    var updated_val = initial_val * callback;
                     $(`#${ parent}`).val(updated_val);
                 }
             });
@@ -3808,11 +3808,11 @@ APP_MASTERS.controller('Controller_Master', [
             }, 100);
         };
         $scope.mapLocation = function(name, id) {
-            val = $(`[name= "${ name }"]`).val();
+            var val = $(`[name= "${ name }"]`).val();
             Factory_Master.get_master_entity(val, 'location', 'masters', (response) => {
                 if (response) {
-                    newSysInst = [];
-                    i = 0;
+                    var newSysInst = [];
+                    var i = 0;
                     $.each($scope.formValues.productsSystemInstruments, (key, kval) => {
                         if (!kval.canBeDeleted && kval.id > 0 || typeof kval.canBeDeleted === 'undefined' && kval.id == 0) {
                             newSysInst[key] = kval;
@@ -3844,7 +3844,7 @@ APP_MASTERS.controller('Controller_Master', [
             if (typeof $scope.selectedRows == 'undefined') {
                 $scope.selectedRows = [];
             }
-            selId = row.entity.id;
+            var selId = row.entity.id;
             if ($scope.selectedRows.indexOf(selId) == -1) {
                 $scope.selectedRows.push(selId);
             } else {
@@ -3952,7 +3952,7 @@ APP_MASTERS.controller('Controller_Master', [
                     id: $state.params.entity_id
                 };
             }
-            documentTypeScope = angular.element($('.form_input_DocumentType')).scope();
+            var documentTypeScope = angular.element($('.form_input_DocumentType')).scope();
             $rootScope.formValues.documentType = documentTypeScope.formValues.documentType;
             data.request.Payload.documentType = $rootScope.formValues.documentType;
             data.request.Payload.isVerified = false; // default false
@@ -4148,6 +4148,7 @@ APP_MASTERS.controller('Controller_Master', [
                         $scope.upload_success = 0;
                         $.each(transactionTypes, (key, val) => {
                             data.request.Payload.transactionType = angular.copy(val);
+                            var file;
                             if ($rootScope.droppedDoc) {
                                 file = $rootScope.droppedDoc;
                             } else {
@@ -4272,11 +4273,11 @@ APP_MASTERS.controller('Controller_Master', [
                 }
             }
             // console.log($rootScope)
-            id = element.clc;
-            object = element.source;
-            formvalue = element.formvalue;
-            idx = element.idx;
-            field_name = element.field_name;
+            var id = element.clc;
+            var object = element.source;
+            var formvalue = element.formvalue;
+            var idx = element.idx;
+            var field_name = element.field_name;
             let CLC = $(`#modal_${ id } table.ui-jqgrid-btable`);
             let rowId = CLC.jqGrid('getGridParam', 'selrow');
             let rowData = CLC.jqGrid.Ascensys.gridObject.rows[rowId - 1];
@@ -4372,7 +4373,7 @@ APP_MASTERS.controller('Controller_Master', [
                 } else {
                     $scope.target_element = element.source;
                 }
-                elements = element.source.split('.');
+                var elements = element.source.split('.');
             } else {
                 $scope.target_element = element.source;
                 elements = formvalue.split('.');
@@ -4398,7 +4399,7 @@ APP_MASTERS.controller('Controller_Master', [
                 }
                 if (element.screen == 'rfqrequestslist') {
                 	$scope.selected_value = [];
-                	rowsData = CLC.jqGrid('getGridParam', 'selarrrow');
+                    var rowsData = CLC.jqGrid('getGridParam', 'selarrrow');
                 	$.each(rowsData, (k, v) => {
 	                	$scope.selected_value.push(CLC.jqGrid.Ascensys.gridObject.rows[v - 1]);
                 	});
@@ -4423,10 +4424,10 @@ APP_MASTERS.controller('Controller_Master', [
         };
 
         $scope.assignObjValue = function(obj, keyPath, value) {
-            lastKeyIndex = keyPath.length - 1;
+            var lastKeyIndex = keyPath.length - 1;
             for (let i = 0; i < lastKeyIndex; ++i) {
-                key = keyPath[i];
-                next_key = keyPath[i + 1];
+                var key = keyPath[i];
+                var next_key = keyPath[i + 1];
                 if (typeof next_key === 'number') {
                     if (!(key in obj)) {
                         obj[key] = [];
@@ -4477,7 +4478,7 @@ APP_MASTERS.controller('Controller_Master', [
             let CLC = $(`#modal_${ id } table.ui-jqgrid-btable`);
             let rowId = CLC.jqGrid('getGridParam', 'selrow');
             let rowData = CLC.jqGrid.Ascensys.gridObject.rows[rowId - 1];
-            selectedRows = [];
+            var selectedRows = [];
             $.each(CLC.jqGrid.Ascensys.selectedProductIds, (k1, v1) => {
                 $.each(CLC.jqGrid.Ascensys.gridObject.rows, (k2, v2) => {
                     if (v1 == v2.deliveryProductId) {
@@ -4485,7 +4486,7 @@ APP_MASTERS.controller('Controller_Master', [
                     }
                 });
             });
-            orderAdditionalCostId = [];
+            var orderAdditionalCostId = [];
             $.each(CLC.jqGrid.Ascensys.selectedOrderAdditionalCostId, (k1, v1) => {
                 $.each(CLC.jqGrid.Ascensys.gridObject.rows, (k2, v2) => {
                     if (v1 == v2.orderAdditionalCostId) {
@@ -4494,14 +4495,14 @@ APP_MASTERS.controller('Controller_Master', [
                 });
             });
 
-            mixedRows = selectedRows.concat(orderAdditionalCostId);
+            var mixedRows = selectedRows.concat(orderAdditionalCostId);
 
             $.each(mixedRows, (k, rowData) => {
                 if (rowData.costName) {
-                    transaction_type = 'cost';
+                    var transaction_type = 'cost';
                 	rowData.product.productId = rowData.product.id;
                     // rowData.product.id = rowData.deliveryProductId;
-                    transactionstobeinvoiced_dtRow = {
+                    var transactionstobeinvoiced_dtRow = {
                         product: rowData.product,
                         costName: rowData.costName,
                         costType: rowData.costType,
@@ -4571,7 +4572,7 @@ APP_MASTERS.controller('Controller_Master', [
                     };
                 }
                 if (rowData.costName) {
-                    alreadyExists = false;
+                    var alreadyExists = false;
                     $.each($scope.formValues.costDetails, (idx, val) => {
                         if (rowData.orderAdditionalCostId == val.orderAdditionalCostId) {
                             alreadyExists = true;
@@ -4689,9 +4690,13 @@ APP_MASTERS.controller('Controller_Master', [
             let UIFilters = {};
             let treasurySummaryFilters = [];
 
-            let sellerOperator = brokerOperator = companyOperator = paymentStatusOperator = paymentDateOperator = 1;
+            let sellerOperator = 1;
+            let brokerOperator = 1;
+            let companyOperator = 1;
+            let paymentStatusOperator = 1;
+            let paymentDateOperator = 1;
 
-            newFilterItem = null;
+            var newFilterItem = null;
             for (let i = $rootScope.rawFilters.length - 1; i >= 0; i--) {
             	if ($rootScope.rawFilters[i].fromTreasurySummary) {
 	            	$rootScope.rawFilters.splice(i, 1);
@@ -5031,11 +5036,11 @@ APP_MASTERS.controller('Controller_Master', [
             }
         };
         $scope.hideAddDataButton = function() {
-            buttons = $('.addData')
+            var buttons = $('.addData')
                 .parents('.ui-grid-render-container')
                 .find('.addData');
-            count = buttons.length;
-            first = buttons[0];
+            var count = buttons.length;
+            var first = buttons[0];
             if (count > 1) {
                 first.addClass('hidden');
             }
@@ -5130,7 +5135,7 @@ APP_MASTERS.controller('Controller_Master', [
         	$rootScope.previewEmail = null;
             $.each($listsCache.EmailTransactionType, (key, val) => {
                 if (val.name == valType) {
-                    $transactionId = val.id;
+                    var $transactionId = val.id;
                 }
             });
             Factory_Master.list_by_transaction_type($transactionId, (response) => {
@@ -5143,9 +5148,9 @@ APP_MASTERS.controller('Controller_Master', [
                             }
                         });
                         if (valType == 'Claims') {
-                            keysToRemove = [];
+                            var keysToRemove = [];
                             $.each($scope.emailTemplates, (k, v) => {
-                                entityClaimType = $rootScope.formValues.claimType.claimType.name;
+                                var entityClaimType = $rootScope.formValues.claimType.claimType.name;
                                 if ($rootScope.formValues.claimType.claimType.name == 'Quantity' && $rootScope.formValues.densitySubtypes.length > 0) {
                                     entityClaimType = 'Density';
                                 }
@@ -5208,8 +5213,8 @@ APP_MASTERS.controller('Controller_Master', [
             });
         }
         $scope.addEmailAddressInPreview = function(model, value) {
-            currentValues = $rootScope[model];
-            isDuplicate = false;
+            var currentValues = $rootScope[model];
+            var isDuplicate = false;
             $.each(currentValues, (key, currentVal) => {
                 if (currentVal.name == value.name && currentVal.idEmailAddress == value.idEmailAddress) {
                     isDuplicate = true;
@@ -5239,7 +5244,7 @@ APP_MASTERS.controller('Controller_Master', [
 		            toString = toString.toString();
 		            ccString = ccString.toString();
 
-		            request_data = payloadDataModel.create(data.Payload);
+                    var request_data = payloadDataModel.create(data.Payload);
 
 		            let comments = {
 		                id: $rootScope.previewEmail.comment ? $rootScope.previewEmail.comment.id : 0,
@@ -5266,7 +5271,7 @@ APP_MASTERS.controller('Controller_Master', [
 		            request_data.Payload.comment = angular.copy(comments);
 
 		            if (request_data.warningMessage) {
-		                confirmAction = window.confirm(request_data.warningMessage);
+                        var confirmAction = window.confirm(request_data.warningMessage);
 		                if (confirmAction) {
 		                    Factory_Master.send_email_preview(request_data, (response) => {
 		                        if (response) {
@@ -5307,11 +5312,11 @@ APP_MASTERS.controller('Controller_Master', [
         };
         $scope.addSpecParamsToClaim = function(event) {
             // check if valid
-            selectedDisabled = event.currentTarget.attributes['ng-disabled'].value;
-            selectedParamId = parseInt(event.currentTarget.attributes['spec-param-id'].value); // specParam.id
-            selectedParamClaimType = parseInt(event.currentTarget.attributes['claim-type'].value); // claim.claim.id (actual id to send)
-            selectedParamRadioId = event.currentTarget.attributes['radio-id'].value; // claim.id (given id for validation)
-            selectedClaimId = selectedParamRadioId.split('_')[3];
+            var selectedDisabled = event.currentTarget.attributes['ng-disabled'].value;
+            var  selectedParamId = parseInt(event.currentTarget.attributes['spec-param-id'].value); // specParam.id
+            var selectedParamClaimType = parseInt(event.currentTarget.attributes['claim-type'].value); // claim.claim.id (actual id to send)
+            var selectedParamRadioId = event.currentTarget.attributes['radio-id'].value; // claim.id (given id for validation)
+            var selectedClaimId = selectedParamRadioId.split('_')[3];
             // console.log(selectedClaimId);
             // cancel selection if disabled
             if (selectedDisabled == 'true') {
@@ -5356,7 +5361,7 @@ APP_MASTERS.controller('Controller_Master', [
             // claimId = just for disabling checkboxes
             $rootScope.raiseClaimInfo.currentClaimTypeId = claimTypeId;
             $rootScope.raiseClaimInfo.currentClaimId = claimId;
-            paramsSet = false;
+            var paramsSet = false;
             $rootScope.raiseClaimInfo.currentSpecParamIds = [];
             $.each(vm.availableClaimTypes, (claimKey, claimVal) => {
                 if (claimVal.id != $rootScope.raiseClaimInfo.currentClaimId) {
@@ -5536,11 +5541,11 @@ APP_MASTERS.controller('Controller_Master', [
         /* Convert Currency*/
         $scope.convertCurrency = function(fromCurrencyId, toCurrencyId, exchangeDate, amount, convertCallback) {
             let d = new Date();
-            month = d.getMonth() + 1;
-            day = d.getDate();
-            hours = d.getHours();
-            minutes = d.getMinutes();
-            seconds = d.getSeconds();
+            var month = d.getMonth() + 1;
+            var day = d.getDate();
+            var hours = d.getHours();
+            var minutes = d.getMinutes();
+            var seconds = d.getSeconds();
             if (month < 10) {
                 month = `0${ month}`;
             }
@@ -5556,7 +5561,7 @@ APP_MASTERS.controller('Controller_Master', [
             if (seconds < 10) {
                 seconds = `0${ seconds}`;
             }
-            date = `${d.getFullYear() }-${ month }-${ day }T${ hours }:${ minutes }:${ seconds}`;
+            var date = `${d.getFullYear() }-${ month }-${ day }T${ hours }:${ minutes }:${ seconds}`;
             if (!exchangeDate) {
                 exchangeDate = date;
             }
@@ -5656,7 +5661,7 @@ APP_MASTERS.controller('Controller_Master', [
             });
             newContact.id = 0;
             newContact.emailContact = true;
-            dataToAdd = counterpartyData;
+            var dataToAdd = counterpartyData;
             dataToAdd.contacts.push(newContact);
             $rootScope.$broadcast('confirmedBladeNavigation', true);
             Factory_Master.save_master_changes('masters', 'counterparty', dataToAdd, (callback) => {
@@ -5720,7 +5725,7 @@ APP_MASTERS.controller('Controller_Master', [
             if (param == 'start') {
                 return 0;
             }
-            windowWidth = $window.innerWidth;
+            var windowWidth = $window.innerWidth;
             if (windowWidth > 991) {
                 return 4;
             }
@@ -5805,17 +5810,18 @@ APP_MASTERS.controller('Controller_Master', [
 	            vm.filteredCostTypesByAdditionalCost = [];
             }
 
-            currentCost = cost;
+            var currentCost;
             if (!$rootScope.additionalCostsComponentTypes) {
                 return;
             }
+            var costType;
             $.each($rootScope.additionalCostsComponentTypes, (k, v) => {
                 if (v.id == currentCost) {
                     costType = v.costType.id;
                 }
             });
 
-            availableCosts = [];
+            var availableCosts = [];
             $.each(vm.listsCache.CostType, (ack, acv) => {
                 if (acv) {
                     if (costType == 1 || costType == 2) {
@@ -5872,6 +5878,7 @@ APP_MASTERS.controller('Controller_Master', [
             }
         };
         $scope.setDefaultCostType = function(additionalCost) {
+            var defaultCostType;
             $.each(vm.additionalCostsComponentTypes, (k, v) => {
                 if (v.id == additionalCost.id) {
                     defaultCostType = v.costType;
@@ -5894,7 +5901,7 @@ APP_MASTERS.controller('Controller_Master', [
             $scope.formValues.pricingScheduleOptionEventBasedContinuous = null;
         };
         $scope.getProductTooltipByProductId = function(productId) {
-            tooltipName = null;
+            var tooltipName = null;
             $.each($listsCache.Product, (pk, pv) => {
                 if (pv.id == productId) {
                     tooltipName = pv.displayName;
@@ -5969,8 +5976,8 @@ APP_MASTERS.controller('Controller_Master', [
             }, 300);
         };
         $scope.validateEmailPattern = function(modelData) {
-            pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            resultOk = pattern.test(modelData);
+            var pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            var resultOk = pattern.test(modelData);
             if (resultOk) {
                 return modelData;
             }
@@ -5979,7 +5986,7 @@ APP_MASTERS.controller('Controller_Master', [
         };
 
         $scope.validateContactNamePattern = function(modelData) {
-            errorMessage = 'The contacts cannot contain the characters ",", ";", "|"';
+            var errorMessage = 'The contacts cannot contain the characters ",", ";", "|"';
             if (modelData.indexOf(',') == -1 && modelData.indexOf(';') == -1 && modelData.indexOf('|') == -1) {
                 return modelData;
             }
@@ -5997,19 +6004,19 @@ APP_MASTERS.controller('Controller_Master', [
         		$rootScope.setDocumentTimeout = true;
 	            setTimeout(() => {
 	            	$(document).on('change', 'input.inputfile', function() {
-	            		input = $(this);
+                        var input = $(this);
 	                    // var label = $(input).next();
                         //    var labelVal = label.innerHTML;
 	                    // if (!label) {
 	                    // 	return;
 	                    // }
-	                    currentFile = this.files[0];
+                        var currentFile = this.files[0];
                         let documentTypeValues = this.form[1].value;
                         if (documentTypeValues == '') {
                             toastr.warning('Please select a Document Type and upload the file again');
                             return;
                         }
-	                    fileScope = angular.element($('input').parent().find('.fileNameLabel')).scope();
+                        var fileScope = angular.element($('input').parent().find('.fileNameLabel')).scope();
                         $rootScope.droppedDoc = currentFile;
                         fileScope.$apply(() => {
                             fileScope.droppedDoc = currentFile;
@@ -6130,7 +6137,7 @@ APP_MASTERS.controller('Controller_Master', [
             //     clc_id: "masters_counterpartylist_labs"
             // }
             Factory_Master.get_master_list_filtered('masters', 'counterpartylist', 'masters_counterpartylist_labs', (response) => {
-                defaultLabOptions = [];
+                var defaultLabOptions = [];
                 if (response) {
                     if (response.rows.length > 0) {
                         $.each(response.rows, (k, v) => {
@@ -6166,6 +6173,7 @@ APP_MASTERS.controller('Controller_Master', [
 
         /* Location Master Preffered Seller Product Table*/
         $scope.openLocationPreferredSellerProducts = function(currentSellerKey, master) {
+            var objMapping;
         	if (master) {
         		if (master == 'counterpartyMaster') {
         			objMapping = 'counterpartyLocations';
@@ -6179,7 +6187,8 @@ APP_MASTERS.controller('Controller_Master', [
             tpl = $templateCache.get('app-general-components/views/modal_preferredSellersProduct.html');
             // payload
             $scope.locationMasterPreferredSellerProductsTableConfig = {};
-            getPayload = $scope.createLocationPreferredSellerProductsPayload();
+            var getPayload = $scope.createLocationPreferredSellerProductsPayload();
+            var getPreferredProductsForSellerInLocation;
             if (objMapping == 'sellers') {
 	            getPreferredProductsForSellerInLocation = {
 	                Payload: {
@@ -6261,6 +6270,7 @@ APP_MASTERS.controller('Controller_Master', [
             if (!$scope.locationMasterPreferredSellerProductsTableConfig.take) {
                 $scope.locationMasterPreferredSellerProductsTableConfig.take = 25;
             }
+            var sortList;
             if (!$scope.locationMasterPreferredSellerProductsTableConfig.order) {
                 $scope.locationMasterPreferredSellerProductsTableConfig.order = {};
                 sortList = [
@@ -6278,7 +6288,7 @@ APP_MASTERS.controller('Controller_Master', [
             	];
             }
             $scope.locationMasterPreferredSellerProductsTableConfig.skip = ($scope.locationMasterPreferredSellerProductsTableConfig.currentPage - 1) * $scope.locationMasterPreferredSellerProductsTableConfig.take;
-            payload = {
+            var payload = {
                 Payload: {
                     SelectedProductIds: [],
                     Order: {
@@ -6327,7 +6337,7 @@ APP_MASTERS.controller('Controller_Master', [
                 toastr.error('Please select at least one product');
                 return;
             }
-            preferredProducts = [];
+            var preferredProducts = [];
             $.each($scope.preferredProductsForSellerInLocation, (k, v) => {
                 preferredProducts.push({
                     product: {
@@ -6411,14 +6421,14 @@ APP_MASTERS.controller('Controller_Master', [
             }
         };
         $scope.checkIfIsPrefferedProduct = function(productId) {
-            isPreffered = false;
+            var isPreffered = false;
             if ($scope.preferredProductsForSellerInLocation.indexOf(`${productId }`) != -1) {
                 isPreffered = true;
             }
             return isPreffered;
         };
         $scope.changePrefferedProduct = function(productId) {
-            isAlreadyPreferred = -1;
+            var isAlreadyPreferred = -1;
             $.each($scope.preferredProductsForSellerInLocation, (ppk, ppv) => {
                 if (parseFloat(ppv) == parseFloat(productId)) {
                     isAlreadyPreferred = ppk;
@@ -6725,7 +6735,7 @@ APP_MASTERS.controller('Controller_Master', [
                 return false;
             }
         	// confirm = confirm(message);
-    		sweetConfirmResponse = {};
+            var sweetConfirmResponse = {};
         	$('.sweetConfirmModal').modal();
         	$('.sweetConfirmModal').removeClass('hide fade');
         	$('.sweetConfirmModal').css('transform', 'translateY(100px)');
@@ -6799,6 +6809,7 @@ APP_MASTERS.controller('Controller_Master', [
 
 
         $scope.triggerRobStandard = function(usingStandard) {
+            var vesselTypeId;
             if($scope.formValues.vesselType) {
                 vesselTypeId = angular.copy($scope.formValues.vesselType.id);
             } else if (usingStandard) {
@@ -6809,7 +6820,7 @@ APP_MASTERS.controller('Controller_Master', [
 	                return;
             	}
 
-
+            var vesselId;
             if($scope.formValues.id) {
                 vesselId = angular.copy($scope.formValues.id);
             } else {
@@ -6848,7 +6859,7 @@ APP_MASTERS.controller('Controller_Master', [
             $scope.formValues.flattenedVoyages = [];
             $.each($scope.formValues.voyages, (vk, vv) => {
                 $.each(vv.voyageDetails, (vdk, vdv) => {
-                    voyageDetailRow = {
+                    var voyageDetailRow = {
                         id : vdv.id,
                         code : vv.code,
                         port : vdv.port,
@@ -7223,7 +7234,7 @@ APP_MASTERS.controller('Controller_Master', [
 
 
 	    $scope.createFinalInvoice = function(fv) {
-	        invoiceType = {
+            var invoiceType = {
 	            id: 2,
 	            name: 'FinalInvoice',
 	            code: null
@@ -7233,7 +7244,7 @@ APP_MASTERS.controller('Controller_Master', [
 		        entityId : vm.entity_id
 	        };
 
-	        formValues = angular.element($('[name="CM.editInstance"]')).scope().formValues;
+            var formValues = angular.element($('[name="CM.editInstance"]')).scope().formValues;
             localStorage.setItem('invoice_createFinalInvoice', angular.toJson(data));
             window.open('/#/invoices/invoice/edit/', '_blank');
 	    };
@@ -7242,9 +7253,11 @@ APP_MASTERS.controller('Controller_Master', [
 
 
         function convertDecimalSeparatorStringToNumber(number) {
-        	numberToReturn = number;
+            var numberToReturn = number;
         	if (typeof number == 'string') {
 	        	if (number.indexOf(',') != -1 && number.indexOf('.') != -1) {
+	        	    var decimalSeparator;
+	        	    var thousandsSeparator;
 	        		if (number.indexOf(',') > number.indexOf('.')) {
 	        			decimalSeparator = ',';
 	        			thousandsSeparator = '.';
@@ -7285,7 +7298,7 @@ APP_MASTERS.controller('Controller_Master', [
             if ($rootScope.reloadPage) {
                 return;
             }
-	    	currentRowIndex = rowIndex;
+            var currentRowIndex = rowIndex;
 	    	if (!window.initialUomConversionDone) {
 	    		window.initialUomConversionDone = {
 		    		product : 0,
@@ -7305,14 +7318,14 @@ APP_MASTERS.controller('Controller_Master', [
 	        vm.type = type;
 	        if (vm.type == 'product') {
                 window.initialUomConversionDone.product++;
-	            product = formValues.productDetails[currentRowIndex];
+                var product = formValues.productDetails[currentRowIndex];
 	            if (typeof product.product != 'undefined' && typeof product.invoiceQuantityUom != 'undefined' && typeof product.invoiceRateUom !== 'undefined') {
 	                if (product.invoiceQuantityUom == null || product.invoiceRateUom == null /* || typeof(product.invoiceAmount) == 'undefined'*/) {
 	                    return;
 	                };
 	                console.log('called getUomConversionFactor with params:', product.product.id, product.invoiceRateUom.id, product.invoiceQuantityUom.id);
 	                $scope.getUomConversionFactor(product.product.id, 1, product.invoiceRateUom.id, product.invoiceQuantityUom.id, (response) => {
-	                	conversionFactor = response;
+                        var conversionFactor = response;
 	                	if (false && formValues.productDetails[currentRowIndex].sapInvoiceAmount) {
 		                    formValues.productDetails[currentRowIndex].invoiceAmount = formValues.productDetails[currentRowIndex].sapInvoiceAmount;
 	                	} else {
@@ -7359,7 +7372,7 @@ APP_MASTERS.controller('Controller_Master', [
 	                calculate(vm.old_cost, vm.old_product, vm.old_costType);
 	            }
 
-	            allCostApplyFor = 0;
+                var allCostApplyFor = 0;
 	            $.each($scope.grid.appScope.fVal().dtMasterSource.applyFor, (k, v) => {
 	            	if (v.name != 'All') {
 			            allCostApplyFor = allCostApplyFor + v.convertedFinalQuantityAmount;
@@ -7379,11 +7392,13 @@ APP_MASTERS.controller('Controller_Master', [
 	                if (!formValues.costDetails[rowIndex].invoiceExtras) {
 	                    formValues.costDetails[rowIndex].invoiceExtras = 0;
 	                }
+                    var rateUom;
 	                if (vm.cost.invoiceRateUom) {
 	                    rateUom = vm.cost.invoiceRateUom.id;
 	                } else {
 	                    rateUom = null;
 	                }
+	                var quantityUom;
 	                if (vm.cost.invoiceQuantityUom) {
 	                    quantityUom = vm.cost.invoiceQuantityUom.id;
 	                } else {
@@ -7514,10 +7529,10 @@ APP_MASTERS.controller('Controller_Master', [
 		        });
 		    };
         $scope.getUomConversionFactor = function(ProductId, Quantity, FromUomId, ToUomId, callback) {
-	    	productId = ProductId;
-	    	quantity = Quantity;
-	    	fromUomId = FromUomId;
-	    	toUomId = ToUomId;
+            var productId = ProductId;
+            var quantity = Quantity;
+            var fromUomId = FromUomId;
+            var toUomId = ToUomId;
 	        data = {
 	            Payload: {
 	                ProductId: productId,
@@ -7545,7 +7560,7 @@ APP_MASTERS.controller('Controller_Master', [
 	    };
 
 	    $scope.calculateprovisionalInvoiceAmount = function(formValues) {
-	        grandTotal = 0;
+            var grandTotal = 0;
 	        $.each(formValues.relatedInvoices, (k, v) => {
 	            if (!v.isDeleted && typeof v.invoiceAmount != 'undefined' && v.invoiceType.internalName == 'ProvisionalInvoice') {
 	                grandTotal = grandTotal + v.invoiceAmount;
@@ -7594,7 +7609,7 @@ APP_MASTERS.controller('Controller_Master', [
             });
         };
         $scope.computeTotalInvoiceAmountOnClaimAmountChange = function() {
-	    	costsAmountSum = 0;
+            var costsAmountSum = 0;
 	    	$.each($scope.CM.formValues.invoiceClaimDetails, (k, v) => {
 		    	costsAmountSum = costsAmountSum + convertDecimalSeparatorStringToNumber(v.invoiceAmount);
 	    	});
@@ -7662,7 +7677,7 @@ APP_MASTERS.controller('Controller_Master', [
 	    };
 
         $scope.removeProductTypeMasterService = function(rowIndex, productTypeKey) {
-            scope = angular.element($('entity-edit-form > div')).scope();
+            var scope = angular.element($('entity-edit-form > div')).scope();
             if (scope.formValues.locations[rowIndex].productTypes[productTypeKey].id == 0) {
                 scope.formValues.locations[rowIndex].productTypes.splice(productTypeKey, 1);
             } else {
@@ -7731,7 +7746,7 @@ APP_MASTERS.controller('Controller_Master', [
         vm.EmailTypeNoAutomatic = emailNoAutomaticType();
 
         vm.enabledEmailToVessel = function() {
-            enabledEmailToVessel = true;
+            var enabledEmailToVessel = true;
             if (typeof $rootScope.adminConfiguration != 'undefined') {
                 $rootScope.adminConfiguration.email.forEach((obj) => {
                     if (obj.process == 'Order No BDN To Vessel Email') {
@@ -7796,7 +7811,7 @@ APP_MASTERS.controller('Controller_Master', [
     			return el.name.toLowerCase().indexOf(screen_name) > -1;
     		}).id;
 
-	    	documentTypeFilters = [
+	    	var documentTypeFilters = [
 	    		{
 	    			ColumnName: 'ReferenceNo',
 	    			Value: vm.entity_id
@@ -7897,7 +7912,7 @@ APP_MASTERS.controller('Controller_Master', [
                         var allowProducts = $scope.formValues.products[index].allowedProducts;
                         if (allowProducts.length) {
                             $scope.formValues.products[index].conversionFactors.forEach((value, key) => {
-                                idIndex = _.findIndex(allowProducts, (o) => {
+                                var idIndex = _.findIndex(allowProducts, (o) => {
                                     return o.id == value.product.id;
                                 });
                                 if (idIndex == -1) {
