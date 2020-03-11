@@ -239,6 +239,12 @@ angular.module('shiptech.pages').controller('ContractPlanningController', [ '$sc
                     Value: request.product.id
                 });
             }
+            if (request.bunkeringEta) {
+                newFilters.push({
+                    ColumnName: 'Eta',
+                    Value: request.bunkeringEta
+                });
+            }            
             // if (request.seller) {
             //    newFilters.push({
             //        'ColumnName': 'SellerId',
