@@ -2594,8 +2594,11 @@ APP_MASTERS.controller('Controller_Master', [
                             }
                             let temp = 0;
                             try {
-                                temp = $scope.formValues[entry.ValueFrom];
+                                temp = _.get($scope, "formValues[" +  entry.ValueFrom.split(".").join("][") + "]");
                             } catch (error) {}
+                            if (typeof temp == "undefined") {
+                                temp = 0;
+                            }
                             entry.Value = temp;
                         });
                     }

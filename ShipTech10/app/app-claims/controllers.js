@@ -148,9 +148,12 @@ APP_CLAIMS.controller('Controller_Claims', [
                         }
                         let temp = 0;
                         try {
-                            temp = $scope.formValues[entry.ValueFrom];
+                            temp = _.get($scope, "formValues[" +  entry.ValueFrom.split(".").join("][") + "]");
+                           
                         } catch (error) {}
+                      
                         entry.Value = temp;
+                
                     });
                 }
                 if (!$scope.options) {

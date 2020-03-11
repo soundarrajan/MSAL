@@ -405,7 +405,7 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
                     }
                     let temp = 0;
                     try {
-                        temp = $scope.formValues[entry.ValueFrom];
+                        temp = _.get($scope, "formValues[" +  entry.ValueFrom.split(".").join("][") + "]");
                     } catch (error) { }
                     entry.Value = temp;
                 });

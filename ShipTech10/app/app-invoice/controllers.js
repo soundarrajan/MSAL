@@ -550,7 +550,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                         }
                         let temp = 0;
                         try {
-                            temp = $scope.formValues[entry.ValueFrom];
+                            temp = _.get($scope, "formValues[" +  entry.ValueFrom.split(".").join("][") + "]");
                         } catch (error) {}
                         entry.Value = temp;
                     });

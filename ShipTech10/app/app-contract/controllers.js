@@ -278,7 +278,7 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
                     }
                     let temp = 0;
                     try {
-                        temp = $scope.formValues[entry.ValueFrom];
+                        temp = _.get($scope, "formValues[" +  entry.ValueFrom.split(".").join("][") + "]");
                     } catch (error) {}
                     entry.Value = temp;
                 });
