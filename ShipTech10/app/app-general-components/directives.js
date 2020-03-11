@@ -40,7 +40,7 @@ Number(function() {
                 },
                 link: function(scope, element, attrs, CLC) {
                     tenantService.procurementSettings.then((settings) => {
-                        window.procurementSettings = settings.payload;
+                        procurementSettings = settings.payload;
                     });
                     $rootScope.isModal = scope.modal;
                     $rootScope.modalTableId = scope.id;
