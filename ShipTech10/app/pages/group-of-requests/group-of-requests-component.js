@@ -2343,10 +2343,10 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                     isCorrect = false;
                     break;
                 }
-                if (requirement.productStatus.name == 'Amended') {
-                    isCorrect = false;
-                    break;
-                }
+                // if (requirement.productStatus.name == 'Amended') {
+                //     isCorrect = false;
+                //     break;
+                // }
                 if (typeof requirement.requestOffer.price == 'undefined' || requirement.requestOffer.price === null) {
                     isCorrect = false;
                     break;
