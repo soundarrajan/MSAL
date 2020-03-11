@@ -421,7 +421,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
             }
 
             for (let j = 0; j < ctrl.data.products.length; j++) {
-                ctrl.data.products[j].uniqueIdUI = window.crypto.getRandomValues(new Uint8Array(1)).toString(36).substring(7);
+
+                ctrl.data.products[j].uniqueIdUI = Math.random().toString(36).substring(7);
             }
             ctrl.globalAdditionalCosts = ctrl.data.additionalCosts;
 
@@ -1100,10 +1101,11 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                     ctrl.data.products.length = 0;
                     var productList = ctrl.data.products;
                     for (let product in productList) {
-                    	product.uniqueIdUI = window.crypto.getRandomValues(new Uint8Array(1)).toString(36).substring(7);
+                    	product.uniqueIdUI = Math.random().toString(36).substring(7);
                         if ($.isEmptyObject(productList[product].physicalSupplier)) {
                             angular.copy(ctrl.data.seller, productList[product].physicalSupplier);
                         }
+
                     }
                     destroyDataTables();
                     if (data.defaultFuelOilProduct !== null) {
@@ -1152,7 +1154,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                 priceUom: {},
                 confirmedQtyPrice: null,
                 confirmedQtyProdZ: null,
-                uniqueIdUI: window.crypto.getRandomValues(new Uint8Array(1)).toString(36).substring(7)
+                uniqueIdUI: Math.random().toString(36).substring(7)
             };
             products.push(product);
         };
@@ -2918,7 +2920,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
 
         ctrl.addNewProduct = function() {
         	var newProduct = {
-  				uniqueIdUI: window.crypto.getRandomValues(new Uint8Array(1)).toString(36).substring(7),
+  				uniqueIdUI: Math.random().toString(36).substring(7),
   				// physicalSupplier: angular.copy(ctrl.data.seller),
   				deliveryOption : angular.copy(ctrl.defaultDeliveryOption),
         	};
@@ -2933,6 +2935,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                 let forms_validation = validateForms();
                 var filteredFormValidation = []; /* Should exclude validation for Suveyor, Agent, Physical Supplier*/
                 if (forms_validation) {
+
 	                $.each(forms_validation, (k, v) => {
 	                	if (v.length > 0) {
 	                		$.each(v, (k2, v2) => {

@@ -1108,7 +1108,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                     groupOfRequestsModel.getSellersSorted(counterpatyIds, productIds, ctrl.sellerSortOrder).then((data) => {
                         ctrl.sellers = normalizeArrayToHash(data.payload, 'counterpartyId');
                         ctrl.sellerOrder = getSellerOrder(data.payload);
-                        var randomUnique = window.crypto.getRandomValues(new Uint8Array(1))
+                        var randomUnique = Math.random()
                             .toString(36)
                             .substr(2, 6);
                         newCounterparty = {};
