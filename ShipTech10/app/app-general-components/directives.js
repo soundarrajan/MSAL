@@ -40,7 +40,7 @@ Number(function() {
                 },
                 link: function(scope, element, attrs, CLC) {
                     tenantService.procurementSettings.then((settings) => {
-                        procurementSettings = settings.payload;
+                        window.procurementSettings = settings.payload;
                     });
                     $rootScope.isModal = scope.modal;
                     $rootScope.modalTableId = scope.id;
@@ -66,7 +66,7 @@ Number(function() {
                     CLC.tableParams.PageFilters = {};
                     $rootScope.rawFilters = [];
                     scope.$on('$stateChangeSuccess', () => {
-	                    CLC.tableParams.PageFilters = {};
+                        CLC.tableParams.PageFilters = {};
                         $rootScope.lastLoadedListPayload = null;
                         console.log('stateChangeSuccess');
                     });
@@ -108,7 +108,7 @@ Number(function() {
                     scope.initialLayout = {};
 
                     setTimeout(() => {
-	                    checkCanBuildTable(scope.id, checkProcurement);
+                        checkCanBuildTable(scope.id, checkProcurement);
                     });
 
                     function checkCanBuildTable(table_id, checkProcurement) {
@@ -145,17 +145,17 @@ Number(function() {
                                                         if (scope.source) {
                                                             callback.clc = angular.copy(scope.source);
                                                         }
-        	                                            $.each(callback.clc.colModel, (k, v) => {
-			                                                v.label = v.label.replace('Service', scope.tenantSetting.serviceDisplayName.name);
-			                                                v.label = v.label.replace('Company', scope.tenantSetting.companyDisplayName.name);
-				                                            if (scope.tenantSetting.companyDisplayName.name == 'Pool') {
-					                                            v.label = v.label.replace('Carrier', scope.tenantSetting.companyDisplayName.name);
-				                                            }
-			                                            });
+                                                        $.each(callback.clc.colModel, (k, v) => {
+                                                            v.label = v.label.replace('Service', scope.tenantSetting.serviceDisplayName.name);
+                                                            v.label = v.label.replace('Company', scope.tenantSetting.companyDisplayName.name);
+                                                            if (scope.tenantSetting.companyDisplayName.name == 'Pool') {
+                                                                v.label = v.label.replace('Carrier', scope.tenantSetting.companyDisplayName.name);
+                                                            }
+                                                        });
                                                         $rootScope.$broadcast('tableLayoutLoaded', initialLayout);
                                                         var Layout = layout.clc;
                                                         if (!Layout.rowActions) {
-                                                        	Layout.rowActions = [];
+                                                            Layout.rowActions = [];
                                                         }
                                                         Layout.rowActions = Layout.rowActions.concat(callback.clc.rowActions);
                                                         Layout.rowActions = _.uniqBy(Layout.rowActions, 'label');
@@ -168,8 +168,8 @@ Number(function() {
                                                         // Layout.colModel =
                                                         buildTable(Layout, Elements.scope[table_id], true, Layout.matchedColumnList);
                                                     } else {
-			                                            loadDefaultUi();
-			                                        }
+                                                        loadDefaultUi();
+                                                    }
                                                 }
                                             );
                                         } else {
@@ -222,30 +222,30 @@ Number(function() {
                                         if (callback && callback.clc) {
                                             callback.id = null;
                                             if (scope.source) {
-                                            	callback.clc = angular.copy(scope.source);
+                                                callback.clc = angular.copy(scope.source);
                                             }
-	                                    	if ($rootScope.adminConfiguration) {
-		                                    	if ($rootScope.adminConfiguration.contract.hideAllowedProduct) {
-		                                    		if (callback.clc.table_name == 'Available Contracts') {
-		                                    			for (let i = callback.clc.colModel.length - 1; i >= 0; i--) {
-		                                    				callback.clc.colModel[i];
-		                                    				if (callback.clc.colModel[i].label == 'Allowed Products') {
-		                                    					callback.clc.colModel.splice(i, 1);
-		                                    				}
-		                                    			}
-		                                    			// $.each(callback.clc.colModel, function(k,v){
-		                                    			// })
-		                                    		}
-		                                    	}
-	                                    	}
+                                            if ($rootScope.adminConfiguration) {
+                                                if ($rootScope.adminConfiguration.contract.hideAllowedProduct) {
+                                                    if (callback.clc.table_name == 'Available Contracts') {
+                                                        for (let i = callback.clc.colModel.length - 1; i >= 0; i--) {
+                                                            callback.clc.colModel[i];
+                                                            if (callback.clc.colModel[i].label == 'Allowed Products') {
+                                                                callback.clc.colModel.splice(i, 1);
+                                                            }
+                                                        }
+                                                        // $.each(callback.clc.colModel, function(k,v){
+                                                        // })
+                                                    }
+                                                }
+                                            }
                                             $.each(callback.clc.colModel, (k, v) => {
                                                 v.label = v.label.replace('Service', scope.tenantSetting.serviceDisplayName.name);
                                                 v.label = v.label.replace('Company', scope.tenantSetting.companyDisplayName.name);
-	                                            if (scope.tenantSetting.companyDisplayName.name == 'Pool') {
-		                                            v.label = v.label.replace('Carrier', scope.tenantSetting.companyDisplayName.name);
-	                                            }
+                                                if (scope.tenantSetting.companyDisplayName.name == 'Pool') {
+                                                    v.label = v.label.replace('Carrier', scope.tenantSetting.companyDisplayName.name);
+                                                }
                                             });
-                                            var initialLayout = angular.copy(callback);
+                                            initialLayout = angular.copy(callback);
                                             let Layout = '';
                                             Layout = callback.clc;
                                             // $.each(initialLayout.clc.colModel, function(k, v) {
@@ -268,13 +268,13 @@ Number(function() {
                                 let found = false;
                                 let newCol = null;
                                 if (userColumns.clc.table_name != defaultColumns.clc.table_name) {
-                                	// $state.reload();
-	                            	userColumns.clc.table_name = defaultColumns.clc.table_name;
-                                	toastr.error('The previously saved list configurations is no longer valid therefore the system default configuration has been loaded. Please configure your list preferences again.');
-                                	return;
+                                    // $state.reload();
+                                    userColumns.clc.table_name = defaultColumns.clc.table_name;
+                                    toastr.error('The previously saved list configurations is no longer valid therefore the system default configuration has been loaded. Please configure your list preferences again.');
+                                    return;
                                 }
                                 if (scope.source) {
-                                	defaultColumns.clc.colModel = angular.copy(scope.source.colModel);
+                                    defaultColumns.clc.colModel = angular.copy(scope.source.colModel);
                                 }
 
                                 // debugger;
@@ -312,7 +312,7 @@ Number(function() {
                                                 newCol.hidden = usr_val.hidden;
                                             }
                                             if (def_val.cellFormat) {
-	                                            newCol.cellFormat = def_val.cellFormat;
+                                                newCol.cellFormat = def_val.cellFormat;
                                             }
                                             matchedCol.push(newCol);
                                         } else {
@@ -363,7 +363,7 @@ Number(function() {
                     // RUN directire after loading ALL dependencies
                     $timeout(() => {
                         return;
-                        var isDev = 0;
+                        isDev = 0;
 
                         $.each(Elements.scope, (key, params) => {
                             if (params.id == 'masters_counterpartylist_surveyors' || params.id == 'masters_counterpartylist_labs' || params.id == 'masters_counterpartylist_barge' || params.id == 'masters_counterpartylist_physicalsuppliers' || params.id == 'masters_counterpartylist_seller' || params.id == 'masters_counterpartylist_broker') {
@@ -380,7 +380,7 @@ Number(function() {
                                 (callback) => {
                                     let Layout = '';
                                     if (scope.source) {
-                                    	callback.clc = angular.copy(scope.source);
+                                        callback.clc = angular.copy(scope.source);
                                     }
                                     Layout = callback.clc;
                                     if (callback && callback.clc) {
@@ -388,20 +388,20 @@ Number(function() {
                                             v.label = v.label.replace('Service', scope.tenantSetting.serviceDisplayName.name);
                                             v.label = v.label.replace('Company', scope.tenantSetting.companyDisplayName.name);
                                             if (scope.tenantSetting.companyDisplayName.name == 'Pool') {
-	                                            v.label = v.label.replace('Carrier', scope.tenantSetting.companyDisplayName.name);
+                                                v.label = v.label.replace('Carrier', scope.tenantSetting.companyDisplayName.name);
                                             }
                                         });
-                                    	if ($rootScope.adminConfiguration) {
-	                                    	if ($rootScope.adminConfiguration.contract.hideAllowedProduct) {
-	                                    		if (callback.clc.table_name == 'Available Contracts') {
-	                                    			$.each(callback.clc.colModel, (k, v) => {
-	                                    				if (v.label == 'Allowed Products') {
-	                                    					callback.clc.colModel.splice(k, 1);
-	                                    				}
-	                                    			});
-	                                    		}
-	                                    	}
-                                    	}
+                                        if ($rootScope.adminConfiguration) {
+                                            if ($rootScope.adminConfiguration.contract.hideAllowedProduct) {
+                                                if (callback.clc.table_name == 'Available Contracts') {
+                                                    $.each(callback.clc.colModel, (k, v) => {
+                                                        if (v.label == 'Allowed Products') {
+                                                            callback.clc.colModel.splice(k, 1);
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        }
 
                                         Layout.table_id = `${Layout.view_type }_${ Layout.table_name.replace(/ /g, '_').toLowerCase()}`;
                                         Layout.pager_id = `${Layout.view_type }_${ Layout.table_name.replace(/ /g, '_').toLowerCase() }_pager`;
@@ -419,15 +419,15 @@ Number(function() {
                             // toastr.info('The default layout for this page has changed. Please check additional columns from settings and save your new layout.');
                         }
 
-                    	if (attrs.screen == 'scheduleDashboardTable') {
-                    		for (var i = newValue.colModel.length - 1; i >= 0; i--) {
-                    			if (newValue.colModel[i].name == 'voyageDetail.deliveryFrom' || newValue.colModel[i].name == 'voyageDetail.deliveryTo') {
-                    				if (procurementSettings.request.deliveryWindowDisplay.id == 2) {
-	                					newValue.colModel.splice(i, 1);
-                    				}
-                    			}
-                    		}
-                    	}
+                        if (attrs.screen == 'scheduleDashboardTable') {
+                            for (var i = newValue.colModel.length - 1; i >= 0; i--) {
+                                if (newValue.colModel[i].name == 'voyageDetail.deliveryFrom' || newValue.colModel[i].name == 'voyageDetail.deliveryTo') {
+                                    if (procurementSettings.request.deliveryWindowDisplay.id == 2) {
+                                        newValue.colModel.splice(i, 1);
+                                    }
+                                }
+                            }
+                        }
                         if (attrs.screen == 'orderlist') {
                             for (var i = newValue.colModel.length - 1; i >= 0; i--) {
                                 if (newValue.colModel[i].name == 'isVerified.name' || newValue.colModel[i].name == 'verifiedBy.displayName' || newValue.colModel[i].name == 'verifiedOn') {
@@ -508,29 +508,29 @@ Number(function() {
                         if (Elements.scope[attrs.id].modal) {
                             Elements.settings[table_id].source.height = window.innerHeight / 1.8;
                             if (scope.id != 'procurement_rfqrequestslist') {
-	                            Elements.settings[table_id].source.colModel.unshift({
-	                                label: 'Actions-checkboxes',
-	                                name: 'actions-checkboxes',
-	                                key: true,
-	                                width: 32,
-	                                sortable: false,
-	                                resizable: false,
-	                                frozen: true,
-	                                fixed: true,
-	                                cellFormat: 'modal_check'
-	                            });
-	                            Elements.settings[table_id].source.radioselect = true;
+                                Elements.settings[table_id].source.colModel.unshift({
+                                    label: 'Actions-checkboxes',
+                                    name: 'actions-checkboxes',
+                                    key: true,
+                                    width: 32,
+                                    sortable: false,
+                                    resizable: false,
+                                    frozen: true,
+                                    fixed: true,
+                                    cellFormat: 'modal_check'
+                                });
+                                Elements.settings[table_id].source.radioselect = true;
                             } else {
-	                            Elements.settings[table_id].source.multiselect = true;
+                                Elements.settings[table_id].source.multiselect = true;
                             }
                         } else {
                             Elements.settings[table_id].source.height = '50vh';
-                        	if (table_id != 'flat_available_contracts') {
-	                            Elements.settings[table_id].source.height = 'calc(100vh - 400px)';
-                        	}
-                        	if (table_id == 'flat_audit_log') {
-	                            Elements.settings[table_id].source.height = 'calc(100vh - 340px)';
-                        	}
+                            if (table_id != 'flat_available_contracts') {
+                                Elements.settings[table_id].source.height = 'calc(100vh - 400px)';
+                            }
+                            if (table_id == 'flat_audit_log') {
+                                Elements.settings[table_id].source.height = 'calc(100vh - 340px)';
+                            }
                         }
 
                         Elements.settings[table_id].source.pager = `#${ Elements.settings[table_id].pager}`;
@@ -575,15 +575,15 @@ Number(function() {
                                     ];
                                 } else {
                                     let obj =
-                                            {
-                                                ColumnName: 'IsDeleted',
-                                                ColumnType: 'Bool',
-                                                ColumnValue: 'IsDeleted',
-                                                ConditionValue: '=',
-                                                Values: [ '0' ],
-                                                FilterOperator: 0,
-                                                isComputedColumn: false
-                                            };
+                                        {
+                                            ColumnName: 'IsDeleted',
+                                            ColumnType: 'Bool',
+                                            ColumnValue: 'IsDeleted',
+                                            ConditionValue: '=',
+                                            Values: [ '0' ],
+                                            FilterOperator: 0,
+                                            isComputedColumn: false
+                                        };
 
                                     CLC.tableParams.PageFilters.push(obj);
                                 }
@@ -607,7 +607,7 @@ Number(function() {
                                     }
                                     // });
                                     if (!CLC.tableParams.PageFilters) {
-                                    	CLC.tableParams.PageFilters = {};
+                                        CLC.tableParams.PageFilters = {};
                                     }
                                     CLC.tableParams.PageFilters.sortList = sortList;
                                 }
@@ -632,16 +632,16 @@ Number(function() {
                             }
                             $rootScope.$broadcast('colModel', Elements.settings[table_id].source.colModel);
                             if (Elements.settings[table_id].source.rowNum) {
-                            	CLC.tableParams.rows = Elements.settings[table_id].source.rowNum;
+                                CLC.tableParams.rows = Elements.settings[table_id].source.rowNum;
                             }
                             if ($(Elements.table[Elements.settings[table_id].table]).jqGrid('getGridParam', 'rowNum')) {
-                            	CLC.tableParams.rows = $(Elements.table[Elements.settings[table_id].table]).jqGrid('getGridParam', 'rowNum');
+                                CLC.tableParams.rows = $(Elements.table[Elements.settings[table_id].table]).jqGrid('getGridParam', 'rowNum');
                             }
                             screenLoader.showLoader();
                             if ($('[data-entries-select]').length > 0) {
-	                           if (parseFloat($('[data-entries-select]').val()) != CLC.tableParams.rows) {
-		                           	CLC.tableParams.rows = $('[data-entries-select]').val();
-	                           }
+                                if (parseFloat($('[data-entries-select]').val()) != CLC.tableParams.rows) {
+                                    CLC.tableParams.rows = $('[data-entries-select]').val();
+                                }
                             }
 
                             let listPayload = {
@@ -696,12 +696,12 @@ Number(function() {
 
                                         /* RESET SELECTED DATA AFTER LIST CHANGE*/
                                         if (scope.id == 'deliveries_transactionstobeinvoiced') {
-	                                        scope.selectedProductIds = [];
-	                                        scope.rowsProduct = [];
-	                                        scope.selectedOrderAdditionalCostId = [];
-	                                        $('#flat_invoices_app_deliveries_list').jqGrid.Ascensys.selectedProductIds = [];
-	                                        $('#flat_invoices_app_deliveries_list').jqGrid.Ascensys.selectedOrderAdditionalCostId = [];
-	                                        $('#flat_invoices_app_deliveries_list').jqGrid.Ascensys.rowsProduct = [];
+                                            scope.selectedProductIds = [];
+                                            scope.rowsProduct = [];
+                                            scope.selectedOrderAdditionalCostId = [];
+                                            $('#flat_invoices_app_deliveries_list').jqGrid.Ascensys.selectedProductIds = [];
+                                            $('#flat_invoices_app_deliveries_list').jqGrid.Ascensys.selectedOrderAdditionalCostId = [];
+                                            $('#flat_invoices_app_deliveries_list').jqGrid.Ascensys.rowsProduct = [];
                                         }
 
                                         /* (END) RESET SELECTED DATA AFTER LIST CHANGE*/
@@ -709,46 +709,46 @@ Number(function() {
 
                                         // VERTICALS SCROLLBAR
                                         // $(".ui-jqgrid-bdiv")css("width", "100%");
-	                                        $('.ui-jqgrid-view').on('scroll', function() {
-	                                        	var offsetChild = $(this).children('.ui-jqgrid-bdiv').offset().left - $(this).children('.ui-jqgrid-bdiv').offsetParent().offset().left;
-	                                        	$(this).children('.ui-jqgrid-bdiv').css('min-width', `${parseFloat($(this).css('width')) - parseFloat(offsetChild) }px`);
-	                                        });
-				                        	if (table_id == 'flat_available_contracts') {
-		                                        $('.ui-jqgrid-bdiv').css('max-height', `${$(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.gridData.length * 60 + 15 }px`);
-				                        	} else {
-		                                        // $(".ui-jqgrid-bdiv").css("max-height", $(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.gridData.length * 37 + 15 + "px")
-				                        	}
+                                        $('.ui-jqgrid-view').on('scroll', function() {
+                                            var offsetChild = $(this).children('.ui-jqgrid-bdiv').offset().left - $(this).children('.ui-jqgrid-bdiv').offsetParent().offset().left;
+                                            $(this).children('.ui-jqgrid-bdiv').css('min-width', `${parseFloat($(this).css('width')) - parseFloat(offsetChild) }px`);
+                                        });
+                                        if (table_id == 'flat_available_contracts') {
+                                            $('.ui-jqgrid-bdiv').css('max-height', `${$(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.gridData.length * 60 + 15 }px`);
+                                        } else {
+                                            // $(".ui-jqgrid-bdiv").css("max-height", $(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.gridData.length * 37 + 15 + "px")
+                                        }
                                         // END VERTICALS SCROLLBAR
                                         //
                                         // REMOVE MASTER LINKS FROM LOOKUPS
-	                                        setTimeout(() => {
+                                        setTimeout(() => {
                                             let styles = {
                                                 pointerEvents : 'none',
                                                 color: '#333',
                                                 cursor: 'default',
                                                 textDecoration: 'none'
                                             };
-	 	                                        $('.modal-content td .formatter.edit_link').parent('a').removeAttr('href');
-		                                        $('.modal-content td .formatter.edit_link').parent('a').css(styles);
-		                                        $('.modal-content td a .formatter.edit_link').css(styles);
-	                                        });
+                                            $('.modal-content td .formatter.edit_link').parent('a').removeAttr('href');
+                                            $('.modal-content td .formatter.edit_link').parent('a').css(styles);
+                                            $('.modal-content td a .formatter.edit_link').css(styles);
+                                        });
                                         // REMOVE MASTER LINKS FROM LOOKUPS
                                         Elements.settings[table_id].source.height = '10vh';
 
                                         // apply hstyle
                                         $.each(Elements.settings[table_id].source.colModel, (key, obj) => {
-                                        	if (obj.formatter.name == 'order_list_checkbox') {
-                                        		$(`th[id*="${ obj.name }"]`).addClass('order_list_checkbox');
-                        		            	if (procurementSettings.order.orderVerificationReq.id == 1) {
-									            		// $rootScope.selectedOrderListRows = [];
-									            		// $scope.selectOrders = []
-									            		$('.order_list_checkbox > div').html('<i id="selectAllOrderList"' +
-									            			' style="font-size: 25px !important; color: #d9d9d9;"' +
-									            			' class="fa fa-square-o" ng-click="selectAllOrderList()"></i>');
-								            		// $timeout(function(){
-								            		// })
-								            	}
-                                        	}
+                                            if (obj.formatter.name == 'order_list_checkbox') {
+                                                $(`th[id*="${ obj.name }"]`).addClass('order_list_checkbox');
+                                                if (procurementSettings.order.orderVerificationReq.id == 1) {
+                                                    // $rootScope.selectedOrderListRows = [];
+                                                    // $scope.selectOrders = []
+                                                    $('.order_list_checkbox > div').html('<i id="selectAllOrderList"' +
+                                                        ' style="font-size: 25px !important; color: #d9d9d9;"' +
+                                                        ' class="fa fa-square-o" ng-click="selectAllOrderList()"></i>');
+                                                    // $timeout(function(){
+                                                    // })
+                                                }
+                                            }
                                             if (obj.hstyle) {
                                                 $(`th[id*="${ obj.name }"]`).addClass(`hstyle-color-${ obj.hstyle.color}`);
                                                 $(`th[id*="${ obj.name }"]`).addClass(`hstyle-background-${ obj.hstyle.background}`);
@@ -874,7 +874,7 @@ Number(function() {
                             MCScustom.load();
                         };
                         Elements.settings[table_id].source.sortupdate = function(index, iCol, sortorder) {
-                        	$(Elements.table[Elements.settings[settings_keys[i]].table]).jqGrid('setGridWidth', Elements.settings[settings_keys[i]].source.width, true);
+                            $(Elements.table[Elements.settings[settings_keys[i]].table]).jqGrid('setGridWidth', Elements.settings[settings_keys[i]].source.width, true);
                         };
                         Elements.settings[table_id].source.on_page_change = function(data) {
                             CLC.tableParams.page = data.page;
@@ -961,7 +961,7 @@ Number(function() {
                                 let orderAdditionalCostId = allRowData.orderAdditionalCostId;
                                 var productId = null;
                                 if (!orderAdditionalCostId) {
-	                                var productId = allRowData.deliveryProductId;
+                                    var productId = allRowData.deliveryProductId;
                                 }
                                 if (typeof scope.selectedProductIds == 'undefined') {
                                     scope.selectedProductIds = [];
@@ -1016,22 +1016,22 @@ Number(function() {
                                         }
                                     }
                                 } else {
-                                	if (productId) {
-	                                    scope.selectedProductIds.splice(scope.selectedProductIds.indexOf(productId), 1);
+                                    if (productId) {
+                                        scope.selectedProductIds.splice(scope.selectedProductIds.indexOf(productId), 1);
                                         scope.rowsProduct.splice(scope.rowsProduct.indexOf(rowid), 1);
 
-	                                    if (scope.selectedProductIds.length == 0) {
+                                        if (scope.selectedProductIds.length == 0) {
                                             scope.selectedOrderId = null;
                                             scope.selectedCounterpartyId = null;
-	                                    }
-                                	}
-                                	if (orderAdditionalCostId) {
-	                                    scope.selectedOrderAdditionalCostId.splice(scope.selectedOrderAdditionalCostId.indexOf(orderAdditionalCostId), 1);
-	                                    if (scope.selectedOrderAdditionalCostId.length == 0) {
+                                        }
+                                    }
+                                    if (orderAdditionalCostId) {
+                                        scope.selectedOrderAdditionalCostId.splice(scope.selectedOrderAdditionalCostId.indexOf(orderAdditionalCostId), 1);
+                                        if (scope.selectedOrderAdditionalCostId.length == 0) {
                                             scope.selectedOrderId = null;
                                             scope.selectedCounterpartyId = null;
-	                                    }
-                                	}
+                                        }
+                                    }
                                 }
                                 $(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.selectedProductIds = scope.selectedProductIds;
                                 $(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.rowsProduct = scope.rowsProduct;
@@ -1075,7 +1075,7 @@ Number(function() {
                                     console.log('selectedRowsIds', selectedRowsIds);
                                     $rootScope.selectDeliveryRows = [];
                                     $.each(selectedRowsIds, (key, val) => {
-                                        var rowData = Elements.settings[table_id].source.datastr[val - 1];
+                                        rowData = Elements.settings[table_id].source.datastr[val - 1];
                                         $rootScope.selectDeliveryRows.push(rowData);
                                     });
                                 } else {
@@ -1146,30 +1146,30 @@ Number(function() {
                                         let screenCssPixelRatio = (window.outerWidth - 8) / window.innerWidth;
                                         var zoomLevel;
                                         if (screenCssPixelRatio >= 0.46 && screenCssPixelRatio <= 0.54) {
-										  zoomLevel = '-4';
+                                            zoomLevel = '-4';
                                         } else if (screenCssPixelRatio <= 0.64) {
-										  zoomLevel = '-3';
+                                            zoomLevel = '-3';
                                         } else if (screenCssPixelRatio <= 0.76) {
-										  zoomLevel = '-2';
+                                            zoomLevel = '-2';
                                         } else if (screenCssPixelRatio <= 0.92) {
-										  zoomLevel = '-1';
+                                            zoomLevel = '-1';
                                         } else if (screenCssPixelRatio <= 1.10) {
-										  zoomLevel = '0';
+                                            zoomLevel = '0';
                                         } else if (screenCssPixelRatio <= 1.32) {
-										  zoomLevel = '1';
+                                            zoomLevel = '1';
                                         } else if (screenCssPixelRatio <= 1.58) {
-										  zoomLevel = '2';
+                                            zoomLevel = '2';
                                         } else if (screenCssPixelRatio <= 1.90) {
-										  zoomLevel = '3';
+                                            zoomLevel = '3';
                                         } else if (screenCssPixelRatio <= 2.28) {
-										  zoomLevel = '4';
+                                            zoomLevel = '4';
                                         } else if (screenCssPixelRatio <= 2.70) {
-										  zoomLevel = '5';
+                                            zoomLevel = '5';
                                         } else {
-										  zoomLevel = 'unknown';
+                                            zoomLevel = 'unknown';
                                         }
                                         // if (zoomLevel == "0") {
-	                                        $(Elements.table[Elements.settings[settings_keys[i]].table]).jqGrid('setGridWidth', Elements.settings[settings_keys[i]].source.width, true);
+                                        $(Elements.table[Elements.settings[settings_keys[i]].table]).jqGrid('setGridWidth', Elements.settings[settings_keys[i]].source.width, true);
                                         // }
                                     }
                                     MCScustom.load();
@@ -1205,15 +1205,15 @@ Number(function() {
                                         formatter: v.formatter ?
                                             CLC.get_formatter(v.formatter) :
                                             function(cellvalue, options, rowObject) {
-                                            	let actions = '';
-                                            	let rowID = 0;
+                                                let actions = '';
+                                                let rowID = 0;
 
 
-                                            	if (typeof v.idSrc != 'undefined') {
-                                            		if(v.idSrc == 'voyageDetail.request.id') {
-                                            			if(rowObject.voyageDetail) {
-                                            				if(rowObject.voyageDetail.request) {
-                                            					rowID = rowObject.voyageDetail.request.id;
+                                                if (typeof v.idSrc != 'undefined') {
+                                                    if(v.idSrc == 'voyageDetail.request.id') {
+                                                        if(rowObject.voyageDetail) {
+                                                            if(rowObject.voyageDetail.request) {
+                                                                rowID = rowObject.voyageDetail.request.id;
                                                                 if (Elements.settings[table_id].source.table_name == 'Table Schedule Dashboard') {
                                                                     if (rowID != 0) {
                                                                         return `<a  href="/#/edit-request/${ rowID }"><span style="display: block; margin-left: 7px !important;" title="Edit" class="jqgrid-ng-action edit" >Edit</span></a>`;
@@ -1221,58 +1221,58 @@ Number(function() {
                                                                     return `<a disabled="true" style="display: block; height: 35px; width: 30px;" href="/#/edit-request/${ rowID }"><span style="position: relative; display: block; margin-left: 7px !important; top: 6px !important;" title="Edit" class="jqgrid-ng-action edit" >Edit</span></a>`;
                                                                 }
                                                                 return `<a href="/#/edit-request/${ rowID }"><span title="Edit" class="jqgrid-ng-action edit" >Edit</span></a>`;
-                                            				}
-                                            					rowID = rowObject.voyageDetail.id;
-                                            					return `<a href="/#/new-request/${ rowID }"><span title="Edit" class="jqgrid-ng-action edit" >Edit</span></a>`;
-                                            			}
-                                            		}else if (typeof rowObject[v.idSrc] == 'object') {
-                                            			rowID = rowObject[v.idSrc].id;
-                                            		} else {
-                                            			rowID = rowObject[v.idSrc];
-                                            			if (!rowID && v.altId) {
+                                                            }
+                                                            rowID = rowObject.voyageDetail.id;
+                                                            return `<a href="/#/new-request/${ rowID }"><span title="Edit" class="jqgrid-ng-action edit" >Edit</span></a>`;
+                                                        }
+                                                    }else if (typeof rowObject[v.idSrc] == 'object') {
+                                                        rowID = rowObject[v.idSrc].id;
+                                                    } else {
+                                                        rowID = rowObject[v.idSrc];
+                                                        if (!rowID && v.altId) {
                                                             return `<a href="/#/new-request/${ rowObject[v.altId] }"><span title="Edit" class="jqgrid-ng-action edit" >Edit</span></a>`;
                                                         }
-                                            			if (!rowID && !v.altId) {
+                                                        if (!rowID && !v.altId) {
                                                             return '';
                                                         }
-                                            		}
-                                            	} else if (rowObject.id) {
-                                            			rowID = rowObject.id;
+                                                    }
+                                                } else if (rowObject.id) {
+                                                    rowID = rowObject.id;
                                                     // console.log('idSRC: default (id)');
                                                 }
                                                 // console.log('JQGRID EDIT ACTION ID: ', rowID);
                                                 let i = options.colModel.action_index;
                                                 var rowId = '';
                                                 if (typeof rowObject[v.url] !== 'undefined') {
-                                                  	if (rowObject[v.url]) {
-                                                  		rowId = rowObject[v.url].id;
-                                                  	}
+                                                    if (rowObject[v.url]) {
+                                                        rowId = rowObject[v.url].id;
+                                                    }
                                                 }
                                                 if (table_id == 'flat_invoices_app_invoice_list') {
-                                                  	if (rowObject.isClaimSybtype) {
-                                                  		actions = `<a href="/#/invoices/claims/edit/${ rowObject.invoice.id }" ><span class="jqgrid-ng-action ${ v.class }" title="${ v.label }">${ v.label }</span></a>`;
-                                                  		return actions;
-                                                  	}
-                                                  	if (typeof rowObject.invoiceType != 'undefined' && rowObject.invoiceType) {
-                                                  		if (rowObject.invoiceType.name == 'CreditNote' || rowObject.invoiceType.name == 'DebitNote') {
-                                                  			actions = `<a href="/#/invoices/claims/edit/${ rowObject.invoice.id }" ><span class="jqgrid-ng-action ${ v.class }" title="${ v.label }">${ v.label }</span></a>`;
-                                                  			return actions;
-                                                  		}
-                                                  			actions = `<a href="/#/invoices/invoice/edit/${ rowObject.invoice.id }" ><span class="jqgrid-ng-action ${ v.class }" title="${ v.label }">${ v.label }</span></a>`;
-                                                  			return actions;
-                                                  	}
+                                                    if (rowObject.isClaimSybtype) {
+                                                        actions = `<a href="/#/invoices/claims/edit/${ rowObject.invoice.id }" ><span class="jqgrid-ng-action ${ v.class }" title="${ v.label }">${ v.label }</span></a>`;
+                                                        return actions;
+                                                    }
+                                                    if (typeof rowObject.invoiceType != 'undefined' && rowObject.invoiceType) {
+                                                        if (rowObject.invoiceType.name == 'CreditNote' || rowObject.invoiceType.name == 'DebitNote') {
+                                                            actions = `<a href="/#/invoices/claims/edit/${ rowObject.invoice.id }" ><span class="jqgrid-ng-action ${ v.class }" title="${ v.label }">${ v.label }</span></a>`;
+                                                            return actions;
+                                                        }
+                                                        actions = `<a href="/#/invoices/invoice/edit/${ rowObject.invoice.id }" ><span class="jqgrid-ng-action ${ v.class }" title="${ v.label }">${ v.label }</span></a>`;
+                                                        return actions;
+                                                    }
                                                 }
                                                 if (table_id == 'flat_email_log_list') {
-                                                  	var index = parseFloat(options.rowId) - 1;
+                                                    var index = parseFloat(options.rowId) - 1;
                                                     rowObject = Elements.settings[table_id].source.datastr[index];
                                                     actions = `<a href="/#/masters/emaillogs/edit/${ rowObject.id }" target="_blank" ><span class="jqgrid-ng-action edit"></span></a>`;
                                                     return actions;
                                                 }
                                                 var cellAttrs;
                                                 if (v.data_attributes) {
-                                                  	cellAttrs = `<a ng-disabled ="!${ eval(v.disabled) }"${ v.data_attributes } ng-click="CLC.dataAction('${ v.action }', '${ encodeURIComponent(JSON.stringify(rowObject)) }')" class=" ${ v.class }">${ v.label }</a>`;
+                                                    cellAttrs = `<a ng-disabled ="!${ eval(v.disabled) }"${ v.data_attributes } ng-click="CLC.dataAction('${ v.action }', '${ encodeURIComponent(JSON.stringify(rowObject)) }')" class=" ${ v.class }">${ v.label }</a>`;
                                                 } else {
-                                                  	cellAttrs = `<span title="${ v.label }" class="jqgrid-ng-action ${ v.class }" ng-click="CLC.do_entity_action('${ v.class }', '${ rowID }', '${ rowId }', null, '${ checkProcurement }')">${ v.label }</span>`;
+                                                    cellAttrs = `<span title="${ v.label }" class="jqgrid-ng-action ${ v.class }" ng-click="CLC.do_entity_action('${ v.class }', '${ rowID }', '${ rowId }', null, '${ checkProcurement }')">${ v.label }</span>`;
                                                 }
                                                 actions = cellAttrs;
                                                 return actions;
@@ -1372,7 +1372,7 @@ Number(function() {
 
                                             // console.log(col,sortCol);
 
-                                            var helperCoulmnTitle = `${$rootScope.currentColumnRoute } : ${ col}`;
+                                            helperCoulmnTitle = `${$rootScope.currentColumnRoute } : ${ col}`;
                                             let toAppend = `<a class="colMenu" title="${ helperCoulmnTitle }" data-column="${ col }" data-table="${ table_id }"><i class="fa fa-caret-down"></i></a>`;
                                             $(this)
                                                 .parent()
@@ -1453,10 +1453,10 @@ Number(function() {
                 link: function(scope, element, attrs) {
                     // Load Template
                     $templateRequest('app-general-components/views/entity_edit_form.html').then((html) => {
-                    	let wrappedHtml = `<div ng-controller='Controller_Master as CM'>${html }</div>`;
-                    	if (attrs.specificController) {
-	                    	wrappedHtml = `<div ng-controller='${attrs.specificController }'>${ html }</div>`;
-                    	}
+                        let wrappedHtml = `<div ng-controller='Controller_Master as CM'>${html }</div>`;
+                        if (attrs.specificController) {
+                            wrappedHtml = `<div ng-controller='${attrs.specificController }'>${ html }</div>`;
+                        }
                         element.append($compile(wrappedHtml)(scope));
                     });
                 }
@@ -1660,7 +1660,7 @@ Number(function() {
                     element.removeAttr('dynamic-pattern');
                     element.unbind();
                     setTimeout(function(){
-	                    $compile(element)(scope);
+                        $compile(element)(scope);
                     })
                     // });
                 }
@@ -2012,11 +2012,11 @@ Number(function() {
                         if ($(this).val() < 10) {
                             $(this).val(`0${ $(this).val()}`);
                         }
-                        var minutes = $(this).val();
-                        var hours = $(element)
+                        minutes = $(this).val();
+                        hours = $(element)
                             .find('.hours')
                             .val();
-                        var newTime = parseFloat(hours * 60) + parseFloat(minutes);
+                        newTime = parseFloat(hours * 60) + parseFloat(minutes);
                         ngModel.$setViewValue(newTime);
                     });
             }
@@ -2041,13 +2041,13 @@ Number(function() {
                             ctrl.$setViewValue(editor.getValue());
                         });
                     } else {
-                    	setTimeout(() => {
-                    		if ($(editor.textareaElement).hasClass('ng-dirty')) {
-		                        scope.$apply(() => {
-		                            ctrl.$setViewValue(null);
-		                        });
-                    		}
-                    	});
+                        setTimeout(() => {
+                            if ($(editor.textareaElement).hasClass('ng-dirty')) {
+                                scope.$apply(() => {
+                                    ctrl.$setViewValue(null);
+                                });
+                            }
+                        });
                     }
                 };
                 editor.on('redo:composer', synchronize);
@@ -2116,7 +2116,7 @@ Number(function() {
                         return;
                     }
                     ctrl.$formatters.unshift((a) => {
-                    	var filter, fraction;
+                        var filter, fraction;
                         if (attrs.format.split(':')[1]) {
                             filter = attrs.format.split(':')[0];
                             fraction = attrs.format.split(':')[1];
@@ -2142,18 +2142,17 @@ Number(function() {
                         }
                         var returnData = null;
                         if (ctrl.$modelValue != null && ctrl.$modelValue != '' && typeof ctrl.$modelValue != 'undefined') {
-                        	try {
-		                        returnData = $filter(filter)(ctrl.$modelValue, fraction);
-                        	} catch(error) {
-                        		console.error(error);
-                        		debugger;
-                        	}
+                            try {
+                                returnData = $filter(filter)(ctrl.$modelValue, fraction);
+                            } catch(error) {
+                                console.error(error);
+                                debugger;
+                            }
                         }
                         return returnData;
                         elem.unbind();
                     });
                     ctrl.$parsers.unshift((viewValue) => {
-                        var fraction, filter;
                         if (attrs.format.split(':')[1]) {
                             filter = attrs.format.split(':')[0];
                             fraction = attrs.format.split(':')[1];
@@ -2263,7 +2262,7 @@ Number(function() {
                                     var activeIndex = key;
                                 }
                             });
-                            var objArray = $(element).find('.ordering-element');
+                            objArray = $(element).find('.ordering-element');
                             var nextElemIdx = parseFloat(activeIndex) + 1;
                             var currentElement = $(objArray)[activeIndex];
                             var targetElement = $(objArray)[nextElemIdx];
@@ -2289,19 +2288,18 @@ Number(function() {
                             }, 500);
                         });
                         backBtn.on('click', function() {
-                            var activeElement = $(this)
+                            activeElement = $(this)
                                 .parents('.ordering-element')
                                 .attr('unique-id');
-                            var activeIndex;
                             $.each($(element).find('.ordering-element'), function(key, value) {
                                 if ($(this).attr('unique-id') == activeElement) {
                                     activeIndex = key;
                                 }
                             });
-                            var objArray = $(element).find('.ordering-element');
-                            var nextElemIdx = parseFloat(activeIndex) - 1;
-                            var currentElement = $(objArray)[activeIndex];
-                            var targetElement = $(objArray)[nextElemIdx];
+                            objArray = $(element).find('.ordering-element');
+                            nextElemIdx = parseFloat(activeIndex) - 1;
+                            currentElement = $(objArray)[activeIndex];
+                            targetElement = $(objArray)[nextElemIdx];
                             $(currentElement).css({
                                 transform: 'translateX(-100%) scale(1.1)',
                                 opacity: 0
@@ -2325,7 +2323,7 @@ Number(function() {
                         });
 
                         function updateModel() {
-                            var currentOrder = [];
+                            currentOrder = [];
                             objArray = $(element).find('.ordering-element');
                             $.each(objArray, function() {
                                 currentOrder.push($(this).attr('unique-id'));
@@ -2481,19 +2479,19 @@ Number(function() {
     ]);
 
     APP_GENERAL_COMPONENTS.directive('ngDynamicController', [ '$compile', '$parse', function($compile, $parse) {
-	  return {
-	      scope: {
-	          name: '=ngDynamicController'
-	      },
-	      restrict: 'A',
-	      terminal: true,
-	      priority: 100000,
-	      link: function(scope, elem, attrs) {
-	          elem.attr('ng-controller', scope.name);
-	          elem.removeAttr('ng-dynamic-controller');
+        return {
+            scope: {
+                name: '=ngDynamicController'
+            },
+            restrict: 'A',
+            terminal: true,
+            priority: 100000,
+            link: function(scope, elem, attrs) {
+                elem.attr('ng-controller', scope.name);
+                elem.removeAttr('ng-dynamic-controller');
 
-	          $compile(elem)(scope);
-	      }
-	  };
+                $compile(elem)(scope);
+            }
+        };
     } ]);
 }());
