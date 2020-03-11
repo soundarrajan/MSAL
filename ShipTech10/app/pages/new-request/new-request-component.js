@@ -504,7 +504,8 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         }
                         for (let i = 0; i < ctrl.request.locations[j].products.length; i++) {
                             ctrl.request.locations[j].products[i].name = `${String(i + 1) } - ${ ctrl.request.locations[j].products[i].name}`;
-                            if (ctrl.request.locations[j].products[i] < 1) {
+                            if (ctrl.request.locations[j].products[i].id == 0) { 
+
                                 listsModel.getSpecGroupByProductAndVessel(ctrl.request.locations[j].products[i].product.id, ctrl.request.vesselDetails.vessel.id, j, i).then((server_data) => {
                                     ctrl.request.locations[server_data.id].products[server_data.id2].specGroups = server_data.data.payload;
                                     let isInList = false;
