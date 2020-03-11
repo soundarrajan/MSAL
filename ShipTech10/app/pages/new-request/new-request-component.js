@@ -2117,50 +2117,30 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         });
         ctrl.selectProduct = function(productId) {
             // var product;
+            var productKey;
             var locIdx = ctrl.requestProductDataOnChange.location;
             var prodIdx = ctrl.requestProductDataOnChange.product;
-            var prodUniqueIdUI = ctrl.requestProductDataOnChange.product;
-            prodUniqueIdUI = ctrl.actveProductUniqueIdUi;
+            var prodUniqueIdUI = ctrl.actveProductUniqueIdUi;
+	    	$.each(ctrl.request.locations[locIdx].products, (k, v) => {
+	    		if (v.uniqueIdUI == prodIdx) {
+	    			productKey = k;
+	    		}
+	    	});             
             lookupModel.get(LOOKUP_TYPE.PRODUCTS, productId).then((server_data) => {
-                // product = server_data.payload;
-            	$.each(ctrl.request.locations[locIdx].products, (k, v) => {
-            		if (v.uniqueIdUI == prodUniqueIdUI) {
-		                v.product = server_data.payload;
-            		}
-            	});
+				ctrl.request.locations[locIdx].products[productKey].product = server_data.payload;
+
                 listsModel.getProductTypeByProduct(server_data.payload.id).then((server_data1) => {
-                	$.each(ctrl.request.locations[locIdx].products, (k, v) => {
-                		if (v.uniqueIdUI == prodUniqueIdUI) {
-		                    v.productType = server_data1.data.payload;
-			                listsModel.getSpecGroupByProductAndVessel(server_data.payload.id, ctrl.request.vesselDetails.vessel.id).then((server_data2) => {
-			                	$.each(ctrl.request.locations[locIdx].products, (k, v) => {
-			                		if (v.uniqueIdUI == prodUniqueIdUI) {
-					                    v.specGroups = server_data2.data.payload;
-					                    v.specGroup = null;
-					                    $.each(server_data2.data.payload, (k2, v2) => {
-					                    	if (v2.isDefault) {
-							                    v.specGroup = v2;
-					                    	}
-					                    });
-			                		}
-			                	});
-                                // ctrl.request.locations[locIdx].products = $filter('orderBy')(ctrl.request.locations[locIdx].products, 'productType.name');
-			                });
-                		}
-                	});
+                	ctrl.request.locations[locIdx].products[productKey].productType = server_data1.data.payload
+	                listsModel.getSpecGroupByProductAndVessel(server_data.payload.id, ctrl.request.vesselDetails.vessel.id).then((server_data2) => {
+	                    ctrl.request.locations[locIdx].products[productKey].specGroups = server_data2.data.payload;
+	                    ctrl.request.locations[locIdx].products[productKey].specGroup = null;
+	                    $.each(server_data2.data.payload, (k2, v2) => {
+	                    	if (v2.isDefault) {
+			                    ctrl.request.locations[locIdx].products[productKey].specGroup = v2;
+	                    	}
+	                    });
+	                });
                 });
-                // If there's a set lookupInput, it means we need
-                // to copy the lookup dialog selection into it.
-                //
-                // if (ctrl.lookupInput) {
-                //     if (!ctrl.lookupInput.product) {
-                //         ctrl.lookupInput.product = {};
-                //     }
-                //     ctrl.lookupInput.product.name = product.name;
-                //     ctrl.lookupInput.product.id = product.id;
-                //     ctrl.lookupInput.specGroup = product.defaultSpecGroup;
-                //     ctrl.getSpecGroups(ctrl.lookupInput);
-                // }
                 lookupModel.getSpecParameterForRequestProduct(server_data.payload.id).then((server_data) => {
                     if (typeof $scope.filteredSpecs == 'undefined') {
                         $scope.filteredSpecs = {};
