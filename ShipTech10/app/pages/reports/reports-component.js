@@ -136,6 +136,8 @@ angular.module('shiptech.pages').controller('ReportsController', [
                         return o.internalName.toLowerCase() == $state.params.type.toLowerCase();
                     });
                     let entity_id = $state.params.entity_id ? $state.params.entity_id : '';
+                    let serlocid1 = $state.params.serlocid1 ? $state.params.serlocid1 : '';
+                    let serlocid2 = $state.params.serlocid2 ? $state.params.serlocid2 : '';
                     Factory_Master.getReport({ reportSrc: reportSrc, reportType: reportType.id }, (resp) => {
                         // ctrl.standardReports = response;
                         ctrl.toggled = true;
@@ -146,7 +148,7 @@ angular.module('shiptech.pages').controller('ReportsController', [
                         } else if (reportType.internalName == 'Cashflow') {
 	                        resp.payload.items[0].link = resp.payload.items[0].link + encodeURIComponent('GUID=') + resp.payload.items[0].filterId;
                         } else if (reportType.internalName == 'OperationalReport') {
-	                        resp.payload.items[0].link = `${resp.payload.items[0].link }&${ encodeURIComponent('ServiceId') }=${ entity_id}`;
+	                        resp.payload.items[0].link = `${resp.payload.items[0].link }&${ encodeURIComponent('serlocid1') }=${ serlocid1}&${ encodeURIComponent('serlocid2') }=${ serlocid2}&${ encodeURIComponent('serviceid') }=${ entity_id}`;
                         }
 
                         // <items[0].link>&GUID=<items[0].filterId>

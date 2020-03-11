@@ -3481,6 +3481,32 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             return computedServiceId;
         	// console.log();
         };
+        ctrl.getSerLocId1ForReport = function() {
+            if (!ctrl.requestTenantSettings || !ctrl.request.locations) {
+                return;
+            }
+            if (ctrl.request) {
+                if (ctrl.request.serlocid1) {
+                    return ctrl.request.serlocid1;
+                } else if (ctrl.request.serlocid2) {
+                    return ctrl.request.serlocid2;
+                }
+                
+            }   
+        }
+        ctrl.getSerLocId2ForReport = function() {
+            if (!ctrl.requestTenantSettings || !ctrl.request.locations) {
+                return;
+            }
+            if (ctrl.request) {
+                if (ctrl.request.serlocid2) {
+                    return ctrl.request.serlocid2;
+                } else if (ctrl.request.serlocid1) {
+                    return ctrl.request.serlocid1;
+                }
+                
+            }   
+        }
 
         ctrl.showDestinations = function(locationIdx, event) {
         	console.log(ctrl.request.locations[locationIdx]);
