@@ -145,7 +145,7 @@ angular.module('shiptech.models').factory('emailModel', [ 'emailResource', 'payl
                 attachmentsList: emailData.attachmentsList,
                 businessIds: emailData.businessIds ? formArray(emailData.businessIds) : [],
             };
-            request_data = payloadDataModel.create(payload);
+            var request_data = payloadDataModel.create(payload);
             return emailResource.discardPreview(request_data).$promise.then((data) => {
                 return data;
             });
@@ -214,7 +214,7 @@ angular.module('shiptech.models').factory('emailModel', [ 'emailResource', 'payl
             if (typeof(email.attachmentsList) != 'undefined') {
                 payload.attachmentsList = email.attachmentsList;
             }             
-            request_data = payloadDataModel.create(payload);
+            var request_data = payloadDataModel.create(payload);
             return emailResource.sendEmail(request_data).$promise.then((data) => {
                 return data;
             });
@@ -240,7 +240,7 @@ angular.module('shiptech.models').factory('emailModel', [ 'emailResource', 'payl
                     Value: 'ContractPlanningEmailTemplate'
                 } ]
             };
-            request_data = payloadDataModel.create(payload);
+            var request_data = payloadDataModel.create(payload);
             // request_data.Payload = null;
             return newRequestResource.sendContractPlanningEmail(request_data).$promise.then((data) => {
                 return data;

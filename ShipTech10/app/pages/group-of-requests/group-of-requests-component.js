@@ -2085,7 +2085,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
          */
         ctrl.hasCounterpartyAllRowRequirements = function(sellerId, locations, sellerObj) {
             let req;
-            physicalSupplierId = null;
+            var physicalSupplierId = null;
 
             /* rewrite*/
                 var uniqueRowIdentifier = `${sellerObj.randUniquePkg }-${ locations[0].uniqueLocationIdentifier}`;
@@ -2109,7 +2109,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
         };
         ctrl.hasSellerRequirements = function(sellerId, locations, sellerObj) {
             let req;
-            physicalSupplierId = null;
+            var physicalSupplierId = null;
 
             /* rewrite*/
             var uniqueRowIdentifier = `${sellerObj.randUniquePkg }-${ locations[0].uniqueLocationIdentifier}`;
@@ -2134,7 +2134,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
         ctrl.hasSellerRequirements = function(sellerId, locations, sellerObj) {
             let req;
             let theLocation;
-            physicalSupplierId = null;
+            var physicalSupplierId = null;
 
             /* rewrite*/
 			    // uniqueRowIdentifier = sellerObj.randUniquePkg + "-" + locations[0].uniqueLocationIdentifier
@@ -3019,8 +3019,8 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                         var valuesSoFar = [];
                         var sellers = ctrl.getSortedLocationSellers([ locV ]);
                         $.each(sellers, (k, v) => {
-                            physicalSupplierId = null;
-                            physicalSupplierName = null;
+                            var physicalSupplierId = null;
+                            var physicalSupplierName = null;
                             if (typeof v.offers != 'undefined') {
                                 if (v.offers.length > 0) {
                                     if (v.offers[0].physicalSupplierCounterparty) {
@@ -3150,7 +3150,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                             $.each(locV.products, (prodK, prodV) => {
                                 $.each(prodV.sellers, (sellerK, sellerV) => {
                                     if (typeof sellerV != 'undefined') {
-                                        physicalSupplierId = null;
+                                        var physicalSupplierId = null;
                                         if (typeof sellerV.offers != 'undefined') {
                                             if (sellerV.offers.length > 0) {
                                                 if (sellerV.offers[0].physicalSupplierCounterparty) {
@@ -3668,7 +3668,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
         };
         // remove seller from location group
         ctrl.removeSellerFromLocation = function(seller, locations) {
-            physicalSupplierId = null;
+            var physicalSupplierId = null;
             if (typeof seller.offers != 'undefined') {
                 if (seller.offers.length > 0) {
                     if (seller.offers[0].physicalSupplierCounterparty) {
@@ -4526,7 +4526,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                 var addedSellers = [];
                 var filteredSellers = [];
                 $.each(v.sellers, (k1, v1) => {
-                    physicalSupplierId = null;
+                    var physicalSupplierId = null;
                     if (typeof v1.offers != 'undefined') {
                         if (v1.offers.length > 0) {
                             if (v1.offers[0].physicalSupplierCounterparty) {
@@ -4550,8 +4550,8 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                 if (locationId == locV.id) {
                     data.found = 0;
                     $.each(locV.sellers, (sellerK, sellerV) => {
-                        physicalSupplierName = null;
-                        if (typeof sellerV.offers != 'undefined') {
+                         var physicalSupplierName = null;
+                         if (typeof sellerV.offers != 'undefined') {
                             if (sellerV.offers.length > 0) {
                                 if (sellerV.offers[0].physicalSupplierCounterparty) {
                                     physicalSupplierName = sellerV.offers[0].physicalSupplierCounterparty.name;
@@ -4569,7 +4569,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
             });
 
             /* rewrite*/
-            uniqueLocationIdentifier = theLocation[0].uniqueLocationIdentifier;
+            var uniqueLocationIdentifier = theLocation[0].uniqueLocationIdentifier;
             var uniqeSellers = [];
             $.each(ctrl.requests, (reqK, reqV) => {
                 $.each(reqV.locations, (locK, locV) => {
@@ -4795,7 +4795,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                         var requestSellerIds = packageRequestSellerIds;
                     }
                     // "RequestSellerIds": requestSellerIds,
-                    data = {
+                    var data = {
                         RequestOfferIds: requestOfferIds,
                         PhysicalSupplierId: newSupplierId
                     };
@@ -4986,7 +4986,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                 ctrl.disableBrokerLookup = false;
             } else {
                 var requestOfferIds = ctrl.returnLocationReqOffIds(theLocation, randUniquePkg);
-                data = {
+                var data = {
                     RequestOfferIds: requestOfferIds,
                     BrokerId: newBroker ? newBroker.id : null
                 };
@@ -5061,7 +5061,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
             // oldSupplier = ctrl.oldSupplierBeforeChange;
             ctrl.disableContactLookup = true;
             var oldContact = seller.oldContact;
-            randUniquePkg = seller.randUniquePkg;
+            var randUniquePkg = seller.randUniquePkg;
             if (newContact) {
                 if (oldContact) {
                     if (newContact.id === oldContact.id) {
@@ -5096,7 +5096,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                 });
                 ctrl.disableContactLookup = false;
             } else {
-                requestOfferIds = [];
+                var requestOfferIds = [];
                 $.each(theLocation, (locK, locV) => {
                     $.each(locV.products, (prodK, prodV) => {
                         $.each(prodV.sellers, (sellerK, sellerV) => {
@@ -5108,7 +5108,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                         });
                     });
                 });
-                data = {
+                var data = {
                     RequestOfferIds: requestOfferIds,
                     SellerContactId: newContact ? newContact.id : null
                 };
@@ -5334,7 +5334,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
             //     toastr.error("This seller is preferred at the port");
             //     return false;
             // }
-            var sellerHasOfferOnLocation = false;
+            var sellerHasOfferOnLocation = false, physicalSupplierId;
             $.each(ctrl.requests, (reqK, reqV) => {
                 $.each(reqV.locations, (locK, locV) => {
                     if (locV.uniqueLocationIdentifier == currentSellerLocation[0].uniqueLocationIdentifier) {
@@ -5352,7 +5352,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                                                 } else {
                                                     physicalSupplierId = null;
                                                 }
-                                                req = {
+                                                var req = {
                                                     RequestLocationId: locV.id,
                                                     SellerId: sellerV.sellerCounterparty.id,
                                                     RequestId: reqV.id,
@@ -5861,7 +5861,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
 
         /* TCO checkboxes*/
         ctrl.tcoHasPackageRequirements = function(pkgData) {
-            physicalSupplierId = null;
+            var physicalSupplierId = null;
             var packageType;
             if (pkgData.isSurrogate) {
                 packageType = 'buyer';
@@ -6433,7 +6433,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                     });
                 });
             });
-            data = {
+            var data = {
                 Filters: [
                     {
                         ColumnName: 'RequestSellerId',
@@ -6516,7 +6516,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
         };
         ctrl.updateIncoterm = function(incoterm, theLocation, seller, request) {
             // requestOfferIds = ctrl.returnLocationReqOffIds(location, seller.randUniquePkg);
-            requestOfferIds = [];
+            var requestOfferIds = [];
             $.each(ctrl.requests, (reqK, reqV) => {
                 if (reqV.id == request) {
                     $.each(reqV.locations, (locK, locV) => {
@@ -6534,7 +6534,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                     });
                 }
             });
-            data = {
+            var data = {
                 RequestOfferIds: requestOfferIds,
                 IncotermId: incoterm.id
             };
@@ -6600,7 +6600,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
         };
 
         ctrl.checkIfSellerHasRFQ = function(sellerRandUnique, theLocation) {
-            var availableProductsPerLocation = 0;
+            var availableProductsPerLocation = 0, uniqueLocationIdentifier;
             if (theLocation.length > 0) {
                 uniqueLocationIdentifier = theLocation[0].uniqueLocationIdentifier;
             } else {
@@ -6989,7 +6989,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
         		noQuoteBool = true;
         		requestOfferIds = selectedQuotableItems;
         	}
-        	 payload = {
+        	var payload = {
         	 	Payload : {
         	 		RequestOfferIds : requestOfferIds,
         	 		NoQuote : noQuoteBool
@@ -7150,11 +7150,11 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
             $.each(ctrl.requests, (reqK, reqV) => {
             	if (requestId == reqV.id) {
 	                $.each(reqV.locations, (locK, locV) => {
-	                	currentLocation = locV;
+	                	var currentLocation = locV;
 	                    $.each(locV.products, (prodK, prodV) => {
 	                        if (productId == prodV.product.id) {
 	                        	if (prodV.orderId) {
-	                        		data = {
+	                        		var data = {
 	                        			eta : currentLocation.eta,
 	                        			orderId : prodV.orderId
 	                        		};
@@ -7180,11 +7180,11 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
             $.each(ctrl.requests, (reqK, reqV) => {
             	if (requestId == reqV.id) {
 	                $.each(reqV.locations, (locK, locV) => {
-	                	currentLocation = locV;
+	                	var currentLocation = locV;
 	                    $.each(locV.products, (prodK, prodV) => {
 	                        if (productId == prodV.product.id) {
 	                        	if (prodV.orderId) {
-	                        		data = {
+	                        		var data = {
 	                        			eta : currentLocation.eta,
 	                        			orderId : prodV.orderId
 	                        		};

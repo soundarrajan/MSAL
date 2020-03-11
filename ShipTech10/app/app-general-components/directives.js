@@ -245,7 +245,7 @@ Number(function() {
 		                                            v.label = v.label.replace('Carrier', scope.tenantSetting.companyDisplayName.name);
 	                                            }
                                             });
-                                            initialLayout = angular.copy(callback);
+                                            var initialLayout = angular.copy(callback);
                                             let Layout = '';
                                             Layout = callback.clc;
                                             // $.each(initialLayout.clc.colModel, function(k, v) {
@@ -363,7 +363,7 @@ Number(function() {
                     // RUN directire after loading ALL dependencies
                     $timeout(() => {
                         return;
-                        isDev = 0;
+                        var isDev = 0;
 
                         $.each(Elements.scope, (key, params) => {
                             if (params.id == 'masters_counterpartylist_surveyors' || params.id == 'masters_counterpartylist_labs' || params.id == 'masters_counterpartylist_barge' || params.id == 'masters_counterpartylist_physicalsuppliers' || params.id == 'masters_counterpartylist_seller' || params.id == 'masters_counterpartylist_broker') {
@@ -1075,7 +1075,7 @@ Number(function() {
                                     console.log('selectedRowsIds', selectedRowsIds);
                                     $rootScope.selectDeliveryRows = [];
                                     $.each(selectedRowsIds, (key, val) => {
-                                        rowData = Elements.settings[table_id].source.datastr[val - 1];
+                                        var rowData = Elements.settings[table_id].source.datastr[val - 1];
                                         $rootScope.selectDeliveryRows.push(rowData);
                                     });
                                 } else {
@@ -1372,7 +1372,7 @@ Number(function() {
 
                                             // console.log(col,sortCol);
 
-                                            helperCoulmnTitle = `${$rootScope.currentColumnRoute } : ${ col}`;
+                                            var helperCoulmnTitle = `${$rootScope.currentColumnRoute } : ${ col}`;
                                             let toAppend = `<a class="colMenu" title="${ helperCoulmnTitle }" data-column="${ col }" data-table="${ table_id }"><i class="fa fa-caret-down"></i></a>`;
                                             $(this)
                                                 .parent()
@@ -2012,11 +2012,11 @@ Number(function() {
                         if ($(this).val() < 10) {
                             $(this).val(`0${ $(this).val()}`);
                         }
-                        minutes = $(this).val();
-                        hours = $(element)
+                        var minutes = $(this).val();
+                        var hours = $(element)
                             .find('.hours')
                             .val();
-                        newTime = parseFloat(hours * 60) + parseFloat(minutes);
+                        var newTime = parseFloat(hours * 60) + parseFloat(minutes);
                         ngModel.$setViewValue(newTime);
                     });
             }
@@ -2153,6 +2153,7 @@ Number(function() {
                         elem.unbind();
                     });
                     ctrl.$parsers.unshift((viewValue) => {
+                        var fraction, filter;
                         if (attrs.format.split(':')[1]) {
                             filter = attrs.format.split(':')[0];
                             fraction = attrs.format.split(':')[1];
@@ -2262,7 +2263,7 @@ Number(function() {
                                     var activeIndex = key;
                                 }
                             });
-                            objArray = $(element).find('.ordering-element');
+                            var objArray = $(element).find('.ordering-element');
                             var nextElemIdx = parseFloat(activeIndex) + 1;
                             var currentElement = $(objArray)[activeIndex];
                             var targetElement = $(objArray)[nextElemIdx];
@@ -2288,18 +2289,19 @@ Number(function() {
                             }, 500);
                         });
                         backBtn.on('click', function() {
-                            activeElement = $(this)
+                            var activeElement = $(this)
                                 .parents('.ordering-element')
                                 .attr('unique-id');
+                            var activeIndex;
                             $.each($(element).find('.ordering-element'), function(key, value) {
                                 if ($(this).attr('unique-id') == activeElement) {
                                     activeIndex = key;
                                 }
                             });
-                            objArray = $(element).find('.ordering-element');
-                            nextElemIdx = parseFloat(activeIndex) - 1;
-                            currentElement = $(objArray)[activeIndex];
-                            targetElement = $(objArray)[nextElemIdx];
+                            var objArray = $(element).find('.ordering-element');
+                            var nextElemIdx = parseFloat(activeIndex) - 1;
+                            var currentElement = $(objArray)[activeIndex];
+                            var targetElement = $(objArray)[nextElemIdx];
                             $(currentElement).css({
                                 transform: 'translateX(-100%) scale(1.1)',
                                 opacity: 0
@@ -2323,7 +2325,7 @@ Number(function() {
                         });
 
                         function updateModel() {
-                            currentOrder = [];
+                            var currentOrder = [];
                             objArray = $(element).find('.ordering-element');
                             $.each(objArray, function() {
                                 currentOrder.push($(this).attr('unique-id'));

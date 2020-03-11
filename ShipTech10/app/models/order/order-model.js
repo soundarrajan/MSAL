@@ -331,7 +331,7 @@ angular.module('shiptech.models').factory('orderModel', [ '$q', 'orderResource',
                 OrderId: emailData.orderId,
                 OrderProductsList: emailData.orderProductIds
             };
-            request_data = payloadDataModel.create(payload);
+            var request_data = payloadDataModel.create(payload);
             return orderResource.previewOrderToBeDeliveredMail(request_data)
                 .$promise
                 .then((data) => {
@@ -344,7 +344,7 @@ angular.module('shiptech.models').factory('orderModel', [ '$q', 'orderResource',
                 OrderId: orderId,
                 OrderProductsList: orderProductIds
             };
-            request_data = payloadDataModel.create(payload);
+            var request_data = payloadDataModel.create(payload);
             return orderResource.sendOrderToBeDeliveredMail(request_data)
                 .$promise
                 .then((data) => {
@@ -371,7 +371,7 @@ angular.module('shiptech.models').factory('orderModel', [ '$q', 'orderResource',
                     Value: templateName
                 } ]
             };
-            request_data = payloadDataModel.create(payload);
+            var request_data = payloadDataModel.create(payload);
             return orderResource.previewConfirmation(request_data)
                 .$promise
                 .then((data) => {
@@ -381,7 +381,7 @@ angular.module('shiptech.models').factory('orderModel', [ '$q', 'orderResource',
 
         function getOrderListForRequest(orderId) {
         	let payload = orderId;
-        	request_data = payloadDataModel.create(payload);
+        	var request_data = payloadDataModel.create(payload);
             return orderResource.getOrderListForRequest(request_data)
                 .$promise
                 .then((data) => {

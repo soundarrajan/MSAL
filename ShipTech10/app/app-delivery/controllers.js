@@ -651,7 +651,7 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
     $scope.raiseNoteOfProtestProduct = function(productIndex) {
         let DeliveryProductId = $scope.formValues.deliveryProducts[productIndex].id;
         let DeliveryId = vm.entity_id;
-        data = {
+        var data = {
             Payload: {
                 DeliveryId: DeliveryId,
                 DeliveryProductId: DeliveryProductId
@@ -686,12 +686,12 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
     };
     $scope.raiseClaim = function(data) {
     	console.log($scope.CM.availableClaimTypes);
-    	var specParamsIds = [];
+    	var specParamsIds = [], claimId;
     	$.each($scope.CM.availableClaimTypes, (typeK, typeV) => {
     		$.each(typeV.specParams, (specK, specV) => {
                 if (specV.isSelected) {
 			    	specParamsIds.push(specV.id);
-			    	var claimId = typeV.id;
+			    	claimId = typeV.id;
                 }
     		});
     	});
@@ -977,7 +977,8 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
             if ($rootScope.raiseClaimInfo) {
                 var DeliveryProductId = `${$rootScope.raiseClaimInfo.productId }`;
             	console.log($scope.CM.availableClaimTypes);
-		    	specParamsIds = [];
+		    	var specParamsIds = [];
+                var claimTypeId;
 		    	$.each($scope.CM.availableClaimTypes, (typeK, typeV) => {
 		    		$.each(typeV.specParams, (specK, specV) => {
                         if (specV.isSelected) {
@@ -1095,7 +1096,7 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
             $rootScope.raiseClaimInfo.currentSpecParamIds.push(selectedParamId);
         } else if ($rootScope.raiseClaimInfo.currentClaimId == selectedClaimId || $rootScope.raiseClaimInfo.currentSpecParamIds.length == 0) {
             // add / erase from array if it fits
-            i = $.inArray(selectedParamId, $rootScope.raiseClaimInfo.currentSpecParamIds);
+            var i = $.inArray(selectedParamId, $rootScope.raiseClaimInfo.currentSpecParamIds);
             if (i >= 0) {
                 $rootScope.raiseClaimInfo.currentSpecParamIds.splice(i, 1);
                 // remove restrictions if unchecked all params
@@ -1132,7 +1133,7 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
                 // check current claim boxes & make available
                 $.each(claimVal.specParams, (key, paramVal) => {
                     paramVal.disabled = 'false';
-                    id = `#claim_info_checkbox_${ paramVal.specParameter.id}`;
+                    var id = `#claim_info_checkbox_${ paramVal.specParameter.id}`;
                     $(id)[0].checked = true;
                     $rootScope.raiseClaimInfo.currentSpecParamIds.push(paramVal.id);
                     paramsSet = true;
@@ -1209,8 +1210,8 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
                 orderProductId: data.orderProductId
             });
             // add quality and quantity params for product
-            orderProductId = data.orderProductId;
-            orderProductSpecGroupId = data.specGroup.id;
+            var orderProductId = data.orderProductId;
+            var orderProductSpecGroupId = data.specGroup.id;
             var dataForInfo = {
                 Payload: {
                     Filters: [ {
@@ -1264,7 +1265,7 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
                 });
                 orderProductId = delivery.orderProductId;
                 orderProductSpecGroupId = delivery.specGroup.id;
-                dataForInfo = {
+                var dataForInfo = {
                     Payload: {
                         Filters: [ {
                             ColumnName: 'OrderProductId',
@@ -1328,7 +1329,7 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
                 $scope.relatedDeliveries = [];
             }
             // get deliveries
-            data = {
+            var data = {
                 Payload: orderId
             };
             let duplicate = false;
@@ -1353,7 +1354,7 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
         }
     };
     $scope.getDeliveryConfigurations = function() {
-        data = {
+        var data = {
             Payload: 'true'
         };
         Factory_Master.getDeliveryConfigurations(data, (response) => {
@@ -1491,7 +1492,7 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
 
         if(selectedProductToAddInDelivery.specGroup) {
             orderProductSpecGroupId = selectedProductToAddInDelivery.specGroup.id;
-            data = {
+            var data = {
                 Payload: {
                     Filters: [ {
                         ColumnName: 'OrderProductId',
@@ -1567,7 +1568,7 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
             $location.path(path);
             return;
         }
-        data = {
+        var data = {
             Payload: deliveryId
         };
 
@@ -1663,7 +1664,7 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
         }else{
             // make call to delete product
             toastr.info('Deleting product...');
-            data = {
+            var data = {
                 Payload: productId
             };
 	        Factory_Master.deleteDeliveryProduct(data, (response) => {
@@ -1825,7 +1826,7 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
                     orderProductId = summaryProd.id;
                     orderProductSpecGroupId = summaryProd.specGroup.id;
 
-                    dataForInfo = {
+                    var dataForInfo = {
                         Payload: {
                             Filters: [ {
                                 ColumnName: 'OrderProductId',

@@ -143,8 +143,8 @@ angular.module('shiptech.components').controller('ConfirmOffersDialogController'
                         // hasError = false;
                         $.each(rodV.products, (rodProdK, rodProdV) => {
                             if (rodV.requestLocationId == rqV.RequestLocationId /* && rodProdV.requestProductId == rqV.RequestProductId*/) {
-			                    hasError = false;
-                                hasOrder = true;
+			                    var hasError = false;
+                                var hasOrder = true;
                                 var errorType = [];
                                 if (rodV.seller.id != rqV.SellerId) {
                                     if (productsWithErrors.indexOf(rqV.RequestProductId) == -1) {

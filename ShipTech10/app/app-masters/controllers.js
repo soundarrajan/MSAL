@@ -819,7 +819,7 @@ APP_MASTERS.controller('Controller_Master', [
                 //     vm.editInstance.$valid = false;
                 // }
 
-                minMaxError = false;
+                var minMaxError = false;
                 $.each($scope.formValues.robs, (k, v) => {
                 	if (v.minQty > v.maxQty) {
 		                minMaxError = true;
@@ -843,7 +843,7 @@ APP_MASTERS.controller('Controller_Master', [
                 });
             }
             if (vm.app_id == 'masters' && vm.screen_id == 'vesseltype') {
-                minMaxError = false;
+                var minMaxError = false;
                 $.each($scope.formValues.robs, (k, v) => {
                 	if (v.minQty > v.maxQty) {
 		                minMaxError = true;
@@ -878,7 +878,7 @@ APP_MASTERS.controller('Controller_Master', [
                 }
             }
             if (vm.app_id == 'masters' && vm.screen_id == 'specgroup') {
-                hasError = false;
+                var hasError = false;
                 $.each($scope.formValues.specGroupParameters, (k, v) => {
                     if (!v.min && !v.max) {
                         // vm.editInstance.$valid = false
@@ -956,7 +956,7 @@ APP_MASTERS.controller('Controller_Master', [
             }
             if (vm.app_id == 'contracts' && vm.screen_id == 'contract') {
                 // chech for product location to be obj
-                ret = false;
+                var ret = false;
                 $.each($scope.formValues.products, (key, val) => {
                     if (typeof val.location != 'object') {
                         // toastr error is shown from app-contract controller - save_master_changes_controllerSpecific
@@ -1002,9 +1002,9 @@ APP_MASTERS.controller('Controller_Master', [
                         val.attachmentDocumentTypes = val.attachmentDocumentTypes.split(',');
                     }
 
-	                toEmailsConfigurationSimplified = [];
-	                ccEmailsConfigurationSimplified = [];
-	                attachmentDocumentTypesSimplified = [];
+	                var toEmailsConfigurationSimplified = [];
+	                var ccEmailsConfigurationSimplified = [];
+	                var attachmentDocumentTypesSimplified = [];
                 	if (val.toEmailsConfiguration) {
 	                	if (val.toEmailsConfiguration.length > 0) {
 	                		$.each(val.toEmailsConfiguration, (tok, tov) => {
@@ -1092,7 +1092,7 @@ APP_MASTERS.controller('Controller_Master', [
                     }
                 }
                 if (vm.app_id == 'masters' && vm.screen_id == 'price') {
-                	tempMarketPrices = [];
+                	var tempMarketPrices = [];
                     $.each($scope.filterFromData.marketPrices, (key, val) => {
                     	if (!(val.id == 0 && !val.quotePrice)) {
 		                	tempMarketPrices.push(val);
@@ -1112,7 +1112,7 @@ APP_MASTERS.controller('Controller_Master', [
                 }
                 if (vm.app_id == 'admin' && vm.screen_id == 'role') {
                     console.log($scope.formValues.deepmerge);
-                    roles = $scope.formValues.roles;
+                    var roles = $scope.formValues.roles;
                     $.each(roles.rights, (key, module) => {
                         $.each(module.moduleScreenConfigurations, (key2, screen) => {
                             // screen.id = null;
@@ -1121,10 +1121,10 @@ APP_MASTERS.controller('Controller_Master', [
                     });
                     $scope.formValues.roles.rights = [];
                     $.each($scope.formValues.deepmerge, (key, deepModule) => {
-                        obj = {};
+                        var obj = {};
                         obj.moduleScreenConfigurations = [];
                         $.each(deepModule, (key2, deepScreen) => {
-                            actions = [];
+                            var actions = [];
                             $.each(deepScreen, (key3, deepAction) => {
                                 if (key3 != 'screen' && key3 != 'definedScreenTemplates' && key3 != 'selectedScreenTemplate') {
                                     if (deepAction.isSelected) {
@@ -1151,7 +1151,7 @@ APP_MASTERS.controller('Controller_Master', [
                                     name: deepScreen.screen.name
                                 };
                             }
-                            selectedScreenTemplate = {};
+                            var selectedScreenTemplate = {};
                             if (typeof deepScreen.selectedScreenTemplate != 'undefined') {
                                 selectedScreenTemplate = deepScreen.selectedScreenTemplate;
                             }
@@ -1176,7 +1176,7 @@ APP_MASTERS.controller('Controller_Master', [
 		               //  	$scope.filterFromData.hasManualPaymentDate = false;
 	                // 	}
                 	// }
-                	validCostDetails = [];
+                	var validCostDetails = [];
                     if ($scope.filterFromData.costDetails.length > 0) {
                         $.each($scope.filterFromData.costDetails, (k, v) => {
                             if (typeof v.product != 'undefined' && v.product != null) {
@@ -1201,7 +1201,7 @@ APP_MASTERS.controller('Controller_Master', [
                     }
                     $scope.filterFromData.costDetails = validCostDetails;
                     // return;
-                    costTypeError = false;
+                    var costTypeError = false;
                     for (var i = $scope.filterFromData.costDetails.length - 1; i >= 0; i--) {
                     	if (!$scope.filterFromData.costDetails[i].costType) {
 		                    costTypeError = true;
@@ -1280,7 +1280,7 @@ APP_MASTERS.controller('Controller_Master', [
                             if(noReload == undefined || typeof noReload == undefined || !noReload) {
                                 toastr.success(callback.message);
                                 // alert('reloading');
-                                $tenantConfiguration = null;
+                                var $tenantConfiguration = null;
                                 $state.reload();
                                 screenLoader.hideLoader();
                             } else if(completeCallback) {
@@ -1321,6 +1321,7 @@ APP_MASTERS.controller('Controller_Master', [
                                     }
                                 });
                             } else {
+                                var locationPath;
                                 if ($location.path().slice(-2) == '/0') {
                                     locationPath = $location.path().slice(0, -1);
                                 } else {
@@ -1422,7 +1423,7 @@ APP_MASTERS.controller('Controller_Master', [
                     toastr.error(response.message);
                 } else {
                     $scope.sellerRating = response;
-                    tpl = $templateCache.get('app-general-components/views/modal_sellerrating.html');
+                    var tpl = $templateCache.get('app-general-components/views/modal_sellerrating.html');
                     $scope.modalInstance = $uibModal.open({
                         template: tpl,
                         size: 'full',
@@ -1468,9 +1469,9 @@ APP_MASTERS.controller('Controller_Master', [
                         $scope.canChangeSpec = true;
                     }
                 });
-                productId = product.product.id;
+                var productId = product.product.id;
                 if (application == 'request') {
-                    data = {
+                    var data = {
                         Payload: {
                             Filters: [
                                 {
@@ -1490,7 +1491,7 @@ APP_MASTERS.controller('Controller_Master', [
                     };
                 }
                 if (application == 'supplier') {
-                    data = {
+                    var data = {
                         Token: $state.params.token,
                         Parameters: {
                             Filters: [
@@ -1517,8 +1518,8 @@ APP_MASTERS.controller('Controller_Master', [
                         $scope.canChangeSpec = true;
                     }
                 });
-                productId = product.product.id;
-                data = {
+                var productId = product.product.id;
+                var data = {
                     Payload: {
                         Filters: [
                             {
@@ -1538,8 +1539,8 @@ APP_MASTERS.controller('Controller_Master', [
                 };
             }
             if (application == 'contract') {
-                productId = product.product.id;
-                data = {
+                var productId = product.product.id;
+                var data = {
                     Payload: {
                         Filters: [
                             {
@@ -1614,7 +1615,7 @@ APP_MASTERS.controller('Controller_Master', [
                     spec.specGroup = data[0].specGroup;
                 });
             }
-            objToSend = {
+            var objToSend = {
                 ProductId: vm.activeProductForSpecGroupEdit.product.id,
                 SpecParameters: data
             };
@@ -2345,9 +2346,9 @@ APP_MASTERS.controller('Controller_Master', [
 
         $scope.triggerChangeFields = function(name, id) {
             $rootScope.formDataFields = $scope.formValues;
-            fields = [ 'OrderID', 'labResultID', 'deliveryNumber', 'Product' ];
-            company_id = $('#companylistCompany').val();
-            market_id = $('#MarketInstrumentMarketInstrument').val();
+            var fields = [ 'OrderID', 'labResultID', 'deliveryNumber', 'Product' ];
+            var company_id = $('#companylistCompany').val();
+            var market_id = $('#MarketInstrumentMarketInstrument').val();
 
             if (typeof $scope.triggerChangeFieldsAppSpecific == 'function') {
                 $scope.triggerChangeFieldsAppSpecific(name, id);
@@ -2442,9 +2443,9 @@ APP_MASTERS.controller('Controller_Master', [
                     }
                 }
                 if (name == 'specParameter' && vm.screen_id == 'specgroup') {
-                    row = $(`[name= "${ name }"]`).data('row-index');
+                    var row = $(`[name= "${ name }"]`).data('row-index');
                     setTimeout(() => {
-                        val = $(`[name= "${ name }"]`).data('cell-id');
+                        var val = $(`[name= "${ name }"]`).data('cell-id');
                         Factory_Master.get_master_entity(val, 'specparameter', 'masters', (response) => {
                             if (response) {
                                 $scope.formValues = $rootScope.formValuesLoaded;
@@ -2477,7 +2478,7 @@ APP_MASTERS.controller('Controller_Master', [
                     }
                 }
                 if (name == 'MarketInstrument' && vm.screen_id == 'systeminstrument') {
-                    param = {
+                    var param = {
                         app: vm.app_id,
                         screen: vm.screen_id,
                         MarketInstrument: $scope.formValues[id].id
@@ -2598,7 +2599,7 @@ APP_MASTERS.controller('Controller_Master', [
                             entry.Value = temp;
                         });
                     }
-                    retFunc = false;
+                    var retFunc = false;
                     if (field.Name == 'Product') {
                         $.each(field.Filter, (key, val) => {
                             if (val.ColumnName == 'OrderId') {
@@ -2668,6 +2669,7 @@ APP_MASTERS.controller('Controller_Master', [
                                 $scope.$watchGroup([ $scope.formValues, $scope.options ], () => {
                                     // $timeout(function() {
 	                                    // console.log(' ***** $watchGroup([$scope.formValues, $scope.options]')
+                                    var id;
                                     if (field.Type == 'textUOM') {
                                         id = `#${ field.Name}`;
                                     } else {
@@ -2724,7 +2726,7 @@ APP_MASTERS.controller('Controller_Master', [
             }
             if (typeof $scope.options[field.Name] != 'undefined' && $scope.options[field.Name][0].id != -1 && typeof $scope.formValues != 'undefined' && typeof $scope.formValues[map[field.Name]] != 'undefined') {
                 if ($scope.options[field.Name].length > 0) {
-                    found = false;
+                    var found = false;
                     $.each($scope.options[field.Name], (key, val) => {
                         if (typeof val != 'undefined') {
                             if (val.id == $scope.formValues[map[field.Name]].id) {
@@ -2789,6 +2791,7 @@ APP_MASTERS.controller('Controller_Master', [
         };
         vm.getClaimOptions = function(master, claimType) {
             $scope.claimsOptions = [];
+            var order_product_id, lab_result_id, order_id;
             if ($scope.formValues.orderDetails && $scope.formValues.orderDetails.order) {
                 order_id = $scope.formValues.orderDetails.order.id;
             } else {
@@ -2804,13 +2807,13 @@ APP_MASTERS.controller('Controller_Master', [
             } else {
                 order_product_id = null;
             }
-            product_id = $scope.formValues.orderDetails.deliveryProductId;
-            field = {
+            var product_id = $scope.formValues.orderDetails.deliveryProductId;
+            var field = {
                 Name: master,
                 Type: 'dropdown',
                 masterSource: master
             };
-            claimTypeName = null;
+            var claimTypeName = null;
             $.each(vm.listsCache.ClaimType, (k, v) => {
             	if (v.id == claimType) {
                     claimTypeName = v.name;
@@ -2835,9 +2838,9 @@ APP_MASTERS.controller('Controller_Master', [
 
         vm.formatDate = function(elem, dateFormat) {
             if (elem) {
-                formattedDate = elem;
-                dateFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
-            	hasDayOfWeek = false;
+                var formattedDate = elem;
+                var dateFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
+            	var hasDayOfWeek = false;
 	            if (dateFormat.startsWith('DDD ')) {
 	            	hasDayOfWeek = true;
 	            	dateFormat = dateFormat.split('DDD ')[1];
@@ -2867,7 +2870,7 @@ APP_MASTERS.controller('Controller_Master', [
         vm.formatDateTime = function(elem, dateFormat, fieldUniqueId) {
             // console.log(fieldUniqueId)
             if (elem) {
-                dateFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
+                var dateFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
             	let hasDayOfWeek = false;
 	            if (dateFormat.startsWith('DDD ')) {
 	            	hasDayOfWeek = true;
@@ -2886,7 +2889,7 @@ APP_MASTERS.controller('Controller_Master', [
                 if (fieldUniqueId == 'eta' || fieldUniqueId == 'orderDetails.eta' || fieldUniqueId == 'etb' || fieldUniqueId == 'etd' || fieldUniqueId.toLowerCase().indexOf('delivery') >= 0 || fieldUniqueId == 'pricingDate') {
                     // debugger;
                     // return moment.utc(elem).format($scope.tenantSetting.tenantFormatss.dateFormat.name);
-                    utcDate = moment.utc(elem).format();
+                    var utcDate = moment.utc(elem).format();
                     formattedDate = $filter('date')(utcDate, dateFormat, 'UTC');
                     // return moment.utc(elem).format(dateFormat);
                 } else {
@@ -2902,14 +2905,14 @@ APP_MASTERS.controller('Controller_Master', [
             }
         };
         vm.formatSimpleDate = function(date) {
-            dateFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
+            var dateFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
             window.tenantFormatsDateFormat = dateFormat;
             let hasDayOfWeek = false;
             if (dateFormat.startsWith('DDD ')) {
             	hasDayOfWeek = true;
             	dateFormat = dateFormat.split('DDD ')[1];
             }
-            dateFormat = dateFormat.replace(/d/g, 'D').replace(/y/g, 'Y').split(' ')[0];
+            var dateFormat = dateFormat.replace(/d/g, 'D').replace(/y/g, 'Y').split(' ')[0];
             if (date) {
             	dateFormatted = moment.utc(date).format(dateFormat);
                 if (hasDayOfWeek) {
@@ -2962,7 +2965,7 @@ APP_MASTERS.controller('Controller_Master', [
                             added.push(value.id);
                         }
                     });
-                    objectToAdd = JSON.parse(source.attr('data-value'));
+                    var objectToAdd = JSON.parse(source.attr('data-value'));
                     if ($.inArray(objectToAdd.id, added) == -1) {
                         $scope.formValues[arrayHolder][idx][uniqueID].push(objectToAdd);
                         elt.tagsinput('add', {
@@ -2976,6 +2979,7 @@ APP_MASTERS.controller('Controller_Master', [
                 });
                 $(elt).on('itemRemoved', (event) => {
                     let idToRemove = event.item.value;
+                    var indexRmv;
                     $.each($scope.formValues[arrayHolder][idx][uniqueID], (index, value) => {
                         if (value.id == idToRemove) {
                             indexRmv = index;
@@ -2989,7 +2993,7 @@ APP_MASTERS.controller('Controller_Master', [
 
                 function hideTheChildren() {
                     $scope.initBoostrapTagsInputTooltip();
-                    currentTags = elt.next('.bootstrap-tagsinput').children('.label');
+                    var currentTags = elt.next('.bootstrap-tagsinput').children('.label');
                     currentTags.removeAttr('big-child');
                     currentTags.show();
                     currentTags.css('clear', 'none');
@@ -3030,6 +3034,7 @@ APP_MASTERS.controller('Controller_Master', [
                 itemText: 'text'
             });
             $(elt).on('itemAdded', (event) => {
+                var index;
                 if (id == 'agents') {
                     index = $scope.formValues[id].length - 1;
                     selectDefaultAgent(id, index);
@@ -3037,6 +3042,7 @@ APP_MASTERS.controller('Controller_Master', [
             });
             $(elt).on('itemRemoved', (event) => {
                 let idToRemove = event.item.value;
+                var comparator, indexRmv;
                 $.each($scope.formValues[id], (index, value) => {
                     if (id == 'applications' && vm.screen_id == 'sellerrating') {
                         if (value.module.id == idToRemove) {
@@ -3073,6 +3079,7 @@ APP_MASTERS.controller('Controller_Master', [
                 hideTheChildren();
             });
             elt_plus.on('click', () => {
+                var selector;
                 if (idx >= 0) {
                     selector = id + idx;
                 } else {
@@ -4113,7 +4120,7 @@ APP_MASTERS.controller('Controller_Master', [
 
             // finally set transaction type
             data.request.Payload.transactionType = transactionType;
-
+            var file;
             console.log('$state.params.screen_id', $state.params.screen_id);
             if($state.current.name == 'masters.documents' && $state.params.screen_id == 'documenttype') {
                 // for master documenttype (only with documents upload) set referenceNo to a big number
@@ -4470,11 +4477,11 @@ APP_MASTERS.controller('Controller_Master', [
 	    };
 
         $scope.addTransactionsInInvoice = function(element) {
-            id = element.clc;
-            object = element.source;
-            formvalue = element.formvalue;
-            idx = element.idx;
-            field_name = element.field_name;
+            var id = element.clc;
+            var object = element.source;
+            var formvalue = element.formvalue;
+            var idx = element.idx;
+            var field_name = element.field_name;
             let CLC = $(`#modal_${ id } table.ui-jqgrid-btable`);
             let rowId = CLC.jqGrid('getGridParam', 'selrow');
             let rowData = CLC.jqGrid.Ascensys.gridObject.rows[rowId - 1];
@@ -5338,7 +5345,7 @@ APP_MASTERS.controller('Controller_Master', [
                 $rootScope.raiseClaimInfo.currentSpecParamIds.push(selectedParamId);
             } else if ($rootScope.raiseClaimInfo.currentClaimId == selectedClaimId || $rootScope.raiseClaimInfo.currentSpecParamIds.length == 0) {
                 // add / erase from array if it fits
-                i = $.inArray(selectedParamId, $rootScope.raiseClaimInfo.currentSpecParamIds);
+                var i = $.inArray(selectedParamId, $rootScope.raiseClaimInfo.currentSpecParamIds);
                 if (i >= 0) {
                     $rootScope.raiseClaimInfo.currentSpecParamIds.splice(i, 1);
                     // remove restrictions if unchecked all params
@@ -5565,7 +5572,7 @@ APP_MASTERS.controller('Controller_Master', [
             if (!exchangeDate) {
                 exchangeDate = date;
             }
-            data = {
+            var data = {
                 Payload: {
                     Order: null,
                     Filters: [
@@ -5732,7 +5739,7 @@ APP_MASTERS.controller('Controller_Master', [
             return 2;
         };
         $scope.getSpecGroupByProduct = function(productId) {
-            data = {
+            var data = {
                 Payload: {
                     Filters: [
                         {
@@ -5840,17 +5847,17 @@ APP_MASTERS.controller('Controller_Master', [
         };
 
         $scope.filterCostTypesByAdditionalCost = function(cost, rowRenderIndex) {
-            currentCost = cost;
+            var currentCost = cost;
 
 
             let doFiltering = function(addCostCompTypes, cost) {
-                costType = null;
+                var costType = null;
                 $.each(addCostCompTypes, (k, v) => {
                     if (v.id == currentCost) {
                         costType = v.costType.id;
                     }
                 });
-                availableCosts = [];
+                var availableCosts = [];
                 if (costType == 1 || costType == 2) {
                     $.each(vm.listsCache.CostType, (k, v) => {
                         if (v.id == 1 || v.id == 2) {
@@ -6327,6 +6334,7 @@ APP_MASTERS.controller('Controller_Master', [
             return payload;
         };
         $scope.savePrefferedSellerProducts = function() {
+            var objMapping;
     		if (vm.screen_id == 'counterparty') {
     			objMapping = 'counterpartyLocations';
     		} else {
@@ -6380,7 +6388,7 @@ APP_MASTERS.controller('Controller_Master', [
                 $scope.preferredProductsForSellerInLocation = [];
                 return;
             }
-            payload = {
+            var payload = {
                 Payload: {
                     Order: {
                         ColumnName: $scope.locationMasterPreferredSellerProductsTableConfig.order.columnName,
@@ -6469,7 +6477,7 @@ APP_MASTERS.controller('Controller_Master', [
                 emailObj = emailObj.filter((e) => {
                     return e;
                 });
-                pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                var pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                 if (emailObj.length > 0) {
                     i = 0;
                     $.each(emailObj, (k, v) => {
@@ -6489,7 +6497,7 @@ APP_MASTERS.controller('Controller_Master', [
             }
         };
         $scope.discardSavedPreview = function() {
-            data = {
+            var data = {
                 Payload: {
                     EmailTemplateId: $rootScope.currentEmailTemplate,
                     BusinessId: vm.entity_id,
@@ -6561,7 +6569,7 @@ APP_MASTERS.controller('Controller_Master', [
                 }
             };
 
-            request_data = payloadDataModel.create(data.Payload);
+            var request_data = payloadDataModel.create(data.Payload);
 
             let comments = {
                 id: $rootScope.previewEmail.comment ? $rootScope.previewEmail.comment.id : 0,
@@ -6787,7 +6795,7 @@ APP_MASTERS.controller('Controller_Master', [
 		        }
 		    }
 		    console.log(type);
-		    data = {
+		    var data = {
 		        action: type,
 		        notificationId: $rootScope.selectedNotifications
 		    };
@@ -7071,7 +7079,7 @@ APP_MASTERS.controller('Controller_Master', [
 
 	    $scope.initEmailTemplateTypeahead = function(rowKey, rowData) {
 	        if (typeof $scope.options[`EmailTemplate_${ rowKey}`] == 'undefined') {
-	            field = {
+	            var field = {
 	                Name: `EmailTemplate_${ rowKey}`,
 	                Type: 'lookup',
 	                clc_id: 'admin_templates',
@@ -7157,7 +7165,7 @@ APP_MASTERS.controller('Controller_Master', [
 		        vm.fields = angular.toJson($scope.formValues);
 		        vm.fields = angular.element($('[name="CM.editInstance"]')).scope().formValues;
 
-		        validCostDetails = [];
+		    var validCostDetails = [];
             if (vm.fields.costDetails.length > 0) {
                 $.each(vm.fields.costDetails, (k, v) => {
                     if (typeof v.product != 'undefined' && v.product != null) {
@@ -7239,7 +7247,7 @@ APP_MASTERS.controller('Controller_Master', [
 	            name: 'FinalInvoice',
 	            code: null
 	        };
-	        data = {
+	        var data = {
 		        invoiceType : invoiceType,
 		        entityId : vm.entity_id
 	        };
@@ -7533,7 +7541,7 @@ APP_MASTERS.controller('Controller_Master', [
             var quantity = Quantity;
             var fromUomId = FromUomId;
             var toUomId = ToUomId;
-	        data = {
+	        var data = {
 	            Payload: {
 	                ProductId: productId,
 	                Quantity: quantity,
@@ -7571,7 +7579,7 @@ APP_MASTERS.controller('Controller_Master', [
 
 
         $scope.calculateInvoiceGrandTotal = function(formValues) {
-		        grandTotal = 0;
+		        var grandTotal = 0;
 		        $.each(formValues.productDetails, (k, v) => {
 		            if (!v.isDeleted && typeof v.invoiceAmount != 'undefined') {
 		                grandTotal = grandTotal + convertDecimalSeparatorStringToNumber(v.invoiceAmount);
@@ -7587,7 +7595,7 @@ APP_MASTERS.controller('Controller_Master', [
 		        return grandTotal;
 		    };
         $scope.calculateInvoiceEstimatedGrandTotal = function(formValues) {
-	        grandTotal = 0;
+	        var grandTotal = 0;
 	        $.each(formValues.productDetails, (k, v) => {
 	            if (!v.isDeleted && typeof v.estimatedAmount != 'undefined') {
 	                grandTotal = grandTotal + v.estimatedAmount;
@@ -7621,7 +7629,7 @@ APP_MASTERS.controller('Controller_Master', [
 	    	let transactionTypeId = _.find(vm.listsCache.TransactionType, (el) => {
 	    		return el.name == transaction;
 	    	}).id;
-	    	payload = {
+	    	var payload = {
 	    		PageFilters: {
 	    			Filters: []
 	    		},
@@ -7934,7 +7942,7 @@ APP_MASTERS.controller('Controller_Master', [
                     if (allowProducts.length) {
                         $scope.formValues.products[index].conversionFactors.forEach((value, key) => {
                             if (value.product.id != $scope.formValues.products[index].product.id) {
-                                idIndex = _.findIndex(allowProducts, (o) => {
+                                var idIndex = _.findIndex(allowProducts, (o) => {
                                     console.log(o.id);
                                     return o.id == value.product.id;
                                 });

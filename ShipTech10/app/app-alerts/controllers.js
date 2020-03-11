@@ -490,7 +490,7 @@ APP_ALERTS.controller('Controller_Alerts', [ '$scope', '$rootScope', '$Api_Servi
         Factory_Master.alertsGetRuleOperator(null, (response) => {
             if (response) {
                 if (response.status == true) {
-                    result = response.data;
+                    var result = response.data;
                     $scope.options.alertsOperator = result;
                 } else {
                     toastr.error(response.message);
@@ -591,7 +591,7 @@ APP_ALERTS.controller('Controller_Alerts', [ '$scope', '$rootScope', '$Api_Servi
             Factory_Master.alertsGetTriggerRuleValuesByParamId(paramId, (response) => {
                 if (response) {
                     if (response.status == true) {
-                        result = response.data;
+                        var result = response.data;
                         $scope.options[`triggerRuleValuesFor${ paramId}`] = result;
                     } else {
                         toastr.error(response.message);
@@ -605,7 +605,7 @@ APP_ALERTS.controller('Controller_Alerts', [ '$scope', '$rootScope', '$Api_Servi
         Factory_Master.alertsGetRoles(null, (response) => {
             if (response) {
                 if (response.status == true) {
-                    result = response.data;
+                    var result = response.data;
                     $scope.options.userRoles = result;
                 } else {
                     toastr.error(response.message);
@@ -627,7 +627,7 @@ APP_ALERTS.controller('Controller_Alerts', [ '$scope', '$rootScope', '$Api_Servi
                     currentRolesIds.push(value.id);
                 });
                 if (response.status == true) {
-                    result = response.data;
+                    var result = response.data;
                     var availableUsers = [];
                     var availableUsersIds = [];
                     $.each(result, (key, value) => {
@@ -670,7 +670,7 @@ APP_ALERTS.controller('Controller_Alerts', [ '$scope', '$rootScope', '$Api_Servi
         Factory_Master.getAlertTypes(null, (response) => {
             if (response) {
                 if (response.status == true) {
-                    result = response.data;
+                    var result = response.data;
                     $scope.options.alertTypes = result;
                 } else {
                     toastr.error(response.message);
@@ -803,7 +803,7 @@ APP_ALERTS.controller('Controller_Alerts', [ '$scope', '$rootScope', '$Api_Servi
             }
         }
         console.log(type);
-        data = {
+        var data = {
             action: type,
             notificationId: $rootScope.selectedNotifications
         };

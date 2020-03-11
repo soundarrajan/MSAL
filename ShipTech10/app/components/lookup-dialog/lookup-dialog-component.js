@@ -315,7 +315,7 @@ angular.module('shiptech.components').controller('LookupDialogController', [ '$s
                 tablePagination.start = info.start;
                 tablePagination.length = len;
                 ctrl.tableOptions.pageLength = len;
-                tableOrder = normalizeDatatablesOrder(ctrl.tableOptions.order);
+                var tableOrder = normalizeDatatablesOrder(ctrl.tableOptions.order);
                 setTableVars(tablePagination.length, tablePagination.start);
                 if (ctrl.supplierPortal) {
                     call = lookupModel.getListForSupplierPortal(ctrl.supplierPortalToken, ctrl.lookupType, tableOrder, tablePagination, ctrl.tableOptions.filters, ctrl.tableOptions.searchTerm);

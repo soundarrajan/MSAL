@@ -2491,7 +2491,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 id: requestId,
                 requestCancelReasonOption: reason
             };
-            canBeCancelledPayload = {
+            var canBeCancelledPayload = {
                 Filters: [
                     {
                         ColumnName: 'RequestId',

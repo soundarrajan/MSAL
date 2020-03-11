@@ -1543,7 +1543,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
 
         function productUomChg(product) {
             // console.log("__________ productUomChg________", product);
-            confirmedQuantityOrMaxQuantity = product.confirmedQuantity;
+            var confirmedQuantityOrMaxQuantity = product.confirmedQuantity;
             if (!product.confirmedQuantity) {
                 confirmedQuantityOrMaxQuantity = product.maxQuantity;
             }

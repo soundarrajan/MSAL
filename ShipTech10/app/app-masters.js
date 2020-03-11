@@ -246,7 +246,7 @@ APP_MASTERS.run([ '$state', '$rootScope', 'MASTER_STATE', '$tenantSettings', fun
     });
     var changeTitle = function() {
         if (titleMap[$state.current.name]) {
-            screenTitle = screenMap[$state.params.screen_id];
+            var screenTitle = screenMap[$state.params.screen_id];
             if (screenTitle == 'Company' && $rootScope.tenantSettings.companyDisplayName.name == 'Pool') {
                 screenTitle = 'Pool';
             }

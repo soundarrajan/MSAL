@@ -930,7 +930,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
         hideTheChildren();
 
         function hideTheChildren() {
-            currentTags = elt.next('.bootstrap-tagsinput').children('.label');
+            var currentTags = elt.next('.bootstrap-tagsinput').children('.label');
             currentTags.removeAttr('big-child');
             currentTags.show();
             currentTags.css('clear', 'none');
@@ -1086,7 +1086,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
     };
     $scope.remData = function(obj, row, idx) {
         obj = $scope[obj];
-        index = obj.indexOf(row);
+        var index = obj.indexOf(row);
         length = 0;
         $.each(Object.values(obj), (key, val) => {
             if (!val.isDeleted) {
@@ -1457,7 +1457,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                     costType = v.costType.id;
                 }
             });
-            availableCosts = [];
+            var availableCosts = [];
             if (costType == 1 || costType == 2) {
                 $.each(vm.listsCache.CostType, (k, v) => {
                     if (v.id == 1 || v.id == 2) {
@@ -1719,6 +1719,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
     vm.formatDateTime = function(elem, dateFormat, fieldUniqueId) {
         // console.log(fieldUniqueId)
         if (elem) {
+            var formattedDate, hasDayOfWeek;
             dateFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
             if (dateFormat.startsWith('DDD ')) {
             	hasDayOfWeek = true;
@@ -2170,6 +2171,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                         $scope.options[field.Name] = callback;
                         $scope.$watchGroup([ $scope.formValues, $scope.options ], () => {
                             $timeout(() => {
+                                var id;
                                 if (field.Type == 'textUOM') {
                                     id = `#${ field.Name}`;
                                 } else {
@@ -2628,6 +2630,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                 payload: product
             }).then((response) => {
                 console.log(response);
+                var obj;
                 if (response.data == 1) {
                     obj = {
                         id: 1,
@@ -2680,11 +2683,11 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
         return allProductsAmount;
     };
     $scope.getCostsProductsAndCostsAmount = function(formValues) {
-        allProductsAmount = 0;
+        var allProductsAmount = 0;
         $.each(formValues.productDetails, (k, v) => {
             allProductsAmount = allProductsAmount + v.invoiceAmount;
         });
-        allCostsAmount = 0;
+        var allCostsAmount = 0;
         $.each(formValues.costDetails, (k, v) => {
             var componentType = $scope.getComponentTypeOfCost(v.costName.id);
             if (componentType == 2) {
@@ -2788,7 +2791,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
             name: 'FinalInvoice',
             code: null
         };
-        data = {
+        var data = {
 	        invoiceType : invoiceType,
 	        entityId : vm.entity_id
         };
@@ -2828,7 +2831,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
         return grandTotal;
     };
     $scope.calculateprovisionalInvoiceAmount = function(formValues) {
-        grandTotal = 0;
+        var grandTotal = 0;
         $.each(formValues.relatedInvoices, (k, v) => {
             if (!v.isDeleted && typeof v.invoiceAmount != 'undefined' && v.invoiceType.name == 'ProvisionalInvoice') {
                 grandTotal = grandTotal + v.invoiceAmount;
@@ -2837,7 +2840,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
         return grandTotal;
     };
     $scope.calculateInvoiceEstimatedGrandTotal = function(formValues) {
-        grandTotal = 0;
+        var grandTotal = 0;
         $.each(formValues.productDetails, (k, v) => {
             if (!v.isDeleted && typeof v.estimatedAmount != 'undefined') {
                 grandTotal = grandTotal + v.estimatedAmount;
@@ -2855,10 +2858,10 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
 
     $scope.addTransactionsInInvoice = function(element) {
         id = element.clc;
-        object = element.source;
-        formvalue = element.formvalue;
-        idx = element.idx;
-        field_name = element.field_name;
+        var object = element.source;
+        var formvalue = element.formvalue;
+        var idx = element.idx;
+        var field_name = element.field_name;
         let CLC = $(`#modal_${ id } table.ui-jqgrid-btable`);
         let rowId = CLC.jqGrid('getGridParam', 'selrow');
         let rowData = CLC.jqGrid.Ascensys.gridObject.rows[rowId - 1];

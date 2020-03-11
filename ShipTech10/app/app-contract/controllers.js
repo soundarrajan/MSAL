@@ -750,7 +750,7 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
 
 
     $scope.undo_confirm_contract = function() {
-        notValid = $scope.testForValidLocation();
+        var notValid = $scope.testForValidLocation();
         if(notValid) {
             return;
         }
@@ -782,7 +782,7 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
     	Factory_Master.getContractFormulas(data, (response) => {
             if (response) {
                 $scope.formulaHistoryDataResponse = response.data;
-		    	tpl = $templateCache.get('app-contract/views/formulaHistory.html');
+		    	var tpl = $templateCache.get('app-contract/views/formulaHistory.html');
 		        $scope.modalInstance = $uibModal.open({
 		            template: tpl,
 		            appendTo: angular.element(document.getElementsByClassName('page-container')),
@@ -795,7 +795,7 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
     };
 
     $scope.previewContract = function(templateId, templateName) {
-        data = {
+        var data = {
             Filters: [ {
                 ColumnName: 'ContractId',
                 Value: vm.entity_id
@@ -821,7 +821,7 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
 
     $scope.changeContractEmailTemplate = function(value) {
         $rootScope.currentEmailTemplate = value.id;
-        data = {
+        var data = {
             Payload: {
                 Filters: [ {
                     ColumnName: 'ContractId',
@@ -855,7 +855,7 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
 
 
     $scope.saveContractEmail = function() {
-        data = {
+        var data = {
             Payload: {
                 Id: $rootScope.previewEmail.comment.id,
                 Name: $rootScope.previewEmail.comment.name,
@@ -983,7 +983,7 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
     $scope.getContractProductDeliveryPriceModalData = function(selectedRowData, currentPage) {
         $scope.entries = 5;
         var skip = $scope.entries * (currentPage - 1);
-        data = {
+        var data = {
             Payload: {
                 Filters: [ {
                     ColumnName: 'FormulaId',
@@ -1026,7 +1026,7 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
     $scope.getContractProductDeliveryMtmModalData = function(selectedRowData, currentPage) {
         $scope.entries = 10;
         var skip = $scope.entries * (currentPage - 1);
-        data = {
+        var data = {
             Payload: {
                 Filters: [ {
                     ColumnName: 'FormulaId',
@@ -1068,8 +1068,8 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
     };
     $scope.getContractProductDeliveryExposureModalData = function(selectedRowData, currentPage) {
         $scope.entries = 10;
-        skip = $scope.entries * (currentPage - 1);
-        data = {
+        var skip = $scope.entries * (currentPage - 1);
+        var data = {
             Payload: {
                 Filters: [ {
                     ColumnName: 'FormulaId',
@@ -1102,7 +1102,7 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
                 }
             }
         };
-        type = 'exposure';
+        var type = 'exposure';
         $scope.contractProductDeliveryActions(data, type);
         $scope.currentPage = currentPage;
     };
@@ -1215,7 +1215,7 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
 
 
     $scope.getContractFormulaList = function() {
-        data = {
+        var data = {
             Payload: {
                 PageFilters: {
                     Filters: []

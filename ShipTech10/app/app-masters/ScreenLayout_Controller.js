@@ -40,7 +40,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
         // var vm = this;
 
 
-        onlyInScreenLayout_Controller = 'ScreenLayout_Controller';
+        var onlyInScreenLayout_Controller = 'ScreenLayout_Controller';
 
         // if ($state.params.path) {
         //     vm.app_id = $state.params.path[0].uisref.split(".")[0];
@@ -206,7 +206,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                 localStorage.removeItem('invoice_createFinalInvoice');
 		        Factory_Master.get_master_entity(entity_id, vm.screen_id, vm.app_id, (callback2) => {
 		            if (callback2) {
-		                tempformValues = callback2;
+		                var tempformValues = callback2;
 					    $.each(tempformValues.productDetails, (ik, iv) => {
                             tempformValues.productDetails[ik].pricingDate = null;
 					    });
@@ -255,8 +255,8 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                         // $scope.formValues.paymentDetails.paidAmount = null;
 
 
-                        invoiceAmountGrandTotal = 0;
-                        deductions = 0;
+                        var invoiceAmountGrandTotal = 0;
+                        var deductions = 0;
 
 		                $scope.formValues.invoiceSummary.netPayable = invoiceAmountGrandTotal - deductions;
 		                $.each($scope.formValues.productDetails, (k, v) => {
@@ -368,9 +368,9 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                         $scope.formValues.paymentDetails.paidAmount = null;
                         // $scope.formValues.paymentDetails.paidAmount = $scope.formValues.invoiceSummary.provisionalInvoiceAmount;
 
-                        invoiceAmountGrandTotal = 0;
-                        provisionalInvoiceAmount = 0;
-                        deductions = 0;
+                        var invoiceAmountGrandTotal = 0;
+                        var provisionalInvoiceAmount = 0;
+                        var deductions = 0;
 
 		                $scope.formValues.invoiceSummary.netPayable = invoiceAmountGrandTotal - deductions;
 		                $scope.formValues.costDetails = [];
@@ -462,12 +462,12 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
 	                $scope.formValues.lsfoUom = $scope.tenantSetting.tenantFormats.uom;
 	            }
 	            if (vm.app_id == 'claims' && vm.screen_id == 'claims' && window.location.href.indexOf('?orderId') != -1) {
-	            	params = window.location.href.split('?')[1];
+	            	var params = window.location.href.split('?')[1];
 	            	params = params.split('&');
-	            	objParams = {};
+	            	var objParams = {};
 	            	$.each(params, (k, v) => {
-	            		key = v.split('=')[0];
-	            		val = parseFloat(v.split('=')[1]);
+	            		var key = v.split('=')[0];
+	            		var val = parseFloat(v.split('=')[1]);
 	            		objParams[key] = val;
 	            	});
 	            	$timeout(() => {
@@ -518,7 +518,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                     }
                 } else {
                     if (localStorage.getItem(`${vm.app_id + vm.screen_id }_copy`)) {
-                        id = angular.copy(localStorage.getItem(`${vm.app_id + vm.screen_id }_copy`));
+                        var id = angular.copy(localStorage.getItem(`${vm.app_id + vm.screen_id }_copy`));
                         localStorage.removeItem(`${vm.app_id + vm.screen_id }_copy`);
                         if (id > 0) {
                             $scope.copiedId = id;
@@ -745,7 +745,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
     	                            	$.each($scope.formValues.email, (k, v) => {
 		                            		if (v.toEmailsConfiguration) {
 		                            			v.toEmailsConfiguration = v.toEmailsConfiguration.split(',');
-		                            			tempToEmailsConfiguration = [];
+		                            			var tempToEmailsConfiguration = [];
 		                            			$.each(v.toEmailsConfiguration, (tok, tov) => {
 		                            				tempToEmailsConfiguration.push({ id : parseFloat(tov) });
 		                            			});
@@ -753,7 +753,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
 		                            		}
 		                            		if (v.ccEmailsConfiguration) {
 		                            			v.ccEmailsConfiguration = v.ccEmailsConfiguration.split(',');
-		                            			tempCcEmailsConfiguration = [];
+		                            			var tempCcEmailsConfiguration = [];
 		                            			$.each(v.ccEmailsConfiguration, (tok, tov) => {
 			                            			tempCcEmailsConfiguration.push({ id : parseFloat(tov) });
 		                            			});
@@ -761,7 +761,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
 		                            		}
 		                            		if (v.attachmentDocumentTypes) {
 		                            			v.attachmentDocumentTypes = v.attachmentDocumentTypes.split(',');
-		                            			tempAttachmentDocumentTypes = [];
+		                            			var tempAttachmentDocumentTypes = [];
 		                            			$.each(v.attachmentDocumentTypes, (tok, tov) => {
 			                            			tempAttachmentDocumentTypes.push({ id : parseFloat(tov) });
 		                            			});
@@ -999,7 +999,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
         $scope.checkIfTab = function() {
             $scope.$watch('formFields', () => {
                 setTimeout(() => {
-                    tab = $('.grp_unit')
+                    var tab = $('.grp_unit')
                         .children('.tab-pane')
                         .first()
                         .addClass('active in');
@@ -1018,7 +1018,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
         	if (!clc) {
         		return;
         	}
-            tpl = '';
+            var tpl = '';
 
             if (template == 'formula') {
                 $scope.modal = {
@@ -1049,6 +1049,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                 };
             } else if (template == 'general') {
                 tpl = $templateCache.get('app-general-components/views/modal_general_lookup.html');
+                var clcs;
                 if (clc == 'deliveries_transactionstobeinvoiced') {
                     clcs = [ 'invoices', 'transactionstobeinvoiced' ];
                 } else if (clc == 'payableTo') {

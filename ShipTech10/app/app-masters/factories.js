@@ -199,7 +199,7 @@ APP_MASTERS.factory('Factory_Master', [ '$window', '$http', '$Api_Service', 'API
             });
         },
         generateTemplate: function(payload, callback) {
-            url = `${API.BASE_URL_DATA_IMPORTEXPORT }/api/importExport/upload/generate`;
+            var url = `${API.BASE_URL_DATA_IMPORTEXPORT }/api/importExport/upload/generate`;
             $http({
                 method: 'POST',
                 url: url,

@@ -4736,7 +4736,7 @@ APP_API.factory('$Api_Service', [
                             }
                         },
                         (response) => {
-                            data = {};
+                            var data = {};
                             data.error = true;
                             data.message = response.data.ErrorMessage;
                             console.log('Error retrieving seller rating!');

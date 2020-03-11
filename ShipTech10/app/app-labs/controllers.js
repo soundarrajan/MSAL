@@ -141,11 +141,13 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
             Factory_Master.get_master_entity($scope.formValues.order.id, 'orders', 'orders', (response) => {
                 if (response) {
                     $scope.thirdParty = {};
+                    var del;
                     if ($scope.formValues.delivery) {
                         del = $scope.formValues.delivery.id;
                     } else {
                         del = '';
                     }
+                    var lab;
                     if ($scope.formValues.name) {
                         lab = $scope.formValues.name;
                     } else {
@@ -201,7 +203,7 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
                             products: response.products
                         };
                         if ($scope.formValues.product) {
-                            fil = $filter('filter')($scope.temp.products, { product: { id: $scope.formValues.product.id } })[0];
+                            var fil = $filter('filter')($scope.temp.products, { product: { id: $scope.formValues.product.id } })[0];
                             if (fil) {
                                 $scope.formValues.specGroup = fil.specGroup.name;
                             }
@@ -251,7 +253,7 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
                     } else {
                         $state.params.status_labs = null;
                     }
-                    data = {
+                    var data = {
                         Order: $scope.formValues.order.id,
                     };
                     if (!$scope.formValues.id) {
@@ -302,7 +304,7 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
         if (name == 'Product' && $scope.formValues.product) {
         	if (!$scope.formValues.isFromIntegration) {
 	            if (typeof $scope.temp != 'undefined') {
-	                filteredSpecGroup = $filter('filter')($scope.temp.products, { product: { id: $scope.formValues.product.id } })[0];
+	                var filteredSpecGroup = $filter('filter')($scope.temp.products, { product: { id: $scope.formValues.product.id } })[0];
 	                if (filteredSpecGroup) {
 	                    filteredSpecGroup = filteredSpecGroup.specGroup;
 	                }
@@ -329,7 +331,7 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
             }
         	if (!$scope.formValues.isFromIntegration) {
 	            setTimeout(() => {
-	                data = {
+	                var data = {
 	                    orderId: $scope.formValues.order.id,
 	                    orderProductId: $scope.formValues.orderProductId,
 	                    deliveryProductId: $scope.formValues.deliveryProductId
@@ -419,6 +421,7 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
                     $scope.$watchGroup([ $scope.formValues, $scope.options ], () => {
                         vm.setPhysicalSupplier();
                         $timeout(() => {
+                            var id;
                             if (field.Type == 'textUOM') {
                                 id = `#${ field.Name}`;
                             } else {
@@ -526,7 +529,7 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
             $('.claimTypeSelectionModal').removeClass('hide fade');
             $('.claimTypeSelectionModal').css('transform', 'translateY(100px)');
     		$scope.claimTypeSelectionModalOptions = [];
-            uniqueClaimTypes = _.uniq($scope.labResults_claimId);
+            var uniqueClaimTypes = _.uniq($scope.labResults_claimId);
     		$.each($listsCache.ClaimType, (k, v) => {
     			$.each(uniqueClaimTypes, (ck, cv) => {
     				if (v.id == cv) {
@@ -546,7 +549,7 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
     	}
 
         if (!data) {
-            data = {
+            var data = {
                 LabTestResultIds: $scope.labResults_specParamIds,
                 DeliveryQualityParameterIds: [],
                 DeliveryProductId: null,
@@ -596,7 +599,7 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
 
     $scope.initLabsPreviewEmail = function(id) {
         $rootScope.currentEmailTemplate = 38;
-        data = {
+        var data = {
             Payload: {
                 Filters: [ {
                     ColumnName: 'LabResultId',
@@ -634,7 +637,7 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
                 if (callback.status == true) {
                     toastr.success('Lab was deleted successfully');
                     for (let i = $scope.relatedLabs.length - 1; i >= 0; i--) {
-                        claim = $scope.relatedLabs[i];
+                        var claim = $scope.relatedLabs[i];
                         if (claim.id == claimId) {
                             $scope.relatedLabs.splice(i, 1);
                         }
@@ -661,7 +664,7 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
         return $scope.formValues.labTestResults;
     }, (oldVal, newVal) => {
         if (typeof $scope.formValues.labTestResults != 'undefined') {
-            newReconMatch = _.reduce($scope.formValues.labTestResults, (result, value, key) => {
+            var newReconMatch = _.reduce($scope.formValues.labTestResults, (result, value, key) => {
                 if (value != null && value.qualityMatch != null && typeof value.qualityMatch != 'undefined') {
                     if (value.qualityMatch.id == 1) {
                         result = result && true; // passed
@@ -690,8 +693,8 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
     };
 
     $scope.calculatePassedFailedInLab = function(rowVal) {
-        passedStatus = null;
-        failedStatus = null;
+        var passedStatus = null;
+        var failedStatus = null;
     	$.each($listsCache.QualityMatch, (k, v) => {
     		if (v.name == 'Passed') {
     			passedStatus = v;
@@ -700,7 +703,7 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
     			failedStatus = v;
     		}
     	});
-    	currentStatusResponse = null;
+    	var currentStatusResponse = null;
         if (rowVal.value != '') {
             if (rowVal.min != null && rowVal.max != null) {
                 if (rowVal.value >= rowVal.min && rowVal.value <= rowVal.max) {
@@ -735,7 +738,7 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
     	$scope.labResults_claimId = [];
         $scope.labResults_specParamIds = [];
         $scope.selectedClaimTypeIds = [];
-        currentChecksNo = 0;
+        var currentChecksNo = 0;
     	$.each($scope.formValues.labTestResults, (k, v) => {
     		if (v.isSelected) {
 	    		$.each(v.claimTypes, (k1, v1) => {
@@ -747,7 +750,7 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
         if ($scope.labResults_claimId.length > 0) {
 	    	$.each($scope.formValues.labTestResults, (key, row) => {
 	    		row.disableCheckbox = false;
-	    		isEnabled = false;
+	    		var isEnabled = false;
 		    	$.each(row.claimTypes, (k, v) => {
 			    	if ($scope.labResults_claimId.indexOf(v.id) != -1) {
 			    		isEnabled = true;

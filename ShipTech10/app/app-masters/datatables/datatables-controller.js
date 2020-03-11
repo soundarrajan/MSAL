@@ -1577,7 +1577,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                 onRegisterApi: function(api) {
                     setTimeout(() => {
                         $.each(api.grid.rows, (k, v) => {
-                            field = {
+                            var field = {
                                 Name: `EmailTemplate_${ k}`,
                                 Type: 'lookup',
                                 clc_id: 'masters_documenttypetemplates',
@@ -1680,7 +1680,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                     },
                     remData: function(obj, row, idx) {
                         obj = $scope[obj];
-                        index = obj.indexOf(row);
+                        var index = obj.indexOf(row);
                         length = 0;
                         $.each(Object.values(obj), (key, val) => {
                             if (!val.isDeleted) {
@@ -2218,7 +2218,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                     },
                     cellTemplateFunc: function(row, obj) {
                         obj = eval(obj);
-                        count = Object.keys(obj).length;
+                        var count = Object.keys(obj).length;
                         if (count > 1) {
                             if (row.id > 0) {
                                 row.isDeleted = true;
@@ -3565,6 +3565,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                         $scope.options[field.Name] = callback;
                         $scope.$watchGroup([ $scope.formValues, $scope.options ], () => {
                             $timeout(() => {
+                                var id;
                                 if (field.Type == 'textUOM') {
                                     id = `#${ field.Name}`;
                                 } else {
@@ -3608,6 +3609,7 @@ APP_MASTERS.controller('Controller_Datatables', [
             var currentTableCheckboxes = angular.element(document).find('input[name^=\'labResults\']');
             // $scope.labResults_claimId;
             var currentSelectionClaimIds = [];
+            var loopClaimTypeIds = [];
             $.each($event.entity.claimTypes, (k, v) => {
             	currentSelectionClaimIds.push(v.id);
             });
@@ -3617,7 +3619,7 @@ APP_MASTERS.controller('Controller_Datatables', [
             var currentChecksNo = 0;
             $scope.labResults_specParamIds = [];
             $.each(currentTableCheckboxes, function() {
-                var loopClaimTypeIds = [];
+                loopClaimTypeIds = [];
                 if ($(this).attr('spec-selection')) {
                     $.each(JSON.parse($(this).attr('spec-selection')), (k, v) => {
                         loopClaimTypeIds.push(v.id);
@@ -3759,7 +3761,7 @@ APP_MASTERS.controller('Controller_Datatables', [
             let rowIndex = $(el.currentTarget).attr('row-index');
             let productTypeKey = $(el.currentTarget).attr('product-type-key');
             let productTypeId = $(el.currentTarget).attr('product-type-id');
-            scope = angular.element($('entity-edit-form > div')).scope();
+            var scope = angular.element($('entity-edit-form > div')).scope();
             $.each(scope.formValues.locations[rowIndex].productTypes, (k, v) => {
                 if (v) {
                     if (v.productType.id == parseFloat(productTypeId)) {
