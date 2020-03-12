@@ -4384,6 +4384,10 @@ th#flat_available_contracts_checkbox > * {
 clc-table-list[hasloader="true"] {
 	position: relative;
 }
+clc-table-list[hasloader="true"].loading {
+	opacity: 0.5;
+	pointer-events: none;
+}
 clc-table-list[hasloader="true"].loading:before {
 	/*background: #ffffffa8 !important;*/
     content: "\f1ce";
