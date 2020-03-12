@@ -692,6 +692,28 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
         });
     };
 
+    $scope.formattedData = function(rowVal) {
+        if (rowVal.bdnValue) {
+            var array = '';
+            var bdnValue = rowVal.bdnValue.split(',');
+            for (var i = 0; i < bdnValue.length; i++)  {
+                 array += bdnValue[i];
+            }
+            rowVal.bdnValue = array;
+        }
+
+        if (rowVal.value) {
+            var array2 = '';
+            var value = rowVal.value.split(',');
+            for (var i = 0; i < value.length; i++)  {
+                array2 += value[i];
+            }
+            rowVal.value = array2;
+        }
+    
+
+    }
+
     $scope.calculatePassedFailedInLab = function(rowVal) {
         var passedStatus = null;
         var failedStatus = null;

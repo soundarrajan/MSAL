@@ -989,6 +989,28 @@ APP_CLAIMS.controller('Controller_Claims', [
             quantityShortageScope.getQuantityShortage();
         };
 
+        $scope.formattedData = function(rowIdx, fval) {
+            var rowVal = fval.densitySubtypes[rowIdx];
+            if (rowVal.bdnDensity) {
+                var array = '';
+                var bdnDensity = rowVal.bdnDensity.split(',');
+                for (var i = 0; i < bdnDensity.length; i++)  {
+                     array += bdnDensity[i];
+                }
+                rowVal.bdnDensity = array;
+            }
+
+            if (rowVal.labDensity) {
+                var array2 = '';
+                var labDensity = rowVal.labDensity.split(',');
+                for (var i = 0; i < labDensity.length; i++)  {
+                    array2 += labDensity[i];
+                }
+                rowVal.labDensity = array2;
+            }
+
+        }
+
         $scope.clearTestValueNull = function(rowIdx, fval) {
             if (fval.qualitySubtypes && fval.qualitySubtypes[rowIdx]) {
                 if (fval.qualitySubtypes[rowIdx].testValue == '') {

@@ -3166,6 +3166,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                         displayName: 'BDN density',
                         enableCellEdit: false,
                         cellTemplate: $scope.dataTableTemplates.text,
+                        BlurAction: 'formattedData(rowRenderIndex, grid.appScope.fVal().formValues)',
                         ChangeAction: 'computeDensityDifference(rowRenderIndex, grid.appScope.fVal().formValues)',
                         format: `number:${vm.quantity}`
                     },
@@ -3174,6 +3175,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                         displayName: 'Lab density',
                         enableCellEdit: false,
                         cellTemplate: $scope.dataTableTemplates.text,
+                        BlurAction: 'formattedData(rowRenderIndex, grid.appScope.fVal().formValues)',
                         ChangeAction: 'computeDensityDifference(rowRenderIndex, grid.appScope.fVal().formValues)',
                         format: `number:${vm.quantity}`
                     },
