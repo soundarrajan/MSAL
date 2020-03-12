@@ -13,6 +13,7 @@ angular.module('shiptech.components').controller('ConfirmOrderDialogController',
     'tenantService',
     function($scope, $element, $state, $attrs, $timeout, $filter, $rootScope, uiApiModel, MOCKUP_MAP, orderModel, STATE, tenantService) {
         let ctrl = this;
+        var  changedConfirmationProductOrders;
         ctrl.warningValidation = false;
         setTimeout(() => {
             $('#confirm').on('hidden.bs.modal', () => {
@@ -54,7 +55,7 @@ angular.module('shiptech.components').controller('ConfirmOrderDialogController',
                 ctrl.orderDataFromRequest = null;
             }
             // eslint-disable-next-line init-declarations
-            var changedConfirmationProductOrders;
+            changedConfirmationProductOrders;
             if (changes.confirmationProductOrders.currentValue.confirmationProductOrders) {
                 changedConfirmationProductOrders = changes.confirmationProductOrders.currentValue.confirmationProductOrders;
             } else {
@@ -159,6 +160,7 @@ angular.module('shiptech.components').controller('ConfirmOrderDialogController',
 		            ctrl.BEvalidationMessages.push(v.validationMessage);
             	}
             });
+
             if (ctrl.BEvalidationMessages.length > 0 && shouldValidate) {
                 $('#offer').hide();
                 $('#warning').show();
