@@ -2716,9 +2716,11 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                 return;
             }
 
+            var costType;
+
             $.each(ctrl.additionalCostTypes, (_, v) => {
                 if (v.id == additionalCost.additionalCost.id) {
-                   var costType = v.costType.id;
+                   costType = v.costType.id;
                 }
             });
 
