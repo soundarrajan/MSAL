@@ -168,6 +168,8 @@ APP_CLAIMS.controller('Controller_Claims', [
                                     $.each($scope.options.Product, (k1, v1) => {
                                         if (v.product.id && v1.id === v.product.id) {
                                             v.physicalSupplier = v1.payload.orderDetails.physicalSupplier;
+                                            $scope.formValues.orderDetails.product = v.product;
+
                                         }
                                     });
                                 });

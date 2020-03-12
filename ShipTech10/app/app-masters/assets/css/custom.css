@@ -1034,8 +1034,8 @@ display: flex;
     padding: 10px 10px 9.5px;
 }
 
+
 .ui-grid-row .ui-grid-cell-contents {
-    display: flex;
     align-items: center;
     margin-top: 0 !important;
 }
