@@ -2481,7 +2481,7 @@ APP_MASTERS.controller('Controller_Master', [
                     var param = {
                         app: vm.app_id,
                         screen: vm.screen_id,
-                        MarketInstrument: $scope.formValues[id].id
+                        MarketInstrument: eval("$scope.formValues." + id + ".id")
                     };
                     Factory_Master.get_custom_dropdown(param, (callback) => {
                         if (callback) {
@@ -3715,7 +3715,7 @@ APP_MASTERS.controller('Controller_Master', [
             }
         };
         $scope.addData = function(obj) {
-            obj = $scope[obj];
+            obj = eval("$scope." + obj);
             obj.push({
                 id: 0
             });
@@ -3736,7 +3736,7 @@ APP_MASTERS.controller('Controller_Master', [
             }
         };
         $scope.remData = function(obj, row, idx) {
-            obj = $scope[obj];
+            obj = eval("$scope." + obj);
             index = obj.indexOf(row);
             length = 0;
             $.each(Object.values(obj), (key, val) => {
@@ -5223,7 +5223,7 @@ APP_MASTERS.controller('Controller_Master', [
             });
         }
         $scope.addEmailAddressInPreview = function(model, value) {
-            var currentValues = $rootScope[model];
+            var currentValues = eval("$rootScope." + model);
             var isDuplicate = false;
             $.each(currentValues, (key, currentVal) => {
                 if (currentVal.name == value.name && currentVal.idEmailAddress == value.idEmailAddress) {

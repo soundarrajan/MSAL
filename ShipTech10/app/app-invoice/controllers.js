@@ -1079,13 +1079,13 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
         return $scope;
     };
     $scope.addData = function(obj) {
-        obj = $scope[obj];
+        obj = eval("$scope." + obj);
         obj.push({
             id: 0
         });
     };
     $scope.remData = function(obj, row, idx) {
-        obj = $scope[obj];
+        obj = eval("$scope." + obj);
         var index = obj.indexOf(row);
         length = 0;
         $.each(Object.values(obj), (key, val) => {
@@ -1269,7 +1269,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
         // Check if modal triggered from datatable
         if (!formvalue) {
             if (vm.app_id == 'invoices' && element.name != 'Physical Supplier') {
-                check = $scope[element.source];
+                check = eval("$scope." + element.source);
                 if (Array.isArray(check)) {
                     $scope.target_element = `${element.source }.${ check.length}`;
                     element.source = `${element.source }.${ check.length}`;
@@ -2158,7 +2158,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                         }
                         let temp = 0;
                         try {
-                            temp = $scope.formValues[entry.ValueFrom];
+                            temp = eval("$scope.formValues." + entry.ValueFrom);
                         } catch (error) {}
                         entry.Value = temp;
                     });

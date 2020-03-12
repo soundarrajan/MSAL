@@ -1679,7 +1679,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                         $('.group_VesselTankDetails span.input-group-addon').removeClass('disabled');
                     },
                     remData: function(obj, row, idx) {
-                        obj = $scope[obj];
+                        obj = eval("$scope." + obj);
                         var index = obj.indexOf(row);
                         length = 0;
                         $.each(Object.values(obj), (key, val) => {
@@ -2185,7 +2185,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                         return $scope;
                     },
                     addData: function(obj, index) {
-                        obj = $scope[obj];
+                        obj = eval("$scope." + obj);
                         // count = Object.keys(obj).length;
                         var count = 0;
                         $.each(obj, (key, val) => {

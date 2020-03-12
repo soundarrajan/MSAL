@@ -583,7 +583,7 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
             $scope.$watch('formValues', () => {
                 if (!angular.equals($scope.formValues, {})) {
                     try {
-                        $scope.predefinedVal[name] = $scope[val];
+                        $scope.predefinedVal[name] = eval('$scope.' + val);
                     } catch (e) {
                     }
                 }
