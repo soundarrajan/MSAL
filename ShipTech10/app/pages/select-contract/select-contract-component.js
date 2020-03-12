@@ -140,6 +140,7 @@ angular.module('shiptech.pages').controller('SelectContractController', [ '$wind
         ctrl.displayAllContracts = function() {
             // debugger;
             ctrl.allContracts = true;
+            ctrl.contractHasProduct = false;
 
 
             // localStorage.setItem('displayAllContracts', true);
