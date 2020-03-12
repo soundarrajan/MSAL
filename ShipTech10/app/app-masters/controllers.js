@@ -5143,12 +5143,13 @@ APP_MASTERS.controller('Controller_Master', [
         $scope.getEmailTransactionType = function(valType) {
         	$scope.emailTemplates = null;
         	$rootScope.previewEmail = null;
+            var transactionId;
             $.each($listsCache.EmailTransactionType, (key, val) => {
                 if (val.name == valType) {
-                    var $transactionId = val.id;
+                    transactionId = val.id;
                 }
             });
-            Factory_Master.list_by_transaction_type($transactionId, (response) => {
+            Factory_Master.list_by_transaction_type(transactionId, (response) => {
                 if (response) {
                     if (response.status == true) {
                         $scope.emailTemplates = response.data;
