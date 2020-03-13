@@ -970,76 +970,49 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     return tpl;
                 };
                 var contract_planning_contract = function(cellValue, options, rowObject) {
-                    var objString = JSON.stringify(rowObject);
-                    var fieldString = JSON.stringify({ field: "contract" });
-                    // var tpl = " <span ng-init='contractPlanningInitOptions(" + fieldString + "," + objString + "," + options.rowId + ")'></span>" +
-                    //           "<div class='input-group'>" +
-                    //           "<input name='Contract_" + options.rowId + "' id='Contract_" + options.rowId + "' " +
-                    //           "uib-typeahead='contract as contract.name for contract in cp_options.Contract_" + options.rowId + " | filter:$viewValue | limitTo:5' "  +
-                    //           "typeahead-on-select='contractPlanningSelectedContract($item.id)'  typeahead-editable='false' " +
-                    //           "class='typeahead form-control' ng-model='Contract_" + options.rowId + "'/>" +
-                    //           "</div>";
-                    // tpl = '<div class="input-group input-group-sm contractPlanningContractTypeahead" ng-controller="Controller_Configurable_List_Control as CLC" >';
-                    // tpl += '<input class="form-control no-right-border" ng-focus="CLC.setContractFiltersContractPlanning('+options.rowId+')" ng-model="CLC.contractPlanningContractTypeahead['+options.rowId+']"  uib-typeahead="contract as contract.name for contract in CLC.getContractTypeaheadListCP('+options.rowId+')" />'
-                    //                tpl += '<span class="input-group-addon">'
-                    // tpl += '<i class="fa fa-search clickable" data-toggle="modal" href="#selectContract" ng-click="$ctrl.setContractFilters(row)"></i>'
-                    // tpl += '</span>'
-                    tpl += "</div>";
-                    var initialContractValue = rowObject.contract ? "'" + rowObject.contract.name + "'" : rowObject.contract;
-                    tpl = '<div class="input-group input-group-sm contractPlanningContractTypeahead">';
-                    var columnKey = "'contract'";
-                    if (!$rootScope.editableCProwsModel) {
-                        $rootScope.editableCProwsModel = [];
-                    }
-                    if (!$rootScope.editableCProwsModel['row-'+options.rowId]) {
-                        $rootScope.editableCProwsModel['row-'+options.rowId] = [];
-                    }
-                    $rootScope.editableCProwsModel['row-'+options.rowId]['contract'] = rowObject.contract;
-                    $rootScope.editableCProwsModel['row-'+options.rowId]['contractChanged'] = false;
-                    // CLC.getInitialContractValue('+options.rowId+')
-// // ng-init="CLC.cpCtr[' +
-//                         options.rowId +
-//                         "] = " +
-//                         initialContractValue +
-//                         '"
-                    tpl += '<input ng-init="CLC.cpCtr[' +
-                        options.rowId +
-                        '] = '+initialContractValue+'; CLC.changeCPRowModel(null ,' + options.rowId + "," + columnKey + ", true" + ');"  class="form-control no-right-border" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" typeahead-on-select="CLC.changeCPRowModel($item, ' +
-                        options.rowId +
-                        "," +
-                        columnKey +
-                        ');" ng-focus="CLC.setContractFiltersContractPlanning(' +
-                        options.rowId +
-                        ')" ng-model="CLC.cpCtr[' +
-                        options.rowId +
-                        ']" ng-change="CLC.contractIsEditing = '+options.rowId+'" ng-blur="CLC.clearContractLinkCP('+options.rowId+')"  uib-typeahead="contract as contract.name for contract in CLC.getContractTypeaheadListCP(' +
-                        options.rowId +
-                        ')" />';
-                    // tpl += options.rowId+'-><span ng-bind="CLC.getContractTypeaheadListCP('+options.rowId+')"></span><-'
-            //                     data = {
-            //     template: 'general',
-            //     clc: 'contractplanning_contractlist',
-            //     name: 'Contract',
-            //     id: 'Contract_' + idx,
-            //     formvalue: '',
-            //     idx: '',
-            //     field_name: 'Contract_' + idx,
-            //     filter: filters
-            // }
-            // ng-click="triggerModal(\'general\', \'contractplanning_contractlist\', \'Contract\', \'Contract_\' + '+options.rowId+', \'\', \'\', \'Contract_\' + '+options.rowId+')"
-                    tpl +='<i class="fa fa-search clickable form-control" data-toggle="modal" href="#selectContract" ng-click="openContractPopupInCP('+options.rowId+')" style="border-left: 1px solid #c2cad8;"><span hidden="true">&nbsp;</span></i>';
-                    // tpl += '<i class="fa fa-search clickable" data-toggle="modal" href="#selectContract" ng-click="openContractPopupInCP('+options.rowId+')" ></i>'
-                    // tpl += 'dddd'
-                  //
-                  if (rowObject.contract) {
-                    tpl += '<div id="contract-planning-contract-link-' + options.rowId + '"><a target="_blank" href="#/contracts/contract/edit/' + rowObject.contract.id + '"> <span class="formatter edit_link edit_link_contract_id" data-formatter-type="link"> <i style="float: none;" class="fa fa-edit"></i>' + rowObject.contract.id + '</span></a> </div>';
-                  } else {
-                    tpl += '<div id="contract-planning-contract-link-' + options.rowId + '"></div>';
-                  }
-                  tpl += '</div>';
+                	var objString = JSON.stringify(rowObject);
+                	var fieldString = JSON.stringify({ field: "contract" });
 
-                    // tpl = cellValue;
-                    return tpl;
+                	var initialContractValue = rowObject.contract ? "'" + rowObject.contract.name + "'" : rowObject.contract;
+                	tpl = `<div class="input-group input-group-sm contractPlanningContractTypeahead">`;
+                	var columnKey = "'contract'";
+                	if (!$rootScope.editableCProwsModel) {
+                		$rootScope.editableCProwsModel = [];
+                	}
+                	if (!$rootScope.editableCProwsModel['row-'+options.rowId]) {
+                		$rootScope.editableCProwsModel['row-'+options.rowId] = [];
+                	}
+                	$rootScope.editableCProwsModel['row-'+options.rowId]['contract'] = rowObject.contract;
+                	$rootScope.editableCProwsModel['row-'+options.rowId]['contractChanged'] = false;
+
+
+                	tpl += `<input `;
+                	tpl += ` ng-init="CLC.cpCtr[${options.rowId}] = ${initialContractValue}; CLC.changeCPRowModel(null ,${options.rowId}, ${columnKey}, true);"`;
+                	tpl += ` class="form-control no-right-border" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100"`;
+                	tpl += ` typeahead-on-select="CLC.changeCPRowModel($item, ${options.rowId}, ${columnKey});"`;
+                	tpl += ` ng-focus="CLC.setContractFiltersContractPlanning(${options.rowId})"`;
+                	tpl += ` ng-model="CLC.cpCtr[${options.rowId}]"`;
+                	tpl += ` ng-change="CLC.contractIsEditing = ${options.rowId}"`;
+                	tpl += ` ng-blur="CLC.clearContractLinkCP(${options.rowId})"`;
+                	tpl += ` uib-typeahead="contract as contract.name for contract in CLC.getContractTypeaheadListCP(${options.rowId}) | filter:{name:$viewValue} | limitTo:10" />`;
+
+                	tpl +=`<i class="fa fa-search clickable 
+                	form-control" 
+                	data-toggle="modal" 
+                	href="#selectContract" 
+                	ng-click="openContractPopupInCP(${options.rowId})" 
+                	style="border-left: 1px solid #c2cad8; height:30px;">
+                	<span hidden="true">&nbsp;</span>
+                	</i>`;
+
+                	if (rowObject.contract) {
+                		tpl += `<div id="contract-planning-contract-link-${options.rowId}"><a target="_blank" href="#/contracts/contract/edit/${rowObject.contract.id}"> <span class="formatter edit_link edit_link_contract_id" data-formatter-type="link"> <i style="float: none;" class="fa fa-edit"></i>${rowObject.contract.id}</span></a> </div>`;
+                	} else {
+                		tpl += `<div id="contract-planning-contract-link-${options.rowId}"></div>`;
+                	}
+                	tpl += `</div>`;
+
+                	return tpl;
                 };
 
                 var contract_planning_product = function(cellValue, options, rowObject) {
