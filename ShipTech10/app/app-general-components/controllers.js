@@ -3559,10 +3559,11 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 $scope.selectedContractPlanningRows = [];
             }
             rowIsAlreadySelected = false;
+            var indexInCollection;
             $.each($scope.selectedContractPlanningRows, function(k, v) {
                 if (v.rowIndex == rowIdx) {
                     rowIsAlreadySelected = true;
-                    var indexInCollection = k;
+                    indexInCollection = k;
                 }
             });
             if (!rowIsAlreadySelected) {
