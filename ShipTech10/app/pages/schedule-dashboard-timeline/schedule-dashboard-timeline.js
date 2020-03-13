@@ -157,12 +157,19 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             	ctrl.bunkerPlansGroupedByVoyage = [];
             }
 
+            var displayScheduleBasedOn = _.get(ctrl, 'scheduleDashboardConfiguration.displayScheduleBasedOn.name');
+
             $scope.stopsGroupedByDayAndGroup = _.uniqBy(vessels, "voyageDetail.id");
             $scope.stopsGroupedByDayAndGroup = _.groupBy($scope.stopsGroupedByDayAndGroup, function(obj, key){
             	if (obj != null) {
                     var objGroupString = obj.ServiceName + ' <> ' + obj.BuyerName + ' <> ' +  obj.VesselName + ' <> ' + obj.CompanyName;
-                    return obj.voyageDetail.eta.split("T")[0] + ' <> ' + objGroupString;
+                    if (displayScheduleBasedOn === 'Delivery Date' && obj.voyageDetail.deliveryFrom) {
+                        return obj.voyageDetail.deliveryFrom.split("T")[0] + ' <> ' + objGroupString;  
+                    } else {
+                        return obj.voyageDetail.eta.split("T")[0] + ' <> ' + objGroupString;
+                    }
                 }
+
             });
             var voyageDaysWithSludge = [];
 			$.each(vessels, function(k,detail){
