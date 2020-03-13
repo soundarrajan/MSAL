@@ -173,13 +173,15 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             });
             var voyageDaysWithSludge = [];
 			$.each(vessels, function(k,detail){
-				var hasSludge = false;
-				var voyageDetailId = detail.voyageDetail.id;
-				if (detail.voyageDetail.request.requestDetail.isSludgeProduct) {
-					hasSludge = true;
-				}
-				if (typeof(voyageDaysWithSludge[voyageDetailId]) == "undefined" || !voyageDaysWithSludge[voyageDetailId]) {
-					voyageDaysWithSludge[voyageDetailId] = hasSludge;		
+				if (detail) {
+					var hasSludge = false;
+					var voyageDetailId = detail.voyageDetail.id;
+					if (detail.voyageDetail.request.requestDetail.isSludgeProduct) {
+						hasSludge = true;
+					}
+					if (typeof(voyageDaysWithSludge[voyageDetailId]) == "undefined" || !voyageDaysWithSludge[voyageDetailId]) {
+						voyageDaysWithSludge[voyageDetailId] = hasSludge;		
+					}
 				}
 			})
 
@@ -544,7 +546,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         var buildTimeline = function(data) {
             var cls = "vis-voyage-content vis-voyage-content-sap";
             var voyagesArray = [];
-            if (data.payload.scheduleDashboardView) {
+            // if (data.payload.scheduleDashboardView) {
                 var timelineData = computeData(data);
                 for (var i = 0; i < timelineData.voyages.length; i++) {
                     voyagesArray.push(timelineData.voyages[i]);
@@ -608,7 +610,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 
                 setLayoutAfterTimelineLoad();
 
-            }
+            // }
            
             $rootScope.clc_loaded = true;
             if (data.payload.scheduleDashboardView == null) {
