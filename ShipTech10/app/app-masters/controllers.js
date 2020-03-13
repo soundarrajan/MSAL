@@ -3908,7 +3908,7 @@ APP_MASTERS.controller('Controller_Master', [
         $scope.dropDocument = function(file) {
             $rootScope.droppedDoc = file;
             $scope.droppedDoc = $rootScope.droppedDoc;
-            if (typeof $scope.formValues.documentType != 'undefined') {
+            if ($scope.formValues.documentType) {
                 if ($scope.formValues.documentType.name != '') {
                     $rootScope.formValues.documentType = $scope.formValues.documentType;
                     $scope.uploadDocument('#fileUpload');
@@ -7818,6 +7818,9 @@ APP_MASTERS.controller('Controller_Master', [
         	if (transactionTypeName[screen_name]) {
         		screen_name = transactionTypeName[screen_name].toLowerCase();
         	}
+            if (screen_name) {
+                $scope.formValues.documentType = null;
+            }
 
     	    let transactionTypeId = _.find(vm.listsCache.TransactionType, (el) => {
     			return el.name.toLowerCase().indexOf(screen_name) > -1;

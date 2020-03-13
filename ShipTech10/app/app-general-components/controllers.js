@@ -3774,6 +3774,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
         $rootScope.$on("formValues", function(event, payload) {
             if (payload) {
                 $scope.formValues = payload;
+                if ($scope.formValues.documentType && $state.params.path[2].uisref.split(".")[1] == "documents") {
+                    $scope.formValues.documentType = null;
+                } 
             }
         });
         setTimeout(function() {
