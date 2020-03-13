@@ -2058,10 +2058,11 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             return foundProduct;
         };
         $scope.getProductLocationETAByRequestProductId = function(rpid) {
+            var foundProduct;
             $.each(ctrl.request.locations, (locK, locV) => {
                 $.each(locV.products, (prodK, prodV) => {
                     if (prodV.id == rpid) {
-                        var foundProduct = locV.eta;
+                        foundProduct = locV.eta;
                     }
                 });
             });
