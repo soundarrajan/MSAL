@@ -241,7 +241,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 if (vessels[i].voyageDetail.hasStrategy) {
                     cls += " vis-voyage-content-sap";
                 }
-                if (vessels[i].voyageDetail.request.requestDetail.isSludgeProduct) {
+                if (vessels[i].voyageDetail.request.requestDetail.isSludgeProduct || voyageDaysWithSludge[vessels[i].voyageDetail.id]) {
                     cls += " vis-voyage-sludge-product";
                 }
                 // if (!vessels[i].voyageDetail.portStatus.id) {
@@ -391,6 +391,20 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 if ($scope.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString]) {
 	                if ($scope.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString].length > 1) {
 	                	uniqueCellIdentifier = startDate.split(" ")[0] + ' <> ' +  groupString;
+                        if (voyageDaysWithSludge[voyage.voyageId]) {
+                            var idFirstStop = $scope.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString][0].voyageDetail.id;
+                            var poz = _.findIndex(voyages, function(obj) {
+                                return obj.voyageId == idFirstStop;
+                                   
+                            });
+                            if (poz != -1) {
+                                var cls1 = cls;
+                                var contentChange = voyages[poz].content.split("cell-identifier");
+                                voyages[poz].content= '<span class="' + cls1 + '" cell-identifier' + contentChange[1] + '" cell-identifier' + contentChange[2];
+
+                            }
+                
+                        }
 	                	if ($scope.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString][0].voyageDetail.id == voyage.voyageId) {
 			                voyage.content += '<span class="expand-voyages" cell-identifier="'+uniqueCellIdentifier+'" group="'+voyage.group+'"  eta="'+voyage.start+'">+</span>';
 			                voyage.additionalStops = $scope.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString];
@@ -547,82 +561,86 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             var cls = "vis-voyage-content vis-voyage-content-sap";
             var voyagesArray = [];
             // if (data.payload.scheduleDashboardView) {
-                var timelineData = computeData(data);
-                for (var i = 0; i < timelineData.voyages.length; i++) {
-                    voyagesArray.push(timelineData.voyages[i]);
-                    var hasStrategy = _.find(timelineData.voyages[i].additionalStops, function(obj) {
-                                                return obj.voyageDetail.hasStrategy == true;
-                                            });
-                    if (hasStrategy) {
-                        var contentChange = timelineData.voyages[i].content.split("cell-identifier");
-                        var newContent = '<span class="' + cls + '" cell-identifier' + contentChange[1] + '" cell-identifier' + contentChange[2];
-                        timelineData.voyages[i].content = newContent;
-                        
-                    }
-                }
-                var groups = new vis.DataSet(timelineData.groups);
-                var voyages = new vis.DataSet(timelineData.voyages);
-                var startDateObject = { 'start': ctrl.startDate.format('YYYY-MM-DD'), 'end': ctrl.endDate.format('YYYY-MM-DD')};
-                voyagesArray.push(startDateObject);
-                var timestamp;
-                minDate = _.minBy(voyagesArray, function(item) {
-                    timestamp = moment(item.start).format('X');
-                    if (!item.isRedelivery) {
-                        return timestamp;
-                    }
-                });
-                maxDate =  _.maxBy(voyagesArray, function(item) {
-                    timestamp = moment(item.end).format('X');
-                    if (!item.isRedelivery) {
-                        return timestamp;
-                    }
-                });
-                minDate.start = moment(minDate.start).startOf('day');
-                maxDate.end = moment(maxDate.end).endOf('day');
-                var container = document.getElementById('timeline');
-
-                // Create a Timeline
-                timeline = new vis.Timeline(container, null, getTimelineOptions());  
-                timeline.setGroups(groups);
-                timeline.setItems(voyages);
-
-
-                ctrl.lastStartDate = false;
-                ctrl.lastEndDate = false;
-                timeline.on("rangechange", function(){
-                    ctrl.lastStartDate = moment(timeline.range.start);
-                    ctrl.lastEndDate = moment(timeline.range.end);
-                    var diff = ctrl.lastEndDate -  ctrl.lastStartDate;
+            var timelineData = computeData(data);
+            for (var i = 0; i < timelineData.voyages.length; i++) {
+                voyagesArray.push(timelineData.voyages[i]);
+                var hasStrategy = _.find(timelineData.voyages[i].additionalStops, function(obj) {
+                                            return obj.voyageDetail.hasStrategy == true;
+                                        });
+                if (hasStrategy) {
+                    var contentChange = timelineData.voyages[i].content.split("cell-identifier");
+                    var newContent = '<span class="' + cls + '" cell-identifier' + contentChange[1] + '" cell-identifier' + contentChange[2];
+                    timelineData.voyages[i].content = newContent;
                     
-                    if (diff == 2.592e+9) {
-                        $(".st-btn-icon-zoom-in a").css("color", "#555555");
-                         $(".st-btn-icon-zoom-out a").css("color", "#C1C1C1");
-                    } else if (diff == 2.592e+8) {
-                        $(".st-btn-icon-zoom-in a").css("color", "#C1C1C1");
-                        $(".st-btn-icon-zoom-out a").css("color", "#555555");
-                    } else {
-                        $(".st-btn-icon-zoom-in a").css("color", "#555555");
-                        $(".st-btn-icon-zoom-out a").css("color", "#555555");
-                    }
-                });
-
-                $scope.timelineItems = groups.length;
-                
-                setLayoutAfterTimelineLoad();
-
-            // }
-           
-            $rootScope.clc_loaded = true;
-            if (data.payload.scheduleDashboardView == null) {
-                $("#timeline > .vis-timeline").css("display", "none"); 
-                $(".vis-timeline-zoom-container").css("display", "none");
-                $(".schedule-dashboard-timeline-footer").css("display","none");
-                toastr.error("No Voyages available for the selected period");
-                $("#timeline").append('<div class="noDataFound"> No Results Found</div>');
-            } else {
-                $(".schedule-dashboard-timeline-footer").css("display", "block");
-                $(".vis-timeline-zoom-container").css("display", "block");
+                }
             }
+              
+
+        
+
+            var groups = new vis.DataSet(timelineData.groups);
+            var voyages = new vis.DataSet(timelineData.voyages);
+            var startDateObject = { 'start': ctrl.startDate.format('YYYY-MM-DD'), 'end': ctrl.endDate.format('YYYY-MM-DD')};
+            voyagesArray.push(startDateObject);
+            var timestamp;
+            minDate = _.minBy(voyagesArray, function(item) {
+                timestamp = moment(item.start).format('X');
+                if (!item.isRedelivery) {
+                    return timestamp;
+                }
+            });
+            maxDate =  _.maxBy(voyagesArray, function(item) {
+                timestamp = moment(item.end).format('X');
+                if (!item.isRedelivery) {
+                    return timestamp;
+                }
+            });
+            minDate.start = moment(minDate.start).startOf('day');
+            maxDate.end = moment(maxDate.end).endOf('day');
+            var container = document.getElementById('timeline');
+
+            // Create a Timeline
+            timeline = new vis.Timeline(container, null, getTimelineOptions());  
+            timeline.setGroups(groups);
+            timeline.setItems(voyages);
+
+
+            ctrl.lastStartDate = false;
+            ctrl.lastEndDate = false;
+            timeline.on("rangechange", function(){
+                ctrl.lastStartDate = moment(timeline.range.start);
+                ctrl.lastEndDate = moment(timeline.range.end);
+                var diff = ctrl.lastEndDate -  ctrl.lastStartDate;
+                
+                if (diff == 2.592e+9) {
+                    $(".st-btn-icon-zoom-in a").css("color", "#555555");
+                     $(".st-btn-icon-zoom-out a").css("color", "#C1C1C1");
+                } else if (diff == 2.592e+8) {
+                    $(".st-btn-icon-zoom-in a").css("color", "#C1C1C1");
+                    $(".st-btn-icon-zoom-out a").css("color", "#555555");
+                } else {
+                    $(".st-btn-icon-zoom-in a").css("color", "#555555");
+                    $(".st-btn-icon-zoom-out a").css("color", "#555555");
+                }
+            });
+
+            $scope.timelineItems = groups.length;
+            
+            setLayoutAfterTimelineLoad();
+
+        // }
+       
+        $rootScope.clc_loaded = true;
+        if (data.payload.scheduleDashboardView == null) {
+            $("#timeline > .vis-timeline").css("display", "none"); 
+            $(".vis-timeline-zoom-container").css("display", "none");
+            $(".schedule-dashboard-timeline-footer").css("display","none");
+            toastr.error("No Voyages available for the selected period");
+            $("#timeline").append('<div class="noDataFound"> No Results Found</div>');
+        } else {
+            $(".schedule-dashboard-timeline-footer").css("display", "block");
+            $(".vis-timeline-zoom-container").css("display", "block");
+        }
         };
 
         var updateTimeline = function(data) {
@@ -1358,20 +1376,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 				voyageStopsToday.push(v.voyageDetail.id)
 			})
 
-			// allStops = _.find(ctrl.voyages, function(obj){
-			// 	return	voyageStopsToday.indexOf(obj.voyageId) != -1
-			// })
-
-
-            // $.each(ctrl.voyages, function(k,v){
-            // 	if (v.voyageId == voyageDetailId) {
-            // 		if (v.additionalStops) {
-	           //  		$.each(v.additionalStops, function(k2,v2){
-		          //   		allStops.push(v2.voyageId)
-	           //  		})
-            // 		}
-            // 	}
-            // })
+			
             var voyageStop;
             voyageStop = _.filter(ctrl.voyageData, function(el){
                 return el && voyageStopsToday.indexOf(el.voyageDetail.id) != -1;

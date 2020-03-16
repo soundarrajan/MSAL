@@ -1564,7 +1564,9 @@ angular.module('shiptech.pages').controller('ScheduleCalendarController', [ '$ro
         ctrl.checkIfHasSludge = function(voyageStops) {
             var hasSludge = false;
             $.each(voyageStops, (k, v) => {
-                hasSludge = ctrl.sludgeVoyages[v.id];
+                if (ctrl.sludgeVoyages[v.id]) {
+                    hasSludge = ctrl.sludgeVoyages[v.id];
+                }
             });
             return hasSludge;
         };
