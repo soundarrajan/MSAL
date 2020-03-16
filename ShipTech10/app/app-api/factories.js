@@ -10239,6 +10239,11 @@ APP_API.factory('$Api_Service', [
                                 var res = new Object();
                                 res.data = response.data;
                                 res.status = true;
+                                if ($state.params.screen_id == 'contract') {
+	                                res.data.payload =  _.filter(res.data.payload, function(o) { 
+										return o.isDeleted == false; 
+									});
+		                        }
                                 callback(res);
                             } else {
                                 var res = new Object();
