@@ -4411,3 +4411,10 @@ clc-table-list[hasloader="true"].loading:before {
   from { transform: rotateZ(0deg); }
   to { transform: rotateZ(360deg); }
 }
+
+.page-sidebar-menu .nav-item a i {
+	transition: 0.3s;
+}
+.page-sidebar-menu .nav-item.open > a > i {
+	transform: rotateY(180deg);
+}
