@@ -33,6 +33,7 @@ import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/ten
 import { ReconStatusLookupEnum } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.enum';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { IReconStatusLookupDto } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.interface';
+import { ReconStatusLookup } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.service';
 
 function model(
   prop: keyof ProductTypeListItemViewModel
@@ -59,6 +60,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     rowSelection: RowSelection.Multiple,
     rowDragManaged: true,
     suppressRowClickSelection: true,
+    suppressCellSelection: true,
     multiSortKey: 'ctrl',
     getRowNodeId: (data: ProductTypeListItemViewModel) =>
       data?.productType?.id?.toString(),
@@ -70,8 +72,9 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
       sortable: false,
       filter: false,
       resizable: true,
-      suppressColumnsToolPanel: true,
+      menuTabs: ['generalMenuTab'],
       suppressFiltersToolPanel: true,
+      suppressColumnsToolPanel: true,
       flex: 1
     }
   };
@@ -204,6 +207,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     headerName: ProductDetailsColGroupsLabels.RobAfterDelivery,
     headerGroupComponentFramework: AgColumnGroupHeaderComponent,
     marryChildren: true,
+    suppressColumnsToolPanel: true,
     children: [
       this.logBookAfterDeliveryCol,
       this.measuredRobAfterDeliveryCol,
@@ -216,6 +220,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     headerTooltip: ProductDetailsColGroupsLabels.Products,
     headerName: ProductDetailsColGroupsLabels.Products,
     marryChildren: true,
+    suppressColumnsToolPanel: true,
     children: [this.productTypeCol]
   };
   robBeforeDeliveryColGroup: ColGroupDef = {
@@ -224,6 +229,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     headerName: ProductDetailsColGroupsLabels.RobBeforeDelivery,
     headerGroupComponentFramework: AgColumnGroupHeaderComponent,
     marryChildren: true,
+    suppressColumnsToolPanel: true,
     children: [
       this.logBookBeforeDeliveryCol,
       this.measuredRobBeforeDeliveryCol,
@@ -236,6 +242,7 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     headerName: ProductDetailsColGroupsLabels.DeliveredQuantity,
     headerGroupComponentFramework: AgColumnGroupHeaderComponent,
     marryChildren: true,
+    suppressColumnsToolPanel: true,
     children: [
       this.bdnDeliveredQuantityCol,
       this.measuredDeliveredQuantityCol,
@@ -256,7 +263,8 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     tenantSettings: TenantSettingsService,
     public format: TenantFormattingService,
     private quantityControlService: QcReportService,
-    private store: Store
+    private store: Store,
+    private reconService: ReconStatusLookup
   ) {
     super(
       'quantity-control-product-details-grid',
@@ -350,11 +358,38 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     status: IReconStatusLookupDto
   ): Partial<CSSStyleDeclaration> {
     const statusName = status?.name ?? ReconStatusLookupEnum.Matched; // Default no color (Matched)
-
-    return {
-      backgroundColor:
-        statusName === ReconStatusLookupEnum.Matched ? 'inherit' : status.code,
-      color: statusName === ReconStatusLookupEnum.Matched ? 'inherit' : '#fff'
-    };
+    if (status) {
+      switch (statusName) {
+        case ReconStatusLookupEnum.Matched: {
+          return {
+            backgroundColor: this.reconService.matched.code,
+            color: '#fff'
+          };
+        }
+        case ReconStatusLookupEnum.WithinLimit: {
+          return {
+            backgroundColor: this.reconService.withinLimit.code,
+            color: '#fff'
+          };
+        }
+        case ReconStatusLookupEnum.NotMatched: {
+          return {
+            backgroundColor: this.reconService.notMatched.code,
+            color: '#fff'
+          };
+        }
+        default: {
+          return {
+            backgroundColor: 'inherit',
+            color: 'inherit'
+          };
+        }
+      }
+    } else {
+      return {
+        backgroundColor: 'inherit',
+        color: 'inherit'
+      };
+    }
   }
 }
