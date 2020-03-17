@@ -12,6 +12,7 @@ import { KnownQuantityControlRoutes } from '../../../known-quantity-control.rout
 @Component({
   selector: 'shiptech-qc-report-details-email-logs',
   templateUrl: './qc-report-details-audit-logs.component.html',
+  styleUrls: ['./qc-report-details-audit-logs.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class QcReportDetailsAuditLogsComponent implements OnInit, OnDestroy {

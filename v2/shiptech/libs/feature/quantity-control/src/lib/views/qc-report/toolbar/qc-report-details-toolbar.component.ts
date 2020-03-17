@@ -24,6 +24,7 @@ import { filter, takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'shiptech-qc-report-details-toolbar',
   templateUrl: './qc-report-details-toolbar.component.html',
+  styleUrls: ['./qc-report-details-toolbar.component.css'],
   changeDetection: ChangeDetectionStrategy.Default
 })
 export class QcReportDetailsToolbarComponent

@@ -12,6 +12,7 @@ import { KnownTransactionTypes } from '@shiptech/core/enums/known-transaction-ty
 @Component({
   selector: 'shiptech-qc-report-details-documents',
   templateUrl: './qc-report-details-documents.component.html',
+  styleUrls: ['./qc-report-details-documents.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class QcReportDetailsDocumentsComponent implements OnInit, OnDestroy {

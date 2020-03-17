@@ -1,7 +1,11 @@
-﻿commit d5b7df0cc5860273a3045b8bf42fa9864dfa47a3
-Author: Pavithra <pavithra.m@inatech.com>
-Date:   Mon Mar 9 16:07:02 2020 +0530
+﻿commit a79e1fae2c0a1088c6de8d9d9c1dea811b8c78e2
+Author: Sergiu.vasui <Sergiu.vasui@24software.ro>
+Date:   Tue Mar 17 18:24:51 2020 +0000
 
-    Default Filter Styles Update
+    Merged PR 3342: QC_bugs
+    
+    QC bug fixing
+    
+    Related work items: #17971, #20511
 
 branch: master

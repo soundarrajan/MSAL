@@ -10,6 +10,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   // tslint:disable-next-line:component-selector
   selector: 'app-confirmation-pop-up',
   templateUrl: './alert-dialog.component.html',
+  styleUrls: ['./alert-dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AlertDialogComponent implements OnInit {

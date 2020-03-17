@@ -39,19 +39,23 @@ export class StatusLookup {
   public getStatus(status: IStatusLookupDto): IStatusLookupDto | undefined {
     const result: IStatusLookupDto = {
       id: null,
-      name: <string>status.name,
-      displayName: <string>status.displayName,
+      name: '',
+      displayName: '',
       code: '#fff'
     };
-    switch (status.name) {
-      case this._verified.name:
-        return this._verified;
-      case this._new.name:
-        return this._new;
-      case this._pending.name:
-        return this._pending;
-      default:
-        return result;
+    if (status) {
+      result.name = status.name;
+      result.displayName = status.displayName;
+      switch (status.name) {
+        case this._verified.name:
+          return this._verified;
+        case this._new.name:
+          return this._new;
+        case this._pending.name:
+          return this._pending;
+        default:
+          return result;
+      }
     }
   }
 
