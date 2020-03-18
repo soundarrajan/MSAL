@@ -822,6 +822,11 @@ angular.element(document).ready(() => {
                 .constant('EMAIL_TRANSACTION', appConfig.EMAIL_TRANSACTION)
                 .constant('appInsightsInstance', appInsightsInstanceProvider(appConfig.INSTRUMENTATION_KEY));
             if (window.location.hash.indexOf('supplier-portal') > 0) {
+		        // $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Admin/api/admin/tenantConfiguration/get`, {
+		        //     Payload: false
+		        // }, function(response){
+		        // })    
+	        	angular.module('shiptech').value('$tenantConfiguration', {});
                 angular.module('shiptech').value('$tenantSettings', {});
                 angular.module('shiptech').value('$listsCache', {});
                 angular.module('shiptech').value('$filtersData', {});
