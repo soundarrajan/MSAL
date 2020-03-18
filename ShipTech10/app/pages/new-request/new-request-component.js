@@ -79,6 +79,8 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             $state.params.title = 'Edit Request';
         } else {
             $state.params.title = 'New Request';
+            $rootScope.defaultSelectedBestContracts = [];
+
         }
 
         if (!ctrl.numberPrecision) {

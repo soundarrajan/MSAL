@@ -33,6 +33,11 @@ angular.module('shiptech.pages').controller('SelectContractController', [ '$wind
             }
         };
 
+        ctrl.$onInit  = function() {
+            $rootScope.defaultSelectedBestContracts = [];
+        }
+      
+
         ctrl.gotoContractEvaluation = function() {
             // contract Id is 0 in order to get all contracts
             let contractId = 0;
@@ -358,6 +363,7 @@ angular.module('shiptech.pages').controller('SelectContractController', [ '$wind
             if (!ctrl.contracts) {
                 let CLC = $('#flat_available_contracts');
                 ctrl.contracts = CLC.jqGrid.Ascensys.gridObject.rows;
+            
             }
 
             var selected = 0;
@@ -389,9 +395,8 @@ angular.module('shiptech.pages').controller('SelectContractController', [ '$wind
             var dataToBroadcast = {
             	checkboxes : ctrl.checkboxes,
             };
-
             $rootScope.$broadcast('showProceedButton', dataToBroadcast);
-
+            $('#flat_available_contracts').click();
             console.log('ctrl.contractHasProduct', ctrl.contractHasProduct);
         };
 
