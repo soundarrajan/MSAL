@@ -90,7 +90,7 @@
                                                 class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
                                                 typeahead-wait-ms="100"  typeahead-on-select="addProductToConversion($index, false ,true)" id="Product_{{ index_0 + 1 }}_Main_Product"
                                                 required="true" name="Product_{{ index_0 + 1 }}_Main_Product" autocomplete="off"
-                                                ng-change="formValues.products[$index].product.id ? productSpecGroups = getSpecGroupByProduct(formValues.products[$index].product.id) && addProductToConversion($index, false ,true) : '' "
+                                                ng-change="formValues.products[$index].product.id ? productSpecGroups = getSpecGroupByProduct(formValues.products[$index].product.id, formValues.products[$index].specGroup) && addProductToConversion($index, false ,true) : '' "
                                                 ng-init=""
                                             />
                                             <span class="input-group-addon" ng-click="triggerModal('general', 'masters_productlist', 'Product' , 'formValues.products.'+index_0+'.product');"
@@ -128,12 +128,13 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-4">
-                                    <span ng-if="formValues.products[$index].product.id" ng-init="getSpecGroupByProduct(formValues.products[$index].product.id)"></span>
+                                    <span ng-if="formValues.products[$index].product.id" ng-init="getSpecGroupByProduct(formValues.products[$index].product.id, formValues.products[$index].specGroup)"></span>
                                     <div class="form-group row">
                                         <label class="mainProduct" class="simpleLookupLabel">
                                             {{ CM.app_id + '.SPEC_GROUP' | translate }}
                                         </label>
                                         <div class="input-group form_input">
+                                        	<span >{{CM.addDeletedSpecGroupInDropdownOptions(CM.productSpecGroup[formValues.products[$index].product.id], formValues.products[$index].specGroup)}}</span>
                                             <select class="form-control" ng-model="formValues.products[$index].specGroup" ng-options="item as item.name for item in CM.productSpecGroup[formValues.products[$index].product.id] track by item.id">
                                                 <option value=""></option>
                                             </select>

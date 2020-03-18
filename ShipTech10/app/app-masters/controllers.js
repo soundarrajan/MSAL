@@ -5742,7 +5742,7 @@ APP_MASTERS.controller('Controller_Master', [
             }
             return 2;
         };
-        $scope.getSpecGroupByProduct = function(productId) {
+        $scope.getSpecGroupByProduct = function(productId, additionalSpecGroup) {
             var data = {
                 Payload: {
                     Filters: [
@@ -5765,11 +5765,25 @@ APP_MASTERS.controller('Controller_Master', [
 
             Factory_Master.specGroupGetByProduct(data, (callback) => {
                 if (callback) {
+
+                	if (additionalSpecGroup) {
+                		var additionalSpecIsInArray = false;
+	                	$.each(callback.data.payload, function(k,v){
+	                		if (v.id == additionalSpecGroup.id) {
+		                		additionalSpecIsInArray = true;
+	                		}
+	                	})
+	                	if (!additionalSpecIsInArray) {
+	                		callback.data.payload.push(additionalSpecGroup);		
+	                	}
+                	}
                     vm.productSpecGroup[productId] = callback.data.payload;
                     // $scope.addProductToConversion(index, false, false);
                 }
             });
         };
+
+
         vm.getContractConfiguration = function() {
             console.log('getting contract config');
         };

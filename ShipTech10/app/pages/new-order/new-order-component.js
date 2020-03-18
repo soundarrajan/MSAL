@@ -416,7 +416,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                 if (ctrl.data.products[i].product) {
                     listsModel.getSpecGroupByProduct(ctrl.data.products[i].product.id, i).then((server_data) => {
                     	filteredIsDeleted = _.filter(server_data.data.payload, function(o) { 
-							return o.isDeleted == false; 
+							return o.isDeleted == false || ctrl.data.products[server_data.id].specGroup.id == o.id; 
 						});
                         ctrl.data.products[server_data.id].specGroups = filteredIsDeleted;
                     });
@@ -1072,7 +1072,10 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
         };
         ctrl.getSpecGroups = function(product) {
             listsModel.getSpecGroupByProduct(product.product.id).then((server_data) => {
-                product.specGroups = server_data.data.payload;
+            	filteredIsDeleted = _.filter(server_data.data.payload, function(o) { 
+					return o.isDeleted == false; 
+				});
+                product.specGroups = filteredIsDeleted;
             });
         };
         ctrl.selectVessel = function(vesselId) {
@@ -1167,7 +1170,10 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
             newProduct.product = product;
             newProduct.specGroup = specGroup;
             listsModel.getSpecGroupByProduct(product.id).then((server_data) => {
-                newProduct.specGroups = server_data.data.payload;
+            	filteredIsDeleted = _.filter(server_data.data.payload, function(o) { 
+					return o.isDeleted == false; 
+				});
+                newProduct.specGroups = filteredIsDeleted;
             });
             listsModel.getProductTypeByProduct(product.id).then((server_data) => {
                 console.log('test');
