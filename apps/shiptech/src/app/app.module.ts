@@ -37,9 +37,6 @@ export function getAppBaseHref(doc: Document): string {
     HttpClientModule,
     BrowserModule,
     BrowserAnimationsModule,
-    ServiceWorkerModule.register('./ngsw-worker.js', {
-      enabled: environment.production
-    }),
     AppRoutingModule,
     CoreModule,
     AuthenticationModule.forRoot(),
