@@ -469,17 +469,18 @@ th#master_list_table_cb .cbox, th#master_list_table_cb .s-ico {
     padding-right: 10px;
 }
 
+.ui-jqgrid .ui-jqgrid-btable tbody tr.jqgrow td:nth-child(2) {
+    padding: 0px;
+}
+
 .ui-jqgrid .ui-jqgrid-btable tbody tr.jqgrow td[aria-describedby*="_action"] {
     padding-left: 5px;
 }
-.ui-jqgrid .ui-jqgrid-btable tbody tr.jqgrow td[aria-describedby*="flat_orders_list_actions"] {
+.ui-jqgrid .ui-jqgrid-btable tbody tr.jqgrow td[aria-describedby*="flat_orders_list_actions"]:nth-child(1){
     padding-left: 15px;
 }
 .ui-jqgrid .ui-jqgrid-btable tbody tr.jqgrow td[aria-describedby*="flat_contract_planning_actions"] {
     padding-left: 10px;
-}
-.ui-jqgrid .ui-jqgrid-btable tbody tr.jqgrow td:nth-child(2) {
-    padding: 0px;
 }
 
 .ui-jqgrid .ui-jqgrid-btable tbody tr.jqgrow td[aria-describedby*="_cb"] {
