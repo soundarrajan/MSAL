@@ -1,11 +1,12 @@
-﻿commit a79e1fae2c0a1088c6de8d9d9c1dea811b8c78e2
+﻿commit 8b4a24df53e3ad209bd7343087a00a9d2d57603e
 Author: Sergiu.vasui <Sergiu.vasui@24software.ro>
-Date:   Tue Mar 17 18:24:51 2020 +0000
+Date:   Wed Mar 18 15:10:39 2020 +0000
 
-    Merged PR 3342: QC_bugs
+    Merged PR 3353: QC bug fixing
     
-    QC bug fixing
+    20492
+    removed service worker and fix for 20492
     
-    Related work items: #17971, #20511
+    Related work items: #20492, #22339
 
 branch: master
