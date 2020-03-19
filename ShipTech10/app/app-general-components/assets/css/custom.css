@@ -78,7 +78,7 @@ a.btn[disabled]:hover {
 }
 
 .ui-jqgrid span.jqgrid-ng-action:not(.btn) {
-    display: inline-block;
+    display: block;
     width: 20px;
     height: 20px;
     line-height: 20px;
@@ -3019,6 +3019,7 @@ td.gridcell input.cbox {
     -moz-appearance: none;
     appearance: none;
     background: #fff;
+	display: block;
     width: 18px;
     height: 18px;
     border: 1px solid #d5d5d5;
