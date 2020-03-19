@@ -513,9 +513,11 @@ angular.module('shiptech')
                         } ],
                         title: 'Reports',
                         entity_id: { value: null, squash: true },
+                        serlocid1: { value: null, squash: true },
+                        serlocid2: { value: null, squash: true },
                         type: { value: null, squash: true }
                     },
-                    url: '/reports/{type}/{serlocid1}/{serlocid2}/{entity_id}',
+                    url: '/reports/{type}/{entity_id}/{serlocid1}/{serlocid2}',	
                     template: '<reports></reports>'
                 })
 
