@@ -416,8 +416,13 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                 if (ctrl.data.products[i].product) {
                     listsModel.getSpecGroupByProduct(ctrl.data.products[i].product.id, i).then((server_data) => {
                     	filteredIsDeleted = _.filter(server_data.data.payload, function(o) { 
-							return o.isDeleted == false || ctrl.data.products[server_data.id].specGroup.id == o.id; 
+							return o.isDeleted == false; 
 						});
+						if (ctrl.data.products[server_data.id].specGroup) {
+							if (ctrl.data.products[server_data.id].specGroup.isDeleted) {
+								filteredIsDeleted.push(ctrl.data.products[server_data.id].specGroup);		
+							}
+						}
                         ctrl.data.products[server_data.id].specGroups = filteredIsDeleted;
                     });
                 }
