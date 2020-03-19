@@ -304,7 +304,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                 },
                 {
                     ColumnName: 'OrderProductUomId',
-                    Value: product.priceUom.id
+                    Value: product.priceUom ? product.priceUom.id : null
                 },
                 {
                     ColumnName: 'SellerId',
@@ -1381,6 +1381,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
             let product;
             lookupModel.get(LOOKUP_TYPE.PRODUCTS, productId).then((server_data) => {
                 product = server_data.payload;
+                ctrl.getOrderContractOptions({ product: product });                
                 // If there's a set lookupInput, it means we need
                 // to copy the lookup dialog selection into it.
                 if (ctrl.lookupField) {
