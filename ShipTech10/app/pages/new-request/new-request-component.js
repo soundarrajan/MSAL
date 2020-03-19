@@ -3310,28 +3310,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 return;
             }
 
-            var allDestinations = [
-                ctrl.request.locations[locationIdx].destination ? ctrl.request.locations[locationIdx].destination : undefined,
-                ctrl.request.locations[locationIdx].destination1 ? ctrl.request.locations[locationIdx].destination1 : undefined,
-                ctrl.request.locations[locationIdx].destination2 ? ctrl.request.locations[locationIdx].destination2 : undefined,
-                ctrl.request.locations[locationIdx].destination3 ? ctrl.request.locations[locationIdx].destination3 : undefined,
-                ctrl.request.locations[locationIdx].destination4 ? ctrl.request.locations[locationIdx].destination4 : undefined
-            ];
-
-            allDestinations = _.compact(allDestinations);
-            var duplicateDestination = false;
-            $.each(allDestinations, (k, v) => {
-                if (data.id == v.id) {
-                    duplicateDestination = true;
-                }
-            });
-
-            if (duplicateDestination) {
-                toastr.warning('The same Destination cannot be added more than once!');
-                ctrl.getLowestEtaForDestinationInLocation(locationIdx);
-                return;
-            }
-
             ctrl.request.locations[locationIdx][`destination${ nextAvailableDestinationIndex }VesselVoyageDetailId`] = data.destinationVesselVoyageDetailId;
             // debugger;
             ctrl.request.locations[locationIdx][`destination${ nextAvailableDestinationIndex}`] = {
