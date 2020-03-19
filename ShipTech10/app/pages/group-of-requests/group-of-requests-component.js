@@ -2351,10 +2351,10 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                     isCorrect = false;
                     break;
                 }
-                if (existingRequestProductIds.indexOf(requirement.requestProductId) >= 0) {
-                    isCorrect = false;
-                    break;
-                }
+                // if (existingRequestProductIds.indexOf(requirement.requestProductId) >= 0) {
+                //     isCorrect = false;
+                //     break;
+                // }
                 existingRequestProductIds.push(requirement.requestProductId);
             }
             return isCorrect;
