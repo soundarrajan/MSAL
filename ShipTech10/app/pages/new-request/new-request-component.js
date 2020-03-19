@@ -2704,17 +2704,19 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         toggleInvalid(`${locationIdx }_etb`, 'remove');
                         ctrl.requestDateFieldsErrors[`${locationIdx }_etb`] = null;
                     }
+
+                    if (moment.utc(ctrl.request.locations[locationIdx].etd).isBefore(moment.utc(ctrl.request.locations[locationIdx].eta))) {
+                        errorMessage = 'ETA must be lower or equal to ETD.';
+                        toastr.error(errorMessage);
+                        toggleInvalid(`${locationIdx }_etd`, 'add');
+                        ctrl.requestDateFieldsErrors[`${locationIdx }_etd`] = errorMessage;
+                        hasError = true;
+                    } else if (ctrl.request.locations[locationIdx].etd) {
+                        toggleInvalid(`${locationIdx }_etd`, 'remove');
+                        ctrl.requestDateFieldsErrors[`${locationIdx }_etd`] = null;
+                    }
                 }
-                if (moment.utc(ctrl.request.locations[locationIdx].etd).isBefore(moment.utc(ctrl.request.locations[locationIdx].eta))) {
-                    errorMessage = 'ETA must be lower or equal to ETD.';
-                    toastr.error(errorMessage);
-                    toggleInvalid(`${locationIdx }_etd`, 'add');
-                    ctrl.requestDateFieldsErrors[`${locationIdx }_etd`] = errorMessage;
-                    hasError = true;
-                } else if (ctrl.request.locations[locationIdx].etd) {
-                    toggleInvalid(`${locationIdx }_etd`, 'remove');
-                    ctrl.requestDateFieldsErrors[`${locationIdx }_etd`] = null;
-                }
+             
 
 
                 if (hasError) {
