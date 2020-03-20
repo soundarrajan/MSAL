@@ -1382,11 +1382,15 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
             });
         };
 
-        ctrl.selectProduct = function(productId) {
+        ctrl.selectProduct = function(productId, index) {
             let product;
             lookupModel.get(LOOKUP_TYPE.PRODUCTS, productId).then((server_data) => {
                 product = server_data.payload;
-                ctrl.getOrderContractOptions({ product: product });                
+                var getContractOptionParam = { product: product };
+                if (typeof(index) != 'undefined' ) {
+                	getContractOptionParam.priceUom = ctrl.data.products[index].priceUom;
+                }
+                ctrl.getOrderContractOptions(getContractOptionParam);                
                 // If there's a set lookupInput, it means we need
                 // to copy the lookup dialog selection into it.
                 if (ctrl.lookupField) {
