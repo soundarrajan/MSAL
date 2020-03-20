@@ -1,12 +1,13 @@
-﻿commit a7d5e36f0049f2729dc7a439d9ca689b816a52a5
+﻿commit 97ab510de6083ba1ab873d29eea78e004fb838bd
 Author: Sergiu.vasui <Sergiu.vasui@24software.ro>
-Date:   Fri Mar 20 09:40:46 2020 +0000
+Date:   Fri Mar 20 17:15:40 2020 +0000
 
-    Merged PR 3398: 17834
+    Merged PR 3412: 21911
     
-    17834
-    fix for #17834
+    Added sematext
+    Removed loggingApi from settings.json
+    #21911
     
-    Related work items: #17834
+    Related work items: #21911
 
 branch: master
