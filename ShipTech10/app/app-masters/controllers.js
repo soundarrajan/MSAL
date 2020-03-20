@@ -1315,6 +1315,7 @@ APP_MASTERS.controller('Controller_Master', [
                             toastr.success(callback.message);
                             if (vm.app_id == 'admin' && vm.screen_id == 'configuration') {
                                 vm.entity_id = 0;
+                                $state.reload();
                                 Factory_Master.get_master_entity(vm.entity_id, vm.screen_id, vm.app_id, (callback2) => {
                                     if (callback2) {
                                         $scope.formValues = callback2;
