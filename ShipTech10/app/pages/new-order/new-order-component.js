@@ -300,7 +300,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                 },
                 {
                     ColumnName: 'OrderProductId',
-                    Value: product.id
+                    Value: product.id ? product.id : null
                 },
                 {
                     ColumnName: 'OrderProductUomId',
