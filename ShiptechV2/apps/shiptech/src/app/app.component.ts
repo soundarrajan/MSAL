@@ -9,6 +9,7 @@ import {
   NavigationCancel,
   NavigationEnd,
   NavigationError,
+  NavigationStart,
   Router,
   RouterEvent
 } from '@angular/router';
@@ -35,6 +36,9 @@ export class AppComponent {
       ) {
         this.isLoading = false;
         changeDetector.markForCheck();
+      }
+      if (event instanceof NavigationStart) {
+        window['strum']('routeChange', event.url);
       }
     });
   }
