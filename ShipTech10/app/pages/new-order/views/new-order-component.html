@@ -1408,7 +1408,7 @@
                                         />
 
                                         <span class="input-group-addon ng-scope"
-                                              ng-click="triggerModal('general', 'procurement_productcontractlist', 'Contract' ,'contract',null,null,null, $ctrl.productContractFilters[product.product.id]); $ctrl.productContractSelecting = product.id ? product.id : product.uniqueIdUI"
+                                              ng-click="$ctrl.getOrderContractOptions(product, true); triggerModal('general', 'procurement_productcontractlist', 'Contract' ,'contract',null,null,null, $ctrl.productContractFilters[product.product.id]); $ctrl.productContractSelecting = product.id ? product.id : product.uniqueIdUI"
                                               ng-controller="Controller_Master as CM"
                                               ng-disabled="$ctrl.disabledProduct[product.id] || product.requestOfferId">
                                                 <a class=" btn default" href=""
