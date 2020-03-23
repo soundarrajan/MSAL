@@ -240,26 +240,26 @@ a.btn[disabled]:hover {
 }
 
 span.s-ico:before {
-    color:#fff
     content: "\f0d8";
     display: block;
     font-family: 'fontAwesome';
     position: absolute;
     font-size: 15px;
     font-family: 'fontAwesome';
+    color: #dcdcdc;
     top: -2px;
     right: 6px;
     font-weight: normal;
 }
 
 span.s-ico:after {
-    color:#fff
     content: "\f0d7";
     display: block;
     font-family: 'fontAwesome';
     position: absolute;
     font-size: 15px;
     font-family: 'fontAwesome';
+    color: #dcdcdc;
     top: 6px;
     right: 6px;
     font-weight: normal;
@@ -740,6 +740,7 @@ span.ui-grid-ico-sort.ui-icon-desc.ui-sort-ltr.ui-icon.ui-icon-triangle-1-s:not(
     text-indent: 0;
 }
 
+
 .ui-jqgrid .ui-grid-ico-sort.ui-icon-asc {
     right: 5px;
     font-size: 0px;
@@ -751,6 +752,7 @@ span.ui-grid-ico-sort.ui-icon-desc.ui-sort-ltr.ui-icon.ui-icon-triangle-1-s:not(
     right: 5px;
     z-index: 9;
 }
+
 
 .ui-jqgrid .s-ico span {
     background: none;
@@ -4164,6 +4166,11 @@ custom-popover[table="'flat_table_schedule_dashboard'"] > div.customPopover > di
 .ui-jqgrid .ui-jqgrid-resize-ltr {
 	width: 30px;
 }
+
+span.s-ico:before,span.s-ico:after {
+   color: #ffffff;
+}
+
 .sortedasc span.s-ico:before{
     color:#536881
 }
