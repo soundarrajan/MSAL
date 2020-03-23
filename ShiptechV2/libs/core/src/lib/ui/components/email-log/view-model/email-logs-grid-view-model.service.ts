@@ -56,7 +56,7 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
   }
 
   public defaultColFilterParams = {
-    clearButton: true,
+    resetButton: true,
     applyButton: true
   };
 

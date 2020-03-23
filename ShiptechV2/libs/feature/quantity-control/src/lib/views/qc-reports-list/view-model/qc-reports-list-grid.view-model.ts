@@ -45,8 +45,8 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
   public searchText: string;
   public exportUrl: string;
   public defaultColFilterParams = {
-    clearButton: true,
     applyButton: true,
+    resetButton: true,
     precision: () => this.format.quantityPrecision
   };
   gridOptions: GridOptions = {
