@@ -31,7 +31,7 @@ function model(prop: keyof IVesselMasterDto): keyof IVesselMasterDto {
 export class VesselMasterSelectorGridViewModel extends BaseGridViewModel {
   public searchText: string;
   public defaultColFilterParams = {
-    clearButton: true,
+    resetButton: true,
     applyButton: true,
     precision: () => this.format.quantityPrecision
   };

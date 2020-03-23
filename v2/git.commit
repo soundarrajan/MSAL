@@ -1,13 +1,11 @@
-﻿commit 97ab510de6083ba1ab873d29eea78e004fb838bd
-Author: Sergiu.vasui <Sergiu.vasui@24software.ro>
-Date:   Fri Mar 20 17:15:40 2020 +0000
+﻿commit 830bad79fb8c6361fa435a6c25b8d36b109038ef
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Mon Mar 23 11:32:09 2020 +0000
 
-    Merged PR 3412: 21911
+    Merged PR 3427: 20505 - Fixed clear filter functionality
     
-    Added sematext
-    Removed loggingApi from settings.json
-    #21911
+    20505 - Fixed clear filter functionality
     
-    Related work items: #21911
+    Related work items: #20505
 
 branch: master
