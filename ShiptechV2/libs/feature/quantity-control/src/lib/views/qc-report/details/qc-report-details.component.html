@@ -65,7 +65,7 @@
             <div style="margin-left: auto">
               <span class="badge badge-danger" *ngIf="(matchStatus$ | async) !== null && (matchStatus$ | async) !== undefined"
                     [ngStyle]="{ backgroundColor: (matchStatus$ | async)?.code }">{{ (matchStatus$ | async)?.displayName }}</span>
-                    <span class="f-s-12 afterelementcolor">|</span>
+                    <span class="f-s-12 afterelementcolor" *ngIf="(matchStatus$ | async) !== null && (matchStatus$ | async) !== undefined">|</span>
               <span class="badge  badge-default" *ngIf="(nbOfClaims$ | async) >= 0">Claims: {{nbOfClaims$ | async}}</span>
               <span class="f-s-12 afterelementcolor">|</span>
               <span class="badge  badge-default" *ngIf="(nbOfDeliveries$ | async) >= 0">Deliveries: {{nbOfDeliveries$ | async}}</span>
