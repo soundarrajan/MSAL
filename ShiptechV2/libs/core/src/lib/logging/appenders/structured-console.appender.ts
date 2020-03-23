@@ -4,7 +4,8 @@ import { JL } from 'jsnlog';
 import { ILogItem } from '../logger';
 import { JSNLogAppender } from './jsnlog-appender.interface';
 
-const msgExtractArgsRegex = new RegExp(/(?<!{){(?!{).*?(?<!})}(?!})/g);
+// const msgExtractArgsRegex = new RegExp(/(?<!{){(?!{).*?(?<!})}(?!})/g);
+const msgExtractArgsRegex = '';
 
 // Note: Tested with the following formats
 // this.logger.debug('Load purchase product {ProductId} availability for {PurchaseId} and {SaleId}', pair.purchaseProductId,  pair.purchaseId, pair.saleId);

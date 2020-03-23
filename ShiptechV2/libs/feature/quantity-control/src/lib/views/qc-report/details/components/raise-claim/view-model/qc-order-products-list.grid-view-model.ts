@@ -49,14 +49,33 @@ export class QcOrderProductsListGridViewModel extends BaseGridViewModel {
     }
   };
 
+  selectCol: ITypedColDef = {
+    colId: 'selection',
+    width: 25,
+    checkboxSelection: true,
+    editable: false,
+    filter: false,
+    sortable: false,
+    suppressMenu: true,
+    resizable: false,
+    suppressAutoSize: true,
+    suppressSizeToFit: true,
+    suppressMovable: true,
+    suppressNavigable: true,
+    suppressColumnsToolPanel: true,
+    suppressFiltersToolPanel: true,
+    suppressCellFlash: true,
+    suppressPaste: true,
+    lockPosition: true,
+    lockVisible: true,
+    cellClass: 'cell-border-green'
+  };
+
   orderNoCol: ITypedColDef<IQcOrderProductsListItemDto, IDisplayLookupDto> = {
     colId: QcOrderProductsListColumns.orderNo,
     headerName: QcOrderProductsListColumnsLabels.orderNo,
     field: model('order'),
     valueFormatter: params => params.value?.displayName,
-    headerCheckboxSelection: false,
-    headerCheckboxSelectionFilteredOnly: true,
-    checkboxSelection: true,
     filter: 'agNumberColumnFilter'
   };
   counterpartyCol: ITypedColDef<
@@ -129,6 +148,7 @@ export class QcOrderProductsListGridViewModel extends BaseGridViewModel {
 
   getColumnsDefs(): (ITypedColDef | ITypedColGroupDef)[] {
     return [
+      this.selectCol,
       this.orderNoCol,
       this.counterpartyCol,
       this.productCol,
