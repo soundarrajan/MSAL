@@ -55,7 +55,7 @@ export class DocumentsGridViewModel extends BaseGridViewModel {
   }
 
   public defaultColFilterParams = {
-    clearButton: true,
+    resetButton: true,
     applyButton: true
   };
 

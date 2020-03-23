@@ -29,7 +29,7 @@ function model(prop: keyof IQcEventsLogItemState): keyof IQcEventsLogItemState {
 export class EventsLogGridViewModel extends BaseGridViewModel
   implements OnDestroy {
   public defaultColFilterParams = {
-    clearButton: true,
+    resetButton: true,
     applyButton: true,
     precision: () => this.format.quantityPrecision
   };
