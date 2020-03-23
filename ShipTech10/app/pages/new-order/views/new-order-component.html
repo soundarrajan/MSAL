@@ -1337,7 +1337,7 @@
                                 </td>
                                 <td style="max-width: 180px;min-width: 140px">
                                     <a ng-click="$ctrl.triggerFormulaDetailsModal(product)"
-                                       ng-if="(product.formulaDescription || product.formula) && $ctrl.orderId">Pricing
+                                       ng-if="(product.formulaDescription || product.formula) && $ctrl.orderId && !product.changedOnConfirmedOrder">Pricing
                                         Details</a>
 
                                 </td>
