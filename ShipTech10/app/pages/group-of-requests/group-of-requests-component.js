@@ -7260,7 +7260,9 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
             }
         };
         ctrl.changeScroll = function() {
-            $('#negotiation-table-fixed-container').css('overflow', 'auto');
+        	setTimeout(function(){
+	            $('#negotiation-table-fixed-container').css('overflow', 'auto');
+        	},500)
         };
         ctrl.keyPress = function() {
             $('#negotiation-table-fixed-container').css('overflow', 'initial');
