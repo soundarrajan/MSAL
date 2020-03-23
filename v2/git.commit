@@ -1,11 +1,13 @@
-﻿commit 830bad79fb8c6361fa435a6c25b8d36b109038ef
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon Mar 23 11:32:09 2020 +0000
+﻿commit 8c918d2278910d17c9ba870975f6b82a835739ea
+Author: Sergiu.vasui <Sergiu.vasui@24software.ro>
+Date:   Mon Mar 23 13:37:16 2020 +0000
 
-    Merged PR 3427: 20505 - Fixed clear filter functionality
+    Merged PR 3448: 22502
     
-    20505 - Fixed clear filter functionality
+    22502
+    22497
+    Fixes for above items
     
-    Related work items: #20505
+    Related work items: #22497, #22502
 
 branch: master
