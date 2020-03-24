@@ -137,7 +137,7 @@ angular
                 }
 
                 var tenantConfigPayload = false;
-                if (window.location.href.indexOf("admin/configuration") != -1) {
+                if (window.location.href.indexOf("admin/configuration") != -1 || window.location.href.indexOf("id_token=") != -1) {
 	                tenantConfigPayload = true;
                 }
                 let query = [
