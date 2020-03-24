@@ -1,13 +1,7 @@
-﻿commit 8c918d2278910d17c9ba870975f6b82a835739ea
-Author: Sergiu.vasui <Sergiu.vasui@24software.ro>
-Date:   Mon Mar 23 13:37:16 2020 +0000
+﻿commit a09886ed79966f9481d1816c364d7b7e0db8974e
+Author: Sergiu Vasui <sergiu_vasui@yahoo.com>
+Date:   Mon Mar 23 17:50:54 2020 +0200
 
-    Merged PR 3448: 22502
-    
-    22502
-    22497
-    Fixes for above items
-    
-    Related work items: #22497, #22502
+    Merge branch 'QC_bugs'
 
 branch: master
