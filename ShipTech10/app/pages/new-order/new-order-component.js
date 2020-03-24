@@ -1389,7 +1389,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                 var getContractOptionParam = { product: product };
                 if (typeof(index) != 'undefined' ) {
                 	getContractOptionParam.priceUom = ctrl.data.products[index].priceUom;
-                    if (ctrl.data.status.name == 'Confirmed') {
                     	ctrl.data.products[index].contract = null;
                     	ctrl.data.products[index].contractId = null;
                     	ctrl.data.products[index].formula = null;
@@ -1399,7 +1398,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
 						ctrl.data.products[index].pricingType = null;
 						ctrl.data.products[index].formulaDescription = null;
 						ctrl.data.products[index].changedOnConfirmedOrder = true;
-                    }
                 }
                 ctrl.getOrderContractOptions(getContractOptionParam);                
                 // If there's a set lookupInput, it means we need
@@ -1420,7 +1418,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                     ctrl.getSpecGroups(ctrl.lookupField);
 	                getContractOptionParam = { product: product }
 	                if (!getContractOptionParam.priceUom) {
-	                	getContractOptionParam.priceUom = ctrl.data.products[index].priceUom;;
+	                	getContractOptionParam.priceUom = ctrl.data.products[index].priceUom;
 	                }
                     ctrl.getOrderContractOptions(getContractOptionParam);
 
