@@ -379,6 +379,7 @@ APP_CLAIMS.controller('Controller_Claims', [
                         }
                         if (response.vessel) {
                             $scope.formValues.orderDetails.vessel = response.vessel.name;
+                            $scope.formValues.orderDetails.vesselToWatchFlag = response.vessel.vesselToWatchFlag;
                         }
                         if (response.location) {
                             $scope.formValues.orderDetails.port = response.location.name;
