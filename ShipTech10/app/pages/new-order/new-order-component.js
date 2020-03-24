@@ -1390,6 +1390,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                 if (typeof(index) != 'undefined' ) {
                 	getContractOptionParam.priceUom = ctrl.data.products[index].priceUom;
                     	ctrl.data.products[index].contract = null;
+                    	ctrl.data.products[index].contractProductId = null;
                     	ctrl.data.products[index].contractId = null;
                     	ctrl.data.products[index].formula = null;
                     	ctrl.data.products[index].price = null;
