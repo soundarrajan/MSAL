@@ -136,9 +136,13 @@ angular
                     localStorage.removeItem('loggedOut');
                 }
 
+                var tenantConfigPayload = false;
+                if (window.location.href.indexOf("admin/configuration") != -1) {
+	                tenantConfigPayload = true;
+                }
                 let query = [
                     $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Admin/api/admin/tenantConfiguration/get`, {
-                        Payload: false
+                        Payload: tenantConfigPayload
                     }),
                 ];
 
