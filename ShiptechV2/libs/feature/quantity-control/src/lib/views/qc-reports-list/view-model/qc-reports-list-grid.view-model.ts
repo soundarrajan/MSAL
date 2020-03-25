@@ -408,6 +408,8 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     ];
   }
 
+
+
   public onSearch(value: string): void {
     this.searchText = value;
     this.gridApi.purgeServerSideCache();
