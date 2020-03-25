@@ -10,6 +10,7 @@ import { AgDatePickerComponent } from '@shiptech/core/ui/components/ag-grid/ag-d
 import { AgCheckBoxHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag-check-box-header/ag-check-box-header.component';
 import { AgCheckBoxRendererComponent } from '@shiptech/core/ui/components/ag-grid/ag-check-box-renderer/ag-check-box-renderer.component';
 import { AgGridModule } from '@ag-grid-community/angular';
+import { AgAsyncBackgroundFillComponent } from '@shiptech/core/ui/components/ag-grid/ag-async-background-fill/ag-async-background-fill.component';
 
 @NgModule({
   imports: [
@@ -21,7 +22,8 @@ import { AgGridModule } from '@ag-grid-community/angular';
       AgColumnGroupHeaderComponent,
       AgDatePickerComponent,
       AgCheckBoxHeaderComponent,
-      AgCheckBoxRendererComponent
+      AgCheckBoxRendererComponent,
+      AgAsyncBackgroundFillComponent
     ]),
     FormsModule,
     ReactiveFormsModule,
