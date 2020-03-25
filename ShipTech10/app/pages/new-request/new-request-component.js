@@ -510,14 +510,14 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                                     ctrl.request.locations[server_data.id].products[server_data.id2].specGroups = server_data.data.payload;
                                     let isInList = false;
                                     $.each(ctrl.request.locations[server_data.id].products[server_data.id2].specGroups, (k, v) => {
+                                        if (v.isDefault && !ctrl.request.locations[server_data.id].products[server_data.id2].specGroup) {
+                                            ctrl.request.locations[server_data.id].products[server_data.id2].specGroup = v;
+                                        }
                                     	if (ctrl.request.locations[server_data.id].products[server_data.id2].specGroup) {
 	                                        if (v.id == ctrl.request.locations[server_data.id].products[server_data.id2].specGroup.id) {
 	                                            isInList = true;
 	                                        }
                                     	}
-                                        if (v.isDefault && !ctrl.request.locations[server_data.id].products[server_data.id2].specGroup) {
-                                            ctrl.request.locations[server_data.id].products[server_data.id2].specGroup = v;
-                                        }
                                     });
                                     if (!isInList) {
                                     	ctrl.request.locations[server_data.id].products[server_data.id2].specGroup.isDeleted = true;
