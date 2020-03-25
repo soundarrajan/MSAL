@@ -1,7 +1,9 @@
-﻿commit a09886ed79966f9481d1816c364d7b7e0db8974e
-Author: Sergiu Vasui <sergiu_vasui@yahoo.com>
-Date:   Mon Mar 23 17:50:54 2020 +0200
+﻿commit dc5abb1e86eab6397f938faa10ce44e4b8e808bc
+Author: Sergiu.vasui <Sergiu.vasui@24software.ro>
+Date:   Wed Mar 25 14:15:43 2020 +0000
 
-    Merge branch 'QC_bugs'
+    Merged PR 3466: commit test
+    
+    commit test
 
 branch: master

@@ -22,6 +22,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { ReconStatusLookup } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.service';
 import { QcReportsListColumnServerKeys } from './view-model/qc-reports-list.columns';
+import { StatusLookupEnum } from '@shiptech/core/lookups/known-lookups/status/status-lookup.enum';
 
 @Component({
   selector: 'shiptech-port-calls-list',
@@ -129,6 +130,10 @@ export class QcReportsListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {}
+
+  shouldShow(data: any): boolean {
+    return data?.surveyStatus?.name !== StatusLookupEnum.Verified;
+  }
 
   verifySludgeReport(item: IQcReportsListItemDto, isChecked: boolean): void {
     this.reportService.markSludgeVerification$(item.id, isChecked).subscribe();
