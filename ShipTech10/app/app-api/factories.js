@@ -7334,7 +7334,10 @@ APP_API.factory('$Api_Service', [
                             $http.post(url, apiJSON).then(
                                 (response) => {
                                     if (response.status == 200) {
-                                        callback(response.data.payload);
+						            	filteredIsDeleted = _.filter(response.data.payload, function(o) { 
+											return o.isDeleted == false; 
+										});
+                                        callback(filteredIsDeleted);
                                     } else {
                                         console.log('$APIService dropdown.lookup failed for parameter ', param.field.masterSource);
                                         callback([

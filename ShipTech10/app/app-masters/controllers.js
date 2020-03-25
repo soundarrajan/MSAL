@@ -2738,9 +2738,6 @@ APP_MASTERS.controller('Controller_Master', [
                             }
                         }
                     });
-                    if (!found) {
-                        $scope.formValues[map[field.Name]] = null;
-                    }
                 } else {
                     $scope.formValues[map[field.Name]] = null;
                 }
