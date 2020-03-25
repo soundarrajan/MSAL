@@ -497,6 +497,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', [ '$sc
             var requestProductIds = [];
             var sellerIds = {};
             var noSellerContract = false;
+            var uniqueSlrId;
             if (ctrl.selectedContracts.length == 0 || !ctrl.selectedContracts) {
                 toastr.error('Please select at least one contract');
                 return;
