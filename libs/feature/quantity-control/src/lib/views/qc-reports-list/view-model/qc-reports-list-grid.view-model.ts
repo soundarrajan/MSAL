@@ -95,7 +95,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     suppressSizeToFit: true,
     suppressMovable: true,
     suppressNavigable: true,
-    suppressColumnsToolPanel: true,
+    suppressColumnsToolPanel: false,
     suppressFiltersToolPanel: true,
     suppressCellFlash: true,
     suppressPaste: true,
@@ -315,7 +315,7 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     filter: 'agNumberColumnFilter',
     valueFormatter: params => this.format.quantity(params.value),
     cellStyle: params =>
-      this.toleranceMatchStyle(
+      this.toleranceMatchStyleSecond(
         params.data?.diffSludgeRobBeforeDischarge,
         params?.data?.qtySludgeDischargedUom
       )
@@ -453,6 +453,41 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
       };
 
     let status = this.reconStatusLookups.matched;
+
+    if (Math.abs(value) >= toleranceUom.maxTolerance)
+      status = this.reconStatusLookups.notMatched;
+
+    if (
+      Math.abs(value) > toleranceUom.minTolerance &&
+      Math.abs(value) < toleranceUom.maxTolerance
+    )
+      status = this.reconStatusLookups.withinLimit;
+
+    return {
+      backgroundColor:
+        status.name === ReconStatusLookupEnum.Matched ? 'inherit' : status.code,
+      color: status.name === ReconStatusLookupEnum.Matched ? 'inherit' : '#fff'
+    };
+  }
+
+  private toleranceMatchStyleSecond(
+    value: number,
+    toleranceUom: IToleranceUomDto
+  ): Partial<CSSStyleDeclaration> {
+    console.log(value, toleranceUom);
+    if (
+      value === null ||
+      value === undefined ||
+      toleranceUom === null ||
+      toleranceUom === undefined
+    )
+      return {
+        backgroundColor: 'inherit',
+        color: 'inherit'
+      };
+
+    let status = this.reconStatusLookups.matched;
+    console.log(status);
 
     if (Math.abs(value) >= toleranceUom.maxTolerance)
       status = this.reconStatusLookups.notMatched;

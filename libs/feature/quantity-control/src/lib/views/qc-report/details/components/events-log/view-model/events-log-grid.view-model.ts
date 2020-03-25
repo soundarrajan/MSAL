@@ -100,10 +100,9 @@ export class EventsLogGridViewModel extends BaseGridViewModel
     colId: EventsLogColumns.CreatedBy,
     field: model('createdBy'),
     width: 377,
-    valueFormatter: params => params.value?.displayName ?? params.value?.name,
+    valueFormatter: params => params.value?.name,
     filterParams: {
-      valueGetter: rowModel =>
-        rowModel.data?.createdBy?.displayName ?? rowModel.data?.createdBy?.name
+      valueGetter: rowModel => rowModel.data?.createdBy?.name
     }
   };
 
