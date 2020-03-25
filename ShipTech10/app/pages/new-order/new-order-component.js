@@ -1098,6 +1098,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                     ctrl.data.buyer = {};
                 }
                 ctrl.data.lab = data.defaultLab;
+                ctrl.data.vessel.vesselToWatchFlag = data.vesselToWatchFlag;
                 newRequestModel.getDefaultBuyer(data.id).then((buyer) => {
                     ctrl.data.buyer = buyer.payload;
                     ctrl.data.vessel.id = data.id;
