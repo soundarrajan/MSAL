@@ -5599,8 +5599,13 @@ APP_API.factory('$Api_Service', [
                         let result = {};
                         if ($rootScope.reloadTenantConfiguration) {
                             $rootScope.reloadTenantConfiguration = false;
+                            
+							var tenantConfigPayload = false;
+							if (window.location.href.indexOf("admin/configuration") != -1 || window.location.href.indexOf("id_token=") != -1) {
+								tenantConfigPayload = true;
+							}
                             $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Admin/api/admin/tenantConfiguration/get`, {
-                                Payload: false
+                                Payload: tenantConfigPayload
                             }).then((response) => {
                                 if (response.status == 200) {
                                     angular.module('shiptech').value('$tenantSettings', response.data.generalConfiguration);
