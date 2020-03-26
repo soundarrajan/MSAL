@@ -121,7 +121,7 @@ export class EventsLogGridViewModel extends BaseGridViewModel
     changeDetector: ChangeDetectorRef,
     loggerFactory: ModuleLoggerFactory,
     tenantSettings: TenantSettingsService,
-    actions$: Actions,
+    private actions$: Actions,
     private store: Store,
     private format: TenantFormattingService,
     private detailsService: QcReportService
@@ -136,17 +136,22 @@ export class EventsLogGridViewModel extends BaseGridViewModel
 
     const generalTenantSettings = tenantSettings.getGeneralTenantSettings();
     this.dateFormat = generalTenantSettings.tenantFormats.dateFormat.name;
+    this.updatingGrid();
+  }
 
+  updatingGrid(): void {
     merge(
       this.gridReady$.pipe(first()),
       // Note: After save we want to reload event notes, because we don't have saved ids, so we can't actually delete them.
-      actions$.pipe(ofActionSuccessful(QcSaveReportDetailsSuccessfulAction))
+      this.actions$.pipe(
+        ofActionSuccessful(QcSaveReportDetailsSuccessfulAction)
+      )
     )
       .pipe(
         tap(() => this.gridApi.showLoadingOverlay()),
         switchMap(() => this.detailsService.loadEventsLog$()),
         // Note: No need for pagination or server-side filtering, everything is loaded in memory.
-        switchMap(() => store.select(QcReportState.eventLogsItems)),
+        switchMap(() => this.store.select(QcReportState.eventLogsItems)),
         catchError(() => {
           this.gridApi.hideOverlay();
           return EMPTY$;
