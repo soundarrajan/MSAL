@@ -492,7 +492,7 @@ APP_CLAIMS.controller('Controller_Claims', [
                     });
                     $.each($scope.options.Product, (k, v) => {
                         if (v.id === id) {
-                            // $scope.formValues.orderDetails.deliveryProductId = v.payload.orderDetails.deliveryProductId;
+                            $scope.formValues.orderDetails.deliveryProductId = v.payload.orderDetails.deliveryProductId;
                             
                         }
                     });
