@@ -405,6 +405,9 @@ APP_CLAIMS.controller('Controller_Claims', [
                         if (!$scope.formValues.claimDetails.estimatedSettlementAmountCurrency) {
                             $scope.formValues.claimDetails.estimatedSettlementAmountCurrency = $scope.tenantCurrency;
                         }
+                        if (!$scope.formValues.claimDetails.claimDate) {
+                            $scope.formValues.claimDetails.claimDate = moment().format();
+                        }
                         let field2;
                         field2 = vm.formFieldSearch($scope.formFields, 'orderDetails.deliveryNo');
                         if (field2) {
