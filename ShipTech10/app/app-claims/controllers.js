@@ -162,7 +162,7 @@ APP_CLAIMS.controller('Controller_Claims', [
                 Factory_Master.get_master_list(vm.app_id, vm.screen_id, field, (callback) => {
                     if (callback) {
                         $scope.options[field.Name] = callback;
-                        if (field.Name === 'Product') {
+                        if (field.Name === 'Product' && window.location.href.indexOf('?orderId') == -1)  {
                             if ($scope.options.Product && $scope.options.Product.length > 0) {
                                 $.each($scope.formValues.temp.tempProductforType, (k, v) => {
                                     $.each($scope.options.Product, (k1, v1) => {
@@ -492,7 +492,8 @@ APP_CLAIMS.controller('Controller_Claims', [
                     });
                     $.each($scope.options.Product, (k, v) => {
                         if (v.id === id) {
-                            $scope.formValues.orderDetails.deliveryProductId = v.payload.orderDetails.deliveryProductId;
+                            // $scope.formValues.orderDetails.deliveryProductId = v.payload.orderDetails.deliveryProductId;
+                            
                         }
                     });
                     $timeout(() => {
