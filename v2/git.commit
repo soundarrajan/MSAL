@@ -1,9 +1,16 @@
-﻿commit dc5abb1e86eab6397f938faa10ce44e4b8e808bc
+﻿commit ba628aa451f3143885790ebbf2e8e708846fd1f5
 Author: Sergiu.vasui <Sergiu.vasui@24software.ro>
-Date:   Wed Mar 25 14:15:43 2020 +0000
+Date:   Thu Mar 26 11:28:56 2020 +0000
 
-    Merged PR 3466: commit test
+    Merged PR 3475: #22510
     
-    commit test
+    #22510
+    1.Create the new report.
+    2.Expand the events section and try to add the new event.
+    3.Unable to add the event.
+    
+    Fixed above issue
+    
+    Related work items: #22510
 
 branch: master
