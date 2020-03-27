@@ -956,6 +956,10 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
                             } else {
                                 window.history.back();
                             }
+                            if (window.location.href.indexOf('?reportId') != -1) {
+                                window.history.back();
+
+                            }
 	                    }
                     }
 	            }).finally(() => {
