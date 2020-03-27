@@ -388,7 +388,18 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
       () => {
         const reportDetailsState = this.reportDetailsState;
         const vesselResponse = reportDetailsState.vesselResponse;
-
+        const newNotes = [];
+        values(reportDetailsState.eventsLog.itemsById).filter(s => {
+          if (s.isNew) {
+            s = {
+              ...s,
+              id: undefined
+            };
+          } else {
+            s = { ...s };
+          }
+          newNotes.push(s);
+        });
         return this.api.saveReportDetails({
           id: reportDetailsState.id,
           portCall: reportDetailsState.portCall,
@@ -412,7 +423,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
             afterDeliveryQtyUomId: reportDetailsState.robAfterDeliveryUom?.id
           })),
           notes: [
-            ...values(reportDetailsState.eventsLog.itemsById),
+            ...values(newNotes),
             ...(reportDetailsState.eventsLog.deletedItemIds ?? []).map(
               s =>
                 <IQcEventLogDeletedListItemDto>{

@@ -660,8 +660,9 @@ export class QcReportState {
     { id, eventDetails }: QcUpdateEventLogAction
   ): void {
     const state = getState();
-    const isNewValue = !!state.details.eventsLog.items.find(x => x === id);
-    console.log(isNewValue);
+    const isNewValue = !!state.details.eventsLog.items.find(
+      x => x === id && id < 0
+    );
     patchState({
       details: {
         ...state.details,
@@ -673,7 +674,7 @@ export class QcReportState {
             [id]: {
               ...state.details.eventsLog.itemsById[id],
               eventDetails: eventDetails,
-              isNew: !isNewValue
+              isNew: isNewValue
             }
           }
         }
