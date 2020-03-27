@@ -87,7 +87,8 @@ export class EventsLogGridViewModel extends BaseGridViewModel
     width: 904,
     autoHeight: true,
     cellRendererSelector: params =>
-      params.data?.isNew
+      params.data?.createdBy?.id ===
+      this.store.selectSnapshot(UserProfileState.userId)
         ? { component: nameof(AgCellTemplateComponent) }
         : null,
     tooltipValueGetter: params => params.valueFormatted ?? params.value,
