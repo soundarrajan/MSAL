@@ -412,15 +412,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
             afterDeliveryQtyUomId: reportDetailsState.robAfterDeliveryUom?.id
           })),
           notes: [
-            ...values(reportDetailsState.eventsLog.itemsById)
-              .filter(s => s.isNew)
-              .map(
-                s =>
-                  <IQcEventLogAddedListItemDto>{
-                    ...s,
-                    id: undefined
-                  }
-              ),
+            ...values(reportDetailsState.eventsLog.itemsById),
             ...(reportDetailsState.eventsLog.deletedItemIds ?? []).map(
               s =>
                 <IQcEventLogDeletedListItemDto>{
