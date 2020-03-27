@@ -25,8 +25,8 @@
                                 <i class="fa fa-angle-left pull-right"  ng-show="value.active"></i>
                             </a>
                             <ul class="reports_names"  ng-show="value.active">
-                                <li class="nav-item" ng-repeat="(key2,report2) in value.items">
-                                    <a ng-click="$ctrl.selectIframe = report2;$ctrl.isReportSelected = [];$ctrl.customReports = true;$ctrl.showCateg=[]" style="background-color: #21282e">
+                                <li class="nav-item" ng-repeat="(key2,report2) in value.items"  ng-class="$ctrl.selectIframe.id == report2.id ? 'current' : '' ">
+                                    <a ng-click="$ctrl.selectIframe = report2;$ctrl.isReportSelected = [];$ctrl.customReports = true;$ctrl.showCateg=[]" >
                                         <span class="">
                                             {{report2.name}}
                                         </span>
