@@ -33,7 +33,6 @@ export class EventsLogComponent implements OnInit, OnDestroy {
 
   update(item: IQcEventsLogItemState, newEventDetails: string): void {
     this.detailsService.updateEventLog(item.id, newEventDetails);
-    this.gridViewModel.updatingGrid();
   }
 
   remove(item: IQcEventsLogItemState): void {

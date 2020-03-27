@@ -110,8 +110,8 @@
 </ng-template>
 
 <ng-template [columnDef]="[gridViewModel.isVerifiedSludgeQtyCol]" appAgCellTemplate let-data="data" let-value="value">
-  <div fxLayout="row" fxLayoutAlign="center center" *ngIf="shouldShow(data)">
-    <p-checkbox binary="true" [(ngModel)]="data.isVerifiedSludgeQty" (ngModelChange)="verifySludgeReport(data, $event)">
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <p-checkbox binary="true" [(ngModel)]="data.isVerifiedSludgeQty" (ngModelChange)="verifySludgeReport(data, $event)" [disabled]="!shouldShow(data)">
     </p-checkbox>
   </div>
 </ng-template>
