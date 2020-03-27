@@ -34,7 +34,6 @@ export class QcReportDetailsRouteResolver implements Resolve<any> {
         KnownQuantityControlRoutes.ReportList
       ]);
     }
-
     return this.reportService.loadReportDetails$(reportId).pipe(
       catchError(error => {
         // Note: If the user navigated directly to this route, we need to redirect to root and show and error

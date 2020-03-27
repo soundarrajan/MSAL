@@ -313,7 +313,6 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
     const reportId = this.reportDetailsState.id;
 
     if (this.reportDetailsState.isNew) return EMPTY$;
-
     return this.apiDispatch(
       () => this.api.getEventsLog({ id: reportId }),
       new QcLoadEventsLogAction(),
