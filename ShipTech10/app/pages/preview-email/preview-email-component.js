@@ -1073,6 +1073,9 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
         };
         ctrl.goBack = function() {
             $window.history.back();
+            if (window.location.href.indexOf('preview-email?') != -1 && ctrl.transaction == 'QuantityControl') {
+                window.history.back();
+            }
         };
         ctrl.focusInnerInput = function(event) {
             console.log(event.target);
