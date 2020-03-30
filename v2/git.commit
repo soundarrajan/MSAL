@@ -1,16 +1,10 @@
-﻿commit ba628aa451f3143885790ebbf2e8e708846fd1f5
-Author: Sergiu.vasui <Sergiu.vasui@24software.ro>
-Date:   Thu Mar 26 11:28:56 2020 +0000
+﻿commit 7d4ffade54cfe0c76b045de749cd8bde34e01c2e
+Author: Sergiu Vasui <sergiu_vasui@yahoo.com>
+Date:   Mon Mar 30 11:14:30 2020 +0300
 
-    Merged PR 3475: #22510
-    
+    #22575
+    #22570
+    #22508
     #22510
-    1.Create the new report.
-    2.Expand the events section and try to add the new event.
-    3.Unable to add the event.
-    
-    Fixed above issue
-    
-    Related work items: #22510
 
 branch: master

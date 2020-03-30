@@ -262,12 +262,16 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
   save(): void {
     this.reportService.saveReport$().subscribe(reportId => {
       this.toastrService.success('Report saved successfully');
-      this.router.navigate([
-        KnownPrimaryRoutes.QuantityControl,
-        `${KnownQuantityControlRoutes.Report}`,
-        reportId,
-        KnownQuantityControlRoutes.ReportDetails
-      ]);
+      this.router
+        .navigate([
+          KnownPrimaryRoutes.QuantityControl,
+          `${KnownQuantityControlRoutes.Report}`,
+          reportId,
+          KnownQuantityControlRoutes.ReportDetails
+        ])
+        .then(() => {
+          this.reportService.loadEventsLog$().subscribe();
+        });
     });
   }
 
