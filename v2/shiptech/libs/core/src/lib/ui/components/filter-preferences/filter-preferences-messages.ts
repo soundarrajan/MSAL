@@ -12,4 +12,6 @@ export const EmptyFilterName = 'Filter Name cannot be empty';
 export const PreferenceAlreadyExists = 'Preference Name Already Exists.';
 export const FiltersArNotLoaded =
   'Cannot save filter until loading has finished. Please try again later.';
+export const ColumnsStateResetSuccessfully =
+  'Columns state was successfully reset';
 export const ToastPosition = { positionClass: 'toast-bottom-center' };

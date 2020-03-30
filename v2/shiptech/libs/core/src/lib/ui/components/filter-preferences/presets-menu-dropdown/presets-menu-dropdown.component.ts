@@ -1,5 +1,16 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit
+} from '@angular/core';
 import { AgGridFilterPresetsService } from '../ag-filter-presets-service/ag-filter-presets.service';
+import { throwError } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
+import {
+  ColumnsStateResetSuccessfully,
+  ToastPosition
+} from '@shiptech/core/ui/components/filter-preferences/filter-preferences-messages';
 
 @Component({
   selector: 'shiptech-presets-menu-dropdown',
@@ -8,9 +19,24 @@ import { AgGridFilterPresetsService } from '../ag-filter-presets-service/ag-filt
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PresetsMenuDropdownComponent implements OnInit {
-  constructor(private filterPresetsService: AgGridFilterPresetsService) {}
+  @Input() gridModelColumnApi: any;
+  constructor(
+    private filterPresetsService: AgGridFilterPresetsService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {}
+
+  resetColumns(): void {
+    try {
+      if (this.gridModelColumnApi) {
+        this.gridModelColumnApi.resetColumnState();
+        this.toastr.info(ColumnsStateResetSuccessfully, '', ToastPosition);
+      }
+    } catch (e) {
+      throwError('An error occured while resetting column state: ' + e);
+    }
+  }
 
   createFilter(): void {
     this.filterPresetsService.openSaveAsDialog();

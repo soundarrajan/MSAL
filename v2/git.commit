@@ -1,10 +1,10 @@
-﻿commit 7d4ffade54cfe0c76b045de749cd8bde34e01c2e
-Author: Sergiu Vasui <sergiu_vasui@yahoo.com>
-Date:   Mon Mar 30 11:14:30 2020 +0300
+﻿commit 7eeb5f473bef15d28cd120ffe867c37569d8d6fe
+Author: Sergiu.vasui <Sergiu.vasui@24software.ro>
+Date:   Mon Mar 30 11:19:51 2020 +0000
 
-    #22575
-    #22570
-    #22508
-    #22510
+    Merged PR 3492: Fixed described issue
+    
+    Issue: If all the columns are hide by the user, he is unable to unhide them and none information from the grid is available.
+    Fix: Added Reset Columns state option from the filter preferences menu that resets the column state to default
 
 branch: master
