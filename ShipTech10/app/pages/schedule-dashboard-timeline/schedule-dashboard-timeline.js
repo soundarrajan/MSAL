@@ -1383,7 +1383,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             });            
             voyageStop = _.uniqBy(voyageStop, 'voyageDetail.request.requestDetail.Id')
      
-            var voyageStopGroup = _.groupBy(voyageStop, "voyageDetail.request.id" );
+            var voyageStopGroup = _.groupBy(voyageStop, "voyageDetail.id" );
             var html = "";
             $.each(voyageStopGroup, function(k1,v1){
                 var hasRequest = false;
