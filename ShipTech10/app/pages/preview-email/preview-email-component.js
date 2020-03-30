@@ -1073,11 +1073,14 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
         };
         ctrl.goBack = function() {
             $window.history.back();
-            if (window.location.href.indexOf('quantity-control/report/') == -1) {
-                if (window.location.href.indexOf('preview-email?') != -1 && ctrl.transaction == 'QuantityControl') {
-                    window.history.back();
+            setTimeout(() => {
+                if (window.location.href.indexOf('quantity-control/report/') == -1) {
+                    if (window.location.href.indexOf('preview-email?') != -1 && ctrl.transaction == 'QuantityControl') {
+                        window.history.back();
+                    }
                 }
-            }
+            }, 500);
+         
         };
         ctrl.focusInnerInput = function(event) {
             console.log(event.target);
