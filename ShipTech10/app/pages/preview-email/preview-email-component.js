@@ -956,10 +956,6 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
                             } else {
                                 window.history.back();
                             }
-                            if (window.location.href.indexOf('?reportId') != -1) {
-                                window.history.back();
-
-                            }
 	                    }
                     }
 	            }).finally(() => {
@@ -971,6 +967,10 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
 	            	if (ctrl.transaction != 'QuantityControl') {
 		            	$state.reload();
 	            	}
+                    if (window.location.href.indexOf('?reportId') != -1 && ctrl.transaction == 'QuantityControl') {
+                        window.history.back();
+
+                  }
 	            });
             }
         };
