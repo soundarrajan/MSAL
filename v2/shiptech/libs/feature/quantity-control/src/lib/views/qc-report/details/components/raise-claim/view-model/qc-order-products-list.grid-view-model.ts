@@ -2,9 +2,9 @@ import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { BaseGridViewModel } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
 import { GridOptions } from '@ag-grid-community/core';
 import {
-  RowSelection,
   ITypedColDef,
-  ITypedColGroupDef
+  ITypedColGroupDef,
+  RowSelection
 } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import {
   QcOrderProductsListColumns,
@@ -19,6 +19,7 @@ import { EMPTY$ } from '@shiptech/core/utils/rxjs-operators';
 import { IQcOrderProductsListItemDto } from '../../../../../../services/api/dto/qc-order-products-list-item.dto';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+import { AgCheckBoxRendererComponent } from '@shiptech/core/ui/components/ag-grid/ag-check-box-renderer/ag-check-box-renderer.component';
 
 function model(
   prop: keyof IQcOrderProductsListItemDto
@@ -50,9 +51,9 @@ export class QcOrderProductsListGridViewModel extends BaseGridViewModel {
   };
 
   selectCol: ITypedColDef = {
-    colId: 'selection',
-    width: 25,
-    checkboxSelection: true,
+    colId: QcOrderProductsListColumns.selection,
+    width: 50,
+    checkboxSelection: false,
     editable: false,
     filter: false,
     sortable: false,
@@ -62,13 +63,14 @@ export class QcOrderProductsListGridViewModel extends BaseGridViewModel {
     suppressSizeToFit: true,
     suppressMovable: true,
     suppressNavigable: true,
-    suppressColumnsToolPanel: true,
+    suppressColumnsToolPanel: false,
     suppressFiltersToolPanel: true,
-    suppressCellFlash: true,
+    suppressCellFlash: false,
     suppressPaste: true,
     lockPosition: true,
     lockVisible: true,
-    cellClass: 'cell-border-green'
+    cellClass: 'cell-border-green',
+    cellRendererFramework: AgCheckBoxRendererComponent
   };
 
   orderNoCol: ITypedColDef<IQcOrderProductsListItemDto, IDisplayLookupDto> = {

@@ -1,4 +1,5 @@
 export enum QcOrderProductsListColumns {
+  selection = 'selection',
   orderNo = 'OrderNo',
   counterpartyName = 'CounterpartyName',
   productName = 'Product',
