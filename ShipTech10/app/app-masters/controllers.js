@@ -2663,7 +2663,7 @@ APP_MASTERS.controller('Controller_Master', [
                         $scope.optionsCache[field.Name] = JSON.stringify(field);
                         Factory_Master.get_master_list(app_id, screen_id, field, (callback) => {
                             if (callback) {
-                                $scope.options[field.Name] = callback;
+                                $scope.options[field.Name] = _.orderBy(callback, [item => item.name.toLowerCase()], ['asc']);
                                 if (vm.app_id == 'masters' && vm.screen_id == 'vessel') {
                                     vm.checkSpecGroup(field);
                                 }

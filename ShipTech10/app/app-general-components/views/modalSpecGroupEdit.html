@@ -58,7 +58,7 @@
                                 <span ng-if="value2.editable != true" class="remove" ng-click="value2.isDeleted = true" style="opacity:1; pointer-events: initial"></span>
                             </td>
                             <td style="width:12%">
-                                <input ng-if="value2.editable == true" ng-model="value2.specParameter" ng-controller="Controller_Master as CM"  uib-typeahead="item as item.name for item in CM.listsCache['SpecParameter'] | filter:{name:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="300" id="specParameter" data-uniqueid="specParameter" data-value="{{ specParameter.id }}" autocomplete="off" typeahead-on-select="modalSpecGroupParametersUpdateUom(value2.specParameter, key2)"/>
+                                <input ng-if="value2.editable == true" ng-model="value2.specParameter" ng-controller="Controller_Master as CM"  uib-typeahead="item as item.name for item in CM.listsCache['SpecParameter'] | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="300" id="specParameter" data-uniqueid="specParameter" data-value="{{ specParameter.id }}" autocomplete="off" typeahead-on-select="modalSpecGroupParametersUpdateUom(value2.specParameter, key2)"/>
                                 <input type="text" disabled class="form-control" ng-if="value2.editable != true" ng-model="value2.specParameter.name"/>
                             </td>
                             <td style="width:12%">

@@ -42,7 +42,7 @@
                 {{ CM.app_id + '.FORMULA_QUOTES' | translate }}
             </label>
             <div class="input-group form_input form_input_formula_quotes">
-                <input ng-model="formValues.simpleFormula.systemInstrument" uib-typeahead="item as item.name for item in options.SystemInstrument | filter:{name:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100"  autocomplete="off"/>
+                <input ng-model="formValues.simpleFormula.systemInstrument" uib-typeahead="item as item.name for item in options.SystemInstrument | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100"  autocomplete="off"/>
                 <span class="input-group-addon"  ng-click="triggerModal('general', 'masters_systeminstrument', CM.app_id + '.FORMULA_QUOTES' | translate , 'formValues.simpleFormula.systemInstrument');">
                     <a   class=" btn default">
                         <i class="fa fa-search"></i>
@@ -140,7 +140,7 @@
     <div class="col-md-4">
         <div class="form-group row" ng-init='options.Currency ? return : CM.getOptions({"Name": "Currency", "Type": "simpleLookup", "masterSource": "Currency"});'>
             <div class="input-group form_input form_input_formula_quotes">
-                <input ng-model="formValues.currency" uib-typeahead="item as item.name for item in options.Currency | filter:{name:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100"  autocomplete="off"/>
+                <input ng-model="formValues.currency" uib-typeahead="item as item.name for item in options.Currency | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100"  autocomplete="off"/>
                 <span class="input-group-addon"  ng-click="triggerModal('general', 'masters_currencylist', CM.app_id + '.CURRENCY' | translate , 'formValues.currency');">
                     <a   class=" btn default">
                         <i class="fa fa-search"></i>

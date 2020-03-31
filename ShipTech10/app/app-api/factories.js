@@ -3901,7 +3901,11 @@ APP_API.factory('$Api_Service', [
             console.log('Loaded tenant settings: ', $tenantSettings);
         }
         if (_debug) {
-            console.log('Loaded cache: ', $listsCache);
+        	 var result = {};
+			_.forEach(Object.keys($listsCache).sort(), function(key) {
+			result[key] = $listsCache[key];
+			});
+            console.log('Loaded cache: ', result);
         }
         var formatters = function(obj) {
             for (let key in obj) {
@@ -5463,8 +5467,8 @@ APP_API.factory('$Api_Service', [
                         url = api_map[param.app][param.screen].entity.list.endpoint;
                     }
 
-                    if (param.params.modal && param.screen == 'currencylist') {
-                        url = url.replace('listMasters', 'codesList');
+                    if (param.params.modal && param.screen == 'currencylist' && window.location.href.indexOf('masters/currency') != -1) {
+                        url = url.replace('listMasters', 'codesList'); 
                     } else if (param.params.modal) {
                         url = url.replace('listMasters', 'list');
                     }
@@ -7336,7 +7340,7 @@ APP_API.factory('$Api_Service', [
                                 }
                             };
                             var url = `${API.BASE_URL_DATA_MASTERS }/api/masters/products/getSpec`;
-                            $http.post(url, apiJSON).then(
+                            $http.post(url, apiJSON).then( 
                                 (response) => {
                                     if (response.status == 200) {
 						            	filteredIsDeleted = _.filter(response.data.payload, function(o) { 

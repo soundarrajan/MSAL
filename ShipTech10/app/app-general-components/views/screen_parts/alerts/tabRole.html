@@ -9,7 +9,7 @@
 			<div class="row">
 				<div class="col-md-3">
 				    <div class="input-group no-label pull-left form_input form_input_userRoles" >
-				        <input ng-model="roles" uib-typeahead="item as item.name for item in options['userRoles'] | filter:{name:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="300" id="roles" data-uniqueid="roles" data-value="{{roles.id}}" autocomplete="off" ng-blur="showMultiLookupWarning(roles)">
+				        <input ng-model="roles" uib-typeahead="item as item.name for item in options['userRoles'] | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="300" id="roles" data-uniqueid="roles" data-value="{{roles.id}}" autocomplete="off" ng-blur="showMultiLookupWarning(roles)">
 
 				        <span class="input-group-addon" ng-click="roles.id ? addRolesInAlert(roles) : ''; alertsGetUserFromRoles(); roles = null">
 				            <a   class="object_tagsinput_add_roles btn default" ng-disabled="!roles.id" ng-click="CM.plusClickedMultilookup = true">

@@ -28,7 +28,7 @@
                         <span  class="orange-txt "> * </span>
                     </label>
                     <div class="input-group form_input form_input_contact_type_{{ key }}">
-                        <input  uib-typeahead="item as item.name for item in options.ContactType | filter:{name:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" id="contact_type_{{ key }}" name="contact_type_{{ key }}" ng-model="formValues.contacts[$index].contactType"  autocomplete="off" ng-required="true"/>
+                        <input  uib-typeahead="item as item.name for item in options.ContactType | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" id="contact_type_{{ key }}" name="contact_type_{{ key }}" ng-model="formValues.contacts[$index].contactType"  autocomplete="off" ng-required="true"/>
                         <span class="input-group-addon" ng-click="triggerModal('general', 'masters_contacttypelist',  CM.app_id + '.CONTACT_TYPE' | translate , 'formValues.contacts.'+$index+'.contactType');">
                             <a   class=" btn default">
                                 <i class="fa fa-search"></i>
@@ -121,7 +121,7 @@
                             </span>
                         </label>
                         <div class="input-group form_input form_input_{{ field.Name }}" ng-class="!field.Label ? 'no-label' : ''"  >
-                            <input  uib-typeahead="item as item.name for item in options.Country | filter:{name:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" id="contact_country{{ $index }}" ng-required="formValues.contacts[$index].address" name="contact_country{{ $index }}" class="form-control select2 changeIT" ng-model="formValues.contacts[$index].address.country"  autocomplete="off"/>
+                            <input  uib-typeahead="item as item.name for item in options.Country | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" id="contact_country{{ $index }}" ng-required="formValues.contacts[$index].address" name="contact_country{{ $index }}" class="form-control select2 changeIT" ng-model="formValues.contacts[$index].address.country"  autocomplete="off"/>
                             <span class="input-group-addon" ng-click="triggerModal('general', 'masters_countrylist',  CM.app_id + '.CONTACT_TYPE' | translate , 'formValues.contacts.'+$index+'.address.country');">
                                 <a   class=" btn default">
                                     <i class="fa fa-search"></i>

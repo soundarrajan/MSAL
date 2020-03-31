@@ -16,7 +16,7 @@
 				<td style="width:5%"><span class="insert" ng-click="formValues.sellers.push({id:0})"></span></td>
 				<td style="width:20%">
 					<div class="input-group">
-	                    <input ng-model="value.counterparty" uib-typeahead="item as item.name for item in CM.listsCache.Counterparty | filter:{name:$viewValue} | limitTo:10"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-limit="5" typeahead-append-to-body="true" typeahead-wait-ms="100" name="PrefferedSeller_{{ key }}" autocomplete="off" />
+	                    <input ng-model="value.counterparty" uib-typeahead="item as item.name for item in CM.listsCache.Counterparty | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-limit="5" typeahead-append-to-body="true" typeahead-wait-ms="100" name="PrefferedSeller_{{ key }}" autocomplete="off" />
 	                    <span class="input-group-addon" ng-click="triggerModal('general', 'masters_counterpartylist', 'Counterparty' , 'formValues.sellers.'+key+'.counterparty');" ng-init="modal = false">
 	                        <a   class=" btn default">
 	                            <i class="fa fa-search"></i>

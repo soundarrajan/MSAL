@@ -172,7 +172,7 @@
                         </span>
                     </label>
                     <div class="input-group">
-                        <input name="{{ $ctrl.productColumns.PhysicalSupplier.name }}add" id="id_{{ $ctrl.productColumns.PhysicalSupplier.name }}add" class="typeahead form-control" uib-typeahead="physicalSupplier as physicalSupplier.name for physicalSupplier in $ctrl.lists.Supplier | filter:$viewValue"  ng-click="$ctrl.setSellerDialogType($ctrl.productColumns.PhysicalSupplier.name, $ctrl.productColumns.PhysicalSupplier.name + 'add')" ng-model="$ctrl.newSupplier" typeahead-editable="false"/>
+                        <input name="{{ $ctrl.productColumns.PhysicalSupplier.name }}add" id="id_{{ $ctrl.productColumns.PhysicalSupplier.name }}add" class="typeahead form-control" uib-typeahead="physicalSupplier as physicalSupplier.name for physicalSupplier in $ctrl.lists.Supplier | typeaheadCustomFilter:$viewValue:'name'"  ng-click="$ctrl.setSellerDialogType($ctrl.productColumns.PhysicalSupplier.name, $ctrl.productColumns.PhysicalSupplier.name + 'add')" ng-model="$ctrl.newSupplier" typeahead-editable="false"/>
                         <span class="input-group-addon" data-toggle="modal" href="#counterparties" ng-click="$ctrl.setSellerDialogType($ctrl.productColumns.PhysicalSupplier.name, $ctrl.productColumns.PhysicalSupplier.name + 'add'); $ctrl.supplierPlace = 'supplier';$ctrl.supplierUpdate = null">
                             <a   class=" btn default">
                                 <i class="glyphicon glyphicon-search"></i>

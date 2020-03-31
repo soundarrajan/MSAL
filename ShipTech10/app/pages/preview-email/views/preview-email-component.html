@@ -72,7 +72,7 @@
                     <div class="col-md-11 row" ng-init="!$ctrl.email.to ? $ctrl.email.to = [] : ''">
                         <div class="col-md-6">
                             <div class="input-group">
-                                <input class="typeahead form-control" uib-typeahead="to as to.name for to in $ctrl.email.toList | filter:$viewValue | limitTo:5" ng-model="$ctrl.toEmail"/>
+                                <input class="typeahead form-control" uib-typeahead="to as to.name for to in $ctrl.email.toList | typeaheadCustomFilter:$viewValue:'name'" ng-model="$ctrl.toEmail"/>
                                 <span class="input-group-addon clickable" ng-click="$ctrl.addEmail($ctrl.toEmail, $ctrl.email.to, 'to')">
                                     <i class="fa fa-plus"></i>
                                 </span>
@@ -108,7 +108,7 @@
                     <div class="col-md-11 row" ng-init="!$ctrl.email.cc ? $ctrl.email.cc = [] : ''">
                         <div class="col-md-6">
                             <div class="input-group">
-                                <input class="typeahead form-control" uib-typeahead="cc as cc.name for cc in $ctrl.email.ccList | filter:$viewValue | limitTo:5" ng-model="$ctrl.ccEmail"/>
+                                <input class="typeahead form-control" uib-typeahead="cc as cc.name for cc in $ctrl.email.ccList | typeaheadCustomFilter:$viewValue:'name'" ng-model="$ctrl.ccEmail"/>
                                 <span class="input-group-addon clickable" ng-click="$ctrl.addEmail($ctrl.ccEmail, $ctrl.email.cc, 'cc')">
                                     <i class="fa fa-plus"></i>
                                 </span>

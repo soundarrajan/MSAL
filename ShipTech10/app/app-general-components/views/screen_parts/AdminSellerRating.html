@@ -8,7 +8,7 @@
                 </span>
             </label>
             <div class="input-group form_input">
-                <input ng-model="formValues.company" uib-typeahead="item as item.name for item in options.Company | filter:{name:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100"  ng-required="true" name="company" autocomplete="off" typeahead-on-select="triggerChangeFields('company','company' )"/>
+                <input ng-model="formValues.company" uib-typeahead="item as item.name for item in options.Company | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100"  ng-required="true" name="company" autocomplete="off" typeahead-on-select="triggerChangeFields('company','company' )"/>
                 <span class="input-group-addon"  ng-click="triggerModal('general', 'masters_companylist','Company' , 'formValues.company','','','company');">
                     <a   class=" btn default">
                         <i class="fa fa-search"></i>
@@ -29,7 +29,7 @@
 		    			</span>
 		    		</label>
     				<div class="input-group form_input">
-    					<input ng-model="applicableApp" uib-typeahead="item as item.name for item in CM.listsCache.Module | filter:{name:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-limit="5" typeahead-append-to-body="true" typeahead-wait-ms="100" name="counterpartyTypeFilterItemsInput" autocomplete="off" ng-disabled="!formValues.company.id" />
+    					<input ng-model="applicableApp" uib-typeahead="item as item.name for item in CM.listsCache.Module | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-limit="5" typeahead-append-to-body="true" typeahead-wait-ms="100" name="counterpartyTypeFilterItemsInput" autocomplete="off" ng-disabled="!formValues.company.id" />
     					<span class="input-group-addon"  ng-click="addSellerRatingApplicabbleApp(applicableApp); applicableApp = null" ng-disabled="!formValues.company.id">
     						<a   class=" btn default">
     							<i class="fa fa-plus"></i>

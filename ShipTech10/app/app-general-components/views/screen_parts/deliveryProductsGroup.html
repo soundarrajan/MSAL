@@ -80,7 +80,7 @@
                                             </span>
                                         </label>
                                         <div class="input-group form_input form_input_Product">
-                                            <input  uib-typeahead="item as item.name for item in options.Product | filter:{name:$viewValue} | limitTo:10"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" id="{{ field.masterSource }}Product" name="Product_{{ key + 1 }}_delivered_product" ng-model="formValues.deliveryProducts[key].product"  autocomplete="off" ng-required="true"/>
+                                            <input  uib-typeahead="item as item.name for item in options.Product | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" id="{{ field.masterSource }}Product" name="Product_{{ key + 1 }}_delivered_product" ng-model="formValues.deliveryProducts[key].product"  autocomplete="off" ng-required="true"/>
                                             <span class="input-group-addon"  ng-click="triggerModal('general', 'masters_productlist', 'Product' , 'formValues.deliveryProducts.'+key+'.product','','',product, '');">
                                                 <a   class=" btn default">
                                                     <i class="fa fa-search"></i>

@@ -994,7 +994,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 	tpl += ` ng-model="CLC.cpCtr[${options.rowId}]"`;
                 	tpl += ` ng-change="CLC.contractIsEditing = ${options.rowId}"`;
                 	tpl += ` ng-blur="CLC.clearContractLinkCP(${options.rowId})"`;
-                	tpl += ` uib-typeahead="contract as contract.name for contract in CLC.getContractTypeaheadListCP(${options.rowId}) | filter:{name:$viewValue} | limitTo:10" />`;
+                	tpl += ` uib-typeahead="contract as contract.name for contract in CLC.getContractTypeaheadListCP(${options.rowId}) | typeaheadCustomFilter:$viewValue:'name'" />`;
 
                 	tpl +=`<i class="fa fa-search clickable 
                 	form-control" 

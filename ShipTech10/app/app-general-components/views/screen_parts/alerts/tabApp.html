@@ -23,7 +23,7 @@
 		<br>
 		<div class="form-group row" ng-init='CM.getOptions({"Name": "selectApp", "Type": "multiLookup", "masterSource": "apps"})' >
 		    <div class="input-group no-label  pull-left form_input form_input_selectApp" >
-		        <input ng-model="dummyModel"  uib-typeahead="item as item.name for item in options['selectApp'] | filter:{name:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="300" id="apps" data-uniqueid="apps" data-value="{{dummyModel.id}}" autocomplete="off" ng-blur="showMultiLookupWarning(dummyModel)">
+		        <input ng-model="dummyModel"  uib-typeahead="item as item.name for item in options['selectApp'] | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="300" id="apps" data-uniqueid="apps" data-value="{{dummyModel.id}}" autocomplete="off" ng-blur="showMultiLookupWarning(dummyModel)">
 
 		        <span class="input-group-addon" ng-click="dummyModel.id ? addAppInAlert(dummyModel) : ''; dummyModel = null" >
 		            <a   class="btn default" ng-disabled="!dummyModel.id" ng-click="CM.plusClickedMultilookup = true">
@@ -49,7 +49,7 @@
 		    <span ng-if="formValues.apps[0].id" ng-init="getTransactionsForApp()"></span>
 		    
 		    <div class="input-group  no-label pull-left form_input form_input_selectTransaction" >
-		        <input ng-model="transactions" uib-typeahead="item as item.name for item in CM.appTransactions | filter:{name:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="300" id="transactions" data-uniqueid="transactions" data-value="{{transactions.id}}"  autocomplete="off" ng-disabled="!formValues.apps[0].id;" ng-blur="showMultiLookupWarning(transactions)">
+		        <input ng-model="transactions" uib-typeahead="item as item.name for item in CM.appTransactions | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="300" id="transactions" data-uniqueid="transactions" data-value="{{transactions.id}}"  autocomplete="off" ng-disabled="!formValues.apps[0].id;" ng-blur="showMultiLookupWarning(transactions)">
 
 		        <span class="input-group-addon" ng-click="transactions.id ? addTransactionInAlert(transactions) : ''; transactions = null" >
 		            <a   class="object_tagsinput_add_transactions btn default" ng-disabled="!formValues.apps[0].id" ng-click="CM.plusClickedMultilookup = true">

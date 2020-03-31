@@ -176,7 +176,7 @@
                                             <i ng-click="$$ctrl.removeEmail($index, $$ctrl.email.to)" class="fa fa-close clickable"></i>
                                             {{ toEmail.name }}
                                         </div>
-                                        <input class="typeahead form-control pull-left" uib-typeahead="to as to.name for to in $$ctrl.email.toList | filter:$viewValue | limitTo:5" ng-model="$$ctrl.toEmail" typeahead-on-select="$$ctrl.addEmail($$ctrl.toEmail, $$ctrl.email.to)" ng-blur="$$ctrl.clearEmailInputs()" style="max-width:100px; border: none"/>
+                                        <input class="typeahead form-control pull-left" uib-typeahead="to as to.name for to in $$ctrl.email.toList | typeaheadCustomFilter:$viewValue:'name'" ng-model="$$ctrl.toEmail" typeahead-on-select="$$ctrl.addEmail($$ctrl.toEmail, $$ctrl.email.to)" ng-blur="$$ctrl.clearEmailInputs()" style="max-width:100px; border: none"/>
                                     </div>
                                 </div>
                             </div>
@@ -202,7 +202,7 @@
                                             <i ng-click="$$ctrl.removeEmail($index, $$ctrl.email.cc)" class="fa fa-close clickable"></i>
                                             {{ ccEmail.name }}
                                         </div>
-                                        <input class="typeahead form-control pull-left" uib-typeahead="cc as cc.name for cc in $$ctrl.email.ccList | filter:$viewValue | limitTo:5" ng-model="$$ctrl.ccEmail" typeahead-on-select="$$ctrl.addEmail($$ctrl.ccEmail, $$ctrl.email.cc)" ng-blur="$$ctrl.clearEmailInputs()" style="max-width:100px; border: none"/>
+                                        <input class="typeahead form-control pull-left" uib-typeahead="cc as cc.name for cc in $$ctrl.email.ccList | typeaheadCustomFilter:$viewValue:'name'" ng-model="$$ctrl.ccEmail" typeahead-on-select="$$ctrl.addEmail($$ctrl.ccEmail, $$ctrl.email.cc)" ng-blur="$$ctrl.clearEmailInputs()" style="max-width:100px; border: none"/>
                                     </div>
                                 </div>
                             </div>
@@ -213,7 +213,7 @@
                                 <div class="col-md-11">
                                     <span>
                                         <span class="input-group pull-left form_input" style="margin-bottom: 5px;margin-right: 30px; width: 300px">
-                                            <input ng-model="availableDocumentAttachments" uib-typeahead="item as item.name for item in $$ctrl.availableDocumentAttachmentsList"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-on-select="addToAttachments(availableDocumentAttachments); availableDocumentAttachments=''" typeahead-wait-ms="300" id="availableDocumentAttachments" data-uniqueid="availableDocumentAttachments" autocomplete="off" style="margin-bottom: 0px;"/>
+                                            <input ng-model="availableDocumentAttachments" uib-typeahead="item as item.name for item in $$ctrl.availableDocumentAttachmentsList | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-on-select="addToAttachments(availableDocumentAttachments); availableDocumentAttachments=''" typeahead-wait-ms="300" id="availableDocumentAttachments" data-uniqueid="availableDocumentAttachments" autocomplete="off" style="margin-bottom: 0px;"/>
 
                                             <span class="input-group-addon"  ng-click="triggerModal('general', 'group_of_requests_entity_documents', 'documents' , 'availableDocumentAttachments');" >
                                                 <i class="fa fa-search"></i>

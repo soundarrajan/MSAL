@@ -23,7 +23,7 @@
 			        {{ CM.app_id + '.DISPLAY_FIELDS' | translate }}
 			    </label>
 			    <div class="input-group " ng-init='CM.getOptions({"Name": "transactions", "Type": "simpleLookup", "masterSource": "transactions"});'>
-			        <input ng-model="formValues.temp.MessageVariable"  name="MessageVariable"  uib-typeahead="item as item.name for item in options.transactions | filter:{name:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" autocomplete="off"/>
+			        <input ng-model="formValues.temp.MessageVariable"  name="MessageVariable"  uib-typeahead="item as item.name for item in options.transactions | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" autocomplete="off"/>
 				    <span class="input-group-addon"  ng-click="triggerModal('general', 'masters_currencylist', 'transactions' , 'formValues.temp.MessageVariable');" >
 				        <a   class=" btn default">
 				            <i class="fa fa-search"></i>

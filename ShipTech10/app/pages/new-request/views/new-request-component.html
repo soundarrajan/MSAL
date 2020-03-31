@@ -137,7 +137,7 @@
                             </label>
                             <div class="form-group-sm00">
                                 <div class="input-group col-md-7" >
-                                    <input name="{{ $ctrl.vesselDetailsFields.Vessel.name }}" id="id_{{ $ctrl.vesselDetailsFields.Vessel.name }}" uib-typeahead="vessel as vessel.name for vessel in options.Vessel | filter:$viewValue | limitTo:10" typeahead-on-select="$ctrl.selectVessel($item.id); CM.getOptions({'Name': 'BunkerablePort','masterSource': 'masters_locations', 'filters': $ctrl.request.vesselDetails.vessel})" typeahead-editable="false" class="typeahead form-control" ng-model="$ctrl.request.vesselDetails.vessel.name" required  ng-disabled="$ctrl.request.id || $ctrl.disableAllFields">
+                                    <input name="{{ $ctrl.vesselDetailsFields.Vessel.name }}" id="id_{{ $ctrl.vesselDetailsFields.Vessel.name }}" uib-typeahead="vessel as vessel.name for vessel in options.Vessel | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.selectVessel($item.id); CM.getOptions({'Name': 'BunkerablePort','masterSource': 'masters_locations', 'filters': $ctrl.request.vesselDetails.vessel})" typeahead-editable="false" class="typeahead form-control" ng-model="$ctrl.request.vesselDetails.vessel.name" required  ng-disabled="$ctrl.request.id || $ctrl.disableAllFields">
                                     <span class="input-group-addon" ng-click="triggerModal('general', 'masters_vessellist', $ctrl.vesselDetailsFields.Vessel.caption | translate, '$ctrl.request.vesselDetails.vessel','','',$ctrl.vesselDetailsFields.Vessel.name)"  ng-class="{'disabled' : ($ctrl.isReadonlyForm || $ctrl.request.id)}" ng-disabled="$ctrl.request.id || $ctrl.disableAllFields">
                                         <i class="fa fa-search"></i>
 
@@ -158,7 +158,7 @@
                             <div class="form-group-sm00">
                                 <span ng-init="$ctrl.options.VesselWithImo = options.VesselWithImo" ng-if="$ctrl.options.VesselWithImo"></span>
                                 <div class="input-group col-md-7">
-                                    <input ng-disabled="$ctrl.requestId ? true : false || $ctrl.disableAllFields" name="{{ $ctrl.vesselDetailsFields.VesselImoNo.name }}" id="id_{{ $ctrl.vesselDetailsFields.VesselImoNo.name }}" placeholder="{{ $ctrl.vesselDetailsFields.VesselImoNo.placeholder }}" uib-typeahead="vesselimo as vesselimo.name for vesselimo in options.VesselWithImo | filter:$viewValue  | limitTo:10" typeahead-on-select="$ctrl.selectVessel($item.id)" typeahead-editable="false" class="typeahead form-control" ng-model="$ctrl.request.vesselDetails.vesselImoNo" required >
+                                    <input ng-disabled="$ctrl.requestId ? true : false || $ctrl.disableAllFields" name="{{ $ctrl.vesselDetailsFields.VesselImoNo.name }}" id="id_{{ $ctrl.vesselDetailsFields.VesselImoNo.name }}" placeholder="{{ $ctrl.vesselDetailsFields.VesselImoNo.placeholder }}" uib-typeahead="vesselimo as vesselimo.name for vesselimo in options.VesselWithImo | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.selectVessel($item.id)" typeahead-editable="false" class="typeahead form-control" ng-model="$ctrl.request.vesselDetails.vesselImoNo" required >
                                     <span ng-disabled="$ctrl.requestId ? true : false || $ctrl.disableAllFields" class="input-group-addon"  ng-click="triggerModal('general', 'masters_vessellist', $ctrl.vesselDetailsFields.VesselImoNo.caption | translate, '$ctrl.request.vesselDetails.vesselImoNo','','',$ctrl.vesselDetailsFields.VesselImoNo.name)" ng-class="{'disabled' : $ctrl.isReadonlyForm}">
                                         <i class="fa fa-search"></i>
                                     </span>
@@ -175,7 +175,7 @@
                                 </label>
                                 <div class="form-group-sm00">
                                     <div class="input-group col-md-7" >
-                                        <input ng-disabled="$ctrl.disableAllFields" name="{{ $ctrl.vesselDetailsFields.ServiceCode.name }}" id="id_{{ $ctrl.vesselDetailsFields.ServiceCode.name }}" placeholder="{{ $ctrl.vesselDetailsFields.ServiceCode.placeholder }}" uib-typeahead="service as service.name for service in options.Service | filter:$viewValue | limitTo:10" typeahead-on-select="$ctrl.selectService($item.id)" typeahead-editable="false" class="typeahead form-control" ng-model="$ctrl.request.vesselDetails.service.name" required >
+                                        <input ng-disabled="$ctrl.disableAllFields" name="{{ $ctrl.vesselDetailsFields.ServiceCode.name }}" id="id_{{ $ctrl.vesselDetailsFields.ServiceCode.name }}" placeholder="{{ $ctrl.vesselDetailsFields.ServiceCode.placeholder }}" uib-typeahead="service as service.name for service in options.Service | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.selectService($item.id)" typeahead-editable="false" class="typeahead form-control" ng-model="$ctrl.request.vesselDetails.service.name" required >
                                       
                                         <span ng-disabled="$ctrl.disableAllFields" class="input-group-addon" ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-click="triggerModal('general', 'masters_servicelist', $ctrl.tenantSettings.serviceDisplayName.name + ' Code' | translate, '$ctrl.request.vesselDetails.service','','',$ctrl.vesselDetailsFields.ServiceCode.name)">
                                             <i class="fa fa-search"></i>
@@ -211,7 +211,7 @@
                                 </label>
                                 <div class="form-group-sm00">
                                     <div class="input-group col-md-7">
-                                        <input name="{{ $ctrl.vesselDetailsFields.Company.name }}" id="id_{{ $ctrl.vesselDetailsFields.Company.name }}" placeholder="{{ $ctrl.vesselDetailsFields.Company.placeholder }}" uib-typeahead="company as company.name for company in $ctrl.lists.Company | filter:$viewValue | limitTo:10" typeahead-on-select="$ctrl.selectCompany($item.id)" typeahead-editable="false" class="typeahead form-control" ng-model="$ctrl.request.company.name" required >
+                                        <input name="{{ $ctrl.vesselDetailsFields.Company.name }}" id="id_{{ $ctrl.vesselDetailsFields.Company.name }}" placeholder="{{ $ctrl.vesselDetailsFields.Company.placeholder }}" uib-typeahead="company as company.name for company in $ctrl.lists.Company | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.selectCompany($item.id)" typeahead-editable="false" class="typeahead form-control" ng-model="$ctrl.request.company.name" required >
                                         <span class="input-group-addon"  ng-click="triggerModal('general', 'masters_companylist', $ctrl.tenantSettings.companyDisplayName.name | translate, '$ctrl.request.company.name','','',$ctrl.vesselDetailsFields.Company.name)"  ng-class="{'disabled' : $ctrl.isReadonlyForm}">
                                             <i class="fa fa-search"></i>
                                         </span>
@@ -775,7 +775,7 @@
 
 	                                                <div class="form-group-sm00">
 	                                                    <div class="input-group col-md-8 col-sm-12">
-	                                                        <input name="{{ $ctrl.productInfoFields.Buyer.name }}" id="id_{{ $ctrl.productInfoFields.Buyer.name }}" placeholder="{{ $ctrl.productInfoFields.Buyer.placeholder }}" class="typeahed form-control" uib-typeahead="buyer as buyer.name for buyer in  $ctrl.listsCache.Buyer|  filter:{name:$viewValue}| limitTo:10" ng-model="location.buyer" required typeahead-editable="false" ng-focus="$ctrl.setLookupInput(location)"   ng-blur="location.buyer.name == null || location.buyer.name == '' ? location.buyer = null : '' " ng-value="location.buyer.name" ng-disabled="$ctrl.disableAllFields">
+	                                                        <input name="{{ $ctrl.productInfoFields.Buyer.name }}" id="id_{{ $ctrl.productInfoFields.Buyer.name }}" placeholder="{{ $ctrl.productInfoFields.Buyer.placeholder }}" class="typeahed form-control" uib-typeahead="buyer as buyer.name for buyer in  $ctrl.listsCache.Buyer | typeaheadCustomFilter:$viewValue:'name'" ng-model="location.buyer" required typeahead-editable="false" ng-focus="$ctrl.setLookupInput(location)"   ng-blur="location.buyer.name == null || location.buyer.name == '' ? location.buyer = null : '' " ng-value="location.buyer.name" ng-disabled="$ctrl.disableAllFields">
 
 	                                                            <span class="input-group-addon" ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-click="triggerModal('general', 'procurement_buyerlist', 'Select Buyer','$ctrl.location[' + $index + '].buyer' ,'','', $$ctrl.productInfoFields.Buyer.name, $ctrl.request.vesselDetails.vessel)" ng-disabled="$ctrl.disableAllFields">
 	                                                            <i class="glyphicon glyphicon-search"></i>
@@ -792,7 +792,7 @@
 	                                                <div class="form-group-sm00">
 
 	                                                    <div class="input-group col-md-8 col-sm-12" ng-if="$ctrl.requestTenantSettings.agentDisplay.name == 'Lookup'">
-	                                                        <input name="{{ $ctrl.productInfoFields.Agent.name }}" id="id_{{ $ctrl.productInfoFields.Agent.name }}" class="typeahead form-control" uib-typeahead="ag as ag.name for ag in options.Agent | filter:{name:$viewValue} | limitTo:10" typeahead-on-select="$ctrl.agentLocationIdx = $index; $ctrl.selectAgent($item.id)" ng-model="location.agent" typeahead-editable="false" ng-blur="location.agent.name == null || location.agent.name == '' ? location.agent = null : '' " ng-value="location.agent.name" ng-disabled="$ctrl.disableAllFields">
+	                                                        <input name="{{ $ctrl.productInfoFields.Agent.name }}" id="id_{{ $ctrl.productInfoFields.Agent.name }}" class="typeahead form-control" uib-typeahead="ag as ag.name for ag in options.Agent | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.agentLocationIdx = $index; $ctrl.selectAgent($item.id)" ng-model="location.agent" typeahead-editable="false" ng-blur="location.agent.name == null || location.agent.name == '' ? location.agent = null : '' " ng-value="location.agent.name" ng-disabled="$ctrl.disableAllFields">
 	                                                      <span class="input-group-addon" ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-click="triggerModal('general', 'procurement_agentlist', 'Select Agent', '$ctrl.location[' + $index + '].agent' ,'','', $$ctrl.productInfoFields.Agent.name)" ng-disabled="$ctrl.disableAllFields">
 	                                                            <i class="glyphicon glyphicon-search"></i>
 	                                                        </span>
@@ -812,7 +812,7 @@
 						                            </label>
 						                            <div class="form-group-sm00">
 						                                <div class="input-group col-md-8 col-sm-12">
-						                                    <input ng-disabled="$ctrl.disableAllFields" name="Location {{$index+1}} {{$ctrl.tenantSettings.serviceDisplayName.name}}" id="id_{{ $ctrl.vesselDetailsFields.ServiceCode.name }}" placeholder="{{ $ctrl.vesselDetailsFields.ServiceCode.placeholder }}" uib-typeahead="service as service.name for service in options.Service | filter:$viewValue | limitTo:10" typeahead-on-select="$ctrl.selectServiceInLocation($item.id, $index)" typeahead-editable="false" class="typeahead form-control" ng-model="location.service.name" required>
+						                                    <input ng-disabled="$ctrl.disableAllFields" name="Location {{$index+1}} {{$ctrl.tenantSettings.serviceDisplayName.name}}" id="id_{{ $ctrl.vesselDetailsFields.ServiceCode.name }}" placeholder="{{ $ctrl.vesselDetailsFields.ServiceCode.placeholder }}" uib-typeahead="service as service.name for service in options.Service | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.selectServiceInLocation($item.id, $index)" typeahead-editable="false" class="typeahead form-control" ng-model="location.service.name" required>
 						                               <span ng-disabled="$ctrl.disableAllFields" class="input-group-addon" ng-click="triggerModal('general', 'masters_servicelist', $ctrl.tenantSettings.serviceDisplayName.name + ' Code' | translate, '$ctrl.location[' + $index + '].service' ,'','',Location + $index+1 + $ctrl.tenantSettings.serviceDisplayName.name)" >
 						                                        <i class="fa fa-search"></i>
 						                                    </span>
@@ -828,7 +828,7 @@
 						                            </label>
 						                            <div class="form-group-sm00">
 						                                <div class="input-group col-md-8 col-sm-12">
-						                                    <input name="Location {{$index+1}} {{$ctrl.tenantSettings.companyDisplayName.name}}" id="id_{{ $ctrl.vesselDetailsFields.Company.name }}" placeholder="{{ $ctrl.vesselDetailsFields.Company.placeholder }}" uib-typeahead="company as company.name for company in options.Company | filter:$viewValue | limitTo:10" typeahead-on-select="$ctrl.selectCompanyInLocation($item.id, $index)" ng-required="true" typeahead-editable="false" class="typeahead form-control" ng-model="location.company.name" ng-disabled="$ctrl.disableAllFields">
+						                                    <input name="Location {{$index+1}} {{$ctrl.tenantSettings.companyDisplayName.name}}" id="id_{{ $ctrl.vesselDetailsFields.Company.name }}" placeholder="{{ $ctrl.vesselDetailsFields.Company.placeholder }}" uib-typeahead="company as company.name for company in options.Company | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.selectCompanyInLocation($item.id, $index)" ng-required="true" typeahead-editable="false" class="typeahead form-control" ng-model="location.company.name" ng-disabled="$ctrl.disableAllFields">
 
 	                                                        <span class="input-group-addon" ng-click="triggerModal('general', 'masters_companylist', $ctrl.tenantSettings.serviceDisplayName.name + ' Code' | translate, '$ctrl.location[' + $index + '].company' ,'','',Location + $index+1 + $ctrl.tenantSettings.companyDisplayName.name)" ng-disabled="$ctrl.disableAllFields">
 	                                                            <i class="fa fa-search"></i>
@@ -889,7 +889,7 @@
 	                                                    <input 
 	                                                    name="{{ $ctrl.productInfoColumns.Product.name }}" id="product_product_{{ $index }}" 
 	                                                    placeholder="{{ $ctrl.productInfoColumns.Product.placeholder }}" class="typeahead form-control" 
-	                                                    uib-typeahead="prod as prod.name for prod in options.Product | filter:$viewValue | limitTo:10" 
+	                                                    uib-typeahead="prod as prod.name for prod in options.Product | typeaheadCustomFilter:$viewValue:'name'" 
 	                                                    typeahead-on-select="$ctrl.selectProduct($item.id); $ctrl.changeScroll($index1)" 
 	                                                    typeahead-append-to="'body'" 
 	                                                    typeahead-editable="false" 

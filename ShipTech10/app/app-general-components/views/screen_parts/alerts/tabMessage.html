@@ -23,7 +23,7 @@
 			        {{ CM.app_id + '.DISPLAY_FIELDS' | translate }}
 			    </label>
 			    <div class="input-group " style="float: left;">
-			        <input ng-model="formValues.temp.MessageVariable"  name="MessageVariable"  uib-typeahead="item as item.name for item in formValues.parameters | filter:{name:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" autocomplete="off"/>
+			        <input ng-model="formValues.temp.MessageVariable"  name="MessageVariable"  uib-typeahead="item as item.name for item in formValues.parameters | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" autocomplete="off"/>
 			    </div>
 			    <span class=""  ng-click="addHtmlValueIn(formValues.temp.MessageVariable, '#alertMessage'); formValues.temp.MessageVariable = null">
 					<span class=" btn default">

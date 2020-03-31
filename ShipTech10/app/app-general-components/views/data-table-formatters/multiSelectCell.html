@@ -3,7 +3,7 @@
 	data-original-title="{{MODEL_COL_FIELD.name}}">
 	    <input ng-model="productTypeTypeahead[rowRenderIndex]" 
 	    ng-class="'colt' + col.uid" 
-	    uib-typeahead="item as item.name for item in grid.appScope.fVal().options[col.colDef.cellObject.Name] | filter:{name:$viewValue} | limitTo:10"  
+	    uib-typeahead="item as item.name for item in grid.appScope.fVal().options[col.colDef.cellObject.Name] | typeaheadCustomFilter:$viewValue:'name'"  
 	    class="form-control multiselect-typeahead"  
 	    typeahead-show-hint="true" 
 	    typeahead-min-length="1" 

@@ -79,7 +79,7 @@
 
 											<div class="input-group form_input form_input_ContactType">
 											    <div style="position: relative;">
-											    	<input uib-typeahead="item as item.name for item in CM.listsCache.ContactType | filter:{name:$viewValue}" class="form-control ng-pristine ng-valid ng-not-empty ng-valid-required ng-touched" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" id="contactType" name="contactType5" ng-model="newContact.contactType" autocomplete="off" ng-required="true" aria-autocomplete="list" aria-expanded="false" aria-owns="typeahead-589-7101" required="required" style="position: relative; vertical-align: top; background-color: transparent;">
+											    	<input uib-typeahead="item as item.name for item in CM.listsCache.ContactType | typeaheadCustomFilter:$viewValue:'name'" class="form-control ng-pristine ng-valid ng-not-empty ng-valid-required ng-touched" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" id="contactType" name="contactType5" ng-model="newContact.contactType" autocomplete="off" ng-required="true" aria-autocomplete="list" aria-expanded="false" aria-owns="typeahead-589-7101" required="required" style="position: relative; vertical-align: top; background-color: transparent;">
 												</div>
 											    <span class="input-group-addon" ng-click="triggerModal('general', 'masters_contacttypelist',  CM.app_id + '.CONTACT_TYPE' | translate , 'newContact.contactType');">
 											        <a   class=" btn default">
@@ -147,7 +147,7 @@
 
 												<div class="input-group form_input form_input_ContactType">
 												    <div style="position: relative;">
-												    	<input uib-typeahead="item as item.name for item in CM.listsCache.Country | filter:{name:$viewValue}" class="form-control ng-pristine ng-valid ng-not-empty ng-valid-required ng-touched" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" id="country" name="country" ng-model="newContact.address.country" autocomplete="off" aria-autocomplete="list" aria-expanded="false" style="position: relative; vertical-align: top; background-color: transparent;">
+												    	<input uib-typeahead="item as item.name for item in CM.listsCache.Country | typeaheadCustomFilter:$viewValue:'name'" class="form-control ng-pristine ng-valid ng-not-empty ng-valid-required ng-touched" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100" id="country" name="country" ng-model="newContact.address.country" autocomplete="off" aria-autocomplete="list" aria-expanded="false" style="position: relative; vertical-align: top; background-color: transparent;">
 													</div>
 												    <span class="input-group-addon" ng-click="triggerModal('general', 'masters_countrylist',  'Country' , 'newContact.address.country');">
 												        <a   class=" btn default">

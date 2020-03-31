@@ -8,7 +8,7 @@
                 {{ CM.app_id + '.ORDER_ID' | translate }}
             </label>
             <div class="input-group form_input form_input_Product" ng-init='CM.getOptions({"Name": "OrderNumber","masterSource": "OrderList"})'>
-                <input uib-typeahead="item as item.name for item in options.OrderNumber | filter:{name:$viewValue} | limitTo:10"
+                <input uib-typeahead="item as item.name for item in options.OrderNumber | typeaheadCustomFilter:$viewValue:'name'"
                        class="form-control"
                        typeahead-show-hint="true"
                        typeahead-min-length="1"

@@ -178,7 +178,7 @@
                                                 <input name="{{$ctrl.productColumns.QuotedProduct.name}}"
                                                         id="id_{{$ctrl.productColumns.QuotedProduct.name}}"
                                                         class="typeahead form-control"
-                                                        uib-typeahead="quotedProduct as quotedProduct.name for quotedProduct in $ctrl.lists.Product | filter:$viewValue"
+                                                        uib-typeahead="quotedProduct as quotedProduct.name for quotedProduct in $ctrl.lists.Product | typeaheadCustomFilter:$viewValue:'name'"
                                                         typeahead-on-select="$ctrl.selectQuotedProduct($item.id)"
                                                         ng-model="product.sellers[0].offers[0].quotedProduct.name"
                                                         typeahead-editable="false"

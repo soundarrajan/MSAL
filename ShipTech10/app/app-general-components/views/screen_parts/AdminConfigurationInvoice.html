@@ -30,7 +30,7 @@
 
                 </label>
                 <div class="input-group form_input form_input_formula_quotes">
-                    <input ng-model="formValues.invoice.invoiceCurrency" uib-typeahead="item as item.name for item in options.Currency | filter:{name:$viewValue}"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100"  ng-required="true" name="{{ field.Name }}" autocomplete="off"/>
+                    <input ng-model="formValues.invoice.invoiceCurrency" uib-typeahead="item as item.name for item in options.Currency | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100"  ng-required="true" name="{{ field.Name }}" autocomplete="off"/>
                 </div>
             </div>
         </div>

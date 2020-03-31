@@ -123,7 +123,7 @@
 	                        </td>
 	                        <td>
 	                            <div class="input-group input-group-sm" ng-if="$ctrl.tableLoaded">
-	                                <input class="form-control no-right-border" ng-model="row.contract.name" ng-focus="$ctrl.getLookupLists(row, $index)" uib-typeahead="contract as contract.contract.name for contract in $ctrl.lookupLists[$index] | filter:$viewValue | limitTo:5" typeahead-append-to-body="true" typeahead-on-select="$ctrl.selectContract($item);" ng-blur="$ctrl.clearContract(row.contract.name)" ng-change="contractPlanningHasChanges()" />
+	                                <input class="form-control no-right-border" ng-model="row.contract.name" ng-focus="$ctrl.getLookupLists(row, $index)" uib-typeahead="contract as contract.contract.name for contract in $ctrl.lookupLists[$index] | typeaheadCustomFilter:$viewValue:'name'" typeahead-append-to-body="true" typeahead-on-select="$ctrl.selectContract($item);" ng-blur="$ctrl.clearContract(row.contract.name)" ng-change="contractPlanningHasChanges()" />
 	                                <span class="input-group-addon">
 	                                    <i class="fa fa-search clickable" data-toggle="modal" href="#selectContract" ng-click="$ctrl.setContractFilters(row)"></i>
 	                                </span>

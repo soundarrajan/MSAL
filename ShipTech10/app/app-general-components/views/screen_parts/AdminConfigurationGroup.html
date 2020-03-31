@@ -255,7 +255,7 @@
                             </span>
                         </label>
                         <div class="input-group form_input form_input_formula_quotes">
-                            <input ng-model="formValues.general.tenantFormats.uom" uib-typeahead="item as item.name for item in options.Uom | filter:{name:$viewValue}"
+                            <input ng-model="formValues.general.tenantFormats.uom" uib-typeahead="item as item.name for item in options.Uom | typeaheadCustomFilter:$viewValue:'name'"
                                    class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
                                    typeahead-wait-ms="100" ng-required="true" name="uom" autocomplete="off" />
                             <span class="input-group-addon" ng-click="triggerModal('general', 'masters_uomlist', 'UOM', 'formValues.general.tenantFormats.uom');"
@@ -290,7 +290,7 @@
                             </span>
                         </label>
                         <div class="input-group form_input form_input_formula_quotes">
-                            <input ng-model="formValues.general.tenantFormats.currency" uib-typeahead="item as item.name for item in options.Currency | filter:{name:$viewValue}"
+                            <input ng-model="formValues.general.tenantFormats.currency" uib-typeahead="item as item.name for item in options.Currency | typeaheadCustomFilter:$viewValue:'name'"
                                    class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
                                    typeahead-wait-ms="100" ng-required="true" name="{{ field.Name }}" autocomplete="off" />
                             <span class="input-group-addon" ng-click="triggerModal('general', 'masters_currencylist', 'Currency', 'formValues.general.tenantFormats.currency');"
@@ -903,7 +903,7 @@
                             </span>
                         </label>
                         <div class="input-group form_input form_input_display">
-                            <input ng-model="counterpartyTypeFilterItemsInput" uib-typeahead="item as item.name for item in getCounterpartyTypeFilterItems() | filter:{name:$viewValue}"
+                            <input ng-model="counterpartyTypeFilterItemsInput" uib-typeahead="item as item.name for item in getCounterpartyTypeFilterItems() | typeaheadCustomFilter:$viewValue:'name'"
                                 class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-limit="5"
                                 typeahead-append-to-body="true" typeahead-wait-ms="100" name="counterpartyTypeFilterItemsInput"
                                 autocomplete="off" />
@@ -1195,7 +1195,7 @@
             				</span>
             			</label>
             			<div class="input-group form_input form_input_defaultPaymentCompany">
-                            <input ng-model="formValues.procurement.order.defaultPaymentCompany" uib-typeahead="item as item.name for item in CM.listsCache.Company | filter:{name:$viewValue}"
+                            <input ng-model="formValues.procurement.order.defaultPaymentCompany" uib-typeahead="item as item.name for item in CM.listsCache.Company | typeaheadCustomFilter:$viewValue:'name'"
                                 class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
                                 typeahead-wait-ms="100" ng-required="true" name="Default Payment Company" autocomplete="off" />
                             <span class="input-group-addon" ng-click="triggerModal('general', 'masters_companylist', 'Company', 'formValues.procurement.order.defaultPaymentCompany');"

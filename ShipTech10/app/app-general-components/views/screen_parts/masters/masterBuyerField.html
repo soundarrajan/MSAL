@@ -7,7 +7,7 @@
 	</label>
 
   <div class="input-group form_input" ng-if="formValues.hasNoMoreChildren">
-	  <input ng-model="formValues.user" uib-typeahead="item as item.displayName for item in options.Buyer | filter:{displayName:$viewValue}"
+	  <input ng-model="formValues.user" uib-typeahead="item as item.displayName for item in options.Buyer | typeaheadCustomFilter:$viewValue:'name'"
 		  class="form-control" typeahead-show-hint="true" typeahed-min-length="1" typeahead-append-to-body="true"
 		  typeahead-wait-ms="100" id="Buyer" ng-required="!formValues.user"
 		  name="Buyer" autocomplete="off"

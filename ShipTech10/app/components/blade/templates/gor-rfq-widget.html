@@ -169,7 +169,7 @@
                                             <i ng-click="$ctrl.removeEmail($index, $ctrl.email.to)" class="fa fa-close clickable"></i>
                                             {{ toEmail.name }}
                                         </div>
-                                        <input class="typeahead form-control pull-left" uib-typeahead="to as to.name for to in $ctrl.email.toList | filter:$viewValue | limitTo:5" ng-model="$ctrl.toEmail" typeahead-on-select="$ctrl.addEmail($ctrl.toEmail, $ctrl.email.to)" ng-blur="$ctrl.clearEmailInputs()" style="max-width:100px; border: none"/>
+                                        <input class="typeahead form-control pull-left" uib-typeahead="to as to.name for to in $ctrl.email.toList | typeaheadCustomFilter:$viewValue:'name'" ng-model="$ctrl.toEmail" typeahead-on-select="$ctrl.addEmail($ctrl.toEmail, $ctrl.email.to)" ng-blur="$ctrl.clearEmailInputs()" style="max-width:100px; border: none"/>
                                     </div>
 
                                 </div>
@@ -185,7 +185,7 @@
                                             <i ng-click="$ctrl.removeEmail($index, $ctrl.email.cc)" class="fa fa-close clickable"></i>
                                             {{ ccEmail.name }}
                                         </div>
-                                        <input class="typeahead form-control pull-left" uib-typeahead="cc as cc.name for cc in $ctrl.email.ccList | filter:$viewValue | limitTo:5" ng-model="$ctrl.ccEmail" typeahead-on-select="$ctrl.addEmail($ctrl.ccEmail, $ctrl.email.cc)" ng-blur="$ctrl.clearEmailInputs()" style="max-width:100px; border: none"/>
+                                        <input class="typeahead form-control pull-left" uib-typeahead="cc as cc.name for cc in $ctrl.email.ccList | typeaheadCustomFilter:$viewValue:'name'" ng-model="$ctrl.ccEmail" typeahead-on-select="$ctrl.addEmail($ctrl.ccEmail, $ctrl.email.cc)" ng-blur="$ctrl.clearEmailInputs()" style="max-width:100px; border: none"/>
                                     </div>
                                 </div>
                             </div>
