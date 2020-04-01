@@ -736,6 +736,17 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             // ====== /SETTINGS ======
             // ====== FORMATTERS ======
             {
+            	var plain_text = function(cellValue, options, rowObject) {
+            		if (typeof(cellValue) == "string") {
+            			if (cellValue) {
+		            		return cellValue.replace(/<.*?>/g, '');
+            			}
+            		}
+            		if (cellValue == null) {
+            			return "";
+            		}
+            		return cellValue;
+            	}
                 var composed = function(cellValue, options, rowObject) {
                     if (!options.colModel.secondUnit) return;
                     if (!rowObject[options.colModel.secondUnit]) return;

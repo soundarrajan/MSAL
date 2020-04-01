@@ -8,7 +8,7 @@ angular.module('shiptech').service('dataProcessors', [ '$filtersData', '$state',
                 colmodel[key].cellFormat = obj.formatter;
                 colmodel[key].formatter = CLC.get_formatter(obj.formatter);
             } else {
-                obj.formatter = CLC.get_formatter('generalCell');
+                obj.formatter = CLC.get_formatter('plain_text');
             }
             if (obj.widthOrg) {
                 colmodel[key].width = obj.width;
@@ -232,6 +232,7 @@ angular.module('shiptech').service('dataProcessors', [ '$filtersData', '$state',
             		}
             	}
             });
+
 
             /** ********
             End Change formatters for quantity price and amount based on BE columnType
