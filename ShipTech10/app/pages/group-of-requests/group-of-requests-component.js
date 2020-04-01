@@ -7264,13 +7264,19 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
 	            $('#negotiation-table-fixed-container').css('overflow', 'auto');
         	},500)
         };
+
         ctrl.keyPress = function() {
             $('#negotiation-table-fixed-container').css('overflow', 'initial');
         };
-
-        $(document).on('keyup', '.typeahead', (ev, suggestion) => {
+        $(document).on('click blur', (ev, suggestion) => {
+        	if ($(ev.target).attr("uib-typeahead")) {
+        		return false;
+        	}
+        	$('#negotiation-table-fixed-container').css('overflow', 'auto');
+        });
+        $(document).on('keyup', 'input[uib-typeahead]', (ev, suggestion) => {
         	if ($('[uib-typeahead-popup]').is(':visible')) {
-        		if ($(ev.target).attr('typeahead-append-to') == '\'body\'') {
+        		if ($(ev.target).attr('typeahead-append-to') == 'body') {
                     $('[uib-typeahead-popup]').css('top', '');
                     $('[uib-typeahead-popup]').css('left', '');
                     var parentZoom = 1;

@@ -153,7 +153,7 @@
                                 <option value="{{$ctrl.SELLER_SORT_ORDER.ALPHABET}}">Alphabet</option>
                             </select>
                             <div class="input-group">
-                                <input  ng-disabled="!$ctrl.sellerTypesAreSelected" ng-model="$ctrl.newSeller[0]" placeholder="Seller" uib-typeahead="seller as seller.name for seller in $ctrl.sellerAutocompleteList  | typeaheadCustomFilter:$viewValue:'name'" class="form-control" typeahead-on-select="$ctrl.addSellerToAllLocations($ctrl.newSeller[0].id, $ctrl.locations)" ng-click="$ctrl.setLookupInput(null)" typeahead-editable="false" >
+                                <input  ng-disabled="!$ctrl.sellerTypesAreSelected" ng-model="$ctrl.newSeller[0]" placeholder="Seller" uib-typeahead="seller as seller.name for seller in $ctrl.sellerAutocompleteList  | typeaheadCustomFilter:$viewValue:'name'" class="form-control" typeahead-on-select="$ctrl.addSellerToAllLocations($ctrl.newSeller[0].id, $ctrl.locations)" ng-click="$ctrl.setLookupInput(null)" typeahead-editable="false" ng-keypress="$ctrl.keyPress()">
 
                                 <span ng-controller="Controller_Master as CM" class="input-group-addon {{$ctrl.sellerTypesAreSelected ? '' : 'disabled'}}" ng-click="$ctrl.setLookupInput(null); triggerModal('general', 'procurement_requestcounterpartytypes', 'seller', 'seller','','', '', $ctrl.sellerTypeIds)">
                                     <i class="fa fa-search"></i>
@@ -516,7 +516,7 @@
                         uib-typeahead="seller as seller.name for seller in $ctrl.physicalSupplierList  | typeaheadCustomFilter:$viewValue:'name'"
                         ng-blur="$ctrl.updatePhysicalSupplierForSellers(seller, seller.offers[0].physicalSupplierCounterparty, location, $event);" 
                         ng-click="$ctrl.setLookupInput(null); seller.oldPhysicalSupplier = seller.offers[0].physicalSupplierCounterparty"
-                        typeahead-editable="false"
+                        typeahead-editable="false"                        
                         ng-disabled="$ctrl.disablePhysicalSupplierLookup"
                         style="width: calc(100% - 40px);" 
                         ng-keypress="$ctrl.keyPress()" >
@@ -539,6 +539,7 @@
                         typeahead-on-select="$ctrl.updateBrokerForSellers(seller, seller.offers[0].brokerCounterparty, location)"
                         ng-click="$ctrl.setLookupInput(null); seller.oldBroker = seller.offers[0].brokerCounterparty"
                         typeahead-editable="false"
+                        ng-keypress="$ctrl.keyPress()"
                         ng-disabled="$ctrl.disableBrokerLookup || !seller.id"
                         style="width: calc(100% - 40px);">
      
@@ -561,6 +562,7 @@
                         typeahead-on-select="$ctrl.updateContactForSellers(seller, seller.offers[0].contactCounterparty, location)"
                         ng-click="$ctrl.setLookupInput(null); seller.oldContact = seller.offers[0].contactCounterparty"
                         typeahead-editable="false"
+                        ng-keypress="$ctrl.keyPress()"
                         ng-disabled="$ctrl.disableContactLookup"
                         style="width: calc(100% - 40px);">
                         <span class="input-group-addon"  ng-class="{'disabled': $ctrl.disableContactLookup}" style="line-height: 20px;" ng-click="$ctrl.openContactCounterpartyModal(seller,location); seller.oldContact = seller.offers[0].contactCounterparty">
