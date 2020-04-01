@@ -2569,7 +2569,7 @@ APP_MASTERS.controller('Controller_Master', [
             }
             return true;
         };
-        vm.getOptions = function(field, fromListsCache) {
+        vm.getOptions = function(field, fromListsCache) {        
             // Move this somewhere nice and warm
             var objectByString = function(obj, string) {
                 if (string.includes('.')) {
@@ -2581,7 +2581,7 @@ APP_MASTERS.controller('Controller_Master', [
                 if (field == 'agreementType') {
                     field = { name: 'AgreementType' };
                 }
-
+                
                 if (field) {
                     if (!$scope.options) {
                         $scope.options = [];
@@ -2654,6 +2654,15 @@ APP_MASTERS.controller('Controller_Master', [
                             }
                         }
                     }
+
+					if (field.Name == "DefaultSpecGroup" && vm.entity_id && vm.screen_id == "product" && vm.app_id == "masters") {
+						field.Filter = [
+                            {
+                                ColumnName: 'ProductId',
+                                Value: vm.entity_id
+                            },
+                        ]; 
+					}                	
 
                     if (!$scope.optionsCache) {
                         $scope.optionsCache = {};

@@ -1354,6 +1354,10 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                     ];
                 }
                 if (filter == 'filter__productDefaultSpec') {
+                	if (!$scope.formValues.id && vm.screen_id == "product" && vm.app_id == "masters") {
+                		toastr.warning("You can select Default Spec Group only after saving the product");	
+                		return false;
+                	}
                     $scope.modal.filters = [
                         {
                             ColumnName: 'ProductId',
