@@ -5467,7 +5467,7 @@ APP_API.factory('$Api_Service', [
                         url = api_map[param.app][param.screen].entity.list.endpoint;
                     }
 
-                    if (param.params.modal && param.screen == 'currencylist' && window.location.href.indexOf('masters/currency') != -1) {
+                    if (param.params.modal && param.screen == 'currencylist' &&  window.location.href.indexOf('/masters/currency') != -1) {
                         url = url.replace('listMasters', 'codesList'); 
                     } else if (param.params.modal) {
                         url = url.replace('listMasters', 'list');
