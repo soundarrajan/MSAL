@@ -1,12 +1,13 @@
-﻿commit 6c95e0391b7ae5b3ee2885fff1aaeb9869fb1a67
+﻿commit a6137510811ab0eeab2a2ee187eebe3e766591d6
 Author: Sergiu.vasui <Sergiu.vasui@24software.ro>
-Date:   Thu Apr 2 17:25:08 2020 +0000
+Date:   Fri Apr 3 14:53:32 2020 +0000
 
-    Merged PR 3579: #22775
+    Merged PR 3606: QC bug-fixing
     
-    #22775
-    Fixed above issue
+    #22782
+    #22783
+    Fixed above issues
     
-    Related work items: #22775
+    Related work items: #22782, #22783
 
 branch: master

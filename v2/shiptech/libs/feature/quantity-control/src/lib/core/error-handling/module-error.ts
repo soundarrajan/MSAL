@@ -61,6 +61,13 @@ export class ModuleError<T = any> extends AppError<T> {
     message: 'Update Vessel to Watch has failed. Please try again later.'
   });
 
+  static EventNotesShouldNotBeEmpty = new ModuleError({
+    treatAsWarning: true,
+    code: ErrorCode.EventNotesAreRequired,
+    message:
+      'Events note should not be blank. Please fill in the event note or remove it.'
+  });
+
   constructor(appError: Partial<IAppError> = {}) {
     super(appError);
   }
