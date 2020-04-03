@@ -64,10 +64,7 @@ import {
   QcVesselResponseSludgeStateModel
 } from '../store/report/details/qc-vessel-responses.state';
 import { values } from 'lodash';
-import {
-  IQcEventLogAddedListItemDto,
-  IQcEventLogDeletedListItemDto
-} from './api/dto/qc-event-log-list-item.dto';
+import { IQcEventLogDeletedListItemDto } from './api/dto/qc-event-log-list-item.dto';
 import {
   QcRevertVerifyReportAction,
   QcRevertVerifyReportFailedAction,
@@ -383,6 +380,22 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
 
     if (!this.reportDetailsState.portCall)
       return throwError(ModuleError.PortCallIsRequired);
+
+    if (this.reportDetailsState.eventsLog.items.length) {
+      const eventsToBeChecked = this.reportDetailsState.eventsLog.itemsById;
+      let error = false;
+      Object.keys(eventsToBeChecked).filter(item => {
+        if (
+          eventsToBeChecked[item].eventDetails.replace(/\s/g, '') === '' &&
+          !error
+        ) {
+          error = true;
+        }
+      });
+      if (error) {
+        return throwError(ModuleError.EventNotesShouldNotBeEmpty);
+      }
+    }
 
     return this.apiDispatch(
       () => {
