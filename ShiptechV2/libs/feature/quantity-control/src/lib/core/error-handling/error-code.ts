@@ -17,5 +17,6 @@ export enum ErrorCode {
 
   PortCallIsRequired = 3201,
   VesselIsRequired = 3202,
-  UpdateVesselToWatch = 3203
+  UpdateVesselToWatch = 3203,
+  EventNotesAreRequired = 3204
 }
