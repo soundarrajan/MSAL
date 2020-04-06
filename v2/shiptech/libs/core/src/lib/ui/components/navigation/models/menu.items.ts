@@ -520,12 +520,12 @@ export const BASE_MENU: KeyedMenuItems = {
         items: {
           schedule_dashboard_calendar: {
             label: 'Schedule Dashboard Calendar',
-            url: "openInNewTab('state','DASHBOARD_CALENDAR",
+            url: '/#/schedule-dashboard-table',
             target: '_blank'
           },
           schedule_dashboard_table: {
             label: 'Schedule Dashboard Table',
-            url: '/#/schedule_dashboard_table',
+            url: '/#/schedule-dashboard-calendar',
             target: '_blank'
           }
         }
@@ -535,12 +535,12 @@ export const BASE_MENU: KeyedMenuItems = {
         items: {
           request_list: {
             label: 'Request List',
-            url: '/#/all_requests_table',
+            url: '/#/all-requests-table',
             target: '_blank'
           },
           new_request: {
             label: 'New Request',
-            url: '/#/new_request',
+            url: '/#/new-request',
             target: '_blank'
           }
         }
@@ -550,24 +550,24 @@ export const BASE_MENU: KeyedMenuItems = {
         items: {
           order_list: {
             label: 'Order List',
-            url: '/#/order_list',
+            url: '/#/order-list',
             target: '_blank'
           },
           new_order: {
             label: 'New Order',
-            url: '/#/new_order',
+            url: '/#/new-order',
             target: '_blank'
           },
           sap_export: {
             label: 'SAP Export',
-            url: '/#/sap_export',
+            url: '/#/sap-export',
             target: '_blank'
           }
         }
       },
       contract_planning: {
         label: 'Contract Planning',
-        url: '/#/contract_planning/',
+        url: '/#/contract-planning/',
         target: '_blank'
       }
     }

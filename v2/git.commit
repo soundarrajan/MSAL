@@ -1,13 +1,11 @@
-﻿commit a6137510811ab0eeab2a2ee187eebe3e766591d6
-Author: Sergiu.vasui <Sergiu.vasui@24software.ro>
-Date:   Fri Apr 3 14:53:32 2020 +0000
+﻿commit 35d90943437d8804ac51f1a6e8dc9a7dcaf2ea97
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Mon Apr 6 11:05:30 2020 +0000
 
-    Merged PR 3606: QC bug-fixing
+    Merged PR 3624: Changed url for few pages from application
     
-    #22782
-    #22783
-    Fixed above issues
+    Changed url for few pages from application
     
-    Related work items: #22782, #22783
+    Related work items: #22791
 
 branch: master
