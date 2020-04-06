@@ -1789,9 +1789,19 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                     }
                     if (!$rootScope.reloadPage) {
                         $.each($scope.dtMasterSource.applyFor, (key, val) => {
-                            $scope.getUomConversionFactor(val.productId, val.finalQuantityAmount, val.finalQuantityAmountUomId, $tenantSettings.tenantFormats.uom.id, (response) => {
-                                val.convertedFinalQuantityAmount = response;
+                            var product = _.find($scope.formValues.productDetails, function(object) {
+                                return object.product.id == val.productId;
                             });
+                            if (product && product.contractProductId) {
+                                $scope.getUomConversionFactor(val.productId, val.finalQuantityAmount, val.finalQuantityAmountUomId, $tenantSettings.tenantFormats.uom.id, product.contractProductId, (response) => {
+                                     val.convertedFinalQuantityAmount = response;
+                                });
+                            } else {
+                                $scope.getUomConversionFactor(val.productId, val.finalQuantityAmount, val.finalQuantityAmountUomId, $tenantSettings.tenantFormats.uom.id, (response) => {
+                                     val.convertedFinalQuantityAmount = response;
+                                });
+                            }
+                           
                         });
                     }
                 });
@@ -2475,7 +2485,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                     return;
                 };
                 console.log('called getUomConversionFactor with params:', product.product.id, product.invoiceRateUom.id, product.invoiceQuantityUom.id);
-                $scope.getUomConversionFactor(product.product.id, 1, product.invoiceRateUom.id, product.invoiceQuantityUom.id, (response) => {
+                $scope.getUomConversionFactor(product.product.id, 1, product.invoiceRateUom.id, product.invoiceQuantityUom.id, product.contractProductId, (response) => {
                 	var conversionFactor = response;
                 	if (false && formValues.productDetails[currentRowIndex].sapInvoiceAmount) {
 	                    formValues.productDetails[currentRowIndex].invoiceAmount = formValues.productDetails[currentRowIndex].sapInvoiceAmount;
@@ -3001,7 +3011,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
         $scope.modalInstance.close();
     };
 
-    $scope.getUomConversionFactor = function(ProductId, Quantity, FromUomId, ToUomId, callback) {
+    $scope.getUomConversionFactor = function(ProductId, Quantity, FromUomId, ToUomId, contractProductId, callback) {
     	var productId = ProductId;
     	var quantity = Quantity;
     	var fromUomId = FromUomId;
@@ -3011,7 +3021,9 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                 ProductId: productId,
                 Quantity: quantity,
                 FromUomId: fromUomId,
-                ToUomId: toUomId
+                ToUomId: toUomId,
+                ContractProductId: contractProductId ? contractProductId : null
+
             }
         };
         if (!productId || !toUomId || !fromUomId) {

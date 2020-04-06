@@ -7357,7 +7357,7 @@ APP_MASTERS.controller('Controller_Master', [
 	                    return;
 	                };
 	                console.log('called getUomConversionFactor with params:', product.product.id, product.invoiceRateUom.id, product.invoiceQuantityUom.id);
-	                $scope.getUomConversionFactor(product.product.id, 1, product.invoiceRateUom.id, product.invoiceQuantityUom.id, (response) => {
+	                $scope.getUomConversionFactor(product.product.id, 1, product.invoiceRateUom.id, product.invoiceQuantityUom.id, product.contractProductId, (response) => {
                         var conversionFactor = response;
 	                	if (false && formValues.productDetails[currentRowIndex].sapInvoiceAmount) {
 		                    formValues.productDetails[currentRowIndex].invoiceAmount = formValues.productDetails[currentRowIndex].sapInvoiceAmount;
@@ -7452,7 +7452,7 @@ APP_MASTERS.controller('Controller_Master', [
 	                    calculateGrand(formValues);
 	                    return;
 	                }
-	                $scope.getUomConversionFactor(vm.product, 1, rateUom, quantityUom, (response) => {
+	                $scope.getUomConversionFactor(vm.product, 1, rateUom, quantityUom, 1, (response) => {
 	                    if (vm.costType) {
 	                        if (vm.costType.name == 'Unit') {
 	                            formValues.costDetails[rowIndex].invoiceAmount = response * convertDecimalSeparatorStringToNumber(vm.cost.invoiceRate) * convertDecimalSeparatorStringToNumber(vm.cost.invoiceQuantity);
@@ -7561,7 +7561,7 @@ APP_MASTERS.controller('Controller_Master', [
 		            }
 		        });
 		    };
-        $scope.getUomConversionFactor = function(ProductId, Quantity, FromUomId, ToUomId, callback) {
+        $scope.getUomConversionFactor = function(ProductId, Quantity, FromUomId, ToUomId, contractProductId, callback) {
             var productId = ProductId;
             var quantity = Quantity;
             var fromUomId = FromUomId;
@@ -7571,7 +7571,8 @@ APP_MASTERS.controller('Controller_Master', [
 	                ProductId: productId,
 	                Quantity: quantity,
 	                FromUomId: fromUomId,
-	                ToUomId: toUomId
+	                ToUomId: toUomId,
+                    ContractProductId: contractProductId ? contractProductId : null
 	            }
 	        };
 	        if (!productId || !toUomId || !fromUomId) {
