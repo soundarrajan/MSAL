@@ -1792,7 +1792,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                             var product = _.find($scope.formValues.productDetails, function(object) {
                                 return object.product.id == val.productId;
                             });
-                            if (product && product.contractProductId) {
+                            if (product) {
                                 $scope.getUomConversionFactor(val.productId, val.finalQuantityAmount, val.finalQuantityAmountUomId, $tenantSettings.tenantFormats.uom.id, product.contractProductId, (response) => {
                                      val.convertedFinalQuantityAmount = response;
                                 });
