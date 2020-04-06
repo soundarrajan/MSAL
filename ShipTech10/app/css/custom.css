@@ -99,12 +99,18 @@
             /* End Add-on Classes*/
 
             /* Main Navbar*/
+            .hoverOnPortCode {
+                z-index: 0 !important;
+            }
 
             .page-header.navbar {
                 background-color: White;
                 z-index: 10001 !important;
             }
-
+             .page-header.navbar.hoverOnPortCode {
+                z-index: 0 !important;
+             }
+            
             .page-header.navbar .page-logo {
                 margin-top: 3px;
                 width: 150px;

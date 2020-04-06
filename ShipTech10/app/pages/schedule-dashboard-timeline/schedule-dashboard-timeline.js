@@ -159,18 +159,33 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
             var displayScheduleBasedOn = _.get(ctrl, 'scheduleDashboardConfiguration.displayScheduleBasedOn.name');
 
+            var arrayWithIndex = [];
+            var findElementInInterval = [];
             $scope.stopsGroupedByDayAndGroup = _.uniqBy(vessels, "voyageDetail.id");
             $scope.stopsGroupedByDayAndGroup = _.groupBy($scope.stopsGroupedByDayAndGroup, function(obj, key){
-            	if (obj != null) {
+                if (obj != null) {
                     var objGroupString = obj.ServiceName + ' <> ' + obj.BuyerName + ' <> ' +  obj.VesselName + ' <> ' + obj.CompanyName;
                     if (displayScheduleBasedOn === 'Delivery Date' && obj.voyageDetail.deliveryFrom) {
+                        findElementInInterval = _.find($scope.stopsGroupedByDayAndGroup, function(object) {
+                            return (object.voyageDetail.id != obj.voyageDetail.id && object.voyageDetail.deliveryFrom <= obj.voyageDetail.deliveryFrom && obj.voyageDetail.deliveryTo <= object.voyageDetail.deliveryTo);
+                        });
+                        if (findElementInInterval) {
+                            arrayWithIndex[obj.voyageDetail.id] = true;
+                        }
                         return obj.voyageDetail.deliveryFrom.split("T")[0] + ' <> ' + objGroupString;  
                     } else {
+                        findElementInInterval = _.find($scope.stopsGroupedByDayAndGroup, function(object) {
+                            return (object.voyageDetail.id != obj.voyageDetail.id && object.voyageDetail.eta <= obj.voyageDetail.eta && obj.voyageDetail.etd <= object.voyageDetail.etd);
+                        });
+                        if (findElementInInterval) {
+                            arrayWithIndex[obj.voyageDetail.id] = true;
+                        }
                         return obj.voyageDetail.eta.split("T")[0] + ' <> ' + objGroupString;
                     }
                 }
 
             });
+
             var voyageDaysWithSludge = [];
 			$.each(vessels, function(k,detail){
 				if (detail) {
@@ -1362,6 +1377,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 on('show.bs.popover', function (event) {
                 });
                 $(this).popover('toggle');
+                $('.breadcrumbs-container').css('z-index', '0');
+                $('.page-header.navbar').addClass("hoverOnPortCode");
             }
         });
 
