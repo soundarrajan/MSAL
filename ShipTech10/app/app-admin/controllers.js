@@ -383,26 +383,26 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
         // $.each($scope.formValues.delivery.finalQtyPrecedenceLogicRules, function(key, value) {
         //     $scope.formValues.temp.finalQtyPrecedence['finalOrd_' + value.ord] = value.finalQtyPick;
         // })
-        setTimeout(() => {
-            $.each($scope.deliveryPrecedenceRules, (_, rule) => {
-                let selects = $(`.admin-precedence-select[name^=${ rule.dataName }]`);
-                $.each(selects, function() {
-                    var dataOrd = $(this).attr('data-ord');
-                    var item = $(this);
-                    for (let k1 in $scope.formValues.temp[rule.tempMapping]) {
-                        var objIdx = k1.split('_')[1];
-                        if (objIdx < dataOrd) {
-                            var alreadySelected = $scope.formValues.temp[rule.tempMapping][k1].id;
-                            let selectOptions = item.children('option');
-                            $.each(selectOptions, (k2, v2) => {
-                                if ($(v2).attr('value') == alreadySelected) {
-                                    $(v2).attr('disabled', true);
-                                }
-                            });
-                        }
+       
+        $.each($scope.deliveryPrecedenceRules, (_, rule) => {
+            let selects = $(`.admin-precedence-select[name^=${ rule.dataName }]`);
+            $.each(selects, function() {
+                var dataOrd = $(this).attr('data-ord');
+                var item = $(this);
+                for (let k1 in $scope.formValues.temp[rule.tempMapping]) {
+                    var objIdx = k1.split('_')[1];
+                    if (objIdx < dataOrd) {
+                        var alreadySelected = $scope.formValues.temp[rule.tempMapping][k1].id;
+                        let selectOptions = item.children('option');
+                        $.each(selectOptions, (k2, v2) => {
+                            if ($(v2).attr('value') == alreadySelected) {
+                                $(v2).attr('disabled', true);
+                            }
+                        });
                     }
-                });
+                }
             });
+        });
             // buyerSelects = $(".admin-precedence-select[name^=buyer-ord-]");
             // $.each(buyerSelects, function(key, value) {
             //     dataOrd = $(this).attr("data-ord");
@@ -456,7 +456,6 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
             //         }
             //     }
             // })
-        }, 1000);
     };
 
 
