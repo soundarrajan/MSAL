@@ -2391,6 +2391,11 @@ APP_MASTERS.controller('Controller_Master', [
 	                	 $scope.$apply();
                 	}, 500);
                 }
+
+                if (vm.screen_id == 'claimtype' && id == 'name') {
+                	$scope.formValues.displayName = $scope.formValues.name;
+                }
+
                 if (vm.screen_id == 'vessel' && id == 'vesselType') {
                 	setTimeout(() => {
                 		if ($scope.formValues.usingVesselTypeRob) {
