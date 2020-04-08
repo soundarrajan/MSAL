@@ -161,25 +161,21 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
             var arrayWithIndex = [];
             var findElementInInterval = [];
+
+            vessels = _.orderBy(vessels, function(obj){
+	            if (displayScheduleBasedOn === 'Delivery Date') {
+	            	return obj.voyageDetail.deliveryFrom;
+	            } else {
+	            	return obj.voyageDetail.eta;
+	            }
+            }, 'asc');
             $scope.stopsGroupedByDayAndGroup = _.uniqBy(vessels, "voyageDetail.id");
             $scope.stopsGroupedByDayAndGroup = _.groupBy($scope.stopsGroupedByDayAndGroup, function(obj, key){
-                if (obj != null) {
+            	if (obj != null) {
                     var objGroupString = obj.ServiceName + ' <> ' + obj.BuyerName + ' <> ' +  obj.VesselName + ' <> ' + obj.CompanyName;
                     if (displayScheduleBasedOn === 'Delivery Date' && obj.voyageDetail.deliveryFrom) {
-                        findElementInInterval = _.find($scope.stopsGroupedByDayAndGroup, function(object) {
-                            return (object.voyageDetail.id != obj.voyageDetail.id && object.voyageDetail.deliveryFrom <= obj.voyageDetail.deliveryFrom && obj.voyageDetail.deliveryTo <= object.voyageDetail.deliveryTo);
-                        });
-                        if (findElementInInterval) {
-                            arrayWithIndex[obj.voyageDetail.id] = true;
-                        }
                         return obj.voyageDetail.deliveryFrom.split("T")[0] + ' <> ' + objGroupString;  
                     } else {
-                        findElementInInterval = _.find($scope.stopsGroupedByDayAndGroup, function(object) {
-                            return (object.voyageDetail.id != obj.voyageDetail.id && object.voyageDetail.eta <= obj.voyageDetail.eta && obj.voyageDetail.etd <= object.voyageDetail.etd);
-                        });
-                        if (findElementInInterval) {
-                            arrayWithIndex[obj.voyageDetail.id] = true;
-                        }
                         return obj.voyageDetail.eta.split("T")[0] + ' <> ' + objGroupString;
                     }
                 }
@@ -326,7 +322,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     content: voyageContent,
                     start: startDate,
                     end: endDate,
-                    style: 'background-color: ' + statusColor +"; color:" + getContrastYIQ(statusColor) + ( !vessels[i].voyageDetail.portStatus.id ? "; border-color: #9E9E9E" : " "  )
+                    style: 'z-index:'+ i + '; background-color: ' + statusColor +"; color:" + getContrastYIQ(statusColor) + ( !vessels[i].voyageDetail.portStatus.id ? "; border-color: #9E9E9E" : " "  )
                 };
                 
 
