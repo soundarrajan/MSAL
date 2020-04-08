@@ -2392,8 +2392,8 @@ APP_MASTERS.controller('Controller_Master', [
                 	}, 500);
                 }
 
-                if (vm.screen_id == 'claimtype' && id == 'name') {
-                	$scope.formValues.displayName = $scope.formValues.name;
+                if (vm.screen_id == 'claimtype' && id == 'displayName' && !vm.entity_id) {
+                	$scope.formValues.name = $scope.formValues.displayName;
                 }
 
                 if (vm.screen_id == 'vessel' && id == 'vesselType') {
@@ -7362,7 +7362,7 @@ APP_MASTERS.controller('Controller_Master', [
 	                    return;
 	                };
 	                console.log('called getUomConversionFactor with params:', product.product.id, product.invoiceRateUom.id, product.invoiceQuantityUom.id);
-	                $scope.getUomConversionFactor(product.product.id, 1, product.invoiceRateUom.id, product.invoiceQuantityUom.id, product.contractProductId, (response) => {
+	                $scope.getUomConversionFactor(product.product.id, 1, product.invoiceRateUom.id, product.invoiceQuantityUom.id, (response) => {
                         var conversionFactor = response;
 	                	if (false && formValues.productDetails[currentRowIndex].sapInvoiceAmount) {
 		                    formValues.productDetails[currentRowIndex].invoiceAmount = formValues.productDetails[currentRowIndex].sapInvoiceAmount;
@@ -7457,7 +7457,7 @@ APP_MASTERS.controller('Controller_Master', [
 	                    calculateGrand(formValues);
 	                    return;
 	                }
-	                $scope.getUomConversionFactor(vm.product, 1, rateUom, quantityUom, 1, (response) => {
+	                $scope.getUomConversionFactor(vm.product, 1, rateUom, quantityUom, (response) => {
 	                    if (vm.costType) {
 	                        if (vm.costType.name == 'Unit') {
 	                            formValues.costDetails[rowIndex].invoiceAmount = response * convertDecimalSeparatorStringToNumber(vm.cost.invoiceRate) * convertDecimalSeparatorStringToNumber(vm.cost.invoiceQuantity);
@@ -7566,7 +7566,7 @@ APP_MASTERS.controller('Controller_Master', [
 		            }
 		        });
 		    };
-        $scope.getUomConversionFactor = function(ProductId, Quantity, FromUomId, ToUomId, contractProductId, callback) {
+        $scope.getUomConversionFactor = function(ProductId, Quantity, FromUomId, ToUomId, callback) {
             var productId = ProductId;
             var quantity = Quantity;
             var fromUomId = FromUomId;
@@ -7576,8 +7576,7 @@ APP_MASTERS.controller('Controller_Master', [
 	                ProductId: productId,
 	                Quantity: quantity,
 	                FromUomId: fromUomId,
-	                ToUomId: toUomId,
-                    ContractProductId: contractProductId ? contractProductId : null
+	                ToUomId: toUomId
 	            }
 	        };
 	        if (!productId || !toUomId || !fromUomId) {
@@ -7966,8 +7965,7 @@ APP_MASTERS.controller('Controller_Master', [
                                 }
                             });
                         } else {
-                            var indexProduct = $scope.formValues.products[index].conversionFactors.length - 1;
-                            $scope.formValues.products[index].conversionFactors[indexProduct].isDeleted = true;
+                            $scope.formValues.products[index].conversionFactors[0].isDeleted = true;
                         }
                     }
                 } else if (allowProduct != null) {
@@ -8005,7 +8003,7 @@ APP_MASTERS.controller('Controller_Master', [
                 }
                 if ($scope.formValues.products[index].conversionFactors) {
                     if (selectedProduct) {
-                        let indexProduct = _.findLastIndex($scope.formValues.products[index].conversionFactors, (o) => {
+                        let indexProduct = _.findIndex($scope.formValues.products[index].conversionFactors, (o) => {
                             return o.product.id == selectedProduct.product.id;
                         });
                         if (indexProduct != -1) {
