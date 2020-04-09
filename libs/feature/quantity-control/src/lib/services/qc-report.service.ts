@@ -386,7 +386,8 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
       let error = false;
       Object.keys(eventsToBeChecked).filter(item => {
         if (
-          eventsToBeChecked[item].eventDetails.replace(/\s/g, '') === '' &&
+          (!eventsToBeChecked[item].eventDetails ||
+            eventsToBeChecked[item].eventDetails.replace(/\s/g, '') === '') &&
           !error
         ) {
           error = true;
