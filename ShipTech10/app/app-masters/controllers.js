@@ -7965,7 +7965,8 @@ APP_MASTERS.controller('Controller_Master', [
                                 }
                             });
                         } else {
-                            $scope.formValues.products[index].conversionFactors[0].isDeleted = true;
+                            var indexProduct = $scope.formValues.products[index].conversionFactors.length - 1;
+                            $scope.formValues.products[index].conversionFactors[indexProduct].isDeleted = true;
                         }
                     }
                 } else if (allowProduct != null) {
@@ -8003,7 +8004,7 @@ APP_MASTERS.controller('Controller_Master', [
                 }
                 if ($scope.formValues.products[index].conversionFactors) {
                     if (selectedProduct) {
-                        let indexProduct = _.findIndex($scope.formValues.products[index].conversionFactors, (o) => {
+                        let indexProduct = _.findLastIndex($scope.formValues.products[index].conversionFactors, (o) => {
                             return o.product.id == selectedProduct.product.id;
                         });
                         if (indexProduct != -1) {
