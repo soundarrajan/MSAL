@@ -1,11 +1,12 @@
-﻿commit 35d90943437d8804ac51f1a6e8dc9a7dcaf2ea97
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon Apr 6 11:05:30 2020 +0000
+﻿commit abc452bc5c6db29bac3f93d606418a0002ee7527
+Author: Sergiu.vasui <Sergiu.vasui@24software.ro>
+Date:   Thu Apr 9 10:16:12 2020 +0000
 
-    Merged PR 3624: Changed url for few pages from application
+    Merged PR 3740: #22783
     
-    Changed url for few pages from application
+    #22783
+    Fixed above issue
     
-    Related work items: #22791
+    Related work items: #22783
 
 branch: master
