@@ -1,7 +1,6 @@
-<div class="form-group st-email-input" style="margin-left: -2.5%;">
+<div class="st-email-input">
     <div class="input-group pull-left" style="width: 50%" ng-controller="Controller_Master as CM" tooltip tooltiptrigger="hover"
           data-original-title="{{MODEL_COL_FIELD.name}}">
-        <div class="input-group">           
             <input ng-model="productTypeTypeahead[rowRenderIndex]" 
                     ng-class="'colt' + col.uid" 
                     uib-typeahead="item as item.name for item in grid.appScope.fVal().options[col.colDef.cellObject.Name] | typeaheadCustomFilter:$viewValue:'name'"  
@@ -26,18 +25,18 @@
                             <i class="fa fa-plus"></i>
                         </a> 
             </span>
-        </div>
-        </div style="width: 50%; padding-left: 5px;" class="pull-left">
-            <div class="col-md-6"> 
-                <div class="bootstrap-tagsinput" ng-class="{expanded : ctrl.openList}">
-                    <span ng-show="MODEL_COL_FIELD.length" class="tag label label-info clickable st-hide-tags"  ng-click="ctrl.openList = !ctrl.openList">
-                        &hellip;
-                    </span>
-                    <span  class="email-tag" data-html="true" ng-if="value.isDeleted != true" ng-repeat="(key, value) in MODEL_COL_FIELD  track by $index" tooltip=""  ng-show="$index < 1 || ctrl.openList" data-original-title="{{value.productType.name}}" >
-                        {{value.productType.name}}
-                        <i class="fa fa-remove" ng-click="value.id == 0 ? MODEL_COL_FIELD.splice(key, 1) : MODEL_COL_FIELD[key].isDeleted = true"></i>
-                    </span>
-                </div>
-             </div>
-        </div>
+    </div>
+    </div style="width: 50%; padding-left: 5px;" multi-tags >
+        <div> 
+            <div class="bootstrap-tagsinput" ng-class="{expanded : ctrl.openList}" style="width: 50%;">
+                <span style="float: right !important; margin-right: -3%;" ng-show="MODEL_COL_FIELD.length" class="tag label label-info clickable st-hide-tags"  ng-click="ctrl.openList = !ctrl.openList">
+                    &hellip;
+                </span>
+                <span  class="email-tag" data-html="true" ng-if="value.isDeleted != true" ng-repeat="(key, value) in MODEL_COL_FIELD  track by $index" tooltip=""  ng-show="$index < 1 || ctrl.openList" data-original-title="{{value.productType.name}}" >
+                    {{value.productType.name}}
+                    <i class="fa fa-remove" ng-click="value.id == 0 ? MODEL_COL_FIELD.splice(key, 1) : MODEL_COL_FIELD[key].isDeleted = true"></i>
+                </span>
+            </div>
+         </div>
+    </div>
 </div>

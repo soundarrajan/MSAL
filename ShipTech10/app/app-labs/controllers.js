@@ -508,7 +508,11 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
         Factory_Master.verify_lab(data, (callback) => {
             if (callback.status == true) {
                 $scope.loaded = true;
-                toastr.success(callback.message);
+                if (!callback.message) {
+                    toastr.success("Operation completed successfully");
+                } else {
+                    toastr.success(callback.message);
+                }
                 $state.reload();
             } else if (callback) {
                 if (callback.message) {
