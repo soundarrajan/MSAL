@@ -2391,11 +2391,6 @@ APP_MASTERS.controller('Controller_Master', [
 	                	 $scope.$apply();
                 	}, 500);
                 }
-
-                if (vm.screen_id == 'claimtype' && id == 'displayName' && !vm.entity_id) {
-                	$scope.formValues.name = $scope.formValues.displayName;
-                }
-
                 if (vm.screen_id == 'vessel' && id == 'vesselType') {
                 	setTimeout(() => {
                 		if ($scope.formValues.usingVesselTypeRob) {
@@ -3879,21 +3874,24 @@ APP_MASTERS.controller('Controller_Master', [
                 angular.element('#FTPFileUpload').trigger('click');
             }, 1);
         };
-        $scope.uploadFiles = function(name, id, file) {
-            if (vm.entity_id > 0) {
-                let formData = new FormData();
-                formData.append('request', `{"Payload":{"Id":${ vm.entity_id }}}`);
-                if (id == 'drag') {
-                    formData.append('file', file);
+        $scope.uploadFiles = function(file) {
+            if ($state.params.entity_id > 0) {
+                var file;
+                if ($rootScope.droppedDoc) {
+                    file = $rootScope.droppedDoc;
                 } else {
-                    $.each($('#fileUpload')[0].files, (i, file) => {
-                        formData.append('file', file);
-                    });
+                    if ($('#fileUpload')[0].files[0]) {
+                        file = $('#fileUpload')[0].files[0];
+                    }
                 }
+                let formData = new FormData();
+                formData.append('request', `{"Payload":{"Id":${ $state.params.entity_id}}}`);
+                formData.append('file', file);
+
                 Factory_Master.upload_file(formData, (callback) => {
                     if (callback) {
-                        $scope.getLogo(name);
                         toastr.success(callback);
+                        $state.reload();
                     }
                 });
             } else {
@@ -4252,8 +4250,8 @@ APP_MASTERS.controller('Controller_Master', [
             );
         };
         $scope.getLogo = function(name) {
-            if (vm.entity_id > 0) {
-                Factory_Master.get_file(vm.entity_id, (callback, mime) => {
+            if ($state.params.entity_id > 0) {
+                Factory_Master.get_file($state.params.entity_id, (callback, mime) => {
                     if (callback) {
                         $scope.image = [];
                         $scope.image[name] = {};
@@ -6053,12 +6051,16 @@ APP_MASTERS.controller('Controller_Master', [
                             toastr.warning('Please select a Document Type and upload the file again');
                             return;
                         }
-                        var fileScope = angular.element($('input').parent().find('.fileNameLabel')).scope();
-                        $rootScope.droppedDoc = currentFile;
-                        fileScope.$apply(() => {
-                            fileScope.droppedDoc = currentFile;
-                        });
-                        $scope.uploadDocument('#fileUpload');
+                        if (window.location.href.indexOf("/company/") != -1) {
+                            $scope.uploadFiles();
+                        } else {
+                            var fileScope = angular.element($('input').parent().find('.fileNameLabel')).scope();
+                            $rootScope.droppedDoc = currentFile;
+                            fileScope.$apply(() => {
+                                fileScope.droppedDoc = currentFile;
+                            });
+                            $scope.uploadDocument('#fileUpload');
+                        }
                         // $("input").parent().find(".fileNameLabel").text(currentFile.name)
 
                         // var fileName = "";
@@ -7362,7 +7364,7 @@ APP_MASTERS.controller('Controller_Master', [
 	                    return;
 	                };
 	                console.log('called getUomConversionFactor with params:', product.product.id, product.invoiceRateUom.id, product.invoiceQuantityUom.id);
-	                $scope.getUomConversionFactor(product.product.id, 1, product.invoiceRateUom.id, product.invoiceQuantityUom.id, (response) => {
+	                $scope.getUomConversionFactor(product.product.id, 1, product.invoiceRateUom.id, product.invoiceQuantityUom.id, product.contractProductId, (response) => {
                         var conversionFactor = response;
 	                	if (false && formValues.productDetails[currentRowIndex].sapInvoiceAmount) {
 		                    formValues.productDetails[currentRowIndex].invoiceAmount = formValues.productDetails[currentRowIndex].sapInvoiceAmount;
@@ -7457,7 +7459,7 @@ APP_MASTERS.controller('Controller_Master', [
 	                    calculateGrand(formValues);
 	                    return;
 	                }
-	                $scope.getUomConversionFactor(vm.product, 1, rateUom, quantityUom, (response) => {
+	                $scope.getUomConversionFactor(vm.product, 1, rateUom, quantityUom, 1, (response) => {
 	                    if (vm.costType) {
 	                        if (vm.costType.name == 'Unit') {
 	                            formValues.costDetails[rowIndex].invoiceAmount = response * convertDecimalSeparatorStringToNumber(vm.cost.invoiceRate) * convertDecimalSeparatorStringToNumber(vm.cost.invoiceQuantity);
@@ -7566,7 +7568,7 @@ APP_MASTERS.controller('Controller_Master', [
 		            }
 		        });
 		    };
-        $scope.getUomConversionFactor = function(ProductId, Quantity, FromUomId, ToUomId, callback) {
+        $scope.getUomConversionFactor = function(ProductId, Quantity, FromUomId, ToUomId, contractProductId, callback) {
             var productId = ProductId;
             var quantity = Quantity;
             var fromUomId = FromUomId;
@@ -7576,7 +7578,8 @@ APP_MASTERS.controller('Controller_Master', [
 	                ProductId: productId,
 	                Quantity: quantity,
 	                FromUomId: fromUomId,
-	                ToUomId: toUomId
+	                ToUomId: toUomId,
+                    ContractProductId: contractProductId ? contractProductId : null
 	            }
 	        };
 	        if (!productId || !toUomId || !fromUomId) {

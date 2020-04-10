@@ -1,13 +1,21 @@
-<div class="form-group  form-inline " ng-init="getLogo(field.Name)" ng-click="clickUpload()">
-
-    <div class="dropzone-file-area" id="{{ field.Name }}" imagedrop  on-image-drop="uploadFiles(field.Name, 'drag',uploadedFile )">
-        <h3 class="sbold" ng-show="!image[field.Name]">
-            Drop files here or click to upload
-        </h3>
-        <input type='file' id="fileUpload" ng-model='logo' base-sixty-four-input class="hidden" data-file ng-change="uploadFiles(field.Name)"/>
-        <div style="max-height: 130px; overflow: hidden;    ">
-
-    <img ng-src="data:{{image[field.Name].type}};base64,{{ image[field.Name].stream }}"/>
+<div class="form-group  form-inline ">
+    <div class="col-sm-6" ng-init="getLogo(field.Name)" ng-click="clickUpload()">
+        <div class="dropzone-file-area" id="{{ field.Name }}" imagedrop  on-image-drop="uploadFiles(uploadedFile )">
+            <h3 class="sbold">
+                Drop files here or click to upload
+            </h3>
         </div>
+    </div>
+    <div class="col-md-6">
+        <input type='file' id="fileUpload" ng-model='logo'  class="inputfile" ng-model='droppedDoc' style="opacity: 0"/>
+        <label for="fileUpload">
+
+            <div class="col-sm-9">
+                <div class="fileNameLabel">
+                    {{ droppedDoc.name }}
+                </div>
+            </div>
+        </label>
+        <img ng-src="data:{{image[field.Name].type}};base64,{{ image[field.Name].stream }}"/>
     </div>
 </div>
