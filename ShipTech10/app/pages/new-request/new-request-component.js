@@ -627,6 +627,11 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         /* END "REQUEST COPY" FUNCTIONALITY.
         /*****************************************************************************************************/
         ctrl.goSpot = function(verifyContracts) {
+            var validActiveSpecGroupMessage = ctrl.checkInactiveSpecGroup();
+            if (validActiveSpecGroupMessage != true) {
+                toastr.error(validActiveSpecGroupMessage);
+                return;
+            }
             if (verifyContracts) {
                 console.log(ctrl.bestContractsList);
                 console.log(ctrl.checkedProducts);
@@ -822,6 +827,12 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         screenLoader.hideLoader();
                     });
                 } else {
+                    var validActiveSpecGroupMessage = ctrl.checkInactiveSpecGroup();
+                    if (validActiveSpecGroupMessage != true) {
+                        toastr.error(validActiveSpecGroupMessage);
+                        ctrl.buttonsDisabled = false;
+                        return;
+                    }   
                     screenLoader.showLoader();
                     newRequestModel.updateRequest(ctrl.request).then(
                         (responseData) => {
@@ -1928,6 +1939,11 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             });
         };
         ctrl.confirmContractSelection = function() {
+            var validActiveSpecGroupMessage = ctrl.checkInactiveSpecGroup();
+            if (validActiveSpecGroupMessage != true) {
+                toastr.error(validActiveSpecGroupMessage);
+                return;
+            } 
             ctrl.buttonsDisabled = true;
             var requestProductIds = [];
             var contractProductIds = [];
@@ -1944,6 +1960,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     contractProductIds.push(cv.contractProductId);
                     requestProductIds.push(cv.requestProductId);
                 }
+
             });
             if (errors == 0) {
                 orderModel.getExistingOrders(requestProductIds.join(',')).then(
@@ -2557,8 +2574,18 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 // show errors if needed
                 ctrl.saved = true;
                 let forms_validation = validateForms();
+                var validActiveSpecGroupMessage = ctrl.checkInactiveSpecGroup();
+               
                 if (forms_validation !== null) {
                     toastr.error(VALIDATION_MESSAGES.INVALID_FIELDS + forms_validation.join(', '));
+                    if (validActiveSpecGroupMessage != true) {
+                        toastr.error(validActiveSpecGroupMessage);
+                    }
+                    return false;
+                }
+              
+                if (validActiveSpecGroupMessage != true) {
+                    toastr.error(validActiveSpecGroupMessage);
                     return false;
                 }
                 // validate request
@@ -2614,6 +2641,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 }
             	}
         };
+    
         ctrl.checkValidQuantities = function() {
             let text = '';
             $.each(ctrl.request.locations, (key, val) => {
@@ -2637,8 +2665,57 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             }
             return true;
         };
+
+        ctrl.checkInactiveSpecGroup = function() {
+            let firstLocationWithInactiveSpecGroup = true;
+            let text = 'Please select an active spec group for product from location ';
+            var isStemmedProduct = false;
+              $.each(ctrl.request.locations, (key, val) => {
+                let firstProductWithInactiveSpecGroup = true;
+                $.each(val.products, (key2, val2) => {
+                    if (val2.productStatus) {
+                        if (val2.productStatus.name == "Stemmed") {
+                            isStemmedProduct = true;
+                        }
+                    }
+                    if (val2.specGroup != null) {
+                        var findSpecGroup = _.find($listsCache.SpecGroup, function(object) {
+                            return object.id == val2.specGroup.id;
+                        });
+
+                        if (!findSpecGroup && firstLocationWithInactiveSpecGroup) {
+                            firstLocationWithInactiveSpecGroup = false;
+                            firstProductWithInactiveSpecGroup = false;
+                            text += val.location.name + ' ';
+                            text += val2.product.name + ', ';
+                        } else if (!findSpecGroup && !firstLocationWithInactiveSpecGroup && firstProductWithInactiveSpecGroup) {
+                            text += ' and from location ' + val.location.name + ' ';
+                            text += val2.product.name + ', ';
+                            firstProductWithInactiveSpecGroup = false;
+                        } else if (!findSpecGroup) {
+                            text += val2.product.name + ', ';
+                        }
+                       
+                    }
+                });
+            });
+
+            if (text != 'Please select an active spec group for product from location ' && !isStemmedProduct) {
+                if (text[text.length - 2] == ',') {
+                    text = text.substring(0, text.length - 2);
+                }
+                return text;
+            }
+            return true;
+        }
         ctrl.sendQuestionnaire = function() {
+
         	console.log(ctrl.sendQuestionnaireEmailType);
+            var validActiveSpecGroupMessage = ctrl.checkInactiveSpecGroup();
+            if (validActiveSpecGroupMessage != true) {
+                toastr.error(validActiveSpecGroupMessage);
+                return;
+            }   
 
         	$.each(ctrl.emailSettings, (k, v) => {
 	        	if (!ctrl.request.footerSection.isRedelivery) {

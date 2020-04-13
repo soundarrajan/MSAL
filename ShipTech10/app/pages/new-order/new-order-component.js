@@ -2229,6 +2229,11 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
             }
 
             if (ctrl.orderId) {
+                var validActiveSpecGroupMessage = ctrl.checkInactiveSpecGroup();
+                if (validActiveSpecGroupMessage != true) {
+                    toastr.error(validActiveSpecGroupMessage);
+                    return;
+                }   
                 orderModel.update(payload).then((responseData) => {
                     ctrl.buttonsDisabled = false;
                     $state.go(STATE.EDIT_ORDER, {
@@ -2252,6 +2257,30 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                 });
             }
         };
+
+        ctrl.checkInactiveSpecGroup = function() {
+            let text = 'Please select an active spec group for product ';
+            $.each(ctrl.data.products, (key2, val2) => {
+                if (val2.specGroup != null) {
+                    var findSpecGroup = _.find($listsCache.SpecGroup, function(object) {
+                        return object.id == val2.specGroup.id;
+                    });
+
+                    if (!findSpecGroup) {
+                        text += val2.product.name + ', ';
+                    }
+                   
+                }
+            });
+
+            if (text != 'Please select an active spec group for product ') {
+                if (text[text.length - 2] == ',') {
+                    text = text.substring(0, text.length - 2);
+                }
+                return text;
+            }
+            return true;
+        }
 
         $scope.checkProductsHaveSameProductType = function() {
         	var currentProductTypes = _.uniqBy(ctrl.data.products, 'productType.productTypeGroup.id');
