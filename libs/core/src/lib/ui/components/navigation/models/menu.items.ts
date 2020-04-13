@@ -520,12 +520,17 @@ export const BASE_MENU: KeyedMenuItems = {
         items: {
           schedule_dashboard_calendar: {
             label: 'Schedule Dashboard Calendar',
-            url: '/#/schedule-dashboard-table',
+            url: '/#/schedule-dashboard-calendar',
             target: '_blank'
           },
           schedule_dashboard_table: {
             label: 'Schedule Dashboard Table',
-            url: '/#/schedule-dashboard-calendar',
+            url: '/#/schedule-dashboard-table',
+            target: '_blank'
+          },
+          schedule_dashboard_timeline: {
+            label: 'Schedule Dashboard Timeline',
+            url: '/#/schedule-dashboard-timeline',
             target: '_blank'
           }
         }
