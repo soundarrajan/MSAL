@@ -36,7 +36,7 @@ export class PageSizeSelectorComponent implements OnInit {
   ngOnInit(): void {}
 
   emitSelectionChange(selected: any): void {
-    this.selectedOptionChange.emit(selected);
+    this.selectedOptionChange.emit(parseInt(selected));
   }
 
   compareFn(optionOne: IPageSizeOption, optionTwo: IPageSizeOption): boolean {
