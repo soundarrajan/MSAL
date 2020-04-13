@@ -119,7 +119,7 @@ angular.module('shiptech').service('dataProcessors', [ '$filtersData', '$state',
             // if (obj.name.toLowerCase().indexOf("quantity") != -1 || obj.name.toLowerCase().indexOf("qty") != -1) {
             //     colmodel[key].formatter = CLC.get_formatter("quantity");
             // }
-            if (obj.name == 'recentEta' || obj.name == 'etd' || obj.name == 'eta' || obj.name == 'deliveryDate' || obj.name == 'etb' || obj.name == 'bunkeringEta' || obj.name == 'orderEta' || obj.name.indexOf('.eta') != -1) {
+            if (obj.name == 'recentEta' || obj.name == 'etd' || obj.name == 'eta' || obj.name == 'deliveryDate' || obj.name == 'etb' || obj.name == 'bunkeringEta' || obj.name == 'orderEta' || obj.name.indexOf('.eta') != -1 ||  obj.name.indexOf('.etd') != -1) {
                 if (colmodel[key].formatter) {
                     if (colmodel[key].formatter.name != 'formatOnlyDate') {
                         colmodel[key].formatter = CLC.get_formatter('formatDateUtc');
