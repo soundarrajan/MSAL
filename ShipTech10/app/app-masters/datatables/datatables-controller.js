@@ -3693,23 +3693,36 @@ APP_MASTERS.controller('Controller_Datatables', [
 
         $scope.initMultiselectPopover = function() {
             $('.multiselectcell-show-all-tags').popover({
-                placement: 'auto top',
-                container: 'div.page-content',
+                placement: 'bottom',
+                container: 'body',
                 html: true,
-                trigger: 'click',
+                animation: false,
+                trigger: "manual",
                 content: function() {
-				    let pop_dest = $(this).attr('data-pop');
-				    // setTimeout(function(){
-				    // 	$(".multiselectcell-show-all-tags").popover('hide');
-				    // },10000)
-				    return $(`#${pop_dest}`).html();
-                } });
-		    $(document).on('click', (e) => {
-		    	if (!$(e.target).hasClass('multiselectcell-show-all-tags') && !$(e.target).parents('.multiselectcell-show-all-tags').length > 0 && !$(e.target).parents('.popover').length > 0) {
-			    	$('.multiselectcell-show-all-tags').popover('hide');
-		    	}
-		    });
+                    let pop_dest = $(this).attr('data-pop');
+                    // setTimeout(function(){
+                    //  $(".multiselectcell-show-all-tags").popover('hide');
+                    // },10000)
+                    $(`#${pop_dest}`).removeClass("hidden");
+                    return $(`#${pop_dest}`).html();
+                }
+            }).on("mouseenter", function () {
+                var _this = this;
+                $(this).click();
+                $(this).popover("show");
+                $(".popover-content").on("mouseleave", function () {
+                    $(_this).popover('hide');
+                });
+            }).on("mouseleave", function () {
+                var _this = this;
+                setTimeout(function () {
+                    if (!$(".popover-content:hover").length) {
+                        $(_this).popover("hide");
+                    }
+                }, 300);
+            });
         };
+       
         $scope.initMultiselectPopover();
 
         $scope.addProductTypeMasterService = function(rowIdx, item, fVal) {
