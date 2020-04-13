@@ -38,8 +38,7 @@
                                 </div>
                                 <div class="col-xs-12">
                                     <span>{{ CM.app_id + '.DELIVERY_STATUS' | translate }}</span>
-
-                                    <span class="table_data delivery_result" style="background: {{ CM.getColorCodeFromLabels(delivery.deliveryStatus) }}" ng-if="delivery.deliveryStatus.displayName">{{delivery.deliveryStatus.displayName}}</span>
+                                    <span class="table_data delivery_result" style="background: {{ CM.getColorCodeFromLabels(delivery.deliveryStatus) }}; color: white;" ng-if="delivery.deliveryStatus.displayName">{{delivery.deliveryStatus.displayName}}</span>
                                 </div>
                             </div>
                         </div>
