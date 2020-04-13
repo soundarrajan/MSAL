@@ -529,6 +529,9 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                                     $scope.formValues.lastModifiedBy = null;
                                     $scope.formValues.lastModifiedByUser = null;
                                     $scope.formValues.lastModifiedOn = null;
+                                    if (vm.screen_id == 'specparameter') {
+                                    	$scope.formValues.energyParameterCode = null;
+                                    }
 
                                     $.each($scope.formValues, (key, val) => {
                                         if (val && angular.isArray(val)) {
@@ -536,7 +539,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                                                 if (val1 && val1.hasOwnProperty('isDeleted')) {
                                                 	if (vm.app_id == 'labs' && vm.screen_id == 'labresult') {
                                                 		response[key][0].id = 0;
-                                                	} else if (vm.screen_id != 'company' && vm.app_id != 'contracts' && vm.screen_id != 'contract' && vm.app_id != 'admin' && vm.screen_id != 'users' && vm.screen_id != 'marketinstrument' && vm.screen_id != 'systeminstrument') {
+                                                	} else if (vm.screen_id != 'company' && vm.app_id != 'contracts' && vm.screen_id != 'contract' && vm.app_id != 'admin' && vm.screen_id != 'users' && vm.screen_id != 'marketinstrument' && vm.screen_id != 'systeminstrument' && vm.screen_id != 'specparameter') {
                                                         response[key][key1].id = 0;
                                                     }
                                                 }
