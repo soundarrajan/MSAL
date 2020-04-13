@@ -3078,7 +3078,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                     }
                 });
             }
-            if (product.uniqueIdUI) {
+            if (product.uniqueIdUI && !currentProduct.id) {
                 if (_.has(currentProduct, 'product.name')) {
                     toastr.info(`Please consider changing any additional cost that is applicable for ${ currentProduct.product.name } before removing the product`);
                 }
