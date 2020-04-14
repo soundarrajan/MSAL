@@ -2576,18 +2576,15 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 let forms_validation = validateForms();
                 var validActiveSpecGroupMessage = ctrl.checkInactiveSpecGroup();
                
-                if (forms_validation !== null) {
-                    toastr.error(VALIDATION_MESSAGES.INVALID_FIELDS + forms_validation.join(', '));
-                    if (validActiveSpecGroupMessage != true) {
-                        toastr.error(validActiveSpecGroupMessage);
-                    }
-                    return false;
-                }
-              
                 if (validActiveSpecGroupMessage != true) {
                     toastr.error(validActiveSpecGroupMessage);
                     return false;
                 }
+                if (forms_validation !== null) {
+                    toastr.error(VALIDATION_MESSAGES.INVALID_FIELDS + forms_validation.join(', '));
+                    return false;
+                }
+              
                 // validate request
                 screenLoader.showLoader();
                 newRequestModel.validate(ctrl.request).then(
@@ -2668,9 +2665,9 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 
         ctrl.checkInactiveSpecGroup = function() {
             let firstLocationWithInactiveSpecGroup = true;
-            let text = 'Please select an active spec group for product from location ';
+            var specGroupErrors = []; 
             var isStemmedProduct = false;
-              $.each(ctrl.request.locations, (key, val) => {
+            $.each(ctrl.request.locations, (key, val) => {
                 let firstProductWithInactiveSpecGroup = true;
                 $.each(val.products, (key2, val2) => {
                     if (val2.productStatus) {
@@ -2682,28 +2679,19 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         var findSpecGroup = _.find($listsCache.SpecGroup, function(object) {
                             return object.id == val2.specGroup.id;
                         });
-
-                        if (!findSpecGroup && firstLocationWithInactiveSpecGroup) {
-                            firstLocationWithInactiveSpecGroup = false;
-                            firstProductWithInactiveSpecGroup = false;
-                            text += val.location.name + ' ';
-                            text += val2.product.name + ', ';
-                        } else if (!findSpecGroup && !firstLocationWithInactiveSpecGroup && firstProductWithInactiveSpecGroup) {
-                            text += ' and from location ' + val.location.name + ' ';
-                            text += val2.product.name + ', ';
-                            firstProductWithInactiveSpecGroup = false;
-                        } else if (!findSpecGroup) {
-                            text += val2.product.name + ', ';
+                        if (val2.specGroup.isDeleted) {
+                        	specGroupErrors.push(`Spec Group for "`+val2.product.name+`" from ` + val.location.name + ` is invalid.`);
                         }
-                       
+                    } else {
+                    	if (val2.product && ctrl.request.id) {
+	                    	specGroupErrors.push(`Please select a specGroup for "`+val2.product.name+`" from ` + val.location.name + `.`);
+                    	}
                     }
                 });
             });
 
-            if (text != 'Please select an active spec group for product from location ' && !isStemmedProduct) {
-                if (text[text.length - 2] == ',') {
-                    text = text.substring(0, text.length - 2);
-                }
+            if (specGroupErrors.length > 0 && !isStemmedProduct) {
+            	text = specGroupErrors.join("<br>");
                 return text;
             }
             return true;
