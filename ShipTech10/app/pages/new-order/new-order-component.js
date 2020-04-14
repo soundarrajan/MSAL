@@ -304,7 +304,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                 },
                 {
                     ColumnName: 'OrderProductUomId',
-                    Value: product.priceUom ? product.priceUom.id : null
+                    Value: product.quantityUom ? product.quantityUom.id : null
                 },
                 {
                     ColumnName: 'SellerId',
@@ -338,6 +338,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
 
                     // check if options available
                     if(callback.length) {
+                    	$.each(callback, function(k,v){
+                    		v.name = v.contract.name;
+                    	})
                         ctrl.orderContractOptions[product.product.id] = angular.copy(callback);
                     }else{
                         ctrl.orderContractOptions[product.product.id] = [ {
@@ -1389,7 +1392,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                 product = server_data.payload;
                 var getContractOptionParam = { product: product };
                 if (typeof(index) != 'undefined' ) {
-                	getContractOptionParam.priceUom = ctrl.data.products[index].priceUom;
+                	getContractOptionParam.quantityUom = ctrl.data.products[index].quantityUom;
                     	ctrl.data.products[index].contract = null;
                     	ctrl.data.products[index].contractProductId = null;
                     	ctrl.data.products[index].contractId = null;
@@ -1419,8 +1422,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                     ctrl.lookupField.tempProduct = ctrl.lookupField.product;
                     ctrl.getSpecGroups(ctrl.lookupField);
 	                getContractOptionParam = { product: product }
-	                if (!getContractOptionParam.priceUom) {
-	                	getContractOptionParam.priceUom = ctrl.data.products[index].priceUom;
+	                if (!getContractOptionParam.quantityUom) {
+	                	getContractOptionParam.quantityUom = ctrl.data.products[index].quantityUom;
 	                }
                     ctrl.getOrderContractOptions(getContractOptionParam);
 
@@ -1576,6 +1579,19 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
             productUomChg(product);
             ctrl.getAllOrderContractOptions();
         };
+
+        ctrl.resetContractData = function(productIndex){
+        	ctrl.data.products[productIndex].contract = null;
+        	ctrl.data.products[productIndex].contractProductId = null;
+        	ctrl.data.products[productIndex].contractId = null;
+        	ctrl.data.products[productIndex].formula = null;
+        	ctrl.data.products[productIndex].price = null;
+			ctrl.data.products[productIndex].agreementType = null;
+			ctrl.data.products[productIndex].physicalSupplier = null;
+			ctrl.data.products[productIndex].pricingType = null;
+			ctrl.data.products[productIndex].formulaDescription = null;
+			ctrl.data.products[productIndex].changedOnConfirmedOrder = true;
+        }
 
         function productUomChg(product) {
             // console.log("__________ productUomChg________", product);
