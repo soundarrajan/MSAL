@@ -1531,7 +1531,8 @@ Number(function() {
     APP_GENERAL_COMPONENTS.directive('generalHeader', [
         '$templateRequest',
         '$compile',
-        function($templateRequest, $compile) {
+        '$rootScope',
+        function($templateRequest, $compile, $rootScope) {
             return {
                 restrict: 'E',
                 controller: 'Controller_General_Header as GH',
@@ -1540,6 +1541,7 @@ Number(function() {
                     color: '='
                 },
                 link: function(scope, element, attrs) {
+                	console.log($rootScope.adminConfiguration);
                     // Load Template
                     $templateRequest('app-general-components/views/general_header.html').then((html) => {
                         element.append($compile(html)(scope));

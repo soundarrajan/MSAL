@@ -3749,7 +3749,8 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
     "$filter",
     "$filtersData",
     "$timeout",
-    function($rootScope, $scope, $controller, $Api_Service, Factory_General_Components, Factory_Master, $state, $location, $compile, uiApiModel, $filter, $filtersData, $timeout) {
+    "$tenantConfiguration",
+    function($rootScope, $scope, $controller, $Api_Service, Factory_General_Components, Factory_Master, $state, $location, $compile, uiApiModel, $filter, $filtersData, $timeout, $tenantConfiguration) {
         var vm = this;
         // params
         $controller("Controller_Master", {
@@ -3763,6 +3764,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                 } 
             }
         });
+
         setTimeout(function() {
             console.log("$rootScope", $rootScope.formValues);
             console.log("$scope", $scope.formValues);
@@ -3778,6 +3780,17 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
         $scope.entity_id = $state.params.entity_id;
         vm.general_header_config = "";
         $scope.allSections = [];
+        console.log($tenantConfiguration);
+        vm.adminConfiguration = {
+			"contract" : $tenantConfiguration.contractConfiguration,
+			"email" : $tenantConfiguration.emailConfiguration,
+			"general" : $tenantConfiguration.generalConfiguration,
+			"procurement" : $tenantConfiguration.procurementConfiguration,
+		    "schedule" : $tenantConfiguration.scheduleDashboardConfiguration,
+			"delivery" : $tenantConfiguration.deliveryConfiguration,
+			"invoice" : $tenantConfiguration.invoiceConfiguration,
+			"report" : $tenantConfiguration.reportConfiguration,        	
+        };
         $scope.getAdminConfigurationGH = function(data) {
             vm.adminConfiguration = data;
         };
