@@ -1,11 +1,13 @@
-﻿commit c9e4a9a900a91819f8f50ab334e68b1245209305
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon Apr 13 10:30:14 2020 +0000
+﻿commit 4d9c8a44f925808848fa288eb022c052921910a4
+Author: Sergiu.vasui <Sergiu.vasui@24software.ro>
+Date:   Wed Apr 15 09:37:03 2020 +0000
 
-    Merged PR 3765: Added Schedule Dashboard Timeline in navigation
+    Merged PR 3793: Fixed QC bugs
     
-    Added Schedule Dashboard Timeline in navigation
+    #23082
+    #23060
+    Fixed above issues
     
-    Related work items: #22791
+    Related work items: #23060, #23082
 
 branch: master

@@ -28,7 +28,7 @@ export enum QcSurveyHistoryListColumns {
 
 export enum QcSurveyHistoryListColumnsLabels {
   portCallId = 'Call ID',
-  portName = 'Port call',
+  portName = 'Port',
   vesselName = 'Vessel',
   surveyDate = 'Survey Date',
   surveyStatus = 'Survey Status',
