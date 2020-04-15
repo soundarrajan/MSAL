@@ -349,6 +349,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     headerName: QcSurveyHistoryListColumnsLabels.isVerifiedSludgeQty,
     colId: QcSurveyHistoryListColumns.isVerifiedSludgeQty,
     field: model('isVerifiedSludgeQty'),
+    cellRendererFramework: AgCellTemplateComponent,
     filter: 'agNumberColumnFilter',
     filterParams: {
       ...this.defaultColFilterParams,

@@ -23,7 +23,6 @@ export class RaiseClaimComponent implements OnInit {
 
   ngOnInit(): void {}
 
-
   raiseClaim(): void {
     const gridApi = this.gridViewModel.gridOptions.api;
     const selectedNodes = gridApi.getSelectedNodes() || [];
