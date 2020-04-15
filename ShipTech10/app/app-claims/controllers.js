@@ -330,6 +330,7 @@ APP_CLAIMS.controller('Controller_Claims', [
                 // suprascriem niste date
                 Factory_Master.get_master_entity($scope.formValues.orderDetails.order.id, 'orders', 'orders', (response) => {
                     if (response) {
+                    	$scope.formValues.orderDetails.order.name = response.name;
                     	$scope.formValues.orderDetails.orderPrice = $scope.formValues.initialOrderPrice;
                         if (response.orderDate) {
                             $scope.formValues.orderDetails.orderDate = response.orderDate;
