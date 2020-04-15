@@ -6046,7 +6046,7 @@ APP_MASTERS.controller('Controller_Master', [
 	                    // 	return;
 	                    // }
                 
-                        if (window.location.href.indexOf("/company/") != -1) {
+                        if (window.location.href.indexOf("/company/") != -1 || window.location.href.indexOf("/pool/") != -1) {
                             $scope.uploadFiles();
                         } else {
                             var currentFile = this.files[0];
