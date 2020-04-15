@@ -1591,6 +1591,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
 			ctrl.data.products[productIndex].pricingType = null;
 			ctrl.data.products[productIndex].formulaDescription = null;
 			ctrl.data.products[productIndex].changedOnConfirmedOrder = true;
+			ctrl.getAllOrderContractOptions();
         }
 
         function productUomChg(product) {
@@ -3148,6 +3149,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
 
             let selectContract = function(idx, selection) {
                 ctrl.data.products[idx].contractProductId = selection.contractProductId;
+                ctrl.data.products[idx].priceUom = selection.uom;
                 ctrl.data.products[idx].contract = angular.copy(selection.contract);
                 ctrl.data.products[idx].price = angular.copy(selection.price);
                 ctrl.data.products[idx].formula = angular.copy(selection.formula);
