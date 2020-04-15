@@ -1126,7 +1126,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                     if (data.defaultFuelOilProduct !== null) {
                         ctrl.addProductAndSpecGroupToList(data.defaultFuelOilProduct, data.fuelOilSpecGroup, data.defaultFuelOilProductTypeId, productList);
                     }
-                    if (data.defaultFuelOilProduct !== null) {
+                    if (data.defaultDistillateProduct !== null) {
                         ctrl.addProductAndSpecGroupToList(data.defaultDistillateProduct, data.distillateSpecGroup, data.defaultDistillateProductProductTypeId, productList);
                     }
                     if (data.defaultLsfoProduct !== null) {
@@ -1134,7 +1134,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                     }
                     if (ctrl.data.products.length > 0) {
 	                    ctrl.data.products = $filter('orderBy')(ctrl.data.products, 'productType.id');
-                    }
+                    } 
                     $timeout(() => {
                         updatePageTitle();
                         updateOrderSummary();
