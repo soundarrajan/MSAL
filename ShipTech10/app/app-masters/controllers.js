@@ -6045,15 +6045,16 @@ APP_MASTERS.controller('Controller_Master', [
 	                    // if (!label) {
 	                    // 	return;
 	                    // }
-                        var currentFile = this.files[0];
-                        let documentTypeValues = this.form[1].value;
-                        if (documentTypeValues == '') {
-                            toastr.warning('Please select a Document Type and upload the file again');
-                            return;
-                        }
+                
                         if (window.location.href.indexOf("/company/") != -1) {
                             $scope.uploadFiles();
                         } else {
+                            var currentFile = this.files[0];
+                            let documentTypeValues = this.form[1].value;
+                            if (documentTypeValues == '') {
+                                toastr.warning('Please select a Document Type and upload the file again');
+                                return;
+                            }
                             var fileScope = angular.element($('input').parent().find('.fileNameLabel')).scope();
                             $rootScope.droppedDoc = currentFile;
                             fileScope.$apply(() => {
