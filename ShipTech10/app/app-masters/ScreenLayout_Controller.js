@@ -637,6 +637,11 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
 	                                        v.paymentTerm = null;
                                         });
                                     }
+                                    if (vm.app_id == 'masters' && vm.screen_id == 'vesseltype') {
+                                    	$.each($scope.formValues.robs, function(k,v){
+                                    		v.vesselTypeId = null;
+                                    	})	
+                                    }                                    
 				                    $('#header_action_verify').attr('disabled', 'disabled');
                                     toastr.success('Entity copied');
                                     $scope.$emit('formValues', $scope.formValues);
