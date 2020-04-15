@@ -73,6 +73,17 @@ export class EventsLogGridViewModel extends BaseGridViewModel
     suppressFiltersToolPanel: true,
     headerComponentFramework: AgColumnHeaderComponent,
     flex: undefined,
+    editable: false,
+    filter: false,
+    suppressMenu: true,
+    suppressAutoSize: true,
+    suppressSizeToFit: true,
+    suppressMovable: true,
+    suppressNavigable: true,
+    suppressCellFlash: false,
+    suppressPaste: true,
+    lockPosition: true,
+    lockVisible: true,
     cellRendererSelector: params =>
       params.data?.createdBy?.id ===
       this.store.selectSnapshot(UserProfileState.userId)
@@ -93,7 +104,9 @@ export class EventsLogGridViewModel extends BaseGridViewModel
         : null,
     tooltipValueGetter: params => params.valueFormatted ?? params.value,
     flex: 2,
-    minWidth: 200
+    minWidth: 200,
+    suppressColumnsToolPanel: true,
+    lockVisible: true
   };
 
   createdByCol: ITypedColDef<IQcEventsLogItemState, IDisplayLookupDto> = {

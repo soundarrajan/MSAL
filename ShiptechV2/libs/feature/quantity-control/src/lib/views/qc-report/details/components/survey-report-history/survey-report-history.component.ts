@@ -56,6 +56,14 @@ export class SurveyReportHistoryComponent implements OnInit, OnDestroy {
     this.gridViewModel.pageSize = pageSize;
   }
 
+  convertBoolToString(input: boolean): string {
+    if (input) {
+      return 'Yes';
+    } else {
+      return 'No';
+    }
+  }
+
   ngOnInit(): void {}
 
   ngOnDestroy(): void {
