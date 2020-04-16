@@ -3690,41 +3690,6 @@ APP_MASTERS.controller('Controller_Datatables', [
             });
         };
 
-
-        $scope.initMultiselectPopover = function() {
-            $('.multiselectcell-show-all-tags').popover({
-                placement: 'bottom',
-                container: 'body',
-                html: true,
-                animation: false,
-                trigger: "manual",
-                content: function() {
-                    let pop_dest = $(this).attr('data-pop');
-                    // setTimeout(function(){
-                    //  $(".multiselectcell-show-all-tags").popover('hide');
-                    // },10000)
-                    $(`#${pop_dest}`).removeClass("hidden");
-                    return $(`#${pop_dest}`).html();
-                }
-            }).on("mouseenter", function () {
-                var _this = this;
-                $(this).click();
-                $(this).popover("show");
-                $(".popover-content").on("mouseleave", function () {
-                    $(_this).popover('hide');
-                });
-            }).on("mouseleave", function () {
-                var _this = this;
-                setTimeout(function () {
-                    if (!$(".popover-content:hover").length) {
-                        $(_this).popover("hide");
-                    }
-                }, 300);
-            });
-        };
-       
-        $scope.initMultiselectPopover();
-
         $scope.addProductTypeMasterService = function(rowIdx, item, fVal) {
             if (!item) {
                 toastr.warning('Please select a product type');
