@@ -571,75 +571,73 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         var buildTimeline = function(data) {
             var cls = "vis-voyage-content vis-voyage-content-sap";
             var voyagesArray = [];
-            // if (data.payload.scheduleDashboardView) {
-            var timelineData = computeData(data);
-            for (var i = 0; i < timelineData.voyages.length; i++) {
-                voyagesArray.push(timelineData.voyages[i]);
-                var hasStrategy = _.find(timelineData.voyages[i].additionalStops, function(obj) {
-                                            return obj.voyageDetail.hasStrategy == true;
-                                        });
-                if (hasStrategy) {
-                    var contentChange = timelineData.voyages[i].content.split("cell-identifier");
-                    var newContent = '<span class="' + cls + '" cell-identifier' + contentChange[1] + '" cell-identifier' + contentChange[2];
-                    timelineData.voyages[i].content = newContent;
-                    
+            if (data.payload.scheduleDashboardView) {
+                var timelineData = computeData(data);
+
+                for (var i = 0; i < timelineData.voyages.length; i++) {
+                    voyagesArray.push(timelineData.voyages[i]);
+                    var hasStrategy = _.find(timelineData.voyages[i].additionalStops, function(obj) {
+                                                return obj.voyageDetail.hasStrategy == true;
+                                            });
+                    if (hasStrategy) {
+                        var contentChange = timelineData.voyages[i].content.split("cell-identifier");
+                        var newContent = '<span class="' + cls + '" cell-identifier' + contentChange[1] + '" cell-identifier' + contentChange[2];
+                        timelineData.voyages[i].content = newContent;
+                        
+                    }
                 }
-            }
-              
-
-        
-
-            var groups = new vis.DataSet(timelineData.groups);
-            var voyages = new vis.DataSet(timelineData.voyages);
-            var startDateObject = { 'start': ctrl.startDate.format('YYYY-MM-DD'), 'end': ctrl.endDate.format('YYYY-MM-DD')};
-            voyagesArray.push(startDateObject);
-            var timestamp;
-            minDate = _.minBy(voyagesArray, function(item) {
-                timestamp = moment(item.start).format('X');
-                if (!item.isRedelivery) {
-                    return timestamp;
-                }
-            });
-            maxDate =  _.maxBy(voyagesArray, function(item) {
-                timestamp = moment(item.end).format('X');
-                if (!item.isRedelivery) {
-                    return timestamp;
-                }
-            });
-            minDate.start = moment(minDate.start).startOf('day');
-            maxDate.end = moment(maxDate.end).endOf('day');
-            var container = document.getElementById('timeline');
-
-            // Create a Timeline
-            timeline = new vis.Timeline(container, null, getTimelineOptions());  
-            timeline.setGroups(groups);
-            timeline.setItems(voyages);
-
-
-            ctrl.lastStartDate = false;
-            ctrl.lastEndDate = false;
-            timeline.on("rangechange", function(){
-                ctrl.lastStartDate = moment(timeline.range.start);
-                ctrl.lastEndDate = moment(timeline.range.end);
-                var diff = ctrl.lastEndDate -  ctrl.lastStartDate;
                 
-                if (diff == 2.592e+9) {
-                    $(".st-btn-icon-zoom-in a").css("color", "#555555");
-                     $(".st-btn-icon-zoom-out a").css("color", "#C1C1C1");
-                } else if (diff == 2.592e+8) {
-                    $(".st-btn-icon-zoom-in a").css("color", "#C1C1C1");
-                    $(".st-btn-icon-zoom-out a").css("color", "#555555");
-                } else {
-                    $(".st-btn-icon-zoom-in a").css("color", "#555555");
-                    $(".st-btn-icon-zoom-out a").css("color", "#555555");
-                }
-            });
+                var groups = new vis.DataSet(timelineData.groups);
+                var voyages = new vis.DataSet(timelineData.voyages);
+                var startDateObject = { 'start': ctrl.startDate.format('YYYY-MM-DD'), 'end': ctrl.endDate.format('YYYY-MM-DD')};
+                voyagesArray.push(startDateObject);
+                var timestamp;
+                minDate = _.minBy(voyagesArray, function(item) {
+                    timestamp = moment(item.start).format('X');
+                    if (!item.isRedelivery) {
+                        return timestamp;
+                    }
+                });
+                maxDate =  _.maxBy(voyagesArray, function(item) {
+                    timestamp = moment(item.end).format('X');
+                    if (!item.isRedelivery) {
+                        return timestamp;
+                    }
+                });
+                minDate.start = moment(minDate.start).startOf('day');
+                maxDate.end = moment(maxDate.end).endOf('day');
+                var container = document.getElementById('timeline');
 
-            $scope.timelineItems = groups.length;
-            
-            setLayoutAfterTimelineLoad();
+                // Create a Timeline
+                timeline = new vis.Timeline(container, null, getTimelineOptions());  
+                timeline.setGroups(groups);
+                timeline.setItems(voyages);
 
-        // }
+
+                ctrl.lastStartDate = false;
+                ctrl.lastEndDate = false;
+                timeline.on("rangechange", function(){
+                    ctrl.lastStartDate = moment(timeline.range.start);
+                    ctrl.lastEndDate = moment(timeline.range.end);
+                    var diff = ctrl.lastEndDate -  ctrl.lastStartDate;
+                    
+                    if (diff == 2.592e+9) {
+                        $(".st-btn-icon-zoom-in a").css("color", "#555555");
+                         $(".st-btn-icon-zoom-out a").css("color", "#C1C1C1");
+                    } else if (diff == 2.592e+8) {
+                        $(".st-btn-icon-zoom-in a").css("color", "#C1C1C1");
+                        $(".st-btn-icon-zoom-out a").css("color", "#555555");
+                    } else {
+                        $(".st-btn-icon-zoom-in a").css("color", "#555555");
+                        $(".st-btn-icon-zoom-out a").css("color", "#555555");
+                    }
+                });
+
+                $scope.timelineItems = groups.length;
+                
+                setLayoutAfterTimelineLoad();
+
+        }
        
         $rootScope.clc_loaded = true;
         if (data.payload.scheduleDashboardView == null) {
