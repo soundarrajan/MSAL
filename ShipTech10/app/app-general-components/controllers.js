@@ -28,6 +28,8 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
     "statusColors",
     function($tenantSettings, $scope, $rootScope, $Api_Service, Factory_General_Components, $state, $location, $timeout, $compile, $templateRequest, Factory_Master, $uibModal, $templateCache, $filter, $listsCache, scheduleDashboardStatusResource, tenantModel, newRequestModel, screenActionsModel, SCREEN_ACTIONS, ContractPlanningDataSharing, selectContractModel, $http, statusColors) {
         var vm = this;
+        let ctrl = this;
+
         vm.listsCache = $listsCache;
         vm.SCREEN_ACTIONS = SCREEN_ACTIONS;
         // clc directive current id
@@ -2935,7 +2937,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
         };
 
         $scope.updateMinMaxQuantities = function(rowIdx, productId, callback){
-            
+
             ctrl.CLC = $('#flat_contract_planning');
             ctrl.tableData = ctrl.CLC.jqGrid.Ascensys.gridObject.rows
             ctrl.currentRowData = ctrl.tableData[rowIdx-1]
