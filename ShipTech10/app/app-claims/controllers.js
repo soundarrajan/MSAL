@@ -330,7 +330,22 @@ APP_CLAIMS.controller('Controller_Claims', [
                 // suprascriem niste date
                 Factory_Master.get_master_entity($scope.formValues.orderDetails.order.id, 'orders', 'orders', (response) => {
                     if (response) {
-                    	$scope.formValues.orderDetails.order.name = response.name;
+                    	//$scope.formValues.orderDetails.order.name = response.name;
+                        if (window.location.href.indexOf('?orderId') != -1) {
+                            $scope.formValues.orderDetails.order = {
+                                'id': $scope.formValues.orderDetails.order.id,
+                                'name': response.name,
+                                'internalName': "",
+                                'displayName': "",
+                                'code': "",
+                                'collectionName': null,
+                                'customNonMandatoryAttribute1': "",
+                                'isDeleted': false,
+                                'modulePathUrl': null,
+                                'clientIpAddress': null,
+                                'userAction': null,
+                            }
+                        }
                     	$scope.formValues.orderDetails.orderPrice = $scope.formValues.initialOrderPrice;
                         if (response.orderDate) {
                             $scope.formValues.orderDetails.orderDate = response.orderDate;
