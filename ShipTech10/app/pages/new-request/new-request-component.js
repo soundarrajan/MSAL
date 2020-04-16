@@ -3378,6 +3378,38 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 return;
             }
 
+            var allDestinations = [
+                ctrl.request.locations[locationIdx].destination ? ctrl.request.locations[locationIdx].destination : undefined,
+                ctrl.request.locations[locationIdx].destination1 ? ctrl.request.locations[locationIdx].destination1 : undefined,
+                ctrl.request.locations[locationIdx].destination2 ? ctrl.request.locations[locationIdx].destination2 : undefined,
+                ctrl.request.locations[locationIdx].destination3 ? ctrl.request.locations[locationIdx].destination3 : undefined,
+                ctrl.request.locations[locationIdx].destination4 ? ctrl.request.locations[locationIdx].destination4 : undefined
+            ];
+            var allEta = [
+                ctrl.request.locations[locationIdx].destinationEta ? ctrl.request.locations[locationIdx].destinationEta: undefined,
+                ctrl.request.locations[locationIdx].destination1Eta ? ctrl.request.locations[locationIdx].destination1Eta: undefined,
+                ctrl.request.locations[locationIdx].destination2Eta ? ctrl.request.locations[locationIdx].destination2Eta: undefined,
+                ctrl.request.locations[locationIdx].destination3Eta ? ctrl.request.locations[locationIdx].destination3Eta: undefined,
+                ctrl.request.locations[locationIdx].destination4Eta ? ctrl.request.locations[locationIdx].destination4Eta: undefined
+            ];
+            // allDestinations = _.compact(allDestinations);
+            var duplicateDestination = false;
+            $.each(allDestinations, (k, v) => {
+                if (v) {
+                    if (v.id == data.id) {
+                        if (data.eta == allEta[k]) {
+                            duplicateDestination = true;
+                        }
+                    }
+                }
+            });
+            if (duplicateDestination) {
+                toastr.warning('The same Destination cannot be added more than once!');
+                ctrl.getLowestEtaForDestinationInLocation(locationIdx);
+                return;
+            }
+
+
             ctrl.request.locations[locationIdx][`destination${ nextAvailableDestinationIndex }VesselVoyageDetailId`] = data.destinationVesselVoyageDetailId;
             // debugger;
             ctrl.request.locations[locationIdx][`destination${ nextAvailableDestinationIndex}`] = {
