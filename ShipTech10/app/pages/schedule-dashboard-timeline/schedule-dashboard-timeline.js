@@ -698,9 +698,13 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 if ($scope.displayedColumns["Buyer of the Service"]) {
                     groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-buyer-of-service"> Buyer of the Service </span>';
                 }                
-                if ($scope.displayedColumns["Company"]) {
-                    groupColumnsTitleElement += '<span class="vis-custom-group-column-header last vis-company"> Company </span></div>';
-                }
+                if ($scope.displayedColumns["Company"]) { 
+                    if ($scope.tenantSettings.companyDisplayName.name == "Company") {
+                        groupColumnsTitleElement += '<span class="vis-custom-group-column-header last vis-company"> Company </span></div>';
+                    } else {
+                        groupColumnsTitleElement += '<span class="vis-custom-group-column-header last vis-company"> Pool </span></div>';
+                    }
+                } 
                 groupColumnsTitleElement += '</div>';
 
                 $('.vis-timeline').first().prepend(groupColumnsTitleElement);
