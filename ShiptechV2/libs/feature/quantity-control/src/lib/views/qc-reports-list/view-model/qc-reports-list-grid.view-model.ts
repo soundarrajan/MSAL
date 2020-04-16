@@ -474,7 +474,6 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     value: number,
     toleranceUom: IToleranceUomDto
   ): Partial<CSSStyleDeclaration> {
-    console.log(value, toleranceUom);
     if (
       value === null ||
       value === undefined ||
@@ -487,7 +486,6 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
       };
 
     let status = this.reconStatusLookups.matched;
-    console.log(status);
 
     if (Math.abs(value) >= toleranceUom.maxTolerance)
       status = this.reconStatusLookups.notMatched;
