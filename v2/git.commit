@@ -1,13 +1,12 @@
-﻿commit 4d9c8a44f925808848fa288eb022c052921910a4
+﻿commit 4888f833d87d7c7b42d1376b9e8091cd978e288e
 Author: Sergiu.vasui <Sergiu.vasui@24software.ro>
-Date:   Wed Apr 15 09:37:03 2020 +0000
+Date:   Thu Apr 16 14:44:41 2020 +0000
 
-    Merged PR 3793: Fixed QC bugs
+    Merged PR 3854: #23066
     
-    #23082
-    #23060
-    Fixed above issues
+    #23066
+    Fixed above issue
     
-    Related work items: #23060, #23082
+    Related work items: #23066
 
 branch: master
