@@ -276,13 +276,27 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
   }
 
   verifyVessel(): void {
-    this.reportService
-      .verifyVesselReports$([
-        this.store.selectSnapshot(QcReportState.reportDetailsId)
-      ])
-      .subscribe(() =>
-        this.toastrService.success('Report marked for verification.')
-      );
+    this.reportService.saveReport$().subscribe(reportId => {
+      this.router
+        .navigate([
+          KnownPrimaryRoutes.QuantityControl,
+          `${KnownQuantityControlRoutes.Report}`,
+          reportId,
+          KnownQuantityControlRoutes.ReportDetails
+        ])
+        .then(() => {
+          this.reportService.loadEventsLog$().subscribe();
+        })
+        .then(() => {
+          this.reportService
+            .verifyVesselReports$([
+              this.store.selectSnapshot(QcReportState.reportDetailsId)
+            ])
+            .subscribe(() =>
+              this.toastrService.success('Report marked for verification.')
+            );
+        });
+    });
   }
 
   revertVerifyVessel(): void {
