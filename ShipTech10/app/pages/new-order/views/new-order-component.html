@@ -757,7 +757,7 @@
                                                                    typeahead-on-select="$ctrl.selectSeller($item)"
                                                                    typeahead-show-hint="true"
                                                                    typeahead-wait-ms="100"
-                                                                   uib-typeahead="seller as seller.name for seller in $ctrl.lists.Seller | filter:{name:$viewValue} | limitTo:10"/>
+                                                                   uib-typeahead="seller as seller.name for seller in $ctrl.lists.Seller | typeaheadCustomFilter:$viewValue:'name'"/>
                                                             <span class="input-group-addon ng-scope"
                                                                   ng-click="triggerModal('general', 'masters_counterpartylist', 'Seller' ,'seller',null,null,null,'sellerList');"
                                                                   ng-controller="Controller_Master as CM"

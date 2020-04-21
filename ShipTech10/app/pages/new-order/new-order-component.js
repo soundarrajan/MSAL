@@ -265,7 +265,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
         	});
         };
 
-        ctrl.getOrderContractOptions = function(product, onlyBuildPayload) {
+        ctrl.getOrderContractOptions = function(product, onlyBuildPayload, responseCallback) {
         	if (ctrl.disabledProduct[product.id] || product.requestOfferId) {
         		return;
         	}
@@ -326,6 +326,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
 
             Factory_Master.get_master_list('procurement', 'order_contract_autocomplete', field, (callback) => {
                 if(callback) {
+		        	if (responseCallback) {
+		        		responseCallback(callback);
+		        	}
                     console.log(callback);
 
                     // init options lists
@@ -1581,6 +1584,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
         };
 
         ctrl.resetContractData = function(productIndex){
+        	if (ctrl.data.products[productIndex].contract) {
+	        	var initialContractId = angular.copy(ctrl.data.products[productIndex].contract.id);
+        	}
         	ctrl.data.products[productIndex].contract = null;
         	ctrl.data.products[productIndex].contractProductId = null;
         	ctrl.data.products[productIndex].contractId = null;
@@ -1591,7 +1597,28 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
 			ctrl.data.products[productIndex].pricingType = null;
 			ctrl.data.products[productIndex].formulaDescription = null;
 			ctrl.data.products[productIndex].changedOnConfirmedOrder = true;
-			ctrl.getAllOrderContractOptions();
+			// ctrl.getAllOrderContractOptions();
+			ctrl.getOrderContractOptions(ctrl.data.products[productIndex], false, function(response){
+				if (response && initialContractId) {
+					var newContractData = false;
+					$.each(response, function(k,v){
+						if (v.contract.id == initialContractId) {
+							newContractData = v;
+						}
+					})
+					if (newContractData) {
+		                ctrl.data.products[productIndex].contractProductId = newContractData.contractProductId;
+		                ctrl.data.products[productIndex].priceUom = newContractData.uom;
+		                ctrl.data.products[productIndex].contract = angular.copy(newContractData.contract);
+		                ctrl.data.products[productIndex].price = angular.copy(newContractData.price);
+		                ctrl.data.products[productIndex].formula = angular.copy(newContractData.formula);
+		                ctrl.data.products[productIndex].agreementType = newContractData.contractAgreementType ? angular.copy(newContractData.contractAgreementType) : ctrl.defaultContractAgreementType;
+		                ctrl.data.products[productIndex].requiredFields = [];
+		                ctrl.data.products[productIndex].physicalSupplier = newContractData.physicalSupplier;
+					}
+				}
+				console.log(response);
+			});
         }
 
         function productUomChg(product) {
