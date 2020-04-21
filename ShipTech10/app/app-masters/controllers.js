@@ -3918,6 +3918,7 @@ APP_MASTERS.controller('Controller_Master', [
         $scope.dropDocument = function(file) {
             $rootScope.droppedDoc = file;
             $scope.droppedDoc = $rootScope.droppedDoc;
+            if (window.location.href.indexOf("masters/price") != -1 ) { return; }
             if ($scope.formValues.documentType) {
                 if ($scope.formValues.documentType.name != '') {
                     $rootScope.formValues.documentType = $scope.formValues.documentType;
@@ -6048,6 +6049,15 @@ APP_MASTERS.controller('Controller_Master', [
         		$rootScope.setDocumentTimeout = true;
 	            setTimeout(() => {
 	            	$(document).on('change', 'input.inputfile', function() {
+                        if (window.location.href.indexOf("masters/price") != -1 ) {
+                            var fileScope = angular.element($('.dropzone-file-area')).scope();
+                            var currentFile = this.files[0];
+                            fileScope.$apply(() => {
+                                fileScope.droppedDoc = currentFile;
+                            });                            
+                            $rootScope.droppedDoc = currentFile;
+                        	return;
+                        }
                         var input = $(this);
 	                    // var label = $(input).next();
                         //    var labelVal = label.innerHTML;
@@ -6059,11 +6069,11 @@ APP_MASTERS.controller('Controller_Master', [
                             $scope.uploadFiles();
                         } else {
                             var currentFile = this.files[0];
-                            let documentTypeValues = this.form[1].value;
-                            if (documentTypeValues == '') {
-                                toastr.warning('Please select a Document Type and upload the file again');
-                                return;
-                            }
+	                            let documentTypeValues = this.form[1].value;
+	                            if (documentTypeValues == '') {
+	                                toastr.warning('Please select a Document Type and upload the file again');
+	                                return;
+	                            }
                             var fileScope = angular.element($('input').parent().find('.fileNameLabel')).scope();
                             $rootScope.droppedDoc = currentFile;
                             fileScope.$apply(() => {
