@@ -145,6 +145,13 @@ angular.module('shiptech.components').controller('ConfirmOrderDialogController',
                         $scope.requestOfferItems[`confirmedQuantity_${ key}`].$setValidity('required', false);
                         errorConf = true;
                     }
+                    $.each(ctrl.orderList, function(ok,ov){		
+                    	$.each(ov.products, function(pk,pv){
+	                    	if (val.requestProductId == pv.requestProductId) {
+	                    		pv.confirmedQuantity = val.confirmedQuantity;
+	                    	}
+                    	})
+                    })
                 });
                 if(errorConf) {
                     toastr.error('Confirmed Quantity is required!');
