@@ -7384,13 +7384,13 @@ APP_MASTERS.controller('Controller_Master', [
 	                    return;
 	                };
 	                console.log('called getUomConversionFactor with params:', product.product.id, product.invoiceRateUom.id, product.invoiceQuantityUom.id);
-	                $scope.getUomConversionFactor(product.product.id, 1, product.invoiceRateUom.id, product.invoiceQuantityUom.id, product.contractProductId, (response) => {
+	                $scope.getUomConversionFactor(product.product.id, 1, product.invoiceQuantityUom.id, product.invoiceRateUom.id, product.contractProductId, (response) => {
                         var conversionFactor = response;
 	                	if (false && formValues.productDetails[currentRowIndex].sapInvoiceAmount) {
 		                    formValues.productDetails[currentRowIndex].invoiceAmount = formValues.productDetails[currentRowIndex].sapInvoiceAmount;
 	                	} else {
 	                		console.log($filter('number')(formValues.productDetails[currentRowIndex].invoiceQuantity, 2));
-		                    formValues.productDetails[currentRowIndex].invoiceAmount = convertDecimalSeparatorStringToNumber(formValues.productDetails[currentRowIndex].invoiceQuantity) * (convertDecimalSeparatorStringToNumber(formValues.productDetails[currentRowIndex].invoiceRate) / conversionFactor);
+		                    formValues.productDetails[currentRowIndex].invoiceAmount = convertDecimalSeparatorStringToNumber(formValues.productDetails[currentRowIndex].invoiceQuantity) * (convertDecimalSeparatorStringToNumber(formValues.productDetails[currentRowIndex].invoiceRate) * conversionFactor);
 	                	}
 	                    // formValues.productDetails[currentRowIndex].invoiceComputedAmount = formValues.productDetails[currentRowIndex].invoiceAmount;
 	                    formValues.productDetails[currentRowIndex].difference = parseFloat(formValues.productDetails[currentRowIndex].invoiceAmount) - parseFloat(formValues.productDetails[currentRowIndex].estimatedAmount);
@@ -7479,7 +7479,7 @@ APP_MASTERS.controller('Controller_Master', [
 	                    calculateGrand(formValues);
 	                    return;
 	                }
-	                $scope.getUomConversionFactor(vm.product, 1, rateUom, quantityUom, 1, (response) => {
+	                $scope.getUomConversionFactor(vm.product, 1, quantityUom, rateUom, 1, (response) => {
 	                    if (vm.costType) {
 	                        if (vm.costType.name == 'Unit') {
 	                            formValues.costDetails[rowIndex].invoiceAmount = response * convertDecimalSeparatorStringToNumber(vm.cost.invoiceRate) * convertDecimalSeparatorStringToNumber(vm.cost.invoiceQuantity);
