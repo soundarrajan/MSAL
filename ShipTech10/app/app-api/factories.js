@@ -7566,6 +7566,43 @@ APP_API.factory('$Api_Service', [
                         );
                         return;
                     }
+                    if (param.field.clc_id == 'masters_counterpartylist_labs') {
+                        var apiJSON = {
+                            Payload: {
+                                Filters: [
+                                    {
+                                        ColumnName: 'CounterpartyTypes',
+                                        Value: 8
+                                    }
+                                ]
+                            }
+                        };
+                        var url = `${API.BASE_URL_DATA_MASTERS }/api/masters/counterparties/listByTypesAutocomplete`;
+                        $http.post(url, apiJSON).then(
+                            (response) => {
+                                if (response.status == 200) {
+                                    callback(response.data.payload);
+                                } else {
+                                    callback([
+                                        {
+                                            id: -1,
+                                            name: 'HTTP Error!'
+                                        }
+                                    ]);
+                                }
+                            },
+                            (response) => {
+                                console.log('$APIService dropdown.lookup failed for parameter ', param.field.masterSource);
+                                callback([
+                                    {
+                                        id: -1,
+                                        name: 'HTTP Error!'
+                                    }
+                                ]);
+                            }
+                        );
+                        return;
+                    }                    
                     if (param.app == 'delivery' && param.screen == 'delivery' && param.field.masterSource == 'OrderList') {
                         var apiJSON = {
                             UIFilters: {
