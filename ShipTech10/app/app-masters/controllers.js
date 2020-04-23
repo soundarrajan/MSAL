@@ -4977,7 +4977,7 @@ APP_MASTERS.controller('Controller_Master', [
             $(`#${ Elements.settings[Object.keys(Elements.settings)[0]].table}`).jqGrid.table_config.on_ui_filter({
                 // PaymentDueDate: $("#invoices_payment_due_date_filter").val()
                 // PaymentDueDate : $scope.paymentDueDate,
-                PaymentDueDate:  $scope.paymentDueDate ? $scope.paymentDueDate : $scope.formatDatePicker()
+                PaymentDueDate:  $scope.formatDatePicker()
             });
         };
 
