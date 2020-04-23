@@ -2683,9 +2683,16 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         	specGroupErrors.push(`Spec Group for "`+val2.product.name+`" from ` + val.location.name + ` is invalid.`);
                         }
                     } else {
-                    	if (val2.product && val2.productStatus.name != "Cancelled" && ctrl.request.id) {
-	                    	specGroupErrors.push(`Please select a specGroup for "`+val2.product.name+`" from ` + val.location.name + `.`);
-                    	}
+                    	if (val2.product && ctrl.request.id) {
+                            if (val2.productStatus) {
+                                if ( val2.productStatus.name != "Cancelled") {
+                                    specGroupErrors.push(`Please select a specGroup for "`+val2.product.name+`" from ` + val.location.name + `.`);
+                                }
+                            } else {
+                                specGroupErrors.push(`Please select a specGroup for "`+val2.product.name+`" from ` + val.location.name + `.`);
+
+                            }
+                    	} 
                     }
                 });
             });
