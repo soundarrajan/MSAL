@@ -1373,12 +1373,46 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     template: '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body timeline-popover-hover">'+html+'</div></div>'
                 }).
                 on('show.bs.popover', function (event) {
+                    var lengthVoyageStops = getLengthPopoverMarkup(voyageDetailId);
+                    if (lengthVoyageStops > 3) {
+                        $('.breadcrumbs-container').css('z-index', '0');
+                        $('.page-header.navbar').addClass("hoverOnPortCode");
+                    } 
+                 
                 });
                 $(this).popover('toggle');
-                $('.breadcrumbs-container').css('z-index', '0');
-                $('.page-header.navbar').addClass("hoverOnPortCode");
+              
             }
         });
+        $(document).on("mouseout", "span[voyage-detail-id]", function() {       
+            $('.breadcrumbs-container').css('z-index', '10000');
+            $('.page-header.navbar').removeClass("hoverOnPortCode");
+        });
+
+        var getLengthPopoverMarkup = function(voyageDetailId) {
+            var number = 0;
+            var allStops = [parseFloat(voyageDetailId)];
+
+            var currentCellIdentifier = $("span[voyage-detail-id='"+voyageDetailId+"']").attr("cell-identifier");
+            var voyagesToday = $scope.stopsGroupedByDayAndGroup[currentCellIdentifier];
+            var voyageStopsToday = []
+            $.each(voyagesToday, function(k,v){
+                voyageStopsToday.push(v.voyageDetail.id)
+            })
+
+            
+            var voyageStop;
+            voyageStop = _.filter(ctrl.voyageData, function(el){
+                return el && voyageStopsToday.indexOf(el.voyageDetail.id) != -1;
+            });            
+            voyageStop = _.uniqBy(voyageStop, 'voyageDetail.request.requestDetail.Id')
+            var voyageStopGroup = _.groupBy(voyageStop, "voyageDetail.id" );
+            $.each(voyageStopGroup, function(k1,v1) {
+                number += 1;
+            });
+            return number;
+
+        }
 
         var buildHoverPopoverMarkup = function(voyageDetailId) {
             var hasNoRequest = false;
