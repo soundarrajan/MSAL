@@ -6920,6 +6920,10 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
             }
         });
 
+        $rootScope.$on('undoComments', function() {
+            ctrl.undoComments();
+        });
+
         ctrl.sendRequote = function() {
             if (!ctrl.requirements || ctrl.requirements.length <= 0) {
                 toastr.error('You cannot Requote, as No RFQ is associated with Sellers Offer.');

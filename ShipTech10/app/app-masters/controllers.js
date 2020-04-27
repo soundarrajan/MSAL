@@ -5732,6 +5732,7 @@ APP_MASTERS.controller('Controller_Master', [
                 	$state.reload();
                     // window.location.reload();
                 }
+                $rootScope.$broadcast('undoComments', true);
                 $rootScope.$broadcast('counterpartyBladeClosed', true);
                 $rootScope.overrideCloseNavigation = false;
             }, 500);
