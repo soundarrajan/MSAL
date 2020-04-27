@@ -532,6 +532,9 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                                     if (vm.screen_id == 'specparameter') {
                                     	$scope.formValues.energyParameterCode = null;
                                     }
+                                    if (vm.screen_id == 'counterparty') {
+                                    	$scope.formValues.address.id = 0;
+                                    }
 
                                     $.each($scope.formValues, (key, val) => {
                                         if (val && angular.isArray(val)) {
