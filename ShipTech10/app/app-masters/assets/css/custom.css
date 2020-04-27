@@ -696,14 +696,14 @@ span.variance {
 /*Multi header ui-grid*/
 
 .ui-grid-header-cell.ui-grid-clearfix.ui-grid-category.label_false_visible {
-    display: inline-table;
+  /*  display: inline-table;*/
     height: 100%;
     text-align: center;
     width: 30%;
 }
 
 .ui-grid-header-cell.ui-grid-clearfix.ui-grid-category.label_false_visible:before {
-    display: none;
+   /* display: none;*/
 }
 
 .ui-grid-header-cell.ui-grid-clearfix.ui-grid-category .parent-header-category {
