@@ -258,18 +258,6 @@ $.jgrid.extend({
                     }
                 }
             },
-            payment_due_date: {
-                init: function() {
-                    $(this).jqGrid("Ascensys.tpl.add_element", "top", "right", $(this).jqGrid("Ascensys.element.payment_due_date.structure"));
-                },
-                reload: function() {
-                    $("." + Cfg.class.payment_due_date).remove();
-                    $(this).jqGrid("Ascensys.tpl.add_element", "top", "right", $(this).jqGrid("Ascensys.element.payment_due_date.structure"));
-                },
-                structure: function() {
-                    return Cfg.tpl.payment_due_date;
-                }
-            },
             invoice_type_select: {
                 init: function() {
                     $(this).jqGrid("Ascensys.tpl.add_element", "top", "right", $(this).jqGrid("Ascensys.element.invoice_type_select.structure"));
@@ -403,7 +391,6 @@ var Cfg = {
         entries: "asc_jqgrid__entries",
         columns: "asc_jqgrid__columns",
         filters: "asc_jqgrid__filters",
-        payment_due_date: "asc_jqgrid__payment_due_date",
         invoice_type_select: "asc_jqgrid__invoice_type_select"
     },
     tpl: {
@@ -651,13 +638,6 @@ var Cfg = {
                 Cfg.columnData = colModel;
                 return element;
             }
-        },
-        payment_due_date: function() {
-            return (
-                '<div ng-controller="Controller_Master as CM" class="' +
-                Cfg.class.payment_due_date +
-                ' dynamic_form_editor"> <div class="display: flex;"> <a data-ng-if="!action.special" id="general_action_1" class="btn btn-default btn-default ng-binding ng-scope" ng-click="invoices_payment_due_date_filter()"> Filter </a> <span class="label">Payment Due Date</span> </div display: flex;><div style="display: flex;"><input type="text" ng-model="paymentDueDate"name="invoices_payment_due_date_filter"id="invoices_payment_due_date_filter"new-date-picker picker-type="date"class="form-control date-mask new-date-picker"> </div> </div>'
-            );
         },
         invoice_type_select: function() {
             // return '<div ng-controller="Controller_Master as CM" class="' + Cfg.class.invoice_type_select + '  dynamic_form_editor  "><div class="form-group  "><div class=" col-md-4 col-md-offset-3"><label class="">Invoice Type</label></div><div class="col-md-5"><select ng-if="CM.listsCache" ng-init="initInvoiceTypeOptions()" name="newInvoiceType" class="form-control " id="newInvoiceType"></select></div></div></div>';

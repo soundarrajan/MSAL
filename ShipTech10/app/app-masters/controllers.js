@@ -4965,21 +4965,7 @@ APP_MASTERS.controller('Controller_Master', [
                 $scope.formValues.PaymentDateTo = null;
         	});
         };
-        $scope.formatDatePicker = function() {
-            var value = $("#invoices_payment_due_date_filter_dateinput").val().split('/');
-            if (value.length == 3) {
-                return value[2] + '-' + value[1] + '-' + value[0] + 'T00:00:00+00:00';
-            } else {
-                return '';
-            }
-        }
-        $scope.invoices_payment_due_date_filter = function() {
-            $(`#${ Elements.settings[Object.keys(Elements.settings)[0]].table}`).jqGrid.table_config.on_ui_filter({
-                // PaymentDueDate: $("#invoices_payment_due_date_filter").val()
-                // PaymentDueDate : $scope.paymentDueDate,
-                PaymentDueDate:  $scope.formatDatePicker()
-            });
-        };
+
 
         /* DELIVERY*/
         $scope.setQualityMatch = function(bdn, survey, min, max) {
