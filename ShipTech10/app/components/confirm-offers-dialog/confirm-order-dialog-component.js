@@ -31,6 +31,13 @@ angular.module('shiptech.components').controller('ConfirmOrderDialogController',
             }
             return false;
         };
+	    ctrl.closeBlade = function() {
+	    	$('.bladeEntity').removeClass('open');
+	    	$('body').css('overflow-y', 'initial');
+	    	setTimeout(() => {
+		    	$rootScope.bladeTemplateUrl = '';
+	    	}, 500);
+	    };          
         tenantService.procurementSettings.then((settings) => {
             ctrl.captureConfirmedQuantity = settings.payload.order.captureConfirmedQuantity;
         });

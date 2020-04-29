@@ -125,7 +125,7 @@
         <button type="button" data-dismiss="modal" ng-click="$ctrl.enableButtons()" class="btn btn-default" ng-if="isRequest()">
             No
         </button>
-        <button type="button"  data-dismiss="modal" ng-if="!isRequest()" ng-click="$ctrl.enableButtons()"  class="btn btn-default">
+        <button type="button"  data-dismiss="modal" ng-if="!isRequest()" ng-click="$ctrl.enableButtons(); $ctrl.closeBlade()"  class="btn btn-default">
             No
         </button>
     </div>

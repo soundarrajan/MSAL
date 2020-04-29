@@ -24,6 +24,13 @@ angular.module('shiptech.components').controller('ConfirmOffersDialogController'
         ctrl.enableButtons = function() {
             $rootScope.$emit('buttonsDisabled');
         };
+	    ctrl.closeBlade = function() {
+	    	$('.bladeEntity').removeClass('open');
+	    	$('body').css('overflow-y', 'initial');
+	    	setTimeout(() => {
+		    	$rootScope.bladeTemplateUrl = '';
+	    	}, 500);
+	    };          
         ctrl.$onChanges = function(changes) {
             $('#offer').show();
             $('#warning').hide();
