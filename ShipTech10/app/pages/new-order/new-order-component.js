@@ -2204,6 +2204,11 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
              	// return;
             }
 
+            if (moment(ctrl.data.deliveryFrom).diff(moment(ctrl.data.deliveryTo)) > 0 ) {
+            	aggregatedErrorMessages.push("Delivery To should be greater than Delivery From");
+            }
+
+
             if (aggregatedErrorMessages.length > 0) {
              	$.each(aggregatedErrorMessages, (k, message) => {
 	             	toastr.error(message);
@@ -2273,6 +2278,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                 payload.isVerified.id = 1;
                 payload.isVerified.name = 'Yes';
             }
+
+
 
             if (ctrl.orderId) {
                 var validActiveSpecGroupMessage = ctrl.checkInactiveSpecGroup();
