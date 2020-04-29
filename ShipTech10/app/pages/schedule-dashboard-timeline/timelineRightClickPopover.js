@@ -285,16 +285,28 @@ angular.module('shiptech.components')
                 var payload = {
                     payload : bunkerPlanId
                 };
-                let currentBunkerPlanId = bunkerPlanId;
+                if (typeof(window.timelineCancelledBunkerStrategies) == "undefined") {
+                	window.timelineCancelledBunkerStrategies = [];
+                }
+                var currentBunkerPlanId = bunkerPlanId;
 	            $http.post(url, payload).then((response) => {
 	                if (response.status == 200) {
-	                	$state.reload();
+	                	window.timelineCancelledBunkerStrategies.push(currentBunkerPlanId);
 	                } else {
 	                    console.log('Error cancelStrategy');
 	                }
 	            });
 	            $scope.cancelStrategyModalData = null;
             };
+
+			ctrl.strategyAlreadyCancelled = function(bunkerPlanId) {
+				if (window.timelineCancelledBunkerStrategies) {
+					if (window.timelineCancelledBunkerStrategies.indexOf(bunkerPlanId) != -1) {
+						return true;
+					}
+				}
+				return false;
+			}
 
             ctrl.formatDateUtc = function(cellValue) {
 	            let dateFormat = ctrl.dateFormat;

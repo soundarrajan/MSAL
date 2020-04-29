@@ -533,8 +533,9 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                                 }
                             });
                         });
+                        var offersToBeAdded = [];
                         $.each(prodV.sellersCopy, (sck, scv) => {
-                            var offersToBeAdded = [];
+                            offersToBeAdded = [];
                             $.each(prodV.sellers, (selK, selV) => {
                                 if (selV.offers) {
                                     if (selV.offers.length > 0) {

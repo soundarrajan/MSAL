@@ -1,4 +1,4 @@
-<div class="newStatusColoured contextmenu fade in" style="background-color: #fff;"> 
+<div class="newStatusColoured contextmenu fade in" style="background-color: #fff; z-index: 10000;"> 
 	<div class="popover-header">
 		<i class="fa fa-location-arrow">
 			&nbsp;&nbsp;
@@ -29,7 +29,7 @@
 						<td ng-repeat="(key3, productType) in $ctrl.groupedVoyages.allProductTypes[voyage] track by $index" class="cancelBunkerStrategyCell" style="border: 0.5px solid #E7ECF1;padding: 3px; position: relative; border-radius: 1px !important; ">
 							<span ng-repeat="(ptkey,ptval) in $ctrl.groupedVoyages.groupedVoyagesBunker[voyage]" ng-init="bunkerPlan = ptval[productType][0].voyageDetail.bunkerPlan" class="amountRightPopover">
 								{{( (!bunkerPlan.supplyQuantity) ? ("") : (bunkerPlan.supplyQuantity | number : $ctrl.numberPrecision.amountPrecision))}}
-								<span ng-if="bunkerPlan.supplyStrategy" class="cancelBunkerStrategy" ng-click="$ctrl.confirmCancelBunkerStrategy(bunkerPlan, ptval[productType][0].voyageDetail)" ><i class="fa fa-times"></i></span>
+								<span ng-if="bunkerPlan.supplyStrategy && !$ctrl.strategyAlreadyCancelled(bunkerPlan.id)" class="cancelBunkerStrategy" ng-click="$ctrl.confirmCancelBunkerStrategy(bunkerPlan, ptval[productType][0].voyageDetail)" ><i class="fa fa-times"></i></span>
 							</span>
 						</td>
 					</tr>

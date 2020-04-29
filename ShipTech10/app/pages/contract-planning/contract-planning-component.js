@@ -481,7 +481,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', [ '$sc
             $.each(ctrl.selectedContracts, (k, v) => {
                 if (v.requestId == 0) {
                     previewEmailIsInvalid = true;
-                    toastr.error('One of the selected contracts is not saved yet!');
+                    toastr.error('Please save selected row before previewing email!');
                 }
             });
             if (previewEmailIsInvalid) {

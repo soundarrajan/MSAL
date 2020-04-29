@@ -471,7 +471,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 		                    isRedelivery: true,
 		                    start:  moment.utc(earliestRedelivery).format('YYYY-MM-DD HH:mm'),
 		                    end:  moment.utc(currentGroupRedelivery.latestRedelivery).format('YYYY-MM-DD HH:mm'),
-		                    style: 'background-color: none; border:2px solid red; pointer-events:none; z-index:50'
+		                    style: 'background-color: none; border:2px solid red; pointer-events:none; z-index:9999',
+		                    className: 'redeliveryPeriod'
 		                };
 		                var estimatedRedeliveryStart = moment.utc(currentGroupRedelivery.estimatedRedelivery).format('YYYY-MM-DD') + " 12:00";
 		                var estimatedRedeliveryEnd = moment.utc(currentGroupRedelivery.estimatedRedelivery).format('YYYY-MM-DD') + " 12:00";
@@ -610,6 +611,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
                 // Create a Timeline
                 timeline = new vis.Timeline(container, null, getTimelineOptions());  
+                window.mytimeline = timeline;
                 timeline.setGroups(groups);
                 timeline.setItems(voyages);
 
@@ -617,10 +619,11 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 ctrl.lastStartDate = false;
                 ctrl.lastEndDate = false;
                 timeline.on("rangechange", function(){
+
+
                     ctrl.lastStartDate = moment(timeline.range.start);
                     ctrl.lastEndDate = moment(timeline.range.end);
                     var diff = ctrl.lastEndDate -  ctrl.lastStartDate;
-                    
                     if (diff == 2.592e+9) {
                         $(".st-btn-icon-zoom-in a").css("color", "#555555");
                          $(".st-btn-icon-zoom-out a").css("color", "#C1C1C1");
@@ -632,6 +635,39 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                         $(".st-btn-icon-zoom-out a").css("color", "#555555");
                     }
                 });
+
+
+                redrawOutOfRangeElements = function(){
+                	setTimeout(function(){
+						Object.keys(window.mytimeline.itemSet.items).forEach(function (item) {
+							visibleGroups = window.mytimeline.getVisibleGroups();
+							// console.log(item);
+							if (visibleGroups.indexOf(window.mytimeline.itemSet.items[item].data.group.toString()) != -1) {
+								if (window.mytimeline.itemSet.items[item].data.className == "redeliveryPeriod") {
+									itemDataStart = moment(window.mytimeline.itemSet.items[item].data.start);
+									itemDataEnd = moment(window.mytimeline.itemSet.items[item].data.end);
+									currentWindowStart = moment(window.mytimeline.getWindow().start);
+									currentWindowEnd = moment(window.mytimeline.getWindow().end);
+									if (
+										(itemDataStart.diff(currentWindowStart) >= 0  && currentWindowEnd.diff(itemDataStart) >= 0) ||
+										(currentWindowStart.diff(itemDataStart) >= 0  && itemDataEnd.diff(currentWindowEnd) >= 0) 
+										) {
+											window.mytimeline.itemSet.items[item].show();
+											window.mytimeline.itemSet.items[item].repositionX();
+									}
+								}
+							}
+						});
+                	},300);
+                }
+
+     //            timeline.on("rangechange", function(){
+					// redrawOutOfRangeElements();
+     //            })
+
+                $(".vis-vertical-scroll").on("scroll", function(){
+					redrawOutOfRangeElements();
+                })
 
                 $scope.timelineItems = groups.length;
                 
@@ -1370,7 +1406,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     trigger: 'hover',
                     placement: 'auto bottom',
                     html: true,
-                    template: '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body timeline-popover-hover">'+html+'</div></div>'
+                    template: '<div class="popover" style="z-index: 100000" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body timeline-popover-hover">'+html+'</div></div>'
                 }).
                 on('show.bs.popover', function (event) {
                     var lengthVoyageStops = getLengthPopoverMarkup(voyageDetailId);
@@ -1536,7 +1572,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 if (!model.payload) return;
                 $scope.timelineStatuses = model.payload.scheduleDashboardStatus;
                 console.log(new Date())
-                if($state.current.name == STATE.DASHBOARD_TIMELINE) { 
+                if($state.current.name == STATE.DASHBOARD_TIMELINE || $state.current.name == STATE.HOME) { 
 
                     if (window.scheduleDashboardConfiguration) {
 
