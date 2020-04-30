@@ -7790,6 +7790,9 @@ APP_MASTERS.controller('Controller_Master', [
         vm.EmailTypeNoAutomatic = emailNoAutomaticType();
 
         vm.enabledEmailToVessel = function() {
+            if (window.location.href.indexOf("delivery/delivery") != -1 ) {
+                return false; 
+            }
             var enabledEmailToVessel = true;
             if (typeof $rootScope.adminConfiguration != 'undefined') {
                 $rootScope.adminConfiguration.email.forEach((obj) => {
@@ -7802,6 +7805,13 @@ APP_MASTERS.controller('Controller_Master', [
             }
             return enabledEmailToVessel;
         };
+
+        $scope.showClearButton = function() {
+            if (window.location.href.indexOf("delivery/delivery") != -1 ) {
+                return true; 
+            }
+            return false;
+        }
         vm.getCurrencyCodeFiltered = function() {
             console.log('getCurrencyCodeFiltered');
 
