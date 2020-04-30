@@ -1406,7 +1406,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     trigger: 'hover',
                     placement: 'auto bottom',
                     html: true,
-                    template: '<div class="popover" style="z-index: 100000" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body timeline-popover-hover">'+html+'</div></div>'
+                    template: '<div class="popover" style="z-index: 9999999" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body timeline-popover-hover">'+html+'</div></div>'
                 }).
                 on('show.bs.popover', function (event) {
                     var lengthVoyageStops = getLengthPopoverMarkup(voyageDetailId);
