@@ -963,6 +963,12 @@ angular.module('shiptech.components').controller('FiltersController', [
                 });
             });
         };
+
+        var clickedOnScrollbar = function(mouseX){
+          if( $(window).outerWidth() <= mouseX ){
+            return true;
+          }
+        }
         $(document).on('mousedown', (e) => {
             // check that your clicked
             // element has no id=info
@@ -970,7 +976,7 @@ angular.module('shiptech.components').controller('FiltersController', [
             // console.log(e.target)
             // console.log($("#customPopover").find(e.target).length)
             if (!$(e.target).hasClass('colMenu')) {
-                if (e.target.id != 'customPopover' && !$('#customPopover').find(e.target).length && !$(e.target).hasClass('miunsAct')) {
+                if (!clickedOnScrollbar(e.clientX) && e.target.id != 'customPopover' && !$('#customPopover').find(e.target).length && !$(e.target).hasClass('miunsAct')) {
                     $scope.hidePopover();
                 }
             }
