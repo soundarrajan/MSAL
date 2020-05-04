@@ -412,7 +412,17 @@ angular.module('shiptech.pages').directive('newDatePicker', [ 'tenantModel', '$w
 
                 $(element).on('focus', (e) => {
                     $(element).removeClass('focusedOut');
-                    $('.bootstrap-datetimepicker-widget').css($(element).offset());
+                    if (window.location.href.indexOf("invoices/treasuryreport") != -1 && ($(e.target)[0].id).indexOf("clc") != -1) {
+                        var top = $(element).offset().top;
+                        var left = $(element).offset().left;
+                        $('.bootstrap-datetimepicker-widget').css('top', top - 285);
+                        $('.bootstrap-datetimepicker-widget').css('left', left);
+                    } else {
+                        $('.bootstrap-datetimepicker-widget').css($(element).offset());
+
+                    }
+                   
+
                 });
 
                 $(element).on('blur', (e) => {
