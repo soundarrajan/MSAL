@@ -1643,7 +1643,11 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             })
             return $rootScope.timelineStatusList;
         }
-        
+
+
+		$rootScope.$on('allStrategiesAreCancelled', function(event, voyageDetailId){
+			$("span[voyage-detail-id="+voyageDetailId+"]").removeClass("vis-voyage-content-sap");
+		});        
 
         document.addEventListener('scroll', function (e) {
            if (!$(e.target).hasClass("vis-item") && $(e.target).parents(".vis-item").length == 0) {

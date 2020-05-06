@@ -292,12 +292,29 @@ angular.module('shiptech.components')
 	            $http.post(url, payload).then((response) => {
 	                if (response.status == 200) {
 	                	window.timelineCancelledBunkerStrategies.push(currentBunkerPlanId);
+			            ctrl.checkIfAllStrategiesAreCancelled();
 	                } else {
 	                    console.log('Error cancelStrategy');
 	                }
 	            });
 	            $scope.cancelStrategyModalData = null;
             };
+
+            ctrl.checkIfAllStrategiesAreCancelled = function() {
+            	hasStrategies = false
+            	$.each($scope.rightClickPopoverData.todayVoyages, function(k,v){
+            		if(v.voyageDetail) {
+	            		if(v.voyageDetail.bunkerPlan) {
+		            		if(v.voyageDetail.bunkerPlan.supplyStrategy && window.timelineCancelledBunkerStrategies.indexOf(v.voyageDetail.bunkerPlan.id) == -1) {
+				            	hasStrategies = true;
+		            		}
+	            		}
+            		}
+            	})
+            	if (!hasStrategies) {
+	            	$rootScope.$broadcast('allStrategiesAreCancelled', $scope.rightClickPopoverData.todayVoyages[0].voyageDetail.id);
+            	}
+            }
 
 			ctrl.strategyAlreadyCancelled = function(bunkerPlanId) {
 				if (window.timelineCancelledBunkerStrategies) {
