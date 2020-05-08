@@ -781,6 +781,26 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     }
                     return '<a name="reconfirm" class="' + cls + '" ng-disabled="' + vm.canReconfirm(rowObject) + "\"  ng-click=\"CLC.dataAction('reconfirmOrder', " + rowObject.order.id + ')">Reconfirm</a>';
                 };
+
+                var formatOps = function (cellValue, options, rowObject) {
+                    if (options.colModel.name) {
+                        var color;
+                        if (options.colModel.name == "Yes") {
+                             color = "#1AB01E";
+                        } else {
+                            color = "EE4535"
+                        }
+                        label = options.colModel.name;
+                        if (color) {
+                            return '<span class="label formatStatus" style="overflow:hidden; text-overflow:ellipsis; display:block; background-color:' + color + '" >' + label + "</span>";
+                        } else {
+                            return "";
+                        }
+                    } 
+                    return "";
+
+                }
+
                 var formatStatus = function(cellValue, options, rowObject) {
                     if (cellValue != null && cellValue != "") {
                         if (typeof cellValue == "object") {
@@ -2289,7 +2309,8 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     81:best_contract_price,
                     82:quantity_with_uom,
                     83:best_contract_loop,
-                    85:best_contract_checkbox
+                    85:best_contract_checkbox,
+                    86:formatOps
                 };
 
             }
