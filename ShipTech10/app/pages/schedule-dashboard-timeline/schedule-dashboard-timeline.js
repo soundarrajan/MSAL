@@ -548,8 +548,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     if (isNew){
                         tpl += `<span class="vis-custom-group-column vis-vessel" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="newVessel"> N </span> <span class="vis-custom-group-column-content vesselName"> ${vesselName} </span></span>`;
                     } else {
-                        tpl += `<span class="vis-custom-group-column vis-vessel" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="vis-custom-group-column-content"> ${vesselName} </span></span>`;
-
+                    	tpl += `<span class="vis-custom-group-column vis-vessel" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="vis-custom-group-column-content"> ${vesselName} </span></span>`;
                     }
                     if ($scope.displayedColumns["Service"]) {
                     	tpl += `<span class="vis-custom-group-column vis-service" tooltip title="${group.serviceName}"> <span class="vis-custom-group-column-content">${serviceName} </span></span>`;
@@ -722,21 +721,21 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             timeline._setScrollTop(0);
             if ($('.vis-left').width() > 0) {
             	var groupColumnsTitleElement = '<div class="vis-custom-group" id="vis-custom-group-columns">';
-                groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-vessel"> Vessel </span>';
+                groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-vessel" timeline-order-column="vesselName"> Vessel </span>';
                 if ($scope.displayedColumns["Service"]) {
-	                groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-service"> Service </span>';
+	                groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-service" timeline-order-column="serviceName"> Service </span>';
                 }
                 if ($scope.displayedColumns["Buyer of the Vessel"]) {
-                    groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-buyer-of-vessel"> Buyer of the Vessel </span>';
+                    groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-buyer-of-vessel" timeline-order-column="buyerName"> Buyer of the Vessel </span>';
                 }
                 if ($scope.displayedColumns["Buyer of the Service"]) {
-                    groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-buyer-of-service"> Buyer of the Service </span>';
+                    groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-buyer-of-service" timeline-order-column="serviceBuyerName"> Buyer of the Service </span>';
                 }                
                 if ($scope.displayedColumns["Company"]) { 
                     if ($scope.tenantSettings.companyDisplayName.name == "Company") {
-                        groupColumnsTitleElement += '<span class="vis-custom-group-column-header last vis-company"> Company </span></div>';
+                        groupColumnsTitleElement += '<span class="vis-custom-group-column-header last vis-company" timeline-order-column="companyName"> Company </span></div>';
                     } else {
-                        groupColumnsTitleElement += '<span class="vis-custom-group-column-header last vis-company"> Pool </span></div>';
+                        groupColumnsTitleElement += '<span class="vis-custom-group-column-header last vis-company" timeline-order-column="companyName"> Pool </span></div>';
                     }
                 } 
                 groupColumnsTitleElement += '</div>';
@@ -1656,22 +1655,45 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         }, true);
 
         jQuery(document).ready(function(){
-        	$(document).on("click", function(e){
-        		if(!$(e.target).hasClass("vis-item") && $(e.target).parents(".vis-item").length == 0){
-        			$(".vis-item").removeClass("vis-selected");
-        		}	
+        	$(document).on("click", "span[timeline-order-column]", function(e){
+        		var currentSort = $(e.target).attr("timeline-order-column");
+        		window.timelineGroupOrdering = [];
+        		if(!window.timelineGroupOrdering[currentSort]) {
+	        		window.timelineGroupOrdering[currentSort] = _.orderBy(window.mytimeline.groupsData._data._data, [currentSort], ['asc']);
+        			for (var i = window.timelineGroupOrdering[currentSort].length - 1; i >= 0; i--) {
+						Object.keys(window.mytimeline.groupsData._data._data).forEach(function(key) {
+
+	        				if (window.timelineGroupOrdering[currentSort][i].id == window.mytimeline.groupsData._data._data[key].id) {
+		        				window.mytimeline.groupsData._data._data[key]["sortIndex-" + currentSort] = i;
+	        				}
+
+						});        				
+        			}
+        		}
+				if (window.timelineCurrentSort == currentSort) {
+					if (window.timelineCurrentSortDirection == 'asc') {
+		        		window.timelineCurrentSortDirection = 'desc';
+					} else {
+		        		window.timelineCurrentSortDirection = 'asc';
+					}
+				} else {
+	        		window.timelineCurrentSortDirection = 'asc';
+				}
+				$("span[timeline-order-column]").removeClass("asc").removeClass("desc");
+				$(e.target).addClass(window.timelineCurrentSortDirection);
+				options = {
+					'groupOrder' : function (a, b) {
+						if (window.timelineCurrentSortDirection == 'asc') {
+							return a["sortIndex-" + currentSort] - b["sortIndex-" + currentSort];
+						} else {
+							return b["sortIndex-" + currentSort] - a["sortIndex-" + currentSort];
+						}
+					}
+				}
+        		window.timelineCurrentSort = currentSort;
+				window.mytimeline.setOptions(options);
+				window.mytimeline.redraw();
         	})
-			// $(window).bind('mousewheel DOMMouseScroll', function(event){
-			// 	if ($(event.target).hasClass("vis-group")) {
-			// 	    var currentScrollTop = timeline._getScrollTop();
-			// 	    if (event.originalEvent.wheelDelta > 0 || event.originalEvent.detail < 0) {
-			// 	        timeline._setScrollTop(currentScrollTop + 100);
-			// 	    }
-			// 	    else {
-			// 	        timeline._setScrollTop(currentScrollTop - 100);
-			// 	    }
-			// 	}
-			// });
         })
 
 		function getContrastYIQ(hexcolor){

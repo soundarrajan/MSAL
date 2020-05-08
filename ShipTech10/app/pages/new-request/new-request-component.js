@@ -401,6 +401,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                             for (let j = 0; j < ctrl.request.locations.length; j++) {
                                 if (ctrl.requestTenantSettings.recentEta.id == 1 && ctrl.request.locations[j].eta && ctrl.request.locations[j].id) {
                                     if (!ctrl.request.locations[j].recentEta) {
+
                                         ctrl.request.locations[j].recentEta = ctrl.request.locations[j].eta;
                                     }
                                 }
@@ -1470,10 +1471,12 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     }
                     ctrl.request.locations[ctrl.request.locations.length - 1].products = _.orderBy(ctrl.request.locations[ctrl.request.locations.length - 1].products, [ 'productTypeId', 'product.name' ], [ 'asc', 'asc' ]);
 		            _.each(ctrl.request.locations[ctrl.request.locations.length - 1].products, (value, key) => {
-		                if (!value.product.originalName) {
-		                	value.product.originalName = value.product.name;
+		                if (value.product) {
+			                if (!value.product.originalName) {
+			                	value.product.originalName = value.product.name;
+			                }
+			                value.product.name = `${String(key + 1) } - ${ angular.copy(value.product.originalName)}`;
 		                }
-		                value.product.name = `${String(key + 1) } - ${ angular.copy(value.product.originalName)}`;
 		            });
                     deferred.resolve();
                     ctrl.getLowestEtaForDestinationInLocation(ctrl.request.locations.length - 1);
@@ -1485,7 +1488,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             return deferred.promise;
         }
 
-        function setLocationDates(locationId, vesselVoyageId, eta, etb, etd) {
+        function setLocationDates(locationId, vesselVoyageId, eta, etb, etd, recentEta) {
             let location;
             for (let i = 0; i < ctrl.request.locations.length; i++) {
                 location = ctrl.request.locations[i];
@@ -1493,6 +1496,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     location.eta = eta;
                     location.etb = etb;
                     location.etd = etd;
+                    location.recentEta = recentEta;
                     if (eta && etb && etd) {
                         if (!ctrl.etaDefaultedCount) {
                             ctrl.etaDefaultedCount = {};
@@ -1523,7 +1527,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         }
         $scope.addTypeLocation = function(val, extra) {
             return addLocation(val, null, null, extra).then(() => {
-                setLocationDates(extra.id, extra.vesselVoyageId || extra.voyageId, extra.eta, extra.etb, extra.etd);
+                setLocationDates(extra.id, extra.vesselVoyageId || extra.voyageId, extra.eta, extra.etb, extra.etd, extra.recentEta);
                 if (extra.vesselVoyageId || extra.voyageId) {
 	                setDefaultLocationFields(extra.id, extra.vesselVoyageId || extra.voyageId, extra);
                 }
@@ -1827,7 +1831,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         ctrl.selectPort = function(locationId, extraInfo) {
             if ($scope.portsModal) {
                 addLocation(locationId, null, null, extraInfo).then(() => {
-                    setLocationDates(extraInfo.locationId, extraInfo.voyageId, extraInfo.eta, extraInfo.etb, extraInfo.etd);
+                    setLocationDates(extraInfo.locationId, extraInfo.voyageId, extraInfo.eta, extraInfo.etb, extraInfo.etd, extraInfo.recentEta);
                 });
                 $scope.portsModal = false;
             } else {
@@ -2278,7 +2282,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             // console.log(ctrl.scheduleVoyageID );
             angular.forEach(locations, (location, key) => {
                 addLocation(location.locationId, location.voyageId, location.vesselVoyageDetailId, location).then(() => {
-                    setLocationDates(location.locationId, location.voyageId, location.eta, location.etb, location.etd);
+                    setLocationDates(location.locationId, location.voyageId, location.eta, location.etb, location.etd, location.recentETA);
                     setDefaultLocationFields(location.locationId, location.vesselVoyageId || location.voyageId, location);
                 });
             });
@@ -2680,7 +2684,13 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                             return object.id == val2.specGroup.id;
                         });
                         if (val2.specGroup.isDeleted) {
-                        	specGroupErrors.push(`Spec Group for "`+val2.product.name+`" from ` + val.location.name + ` is invalid.`);
+                            if (val2.product && ctrl.request.id) {
+                                if (val2.productStatus) {
+                                    if ( val2.productStatus.name != "Cancelled") {
+                        	               specGroupErrors.push(`Spec Group for "`+val2.product.name+`" from ` + val.location.name + ` is invalid.`);
+                                    }
+                                }
+                            }
                         }
                     } else {
                     	if (val2.product && ctrl.request.id) {

@@ -155,12 +155,8 @@ angular.module('shiptech').service('dataProcessors', [ '$filtersData', '$state',
             }
             if(obj.name == 'notes' && obj.label == 'Add/View Notes') {
                 colmodel[key].formatter = CLC.get_formatter('documents_notes_modal');
-            }
-            if(CLC.screen_id == 'contract') {
-                if(obj.name == 'isVerified') {
-                    colmodel[key].formatter = CLC.get_formatter('yes_no');
-                }
-            }
+            } 
+
 
             // to be moved in the screen layout (screen id: 113)
             if(CLC.screen_id == 'treasuryreport') {

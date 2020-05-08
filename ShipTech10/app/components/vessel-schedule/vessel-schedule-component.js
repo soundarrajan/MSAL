@@ -31,6 +31,7 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope', '$
                 Value: value
             }).then((data) => {
                 ctrl.data = data.payload;
+                ctrl.data1 = angular.copy(data.payload);
                 $.each(ctrl.data, (k, v) => {
                     v.eta = $scope.formatDate(v.eta);
                     v.etb = $scope.formatDate(v.etb);
@@ -108,7 +109,7 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope', '$
                         ctrl.data[key].destinationEtaFormated,
                     ].join(' - ');
                     // }
-                    selectedLocations.push(ctrl.data[key]);
+                    selectedLocations.push(ctrl.data1[key]);
                 }
             });
             ctrl.onVesselSchedulesSelect({

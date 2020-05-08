@@ -1473,7 +1473,23 @@ angular.module('shiptech.pages').controller('ScheduleCalendarController', [ '$ro
                 window.open(href, '_blank');
             };
             function contextActionContractPlanning(voyageStop) {
+                var vesselsWithoutProduct = '';
                 $rootScope.scheduleDashboardVesselVoyages = [ voyageStop ];
+                $.each(ctrl.calendarDataRows, function(k, calData){
+                    $.each(calData.calendar, function(k2, cal){
+                        $.each(cal, function(k2, voyage){
+                            if (voyageStop.id == voyage.id) {
+                                if (!calData.defaultDistillate && !calData.defaultFuel) {
+                                    vesselsWithoutProduct = `${vesselsWithoutProduct }${calData.vesselName }, `;
+                                }
+                            }
+                        })
+                    })
+                })
+                if (vesselsWithoutProduct.length > 0) {
+                    toastr.error(`For the selected Vessels : ${ vesselsWithoutProduct } there  is no product defined. Please define at least one Product into Vessel master.`);
+                    return;
+                }
                 localStorage.setItem('scheduleDashboardVesselVoyages', JSON.stringify($rootScope.scheduleDashboardVesselVoyages));
                 // $rootScope.activeBreadcrumbFilters = [];
                 $('.contextmenu a.close').click();
@@ -1482,7 +1498,23 @@ angular.module('shiptech.pages').controller('ScheduleCalendarController', [ '$ro
         };
 
         ctrl.addVoyageToContractPlanning = function(voyageStop) {
+            var vesselsWithoutProduct = '';
             $rootScope.scheduleDashboardVesselVoyages = [ voyageStop ];
+            $.each(ctrl.calendarDataRows, function(k, calData){
+                $.each(calData.calendar, function(k2, cal){
+                    $.each(cal, function(k2, voyage){
+                        if (voyageStop.id == voyage.id) {
+                            if (!calData.defaultDistillate && !calData.defaultFuel) {
+                                vesselsWithoutProduct = `${vesselsWithoutProduct }${calData.vesselName }, `;
+                            }
+                        }
+                    })
+                })
+            })
+            if (vesselsWithoutProduct.length > 0) {
+                toastr.error(`For the selected Vessels : ${ vesselsWithoutProduct } there  is no product defined. Please define at least one Product into Vessel master.`);
+                return;
+            }
             localStorage.setItem('scheduleDashboardVesselVoyages', JSON.stringify($rootScope.scheduleDashboardVesselVoyages));
             // $rootScope.activeBreadcrumbFilters = [];
             $('.contextmenu a.close').click();

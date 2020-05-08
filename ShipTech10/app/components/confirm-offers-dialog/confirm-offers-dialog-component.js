@@ -55,7 +55,7 @@ angular.module('shiptech.components').controller('ConfirmOffersDialogController'
                     offerIds.push(confirmationProductOfferIds[i].requestOfferId);
                 }
             }
-            groupOfRequestsModel.confirmOfferView($.unique(productIds).join(','), $.unique(offerIds).join(',')).then((data) => {
+            groupOfRequestsModel.confirmOfferView(_.uniq(productIds).join(','), _.uniq(offerIds).join(',')).then((data) => {
                 if (data.payload !== null) {
                     ctrl.requestOfferItems = data.payload.requestOfferItems;
                     ctrl.isBestOffer = data.payload.isBestOffer;

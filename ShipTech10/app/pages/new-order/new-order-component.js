@@ -1588,27 +1588,34 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
 	        	var initialContractId = angular.copy(ctrl.data.products[productIndex].contract.id);
 	        	var initialContract = angular.copy(ctrl.data.products[productIndex].contract);
         	}
-        	ctrl.data.products[productIndex].contract = null;
-        	ctrl.data.products[productIndex].contractProductId = null;
-        	ctrl.data.products[productIndex].contractId = null;
-        	// ctrl.data.products[productIndex].formula = null;
-        	ctrl.data.products[productIndex].price = null;
-			ctrl.data.products[productIndex].agreementType = null;
-			ctrl.data.products[productIndex].physicalSupplier = null;
-			ctrl.data.products[productIndex].pricingType = null;
-			// ctrl.data.products[productIndex].formulaDescription = null;
-			ctrl.data.products[productIndex].totalAmount = null;
-			// ctrl.getAllOrderContractOptions();
+            var isSameContract = false;
+
+            if (initialContract) {
+                ctrl.data.products[productIndex].contract = null;
+                ctrl.data.products[productIndex].contractProductId = null;
+                ctrl.data.products[productIndex].contractId = null;
+                // ctrl.data.products[productIndex].formula = null;
+                ctrl.data.products[productIndex].price = null;
+                ctrl.data.products[productIndex].agreementType = null;
+                ctrl.data.products[productIndex].physicalSupplier = null;
+                ctrl.data.products[productIndex].pricingType = null;
+                // ctrl.data.products[productIndex].formulaDescription = null;
+                ctrl.data.products[productIndex].totalAmount = null;
+                // ctrl.getAllOrderContractOptions();
+
+            }
+        
 			ctrl.getOrderContractOptions(ctrl.data.products[productIndex], false, function(response){
 				if (response && initialContractId) {
 					var newContractData = false;
 					$.each(response, function(k,v){
 						if (v.contract.id == initialContractId) {
 							newContractData = v;
+                            isSameContract = true;
 						}
 					})
 					if (newContractData) {
-						$scope.selectProductContract(ctrl.data.products[productIndex].id, newContractData);
+						$scope.selectProductContract(ctrl.data.products[productIndex].id, newContractData, isSameContract);
 		   //              ctrl.data.products[productIndex].contractProductId = newContractData.contractProductId;
 		   //              ctrl.data.products[productIndex].priceUom = newContractData.uom;
 		   //              ctrl.data.products[productIndex].contract = angular.copy(newContractData.contract);
@@ -2283,10 +2290,11 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
 
             if (ctrl.orderId) {
                 var validActiveSpecGroupMessage = ctrl.checkInactiveSpecGroup();
+               
                 if (validActiveSpecGroupMessage != true) {
                     toastr.error(validActiveSpecGroupMessage);
-                    return;
-                }   
+                    return false;
+                }
                 orderModel.update(payload).then((responseData) => {
                     ctrl.buttonsDisabled = false;
                     $state.go(STATE.EDIT_ORDER, {
@@ -2312,24 +2320,37 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
         };
 
         ctrl.checkInactiveSpecGroup = function() {
-            let text = 'Please select an active spec group for product ';
+            var specGroupErrors = []; 
             $.each(ctrl.data.products, (key2, val2) => {
                 if (val2.specGroup != null) {
                     var findSpecGroup = _.find($listsCache.SpecGroup, function(object) {
                         return object.id == val2.specGroup.id;
                     });
-
-                    if (!findSpecGroup) {
-                        text += val2.product.name + ', ';
+                    if (val2.specGroup.isDeleted) {
+                        if (val2.product) {
+                            if (val2.status) {
+                                if ( val2.status.name != "Cancelled") {
+                                       specGroupErrors.push(`Spec Group for "`+val2.product.name+ ` is invalid.`);
+                                }
+                            }
+                        }
                     }
-                   
+                } else {
+                    if (val2.product) {
+                        if (val2.status) {
+                            if ( val2.status.name != "Cancelled") {
+                                specGroupErrors.push(`Please select a specGroup for "`+val2.product.name+`" from ` + val.location.name + `.`);
+                            }
+                        } else {
+                            specGroupErrors.push(`Please select a specGroup for "`+val2.product.name+`" from ` + val.location.name + `.`);
+
+                        }
+                    } 
                 }
             });
 
-            if (text != 'Please select an active spec group for product ') {
-                if (text[text.length - 2] == ',') {
-                    text = text.substring(0, text.length - 2);
-                }
+            if (specGroupErrors.length > 0) {
+                text = specGroupErrors.join("<br>");
                 return text;
             }
             return true;
@@ -3178,7 +3199,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
         };
 
 
-        $scope.selectProductContract = function(productUniqueId, selection) {
+        $scope.selectProductContract = function(productUniqueId, selection, isSameContract) {
             // find product
             // 1. by id
             console.log(selection);
@@ -3212,7 +3233,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                     }
                 }
                 productUomChg(ctrl.data.products[idx]);
-                $scope.addAdditionalCostByContractProductId(selection.contractProductId, idx);
+                $scope.addAdditionalCostByContractProductId(selection.contractProductId, idx, isSameContract);
             };
             $.each(ctrl.data.products, (key, value) => {
                 if(value.id == productUniqueId) {
@@ -3224,7 +3245,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
         };
 
 
-        $scope.addAdditionalCostByContractProductId = function(contractProductId, productIdx) {
+        $scope.addAdditionalCostByContractProductId = function(contractProductId, productIdx, isSameContract) {
             //     	if (ctrl.data.id) {
             // // applicable only for new order
             //     		return
@@ -3236,6 +3257,19 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
             	if (!ctrl.data.products[currentProductIndex].additionalCosts) {
             		ctrl.data.products[currentProductIndex].additionalCosts = [];
             	}
+                if (isSameContract) {
+                    $.each(response.payload, (k, v) => {
+                        for (let i = ctrl.data.products[currentProductIndex].additionalCosts.length - 1; i >= 0; i--) { 
+                            var x = response.payload[k];
+                            var y = ctrl.data.products[currentProductIndex].additionalCosts[i];
+                            if (x.additionalCost.id == y.additionalCost.id && x.costType.id == y.costType.id && x.currency.id == y.currency.id && x.extras == y.extras && x.price == y.price) {
+                                ctrl.data.products[currentProductIndex].additionalCosts[i].isFromContract = true;
+                            }
+                          
+                        }
+                    });
+                }
+
             	for (let i = ctrl.data.products[currentProductIndex].additionalCosts.length - 1; i >= 0; i--) {
             		if (ctrl.data.products[currentProductIndex].additionalCosts[i].isFromContract) {
             			ctrl.data.products[currentProductIndex].additionalCosts.splice(i, 1);

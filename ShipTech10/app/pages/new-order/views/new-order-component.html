@@ -712,25 +712,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                    <div ng-if="$ctrl.isDeliveryWindow && !($ctrl.isRecentETA && $ctrl.portFields.recentEta.visible)">
-                                                        <div class="form-group row">
-                                                            <label class="deliveryDate_label" for="deliveryDate">
-                                                                {{ 'PAGES.NEW_REQUEST.DELIVERY_TO' | translate }}
-                                                            </label>
-                                                            <div class="input-group form_input form_input_deliveryDate">
-                                                                <div class="input-group w100">
-                                                                    <input
-                                                                            class="form-control date-mask new-date-picker"
-                                                                            id="deliveryTo"
-                                                                            name="deliveryTo"
-                                                                            new-date-picker
-                                                                            ng-class="{'etb_invalid': $ctrl.data.deliveryTo > $ctrl.data.deliveryTo}"
-                                                                            ng-model="$ctrl.data.deliveryTo"
-                                                                            picker-type="dynamic">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
                                                 </div>
 
                                                 <div class="col-md-3">

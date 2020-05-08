@@ -240,7 +240,17 @@ angular.module('shiptech.components')
 		    };
 
 	        ctrl.addVoyageToContractPlanning = function(voyageStop) {
+                var vesselsWithoutProduct = '';
 	            $rootScope.scheduleDashboardVesselVoyages = [ ctrl.groupedVoyagesDetails[voyageStop][0] ];
+                for (var i = 0 ; i < $rootScope.scheduleDashboardVesselVoyages.length; i++) {
+                      if (!$rootScope.scheduleDashboardVesselVoyages[i].DefaultDistillate  &&  !$rootScope.scheduleDashboardVesselVoyages[i].DefaultFuel) {
+                        vesselsWithoutProduct = `${vesselsWithoutProduct }${$rootScope.scheduleDashboardVesselVoyages[i].VesselName }, `;
+                    }
+                }
+                if (vesselsWithoutProduct.length > 0) {
+                    toastr.error(`For the selected Vessels : ${ vesselsWithoutProduct } there  is no product defined. Please define at least one Product into Vessel master.`);
+                    return;
+                }
 	            localStorage.setItem('scheduleDashboardVesselVoyages', JSON.stringify($rootScope.scheduleDashboardVesselVoyages));
 	            // $rootScope.activeBreadcrumbFilters = [];
 	            $('.contextmenu a.close').click();

@@ -465,7 +465,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                 });
             });
             initializeDataArrays(ctrl.requests, skipSellerSorting);
-            var requestGroupProductIds = getRequestGroupProductIdsCSV(ctrl.requests);
+            requestGroupProductIds = getRequestGroupProductIdsCSV(ctrl.requests);
             if (!skipBestCalls) {
 	            // groupOfRequestsModel.getBestOffer(requestGroupProductIds).then(function (data) {
 	            //     ctrl.bestOfferData = data.payload;

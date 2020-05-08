@@ -224,6 +224,7 @@ Number(function() {
                                             if (scope.source) {
                                                 callback.clc = angular.copy(scope.source);
                                             }
+                                            callback.clc.colModel = _.uniqBy(callback.clc.colModel, "name");
                                             if ($rootScope.adminConfiguration) {
                                                 if ($rootScope.adminConfiguration.contract.hideAllowedProduct) {
                                                     if (callback.clc.table_name == 'Available Contracts') {
