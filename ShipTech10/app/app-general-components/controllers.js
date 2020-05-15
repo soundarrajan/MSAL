@@ -1101,7 +1101,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         textVal = rowObject.comment.replace(new RegExp("'","g"), "\\'");
                         textVal = textVal.replace(new RegExp('"',"g"), "\\'");
                     }
-                    return '<textarea class="contract_planning_comments"  ng-blur="CLC.changeCPRowModel(cpcomment[' + options.rowId + "], " + options.rowId + "," + columnKey + ', false);" ng-model="cpcomment[' + options.rowId + ']" ng-init="cpcomment[' + options.rowId + '] = \''+textVal+'\'" rowId="' + options.rowId + '" cols="30" rows="1" style="width: 100px; max-width: 100px; min-width: 100px; min-height: 30px" >' + textVal + '</textarea>';
+                    return '<textarea class="contract_planning_comments"  ng-blur="CLC.changeCPRowModel(cpcomment[' + options.rowId + "], " + options.rowId + "," + columnKey + ', false);" ng-model="cpcomment[' + options.rowId + ']" ng-init="cpcomment[' + options.rowId + '] = \''+textVal+'\'" rowId="' + options.rowId + '" cols="30" rows="1" style="display: block; width: 100px; max-width: 100%; min-width: 100px; min-height: 30px; resize: both;" >' + textVal + '</textarea>';
 
                 };
                 var order_comments = function(cellValue, options, rowObject) {
