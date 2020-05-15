@@ -57,6 +57,7 @@
         </div>
     </div>
 </div>
+
 <div class="col-md-6">
     <div class="form-group row">
         <label for="productTypeInSchedule" class="simpleLookupLabel">
@@ -70,6 +71,22 @@
         </div>
     </div>
 </div>
+
+<div class="col-md-6">
+    <div class="form-group row">
+        <label for="pendingAInSchedule" class="simpleLookupLabel">
+           Display Pending Actions
+            <span class="orange-txt">
+                *
+            </span>
+        </label>
+        <div class="input-group form_input form_input_pendingActionsInSchedule">
+            <select class="form-control bs-select changeIT" name="pendingActionsInSchedule" id="pendingActionsInSchedule" ng-required="true" ng-options="item as item.name for item in CM.listsCache.YesNoOptions track by item.id" ng-model="formValues.schedule.productTypeInSchedule"></select>
+        </div>
+    </div>
+</div>
+</div>
+
 
 <div class="row">
 	<div class="container-fluid">
@@ -149,5 +166,4 @@
             	</tbody>
             </table>
         </div>
-</div>
 </div>
