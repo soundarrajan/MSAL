@@ -46,6 +46,9 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         };
 
         var createStyle = function(colorCode) {
+        	if (!colorCode) {
+        		return null;
+        	}
             return {
                 "border-color": colorCode,
                 "background-color": colorCode
@@ -235,6 +238,14 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 if (findHighestPriority) {
                     statusColor = statusColors.getColorCodeFromLabels(findHighestPriority.voyageDetail.portStatus, $listsCache.ScheduleDashboardLabelConfiguration); 
                 } 
+
+				var statusObj = vessels[i].voyageDetail.portStatus;
+				$.each(window.scheduleDashboardConfiguration.payload.labels, function(sk,sv){
+					if (sv.status.id == statusObj.id && sv.transactionType.id == statusObj.transactionTypeId && !sv.displayInDashboard ) {
+						console.log("remove Color for :" + statusObj.name)
+						statusColor = '#ffffff';
+					}
+				})                
                 var voyageContent = '';
                 var voyageContentDotted = '';
                 var initialEtaDotted = '';
@@ -322,7 +333,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     content: voyageContent,
                     start: startDate,
                     end: endDate,
-                    style: 'z-index:'+ i + '; background-color: ' + statusColor +"; color:" + getContrastYIQ(statusColor) + ( !vessels[i].voyageDetail.portStatus.id ? "; border-color: #9E9E9E" : " "  )
+                    style: 'z-index:'+ i + '; background-color: ' + statusColor +"; color:" + getContrastYIQ(statusColor) + ( !vessels[i].voyageDetail.portStatus.id ? "; " : " "  )
                 };
                 
 
@@ -519,7 +530,10 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 	        	computedStartDate = angular.copy(moment.utc(ctrl.startDate).format("YYYY-MM-DD"));
 	        	computedEndDate = angular.copy(moment.utc(ctrl.startDate).add(30,"days").format("YYYY-MM-DD"));
         	}
-            return {
+
+
+
+            options =  {
                 'verticalScroll': true,
                 // 'moveable': false,
                 // Disable red line
@@ -566,6 +580,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     return tpl;
                 },
             };
+
+            return options;
         }
 
         var buildTimeline = function(data) {
@@ -636,6 +652,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 });
 
 
+
+
                 redrawOutOfRangeElements = function(){
                 	setTimeout(function(){
 						Object.keys(window.mytimeline.itemSet.items).forEach(function (item) {
@@ -660,13 +678,25 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 	},300);
                 }
 
-     //            timeline.on("rangechange", function(){
-					// redrawOutOfRangeElements();
-     //            })
 
+                /*
+                	Redraw long voyages that exceed the timeline width
+                	Fixed performance issue when scrolling groups vertically
+                */
                 $(".vis-vertical-scroll").on("scroll", function(){
 					redrawOutOfRangeElements();
+					$(".vis-panel.vis-center").css("padding-left", $(".vis-panel.vis-center").css("left"));
+					$(".vis-panel.vis-center").css("margin-left", "-" + $(".vis-panel.vis-center").css("left"));
+					$(".vis-left").css("pointer-events", "none");
+					window.lastScrollingTime = moment();
                 })
+                $(".vis-panel.vis-center").on("mouseover", function(){
+                	var timeFromLastScroll = moment().diff( moment(window.lastScrollingTime) )
+                	if (timeFromLastScroll > 2000) {
+						$(".vis-left").css("pointer-events", "initial");
+                	}
+                })
+
 
                 $scope.timelineItems = groups.length;
                 
@@ -750,12 +780,44 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     }
                 });
             }
+            applyCurrentSort();
             $scope.timelineLoaded = true;
-            // setTimeout(function() {
-            //     timeline.moveTo(ctrl.startDate);
-            // });
+
 
         };
+
+        applyCurrentSort = function() {
+			if (window.timelineCurrentSort && window.timelineCurrentSortDirection) {
+        		window.timelineGroupOrdering[window.timelineCurrentSort] = _.orderBy(window.mytimeline.groupsData._data._data, [window.timelineCurrentSort], ['asc']);
+    			for (var i = window.timelineGroupOrdering[window.timelineCurrentSort].length - 1; i >= 0; i--) {
+					Object.keys(window.mytimeline.groupsData._data._data).forEach(function(key) {
+
+        				if (window.timelineGroupOrdering[window.timelineCurrentSort][i].id == window.mytimeline.groupsData._data._data[key].id) {
+	        				window.mytimeline.groupsData._data._data[key]["sortIndex-" + window.timelineCurrentSort] = i;
+        				}
+
+					});        				
+    			}
+				$("span[timeline-order-column]").removeClass("asc").removeClass("desc");
+				$('[timeline-order-column="'+window.timelineCurrentSort+'"]').addClass(window.timelineCurrentSortDirection);
+				options = {
+					"groupOrder" : function (a, b) {
+						if (window.timelineCurrentSortDirection == 'asc') {
+							return a["sortIndex-" + window.timelineCurrentSort] - b["sortIndex-" + window.timelineCurrentSort];
+						} else {
+							return b["sortIndex-" + window.timelineCurrentSort] - a["sortIndex-" + window.timelineCurrentSort];
+						}
+					}
+				}
+				window.mytimeline.setOptions(options);
+                setTimeout(function() {
+                	if ($(".vis-vertical-scroll").scrollTop() < 50) {
+	                    timeline._setScrollTop(0);
+                	}
+                });				
+			}
+        }
+
         $scope.changeZoomLevel = function(direction) {
         	if (direction === 0) {
         		timeline.zoomOut(0.2);
@@ -787,7 +849,12 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             $scope.endDateDisplay = moment.unix(moment(ctrl.endDate).format('X')).format(dateFormat);
 
             getData($scope.filtersAppliedPayload).then(function(response) {
+                console.log(window.timelineCurrentSort);
+
+
                 updateTimeline(response);
+                window.selectFrame = true;
+                $("span[timeline-order-column=" + window.timelineCurrentSort + "]").click();
                 $timeout(function() {
                     $scope.getTimelineStatus();
                 })
@@ -1611,6 +1678,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
                 var colorCode = statusColors.getColorCodeFromLabels(statusObj, $listsCache.ScheduleDashboardLabelConfiguration);
 
+
                 var status = {}
                 status.style = createStyle(colorCode);
                 status.count = 0;
@@ -1654,8 +1722,17 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             }   
         }, true);
 
-        jQuery(document).ready(function(){
+		jQuery(document).ready(function(){
+
         	$(document).on("click", "span[timeline-order-column]", function(e){
+				// Prevent multiple clicks
+				if (window.lastSortingTime) {
+					if (moment().diff(window.lastSortingTime) < 1000) {
+						return;
+					}
+				}
+				window.lastSortingTime = moment();
+
         		var currentSort = $(e.target).attr("timeline-order-column");
         		window.timelineGroupOrdering = [];
         		if(!window.timelineGroupOrdering[currentSort]) {
@@ -1670,15 +1747,23 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 						});        				
         			}
         		}
-				if (window.timelineCurrentSort == currentSort) {
-					if (window.timelineCurrentSortDirection == 'asc') {
-		        		window.timelineCurrentSortDirection = 'desc';
-					} else {
-		        		window.timelineCurrentSortDirection = 'asc';
-					}
-				} else {
-	        		window.timelineCurrentSortDirection = 'asc';
-				}
+                if (!window.selectFrame) {
+                    if (window.timelineCurrentSort == currentSort) {
+                        if (!window.selectFrame) {
+                            if (window.timelineCurrentSortDirection == 'asc') {
+                                window.timelineCurrentSortDirection = 'desc';
+                            } else {
+                                window.timelineCurrentSortDirection = 'asc';
+                            }
+                        }
+                        
+                    } else {
+                        window.timelineCurrentSortDirection = 'asc';
+                    }
+                } else {
+                    window.selectFrame = false;
+                }
+				
 				$("span[timeline-order-column]").removeClass("asc").removeClass("desc");
 				$(e.target).addClass(window.timelineCurrentSortDirection);
 				options = {
@@ -1693,10 +1778,18 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         		window.timelineCurrentSort = currentSort;
 				window.mytimeline.setOptions(options);
 				window.mytimeline.redraw();
+                setTimeout(function() {
+                	if ($(".vis-vertical-scroll").scrollTop() < 50) {
+	                    timeline._setScrollTop(0);
+                	}
+                });
+
         	})
         })
+		
 
 		function getContrastYIQ(hexcolor){
+			if (!hexcolor) { return "black"; }
 		    hexcolor = hexcolor.replace("#", "");
 		    var r = parseInt(hexcolor.substr(0,2),16);
 		    var g = parseInt(hexcolor.substr(2,2), 16);

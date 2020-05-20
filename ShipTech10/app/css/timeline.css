@@ -27,7 +27,7 @@
 	width: 230px;
 }
 .vis-service {
-	width: 50px;
+	width: 70px;
 }
 .vis-buyer-of-service {
 	width: 65px;
@@ -51,17 +51,18 @@
     font-size: 14px;
 }
 
-.vis-custom-group-column { 
+.vis-left .vis-custom-group .vis-custom-group-column { 
 	/* height: 100%; */
     display: flex;
     /* justify-content: center; */
     align-items: center;
-    border-right: 1px solid #e7ecf1;
+    border-right: 1px solid #e7ecf1 !important;
     text-align: center;
     /* padding: 5px; */
     text-overflow: ellipsis;
     overflow: hidden;
     font-size: 14px;
+    box-shadow: 0px -1px 0px 0px inset #e7ecf1;
 }
  .vis-custom-group-column-header {
 	/*justify-content: center;*/
@@ -97,7 +98,7 @@
 .vis-item {
 	height: calc(100% + 1px);
 	top: 0 !important;
-	border-color: #E7ECF1;
+	border-color: #BFBFBF;
 }
 
 .vis-item-content {
@@ -175,13 +176,13 @@ schedule-dashboard-timeline .vis-item.vis-selected {
 .vis-timeline-filters-container {
 	padding: 1em;
 	background: #ffffff;
-	border: 1px solid #bfbfbf;
+	/*border: 1px solid #bfbfbf;*/
 }
 
 .vis-timeline-timeselect-container {
 	padding: 1em;
 	background: #f0f8ff;
-	border: 1px solid #bfbfbf;
+	/*border: 1px solid #bfbfbf;*/
 	text-align: center;
 	display: flex;
 }
@@ -194,7 +195,7 @@ schedule-dashboard-timeline .vis-item.vis-selected {
 
 .schedule-dashboard-timeline-footer {
     background: #ffffff;
-    border: 1px solid #bfbfbf;
+    /*border: 1px solid #bfbfbf;*/
     text-align: left;
     margin-bottom: 1em;
 	padding: 5px; 
@@ -244,7 +245,7 @@ span.vesselName {
     line-height: 10px;
     color: #000;
     cursor: pointer;
-    border: 1px solid #d8d8d8;
+    /*border: 1px solid #d8d8d8;*/
     transition: 0.1s;
 }
 
@@ -256,7 +257,7 @@ span.vesselName {
     background: #fff;
     box-shadow: 4px 4px 0px rgba(72, 72, 72, 0.1);
     padding: 10px;
-    border: 1px solid #dcdcdc;
+    /*border: 1px solid #dcdcdc;*/
     top: 100px;
     left: 500px;
 }
@@ -265,7 +266,7 @@ span.vesselName {
     background-color: #E7ECF1;
     padding: 1px 4px;
     font-size: 14px;
-    border: 1px solid #DCDCDC;
+    /*border: 1px solid #DCDCDC;*/
     display: block;
     float: left;
     width: 30px;
@@ -288,7 +289,7 @@ span.vesselName {
 	font-weight: bold;
 	text-align: center;
 	background: #f0f8ff;
-	border: 1px solid #bfbfbf;
+	/*border: 1px solid #bfbfbf;*/
 }
 .vis-time-axis .vis-grid.vis-minor {
     border-top: 1px solid #E7ECF1;
@@ -296,9 +297,13 @@ span.vesselName {
 .vis-time-axis .vis-major {
 	background: #fff;
     font-weight: 600;
+
 }
 .vis-foreground .vis-group {
     border-bottom: 1px solid #E7ECF1;
+}
+#timeline .vis-foreground  {
+	overflow: hidden;
 }
 
 #timeline, .vis-timeline-timeselect-container, .timeline-popover-hover {
@@ -362,27 +367,50 @@ span.vis-voyage-content.vis-voyage-sludge-product {
 .vis-panel {
     box-sizing: content-box;
 }
-.vis-timeline *:not(.vis-item){
-	/*border: none !important;*/
-	border-bottom: none !important;
+.vis-timeline *:not(.vis-item):not(.vis-major):not(.vis-custom-group-column):not(.vis-custom-group-column-header){
+	/*border-bottom: none !important;*/
+	border-top: none !important;
+	border-left: none !important;
+	border-right: none !important;
+	/*box-sizing: border-box;*/
+}
+.vis-timeline .vis-text.vis-minor, .vis-timeline .vis-background .vis-grid.vis-vertical.vis-minor {
+    /*border-left: 1px solid #e7ecf1 !important;*/
+	box-shadow: -1px 0px 0px 0px inset #e7ecf1;
 }
 /*.vis-custom-group-column {
 }*/ 
+
 
 .vis-group, .vis-custom-group {
 	/*border:none !important;*/
 	box-shadow: 0px 1px 0px 0px inset #00000008;
 }
 
+.vis-labelset .vis-label .vis-inner {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+}
+
 span[timeline-order-column].asc:before {
-    content: "\f0d7";
+    content: "\f0d8";
     font-family: "FontAwesome";
     margin-right: 5px;
     color: #989898;
 }
 span[timeline-order-column].desc:before {
-    content: "\f0d8";
+    content: "\f0d7";
     font-family: "FontAwesome";
     margin-right: 5px;
     color: #989898;
+}
+
+.vis-left * {
+	border: none !important;
+}
+
+.vis-left  {
+	z-index: 9999;
+	background: rgb(255, 255, 255);
 }

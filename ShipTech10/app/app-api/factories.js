@@ -4844,11 +4844,6 @@ APP_API.factory('$Api_Service', [
                             param.params.col = 'Order_Name';
                         }
                     }
-                    if (param.app == 'claims' && param.clc_id == 'claims_claimslist' && param.screen == 'claimslist') {
-                        if (param.params.col == 'claimNo') {
-                            param.params.col = 'id';
-                        }
-                    }
                     if (param.app == 'invoices' && param.clc_id == 'invoices_treasuryreport' && param.screen == 'treasuryreport') {
                         // console.log(param);
                         if (param.params.col == 'paymentStatus') {

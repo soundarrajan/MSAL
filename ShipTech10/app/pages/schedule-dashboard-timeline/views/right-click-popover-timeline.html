@@ -9,7 +9,8 @@
 			<hr ng-if="$index > 0" style="margin: 5px 0;" >
 			<div ng-init="voyageStatus = $ctrl.getPriorityStatus(voyage)" style="padding-left: 5px;">
 				Port: <b>{{$ctrl.groupedVoyagesDetails[voyage][0].voyageDetail.locationCode}}</b>
-				<span style="background: {{voyageStatus.color}}; color:{{voyageStatus.fontColor}}; padding: 0px 5px; border-radius: 200px !important;">{{voyageStatus.name}}</span>
+				<!-- {{voyageStatus.hideInDashboard}} -->
+				<span ng-if="!voyageStatus.hideInDashboard" style="background: {{voyageStatus.color}}; color:{{voyageStatus.fontColor}}; padding: 0px 5px; border-radius: 200px !important;">{{voyageStatus.name}}</span>
 			</div>
 			<table ng-if="$ctrl.groupedVoyages.hasEntity[voyage].hasBunkerPlan || $ctrl.groupedVoyages.hasEntity[voyage].hasRequest || $ctrl.groupedVoyages.hasEntity[voyage].hasOrder" style="border-spacing: 5px 5px;border-collapse: separate;">
 				<thead>
@@ -26,7 +27,7 @@
 						<td style="width: 90px;max-width: 100px; padding-left: 0">
 							{{voyage}}
 						</td>
-						<td ng-repeat="(key3, productType) in $ctrl.groupedVoyages.allProductTypes[voyage] track by $index" class="cancelBunkerStrategyCell" style="border: 0.5px solid #E7ECF1;padding: 3px; position: relative; border-radius: 1px !important; ">
+						<td ng-repeat="(key3, productType) in $ctrl.groupedVoyages.allProductTypes[voyage] track by $index" class="cancelBunkerStrategyCell" style="border: 1px solid #E7ECF1;padding: 3px; position: relative; border-radius: 1px !important; ">
 							<span ng-repeat="(ptkey,ptval) in $ctrl.groupedVoyages.groupedVoyagesBunker[voyage]" ng-init="bunkerPlan = ptval[productType][0].voyageDetail.bunkerPlan" class="amountRightPopover">
 								{{( (!bunkerPlan.supplyQuantity) ? ("") : (bunkerPlan.supplyQuantity | number : $ctrl.numberPrecision.amountPrecision))}}
 								<span ng-if="bunkerPlan.supplyStrategy && !$ctrl.strategyAlreadyCancelled(bunkerPlan.id)" class="cancelBunkerStrategy" ng-click="$ctrl.confirmCancelBunkerStrategy(bunkerPlan, ptval[productType][0].voyageDetail)" ><i class="fa fa-times"></i></span>

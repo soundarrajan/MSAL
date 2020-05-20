@@ -336,12 +336,12 @@
                                                             </span>
                                                             &nbsp;
                                                             <span ng-if="$ctrl.data.vessel.vesselToWatchFlag">
-                                                            	<i class="fa fa-flag vesselToWatchFlag"></i>
+                                                                <i class="fa fa-flag vesselToWatchFlag"></i>
                                                             </span>
                                                         </label>
                                                         <div class="form_input form_input_{{ $ctrl.sellerDetails.VesselImoNo.name }} input-group">
-							                                <div class="input-group">
-							                                    <input class="typeahead form-control"
+                                                            <div class="input-group">
+                                                                <input class="typeahead form-control"
                                                                        id="id_{{ $ctrl.vesselDetailsFields.Vessel.name }}"
                                                                        name="{{ $ctrl.vesselDetailsFields.Vessel.name }}"
                                                                        ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Stemmed'].id || $ctrl.data.status.id === $ctrl.STATUS['Delivered'].id || $ctrl.data.status.id === $ctrl.STATUS['PartiallyDelivered'].id || $ctrl.data.status.id === $ctrl.STATUS['PartiallyInvoiced'].id || $ctrl.data.status.id === $ctrl.STATUS['Invoiced'].id || $ctrl.data.status.id === $ctrl.STATUS['Approved'].id || $ctrl.data.status.id === $ctrl.STATUS['WaitingForApproval'].id || $ctrl.data.status.id === $ctrl.STATUS['Confirmed'].id"
@@ -351,28 +351,28 @@
                                                                        typeahead-editable="false"
                                                                        typeahead-on-select="$ctrl.selectVessel($item.id); CM.getOptions({'Name': 'BunkerablePort','masterSource': 'masters_locations', 'filters': $ctrl.data.vessel})"
                                                                        uib-typeahead="vessel as vessel.name for vessel in $ctrl.listsCache.Vessel | typeaheadCustomFilter:$viewValue:'name'">
-							                                    <span class="input-group-addon ng-scope"
+                                                                <span class="input-group-addon ng-scope"
                                                                       ng-click="triggerModal('general', 'masters_vessellist', 'Vessel' , 'vessel');"
                                                                       ng-controller="Controller_Master as CM"
                                                                       ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Stemmed'].id || $ctrl.data.status.id === $ctrl.STATUS['Delivered'].id || $ctrl.data.status.id === $ctrl.STATUS['PartiallyDelivered'].id || $ctrl.data.status.id === $ctrl.STATUS['PartiallyInvoiced'].id || $ctrl.data.status.id === $ctrl.STATUS['Invoiced'].id || $ctrl.data.status.id === $ctrl.STATUS['Approved'].id || $ctrl.data.status.id === $ctrl.STATUS['WaitingForApproval'].id || $ctrl.data.status.id === $ctrl.STATUS['Confirmed'].id">
-							                                        <a class=" btn default" href=""
+                                                                    <a class=" btn default" href=""
                                                                        ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Stemmed'].id || $ctrl.data.status.id === $ctrl.STATUS['Delivered'].id || $ctrl.data.status.id === $ctrl.STATUS['PartiallyDelivered'].id || $ctrl.data.status.id === $ctrl.STATUS['PartiallyInvoiced'].id || $ctrl.data.status.id === $ctrl.STATUS['Invoiced'].id || $ctrl.data.status.id === $ctrl.STATUS['Approved'].id || $ctrl.data.status.id === $ctrl.STATUS['WaitingForApproval'].id || $ctrl.data.status.id === $ctrl.STATUS['Confirmed'].id">
-							                                            <i class="fa fa-search"></i>
-							                                        </a>
-							                                    </span>
-							                                </div>
+                                                                        <i class="fa fa-search"></i>
+                                                                    </a>
+                                                                </span>
+                                                            </div>
                                                         </div>
                                                     </div></div>
                                                     <div ng-if="$ctrl.portFields.carrierCompany.visible"><div
                                                             class="form-group row">
                                                         <label class="{{ $ctrl.portFields.carrierCompany.name }}_label"
                                                                for="{{ $ctrl.portFields.carrierCompany.name }}">
-                                                        	<span ng-if='$ctrl.tenantSettings.companyDisplayName.name == "Pool"'>
-                                                        		{{$ctrl.tenantSettings.companyDisplayName.name | translate}}
-                                                        	</span>
-                                                        	<span ng-if='$ctrl.tenantSettings.companyDisplayName.name != "Pool"'>
-	                                                            {{ $ctrl.portFields.carrierCompany.caption | translate }}
-                                                        	</span>
+                                                            <span ng-if='$ctrl.tenantSettings.companyDisplayName.name == "Pool"'>
+                                                                {{$ctrl.tenantSettings.companyDisplayName.name | translate}}
+                                                            </span>
+                                                            <span ng-if='$ctrl.tenantSettings.companyDisplayName.name != "Pool"'>
+                                                                {{ $ctrl.portFields.carrierCompany.caption | translate }}
+                                                            </span>
                                                             <span class="orange-txt">
                                                                 *
                                                             </span>
@@ -434,7 +434,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-												    <div ng-if="$ctrl.vesselDetailsFields.Buyer.visible">
+                                                    <div ng-if="$ctrl.vesselDetailsFields.Buyer.visible">
                                                     <div class="form-group  row">
                                                         <label class="{{ $ctrl.sellerDetails.Trader.name }}_label"
                                                                for="{{ $ctrl.sellerDetails.Buyer.name }}">
@@ -700,7 +700,7 @@
                                                         </label>
                                                         <div class="input-group form_input form_input_deliveryDate">
                                                             <div class="input-group w100">
-			                                               <input
+                                                           <input
                                                                    class="form-control date-mask new-date-picker"
                                                                    id="deliveryFrom"
                                                                    name="deliveryFrom"
@@ -712,6 +712,25 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                    <div ng-if="$ctrl.isDeliveryWindow && !($ctrl.isRecentETA && $ctrl.portFields.recentEta.visible)">
+                                                        <div class="form-group row">
+                                                            <label class="deliveryDate_label" for="deliveryDate">
+                                                                {{ 'PAGES.NEW_REQUEST.DELIVERY_TO' | translate }}
+                                                            </label>
+                                                            <div class="input-group form_input form_input_deliveryDate">
+                                                                <div class="input-group w100">
+                                                                    <input
+                                                                            class="form-control date-mask new-date-picker"
+                                                                            id="deliveryTo"
+                                                                            name="deliveryTo"
+                                                                            new-date-picker
+                                                                            ng-class="{'etb_invalid': $ctrl.data.deliveryTo > $ctrl.data.deliveryTo}"
+                                                                            ng-model="$ctrl.data.deliveryTo"
+                                                                            picker-type="dynamic">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
 
                                                 <div class="col-md-3">
@@ -934,7 +953,7 @@
                                                         </label>
                                                         <div class="input-group form_input form_input_deliveryDate">
                                                             <div class="input-group w100">
-			                                               <input
+                                                           <input
                                                                    class="form-control date-mask new-date-picker"
                                                                    id="deliveryTo"
                                                                    name="deliveryTo"
@@ -972,8 +991,8 @@
                                                         <div class="form-group row">
                                                         <label class="{{ $ctrl.portFields.comments.name }}_label"
                                                                for="{{ $ctrl.portFields.comments.name }}">
-                                                        	 <!-- Comment -->
-                                                        	 {{'PAGES.NEW_ORDER.COMMENTS_STRATEGY' | translate}}
+                                                             <!-- Comment -->
+                                                             {{'PAGES.NEW_ORDER.COMMENTS_STRATEGY' | translate}}
 
                                                         </label>
                                                         <div class="input-group form_input form_input_{{ $ctrl.portFields.deliveryDate.name }}">
@@ -984,7 +1003,7 @@
                                                     </div>
                                                     </div>
                                                     <div ng-if="$ctrl.portFields.comments.visible">
-										                <div class="form-group row">
+                                                        <div class="form-group row">
                                                             <label class="{{ $ctrl.portFields.comments.name }}_label"
                                                                    for="{{ $ctrl.portFields.comments.name }}">
                                                                  <!-- Comment -->
@@ -992,25 +1011,25 @@
 
                                                             </label>
                                                             <div class="input-group form_input form_input_{{ $ctrl.portFields.deliveryDate.name }}">
-										                    <textarea class="col-md-12 form-control" maxlength="500"
+                                                            <textarea class="col-md-12 form-control" maxlength="500"
                                                                       ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
                                                                       ng-model="$ctrl.data.customNonMandatoryAttribute11"></textarea>
-										                </div>
-										                </div>
-										            </div>
+                                                        </div>
+                                                        </div>
+                                                    </div>
                                                     <div ng-if="$ctrl.portFields.emailComments.visible">
-		                                            <div class="form-group row">
-		                                                <label class="{{ $ctrl.portFields.comments.name }}_label">
-		                                                    {{ 'PAGES.NEW_ORDER.EMAIL_COMMENTS' | translate }}
-		                                                </label>
-		                                                <div class="input-group form_input">
+                                                    <div class="form-group row">
+                                                        <label class="{{ $ctrl.portFields.comments.name }}_label">
+                                                            {{ 'PAGES.NEW_ORDER.EMAIL_COMMENTS' | translate }}
+                                                        </label>
+                                                        <div class="input-group form_input">
 
-		                                                    <textarea class="col-md-12 form-control" maxlength="500"
+                                                            <textarea class="col-md-12 form-control" maxlength="500"
                                                                       ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id"
                                                                       ng-model="$ctrl.data.customNonMandatoryAttribute1"></textarea>
 
-		                                                </div>
-		                                            </div></div>
+                                                        </div>
+                                                    </div></div>
                                                     <div class="form-group row"  ng-if="$ctrl.portFields.comments.visible && $ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id && $ctrl.procurementSettings.order.captureReasonToCancelTheOrder.name == 'Yes'">
                                                         <label class="{{ $ctrl.portFields.comments.name }}_label"
                                                                for="{{ $ctrl.portFields.comments.name }}">
@@ -1025,7 +1044,7 @@
                                                 </div>
                                             </div>
 
-	                                    </div>
+                                        </div>
 
 
                                     </form>
@@ -1305,12 +1324,12 @@
                                 </td>
                                 <!--  end unit price for product -->
                                 <td style="max-width: 180px;min-width: 140px">
-                                    		<span class="form-control disabled"
+                                            <span class="form-control disabled"
                                                   data-original-title="{{product.formulaDescription ? product.formulaDescription : product.formula.name}}"
                                                   style="background: #e6eaec;overflow: hidden;"
                                                   tooltip>
-                                    			{{product.formulaDescription ? product.formulaDescription : product.formula.name}}
-                                    		</span>
+                                                {{product.formulaDescription ? product.formulaDescription : product.formula.name}}
+                                            </span>
 
                                     {{product.pricingType.id !== $ctrl.PRICING_TYPE_FORMULA_ID ?
                                     product.formulaDescription = null : ''}}
@@ -1323,13 +1342,13 @@
 
                                 </td>
                                 <td style="max-width: 120px;min-width: 120px">
-
-                                    {{product.totalAmount ? (product.totalAmount |
+									{{$ctrl.formatAmount(product.amount)}}
+                                    <!-- {{product.totalAmount ? (product.totalAmount |
                                     number:$ctrl.numberPrecision.amountPrecision) : (product.amount |
                                     number:$ctrl.numberPrecision.amountPrecision)
-                                    }}
+                                    }} -->
                                 </td>
-                                <td style="max-width: 180px;min-width: 140px">
+                                <td style="max-width: 180px;min-width: 140px"> 
 
                                     <select class="form-control"
                                             id="product_agreementType_{{ $index }}"
@@ -1348,10 +1367,10 @@
                                 </td>
                                 <td ng-init="!product.pricingType ? product.pricingType.id = 1 : '' "
                                     style="max-width: 200px;min-width: 180px">
-                                    	<span class="hidden">
-											{{!product.contract.id ?  (disabledPricingType[product.id] = true) : ( disabledPricingType[product.id] = false) }}
-											{{!product.contract.id ?  (product.pricingType.id = 1) : '' }}
-                                    	</span>
+                                        <span class="hidden">
+                                            {{!product.contract.id ?  (disabledPricingType[product.id] = true) : ( disabledPricingType[product.id] = false) }}
+                                            {{!product.contract.id ?  (product.pricingType.id = 1) : '' }}
+                                        </span>
                                     <select class="form-control"
                                             disabled
                                             id="product_pricingType_{{ $index }}"

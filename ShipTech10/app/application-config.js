@@ -517,7 +517,7 @@ angular.module('shiptech')
                         serlocid2: { value: null, squash: true },
                         type: { value: null, squash: true }
                     },
-                    url: '/reports/{type}/{entity_id}/{serlocid1}/{serlocid2}',	
+                    url: '/reports/{type}/{serlocid1}/{serlocid2}/{entity_id}',	
                     template: '<reports></reports>'
                 })
 

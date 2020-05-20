@@ -1583,6 +1583,12 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
             ctrl.getAllOrderContractOptions();
         };
 
+
+        ctrl.formatAmount = function (num) {
+            return $filter("number")(num, ctrl.numberPrecision.amountPrecision);
+    
+        }
+
         ctrl.resetContractData = function(productIndex){
         	if (ctrl.data.products[productIndex].contract) {
 	        	var initialContractId = angular.copy(ctrl.data.products[productIndex].contract.id);
@@ -1603,6 +1609,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                 ctrl.data.products[productIndex].totalAmount = null;
                 // ctrl.getAllOrderContractOptions();
 
+            } else {
+                productUomChg(ctrl.data.products[productIndex]);
             }
         
 			ctrl.getOrderContractOptions(ctrl.data.products[productIndex], false, function(response){

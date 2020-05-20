@@ -32,6 +32,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
         ctrl.vesselsNumber = 0;
         ctrl.editSupplierIdx_individuals = null;
         ctrl.editSupplierIdx_package = null;
+        $rootScope.reloadTenantConfiguration = true;
         if ($stateParams.title === 'Shiptech Supplier Portal') {
             ctrl.supplierPortalFlag = true;
         } else {
@@ -49,6 +50,15 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
                 ctrl.tenantDefaultUom = settings.payload.tenantFormats.uom;
             });
         }
+        $rootScope.$on('tenantConfiguration', (event, value) => {
+            ctrl.procurementSettings = value.procurement;
+        });
+
+        Factory_Master.get_master_entity(1, 'configuration', 'admin', (callback2) => {
+            if (callback2) {
+                $rootScope.adminConfiguration = callback2;
+            }
+        });
         if ($stateParams.token) {
             tenantService.procurementSettings.then((settings) => {
                 ctrl.procurementSettings = settings.payload;

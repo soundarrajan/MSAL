@@ -228,11 +228,21 @@ angular.module('shiptech.components')
                 var highestPriorityStatus = _.maxBy(ctrl.groupedVoyagesDetails[voyage], 'voyageDetail.portStatusPriority');
                 if (highestPriorityStatus) {
                     var colorCode = statusColors.getColorCodeFromLabels(highestPriorityStatus.voyageDetail.portStatus, $listsCache.ScheduleDashboardLabelConfiguration);
+					$.each(window.scheduleDashboardConfiguration.payload.labels, function(sk,sv){
+						if (sv.status.id == highestPriorityStatus.voyageDetail.portStatus.id && sv.transactionType.id == highestPriorityStatus.voyageDetail.portStatus.transactionTypeId && !sv.displayInDashboard ) {
+							highestPriorityStatus.voyageDetail.portStatus.hideInDashboard = true;
+						}
+					})                     
                     highestPriorityStatus.voyageDetail.portStatus.color = colorCode;
                     highestPriorityStatus.voyageDetail.portStatus.fontColor = getContrastYIQ(colorCode);
                 } else {
                     highestPriorityStatus = ctrl.groupedVoyagesDetails[voyage][0];
                     var colorCode = statusColors.getColorCodeFromLabels(highestPriorityStatus.voyageDetail.portStatus, $listsCache.ScheduleDashboardLabelConfiguration);
+					$.each(window.scheduleDashboardConfiguration.payload.labels, function(sk,sv){
+						if (sv.status.id == highestPriorityStatus.voyageDetail.portStatus.id && sv.transactionType.id == highestPriorityStatus.voyageDetail.portStatus.transactionTypeId && !sv.displayInDashboard ) {
+							highestPriorityStatus.voyageDetail.portStatus.hideInDashboard = true;
+						}
+					})                     
                     highestPriorityStatus.voyageDetail.portStatus.color = colorCode;
                     highestPriorityStatus.voyageDetail.portStatus.fontColor = getContrastYIQ(colorCode);
                 }
@@ -315,7 +325,9 @@ angular.module('shiptech.components')
             	$.each($scope.rightClickPopoverData.todayVoyages, function(k,v){
             		if(v.voyageDetail) {
 	            		if(v.voyageDetail.bunkerPlan) {
-		            		if(v.voyageDetail.bunkerPlan.supplyStrategy && window.timelineCancelledBunkerStrategies.indexOf(v.voyageDetail.bunkerPlan.id) == -1) {
+		            		if(v.voyageDetail.bunkerPlan.supplyStrategy && 
+		            			v.voyageDetail.bunkerPlan.supplyQuantity != 0 && 
+		            			window.timelineCancelledBunkerStrategies.indexOf(v.voyageDetail.bunkerPlan.id) == -1) {
 				            	hasStrategies = true;
 		            		}
 	            		}
@@ -325,6 +337,7 @@ angular.module('shiptech.components')
 	            	$rootScope.$broadcast('allStrategiesAreCancelled', $scope.rightClickPopoverData.todayVoyages[0].voyageDetail.id);
             	}
             }
+
 
 			ctrl.strategyAlreadyCancelled = function(bunkerPlanId) {
 				if (window.timelineCancelledBunkerStrategies) {

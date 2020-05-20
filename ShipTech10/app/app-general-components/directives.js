@@ -22,8 +22,9 @@ Number(function() {
         'getExternalFilters',
         'screenLoader',
         'tenantService',
+        '$filtersData',
         '$state',
-        function($templateRequest, $tenantSettings, $compile, $Api_Service, $timeout, Factory_General_Components, $http, $rootScope, uiApiModel, dataProcessors, getExternalFilters, screenLoader, tenantService, $state) {
+        function($templateRequest, $tenantSettings, $compile, $Api_Service, $timeout, Factory_General_Components, $http, $rootScope, uiApiModel, dataProcessors, getExternalFilters, screenLoader, tenantService, $filtersData, $state) {
             return {
                 restrict: 'E',
                 controller: 'Controller_Configurable_List_Control as CLC',
@@ -595,6 +596,23 @@ Number(function() {
                             // $rootScope.sortList = []task
                             if (CLC.tableParams.PageFilters && CLC.tableParams.PageFilters.sortList) {
                                 $rootScope.sortList = CLC.tableParams.PageFilters.sortList;
+                                var currentTableColumns = _.filter($filtersData.filterColumns, function(o){
+                                	return o.columnRoute == $rootScope.currentColumnRoute;
+                                })
+                                console.log(currentTableColumns);
+                                $.each($rootScope.sortList, function(k,v){
+	                                var matchingColumn = 0;	
+	                                $.each(currentTableColumns, function(k2,v2){
+	                                	if (v2.sortColumnValue) {
+	                                		if (v2.sortColumnValue.toLowerCase().replace(/ /g, '_') == v.columnValue) {
+			                                	matchingColumn = v2;
+	                                		}
+	                                	}
+	                                })
+	                                if (matchingColumn) {
+	                                	v.col = matchingColumn.columnValue.toLowerCase().replace(/ /g, '_')
+	                                }
+                                })
                             } else {
                                 let sortList = [];
                                 if ($(Elements.table[Elements.settings[table_id].table]).jqGrid('getGridParam', 'sortname')) {
@@ -781,11 +799,15 @@ Number(function() {
                                                 if (v.col) {
                                                     column = v.col;
                                                 }
+                                                if (table_id == "flat_claims_list" && column == 'id') {
+                                                	column = "claimNo";
+                                                }
 
                                                 // console.log(column, directionsNames[sort]);
                                                 $(`.colMenu[data-sortCol="${ column.toLowerCase() }"]`)
                                                     .parent()
                                                     .addClass(`sorted${ directionsNames[sort]}`);
+                                                console.log("!@#");
                                             });
                                         }
 

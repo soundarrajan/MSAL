@@ -796,9 +796,22 @@ angular.module('shiptech.components').controller('FiltersController', [
                     return;
                 }
                 var filtersList = $scope.packFilters(data);
+                for (var i = 0; i < filtersList.length; i++) {
+                    if (filtersList[i].ColumnType == 'Date') {
+                        for (var j = 0; j < filtersList[i].Values.length; j++) {
+                             filtersList[i].Values[j] =  moment.utc(filtersList[i].Values[j]).format('YYYY-MM-DD');
+                        }
+                        console.log(filtersList[i]);
+                    }
+             
+                 }
+
+              
             } else {
                 filtersList = [];
             }
+
+         
             if (name == 'Add new configuration') {
                 var no = $scope.filtersConfigurations.length - 1;
                 name = `Configuration ${ no}`;

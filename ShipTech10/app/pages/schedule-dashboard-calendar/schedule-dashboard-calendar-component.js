@@ -331,9 +331,11 @@ angular.module('shiptech.pages').controller('ScheduleCalendarController', [ '$ro
             console.warn('showData -1:', new Date().getTime() - window.scheduleDashboardCalendarModelGetEndTime);
             hidePopovers();
             delete ctrl.calendarDataRows;
+            $('tbody')[0].scrollLeft = 0;
             destroyDataTable();
             ctrl.calendarData = data.payload;
             ctrl.lastShownData = data;
+
 
             /* ctrl.tempData = normalizeCalendarData(ctrl.calendarData.scheduleDashboardView, ctrl.calendarDates, ctrl.dateScroller.calendarUnit);
             ctrl.tempData1 = [];
