@@ -783,21 +783,21 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 };
 
                 var formatOps = function (cellValue, options, rowObject) {
-                    if (options.colModel.name) {
-                        var color;
-                        if (options.colModel.name == "Yes") {
-                             color = "#1AB01E";
-                        } else {
-                            color = "EE4535"
-                        }
-                        label = options.colModel.name;
-                        if (color) {
-                            return '<span class="label formatStatus" style="overflow:hidden; text-overflow:ellipsis; display:block; background-color:' + color + '" >' + label + "</span>";
-                        } else {
-                            return "";
-                        }
-                    } 
-                    return "";
+                    var color = "#1AB01E";
+                    var label = "Yes";
+                    if (cellValue) {
+                        color = "#1AB01E";
+                        label = "Yes";
+                    } else {
+                        color = "#EE4535";
+                        label = "No";
+                    }
+
+                    if (color) {
+                        return '<span class="label formatStatus" style="overflow:hidden; text-overflow:ellipsis; display:block; background-color:' + color + '" >' + label + "</span>";
+                    } else {
+                        return "";
+                    }    
 
                 }
 
