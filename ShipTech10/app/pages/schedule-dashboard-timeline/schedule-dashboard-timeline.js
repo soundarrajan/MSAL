@@ -186,8 +186,10 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             });
 
             var voyageDaysWithSludge = [];
+            var vesselWithHasUsdRestrictions = [];
 			$.each(vessels, function(k,detail){
 				if (detail) {
+                    var hasUsdRestrictions = false;
 					var hasSludge = false;
 					var voyageDetailId = detail.voyageDetail.id;
 					if (detail.voyageDetail.request.requestDetail.isSludgeProduct) {
@@ -196,8 +198,18 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 					if (typeof(voyageDaysWithSludge[voyageDetailId]) == "undefined" || !voyageDaysWithSludge[voyageDetailId]) {
 						voyageDaysWithSludge[voyageDetailId] = hasSludge;		
 					}
+
+                    if (detail.voyageDetail.hasUsdRestrictions) {
+                        hasUsdRestrictions = true;
+                    }
+
+                    if (typeof(vesselWithHasUsdRestrictions[detail.VesselId]) == "undefined" || !vesselWithHasUsdRestrictions[detail.VesselId]) {
+                        vesselWithHasUsdRestrictions[detail.VesselId] = hasUsdRestrictions;       
+                    }
 				}
 			})
+
+            console.log(vesselWithHasUsdRestrictions);
 
             if (!$scope.stopsGroupedByDayAndGroup["undefined"]) {
                 $.each($scope.stopsGroupedByDayAndGroup, function(k, v) {
@@ -260,6 +272,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 	                }
                 }
 
+        
+
                 if (vessels[i].voyageDetail.hasStrategy) {
                     cls += " vis-voyage-content-sap";
                 }
@@ -282,7 +296,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 var startDate, endDate;
 
                 var displayScheduleBasedOn = _.get(ctrl, 'scheduleDashboardConfiguration.displayScheduleBasedOn.name');
-
+              
                 if (displayScheduleBasedOn === 'Delivery Date') {
                     if (vessels[i].voyageDetail.deliveryFrom && vessels[i].voyageDetail.deliveryTo) {
                         startDate = moment.utc(vessels[i].voyageDetail.deliveryFrom).format('YYYY-MM-DD HH:mm');
@@ -384,7 +398,9 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                         defaultDistillate: vessels[i].DefaultDistillate,
                         // contentTemplate: 
                         content: groupString,
-                        isNew: false
+                        isNew: false,
+                        hasUsdRestrictions: vesselWithHasUsdRestrictions[vessels[i].VesselId]
+
                     };
 
                     // Add group to groups
@@ -557,12 +573,22 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     var companyName = group.companyName;
                     var serviceBuyerName = group.serviceBuyerName;
                     var isNew = group.isNew;
+                    var hasUsdRestrictions = group.hasUsdRestrictions;
 
                     var tpl = '<div class="vis-custom-group">';
                     if (isNew){
-                        tpl += `<span class="vis-custom-group-column vis-vessel" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="newVessel"> N </span> <span class="vis-custom-group-column-content vesselName"> ${vesselName} </span></span>`;
+                        if (hasUsdRestrictions) {
+                            tpl += `<span class="vis-custom-group-column vis-vessel" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="newVessel"> N </span> <span tooltip title="Vessel Approaching USD restricted port">  <i  class="fa fa-ban usdRestrictionsFlag"></i></span> <span class="vis-custom-group-column-content vesselName"> ${vesselName} </span></span>`;
+                        } else {
+                            tpl += `<span class="vis-custom-group-column vis-vessel" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="newVessel"> N </span> <span class="vis-custom-group-column-content vesselName"> ${vesselName} </span></span>`;
+                        }
                     } else {
-                    	tpl += `<span class="vis-custom-group-column vis-vessel" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="vis-custom-group-column-content"> ${vesselName} </span></span>`;
+                        if (hasUsdRestrictions) {
+                            tpl += `<span class="vis-custom-group-column vis-vessel" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"> <span tooltip title="Vessel Approaching USD restricted port">  <i  class="fa fa-ban usdRestrictionsFlag"></i></span> <span class="vis-custom-group-column-content"> ${vesselName} </span></span>`;
+                        } else {
+                            tpl += `<span class="vis-custom-group-column vis-vessel" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"> <span class="vis-custom-group-column-content"> ${vesselName} </span></span>`;
+
+                        }
                     }
                     if ($scope.displayedColumns["Service"]) {
                     	tpl += `<span class="vis-custom-group-column vis-service" tooltip title="${group.serviceName}"> <span class="vis-custom-group-column-content">${serviceName} </span></span>`;

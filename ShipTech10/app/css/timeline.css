@@ -414,3 +414,17 @@ span[timeline-order-column].desc:before {
 	z-index: 9999;
 	background: rgb(255, 255, 255);
 }
+
+.usdRestrictionsFlag {
+    position: relative;
+    top: -10px;
+    left: -4px;
+    color: red;
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    text-align: center;
+    line-height: 20px !important;
+    border-radius: 1000px;
+    font-size: 12px;
+}
