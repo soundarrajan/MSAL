@@ -4925,3 +4925,8 @@ table.energyCalculationBlade tr.border-green-jungle{
     border-radius: 1000px;
     font-size: 12px;
 }
+
+.fakeDisabledReport {
+	opacity: 0.5;
+	cursor: default !important;
+}

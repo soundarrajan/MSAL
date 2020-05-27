@@ -138,6 +138,10 @@ angular.module('shiptech.pages').controller('ReportsController', [
                     let entity_id = $state.params.entity_id ? $state.params.entity_id : '';
                     let serlocid1 = $state.params.serlocid1 ? $state.params.serlocid1 : '';
                     let serlocid2 = $state.params.serlocid2 ? $state.params.serlocid2 : '';
+                    let serlocid3 = $state.params.serlocid3 ? $state.params.serlocid3 : '';
+                    let serlocid4 = $state.params.serlocid4 ? $state.params.serlocid4 : '';
+                    let serlocid5 = $state.params.serlocid5 ? $state.params.serlocid5 : '';
+                    let serlocid6 = $state.params.serlocid6 ? $state.params.serlocid6 : '';
                     Factory_Master.getReport({ reportSrc: reportSrc, reportType: reportType.id }, (resp) => {
                         // ctrl.standardReports = response;
                         ctrl.toggled = true;
@@ -148,7 +152,14 @@ angular.module('shiptech.pages').controller('ReportsController', [
                         } else if (reportType.internalName == 'Cashflow') {
 	                        resp.payload.items[0].link = resp.payload.items[0].link + encodeURIComponent('GUID=') + resp.payload.items[0].filterId;
                         } else if (reportType.internalName == 'OperationalReport') {
-	                        resp.payload.items[0].link = `${resp.payload.items[0].link }&${ encodeURIComponent('serlocid1') }=${ serlocid1}&${ encodeURIComponent('serlocid2') }=${ serlocid2}&${ encodeURIComponent('serviceid') }=${ entity_id}`;
+	                        resp.payload.items[0].link = `${resp.payload.items[0].link }`;
+                        	resp.payload.items[0].link += `&${ encodeURIComponent('serlocid1') }=${ serlocid1}`;
+                        	resp.payload.items[0].link += `&${ encodeURIComponent('serlocid2') }=${ serlocid2}`;
+                        	resp.payload.items[0].link += `&${ encodeURIComponent('serlocid3') }=${ serlocid3}`;
+                        	resp.payload.items[0].link += `&${ encodeURIComponent('serlocid4') }=${ serlocid4}`;
+                        	resp.payload.items[0].link += `&${ encodeURIComponent('serlocid5') }=${ serlocid5}`;
+                        	resp.payload.items[0].link += `&${ encodeURIComponent('serlocid6') }=${ serlocid6}`;
+                        	resp.payload.items[0].link += `&${ encodeURIComponent('serviceid') }=${ entity_id}`;
                         }
 
                         // <items[0].link>&GUID=<items[0].filterId>

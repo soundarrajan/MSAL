@@ -31,11 +31,10 @@
                     <i class="glyphicon glyphicon-envelope"></i>
                 </a>
             </div>
-
-            <a ng-show="$ctrl.requestTenantSettings.showOperationalReport" class="btn orange btn-outline" ng-disabled="!$ctrl.getServiceIdForReport()" href="#/reports/operationalreport/{{$ctrl.getSerLocId1ForReport()}}/{{$ctrl.getSerLocId2ForReport()}}/{{$ctrl.getServiceIdForReport()}}" target="_blank">
+            <a ng-show="$ctrl.requestTenantSettings.showOperationalReport" ng-class="{'fakeDisabledReport' : !$ctrl.enableReport}" ng-attr-tooltip="{{!$ctrl.enableReport}}"  data-original-title="{{!$ctrl.enableReport ? 'Loading reports ...' : null}}" class="btn orange btn-outline" ng-click="$ctrl.enableReport ? $ctrl.goToReport() : ''">
                 Report
             </a>
-            <a ng-show="$ctrl.canSave($ctrl.screenActions) && !$ctrl.disableAllFields" class="btn orange btn-outline" ng-click="$ctrl.saveRequest()" ng-class="{'disabled' : $ctrl.buttonsDisabled }">
+            <a ng-show="$ctrl.canSave($ctrl.screenActions) && !$ctrl.disableAllFields"  class="btn orange btn-outline" ng-click="$ctrl.saveRequest()" ng-class="{'disabled' : $ctrl.buttonsDisabled }">
                 Save
             </a>
             <a class="btn orange btn-outline" ng-click="$ctrl.sendQuestionnaire()" ng-if="$ctrl.canQuestionnaire()> 0">
@@ -1050,7 +1049,7 @@
                 </div>
 
               
-	            <a ng-show="$ctrl.requestTenantSettings.showOperationalReport && ctrl.request.id != 0" class="btn orange btn-outline" href="#/reports/operationalreport/{{$ctrl.getServiceIdForReport()}}" target="_blank">
+	            <a ng-show="$ctrl.requestTenantSettings.showOperationalReport" ng-class="{'fakeDisabledReport' : !$ctrl.enableReport}" ng-attr-tooltip="{{!$ctrl.enableReport}}"  data-original-title="{{!$ctrl.enableReport ? 'Loading reports ...' : null}}" class="btn orange btn-outline" ng-click="$ctrl.enableReport ? $ctrl.goToReport() : ''">
 	                Report
 	            </a>
                 <a ng-show="$ctrl.canSave($ctrl.screenActions) && !$ctrl.disableAllFields" class="btn orange btn-outline" ng-click="$ctrl.saveRequest()" ng-class="{'disabled' : $ctrl.buttonsDisabled }">

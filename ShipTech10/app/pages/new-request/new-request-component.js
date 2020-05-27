@@ -39,7 +39,9 @@ angular.module('shiptech.pages').controller('NewRequestController', [
     '$location',
     'screenLoader',
     'Factory_Admin',
-    function($rootScope, $scope, $q, $listsCache, $element, $attrs, $timeout, $state, $filter, $stateParams, $tenantSettings, newRequestModel, orderModel, listsModel, uiApiModel, lookupModel, groupOfRequestsModel, screenActionsModel, tenantService, Factory_Master, STATE, LOOKUP_MAP, LOOKUP_TYPE, SCREEN_LAYOUTS, SCREEN_ACTIONS, IDS, VALIDATION_MESSAGES, STATUS, PRODUCT_STATUS_IDS, EMAIL_TRANSACTION, $uibTooltip, selectContractModel, $uibModal, $templateCache, $compile, emailModel, statusColors, $location, screenLoader, Factory_Admin) {
+	'$http',
+	'API',
+    function($rootScope, $scope, $q, $listsCache, $element, $attrs, $timeout, $state, $filter, $stateParams, $tenantSettings, newRequestModel, orderModel, listsModel, uiApiModel, lookupModel, groupOfRequestsModel, screenActionsModel, tenantService, Factory_Master, STATE, LOOKUP_MAP, LOOKUP_TYPE, SCREEN_LAYOUTS, SCREEN_ACTIONS, IDS, VALIDATION_MESSAGES, STATUS, PRODUCT_STATUS_IDS, EMAIL_TRANSACTION, $uibTooltip, selectContractModel, $uibModal, $templateCache, $compile, emailModel, statusColors, $location, screenLoader, Factory_Admin,$http, API) {
         let ctrl = this;
 
         let voyageId = $stateParams.voyageId;
@@ -366,6 +368,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     } else if (typeof requestId != 'undefined' && requestId !== null) {
                         newRequestModel.getRequest(requestId).then((newRequestData) => {
                             ctrl.request = newRequestData.payload;
+                            ctrl.getOperationalReportParameters();
                             ctrl.disableAllFields = false;
                             if(typeof ctrl.request.requestCompleted != 'undefined') {
                                 if(ctrl.request.requestCompleted != null) {
@@ -3518,6 +3521,56 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             });
             return found;
         };
+
+        ctrl.goToReport = function() {
+			var win = window.open("/#/reports/operationalreport/" + ctrl.computedReportUrl, '_blank');
+			win.focus();
+        }
+		ctrl.getOperationalReportParameters = function() {
+			serviceId = ctrl.request.operationalReportServiceId;
+			console.log(serviceId);
+			ctrl.enableReport = false;
+			$http.post(`${API.BASE_URL_DATA_INFRASTRUCTURE }/api/infrastructure/reports/getOperationalReportParameters`, { Payload: serviceId }).then(
+			    (response) => {
+			        if (response.status == 200) {
+			        	console.log(response.data);
+			        	ctrl.computedReportUrl = serviceId; 
+						$.each(response.data.payload.serLocIds, function(k,v){
+							if (v.id == 1) {
+								serlocid1 = v.serviceLocationId
+								ctrl.computedReportUrl += "/" + serlocid1;
+							}
+							if (v.id == 2) {
+								serlocid2 = v.serviceLocationId
+								ctrl.computedReportUrl += "/" + serlocid2;
+							}
+							if (v.id == 3) {
+								serlocid3 = v.serviceLocationId
+								ctrl.computedReportUrl += "/" + serlocid3;
+							}
+							if (v.id == 4) {
+								serlocid4 = v.serviceLocationId
+								ctrl.computedReportUrl += "/" + serlocid4;
+							}
+							if (v.id == 5) {
+								serlocid5 = v.serviceLocationId
+								ctrl.computedReportUrl += "/" + serlocid5;
+							}
+							if (v.id == 6) {
+								serlocid6 = v.serviceLocationId
+								ctrl.computedReportUrl += "/" + serlocid6;
+							}
+						})
+						console.log(ctrl.computedReportUrl);
+						ctrl.enableReport = true;
+			        } else {
+			            toastr.error('Error occured while getting reports data!')
+			        }
+			    }
+			);			
+			setTimeout(function(){
+			},4000)		
+		}
 
         ctrl.getServiceIdForReport = function() {
         	if (!ctrl.requestTenantSettings || !ctrl.request.locations) {

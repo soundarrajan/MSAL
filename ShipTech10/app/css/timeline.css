@@ -1,6 +1,7 @@
 .vis-timeline {
 	background: #ffffff;
 	padding-bottom: 20px;
+    visibility: visible !important;
 }
 
 .vis-inner {
@@ -36,7 +37,7 @@
 	width: 65px;
 }
 .vis-company {
-	width: 60px;
+	width: 75px;
 }
 .vis-custom-group-column-header {
 	display: flex;
@@ -62,7 +63,6 @@
     text-overflow: ellipsis;
     overflow: hidden;
     font-size: 14px;
-    box-shadow: 0px -1px 0px 0px inset #e7ecf1;
 }
  .vis-custom-group-column-header {
 	/*justify-content: center;*/
@@ -406,6 +406,10 @@ span[timeline-order-column].desc:before {
     color: #989898;
 }
 
+.vis-foreground .vis-group,.vis-background .vis-group, .vis-labelset .vis-label {
+	height: 35px !important;
+}
+
 .vis-left * {
 	border: none !important;
 }
@@ -427,4 +431,14 @@ span[timeline-order-column].desc:before {
     line-height: 20px !important;
     border-radius: 1000px;
     font-size: 12px;
+}
+
+.vis-panel.vis-left, .vis-panel.vis-center, .vis-timeline.vis-bottom{
+	border-bottom:none;
+} 
+/*.vis-panel.vis-left {
+	overflow-y: scroll; 
+}*/
+.vis-panel .vis-shadow {
+	display: none;
 }

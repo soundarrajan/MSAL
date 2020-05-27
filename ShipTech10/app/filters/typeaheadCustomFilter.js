@@ -30,6 +30,9 @@
     		console.log(items);
     		console.log(filtered);
     		console.log(searchTerm, objProperty);
+    		if (!filtered[0]) {
+    			return [];
+    		}
     		return filtered.slice(0,10);
     	};
     });

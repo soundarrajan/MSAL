@@ -251,7 +251,11 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     statusColor = statusColors.getColorCodeFromLabels(findHighestPriority.voyageDetail.portStatus, $listsCache.ScheduleDashboardLabelConfiguration); 
                 } 
 
-				var statusObj = vessels[i].voyageDetail.portStatus;
+                if (findHighestPriority) {
+					var statusObj = findHighestPriority.voyageDetail.portStatus;
+                } else {
+					var statusObj = vessels[i].voyageDetail.portStatus;
+                } 
 				$.each(window.scheduleDashboardConfiguration.payload.labels, function(sk,sv){
 					if (sv.status.id == statusObj.id && sv.transactionType.id == statusObj.transactionTypeId && !sv.displayInDashboard ) {
 						console.log("remove Color for :" + statusObj.name)
@@ -661,6 +665,11 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 ctrl.lastEndDate = false;
                 timeline.on("rangechange", function(){
 
+                	if ($(".vis-panel.vis-left.vis-vertical-scroll").length > 0) {
+                		if ($(".vis-panel.vis-left.vis-vertical-scroll").height() - $(".vis-panel.vis-left.vis-vertical-scroll").height() <= 2) {
+                			$(".vis-panel.vis-left.vis-vertical-scroll").removeClass("vis-vertical-scroll");
+                		}
+                	}
 
                     ctrl.lastStartDate = moment(timeline.range.start);
                     ctrl.lastEndDate = moment(timeline.range.end);
@@ -711,21 +720,22 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 */
                 $(".vis-vertical-scroll").on("scroll", function(){
 					redrawOutOfRangeElements();
-					$(".vis-panel.vis-center").css("padding-left", $(".vis-panel.vis-center").css("left"));
-					$(".vis-panel.vis-center").css("margin-left", "-" + $(".vis-panel.vis-center").css("left"));
-					$(".vis-left").css("pointer-events", "none");
+					leftOffset = (parseFloat($(".vis-panel.vis-center").css("left")) - 25) + "px";
+					$(".vis-panel.vis-center").css("padding-left", leftOffset);
+					$(".vis-panel.vis-center").css("margin-left", "-" + leftOffset);
+                    $(".vis-left").css("pointer-events", "none");
 					window.lastScrollingTime = moment();
-                })
-                $(".vis-panel.vis-center").on("mouseover", function(){
-                	var timeFromLastScroll = moment().diff( moment(window.lastScrollingTime) )
-                	if (timeFromLastScroll > 2000) {
-						$(".vis-left").css("pointer-events", "initial");
-                	}
-                })
-
+					console.log("scrolling...")
+					setTimeout(function(){
+	                    var timeFromLastScroll = moment().diff( moment(window.lastScrollingTime) )
+	                    if (timeFromLastScroll > 1000) {
+							console.log("STOPPED scrolling")
+	                        $(".vis-left").css("pointer-events", "initial");
+	                    }
+					},1500)
+                });
 
                 $scope.timelineItems = groups.length;
-                
                 setLayoutAfterTimelineLoad();
 
         }
