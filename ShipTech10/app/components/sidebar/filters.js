@@ -1121,7 +1121,7 @@ angular.module('shiptech.components').controller('FiltersController', [
             // debugger;
             // only type text
 
-            if (column == 'IsVerified_Name') {
+            if (column == 'IsVerified_Name' || column == "HasOpsValidation" || column ==  "HasSellerConfirmationDocument") {
                 $scope.columnFilters[column][key].column.columnType = 'Bool';
             }
 

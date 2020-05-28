@@ -1261,6 +1261,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         $(document).on("click", function(event) {
 	        if ((!$(event.target).hasClass("contextmenu") && !$(event.target).parents('.contextmenu').length) || $(event.target).hasClass("close")) {
 	        	$scope.rightClickPopoverData = null;
+                $scope.rightClickVesselPopoverData = null;
 	        	$scope.$digest();
 	        }      
 	        if ($(event.target).hasClass("expand-voyages")) {
@@ -1303,6 +1304,49 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 	        }
 
         });
+    
+
+        $(document).on("mousedown", "span.vis-vessel", function(event){
+            $("body").click();
+            console.log("Mouse down");
+            event.preventDefault();
+            if (event.which == 3) {
+                console.log("RIGHT CLICK");
+                $(".contextmenu").css("display", "block");
+
+                var currentElem = $(event.currentTarget);
+                removePopups();
+                var rightClickVesselPopoverData = {};
+                $scope.rightClickVesselPopoverData = currentElem[0].textContent;
+                $scope.$apply();
+                $timeout(function() {
+                    $('.contextmenu').css("left", "initial");
+                    $('.contextmenu').css("right", "initial");
+                    if (window.innerWidth / 2 > $(currentElem).offset().left) {
+                        $('.contextmenu').css("left", $(currentElem).offset().left);
+                    } else {
+                        $('.contextmenu').css("right", window.innerWidth - $(currentElem).offset().left - 45);
+                    }
+                    $('.contextmenu').css("top", $(currentElem).offset().top - 15);
+                    $('.contextmenu').removeClass("hidden");
+
+                    $('.contextmenu .close').click(function (e) {
+                        e.preventDefault();
+                        removePopups();
+                    });
+                });
+            }
+        });
+        
+
+        // window.oncontextmenu = function (event) {
+        //     console.log(event);
+        //     alert('Right Click')
+        //     event.preventDefault();
+        //     var currentElem = $(event.currentTarget);
+
+
+        // }
 
         $(document).on("mousedown", "span[voyage-detail-id]", function(event){
             event.preventDefault();
@@ -1467,12 +1511,15 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         function removePopups() {
             $('.popover').remove();
             $("schedule-dashboard-timeline > .contextmenu").remove();
+            $scope.$digest();
+
         }
 
         ctrl.onPopoverClose = function(results) {
             if (results) {
                 removePopups();
                 $scope.rightClickPopoverData = null;
+                $scope.rightClickVesselPopoverData = null;
                 $scope.$digest();
             }
         };
@@ -1755,6 +1802,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         document.addEventListener('scroll', function (e) {
            if (!$(e.target).hasClass("vis-item") && $(e.target).parents(".vis-item").length == 0) {
                 $(".contextmenu").css("display", "none");
+                $(".contextmenu1").css("display", "none");
+
             }   
         }, true);
 

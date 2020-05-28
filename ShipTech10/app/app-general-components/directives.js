@@ -2419,6 +2419,15 @@ Number(function() {
                         });
                     });
                 });
+                 lement.bind('contextmenu1', (event) => {
+                    scope.$apply(() => {
+                        event.preventDefault();
+                        fn(scope, {
+                            $event: event
+                        });
+                    });
+                });
+
             };
         }
     ]);
