@@ -242,9 +242,14 @@ angular.module('shiptech.components')
 						if (sv.status.id == highestPriorityStatus.voyageDetail.portStatus.id && sv.transactionType.id == highestPriorityStatus.voyageDetail.portStatus.transactionTypeId && !sv.displayInDashboard ) {
 							highestPriorityStatus.voyageDetail.portStatus.hideInDashboard = true;
 						}
-					})                     
+					});                     
                     highestPriorityStatus.voyageDetail.portStatus.color = colorCode;
                     highestPriorityStatus.voyageDetail.portStatus.fontColor = getContrastYIQ(colorCode);
+                    if (highestPriorityStatus.voyageDetail.portStatus.hideInDashboard) {
+                        highestPriorityStatus.voyageDetail.portStatus.color = "#ffffff";
+                        highestPriorityStatus.voyageDetail.portStatus.fontColor = "#000000";
+                        highestPriorityStatus.voyageDetail.portStatus.hideInDashboard = false;
+                    }
                 }
                 return highestPriorityStatus.voyageDetail.portStatus;
 		    };

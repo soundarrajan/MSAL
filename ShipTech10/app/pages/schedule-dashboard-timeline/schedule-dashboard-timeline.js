@@ -540,15 +540,15 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             var computedEndDate, computedStartDate;
         	if (ctrl.scheduleDashboardConfiguration.startsBefore >= 15) {
 	        	computedStartDate = moment.utc().subtract(15, "days").format("YYYY-MM-DD");
-	        	computedEndDate = angular.copy(moment.utc(computedStartDate).add(30,"days").format("YYYY-MM-DD"));
+	        	computedEndDate = angular.copy(moment.utc(computedStartDate).add(25,"days").format("YYYY-MM-DD"));
         		// if ( (ctrl.scheduleDashboardConfiguration.startsBefore + ctrl.scheduleDashboardConfiguration.endsAfter) % 2 == 1) {
-		        // 	computedEndDate = angular.copy(moment.utc(ctrl.startDate).add(30,"days").format("YYYY-MM-DD"));
+		        // 	computedEndDate = angular.copy(moment.utc(ctrl.startDate).add(25,"days").format("YYYY-MM-DD"));
         		// } else {
 		        // 	computedEndDate = angular.copy(moment.utc(ctrl.endDate).format("YYYY-MM-DD"));
         		// }
         	} else {
 	        	computedStartDate = angular.copy(moment.utc(ctrl.startDate).format("YYYY-MM-DD"));
-	        	computedEndDate = angular.copy(moment.utc(ctrl.startDate).add(30,"days").format("YYYY-MM-DD"));
+	        	computedEndDate = angular.copy(moment.utc(ctrl.startDate).add(25,"days").format("YYYY-MM-DD"));
         	}
 
 
@@ -567,7 +567,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 'end': ctrl.lastEndDate ? ctrl.lastEndDate : computedEndDate,
                 'max': angular.copy(moment(moment(ctrl.endDate).format("YYYY-MM-DD")).endOf("day")),
                 'zoomMin': 2.592e+8,
-                'zoomMax': 2.592e+9,
+                'zoomMax': 2.16e+9,
                 // 'preferZoom': true,
                 'zoomKey': 'altKey', 
                 groupTemplate: function (group) {
@@ -1558,6 +1558,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     template: '<div class="popover" style="z-index: 9999999" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body timeline-popover-hover">'+html+'</div></div>'
                 }).
                 on('show.bs.popover', function (event) {
+					$scope.rightClickPopoverData = null;
+					$scope.$apply();
                     var lengthVoyageStops = getLengthPopoverMarkup(voyageDetailId);
                     if (lengthVoyageStops > 3) {
                         $('.breadcrumbs-container').css('z-index', '0');
