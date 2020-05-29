@@ -12,30 +12,51 @@ angular.module('shiptech.components')
 
 		    ctrl.$onChanges = function(changes) {
 		    	$scope.test = new Date();
-                console.log("IOANA");
+                $scope.rightClickVesselPopoverData = changes.rightClickVesselPopoverData.currentValue;
                 $timeout(() => {
-		    	             $scope.rightClickVesselPopoverData = changes.rightClickVesselPopoverData.currentValue;
+                    groupVoyages($scope.rightClickVesselPopoverData);
                 });
+                ctrl.vesselName = changes.rightClickVesselPopoverData.currentValue[0].VesselName;
 		    };
-		  
-	        ctrl.addVoyageToContractPlanning = function(voyageStop) {
-                var vesselsWithoutProduct = '';
-	            $rootScope.scheduleDashboardVesselVoyages = [ ctrl.groupedVoyagesDetails[voyageStop][0] ];
-                for (var i = 0 ; i < $rootScope.scheduleDashboardVesselVoyages.length; i++) {
-                      if (!$rootScope.scheduleDashboardVesselVoyages[i].DefaultDistillate  &&  !$rootScope.scheduleDashboardVesselVoyages[i].DefaultFuel) {
-                        vesselsWithoutProduct = `${vesselsWithoutProduct }${$rootScope.scheduleDashboardVesselVoyages[i].VesselName }, `;
-                    }
-                }
-                if (vesselsWithoutProduct.length > 0) {
-                    toastr.error(`For the selected Vessels : ${ vesselsWithoutProduct } there  is no product defined. Please define at least one Product into Vessel master.`);
-                    return;
-                }
-	            localStorage.setItem('scheduleDashboardVesselVoyages', JSON.stringify($rootScope.scheduleDashboardVesselVoyages));
-	            // $rootScope.activeBreadcrumbFilters = [];
-	            $('.contextmenu a.close').click();
-	            window.open('/#/contract-planning/', '_blank');
-	        };
 
+
+            var groupVoyages = function(voyages) {
+                var groupedVoyagesRequest = _.filter(voyages, function(object) {
+                    return object.voyageDetail.request.id != 0 && object.voyageDetail.request.requestDetail.Id
+                });
+                groupedVoyagesRequest = _.orderBy(groupedVoyagesRequest, "voyageDetail.request.id");
+
+                var groupedVoyagesOrder = _.filter(voyages, function(object) {
+                    return object.voyageDetail.request.requestDetail.orderId;
+                });
+                groupedVoyagesOrder =  _.orderBy(groupedVoyagesOrder, "voyageDetail.request.requestDetail.orderId");
+
+                var groupedVoyagesNoScheduleRequest =  _.filter(voyages, function(object) {
+                    return object.voyageDetail.isDeleted && object.voyageDetail.request.id != 0 && object.voyageDetail.request.requestDetail.Id;
+                });
+                groupedVoyagesNoScheduleRequest = _.orderBy(groupedVoyagesNoScheduleRequest, "voyageDetail.request.id");
+
+                var groupedVoyagesNoScheduleOrder =  _.filter(voyages, function(object) {
+                    return object.voyageDetail.isDeleted && object.voyageDetail.request.requestDetail.orderId;
+                });
+                groupedVoyagesNoScheduleOrder =  _.orderBy(groupedVoyagesNoScheduleOrder, "voyageDetail.request.requestDetail.orderId");
+
+
+                console.log(groupedVoyagesRequest);
+                console.log(groupedVoyagesOrder);
+                console.log(groupedVoyagesNoScheduleRequest);
+                console.log(groupedVoyagesNoScheduleOrder);
+
+
+                ctrl.groupedVoyages = {
+                    groupedVoyagesRequest : groupedVoyagesRequest,
+                    groupedVoyagesOrder : groupedVoyagesOrder,
+                    groupedVoyagesNoScheduleRequest: groupedVoyagesNoScheduleRequest,
+                    groupedVoyagesNoScheduleOrder: groupedVoyagesNoScheduleOrder
+                };
+            };
+
+		  
             ctrl.$onInit = function() {
             };
 

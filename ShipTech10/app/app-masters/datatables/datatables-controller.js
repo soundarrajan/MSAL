@@ -1423,12 +1423,6 @@ APP_MASTERS.controller('Controller_Datatables', [
                         displayName: 'Speed'
                     },
                     {
-                        name: 'speed',
-                        width: 130,
-                        enableCellEdit: false,
-                        displayName: 'Speed'
-                    },
-                    {
                         name: 'distanceStandard',
                         width: 130,
                         enableCellEdit: false,
@@ -1447,6 +1441,14 @@ APP_MASTERS.controller('Controller_Datatables', [
                         cellTemplate: '<div class="ui-grid-cell-contents"><span style="cursor: pointer;" ng-click="grid.appScope. showVesselVoyageDetails(grid.appScope.fVal().formValues.flattenedVoyages[grid.appScope.rowIdx(row)].id)"><i class="fa fa-2x fa-plus-circle" style="color: #364150;"></i></span></div>',
                         displayName: ''
 
+                    }, 
+                    {
+                        name: 'hasUsdRestrictions',
+                        width: 130,
+                        enableCellEdit: false,
+                        displayName: 'USD Restrictions',
+                        cellTemplate: $scope.dataTableTemplates.checkbox,
+                        cellConditionType: 'true'
                     }
                 ]
             },

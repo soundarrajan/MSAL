@@ -31,6 +31,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
         var searchTextFilters = null;
         var pagination = null;
+        ctrl.vesselWithPbBucket = [];
         //var filtersDefault = null;
 
         $scope.searchTimeline = function(searchText) {
@@ -190,6 +191,9 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 			$.each(vessels, function(k,detail){
 				if (detail) {
                     var hasUsdRestrictions = false;
+                    var hasOpsValidation =  true;
+                    var hasSellerConfirmationDocument = true; 
+                    var noSchedule = false;
 					var hasSludge = false;
 					var voyageDetailId = detail.voyageDetail.id;
 					if (detail.voyageDetail.request.requestDetail.isSludgeProduct) {
@@ -203,13 +207,34 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                         hasUsdRestrictions = true;
                     }
 
+                    if (detail.voyageDetail.request.hasOpsValidation == false) 
+                    {
+                        hasOpsValidation = false;
+                    }
+
+                    if (detail.voyageDetail.request.requestDetail.hasSellerConfirmationDocument == false) {
+                        hasSellerConfirmationDocument = false;
+                    }
+                    if (detail.voyageDetail.isDeleted) {
+                        noSchedule = true;
+                    }
+
                     if (typeof(vesselWithHasUsdRestrictions[detail.VesselId]) == "undefined" || !vesselWithHasUsdRestrictions[detail.VesselId]) {
                         vesselWithHasUsdRestrictions[detail.VesselId] = hasUsdRestrictions;       
+                    }
+
+
+                    if (typeof(ctrl.vesselWithPbBucket[detail.VesselId]) == "undefined" || !ctrl.vesselWithPbBucket[detail.VesselId])  {
+                        if (!hasOpsValidation  || !hasSellerConfirmationDocument || noSchedule) {
+                            ctrl.vesselWithPbBucket[detail.VesselId] = true;
+                        }
+
                     }
 				}
 			})
 
             console.log(vesselWithHasUsdRestrictions);
+            console.log(ctrl.vesselWithPbBucket);
 
             if (!$scope.stopsGroupedByDayAndGroup["undefined"]) {
                 $.each($scope.stopsGroupedByDayAndGroup, function(k, v) {
@@ -281,6 +306,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 if (vessels[i].voyageDetail.hasStrategy) {
                     cls += " vis-voyage-content-sap";
                 }
+
                 if (vessels[i].voyageDetail.request.requestDetail.isSludgeProduct || voyageDaysWithSludge[vessels[i].voyageDetail.id]) {
                     cls += " vis-voyage-sludge-product";
                 }
@@ -351,7 +377,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     content: voyageContent,
                     start: startDate,
                     end: endDate,
-                    style: 'z-index:'+ i + '; background-color: ' + statusColor +"; color:" + getContrastYIQ(statusColor) + ( !vessels[i].voyageDetail.portStatus.id ? "; " : " "  )
+                    style: 'z-index:'+ i + '; background-color: ' + statusColor +"; color:" + getContrastYIQ(statusColor) + ( !vessels[i].voyageDetail.portStatus.id ? "; " : " "  ),
+                    isDeleted: vessels[i].voyageDetail.isDeleted
                 };
                 
 
@@ -403,7 +430,9 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                         // contentTemplate: 
                         content: groupString,
                         isNew: false,
-                        hasUsdRestrictions: vesselWithHasUsdRestrictions[vessels[i].VesselId]
+                        hasUsdRestrictions: vesselWithHasUsdRestrictions[vessels[i].VesselId],
+                        hasPbBucket: ctrl.vesselWithPbBucket[vessels[i].VesselId],
+                        isDeleted: vessels[i].voyageDetail.isDeleted
 
                     };
 
@@ -578,19 +607,24 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     var serviceBuyerName = group.serviceBuyerName;
                     var isNew = group.isNew;
                     var hasUsdRestrictions = group.hasUsdRestrictions;
+                    var hasPbBucket = group.hasPbBucket;
+                    var colorVessel;
+                    if (hasPbBucket) {
+                        colorVessel = "orange";
+                    }
 
                     var tpl = '<div class="vis-custom-group">';
                     if (isNew){
                         if (hasUsdRestrictions) {
-                            tpl += `<span class="vis-custom-group-column vis-vessel" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="newVessel"> N </span> <span tooltip title="Vessel Approaching USD restricted port">  <i  class="fa fa-ban usdRestrictionsFlag"></i></span> <span class="vis-custom-group-column-content vesselName"> ${vesselName} </span></span>`;
+                            tpl += `<span class="vis-custom-group-column vis-vessel" vessel-detail-id="${group.vesselId}" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="newVessel"> N </span> <span tooltip title="Vessel Approaching USD restricted port" style="width: 10px">  <i  class="fa fa-ban usdRestrictionsFlag"></i> <i class="fa fa-dollar usdRestrictionsDollar" ></i> </span> <span class="vis-custom-group-column-content vesselName" style="color: ${colorVessel}"> ${vesselName} </span></span>`;
                         } else {
-                            tpl += `<span class="vis-custom-group-column vis-vessel" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="newVessel"> N </span> <span class="vis-custom-group-column-content vesselName"> ${vesselName} </span></span>`;
+                            tpl += `<span class="vis-custom-group-column vis-vessel"  vessel-detail-id="${group.vesselId}" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="newVessel"> N </span> <span class="vis-custom-group-column-content vesselName" style="color: ${colorVessel}"> ${vesselName} </span></span>`;
                         }
                     } else {
                         if (hasUsdRestrictions) {
-                            tpl += `<span class="vis-custom-group-column vis-vessel" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"> <span tooltip title="Vessel Approaching USD restricted port">  <i  class="fa fa-ban usdRestrictionsFlag"></i></span> <span class="vis-custom-group-column-content"> ${vesselName} </span></span>`;
+                            tpl += `<span class="vis-custom-group-column vis-vessel"  vessel-detail-id="${group.vesselId}" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"> <span tooltip title="Vessel Approaching USD restricted port" style="width: 10px">  <i  class="fa fa-ban usdRestrictionsFlag"></i> <i class="fa fa-dollar usdRestrictionsDollar" ></i> </span> <span class="vis-custom-group-column-content" style="color: ${colorVessel}"> ${vesselName} </span></span>`;
                         } else {
-                            tpl += `<span class="vis-custom-group-column vis-vessel" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"> <span class="vis-custom-group-column-content"> ${vesselName} </span></span>`;
+                            tpl += `<span class="vis-custom-group-column vis-vessel"  vessel-detail-id="${group.vesselId}" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"> <span class="vis-custom-group-column-content" style="color: ${colorVessel}"> ${vesselName} </span></span>`;
 
                         }
                     }
@@ -632,9 +666,13 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                         
                     }
                 }
+
+                var timelineVoyages = _.filter(timelineData.voyages, function(object) {
+                    return !object.isDeleted;
+                });
                 
                 var groups = new vis.DataSet(timelineData.groups);
-                var voyages = new vis.DataSet(timelineData.voyages);
+                var voyages = new vis.DataSet(timelineVoyages);
                 var startDateObject = { 'start': ctrl.startDate.format('YYYY-MM-DD'), 'end': ctrl.endDate.format('YYYY-MM-DD')};
                 voyagesArray.push(startDateObject);
                 var timestamp;
@@ -1253,7 +1291,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         });
 
         document.addEventListener('contextmenu', function(e) {
-	        if ($(event.target).hasClass("vis-voyage-content") || $(event.target).parents('.vis-voyage-content').length || $(event.target).hasClass('screen-loader')) {
+	        if ($(event.target).hasClass("vis-vessel")  || $(event.target).hasClass("vis-voyage-content") || $(event.target).parents('.vis-voyage-content').length || $(event.target).hasClass('screen-loader')) {
             	e.preventDefault();
             }
         });
@@ -1304,26 +1342,36 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 	        }
 
         });
-    
 
         $(document).on("mousedown", "span.vis-vessel", function(event){
-            $("body").click();
-            console.log("Mouse down");
-            event.preventDefault();
+            //event.preventDefault();
+            $("#timeline").click();
             if (event.which == 3) {
                 console.log("RIGHT CLICK");
+                var vesselId =  $(this).attr("vessel-detail-id");
+                if (!ctrl.vesselWithPbBucket[vesselId]) {
+                    return;
+                }
                 $(".contextmenu").css("display", "block");
 
+                var voyageStop;
+                voyageStop = _.filter(ctrl.voyageData, function(el){
+                    return el.VesselId == parseFloat(vesselId) && (el.voyageDetail.request.hasOpsValidation == false || el.voyageDetail.request.requestDetail.hasSellerConfirmationDocument == false || el.voyageDetail.isDeleted);
+                }); 
+                console.log(voyageStop);           
+                voyageStop = _.uniqBy(voyageStop, 'voyageDetail.request.id')
+                
                 var currentElem = $(event.currentTarget);
                 removePopups();
                 var rightClickVesselPopoverData = {};
-                $scope.rightClickVesselPopoverData = currentElem[0].textContent;
+                $scope.rightClickVesselPopoverData = voyageStop;
                 $scope.$apply();
+                $compile($('schedule-dashboard-timeline > .contextmenu'))($scope);
                 $timeout(function() {
                     $('.contextmenu').css("left", "initial");
                     $('.contextmenu').css("right", "initial");
                     if (window.innerWidth / 2 > $(currentElem).offset().left) {
-                        $('.contextmenu').css("left", $(currentElem).offset().left);
+                        $('.contextmenu').css("left", $(currentElem).offset().left + 50);
                     } else {
                         $('.contextmenu').css("right", window.innerWidth - $(currentElem).offset().left - 45);
                     }
@@ -1337,7 +1385,6 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 });
             }
         });
-        
 
         // window.oncontextmenu = function (event) {
         //     console.log(event);
@@ -1350,8 +1397,10 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
         $(document).on("mousedown", "span[voyage-detail-id]", function(event){
             event.preventDefault();
+            $("#timeline").click();
             if (event.which == 3) {
                 var voyageDetailId = $(this).attr("voyage-detail-id");
+                removePopups();
                 $(".contextmenu").css("display", "block");
 	            
 	            var allStops = [parseFloat(voyageDetailId)];

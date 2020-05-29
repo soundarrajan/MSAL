@@ -226,7 +226,6 @@ span.newVessel {
 	width: 10px;
 	height: 15px;
 	font-size: 0.9em;
-	top: 25%;
 	left: 0.5%;
 	background-color: orange;
 	color: white;
@@ -421,7 +420,22 @@ span[timeline-order-column].desc:before {
 
 .usdRestrictionsFlag {
     position: relative;
-    top: -10px;
+    top: -3px;
+    left: -4px;
+    color: red;
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    text-align: center;
+    line-height: 20px !important;
+    border-radius: 1000px;
+    font-size: 15px;
+
+}
+
+.usdRestrictionsDollar {
+    position: relative;
+    top: -23px;
     left: -4px;
     color: red;
     width: 20px;

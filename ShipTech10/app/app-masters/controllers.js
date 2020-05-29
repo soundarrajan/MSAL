@@ -6919,6 +6919,7 @@ APP_MASTERS.controller('Controller_Master', [
                         speed: vdv.speed,
                         distanceStandard: vdv.distanceStandard,
                         distanceECA: vdv.distanceECA,
+                        hasUsdRestrictions: vdv.hasUsdRestrictions
                     };
                     $scope.formValues.flattenedVoyages.push(voyageDetailRow);
                 });
