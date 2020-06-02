@@ -532,9 +532,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                                     if (vm.screen_id == 'specparameter') {
                                     	$scope.formValues.energyParameterCode = null;
                                     }
-                                    if (vm.screen_id == 'counterparty') {
-                                    	$scope.formValues.address.id = 0;
-                                    }
+
 
                                     $.each($scope.formValues, (key, val) => {
                                         if (val && angular.isArray(val)) {
@@ -550,6 +548,14 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                                         }
                                     });
                                     $scope.formValues.id = 0;
+                                    if (vm.screen_id == 'counterparty') {
+                                    	$scope.formValues.address.id = 0;
+                                    	$.each($scope.formValues.counterpartyLocations, (key, val) => {
+	                                            $.each(val.products, (key1, val1) => {
+	                                            	val1.id = 0;
+	                                            });
+	                                     });
+                                    }
                                     if (typeof $scope.formValues.name != 'undefined') {
                                         $scope.formValues.name = null;
                                     }
