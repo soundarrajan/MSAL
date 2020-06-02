@@ -619,15 +619,15 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     var tpl = '<div class="vis-custom-group">';
                     if (isNew){
                         if (hasUsdRestrictions) {
-                            tpl += `<span class="vis-custom-group-column vis-vessel" vessel-detail-id="${group.vesselId}" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="newVessel"> N </span> <span tooltip title="Vessel Approaching USD restricted port" style="width: 10px">  <i  class="fa fa-ban usdRestrictionsFlag"></i> <i class="fa fa-dollar usdRestrictionsDollar" ></i> </span> <span class="vis-custom-group-column-content vesselName" style="color: ${colorVessel}"> ${vesselName} </span></span>`;
+                            tpl += `<span class="vis-custom-group-column vis-vessel"  oncontextmenu="return false;" vessel-detail-id="${group.vesselId}" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="newVessel"> N </span> <span tooltip title="Vessel Approaching USD restricted port" style="width: 10px">  <i  class="fa fa-ban usdRestrictionsFlag"></i> <i class="fa fa-dollar usdRestrictionsDollar" ></i> </span> <span class="vis-custom-group-column-content vesselName" style="color: ${colorVessel}"> ${vesselName} </span></span>`;
                         } else {
-                            tpl += `<span class="vis-custom-group-column vis-vessel"  vessel-detail-id="${group.vesselId}" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="newVessel"> N </span> <span class="vis-custom-group-column-content vesselName" style="color: ${colorVessel}"> ${vesselName} </span></span>`;
+                            tpl += `<span class="vis-custom-group-column vis-vessel"  oncontextmenu="return false;" vessel-detail-id="${group.vesselId}" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="newVessel"> N </span> <span class="vis-custom-group-column-content vesselName" style="color: ${colorVessel}"> ${vesselName} </span></span>`;
                         }
                     } else {
                         if (hasUsdRestrictions) {
-                            tpl += `<span class="vis-custom-group-column vis-vessel"  vessel-detail-id="${group.vesselId}" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"> <span tooltip title="Vessel Approaching USD restricted port" style="width: 10px">  <i  class="fa fa-ban usdRestrictionsFlag"></i> <i class="fa fa-dollar usdRestrictionsDollar" ></i> </span> <span class="vis-custom-group-column-content" style="color: ${colorVessel}"> ${vesselName} </span></span>`;
+                            tpl += `<span class="vis-custom-group-column vis-vessel"   oncontextmenu="return false;" vessel-detail-id="${group.vesselId}" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"> <span tooltip title="Vessel Approaching USD restricted port" style="width: 10px">  <i  class="fa fa-ban usdRestrictionsFlag"></i> <i class="fa fa-dollar usdRestrictionsDollar" ></i> </span> <span class="vis-custom-group-column-content vesselName" style="color: ${colorVessel}"> ${vesselName} </span></span>`;
                         } else {
-                            tpl += `<span class="vis-custom-group-column vis-vessel"  vessel-detail-id="${group.vesselId}" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"> <span class="vis-custom-group-column-content" style="color: ${colorVessel}"> ${vesselName} </span></span>`;
+                            tpl += `<span class="vis-custom-group-column vis-vessel"   oncontextmenu="return false;" vessel-detail-id="${group.vesselId}" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"> <span class="vis-custom-group-column-content" style="color: ${colorVessel}"> ${vesselName} </span></span>`;
 
                         }
                     }
@@ -1843,12 +1843,15 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
 		$rootScope.$on('allStrategiesAreCancelled', function(event, voyageDetailId){
 			$("span[voyage-detail-id="+voyageDetailId+"]").removeClass("vis-voyage-content-sap");
-		});        
+		});     
+           
+        document.addEventListener("contextmenu", function(e){
+            e.preventDefault();
+        }, false);
 
         document.addEventListener('scroll', function (e) {
            if (!$(e.target).hasClass("vis-item") && $(e.target).parents(".vis-item").length == 0) {
                 $(".contextmenu").css("display", "none");
-                $(".contextmenu1").css("display", "none");
 
             }   
         }, true);
