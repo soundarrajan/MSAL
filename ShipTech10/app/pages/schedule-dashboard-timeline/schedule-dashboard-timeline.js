@@ -203,8 +203,11 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 						voyageDaysWithSludge[voyageDetailId] = hasSludge;		
 					}
 
-                    if (detail.voyageDetail.hasUsdRestrictions) {
-                        hasUsdRestrictions = true;
+                    if (detail.voyageDetail.hasUsdRestrictions && !detail.voyageDetail.isDeleted) {
+                        var today =  moment.utc(new Date()).startOf('day').format('YYYY-MM-DD HH:mm');
+                        if (detail.voyageDetail.eta >= today) {
+                            hasUsdRestrictions = true;
+                        }
                     }
 
                     if (detail.voyageDetail.request.hasOpsValidation == false) 
