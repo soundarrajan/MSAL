@@ -56,6 +56,22 @@ angular.module('shiptech.components')
                 };
             };
 
+            ctrl.getWidth = function() {
+                var string = "310px";
+                ctrl.changeWidth = "33.33333% !important";
+                var array = [ctrl.groupedVoyages.groupedVoyagesRequest.length, ctrl.groupedVoyages.groupedVoyagesOrder.length, 
+                             ctrl.groupedVoyages.groupedVoyagesNoScheduleRequest.length + ctrl.groupedVoyages.groupedVoyagesNoScheduleOrder.length];
+                var max = _.max(array);
+                console.log(max);
+                if (max == 2) {
+                    ctrl.changeWidth = "50% !important";
+                    return "250px";
+                } else if (max == 1) {
+                    return "230px";
+                }
+                return string;
+            }
+
 		  
             ctrl.$onInit = function() {
             };

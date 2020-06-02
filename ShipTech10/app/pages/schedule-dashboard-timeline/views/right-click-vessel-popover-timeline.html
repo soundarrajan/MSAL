@@ -1,4 +1,4 @@
-<div class="newStatusColoured vesselPopover contextmenu fade in" style="background-color: #fff; z-index: 9999999; width: 300px !important;"> 
+<div class="newStatusColoured vesselPopover contextmenu fade in" style="background-color: #fff; z-index: 9999999; width: {{$ctrl.getWidth()}};"> 
 	<div class="popover-header">
 		<i class="fa fa-location-arrow">
 			&nbsp;&nbsp;
@@ -11,7 +11,7 @@
 				OPS Validation pending
 			</div>
 			<div class="row" style="padding-bottom: 5px;">
-				<div class="col-md-4" ng-repeat="(key,voyage) in $ctrl.groupedVoyages.groupedVoyagesRequest" style="padding-bottom: 5px">
+				<div class="col-md-4" ng-repeat="(key,voyage) in $ctrl.groupedVoyages.groupedVoyagesRequest" style="padding-bottom: 5px; width: {{$ctrl.changeWidth}};">
 					<a href="/#/view-request-documents/{{voyage.voyageDetail.request.id}}" target="_blank" style="border: 1px solid #E7ECF1;padding: 5px;
 ">
 						REQ{{voyage.voyageDetail.request.id}}
@@ -22,7 +22,7 @@
 				Seller Document pending
 			</div>
 			<div class="row" style="padding-bottom: 5px;">
-				<div  class="col-md-4" ng-repeat="(key,voyage) in $ctrl.groupedVoyages.groupedVoyagesOrder" style="padding-bottom: 5px">
+				<div  class="col-md-4" ng-repeat="(key,voyage) in $ctrl.groupedVoyages.groupedVoyagesOrder" style="padding-bottom: 5px; width: {{$ctrl.changeWidth}};">
 					<a href="/#/view-order-documents/{{voyage.voyageDetail.request.requestDetail.orderId}}" target="_blank" style="border: 1px solid #E7ECF1;  padding: 5px;">
 						ORD{{voyage.voyageDetail.request.requestDetail.orderId}}
 					</a>
@@ -32,13 +32,13 @@
 				No Schedule
 			</div>
 			<div class="row" style="padding-bottom: 5px;">
-				<div  class="col-md-4"  ng-repeat="(key,voyage) in $ctrl.groupedVoyages.groupedVoyagesNoScheduleRequest" style="padding-bottom: 5px">
+				<div  class="col-md-4"  ng-repeat="(key,voyage) in $ctrl.groupedVoyages.groupedVoyagesNoScheduleRequest"  style="padding-bottom: 5px; width: {{$ctrl.changeWidth}};">
 					<a href="/#/edit-request/{{voyage.voyageDetail.request.id}}" target="_blank" style="border: 1px solid #E7ECF1; padding: 5px;
 ">
 						REQ{{voyage.voyageDetail.request.id}}
 					</a>
 				</div>
-				<div  class="col-md-4"  ng-repeat="(key,voyage) in $ctrl.groupedVoyages.groupedVoyagesNoScheduleOrder">
+				<div  class="col-md-4"  ng-repeat="(key,voyage) in $ctrl.groupedVoyages.groupedVoyagesNoScheduleOrder"  style="padding-bottom: 5px; width: {{$ctrl.changeWidth}};">
 					<a href="/#/edit-order/{{voyage.voyageDetail.request.requestDetail.orderId}}" target="_blank" style="border: 1px solid #E7ECF1;     padding: 5px;">
 						ORD{{voyage.voyageDetail.request.requestDetail.orderId}}
 					</a>

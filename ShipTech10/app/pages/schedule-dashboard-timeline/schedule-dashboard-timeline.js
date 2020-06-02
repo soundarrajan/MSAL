@@ -609,7 +609,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     var hasUsdRestrictions = group.hasUsdRestrictions;
                     var hasPbBucket = group.hasPbBucket;
                     var colorVessel;
-                    if (hasPbBucket) {
+                    if (hasPbBucket && ctrl.scheduleDashboardConfiguration.displayPendingActions.name == "Yes") {
                         colorVessel = "orange";
                     }
 
@@ -1346,7 +1346,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         $(document).on("mousedown", "span.vis-vessel", function(event){
             //event.preventDefault();
             $("#timeline").click();
-            if (event.which == 3) {
+            if (event.which == 3 && ctrl.scheduleDashboardConfiguration.displayPendingActions.name == "Yes") {
                 console.log("RIGHT CLICK");
                 var vesselId =  $(this).attr("vessel-detail-id");
                 if (!ctrl.vesselWithPbBucket[vesselId]) {
@@ -1386,14 +1386,6 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             }
         });
 
-        // window.oncontextmenu = function (event) {
-        //     console.log(event);
-        //     alert('Right Click')
-        //     event.preventDefault();
-        //     var currentElem = $(event.currentTarget);
-
-
-        // }
 
         $(document).on("mousedown", "span[voyage-detail-id]", function(event){
             event.preventDefault();
