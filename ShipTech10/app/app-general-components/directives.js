@@ -732,6 +732,9 @@ Number(function() {
                                             var offsetChild = $(this).children('.ui-jqgrid-bdiv').offset().left - $(this).children('.ui-jqgrid-bdiv').offsetParent().offset().left;
                                             $(this).children('.ui-jqgrid-bdiv').css('min-width', `${parseFloat($(this).css('width')) - parseFloat(offsetChild) }px`);
                                         });
+                                        $('.ui-jqgrid-view, .ui-jqgrid-bdiv').on('scroll', function() {
+                                            $('.datepicker').parent().hide();
+                                        });
                                         if (table_id == 'flat_available_contracts') {
                                             $('.ui-jqgrid-bdiv').css('max-height', `${$(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.gridData.length * 60 + 15 }px`);
                                         } else {
