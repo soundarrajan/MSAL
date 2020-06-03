@@ -59,7 +59,7 @@
                             <i class="fa fa-search"></i>
                         </span>
                     </div>
-                            <a ng-if="GH.searched || showClearButton()" class="btn btn-default btn-outline"  ng-click="GH.general_search_terms = '';GH.general_search(GH.general_search_terms)">
+                            <a ng-if="GH.searched" class="btn btn-default btn-outline"  ng-click="GH.general_search_terms = '';GH.general_search(GH.general_search_terms)">
                                 Clear
                             </a>
                     <span data-ng-repeat="(key, action) in actions.primary">

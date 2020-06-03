@@ -7807,12 +7807,6 @@ APP_MASTERS.controller('Controller_Master', [
             return enabledEmailToVessel;
         };
 
-        $scope.showClearButton = function() {
-            if (window.location.href.indexOf("delivery/delivery") != -1 ) {
-                return true; 
-            }
-            return false;
-        }
         vm.getCurrencyCodeFiltered = function() {
             console.log('getCurrencyCodeFiltered');
 
