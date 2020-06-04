@@ -2293,6 +2293,18 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                 payload.isVerified.id = 1;
                 payload.isVerified.name = 'Yes';
             }
+            for (let i = 0; i < payload.products.length; i++) {
+                if (payload.products[i].additionalCosts) {
+                    for (let j = 0; j < payload.products[i].additionalCosts.length; j++) {
+                        if (payload.products[i].additionalCosts[j].isFromContract) {
+                            payload.products[i].additionalCosts[j].isDeleted = true;
+                        }
+
+                    }
+                }          
+            }
+
+            console.log(payload.products);
 
 
 
