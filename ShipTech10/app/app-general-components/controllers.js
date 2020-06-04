@@ -1100,8 +1100,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     if (rowObject.comment) {
                         textVal = rowObject.comment.replace(new RegExp("'","g"), "\\'");
                         textVal = textVal.replace(new RegExp('"',"g"), "\\'");
+
                     }
-                    return '<textarea class="contract_planning_comments"  ng-blur="CLC.changeCPRowModel(cpcomment[' + options.rowId + "], " + options.rowId + "," + columnKey + ', false);" ng-model="cpcomment[' + options.rowId + ']" ng-init="cpcomment[' + options.rowId + '] = \''+textVal+'\'" rowId="' + options.rowId + '" cols="30" rows="1" style="display: block; width: 100px; max-width: 100%; min-width: 100px; min-height: 30px; resize: both;" >' + textVal + '</textarea>';
+                    return '<textarea class="contract_planning_comments"  ng-blur="CLC.changeCPRowModel(cpcomment[' + options.rowId + "], " + options.rowId + "," + columnKey + ', false);" ng-model="cpcomment[' + options.rowId + ']" ng-init="cpcomment[' + options.rowId + '] = \'' + textVal + '\'" rowId="' + options.rowId + '" cols="30" rows="1" style="display: block; width: 100px; min-width: 100px; min-height: 30px; resize: both;" >' + textVal + '</textarea>';
 
                 };
                 var order_comments = function(cellValue, options, rowObject) {
@@ -2957,6 +2958,35 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             return vm.contractPlanningContractTypeaheadOptions["r" + parseFloat(rowId - 1)];
         };
 
+        let lastWidth = $(".contract_planning_comments").width(); 
+        ctrl.repeat = 0;
+        let y = 0;
+
+        function checkHeightChange() { 
+            if (ctrl.currentRowId) {
+                let newWidth =  parseFloat(($(".contract_planning_comments")[ctrl.currentRowId - 1]).style.width.split("px")[0]); 
+                if (newWidth) { 
+                    ctrl.repeat++;
+                    var x = $("#flat_contract_planning_comment").width();
+                    if (ctrl.repeat == 1) {
+                        y = x;
+                    }
+                    if (newWidth - 40 > y && ctrl.repeat > 1) {
+                        $(Elements.table[Elements.settings["flat_contract_planning"].table]).jqGrid('resizeColumn', 'comment', newWidth + 40);                           
+                    } else {
+                        $(Elements.table[Elements.settings["flat_contract_planning"].table]).jqGrid('resizeColumn', 'comment', y);                           
+                    }
+                  
+                } 
+            
+            }
+          
+         
+        } 
+  
+        setInterval(checkHeightChange, 200); 
+      
+
         $scope.updateMinMaxQuantities = function(rowIdx, productId, callback){
 
             ctrl.CLC = $('#flat_contract_planning');
@@ -3750,10 +3780,14 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             });
             $(document).on("blur", ".contract_planning_comments", function() {
                 rowId = $(this).attr("rowId");
+                ctrl.currentRowId = $(this).attr("rowId");
                 newData = $(this).val();
                 if (!vm.hasChanged) {
                     rowId -= 1;
                 }
+            });
+            $(document).on("mouseover", ".contract_planning_comments", function() {
+                ctrl.currentRowId = $(this).attr("rowId");
             });
         });
     }
