@@ -22,12 +22,12 @@ angular.module('shiptech.components')
 
             var groupVoyages = function(voyages) {
                 var groupedVoyagesRequest = _.filter(voyages, function(object) {
-                    return object.voyageDetail.request.id != 0 && object.voyageDetail.request.requestDetail.Id
+                    return object.voyageDetail.request.id != 0 && object.voyageDetail.request.requestDetail.Id && !object.voyageDetail.request.hasOpsValidation;
                 });
                 groupedVoyagesRequest = _.orderBy(groupedVoyagesRequest, "voyageDetail.request.id");
 
                 var groupedVoyagesOrder = _.filter(voyages, function(object) {
-                    return object.voyageDetail.request.requestDetail.orderId;
+                    return object.voyageDetail.request.requestDetail.orderId && !object.voyageDetail.request.requestDetail.hasSellerConfirmationDocument;
                 });
                 groupedVoyagesOrder =  _.orderBy(groupedVoyagesOrder, "voyageDetail.request.requestDetail.orderId");
 
