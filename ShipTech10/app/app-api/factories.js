@@ -6229,7 +6229,7 @@ APP_API.factory('$Api_Service', [
                         payload.exportType = 2;
                         file_type = 'text/plain';
                     }
-                    let timeZone = jstz().timezone_name;
+                    let timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
                     let d = new Date();
                     let dOffset = d.getTimezoneOffset();
                     payload.Order = null;
