@@ -4162,6 +4162,12 @@ a[data-table="flat_table_schedule_dashboard"] {
 custom-popover[table="'flat_table_schedule_dashboard'"] > div.customPopover > div.showFilters {
     display: none;
 }
+custom-popover[table="'flat_requests_list'"][sortcol="'hasopsvalidation'"]{
+    width: 230px !important;
+}
+custom-popover[table="'flat_orders_list'"][sortcol="'hassellerconfirmationdocument'"]{
+    width: 230px !important;
+}
 
 .ui-jqgrid .ui-jqgrid-resize-ltr {
 	width: 30px;
@@ -4426,4 +4432,8 @@ clc-table-list[hasloader="true"].loading:before {
 }
 .page-sidebar-menu .nav-item.open > a > i {
 	transform: rotateY(180deg);
+}
+
+select option {
+    border: 1px solid red;
 }

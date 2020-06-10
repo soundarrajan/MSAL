@@ -274,6 +274,7 @@ angular.module('shiptech.components').controller('FiltersController', [
             }
             $scope.packedFilters = $scope.packFilters(data);
             $scope.packedFilters.raw = $rootScope.rawFilters;
+            $rootScope.filtersAppliedOps = angular.copy(data);
             if (defaultConf) {
                 $rootScope.timelineSaved = $scope.packedFilters;
             }
@@ -1115,6 +1116,13 @@ angular.module('shiptech.components').controller('FiltersController', [
             $rootScope.rawFilters = newFilter;
             $scope.applyFilters($rootScope.rawFilters);
         };
+
+
+        $scope.verifyValue = function(element) {
+            for (var i = 0; i < $rootScope.filtersAppliedOps.length; i++) {
+                $rootScope.rawFilters[i] = angular.copy($rootScope.filtersAppliedOps[i]);
+           }
+        }
 
         $scope.setDefaultConditionType = function(column, key) {
             // console.log($scope.columnFilters[column][key]);
