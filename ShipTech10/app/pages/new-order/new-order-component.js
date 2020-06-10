@@ -2732,6 +2732,11 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
             	errorMsg = `${errorMsg }You have additional costs that have applicable for set on cancelled products \n`;
             }
 
+            if (moment(ctrl.data.deliveryFrom).diff(moment(ctrl.data.deliveryTo)) > 0 ) {
+                errorMsg = `${errorMsg }Delivery To should be greater than Delivery From \n`;
+            }
+
+
             if(errorMsg != '') {
             	aggregatedErrorMessages.push(errorMsg);
                 // toastr.error(errorMsg);
