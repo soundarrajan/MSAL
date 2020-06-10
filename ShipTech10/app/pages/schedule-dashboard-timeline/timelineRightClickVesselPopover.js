@@ -24,21 +24,25 @@ angular.module('shiptech.components')
                 var groupedVoyagesRequest = _.filter(voyages, function(object) {
                     return object.voyageDetail.request.id != 0 && object.voyageDetail.request.requestDetail.Id && !object.voyageDetail.request.hasOpsValidation;
                 });
+                groupedVoyagesRequest = _.uniqBy(groupedVoyagesRequest, 'voyageDetail.request.id')
                 groupedVoyagesRequest = _.orderBy(groupedVoyagesRequest, "voyageDetail.request.id");
 
                 var groupedVoyagesOrder = _.filter(voyages, function(object) {
                     return object.voyageDetail.request.requestDetail.orderId && !object.voyageDetail.request.requestDetail.hasSellerConfirmationDocument;
                 });
+                groupedVoyagesOrder = _.uniqBy(groupedVoyagesOrder, 'voyageDetail.request.requestDetail.orderId')
                 groupedVoyagesOrder =  _.orderBy(groupedVoyagesOrder, "voyageDetail.request.requestDetail.orderId");
 
                 var groupedVoyagesNoScheduleRequest =  _.filter(voyages, function(object) {
                     return object.voyageDetail.isDeleted && object.voyageDetail.request.id != 0 && object.voyageDetail.request.requestDetail.Id;
                 });
+                groupedVoyagesNoScheduleRequest = _.uniqBy(groupedVoyagesNoScheduleRequest, 'voyageDetail.request.id')
                 groupedVoyagesNoScheduleRequest = _.orderBy(groupedVoyagesNoScheduleRequest, "voyageDetail.request.id");
 
                 var groupedVoyagesNoScheduleOrder =  _.filter(voyages, function(object) {
                     return object.voyageDetail.isDeleted && object.voyageDetail.request.requestDetail.orderId;
                 });
+                groupedVoyagesNoScheduleOrder = _.uniqBy(groupedVoyagesNoScheduleOrder, 'voyageDetail.request.requestDetail.orderId')
                 groupedVoyagesNoScheduleOrder =  _.orderBy(groupedVoyagesNoScheduleOrder, "voyageDetail.request.requestDetail.orderId");
 
 

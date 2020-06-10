@@ -188,6 +188,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
             var voyageDaysWithSludge = [];
             var vesselWithHasUsdRestrictions = [];
+            ctrl.vesselWithPbBucket = [];
 			$.each(vessels, function(k,detail){
 				if (detail) {
                     var hasUsdRestrictions = false;
@@ -1401,7 +1402,6 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     return el.VesselId == parseFloat(vesselId) && (el.voyageDetail.request.hasOpsValidation == false || el.voyageDetail.request.requestDetail.hasSellerConfirmationDocument == false || el.voyageDetail.isDeleted);
                 }); 
                 console.log(voyageStop);           
-                voyageStop = _.uniqBy(voyageStop, 'voyageDetail.request.id')
                 
                 var currentElem = $(event.currentTarget);
                 removePopups();
