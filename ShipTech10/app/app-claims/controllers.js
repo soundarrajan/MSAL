@@ -164,17 +164,15 @@ APP_CLAIMS.controller('Controller_Claims', [
                         $scope.options[field.Name] = callback;
                         if (field.Name === 'Product' && window.location.href.indexOf('?orderId') == -1)  {
                             if ($scope.options.Product && $scope.options.Product.length > 0) {
-                                $.each($scope.formValues.temp.tempProductforType, (k, v) => {
-                                    $.each($scope.options.Product, (k1, v1) => {
+                               $.each($scope.formValues.temp.tempProductforType, function(k, v) {
+                                    $.each($scope.options['Product'], function(k1, v1) {
                                         if (v.product.id && v1.id === v.product.id) {
                                             v.physicalSupplier = v1.payload.orderDetails.physicalSupplier;
-                                            $scope.formValues.orderDetails.product = v.product;
-
                                         }
                                     });
                                 });
                                 if ($scope.formValues.orderDetails.product) {
-                                	$scope.formValues.orderDetails.product = _.find($scope.options.Product, { id:$scope.formValues.orderDetails.product.id });
+                                    $scope.formValues.orderDetails.product = _.find($scope.options.Product, { id:$scope.formValues.orderDetails.product.id });
                                 }
                                 $scope.triggerChangeFieldsAppSpecific('Product');
                                 $rootScope.$broadcast('changeCurrencyValues', 'EstimatedSettlementAmount');

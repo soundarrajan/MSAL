@@ -286,7 +286,6 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 } 
 				$.each(window.scheduleDashboardConfiguration.payload.labels, function(sk,sv){
 					if (sv.status.id == statusObj.id && sv.transactionType.id == statusObj.transactionTypeId && !sv.displayInDashboard ) {
-						console.log("remove Color for :" + statusObj.name)
 						statusColor = '#ffffff';
 					}
 				})                
@@ -727,7 +726,20 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     }
                 });
 
-
+                timeline.on("changed", function(){
+            		isAtTimelineBottom = checkIfIsAtTimelineBottom();
+            		if(isAtTimelineBottom) {
+            			var scrollFixVal = $(".vis-vertical-scroll").scrollTop() - 1;
+            			if (scrollFixVal > 0) {
+	            			$(".vis-vertical-scroll").scrollTop(scrollFixVal) 
+	            			console.log("xxxxxxxxxxx: " + scrollFixVal);
+            			}
+            			 $(window).scrollTop($(window).scrollTop()+120);
+	                    // console.log("xxxxxxxxxx rangechange")
+	                    // console.log($(".vis-vertical-scroll").scrollTop())
+            			return false;
+            		}                    
+                });
 
 
                 redrawOutOfRangeElements = function(){
@@ -755,31 +767,58 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 }
 
 
+                checkIfIsAtTimelineBottom = function() {
+                	if(
+                		$(".vis-vertical-scroll").scrollTop() + $(".vis-vertical-scroll").height() - $(".vis-vertical-scroll .vis-content").height() >= -2 ||
+                		$(".vis-vertical-scroll .vis-content").height() - $(".vis-vertical-scroll").scrollTop() + $(".vis-vertical-scroll").height() <= 2 
+            		) {
+                		isAtTimelineBottom = true;
+                	} else {
+                		isAtTimelineBottom = false;
+                	}    
+                	return isAtTimelineBottom;            	
+                }
+      //       	$('.vis-foreground, #timeline *').bind('mousewheel', function(e){
+      //       		isAtTimelineBottom = checkIfIsAtTimelineBottom();
+      //       		if(e.originalEvent.wheelDelta < 0 && isAtTimelineBottom) {
+      //       			$(".vis-vertical-scroll").scrollTop($(".vis-vertical-scroll").scrollTop() - 1) 
+						// $(window).scrollTop($(window).scrollTop()+120);
+      //       			return false;
+      //       		}
+      //       	});				   
+
                 /*
-                	Redraw long voyages that exceed the timeline width
-                	Fixed performance issue when scrolling groups vertically
+                    Redraw long voyages that exceed the timeline width
+                    Fixed performance issue when scrolling groups vertically
                 */
+                
                 $(".vis-vertical-scroll").on("scroll", function(){
-					redrawOutOfRangeElements();
-					leftOffset = (parseFloat($(".vis-panel.vis-center").css("left")) - 25) + "px";
-					$(".vis-panel.vis-center").css("padding-left", leftOffset);
-					$(".vis-panel.vis-center").css("margin-left", "-" + leftOffset);
+                    redrawOutOfRangeElements();
+                    leftOffset = (parseFloat($(".vis-panel.vis-center").css("left")) - 28) + "px";
+                    $(".vis-panel.vis-center").css("padding-left", leftOffset);
+                    $(".vis-panel.vis-center").css("margin-left", "-" + leftOffset);
                     $(".vis-left").css("pointer-events", "none");
 					window.lastScrollingTime = moment();
-					console.log("scrolling...")
+					// console.log("scrolling...")
 					setTimeout(function(){
 	                    var timeFromLastScroll = moment().diff( moment(window.lastScrollingTime) )
 	                    if (timeFromLastScroll > 1000) {
-							console.log("STOPPED scrolling")
+							// console.log("STOPPED scrolling")
 	                        $(".vis-left").css("pointer-events", "initial");
 	                    }
-					},1500)
+					},1000)
                 });
 
                 $scope.timelineItems = groups.length;
                 setLayoutAfterTimelineLoad();
 
         }
+
+       
+
+        // timeline.on('select', function (properties) {
+        //      alert('selected items: ' + properties.nodes);
+        // });
        
         $rootScope.clc_loaded = true;
         if (data.payload.scheduleDashboardView == null) {

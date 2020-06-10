@@ -3519,6 +3519,10 @@ APP_MASTERS.controller('Controller_Datatables', [
                     id: 0
                 });
             }
+            console.log(obj);
+            if (obj.length == 1) {
+                $scope.formValues.claimType.quantityShortage = obj[0].quantityShortage;
+            }
         	if (!$scope.formValues.claimDetails.isEstimatedSettlementAmountManual) {
         		$scope.formValues.claimDetails.estimatedSettlementAmount = null;
         	}
