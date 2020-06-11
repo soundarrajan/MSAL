@@ -142,7 +142,7 @@
                             </span>
                         </span>
                         <span ng-repeat="(key, attachment) in $ctrl.email.attachmentsList track by $index" ng-hide="attachment.isIncludedInMail == false" class="email-tag pull-left">
-                            <a ng-click="downloadDocument(attachment.id, attachment.name)">
+                            <a ng-click="downloadDocument(attachment.id, attachment.name, attachment.content)">
                                 {{ attachment.name }}
                             </a>
                             <i class="fa fa-remove font-red-thunderbird" ng-click="attachment.isIncludedInMail = false"></i>

@@ -4225,10 +4225,15 @@ APP_MASTERS.controller('Controller_Master', [
             Factory_Master.newSchedule(data, (response) => {});
         };
         // download document using XHR - { liviu m. }
-        $scope.downloadDocument = function(rowId, docName) {
+        $scope.downloadDocument = function(rowId, docName, content) {
+            var payload = {
+                "id": rowId,
+                "name": docName,
+                "content": content
+            }
             Factory_Master.get_document_file(
                 {
-                    Payload: rowId
+                    Payload: payload
                 },
                 (file, mime) => {
                     if (file.data) {
