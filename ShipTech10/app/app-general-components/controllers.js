@@ -2078,7 +2078,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 };
                 var formGotoDocument = function(cellValue, options, rowObject) {
                     // return '<a ng-controller="Controller_Master as CM" ng-click="downloadDocument(' + rowObject.id + ')" title="Download">' + cellValue + '</a>';
-                    return '<a ng-controller="Controller_Master as CM" ng-click="downloadDocument(' + rowObject.id + ",'" + rowObject.name + '\')" title="Download">' + cellValue + "</a>";
+                    return '<a ng-controller="Controller_Master as CM" ng-click="downloadDocument(' + rowObject.id + ",'" + rowObject.content +  '\'  )" title="Download">' + cellValue + "</a>";
                 };
                 // collection Read -- {code, collectionName, id, name}
                 var collectionRead = function(cellValue, options, rowObject) {
@@ -2359,7 +2359,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     vm.changedfields[entityId] = {};
                 }
                 vm.changedfields[entityId][name] = cellValue;
-                tpl = "<span title=''><input class='form-control' ng-model='CLC.changedfields[" + entityId + "]." + name + "' ng-focus='CLC.setInitialValue(CLC.changedfields[" + entityId + "]." + name + ", $event)' ng-blur='CLC.checkChange(" + entityId + ", CLC.changedfields[" + entityId + "]." + name + ", $event)' /></span>";
+                tpl = "<span title=''><textarea cols='30' rows='1' style='display: block; width: 100px; min-width: 100px; min-height: 30px; resize: both;' class='form-control box_office_comments' ng-model='CLC.changedfields[" + entityId + "]." + name + "' ng-focus='CLC.setInitialValue(CLC.changedfields[" + entityId + "]." + name + ", $event)' ng-blur='CLC.checkChange(" + entityId + ", CLC.changedfields[" + entityId + "]." + name + ", $event)' /></textarea>";
                 return tpl;
             };
             var dropdown = function(cellValue, options, rowObject) {
@@ -2965,36 +2965,58 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             }
             return vm.contractPlanningContractTypeaheadOptions["r" + parseFloat(rowId - 1)];
         };
-        let lastWidth = $(".contract_planning_comments").width();
+      
+        let lastWidth = $(".contract_planning_comments").width(); 
         ctrl.repeat = 0;
 
-        function checkHeightChange() {
-            let elements = $(".contract_planning_comments");
-            var array = [];
-            for (var i = 0; i < elements.length; i++) {
-                array.push(parseFloat(elements[i].style.width.split("px")[0]));
-            }
-            let newWidth = _.max(array);
-            if (newWidth) {
-                ctrl.repeat++;
-                var x = $("#flat_contract_planning_comment").width();
-                if (ctrl.repeat == 1) {
-                    y = x;
+        function checkHeightChange() { 
+            let elements =  $(".contract_planning_comments"); 
+            if (elements.length) {
+                var array = [];
+                for (var i = 0 ; i < elements.length ; i++) {
+                    array.push(parseFloat(elements[i].style.width.split("px")[0]));
                 }
-                if (newWidth - 40 > y && ctrl.repeat > 1) {
-                    $(Elements.table[Elements.settings["flat_contract_planning"].table]).jqGrid('resizeColumn', 'comment', newWidth + 40);
-                } else {
-                    $(Elements.table[Elements.settings["flat_contract_planning"].table]).jqGrid('resizeColumn', 'comment', y);
+                let newWidth = _.max(array);
+                if (newWidth) { 
+                    ctrl.repeat++;
+                    var x = $("#flat_contract_planning_comment").width();
+                    if (ctrl.repeat == 1) {
+                        y = x;
+                    }
+                    if (newWidth > y && ctrl.repeat > 1) {
+                        $(Elements.table[Elements.settings["flat_contract_planning"].table]).jqGrid('resizeColumn', 'comment', newWidth + 40);                           
+                    } else {
+                        $(Elements.table[Elements.settings["flat_contract_planning"].table]).jqGrid('resizeColumn', 'comment', y);                           
+                    }
+                
+                } 
+            } else {
+                let elements =  $(".box_office_comments"); 
+                var array = [];
+                for (var i = 0 ; i < elements.length ; i++) {
+                    array.push(parseFloat(elements[i].style.width.split("px")[0]));
                 }
-
+                let newWidth = _.max(array);
+                if (newWidth) { 
+                    ctrl.repeat++;
+                    var x = $("#flat_invoices_app_complete_view_list_backOfficeComments").width();
+                    if (ctrl.repeat == 1) {
+                        y = x;
+                    }
+                    if (newWidth > y && ctrl.repeat > 1) {
+                        $(Elements.table[Elements.settings["flat_invoices_app_complete_view_list"].table]).jqGrid('resizeColumn', 'backOfficeComments', newWidth + 40);                           
+                    } else {
+                        $(Elements.table[Elements.settings["flat_invoices_app_complete_view_list"].table]).jqGrid('resizeColumn', 'backOfficeComments', y);                           
+                    }
+                
+                } 
             }
+          
+            
+        } 
 
-
-
-
-        }
-
-        setInterval(checkHeightChange, 200);
+  
+        setInterval(checkHeightChange, 200); 
 
 
         $scope.updateMinMaxQuantities = function(rowIdx, productId, callback){

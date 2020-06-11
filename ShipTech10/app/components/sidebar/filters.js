@@ -1119,9 +1119,12 @@ angular.module('shiptech.components').controller('FiltersController', [
 
 
         $scope.verifyValue = function(element) {
-            for (var i = 0; i < $rootScope.filtersAppliedOps.length; i++) {
-                $rootScope.rawFilters[i] = angular.copy($rootScope.filtersAppliedOps[i]);
-           }
+            if (window.location.href.indexOf("all-requests-table") != -1 || window.location.href.indexOf("order-list") != -1) {
+                for (var i = 0; i < $rootScope.filtersAppliedOps.length; i++) {
+                    $rootScope.rawFilters[i] = angular.copy($rootScope.filtersAppliedOps[i]);
+                }
+            }
+           
         }
 
         $scope.setDefaultConditionType = function(column, key) {

@@ -121,7 +121,10 @@
                                                     name="condition_value_{{ key }}" id="condition_value_{{ key }}" required
                                                     ng-if="columnFilters[column][key].column.columnType != 'Bool' &&
                                                     columnFilters[column][key].column.columnType != 'Date' && columnFilters[column][key].column.columnType != 'DateOnly'" />
-                                                    {{verifyValue(columnFilters[column][key])}}
+                                                    
+                                            <span class="hidden">
+                                                {{verifyValue(columnFilters[column][key])}}
+                                            </span>
                                             <select ng-disabled="columnFilters[column][key].fromTreasurySummary" name="enumConditions{{key}}" id="enumConditions{{key}}" ng-if="columnFilters[column][key].column.columnType == 'Bool'"
                                                     ng-model="columnFilters[column][key].value[0]" class="form-control bs-select">
                                                     <option value="{{vl.databaseValue}}" ng-repeat="(key, vl) in listsCache.TrueFalseOptions">
