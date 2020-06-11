@@ -911,7 +911,15 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         dateFormat = dateFormat.split("DDD ")[1];
                     }
                     dateFormat = dateFormat.replace(/d/g, "D").replace(/y/g, "Y");
-                    formattedDate = moment.utc(cellValue).add(moment().utcOffset(), 'minutes').format(dateFormat);
+                    if ((options.colModel.name == "createdOn" || options.colModel.name == "lastModifiedOn") && window.location.href.indexOf('masters/price') != -1) {
+                        var date = Date.parse(cellValue);
+                        date = new Date(cellValue);
+                        formattedDate = moment(date).format(dateFormat);
+
+                    } else {
+                        formattedDate = moment.utc(cellValue).add(moment().utcOffset(), 'minutes').format(dateFormat);
+
+                   }
                     if (options.label == "ETA" || options.label == "ETB" || options.label == "ETD") {
                         formattedDate = $filter("date")(cellValue, dateFormat, 'UTC');
                     }
@@ -2957,38 +2965,37 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             }
             return vm.contractPlanningContractTypeaheadOptions["r" + parseFloat(rowId - 1)];
         };
-
-        let lastWidth = $(".contract_planning_comments").width(); 
+        let lastWidth = $(".contract_planning_comments").width();
         ctrl.repeat = 0;
 
-        function checkHeightChange() { 
-            let elements =  $(".contract_planning_comments"); 
+        function checkHeightChange() {
+            let elements = $(".contract_planning_comments");
             var array = [];
-            for (var i = 0 ; i < elements.length ; i++) {
+            for (var i = 0; i < elements.length; i++) {
                 array.push(parseFloat(elements[i].style.width.split("px")[0]));
             }
             let newWidth = _.max(array);
-            if (newWidth) { 
+            if (newWidth) {
                 ctrl.repeat++;
                 var x = $("#flat_contract_planning_comment").width();
                 if (ctrl.repeat == 1) {
                     y = x;
                 }
                 if (newWidth - 40 > y && ctrl.repeat > 1) {
-                    $(Elements.table[Elements.settings["flat_contract_planning"].table]).jqGrid('resizeColumn', 'comment', newWidth + 40);                           
+                    $(Elements.table[Elements.settings["flat_contract_planning"].table]).jqGrid('resizeColumn', 'comment', newWidth + 40);
                 } else {
-                    $(Elements.table[Elements.settings["flat_contract_planning"].table]).jqGrid('resizeColumn', 'comment', y);                           
+                    $(Elements.table[Elements.settings["flat_contract_planning"].table]).jqGrid('resizeColumn', 'comment', y);
                 }
-            
-            } 
-            
-          
-          
-         
-        } 
-  
-        setInterval(checkHeightChange, 200); 
-      
+
+            }
+
+
+
+
+        }
+
+        setInterval(checkHeightChange, 200);
+
 
         $scope.updateMinMaxQuantities = function(rowIdx, productId, callback){
 
