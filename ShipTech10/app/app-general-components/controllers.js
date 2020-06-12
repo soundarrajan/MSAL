@@ -2970,53 +2970,54 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
         ctrl.repeat = 0;
 
         function checkHeightChange() { 
-            let elements =  $(".contract_planning_comments"); 
-            if (elements.length) {
-                var array = [];
-                for (var i = 0 ; i < elements.length ; i++) {
-                    array.push(parseFloat(elements[i].style.width.split("px")[0]));
+            if ($rootScope.isCommentsSection) {
+                let elements =  $(".contract_planning_comments"); 
+                if (elements.length) {
+                    var array = [];
+                    for (var i = 0 ; i < elements.length ; i++) {
+                        array.push(parseFloat(elements[i].style.width.split("px")[0]));
+                    }
+                    let newWidth = _.max(array);
+                    if (newWidth) { 
+                        ctrl.repeat++;
+                        var x = $("#flat_contract_planning_comment").width();
+                        if (ctrl.repeat == 1) {
+                            $rootScope.generalWidth = x;
+                        }
+                        if (newWidth + 100 > $rootScope.generalWidth && ctrl.repeat > 1) {
+                             $(Elements.table[Elements.settings["flat_contract_planning"].table]).jqGrid('resizeColumn', 'comment', newWidth + 100);                           
+                        } else {
+                            $(Elements.table[Elements.settings["flat_contract_planning"].table]).jqGrid('resizeColumn', 'comment',  $rootScope.generalWidth);                           
+                        }                    
+                    } 
+                } else {
+                    let elements =  $(".box_office_comments"); 
+                    var array = [];
+                    for (var i = 0 ; i < elements.length ; i++) {
+                        array.push(parseFloat(elements[i].style.width.split("px")[0]));
+                    }
+                    let newWidth = _.max(array);
+                    if (newWidth) { 
+                        ctrl.repeat++;
+                        var x = $("#flat_invoices_app_complete_view_list_backOfficeComments").width();
+                        if (ctrl.repeat == 1) {
+                            $rootScope.generalWidth = x;
+                        }
+                        if (newWidth + 40 >  $rootScope.generalWidth && ctrl.repeat > 1) {
+                            $(Elements.table[Elements.settings["flat_invoices_app_complete_view_list"].table]).jqGrid('resizeColumn', 'backOfficeComments', newWidth + 100);                           
+                        } else {
+                            $(Elements.table[Elements.settings["flat_invoices_app_complete_view_list"].table]).jqGrid('resizeColumn', 'backOfficeComments',  $rootScope.generalWidth);                           
+                        }
+                    
+                    } 
                 }
-                let newWidth = _.max(array);
-                if (newWidth) { 
-                    ctrl.repeat++;
-                    var x = $("#flat_contract_planning_comment").width();
-                    if (ctrl.repeat == 1) {
-                        y = x;
-                    }
-                    if (newWidth > y && ctrl.repeat > 1) {
-                        $(Elements.table[Elements.settings["flat_contract_planning"].table]).jqGrid('resizeColumn', 'comment', newWidth + 40);                           
-                    } else {
-                        $(Elements.table[Elements.settings["flat_contract_planning"].table]).jqGrid('resizeColumn', 'comment', y);                           
-                    }
-                
-                } 
-            } else {
-                let elements =  $(".box_office_comments"); 
-                var array = [];
-                for (var i = 0 ; i < elements.length ; i++) {
-                    array.push(parseFloat(elements[i].style.width.split("px")[0]));
-                }
-                let newWidth = _.max(array);
-                if (newWidth) { 
-                    ctrl.repeat++;
-                    var x = $("#flat_invoices_app_complete_view_list_backOfficeComments").width();
-                    if (ctrl.repeat == 1) {
-                        y = x;
-                    }
-                    if (newWidth > y && ctrl.repeat > 1) {
-                        $(Elements.table[Elements.settings["flat_invoices_app_complete_view_list"].table]).jqGrid('resizeColumn', 'backOfficeComments', newWidth + 40);                           
-                    } else {
-                        $(Elements.table[Elements.settings["flat_invoices_app_complete_view_list"].table]).jqGrid('resizeColumn', 'backOfficeComments', y);                           
-                    }
-                
-                } 
+
             }
-          
-            
+               
         } 
 
   
-        setInterval(checkHeightChange, 200); 
+        setInterval(checkHeightChange, 100); 
 
 
         $scope.updateMinMaxQuantities = function(rowIdx, productId, callback){
@@ -3818,9 +3819,34 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     rowId -= 1;
                 }
             });
-            $(document).on("mouseover", ".contract_planning_comments", function() {
-                ctrl.currentRowId = $(this).attr("rowId");
+
+            $(document).on("mouseover", ".ui-jqgrid .ui-jqgrid-btable tbody tr.jqgrow td", function(e) {
+                if (e.currentTarget.childNodes[0] && e.currentTarget.childNodes[0].className) {
+                    if (e.currentTarget.childNodes[0].className.indexOf("contract_planning_comments") != -1) {
+                        $rootScope.isCommentsSection = true;
+                    } else {
+                        $rootScope.isCommentsSection = false;
+                    }
+                } else if (e.currentTarget.childNodes[0] && e.currentTarget.childNodes[0].childNodes[0] && e.currentTarget.childNodes[0].childNodes[0].className){
+                    if (e.currentTarget.childNodes[0].childNodes[0].className.indexOf("box_office_comments") != -1) {
+                        $rootScope.isCommentsSection = true;
+                    } else {
+                        $rootScope.isCommentsSection = false;
+                    }
+                } else {
+                    $rootScope.isCommentsSection = false;
+                }
+                console.log($rootScope.isCommentsSection);
             });
+
+
+            $(document).on("mouseover", ".ui-th-div", function() {
+                $rootScope.isCommentsSection = false;
+                console.log($rootScope.isCommentsSection);
+                ctrl.currentRowId = $(this).attr("rowId");
+
+            });
+
         });
     }
 ]);

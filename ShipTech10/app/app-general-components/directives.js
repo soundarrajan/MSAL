@@ -897,6 +897,12 @@ Number(function() {
 
                         Elements.settings[table_id].source.resizeStop = function(width, index) {
                             $('.ui-jqgrid-view,.ui-jqgrid-bdiv,.ui-jqgrid-hdiv').width($(Elements.table[Elements.settings[table_id].table]).width());
+                            if ($("#flat_contract_planning_comment").width()) {
+                                $rootScope.generalWidth = $("#flat_contract_planning_comment").width();
+                            }
+                            if ($("#flat_invoices_app_complete_view_list_backOfficeComments").width()) {
+                                 $rootScope.generalWidth  =  $("#flat_invoices_app_complete_view_list_backOfficeComments").width(); 
+                            }
                             MCScustom.load();
                         };
                         Elements.settings[table_id].source.sortupdate = function(index, iCol, sortorder) {
