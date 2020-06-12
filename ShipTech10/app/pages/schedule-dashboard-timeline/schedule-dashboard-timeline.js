@@ -1409,8 +1409,9 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 $scope.rightClickVesselPopoverData = voyageStop;
                 $scope.$apply();
                 $compile($('schedule-dashboard-timeline > .contextmenu'))($scope);
-
+                $('.contextmenu').css("opacity", "0");
                 $timeout(function() {
+                    $('.contextmenu').css("opacity", "1");
                     $('.contextmenu').css("left", "initial");
                     $('.contextmenu').css("right", "initial");
                     if (window.innerWidth / 2 > $(currentElem).offset().left) {
