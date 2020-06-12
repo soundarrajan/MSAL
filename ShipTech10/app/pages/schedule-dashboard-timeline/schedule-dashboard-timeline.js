@@ -1409,6 +1409,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 $scope.rightClickVesselPopoverData = voyageStop;
                 $scope.$apply();
                 $compile($('schedule-dashboard-timeline > .contextmenu'))($scope);
+
                 $timeout(function() {
                     $('.contextmenu').css("left", "initial");
                     $('.contextmenu').css("right", "initial");
@@ -1542,7 +1543,27 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 } else {
                     $('.contextmenu').css("right", window.innerWidth - $(currentElem).offset().left - 45);
                 }
-                $('.contextmenu').css("top", $(currentElem).offset().top - 15);
+
+                $('.contextmenu').css("top", "-400px");
+                setTimeout(function() {
+                    var heightElement = $('.contextmenu').height();
+                    var scrollTop  = $(window).scrollTop();
+                    var timelineScrollTop = $(".vis-vertical-scroll").scrollTop();
+                    elementOffset = $(currentElem).offset().top;
+                    distance  = (elementOffset - scrollTop - timelineScrollTop);
+
+                    console.log(heightElement);
+
+                    if ($(currentElem).offset().top - $("#timeline").height() < 0){
+                        $('.contextmenu').css("top", $(currentElem).offset().top - 15);
+                    } else {
+                        $('.contextmenu').css("top", $(currentElem).offset().top - heightElement - 36);
+                    }
+
+
+               }, 50)
+
+
                 $('.contextmenu').removeClass("hidden");
                 var index;
                 $('.contextAction').click(function () {
