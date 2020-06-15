@@ -735,9 +735,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 	            			$(".vis-vertical-scroll").scrollTop(scrollFixVal) 
 	            			console.log("xxxxxxxxxxx: " + scrollFixVal);
             			}
-            			 $(window).scrollTop($(window).scrollTop()+120);
-	                    // console.log("xxxxxxxxxx rangechange")
-	                    // console.log($(".vis-vertical-scroll").scrollTop())
+
             			return false;
             		}                    
                 });
@@ -779,21 +777,21 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 	}    
                 	return isAtTimelineBottom;            	
                 }
-      //       	$('.vis-foreground, #timeline *').bind('mousewheel', function(e){
-      //       		isAtTimelineBottom = checkIfIsAtTimelineBottom();
-      //       		if(e.originalEvent.wheelDelta < 0 && isAtTimelineBottom) {
-      //       			$(".vis-vertical-scroll").scrollTop($(".vis-vertical-scroll").scrollTop() - 1) 
-						// $(window).scrollTop($(window).scrollTop()+120);
-      //       			return false;
-      //       		}
-      //       	});				   
+            	$('.vis-foreground, #timeline *').bind('mousewheel', function(e){
+            		isAtTimelineBottom = checkIfIsAtTimelineBottom();
+            		if(e.originalEvent.wheelDelta < 0 && isAtTimelineBottom) {
+            			$(".vis-vertical-scroll").scrollTop($(".vis-vertical-scroll").scrollTop() - 1) 
+						$(window).scrollTop($(window).scrollTop()+120);
+            			return false;
+            		}
+            	});				   
 
                 /*
                     Redraw long voyages that exceed the timeline width
                     Fixed performance issue when scrolling groups vertically
                 */
                 
-                $(".vis-vertical-scroll").on("scroll", function(){
+                $(".vis-vertical-scroll").on("scroll", function(e){
                     redrawOutOfRangeElements();
                     leftOffset = (parseFloat($(".vis-panel.vis-center").css("left")) - 28) + "px";
                     $(".vis-panel.vis-center").css("padding-left", leftOffset);
@@ -805,6 +803,10 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 	                    if (timeFromLastScroll > 300) {
 	                        $(".vis-left").css("pointer-events", "initial");
 	                    }
+						isAtTimelineBottom = checkIfIsAtTimelineBottom();
+	            		if(isAtTimelineBottom) {
+							// $(window).scrollTop($(window).scrollTop()+120);
+	            		}   					
 					},500)
                 });
 
