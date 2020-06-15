@@ -294,6 +294,7 @@ angular.module('shiptech.components')
 	        ctrl.confirmCancelBunkerStrategy = function(bunkerPlan, vsVal) {
                 $('.cancelStrategyModal').modal();
                 $('.cancelStrategyModal').removeClass('hide');
+                $("timeline-right-click-popover").hide();
                 ctrl.cancelStrategyModalData = {};
                 ctrl.cancelStrategyModalData.vesselName = vsVal.request.requestDetail.vesselName;
                 ctrl.cancelStrategyModalData.portCode = vsVal.request.requestDetail.locationCode;
