@@ -809,7 +809,9 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 	            		}   					
 					},500)
                 });
-
+                setTimeout(function(){
+					timeline._setScrollTop(0);
+                })
                 $scope.timelineItems = groups.length;
                 setLayoutAfterTimelineLoad();
 
