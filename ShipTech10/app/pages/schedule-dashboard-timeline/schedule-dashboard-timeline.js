@@ -800,14 +800,12 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     $(".vis-panel.vis-center").css("margin-left", "-" + leftOffset);
                     $(".vis-left").css("pointer-events", "none");
 					window.lastScrollingTime = moment();
-					// console.log("scrolling...")
 					setTimeout(function(){
 	                    var timeFromLastScroll = moment().diff( moment(window.lastScrollingTime) )
-	                    if (timeFromLastScroll > 1000) {
-							// console.log("STOPPED scrolling")
+	                    if (timeFromLastScroll > 300) {
 	                        $(".vis-left").css("pointer-events", "initial");
 	                    }
-					},1000)
+					},500)
                 });
 
                 $scope.timelineItems = groups.length;
