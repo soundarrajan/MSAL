@@ -1589,11 +1589,12 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
     
         }
 
-        ctrl.resetContractData = function(productIndex){
-        	if (ctrl.data.products[productIndex].contract) {
+        ctrl.resetContractData = function(productIndex, skipSpecGroup){
+        	if (ctrl.data.products[productIndex].contract) { 
 	        	var initialContractId = angular.copy(ctrl.data.products[productIndex].contract.id);
 	        	var initialContract = angular.copy(ctrl.data.products[productIndex].contract);
         	}
+        	var oldSpecGroup = angular.copy(ctrl.data.products[productIndex].specGroup);
             var isSameContract = false;
 
             if (initialContract) {
@@ -1612,7 +1613,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
             } else {
                 productUomChg(ctrl.data.products[productIndex]);
             }
-        
 			ctrl.getOrderContractOptions(ctrl.data.products[productIndex], false, function(response){
 				if (response && initialContractId) {
 					var newContractData = false;
@@ -1624,7 +1624,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
 					})
 					if (newContractData) {
 						$scope.selectProductContract(ctrl.data.products[productIndex].id, newContractData, isSameContract);
-		   //              ctrl.data.products[productIndex].contractProductId = newContractData.contractProductId;
+						if (skipSpecGroup) {
+			                ctrl.data.products[productIndex].specGroup = oldSpecGroup;
+						}
 		   //              ctrl.data.products[productIndex].priceUom = newContractData.uom;
 		   //              ctrl.data.products[productIndex].contract = angular.copy(newContractData.contract);
 		   //              ctrl.data.products[productIndex].price = angular.copy(newContractData.price);
