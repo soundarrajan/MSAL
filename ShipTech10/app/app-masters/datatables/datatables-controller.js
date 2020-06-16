@@ -1446,7 +1446,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                         name: 'hasUsdRestrictions',
                         width: 130,
                         enableCellEdit: false,
-                        displayName: 'USD Restrictions',
+                        displayName: 'USD Restrictions Port',
                         cellTemplate: $scope.dataTableTemplates.checkbox,
                         cellConditionType: 'true'
                     }
