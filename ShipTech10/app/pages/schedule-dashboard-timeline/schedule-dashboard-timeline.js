@@ -728,16 +728,16 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 });
 
                 timeline.on("changed", function(){
-            		isAtTimelineBottom = checkIfIsAtTimelineBottom();
-            		if(isAtTimelineBottom) {
-            			var scrollFixVal = $(".vis-vertical-scroll").scrollTop() - 1;
-            			if (scrollFixVal > 0) {
-	            			$(".vis-vertical-scroll").scrollTop(scrollFixVal) 
-	            			console.log("xxxxxxxxxxx: " + scrollFixVal);
-            			}
+            		// isAtTimelineBottom = checkIfIsAtTimelineBottom();
+            		// if(isAtTimelineBottom) {
+            		// 	var scrollFixVal = $(".vis-vertical-scroll").scrollTop() - 1;
+            		// 	if (scrollFixVal > 0) {
+	            	// 		$(".vis-vertical-scroll").scrollTop(scrollFixVal) 
+	            	// 		console.log("xxxxxxxxxxx: " + scrollFixVal);
+            		// 	}
 
-            			return false;
-            		}                    
+            		// 	return false;
+            		// }                    
                 });
 
 
@@ -777,10 +777,14 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 	}    
                 	return isAtTimelineBottom;            	
                 }
+
             	$('.vis-foreground, #timeline *').bind('mousewheel', function(e){
             		isAtTimelineBottom = checkIfIsAtTimelineBottom();
+                    console.log("mousewheel: " + isAtTimelineBottom);
             		if(e.originalEvent.wheelDelta < 0 && isAtTimelineBottom) {
-            			$(".vis-vertical-scroll").scrollTop($(".vis-vertical-scroll").scrollTop() - 1) 
+                        var height = $(".vis-vertical-scroll .vis-content").height();
+                        console.log(height);
+            			$(".vis-vertical-scroll").scrollTop(height);
 						$(window).scrollTop($(window).scrollTop()+120);
             			return false;
             		}
@@ -805,7 +809,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 	                    }
 						isAtTimelineBottom = checkIfIsAtTimelineBottom();
 	            		if(isAtTimelineBottom) {
-							// $(window).scrollTop($(window).scrollTop()+120);
+							 //$(window).scrollTop($(window).scrollTop()+120);
+
 	            		}   					
 					},500)
                 });
