@@ -4437,3 +4437,7 @@ clc-table-list[hasloader="true"].loading:before {
 select option {
     border: 1px solid red;
 }
+
+.contract_planning_comments, .box_office_comments{
+    width: 100% !important;
+}
