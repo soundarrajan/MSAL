@@ -3847,6 +3847,11 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
 
             });
 
+            $(document).on("mouseover", ".colMenu", function() {
+                 $rootScope.isCommentsSection = false;
+                console.log($rootScope.isCommentsSection);
+            });
+
         });
     }
 ]);
