@@ -728,16 +728,16 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 });
 
                 timeline.on("changed", function(){
-            		// isAtTimelineBottom = checkIfIsAtTimelineBottom();
-            		// if(isAtTimelineBottom) {
-            		// 	var scrollFixVal = $(".vis-vertical-scroll").scrollTop() - 1;
-            		// 	if (scrollFixVal > 0) {
-	            	// 		$(".vis-vertical-scroll").scrollTop(scrollFixVal) 
-	            	// 		console.log("xxxxxxxxxxx: " + scrollFixVal);
-            		// 	}
+            		isAtTimelineBottom = checkIfIsAtTimelineBottom();
+            		if(isAtTimelineBottom) {
+            			var scrollFixVal = $(".vis-vertical-scroll").scrollTop() - 1;
+            			if (scrollFixVal > 0) {
+	            			$(".vis-vertical-scroll").scrollTop(scrollFixVal) 
+	            			console.log("xxxxxxxxxxx: " + scrollFixVal);
+            			}
 
-            		// 	return false;
-            		// }                    
+            			return false;
+            		}                    
                 });
 
 
@@ -782,6 +782,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             		isAtTimelineBottom = checkIfIsAtTimelineBottom();
                     console.log("mousewheel: " + isAtTimelineBottom);
             		if(e.originalEvent.wheelDelta < 0 && isAtTimelineBottom) {
+                        e.preventDefault();
                         var height = $(".vis-vertical-scroll .vis-content").height();
                         console.log(height);
             			$(".vis-vertical-scroll").scrollTop(height);
@@ -807,11 +808,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 	                    if (timeFromLastScroll > 300) {
 	                        $(".vis-left").css("pointer-events", "initial");
 	                    }
-						isAtTimelineBottom = checkIfIsAtTimelineBottom();
-	            		if(isAtTimelineBottom) {
-							 //$(window).scrollTop($(window).scrollTop()+120);
 
-	            		}   					
 					},500)
                 });
                 setTimeout(function(){
@@ -1416,9 +1413,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 $scope.rightClickVesselPopoverData = voyageStop;
                 $scope.$apply();
                 $compile($('schedule-dashboard-timeline > .contextmenu'))($scope);
-                $('.contextmenu').css("opacity", "0");
                 $timeout(function() {
-                    $('.contextmenu').css("opacity", "1");
                     $('.contextmenu').css("left", "initial");
                     $('.contextmenu').css("right", "initial");
                     if (window.innerWidth / 2 > $(currentElem).offset().left) {
@@ -1428,7 +1423,10 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     }
                     $('.contextmenu').css("top", $(currentElem).offset().top - 15);
                     $('.contextmenu').removeClass("hidden");
+                    setTimeout(function() {
+                        $('.contextmenu').css("visibility", "visible");
 
+                    });
                     $('.contextmenu .close').click(function (e) {
                         e.preventDefault();
                         removePopups();
@@ -1567,7 +1565,10 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     } else {
                         $('.contextmenu').css("top", $(currentElem).offset().top - heightElement - 36);
                     }
+                    setTimeout(function() {
+                        $('.contextmenu').css("visibility", "visible");
 
+                    });
 
                }, 50)
 
