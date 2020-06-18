@@ -96,7 +96,7 @@
                                             <div class="form_input no-label">
                                                 <div ng-if="globalFilters[key].column.columnType != 'Date'">
 
-                                                    <input tabindex="-1" type="text" id="filter{{ key }}_{{ globalFilters[key].column.columnType }}0" class="form-control" ng-model="globalFilters[key].value[0]" name="condition_value_{{ key }}" id="condition_value_{{ key }}" required  format="{{globalFilters[key].column.columnType == 'Number' ? 'number:3' : ''}}" />
+                                                    <input tabindex="-1" type="text" id="filter{{ key }}_{{ globalFilters[key].column.columnType }}0" class="form-control" ng-model="globalFilters[key].value[0]" name="condition_value_{{ key }}" id="condition_value_{{ key }}" required  />
                                                 </div>
 
                                                 <div ng-if="globalFilters[key].column.columnType == 'Date'" class="input-group" style="margin: 15px; margin-left: 0;  padding-left: 0;">
