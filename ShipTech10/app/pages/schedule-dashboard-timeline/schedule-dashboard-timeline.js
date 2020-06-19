@@ -1373,13 +1373,22 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 	        	$.each(additionalVoyages, function(k,v){
 	        		v.voyageDetail.formattedEta = moment(v.voyageDetail.eta).format($scope.dateFormat)
 	        	})
-	        	$timeout(function(){
-		        	ctrl.additionalVoyages = {
-		        		data : additionalVoyages,
-		        		offsetTop: event.clientY,
-		        		offsetLeft: event.clientX
-		        	}
-	        	},200)
+	            var currentElem = $(event.target);
+                $timeout(function(){
+                    var distance = 0;
+                    if ($(currentElem).offset().top - $("#timeline").height() < 0){
+                      console.log("jos");
+                      distance = event.clientY;
+                    } else {
+                       console.log("sus");
+                       distance = event.clientY - 74 * additionalVoyages.length;
+                    }
+                    ctrl.additionalVoyages = {
+                        data : additionalVoyages,
+                        offsetTop: distance,
+                        offsetLeft: event.clientX
+                    }
+                },200)
 	        }
 	        if ( !$(event.target).hasClass("contextmenu") && !$(event.target).parents('.contextmenu').length) {
 	        	$(".contextmenu").remove();
@@ -1413,6 +1422,9 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 $scope.rightClickVesselPopoverData = voyageStop;
                 $scope.$apply();
                 $compile($('schedule-dashboard-timeline > .contextmenu'))($scope);
+
+
+                $('.contextmenu').css("top", "-400px");
                 $timeout(function() {
                     $('.contextmenu').css("left", "initial");
                     $('.contextmenu').css("right", "initial");
@@ -1421,7 +1433,22 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     } else {
                         $('.contextmenu').css("right", window.innerWidth - $(currentElem).offset().left - 45);
                     }
-                    $('.contextmenu').css("top", $(currentElem).offset().top - 15);
+
+                    var heightElement = $('.contextmenu').height();
+                    var scrollTop  = $(window).scrollTop();
+                    var timelineScrollTop = $(".vis-vertical-scroll").scrollTop();
+                    elementOffset = $(currentElem).offset().top;
+                    distance  = (elementOffset - scrollTop - timelineScrollTop);
+                    if ($(currentElem).offset().top - $("#timeline").height() < 0){
+                        $('.contextmenu').css("top", $(currentElem).offset().top - 15);
+                    } else {
+                        $('.contextmenu').css("top", $(currentElem).offset().top - heightElement - 36);
+                    }
+                    
+                    setTimeout(function() {
+                        $('.contextmenu').css("visibility", "visible");
+
+                    });
                     $('.contextmenu').removeClass("hidden");
                     setTimeout(function() {
                         $('.contextmenu').css("visibility", "visible");
