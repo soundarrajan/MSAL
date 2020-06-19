@@ -52,10 +52,10 @@ export enum QcSoundingReportListColumnsLabels {
   computedRobHsfo = 'Computed ROB HSFO',
   measuredRobHsfo = 'Measured ROB HSFO',
   robHsfoDiff = 'ROB HSFO Diff',
-  computedRobLsfo = 'Computed ROB LSFO',
-  measuredRobLsfo = 'Measured ROB LSFO',
+  computedRobLsfo = 'Computed ROB HSFO',
+  measuredRobLsfo = 'Measured ROB HSFO',
   robLsfoDiff = 'ROB LSFO Diff',
   computedRobDogo = 'Computed ROB DOGO',
-  measuredRobDogo = 'Measured ROB DOGO',
-  robDogoDiff = 'ROB DOGO Diff'
+  measuredRobDogo = 'Measured ROB LSFO',
+  robDogoDiff = 'ROB LSFO Diff'
 }
