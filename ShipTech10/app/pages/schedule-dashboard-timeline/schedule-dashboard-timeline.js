@@ -728,16 +728,21 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 });
 
                 timeline.on("changed", function(){
-            		isAtTimelineBottom = checkIfIsAtTimelineBottom();
-            		if(isAtTimelineBottom) {
-            			var scrollFixVal = $(".vis-vertical-scroll").scrollTop() - 1;
-            			if (scrollFixVal > 0) {
-	            			$(".vis-vertical-scroll").scrollTop(scrollFixVal) 
-	            			console.log("xxxxxxxxxxx: " + scrollFixVal);
-            			}
+            		lastVoyageTopOffset = $(".vis-foreground > .vis-group:last-child").offset().top + $(".vis-foreground > .vis-group:last-child").height();  
+            		foregroundTopOffset = $(".vis-foreground").offset().top + $(".vis-foreground").height();  
+            		verticalScrollBottomLine = $(".vis-vertical-scroll").offset().top + $(".vis-vertical-scroll").height();
+            		
+					obj = $(".vis-foreground > .vis-group:last-child");            	
+					var childPos = obj.offset();
+					var parentPos = obj.parent().offset();
+					var childOffset = childPos.top - parentPos.top + $(obj).height();
+					computedMaxHeight = $(obj.parent()).height() - ($(obj.parent()).height() - childOffset)
+					console.log(computedMaxHeight);
 
-            			return false;
-            		}                    
+	            		$(".vis-itemset").css("max-height", computedMaxHeight + "px")
+            		// if (lastVoyageTopOffset < verticalScrollBottomLine) {
+            		// }
+        			return false;
                 });
 
 
@@ -767,9 +772,11 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
 
                 checkIfIsAtTimelineBottom = function() {
+                	// console.log("###*********", $(".vis-vertical-scroll").scrollTop() + $(".vis-vertical-scroll").height() - $(".vis-vertical-scroll .vis-content").height());
+                	// console.log("###*********", $(".vis-vertical-scroll .vis-content").height() - $(".vis-vertical-scroll").scrollTop() + $(".vis-vertical-scroll").height());
                 	if(
-                		$(".vis-vertical-scroll").scrollTop() + $(".vis-vertical-scroll").height() - $(".vis-vertical-scroll .vis-content").height() >= -2 ||
-                		$(".vis-vertical-scroll .vis-content").height() - $(".vis-vertical-scroll").scrollTop() + $(".vis-vertical-scroll").height() <= 2 
+                		$(".vis-vertical-scroll").scrollTop() + $(".vis-vertical-scroll").height() - $(".vis-vertical-scroll .vis-content").height() >= -10 ||
+                		$(".vis-vertical-scroll .vis-content").height() - $(".vis-vertical-scroll").scrollTop() + $(".vis-vertical-scroll").height() <= 10 
             		) {
                 		isAtTimelineBottom = true;
                 	} else {
@@ -778,18 +785,16 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 	return isAtTimelineBottom;            	
                 }
 
-            	$('.vis-foreground, #timeline *').bind('mousewheel', function(e){
-            		isAtTimelineBottom = checkIfIsAtTimelineBottom();
-                    console.log("mousewheel: " + isAtTimelineBottom);
-            		if(e.originalEvent.wheelDelta < 0 && isAtTimelineBottom) {
-                        e.preventDefault();
-                        var height = $(".vis-vertical-scroll .vis-content").height();
-                        console.log(height);
-            			$(".vis-vertical-scroll").scrollTop(height);
-						$(window).scrollTop($(window).scrollTop()+120);
-            			return false;
-            		}
-            	});				   
+      //       	$('.vis-foreground, #timeline *').bind('mousewheel', function(e){
+      //       		isAtTimelineBottom = checkIfIsAtTimelineBottom();
+      //               console.log("mousewheel: " + isAtTimelineBottom);
+      //       		if(e.originalEvent.wheelDelta < 0 && isAtTimelineBottom) {
+      //                   e.preventDefault();
+						// $(window).scrollTop($(window).scrollTop()+120);
+						// console.log("********* ", $(window).scrollTop());
+      //       			return false;
+      //       		}
+      //       	});				   
 
                 /*
                     Redraw long voyages that exceed the timeline width
