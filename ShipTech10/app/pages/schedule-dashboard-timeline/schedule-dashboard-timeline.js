@@ -731,7 +731,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             		lastVoyageTopOffset = $(".vis-foreground > .vis-group:last-child").offset().top + $(".vis-foreground > .vis-group:last-child").height();  
             		foregroundTopOffset = $(".vis-foreground").offset().top + $(".vis-foreground").height();  
             		verticalScrollBottomLine = $(".vis-vertical-scroll").offset().top + $(".vis-vertical-scroll").height();
-            		
+
 					obj = $(".vis-foreground > .vis-group:last-child");            	
 					var childPos = obj.offset();
 					var parentPos = obj.parent().offset();
@@ -1947,9 +1947,11 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 		});     
            
         document.addEventListener("contextmenu", function(e){
-            e.preventDefault();
+        	if ($(e.target).attr("oncontextmenu") || $(e.target).parents("[oncontextmenu]").length > 0) {
+	            e.preventDefault();
+        	}
         }, false);
-
+ 
         document.addEventListener('scroll', function (e) {
            if (!$(e.target).hasClass("vis-item") && $(e.target).parents(".vis-item").length == 0) {
                 $(".contextmenu").css("display", "none");
