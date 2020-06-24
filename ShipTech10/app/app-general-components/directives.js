@@ -2444,7 +2444,7 @@ Number(function() {
                         });
                     });
                 });
-                 lement.bind('contextmenu1', (event) => {
+                element.bind('contextmenu1', (event) => {
                     scope.$apply(() => {
                         event.preventDefault();
                         fn(scope, {
