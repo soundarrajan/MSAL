@@ -2078,7 +2078,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 };
                 var formGotoDocument = function(cellValue, options, rowObject) {
                     // return '<a ng-controller="Controller_Master as CM" ng-click="downloadDocument(' + rowObject.id + ')" title="Download">' + cellValue + '</a>';
-                    return '<a ng-controller="Controller_Master as CM" ng-click="downloadDocument(' + rowObject.id + ",'" + rowObject.content +  '\'  )" title="Download">' + cellValue + "</a>";
+                    return '<a ng-controller="Controller_Master as CM" ng-click="downloadDocument(' + rowObject.id + ",'" + rowObject.name + "','" + rowObject.content +  '\'  )" title="Download">' + cellValue + "</a>";
                 };
                 // collection Read -- {code, collectionName, id, name}
                 var collectionRead = function(cellValue, options, rowObject) {
