@@ -2984,11 +2984,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         if (ctrl.repeat == 1) {
                             $rootScope.generalWidth = x;
                         }
-                        if (newWidth + 100 > $rootScope.generalWidth && ctrl.repeat > 1) {
+                        if (newWidth + 40 > $rootScope.generalWidth && ctrl.repeat > 1) {
                              $(Elements.table[Elements.settings["flat_contract_planning"].table]).jqGrid('resizeColumn', 'comment', newWidth + 100);                           
-                        } else {
-                            $(Elements.table[Elements.settings["flat_contract_planning"].table]).jqGrid('resizeColumn', 'comment',  $rootScope.generalWidth);                           
-                        }                    
+                        }                   
                     } 
                 } else {
                     let elements =  $(".box_office_comments"); 
@@ -3005,9 +3003,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         }
                         if (newWidth + 40 >  $rootScope.generalWidth && ctrl.repeat > 1) {
                             $(Elements.table[Elements.settings["flat_invoices_app_complete_view_list"].table]).jqGrid('resizeColumn', 'backOfficeComments', newWidth + 100);                           
-                        } else {
-                            $(Elements.table[Elements.settings["flat_invoices_app_complete_view_list"].table]).jqGrid('resizeColumn', 'backOfficeComments',  $rootScope.generalWidth);                           
-                        }
+                        } 
                     
                     } 
                 }
