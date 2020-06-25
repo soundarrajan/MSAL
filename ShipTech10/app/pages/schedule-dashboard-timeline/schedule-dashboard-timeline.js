@@ -736,10 +736,10 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 					var childPos = obj.offset();
 					var parentPos = obj.parent().offset();
 					var childOffset = childPos.top - parentPos.top + $(obj).height();
-					computedMaxHeight = $(obj.parent()).height() - ($(obj.parent()).height() - childOffset)
+					computedMaxHeight = $(obj.parent()).height() - ($(obj.parent()).height() - childOffset) + 1
 					console.log(computedMaxHeight);
 
-	            		$(".vis-itemset").css("max-height", computedMaxHeight + "px")
+	            		$(".vis-itemset").css("max-height", computedMaxHeight  + "px")
             		// if (lastVoyageTopOffset < verticalScrollBottomLine) {
             		// }
         			return false;
