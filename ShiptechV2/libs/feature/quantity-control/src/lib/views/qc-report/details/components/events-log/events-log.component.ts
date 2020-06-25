@@ -2,7 +2,8 @@ import {
   ChangeDetectionStrategy,
   Component,
   OnDestroy,
-  OnInit
+  OnInit,
+  ViewEncapsulation
 } from '@angular/core';
 import { EventsLogGridViewModel } from './view-model/events-log-grid.view-model';
 import { IQcEventsLogItemState } from '../../../../../store/report/details/qc-events-log-state.model';
@@ -17,7 +18,8 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './events-log.component.html',
   styleUrls: ['./events-log.component.scss'],
   providers: [EventsLogGridViewModel],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
 export class EventsLogComponent implements OnInit, OnDestroy {
   @Select(QcReportState.isReadOnly) isReadOnly$: Observable<boolean>;

@@ -3,7 +3,7 @@ import { IQcEventLogListItemDto } from '../../../services/api/dto/qc-event-log-l
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 
 export class QcEventsLogItemStateModel implements IQcEventLogListItemDto {
-  createdOn: string;
+  createdOn: Date | string;
   createdBy: IDisplayLookupDto;
   eventDetails: string;
   id: number;

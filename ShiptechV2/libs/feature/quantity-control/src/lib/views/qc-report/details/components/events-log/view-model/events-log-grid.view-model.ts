@@ -124,9 +124,29 @@ export class EventsLogGridViewModel extends BaseGridViewModel
     headerName: EventsLogColumnsLabels.Created,
     colId: EventsLogColumns.Created,
     field: model('createdOn'),
-    width: 507,
     filter: 'agDateColumnFilter',
-    valueFormatter: params => this.format.date(params.value)
+    valueFormatter: params => this.format.date(params.value),
+    filterParams: {
+      comparator: function(filterLocalDateAtMidnight: Date, cellValue: string) {
+        const dateAsString = cellValue;
+        if (dateAsString == null) return -1;
+        console.log(dateAsString);
+        const cellDate = new Date(dateAsString.substr(0, 11) + '00:00:00');
+        if (filterLocalDateAtMidnight.getTime() === cellDate.getTime()) {
+          console.log('e egal');
+          return 0;
+        }
+        if (cellDate < filterLocalDateAtMidnight) {
+          return -1;
+        }
+        if (cellDate > filterLocalDateAtMidnight) {
+          return 1;
+        }
+      },
+      applyButton: true,
+      clearButton: true
+    },
+    width: 507
   };
   private readonly dateFormat: string;
 
