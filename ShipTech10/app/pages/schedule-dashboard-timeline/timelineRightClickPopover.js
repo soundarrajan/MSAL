@@ -295,6 +295,8 @@ angular.module('shiptech.components')
                 $('.cancelStrategyModal').modal();
                 $('.cancelStrategyModal').removeClass('hide');
                 $("timeline-right-click-popover").hide();
+                $("more-ports-popover").hide();
+                $(".vis-item.vis-selected").removeClass("vis-selected");
                 ctrl.cancelStrategyModalData = {};
                 ctrl.cancelStrategyModalData.vesselName = vsVal.request.requestDetail.vesselName;
                 ctrl.cancelStrategyModalData.portCode = vsVal.request.requestDetail.locationCode;
