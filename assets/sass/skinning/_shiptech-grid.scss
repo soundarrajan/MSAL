@@ -88,7 +88,7 @@
       position: relative;
       left:50%;
       transform: translateX(-50%);
-    }  
+    }
      //menu icon updates
      .ag-header-cell {
       &.ag-header-cell-sortable{
@@ -97,7 +97,7 @@
     }
     .ag-icon-menu:before{
       content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='17' height='41' viewBox='0 0 17 41' fill='none'%3E%3Crect x='0.350586' y='0.375' width='16' height='40' fill='%23DDDDDD'/%3E%3Cpath d='M14.3506 18.375H2.35059L8.72559 25.375L14.3506 18.375Z' fill='%23F1F1F1' stroke='%23F1F1F1'/%3E%3C/svg%3E");
-    } 
+    }
     .ag-icon-menu:hover{
       content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='17' height='41' viewBox='0 0 17 41' fill='none'%3E%3Crect x='0.350586' y='0.375' width='16' height='40' fill='%23DDDDDD'/%3E%3Cpath d='M14.3506 18.375H2.35059L8.72559 25.375L14.3506 18.375Z' fill='%23c77405' stroke='%23F1F1F1'/%3E%3C/svg%3E");
     }
@@ -107,7 +107,7 @@
           &.ag-icon-menu{
             font-family: "Font Awesome 5 Free";
           }
-         
+
         }
         .ag-icon-menu:before{
           content:"\f0c9";
@@ -117,11 +117,11 @@
         .ag-icon-menu:hover{
           content:"\f0c9";
           font-weight: 600;
-   
+
         }
       }
 
-    }  
+    }
   }
   /*Grid with sub grid*/
   .shiptech-panel-theme {
@@ -330,7 +330,7 @@
         app-ag-check-box-renderer{
           position: relative;
           left: 50%;
-          transform: translateX(-50%); 
+          transform: translateX(-50%);
         }
       }
     }
