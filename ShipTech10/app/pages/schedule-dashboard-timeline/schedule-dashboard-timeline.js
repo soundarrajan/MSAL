@@ -618,30 +618,29 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
                     var tpl = '<div class="vis-custom-group">';
                     if (isNew){
-                        if (hasUsdRestrictions) {
-                            tpl += `<span class="vis-custom-group-column vis-vessel"  oncontextmenu="return false;" vessel-detail-id="${group.vesselId}" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="newVessel"> N </span> <span tooltip title="Vessel Approaching USD restricted port" style="width: 10px">  <i  class="fa fa-ban usdRestrictionsFlag"></i> <i class="fa fa-dollar usdRestrictionsDollar" ></i> </span> <span class="vis-custom-group-column-content vesselName" style="color: ${colorVessel}"> ${vesselName} </span></span>`;
-                        } else {
-                            tpl += `<span class="vis-custom-group-column vis-vessel"  oncontextmenu="return false;" vessel-detail-id="${group.vesselId}" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="newVessel"> N </span> <span class="vis-custom-group-column-content vesselName" style="color: ${colorVessel}"> ${vesselName} </span></span>`;
-                        }
+                        // if (hasUsdRestrictions) {
+                            tpl += `<span class="vis-custom-group-column vis-vessel"  oncontextmenu="return false;" vessel-detail-id="${group.vesselId}" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="newVesselUsd"> N </span> <span tooltip title="Vessel Approaching USD restricted port" style="width: 10px">  <i  class="fa fa-ban usdRestrictionsFlag"></i> <i class="fa fa-dollar usdRestrictionsDollar" ></i> </span> <span class="vis-custom-group-column-content vesselName vesselNameUsd" style="color: ${colorVessel}"> ${vesselName} </span></span>`;
+                        // } else {
+                        //     tpl += `<span class="vis-custom-group-column vis-vessel"  oncontextmenu="return false;" vessel-detail-id="${group.vesselId}" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="newVessel"> N </span> <span class="vis-custom-group-column-content vesselName" style="color: ${colorVessel}"> ${vesselName} </span></span>`;
+                        // }
                     } else {
-                        if (hasUsdRestrictions) {
-                            tpl += `<span class="vis-custom-group-column vis-vessel"   oncontextmenu="return false;" vessel-detail-id="${group.vesselId}" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"> <span tooltip title="Vessel Approaching USD restricted port" style="width: 10px">  <i  class="fa fa-ban usdRestrictionsFlag"></i> <i class="fa fa-dollar usdRestrictionsDollar" ></i> </span> <span class="vis-custom-group-column-content vesselName" style="color: ${colorVessel}"> ${vesselName} </span></span>`;
-                        } else {
-                            tpl += `<span class="vis-custom-group-column vis-vessel"   oncontextmenu="return false;" vessel-detail-id="${group.vesselId}" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"> <span class="vis-custom-group-column-content" style="color: ${colorVessel}"> ${vesselName} </span></span>`;
-
-                        }
+                       // if (hasUsdRestrictions) {
+                            tpl += `<span class="vis-custom-group-column vis-vessel"   oncontextmenu="return false;" vessel-detail-id="${group.vesselId}" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"> <span tooltip title="Vessel Approaching USD restricted port" style="width: 10px">  <i  class="fa fa-ban usdRestrictionsFlag"></i> <i class="fa fa-dollar usdRestrictionsDollar" ></i> </span> <span class="vis-custom-group-column-content vesselName vesselNameUsd" style="color: ${colorVessel}"> ${vesselName} </span></span>`;
+                        // } else {
+                        //     tpl += `<span class="vis-custom-group-column vis-vessel"   oncontextmenu="return false;" vessel-detail-id="${group.vesselId}" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"> <span class="vis-custom-group-column-content vesselName" style="color: ${colorVessel}"> ${vesselName} </span></span>`;
+                        // }
                     }
                     if ($scope.displayedColumns["Service"]) {
-                    	tpl += `<span class="vis-custom-group-column vis-service" tooltip title="${group.serviceName}"> <span class="vis-custom-group-column-content">${serviceName} </span></span>`;
+                    	tpl += `<span class="vis-custom-group-column vis-service" tooltip title="${group.serviceName}"> <span class="vis-custom-group-column-content serviceName">${serviceName} </span></span>`;
                     }
                     if ($scope.displayedColumns["Buyer of the Vessel"]) {
-	                    tpl += `<span class="vis-custom-group-column vis-buyer-of-vessel" tooltip title="${group.buyerName}"> <span class="vis-custom-group-column-content"> ${buyerName} </span></span>`;
+	                    tpl += `<span class="vis-custom-group-column vis-buyer-of-vessel" tooltip title="${group.buyerName}"> <span class="vis-custom-group-column-content buyerName"> ${buyerName} </span></span>`;
                     }
                     if ($scope.displayedColumns["Buyer of the Service"]) {
-                        tpl += `<span class="vis-custom-group-column vis-buyer-of-service" tooltip title="${group.serviceBuyerName}" ><span class="vis-custom-group-column-content"> ${serviceBuyerName} </span></span>`;
+                        tpl += `<span class="vis-custom-group-column vis-buyer-of-service" tooltip title="${group.serviceBuyerName}" ><span class="vis-custom-group-column-content serviceBuyerName"> ${serviceBuyerName} </span></span>`;
                     }                    
                     if ($scope.displayedColumns["Company"]) {
-                        tpl += `<span class="vis-custom-group-column last vis-company" tooltip title="${group.companyName}"> <span class="vis-custom-group-column-content"> ${companyName} </span></span>`;
+                        tpl += `<span class="vis-custom-group-column last vis-company" tooltip title="${group.companyName}"> <span class="vis-custom-group-column-content companyName"> ${companyName} </span></span>`;
                     }
                     tpl += '</div>';
                     return tpl;
@@ -736,7 +735,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 					var childPos = obj.offset();
 					var parentPos = obj.parent().offset();
 					var childOffset = childPos.top - parentPos.top + $(obj).height();
-					computedMaxHeight = $(obj.parent()).height() - ($(obj.parent()).height() - childOffset) + 1
+					computedMaxHeight = $(obj.parent()).height() - ($(obj.parent()).height() - childOffset) + 1;
 					console.log(computedMaxHeight);
 
 	            		$(".vis-itemset").css("max-height", computedMaxHeight  + "px")

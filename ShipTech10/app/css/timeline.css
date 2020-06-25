@@ -24,6 +24,7 @@
 .vis-custom-group .vis-custom-group-column-header{ 
 	font-weight: 600;
 }
+
 .vis-vessel {
 	width: 230px;
 }
@@ -50,6 +51,12 @@
     text-overflow: ellipsis;
     overflow: hidden;
     font-size: 14px;
+    padding: 5px;
+
+}
+
+.vis-custom-group-column-header.vis-vessel {
+    padding: 15px !important;
 }
 
 .vis-left .vis-custom-group .vis-custom-group-column { 
@@ -221,19 +228,41 @@ schedule-dashboard-timeline .vis-item.vis-selected {
     background: #b70000;
     border-radius: 100%;
 }
+
 span.newVessel {
-	display: block;
-	position: absolute;
-	width: 10px;
-	height: 15px;
-	font-size: 0.9em;
-	left: 0.5%;
-	background-color: orange;
-	color: white;
+    display: block;
+    position: absolute;
+    width: 10px;
+    height: 15px;
+    font-size: 0.9em;
+    left: 0.5%;
+    background-color: orange;
+    color: white;
+}
+
+span.newVesselUsd {
+	left: 220px;
+    display: block;
+    position: absolute;
+    width: 10px;
+    font-size: 11px;
+    top: -0.1px;
+    background-color: orange;
+    color: white;
 }
 span.vesselName {
-    margin-left: 13px;
+    padding: 0px 0px 0px 15px;
 }
+
+span.serviceName, span.buyerName, span.serviceBuyerName, span.companyName {
+    padding: 5px;
+
+}
+
+span.vesselNameUsd {
+    padding: 0px 0px 0px 5px;
+}
+
 .expand-voyages {
 	position: absolute;
     left: 0;
@@ -418,26 +447,25 @@ span[timeline-order-column].desc:before {
 
 .usdRestrictionsFlag {
     position: relative;
-    top: -3px;
-    left: -4px;
+    top: -10px;
+    left: -1px;
     color: red;
-    width: 20px;
-    height: 20px;
+    width: 5px;
+    height: 5px;
     vertical-align: middle;
     text-align: center;
     line-height: 20px !important;
     border-radius: 1000px;
     font-size: 15px;
-
 }
 
 .usdRestrictionsDollar {
     position: relative;
-    top: -23px;
-    left: -4px;
+    top: -27px;
+    left: 2px;
     color: red;
-    width: 20px;
-    height: 20px;
+    width: 5px;
+    height: 5px;
     vertical-align: middle;
     text-align: center;
     line-height: 20px !important;
