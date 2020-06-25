@@ -618,17 +618,17 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
                     var tpl = '<div class="vis-custom-group">';
                     if (isNew){
-                        // if (hasUsdRestrictions) {
+                        if (hasUsdRestrictions) {
                             tpl += `<span class="vis-custom-group-column vis-vessel"  oncontextmenu="return false;" vessel-detail-id="${group.vesselId}" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="newVesselUsd"> N </span> <span tooltip title="Vessel Approaching USD restricted port" style="width: 10px">  <i  class="fa fa-ban usdRestrictionsFlag"></i> <i class="fa fa-dollar usdRestrictionsDollar" ></i> </span> <span class="vis-custom-group-column-content vesselName vesselNameUsd" style="color: ${colorVessel}"> ${vesselName} </span></span>`;
-                        // } else {
-                        //     tpl += `<span class="vis-custom-group-column vis-vessel"  oncontextmenu="return false;" vessel-detail-id="${group.vesselId}" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="newVessel"> N </span> <span class="vis-custom-group-column-content vesselName" style="color: ${colorVessel}"> ${vesselName} </span></span>`;
-                        // }
+                        } else {
+                            tpl += `<span class="vis-custom-group-column vis-vessel"  oncontextmenu="return false;" vessel-detail-id="${group.vesselId}" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="newVessel"> N </span> <span class="vis-custom-group-column-content vesselName" style="color: ${colorVessel}"> ${vesselName} </span></span>`;
+                        }
                     } else {
-                       // if (hasUsdRestrictions) {
+                       if (hasUsdRestrictions) {
                             tpl += `<span class="vis-custom-group-column vis-vessel"   oncontextmenu="return false;" vessel-detail-id="${group.vesselId}" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"> <span tooltip title="Vessel Approaching USD restricted port" style="width: 10px">  <i  class="fa fa-ban usdRestrictionsFlag"></i> <i class="fa fa-dollar usdRestrictionsDollar" ></i> </span> <span class="vis-custom-group-column-content vesselName vesselNameUsd" style="color: ${colorVessel}"> ${vesselName} </span></span>`;
-                        // } else {
-                        //     tpl += `<span class="vis-custom-group-column vis-vessel"   oncontextmenu="return false;" vessel-detail-id="${group.vesselId}" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"> <span class="vis-custom-group-column-content vesselName" style="color: ${colorVessel}"> ${vesselName} </span></span>`;
-                        // }
+                        } else {
+                            tpl += `<span class="vis-custom-group-column vis-vessel"   oncontextmenu="return false;" vessel-detail-id="${group.vesselId}" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"> <span class="vis-custom-group-column-content vesselName" style="color: ${colorVessel}"> ${vesselName} </span></span>`;
+                        }
                     }
                     if ($scope.displayedColumns["Service"]) {
                     	tpl += `<span class="vis-custom-group-column vis-service" tooltip title="${group.serviceName}"> <span class="vis-custom-group-column-content serviceName">${serviceName} </span></span>`;
