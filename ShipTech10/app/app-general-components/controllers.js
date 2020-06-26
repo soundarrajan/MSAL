@@ -783,13 +783,13 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 };
 
                 var formatOps = function (cellValue, options, rowObject) {
-                    var color = "#1AB01E";
+                    var color = "#00B53F";
                     var label = "Yes";
                     if (cellValue) {
                         color = "#1AB01E";
                         label = "Yes";
                     } else {
-                        color = "#EE4535";
+                        color = "#E65050";
                         label = "No";
                     }
 
