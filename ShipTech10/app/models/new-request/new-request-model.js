@@ -219,7 +219,7 @@ angular.module('shiptech.models').factory('newRequestModel', [ 'newRequestResour
                 });
         }
 
-        function getRequestEmailTemplate(emailData, transactionTypeId) {
+        function getRequestEmailTemplate(emailData, template, transactionTypeId, isPreview) {
             let templateId = 0;
             let templateName = null;
             if (typeof template != 'undefined' && template !== null) {
@@ -227,6 +227,7 @@ angular.module('shiptech.models').factory('newRequestModel', [ 'newRequestResour
                 templateName = template.name;
             }
             let payload;
+            if (isPreview) {
                 payload = {
                     Filters: [ {
                         ColumnName: 'RequestId',
@@ -236,6 +237,23 @@ angular.module('shiptech.models').factory('newRequestModel', [ 'newRequestResour
                         Value: transactionTypeId
                     } ]
                 };
+            } else {
+                 payload = {
+                    Filters: [ {
+                        ColumnName: 'RequestId',
+                        Value: emailData.requestId
+                    }, {
+                        ColumnName: 'TemplateId',
+                        Value: templateId
+                    }, {
+                        ColumnName: 'TransactionTypeId',
+                        Value: transactionTypeId
+                    }, {
+                        ColumnName: 'TemplateName',
+                        Value: templateName
+                    } ]
+                 };
+            }
            
           
             request_data = payloadDataModel.create(payload);

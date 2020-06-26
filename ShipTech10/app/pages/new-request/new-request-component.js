@@ -700,8 +700,14 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     },
                     transaction: EMAIL_TRANSACTION.REQUEST
                 };
+                let isPreviewButton = {
+                    data: {
+                        isPreview: true
+                    }
+                }
 
                 localStorage.setItem('previewEmailData', JSON.stringify(previewEmailData));
+                $rootScope.isPreview = true;
 
                 let url = $state.href(STATE.PREVIEW_EMAIL);
                 // $window.open(url, '_blank');

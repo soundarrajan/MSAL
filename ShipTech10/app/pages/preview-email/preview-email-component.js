@@ -382,8 +382,15 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
             switch (ctrl.transaction) {
             case EMAIL_TRANSACTION.REQUEST:
             case 'ValidatePreRequest':
+                console.log($rootScope.isPreview);
                 screenLoader.showLoader();
-                newRequestModel.getRequestEmailTemplate(ctrl.data, ctrl.emailTransactionTypeId).then((data) => {
+                if (ctrl.template.name === 'Questionnaire - Redelivery') {
+                    ctrl.template.name = 'Redelivery';
+                }
+                if (ctrl.template.name === 'Questionnaire - Standard') {
+                    ctrl.template.name = 'Standard';
+                }
+                newRequestModel.getRequestEmailTemplate(ctrl.data, ctrl.template, ctrl.emailTransactionTypeId, $rootScope.isPreview).then((data) => {
                     ctrl.email = data.payload;
 
                     // init toOthers and ccOthers
@@ -403,15 +410,19 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
                     }
                     ctrl.email = data.payload;
                     ctrl.emailContentHtml = $sce.trustAsHtml(ctrl.email.content);
+                    $rootScope.isPreview = false;
                 }, () => {
-                    	ctrl.template = null;
-                    	// ctrl.data = {};
-                    	ctrl.email = {};
+                        ctrl.template = null;
+                        // ctrl.data = {};
+                        ctrl.email = {};
                 }).finally(() => {
                     setTimeout(() => {
                         screenLoader.hideLoader();
                     }, 1500);
                 });
+
+
+               
                 break;
             case EMAIL_TRANSACTION.GROUP_OF_REQUESTS:
                 // console.log(ctrl.data);
