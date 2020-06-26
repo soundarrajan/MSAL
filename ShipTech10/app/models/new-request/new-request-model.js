@@ -226,21 +226,18 @@ angular.module('shiptech.models').factory('newRequestModel', [ 'newRequestResour
                 templateId = template.id;
                 templateName = template.name;
             }
-            let payload = {
-                Filters: [ {
-                    ColumnName: 'RequestId',
-                    Value: emailData.requestId
-                }, {
-                    ColumnName: 'TemplateId',
-                    Value: templateId
-                }, {
-                    ColumnName: 'TransactionTypeId',
-                    Value: transactionTypeId
-                }, {
-                    ColumnName: 'TemplateName',
-                    Value: templateName
-                } ]
-            };
+            let payload;
+                payload = {
+                    Filters: [ {
+                        ColumnName: 'RequestId',
+                        Value: emailData.requestId 
+                    },{
+                        ColumnName: 'TransactionTypeId',
+                        Value: transactionTypeId
+                    } ]
+                };
+           
+          
             request_data = payloadDataModel.create(payload);
             return newRequestResource.getRequestEmailTemplate(request_data)
                 .$promise

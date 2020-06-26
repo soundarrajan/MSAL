@@ -2726,22 +2726,19 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             }   
 
         	$.each(ctrl.emailSettings, (k, v) => {
-	        	if (!ctrl.request.footerSection.isRedelivery) {
-	        		if (v.process == 'Standard' && v.transactionType.name == 'PreRequest' && v.emailType.name == 'Manual') {
-	        			ctrl.sendQuestionnaireEmailType = v.emailType.name;
-	        			ctrl.sendQuestionnaireEmailTemplate = v.template;
-	        		}
-	        	} else if (v.process == 'Redelivery' && v.transactionType.name == 'PreRequest' && v.emailType.name == 'Manual') {
-	        			ctrl.sendQuestionnaireEmailType = v.emailType.name;
-	        			ctrl.sendQuestionnaireEmailTemplate = v.template;
-	        		}
+        		if ((v.process == 'Redelivery' || v.process == 'Standard') && v.transactionType.name == 'PreRequest' && v.emailType.name == 'Manual') {
+        			ctrl.sendQuestionnaireEmailType = v.emailType.name;
+        			ctrl.sendQuestionnaireEmailTemplate = v.template;
+        		}
+	        
         	});
-
+        
         	if (ctrl.sendQuestionnaireEmailType == 'Manual') {
         		localStorage.setItem('setQuestionnaireTemplate', JSON.stringify(ctrl.sendQuestionnaireEmailTemplate));
         		ctrl.goEmail();
         		return;
         	}
+
             ctrl.buttonsDisabled = true;
             newRequestModel.sendPrerequest(ctrl.request.id).then(
                 (responseData) => {
