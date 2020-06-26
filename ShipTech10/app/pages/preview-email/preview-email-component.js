@@ -383,23 +383,7 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
             case EMAIL_TRANSACTION.REQUEST:
             case 'ValidatePreRequest':
                 screenLoader.showLoader();
-                if (localStorage.getItem('setQuestionnaireTemplate')) {
-                    	ctrl.template = angular.copy(JSON.parse(localStorage.getItem('setQuestionnaireTemplate')));
-                    	localStorage.removeItem('setQuestionnaireTemplate');
-                }
-                if(!ctrl.template) {
-                    	return;
-                }
-                if(ctrl.template.id == 0) {
-                    	return;
-                }
-                if (ctrl.template.name === 'Questionnaire - Redelivery') {
-                    ctrl.template.name = 'Redelivery';
-                }
-                if (ctrl.template.name === 'Questionnaire - Standard') {
-                    ctrl.template.name = 'Standard';
-                }
-                newRequestModel.getRequestEmailTemplate(ctrl.data, ctrl.template, ctrl.emailTransactionTypeId).then((data) => {
+                newRequestModel.getRequestEmailTemplate(ctrl.data, ctrl.emailTransactionTypeId).then((data) => {
                     ctrl.email = data.payload;
 
                     // init toOthers and ccOthers

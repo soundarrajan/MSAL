@@ -2734,7 +2734,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         	});
         
         	if (ctrl.sendQuestionnaireEmailType == 'Manual') {
-        		localStorage.setItem('setQuestionnaireTemplate', JSON.stringify(ctrl.sendQuestionnaireEmailTemplate));
         		ctrl.goEmail();
         		return;
         	}

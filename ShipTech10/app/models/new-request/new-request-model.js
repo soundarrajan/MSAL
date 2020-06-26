@@ -219,7 +219,7 @@ angular.module('shiptech.models').factory('newRequestModel', [ 'newRequestResour
                 });
         }
 
-        function getRequestEmailTemplate(emailData, template, transactionTypeId) {
+        function getRequestEmailTemplate(emailData, transactionTypeId) {
             let templateId = 0;
             let templateName = null;
             if (typeof template != 'undefined' && template !== null) {
