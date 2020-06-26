@@ -390,6 +390,9 @@ APP_CLAIMS.controller('Controller_Claims', [
                             	// window.history.pushState({}, document.title, "#" + newUrl);
                             }
                             // $scope.formValues.deliveryDate = response.deliveryDate;
+                        } else if (response.deliveryDate  &&  !$scope.formValues.deliveryDate) {
+                            $scope.formValues.deliveryDate = response.deliveryDate;
+
                         }
                         if (response.vessel) {
                             $scope.formValues.orderDetails.vessel = response.vessel.name;
