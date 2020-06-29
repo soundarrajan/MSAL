@@ -946,6 +946,7 @@ angular.module('shiptech.pages').controller('ScheduleCalendarController', [ '$ro
                 });
 
 			  $('tbody').scroll((e) => { // detect a scroll event on the tbody
+			  	$(".contextmenu").hide();
 			  	// console.log($('tbody').scrollTop(), $('tbody').height(), $('tbody').height() - $('tbody').scrollTop() );
 			    $('thead').css('left', -$('tbody').scrollLeft()); // fix the thead relative to the body scrolling
 			    $('thead th:nth-child(1)').css('left', $('tbody').scrollLeft()); // fix the first cell of the header
@@ -1728,7 +1729,6 @@ angular.module('shiptech.pages').controller('ScheduleCalendarController', [ '$ro
        		}
        		return vesselsStrategy;
         };
-
 
         function removePopups() {
             $('body > .morePortsPopup').remove();
