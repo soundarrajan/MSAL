@@ -784,16 +784,39 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 	return isAtTimelineBottom;            	
                 }
 
-      //       	$('.vis-foreground, #timeline *').bind('mousewheel', function(e){
-      //       		isAtTimelineBottom = checkIfIsAtTimelineBottom();
-      //               console.log("mousewheel: " + isAtTimelineBottom);
-      //       		if(e.originalEvent.wheelDelta < 0 && isAtTimelineBottom) {
-      //                   e.preventDefault();
-						// $(window).scrollTop($(window).scrollTop()+120);
-						// console.log("********* ", $(window).scrollTop());
-      //       			return false;
-      //       		}
-      //       	});				   
+            	$('.vis-foreground, #timeline *').bind('mousewheel', function(e){
+					enableImprovedScrolling();
+            	});				   
+
+            	var enableImprovedScrolling = function() {
+                    leftOffset = (parseFloat($(".vis-panel.vis-center").css("left")) - 28) + "px";
+                    $(".vis-panel.vis-center").css("padding-left", leftOffset);
+                    $(".vis-panel.vis-center").css("margin-left", "-" + leftOffset);
+                    $(".vis-left").css("pointer-events", "none");            		
+            	}
+            	var disableImprovedScrolling = function() {
+            		$(".vis-left").css("pointer-events", "initial");
+            	}
+
+            	$(document).on("mousedown", ".vis-timeline .vis-center", function(e){
+            		// e.preventDefault();
+            		disableImprovedScrolling();
+            	}).on("mouseup", function(e){
+            		// e.preventDefault();
+            		if ($(e.target).attr("oncontextmenu") || $(e.target).parents("[oncontextmenu]").length > 0 ) {
+            			var event = {};
+            			event.which = 3;
+            			if ($(e.target).attr("vessel-detail-id")) {
+	            			event.currentTarget = $(e.target);
+            			} else {
+	            			event.currentTarget = $(e.target).parents("[vessel-detail-id]");
+            			}
+            			if ($(e.target).parents(".vis-vertical-scroll").length > 0) {
+	            			openVesselContextMenu(event);
+            			}
+            		}
+					enableImprovedScrolling();
+            	})
 
                 /*
                     Redraw long voyages that exceed the timeline width
@@ -802,18 +825,6 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 
                 $(".vis-vertical-scroll").on("scroll", function(e){
                     redrawOutOfRangeElements();
-                    leftOffset = (parseFloat($(".vis-panel.vis-center").css("left")) - 28) + "px";
-                    $(".vis-panel.vis-center").css("padding-left", leftOffset);
-                    $(".vis-panel.vis-center").css("margin-left", "-" + leftOffset);
-                    $(".vis-left").css("pointer-events", "none");
-					window.lastScrollingTime = moment();
-					setTimeout(function(){
-	                    var timeFromLastScroll = moment().diff( moment(window.lastScrollingTime) )
-	                    if (timeFromLastScroll > 300) {
-	                        $(".vis-left").css("pointer-events", "initial");
-	                    }
-
-					},500)
                 });
                 setTimeout(function(){
 					timeline._setScrollTop(0);
@@ -825,6 +836,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 window.timelineCurrentSortDirection = "asc";
                 initSortingData()
 				applyCurrentSort();
+				enableImprovedScrolling();
 
         }
 
@@ -1347,7 +1359,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         });
 
         document.addEventListener('contextmenu', function(e) {
-	        if ($(event.target).hasClass("vis-vessel")  || $(event.target).hasClass("vis-voyage-content") || $(event.target).parents('.vis-voyage-content').length || $(event.target).hasClass('screen-loader')) {
+	        if ($(event.target).hasClass("vis-vessel")  || $(event.target).hasClass("vis-voyage-content") || $(event.target).parents('.vis-voyage-content').length || $(event.target).hasClass('screen-loader') || ($(event.target).hasClass('vis-center'))) {
             	e.preventDefault();
             }
         });
@@ -1410,10 +1422,15 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
         $(document).on("mousedown", "span.vis-vessel", function(event){
             //event.preventDefault();
+            openVesselContextMenu(event);
+        });
+
+        var openVesselContextMenu = function(event) {
             $("#timeline").click();
             if (event.which == 3 && ctrl.scheduleDashboardConfiguration.displayPendingActions.name == "Yes") {
+                var currentElem = $(event.currentTarget);
                 console.log("RIGHT CLICK");
-                var vesselId =  $(this).attr("vessel-detail-id");
+                var vesselId =  $(event.currentTarget).attr("vessel-detail-id");
                 if (!ctrl.vesselWithPbBucket[vesselId]) {
                     return;
                 }
@@ -1425,7 +1442,6 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 }); 
                 console.log(voyageStop);           
                 
-                var currentElem = $(event.currentTarget);
                 removePopups();
                 var rightClickVesselPopoverData = {};
                 $scope.rightClickVesselPopoverData = voyageStop;
@@ -1468,8 +1484,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                         removePopups();
                     });
                 });
-            }
-        });
+            }        	
+        }
 
 
         $(document).on("mousedown", "span[voyage-detail-id]", function(event){
