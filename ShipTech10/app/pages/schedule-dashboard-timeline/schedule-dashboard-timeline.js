@@ -821,6 +821,11 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 $scope.timelineItems = groups.length;
                 setLayoutAfterTimelineLoad();
 
+                window.timelineCurrentSort = "vessel";
+                window.timelineCurrentSortDirection = "asc";
+                initSortingData()
+				applyCurrentSort();
+
         }
 
        
@@ -1968,61 +1973,70 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 					}
 				}
 				window.lastSortingTime = moment();
-
-        		var currentSort = $(e.target).attr("timeline-order-column");
-        		window.timelineGroupOrdering = [];
-        		if(!window.timelineGroupOrdering[currentSort]) {
-	        		window.timelineGroupOrdering[currentSort] = _.orderBy(window.mytimeline.groupsData._data._data, [currentSort], ['asc']);
-        			for (var i = window.timelineGroupOrdering[currentSort].length - 1; i >= 0; i--) {
-						Object.keys(window.mytimeline.groupsData._data._data).forEach(function(key) {
-
-	        				if (window.timelineGroupOrdering[currentSort][i].id == window.mytimeline.groupsData._data._data[key].id) {
-		        				window.mytimeline.groupsData._data._data[key]["sortIndex-" + currentSort] = i;
-	        				}
-
-						});        				
-        			}
-        		}
-                if (!window.selectFrame) {
-                    if (window.timelineCurrentSort == currentSort) {
-                        if (!window.selectFrame) {
-                            if (window.timelineCurrentSortDirection == 'asc') {
-                                window.timelineCurrentSortDirection = 'desc';
-                            } else {
-                                window.timelineCurrentSortDirection = 'asc';
-                            }
-                        }
-                        
-                    } else {
-                        window.timelineCurrentSortDirection = 'asc';
-                    }
-                } else {
-                    window.selectFrame = false;
-                }
-				
-				$("span[timeline-order-column]").removeClass("asc").removeClass("desc");
-				$(e.target).addClass(window.timelineCurrentSortDirection);
-				options = {
-					'groupOrder' : function (a, b) {
-						if (window.timelineCurrentSortDirection == 'asc') {
-							return a["sortIndex-" + currentSort] - b["sortIndex-" + currentSort];
-						} else {
-							return b["sortIndex-" + currentSort] - a["sortIndex-" + currentSort];
-						}
-					}
-				}
-        		window.timelineCurrentSort = currentSort;
-				window.mytimeline.setOptions(options);
-				window.mytimeline.redraw();
-                setTimeout(function() {
-                	if ($(".vis-vertical-scroll").scrollTop() < 50) {
-	                    timeline._setScrollTop(0);
-                	}
-                });
+				initSortingData(e);
+       
 
         	})
         })
-		
+
+		initSortingData = function(e) {
+			if (e) {
+				activeColumn = e.target;
+			} else {
+				activeColumn = $(".vis-custom-group > .vis-vessel");
+			}
+	 		var currentSort = $(activeColumn).attr("timeline-order-column");
+    		window.timelineGroupOrdering = [];
+    		if(!window.timelineGroupOrdering[currentSort]) {
+        		window.timelineGroupOrdering[currentSort] = _.orderBy(window.mytimeline.groupsData._data._data, [currentSort], ['asc']);
+    			for (var i = window.timelineGroupOrdering[currentSort].length - 1; i >= 0; i--) {
+					Object.keys(window.mytimeline.groupsData._data._data).forEach(function(key) {
+
+        				if (window.timelineGroupOrdering[currentSort][i].id == window.mytimeline.groupsData._data._data[key].id) {
+	        				window.mytimeline.groupsData._data._data[key]["sortIndex-" + currentSort] = i;
+        				}
+
+					});        				
+    			}
+    		}
+            if (!window.selectFrame) {
+                if (window.timelineCurrentSort == currentSort) {
+                    if (!window.selectFrame) {
+                        if (window.timelineCurrentSortDirection == 'asc') {
+                            window.timelineCurrentSortDirection = 'desc';
+                        } else {
+                            window.timelineCurrentSortDirection = 'asc';
+                        }
+                    }
+                    
+                } else {
+                    window.timelineCurrentSortDirection = 'asc';
+                }
+            } else {
+                window.selectFrame = false;
+            }
+			
+			$("span[timeline-order-column]").removeClass("asc").removeClass("desc");
+			$(activeColumn).addClass(window.timelineCurrentSortDirection);
+			options = {
+				'groupOrder' : function (a, b) {
+					if (window.timelineCurrentSortDirection == 'asc') {
+						return a["sortIndex-" + currentSort] - b["sortIndex-" + currentSort];
+					} else {
+						return b["sortIndex-" + currentSort] - a["sortIndex-" + currentSort];
+					}
+				}
+			}
+    		window.timelineCurrentSort = currentSort;
+			window.mytimeline.setOptions(options);
+			window.mytimeline.redraw();
+            setTimeout(function() {
+            	if ($(".vis-vertical-scroll").scrollTop() < 50) {
+                    timeline._setScrollTop(0);
+            	}
+            });
+		}			
+
 
 		function getContrastYIQ(hexcolor){
 			if (!hexcolor) { return "black"; }
