@@ -621,7 +621,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                         if (hasUsdRestrictions) {
                             tpl += `<span class="vis-custom-group-column vis-vessel"  oncontextmenu="return false;" vessel-detail-id="${group.vesselId}" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="newVesselUsd"> N </span> <span tooltip title="Vessel Approaching USD restricted port" style="width: 10px">  <i  class="fa fa-ban usdRestrictionsFlag"></i> <i class="fa fa-dollar usdRestrictionsDollar" ></i> </span> <span class="vis-custom-group-column-content vesselName vesselNameUsd" style="color: ${colorVessel}"> ${vesselName} </span></span>`;
                         } else {
-                            tpl += `<span class="vis-custom-group-column vis-vessel"  oncontextmenu="return false;" vessel-detail-id="${group.vesselId}" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="newVessel"> N </span> <span class="vis-custom-group-column-content vesselName" style="color: ${colorVessel}"> ${vesselName} </span></span>`;
+                            tpl += `<span class="vis-custom-group-column vis-vessel"  oncontextmenu="return false;" vessel-detail-id="${group.vesselId}" tooltip title="${group.vesselName} : ${group.defaultFuel} : ${group.defaultDistillate}"><span class="newVesselUsd"> N </span> <span class="vis-custom-group-column-content vesselName" style="color: ${colorVessel}"> ${vesselName} </span></span>`;
                         }
                     } else {
                        if (hasUsdRestrictions) {
