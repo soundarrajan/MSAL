@@ -798,7 +798,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             		$(".vis-left").css("pointer-events", "initial");
             	}
 
-            	$(document).on("mousedown", ".vis-timeline .vis-center", function(e){
+            	$(document).on("mousedown mouseover", ".vis-timeline .vis-center", function(e){
             		// e.preventDefault();
             		disableImprovedScrolling();
             	}).on("mouseup", function(e){
