@@ -392,7 +392,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                         start: initialEtaDotted,
                         end: startDate,
                         className: 'earliestEtaDashed',
-                        style: 'border-width: 1.8px; border-style: dashed; pointer-events:none; border-right-style: none; box-shadow: none; border-color: #97b0f8; '
+                        style: 'border-width: 1.8px; border-style: dashed; pointer-events:none; border-right-style: none; box-shadow: none; border-color: #97b0f8; ',
+                        isDeleted: vessels[i].voyageDetail.isDeleted
                     };
                     numberVessels += 1;
                 }
