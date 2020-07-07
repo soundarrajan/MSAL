@@ -8,6 +8,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         
         ctrl.startDate = null;
         ctrl.endDate = null;
+        $rootScope.numberLoad = 0;
 
         var DEBUG = false;
         var minDate = null;
@@ -811,6 +812,10 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     $(".vis-panel.vis-center").css("padding-left", leftOffset);
                     $(".vis-panel.vis-center").css("margin-left", "-" + leftOffset);
                     $(".vis-left").css("pointer-events", "none"); 
+                    if (!$rootScope.numberLoad) {
+                        disableImprovedScrolling();
+                    }
+                    $rootScope.numberLoad += 1;
                     console.log("enabled"); 
             	}
             	var disableImprovedScrolling = function() {
