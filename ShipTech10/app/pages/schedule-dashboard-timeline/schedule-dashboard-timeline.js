@@ -812,10 +812,10 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     $(".vis-panel.vis-center").css("padding-left", leftOffset);
                     $(".vis-panel.vis-center").css("margin-left", "-" + leftOffset);
                     $(".vis-left").css("pointer-events", "none"); 
-                    if (!$rootScope.numberLoad) {
-                        disableImprovedScrolling();
-                    }
-                    $rootScope.numberLoad += 1;
+                    // if (!$rootScope.numberLoad) {
+                    //     disableImprovedScrolling();
+                    // }
+                    // $rootScope.numberLoad += 1;
                     console.log("enabled"); 
             	}
             	var disableImprovedScrolling = function() {
@@ -869,7 +869,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 window.timelineCurrentSortDirection = "asc";
                 initSortingData()
 				applyCurrentSort();
-				enableImprovedScrolling();
+				// enableImprovedScrolling();
+                disableImprovedScrolling();
 
         }
 
