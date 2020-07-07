@@ -536,7 +536,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 		                    start:  moment.utc(earliestRedelivery).format('YYYY-MM-DD HH:mm'),
 		                    end:  moment.utc(currentGroupRedelivery.latestRedelivery).format('YYYY-MM-DD HH:mm'),
 		                    style: 'background-color: none; border:2px solid red; pointer-events:none; z-index:9999',
-		                    className: 'redeliveryPeriod'
+		                    className: 'redeliveryPeriod',
+                            isDeleted: currentGroupRedelivery.isDeleted
 		                };
 		                var estimatedRedeliveryStart = moment.utc(currentGroupRedelivery.estimatedRedelivery).format('YYYY-MM-DD') + " 12:00";
 		                var estimatedRedeliveryEnd = moment.utc(currentGroupRedelivery.estimatedRedelivery).format('YYYY-MM-DD') + " 12:00";
@@ -550,7 +551,9 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 		                    start:  estimatedRedeliveryStart,
 		                    end:  estimatedRedeliveryEnd,
 		                    style: 'background-color: none; border:1px solid #b70000; pointer-events:none; z-index:51',
-		                    className: 'estimatedRedeliveryDot'
+		                    className: 'estimatedRedeliveryDot',
+                            isDeleted: currentGroupRedelivery.isDeleted
+
 		                };  
 		                voyages.push(redeliveryPeriod);            
 		                voyages.push(estimatedRedelivery);              	
@@ -673,8 +676,11 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 var timelineVoyages = _.filter(timelineData.voyages, function(object) {
                     return !object.isDeleted;
                 });
+                var timelineGroups = _.filter(timelineData.groups, function(object) {
+                    return !object.isDeleted;
+                });
                 
-                var groups = new vis.DataSet(timelineData.groups);
+                var groups = new vis.DataSet(timelineGroups);
                 var voyages = new vis.DataSet(timelineVoyages);
                 var startDateObject = { 'start': ctrl.startDate.format('YYYY-MM-DD'), 'end': ctrl.endDate.format('YYYY-MM-DD')};
                 voyagesArray.push(startDateObject);
