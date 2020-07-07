@@ -183,14 +183,15 @@ angular.module('shiptech.components')
                     });
                 });
 
-
                 Object.keys(groupedVoyagesOrder).forEach((item) => {
                     Object.keys(groupedVoyagesOrder[item]).forEach((item2) => {
                         if (item2 != 'undefined') {
-                            // groupedVoyagesOrder[item][item2] = _.uniqBy(groupedVoyagesOrder[item][item2], 'voyageDetail.request.requestDetail.orderId');
+                            // groupedVoyagesOrder[item][item2] = _.groupBy(groupedVoyagesOrder[item][item2], 'voyageDetail.request.requestDetail.orderId');
+                           
                             groupedVoyagesOrder[item][item2] = _.groupBy(groupedVoyagesOrder[item][item2], 'voyageDetail.request.requestDetail.fuelType.name');
                             Object.keys(groupedVoyagesOrder[item][item2]).forEach((item3) => {
                                 if (item3 != 'undefined') {
+                                    groupedVoyagesOrder[item][item2][item3] =  _.uniqBy(groupedVoyagesOrder[item][item2][item3], 'voyageDetail.request.requestDetail.Id');
                                     groupedVoyagesOrder[item][item2][item3] = _.sumBy(groupedVoyagesOrder[item][item2][item3], 'voyageDetail.request.requestDetail.orderProductQuantity');
                                     allProductTypes[item].push(item3);
                                     orderProductTypes[item].push(item3);
@@ -201,14 +202,14 @@ angular.module('shiptech.components')
                         }
                     });
                 });
-
                 Object.keys(allProductTypes).forEach((item) => {
                     allProductTypes[item] = _.uniq(allProductTypes[item]);
+
                 });
 
                 $.each(uniqueVoyages, (k, v) => {
                     if (groupedVoyagesAllRequestProductsAreStemmed[v]) {
-                        allProductTypes[v] = orderProductTypes[v];
+                        allProductTypes[v] = _.uniq(orderProductTypes[v]);
                     }
                 });
 
