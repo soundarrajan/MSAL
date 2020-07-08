@@ -1755,10 +1755,13 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         }
 
         $scope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
-            delete(ctrl);
+            $(document).unbind();
+            console.log("DELETE");
+            console.log(ctrl);
         });
         /*build hover popover*/
         $(document).on("mouseover", "span[voyage-detail-id]", function(){
+
             console.log("mouseover");
             // $(this).click();
             var voyageDetailId = $(this).attr("voyage-detail-id");
