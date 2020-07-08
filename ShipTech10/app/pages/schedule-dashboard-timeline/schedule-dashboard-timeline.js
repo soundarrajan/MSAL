@@ -174,8 +174,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 	            	return obj.voyageDetail.eta;
 	            }
             }, 'asc');
-            $scope.stopsGroupedByDayAndGroup = _.uniqBy(vessels, "voyageDetail.id");
-            $scope.stopsGroupedByDayAndGroup = _.groupBy($scope.stopsGroupedByDayAndGroup, function(obj, key){
+            ctrl.stopsGroupedByDayAndGroup = _.uniqBy(vessels, "voyageDetail.id");
+            ctrl.stopsGroupedByDayAndGroup = _.groupBy(ctrl.stopsGroupedByDayAndGroup, function(obj, key){
             	if (obj != null) {
                     var objGroupString = obj.ServiceName + ' <> ' + obj.BuyerName + ' <> ' +  obj.VesselName + ' <> ' + obj.CompanyName;
                     if (displayScheduleBasedOn === 'Delivery Date' && obj.voyageDetail.deliveryFrom) {
@@ -241,8 +241,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             console.log(vesselWithHasUsdRestrictions);
             console.log(ctrl.vesselWithPbBucket);
 
-            if (!$scope.stopsGroupedByDayAndGroup["undefined"]) {
-                $.each($scope.stopsGroupedByDayAndGroup, function(k, v) {
+            if (!ctrl.stopsGroupedByDayAndGroup["undefined"]) {
+                $.each(ctrl.stopsGroupedByDayAndGroup, function(k, v) {
                     var minVoyageEta =  _.minBy(v, function(item) {
                             if (typeof (item.voyageDetail) != "undefined") {
                                 var timestamp = moment(item.voyageDetail.eta).format('X');
@@ -453,9 +453,9 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
                 // Add voyage
                 var hasMultipleStops = false;
-                // $scope.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString]
+                // ctrl.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString]
                 var objStart;
-                var firstStopToday = _.find($scope.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString], function(obj){
+                var firstStopToday = _.find(ctrl.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString], function(obj){
 					if (displayScheduleBasedOn === 'Delivery Date'){
 						objStart = obj.voyageDetail.deliveryFrom
 					} else {
@@ -464,11 +464,11 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     return obj.voyageDetail.id != voyage.voyageId;
                 });
                 var isExtraStop = false;
-                if ($scope.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString]) {
-	                if ($scope.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString].length > 1) {
+                if (ctrl.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString]) {
+	                if (ctrl.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString].length > 1) {
 	                	uniqueCellIdentifier = startDate.split(" ")[0] + ' <> ' +  groupString;
                         if (voyageDaysWithSludge[voyage.voyageId]) {
-                            var idFirstStop = $scope.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString][0].voyageDetail.id;
+                            var idFirstStop = ctrl.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString][0].voyageDetail.id;
                             var poz = _.findIndex(voyages, function(obj) {
                                 return obj.voyageId == idFirstStop;
                                    
@@ -481,9 +481,9 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                             }
                 
                         }
-	                	if ($scope.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString][0].voyageDetail.id == voyage.voyageId) {
+	                	if (ctrl.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString][0].voyageDetail.id == voyage.voyageId) {
 			                voyage.content += '<span class="expand-voyages" cell-identifier="'+uniqueCellIdentifier+'" group="'+voyage.group+'"  eta="'+voyage.start+'">+</span>';
-			                voyage.additionalStops = $scope.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString];
+			                voyage.additionalStops = ctrl.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString];
 		                } else {
 			                isExtraStop = true;
 		                }
@@ -1413,7 +1413,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 	        	var currentGroup = $(event.target).attr("group");
 	        	var currentEta = $(event.target).attr("eta");
 	        	var currentCellIdentifier = $(event.target).attr("cell-identifier");
-	        	var additionalVoyages = $scope.stopsGroupedByDayAndGroup[currentCellIdentifier];
+	        	var additionalVoyages = ctrl.stopsGroupedByDayAndGroup[currentCellIdentifier];
 
 	        	// $.each(ctrl.voyages, function(key,obj){
 	        	// 	if (obj.additionalStops) {
@@ -1755,7 +1755,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         }
 
         $scope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
-            $("#timeline *").unbind();
+            delete(ctrl);
         });
         /*build hover popover*/
         $(document).on("mouseover", "span[voyage-detail-id]", function(){
@@ -1800,7 +1800,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             var allStops = [parseFloat(voyageDetailId)];
 
             var currentCellIdentifier = $("span[voyage-detail-id='"+voyageDetailId+"']").attr("cell-identifier");
-            var voyagesToday = $scope.stopsGroupedByDayAndGroup[currentCellIdentifier];
+            var voyagesToday = ctrl.stopsGroupedByDayAndGroup[currentCellIdentifier];
             var voyageStopsToday = []
             $.each(voyagesToday, function(k,v){
                 voyageStopsToday.push(v.voyageDetail.id)
@@ -1826,7 +1826,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             var allStops = [parseFloat(voyageDetailId)];
 
             var currentCellIdentifier = $("span[voyage-detail-id='"+voyageDetailId+"']").attr("cell-identifier");
-			var voyagesToday = $scope.stopsGroupedByDayAndGroup[currentCellIdentifier];
+			var voyagesToday = ctrl.stopsGroupedByDayAndGroup[currentCellIdentifier];
 			var voyageStopsToday = []
 			$.each(voyagesToday, function(k,v){
 				voyageStopsToday.push(v.voyageDetail.id)
