@@ -134,9 +134,18 @@
     color: #333;
 }
 
+.vis-saturday.vis-major > div,
+.vis-sunday.vis-major > div{
+    background: white !important;
+}
+
+.vis-time-axis .vis-text  {
+    padding: 0px !important;
+}
+
 .vis-saturday,
 .vis-sunday {
-	background: #E4E4E4;
+    background: #E4E4E4 !important;
 }
 
 schedule-dashboard-timeline .vis-inner {
