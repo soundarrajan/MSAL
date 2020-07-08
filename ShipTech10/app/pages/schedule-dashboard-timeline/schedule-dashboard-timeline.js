@@ -808,7 +808,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             	});				   
 
             	var enableImprovedScrolling = function() {
-                    leftOffset = (parseFloat($(".vis-panel.vis-center").css("left")) - 50) + "px";
+                    leftOffset = (parseFloat($(".vis-panel.vis-center").css("left")) - 25) + "px";
                     $(".vis-panel.vis-center").css("padding-left", leftOffset);
                     $(".vis-panel.vis-center").css("margin-left", "-" + leftOffset);
                     $(".vis-left").css("pointer-events", "none"); 
@@ -836,6 +836,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             		disableImprovedScrolling();
             	}).on("mouseup", function(e){
             		// e.preventDefault();
+                    console.log("mouseup");
             		if ($(e.target).attr("oncontextmenu") || $(e.target).parents("[oncontextmenu]").length > 0 ) {
             			var event = {};
             			event.which = 3;
@@ -857,6 +858,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 */
                 
                 $(".vis-vertical-scroll").on("scroll", function(e){
+                    console.log("right scroll");
                     redrawOutOfRangeElements();
                 });
                 setTimeout(function(){
@@ -1521,9 +1523,6 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             }        	
         }
 
-        $(document).on("scroll", "#timeline", function(event){
-        });
-
 
         $(document).on("mousedown", "span[voyage-detail-id]", function(event){
             event.preventDefault();
@@ -1711,6 +1710,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         });
 
         function removePopups() {
+            console.log("Close");
             $('.popover').remove();
             $("schedule-dashboard-timeline > .contextmenu").remove();
             $scope.$digest();
@@ -1718,6 +1718,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         }
 
         ctrl.onPopoverClose = function(results) {
+            console.log("Close");
             if (results) {
                 removePopups();
                 $scope.rightClickPopoverData = null;
@@ -1746,8 +1747,20 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             return moment(date).format('DD/MM/YYYY HH:mm');
         };
 
+        window.onscroll = function(e) {
+          // print "false" if direction is down and "true" if up
+          console.log(this.oldScroll > this.scrollY);
+          $(".vis-left").css("pointer-events", "initial");
+          this.oldScroll = this.scrollY;
+        }
+
+        $scope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
+            $("#timeline *").unbind();
+        });
         /*build hover popover*/
         $(document).on("mouseover", "span[voyage-detail-id]", function(){
+            console.log("mouseover");
+            // $(this).click();
             var voyageDetailId = $(this).attr("voyage-detail-id");
             if (voyageDetailId) {
                 var html = buildHoverPopoverMarkup(voyageDetailId);
@@ -1761,7 +1774,6 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 }).
                 on('show.bs.popover', function (event) {
 					$scope.rightClickPopoverData = null;
-					$scope.$apply();
                     var lengthVoyageStops = getLengthPopoverMarkup(voyageDetailId);
                     if (lengthVoyageStops > 3) {
                         $('.breadcrumbs-container').css('z-index', '0');
@@ -1769,11 +1781,16 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     } 
                  
                 });
-                $(this).popover('toggle');
+                $(this).popover('show');
+                // setTimeout(function() {
+                //     $scope.$apply();
+                // });
+
               
             }
         });
-        $(document).on("mouseout", "span[voyage-detail-id]", function() {       
+        $(document).on("mouseout", "span[voyage-detail-id]", function() {
+            console.log("mouseout");      
             $('.breadcrumbs-container').css('z-index', '10000');
             $('.page-header.navbar').removeClass("hoverOnPortCode");
         });
@@ -1804,6 +1821,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         }
 
         var buildHoverPopoverMarkup = function(voyageDetailId) {
+            console.log("BUILD");
             var hasNoRequest = false;
             var allStops = [parseFloat(voyageDetailId)];
 
