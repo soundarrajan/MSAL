@@ -51,7 +51,7 @@
     text-overflow: ellipsis;
     overflow: hidden;
     font-size: 14px;
-    padding: 5px;
+    padding: 5px !important;
 
 }
 
@@ -134,13 +134,9 @@
     color: #333;
 }
 
-.vis-saturday.vis-major > div,
-.vis-sunday.vis-major > div{
-    background: white !important;
-}
 
-.vis-time-axis .vis-text  {
-    padding: 0px !important;
+div.vis-panel.vis-top > div > div.vis-text.vis-major {
+    background: white !important;
 }
 
 .vis-saturday,
