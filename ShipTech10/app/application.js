@@ -150,8 +150,10 @@ angular
                     return $q.all(query).then(
                         (response) => {
                             if (response[0].status == 200) {
+                            	response[0].data.generalConfiguration.shiptechLite = false;
                                 angular.module('shiptech').value('$tenantSettings', response[0].data.generalConfiguration);
                                 angular.module('shiptech').value('$tenantConfiguration', response[0].data);
+
                             }
                             if (query.length === 2) {
                                 if (response[1].status == 200) {

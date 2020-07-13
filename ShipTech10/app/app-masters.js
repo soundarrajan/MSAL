@@ -16,6 +16,7 @@ APP_MASTERS.constant('MASTER_STATE', {
     DOCUMENTS: 'masters.documents',
     EMAIL: 'masters.email',
     STRUCTURE: 'masters.structure',
+    HIERARCHY: 'masters.hierarchy',
     EDIT: 'masters.edit',
 });
 // Config
@@ -157,6 +158,23 @@ APP_MASTERS.config([ '$stateProvider', '$urlRouterProvider', 'MASTER_STATE', fun
             requireADLogin: true,
             url: '/masters/:screen_id/audit-log/:entity_id',
             templateUrl: 'app-masters/views/list_audit.html'
+        }).state(MASTER_STATE.HIERARCHY, {
+            params: {
+                path: [ {
+                    label: 'Masters List',
+                    uisref: MASTER_STATE.HOME
+                }, {
+                    label: 'Master List',
+                    uisref: MASTER_STATE.SINGLE
+                }, {
+                    label: 'Hierarchy',
+                    uisref: MASTER_STATE.HIERARCHY
+                } ],
+                title: 'Master Hierarchy'
+            },
+            requireADLogin: true,
+            url: '/masters/:screen_id/hierarchy',
+            templateUrl: 'app-masters/views/hierarchy.html'
         })
         // Email Log
         .state(MASTER_STATE.EMAIL, {

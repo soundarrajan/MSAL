@@ -798,7 +798,9 @@
             .st-main-content-menu .nav-tabs {
                 height: 35px;
             }
-
+            general-header.footer-general-header > div > div:nth-child(2) > ul:nth-child(1) {
+                display: none;
+            }
             .st-main-content-menu .nav-tabs li {
                 height: 49px;
                 color: #737377;
@@ -4929,4 +4931,53 @@ table.energyCalculationBlade tr.border-green-jungle{
 .fakeDisabledReport {
 	opacity: 0.5;
 	cursor: default !important;
+}
+
+#hierarchical-tree .search-list {
+    border-left: 1px dashed #364150;
+    padding-left: 15px;
+}
+#hierarchical-tree  .expander {
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    margin-left: -16px;
+}
+#hierarchical-tree  .expander i {
+    /*margin-left: -16px;*/
+    font-size: 20px;
+    cursor: pointer;
+	transform: rotateZ(45deg) translate(5px);
+	transition: 0.3s;
+}
+#hierarchical-tree  .expander span {
+	margin-left: 9px;
+}
+
+#hierarchical-tree  .expander i.collapsed {
+	transform: rotateZ(0deg) translate(0px);
+}
+
+#hierarchical-tree .no-children {
+	position: relative;
+}
+#hierarchical-tree .no-children:before {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 7px;
+    border-top: 1px dashed #364150;
+    margin-top: 9px;
+    left: -15px;
+}
+
+#hierarchical-tree  .element-name {
+    position: relative;
+	position: relative;
+	margin-bottom: 2px;
+	display: inline-block;
+}
+#hierarchical-tree  .element-name:hover {
+	text-decoration: underline;
+	color: #364150;
 }

@@ -1,11 +1,24 @@
 ﻿<div class="row general-header color-{{ color }}">
     <span ng-init="GH.getScreenActions(); getAdminConfiguration()"></span>
-    <div class="st-main-content-menu tabbable-line">
+    <div class="st-main-content-menu tabbable-line"> 
         <span ng-if="actions.title">
             <h4 class="pull-left title">
                 {{ actions.title }}
             </h4>
         </span>
+        <ul class="nav nav-tabs pull-left" ng-if="GH.verifyMasters()">
+            <li class="active">
+                <a class="btn btn-default ng-binding" href="/#/masters/{{GH.screen_id}}">
+                    List View
+                </a>
+            </li>
+            <li>
+                <a class="btn btn-default ng-binding"  href="/#/masters/{{GH.screen_id}}/hierarchy">
+                    Hierarchical View
+                </a>
+            </li>               
+        </ul>     
+      
         <div class="pull-left" ng-show="color != 'white' && formFieldsNew">
             <div class=" form-inline">
                 <div class="form-group">

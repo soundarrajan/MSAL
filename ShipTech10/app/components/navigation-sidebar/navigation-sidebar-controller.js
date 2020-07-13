@@ -1,5 +1,5 @@
-angular.module('shiptech').controller('navigationSidebarController', [ '$scope', '$state', 'STATE', '$timeout', '$tenantSettings', '$filter', '$window', '$location',
-    function($scope, $state, STATE, $timeout, $tenantSettings, $filter, $window, $location) {
+angular.module('shiptech').controller('navigationSidebarController', [ '$scope', '$rootScope', '$state', 'STATE', '$timeout', '$tenantSettings', '$filter', '$window', '$location',
+    function($scope, $rootScope, $state, STATE, $timeout, $tenantSettings, $filter, $window, $location) {
         $scope.state = $state;
         $scope.STATE = STATE;
         $scope.tenantSettings = $tenantSettings;

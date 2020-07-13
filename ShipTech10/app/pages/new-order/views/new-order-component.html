@@ -38,7 +38,7 @@
                            ng-show="$ctrl.canSave($ctrl.screenActions)">
                             Save
                         </a>
-                        <a class="btn btn-default" ng-class="{'disabled': !$ctrl.data.id}"
+                        <a ng-if="!$ctrl.tenantSettings.shiptechLite" class="btn btn-default" ng-class="{'disabled': !$ctrl.data.id}"
                            ng-href="#/reports/ordernegotiation/OrderId={{$ctrl.data.id}}"
                            ng-show="{{$ctrl.tenantSettings.defaultValues.isSSRSReports}}" target="blank">
                             Order Negotiation Report

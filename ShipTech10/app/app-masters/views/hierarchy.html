@@ -1,0 +1,76 @@
+<div ng-controller="Master_Hierarchy as MH">
+	<div class="row">
+		<div class="st-main-content-menu tabbable-line">
+			<!-- ngIf: actions.title -->
+			<ul class="nav nav-tabs pull-left">
+				<li>
+					<a class="btn btn-default ng-binding" href="/#/masters/{{screen_id}}">
+						List View
+					</a>
+				</li>
+				<li class="active">
+					<a class="btn btn-default ng-binding">
+						Hierarchical View
+					</a>
+				</li>				
+			</ul>	    
+			<div class="pull-right">
+				<form class="form-inline">
+					<div class="input-group st-content-search-box ">
+                        <input type="search" class="form-control" ng-model="search_terms" placeholder="Search"
+                            ng-keydown="$event.keyCode === 13 &amp;&amp; searchHierarchy(search_terms)" />
+                        <span class="input-group-addon" ng-click="searchHierarchy(search_terms)">
+                            <i class="fa fa-search"></i>
+                        </span>
+                    </div>
+                    <a ng-if="searched" class="btn btn-default btn-outline"  ng-click="search_terms='';searchHierarchy(search_terms)">
+                            Clear
+                        </a>
+                     <a id="general_action_{{ $index }}" class="btn btn-default btn-default" ng-click="newEntity()">
+                            New Entity
+                    </a>
+                 </form>
+			</div>
+
+			<div class="clearfix"></div>
+		</div>
+	</div>
+
+
+	<div class="row">
+		<div class="col-md-12 portlet light">
+			<div class="list-unstyled" id="hierarchical-tree">
+				<span class="expander root"> 
+					<i class="fa fa-caret-right" onclick="expandHierarchyChildren(this)"></i>
+					<span class="element-name">Root</span>
+				</span>
+
+				<div class="children">
+					<span ng-repeat="item in hierarchy" ng-include="'tree'" ng-init="depth = 1">
+					</span>
+				</div>
+			</div>
+
+			<script type="text/ng-template" id="tree">
+				<div class="list-unstyled search-list" style="margin-left:{{depth*10}}px">
+					<span class="{{item.children.length ? 'expander' : ''}}" ng-class="!item.children.length ? 'no-children' : ''"> 
+						<i ng-if="item.children.length" class="fa fa-caret-right" onclick="expandHierarchyChildren(this)"></i>
+						<!-- <input type="radio" name="tree-selection"> -->
+						<span class="element-name formatter edit_link" ng-click="openChild(item.id)">
+							{{item.name}}
+						</span>
+					</span>
+					<div class="cildren">
+						<span  ng-repeat="item in item.children" ng-include="'tree'" ng-init="depth = depth + 1">
+							<!-- <input type="radio" name="tree-selection"> -->
+							<span class="formatter edit_link" ng-click="openChild(item.id)">
+								{{item.name}}
+							</span>
+						</span>
+					</div>
+				</div>
+			</script>
+		</div>
+	</div>
+
+</div>

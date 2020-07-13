@@ -5632,8 +5632,8 @@ APP_API.factory('$Api_Service', [
     							result.invoice = $tenantConfiguration.invoiceConfiguration;
     							result.report = $tenantConfiguration.reportConfiguration;
     							$rootScope.$broadcast('tenantConfiguration', result);
-                            $rootScope.tenantConfigurationResponseData = result;
-                            callback(result);
+                                $rootScope.tenantConfigurationResponseData = result;
+	                            callback(result);
     	                        return;
                         }
                     }

@@ -62,7 +62,7 @@
 		
 				</tbody>			
 			</table>
-			<div ng-if="!$ctrl.groupedVoyages.hasEntity[voyage].hasRequest">
+			<div ng-if="!$ctrl.groupedVoyages.hasEntity[voyage].hasRequest && !tenantSettings.shiptechLite">
 				<a class="action-btn btn btn-sm btn-default" href="#/new-request/{{voyage}}" target="_blank"> <i class="fa fa-pencil"></i> Create Request</a>
 				<span class="action-btn btn btn-sm btn-default" ng-click="$ctrl.addVoyageToContractPlanning(voyage)" style="margin-right: 15px;" ng-if="$ctrl.canAddToContractPlanning(voyage)"> <i class="fa fa-pencil"></i> Add to Contract Planning </span>
 			</div>

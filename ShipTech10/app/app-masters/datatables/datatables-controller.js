@@ -2491,6 +2491,139 @@ APP_MASTERS.controller('Controller_Datatables', [
                     }, 10);
                 }
             },
+            locationsSystemInstruments: {
+                data: 'formValues.locationsSystemInstruments',
+                treeRowHeaderAlwaysVisible: true,
+                headerTemplate: $templateCache.get('app-general-components/views/screen_parts/ui-grid_headerTemplate.html'),
+                category: [
+                    {
+                        name: '1',
+                        visible: true,
+                        labelVisible: false
+                    },
+                    {
+                        name: 'Benchmark Schedule Option',
+                        visible: true
+                    },
+                    {
+                        name: '2',
+                        visible: true,
+                        labelVisible: false
+                    }
+                ],
+                multiSelect: false,
+                noUnselect: true,
+                rowHeight: 40,
+                excessRows: 999,
+                rowEditWaitInterval: -1, // Important for skipping the promise
+                columnDefs: [
+                    {
+                        name: '  ',
+                        width: 40,
+                        enableCellEdit: false,
+                        enableSorting: false,
+                        cellClass: 'actionsCol',
+                        cellTemplate: $scope.dataTableTemplates.remRow,
+                        category: '1'
+                    },
+                    {
+                        name: '   ',
+                        width: 40,
+                        enableCellEdit: false,
+                        enableSorting: false,
+                        cellClass: 'actionsCol',
+                        cellTemplate: $scope.dataTableTemplates.addRow,
+                        headerCellTemplate: $scope.dataTableTemplates.addRow,
+                        category: '1'
+                    },
+                    {
+                        name: 'location',
+                        displayName: 'Location',
+                        cellTemplate: $scope.dataTableTemplates.lookup,
+                        cellObject: {
+                            Name: 'Location',
+                            Type: 'lookup',
+                            masterSource: 'Location',
+                            clc_id: 'masters_locationlist'
+                        },
+                        category: '1'
+                    },
+                    {
+                        name: 'product',
+                        displayName: 'Product',
+                        cellTemplate: $scope.dataTableTemplates.lookup,
+                        cellObject: {
+                            Name: 'Product',
+                            Type: 'lookup',
+                            masterSource: 'Product',
+                            clc_id: 'masters_productlist'
+                        },
+                        category: '1'
+                    },
+                    {
+                        name: 'benchmarkType',
+                        displayName: '+/-',
+                        cellTemplate: $scope.dataTableTemplates.dropdown,
+                        cellObject: {
+                            Name: 'BenchmarkType',
+                            Type: 'dropdown',
+                            masterSource: 'BenchmarkType'
+                        },
+                        category: 'Benchmark Schedule Option'
+                    },
+                    {
+                        name: 'benchmarkAmount',
+                        displayName: 'Amount',
+                        format: 'number:3',
+                        cellTemplate: $scope.dataTableTemplates.text,
+                        category: 'Benchmark Schedule Option',
+                        cellCondition: 'grid.appScope.fVal().formValues.locationsSystemInstruments[grid.appScope.rowIdx(row)].benchmarkType.id == 1',
+                        cellConditionType: 'ng-disabled'
+                    },
+                    {
+                        name: 'benchmarkUom',
+                        displayName: 'UOM',
+                        category: 'Benchmark Schedule Option',
+                        cellTemplate: $scope.dataTableTemplates.dropdown,
+                        cellCondition: 'grid.appScope.fVal().formValues.locationsSystemInstruments[grid.appScope.rowIdx(row)].benchmarkType.id == 1',
+                        cellConditionType: 'ng-disabled',
+                        cellObject: {
+                            Name: 'UOM',
+                            Type: 'dropdown',
+                            masterSource: 'Uom',
+                            Disabled: 'grid.appScope.fVal().formValues.locationsSystemInstruments[grid.appScope.rowIdx(row)].benchmarkType.id == 1'
+                        },
+                    },
+                    {
+                        name: 'isBunkerwireDefault',
+                        displayName: 'Reference price 1',
+                        cellTemplate: $scope.dataTableTemplates.checkbox,
+                        category: '2'
+                    },
+                    {
+                        name: 'isCargoDefault',
+                        displayName: 'Reference price 2',
+                        cellTemplate: $scope.dataTableTemplates.checkbox,
+                        category: '2'
+                    }
+                ],
+                onRegisterApi: function(api) {
+                    setTimeout(() => {
+                        api.core.handleWindowResize();
+                        if (angular.equals($scope.formValues, {}) || !$scope.formValues.locationsSystemInstruments) {
+                            $scope.formValues.locationsSystemInstruments = [
+                                {
+                                    id: 0
+                                }
+                            ];
+                        } else if (angular.equals($scope.formValues.locationsSystemInstruments, [])) {
+                            $scope.formValues.productsSystemInstruments.push({
+                                id: 0
+                            });
+                        }
+                    }, 10);
+                }
+            },
             additionalCosts: {
                 data: 'formValues.additionalCosts',
                 multiSelect: false,

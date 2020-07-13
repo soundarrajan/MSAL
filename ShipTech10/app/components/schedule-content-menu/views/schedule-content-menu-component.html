@@ -101,7 +101,7 @@
                 <a class="btn btn-default" ng-click="$ctrl.gotoNewRequest();">
                     Create Request
                 </a>
-                <a class="btn btn-default" ng-disabled="!$ctrl.contractPrePlanSelection || $ctrl.contractPrePlanSelectionDisabled" ng-click="$ctrl.addToContractPrePlanning();">
+                <a ng-if="!tenantSettings.shiptechLite" class="btn btn-default" ng-disabled="!$ctrl.contractPrePlanSelection || $ctrl.contractPrePlanSelectionDisabled" ng-click="$ctrl.addToContractPrePlanning();">
                     Add to Contract Pre-planning
                 </a>
             </div>

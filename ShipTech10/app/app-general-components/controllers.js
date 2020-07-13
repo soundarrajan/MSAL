@@ -29,7 +29,6 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
     function($tenantSettings, $scope, $rootScope, $Api_Service, Factory_General_Components, $state, $location, $timeout, $compile, $templateRequest, Factory_Master, $uibModal, $templateCache, $filter, $listsCache, scheduleDashboardStatusResource, tenantModel, newRequestModel, screenActionsModel, SCREEN_ACTIONS, ContractPlanningDataSharing, selectContractModel, $http, statusColors) {
         var vm = this;
         let ctrl = this;
-
         vm.listsCache = $listsCache;
         vm.SCREEN_ACTIONS = SCREEN_ACTIONS;
         // clc directive current id
@@ -4506,6 +4505,15 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
 		
 
         })
+
+        vm.verifyMasters = function() {
+            var listScreens = ["counterparty", "location", "buyer", "strategy", "service", "product", "company"];
+            if (listScreens.indexOf(vm.screen_id) != -1) {
+                return true;
+            }
+            return false;
+        }
+
 
         /*GET SCREEN ACTIONS*/
         //     $rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
