@@ -21,17 +21,17 @@
                 {{ 'Email' | translate }}
             </a>
         </li>
-        <li role="presentation" ng-if="!tenantSetting.shiptechLite">
+        <li role="presentation" ng-if="tenantSetting.shiptechLite !== true">
             <a href="#delivery" aria-controls="home" role="tab" data-toggle="tab" ng-click="config_tab = 5">
                 {{ 'Delivery' | translate }}
             </a>
         </li>
-        <li role="presentation" ng-if="!tenantSetting.shiptechLite">
+        <li role="presentation" ng-if="tenantSetting.shiptechLite !== true">
             <a href="#invoice" aria-controls="home" role="tab" data-toggle="tab" ng-click="config_tab = 6">
                 {{ 'Invoice' | translate }}
             </a>
         </li>
-        <li role="presentation" ng-if="!tenantSetting.shiptechLite">
+        <li role="presentation" ng-if="tenantSetting.shiptechLite !== true">
             <a href="#contract" aria-controls="home" role="tab" data-toggle="tab" ng-click="config_tab = 7">
                 {{ 'Contract' | translate }}
             </a>
@@ -44,6 +44,7 @@
 
     </ul>
     <!-- Tab panes -->
+	
 
 
     <div class="tab-content">
@@ -318,7 +319,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4" ng-if="!tenantSetting.shiptechLite">
+                <div class="col-md-4" ng-if="tenantSetting.shiptechLite !== true">
                     <div class="form-group  row">
                         <div class="form_input form_input_IsComplexFormulaWeightEnforced">
                             <div class="">
@@ -347,7 +348,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="form-group row" ng-if="!tenantSetting.shiptechLite">
+                    <div class="form-group row" ng-if="tenantSetting.shiptechLite !== true">
                         <label for="defaultContractAgreementType" class="simpleLookupLabel">
                             {{ CM.app_id + '.DEFAULT_CONTRACT_AGREEMENT_TYPE' | translate }}
                             <span class="orange-txt">
@@ -656,7 +657,7 @@
                         </div>
                     </div>
                 </div>  
-                <div class="col-md-4" ng-if="!tenantSetting.shiptechLite">
+                <div class="col-md-4" ng-if="tenantSetting.shiptechLite !== true">
                     <div class="form-group  row">
                         <div class="form_input form_input_showOperationalReport">
                             <div class="">
@@ -706,7 +707,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4" ng-if="!tenantSetting.shiptechLite">
+                <div class="col-md-4" ng-if="tenantSetting.shiptechLite !== true">
                     <div class="form-group  row">
                         <div class="form_input form_input_isSelerPortalNeeded">
                             <div class="">
@@ -849,7 +850,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4" ng-if="!tenantSetting.shiptechLite">
+                <div class="col-md-4" ng-if="tenantSetting.shiptechLite !== true">
                     <div class="form-group row">
                         <label for="bestTcoDefaultView" class="simpleLookupLabel" style="max-height: initial;">
                             {{ CM.app_id + '.BEST_TCO_DEFAULT_VIEW' | translate }}
@@ -1170,7 +1171,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4" ng-if="!tenantSetting.shiptechLite">
+                <div class="col-md-4" ng-if="tenantSetting.shiptechLite !== true">
                     <div class="form-group row">
                         <label for="captureConfirmedQuantity" class="simpleLookupLabel" style="max-height: initial;">
                             {{ CM.app_id + '.AUTOPOPULATE_LAB_FROM' | translate }}
@@ -1300,14 +1301,14 @@
             </div>
         
 
-            <div class="portlet" ng-if="!tenantSetting.shiptechLite">
+            <div class="portlet" ng-if="tenantSetting.shiptechLite !== true">
                 <div class="portlet-title">
                     <span class="caption-subject ">
                         Price
                     </span>
                 </div>
             </div>
-            <div class="row" ng-if="!tenantSetting.shiptechLite">
+            <div class="row" ng-if="tenantSetting.shiptechLite !== true">
                 <div class="col-md-4">
                     <div class="form-group row" ng-init='CM.getOptions({"Name": "CaptureConfirmedQuantity", "Type": "dropdown", "masterSource": "CaptureConfirmedQuantity"})'>
                         <label for="PricingDateStopOption" class="simpleLookupLabel" style="max-height: initial;">
@@ -1337,14 +1338,14 @@
                     </div>
                 </div>
             </div>
-            <div class="portlet" ng-if="!tenantSetting.shiptechLite">
+            <div class="portlet" ng-if="tenantSetting.shiptechLite !== true">
                 <div class="portlet-title">
                     <span class="caption-subject ">
                         Energy Calculation
                     </span>
                 </div>
             </div>
-            <div class="row" ng-if="!tenantSetting.shiptechLite">
+            <div class="row" ng-if="tenantSetting.shiptechLite !== true">
                 <div class="col-md-4">
                     <div class="form-group row">
                         <div class="form_input form_input_isEnergyCalculationRequired">
