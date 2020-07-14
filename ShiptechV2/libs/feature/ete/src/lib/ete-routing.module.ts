@@ -16,7 +16,7 @@ const routes: Routes = [
         },
         children: [
           {
-            path: KnownEteRoutes.emailTemplateEditor,
+            path: `:${KnownEteRoutes.templateIdParam}`,
             component: EteEditComponent,
             data: {title: 'Email Template Editor'}
           }
