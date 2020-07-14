@@ -1,3 +1,4 @@
 export enum KnownEteRoutes {
-  emailTemplateEditor = ''
+  emailTemplateEditor = '',
+  templateIdParam = 'templateId'
 }
