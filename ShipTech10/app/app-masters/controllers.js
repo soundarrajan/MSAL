@@ -7144,6 +7144,11 @@ APP_MASTERS.controller('Controller_Master', [
 	        }
 	    };
 
+        $scope.goToEmailTemplate = function(id) {
+            console.log(id);
+            window.open("/v2/email-template-editor/" + id, "_blank");
+        }
+
 	    $rootScope.$on('setInvoiceApplicableFor', (e, data) => {
 	    	$scope.dtMasterSource.applyFor = data;
 	    	vm.invoiceApplicableForProducts = data;
