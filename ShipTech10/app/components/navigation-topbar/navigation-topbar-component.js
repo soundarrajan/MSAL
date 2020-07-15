@@ -1,6 +1,6 @@
-angular.module('shiptech').controller('NavigationTopBarController', [ '$rootScope', '$timeout', '$scope', '$state', '$stateParams', '$filter', 'STATE', 'CUSTOM_EVENTS', 'VIEW_TYPES',
+angular.module('shiptech').controller('NavigationTopBarController', [ '$rootScope', '$tenantSettings', '$timeout', '$scope', '$state', '$stateParams', '$filter', 'STATE', 'CUSTOM_EVENTS', 'VIEW_TYPES',
     'scheduleDashboardCalendarModel', 'API', '$http',
-    function($rootScope, $timeout, $scope, $state, $stateParams, $filter, STATE, CUSTOM_EVENTS, VIEW_TYPES, scheduleDashboardCalendarModel, API, $http) {
+    function($rootScope, $tenantSettings, $timeout, $scope, $state, $stateParams, $filter, STATE, CUSTOM_EVENTS, VIEW_TYPES, scheduleDashboardCalendarModel, API, $http) {
 		var ctrl = this;
     	ctrl.availableStates = [
     		'default.edit-request', // REQUEST
@@ -21,6 +21,8 @@ angular.module('shiptech').controller('NavigationTopBarController', [ '$rootScop
             // $scope.shouldDisplayNavigationBar = true;
             // console.error($state.params);
         }, 3000);
+
+        $scope.tenantSettings = $tenantSettings;
 
     	$scope.$watch(() => {
 			var stateParams = JSON.stringify($state.params);
@@ -56,7 +58,7 @@ angular.module('shiptech').controller('NavigationTopBarController', [ '$rootScop
             }
 
 
-    		$scope.navigationItems = [
+    		var navigationItems = [
 	    		{
 	    			id: 'request',
 	    			displayName : 'Request',
@@ -64,14 +66,6 @@ angular.module('shiptech').controller('NavigationTopBarController', [ '$rootScop
 	    			entityId : typeof payload != 'undefined' && payload.requestId ? payload.requestId : '',
 	    			indexStatus : null,
 	    			hidden : false
-	    		},
-	    		{
-	    			id: 'contract',
-	    			displayName : 'Contract',
-	    			url : typeof payload != 'undefined' && payload.contractId ? `#/contracts/contract/edit/${ payload.contractId}` : '',
-	    			entityId : typeof payload != 'undefined' && payload.contractId ? payload.contractId : '',
-	    			indexStatus : null,
-	    			hidden : !(typeof payload != 'undefined' && payload.contractId || $scope.currentPage == 'contracts.edit')
 	    		},
 	    		{
 	    			id: 'rfq',
@@ -88,48 +82,65 @@ angular.module('shiptech').controller('NavigationTopBarController', [ '$rootScop
 	    			entityId : typeof payload != 'undefined' && payload.orderId ? payload.orderId : '',
 	    			indexStatus : null,
 	    			hidden : false
-	    		},
-	    		{
-	    			id: 'delivery',
-	    			displayName : 'Delivery',
-	    			url : typeof payload != 'undefined' && payload.deliveryId ? `#/delivery/delivery/edit/${ payload.deliveryId}` : '',
-	    			entityId : typeof payload != 'undefined' && payload.deliveryId ? payload.deliveryId : '',
-	    			indexStatus : null,
-	    			hidden : false
-	    		},
-	    		{
-	    			id: 'labs',
-	    			displayName : 'Labs',
-	    			url : typeof payload != 'undefined' && payload.labId ? `#/labs/labresult/edit/${ payload.labId}` : '',
-	    			entityId : typeof payload != 'undefined' && payload.labId ? payload.labId : '',
-	    			indexStatus : null,
-	    			hidden : false
-	    		},
-	    		{
-	    			id: 'claims',
-	    			displayName : 'Claims',
-	    			url : typeof payload != 'undefined' && payload.claimId ? `#/claims/claim/edit/${ payload.claimId}` : '',
-	    			entityId : typeof payload != 'undefined' && payload.claimId ? payload.claimId : '',
-	    			indexStatus : null,
-	    			hidden : false
-	    		},
-	    		{
-	    			id: 'invoices',
-	    			displayName : 'Invoices',
-	    			url: typeof payload != 'undefined' && payload.invoiceId ? `#/invoices/invoice/edit/${ payload.invoiceId}` : '',
-	    			entityId : typeof payload != 'undefined' && payload.invoiceId ? payload.invoiceId : '',
-	    			indexStatus : null,
-	    			hidden : false
-	    		},
-	    		{
-	    			id: 'recon',
-	    			displayName : 'Recon',
-	    			url : typeof payload != 'undefined' && payload.orderId ? `#/recon/reconlist/edit/${ payload.orderId}` : '',
-	    			entityId : typeof payload != 'undefined' && payload.orderId ? payload.orderId : '',
-	    			indexStatus : null,
-	    			hidden : false
-	    		},
+	    		}	    		
             ];
+
+            var shiptechLiteTransactions = [
+	            {
+	            	id: 'contract',
+	            	displayName : 'Contract',
+	            	url : typeof payload != 'undefined' && payload.contractId ? `#/contracts/contract/edit/${ payload.contractId}` : '',
+	            	entityId : typeof payload != 'undefined' && payload.contractId ? payload.contractId : '',
+	            	indexStatus : null,
+	            	hidden : !(typeof payload != 'undefined' && payload.contractId || $scope.currentPage == 'contracts.edit')
+	            },
+	            {
+	            	id: 'delivery',
+	            	displayName : 'Delivery',
+	            	url : typeof payload != 'undefined' && payload.deliveryId ? `#/delivery/delivery/edit/${ payload.deliveryId}` : '',
+	            	entityId : typeof payload != 'undefined' && payload.deliveryId ? payload.deliveryId : '',
+	            	indexStatus : null,
+	            	hidden : false
+	            },
+	            {
+	            	id: 'labs',
+	            	displayName : 'Labs',
+	            	url : typeof payload != 'undefined' && payload.labId ? `#/labs/labresult/edit/${ payload.labId}` : '',
+	            	entityId : typeof payload != 'undefined' && payload.labId ? payload.labId : '',
+	            	indexStatus : null,
+	            	hidden : false
+	            },
+	            {
+	            	id: 'claims',
+	            	displayName : 'Claims',
+	            	url : typeof payload != 'undefined' && payload.claimId ? `#/claims/claim/edit/${ payload.claimId}` : '',
+	            	entityId : typeof payload != 'undefined' && payload.claimId ? payload.claimId : '',
+	            	indexStatus : null,
+	            	hidden : false
+	            },
+	            {
+	            	id: 'invoices',
+	            	displayName : 'Invoices',
+	            	url: typeof payload != 'undefined' && payload.invoiceId ? `#/invoices/invoice/edit/${ payload.invoiceId}` : '',
+	            	entityId : typeof payload != 'undefined' && payload.invoiceId ? payload.invoiceId : '',
+	            	indexStatus : null,
+	            	hidden : false
+	            },
+	            {
+	            	id: 'recon',
+	            	displayName : 'Recon',
+	            	url : typeof payload != 'undefined' && payload.orderId ? `#/recon/reconlist/edit/${ payload.orderId}` : '',
+	            	entityId : typeof payload != 'undefined' && payload.orderId ? payload.orderId : '',
+	            	indexStatus : null,
+	            	hidden : false
+	            }
+            ]
+
+            if (!$scope.tenantSettings.shiptechLite) {
+	            $scope.navigationItems = [...navigationItems, ...shiptechLiteTransactions];
+            } else {
+	            $scope.navigationItems = navigationItems;
+            }
     	};
 
 		var setItemsActiveStatus = function() {
