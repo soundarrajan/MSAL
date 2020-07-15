@@ -1,12 +1,11 @@
-﻿commit 4888f833d87d7c7b42d1376b9e8091cd978e288e
-Author: Sergiu.vasui <Sergiu.vasui@24software.ro>
-Date:   Thu Apr 16 14:44:41 2020 +0000
+﻿commit 9c80da78a3765d90e65e44ca3bc3457fb81f6d0d
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Wed Jul 15 11:38:30 2020 +0000
 
-    Merged PR 3854: #23066
+    Merged PR 5848: Added email template component
     
-    #23066
-    Fixed above issue
+    Added email template component
     
-    Related work items: #23066
+    Related work items: #7718
 
 branch: master

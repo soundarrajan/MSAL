@@ -254,6 +254,37 @@
           "styleext": "scss"
         }
       }
+    },
+    "feature-ete": {
+      "projectType": "library",
+      "root": "libs/feature/ete",
+      "sourceRoot": "libs/feature/ete/src",
+      "prefix": "shiptech",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/feature/ete/tsconfig.lib.json",
+              "libs/feature/ete/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/feature/ete/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/feature/ete/jest.config.js",
+            "tsConfig": "libs/feature/ete/tsconfig.spec.json",
+            "setupFile": "libs/feature/ete/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
     }
   },
   "cli": {
