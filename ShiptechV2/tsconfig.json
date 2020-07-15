@@ -27,17 +27,14 @@
       "@shiptech/feature/lazy-load-poc": [
         "libs/feature/lazy-load-poc/src/index.ts"
       ],
-      "@shiptech/feature/invoice": ["libs/feature/invoice/src/index.ts"]
+      "@shiptech/feature/invoice": ["libs/feature/invoice/src/index.ts"],
+      "@shiptech/feature/ete": ["libs/feature/ete/src/index.ts"]
     },
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "types": ["reflect-metadata", "jest"]
   },
-  "exclude": [
-    "node_modules",
-    "tmp",
-    "**/*.mock.ts"
-  ],
+  "exclude": ["node_modules", "tmp", "**/*.mock.ts"],
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
     "disableTypeScriptVersionCheck": true,
