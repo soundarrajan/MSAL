@@ -168,7 +168,6 @@ APP_MASTERS.controller('Master_Hierarchy', [
 					$(this).show();
 				} else {
 					$(this).hide();
-
 				}
 			});
 			if (val != "") {
@@ -176,8 +175,14 @@ APP_MASTERS.controller('Master_Hierarchy', [
 			} else {
 				$scope.searched = false;
 				$scope.search_terms = "";
+				$scope.redrawTree();
 			}
 
+		}
+
+		$scope.redrawTree = function() {
+			$(".not-first-level").hide(); 
+			$(".not-first-level").parent().find(".expander i").addClass("collapsed"); 
 		}
 
     }

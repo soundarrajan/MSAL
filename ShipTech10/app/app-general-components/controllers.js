@@ -4508,7 +4508,8 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
 
         vm.isHierarchicalMasterList = function() {
             var listScreens = ["counterparty", "location", "buyer", "strategy", "service", "product", "company"];
-            if (listScreens.indexOf(vm.screen_id) != -1 && window.location.href.indexOf("edit") == -1) {
+            if (listScreens.indexOf(vm.screen_id) != -1 && 
+            	window.location.href.endsWith(vm.screen_id)) {
                 return true;
             }
             return false;

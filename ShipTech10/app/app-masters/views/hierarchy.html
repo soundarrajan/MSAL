@@ -60,7 +60,7 @@
 							{{item.name}}
 						</span>
 					</span>
-					<div class="cildren collapse">
+					<div class="cildren collapse not-first-level">
 						<span  ng-repeat="item in item.children" ng-include="'tree'" ng-init="depth = depth + 1">
 							<!-- <input type="radio" name="tree-selection"> -->
 							<span class="formatter edit_link" ng-click="openChild(item.id)">
