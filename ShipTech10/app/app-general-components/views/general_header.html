@@ -6,7 +6,7 @@
                 {{ actions.title }}
             </h4>
         </span>
-        <ul class="nav nav-tabs pull-left" ng-if="GH.verifyMasters()">
+        <ul class="nav nav-tabs pull-left" ng-if="GH.isHierarchicalMasterList()">
             <li class="active">
                 <a class="btn btn-default ng-binding" href="/#/masters/{{GH.screen_id}}">
                     List View
