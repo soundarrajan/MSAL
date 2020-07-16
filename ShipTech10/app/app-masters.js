@@ -205,6 +205,7 @@ APP_MASTERS.run([ '$state', '$rootScope', 'MASTER_STATE', '$tenantSettings', fun
     titleMap[MASTER_STATE.AUDIT] = ':screen_id :: Audit :entity_id';
     titleMap[MASTER_STATE.DOCUMENTS] = ':screen_id :: Documents :entity_id';
     titleMap[MASTER_STATE.STRUCTURE] = ':screen_id :: Structure';
+    titleMap[MASTER_STATE.HIERARCHY] = ':screen_id :: Hierarchy';
     titleMap[MASTER_STATE.EDIT] = ':screen_id :: Edit :entity_id';
     let screenMap = {
         counterparty: 'Counterparty',
