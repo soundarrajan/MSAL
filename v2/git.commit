@@ -1,11 +1,7 @@
-﻿commit 9c80da78a3765d90e65e44ca3bc3457fb81f6d0d
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Jul 15 11:38:30 2020 +0000
+﻿commit 7f9811c597f90d6fbee90e61c272e4c340a23ecc
+Author: Florin Marin <marinflorinalexandru@gmail.com>
+Date:   Thu Jul 16 20:02:47 2020 +0300
 
-    Merged PR 5848: Added email template component
-    
-    Added email template component
-    
-    Related work items: #7718
+    build fix try2
 
 branch: master
