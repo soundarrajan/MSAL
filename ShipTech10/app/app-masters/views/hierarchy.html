@@ -54,13 +54,13 @@
 			<script type="text/ng-template" id="tree">
 				<div class="list-unstyled search-list" style="margin-left:{{depth*10}}px">
 					<span class="{{item.children.length ? 'expander' : ''}}" ng-class="!item.children.length ? 'no-children' : ''"> 
-						<i ng-if="item.children.length" class="fa fa-caret-right" onclick="expandHierarchyChildren(this)"></i>
+						<i ng-if="item.children.length" class="fa fa-caret-right collapsed" onclick="expandHierarchyChildren(this)"></i>
 						<!-- <input type="radio" name="tree-selection"> -->
 						<span class="element-name formatter edit_link" ng-click="openChild(item.id)">
 							{{item.name}}
 						</span>
 					</span>
-					<div class="cildren">
+					<div class="cildren collapse">
 						<span  ng-repeat="item in item.children" ng-include="'tree'" ng-init="depth = depth + 1">
 							<!-- <input type="radio" name="tree-selection"> -->
 							<span class="formatter edit_link" ng-click="openChild(item.id)">

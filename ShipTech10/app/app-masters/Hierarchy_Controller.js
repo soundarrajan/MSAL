@@ -159,7 +159,7 @@ APP_MASTERS.controller('Master_Hierarchy', [
 		$scope.openChild = function(id) {
 			var url =  $state.$current.url.prefix + $state.params.screen_id + "/edit/" + id;
 			window.open($location.$$absUrl.replace($location.$$path, url), '_blank');
-			$state.reload();
+			// $state.reload();
 		}
 
 		$scope.searchHierarchy = function(val) {
