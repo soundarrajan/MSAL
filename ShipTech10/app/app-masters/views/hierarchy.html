@@ -48,7 +48,8 @@
 				<div class="children">
 					<span ng-repeat="item in hierarchy" ng-include="'tree'" ng-init="depth = 1">
 					</span>
-				</div>
+                </div>
+                <p class="warning" ng-if="noResultsFound">No results found</p>
 			</div>
 
 			<script type="text/ng-template" id="tree">
@@ -60,7 +61,7 @@
 							{{item.name}}
 						</span>
 					</span>
-					<div class="cildren collapse not-first-level">
+					<div class="children collapse not-first-level">
 						<span  ng-repeat="item in item.children" ng-include="'tree'" ng-init="depth = depth + 1">
 							<!-- <input type="radio" name="tree-selection"> -->
 							<span class="formatter edit_link" ng-click="openChild(item.id)">

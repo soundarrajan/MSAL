@@ -96,8 +96,14 @@ APP_MASTERS.controller('Master_Hierarchy', [
 
     	window.expandHierarchyChildren = function(e) {
     		console.log(e);
-    		$(e).toggleClass("collapsed");
-    		$(e).parent().next().slideToggle();
+            if ($(e).hasClass("collapsed")) {
+                $(e).parent().next().slideDown();
+            } else {
+                $(e).parent().next().find(".children").hide();
+                $(e).parent().next().find(".expander i").addClass("collapsed");
+                $(e).parent().next().slideUp();
+            }
+            $(e).toggleClass("collapsed");
     	}
 
 	  
@@ -166,21 +172,27 @@ APP_MASTERS.controller('Master_Hierarchy', [
 			$.each($(".search-list"), function() {
 				if ($(this).text().toLowerCase().indexOf(val.toLowerCase()) != -1) {
 					$(this).show();
-				} else {
+                    $(this).children(".expander").find("i").removeClass("collapsed");
+                    $(this).children(".children").show();
+                } else {
 					$(this).hide();
 				}
-			});
+            });
+            if ($("#hierarchical-tree").text().toLowerCase().indexOf(val.toLowerCase()) == -1) {
+                $scope.noResultsFound = true;
+            }
 			if (val != "") {
-				$scope.searched = true;
+                $scope.searched = true;
 			} else {
-				$scope.searched = false;
+                $scope.searched = false;
 				$scope.search_terms = "";
 				$scope.redrawTree();
 			}
-
+            
 		}
-
+        
 		$scope.redrawTree = function() {
+            $scope.noResultsFound = false;
 			$(".not-first-level").hide(); 
 			$(".not-first-level").parent().find(".expander i").addClass("collapsed"); 
 		}
