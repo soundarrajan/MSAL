@@ -1,9 +1,7 @@
-﻿commit 81f21344d2a34a51dd75eb83c9f437c4767894fa
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon Jul 20 10:02:36 2020 +0000
+﻿commit 06eb892762433d98efcb2f204399f64f12e7b049
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Mon Jul 20 14:56:21 2020 +0300
 
-    Merged PR 5941: Updated email-template version
-    
-    Updated email-template version
+    Updated email template editor version
 
 branch: master
