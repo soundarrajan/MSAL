@@ -1,7 +1,9 @@
-﻿commit 7f9811c597f90d6fbee90e61c272e4c340a23ecc
-Author: Florin Marin <marinflorinalexandru@gmail.com>
-Date:   Thu Jul 16 20:02:47 2020 +0300
+﻿commit 81f21344d2a34a51dd75eb83c9f437c4767894fa
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Mon Jul 20 10:02:36 2020 +0000
 
-    build fix try2
+    Merged PR 5941: Updated email-template version
+    
+    Updated email-template version
 
 branch: master
