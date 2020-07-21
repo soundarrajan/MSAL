@@ -5857,10 +5857,12 @@ APP_API.factory('$Api_Service', [
                                 let result = {};
                                 result.status = true;
                                 result.message = '';
-                                if (responses[0].status == 200) {
-                                    result.message = `${result.message }Contract settings saved!<br>`;
-                                } else {
-                                    result.message = `${result.message }Contract settings failed to save!<br>`;
+                                if (!$tenantSettings.shiptechLite) {
+                                    if (responses[0].status == 200) {
+                                        result.message = `${result.message }Contract settings saved!<br>`;
+                                    } else {
+                                        result.message = `${result.message }Contract settings failed to save!<br>`;
+                                    }
                                 }
                                 if (responses[1].status == 200) {
                                     result.message = `${result.message }Email settings saved!<br>`;
@@ -5882,16 +5884,20 @@ APP_API.factory('$Api_Service', [
                                 } else {
                                     result.message = `${result.message }Schedule settings failed to save!<br>`;
                                 }
-                                if (responses[5].status == 200) {
-                                    result.message = `${result.message }Delivery settings saved!<br>`;
-                                } else {
-                                    result.message = `${result.message }Delivery settings failed to save!<br>`;
+                                
+                                if (!$tenantSettings.shiptechLite) {
+                                    if (responses[5].status == 200) {
+                                        result.message = `${result.message }Delivery settings saved!<br>`;
+                                    } else {
+                                        result.message = `${result.message }Delivery settings failed to save!<br>`;
+                                    }
+                                    if (responses[6].status == 200) {
+                                        result.message = `${result.message }Invoice settings saved!<br>`;
+                                    } else {
+                                        result.message = `${result.message }Invoice settings failed to save!<br>`;
+                                    }
                                 }
-                                if (responses[6].status == 200) {
-                                    result.message = `${result.message }Invoice settings saved!<br>`;
-                                } else {
-                                    result.message = `${result.message }Invoice settings failed to save!<br>`;
-                                }
+                                
                                 if (responses[7].status == 200) {
                                     result.message = `${result.message }Report settings saved!<br>`;
                                 } else {

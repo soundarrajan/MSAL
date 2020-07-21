@@ -3,6 +3,7 @@ angular.module('shiptech').controller('HeaderController', [ '$scope', '$rootScop
     $scope.state = $state;
     $scope.STATE = STATE;
     $scope.userManualLink = $tenantSettings.userManualLink;
+    $scope.smartTraderLink = $tenantSettings.smartTraderLink;
 
     $scope.$on('userId', (e, v) => {
         Factory_Admin.getUsername(v, (response) => {

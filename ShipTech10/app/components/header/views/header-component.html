@@ -40,6 +40,13 @@
         <!-- BEGIN TOP NAVIGATION MENU -->
         <div class="top-menu main-menu-icons">
             <ul class="nav navbar-nav pull-right">
+
+                <li ng-if="smartTraderLink" class="dropdown main-menu-item user-menu-item">
+                    <a href="{{ smartTraderLink }}" target="_blank" class="dropdown-toggle user-menu">
+                        <i class="fa fa-location-arrow"></i>
+                    </a>
+                </li>
+
                 <!-- BEGIN NOTIFICATION DROPDOWN -->
                 <li ng-controller="Controller_Alerts as CA" ng-init="notificationAction('stats')" class="dropdown dropdown-extended dropdown-notification main-menu-item" id="header_notification_bar">
 	                <span >
