@@ -1,7 +1,7 @@
-﻿commit ba4148e1fa209beb36513493cb9fc314b6cd0626
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Tue Jul 21 15:47:49 2020 +0300
+﻿commit ed54f0a6ab63e6c2789a637d5352ae2b9c19dc8a
+Author: Sergiu Vasui <sergiu_vasui@yahoo.com>
+Date:   Tue Jul 21 21:13:47 2020 +0300
 
-    Added 1.0.12 version of email-template-editor
+    Modified script for azure build release
 
 branch: master

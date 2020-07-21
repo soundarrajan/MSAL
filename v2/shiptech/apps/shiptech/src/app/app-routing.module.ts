@@ -34,9 +34,7 @@ const routes: Routes = [
         path: KnownPrimaryRoutes.EmailTemplateEditor,
         canActivate: [AuthenticationGuard],
         loadChildren: () =>
-          import('@shiptech/feature/ete').then(
-            m => m.EteModule
-          )
+          import('@shiptech/feature/ete').then(m => m.EteModule)
       }
     ]
   },
