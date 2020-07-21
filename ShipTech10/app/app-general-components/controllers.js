@@ -1038,8 +1038,6 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
 
                 	tpl +=`<i class="fa fa-search clickable 
                 	form-control" 
-                	data-toggle="modal" 
-                	href="#selectContract" 
                 	ng-click="openContractPopupInCP(${options.rowId})" 
                 	style="border-left: 1px solid #c2cad8; height:30px;">
                 	<span hidden="true">&nbsp;</span>
@@ -3789,7 +3787,12 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
         $scope.openContractPopupInCP = function(rowIdx) {
             CLC = $("#flat_contract_planning");
             request = CLC.jqGrid.Ascensys.gridObject.rows[rowIdx - 1];
+            if (window.lastBroadcastedContractModelData == JSON.stringify(request)) {
+                // return;
+            }
+            window.lastBroadcastedContractModelData = JSON.stringify(request);
             $scope.openContractModalRowIdx = rowIdx;
+            $("#selectContract").modal()
             $rootScope.$broadcast("contractModalData", request)
         }
         $scope.openProductPopupInCP = function (rowIdx) {
