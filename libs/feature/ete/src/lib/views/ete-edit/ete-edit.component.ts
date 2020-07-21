@@ -1,7 +1,12 @@
-import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
-import {Subject} from 'rxjs';
-import {AppConfig} from '@shiptech/core/config/app-config';
-import { Router, ActivatedRoute } from '@angular/router';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
+import { Subject } from 'rxjs';
+import { AppConfig } from '@shiptech/core/config/app-config';
+import { ActivatedRoute } from '@angular/router';
 import { KnownEteRoutes } from '../../known-ete.routes';
 
 @Component({
@@ -11,15 +16,10 @@ import { KnownEteRoutes } from '../../known-ete.routes';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EteEditComponent implements OnInit, OnDestroy {
-
+  public templateId = '';
   private _destroy$ = new Subject();
-  public templateId = "";
 
-  constructor(
-    public appConfig: AppConfig,
-    public route: ActivatedRoute
-  ) {
-  }
+  constructor(public appConfig: AppConfig, public route: ActivatedRoute) {}
 
   ngOnInit(): void {
     // this.route.queryParams.subscribe(params => {
@@ -28,10 +28,11 @@ export class EteEditComponent implements OnInit, OnDestroy {
     //   console.log(params);
     // });
 
-    this.templateId = this.route.snapshot.paramMap.get(KnownEteRoutes.templateIdParam);
-    console.log("test");
+    this.templateId = this.route.snapshot.paramMap.get(
+      KnownEteRoutes.templateIdParam
+    );
+    console.log('test');
     console.log(this.templateId);
-    
   }
 
   ngOnDestroy(): void {
