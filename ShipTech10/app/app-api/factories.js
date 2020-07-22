@@ -5828,6 +5828,71 @@ APP_API.factory('$Api_Service', [
                     }
                     if (param.app == 'admin' && param.screen == 'configuration') {
                         param.id = 0;
+                        if ($tenantSettings.shiptechLite) {
+                            let email = $http.post(`${API.BASE_URL_DATA_ADMIN }/api/admin/emailConfiguration/update`, {
+                                Payload: data.email
+                            });
+                            let general = $http.post(`${API.BASE_URL_DATA_ADMIN }/api/admin/generalConfiguration/update`, {
+                                Payload: data.general
+                            });
+                            let procurement = $http.post(`${API.BASE_URL_DATA_ADMIN }/api/admin/procurementConfiguration/update`, {
+                                Payload: data.procurement
+                            });
+                            let schedule = $http.post(`${API.BASE_URL_DATA_ADMIN }/api/admin/scheduleDashboardConfiguration/update`, {
+                                Payload: data.schedule
+                            });
+                            let report = $http.post(`${API.BASE_URL_DATA_ADMIN }/api/admin/reportConfiguration/update`, {
+                                Payload: data.report
+                            });  
+                            $q.all([ email, general, procurement, schedule, report]).then(
+                            (responses) => {
+                                let result = {};
+                                result.status = true;
+                                result.message = '';
+                                if (responses[0].status == 200) {
+                                    result.message = `${result.message }Email settings saved!<br>`;
+                                } else {
+                                    result.message = `${result.message }Email settings failed to save!<br>`;
+                                }
+
+                                if (responses[1].status == 200) {
+                                    result.message = `${result.message }General settings saved!<br>`;
+                                } else {
+                                    result.message = `${result.message }General settings failed to save!<br>`;
+                                }
+
+                                if (responses[2].status == 200) {
+                                    result.message = `${result.message }Procurement settings saved!<br>`;
+                                } else {
+                                    result.message = `${result.message }Procurement settings failed to save!<br>`;
+                                }
+
+                                if (responses[3].status == 200) {
+                                    result.message = `${result.message }Schedule settings saved!<br>`;
+                                } else {
+                                    result.message = `${result.message }Schedule settings failed to save!<br>`;
+                                }
+
+                                if (responses[4].status == 200) {
+                                    result.message = `${result.message }Report settings saved!<br>`;
+                                } else {
+                                     result.message = `${result.message }Report settings failed to save!<br>`;
+                                }
+                                callback(result);
+                            },
+                            (response) => {
+                                console.log('HTTP ERROR');
+                                let res3 = new Object();
+                                res3.message = 'HTTP Error!';
+                                if (_debug) {
+                                    res3.message = response.data.message;
+                                }
+                                callback(res3);
+                                return;
+                            }
+                        );
+                        return;
+                        }
                         let contract = $http.post(`${API.BASE_URL_DATA_ADMIN }/api/admin/contractConfiguration/update`, {
                             Payload: data.contract
                         });
@@ -5851,7 +5916,7 @@ APP_API.factory('$Api_Service', [
                         });
                         let report = $http.post(`${API.BASE_URL_DATA_ADMIN }/api/admin/reportConfiguration/update`, {
                             Payload: data.report
-                        });
+                        });                
                         $q.all([ contract, email, general, procurement, schedule, delivery, invoice, report ]).then(
                             (responses) => {
                                 let result = {};
@@ -5897,12 +5962,12 @@ APP_API.factory('$Api_Service', [
                                         result.message = `${result.message }Invoice settings failed to save!<br>`;
                                     }
                                 }
-                                
                                 if (responses[7].status == 200) {
                                     result.message = `${result.message }Report settings saved!<br>`;
                                 } else {
                                     result.message = `${result.message }Report settings failed to save!<br>`;
                                 }
+                                
                                 callback(result);
                             },
                             (response) => {
@@ -6053,6 +6118,7 @@ APP_API.factory('$Api_Service', [
                         let delivery = $http.post(`${API.BASE_URL_DATA_ADMIN }/api/admin/deliveryConfiguration/update`, {
                             Payload: data.delivery
                         });
+                        console.log("CREATE");
                         $q.all([ contract, email, general, procurement, schedule, delivery ]).then(
                             (responses) => {
                                 let result = {};
@@ -10581,7 +10647,7 @@ APP_API.factory('$Api_Service', [
                             } else {
                                 let res = new Object();
                                 res.status = false;
-                                res.message = 'Error occured while getting reports data!';
+                                res.message = 'Cannot find powerbi reports. You may want to check the SSRS configuration!';
                                 res.data = response;
                                 callback(res);
                             }

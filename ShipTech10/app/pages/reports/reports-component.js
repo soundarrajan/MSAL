@@ -102,6 +102,7 @@ angular.module('shiptech.pages').controller('ReportsController', [
                     Factory_Master.getReportsGroups();
                 } else {
                     toastr.error(response.message);
+                    ctrl.reportsLoading = false;
                 }
             });
         };
