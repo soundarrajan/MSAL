@@ -4,7 +4,7 @@ export interface IQcEventLogListItemDto {
   id: number;
   eventDetails: string;
   createdBy: IDisplayLookupDto;
-  createdOn: string;
+  createdOn: Date | string;
 }
 
 export interface IQcEventLogAddedListItemDto

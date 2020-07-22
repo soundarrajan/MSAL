@@ -8,3 +8,9 @@
   display: block!important;
   padding: 0 12px;
 }
+
+#quantityControlEventsLog > .ag-root-wrapper > :not(.ag-theme-balham) + .ag-theme-balham > .ag-menu {
+  position: relative;
+  margin-top: -114px;
+  width: 222px;
+}
