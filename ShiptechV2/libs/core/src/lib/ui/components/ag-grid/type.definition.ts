@@ -83,6 +83,7 @@ export interface TypedFilterParams<TData = any, TField = any>
   clearButton?: boolean;
   applyButton?: boolean;
   valueGetter?: (rowNode: TypedRowNode<TData>) => any;
+  comparator?: object;
 }
 
 export interface IAgGridCellClassRules<TData = any, TField = any> {
