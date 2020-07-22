@@ -22,6 +22,9 @@
     },
     "feature-invoice": {
       "tags": []
+    },
+    "feature-ete": {
+      "tags": []
     }
   }
 }

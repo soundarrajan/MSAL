@@ -29,6 +29,12 @@ const routes: Routes = [
           import('@shiptech/feature/quantity-control').then(
             m => m.QuantityControlModule
           )
+      },
+      {
+        path: KnownPrimaryRoutes.EmailTemplateEditor,
+        canActivate: [AuthenticationGuard],
+        loadChildren: () =>
+          import('@shiptech/feature/ete').then(m => m.EteModule)
       }
     ]
   },
