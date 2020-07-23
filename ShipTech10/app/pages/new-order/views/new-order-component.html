@@ -67,7 +67,7 @@
                            ng-disabled="EmailToLabsDisabled = !($ctrl.data.id && $ctrl.orderConfirmationEmailToLabs.name == 'Manual' &&
                                     $ctrl.data.lab.name && !$ctrl.data.buttonsDisabled &&
                                     ($ctrl.hasAction($ctrl.SCREEN_ACTIONS.CONFIRM) || $ctrl.data.status.name == 'Confirmed'))"
-                           ng-if="['None','Automatic'].indexOf($ctrl.orderConfirmationEmailToLabs.name) == -1 && !$ctrl.shiptechLite">
+                           ng-if="['None','Automatic'].indexOf($ctrl.orderConfirmationEmailToLabs.name) == -1 && !$ctrl.tenantSettings.shiptechLite">
                             Email to Labs
                         </a>
                         <a class="btn btn-sm btn-default hover-orange" href=""
@@ -1860,7 +1860,7 @@
                    ng-show="$ctrl.canSave($ctrl.screenActions)">
                     Save
                 </a>
-                <a class="btn btn-default" ng-class="{'disabled': !$ctrl.data.id}"
+                <a ng-if="!$ctrl.tenantSettings.shiptechLite" class="btn btn-default" ng-class="{'disabled': !$ctrl.data.id}"
                    ng-href="#/reports/ordernegotiation/OrderId={{$ctrl.data.id}}"
                    ng-show="{{$ctrl.tenantSettings.defaultValues.isSSRSReports}}" target="blank">
                     Order Negotiation Report
@@ -1890,7 +1890,7 @@
                    ng-disabled="EmailToLabsDisabled = !($ctrl.data.id && $ctrl.orderConfirmationEmailToLabs.name == 'Manual' &&
                             $ctrl.data.lab.name && !$ctrl.data.buttonsDisabled &&
                             ($ctrl.hasAction($ctrl.SCREEN_ACTIONS.CONFIRM) || $ctrl.data.status.name == 'Confirmed'))"
-                   ng-if="['None','Automatic'].indexOf($ctrl.orderConfirmationEmailToLabs.name) == -1">
+                   ng-if="['None','Automatic'].indexOf($ctrl.orderConfirmationEmailToLabs.name) == -1 && !$ctrl.tenantSettings.shiptechLite">
                     Email to Labs
                 </a>
                 <a class="btn btn-sm btn-default hover-orange" href=""
