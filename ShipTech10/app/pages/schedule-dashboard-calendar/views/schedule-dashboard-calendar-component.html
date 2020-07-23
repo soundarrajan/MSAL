@@ -1,6 +1,6 @@
 <div data-ng-include="'components/schedule-content-menu/views/schedule-content-menu-component.html'" ng-controller="ScheduleContentMenuController"></div>
 <span ng-init="initBreadcrumbsFilter()"></span>
-<div class="row">
+<div class="row" ng-if="!tenantSettings.shiptechLite">
     <div class="portlet light" style="padding-top:0px">
         <tbody class="portlet-body" style="height: 100%; padding-top:0px">
         	<div class="asc_jqgrid__filters dataTables_info" style="padding: 10px 0 10px 0; width: 100%; display:flex; justify-content: space-between;">

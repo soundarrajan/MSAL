@@ -11,12 +11,13 @@
                     Table View
                 </a>
             </li>
-            <li ng-class="{open : state.is(STATE.DASHBOARD_CALENDAR)}">
+            <li ng-show="!tenantSettings.shiptechLite" ng-class="{open : state.is(STATE.DASHBOARD_CALENDAR)}">
                 <a ui-sref="default.dashboard-calendar">
                     Calendar View
                 </a>
             </li>
         </ul>
+
         <div class="form-inline pull-right">
             <div ng-if="state.is(STATE.DASHBOARD_CALENDAR)">
                 <div class="btn-group calendar-select">

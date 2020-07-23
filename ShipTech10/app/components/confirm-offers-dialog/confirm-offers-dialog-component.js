@@ -16,6 +16,9 @@ angular.module('shiptech.components').controller('ConfirmOffersDialogController'
         tenantService.procurementSettings.then((settings) => {
             ctrl.captureConfirmedQuantity = settings.payload.order.captureConfirmedQuantity;
         });
+        tenantService.tenantSettings.then((settings) => {
+            ctrl.tenantSettings = settings.payload;
+        })
         // setTimeout(function() {
         //     $('#confirm').on('hidden.bs.modal', function() {
         //         $scope.$emit('buttonsEnabled');

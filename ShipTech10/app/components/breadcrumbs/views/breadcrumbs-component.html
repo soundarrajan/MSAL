@@ -35,7 +35,7 @@
             </a>
         </span>
     </div>
-
+    {{tenantSettings.shiptechLite}}
     <navigation-topbar class="pull-right"></navigation-topbar>
     <div class="page-toolbar" ng-class="state.is(STATE.DASHBOARD_TABLE) ||
                                         state.is(STATE.DASHBOARD_CALENDAR) ||
@@ -44,7 +44,7 @@
 
         <div class="st-breadcrumbs-pins"
              ng-if="state.is(STATE.DASHBOARD_TABLE) ||
-                    state.is(STATE.DASHBOARD_CALENDAR)"
+                    (state.is(STATE.DASHBOARD_CALENDAR) && !tenantSettings.shiptechLite)"
              ng-init="getCalendarStatus()">
             <span class="hide" ng-if="!calendarStatuses && !adminDashboardStatuses">{{getCalendarStatus()}}</span>
             <ul class="page-breadcrumb" style="width: 100%; padding: 0;">
