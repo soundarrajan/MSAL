@@ -40,6 +40,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
             ctrl.quantityPrecision = settings.payload.defaultValues.quantityPrecision;
             ctrl.defaultContractAgreementType = settings.payload.defaultValues.defaultContractAgreementType;
             ctrl.defaultSpotAgreementType = settings.payload.defaultValues.defaultSpotAgreementType;
+            ctrl.shiptechLite = settings.payload.shiptechLite;
         });
 
         ctrl.disabledProduct = [];
