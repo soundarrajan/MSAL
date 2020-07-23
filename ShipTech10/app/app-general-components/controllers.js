@@ -3010,7 +3010,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
         } 
 
   
-        setInterval(checkHeightChange, 100); 
+        setInterval(checkHeightChange, 20); 
 
 
         $scope.updateMinMaxQuantities = function(rowIdx, productId, callback){
