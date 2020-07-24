@@ -4981,3 +4981,12 @@ table.energyCalculationBlade tr.border-green-jungle{
 	text-decoration: underline;
 	color: #364150;
 }
+#hierarchical-tree .item-deleted {
+    color: #565555;
+}
+
+#hierarchical-tree .deleted-icon {
+    color: #AFACB0;
+    font-size: 15px !important;
+    transform: rotateZ(0deg) translate(5px) !important;
+}

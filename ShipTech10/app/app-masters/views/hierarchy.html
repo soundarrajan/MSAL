@@ -52,9 +52,10 @@
 					<span class="{{item.children.length ? 'expander' : ''}}" ng-class="!item.children.length && depth != 1? 'no-children' : ''"> 
 						<i ng-if="item.children.length" class="fa fa-caret-right collapsed" onclick="expandHierarchyChildren(this)"></i>
 						<!-- <input type="radio" name="tree-selection"> -->
-						<span class="element-name formatter edit_link" ng-click="openChild(item.id)">
+						<span ng-class="item.isDeleted ? 'item-deleted' : ''"class="element-name formatter edit_link" ng-click="openChild(item.id)">
 							{{item.name}}
 						</span>
+						<i  ng-if="item.isDeleted" class="fa fa-ban deleted-icon"></i>
 					</span>
 					<div class="children collapse not-first-level">
 						<span  ng-repeat="item in item.children" ng-include="'tree'" ng-init="depth = depth + 1">
