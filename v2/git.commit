@@ -1,7 +1,7 @@
-﻿commit da7c91bc329c2a03b0125a0b584aac4f127f50e2
+﻿commit fa50203abc7b79132ab500b2286c7e15e5fd4b8e
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Fri Jul 24 09:41:29 2020 +0300
+Date:   Fri Jul 24 14:06:24 2020 +0300
 
-    Added 1.0.29 version of email template editor
+    Added validation message when user performs any action and hasn't no rights
 
 branch: master
