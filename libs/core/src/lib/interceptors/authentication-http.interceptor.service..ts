@@ -11,6 +11,7 @@ import { catchError, mergeMap } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { LoggerFactory } from '@shiptech/core/logging/logger-factory.service';
 import { ILogger } from '@shiptech/core/logging/logger';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class AuthenticationInterceptor implements HttpInterceptor {
@@ -18,6 +19,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
 
   constructor(
     private authService: AuthenticationService,
+    private toastrService: ToastrService,
     loggerFactory: LoggerFactory
   ) {
     this.logger = loggerFactory.createLogger(AuthenticationInterceptor.name);
@@ -60,10 +62,10 @@ export class AuthenticationInterceptor implements HttpInterceptor {
         if (error instanceof HttpErrorResponse) {
           if (error.status === 401) {
             this.logger.warn(`Api not authenticated. Logging out. `);
-            this.authService.logout();
+            this.toastrService.error('You do not have authorization to perform this action.');
+            return;
           }
         }
-
         return throwError(error);
       })
     );

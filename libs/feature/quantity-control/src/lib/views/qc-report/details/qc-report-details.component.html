@@ -3,17 +3,17 @@
     <div style="float:right">
       <button (click)="openEmailPreview()" [disabled]="isReadOnly$ | async" class="mr-1 mail-icon" *ngIf="!(isNew$ | async)"
               pButton></button>
-      <button (click)="save()" [disabled]="isReadOnly$ | async" class="ui-button-info mr-1 btn-i-yellow" label="Save"
+      <button (click)="save()" class="ui-button-info mr-1 btn-i-yellow" label="Save"
               pButton
               type="button"></button>
       <button (click)="raiseClaim()" [disabled]="isBusy$ | async" *ngIf="!(isNew$ | async)"
               class="ui-button-warning mr-1 btn-i-yellow"
               label="Raise Caim"
               pButton type="button"></button>
-      <button (click)="verifyVessel()" [disabled]="isReadOnly$ | async" *ngIf="!(isNew$ | async) && !(hasVerifiedStatus$ | async)"
+      <button (click)="verifyVessel()"  *ngIf="!(isNew$ | async) && !(hasVerifiedStatus$ | async)"
               class="ui-button-success mr-1 btn-i-success" label="Verify"
               pButton type="button"></button>
-      <button (click)="revertVerifyVessel()" [disabled]="isBusy$ | async" *ngIf="hasVerifiedStatus$ | async"
+      <button (click)="revertVerifyVessel()"  *ngIf="hasVerifiedStatus$ | async"
               class="ui-button-success mr-1 btn-i-success" label="Revert Verify"
               pButton type="button"></button>
     </div>
