@@ -1,7 +1,7 @@
-﻿commit fa50203abc7b79132ab500b2286c7e15e5fd4b8e
+﻿commit 54f7b9569c3b23953c7e8efae9c65e9f280af6f5
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Fri Jul 24 14:06:24 2020 +0300
+Date:   Fri Jul 24 18:18:15 2020 +0300
 
-    Added validation message when user performs any action and hasn't no rights
+    Added 1.0.30 version of email-template-editor
 
 branch: master
