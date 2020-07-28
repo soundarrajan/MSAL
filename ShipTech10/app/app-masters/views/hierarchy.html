@@ -40,7 +40,7 @@
 	<div class="row">
 		<div class="col-md-12 portlet light">
 			<div class="list-unstyled" id="hierarchical-tree">
-				<div class="children">
+				<div ng-show="!noResultsFound" class="children">
 					<span ng-repeat="item in hierarchy" ng-include="'tree'" ng-init="depth = 1">
 					</span>
                 </div>
@@ -48,8 +48,8 @@
 			</div>
 
 			<script type="text/ng-template" id="tree">
-				<div class="list-unstyled search-list" style="margin-left:{{depth*10}}px">
-					<span class="{{item.children.length ? 'expander' : ''}}" ng-class="!item.children.length && depth != 1? 'no-children' : ''"> 
+				<div class="search-list list-unstyled" style="margin-left:{{depth*10}}px">
+					<span class="{{item.children.length ? 'expander' : ''}}" ng-class="!item.children.length && depth != 1 ? 'no-children' : ''"> 
 						<i ng-if="item.children.length" class="fa fa-caret-right collapsed" onclick="expandHierarchyChildren(this)"></i>
 						<!-- <input type="radio" name="tree-selection"> -->
 						<span ng-class="item.isDeleted ? 'item-deleted' : ''"class="element-name formatter edit_link" ng-click="openChild(item.id)">
