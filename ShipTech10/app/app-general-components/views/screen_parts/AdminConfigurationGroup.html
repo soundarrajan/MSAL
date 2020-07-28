@@ -36,7 +36,7 @@
                 {{ 'Contract' | translate }}
             </a>
         </li>
-        <li role="presentation">
+        <li role="presentation" ng-show="tenantSetting.shiptechLite !== true">
             <a aria-controls="home" role="tab" data-toggle="tab" ng-click="config_tab = 9">
                 {{ 'Reports' | translate }}
             </a>
@@ -305,7 +305,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-4" ng-if="tenantSetting.shiptechLite !== true">
                     <div class="form-group  row">
                         <div class="form_input form_input_isSSRSReports">
                             <div class="">
