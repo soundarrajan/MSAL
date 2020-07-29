@@ -11,6 +11,7 @@
 				<td class="padding"><b>Mass UOM</b></td>
 				<td class="padding"><b>Conversion Value</b></td>
 				<td class="padding"><b>Volume UOM</b></td>
+                <td class="padding"><b>Conversion Factor</b></td>
 				<td class="padding"><b>Default Conversion</b></td>
             </tr>
         </thead>
@@ -26,12 +27,15 @@
         		<td>
         			<select name="Product {{$index}} mass UOM" ng-model="value.volumeUom" ng-options="item as item.name for item in vm.listsCache.UomVolume track by item.id" class="form-control"></select>
         		</td>
-        		<td style="width:160px">
-        			<label class="mt-checkbox" style="margin-bottom: 15px;margin-left: 10px;">
-	        			<input type="checkbox" ng-model="value.isDefault">	
-        				<span></span>
-        			</label>
-        		</td>
+                <td>
+                    <select name="Product {{$index}} mass UOM" ng-model="value.volumeUom" ng-options="item as item.name for item in vm.listsCache.ContractConversionFactorOptions track by item.id" class="form-control"></select>
+                </td>
+                <td style="width:160px">
+                    <label class="mt-checkbox" style="margin-bottom: 15px;margin-left: 10px;">
+                        <input type="checkbox" ng-model="value.isDefault">  
+                        <span></span>
+                    </label>
+                </td>
         	</tr>
         </tbody>
     </table>
