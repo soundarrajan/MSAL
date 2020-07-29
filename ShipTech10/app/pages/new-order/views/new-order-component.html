@@ -1084,7 +1084,10 @@
                                 </th>
                                 <th id="generatedThId194" ng-if="$ctrl.data.status.id != $ctrl.STATUS['Cancelled'].id"
                                     style="vertical-align: middle;"></th>
-                                <th id="generatedThId195" ng-if="column.visible" ng-repeat="column in $ctrl.productColumns">
+                                <th id="generatedThId195" ng-if="column.visible && column.caption != 'PAGES.NEW_ORDER.CONTRACT_ID' &&  column.caption != 'PAGES.NEW_ORDER.FORMULA_DESCRIPTION' && column.caption != 'PAGES.NEW_ORDER.FORMULA_DETAILS' && column.caption != 'PAGES.NEW_ORDER.PRICING_DATE' && $ctrl.tenantSettings.shiptechLite" ng-repeat="column in $ctrl.productColumns">
+                                    {{ column.caption | translate }}
+                                </th>
+                                <th id="generatedThId195" ng-if="column.visible  && !$ctrl.tenantSettings.shiptechLite" ng-repeat="column in $ctrl.productColumns">
                                     {{ column.caption | translate }}
                                 </th>
                             </tr>
@@ -1323,7 +1326,7 @@
                                     </div>
                                 </td>
                                 <!--  end unit price for product -->
-                                <td style="max-width: 180px;min-width: 140px">
+                                <td style="max-width: 180px;min-width: 140px" ng-if="!$ctrl.tenantSettings.shiptechLite">
                                             <span class="form-control disabled"
                                                   data-original-title="{{product.formulaDescription ? product.formulaDescription : product.formula.name}}"
                                                   style="background: #e6eaec;overflow: hidden;"
@@ -1335,7 +1338,7 @@
                                     product.formulaDescription = null : ''}}
 
                                 </td>
-                                <td style="max-width: 180px;min-width: 140px">
+                                <td style="max-width: 180px;min-width: 140px"  ng-if="!$ctrl.tenantSettings.shiptechLite">
                                     <a ng-click="$ctrl.triggerFormulaDetailsModal(product)"
                                        ng-if="(product.formulaDescription || product.formula) && $ctrl.orderId && !product.changedOnConfirmedOrder">Pricing
                                         Details</a>
@@ -1387,7 +1390,7 @@
                                           style="text-overflow: ellipsis;"
                                           tooltip>  {{ product.comments }} </span>
                                 </td>
-                                <td style="max-width: 250px;min-width: 230px">
+                                <td style="max-width: 250px;min-width: 230px" ng-if="!$ctrl.tenantSettings.shiptechLite">
                                     <a href="/#/contracts/contract/edit/{{ product.contract.id }}"
                                        ng-disabled="!product.contract.id || product.requestOfferId"
                                        style="display: block; float: left;margin-top: 10px; margin-right: 10px;">
@@ -1436,7 +1439,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td style="max-width: 180px;min-width: 140px">
+                                <td style="max-width: 180px;min-width: 140px" ng-if="!$ctrl.tenantSettings.shiptechLite">
                                     <div class="form-group">
                                         <div class="input-group form-input table-formatted-input">
 
