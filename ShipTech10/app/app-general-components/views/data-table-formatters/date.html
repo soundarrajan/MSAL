@@ -10,7 +10,9 @@
       dynamic-condition-type="{{ col.colDef.cellConditionType }}"
       ng-required="$eval(col.colDef.required) > 0 || col.colDef.required == true ? true : false"
       new-date-picker
-      picker-type="date">
+      picker-type="date"
+      ng-disabled="{{ col.colDef.cellCondition }}">
+
 </div>
 
 
