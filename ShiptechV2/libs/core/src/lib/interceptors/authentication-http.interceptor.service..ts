@@ -61,11 +61,12 @@ export class AuthenticationInterceptor implements HttpInterceptor {
       catchError(error => {
         if (error instanceof HttpErrorResponse) {
           if (error.status === 401) {
-            this.logger.warn(`Api not authenticated. Logging out. `);
             this.toastrService.error('You do not have authorization to perform this action.');
+            localStorage.setItem("authorization", "0");
             return;
           }
         }
+        localStorage.setItem("authorization", "1");
         return throwError(error);
       })
     );
