@@ -28,7 +28,7 @@
         			<select name="Product {{$index}} mass UOM" ng-model="value.volumeUom" ng-options="item as item.name for item in vm.listsCache.UomVolume track by item.id" class="form-control"></select>
         		</td>
                 <td>
-                    <select name="Product {{$index}} mass UOM" ng-model="value.volumeUom" ng-options="item as item.name for item in vm.listsCache.ContractConversionFactorOptions track by item.id" class="form-control"></select>
+                    <select name="Product {{$index}} conversion factor" ng-model="value.contractConversionFactorOptions" ng-options="item as item.name for item in vm.listsCache.ContractConversionFactorOptions track by item.id" class="form-control"></select>
                 </td>
                 <td style="width:160px">
                     <label class="mt-checkbox" style="margin-bottom: 15px;margin-left: 10px;">

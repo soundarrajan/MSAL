@@ -259,6 +259,46 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group row">
+                            <label for="Product_{{ productIndex }}_quantity_details_sludge_production" class="quantity_details_sludge_productio" style="max-height: initial;">
+                                Conversion Factor
+                            </label>
+                            <div class="input-group form_input form_input_quantity_conversion_factor">
+                                <table class="table table-hover table-bordered table-stripped" id="conversion_factor_products">
+                                    <thead>
+                                        <tr  colspan="10">
+                                            <th>
+                                                Conversion Factor
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="padding: 1px 0px !important">
+                                                <input class="form-control" style="width: 25%;" id="product_type_{{ $index }}"
+                                                       name="Conversion Mass {{$index}}" ng-disabled="true"
+                                                       ng-model="formValues.deliveryProducts[productIndex].convFactorMassUom" ng-required="false"
+                                                 />
+                                                <input class="form-control" style="width: 50%;" id="product_type_{{ $index }}"
+                                                       name="Conversion Factor {{$index}}" ng-disabled="true"
+                                                       ng-model="formValues.deliveryProducts[productIndex].convFactorValue" ng-required="false"
+                                                 />
+                                                <input class="form-control" style="width: 25%;" id="product_type_{{ $index }}"
+                                                       name="Conversion Volume {{$index}}" ng-disabled="true"
+                                                       ng-model="formValues.deliveryProducts[productIndex].convFactorVolumeUom" ng-required="false"
+                                                 />
+                                            </td>
+                                                
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                           
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
