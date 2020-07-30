@@ -775,10 +775,10 @@ angular.module('shiptech.models', []);
 var i = 0;
 
 var hostName = window.location.hostname;
-// var config = "config/config.js";
-// if (["localhost", "mail.24software.ro"].indexOf(hostName) < 0) {
-//     config = "config/" + hostName + ".js";
-// }
+var config = "config/config.js";
+if (["localhost", "mail.24software.ro"].indexOf(hostName) < 0) {
+    config = "config/" + hostName + ".js";
+}
 function bootstrapApplication() {
     if (i == 0) {
         // angular.element(document).ready(function() {
@@ -790,15 +790,32 @@ function bootstrapApplication() {
     }
 }
 
+function loadScript(url, callback) {
+    let script = document.createElement('script');
+    script.type = 'text/javascript';
+
+    if (script.readyState) {
+        // IE
+        script.onreadystatechange = function() {
+            if (script.readyState == 'loaded' || script.readyState == 'complete') {
+                script.onreadystatechange = null;
+                callback();
+            }
+        };
+    } else {
+        // Others
+        script.onload = function() {
+            callback();
+        };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+}
+
+
 angular.element(document).ready(() => {
-    // loadScript(config, function() {
-    // });
-    $.ajax({
-        url: 'config/config.json',
-        dataType: 'json',
-        method: 'GET',
-        success:function(response) {
-            appConfig = response;
+    loadScript(config, function() {
             angular
                 .module('shiptech')
                 .constant('tenantConfigs', appConfig.tenantConfigs)
@@ -840,9 +857,7 @@ angular.element(document).ready(() => {
                     strictDi: true
                 });
             }
-        },
-        async:false
-    });
+        })
 });
 
 
