@@ -766,7 +766,13 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         };
 
         ctrl.saveRequest = function() {
-            ctrl.isRequiredMinMax();
+            var valid;
+            if (ctrl.request.requestStatus) {
+                valid = ctrl.checkValidQuantities();
+                ctrl.isRequiredMinMax(true);
+            } else {
+                ctrl.isRequiredMinMax();
+            }
             ctrl.isSpecGroupIsRequired();
 
             $timeout(() => {
@@ -2656,6 +2662,12 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             let text = '';
             $.each(ctrl.request.locations, (key, val) => {
                 $.each(val.products, (key2, val2) => {
+                    if (val2.minQuantity != null && isNaN(val2.minQuantity)) {
+                        ctrl.request.locations[key].products[key2].minQuantity = null;
+                    }
+                    if (val2.maxQuantity != null && isNaN(val2.maxQuantity)) {
+                        ctrl.request.locations[key].products[key2].maxQuantity = null;
+                    }
                     if (val2.minQty != null) {
                         if (val2.maxQuantity != null) {
                             if (val2.minQty > val2.maxQuantity) {
