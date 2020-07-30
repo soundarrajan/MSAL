@@ -1,7 +1,7 @@
-﻿commit 76f9054e376bd450f421c8d85a24190b7cfbb613
+﻿commit 8fd549aa99a07952fa8019aef5da183e7b43a2ae
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Tue Jul 28 09:55:27 2020 +0300
+Date:   Thu Jul 30 10:31:27 2020 +0300
 
-    Added 1.0.33 version of email template editor
+    Fixed issues  in the event section and removed  the error message when the user performs any action that he has no rights on
 
 branch: master

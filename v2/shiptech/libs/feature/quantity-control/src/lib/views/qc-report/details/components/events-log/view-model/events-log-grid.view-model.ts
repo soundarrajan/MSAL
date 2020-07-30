@@ -131,6 +131,8 @@ export class EventsLogGridViewModel extends BaseGridViewModel
         filterLocalDateAtMidnight: Date,
         cellValue: string
       ): number {
+        const test = document.querySelectorAll<HTMLElement>('.ag-menu');
+        test[0].style.display = "none";
         const dateAsString = cellValue;
         if (dateAsString == null) return -1;
         const cellDate = new Date(dateAsString.substr(0, 11) + '00:00:00');

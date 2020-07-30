@@ -60,7 +60,7 @@ export class AppErrorHandler implements ErrorHandler {
     ) {
       // App does not know how to handleError this type of unwrappedError so Angular can pick it up
 
-      if (this.toastr) {
+      if (this.toastr && parseInt(localStorage.getItem("authorization"), 10)) {
         // Note: Most of the times the unwrappedError handler runs outside of the angular zone. Pass onActivateTick: true
         this.toastr.error(AppError.Unknown.message, null, toastrLogConfig);
       }
