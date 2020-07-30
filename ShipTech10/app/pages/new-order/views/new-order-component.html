@@ -1090,6 +1090,12 @@
                                 <th id="generatedThId195" ng-if="column.visible  && !$ctrl.tenantSettings.shiptechLite" ng-repeat="column in $ctrl.productColumns">
                                     {{ column.caption | translate }}
                                 </th>
+                                <th>
+                                    Conversion Factor
+                                </th>
+                                 <th>
+                                    Overwrite Conversion Factor
+                                </th>
                             </tr>
                             </thead>
                             <tbody>
@@ -1514,6 +1520,30 @@
                                                     ng-options="uomItem as uomItem.name for uomItem in $ctrl.lists.Uom track by uomItem.id"
                                                     ng-required="product.product !== null && !$ctrl.requestTenantSettings.isPrerequestEnabled"
                                                     style="min-width: 75px; max-width: 75px;"></select>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td ng-if="$ctrl.enableManualPricingDateOverride"
+                                    style="width: 250px; display: flex; padding: 1px 0px !important">
+                                     <input class="form-control" style="width: 25%;" id="product_type_{{ $index }}"
+                                           name="Conversion Mass {{$index}}" ng-disabled="true"
+                                           ng-model="product.convFactorMassUom" ng-required="false"/>
+                                    <input class="form-control" style="width: 50%;" id="product_type_{{ $index }}"
+                                           name="Conversion Factor {{$index}}" ng-disabled="true"
+                                           ng-model="product.convFactorValue" ng-required="false"/>
+                                    <input class="form-control" style="width: 25%;" id="product_type_{{ $index }}"
+                                           name="Conversion Volume {{$index}}" ng-disabled="true"
+                                           ng-model="product.convFactorVolumeUom" ng-required="false"/>
+                                </td>
+                                  <td style="max-width: 180px;min-width: 140px">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <label class="mt-checkbox">
+                                                <input id="product_manualPricingDateOverride_{{ $index }}"
+                                                       ng-model="product.conversionFactorToUomOfPriceFromContract"
+                                                       type="checkbox">
+                                                <span></span>
+                                            </label>
                                         </div>
                                     </div>
                                 </td>
