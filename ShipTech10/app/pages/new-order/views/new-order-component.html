@@ -1090,10 +1090,10 @@
                                 <th id="generatedThId195" ng-if="column.visible  && !$ctrl.tenantSettings.shiptechLite" ng-repeat="column in $ctrl.productColumns">
                                     {{ column.caption | translate }}
                                 </th>
-                                <th>
+                                <th class="hidden">
                                     Conversion Factor
                                 </th>
-                                 <th>
+                                 <th class="hidden">
                                     Overwrite Conversion Factor
                                 </th>
                             </tr>
@@ -1523,7 +1523,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td ng-if="$ctrl.enableManualPricingDateOverride"
+                                <td class="hidden" ng-if="$ctrl.enableManualPricingDateOverride"
                                     style="width: 250px; display: flex; padding: 1px 0px !important">
                                      <input class="form-control" style="width: 25%;" id="product_type_{{ $index }}"
                                            name="Conversion Mass {{$index}}" ng-disabled="true"
@@ -1535,7 +1535,7 @@
                                            name="Conversion Volume {{$index}}" ng-disabled="true"
                                            ng-model="product.convFactorVolumeUom" ng-required="false"/>
                                 </td>
-                                  <td style="max-width: 180px;min-width: 140px">
+                                  <td class="hidden" style="max-width: 180px;min-width: 140px">
                                     <div class="form-group">
                                         <div class="input-group">
                                             <label class="mt-checkbox">
