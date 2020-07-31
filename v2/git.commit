@@ -1,7 +1,7 @@
-﻿commit c71c79229b63824fdddd437f976de2b687f9926e
+﻿commit 8f09dcf36be7deaf6b4d814cc4060efd013d3f6a
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Fri Jul 31 11:08:42 2020 +0300
+Date:   Fri Jul 31 11:29:53 2020 +0300
 
-    Fixed email-template-editor
+    Fixed CK Editor Template  loading
 
 branch: master
