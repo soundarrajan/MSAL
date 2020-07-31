@@ -1,7 +1,7 @@
-﻿commit 8fd549aa99a07952fa8019aef5da183e7b43a2ae
+﻿commit c71c79229b63824fdddd437f976de2b687f9926e
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Thu Jul 30 10:31:27 2020 +0300
+Date:   Fri Jul 31 11:08:42 2020 +0300
 
-    Fixed issues  in the event section and removed  the error message when the user performs any action that he has no rights on
+    Fixed email-template-editor
 
 branch: master

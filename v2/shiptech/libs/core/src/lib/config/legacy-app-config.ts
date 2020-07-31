@@ -75,6 +75,7 @@ export interface IApiUrlsLegacyConfig {
   BASE_URL_OPEN_SERVER: string;
   BASE_HEADER_FOR_NOTIFICATIONS: string;
   BASE_URL: string;
+  BASE_URL_TEST: string;
   USE_LOCAL_MOCKUPS: boolean;
 }
 

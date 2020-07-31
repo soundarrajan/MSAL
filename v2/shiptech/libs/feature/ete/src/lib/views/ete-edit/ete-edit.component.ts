@@ -17,21 +17,17 @@ import { KnownEteRoutes } from '../../known-ete.routes';
 })
 export class EteEditComponent implements OnInit, OnDestroy {
   public templateId = '';
+  public serverUrl = '';
+
   private _destroy$ = new Subject();
 
   constructor(public appConfig: AppConfig, public route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    // this.route.queryParams.subscribe(params => {
-    //   this.templateId = params[KnownEteRoutes.templateIdParam];
-    //   console.log("Test");
-    //   console.log(params);
-    // });
-
+    this.serverUrl  = this.appConfig.v1.API.BASE_URL_TEST;
     this.templateId = this.route.snapshot.paramMap.get(
       KnownEteRoutes.templateIdParam
     );
-    console.log('test');
     console.log(this.templateId);
   }
 
