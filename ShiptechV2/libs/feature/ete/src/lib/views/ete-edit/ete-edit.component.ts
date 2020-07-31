@@ -24,7 +24,7 @@ export class EteEditComponent implements OnInit, OnDestroy {
   constructor(public appConfig: AppConfig, public route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.serverUrl  = this.appConfig.v1.API.BASE_URL_TEST;
+    this.serverUrl  = this.appConfig.v1.API.BASE_URL;
     this.templateId = this.route.snapshot.paramMap.get(
       KnownEteRoutes.templateIdParam
     );
