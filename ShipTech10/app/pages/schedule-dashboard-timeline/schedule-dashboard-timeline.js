@@ -737,7 +737,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 timeline.on("changed", function(){
             		lastVoyageTopOffset = $(".vis-foreground > .vis-group:last-child").offset().top + $(".vis-foreground > .vis-group:last-child").height();  
             		foregroundTopOffset = $(".vis-foreground").offset().top + $(".vis-foreground").height();  
-            		verticalScrollBottomLine = $(".vis-vertical-scroll").offset().top + $(".vis-vertical-scroll").height();
+                    verticalScrollBottomLine = $(".vis-vertical-scroll").length ? $(".vis-vertical-scroll").offset().top + $(".vis-vertical-scroll").height() : 0;
+                    
 
 					obj = $(".vis-foreground > .vis-group:last-child");            	
 					var childPos = obj.offset();
