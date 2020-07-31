@@ -775,9 +775,9 @@ angular.module('shiptech.models', []);
 var i = 0;
 
 var hostName = window.location.hostname;
-var config = "config/config.js";
+var config = "config/config.json";
 if (["localhost", "mail.24software.ro"].indexOf(hostName) < 0) {
-    config = "config/" + hostName + ".js";
+    config = "config/" + hostName + ".json";
 }
 function bootstrapApplication() {
     if (i == 0) {
@@ -790,32 +790,38 @@ function bootstrapApplication() {
     }
 }
 
+
+
 function loadScript(url, callback) {
-    let script = document.createElement('script');
-    script.type = 'text/javascript';
-
-    if (script.readyState) {
-        // IE
-        script.onreadystatechange = function() {
-            if (script.readyState == 'loaded' || script.readyState == 'complete') {
-                script.onreadystatechange = null;
+    window.appConfig = (function() {
+        var hostName = window.location.hostname;
+        var config = "config/config.json";
+        if (["localhost", "mail.24software.ro"].indexOf(hostName) < 0) {
+            config = "config/" + hostName + ".json";
+        }
+        let returnVars;
+        $.ajax({
+            url: config,
+            dataType: 'json',
+             method: 'GET',
+             success:function(response) {
+                returnVars = response;
+                window.appConfig = response;
                 callback();
-            }
-        };
-    } else {
-        // Others
-        script.onload = function() {
-            callback();
-        };
-    }
-
-    script.src = url;
-    document.getElementsByTagName('head')[0].appendChild(script);
+            },
+            async:false
+        });
+        return returnVars;
+    }());
 }
+
+
+
 
 
 angular.element(document).ready(() => {
     loadScript(config, function() {
+        appConfig = window.appConfig;
             angular
                 .module('shiptech')
                 .constant('tenantConfigs', appConfig.tenantConfigs)
