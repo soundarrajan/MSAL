@@ -237,6 +237,15 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
                             } else {
                                 deliveryProd.pricingDate = $scope.formValues.temp.deliverysummary.deliveryDate;
                             }
+                            if (summaryProd.convFactorMassUom != null) {
+                                deliveryProd.convFactorMassUom = summaryProd.convFactorMassUom;
+                            }
+                            if (summaryProd.convFactorValue != null) {
+                                deliveryProd.convFactorValue = summaryProd.convFactorValue;
+                            }
+                            if (summaryProd.convFactorVolumeUom != null) {
+                                deliveryProd.convFactorVolumeUom = summaryProd.convFactorVolumeUom;
+                            }
                         }
                     });
                 });
@@ -1529,6 +1538,10 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
             // set orderproductid
             newProductData.orderProductId = selectedProductToAddInDelivery.id;
             newProductData.manualPricingDateOverride = selectedProductToAddInDelivery.manualPricingDateOverride;
+
+            newProductData.convFactorMassUom = selectedProductToAddInDelivery.convFactorMassUom;
+            newProductData.convFactorValue = selectedProductToAddInDelivery.convFactorValue;
+            newProductData.convFactorVolumeUom = selectedProductToAddInDelivery.convFactorVolumeUom;
 
             // add pricing date
             $.each($scope.formValues.temp.deliverysummary.products, (_, summaryProd) => {

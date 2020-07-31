@@ -279,7 +279,7 @@
                                             <td style="padding: 1px 0px !important">
                                                 <input class="form-control" style="width: 25%;" id="product_type_{{ $index }}"
                                                        name="Conversion Mass {{$index}}" ng-disabled="true"
-                                                       ng-model="formValues.deliveryProducts[productIndex].convFactorMassUom" ng-required="false"
+                                                       ng-model="formValues.deliveryProducts[productIndex].convFactorMassUom.name" ng-required="false"
                                                  />
                                                 <input class="form-control" style="width: 50%;" id="product_type_{{ $index }}"
                                                        name="Conversion Factor {{$index}}" ng-disabled="true"
@@ -287,7 +287,7 @@
                                                  />
                                                 <input class="form-control" style="width: 25%;" id="product_type_{{ $index }}"
                                                        name="Conversion Volume {{$index}}" ng-disabled="true"
-                                                       ng-model="formValues.deliveryProducts[productIndex].convFactorVolumeUom" ng-required="false"
+                                                       ng-model="formValues.deliveryProducts[productIndex].convFactorVolumeUom.name" ng-required="false"
                                                  />
                                             </td>
                                                 
