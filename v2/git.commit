@@ -1,7 +1,7 @@
-﻿commit 8f09dcf36be7deaf6b4d814cc4060efd013d3f6a
+﻿commit 4b654d0de99b5892eba9173b14aeb4d12f564f76
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Fri Jul 31 11:29:53 2020 +0300
+Date:   Mon Aug 3 13:27:21 2020 +0300
 
-    Fixed CK Editor Template  loading
+    Fixed issues  in the event section
 
 branch: master
