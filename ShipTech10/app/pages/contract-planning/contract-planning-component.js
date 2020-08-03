@@ -506,9 +506,15 @@ angular.module('shiptech.pages').controller('ContractPlanningController', [ '$sc
                 if (!contract.seller) {
                     noSellerContract = true;
                     // sameSeller = false;
-                    return;
                 }
-                uniqueSlrId = contract.seller.id;
+                if (contract.contract.fullValue) {
+                    if (contract.contract.fullValue.seller) {
+                        noSellerContract = false;
+                    }
+                }
+                if (contract.seller) {
+                    uniqueSlrId = contract.seller.id;
+                }
                 if (typeof uniqueSlrId != 'undefined') {
                     if (uniqueSlrId != contract.seller.id) {
                         sameSeller = false;
