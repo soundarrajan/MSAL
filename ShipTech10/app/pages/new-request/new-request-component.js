@@ -768,8 +768,10 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         ctrl.saveRequest = function() {
             var valid;
             if (ctrl.request.requestStatus) {
-                valid = ctrl.checkValidQuantities();
-                ctrl.isRequiredMinMax(true);
+                if (ctrl.request.requestStatus.name == "Validated" || !ctrl.requestTenantSettings.isPrerequestEnabled) {
+                    valid = ctrl.checkValidQuantities();
+                    ctrl.isRequiredMinMax(true);
+                }
             } else {
                 ctrl.isRequiredMinMax();
             }
