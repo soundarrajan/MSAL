@@ -98,6 +98,9 @@ APP_MASTERS.controller('Master_Hierarchy', [
 		window.expandHierarchyChildren = function (e) {
 			console.log(e);
 			if ($(e).hasClass("collapsed")) {
+				if ($scope.searched) {
+					$(e).parent().next().find(".search-list").show();
+				}
 				$(e).parent().next().slideDown();
 			} else {
 				$(e).parent().next().find(".children").hide();
@@ -178,9 +181,23 @@ APP_MASTERS.controller('Master_Hierarchy', [
 					if ($(this).text().toLowerCase().indexOf(val.toLowerCase()) != -1) {
 						$(this).show();
 						$(this).children(".children").show();
-						$(this).children(".expander").find("i").removeClass("collapsed");
+						$(this).children(".expander").find("i").addClass("collapsed");
 					}else {
 						$(this).hide();
+					}
+				});0.
+				$.each($(".search-list"), function (){
+					if ($(this).text().toLowerCase().indexOf(val.toLowerCase()) != -1) {
+						let elements = $(this).find(".children .search-list");
+						let hasHiddenAllChildren = true;
+						for (let i = 0; i < elements.length; i++) {
+							if (elements[i].style.display == "block" || !elements[i].style.display) {
+								hasHiddenAllChildren = false;
+							}
+						}
+						if (!hasHiddenAllChildren) {
+							$(this).children(".expander").find("i").removeClass("collapsed");
+						}
 					}
 				});
 				$scope.noResultsFound = ($("#hierarchical-tree").text().toLowerCase().indexOf(val.toLowerCase()) == -1);
