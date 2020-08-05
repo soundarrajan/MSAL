@@ -3543,6 +3543,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 			win.focus();
         }
 		ctrl.getOperationalReportParameters = function() {
+            if (!ctrl.requestTenantSettings.showOperationalReport) return;
 			serviceId = ctrl.request.operationalReportServiceId;
 			console.log(serviceId);
 			ctrl.enableReport = false;
