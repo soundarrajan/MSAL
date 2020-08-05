@@ -19,13 +19,13 @@
         	<tr ng-repeat="(key, value) in formValues.products[$index].conversionFactors " ng-if="!value.isDeleted">
         		<td class="padding">{{value.product.name}}</td>
         		<td>
-        			<select name="Product {{$index}} mass UOM" ng-model="value.massUom" ng-options="item as item.name for item in vm.listsCache.UomMass track by item.id" class="form-control"></select>
+        			<select name="Product {{$index}} mass UOM" ng-model="value.massUom" ng-options="item as item.name for item in vm.listsCache.UomMass track by item.id" class="form-control" ng-disabled="value.contractConversionFactorOptions.id == 3"></select>
         		</td>
         		<td>
-        			<input type="text" class="form-control" ng-model="value.value">	
+        			<input type="text" class="form-control" ng-model="value.value" ng-disabled="value.contractConversionFactorOptions.id == 3">	
         		</td>
         		<td>
-        			<select name="Product {{$index}} mass UOM" ng-model="value.volumeUom" ng-options="item as item.name for item in vm.listsCache.UomVolume track by item.id" class="form-control"></select>
+        			<select name="Product {{$index}} mass UOM" ng-model="value.volumeUom" ng-options="item as item.name for item in vm.listsCache.UomVolume track by item.id" class="form-control" ng-disabled="value.contractConversionFactorOptions.id == 3"></select>
         		</td>
                 <td>
                     <select name="Product {{$index}} conversion factor" ng-model="value.contractConversionFactorOptions" ng-options="item as item.name for item in vm.listsCache.ContractConversionFactorOptions track by item.id" class="form-control"></select>
