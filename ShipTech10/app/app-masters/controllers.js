@@ -8041,12 +8041,17 @@ APP_MASTERS.controller('Controller_Master', [
                     $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/getProdDefaultConversionFactors`, payload).then((response) => {
                         console.log(response);
                         if (response.data.payload != 'null') {
+                            let contractConversionFactor = {
+                                id: 3,
+                                name: "Standard (Product)"
+                            }
                             let object = {
                                 id: 0,
                                 product : selectedProduct.product,
                                 value: response.data.payload.value,
                                 massUom: response.data.payload.massUom,
                                 volumeUom: response.data.payload.volumeUom,
+                                contractConversionFactorOptions: contractConversionFactor
                             };
                             $scope.formValues.products[index].conversionFactors.push(object);
                         }
