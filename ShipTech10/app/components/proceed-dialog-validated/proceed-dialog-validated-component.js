@@ -1,6 +1,7 @@
 angular.module('shiptech.components')
-    .controller('ProceedDialogValidatedController', [ '$scope', '$state', '$window', '$element', '$attrs', '$timeout', 'uiApiModel', 'MOCKUP_MAP', 'STATE', 'groupOfRequestsModel',
-        function($scope, $state, $window, $element, $attrs, $timeout, uiApiModel, MOCKUP_MAP, STATE, groupOfRequestsModel) {
+    .controller('ProceedDialogValidatedController', [ '$scope', '$state', '$window', '$element', '$attrs', '$timeout', '$tenantSettings',
+    'tenantService','uiApiModel', 'MOCKUP_MAP', 'STATE', 'groupOfRequestsModel',
+        function($scope, $state, $window, $element, $attrs, $timeout,  $tenantSettings, tenantService, uiApiModel, MOCKUP_MAP, STATE, groupOfRequestsModel) {
             $scope.STATE = STATE;
 
             let ctrl = this;
@@ -8,6 +9,9 @@ angular.module('shiptech.components')
             ctrl.$onChanges = function(changes) {
 
             };
+            tenantService.tenantSettings.then((settings) => {
+                ctrl.tenantSettings = settings.payload;
+            })
 
             ctrl.gotoGroupOfRequests = function(request) {
 
