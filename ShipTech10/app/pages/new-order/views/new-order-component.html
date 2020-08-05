@@ -1084,7 +1084,7 @@
                                 </th>
                                 <th id="generatedThId194" ng-if="$ctrl.data.status.id != $ctrl.STATUS['Cancelled'].id"
                                     style="vertical-align: middle;"></th>
-                                <th id="generatedThId195" ng-if="column.visible && column.caption != 'PAGES.NEW_ORDER.CONTRACT_ID' &&  column.caption != 'PAGES.NEW_ORDER.FORMULA_DESCRIPTION' && column.caption != 'PAGES.NEW_ORDER.FORMULA_DETAILS' && column.caption != 'PAGES.NEW_ORDER.PRICING_DATE' && $ctrl.tenantSettings.shiptechLite" ng-repeat="column in $ctrl.productColumns">
+                                <th id="generatedThId195" ng-if="column.visible && column.caption != 'PAGES.NEW_ORDER.CONTRACT_ID' &&  column.caption != 'PAGES.NEW_ORDER.FORMULA_DESCRIPTION' && column.caption != 'PAGES.NEW_ORDER.FORMULA_DETAILS' && column.caption != 'PAGES.NEW_ORDER.PRICING_DATE' && column.caption != 'PAGES.NEW_ORDER.MANUAL_PRICING_DATE_OVERRIDE' && $ctrl.tenantSettings.shiptechLite" ng-repeat="column in $ctrl.productColumns">
                                     {{ column.caption | translate }}
                                 </th>
                                 <th id="generatedThId195" ng-if="column.visible  && !$ctrl.tenantSettings.shiptechLite" ng-repeat="column in $ctrl.productColumns">
@@ -1427,10 +1427,8 @@
                                             </span>
                                     </div>
                                 </td>
-                                <td ng-if="$ctrl.enableManualPricingDateOverride"
-                                    style="max-width: 180px;min-width: 140px">
-
-
+                                <td ng-if="$ctrl.enableManualPricingDateOverride && !$ctrl.tenantSettings.shiptechLite"
+                                    style="max-width: 180px;min-width: 140px" >
                                     <span ng-if="!$ctrl.data.id && $ctrl.data.products"
                                           ng-init="$ctrl.manualPricingDateOverride.id ? ($ctrl.manualPricingDateOverride.id == 1 ? product.manualPricingDateOverride = true : product.manualPricingDateOverride = false) : ''"></span>
                                     <div class="form-group">

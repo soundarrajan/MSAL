@@ -1137,7 +1137,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 ">
+                <div class="col-md-4 " ng-if="!tenantSetting.shiptechLite">
                     <div class="form-group row" ng-init='CM.getOptions({"Name": "specContract", "Type": "dropdown", "masterSource": "YesNoOptions"})'>
                         <label for="specGroupFlowFromContract" class="simpleLookupLabel" style="max-height: initial;">
                             {{ CM.app_id + '.SPEC_FROM_CONTRACT' | translate }}
