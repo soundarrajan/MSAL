@@ -17,10 +17,10 @@ angular.module('shiptech').controller('NavigationTopBarController', [ '$rootScop
     		'recon.edit', // RECON
         ];
 
-        setTimeout(() => {
-            // $scope.shouldDisplayNavigationBar = true;
-            // console.error($state.params);
-        }, 3000);
+        // setTimeout(() => {
+        //     $scope.shouldDisplayNavigationBar = true;
+        //     console.error($state.params);
+        // }, 3000);
 
         $scope.tenantSettings = $tenantSettings;
 
@@ -36,19 +36,26 @@ angular.module('shiptech').controller('NavigationTopBarController', [ '$rootScop
             // console.error('scope params', $state.params);
         });
 
+		$scope.checkIfShouldDisplayNavigationBar = function(){
+			var possiblePages = ['default.edit-request', 'default.new-request', 'contracts.edit', 'default.group-of-requests', 'default.new-order', 'default.edit-order', 'delivery.edit', 'labs.edit', 'claims.edit', 'invoices.edit', 'recon.edit'];
+			if(possiblePages.indexOf($scope.currentPage) >= 0){
+				return true;
+			}
+			return false;
+		};
+
     	$scope.initNavigation = function(resize) {
-            if (window.location.href != $scope.lastInitFor) {
-                $scope.lastInitFor = window.location.href;
-                $scope.shouldDisplayNavigationBar = false;
-                createNavigationItems();
+			$scope.shouldDisplayNavigationBar = $scope.checkIfShouldDisplayNavigationBar();
+			if($scope.shouldDisplayNavigationBar){
+				createNavigationItems();
                 setItemsActiveStatus();
                 setResponsiveItemsNames();
-            }
-    	};
+			}
+		};
+
     	$(window).resize(() => {
             $scope.initNavigation(true);
     	});
-
 
 		var createNavigationItems = function(payload) {
             // indexStatus = calculate if is previous, current or next
@@ -236,7 +243,6 @@ angular.module('shiptech').controller('NavigationTopBarController', [ '$rootScop
                     }
                 });
             };
-
             markNavigationItems();
     	};
 
