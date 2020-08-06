@@ -3301,7 +3301,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 console.log(ctrl.data.products);
             } else if(!product.overrideConversionFactor && product.contract) {
                 Payload = {
-                    "ContractProductId": product.contract.id,
+                    "ContractProductId": product.contractProductId,
                     "ProductId": product.product.id
                 }
                 payload = { Payload: Payload };
