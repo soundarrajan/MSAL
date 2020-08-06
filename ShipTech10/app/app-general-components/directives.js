@@ -430,6 +430,17 @@ Number(function() {
                                 }
                             }
                         }
+
+                        if (attrs.screen == 'requestslist') {
+                            for (var i = newValue.colModel.length - 1; i >= 0; i--) {
+                                if (newValue.colModel[i].name == 'hasOpsValidation') {
+                                    if (scope.tenantSetting.shiptechLite) {
+                                        newValue.colModel.splice(i, 1);
+                                    }
+                                }
+                            }
+                        }
+                        
                         if (attrs.screen == 'orderlist') {
                             for (var i = newValue.colModel.length - 1; i >= 0; i--) {
                                 if (newValue.colModel[i].name == 'isVerified.name' || newValue.colModel[i].name == 'verifiedBy.displayName' || newValue.colModel[i].name == 'verifiedOn') {
@@ -437,6 +448,12 @@ Number(function() {
                                         newValue.colModel.splice(i, 1);
                                     }
                                 }
+                                if (newValue.colModel[i].name == 'hasSellerConfirmationDocument') {
+                                    if (scope.tenantSetting.shiptechLite) {
+                                        newValue.colModel.splice(i, 1);
+                                    }
+                                }
+
                             }
                             for (var i = newValue.rowActions.length - 1; i >= 0; i--) {
                                 if (newValue.rowActions[i].name == '') {
