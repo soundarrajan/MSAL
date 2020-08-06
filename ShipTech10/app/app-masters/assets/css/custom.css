@@ -278,6 +278,11 @@ clc-table-list>.jqgrid_component {
     padding-top: 0px;
     margin-left: 0;
 }
+/*to fix input overflow in master strategy edit*/
+.dynamic_form_editor .portlet .mt-radio-list label{
+    padding-right: 20px;
+    float: left;
+}
 
 .dynamic_form_editor .portlet.light {
     padding: 12px 20px 15px 20px;
@@ -364,7 +369,7 @@ form.submitted input.ng-invalid, form.submitted select.ng-invalid, form.submitte
     padding-top: 25px;
 }
 
-.dynamic_form_editor .portlet .form-group label:not(.mt-checkbox) {
+.dynamic_form_editor .portlet .form-group label:not(.mt-checkbox):not(.mt-radio){
     width: 125px;
     float: left;
     padding-right: 3px;
@@ -1066,9 +1071,9 @@ display: flex;
 }
 
 /*payment term master*/
-.form_input.form_input_paymentConditionType .mt-radio-list label.mt-radio{
+/* .form_input.form_input_paymentConditionType .mt-radio-list label.mt-radio{
     width: 280px !important;
-}
+} commented because it was fixed at line 282*/ 
 
 /* end UI Update Inatech */
 .ui-grid-column-menu-button{display: none;}
