@@ -1,5 +1,5 @@
-angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$element', '$listsCache', '$attrs', '$timeout', '$state', '$filter', '$stateParams', '$templateCache', '$tenantSettings', '$uibModal', 'STATE', 'SCREEN_LAYOUTS', 'LOOKUP_TYPE', 'LOOKUP_MAP', 'IDS', 'ORDER_COMMANDS', 'VALIDATION_MESSAGES', 'SCREEN_ACTIONS', 'COST_TYPE_IDS', 'COMPONENT_TYPE_IDS', 'EMAIL_TRANSACTION', 'uiApiModel', 'listsModel', 'orderModel', 'lookupModel', 'screenActionsModel', 'tenantService', 'newRequestModel', '$uibModal', 'Factory_Master', 'Factory_Admin', '$rootScope', '$compile', 'statusColors', '$window', '$location',
-    function($scope, $element, $listsCache, $attrs, $timeout, $state, $filter, $stateParams, $templateCache, $tenantSettings, uibModal, STATE, SCREEN_LAYOUTS, LOOKUP_TYPE, LOOKUP_MAP, IDS, ORDER_COMMANDS, VALIDATION_MESSAGES, SCREEN_ACTIONS, COST_TYPE_IDS, COMPONENT_TYPE_IDS, EMAIL_TRANSACTION, uiApiModel, listsModel, orderModel, lookupModel, screenActionsModel, tenantService, newRequestModel, $uibModal, Factory_Master, Factory_Admin, $rootScope, $compile, statusColors, $window, $location) {
+angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$scope', '$element', '$listsCache', '$attrs', '$timeout','$http', '$state', '$filter', '$stateParams', '$templateCache', '$tenantSettings', '$uibModal', 'STATE', 'SCREEN_LAYOUTS', 'LOOKUP_TYPE', 'LOOKUP_MAP', 'IDS', 'ORDER_COMMANDS', 'VALIDATION_MESSAGES', 'SCREEN_ACTIONS', 'COST_TYPE_IDS', 'COMPONENT_TYPE_IDS', 'EMAIL_TRANSACTION', 'uiApiModel', 'listsModel', 'orderModel', 'lookupModel', 'screenActionsModel', 'tenantService', 'newRequestModel', '$uibModal', 'Factory_Master', 'Factory_Admin', '$rootScope', '$compile', 'statusColors', '$window', '$location',
+    function(API, $scope, $element, $listsCache, $attrs, $timeout, $http, $state, $filter, $stateParams, $templateCache, $tenantSettings, uibModal, STATE, SCREEN_LAYOUTS, LOOKUP_TYPE, LOOKUP_MAP, IDS, ORDER_COMMANDS, VALIDATION_MESSAGES, SCREEN_ACTIONS, COST_TYPE_IDS, COMPONENT_TYPE_IDS, EMAIL_TRANSACTION, uiApiModel, listsModel, orderModel, lookupModel, screenActionsModel, tenantService, newRequestModel, $uibModal, Factory_Master, Factory_Admin, $rootScope, $compile, statusColors, $window, $location) {
         let ctrl = this;
         ctrl.state = $state;
         ctrl.STATE = STATE;
@@ -1194,6 +1194,16 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
 	            newProduct.productType.productTypeGroup = server_data.data.payload.productTypeGroup;
                 // newProduct.specGroups = server_data.data.payload;
             });
+            payload = { Payload: product.id };
+            $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/getProdDefaultConversionFactors`, payload).then((response) => {
+                console.log(response);
+                if (response.data.payload != 'null') {
+                    newProduct.convFactorMassUom = response.data.payload.massUom;
+                    newProduct.convFactorValue = response.data.payload.value;
+                    newProduct.convFactorVolumeUom = response.data.payload.volumeUom;
+
+                }
+            }); 
             newProduct.quantityUom = {};
             newProduct.currency = ctrl.currency;
             // newProduct.fsicalSupplier = angular.copy(ctrl.data.seller);
@@ -3240,6 +3250,10 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
                 ctrl.data.products[idx].formula = angular.copy(selection.formula);
                 ctrl.data.products[idx].agreementType = selection.contractAgreementType ?
                     angular.copy(selection.contractAgreementType) : ctrl.defaultContractAgreementType;
+                ctrl.data.products[idx].convFactorMassUom = angular.copy(selection.conversionFactors.massUom);
+                ctrl.data.products[idx].convFactorValue = angular.copy(selection.conversionFactors.value);
+                ctrl.data.products[idx].convFactorVolumeUom = angular.copy(selection.conversionFactors.volumeUom);
+
                 ctrl.data.products[idx].requiredFields = [];
                 ctrl.data.products[idx].physicalSupplier = selection.physicalSupplier;
                 if (ctrl.procurementSettings.order.specGroupFlowFromContract.name == 'Yes') {
@@ -3272,6 +3286,39 @@ angular.module('shiptech.pages').controller('NewOrderController', [ '$scope', '$
             });
         };
 
+        ctrl.overrideConversion = function(product, index) {
+            if (!product.overrideConversionFactor && !product.contract) {
+                payload = { Payload: product.product.id };
+                $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/getProdDefaultConversionFactors`, payload).then((response) => {
+                    console.log(response);
+                    if (response.data.payload != 'null') {
+                        ctrl.data.products[index].convFactorMassUom = response.data.payload.massUom;
+                        ctrl.data.products[index].convFactorValue = response.data.payload.value;
+                        ctrl.data.products[index].convFactorVolumeUom = response.data.payload.volumeUom;
+
+                    }
+                }); 
+                console.log(ctrl.data.products);
+            } else if(!product.overrideConversionFactor && product.contract) {
+                Payload = {
+                    "ContractProductId": product.contract.id,
+                    "ProductId": product.product.id
+                }
+                payload = { Payload: Payload };
+                $http.post(`${API.BASE_URL_DATA_CONTRACTS  }/api/contract/contract/getConversionFactorsForContractProduct`, payload).then((response) => {
+                    console.log(response);
+                    if (response.data.payload != 'null') {
+                        let res = response.data.payload[0];
+                        ctrl.data.products[index].convFactorMassUom = res.massUom;
+                        ctrl.data.products[index].convFactorValue = res.value;
+                        ctrl.data.products[index].convFactorVolumeUom = res.volumeUom;
+
+                    }
+                }); 
+
+            }
+            console.log(product);
+        }
 
         $scope.addAdditionalCostByContractProductId = function(contractProductId, productIdx, isSameContract) {
             //     	if (ctrl.data.id) {
