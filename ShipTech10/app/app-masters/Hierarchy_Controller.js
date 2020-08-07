@@ -183,6 +183,8 @@ APP_MASTERS.controller('Master_Hierarchy', [
 						$(this).children(".children").show();
 						$(this).children(".expander").find("i").addClass("collapsed");
 					}else {
+						$(this).children(".children").hide();
+						$(this).children(".expander").find("i").addClass("collapsed");
 						$(this).hide();
 					}
 				});0.
