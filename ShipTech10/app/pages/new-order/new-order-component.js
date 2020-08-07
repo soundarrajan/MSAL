@@ -1417,6 +1417,16 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 					ctrl.data.products[index].pricingType = null;
 					ctrl.data.products[index].formulaDescription = null;
 					ctrl.data.products[index].changedOnConfirmedOrder = true;
+                    payload = { Payload: product.id };
+                    $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/getProdDefaultConversionFactors`, payload).then((response) => {
+                        console.log(response);
+                        if (response.data.payload != 'null') {
+                            ctrl.data.products[index].convFactorMassUom = response.data.payload.massUom;
+                            ctrl.data.products[index].convFactorValue = response.data.payload.value;
+                            ctrl.data.products[index].convFactorVolumeUom = response.data.payload.volumeUom;
+
+                        }
+                    }); 
                     let productTypeGroup  = product.productTypeGroup;
                     let sludgeProductTypeGroup = _.find(ctrl.listsCache.ProductTypeGroup, { name : 'Sludge' });
                     if (productTypeGroup.id == sludgeProductTypeGroup.id) {
