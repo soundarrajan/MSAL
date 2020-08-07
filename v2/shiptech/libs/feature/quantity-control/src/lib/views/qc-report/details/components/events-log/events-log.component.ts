@@ -54,12 +54,16 @@ export class EventsLogComponent implements OnInit, OnDestroy {
 
   @HostListener('click')
   clickInside($event) {
-    if (this.gridViewModel.actionsColumn.cellRendererParams.ngTemplate._projectedViews.length) {
-      let element = document.querySelector<HTMLElement>("#quantityControlEventsLog > .ag-root-wrapper > :not(.ag-theme-balham) + .ag-theme-balham > .ag-menu ");
-      if (element) {
-        element.style.marginTop = this.gridViewModel.actionsColumn.cellRendererParams.ngTemplate._projectedViews.length == 1 ? "-80px" : "-" + (this.gridViewModel.actionsColumn.cellRendererParams.ngTemplate._projectedViews.length * 42 + 30) + "px";
+    if (this.gridViewModel.actionsColumn.cellRendererParams.ngTemplate._projectedViews) {
+      if (this.gridViewModel.actionsColumn.cellRendererParams.ngTemplate._projectedViews.length) {
+        let element = document.querySelector<HTMLElement>("#quantityControlEventsLog > .ag-root-wrapper > :not(.ag-theme-balham) + .ag-theme-balham > .ag-menu ");
+        if (element) {
+          element.style.marginTop = this.gridViewModel.actionsColumn.cellRendererParams.ngTemplate._projectedViews.length == 1 ? "-80px" : "-" + (this.gridViewModel.actionsColumn.cellRendererParams.ngTemplate._projectedViews.length * 42 + 30) + "px";
+        }
       }
+
     }
+    
   }
   
 
