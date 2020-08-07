@@ -179,13 +179,13 @@
                 		<span class="pull-right">12M</span>
                 	</div>
 	            </th>
-                <th id="generatedThId157" ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" rowspan="2" style="min-width:170px;">
+                <th ng-if="!$ctrl.tenantSetting.shiptechLite" id="generatedThId157" ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" rowspan="2" style="min-width:170px;">
                 	<div style="margin-bottom: 10px">
 		                Exposure
                 	</div>
 	                (Delivered-Invoiced)
 	            </th>
-                <th id="generatedThId158" ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" rowspan="2" style="min-width:170px;">Claims Last 12m<br/> Close-Open</th>
+                <th ng-if="!$ctrl.tenantSetting.shiptechLite" id="generatedThId158" ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" rowspan="2" style="min-width:170px;">Claims Last 12m<br/> Close-Open</th>
                 <th id="generatedThId159" ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" colspan="{{$ctrl.isSellerHistoryExpanded ? 1 : 2}}" class="{{$ctrl.isSellerHistoryExpanded ? '' : 'left-border'}}" rowspan="2" >Avg. Drop <br/>(Last-First)<br/> ALL PRODUCTS</th>
                 <th id="generatedThId160" ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" rowspan="2"  style="min-width:85px;" >Win rate <br/> Last 12m %</th>
                 <th id="generatedThId161" ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" colspan="3" rowspan="2" ><!-- CREDIT PERIOD --> Payment term</th>
@@ -650,7 +650,7 @@
                 <td ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" ng-class="{'bg-baby-blue-light': $index % 2 != 0, 'bg-baby-blue-dark': $index % 2 == 0}" title="12m">{{sellerDetails.volume12m | number : $ctrl.numberPrecision.amountPrecision }}</td>
     
                     <!-- exposure -->
-                <td ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" ng-class="{'bg-baby-blue-light': $index % 2 != 0, 'bg-baby-blue-dark': $index % 2 == 0}" title="exposure">
+                <td ng-if="$ctrl.sellerHistoryVisibility == 1 && !$ctrl.tenantSetting.shiptechLite" ng-show="$ctrl.isSellerHistoryExpanded" ng-class="{'bg-baby-blue-light': $index % 2 != 0, 'bg-baby-blue-dark': $index % 2 == 0}" title="exposure">
                     <div class="stack-bar" ng-if="sellerDetails.exposureLeft !== undefined && sellerDetails.exposureRight !== undefined">
                         <div class="stack-bar-inner stack-bar-left" ng-style="{width: $ctrl.calcStackBarStyles(sellerDetails.exposureLeft, sellerDetails.exposureRight).left}">
                             {{sellerDetails.exposureLeft | number : $ctrl.numberPrecision.amountPrecision }}
@@ -661,7 +661,7 @@
                     </div></td>
     
                     <!-- claims 12m-->
-                <td ng-if="$ctrl.sellerHistoryVisibility == 1" ng-show="$ctrl.isSellerHistoryExpanded" ng-class="{'bg-baby-blue-light': $index % 2 != 0, 'bg-baby-blue-dark': $index % 2 == 0}" title="closedClaims12mValue">
+                <td ng-if="$ctrl.sellerHistoryVisibility == 1 && !$ctrl.tenantSetting.shiptechLite" ng-show="$ctrl.isSellerHistoryExpanded" ng-class="{'bg-baby-blue-light': $index % 2 != 0, 'bg-baby-blue-dark': $index % 2 == 0}" title="closedClaims12mValue">
                         <div class="stack-bar" ng-if="sellerDetails.closedClaims12mValue !== undefined && sellerDetails.openClaims12mValue !== undefined">
                             <div class="stack-bar-inner stack-bar-left" ng-style="{width: $ctrl.calcStackBarStyles(sellerDetails.closedClaims12mValue, sellerDetails.openClaims12mValue).left}">
                                 {{sellerDetails.closedClaims12mValue | number : $ctrl.numberPrecision.amountPrecision }}
