@@ -8067,23 +8067,22 @@ APP_MASTERS.controller('Controller_Master', [
                     if (response.data.payload != 'null') {
                         let productTypeGroup  = response.data.payload.productTypeGroup;
                         let sludgeProductTypeGroup = _.find(vm.listsCache.ProductTypeGroup, { name : 'Sludge' });
-                        if (productTypeGroup.id == sludgeProductTypeGroup.id) {
-                            payload = { Payload: {} };
-                            $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/listProductTypeGroupsDefaults`, payload).then((response) => {
-                                console.log(response);
-                                if (response.data.payload != 'null') {
-                                   let defaultUomAndCompany = _.find(response.data.payload, function(object) {
-                                        return object.id == productTypeGroup.id;
-                                   });
-                                   console.log(defaultUomAndCompany);
-                                   if (defaultUomAndCompany) {
-                                        $scope.formValues.products[index].priceUom = defaultUomAndCompany.defaultUom;
-                                        $scope.formValues.products[index].mtmPriceUom = defaultUomAndCompany.defaultUom;
-                                   }
-                                  
-                                }
-                            });    
-                        }
+                        payload = { Payload: {} };
+                        $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/listProductTypeGroupsDefaults`, payload).then((response) => {
+                            console.log(response);
+                            if (response.data.payload != 'null') {
+                               let defaultUomAndCompany = _.find(response.data.payload, function(object) {
+                                    return object.id == productTypeGroup.id;
+                               });
+                               console.log(defaultUomAndCompany);
+                               if (defaultUomAndCompany) {
+                                    $scope.formValues.products[index].priceUom = defaultUomAndCompany.defaultUom;
+                                    $scope.formValues.products[index].mtmPriceUom = defaultUomAndCompany.defaultUom;
+                               }
+                              
+                            }
+                        });    
+                        
                        
                     }
             });
