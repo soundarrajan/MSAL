@@ -1427,25 +1427,25 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 
                         }
                     }); 
-                    let productTypeGroup  = product.productTypeGroup;
-                    let sludgeProductTypeGroup = _.find(ctrl.listsCache.ProductTypeGroup, { name : 'Sludge' });
-                    payload = { Payload: {} };
-                    $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/listProductTypeGroupsDefaults`, payload).then((response) => {
-                        if (response.data.payload != 'null') {
-                           let defaultUomAndCompany = _.find(response.data.payload, function(object) {
-                                return object.id == productTypeGroup.id;
-                           });
-                           console.log(defaultUomAndCompany);
-                           if (defaultUomAndCompany) {
-                                ctrl.data.products[index].quantityUom = defaultUomAndCompany.defaultUom;
-                                ctrl.data.products[index].minMaxQuantityUom = defaultUomAndCompany.defaultUom;
-                                ctrl.data.products[index].priceUom = defaultUomAndCompany.defaultUom;
-                                if (defaultUomAndCompany.isPriority) {
-                                    ctrl.data.paymentCompany = defaultUomAndCompany.defaultCompany;
-                                } 
-                           }
-                        }
-                    });    
+                    // let productTypeGroup  = product.productTypeGroup;
+                    // let sludgeProductTypeGroup = _.find(ctrl.listsCache.ProductTypeGroup, { name : 'Sludge' });
+                    // payload = { Payload: {} };
+                    // $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/listProductTypeGroupsDefaults`, payload).then((response) => {
+                    //     if (response.data.payload != 'null') {
+                    //        let defaultUomAndCompany = _.find(response.data.payload, function(object) {
+                    //             return object.id == productTypeGroup.id;
+                    //        });
+                    //        console.log(defaultUomAndCompany);
+                    //        if (defaultUomAndCompany) {
+                    //             ctrl.data.products[index].quantityUom = defaultUomAndCompany.defaultUom;
+                    //             ctrl.data.products[index].minMaxQuantityUom = defaultUomAndCompany.defaultUom;
+                    //             ctrl.data.products[index].priceUom = defaultUomAndCompany.defaultUom;
+                    //             if (defaultUomAndCompany.isPriority) {
+                    //                 ctrl.data.paymentCompany = defaultUomAndCompany.defaultCompany;
+                    //             } 
+                    //        }
+                    //     }
+                    // });    
                                           
                 }
                 ctrl.getOrderContractOptions(getContractOptionParam);                
