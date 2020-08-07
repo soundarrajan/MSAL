@@ -2,8 +2,12 @@
 	<h4 class="font-blue-madison ng-binding">
 	    Default Conversion Details
 	</h4>
+    <a style="position: relative;top: -40px;left: 96%;" class="btn btn-default" ng-click="CM.saveConversionFactors(formValues.products[$index].conversionFactors)" ng-disabled="formValues.hasInvoicedOrder">
+        Save
+    </a>
+   
 </div>
-<div class="custom-hardcoded-table ng-scope" ng-init="CM.getAdditionalCostsComponentTypes()">
+<div style="position: relative;top: -30px;" class="custom-hardcoded-table ng-scope" ng-init="CM.getAdditionalCostsComponentTypes()">
     <table class="table-body" style="width:100%">
         <thead>
             <tr>

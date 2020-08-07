@@ -8088,5 +8088,20 @@ APP_MASTERS.controller('Controller_Master', [
             });
 
         }
+
+        vm.saveConversionFactors = function(conversionFactors) {
+            console.log(conversionFactors);
+            payload = { Payload: conversionFactors };
+            $http.post(`${API.BASE_URL_DATA_CONTRACTS  }/api/contract/contract/saveConversionFactorsForContractProduct`, payload).then((response) => {
+                    console.log(response);
+                    if (response.data.payload != 'null') {
+                        let res = response.data.payload[0];
+                        ctrl.data.products[index].convFactorMassUom = res.massUom;
+                        ctrl.data.products[index].convFactorValue = res.value;
+                        ctrl.data.products[index].convFactorVolumeUom = res.volumeUom;
+
+                    }
+            }); 
+        }
     }
 ]);
