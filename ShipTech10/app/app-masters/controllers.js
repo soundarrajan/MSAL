@@ -7962,7 +7962,7 @@ APP_MASTERS.controller('Controller_Master', [
         });
 
         $scope.addProductToConversion = function(index, allowProduct, isMainProduct) {
-            $scope.defaultUomSludge(index);
+             $scope.defaultUomSludge(index);
             if (!$scope.formValues.products[index].conversionFactors) {
                 $scope.formValues.products[index].conversionFactors = [];
             }
@@ -8061,7 +8061,7 @@ APP_MASTERS.controller('Controller_Master', [
             });
         };
 
-        $scope.addProductToConversion = function(index) {
+        $scope.defaultUomSludge = function(index) {
             payload = { Payload: $scope.formValues.products[index].product.id };
                 $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/get`, payload).then((response) => {
                     if (response.data.payload != 'null') {
