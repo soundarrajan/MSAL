@@ -1407,16 +1407,40 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 var getContractOptionParam = { product: product };
                 if (typeof(index) != 'undefined' ) {
                 	getContractOptionParam.quantityUom = ctrl.data.products[index].quantityUom;
-                    	ctrl.data.products[index].contract = null;
-                    	ctrl.data.products[index].contractProductId = null;
-                    	ctrl.data.products[index].contractId = null;
-                    	ctrl.data.products[index].formula = null;
-                    	ctrl.data.products[index].price = null;
-						ctrl.data.products[index].agreementType = null;
-						ctrl.data.products[index].physicalSupplier = null;
-						ctrl.data.products[index].pricingType = null;
-						ctrl.data.products[index].formulaDescription = null;
-						ctrl.data.products[index].changedOnConfirmedOrder = true;
+                	ctrl.data.products[index].contract = null;
+                	ctrl.data.products[index].contractProductId = null;
+                	ctrl.data.products[index].contractId = null;
+                	ctrl.data.products[index].formula = null;
+                	ctrl.data.products[index].price = null;
+					ctrl.data.products[index].agreementType = null;
+					ctrl.data.products[index].physicalSupplier = null;
+					ctrl.data.products[index].pricingType = null;
+					ctrl.data.products[index].formulaDescription = null;
+					ctrl.data.products[index].changedOnConfirmedOrder = true;
+                    let productTypeGroup  = product.productTypeGroup;
+                    let sludgeProductTypeGroup = _.find(ctrl.listsCache.ProductTypeGroup, { name : 'Sludge' });
+                    if (productTypeGroup.id == sludgeProductTypeGroup.id) {
+                        payload = { Payload: {} };
+                        $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/listProductTypeGroupsDefaults`, payload).then((response) => {
+                            if (response.data.payload != 'null') {
+                               let defaultUomAndCompany = _.find(response.data.payload, function(object) {
+                                    return object.id == productTypeGroup.id;
+                               });
+                               console.log(defaultUomAndCompany);
+                               if (defaultUomAndCompany) {
+                                    ctrl.data.products[index].quantityUom = defaultUomAndCompany.defaultUom;
+                                    ctrl.data.products[index].minMaxQuantityUom = defaultUomAndCompany.defaultUom;
+                                    ctrl.data.products[index].priceUom = defaultUomAndCompany.defaultUom;
+                                    if (defaultUomAndCompany.isPriority) {
+                                        ctrl.data.paymentCompany = defaultUomAndCompany.defaultCompany;
+                                    } else {
+                                        ctrl.data.carrierCompany = defaultUomAndCompany.defaultCompany;
+                                    }
+                               }
+                            }
+                        });    
+                    }
+                      
                 }
                 ctrl.getOrderContractOptions(getContractOptionParam);                
                 // If there's a set lookupInput, it means we need

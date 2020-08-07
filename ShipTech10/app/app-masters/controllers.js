@@ -7962,6 +7962,7 @@ APP_MASTERS.controller('Controller_Master', [
         });
 
         $scope.addProductToConversion = function(index, allowProduct, isMainProduct) {
+            $scope.defaultUomSludge(index);
             if (!$scope.formValues.products[index].conversionFactors) {
                 $scope.formValues.products[index].conversionFactors = [];
             }
@@ -8059,5 +8060,34 @@ APP_MASTERS.controller('Controller_Master', [
                 }
             });
         };
+
+        $scope.addProductToConversion = function(index) {
+            payload = { Payload: $scope.formValues.products[index].product.id };
+                $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/get`, payload).then((response) => {
+                    if (response.data.payload != 'null') {
+                        let productTypeGroup  = response.data.payload.productTypeGroup;
+                        let sludgeProductTypeGroup = _.find(vm.listsCache.ProductTypeGroup, { name : 'Sludge' });
+                        if (productTypeGroup.id == sludgeProductTypeGroup.id) {
+                            payload = { Payload: {} };
+                            $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/listProductTypeGroupsDefaults`, payload).then((response) => {
+                                console.log(response);
+                                if (response.data.payload != 'null') {
+                                   let defaultUomAndCompany = _.find(response.data.payload, function(object) {
+                                        return object.id == productTypeGroup.id;
+                                   });
+                                   console.log(defaultUomAndCompany);
+                                   if (defaultUomAndCompany) {
+                                        $scope.formValues.products[index].priceUom = defaultUomAndCompany.defaultUom;
+                                        $scope.formValues.products[index].mtmPriceUom = defaultUomAndCompany.defaultUom;
+                                   }
+                                  
+                                }
+                            });    
+                        }
+                       
+                    }
+            });
+
+        }
     }
 ]);

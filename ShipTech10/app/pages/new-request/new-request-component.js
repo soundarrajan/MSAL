@@ -2164,7 +2164,8 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 	    		if (v.uniqueIdUI == prodIdx) {
 	    			productKey = k;
 	    		}
-	    	});             
+	    	});   
+
             lookupModel.get(LOOKUP_TYPE.PRODUCTS, productId).then((server_data) => {
 				ctrl.request.locations[locIdx].products[productKey].product = server_data.payload;
 
@@ -2178,6 +2179,25 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 			                    ctrl.request.locations[locIdx].products[productKey].specGroup = v2;
 	                    	}
 	                    });
+                        let productTypeGroup  = server_data.payload.productTypeGroup;
+                        let sludgeProductTypeGroup = _.find(ctrl.listsCache.ProductTypeGroup, { name : 'Sludge' });
+                        if (productTypeGroup.id == sludgeProductTypeGroup.id) {
+                            payload = { Payload: {} };
+                            $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/listProductTypeGroupsDefaults`, payload).then((response) => {
+                                if (response.data.payload != 'null') {
+                                   let defaultUomAndCompany = _.find(response.data.payload, function(object) {
+                                        return object.id == productTypeGroup.id;
+                                   });
+                                   console.log(defaultUomAndCompany);
+                                   if (defaultUomAndCompany) {
+                                       ctrl.request.locations[locIdx].products[productKey].robOnArrivalUom = defaultUomAndCompany.defaultUom;
+                                       ctrl.request.locations[locIdx].products[productKey].uom = defaultUomAndCompany.defaultUom;
+                                       ctrl.request.locations[locIdx].products[productKey].roundVoyageConsumptionUom = defaultUomAndCompany.defaultUom;
+                                   }
+                                }
+                            });    
+                        }
+                      
 	                });
                 });
                 lookupModel.getSpecParameterForRequestProduct(server_data.payload.id).then((server_data) => {
