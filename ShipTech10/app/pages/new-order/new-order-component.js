@@ -1312,6 +1312,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             });
         };
         ctrl.setPaymentCompany = function() {
+        	ctrl.carrierIsPaymentCompany = false;
             if (ctrl.data && $.isEmptyObject(ctrl.data.paymentCompany)) {
                 Factory_Master.get_master_entity(ctrl.data.carrierCompany.id, 'company', 'masters', (response) => {
                     var canDefault = 0;
@@ -1321,7 +1322,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                         }
                     });
                     if (canDefault >= 2) {
-                        angular.copy(ctrl.procurementSettings.order.defaultPaymentCompany, ctrl.data.paymentCompany);
+			        	ctrl.carrierIsPaymentCompany = true;
+                        angular.copy(ctrl.data.carrierCompany, ctrl.data.paymentCompany);
                     }
                 });
             }
@@ -1427,25 +1429,33 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 
                         }
                     }); 
-                    // let productTypeGroup  = product.productTypeGroup;
-                    // let sludgeProductTypeGroup = _.find(ctrl.listsCache.ProductTypeGroup, { name : 'Sludge' });
-                    // payload = { Payload: {} };
-                    // $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/listProductTypeGroupsDefaults`, payload).then((response) => {
-                    //     if (response.data.payload != 'null') {
-                    //        let defaultUomAndCompany = _.find(response.data.payload, function(object) {
-                    //             return object.id == productTypeGroup.id;
-                    //        });
-                    //        console.log(defaultUomAndCompany);
-                    //        if (defaultUomAndCompany) {
-                    //             ctrl.data.products[index].quantityUom = defaultUomAndCompany.defaultUom;
-                    //             ctrl.data.products[index].minMaxQuantityUom = defaultUomAndCompany.defaultUom;
-                    //             ctrl.data.products[index].priceUom = defaultUomAndCompany.defaultUom;
-                    //             if (defaultUomAndCompany.isPriority) {
-                    //                 ctrl.data.paymentCompany = defaultUomAndCompany.defaultCompany;
-                    //             } 
-                    //        }
-                    //     }
-                    // });    
+                    let productTypeGroup  = product.productTypeGroup;
+                    let sludgeProductTypeGroup = _.find(ctrl.listsCache.ProductTypeGroup, { name : 'Sludge' });
+                    payload = { Payload: {} };
+                    $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/listProductTypeGroupsDefaults`, payload).then((response) => {
+                        if (response.data.payload != 'null') {
+                           let defaultUomAndCompany = _.find(response.data.payload, function(object) {
+                                return object.id == productTypeGroup.id;
+                           });
+                           console.log(defaultUomAndCompany);
+                           if (defaultUomAndCompany) {
+                                ctrl.data.products[index].quantityUom = defaultUomAndCompany.defaultUom;
+                                ctrl.data.products[index].minMaxQuantityUom = defaultUomAndCompany.defaultUom;
+                                ctrl.data.products[index].priceUom = defaultUomAndCompany.defaultUom;
+                                if (defaultUomAndCompany.isPriority) {
+                                    ctrl.data.paymentCompany = defaultUomAndCompany.defaultCompany;
+                                } else {
+                                	if ($("#id_paymentCompany").hasClass("ng-pristine") && !ctrl.orderId) {
+	                                	if (ctrl.carrierIsPaymentCompany) {
+					                        	angular.copy(ctrl.data.carrierCompany, ctrl.data.paymentCompany);
+	                                	} else {
+		                                    ctrl.data.paymentCompany = defaultUomAndCompany.defaultCompany;
+	                                	}
+                                	}
+                                }
+                           }
+                        }
+                    });    
                                           
                 }
                 ctrl.getOrderContractOptions(getContractOptionParam);                
