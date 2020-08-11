@@ -1,7 +1,7 @@
-﻿commit 4d66701953a8bed81d94767df63ad3f6ec6eed3b
+﻿commit 615b0757874ef0d043284dd50b3d430d549f8166
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Tue Aug 11 10:26:13 2020 +0300
+Date:   Tue Aug 11 16:44:23 2020 +0300
 
-    Added 1.0.34 version of email-template-editor (user are able to add the contacts and custom email in the master template.)
+    Added 1.0.39 version of email template editor
 
 branch: master
