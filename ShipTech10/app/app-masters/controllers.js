@@ -7962,7 +7962,7 @@ APP_MASTERS.controller('Controller_Master', [
         });
 
         $scope.addProductToConversion = function(index, allowProduct, isMainProduct) {
-            // $scope.defaultUomSludge(index);
+            $scope.defaultUomSludge(index);
             if (!$scope.formValues.products[index].conversionFactors) {
                 $scope.formValues.products[index].conversionFactors = [];
             }
