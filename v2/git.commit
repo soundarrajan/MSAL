@@ -1,7 +1,7 @@
-﻿commit 502e93751e2eb201abfb0299e3545d8ff7b28cde
+﻿commit 4d66701953a8bed81d94767df63ad3f6ec6eed3b
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Fri Aug 7 14:07:59 2020 +0300
+Date:   Tue Aug 11 10:26:13 2020 +0300
 
-    Fixed error when add new events
+    Added 1.0.34 version of email-template-editor (user are able to add the contacts and custom email in the master template.)
 
 branch: master
