@@ -1,7 +1,9 @@
-﻿commit 615b0757874ef0d043284dd50b3d430d549f8166
+﻿commit 0fc4a6bcaaf96bc66cfec930c71f4a6e6f0e7642
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Tue Aug 11 16:44:23 2020 +0300
+Date:   Wed Aug 12 09:39:41 2020 +0300
 
-    Added 1.0.39 version of email template editor
+    Added 1.0.40 version of email template editor (Fixed displaying outside of the subject in the preview for New RFQ
+    Revoke RFQ
+    Requote)
 
 branch: master
