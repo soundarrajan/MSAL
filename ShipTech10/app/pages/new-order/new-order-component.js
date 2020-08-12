@@ -693,12 +693,59 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             if (!product) {
                 product = ctrl.data.products[0];
             }
+            if (ctrl.defaultValueUom) {
+                additionalCost.priceUom = ctrl.defaultValueUom;
+            }
+         
             additionalCost.quantityUom = product.quantityUom;
             additionalCost.confirmedQuantity = parseFloat(additionalCost.confirmedQuantity) ? parseFloat(additionalCost.confirmedQuantity) : parseFloat(product.maxQuantity);
             additionalCost.extrasAmount = parseFloat(additionalCost.extras) / 100 * parseFloat(additionalCost.amount) || 0;
             additionalCost.totalAmount = parseFloat(additionalCost.amount) + parseFloat(additionalCost.extrasAmount);
             additionalCost.rate = parseFloat(additionalCost.totalAmount) / parseFloat(additionalCost.confirmedQuantity);
             return additionalCost;
+        }
+
+        ctrl.getDefaultUomForAdditionalCost = function(additionalCost, product) {
+            console.log(additionalCost);
+            console.log(product);
+            if (!ctrl.listProductTypeGroupsDefaults) {
+                let payload1 = { Payload: {} };
+                $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/listProductTypeGroupsDefaults`, payload1).then((response) => {
+                    console.log(response);
+                    if (response.data.payload != 'null') {
+                        ctrl.listProductTypeGroupsDefaults = response.data.payload;
+                        let payload = { Payload: product.product.id };
+                        $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/get`, payload).then((response) => {
+                            if (response.data.payload != 'null') {
+                                let productTypeGroup  = response.data.payload.productTypeGroup;
+                                let defaultUomAndCompany = _.find(ctrl.listProductTypeGroupsDefaults, function(object) {
+                                        return object.id == productTypeGroup.id;
+                                });
+                                if (defaultUomAndCompany) {
+                                    ctrl.defaultValueUom = defaultUomAndCompany.defaultUom;
+
+                                }                               
+                            }
+                        }); 
+                    }
+                });  
+
+            } else {
+                let payload = { Payload: product.product.id };
+                $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/get`, payload).then((response) => {
+                    if (response.data.payload != 'null') {
+                        let productTypeGroup  = response.data.payload.productTypeGroup;
+                        let defaultUomAndCompany = _.find(ctrl.listProductTypeGroupsDefaults, function(object) {
+                                return object.id == productTypeGroup.id;
+                        });
+                        if (defaultUomAndCompany) {
+                            ctrl.defaultValueUom = defaultUomAndCompany.defaultUom;
+                        } 
+                       
+                    }
+                });
+            }
+            
         }
 
         /**
@@ -951,7 +998,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     additionalCost.quantityUom = ctrl.data.products[0].quantityUom;
                     additionalCost = calculateAdditionalCostAmounts(additionalCost, null);
                 }
-            }
+            }  
             if (ctrl.data.products) {
                 for (let i = 0; i < ctrl.data.products.length; i++) {
                     if (ctrl.data.products[i].additionalCosts) {
@@ -1221,6 +1268,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                                 newProduct.quantityUom = defaultUomAndCompany.defaultUom;
                                 newProduct.minMaxQuantityUom = defaultUomAndCompany.defaultUom;
                                 newProduct.priceUom = defaultUomAndCompany.defaultUom;
+                                newProduct.robOnArrivalUom = defaultUomAndCompany.defaultUom;
+                                newProduct.roundVoyageConsumptionUom = defaultUomAndCompany.defaultUom;
                            }
                           
                         }
@@ -1465,6 +1514,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                                 ctrl.data.products[index].quantityUom = defaultUomAndCompany.defaultUom;
                                 ctrl.data.products[index].minMaxQuantityUom = defaultUomAndCompany.defaultUom;
                                 ctrl.data.products[index].priceUom = defaultUomAndCompany.defaultUom;
+                                ctrl.data.products[index].robOnArrivalUom = defaultUomAndCompany.defaultUom;
+                                ctrl.data.products[index].roundVoyageConsumptionUom = defaultUomAndCompany.defaultUom;
                                 if (defaultUomAndCompany.isPriority) {
                                     ctrl.data.paymentCompany = defaultUomAndCompany.defaultCompany;
                                 } else {
