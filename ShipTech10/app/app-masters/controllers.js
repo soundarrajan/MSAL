@@ -8078,10 +8078,18 @@ APP_MASTERS.controller('Controller_Master', [
                                if (defaultUomAndCompany) {
                                     $scope.formValues.products[index].priceUom = defaultUomAndCompany.defaultUom;
                                     $scope.formValues.products[index].mtmPriceUom = defaultUomAndCompany.defaultUom;
-                                    $scope.formValues.products[index].summary.uom = defaultUomAndCompany.defaultUom.name;
+                                    if ($scope.formValues.products[index].summary) {
+                                        $scope.formValues.products[index].summary.uom = defaultUomAndCompany.defaultUom.name;
+                                    }
                                     for (let i = 0; i < $scope.formValues.details.length; i++) {
                                         $scope.formValues.details[i].uom = defaultUomAndCompany.defaultUom;
                                     }
+                                    if ($scope.formValues.products[index].details) {
+                                        for (let i = 0; i < $scope.formValues.products[index].details.length; i++) {
+                                            $scope.formValues.products[index].details[i].uom = defaultUomAndCompany.defaultUom;
+                                        }
+                                    }
+                                  
                                }
                               
                             }
