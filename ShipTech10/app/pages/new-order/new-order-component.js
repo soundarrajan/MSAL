@@ -1204,6 +1204,29 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 
                 }
             }); 
+            $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/get`, payload).then((response) => {
+                if (response.data.payload != 'null') {
+                    let productTypeGroup  = response.data.payload.productTypeGroup;
+                    let sludgeProductTypeGroup = _.find(ctrl.listsCache.ProductTypeGroup, { name : 'Sludge' });
+                    let payload1 = { Payload: {} };
+                    $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/listProductTypeGroupsDefaults`, payload1).then((response) => {
+                        console.log(response);
+                        if (response.data.payload != 'null') {
+                           let defaultUomAndCompany = _.find(response.data.payload, function(object) {
+                                return object.id == productTypeGroup.id;
+                           });
+                           console.log(defaultUomAndCompany);
+                           console.log(newProduct);
+                           if (defaultUomAndCompany) {
+                                newProduct.quantityUom = defaultUomAndCompany.defaultUom;
+                                newProduct.minMaxQuantityUom = defaultUomAndCompany.defaultUom;
+                                newProduct.priceUom = defaultUomAndCompany.defaultUom;
+                           }
+                          
+                        }
+                    });       
+                }
+            });
             newProduct.quantityUom = {};
             newProduct.currency = ctrl.currency;
             // newProduct.fsicalSupplier = angular.copy(ctrl.data.seller);

@@ -1024,8 +1024,34 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 			            newProduct.specGroup = v;
 	            	}
             	});
+                let payload = { Payload: product.id };
+                $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/get`, payload).then((response) => {
+                    if (response.data.payload != 'null') {
+                        let productTypeGroup  = response.data.payload.productTypeGroup;
+                        let sludgeProductTypeGroup = _.find(ctrl.listsCache.ProductTypeGroup, { name : 'Sludge' });
+                        let payload1 = { Payload: {} };
+                        $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/listProductTypeGroupsDefaults`, payload1).then((response) => {
+                            console.log(response);
+                            if (response.data.payload != 'null') {
+                               let defaultUomAndCompany = _.find(response.data.payload, function(object) {
+                                    return object.id == productTypeGroup.id;
+                               });
+                               console.log(defaultUomAndCompany);
+                               console.log(newProduct);
+                               if (defaultUomAndCompany) {
+                                    newProduct.robOnArrivalUom = defaultUomAndCompany.defaultUom;
+                                    newProduct.uom = defaultUomAndCompany.defaultUom;
+                                    newProduct.roundVoyageConsumptionUom = defaultUomAndCompany.defaultUom;
+                               }
+                              
+                            }
+                        });       
+                    }
+                });
             });
+
         };
+
         ctrl.getProductTypeObjById = function(id) {
             let prodType = _.filter(ctrl.listsCache.ProductType, [ 'id', id ]);
             if (prodType.length > 0) {
