@@ -1534,7 +1534,10 @@
                                         <input  style="width: 40%;" 
                                                 type="text" 
                                                 class="form-control" 
-                                                ng-model="product.convFactorValue"> 
+                                                ng-model="product.convFactorValue"
+                                                name="Conversion factor value"
+                                                ng-required=" $ctrl.captureConfirmedQuantity.name != 'Offer' && ((product.status && product.status.id != $ctrl.STATUS['Cancelled'].id) || !product.status)"
+                                                /> 
                                         <select style="width: 30%;"  
                                                 name="Product {{$index}} mass UOM" 
                                                 ng-model="product.convFactorVolumeUom" 
