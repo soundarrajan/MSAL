@@ -21,18 +21,18 @@
         <tbody>
         	<tr ng-repeat="(key, value) in formValues.products[$index].conversionFactors " ng-if="!value.isDeleted">
         		<td class="padding">{{value.product.name}}</td>
-        		<td>
+        		<td class="conversion-table">
         			<select name="Product {{$index}} mass UOM" ng-model="value.massUom" ng-options="item as item.name for item in vm.listsCache.UomMass track by item.id" class="form-control" ng-disabled="value.contractConversionFactorOptions.id == 3 || (formValues.hasInvoicedOrder && value.contractConversionFactorOptions.id == 2)"></select>
         		</td>
-        		<td>
-        			<input ng-if="value.contractConversionFactorOptions.id == 2" type="text" class="form-control" ng-model="value.value" ng-disabled="value.contractConversionFactorOptions.id == 3 || (formValues.hasInvoicedOrder && value.contractConversionFactorOptions.id == 2)"  required="required">	
-                    <input ng-if="value.contractConversionFactorOptions.id != 2" type="text" class="form-control" ng-model="value.value" ng-disabled="value.contractConversionFactorOptions.id == 3 || (formValues.hasInvoicedOrder && value.contractConversionFactorOptions.id == 2)">
+        		<td class="conversion-table">
+        			<input name="Product {{$index}} conversion value" ng-if="value.contractConversionFactorOptions.id == 2" type="text" class="form-control" ng-model="value.value" ng-disabled="value.contractConversionFactorOptions.id == 3 || (formValues.hasInvoicedOrder && value.contractConversionFactorOptions.id == 2)"  required="required">	
+                    <input  name="Product {{$index}} conversion value" ng-if="value.contractConversionFactorOptions.id != 2" type="text" class="form-control" ng-model="value.value" ng-disabled="value.contractConversionFactorOptions.id == 3 || (formValues.hasInvoicedOrder && value.contractConversionFactorOptions.id == 2)">
         		</td>
-        		<td>
+        		<td class="conversion-table">
         			<select name="Product {{$index}} mass UOM" ng-model="value.volumeUom" ng-options="item as item.name for item in vm.listsCache.UomVolume track by item.id" class="form-control" ng-disabled="value.contractConversionFactorOptions.id == 3 || (formValues.hasInvoicedOrder && value.contractConversionFactorOptions.id == 2)"></select>
         		</td>
-                <td>
-                    <select name="Product {{$index}} conversion factor" ng-model="value.contractConversionFactorOptions" ng-options="item as item.name for item in vm.listsCache.ContractConversionFactorOptions track by item.id" class="form-control" required="required"></select>
+                <td class="conversion-table">
+                    <select name="Product {{$index}} conversion factor" ng-model="value.contractConversionFactorOptions" ng-options="item as item.name for item in vm.listsCache.ContractConversionFactorOptions track by item.id" class="form-control" required="required"  ng-disabled="(formValues.hasInvoicedOrder || formValues.status.name != 'Draft') && value.contractConversionFactorOptions.id == 2"></select>
                 </td>
         	</tr>
         </tbody>

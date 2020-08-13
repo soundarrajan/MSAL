@@ -116,8 +116,19 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
 
     $scope.disableFieldsIfConfirmed = function() {
     	$('.app_contracts_screen_contract').addClass('disableAll');
-    	$('.dynamic_form_editor.app_contracts_screen_contract.disableAll input').attr('disabled', 'disabled');
-    	$('.dynamic_form_editor.app_contracts_screen_contract.disableAll select').attr('disabled', 'disabled');
+        var elements = $("input");
+        for (let i = 0; i < elements.length; i++) {
+            if (!$(elements[i]).parent().hasClass("conversion-table")) {
+                $(elements[i]).attr('disabled', 'disabled');
+            }
+        }
+        var selects = $("select");
+        for (let i = 0; i < selects.length; i++) {
+            if (!$(selects[i]).parent().hasClass("conversion-table")) {
+                $(selects[i]).attr('disabled', 'disabled');
+            }
+        }
+       
     	$('.dynamic_form_editor.app_contracts_screen_contract.disableAll textarea').attr('disabled', 'disabled');
     	$('.dynamic_form_editor.app_contracts_screen_contract.disableAll .btn.date-set').attr('disabled', 'disabled');
     	$('.dynamic_form_editor.app_contracts_screen_contract.disableAll .date-picker').attr('disabled', 'disabled');
