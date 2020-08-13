@@ -237,6 +237,9 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
                             } else {
                                 deliveryProd.pricingDate = $scope.formValues.temp.deliverysummary.deliveryDate;
                             }
+                            if (summaryProd.convFactorOptions) {
+                                deliveryProd.convFactorOptions = summaryProd.convFactorOptions;
+                            }
                             if (summaryProd.convFactorMassUom != null) {
                                 deliveryProd.convFactorMassUom = summaryProd.convFactorMassUom;
                             }
@@ -1539,6 +1542,8 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
             newProductData.orderProductId = selectedProductToAddInDelivery.id;
             newProductData.manualPricingDateOverride = selectedProductToAddInDelivery.manualPricingDateOverride;
 
+           
+            newProductData.convFactorOptions = selectedProductToAddInDelivery.convFactorOptions;
             newProductData.convFactorMassUom = selectedProductToAddInDelivery.convFactorMassUom;
             newProductData.convFactorValue = selectedProductToAddInDelivery.convFactorValue;
             newProductData.convFactorVolumeUom = selectedProductToAddInDelivery.convFactorVolumeUom;

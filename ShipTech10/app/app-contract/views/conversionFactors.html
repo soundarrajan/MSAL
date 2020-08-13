@@ -32,7 +32,7 @@
         			<select name="Product {{$index}} mass UOM" ng-model="value.volumeUom" ng-options="item as item.name for item in vm.listsCache.UomVolume track by item.id" class="form-control" ng-disabled="value.contractConversionFactorOptions.id == 3 || (formValues.hasInvoicedOrder && value.contractConversionFactorOptions.id == 2)"></select>
         		</td>
                 <td class="conversion-table">
-                    <select name="Product {{$index}} conversion factor" ng-model="value.contractConversionFactorOptions" ng-options="item as item.name for item in vm.listsCache.ContractConversionFactorOptions track by item.id" class="form-control" required="required"  ng-disabled="(formValues.hasInvoicedOrder || formValues.status.name != 'Draft') && value.contractConversionFactorOptions.id == 2"></select>
+                    <select name="Product {{$index}} conversion factor" ng-model="value.contractConversionFactorOptions" ng-options="item as item.name for item in vm.listsCache.ContractConversionFactorOptions track by item.id" class="form-control" required="required"  ng-disabled="(formValues.hasInvoicedOrder || (formValues.status && formValues.status.name != 'Draft'))"></select>
                 </td>
         	</tr>
         </tbody>
