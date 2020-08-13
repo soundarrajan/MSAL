@@ -4,7 +4,9 @@ import {
   OnDestroy,
   OnInit,
   ViewEncapsulation,
-  HostListener
+  HostListener,
+  ViewChild,
+  ElementRef
 } from '@angular/core';
 import { EventsLogGridViewModel } from './view-model/events-log-grid.view-model';
 import { IQcEventsLogItemState } from '../../../../../store/report/details/qc-events-log-state.model';
@@ -24,13 +26,17 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class EventsLogComponent implements OnInit, OnDestroy {
   @Select(QcReportState.isReadOnly) isReadOnly$: Observable<boolean>;
+  @ViewChild('somePopup', { read: ElementRef, static: false }) somePopup: ElementRef
+
   private _destroy$ = new Subject();
 
   constructor(
     public gridViewModel: EventsLogGridViewModel,
     private detailsService: QcReportService,
-    private toastr: ToastrService
-  ) {}
+    private toastr: ToastrService,
+    private eRef: ElementRef
+  ) {
+  }
 
   ngOnInit(): void {}
 
@@ -52,19 +58,21 @@ export class EventsLogComponent implements OnInit, OnDestroy {
     this.detailsService.addEventLog();
   }
 
-  @HostListener('click')
-  clickInside($event) {
-    if (this.gridViewModel.actionsColumn.cellRendererParams.ngTemplate._projectedViews) {
-      if (this.gridViewModel.actionsColumn.cellRendererParams.ngTemplate._projectedViews.length) {
-        let element = document.querySelector<HTMLElement>("#quantityControlEventsLog > .ag-root-wrapper > :not(.ag-theme-balham) + .ag-theme-balham > .ag-menu ");
-        if (element) {
-          element.style.marginTop = this.gridViewModel.actionsColumn.cellRendererParams.ngTemplate._projectedViews.length == 1 ? "-80px" : "-" + (this.gridViewModel.actionsColumn.cellRendererParams.ngTemplate._projectedViews.length * 42 + 30) + "px";
-        }
+  @HostListener('document:click', ['$event'])
+  clickout(event) {
+    if(this.eRef.nativeElement.contains(event.target)) {
+      if (this.gridViewModel.actionsColumn.cellRendererParams.ngTemplate._projectedViews) {
+          if (this.gridViewModel.actionsColumn.cellRendererParams.ngTemplate._projectedViews.length) {
+            let element = document.querySelector<HTMLElement>("#quantityControlEventsLog > .ag-root-wrapper > :not(.ag-theme-balham) + .ag-theme-balham > .ag-menu ");
+            if (element) {
+              element.style.marginTop = this.gridViewModel.actionsColumn.cellRendererParams.ngTemplate._projectedViews.length == 1 ? "-80px" : "-" + (this.gridViewModel.actionsColumn.cellRendererParams.ngTemplate._projectedViews.length * 42 + 30) + "px";
+            }
+          }
       }
-
-    }
-    
+    } 
   }
+
+
   
 
   ngOnDestroy(): void {
