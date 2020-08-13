@@ -1,7 +1,7 @@
-﻿commit bdbc40a8dcfbe40251cd86a82c47f71942649bcf
+﻿commit 007ad7deb9fbd12b7d99d676b0371d940de2e0fb
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Thu Aug 13 10:58:00 2020 +0300
+Date:   Thu Aug 13 11:26:32 2020 +0300
 
-    build fix try2
+    Removed settings wheel from the ETE screen
 
 branch: master
