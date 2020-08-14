@@ -342,7 +342,7 @@
                                             </span>
                                         </td>
                                         <td style="min-width: 150px">
-                                            <select class="form-control" ng-disabled="$ctrl.disableCostBasedOnApplicableProductStatus(additionalCost.parentProductId, location.products)" ng-options="addCost as addCost.name for addCost in $ctrl.lists.AdditionalCost track by addCost.id" ng-model="additionalCost.additionalCost" ng-change="$ctrl.additionalCostNameChanged(additionalCost, location)" ng-required="additionalCost.price"></select>
+                                            <select class="form-control" ng-disabled="$ctrl.disableCostBasedOnApplicableProductStatus(additionalCost.parentProductId, location.products)" ng-options="addCost as addCost.name for addCost in $ctrl.lists.AdditionalCost track by addCost.id" ng-model="additionalCost.additionalCost" ng-change="$ctrl.getDefaultUomForAdditionalCost(additionalCost, $ctrl.additionalCostApplicableFor[additionalCost.fakeId]); $ctrl.additionalCostNameChanged(additionalCost, location);" ng-required="additionalCost.price"></select>
                                         </td>
                                         <td style="min-width: 150px" >
 
@@ -352,6 +352,7 @@
                                             name="{{ $ctrl.additionalCostColumns.type.name }}"
                                             ng-required="additionalCost.additionalCost"
                                             ng-disabled="$ctrl.disableCostBasedOnApplicableProductStatus(additionalCost.parentProductId, location.products)"
+                                            ng-change="$ctrl.getDefaultUomForAdditionalCost(additionalCost, $ctrl.additionalCostApplicableFor[additionalCost.fakeId]);"
                                             style="min-width: 80px">
                                             </select>   
 
@@ -377,7 +378,7 @@
                                             </div>
                                         </td>
                                         <td style="min-width: 150px">
-                                        	<span ng-if="!($ctrl.tenantQuoteDisabled || !$ctrl.additionalCostPriceUomEnabled(additionalCost))" ng-init="!additionalCost.priceUom.id ? additionalCost.priceUom = $ctrl.tenantDefaultUom : '' "></span>
+                                        	<span ng-if="!($ctrl.tenantQuoteDisabled || !$ctrl.additionalCostPriceUomEnabled(additionalCost)) && additionalCost.costType && additionalCost.costType.name != 'Unit'" ng-init="!additionalCost.priceUom.id ? additionalCost.priceUom = $ctrl.tenantDefaultUom : '' "></span>
                                         	<span ng-if="$ctrl.tenantQuoteDisabled || !$ctrl.additionalCostPriceUomEnabled(additionalCost)" ng-init="additionalCost.priceUom = null"></span>
                                             <div class="input-group">
                                                 <div class="input-group-btn">
@@ -411,7 +412,7 @@
                                             <select ng-if="!($ctrl.additionalCostApplicableFor[additionalCost.fakeId].productStatus.name == 'Stemmed' && additionalCost.id)" 
                                             ng-options="product as product.product.name for product in location.products | filter: {productStatus:{name: '!Stemmed'}} " 
                                             ng-model="$ctrl.additionalCostApplicableFor[additionalCost.fakeId]" 
-                                            ng-change="$ctrl.applicableForChange(additionalCost, $ctrl.additionalCostApplicableFor[additionalCost.fakeId], location); $ctrl.additionalCostNameChanged(additionalCost, location, true);" 
+                                            ng-change="$ctrl.getDefaultUomForAdditionalCost(additionalCost, $ctrl.additionalCostApplicableFor[additionalCost.fakeId]); $ctrl.applicableForChange(additionalCost, $ctrl.additionalCostApplicableFor[additionalCost.fakeId], location); $ctrl.additionalCostNameChanged(additionalCost, location, true);" 
                                             class="form-control" 
                                             ng-disabled="$ctrl.disableCostBasedOnApplicableProductStatus(additionalCost.parentProductId, location.products) || !additionalCost.additionalCost || (additionalCost.isTaxComponent && additionalCost.costType.name == 'Percent') ">
                                                 <option value="" >

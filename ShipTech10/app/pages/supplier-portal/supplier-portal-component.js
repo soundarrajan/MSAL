@@ -1,5 +1,5 @@
-angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scope', '$rootScope', 'Factory_Master', '$element', '$attrs', '$timeout', '$filter', '$state', '$stateParams', 'tenantModel', 'tenantSupplierPortalService', 'uiApiModel', 'listsModel', 'lookupModel', 'supplierPortalModel', 'groupOfRequestsModel', 'LOOKUP_MAP', 'LOOKUP_TYPE', 'VALIDATION_MESSAGES', 'COST_TYPE_IDS', 'COMPONENT_TYPE_IDS', 'IDS', 'VALIDATION_STOP_TYPE_IDS', 'CUSTOM_EVENTS', 'MOCKUP_MAP', 'PACKAGES_CONFIGURATION', 'tenantService', '$compile', 'screenLoader', '$listsCache',
-    function($scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $filter, $state, $stateParams, tenantModel, tenantSupplierPortalService, uiApiModel, listsModel, lookupModel, supplierPortalModel, groupOfRequestsModel, LOOKUP_MAP, LOOKUP_TYPE, VALIDATION_MESSAGES, COST_TYPE_IDS, COMPONENT_TYPE_IDS, IDS, VALIDATION_STOP_TYPE_IDS, CUSTOM_EVENTS, MOCKUP_MAP, PACKAGES_CONFIGURATION, tenantService, $compile, screenLoader, $listsCache) {
+angular.module('shiptech.pages').controller('SupplierPortalController', [ 'API', '$scope', '$rootScope', 'Factory_Master', '$element', '$attrs', '$timeout','$http', '$filter', '$state', '$stateParams', 'tenantModel', 'tenantSupplierPortalService', 'uiApiModel', 'listsModel', 'lookupModel', 'supplierPortalModel', 'groupOfRequestsModel', 'LOOKUP_MAP', 'LOOKUP_TYPE', 'VALIDATION_MESSAGES', 'COST_TYPE_IDS', 'COMPONENT_TYPE_IDS', 'IDS', 'VALIDATION_STOP_TYPE_IDS', 'CUSTOM_EVENTS', 'MOCKUP_MAP', 'PACKAGES_CONFIGURATION', 'tenantService', '$compile', 'screenLoader', '$listsCache',
+    function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $http, $filter, $state, $stateParams, tenantModel, tenantSupplierPortalService, uiApiModel, listsModel, lookupModel, supplierPortalModel, groupOfRequestsModel, LOOKUP_MAP, LOOKUP_TYPE, VALIDATION_MESSAGES, COST_TYPE_IDS, COMPONENT_TYPE_IDS, IDS, VALIDATION_STOP_TYPE_IDS, CUSTOM_EVENTS, MOCKUP_MAP, PACKAGES_CONFIGURATION, tenantService, $compile, screenLoader, $listsCache) {
         let ctrl = this;
         ctrl.token = $stateParams.token;
         $scope.forms = {};
@@ -1651,16 +1651,66 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ '$scop
          * Change the cost type to the default for the respective additional cost.
          */
         ctrl.additionalCostNameChanged = function(additionalCost, theLocation, skipDefault) {
+            console.log("IOANA");
         	if (!skipDefault) {
 	            additionalCost.costType = getAdditionalCostDefaultCostType(additionalCost);
         	}
     		ctrl.addPriceUomChanged(additionalCost, theLocation);
-        	setTimeout(() => {
+        	// setTimeout(() => {
         		// $scope.$apply();
 	         //    ctrl.getAdditionalCosts(theLocation);
         		// $scope.$apply();
-        	}, 1000);
+        	// }, 1000);
         };
+
+        ctrl.getDefaultUomForAdditionalCost = function(additionalCost, product) {
+            if (product == null) {
+                return;
+            }
+            if (!ctrl.listProductTypeGroupsDefaults) {
+                let payload1 = { Payload: {} };
+                $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/listProductTypeGroupsDefaults`, payload1).then((response) => {
+                    console.log(response);
+                    if (response.data.payload != 'null') {
+                        ctrl.listProductTypeGroupsDefaults = response.data.payload;
+                        let payload = { Payload: product.product.id };
+                        $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/get`, payload).then((response) => {
+                            if (response.data.payload != 'null') {
+                                let productTypeGroup  = response.data.payload.productTypeGroup;
+                                let defaultUomAndCompany = _.find(ctrl.listProductTypeGroupsDefaults, function(object) {
+                                        return object.id == productTypeGroup.id;
+                                });
+                                if (defaultUomAndCompany) {
+                                    if (additionalCost.costType.name != "Flat") {
+                                        additionalCost.priceUom =  defaultUomAndCompany.defaultUom;
+                                    }
+
+                                }                               
+                            }
+                        }); 
+                    }
+                });  
+
+            } else {
+                let payload = { Payload: product.product.id };
+                $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/get`, payload).then((response) => {
+                    if (response.data.payload != 'null') {
+                        let productTypeGroup  = response.data.payload.productTypeGroup;
+                        let defaultUomAndCompany = _.find(ctrl.listProductTypeGroupsDefaults, function(object) {
+                                return object.id == productTypeGroup.id;
+                        });
+                        if (defaultUomAndCompany) {
+                            if (additionalCost.costType.name != "Flat") {
+                                additionalCost.priceUom =  defaultUomAndCompany.defaultUom;
+                            }
+                            
+                        }   
+                       
+                    }
+                });
+            }
+            
+        }
         ctrl.quotedByChanged = function(quotedBy) {
             for (let i = 0; i < ctrl.individuals.length; i++) {
                 for (let j = 0; j < ctrl.individuals[i].products.length; j++) {
