@@ -8168,7 +8168,9 @@ APP_MASTERS.controller('Controller_Master', [
 
         vm.saveConversionFactors = function(conversionFactors) {
             console.log(conversionFactors);
-            payload = { Payload: conversionFactors };
+            let conversionFactorsList = [];
+            conversionFactorsList.push(conversionFactors);
+            payload = { Payload: conversionFactorsList };
             $http.post(`${API.BASE_URL_DATA_CONTRACTS  }/api/contract/contract/saveConversionFactorsForContractProduct`, payload).then((response) => {
                     console.log(response);
                     if (response.data.payload != 'null') {
