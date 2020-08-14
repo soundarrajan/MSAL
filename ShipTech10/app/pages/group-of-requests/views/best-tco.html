@@ -21,7 +21,7 @@
                             </a>
                         </div>
                     </div>
-                    <div class="pull-right" >
+                    <div class="pull-right" ng-if="!$ctrl.tenantSetting.shiptechLite">
                         <span ng-init="$ctrl.includeAverageSurveyorChargeChecbox = $ctrl.includeAverageSurveyorCharge"></span> 
                         <label class="mt-checkbox" ng-if="$ctrl.includeAverageSurveyorCharge">
                             <b>
