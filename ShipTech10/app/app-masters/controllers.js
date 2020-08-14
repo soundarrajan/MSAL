@@ -7353,6 +7353,16 @@ APP_MASTERS.controller('Controller_Master', [
         };
 
         $scope.invoiceConvertUom = function(type, rowIndex, formValues, oneTimeRun) {
+            var currentRowIndex = rowIndex;
+            var additionalCost = formValues.costDetails[currentRowIndex];
+            if (additionalCost) {
+                if (additionalCost.product.name != 'All') {
+                    getDefaultUomForAdditionalCost(additionalCost, currentRowIndex);
+                } else {
+                    getDefaultUomForAdditionalCost(additionalCost, currentRowIndex, true);
+                }
+            }
+            
             if ($rootScope.reloadPage) {
                 return;
             }
@@ -7494,6 +7504,61 @@ APP_MASTERS.controller('Controller_Master', [
 	                });
 	            }
 	        }
+
+            function getDefaultUomForAdditionalCost(additionalCost, index, isAll) {
+                console.log(additionalCost);
+                console.log(product);
+                if (!$scope.listProductTypeGroupsDefaults) {
+                    let payload1 = { Payload: {} };
+                    $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/listProductTypeGroupsDefaults`, payload1).then((response) => {
+                        console.log(response);
+                        if (response.data.payload != 'null') {
+                            $scope.listProductTypeGroupsDefaults = response.data.payload;
+                            let payload;
+                            if (isAll) {
+                                payload = { Payload: formValues.productDetails[0].product.id };
+                            } else {
+                                payload = { Payload: product.product.id };
+                            }
+                            $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/get`, payload).then((response) => {
+                                if (response.data.payload != 'null') {
+                                    let productTypeGroup  = response.data.payload.productTypeGroup;
+                                    let defaultUomAndCompany = _.find($scope.listProductTypeGroupsDefaults, function(object) {
+                                        return object.id == productTypeGroup.id;
+                                    });
+                                    if (defaultUomAndCompany) {
+                                        formValues.costDetails[index].invoiceRateUom = defaultUomAndCompany.defaultUom;
+                                        formValues.costDetails[index].invoiceQuantityUom = defaultUomAndCompany.defaultUom;
+
+                                    }                               
+                                }
+                            }); 
+                        }
+                    });  
+
+                } else {
+                    let payload;
+                    if (isAll) {
+                        payload = { Payload: formValues.productDetails[0].product.id };
+                    } else {
+                        payload = { Payload: product.product.id };
+                    }
+                    $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/get`, payload).then((response) => {
+                        if (response.data.payload != 'null') {
+                            let productTypeGroup  = response.data.payload.productTypeGroup;
+                            let defaultUomAndCompany = _.find($scope.listProductTypeGroupsDefaults, function(object) {
+                                return object.id == productTypeGroup.id;
+                            });
+                            if (defaultUomAndCompany) {
+                                formValues.costDetails[index].invoiceRateUom = defaultUomAndCompany.defaultUom;
+                                formValues.costDetails[index].invoiceQuantityUom = defaultUomAndCompany.defaultUom;
+                            } 
+                           
+                        }
+                    });
+                }
+            
+            }
 
 	        function recalculatePercentAdditionalCosts(formValues) {
 	    		$.each(formValues.costDetails, (ck, cv) => {

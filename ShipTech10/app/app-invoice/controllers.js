@@ -2463,6 +2463,8 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
         var additionalCost = formValues.costDetails[currentRowIndex];
         if (additionalCost.product.name != 'All') {
             getDefaultUomForAdditionalCost(additionalCost, currentRowIndex);
+        } else {
+            getDefaultUomForAdditionalCost(additionalCost, currentRowIndex, 0);
         }
         if ($rootScope.reloadPage) {
             return;
@@ -2599,7 +2601,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                 });
             }
         }
-        function getDefaultUomForAdditionalCost(additionalCost, index) {
+        function getDefaultUomForAdditionalCost(additionalCost, index, isAll) {
             console.log(additionalCost);
             console.log(product);
             if (!$scope.listProductTypeGroupsDefaults) {
@@ -2608,7 +2610,12 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                     console.log(response);
                     if (response.data.payload != 'null') {
                         $scope.listProductTypeGroupsDefaults = response.data.payload;
-                        let payload = { Payload: additionalCost.product.productId };
+                        let payload;
+                        if (isAll) {
+                            payload = { Payload: formValues.productDetails[0].product.id };
+                        } else {
+                            payload = { Payload: product.product.id };
+                        }
                         $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/get`, payload).then((response) => {
                             if (response.data.payload != 'null') {
                                 let productTypeGroup  = response.data.payload.productTypeGroup;
@@ -2626,7 +2633,12 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                 });  
 
             } else {
-                let payload = { Payload: product.product.id };
+                let payload;
+                if (isAll) {
+                    payload = { Payload: formValues.productDetails[0].product.id };
+                } else {
+                    payload = { Payload: product.product.id };
+                }
                 $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/get`, payload).then((response) => {
                     if (response.data.payload != 'null') {
                         let productTypeGroup  = response.data.payload.productTypeGroup;
