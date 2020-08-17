@@ -1,7 +1,7 @@
-﻿commit f3fef01159405965d1c0622a84d315f891cde967
+﻿commit d0cda4495c42ecc05a4a69730fb11a46d950f261
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Mon Aug 17 14:09:32 2020 +0300
+Date:   Mon Aug 17 15:27:47 2020 +0300
 
-    Added in the filter panel apply and rest filter buttons and fixed filtering
+    Removed the setting icon from the  email editor master
 
 branch: master
