@@ -116,8 +116,11 @@ export class EventsLogGridViewModel extends BaseGridViewModel
     width: 377,
     valueFormatter: params => params.value?.name,
     filterParams: {
-      valueGetter: rowModel => rowModel.data?.createdBy?.name
-    }
+      valueGetter: rowModel => rowModel.data?.createdBy?.name,
+      applyButton: true,
+      resetButton: true
+    },
+   
   };
 
   createdCol: ITypedColDef<IQcEventsLogItemState, string> = {
@@ -147,7 +150,7 @@ export class EventsLogGridViewModel extends BaseGridViewModel
         }
       },
       applyButton: true,
-      clearButton: true
+      resetButton: true
     },
     width: 507
   };

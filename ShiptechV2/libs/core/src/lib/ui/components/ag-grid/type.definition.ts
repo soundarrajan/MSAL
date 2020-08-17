@@ -81,6 +81,7 @@ export interface TypedFilterParams<TData = any, TField = any>
   colDef?: ITypedColDef<TData, TField>;
   rowModel?: ITypedRowModel<TData>;
   clearButton?: boolean;
+  resetButton?: boolean;
   applyButton?: boolean;
   valueGetter?: (rowNode: TypedRowNode<TData>) => any;
   comparator?: object;
