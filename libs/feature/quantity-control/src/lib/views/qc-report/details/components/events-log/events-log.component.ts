@@ -76,13 +76,6 @@ export class EventsLogComponent implements OnInit, OnDestroy {
         test[0].style.display = "none";
       }
     }
-    if (this.eRef.nativeElement.contains(event.target) && event.target.classList[1] == "ag-icon-menu")  {
-      console.log("AICI");
-      const element = document.querySelectorAll<HTMLElement>('#quantityControlEventsLog > div > div.ag-theme-balham.ag-popup > div > div > div.ag-tab-header > span:nth-child(1)');
-      console.log(this.gridViewModel);
-      // console.log(element[0].classList);
-      // element[0].classList.add("ag-tab-selected");
-    }
   }
 
 
