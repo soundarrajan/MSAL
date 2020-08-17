@@ -1,7 +1,7 @@
-﻿commit 007ad7deb9fbd12b7d99d676b0371d940de2e0fb
+﻿commit b39944e9e538dfe842bffd0f1d1169fdf659db0e
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Thu Aug 13 11:26:32 2020 +0300
+Date:   Mon Aug 17 12:00:49 2020 +0300
 
-    Removed settings wheel from the ETE screen
+    Added in the filter panel apply and rest filter buttons and fixed filtering from the event section
 
 branch: master

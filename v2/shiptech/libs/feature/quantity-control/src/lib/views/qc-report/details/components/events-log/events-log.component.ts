@@ -15,6 +15,7 @@ import { QcReportService } from '../../../../../services/qc-report.service';
 import { Observable, Subject } from 'rxjs';
 import { QcReportState } from '../../../../../store/report/qc-report.state';
 import { ToastrService } from 'ngx-toastr';
+import { timeout } from 'rxjs/operators';
 
 @Component({
   selector: 'shiptech-events-log',
@@ -60,6 +61,7 @@ export class EventsLogComponent implements OnInit, OnDestroy {
 
   @HostListener('document:click', ['$event'])
   clickout(event) {
+    // lookup Filters Tool Panel instance by id
     if(this.eRef.nativeElement.contains(event.target)) {
       if (this.gridViewModel.actionsColumn.cellRendererParams.ngTemplate._projectedViews) {
           if (this.gridViewModel.actionsColumn.cellRendererParams.ngTemplate._projectedViews.length) {
@@ -69,7 +71,11 @@ export class EventsLogComponent implements OnInit, OnDestroy {
             }
           }
       }
-    } 
+      if (event.target.innerHTML == "Reset Filter") {
+        const test = document.querySelectorAll<HTMLElement>('.ag-menu');
+        test[0].style.display = "none";
+      }
+    }
   }
 
 
