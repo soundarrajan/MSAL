@@ -105,7 +105,7 @@
                                                         </span>
                                                     </p>
                                                     <span>
-                                                        {{ product.product.name }} : {{( (!product.maxQuantity) ? (0 | number : $ctrl.numberPrecision.quantityPrecision) : (product.maxQuantity  | number : $ctrl.numberPrecision.quantityPrecision))}} {{ product.uom.name }} - {{( (!product.price) ? (0 | number : $ctrl.numberPrecision.pricePrecision) : (product.price | number : $ctrl.numberPrecision.pricePrecision))}} {{ product.currency.code ?  product.currency.code : product.currency.name }}
+                                                        {{ product.product.name }} : {{( (!product.maxQuantity) ? (0 | number : $ctrl.numberPrecision.quantityPrecision) : (product.maxQuantity  | number : $ctrl.numberPrecision.quantityPrecision))}} {{ product.uom.name }} - {{( (!product.price) ? (0 | number : $ctrl.numberPrecision.pricePrecision) : (product.price | number : $ctrl.numberPrecision.pricePrecision))}} {{ product.currency.code ?  product.currency.code : product.currency.name }} / {{ product.priceUom.code ?  product.priceUom.code : product.priceUom.name}}
                                                         <br/>
                                                     </span>
                                                     <div class="location-name">
@@ -338,7 +338,7 @@
                                                     </p>
                                                     <span>
 
-                                                        {{ svalue.product.name }}:  {{( (!svalue.maxQuantity) ? (0 | number : $ctrl.numberPrecision.quantityPrecision) : (svalue.maxQuantity | number : $ctrl.numberPrecision.quantityPrecision))}} {{ svalue.uom.name }} - {{( (!svalue.price) ? (0 | number : $ctrl.numberPrecision.pricePrecision) : (svalue.price | number : $ctrl.numberPrecision.pricePrecision))}} {{ svalue.currency.code ?  svalue.currency.code : svalue.currency.name }}
+                                                        {{ svalue.product.name }}:  {{( (!svalue.maxQuantity) ? (0 | number : $ctrl.numberPrecision.quantityPrecision) : (svalue.maxQuantity | number : $ctrl.numberPrecision.quantityPrecision))}} {{ svalue.uom.name }} - {{( (!svalue.price) ? (0 | number : $ctrl.numberPrecision.pricePrecision) : (svalue.price | number : $ctrl.numberPrecision.pricePrecision))}} {{ svalue.currency.code ?  svalue.currency.code : svalue.currency.name }} / {{ svalue.priceUom.code ?  svalue.priceUom.code : svalue.priceUom.name }}
                                                     </span>
 
                                                 </div>
