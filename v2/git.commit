@@ -1,7 +1,7 @@
-﻿commit b39944e9e538dfe842bffd0f1d1169fdf659db0e
+﻿commit f3fef01159405965d1c0622a84d315f891cde967
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Mon Aug 17 12:00:49 2020 +0300
+Date:   Mon Aug 17 14:09:32 2020 +0300
 
-    Added in the filter panel apply and rest filter buttons and fixed filtering from the event section
+    Added in the filter panel apply and rest filter buttons and fixed filtering
 
 branch: master
