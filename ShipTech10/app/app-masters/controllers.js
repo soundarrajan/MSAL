@@ -7392,7 +7392,7 @@ APP_MASTERS.controller('Controller_Master', [
 	                    return;
 	                };
 	                console.log('called getUomConversionFactor with params:', product.product.id, product.invoiceRateUom.id, product.invoiceQuantityUom.id);
-	                $scope.getUomConversionFactor(product.product.id, 1, product.invoiceQuantityUom.id, product.invoiceRateUom.id, product.contractProductId, (response) => {
+	                $scope.getUomConversionFactor(product.product.id, 1, product.invoiceQuantityUom.id, product.invoiceRateUom.id, product.contractProductId, product.id ? product.id : product.orderProductId, (response) => {
                         var conversionFactor = response;
                 		console.log($filter('number')(formValues.productDetails[currentRowIndex].invoiceQuantity, 2));
 	                    formValues.productDetails[currentRowIndex].invoiceAmount = convertDecimalSeparatorStringToNumber(formValues.productDetails[currentRowIndex].invoiceQuantity) * (convertDecimalSeparatorStringToNumber(formValues.productDetails[currentRowIndex].invoiceRate) * conversionFactor);
@@ -7647,7 +7647,7 @@ APP_MASTERS.controller('Controller_Master', [
 		            }
 		        });
 		    };
-        $scope.getUomConversionFactor = function(ProductId, Quantity, FromUomId, ToUomId, contractProductId, callback) {
+        $scope.getUomConversionFactor = function(ProductId, Quantity, FromUomId, ToUomId, contractProductId, orderProductId, callback) {
             var productId = ProductId;
             var quantity = Quantity;
             var fromUomId = FromUomId;
@@ -7655,6 +7655,7 @@ APP_MASTERS.controller('Controller_Master', [
 	        var data = {
 	            Payload: {
 	                ProductId: productId,
+                    OrderProductId: orderProductId,
 	                Quantity: quantity,
 	                FromUomId: fromUomId,
 	                ToUomId: toUomId,

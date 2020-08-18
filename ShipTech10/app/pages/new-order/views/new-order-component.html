@@ -1301,9 +1301,7 @@
                                                ng-required="true && product.status.id != $ctrl.STATUS['Cancelled'].id && !(product.contractProductId != null  || product.agreementType.name.toLowerCase() == 'contract' || product.pricingType.id == 1 || $ctrl.disabledProduct[product.id])"
                                                style="min-width:80px"
                                                type="text"/>
-                                         <span style="display: none" ng-if="!product.price">
-                                            {{product.price= (product.price | number : $ctrl.numberPrecision.pricePrecision)}}
-                                        </span>
+                                        
 
                                         <!-- price uom -->
                                         <div class="input-group-btn"

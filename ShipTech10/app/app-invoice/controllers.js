@@ -1793,7 +1793,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                                 return object.product.id == val.productId;
                             });
                             if (product) {
-                                $scope.getUomConversionFactor(val.productId, val.finalQuantityAmount, val.finalQuantityAmountUomId, $tenantSettings.tenantFormats.uom.id, product.contractProductId, (response) => {
+                                $scope.getUomConversionFactor(val.productId, val.finalQuantityAmount, val.finalQuantityAmountUomId, $tenantSettings.tenantFormats.uom.id, product.contractProductId,  product.orderProductId, (response) => {
                                      val.convertedFinalQuantityAmount = response;
                                 });
                             } else {
@@ -2491,7 +2491,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                     return;
                 };
                 console.log('called getUomConversionFactor with params:', product.product.id, product.invoiceRateUom.id, product.invoiceQuantityUom.id);
-                $scope.getUomConversionFactor(product.product.id, 1, product.invoiceQuantityUom.id, product.invoiceRateUom.id, product.contractProductId, (response) => {
+                $scope.getUomConversionFactor(product.product.id, 1, product.invoiceQuantityUom.id, product.invoiceRateUom.id, product.contractProductId, product.id ? product.id : product.orderProductId, (response) => {
                 	var conversionFactor = response;
                 	if (false && formValues.productDetails[currentRowIndex].sapInvoiceAmount) {
 	                    formValues.productDetails[currentRowIndex].invoiceAmount = formValues.productDetails[currentRowIndex].sapInvoiceAmount;
@@ -3072,7 +3072,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
         $scope.modalInstance.close();
     };
 
-    $scope.getUomConversionFactor = function(ProductId, Quantity, FromUomId, ToUomId, contractProductId, callback) {
+    $scope.getUomConversionFactor = function(ProductId, Quantity, FromUomId, ToUomId, contractProductId, orderProductId, callback) {
     	var productId = ProductId;
     	var quantity = Quantity;
     	var fromUomId = FromUomId;
@@ -3080,6 +3080,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
         var data = {
             Payload: {
                 ProductId: productId,
+                OrderProductId: orderProductId,
                 Quantity: quantity,
                 FromUomId: fromUomId,
                 ToUomId: toUomId,
