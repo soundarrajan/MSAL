@@ -1,7 +1,7 @@
-﻿commit 61285a905f98770b95f470385e175727a1a9fbe7
+﻿commit f3e8e932e660f85beec62f4216765cede0c9aae1
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Tue Aug 18 09:11:14 2020 +0300
+Date:   Tue Aug 18 14:13:41 2020 +0300
 
-    Added 1.0.44 version of email template editor ( Replaced ckeditor v5 with v4)
+    Added 1.0.47 version of email template editor (Removed data panel on outside click in the email editor and Added validation for duplicate value)
 
 branch: master
