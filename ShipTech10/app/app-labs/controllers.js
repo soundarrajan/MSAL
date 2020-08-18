@@ -178,7 +178,7 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
                     if (response.paymentCompany) {
                         $scope.formValues.company = response.paymentCompany;
                     }
-                    if (response.deliveryDate) {
+                    if (response.deliveryDate && !$scope.formValues.deliveryDate) {
                         $scope.formValues.deliveryDate = response.deliveryDate;
                     }
                     if (response.surveyorCounterparty && !$scope.formValues.surveyor) {
