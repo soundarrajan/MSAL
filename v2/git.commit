@@ -1,7 +1,7 @@
-﻿commit 4c2682be5a980724dc9851a0ae8bf7e799ffd598
+﻿commit 61285a905f98770b95f470385e175727a1a9fbe7
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Tue Aug 18 09:05:47 2020 +0300
+Date:   Tue Aug 18 09:11:14 2020 +0300
 
-    Merge branch 'master' of ssh.dev.azure.com:v3/inatech/Shiptech10/Shiptech10-UI
+    Added 1.0.44 version of email template editor ( Replaced ckeditor v5 with v4)
 
 branch: master
