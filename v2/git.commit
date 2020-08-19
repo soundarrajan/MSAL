@@ -1,7 +1,7 @@
-﻿commit b18184a174dabfa6bf674388e668e691ae217cc0
+﻿commit 72aa989eb7928ba0035fd9be3cb70bb7e7d2dcb3
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Tue Aug 18 16:06:24 2020 +0300
+Date:   Wed Aug 19 16:08:25 2020 +0300
 
-    Added 1.0.49 version of email template editor
+    Added 1.0.53 version of email-template editor (Fixed toOthers/ccOthers fields, Fixed "To Others" and "Cc Others" dropdown and  user are able to add  custom email in the master template on enter on input and Removed data panel on tab out in the email template editor)
 
 branch: master
