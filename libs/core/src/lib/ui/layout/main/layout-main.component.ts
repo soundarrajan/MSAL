@@ -1,4 +1,5 @@
 import { AfterViewInit, Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -41,9 +42,14 @@ export class LayoutMainComponent implements AfterViewInit {
   inlineUser: boolean;
 
   isRTL: boolean;
+  isEmailTemplateEditor: boolean = false;
   moduleLoaded: any;
 
-  constructor() {}
+  constructor(private router: Router) {
+    if (this.router.url.includes('email-template-editor')) {
+      this.isEmailTemplateEditor = true;
+    }
+  }
 
   onLayoutClick(): void {
     if (!this.userMenuClick) {
