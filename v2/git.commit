@@ -1,7 +1,7 @@
-﻿commit 90fd3c69ff4f34f413cf5ede5997248baaff596e
+﻿commit 4457d13fb83de633d4ccbf2b3e60da69590e07ea
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Thu Aug 20 15:43:30 2020 +0300
+Date:   Thu Aug 20 16:49:31 2020 +0300
 
-    Added 1.0.60 version of email  template editor (Fixed email template editor when the changes are applied in the respective email preview only when I preview the source and save)
+    Added 1.0.62 version of email template editor(detect changes on save button)
 
 branch: master
