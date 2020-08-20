@@ -16,7 +16,20 @@
   </div>
 
 
-  <div class="layout-footer footer-color">
+  <div *ngIf="isEmailTemplateEditor" class="layout-footer footer-color"  style="position: relative;top: 40px;">
+    <div class="row">
+      <div class="col-md-4">
+        <a href="/" style="color: #B8B5B6;">Proprietary and Confidential</a>
+      </div>
+      <div class="col-md-4" style="text-align:center;">
+        Copyright © 2019 Shiptech
+      </div>
+      <div class="col-md-4">
+        <img src="http://mail.24software.ro:8160/assets/layouts/layout/img/powered_by.png" style="position:absolute;right:20px;height:45px;top:-15px;" alt="">
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!isEmailTemplateEditor" class="layout-footer footer-color">
     <div class="row">
       <div class="col-md-4">
         <a href="/" style="color: #B8B5B6;">Proprietary and Confidential</a>
