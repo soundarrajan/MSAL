@@ -712,13 +712,17 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
 				                            });
 				                        }
 				                    }
-				                     if (vm.app_id == 'masters' && vm.screen_id == 'additionalcost') {
+				                    if (vm.app_id == 'masters' && vm.screen_id == 'additionalcost') {
 					                    if($scope.formValues.costType.name == 'Flat' || $scope.formValues.costType.name == 'Unit') {
 					                        $scope.formValues.componentType = null;
 					                        $('.edit_form_fields_ComponentType_masters').hide();
 					                    } else {
 					                        $('.edit_form_fields_ComponentType_masters').show();
 					                    }
+				                    }
+
+				                    if (vm.screen_id == 'claims' && vm.app_id == 'claims' && vm.entity_id) {
+				                		$rootScope.reloadClaimPage = true;
 				                    }
 
                                     $rootScope.$broadcast('formValues', $scope.formValues);

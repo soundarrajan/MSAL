@@ -237,44 +237,48 @@ APP_CLAIMS.controller('Controller_Claims', [
                 $('#CompromisedAmount').val($(this).val());
                 $('#NoClaimAmmount').val($(this).val());
             });
-            if ($scope.formValues && $scope.formValues.claimType && $scope.formValues.claimType.claimType.name) {
-                let type = $scope.formValues.claimType.claimType.name;
-                if (type.toLowerCase() == 'debunker') {
-                    $('.group_debunkerDetails').show();
-                } else {
-                    $('.group_debunkerDetails').hide();
-                }
-                // $scope.formValues.complianceSubtypes = [];
-                // $scope.formValues.densitySubtypes = [];
-                // $scope.formValues.qualitySubtypes = [];
-                // $scope.formValues.quantitySubtypes = [];
-                if (type.toLowerCase() == 'debunker' && (!$scope.formValues.claimDetails.estimatedSettlementAmount || !$scope.formValues.claimDetails.isEstimatedSettlementAmountManual)) {
-                    if (!$scope.formValues.claimDebunkerDetails || typeof $scope.formValues.claimDebunkerDetails == 'undefined') {
-                        $scope.formValues.claimDebunkerDetails = {};
+            if ($scope.formValues && $scope.formValues.claimType && $scope.formValues.claimType.claimType) {
+                if ($scope.formValues.claimType.claimType.name) {
+                    let type = $scope.formValues.claimType.claimType.name;
+                    if (type.toLowerCase() == 'debunker') {
+                        $('.group_debunkerDetails').show();
+                    } else {
+                        $('.group_debunkerDetails').hide();
                     }
-                    $scope.formValues.claimDetails.estimatedSettlementAmount = $scope.formValues.claimDebunkerDetails.debunkerAmount - $scope.formValues.claimDebunkerDetails.resaleAmount;
-                } else if(type != 'Quantity' && !$scope.formValues.claimDetails.isEstimatedSettlementAmountManual) {
-                    $scope.formValues.claimDetails.estimatedSettlementAmount = null;
-                    return;
-                } else if (type == 'Quantity' && /* !$scope.formValues.claimDetails.estimatedSettlementAmount &&*/ $scope.formValues.quantitySubtypes) {
-                    if (!$scope.formValues.quantitySubtypes) {
-                        $scope.formValues.quantitySubtypes = [];
-                    }
-                    let object = getIndexAndCount($scope.formValues.quantitySubtypes);
-                    if ($scope.formValues.quantitySubtypes.length > 0) {
-                        $timeout(() => {
-                            $scope.formValues.claimType.quantityShortageUom = $scope.formValues.quantitySubtypes[object.index].quantityUom;
-                            if($scope.formValues.quantitySubtypes[object.index].quantityUom != null) {
-                                $('[name=\'claimType.quantityShortage Option\']').val($scope.formValues.quantitySubtypes[object.index].quantityUom.id);
-                            }
-                        });
+                    // $scope.formValues.complianceSubtypes = [];
+                    // $scope.formValues.densitySubtypes = [];
+                    // $scope.formValues.qualitySubtypes = [];
+                    // $scope.formValues.quantitySubtypes = [];
+                    if (type.toLowerCase() == 'debunker' && (!$scope.formValues.claimDetails.estimatedSettlementAmount || !$scope.formValues.claimDetails.isEstimatedSettlementAmountManual)) {
+                        if (!$scope.formValues.claimDebunkerDetails || typeof $scope.formValues.claimDebunkerDetails == 'undefined') {
+                            $scope.formValues.claimDebunkerDetails = {};
+                        }
+                        $scope.formValues.claimDetails.estimatedSettlementAmount = $scope.formValues.claimDebunkerDetails.debunkerAmount - $scope.formValues.claimDebunkerDetails.resaleAmount;
+                    } else if(type != 'Quantity' && !$scope.formValues.claimDetails.isEstimatedSettlementAmountManual) {
+                        $scope.formValues.claimDetails.estimatedSettlementAmount = null;
+                        return;
+                    } else if (type == 'Quantity' && /* !$scope.formValues.claimDetails.estimatedSettlementAmount &&*/ $scope.formValues.quantitySubtypes) {
+                        if (!$scope.formValues.quantitySubtypes) {
+                            $scope.formValues.quantitySubtypes = [];
+                        }
+                        let object = getIndexAndCount($scope.formValues.quantitySubtypes);
+                        if ($scope.formValues.quantitySubtypes.length > 0) {
+                            $timeout(() => {
+                                $scope.formValues.claimType.quantityShortageUom = $scope.formValues.quantitySubtypes[object.index].quantityUom;
+                                if($scope.formValues.quantitySubtypes[object.index].quantityUom != null) {
+                                    $('[name=\'claimType.quantityShortage Option\']').val($scope.formValues.quantitySubtypes[object.index].quantityUom.id);
+                                }
+                            });
+                        }
+
+                        if (object.lengthFalse && !$scope.formValues.claimDetails.isEstimatedSettlementAmountManual) {
+                            // $scope.formValues.claimDetails.estimatedSettlementAmount = ($scope.formValues.quantitySubtypes[object.index].sellerQuantity - $scope.formValues.quantitySubtypes[object.index].buyerQuantity) * $scope.formValues.orderDetails.orderPrice;
+
+                        }
                     }
 
-                    if (object.lengthFalse && !$scope.formValues.claimDetails.isEstimatedSettlementAmountManual) {
-                        // $scope.formValues.claimDetails.estimatedSettlementAmount = ($scope.formValues.quantitySubtypes[object.index].sellerQuantity - $scope.formValues.quantitySubtypes[object.index].buyerQuantity) * $scope.formValues.orderDetails.orderPrice;
-
-                    }
                 }
+               
             }
             $scope.getQuantityShortage();
             $rootScope.EstimatedSettlementAmountManualChange = false;
@@ -504,7 +508,12 @@ APP_CLAIMS.controller('Controller_Claims', [
                     $.each($scope.formValues.temp.tempProductforType, (k, v) => {
                         if (v.product.id && v.product.id == $scope.formValues.orderDetails.product.id) {
                             $scope.formValues.orderDetails.productType = v.productType.name;
-                            $scope.formValues.claimDetails.physicalSupplier = v.physicalSupplier;
+                            if (!$rootScope.reloadClaimPage) {
+                                $scope.formValues.claimDetails.physicalSupplier = v.physicalSupplier;
+                            } else {
+                                $rootScope.reloadClaimPage = false;
+                            }
+
                         }
                     });
                     $.each($scope.options.Product, (k, v) => {
