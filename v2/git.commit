@@ -1,7 +1,7 @@
-﻿commit 49037dff31effde65580555ede1524c125744624
+﻿commit ed31c47cc10b9800ab892f28993e998d57b914f4
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Fri Aug 21 09:19:54 2020 +0300
+Date:   Fri Aug 21 14:16:04 2020 +0300
 
-    Added 1.0.63 version of email-template editor (fixed save button)
+    Added 1.0.66 version of email template editor (fixed mapping of toOthers/ccOthers)
 
 branch: master
