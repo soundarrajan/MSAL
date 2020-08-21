@@ -8028,7 +8028,6 @@ APP_MASTERS.controller('Controller_Master', [
         });
 
         $scope.addProductToConversion = function(index, allowProduct, isMainProduct) {
-            $scope.defaultUomSludge(index);
             if (!$scope.formValues.products[index].conversionFactors) {
                 $scope.formValues.products[index].conversionFactors = [];
             }
@@ -8121,6 +8120,7 @@ APP_MASTERS.controller('Controller_Master', [
                                 contractConversionFactorOptions: contractConversionFactor
                             };
                             $scope.formValues.products[index].conversionFactors.push(object);
+                            $scope.defaultUomSludge(index);
                         }
                     });
                 }
@@ -8128,7 +8128,8 @@ APP_MASTERS.controller('Controller_Master', [
         };
 
         $scope.defaultUomSludge = function(index) {
-            payload = { Payload: $scope.formValues.products[index].product.id };
+            let size = $scope.formValues.products[index].conversionFactors.length - 1;
+            payload = { Payload: $scope.formValues.products[index].conversionFactors[size].product.id };
                 $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/get`, payload).then((response) => {
                     if (response.data.payload != 'null') {
                         let productTypeGroup  = response.data.payload.productTypeGroup;
@@ -8142,8 +8143,10 @@ APP_MASTERS.controller('Controller_Master', [
                                });
                                console.log(defaultUomAndCompany);
                                if (defaultUomAndCompany) {
-                                    $scope.formValues.products[index].priceUom = defaultUomAndCompany.defaultUom;
-                                    $scope.formValues.products[index].mtmPriceUom = defaultUomAndCompany.defaultUom;
+                                    if (defaultUomAndCompany.id == sludgeProductTypeGroup.id) {
+                                        $scope.formValues.products[index].priceUom = defaultUomAndCompany.defaultUom;
+                                        $scope.formValues.products[index].mtmPriceUom = defaultUomAndCompany.defaultUom;
+                                    }
                                     if ($scope.formValues.products[index].summary) {
                                         $scope.formValues.products[index].summary.uom = defaultUomAndCompany.defaultUom.name;
                                     }
