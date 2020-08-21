@@ -1,7 +1,7 @@
-﻿commit ed31c47cc10b9800ab892f28993e998d57b914f4
+﻿commit 5b423bffbcc14d4bc950478a4623e9728edc8597
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Fri Aug 21 14:16:04 2020 +0300
+Date:   Fri Aug 21 14:35:39 2020 +0300
 
-    Added 1.0.66 version of email template editor (fixed mapping of toOthers/ccOthers)
+    Added 1.0.67 version of email template editor
 
 branch: master
