@@ -3656,6 +3656,10 @@ APP_MASTERS.controller('Controller_Master', [
             $scope.formFields = structure;
             $scope.dragElements = elements;
         };
+
+        vm.loadShiptechLite = function() {
+            vm.shiptechLite = $rootScope.adminConfiguration.general.shiptechLite;
+        };
         // vm.load_eef_config = function(structure) {
         //     $scope.formFields = structure;
         // };
