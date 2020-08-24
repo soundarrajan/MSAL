@@ -8174,13 +8174,41 @@ APP_MASTERS.controller('Controller_Master', [
 
         }
 
-        vm.saveConversionFactors = function(conversionFactors) {
-            if (conversionFactors.contractProductId) {
-                console.log(conversionFactors);
-                let conversionFactorsList = [];
-                conversionFactorsList.push(conversionFactors);
-                payload = { Payload: conversionFactorsList };
-                $http.post(`${API.BASE_URL_DATA_CONTRACTS  }/api/contract/contract/saveConversionFactorsForContractProduct`, payload).then((response) => {
+        vm.saveConversionFactors = function(conversionFactors, conversionFactorsDropdown) {
+            if (conversionFactorsDropdown && conversionFactors.contractConversionFactorOptions.id == 3) {
+                payload = { Payload: conversionFactors.product.id };
+                $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/getProdDefaultConversionFactors`, payload).then((response) => {
+                    console.log(response);
+                    if (response.data.payload != 'null') {
+                        conversionFactors.value = response.data.payload.value;
+                        conversionFactors.massUom = response.data.payload.massUom;
+                        conversionFactors.volumeUom = response.data.payload.volumeUom;
+                        if (conversionFactors.contractProductId) {
+                            console.log(conversionFactors);
+                            let conversionFactorsList = [];
+                            conversionFactorsList.push(conversionFactors);
+                            payload = { Payload: conversionFactorsList };
+                            $http.post(`${API.BASE_URL_DATA_CONTRACTS  }/api/contract/contract/saveConversionFactorsForContractProduct`, payload).then((response) => {
+                                console.log(response);
+                                if (response.data.payload != 'null') {
+                                    let res = response.data.payload[0];
+                                    ctrl.data.products[index].convFactorMassUom = res.massUom;
+                                    ctrl.data.products[index].convFactorValue = res.value;
+                                    ctrl.data.products[index].convFactorVolumeUom = res.volumeUom;
+
+                                }
+                            }); 
+                        }
+                    }
+                });
+
+            } else {
+                if (conversionFactors.contractProductId) {
+                    console.log(conversionFactors);
+                    let conversionFactorsList = [];
+                    conversionFactorsList.push(conversionFactors);
+                    payload = { Payload: conversionFactorsList };
+                    $http.post(`${API.BASE_URL_DATA_CONTRACTS  }/api/contract/contract/saveConversionFactorsForContractProduct`, payload).then((response) => {
                         console.log(response);
                         if (response.data.payload != 'null') {
                             let res = response.data.payload[0];
@@ -8189,8 +8217,11 @@ APP_MASTERS.controller('Controller_Master', [
                             ctrl.data.products[index].convFactorVolumeUom = res.volumeUom;
 
                         }
-                }); 
+                    }); 
+                }
             }
+         
+           
            
         }
     }
