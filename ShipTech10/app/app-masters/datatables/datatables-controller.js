@@ -2492,7 +2492,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                 }
             },
             locationsSystemInstruments: {
-                data: 'formValues.locationsSystemInstruments',
+                data: 'formValues.productsSystemInstruments',
                 treeRowHeaderAlwaysVisible: true,
                 headerTemplate: $templateCache.get('app-general-components/views/screen_parts/ui-grid_headerTemplate.html'),
                 category: [
