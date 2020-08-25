@@ -2546,7 +2546,8 @@ APP_MASTERS.controller('Controller_Datatables', [
                             masterSource: 'Location',
                             clc_id: 'masters_locationlist'
                         },
-                        category: '1'
+                        category: '1',
+                        required: true
                     },
                     {
                         name: 'product',
@@ -2558,7 +2559,8 @@ APP_MASTERS.controller('Controller_Datatables', [
                             masterSource: 'Product',
                             clc_id: 'masters_productlist'
                         },
-                        category: '1'
+                        category: '1',
+                        required: true
                     },
                     {
                         name: 'benchmarkType',
@@ -2577,7 +2579,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                         format: 'number:3',
                         cellTemplate: $scope.dataTableTemplates.text,
                         category: 'Benchmark Schedule Option',
-                        cellCondition: 'grid.appScope.fVal().formValues.locationsSystemInstruments[grid.appScope.rowIdx(row)].benchmarkType.id == 1',
+                        cellCondition: 'grid.appScope.fVal().formValues.productsSystemInstruments[grid.appScope.rowIdx(row)].benchmarkType.id == 1',
                         cellConditionType: 'ng-disabled'
                     },
                     {
@@ -2585,38 +2587,42 @@ APP_MASTERS.controller('Controller_Datatables', [
                         displayName: 'UOM',
                         category: 'Benchmark Schedule Option',
                         cellTemplate: $scope.dataTableTemplates.dropdown,
-                        cellCondition: 'grid.appScope.fVal().formValues.locationsSystemInstruments[grid.appScope.rowIdx(row)].benchmarkType.id == 1',
+                        cellCondition: 'grid.appScope.fVal().formValues.productsSystemInstruments[grid.appScope.rowIdx(row)].benchmarkType.id == 1',
                         cellConditionType: 'ng-disabled',
                         cellObject: {
                             Name: 'UOM',
                             Type: 'dropdown',
                             masterSource: 'Uom',
-                            Disabled: 'grid.appScope.fVal().formValues.locationsSystemInstruments[grid.appScope.rowIdx(row)].benchmarkType.id == 1'
+                            Disabled: 'grid.appScope.fVal().formValues.productsSystemInstruments[grid.appScope.rowIdx(row)].benchmarkType.id == 1'
                         },
                     },
                     {
                         name: 'isBunkerwireDefault',
                         displayName: 'Reference price 1',
                         cellTemplate: $scope.dataTableTemplates.checkbox,
-                        category: '2'
+                        category: '2',
+                        cellCondition: 'false',
+                        cellConditionType: 'ng-disabled'
                     },
                     {
                         name: 'isCargoDefault',
                         displayName: 'Reference price 2',
                         cellTemplate: $scope.dataTableTemplates.checkbox,
-                        category: '2'
+                        category: '2',
+                        cellCondition: 'false',
+                        cellConditionType: 'ng-disabled'
                     }
                 ],
                 onRegisterApi: function(api) {
                     setTimeout(() => {
                         api.core.handleWindowResize();
-                        if (angular.equals($scope.formValues, {}) || !$scope.formValues.locationsSystemInstruments) {
-                            $scope.formValues.locationsSystemInstruments = [
+                        if (angular.equals($scope.formValues, {}) || !$scope.formValues.productsSystemInstruments) {
+                            $scope.formValues.productsSystemInstruments = [
                                 {
                                     id: 0
                                 }
                             ];
-                        } else if (angular.equals($scope.formValues.locationsSystemInstruments, [])) {
+                        } else if (angular.equals($scope.formValues.productsSystemInstruments, [])) {
                             $scope.formValues.productsSystemInstruments.push({
                                 id: 0
                             });

@@ -756,6 +756,61 @@ APP_MASTERS.controller('Controller_Master', [
                     }
                 }
                 $scope.formValues.periods = periods;
+                if ($scope.formValues && $scope.formValues.productsSystemInstruments) {
+                    let errors = '';
+                    let products = [];
+                    let locations = [];
+                    let systemInstrument = {
+                        'name': $scope.formValues.name,
+                        'id': $scope.formValues.id
+                    }
+                    for (let i = 0; i < $scope.formValues.productsSystemInstruments.length; i++) {
+                        $scope.formValues.productsSystemInstruments[i].systemInstrument = systemInstrument;
+                        if ($scope.formValues.productsSystemInstruments[i].isBunkerwireDefault) {
+                            let element = $scope.formValues.productsSystemInstruments[i];
+                            var findCombinationProductAndLocationBunkerwireDefault = _.filter($scope.formValues.productsSystemInstruments, function(object) {
+                                return object.location.name == element.location.name && object.product.name == element.product.name && object.isBunkerwireDefault;
+                            });
+                            if (findCombinationProductAndLocationBunkerwireDefault.length > 1) {
+                                products.push(element.product.name);
+                                locations.push(element.location.name);
+                            }
+                        } else if ($scope.formValues.productsSystemInstruments[i].isCargoDefault) {
+                            let element = $scope.formValues.productsSystemInstruments[i];
+                            var findCombinationProductAndLocationCargoDefault = _.filter($scope.formValues.productsSystemInstruments, function(object) {
+                                return object.location.name == element.location.name && object.product.name == element.product.name && object.isCargoDefault;
+                            });
+                            if (findCombinationProductAndLocationCargoDefault.length > 1 ) {
+                                products.push(element.product.name);
+                                locations.push(element.location.name);
+                            }
+                        }
+                    }
+                    products = _.uniq(products);
+                    locations = _.uniq(locations);
+                    let productsString = '';
+                    let locationsString = '';
+                    for (let i = 0; i < products.length; i++) {
+                        productsString += products[i] + ',';
+                    }
+                    for (let i = 0; i < locations.length; i++) {
+                        locationsString += locations[i] + ',';
+                    }
+                    if (productsString[productsString.length - 1] == ',') {
+                        productsString =  productsString.substring(0,  productsString.length - 1);
+                    }
+                    if (locationsString[locationsString.length - 1] == ',') {
+                        locationsString =  locationsString.substring(0,  locationsString.length - 1);
+                    }
+                    if (productsString != '' && locationsString != '' && products.length > 1) {
+                        toastr.warning('Default bunkerwire quote is already available for the products ' + productsString + ' and locations ' + locationsString + '. Please check and update');
+                        return;
+                    }
+                    if (productsString != '' && locationsString != '' && products.length == 1) {
+                        toastr.warning('Default bunkerwire quote is already available for the product ' + productsString + ' and location ' + locationsString + '. Please check and update');
+                        return;
+                    }
+                }
             }
 
             if(vm.app_id == 'masters' && vm.screen_id == 'counterparty') {
