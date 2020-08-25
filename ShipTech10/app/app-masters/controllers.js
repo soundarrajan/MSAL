@@ -756,7 +756,7 @@ APP_MASTERS.controller('Controller_Master', [
                     }
                 }
                 $scope.formValues.periods = periods;
-                if ($scope.formValues && $scope.formValues.productsSystemInstruments) {
+                if ($scope.formValues && $scope.formValues.productsLocations) {
                     let errors = '';
                     let products = [];
                     let locations = [];
@@ -764,20 +764,20 @@ APP_MASTERS.controller('Controller_Master', [
                         'name': $scope.formValues.name,
                         'id': $scope.formValues.id
                     }
-                    for (let i = 0; i < $scope.formValues.productsSystemInstruments.length; i++) {
-                        $scope.formValues.productsSystemInstruments[i].systemInstrument = systemInstrument;
-                        if ($scope.formValues.productsSystemInstruments[i].isBunkerwireDefault) {
-                            let element = $scope.formValues.productsSystemInstruments[i];
-                            var findCombinationProductAndLocationBunkerwireDefault = _.filter($scope.formValues.productsSystemInstruments, function(object) {
+                    for (let i = 0; i < $scope.formValues.productsLocations.length; i++) {
+                        $scope.formValues.productsLocations[i].systemInstrument = systemInstrument;
+                        if ($scope.formValues.productsLocations[i].isBunkerwireDefault) {
+                            let element = $scope.formValues.productsLocations[i];
+                            var findCombinationProductAndLocationBunkerwireDefault = _.filter($scope.formValues.productsLocations, function(object) {
                                 return object.location.name == element.location.name && object.product.name == element.product.name && object.isBunkerwireDefault;
                             });
                             if (findCombinationProductAndLocationBunkerwireDefault.length > 1) {
                                 products.push(element.product.name);
                                 locations.push(element.location.name);
                             }
-                        } else if ($scope.formValues.productsSystemInstruments[i].isCargoDefault) {
-                            let element = $scope.formValues.productsSystemInstruments[i];
-                            var findCombinationProductAndLocationCargoDefault = _.filter($scope.formValues.productsSystemInstruments, function(object) {
+                        } else if ($scope.formValues.productsLocations[i].isCargoDefault) {
+                            let element = $scope.formValues.productsLocations[i];
+                            var findCombinationProductAndLocationCargoDefault = _.filter($scope.formValues.productsLocations, function(object) {
                                 return object.location.name == element.location.name && object.product.name == element.product.name && object.isCargoDefault;
                             });
                             if (findCombinationProductAndLocationCargoDefault.length > 1 ) {

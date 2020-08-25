@@ -2496,7 +2496,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                 }
             },
             locationsSystemInstruments: {
-                data: 'formValues.productsSystemInstruments',
+                data: 'formValues.productsLocations',
                 treeRowHeaderAlwaysVisible: true,
                 headerTemplate: $templateCache.get('app-general-components/views/screen_parts/ui-grid_headerTemplate.html'),
                 category: [
@@ -2583,7 +2583,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                         format: 'number:3',
                         cellTemplate: $scope.dataTableTemplates.text,
                         category: 'Benchmark Schedule Option',
-                        cellCondition: 'grid.appScope.fVal().formValues.productsSystemInstruments[grid.appScope.rowIdx(row)].benchmarkType.id == 1',
+                        cellCondition: 'grid.appScope.fVal().formValues.productsLocations[grid.appScope.rowIdx(row)].benchmarkType.id == 1',
                         cellConditionType: 'ng-disabled'
                     },
                     {
@@ -2591,13 +2591,13 @@ APP_MASTERS.controller('Controller_Datatables', [
                         displayName: 'UOM',
                         category: 'Benchmark Schedule Option',
                         cellTemplate: $scope.dataTableTemplates.dropdown,
-                        cellCondition: 'grid.appScope.fVal().formValues.productsSystemInstruments[grid.appScope.rowIdx(row)].benchmarkType.id == 1',
+                        cellCondition: 'grid.appScope.fVal().formValues.productsLocations[grid.appScope.rowIdx(row)].benchmarkType.id == 1',
                         cellConditionType: 'ng-disabled',
                         cellObject: {
                             Name: 'UOM',
                             Type: 'dropdown',
                             masterSource: 'Uom',
-                            Disabled: 'grid.appScope.fVal().formValues.productsSystemInstruments[grid.appScope.rowIdx(row)].benchmarkType.id == 1'
+                            Disabled: 'grid.appScope.fVal().formValues.productsLocations[grid.appScope.rowIdx(row)].benchmarkType.id == 1'
                         },
                     },
                     {
@@ -2620,14 +2620,14 @@ APP_MASTERS.controller('Controller_Datatables', [
                 onRegisterApi: function(api) {
                     setTimeout(() => {
                         api.core.handleWindowResize();
-                        if (angular.equals($scope.formValues, {}) || !$scope.formValues.productsSystemInstruments) {
-                            $scope.formValues.productsSystemInstruments = [
+                        if (angular.equals($scope.formValues, {}) || !$scope.formValues.productsLocations) {
+                            $scope.formValues.productsLocations = [
                                 {
                                     id: 0
                                 }
                             ];
-                        } else if (angular.equals($scope.formValues.productsSystemInstruments, [])) {
-                            $scope.formValues.productsSystemInstruments.push({
+                        } else if (angular.equals($scope.formValues.productsLocations, [])) {
+                            $scope.formValues.productsLocations.push({
                                 id: 0
                             });
                         }
