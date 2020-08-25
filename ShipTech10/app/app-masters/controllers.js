@@ -769,7 +769,7 @@ APP_MASTERS.controller('Controller_Master', [
                         if ($scope.formValues.productsLocations[i].isBunkerwireDefault && !$scope.formValues.productsLocations[i].isDeleted) {
                             let element = $scope.formValues.productsLocations[i];
                             var findCombinationProductAndLocationBunkerwireDefault = _.filter($scope.formValues.productsLocations, function(object) {
-                                return object.isDeleted && object.location.name == element.location.name && object.product.name == element.product.name && object.isBunkerwireDefault;
+                                return !object.isDeleted && object.location.name == element.location.name && object.product.name == element.product.name && object.isBunkerwireDefault;
                             });
                             if (findCombinationProductAndLocationBunkerwireDefault.length > 1) {
                                 products.push(element.product.name);
@@ -778,7 +778,7 @@ APP_MASTERS.controller('Controller_Master', [
                         } else if ($scope.formValues.productsLocations[i].isCargoDefault) {
                             let element = $scope.formValues.productsLocations[i];
                             var findCombinationProductAndLocationCargoDefault = _.filter($scope.formValues.productsLocations, function(object) {
-                                return  object.isDeleted && object.location.name == element.location.name && object.product.name == element.product.name && object.isCargoDefault;
+                                return  !object.isDeleted && object.location.name == element.location.name && object.product.name == element.product.name && object.isCargoDefault;
                             });
                             if (findCombinationProductAndLocationCargoDefault.length > 1 ) {
                                 products.push(element.product.name);
