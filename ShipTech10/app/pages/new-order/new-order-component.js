@@ -1264,13 +1264,16 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                            });
                            console.log(defaultUomAndCompany);
                            console.log(newProduct);
-                           if (defaultUomAndCompany) {
+                            if (defaultUomAndCompany) {
                                 newProduct.quantityUom = defaultUomAndCompany.defaultUom;
                                 newProduct.minMaxQuantityUom = defaultUomAndCompany.defaultUom;
                                 newProduct.priceUom = defaultUomAndCompany.defaultUom;
                                 newProduct.robOnArrivalUom = defaultUomAndCompany.defaultUom;
                                 newProduct.roundVoyageConsumptionUom = defaultUomAndCompany.defaultUom;
-                           }
+                            }
+                            if (defaultUomAndCompany.isPriority) {
+                                ctrl.data.paymentCompany = defaultUomAndCompany.defaultCompany;
+                            }
                           
                         }
                     });       
