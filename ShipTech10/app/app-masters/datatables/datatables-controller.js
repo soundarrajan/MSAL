@@ -2465,13 +2465,17 @@ APP_MASTERS.controller('Controller_Datatables', [
                         name: 'isBunkerwireDefault',
                         displayName: 'Reference price 1',
                         cellTemplate: $scope.dataTableTemplates.checkbox,
-                        category: '2'
+                        category: '2',
+                        cellCondition: 'false',
+                        cellConditionType: 'ng-disabled'
                     },
                     {
                         name: 'isCargoDefault',
                         displayName: 'Reference price 2',
                         cellTemplate: $scope.dataTableTemplates.checkbox,
-                        category: '2'
+                        category: '2',
+                        cellCondition: 'false',
+                        cellConditionType: 'ng-disabled'
                     }
                 ],
                 onRegisterApi: function(api) {
