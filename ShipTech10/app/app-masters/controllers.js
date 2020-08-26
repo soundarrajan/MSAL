@@ -769,16 +769,20 @@ APP_MASTERS.controller('Controller_Master', [
                         if ($scope.formValues.productsLocations[i].isBunkerwireDefault && !$scope.formValues.productsLocations[i].isDeleted) {
                             let element = $scope.formValues.productsLocations[i];
                             var findCombinationProductAndLocationBunkerwireDefault = _.filter($scope.formValues.productsLocations, function(object) {
-                                return !object.isDeleted && object.location.name == element.location.name && object.product.name == element.product.name && object.isBunkerwireDefault;
+                                if (object.location && object.product && element.location && element.product) {
+                                    return !object.isDeleted && object.location.name == element.location.name && object.product.name == element.product.name && object.isBunkerwireDefault;
+                                }
                             });
                             if (findCombinationProductAndLocationBunkerwireDefault.length > 1) {
                                 products.push(element.product.name);
                                 locations.push(element.location.name);
                             }
-                        } else if ($scope.formValues.productsLocations[i].isCargoDefault) {
+                        } else if ($scope.formValues.productsLocations[i].isCargoDefault && !$scope.formValues.productsLocations[i].isDeleted) {
                             let element = $scope.formValues.productsLocations[i];
                             var findCombinationProductAndLocationCargoDefault = _.filter($scope.formValues.productsLocations, function(object) {
-                                return  !object.isDeleted && object.location.name == element.location.name && object.product.name == element.product.name && object.isCargoDefault;
+                                if (object.location && object.product && element.location && element.product) {
+                                    return  !object.isDeleted && object.location.name == element.location.name && object.product.name == element.product.name && object.isCargoDefault;
+                                }
                             });
                             if (findCombinationProductAndLocationCargoDefault.length > 1 ) {
                                 products.push(element.product.name);
