@@ -1,7 +1,7 @@
-﻿commit 7fab040d641efcea6a9a24ed9ceef5f16efa091a
+﻿commit 983bd3a678fe527ca116425f64095ae166e37182
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Tue Aug 25 13:11:52 2020 +0300
+Date:   Wed Aug 26 10:39:09 2020 +0300
 
-    Added 1.0.71 version of email template editor
+    Fixed filter 'In range' for date column in the event section
 
 branch: master
