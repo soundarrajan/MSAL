@@ -1,5 +1,5 @@
-angular.module('shiptech').controller('PriceGraphController', [ '$scope', '$state', 'STATE', 'groupOfRequestsModel', '$listsCache', 'screenLoader', '$tenantSettings',
-    function($scope, $state, STATE, groupOfRequestsModel, $listsCache, screenLoader, $tenantSettings) {
+angular.module('shiptech').controller('PriceGraphController', ['API', '$scope', '$state', 'STATE', 'groupOfRequestsModel', '$listsCache', 'screenLoader', '$tenantSettings','$http',
+    function(API, $scope, $state, STATE, groupOfRequestsModel, $listsCache, screenLoader, $tenantSettings, $http) {
         $scope.state = $state;
         $scope.STATE = STATE;
         $scope.logs = {};
@@ -35,13 +35,16 @@ angular.module('shiptech').controller('PriceGraphController', [ '$scope', '$stat
             // return _.uniqBy(res, 'id');
 
             var productsList = [];
+            ctrl.listOfProducts = [];
             $.each(obj.locations, (locK, locV) => {
                 $.each(locV.products, (prodK, prodV) => {
                     var currentProduct = angular.copy(prodV.product);
+                    ctrl.listOfProducts.push(prodV.product);
                 	currentProduct.id = prodV.id;
                     productsList.push(currentProduct);
                 });
             });
+            ctrl.listOfProducts = _.uniqBy(ctrl.listOfProducts , 'id');
             return _.uniqBy(productsList, 'id');
         };
         ctrl.$onChanges = function(changes) {
@@ -85,6 +88,56 @@ angular.module('shiptech').controller('PriceGraphController', [ '$scope', '$stat
         	});
         	return latestOffers;
         };
+
+         ctrl.getDefaultUomForAdditionalCost = function(product) {
+            if (product == null) {
+                return;
+            }
+            let findProductId = _.find(ctrl.listOfProducts, function(object) {
+                return object.name == product.name;
+            });
+            if (!findProductId) {
+                return;
+            }
+            if (!ctrl.listProductTypeGroupsDefaults) {
+                let payload1 = { Payload: {} };
+                $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/listProductTypeGroupsDefaults`, payload1).then((response) => {
+                    console.log(response);
+                    if (response.data.payload != 'null') {
+                        ctrl.listProductTypeGroupsDefaults = response.data.payload;
+                       
+                        let payload = { Payload: findProductId.id };
+                        $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/get`, payload).then((response) => {
+                            if (response.data.payload != 'null') {
+                                let productTypeGroup  = response.data.payload.productTypeGroup;
+                                let defaultUomAndCompany = _.find(ctrl.listProductTypeGroupsDefaults, function(object) {
+                                        return object.id == productTypeGroup.id;
+                                });
+                                if (defaultUomAndCompany) {
+                                    ctrl.grapUomID =  defaultUomAndCompany.defaultUom;
+                                }                               
+                            }
+                        }); 
+                    }
+                });  
+            } else {
+                let payload = { Payload: findProductId.id };
+                $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/get`, payload).then((response) => {
+                    if (response.data.payload != 'null') {
+                        let productTypeGroup  = response.data.payload.productTypeGroup;
+                        let defaultUomAndCompany = _.find(ctrl.listProductTypeGroupsDefaults, function(object) {
+                                return object.id == productTypeGroup.id;
+                        });
+                        if (defaultUomAndCompany) {
+                            if (defaultUomAndCompany) {
+                                ctrl.grapUomID =  defaultUomAndCompany.defaultUom;
+                            }  
+                        }   
+                    }
+                });
+            }
+            
+        }
 
         ctrl.generateTimeline = function(request, product, uom, addlCost) {
         	// groupOfRequestsModel.getRequests();

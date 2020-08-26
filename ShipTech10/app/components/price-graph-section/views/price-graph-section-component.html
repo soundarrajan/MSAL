@@ -23,7 +23,7 @@
                         <b>
                             Product
                         </b>
-                        <select name="" id=""  class="form-control" ng-model="$ctrl.grapProdID"   ng-options="item as item.name for item in $ctrl.products track by item.id" ng-change="$ctrl.timelineresults = 0"></select>
+                        <select name="" id=""  class="form-control" ng-model="$ctrl.grapProdID"   ng-options="item as item.name for item in $ctrl.products track by item.id" ng-change="$ctrl.timelineresults = 0; $ctrl.getDefaultUomForAdditionalCost($ctrl.grapProdID)"></select>
                     </span>
                     <span ng-init="$ctrl.grapUomID = $ctrl.tenantSettings.tenantFormats.uom">
                         <b>
