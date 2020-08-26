@@ -2441,7 +2441,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                     {
                         name: 'benchmarkAmount',
                         displayName: 'Amount',
-                        format: 'number:3',
+                        format: `number:${ vm.amount }`,
                         cellTemplate: $scope.dataTableTemplates.text,
                         category: 'Benchmark Schedule Option',
                         cellCondition: 'grid.appScope.fVal().formValues.productsSystemInstruments[grid.appScope.rowIdx(row)].benchmarkType.id == 1',
@@ -2580,7 +2580,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                     {
                         name: 'benchmarkAmount',
                         displayName: 'Amount',
-                        format: 'number:3',
+                        format: `number:${ vm.amount }`,
                         cellTemplate: $scope.dataTableTemplates.text,
                         category: 'Benchmark Schedule Option',
                         cellCondition: 'grid.appScope.fVal().formValues.productsLocations[grid.appScope.rowIdx(row)].benchmarkType.id == 1',
