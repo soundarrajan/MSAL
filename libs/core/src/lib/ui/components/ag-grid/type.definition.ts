@@ -83,6 +83,7 @@ export interface TypedFilterParams<TData = any, TField = any>
   clearButton?: boolean;
   resetButton?: boolean;
   applyButton?: boolean;
+  inRangeInclusive?: boolean;
   valueGetter?: (rowNode: TypedRowNode<TData>) => any;
   comparator?: object;
 }
