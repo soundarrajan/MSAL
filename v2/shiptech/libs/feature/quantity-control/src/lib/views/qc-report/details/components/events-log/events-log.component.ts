@@ -77,7 +77,7 @@ export class EventsLogComponent implements OnInit, OnDestroy {
             }
           }
       }
-      if (event.target.innerHTML == 'Reset Filter') {
+      if (event.target.innerHTML == 'Reset Filter' || event.target.innerHTML == 'Apply Filter') {
         const test = document.querySelectorAll<HTMLElement>('.ag-menu');
         test[0].style.display = 'none';
       }

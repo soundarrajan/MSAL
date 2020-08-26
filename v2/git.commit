@@ -1,7 +1,7 @@
-﻿commit 983bd3a678fe527ca116425f64095ae166e37182
+﻿commit b5b06d7db8973832aecf757d10926120c4cfe4ee
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Wed Aug 26 10:39:09 2020 +0300
+Date:   Wed Aug 26 12:08:41 2020 +0300
 
-    Fixed filter 'In range' for date column in the event section
+    Removed the filter panel after applied the filter
 
 branch: master
