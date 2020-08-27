@@ -2,6 +2,11 @@
     <div class="st-main-content-menu st-displaceable-menu tabbable-line">
         <ul class="nav nav-tabs pull-left">
             <li><a ui-sref="default.edit-request({requestId: NAV.requestId})">Request</a></li>
+            <li>
+                <a href="/#/view-request-report/{{NAV.requestId}}">
+                    Report
+                </a>
+            </li>
             <li><a ui-sref="default.view-request-documents({requestId: NAV.requestId})">Documents</a></li>
             <li><a ui-sref="default.view-request-emaillog({requestId: NAV.requestId})">Email Log</a></li>
             <li class="open"><a>Audit Log</a></li>

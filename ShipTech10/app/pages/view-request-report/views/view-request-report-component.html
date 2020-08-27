@@ -2,12 +2,12 @@
     <div class="st-main-content-menu st-displaceable-menu tabbable-line">
         <ul class="nav nav-tabs pull-left">
             <li><a ui-sref="default.edit-request({requestId: NAV.requestId})">Request</a></li>
-            <li>
+            <li class="open"> 
                 <a href="/#/view-request-report/{{NAV.requestId}}">
                     Report
                 </a>
             </li>
-            <li class="open"><a>Documents</a></li>
+            <li><a ui-sref="default.view-request-documents({requestId: NAV.requestId})">Documents</a></li>
             <li><a ui-sref="default.view-request-emaillog({requestId: NAV.requestId})">Email Log</a></li>
             <li><a ui-sref="default.view-request-auditlog({requestId: NAV.requestId})">Audit Log</a></li>
 
@@ -16,19 +16,16 @@
         <div class="clearfix"></div>
     </div>
 </div>
-<div class="row">
-
-
-    <span>
-        <entity-edit-form screenchild="'entity_documents'"></entity-edit-form>
-    </span>
-    <span ng-controller="Controller_Configurable_List_Control as CLC">
-        <clc-table-list
-            id="'entity_documents'"
-            app="'procurement'"
-            screen="'request_entity_documents'"
-            controls="'[entries, columns, info, pager]'"
-        ></clc-table-list>
-    </span>
-
+<div class="col_selected_report">
+    <div class="portlet-body">
+        <div class="row">
+            <div class="col-xs-12 ">
+                <div>
+                    <iframe ng-src="https://reports.shiptech.com/Home/EmbedReportWorkspace?groupid=a8810a15-07b0-4693-9087-ddc50ebac9e5&id=Vessel Schedule Report" class="iframes">
+                        <p>Your browser does not support iframes.</p>
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

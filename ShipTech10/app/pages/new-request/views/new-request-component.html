@@ -85,6 +85,11 @@
                 </a>
             </li>
             <li>
+                <a ng-class="{'disabled' : !$ctrl.request.id}" href="/#/view-request-report/{{NAV.requestId}}">
+                    Report
+                </a>
+            </li>
+            <li>
                 <a ng-class="{'disabled' : !$ctrl.request.id}" ui-sref="default.view-request-documents({requestId: NAV.requestId})" >
                     Documents
                 </a>

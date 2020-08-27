@@ -1,10 +1,10 @@
 angular.module('shiptech.pages')
-    .controller('ViewRfqController', [ '$scope', '$rootScope', '$element', '$attrs', '$timeout', '$state', '$stateParams', 'uiApiModel', 'groupOfRequestsModel', 'tenantService',
+    .controller('ViewRfqController', [ '$scope', '$rootScope', '$element', '$attrs', '$tenantSettings',  '$timeout', '$state', '$stateParams', 'uiApiModel', 'groupOfRequestsModel', 'tenantService',
         'screenActionsModel', 'STATE', 'EMAIL_TRANSACTION', 'SCREEN_ACTIONS', 'screenLoader', '$listsCache', 'statusColors',
-        function($scope, $rootScope, $element, $attrs, $timeout, $state, $stateParams, uiApiModel, groupOfRequestsModel, tenantService,
+        function($scope, $rootScope, $element, $attrs, $tenantSettings, $timeout, $state, $stateParams, uiApiModel, groupOfRequestsModel, tenantService,
             screenActionsModel, STATE, EMAIL_TRANSACTION, SCREEN_ACTIONS, screenLoader, $listsCache, statusColors) {
             let ctrl = this;
-
+            ctrl.tenantSettings = $tenantSettings;
             $scope.STATE = STATE;
 
             ctrl.groupId = $stateParams.requestGroupId || 1;

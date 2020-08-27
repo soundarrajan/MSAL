@@ -1,6 +1,8 @@
 angular.module('shiptech.pages')
-    .controller('ViewRequestDocumentsController', [ '$scope', '$element', '$attrs', '$timeout', '$state', function($scope, $element, $attrs, $timeout, $state) {
+    .controller('ViewRequestDocumentsController', [ '$scope', '$element', '$attrs', '$tenantSettings', '$timeout', '$state', function($scope, $element, $attrs, $tenantSettings, $timeout, $state) {
         // $timeout(function(){
+        let ctrl = this;
+        ctrl.tenantSettings = $tenantSettings;
 
         if ($state.params.requestId) {
             $state.params.entity_id = $state.params.requestId;

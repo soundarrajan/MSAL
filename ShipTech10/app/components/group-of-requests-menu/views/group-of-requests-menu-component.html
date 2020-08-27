@@ -95,13 +95,20 @@
         <div class="clearfix"></div>
         </div>
         <div class="st-main-content-menu st-displaceable-menu tabbable-line tabs_bar"  ng-show="moreInformations">
+        	<!-- {{$ctrl.tenantSetting}} -->
         	<ul class="nav nav-tabs pull-left">
         		<li ng-class="{open: state.is(STATE.GROUP_OF_REQUESTS)}">
         			<a href="/#/group-of-requests/{{ entity_id }}" ng-if="!$ctrl.groupId"  ng-init="$ctrl.groupId = entity_id">
         				Negotiation
+
         			</a>
         			<a href="/#/group-of-requests/{{ $ctrl.groupId }}" ng-if="entity_id || $ctrl.groupId">
         				Negotiation
+        			</a>
+        		</li>
+        		<li ng-class="screen_id == 'request_procurement_report' ? 'open' : '' ">
+        			<a href="/#/view-group-of-requests-report/{{ $ctrl.groupId }}">
+        				Report
         			</a>
         		</li>
         		<li ng-class="screen_id == 'request_procurement_documents' ? 'open' : '' ">

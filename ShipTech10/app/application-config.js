@@ -193,6 +193,19 @@ angular.module('shiptech')
                     template: '<view-group-of-requests-documents></view-group-of-requests-documents>'
                 })
 
+                  // View Request Documents
+                .state(STATE.VIEW_GROUP_OF_REQUESTS_REPORT, {
+                    params: {
+                        path: [
+                            { label: 'Procurement', uisref: STATE.HOME },
+                            { label: 'View Negotiation Report', uisref: STATE.VIEW_GROUP_OF_REQUESTS_REPORT },
+                        ],
+                        title: 'View Requests Report',
+                        requestId: null
+                    },
+                    url: '/view-group-of-requests-report/:requestId',
+                    template: '<view-group-of-requests-report></view-group-of-requests-report>'
+                })
 
                 // View Group of Request Documents
                 .state(STATE.VIEW_REQUEST_DOCUMENTS, {
@@ -206,6 +219,20 @@ angular.module('shiptech')
                     },
                     url: '/view-request-documents/:requestId',
                     template: '<view-request-documents></view-request-documents>'
+                })
+
+                  // View Group of Request Documents
+                .state(STATE.VIEW_REQUEST_REPORT, {
+                    params: {
+                        path: [
+                            { label: 'Procurement', uisref: STATE.HOME },
+                            { label: 'View Request Report', uisref: STATE.VIEW_REQUEST_REPORT },
+                        ],
+                        title: 'View Request Report',
+                        requestId: null
+                    },
+                    url: '/view-request-report/:requestId',
+                    template: '<view-request-report></view-request-report>'
                 })
 
                 // View Request Audit Log
@@ -285,6 +312,7 @@ angular.module('shiptech')
                     url: '/group-of-requests-emaillog/:groupId',
                     template: '<group-of-requests-emaillog></group-of-requests-emaillog>'
                 })
+
                 // New Order View
                 .state(STATE.NEW_ORDER, {
                     params: {
