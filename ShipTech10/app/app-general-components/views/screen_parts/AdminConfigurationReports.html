@@ -67,7 +67,7 @@
                     <tbody>
                         <tr ng-repeat="(key, val) in formValues.report.tabConfigurations">
                             <td class="padding">
-                                {{val.screen.name}}
+                                {{val.screen.name == 'GroupOfRequests' ? 'Negotiation' : val.screen.name}}
                             </td>
                             <td class="padding">
                                 <label class="mt-checkbox">
