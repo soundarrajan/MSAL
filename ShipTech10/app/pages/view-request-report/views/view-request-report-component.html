@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" ng-init="$ctrl.getData()">
     <div class="st-main-content-menu st-displaceable-menu tabbable-line">
         <ul class="nav nav-tabs pull-left">
             <li><a ui-sref="default.edit-request({requestId: NAV.requestId})">Request</a></li>
@@ -21,7 +21,7 @@
         <div class="row">
             <div class="col-xs-12 ">
                 <div>
-                    <iframe ng-src="https://reports.shiptech.com/Home/EmbedReportWorkspace?groupid=a8810a15-07b0-4693-9087-ddc50ebac9e5&id=Vessel Schedule Report" class="iframes">
+                    <iframe ng-src="{{$ctrl.reportRequestConfiguration.reportUrl | srcurl}}" class="iframes">
                         <p>Your browser does not support iframes.</p>
                     </iframe>
                 </div>

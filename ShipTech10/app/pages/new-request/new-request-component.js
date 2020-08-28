@@ -96,6 +96,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             ctrl.numberPrecision = value.general.defaultValues;
             ctrl.requestTenantSettings = value.procurement.request;
         	ctrl.emailSettings = value.email;
+            ctrl.showReport = value.report.tabConfigurations[0].showReport;
         });
 
         // tenantService.tenantSettings.then(function(settings) {
@@ -132,7 +133,21 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         $rootScope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
             // ctrl.contractHasProduct = false;
         });
-
+        ctrl.hasAccess = false;
+        ctrl.getData = function() {
+            let payload = {
+                Payload: {}
+            }
+            $http.post(`${API.BASE_URL_DATA_PROCUREMENT}/api/procurement/request/isAuthorizedForReportsTab`, payload).then((response) => {
+                if (response) {
+                    if (response.data) {
+                        ctrl.hasAccess = true;
+                    }
+                } else {
+                    ctrl.hasAccess = false;
+                }
+            });
+        }
         ctrl.defaultProductsTooltip = function() {
             let ret = '';
             if (ctrl.selectedVessel && ctrl.selectedVessel.defaultDistillateProduct && ctrl.selectedVessel.distillateSpecGroup) {

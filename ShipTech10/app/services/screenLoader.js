@@ -270,6 +270,9 @@ angular.module('shiptech').config([
                     			}
                     			toastr.error(errorText);
                     		} else if (config.status == '401') {
+                                    if (routeCall == "api/procurement/request/isAuthorizedForReportsTab" || routeCall == "api/procurement/rfq/isAuthorizedForReportsTab") {
+                                        return;
+                                    }
                     				toastr.error('You do not have authorization to perform this action.');
                     			} else {
 	                    			toastr.error('An error has occured');
