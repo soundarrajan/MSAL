@@ -43,6 +43,9 @@ Number(function() {
                     tenantService.procurementSettings.then((settings) => {
                         window.procurementSettings = settings.payload;
                     });
+                    tenantService.scheduleDashboardConfiguration.then((settings) => {
+                        $rootScope.scheduleDashboardConfiguration = settings.payload;
+                    });
                     $rootScope.isModal = scope.modal;
                     $rootScope.modalTableId = scope.id;
                     $rootScope.listTableSelector = `flat_${ scope.screen.replace('list', '_list')}`;
@@ -427,6 +430,14 @@ Number(function() {
                                     if (procurementSettings.request.deliveryWindowDisplay.id == 2) {
                                         newValue.colModel.splice(i, 1);
                                     }
+                                } else if (newValue.colModel[i].name == 'vesselType') {
+                                    let vesselType = _.find($rootScope.scheduleDashboardConfiguration.hiddenFields, function(object) {
+                                        return object.option.name == 'Vessel Type';
+                                    });
+                                    if (vesselType.hidden) {
+                                        newValue.colModel.splice(i, 1);
+                                    }
+
                                 }
                             }
                         }

@@ -28,6 +28,10 @@
 .vis-vessel {
 	width: 230px;
 }
+
+.vis-vessel-type {
+    width: 150px;
+}
 .vis-service {
 	width: 70px;
 }
