@@ -3717,7 +3717,9 @@ APP_MASTERS.controller('Controller_Master', [
         };
 
         vm.loadShiptechLite = function() {
-            vm.shiptechLite = $rootScope.adminConfiguration.general.shiptechLite;
+            if ($rootScope.adminConfiguration) {
+                vm.shiptechLite = $rootScope.adminConfiguration.general.shiptechLite;
+            }
         };
         // vm.load_eef_config = function(structure) {
         //     $scope.formFields = structure;
