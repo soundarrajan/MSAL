@@ -263,7 +263,7 @@ span.vesselName {
     padding: 0px 0px 0px 15px;
 }
 
-span.serviceName, span.buyerName, span.serviceBuyerName, span.companyName {
+span.serviceName, span.vesselType, span.buyerName, span.serviceBuyerName, span.companyName {
     padding: 5px;
 
 }
