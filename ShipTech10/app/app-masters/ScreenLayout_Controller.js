@@ -581,6 +581,9 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                                                 if (v1.contractProduct) {
 	                                                v1.contractProduct.id = 0;
                                                 }
+                                                if (v1.contractProductId) {
+                                                	v1.contractProductId = 0;
+                                                }
                                             });
                                             v.formula = null;
                                             v.mtmFormula = null;
