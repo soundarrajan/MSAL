@@ -1780,7 +1780,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 product.confirmedQtyPrice = 1;
                 product.amount = Number(product.confirmedQtyPrice) * Number(confirmedQuantityOrMaxQuantity) * Number(product.price);
             } else {
-                lookupModel.getConvertedUOM(ctrl.data.products[0].product.id, 1, product.quantityUom.id, product.priceUom.id).then((server_data) => {
+                lookupModel.getConvertedUOM(ctrl.data.products[0].product.id, 1, product.quantityUom.id, product.priceUom.id, product.id).then((server_data) => {
                     product.confirmedQtyPrice = server_data.payload;
                     product.amount = Number(product.confirmedQtyPrice) * Number(confirmedQuantityOrMaxQuantity) * Number(product.price);
                 }).catch((e) => {

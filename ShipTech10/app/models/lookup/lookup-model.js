@@ -417,12 +417,13 @@ angular.module('shiptech.models').factory('lookupModel', [ 'lookupResource', 'lo
                 });
         }
 
-        function getConvertedUOM(product, quantity, fromUOM, toUOM) {
+        function getConvertedUOM(product, quantity, fromUOM, toUOM, orderProductId) {
             let request_data = {
                 Payload: payload
             };
             request_data.Payload = {
                 ProductId: product,
+                OrderProductId: orderProductId,
                 Quantity: quantity,
                 FromUomId: fromUOM,
                 ToUomId: toUOM
