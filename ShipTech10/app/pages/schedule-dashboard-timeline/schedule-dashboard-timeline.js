@@ -940,7 +940,11 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-vessel-type" timeline-order-column="vesselType"> Vessel Type </span>';
                 }
                 if ($scope.displayedColumns["Service"]) {
-	                groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-service" timeline-order-column="serviceName"> Service </span>';
+                    if ($scope.tenantSettings.serviceDisplayName.name == "Service") {
+	                   groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-service" timeline-order-column="serviceName"> Service </span>';
+                    } else {
+                        groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-service" timeline-order-column="serviceName"> Operator </span>';
+                    }
                 }
                 if ($scope.displayedColumns["Buyer of the Vessel"]) {
                     groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-buyer-of-vessel" timeline-order-column="buyerName"> Buyer of the Vessel </span>';
@@ -2118,7 +2122,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 			}
     		window.timelineCurrentSort = currentSort;
 			window.mytimeline.setOptions(options);
-			window.mytimeline.redraw();
+		    // window.mytimeline.redraw();
             setTimeout(function() {
             	if ($(".vis-vertical-scroll").scrollTop() < 50) {
                     timeline._setScrollTop(0);
