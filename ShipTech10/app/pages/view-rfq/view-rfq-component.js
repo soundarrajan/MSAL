@@ -7,7 +7,10 @@ angular.module('shiptech.pages')
             ctrl.tenantSettings = $tenantSettings;
             $scope.STATE = STATE;
 
-            ctrl.groupId = $stateParams.requestGroupId || 1;
+            ctrl.groupId = $state.params.groupId || 1;
+            $scope.NAV = {};
+            $scope.NAV.requestId = $state.params.requestId;
+            $scope.entity_id = $state.params.groupId;
             ctrl.checkboxes = [];
             ctrl.requirements = [];
             ctrl.quoteByTimezoneId = 1;

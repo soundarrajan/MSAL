@@ -493,7 +493,7 @@ angular.module('shiptech')
                         title: 'Group of Requests',
                         requestGroupId: null
                     },
-                    url: '/view-rfq',
+                    url: '/view-rfq/:groupId',
                     template: '<view-rfq></view-rfq>'
                 })
 
