@@ -1,7 +1,7 @@
-﻿commit b5b06d7db8973832aecf757d10926120c4cfe4ee
+﻿commit d41692fea64b7c0ab92be5f17bdc440fa078889e
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Wed Aug 26 12:08:41 2020 +0300
+Date:   Mon Aug 31 10:19:27 2020 +0300
 
-    Removed the filter panel after applied the filter
+    Added 1.0.72 version of email template editor( Added the marker and flag changes are  reflected in the preview.)
 
 branch: master
