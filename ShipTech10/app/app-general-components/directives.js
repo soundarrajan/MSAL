@@ -430,15 +430,7 @@ Number(function() {
                                     if (procurementSettings.request.deliveryWindowDisplay.id == 2) {
                                         newValue.colModel.splice(i, 1);
                                     }
-                                } else if (newValue.colModel[i].name == 'vesselType') {
-                                    let vesselType = _.find($rootScope.scheduleDashboardConfiguration.hiddenFields, function(object) {
-                                        return object.option.name == 'Vessel Type';
-                                    });
-                                    if (vesselType.hidden) {
-                                        newValue.colModel.splice(i, 1);
-                                    }
-
-                                }
+                                } 
                             }
                         }
 
