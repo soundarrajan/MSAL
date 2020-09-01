@@ -3426,6 +3426,12 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 Payload = {
                     "ContractProductId": product.contractProductId,
                     "ProductId": product.product.id
+                }    
+                let findContractOption = _.find(ctrl.orderContractOptions[product.product.id], function(object) {
+                    return object.contract.id == product.contract.id;
+                });
+                if (findContractOption.conversionFactors.contractConversionFactorOptions.id == 1) {
+                    return;
                 }
                 payload = { Payload: Payload };
                 $http.post(`${API.BASE_URL_DATA_CONTRACTS  }/api/contract/contract/getConversionFactorsForContractProduct`, payload).then((response) => {
