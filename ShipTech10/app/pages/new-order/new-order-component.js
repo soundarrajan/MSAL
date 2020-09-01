@@ -1734,7 +1734,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 // ctrl.data.products[productIndex].formula = null;
                 ctrl.data.products[productIndex].price = null;
                 ctrl.data.products[productIndex].agreementType = null;
-                ctrl.data.products[productIndex].physicalSupplier = null;
                 ctrl.data.products[productIndex].pricingType = null;
                 // ctrl.data.products[productIndex].formulaDescription = null;
                 ctrl.data.products[productIndex].totalAmount = null;
@@ -3371,12 +3370,15 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 ctrl.data.products[idx].formula = angular.copy(selection.formula);
                 ctrl.data.products[idx].agreementType = selection.contractAgreementType ?
                     angular.copy(selection.contractAgreementType) : ctrl.defaultContractAgreementType;
-                ctrl.data.products[idx].convFactorMassUom = angular.copy(selection.conversionFactors.massUom);
-                ctrl.data.products[idx].convFactorValue = angular.copy(selection.conversionFactors.value);
-                ctrl.data.products[idx].convFactorVolumeUom = angular.copy(selection.conversionFactors.volumeUom);
+                if (!isSameContract) {   
+                    ctrl.data.products[idx].convFactorMassUom = angular.copy(selection.conversionFactors.massUom);
+                    ctrl.data.products[idx].convFactorValue = angular.copy(selection.conversionFactors.value);
+                    ctrl.data.products[idx].convFactorVolumeUom = angular.copy(selection.conversionFactors.volumeUom);
+                    ctrl.data.products[idx].physicalSupplier = selection.physicalSupplier;
+                }
+               
 
                 ctrl.data.products[idx].requiredFields = [];
-                ctrl.data.products[idx].physicalSupplier = selection.physicalSupplier;
                 if (ctrl.procurementSettings.order.specGroupFlowFromContract.name == 'Yes') {
                     ctrl.data.products[idx].specGroup = selection.specGroup;
                 }
