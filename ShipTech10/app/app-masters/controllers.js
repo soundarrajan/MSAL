@@ -829,6 +829,12 @@ APP_MASTERS.controller('Controller_Master', [
                 }
             }
 
+            if (vm.app_id == 'masters' && vm.screen_id == 'vessel') {
+                if ($scope.formValues.temp.tanks && JSON.stringify($scope.formValues.temp.tanks) != JSON.stringify({})) {
+                    $scope.formValues.tanks.push($scope.formValues.temp.tanks);
+                }
+            }
+
             if(vm.app_id === 'masters' && vm.screen_id === 'buyer') {
             	// if(!$scope.formValues.code) {
 	            	if(!$scope.formValues.code) {
