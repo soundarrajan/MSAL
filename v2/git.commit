@@ -1,7 +1,7 @@
-﻿commit 30a150ac988e7bf5881fb5d73942503f736bd5dd
+﻿commit 9a16d808e82d0780cb1482b859d7deb2ecb90955
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Tue Sep 1 15:25:22 2020 +0300
+Date:   Wed Sep 2 13:02:30 2020 +0300
 
-    Added the loading indicator in email template editor page
+    Removed duplicates for ToOthers and CcOthers in email template editor
 
 branch: master
