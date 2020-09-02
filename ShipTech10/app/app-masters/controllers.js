@@ -6125,10 +6125,12 @@ APP_MASTERS.controller('Controller_Master', [
                         if (window.location.href.indexOf("admin/order-import") != -1) {
                             let currentFile = this.files[0];
                             var fileScope = angular.element($('input').parent().find('.fileNameLabel')).scope();
-                            $rootScope.droppedDoc = currentFile;
-                            fileScope.$apply(() => {
-                                fileScope.droppedDoc = currentFile;
-                            });
+                            if (currentFile) {
+                                $rootScope.droppedDoc = currentFile;
+                                fileScope.$apply(() => {
+                                    fileScope.droppedDoc = currentFile;
+                                });
+                            }
                             return;
                         }
                         var input = $(this);

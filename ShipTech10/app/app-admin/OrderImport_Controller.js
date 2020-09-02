@@ -46,7 +46,7 @@ APP_MASTERS.controller('OrderImport_Controller', [
                 "product": "products",
                 "company": "companies"
             };
-            var currentList = map[$scope.screen_id];
+            var currentList = "locations";
 
             return `${API.BASE_URL_DATA_MASTERS}/api/masters/${currentList}/listMasters`;
         }
@@ -56,30 +56,30 @@ APP_MASTERS.controller('OrderImport_Controller', [
                 "Payload": {
                     "Pagination": {
                         "Skip": 0,
-                        "Take": 9999999
+                        "Take": 10
                     }
                 }
             }
             url = getListUrl();
-            console.log("IOANA");
-            // $http.post(url, angular.toJson(apiJSON)).then(
-            //     (response) => {
-            //         if (response.data) {
-            //             console.log("Start", Date.now());
-            //             callback(response.data.payload);
-            //         } else {
-            //             callback(false);
-            //         }
-            //     },
-            //     (response) => {
-            //         console.log('HTTP ERROR');
-            //         callback(false);
-            //     }
-            // );
+            $http.post(url, angular.toJson(apiJSON)).then(
+                (response) => {
+                    if (response.data) {
+                        console.log("Start", Date.now());
+                        callback(response.data.payload);
+                    } else {
+                        callback(false);
+                    }
+                },
+                (response) => {
+                    console.log('HTTP ERROR');
+                    callback(false);
+                }
+            );
         }
 
         vm.getData(function (response) {
-            
+            $scope.formValues = response;
+            console.log($scope.formValues);
         });
 
         $('.display').on('click','div',function (e) {

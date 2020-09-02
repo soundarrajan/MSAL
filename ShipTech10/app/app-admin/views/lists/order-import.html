@@ -59,8 +59,23 @@
             </div>
         </div>
         <div class="portlet-body">
+            <div  class="custom-hardcoded-table ng-scope">
+                <table class="table-body" style="width:50%; position: relative; left: 15px;">
+                    <thead>
+                        <tr>
+                            <td class="padding"><b>BO Number</b></td>
+                            <td class="padding"><b>Log Description</b></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="(key, value) in formValues " ng-if="!value.isDeleted">
+                            <td class="padding">{{value.code}}</td>
+                            <td class="padding">{{value.createdBy.name}} </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-
     </div>
 </div>
 </div>

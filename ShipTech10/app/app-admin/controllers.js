@@ -164,7 +164,14 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
                 slug: 'configuration/edit/',
                 icon: 'fa fa-folder icon-lg',
                 nodes: 1
-            }, {
+            }, 
+            {
+                id: 3,
+                title: 'Order Import',
+                slug: 'order-import',
+                icon: 'fa fa-folder icon-lg',
+                nodes: 1
+            },{
                 id: 3,
                 title: 'Seller Rating',
                 slug: 'sellerRating/edit/',
