@@ -16,6 +16,7 @@ APP_ADMIN.constant('ADMIN_STATE', {
     EDIT: 'admin.edit',
     PASSWORD: 'admin.password',
     CONFIGURATION: 'admin.configuration',
+    IMPORT: 'admin.import',
     SELLERRATING: 'admin.sellerRating',
     TRANSLATE: 'admin.translate',
 });
@@ -154,6 +155,17 @@ APP_ADMIN.config([ '$stateProvider', '$urlRouterProvider', 'ADMIN_STATE', functi
             url: '/admin/configuration/translate',
             requireADLogin: true,
             templateUrl: 'app-admin/views/translate.html'
+        }).state(ADMIN_STATE.IMPORT, {
+            params: {
+                path: [ {
+                    label: 'Masters List',
+                    uisref: ADMIN_STATE.IMPORT
+                } ],
+                title: 'Order Import'
+            },
+            url: '/admin/order-import',
+            requireADLogin: true,
+            templateUrl: 'app-admin/views/lists/order-import.html'
         });
 } ]);
 // ON RUN
@@ -165,6 +177,7 @@ APP_ADMIN.run([ '$state', '$rootScope', 'ADMIN_STATE', function($state, $rootSco
     titleMap[ADMIN_STATE.EDIT] = ':screen_id :: Edit :entity_id';
     titleMap[ADMIN_STATE.PASSWORD] = 'User Password Change';
     titleMap[ADMIN_STATE.TRANSLATE] = 'Translate';
+    titleMap[ADMIN_STATE.IMPORT] = 'IMPORT';
     let screenMap = {
         users: 'Users',
         user_role: 'User Role',
@@ -172,7 +185,8 @@ APP_ADMIN.run([ '$state', '$rootScope', 'ADMIN_STATE', function($state, $rootSco
         configuration: 'Configuration',
         sellerRating: 'sellerRating',
         subscriptionslist: 'Subscription',
-        translate: 'Translate'
+        translate: 'Translate',
+        import: 'Import'
     };
     let entityMap = {}; // if needed :)
     // do not edit below
@@ -187,6 +201,12 @@ APP_ADMIN.run([ '$state', '$rootScope', 'ADMIN_STATE', function($state, $rootSco
             let newTitle = titleMap[$state.current.name];
             newTitle = newTitle.replace(/:screen_id/i, screenMap[$state.params.screen_id]).replace(/:entity_id/i, $state.params.entity_id);
             $state.params.title = newTitle;
+            if ($state.params.screen_id == 'order-import') {
+                $state.current.params.path[1].label = 'Order  Import';
+                $state.current.params.title = 'Order  Import';
+                $state.params.path[1].label = 'Order Invoice  Import';
+                $state.params.title = 'Order Invoice Import';
+            }
         }
     };
 } ]);

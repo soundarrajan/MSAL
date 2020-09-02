@@ -1,0 +1,66 @@
+﻿<span ng-controller="Controller_Admin as CA" ng-init="setPageTitle()"></span>
+<div  ng-controller="Controller_Master as CM"></div>
+<div ng-controller="OrderImport_Controller as OC">
+<div class="row">
+        <div class="st-main-content-menu tabbable-line" style="height: 70px!important;">
+            <div class="clearfix"></div>
+        </div>
+</div>
+
+<div class="form-group  form-inline " style="opacity: 0">
+    <div class="col-md-6">
+        <input type='file' id="fileUpload" class="inputfile" ng-model='droppedDoc' style="opacity: 0"/>
+        <label for="fileUpload">
+
+            <div class="col-sm-9">
+                <div class="fileNameLabel">
+                    {{ droppedDoc.name }}
+                </div>
+            </div>
+        </label>
+    </div>
+</div>
+<div class="col-md-12 no-padding-left">
+    <div class="portlet light stretch-vertical">
+        <div class="portlet-title">
+            <div class="caption">
+                <div class="caption-subject" style="color: black !important; position: relative; left: 15px; text-transform: initial;">
+                    Order Import
+                </div>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div class="row" style="display: flex;">
+                <div  class="col-md-6 display" >
+                    <div class="input-group" style="margin-left: 15px; width: 60%;">
+                        <input typeahead-editable="false" class="typeahead form-control" ng-model="droppedDoc.name" >
+                        <span class="input-group-addon" >
+                            <i class="fa fa-search"></i>
+                        </span>
+                    </div>
+                </div>
+                 <div class="pull-right col-md-6" style="position: absolute;right: 10px; width: 120px; ">
+                    <a id="general_action_{{ $index }}" class="btn btn-default btn-default"  ng-click="OC.uploadDocument('#fileUpload')">
+                        Upload
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="col-md-12 no-padding-left">
+    <div class="portlet light stretch-vertical">
+        <div class="portlet-title">
+            <div class="caption">
+                <div class="caption-subject" style="color: black !important; position: relative; left: 15px; text-transform: initial;">
+                    Order Invoice Log
+                </div>
+            </div>
+        </div>
+        <div class="portlet-body">
+        </div>
+
+    </div>
+</div>
+</div>
