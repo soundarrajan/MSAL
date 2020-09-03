@@ -81,6 +81,7 @@ APP_MASTERS.controller('OrderImport_Controller', [
         vm.getData(function (response) {
             $scope.formValues = response;
             console.log($scope.formValues);
+
         });
 
         $('.display').on('click','div',function (e) {
@@ -165,19 +166,22 @@ APP_MASTERS.controller('OrderImport_Controller', [
             }
             if (findRequestToInvoiceImport) {
                 data.request.Payload.documentType = findRequestToInvoiceImport;
+                FD.append('file', file);
+                FD.append('request', JSON.stringify(data.request));
+                screenLoader.showLoader();
+                Factory_Master.upload_document_import_data(FD, (callback) => {
+                    if (callback) {
+                        toastr.success('Document saved!');
+                        screenLoader.hideLoader();
+                    } else {
+                        toastr.error('Upload error');
+                        screenLoader.hideLoader();
+                    }
+                });    
+            } else {
+                toastr.warning("Document type RequestToInvoiceImport doesn't exist in lists cache!");
             }
-            FD.append('file', file);
-            FD.append('request', JSON.stringify(data.request));
-            screenLoader.showLoader();
-            Factory_Master.upload_document_import_data(FD, (callback) => {
-                if (callback) {
-                    toastr.success('Document saved!');
-                    screenLoader.hideLoader();
-                } else {
-                    toastr.error('Upload error');
-                    screenLoader.hideLoader();
-                }
-            });    
+           
             
         }
         
