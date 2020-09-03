@@ -30,21 +30,23 @@
             </div>
         </div>
         <div class="portlet-body">
-            <div class="row" style="display: flex;">
-                <div  class="col-md-6 display" >
-                    <div class="input-group" style="margin-left: 15px; width: 60%;">
-                        <input typeahead-editable="false" class="typeahead form-control" ng-model="droppedDoc.name" >
-                        <span class="input-group-addon" >
-                            <i class="fa fa-search"></i>
-                        </span>
+            <form class="form-horizontal">
+                <div class="row" style="display: flex;">
+                    <div  class="col-md-6 display" >
+                        <div class="input-group" style="margin-left: 15px; width: 60%;">
+                            <input typeahead-editable="false" class="typeahead form-control" ng-model="droppedDoc.name" >
+                            <span class="input-group-addon" >
+                                <i class="fa fa-search"></i>
+                            </span>
+                        </div>
+                    </div>
+                     <div class="pull-right col-md-6" style="position: absolute;right: 10px; width: 120px; ">
+                        <a id="general_action_{{ $index }}" class="btn btn-default btn-default"  ng-click="OC.uploadDocument('#fileUpload')">
+                            Upload
+                        </a>
                     </div>
                 </div>
-                 <div class="pull-right col-md-6" style="position: absolute;right: 10px; width: 120px; ">
-                    <a id="general_action_{{ $index }}" class="btn btn-default btn-default"  ng-click="OC.uploadDocument('#fileUpload')">
-                        Upload
-                    </a>
-                </div>
-            </div>
+            </form>
         </div>
 
     </div>

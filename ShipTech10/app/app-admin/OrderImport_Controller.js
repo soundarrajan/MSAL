@@ -159,7 +159,7 @@ APP_MASTERS.controller('OrderImport_Controller', [
                 file = $(selector)[0].files[0];
             }
             FD.append('file', file);
-            // FD.append('request', JSON.stringify(data.request));
+            FD.append('request', JSON.stringify(data.request));
             screenLoader.showLoader();
             Factory_Master.upload_document_import_data(FD, (callback) => {
                 if (callback) {
