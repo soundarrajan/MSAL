@@ -1072,15 +1072,13 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
             return true;
         };
         ctrl.goBack = function() {
-            $window.history.back();
-            setTimeout(() => {
-                if (window.location.href.indexOf('quantity-control/report/') == -1) {
-                    if (window.location.href.indexOf('preview-email?') != -1 && ctrl.transaction == 'QuantityControl') {
-                        window.history.back();
-                    }
-                }
-            }, 500);
-         
+            if (window.location.href.indexOf('preview-email?reportId') != 1 && ctrl.transaction == 'QuantityControl') {
+                console.log("QUANTITY CONTROL");
+                let reportUrl = 'v2/quantity-control/report/' + ctrl.reportId + '/details';
+                window.location.href = reportUrl;
+            } else {
+                $window.history.back();
+            }
         };
         ctrl.focusInnerInput = function(event) {
             console.log(event.target);
