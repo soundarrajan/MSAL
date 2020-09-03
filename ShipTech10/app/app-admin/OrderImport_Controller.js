@@ -35,6 +35,7 @@ APP_MASTERS.controller('OrderImport_Controller', [
     function (API, $tenantSettings, tenantService, $scope, $rootScope, $sce, $Api_Service, Factory_Master, $state, $location, $q, $compile, $timeout, $interval, $templateCache, $listsCache, $uibModal, uibDateParser, uiGridConstants, $filter, $http, $window, $controller, payloadDataModel, statusColors, screenLoader, $parse, orderModel, API) {
         let vm = this;
         $scope.screen_id = $state.params.screen_id;
+        vm.listsCache = $listsCache;
 
         var getListUrl = function () {
             var map = {
@@ -118,6 +119,10 @@ APP_MASTERS.controller('OrderImport_Controller', [
         };
 
         vm.uploadDocument = function(selector) {
+            let listOfDocumentTypes = vm.listsCache['DocumentType'];
+            let findRequestToInvoiceImport = _.find(listOfDocumentTypes, function(object) {
+                return object.name == 'RequestToInvoiceImport';
+            });
             let data = {
                 request: {
                     Payload: {
@@ -158,12 +163,16 @@ APP_MASTERS.controller('OrderImport_Controller', [
             } else {
                 file = $(selector)[0].files[0];
             }
+            if (findRequestToInvoiceImport) {
+                data.request.Payload.documentType = findRequestToInvoiceImport;
+            }
             FD.append('file', file);
             FD.append('request', JSON.stringify(data.request));
             screenLoader.showLoader();
             Factory_Master.upload_document_import_data(FD, (callback) => {
                 if (callback) {
                     toastr.success('Document saved!');
+                    screenLoader.hideLoader();
                 } else {
                     toastr.error('Upload error');
                     screenLoader.hideLoader();
