@@ -159,30 +159,19 @@ APP_MASTERS.controller('OrderImport_Controller', [
                 file = $(selector)[0].files[0];
             }
             FD.append('file', file);
-            // add file
-            Factory_Master.upload_document(FD, (callback) => {
+            // FD.append('request', JSON.stringify(data.request));
+            screenLoader.showLoader();
+            Factory_Master.upload_document_import_data(FD, (callback) => {
                 if (callback) {
                     toastr.success('Document saved!');
-                    // $state.reload();
-                    // $('.ui-jqgrid-btable').trigger('reloadGrid');
-                    // location.reload();
                 } else {
                     toastr.error('Upload error');
-                    // $state.reload();
-                    // location.reload();
+                    screenLoader.hideLoader();
                 }
-            });
+            });    
             
-        };
-
-        vm.searchClick = function() {
-            console.log("IOANA");
-            setTimeout(() => {
-                angular.element('#fileUpload').trigger('click');
-                angular.element('#FTPFileUpload').trigger('click');
-            }, 1);
         }
-
+        
         vm.uploadedFile = function() {
             console.log("UPLOAD");
         }

@@ -156,6 +156,25 @@ APP_MASTERS.factory('Factory_Master', [ '$window', '$http', '$Api_Service', 'API
                 callback(false);
             });
         },
+        upload_document_import_data: function(data, callback) {
+            let url = `${API.BASE_URL_DATA_ADMIN }/api/admin/import/upload`;
+            $http.post(url, data, {
+                transformRequest: angular.identity,
+                headers: {
+                    'Content-Type': undefined
+                }
+            }).then((response) => {
+                if (response) {
+                    callback('Success');
+                } else {
+                    callback(false);
+                }
+            }, (response) => {
+                console.log('HTTP ERROR');
+                callback(false);
+            });
+        },
+
         get_file: function(id, callback) {
             var getUrl = `${API.BASE_URL_DATA_MASTERS }/api/masters/companies/download`;
             id = {
