@@ -76,7 +76,7 @@
                                 </label>
                             </td>
                             <td>
-                                <input  ng-model="val.reportUrl" type="text" class="form-control" name="reportViewerUrlNegociation" id="field_reportViewerUrlNegociation"/>
+                                <input  ng-model="val.reportUrl" type="text" class="form-control" name="URL  for the {{val.screen.name == 'GroupOfRequests' ? 'Negotiation' : val.screen.name}} report" id="field_reportViewerUrlNegociation"  ng-required="val.showReport ? true : false" />
                             </td>
                         </tr>
                     </tbody>
