@@ -36,53 +36,7 @@ APP_MASTERS.controller('OrderImport_Controller', [
         let vm = this;
         $scope.screen_id = $state.params.screen_id;
         vm.listsCache = $listsCache;
-
-        var getListUrl = function () {
-            var map = {
-                "counterparty": "counterparties",
-                "location": "locations",
-                "buyer": "buyer",
-                "strategy": "strategies",
-                "service": "services",
-                "product": "products",
-                "company": "companies"
-            };
-            var currentList = "locations";
-
-            return `${API.BASE_URL_DATA_MASTERS}/api/masters/${currentList}/listMasters`;
-        }
-
-        vm.getData = function (callback) {
-            apiJSON = {
-                "Payload": {
-                    "Pagination": {
-                        "Skip": 0,
-                        "Take": 10
-                    }
-                }
-            }
-            url = getListUrl();
-            $http.post(url, angular.toJson(apiJSON)).then(
-                (response) => {
-                    if (response.data) {
-                        console.log("Start", Date.now());
-                        callback(response.data.payload);
-                    } else {
-                        callback(false);
-                    }
-                },
-                (response) => {
-                    console.log('HTTP ERROR');
-                    callback(false);
-                }
-            );
-        }
-
-        vm.getData(function (response) {
-            $scope.formValues = response;
-            console.log($scope.formValues);
-
-        });
+        $scope.formValues = [];
 
         $('.display').on('click','div',function (e) {
           setTimeout(() => {
@@ -172,6 +126,7 @@ APP_MASTERS.controller('OrderImport_Controller', [
                 Factory_Master.upload_document_import_data(FD, (callback) => {
                     if (callback) {
                         toastr.success("Operation completed successfully");
+                        $scope.formValues = callback.payload;
                         screenLoader.hideLoader();
                     } else {
                         toastr.error('Upload error');

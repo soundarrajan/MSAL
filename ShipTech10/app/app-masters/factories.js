@@ -165,7 +165,7 @@ APP_MASTERS.factory('Factory_Master', [ '$window', '$http', '$Api_Service', 'API
                 }
             }).then((response) => {
                 if (response) {
-                    callback('Success');
+                    callback(response.data);
                 } else {
                     callback(false);
                 }

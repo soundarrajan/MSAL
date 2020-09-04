@@ -71,8 +71,8 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="(key, value) in formValues " ng-if="!value.isDeleted">
-                            <td class="padding">{{value.code}}</td>
-                            <td class="padding">{{value.createdBy.name}} </td>
+                            <td class="padding">{{value.orderName}}</td>
+                            <td class="padding">{{value.error}} </td>
                         </tr>
                     </tbody>
                 </table>
