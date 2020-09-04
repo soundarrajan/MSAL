@@ -730,6 +730,11 @@ export const BASE_MENU: KeyedMenuItems = {
         url: '/#/admin/configuration/edit/1',
         target: '_blank'
       },
+      import_data: {
+        label: 'Order to Invoice Import',
+        url: '/#/admin/order-import',
+        target: '_blank'
+      },
       seller_rating: {
         label: 'Seller Rating',
         url: '/#/admin/sellerrating/edit/',
