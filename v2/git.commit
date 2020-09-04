@@ -1,7 +1,7 @@
-﻿commit 9a16d808e82d0780cb1482b859d7deb2ecb90955
+﻿commit e41e874bcb47a08194b765001f761d8953a67111
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Wed Sep 2 13:02:30 2020 +0300
+Date:   Fri Sep 4 16:35:04 2020 +0300
 
-    Removed duplicates for ToOthers and CcOthers in email template editor
+    Added Order to Invoice Import to /v2/
 
 branch: master
