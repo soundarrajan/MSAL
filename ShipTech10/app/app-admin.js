@@ -202,10 +202,10 @@ APP_ADMIN.run([ '$state', '$rootScope', 'ADMIN_STATE', function($state, $rootSco
             newTitle = newTitle.replace(/:screen_id/i, screenMap[$state.params.screen_id]).replace(/:entity_id/i, $state.params.entity_id);
             $state.params.title = newTitle;
             if ($state.params.screen_id == 'order-import') {
-                $state.current.params.path[1].label = 'Order  Import';
-                $state.current.params.title = 'Order  Import';
-                $state.params.path[1].label = 'Order Invoice  Import';
-                $state.params.title = 'Order Invoice Import';
+                $state.current.params.path[1].label = 'Order to Invoice  Import';
+                $state.current.params.title = 'Order to Invoice  Import';
+                $state.params.path[1].label = 'Order to Invoice  Import';
+                $state.params.title = 'Order to Invoice Import';
             }
         }
     };

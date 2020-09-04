@@ -171,7 +171,7 @@ APP_MASTERS.controller('OrderImport_Controller', [
                 screenLoader.showLoader();
                 Factory_Master.upload_document_import_data(FD, (callback) => {
                     if (callback) {
-                        toastr.success('Document saved!');
+                        toastr.success("Operation completed successfully");
                         screenLoader.hideLoader();
                     } else {
                         toastr.error('Upload error');
