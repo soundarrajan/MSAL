@@ -1,7 +1,7 @@
-﻿commit e41e874bcb47a08194b765001f761d8953a67111
+﻿commit adf6f9b4235b07c125ad2413510abb916fb23626
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Fri Sep 4 16:35:04 2020 +0300
+Date:   Mon Sep 7 13:23:29 2020 +0300
 
-    Added Order to Invoice Import to /v2/
+    Fixed content  once we made some changes in  the list of email template editor
 
 branch: master
