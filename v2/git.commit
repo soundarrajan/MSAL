@@ -1,7 +1,7 @@
-﻿commit adf6f9b4235b07c125ad2413510abb916fb23626
+﻿commit 29c09de465a344b28ac7a9bfdace1a32ea4263aa
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Mon Sep 7 13:23:29 2020 +0300
+Date:   Mon Sep 7 16:11:27 2020 +0300
 
-    Fixed content  once we made some changes in  the list of email template editor
+    Added 1.0.83 version of email template editor(fixed unproperly custom email  from contact email extension)
 
 branch: master
