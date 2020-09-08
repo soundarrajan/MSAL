@@ -492,8 +492,11 @@ span[timeline-order-column].desc:before {
 /* #timeline .vis-group, #timeline .vis-label{
     height: 36px !important;
 } */
-
 #timeline .vis-label .vis-inner{
+    height: 36px !important;
+}
+
+#timeline .vis-content .vis-labelset .vis-label, #timeline .vis-content .vis-group{
     height: 36px !important;
 }
 
