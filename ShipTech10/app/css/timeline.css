@@ -497,7 +497,7 @@ span[timeline-order-column].desc:before {
 }
 
 #timeline .vis-content .vis-labelset .vis-label, #timeline .vis-content .vis-group{
-    height: 36px !important;
+    height: 34px !important;
 }
 
 timeline-right-click-popover .contextmenu {
