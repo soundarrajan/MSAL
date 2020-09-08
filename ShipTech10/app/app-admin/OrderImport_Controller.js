@@ -38,7 +38,7 @@ APP_MASTERS.controller('OrderImport_Controller', [
         vm.listsCache = $listsCache;
         $scope.formValues = [];
 
-        $('.display').on('click','div',function (e) {
+        $('.search-part').on('click','div',function (e) {
           setTimeout(() => {
             angular.element('#fileUpload').trigger('click');
             angular.element('#FTPFileUpload').trigger('click');
@@ -46,15 +46,15 @@ APP_MASTERS.controller('OrderImport_Controller', [
          });
 
 
-        $('.display').on('dragover', 'div', function(e) {
+        $('.drop-part').on('dragover', 'div', function(e) {
             e.preventDefault();
             e.stopPropagation();
         })
-         $('.display').on('dragenter', 'div', function(e) {
+         $('.drop-part').on('dragenter', 'div', function(e) {
             e.preventDefault();
             e.stopPropagation();
         })
-        $('.display').on('drop', 'div', function(e) {
+        $('.drop-part').on('drop', 'div', function(e) {
             e.preventDefault();
             e.stopPropagation();
             if (e.originalEvent.dataTransfer){

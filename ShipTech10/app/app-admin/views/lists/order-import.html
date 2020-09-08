@@ -32,12 +32,21 @@
         <div class="portlet-body">
             <form class="form-horizontal">
                 <div class="row" style="display: flex;">
-                    <div  class="col-md-6 display" >
+                    <div  class="col-md-4 search-part" >
                         <div class="input-group" style="margin-left: 15px; width: 60%;">
                             <input typeahead-editable="false" class="typeahead form-control" ng-model="droppedDoc.name" >
                             <span class="input-group-addon" >
                                 <i class="fa fa-search"></i>
                             </span>
+                        </div>
+                    </div>
+                    <div class="col-md-4" >
+                        <div class="drop-part">
+                            <div class="dropzone-file-area">
+                                <h3 class="sbold">
+                                    Drop files here
+                                </h3>
+                            </div>
                         </div>
                     </div>
                      <div class="pull-right col-md-6" style="position: absolute;right: 10px; width: 120px; ">
