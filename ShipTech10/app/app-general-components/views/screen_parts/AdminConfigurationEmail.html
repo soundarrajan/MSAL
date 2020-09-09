@@ -1,5 +1,5 @@
-<div class="custom-hardcoded-table fixed-header ng-scope" style="max-height: 500px;">
 
+<div class="custom-hardcoded-table fixed-header ng-scope" style="max-height: 500px;">
 		    <table class="table-body" style="width:99.9%">
 		        <thead>
 		            <tr>
@@ -8,10 +8,10 @@
 		            	<th id="generatedThId11" class="padding">Email Type</th>
 		            	<th id="generatedThId12" class="padding">Template</th>
 		            	<th id="generatedThId13" class="padding">Reply To</th>
-		            	<th id="generatedThId14" class="padding">To email configuration</th>
-		            	<th id="generatedThId15" class="padding">CC email configuration</th>
-		            	<th id="generatedThId16" class="padding">Attachment Document Types</th>
-		            	<th id="generatedThId17" class="padding">Email Attachment Required</th>
+		            	<th id="generatedThId14" class="padding" ng-if="formValues.general.useHtmlTemplates.name == 'No'">To email configuration</th>
+		            	<th id="generatedThId15" class="padding" ng-if="formValues.general.useHtmlTemplates.name == 'No'">CC email configuration</th>
+		            	<th id="generatedThId16" class="padding" ng-if="formValues.general.useHtmlTemplates.name == 'No'">Attachment Document Types</th>
+		            	<th id="generatedThId17" class="padding" ng-if="formValues.general.useHtmlTemplates.name == 'No'">Email Attachment Required</th>
 		            </tr>
 		        </thead>
 		        <tbody>
@@ -55,22 +55,22 @@
 						<td>
 							<input type="text" class="form-control" ng-model="value.replyTo">
 						</td>
-						<td class="">
+						<td class="" ng-if="formValues.general.useHtmlTemplates.name == 'No'">
 
 								<multiselect ng-model="value.toEmailsConfiguration" options="CM.listsCache['EmailAddressTypes']" id-prop="id" display-prop="name" show-search="true"></multiselect>
 
 						</td>
-						<td class="">
+						<td class="" ng-if="formValues.general.useHtmlTemplates.name == 'No'">
 
 								<multiselect ng-model="value.ccEmailsConfiguration" options="CM.listsCache['EmailAddressTypes']" id-prop="id" display-prop="name" show-search="true"></multiselect>
 
 						</td>						
-						<td class="">
+						<td class="" ng-if="formValues.general.useHtmlTemplates.name == 'No'">
 
 								<multiselect ng-model="value.attachmentDocumentTypes" ng-disabled="!value.isEmailAttachmentRequired" options="CM.listsCache['DocumentType']" id-prop="id" display-prop="name" show-search="true"></multiselect>
 
 						</td>
-						<td class="">
+						<td class="" ng-if="formValues.general.useHtmlTemplates.name == 'No'">
 							<label class="mt-checkbox">
 								<input type="checkbox" ng-model="value.isEmailAttachmentRequired" >
 									<span style="background:#fff; border: 1px solid #dedede;"></span>
