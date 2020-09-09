@@ -1419,10 +1419,6 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                     ];
                 }
                 if (filter == 'filter__vessel_tankProduct') {
-                    $scope.modal.filters = [
-                        { columnValue: 'ProductType_Id', ColumnType: 'Number', ConditionValue: '=', Values: [ $scope.formValues.temp.tanks.productType.id ], FilterOperator: 0 }
-                        // {columnValue: "ProductType_Name", ColumnType: "Text", ConditionValue: "LIKE", Values: [$scope.formValues.temp.tanks.productType.name], FilterOperator: 0}
-                    ];
                     localStorage.setItem('uniqueModalTableIdentifier', 'productsInVesselMaster');
                 }
                 if (clc == 'masters_marketinstrumentlist') {
