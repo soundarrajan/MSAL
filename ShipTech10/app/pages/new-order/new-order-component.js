@@ -2424,16 +2424,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 payload.isVerified.id = 1;
                 payload.isVerified.name = 'Yes';
             }
-            for (let i = 0; i < payload.products.length; i++) {
-                if (payload.products[i].additionalCosts) {
-                    for (let j = 0; j < payload.products[i].additionalCosts.length; j++) {
-                        if (payload.products[i].additionalCosts[j].isFromContract) {
-                            payload.products[i].additionalCosts[j].isDeleted = true;
-                        }
-
-                    }
-                }          
-            }
 
             console.log(payload.products);
 
@@ -3398,7 +3388,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     }
                 }
                 productUomChg(ctrl.data.products[idx]);
-                $scope.addAdditionalCostByContractProductId(selection.contractProductId, idx, isSameContract);
+                if (!isSameContract) {
+                    $scope.addAdditionalCostByContractProductId(selection.contractProductId, idx);
+                }
             };
             $.each(ctrl.data.products, (key, value) => {
                 if(value.id == productUniqueId) {
@@ -3432,7 +3424,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 });
                 if (findContractOption.conversionFactors.contractConversionFactorOptions.id == 1) {
                     return;
-                }
+                } 
                 payload = { Payload: Payload };
                 $http.post(`${API.BASE_URL_DATA_CONTRACTS  }/api/contract/contract/getConversionFactorsForContractProduct`, payload).then((response) => {
                     console.log(response);
@@ -3449,42 +3441,29 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             console.log(product);
         }
 
-        $scope.addAdditionalCostByContractProductId = function(contractProductId, productIdx, isSameContract) {
+        $scope.addAdditionalCostByContractProductId = function(contractProductId, productIdx) {
             //     	if (ctrl.data.id) {
             // // applicable only for new order
             //     		return
             //     	}
-        	var cureentContractProductId = contractProductId;
-        	var currentProductIndex = productIdx;
-            orderModel.getContractProductAdditionalCosts(contractProductId).then((response) => {
-            	console.log(response);
-            	if (!ctrl.data.products[currentProductIndex].additionalCosts) {
-            		ctrl.data.products[currentProductIndex].additionalCosts = [];
-            	}
-                if (isSameContract) {
-                    $.each(response.payload, (k, v) => {
-                        for (let i = ctrl.data.products[currentProductIndex].additionalCosts.length - 1; i >= 0; i--) { 
-                            var x = response.payload[k];
-                            var y = ctrl.data.products[currentProductIndex].additionalCosts[i];
-                            if (x.additionalCost.id == y.additionalCost.id && x.costType.id == y.costType.id && x.currency.id == y.currency.id && x.extras == y.extras && x.price == y.price) {
-                                ctrl.data.products[currentProductIndex].additionalCosts[i].isFromContract = true;
-                            }
-                          
-                        }
-                    });
+        	let currentContractProductId = contractProductId
+            let currentProductIndex = productIdx
+            orderModel.getContractProductAdditionalCosts(contractProductId).then(function (response) {
+                console.log(response);
+                if (!ctrl.data.products[currentProductIndex].additionalCosts) {
+                    ctrl.data.products[currentProductIndex].additionalCosts = []
                 }
-
-            	for (let i = ctrl.data.products[currentProductIndex].additionalCosts.length - 1; i >= 0; i--) {
-            		if (ctrl.data.products[currentProductIndex].additionalCosts[i].isFromContract) {
-            			ctrl.data.products[currentProductIndex].additionalCosts.splice(i, 1);
-            		}
-            	}
-            	$.each(response.payload, (k, v) => {
-            		v.isFromContract = true;
-            		v.id = 0;
-	            	ctrl.data.products[currentProductIndex].additionalCosts.push(v);
-            	});
-            }).catch((error) => {
+                for (let i = ctrl.data.products[currentProductIndex].additionalCosts.length - 1; i >= 0; i--) {
+                    if (ctrl.data.products[currentProductIndex].additionalCosts[i].isFromContract) {
+                        ctrl.data.products[currentProductIndex].additionalCosts.splice(i, 1)
+                    }
+                }
+                $.each(response.payload, function(k,v){
+                    v.isFromContract = true;
+                    v.id = 0;
+                    ctrl.data.products[currentProductIndex].additionalCosts.push(v)
+                })
+            }).catch(function (error) {
             });
         };
 
