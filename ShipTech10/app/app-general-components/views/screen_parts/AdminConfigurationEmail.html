@@ -44,7 +44,7 @@
 								            <i class="fa fa-search"></i>
 								        </a>
 								</span>
-								<span class="input-group-addon ng-scope" ng-click="goToEmailTemplate(value.template.id)">
+								<span class="input-group-addon ng-scope" ng-if="formValues.general.useHtmlTemplates.name == 'Yes'" ng-click="goToEmailTemplate(value.template.id)">
 									<a class=" btn default">
 								     <i class="fa fa-pencil"></i>
 								 	</a>
