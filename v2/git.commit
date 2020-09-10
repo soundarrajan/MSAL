@@ -1,7 +1,7 @@
-﻿commit fb5fb036bf9476c2334637978941b739f08e5bab
+﻿commit d899265796e2b3ddfd36b0e56f9652cc30d075f3
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Tue Sep 8 11:35:39 2020 +0300
+Date:   Thu Sep 10 15:06:28 2020 +0300
 
-    Added 1.0.84(Fixed the marker and flag changes to  reflected in the preview after save the template)
+    Added 1.0.85 version of email template editor
 
 branch: master
