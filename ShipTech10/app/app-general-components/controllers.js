@@ -2160,8 +2160,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         if(rowObject.currency != null){
 
                             var currency = rowObject.currency.name;
-                            var price =  $filter('number')(rowObject.fixedPrice, 3);
-
+                            var price =  $filter('number')(rowObject.fixedPrice, $scope.tenantSettings.defaultValues.pricePrecision);
 
                             tpl = '<span class="">' + currency + ' ' + price + '</span>';
                         }
@@ -2174,7 +2173,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     if(cellValue != null){
                         if (rowObject.uom != null) {
                             var uom = rowObject.uom.name;
-                            var qty = $filter('number')(rowObject[options.colModel.name], 3);
+                            var qty = $filter('number')(rowObject[options.colModel.name], $scope.tenantSettings.defaultValues.quantityPrecision);
 
                             console.log(rowObject[options.colModel.name]);
 
