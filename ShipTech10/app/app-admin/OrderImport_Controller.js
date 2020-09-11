@@ -127,6 +127,8 @@ APP_MASTERS.controller('OrderImport_Controller', [
                     if (callback) {
                         toastr.success("Operation completed successfully");
                         $scope.formValues = callback.payload;
+                        $rootScope.droppedDoc = null;
+                        $scope.droppedDoc = null;
                         screenLoader.hideLoader();
                     } else {
                         toastr.error('Upload error');
