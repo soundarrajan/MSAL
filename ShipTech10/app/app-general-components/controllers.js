@@ -4204,9 +4204,12 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                 app = vm.app_id;
                 screen = vm.screen_id;
             }
-            if ($rootScope.filterForExport.raw) {
-                delete $rootScope.filterForExport.raw;
+            if ($rootScope.filterForExport) {
+                if ($rootScope.filterForExport.raw) {
+                    delete $rootScope.filterForExport.raw;
+                }
             }
+           
             $rootScope.filterForExport = _.isEmpty($rootScope.filterForExport) ? [] : $scope.processDateFilters($rootScope.filterForExport);
             var json = {
                 app: app,
