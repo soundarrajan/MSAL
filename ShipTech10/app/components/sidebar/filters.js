@@ -289,6 +289,7 @@ angular.module('shiptech.components').controller('FiltersController', [
             }
             $scope.packedFilters = $scope.packFilters(data);
             $scope.packedFilters.raw = $rootScope.rawFilters;
+            $rootScope.filterForExport = angular.copy($scope.packedFilters);
             $rootScope.filtersAppliedOps = angular.copy(data);
             if (defaultConf) {
                 $rootScope.timelineSaved = $scope.packedFilters;

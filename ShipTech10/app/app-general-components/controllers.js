@@ -4115,6 +4115,25 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                     $(".st-content-action-icons .delete_layout").css("pointer-events", "none");
             }
         }
+        $scope.processDateFilters = function(filters) {
+            var initialDateFilter = angular.copy(filters);
+            $.each(initialDateFilter, (k, v) => {
+                if (v) {
+                    if (typeof v.ColumnType != 'undefined') {
+                        if (v.ColumnType.toLowerCase() == 'date' || v.ColumnType.toLowerCase() == 'dateonly') {
+                            $.each(v.Values, (kk, vv) => {
+                                if (v.dateType && v.dateType == 'subtractTimezone') {
+                                    initialDateFilter[k].Values[kk] = moment.utc(vv).subtract(moment().utcOffset(), 'minutes').format('YYYY-MM-DDTHH:mm');
+                                } else {
+                                    initialDateFilter[k].Values[kk] = moment.utc(vv).format('YYYY-MM-DDTHH:mm');
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+            return initialDateFilter;
+        }
 
         vm.export = function(icon, params) {
      
@@ -4186,13 +4205,17 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                 app = vm.app_id;
                 screen = vm.screen_id;
             }
+            if ($rootScope.filterForExport.raw) {
+                delete $rootScope.filterForExport.raw;
+            }
+            $rootScope.filterForExport = _.isEmpty($rootScope.filterForExport) ? [] : $scope.processDateFilters($rootScope.filterForExport);
             var json = {
                 app: app,
                 screen: screen,
                 action: icon.action,
                 colModel: Object.values(Elements.table)[0].jqGrid("getGridParam", "colModel"),
                 search: vm.general_search_terms,
-                pageFilters: vm.tablesExportFilters,
+                pageFilters: $rootScope.filterForExport ,
                 table_id: table_id
             };
             if ($scope.currentList == "masters/emaillogs") {
