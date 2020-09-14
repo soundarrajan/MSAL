@@ -85,6 +85,10 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
         breadcrumbs.push(newBreadCrumb);
       }
     }
+    if (this.router.url.includes('email-template-editor')) {
+      breadcrumbs[0].label = 'Admin';
+      breadcrumbs[0].url = '/#/admin/configuration/edit/1';
+    }
 
     return this.createBreadcrumbs(child, url, breadcrumbs);
   }
