@@ -44,13 +44,18 @@ APP_MASTERS.controller('OrderImport_Controller', [
             angular.element('#FTPFileUpload').trigger('click');
             }, 1);
          });
-
-
+        
+         $('.drop-part').on('click','div',function (e) {
+          setTimeout(() => {
+            angular.element('#fileUpload').trigger('click');
+            angular.element('#FTPFileUpload').trigger('click');
+            }, 1);
+         });
         $('.drop-part').on('dragover', 'div', function(e) {
             e.preventDefault();
             e.stopPropagation();
         })
-         $('.drop-part').on('dragenter', 'div', function(e) {
+        $('.drop-part').on('dragenter', 'div', function(e) {
             e.preventDefault();
             e.stopPropagation();
         })
