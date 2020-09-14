@@ -1,7 +1,7 @@
-﻿commit eb1c4a3899c692576cc62339f60737b560182381
+﻿commit 45fe5d2c217bc1aee3aa1ec5d06bc98a876e7408
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Fri Sep 11 10:09:09 2020 +0300
+Date:   Mon Sep 14 14:24:08 2020 +0300
 
-    Added 1.0.89 version of email template editor
+    Added 1.0.90 version of email template editor(fixed  the line displaying under the "add new" field after removing the input data)
 
 branch: master
