@@ -7244,6 +7244,18 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
             });
         };
 
+        ctrl.getWidth = function(element) {
+            $(element).css('opacity', '0');
+            $('#negotiation-table-fixed-container').css('overflow', 'initial');
+            setTimeout(() => {
+                let elementWidth = $(element).width();
+                if (elementWidth) {
+                    $(element).css('left', -(elementWidth - 30));
+                }
+                $(element).css('opacity', '1');
+            });
+        };
+
 
         ctrl.setWidthTooltip = function(object) {
             let elements = $(event.target).parents('td').find('.groupOfRequestTableTooltip ');

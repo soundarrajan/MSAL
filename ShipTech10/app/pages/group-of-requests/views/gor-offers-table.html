@@ -432,15 +432,15 @@
                     </div>
                 </td>
     
-                <td ng-repeat-start="productTop in requestProducts" style="position: relative;" ng-show="!$ctrl.isRequestTabExpanded($parent.$index)"
+                <td ng-repeat-start="productTop in requestProducts track by $index" style="position: relative;" ng-show="!$ctrl.isRequestTabExpanded($parent.$index)"
     
                     ng-init="productTop.productLocations['L' + location[0].uniqueLocationIdentifier] ? product = productTop.productLocations['L' + location[0].uniqueLocationIdentifier] : ''">
                     <span ng-if="product" ng-init="maxQuantity = $ctrl.getProductMaxQuantityOnLocation(product, location);">
                         <span style="line-height: 40px;">Market Price</span>
 
-                        <span class="pull-right bg-grey font-dark" style="padding: 5px;position: absolute;right: 0;top: 50%;transform: translateY(-50%);" ng-mouseover="marketPrice['seller.id + product.id'] = true" ng-mouseout="marketPrice['seller.id + product.id'] = false">
-                            <span style="z-index: 999" class="groupOfRequestTableTooltip" ng-show="marketPrice['seller.id + product.id'] && $ctrl.getMarketPricePopup(product, location)" ng-bind-html="$ctrl.getMarketPricePopup(product, location)"></span>
-                            <span class="pull-right">
+                        <span class="pull-right bg-grey font-dark" style="padding: 5px;position: absolute;right: 0;top: 50%;transform: translateY(-50%);" ng-mouseover="$ctrl.getWidth('.groupOfRequestTableTooltipLastProduct'); marketPrice['seller.id + product.id'] = true;" ng-mouseout="marketPrice['seller.id + product.id'] = false">
+                            <span style="z-index: 999;" ng-class="requestProducts.length - 1 == $index ? 'groupOfRequestTableTooltipLastProduct' : 'groupOfRequestTableTooltip'" ng-show="marketPrice['seller.id + product.id'] && $ctrl.getMarketPricePopup(product, location)" ng-bind-html="$ctrl.getMarketPricePopup(product, location)"></span>
+                            <span class="pull-right" ng-mouseover="$ctrl.gettWidthTooltip(groupOfRequestTableTooltip)">
                                 {{maxQuantity.quotePrice != null ? (maxQuantity.quotePrice | number : $ctrl.numberPrecision.amountPrecision) : "-"}}
                             </span>
                         </span>

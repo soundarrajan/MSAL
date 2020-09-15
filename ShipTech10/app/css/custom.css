@@ -4391,6 +4391,18 @@ a[disabled]{
     transform: translate(-50%, -100%);
 }
 
+.groupOfRequestTableTooltipLastProduct {
+    display: block !important;
+    position: absolute;
+    top: -7px;
+    background: #364150;
+    color: #fff;
+    padding: 5px 10px;
+    font-size: 16px !important;
+    z-index: 9999;
+    transform: translateY(-100%);
+}
+
 table#new_order_products td {
 	vertical-align: middle;
 }
