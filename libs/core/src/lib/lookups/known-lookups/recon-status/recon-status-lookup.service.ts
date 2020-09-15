@@ -31,6 +31,9 @@ export class ReconStatusLookup {
   constructor(private legacyLookupsDatabase: LegacyLookupsDatabase) {}
 
   public async load(): Promise<any> {
+    if (window.location.pathname.includes('email-template-editor')) {
+      return;
+    }
     this._withinLimit = await this.legacyLookupsDatabase.reconMatch
       .where(nameField)
       .equals(ReconStatusLookupEnum.WithinLimit)
