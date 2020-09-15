@@ -1706,10 +1706,10 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             });
             // return 1;
         }
-        ctrl.productUomChanged = function(product) {
+        ctrl.productUomChanged = function(product, isPriceUom) {
             product.referencePrice = parseInt(product.price);
             product.referencePriceUomId = product.priceUom.id;
-            productUomChg(product);
+            productUomChg(product, isPriceUom);
             ctrl.getAllOrderContractOptions();
         };
 
@@ -1732,7 +1732,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 ctrl.data.products[productIndex].contractProductId = null;
                 ctrl.data.products[productIndex].contractId = null;
                 // ctrl.data.products[productIndex].formula = null;
-                ctrl.data.products[productIndex].price = null;
                 ctrl.data.products[productIndex].agreementType = null;
                 ctrl.data.products[productIndex].pricingType = null;
                 // ctrl.data.products[productIndex].formulaDescription = null;
@@ -1740,7 +1739,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 // ctrl.getAllOrderContractOptions();
 
             } else {
-                productUomChg(ctrl.data.products[productIndex]);
+                productUomChg(ctrl.data.products[productIndex], true);
             }
 			ctrl.getOrderContractOptions(ctrl.data.products[productIndex], false, function(response){
 				if (response && initialContractId) {
@@ -1769,22 +1768,24 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 			});
         }
 
-        function productUomChg(product) {
+        function productUomChg(product, isPriceUom) {
             // console.log("__________ productUomChg________", product);
             var confirmedQuantityOrMaxQuantity = product.confirmedQuantity;
             if (!product.confirmedQuantity) {
                 confirmedQuantityOrMaxQuantity = product.maxQuantity;
             }
-            if (product.quantityUom.id == product.priceUom.id) {
-                product.confirmedQtyPrice = 1;
-                product.amount = Number(product.confirmedQtyPrice) * Number(confirmedQuantityOrMaxQuantity) * Number(product.price);
-            } else {
-                lookupModel.getConvertedUOM(ctrl.data.products[0].product.id, 1, product.quantityUom.id, product.priceUom.id, product.id).then((server_data) => {
-                    product.confirmedQtyPrice = server_data.payload;
+            if (!isPriceUom) {
+                if (product.quantityUom.id == product.priceUom.id) {
+                    product.confirmedQtyPrice = 1;
                     product.amount = Number(product.confirmedQtyPrice) * Number(confirmedQuantityOrMaxQuantity) * Number(product.price);
-                }).catch((e) => {
-                    throw 'Unable to get the uom.';
-                });
+                } else {
+                    lookupModel.getConvertedUOM(ctrl.data.products[0].product.id, 1, product.quantityUom.id, product.priceUom.id, product.id).then((server_data) => {
+                        product.confirmedQtyPrice = server_data.payload;
+                        product.amount = Number(product.confirmedQtyPrice) * Number(confirmedQuantityOrMaxQuantity) * Number(product.price);
+                    }).catch((e) => {
+                        throw 'Unable to get the uom.';
+                    });
+                }
             }
             for (let i = 0; i < ctrl.data.products.length; i++) {
                 let prod = ctrl.data.products[i];
@@ -3356,7 +3357,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 ctrl.data.products[idx].contractProductId = selection.contractProductId;
                 ctrl.data.products[idx].priceUom = selection.uom;
                 ctrl.data.products[idx].contract = angular.copy(selection.contract);
-                ctrl.data.products[idx].price = angular.copy(selection.price);
                 ctrl.data.products[idx].formula = angular.copy(selection.formula);
                 ctrl.data.products[idx].agreementType = selection.contractAgreementType ?
                     angular.copy(selection.contractAgreementType) : ctrl.defaultContractAgreementType;
@@ -3419,12 +3419,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     "ContractProductId": product.contractProductId,
                     "ProductId": product.product.id
                 }    
-                let findContractOption = _.find(ctrl.orderContractOptions[product.product.id], function(object) {
-                    return object.contract.id == product.contract.id;
-                });
-                if (findContractOption.conversionFactors.contractConversionFactorOptions.id == 1) {
-                    return;
-                } 
                 payload = { Payload: Payload };
                 $http.post(`${API.BASE_URL_DATA_CONTRACTS  }/api/contract/contract/getConversionFactorsForContractProduct`, payload).then((response) => {
                     console.log(response);
