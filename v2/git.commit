@@ -1,7 +1,7 @@
-﻿commit 68b245ea4808aa9f524510441a440689d07de5ab
+﻿commit f8d7116a246c0f43698142e520fce85bf190d745
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Tue Sep 15 11:25:53 2020 +0300
+Date:   Tue Sep 15 13:54:45 2020 +0300
 
-    #27703
+    Fixed email template editor
 
 branch: master

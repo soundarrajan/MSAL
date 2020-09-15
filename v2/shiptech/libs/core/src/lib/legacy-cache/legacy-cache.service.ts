@@ -58,9 +58,6 @@ export class LookupsCacheService {
       .map(t => t.name);
     // Note: Local LookupVersions may be "dirty", as in, there may be tables that are not relevant anymore, e.g deleted from schema
     const localLookupVersions = await this.db.lookupVersions.toArray();
-    if (window.location.pathname.includes('email-template-editor')) {
-      return;
-    }
     const serverLookupVersions = (
       await this.http
         .post<IHashListsLegacyResponse>(
