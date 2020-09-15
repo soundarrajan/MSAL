@@ -64,10 +64,12 @@ export class StatusLookup {
       .where(nameField)
       .equals(StatusLookupEnum.Verified)
       .first();
-    this._verified.code = await this.databaseManipulation.getStatusColorFromDashboard(
-      this._verified.id,
-      TRANSACTION_TYPE_ID
-    );
+    if (this._verified.id) {
+      this._verified.code = await this.databaseManipulation.getStatusColorFromDashboard(
+        this._verified.id,
+        TRANSACTION_TYPE_ID
+      );
+    }
     if (!this._verified)
       throw AppError.MissingLookupKey(
         nameof<LegacyLookupsDatabase>('status'),
@@ -78,10 +80,12 @@ export class StatusLookup {
       .where(nameField)
       .equals(StatusLookupEnum.New)
       .first();
-    this._new.code = await this.databaseManipulation.getStatusColorFromDashboard(
-      this._new.id,
-      TRANSACTION_TYPE_ID
-    );
+    if (this._new.id) {
+      this._new.code = await this.databaseManipulation.getStatusColorFromDashboard(
+        this._new.id,
+        TRANSACTION_TYPE_ID
+      );
+    }
     if (!this._new)
       throw AppError.MissingLookupKey(
         nameof<LegacyLookupsDatabase>('status'),
@@ -92,10 +96,12 @@ export class StatusLookup {
       .where(nameField)
       .equals(StatusLookupEnum.Pending)
       .first();
-    this._pending.code = await this.databaseManipulation.getStatusColorFromDashboard(
-      this._pending.id,
-      TRANSACTION_TYPE_ID
-    );
+    if (this._pending.id) {
+      this._pending.code = await this.databaseManipulation.getStatusColorFromDashboard(
+        this._pending.id,
+        TRANSACTION_TYPE_ID
+      );
+    }
     if (!this._pending)
       throw AppError.MissingLookupKey(
         nameof<LegacyLookupsDatabase>('status'),
