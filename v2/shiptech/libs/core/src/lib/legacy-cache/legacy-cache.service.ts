@@ -50,9 +50,7 @@ export class LookupsCacheService {
 
   private async loadInternal(): Promise<any> {
     // TODO: Implement proper logging here
-    if (window.location.pathname.includes('email-template-editor')) {
-      return;
-    }
+    
     await this.db.open();
 
     const lookupTableNames = this.db.tables
