@@ -60,9 +60,6 @@ export class StatusLookup {
   }
 
   public async load(): Promise<any> {
-    if (window.location.pathname.includes('email-template-editor')) {
-      return;
-    }
     this._verified = await this.legacyLookupsDatabase.status
       .where(nameField)
       .equals(StatusLookupEnum.Verified)
