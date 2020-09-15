@@ -3348,7 +3348,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         };
 
 
-        $scope.selectProductContract = function(productUniqueId, selection, isSameContract) {
+        $scope.selectProductContract = function(productUniqueId, selection, isSameContract, changeContract) {
             // find product
             // 1. by id
             console.log(selection);
@@ -3357,6 +3357,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 ctrl.data.products[idx].contractProductId = selection.contractProductId;
                 ctrl.data.products[idx].priceUom = selection.uom;
                 ctrl.data.products[idx].contract = angular.copy(selection.contract);
+                if (changeContract) { 
+                    ctrl.data.products[idx].price = angular.copy(selection.price);
+                }  
                 ctrl.data.products[idx].formula = angular.copy(selection.formula);
                 ctrl.data.products[idx].agreementType = selection.contractAgreementType ?
                     angular.copy(selection.contractAgreementType) : ctrl.defaultContractAgreementType;
@@ -3530,7 +3533,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                         }
                     }
                     if(a.elem[0] == 'contract') {
-                        $scope.selectProductContract(ctrl.productContractSelecting, a.val);
+                        $scope.selectProductContract(ctrl.productContractSelecting, a.val, false, true);
                     }
                 }
             }
