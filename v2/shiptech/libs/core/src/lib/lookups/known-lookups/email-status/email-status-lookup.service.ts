@@ -34,6 +34,9 @@ export class EmailStatusLookup {
   constructor(private legacyLookupsDatabase: LegacyLookupsDatabase) {}
 
   public async load(): Promise<any> {
+    if (window.location.pathname.includes('email-template-editor')) {
+      return;
+    }
     this._failed = await this.legacyLookupsDatabase.emailStatus
       .where(nameField)
       .equals(EmailStatusLookupEnum.Failed)
