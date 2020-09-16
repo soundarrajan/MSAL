@@ -855,6 +855,7 @@ angular.module('shiptech.pages').controller('ScheduleCalendarController', [ '$ro
 	                                eta: event.voyageDetail.eta,
 	                                style: event.voyageDetail.portStatus ? getButtonStyle(event.voyageDetail.portStatus) : null,
 	                                voyageDetail: event.voyageDetail,
+                                    isDeleted: event.voyageDetail.isDeleted
 	                            };
 	                            if (portDetails.request.id > 0) {
                                     event.voyageDetail.request.requestDetail.requestName = event.voyageDetail.request.requestName;
@@ -897,11 +898,18 @@ angular.module('shiptech.pages').controller('ScheduleCalendarController', [ '$ro
                             }
                         }
                     }
-
-                    resultRow.calendar.push(portData);
+                    let activePortData = _.filter(portData, function(object) {
+                        return !object.isDeleted;
+                    });
+                    resultRow.calendar.push(activePortData);
                 }
-
-                result.push(resultRow);
+                let calendarData = resultRow.calendar;
+                let findVoyages = _.find(calendarData, function(object) {
+                    return object.length;
+                });
+                if (findVoyages) {
+                    result.push(resultRow);
+                }
                 i1++;
             }
 
