@@ -1,7 +1,7 @@
-﻿commit c14cfdd7a6308dd8a1ee1fdd21bb48bf31aa3087
+﻿commit fa4de2f505f962266464c134304f0e7381af0be0
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Wed Sep 16 14:50:39 2020 +0300
+Date:   Wed Sep 16 15:20:44 2020 +0300
 
-    Added 1.9.93 version of email template editor(removed the flag simbol from editor)
+    Updated personal access token for email template editor
 
 branch: master
