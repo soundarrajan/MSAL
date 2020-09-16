@@ -1719,7 +1719,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
     
         }
 
-        ctrl.resetContractData = function(productIndex, skipSpecGroup){
+        ctrl.resetContractData = function(productIndex, skipSpecGroup, isQuantityUom){
         	if (ctrl.data.products[productIndex].contract) { 
 	        	var initialContractId = angular.copy(ctrl.data.products[productIndex].contract.id);
 	        	var initialContract = angular.copy(ctrl.data.products[productIndex].contract);
@@ -1751,7 +1751,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 						}
 					})
 					if (newContractData) {
-						$scope.selectProductContract(ctrl.data.products[productIndex].id, newContractData, isSameContract);
+						$scope.selectProductContract(ctrl.data.products[productIndex].id, newContractData, isSameContract, false, isQuantityUom);
 						if (skipSpecGroup) {
 			                ctrl.data.products[productIndex].specGroup = oldSpecGroup;
 						}
@@ -3348,7 +3348,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         };
 
 
-        $scope.selectProductContract = function(productUniqueId, selection, isSameContract, changeContract) {
+        $scope.selectProductContract = function(productUniqueId, selection, isSameContract, changeContract, isQuantityUom) {
             // find product
             // 1. by id
             console.log(selection);
@@ -3357,7 +3357,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 ctrl.data.products[idx].contractProductId = selection.contractProductId;
                 ctrl.data.products[idx].priceUom = selection.uom;
                 ctrl.data.products[idx].contract = angular.copy(selection.contract);
-                if (changeContract || changeContractAutocomplete) { 
+                if ((changeContract || changeContractAutocomplete) && !isQuantityUom) { 
                     ctrl.data.products[idx].price = angular.copy(selection.price);
                 }  
                 ctrl.data.products[idx].formula = angular.copy(selection.formula);
