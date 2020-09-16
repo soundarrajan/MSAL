@@ -1049,6 +1049,21 @@ APP_MASTERS.controller('Controller_Master', [
                 }
             }
 
+            if (vm.app_id == 'masters' && vm.screen_id == 'vessel') {
+                if ($scope.formValues.temp.tanks && JSON.stringify($scope.formValues.temp.tanks) != JSON.stringify({})) {
+                    if ($scope.formValues.temp.tanks.id) {
+                        let verifyIfExist = _.find($scope.formValues.tanks, function(object) {
+                            return object.id == $scope.formValues.temp.tanks.id;
+                        });
+                        if (verifyIfExist) {
+                            toastr.error('Selected tank already exists!');
+                            return;
+                        }
+                    }
+
+                }
+            }
+
             if (vm.app_id == 'admin' && vm.screen_id == 'configuration') {
                 // chech for product location to be obj
                 $.each($scope.formValues.email, (key, val) => {
@@ -1116,11 +1131,6 @@ APP_MASTERS.controller('Controller_Master', [
                     }
                 });
                 
-                if (vm.app_id == 'masters' && vm.screen_id == 'vessel') {
-                    if ($scope.formValues.temp.tanks && JSON.stringify($scope.formValues.temp.tanks) != JSON.stringify({})) {
-                        $scope.formValues.tanks.push($scope.formValues.temp.tanks);
-                    }
-                }
 	            if (vm.app_id == 'claims' && vm.screen_id == 'claims') {
 	                let type = $scope.filterFromData.claimType.claimType.name;
 	                if (type.toLowerCase() != 'debunker') {
@@ -1152,6 +1162,12 @@ APP_MASTERS.controller('Controller_Master', [
                         $scope.filterFromData.robs = null;
                     }
                 }
+                if (vm.app_id == 'masters' && vm.screen_id == 'vessel') {
+                    if ($scope.formValues.temp.tanks && JSON.stringify($scope.formValues.temp.tanks) != JSON.stringify({})) {
+                        $scope.filterFromData.tanks.push($scope.formValues.temp.tanks);
+                    }
+                }
+
                 if (vm.app_id == 'admin' && vm.screen_id == 'users') {
                     if (!$('#Signature').val()) {
                         $scope.filterFromData.signature = null;
@@ -2449,13 +2465,6 @@ APP_MASTERS.controller('Controller_Master', [
                     } else {
                         $('.edit_form_fields_ComponentType_masters').show();
                     }
-                }
-                if (vm.screen_id == 'vessel' && id == 'temp.tanks.productType') {
-                	setTimeout(() => {
-	                	 $scope.options.ProductFiltered = $filter('filter')(angular.copy($listsCache.Product), { productTypeId:$scope.formValues.temp.tanks.productType.id });
-	                	 $scope.formValues.temp.tanks.product = null;
-	                	 $scope.$apply();
-                	}, 500);
                 }
                 if (vm.screen_id == 'vessel' && id == 'vesselType') {
                 	setTimeout(() => {
