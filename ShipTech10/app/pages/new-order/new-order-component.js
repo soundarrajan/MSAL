@@ -3353,11 +3353,11 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             // 1. by id
             console.log(selection);
 
-            let selectContract = function(idx, selection) {
+            let selectContract = function(idx, selection, changeContractAutocomplete) {
                 ctrl.data.products[idx].contractProductId = selection.contractProductId;
                 ctrl.data.products[idx].priceUom = selection.uom;
                 ctrl.data.products[idx].contract = angular.copy(selection.contract);
-                if (changeContract) { 
+                if (changeContract || changeContractAutocomplete) { 
                     ctrl.data.products[idx].price = angular.copy(selection.price);
                 }  
                 ctrl.data.products[idx].formula = angular.copy(selection.formula);
@@ -3397,9 +3397,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             };
             $.each(ctrl.data.products, (key, value) => {
                 if(value.id == productUniqueId) {
-                    selectContract(key, selection);
+                    selectContract(key, selection, true);
                 }else if(value.uniqueIdUI == productUniqueId) {
-                    selectContract(key, selection);
+                    selectContract(key, selection, true);
                 }
             });
         };
