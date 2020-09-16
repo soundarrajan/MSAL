@@ -1,7 +1,7 @@
-﻿commit fa4de2f505f962266464c134304f0e7381af0be0
+﻿commit 73f0193e2e6b09d92b634a059cd657b60a2c1b56
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Wed Sep 16 15:20:44 2020 +0300
+Date:   Wed Sep 16 16:17:20 2020 +0300
 
-    Updated personal access token for email template editor
+    Added 1.0.95 version of email-template-editor-ckeditor
 
 branch: master
