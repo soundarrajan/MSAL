@@ -1,7 +1,7 @@
-﻿commit 73f0193e2e6b09d92b634a059cd657b60a2c1b56
+﻿commit 6849f205a346f7ab1a130afe1ead0dae412ab1dc
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Wed Sep 16 16:17:20 2020 +0300
+Date:   Thu Sep 17 09:51:19 2020 +0300
 
-    Added 1.0.95 version of email-template-editor-ckeditor
+    Added 1.0.96 version of email template editor
 
 branch: master
