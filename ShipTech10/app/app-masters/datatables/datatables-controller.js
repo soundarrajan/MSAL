@@ -2413,6 +2413,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                             masterSource: 'Product',
                             clc_id: 'masters_productlist'
                         },
+                        required: true,
                         category: '1'
                     },
                     {
@@ -2425,6 +2426,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                             masterSource: 'SystemInstrument',
                             clc_id: 'masters_systeminstrument'
                         },
+                        required: true,
                         category: '1'
                     },
                     {
