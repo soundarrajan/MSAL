@@ -3422,12 +3422,14 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     Payload = {
                         "ContractProductId": product.contractProductId,
                         "OrderProductId": product.id,
-                        "ProductId": product.product.id
+                        "ProductId": product.product.id,
+                        "CancelOrderOverride": true
                     }  
                 } else {
                     Payload = {
                         "ContractProductId": product.contractProductId,
-                        "ProductId": product.product.id
+                        "ProductId": product.product.id,
+                        "CancelOrderOverride": true
                     }  
                 }
                 payload = { Payload: Payload };
