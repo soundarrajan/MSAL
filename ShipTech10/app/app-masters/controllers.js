@@ -817,6 +817,69 @@ APP_MASTERS.controller('Controller_Master', [
                 }
             }
 
+            if(vm.app_id == 'masters' && vm.screen_id == 'location') {
+                 if ($scope.formValues && $scope.formValues.productsSystemInstruments) {
+                    let errors = '';
+                    let products = [];
+                    let systemInstruments = [];
+                    let location = {
+                        'name': $scope.formValues.name,
+                        'id': $scope.formValues.id
+                    }
+                    for (let i = 0; i < $scope.formValues.productsSystemInstruments.length; i++) {
+                        $scope.formValues.productsSystemInstruments[i].location = location;
+                        if ($scope.formValues.productsSystemInstruments[i].isBunkerwireDefault && !$scope.formValues.productsSystemInstruments[i].isDeleted) {
+                            let element = $scope.formValues.productsSystemInstruments[i];
+                            var findCombinationProductAndSystemInstrumentBunkerwireDefault = _.filter($scope.formValues.productsSystemInstruments, function(object) {
+                                if (object.systemInstrument && object.product && element.systemInstrument && element.product) {
+                                    return !object.isDeleted && object.systemInstrument.name == element.systemInstrument.name && object.product.name == element.product.name && object.isBunkerwireDefault;
+                                }
+                            });
+                            if (findCombinationProductAndSystemInstrumentBunkerwireDefault.length > 1) {
+                                products.push(element.product.name);
+                                systemInstruments.push(element.systemInstrument.name);
+                            }
+                        } else if ($scope.formValues.productsSystemInstruments[i].isCargoDefault && !$scope.formValues.productsSystemInstruments[i].isDeleted) {
+                            let element = $scope.formValues.productsSystemInstruments[i];
+                            var findCombinationProductAndSystemInstrumentCargoDefault = _.filter($scope.formValues.productsSystemInstruments, function(object) {
+                                if (object.systemInstrument && object.product && element.systemInstrument && element.product) {
+                                    return  !object.isDeleted && object.systemInstrument.name == element.systemInstrument.name && object.product.name == element.product.name && object.isCargoDefault;
+                                }
+                            });
+                            if (findCombinationProductAndSystemInstrumentCargoDefault.length > 1 ) {
+                                products.push(element.product.name);
+                                systemInstruments.push(element.systemInstrument.name);
+                            }
+                        }
+                    }
+                    products = _.uniq(products);
+                    systemInstruments = _.uniq(systemInstruments);
+                    let productsString = '';
+                    let systemInstrumentsString = '';
+                    for (let i = 0; i < products.length; i++) {
+                        productsString += products[i] + ',';
+                    }
+                    for (let i = 0; i < systemInstruments.length; i++) {
+                        systemInstrumentsString += systemInstruments[i] + ',';
+                    }
+                    if (productsString[productsString.length - 1] == ',') {
+                        productsString =  productsString.substring(0,  productsString.length - 1);
+                    }
+                    if (systemInstrumentsString[systemInstrumentsString.length - 1] == ',') {
+                        systemInstrumentsString =  systemInstrumentsString.substring(0,  systemInstrumentsString.length - 1);
+                    }
+                    if (productsString != '' && systemInstrumentsString != '' && products.length > 1) {
+                        toastr.warning('Default bunkerwire quote is already available for the products ' + productsString + ' and system instruments' + systemInstrumentsString + '. Please check and update');
+                        return;
+                    }
+                    if (productsString != '' && systemInstrumentsString != '' && products.length == 1) {
+                        toastr.warning('Default bunkerwire quote is already available for the product ' + productsString + ' and system instrument ' + systemInstrumentsString + '. Please check and update');
+                        return;
+                    }
+                }
+            }
+
+
             if(vm.app_id == 'masters' && vm.screen_id == 'counterparty') {
                 if($scope.formValues && $scope.formValues.counterpartyTypes) {
                     let validCounterpartyTypes = [];
