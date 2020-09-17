@@ -3418,10 +3418,18 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 }); 
                 console.log(ctrl.data.products);
             } else if(!product.overrideConversionFactor && product.contract) {
-                Payload = {
-                    "ContractProductId": product.contractProductId,
-                    "ProductId": product.product.id
-                }    
+                if (product.id) {
+                    Payload = {
+                        "ContractProductId": product.contractProductId,
+                        "OrderProductId": product.id,
+                        "ProductId": product.product.id
+                    }  
+                } else {
+                    Payload = {
+                        "ContractProductId": product.contractProductId,
+                        "ProductId": product.product.id
+                    }  
+                }
                 payload = { Payload: Payload };
                 $http.post(`${API.BASE_URL_DATA_CONTRACTS  }/api/contract/contract/getConversionFactorsForContractProduct`, payload).then((response) => {
                     console.log(response);
