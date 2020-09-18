@@ -226,6 +226,7 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
                     orderModel.previewOrderToBeDeliveredMail(ctrl.data, ctrl.template).then((data) => {
                         ctrl.email = data.payload;
                         ctrl.emailContentHtml = $sce.trustAsHtml(ctrl.email.content);
+                        ctrl.initOthers();
                         if (ctrl.email.comment) {
                             if (!ctrl.email.comment.emailTemplate) {
                                 return;
