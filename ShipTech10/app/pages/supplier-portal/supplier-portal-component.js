@@ -1681,7 +1681,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ 'API',
                                         return object.id == productTypeGroup.id;
                                 });
                                 if (defaultUomAndCompany) {
-                                    if (additionalCost.costType.name != "Flat") {
+                                    if (additionalCost.costType.name == "Unit") {
                                         additionalCost.priceUom =  defaultUomAndCompany.defaultUom;
                                     }
 
@@ -1700,7 +1700,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ 'API',
                                 return object.id == productTypeGroup.id;
                         });
                         if (defaultUomAndCompany) {
-                            if (additionalCost.costType.name != "Flat") {
+                            if (additionalCost.costType.name == "Unit") {
                                 additionalCost.priceUom =  defaultUomAndCompany.defaultUom;
                             }
                             
