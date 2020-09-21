@@ -48,7 +48,9 @@ Number(function() {
                     });
                     $rootScope.isModal = scope.modal;
                     $rootScope.modalTableId = scope.id;
-                    $rootScope.listTableSelector = `flat_${ scope.screen.replace('list', '_list')}`;
+                    if (scope.screen) {
+	                    $rootScope.listTableSelector = `flat_${ scope.screen.replace('list', '_list')}`;
+                    }
                     $rootScope.sortList = null;
                     console.log(scope.hasloader);
                     // console.log(CLC);

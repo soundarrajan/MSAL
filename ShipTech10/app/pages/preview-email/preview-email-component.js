@@ -284,6 +284,7 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
                         },
                         true
                     );
+                    ctrl.getAvailableDocumentAttachments(ctrl.data.groupId, "Offer");
                     if (templateFilter.length > 0) {
                         ctrl.template = templateFilter[0];
                         ctrl.defaultTemplate = templateFilter[0];

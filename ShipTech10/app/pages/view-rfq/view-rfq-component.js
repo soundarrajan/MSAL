@@ -263,6 +263,7 @@ angular.module('shiptech.pages')
                 ctrl.requirements.push(req);
                 let data = {
                     rfqId: rfq.rfqId,
+                    groupId: ctrl.groupId,
                     rfqRequirements : ctrl.requirements
                 };
                 $state.go(STATE.PREVIEW_EMAIL, { data: data, transaction: EMAIL_TRANSACTION.VIEW_RFQ, multipleRequests: ctrl.multipleRequests });

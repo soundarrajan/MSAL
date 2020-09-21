@@ -1159,6 +1159,26 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
 		    		$scope.filters = $scope.modal.filters;
                 }
 
+                if (clc == 'RequestChanges') {
+                    $scope.modal.app = 'procurement';
+                    $scope.modal.screen = 'request_entity_documents';
+                    $scope.modal.clc = 'entity_documents';
+        	    	var transactionTypeId = _.find(vm.listsCache.TransactionType, (el) => {
+			    		return el.name == 'Offer';
+			    	}).id;
+			    	$scope.modal.filters = [
+			    		{
+			    			ColumnName: 'ReferenceNo',
+			    			Value: _.get(ctrlData, 'groupId')
+			    		},
+			    		{
+			    			ColumnName: 'TransactionTypeId',
+			    			Value: transactionTypeId
+			    		}
+		    		];
+		    		$scope.filters = $scope.modal.filters;
+                }                
+
                 if (clc == 'Order') {
                     $scope.modal.app = 'procurement';
                     $scope.modal.screen = 'order_entity_documents';
