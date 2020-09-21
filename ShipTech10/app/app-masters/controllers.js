@@ -7674,7 +7674,7 @@ APP_MASTERS.controller('Controller_Master', [
                             if (isAll) {
                                 payload = { Payload: formValues.productDetails[0].product.id };
                             } else {
-                                payload = { Payload: product.product.id };
+                                payload = { Payload: additionalCost.product.productId };
                             }
                             $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/get`, payload).then((response) => {
                                 if (response.data.payload != 'null') {
@@ -7693,11 +7693,11 @@ APP_MASTERS.controller('Controller_Master', [
                     });  
 
                 } else {
-                    let payload;
+                    let payload; 
                     if (isAll) {
                         payload = { Payload: formValues.productDetails[0].product.id };
                     } else {
-                        payload = { Payload: product.product.id };
+                        payload = { Payload: additionalCost.product.productId };
                     }
                     $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/get`, payload).then((response) => {
                         if (response.data.payload != 'null') {
