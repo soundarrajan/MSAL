@@ -1707,8 +1707,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             // return 1;
         }
         ctrl.productUomChanged = function(product, isPriceUom) {
-            product.referencePrice = parseInt(product.price);
-            product.referencePriceUomId = product.priceUom.id;
+            if (product.contractProductId) {
+	            product.referencePriceUomId = product.priceUom.id;
+            }
             productUomChg(product, isPriceUom);
             ctrl.getAllOrderContractOptions();
         };
@@ -2713,8 +2714,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
          * Recalculates product amount and total fuel price when product price changes.
          */
         ctrl.productPriceChanged = function(product) {
-            product.referencePrice = parseInt(product.price);
-            product.referencePriceUomId = product.priceUom.id;
+			if (product.contractProductId) { 
+				product.referencePrice = parseInt(product.price);
+			}
             product.amount = calculateProductAmount(product);
             updateOrderSummary();
         };
