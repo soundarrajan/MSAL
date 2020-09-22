@@ -200,13 +200,17 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
         ctrl.loadTemplateList = function() {
             let templateFilter;
 
-            if (window.location.href.indexOf('reportId')) {
+            if (window.location.href.indexOf('reportId') != -1) {
             	var getParams = window.location.href.split('?')[1];
             	if (getParams) {
 	            	ctrl.emailTransactionTypeId = getParams.split('&')[1].split('=')[1];
 	            	ctrl.reportId = getParams.split('&')[0].split('=')[1];
 	            	ctrl.transaction = 'QuantityControl';
             	}
+            } else if ($state.reportId && (ctrl.defaultTemplate.name == 'BunkerQuantity' || ctrl.defaultTemplate.name == 'SludgeQuantity')) {
+                ctrl.emailTransactionTypeId = $state.emailTransactionTypeId;
+                ctrl.reportId = $state.reportId;
+                ctrl.transaction = 'QuantityControl';
             }
 
             // Get the template list for the template dropdown
@@ -294,7 +298,7 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
 	                    ctrl.defaultTemplate = ctrl.templateList[0];
                     break;
                 case 'QuantityControl':
-	                    ctrl.defaultTemplate = ctrl.templateList[0];
+	                    ctrl.defaultTemplate = $state.defaultTemplate ? $state.defaultTemplate : ctrl.templateList[0];
                         $rootScope.reportId = ctrl.reportId;
                         ctrl.getAvailableDocumentAttachments(ctrl.reportId, 'QuantityControlReport');
                     break;
@@ -686,6 +690,8 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
                 emailData.attachmentsList = validAttachments;
                 emailModel.discardPreview(emailData, ctrl.template).then(() => {
                     $state.defaultTemplate = ctrl.template;
+                    $state.reportId = ctrl.reportId;
+                    $state.emailTransactionTypeId = ctrl.emailTransactionTypeId;
                     $state.reload();
     	        	if ($stateParams.data) {
 	    	        	if ($stateParams.data.defaultTemplate) {
