@@ -278,6 +278,7 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
                 case EMAIL_TRANSACTION.REQUOTE:
                     ctrl.template = ctrl.templateList[0];
                     ctrl.defaultTemplate = ctrl.templateList[0];
+                    ctrl.getAvailableDocumentAttachments(ctrl.data.groupId, "Offer");
                     break;
                 case EMAIL_TRANSACTION.VIEW_RFQ:
                     templateFilter = $filter('filter')(
