@@ -2464,7 +2464,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
         if (additionalCost.product.name != 'All') {
             getDefaultUomForAdditionalCost(additionalCost, currentRowIndex);
         } else {
-            getDefaultUomForAdditionalCost(additionalCost, currentRowIndex, 0);
+            getDefaultUomForAdditionalCost(additionalCost, currentRowIndex, 1);
         }
         if ($rootScope.reloadPage) {
             return;
@@ -2614,7 +2614,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                         if (isAll) {
                             payload = { Payload: formValues.productDetails[0].product.id };
                         } else {
-                            payload = { Payload: product.product.id };
+                            payload = { Payload: product.product.id  ? product.product.id : additionalCost.product.productId };
                         }
                         $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/get`, payload).then((response) => {
                             if (response.data.payload != 'null') {
@@ -2637,7 +2637,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                 if (isAll) {
                     payload = { Payload: formValues.productDetails[0].product.id };
                 } else {
-                    payload = { Payload: product.product.id };
+                    payload = { Payload: product.product.id  ? product.product.id  : additionalCost.product.productId };
                 }
                 $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/get`, payload).then((response) => {
                     if (response.data.payload != 'null') {

@@ -7512,10 +7512,10 @@ APP_MASTERS.controller('Controller_Master', [
             var currentRowIndex = rowIndex;
             var additionalCost = formValues.costDetails[currentRowIndex];
             if (additionalCost) {
-                if (additionalCost.product.name != 'All') {
-                    getDefaultUomForAdditionalCost(additionalCost, currentRowIndex);
-                } else {
+                if (additionalCost.associatedOrderProduct == 'All' || additionalCost.product.name == 'All'){
                     getDefaultUomForAdditionalCost(additionalCost, currentRowIndex, true);
+                } else {
+                    getDefaultUomForAdditionalCost(additionalCost, currentRowIndex);
                 }
             }
             
