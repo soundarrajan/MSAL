@@ -1040,6 +1040,9 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
         };
 
         $scope.triggerModal = function(template, clc, name, id, formvalue, idx, field_name, filter, ctrlData) {
+        	if (!clc && (window.location.href.indexOf('preview-email?reportId') != -1 || $rootScope.reportId)) {
+        		clc = 'QuantityControlReport';
+        	}
         	if (!clc) {
         		return;
         	}
@@ -1150,6 +1153,26 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
 			    		{
 			    			ColumnName: 'ReferenceNo',
 			    			Value: _.get(ctrlData, 'requestId')
+			    		},
+			    		{
+			    			ColumnName: 'TransactionTypeId',
+			    			Value: transactionTypeId
+			    		}
+		    		];
+		    		$scope.filters = $scope.modal.filters;
+                }
+
+                if (clc ==  'QuantityControlReport') {
+                	$scope.modal.app = 'procurement';
+                    $scope.modal.screen = 'request_entity_documents';
+                    $scope.modal.clc = 'entity_documents';
+        	    	var transactionTypeId = _.find(vm.listsCache.TransactionType, (el) => {
+			    		return el.name == 'QuantityControlReport';
+			    	}).id;
+			    	$scope.modal.filters = [
+			    		{
+			    			ColumnName: 'ReferenceNo',
+			    			Value:  $rootScope.reportId
 			    		},
 			    		{
 			    			ColumnName: 'TransactionTypeId',

@@ -295,6 +295,8 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
                     break;
                 case 'QuantityControl':
 	                    ctrl.defaultTemplate = ctrl.templateList[0];
+                        $rootScope.reportId = ctrl.reportId;
+                        ctrl.getAvailableDocumentAttachments(ctrl.reportId, 'QuantityControlReport');
                     break;
                 case EMAIL_TRANSACTION.ORDER_CONFIRM:
                     ctrl.template = {
