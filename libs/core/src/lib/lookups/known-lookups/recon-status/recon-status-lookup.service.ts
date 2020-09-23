@@ -74,6 +74,7 @@ export class ReconStatusLookup {
       case ReconStatusLookupEnum.Matched:
         return this._matched;
       case ReconStatusLookupEnum.WithinLimit:
+        this._withinLimit.code = '#FFBF00';
         return this._withinLimit;
       case ReconStatusLookupEnum.NotMatched:
         return this._notMatched;
