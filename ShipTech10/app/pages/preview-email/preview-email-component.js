@@ -101,7 +101,16 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
                 if (!ctrl.email.attachmentsList) {
                     ctrl.email.attachmentsList = [];
                 }
+                let i = 0;
+                while (i >= 0 && i < ctrl.email.attachmentsList.length)
+                    if (ctrl.email.attachmentsList[i].id == el.id) {
+                        ctrl.email.attachmentsList.splice(i, 1);
+                        i --;
+                    } else {
+                        i ++;
+                    }
                 ctrl.email.attachmentsList.push(el);
+                console.log(ctrl.email.attachmentsList);
             }
         };
 
