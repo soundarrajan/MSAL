@@ -20,7 +20,7 @@ export const MockReconStatusLookupEnumMap: Record<
     id: 1,
     name: ReconStatusLookupEnum.WithinLimit,
     displayName: 'Within Limit',
-    code: '#1AB01E'
+    code: '#FFBF00'
   },
   [ReconStatusLookupEnum.NotMatched]: {
     id: 1,
