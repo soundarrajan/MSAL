@@ -211,9 +211,6 @@ export class QcReportState {
     if (diff > maxTolerance) return ReconStatusLookupEnum.NotMatched;
 
     if (diff <= minTolerance) return ReconStatusLookupEnum.Matched;
-
-    if (diff > minTolerance && diff <= maxTolerance) return ReconStatusLookupEnum.Matched;
-
     return ReconStatusLookupEnum.WithinLimit;
   }
 
