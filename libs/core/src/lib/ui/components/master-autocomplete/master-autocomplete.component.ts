@@ -12,6 +12,7 @@ import { AgGridKnownFilterTypes } from '@shiptech/core/ui/components/ag-grid/typ
 import { ServerGridConditionFilterEnum } from '@shiptech/core/grid/server-grid/server-grid-condition-filter.enum';
 import { AutoComplete } from 'primeng/autocomplete';
 import { switchMap, takeUntil, tap } from 'rxjs/operators';
+import { query } from '@angular/animations';
 
 export class MasterAutocompleteComponent implements AfterViewInit, OnDestroy {
   @Input() disabled: boolean = false;
@@ -24,6 +25,8 @@ export class MasterAutocompleteComponent implements AfterViewInit, OnDestroy {
     ServerGridConditionFilterEnum.STARTS_WITH;
 
   suggestions: IDisplayLookupDto[];
+  oldSuggestions: IDisplayLookupDto[];
+  documentTypes: any;
 
   @ContentChild(AutoComplete, { static: true }) autoComplete: AutoComplete;
   protected _destroy$ = new Subject();
@@ -35,7 +38,18 @@ export class MasterAutocompleteComponent implements AfterViewInit, OnDestroy {
       .pipe(
         switchMap(query => this.getFilterResults(query)),
         tap(results => {
-          this.suggestions = results || [];
+          this.oldSuggestions = results || [];
+          this.documentTypes = this.getDocumentTypes();
+          this.suggestions = [];
+          for (let i = 0; i < this.oldSuggestions.length; i++) {
+            let object = this.oldSuggestions[i];
+            let findElement = this.documentTypes.find((item: any) => {
+              return item.name == object.name;
+            });
+            if (findElement) {
+              this.suggestions.push(this.oldSuggestions[i]);
+            }
+          }
           this.changeDetectorRef.markForCheck();
         }),
         takeUntil(this._destroy$)
@@ -73,6 +87,10 @@ export class MasterAutocompleteComponent implements AfterViewInit, OnDestroy {
   }
 
   protected getFilterResults(query: string): Observable<IDisplayLookupDto[]> {
+    return of([]);
+  }
+
+  protected getDocumentTypes(): Observable<any> {
     return of([]);
   }
 }
