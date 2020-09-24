@@ -443,7 +443,7 @@ Number(function() {
                                         newValue.colModel.splice(i, 1);
                                     }
                                 }
-                            }
+                            }  
                         }
                         
                         if (attrs.screen == 'orderlist') {
@@ -452,8 +452,7 @@ Number(function() {
                                     if (procurementSettings.order.orderVerificationReq.id == 2) {
                                         newValue.colModel.splice(i, 1);
                                     }
-                                }
-                                if (newValue.colModel[i].name == 'hasSellerConfirmationDocument') {
+                                } else if (newValue.colModel[i].name == 'hasSellerConfirmationDocument') {
                                     if (scope.tenantSetting.shiptechLite) {
                                         newValue.colModel.splice(i, 1);
                                     }
