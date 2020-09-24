@@ -1,7 +1,7 @@
-﻿commit ff3ab6c3daeef33c2d5fe2feaa718ff1d275e1d3
+﻿commit 363be1704997e05ffef58c5dd400ffac2f1be111
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Thu Sep 24 08:49:02 2020 +0300
+Date:   Thu Sep 24 11:04:26 2020 +0300
 
-    Fixed  difference color when value is max tolerance
+    #28208
 
 branch: master

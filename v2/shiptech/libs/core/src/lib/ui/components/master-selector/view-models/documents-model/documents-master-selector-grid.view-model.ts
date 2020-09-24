@@ -220,14 +220,15 @@ export class DocumentsMasterSelectorGridViewModel extends BaseGridViewModel {
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     const filters: ServerQueryFilter[] = [
-      /*{
-        columnName: "TransactionTypeId",
-        value: TRANSACTION_TYPE_ID.toString(10)
-      },*/
       {
         columnName: 'ReferenceNo',
         value: this.entityId.toString(10)
-      }
+      },
+      {
+        columnName: 'TransactionTypeId',
+        value: TRANSACTION_TYPE_ID.toString(10)
+      },
+
     ];
     this.mastersApi
       .getDocumentsMaster({
