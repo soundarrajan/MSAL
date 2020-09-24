@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { nameof } from '@shiptech/core/utils/type-definitions';
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import {
   ServerGridConditionFilterEnum,
   ShiptechGridFilterOperators
@@ -26,9 +26,15 @@ import {
 } from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
 import { DefaultPageSize } from '@shiptech/core/ui/components/ag-grid/base.grid-view-model';
 import { ServerGridSortParametersEnum } from '@shiptech/core/grid/server-grid/server-grid-sort-parameters.enum';
-import { map } from 'rxjs/operators';
+import { catchError, finalize, map } from 'rxjs/operators';
 import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/request-response-dtos/vessel-port-call';
+import { AppConfig } from '@shiptech/core/config/app-config';
+import { HttpClient } from '@angular/common/http';
+import { ServerQueryFilter } from '@shiptech/core/grid/server-grid/server-query.filter';
+const routes = {
+  getDocumentsType: (serverUrl: string) => serverUrl  + '/api/masters/documenttype/list',
 
+};
 @Component({
   selector: 'shiptech-autocomplete',
   templateUrl: './autocomplete.component.html',
@@ -38,6 +44,7 @@ import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/re
 })
 export class AutocompleteComponent extends MasterAutocompleteComponent
   implements OnInit {
+  private _documentTypes: any;
   get entityId(): number {
     return this._entityId;
   }
@@ -65,11 +72,16 @@ export class AutocompleteComponent extends MasterAutocompleteComponent
   private _entityId: number;
   private _entityName: string;
   private _autocompleteType: string;
+  private _TRANSACTION_TYPE_ID: number = 46;
+  protected _apiUrl = this.appConfig.v1.API.BASE_URL_DATA_MASTERS;
+
 
   constructor(
     @Inject(VESSEL_MASTERS_API_SERVICE) private mastersApi: IVesselMastersApi,
     private legacyLookupsDatabase: LegacyLookupsDatabase,
-    changeDetectorRef: ChangeDetectorRef
+    changeDetectorRef: ChangeDetectorRef,
+    private appConfig: AppConfig,
+    private httpClient: HttpClient
   ) {
     super(changeDetectorRef);
   }
@@ -92,7 +104,42 @@ export class AutocompleteComponent extends MasterAutocompleteComponent
       this.field = nameof<IVesselPortCallMasterDto>('portCallId');
       this.dataKey = nameof<IVesselPortCallMasterDto>('portCallId');
     }
+    const filters: ServerQueryFilter[] = [
+      {
+        columnName: 'ReferenceNo',
+        value: this.entityId.toString(10)
+      },
+      {
+        columnName: 'TransactionTypeId',
+        value: this._TRANSACTION_TYPE_ID.toString(10)
+      },
+
+    ];   
+    let payload = {
+      'filters': [],
+      'pageFilters': {
+        'filters': []
+      },
+      'pagination': {
+        'take': 999999,
+        'skip': 0
+      }
+      
+    };
+    payload.filters = filters; 
+    this.getDocumentsType(this._apiUrl, payload)
+    .pipe(
+        finalize(() => {
+        })
+    )
+    .subscribe((result: any) => {
+      this._documentTypes = result;
+     });
   }
+  protected getDocumentTypes(): Observable<any> {
+    return this._documentTypes;
+  }
+
 
   protected getFilterResults(query: string): Observable<IDisplayLookupDto[]> {
     switch (this._autocompleteType) {
@@ -157,5 +204,12 @@ export class AutocompleteComponent extends MasterAutocompleteComponent
           `${MasterAutocompleteComponent.name} hasn't defined the autocomplete type`
         );
     }
+  }
+
+  getDocumentsType(serverUrl: string, payload: any): Observable<any> {
+    return this.httpClient.post(routes.getDocumentsType(serverUrl),{'payload': payload}).pipe(
+      map((body: any) => body.payload),
+      catchError(() => of('Error, could not load the template'))
+    );
   }
 }
