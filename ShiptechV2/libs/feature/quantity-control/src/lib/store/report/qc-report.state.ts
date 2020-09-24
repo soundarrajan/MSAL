@@ -209,7 +209,6 @@ export class QcReportState {
     const diff = Math.abs(left - right);
 
     if (diff >= maxTolerance) return ReconStatusLookupEnum.NotMatched;
-
     if (diff <= minTolerance) return ReconStatusLookupEnum.Matched;
     return ReconStatusLookupEnum.WithinLimit;
   }
