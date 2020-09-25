@@ -1,7 +1,7 @@
-﻿commit 5330d52da7302030106250973e4f4a7b736a5549
+﻿commit b6d452113b7e58009e546b0659f02c1aae969585
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Thu Sep 24 17:59:26 2020 +0300
+Date:   Fri Sep 25 08:29:35 2020 +0300
 
-    Fixed autocomplete on documents types section
+    Fixed quantity control page
 
 branch: master
