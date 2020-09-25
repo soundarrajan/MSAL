@@ -6301,7 +6301,18 @@ APP_API.factory('$Api_Service', [
                         payload.exportType = 2;
                         file_type = 'text/plain';
                     }
-                    let timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                    
+                    var timeZoneException = [
+                        { old: "America/Godthab", new: "America/Santiago" },
+                    ];
+                    let timeZone1 = jstz().timezone_name;
+                    let findTimezoneException = timeZoneException.find(function(object) {
+                        return object.old == timeZone1;
+                    });
+                    let timeZone = jstz().timezone_name;
+                    if (findTimezoneException) {
+                        timeZone = findTimezoneException.new;
+                    }
                     let d = new Date();
                     let dOffset = d.getTimezoneOffset();
                     payload.Order = null;
