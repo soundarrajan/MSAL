@@ -38,18 +38,23 @@ export class MasterAutocompleteComponent implements AfterViewInit, OnDestroy {
       .pipe(
         switchMap(query => this.getFilterResults(query)),
         tap(results => {
-          this.oldSuggestions = results || [];
-          this.documentTypes = this.getDocumentTypes();
-          this.suggestions = [];
-          for (let i = 0; i < this.oldSuggestions.length; i++) {
-            let object = this.oldSuggestions[i];
-            let findElement = this.documentTypes.find((item: any) => {
-              return item.name == object.name;
-            });
-            if (findElement) {
-              this.suggestions.push(this.oldSuggestions[i]);
+          if (window.location.pathname.includes('documents')) {
+            this.oldSuggestions = results || [];
+            this.documentTypes = this.getDocumentTypes();
+            this.suggestions = [];
+            for (let i = 0; i < this.oldSuggestions.length; i++) {
+              let object = this.oldSuggestions[i];
+              let findElement = this.documentTypes.find((item: any) => {
+                return item.name == object.name;
+              });
+              if (findElement) {
+                this.suggestions.push(this.oldSuggestions[i]);
+              }
             }
+          } else {
+            this.suggestions = results || [];
           }
+         
           this.changeDetectorRef.markForCheck();
         }),
         takeUntil(this._destroy$)
