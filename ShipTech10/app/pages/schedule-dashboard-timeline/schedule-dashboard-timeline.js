@@ -740,7 +740,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 });
 
                 timeline.on("changed", function(){
-            		lastVoyageTopOffset = $(".vis-foreground > .vis-group:last-child").offset().top + $(".vis-foreground > .vis-group:last-child").height();  
+            		lastVoyageTopOffset = $(".vis-foreground > .vis-group:last-child").offset() ? $(".vis-foreground > .vis-group:last-child").offset().top + $(".vis-foreground > .vis-group:last-child").height() : 0;  
             		foregroundTopOffset = $(".vis-foreground").offset().top + $(".vis-foreground").height();  
                     verticalScrollBottomLine = $(".vis-vertical-scroll").length ? $(".vis-vertical-scroll").offset().top + $(".vis-vertical-scroll").height() : 0;
                     
@@ -748,7 +748,10 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 					obj = $(".vis-foreground > .vis-group:last-child");            	
 					var childPos = obj.offset();
 					var parentPos = obj.parent().offset();
-					var childOffset = childPos.top - parentPos.top + $(obj).height();
+                    var childOffset = 0;
+                    if (childPos) {
+                        childOffset = childPos.top - parentPos.top + $(obj).height();
+                    }
 					computedMaxHeight = $(obj.parent()).height() - ($(obj.parent()).height() - childOffset) + 1;
 					console.log(computedMaxHeight);
 
@@ -1799,7 +1802,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     trigger: 'hover',
                     placement: 'auto bottom',
                     html: true,
-                    template: '<div class="popover" style="z-index: 9999998" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body timeline-popover-hover">'+html+'</div></div>'
+                    template: '<div class="popover" style="z-index: 9999999" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body timeline-popover-hover">'+html+'</div></div>'
                 }).
                 on('show.bs.popover', function (event) {
                     var lengthVoyageStops = getLengthPopoverMarkup(voyageDetailId);
