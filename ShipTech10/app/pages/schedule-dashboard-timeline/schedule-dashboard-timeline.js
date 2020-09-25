@@ -539,7 +539,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 		                    end:  moment.utc(currentGroupRedelivery.latestRedelivery).format('YYYY-MM-DD HH:mm'),
 		                    style: 'background-color: none; border:2px solid red; pointer-events:none; z-index:9999',
 		                    className: 'redeliveryPeriod',
-                            isDeleted: currentGroupRedelivery.isDeleted
+                            isDeleted: v.isDeleted
 		                };
 		                var estimatedRedeliveryStart = moment.utc(currentGroupRedelivery.estimatedRedelivery).format('YYYY-MM-DD') + " 12:00";
 		                var estimatedRedeliveryEnd = moment.utc(currentGroupRedelivery.estimatedRedelivery).format('YYYY-MM-DD') + " 12:00";
@@ -554,7 +554,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 		                    end:  estimatedRedeliveryEnd,
 		                    style: 'background-color: none; border:1px solid #b70000; pointer-events:none; z-index:51',
 		                    className: 'estimatedRedeliveryDot',
-                            isDeleted: currentGroupRedelivery.isDeleted
+                            isDeleted:  v.isDeleted
 
 		                };  
 		                voyages.push(redeliveryPeriod);            
@@ -682,6 +682,18 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 var timelineVoyages = _.filter(timelineData.voyages, function(object) {
                     return !object.isDeleted;
                 });
+                for (let i = 0; i < timelineData.groups.length; i++) {
+                    let groupId = timelineData.groups[i].id;
+                    let findElement = _.find(timelineVoyages, function(object) {
+                        return object.group == groupId;
+                    });
+                    if (findElement) {
+                        console.log(findElement);
+                        timelineData.groups[i].isDeleted = false;
+                    } else {
+                        timelineData.groups[i].isDeleted = true;
+                    }
+                }
                 var timelineGroups = _.filter(timelineData.groups, function(object) {
                     return !object.isDeleted;
                 });
