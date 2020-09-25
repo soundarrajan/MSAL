@@ -984,15 +984,6 @@ APP_MASTERS.controller('Controller_Master', [
                 	$scope.formValues.internalName = angular.copy($scope.formValues.name);
                 }
             }
-            if (vm.app_id == 'masters' && vm.screen_id == 'location') {
-                if (typeof $scope.formValues.productsSystemInstruments[0] != 'undefined') {
-                    if (!$scope.formValues.productsSystemInstruments[0].product && !$scope.formValues.productsSystemInstruments[0].systemInstrument) {
-                        $scope.formValues.productsSystemInstruments = [];
-                    }
-                } else {
-                    $scope.formValues.productsSystemInstruments = [];
-                }
-            }
 
             /* Contract Validations*/
             if (typeof $scope.save_master_changes_controllerSpecific === 'function') {
