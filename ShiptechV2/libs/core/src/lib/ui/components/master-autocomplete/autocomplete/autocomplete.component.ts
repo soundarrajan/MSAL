@@ -104,37 +104,40 @@ export class AutocompleteComponent extends MasterAutocompleteComponent
       this.field = nameof<IVesselPortCallMasterDto>('portCallId');
       this.dataKey = nameof<IVesselPortCallMasterDto>('portCallId');
     }
-    const filters: ServerQueryFilter[] = [
-      {
-        columnName: 'ReferenceNo',
-        value: this.entityId.toString(10)
-      },
-      {
-        columnName: 'TransactionTypeId',
-        value: this._TRANSACTION_TYPE_ID.toString(10)
-      },
-
-    ];   
-    let payload = {
-      'filters': [],
-      'pageFilters': {
-        'filters': []
-      },
-      'pagination': {
-        'take': 999999,
-        'skip': 0
-      }
-      
-    };
-    payload.filters = filters; 
-    this.getDocumentsType(this._apiUrl, payload)
-    .pipe(
-        finalize(() => {
-        })
-    )
-    .subscribe((result: any) => {
-      this._documentTypes = result;
-     });
+    if (this.autocompleteType === knownMastersAutocomplete.documents) {
+      const filters: ServerQueryFilter[] = [
+        {
+          columnName: 'ReferenceNo',
+          value: this.entityId.toString(10)
+        },
+        {
+          columnName: 'TransactionTypeId',
+          value: this._TRANSACTION_TYPE_ID.toString(10)
+        },
+  
+      ];   
+      let payload = {
+        'filters': [],
+        'pageFilters': {
+          'filters': []
+        },
+        'pagination': {
+          'take': 999999,
+          'skip': 0
+        }
+        
+      };
+      payload.filters = filters; 
+      this.getDocumentsType(this._apiUrl, payload)
+      .pipe(
+          finalize(() => {
+          })
+      )
+      .subscribe((result: any) => {
+        this._documentTypes = result;
+       });
+    }
+   
   }
   protected getDocumentTypes(): Observable<any> {
     return this._documentTypes;
