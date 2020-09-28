@@ -2338,6 +2338,11 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
             if (ctrl.requirementRequestProductIds.length == 0) {
                 return false;
             }
+            if (_.uniqBy(ctrl.requirementRequestProductIds, 'productSellerId').length != 1) {
+                ctrl.confirmButtonDisabled = true;
+            } else {
+                ctrl.confirmButtonDisabled = false;
+            }
             for (let i = 0; i < ctrl.requirementRequestProductIds.length; i++) {
                 requirement = ctrl.requirementRequestProductIds[i];
                 if (typeof requirement.requestOfferId == 'undefined' || requirement.requestOfferId === null) {

@@ -49,7 +49,7 @@
 
                     <a class="btn btn-default" ng-click="$ctrl.skipRFQ()" ng-class="{ 'disabled' : !$ctrl.canSendRFQ() || $ctrl.buttonsDisabled || !$ctrl.isSkipRfqAllowed}">Skip RFQ</a>
                     <a class="btn btn-default btn-outline mt-ladda-btn ladda-button ng-scope orange " ng-show="!addNewContact"  ng-click="$ctrl.setAsCurrentSelection($ctrl.requirements, 'table')">  Set as current selection</a>
-					<a class="btn orange btn-outline" ng-click="$ctrl.setConfirmationOffers()" ng-class="{'disabled' : !$ctrl.hasAction($ctrl.SCREEN_ACTIONS.CONFIRM)||!$ctrl.requirementsAreCorrectForConfirm() || $ctrl.buttonsDisabled}">
+					<a class="btn orange btn-outline" ng-click="$ctrl.setConfirmationOffers()" ng-class="{'disabled' : !$ctrl.hasAction($ctrl.SCREEN_ACTIONS.CONFIRM)||!$ctrl.requirementsAreCorrectForConfirm() || $ctrl.buttonsDisabled || $ctrl.confirmButtonDisabled}">
 						Confirm
 					</a>
 					<div class="btn-group">
