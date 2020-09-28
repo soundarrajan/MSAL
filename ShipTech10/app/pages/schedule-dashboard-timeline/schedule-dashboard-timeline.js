@@ -373,7 +373,6 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 var uniqueCellIdentifier = startDate.split(" ")[0] + ' <> ' +  groupString;
                 voyageContent += '<span class="' + cls + '" cell-identifier="'+uniqueCellIdentifier+'" oncontextmenu="return false;" voyage-detail-id="' + vessels[i].voyageDetail.id + '"> ' + vessels[i].voyageDetail.locationCode;
                 voyageContent += ' </span>';
-
                 var voyage = {
                     id: i,
                     voyageId: vessels[i].voyageDetail.id,
@@ -482,6 +481,10 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                             }
                 
                         }
+                        ctrl.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString] = _.sortBy(ctrl.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString], function(object) {
+                            return object.voyageDetail.id;
+                        });
+
 	                	if (ctrl.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString][0].voyageDetail.id == voyage.voyageId) {
 			                voyage.content += '<span class="expand-voyages" cell-identifier="'+uniqueCellIdentifier+'" group="'+voyage.group+'"  eta="'+voyage.start+'">+</span>';
 			                voyage.additionalStops = ctrl.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString];
@@ -509,7 +512,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 if (!_.find(voyages, {'voyageId' : vessels[i].voyageDetail.id}) && !isExtraStop) {
 	                voyages.push(voyage);
                 }
-                 if (initialEtaDotted != '' && displayDottedLine == true) {
+                if (initialEtaDotted != '' && displayDottedLine == true) {
                     voyage1.group = groupId;
                     voyages.push(voyage1);
                 }
@@ -678,7 +681,6 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                         
                     }
                 }
-
                 var timelineVoyages = _.filter(timelineData.voyages, function(object) {
                     return !object.isDeleted;
                 });
@@ -688,7 +690,6 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                         return object.group == groupId;
                     });
                     if (findElement) {
-                        console.log(findElement);
                         timelineData.groups[i].isDeleted = false;
                     } else {
                         timelineData.groups[i].isDeleted = true;
@@ -697,7 +698,6 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 var timelineGroups = _.filter(timelineData.groups, function(object) {
                     return !object.isDeleted;
                 });
-                
                 var groups = new vis.DataSet(timelineGroups);
                 var voyages = new vis.DataSet(timelineVoyages);
                 var startDateObject = { 'start': ctrl.startDate.format('YYYY-MM-DD'), 'end': ctrl.endDate.format('YYYY-MM-DD')};
