@@ -422,6 +422,12 @@ APP_CLAIMS.controller('Controller_Claims', [
                                 });
                             }
                         }
+                        if ($scope.formValues.claimDetails.actualSettlementAmount == 0) {
+                            $scope.formValues.claimDetails.actualSettlementAmount = $scope.formValues.claimDetails.actualSettlementAmount.toString();
+                        }
+                        if ($scope.formValues.claimDetails.estimatedSettlementAmount == 0) {
+                            $scope.formValues.claimDetails.estimatedSettlementAmount = $scope.formValues.claimDetails.estimatedSettlementAmount.toString();
+                        }
                         // retrigger de dropdowns delivery, labs, products
                         if (!$scope.formValues.claimDetails.estimatedSettlementAmountCurrency) {
                             $scope.formValues.claimDetails.estimatedSettlementAmountCurrency = $scope.tenantCurrency;
