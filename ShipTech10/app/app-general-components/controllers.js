@@ -825,6 +825,10 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         if (options.colModel.name.toLowerCase().indexOf("customstatus") != -1) {
                             return label;
                         }
+                        if (options.gid == 'flat_counterparties') {
+                            color = '#333333';
+                            return '<span class="label formatStatus" style="overflow:hidden; text-overflow:ellipsis; display:block; font-weight: 500; color:' + color + '" >' + label + "</span>";
+                        }
 
                         if (label && color) {
                             return '<span class="label formatStatus" style="overflow:hidden; text-overflow:ellipsis; display:block; background-color:' + color + '" >' + label + "</span>";
