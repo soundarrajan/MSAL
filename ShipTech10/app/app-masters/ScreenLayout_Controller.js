@@ -562,6 +562,11 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                                     if ($scope.formValues.conversionFactor) {
                                         $scope.formValues.conversionFactor.id = 0;
                                     }
+                                    if (vm.app_id == 'masters' && vm.screen_id == 'vessel') {
+                                    	$.each($scope.formValues.tanks, (k, v) => {
+                                    		v.vessel.id = 0;
+                                    	});
+                                    }
                                     // reset contract status
                                     if (vm.app_id == 'contracts' && vm.screen_id == 'contract') {
                                         $scope.formValues.status = null;

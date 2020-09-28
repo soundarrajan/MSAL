@@ -1103,21 +1103,6 @@ APP_MASTERS.controller('Controller_Master', [
                 }
             }
 
-            if (vm.app_id == 'masters' && vm.screen_id == 'vessel') {
-                if ($scope.formValues.temp.tanks && JSON.stringify($scope.formValues.temp.tanks) != JSON.stringify({})) {
-                    if ($scope.formValues.temp.tanks.id) {
-                        let verifyIfExist = _.find($scope.formValues.tanks, function(object) {
-                            return object.id == $scope.formValues.temp.tanks.id;
-                        });
-                        if (verifyIfExist) {
-                            toastr.error('Selected tank already exists!');
-                            return;
-                        }
-                    }
-
-                }
-            }
-
             if (vm.app_id == 'admin' && vm.screen_id == 'configuration') {
                 // chech for product location to be obj
                 $.each($scope.formValues.email, (key, val) => {
@@ -1217,8 +1202,16 @@ APP_MASTERS.controller('Controller_Master', [
                     }
                 }
                 if (vm.app_id == 'masters' && vm.screen_id == 'vessel') {
-                    if ($scope.formValues.temp.tanks && JSON.stringify($scope.formValues.temp.tanks) != JSON.stringify({})) {
-                        $scope.filterFromData.tanks.push($scope.formValues.temp.tanks);
+                    if (!$scope.filterFromData.tanks) {
+                        $scope.filterFromData.tanks = [];
+                    }
+                    if ($scope.formValues.temp && $scope.formValues.temp.tanks) {
+                        if ($scope.formValues.temp.tanks.availableCapacity && $scope.formValues.temp.tanks.usableCapacity && !$scope.formValues.temp.tanks.tankCategory && !$scope.formValues.temp.tanks.product && !$scope.formValues.temp.tanks.uom) {
+                            $scope.formValues.temp.tanks = {};
+                        } 
+                        if ($scope.formValues.temp.tanks && JSON.stringify($scope.formValues.temp.tanks) != JSON.stringify({})) {
+                            $scope.filterFromData.tanks.push($scope.formValues.temp.tanks);
+                        }
                     }
                 }
 
