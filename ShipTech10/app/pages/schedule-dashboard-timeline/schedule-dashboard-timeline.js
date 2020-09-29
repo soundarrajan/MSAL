@@ -841,6 +841,11 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
             	$('.vis-foreground, #timeline *').bind('mousewheel', function(e){
             		if (!e.altKey) {
+						if (window.scrollEnabled == 0) {
+		                    window.scrollEnabled++;
+							e.preventDefault();
+							return;
+						}
 						enableImprovedScrolling();
             		}
             	});				   
@@ -857,6 +862,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     console.log("enabled"); 
             	}
             	var disableImprovedScrolling = function() {
+                    window.scrollEnabled = 0;
             		$(".vis-left").css("pointer-events", "initial");
                     console.log("disabled");
             	}
