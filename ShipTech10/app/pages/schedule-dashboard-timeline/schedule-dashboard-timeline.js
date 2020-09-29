@@ -593,6 +593,14 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         	}
 
 
+        	let columnsCount = 1;
+        	Object.keys($scope.displayedColumns).forEach((key)=>{
+        		columnsCount++;
+        	})
+            let zoomMin = 2.592e+8;
+        	if (columnsCount > 5) {
+                zoomMin = 2.0e+8;
+        	}
 
             options =  {
                 'verticalScroll': true,
@@ -607,7 +615,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 'min': angular.copy(moment(ctrl.startDate).format("YYYY-MM-DD")),
                 'end': ctrl.lastEndDate ? ctrl.lastEndDate : computedEndDate,
                 'max': angular.copy(moment(moment(ctrl.endDate).format("YYYY-MM-DD")).endOf("day")),
-                'zoomMin': 2.592e+8,
+                'zoomMin': zoomMin,
                 'zoomMax': 2.16e+9,
                 // 'preferZoom': true,
                 'zoomKey': 'altKey', 
@@ -825,7 +833,9 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 })
 
             	$('.vis-foreground, #timeline *').bind('mousewheel', function(e){
-					enableImprovedScrolling();
+            		if (!e.altKey) {
+						enableImprovedScrolling();
+            		}
             	});				   
 
             	var enableImprovedScrolling = function() {
