@@ -883,7 +883,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     redrawOutOfRangeElements();
                 });
                 setTimeout(function(){
-					timeline._setScrollTop(0);
+                    $(".vis-vertical-scroll").scrollTop(10);
                 })
                 $scope.timelineItems = groups.length;
                 setLayoutAfterTimelineLoad();
@@ -947,7 +947,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             // Add group columns header
             $('#vis-custom-group-columns').remove();
             $('.vis-panel.vis-bottom').remove();
-            timeline._setScrollTop(0);
+            $(".vis-vertical-scroll").scrollTop(10);
             if ($('.vis-left').width() > 0) {
             	var groupColumnsTitleElement = '<div class="vis-custom-group" id="vis-custom-group-columns">';
                 groupColumnsTitleElement += '<span class="vis-custom-group-column-header vis-vessel" timeline-order-column="vesselName"> Vessel </span>';
@@ -1018,7 +1018,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 				window.mytimeline.setOptions(options);
                 setTimeout(function() {
                 	if ($(".vis-vertical-scroll").scrollTop() < 50) {
-	                    timeline._setScrollTop(0);
+                        $(".vis-vertical-scroll").scrollTop(10);
                 	}
                 });				
 			}
@@ -2146,7 +2146,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 		    // window.mytimeline.redraw();
             setTimeout(function() {
             	if ($(".vis-vertical-scroll").scrollTop() < 50) {
-                    timeline._setScrollTop(0);
+                    $(".vis-vertical-scroll").scrollTop(10);
             	}
             });
 		}			
