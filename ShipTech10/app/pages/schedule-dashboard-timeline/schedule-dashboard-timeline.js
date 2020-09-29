@@ -743,14 +743,21 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 			$(".vis-panel.vis-left.vis-vertical-scroll").removeClass("vis-vertical-scroll");
                 		}
                 	}
-
+                    let columnsCount = 1;
+                    Object.keys($scope.displayedColumns).forEach((key)=>{
+                        columnsCount++;
+                    })
+                    let zoomMin = 2.592e+8;
+                    if (columnsCount > 5) {
+                        zoomMin = 2.0e+8;
+                    }
                     ctrl.lastStartDate = moment(timeline.range.start);
                     ctrl.lastEndDate = moment(timeline.range.end);
                     var diff = ctrl.lastEndDate -  ctrl.lastStartDate;
-                    if (diff == 2.592e+9) {
+                    if (diff == 2.16e+9) {
                         $(".st-btn-icon-zoom-in a").css("color", "#555555");
                          $(".st-btn-icon-zoom-out a").css("color", "#C1C1C1");
-                    } else if (diff == 2.592e+8) {
+                    } else if (diff == zoomMin) {
                         $(".st-btn-icon-zoom-in a").css("color", "#C1C1C1");
                         $(".st-btn-icon-zoom-out a").css("color", "#555555");
                     } else {
