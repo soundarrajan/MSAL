@@ -2338,12 +2338,17 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
             if (ctrl.requirementRequestProductIds.length == 0) {
                 return false;
             }
-            if (_.uniqBy(ctrl.requirementRequestProductIds, 'productSellerId').length != 1) {
-                ctrl.confirmButtonDisabled = true;
-            } else {
-                ctrl.confirmButtonDisabled = false;
-            }
+            ctrl.confirmButtonDisabled = false;
             for (let i = 0; i < ctrl.requirementRequestProductIds.length; i++) {
+                let element = ctrl.requirementRequestProductIds[i];
+                let findNumberOfProduct = _.filter(ctrl.requirementRequestProductIds, function(object) {
+                    if (object.requestOffer && object.requestOffer.quotedProduct) {
+                        return object.requestOffer.quotedProduct.id == element.requestOffer.quotedProduct.id && object.requestOffer.offer.requestId == element.requestOffer.offer.requestId;
+                    }
+                });
+                if (findNumberOfProduct.length > 1) {
+                   ctrl.confirmButtonDisabled = true;
+                } 
                 requirement = ctrl.requirementRequestProductIds[i];
                 if (typeof requirement.requestOfferId == 'undefined' || requirement.requestOfferId === null) {
                     isCorrect = false;
