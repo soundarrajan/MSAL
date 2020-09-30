@@ -1208,15 +1208,13 @@ APP_MASTERS.controller('Controller_Datatables', [
                         name: 'formula',
                         displayName: 'Formula Description',
                         cellTemplate: $scope.dataTableTemplates.lookup,
-                        cellCondition: '!grid.appScope.fVal().formValues.mtmFormulaProducts[grid.appScope.rowIdx(row)].product.id',
-                        cellConditionType: 'ng-disabled',
                         cellObject: {
                             Name: 'Formula',
                             Type: 'lookup',
                             masterSource: 'Formula',
                             clc_id: 'masters_forrmulalist',
-                            required: 'grid.appScope.fVal().formValues.mtmFormulaProducts[grid.appScope.rowIdx(row)].product.id'
-                        }
+                        },
+                        required: true
                     },
                     {
                         name: 'product',
@@ -1227,7 +1225,8 @@ APP_MASTERS.controller('Controller_Datatables', [
                             Type: 'lookup',
                             masterSource: 'Product',
                             clc_id: 'masters_productlist'
-                        }
+                        },
+                        required: true
                     }
                 ],
                 onRegisterApi: function(api) {
