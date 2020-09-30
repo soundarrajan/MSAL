@@ -2305,7 +2305,8 @@ APP_MASTERS.controller('Controller_Datatables', [
                             Type: 'lookup',
                             masterSource: 'Location',
                             clc_id: 'masters_locationlist'
-                        }
+                        },
+                        required: true
                     },
                     {
                         name: 'productTypes',
@@ -2319,6 +2320,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                             customChangeAction : 'addProductTypeMasterService(rowRenderIndex, productTypeTypeahead[rowRenderIndex], grid.appScope.fVal().formValues)',
                             masterSource: 'ProductType'
                         },
+                        required: true
                     },
                     {
                         enableSorting: false,
