@@ -1213,7 +1213,9 @@ APP_MASTERS.controller('Controller_Datatables', [
                             Type: 'lookup',
                             masterSource: 'Formula',
                             clc_id: 'masters_forrmulalist',
-                            required: 'grid.appScope.fVal().formValues.mtmType.id == 1'
+                            required: 'grid.appScope.fVal().formValues.mtmType.id == 1',
+                            customNumberOfRowsAction: 'getRowNumbers(rowRenderIndex, productTypeTypeahead[rowRenderIndex], grid.appScope.fVal().formValues)'
+
 
                         },
                     },
@@ -1226,7 +1228,9 @@ APP_MASTERS.controller('Controller_Datatables', [
                             Type: 'lookup',
                             masterSource: 'Product',
                             clc_id: 'masters_productlist',
-                            required: 'grid.appScope.fVal().formValues.mtmType.id == 1'
+                            required: 'grid.appScope.fVal().formValues.mtmType.id == 1',
+                            customNumberOfRowsAction: 'getRowNumbers(rowRenderIndex, productTypeTypeahead[rowRenderIndex], grid.appScope.fVal().formValues)'
+
                         },
                     }
                 ],
@@ -2304,7 +2308,8 @@ APP_MASTERS.controller('Controller_Datatables', [
                             Name: 'Location',
                             Type: 'lookup',
                             masterSource: 'Location',
-                            clc_id: 'masters_locationlist'
+                            clc_id: 'masters_locationlist',
+                            customNumberOfRowsAction: 'getRowNumbers(rowRenderIndex, productTypeTypeahead[rowRenderIndex], grid.appScope.fVal().formValues)'
                         },
                         required: true
                     },
@@ -2318,7 +2323,9 @@ APP_MASTERS.controller('Controller_Datatables', [
                             Name: 'ProductType',
                             Type: 'dropdown',
                             customChangeAction : 'addProductTypeMasterService(rowRenderIndex, productTypeTypeahead[rowRenderIndex], grid.appScope.fVal().formValues)',
-                            masterSource: 'ProductType'
+                            masterSource: 'ProductType',
+                            customNumberOfRowsProductType: 'getRowNumbersOfProductType(rowRenderIndex, productTypeTypeahead[rowRenderIndex], grid.appScope.fVal().formValues)',
+                            customNumberOfRowsAction: 'getRowNumbers(rowRenderIndex, productTypeTypeahead[rowRenderIndex], grid.appScope.fVal().formValues)'
                         },
                         required: true
                     },
@@ -3842,6 +3849,41 @@ APP_MASTERS.controller('Controller_Datatables', [
                 }
             });
         };
+
+        $scope.getRowNumbers = function(rowIdx, item, fVal) {
+            if (vm.app_id == 'masters' && vm.screen_id == 'service') {
+                let currentRowIdx = 0;
+                for (let i = 0; i < fVal.locations.length; i++) {
+                    if (i < rowIdx && !fVal.locations[i].isDeleted) {
+                        currentRowIdx ++ ;
+                    }
+
+                }
+                return currentRowIdx + 1;
+            } else if (vm.app_id == 'masters' && vm.screen_id == 'strategy') {
+                let currentRowIdx = 0;
+                for (let i = 0; i < fVal.mtmFormulaProducts.length; i++) {
+                    if (i < rowIdx && !fVal.mtmFormulaProducts[i].isDeleted) {
+                        currentRowIdx ++ ;
+                    }
+
+                }
+                return currentRowIdx + 1;
+            }
+            return rowIdx + 1;
+        }
+
+        $scope.getRowNumbersOfProductType = function(rowIdx, item, fVal) {
+            if (vm.app_id == 'masters' && vm.screen_id == 'service') {
+                let number = _.filter(fVal.locations[rowIdx].productTypes, function(object) {
+                    return !object.isDeleted;
+                })
+                if (!number.length) {
+                    return true;
+                }
+                return false;
+            }
+        }
 
         $scope.addProductTypeMasterService = function(rowIdx, item, fVal) {
             if (!item) {
