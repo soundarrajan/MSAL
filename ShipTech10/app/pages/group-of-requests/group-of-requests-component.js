@@ -2343,7 +2343,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                 let element = ctrl.requirementRequestProductIds[i];
                 let findNumberOfProduct = _.filter(ctrl.requirementRequestProductIds, function(object) {
                     if (object.requestOffer && object.requestOffer.quotedProduct) {
-                        return object.requestOffer.quotedProduct.id == element.requestOffer.quotedProduct.id && object.requestOffer.offer.requestId == element.requestOffer.offer.requestId;
+                        return object.productSellerId != element.productSellerId && object.requestOffer.quotedProduct.id == element.requestOffer.quotedProduct.id && object.requestOffer.offer.requestId == element.requestOffer.offer.requestId;
                     }
                 });
                 if (findNumberOfProduct.length > 1) {
