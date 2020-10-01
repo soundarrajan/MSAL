@@ -829,7 +829,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 }
                 var timer = null;
               
-                timeline.on("scroll", function() {
+                timeline.on("mousewheel", function() {
                     console.log("DISABLED SCROLL");
                     if(timer !== null) {
                         clearTimeout(timer);        
@@ -841,16 +841,34 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
             	$('.vis-foreground, #timeline *').bind('mousewheel', function(e){
             		if (!e.altKey) {
-						if (window.scrollEnabled == 0) {
-		                    window.scrollEnabled++;
+	                    window.scrollEnabled += 1;
+						if (window.scrollEnabled <= 1) {
 							e.preventDefault();
-							return;
-						}
-						enableImprovedScrolling();
+							if (e.originalEvent.deltaY < 0) {
+								$(".vis-left").scrollTop($(".vis-left").scrollTop() - 100)
+							} else {
+								$(".vis-left").scrollTop($(".vis-left").scrollTop() + 100)
+							}
+							enableImprovedScrolling();
+						} else {
+							return
+						} 
             		}
+                    if(timer !== null) {
+                        clearTimeout(timer);        
+                    }
+                    timer = setTimeout(function() {
+                          disableImprovedScrolling();
+                    }, 150);						
+            	});				   
+            	$('body').on('click', function(e){
+					disableImprovedScrolling();
             	});				   
 
             	var enableImprovedScrolling = function() {
+            		if ($(".vis-left").css("pointer-events") == "none") {
+            			return;
+            		}
                     leftOffset = (parseFloat($(".vis-panel.vis-center").css("left")) - 25) + "px";
                     $(".vis-panel.vis-center").css("padding-left", leftOffset);
                     $(".vis-panel.vis-center").css("margin-left", "-" + leftOffset);
