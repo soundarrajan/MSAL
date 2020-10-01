@@ -1,7 +1,7 @@
-﻿commit b6d452113b7e58009e546b0659f02c1aae969585
+﻿commit b79072e66d58f67d69e3761330195f68378dc120
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Fri Sep 25 08:29:35 2020 +0300
+Date:   Thu Oct 1 11:58:50 2020 +0300
 
-    Fixed quantity control page
+    #28256
 
 branch: master
