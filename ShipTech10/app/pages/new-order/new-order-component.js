@@ -1724,6 +1724,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         	if (ctrl.data.products[productIndex].contract) { 
 	        	var initialContractId = angular.copy(ctrl.data.products[productIndex].contract.id);
 	        	var initialContract = angular.copy(ctrl.data.products[productIndex].contract);
+                var initialContractProductId =  angular.copy(ctrl.data.products[productIndex].contractProductId)
         	}
         	var oldSpecGroup = angular.copy(ctrl.data.products[productIndex].specGroup);
             var isSameContract = false;
@@ -1746,7 +1747,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 				if (response && initialContractId) {
 					var newContractData = false;
 					$.each(response, function(k,v){
-						if (v.contract.id == initialContractId) {
+						if (v.contract.id == initialContractId && v.contractProductId == initialContractProductId) {
 							newContractData = v;
                             isSameContract = true;
 						}
