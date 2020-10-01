@@ -745,6 +745,13 @@ APP_MASTERS.controller('Controller_Master', [
             $('form').addClass('submitted');
             vm.invalid_form = false;
             // console.log(vm.editInstance);
+            if(vm.app_id == 'masters' && vm.screen_id == 'strategy') {
+                if ($scope.formValues.mtmType.id != 1) {
+                    $scope.formValues.mtmFormulaProducts = _.filter($scope.formValues.mtmFormulaProducts, function(object) {
+                        return object.id;
+                    });
+                }
+            }
 
             if(vm.app_id == 'masters' && vm.screen_id == 'systeminstrument') {
                 let periods = [];

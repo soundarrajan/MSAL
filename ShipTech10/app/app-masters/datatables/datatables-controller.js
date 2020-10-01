@@ -1213,8 +1213,9 @@ APP_MASTERS.controller('Controller_Datatables', [
                             Type: 'lookup',
                             masterSource: 'Formula',
                             clc_id: 'masters_forrmulalist',
+                            required: 'grid.appScope.fVal().formValues.mtmType.id == 1'
+
                         },
-                        required: true
                     },
                     {
                         name: 'product',
@@ -1224,9 +1225,9 @@ APP_MASTERS.controller('Controller_Datatables', [
                             Name: 'Product',
                             Type: 'lookup',
                             masterSource: 'Product',
-                            clc_id: 'masters_productlist'
+                            clc_id: 'masters_productlist',
+                            required: 'grid.appScope.fVal().formValues.mtmType.id == 1'
                         },
-                        required: true
                     }
                 ],
                 onRegisterApi: function(api) {
