@@ -1,7 +1,7 @@
-﻿commit b79072e66d58f67d69e3761330195f68378dc120
+﻿commit d8db1b582779a6e0d99d05be17b55a6a1f1bfbfb
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Thu Oct 1 11:58:50 2020 +0300
+Date:   Thu Oct 1 12:52:39 2020 +0300
 
-    #28256
+    Added base64 for the "Shiptech" logo for quantity control
 
 branch: master
