@@ -2342,11 +2342,9 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
             for (let i = 0; i < ctrl.requirementRequestProductIds.length; i++) {
                 let element = ctrl.requirementRequestProductIds[i];
                 let findNumberOfProduct = _.filter(ctrl.requirementRequestProductIds, function(object) {
-                    if (object.requestOffer && object.requestOffer.quotedProduct) {
-                        return object.productSellerId != element.productSellerId && object.requestOffer.quotedProduct.id == element.requestOffer.quotedProduct.id && object.requestOffer.offer.requestId == element.requestOffer.offer.requestId;
-                    }
+                    return object.requestProductId == element.requestProductId && object.productSellerId != element.productSellerId;
                 });
-                if (findNumberOfProduct.length > 1) {
+                if (findNumberOfProduct.length) {
                    ctrl.confirmButtonDisabled = true;
                 } 
                 requirement = ctrl.requirementRequestProductIds[i];
