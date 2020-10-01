@@ -21,7 +21,6 @@
                 </tr>
             </thead>
             <tbody>
-
                 <tr ng-repeat="row in $ctrl.data track by $index">
                         <td>
                             <label class="mt-checkbox mt-checkbox-outline">
@@ -40,7 +39,7 @@
                         <td>{{row.product.name}}</td>
                         <td>{{row.contractedQuantity | number:$ctrl.tenantSettings.defaultValues.quantityPrecision}}</td>
                         <td>{{row.availableQuantity | number:$ctrl.tenantSettings.defaultValues.quantityPrecision}}</td>
-                        <td>{{row.product.name}}</td>
+                        <td>{{row.status.name}}</td>
                         <td>{{row.minQuantity | number:$ctrl.tenantSettings.defaultValues.quantityPrecision}} - {{row.maxQuantity | number:$ctrl.tenantSettings.defaultValues.quantityPrecision}}</td>
                 </tr>
             </tbody>
