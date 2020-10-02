@@ -101,8 +101,10 @@ angular.module('shiptech.pages').controller('ReportsController', [
                     $scope.once = false;
                     Factory_Master.getReportsGroups();
                 } else {
-                    toastr.error(response.message);
-                    ctrl.reportsLoading = false;
+                    if (window.location.href.indexOf("group-of-requests") == -1) {
+                        toastr.error(response.message);
+                        ctrl.reportsLoading = false;
+                    }
                 }
             });
         };

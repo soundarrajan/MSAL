@@ -748,7 +748,7 @@ APP_MASTERS.controller('Controller_Master', [
             if(vm.app_id == 'masters' && vm.screen_id == 'strategy') {
                 if ($scope.formValues.mtmType.id != 1) {
                     $scope.formValues.mtmFormulaProducts = _.filter($scope.formValues.mtmFormulaProducts, function(object) {
-                        return object.id;
+                        return object.product && object.formula;
                     });
                 }
             }

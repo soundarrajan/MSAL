@@ -3640,7 +3640,9 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 						console.log(ctrl.computedReportUrl);
 						ctrl.enableReport = true;
 			        } else {
-			            toastr.error('Error occured while getting reports data!')
+                        if (window.location.href.indexOf("group-of-requests") == -1) {
+			                toastr.error('Error occured while getting reports data!');
+                        }
 			        }
 			    }
 			);			
