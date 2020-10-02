@@ -2513,6 +2513,25 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
             }
             if (ctrl.hasSellerRequirements(seller.sellerCounterparty.id, locations, seller)) {
                 removeSellerRequirementsOnLocation(seller, locations);
+                for (let i = 0; i < locations.length; i++) {
+                    theLocation = locations[i];
+                    for (let j = 0; j < theLocation.products.length; j++) {
+                        product = theLocation.products[j];
+                        // create RFQ requirements
+                        productOffer = ctrl.getSellerProductOfferOnLocationRewrite(product, locations, seller.sellerCounterparty.id, seller);
+                        if (productOffer) {
+                            if (productOffer.hasNoQuote) {
+                                $.each(ctrl.selectedNoQuoteItems, (k, v) => {
+                                    if (k == 'nq' + productOffer.id && v) {
+                                        ctrl.listOfNoQuote(seller, theLocation, product, productOffer, true);
+                                    }
+                                   
+                                });
+                                continue;
+                            }
+                        }
+                    }
+                }
                 if (seller.packageType != 'individual') {
                     ctrl.removePackageRequirements(seller, locations, productOffer.packageId);
                 }
