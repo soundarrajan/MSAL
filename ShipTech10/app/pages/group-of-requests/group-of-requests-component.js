@@ -2331,6 +2331,39 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
             }
             return isCorrect;
         };
+
+        ctrl.listOfNoQuote = function(seller, location, product, productOffer, noQuoteCheckboxes) {
+            if (!ctrl.requirementRequestProductIdsNoQuote) {
+                ctrl.requirementRequestProductIdsNoQuote = [];
+            }
+            let findElement = _.find(ctrl.requirementRequestProductIdsNoQuote, function(object) {
+                return object.requestProductId == product.id && object.productSellerId == seller.sellerCounterparty.id && object.requestOffer == productOffer;
+            });
+            if (!findElement) {
+                ctrl.requirementRequestProductIdsNoQuote.push({
+                    requestProductId: product.id,
+                    productStatus: product.productStatus,
+                    requestOfferId: productOffer !== null ? productOffer.id : null,
+                    productSellerId: seller.sellerCounterparty.id,
+                    requestOffer: productOffer,
+                    randUniquePkg: seller.randUniquePkg
+                });
+            } else if (findElement) {
+                ctrl.requirementRequestProductIdsNoQuote = _.filter(ctrl.requirementRequestProductIdsNoQuote, function(object) {
+                    return !(object.requestProductId == product.id && object.productSellerId == seller.sellerCounterparty.id && object.requestOffer == productOffer);
+                });
+            }
+            if (noQuoteCheckboxes) {
+                 ctrl.requirementRequestProductIdsNoQuote.push({
+                    requestProductId: product.id,
+                    productStatus: product.productStatus,
+                    requestOfferId: productOffer !== null ? productOffer.id : null,
+                    productSellerId: seller.sellerCounterparty.id,
+                    requestOffer: productOffer,
+                    randUniquePkg: seller.randUniquePkg
+                });
+            }
+        }
         ctrl.requirementsAreCorrectForConfirm = function() {
             let requirement;
             let isCorrect = true;
@@ -2347,6 +2380,12 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                 if (findNumberOfProduct.length) {
                    ctrl.confirmButtonDisabled = true;
                 } 
+                let findNumberOfProductNoQuote = _.filter(ctrl.requirementRequestProductIdsNoQuote, function(object) {
+                    return object.requestProductId == element.requestProductId && object.productSellerId != element.productSellerId;
+                });
+                if (findNumberOfProductNoQuote.length) {
+                   ctrl.confirmButtonDisabled = true;
+                }
                 requirement = ctrl.requirementRequestProductIds[i];
                 if (typeof requirement.requestOfferId == 'undefined' || requirement.requestOfferId === null) {
                     isCorrect = false;
@@ -2433,6 +2472,15 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
 			            console.log(ctrl.selectedNoQuoteItems);
 			            console.log(newSelectedNoQuoteItems);
 		            	ctrl.selectedNoQuoteItems = newSelectedNoQuoteItems;
+                        $.each(ctrl.selectedNoQuoteItems, (k, v) => {
+                            if (!v) {
+                                let productOfferId = k.substring(2);
+                                console.log(productOfferId);
+                                ctrl.requirementRequestProductIdsNoQuote = _.filter(ctrl.requirementRequestProductIdsNoQuote, function(object) {
+                                    return object.requestOffer.id != productOfferId;
+                                });
+                            }      
+                        });
 			            $scope.$apply();
 			            console.log(ctrl.selectedNoQuoteItems);
 		            });
@@ -2507,6 +2555,12 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                         }
                         if (productOffer) {
                             if (productOffer.hasNoQuote) {
+                                $.each(ctrl.selectedNoQuoteItems, (k, v) => {
+                                    if (k == 'nq' + productOffer.id && v) {
+                                        ctrl.listOfNoQuote(seller, theLocation, product, productOffer, true);
+                                    }
+                                   
+                                });
                                 continue;
                             }
                         }

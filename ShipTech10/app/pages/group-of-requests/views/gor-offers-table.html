@@ -796,7 +796,7 @@
                                     <span ng-show="!productOffer.id || seller.isCloned" >-</span>
                                     <span ng-if="productOffer.id && !seller.isCloned" style="display: flex; justify-content: space-between; align-items: center;">
                                       <label style="margin-left: 5px;" class="mt-checkbox mt-checkbox-outline pull-left" ng-show="productOffer.hasNoQuote" style="">
-                                        <input type="checkbox" ng-disabled="!productAvailable" class="checkSlr" product-offer-id="{{productOffer.id}}" has-no-quote="{{productOffer.hasNoQuote}}" ng-model="$ctrl.selectedNoQuoteItems['nq'+productOffer.id]">
+                                        <input type="checkbox" ng-disabled="!productAvailable" class="checkSlr" product-offer-id="{{productOffer.id}}" has-no-quote="{{productOffer.hasNoQuote}}" ng-model="$ctrl.selectedNoQuoteItems['nq'+productOffer.id]" ng-change="$ctrl.listOfNoQuote(seller, location, product, productOffer)">
                                         <span style="height: 23px;width: 23px; margin-top: -4px;"></span>
                                       </label>
                                         <span style="display: none" ng-if="!productOffer.price">
