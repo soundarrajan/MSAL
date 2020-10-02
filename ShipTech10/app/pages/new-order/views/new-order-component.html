@@ -1204,6 +1204,9 @@
                                 </td>
                                 <td ng-if="$ctrl.productColumns.minQuantity.visible"
                                     style="max-width: 250px;min-width: 150px">
+                                    <span class="hide" ng-if="$ctrl.captureConfirmedQuantity.name == 'Offer' && !product.id">
+                                        {{ product.minQuantity = product.confirmedQuantity }}
+                                    </span>
                                     <div class="input-group">
                                         <input class="form-control"
                                                format="number:{{ $ctrl.numberPrecision.quantityPrecision }}"
@@ -1232,6 +1235,9 @@
                                 </td>
                                 <td ng-if="$ctrl.productColumns.maxQuantity.visible"
                                     style="max-width: 250px;min-width: 150px">
+                                    <span class="hide" ng-if="$ctrl.captureConfirmedQuantity.name == 'Offer' && !product.id">
+                                        {{ product.maxQuantity = product.confirmedQuantity }}
+                                    </span>
                                     <div class="input-group">
                                         <input class="form-control"
                                                format="number:{{ $ctrl.numberPrecision.quantityPrecision }}"
