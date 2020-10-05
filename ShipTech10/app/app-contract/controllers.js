@@ -118,7 +118,7 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
     	$('.app_contracts_screen_contract').addClass('disableAll');
         var elements = $("input");
         for (let i = 0; i < elements.length; i++) {
-            if (!$(elements[i]).parent().hasClass("conversion-table")) {
+            if (!$(elements[i]).parent().hasClass("conversion-table") && $(elements[i]).prop('id') != 'effectiveFrom_dateinput') {
                 $(elements[i]).attr('disabled', 'disabled');
             }
         }
