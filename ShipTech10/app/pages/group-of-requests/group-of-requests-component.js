@@ -7327,7 +7327,9 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
 
         ctrl.getWidth = function(element) {
             $(element).css('opacity', '0');
-            $('#negotiation-table-fixed-container').css('overflow', 'initial');
+            if (!ctrl.allExpanded) {
+                $('#negotiation-table-fixed-container').css('overflow', 'initial');
+            }
             setTimeout(() => {
                 let elementWidth = $(element).width();
                 if (elementWidth) {
