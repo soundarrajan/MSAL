@@ -15,7 +15,8 @@
     </label>
     <div class="form_input form_input_{{ field.Name }}" ng-class="!field.Label ? 'no-label' : ''">
        <span ng-if="tenantFormatPrecision"  class="form-control "  ng-bind="formValues.{{field.Unique_ID}} | number:tenantFormatPrecision" style="background: #eeeeee;" ></span>
-	    <span ng-if="!tenantFormatPrecision"  class="form-control "  ng-bind="formValues.{{field.Unique_ID}}" style="background: #eeeeee;" ></span>
+	   <span  ng-if="!tenantFormatPrecision && field.Unique_ID == 'orderDetails.vesselName'"  class="form-control "  ng-bind="formValues.{{field.Unique_ID}}" style="background: #eeeeee;" tooltip data-original-title="{{formValues.orderDetails.vesselName}}"></span>
+       <span   ng-if="!tenantFormatPrecision && field.Unique_ID != 'orderDetails.vesselName'"  class="form-control "  ng-bind="formValues.{{field.Unique_ID}}" style="background: #eeeeee;" ></span>
     </div>
 
 </div>
