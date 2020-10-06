@@ -15,7 +15,7 @@
                 id="contract_select">
             <thead>
                 <tr>
-                    <th id="generatedThId103" ng-repeat="column in $ctrl.ui.contracts.columns">
+                    <th ng-if="column.caption != 'PAGES.SELECT_CONTRACT.ADD_COST'" id="generatedThId103" ng-repeat="column in $ctrl.ui.contracts.columns">
                         {{column.caption | translate}}
                     </th>
                 </tr>
@@ -33,7 +33,6 @@
                         <td><span ng-controller="Controller_Master as CM"> {{CM.formatDateTime(row.validTo , null, 'default')}}</span></td>
                         <td>{{row.fixedPrice | number:$ctrl.tenantSettings.defaultValues.pricePrecision}}</td>
                         <td>{{row.formula}}</td>
-                        <td>{{}}</td>
                         <td>{{row.seller.name}}</td>
                         <td>{{row.location.name}}</td>
                         <td>{{row.product.name}}</td>
