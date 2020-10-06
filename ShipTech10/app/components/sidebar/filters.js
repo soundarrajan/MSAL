@@ -385,6 +385,9 @@ angular.module('shiptech.components').controller('FiltersController', [
             if (ctrl.saveFilterActionEvent) {
                 return;
             }
+            if ($state.current.name == 'default.dashboard-table') {
+                data.filters = data.filters.replace('VoyageDetail_Request_Id', '(CASE WHEN VoyageDetail_Request_Id = 0 THEN NULL ELSE VoyageDetail_Request_Id END)');
+            }
             $scope.globalFilters = [];
             // if new configuration, return
             if (!data) {
@@ -428,7 +431,11 @@ angular.module('shiptech.components').controller('FiltersController', [
                     filterOperator: val.filterOperator,
                     value: []
                 };
-
+                if ($state.current.name == 'default.dashboard-table') {
+                    if (val.columnValue == 'VoyageDetail_Request_Id') {
+                        val.columnValue = '(CASE WHEN VoyageDetail_Request_Id = 0 THEN NULL ELSE VoyageDetail_Request_Id END)';
+                    }
+                }
                 // check in current columns
                 $.each($scope.currentColumns, (key2, val2) => {
                     if (val2.columnValue == val.columnValue) {
