@@ -1,7 +1,7 @@
-﻿commit df2bf2aa32b2909594d43989a42014a2da2a560e
+﻿commit 33fb9cc0ead627bf2b2e955ba689dc59d1570b0a
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Wed Oct 7 13:40:03 2020 +0300
+Date:   Wed Oct 7 14:11:39 2020 +0300
 
-    Added 1.1.6 version of email template editor
+    Added 1.1.7 version of email template editor
 
 branch: master
