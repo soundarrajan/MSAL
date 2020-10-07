@@ -1,7 +1,7 @@
-﻿commit d8db1b582779a6e0d99d05be17b55a6a1f1bfbfb
+﻿commit 884435a476efa6c906c9d13724a67bf4b28e7b63
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Thu Oct 1 12:52:39 2020 +0300
+Date:   Wed Oct 7 12:51:09 2020 +0300
 
-    Added base64 for the "Shiptech" logo for quantity control
+    Added 1.1.5 of template editor
 
 branch: master
