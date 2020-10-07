@@ -42,53 +42,11 @@
         <div class="top-menu main-menu-icons">
             <ul class="nav navbar-nav pull-right">
 
-                <li ng-if="smartTraderLink" class="dropdown main-menu-item user-menu-item">
+                <li style="padding: 5px 0px 5px 7px;" ng-if="smartTraderLink" class="dropdown main-menu-item user-menu-item">
                     <a href="{{ smartTraderLink }}" target="_blank" class="dropdown-toggle user-menu">
                         <i class="fa fa-location-arrow"></i>
                     </a>
                 </li>
-
-                <!-- BEGIN NOTIFICATION DROPDOWN -->
-                <li ng-controller="Controller_Alerts as CA" ng-init="notificationAction('stats')" class="dropdown dropdown-extended dropdown-notification main-menu-item" id="header_notification_bar">
-	                <span >
-
-		                <div class="unread-notifications" ng-if="liveNotificationsList">
-			                <span >
-							{{liveNotificationsList.length}}
-							</span>
-						 </div>
-	                </span>
-
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                    <i class="icon-bell"></i>
-                    </a>
-                    <ul class="dropdown-menu">
-
-                    	<span ng-controller="Controller_Alerts as CA" ng-init="liveNotifications()">
-                    	</span>
-                        <li>
-	                        <div class="col-sm-12">
-	                            <p>
-	                                {{liveNotificationsList.length}} pending notifications
-	                            <span style="float:right"><a href="/#/alerts/notifications">view all</a></span>
-	                            </p>
-	                        </div>
-	                        <div class="clearfix"></div>
-                        </li>
-                        <li ng-controller="Controller_Alerts as CA">
-	                        <span ng-init="getNotificationsList()"></span>
-                            <ul class="dropdown-menu-list scroller" style="height: 250px; overflow: auto">
-                                <li ng-repeat="(index, notification) in liveNotificationsList">
-                                    <a class="clearfix">
-                                    {{notification.message}}
-                                    <span class="time" ng-bind="formatDate(notification.addedAt)"></span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <!-- END NOTIFICATION DROPDOWN -->
 
                <!-- BEGIN USER LOGIN DROPDOWN -->
                 <li class="dropdown main-menu-item user-menu-item">
@@ -105,6 +63,47 @@
                         </li>
                     </ul>
                 </li>
+                <!-- BEGIN NOTIFICATION DROPDOWN -->
+                <li ng-controller="Controller_Alerts as CA" ng-init="notificationAction('stats')" class="dropdown dropdown-extended dropdown-notification main-menu-item" id="header_notification_bar">
+                    <span >
+
+                        <div class="unread-notifications" ng-if="liveNotificationsList">
+                            <span >
+                            {{liveNotificationsList.length}}
+                            </span>
+                         </div>
+                    </span>
+
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                    <i class="icon-bell"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+
+                        <span ng-controller="Controller_Alerts as CA" ng-init="liveNotifications()">
+                        </span>
+                        <li>
+                            <div class="col-sm-12">
+                                <p>
+                                    {{liveNotificationsList.length}} pending notifications
+                                <span style="float:right"><a href="/#/alerts/notifications">view all</a></span>
+                                </p>
+                            </div>
+                            <div class="clearfix"></div>
+                        </li>
+                        <li ng-controller="Controller_Alerts as CA">
+                            <span ng-init="getNotificationsList()"></span>
+                            <ul class="dropdown-menu-list scroller" style="height: 250px; overflow: auto">
+                                <li ng-repeat="(index, notification) in liveNotificationsList">
+                                    <a class="clearfix">
+                                    {{notification.message}}
+                                    <span class="time" ng-bind="formatDate(notification.addedAt)"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <!-- END NOTIFICATION DROPDOWN -->
                 <li class="dropdown main-menu-item user-menu-item" style="border-left: none;">
                     <a href="{{ userManualLink }}" target="_blank" class="dropdown-toggle user-menu">
                     <i class="fa fa-question"></i>
