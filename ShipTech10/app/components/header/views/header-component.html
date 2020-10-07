@@ -64,10 +64,10 @@
                     </ul>
                 </li>
                 <!-- BEGIN NOTIFICATION DROPDOWN -->
-                <li ng-controller="Controller_Alerts as CA" ng-init="notificationAction('stats')" class="dropdown dropdown-extended dropdown-notification main-menu-item" id="header_notification_bar">
+                <li  style="border-right: 1px solid #364150" ng-controller="Controller_Alerts as CA" ng-init="notificationAction('stats')" class="dropdown dropdown-extended dropdown-notification main-menu-item" id="header_notification_bar">
                     <span >
 
-                        <div class="unread-notifications" ng-if="liveNotificationsList">
+                        <div style="background-color: black !important;" class="unread-notifications" ng-if="liveNotificationsList">
                             <span >
                             {{liveNotificationsList.length}}
                             </span>
