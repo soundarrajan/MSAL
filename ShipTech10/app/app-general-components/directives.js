@@ -2097,12 +2097,12 @@ Number(function() {
         return {
             restrict: 'A',
             require: 'ngModel',
-            // replace : true,
+            replace : true,
             transclude: true,
             // template : '<div><textarea></textarea></div>',
             link: function(scope, element, attrs, ctrl) {
                 let textarea = element.wysihtml5({
-                    html: false,
+                    html: true,
                     image: false
                 });
                 let editor = textarea.data('wysihtml5').editor;
@@ -2121,6 +2121,42 @@ Number(function() {
                         });
                     }
                 };
+                var removeClientSideCodeInjection = function(comments) {
+                    let value = comments, newValue, finalValue = '', removeValue, nr = 0;
+                    let hasClientSideCodeInjection = true;
+                    while(hasClientSideCodeInjection) {
+                        removeValue = '';
+                        if (value.split('<script>')) {
+                            newValue = value.split('<script>');
+                        }
+                        if (newValue[1] && newValue[1].split('</script>')) {
+                            removeValue = '<script>' + newValue[1].split('</script>')[0] + '</script>';
+                        }
+                        value = value.replace(removeValue, '');
+                        if (value.split('<script>').length == 1) {
+                            hasClientSideCodeInjection = false;
+                        }
+                    }
+                    return value;
+                };
+                var removeClientSideCodeInjection1 = function(comments) {
+                    let value = comments, newValue, finalValue = '', removeValue, nr = 0;
+                    let hasClientSideCodeInjection = true;
+                    while(hasClientSideCodeInjection) {
+                        removeValue = '';
+                        if (value.split('&lt;script&gt;')) {
+                            newValue = value.split('&lt;script&gt;');
+                        }
+                        if (newValue[1] && newValue[1].split('&lt;/script&gt;')) {
+                            removeValue = '&lt;script&gt;' + newValue[1].split('&lt;/script&gt;')[0] + '&lt;/script&gt;';
+                        }
+                        value = value.replace(removeValue, '');
+                        if (value.split('&lt;script&gt;').length == 1) {
+                            hasClientSideCodeInjection = false;
+                        }
+                    }
+                    return value;
+                };
                 editor.on('redo:composer', synchronize);
                 editor.on('undo:composer', synchronize);
                 editor.on('paste', synchronize);
@@ -2132,10 +2168,16 @@ Number(function() {
                 // });
                 // handle changes to model from outside the editor
                 scope.$watch(attrs.ngModel, (newValue) => {
+                    if (newValue) {
+                        newValue = removeClientSideCodeInjection(newValue);
+                        newValue = removeClientSideCodeInjection1(newValue);
+                    }
+                    console.log(ctrl);
                     // necessary to prevent thrashing
                     if (newValue && newValue !== editor.getValue()) {
-                        element.html(newValue);
+                        // element.html(newValue);
                         editor.setValue(newValue);
+                        ctrl.$setViewValue(editor.getValue());
                     }
                 });
                 // editor.on('change', function() {
@@ -2144,11 +2186,11 @@ Number(function() {
                 //     });
                 // });
                 // model -> view
-                ctrl.$render = function() {
-                    textarea.html(ctrl.$viewValue);
-                    editor.setValue(ctrl.$viewValue);
-                };
-                ctrl.$render();
+                // ctrl.$render = function() {
+                //     textarea.html(ctrl.$viewValue);
+                //     editor.setValue(ctrl.$viewValue);
+                // };
+                // ctrl.$render();
             }
         };
     });

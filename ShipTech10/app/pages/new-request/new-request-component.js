@@ -751,6 +751,25 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             );
         };
 
+        ctrl.removeClientSideCodeInjection = function(comments) {
+            let value = comments, newValue, finalValue = '', removeValue, nr = 0;
+            let hasClientSideCodeInjection = true;
+            while(hasClientSideCodeInjection) {
+                removeValue = '';
+                if (value.split('<script>')) {
+                    newValue = value.split('<script>');
+                }
+                if (newValue[1] && newValue[1].split('</script>')) {
+                    removeValue = '<script>' + newValue[1].split('</script>')[0] + '</script>';
+                }
+                value = value.replace(removeValue, '');
+                if (value.split('<script>').length == 1) {
+                    hasClientSideCodeInjection = false;
+                }
+            }
+            return value;
+        };
+
         ctrl.validateMinMaxQuantity = function(min, max) {
             if(typeof min == 'string') {
                 min = parseFloat(min);

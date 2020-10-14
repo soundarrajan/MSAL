@@ -3471,6 +3471,28 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
             $rootScope.overrideCloseNavigation = false;
         };
 
+        ctrl.removeClientSideCodeInjection = function(comments) {
+            let value = comments, newValue, finalValue = '', removeValue, nr = 0;
+            let hasClientSideCodeInjection = true;
+            if (!comments) {
+                return comments;
+            }
+            while(hasClientSideCodeInjection) {
+                removeValue = '';
+                if (value.split('<script>')) {
+                    newValue = value.split('<script>');
+                }
+                if (newValue[1] && newValue[1].split('</script>')) {
+                    removeValue = '<script>' + newValue[1].split('</script>')[0] + '</script>';
+                }
+                value = value.replace(removeValue, '');
+                if (value.split('<script>').length == 1) {
+                    hasClientSideCodeInjection = false;
+                }
+            }
+            return value;
+        };
+
         ctrl.saveComments = function(internalComments, externalComments, fromDate, event) {
             if (ctrl.quoteByDateFrom == '0000-00-00T00:00+00:00' || !$('#quoteByDateFrom_dateinput').hasClass('focusedOut') && !ctrl.quoteByDateFrom) {
                 if (!event) {

@@ -1034,7 +1034,8 @@
                                     </label>
                                     <div class="form-group-sm00">
                                         <div class="input-group col-md-10">
-                                            <textarea rows="5" class="form-control" name="{{ $ctrl.footerSectionFields.Comments.name }}" id="id_{{ $ctrl.footerSectionFields.Comments.name }}" ng-model="$ctrl.request.footerSection.comments" ng-disabled="$ctrl.disableAllFields"></textarea>
+                                            <textarea rows="5" class="form-control" name="{{ $ctrl.footerSectionFields.Comments.name }}" id="id_{{ $ctrl.footerSectionFields.Comments.name }}" ng-model="$ctrl.request.footerSection.comments" ng-disabled="$ctrl.disableAllFields"
+                                            ng-blur="$ctrl.request.footerSection.comments = $ctrl.removeClientSideCodeInjection($ctrl.request.footerSection.comments)" ></textarea>
                                         </div>
                                     </div>
                                 </div>
