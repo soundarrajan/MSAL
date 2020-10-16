@@ -21,7 +21,20 @@ angular
         function($rootScope, adalService, $http, $q, $window, $interval) {
             // angular.module("shiptech").value("$cacheDefaultFilterConfigurations", {});
             // angular.module("shiptech").value("$cacheFilterConfigurations", {});
+            $(document).on('click',  function (event) {
+                if ($(event.target).parents('.st-main-content-menu').length && ($(event.target).hasClass('btn') || $(event.target).hasClass('ladda-label'))) {
+                    window.actionLevel = event.target.outerText;
+                    if (event.target.outerText == 'Save') {
+                        let length = window.location.href.split('/#/')[1].split('/').length - 1;
+                        let id = parseFloat(window.location.href.split('/#/')[1].split('/')[length]);
+                        if (!isNaN(id)) {
+                            window.actionLevel = 'Update';
+                        } 
+                    }
+                }
+                console.log(event.target);
 
+            });
             $rootScope.$on('$routeChangeStart', () => {
             });
             $rootScope.$on('$locationChangeStart', (event, next, current) => {
@@ -579,6 +592,8 @@ angular
                     );
             }
             */
+
+            
             this.settings = {
                 layoutPath: 'assets/layouts/layout',
                 layout: {

@@ -1,27 +1,27 @@
 angular.module('shiptech').service('screenLoader', [
     function() {
         function showLoader() {
-        	return;
-        	// localStorage.setItem('lastOpenLoader', new Date().getTime());
+            return;
+            // localStorage.setItem('lastOpenLoader', new Date().getTime());
             // $('.screen-loader').show();
         }
 
         function hideLoader() {
-        	return;
+            return;
             // $('.screen-loader').hide();
         }
 
         // clearInterval(loaderTiming);
         //  loaderTiming = setInterval(function(){
-        //  	if (new Date().getTime() - localStorage.getItem('lastOpenLoader') > 6000) {
-        //  		hideLoader();
-        //  		// localStorage.removeItem('lastOpenLoader');
-	    		// // clearInterval(loaderTiming);
-        //  	}
+        //      if (new Date().getTime() - localStorage.getItem('lastOpenLoader') > 6000) {
+        //          hideLoader();
+        //          // localStorage.removeItem('lastOpenLoader');
+                // // clearInterval(loaderTiming);
+        //      }
         //  },1000)
 
         function isLoading() {
-        	localStorage.setItem('lastOpenLoader', new Date().getTime());
+            localStorage.setItem('lastOpenLoader', new Date().getTime());
             $('.screen-loader').show();
         }
 
@@ -42,7 +42,7 @@ angular.module('shiptech').service('screenLoader', [
 angular.module('shiptech').config([
     '$httpProvider',
     function($httpProvider) {
-    	let routeExceptions = [
+        let routeExceptions = [
             'uib/template/typeahead/typeahead-match.html',
             'uib/template/typeahead/typeahead-popup.html',
             'app-general-components/views/columnFiltersPopover.html',
@@ -64,7 +64,7 @@ angular.module('shiptech').config([
             'api/procurement/request/getQuantityAndStrategy',
             'api/infrastructure/reports/getOperationalReportParameters',
             'api/claims/getQuantityShortage'
-    	];
+        ];
         $httpProvider.interceptors.push([
             '$q'/* , 'applicationInsightsService'*/, '$log', 'appInsightsInstance', '$rootScope',
             function($q/* , applicationInsightsService*/, $log, appInsightsInstance, $rootScope) {
@@ -136,34 +136,46 @@ angular.module('shiptech').config([
                             request.headers['x-ms-request-id'] = request.trackAjaxTelemetryId;
                         }
 
-                    	var routeCall = request.url;
+                        var routeCall = request.url;
 
-                    	if (request.url.indexOf('/api/') != -1) {
-	                    	routeCall = `api/${ request.url.split('/api/')[1]}`;
-                    	}
+                        if (request.url.indexOf('/api/') != -1) {
+                            routeCall = `api/${ request.url.split('/api/')[1]}`;
+                        }
 
 
-                    	if (routeCall.indexOf('invoice/list') != -1) {
-                    		// debugger;
-                    	}
-                    	if (routeExceptions.indexOf(routeCall) == -1) {
+                        if (routeCall.indexOf('invoice/list') != -1) {
+                            // debugger;
+                        }
+                        if (routeExceptions.indexOf(routeCall) == -1) {
 
-                    		/* APP INSIGHTS LOGGER Start Timer*/
-	                    	if (!loaderIsOpen()) {
-	                    		window.firstApiCallStartTime = Date.now();
-	                			console.log('First Start : ==============: ', window.firstApiCallStartTime);
-	                    	}
+                            /* APP INSIGHTS LOGGER Start Timer*/
+                            if (!loaderIsOpen()) {
+                                window.firstApiCallStartTime = Date.now();
+                                console.log('FIRST API CALL START TIME!!!');
+                                console.log('First Start : ==============: ', window.firstApiCallStartTime);
+                                $rootScope.pageViewTelemetryId = Microsoft.ApplicationInsights.Util.generateW3CId();
+                                if (appInsightsInstance) {
+                                    appInsightsInstance.trackPageView({
+                                        id: $rootScope.pageViewTelemetryId,
+                                        name: window.actionLevel ? window.actionLevel + ' ' + window.location.href : window.location.href,
+                                        properties: {
+                                            tenantUrl: window.location.origin
+                                        }
+                                    });
+                                }
+                                appInsightsInstance.startTrackEvent(window.actionLevel ? window.actionLevel + ' ' + window.location.href : window.location.href);
+                            }
 
-                    		/* END APP INSIGHTS LOGGER Start Timer*/
+                            /* END APP INSIGHTS LOGGER Start Timer*/
 
-	                    	$('.screen-loader').fadeIn(200);
-	                    	$('clc-table-list tbody').css('transition', '0.3s');
-	                    	$('clc-table-list tbody').css('opacity', 0);
-	                    	if (typeof window.openedScreenLoaders == 'undefined') {
-	                    		window.openedScreenLoaders = 0;
-	                    	}
-	                    	window.openedScreenLoaders = window.openedScreenLoaders + 1;
-                    	}
+                            $('.screen-loader').fadeIn(200);
+                            $('clc-table-list tbody').css('transition', '0.3s');
+                            $('clc-table-list tbody').css('opacity', 0);
+                            if (typeof window.openedScreenLoaders == 'undefined') {
+                                window.openedScreenLoaders = 0;
+                            }
+                            window.openedScreenLoaders = window.openedScreenLoaders + 1;
+                        }
                         // applicationInsightsService.trackMetric('Requests in que on request', window.openedScreenLoaders, config);
                         return request;
                     },
@@ -198,125 +210,131 @@ angular.module('shiptech').config([
 
                         var routeCall = config.config.url;
 
-                    	if (config.config.url.indexOf('/api/') != -1) {
-	                    	routeCall = `api/${ config.config.url.split('/api/')[1]}`;
-                    	}
+                        if (config.config.url.indexOf('/api/') != -1) {
+                            routeCall = `api/${ config.config.url.split('/api/')[1]}`;
+                        }
                         if (routeExceptions.indexOf(routeCall) == -1) {
-	                        /* APP INSIGHTS LOGGER*/
-	                        if (typeof window.intervalLoaderWatch == 'undefined' || !window.intervalLoaderWatch) {
-	                        	window.intervalLoaderWatch = setInterval(() => {
-	                        		if (!loaderIsOpen()) {
-	                        			console.log('Last End: ==============: ', Date.now() - window.firstApiCallStartTime);
+                            /* APP INSIGHTS LOGGER*/
+                            if (typeof window.intervalLoaderWatch == 'undefined' || !window.intervalLoaderWatch) {
+                                window.intervalLoaderWatch = setInterval(() => {
+                                    if (!loaderIsOpen()) {
+                                        console.log(window.actionLevel);
+                                        console.log("TIME AT ACTION LEVEL!")
+                                        console.log('Last End: ==============: ', Date.now() - window.firstApiCallStartTime);
                                         if (appInsightsInstance) {
-                                            appInsightsInstance.trackMetric({ name: 'Page data loading duration', average: Date.now() - window.firstApiCallStartTime }, window.location);
+                                            appInsightsInstance.trackMetric({ name:  window.actionLevel ? window.actionLevel + ' ' + window.location.href : window.location.href, average: Date.now() - window.firstApiCallStartTime }, window.location);
+                                            appInsightsInstance.stopTrackEvent(window.actionLevel ? window.actionLevel + ' ' + window.location.href : window.location.href, { type: 'PAGE LOAD TIME' });
+                                            appInsightsInstance.trackPageView();
                                         }
-			                    		delete window.firstApiCallStartTime;
-	                        			clearInterval(window.intervalLoaderWatch);
-	                        			window.intervalLoaderWatch = false;
-	                        		}
-	                        	}, 50);
-	                        }
-	                    	if (!loaderIsOpen()) {
-	                			clearInterval(window.intervalLoaderWatch);
-	                			window.intervalLoaderWatch = false;
-	                    	}
+                                        delete window.firstApiCallStartTime;
+                                        delete window.actionLevel;
+                                        clearInterval(window.intervalLoaderWatch);
+                                        window.intervalLoaderWatch = false;
+                                    }
+                                }, 50);
+                            }
+                            if (!loaderIsOpen()) {
+                                clearInterval(window.intervalLoaderWatch);
+                                window.intervalLoaderWatch = false;
+                                delete window.actionLevel;
+                            }
 
-	                        /* END APP INSIGHTS LOGGER*/
+                            /* END APP INSIGHTS LOGGER*/
 
 
-	                    	window.openedScreenLoaders = window.openedScreenLoaders - 1;
-	                    	setTimeout(() => {
-		                    	if (window.openedScreenLoaders <= 0) {
-			                    	$('.screen-loader').fadeOut(200);
+                            window.openedScreenLoaders = window.openedScreenLoaders - 1;
+                            setTimeout(() => {
+                                if (window.openedScreenLoaders <= 0) {
+                                    $('.screen-loader').fadeOut(200);
                                     $('clc-table-list tbody').css('opacity', 1);
                                 }
-	                    	}, 50);
-                    	}
+                            }, 50);
+                        }
                         return config;
                     },
                     responseError: function name(config) {
-                    	var routeCall = config.config.url;
-                    	if (config.config.url.indexOf('/api/') != -1) {
-	                    	routeCall = `api/${ config.config.url.split('/api/')[1]}`;
-                    	}
-                    	if (routeExceptions.indexOf(routeCall) == -1) {
-	                    	window.openedScreenLoaders = window.openedScreenLoaders - 1;
+                        var routeCall = config.config.url;
+                        if (config.config.url.indexOf('/api/') != -1) {
+                            routeCall = `api/${ config.config.url.split('/api/')[1]}`;
+                        }
+                        if (routeExceptions.indexOf(routeCall) == -1) {
+                            window.openedScreenLoaders = window.openedScreenLoaders - 1;
                             var errorText;
-                    		if (config.data.ErrorMessage && config.status != 200) {
-                    			errorText = config.data.ErrorMessage;
-                    			if (config.data.reference) {
-	                    			errorText = `${errorText } - ${ config.data.reference}`;
-                    			}
-                    			if (config.data.Reference) {
-	                    			errorText = `${errorText } - ${ config.data.Reference}`;
-                    			}
-                    			toastr.error(errorText);
-                    		} else if (config.data.message && config.status != 200) {
-                    			errorText = config.data.message;
-                    			if (config.data.reference) {
-	                    			errorText = `${errorText } - ${ config.data.reference}`;
-                    			}
-                    			if (config.data.Reference) {
-	                    			errorText = `${errorText } - ${ config.data.Reference}`;
-                    			}
-                    			toastr.error(errorText);
-                    		} else if (config.data.errorMessage && config.status != 200) {
-                    			errorText = config.data.errorMessage;
-                    			if (config.data.reference) {
-	                    			errorText = `${errorText } - ${ config.data.reference}`;
-                    			}
-                    			if (config.data.Reference) {
-	                    			errorText = `${errorText } - ${ config.data.Reference}`;
-                    			}
-                    			toastr.error(errorText);
-                    		} else if (config.status == '401') {
+                            if (config.data.ErrorMessage && config.status != 200) {
+                                errorText = config.data.ErrorMessage;
+                                if (config.data.reference) {
+                                    errorText = `${errorText } - ${ config.data.reference}`;
+                                }
+                                if (config.data.Reference) {
+                                    errorText = `${errorText } - ${ config.data.Reference}`;
+                                }
+                                toastr.error(errorText);
+                            } else if (config.data.message && config.status != 200) {
+                                errorText = config.data.message;
+                                if (config.data.reference) {
+                                    errorText = `${errorText } - ${ config.data.reference}`;
+                                }
+                                if (config.data.Reference) {
+                                    errorText = `${errorText } - ${ config.data.Reference}`;
+                                }
+                                toastr.error(errorText);
+                            } else if (config.data.errorMessage && config.status != 200) {
+                                errorText = config.data.errorMessage;
+                                if (config.data.reference) {
+                                    errorText = `${errorText } - ${ config.data.reference}`;
+                                }
+                                if (config.data.Reference) {
+                                    errorText = `${errorText } - ${ config.data.Reference}`;
+                                }
+                                toastr.error(errorText);
+                            } else if (config.status == '401') {
                                     if (routeCall == "api/procurement/request/isAuthorizedForReportsTab" || routeCall == "api/procurement/rfq/isAuthorizedForReportsTab") {
                                         return;
                                     }
-                    				toastr.error('You do not have authorization to perform this action.');
-                    			} else {
-	                    			toastr.error('An error has occured');
-                    			}
+                                    toastr.error('You do not have authorization to perform this action.');
+                                } else {
+                                    toastr.error('An error has occured');
+                                }
 
 
-	                        /* APP INSIGHTS LOGGER*/
-	                        if (typeof window.intervalLoaderWatch == 'undefined' || !window.intervalLoaderWatch) {
-	                        	window.intervalLoaderWatch = setInterval(() => {
-	                        		if (!loaderIsOpen()) {
-	                        			console.log('Last End on Error: ==============: ', Date.now() - window.firstApiCallStartTime);
+                            /* APP INSIGHTS LOGGER*/
+                            if (typeof window.intervalLoaderWatch == 'undefined' || !window.intervalLoaderWatch) {
+                                window.intervalLoaderWatch = setInterval(() => {
+                                    if (!loaderIsOpen()) {
+                                        console.log('Last End on Error: ==============: ', Date.now() - window.firstApiCallStartTime);
                                         if (appInsightsInstance) {
                                             appInsightsInstance.trackMetric({ name: 'Page data loading duration', average: Date.now() - window.firstApiCallStartTime }, window.location);
                                         }
-			                    		delete window.firstApiCallStartTime;
-	                        			clearInterval(window.intervalLoaderWatch);
-	                        			window.intervalLoaderWatch = false;
-	                        		}
-	                        	}, 50);
-	                        }
-	                    	if (!loaderIsOpen()) {
-	                			clearInterval(window.intervalLoaderWatch);
-	                			window.intervalLoaderWatch = false;
-	                    	}
+                                        delete window.firstApiCallStartTime;
+                                        clearInterval(window.intervalLoaderWatch);
+                                        window.intervalLoaderWatch = false;
+                                    }
+                                }, 50);
+                            }
+                            if (!loaderIsOpen()) {
+                                clearInterval(window.intervalLoaderWatch);
+                                window.intervalLoaderWatch = false;
+                            }
 
-	                        /* END APP INSIGHTS LOGGER*/
+                            /* END APP INSIGHTS LOGGER*/
 
-	                    	if (window.openedScreenLoaders <= 0) {
+                            if (window.openedScreenLoaders <= 0) {
                                 setTimeout(() => {
-			                    	if (window.openedScreenLoaders <= 0) {
+                                    if (window.openedScreenLoaders <= 0) {
                                         $('.screen-loader').fadeOut(200);
                                         $('clc-table-list tbody').css('opacity', 1);
                                     }
                                     console.warn(`LOADER CLOSED ON ERROR: ${ window.location.href}`);
                                 }, 50);
-	                    	}
+                            }
 
-	                    	let guidReference = config.data.Reference || config.data.reference;
-	                    	$('#autoTestingGUIDerror').text(guidReference);
+                            let guidReference = config.data.Reference || config.data.reference;
+                            $('#autoTestingGUIDerror').text(guidReference);
 
-		                    // 	console.log("response timeout:" + window.openedScreenLoaders);
-                    	}
-                    	// console.log("***** response:" + window.openedScreenLoaders);
-                    	// //console.log(config);
+                            //  console.log("response timeout:" + window.openedScreenLoaders);
+                        }
+                        // console.log("***** response:" + window.openedScreenLoaders);
+                        // //console.log(config);
 
                         if (appInsightsInstance) {
                             appInsightsInstance.appInsights.trackException({ message: 'Response error' }, config);
