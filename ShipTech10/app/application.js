@@ -32,7 +32,6 @@ angular
                         } 
                     }
                 }
-                console.log(event.target);
 
             });
             $rootScope.$on('$routeChangeStart', () => {
