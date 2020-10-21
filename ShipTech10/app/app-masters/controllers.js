@@ -127,6 +127,21 @@ APP_MASTERS.controller('Controller_Master', [
         $scope.changedFields = 0;
         $scope.submitedAction = false;
         $scope.reloadPage = false;
+
+        $(document).on('click',  function (event) {
+            if ($(event.target).parents('.st-main-content-menu').length && ($(event.target).hasClass('btn') || $(event.target).hasClass('ladda-label'))) {
+                window.actionLevel = event.target.outerText;
+                if (event.target.outerText == 'Save') {
+                    let length = window.location.href.split('/#/')[1].split('/').length - 1;
+                    let id = parseFloat(window.location.href.split('/#/')[1].split('/')[length]);
+                    if (!isNaN(id)) {
+                        window.actionLevel = 'Update';
+                    } 
+                }
+            }
+
+
+        });
         $scope.submitedAcc = function(act) {
             $timeout(() => {
                 if (act != 'save_master_changes()') {

@@ -223,7 +223,7 @@ angular.module('shiptech').config([
                                         console.log('Last End: ==============: ', Date.now() - window.firstApiCallStartTime);
                                         if (appInsightsInstance) {
                                             appInsightsInstance.trackMetric({ name:  window.actionLevel ? window.actionLevel + ' ' + window.location.href : window.location.href, average: Date.now() - window.firstApiCallStartTime }, window.location);
-                                            appInsightsInstance.stopTrackEvent(window.actionLevel ? window.actionLevel + ' ' + window.location.href : window.location.href, { type: 'PAGE LOAD TIME' });
+                                            appInsightsInstance.stopTrackEvent(window.actionLevel ? window.actionLevel + ' ' + window.location.href : window.location.href, { type: window.actionLevel ? 'Action Level' : 'PAGE LOAD TIME' });
                                             appInsightsInstance.trackPageView();
                                         }
                                         delete window.firstApiCallStartTime;
