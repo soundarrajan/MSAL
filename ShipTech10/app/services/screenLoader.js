@@ -337,6 +337,7 @@ angular.module('shiptech').config([
                         // //console.log(config);
 
                         if (appInsightsInstance) {
+                            delete window.actionLevel;
                             appInsightsInstance.appInsights.trackException({ message: 'Response error' }, config);
                         }
                         // applicationInsightsService.trackException('Response error', config);
