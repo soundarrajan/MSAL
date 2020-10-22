@@ -14,7 +14,7 @@ export interface IUserSettingsApiService {
   getByKey(request: IUserSettingByKeyRequest): Observable<IUserSettingResponse>;
 
   save(
-    request: IUpsertUserSettingRequest
+    request: IUpsertUserSettingRequest,
   ): Observable<IUpsertUserSettingResponse>;
 
   delete(
