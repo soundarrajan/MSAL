@@ -46,16 +46,9 @@ export class AppComponent {
         event instanceof NavigationError
       ) {
         this.isLoading = false;
-        if (event instanceof NavigationEnd)  {
-          console.log("NAVIGATION END");
-          myMonitoringService.stopTrackEvent(window.location.href);
-          // // myMonitoringService.logMetric(window.location.href,  Date.now() - this.firstApiCallStartTime , window.location);
-         myMonitoringService.logPageView();
-        }
         changeDetector.markForCheck();
       }
       if (event instanceof NavigationStart) {
-        myMonitoringService.startTrackEvent(window.location.href);
         window['strum']('routeChange', event.url);
       }
     });
