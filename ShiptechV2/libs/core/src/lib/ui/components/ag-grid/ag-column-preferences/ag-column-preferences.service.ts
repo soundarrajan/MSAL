@@ -1,6 +1,6 @@
 import { Inject, Injectable, OnDestroy, Optional } from '@angular/core';
 import { GridOptions } from '@ag-grid-community/core';
-import { EMPTY, Observable, Subject } from 'rxjs';
+import { EMPTY, Observable, of, Subject } from 'rxjs';
 import {
   debounceTime,
   filter,
@@ -48,7 +48,7 @@ const GridMonitorEvents = [
   providedIn: 'root'
 })
 export class AgColumnPreferencesService implements OnDestroy {
-  private _savePreferences = new Subject<IGridPreferences>();
+  private _savePreferences = new Subject<any>();
   private _watches: IGridRegistration[] = [];
   private _storage: IPreferenceStorage;
 
@@ -60,19 +60,23 @@ export class AgColumnPreferencesService implements OnDestroy {
 
     // Note: Aligned grids will each try to save it's preferences when a column state changes.
     // Note: We only want to save one of them.
-    this._savePreferences
+    // if ((<any>window).savePreferenceCall) {
+      this._savePreferences
       .pipe(
         groupBy(request => request.gridName),
         mergeMap(group =>
           group.pipe(
             throttleTime(1000),
-            switchMap(request =>
-              this._storage.set(this._storageKey(request.gridName), request)
+            switchMap((request) =>  this._storage.set(this._storageKey(request.gridName), request)
             )
           )
         )
       )
       .subscribe();
+    // } else {
+    //   (<any>window).savePreferenceCall = true;
+    // }
+   
   }
 
   registerWatch(gridName: string, gridOptions: GridOptions): void {

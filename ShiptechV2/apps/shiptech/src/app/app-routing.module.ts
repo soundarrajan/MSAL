@@ -4,6 +4,9 @@ import { AdalGuard } from 'adal-angular-wrapper';
 import { LayoutMainComponent } from '@shiptech/core/ui/layout/main/layout-main.component';
 import { AuthenticationGuard } from '@shiptech/core/guards/authentication.guard';
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { InterceptorService } from './service/interceptor.service';
+import { AuthenticationInterceptor } from '@shiptech/core/interceptors/authentication-http.interceptor.service.';
 
 const routes: Routes = [
   {
@@ -64,7 +67,14 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  providers: [AdalGuard],
+  providers:  [
+    AdalGuard,
+    {
+      provide: HTTP_INTERCEPTORS, 
+      useClass: InterceptorService, 
+      multi: true
+    }
+  ],
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
