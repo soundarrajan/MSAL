@@ -44,6 +44,7 @@ import { knownMastersAutocomplete } from '@shiptech/core/ui/components/master-au
 import { ConfirmationService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { VesselToWatchModel } from '../../../store/report/models/vessel-to-watch.model';
+import { MyMonitoringService } from '../../service/logging.service';
 
 @Component({
   selector: 'shiptech-port-call',
@@ -85,6 +86,8 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
   private _destroy$ = new Subject();
 
   private quantityPrecision: number;
+  
+  private firstApiCallStartTime: any;
 
   constructor(
     private entityStatus: EntityStatusService,
@@ -97,7 +100,8 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
     private toastrService: ToastrService,
     private reconStatusLookups: ReconStatusLookup,
     private tenantSettings: TenantSettingsService,
-    private statusLookup: StatusLookup
+    private statusLookup: StatusLookup,
+    private myMonitoringService: MyMonitoringService
   ) {
     const generalTenantSettings = tenantSettings.getGeneralTenantSettings();
     this.quantityPrecision =
@@ -260,6 +264,15 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
   }
 
   save(): void {
+    (<any>window).qcActions = true;
+    let id = window.location.href.split('report')[1].split('/')[1];
+    let actionLevel = 'Save ';
+    if (parseInt(id)) {
+      actionLevel = 'Update ';
+    }
+    this.firstApiCallStartTime = Date.now();
+    console.log('FIRST API CALL START TIME!!!');
+    console.log(this.firstApiCallStartTime);
     this.reportService.saveReport$().subscribe(reportId => {
       this.toastrService.success('Report saved successfully');
       this.router
@@ -270,12 +283,20 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
           KnownQuantityControlRoutes.ReportDetails
         ])
         .then(() => {
-          this.reportService.loadEventsLog$().subscribe();
+          this.reportService.loadEventsLog$().subscribe(() => {
+            console.log('TIME AT ACTION LEVEL!');
+            console.log(Date.now() - this.firstApiCallStartTime);
+            this.myMonitoringService.logMetric(actionLevel + window.location.href, Date.now() - this.firstApiCallStartTime);
+            delete this.firstApiCallStartTime;
+            delete (<any>window).qcActions;
+          });
         });
     });
   }
 
   verifyVessel(): void {
+    this.firstApiCallStartTime = Date.now();
+    (<any>window).qcActions = true;
     this.reportService.saveReport$().subscribe(reportId => {
       this.router
         .navigate([
@@ -292,21 +313,34 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
             .verifyVesselReports$([
               this.store.selectSnapshot(QcReportState.reportDetailsId)
             ])
-            .subscribe(() =>
-              this.toastrService.success('Report marked for verification.')
+            .subscribe(() => {
+              this.toastrService.success('Report marked for verification.');
+              console.log('TIME AT ACTION LEVEL!');
+              console.log(Date.now() - this.firstApiCallStartTime);
+              this.myMonitoringService.logMetric('Verify ' + window.location.href, Date.now() - this.firstApiCallStartTime);
+              delete this.firstApiCallStartTime;
+              delete (<any>window).qcActions;
+            }
             );
         });
     });
   }
 
   revertVerifyVessel(): void {
+    this.firstApiCallStartTime = Date.now();
+    (<any>window).qcActions = true;
     this.reportService
       .revertVerifyVessel$([
         this.store.selectSnapshot(QcReportState.reportDetailsId)
       ])
-      .subscribe(() =>
-        this.toastrService.success('Verification reverted successfully.')
-      );
+      .subscribe(() => {
+        this.toastrService.success('Verification reverted successfully.');
+        console.log('TIME AT ACTION LEVEL!');
+        console.log(Date.now() - this.firstApiCallStartTime);
+        this.myMonitoringService.logMetric('Revert Verify ' + window.location.href, Date.now() - this.firstApiCallStartTime);
+        delete this.firstApiCallStartTime;
+        delete (<any>window).qcActions;
+      });
   }
 
   raiseClaim(): void {

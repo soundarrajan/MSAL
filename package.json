@@ -107,7 +107,8 @@
     "tslint-to-eslint-config": "^0.5.1",
     "url-parse": "^1.4.7",
     "web-animations-js": "github:angular/web-animations-js#release_pr208",
-    "zone.js": "0.10.2"
+    "zone.js": "0.10.2",
+    "@microsoft/applicationinsights-web": "~2.4.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.900.1",

@@ -114,11 +114,11 @@ export class UserSettingsApiService
 
   @ObservableException()
   set(key: string, value: any): Observable<any> {
-    return this.save({
+    return  this.save({
       key,
       value:
         typeof value === 'string' ? (value as string) : JSON.stringify(value)
-    });
+    });;
   }
 
   // TODO: Remove from here, create a UserSettingService
