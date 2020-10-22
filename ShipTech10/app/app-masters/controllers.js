@@ -129,7 +129,7 @@ APP_MASTERS.controller('Controller_Master', [
         $scope.reloadPage = false;
 
         $(document).on('click',  function (event) {
-            if ($(event.target).parents('.st-main-content-menu').length && ($(event.target).hasClass('btn-outline') || $(event.target).hasClass('ladda-label'))) {
+            if ($(event.target).parents('.st-main-content-menu').length && ($(event.target).hasClass('btn') || $(event.target).hasClass('ladda-label'))) {
                 window.actionLevel = event.target.outerText;
                 if (event.target.outerText == 'Save') {
                     let length = window.location.href.split('/#/')[1].split('/').length - 1;
