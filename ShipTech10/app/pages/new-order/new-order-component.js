@@ -3311,8 +3311,10 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     toastr.info(`Please consider changing any additional cost that is applicable for ${ currentProduct.product.name } before removing the product`);
                 }
                 $.each(ctrl.data.products, (pk, pv) => {
-                    if (pv.uniqueIdUI == product.uniqueIdUI) {
-                        ctrl.data.products.splice(pk, 1);
+                    if (pv) {
+                        if (pv.uniqueIdUI == product.uniqueIdUI) {
+                            ctrl.data.products.splice(pk, 1);
+                        }
                     }
                 });
             }
