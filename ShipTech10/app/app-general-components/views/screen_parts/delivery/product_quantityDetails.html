@@ -214,7 +214,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-4" ng-if="!formValues.temp.hiddenFields.pricingDate">
                        <span ng-init="disabledPricingDate[productIndex] = !CM.isEditable || !formValues.deliveryProducts[productIndex].manualPricingDateOverride || adminConfiguration.procurement.price.pricingDateStopOption.name == 'Order' "></span>
                         <div class="form-group row">
                             <label for="Product_{{ productIndex }}_pricingDate" class="pricing_date_label">
