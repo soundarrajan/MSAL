@@ -22,7 +22,7 @@ export class AppContextModule {
       .subscribe();
   }
 
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders <any> {
     return {
       ngModule: AppContextModule,
       providers: [

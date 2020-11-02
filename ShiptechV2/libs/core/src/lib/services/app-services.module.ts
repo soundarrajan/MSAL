@@ -57,7 +57,7 @@ import { ExportApiServiceMock } from '@shiptech/core/ui/components/export/api/ex
   exports: []
 })
 export class AppServicesModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders <any> {
     return {
       ngModule: AppServicesModule,
       providers: [
