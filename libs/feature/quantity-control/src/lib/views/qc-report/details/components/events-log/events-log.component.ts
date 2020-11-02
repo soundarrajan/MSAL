@@ -62,31 +62,13 @@ export class EventsLogComponent implements OnInit, OnDestroy {
   @HostListener('document:click', ['$event'])
   clickout(event) {
     if(this.eRef.nativeElement.contains(event.target)) {
-      const elements =  document.querySelector<HTMLElement>('#quantityControlEventsLog > div > div.ag-root-wrapper-body.ag-layout-auto-height > div.ag-root.ag-unselectable.ag-layout-auto-height > div.ag-body-horizontal-scroll > div.ag-body-horizontal-scroll-viewport');
-      if (this.gridViewModel.actionsColumn.cellRendererParams.ngTemplate._projectedViews) {
-          if (this.gridViewModel.actionsColumn.cellRendererParams.ngTemplate._projectedViews.length) {
-            let element = document.querySelector<HTMLElement>('#quantityControlEventsLog > .ag-root-wrapper > :not(.ag-theme-balham) + .ag-theme-balham > .ag-menu ');
-            if (element) {
-              element.style.marginTop = this.gridViewModel.actionsColumn.cellRendererParams.ngTemplate._projectedViews.length == 1 ? '-80px' : '-' + (this.gridViewModel.actionsColumn.cellRendererParams.ngTemplate._projectedViews.length * 42 + 30) + 'px';
-            }
-            if (elements && element) {
-              if (parseInt(elements.style.height.split('px')[0])) {
-                let value = parseInt(element.style.marginTop.split('px')[0]) - 20;
-                element.style.marginTop = value + 'px';
-              }
-            }
-          }
-      }
-      if (event.target.innerHTML == 'Reset Filter' || event.target.innerHTML == 'Apply Filter') {
+      if (event.target.innerHTML === 'Reset Filter' || event.target.innerHTML === 'Apply Filter') {
         const test = document.querySelectorAll<HTMLElement>('.ag-menu');
         test[0].style.display = 'none';
       }
      
     }
   }
-
-
-  
 
   ngOnDestroy(): void {
     this._destroy$.next();
