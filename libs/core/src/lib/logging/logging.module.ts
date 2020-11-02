@@ -53,7 +53,7 @@ export function LoggerSettingsFactory(
   ]
 })
 export class LoggingModule {
-  public static forRoot(settings: ILoggerSettings): ModuleWithProviders {
+  public static forRoot(settings: ILoggerSettings): ModuleWithProviders <any> {
     return {
       ngModule: LoggingModule,
       providers: [

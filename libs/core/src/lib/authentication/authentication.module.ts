@@ -12,7 +12,7 @@ export function authContextFactory(): AuthenticationContext {
 
 @NgModule()
 export class AuthenticationModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders <any>{
     return {
       ngModule: AuthenticationModule,
       providers: [
@@ -31,7 +31,7 @@ export class AuthenticationModule {
     };
   }
 
-  static forFeature(): ModuleWithProviders {
+  static forFeature(): ModuleWithProviders <any> {
     return {
       ngModule: AuthenticationModule,
       providers: [
