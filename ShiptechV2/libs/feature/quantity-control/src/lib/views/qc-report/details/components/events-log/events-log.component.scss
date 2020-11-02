@@ -9,8 +9,11 @@
   padding: 0 12px;
 }
 
+#quantityControlEventsLog > div > div.ag-root-wrapper-body.ag-layout-auto-height {
+  min-height: 200px;
+}
+
 #quantityControlEventsLog > .ag-root-wrapper > :not(.ag-theme-balham) + .ag-theme-balham > .ag-menu {
-  position: relative;
+  position: absolute;
   width: 222px;
-  margin-top: -80px;
 }
