@@ -40,10 +40,13 @@
     "@ag-grid-community/angular": "^24.1.0",
     "@ag-grid-enterprise/all-modules": "^22.1.2",
     "@angular-builders/custom-webpack": "^8.4.1",
+    "@angular-devkit/architect": "^0.1002.0",
+    "@angular-devkit/core": "^10.2.0",
+    "@angular-devkit/schematics": "^10.2.0",
     "@angular/animations": "10.2.0",
     "@angular/cdk": "10.2.0",
     "@angular/common": "10.2.0",
-    "@angular/compiler": "10.2.0",
+    "@angular/compiler": "^10.2.0",
     "@angular/core": "10.2.0",
     "@angular/flex-layout": "^9.0.0-beta.29",
     "@angular/forms": "10.2.0",
@@ -66,6 +69,7 @@
     "@ngxs/logger-plugin": "^3.7.0",
     "@ngxs/store": "^3.7.0",
     "@nrwl/angular": "9.0.0",
+    "@schematics/angular": "^10.2.0",
     "@types/chance": "^1.0.8",
     "@types/dateformat": "^3.0.1",
     "@types/jsonpath": "^0.2.0",
@@ -111,10 +115,10 @@
     "zone.js": "0.10.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "0.1002.0",
-    "@angular/cli": "10.2.0",
-    "@angular/compiler-cli": "10.2.0",
-    "@angular/language-service": "10.2.0",
+    "@angular-devkit/build-angular": "^0.1002.0",
+    "@angular/cli": "^10.2.0",
+    "@angular/compiler-cli": "^10.2.0",
+    "@angular/language-service": "^10.2.0",
     "@fortawesome/fontawesome-free": "^5.12.1",
     "@nrwl/cli": "^9.4.4",
     "@nrwl/cypress": "9.0.0",
@@ -143,7 +147,7 @@
     "tsickle": "^0.38.0",
     "tslib": "^1.9.0",
     "tslint": "^6.0.0",
-    "typescript": "4.0.5",
+    "typescript": "^4.0.5",
     "webpack-bundle-analyzer": "^3.6.1"
   }
 }
