@@ -600,7 +600,7 @@ var Cfg = {
                             value = "No";
                         }   
                     }
-                    conditions += concat + ' <div class="filterCondition">' + v.column.columnName + " " + condition + ' <span class="filterVal">' + value + "</span></div>";
+                    conditions += concat + ' <div class="filterCondition">' + v.column.columnName + " " + condition + ' <span class="filterVal">' + _.escape(value) + "</span></div>";
                 }
             });
             var element = "" + '<div class="' + Cfg.class.filters + ' dataTables_info">Filter: ##CONTENT##</div>';
