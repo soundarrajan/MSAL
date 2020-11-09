@@ -498,6 +498,14 @@ var Cfg = {
             return element;
         },
         filters: function() {
+            let gridId = $('.ui-jqgrid.ui-widget.ui-widget-content.ui-corner-all')[0].id.split('_');
+            let columnId = '#';
+            for (let i = 1; i < gridId.length; i++) {
+                columnId += gridId[i] + '_';
+            }
+            columnId += 'isDeleted';
+            let isStatus = $(columnId)[0] ? $(columnId)[0].innerText.indexOf('Status') != -1 : false;
+            let isBlacklisted = $(columnId)[0] ? $(columnId)[0].innerText.indexOf('Blacklisted') != -1 : false;
             var Filters = $(this).jqGrid.Ascensys.columnFiltersData;
             var conditions = "";
             Filters = _.sortBy(Filters, function(item) {
@@ -577,6 +585,15 @@ var Cfg = {
                             value = dates.join(' - ');
                         }
                     }
+                    if (v.column.columnRoute = 'masters/product' && v.column.columnValue == 'CustomNonMandatoryAttribute1') {
+                         v.column.columnName = 'Material';
+                    }
+                    if (window.location.href.indexOf('masters/') != -1 && v.column.columnValue == "IsDeleted" && isStatus) {
+                         v.column.columnName = 'Status';
+                    }
+                    if (window.location.href.indexOf('masters/') != -1 && v.column.columnValue == "IsDeleted" && isBlacklisted) {
+                         v.column.columnName = 'Blacklisted';
+                    }
                     if (v.column.columnType == "Bool" && v.column.columnValue == "IsDeleted") {
                          if (value === "1") {
                             value = "Inactive";
@@ -591,7 +608,7 @@ var Cfg = {
 	                    if (value === "0") {
 	                        value = "No";
 	                    }   
-                    }
+                    } 
                     if (v.column.columnType == "YesNo") {
                         if (value === "1") {
                             value = "Yes";
