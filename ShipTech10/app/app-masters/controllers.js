@@ -1376,6 +1376,13 @@ APP_MASTERS.controller('Controller_Master', [
                         $scope.filterFromData.name = $scope.filterFromData.displayName;
                     }
                 }
+
+                if (vm.app_id == 'masters' && vm.screen_id == 'formula') {
+                    $scope.filterFromData.pricingScheduleOptionSpecificDate.dates = _.filter($scope.filterFromData.pricingScheduleOptionSpecificDate.dates, function(object) {
+                        return (!object.id && !object.isDeleted) || object.id; 
+                    });
+                }
+
                 if (vm.app_id == 'delivery' && vm.screen_id == 'delivery') {
                     $.each($scope.filterFromData.deliveryProducts, (key, value) => {
                         if ($scope.filterFromData.deliveryProducts[key].agreedQuantityAmount == null || $scope.filterFromData.deliveryProducts[key].agreedQuantityAmount == '') {
@@ -3619,7 +3626,7 @@ APP_MASTERS.controller('Controller_Master', [
         vm.softDelete = function(item, key) {
             if (!item[key].id || item[key].id == 0) {
                 if (item.length > 1) {
-                    item.splice(key, 1);
+                    $scope.formValues.pricingScheduleOptionSpecificDate.dates[key].isDeleted = true;
                 } else {
                     item[key] = {};
                 }
