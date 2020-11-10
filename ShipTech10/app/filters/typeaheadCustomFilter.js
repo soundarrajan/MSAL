@@ -27,6 +27,10 @@
 					}
 				}
     		}, ['asc']);
+            console.log(filtered);
+            filtered = _.filter(filtered, function(object) {
+                return typeof(object) !=  "undefined";
+            });
     		console.log(items);
     		console.log(filtered);
     		console.log(searchTerm, objProperty);
