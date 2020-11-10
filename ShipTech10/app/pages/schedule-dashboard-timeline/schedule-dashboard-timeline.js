@@ -1835,17 +1835,11 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             console.log(ctrl);
         });
 
-        $(document).on("mouseover", "div.vis-group", function(event){
-            if ((!$(event.target).hasClass("contextmenu") && !$(event.target).parents('.contextmenu').length) || $(event.target).hasClass("close")) {
-                $(".contextmenu").css("display", "none");
-            }
-        });
 
         /*build hover popover*/
         $(document).on("mouseover", "span[voyage-detail-id]", function(){
 
             console.log("mouseover");
-            $(".contextmenu").css("display", "none");
             var voyageDetailId = $(this).attr("voyage-detail-id");
             if (voyageDetailId) {
                 var html = buildHoverPopoverMarkup(voyageDetailId);
@@ -1858,6 +1852,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     template: '<div class="popover" style="z-index: 9999999" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body timeline-popover-hover">'+html+'</div></div>'
                 }).
                 on('show.bs.popover', function (event) {
+                    $scope.rightClickPopoverData = null;
+                    $scope.$apply();
                     var lengthVoyageStops = getLengthPopoverMarkup(voyageDetailId);
                     if (lengthVoyageStops > 3) {
                         $('.breadcrumbs-container').css('z-index', '0');
