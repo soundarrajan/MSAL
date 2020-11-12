@@ -89,6 +89,7 @@ angular.module('shiptech.pages')
 
                             initializeDateInputs();
                             $rootScope.overrideCloseNavigation = true;
+                            window.scrollTable();
                         });
                     });
                 }).finally(() => {
@@ -296,6 +297,25 @@ angular.module('shiptech.pages')
 
                 return canRevoke;
             };
+
+            window.scrollTable = function() {
+                let left = $('#view_rfq_table').width();
+                let button = $('#view_rfq_table_wrapper .dt-buttons');
+                $(button).css('position', 'absolute');
+                $(button).css('float', 'left');
+                $(button).css('left', left - 30);
+            }
+
+            $(document).on("click", '#view_rfq_table_wrapper .dt-buttons', function() {
+                let bladeWidth = $('.bladeEntity ').width() - 155;
+                $('.dt-button-collection').css('left', bladeWidth);
+            });
+
+            $(document).on("click", '.dt-button-collection  a', function() {
+                window.scrollTable();
+                $('.portlet').click();
+            });
+
 
             // ctrl.parseLists = function(){
             //     if(typeof ctrl.STATUS == 'undefined') ctrl.STATUS = {};
