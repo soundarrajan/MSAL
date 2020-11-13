@@ -42,6 +42,18 @@ angular.module('shiptech.components').controller('FiltersController', [
                     }
                 }
             }
+            let company = _.find(ctrl.scheduleDashboardConfiguration.hiddenFields, function(object) {
+                 return object.option.name == 'Company';
+            });
+            if ($scope.currentList == 'schedule-dashboard-calendar' && company.hidden) {
+                if ($scope.currentColumns) {
+                    for (let i = $scope.currentColumns.length - 1; i >= 0; i--) {
+                        if ($scope.currentColumns[i].columnValue == 'CompanyName') {
+                                $scope.currentColumns.splice(i, 1);
+                        }
+                    }
+                }
+            }
         });
 
         console.log('init');
@@ -623,6 +635,17 @@ angular.module('shiptech.components').controller('FiltersController', [
                                 return object.option.name == 'Vessel Type';
                             });
                             if (vesselType.hidden) {
+                                return;
+                            }                         
+                        }
+                    }
+
+                    if (value.columnRoute  == 'schedule-dashboard-calendar' && value.columnValue == 'CompanyName') {
+                        if (ctrl.scheduleDashboardConfiguration) {
+                            let company = _.find(ctrl.scheduleDashboardConfiguration.hiddenFields, function(object) {
+                                return object.option.name == 'Company';
+                            });
+                            if (company.hidden) {
                                 return;
                             }                         
                         }
