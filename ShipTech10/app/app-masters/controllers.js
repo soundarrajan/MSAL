@@ -1378,9 +1378,11 @@ APP_MASTERS.controller('Controller_Master', [
                 }
 
                 if (vm.app_id == 'masters' && vm.screen_id == 'formula') {
-                    $scope.filterFromData.pricingScheduleOptionSpecificDate.dates = _.filter($scope.filterFromData.pricingScheduleOptionSpecificDate.dates, function(object) {
-                        return (!object.id && !object.isDeleted) || object.id; 
-                    });
+                    if ($scope.filterFromData.pricingScheduleOptionSpecificDate) {
+                        $scope.filterFromData.pricingScheduleOptionSpecificDate.dates = _.filter($scope.filterFromData.pricingScheduleOptionSpecificDate.dates, function(object) {
+                            return (!object.id && !object.isDeleted) || object.id; 
+                        });
+                    }
                 }
 
                 if (vm.app_id == 'delivery' && vm.screen_id == 'delivery') {
