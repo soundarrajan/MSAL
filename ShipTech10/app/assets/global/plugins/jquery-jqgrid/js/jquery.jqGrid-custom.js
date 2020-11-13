@@ -585,7 +585,27 @@ var Cfg = {
                             value = dates.join(' - ');
                         }
                     }
-                    if (v.column.columnRoute = 'masters/product' && v.column.columnValue == 'CustomNonMandatoryAttribute1') {
+                    if (v.column.columnRoute == 'invoices/complete_view') {
+                        if (v.column.columnValue == 'ValidationDate') {
+                            v.column.columnName = 'Validation Date';
+                        }
+                        if (v.column.columnValue == 'BackOfficeComments') {
+                            v.column.columnName = 'Back Office Comments';
+                        }
+                        if (v.column.columnValue == 'ClaimDate') {
+                            v.column.columnName = 'Claim Date';
+                        }
+                        if (v.column.columnValue == 'DebunkerAmount') {
+                            v.column.columnName = 'Debunker Amount';
+                        }
+                        if (v.column.columnValue == 'AccountNumber') {
+                            v.column.columnName = 'Account Number';
+                        }
+                        if (v.column.columnValue == 'ResaleAmount') {
+                            v.column.columnName = 'Resale Amount';
+                        }
+                    }
+                    if (v.column.columnRoute == 'masters/product' && v.column.columnValue == 'CustomNonMandatoryAttribute1') {
                          v.column.columnName = 'Material';
                     }
                     if (window.location.href.indexOf('masters/') != -1 && v.column.columnValue == "IsDeleted" && isStatus) {
