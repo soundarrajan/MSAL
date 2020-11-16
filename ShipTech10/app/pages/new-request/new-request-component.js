@@ -811,100 +811,98 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             }
             ctrl.isSpecGroupIsRequired();
 
-            $timeout(() => {
-                $('form').addClass('submitted');
-                ctrl.saved = true;
-                let forms_validation = validateForms();
-                if (forms_validation !== null) {
-                    toastr.error(VALIDATION_MESSAGES.INVALID_FIELDS + forms_validation.join(', '));
-                    // ctrl.initMask(); // reinit mask for date inputs
-                }
-                let invalidDates = false;
-                $.each(ctrl.requestDateFieldsErrors, (k, v) => {
-                    if (v) {
-                        invalidDates = true;
-                        toastr.error(v);
-                    }
-                });
-
-                /*
-                var invalidDates = [];
-                $('.new-date-picker').each(function(key, value) {
-                    if ($(this).hasClass('invalid')) {
-                        invalidDates.push($(this).attr('name').split('_')[1].toUpperCase());
-                    }
-                });
-                if (invalidDates.length > 0) {
-                    toastr.error('Please check the date fields: ' + invalidDates.join(', '));
-                    return false;
-                }
-                */
-                if (forms_validation !== null || invalidDates) {
-                    return;
-                }
-                ctrl.buttonsDisabled = true;
-                // remove empty products
-                for (let i = ctrl.request.locations.length - 1; i >= 0; i--) {
-                    if (ctrl.request.locations[i].isDeleted) {
-                        ctrl.request.locations.splice(i, 1);
-                    } else {
-                        // products
-                        for (let j = ctrl.request.locations[i].products.length - 1; j >= 0; j--) {
-                            if (ctrl.request.locations[i].products[j].product === null || ctrl.request.locations[i].products[j].isDeleted) {
-                                ctrl.request.locations[i].products.splice(j, 1);
-                            }
-                        }
-                        // if agent == {} se null
-                        if (_.isEmpty(ctrl.request.locations[i].agent)) {
-                            ctrl.request.locations[i].agent = null;
-                        }
-                    }
-                }
-                if (ctrl.request.footerSection) {
-	                ctrl.request.footerSection.isPrerequest = ctrl.requestTenantSettings.isPrerequestEnabled;
-                }
-                if (ctrl.isNewRequest) {
-                    screenLoader.showLoader();
-                    newRequestModel.createRequest(ctrl.request).then(
-                        (responseData) => {
-                            ctrl.buttonsDisabled = false;
-                            $state.go(STATE.EDIT_REQUEST, {
-                                requestId: responseData.payload.id
-                            });
-                        },
-                        () => {
-                            ctrl.buttonsDisabled = false;
-                        }
-                    ).finally(() => {
-                        screenLoader.hideLoader();
-                    });
-                } else {
-                    var validActiveSpecGroupMessage = ctrl.checkInactiveSpecGroup();
-                    if (validActiveSpecGroupMessage != true) {
-                        toastr.error(validActiveSpecGroupMessage);
-                        ctrl.buttonsDisabled = false;
-                        return;
-                    }   
-                    screenLoader.showLoader();
-                    newRequestModel.updateRequest(ctrl.request).then(
-                        (responseData) => {
-                            let data = responseData.payload;
-                            ctrl.buttonsDisabled = false;
-                            if (data.requirementsToAmend !== null && data.requirementsToAmend.length > 0) {
-                                ctrl.requirementsToAmend = data.requirementsToAmend;
-                                $('amend-dialog').modal('show');
-                            } else {
-                                ctrl.requirementsToAmend = null;
-                            }
-                            screenLoader.hideLoader();
-                            $state.reload();
-                        },
-                        () => {
-                            ctrl.buttonsDisabled = false;
-                        }
-                    );
+            $('form').addClass('submitted');
+            ctrl.saved = true;
+            let forms_validation = validateForms();
+            if (forms_validation !== null) {
+                toastr.error(VALIDATION_MESSAGES.INVALID_FIELDS + forms_validation.join(', '));
+                // ctrl.initMask(); // reinit mask for date inputs
+            }
+            let invalidDates = false;
+            $.each(ctrl.requestDateFieldsErrors, (k, v) => {
+                if (v) {
+                    invalidDates = true;
+                    toastr.error(v);
                 }
             });
+
+            /*
+            var invalidDates = [];
+            $('.new-date-picker').each(function(key, value) {
+                if ($(this).hasClass('invalid')) {
+                    invalidDates.push($(this).attr('name').split('_')[1].toUpperCase());
+                }
+            });
+            if (invalidDates.length > 0) {
+                toastr.error('Please check the date fields: ' + invalidDates.join(', '));
+                return false;
+            }
+            */
+            if (forms_validation !== null || invalidDates) {
+                return;
+            }
+            ctrl.buttonsDisabled = true;
+            // remove empty products
+            for (let i = ctrl.request.locations.length - 1; i >= 0; i--) {
+                if (ctrl.request.locations[i].isDeleted) {
+                    ctrl.request.locations.splice(i, 1);
+                } else {
+                    // products
+                    for (let j = ctrl.request.locations[i].products.length - 1; j >= 0; j--) {
+                        if (ctrl.request.locations[i].products[j].product === null || ctrl.request.locations[i].products[j].isDeleted) {
+                            ctrl.request.locations[i].products.splice(j, 1);
+                        }
+                    }
+                    // if agent == {} se null
+                    if (_.isEmpty(ctrl.request.locations[i].agent)) {
+                        ctrl.request.locations[i].agent = null;
+                    }
+                }
+            }
+            if (ctrl.request.footerSection) {
+                ctrl.request.footerSection.isPrerequest = ctrl.requestTenantSettings.isPrerequestEnabled;
+            }
+            if (ctrl.isNewRequest) {
+                screenLoader.showLoader();
+                newRequestModel.createRequest(ctrl.request).then(
+                    (responseData) => {
+                        ctrl.buttonsDisabled = false;
+                        $state.go(STATE.EDIT_REQUEST, {
+                            requestId: responseData.payload.id
+                        });
+                    },
+                    () => {
+                        ctrl.buttonsDisabled = false;
+                    }
+                ).finally(() => {
+                    screenLoader.hideLoader();
+                });
+            } else {
+                var validActiveSpecGroupMessage = ctrl.checkInactiveSpecGroup();
+                if (validActiveSpecGroupMessage != true) {
+                    toastr.error(validActiveSpecGroupMessage);
+                    ctrl.buttonsDisabled = false;
+                    return;
+                }   
+                screenLoader.showLoader();
+                newRequestModel.updateRequest(ctrl.request).then(
+                    (responseData) => {
+                        let data = responseData.payload;
+                        ctrl.buttonsDisabled = false;
+                        if (data.requirementsToAmend !== null && data.requirementsToAmend.length > 0) {
+                            ctrl.requirementsToAmend = data.requirementsToAmend;
+                            $('amend-dialog').modal('show');
+                        } else {
+                            ctrl.requirementsToAmend = null;
+                        }
+                        screenLoader.hideLoader();
+                        $state.reload();
+                    },
+                    () => {
+                        ctrl.buttonsDisabled = false;
+                    }
+                );
+            }
         };
 
         ctrl.showDeleteLocationConfirm = function(location) {
