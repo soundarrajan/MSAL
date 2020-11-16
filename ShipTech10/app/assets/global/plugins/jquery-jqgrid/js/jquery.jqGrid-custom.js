@@ -506,6 +506,10 @@ var Cfg = {
             columnId += 'isDeleted';
             let isStatus = $(columnId)[0] ? $(columnId)[0].innerText.indexOf('Status') != -1 : false;
             let isBlacklisted = $(columnId)[0] ? $(columnId)[0].innerText.indexOf('Blacklisted') != -1 : false;
+
+            let findServiceColumn = $('#flat_service_list_name')[0] ? $('#flat_service_list_name')[0].innerText.indexOf('Service') != -1 : false;
+            let findServiceCodeColumn = $('#flat_service_list_code')[0] ? $('#flat_service_list_code')[0].innerText.indexOf('Service Code') != -1 : false;
+
             var Filters = $(this).jqGrid.Ascensys.columnFiltersData;
             var conditions = "";
             Filters = _.sortBy(Filters, function(item) {
@@ -583,6 +587,15 @@ var Cfg = {
 		                        }
                             }
                             value = dates.join(' - ');
+                        }
+                    }
+                    if (v.column.columnRoute == 'masters/service') {
+                        if (v.column.columnValue == 'Name' && findServiceColumn) {
+                            v.column.columnName = v.column.columnName.replace('Operator', 'Service');
+                        }
+
+                        if (v.column.columnValue == 'Code' && findServiceCodeColumn) {
+                            v.column.columnName = v.column.columnName.replace('Operator', 'Service');
                         }
                     }
                     if (v.column.columnRoute == 'invoices/complete_view') {
