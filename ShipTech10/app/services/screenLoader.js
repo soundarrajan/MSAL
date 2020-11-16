@@ -45,6 +45,7 @@ angular.module('shiptech').config([
         let routeExceptions = [
             'uib/template/typeahead/typeahead-match.html',
             'uib/template/typeahead/typeahead-popup.html',
+            'pages/schedule-dashboard-timeline/views/right-click-popover-timeline.html',
             'app-general-components/views/columnFiltersPopover.html',
             'api/invoice/totalConversion',
             'api/masters/uoms/convertQuantity',
