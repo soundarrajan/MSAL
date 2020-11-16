@@ -104,7 +104,7 @@
 	                            <span ng-class="{'isSapStrategy': vsVal.hasComputedStrategy}" id="{{ vsVal.id }}" ng-mouseover="$ctrl.hidePopovers(); $ctrl.initPopover(vsVal.id);" ng-repeat="(vsKey, vsVal) in voyageStop  | limitTo: 1 track by $index" data-toggle="popover"  data-content="{{ $ctrl.getPopoverMarkup($index, vsVal.id, vsVal.day, vsVal, voyageStop) }}" ng-style="vsVal.style" class="voyageStopItem pull-left" ng-right-click="$ctrl.showContextMenu($event, voyageStop, vsVal)">
 	                                <span hidden>{{vsVal.hasComputedStrategy = $ctrl.checkIfHasSAPStrategy(voyageStop)}}</span>
 	                                <span hidden>{{vsVal.hasSludge = $ctrl.checkIfHasSludge(voyageStop)}}</span>
-
+	                                <span hidden>{{$ctrl.getBodyWidth()}}</span>
 	                                <span ng-if="voyageStop.length > 1" class="expandPorts" ng-click="$ctrl.showMorePortsPopup($event, voyageStop)">
 	                                    +
 	                                </span>

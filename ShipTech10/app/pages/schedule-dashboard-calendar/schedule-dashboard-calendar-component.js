@@ -331,7 +331,9 @@ angular.module('shiptech.pages').controller('ScheduleCalendarController', [ '$ro
             console.warn('showData -1:', new Date().getTime() - window.scheduleDashboardCalendarModelGetEndTime);
             hidePopovers();
             delete ctrl.calendarDataRows;
-            $('tbody')[0].scrollLeft = 0;
+            if ($('tbody')[0]) {
+                $('tbody')[0].scrollLeft = 0;
+            }
             destroyDataTable();
             ctrl.calendarData = data.payload;
             ctrl.lastShownData = data;
@@ -1613,6 +1615,16 @@ angular.module('shiptech.pages').controller('ScheduleCalendarController', [ '$ro
             });
             return hasSludge;
         };
+
+        ctrl.getBodyWidth = function() {
+            let element = $('.asc_jqgrid__filters');
+            let body = $('#schedule_calendar_table tbody');
+            if (body.length && element.length) {
+                $('#schedule_calendar_table tbody').css('width', $(element)[0].offsetWidth);
+                $('#schedule_calendar_table > thead').css('width', $(element)[0].offsetWidth);
+                $('#schedule_calendar_table').css('width', '');
+            }
+        }
 
         ctrl.cancelStrategy = function(bunkerPlanId) {
             let url = `${API.BASE_URL_DATA_MASTERS }/api/masters/vessels/cancelStrategy`;
