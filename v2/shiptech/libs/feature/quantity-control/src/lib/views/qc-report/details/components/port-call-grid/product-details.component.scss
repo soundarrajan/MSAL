@@ -1,4 +1,7 @@
 ::ng-deep {
+  #quantity-control-product-details-grid > div > div.ag-root-wrapper-body.ag-layout-auto-height > div.ag-root.ag-unselectable.ag-layout-auto-height > div.ag-body-viewport.ag-layout-auto-height.ag-row-animation > div.ag-center-cols-clipper {
+    height: auto !important;
+  }
   .ag-header-cell-label .ag-header-cell-text {
     text-overflow: clip;
     overflow: visible;
@@ -45,3 +48,4 @@
     text-align: center;
   }
 }
+

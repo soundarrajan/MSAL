@@ -33,7 +33,7 @@ import { AppContext } from '../../app-context/app-context';
     >
       {{ message }}
     </div>
-    <div style="font-size: 10px; opacity: 0.3">tracking-id</div>
+    <div style="font-size: 10px; color: white;">tracking-id</div>
     <div
       *ngIf="message && options.enableHtml"
       class="form-inline"
