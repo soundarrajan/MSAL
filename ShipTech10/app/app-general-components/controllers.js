@@ -2189,7 +2189,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 };
 
                 var best_contract_loop = function(cellValue, options, rowObject) {
-                    var cellList = "";
+                    var cellList = "", value = "";
                     var currentCellKey = options.colModel.name
                     if (options.colModel.name.indexOf(".name") != -1) {
                         currentCellKey = options.colModel.name.split(".name")[0]
@@ -2197,15 +2197,16 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
 
                     $.each(rowObject[currentCellKey], function(key,val){
                         cellList = cellList + "<div>" + (val.name ? val.name : val);
+                        value = value + (val.name ? val.name : val);
                         if(key != (rowObject[currentCellKey].length - 1)){
                             cellList = cellList + ",</div>";
+                            value = value + ', ';
                         }else{
                             cellList = cellList + "</div>";
                         }
 
                     })
-
-                    var tpl = '<span class="best_contract_loop"><ul style="overflow:hidden" data-html="true" tooltip data-original-title="'+cellList+'">'+ cellList + '</ul></span>';
+                    var tpl = '<span class="best_contract_loop"><ul style="overflow:hidden; text-overflow: ellipsis;" data-html="true" tooltip data-original-title="'+cellList+'">'+ value + '</ul></span>';
                     return tpl;
                 };
 
