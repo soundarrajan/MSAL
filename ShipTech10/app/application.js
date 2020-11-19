@@ -789,9 +789,9 @@ angular.module('shiptech.models', []);
 var i = 0;
 
 var hostName = window.location.hostname;
-var config = "config/config.json";
-if (["localhost", "mail.24software.ro"].indexOf(hostName) < 0) {
-    config = "config/" + hostName + ".json";
+var config = "config/" + hostName + ".json";
+if (["localhost"].indexOf(hostName) != -1) {
+    config = "config/config.json";
 }
 function bootstrapApplication() {
     if (i == 0) {
@@ -809,9 +809,9 @@ function bootstrapApplication() {
 function loadScript(url, callback) {
     window.appConfig = (function() {
         var hostName = window.location.hostname;
-        var config = "config/config.json";
-        if (["localhost", "mail.24software.ro"].indexOf(hostName) < 0) {
-            config = "config/" + hostName + ".json";
+        var config = "config/" + hostName + ".json"
+        if (["localhost"].indexOf(hostName) != -1) {
+            config = "config/config.json";
         }
         let returnVars;
         $.ajax({
