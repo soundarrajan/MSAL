@@ -526,6 +526,7 @@
     "CLAIM_EDIT_CREATE_CREDIT_NOTE": "Create Credit Note"
   },
   "masters": {
+    "ADDL_TECHNICAL_DETAILS": "Addl. Technical Details",
     "CONTACT_ADDRESS": "Contact Address",
     "TERMS_AND_CONDITIONS": "Terms and Conditions",
     "ENERGY_PARAMETER_TYPE": "Parameter Type",
@@ -715,7 +716,6 @@
     "USABLE_CAPACITY": "Usable Capacity",
     "AVAILABLE_CAPACITY": "Available Capacity",
     "VESSELKPI": "Vessel KPI",
-    "ADDL_TECHNICAL_DETAILS": "Addl. Technical Details",
     "VOYAGE_UPDATED_DATE": "Voyage updated Date",
     "MARKET_INSTRUMENT": "Market Instrument",
     "MARKET_INSTRUMENT_CODE": "Market Instrument Code",

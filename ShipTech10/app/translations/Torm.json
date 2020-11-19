@@ -526,6 +526,7 @@
             "CLAIM_EDIT_CREATE_CREDIT_NOTE": "Create Credit / Debit Note"
       },
       "masters": {
+            "ADDL_TECHNICAL_DETAILS": "Addl. Technical Details",
             "CONTACT_ADDRESS": "Contact Address",
             "CURRENT_ROB_HSFO": "Current ROB HSFO",
             "CURRENT_ROB_LSFO": "Current ROB LSFO",
