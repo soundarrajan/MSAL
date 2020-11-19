@@ -488,6 +488,20 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 	                	if (ctrl.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString][0].voyageDetail.id == voyage.voyageId) {
 			                voyage.content += '<span class="expand-voyages" cell-identifier="'+uniqueCellIdentifier+'" group="'+voyage.group+'"  eta="'+voyage.start+'">+</span>';
 			                voyage.additionalStops = ctrl.stopsGroupedByDayAndGroup[startDate.split(" ")[0] + ' <> ' +  groupString];
+                            let additionalStop = _.find(voyage.additionalStops, function(object) {
+                                return !object.voyageDetail.isDeleted;
+                            });
+                            if (additionalStop) {
+                                voyage.isDeleted = false;
+                            }
+                            let highestPriority = _.maxBy(voyage.additionalStops, "voyageDetail.portStatusPriority");
+                            let statusColor = null;
+                            if (highestPriority) {
+                                statusColor = statusColors.getColorCodeFromLabels(highestPriority.voyageDetail.portStatus, $listsCache.ScheduleDashboardLabelConfiguration); 
+                            } 
+                            if(statusColor) {
+                                voyage.style += '; background-color: ' + statusColor + ' !important;' + 'color: ' + getContrastYIQ(statusColor) + ' !important;';
+                            }
 		                } else {
 			                isExtraStop = true;
 		                }
