@@ -150,7 +150,7 @@ angular
 
                 var tenantConfigPayload = false;
                 if (window.location.href.indexOf("admin/configuration") != -1 || window.location.href.indexOf("id_token=") != -1) {
-	                tenantConfigPayload = true;
+                    tenantConfigPayload = true;
                 }
                 let query = [
                     $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Admin/api/admin/tenantConfiguration/get`, {
@@ -789,9 +789,9 @@ angular.module('shiptech.models', []);
 var i = 0;
 
 var hostName = window.location.hostname;
-var config = "config/" + hostName + ".json";
-if (["localhost"].indexOf(hostName) != -1) {
-    config = "config/config.json";
+var config = "config/config.json";
+if (["localhost", "mail.24software.ro"].indexOf(hostName) < 0) {
+    config = "config/" + hostName + ".json";
 }
 function bootstrapApplication() {
     if (i == 0) {
@@ -809,9 +809,9 @@ function bootstrapApplication() {
 function loadScript(url, callback) {
     window.appConfig = (function() {
         var hostName = window.location.hostname;
-        var config = "config/" + hostName + ".json"
-        if (["localhost"].indexOf(hostName) != -1) {
-            config = "config/config.json";
+        var config = "config/config.json";
+        if (["localhost", "mail.24software.ro"].indexOf(hostName) < 0) {
+            config = "config/" + hostName + ".json";
         }
         let returnVars;
         $.ajax({
@@ -863,11 +863,11 @@ angular.element(document).ready(() => {
                 .constant('EMAIL_TRANSACTION', appConfig.EMAIL_TRANSACTION)
                 .constant('appInsightsInstance', appInsightsInstanceProvider(appConfig.INSTRUMENTATION_KEY));
             if (window.location.hash.indexOf('supplier-portal') > 0) {
-		        // $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Admin/api/admin/tenantConfiguration/get`, {
-		        //     Payload: false
-		        // }, function(response){
-		        // })    
-	        	angular.module('shiptech').value('$tenantConfiguration', {});
+                // $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Admin/api/admin/tenantConfiguration/get`, {
+                //     Payload: false
+                // }, function(response){
+                // })    
+                angular.module('shiptech').value('$tenantConfiguration', {});
                 angular.module('shiptech').value('$tenantSettings', {});
                 angular.module('shiptech').value('$listsCache', {});
                 angular.module('shiptech').value('$filtersData', {});
