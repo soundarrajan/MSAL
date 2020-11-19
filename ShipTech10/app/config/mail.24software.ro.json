@@ -26,9 +26,11 @@
     "NEW_REQUEST": "default.new-request",
     "EDIT_REQUEST": "default.edit-request",
     "VIEW_REQUEST_DOCUMENTS": "default.view-request-documents",
+    "VIEW_REQUEST_REPORT": "default.view-request-report",
     "VIEW_REQUEST_AUDITLOG": "default.view-request-auditlog",
     "VIEW_REQUEST_EMAILLOG": "default.view-request-emaillog",
     "VIEW_GROUP_OF_REQUESTS_EMAILLOG": "default.group-of-requests-emaillog",
+    "VIEW_GROUP_OF_REQUESTS_REPORT": "default.group-of-requests-report",
     "COPY_REQUEST": "default.copy-request",
     "ALL_REQUESTS_TABLE": "default.all-requests-table",
     "GROUP_OF_REQUESTS": "default.group-of-requests",
@@ -271,5 +273,5 @@
     "ORDER_CONFIRM": "OrderConfirmationToSellerOrVessel",
     "CONTRACT_PLANNING": "ContractPlanning"
   },
-  "INSTRUMENTATION_KEY": ""
+  "INSTRUMENTATION_KEY": "61f82289-6395-460f-81ca-9cb0da7407b2"
 }
