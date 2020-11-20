@@ -900,21 +900,26 @@ angular.module('shiptech.pages').controller('ScheduleCalendarController', [ '$ro
                             }
                         }
                     }
-                    let activePortData = _.filter(portData, function(object) {
-                        return !object.isDeleted;
-                    });
-                    resultRow.calendar.push(activePortData);
+                  
+                    resultRow.calendar.push(portData);
                 }
                 let calendarData = resultRow.calendar;
-                let findVoyages = _.find(calendarData, function(object) {
-                    return object.length;
+                let deletedRow = true;
+                $.each(calendarData, function(k, v) {
+                    let findIsDeletedFalse = _.filter(v, function(object) {
+                        return !object.isDeleted;
+                    });
+                    if (findIsDeletedFalse) {
+                        deletedRow = false;
+                        return;
+                    }
+
                 });
-                if (findVoyages) {
+                if (!deletedRow) {
                     result.push(resultRow);
                 }
                 i1++;
             }
-
         	console.warn('normalizeCalendarDataFlat end :', new Date().getTime() - window.scheduleDashboardCalendarModelGetEndTime);
             return result;
         }
