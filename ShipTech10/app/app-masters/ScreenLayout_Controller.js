@@ -566,6 +566,9 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                                     	$.each($scope.formValues.tanks, (k, v) => {
                                     		v.vessel.id = 0;
                                     	});
+                                    	$.each($scope.formValues.robs, (k, v) => {
+                                    		v.vesselId = 0;
+                                    	});
                                     }
                                     // reset contract status
                                     if (vm.app_id == 'contracts' && vm.screen_id == 'contract') {
