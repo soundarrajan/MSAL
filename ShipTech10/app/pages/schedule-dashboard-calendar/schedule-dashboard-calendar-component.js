@@ -815,6 +815,16 @@ angular.module('shiptech.pages').controller('ScheduleCalendarController', [ '$ro
                     calendar: [],
                     statusList: []
                 };
+                resultRow1 = {
+                    serviceName: v.service,
+                    vesselName: v.vessel,
+                    buyerName: v.buyer,
+                    companyName: dataJSON.vessels[v.voyage[0]].CompanyName,
+                    defaultDistillate: dataJSON.vessels[v.voyage[0]].DefaultDistillate,
+                    defaultFuel: dataJSON.vessels[v.voyage[0]].DefaultFuel,
+                    calendar: [],
+                    statusList: []
+                };
                 let v_index = 0;
                 for (let i2 = 0; i2 < dates.length; i2++) {
                     var v1 = dates[i2];
@@ -900,26 +910,22 @@ angular.module('shiptech.pages').controller('ScheduleCalendarController', [ '$ro
                             }
                         }
                     }
-                  
-                    resultRow.calendar.push(portData);
-                }
-                let calendarData = resultRow.calendar;
-                let deletedRow = true;
-                $.each(calendarData, function(k, v) {
-                    let findIsDeletedFalse = _.filter(v, function(object) {
+                    let activePortData = _.filter(portData, function(object) {
                         return !object.isDeleted;
                     });
-                    if (findIsDeletedFalse) {
-                        deletedRow = false;
-                        return;
-                    }
-
+                    resultRow.calendar.push(portData);
+                    resultRow1.calendar.push(activePortData);
+                }
+                let calendarData = resultRow1.calendar;
+                let findVoyages = _.find(calendarData, function(object) {
+                    return object.length;
                 });
-                if (!deletedRow) {
+                if (findVoyages) {
                     result.push(resultRow);
                 }
                 i1++;
             }
+
         	console.warn('normalizeCalendarDataFlat end :', new Date().getTime() - window.scheduleDashboardCalendarModelGetEndTime);
             return result;
         }
