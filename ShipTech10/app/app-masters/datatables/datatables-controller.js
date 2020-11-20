@@ -2493,15 +2493,9 @@ APP_MASTERS.controller('Controller_Datatables', [
                     setTimeout(() => {
                         api.core.handleWindowResize();
                         if (angular.equals($scope.formValues, {}) || !$scope.formValues.productsSystemInstruments) {
-                            $scope.formValues.productsSystemInstruments = [
-                                {
-                                    id: 0
-                                }
-                            ];
+                            $scope.formValues.productsSystemInstruments = [];
                         } else if (angular.equals($scope.formValues.productsSystemInstruments, [])) {
-                            $scope.formValues.productsSystemInstruments.push({
-                                id: 0
-                            });
+                            $scope.formValues.productsSystemInstruments = [];
                         }
                     }, 10);
                 }
@@ -2632,15 +2626,9 @@ APP_MASTERS.controller('Controller_Datatables', [
                     setTimeout(() => {
                         api.core.handleWindowResize();
                         if (angular.equals($scope.formValues, {}) || !$scope.formValues.productsLocations) {
-                            $scope.formValues.productsLocations = [
-                                {
-                                    id: 0
-                                }
-                            ];
+                            $scope.formValues.productsLocations = [];
                         } else if (angular.equals($scope.formValues.productsLocations, [])) {
-                            $scope.formValues.productsLocations.push({
-                                id: 0
-                            });
+                            $scope.formValues.productsLocations = [];
                         }
                     }, 10);
                 }
