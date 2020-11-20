@@ -913,7 +913,11 @@ angular.module('shiptech.pages').controller('ScheduleCalendarController', [ '$ro
                     let activePortData = _.filter(portData, function(object) {
                         return !object.isDeleted;
                     });
-                    resultRow.calendar.push(portData);
+                    if (activePortData.length) {
+                        resultRow.calendar.push(portData);
+                    } else {
+                        resultRow.calendar.push([]);
+                    }
                     resultRow1.calendar.push(activePortData);
                 }
                 let calendarData = resultRow1.calendar;
