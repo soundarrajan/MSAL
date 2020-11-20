@@ -1,7 +1,7 @@
-﻿commit 93fce2313fb475c5aad151c06d11c22049b39241
+﻿commit 71d6930b436f06e3bf6a394962223d6f1da86da8
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Tue Nov 17 11:15:02 2020 +0200
+Date:   Fri Nov 20 21:19:01 2020 +0200
 
-    #23385
+    Fixed build try1
 
 branch: master
