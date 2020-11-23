@@ -1,7 +1,7 @@
-﻿commit 71d6930b436f06e3bf6a394962223d6f1da86da8
+﻿commit ac52c6c914aa5aa5668da3a051c44cec2f9de5bc
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Fri Nov 20 21:19:01 2020 +0200
+Date:   Mon Nov 23 11:50:27 2020 +0200
 
-    Fixed build try1
+    Fixed node modules
 
 branch: master
