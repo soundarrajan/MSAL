@@ -23,7 +23,7 @@ angular
             // angular.module("shiptech").value("$cacheFilterConfigurations", {});
             $(document).on('click',  function (event) {
                 if ($(event.target).parent()[0].nodeName != 'LI' && $(event.target).parents('.st-main-content-menu').length && ($(event.target).hasClass('btn') || $(event.target).hasClass('ladda-label'))) {
-                    window.actionLevel = event.target.outerText;
+                    window.actionLevel = event.target.outerText.trim();
                     if (event.target.outerText == 'Save') {
                         let length = window.location.href.split('/#/')[1].split('/').length - 1;
                         let id = parseFloat(window.location.href.split('/#/')[1].split('/')[length]);
@@ -32,14 +32,17 @@ angular
                         } 
                     }
                 }
+                if ($(event.target).parents('li') && ($(event.target).parents('.dropdown-menu.st-extra-buttons').length || $(event.target).parents('.dropdown-menu.pull-right').length)) {
+                    window.actionLevel = event.target.outerText.trim();
+                }
 
             });
-            $rootScope.$on('$routeChangeStart', () => {
-            });
+            
             $rootScope.$on('$locationChangeStart', (event, next, current) => {
                 let activePage = window.location.href.replace('/#/', '/');
                 window.strum('routeChange', activePage);
             });
+
 
             console.log(adalService);
             console.log('adal:application refresh');

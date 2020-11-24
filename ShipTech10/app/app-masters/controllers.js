@@ -130,13 +130,16 @@ APP_MASTERS.controller('Controller_Master', [
 
         $(document).on('click',  function (event) {
             if ($(event.target).parent()[0].nodeName != 'LI' && $(event.target).parents('.st-main-content-menu').length && ($(event.target).hasClass('btn') || $(event.target).hasClass('ladda-label'))) {
-                window.actionLevel = event.target.outerText;
+                window.actionLevel = event.target.outerText.trim();
                 if (event.target.outerText == 'Save') {
                     let length = window.location.href.split('/#/')[1].split('/').length - 1;
                     let id = parseFloat(window.location.href.split('/#/')[1].split('/')[length]);
                     if (!isNaN(id)) {
                         window.actionLevel = 'Update';
                     } 
+                }
+                if ($(event.target).parents('li').length && ($(event.target).parents('.dropdown-menu.st-extra-buttons').length || $(event.target).parents('.dropdown-menu.pull-right').length)) {
+                    window.actionLevel = event.target.outerText.trim();
                 }
             }
 

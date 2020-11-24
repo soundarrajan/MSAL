@@ -726,6 +726,7 @@ APP_CONTRACT.controller('Controller_Contract', [ '$scope', '$rootScope', '$Api_S
     };
     $scope.sendExtendContractData = function() {
         let data = $scope.formValues;
+        window.actionLevel = 'Extend';
         Factory_Master.extend_contract(data, (response) => {
             if (response) {
                 if (response.status == true) {

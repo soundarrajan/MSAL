@@ -2583,6 +2583,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             // }
         };
         ctrl.confirmCancelRequest = function(requestId, reason) {
+            window.actionLevel = 'Cancel';
             if (typeof reason == 'undefined') {
                 toastr.error('Please select the reason');
                 return;
