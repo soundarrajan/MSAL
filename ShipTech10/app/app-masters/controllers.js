@@ -7526,20 +7526,21 @@ APP_MASTERS.controller('Controller_Master', [
             $rootScope.reloadPage = false;
         };
 
-        $scope.invoiceConvertUom = function(type, rowIndex, formValues, oneTimeRun) {
+        $scope.invoiceConvertUom = function(type, rowIndex, formValues, isUom) {
             var currentRowIndex = rowIndex;
             var additionalCost = formValues.costDetails[currentRowIndex];
-            if (additionalCost) {
-                if (additionalCost.associatedOrderProduct == 'All' || additionalCost.product.name == 'All'){
-                    getDefaultUomForAdditionalCost(additionalCost, currentRowIndex, true);
-                } else {
-                    getDefaultUomForAdditionalCost(additionalCost, currentRowIndex);
-                }
-            }
-            
             if ($rootScope.reloadPage) {
                 return;
             }
+            if (!isUom) {
+                if (additionalCost) {
+                    if (additionalCost.associatedOrderProduct == 'All' || additionalCost.product.name == 'All'){
+                        getDefaultUomForAdditionalCost(additionalCost, currentRowIndex, true);
+                    } else {
+                        getDefaultUomForAdditionalCost(additionalCost, currentRowIndex);
+                    }
+                }
+            }           
             var currentRowIndex = rowIndex;
 	    	if (!window.initialUomConversionDone) {
 	    		window.initialUomConversionDone = {

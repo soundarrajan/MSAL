@@ -2458,13 +2458,18 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
     });
 
 
-    $scope.invoiceConvertUom = function(type, rowIndex, formValues, oneTimeRun) {
+    $scope.invoiceConvertUom = function(type, rowIndex, formValues, isUom) {
     	var currentRowIndex = rowIndex;
         var additionalCost = formValues.costDetails[currentRowIndex];
-        if (additionalCost.product.name != 'All') {
-            getDefaultUomForAdditionalCost(additionalCost, currentRowIndex);
-        } else {
-            getDefaultUomForAdditionalCost(additionalCost, currentRowIndex, 1);
+        if ($rootScope.reloadPage) {
+            return;
+        }
+        if (!isUom) {
+            if (additionalCost.product.name != 'All') {
+                getDefaultUomForAdditionalCost(additionalCost, currentRowIndex);
+            } else {
+                getDefaultUomForAdditionalCost(additionalCost, currentRowIndex, 1);
+            }
         }
         if ($rootScope.reloadPage) {
             return;

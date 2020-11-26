@@ -276,7 +276,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                             masterSource: 'Uom',
                             UniqueId: 'invoiceQuantityUom',
                             // changeEvent: "invoiceConvertUom('cost', rowRenderIndex, grid.appScope.fVal().formValues)"
-                            changeEvent: 'invoiceConvertUom(\'cost\', rowRenderIndex, grid.appScope.fVal().formValues)',
+                            changeEvent: 'invoiceConvertUom(\'cost\', rowRenderIndex, grid.appScope.fVal().formValues, true)',
                             keyPressEvent: 'invoiceKeyPress(\'cost\')'
 
                         }
@@ -295,7 +295,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                             FirstUomDisabled: 'grid.appScope.fVal().formValues.costDetails[grid.appScope.rowIdx(row)].costType.name != \'Unit\'',
                             hasUom: true,
                             additionalUomModel: 'invoiceRateUom',
-                            changeEvent: 'invoiceConvertUom(\'cost\', rowRenderIndex, grid.appScope.fVal().formValues)',
+                            changeEvent: 'invoiceConvertUom(\'cost\', rowRenderIndex, grid.appScope.fVal().formValues, true)',
                             keyPressEvent: 'invoiceKeyPress(\'cost\')'
 
                         }
