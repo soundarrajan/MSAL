@@ -1910,6 +1910,10 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 			                orderModel.getManualCancellationEmail(ctrl.data).then((response) => {
 		                    	console.log(response);
 		                    	ctrl.defaultCancellationEmail = null;
+                                if (response.payload.name == 'OrderCancellationToLabEmail' && (angular.equals(ctrl.data.lab, {}) || !ctrl.data.lab)) {
+                                    $scope.prettyCloseModal();
+                                    return;
+                                }
 		                    	if (response.payload.id) {
 		                    		ctrl.defaultCancellationEmail = {
 		                    			id : response.payload.id,
