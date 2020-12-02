@@ -37,6 +37,9 @@
     		if (!filtered[0]) {
     			return [];
     		}
+            if (filtered[0].searchString == 'No options available!') {
+                return [];
+            }
     		return filtered.slice(0,10);
     	};
     });
