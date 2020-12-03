@@ -17968,8 +17968,8 @@ AngularJS Basic Animations
 }
 
 .fade-in-up {
-    -webkit-animation: fadeInUp .5s;
-    animation: fadeInUp .5s;
+  /*  -webkit-animation: fadeInUp .5s;
+    animation: fadeInUp .5s;*/
 }
 
 @-webkit-keyframes bounceDelay {

@@ -2924,7 +2924,7 @@ Uncomment to see border around all .col-*
             }
 
             .inside_content {
-                transition: all .4s ease-in-out;
+                /*transition: all .4s ease-in-out;*/
             }
 
             .between {
@@ -4886,8 +4886,8 @@ input[id$="etd_dateinput"] {
 table.energyCalculationBlade tr.bg-green-jungle td{
 	opacity: 0.9;
 }
-table.energyCalculationBlade tr.border-green-jungle{
-	border: 2px solid;
+table.energyCalculationBlade tr.border-green-jungle {
+    border: 2px solid;
 }
 #grid_labTestResults, #grid_labTestResults .ui-grid-viewport {
 	height: auto !important;
