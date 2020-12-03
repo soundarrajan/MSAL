@@ -1230,7 +1230,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
 		    		$scope.filters = $scope.modal.filters;
                 }                 
 
-                if (clc == 'Order') {
+                if (clc == 'Order' || clc == 'OrderNoBDNToVesselEmail') {
                     $scope.modal.app = 'procurement';
                     $scope.modal.screen = 'order_entity_documents';
                     $scope.modal.clc = 'entity_documents';

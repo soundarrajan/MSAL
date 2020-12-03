@@ -234,6 +234,7 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
                     ctrl.getAvailableDocumentAttachments(ctrl.data.orderId, 'Order');
                 });
             }
+            
             if (ctrl.transaction === 'OrderNoBDNToVesselEmail') {
                 return new Promise((resolve, reject) => {
                     orderModel.previewOrderToBeDeliveredMail(ctrl.data, ctrl.template).then((data) => {
@@ -245,8 +246,9 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
                                 return;
                             }
                             ctrl.templateList = [ ctrl.email.comment.emailTemplate ];
-                            ctrl.template = ctrl.email.comment.emailTemplate;
+                            ctrl.template = ctrl.email.comment.emailTemplate; 
                         }
+                        ctrl.getAvailableDocumentAttachments(ctrl.data.orderId, 'Order');
                     }, () => {
                         ctrl.template = null;
                         ctrl.data = {};
