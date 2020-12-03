@@ -3052,7 +3052,7 @@ APP_MASTERS.controller('Controller_Master', [
                 if (fieldUniqueId == 'invoiceDate' && vm.app_id == 'invoices') {
                     return vm.formatDate(elem, 'dd/MM/yyyy');
                 }
-                if (fieldUniqueId == 'eta' || fieldUniqueId == 'orderDetails.eta' || fieldUniqueId == 'etb' || fieldUniqueId == 'etd' || fieldUniqueId.toLowerCase().indexOf('delivery') >= 0 || fieldUniqueId == 'pricingDate') {
+                if (fieldUniqueId == 'resultDate' || fieldUniqueId == 'eta' || fieldUniqueId == 'orderDetails.eta' || fieldUniqueId == 'etb' || fieldUniqueId == 'etd' || fieldUniqueId.toLowerCase().indexOf('delivery') >= 0 || fieldUniqueId == 'pricingDate') {
                     // debugger;
                     // return moment.utc(elem).format($scope.tenantSetting.tenantFormatss.dateFormat.name);
                     var utcDate = moment.utc(elem).format();
