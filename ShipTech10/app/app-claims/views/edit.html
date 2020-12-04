@@ -5,7 +5,9 @@
         url: '#',
         method: 'save_master_changes()',
         extern: true,
-        main: true
+        main: true,
+        ConditionalType: 'ng-show',
+        Conditional: 'formValues.claimDetails.status.name != \'Invoiced\''
     }, {
         label: 'Copy',
         url: '#',
@@ -19,7 +21,7 @@
         method: 'save_master_changes(null, null, true, complete_claim)',
         extern: true,
         ConditionalType: 'ng-show',
-        Conditional: 'CM.entity_id > 0 && formValues.claimDetails.status.name != \'Completed\' && formValues.claimDetails.status.name != \'Cancelled\' '
+        Conditional: 'CM.entity_id > 0 && formValues.claimDetails.status.name != \'Completed\' && formValues.claimDetails.status.name != \'Cancelled\' && formValues.claimDetails.status.name != \'Invoiced\''
     }, {
         label: 'Create Debunker Claim',
         url: '#',
@@ -31,6 +33,8 @@
         label: '...',
         type: 'button-group',
         url: '',
+        ConditionalType: 'ng-show',
+        Conditional:'formValues.claimDetails.status.name != \'Invoiced\'',
         children: [ {
         label: 'New',
         type: 'goto',
@@ -109,7 +113,9 @@
         url: '#',
         method: 'save_master_changes()',
         extern: true,
-        main: true
+        main: true,
+        ConditionalType: 'ng-show',
+        Conditional: 'formValues.claimDetails.status.name != \'Invoiced\''
     }, {
         label: 'Copy',
         url: '#',
@@ -123,7 +129,7 @@
         method: 'save_master_changes(null, null, true, complete_claim)',
         extern: true,
         ConditionalType: 'ng-show',
-        Conditional: 'CM.entity_id > 0 && formValues.claimDetails.status.name != \'Completed\' && formValues.claimDetails.status.name != \'Cancelled\' '
+        Conditional: 'CM.entity_id > 0 && formValues.claimDetails.status.name != \'Completed\' && formValues.claimDetails.status.name != \'Cancelled\' && formValues.claimDetails.status.name != \'Invoiced\''
     }, {
         label: 'Create Debunker Claim',
         url: '#',
@@ -135,6 +141,8 @@
         label: '...',
         type: 'button-group',
         url: '',
+        ConditionalType: 'ng-show',
+        Conditional:'formValues.claimDetails.status.name != \'Invoiced\'',
         children: [ {
         label: 'New',
         type: 'goto',

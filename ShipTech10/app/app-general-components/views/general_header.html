@@ -208,7 +208,7 @@
                                 <a data-ng-if="action.type == 'back'" id="general_action_{{ $index }}" class="btn btn-default btn-default" back-button>
                                     {{ action.label }}
                                 </a>
-                                <span ng-if="action.type == 'button-group'" class="btn-group">
+                                <span ng-if="action.type == 'button-group'" class="btn-group" dynamic-condition="{{ action.Conditional }}" dynamic-condition-type="{{ action.ConditionalType }}">
                                     <a id="general_action_{{ $index }}" class="btn btn-default btn-default" data-toggle="dropdown" ng-click="GH.general_action(action.type, action.url, action.method, action.absolute)">
                                         {{ action.label }}
                                     </a>
