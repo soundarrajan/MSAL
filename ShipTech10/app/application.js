@@ -156,7 +156,7 @@ angular
 	                tenantConfigPayload = true;
                 }
                 let query = [
-                    $http.post(`${appConfig.API.BASE_URL_DATA_ADMIN }/api/admin/tenantConfiguration/get`, {
+                    $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Admin/api/admin/tenantConfiguration/get`, {
                         Payload: tenantConfigPayload
                     }),
                 ];
@@ -206,7 +206,7 @@ angular
                 }
 
                 function getAndSetStaticFilters() {
-                    $http.post(`${appConfig.API.BASE_URL_DATA_INFRASTRUCTURE }/api/infrastructure/static/filters`, {
+                    $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Infrastructure/api/infrastructure/static/filters`, {
                         Payload: false
                     }).then((response) => {
                         angular.module('shiptech').value('$filtersData', response.data);
@@ -233,7 +233,7 @@ angular
                         });
 
                         if (!window.localStorage.getItem('listsInitTime')) {
-                            $http.post(`${appConfig.API.BASE_URL_DATA_INFRASTRUCTURE }/api/infrastructure/static/listsHash`, {
+                            $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Infrastructure/api/infrastructure/static/listsHash`, {
                                 Payload: false
                             }).then((data) => {
                                 db.delete();
@@ -245,7 +245,7 @@ angular
                                 localStorage.setItem('listsInitTime', String(data.data.initTime));
                             });
                             query.push(
-                                $http.post(`${appConfig.API.BASE_URL_DATA_INFRASTRUCTURE }/api/infrastructure/static/lists`, {
+                                $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists`, {
                                     Payload: false
                                 })
                             );
@@ -254,7 +254,7 @@ angular
                             return;
                         }
                         db.open();
-                        $http.post(`${appConfig.API.BASE_URL_DATA_INFRASTRUCTURE }/api/infrastructure/static/listsHash`, {
+                        $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Infrastructure/api/infrastructure/static/listsHash`, {
                             Payload: false
                         }).then((data) => {
                             if (new Date(data.data.initTime) > new Date(localStorage.getItem('listsInitTime'))) {
@@ -265,7 +265,7 @@ angular
                                 });
                                 localStorage.setItem('listsInitTime', String(data.data.initTime));
                                 query.push(
-                                    $http.post(`${appConfig.API.BASE_URL_DATA_INFRASTRUCTURE }/api/infrastructure/static/lists`, {
+                                    $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists`, {
                                         Payload: false
                                     })
                                 );
@@ -305,7 +305,7 @@ angular
                                                         listsToUpdate.splice(listsToUpdate.indexOf('StaticFilters'));
                                                         getAndSetStaticFilters();
                                                     }
-                                                    $http.post(`${appConfig.API.BASE_URL_DATA_INFRASTRUCTURE }/api/infrastructure/static/lists`, {
+                                                    $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists`, {
                                                         Payload: listsToUpdate
                                                     }).then((res) => {
                                                         $.each(res.data, (k, v) => {
@@ -328,7 +328,7 @@ angular
                                         angular.module('shiptech').value('$listsCache', listsCache);
                                     } else {
                                         query.push(
-                                            $http.post(`${appConfig.API.BASE_URL_DATA_INFRASTRUCTURE }/api/infrastructure/static/lists`, {
+                                            $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists`, {
                                                 Payload: false
                                             })
                                         );
@@ -337,7 +337,7 @@ angular
                                     }
                                 }).catch((err) => {
                                     query.push(
-                                        $http.post(`${appConfig.API.BASE_URL_DATA_INFRASTRUCTURE }/api/infrastructure/static/lists`, {
+                                        $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists`, {
                                             Payload: false
                                         })
                                     );
@@ -348,7 +348,7 @@ angular
                         });
                     } catch (err) {
                         query.push(
-                            $http.post(`${appConfig.API.BASE_URL_DATA_INFRASTRUCTURE }/api/infrastructure/static/lists`, {
+                            $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists`, {
                                 Payload: false
                             })
                         );
@@ -357,7 +357,7 @@ angular
                     }
                 } else {
                     query.push(
-                        $http.post(`${appConfig.API.BASE_URL_DATA_INFRASTRUCTURE }/api/infrastructure/static/lists`, {
+                        $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists`, {
                             Payload: false
                         })
                     );
@@ -866,7 +866,7 @@ angular.element(document).ready(() => {
                 .constant('EMAIL_TRANSACTION', appConfig.EMAIL_TRANSACTION)
                 .constant('appInsightsInstance', appInsightsInstanceProvider(appConfig.INSTRUMENTATION_KEY));
             if (window.location.hash.indexOf('supplier-portal') > 0) {
-		        // $http.post(`${appConfig.API.BASE_URL_DATA_ADMIN }/api/admin/tenantConfiguration/get`, {
+		        // $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Admin/api/admin/tenantConfiguration/get`, {
 		        //     Payload: false
 		        // }, function(response){
 		        // })    

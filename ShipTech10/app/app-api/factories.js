@@ -5603,7 +5603,7 @@ APP_API.factory('$Api_Service', [
 							if (window.location.href.indexOf("admin/configuration") != -1 || window.location.href.indexOf("id_token=") != -1) {
 								tenantConfigPayload = true;
 							}
-                            $http.post(`${appConfig.API.BASE_URL_DATA_ADMIN }/api/admin/tenantConfiguration/get`, {
+                            $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Admin/api/admin/tenantConfiguration/get`, {
                                 Payload: tenantConfigPayload
                             }).then((response) => {
                                 if (response.status == 200) {
