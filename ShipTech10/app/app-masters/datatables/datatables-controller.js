@@ -245,7 +245,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                             Type: 'dropdown',
                             dropdownSource: 'filterInvoiceCostTypeDropdown( grid.appScope.fVal().formValues.costDetails[grid.appScope.rowIdx(row)].costName )',
                             Action: 'CostType',
-                            changeEvent: 'invoiceConvertUom(\'cost\', rowRenderIndex, grid.appScope.fVal().formValues)',
+                            changeEvent: 'invoiceConvertUom(\'cost\', rowRenderIndex, grid.appScope.fVal().formValues, true)',
                             keyPressEvent: 'invoiceKeyPress(\'cost\')',
                             Disabled: 'grid.appScope.fVal().formValues.costDetails[grid.appScope.rowIdx(row)].orderAdditionalCostId || [\'Approved\', \'Cancelled\'].indexOf(grid.appScope.fVal().formValues.status.name) != -1'
                         }
@@ -261,7 +261,7 @@ APP_MASTERS.controller('Controller_Datatables', [
 	                        Name: 'applyFor',
                             Disabled: 'grid.appScope.fVal().formValues.costDetails[grid.appScope.rowIdx(row)].orderAdditionalCostId || grid.appScope.fVal().formValues.costDetails[grid.appScope.rowIdx(row)].isTaxComponent || [\'Approved\', \'Cancelled\'].indexOf(grid.appScope.fVal().formValues.status.name) != -1',
                             Required: 'grid.appScope.fVal().formValues.costDetails[grid.appScope.rowIdx(row)].costType.id > 1',
-                            changeEvent: 'invoiceConvertUom(\'cost\', rowRenderIndex, grid.appScope.fVal().formValues)',
+                            changeEvent: 'invoiceConvertUom(\'cost\', rowRenderIndex, grid.appScope.fVal().formValues, true)',
                             keyPressEvent: 'invoiceKeyPress(\'cost\')'
                         }
                     },
@@ -499,7 +499,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                             masterSource: 'Uom',
                             UomRequired: true,
                             UniqueId: 'invoiceQuantityUom',
-                            changeEvent: 'invoiceConvertUom(\'product\', rowRenderIndex, grid.appScope.fVal().formValues)',
+                            changeEvent: 'invoiceConvertUom(\'product\', rowRenderIndex, grid.appScope.fVal().formValues, true)',
                             keyPressEvent: 'invoiceKeyPress(\'product\')'
                         }
                     },
@@ -519,7 +519,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                             UniqueId: 'invoiceRateCurrency',
                             parentGroup: 'productDetails',
                             // changeEvent: "invoiceConvertUom('product', rowRenderIndex, grid.appScope.fVal().formValues)"
-                            changeEvent: 'invoiceConvertUom(\'product\', rowRenderIndex, grid.appScope.fVal().formValues)',
+                            changeEvent: 'invoiceConvertUom(\'product\', rowRenderIndex, grid.appScope.fVal().formValues, true)',
                             keyPressEvent: 'invoiceKeyPress(\'product\')'
                         }
                     },

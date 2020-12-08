@@ -38,6 +38,9 @@ a.btn[disabled]:hover {
     margin-bottom: 10px;
 }
 
+#\'request_bestcontracts\' > div {
+    margin-right: 0px !important;
+}
 .general-header .title {
     font-size: 18px;
     color: #578ebe;

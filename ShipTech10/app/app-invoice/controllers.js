@@ -2101,6 +2101,8 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
     };
     $scope.addCostDetail = function(data) {
         // console.log(vm.getAdditionalCostsComponentTypes());
+        $rootScope.addNewCost = true;
+        $rootScope.reloadPage = false;
         vm.getAdditionalCostsComponentTypes((additionalCostsComponentTypes) => {
             $scope.additionalCostsComponentTypes = additionalCostsComponentTypes;
             var isTaxComponent = false;
@@ -2464,12 +2466,13 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
         if ($rootScope.reloadPage) {
             return;
         }
-        if (!isUom) {
+        if (!isUom || $rootScope.addNewCost) {
             if (additionalCost.product.name != 'All') {
                 getDefaultUomForAdditionalCost(additionalCost, currentRowIndex);
             } else {
                 getDefaultUomForAdditionalCost(additionalCost, currentRowIndex, 1);
             }
+            $rootScope.addNewCost = false;
         }
         if ($rootScope.reloadPage) {
             return;

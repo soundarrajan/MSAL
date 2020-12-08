@@ -7532,7 +7532,7 @@ APP_MASTERS.controller('Controller_Master', [
             if ($rootScope.reloadPage) {
                 return;
             }
-            if (!isUom) {
+            if (!isUom || $rootScope.addNewCost) {
                 if (additionalCost) {
                     if (additionalCost.associatedOrderProduct == 'All' || additionalCost.product.name == 'All'){
                         getDefaultUomForAdditionalCost(additionalCost, currentRowIndex, true);
@@ -7540,6 +7540,7 @@ APP_MASTERS.controller('Controller_Master', [
                         getDefaultUomForAdditionalCost(additionalCost, currentRowIndex);
                     }
                 }
+                $rootScope.addNewCost = false;
             }           
             var currentRowIndex = rowIndex;
 	    	if (!window.initialUomConversionDone) {
