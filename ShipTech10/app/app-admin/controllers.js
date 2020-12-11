@@ -664,7 +664,11 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
                 if (response) {
                     if (val.id == 'vessel_access') {
                         if (response.payload.length == 1) {
-                             $scope.tabData[val.id] = $scope.buildTree(response.payload[0].children);
+                            $scope.tabData[val.id] = $scope.buildTree(response.payload[0].children, $scope.formValues.accessVessels);
+                            $scope.checkData[val.id] = false;
+                            $scope.tabData['buyer_access'] = $scope.buildTree($scope.tabInitalData['buyer_access'], $scope.formValues.accessBuyers);
+                            $scope.tabData['company_access'] = $scope.buildTree($scope.tabInitalData['company_access'], $scope.formValues.accessCompanies);
+                            $scope.detectInitialAllSelected();
                         } else {
                             var aligendObject = $scope.setParentUnselectable(response.payload, $scope.formValues.accessVessels);
                             $scope.tabData[val.id] = aligendObject;
