@@ -758,6 +758,16 @@ APP_MASTERS.controller('Controller_Master', [
             }
         };
 
+        function setAllChild(object, type) {
+            if (object.isSelected) {
+                $scope.formValues[type].push({id: object.id, name: object.name});
+            }   
+            if (object.children && object.children.length) {
+                for (var i = 0; i < object.children.length; i++) {
+                    setAllChild(object.children[i], type);
+                }
+            }
+        }
         $scope.save_master_changes = function(ev, sendEmails, noReload, completeCallback) {
             screenLoader.showLoader();
             $('form').addClass('submitted');
@@ -769,6 +779,33 @@ APP_MASTERS.controller('Controller_Master', [
                         return object.product && object.formula;
                     });
                 }
+            }
+            
+            if (vm.app_id == 'admin' && vm.screen_id == 'users') {
+                var dataSrcs = {
+                    vessel_access: 'accessVessels',
+                    buyer_access: 'accessBuyers',
+                    company_access: 'accessCompanies'
+                };
+                var types = ['vessel_access', 'buyer_access', 'company_access'];
+                if ($scope.formValues.company) {
+                    let newCompany = {
+                        id: $scope.formValues.company.id,
+                        name: $scope.formValues.company.name
+                    }
+                    $scope.formValues.company = newCompany;
+                }
+                console.log($scope.formValues);
+                console.log($rootScope.tabData);
+                _.forEach(types, function(type) {
+                    $scope.formValues[dataSrcs[type]] = [];
+                    for (let i = 0; i < $rootScope.tabData[type].length; i++) {
+                        console.log($rootScope.tabData[type][i]);
+                        setAllChild($rootScope.tabData[type][i],dataSrcs[type]);
+                    }
+
+                })
+               
             }
 
             if(vm.app_id == 'masters' && vm.screen_id == 'systeminstrument') {

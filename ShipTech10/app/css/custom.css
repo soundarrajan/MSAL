@@ -4953,6 +4953,23 @@ table.energyCalculationBlade tr.border-green-jungle {
     border-left: 1px dashed #364150;
     padding-left: 15px;
 }
+
+
+#hierarchical-tree .search-list-user {
+    padding-left: 15px;
+}
+
+#hierarchical-tree .element-user-screen {
+    text-decoration: none !important;
+    cursor: pointer;
+    font-weight: 700;
+    box-sizing: border-box;
+    min-height: 20px;
+    line-height: 20px;
+}
+.tree-selection {
+    margin-left: 10px !important;
+}
 #hierarchical-tree  .expander {
     overflow: hidden;
     display: flex;
@@ -4966,6 +4983,8 @@ table.energyCalculationBlade tr.border-green-jungle {
 	transform: rotateZ(45deg) translate(5px);
 	transition: 0.3s;
 }
+
+
 #hierarchical-tree  .expander span {
 	margin-left: 9px;
 }

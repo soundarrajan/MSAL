@@ -9,8 +9,73 @@
     </ul>
     <div class="tab-content" >
         <div class="tab-pane fade" ng-repeat="(key, value) in entities" id="tab_{{  value.id  }}" ng-class="$index == 0 ? 'active in ' : ''">
+        <div class="">
+            <div class="col-md-12">
+                <div class="hierarchy-header row">
+                    <div class="col-md-9">
+                        <div class="form-group  form-inline row ">
+                            <label class="mt-checkbox " for="inlineCheckboxSelectAll_{{ value }}">
+                                <input type="checkbox" name="selectAll_{{ value }}" id="inlineCheckboxSelectAll_{{ value }}" ng-model="checkData[value.id]" ng-change="selectAll(value.id, checkData[value.id])"/>
+                                <span></span>
+                                Select all
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-3 ">
+                        <div class="input-group st-content-search-box ng-scope">
+                            <input type="search" class="form-control" ng-model="search_terms" placeholder="Search"
+                                ng-keydown="$event.keyCode === 13 &amp;&amp; searchHierarchy(search_terms, value.id)" />
+                                <span class="input-group-addon">
+                                    <i class="fa fa-search" ng-click="searchHierarchy(search_terms)"></i>
+                                </span>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 portlet light">
+                <div class="list-unstyled hierarchical-tree_{{value.id}}" id="hierarchical-tree" style="margin-left: 13px !important;">
+                    <div ng-show="!noResultsFound" class="children">
+                        <span ng-repeat="item in tabData[value.id] track by $index" ng-include="'tree'" ng-init="depth = 1">
+                        </span>
+                    </div>
+                    <p class="warning" ng-if="noResultsFound">No results found</p>
+                </div>
 
-            <hierarchy-search dataset="tabData[value.id]" datasrc="value.id"  datavalues="formValues" screenid="CA.entity_id" ng-if="(tabData[value.id] && formValues.id) || ( tabData[value.id] && CA.entity_id == '') "></hierarchy-search>
+                <script type="text/ng-template" id="tree">
+                    <div class="search-list-user_{{value.id}} list-unstyled search-list-user" style="margin-left:{{depth*10}}px">
+                        <span class="{{item.children.length ? 'expander' : ''}}" ng-class="!item.children.length && depth != 1 ? 'no-children' : ''"> 
+                            <i ng-if="item.children.length" class="fa fa-caret-right collapsed" onclick="expandHierarchyChildren(this)"></i>
+                            <label class="mt-checkbox element-user-screen">
+                                <input type="checkbox" ng-checked="item.isSelected" onchange="change(this)"
+                                        class="tree-selection" name="tree-selection" hierarchy-detail="{{item}}" hierarchy-type="{{value.id}}">
+                                <span style="background:#fff; border: 1px solid #dedede;"></span>
+                                {{item.name}}
+                             </label>
+                        </span>
+                        <div  class="children collapse not-first-level">
+                            <span ng-repeat="item in item.children track by $index">
+                                <span ng-if="!item.children.length" ng-init="depth = depth + 1" style="display: list-item">
+                                    <label class="mt-checkbox element-user-screen" style="margin-left: 20px;">
+                                      <input  ng-checked="item.isSelected" onchange="change(this)" type="checkbox" class="tree-selection" name="tree-selection" hierarchy-detail="{{item}}" hierarchy-type="{{value.id}}"> 
+                                        <span style="background:#fff; border: 1px solid #dedede;"></span>
+                                        {{item.name}}
+                                     </label>
+                                </span>
+                                <span ng-if="item.children.length"  ng-include="'tree'" ng-init="depth = depth + 1" style="display: list-item">
+                                    <label class="mt-checkbox element-user-screen">
+                                      <input  ng-checked="item.isSelected" onchange="change(this)" type="checkbox" class="tree-selection" name="tree-selection" hierarchy-detail="{{item}}" hierarchy-type="{{value.id}}"> 
+                                      <span style="background:#fff; border: 1px solid #dedede;"></span>
+                                        {{item.name}}
+                                     </label>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                </script>
+            </div>
+        </div>
 
         </div>
     </div>

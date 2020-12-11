@@ -648,18 +648,35 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
         }, 20);
     };
     $scope.getTabData = function() {
+        console.log($scope.formValues);
+        $scope.checkData = {
+            vessel_access: 'accessVessels',
+            buyer_access: 'accessBuyers',
+            company_access: 'accessCompanies'
+        };
+        $scope.tabInitalData = {
+            vessel_access: 'accessVessels',
+            buyer_access: 'accessBuyers',
+            company_access: 'accessCompanies'
+        }
         $.each($scope.entities, (key, val) => {
             Factory_Admin.getTabData(val.id, (response) => {
                 if (response) {
                     if (val.id == 'vessel_access') {
                         if (response.payload.length == 1) {
-                            $scope.tabData[val.id] = $scope.buildTree(response.payload[0].children);
+                             $scope.tabData[val.id] = $scope.buildTree(response.payload[0].children);
                         } else {
-                            var aligendObject = $scope.setParentUnselectable(response.payload);
+                            var aligendObject = $scope.setParentUnselectable(response.payload, $scope.formValues.accessVessels);
                             $scope.tabData[val.id] = aligendObject;
+                            $scope.checkData[val.id] = false;
+                            $scope.tabData['buyer_access'] = $scope.buildTree($scope.tabInitalData['buyer_access'], $scope.formValues.accessBuyers);
+                            $scope.tabData['company_access'] = $scope.buildTree($scope.tabInitalData['company_access'], $scope.formValues.accessCompanies);
+                            $scope.detectInitialAllSelected();
                         }
                     } else {
-                        $scope.tabData[val.id] = $scope.buildTree(response.payload);
+                        $scope.checkData[val.id] = false;
+                        $scope.tabData[val.id] = response.payload
+                        $scope.tabInitalData[val.id] = response.payload;
                     }
                 }
             });
@@ -672,6 +689,19 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
         	$scope.spotAgreementTypesList = response.payload.spotAgreementTypesList;
         });
     };
+
+    $scope.findInObject = function(values, type) {
+        $.each($scope.tabData[type], (ki, item) => {
+            let findVal = _.find(values, function (object) {
+                return object.id == item.id;
+            })
+            if (findVal) {
+                $scope.tabData[type].isSelected = true;
+            } else if (item.children) {
+                findInObject(values, item.children);
+            }
+        });
+    }
 
     $scope.$on('changedSelection', (evt, value) => {
         // console.log(value);
@@ -686,14 +716,213 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
             $scope.formValues.accessCompanies = value.company_access;
         }
     });
-    $scope.setParentUnselectable = function(list) {
+
+    $scope.$watch('tabData', function(scope){
+       $rootScope.tabData = $scope.tabData;
+    }, true);
+
+
+
+    $scope.setParentUnselectable = function(list, values) {
         list.forEach((obj) => {
             obj.unSelectable = true;
+            obj.open = false;
+            for (let i = 0; i < obj.children.length; i++) {
+                let element = obj.children[i];
+                let findElement = _.find(values, function(object) {
+                    return object.id == element.id && object.name == element.name;
+                });
+                if (findElement) {
+                    obj.children[i].isSelected = true;
+                }
+                setParent(obj, obj, obj.children[0].isSelected, obj);
+            }
+
         });
-        console.log(list);
         return list;
     };
-    $scope.buildTree = function(list, idAttr, parentAttr, childrenAttr) {
+
+    window.expandHierarchyChildren = function (e) {
+        if ($(e).hasClass("collapsed")) {
+            if ($scope.searched) {
+                $(e).parent().next().find(".search-list").show();
+            }
+            $(e).parent().next().slideDown();
+        } else {
+            $(e).parent().next().find(".children").hide();
+            $(e).parent().next().find(".expander i").addClass("collapsed");
+            $(e).parent().next().slideUp();
+        }
+        $(e).toggleClass("collapsed");
+    }
+
+    $scope.searchHierarchy = function (val, type) {
+        if (val == "" || val == undefined) {
+            $scope.searched = false;
+            $scope.search_terms = "";
+            $scope.redrawTree(type);
+        } else {
+            $(".search-list-user_" + type).show();
+            $.each($(".search-list-user_" + type), function (){
+                if ($(this).text().toLowerCase().indexOf(val.toLowerCase()) != -1) {
+                    $(this).show();
+                    $(this).children(".children").show();
+                    $(this).children(".expander").find("i").addClass("collapsed");
+                }else {
+                    $(this).children(".children").hide();
+                    $(this).children(".expander").find("i").addClass("collapsed");
+                    $(this).hide();
+                }
+            });0.
+            $.each($(".search-list-user_" + type), function (){
+                if ($(this).text().toLowerCase().indexOf(val.toLowerCase()) != -1) {
+                    let elements = $(this).find(".children .search-list-user");
+                    let hasHiddenAllChildren = true;
+                    for (let i = 0; i < elements.length; i++) {
+                        if (elements[i].style.display == "block" || !elements[i].style.display) {
+                            hasHiddenAllChildren = false;
+                        }
+                    }
+                    if (!hasHiddenAllChildren) {
+                        $(this).children(".expander").find("i").removeClass("collapsed");
+                    }
+                }
+            });
+            $scope.noResultsFound = ($(".hierarchical-tree_" + type).text().toLowerCase().indexOf(val.toLowerCase()) == -1);
+            $scope.searched = true;
+        }
+    }
+
+    $scope.redrawTree = function (type) {
+        $scope.noResultsFound = false;
+        $(".not-first-level").hide();
+        $(".search-list-user_" + type).show();
+        $(".search-list-user_" + type).find(".expander i").addClass("collapsed");
+    }
+
+    function tree(object, detail, initial) {
+        if (object.id == detail.id && object.name == detail.name) {
+            object.isSelected = !object.isSelected;
+            setChild(object, object.isSelected);
+            if (object.parent) {
+                setParent(initial, object.parent, object.isSelected, initial);
+            } else {
+                setParent(initial, initial, object.isSelected, initial);
+            }
+        }
+        if (object.children && object.children.length) {
+            for (var i = 0; i < object.children.length; i++) {
+                if (object.children[i].id == detail.id && object.name == detail.name) {
+                    setChild(object.children[i], object.children[i].isSelected);
+                }
+                tree(object.children[i], detail, initial);
+            }
+        }
+        
+    }
+
+    function setChild(object, value) {
+        if (object.children && object.children.length) {
+            for (var i = 0; i < object.children.length; i++) {
+                object.children[i].isSelected = value;    
+                setChild(object.children[i], value);
+            }
+        }
+    }
+
+    function setParent(object, detail, value, initial) {
+        if (object.id == detail.id && object.name == detail.name) {
+            object.isSelected = value;
+            let findElementUnselected = _.find(object.children, function(object) {
+                return !object.isSelected;
+            });
+            if (!findElementUnselected) {
+                object.isSelected = value;
+            } else {
+                object.isSelected = false;
+            }
+            if (object.parent) {
+                setParent(initial, object.parent, object.isSelected, initial);
+            }
+        }
+        if (object.children && object.children.length) {
+            for (var i = 0; i < object.children.length; i++) {
+                setParent(object.children[i], detail, value, initial);
+            }
+        }
+    }
+
+
+    function setAllChild(object, value) {
+        if (object.children && object.children.length) {
+            for (var i = 0; i < object.children.length; i++) {
+                object.children[i].isSelected = value;    
+                setAllChild(object.children[i], value);
+            }
+        }
+    }
+
+    $scope.selectAll = function(type, value) {
+        _.forEach($scope.tabData[type], function(object) {
+            object.isSelected = value;
+            setAllChild(object, value);
+        })
+        console.log($scope.tabData[type]);
+    }
+
+    function detectAllSelected(object, checkData) {
+        if (object.children && object.children.length) {
+             for (var i = 0; i < object.children.length; i++) {
+                if (!object.children[i].isSelected) {
+                    checkData = false;
+                    $scope.isAll = false;
+                    return;
+                }    
+                detectAllSelected(object.children[i], checkData);
+            }
+        } else if (!object.isSelected) {
+            checkData = false;
+            $scope.isAll = false;
+            return;
+        }
+    }
+
+    $scope.detectInitialAllSelected = function() {
+        var dataSrcs = {
+            vessel_access: 'accessVessels',
+            buyer_access: 'accessBuyers',
+            company_access: 'accessCompanies'
+        };
+        var types = ['vessel_access', 'buyer_access', 'company_access'];
+        _.forEach(types, function (type) {
+            $scope.isAll = true;
+            for (let i = 0; i < $scope.tabData[type].length; i++) {
+                detectAllSelected($scope.tabData[type][i], $scope.checkData[type]);
+            }
+            $scope.checkData[type] = $scope.isAll ? true : false;
+        });
+    }
+    window.change = function(event) {
+        event.value = "off";
+        var detail = JSON.parse($(event).attr("hierarchy-detail"));
+        var type = $(event).attr("hierarchy-type");
+        var dataSrcs = {
+            vessel_access: 'accessVessels',
+            buyer_access: 'accessBuyers',
+            company_access: 'accessCompanies'
+        };
+        $scope.isAll = true;
+        for (let i = 0; i < $scope.tabData[type].length; i++) {
+            tree($scope.tabData[type][i], detail, $scope.tabData[type][i]);
+            detectAllSelected($scope.tabData[type][i], $scope.checkData[type]);
+        }
+        $scope.checkData[type] = $scope.isAll ? true : false;
+        $scope.$apply();
+        console.log($scope.tabData[type]);
+        
+    }
+
+    $scope.buildTree = function(list, values, idAttr, parentAttr, childrenAttr) {
         if (!idAttr) {
             idAttr = 'id';
         }
@@ -706,6 +935,12 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
         let treeList = [];
         let lookup = {};
         list.forEach((obj) => {
+            let findElement = _.find(values, function(object) {
+                return object.id == obj.id && object.name == obj.name;
+            });
+            if (findElement) {
+                obj.isSelected = true;
+            }
             lookup[obj[idAttr]] = obj;
             obj[childrenAttr] = [];
         });
