@@ -44,7 +44,7 @@
                 </div>
 
                 <script type="text/ng-template" id="tree">
-                    <div class="search-list-user_{{value.id}} list-unstyled search-list-user" style="margin-left:{{depth*10}}px">
+                    <div class="search-list-user_{{value.id}} list-unstyled search-list-user">
                         <span class="{{item.children.length ? 'expander' : ''}}" ng-class="!item.children.length && depth != 1 ? 'no-children' : ''"> 
                             <i ng-if="item.children.length" class="fa fa-caret-right collapsed" onclick="expandHierarchyChildren(this)"></i>
                             <label class="mt-checkbox element-user-screen">
