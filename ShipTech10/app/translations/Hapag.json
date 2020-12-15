@@ -523,7 +523,8 @@
             "CLAIM_SUMMARY": "Claim Summary",
             "DEBUNKER_AMOUNT": "Debunker Amount",
             "DOCUMENT_TYPE": "Document Type",
-            "CLAIM_EDIT_CREATE_CREDIT_NOTE": "Create Credit Note"
+            "CLAIM_EDIT_CREATE_CREDIT_NOTE": "Create Credit Note",
+            "CLAIM_QUANTITY":"Claim Quantity"
       },
       "masters": {
             "ADDL_TECHNICAL_DETAILS": "Addl. Technical Details",
