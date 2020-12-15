@@ -565,7 +565,7 @@ angular.module('shiptech')
             prefix: `${API.BASE_URL_OPEN_SERVER }/translations/`,
             suffix: '.json'
         });
-
+        window.isCMATranslations = tenantConfigs.translations == 'CMA' ? true : false;
         // translations are based tenant, use tenantConfigs.translations (file name)
         $translateProvider.preferredLanguage(tenantConfigs.translations);
         $translateProvider.useSanitizeValueStrategy('sanitize');

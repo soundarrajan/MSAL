@@ -177,13 +177,13 @@
                                 </span>
                             </div>
                         </span>
-                        <span ng-if="action.html_element == 'checkbox'">
+                        <span ng-if="action.html_element == 'checkbox'"  ng-controller="Controller_Master as CM">
                             <div class="input-group" style="padding:0 10px">
                                 <div class="icheck-inline">
                                     <label  class=" mt-checkbox">
                                         <input class="{{ action.id }}"  type="checkbox" name="{{ action.id }}[]"  id="{{ action.id }}"  dynamic-condition="{{ action.Conditional }}" dynamic-condition-type="{{ action.ConditionalType }}"/>
                                         <span></span>
-                                        {{ action.label }}
+                                        {{CM.isCMATranslations && action.label == 'Blacklisted' ? 'Not Active' : action.label }}
                                     </label>
                                 </div>
                             </div>

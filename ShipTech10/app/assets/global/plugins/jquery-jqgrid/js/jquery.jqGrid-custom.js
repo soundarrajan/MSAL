@@ -506,6 +506,7 @@ var Cfg = {
             columnId += 'isDeleted';
             let isStatus = $(columnId)[0] ? $(columnId)[0].innerText.indexOf('Status') != -1 : false;
             let isBlacklisted = $(columnId)[0] ? $(columnId)[0].innerText.indexOf('Blacklisted') != -1 : false;
+            let notActiveCounterparty = $(columnId)[0] ? $(columnId)[0].innerText.indexOf('Not Active') != -1 : false;
 
             let findServiceColumn = $('#flat_service_list_name')[0] ? $('#flat_service_list_name')[0].innerText.indexOf('Service') != -1 : false;
             let findServiceCodeColumn = $('#flat_service_list_code')[0] ? $('#flat_service_list_code')[0].innerText.indexOf('Service Code') != -1 : false;
@@ -626,6 +627,9 @@ var Cfg = {
                     }
                     if (window.location.href.indexOf('masters/') != -1 && v.column.columnValue == "IsDeleted" && isBlacklisted) {
                          v.column.columnName = 'Blacklisted';
+                    }
+                    if (window.location.href.indexOf('masters/counterparty') != -1 && v.column.columnValue == "IsDeleted" && notActiveCounterparty) {
+                         v.column.columnName = 'Not Active';
                     }
                     if (v.column.columnType == "Bool" && v.column.columnValue == "IsDeleted") {
                          if (value === "1") {
