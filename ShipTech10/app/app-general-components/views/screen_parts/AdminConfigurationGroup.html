@@ -27,6 +27,11 @@
             </a>
         </li>
         <li role="presentation" ng-show="tenantSetting.shiptechLite !== true">
+            <a aria-controls="home" role="tab" data-toggle="tab" ng-click="config_tab = 10">
+                {{ 'Lab' | translate }}
+            </a>
+        </li>
+        <li role="presentation" ng-show="tenantSetting.shiptechLite !== true">
             <a aria-controls="home" role="tab" data-toggle="tab" ng-click="config_tab = 6">
                 {{ 'Invoice' | translate }}
             </a>
@@ -1514,6 +1519,28 @@
             </div>
             <div class="col-sm-12">
                 <span ng-include="'app-general-components/views/screen_parts/AdminConfigurationReports.html'"></span>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-panel " ng-if="tenantSetting.shiptechLite !== true" id="invoice" ng-show="config_tab == 10">
+            <div class="portlet">
+                <div class="portlet-title">
+                    <span class="caption-subject ">
+                        Lab
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-md-3">
+                    <div class="form-group row">
+                        <label for="autoVerifyLabResult" class="simpleLookupLabel">
+                            {{ CM.app_id + '.AUTO_VERIFY_LAB_RESULTS' | translate }}
+                        </label>
+                        <div class="input-group form_input form_input_autoverifylabresult">
+                            <select class="form-control bs-select changeIT" name="autoVerifyLabResult" id="autoVerifyLabResult" ng-required="true" ng-options="item as item.name for item in CM.listsCache.AutoVerifyLabResult track by item.id"
+                                    ng-model="formValues.lab.autoVerifyLabResult"></select>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
      

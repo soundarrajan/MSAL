@@ -5617,6 +5617,7 @@ APP_API.factory('$Api_Service', [
                                     result.delivery = response.data.deliveryConfiguration;
                                     result.invoice = response.data.invoiceConfiguration;
                                     result.report = response.data.reportConfiguration;
+                                    result.lab = response.data.labConfiguration;
                                     $rootScope.$broadcast('tenantConfiguration', result);
                                     $rootScope.tenantConfigurationResponseData = result;
                                     callback(result);
@@ -5630,7 +5631,8 @@ APP_API.factory('$Api_Service', [
     						    result.schedule = $tenantConfiguration.scheduleDashboardConfiguration;
     							result.delivery = $tenantConfiguration.deliveryConfiguration;
     							result.invoice = $tenantConfiguration.invoiceConfiguration;
-    							result.report = $tenantConfiguration.reportConfiguration;
+                                result.report = $tenantConfiguration.reportConfiguration;
+                                result.lab = $tenantConfiguration.labConfiguration;
     							$rootScope.$broadcast('tenantConfiguration', result);
                                 $rootScope.tenantConfigurationResponseData = result;
 	                            callback(result);
@@ -5917,7 +5919,10 @@ APP_API.factory('$Api_Service', [
                         let report = $http.post(`${API.BASE_URL_DATA_ADMIN }/api/admin/reportConfiguration/update`, {
                             Payload: data.report
                         });                
-                        $q.all([ contract, email, general, procurement, schedule, delivery, invoice, report ]).then(
+                        let lab = $http.post(`${API.BASE_URL_DATA_ADMIN }/api/admin/labConfiguration/update`, {
+                            Payload: data.lab
+                        });
+                        $q.all([ contract, email, general, procurement, schedule, delivery, invoice, report, lab ]).then(
                             (responses) => {
                                 let result = {};
                                 result.status = true;
@@ -5966,6 +5971,11 @@ APP_API.factory('$Api_Service', [
                                     result.message = `${result.message }Report settings saved!<br>`;
                                 } else {
                                     result.message = `${result.message }Report settings failed to save!<br>`;
+                                }
+                                if (responses[8].status == 200) {
+                                    result.message = `${result.message }Lab settings saved!<br>`;
+                                } else {
+                                    result.message = `${result.message }Lab settings failed to save!<br>`;
                                 }
                                 
                                 callback(result);

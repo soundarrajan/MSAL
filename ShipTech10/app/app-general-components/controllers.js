@@ -3912,7 +3912,8 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
 		    "schedule" : $tenantConfiguration.scheduleDashboardConfiguration,
 			"delivery" : $tenantConfiguration.deliveryConfiguration,
 			"invoice" : $tenantConfiguration.invoiceConfiguration,
-			"report" : $tenantConfiguration.reportConfiguration,        	
+            "report" : $tenantConfiguration.reportConfiguration,   
+            "lab" : $tenantConfiguration.labConfiguration,        	
         };
         $scope.getAdminConfigurationGH = function(data) {
             vm.adminConfiguration = data;

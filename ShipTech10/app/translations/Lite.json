@@ -1247,7 +1247,8 @@
     "NEED_ORDER_CONFIRMATION_EMAIL_VESSEL": "Need order confirmation email to vessel",
     "AUTOPOPULATE_LAB_FROM": "Auto Populate Lab from",
     "PRICING_EVENT_DATE_MANUAL_OVERRIDE": "Pricing date manual override",
-    "AUTO_FINAL_QUANTITY": "Auto-populate Final Qty based on"
+    "AUTO_FINAL_QUANTITY": "Auto-populate Final Qty based on",
+    "AUTO_VERIFY_LAB_RESULTS": "Auto Verify Lab Results"
   },
   "recon": {
     "VESSEL_NAME": "Vessel Name",
