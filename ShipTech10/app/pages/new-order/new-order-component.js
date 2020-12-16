@@ -370,7 +370,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         function loadData(data) {
             ctrl.data = data.payload;
 
-
             $.each(ctrl.data.products, (k, v) => {
                 if ((!v.physicalSupplier || !_.get(v, 'physicalSupplier.id')) && _.get(v, 'status.name') !== 'Cancelled') {
                     ctrl.data.missingPhysicalSupplier = true;
@@ -2232,6 +2231,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             }
         };
         ctrl.saveOrder = function() {
+            console.log($rootScope.notes);
             $('form').addClass('submitted');
             let aggregatedErrorMessages = [];
             let forms_validation = validateForms(),

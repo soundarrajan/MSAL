@@ -77,6 +77,7 @@ APP_MASTERS.controller('Controller_Datatables', [
             multiSelectCell: $templateCache.get('app-general-components/views/data-table-formatters/multiSelectCell.html'),
             multiselect: $templateCache.get('app-general-components/views/data-table-formatters/multiselect.html'),
             readonlyNumber: $templateCache.get('app-general-components/views/data-table-formatters/readonlyNumber.html'),
+            customRemRow: $templateCache.get('app-general-components/views/data-table-formatters/customRemRow.html')
         };
         $scope.gridScope = $scope;
         $scope.initGridDropdowns = function(id) {
@@ -1353,6 +1354,59 @@ APP_MASTERS.controller('Controller_Datatables', [
                         // }
                     }, 10);
                 }
+            },
+            generalNotes: {
+                data: 'formValues.notes',
+                multiSelect: false,
+                noUnselect: true,
+                rowHeight: 40,
+                excessRows: 999,
+                rowEditWaitInterval: -1, // Important for skipping the promise
+                columnDefs: [
+                    {
+                        name: '   ',
+                        width: 40,
+                        enableCellEdit: false,
+                        enableSorting: false,
+                        cellClass: 'actionsCol',
+                        cellTemplate: $scope.dataTableTemplates.customRemRow,
+                        headerCellTemplate: $scope.dataTableTemplates.addRow,
+                        cellTemplateCondition: 'detectCurrentUser(grid.appScope.fVal().formValues.notes, grid.appScope.rowIdx(row))',
+                    },
+                    {
+                        name: 'claimNote',
+                        displayName: 'Notes',
+                        cellTemplate: $scope.dataTableTemplates.text,
+                        ChangeAction : 'updateDateAndTime(grid.appScope.fVal().formValues.notes[grid.appScope.rowIdx(row)])',
+                        BlurAction: 'autoSaveNotes(grid.appScope.fVal().formValues.notes)',
+                        cellTemplateCondition: 'detectCurrentUser(grid.appScope.fVal().formValues.notes, grid.appScope.rowIdx(row))',
+                        
+                    },
+                    {
+                        name: 'createdBy.name',
+                        displayName: 'Added By',
+                        enableCellEdit: false
+                    },
+                    {
+                        name: 'createdOn',
+                        displayName: 'Date & Time',
+                        cellTemplate: $scope.dataTableTemplates.dateDisplay,
+                        enableCellEdit: false
+                    }
+    
+                ],
+                onRegisterApi: function(api) {
+                    setTimeout(() => {
+                        api.core.handleWindowResize();
+                        if (angular.equals($scope.formValues, {}) || !$scope.formValues.notes) {
+                            $scope.formValues.notes = [];
+                            if (!$scope.entity_id) {
+                                $scope.formValues.isEditable = true;
+                            }
+                        }
+                    }, 10);
+                }
+
             },
             voyages: {
                 data: 'formValues.flattenedVoyages',
@@ -3811,6 +3865,18 @@ APP_MASTERS.controller('Controller_Datatables', [
                 });
             }
         };
+
+        $scope.updateDateAndTime = function(row) {
+            row.createdOn =  moment().format();
+        }
+
+        $scope.autoSaveNotes = function(formValues) {
+            console.log(formValues);
+        }
+
+        $scope.detectCurrentUser = function(values, index) {
+            return $rootScope.user.name != values[index].createdBy.name ? true : false;
+        }
 
         $scope.checkIfAtLeastOneElementIsInArray = function(needle, haystack) {
             var isInArray = false;

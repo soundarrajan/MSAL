@@ -2,7 +2,7 @@
 	<span ng-if="!col.colDef.isLabResultTooltip">
 		<span ng-init="chg = false"></span>
 		<span ng-if="CM.chg == true && changedFVal" class="hidden">{{grid.appScope.fVal().formValues = changedFVal}}</span>
-		<input ng-if="col.colDef.readOnly != true"
+		<input ng-if="col.colDef.readOnly != true && !$eval(col.colDef.cellTemplateCondition)"
 			type="text"
 			class="form-control w100"
 			name="{{ col.colDef.displayName }}"
@@ -19,6 +19,9 @@
 			format="{{ col.colDef.format }}" />
 		<span ng-if="col.colDef.readOnly == true">
 			<input type="text" format="number:3" class="form-control w100" disabled ng-model="MODEL_COL_FIELD" />
+		</span>
+		<span ng-if="col.colDef.readOnly != true && $eval(col.colDef.cellTemplateCondition)" style="position: relative;top: 7px;padding: 10px 10px 9.5px;">
+			{{MODEL_COL_FIELD}}
 		</span>
 	</span>
 

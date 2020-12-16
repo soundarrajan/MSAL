@@ -377,6 +377,7 @@
 
 <div ng-include=" 'pages/group-of-requests/views/best-tco.html'"></div>
 <div ng-include=" 'pages/group-of-requests/views/compare.html'"></div>
+<div ng-include=" 'pages/group-of-requests/views/notes.html'"></div>
 <comments-dialog class="modal fade in" id="comments" aria-hidden="true" data-width="33%" args="{ internalComments: $ctrl.internalComments, externalComments: $ctrl.externalComments}" on-save-comments="$ctrl.saveComments(internalComments, externalComments)"></comments-dialog>
 <div class="bladeEntity" id="confirmOffer" style="overflow: auto;">
     <confirm-offers-dialog id="confirm" aria-hidden="true" data-width="90%" args="{needSupplierVerif: $ctrl.needSupplierQuote}" confirmation-product-offers=$ctrl.confirmationProductOffers></confirm-offers-dialog>

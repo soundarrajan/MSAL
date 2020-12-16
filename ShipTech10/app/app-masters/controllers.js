@@ -3921,12 +3921,21 @@ APP_MASTERS.controller('Controller_Master', [
                 $scope.formValues[elem].id = 0;
             }
         };
+
+        $scope.setScope = function(notes) {
+            $scope.formValues.notes = notes;
+        }
+
+        $scope.$watch('formValues.notes', function(scope){
+             $rootScope.notes = $scope.formValues.notes;
+        }, true);
+
         $scope.addData = function(obj) {
             obj = eval("$scope." + obj);
             obj.push({
                 id: 0
             });
-            if (vm.app_id == 'claims' && vm.screen_id == 'claims') {
+            if (vm.app_id == 'claims' && vm.screen_id == 'claims' || (vm.app_id == 'default' && (window.location.href.indexOf('request') != -1 || window.location.href.indexOf('order') != -1))) {
                 $.each(obj, (key, val) => {
                     if (val.id == 0) {
                         if (typeof val.createdBy == 'undefined') {

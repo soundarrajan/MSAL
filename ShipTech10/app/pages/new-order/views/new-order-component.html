@@ -1905,6 +1905,32 @@
         </div>
     </div>
 
+    <div class="row" style="background-color: white; padding: 15px 15px 10px 7px;margin-bottom:5px;">
+        <div class="portlet light">
+            <div class="portlet-title">
+                <div class="tools">
+                    <a   class="collapse" data-original-title="" title=""></a>
+                </div>
+                <div class="caption">
+                    <span class="caption-subject">
+                        NOTES
+                    </span>
+                </div>
+            </div>
+            <div class="portlet-body" ng-controller="Controller_Master as CM">
+                <div>
+                   <div ui-grid="gridOptions.generalNotes" id="grid_orderNotes" class="dataGrid">
+                        <div class="clearfix"></div>
+                    </div>
+                <span ng-init="initGridDropdowns('generalNotes')"></span>
+                <span ng-if="$ctrl.data.orderNotes">
+                    <span ng-init="setScope($ctrl.data.orderNotes)"></span>
+                </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
 <!--    ACTION BUTTONS-->
 
     <div class="row">

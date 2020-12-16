@@ -1046,6 +1046,29 @@
             </div>
         </div>
     </div>
+    <div class="portlet light" ng-if="$ctrl.request">
+        <div class="portlet-title">
+            <div class="tools">
+                <a   class="collapse" data-original-title="" title=""></a>
+            </div>
+            <div class="caption">
+                <span class="caption-subject">
+                    NOTES
+                </span>
+            </div>
+        </div>
+        <div class="portlet-body" ng-controller="Controller_Master as CM">
+            <div>
+               <div ui-grid="gridOptions.generalNotes" id="grid_generalNotes" class="dataGrid">
+                    <div class="clearfix"></div>
+                </div>
+            <span ng-init="initGridDropdowns('generalNotes')"></span>
+            <span ng-if="$ctrl.request.requestNotes">
+                <span ng-init="setScope($ctrl.request.requestNotes)"></span>
+            </span>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="st-main-content-menu bottom-menu">
             <div class="pull-right buttons">
