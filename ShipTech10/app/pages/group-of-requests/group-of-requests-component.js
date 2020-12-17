@@ -4050,19 +4050,23 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
         };
         ctrl.viewBladeSellerRating = function() {
         	ctrl.changeBladeWidgetFunction = null;
-        	if ($('.blade-column.main-content-column .ng-dirty').length > 0 && !ctrl.confirmedBladeNavigation) {
-	        	$('.confirmNavigateBlade').removeClass('hide');
-	        	$('.confirmNavigateBlade').modal();
-	        	ctrl.changeBladeWidgetFunction = {
-	        		function: 'ctrl.viewBladeSellerRating',
-	        		params : []
-	        	};
-	        	return;
-        	}
-        	ctrl.confirmedBladeNavigation = false;
-
-        	ctrl.blade.activeWidget = 'rating';
-        	ctrl.blade.colLayout = 'double';
+            if ($('.blade-column.main-content-column .ng-dirty').length > 0 && !ctrl.confirmedBladeNavigation) {
+                $('.confirmNavigateBlade').removeClass('hide');
+                $('.confirmNavigateBlade').modal();
+                ctrl.changeBladeWidgetFunction = {
+                    function: 'ctrl.viewBladeSellerRating',
+                    params : []
+                };
+                return;
+            }
+            ctrl.confirmedBladeNavigation = false;
+            ctrl.blade.colLayout = 'double';
+            ctrl.blade.activeWidget = 'rating';
+            ctrl.bladeTemplateUrl = 'components/blade/templates/gor-blade-content.html';
+            ctrl.blade.widgetType = 'counterparty';
+            $bladeEntity.open('groupOfRequestBlade');
+            ctrl.bladeOpened = true;
+            ctrl.dataLoaded = true;
         };
         ctrl.changeBladeCounterparty = function(seller, theLocation) {
             // ctrl.dataLoaded = true;
