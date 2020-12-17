@@ -1576,9 +1576,11 @@ APP_MASTERS.controller('Controller_Master', [
                     }
                     message = `${message }<br>${ val.$name}`;
                 });
-                $.each(vm.editInstance.$error.min, (key, val) => {
-                    message = `${message_min }<br>${val.$name ? val.$name : val.$$attr.id}`;
-                });
+                if(vm.editInstance.$error.required.length<0){
+                    $.each(vm.editInstance.$error.min, (key, val) => {
+                        message = `${message_min }<br>${val.$name ? val.$name : val.$$attr.id}`;
+                    });
+                }               
                 
                 toastr.error(message);
                 setTimeout(() => {
