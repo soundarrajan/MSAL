@@ -1561,10 +1561,13 @@ APP_MASTERS.controller('Controller_Master', [
                 vm.invalid_form = true;
                 let message = 'Please fill in required fields:';
                 let message_min = 'Please enter a value greater than zero for:';
+                let hasMessage = false;
+                let isMin = false;
                 let names = [];
                 $.each(vm.editInstance.$error.required, (key, val) => {
                     if (names.indexOf(val.$name) == -1) {
                         message = `${message }<br>${ val.$name ? val.$name : val.$$attr.id}`;
+                        hasMessage = true;
                     }
                     names = names + (val.$name ? val.$name : val.$$attr.id);
                 });
@@ -1575,14 +1578,19 @@ APP_MASTERS.controller('Controller_Master', [
                         message = `${message }<br>Please check format:`;
                     }
                     message = `${message }<br>${ val.$name}`;
+                    hasMessage = true;
                 });
-                if(!vm.editInstance.$error.required && !vm.editInstance.$error.pattern){
-                    $.each(vm.editInstance.$error.min, (key, val) => {
-                        message = `${message_min }<br>${val.$name ? val.$name : val.$$attr.id}`;
-                    });
-                }               
-                
-                toastr.error(message);
+              
+                $.each(vm.editInstance.$error.min, (key, val) => {
+                    message_min = `${message_min }<br>${val.$name ? val.$name : val.$$attr.id}`;
+                    isMin = true;
+                });
+                if (hasMessage) {
+                    toastr.error(message);
+                }
+                if (isMin) {
+                    toastr.error(message_min);
+                }
                 setTimeout(() => {
                     $scope.submitedAction = false;
                 }, 100);
