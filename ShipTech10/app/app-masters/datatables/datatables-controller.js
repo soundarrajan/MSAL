@@ -2001,12 +2001,14 @@ APP_MASTERS.controller('Controller_Datatables', [
                     {
                         name: 'quantityRangeFrom',
                         displayName: 'Quantity From',
-                        cellTemplate: $scope.dataTableTemplates.text
+                        cellTemplate: $scope.dataTableTemplates.text,
+                        format: `number:${ vm.quantity }`
                     },
                     {
                         name: 'quantityRangeTo',
                         displayName: 'Quantity To',
-                        cellTemplate: $scope.dataTableTemplates.text
+                        cellTemplate: $scope.dataTableTemplates.text,
+                        format: `number:${ vm.quantity }`
                     },
                     {
                         name: 'uom',
@@ -2034,7 +2036,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                     },
                     {
                         name: 'amount',
-                        format: 'number:3',
+                        format: `number:${ vm.amount }`,
                         displayName: 'Amount',
                         cellTemplate: $scope.dataTableTemplates.text,
                         cellCondition: 'grid.appScope.fVal().formValues.quantityDiscountRules[grid.appScope.rowIdx(row)].plusMinus.id == 3',
