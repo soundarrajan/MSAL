@@ -1560,6 +1560,7 @@ APP_MASTERS.controller('Controller_Master', [
                 $scope.submitedAction = false;
                 vm.invalid_form = true;
                 let message = 'Please fill in required fields:';
+                let message_min = 'Please enter a value greater than zero for:';
                 let names = [];
                 $.each(vm.editInstance.$error.required, (key, val) => {
                     if (names.indexOf(val.$name) == -1) {
@@ -1575,6 +1576,10 @@ APP_MASTERS.controller('Controller_Master', [
                     }
                     message = `${message }<br>${ val.$name}`;
                 });
+                $.each(vm.editInstance.$error.min, (key, val) => {
+                    message = `${message_min }<br>${val.$name ? val.$name : val.$$attr.id}`;
+                });
+                
                 toastr.error(message);
                 setTimeout(() => {
                     $scope.submitedAction = false;

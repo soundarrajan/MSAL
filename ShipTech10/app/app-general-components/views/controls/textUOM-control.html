@@ -21,7 +21,7 @@
 
         </span>
 
-        <input type="text"  id="{{ field.Name }}{{ field.UOMType }}" name="{{ field.Name }}" class="form-control uomInput" compute-formula="$eval(field.Formula)" dynamic-model="'formValues.' + field.Unique_ID " ng-required='field.Required && isVisible(field.Name + field.UOMType)'  ng-class="CM.invalid_form ? 'ng-touched' : ''" ng-disabled="$eval(field.Disabled) == true || field.Disabled == true ? true : false" ng-change="triggerChangeFields(field.Name, field.Unique_ID);" format="number:{{ tenantFormatPrecision }}"/>
+        <input type="number"  id="{{ field.Name }}{{ field.UOMType }}" name="{{ field.Name }}" class="form-control uomInput" compute-formula="$eval(field.Formula)" dynamic-model="'formValues.' + field.Unique_ID " ng-required='field.Required && isVisible(field.Name + field.UOMType)'  ng-class="CM.invalid_form ? 'ng-touched' : ''" ng-disabled="$eval(field.Disabled) == true || field.Disabled == true ? true : false" ng-change="triggerChangeFields(field.Name, field.Unique_ID);" format="number:{{ tenantFormatPrecision }}" ng-min="field.Name=='claimQuantity'?0.1:''"/>
 
 
         <span class="input-group-addon uom_group pseudoSelect" ng-if="field.UOMType != 'Currency'">

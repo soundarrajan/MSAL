@@ -516,6 +516,8 @@ APP_CLAIMS.controller('Controller_Claims', [
                             $scope.formValues.orderDetails.productType = v.productType.name;
                             if (!$rootScope.reloadClaimPage) {
                                 $scope.formValues.claimDetails.physicalSupplier = v.physicalSupplier;
+                                $scope.formValues.claimDetails.claimQuantity = $scope.formValues.orderDetails.claimQuantity;
+                                $scope.formValues.claimDetails.claimQuantityUom = $scope.formValues.orderDetails.claimQuantityUom;
                             } else {
                                 $rootScope.reloadClaimPage = false;
                             }
@@ -1086,6 +1088,8 @@ APP_CLAIMS.controller('Controller_Claims', [
             var quantityUom = null;
             var densityDifference = null;
             var specParameterId = null;
+            var ClaimQuantity =  $scope.formValues.claimDetails.claimQuantity;
+            var ClaimQuantityUom = $scope.formValues.claimDetails.claimQuantityUom;
 
             let quantity = getIndexAndCount($scope.formValues.quantitySubtypes);
             let density = getIndexAndCount($scope.formValues.densitySubtypes);
@@ -1128,7 +1132,7 @@ APP_CLAIMS.controller('Controller_Claims', [
                 }
                 $scope.formValues.claimType.quantityShortageUom = $scope.formValues.densitySubtypes[density.index].bdnQuantityUom;
             }
-
+            
             var payload = {
                 Payload: {
                     productId : productId,
@@ -1142,7 +1146,9 @@ APP_CLAIMS.controller('Controller_Claims', [
                     sellerQuantity : sellerQuantity,
                     buyerQuantity : buyerQuantity,
                     quantityUom : quantityUom,
-                    specParameterId : specParameterId
+                    specParameterId : specParameterId,
+                    claimQuantity : ClaimQuantity,
+                    claimQuantityUom : ClaimQuantityUom
                 }
             };
             $http.post(`${API.BASE_URL_DATA_CLAIMS }/api/claims/getQuantityShortage`, payload).then((response) => {
