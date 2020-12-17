@@ -1576,7 +1576,7 @@ APP_MASTERS.controller('Controller_Master', [
                     }
                     message = `${message }<br>${ val.$name}`;
                 });
-                if(vm.editInstance.$error.required.length<0){
+                if(!vm.editInstance.$error.required && !vm.editInstance.$error.pattern){
                     $.each(vm.editInstance.$error.min, (key, val) => {
                         message = `${message_min }<br>${val.$name ? val.$name : val.$$attr.id}`;
                     });
