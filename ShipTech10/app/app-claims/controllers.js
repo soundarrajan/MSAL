@@ -602,6 +602,9 @@ APP_CLAIMS.controller('Controller_Claims', [
                 $rootScope.$broadcast('changeCurrencyValues', 'EstimatedSettlementAmount');
                 $rootScope.$broadcast('changeCurrencyValues', 'OrderPrice');
             }
+            if(name == 'claimQuantity')
+                $scope.getQuantityShortage()
+
         };
         $scope.cancel_claim = function() {
             vm.fields = angular.toJson($scope.formValues.id);
