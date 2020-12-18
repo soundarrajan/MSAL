@@ -18,7 +18,7 @@
 			ng-required="$eval(col.colDef.required) > 0 || col.colDef.required == true ? true : false"
 			format="{{ col.colDef.format }}" />
 		<span ng-if="col.colDef.readOnly == true">
-			<input type="text" format="number:3" class="form-control w100" disabled ng-model="MODEL_COL_FIELD" />
+			<input type="text" format="{{col.colDef.format}}" class="form-control w100" disabled ng-model="MODEL_COL_FIELD" />
 		</span>
 		<span ng-if="col.colDef.readOnly != true && $eval(col.colDef.cellTemplateCondition)" style="position: relative;top: 7px;padding: 10px 10px 9.5px;">
 			{{MODEL_COL_FIELD}}

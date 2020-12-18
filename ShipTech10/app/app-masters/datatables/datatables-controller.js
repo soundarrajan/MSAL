@@ -325,14 +325,14 @@ APP_MASTERS.controller('Controller_Datatables', [
                         minWidth: 100,
                         cellTemplate: $scope.dataTableTemplates.text,
                         ChangeAction: 'invoiceConvertUom(\'cost\', rowRenderIndex, grid.appScope.fVal().formValues)',
-                        format: 'number:3',
+                        format: `number:${ vm.amount}`,
                         keyPressEvent: 'invoiceKeyPress(\'cost\')'
                     },
                     {
                         name: 'invoiceExtrasAmount',
                         displayName: 'Extra Amount',
                         minWidth: 100,
-                        format: 'number: 3',
+                        format: `number:${ vm.amount}`,
                         cellTemplate: $scope.dataTableTemplates.text,
                         readOnly: true
                     },
@@ -340,7 +340,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                         name: 'invoiceTotalAmount',
                         displayName: 'Total Amount',
                         cellTemplate: $scope.dataTableTemplates.text,
-                        format: 'number: 3',
+                        format: `number:${ vm.amount}`,
                         minWidth: 100,
                         readOnly: true
                     },
@@ -670,6 +670,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                         displayName: 'Inv. Amount in order curr.',
                         cellTemplate: $scope.dataTableTemplates.simpleTextUOM,
                         cellUomName: 'estimatedRateCurrency',
+                        format: vm.amount,
                         width: 200,
                         cellObject: {
                             Disabled: true

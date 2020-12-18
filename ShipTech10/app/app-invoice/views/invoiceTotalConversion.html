@@ -7,7 +7,7 @@
 	                {{ CM.app_id + '.INVOICE_AMOUNT' | translate }}
 	            </label>
 		        <span class="input-group-addon">
-		            <input type="text" style="width:50%" class="form-control pull-left" ng-change="computeInvoiceTotalConversion(CM.conversionRoe, CM.conversionTo)" ng-model="formValues.invoiceSummary.invoiceAmountGrandTotal" disabled>
+		            <input  format="number: {{tenantSetting.defaultValues.amountPrecision}}" type="text" style="width:50%" class="form-control pull-left" ng-change="computeInvoiceTotalConversion(CM.conversionRoe, CM.conversionTo)" ng-model="formValues.invoiceSummary.invoiceAmountGrandTotal" disabled>
 			        <input type="text" style="width:50%" class="form-control pull-left" ng-model="formValues.invoiceRateCurrency.name" disabled>
 		        </span>
 	        </div>
