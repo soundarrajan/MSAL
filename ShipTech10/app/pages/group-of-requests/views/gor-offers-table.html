@@ -817,7 +817,7 @@
                     <span ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+pkey]">
 
                         <div style="width:100px" class="energy-content-cell priceGap">
-                            {{productOffer.energyParameterValues.priceGap ? ( productOffer.energyParameterValues.priceGap  | number : $ctrl.numberPrecision.amountPrecision ): '-'}}
+                            {{!productOffer.energyParameterValues.priceGap ?  ( 0 | number : $ctrl.numberPrecision.pricePrecision )  : ( productOffer.energyParameterValues.priceGap  | number : $ctrl.numberPrecision.pricePrecision ) }}
                         </div>
                         <div style="width:100px" class="energy-content-cell tco {{ ($ctrl.isMinimumAmountOrTco(productOffer) && productOffer.totalAmount && productOffer.energyParameterValues.tco) ? 'bg-green-jungle' : '' }}">
                             {{productOffer.energyParameterValues.tco ? (productOffer.energyParameterValues.tco | number : $ctrl.numberPrecision.amountPrecision) : '-'}}
@@ -835,7 +835,6 @@
                         </div>                    
                         <div style="width:100px" class="energy-content-cell ">
                             <!-- amount -->
-
                             <span ng-if="$ctrl.negotiationDisplayDecimal">
                                 {{( (!productOffer.totalAmount) ? (0 | number : $ctrl.numberPrecision.amountPrecision) : (productOffer.totalAmount | number : $ctrl.numberPrecision.amountPrecision))}}
                             </span>

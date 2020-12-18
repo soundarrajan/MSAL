@@ -28,6 +28,7 @@ angular.module('shiptech.components')
                 groupOfRequestsModel.getEnergyBladeContentByProduct(payload).then((data) => {
                     if (data) {
                         ctrl.energyCalculationBladeData.data = data.payload;
+                        ctrl.priceDifference();
                         if (callback) {
                             callback();
                         }
@@ -35,6 +36,16 @@ angular.module('shiptech.components')
 	            });
             };
 
+            ctrl.priceDifference = function() {
+                $.each(ctrl.energyCalculationBladeData.data, (k, loc) => {
+                    $.each(loc.counterparties, (k2, counterparty) => {
+                        var priceGap = counterparty.energyParameterValues.priceGap;
+                        if (priceGap == 0) {
+                            counterparty.energyParameterValues.priceGap = counterparty.energyParameterValues.priceGap.toString();
+                        }
+                    });
+                });
+            }
             ctrl.computeDiffBasedOnSpecificEnergy = function() {
                 $.each(ctrl.energyCalculationBladeData.data, (k, loc) => {
                     $.each(loc.counterparties, (k2, counterparty) => {
