@@ -1823,7 +1823,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                     {
                         name: 'amount',
                         displayName: 'Amount',
-                        format: 'number:3',
+                        format: `number:${ vm.amount}`,
                         cellTemplate: $scope.dataTableTemplates.text,
                         cellCondition: 'grid.appScope.fVal().formValues.locationDiscountRules[grid.appScope.rowIdx(row)].plusMinus.id == 3',
                         cellConditionType: 'ng-disabled'
@@ -1918,7 +1918,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                     {
                         name: 'amount',
                         displayName: 'Amount',
-                        format: 'number:3',
+                        format:  `number:${ vm.amount}`,
                         cellTemplate: $scope.dataTableTemplates.text,
                         cellCondition: 'grid.appScope.fVal().formValues.productDiscountRules[grid.appScope.rowIdx(row)].plusMinus.id == 3',
                         cellConditionType: 'ng-disabled'
