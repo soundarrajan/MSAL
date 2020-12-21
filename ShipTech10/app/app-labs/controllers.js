@@ -44,6 +44,9 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
         if (typeof value == 'undefined') {
             return;
         }
+        if (window.location.href.indexOf("/invoices/") != -1) {
+           return;
+        }
         if (value == 'init') {
             if (typeof $scope.formValues.status != 'undefined') {
                 if ($scope.formValues.status.name) {
