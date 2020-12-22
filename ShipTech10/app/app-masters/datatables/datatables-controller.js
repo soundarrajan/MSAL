@@ -1375,7 +1375,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                         cellTemplateCondition: 'detectCurrentUser(grid.appScope.fVal().formValues.notes, grid.appScope.rowIdx(row))',
                     },
                     {
-                        name: 'claimNote',
+                        name: 'note',
                         displayName: 'Notes',
                         cellTemplate: $scope.dataTableTemplates.text,
                         ChangeAction : 'updateDateAndTime(grid.appScope.fVal().formValues.notes[grid.appScope.rowIdx(row)])',
@@ -1389,7 +1389,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                         enableCellEdit: false
                     },
                     {
-                        name: 'createdOn',
+                        name: 'createdAt',
                         displayName: 'Date & Time',
                         cellTemplate: $scope.dataTableTemplates.dateDisplay,
                         enableCellEdit: false
@@ -3870,15 +3870,14 @@ APP_MASTERS.controller('Controller_Datatables', [
         };
 
         $scope.updateDateAndTime = function(row) {
-            row.createdOn =  moment().format();
-        }
-
-        $scope.autoSaveNotes = function(formValues) {
-            console.log(formValues);
+            row.createdAt =  moment().format();
         }
 
         $scope.detectCurrentUser = function(values, index) {
-            return $rootScope.user.name != values[index].createdBy.name ? true : false;
+            if (values[index] && values[index].createdBy) {
+                return $rootScope.user.name != values[index].createdBy.name ? true : false;
+            }
+            return false;
         }
 
         $scope.checkIfAtLeastOneElementIsInArray = function(needle, haystack) {

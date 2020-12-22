@@ -3942,7 +3942,8 @@ APP_MASTERS.controller('Controller_Master', [
         }
 
         $scope.$watch('formValues.notes', function(scope){
-             $rootScope.notes = $scope.formValues.notes;
+            var generalNotesScope = angular.element($('#grid_generalNotes')).scope();
+            $rootScope.notes = generalNotesScope.formValues.notes;
         }, true);
 
         $scope.addData = function(obj) {
@@ -3950,7 +3951,7 @@ APP_MASTERS.controller('Controller_Master', [
             obj.push({
                 id: 0
             });
-            if (vm.app_id == 'claims' && vm.screen_id == 'claims' || (vm.app_id == 'default' && (window.location.href.indexOf('request') != -1 || window.location.href.indexOf('order') != -1))) {
+            if (vm.app_id == 'claims' && vm.screen_id == 'claims') {
                 $.each(obj, (key, val) => {
                     if (val.id == 0) {
                         if (typeof val.createdBy == 'undefined') {
@@ -3965,8 +3966,27 @@ APP_MASTERS.controller('Controller_Master', [
                     }
                 });
             }
+            if (vm.app_id == 'default' && (window.location.href.indexOf('request') != -1 || window.location.href.indexOf('order') != -1)) {
+                $.each(obj, (key, val) => {
+                    if (val.id == 0) {
+                        if (typeof val.createdBy == 'undefined') {
+                            val.createdBy = $rootScope.user;
+                            val.createdBy.displayName = null;
+                            val.createdBy.code = null;
+                            val.createdBy.collectionName = null;
+                        }
+                        if (typeof val.createdAt == 'undefined') {
+                            val.createdAt = moment().format();
+                        }
+                    }
+                });
+            }
         };
         $scope.remData = function(obj, row, idx) {
+            let autoSave = false;
+            if (obj == "formValues.notes") {
+                autoSave = true;
+            }
             obj = eval("$scope." + obj);
             index = obj.indexOf(row);
             length = 0;
@@ -4015,12 +4035,20 @@ APP_MASTERS.controller('Controller_Master', [
             } else if (row.id > 0) {
                 row.isDeleted = true;
                 if(vm.app_id !== 'claims' && vm.screen_id !== 'claims') {
-                    obj.push({
-                        id: 0
-                    });
+                    if (vm.app_id == 'default' && (window.location.href.indexOf('request') != -1 || window.location.href.indexOf('order') != -1)) {
+                        console.log("--");
+                    } else {
+                        obj.push({
+                            id: 0
+                        });
+                    }
                 }
+
             } else {
                 obj.splice(index, 1);
+            }
+            if (autoSave) {
+                $scope.autoSaveNotes(obj);
             }
         };
         $scope.showRow = function(row, grid) {
@@ -8461,5 +8489,50 @@ APP_MASTERS.controller('Controller_Master', [
            
            
         }
+
+        $scope.autoSaveNotes = function(notes) {
+            console.log(notes);
+            var generalNotesScope = angular.element($('#grid_generalNotes')).scope();
+            let length = window.location.href.split('/#/')[1].split('/').length - 1;
+            let id = parseFloat(window.location.href.split('/#/')[1].split('/')[length]);
+            if (!isNaN(id)) {
+                console.log(id);
+                if (window.location.href.indexOf('request/') != -1) {
+                    console.log('request');
+                    payload = { Payload: {
+                        "requestId": id,
+                        "requestNotes": generalNotesScope.formValues.notes
+                    }};
+                    console.log(payload);
+                    $http.post(`${API.BASE_URL_DATA_PROCUREMENT}/api/procurement/request/autosave`, payload).then((response) => {
+                        console.log(response);
+                        if (response.data.payload != 'null') {
+                            let res = response.data.payload;
+                            notes = res;
+                            console.log(notes); 
+                            $timeout(function() {
+                                generalNotesScope.formValues.notes = res;
+                            }, 10);
+                            console.log(generalNotesScope.formValues.notes);
+                        }
+                    }); 
+                } else  if (window.location.href.indexOf('order/') != -1) {
+                    console.log('order');
+                    payload = { Payload: {
+                        "orderId": id,
+                        "orderNotes": notes
+                    }};
+                    console.log(payload);
+                    $http.post(`${API.BASE_URL_DATA_PROCUREMENT}/api/procurement/order/autosave`, payload).then((response) => {
+                        console.log(response);
+                        if (response.data.payload != 'null') {
+                            let res = response.data.payload;
+                            notes = res;
+                        }
+                    }); 
+                }
+            }
+        }
+
     }
 ]);

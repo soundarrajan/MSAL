@@ -801,6 +801,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 
         ctrl.saveRequest = function() {
             console.log($rootScope.notes);
+            ctrl.request.requestNotes = $rootScope.notes;
             ctrl.buttonsDisabled = true;
             var valid;
             if (ctrl.request.requestStatus) {
