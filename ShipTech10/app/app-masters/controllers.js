@@ -3943,7 +3943,9 @@ APP_MASTERS.controller('Controller_Master', [
 
         $scope.$watch('formValues.notes', function(scope){
             var generalNotesScope = angular.element($('#grid_generalNotes')).scope();
-            $rootScope.notes = generalNotesScope.formValues.notes;
+            if (generalNotesScope && generalNotesScope.formValues) {
+                $rootScope.notes = generalNotesScope.formValues.notes;
+            }
         }, true);
 
         $scope.addData = function(obj) {
