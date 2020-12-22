@@ -2232,6 +2232,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         };
         ctrl.saveOrder = function() {
             console.log($rootScope.notes);
+            ctrl.data.orderNotes = $rootScope.notes;
             $('form').addClass('submitted');
             let aggregatedErrorMessages = [];
             let forms_validation = validateForms(),

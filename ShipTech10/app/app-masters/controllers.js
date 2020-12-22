@@ -3942,7 +3942,7 @@ APP_MASTERS.controller('Controller_Master', [
         }
 
         $scope.$watch('formValues.notes', function(scope){
-            var generalNotesScope = angular.element($('#grid_generalNotes')).scope();
+            var generalNotesScope = angular.element($('.grid_generalNotes')).scope();
             if (generalNotesScope && generalNotesScope.formValues) {
                 $rootScope.notes = generalNotesScope.formValues.notes;
             }
@@ -8492,15 +8492,13 @@ APP_MASTERS.controller('Controller_Master', [
            
         }
 
-        $scope.autoSaveNotes = function(notes) {
-            console.log(notes);
-            var generalNotesScope = angular.element($('#grid_generalNotes')).scope();
+        $scope.autoSaveNotes = function() {
+            var generalNotesScope = angular.element($('.grid_generalNotes')).scope();
             let length = window.location.href.split('/#/')[1].split('/').length - 1;
             let id = parseFloat(window.location.href.split('/#/')[1].split('/')[length]);
             if (!isNaN(id)) {
-                console.log(id);
                 if (window.location.href.indexOf('request/') != -1) {
-                    console.log('request');
+                    console.log("request");
                     payload = { Payload: {
                         "requestId": id,
                         "requestNotes": generalNotesScope.formValues.notes
@@ -8509,29 +8507,36 @@ APP_MASTERS.controller('Controller_Master', [
                     $http.post(`${API.BASE_URL_DATA_PROCUREMENT}/api/procurement/request/autosave`, payload).then((response) => {
                         console.log(response);
                         if (response.data.payload != 'null') {
-                            let res = response.data.payload;
-                            notes = res;
-                            console.log(notes); 
-                            $timeout(function() {
-                                generalNotesScope.formValues.notes = res;
-                            }, 10);
-                            console.log(generalNotesScope.formValues.notes);
+                            generalNotesScope.formValues.notes = response.data.payload;
                         }
                     }); 
                 } else  if (window.location.href.indexOf('order/') != -1) {
-                    console.log('order');
+                    console.log("order");
                     payload = { Payload: {
                         "orderId": id,
-                        "orderNotes": notes
+                        "orderNotes": generalNotesScope.formValues.notes
                     }};
                     console.log(payload);
                     $http.post(`${API.BASE_URL_DATA_PROCUREMENT}/api/procurement/order/autosave`, payload).then((response) => {
                         console.log(response);
                         if (response.data.payload != 'null') {
-                            let res = response.data.payload;
-                            notes = res;
+                            generalNotesScope.formValues.notes = response.data.payload;
                         }
                     }); 
+                } else if (window.location.href.indexOf('group-of-requests/') != -1) {
+                    console.log("negociation");
+                    payload = { Payload: {
+                        "rfqId": id,
+                        "rfqNotes": generalNotesScope.formValues.notes
+                    }};
+                    console.log(payload);
+                    $http.post(`${API.BASE_URL_DATA_PROCUREMENT}/api/procurement/rfq/autosave`, payload).then((response) => {
+                        console.log(response);
+                        if (response.data.payload != 'null') {
+                            generalNotesScope.formValues.notes = response.data.payload;
+                        }
+                    }); 
+
                 }
             }
         }

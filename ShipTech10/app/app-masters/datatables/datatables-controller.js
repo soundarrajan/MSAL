@@ -1379,7 +1379,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                         displayName: 'Notes',
                         cellTemplate: $scope.dataTableTemplates.text,
                         ChangeAction : 'updateDateAndTime(grid.appScope.fVal().formValues.notes[grid.appScope.rowIdx(row)])',
-                        BlurAction: 'autoSaveNotes(grid.appScope.fVal().formValues.notes)',
+                        BlurAction: 'autoSaveNotes()',
                         cellTemplateCondition: 'detectCurrentUser(grid.appScope.fVal().formValues.notes, grid.appScope.rowIdx(row))',
                         
                     },
@@ -3874,7 +3874,7 @@ APP_MASTERS.controller('Controller_Datatables', [
         }
 
         $scope.detectCurrentUser = function(values, index) {
-            if (values[index] && values[index].createdBy) {
+            if (values[index] && values[index].createdBy && $rootScope.user) {
                 return $rootScope.user.name != values[index].createdBy.name ? true : false;
             }
             return false;
