@@ -540,20 +540,22 @@ APP_CLAIMS.controller('Controller_Claims', [
                         $scope.formValues.claimType.claimType = null;
                         $timeout(() => {
                             $scope.formValues.claimType.claimType = oldClaimType;
-                            if ($scope.formValues.densitySubtypes.length) {
-                                 _.forEach($scope.formValues.densitySubtypes, function(object) {
-                                    object.isDeleted = true;
-                                });
-                            }
-                            if ($scope.formValues.quantitySubtypes.length) {
-                                _.forEach($scope.formValues.quantitySubtypes, function(object) {
-                                    object.isDeleted = true;
-                                });
-                            }
-                            if ($scope.formValues.qualitySubtypes.length) {
-                                 _.forEach($scope.formValues.qualitySubtypes, function(object) {
-                                    object.isDeleted = true;
-                                });
+                            if ($scope.formValues.isEditable) {
+                                if ($scope.formValues.densitySubtypes.length) {
+                                    _.forEach($scope.formValues.densitySubtypes, function(object) {
+                                        object.isDeleted = true;
+                                    });
+                                }
+                                if ($scope.formValues.quantitySubtypes.length) {
+                                    _.forEach($scope.formValues.quantitySubtypes, function(object) {
+                                        object.isDeleted = true;
+                                    });
+                                }
+                                if ($scope.formValues.qualitySubtypes.length) {
+                                     _.forEach($scope.formValues.qualitySubtypes, function(object) {
+                                        object.isDeleted = true;
+                                    });
+                                }
                             }
                             $scope.formValues.claimType.quantityShortage = null;
                             $scope.formValues.claimType.quantityShortageUom = null;
