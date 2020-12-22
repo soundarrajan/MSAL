@@ -8503,7 +8503,6 @@ APP_MASTERS.controller('Controller_Master', [
                         "requestId": id,
                         "requestNotes": generalNotesScope.formValues.notes
                     }};
-                    console.log(payload);
                     $http.post(`${API.BASE_URL_DATA_PROCUREMENT}/api/procurement/request/autosave`, payload).then((response) => {
                         console.log(response);
                         if (response.data.payload != 'null') {
@@ -8516,7 +8515,6 @@ APP_MASTERS.controller('Controller_Master', [
                         "orderId": id,
                         "orderNotes": generalNotesScope.formValues.notes
                     }};
-                    console.log(payload);
                     $http.post(`${API.BASE_URL_DATA_PROCUREMENT}/api/procurement/order/autosave`, payload).then((response) => {
                         console.log(response);
                         if (response.data.payload != 'null') {
@@ -8529,7 +8527,6 @@ APP_MASTERS.controller('Controller_Master', [
                         "rfqId": id,
                         "rfqNotes": generalNotesScope.formValues.notes
                     }};
-                    console.log(payload);
                     $http.post(`${API.BASE_URL_DATA_PROCUREMENT}/api/procurement/rfq/autosave`, payload).then((response) => {
                         console.log(response);
                         if (response.data.payload != 'null') {

@@ -271,6 +271,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                     ctrl.en6MHReferenceDate = data.payload.en6MHReferenceDate;
                     ctrl.quoteByDate = data.payload.quoteByDate;
                     ctrl.quoteByDateFrom = data.payload.quoteByDateFrom;
+                    ctrl.rfqNotes = data.payload.rfqNotes;
                     if (ctrl.quoteByDateFrom == '' || ctrl.quoteByDateFrom == null) {
                         let d = new Date();
                         var month = d.getMonth() + 1;
@@ -364,6 +365,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                         }
                         ctrl.quoteByDate = data.payload.quoteByDate;
                         ctrl.quoteByDateFrom = data.payload.quoteByDateFrom;
+                        ctrl.rfqNotes = data.payload.rfqNotes;
                         if (ctrl.quoteByDateFrom == '' || ctrl.quoteByDateFrom == null) {
                             let d = new Date();
                             var month = d.getMonth() + 1;
@@ -799,6 +801,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
 	                    	if (data.payload.externalComments) {
 	                            ctrl.externalComments = data.payload.externalComments.replace(/<br\s?\/?>/g, '\n');
 	                    	}
+                            ctrl.rfqNotes = data.payload.rfqNotes;
 	                    });
                     }
                 }).finally(() => {
