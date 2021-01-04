@@ -1381,18 +1381,21 @@ APP_MASTERS.controller('Controller_Datatables', [
                         ChangeAction : 'updateDateAndTime(grid.appScope.fVal().formValues.notes[grid.appScope.rowIdx(row)])',
                         BlurAction: 'autoSaveNotes()',
                         cellTemplateCondition: 'detectCurrentUser(grid.appScope.fVal().formValues.notes, grid.appScope.rowIdx(row))',
+                        enableSorting: false
                         
                     },
                     {
                         name: 'createdBy.name',
                         displayName: 'Added By',
-                        enableCellEdit: false
+                        enableCellEdit: false,
+                        enableSorting: false
                     },
                     {
                         name: 'createdAt',
                         displayName: 'Date & Time',
                         cellTemplate: $scope.dataTableTemplates.dateDisplay,
-                        enableCellEdit: false
+                        enableCellEdit: false,
+                        enableSorting: false
                     }
     
                 ],
