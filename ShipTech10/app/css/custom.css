@@ -5026,16 +5026,14 @@ table.energyCalculationBlade tr.border-green-jungle {
     transform: rotateZ(0deg) translate(5px) !important;
 }
 
-#grid_generalNotes .st-btn-icon {
-    position: relative;
-    margin: 10px;
-    top: 8px;
+#grid_generalNotes  .actionsCol, #grid_orderNotes .actionsCol {
+    text-align: center;
 }
 
-#grid_orderNotes .st-btn-icon {
-    top: 2px !important;
+#grid_generalNotes  .ui-grid-render-container .ui-grid-header-cell .addData, #grid_orderNotes  .ui-grid-render-container .ui-grid-header-cell .addData {
+    margin: 10px 0 0 11px;
+    display: inline-block;
 }
-
 #grid_generalNotes  div.ui-grid-viewport, #grid_orderNotes  div.ui-grid-viewport {
     width: 100% !important;
     overflow-x: hidden !important;
