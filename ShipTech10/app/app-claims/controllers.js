@@ -168,6 +168,8 @@ APP_CLAIMS.controller('Controller_Claims', [
                                     $.each($scope.options['Product'], function(k1, v1) {
                                         if (v.product.id && v1.id === v.product.id) {
                                             v.physicalSupplier = v1.payload.orderDetails.physicalSupplier;
+                                            v.claimQuantity =v1.payload.orderDetails.claimQuantity;
+                                            v.claimQuantityUom =v1.payload.orderDetails.claimQuantityUom;
                                         }
                                     });
                                 });
@@ -516,9 +518,10 @@ APP_CLAIMS.controller('Controller_Claims', [
                             $scope.formValues.orderDetails.productType = v.productType.name;
                             if (!$rootScope.reloadClaimPage) {
                                 $scope.formValues.claimDetails.physicalSupplier = v.physicalSupplier;
-                                $scope.formValues.claimDetails.claimQuantity = $scope.formValues.orderDetails.claimQuantity;
-                                $scope.formValues.claimDetails.claimQuantityUom = $scope.formValues.orderDetails.claimQuantityUom;
-                            } else {
+                                $scope.formValues.claimDetails.claimQuantity = v.claimQuantity;
+                                $scope.formValues.claimDetails.claimQuantityUom = v.claimQuantityUom;
+                            } 
+                            else {
                                 $rootScope.reloadClaimPage = false;
                             }
 
