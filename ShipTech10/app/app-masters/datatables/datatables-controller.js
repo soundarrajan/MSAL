@@ -3687,12 +3687,20 @@ APP_MASTERS.controller('Controller_Datatables', [
         };
         $scope.selectedRowIds = [];
         $scope.selectRowsByType = function(row) {};
+
+        var decodeHtmlEntity = function(str) {
+            return str.replace(/&#(\d+);/g, function(match, dec) {
+                return String.fromCharCode(dec);
+            });
+        };
+        
         $scope.addClaimData = function(obj, spec, objKey) {
         	if (!$scope.formValues.orderDetails.product) {
         		toastr.error('Please select a product first');
         		return;
         	}
             spec = angular.fromJson(spec);
+            spec.specParameter.name = decodeHtmlEntity(_.unescape(spec.specParameter.name));
             var id = spec.specParameter.id;
     		if (typeof $scope.formValues[objKey] == 'undefined') {
     			$scope.formValues[objKey] = [];

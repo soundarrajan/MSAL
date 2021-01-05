@@ -138,6 +138,13 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
         delete field;
     };
 
+
+    var decodeHtmlEntity = function(str) {
+        return str.replace(/&#(\d+);/g, function(match, dec) {
+            return String.fromCharCode(dec);
+        });
+    };
+
     $scope.triggerChangeFieldsAppSpecific = function(name, id) {
         if (name == 'OrderID' && id == 'order') {
             // suprascriem niste date
@@ -203,6 +210,12 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
                         if (!$scope.formValues.counterparty) {
 	                        $scope.formValues.counterparty = response.lab;
                         }
+                    }
+
+                    if ($scope.formValues.labTestResults && $scope.formValues.labTestResults.length) {
+                        _.forEach($scope.formValues.labTestResults, function(object) {
+                            object.specParameter.name = decodeHtmlEntity(_.unescape(object.specParameter.name));
+                        });
                     }
                     if (response.products) {
                         $scope.temp = {
@@ -376,6 +389,11 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
                         } else {
                             $.each(callback, (k, v) => {
                                 $scope.formValues.labTestResults.push(callback[k]);
+                            });
+                        }
+                        if ($scope.formValues.labTestResults && $scope.formValues.labTestResults.length) {
+                            _.forEach($scope.formValues.labTestResults, function(object) {
+                                object.specParameter.name = decodeHtmlEntity(_.unescape(object.specParameter.name));
                             });
                         }
                     } else if (obj == 'deliveryProducts') {

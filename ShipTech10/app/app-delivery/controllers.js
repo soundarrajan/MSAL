@@ -125,7 +125,20 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
         $rootScope.raiseClaimInfo = {};
         console.log('init raise claim info');
     };
+
+    var decodeHtmlEntity = function(str) {
+      return str.replace(/&#(\d+);/g, function(match, dec) {
+        return String.fromCharCode(dec);
+      });
+    };
+
+    $scope.decodeSpecParamsName = function(specParams) {
+        _.each(specParams, function(object) {
+            object.specParameter.name = decodeHtmlEntity(_.unescape(object.specParameter.name));
+        });
+    }
     $scope.getClaimInfo = function(specParams, prodId) {
+        $scope.decodeSpecParamsName(specParams);
         $rootScope.raiseClaimInfo = {};
         $rootScope.raiseClaimInfo.allSpecParams = specParams;
         $rootScope.raiseClaimInfo.productId = prodId;

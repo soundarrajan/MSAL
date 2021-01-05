@@ -6986,6 +6986,12 @@ APP_API.factory('$Api_Service', [
                         return;
                     }
                     if (param.app == 'claims' && param.screen == 'claims' && param.field.masterSource == 'claimSubtype') {
+                        var decodeHtmlEntity = function(str) {
+                            return str.replace(/&#(\d+);/g, function(match, dec) {
+                                return String.fromCharCode(dec);
+                            });
+                        };
+
                         // debugger;
                         if (param.field.param.ClaimTypeName == 'Quantity') {
                             apiJSON = {
@@ -7005,7 +7011,7 @@ APP_API.factory('$Api_Service', [
                                         response.data.payload.forEach((entry) => {
                                             result[entry.specParameter.id] = {
                                                 id: entry.specParameter.id,
-                                                name: entry.specParameter.name,
+                                                name:  decodeHtmlEntity(_.unescape(entry.specParameter.name)),
                                                 isQuantitySubtype: entry.isQuantitySubtype,
                                                 payload: entry
                                             };
@@ -7041,7 +7047,7 @@ APP_API.factory('$Api_Service', [
                                         response.data.payload.forEach((entry) => {
                                             result[entry.specParameter.id] = {
                                                 id: entry.specParameter.id,
-                                                name: entry.specParameter.name,
+                                                name: decodeHtmlEntity(_.unescape(entry.specParameter.name)),
                                                 payload: {
                                                     specParameter: entry.specParameter,
                                                     labTestResultId: entry.labTestResultId,

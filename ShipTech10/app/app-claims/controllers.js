@@ -300,6 +300,13 @@ APP_CLAIMS.controller('Controller_Claims', [
             }
             return false;
         };
+
+        var decodeHtmlEntity = function(str) {
+            return str.replace(/&#(\d+);/g, function(match, dec) {
+                return String.fromCharCode(dec);
+            });
+        };
+
         $scope.triggerChangeFieldsAppSpecific = function(name, id) {
             // if (!$rootScope.createDebunkerFromClaim && vm.entity_id < 1) {
             //     $.each($listsCache.ClaimType, function(k, v) {
@@ -436,6 +443,22 @@ APP_CLAIMS.controller('Controller_Claims', [
                         }
                         if (!$scope.formValues.claimDetails.claimDate) {
                             $scope.formValues.claimDetails.claimDate = moment().format();
+                        }
+        
+                        if ($scope.formValues.densitySubtypes && $scope.formValues.densitySubtypes.length) {
+                            _.forEach($scope.formValues.densitySubtypes, function(object) {
+                                object.specParameter.name = decodeHtmlEntity(_.unescape(object.specParameter.name));
+                            });
+                        }
+                        if ($scope.formValues.quantitySubtypes && $scope.formValues.quantitySubtypes.length) {
+                            _.forEach($scope.formValues.quantitySubtypes, function(object) {
+                                object.specParameter.name = decodeHtmlEntity(_.unescape(object.specParameter.name));
+                            });
+                        }
+                        if ($scope.formValues.qualitySubtypes && $scope.formValues.qualitySubtypes.length) {
+                             _.forEach($scope.formValues.qualitySubtypes, function(object) {
+                                object.specParameter.name = decodeHtmlEntity(_.unescape(object.specParameter.name));
+                            });
                         }
                         let field2;
                         field2 = vm.formFieldSearch($scope.formFields, 'orderDetails.deliveryNo');
