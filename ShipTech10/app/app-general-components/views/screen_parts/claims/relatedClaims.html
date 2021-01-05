@@ -26,4 +26,15 @@
 	        </div>
 		</div>
 	</div>
+
+	<div class="pull-left related-entity-item" ng-if="!formValues.claimDetails.status && formValues.claimType.claimType.name.toLowerCase() == 'debunker'">
+		<div class="col-sm-12">
+			<div class="note note-related active" >
+				<div class="fa fa-times remove-entity" ng-click="CC.deleteClaim(CC.entity_id)"></div>
+					<p><b>Order No</b>: {{formValues.orderDetails.order.name}}</p>
+					<p><b>Claim ID</b>: {{CC.entity_id}}</p>
+					<p><b>Claim Status</b>: {{formValues.claimDetails.status.name}}</p>
+			</div>
+		</div>
+	</div>
 </div>
