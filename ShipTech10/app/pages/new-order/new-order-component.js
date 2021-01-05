@@ -365,6 +365,11 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         //     }
         // }
 
+        var decodeHtmlEntity = function(str) {
+          return str.replace(/&#(\d+);/g, function(match, dec) {
+            return String.fromCharCode(dec);
+          });
+        };
         // set all data mappings
         getOrderListForRequest();
         function loadData(data) {
@@ -402,17 +407,17 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 
             if (typeof ctrl.data.comments != 'undefined') {
             	if (ctrl.data.comments) {
-		            ctrl.data.comments = _.unescape(ctrl.data.comments).replace(/<br\s?\/?>/g, '\n');
+		            ctrl.data.comments = decodeHtmlEntity(_.unescape(ctrl.data.comments)).replace(/<br\s?\/?>/g, '\n');
             	}
             }
             if (typeof ctrl.data.customNonMandatoryAttribute10 != 'undefined') {
             	if (ctrl.data.customNonMandatoryAttribute10) {
-		            ctrl.data.customNonMandatoryAttribute10 = _.unescape(ctrl.data.customNonMandatoryAttribute10).replace(/<br\s?\/?>/g, '\n');
+		            ctrl.data.customNonMandatoryAttribute10 = decodeHtmlEntity(_.unescape(ctrl.data.customNonMandatoryAttribute10)).replace(/<br\s?\/?>/g, '\n');
             	}
             }
             if (typeof ctrl.data.customNonMandatoryAttribute11 != 'undefined') {
             	if (ctrl.data.customNonMandatoryAttribute11) {
-		            ctrl.data.customNonMandatoryAttribute11 = _.unescape(ctrl.data.customNonMandatoryAttribute11).replace(/<br\s?\/?>/g, '\n');
+		            ctrl.data.customNonMandatoryAttribute11 = decodeHtmlEntity(_.unescape(ctrl.data.customNonMandatoryAttribute11)).replace(/<br\s?\/?>/g, '\n');
             	}
             }
 

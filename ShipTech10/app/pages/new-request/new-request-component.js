@@ -234,6 +234,11 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             return ret;
         };
 
+        var decodeHtmlEntity = function(str) {
+            return str.replace(/&#(\d+);/g, function(match, dec) {
+                return String.fromCharCode(dec);
+            });
+        };
         ctrl.$onInit = function() {
             screenLoader.showLoader();
             ctrl.checkedProducts = [];
@@ -383,6 +388,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     } else if (typeof requestId != 'undefined' && requestId !== null) {
                         newRequestModel.getRequest(requestId).then((newRequestData) => {
                             ctrl.request = newRequestData.payload;
+                            ctrl.request.footerSection.comments =  decodeHtmlEntity(_.unescape(ctrl.request.footerSection.comments));
                             ctrl.getOperationalReportParameters();
                             ctrl.disableAllFields = false;
                             if(typeof ctrl.request.requestCompleted != 'undefined') {

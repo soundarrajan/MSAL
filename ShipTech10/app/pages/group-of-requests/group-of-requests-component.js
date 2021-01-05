@@ -229,6 +229,12 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
             }
         };
 
+        var decodeHtmlEntity = function(str) {
+          return str.replace(/&#(\d+);/g, function(match, dec) {
+            return String.fromCharCode(dec);
+          });
+        };
+
         ctrl.initScreenAfterSendOrSkipRfq = function() {
             // if (action == 'sendRFQ') {
             //     $state.reload();
@@ -254,11 +260,11 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
             function getGroupInfo(groupId) {
                 groupOfRequestsModel.getGroupInfo(groupId).then((data) => {
                     	if (data.payload.internalComments) {
-                        ctrl.internalComments = _.unescape(data.payload.internalComments).replace(/<br\s?\/?>/g, '\n');
+                        ctrl.internalComments = decodeHtmlEntity(_.unescape(data.payload.internalComments)).replace(/<br\s?\/?>/g, '\n');
                         initialValueInternalComments = ctrl.internalComments;
                     	}
                     	if (data.payload.externalComments) {
-                        ctrl.externalComments = _.unescape(data.payload.externalComments).replace(/<br\s?\/?>/g, '\n');
+                        ctrl.externalComments = decodeHtmlEntity(_.unescape(data.payload.externalComments)).replace(/<br\s?\/?>/g, '\n');
                         initialValueExternalComments = ctrl.externalComments;
                     	}
                     console.log(data.payload);
@@ -303,6 +309,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
             }
         };
 
+      
         // Get the UI settings from server. When complete, get business data.
         ctrl.initScreen = function() {
             uiApiModel.get(SCREEN_LAYOUTS.GROUP_OF_REQUESTS).then((data) => {
@@ -349,11 +356,11 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                     groupOfRequestsModel.getGroupInfo(groupId).then((data) => {
                     	ctrl.en6MHReferenceDate = data.payload.en6MHReferenceDate;
                     	if (data.payload.internalComments) {
-                            ctrl.internalComments = _.unescape(data.payload.internalComments).replace(/<br\s?\/?>/g, '\n');
+                            ctrl.internalComments = decodeHtmlEntity(_.unescape(data.payload.internalComments)).replace(/<br\s?\/?>/g, '\n');
                             initialValueInternalComments = ctrl.internalComments;
                     	}
                     	if (data.payload.externalComments) {
-                            ctrl.externalComments = _.unescape(data.payload.externalComments).replace(/<br\s?\/?>/g, '\n');
+                            ctrl.externalComments = decodeHtmlEntity(_.unescape(data.payload.externalComments)).replace(/<br\s?\/?>/g, '\n');
                             initialValueExternalComments = ctrl.externalComments;
                     	}
                         console.log(data.payload);
@@ -796,10 +803,10 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
 	                    groupOfRequestsModel.getGroupInfo(groupId).then((data) => {
 	                    	ctrl.en6MHReferenceDate = data.payload.en6MHReferenceDate;
 	                    	if (data.payload.internalComments) {
-	                            ctrl.internalComments = _.unescape(data.payload.internalComments).replace(/<br\s?\/?>/g, '\n');
+	                            ctrl.internalComments = decodeHtmlEntity(_.unescape(data.payload.internalComments)).replace(/<br\s?\/?>/g, '\n');
 	                    	}
 	                    	if (data.payload.externalComments) {
-	                            ctrl.externalComments = _.unescape(data.payload.externalComments).replace(/<br\s?\/?>/g, '\n');
+	                            ctrl.externalComments = decodeHtmlEntity(_.unescape(data.payload.externalComments)).replace(/<br\s?\/?>/g, '\n');
 	                    	}
                             ctrl.rfqNotes = data.payload.rfqNotes;
 	                    });
