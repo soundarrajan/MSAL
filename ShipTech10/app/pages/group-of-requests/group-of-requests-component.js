@@ -254,11 +254,11 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
             function getGroupInfo(groupId) {
                 groupOfRequestsModel.getGroupInfo(groupId).then((data) => {
                     	if (data.payload.internalComments) {
-                        ctrl.internalComments = data.payload.internalComments.replace(/<br\s?\/?>/g, '\n');
+                        ctrl.internalComments = _.unescape(data.payload.internalComments).replace(/<br\s?\/?>/g, '\n');
                         initialValueInternalComments = ctrl.internalComments;
                     	}
                     	if (data.payload.externalComments) {
-                        ctrl.externalComments = data.payload.externalComments.replace(/<br\s?\/?>/g, '\n');
+                        ctrl.externalComments = _.unescape(data.payload.externalComments).replace(/<br\s?\/?>/g, '\n');
                         initialValueExternalComments = ctrl.externalComments;
                     	}
                     console.log(data.payload);
@@ -349,11 +349,11 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                     groupOfRequestsModel.getGroupInfo(groupId).then((data) => {
                     	ctrl.en6MHReferenceDate = data.payload.en6MHReferenceDate;
                     	if (data.payload.internalComments) {
-                            ctrl.internalComments = data.payload.internalComments.replace(/<br\s?\/?>/g, '\n');
+                            ctrl.internalComments = _.unescape(data.payload.internalComments).replace(/<br\s?\/?>/g, '\n');
                             initialValueInternalComments = ctrl.internalComments;
                     	}
                     	if (data.payload.externalComments) {
-                            ctrl.externalComments = data.payload.externalComments.replace(/<br\s?\/?>/g, '\n');
+                            ctrl.externalComments = _.unescape(data.payload.externalComments).replace(/<br\s?\/?>/g, '\n');
                             initialValueExternalComments = ctrl.externalComments;
                     	}
                         console.log(data.payload);
@@ -796,10 +796,10 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
 	                    groupOfRequestsModel.getGroupInfo(groupId).then((data) => {
 	                    	ctrl.en6MHReferenceDate = data.payload.en6MHReferenceDate;
 	                    	if (data.payload.internalComments) {
-	                            ctrl.internalComments = data.payload.internalComments.replace(/<br\s?\/?>/g, '\n');
+	                            ctrl.internalComments = _.unescape(data.payload.internalComments).replace(/<br\s?\/?>/g, '\n');
 	                    	}
 	                    	if (data.payload.externalComments) {
-	                            ctrl.externalComments = data.payload.externalComments.replace(/<br\s?\/?>/g, '\n');
+	                            ctrl.externalComments = _.unescape(data.payload.externalComments).replace(/<br\s?\/?>/g, '\n');
 	                    	}
                             ctrl.rfqNotes = data.payload.rfqNotes;
 	                    });
