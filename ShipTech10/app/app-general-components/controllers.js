@@ -3879,15 +3879,24 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
         $controller("Controller_Master", {
             $scope: $scope
         });
+         var decodeHtmlEntity = function(str) {
+            return str.replace(/&#(\d+);/g, function(match, dec) {
+                return String.fromCharCode(dec);
+            });
+        };
         $rootScope.$on("formValues", function(event, payload) {
             if (payload) {
                 $scope.formValues = payload;
                 if ($scope.formValues.documentType && $state.params.path[2].uisref.split(".")[1] == "documents") {
                     $scope.formValues.documentType = null;
                 } 
+
+                if (vm.app_id == 'masters' && vm.screen_id == 'specparameter') {
+                    $scope.formValues.name =  decodeHtmlEntity(_.unescape($scope.formValues.name));
+                }
             }
         });
-
+        
         setTimeout(function() {
             console.log("$rootScope", $rootScope.formValues);
             console.log("$scope", $scope.formValues);
