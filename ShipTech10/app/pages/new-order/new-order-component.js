@@ -382,6 +382,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 if ((!v.specGroup || !_.get(v, 'specGroup.id')) && _.get(v, 'status.name') !== 'Cancelled') {
                     ctrl.data.missingSpecGroup = true;
                 }
+                v.comments = decodeHtmlEntity(_.unescape(v.comments)).replace(/<br\s?\/?>/g, '\n');
             });
 
             ctrl.data.missingSurveyor = !ctrl.data.surveyorCounterparty && ctrl.isSurveyorMandatory;
@@ -419,6 +420,12 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             	if (ctrl.data.customNonMandatoryAttribute11) {
 		            ctrl.data.customNonMandatoryAttribute11 = decodeHtmlEntity(_.unescape(ctrl.data.customNonMandatoryAttribute11)).replace(/<br\s?\/?>/g, '\n');
             	}
+            }
+
+            if (typeof ctrl.data.cancelOrderComments  != 'undefined') {
+                if (ctrl.data.cancelOrderComments) {
+                    ctrl.data.cancelOrderComments = decodeHtmlEntity(_.unescape(ctrl.data.cancelOrderComments)).replace(/<br\s?\/?>/g, '\n');
+                }
             }
 
             ctrl.fixedCurrency = ctrl.data.products[0].requestProductId && !ctrl.data.contract;

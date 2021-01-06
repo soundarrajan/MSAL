@@ -432,6 +432,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 	                            $scope.productTypesLoadedPerLocation.totalProducts += ctrl.request.locations[j].products.length;
                                 for (let i = 0; i < ctrl.request.locations[j].products.length; i++) {
                                 	ctrl.request.locations[j].products[i].uniqueIdUI = Math.random().toString(36).substring(7); 
+                                    ctrl.request.locations[j].products[i].comments =  decodeHtmlEntity(_.unescape(ctrl.request.locations[j].products[i].comments));
                                     if (ctrl.request.locations[j].products[i].product) {
                                     	// ctrl.request.locations[j].products[i].product.name = ctrl.request.locations[j].products[i].requestIndex + ' - ' + ctrl.request.locations[j].products[i].product.name;
                                     	if (ctrl.request.locations[j].products[i].productTypeId) {
