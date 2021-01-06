@@ -441,6 +441,10 @@ APP_CLAIMS.controller('Controller_Claims', [
                         if (!$scope.formValues.claimDetails.estimatedSettlementAmountCurrency) {
                             $scope.formValues.claimDetails.estimatedSettlementAmountCurrency = $scope.tenantCurrency;
                         }
+                        if (!$scope.formValues.claimDetails.claimQuantityUom) {
+                            $scope.formValues.claimDetails.claimQuantityUom = $tenantSettings.tenantFormats.uom;
+                        }
+                        
                         if (!$scope.formValues.claimDetails.claimDate) {
                             $scope.formValues.claimDetails.claimDate = moment().format();
                         }
@@ -541,8 +545,11 @@ APP_CLAIMS.controller('Controller_Claims', [
                             $scope.formValues.orderDetails.productType = v.productType.name;
                             if (!$rootScope.reloadClaimPage) {
                                 $scope.formValues.claimDetails.physicalSupplier = v.physicalSupplier;
-                                $scope.formValues.claimDetails.claimQuantity = v.claimQuantity;
-                                $scope.formValues.claimDetails.claimQuantityUom = v.claimQuantityUom;
+
+                                if(v.claimQuantity){
+                                    $scope.formValues.claimDetails.claimQuantity = v.claimQuantity;
+                                    $scope.formValues.claimDetails.claimQuantityUom = v.claimQuantityUom;
+                                }
                             } 
                             else {
                                 $rootScope.reloadClaimPage = false;
@@ -584,7 +591,7 @@ APP_CLAIMS.controller('Controller_Claims', [
                                 }
                             }
                             $scope.formValues.claimType.quantityShortage = null;
-                            $scope.formValues.claimType.quantityShortageUom = null;
+                            $scope.formValues.claimType.quantityShortageUom = $tenantSettings.tenantFormats.uom;
                         }, 100);
                         $scope.checkClaimType();
                     }
@@ -603,6 +610,10 @@ APP_CLAIMS.controller('Controller_Claims', [
                 // $.each($scope.formValues.complianceSubtypes, function(k, v) {
                 //   v.isDeleted = true;
                 // });
+                if($scope.formValues.claimType.claimType.id == 1)
+                {
+                    $scope.formValues.claimType.quantityShortageUom = $tenantSettings.tenantFormats.uom;
+                }
                 $scope.checkClaimType();
             }
             if (name == 'DebunkerQuantitywithUOM') {
@@ -699,7 +710,7 @@ APP_CLAIMS.controller('Controller_Claims', [
         $scope.setQuantitySub = function() {
             $scope.IsQuantitySubtype = $('#quantity_Parameter option:checked').data('opt');
             $scope.formValues.claimType.quantityShortage = null;
-            $scope.formValues.claimType.quantityShortageUom = null;
+            $scope.formValues.claimType.quantityShortageUom = $tenantSettings.tenantFormats.uom;
             //   $timeout(function(){
             // if (!$scope.formValues.claimDetails.isEstimatedSettlementAmountManual) {
             //  $scope.formValues.claimDetails.estimatedSettlementAmount = null;
@@ -1168,6 +1179,11 @@ APP_CLAIMS.controller('Controller_Claims', [
                     specParameterId = $scope.formValues.densitySubtypes[density.index].specParameter.id;
                 }
                 $scope.formValues.claimType.quantityShortageUom = $scope.formValues.densitySubtypes[density.index].bdnQuantityUom;
+
+                if(!$scope.formValues.claimType.quantityShortageUom)
+                {
+                    $scope.formValues.claimType.quantityShortageUom = $tenantSettings.tenantFormats.uom;
+                }
             }
             
             var payload = {
