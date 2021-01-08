@@ -3680,6 +3680,9 @@ APP_MASTERS.controller('Controller_Datatables', [
                         api.core.handleWindowResize().then(() => {
                             let height = Math.min(Math.max(api.grid.rows.length * 60, 80), 220);
                             $('#grid_related_labs').css('height', `${height }px`).show();
+                            if (api.grid.rows.length < 5) {
+                                $('#grid_related_labs').css('pointer-events', 'none');
+                            }
                         });
                     });
                 }
