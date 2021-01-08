@@ -3682,6 +3682,8 @@ APP_MASTERS.controller('Controller_Datatables', [
                             $('#grid_related_labs').css('height', `${height }px`).show();
                             if (api.grid.rows.length < 5) {
                                 $('#grid_related_labs').css('pointer-events', 'none');
+                            } else {
+                                $('#grid_related_labs').css('pointer-events', '');
                             }
                         });
                     });
