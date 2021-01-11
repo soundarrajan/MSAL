@@ -2798,7 +2798,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 paymentterm: "paymentterm",
                 deliveryoption: "deliveryoption",
                 incoterms: "incoterms",
-                uom: "uomlist",
+                uom: "uom",
                 period: "periodlist",
                 event: "eventlist",
                 calendar: "calendarlist",
@@ -2807,12 +2807,12 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                 agreementtype: "agreementtypelist",
                 additionalcost: "additionalcost",
                 barge: "barge",
-                status: "statuslist",
+                status: "status",
                 country: "country",
                 currency: "currencylist",
                 exchangerate: "exchangeratelist",
                 formula: "formula",
-                claimtype: "claimtypelist",
+                claimtype: "claimtype",
                 users: "userlist", // admin
                 role: "rolelist", // admin
                 configuration: "configurationlist", // admin
