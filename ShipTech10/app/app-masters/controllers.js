@@ -1651,6 +1651,17 @@ APP_MASTERS.controller('Controller_Master', [
                 }
             });
         };
+
+        var decodeHtmlEntity = function(str) {
+            return str.replace(/&#(\d+);/g, function(match, dec) {
+                return String.fromCharCode(dec);
+            });
+        };
+
+        vm.decodeHtml = function(str) {
+            return decodeHtmlEntity(_.unescape(str));
+        }
+
         // SPEC GROUP MODAL
         $scope.modalSpecGroupEdit = function(product, entityId, application, orderData) {
             vm.activeProductForSpecGroupEdit = product;
@@ -1784,6 +1795,9 @@ APP_MASTERS.controller('Controller_Master', [
             Factory_Master.getSpecForProcurement(data, application, (response) => {
                 if (response) {
                     $scope.modalSpecGroupParameters = response.data.payload;
+                    for (let i = 0; i < $scope.modalSpecGroupParameters.length; i++) {
+                        $scope.modalSpecGroupParameters[i].specParameter.name = decodeHtmlEntity(_.unescape( $scope.modalSpecGroupParameters[i].specParameter.name));
+                    }
                     $scope.application = application;
                     $scope.product = product;
                     $scope.modalInstance = $uibModal.open({

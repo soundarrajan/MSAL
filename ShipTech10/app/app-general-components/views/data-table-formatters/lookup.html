@@ -3,6 +3,7 @@
 <div class="input-group" ng-controller="Controller_Master as CM" tooltip tooltiptrigger="hover"
 data-original-title="{{MODEL_COL_FIELD.name}}">
     <input ng-model="MODEL_COL_FIELD" 
+    ng-init="grid.element[0].id == 'grid_specGroupParameters' ? MODEL_COL_FIELD.name = CM.decodeHtml(MODEL_COL_FIELD.name) : ''"
     ng-class="'colt' + col.uid" 
     uib-typeahead="item as item.name for item in grid.appScope.fVal().options[col.colDef.cellObject.Name] | typeaheadCustomFilter:$viewValue:'name'"  
     class="form-control "  
@@ -17,7 +18,7 @@ data-original-title="{{MODEL_COL_FIELD.name}}">
     dynamic-condition="{{ col.colDef.cellCondition }}" 
     dynamic-condition-type="{{ col.colDef.cellConditionType }}" 
     data-row-index="{{ rowRenderIndex }}" 
-    typeahead-on-select="triggerChangeFields(col.colDef.name); $eval(col.colDef.cellObject.customChangeAction);" 
+    typeahead-on-select="triggerChangeFields(col.colDef.name); $eval(col.colDef.cellObject.customChangeAction); grid.element[0].id == 'grid_specGroupParameters' ? MODEL_COL_FIELD.name = CM.decodeHtml(MODEL_COL_FIELD.name) : ''" 
     data-cell-id="{{MODEL_COL_FIELD.id}}" 
     ng-disabled="$eval(col.colDef.cellObject.Disabled)"
     ng-blur="!MODEL_COL_FIELD.id ? MODEL_COL_FIELD = null : ''"/>
