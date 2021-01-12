@@ -3894,6 +3894,12 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                 if (vm.app_id == 'masters' && vm.screen_id == 'specparameter') {
                     $scope.formValues.name =  decodeHtmlEntity(_.unescape($scope.formValues.name));
                 }
+
+                if (vm.app_id == 'masters' && vm.screen_id == 'specgroup') {
+                    for (let i = 0; i < $scope.formValues.specGroupParameters.length; i++) {
+                        $scope.formValues.specGroupParameters[i].specParameter.name =  decodeHtmlEntity(_.unescape($scope.formValues.specGroupParameters[i].specParameter.name));
+                    }
+                }
             }
         });
         
