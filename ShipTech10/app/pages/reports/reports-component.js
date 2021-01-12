@@ -180,6 +180,12 @@ angular.module('shiptech.pages').controller('ReportsController', [
             ctrl.getStandardReports();
             ctrl.initComponent();
         }
+
+        ctrl.openReportInST = function(reportItemUrl){
+            reportItemUrl =  `${ ctrl.tenantSettings.smartTraderLink.toLowerCase()}`+reportItemUrl;
+            window.open(reportItemUrl,'_blank');
+        }
+
         ctrl.loadReport = function(selection) {
             ctrl.embedErrorMessage = null;
 

@@ -702,9 +702,9 @@ angular.module('shiptech.components').controller('FiltersController', [
 
         $rootScope.$on('$stateChangeSuccess', (event, toState, toParams, fromState, fromParams) => {
             let array = [ 'Schedule Dashboard', 'Schedule Dashboard', 'Schedule Dashboard Timeline' ];
-            if (array.indexOf(toParams.path[1].label) != -1 && $rootScope.startView) {
+            if (array.indexOf(toParams.path[1] && toParams.path[1].label) != -1 && $rootScope.startView) {
                 $rootScope.clc_loaded = false;
-                if (toParams.path[1].label == 'Schedule Dashboard Timeline') {
+                if (toParams.path[1] && toParams.path[1].label == 'Schedule Dashboard Timeline') {
                     $rootScope.isTimelineFiltersDefault = true;
                 } else {
                     $rootScope.isTimelineFiltersDefault = false;
@@ -720,7 +720,7 @@ angular.module('shiptech.components').controller('FiltersController', [
 
         var deregisterStateChangeStart = $rootScope.$on('$stateChangeSuccess', (event, toState, toParams, fromState, fromParams) => {
             $rootScope.clc_loaded = false;
-            if (toParams.path[1].label == 'Schedule Dashboard Timeline') {
+            if (toParams.path[1] && toParams.path[1].label == 'Schedule Dashboard Timeline') {
                 $rootScope.isTimelineFiltersDefault = true;
             } else {
                 $rootScope.isTimelineFiltersDefault = false;
