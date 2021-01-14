@@ -430,6 +430,12 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 }
             }
 
+            if (typeof ctrl.data.customNonMandatoryAttribute1 != 'undefined') {
+                if (ctrl.data.customNonMandatoryAttribute1) {
+                    ctrl.data.customNonMandatoryAttribute1 = decodeHtmlEntity(_.unescape(ctrl.data.customNonMandatoryAttribute1)).replace(/<br\s?\/?>/g, '\n');
+                }
+            }
+
             ctrl.fixedCurrency = ctrl.data.products[0].requestProductId && !ctrl.data.contract;
 
             for (var i = 0; i < ctrl.data.products.length; i++) {
