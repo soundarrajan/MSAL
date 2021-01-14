@@ -370,6 +370,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             return String.fromCharCode(dec);
           });
         };
+
         // set all data mappings
         getOrderListForRequest();
         function loadData(data) {
@@ -383,6 +384,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     ctrl.data.missingSpecGroup = true;
                 }
                 v.comments = decodeHtmlEntity(_.unescape(v.comments)).replace(/<br\s?\/?>/g, '\n');
+
             });
 
             ctrl.data.missingSurveyor = !ctrl.data.surveyorCounterparty && ctrl.isSurveyorMandatory;
@@ -406,20 +408,20 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 }
             });
 
-            if (typeof ctrl.data.comments != 'undefined') {
-            	if (ctrl.data.comments) {
-		            ctrl.data.comments = decodeHtmlEntity(_.unescape(ctrl.data.comments)).replace(/<br\s?\/?>/g, '\n');
-            	}
+          if (typeof ctrl.data.comments != 'undefined') {
+                if (ctrl.data.comments) {
+                    ctrl.data.comments = decodeHtmlEntity(_.unescape(ctrl.data.comments)).replace(/<br\s?\/?>/g, '\n');
+                }
             }
             if (typeof ctrl.data.customNonMandatoryAttribute10 != 'undefined') {
-            	if (ctrl.data.customNonMandatoryAttribute10) {
-		            ctrl.data.customNonMandatoryAttribute10 = decodeHtmlEntity(_.unescape(ctrl.data.customNonMandatoryAttribute10)).replace(/<br\s?\/?>/g, '\n');
-            	}
+                if (ctrl.data.customNonMandatoryAttribute10) {
+                    ctrl.data.customNonMandatoryAttribute10 = decodeHtmlEntity(_.unescape(ctrl.data.customNonMandatoryAttribute10)).replace(/<br\s?\/?>/g, '\n');
+                }
             }
             if (typeof ctrl.data.customNonMandatoryAttribute11 != 'undefined') {
-            	if (ctrl.data.customNonMandatoryAttribute11) {
-		            ctrl.data.customNonMandatoryAttribute11 = decodeHtmlEntity(_.unescape(ctrl.data.customNonMandatoryAttribute11)).replace(/<br\s?\/?>/g, '\n');
-            	}
+                if (ctrl.data.customNonMandatoryAttribute11) {
+                    ctrl.data.customNonMandatoryAttribute11 = decodeHtmlEntity(_.unescape(ctrl.data.customNonMandatoryAttribute11)).replace(/<br\s?\/?>/g, '\n');
+                }
             }
 
             if (typeof ctrl.data.cancelOrderComments  != 'undefined') {
