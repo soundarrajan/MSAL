@@ -4450,3 +4450,116 @@ select option {
 .contract_planning_comments, .box_office_comments{
     width: 100% !important;
 }
+
+.sellerRating .seller-rating-module, .sellerRating .seller-rating-location {
+    border: 1px solid; 
+    color: black; 
+    padding-left:6px;
+}
+
+.sellerRating .seller-specific-location,
+.sellerRating .seller-all-location {
+    padding-left: 0px !important;
+}
+
+.sellerRating .light-specific-location {
+    padding-left: 0px!important; 
+    padding-right: 0px!important;
+}
+
+.sellerRating .portlet-category-key {
+    margin-bottom: 25px;
+    clear: both;
+    border-top: 2px solid #ddd;
+    margin-top: 25px;
+}
+
+.seller-rating-category {
+    padding-right: 28px;
+}
+
+.sellerRating .seller-rating-param-group {
+    display: flex; 
+    justify-content: flex-end;
+}
+
+.sellerRating .seller-rating-required {
+    width: 50%;
+}
+
+.sellerRating .portlet-title-no-border {
+    border-bottom: 0px !important;
+}
+
+.sellerRating .seller-rating-empty {
+    margin-bottom: 5px; 
+    clear: both;
+}
+
+.sellerRating .seller-counterparty-specific-location,
+.sellerRating .seller-counterparty-all-location {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+
+.sellerRating .seller-rating-container-title {
+    text-transform: capitalize;
+}
+
+.sellerRating .seller-rating-portlet-body {
+    border: 0.5px solid lightgray;
+}
+
+.sellerRating .seller-rating-caption-subject {
+    color: #337ab7;
+    text-transform: uppercase;
+    font-weight: 900;
+    margin-top: 0px !important;
+    border-bottom: 0.5px solid lightgray;
+    padding: 15px;
+    font-size: 16px;
+} 
+
+.sellerRating .seller-rating-portlet-param-container {
+    padding: 15px;
+}
+
+.sellerRating .seller-rating-category-title {
+    font-weight: bold;
+    padding-bottom: 20px;
+}
+
+.sellerRating .seller-rating-question {
+    font-size: 14px;
+    line-height: 1.2;
+    font-weight: 600;
+    text-align: left;
+    /* padding-top: 10px; */
+    color: #666!important;
+}
+
+.sellerRating .portlet-category-key-counterparty {
+    position: relative;
+    margin-bottom: 25px;
+    clear: both;
+    border-top: 2px solid #ddd;
+}
+
+
+.rate-base-layer
+{
+    color: #aaa;
+}
+.rate-hover-layer
+{
+    color: #337AB7;
+}
+
+.created-by-display-name, .seller-rating-created-on {
+    font-weight: bold;
+}
+
+.seller-rating-param-line {
+    padding-bottom: 10px;
+}
+

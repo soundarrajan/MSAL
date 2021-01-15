@@ -781,6 +781,25 @@ APP_MASTERS.controller('Controller_Master', [
                     });
                 }
             }
+            if (vm.app_id == 'admin' &&  vm.screen_id == 'sellerrating') {
+                let hasTotalWeightDifferentBy100 = false;
+                for (let i = 0 ; i < $scope.formValues.applications.length; i++) {
+                    if ($scope.formValues.applications[i].specificLocations) {
+                        for (let j = 0; j < $scope.formValues.applications[i].specificLocations.length; j++) {
+                            if ($scope.formValues.applications[i].specificLocations[j].totalWeightage != 100) {
+                               hasTotalWeightDifferentBy100 = true;
+                            }
+                        }
+                    }
+                    if ($scope.formValues.applications[i].allLocations.totalWeightage != 100) {
+                        hasTotalWeightDifferentBy100 = true;
+                    }
+                }
+                if (hasTotalWeightDifferentBy100) {
+                    toastr.error('Please adjust the weight of the questions so total weight is 100!');
+                    vm.editInstance.$valid = false;
+                }
+            }
             
             if (vm.app_id == 'admin' && vm.screen_id == 'users') {
                 var dataSrcs = {
@@ -3137,6 +3156,7 @@ APP_MASTERS.controller('Controller_Master', [
                 return formattedDate;
             }
         };
+        
         vm.formatSimpleDate = function(date) {
             var dateFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
             window.tenantFormatsDateFormat = dateFormat;

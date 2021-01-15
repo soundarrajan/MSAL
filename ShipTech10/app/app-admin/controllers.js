@@ -18,14 +18,14 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
     }
     vm.entity_id = $state.params.entity_id;
 
+    if ($state.params.path) {
+        vm.app_id = $state.params.path[0].uisref.split('.')[0];
+    }
+
     if (vm.screen_id == 'sellerrating') {
         setTimeout(() => {
             $state.params.title = 'Configure Seller Rating';
         }, 1000);
-    }
-
-    if ($state.params.path) {
-        vm.app_id = $state.params.path[0].uisref.split('.')[0];
     }
     vm.treant = [ {
         Name: 'Company1',
@@ -199,6 +199,7 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
         name: 'Company Access',
         id: 'company_access'
     } ];
+
     // console.log($scope)
     $scope.triggerChangeFieldsAppSpecific = function(name, id) {
         if (vm.screen_id == 'sellerrating') {
@@ -322,6 +323,7 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
         $scope.formValues.applications[applicationIdx].categories[categoryIdx].weight = weight;
         $scope.totalWeightageCalc();
     };
+
     $scope.totalWeightageCalc = function() {
         var totalWeightage = 0;
         $.each($scope.formValues.applications, (key, value) => {
@@ -336,6 +338,63 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
             });
         });
         $scope.totalWeightage = totalWeightage;
+    };
+
+    $scope.updateWeightSumSpecificLocations = function(applicationIdx, locationIdx, categoryIdx) {
+        let weight = 0;
+        $.each($scope.formValues.applications[applicationIdx].specificLocations[locationIdx].categories[categoryIdx].details, (key, value) => {
+            var currentVal = value.weight;
+            if (typeof value.weight == 'NaN' || typeof value.weight == 'undefined' || value.weight == null) {
+                currentVal = 0;
+            }
+            if (value.ratingRequired) {
+                weight = weight + parseFloat(currentVal);
+            }
+        });
+        $scope.formValues.applications[applicationIdx].specificLocations[locationIdx].categories[categoryIdx].weight = weight;
+        $scope.formValues.applications[applicationIdx].specificLocations[locationIdx].categories = _.filter( $scope.formValues.applications[applicationIdx].specificLocations[locationIdx].categories, function(object) {
+            return object.details.length;
+        });
+        $scope.totalWeightageCalcSpecificLocations($scope.formValues.applications[applicationIdx].specificLocations[locationIdx]);
+    };
+
+
+    $scope.totalWeightageCalcSpecificLocations = function(specificLocation) {
+        var totalWeightage = 0;
+        $.each(specificLocation.categories, (key, value) => {
+            if (value.weight) {
+                totalWeightage += parseFloat(value.weight);
+            }
+        });
+        specificLocation.totalWeightage = totalWeightage;
+    };
+
+    $scope.updateWeightSumAllLocations = function(applicationIdx, categoryIdx) {
+        let weight = 0;
+        $.each($scope.formValues.applications[applicationIdx].allLocations.categories[categoryIdx].details, (key, value) => {
+            var currentVal = value.weight;
+            if (typeof value.weight == 'NaN' || typeof value.weight == 'undefined' || value.weight == null) {
+                currentVal = 0;
+            }
+            if (value.ratingRequired) {
+                weight = weight + parseFloat(currentVal);
+            }
+        });
+        $scope.formValues.applications[applicationIdx].allLocations.categories[categoryIdx].weight = weight;
+        $scope.formValues.applications[applicationIdx].allLocations.categories = _.filter($scope.formValues.applications[applicationIdx].allLocations.categories, function(object) {
+            return object.details.length;
+        });
+        $scope.totalWeightageCalcAllLocations($scope.formValues.applications[applicationIdx].allLocations);
+    };
+
+    $scope.totalWeightageCalcAllLocations = function(allLocations, categoryIdx) {
+        var totalWeightage = 0;
+        $.each(allLocations.categories, (key, value) => {
+            if (value.weight) {
+                totalWeightage += parseFloat(value.weight);
+            }
+        });
+        allLocations.totalWeightage = totalWeightage;
     };
 
     /* ADmin precedence rules*/
@@ -1062,6 +1121,30 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
     		toastr.error(`${newApp.name } app is already added`);
     	}
     };
+
+    $scope.addSellerRatingApplicabbleAppSpecificLocations = function(specificLocation, index) {
+        if (!$scope.formValues.applications[index].specificLocations || typeof $scope.formValues.applications[index].specificLocations  == 'undefined') {
+            $scope.formValues.applications[index].specificLocations  = [];
+        }
+        var isAlreadyAdded = false;
+        $.each($scope.formValues.applications[index].specificLocations, (apk, apv) => {
+            if (apv.location.id == specificLocation.id) {
+                isAlreadyAdded = true;
+            }
+        });
+        if (!isAlreadyAdded) {
+            var newObj = {
+                location: {
+                    id: specificLocation.id,
+                    name: specificLocation.name
+                }
+            };
+            $scope.formValues.applications[index].specificLocations.push(newObj);
+        } else {
+            toastr.error(`${specificLocation.name } location is already added`);
+        }
+    };
+
 
 
     $scope.setPageTitle = function(title) {
