@@ -5568,12 +5568,6 @@ APP_API.factory('$Api_Service', [
                     if (param.app == 'admin' && param.screen == 'sellerrating') {
                         let apiJSON = {
                             Payload: {
-                                Filters: [
-                                    {
-                                        ColumnName: 'CompanyId',
-                                        Value: param.id
-                                    }
-                                ]
                             }
                         };
                         url = api_map[param.app][param.screen].entity.get.endpoint;

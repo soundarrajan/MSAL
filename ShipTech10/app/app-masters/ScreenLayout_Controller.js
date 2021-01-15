@@ -683,7 +683,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                             (callback) => {
                                 screenLoader.hideLoader();
                                 if (callback) {
-	                                    $scope.formValues = callback;
+	                                $scope.formValues = callback;
                                     if(vm.screen_id === 'emaillogs') {
                                         if($scope.formValues.to && typeof $scope.formValues.to === 'string') {
                                             $scope.formValues.to = $scope.formValues.to.replace(/,/g, ';');
@@ -704,6 +704,11 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                                         $scope.initRobTable();
                                     }
 
+                                    if (vm.app_id == 'admin' && vm.screen_id == 'sellerrating') {
+							            setTimeout(() => {
+							                $scope.initMultiTags('applications');
+							            }, 500);
+                                    }
 
 				                    if (vm.app_id == 'invoices' && vm.screen_id == 'invoice') {
 				                    	$rootScope.reloadPage = true;
