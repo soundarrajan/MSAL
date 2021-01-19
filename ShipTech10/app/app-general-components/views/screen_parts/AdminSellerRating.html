@@ -45,14 +45,14 @@
             <div class="portlet-body">
                 <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation" ng-repeat="(key,value) in formValues.applications">
-                        <a href="#{{ value.module.name }}" aria-controls="{{ value.name }}" role="tab" data-toggle="tab">
+                        <a href="#{{ value.module.name == 'Counterparty Master' ? 'CounterpartyMaster' :  value.module.name }}" aria-controls="{{value.module.name == 'Counterparty Master' ? 'CounterpartyMaster' :  value.module.name }}" role="tab" data-toggle="tab">
                             {{ value.module.name }}
                         </a>
                     </li>
                 </ul>
                 <br/>
                 <div class="tab-content">
-                    <div ng-repeat="(key1,value1) in formValues.applications" role="tabpanel" class="tab-pane" id="{{ value1.module.name }}">
+                    <div ng-repeat="(key1,value1) in formValues.applications" role="tabpanel" class="tab-pane" id="{{ value1.module.name == 'Counterparty Master' ? 'CounterpartyMaster' :  value1.module.name }}">
                         <div class="row">
                             <span ng-init='CM.getOptions({"Name": "Location", "Type": "dropdown", "masterSource": "Location"})'></span>
                             <div class="col-md-4">
@@ -206,14 +206,14 @@
             <div class="portlet-body">
                <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation" ng-repeat="(key,value) in formValues.applications">
-                        <a href="#{{ value.module.name }}allLocations" aria-controls="{{ value.name }}" role="tab" data-toggle="tab">
+                        <a href="#{{ value.module.name == 'Counterparty Master' ? 'CounterpartyMaster' :  value.module.name }}allLocations" aria-controls="{{ value.module.name == 'Counterparty Master' ? 'CounterpartyMaster' :  value.module.name  }}" role="tab" data-toggle="tab">
                             {{ value.module.name }}
                         </a>
                     </li>
                 </ul>
                 <br/>
                 <div class="tab-content">
-                    <div ng-repeat="(key1,value1) in formValues.applications" role="tabpanel" class="tab-pane" id="{{ value1.module.name }}allLocations">
+                    <div ng-repeat="(key1,value1) in formValues.applications" role="tabpanel" class="tab-pane" id="{{ value1.module.name == 'Counterparty Master' ? 'CounterpartyMaster' :  value1.module.name  }}allLocations">
                         <span ng-init="!formValues.applications[key1].allLocations.categories ? formValues.applications[key1].allLocations.categories=[{'id':0}] : '' "></span>
                         <!-- {{value1}} -->
                         <div class="col-md-push-8">
