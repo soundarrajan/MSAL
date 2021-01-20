@@ -2360,7 +2360,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     vm.changedfields[entityId] = {};
                 }
                 vm.changedfields[entityId][name] = cellValue;
-                tpl = "<span title=''><textarea cols='30' rows='1' style='display: block; width: 100%; min-width: 100px; min-height: 30px; resize: both;' class='form-control box_office_comments' ng-model='CLC.changedfields[" + entityId + "]." + name + "' ng-focus='CLC.setInitialValue(CLC.changedfields[" + entityId + "]." + name + ", $event)' ng-blur='CLC.checkChange(" + entityId + ", CLC.changedfields[" + entityId + "]." + name + ", $event)' /></textarea>";
+                tpl = "<span title=''><textarea decode-input-format cols='30' rows='1' style='display: block; width: 100%; min-width: 100px; min-height: 30px; resize: both;' class='form-control box_office_comments' ng-model='CLC.changedfields[" + entityId + "]." + name + "' ng-focus='CLC.setInitialValue(CLC.changedfields[" + entityId + "]." + name + ", $event)' ng-blur='CLC.checkChange(" + entityId + ", CLC.changedfields[" + entityId + "]." + name + ", $event)' /></textarea>";
                 return tpl;
             };
             var dropdown = function(cellValue, options, rowObject) {

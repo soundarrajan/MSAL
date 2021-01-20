@@ -10,7 +10,7 @@
             <textarea rich-text-editor class="wysihtml5 form-control" rows="6" id="{{ field.Name }}" dynamic-model="'formValues.' + field.Unique_ID "  ng-required='field.Required' dynamic-condition="{{ field.Conditional }}" dynamic-condition-type="{{ field.ConditionalType }}"></textarea>
         </span>
          <span ng-if="!field.Richtext && !field.htmlDisplay" id="regular_textarea_wrapper">
-            <textarea class="form-control" rows="2" id="{{ field.Name }}" dynamic-model="'formValues.' + field.Unique_ID "  ng-required='field.Required' ng-disabled="field.Disabled"></textarea>
+            <textarea decode-input-format class="form-control" rows="2" id="{{ field.Name }}" dynamic-model="'formValues.' + field.Unique_ID "  ng-required='field.Required' ng-disabled="field.Disabled"></textarea>
         </span>
         <span ng-if="field.Richtext && field.htmlDisplay">
 	        <span ng-bind-html="CM.trustAsHtmlField(field)" class="richTextHtmlDisplay"></span>
