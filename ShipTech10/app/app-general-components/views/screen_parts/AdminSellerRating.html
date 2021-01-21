@@ -119,7 +119,7 @@
                                                             {{ CM.app_id + '.CATEGORY' | translate }} {{ key2 + 1 }}
                                                         </span>
                                                         <div class="form_control pull-left">
-                                                            <input type="text" ng-required="true" name="Category_{{ key2 + 1 }}_name_specificLocations_{{value4.location.name}}_{{value1.module.name}}" id="" class="form-control" placeholder="Category {{ key2 + 1 }}" ng-model="value2.name"/>
+                                                            <input decode-input-format type="text" ng-required="true" name="Category_{{ key2 + 1 }}_name_specificLocations_{{value4.location.name}}_{{value1.module.name}}" id="" class="form-control" placeholder="Category {{ key2 + 1 }}" ng-model="value2.name"/>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
@@ -152,7 +152,7 @@
                                                             {{ CM.app_id + '.PARAMETER' | translate }} {{ key3 + 1 }}
                                                         </label>
                                                         <div class="input-group form_input">
-                                                            <input type="text" ng-required="true" class="form-control" name="Category_{{ key2 + 1 }}_question_{{ key3 + 1 }}_specificLocations_{{value4.location.name}}_{{value1.module.name}}" ng-model="value3.name"/>
+                                                            <input decode-input-format type="text" ng-required="true" class="form-control" name="Category_{{ key2 + 1 }}_question_{{ key3 + 1 }}_specificLocations_{{value4.location.name}}_{{value1.module.name}}" ng-model="value3.name"/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -160,7 +160,7 @@
                                                     <div class="input-group pull-left form_group seller-rating-required">
                                                         <div class="icheck-inline">
                                                             <label  class=" mt-checkbox">
-                                                                <input class="rating-required"  type="checkbox"   id="rating-required" ng-model="value3.ratingRequired" ng-change="updateWeightSumSpecificLocations(key1, key4, key2)"/>
+                                                                <input decode-input-format class="rating-required"  type="checkbox"   id="rating-required" ng-model="value3.ratingRequired" ng-change="updateWeightSumSpecificLocations(key1, key4, key2)"/>
                                                                 <span></span>
                                                                 Rating Required
                                                             </label>
@@ -176,7 +176,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="input-group pull-right form_input">
-                                                            <input type="number" class="form-control weightage" ng-required="value3.ratingRequired" name="Category_{{ key2 + 1 }}_question_{{ key3 + 1 }}_weight_specificLocations_{{value4.location.name}}_{{value1.module.name}}" ng-model="value3.weight" ng-change="updateWeightSumSpecificLocations(key1, key4, key2)" ng-disabled="!value3.ratingRequired"/>
+                                                            <input decode-input-format type="number" class="form-control weightage" ng-required="value3.ratingRequired" name="Category_{{ key2 + 1 }}_question_{{ key3 + 1 }}_weight_specificLocations_{{value4.location.name}}_{{value1.module.name}}" ng-model="value3.weight" ng-change="updateWeightSumSpecificLocations(key1, key4, key2)" ng-disabled="!value3.ratingRequired"/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -241,7 +241,7 @@
                                             {{ CM.app_id + '.CATEGORY' | translate }} {{ key2 + 1 }}
                                         </span>
                                         <div class="form_control pull-left">
-                                            <input type="text" ng-required="true" name="Category_{{ key2 + 1 }}_name_allLocations_{{value1.module.name}}" id="" class="form-control" placeholder="Category {{ key2 + 1 }}" ng-model="value2.name"/>
+                                            <input decode-input-format type="text" ng-required="true" name="Category_{{ key2 + 1 }}_name_allLocations_{{value1.module.name}}" id="" class="form-control" placeholder="Category {{ key2 + 1 }}" ng-model="value2.name"/>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -274,7 +274,7 @@
                                             {{ CM.app_id + '.PARAMETER' | translate }} {{ key3 + 1 }}
                                         </label>
                                         <div class="input-group form_input">
-                                            <input type="text" ng-required="true" class="form-control" name="Category_{{ key2 + 1 }}_question_{{ key3 + 1 }}_allLocations_{{value1.module.name}}" ng-model="value3.name"/>
+                                            <input decode-input-format type="text" ng-required="true" class="form-control" name="Category_{{ key2 + 1 }}_question_{{ key3 + 1 }}_allLocations_{{value1.module.name}}" ng-model="value3.name"/>
                                         </div>
                                     </div>
                                 </div>
@@ -282,7 +282,7 @@
                                      <div class="input-group form_group seller-rating-required">
                                         <div class="icheck-inline">
                                             <label  class=" mt-checkbox">
-                                                <input class="rating-required"  type="checkbox"   id="rating-required" ng-model="value3.ratingRequired" ng-change="updateWeightSumAllLocations(key1, key2)"/>
+                                                <input decode-input-format class="rating-required"  type="checkbox"   id="rating-required" ng-model="value3.ratingRequired" ng-change="updateWeightSumAllLocations(key1, key2)"/>
                                                 <span></span>
                                                 Rating Required
                                             </label>
@@ -299,7 +299,7 @@
                                             </div>
                                         </div>
                                         <div class="input-group pull-right form_input">
-                                            <input type="number" class="form-control weightage" ng-required="value3.ratingRequired" name="Category_{{ key2 + 1 }}_question_{{ key3 + 1 }}_weight_allLocations_{{value1.module.name}}" ng-model="value3.weight" ng-change="updateWeightSumAllLocations(key1, key2)" ng-disabled="!value3.ratingRequired"/>
+                                            <input  decode-input-format type="number" class="form-control weightage" ng-required="value3.ratingRequired" name="Category_{{ key2 + 1 }}_question_{{ key3 + 1 }}_weight_allLocations_{{value1.module.name}}" ng-model="value3.weight" ng-change="updateWeightSumAllLocations(key1, key2)" ng-disabled="!value3.ratingRequired"/>
                                         </div>
                                     </div>
                                 </div>
