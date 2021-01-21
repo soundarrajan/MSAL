@@ -1203,4 +1203,19 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
             }
         }
     };
+
+
+    $scope.verifyAllLocation = function(category) {
+        if (category.name != null && category.name != "") {
+            return true;
+        }
+        if (category.details) {
+            for (let i = 0; i < category.details.length; i++) {
+                if ((category.details[i].name  != null   && category.details[i].name != "") ||  category.details[i].weight) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 } ]);

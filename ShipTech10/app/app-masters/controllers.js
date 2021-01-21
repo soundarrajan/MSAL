@@ -770,6 +770,21 @@ APP_MASTERS.controller('Controller_Master', [
                 }
             }
         }
+
+        $scope.verifyAllLocation = function(category) {
+            if (category.name != null && category.name != "") {
+                return true;
+            }
+            if (category.details) {
+                for (let i = 0; i < category.details.length; i++) {
+                    if ((category.details[i].name  != null   && category.details[i].name != "") ||  category.details[i].weight) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         $scope.save_master_changes = function(ev, sendEmails, noReload, completeCallback) {
             screenLoader.showLoader();
             $('form').addClass('submitted');
@@ -801,6 +816,18 @@ APP_MASTERS.controller('Controller_Master', [
                                hasTotalWeightDifferentBy100 = true;
                             }
                         }
+                    }
+                    if ($scope.formValues.applications[i].allLocations.categories) {
+                        for (let p = 0; p < $scope.formValues.applications[i].allLocations.categories.length; p++) {
+                            if (!$scope.verifyAllLocation($scope.formValues.applications[i].allLocations.categories[p])) {
+                                $scope.formValues.applications[i].allLocations.categories.splice(p, 1);
+                                p--;
+                            }
+                        }
+                        if (!$scope.formValues.applications[i].allLocations.categories.length) {
+                            $scope.formValues.applications[i].allLocations = null;
+                        }
+
                     }
                     if ($scope.formValues.applications[i].allLocations) {
                         let ratingRequired = false;
@@ -1573,7 +1600,7 @@ APP_MASTERS.controller('Controller_Master', [
                                 }
                                 if (vm.app_id == 'admin') {
                                     if(vm.screen_id == 'sellerrating') {
-                                        // do nothing
+                                        $state.reload();
                                     }else if (sendEmails) {
                                         $location.path(locationPath + callback.id).hash('mail');
                                     } else {
