@@ -160,7 +160,7 @@
                                                     <div class="input-group pull-left form_group seller-rating-required">
                                                         <div class="icheck-inline">
                                                             <label  class=" mt-checkbox">
-                                                                <input decode-input-format class="rating-required"  type="checkbox"   id="rating-required" ng-model="value3.ratingRequired" ng-change="updateWeightSumSpecificLocations(key1, key4, key2)"/>
+                                                                <input class="rating-required"  type="checkbox"   id="rating-required" ng-model="value3.ratingRequired" ng-change="updateWeightSumSpecificLocations(key1, key4, key2);!value3.ratingRequired ? value3.weight= null : ''"/>
                                                                 <span></span>
                                                                 Rating Required
                                                             </label>
@@ -282,7 +282,7 @@
                                      <div class="input-group form_group seller-rating-required">
                                         <div class="icheck-inline">
                                             <label  class=" mt-checkbox">
-                                                <input decode-input-format class="rating-required"  type="checkbox"   id="rating-required" ng-model="value3.ratingRequired" ng-change="updateWeightSumAllLocations(key1, key2)"/>
+                                                <input class="rating-required"  type="checkbox"   id="rating-required" ng-model="value3.ratingRequired" ng-change="updateWeightSumAllLocations(key1, key2); !value3.ratingRequired ? value3.weight= null : '' "/>
                                                 <span></span>
                                                 Rating Required
                                             </label>

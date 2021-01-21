@@ -119,6 +119,7 @@ APP_MASTERS.controller('Controller_Master', [
 
         // END APP SPECIFIC CONTROLLER INSERTION
         vm.entity_id = $state.params.entity_id;
+        vm.location_id = $state.params.location_id;
         $rootScope.entity_id = $state.params.entity_id;
         vm.isDev = 0;
         vm.listsCache = $listsCache;
@@ -786,14 +787,36 @@ APP_MASTERS.controller('Controller_Master', [
                 for (let i = 0 ; i < $scope.formValues.applications.length; i++) {
                     if ($scope.formValues.applications[i].specificLocations) {
                         for (let j = 0; j < $scope.formValues.applications[i].specificLocations.length; j++) {
-                            if ($scope.formValues.applications[i].specificLocations[j].totalWeightage != 100) {
+                            let ratingRequired = false;
+                            for (let k = 0; k < $scope.formValues.applications[i].specificLocations[j].categories.length; k++) {
+                                let findIndex = _.findIndex($scope.formValues.applications[i].specificLocations[j].categories[k].details, function(object) {
+                                    return object.ratingRequired;
+                                });
+                                if (findIndex != -1) {
+                                    ratingRequired = true;
+                                }
+
+                            }
+                            if (ratingRequired && $scope.formValues.applications[i].specificLocations[j].totalWeightage != 100) {
                                hasTotalWeightDifferentBy100 = true;
                             }
                         }
                     }
-                    if ($scope.formValues.applications[i].allLocations.totalWeightage != 100) {
-                        hasTotalWeightDifferentBy100 = true;
-                    }
+                    if ($scope.formValues.applications[i].allLocations) {
+                        let ratingRequired = false;
+                        for (let l = 0 ; l < $scope.formValues.applications[i].allLocations.categories.length; l++) {
+                            let findIndex = _.findIndex($scope.formValues.applications[i].allLocations.categories[l].details, function(object) {
+                                return object.ratingRequired;
+                            });
+                            if (findIndex != -1) {
+                                ratingRequired = true;
+                            }
+                        }
+                        if (ratingRequired && $scope.formValues.applications[i].allLocations.totalWeightage != 100) {
+                            hasTotalWeightDifferentBy100 = true;
+                        }
+                    }                    
+
                 }
                 if (hasTotalWeightDifferentBy100) {
                     toastr.error('Please adjust the weight of the questions so total weight is 100!');
@@ -1633,6 +1656,10 @@ APP_MASTERS.controller('Controller_Master', [
         $scope.copyEntity = function() {
             localStorage.setItem(`${vm.app_id + vm.screen_id }_copy`, vm.entity_id);
             $location.path(`/${ vm.app_id }/${ vm.screen_id }/edit/`);
+        };
+
+        $scope.navigateToSellerRating = function() {
+            $location.path(`/${ vm.app_id }/${ vm.screen_id }/seller-rating/${ vm.entity_id }/${ vm.location_id }`);
         };
         $scope.triggerError = function(name, errors) {
             if (errors.$viewValue != 'NaN') {
