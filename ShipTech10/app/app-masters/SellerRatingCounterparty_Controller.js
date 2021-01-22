@@ -47,38 +47,56 @@ APP_MASTERS.controller('Master_Seller_Rating_Counterparty', [
 				"moduleId": 12
 			}
 			Factory_Master.getSellerRatingConfig(payload, (response) => {
-            	callback(response);
+				if (response) {
+					callback(response);
+				} else {
+                    toastr.error('An error has occured!');
+				}
+    
     		});
 
+		}
+
+		$scope.mappedRating = function(applications, sellerRatingReviewCategories) {
+			for (let i = 0; i < applications.length; i++) {
+				for (let j = 0; j < applications[i].categories.length; j++) {
+					let currentCategory = applications[i].categories[j];
+					let findCategory = _.find(sellerRatingReviewCategories, function(object) {
+						return object.sellerRatingCategoryId == currentCategory.id;
+					});
+					if (findCategory) {
+						applications[i].categories[j].createdOn = findCategory.createdOn;
+						applications[i].categories[j].createdBy = findCategory.createdBy;
+						applications[i].categories[j].sellerRatingReviewCategoryId = findCategory.id;
+						for (let k = 0; k < applications[i].categories[j].details.length; k++) {
+							let currentDetail =  applications[i].categories[j].details[k];
+							let findDetail = _.find(findCategory.details, function(object) {
+								return object.sellerRatingCategoryDetailId == currentDetail.id;
+							});
+							if (findDetail) {
+								applications[i].categories[j].details[k].rating = findDetail.rating;
+								applications[i].categories[j].details[k].comments = findDetail.comments;
+								applications[i].categories[j].details[k].sellerRatingReviewDetailId = findDetail.id;
+							}
+						}
+					}				
+				}
+			}
 		}
 
 		vm.getData(function (response) {
 			$scope.formValues.applications = {};
 			$scope.formValues.applications = response;
-			// for (let i = 0; i < $scope.formValues.applications.length; i++) {
-			// 	for (let j = 0; j < $scope.formValues.applications[i].categories.length; j++) {
-			// 		let currentCategory = $scope.formValues.applications[i].categories[j];
-			// 		let findCategory = _.find($scope.formValues.applications1.sellerRatingReviewCategories, function(object) {
-			// 			return object.sellerRatingCategoryId == currentCategory.id;
-			// 		});
-			// 		if (findCategory) {
-			// 			$scope.formValues.applications[i].categories[j].createdOn = findCategory.createdOn;
-			// 			$scope.formValues.applications[i].categories[j].createdBy = findCategory.createdBy;
-			// 			$scope.formValues.applications[i].categories[j].sellerRatingReviewCategoryId = findCategory.id;
-			// 			for (let k = 0; k < $scope.formValues.applications[i].categories[j].details.length; k++) {
-			// 				let currentDetail =  $scope.formValues.applications[i].categories[j].details[k];
-			// 				let findDetail = _.find(findCategory.details, function(object) {
-			// 					return object.sellerRatingCategoryDetailId == currentDetail.id;
-			// 				});
-			// 				if (findDetail) {
-			// 					$scope.formValues.applications[i].categories[j].details[k].rating = findDetail.rating;
-			// 					$scope.formValues.applications[i].categories[j].details[k].comments = findDetail.comments;
-			// 					$scope.formValues.applications[i].categories[j].details[k].sellerRatingReviewDetailId = findDetail.id;
-			// 				}
-			// 			}
-			// 		}				
-			// 	}
-			// }
+			Factory_Master.getSellerRatingReview($scope.entity_id, (response) => {
+				if (response) {
+					$scope.formValues.sellerRatingReviewCategories = response;
+					$scope.mappedRating($scope.formValues.applications, $scope.formValues.sellerRatingReviewCategories);
+
+				} else {
+					toastr.error('An error has occured!');
+				}
+			})
+	
 
 			console.log($scope.formValues.applications1);
 	      	console.log($scope.formValues.applications);
@@ -216,6 +234,7 @@ APP_MASTERS.controller('Master_Seller_Rating_Counterparty', [
         $scope.discardChanges = function() {
         	$state.reload();
         }
+
 	}
 
 ]);
