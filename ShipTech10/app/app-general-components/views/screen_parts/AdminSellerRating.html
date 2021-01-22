@@ -22,8 +22,8 @@
             </div>
             <div class="col-sm-8">
                 <div class="bootstrap-tagsinput"> 
-                    <span class="tag label border-default seller-rating-module" ng-repeat="(key, value) in formValues.applications">
-                        <a ng-click="formValues.applications.splice(key,1)"><i class="fa fa-close font-red-thunderbird" ></i></a>
+                    <span class="tag label border-default seller-rating-module" ng-repeat="(key, value) in formValues.applications" ng-if="!value.isDeleted">
+                        <a ng-click="value.id ? deleteModule(value) : formValues.applications.splice(key,1)"><i class="fa fa-close font-red-thunderbird" ></i></a>
                         {{value.module.name}}
                     </span>
                 </div>                  
@@ -44,7 +44,7 @@
             </div>
             <div class="portlet-body">
                 <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" ng-repeat="(key,value) in formValues.applications">
+                    <li role="presentation" ng-repeat="(key,value) in formValues.applications" ng-if="!value.isDeleted">
                         <a href="#{{ value.module.name == 'Counterparty Master' ? 'CounterpartyMaster' :  value.module.name }}" aria-controls="{{value.module.name == 'Counterparty Master' ? 'CounterpartyMaster' :  value.module.name }}" role="tab" data-toggle="tab">
                             {{ value.module.name }}
                         </a>
@@ -72,119 +72,120 @@
                             </div>
                             <div class="col-sm-8">
                                 <div class="bootstrap-tagsinput"> 
-                                    <span class="tag label border-default seller-rating-location"  ng-repeat="(key, value) in formValues.applications[key1].specificLocations">
-                                        <a ng-click="formValues.applications[key1].specificLocations.splice(key,1)"><i class="fa fa-close font-red-thunderbird" ></i></a>
+                                    <span class="tag label border-default seller-rating-location"  ng-repeat="(key, value) in formValues.applications[key1].specificLocations" ng-if="!value.isDeleted">
+                                        <a ng-click="value.id ? deleteLocation(value): formValues.applications[key1].specificLocations.splice(key,1)"><i class="fa fa-close font-red-thunderbird" ></i></a>
                                         {{value.location.name}}
                                     </span>
                                 </div>                  
                             </div>              
                         </div>
                         <div ng-repeat="(key4,value4) in formValues.applications[key1].specificLocations">
-                            <!-- {{value4}} -->
-                            <span ng-init="!formValues.applications[key1].specificLocations[key4].categories ? formValues.applications[key1].specificLocations[key4].categories=[{'id':0}] : '' "></span>
-                            <div class="portlet light light-specific-location">
-                                    <div class="portlet-title ">
-                                        <div class="tools ">
-                                            <a   class="collapse" data-original-title="" title=""></a>
-                                        </div>
-                                        <div class="caption ">
-                                            <span class="caption-subject pull-left ">
-                                                {{value4.location.name}}
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="portlet-body">
-                                        <div class="col-md-push-8">
-                                            <div class="weightage-labels">
-                                                <div class="input-group pull-right form_input form_input_applications">
-                                                    <span class="form-control weightage" ng-if="formValues.applications" ng-init="totalWeightageCalcSpecificLocations(value4)" ng-class="formValues.applications[key1].specificLocations[key4].totalWeightage != 100 ? 'danger' : '' ">
-                                                        {{ formValues.applications[key1].specificLocations[key4].totalWeightage }}
-                                                    </span>
-                                                </div>
-                                                <label class="control-label pull-right">
-                                                    {{ CM.app_id + '.TOTAL_WEIGHTAGE' | translate }}
-                                                </label>
+                            <div ng-if="!formValues.applications[key1].specificLocations[key4].isDeleted">
+                                <span ng-init="!formValues.applications[key1].specificLocations[key4].categories ? formValues.applications[key1].specificLocations[key4].categories=[{'id':0}] : '' "></span>
+                                <div class="portlet light light-specific-location">
+                                        <div class="portlet-title ">
+                                            <div class="tools ">
+                                                <a   class="collapse" data-original-title="" title=""></a>
+                                            </div>
+                                            <div class="caption ">
+                                                <span class="caption-subject pull-left ">
+                                                    {{value4.location.name}}
+                                                </span>
                                             </div>
                                         </div>
-                                        <br/>
-                                        <br/>
-                                        <br/>
-                                        <div class="portlet" ng-repeat="(key2, value2) in value4.categories">
-                                            <div class="portlet-category-key" ng-if="key2> 0">
-                                            </div>
-                                            <div class="portlet-title portlet-title-no-border">
-                                                <div class="row">
-                                                    <div class="col-md-8 form-group">
-                                                        <span class="caption-subject pull-left control-label seller-rating-category">
-                                                            {{ CM.app_id + '.CATEGORY' | translate }} {{ key2 + 1 }}
+                                        <div class="portlet-body">
+                                            <div class="col-md-push-8">
+                                                <div class="weightage-labels">
+                                                    <div class="input-group pull-right form_input form_input_applications">
+                                                        <span class="form-control weightage" ng-if="formValues.applications" ng-init="totalWeightageCalcSpecificLocations(value4)" ng-class="formValues.applications[key1].specificLocations[key4].totalWeightage != 100 ? 'danger' : '' ">
+                                                            {{ formValues.applications[key1].specificLocations[key4].totalWeightage }}
                                                         </span>
-                                                        <div class="form_control pull-left">
-                                                            <input decode-input-format type="text" ng-required="true" name="Category_{{ key2 + 1 }}_name_specificLocations_{{value4.location.name}}_{{value1.module.name}}" id="" class="form-control" placeholder="Category {{ key2 + 1 }}" ng-model="value2.name"/>
+                                                    </div>
+                                                    <label class="control-label pull-right">
+                                                        {{ CM.app_id + '.TOTAL_WEIGHTAGE' | translate }}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <div class="portlet" ng-repeat="(key2, value2) in value4.categories" ng-if="!value2.isDeleted">
+                                                <div class="portlet-category-key" ng-if="key2> 0">
+                                                </div>
+                                                <div class="portlet-title portlet-title-no-border">
+                                                    <div class="row">
+                                                        <div class="col-md-8 form-group">
+                                                            <span class="caption-subject pull-left control-label seller-rating-category">
+                                                                {{ CM.app_id + '.CATEGORY' | translate }} {{ key2 + 1 }}
+                                                            </span>
+                                                            <div class="form_control pull-left">
+                                                                <input decode-input-format type="text" ng-required="true" name="Category_{{ key2 + 1 }}_name_specificLocations_{{value4.location.name}}_{{value1.module.name}}" id="" class="form-control" placeholder="Category {{ key2 + 1 }}" ng-model="value2.name"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="weightage-labels">
+                                                                <div class="action-buttons">
+                                                                    <div class="remove"  ng-if="key2> 0"  ng-click="value2.id ? deleteCategory(value2) : value4.categories.splice(key2, 1); totalWeightageCalcSpecificLocations(value4)">
+                                                                        <i class="fa fa-minus"></i>
+                                                                    </div>
+                                                                    <div class="insert" ng-click="value4.categories.push({'id':0})">
+                                                                        <i class="fa fa-plus"></i>
+                                                                    </div>
+                                                                </div>
+                                                                <label class="control-label">
+                                                                    {{ CM.app_id + '.WEIGHTAGE' | translate }}
+                                                                </label>
+                                                                <div class="input-group pull-right form_input">
+                                                                    <span class="form-control weightage">
+                                                                        {{ value2.weight }}
+                                                                    </span>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
+                                                </div>
+                                                <span ng-init="!value2.details ? value2.details = [{'id':0}] : ''"></span>
+                                                <div class="row" ng-repeat="(key3, value3) in value2.details" ng-if="!value3.isDeleted">
+                                                    <div class="col-md-8">
+                                                        <div class="form-group row">
+                                                            <label class="control-label">
+                                                                {{ CM.app_id + '.PARAMETER' | translate }} {{ key3 + 1 }}
+                                                            </label>
+                                                            <div class="input-group form_input">
+                                                                <input decode-input-format type="text" ng-required="true" class="form-control" name="Category_{{ key2 + 1 }}_question_{{ key3 + 1 }}_specificLocations_{{value4.location.name}}_{{value1.module.name}}" ng-model="value3.name"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 seller-rating-param-group">
+                                                        <div class="input-group pull-left form_group seller-rating-required">
+                                                            <div class="icheck-inline">
+                                                                <label  class=" mt-checkbox">
+                                                                    <input class="rating-required"  type="checkbox"   id="rating-required" ng-model="value3.ratingRequired" ng-change="updateWeightSumSpecificLocations(key1, key4, key2);!value3.ratingRequired ? value3.weight= null : ''"/>
+                                                                    <span></span>
+                                                                    Rating Required
+                                                                </label>
+                                                            </div>
+                                                        </div>
                                                         <div class="weightage-labels">
                                                             <div class="action-buttons">
-                                                                <div class="remove"  ng-if="key2> 0"  ng-click="value4.categories.splice(key2, 1); totalWeightageCalcSpecificLocations(value4)">
+                                                                <div class="remove" ng-if="key3> 0" ng-click="value3.id ? value3.isDeleted= true : value2.details.splice(key3, 1); updateWeightSumSpecificLocations(key1, key4, key2)">
                                                                     <i class="fa fa-minus"></i>
                                                                 </div>
-                                                                <div class="insert" ng-click="value4.categories.push({'id':0})">
+                                                                <div class="insert" ng-click="value2.details.push({'id':0})">
                                                                     <i class="fa fa-plus"></i>
                                                                 </div>
                                                             </div>
-                                                            <label class="control-label">
-                                                                {{ CM.app_id + '.WEIGHTAGE' | translate }}
-                                                            </label>
                                                             <div class="input-group pull-right form_input">
-                                                                <span class="form-control weightage">
-                                                                    {{ value2.weight }}
-                                                                </span>
+                                                                <input decode-input-format type="number" class="form-control weightage" ng-required="value3.ratingRequired" name="Category_{{ key2 + 1 }}_question_{{ key3 + 1 }}_weight_specificLocations_{{value4.location.name}}_{{value1.module.name}}" ng-model="value3.weight" ng-change="updateWeightSumSpecificLocations(key1, key4, key2)" ng-disabled="!value3.ratingRequired"/>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="seller-rating-empty"></div>
                                                 </div>
-                                            </div>
-                                            <span ng-init="!value2.details ? value2.details = [{'id':0}] : ''"></span>
-                                            <div class="row" ng-repeat="(key3, value3) in value2.details">
-                                                <div class="col-md-8">
-                                                    <div class="form-group row">
-                                                        <label class="control-label">
-                                                            {{ CM.app_id + '.PARAMETER' | translate }} {{ key3 + 1 }}
-                                                        </label>
-                                                        <div class="input-group form_input">
-                                                            <input decode-input-format type="text" ng-required="true" class="form-control" name="Category_{{ key2 + 1 }}_question_{{ key3 + 1 }}_specificLocations_{{value4.location.name}}_{{value1.module.name}}" ng-model="value3.name"/>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4 seller-rating-param-group">
-                                                    <div class="input-group pull-left form_group seller-rating-required">
-                                                        <div class="icheck-inline">
-                                                            <label  class=" mt-checkbox">
-                                                                <input class="rating-required"  type="checkbox"   id="rating-required" ng-model="value3.ratingRequired" ng-change="updateWeightSumSpecificLocations(key1, key4, key2);!value3.ratingRequired ? value3.weight= null : ''"/>
-                                                                <span></span>
-                                                                Rating Required
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="weightage-labels">
-                                                        <div class="action-buttons">
-                                                            <div class="remove" ng-if="key3> 0" ng-click="value2.details.splice(key3, 1); updateWeightSumSpecificLocations(key1, key4, key2)">
-                                                                <i class="fa fa-minus"></i>
-                                                            </div>
-                                                            <div class="insert" ng-click="value2.details.push({'id':0})">
-                                                                <i class="fa fa-plus"></i>
-                                                            </div>
-                                                        </div>
-                                                        <div class="input-group pull-right form_input">
-                                                            <input decode-input-format type="number" class="form-control weightage" ng-required="value3.ratingRequired" name="Category_{{ key2 + 1 }}_question_{{ key3 + 1 }}_weight_specificLocations_{{value4.location.name}}_{{value1.module.name}}" ng-model="value3.weight" ng-change="updateWeightSumSpecificLocations(key1, key4, key2)" ng-disabled="!value3.ratingRequired"/>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="seller-rating-empty"></div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div>                     
                         </div>
                     </div>
                 </div>
@@ -205,7 +206,7 @@
             </div>
             <div class="portlet-body">
                <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" ng-repeat="(key,value) in formValues.applications">
+                    <li role="presentation" ng-repeat="(key,value) in formValues.applications"  ng-if="!value.isDeleted">
                         <a href="#{{ value.module.name == 'Counterparty Master' ? 'CounterpartyMaster' :  value.module.name }}allLocations" aria-controls="{{ value.module.name == 'Counterparty Master' ? 'CounterpartyMaster' :  value.module.name  }}" role="tab" data-toggle="tab">
                             {{ value.module.name }}
                         </a>
@@ -231,7 +232,7 @@
                         <br/>
                         <br/>
                         <br/>
-                        <div class="portlet" ng-repeat="(key2, value2) in value1.allLocations.categories">
+                        <div class="portlet" ng-repeat="(key2, value2) in value1.allLocations.categories" ng-if="!value2.isDeleted">
                             <div class="portlet-category-key" ng-if="key2> 0">
                             </div>
                             <div class="portlet-title portlet-title-no-border">
@@ -247,7 +248,7 @@
                                     <div class="col-md-4">
                                         <div class="weightage-labels">
                                             <div class="action-buttons">
-                                                <div class="remove" ng-if="key2> 0"  ng-click="value1.allLocations.categories.splice(key2, 1); totalWeightageCalcAllLocations(value1.allLocations)">
+                                                <div class="remove" ng-if="key2> 0"  ng-click="value2.id ? deleteCategory(value2) : value1.allLocations.categories.splice(key2, 1); totalWeightageCalcAllLocations(value1.allLocations)">
                                                     <i class="fa fa-minus"></i>
                                                 </div>
                                                 <div class="insert" ng-click="value1.allLocations.categories.push({'id':0})">
@@ -267,7 +268,7 @@
                                 </div>
                             </div>
                             <span ng-init="!value2.details ? value2.details = [{'id':0}] : ''"></span>
-                            <div class="row" ng-repeat="(key3, value3) in value2.details">
+                            <div class="row" ng-repeat="(key3, value3) in value2.details" ng-if="!value3.isDeleted">
                                 <div class="col-md-8">
                                     <div class="form-group row">
                                         <label class="control-label">
@@ -290,7 +291,7 @@
                                     </div>
                                     <div class="weightage-labels">
                                         <div class="action-buttons">
-                                            <div class="remove" ng-if="key3> 0" ng-click="value2.details.splice(key3, 1);
+                                            <div class="remove" ng-if="key3> 0" ng-click="value3.id ? value3.isDeleted = true : value2.details.splice(key3, 1);
                                                 updateWeightSumAllLocations(key1, key2)">
                                                 <i class="fa fa-minus"></i>
                                             </div>

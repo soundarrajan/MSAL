@@ -705,6 +705,16 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                                     }
 
                                     if (vm.app_id == 'admin' && vm.screen_id == 'sellerrating') {
+                                    	for (let i = 0; i < $scope.formValues.applications.length; i++) {
+                                    		let findAllLocations = _.filter($scope.formValues.applications[i].locations, function(object) {
+                                    			return !object.location;
+                                    		});
+                                    		let findSpecificLocations = _.filter($scope.formValues.applications[i].locations, function(object) {
+                                    			return object.location;
+                                    		});
+                                    		$scope.formValues.applications[i].allLocations = Object.assign({}, findAllLocations[0]);
+                                    		$scope.formValues.applications[i].specificLocations = findSpecificLocations;
+                                    	}
 							            setTimeout(() => {
 							                $scope.initMultiTags('applications');
 							            }, 500);

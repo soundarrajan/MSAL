@@ -800,20 +800,23 @@ APP_MASTERS.controller('Controller_Master', [
             if (vm.app_id == 'admin' &&  vm.screen_id == 'sellerrating') {
                 let hasTotalWeightDifferentBy100 = false;
                 for (let i = 0 ; i < $scope.formValues.applications.length; i++) {
-                    if ($scope.formValues.applications[i].specificLocations) {
+                    if ($scope.formValues.applications[i].specificLocations && !$scope.formValues.applications[i].isDeleted) {
                         for (let j = 0; j < $scope.formValues.applications[i].specificLocations.length; j++) {
-                            let ratingRequired = false;
-                            for (let k = 0; k < $scope.formValues.applications[i].specificLocations[j].categories.length; k++) {
-                                let findIndex = _.findIndex($scope.formValues.applications[i].specificLocations[j].categories[k].details, function(object) {
-                                    return object.ratingRequired;
-                                });
-                                if (findIndex != -1) {
-                                    ratingRequired = true;
+                            if (!$scope.formValues.applications[i].specificLocations[j].isDeleted) {
+                                let ratingRequired = false;
+                                for (let k = 0; k < $scope.formValues.applications[i].specificLocations[j].categories.length; k++) {
+                                    if (!$scope.formValues.applications[i].specificLocations[j].categories[k].isDeleted) {
+                                        let findIndex = _.findIndex($scope.formValues.applications[i].specificLocations[j].categories[k].details, function(object) {
+                                            return object.ratingRequired && !object.isDeleted;
+                                        });
+                                        if (findIndex != -1) {
+                                            ratingRequired = true;
+                                        }
+                                    }
                                 }
-
-                            }
-                            if (ratingRequired && $scope.formValues.applications[i].specificLocations[j].totalWeightage != 100) {
-                               hasTotalWeightDifferentBy100 = true;
+                                if (ratingRequired && $scope.formValues.applications[i].specificLocations[j].totalWeightage != 100) {
+                                   hasTotalWeightDifferentBy100 = true;
+                                }
                             }
                         }
                     }
@@ -829,19 +832,24 @@ APP_MASTERS.controller('Controller_Master', [
                         }
 
                     }
-                    if ($scope.formValues.applications[i].allLocations) {
-                        let ratingRequired = false;
-                        for (let l = 0 ; l < $scope.formValues.applications[i].allLocations.categories.length; l++) {
-                            let findIndex = _.findIndex($scope.formValues.applications[i].allLocations.categories[l].details, function(object) {
-                                return object.ratingRequired;
-                            });
-                            if (findIndex != -1) {
-                                ratingRequired = true;
-                            }
+                    if ($scope.formValues.applications[i].allLocations && !$scope.formValues.applications[i].isDeleted) {
+                        if (!$scope.formValues.applications[i].allLocations.categories.isDeleted) {
+                            let ratingRequired = false;
+                            for (let l = 0 ; l < $scope.formValues.applications[i].allLocations.categories.length; l++) {
+                                if (!$scope.formValues.applications[i].allLocations.categories[l].isDeleted) {
+                                    let findIndex = _.findIndex($scope.formValues.applications[i].allLocations.categories[l].details, function(object) {
+                                        return object.ratingRequired && !object.isDeleted;
+                                    });
+                                    if (findIndex != -1) {
+                                        ratingRequired = true;
+                                    }
+                                }                        
                         }
                         if (ratingRequired && $scope.formValues.applications[i].allLocations.totalWeightage != 100) {
                             hasTotalWeightDifferentBy100 = true;
                         }
+                        }
+
                     }                    
 
                 }
@@ -849,6 +857,7 @@ APP_MASTERS.controller('Controller_Master', [
                     toastr.error('Please adjust the weight of the questions so total weight is 100!');
                     vm.editInstance.$valid = false;
                 }
+
             }
             
             if (vm.app_id == 'admin' && vm.screen_id == 'users') {
@@ -1281,6 +1290,30 @@ APP_MASTERS.controller('Controller_Master', [
 
             /* END Contract Validations*/
             if (vm.editInstance.$valid) {
+                if (vm.app_id == 'admin' &&  vm.screen_id == 'sellerrating') {
+                    for (let i = 0 ; i < $scope.formValues.applications.length; i++) {
+                        const model = {
+                            'allLocations': null,
+                            'id': null,
+                            'isDeleted': null,
+                            'module': null,
+                            'specificLocations': null,
+
+                        }
+                        const value = _.pick($scope.formValues.applications[i], _.keys(model));
+                        if (value.allLocations) {
+                            value.specificLocations.push(value.allLocations);
+                        }
+                        $scope.formValues.applications[i] = {
+                            'id': value.id,
+                            'isDeleted': value.isDeleted,
+                            'module': value.module,
+                            'locations': value.specificLocations
+                        }
+
+                        console.log($scope.formValues.applications[i]);
+                    }
+                }
                 $scope.filterFromData = {};
                 $scope.submitedAction = true;
                 $.each($scope.formValues, (key, val) => {
@@ -8624,6 +8657,92 @@ APP_MASTERS.controller('Controller_Master', [
 
                 }
             }
+        }
+        
+
+         $scope.setRatingC = function() {
+            let rating = $(".my-rating");
+            for (let i = 0; i < rating.length; i++) {
+                let rate =  $(rating[i]).attr("rating");
+                if (Number(rate) > 0) {
+                    $(rating[i]).starRating({
+                        initialRating: rate,
+                        strokeWidth: 40,
+                        starSize: 20,
+                        totalStars: 5,
+                        emptyColor: 'white',
+                        strokeColor: '#337AB7',
+                        activeColor: '#337AB7',
+                        useGradient: false,
+                        minRating: 1,
+                        readOnly: true,
+                        callback: function(currentRating, $el){
+                            alert('rated ' + currentRating);
+                            console.log('DOM element ', $el);
+                        }
+                    });
+                }           
+            }
+        }
+
+
+        $scope.rating = function() {
+            //or for example
+            let options = {
+                min_value: 1,
+                max_value: 5,
+                step_size: 0.1,
+                initial_value: 0,
+                readonly: true
+            }
+            $(".rating").rate(options);
+            let rating = $(".rating");
+            for (let i = 0; i < rating.length; i++) {
+                let rate =  $(rating[i]).attr("rating");
+                if (Number(rate) > 0) {
+                    $(rating[i]).rate("setValue", Number(rate));
+                }           
+            }
+        }
+
+
+        $scope.setRatingValue = function(object) {
+            for (let i = 0; i < object.length; i++) {
+                object[i].rating = 3.7;
+            }
+            object[object.length - 1].rating = 0;
+        }
+
+        $scope.openSellerRatingForPreferredLocation = function(location, counterparty) {
+            console.log(location);
+            console.log(counterparty);
+            let data = {
+                "location": location,
+                "counterparty": counterparty
+            }
+            localStorage.setItem('sellerRatingForPreferredLocation', JSON.stringify(data));
+            window.open(`/#/${ vm.app_id }/${ vm.screen_id }/seller-rating/${ vm.entity_id }/${ location.id }`, "_blank");
+
+
+        }
+
+        $scope.navigateToAuditCounterparty = function() {
+            $location.path(`/${ vm.app_id }/${ vm.screen_id }/audit-log/${ vm.entity_id }/${ vm.location_id }`);
+
+        }
+
+        $scope.navigateToDocumentsCounterparty = function() {
+            $location.path(`/${ vm.app_id }/${ vm.screen_id }/documents/${ vm.entity_id }/${ vm.location_id }`);
+
+        }
+
+        $scope.navigateToSellerRating = function() {
+            if (vm.location_id) {
+                $location.path(`/${ vm.app_id }/${ vm.screen_id }/seller-rating/${ vm.entity_id }/${ vm.location_id }`);
+                return;
+            }
+            localStorage.setItem('counterparty', JSON.stringify($scope.formValues.displayName)); 
+            $location.path(`/${ vm.app_id }/${ vm.screen_id }/seller-rating/${ vm.entity_id }/0`);
         }
 
     }

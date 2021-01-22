@@ -347,7 +347,7 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
             if (typeof value.weight == 'NaN' || typeof value.weight == 'undefined' || value.weight == null) {
                 currentVal = 0;
             }
-            if (value.ratingRequired) {
+            if (value.ratingRequired && !value.isDeleted) {
                 weight = weight + parseFloat(currentVal);
             }
         });
@@ -362,7 +362,7 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
     $scope.totalWeightageCalcSpecificLocations = function(specificLocation) {
         var totalWeightage = 0;
         $.each(specificLocation.categories, (key, value) => {
-            if (value.weight) {
+            if (value.weight && !value.isDeleted) {
                 totalWeightage += parseFloat(value.weight);
             }
         });
@@ -376,7 +376,7 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
             if (typeof value.weight == 'NaN' || typeof value.weight == 'undefined' || value.weight == null) {
                 currentVal = 0;
             }
-            if (value.ratingRequired) {
+            if (value.ratingRequired && !value.isDeleted) {
                 weight = weight + parseFloat(currentVal);
             }
         });
@@ -390,12 +390,34 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
     $scope.totalWeightageCalcAllLocations = function(allLocations, categoryIdx) {
         var totalWeightage = 0;
         $.each(allLocations.categories, (key, value) => {
-            if (value.weight) {
+            if (value.weight && !value.isDeleted) {
                 totalWeightage += parseFloat(value.weight);
             }
         });
         allLocations.totalWeightage = totalWeightage;
     };
+
+    $scope.deleteCategory = function(category) {
+        category.isDeleted = true;
+        for (let i = 0; i < category.details.length; i++) {
+            category.details[i].isDeleted = true;
+        }
+    }
+
+    $scope.deleteLocation = function(location) {
+        location.isDeleted = true;
+        for (let i = 0; i < location.categories.length; i++) {
+            $scope.deleteCategory(location.categories[i]);
+        }
+    }
+
+    $scope.deleteModule = function(applicationModule) {
+        applicationModule.isDeleted = true;
+        $scope.deleteLocation(applicationModule.allLocations);
+        for (let i = 0; i < applicationModule.specificLocations.length; i++) {
+            $scope.deleteLocation(applicationModule.specificLocations[i]);
+        }
+    }
 
     /* ADmin precedence rules*/
     $scope.initAdminPrecedenceRules = function() {
