@@ -8783,7 +8783,7 @@ APP_MASTERS.controller('Controller_Master', [
         };
 
         $scope.deleteLocation = function(key) {
-            if ($scope.formValues.counterpartyLocations[key].isSpecificLocation && $scope.formValues.counterpartyLocations[key].lastModifiedBy && $scope.formValues.counterpartyLocations[key].lastModifiedOn) {
+            if ($scope.formValues.counterpartyLocations[key].isSpecificLocation && $scope.formValues.counterpartyLocations[key].rating && $scope.formValues.counterpartyLocations[key].lastModifiedBy && $scope.formValues.counterpartyLocations[key].lastModifiedOn) {
                 $scope.key = key;
                 $scope.showModalConfirmDeletePreferredLocationWithRating('Seller Rating also would be removed. Do you still want to remove the location?', true, (modalResponse) => {
                     console.log(modalResponse);
@@ -8795,13 +8795,6 @@ APP_MASTERS.controller('Controller_Master', [
                 $scope.formValues.counterpartyLocations[key].isDeleted = true;
             }
           
-        }
-
-       $scope.setRatingValue = function(object) {
-            for (let i = 0; i < object.length; i++) {
-                object[i].rating = 4;
-            }
-            object[object.length - 1].rating = 0;
         }
 
     }
