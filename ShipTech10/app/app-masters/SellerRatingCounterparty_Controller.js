@@ -89,7 +89,8 @@ APP_MASTERS.controller('Master_Seller_Rating_Counterparty', [
 			$scope.formValues.applications = response;
 			Factory_Master.getSellerRatingReview($scope.entity_id, (response) => {
 				if (response) {
-					$scope.formValues.sellerRatingReviewCategories = response;
+					$scope.formValues.sellerRatingReviewCategories = response.sellerRatingReviewCategories;
+					$scope.formValues.applications.counterparty = response.counterParty;
 					$scope.mappedRating($scope.formValues.applications, $scope.formValues.sellerRatingReviewCategories);
 
 				} else {
