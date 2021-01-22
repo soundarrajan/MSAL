@@ -51,22 +51,20 @@
                         <i class="fa fa-star" ng-click="openSellerRatingForPreferredLocation(value.location, formValues.displayName)"></i>
                     </span>
                 </td>
-				<td style="max-width: initial; min-width: 220px;" ng-class="value.rating ? 'rating-container-preffered-location' : ''">			             	 <!-- <div  rating="{{value.rating}}" class="my-rating">
-						{{setRatingC()}}
-					</div> -->
-					<div  ng-if="value.rating" rating="{{value.rating}}" class="rating" data-rate-value=0></div>
+				<td style="max-width: initial; min-width: 220px;" ng-class="value.rating ? 'rating-container-preffered-location' : ''">			             
+					<div   ng-if="value.isSpecificLocation && value.rating" rating="{{value.rating}}" class="rating" data-rate-value=0></div>
 					{{rating()}}
 					<div style="padding-left: 10px;" ng-if="value.rating">
 						( {{value.rating}} Out of 5)
 					</div>
 				</td>
 				<td style="max-width: initial; min-width: 220px;"  class="padding">
-					<span ng-if="value.rating">
-						{{formValues.createdBy.name}}
+					<span ng-if="value.isSpecificLocation && value.lastModifiedBy">
+						{{value.lastModifiedBy.name}}
 					</span>
 				</td>
 				<td style="max-width: initial; min-width: 220px;"  class="padding"> 
-					<span   ng-if="value.rating" class="formatted-date" ng-bind="CM.formatDateTime(formValues.createdOn)"></span>
+					<span ng-if="value.isSpecificLocation && value.lastModifiedOn" class="formatted-date" ng-bind="CM.formatDateTime(value.lastModifiedOn)"></span>
 				</td>
 			</tr>
 		</tbody>

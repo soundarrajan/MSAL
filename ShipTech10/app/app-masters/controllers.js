@@ -8706,13 +8706,6 @@ APP_MASTERS.controller('Controller_Master', [
         }
 
 
-        $scope.setRatingValue = function(object) {
-            for (let i = 0; i < object.length; i++) {
-                object[i].rating = 3.7;
-            }
-            object[object.length - 1].rating = 0;
-        }
-
         $scope.openSellerRatingForPreferredLocation = function(location, counterparty) {
             console.log(location);
             console.log(counterparty);

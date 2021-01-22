@@ -1046,6 +1046,31 @@ APP_MASTERS.factory('Factory_Master', [ '$window', '$http', '$Api_Service', 'API
                 console.log(response);
                 callback(false);
             });
+        },
+        updateSellerRatingReview: function(data, callback) {
+            let payload = {
+                Payload: data
+            };
+            let url = `${API.BASE_URL_DATA_SELLERRATING }/api/sellerrating/sellerratingreview/update`;
+            $http.post(url, payload).then(
+                (response) => {
+                    let res = {};
+                    if (response.status == 200) {
+                        res.status = true;
+                        res.message = 'Rating saved!';
+                        callback(res);
+                    } else {
+                        res.status = false;
+                        res.message = 'Could not save rating!';
+                    }
+                },
+                (response) => {
+                    let res = {};
+                    res.status = false;
+                    res.message = 'Could not save rating!';
+                    console.log('HTTP ERROR while trying to save rating!');
+                }
+            );
         }
 
     };

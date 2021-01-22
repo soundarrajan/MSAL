@@ -55,14 +55,32 @@ APP_MASTERS.controller('Master_Seller_Rating_Counterparty', [
 		vm.getData(function (response) {
 			$scope.formValues.applications = {};
 			$scope.formValues.applications = response;
-			// $scope.formValues.applications1 = {
-			// 	"allLocations": null,
-			// 	"specificLocations": null
+			// for (let i = 0; i < $scope.formValues.applications.length; i++) {
+			// 	for (let j = 0; j < $scope.formValues.applications[i].categories.length; j++) {
+			// 		let currentCategory = $scope.formValues.applications[i].categories[j];
+			// 		let findCategory = _.find($scope.formValues.applications1.sellerRatingReviewCategories, function(object) {
+			// 			return object.sellerRatingCategoryId == currentCategory.id;
+			// 		});
+			// 		if (findCategory) {
+			// 			$scope.formValues.applications[i].categories[j].createdOn = findCategory.createdOn;
+			// 			$scope.formValues.applications[i].categories[j].createdBy = findCategory.createdBy;
+			// 			$scope.formValues.applications[i].categories[j].sellerRatingReviewCategoryId = findCategory.id;
+			// 			for (let k = 0; k < $scope.formValues.applications[i].categories[j].details.length; k++) {
+			// 				let currentDetail =  $scope.formValues.applications[i].categories[j].details[k];
+			// 				let findDetail = _.find(findCategory.details, function(object) {
+			// 					return object.sellerRatingCategoryDetailId == currentDetail.id;
+			// 				});
+			// 				if (findDetail) {
+			// 					$scope.formValues.applications[i].categories[j].details[k].rating = findDetail.rating;
+			// 					$scope.formValues.applications[i].categories[j].details[k].comments = findDetail.comments;
+			// 					$scope.formValues.applications[i].categories[j].details[k].sellerRatingReviewDetailId = findDetail.id;
+			// 				}
+			// 			}
+			// 		}				
+			// 	}
 			// }
-	  //     	console.log($scope.formValues.applications, $scope.formValues.applications1);
-	  //     	if ($scope.formValues.applications1.allLocations) {
-	  //     		angular.merge($scope.formValues.applications, $scope.formValues.applications1);
-	  //     	}
+
+			console.log($scope.formValues.applications1);
 	      	console.log($scope.formValues.applications);
 			// initExpanders()
 
@@ -139,66 +157,59 @@ APP_MASTERS.controller('Master_Seller_Rating_Counterparty', [
         }
 
 
-        $scope.save = function() {
-        	$scope.formValues.applicationsSave = angular.copy($scope.formValues.applications);
-    		for (let i = 0; i < $scope.formValues.applicationsSave.specificLocations.length; i++) {
-    			for (let j = 0; j < $scope.formValues.applicationsSave.specificLocations[i].categories.length; j++) {
-    				console.log($scope.formValues.applicationsSave.specificLocations[i].categories[j]);
-    				const model = {
-    					'details': null,
-    					'createdBy': null,
-    					'createdOn': null,
-    					'id': null
-    				}
-    				const value = _.pick($scope.formValues.applicationsSave.specificLocations[i].categories[j], _.keys(model));
-    				console.log(value);
-    				$scope.formValues.applicationsSave.specificLocations[i].categories[j] = angular.copy(value);
-    				for (let k = 0; k < $scope.formValues.applicationsSave.specificLocations[i].categories[j].details.length; k++) {
-    					if (!$scope.formValues.applications1.specificLocations) {
-    						$scope.formValues.applicationsSave.specificLocations[i].categories[j].details[k].detailId = $scope.formValues.applicationsSave.specificLocations[i].categories[j].details[k].id;
-    						$scope.formValues.applicationsSave.specificLocations[i].categories[j].details[k].id = 0;
-    					}
-    					const model1 = {
-        					'detailId': null,
-        					'rating': null,
-        					'id': null,
-        					'comments': null
-    					}
-        				const detailValue = _.pick($scope.formValues.applicationsSave.specificLocations[i].categories[j].details[k], _.keys(model1));
-        				$scope.formValues.applicationsSave.specificLocations[i].categories[j].details[k] = angular.copy(detailValue);
-    				}
-    			}
-    		}
+        $scope.changeNameAndDate = function(category) {
+        	category.createdOn = moment().format();
+        	category.createdBy = $rootScope.user;
+        }
 
-    		for (let i = 0; i < $scope.formValues.applicationsSave.allLocations.categories.length; i++) {
-				console.log($scope.formValues.applicationsSave.allLocations.categories[i]);
-				const model = {
-					'details': null,
-					'createdBy': null,
-					'createdOn': null,
-					'id': null
-				}
-				const value = _.pick($scope.formValues.applicationsSave.allLocations.categories[i], _.keys(model));
-				console.log(value);
-				$scope.formValues.applicationsSave.allLocations.categories[i] = angular.copy(value);
-				for (let k = 0; k < $scope.formValues.applicationsSave.allLocations.categories[i].details.length; k++) {
-					if (!$scope.formValues.applications1.allLocations) {
-						$scope.formValues.applicationsSave.allLocations.categories[i].details[k].detailId = $scope.formValues.applicationsSave.allLocations.categories[i].details[k].id;
-						$scope.formValues.applicationsSave.allLocations.categories[i].details[k].id = 0;
-					}
-					const model1 = {
-    					'detailId': null,
-    					'rating': null,
-    					'id': null,
-    					'comments': null
-					}
-    				const detailValue = _.pick($scope.formValues.applicationsSave.allLocations.categories[i].details[k], _.keys(model1));
-    				$scope.formValues.applicationsSave.allLocations.categories[i].details[k] = angular.copy(detailValue);
-				}
-       		}
+
+        $scope.save = function() {
+        	$scope.formValues.sellerRatingReviewCategories = [];
+        	for (let i = 0; i < $scope.formValues.applications.length; i++) {
+        		for (let j = 0; j < $scope.formValues.applications[i].categories.length; j++) {
+        			const categoryModel = {
+    					'id': $scope.formValues.applications[i].categories[j].sellerRatingReviewCategoryId ? $scope.formValues.applications[i].categories[j].sellerRatingReviewCategoryId : 0,
+    					'sellerRatingCategoryId':  $scope.formValues.applications[i].categories[j].id,
+    					'createdOn': $scope.formValues.applications[i].categories[j].createdOn,
+    					'createdBy': $scope.formValues.applications[i].categories[j].createdBy,
+    					'details': null
+        			};
+        			let ratingDetails = [];
+        			for (let k = 0; k < $scope.formValues.applications[i].categories[j].details.length; k++) {
+        				const model = {
+        					'id': $scope.formValues.applications[i].categories[j].details[k].sellerRatingReviewDetailId ? $scope.formValues.applications[i].categories[j].details[k].sellerRatingReviewDetailId : 0,
+        					'sellerRatingCategoryDetailId': $scope.formValues.applications[i].categories[j].details[k].id,
+        					'rating':  $scope.formValues.applications[i].categories[j].details[k].rating ? $scope.formValues.applications[i].categories[j].details[k].rating : null,
+        					'comments': $scope.formValues.applications[i].categories[j].details[k].comments ? $scope.formValues.applications[i].categories[j].details[k].comments : null
+        				};
+        				ratingDetails.push(model);
+        			}
+        			categoryModel.details = ratingDetails;
+        			$scope.formValues.sellerRatingReviewCategories.push(categoryModel);
+        			console.log(ratingDetails);
+        		}
+        	}
+
+        	payload = { 
+                'sellerRatingReviewCategories': $scope.formValues.sellerRatingReviewCategories,
+                'counterparty': {
+                	'id': $scope.entity_id
+              	}
+            };
+            screenLoader.showLoader();
+            Factory_Master.updateSellerRatingReview(payload, (response) => {
+            	if (response) {
+                    toastr.success('Operation completed successfully');
+                    screenLoader.hideLoader();
+                    $state.reload();
+                } else {
+                    toastr.error('Could not save rating!');
+                    screenLoader.hideLoader();
+                }
+    		});
+
     		console.log($scope.formValues.applications);
         	console.log($scope.formValues);
-        	//$state.reload();
         }
 
 

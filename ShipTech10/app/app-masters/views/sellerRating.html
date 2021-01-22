@@ -100,16 +100,18 @@
 	                                            </div>
 	                                            <div class="col-md-8">
 	                                                <textarea
+	                                                	decode-input-format
 	                                                	ng-if="!value3.ratingRequired"
 	                                                    class="form-control"
 	                                                    maxlength="500"
 	                                                    ng-model="value3.comments"
-	                                                    placeholder="Type your answer..."></textarea>
+	                                                    placeholder="Type your answer..."
+	                                                    ng-change="changeNameAndDate(value2)"
+	                                                    ></textarea>
 													<div  ng-if="value3.ratingRequired" rating="{{value3.rating}}" class="rating" data-rate-value=0 onmouseleave="setModelOfRatingForSpecificLocation(this)" 
 													onclick="changeNameAndDateForSpecificLocation(this)"  location-key="{{key4}}" category-key="{{key2}}" detail-key="{{key3}}" >
 													</div>
 													{{rating()}}
-													{{value3.rating}}
 	                                            </div>
 	                                            <div class="seller-rating-empty"></div>
 	                                        </div>
@@ -166,16 +168,18 @@
 				                                            </div>
 				                                            <div class="col-md-8">
 				                                                <textarea
+				                                                	decode-input-format
 				                                                	ng-if="!value3.ratingRequired"
 				                                                    class="form-control"
 				                                                    maxlength="500"
 				                                                    ng-model="value3.comments"
-				                                                    placeholder="Type your answer..."></textarea>
+				                                                    placeholder="Type your answer..."
+				                                                    ng-change="changeNameAndDate(value2)"
+				                                                    ></textarea>
 																<div  ng-if="value3.ratingRequired" rating="{{value3.rating}}" class="rating" data-rate-value=0 onmouseleave="setModelOfRatingForSpecificLocation(this)" 
 																onclick="changeNameAndDateForSpecificLocation(this)"  location-key="{{key4}}" category-key="{{key2}}" detail-key="{{key3}}" >
 																</div>
 																{{rating()}}
-																{{value3.rating}}
 				                                            </div>
 				                                            <div class="seller-rating-empty"></div>
 				                                        </div>
