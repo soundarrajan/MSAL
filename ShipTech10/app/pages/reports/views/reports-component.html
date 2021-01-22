@@ -26,30 +26,14 @@
                             </a>
                             <ul class="reports_names"  ng-show="value.active">
                                 <li class="nav-item" ng-repeat="(key2,report2) in value.items"  ng-class="$ctrl.selectIframe.id == report2.id ? 'current' : '' ">
-                                    <a ng-click="$ctrl.selectIframe = report2;$ctrl.isReportSelected = [];$ctrl.customReports = true;$ctrl.showCateg=[]" >
+                                    <a  ng-if="!report2.isPageReport" ng-click="$ctrl.selectIframe = report2;$ctrl.isReportSelected = [];$ctrl.customReports = true;$ctrl.showCateg=[]" >
                                         <span class="">
                                             {{report2.name}}
                                         </span>
                                     </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a ng-click="$ctrl.openReportInST('/procurement-overview')" >
+                                    <a ng-if="report2.isPageReport" ng-click="$ctrl.openReportInST(report2.name)">
                                         <span>
-                                            Procurement Overview Report
-                                        </span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a ng-click="$ctrl.openReportInST('/negotiation-summary')" >
-                                        <span>
-                                            Negotiation Summary
-                                        </span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a ng-click="$ctrl.openReportInST('/order-report')" >
-                                        <span>
-                                            Order Report
+                                            {{report2.name}}
                                         </span>
                                     </a>
                                 </li>

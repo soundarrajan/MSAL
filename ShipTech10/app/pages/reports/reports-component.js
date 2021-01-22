@@ -181,8 +181,20 @@ angular.module('shiptech.pages').controller('ReportsController', [
             ctrl.initComponent();
         }
 
-        ctrl.openReportInST = function(reportItemUrl){
-            reportItemUrl =  `${ ctrl.tenantSettings.smartTraderLink.toLowerCase()}`+reportItemUrl;
+        ctrl.openReportInST = function(reportItemName){
+            var reportUrl = '';
+            switch(reportItemName){
+                case 'Negotiation Summary':
+                    reportUrl = '/negotiation-summary';
+                    break;
+                case 'Order Report':
+                    reportUrl = '/order-report';
+                    break;
+                case 'Procurement Overview Report':
+                    reportUrl = '/procurement-overview';
+                    break;
+            }
+            reportItemUrl =  `${ ctrl.tenantSettings.smartTraderLink.toLowerCase()}`+reportUrl;
             window.open(reportItemUrl,'_blank');
         }
 
