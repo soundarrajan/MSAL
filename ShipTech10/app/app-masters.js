@@ -13,11 +13,14 @@ APP_MASTERS.constant('MASTER_STATE', {
     HOME: 'masters.home',
     SINGLE: 'masters.single',
     AUDIT: 'masters.audit',
+    SELLERRATING: 'masters.seller-rating',
     DOCUMENTS: 'masters.documents',
     EMAIL: 'masters.email',
     STRUCTURE: 'masters.structure',
     HIERARCHY: 'masters.hierarchy',
     EDIT: 'masters.edit',
+    AUDITCOUNTERPARTY:  'masters.audit-counterparty',
+    DOCUMENTSCOUNTERPARTY: 'masters.documents-counterparty'
 });
 // Config
 APP_MASTERS.config([ '$stateProvider', '$urlRouterProvider', 'MASTER_STATE', function($stateProvider, $urlRouterProvider, MASTER_STATE) {
@@ -158,7 +161,62 @@ APP_MASTERS.config([ '$stateProvider', '$urlRouterProvider', 'MASTER_STATE', fun
             requireADLogin: true,
             url: '/masters/:screen_id/audit-log/:entity_id',
             templateUrl: 'app-masters/views/list_audit.html'
-        }).state(MASTER_STATE.HIERARCHY, {
+        })
+        .state(MASTER_STATE.SELLERRATING, {
+            params: {
+                path: [ {
+                    label: 'Masters List',
+                    uisref: MASTER_STATE.HOME
+                }, {
+                    label: 'Master List',
+                    uisref: MASTER_STATE.SINGLE
+                }, {
+                    label: 'Master Audit Log',
+                    uisref: MASTER_STATE.SELLERRATING
+                } ],
+                title: 'Master Entity Seller Rating'
+            },
+            requireADLogin: true,
+            url: '/masters/:screen_id/seller-rating/:entity_id/:location_id',
+            templateUrl: 'app-masters/views/sellerRating.html'
+        })
+         .state(MASTER_STATE.AUDITCOUNTERPARTY, {
+            params: {
+                path: [ {
+                    label: 'Masters List',
+                    uisref: MASTER_STATE.HOME
+                }, {
+                    label: 'Master List',
+                    uisref: MASTER_STATE.SINGLE
+                }, {
+                    label: 'Master Audit Log',
+                    uisref: MASTER_STATE.AUDITCOUNTERPARTY
+                } ],
+                title: 'Master Entity Seller Rating'
+            },
+            requireADLogin: true,
+            url: '/masters/:screen_id/audit-log/:entity_id/:location_id',
+            templateUrl: 'app-masters/views/list_audit.html'
+        })
+         .state(MASTER_STATE.DOCUMENTSCOUNTERPARTY, {
+            params: {
+                path: [ {
+                    label: 'Masters List',
+                    uisref: MASTER_STATE.HOME
+                }, {
+                    label: 'Master List',
+                    uisref: MASTER_STATE.SINGLE
+                }, {
+                    label: 'Master Documents',
+                    uisref: MASTER_STATE.DOCUMENTSCOUNTERPARTY
+                } ],
+                title: 'Master Entity Documents'
+            },
+            requireADLogin: true,
+            url: '/masters/:screen_id/documents/:entity_id/:location_id',
+            templateUrl: 'app-masters/views/list_documents.html'
+        })
+        .state(MASTER_STATE.HIERARCHY, {
             params: {
                 path: [ {
                     label: 'Masters List',
@@ -203,7 +261,10 @@ APP_MASTERS.run([ '$state', '$rootScope', 'MASTER_STATE', '$tenantSettings', fun
     titleMap[MASTER_STATE.HOME] = 'Master Screens';
     titleMap[MASTER_STATE.SINGLE] = ':screen_id List';
     titleMap[MASTER_STATE.AUDIT] = ':screen_id :: Audit :entity_id';
+    titleMap[MASTER_STATE.AUDITCOUNTERPARTY] = ':screen_id :: Audit :entity_id';
+    titleMap[MASTER_STATE.SELLERRATING] = ':screen_id :: Seller Rating :entity_id';
     titleMap[MASTER_STATE.DOCUMENTS] = ':screen_id :: Documents :entity_id';
+    titleMap[MASTER_STATE.DOCUMENTSCOUNTERPARTY] = ':screen_id :: Documents :entity_id';
     titleMap[MASTER_STATE.STRUCTURE] = ':screen_id :: Structure';
     titleMap[MASTER_STATE.HIERARCHY] = ':screen_id Hierarchy';
     titleMap[MASTER_STATE.EDIT] = ':screen_id :: Edit :entity_id';

@@ -79,7 +79,7 @@
                                     		<div class="portlet-title portlet-title-no-border">
 	                                            <div class="row">
 	                                                <div class="col-md-4 seller-rating-category-title">
-	                                                  	{{ value2.name }}
+	                                                  	{{ value2.name | decodeReadOnly}}
 	                                                </div>
 	                                                <div class="col-md-8" ng-if="value2.createdBy">
 	                                                  	Rated by
@@ -96,7 +96,7 @@
 	                                        <span ng-init="!value2.details ? value2.details = [{'id':0}] : ''"></span>
 	                                        <div class="row seller-rating-param-line" ng-repeat="(key3, value3) in value2.details">
 	                                            <div class="col-md-4 seller-rating-question">
-	                                                {{ key3 + 1 }}. {{ value3.name }}
+	                                                {{ key3 + 1 }}. {{ value3.name  | decodeReadOnly }}
 	                                            </div>
 	                                            <div class="col-md-8">
 	                                                <textarea
@@ -145,7 +145,7 @@
 			                                    		<div class="portlet-title portlet-title-no-border">
 				                                            <div class="row">
 				                                                <div class="col-md-4 seller-rating-category-title">
-				                                                  	{{ value2.name }}
+				                                                  	{{ value2.name | decodeReadOnly }}
 				                                                </div>
 				                                                <div class="col-md-8" ng-if="value2.createdBy">
 				                                                  	Rated by
@@ -162,7 +162,7 @@
 				                                        <span ng-init="!value2.details ? value2.details = [{'id':0}] : ''"></span>
 				                                        <div class="row seller-rating-param-line" ng-repeat="(key3, value3) in value2.details">
 				                                            <div class="col-md-4 seller-rating-question">
-				                                                {{ key3 + 1 }}. {{ value3.name }}
+				                                                {{ key3 + 1 }}. {{ value3.name | decodeReadOnly }}
 				                                            </div>
 				                                            <div class="col-md-8">
 				                                                <textarea
