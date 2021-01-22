@@ -1030,6 +1030,23 @@ APP_MASTERS.factory('Factory_Master', [ '$window', '$http', '$Api_Service', 'API
                 console.log('HTTP ERROR');
                 callback(false);
             });
+        },
+        getSellerRatingConfig: function(data, callback) {
+            let payload = {
+                Payload: data
+            };
+            let url =`${API.BASE_URL_DATA_SELLERRATING }/api/sellerrating/sellerrating/getConfig`;
+            $http({
+                method: 'POST',
+                url: url,
+                data: payload
+            }).then((response) => {
+                callback(response.data.payload);
+            }, (response) => {
+                console.log(response);
+                callback(false);
+            });
         }
+
     };
 } ]);

@@ -1,20 +1,25 @@
 <div class="custom-hardcoded-table admin">
-	<table class="table-body" style="width:100%;min-width:initial">
+	{{formValues.counterpartyLocations ? setRatingValue(formValues.counterpartyLocations) : ''}}
+	<table class="table-body">
 		<thead>
 			<tr>
-				<td style="width:5%"  class="padding"></td>
-				<td style="width:5%" class="padding"><span class="insert" ng-click="formValues.counterpartyLocations ? formValues.counterpartyLocations.push({id:0}) : formValues.counterpartyLocations=[{id:0}]"></span></td>
-				<td style="width:20%" class="padding"><b>Location</b></td>
-				<td style="width:20%" class="padding"><b>Preferred Products</b></td>
-				<td style="width:20%" class="padding"><b>Status</b></td>
-				<td style="width:30%" class="padding"><b>Comments</b></td>
+				<td style="max-width: initial; min-width: 50px;"  class="padding"></td>
+				<td  style="max-width: initial; min-width: 50px;" class="padding"><span class="insert" ng-click="formValues.counterpartyLocations ? formValues.counterpartyLocations.push({id:0}) : formValues.counterpartyLocations=[{id:0}]"></span></td>
+				<td class="padding"><b>Location</b></td>
+				<td style="max-width: initial; min-width: 400px;" class="padding"><b>Preferred Products</b></td>
+				<td style="max-width: initial; min-width: 300px;" class="padding"><b>Status</b></td>
+				<td style="max-width: initial; min-width: 250px;" class="padding"><b>Comments</b></td>
+				<td style="max-width: initial; min-width: 100px;" class="padding"><b></b></td>
+				<td style="max-width: initial; min-width: 220px;" class="padding"><b>Rating</b></td>
+				<td style="max-width: initial; min-width: 220px;" class="padding"><b>Last Modified By</b></td>
+				<td style="max-width: initial; min-width: 220px;" class="padding"><b>Last Modified On</b></td>
 			</tr>
 		</thead>
 		<tbody>
 			<tr ng-repeat="(key, value) in formValues.counterpartyLocations" ng-if="!value.isDeleted">
-				<td style="width:5%"><span class="remove" style="display: block;pointer-events: all; opacity: 1" ng-click="value.id == 0 ? formValues.counterpartyLocations.splice(key,1) : value.isDeleted = true"></span></td>
-				<td style="width:5%"><span class="insert" ng-click="formValues.counterpartyLocations.push({id:0})"></span></td>
-				<td style="width:20%">
+				<td style="max-width: initial; min-width: 50px;"><span class="remove" style="display: block;pointer-events: all; opacity: 1" ng-click="value.id == 0 ? formValues.counterpartyLocations.splice(key,1) : value.isDeleted = true"></span></td>
+				<td  style="max-width: initial; min-width: 50px;"><span class="insert" ng-click="formValues.counterpartyLocations.push({id:0})"></span></td>
+				<td style="max-width: initial; min-width: 220px;">
 					<div class="input-group">
 	                    <input ng-model="value.location" uib-typeahead="item as item.name for item in CM.listsCache.Location | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-limit="5" typeahead-append-to-body="true" typeahead-wait-ms="100" name="PrefferedSeller_{{ key }}" autocomplete="off" />
 	                    <span class="input-group-addon" ng-click="triggerModal('general', 'masters_locationlist', 'Location' , 'formValues.counterpartyLocations.'+key+'.location');" ng-init="modal = false">
@@ -29,7 +34,7 @@
 	                    </span>				
 					</div>
 				</td>
-				<td style="width:20%">
+				<td style="max-width: initial; min-width: 400px;">
 					<div class="location-preffered-sellers">
 	                    <span ng-repeat="(key2,product) in value.products" ng-hide="product.isDeleted">
                             <span ng-if="key2 != 0">,</span>
@@ -37,10 +42,32 @@
                         </span>			
 					</div>
 				</td>
-				<td style="width:20%">
+				<td style="max-width: initial; min-width: 300px;">
 					<select name="Item Name" class="form-control" ng-options="item as item.name for item in CM.listsCache.CounterpartyStatus track by item.id " ng-model="value.status"></select>
 				</td>
-				<td style="width:30%"><input class="form-control" type="text" ng-model="value.comments"></td>
+				<td style="max-width: initial; min-width: 250px;"><input class="form-control" type="text" ng-model="value.comments"></td>
+				<td style="max-width: initial; min-width: 100px;" class="text-center">
+					<span class="badge bg-dark bg-font-grey-gallery">
+                        <i class="fa fa-star" ng-click="openSellerRatingForPreferredLocation(value.location, formValues.displayName)"></i>
+                    </span>
+                </td>
+				<td style="max-width: initial; min-width: 220px;" ng-class="value.rating ? 'rating-container-preffered-location' : ''">			             	 <!-- <div  rating="{{value.rating}}" class="my-rating">
+						{{setRatingC()}}
+					</div> -->
+					<div  ng-if="value.rating" rating="{{value.rating}}" class="rating" data-rate-value=0></div>
+					{{rating()}}
+					<div style="padding-left: 10px;" ng-if="value.rating">
+						( {{value.rating}} Out of 5)
+					</div>
+				</td>
+				<td style="max-width: initial; min-width: 220px;"  class="padding">
+					<span ng-if="value.rating">
+						{{formValues.createdBy.name}}
+					</span>
+				</td>
+				<td style="max-width: initial; min-width: 220px;"  class="padding"> 
+					<span   ng-if="value.rating" class="formatted-date" ng-bind="CM.formatDateTime(formValues.createdOn)"></span>
+				</td>
 			</tr>
 		</tbody>
 	</table>

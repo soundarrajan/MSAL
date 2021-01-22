@@ -1,0 +1,196 @@
+<div ng-controller="Master_Seller_Rating_Counterparty as MSRC">
+	<div class="row">
+		<div class="st-main-content-menu tabbable-line">
+			<!-- ngIf: actions.title -->
+			<ul class="nav nav-tabs pull-left">
+				<li>
+					<a class="btn btn-default ng-binding" href="/#/masters/{{screen_id}}/edit/{{entity_id}}">
+						Edit
+					</a>
+				</li>
+	        	<li>
+					<a class="btn btn-default ng-binding" href="/#/masters/{{screen_id}}/documents/{{entity_id}}/{{location_id}}">
+						Documents
+					</a>
+				</li>
+				<li>
+					<a class="btn btn-default ng-binding" href="/#/masters/{{screen_id}}/audit-log/{{entity_id}}/{{location_id}}">
+						Audit Log
+					</a>
+				</li>
+				<li class="active">
+					<a class="btn btn-default ng-binding">
+						Seller Rating
+					</a>
+				</li>	
+				<li>
+					<a class="btn btn-default ng-binding" href="/#/masters/{{screen_id}}/structure">
+						Configure
+					</a>
+				</li>			
+			</ul>	    
+			<div class="pull-right">
+				<form class="form-inline">
+	                <a id="general_action_{{ $index }}" class="btn btn-default btn-default" ng-click="save()">
+	                    Save
+	                </a>
+	                <a id="general_action_{{ $index }}" class="btn btn-default btn-default" ng-click="discardChanges()">
+	                    Discard Changes
+	                </a>
+	             </form>
+			</div>
+
+			<div class="clearfix"></div>
+		</div>
+	</div>
+	<div class="row sellerRating dynamic_form_editor">
+		<div class="clearfix"></div>
+	    <div class="col-sm-12 seller-counterparty-specific-location">
+	        <div class="portlet light">
+    			<div class="portlet-title">
+                    <div class="caption">
+                        <span class="caption-subject pull-left ">
+                          	<span class="seller-rating-container-title"  style="color: #08A8EA; text-transform: uppercase; font-weight: 900 !important; font-size: 18px !important;">
+                          		{{formValues.applications.counterparty.name}}
+                          	</span> 
+                        </span>
+                    </div>
+                </div>
+	            <div class="portlet-body">
+	                <div class="tab-content">
+                        <div ng-repeat="(key4,value4) in formValues.applications">
+                            <div class="portlet light light-specific-location" ng-if="value4.location.id">
+                                <div class="portlet-title  portlet-title-no-border" style="display: inline-flex;">
+                                    <div class="caption">
+                                        <span class="caption-subject pull-left ">
+                                          	<span class="seller-rating-container-title">
+                                          		Location - 
+                                          	</span> 
+                                          	{{value4.location.name}}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="portlet seller-rating-portlet-body" ng-repeat="(key2, value2) in value4.categories">
+                                    	<div class="col-md-push-8 seller-rating-caption-subject">
+                                      		 Feautures Rating
+                                    	</div>
+                                    	<div class="portlet-body seller-rating-portlet-param-container">
+                                    		<div class="portlet-title portlet-title-no-border">
+	                                            <div class="row">
+	                                                <div class="col-md-4 seller-rating-category-title">
+	                                                  	{{ value2.name }}
+	                                                </div>
+	                                                <div class="col-md-8" ng-if="value2.createdBy">
+	                                                  	Rated by
+	                                                  	<span class="created-by-display-name"> 
+	                                                  	{{ value2.createdBy.name}}
+	                                                  	</span>
+	                                                  	on
+	                                                  	<span class="seller-rating-created-on"> 
+	                                                    {{ formatDateTime(value2.createdOn) }}
+	                                                  	</span>
+	                                                </div>
+	                                            </div>
+                                       		</div>
+	                                        <span ng-init="!value2.details ? value2.details = [{'id':0}] : ''"></span>
+	                                        <div class="row seller-rating-param-line" ng-repeat="(key3, value3) in value2.details">
+	                                            <div class="col-md-4 seller-rating-question">
+	                                                {{ key3 + 1 }}. {{ value3.name }}
+	                                            </div>
+	                                            <div class="col-md-8">
+	                                                <textarea
+	                                                	ng-if="!value3.ratingRequired"
+	                                                    class="form-control"
+	                                                    maxlength="500"
+	                                                    ng-model="value3.comments"
+	                                                    placeholder="Type your answer..."></textarea>
+													<div  ng-if="value3.ratingRequired" rating="{{value3.rating}}" class="rating" data-rate-value=0 onmouseleave="setModelOfRatingForSpecificLocation(this)" 
+													onclick="changeNameAndDateForSpecificLocation(this)"  location-key="{{key4}}" category-key="{{key2}}" detail-key="{{key3}}" >
+													</div>
+													{{rating()}}
+													{{value3.rating}}
+	                                            </div>
+	                                            <div class="seller-rating-empty"></div>
+	                                        </div>
+                                    	</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+	                </div>
+	                <div class="portlet light" style="padding: 0!important">
+			            <div class="portlet-title ">
+			                <div class="tools ">
+			                    <a   class="collapse" data-original-title="" title=""></a>
+			                </div>
+			                <div class="caption ">
+			                    <span class="caption-subject pull-left ">
+			                        All Locations
+			                    </span>
+			                </div>
+			            </div>
+			            <div class="portlet-body"  style="padding: 0!important;">
+			                <div class="tab-content">
+			                    <div class="portlet light light-specific-location">
+			                        <div class="portlet-body">
+			                        	<div ng-repeat="(key4,value4) in formValues.applications">
+			                            <div class="portlet light light-specific-location" ng-if="!value4.location">
+			                                <div class="portlet-body">
+			                                    <div class="portlet seller-rating-portlet-body" ng-repeat="(key2, value2) in value4.categories">
+			                                    	<div class="col-md-push-8 seller-rating-caption-subject">
+			                                      		 Feautures Rating
+			                                    	</div>
+			                                    	<div class="portlet-body seller-rating-portlet-param-container">
+			                                    		<div class="portlet-title portlet-title-no-border">
+				                                            <div class="row">
+				                                                <div class="col-md-4 seller-rating-category-title">
+				                                                  	{{ value2.name }}
+				                                                </div>
+				                                                <div class="col-md-8" ng-if="value2.createdBy">
+				                                                  	Rated by
+				                                                  	<span class="created-by-display-name"> 
+				                                                  	{{ value2.createdBy.name}}
+				                                                  	</span>
+				                                                  	on
+				                                                  	<span class="seller-rating-created-on"> 
+				                                                    {{ formatDateTime(value2.createdOn) }}
+				                                                  	</span>
+				                                                </div>
+				                                            </div>
+			                                       		</div>
+				                                        <span ng-init="!value2.details ? value2.details = [{'id':0}] : ''"></span>
+				                                        <div class="row seller-rating-param-line" ng-repeat="(key3, value3) in value2.details">
+				                                            <div class="col-md-4 seller-rating-question">
+				                                                {{ key3 + 1 }}. {{ value3.name }}
+				                                            </div>
+				                                            <div class="col-md-8">
+				                                                <textarea
+				                                                	ng-if="!value3.ratingRequired"
+				                                                    class="form-control"
+				                                                    maxlength="500"
+				                                                    ng-model="value3.comments"
+				                                                    placeholder="Type your answer..."></textarea>
+																<div  ng-if="value3.ratingRequired" rating="{{value3.rating}}" class="rating" data-rate-value=0 onmouseleave="setModelOfRatingForSpecificLocation(this)" 
+																onclick="changeNameAndDateForSpecificLocation(this)"  location-key="{{key4}}" category-key="{{key2}}" detail-key="{{key3}}" >
+																</div>
+																{{rating()}}
+																{{value3.rating}}
+				                                            </div>
+				                                            <div class="seller-rating-empty"></div>
+				                                        </div>
+			                                    	</div>
+			                                    </div>
+			                                </div>
+			                            </div>
+                       				</div>
+			                        </div>
+			                    </div>
+			                </div>
+			            </div>
+			        </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+</div>

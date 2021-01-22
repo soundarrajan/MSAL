@@ -1,14 +1,28 @@
-﻿<general-header actions="{
-    primary: [
-    ],
-    secondary: [
-        {label: 'Edit', type: 'goto', url: 'edit/:entity_id'},
-        {label: 'Documents', type: 'goto', url: 'documents/:entity_id'},
-        {label: 'Audit Log', active: true},
-        {label: 'Configure UI',type: 'goto', url: 'structure'},
-    ],
-}"></general-header>
-
+﻿<span  ng-controller="Controller_Master as CM">
+    <general-header ng-if="CM.screen_id == 'counterparty'" actions="{
+        primary: [
+        ],
+        secondary: [
+            {label: 'Edit', type: 'goto', url: 'edit/:entity_id'},
+            {label: 'Documents', type: 'goto', url: 'documents/:entity_id/:location_id',ConditionalType: 'ng-show',
+            Conditional: 'vm.screen_id == \'counterparty\'', method: 'navigateToDocumentsCounterparty()'},
+            {label: 'Audit Log', active: true},
+            {label: 'Rate Seller', type: 'goto', url: 'seller-rating/:entity_id/:location_id', ConditionalType: 'ng-show',
+            Conditional: 'vm.screen_id == \'counterparty\'',  method: 'navigateToSellerRating()'},
+            {label: 'Configure UI',type: 'goto', url: 'structure'},
+        ],
+    }"></general-header>
+     <general-header ng-if="CM.screen_id != 'counterparty'" actions="{
+        primary: [
+        ],
+        secondary: [
+            {label: 'Edit', type: 'goto', url: 'edit/:entity_id'},
+            {label: 'Documents', type: 'goto', url: 'documents/:entity_id'},
+            {label: 'Audit Log', active: true},
+            {label: 'Configure UI',type: 'goto', url: 'structure'},
+        ],
+    }"></general-header>
+</span>
 <span ng-controller="Controller_Configurable_List_Control as CLC">
     <clc-table-list
         id="'entity_audit_log'"

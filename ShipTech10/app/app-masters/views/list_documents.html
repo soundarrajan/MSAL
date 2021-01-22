@@ -1,20 +1,40 @@
 ﻿
 <div ng-controller="Controller_Configurable_List_Control as CLC">
-    <general-header actions="{
-    primary: [
-        {label: 'Upload', method: 'uploadDocument(\'#fileUpload\')', extern: true},
-    ],
-    secondary: [
-        {label: 'Edit', type: 'goto', url: 'edit/:entity_id'},
-        {label: 'Documents', active: true},
-        {label: 'Audit Log', type: 'goto', url: 'audit-log/:entity_id'},
-        {label: 'Configure UI',type: 'goto', url: 'structure'},
-    ],
-     icons: [
-            {class: 'fa fa-save', action: 'save_layout'},
-            {class: 'fa fa-trash', action: 'delete_layout'}
-    ]
-}"></general-header>
+    <span  ng-controller="Controller_Master as CM">
+        <general-header ng-if="CM.screen_id != 'counterparty'" actions="{
+            primary: [
+                {label: 'Upload', method: 'uploadDocument(\'#fileUpload\')', extern: true},
+            ],
+            secondary: [
+                {label: 'Edit', type: 'goto', url: 'edit/:entity_id'},
+                {label: 'Documents', active: true},
+                {label: 'Audit Log', type: 'goto', url: 'audit-log/:entity_id'},
+                {label: 'Configure UI',type: 'goto', url: 'structure'},
+            ],
+             icons: [
+                    {class: 'fa fa-save', action: 'save_layout'},
+                    {class: 'fa fa-trash', action: 'delete_layout'}
+            ]
+        }"></general-header>
+         <general-header ng-if="CM.screen_id == 'counterparty'" actions="{
+            primary: [
+                {label: 'Upload', method: 'uploadDocument(\'#fileUpload\')', extern: true},
+            ],
+            secondary: [
+                {label: 'Edit', type: 'goto', url: 'edit/:entity_id'},
+                {label: 'Documents', active: true},
+                {label: 'Audit Log', type: 'goto', url: 'audit-log/:entity_id/:location_id', ConditionalType: 'ng-show',
+            Conditional: 'vm.screen_id == \'counterparty\'',  method: 'navigateToAuditCounterparty()'},
+                {label: 'Rate Seller', type: 'goto', url: 'seller-rating/:entity_id/:location_id', ConditionalType: 'ng-show',
+            Conditional: 'vm.screen_id == \'counterparty\'',  method: 'navigateToSellerRating()'},
+                {label: 'Configure UI',type: 'goto', url: 'structure'},
+            ],
+             icons: [
+                    {class: 'fa fa-save', action: 'save_layout'},
+                    {class: 'fa fa-trash', action: 'delete_layout'}
+            ]
+        }"></general-header>
+    </span>
 
     <entity-edit-form screenchild="'entity_documents'"></entity-edit-form>
 
