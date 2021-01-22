@@ -47,7 +47,7 @@
 				</td>
 				<td style="max-width: initial; min-width: 250px;"><input class="form-control" type="text" ng-model="value.comments"></td>
 				<td style="max-width: initial; min-width: 100px;" class="text-center">
-					<span class="badge bg-dark bg-font-grey-gallery">
+					<span class="badge bg-dark bg-font-grey-gallery" ng-if="value.isSpecificLocation">
                         <i class="fa fa-star" ng-click="openSellerRatingForPreferredLocation(value.location, formValues.displayName)"></i>
                     </span>
                 </td>
