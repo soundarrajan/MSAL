@@ -8738,5 +8738,71 @@ APP_MASTERS.controller('Controller_Master', [
             $location.path(`/${ vm.app_id }/${ vm.screen_id }/seller-rating/${ vm.entity_id }/0`);
         }
 
+          // modal close
+        $scope.prettyCloseModal = function() {
+            let modalStyles = {
+                transition: '0.3s',
+                opacity: '0',
+                transform: 'translateY(-50px)'
+            };
+            let bckStyles = {
+                opacity: '0',
+                transition: '0.3s'
+            };
+            $('[modal-render=\'true\']').css(modalStyles);
+            $('.modal-backdrop').css(bckStyles);
+            setTimeout(() => {
+                if ($scope.modalInstance) {
+                    $scope.modalInstance.close();
+                }
+                // $(".modal-scrollable").css("display", "none")
+            }, 500);
+        };
+
+        $scope.showModalConfirmDeletePreferredLocationWithRating = function(message, additionalData, callback) {
+            $scope.confirmModalAdditionalData = additionalData;
+            $('.confirmModalDeletePreferredLocationWithRating').modal();
+            $('.confirmModalDeletePreferredLocationWithRating').removeClass('hide');
+            $('.modal-open.page-overflow .modal-scrollable').css("overflow-x", "hidden !important");
+            $scope.confirmModalData = {
+                message : message
+            };
+            $scope.confirmedModal = false;
+            $('.confirmAction1').on('click', () => {
+                if ($scope.confirmedModal) {
+                    return;
+                }
+                if ($scope.key >= 0) {
+                    $scope.formValues.counterpartyLocations[$scope.key].isDeleted = true;
+                }
+                $scope.key = -1;
+                $scope.confirmedModal = true;
+                $scope.$apply();
+                return callback($scope.confirmModalAdditionalData);
+            });
+        };
+
+        $scope.deleteLocation = function(key) {
+            if ($scope.formValues.counterpartyLocations[key].isSpecificLocation && $scope.formValues.counterpartyLocations[key].lastModifiedBy && $scope.formValues.counterpartyLocations[key].lastModifiedOn) {
+                $scope.key = key;
+                $scope.showModalConfirmDeletePreferredLocationWithRating('Seller Rating also would be removed. Do you still want to remove the location?', true, (modalResponse) => {
+                    console.log(modalResponse);
+                    if (modalResponse) {
+                        $scope.prettyCloseModal();
+                    }
+                });
+            } else {
+                $scope.formValues.counterpartyLocations[key].isDeleted = true;
+            }
+          
+        }
+
+       $scope.setRatingValue = function(object) {
+            for (let i = 0; i < object.length; i++) {
+                object[i].rating = 4;
+            }
+            object[object.length - 1].rating = 0;
+        }
+
     }
 ]);

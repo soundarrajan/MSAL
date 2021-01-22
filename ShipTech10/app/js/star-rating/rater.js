@@ -217,7 +217,7 @@
             'white-space': 'nowrap'
         });
         $(this.element).css({
-            width: $(layer).textWidth() + "px",
+            width:  "90px",
             height: $(layer).height(),
             position: 'relative',
             cursor: this.settings.cursor,

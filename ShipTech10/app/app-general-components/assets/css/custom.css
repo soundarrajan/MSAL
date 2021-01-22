@@ -4622,3 +4622,7 @@ select option {
     padding-top: 11px !important; 
     padding-bottom: 12px !important;
 }
+
+.no-specific-location {
+    border-left: 0px !important;
+}

@@ -270,7 +270,9 @@ Bootstrap Modal
 .modal-open.page-overflow .page-container .navbar-fixed-top,
 .modal-open.page-overflow .page-container .navbar-fixed-bottom,
 .modal-open.page-overflow .modal-scrollable {
-  overflow-y: auto !important; }
+  overflow-y: auto !important;
+  overflow-x: hidden;
+  }
 
 /* BS 3.3.1 fix */
 .modal-backdrop {
