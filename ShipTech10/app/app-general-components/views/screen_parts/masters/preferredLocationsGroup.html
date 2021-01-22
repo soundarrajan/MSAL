@@ -56,12 +56,10 @@
 	                </span>		
 				</td>
 				<td style="max-width: initial; min-width: 220px;"  class="padding">
-					<span ng-if="value.isSpecificLocation && value.lastModifiedBy">
-						{{value.lastModifiedBy.name}}
-					</span>
+					{{value.lastModifiedBy.name}}
 				</td>
 				<td style="max-width: initial; min-width: 220px;"  class="padding"> 
-					<span ng-if="value.isSpecificLocation && value.lastModifiedOn" class="formatted-date" ng-bind="CM.formatDateTime(value.lastModifiedOn)"></span>
+					<span ng-if="value.lastModifiedOn" class="formatted-date" ng-bind="CM.formatDateTime(value.lastModifiedOn)"></span>
 				</td>
 			</tr>
 		</tbody>
