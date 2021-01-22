@@ -20,7 +20,7 @@
 				<td  style="max-width: initial; min-width: 50px;"><span class="insert" ng-click="formValues.counterpartyLocations.push({id:0})"></span></td>
 				<td style="max-width: initial; min-width: 220px;">
 					<div class="input-group">
-	                    <input ng-model="value.location" uib-typeahead="item as item.name for item in CM.listsCache.Location | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-limit="5" typeahead-append-to-body="true" typeahead-wait-ms="100" name="PrefferedSeller_{{ key }}" autocomplete="off" />
+	                    <input ng-model="value.location" uib-typeahead="item as item.name for item in CM.listsCache.Location | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-limit="5" typeahead-append-to-body="true" typeahead-wait-ms="100" name="PrefferedSeller_{{ key }}" autocomplete="off" typeahead-on-select="resetLocationData(value)"  />
 	                    <span class="input-group-addon" ng-click="triggerModal('general', 'masters_locationlist', 'Location' , 'formValues.counterpartyLocations.'+key+'.location');" ng-init="modal = false">
 	                        <a   class=" btn default">
 	                            <i class="fa fa-search"></i>

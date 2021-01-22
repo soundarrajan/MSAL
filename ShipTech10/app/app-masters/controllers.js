@@ -8797,5 +8797,12 @@ APP_MASTERS.controller('Controller_Master', [
           
         }
 
+        $scope.resetLocationData = function(location) {
+            location.isSpecificLocation = false;
+            location.rating = null;
+            location.lastModifiedBy = null;
+            location.lastModifiedOn = null
+        }
+
     }
 ]);
