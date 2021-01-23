@@ -209,6 +209,10 @@ APP_MASTERS.controller('Master_Seller_Rating_Counterparty', [
         		}
         	}
 
+        	$scope.formValues.sellerRatingReviewCategories = _.filter($scope.formValues.sellerRatingReviewCategories, function(object) {
+        		return object.createdBy && object.createdOn;
+        	});
+
         	payload = { 
                 'sellerRatingReviewCategories': $scope.formValues.sellerRatingReviewCategories,
                 'counterparty': {

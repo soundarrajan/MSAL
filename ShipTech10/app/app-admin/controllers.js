@@ -404,7 +404,7 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
         }
     }
 
-    $scope.deleteLocation = function(location) {
+    $scope.deleteLocationFromAdminSellerRating = function(location) {
         location.isDeleted = true;
         for (let i = 0; i < location.categories.length; i++) {
             $scope.deleteCategory(location.categories[i]);
@@ -413,9 +413,9 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
 
     $scope.deleteModule = function(applicationModule) {
         applicationModule.isDeleted = true;
-        $scope.deleteLocation(applicationModule.allLocations);
+        $scope.deleteLocationFromAdminSellerRating(applicationModule.allLocations);
         for (let i = 0; i < applicationModule.specificLocations.length; i++) {
-            $scope.deleteLocation(applicationModule.specificLocations[i]);
+            $scope.deleteLocationFromAdminSellerRating(applicationModule.specificLocations[i]);
         }
     }
 

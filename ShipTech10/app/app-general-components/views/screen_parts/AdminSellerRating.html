@@ -73,7 +73,7 @@
                             <div class="col-sm-8">
                                 <div class="bootstrap-tagsinput"> 
                                     <span class="tag label border-default seller-rating-location"  ng-repeat="(key, value) in formValues.applications[key1].specificLocations" ng-if="!value.isDeleted">
-                                        <a ng-click="value.id ? deleteLocation(value): formValues.applications[key1].specificLocations.splice(key,1)"><i class="fa fa-close font-red-thunderbird" ></i></a>
+                                        <a ng-click="value.id ? deleteLocationFromAdminSellerRating(value): formValues.applications[key1].specificLocations.splice(key,1)"><i class="fa fa-close font-red-thunderbird" ></i></a>
                                         {{value.location.name}}
                                     </span>
                                 </div>                  
