@@ -135,18 +135,20 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         });
         ctrl.hasAccess = false;
         ctrl.getData = function() {
-            let payload = {
-                Payload: {}
-            }
-            $http.post(`${API.BASE_URL_DATA_PROCUREMENT}/api/procurement/request/isAuthorizedForReportsTab`, payload).then((response) => {
-                if (response) {
-                    if (response.data) {
-                        ctrl.hasAccess = true;
-                    }
-                } else {
-                    ctrl.hasAccess = false;
+            if (ctrl.showReport) {
+                let payload = {
+                    Payload: {}
                 }
-            });
+                $http.post(`${API.BASE_URL_DATA_PROCUREMENT}/api/procurement/request/isAuthorizedForReportsTab`, payload).then((response) => {
+                    if (response) {
+                        if (response.data) {
+                            ctrl.hasAccess = true;
+                        }
+                    } else {
+                        ctrl.hasAccess = false;
+                    }
+                });
+            }
         }
         ctrl.defaultProductsTooltip = function() {
             let ret = '';

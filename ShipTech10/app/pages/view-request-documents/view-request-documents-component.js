@@ -20,18 +20,20 @@ angular.module('shiptech.pages')
             $http.post(`${API.BASE_URL_DATA_ADMIN}/api/admin/tenantConfiguration/get`, payload).then((response) => {
                 if (response.data != 'null') {
                     ctrl.showReport =  response.data.reportConfiguration.tabConfigurations[0].showReport; 
-                    let payload1 = {
-                        Payload: {}
-                    }
-                    $http.post(`${API.BASE_URL_DATA_PROCUREMENT}/api/procurement/request/isAuthorizedForReportsTab`, payload1).then((response) => {
-                        if (response) {
-                            if (response.data) {
-                                ctrl.hasAccess = true;
-                            }
-                        } else {
-                            ctrl.hasAccess = false;
+                    if (ctrl.showReport) {
+                        let payload1 = {
+                            Payload: {}
                         }
-                    });
+                        $http.post(`${API.BASE_URL_DATA_PROCUREMENT}/api/procurement/request/isAuthorizedForReportsTab`, payload1).then((response) => {
+                            if (response) {
+                                if (response.data) {
+                                    ctrl.hasAccess = true;
+                                }
+                            } else {
+                                ctrl.hasAccess = false;
+                            }
+                        });
+                    }
                 }
             });
         }

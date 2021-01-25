@@ -64,7 +64,9 @@ angular.module('shiptech').config([
             'api/procurement/request/getQuantityAverage',
             'api/procurement/request/getQuantityAndStrategy',
             'api/infrastructure/reports/getOperationalReportParameters',
-            'api/claims/getQuantityShortage'
+            'api/claims/getQuantityShortage',
+            'api/procurement/request/isAuthorizedForReportsTab',
+            'api/procurement/rfq/isAuthorizedForReportsTab'
         ];
         $httpProvider.interceptors.push([
             '$q'/* , 'applicationInsightsService'*/, '$log', 'appInsightsInstance', '$rootScope',
@@ -291,9 +293,6 @@ angular.module('shiptech').config([
                                 }
                                 toastr.error(errorText);
                             } else if (config.status == '401') {
-                                    if (routeCall == "api/procurement/request/isAuthorizedForReportsTab" || routeCall == "api/procurement/rfq/isAuthorizedForReportsTab") {
-                                        return;
-                                    }
                                     toastr.error('You do not have authorization to perform this action.');
                                 } else {
                                     toastr.error('An error has occured');

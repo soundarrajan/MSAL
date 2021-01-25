@@ -1,6 +1,8 @@
 angular.module('shiptech.pages').controller('ViewGroupOfRequestsReportController', [ 'API', '$scope', '$element', '$attrs', '$tenantSettings', '$http', '$timeout', '$state', 'STATE', function(API, $scope, $element, $attrs,  $tenantSettings, $http, $timeout, $state, STATE) {
     var ctrl = this;
     ctrl.tenantSettings = $tenantSettings;
+    ctrl.showReport = false;
+    ctrl.hasAccess = false;
     ctrl.reportNegotiationConfiguration = {};
     if ($state.params.requestId) {
         $state.params.entity_id = $state.params.groupId;
