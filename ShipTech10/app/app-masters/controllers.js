@@ -822,7 +822,7 @@ APP_MASTERS.controller('Controller_Master', [
                     }
                     if ($scope.formValues.applications[i].allLocations && $scope.formValues.applications[i].allLocations.categories) {
                         for (let p = 0; p < $scope.formValues.applications[i].allLocations.categories.length; p++) {
-                            if (!$scope.verifyAllLocation($scope.formValues.applications[i].allLocations.categories[p])) {
+                            if (!$scope.verifyAllLocation($scope.formValues.applications[i].allLocations.categories[p]) && !$scope.formValues.applications[i].allLocations.categories[p].id) {
                                 $scope.formValues.applications[i].allLocations.categories.splice(p, 1);
                                 p--;
                             }
