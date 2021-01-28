@@ -457,7 +457,7 @@
             </tr>
     
             <tr ng-repeat-start="(key, seller) in $ctrl.getSortedLocationSellers(location)"
-                ng-init="seller.isCloned ? sellerDetails = {} : sellerDetails = $ctrl.sellers[seller.sellerCounterparty.id]; seller.isInSearch = true;"
+                ng-init="seller.isCloned ? sellerDetails = {} : sellerDetails = $ctrl.sellers[seller.sellerCounterparty.id]; seller.isInSearch = true; seller.viewEditRatingIcon = false"
                 ng-show="seller.shouldBeVisible && seller.isInSearch "
                 style="{{seller.isNotInterested == true ? 'background: #bec4c5!important' : ''}}"
                 class="bg-white {{seller.packageType == 'seller' ? 'pkgSellerRow' : '' }} {{seller.packageType == 'buyer' ? 'pkgBuyerRow' : '' }} "
@@ -598,13 +598,13 @@
                         <i class="fa fa-users font-dark"></i>
                     </a>
                 </td>
-                <td style="max-width: 100px">
+                <td style="max-width: 100px" ng-mouseleave="seller.viewEditRatingIcon = false"  ng-mouseover="seller.viewEditRatingIcon = true">
                     <div style="text-align: center; width: 100px; display: inline-flex;">
                         <span style="padding-left: 10px;width: 40px;">{{sellerDetails.sellerRating}}</span>
                         <span>
                             <i style="color: #337AB7; font-size: 18px;  padding-left: 5px;" class="fa fa-star"></i>
                         </span>
-                        <span style="padding-left: 10px;">
+                        <span ng-if="seller.viewEditRatingIcon" style="padding-left: 10px;">
                             <i style="color: #337AB7; font-size: 18px;" class="fa fa-pencil" ng-click="$ctrl.viewBladeSellerRating(seller.sellerCounterparty.id, location, seller)"></i>
                         </span>
                     </div>
