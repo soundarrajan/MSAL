@@ -1302,6 +1302,9 @@ APP_MASTERS.controller('Controller_Master', [
                         }
                         const value = _.pick($scope.formValues.applications[i], _.keys(model));
                         if (value.allLocations) {
+                            if (!value.specificLocations) {
+                                value.specificLocations = [];
+                            }
                             value.specificLocations.push(value.allLocations);
                         }
                         $scope.formValues.applications[i] = {
