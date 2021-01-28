@@ -598,12 +598,15 @@
                         <i class="fa fa-users font-dark"></i>
                     </a>
                 </td>
-                <td style="max-width: 65px">
-                    <div style="text-align: center;">
-                        <span class="badge bg-dark bg-font-grey-gallery">
-                            <i class="fa fa-star" ng-click="$ctrl.viewBladeSellerRating()"></i>
+                <td style="max-width: 100px">
+                    <div style="text-align: center; width: 100px; display: inline-flex;">
+                        <span style="padding-left: 10px;width: 40px;">{{sellerDetails.sellerRating}}</span>
+                        <span>
+                            <i style="color: #337AB7; font-size: 18px;  padding-left: 5px;" class="fa fa-star"></i>
                         </span>
-                        <span class="badge bg-grey font-dark"><strong>{{sellerDetails.sellerRating}}</strong></span>
+                        <span style="padding-left: 10px;">
+                            <i style="color: #337AB7; font-size: 18px;" class="fa fa-pencil" ng-click="$ctrl.viewBladeSellerRating(seller.sellerCounterparty.id, location, seller)"></i>
+                        </span>
                     </div>
                 </td>
                 <td style="text-align: center;">

@@ -8677,7 +8677,6 @@ APP_MASTERS.controller('Controller_Master', [
                         minRating: 1,
                         readOnly: true,
                         callback: function(currentRating, $el){
-                            alert('rated ' + currentRating);
                             console.log('DOM element ', $el);
                         }
                     });

@@ -4058,14 +4058,15 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
             ctrl.bladeOpened = true;
             ctrl.dataLoaded = true;
         };
-        ctrl.viewBladeSellerRating = function() {
-        	ctrl.changeBladeWidgetFunction = null;
+        ctrl.viewBladeSellerRating = function(counterpartyId, theLocation, seller) {
+            ctrl.changeBladeWidgetFunction = null;
             if ($('.blade-column.main-content-column .ng-dirty').length > 0 && !ctrl.confirmedBladeNavigation) {
                 $('.confirmNavigateBlade').removeClass('hide');
                 $('.confirmNavigateBlade').modal();
                 ctrl.changeBladeWidgetFunction = {
                     function: 'ctrl.viewBladeSellerRating',
-                    params : []
+                    params : [ counterpartyId, theLocation, seller ]
+
                 };
                 return;
             }
@@ -4073,11 +4074,209 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
             ctrl.blade.colLayout = 'double';
             ctrl.blade.activeWidget = 'rating';
             ctrl.bladeTemplateUrl = 'components/blade/templates/gor-blade-content.html';
-            ctrl.blade.widgetType = 'counterparty';
-            $bladeEntity.open('groupOfRequestBlade');
-            ctrl.bladeOpened = true;
+              if (typeof ctrl.blade == 'undefined') {
+                ctrl.blade = {};
+            }
+            ctrl.blade.counterpartyActiveSeller = seller;
+            ctrl.blade.counterpartyActiveLocation = theLocation;
+            // Factory_Master.get_master_entity(counterpartyId, 'counterparty', 'masters', (callback) => {
+            //     if (callback) {
+            //         console.log(callback);
+                    ctrl.blade.sellerRatingBladeData = {
+                    "locations": [
+                        {
+                        "location": {
+                          "id": 112,
+                          "name": "ROTTERDAM"
+                        },
+                        "categories": [
+                        {
+                          "id": 0,
+                          "details": [
+                            {
+                              "id": 0,
+                              "ratingRequired": true,
+                              "weight": 20,
+                              "name": "How do you rate the supplier on response time on negotiation?",
+                               "rating": 3.3
+                            },
+                            {
+                              "id": 0,
+                              "ratingRequired": true,
+                              "weight": 30,
+                              "name": "How do you rate the supplier on response time on negotiation?",
+                               "rating": 3.5
+                            },
+                            {
+                              "id": 0,
+                              "name": "Give your comments on the experience of delays",
+                              "comments": "Give your comments on the experience of delays"
+                            }
+                          ],
+                          "weight": 50,
+                          "name": "Response",
+                           "rating": 4, 
+                          "createdBy":  
+                          {
+                            "id": 0,
+                            "displayName": "24S SuperUser"
+                          },
+                            "createdOn": "2020-03-25T15:15:54.2Z"
+                        },
+                        {
+                          "id": 0,
+                          "details": [
+                            {
+                              "id": 0,
+                              "ratingRequired": true,
+                              "weight": 20,
+                              "name": "How do you rate the supplier on response time on negotiation?",
+                               "rating": 5
+                            },
+                            {
+                              "id": 0,
+                              "ratingRequired": true,
+                              "weight": 30,
+                              "name": "How do you rate the supplier on response time on negotiation?",
+                               "rating": 3
+                            },
+                            {
+                              "id": 0,
+                              "name": "Give your comments on the experience of delays",
+                               "comments": "Give your comments on the experience of delays"
+                            }
+                          ],
+                          "weight": 50,
+                          "name": "Quality",
+                          "rating": 4, 
+                          "createdBy":  
+                          {
+                            "id": 0,
+                            "displayName": "24S SuperUser"
+                          },
+                            "createdOn": "2020-03-25T15:15:54.2Z"
+                        }
+                      ],
+                        "totalWeightage": 100,
+                        "rating": 3
+
+                    },
+                     {
+                        "location": {
+                          "id": 0,
+                          "name": ""
+                        },
+                        "categories": [
+                        {
+                          "id": 0,
+                          "details": [
+                            {
+                              "id": 0,
+                              "ratingRequired": true,
+                              "weight": 20,
+                              "name": "How do you rate the supplier on response time on negotiation?",
+                               "rating": 1
+                            },
+                            {
+                              "id": 0,
+                              "ratingRequired": true,
+                              "weight": 30,
+                              "name": "How do you rate the supplier on response time on negotiation?",
+                               "rating": 3.5
+                            },
+                            {
+                              "id": 0,
+                              "name": "Give your comments on the experience of delays",
+                              "comments": "Give your comments on the experience of delays"
+                            }
+                          ],
+                          "weight": 50,
+                          "name": "Response",
+                           "rating": 4, 
+                          "createdBy":  
+                          {
+                            "id": 0,
+                            "displayName": "24S SuperUser"
+                          },
+                            "createdOn": "2020-03-25T15:15:54.2Z"
+                        },
+                        {
+                          "id": 0,
+                          "details": [
+                            {
+                              "id": 0,
+                              "ratingRequired": true,
+                              "weight": 20,
+                              "name": "How do you rate the supplier on response time on negotiation?",
+                               "rating": 5
+                            },
+                            {
+                              "id": 0,
+                              "ratingRequired": true,
+                              "weight": 30,
+                              "name": "How do you rate the supplier on response time on negotiation?",
+                               "rating": 3
+                            },
+                            {
+                              "id": 0,
+                              "name": "Give your comments on the experience of delays",
+                              "comments": "Give your comments on the experience of delays"
+                            }
+                          ],
+                          "weight": 50,
+                          "name": "Quality",
+                          "rating": 4, 
+                          "createdBy":  
+                          {
+                            "id": 0,
+                            "displayName": "24S SuperUser"
+                          },
+                            "createdOn": "2020-03-25T15:15:54.2Z"
+                        }
+                      ],
+                        "totalWeightage": 100,
+                        "rating": 3
+                    }
+                     
+                    ]
+                };
+                    // ctrl.blade.widgetType = 'general';
+                    ctrl.blade.widgetType = 'counterparty';
+                    // ctrl.blade.colLayout = 'single';
+                    // ctrl.blade.colLayout = 'none';
+                    ctrl.blade.colLayout = 'double';
+                    ctrl.blade.activeWidget = 'rating';
+                    ctrl.blade.counterpartyActiveLocation = theLocation;
+                    ctrl.blade.counterpartyActiveProducts = theLocation[0].products;
+                    ctrl.blade.activeSeller = `${seller.requestLocationId }-${ seller.randUnique}`;
+                    // $rootScope.counterpartyData = callback;
+                    $bladeEntity.open('groupOfRequestBlade');
+                    ctrl.bladeOpened = true;
+                // }
+            // });
             ctrl.dataLoaded = true;
         };
+
+        ctrl.formatDateTime = function(elem) {
+            if (elem) {
+                var dateFormat = ctrl.tenantSetting.tenantFormats.dateFormat.name;
+                let hasDayOfWeek = false;
+                if (dateFormat.startsWith('DDD ')) {
+                    hasDayOfWeek = true;
+                    dateFormat = dateFormat.split('DDD ')[1];
+                }
+                dateFormat = dateFormat.replace(/D/g, 'd').replace(/Y/g, 'y');
+                formattedDate = $filter('date')(elem, dateFormat);
+                if (hasDayOfWeek) {
+                    formattedDate = `${moment.utc(elem).format('ddd') } ${ formattedDate}`;
+                }
+                if (formattedDate.endsWith('00:00')) {
+                    formattedDate = formattedDate.split('00:00')[0];
+                }
+                return formattedDate;
+            }
+        };
+
         ctrl.changeBladeCounterparty = function(seller, theLocation) {
             // ctrl.dataLoaded = true;
 

@@ -1,3 +1,189 @@
 <div class="blade-column-title main text-uppercase">
-	Seller rating
+	Seller Rating
+</div>
+<div class="row sellerRating dynamic_form_editor">
+	<div class="clearfix"></div>
+    <div class="col-sm-12 seller-counterparty-specific-location">
+        <div class="portlet light">
+            <div class="portlet-body">
+                <br/>
+                <div class="tab-content">
+                    <div ng-repeat="(key4,value4) in $ctrl.blade.sellerRatingBladeData.locations" ng-if="value4.location.id">
+                        <!-- {{value4}} -->
+                        <div class="portlet light light-specific-location">
+                            <div class="portlet-title  portlet-title-no-border">
+                                <div class="caption">
+                                    <span class="caption-subject pull-left ">
+                                      	<span class="seller-rating-container-title">
+                                      		Location - 
+                                      	</span> 
+                                      	{{value4.location.name}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row">
+                        		<div class="col-md-2">
+                        			Supplier Rating
+                        		</div>                         			
+                        		<div class="col-md-4" style="position: relative; left: 35px; display: inline-flex;">
+									<span star-rating ng-model="value4.rating" style="margin-top: 3.5px !important;"></span>
+			                		<div>
+			                		 	 ( {{value4.rating }} Out of 5 )
+			                		</div>
+                                </div>
+                            </div>
+                        	</br>
+                            <div class="portlet-body seller-rating-portlet-body">
+                                <div class="col-md-push-8 seller-rating-caption-subject">
+                                   Feautures Rating
+                                </div>
+                                <div class="portlet seller-rating-portlet-param-container-negociation" ng-repeat="(key2, value2) in value4.categories">
+                                    <div class="portlet-category-key-counterparty-negociation" ng-if="key2> 0">
+                                    </div>
+                                    <div class="portlet-title portlet-title-no-border" style="display: flex;">
+						                <div class="tools ">
+						                    <a   class="expand" data-original-title="" title=""></a>
+						                </div>
+						                <div class="caption col-md-2">
+						                    <span class="caption-subject pull-left ">
+						                       	{{ value2.name }}
+						                    </span>
+						                </div>
+						                <div  class="header-seller-rating col-md-10">
+						                	<div class="col-md-4" style="position: relative; display: inline-flex;">
+						                	    <span  star-rating ng-model="value4.rating" style="margin-top: 3.5px !important;"></span>
+						                		<div>
+						                		 	 ( {{value4.rating }} Out of 5 )
+						                		</div>
+                                			</div>
+						                   	<div class="col-md-6">
+						                   		Rated by
+		                                      	<span class="created-by-display-name"> 
+		                                      	{{ value2.createdBy.displayName}}
+		                                      	</span>
+		                                      	on
+		                                      	<span class="seller-rating-created-on"> 
+		                                        {{ $ctrl.formatDateTime(value2.createdOn) }}
+		                                      	</span>
+						                   	</div>
+						                </div>
+           							</div>
+           							<div class="portlet-body portlet-collapsed">
+           								<span ng-init="!value2.details ? value2.details = [{'id':0}] : ''"></span>
+                                        <div class="row seller-rating-param-line" ng-repeat="(key3, value3) in value2.details">
+                                            <div class="col-md-6 seller-rating-question">
+                                                {{ key3 + 1 }}. {{ value3.name }}
+                                            </div>
+                                            <div class="col-md-6">
+                                                <textarea
+                                                	style="background-color: white !important"
+                                                	readonly
+                                                	ng-if="!value3.ratingRequired"
+                                                    class="form-control"
+                                                    maxlength="500"
+                                                    ng-model="value3.comments"
+                                                    placeholder="Type your answer..."></textarea>
+												<span  ng-if="value3.ratingRequired" star-rating ng-model="value3.rating"></span>
+                                            </div>
+                                            <div class="seller-rating-empty"></div>
+                                        </div>
+           							</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12 seller-counterparty-all-location">
+        <div class="portlet light">
+        	<div class="portlet-title  portlet-title-no-border">
+                <div class="caption">
+                    <span class="caption-subject pull-left ">
+                      	<span class="seller-rating-container-title">
+                      		Location - 
+                      	</span> 
+                      	All Locations
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+        		<div class="col-md-2">
+        			Supplier Rating
+        		</div> 
+        		<div ng-repeat="(key4,value4) in $ctrl.blade.sellerRatingBladeData.locations" ng-if="!value4.location.id">
+	        		<div class="col-md-4" style="position: relative; left: 35px; display: inline-flex;">
+	                    <span star-rating ng-model="value4.rating" style="margin-top: 3.5px !important;"></span>
+                		<div>
+                		 	 ( {{value4.rating }} Out of 5 )
+                		</div>
+                    </div>
+			    </div>
+            </div>
+      		</br>
+            <div class="portlet-body seller-rating-portlet-body">
+                <div class="tab-content">
+                    <div class="col-md-push-8">
+                        <div class="col-md-push-8 seller-rating-caption-subject">
+                            Feautures Rating
+                        </div>
+                    </div>
+                    <div ng-repeat="(key4,value4) in $ctrl.blade.sellerRatingBladeData.locations" ng-if="!value4.location.id">
+	                    <div class="portlet seller-rating-portlet-param-container-negociation" ng-repeat="(key2, value2) in value4.categories">
+	                      	<div class="portlet-category-key-counterparty-negociation" ng-if="key2> 0"></div>
+	                        <div class="portlet-title portlet-title-no-border" style="display: flex;">
+				                <div class="tools ">
+				                    <a   class="expand" data-original-title="" title=""></a>
+				                </div>
+				                <div class="caption col-md-2">
+				                    <span class="caption-subject pull-left ">
+				                       	{{ value2.name }}
+				                    </span>
+				                </div>
+				                <div  class="header-seller-rating col-md-10">
+				                	<div class="col-md-4" style="position: relative; display: inline-flex;">
+	                                    <span  star-rating ng-model="value4.rating" style="margin-top: 3.5px !important;"></span>
+				                		<div>
+				                		 	 ( {{value4.rating }} Out of 5 )
+				                		</div>
+                                	</div>
+				                   	<div class="col-md-6">
+				                   		Rated by
+	                                  	<span class="created-by-display-name"> 
+	                                  	{{ value2.createdBy.displayName}}
+	                                  	</span>
+	                                  	on
+	                                  	<span class="seller-rating-created-on"> 
+	                                    {{ $ctrl.formatDateTime(value2.createdOn) }}
+	                                  	</span>
+				                   	</div>
+				                </div>
+	           				</div>
+							<div class="portlet-body portlet-collapsed">
+									<span ng-init="!value2.details ? value2.details = [{'id':0}] : ''"></span>
+	                            <div class="row seller-rating-param-line" ng-repeat="(key3, value3) in value2.details">
+	                                <div class="col-md-6 seller-rating-question">
+	                                    {{ key3 + 1 }}. {{ value3.name }}
+	                                </div>
+	                                <div class="col-md-6">
+	                                    <textarea
+	                                        readonly
+	                                        style="background-color: white !important"
+	                                    	ng-if="!value3.ratingRequired"
+	                                        class="form-control"
+	                                        maxlength="500"
+	                                        ng-model="value3.comments"
+	                                        placeholder="Type your answer..."></textarea>
+	                                    <span ng-if="value3.ratingRequired" star-rating ng-model="value3.rating"></span>
+	                                </div>
+	                                <div class="seller-rating-empty"></div>
+	                            </div>
+	           				</div>
+	           			</div>
+	           		</div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
 </div>
