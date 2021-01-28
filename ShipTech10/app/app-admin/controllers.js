@@ -1167,6 +1167,23 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
         }
     };
 
+    $scope.verifyRatingRequired = function(location) {
+        console.log(location);
+        if (location.categories) {
+            for (let i = 0; i < location.categories.length; i++) {
+                if (location.categories[i].details) {
+                    for (let j = 0; j < location.categories[i].details.length ; j++) {
+                        if (location.categories[i].details[j].ratingRequired) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+
+    }
+
 
 
     $scope.setPageTitle = function(title) {

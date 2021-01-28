@@ -97,7 +97,7 @@
                                             <div class="col-md-push-8">
                                                 <div class="weightage-labels">
                                                     <div class="input-group pull-right form_input form_input_applications">
-                                                        <span class="form-control weightage" ng-if="formValues.applications" ng-init="totalWeightageCalcSpecificLocations(value4)" ng-class="formValues.applications[key1].specificLocations[key4].totalWeightage != 100 ? 'danger' : '' ">
+                                                        <span class="form-control weightage" ng-if="formValues.applications" ng-init="totalWeightageCalcSpecificLocations(value4)" ng-class="verifyRatingRequired(formValues.applications[key1].specificLocations[key4]) && formValues.applications[key1].specificLocations[key4].totalWeightage != 100 ? 'danger' : '' ">
                                                             {{ formValues.applications[key1].specificLocations[key4].totalWeightage }}
                                                         </span>
                                                     </div>
@@ -152,7 +152,7 @@
                                                                 {{ CM.app_id + '.PARAMETER' | translate }} {{ key3 + 1 }}
                                                             </label>
                                                             <div class="input-group form_input">
-                                                                <input decode-input-format type="text" ng-required="true" class="form-control" name="Category_{{ key2 + 1 }}_question_{{ key3 + 1 }}_specificLocations_{{value4.location.name}}_{{value1.module.name}}" ng-model="value3.name"/>
+                                                                <input decode-input-format type="text" ng-required="true" class="form-control" name="Category_{{ key2 + 1 }}_Parameter_{{ key3 + 1 }}_specificLocations_{{value4.location.name}}_{{value1.module.name}}" ng-model="value3.name"/>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -176,7 +176,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="input-group pull-right form_input">
-                                                                <input decode-input-format type="number" class="form-control weightage" ng-required="value3.ratingRequired" name="Category_{{ key2 + 1 }}_question_{{ key3 + 1 }}_weight_specificLocations_{{value4.location.name}}_{{value1.module.name}}" ng-model="value3.weight" ng-change="updateWeightSumSpecificLocations(key1, key4, key2)" ng-disabled="!value3.ratingRequired"/>
+                                                                <input decode-input-format type="number" ng-min="0"  class="form-control weightage" ng-required="value3.ratingRequired" name="Category_{{ key2 + 1 }}_Parameter_{{ key3 + 1 }}_Weight_specificLocations_{{value4.location.name}}_{{value1.module.name}}" ng-model="value3.weight" ng-change="updateWeightSumSpecificLocations(key1, key4, key2)" ng-disabled="!value3.ratingRequired"/>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -220,7 +220,7 @@
                         <div class="col-md-push-8">
                             <div class="weightage-labels">
                                 <div class="input-group pull-right form_input form_input_applications">
-                                    <span class="form-control weightage" ng-if="formValues.applications" ng-init="totalWeightageCalcAllLocations(formValues.applications[key1].allLocations)" ng-class="formValues.applications[key1].allLocations.totalWeightage != 100 ? 'danger' : '' ">
+                                    <span class="form-control weightage" ng-if="formValues.applications" ng-init="totalWeightageCalcAllLocations(formValues.applications[key1].allLocations)" ng-class="verifyRatingRequired(formValues.applications[key1].allLocations) && formValues.applications[key1].allLocations.totalWeightage != 100 ? 'danger' : '' ">
                                         {{ formValues.applications[key1].allLocations.totalWeightage }}
                                     </span>
                                 </div>
@@ -275,7 +275,7 @@
                                             {{ CM.app_id + '.PARAMETER' | translate }} {{ key3 + 1 }}
                                         </label>
                                         <div class="input-group form_input">
-                                            <input decode-input-format type="text" ng-required="verifyAllLocation(value2)" class="form-control" name="Category_{{ key2 + 1 }}_question_{{ key3 + 1 }}_allLocations_{{value1.module.name}}" ng-model="value3.name"/>
+                                            <input decode-input-format type="text" ng-required="verifyAllLocation(value2)" class="form-control" name="Category_{{ key2 + 1 }}_Parameter_{{ key3 + 1 }}_allLocations_{{value1.module.name}}" ng-model="value3.name"/>
                                         </div>
                                     </div>
                                 </div>
@@ -300,7 +300,7 @@
                                             </div>
                                         </div>
                                         <div class="input-group pull-right form_input">
-                                            <input  decode-input-format type="number" class="form-control weightage" ng-required="value3.ratingRequired && verifyAllLocation(value2)" name="Category_{{ key2 + 1 }}_question_{{ key3 + 1 }}_weight_allLocations_{{value1.module.name}}" ng-model="value3.weight" ng-change="updateWeightSumAllLocations(key1, key2)" ng-disabled="!value3.ratingRequired"/>
+                                            <input  decode-input-format type="number"  ng-min="0" class="form-control weightage" ng-required="value3.ratingRequired && verifyAllLocation(value2)" name="Category_{{ key2 + 1 }}_Parameter_{{ key3 + 1 }}_Weight_allLocations_{{value1.module.name}}" ng-model="value3.weight" ng-change="updateWeightSumAllLocations(key1, key2)" ng-disabled="!value3.ratingRequired"/>
                                         </div>
                                     </div>
                                 </div>
