@@ -1093,7 +1093,30 @@ APP_MASTERS.factory('Factory_Master', [ '$window', '$http', '$Api_Service', 'API
                     res.message = 'An error has ocurred!';
                 }
             );
+        },
+        getSellerRatingForNegociation: function(data, callback) {
+            let payload = {
+                Payload: data
+            };
+            let url = `${API.BASE_URL_DATA_SELLERRATING }/api/sellerrating/sellerratingreview/getForNegotiation`;
+            $http.post(url, payload).then(
+                (response) => {
+                    let res = {};
+                    if (response.status == 200) {
+                        callback(response.data.payload);
+                    } else {
+                        res.status = false;
+                        res.message = 'An error has ocurred!';
+                    }
+                },
+                (response) => {
+                    let res = {};
+                    res.status = false;
+                    res.message = 'An error has ocurred!';
+                }
+            );
         }
+
 
     };
 } ]);

@@ -4079,181 +4079,23 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
             }
             ctrl.blade.counterpartyActiveSeller = seller;
             ctrl.blade.counterpartyActiveLocation = theLocation;
-            // Factory_Master.get_master_entity(counterpartyId, 'counterparty', 'masters', (callback) => {
-            //     if (callback) {
-            //         console.log(callback);
-                    ctrl.blade.sellerRatingBladeData = {
-                    "locations": [
-                        {
-                        "location": {
-                          "id": 112,
-                          "name": "ROTTERDAM"
-                        },
-                        "categories": [
-                        {
-                          "id": 0,
-                          "details": [
-                            {
-                              "id": 0,
-                              "ratingRequired": true,
-                              "weight": 20,
-                              "name": "How do you rate the supplier on response time on negotiation?",
-                               "rating": 3.3
-                            },
-                            {
-                              "id": 0,
-                              "ratingRequired": true,
-                              "weight": 30,
-                              "name": "How do you rate the supplier on response time on negotiation?",
-                               "rating": 3.5
-                            },
-                            {
-                              "id": 0,
-                              "name": "Give your comments on the experience of delays",
-                              "comments": "Give your comments on the experience of delays"
-                            }
-                          ],
-                          "weight": 50,
-                          "name": "Response",
-                           "rating": 4, 
-                          "createdBy":  
-                          {
-                            "id": 0,
-                            "displayName": "24S SuperUser"
-                          },
-                            "createdOn": "2020-03-25T15:15:54.2Z"
-                        },
-                        {
-                          "id": 0,
-                          "details": [
-                            {
-                              "id": 0,
-                              "ratingRequired": true,
-                              "weight": 20,
-                              "name": "How do you rate the supplier on response time on negotiation?",
-                               "rating": 5
-                            },
-                            {
-                              "id": 0,
-                              "ratingRequired": true,
-                              "weight": 30,
-                              "name": "How do you rate the supplier on response time on negotiation?",
-                               "rating": 3
-                            },
-                            {
-                              "id": 0,
-                              "name": "Give your comments on the experience of delays",
-                               "comments": "Give your comments on the experience of delays"
-                            }
-                          ],
-                          "weight": 50,
-                          "name": "Quality",
-                          "rating": 4, 
-                          "createdBy":  
-                          {
-                            "id": 0,
-                            "displayName": "24S SuperUser"
-                          },
-                            "createdOn": "2020-03-25T15:15:54.2Z"
-                        }
-                      ],
-                        "totalWeightage": 100,
-                        "rating": 3
-
-                    },
-                     {
-                        "location": {
-                          "id": 0,
-                          "name": ""
-                        },
-                        "categories": [
-                        {
-                          "id": 0,
-                          "details": [
-                            {
-                              "id": 0,
-                              "ratingRequired": true,
-                              "weight": 20,
-                              "name": "How do you rate the supplier on response time on negotiation?",
-                               "rating": 1
-                            },
-                            {
-                              "id": 0,
-                              "ratingRequired": true,
-                              "weight": 30,
-                              "name": "How do you rate the supplier on response time on negotiation?",
-                               "rating": 3.5
-                            },
-                            {
-                              "id": 0,
-                              "name": "Give your comments on the experience of delays",
-                              "comments": "Give your comments on the experience of delays"
-                            }
-                          ],
-                          "weight": 50,
-                          "name": "Response",
-                           "rating": 4, 
-                          "createdBy":  
-                          {
-                            "id": 0,
-                            "displayName": "24S SuperUser"
-                          },
-                            "createdOn": "2020-03-25T15:15:54.2Z"
-                        },
-                        {
-                          "id": 0,
-                          "details": [
-                            {
-                              "id": 0,
-                              "ratingRequired": true,
-                              "weight": 20,
-                              "name": "How do you rate the supplier on response time on negotiation?",
-                               "rating": 5
-                            },
-                            {
-                              "id": 0,
-                              "ratingRequired": true,
-                              "weight": 30,
-                              "name": "How do you rate the supplier on response time on negotiation?",
-                               "rating": 3
-                            },
-                            {
-                              "id": 0,
-                              "name": "Give your comments on the experience of delays",
-                              "comments": "Give your comments on the experience of delays"
-                            }
-                          ],
-                          "weight": 50,
-                          "name": "Quality",
-                          "rating": 4, 
-                          "createdBy":  
-                          {
-                            "id": 0,
-                            "displayName": "24S SuperUser"
-                          },
-                            "createdOn": "2020-03-25T15:15:54.2Z"
-                        }
-                      ],
-                        "totalWeightage": 100,
-                        "rating": 3
-                    }
-                     
-                    ]
-                };
-                    // ctrl.blade.widgetType = 'general';
+            payload = { 
+                'locationId': theLocation[0].location.id,
+                'counterpartyId': counterpartyId
+            };
+            Factory_Master.getSellerRatingForNegociation(payload, (callback) => {
+                if (callback) {
+                    ctrl.blade.sellerRatingBladeData = callback;
                     ctrl.blade.widgetType = 'counterparty';
-                    // ctrl.blade.colLayout = 'single';
-                    // ctrl.blade.colLayout = 'none';
                     ctrl.blade.colLayout = 'double';
                     ctrl.blade.activeWidget = 'rating';
                     ctrl.blade.counterpartyActiveLocation = theLocation;
                     ctrl.blade.counterpartyActiveProducts = theLocation[0].products;
                     ctrl.blade.activeSeller = `${seller.requestLocationId }-${ seller.randUnique}`;
-                    // $rootScope.counterpartyData = callback;
                     $bladeEntity.open('groupOfRequestBlade');
                     ctrl.bladeOpened = true;
-                // }
-            // });
+                }
+            });
             ctrl.dataLoaded = true;
         };
 
@@ -4276,6 +4118,16 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                 return formattedDate;
             }
         };
+
+
+        ctrl.formatNumber = function(value) {
+            if (value) {
+                if (value != Math.floor(value)) {
+                    return value.toFixed(1);
+                } 
+            }
+            return !value ? 0 : value;
+        }
 
         ctrl.changeBladeCounterparty = function(seller, theLocation) {
             // ctrl.dataLoaded = true;
@@ -4334,6 +4186,29 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                         ctrl.dataLoaded = true;
                     }
                 });
+            }
+
+            if (ctrl.blade.activeWidget == 'rating') {
+                ctrl.blade.activeWidget = null;
+                payload = { 
+                    'locationId': theLocation.location.id,
+                    'counterpartyId': seller.sellerCounterparty.id
+                };
+                Factory_Master.getSellerRatingForNegociation(payload, (callback) => {
+                    if (callback) {
+                        console.log(callback);
+                        ctrl.blade.sellerRatingBladeData = callback;
+                        ctrl.blade.widgetType = 'counterparty';
+                        ctrl.blade.colLayout = 'double';
+                        ctrl.blade.activeWidget = 'rating';
+                        ctrl.blade.counterpartyActiveLocation = theLocation;
+                        ctrl.blade.counterpartyActiveProducts = theLocation[0].products;
+                        ctrl.blade.activeSeller = `${seller.requestLocationId }-${ seller.randUnique}`;
+                        $bladeEntity.open('groupOfRequestBlade');
+                        ctrl.bladeOpened = true;
+                    }
+                }); 
+
             }
         };
         ctrl.openGeneralWidgetBlade = function(widget, product) {
