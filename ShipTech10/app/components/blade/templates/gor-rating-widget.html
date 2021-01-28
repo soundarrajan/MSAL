@@ -6,13 +6,11 @@
 	<div ng-if="!$ctrl.blade.sellerRatingBladeData.length" style="padding: 5px;">
 		No Seller Rating Available
 	</div>
-    <div class="col-sm-12 seller-counterparty-specific-location" ng-if="$ctrl.blade.sellerRatingBladeData.length">
-        <div class="portlet light">
-            <div class="portlet-body">
-                <br/>
+    <div class="col-sm-12 seller-counterparty-specific-location" ng-if="$ctrl.blade.sellerRatingBladeData.length" ng-class="$ctrl.blade.noSpecificLocation ? 'no-seller-rating' : '' ">
+        <div class="portlet light seller-no-padding-top">
+            <div class="portlet-body seller-no-padding-top">
                 <div class="tab-content">
                     <div ng-repeat="(key4,value4) in $ctrl.blade.sellerRatingBladeData" ng-if="value4.location.id">
-                        <!-- {{value4}} -->
                         <div class="portlet light light-specific-location">
                             <div class="portlet-title  portlet-title-no-border">
                                 <div class="caption">

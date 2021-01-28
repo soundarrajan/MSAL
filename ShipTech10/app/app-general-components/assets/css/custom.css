@@ -4634,3 +4634,11 @@ select option {
     padding-right: 0px!important; 
     padding-left: 0px!important;
 }
+
+.no-seller-rating {
+    display: none;
+}
+
+.seller-no-padding-top {
+    padding-top: 0px !important;
+}

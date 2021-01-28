@@ -4086,6 +4086,10 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
             Factory_Master.getSellerRatingForNegociation(payload, (callback) => {
                 if (callback) {
                     ctrl.blade.sellerRatingBladeData = callback;
+                    let findSpecificLocation = _.find(ctrl.blade.sellerRatingBladeData, function(obj) {
+                        return obj.location;
+                    });
+                    ctrl.blade.noSpecificLocation = !findSpecificLocation ? true : false;
                     ctrl.blade.widgetType = 'counterparty';
                     ctrl.blade.colLayout = 'double';
                     ctrl.blade.activeWidget = 'rating';
@@ -4198,6 +4202,10 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                     if (callback) {
                         console.log(callback);
                         ctrl.blade.sellerRatingBladeData = callback;
+                        let findSpecificLocation = _.find(ctrl.blade.sellerRatingBladeData, function(obj) {
+                            return obj.location;
+                        });
+                        ctrl.blade.noSpecificLocation = !findSpecificLocation ? true : false;
                         ctrl.blade.widgetType = 'counterparty';
                         ctrl.blade.colLayout = 'double';
                         ctrl.blade.activeWidget = 'rating';
