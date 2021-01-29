@@ -347,7 +347,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                 		ctrl.sellerSortOrder = SELLER_SORT_ORDER.ALPHABET;
                 	}
                     parseRequestList(data.payload, false);
-                    initializeDataArrays(data.payload);
+                    //initializeDataArrays(data.payload);
                     getGroupInfo(groupId);
                     ctrl.priceInputsDisabled = false;
                 });

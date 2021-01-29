@@ -45,8 +45,10 @@
 					<select name="Item Name" class="form-control" ng-options="item as item.name for item in CM.listsCache.CounterpartyStatus track by item.id " ng-model="value.status"></select>
 				</td>
 				<td style="max-width: initial; min-width: 250px;"><input class="form-control" type="text" ng-model="value.comments"></td>
-				<td style="max-width: initial; min-width: 170px; border-right: 0px !important" class="padding">    	
-				    <span style="margin-top: 0px !important; margin-bottom: 0px !important;" ng-if="value.isSpecificLocation && value.rating"  star-rating ng-model="value.rating"></span>
+				<td style="max-width: initial; min-width: 170px; border-right: 0px !important" class="padding">
+					<div style="padding-top: 5px !important; padding-bottom: 0px !important;">
+				    	<span style="margin-top: 0px !important; margin-bottom: 0px !important;" ng-if="value.isSpecificLocation && value.rating"  star-rating 	ng-model="value.rating"></span>
+				    </div>
 					<div  ng-if="!value.isSpecificLocation"> NA </div>
 				</td>
 				<td style="max-width: initial; min-width: 50px;" class="padding" ng-class="!value.isSpecificLocation ? 'no-specific-location' : ''">

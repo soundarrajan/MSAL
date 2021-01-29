@@ -4642,3 +4642,7 @@ select option {
 .seller-no-padding-top {
     padding-top: 0px !important;
 }
+
+.rating-with-border {
+    border-bottom: 1px solid #777777;
+}
