@@ -57,10 +57,10 @@
 						                		 	 ( {{ $ctrl.formatNumber(value2.rating) }} Out of 5 )
 						                		</div>
                                 			</div>
-						                   	<div class="col-md-6">
+						                   	<div ng-if="value2.createdBy && value2.createdOn">
 						                   		Rated by
 		                                      	<span class="created-by-display-name"> 
-		                                      	{{ value2.createdBy.displayName}}
+		                                      	{{ value2.createdBy.name}}
 		                                      	</span>
 		                                      	on
 		                                      	<span class="seller-rating-created-on"> 
@@ -75,7 +75,7 @@
                                             <div class="col-md-6 seller-rating-question">
                                                 {{ key3 + 1 }}. {{ value3.name }}
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-6" style="width: 49%;">
                                                 <textarea
                                                 	style="background-color: white !important"
                                                 	readonly
@@ -149,10 +149,10 @@
 				                		 	( {{ $ctrl.formatNumber(value2.rating) }} Out of 5 )
 				                		</div>
                                 	</div>
-				                   	<div class="col-md-6">
+				                   	<div ng-if="value2.createdBy && value2.createdOn">
 				                   		Rated by
 	                                  	<span class="created-by-display-name"> 
-	                                  	{{ value2.createdBy.displayName}}
+	                                  	{{ value2.createdBy.name}}
 	                                  	</span>
 	                                  	on
 	                                  	<span class="seller-rating-created-on"> 
@@ -167,7 +167,7 @@
 	                                <div class="col-md-6 seller-rating-question">
 	                                    {{ key3 + 1 }}. {{ value3.name }}
 	                                </div>
-	                                <div class="col-md-6">
+	                                <div class="col-md-6" style="width: 49%;">
 	                                    <textarea
 	                                        readonly
 	                                        style="background-color: white !important"
