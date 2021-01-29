@@ -91,8 +91,7 @@ APP_MASTERS.controller('Master_Seller_Rating_Counterparty', [
 				if (response) {
 					$scope.formValues.sellerRatingReviewCategories = response.sellerRatingReviewCategories;
 					$scope.formValues.applications.counterparty = response.counterParty;
-					$scope.mappedRating($scope.formValues.applications, $scope.formValues.sellerRatingReviewCategories);
-
+					$scope.mappedRating($scope.formValues.applications, $scope.formValues.sellerRatingReviewCategories);				
 				} else {
 					toastr.error('An error has occured!');
 				}
@@ -170,8 +169,8 @@ APP_MASTERS.controller('Master_Seller_Rating_Counterparty', [
         	let categoryKey =  JSON.parse($(event).attr("category-key"));
         	let detailKey =  JSON.parse($(event).attr("detail-key"));
         	console.log(locationKey, categoryKey, detailKey);
-        	$scope.formValues.applications[locationKey].categories[categoryKey].createdBy = $rootScope.user;
-        	$scope.formValues.applications[locationKey].categories[categoryKey].createdOn = moment().format();
+        	$scope.formValues.applications[locationKey].categories[categoryKey].newCreatedBy = $rootScope.user;
+        	$scope.formValues.applications[locationKey].categories[categoryKey].newCreatedOn = moment().format();
         	$scope.$apply();
         }
 
@@ -189,8 +188,8 @@ APP_MASTERS.controller('Master_Seller_Rating_Counterparty', [
         			const categoryModel = {
     					'id': $scope.formValues.applications[i].categories[j].sellerRatingReviewCategoryId ? $scope.formValues.applications[i].categories[j].sellerRatingReviewCategoryId : 0,
     					'sellerRatingCategoryId':  $scope.formValues.applications[i].categories[j].id,
-    					'createdOn': $scope.formValues.applications[i].categories[j].createdOn,
-    					'createdBy': $scope.formValues.applications[i].categories[j].createdBy,
+    					'createdOn': $scope.formValues.applications[i].categories[j].newCreatedOn ? $scope.formValues.applications[i].categories[j].newCreatedOn  :  $scope.formValues.applications[i].categories[j].createdOn,
+    					'createdBy': $scope.formValues.applications[i].categories[j].newCreatedBy ? $scope.formValues.applications[i].categories[j].newCreatedBy : $scope.formValues.applications[i].categories[j].createdBy,
     					'details': null
         			};
         			let ratingDetails = [];
