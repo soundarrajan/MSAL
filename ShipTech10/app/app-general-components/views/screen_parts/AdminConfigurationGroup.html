@@ -1299,6 +1299,17 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-13">
+                    <div class="form-group row" ng-init='CM.getOptions({"Name": "closeOrder", "Type": "dropdown", "masterSource": "YesNoOptions"})'>
+                        <label for="closeOrder" class="simpleLookupLabel" style="max-height: initial;">
+                            Close the Order
+                        </label>
+                        <div class="input-group form_input form_input_closeOrder">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.closeOrder track by item.id"
+                                ng-required="true" id="closeOrder" ng-model="formValues.procurement.order.closeOption"></select>
+                        </div>
+                    </div>
+                </div>
             </div>
         
 

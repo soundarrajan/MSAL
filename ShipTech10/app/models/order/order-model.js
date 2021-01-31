@@ -161,6 +161,13 @@ angular.module('shiptech.models').factory('orderModel', [ '$q', 'orderResource',
             });
         }
 
+        function close(data) {
+            let request_data = payloadDataModel.create(data);
+            return orderResource.close(request_data).$promise.then((data) => {
+                return data;
+            });
+        }
+
 
         function getContractProductAdditionalCosts(contractProductId) {
             let request_data = payloadDataModel.create(contractProductId);
@@ -423,6 +430,7 @@ angular.module('shiptech.models').factory('orderModel', [ '$q', 'orderResource',
             get: get,
             list: list,
             create: create,
+            close: close,
             update: update,
             verifyOrders: verifyOrders,
             confirm: confirm,

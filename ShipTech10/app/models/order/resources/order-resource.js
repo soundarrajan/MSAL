@@ -15,6 +15,7 @@ angular.module('shiptech.models')
                         };
                     } },
                 create: { method:'POST', params:{ verb:'create' }, interceptor: resourceInterceptor },
+                close: { method:'POST', params:{ verb:'close' }, interceptor: resourceInterceptor },
                 update: { method:'POST', params:{ verb:'update' }, interceptor: resourceInterceptor },
                 verifyOrders: { method:'POST', params:{ verb:'verifyOrders' }, interceptor: resourceInterceptor },
                 createWithContract: { method:'POST', params:{ verb:'createWithContract' } },

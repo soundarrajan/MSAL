@@ -2250,6 +2250,20 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 ctrl.openPreviewEmail(previewEmailData);
             }
         };
+
+
+        ctrl.closeOrder = function() {
+            if (ctrl.orderId) {
+                let payload = angular.copy(ctrl.data);
+                orderModel.close(payload).then((payload) => {
+                    $state.reload();
+                }).catch((err) => {
+                    ctrl.buttonsDisabled = false;
+                });
+            } 
+        }
+
+
         ctrl.saveOrder = function() {
             console.log($rootScope.notes);
             ctrl.data.orderNotes = $rootScope.notes;
