@@ -670,6 +670,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
 	            groupOfRequestsModel.getSellersSorted(counterpatyIds, productIds, ctrl.sellerSortOrder).then((data) => {
 	                if (data.payload !== null) {
 	                    ctrl.sellers = normalizeArrayToHash(data.payload, 'counterpartyId');
+                        ctrl.locationsRatingSorted = _.groupBy(data.payload, 'locationId');
 	                    ctrl.sellerOrder = getSellerOrder(data.payload);
 	                }
 	                ctrl.locations = getLocationsFromRequests(requests);
@@ -1501,12 +1502,21 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                 }
             }
             // order array to make sure we respect user sort preference
+            ctrl.sellerLocationOrder = getSellerOrder(ctrl.locationsRatingSorted[locations[0].location.id]);
             sellers.sort((a, b) => {
                 return ctrl.sellerOrder.indexOf(a.sellerCounterparty.id) - ctrl.sellerOrder.indexOf(b.sellerCounterparty.id);
             });
-            // ctrl.sortedLocationSellers = sellers
             return sellers;
         };
+
+        ctrl.getSellerRatingForCounterpartyForSpecificLocation = function(location, counterpartyId) {
+            let findSellerRatingForSpecificLocation = _.find(ctrl.locationsRatingSorted[location[0].location.id], function(object) {
+                return object.counterpartyId === counterpartyId;
+            });
+            if (findSellerRatingForSpecificLocation) {
+                return findSellerRatingForSpecificLocation.sellerRating;
+            }
+        }
 
         /**
          * Get correct seller order from counterparty list.
@@ -4089,7 +4099,11 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                     let findSpecificLocation = _.find(ctrl.blade.sellerRatingBladeData, function(obj) {
                         return obj.location;
                     });
+                    let findAllLocations = _.find(ctrl.blade.sellerRatingBladeData, function(obj) {
+                        return !obj.location;
+                    });
                     ctrl.blade.noSpecificLocation = !findSpecificLocation ? true : false;
+                    ctrl.blade.noAllLocations = !findAllLocations ? true : false;
                     ctrl.blade.widgetType = 'counterparty';
                     ctrl.blade.colLayout = 'double';
                     ctrl.blade.activeWidget = 'rating';
@@ -4205,7 +4219,11 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                         let findSpecificLocation = _.find(ctrl.blade.sellerRatingBladeData, function(obj) {
                             return obj.location;
                         });
+                        let findAllLocations = _.find(ctrl.blade.sellerRatingBladeData, function(obj) {
+                            return !obj.location;
+                        });
                         ctrl.blade.noSpecificLocation = !findSpecificLocation ? true : false;
+                        ctrl.blade.noAllLocations = !findAllLocations ? true : false;
                         ctrl.blade.widgetType = 'counterparty';
                         ctrl.blade.colLayout = 'double';
                         ctrl.blade.activeWidget = 'rating';
@@ -4353,10 +4371,12 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                             if (typeof $scope.tempGroupedLocation[vk].orderedSellers == 'undefined') {
                                 $scope.tempGroupedLocation[vk].orderedSellers = [];
                             }
-                            if (dv.counterpartyId == uosV.sellerCounterparty.id) {
-                                if (addedSellers.indexOf(uosV.randUniquePkg) == -1) {
-                                    $scope.tempGroupedLocation[vk].orderedSellers.push(uosV);
-                                    addedSellers.push(uosV.randUniquePkg);
+                            if (dv.locationId == vv.location.id) {
+                                if (dv.counterpartyId == uosV.sellerCounterparty.id) {
+                                    if (addedSellers.indexOf(uosV.randUniquePkg) == -1) {
+                                        $scope.tempGroupedLocation[vk].orderedSellers.push(uosV);
+                                        addedSellers.push(uosV.randUniquePkg);
+                                    }
                                 }
                             }
                         });

@@ -97,7 +97,7 @@
             </div>
         </div>
     </div>
-    <div class="col-sm-12 seller-counterparty-all-location" ng-if="$ctrl.blade.sellerRatingBladeData.length">
+    <div class="col-sm-12 seller-counterparty-all-location" ng-if="$ctrl.blade.sellerRatingBladeData.length" ng-class="$ctrl.blade.noAllLocations ? 'no-seller-rating' : '' ">
         <div class="portlet light">
         	<div class="portlet-title  portlet-title-no-border">
                 <div class="caption">

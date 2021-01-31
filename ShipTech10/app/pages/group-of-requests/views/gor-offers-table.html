@@ -601,7 +601,12 @@
                 <td style="max-width: 100px" ng-mouseleave="seller.viewEditRatingIcon = false"  ng-mouseover="seller.viewEditRatingIcon = true">
                     <div style="text-align: center; width: 100px; display: inline-flex;">
                         <div style="padding-left: 10px;width: 40px;"> 
-                            <span ng-class="seller.viewEditRatingIcon? 'rating-with-border' : '' ">{{sellerDetails.sellerRating}} </span>
+                            <span ng-class="seller.viewEditRatingIcon? 'rating-with-border' : '' ">
+                                <span class="hidden">
+                                    {{seller.rating = $ctrl.getSellerRatingForCounterpartyForSpecificLocation(location, seller.sellerCounterparty.id)}} 
+                                </span>
+                                {{seller.rating ? seller.rating : 'NA'}}
+                            </span>
                         </div>
                         <span>
                             <i style="color: #337AB7; font-size: 18px;  padding-left: 5px;" class="fa fa-star"></i>
