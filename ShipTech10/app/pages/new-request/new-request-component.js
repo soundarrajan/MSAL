@@ -765,10 +765,10 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             let hasClientSideCodeInjection = true;
             while(hasClientSideCodeInjection) {
                 removeValue = '';
-                if (value.split('<script>')) {
+                if (value && value.split('<script>')) {
                     newValue = value.split('<script>');
                 }
-                if (newValue[1] && newValue[1].split('</script>')) {
+                if (newValue && newValue[1] && newValue[1].split('</script>')) {
                     removeValue = '<script>' + newValue[1].split('</script>')[0] + '</script>';
                 }
                 value = value.replace(removeValue, '');

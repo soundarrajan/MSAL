@@ -1525,8 +1525,10 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
          */
         function getSellerOrder(counterparties) {
             let order = [];
-            for (let i = 0; i < counterparties.length; i++) {
-                order.push(counterparties[i].counterpartyId);
+            if (counterparties) {
+                for (let i = 0; i < counterparties.length; i++) {
+                    order.push(counterparties[i].counterpartyId);
+                }
             }
             return order;
         }
@@ -3499,10 +3501,10 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
             }
             while(hasClientSideCodeInjection) {
                 removeValue = '';
-                if (value.split('<script>')) {
+                if (value && value.split('<script>')) {
                     newValue = value.split('<script>');
                 }
-                if (newValue[1] && newValue[1].split('</script>')) {
+                if (newValue && newValue[1] && newValue[1].split('</script>')) {
                     removeValue = '<script>' + newValue[1].split('</script>')[0] + '</script>';
                 }
                 value = value.replace(removeValue, '');
