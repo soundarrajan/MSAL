@@ -45,19 +45,13 @@
 						                <div class="tools " style="padding-top: 11px !important;">
 						                    <a   class="expand" data-original-title="" title=""></a>
 						                </div>
-						                <div class="caption col-md-2">
+						                <div class="caption col-md-6">
 						                    <span class="caption-subject pull-left ">
-						                       	{{ value2.name }}
+						                       	{{ value2.name | decodeReadOnly}}
 						                    </span>
 						                </div>
-						                <div  class="header-seller-rating col-md-10">
-						                	<div class="col-md-4" style="position: relative; display: inline-flex;">
-						                	    <span  star-rating ng-model="value2.rating" style="margin-top: 3.5px !important;"></span>
-						                		<div>
-						                		 	 ( {{ $ctrl.formatNumber(value2.rating) }} Out of 5 )
-						                		</div>
-                                			</div>
-						                   	<div ng-if="value2.createdBy && value2.createdOn">
+						                <div  class="header-seller-rating col-md-6">
+						          			<div ng-if="value2.createdBy && value2.createdOn">
 						                   		Rated by
 		                                      	<span class="created-by-display-name"> 
 		                                      	{{ value2.createdBy.name}}
@@ -73,7 +67,7 @@
            								<span ng-init="!value2.details ? value2.details = [{'id':0}] : ''"></span>
                                         <div class="row seller-rating-param-line" ng-repeat="(key3, value3) in value2.details">
                                             <div class="col-md-6 seller-rating-question">
-                                                {{ key3 + 1 }}. {{ value3.name }}
+                                                {{ key3 + 1 }}. {{ value3.name | decodeReadOnly}}
                                             </div>
                                             <div class="col-md-6" style="width: 49%;">
                                                 <textarea
@@ -137,27 +131,21 @@
 						        <div class="tools " style="padding-top: 11px !important;">
 				                    <a   class="expand" data-original-title="" title=""></a>
 				                </div>
-				                <div class="caption col-md-2">
+				                <div class="caption col-md-6">
 				                    <span class="caption-subject pull-left ">
-				                       	{{ value2.name }}
+				                       	{{ value2.name | decodeReadOnly}}
 				                    </span>
-				                </div>
-				                <div  class="header-seller-rating col-md-10">
-				                	<div class="col-md-4" style="position: relative; display: inline-flex;">
-	                                    <span  star-rating ng-model="value2.rating" style="margin-top: 3.5px !important;"></span>
-				                		<div>
-				                		 	( {{ $ctrl.formatNumber(value2.rating) }} Out of 5 )
-				                		</div>
-                                	</div>
-				                   	<div ng-if="value2.createdBy && value2.createdOn">
+						        </div>
+				                <div  class="header-seller-rating col-md-6">
+				          			<div ng-if="value2.createdBy && value2.createdOn">
 				                   		Rated by
-	                                  	<span class="created-by-display-name"> 
-	                                  	{{ value2.createdBy.name}}
-	                                  	</span>
-	                                  	on
-	                                  	<span class="seller-rating-created-on"> 
-	                                    {{ $ctrl.formatDateTime(value2.createdOn) }}
-	                                  	</span>
+                                      	<span class="created-by-display-name"> 
+                                      	{{ value2.createdBy.name}}
+                                      	</span>
+                                      	on
+                                      	<span class="seller-rating-created-on"> 
+                                        {{ $ctrl.formatDateTime(value2.createdOn) }}
+                                      	</span>
 				                   	</div>
 				                </div>
 	           				</div>
@@ -165,7 +153,7 @@
 									<span ng-init="!value2.details ? value2.details = [{'id':0}] : ''"></span>
 	                            <div class="row seller-rating-param-line" ng-repeat="(key3, value3) in value2.details">
 	                                <div class="col-md-6 seller-rating-question">
-	                                    {{ key3 + 1 }}. {{ value3.name }}
+	                                    {{ key3 + 1 }}. {{ value3.name | decodeReadOnly}}
 	                                </div>
 	                                <div class="col-md-6" style="width: 49%;">
 	                                    <textarea
