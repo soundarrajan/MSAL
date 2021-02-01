@@ -53,7 +53,27 @@ APP_ADMIN.config([ '$stateProvider', '$urlRouterProvider', 'ADMIN_STATE', functi
         templateUrl: function($stateParams) {
             return `app-admin/views/lists/${ $stateParams.screen_id }.html`;
         }
-    }).state(ADMIN_STATE.EDIT, {
+    })
+    .state(ADMIN_STATE.SELLERRATING, {
+        params: {
+            path: [
+                {
+                    label: 'Admin',
+                    uisref: ADMIN_STATE.HOME
+                }, 
+                {
+                    label: 'Seller Rating',
+                    uisref: ADMIN_STATE.SELLERRATING
+                }],
+            title: 'Seller Rating'
+        },
+        url: '/admin/sellerrating/edit/',
+        requireADLogin: true,
+        templateUrl: function($stateParams) {
+            return `app-admin/views/edit/sellerrating.html`;
+        }
+    })
+    .state(ADMIN_STATE.EDIT, {
         params: {
             path: [ {
                 label: 'Admin',

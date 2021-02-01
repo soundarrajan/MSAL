@@ -21,12 +21,6 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
     if ($state.params.path) {
         vm.app_id = $state.params.path[0].uisref.split('.')[0];
     }
-
-    if (vm.screen_id == 'sellerrating') {
-        setTimeout(() => {
-            $state.params.title = 'Configure Seller Rating';
-        }, 1000);
-    }
     vm.treant = [ {
         Name: 'Company1',
         slug: 'company001',
@@ -174,7 +168,7 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
             },{
                 id: 3,
                 title: 'Seller Rating',
-                slug: 'sellerRating/edit/',
+                slug: 'sellerrating/edit/',
                 icon: 'fa fa-folder icon-lg',
                 nodes: 1
             },
