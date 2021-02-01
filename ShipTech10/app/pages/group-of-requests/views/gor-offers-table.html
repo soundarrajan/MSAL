@@ -605,7 +605,7 @@
                                 <span class="hidden">
                                     {{seller.rating = $ctrl.getSellerRatingForCounterpartyForSpecificLocation(location, seller.sellerCounterparty.id)}} 
                                 </span>
-                                {{seller.rating ? seller.rating : 'NA'}}
+                                {{seller.rating ? $ctrl.formatNumber(seller.rating) : 'NA'}}
                             </span>
                         </div>
                         <span>

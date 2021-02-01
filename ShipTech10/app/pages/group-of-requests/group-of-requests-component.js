@@ -4143,7 +4143,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
         ctrl.formatNumber = function(value) {
             if (value) {
                 if (value != Math.floor(value)) {
-                    return value.toFixed(1);
+                    return value.toString().split('.')[1].length == 1 ? value.toFixed(1) : value.toFixed(2);
                 } 
             }
             return !value ? 0 : value;
