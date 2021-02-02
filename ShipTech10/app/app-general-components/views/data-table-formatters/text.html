@@ -4,6 +4,7 @@
 		<span ng-if="CM.chg == true && changedFVal" class="hidden">{{grid.appScope.fVal().formValues = changedFVal}}</span>
 		<input ng-if="col.colDef.readOnly != true && !$eval(col.colDef.cellTemplateCondition)"
 			decode-input-format 
+			ng-disabled="$eval(col.colDef.Disabled)"
 			type="text"
 			class="form-control w100"
 			name="{{ col.colDef.displayName }}"

@@ -375,7 +375,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         getOrderListForRequest();
         function loadData(data) {
             ctrl.data = data.payload;
-
             $.each(ctrl.data.products, (k, v) => {
                 if ((!v.physicalSupplier || !_.get(v, 'physicalSupplier.id')) && _.get(v, 'status.name') !== 'Cancelled') {
                     ctrl.data.missingPhysicalSupplier = true;
@@ -3626,6 +3625,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 if(prod.status.name == 'Invoiced') {
                     return true;
                 } // invoiced
+                if (prod.status.name == 'Closed') {
+                    return true;
+                }
             }
 
             return false;

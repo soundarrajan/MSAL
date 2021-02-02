@@ -4061,8 +4061,12 @@ APP_MASTERS.controller('Controller_Master', [
             }
         };
 
-        $scope.setScope = function(notes) {
+        $scope.setScope = function(notes, status) {
             $scope.formValues.notes = notes;
+            if (status) {
+                $scope.formValues.status = {};
+                $scope.formValues.status = status;
+            }
         }
 
         $scope.$watch('formValues.notes', function(scope){

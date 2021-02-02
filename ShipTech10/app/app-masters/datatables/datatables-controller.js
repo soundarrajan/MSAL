@@ -59,7 +59,7 @@ APP_MASTERS.controller('Controller_Datatables', [
             yesNo: $templateCache.get('app-general-components/views/data-table-formatters/yesNo.html'),
             matchedUnmatched: $templateCache.get('app-general-components/views/data-table-formatters/matchedUnmatched.html'),
             customStatus: $templateCache.get('app-general-components/views/data-table-formatters/customStatus.html'),
-            addRow: '<a id="{{ grid.element[0].id }}_addRow_{{ rowRenderIndex }}" class="st-btn-icon addData" ng-click="grid.appScope.addData(grid.options.data)"><i class="fa fa-plus"></i></a>',
+            addRow: '<a ng-if="!$eval(col.colDef.Disabled)" id="{{ grid.element[0].id }}_addRow_{{ rowRenderIndex }}" class="st-btn-icon addData" ng-click="grid.appScope.addData(grid.options.data)"><i class="fa fa-plus"></i></a>',
             remRow: '<a id="{{ grid.element[0].id }}_remRow_{{ rowRenderIndex }}" class="st-btn-icon" ng-click="grid.appScope.remData(grid.options.data, row.entity, rowRenderIndex)"><i class="fa fa-minus"></i></a>',
             headerBlue: $templateCache.get('app-general-components/views/data-table-formatters/headerBlue.html'),
             headerWhite: $templateCache.get('app-general-components/views/data-table-formatters/headerWhite.html'),
@@ -1373,6 +1373,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                         cellTemplate: $scope.dataTableTemplates.customRemRow,
                         headerCellTemplate: $scope.dataTableTemplates.addRow,
                         cellTemplateCondition: 'detectCurrentUser(grid.appScope.fVal().formValues.notes, grid.appScope.rowIdx(row))',
+                        Disabled: 'grid.appScope.fVal().formValues.status.name == \'Closed\''
                     },
                     {
                         name: 'note',
@@ -1381,6 +1382,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                         ChangeAction : 'updateDateAndTime(grid.appScope.fVal().formValues.notes[grid.appScope.rowIdx(row)])',
                         BlurAction: 'autoSaveNotes()',
                         cellTemplateCondition: 'detectCurrentUser(grid.appScope.fVal().formValues.notes, grid.appScope.rowIdx(row))',
+                        Disabled: 'grid.appScope.fVal().formValues.status.name == \'Closed\'',
                         enableSorting: false
                         
                     },
