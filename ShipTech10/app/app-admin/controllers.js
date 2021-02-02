@@ -1156,6 +1156,7 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
                 }
             };
             $scope.formValues.applications[index].specificLocations.push(newObj);
+            $scope.CM.selectedLocation = $scope.formValues.applications[index].specificLocations.length - 1;
         } else {
             toastr.error(`${specificLocation.name } location is already added`);
         }
@@ -1250,5 +1251,14 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
             }
         }
         return false;
+    }
+
+    $scope.getFirstIndex = function(specificLocations) {
+        let findIndex = _.findIndex(specificLocations, function(obj) {
+            return !obj.isDeleted;
+        });
+        if (findIndex != -1) {
+            return findIndex;
+        }
     }
 } ]);

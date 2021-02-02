@@ -4646,3 +4646,59 @@ select option {
 .rating-with-border {
     border-bottom: 1px solid #777777;
 }
+
+.locations_list {
+    margin-bottom: 25px;
+}
+
+.locations_list a {
+    color: #a1a1a1;
+    height: auto;
+}
+
+.locations_list .arrow, .locations_list .red-card {
+    height: 130px;
+}
+
+.locations_list .col-xs-6, .locations_list .col-md-3 {
+    height: 130px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.locations_list .location_tab {
+    /*margin: 0 5px;*/
+    border-width: 1px;
+    box-shadow: -3px 4px 4px #BFBFBF;
+    border-style: solid;
+    border-color: #a1a1a1;
+    padding: 10px 5px;
+    height: 100%;
+}
+
+.locations_list .location_tab.selected {
+    color: #fff;
+    background-color: #337ab7;
+    transition: all 0.3s ease;
+    box-shadow: none;
+}
+
+.locations_list .location_tab.selected a {
+    color: #fff;
+}
+
+
+.specific-location-selected span {
+    border: 1px solid #337AB7 !important;
+    color: #337AB7 !important;
+    font-weight: 600 !important;
+}
+
+.specific-location-seller-tab {
+    float: left;
+    margin-bottom: 5px;
+}
+
+.tag-seller-rating-module {
+    margin-right: 10px !important;
+}

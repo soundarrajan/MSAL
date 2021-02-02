@@ -20,9 +20,9 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-8">
+            <div class="col-sm-8" style="padding-left: 0px !important;">
                 <div class="bootstrap-tagsinput"> 
-                    <span class="tag label border-default seller-rating-module" ng-repeat="(key, value) in formValues.applications" ng-if="!value.isDeleted">
+                    <span class="tag label border-default seller-rating-module tag-seller-rating-module" ng-repeat="(key, value) in formValues.applications" ng-if="!value.isDeleted">
                         <a ng-click="value.id ? deleteModule(value) : formValues.applications.splice(key,1)"><i class="fa fa-close font-red-thunderbird" ></i></a>
                         {{value.module.name}}
                     </span>
@@ -44,7 +44,7 @@
             </div>
             <div class="portlet-body">
                 <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" ng-repeat="(key,value) in formValues.applications" ng-if="!value.isDeleted">
+                    <li role="presentation" ng-repeat="(key,value) in formValues.applications" ng-if="!value.isDeleted" ng-click="CM.selectedLocation = getFirstIndex(formValues.applications[key].specificLocations)">
                         <a href="#{{ value.module.name == 'Counterparty Master' ? 'CounterpartyMaster' :  value.module.name }}" aria-controls="{{value.module.name == 'Counterparty Master' ? 'CounterpartyMaster' :  value.module.name }}" role="tab" data-toggle="tab">
                             {{ value.module.name }}
                         </a>
@@ -62,7 +62,7 @@
                                     </label>
                                     <div class="input-group form_input">
                                         <input ng-model="location" uib-typeahead="item as item.name for item in options.Location | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-limit="5" typeahead-append-to-body="true" typeahead-wait-ms="100" name="counterpartyTypeFilterItemsInput" autocomplete="off"  />
-                                        <span class="input-group-addon"  ng-click="addSellerRatingApplicabbleAppSpecificLocations(location, key1); location = null">
+                                        <span class="input-group-addon"  ng-click="addSellerRatingApplicabbleAppSpecificLocations(location, key1); location = null;">
                                             <a   class=" btn default">
                                                 <i class="fa fa-plus"></i>
                                             </a>
@@ -70,20 +70,28 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-8">
-                                <div class="bootstrap-tagsinput"> 
-                                    <span class="tag label border-default seller-rating-location"  ng-repeat="(key, value) in formValues.applications[key1].specificLocations" ng-if="!value.isDeleted">
-                                        <a ng-click="value.id ? deleteLocationFromAdminSellerRating(value): formValues.applications[key1].specificLocations.splice(key,1)"><i class="fa fa-close font-red-thunderbird" ></i></a>
-                                        {{value.location.name}}
-                                    </span>
-                                </div>                  
+                            <div class="col-sm-8">  
+                                <div class="row">
+                                    <div class="specific-location-seller-tab" ng-repeat="(key, value) in formValues.applications[key1].specificLocations" ng-if="!value.isDeleted">
+                                        <div ng-click="CM.selectedLocation = key;" ng-class="CM.selectedLocation == key ? 'specific-location-selected' : ''">
+                                            <div class="bootstrap-tagsinput"> 
+                                                <span class="tag label border-default seller-rating-location">
+                                                    <a ng-click="value.id ? deleteLocationFromAdminSellerRating(value): formValues.applications[key1].specificLocations.splice(key,1); CM.selectedLocation = getFirstIndex(formValues.applications[key1].specificLocations)"><i class="fa fa-close font-red-thunderbird" ></i></a>
+                                                    {{value.location.name}}
+                                                 </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>              
                         </div>
-                        <div ng-repeat="(key4,value4) in formValues.applications[key1].specificLocations">
-                            <div ng-if="!formValues.applications[key1].specificLocations[key4].isDeleted">
+                        <span ng-repeat="(key4, value4) in formValues.applications[key1].specificLocations" ng-show="CM.selectedLocation == key4">
+                            <div class="row margin-top-10">
+                                <div class="col-xs-12">
+                                <div ng-if="!formValues.applications[key1].specificLocations[key4].isDeleted">
                                 <span ng-init="!formValues.applications[key1].specificLocations[key4].categories ? formValues.applications[key1].specificLocations[key4].categories=[{'id':0}] : '' "></span>
-                                <div class="portlet light light-specific-location">
-                                        <div class="portlet-title ">
+                                <div class="portlet light light-specific-location seller-rating-portlet-body">
+                                        <div class="portlet-title " style="padding-top: 10px; padding-left: 10px;">
                                             <div class="tools ">
                                                 <a   class="collapse" data-original-title="" title=""></a>
                                             </div>
@@ -93,7 +101,7 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <div class="portlet-body">
+                                        <div class="portlet-body" style="padding: 10px;">
                                             <div class="col-md-push-8">
                                                 <div class="weightage-labels">
                                                     <div class="input-group pull-right form_input form_input_applications">
@@ -184,9 +192,10 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>                     
-                        </div>
+                                    </div>                                
+                                </div>
+                            </div>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -206,7 +215,7 @@
             </div>
             <div class="portlet-body">
                <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" ng-repeat="(key,value) in formValues.applications"  ng-if="!value.isDeleted">
+                    <li role="presentation" ng-repeat="(key,value) in formValues.applications"  ng-if="!value.isDeleted" >
                         <a href="#{{ value.module.name == 'Counterparty Master' ? 'CounterpartyMaster' :  value.module.name }}allLocations" aria-controls="{{ value.module.name == 'Counterparty Master' ? 'CounterpartyMaster' :  value.module.name  }}" role="tab" data-toggle="tab">
                             {{ value.module.name }}
                         </a>
