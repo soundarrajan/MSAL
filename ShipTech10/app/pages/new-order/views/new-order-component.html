@@ -33,12 +33,12 @@
                             <i class="glyphicon glyphicon-envelope" style="font-size: 18px;line-height: 15px;"></i>
                         </a>
                         <a class="btn btn-default"
-                           ng-class="{'disabled': $ctrl.buttonsDisabled || $ctrl.data.status.name == 'Cancelled'}"
+                           ng-class="{'disabled': $ctrl.buttonsDisabled || $ctrl.data.status.name == 'Cancelled' || $ctrl.data.status.name == 'Closed'}"
                            ng-click="$ctrl.saveOrder()"
                            ng-show="$ctrl.canSave($ctrl.screenActions)">
                             Save
                         </a>
-                        <a ng-if="!$ctrl.tenantSettings.shiptechLite" class="btn btn-default" ng-class="{'disabled': !$ctrl.data.id}"
+                        <a ng-if="!$ctrl.tenantSettings.shiptechLite" class="btn btn-default" ng-class="{'disabled': !$ctrl.data.id || $ctrl.data.status.name == 'Closed'}"
                            ng-href="#/reports/ordernegotiation/OrderId={{$ctrl.data.id}}"
                            ng-show="{{$ctrl.tenantSettings.defaultValues.isSSRSReports}}" target="blank">
                             Order Negotiation Report
@@ -48,7 +48,7 @@
                            ng-click="$ctrl.sendOrderCommand($ctrl.ORDER_COMMANDS.CONFIRM_TO_SELLER, $ctrl.data.id)"
                            ng-disabled="$ctrl.ConfirmToSellerDisabled = !($ctrl.data.id && $ctrl.confirmToSellerManual &&
                                       !$ctrl.data.buttonsDisabled && $ctrl.data.seller.name &&
-                                      ($ctrl.hasAction($ctrl.SCREEN_ACTIONS.CONFIRM) || $ctrl.data.status.name == 'Confirmed'))"
+                                      ($ctrl.hasAction($ctrl.SCREEN_ACTIONS.CONFIRM) || $ctrl.data.status.name == 'Confirmed')) "
                            ng-if="$ctrl.dtoHasAction($ctrl.SCREEN_ACTIONS.CONFIRMSELLEREMAIL)">
                             Confirm to Seller
                         </a>
@@ -86,7 +86,7 @@
                         </a>
                          <a class="btn btn-default"
                            ng-class="{'disabled font-dark': !$ctrl.data.id || $ctrl.buttonsDisabled || !$ctrl.hasAction($ctrl.SCREEN_ACTIONS.CLOSE)} "
-                           ng-click="$ctrl.closeOrder()">
+                           ng-click="$ctrl.closeOrder()" ng-show="$ctrl.hasAction($ctrl.SCREEN_ACTIONS.CLOSE)">
                             Close Order
                         </a>
                         <a class="btn btn-orange {{!$ctrl.data.id || $ctrl.buttonsDisabled || !$ctrl.hasAction($ctrl.SCREEN_ACTIONS.CONFIRM) ? '' : 'bg-yellow-gold-opacity font-white'}}"
@@ -310,7 +310,7 @@
                                         <span ng-if="$ctrl.procurementSettings.order.orderVerificationReq.name == 'Yes'" style="display: flex; cursor: pointer;">
                                             <span style="margin-right: 10px;">Verify</span>
                                             <label class="mt-checkbox" id="verifyCheckboxLabel" style="margin:0; padding-left: 46px;" >
-                                                <input type="checkbox" name="verifyCheckbox" id="verifyCheckboxInput" ng-change="$ctrl.verifyOrder()" ng-disabled="$ctrl.data.isVerifiedBool" ng-model="$ctrl.data.isVerifiedBool" />
+                                                <input type="checkbox" name="verifyCheckbox" id="verifyCheckboxInput" ng-change="$ctrl.verifyOrder()" ng-disabled="$ctrl.data.isVerifiedBool ||  $ctrl.data.status.id === $ctrl.STATUS['Closed'].id ||  $ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id" ng-model="$ctrl.data.isVerifiedBool" />
                                                 <span></span>
                                             </label>
                                         </span>
@@ -349,7 +349,7 @@
                                                                 <input class="typeahead form-control"
                                                                        id="id_{{ $ctrl.vesselDetailsFields.Vessel.name }}"
                                                                        name="{{ $ctrl.vesselDetailsFields.Vessel.name }}"
-                                                                       ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Stemmed'].id || $ctrl.data.status.id === $ctrl.STATUS['Delivered'].id || $ctrl.data.status.id === $ctrl.STATUS['PartiallyDelivered'].id || $ctrl.data.status.id === $ctrl.STATUS['PartiallyInvoiced'].id || $ctrl.data.status.id === $ctrl.STATUS['Invoiced'].id || $ctrl.data.status.id === $ctrl.STATUS['Approved'].id || $ctrl.data.status.id === $ctrl.STATUS['WaitingForApproval'].id || $ctrl.data.status.id === $ctrl.STATUS['Confirmed'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id"
+                                                                       ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Stemmed'].id || $ctrl.data.status.id === $ctrl.STATUS['Delivered'].id || $ctrl.data.status.id === $ctrl.STATUS['PartiallyDelivered'].id || $ctrl.data.status.id === $ctrl.STATUS['PartiallyInvoiced'].id || $ctrl.data.status.id === $ctrl.STATUS['Invoiced'].id || $ctrl.data.status.id === $ctrl.STATUS['Approved'].id || $ctrl.data.status.id === $ctrl.STATUS['WaitingForApproval'].id || $ctrl.data.status.id === $ctrl.STATUS['Confirmed'].id || $ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id"
                                                                        ng-model="$ctrl.data.vessel.name"
                                                                        required
                                                                        typeahead-append-to-body="true"
@@ -359,9 +359,9 @@
                                                                 <span class="input-group-addon ng-scope"
                                                                       ng-click="triggerModal('general', 'masters_vessellist', 'Vessel' , 'vessel');"
                                                                       ng-controller="Controller_Master as CM"
-                                                                      ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Stemmed'].id || $ctrl.data.status.id === $ctrl.STATUS['Delivered'].id || $ctrl.data.status.id === $ctrl.STATUS['PartiallyDelivered'].id || $ctrl.data.status.id === $ctrl.STATUS['PartiallyInvoiced'].id || $ctrl.data.status.id === $ctrl.STATUS['Invoiced'].id || $ctrl.data.status.id === $ctrl.STATUS['Approved'].id || $ctrl.data.status.id === $ctrl.STATUS['WaitingForApproval'].id || $ctrl.data.status.id === $ctrl.STATUS['Confirmed'].id">
+                                                                      ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Stemmed'].id || $ctrl.data.status.id === $ctrl.STATUS['Delivered'].id || $ctrl.data.status.id === $ctrl.STATUS['PartiallyDelivered'].id || $ctrl.data.status.id === $ctrl.STATUS['PartiallyInvoiced'].id || $ctrl.data.status.id === $ctrl.STATUS['Invoiced'].id || $ctrl.data.status.id === $ctrl.STATUS['Approved'].id || $ctrl.data.status.id === $ctrl.STATUS['WaitingForApproval'].id || $ctrl.data.status.id === $ctrl.STATUS['Confirmed'].id || $ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id">
                                                                     <a class=" btn default" href=""
-                                                                       ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Stemmed'].id || $ctrl.data.status.id === $ctrl.STATUS['Delivered'].id || $ctrl.data.status.id === $ctrl.STATUS['PartiallyDelivered'].id || $ctrl.data.status.id === $ctrl.STATUS['PartiallyInvoiced'].id || $ctrl.data.status.id === $ctrl.STATUS['Invoiced'].id || $ctrl.data.status.id === $ctrl.STATUS['Approved'].id || $ctrl.data.status.id === $ctrl.STATUS['WaitingForApproval'].id || $ctrl.data.status.id === $ctrl.STATUS['Confirmed'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id">
+                                                                       ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Stemmed'].id || $ctrl.data.status.id === $ctrl.STATUS['Delivered'].id || $ctrl.data.status.id === $ctrl.STATUS['PartiallyDelivered'].id || $ctrl.data.status.id === $ctrl.STATUS['PartiallyInvoiced'].id || $ctrl.data.status.id === $ctrl.STATUS['Invoiced'].id || $ctrl.data.status.id === $ctrl.STATUS['Approved'].id || $ctrl.data.status.id === $ctrl.STATUS['WaitingForApproval'].id || $ctrl.data.status.id === $ctrl.STATUS['Confirmed'].id || $ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id">
                                                                         <i class="fa fa-search"></i>
                                                                     </a>
                                                                 </span>
@@ -481,7 +481,7 @@
                                                             <input class="typeahead form-control"
                                                                    id="id_{{ $ctrl.sellerDetails.Trader.name }}"
                                                                    name="{{ $ctrl.sellerDetails.Trader.name }}"
-                                                                   ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Closed'].id" 
+                                                                   ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id" 
                                                                    ng-model="$ctrl.data.trader.name"
                                                                    typeahead-append-to-body="true"
                                                                    typeahead-editable="false"
@@ -678,7 +678,7 @@
                                                                            id="orderDate"
                                                                            name="orderDate" new-date-picker
                                                                            ng-model="$ctrl.data.orderDate"
-                                                                           ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Closed'].id"
+                                                                           ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id"
                                                                            picker-type="date">
                                                             </div>
                                                         </div>
@@ -1501,7 +1501,7 @@
                                                format="number:{{ $ctrl.numberPrecision.quantityPrecision }}"
                                                id="product_RobOnArrival_{{ $index }}"
                                                name="RobOnArrival"
-                                               ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields || product.status.name == 'Closed'"
+                                               ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields || product.status.name == 'Closed' ||  product.status.name == 'Cancelled'"
                                                ng-model="$ctrl.data.products[key].robOnArrival"
                                                type="text">
                                         <div class="input-group-btn"
@@ -1509,7 +1509,7 @@
                                             <select class="form-control bs-select pull-right"
                                                     data-original-title="{{ product.robOnArrivalUom.name }}"
                                                     id="product_robOnArrivalUom_{{ $index }}"
-                                                    ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields || product.status.name == 'Closed'"
+                                                    ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields || product.status.name == 'Closed'|| product.status.name == 'Cancelled'"
                                                     ng-model="$ctrl.data.products[key].robOnArrivalUom"
                                                     ng-options="uomItem as uomItem.name for uomItem in $ctrl.lists.Uom track by uomItem.id"
                                                     ng-required="product.product !== null && !$ctrl.requestTenantSettings.isPrerequestEnabled"
@@ -1524,7 +1524,7 @@
                                                format="number:{{ $ctrl.numberPrecision.quantityPrecision }}"
                                                id="product_roundVoyageConsumption_{{ $index }}"
                                                name="roundVoyageConsumption"
-                                               ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields || product.status.name == 'Closed'"
+                                               ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields || product.status.name == 'Closed'|| product.status.name == 'Cancelled'"
                                                ng-model="product.roundVoyageConsumption"
                                                type="text">
                                         <div class="input-group-btn"
@@ -1532,7 +1532,7 @@
                                             <select class="form-control bs-select pull-right"
                                                     data-original-title="{{ product.roundVoyageConsumptionUom.name }}"
                                                     id="product_roundVoyageConsumptionUom_{{ $index }}"
-                                                    ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields || product.status.name == 'Closed'"
+                                                    ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields || product.status.name == 'Closed' || product.status.name == 'Cancelled'"
                                                     ng-model="product.roundVoyageConsumptionUom"
                                                     ng-options="uomItem as uomItem.name for uomItem in $ctrl.lists.Uom track by uomItem.id"
                                                     ng-required="product.product !== null && !$ctrl.requestTenantSettings.isPrerequestEnabled"

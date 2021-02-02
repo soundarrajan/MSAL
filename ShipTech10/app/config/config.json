@@ -149,6 +149,7 @@
     "noQuoteReason": "noQuoteReason"
   },
   "SCREEN_ACTIONS": {
+    "CLOSE": "Close",
     "COPY": "Copy",
     "CANCEL": "Cancel",
     "CREATERFQ": "CreateRfq",

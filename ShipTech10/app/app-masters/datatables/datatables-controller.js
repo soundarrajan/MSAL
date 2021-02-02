@@ -1373,7 +1373,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                         cellTemplate: $scope.dataTableTemplates.customRemRow,
                         headerCellTemplate: $scope.dataTableTemplates.addRow,
                         cellTemplateCondition: 'detectCurrentUser(grid.appScope.fVal().formValues.notes, grid.appScope.rowIdx(row))',
-                        Disabled: 'grid.appScope.fVal().formValues.status.name == \'Closed\''
+                        Disabled: 'grid.appScope.fVal().formValues.status.name == \'Closed\' || grid.appScope.fVal().formValues.status.name == \'Cancelled\''
                     },
                     {
                         name: 'note',
@@ -1382,7 +1382,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                         ChangeAction : 'updateDateAndTime(grid.appScope.fVal().formValues.notes[grid.appScope.rowIdx(row)])',
                         BlurAction: 'autoSaveNotes()',
                         cellTemplateCondition: 'detectCurrentUser(grid.appScope.fVal().formValues.notes, grid.appScope.rowIdx(row))',
-                        Disabled: 'grid.appScope.fVal().formValues.status.name == \'Closed\'',
+                        Disabled: 'grid.appScope.fVal().formValues.status.name == \'Closed\' || grid.appScope.fVal().formValues.status.name == \'Cancelled\'',
                         enableSorting: false
                         
                     },
