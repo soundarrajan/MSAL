@@ -86,7 +86,7 @@
                         </a>
                          <a class="btn btn-default"
                            ng-class="{'disabled font-dark': !$ctrl.data.id || $ctrl.buttonsDisabled || !$ctrl.hasAction($ctrl.SCREEN_ACTIONS.CLOSE)} "
-                           ng-click="$ctrl.closeOrder()" ng-show="$ctrl.hasAction($ctrl.SCREEN_ACTIONS.CLOSE)">
+                           ng-click="$ctrl.closeOrder()">
                             Close Order
                         </a>
                         <a class="btn btn-orange {{!$ctrl.data.id || $ctrl.buttonsDisabled || !$ctrl.hasAction($ctrl.SCREEN_ACTIONS.CONFIRM) ? '' : 'bg-yellow-gold-opacity font-white'}}"
