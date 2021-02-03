@@ -21,7 +21,7 @@ angular.module('shiptech.pages')
             }
             $http.post(`${API.BASE_URL_DATA_ADMIN}/api/admin/tenantConfiguration/get`, payload).then((response) => {
                 if (response.data != 'null') {
-                    ctrl.showReport =  response.data.reportConfiguration.tabConfigurations[0].showReport; 
+                    ctrl.showReport = (response.data.reportConfiguration && response.data.reportConfiguration.tabConfigurations.length)  ? response.data.reportConfiguration.tabConfigurations[0].showReport : false; 
                     if (ctrl.showReport) {
                         let payload1 = {
                             Payload: {}

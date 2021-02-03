@@ -20,7 +20,7 @@ angular.module('shiptech').controller('GroupOfRequestsMenuController', [ 'API', 
             }
             $http.post(`${API.BASE_URL_DATA_ADMIN}/api/admin/tenantConfiguration/get`, payload).then((response) => {
                 if (response.data != 'null') {
-                    $scope.showReport =  response.data.reportConfiguration.tabConfigurations[1].showReport;
+                    $scope.showReport =  (response.data.reportConfiguration && response.data.reportConfiguration.tabConfigurations.length)  ? response.data.reportConfiguration.tabConfigurations[1].showReport : false;
                     if ($scope.showReport) {
                         let payload1 = {
                             Payload: {}

@@ -27,7 +27,7 @@ angular.module('shiptech.pages').controller('ViewGroupOfRequestsReportController
         }
         $http.post(`${API.BASE_URL_DATA_ADMIN}/api/admin/tenantConfiguration/get`, payload).then((response) => {
             if (response.data != 'null') {
-                ctrl.showReport =  response.data.reportConfiguration.tabConfigurations[1].showReport;
+                ctrl.showReport =  (response.data.reportConfiguration && response.data.reportConfiguration.tabConfigurations.length)  ? response.data.reportConfiguration.tabConfigurations[1].showReport : false;
                 let tenantSettings = response.data;
                 if (ctrl.showReport) {
                     let payload1 = {

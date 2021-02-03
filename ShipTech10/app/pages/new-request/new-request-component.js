@@ -96,7 +96,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             ctrl.numberPrecision = value.general.defaultValues;
             ctrl.requestTenantSettings = value.procurement.request;
         	ctrl.emailSettings = value.email;
-            ctrl.showReport = value.report.tabConfigurations[0].showReport;
+            ctrl.showReport = value.report.tabConfigurations.length ? value.report.tabConfigurations[0].showReport : false;
         });
 
         // tenantService.tenantSettings.then(function(settings) {
