@@ -113,7 +113,7 @@ angular.module('shiptech.components')
                         if (value == value2.voyageDetail.id) {
                             if (value2.voyageDetail.request) {
                                 if (value2.voyageDetail.request.id) {
-                                    if (!value2.voyageDetail.request.requestDetail.orderId || typeof value2.voyageDetail.request.requestDetail.orderId == 'undefined') {
+                                    if (!value2.voyageDetail.request.requestDetail.orderId || typeof value2.voyageDetail.request.requestDetail.orderId == 'undefined') {                                                                        
                                         groupedVoyagesAllRequestProductsAreStemmed[value] = false;
                                     }
                                 }
@@ -135,7 +135,8 @@ angular.module('shiptech.components')
                 _.forEach(groupedVoyagesRequest, (value, key) => {
                     groupedVoyagesRequest[key] = _.groupBy(groupedVoyagesRequest[key], (item) => {
                         if (item.voyageDetail.request) {
-                            if (item.voyageDetail.request.id) {
+                            if ((item.voyageDetail.request.id) && (!item.voyageDetail.request.requestDetail.orderId)) {
+                            //if ((item.voyageDetail.request.id)) {
                                 return item.voyageDetail.request.id;
                             }
                         }
