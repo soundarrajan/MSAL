@@ -4092,7 +4092,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
             ctrl.blade.counterpartyActiveSeller = seller;
             ctrl.blade.counterpartyActiveLocation = theLocation;
             payload = { 
-                'locationId': theLocation[0].location.id,
+                'locationId': theLocation[0] ? theLocation[0].location.id : theLocation.location.id,
                 'counterpartyId': counterpartyId
             };
             Factory_Master.getSellerRatingForNegociation(payload, (callback) => {
