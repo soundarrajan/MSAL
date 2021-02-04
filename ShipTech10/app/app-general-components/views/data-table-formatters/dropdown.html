@@ -30,7 +30,7 @@
             data-container="body"
             ng-class="'colt' + col.uid"
             ng-change="grid.appScope.fVal().triggerChangeFields(col.colDef.name, rowRenderIndex); $eval(col.colDef.cellObject.changeEvent)"
-            ng-options="item as item.name for item in grid.appScope.fVal().options[col.colDef.cellObject.Name] track by item.id | unique:'id'"
+            ng-options="item as item.name | decodeReadOnly for item in grid.appScope.fVal().options[col.colDef.cellObject.Name]  track by item.id | unique:'id'"
             ng-model="MODEL_COL_FIELD"
             ng-required="$eval(col.colDef.cellObject.Required) || $eval(col.colDef.cellObject.required) > 0 || col.colDef.cellObject.required == true ? true : false"
             ng-disabled="$eval(col.colDef.cellObject.Disabled)">

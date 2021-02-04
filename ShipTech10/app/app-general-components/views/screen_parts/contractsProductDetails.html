@@ -16,15 +16,15 @@
                                 PRODUCT {{ $index + 1 }}
                             </div>
                             <div>
-                                {{ value.product.name ? value.product.name : "New Product" }}
+                                {{ value.product.name ? (value.product.name |  decodeReadOnly) : "New Product" }}
                             </div>
                             <div>
                                 Qty: {{ value.summary.contractedQuantity ? (value.summary.contractedQuantity | number:tenantSetting.defaultValues.quantityPrecision)
-                                : "" }} {{value.summary.uom}}
+                                : "" }} {{(value.summary.uom  | decodeReadOnly)}}
                             </div>
                             <div>
                                 Pricing: {{ value.fixedPrice ? (value.price | number:tenantSetting.defaultValues.pricePrecision) : "Formula" }} {{ value.fixedPrice
-                                ? value.currency.code : "" }}
+                                ? (value.currency.code | decodeReadOnly) : "" }}
                             </div>
                         </div>
                         <span class="remove-product" ng-click="formValues.products[key].id == 0 ? formValues.products.splice(key, 1) : formValues.products[key].isDeleted = true">
@@ -86,7 +86,7 @@
                                             <input ng-model="formValues.products[$index].conversionFactors">
                                         </span>
                                         <div class="input-group form_input" tooltip tooltiptrigger="hover" data-original-title="{{ getProductTooltipByProductId(formValues.products[$index].product.id) }}">
-                                            <input ng-model="formValues.products[$index].product" uib-typeahead="item as item.name for item in options.Product | typeaheadCustomFilter:$viewValue:'name' "
+                                            <input  decode-input-format ng-model="formValues.products[$index].product" uib-typeahead="item as item.name for item in options.Product | typeaheadCustomFilter:$viewValue:'name' "
                                                 class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
                                                 typeahead-wait-ms="100"  typeahead-on-select="addProductToConversion($index, false ,true)" id="Product_{{ index_0 + 1 }}_Main_Product"
                                                 required="true" name="Product_{{ index_0 + 1 }}_Main_Product" autocomplete="off"
@@ -107,7 +107,7 @@
                                         {{ CM.app_id + '.ALLOWED_PRODUCTS' | translate }}
                                     </label>
                                     <div class="input-group pull-left form_input" ng-init='CM.getOptions({"Name": "Product", "Type": "simpleLookup", "masterSource": "Product"})'>
-                                        <input ng-model="allowedProduct_[$index]" id="allowedProduct_{{ $index }}" name="Product_{{ index_0 + 1 }}_Allowed_Products"
+                                        <input decode-input-format ng-model="allowedProduct_[$index]" id="allowedProduct_{{ $index }}" name="Product_{{ index_0 + 1 }}_Allowed_Products"
                                             uib-typeahead="item as item.name for item in options.Product | typeaheadCustomFilter:$viewValue:'name' "
                                             class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
                                             typeahead-wait-ms="300" id="{{ field.Unique_ID }}" data-uniqueid="{{ field.Unique_ID }}"
@@ -120,7 +120,7 @@
                                         </span>
                                     </div>
                                     <div class="multi_lookup_tags tagsForallowedProduct{{ $index }}">
-                                        <input type="text" name="Product_{{ index_0 + 1 }}_Allowed_Products" class="input-as-label form-control typeahead object_tagsinput_allowedProduct_{{ $index }}"
+                                        <input decode-input-format type="text" name="Product_{{ index_0 + 1 }}_Allowed_Products" class="input-as-label form-control typeahead object_tagsinput_allowedProduct_{{ $index }}"
                                             ng-model="formValues.products[$index].allowedProductsTemp.name" ng-change="addProductToConversion($index, allowedProduct_[$index], false); allowedProduct_[$index] = null;" 
                                         />
                                     </div>
@@ -135,7 +135,7 @@
                                         </label>
                                         <div class="input-group form_input">
                                         	<span >{{CM.addDeletedSpecGroupInDropdownOptions(CM.productSpecGroup[formValues.products[$index].product.id], formValues.products[$index].specGroup)}}</span>
-                                            <select class="form-control" ng-model="formValues.products[$index].specGroup" ng-options="item as item.name for item in CM.productSpecGroup[formValues.products[$index].product.id] track by item.id">
+                                            <select class="form-control" ng-model="formValues.products[$index].specGroup" ng-options="item as item.name | decodeReadOnly for item in CM.productSpecGroup[formValues.products[$index].product.id] track by item.id">
                                                 <option value=""></option>
                                             </select>
                                             <span class="input-group-addon" ng-click="modalSpecGroupEdit(formValues.products[$index], null,  'contract')" ng-init="modal = false">
@@ -167,7 +167,7 @@
                                             </span>
                                         </label>
                                         <div class="input-group form_input">
-                                            <input ng-model="formValues.products[$index].location" uib-typeahead="item as item.name for item in options.Location | typeaheadCustomFilter:$viewValue:'name' "
+                                            <input decode-input-format ng-model="formValues.products[$index].location" uib-typeahead="item as item.name for item in options.Location | typeaheadCustomFilter:$viewValue:'name' "
                                                 class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
                                                 typeahead-wait-ms="100" id="Product_{{ index_0 + 1 }}_Location" required="true"
                                                 name="Product_{{ index_0 + 1 }}_Location" autocomplete="off" typeahead-on-select="getAdditionalCosts(formValues.products[$index].location.id, $index)"
@@ -188,7 +188,7 @@
                                     </label>
                                     <div class="input-group pull-left form_input" ng-init='CM.getOptions({"Name": "Location", "Type": "simpleLookup", "masterSource": "Location"})'>
 
-                                        <input ng-model="allowedLocations_[$index]" id="allowedLocation_{{ $index }}" name="Product_{{ index_0 + 1 }}_Allowed_Locations"
+                                        <input decode-input-format ng-model="allowedLocations_[$index]" id="allowedLocation_{{ $index }}" name="Product_{{ index_0 + 1 }}_Allowed_Locations"
                                             uib-typeahead="item as item.name for item in options.Location | typeaheadCustomFilter:$viewValue:'name' "
                                             class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
                                             typeahead-wait-ms="300" id="{{ field.Unique_ID }}" data-uniqueid="{{ field.Unique_ID }}"
@@ -202,7 +202,7 @@
                                         </span>
                                     </div>
                                     <div class="multi_lookup_tags tagsForallowedLocations{{ $index }}">
-                                        <input type="text" name="Product_{{ index_0 + 1 }}_Allowed_Locations" class="input-as-label form-control typeahead object_tagsinput_allowedLocation_{{ $index }}"
+                                        <input decode-input-format type="text" name="Product_{{ index_0 + 1 }}_Allowed_Locations" class="input-as-label form-control typeahead object_tagsinput_allowedLocation_{{ $index }}"
                                             ng-model="formValues.products[$index].allowedLocations.name" ng-change="allowedLocations_[$index] = null"
                                         />
                                     </div>
@@ -216,7 +216,7 @@
                                         </label>
                                         <div class="input-group pull-left form_input" ng-init='CM.getOptions({"Name": "Supplier", "Type": "simpleLookup", "masterSource": "Supplier"})'>
 
-                                            <input ng-model="allowedSuppliers_[$index]" name="Product_{{ index_0 + 1 }}_Supplier" id="Supplier_{{ $index }}" uib-typeahead="item as item.name for item in options.Supplier | typeaheadCustomFilter:$viewValue:'name' "
+                                            <input decode-input-format ng-model="allowedSuppliers_[$index]" name="Product_{{ index_0 + 1 }}_Supplier" id="Supplier_{{ $index }}" uib-typeahead="item as item.name for item in options.Supplier | typeaheadCustomFilter:$viewValue:'name' "
                                                 class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
                                                 typeahead-wait-ms="300" id="{{ field.Unique_ID }}" data-uniqueid="{{ field.Unique_ID }}"
                                                 data-value="{{ allowedSuppliers_[$index]}}" autocomplete="off" ng-init="CM.initTypeahead('Supplier', formValues.products[$index].product);CM.multiTagsContractProducts(formValues.products[$index].physicalSuppliers, $index, 'Supplier_'+$index, 'physicalSuppliers')"
@@ -265,7 +265,7 @@
                                     </label>
                                     <div class="input-group pull-left form_input" ng-init='CM.getOptions({"Name": "Barge", "Type": "simpleLookup", "masterSource": "Barge"})'>
 
-                                        <input ng-model="barges_[$index]" id="barges_{{ $index }}" name="Product_{{ index_0 + 1 }}_Barges" uib-typeahead="item as item.name for item in options.Barge | typeaheadCustomFilter:$viewValue:'name' "
+                                        <input decode-input-format ng-model="barges_[$index]" id="barges_{{ $index }}" name="Product_{{ index_0 + 1 }}_Barges" uib-typeahead="item as item.name for item in options.Barge | typeaheadCustomFilter:$viewValue:'name' "
                                             class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
                                             typeahead-wait-ms="300" id="{{ field.Unique_ID }}" data-uniqueid="{{ field.Unique_ID }}"
                                             data-value="{{ barges_[$index]}}" autocomplete="off" ng-init="CM.initTypeahead('Barge', formValues.products[$index].product);CM.multiTagsContractProducts(formValues.products[$index].barges, $index, 'barges_'+$index, 'barges')"
@@ -278,7 +278,7 @@
                                         </span>
                                     </div>
                                     <div class="multi_lookup_tags tagsForbarges{{ $index }}">
-                                        <input type="text" name="Product_{{ index_0 + 1 }}_Barges" class="input-as-label form-control typeahead object_tagsinput_barges_{{ $index }}"
+                                        <input decode-input-format type="text" name="Product_{{ index_0 + 1 }}_Barges" class="input-as-label form-control typeahead object_tagsinput_barges_{{ $index }}"
                                             ng-model="formValues.products[$index].barges.name" ng-change="barges_[$index] = null"
                                         />
                                     </div>
@@ -337,7 +337,7 @@
                                                 <span class="input-group-addon uom_group pseudoSelect">
                                                     <select class="bs-select" name="Product_{{ index_0 + 1 }}_Price_Currency" ng-required="formValues.products[index_0].fixedPrice"
                                                         data-width="fit" id="" ng-model="formValues.products[$index].currency"
-                                                        ng-options="item as item.code for item in options.Currency track by item.id">
+                                                        ng-options="item as item.code for item in options.Currency | decodeReadOnly track by item.id">
                                                         <option></option>
                                                     </select>
                                                 </span>
@@ -348,7 +348,7 @@
                                                 <span class="input-group-addon uom_group pseudoSelect">
                                                     <select class="bs-select" name="Product_{{ index_0 + 1 }}_MTM_Price_UOM" ng-required="formValues.products[index_0].fixedPrice"
                                                         data-width="fit" id="" ng-model="formValues.products[$index].priceUom"
-                                                        ng-options="item as item.name for item in vm.listsCache.Uom track by item.id">
+                                                        ng-options="item as item.name for item in vm.listsCache.Uom | decodeReadOnly track by item.id">
                                                         <option></option>
                                                     </select>
                                                 </span>                                                      
@@ -365,7 +365,7 @@
                                                 </a>
                                             </label>
                                             <div class="input-group form_input">
-                                                <input uib-typeahead="item as item.name for item in contractFormulaList | typeaheadCustomFilter:$viewValue:'name' " class="form-control"
+                                                <input  decode-input-format uib-typeahead="item as item.name for item in contractFormulaList | typeaheadCustomFilter:$viewValue:'name' " class="form-control"
                                                     typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
                                                     typeahead-wait-ms="100" id="priceFormula{{ $index }}" name="Product_{{ index_0 + 1 }}_Price_Formula"
                                                     ng-model="formValues.products[$index].formula" autocomplete="off" ng-disabled="formValues.status.name == 'Cancelled' || formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered' "
@@ -407,7 +407,7 @@
                                                 <span class="input-group-addon uom_group pseudoSelect">
                                                     <select class="bs-select" name="Product_{{ index_0 + 1 }}_MTM_Price_Currency" ng-required="formValues.products[index_0].mtmFixed"
                                                         data-width="fit" id="" ng-model="formValues.products[$index].currency"
-                                                        ng-options="item as item.code for item in options.Currency track by item.id">
+                                                        ng-options="item as item.code for item in options.Currency | decodeReadOnly track by item.id">
                                                         <option></option>
                                                     </select>
                                                 </span>
@@ -418,7 +418,7 @@
                                                 <span class="input-group-addon uom_group pseudoSelect">
                                                     <select class="bs-select" name="Product_{{ index_0 + 1 }}_MTM_Price_UOM" ng-required="formValues.products[index_0].mtmFixed"
                                                         data-width="fit" id="" ng-model="formValues.products[$index].mtmPriceUom"
-                                                        ng-options="item as item.name for item in vm.listsCache.Uom track by item.id">
+                                                        ng-options="item as item.name for item in vm.listsCache.Uom | decodeReadOnly track by item.id">
                                                         <option></option>
                                                     </select>
                                                 </span>                                                    
@@ -437,7 +437,7 @@
                                                 </a>
                                             </label>
                                             <div class="input-group form_input" >
-                                                <input uib-typeahead="item as item.name for item in contractFormulaList | typeaheadCustomFilter:$viewValue:'name' " class="form-control"
+                                                <input decode-input-format uib-typeahead="item as item.name for item in contractFormulaList | typeaheadCustomFilter:$viewValue:'name' " class="form-control"
                                                     typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true"
                                                     typeahead-wait-ms="100" id="MTMpriceFormula{{ $index }}" name="Product_{{ index_0 + 1 }}_MTM_Price_Formula"
                                                     ng-model="formValues.products[$index].mtmFormula" autocomplete="off" ng-disabled="formValues.status.name == 'Cancelled' || formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered' "
@@ -473,7 +473,7 @@
                                             <div class="form_input form_input_comment" ng-class="!field.Label ? 'no-label' : ''">
                                                 <span>
                                                     <span>
-                                                        <textarea class="form-control" rows="2" id="priceComments" ng-model="formValues.products[$index].comments"></textarea>
+                                                        <textarea decode-input-format class="form-control" rows="2" id="priceComments" ng-model="formValues.products[$index].comments"></textarea>
                                                     </span>
                                                 </span>
                                             </div>

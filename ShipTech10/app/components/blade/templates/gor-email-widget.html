@@ -77,17 +77,17 @@
                                 </td>
                                 <td>
                                     <a ng-click="$cntrl.previewRFQ(rfq)">
-                                        {{ rfq.rfqName }}
+                                        {{ rfq.rfqName | decodeReadOnly }}
                                     </a>
                                 </td>
                                 <td>
                                     <a ui-sref="default.edit-request({requestId: rfq.requestId})">
-                                        {{ rfq.requestName }}
+                                        {{ rfq.requestName | decodeReadOnly }}
                                     </a>
                                 </td>
                                 <td ng-controller="Controller_Master as CM">
                                     <label class="label label-sm" style="background: {{ CM.getColorCodeFromLabels(rfq.rfqStatus) }}" ng-if="rfq.rfqStatus.name">
-                                        {{ rfq.rfqStatus.name }}
+                                        {{ rfq.rfqStatus.name | decodeReadOnly }}
                                     </label>
                                 </td>
                                 <td>
@@ -97,13 +97,13 @@
                                     {{ rfq.quoteByDate | stDateFormat }}
                                 </td>
                                 <td>
-                                    {{ rfq.sellerName }}
+                                    {{ rfq.sellerName | decodeReadOnly }}
                                 </td>
                                 <td>
-                                    {{ rfq.locationName }}
+                                    {{ rfq.locationName | decodeReadOnly }}
                                 </td>
                                 <td>
-                                    {{ rfq.productName }}
+                                    {{ rfq.productName | decodeReadOnly }}
                                 </td>
                                 <td>
                                     {{ rfq.minQuantity | number: $cntrl.numberPrecision.quantityPrecision }}

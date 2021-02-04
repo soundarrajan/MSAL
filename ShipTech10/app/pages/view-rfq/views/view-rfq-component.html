@@ -23,20 +23,20 @@
                                 <span></span>
                             </label>
                         </td>
-                        <td><a ng-click="$ctrl.previewRFQ(rfq)">{{rfq.rfqName}}</a></td>
-                        <td><a ui-sref="default.edit-request({requestId: rfq.requestId})">{{rfq.requestName}}</a></td>
+                        <td><a ng-click="$ctrl.previewRFQ(rfq)">{{rfq.rfqName | decodeReadOnly }}</a></td>
+                        <td><a ui-sref="default.edit-request({requestId: rfq.requestId})">{{rfq.requestName | decodeReadOnly }}</a></td>
                         <td style="vertical-align: middle;">
-                            <label class="label label-sm" style="background: {{ $ctrl.getColorCodeFromLabels(rfq.rfqStatus) }}">{{rfq.rfqStatus.displayName}}</label>
+                            <label class="label label-sm" style="background: {{ $ctrl.getColorCodeFromLabels(rfq.rfqStatus) }}">{{rfq.rfqStatus.displayName | decodeReadOnly }}</label>
                         </td>
                         <td>{{rfq.rfqDate | utcToLocal | stDateFormat}}</td>
                         <td>{{rfq.quoteByDate | stDateFormat}}</td>
-                        <td>{{rfq.sellerName}}</td>
-                        <td>{{rfq.locationName}}</td>
-                        <td>{{rfq.productName}}</td>
+                        <td>{{rfq.sellerName | decodeReadOnly }}</td>
+                        <td>{{rfq.locationName | decodeReadOnly }}</td>
+                        <td>{{rfq.productName | decodeReadOnly }}</td>
                         <td>{{rfq.minQuantity | number: $ctrl.numberPrecision.quantityPrecision}}</td>
                         <td>{{rfq.maxQuantity | number: $ctrl.numberPrecision.quantityPrecision}}</td>
                         <td style="vertical-align: middle;">
-                            <label class="label label-sm" style="background: {{ $ctrl.getColorCodeFromLabels(rfq.productStatus) }}">{{rfq.productStatus.displayName}}</label>
+                            <label class="label label-sm" style="background: {{ $ctrl.getColorCodeFromLabels(rfq.productStatus) }}">{{rfq.productStatus.displayName | decodeReadOnly }}</label>
                         </td>
                     </tr>
                 </tbody>

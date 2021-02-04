@@ -141,7 +141,7 @@
                             </label>
                             <div class="form-group-sm00">
                                 <div class="input-group col-md-7" >
-                                    <input name="{{ $ctrl.vesselDetailsFields.Vessel.name }}" id="id_{{ $ctrl.vesselDetailsFields.Vessel.name }}" uib-typeahead="vessel as vessel.name for vessel in options.Vessel | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.selectVessel($item.id); CM.getOptions({'Name': 'BunkerablePort','masterSource': 'masters_locations', 'filters': $ctrl.request.vesselDetails.vessel})" typeahead-editable="false" class="typeahead form-control" ng-model="$ctrl.request.vesselDetails.vessel.name" required  ng-disabled="$ctrl.request.id || $ctrl.disableAllFields">
+                                    <input decode-input-format name="{{ $ctrl.vesselDetailsFields.Vessel.name }}" id="id_{{ $ctrl.vesselDetailsFields.Vessel.name }}" uib-typeahead="vessel as vessel.name  for vessel in options.Vessel | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.selectVessel($item.id); CM.getOptions({'Name': 'BunkerablePort','masterSource': 'masters_locations', 'filters': $ctrl.request.vesselDetails.vessel})" typeahead-editable="false" class="typeahead form-control" ng-model="$ctrl.request.vesselDetails.vessel.name" required  ng-disabled="$ctrl.request.id || $ctrl.disableAllFields">
                                     <span class="input-group-addon" ng-click="triggerModal('general', 'masters_vessellist', $ctrl.vesselDetailsFields.Vessel.caption | translate, '$ctrl.request.vesselDetails.vessel','','',$ctrl.vesselDetailsFields.Vessel.name)"  ng-class="{'disabled' : ($ctrl.isReadonlyForm || $ctrl.request.id)}" ng-disabled="$ctrl.request.id || $ctrl.disableAllFields">
                                         <i class="fa fa-search"></i>
 
@@ -162,7 +162,7 @@
                             <div class="form-group-sm00">
                                 <span ng-init="$ctrl.options.VesselWithImo = options.VesselWithImo" ng-if="$ctrl.options.VesselWithImo"></span>
                                 <div class="input-group col-md-7">
-                                    <input ng-disabled="$ctrl.requestId ? true : false || $ctrl.disableAllFields" name="{{ $ctrl.vesselDetailsFields.VesselImoNo.name }}" id="id_{{ $ctrl.vesselDetailsFields.VesselImoNo.name }}" placeholder="{{ $ctrl.vesselDetailsFields.VesselImoNo.placeholder }}" uib-typeahead="vesselimo as vesselimo.name for vesselimo in options.VesselWithImo | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.selectVessel($item.id)" typeahead-editable="false" class="typeahead form-control" ng-model="$ctrl.request.vesselDetails.vesselImoNo" required >
+                                    <input  decode-input-format ng-disabled="$ctrl.requestId ? true : false || $ctrl.disableAllFields" name="{{ $ctrl.vesselDetailsFields.VesselImoNo.name }}" id="id_{{ $ctrl.vesselDetailsFields.VesselImoNo.name }}" placeholder="{{ $ctrl.vesselDetailsFields.VesselImoNo.placeholder }}" uib-typeahead="vesselimo as vesselimo.name for vesselimo in options.VesselWithImo | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.selectVessel($item.id)" typeahead-editable="false" class="typeahead form-control" ng-model="$ctrl.request.vesselDetails.vesselImoNo" required >
                                     <span ng-disabled="$ctrl.requestId ? true : false || $ctrl.disableAllFields" class="input-group-addon"  ng-click="triggerModal('general', 'masters_vessellist', $ctrl.vesselDetailsFields.VesselImoNo.caption | translate, '$ctrl.request.vesselDetails.vesselImoNo','','',$ctrl.vesselDetailsFields.VesselImoNo.name)" ng-class="{'disabled' : $ctrl.isReadonlyForm}">
                                         <i class="fa fa-search"></i>
                                     </span>
@@ -275,7 +275,7 @@
 							</label>
 							<div class="form-group-sm00">
 							    <div class="input-group">
-							        <input  name="chartererName" readonly="" disabled class="form-control" ng-model="$ctrl.vesselCharteredDetails.chartererName">
+							        <input decode-input-format name="chartererName" readonly="" disabled class="form-control" ng-model="$ctrl.vesselCharteredDetails.chartererName">
 							    </div>
 							</div>
 		        		</div>
@@ -362,7 +362,7 @@
 							</label>
 							<div class="form-group-sm00">
 							    <div class="input-group">
-							        <input  name="redeliveryLocation" readonly="" disabled class="form-control" ng-model="$ctrl.vesselCharteredDetails.redeliveryLocation.name">
+							        <input  decode-input-format  name="redeliveryLocation" readonly="" disabled class="form-control" ng-model="$ctrl.vesselCharteredDetails.redeliveryLocation.name">
                                     <span class="input-group-addon bg-grey-steel disabled"  ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-click="triggerModal('general', 'procurement_location', 'Select Latest Redelivery Port', '', '', '', 'ports', $ctrl.vesselCharteredDetails.redeliveryLocation.name)" ng-disabled="!$ctrl.request.vesselDetails.vessel || $ctrl.disableAllFields">
                                         <!-- procurement_bunkerableport -->
                                         <!-- masters_locationlist -->
@@ -530,7 +530,7 @@
                                 </label>
                                 <div class="form-group-sm00">
                                     <div class="input-group col-md-7">
-                                 <input name="ports" id="id_Ports" ng-model="dumm" class="typeahead form-control" ng-class="{'ng-invalid': $ctrl.request.locations.length == 0}" uib-typeahead="destPort as destPort.name for destPort in updateDestinations($viewValue, 'BunkerablePort')" type="text" typeahead-on-select="addTypeLocation(dumm.id, dumm)" typeahead-loading="$ctrl.loadedTypeaheadPort" typeahead-wait-ms="100" ng-model-options="{ allowInvalid: false, debounce: 100 }" ng-disabled="!$ctrl.request.vesselDetails.vessel || $ctrl.disableAllFields">
+                                 <input decode-input-format  name="ports" id="id_Ports" ng-model="dumm" class="typeahead form-control" ng-class="{'ng-invalid': $ctrl.request.locations.length == 0}" uib-typeahead="destPort as destPort.name for destPort in updateDestinations($viewValue, 'BunkerablePort')" type="text" typeahead-on-select="addTypeLocation(dumm.id, dumm)" typeahead-loading="$ctrl.loadedTypeaheadPort" typeahead-wait-ms="100" ng-model-options="{ allowInvalid: false, debounce: 100 }" ng-disabled="!$ctrl.request.vesselDetails.vessel || $ctrl.disableAllFields">
                                         <span class="input-group-addon"  ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-click="triggerModal('general', 'procurement_bunkerableport', 'Bunkerable Port', '$ctrl.new_location' ,'','', 'ports', $ctrl.request.vesselDetails.vessel)" ng-disabled="!$ctrl.request.vesselDetails.vessel || $ctrl.disableAllFields">
                                             <!-- procurement_bunkerableport -->
                                             <!-- masters_locationlist -->
@@ -543,7 +543,7 @@
                                 <span ng-repeat="location in $ctrl.request.locations" class="tag label label-info" ng-if="!location.isDeleted && location.location !== null" data-original-title=" {{ location.location.name }}">
                                     <a ng-click="$ctrl.deleteLocation(location)" ng-disabled="$ctrl.disableAllFields">
                                         <i class="fa fa-close clickable" ng-class="{'disabled' : $ctrl.isReadonlyForm}"></i>
-                                        {{location.location.name }}
+                                        {{location.location.name | decodeReadOnly}}
                                     </a>
                                 </span>
                             </form>
@@ -561,7 +561,7 @@
                                 <a role="button" data-toggle="collapse" href="#location{{ $index }}"  >
                                     <i class="fa fa-angle-double-down"></i>
                                 </a>
-                                {{ location.location.name }} 
+                                {{ location.location.name | decodeReadOnly}} 
                                 {{ location.voyageCode ? ' - '+ location.voyageCode : '' }} 
                                 {{location.portCallId ? ' - '+ location.portCallId : '' }}
                             </span>
@@ -725,7 +725,7 @@
 	                                                <div class="form-group-sm00">
 	                                                    <div class="input-group col-md-8 col-sm-12">
 
-	                                                        <input name="{{ $ctrl.productInfoFields.DestinationPort.name }}{{ $index }}" id="id_{{ $ctrl.productInfoFields.DestinationPort.name }}{{ $index }}" class="typeahead form-control" ng-model="location.destinationInput" uib-typeahead="destPort as destPort.name for destPort in updateDestinations($viewValue, 'DestinationPort', location)" typeahead-on-select="$ctrl.selectDestinationPort($item, locationIdx)" typeahead-editable="false" ng-model-options="{ allowInvalid: false, debounce: 100 }" typeahead-loading="$ctrl.loadedTypeaheadPort" typeahead-wait-ms="100" data-origina-title="{{ location.destination.name }}" ng-disabled="$ctrl.disableAllFields">
+	                                                        <input decode-input-format name="{{ $ctrl.productInfoFields.DestinationPort.name }}{{ $index }}" id="id_{{ $ctrl.productInfoFields.DestinationPort.name }}{{ $index }}" class="typeahead form-control" ng-model="location.destinationInput" uib-typeahead="destPort as destPort.name for destPort in updateDestinations($viewValue, 'DestinationPort', location)" typeahead-on-select="$ctrl.selectDestinationPort($item, locationIdx)" typeahead-editable="false" ng-model-options="{ allowInvalid: false, debounce: 100 }" typeahead-loading="$ctrl.loadedTypeaheadPort" typeahead-wait-ms="100" data-origina-title="{{ location.destination.name }}" ng-disabled="$ctrl.disableAllFields">
 
 	                                                        <span class="input-group-addon" ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-click="triggerModal('general', 'procurement_destinationport', 'Destination Port', '$ctrl.location[' + $index + '].destinationInput','','', $ctrl.productInfoFields.DestinationPort.name + $index, $ctrl.request.vesselDetails.vessel, location)" ng-disabled="$ctrl.disableAllFields">
 	                                                            <i class="fa fa-search"></i>
@@ -741,31 +741,31 @@
 													<div class="border border-grey-cascade font-dark label tag" ng-if="location.destination.id" data-original-title="location.destination.name">
 				                                        <i class="fa fa-close font-red-mint" ng-click="location.destination = null; location.destinationEta = null; location.destinationEtaFormatted = null; location.destinationVesselVoyageDetailId = null; $ctrl.getLowestEtaForDestinationInLocation(locationIdx);" ng-class="{'disabled' : $ctrl.isReadonlyForm}"></i>
 														<span class="font-dark">
-															{{location.destination.name}}
+															{{location.destination.name | decodeReadOnly}}
 														</span>
 					                                </div>	
 													<div class="border border-grey-cascade font-dark label tag" ng-if="location.destination1.id" data-original-title="location.destination1.name">
 				                                        <i class="fa fa-close font-red-mint" ng-click="location.destination1 = null; location.destination1Eta = null; location.destination1EtaFormatted = null; location.destination1VesselVoyageDetailId = null; $ctrl.getLowestEtaForDestinationInLocation(locationIdx);" ng-class="{'disabled' : $ctrl.isReadonlyForm}"></i>
 														<span class="font-dark">
-															{{location.destination1.name}}
+															{{location.destination1.name | decodeReadOnly}}
 														</span>
 					                                </div>	
 													<div class="border border-grey-cascade font-dark label tag" ng-if="location.destination2.id" data-original-title="location.destination2.name">
 				                                        <i class="fa fa-close font-red-mint" ng-click="location.destination2 = null; location.destination2Eta = null; location.destination2EtaFormatted = null; location.destination2VesselVoyageDetailId = null; $ctrl.getLowestEtaForDestinationInLocation(locationIdx);" ng-class="{'disabled' : $ctrl.isReadonlyForm}"></i>
 														<span class="font-dark">
-															{{location.destination2.name}}
+															{{location.destination2.name | decodeReadOnly}}
 														</span>
 					                                </div>	
 													<div class="border border-grey-cascade font-dark label tag" ng-if="location.destination3.id" data-original-title="location.destination3.name">
 				                                        <i class="fa fa-close font-red-mint" ng-click="location.destination3 = null; location.destination3Eta = null; location.destination3EtaFormatted = null; location.destination3VesselVoyageDetailId = null; $ctrl.getLowestEtaForDestinationInLocation(locationIdx);" ng-class="{'disabled' : $ctrl.isReadonlyForm}"></i>
 														<span class="font-dark">
-															{{location.destination3.name}}
+															{{location.destination3.name | decodeReadOnly}}
 														</span>
 					                                </div>	
 													<div class="border border-grey-cascade font-dark label tag" ng-if="location.destination4.id" data-original-title="location.destination4.name">
 				                                        <i class="fa fa-close font-red-mint" ng-click="location.destination4 = null; location.destination4Eta = null; location.destination4EtaFormatted = null; location.destination4VesselVoyageDetailId = null; $ctrl.getLowestEtaForDestinationInLocation(locationIdx);" ng-class="{'disabled' : $ctrl.isReadonlyForm}"></i>
 														<span class="font-dark">
-															{{location.destination4.name}}
+															{{location.destination4.name | decodeReadOnly}}
 														</span>
 					                                </div>	
 												</div>
@@ -779,7 +779,7 @@
 
 	                                                <div class="form-group-sm00">
 	                                                    <div class="input-group col-md-8 col-sm-12">
-	                                                        <input name="{{ $ctrl.productInfoFields.Buyer.name }}" id="id_{{ $ctrl.productInfoFields.Buyer.name }}" placeholder="{{ $ctrl.productInfoFields.Buyer.placeholder }}" class="typeahed form-control" uib-typeahead="buyer as buyer.name for buyer in  $ctrl.listsCache.Buyer | typeaheadCustomFilter:$viewValue:'name'" ng-model="location.buyer" required typeahead-editable="false" ng-focus="$ctrl.setLookupInput(location)"   ng-blur="location.buyer.name == null || location.buyer.name == '' ? location.buyer = null : '' " ng-value="location.buyer.name" ng-disabled="$ctrl.disableAllFields">
+	                                                        <input  decode-input-format  name="{{ $ctrl.productInfoFields.Buyer.name }}" id="id_{{ $ctrl.productInfoFields.Buyer.name }}" placeholder="{{ $ctrl.productInfoFields.Buyer.placeholder }}" class="typeahed form-control" uib-typeahead="buyer as buyer.name for buyer in  $ctrl.listsCache.Buyer | typeaheadCustomFilter:$viewValue:'name'" ng-model="location.buyer" required typeahead-editable="false" ng-focus="$ctrl.setLookupInput(location)"   ng-blur="location.buyer.name == null || location.buyer.name == '' ? location.buyer = null : '' " ng-value="location.buyer.name" ng-disabled="$ctrl.disableAllFields">
 
 	                                                            <span class="input-group-addon" ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-click="triggerModal('general', 'procurement_buyerlist', 'Select Buyer','$ctrl.location[' + $index + '].buyer' ,'','', $$ctrl.productInfoFields.Buyer.name, $ctrl.request.vesselDetails.vessel)" ng-disabled="$ctrl.disableAllFields">
 	                                                            <i class="glyphicon glyphicon-search"></i>
@@ -796,7 +796,7 @@
 	                                                <div class="form-group-sm00">
 
 	                                                    <div class="input-group col-md-8 col-sm-12" ng-if="$ctrl.requestTenantSettings.agentDisplay.name == 'Lookup'">
-	                                                        <input name="{{ $ctrl.productInfoFields.Agent.name }}" id="id_{{ $ctrl.productInfoFields.Agent.name }}" class="typeahead form-control" uib-typeahead="ag as ag.name for ag in options.Agent | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.agentLocationIdx = $index; $ctrl.selectAgent($item.id)" ng-model="location.agent" typeahead-editable="false" ng-blur="location.agent.name == null || location.agent.name == '' ? location.agent = null : '' " ng-value="location.agent.name" ng-disabled="$ctrl.disableAllFields">
+	                                                        <input   decode-input-format  name="{{ $ctrl.productInfoFields.Agent.name }}" id="id_{{ $ctrl.productInfoFields.Agent.name }}" class="typeahead form-control" uib-typeahead="ag as ag.name for ag in options.Agent | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.agentLocationIdx = $index; $ctrl.selectAgent($item.id)" ng-model="location.agent" typeahead-editable="false" ng-blur="location.agent.name == null || location.agent.name == '' ? location.agent = null : '' " ng-value="location.agent.name" ng-disabled="$ctrl.disableAllFields">
 	                                                      <span class="input-group-addon" ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-click="triggerModal('general', 'procurement_agentlist', 'Select Agent', '$ctrl.location[' + $index + '].agent' ,'','', $$ctrl.productInfoFields.Agent.name)" ng-disabled="$ctrl.disableAllFields">
 	                                                            <i class="glyphicon glyphicon-search"></i>
 	                                                        </span>
@@ -816,7 +816,7 @@
 						                            </label>
 						                            <div class="form-group-sm00">
 						                                <div class="input-group col-md-8 col-sm-12">
-						                                    <input ng-disabled="$ctrl.disableAllFields" name="Location {{$index+1}} {{$ctrl.tenantSettings.serviceDisplayName.name}}" id="id_{{ $ctrl.vesselDetailsFields.ServiceCode.name }}" placeholder="{{ $ctrl.vesselDetailsFields.ServiceCode.placeholder }}" uib-typeahead="service as service.name for service in options.Service | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.selectServiceInLocation($item.id, $index)" typeahead-editable="false" class="typeahead form-control" ng-model="location.service.name" required>
+						                                    <input  decode-input-format  ng-disabled="$ctrl.disableAllFields" name="Location {{$index+1}} {{$ctrl.tenantSettings.serviceDisplayName.name}}" id="id_{{ $ctrl.vesselDetailsFields.ServiceCode.name }}" placeholder="{{ $ctrl.vesselDetailsFields.ServiceCode.placeholder }}" uib-typeahead="service as service.name for service in options.Service | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.selectServiceInLocation($item.id, $index)" typeahead-editable="false" class="typeahead form-control" ng-model="location.service.name" required>
 						                               <span ng-disabled="$ctrl.disableAllFields" class="input-group-addon" ng-click="triggerModal('general', 'masters_servicelist', $ctrl.tenantSettings.serviceDisplayName.name + ' Code' | translate, '$ctrl.location[' + $index + '].service' ,'','',Location + $index+1 + $ctrl.tenantSettings.serviceDisplayName.name)" >
 						                                        <i class="fa fa-search"></i>
 						                                    </span>
@@ -832,7 +832,7 @@
 						                            </label>
 						                            <div class="form-group-sm00">
 						                                <div class="input-group col-md-8 col-sm-12">
-						                                    <input name="Location {{$index+1}} {{$ctrl.tenantSettings.companyDisplayName.name}}" id="id_{{ $ctrl.vesselDetailsFields.Company.name }}" placeholder="{{ $ctrl.vesselDetailsFields.Company.placeholder }}" uib-typeahead="company as company.name for company in options.Company | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.selectCompanyInLocation($item.id, $index)" ng-required="true" typeahead-editable="false" class="typeahead form-control" ng-model="location.company.name" ng-disabled="$ctrl.disableAllFields">
+						                                    <input  decode-input-format  name="Location {{$index+1}} {{$ctrl.tenantSettings.companyDisplayName.name}}" id="id_{{ $ctrl.vesselDetailsFields.Company.name }}" placeholder="{{ $ctrl.vesselDetailsFields.Company.placeholder }}" uib-typeahead="company as company.name for company in options.Company | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.selectCompanyInLocation($item.id, $index)" ng-required="true" typeahead-editable="false" class="typeahead form-control" ng-model="location.company.name" ng-disabled="$ctrl.disableAllFields">
 
 	                                                        <span class="input-group-addon" ng-click="triggerModal('general', 'masters_companylist', $ctrl.tenantSettings.serviceDisplayName.name + ' Code' | translate, '$ctrl.location[' + $index + '].company' ,'','',Location + $index+1 + $ctrl.tenantSettings.companyDisplayName.name)" ng-disabled="$ctrl.disableAllFields">
 	                                                            <i class="fa fa-search"></i>
@@ -891,8 +891,9 @@
 
 
 	                                            <td ng-if="$ctrl.productInfoColumns.Product.visible" style="width:11%;min-width: 190px;" ng-init="CM.getOptions({'Name': 'Product', 'masterSource': 'Product'})">
-	                                                <div class="input-group" tooltip tooltiptrigger="hover" data-original-title="{{ $ctrl.getProductTooltipByProductId(product.product.id) }}">
+	                                                <div class="input-group" tooltip tooltiptrigger="hover" data-original-title="{{ $ctrl.getProductTooltipByProductId(product.product.id) | decodeReadOnly }}">
 	                                                    <input 
+                                                        decode-input-format
 	                                                    name="{{ $ctrl.productInfoColumns.Product.name }}" id="product_product_{{ $index }}" 
 	                                                    placeholder="{{ $ctrl.productInfoColumns.Product.placeholder }}" class="typeahead form-control" 
 	                                                    uib-typeahead="prod as prod.name for prod in options.Product | typeaheadCustomFilter:$viewValue:'name'" 
@@ -912,12 +913,12 @@
 	                                            </td>
 
 	                                            <td ng-if="$ctrl.productInfoColumns.ProductType.visible" style="width:8%">
-	                                                <input type="text"  name="ProductType" id="product_ProductType_{{ $index }}" class="form-control input-sm" ng-model="product.productType.name" ng-disabled="true" >
+	                                                <input decode-input-format type="text"  name="ProductType" id="product_ProductType_{{ $index }}" class="form-control input-sm" ng-model="product.productType.name" ng-disabled="true" >
 
 	                                            </td>
 	                                            
 	                                            <td ng-if="$ctrl.productInfoColumns.SpecGroup.visible" style="width:11%;min-width: 150px;">
-	                                                <select name="Spec Group" ng-options="specGroup as specGroup.name for specGroup in product.specGroups track by specGroup.id" ng-model="product.specGroup" class="form-control pull-left" ng-required="product.product !== null && product.productStatus.name !== 'Cancelled' && $ctrl.specGroupIsRequired"  data-original-title="{{ product.specGroup.name }}" style="width: calc(100% - 20px);" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" id="product_specGroup_{{ $index }}"></select>
+	                                                <select name="Spec Group" ng-options="specGroup as specGroup.name for specGroup in product.specGroups | decodeReadOnly track by specGroup.id" ng-model="product.specGroup" class="form-control pull-left" ng-required="product.product !== null && product.productStatus.name !== 'Cancelled' && $ctrl.specGroupIsRequired"  data-original-title="{{ product.specGroup.name }}" style="width: calc(100% - 20px);" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" id="product_specGroup_{{ $index }}"></select>
 
 	                                                <a ng-controller="Controller_Master" ng-click="modalSpecGroupEdit(product, NAV.requestId,  'request')" class="pull-left" style="line-height: 34px;margin-left: 5px;" ng-hide="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed'" tooltip data-original-title="Open Spec group" ng-disabled="$ctrl.disableAllFields">
 	                                                    <i class="fa fa-file-text font-grey-cascade"></i>
@@ -928,8 +929,8 @@
                                                     <div class="input-group">
                                                         <input style="font-size: 12px;" type="text" format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" name="RobOnArrival" id="product_RobOnArrival_{{ $index }}" class="form-control input-md" ng-model="product.robOnArrival"  data-original-title="{{ product.robOnArrival }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields">
                                                         <div class="input-group-btn" ng-init="!product.robOnArrivalUom.id ? product.robOnArrivalUom = product.uom : '' ">
-                                                            <select style="min-width: 60px; max-width: 60px; font-size: 12px;"
-                                                                ng-options="uomItem as uomItem.name for uomItem in $ctrl.lists.Uom track by uomItem.id" ng-model="product.robOnArrivalUom" class="form-control bs-select pull-right" ng-required="product.product !== null && !$ctrl.requestTenantSettings.isPrerequestEnabled"  data-original-title="{{ product.robOnArrivalUom.name }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields"
+                                                            <select  style="min-width: 60px; max-width: 60px; font-size: 12px;"
+                                                                ng-options="uomItem as uomItem.name for uomItem in $ctrl.lists.Uom | decodeReadOnly track by uomItem.id" ng-model="product.robOnArrivalUom" class="form-control bs-select pull-right" ng-required="product.product !== null && !$ctrl.requestTenantSettings.isPrerequestEnabled"  data-original-title="{{ product.robOnArrivalUom.name }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields"
                                                                 id="product_robOnArrivalUom_{{ $index }}"></select>
                                                         </div>
                                                     </div>
@@ -945,18 +946,18 @@
 	                                                <input type="text"  format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" name="MaxQuantity_{{$index}}" id="product_MaxQuantity_{{$index}}" class="form-control input-sm" ng-model="product.maxQuantity" ng-required="$ctrl.requiredQty && (product.productStatus.name != 'Cancelled' && product.productStatus.name != 'Stemmed')" ng-min="{{ product.minQuantity }}"  data-original-title="{{ product.maxQuantity }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" ng-blur="product.maxQuantity = $ctrl.validateMinMaxQuantity(product.minQuantity, product.maxQuantity)['maxQuantity'];" ng-change="$ctrl.invalidMinMax(product.minQuantity,product.maxQuantity,$index,locationIdx)">
 	                                            </td>
 	                                            <td ng-if="$ctrl.productInfoColumns.Uom.visible" style="width:8%;min-width: 80px;">
-	                                                <select ng-options="uomItem as uomItem.name for uomItem in $ctrl.lists.Uom track by uomItem.id" ng-model="product.uom" class="form-control" ng-required="product.product !== null && !$ctrl.requestTenantSettings.isPrerequestEnabled"  data-original-title="{{ product.uom.name }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields"
+	                                                <select ng-options="uomItem as uomItem.name for uomItem in $ctrl.lists.Uom | decodeReadOnly  track by uomItem.id" ng-model="product.uom" class="form-control" ng-required="product.product !== null && !$ctrl.requestTenantSettings.isPrerequestEnabled"  data-original-title="{{ product.uom.name }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields"
                                                     id="product_uom_{{ $index }}"></select>
 	                                            </td>
 	                                            <td ng-if="$ctrl.productInfoColumns.AgreementType.visible" style="width:12%">
 
-	                                                <select ng-options="agreementType as agreementType.name for agreementType in $ctrl.lists.AgreementType track by agreementType.id" ng-model="product.agreementType" class="form-control" ng-required="product.product !== null"  data-original-title="{{ product.agreementType.name }} " ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" id="product_agreementType_{{ $index }}"></select>
+	                                                <select ng-options="agreementType as agreementType.name for agreementType in $ctrl.lists.AgreementType | decodeReadOnly track by agreementType.id" ng-model="product.agreementType" class="form-control" ng-required="product.product !== null"  data-original-title="{{ product.agreementType.name }} " ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" id="product_agreementType_{{ $index }}"></select>
 	                                            </td>
 	                                            <td ng-if="!$ctrl.tenantSettings.shiptechLite">
 	                                            	<a href="/#/contracts/contract/edit/{{product.contract.contract.id}}">{{product.contract.contract.name}}</a>
 	                                            </td>
 	                                            <td ng-if="$ctrl.productInfoColumns.Comment.visible" style="width:15%;min-width: 100px;">
-	                                                <input type="text" class="form-control input-sm" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" ng-model="product.comments" id="product_comment_{{ $index }}" id="product_productStatus_{{ $index }}">
+	                                                <input decode-input-format type="text" class="form-control input-sm" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" ng-model="product.comments" id="product_comment_{{ $index }}" id="product_productStatus_{{ $index }}">
 
 	                                            </td>
 	                                            <td ng-if="$ctrl.productInfoColumns.ProductStatus.visible" style="width:10%">
@@ -967,7 +968,7 @@
                                                         <input style="font-size: 12px;" type="text" format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" name="roundVoyageConsumption" id="product_roundVoyageConsumption_{{ $index }}" class="form-control input-md" ng-model="product.roundVoyageConsumption"  data-original-title="{{ product.roundVoyageConsumption }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields">
                                                         <div class="input-group-btn" ng-init="!product.roundVoyageConsumptionUom.id ? product.roundVoyageConsumptionUom = product.uom : '' ">
                                                             <select style="min-width: 60px; max-width: 60px; font-size: 12px;"
-                                                                ng-options="uomItem as uomItem.name for uomItem in $ctrl.lists.Uom track by uomItem.id" ng-model="product.roundVoyageConsumptionUom" class="form-control bs-select pull-right" ng-required="product.product !== null && !$ctrl.requestTenantSettings.isPrerequestEnabled"  data-original-title="{{ product.roundVoyageConsumptionUom.name }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields"
+                                                                ng-options="uomItem as uomItem.name for uomItem in $ctrl.lists.Uom | decodeReadOnly track by uomItem.id" ng-model="product.roundVoyageConsumptionUom" class="form-control bs-select pull-right" ng-required="product.product !== null && !$ctrl.requestTenantSettings.isPrerequestEnabled"  data-original-title="{{ product.roundVoyageConsumptionUom.name }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields"
                                                                 id="product_roundVoyageConsumptionUom_{{ $index }}"></select>
                                                         </div>
                                                     </div>
@@ -1018,7 +1019,7 @@
 
                                     <div class="form-group-sm00">
                                         <div class="input-group col-md-6">
-                                            <input name="{{ $ctrl.footerSectionFields.ValidatedBy.name }}" id="id_{{ $ctrl.footerSectionFields.ValidatedBy.name }}" class="form-control" ng-model="($ctrl.lists.contactEmails | filter:{id: $ctrl.request.footerSection.validatedBy.id})[0].email" ng-disabled="$ctrl.disableAllFields">
+                                            <input  name="{{ $ctrl.footerSectionFields.ValidatedBy.name }}" id="id_{{ $ctrl.footerSectionFields.ValidatedBy.name }}" class="form-control" ng-model="($ctrl.lists.contactEmails | filter:{id: $ctrl.request.footerSection.validatedBy.id})[0].email" ng-disabled="$ctrl.disableAllFields">
                                         </div>
                                     </div>
                                 </div>
@@ -1034,8 +1035,7 @@
                                     </label>
                                     <div class="form-group-sm00">
                                         <div class="input-group col-md-10">
-                                            <textarea rows="5" class="form-control" name="{{ $ctrl.footerSectionFields.Comments.name }}" id="id_{{ $ctrl.footerSectionFields.Comments.name }}" ng-model="$ctrl.request.footerSection.comments" ng-disabled="$ctrl.disableAllFields"
-                                            ng-blur="$ctrl.request.footerSection.comments = $ctrl.removeClientSideCodeInjection($ctrl.request.footerSection.comments)" ></textarea>
+                                            <textarea decode-input-format rows="5" class="form-control" name="{{ $ctrl.footerSectionFields.Comments.name }}" id="id_{{ $ctrl.footerSectionFields.Comments.name }}" ng-model="$ctrl.request.footerSection.comments" ng-disabled="$ctrl.disableAllFields" ></textarea>
                                         </div>
                                     </div>
                                 </div>

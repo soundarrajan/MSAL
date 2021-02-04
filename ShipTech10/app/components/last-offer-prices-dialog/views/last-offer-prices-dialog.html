@@ -14,7 +14,7 @@
         </thead>
         <tbody>
             <tr ng-repeat="row in $ctrl.data" ng-click="$ctrl.setSelectedItem(row)" class="clickable">
-                <td>{{row.sellerName}}</td>
+                <td>{{row.sellerName | decodeReadOnly}}</td>
                 <td>
 					<label class="mt-checkbox" style="margin-bottom: 20px;margin-top: -15px;">
                         <input type="checkbox" name="isOmitted" ng-model="row.isOmitted" ng-change="$ctrl.checkEnableComments()" />
@@ -22,13 +22,13 @@
                     </label>
                 </td>
                 <td>
-                        {{row.price | number: $ctrl.numberPrecision.pricePrecision}} {{row.priceCurrency}}
+                        {{row.price | number: $ctrl.numberPrecision.pricePrecision}} {{row.priceCurrency | decodeReadOnly}}
                 </td>
-                <td>{{row.productName}}</td>
-                <td>{{row.quotedProduct}}</td>
+                <td>{{row.productName | decodeReadOnly}}</td>
+                <td>{{row.quotedProduct | decodeReadOnly}}</td>
                 <td>{{row.quoteDate | utcToLocal | stDateFormat}}</td>
-                <td>{{row.requestName}}</td>
-                <td>{{row.vesselName}}</td>
+                <td>{{row.requestName | decodeReadOnly}}</td>
+                <td>{{row.vesselName | decodeReadOnly}}</td>
             </tr>
         </tbody>
     </table>
@@ -40,7 +40,7 @@
 	        	<span class="hidden" ng-if="!$ctrl.hasOmittedProduct">
 		        	{{$ctrl.data[0].sellerComments = null}}
 	        	</span>
-	           <textarea rows="3" ng-disabled="!$ctrl.hasOmittedProduct" class="form-control" style="max-width:100%; min-width: 100%;" ng-model="$ctrl.omittedSellerComments"></textarea>
+	           <textarea decode-input-format rows="3" ng-disabled="!$ctrl.hasOmittedProduct" class="form-control" style="max-width:100%; min-width: 100%;" ng-model="$ctrl.omittedSellerComments"></textarea>
 	        </div>
     	</div>
     </div>

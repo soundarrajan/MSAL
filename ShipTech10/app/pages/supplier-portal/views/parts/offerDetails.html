@@ -37,12 +37,12 @@
                                                 <br/>
                                                 Requests:
                                                 <span ng-repeat="(key, value) in $ctrl.requests ">
-                                                    {{ value.name }},
+                                                    {{ value.name | decodeReadOnly }},
                                                 </span>
                                                 <br/>
                                                 Products:
                                                 <span ng-repeat="(p, pc) in $ctrl.individuals[0].products">
-                                                    {{ pc.product.name }},
+                                                    {{ pc.product.name | decodeReadOnly }},
                                                 </span>
                                             </p>
                                         </div>
@@ -54,21 +54,21 @@
                                     <div ng-init="vesselDetails = $ctrl.getVesselDetailsByRequestId(value.id)">
                                         <p>
                                             <span style="font-weight: 600;">
-                                                {{ value.name }}
+                                                {{ value.name  | decodeReadOnly }}
                                             </span>
                                             <br/>
-                                            Vessel Name: {{ vesselDetails .vessel.name }} - IMO: {{ vesselDetails .vesselImoNo }}
+                                            Vessel Name: {{ vesselDetails .vessel.name | decodeReadOnly }} - IMO: {{ vesselDetails .vesselImoNo | decodeReadOnly }}
                                             <br/>
                                             Locations:
                                             <span ng-init="distinctLocations = $ctrl.getDistinctLocationsInRequest(value.id)">
                                             	<span ng-repeat="(k,v) in distinctLocations">
-                                            		{{v}}
+                                            		{{v | decodeReadOnly }}
                                             	</span>
                                             </span>
                                             <br/>
                                             Products :
                                             <span ng-repeat="(p, pc) in $ctrl.getAllProductsInRequest(value)">
-                                                {{ pc.name }},
+                                                {{ pc.name | decodeReadOnly }},
                                             </span>
                                         </p>
                                     </div>
@@ -92,12 +92,12 @@
                                             <br/>
                                             Requests:
                                             <span ng-repeat="(key, value) in $ctrl.getAllRequestsInPackage(val) ">
-                                                {{ value }},
+                                                {{ value | decodeReadOnly }},
                                             </span>
                                             <br/>
                                             Products:
                                             <span ng-repeat="(p, pc) in $ctrl.getAllProductsinRFQPackage(val)">
-                                                {{ pc.name }},
+                                                {{ pc.name | decodeReadOnly }},
                                             </span>
                                         </p>
                                     </div>
@@ -113,12 +113,12 @@
                                             <br/>
                                             Requests:
                                             <span ng-repeat="(key, value) in $ctrl.getAllRequestsInPackage('surrogate') ">
-                                                {{ value }},
+                                                {{ value | decodeReadOnly }},
                                             </span>
                                             <br/>
                                             Products:
                                             <span ng-repeat="(p, pc) in $ctrl.getAllProductsinRFQPackage('surrogate')">
-                                                {{ pc.name }},
+                                                {{ pc.name | decodeReadOnly }},
                                             </span>
                                         </p>
                                     </div>
@@ -135,12 +135,12 @@
                                             <br/>
                                             Requests:
                                             <span ng-repeat="(key, value) in $ctrl.requests ">
-                                                {{ value.name }},
+                                                {{ value.name | decodeReadOnly }},
                                             </span>
                                             <br/>
                                             Products:
                                             <span ng-repeat="(p, pc) in $ctrl.individuals[0].products">
-                                                {{ pc.product.name }},
+                                                {{ pc.product.name | decodeReadOnly }},
                                             </span>
                                         </p>
                                     </div>

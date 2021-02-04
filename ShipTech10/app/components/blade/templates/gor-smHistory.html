@@ -5,7 +5,7 @@
     		<div class="form-group row input-group pull-left">
 	    		<label>Location </label>
     			<div class="input-group">
-		    		 <input name="sixMonthLocationSelector" id="sixMonthLocationSelector" uib-typeahead="location as location.name for location in $ctrl.listsCache.Location | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="" typeahead-editable="false" class="typeahead form-control" ng-model="$ctrl.sixMonthLocationSelector">
+		    		 <input decode-input-format name="sixMonthLocationSelector" id="sixMonthLocationSelector" uib-typeahead="location as location.name for location in $ctrl.listsCache.Location | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="" typeahead-editable="false" class="typeahead form-control" ng-model="$ctrl.sixMonthLocationSelector">
 					<span class="input-group-addon border-grey-silver" style="width: 35px !important;border: 1px solid;" ng-click="$ctrl.addLocationToHistory($ctrl.sixMonthLocationSelector)">
 						<i class="fa fa-plus"></i>
 					</span>
@@ -15,7 +15,7 @@
                 <span ng-repeat="location in $ctrl.selectedLocations" class="tag border border-grey-cascade label" data-original-title=" {{ location.name }}">
                     <span class="font-dark">
                         <a ng-click="$ctrl.removeLocationFromHistory($index)" class="fa fa-close font-red"></a>
-                        {{location.name }}
+                        {{location.name | decodeReadOnly }}
                     </span>
                 </span>
     		</div>

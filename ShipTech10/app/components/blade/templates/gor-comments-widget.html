@@ -5,11 +5,11 @@
 	<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 180px;">
     	<div class="col-md-6">
     		<span>Internal Comments</span>
-    		<textarea class="form-control img-responsive" rows="6" ng-model="$ctrl.internalComments" ng-change="$ctrl.triggerCommentsChange()"  ng-blur="$ctrl.internalComments = $ctrl.removeClientSideCodeInjection($ctrl.internalComments)"></textarea>
+    		<textarea decode-input-format class="form-control img-responsive" rows="6" ng-model="$ctrl.internalComments" ng-change="$ctrl.triggerCommentsChange()"></textarea>
     	</div>
     	<div class="col-md-6">
     		<span>External Comment to all Parties</span>
-    		<textarea class="form-control img-responsive" rows="6" ng-model="$ctrl.externalComments" ng-change="$ctrl.triggerCommentsChange()" ng-blur="$ctrl.externalComments = $ctrl.removeClientSideCodeInjection($ctrl.externalComments)"></textarea>
+    		<textarea decode-input-format class="form-control img-responsive" rows="6" ng-model="$ctrl.externalComments" ng-change="$ctrl.triggerCommentsChange()"></textarea>
     	</div>
     </div>
 </div>

@@ -15,26 +15,26 @@
                 Contracted Qty
             </div>
             <h2>
-                {{ formValues.summary.contractedQuantity | number:tenantSetting.defaultValues.quantityPrecision }} {{ formValues.summary.uom }}
+                {{ formValues.summary.contractedQuantity | number:tenantSetting.defaultValues.quantityPrecision }} {{ formValues.summary.uom | decodeReadOnly}}
             </h2>
             <div>
                 Planned Qty
             </div>
             <h2>
-                {{ formValues.summary.plannedQuantity| number:tenantSetting.defaultValues.quantityPrecision }} {{ formValues.summary.uom }}
+                {{ formValues.summary.plannedQuantity| number:tenantSetting.defaultValues.quantityPrecision }} {{ formValues.summary.uom | decodeReadOnly}}
             </h2>
 
             <div>
                 Utilised Qty
             </div>
             <h2>
-                {{ formValues.summary.utilizedQuantity| number:tenantSetting.defaultValues.quantityPrecision }} {{ formValues.summary.uom }}
+                {{ formValues.summary.utilizedQuantity| number:tenantSetting.defaultValues.quantityPrecision }} {{ formValues.summary.uom | decodeReadOnly}}
             </h2>
             <div>
                 Available Qty
             </div>
             <h2>
-                {{ formValues.summary.availableQuantity | number:tenantSetting.defaultValues.quantityPrecision}} {{ formValues.summary.uom }}
+                {{ formValues.summary.availableQuantity | number:tenantSetting.defaultValues.quantityPrecision}} {{ formValues.summary.uom | decodeReadOnly}}
             </h2>
             <div class="big-message">
                 <div class="inner">
@@ -68,23 +68,23 @@
                     <span class="order_summary_product_name">
                         <p>
                             <b>
-                                {{ value.product.name ? value.product.name : "New Product" }}
+                                {{ value.product.name ? (value.product.name | decodeReadOnly) : "New Product" }}
                             </b>
                             <span class="product-status">
                                 {{ value.summary.productStatus }}
                             </span>
                         </p>
                         <p>
-                            Contracted Qty: {{ value.summary.contractedQuantity | number:tenantSetting.defaultValues.quantityPrecision}} {{value.summary.uom}}
+                            Contracted Qty: {{ value.summary.contractedQuantity | number:tenantSetting.defaultValues.quantityPrecision}} {{value.summary.uom | decodeReadOnly}}
                         </p>
                         <p>
-                            Planned Qty: {{ value.summary.plannedQuantity | number:tenantSetting.defaultValues.quantityPrecision}} {{value.summary.uom}}
+                            Planned Qty: {{ value.summary.plannedQuantity | number:tenantSetting.defaultValues.quantityPrecision}} {{value.summary.uom | decodeReadOnly}}
                         </p>
                         <p>
-                            Utilised Qty: {{ value.summary.utilizedQuantity | number:tenantSetting.defaultValues.quantityPrecision}} {{value.summary.uom}}
+                            Utilised Qty: {{ value.summary.utilizedQuantity | number:tenantSetting.defaultValues.quantityPrecision}} {{value.summary.uom | decodeReadOnly}}
                         </p>
                         <p>
-                            Available Qty: {{ value.summary.availableQuantity | number:tenantSetting.defaultValues.quantityPrecision}} {{value.summary.uom}}
+                            Available Qty: {{ value.summary.availableQuantity | number:tenantSetting.defaultValues.quantityPrecision}} {{value.summary.uom | decodeReadOnly}}
                         </p>
                     </span>
                 </td>

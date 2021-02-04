@@ -23,13 +23,13 @@
                         <b>
                             Product
                         </b>
-                        <select name="" id=""  class="form-control" ng-model="$ctrl.grapProdID"   ng-options="item as item.name for item in $ctrl.products track by item.id" ng-change="$ctrl.timelineresults = 0; $ctrl.getDefaultUomForAdditionalCost($ctrl.grapProdID)"></select>
+                        <select name="" id=""  class="form-control" ng-model="$ctrl.grapProdID"   ng-options="item as item.name for item in $ctrl.products | decodeReadOnly track by item.id" ng-change="$ctrl.timelineresults = 0; $ctrl.getDefaultUomForAdditionalCost($ctrl.grapProdID)"></select>
                     </span>
                     <span ng-init="$ctrl.grapUomID = $ctrl.tenantSettings.tenantFormats.uom">
                         <b>
                             UOM
                         </b>
-                        <select name="" id=""  class="form-control" ng-model="$ctrl.grapUomID"  ng-options="item as item.name for item in $ctrl.listsCache.Uom track by item.id" ng-change="$ctrl.timelineresults = 0"></select>
+                        <select name="" id=""  class="form-control" ng-model="$ctrl.grapUomID"  ng-options="item as item.name for item in $ctrl.listsCache.Uom | decodeReadOnly track by item.id" ng-change="$ctrl.timelineresults = 0"></select>
                     </span>
                     <span>
                         <label class="mt-checkbox mt-checkbox-outline">

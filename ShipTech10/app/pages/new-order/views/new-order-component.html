@@ -206,7 +206,7 @@
                                     <b>
                                         Order No
                                     </b>
-                                    : {{ $ctrl.data.name }}
+                                    : {{ $ctrl.data.name | decodeReadOnly}}
                                 </p>
                                 <p>
                                     <b>
@@ -218,7 +218,7 @@
                                     <b>
                                         Port
                                     </b>
-                                    : {{ $ctrl.data.location.name }}
+                                    : {{ $ctrl.data.location.name | decodeReadOnly}}
                                 </p>
                                 <p>
                                     <b>
@@ -230,7 +230,7 @@
                                     <b>
                                         Seller
                                     </b>
-                                    : {{ $ctrl.data.seller.name }}
+                                    : {{ $ctrl.data.seller.name | decodeReadOnly}}
                                 </p>
                             </div>
                         </div>
@@ -244,19 +244,19 @@
                                         <b>
                                             Order No
                                         </b>
-                                        : {{ orderVal.name }}
+                                        : {{ orderVal.name | decodeReadOnly}}
                                     </p>
                                     <p>
                                         <b>
                                             Status
                                         </b>
-                                        : {{ orderVal.status.displayName }}
+                                        : {{ orderVal.status.displayName | decodeReadOnly}}
                                     </p>
                                     <p>
                                         <b>
                                             Port
                                         </b>
-                                        : {{ orderVal.port.name }}
+                                        : {{ orderVal.port.name | decodeReadOnly}}
                                     </p>
                                     <p>
                                         <b>
@@ -268,7 +268,7 @@
                                         <b>
                                             Seller
                                         </b>
-                                        : {{ orderVal.seller.name }}
+                                        : {{ orderVal.seller.name | decodeReadOnly}}
                                     </p>
                                 </a>
                             </div>
@@ -298,11 +298,11 @@
                                             <span ng-if="$ctrl.data.request">
                                                 -
                                                 <a href="#/edit-request/{{ $ctrl.data.request.id }}">
-                                                    {{ $ctrl.data.request.name }}
+                                                    {{ $ctrl.data.request.name | decodeReadOnly }}
                                                 </a>
-                                                {{ $ctrl.vesselDetailsFields.Vessel.caption | translate }} {{$ctrl.data.vessel.name}}
+                                                {{ $ctrl.vesselDetailsFields.Vessel.caption | translate }} {{$ctrl.data.vessel.name | decodeReadOnly}}
                                                 -
-                                                {{$ctrl.data.voyageCode}}
+                                                {{$ctrl.data.voyageCode | decodeReadOnly}}
                                             </span>
                                         </span>
                                     </div>
@@ -351,6 +351,7 @@
                                                                        name="{{ $ctrl.vesselDetailsFields.Vessel.name }}"
                                                                        ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Stemmed'].id || $ctrl.data.status.id === $ctrl.STATUS['Delivered'].id || $ctrl.data.status.id === $ctrl.STATUS['PartiallyDelivered'].id || $ctrl.data.status.id === $ctrl.STATUS['PartiallyInvoiced'].id || $ctrl.data.status.id === $ctrl.STATUS['Invoiced'].id || $ctrl.data.status.id === $ctrl.STATUS['Approved'].id || $ctrl.data.status.id === $ctrl.STATUS['WaitingForApproval'].id || $ctrl.data.status.id === $ctrl.STATUS['Confirmed'].id || $ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id"
                                                                        ng-model="$ctrl.data.vessel.name"
+                                                                       decode-input-format
                                                                        required
                                                                        typeahead-append-to-body="true"
                                                                        typeahead-editable="false"
@@ -390,6 +391,7 @@
                                                                    ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Invoiced'].id || $ctrl.data.status.id === $ctrl.STATUS['PartiallyInvoiced'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id"
                                                                    ng-focus="$ctrl.initLookup($ctrl.portFields.carrierCompany.name, $ctrl.data.carrierCompany)"
                                                                    ng-model="$ctrl.data.carrierCompany.name"
+                                                                   decode-input-format
                                                                    required
                                                                    typeahead-append-to-body="true"
                                                                    typeahead-editable="false"
@@ -423,6 +425,7 @@
                                                                    ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id"
                                                                    ng-focus="$ctrl.initLookup($ctrl.portFields.paymentCompany.name, $ctrl.data.paymentCompany)"
                                                                    ng-model="$ctrl.data.paymentCompany.name"
+                                                                   decode-input-format
                                                                    required
                                                                    typeahead-append-to-body="true"
                                                                    typeahead-editable="false"
@@ -454,6 +457,7 @@
                                                                    name="{{ $ctrl.vesselDetailsFields.Buyer.name }}"
                                                                    ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id" 
                                                                    ng-model="$ctrl.data.buyer.name"
+                                                                   decode-input-format
                                                                    required
                                                                    typeahead-append-to-body="true"
                                                                    typeahead-editable="false"
@@ -483,6 +487,7 @@
                                                                    name="{{ $ctrl.sellerDetails.Trader.name }}"
                                                                    ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id" 
                                                                    ng-model="$ctrl.data.trader.name"
+                                                                   decode-input-format
                                                                    typeahead-append-to-body="true"
                                                                    typeahead-editable="false"
                                                                    typeahead-on-select="$ctrl.isTrader = true; $ctrl.selectTrader($item);"
@@ -509,6 +514,7 @@
                                                                    name="{{ $ctrl.sellerDetails.PaymntTerms.name }}"
                                                                    ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id"
                                                                    ng-model="$ctrl.data.paymentTerm.name"
+                                                                   decode-input-format
                                                                    required
                                                                    typeahead-append-to-body="true"
                                                                    typeahead-editable="false"
@@ -541,6 +547,7 @@
                                                                    id="exchangeRate" name="exchangeRate"
                                                                    ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id"
                                                                    ng-model="$ctrl.data.exchangeRate"
+                                                                   decode-input-format
                                                                    type="text">
 
                                                         </div>
@@ -564,6 +571,7 @@
                                                                    name="{{ $ctrl.tenantSettings.serviceDisplayName.name + ' Code' | translate }}"
                                                                    ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Confirmed'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id"
                                                                    ng-model="$ctrl.data.service.name"
+                                                                   decode-input-format
                                                                    required
                                                                    typeahead-append-to-body="true"
                                                                    typeahead-editable="false"
@@ -588,7 +596,7 @@
                                                             {{ $ctrl.portFields.locationName.caption | translate }}
                                                         </label>
                                                         <div class="form_input form_input_{{ $ctrl.portFields.locationName.name }} input-group">
-                                                            {{ $ctrl.data.location.name }}
+                                                            {{ $ctrl.data.location.name | decodeReadOnly}}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -607,6 +615,7 @@
                                                                        name="{{ $ctrl.portFields.locationName.caption | translate }}"
                                                                        ng-click="$ctrl.initLookup($ctrl.portFields.locationName.name, $ctrl.data.location)"
                                                                        ng-model="$ctrl.data.location"
+                                                                       decode-input-format
                                                                        required
                                                                        typeahead-append-to-body="true"
                                                                        typeahead-editable="false"
@@ -760,7 +769,9 @@
                                                                    name="{{ $ctrl.sellerDetails.Seller.caption | translate }}"
                                                                    ng-blur="!$ctrl.data.seller.name ? $ctrl.clearPhysicalSupplier() : null"
                                                                    ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id"
-                                                                   ng-model="$ctrl.data.seller.name" ng-required="true"
+                                                                   ng-model="$ctrl.data.seller.name" 
+                                                                   decode-input-format
+                                                                   ng-required="true"
                                                                    typeahead-append-to-body="true"
                                                                    typeahead-editable="false"
                                                                    typeahead-min-length="1"
@@ -793,6 +804,7 @@
                                                                    ng-click="$ctrl.setSellerDialogType($ctrl.nominationFields.broker.name, $ctrl.data.broker)"
                                                                    ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id"
                                                                    ng-model="$ctrl.data.broker.name"
+                                                                   decode-input-format
                                                                    typeahead-append-to-body="true"
                                                                    typeahead-editable="true"
                                                                    typeahead-on-select="$ctrl.data.broker = $ctrl.setTypeahedVal($ctrl.data.broker, $item, false)"
@@ -827,6 +839,7 @@
                                                                    ng-blur="!$ctrl.data.surveyorCounterparty.name ? $ctrl.data.surveyorCounterparty = null : '' "
                                                                    ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id "
                                                                    ng-model="$ctrl.data.surveyorCounterparty.name"
+                                                                   decode-input-format
                                                                    ng-required="$ctrl.isSurveyorMandatory"
                                                                    typeahead-append-to-body="true"
                                                                    typeahead-editable="false"
@@ -864,6 +877,7 @@
                                                                    ng-click="$ctrl.setSellerDialogType($ctrl.portFields.agentCounterparty.name, $ctrl.data.agentCounterparty)"
                                                                    ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id  || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id"
                                                                    ng-model="$ctrl.data.agentCounterparty.name"
+                                                                   decode-input-format
                                                                    ng-required="$ctrl.isAgentMandatory"
                                                                    typeahead-append-to-body="true"
                                                                    typeahead-editable="false"
@@ -908,6 +922,7 @@
                                                                    ng-click="$ctrl.setSellerDialogType($ctrl.nominationFields.lab.name, $ctrl.data.lab)"
                                                                    ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id  || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id"
                                                                    ng-model="$ctrl.data.lab.name"
+                                                                   decode-input-format
                                                                    typeahead-append-to-body="true"
                                                                    typeahead-editable="false"
                                                                    typeahead-on-select="$ctrl.data.lab = $ctrl.setTypeahedVal($ctrl.data.lab, $item, false)"
@@ -940,6 +955,7 @@
                                                                    ng-click="$ctrl.setSellerDialogType($ctrl.nominationFields.barge.name, $ctrl.data.barge)"
                                                                    ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id  || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id"
                                                                    ng-model="$ctrl.data.barge.name"
+                                                                   decode-input-format
                                                                    typeahead-append-to-body="true"
                                                                    typeahead-editable="false"
                                                                    typeahead-on-select="$ctrl.data.barge = $ctrl.setTypeahedVal($ctrl.data.barge, $item, false)"
@@ -994,7 +1010,8 @@
                                                                         class="col-md-12 form-control"
                                                                         maxlength="500"
                                                                         ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id"
-                                                                        ng-model="$ctrl.data.comments"></textarea>
+                                                                        ng-model="$ctrl.data.comments"
+                                                                        decode-input-format></textarea>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1009,7 +1026,8 @@
                                                         <div class="input-group form_input form_input_{{ $ctrl.portFields.deliveryDate.name }}">
                                                             <textarea class="col-md-12 form-control" maxlength="500"
                                                                       ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id"
-                                                                      ng-model="$ctrl.data.customNonMandatoryAttribute10"></textarea>
+                                                                      ng-model="$ctrl.data.customNonMandatoryAttribute10"
+                                                                      decode-input-format></textarea>
                                                         </div>
                                                     </div>
                                                     </div>
@@ -1037,7 +1055,8 @@
 
                                                             <textarea class="col-md-12 form-control" maxlength="500"
                                                                       ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id"
-                                                                      ng-model="$ctrl.data.customNonMandatoryAttribute1"></textarea>
+                                                                      ng-model="$ctrl.data.customNonMandatoryAttribute1"
+                                                                      decode-input-format></textarea>
 
                                                         </div>
                                                     </div></div>
@@ -1049,6 +1068,7 @@
                                                         <div class="input-group form_input form_input_{{ $ctrl.portFields.deliveryDate.name }}">
                                                                 <textarea class="col-md-12 form-control" maxlength="1000"
                                                                           ng-model="$ctrl.data.cancelOrderComments"
+                                                                          decode-input-format
                                                                           ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Closed'].id"
                                                                           readonly></textarea>
                                                         </div>
@@ -1132,7 +1152,7 @@
                                 </td>
                                 <td style="max-width: initial; min-width: 220px;">
                                     <div class="input-group"
-                                         data-original-title="{{ $ctrl.getProductTooltipByProductId(product.product.id) }}"
+                                         data-original-title="{{ $ctrl.getProductTooltipByProductId(product.product.id) | decodeReadOnly }}"
                                          ng-init="product.tempProduct = $ctrl.setDefaultTempProduct(product.product)"
                                          tooltip
                                          tooltiptrigger="hover">
@@ -1142,6 +1162,7 @@
                                                ng-disabled="$ctrl.disabledProduct[product.id]"
                                                ng-focus="$ctrl.initLookup($ctrl.productColumns.Product.name, product)"
                                                ng-if="!$ctrl.refreshProduct" ng-model="product.tempProduct"
+                                               decode-input-format
                                                ng-required="true && product.status.id != $ctrl.STATUS['Cancelled'].id"
                                                typeahead-append-to-body="true"
                                                typeahead-append-to-body="true"
@@ -1162,7 +1183,7 @@
                                     <div class="input-group">
                                         <input class="form-control" id="product_type_{{ $index }}"
                                                name="Product Type {{$index}}" ng-disabled="true"
-                                               ng-model="product.productType.name" ng-required="false"
+                                               ng-model="product.productType.name" decode-input-format ng-required="false"
                                         />
                                     </div>
                                 </td>
@@ -1171,7 +1192,7 @@
                                             id="product_specGroup_{{ $index }}"
                                             ng-class="{'border-red-thunderbird' : ($ctrl.hasMissingSpecGroup && product.status.name != 'Cancelled' && !product.specGroup)}"
                                             ng-disabled="$ctrl.disabledProduct[product.id]" ng-model="product.specGroup"
-                                            ng-options="specGroup as specGroup.name for specGroup in product.specGroups track by specGroup.id"
+                                            ng-options="specGroup as specGroup.name for specGroup in product.specGroups | decodeReadOnly track by specGroup.id"
                                             style="width: calc(100% - 20px);"></select>
                                     <a class="pull-left"
                                        ng-click="modalSpecGroupEdit(product, NAV.orderId, 'order', $ctrl.data)"
@@ -1186,7 +1207,7 @@
                                             id="product_delOption_{{ $index }}"
                                             ng-disabled="$ctrl.disabledProduct[product.id]"
                                             ng-model="product.deliveryOption"
-                                            ng-options="delOption as delOption.name for delOption in $ctrl.lists.DeliveryOption track by delOption.id"></select>
+                                            ng-options="delOption as delOption.name for delOption in $ctrl.lists.DeliveryOption | decodeReadOnly track by delOption.id"></select>
                                 </td>
                                 <td style="max-width: 300px;min-width: 300px">
                                     <div class="input-group" style="width: 100%">
@@ -1195,6 +1216,7 @@
                                                name="Product {{$index+1}} ({{product.tempProduct.name}}) Physical Supplier"
                                                ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.disabledProduct[product.id]"
                                                ng-model="product.physicalSupplier"
+                                               decode-input-format
                                                ng-mouseover="$ctrl.setSellerDialogType($ctrl.productColumns.physicalSupplier.name, product.physicalSupplier)"
                                                ng-required="product.status.id != $ctrl.STATUS['Cancelled'].id"
                                                typeahead-append-to-body="true"
@@ -1331,7 +1353,7 @@
                                                     ng-change="$ctrl.productUomChanged(product, true)"
                                                     ng-disabled="product.contractProductId != null  || $ctrl.disabledProduct[product.id]"
                                                     ng-model="product.priceUom"
-                                                    ng-options="item as item.name for item in $ctrl.lists.Uom track by item.id"></select>
+                                                    ng-options="item as item.name for item in $ctrl.lists.Uom | decodeReadOnly track by item.id"></select>
                                         </div>
 
                                         <!-- currency -->
@@ -1345,7 +1367,7 @@
                                                     ng-change="$ctrl.changeAllCurrencyInOrder(product.currency)"
                                                     ng-disabled="key != 0 || $ctrl.disabledProduct[product.id]"
                                                     ng-model="product.currency"
-                                                    ng-options="item as item.code for item in $ctrl.lists.Currency track by item.id"
+                                                    ng-options="item as item.code for item in $ctrl.lists.Currency | decodeReadOnly track by item.id"
                                             ></select>
                                         </div>
                                     </div>
@@ -1353,10 +1375,10 @@
                                 <!--  end unit price for product -->
                                 <td style="max-width: 180px;min-width: 140px" ng-if="!$ctrl.tenantSettings.shiptechLite">
                                             <span class="form-control disabled"
-                                                  data-original-title="{{product.formulaDescription ? product.formulaDescription : product.formula.name}}"
+                                                  data-original-title="{{product.formulaDescription ? (product.formulaDescription | decodeReadOnly) : (product.formula.name | decodeReadOnly)}}"
                                                   style="background: #e6eaec;overflow: hidden;"
                                                   tooltip>
-                                                {{product.formulaDescription ? product.formulaDescription : product.formula.name}}
+                                                {{product.formulaDescription ? (product.formulaDescription | decodeReadOnly) : (product.formula.name | decodeReadOnly)}}
                                             </span>
 
                                     {{product.pricingType.id !== $ctrl.PRICING_TYPE_FORMULA_ID ?
@@ -1384,7 +1406,7 @@
                                             ng-disabled="$ctrl.disabledProduct[product.id]"
                                             ng-init="!product.id ? (product.contractId ? product.agreementType = $ctrl.defaultContractAgreementType : product.agreementType = $ctrl.defaultSpotAgreementType) : '';"
                                             ng-model="product.agreementType"
-                                            ng-options="agreementType as agreementType.name for agreementType in (product.contract.id ? $ctrl.contractAgreementTypesList : $ctrl.spotAgreementTypesList) track by agreementType.id"
+                                            ng-options="agreementType as agreementType.name for agreementType in (product.contract.id ? $ctrl.contractAgreementTypesList : $ctrl.spotAgreementTypesList) | decodeReadOnly track by agreementType.id"
                                             ng-required="true && product.status.id != $ctrl.STATUS['Cancelled'].id"
                                     ></select>
 
@@ -1406,14 +1428,14 @@
                                             ng-change=" product.contract = null; product.contractProductId = null"
                                             ng-disabled="$ctrl.disabledProduct[product.id] || disabledPricingType[product.id]"
                                             ng-model="product.pricingType"
-                                            ng-options="pricingType as pricingType.name for pricingType in $ctrl.lists.PricingType track by pricingType.id"></select>
+                                            ng-options="pricingType as pricingType.name for pricingType in $ctrl.lists.PricingType | decodeReadOnly track by pricingType.id"></select>
 
                                 </td>
                                 <td style="max-width: 180px;min-width: 140px; overflow: hidden;">
-                                    <span class="orderProductTable" data-original-title="{{ product.comments }}"
+                                    <span class="orderProductTable" data-original-title="{{ product.comments | decodeReadOnly }}"
                                           ng-disabled="$ctrl.disabledProduct[product.id]"
                                           style="text-overflow: ellipsis;"
-                                          tooltip>  {{ product.comments }} </span>
+                                          tooltip>  {{ product.comments | decodeReadOnly}} </span>
                                 </td>
                                 <td style="max-width: 250px;min-width: 230px" ng-if="!$ctrl.tenantSettings.shiptechLite">
                                     <a href="/#/contracts/contract/edit/{{ product.contract.id }}"
@@ -1429,6 +1451,7 @@
                                                ng-click="$ctrl.productContractSelecting = product.id ? product.id : product.uniqueIdUI"
                                                ng-disabled="$ctrl.disabledProduct[product.id] || product.requestOfferId"
                                                ng-model="product.contract.name"
+                                               decode-input-format
                                                typeahead-append-to-body="true"
                                                typeahead-editable="false"
                                                typeahead-on-select="selectProductContract($ctrl.productContractSelecting, $item)"
@@ -1511,7 +1534,7 @@
                                                     id="product_robOnArrivalUom_{{ $index }}"
                                                     ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields || product.status.name == 'Closed'|| product.status.name == 'Cancelled'"
                                                     ng-model="$ctrl.data.products[key].robOnArrivalUom"
-                                                    ng-options="uomItem as uomItem.name for uomItem in $ctrl.lists.Uom track by uomItem.id"
+                                                    ng-options="uomItem as uomItem.name for uomItem in $ctrl.lists.Uom | decodeReadOnly track by uomItem.id"
                                                     ng-required="product.product !== null && !$ctrl.requestTenantSettings.isPrerequestEnabled"
                                                     style="min-width: 75px; max-width: 75px;"></select>
                                         </div>
@@ -1534,7 +1557,7 @@
                                                     id="product_roundVoyageConsumptionUom_{{ $index }}"
                                                     ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields || product.status.name == 'Closed' || product.status.name == 'Cancelled'"
                                                     ng-model="product.roundVoyageConsumptionUom"
-                                                    ng-options="uomItem as uomItem.name for uomItem in $ctrl.lists.Uom track by uomItem.id"
+                                                    ng-options="uomItem as uomItem.name for uomItem in $ctrl.lists.Uom | decodeReadOnly track by uomItem.id"
                                                     ng-required="product.product !== null && !$ctrl.requestTenantSettings.isPrerequestEnabled"
                                                     style="min-width: 75px; max-width: 75px;"></select>
                                         </div>
@@ -1545,7 +1568,7 @@
                                         <select style="width: 30%;"  
                                                 name="Product {{$index}} mass UOM" 
                                                 ng-model="product.convFactorMassUom" 
-                                                ng-options="item as item.name for item in  $ctrl.listsCache.UomMass track by item.id" 
+                                                ng-options="item as item.name for item in  $ctrl.listsCache.UomMass | decodeReadOnly track by item.id" 
                                                 class="form-control"></select>
                                         <input  style="width: 40%;" 
                                                 type="text" 
@@ -1557,19 +1580,19 @@
                                         <select style="width: 30%;"  
                                                 name="Product {{$index}} mass UOM" 
                                                 ng-model="product.convFactorVolumeUom" 
-                                                ng-options="item as item.name for item in $ctrl.listsCache.UomVolume track by item.id" 
+                                                ng-options="item as item.name for item in $ctrl.listsCache.UomVolume | decodeReadOnly track by item.id" 
                                                 class="form-control"></select>        
                                 </td>
                                 <td  ng-if="!product.overrideConversionFactor || $ctrl.disabledProduct[product.id]"
                                     style="max-width: 250px;min-width: 250px; display: flex; padding: 1px 0px !important">
                                         <input class="form-control" style="width: 30%;" id="conversion_mass_{{ $index }}"
                                            name="Conversion Mass {{$index}}" ng-disabled="true"
-                                           ng-model="product.convFactorMassUom.name" ng-required="false"/>
+                                           ng-model="product.convFactorMassUom.name" decode-input-format ng-required="false"/>
                                         <input class="form-control" style="width: 40%;" id="conversion_value_{{ $index }}"
                                            name="Conversion Factor {{$index}}" ng-disabled="true"
                                            ng-model="product.convFactorValue" ng-required="false"/>
                                         <input class="form-control" style="width: 30%;" id="conversion_volume_{{ $index }}"
-                                           name="Conversion Volume {{$index}}" ng-disabled="true"
+                                           name="Conversion Volume {{$index}}" decode-input-format ng-disabled="true"
                                            ng-model="product.convFactorVolumeUom.name" ng-required="false"/>
                                 </td>
                                 <td style="max-width: 180px;min-width: 140px">
@@ -1645,7 +1668,7 @@
                                             ng-change="$ctrl.getDefaultUomForAdditionalCost(additionalCost, $ctrl.additionalCostApplicableFor[additionalCost.fakeId]); $ctrl.additionalCostNameChanged(additionalCost); $ctrl.validateAdditionalCostAllowNegative(additionalCost.price,additionalCost.additionalCost.allowNegative, $index, additionalCost.additionalCost); additionalCost.costLineChanged = true"
                                             ng-disabled="additionalCost.disabled || $ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id  || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id || ['Delivered', 'PartiallyDelivered', 'Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) != -1"
                                             ng-model="additionalCost.additionalCost"
-                                            ng-options="addCost as addCost.name for addCost in $ctrl.lists.AdditionalCost track by addCost.id"></select>
+                                            ng-options="addCost as addCost.name for addCost in $ctrl.lists.AdditionalCost | decodeReadOnly track by addCost.id"></select>
                                 </td>
                                 <td>
                                     <!--  cost type -->
@@ -1655,7 +1678,7 @@
                                             ng-change="$ctrl.costTypeChanged(additionalCost); additionalCost.costLineChanged = true"
                                             ng-disabled="additionalCost.disabled || $ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id || ['Delivered', 'PartiallyDelivered', 'Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) != -1"
                                             ng-model="additionalCost.costType"
-                                            ng-options="costType as costType.name for costType in getAdditionalCostDefaultCostType(additionalCost) track by costType.id"
+                                            ng-options="costType as costType.name for costType in getAdditionalCostDefaultCostType(additionalCost) | decodeReadOnly track by costType.id"
                                             ng-required="additionalCost.additionalCost"></select>
                                 </td>
                                 <td>
@@ -1667,12 +1690,12 @@
                                         <div class="input-group-btn">
                                             <button class="btn dropdown-toggle" data-toggle="dropdown" disabled
                                                     readonly type="button">
-                                                {{ additionalCost.quantityUom.name }}
+                                                {{ additionalCost.quantityUom.name | decodeReadOnly }}
                                                 <span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu pull-right">
                                                 <li ng-click="$ctrl.updateModel(additionalCost.quantityUom, uom)"
-                                                    ng-repeat="uom in $ctrl.lists.Uom">
+                                                    ng-repeat="uom in $ctrl.lists.Uom | decodeReadOnly">
                                                     <a>
                                                         {{ uom.name }}
                                                     </a>
@@ -1709,7 +1732,7 @@
                                                     ng-change="$ctrl.addPriceUomChanged(additionalCost)"
                                                     ng-disabled="!$ctrl.additionalCostPriceUomEnabled(additionalCost) || $ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id || ['Delivered', 'PartiallyDelivered', 'Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) != -1"
                                                     ng-model="additionalCost.priceUom"
-                                                    ng-options="item as item.name for item in $ctrl.lists.Uom track by item.id"></select>
+                                                    ng-options="item as item.name for item in $ctrl.lists.Uom | decodeReadOnly track by item.id"></select>
 
                                             <span hidden>{{ additionalCost.costType.name == 'Flat' ? additionalCost.priceUom = null : '' }}</span>
                                         </div>
@@ -1718,12 +1741,12 @@
                                             <button class="btn dropdown-toggle" data-toggle="dropdown" disabled
                                                     ng-class="{'ng-invalid' : additionalCost.additionalCost && !additionalCost.currency.id}"
                                                     type="button">
-                                                {{ additionalCost.currency.code }}
+                                                {{ additionalCost.currency.code | decodeReadOnly }}
                                                 <span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu pull-right">
                                                 <li ng-click="$ctrl.updateModel(additionalCost.currency, currency)"
-                                                    ng-repeat="currency in $ctrl.lists.Currency">
+                                                    ng-repeat="currency in $ctrl.lists.Currency | decodeReadOnly">
                                                     <a>
                                                         {{ currency.code }}
                                                     </a>
@@ -1743,7 +1766,7 @@
                                             ng-change="$ctrl.applicableForChange(additionalCost, $ctrl.additionalCostApplicableFor[additionalCost.fakeId])"
                                             ng-disabled="!additionalCost.additionalCost || $ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id || additionalCost.disabledApplicableFor || (additionalCost.isTaxComponent && additionalCost.costType.name == 'Percent') || ['Delivered', 'PartiallyDelivered', 'Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) != -1"
                                             ng-model="$ctrl.additionalCostApplicableFor[additionalCost.fakeId]"
-                                            ng-options="product as ($ctrl.sumThose(idx,1) +' - '+ product.product.name) for (idx, product) in $ctrl.data.products | aplicableCostForProduct | orderBy : 'productType.id'"
+                                            ng-options="product as ($ctrl.sumThose(idx,1) +' - '+ product.product.name) | decodeReadOnly for (idx, product) in $ctrl.data.products | aplicableCostForProduct | orderBy : 'productType.id' "
                                     >
 
                                         <option selected value="">
@@ -1759,12 +1782,12 @@
                                         <div class="input-group-btn">
                                             <button class="btn dropdown-toggle" data-toggle="dropdown" disabled
                                                     readonly type="button">
-                                                {{ additionalCost.currency.code }}
+                                                {{ additionalCost.currency.code | decodeReadOnly}}
                                                 <span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu pull-right">
                                                 <li ng-click="$ctrl.updateModel(additionalCost.currency, currency)"
-                                                    ng-repeat="currency in $ctrl.lists.Currency">
+                                                    ng-repeat="currency in $ctrl.lists.Currency | decodeReadOnly">
                                                     <a>
                                                         {{ currency.code }}
                                                     </a>
@@ -1791,12 +1814,12 @@
                                         <div class="input-group-btn">
                                             <button class="btn dropdown-toggle" data-toggle="dropdown" disabled
                                                     readonly type="button">
-                                                {{ additionalCost.currency.code }}
+                                                {{ additionalCost.currency.code | decodeReadOnly }}
                                                 <span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu pull-right">
                                                 <li ng-click="$ctrl.updateModel(additionalCost.currency, currency)"
-                                                    ng-repeat="currency in $ctrl.lists.Currency">
+                                                    ng-repeat="currency in $ctrl.lists.Currency | decodeReadOnly">
                                                     <a>
                                                         {{ currency.code }}
                                                     </a>
@@ -1813,14 +1836,14 @@
                                         <div class="input-group-btn">
                                             <button class="btn dropdown-toggle" data-toggle="dropdown" disabled
                                                     readonly type="button">
-                                                {{ additionalCost.currency.code }}
+                                                {{ additionalCost.currency.code | decodeReadOnly }}
                                                 <span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu pull-right">
                                                 <li ng-click="$ctrl.updateModel(additionalCost.currency, currency)"
                                                     ng-repeat="currency in $ctrl.lists.Currency">
                                                     <a>
-                                                        {{ currency.code }}
+                                                        {{ currency.code | decodeReadOnly }}
                                                     </a>
                                                 </li>
                                             </ul>
@@ -1837,14 +1860,14 @@
                                             <button aria-expanded="false" aria-haspopup="true"
                                                     class="btn dropdown-toggle"
                                                     data-toggle="dropdown" disabled type="button">
-                                                {{ additionalCost.currency.code }}
+                                                {{ additionalCost.currency.code | decodeReadOnly}}
                                                 <span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu pull-right">
                                                 <li ng-click="$ctrl.updateModel(additionalCost.currency, currency)"
                                                     ng-repeat="currency in $ctrl.lists.Currency">
                                                     <a>
-                                                        {{ currency.code }}
+                                                        {{ currency.code | decodeReadOnly}}
                                                     </a>
                                                 </li>
                                             </ul>

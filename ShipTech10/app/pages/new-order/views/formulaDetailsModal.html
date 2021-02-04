@@ -14,12 +14,12 @@
             <b>
                 {{ 'PAGES.NEW_ORDER.VESSEL' | translate }} :
             </b>
-            {{ $ctrl.formulaDetailsData.vessel.name }}
+            {{ $ctrl.formulaDetailsData.vessel.name | decodeReadOnly }}
             <br />
             <b>
                 {{ 'PAGES.NEW_ORDER.PRODUCT' | translate }} :
             </b>
-            {{ $ctrl.formulaDetailsData.product.name }}
+            {{ $ctrl.formulaDetailsData.product.name | decodeReadOnly }}
         </div>
         <div class="col-sm-4">
             <b>
@@ -35,7 +35,7 @@
             <b>
                 {{ 'PAGES.NEW_ORDER.LOCATION' | translate }} :
             </b>
-            {{ $ctrl.formulaDetailsData.location.name }}
+            {{ $ctrl.formulaDetailsData.location.name | decodeReadOnly }}
         </div>
     </div>
     <br />
@@ -44,7 +44,7 @@
             <b>
                 {{ 'PAGES.NEW_ORDER.SELLER' | translate }} :
             </b>
-            {{ $ctrl.formulaDetailsData.seller.name }}
+            {{ $ctrl.formulaDetailsData.seller.name | decodeReadOnly }}
         </div>
     </div>
     <div class="row">
@@ -52,7 +52,7 @@
             <b>
                 {{ 'PAGES.NEW_ORDER.PRICING_FORMULA' | translate }} :
             </b>
-            {{ $ctrl.formulaDetailsData.formula.name }}
+            {{ $ctrl.formulaDetailsData.formula.name | decodeReadOnly }}
         </div>
     </div>
 
@@ -66,7 +66,7 @@
                 </b>
             </span>
             <span class="pull-right">
-                * All values are in {{ $ctrl.currency.code }} / {{ $ctrl.tenantUom.name }}
+                * All values are in {{ $ctrl.currency.code | decodeReadOnly }} / {{ $ctrl.tenantUom.name | decodeReadOnly }}
             </span>
         </div>
     </div>

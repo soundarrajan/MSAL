@@ -30,13 +30,13 @@
             <tbody>
                 <tr ng-repeat="item in $ctrl.requestOfferItems track by $index">
                     <td>
-                        {{ item.sellerName }}
+                        {{ item.sellerName | decodeReadOnly}}
                     </td> 
                     <td>
-                        {{ item.locationName }}
+                        {{ item.locationName | decodeReadOnly}}
                     </td>
                     <td>
-                        {{ item.productName }}
+                        {{ item.productName | decodeReadOnly}}
                     </td>
                     <td>
                         {{ item.minQuantity | number:3 }}
@@ -56,7 +56,7 @@
 
                     </td>
                     <td>
-                        {{ item.physicalSupplierName }}
+                        {{ item.physicalSupplierName | decodeReadOnly}}
                     </td>
                 </tr>
             </tbody>
@@ -78,22 +78,22 @@
                     <tr ng-repeat="item in $ctrl.availableContractItems track by $index" ng-if="$index < 10">
 
                         <td>
-                            {{ item.seller.name }}
+                            {{ item.seller.name | decodeReadOnly}}
                         </td>
                         <td>
-                            {{ item.location.name }}
+                            {{ item.location.name | decodeReadOnly}}
                         </td>
                         <td>
-                            {{ item.product.name }}
+                            {{ item.product.name | decodeReadOnly}}
                         </td>
                         <td style="max-width: 100px; text-overflow: ellipsis; overflow: hidden" tooltip data-original-title="{{ item.contract.name }}">
-                            {{ item.contract.name }}
+                            {{ item.contract.name | decodeReadOnly}}
                         </td>
                         <td style="max-width: 100px; text-overflow: ellipsis; overflow: hidden" tooltip data-original-title="{{ item.formulaDescription }}">
-                            {{ item.formulaDescription }}
+                            {{ item.formulaDescription | decodeReadOnly}}
                         </td>
                         <td style="max-width: 100px; text-overflow: ellipsis; overflow: hidden" tooltip data-original-title="{{ item.pricingScheduleOptionName }}">
-                            {{ item.pricingScheduleOptionName }}
+                            {{ item.pricingScheduleOptionName | decodeReadOnly}}
                         </td>
                         <td>
                             {{ item.contractedQuantity  | number:3 }}
@@ -105,13 +105,13 @@
                             {{ item.availableQuantity  | number:3 }}
                         </td>
                         <td>
-                            {{ item.uom.name }}
+                            {{ item.uom.name | decodeReadOnly}}
                         </td>
                         <td>
                             {{ item.convertedPrice | number:3 }}
                         </td>
                         <td>
-                            {{ item.priceUom.name }}
+                            {{ item.priceUom.name | decodeReadOnly}}
                         </td>
                     </tr>
                 </tbody>

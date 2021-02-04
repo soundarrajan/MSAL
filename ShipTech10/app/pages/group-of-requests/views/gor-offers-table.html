@@ -127,7 +127,7 @@
                 <!-- Expanded request tab -->
                 <th id="generatedThId152" ng-show="!$ctrl.isRequestTabExpanded($index) && !request.isDeleted" colspan="{{request.newProductCount*2 + 1 }}" class="request-tab-expanded left-border border-selected-left border-selected-top font-white" style="background: #86cdd8; position: relative;">
                     <form class="form-inline" style="position: absolute;height: 100%;top: 0;background: #f1f5f8;left: 0;min-width: 190px;text-align: center;color: #000;box-shadow: 0px 0px 8px 1px #3641504f; padding: 0 5px; font-size:16px;">
-                        <label style="height: 100%;padding: 0;margin: 0;position: relative;float: left;display: flex;justify-content: center;align-items: center;" class="control-label"><b>{{request.name}} - {{request.vesselDetails.vessel.name}}</b></label>
+                        <label style="height: 100%;padding: 0;margin: 0;position: relative;float: left;display: flex;justify-content: center;align-items: center;" class="control-label"><b>{{request.name | decodeReadOnly}} - {{request.vesselDetails.vessel.name | decodeReadOnly}}</b></label>
                     </form>
                 </th>
     
@@ -153,7 +153,7 @@
                                 <option value="{{$ctrl.SELLER_SORT_ORDER.ALPHABET}}">Alphabet</option>
                             </select>
                             <div class="input-group">
-                                <input  ng-disabled="!$ctrl.sellerTypesAreSelected" ng-model="$ctrl.newSeller[0]" placeholder="Seller" uib-typeahead="seller as seller.name for seller in $ctrl.sellerAutocompleteList  | typeaheadCustomFilter:$viewValue:'name'" class="form-control" typeahead-on-select="$ctrl.addSellerToAllLocations($ctrl.newSeller[0].id, $ctrl.locations)" ng-click="$ctrl.setLookupInput(null)" typeahead-editable="false" ng-keypress="$ctrl.keyPress()">
+                                <input decode-input-format ng-disabled="!$ctrl.sellerTypesAreSelected" ng-model="$ctrl.newSeller[0]" placeholder="Seller" uib-typeahead="seller as seller.name for seller in $ctrl.sellerAutocompleteList  | typeaheadCustomFilter:$viewValue:'name' | decodeReadOnly" class="form-control" typeahead-on-select="$ctrl.addSellerToAllLocations($ctrl.newSeller[0].id, $ctrl.locations)" ng-click="$ctrl.setLookupInput(null)" typeahead-editable="false" ng-keypress="$ctrl.keyPress()">
 
                                 <span ng-controller="Controller_Master as CM" class="input-group-addon {{$ctrl.sellerTypesAreSelected ? '' : 'disabled'}}" ng-click="$ctrl.setLookupInput(null); triggerModal('general', 'procurement_requestcounterpartytypes', 'seller', 'seller','','', '', $ctrl.sellerTypeIds)">
                                     <i class="fa fa-search"></i>
@@ -220,7 +220,7 @@
                     <form class="form-inline" style="width: calc(100% - 20px); display: flex; align-items: center; height: 35px;justify-content: space-between;">
                         <div class="form-group-sm">
                             
-                            <label class="control-label font-dark" ><b ng-click="$ctrl.goToOrderForProduct(product)" ng-class="{'productHasOrderLink' : $ctrl.checkIfProductHasOrder(product)}">{{product.product.name}}</b></label>
+                            <label class="control-label font-dark" ><b ng-click="$ctrl.goToOrderForProduct(product)" ng-class="{'productHasOrderLink' : $ctrl.checkIfProductHasOrder(product)}">{{product.product.name | decodeReadOnly}}</b></label>
                         </div>
                         <a href="" style="margin-right: 10px;font-size: 20px;" ng-if="$ctrl.checkIfCanInitEnergyCalculation(product)" ng-click="$ctrl.openGeneralWidgetBlade('energyCalculation', product)"><i class="fa fa-tint font-dark"></i></a>
                     </form>
@@ -294,7 +294,7 @@
                                 <i style="font-weight: bold;" class="fa fa-angle-double-up" ng-show="location[0].fullLocationSellersExpanded" ng-click="location[0].fullLocationSellersExpanded = !location[0].fullLocationSellersExpanded"></i>
                             </b>
                             &nbsp;&nbsp;
-                            <b tooltip tooltip-trigger="hover" data-original-title="{{location[0].portRestrictionComments}}">{{location[0].location.name}}</b>
+                            <b tooltip tooltip-trigger="hover" data-original-title="{{location[0].portRestrictionComments | decodeReadOnly}}">{{location[0].location.name | decodeReadOnly}}</b>
                         </div>
                     </form>
                 </th>
@@ -339,7 +339,7 @@
                             <div class="input-group pull-right" style=" max-width: 100px; float: right;">
                                 <input class="form-control ng-pristine ng-untouched ng-valid ng-not-empty" style="height:26px" disabled ng-model="maxQuantity">
                                 <span class="input-group-addon bg-grey-steel" style="padding: 5px;"><b>
-                                    {{maxQuantityUom.name}}
+                                    {{maxQuantityUom.name | decodeReadOnly}}
                                 </b></span>
                             </div>
                         </span>
@@ -378,9 +378,7 @@
                         <div class="form-group-sm" style="display: flex; align-items: center;">
                             <span>Counterparty &nbsp;&nbsp;</span>
                             <div class="input-group">
-                                <input ng-disabled="!$ctrl.sellerTypesAreSelected" ng-model="$ctrl.newSeller[location.id]" placeholder="Add counterparty" uib-typeahead="seller as seller.name for seller in $ctrl.sellerAutocompleteList | typeaheadCustomFilter:$viewValue:'name'" class="form-control" typeahead-on-select="$ctrl.addSellerToLocations($ctrl.newSeller[location.id].id, location)" ng-click="$ctrl.setLookupInput(location);" typeahead-editable="false"  ng-keypress="$ctrl.keyPress()">
-
-                                    
+                                <input decode-input-format ng-disabled="!$ctrl.sellerTypesAreSelected" ng-model="$ctrl.newSeller[location.id]" placeholder="Add counterparty" uib-typeahead="seller as seller.name for seller in $ctrl.sellerAutocompleteList | typeaheadCustomFilter:$viewValue:'name'" class="form-control" typeahead-on-select="$ctrl.addSellerToLocations($ctrl.newSeller[location.id].id, location)" ng-click="$ctrl.setLookupInput(location);" typeahead-editable="false"  ng-keypress="$ctrl.keyPress()">          
                                 <span ng-controller="Controller_Master as CM" class="input-group-addon {{$ctrl.sellerTypesAreSelected ? '' : 'disabled' }}" ng-click="$ctrl.newSellerLocation = location; $ctrl.setLookupInput(location); triggerModal('general', 'procurement_requestcounterpartytypes', 'counterparty', 'counterparty','','', '', $ctrl.sellerTypeIds)">
                                     <i class="fa fa-search"></i>
                                 </span>
@@ -504,7 +502,7 @@
                 </td>
                 <td style="max-width:160px; min-width: 160px;">
                     <div style="position:relative">
-                        <input class="form-control bg-white" value="{{seller.sellerCounterparty.name}}" ng-readonly="true" style="padding-right: 30px"/>
+                        <input class="form-control bg-white" value="{{seller.sellerCounterparty.name | decodeReadOnly}}" ng-readonly="true" style="padding-right: 30px"/>
                         <span ng-init="uniqueCounterpartyType = $ctrl.calculateUniqueCounterpartyType(seller)" style="position: absolute;top: 10px;right: 10px;">
                             <i class="fa fa-user {{uniqueCounterpartyType.counterpartyTypeFontClass}}"></i>
                         </span>
@@ -513,7 +511,7 @@
                 <td style="position: relative;">
                     <div class="input-group physicalSupplier" style="min-width:200px; padding-top: 1px; display: inline-block; float: none; {{$ctrl.packagesConfigurationEnabled && (seller.packageType == 'buyer' || seller.packageType == 'seller') ? 'margin-right: 30px;' : '';}}" ng-if="!$ctrl.fieldVisibility.isPhysicalSupplierHidden" ng-click="$ctrl.checkIfPhysicalSupplierChanged(seller.offers[0].physicalSupplierCounterparty, seller)" >
                         <span ng-init="seller.oldPhysicalSupplier = seller.offers[0].physicalSupplierCounterparty"></span>
-                        <input ng-model="seller.offers[0].physicalSupplierCounterparty"
+                        <input decode-input-format ng-model="seller.offers[0].physicalSupplierCounterparty"
                         class="form-control"
                         placeholder="Physical Supplier"
                         uib-typeahead="seller as seller.name for seller in $ctrl.physicalSupplierList  | typeaheadCustomFilter:$viewValue:'name'"
@@ -535,10 +533,10 @@
 
                     <div class="input-group" style="min-width:250px; padding-top: 1px; display: inline-block; float: none; {{$ctrl.packagesConfigurationEnabled && (seller.packageType == 'buyer' || seller.packageType == 'seller') ? 'margin-right: 30px;' : '';}}" ng-if="!$ctrl.fieldVisibility.isBrokerHidden" ng-show="$ctrl.counterpartyDetailsIsExpanded">
                         <span ng-init="seller.oldBroker = seller.offers[0].brokerCounterparty"></span>
-                        <input ng-model="seller.offers[0].brokerCounterparty"
+                        <input  decode-input-format ng-model="seller.offers[0].brokerCounterparty"
                         class="form-control"
                         placeholder="Broker"
-                        uib-typeahead="seller as seller.name for seller in $ctrl.brokerList  | typeaheadCustomFilter:$viewValue:'name'"
+                        uib-typeahead="seller as seller.name for seller in $ctrl.brokerList  | typeaheadCustomFilter:$viewValue:'name' | decodeReadOnly"
                         typeahead-on-select="$ctrl.updateBrokerForSellers(seller, seller.offers[0].brokerCounterparty, location)"
                         ng-click="$ctrl.setLookupInput(null); seller.oldBroker = seller.offers[0].brokerCounterparty"
                         typeahead-editable="false"
@@ -558,10 +556,10 @@
     
                     <div class="input-group" style="min-width:250px; padding-top: 1px; display: inline-block; float: none; {{$ctrl.packagesConfigurationEnabled && (seller.packageType == 'buyer' || seller.packageType == 'seller') ? 'margin-right: 30px;' : '';}}" ng-if="!$ctrl.fieldVisibility.isSellerContactHidden" ng-show="$ctrl.counterpartyDetailsIsExpanded">
                         <span ng-init="seller.oldContact = seller.offers[0].contactCounterparty; $ctrl.getContactListForSeller(seller)"></span>
-                        <input ng-model="seller.offers[0].contactCounterparty"
+                        <input decode-input-format ng-model="seller.offers[0].contactCounterparty"
                         class="form-control"
                         placeholder="Contact"
-                        uib-typeahead="seller as seller.name for seller in $ctrl.sellerContactList['s'+seller.sellerCounterparty.id]  | typeaheadCustomFilter:$viewValue:'name'"
+                        uib-typeahead="seller as seller.name for seller in $ctrl.sellerContactList['s'+seller.sellerCounterparty.id]  | typeaheadCustomFilter:$viewValue:'name' | decodeReadOnly"
                         typeahead-on-select="$ctrl.updateContactForSellers(seller, seller.offers[0].contactCounterparty, location)"
                         ng-click="$ctrl.setLookupInput(null); seller.oldContact = seller.offers[0].contactCounterparty"
                         typeahead-editable="false"
@@ -638,7 +636,7 @@
 
                     <div ng-mouseover="generalSellerCommenttooltip['seller.id'] = true; $ctrl.setWidthTooltip(seller) " ng-mouseleave="generalSellerCommenttooltip['seller.id'] = false;" tooltip-trigger="click" data-original-title="{{seller.generalSellerComment}}" class="pull-left energy-content-cell" style="position:relative; width:100px; height: 100%;overflow:visible;">
                         <span style="max-width: 100%; overflow: hidden; display: block; text-overflow: ellipsis;">{{seller.generalSellerComment}}</span>
-                        <span class="groupOfRequestTableTooltip" ng-show="generalSellerCommenttooltip['seller.id'] && seller.generalSellerComment">{{seller.generalSellerComment}}</span>
+                        <span class="groupOfRequestTableTooltip" ng-show="generalSellerCommenttooltip['seller.id'] && seller.generalSellerComment">{{seller.generalSellerComment | decodeReadOnly}}</span>
                     </div>
                     <div ng-mouseover="portSellerStatustooltip['seller.id'] = true; $ctrl.setWidthTooltip(seller)" ng-mouseleave="portSellerStatustooltip['seller.id'] = false;" class="pull-left energy-content-cell" style="position:relative; width:100px; height: 100%; overflow:visible;">
                         <span style="max-width: 100%; overflow: hidden;display: block; text-overflow: ellipsis;">{{seller.portSellerStatus}}</span>
@@ -646,7 +644,7 @@
                     </div>
                     <div ng-mouseover="portSellerCommenttooltip['seller.id'] = true; $ctrl.setWidthTooltip(seller)" ng-mouseleave="portSellerCommenttooltip['seller.id'] = false;" class="pull-left energy-content-cell" style="position:relative; width:100px; height: 100%; overflow:visible;">
                         <span style="max-width: 100%; overflow: hidden;display: block; text-overflow: ellipsis;">{{seller.portSellerComment}}</span>
-                        <span class="groupOfRequestTableTooltip" ng-show="portSellerCommenttooltip['seller.id'] && seller.portSellerComment">{{seller.portSellerComment}}</span>
+                        <span class="groupOfRequestTableTooltip" ng-show="portSellerCommenttooltip['seller.id'] && seller.portSellerComment">{{seller.portSellerComment | decodeReadOnly}}</span>
                     </div>                    
 
                 </td>
@@ -733,9 +731,9 @@
                         </a>
 
 
-                        <span class="groupOfRequestTableTooltip" ng-show="tooltip[seller.id + '-' + location[0].uniqueLocationIdentifier + '-' + location[0].requestId]">{{$ctrl.getRequestComment(requestProducts, product, location, seller.sellerCounterparty.id, seller)}}</span>
+                        <span class="groupOfRequestTableTooltip" ng-show="tooltip[seller.id + '-' + location[0].uniqueLocationIdentifier + '-' + location[0].requestId]">{{$ctrl.getRequestComment(requestProducts, product, location, seller.sellerCounterparty.id, seller) | decodeReadOnly }}</span>
 
-                        <a ng-click="$ctrl.viewSupplierCardBlade(seller, location, requestProducts); $ctrl.supplierCardActiveRequestId = requestProducts[0].requestId" ng-show="$ctrl.getRequestComment(requestProducts, product, location, seller.sellerCounterparty.id, seller)" class="font-dark" ng-mouseover="tooltip[seller.id + '-' + location[0].uniqueLocationIdentifier + '-' + location[0].requestId] = true" ng-mouseout="tooltip[seller.id + '-' + location[0].uniqueLocationIdentifier + '-' + location[0].requestId] = false" data-original-title="{{$ctrl.getRequestComment(requestProducts, product, location, seller.sellerCounterparty.id, seller)}}">
+                        <a ng-click="$ctrl.viewSupplierCardBlade(seller, location, requestProducts); $ctrl.supplierCardActiveRequestId = requestProducts[0].requestId" ng-show="$ctrl.getRequestComment(requestProducts, product, location, seller.sellerCounterparty.id, seller)" class="font-dark" ng-mouseover="tooltip[seller.id + '-' + location[0].uniqueLocationIdentifier + '-' + location[0].requestId] = true" ng-mouseout="tooltip[seller.id + '-' + location[0].uniqueLocationIdentifier + '-' + location[0].requestId] = false" data-original-title="{{$ctrl.getRequestComment(requestProducts, product, location, seller.sellerCounterparty.id, seller) | decodeReadOnly}} ">
                             <b>
                                 <i class="fa fa-clone" style="color: #e8a404;text-shadow: 1px 1px 0px;font-weight: bold;"></i>
                             </b>

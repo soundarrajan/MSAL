@@ -58,7 +58,7 @@
                 <td style="width:16%">
                     <div class=" " ng-init='options.Uom ? return : CM.getOptions({"Name": "Uom", "Type": "dropdowm", "masterSource": "Uom"});'>
 
-                        <select name="Product_{{ index_0 }}_Product_Quantity_{{ key+1 }}_UOM" ng-model="value.uom"  data-container="body" class="form-control bs-select changeIT" ng-options="item as item.name for item in CM.listsCache.Uom track by item.id"></select>
+                        <select name="Product_{{ index_0 }}_Product_Quantity_{{ key+1 }}_UOM" ng-model="value.uom"  data-container="body" class="form-control bs-select changeIT" ng-options="item as item.name for item in CM.listsCache.Uom  track by item.id"></select>
 
                     </div>
                 </td>

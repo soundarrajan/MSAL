@@ -299,17 +299,19 @@ angular.module('shiptech.components')
                 $.each(ctrl.selectedLocations, (k, v) => {
                     selectedLocationsIds.push(v.id);
                 });
-                $.each(ctrl.sixMonthPayloadSent.Filters, (k, v) => {
-                    if (v.ColumnName == 'LocationIds') {
-                        v.Value = selectedLocationsIds.join();
-                    }
-                });
-                ctrl.getSixMonthHistoryData(ctrl.sixMonthPayloadSent, true, (response) => {
-                    console.log(response);
-                    ctrl.computeTableHeight();
-                    ctrl.countSelectedItems();
-                    ctrl.verifyLocation(location);
-                });
+                if (ctrl.sixMonthPayloadSent) {
+                    $.each(ctrl.sixMonthPayloadSent.Filters, (k, v) => {
+                        if (v.ColumnName == 'LocationIds') {
+                            v.Value = selectedLocationsIds.join();
+                        }
+                    });
+                    ctrl.getSixMonthHistoryData(ctrl.sixMonthPayloadSent, true, (response) => {
+                        console.log(response);
+                        ctrl.computeTableHeight();
+                        ctrl.countSelectedItems();
+                        ctrl.verifyLocation(location);
+                    });
+                }
             };
             ctrl.removeLocationFromHistory = function(index) {
                 if (ctrl.selectedLocations.length == 1) {

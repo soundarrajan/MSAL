@@ -51,17 +51,17 @@
 					 <span class="insert" ng-click="formValues.products[index_0].additionalCosts.push({'id':0, 'currency': tenantSetting.tenantFormats.currency})"></span>
                 </td>
                 <td style="width:12%">
-                    <select name="Item Name" class="form-control" ng-options="item as item.name for item in CM.listsCache.AdditionalCost track by item.id " ng-change="value.costType = setDefaultCostType(value.additionalCost); resetUom(index_0,key)" ng-model="value.additionalCost" ng-required="!value.isDeleted"></select>
+                    <select name="Item Name" class="form-control" ng-options="item as item.name for item in CM.listsCache.AdditionalCost | decodeReadOnly track by item.id " ng-change="value.costType = setDefaultCostType(value.additionalCost); resetUom(index_0,key)" ng-model="value.additionalCost" ng-required="!value.isDeleted"></select>
                 </td>
                 <td style="width:12%">
-                    <select name="Type" class="form-control" ng-options="item as item.name for item in filterCostTypesByAdditionalCost(value.additionalCost.id) track by item.id " ng-model="value.costType" ng-change="resetUom(index_0,key)" ng-required="!value.isDeleted"></select>
+                    <select name="Type" class="form-control" ng-options="item as item.name for item in filterCostTypesByAdditionalCost(value.additionalCost.id) | decodeReadOnly track by item.id " ng-model="value.costType" ng-change="resetUom(index_0,key)" ng-required="!value.isDeleted"></select>
                 </td>
                 <td style="width:12%">
                     <input name="Amount" type="text" class="form-control" ng-model="value.amount" format="number" ng-required="!value.isDeleted">
                 </td>
                 <td style="width:12%">
                 	<span ng-if="value.costType.name == 'Percent'" ng-init="value.uom = null"></span>
-                    <select name="Price UOM" class="form-control" ng-options="item as item.name for item in CM.listsCache.Uom track by item.id " ng-model="value.uom"
+                    <select name="Price UOM" class="form-control" ng-options="item as item.name for item in CM.listsCache.Uom | decodeReadOnly track by item.id " ng-model="value.uom"
 					ng-disabled="value.costType.name != 'Unit'"
 					ng-required="value.costType.name == 'Unit' && !value.isDeleted"
                     ></select>
@@ -71,10 +71,10 @@
 
                 </td>
                 <td style="width:12%">
-					<select name="Currency" class="form-control" ng-required="!value.isDeleted" ng-options="item as item.name for item in CM.listsCache.Currency track by item.id " ng-model="value.currency"></select>
+					<select name="Currency" class="form-control" ng-required="!value.isDeleted" ng-options="item as item.name for item in CM.listsCache.Currency | decodeReadOnly track by item.id " ng-model="value.currency"></select>
                 </td>
                 <td style="width:12%">
-                    <input name="Comment" class="form-control" ng-model="value.comments">
+                    <input decode-input-format name="Comment" class="form-control" ng-model="value.comments">
                 </td>
             </tr>
         </tbody>

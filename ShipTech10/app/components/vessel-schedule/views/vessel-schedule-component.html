@@ -33,14 +33,14 @@
                 </td>
                 <td>
                     <i class="fa fa-sitemap fa-rotate-270 font-grey-salsa"></i>
-                    {{row.locationName}} 
+                    {{row.locationName | decodeReadOnly}} 
                 </td>
-                <td>{{row.voyageId}}</td>
+                <td>{{row.voyageId | decodeReadOnly}}</td>
                 <td>{{row.eta}}</td>
                 <td>{{row.etb}}</td>
                 <td>{{row.etd}}</td>
-                <td>{{row.portCallId}}</td>
-                <td>{{row.service.name}}</td>
+                <td>{{row.portCallId | decodeReadOnly}}</td>
+                <td>{{row.service.name | decodeReadOnly}}</td>
             </tr>
         </tbody>
     </table>

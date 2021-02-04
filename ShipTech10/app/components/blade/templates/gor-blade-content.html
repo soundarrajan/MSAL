@@ -15,7 +15,7 @@
 								<strong>
 								<i class="fa fa-angle-double-down" ng-show="collapseLocation_$index" ng-click="collapseLocation_$index = !collapseLocation_$index"></i>
 								<i class="fa fa-angle-double-up" ng-show="!collapseLocation_$index" ng-click="collapseLocation_$index = !collapseLocation_$index"></i>
-								{{location.location.name}}
+								{{location.location.name | decodeReadOnly}}
 								</strong>
 							</div>
 							<ul class="no-padding" ng-show="!collapseLocation_$index">
@@ -24,7 +24,7 @@
 									<div class="seller" 
 									ng-class="$ctrl.blade.counterpartyActiveSeller.uniqueLocationSellerPhysical == seller.uniqueLocationSellerPhysical ? 'active' : ''" 
 									data-original-title="{{seller.offers[0].physicalSupplierCounterparty.name}}" tooltip="elem" style="padding-right: 30px">
-										{{seller.sellerCounterparty.name}} <i class="fa fa-user pull-right" style="position: absolute;right: 10px;"></i>
+										{{seller.sellerCounterparty.name | decodeReadOnly}} <i class="fa fa-user pull-right" style="position: absolute;right: 10px;"></i>
 									</div>
 
 									<span ng-if="$ctrl.blade.counterpartyData.id == seller.sellerCounterparty.id && $ctrl.blade.counterpartyActiveLocation[0].location.id == location.location.id"

@@ -38,7 +38,7 @@
                     <tbody ng-if="!modalSpecGroupParametersEditable">
                         <tr ng-repeat="(key2, value2) in modalSpecGroupParameters" ng-if="value2.isDeleted == false || !value2.isDeleted">
                             <td style="width:12%" class="padding">
-                                {{ value2.specParameter.name }}
+                                {{ value2.specParameter.name | decodeReadOnly }}
                             </td>
                             <td style="width:12%" class="padding">
                                 {{ value2.min }}
@@ -47,7 +47,7 @@
                                 {{ value2.max }}
                             </td>
                             <td style="width:12%" class="padding">
-                                {{ value2.uom }}
+                                {{ value2.uom | decodeReadOnly }}
                             </td>
                         </tr>
                     </tbody>
@@ -58,7 +58,7 @@
                                 <span ng-if="value2.editable != true" class="remove" ng-click="value2.isDeleted = true" style="opacity:1; pointer-events: initial"></span>
                             </td>
                             <td style="width:12%">
-                                <input ng-if="value2.editable == true" ng-model="value2.specParameter" ng-controller="Controller_Master as CM"  uib-typeahead="item as item.name for item in CM.listsCache['SpecParameter'] | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="300" id="specParameter" data-uniqueid="specParameter" data-value="{{ specParameter.id }}" autocomplete="off" typeahead-on-select="modalSpecGroupParametersUpdateUom(value2.specParameter, key2)"/>
+                                <input decode-input-format ng-if="value2.editable == true" ng-model="value2.specParameter" ng-controller="Controller_Master as CM"  uib-typeahead="item as item.name for item in CM.listsCache['SpecParameter'] | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="300" id="specParameter" data-uniqueid="specParameter" data-value="{{ specParameter.id }}" autocomplete="off" typeahead-on-select="modalSpecGroupParametersUpdateUom(value2.specParameter, key2)"/>
                                 <input type="text" disabled class="form-control" ng-if="value2.editable != true" ng-model="value2.specParameter.name"/>
                             </td>
                             <td style="width:12%">
@@ -68,7 +68,7 @@
                                 <input type="number" class="form-control w100" ng-model="value2.max"/>
                             </td>
                             <td style="width:12%" class="padding">
-                                {{ value2.uom }}
+                                {{ value2.uom | decodeReadOnly}}
                             </td>
                         </tr>
                     </tbody>

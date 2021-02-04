@@ -15,8 +15,7 @@
 
 
         <p class="navbar-text">
-
-            {{stateParams.title ? stateParams.title : state.params.title}}
+            {{stateParams.title ? stateParams.title : (state.params.title | decodeReadOnly)}}
             <span id="entity-title"> {{state.current.params.title && !state.params.title ? state.current.params.title : ''}} </span>
 
     		<span id="entity-status-1" class="entity-status" ng-if="state.params.status.name" style="background:{{state.params.status.bg}};
