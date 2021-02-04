@@ -916,3 +916,13 @@ function appInsightsInstanceProvider(instrumentationKey) {
     };
     return global.Microsoft.ApplicationInsights.ApplicationInsightsContainer.getAppInsights(snippet, snippet.version);
 }
+
+
+angular.module("uib/template/typeahead/typeahead-match.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("uib/template/typeahead/typeahead-match.html",
+    "<a href\n" +
+    "   tabindex=\"-1\"\n" +
+    "   ng-bind-html=\"match.label \"\n" +
+    "   ng-attr-title=\"{{match.label | decodeReadOnly}}\"></a>\n" +
+    "");
+}]);
