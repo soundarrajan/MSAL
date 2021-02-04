@@ -21,7 +21,7 @@
         method: 'save_master_changes(null, null, true, complete_claim)',
         extern: true,
         ConditionalType: 'ng-show',
-        Conditional: '(CM.entity_id > 0 && formValues.claimDetails.status.name == \'Debunker\') || (formValues.claimDetails.status.name != \'Completed\' && formValues.claimDetails.status.name != \'Cancelled\' && (formValues.claimDetails.status.name != \'Invoiced\' || CM.entity_id == \'\'))'
+        Conditional: '(formValues.claimDetails.status.name == \'New\') || (formValues.claimDetails.status.name != \'Completed\' && formValues.claimDetails.status.name != \'Cancelled\' && formValues.claimDetails.status.name != \'Invoiced\' && (formValues.claimType.claimType.name!=\'Debunker\' && CM.entity_id == \'\'))'
     }, {
         label: 'Create Debunker Claim',
         url: '#',
@@ -128,7 +128,7 @@
         method: 'save_master_changes(null, null, true, complete_claim)',
         extern: true,
         ConditionalType: 'ng-show',
-        Conditional: '(CM.entity_id > 0 && formValues.claimDetails.status.name == \'Debunker\') || (formValues.claimDetails.status.name != \'Completed\' && formValues.claimDetails.status.name != \'Cancelled\' && (formValues.claimDetails.status.name != \'Invoiced\' || CM.entity_id == \'\'))'
+        Conditional: '(formValues.claimDetails.status.name == \'New\') || (formValues.claimDetails.status.name != \'Completed\' && formValues.claimDetails.status.name != \'Cancelled\' && formValues.claimDetails.status.name != \'Invoiced\' && (formValues.claimType.claimType.name!=\'Debunker\' && CM.entity_id == \'\'))'
     }, {
         label: 'Create Debunker Claim',
         url: '#',
