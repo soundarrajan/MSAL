@@ -518,7 +518,7 @@ APP_CLAIMS.controller('Controller_Claims', [
             if (name == 'labResultID') {
                 if ($scope.formValues.orderDetails.labResult) {
                     if ($scope.formValues.orderDetails.deliveryProductId === null) {
-                        $scope.formValues.orderDetails.deliveryProductId = '';
+                        $scope.formValues.orderDetails.deliveryProductId = '';   
                     }
                     var id = $scope.formValues.orderDetails.labResult.id;
                     angular.merge($scope.formValues, $scope.formValues.orderDetails.labResult.payload);
@@ -527,6 +527,8 @@ APP_CLAIMS.controller('Controller_Claims', [
                     if (field) {
                         vm.getOptions(field);
                     }
+                    $scope.formValues.orderDetails.product = null;
+                    $scope.triggerChangeFieldsAppSpecific('Product');
                     delete $scope.formValues.orderDetails.labResult.payload;
                     delete field;
                 }
@@ -592,8 +594,9 @@ APP_CLAIMS.controller('Controller_Claims', [
                             }
                             $scope.formValues.claimType.quantityShortage = null;
                             $scope.formValues.claimType.quantityShortageUom = $tenantSettings.tenantFormats.uom;
+                            $scope.checkClaimType();
                         }, 100);
-                        $scope.checkClaimType();
+                      
                     }
                 }
             }
@@ -1095,6 +1098,7 @@ APP_CLAIMS.controller('Controller_Claims', [
                 }
                 rowVal.labDensity = array2;
             }
+            $scope.getQuantityShortage();
 
         }
 

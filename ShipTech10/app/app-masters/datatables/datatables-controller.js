@@ -3741,8 +3741,8 @@ APP_MASTERS.controller('Controller_Datatables', [
                 $scope.formValues.claimType.quantityShortage = obj[0].quantityShortage;
             }
         	if (!$scope.formValues.claimDetails.isEstimatedSettlementAmountManual) {
-        		$scope.formValues.claimDetails.estimatedSettlementAmount = null;
-        	}
+                $scope.getQuantityShortage();
+            }
             var subTypeObjects = [ 'quantitySubtypes', 'densitySubtypes', 'qualitySubtypes', 'complianceSubtypes' ];
             $.each(subTypeObjects, (stk, stv) => {
             	if (stv != objKey) {
