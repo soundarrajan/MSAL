@@ -3246,6 +3246,15 @@ APP_MASTERS.controller('Controller_Master', [
                 return formattedDate;
             }
         };
+
+        vm.formatNumber = function(value) {
+            if (value) {
+                if (value != Math.floor(value)) {
+                    return value.toString().split('.')[1].length == 1 ? value.toFixed(1) : value.toFixed(2);
+                } 
+            }
+            return !value ? 0 : value;
+        }
         
         vm.formatSimpleDate = function(date) {
             var dateFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;

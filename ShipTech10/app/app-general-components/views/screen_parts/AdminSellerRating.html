@@ -77,7 +77,7 @@
                                             <div class="bootstrap-tagsinput"> 
                                                 <span class="tag label border-default seller-rating-location">
                                                     <a ng-click="value.id ? deleteLocationFromAdminSellerRating(value): formValues.applications[key1].specificLocations.splice(key,1); CM.selectedLocation = getFirstIndex(formValues.applications[key1].specificLocations)"><i class="fa fa-close font-red-thunderbird" ></i></a>
-                                                    {{value.location.name}}
+                                                    {{value.location.name | decodeReadOnly}}
                                                  </span>
                                             </div>
                                         </div>
@@ -97,7 +97,7 @@
                                             </div>
                                             <div class="caption ">
                                                 <span class="caption-subject pull-left ">
-                                                    {{value4.location.name}}
+                                                    {{value4.location.name | decodeReadOnly}}
                                                 </span>
                                             </div>
                                         </div>

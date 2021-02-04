@@ -34,8 +34,8 @@
                                 		<span ng-if="CM.screen_id == 'delivery' && CM.app_id == 'delivery' && parents.name == 'Deliveries'">
                                 			<span ng-if="formValues.info.requestId"> - {{ formValues.info.requestId }}</span>
                                 			<span ng-if="formValues.info.request.id">- {{ formValues.info.request.id }}</span>
-                                			<span ng-if="formValues.info.vesselName"> - {{ formValues.info.vesselName }} </span>
-                                			<span ng-if="formValues.info.locationName">  - {{ formValues.info.locationName }} </span>
+                                			<span ng-if="formValues.info.vesselName"> - {{ formValues.info.vesselName | decodeReadOnly }} </span>
+                                			<span ng-if="formValues.info.locationName">  - {{ formValues.info.locationName | decodeReadOnly }} </span>
                                 			<span ng-if="formValues.info.eta">
                                 				- ETA
                                 				<span ng-bind="CM.formatDate(formValues.info.eta, '{{tenantSetting.tenantFormats.dateFormat.name}}')"></span>
@@ -50,6 +50,25 @@
                                 			- REQUEST {{formValues.requestInfo.request.id}}
 	                                	</span>
                                 	</span>
+                                </div>
+                                <div ng-if="CM.screen_id == 'counterparty' && CM.app_id == 'masters' && parents.name == 'General Information' && formValues.sellerRating" style="position: relative;top: 6px; float: right; display: inline-flex; padding-left: 15px;padding-right: 15px;">
+                                    <div  style="position: relative; display: inline-flex;">
+                                        <span  star-rating ng-model="formValues.sellerRating" style="margin-top: 3.5px !important;"></span>
+                                        <div>
+                                            ( {{ CM.formatNumber(formValues.sellerRating) }} Out of 5 )
+                                        </div>
+
+                                    </div>
+                                    <div  ng-if="formValues.sellerRatingLastModifiedBy && formValues.sellerRatingLastModifiedOn" style="margin-left: 10px;">
+                                        Rated by
+                                        <span class="created-by-display-name"> 
+                                        {{ formValues.sellerRatingLastModifiedBy.name}}
+                                        </span>
+                                        on
+                                        <span class="seller-rating-created-on"> 
+                                         {{ CM.formatDateTime(formValues.sellerRatingLastModifiedOn) }}
+                                        </span>
+                                    </div>
                                 </div>
                                 <div ng-if="CM.screen_id == 'invoice' && CM.app_id == 'invoices' && parents.name == 'Related Invoices'" class="pull-right">
                                 	<em>Invoices Created : {{formValues.relatedInvoices.length}}</em>

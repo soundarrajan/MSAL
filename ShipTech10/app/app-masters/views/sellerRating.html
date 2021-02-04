@@ -51,7 +51,7 @@
                     <div class="caption">
                         <span class="caption-subject pull-left ">
                           	<span class="seller-rating-container-title"  style="color: #08A8EA; text-transform: uppercase; font-weight: 900 !important; font-size: 18px !important;">
-                          		{{formValues.applications.counterparty.name}}
+                          		{{formValues.applications.counterparty.name | decodeReadOnly}}
                           	</span> 
                         </span>
                     </div>
@@ -66,7 +66,7 @@
                                           	<span class="seller-rating-container-title">
                                           		Location - 
                                           	</span> 
-                                          	{{value4.location.name}}
+                                          	{{value4.location.name | decodeReadOnly}}
                                         </span>
                                     </div>
                                 </div>
