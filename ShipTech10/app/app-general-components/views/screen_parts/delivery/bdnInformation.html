@@ -75,7 +75,7 @@
             <!-- barge delay calculation -->
             <span ng-if="formValues.berthingTime && formValues.bargeAlongside" ng-init="formValues.bargeDelay = getTimeBetweenDates(formValues.berthingTime,formValues.bargeAlongside)"></span>
             <div class="input-group form_input form_input_bdn_number">
-                <input type="text" name="bargeDelay" class="form-control bargeDelay" ng-model="formValues.bargeDelay" ng-class="CM.invalid_form ? 'ng-touched' : ''" ng-disabled="true"/>
+                <input decode-input-format type="text" name="bargeDelay" class="form-control bargeDelay" ng-model="formValues.bargeDelay" ng-class="CM.invalid_form ? 'ng-touched' : ''" ng-disabled="true"/>
             </div>
         </div>
     </div>
@@ -150,7 +150,7 @@
             </div>
             <span ng-init="formValues.pumpingDuration = getTimeBetweenDates(formValues.bargePumpingRateStartTime, formValues.bargePumpingRateEndTime)" ng-if="formValues.bargePumpingRateStartTime && formValues.bargePumpingRateEndTime"></span>
             <div class="input-group form_input form_input_pumping_duration">
-                <input type="text" name="pumpingDuration" class="form-control pumpingDuration" ng-model="formValues.pumpingDuration" ng-class="CM.invalid_form ? 'ng-touched' : ''" ng-disabled="true" ng-change="calculatePumpingRate(formValues.pumpingDuration,0)"/>
+                <input decode-input-format type="text" name="pumpingDuration" class="form-control pumpingDuration" ng-model="formValues.pumpingDuration" ng-class="CM.invalid_form ? 'ng-touched' : ''" ng-disabled="true" ng-change="calculatePumpingRate(formValues.pumpingDuration,0)"/>
             </div>
         </div>
     </div>
@@ -165,7 +165,7 @@
             <div class="input-group form_input form_input_net_specific_energy">
                 <input type="text" name="pumpingRate" class="form-control pumping_rate" ng-model="formValues.pumpingRate" ng-class="CM.invalid_form ? 'ng-touched' : ''" ng-disabled="true" />
                 <span class="input-group-addon uom_group uom_group_text">
-                    <input type="text" name="pumping_rate_uom" id="" ng-model="formValues.pumpingRateUom.name" ng-disabled="true" class="form-control pumpin_rate_uom"/>
+                    <input decode-input-format type="text" name="pumping_rate_uom" id="" ng-model="formValues.pumpingRateUom.name" ng-disabled="true" class="form-control pumpin_rate_uom"/>
                 </span>
 
             </div>
@@ -239,7 +239,7 @@
                 {{ CM.app_id + '.BDN_NUMBER' | translate }}
             </label>
             <div class="input-group form_input form_input_bdn_number">
-                <input type="text" name="bdnNumber" class="form-control bdnNumber" ng-model="formValues.bdnNumber" ng-class="CM.invalid_form ? 'ng-touched' : ''"  ng-disabled="!CM.isEditable">
+                <input decode-input-format type="text" name="bdnNumber" class="form-control bdnNumber" ng-model="formValues.bdnNumber" ng-class="CM.invalid_form ? 'ng-touched' : ''"  ng-disabled="!CM.isEditable">
             </div>
         </div>
     </div>

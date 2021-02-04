@@ -86,13 +86,13 @@
                         <td>
                             {{ item.product.name | decodeReadOnly}}
                         </td>
-                        <td style="max-width: 100px; text-overflow: ellipsis; overflow: hidden" tooltip data-original-title="{{ item.contract.name }}">
+                        <td style="max-width: 100px; text-overflow: ellipsis; overflow: hidden" tooltip data-original-title="{{ item.contract.name | decodeReadOnly}}">
                             {{ item.contract.name | decodeReadOnly}}
                         </td>
-                        <td style="max-width: 100px; text-overflow: ellipsis; overflow: hidden" tooltip data-original-title="{{ item.formulaDescription }}">
+                        <td style="max-width: 100px; text-overflow: ellipsis; overflow: hidden" tooltip data-original-title="{{ item.formulaDescription | decodeReadOnly}}">
                             {{ item.formulaDescription | decodeReadOnly}}
                         </td>
-                        <td style="max-width: 100px; text-overflow: ellipsis; overflow: hidden" tooltip data-original-title="{{ item.pricingScheduleOptionName }}">
+                        <td style="max-width: 100px; text-overflow: ellipsis; overflow: hidden" tooltip data-original-title="{{ item.pricingScheduleOptionName | decodeReadOnly}}">
                             {{ item.pricingScheduleOptionName | decodeReadOnly}}
                         </td>
                         <td>

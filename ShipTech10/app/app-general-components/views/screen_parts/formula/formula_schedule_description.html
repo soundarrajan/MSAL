@@ -8,7 +8,7 @@
                 </span>
             </label>
             <div class="form_input form_input_formula_description">
-                <input type="text" class="form-control {{formValues.contractId ? ' bg-green-sharp font-white ' : ' '}}" name="formula_description" id="formula_description" ng-model="formValues.name"  ng-trim="false"/>
+                <input decode-input-format type="text" class="form-control {{formValues.contractId ? ' bg-green-sharp font-white ' : ' '}}" name="formula_description" id="formula_description" ng-model="formValues.name"  ng-trim="false"/>
             </div>
         </div>
     </div>
@@ -24,31 +24,31 @@
                 <div class="bootstrap-tagsinput">
                     <a  ng-click="showTab('#pricing_schedule');  formValues.pricingSchedule.id = 4; " ng-if="formValues.pricingScheduleOptionDateRange.id >= 0 && formValues.pricingScheduleOptionDateRange.name &&  !formValues.pricingScheduleOptionDateRange.isDeleted">
                         <span class="tag label label-info" style="clear: none;">
-                            {{ formValues.pricingScheduleOptionDateRange.name }}
+                            {{ formValues.pricingScheduleOptionDateRange.name | decodeReadOnly}}
                             <span data-role="remove" ng-click="removeSchedule('pricingScheduleOptionDateRange')"></span>
                         </span>
                     </a>
                     <a  ng-click="showTab('#pricing_schedule');  formValues.pricingSchedule.id = 5; " ng-if="formValues.pricingScheduleOptionSpecificDate.id >= 0 &&  formValues.pricingScheduleOptionSpecificDate.name &&   !formValues.pricingScheduleOptionSpecificDate.isDeleted">
                         <span class="tag label label-info" style="clear: none;">
-                            {{ formValues.pricingScheduleOptionSpecificDate.name }}
+                            {{ formValues.pricingScheduleOptionSpecificDate.name | decodeReadOnly }}
                             <span data-role="remove" ng-click="removeSchedule('pricingScheduleOptionSpecificDate')"></span>
                         </span>
                     </a>
                     <a  ng-click="showTab('#pricing_schedule');  formValues.pricingSchedule.id = 6; " ng-if="formValues.pricingScheduleOptionEventBasedSimple.id >= 0 &&  formValues.pricingScheduleOptionEventBasedSimple.name &&   !formValues.pricingScheduleOptionEventBasedSimple.isDeleted">
                         <span class="tag label label-info" style="clear: none;">
-                            {{ formValues.pricingScheduleOptionEventBasedSimple.name }}
+                            {{ formValues.pricingScheduleOptionEventBasedSimple.name | decodeReadOnly }}
                             <span data-role="remove" ng-click="removeSchedule('pricingScheduleOptionEventBasedSimple')"></span>
                         </span>
                     </a>
                     <a  ng-click="showTab('#pricing_schedule');  formValues.pricingSchedule.id = 7; " ng-if="formValues.pricingScheduleOptionEventBasedExtended.id >= 0 &&  formValues.pricingScheduleOptionEventBasedExtended.name &&   !formValues.pricingScheduleOptionEventBasedExtended.isDeleted">
                         <span class="tag label label-info" style="clear: none;">
-                            {{ formValues.pricingScheduleOptionEventBasedExtended.name }}
+                            {{ formValues.pricingScheduleOptionEventBasedExtended.name | decodeReadOnly }}
                             <span data-role="remove" ng-click="removeSchedule('pricingScheduleOptionEventBasedExtended')"></span>
                         </span>
                     </a>
                     <a  ng-click="showTab('#pricing_schedule');  formValues.pricingSchedule.id = 8; " ng-if="formValues.pricingScheduleOptionEventBasedContinuous.id >= 0 &&  formValues.pricingScheduleOptionEventBasedContinuous.name &&   !formValues.pricingScheduleOptionEventBasedContinuous.isDeleted">
                         <span class="tag label label-info" style="clear: none;">
-                            {{ formValues.pricingScheduleOptionEventBasedContinuous.name }}
+                            {{ formValues.pricingScheduleOptionEventBasedContinuous.name | decodeReadOnly}}
                             <span data-role="remove" ng-click="removeSchedule('pricingScheduleOptionEventBasedContinuous')"></span>
                         </span>
                     </a>

@@ -16,7 +16,7 @@
 				<td style="width:5%"><span class="insert" ng-click="formValues.sellers.push({id:0})"></span></td>
 				<td style="width:20%">
 					<div class="input-group">
-	                    <input ng-model="value.counterparty" uib-typeahead="item as item.name for item in CM.listsCache.Counterparty | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-limit="5" typeahead-append-to-body="true" typeahead-wait-ms="100" name="PrefferedSeller_{{ key }}" autocomplete="off" />
+	                    <input decode-input-format ng-model="value.counterparty" uib-typeahead="item as item.name for item in CM.listsCache.Counterparty | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-limit="5" typeahead-append-to-body="true" typeahead-wait-ms="100" name="PrefferedSeller_{{ key }}" autocomplete="off" />
 	                    <span class="input-group-addon" ng-click="triggerModal('general', 'masters_counterpartylist', 'Counterparty' , 'formValues.sellers.'+key+'.counterparty');" ng-init="modal = false">
 	                        <a   class=" btn default">
 	                            <i class="fa fa-search"></i>
@@ -33,14 +33,14 @@
 					<div class="location-preffered-sellers">
 	                    <span ng-repeat="(key2,product) in value.products" ng-hide="product.isDeleted">
                             <span ng-if="key2 != 0">,</span>
-                            {{ product.product.name }}
+                            {{ product.product.name | decodeReadOnly }}
                         </span>			
 					</div>
 				</td>
 				<td style="width:20%">
 					<select name="Item Name" class="form-control" ng-options="item as item.name for item in CM.listsCache.CounterpartyStatus track by item.id " ng-model="value.status"></select>
 				</td>
-				<td style="width:30%"><input class="form-control" type="text" ng-model="value.comments"></td>
+				<td style="width:30%"><input class="form-control" type="text" decode-input-format ng-model="value.comments"></td>
 			</tr>
 		</tbody>
 	</table>

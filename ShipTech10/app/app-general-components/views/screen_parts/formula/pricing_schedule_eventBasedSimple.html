@@ -8,7 +8,7 @@
                 </span>
             </label>
             <div class="input-group form_input_schedule_description_add" ng-class="!field.Label ? 'no-label' : ''">
-                <input type="text" class="form-control " name="schedule_description_add" id="schedule_description_add" ng-model="formValues.pricingScheduleOptionEventBasedSimple.name"/>
+                <input decode-input-format type="text" class="form-control " name="schedule_description_add" id="schedule_description_add" ng-model="formValues.pricingScheduleOptionEventBasedSimple.name"/>
                 <span class="input-group-btn">
                     <a class="btn default" ng-click="addSchedule('pricingScheduleOptionEventBasedSimple')" ng-disabled="formValues.pricingScheduleOptionEventBasedSimple.id> 0 ">
                         Add Schedule

@@ -5,7 +5,7 @@
     </span>
 </label>
 <div class="input-group pull-left form_input form_input_{{ field.Name }}" ng-init="options[field.Name] ? return : CM.getOptions(field)">
-    <input ng-model="dummyModelAg" uib-typeahead="item as item.name for item in options[field.Name] | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="300" id="agents"  ng-init="CM.multiTags('agents','false', field.Name)" autocomplete="off"/>
+    <input decode-input-format ng-model="dummyModelAg" uib-typeahead="item as item.name for item in options[field.Name] | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="300" id="agents"  ng-init="CM.multiTags('agents','false', field.Name)" autocomplete="off"/>
     <span class="input-group-addon">
         <a   class="object_tagsinput_add_agents btn default" >
             <i class="fa fa-plus"></i>
@@ -14,5 +14,5 @@
 </div>
 <input type="hidden" ng-value="dummyModelAg.id" id="agentsVal"/>
 <div class="multi_lookup_tags tagsForagents" multi-tags name="{{ field.Name }}" unique-id="{{ field.Unique_ID }}">
-    <input type="text" class="input-as-label form-control typeahead object_tagsinput_agents" ng-model="formValues.agents.id" name=" {{ CM.app_id + '.' + field.Label | translate }}"  ng-required='field.Required' ng-change="dummyModelAg = null"/>
+    <input decode-input-format type="text" class="input-as-label form-control typeahead object_tagsinput_agents" ng-model="formValues.agents.id" name=" {{ CM.app_id + '.' + field.Label | translate }}"  ng-required='field.Required' ng-change="dummyModelAg = null"/>
 </div>

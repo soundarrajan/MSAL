@@ -120,7 +120,7 @@
                                 <span></span>
                             </td>
                             <td style="width:12%" class="padding">
-                                <span>{{ value2.specParameter.name }}</span>
+                                <span>{{ value2.specParameter.name | decodeReadOnly}}</span>
                             </td>
                             <td style="width:12%" class="padding">
                                <span>{{ value2.min }}</span>
@@ -129,7 +129,7 @@
                                 <span>{{ value2.max }}</span>
                             </td>
                             <td style="width:12%" class="padding">
-                               <span>{{ value2.uom }}</span>
+                               <span>{{ value2.uom | decodeReadOnly}}</span>
                             </td>
                             <td style="width:12%">
                                 <span>
@@ -182,7 +182,7 @@
             <div class="col-xs-12 productQualityComments">
                 <label for="Product_{{productIndex}}_productQualityComments">{{ CM.app_id + '.COMMENTS' | translate }}</label>
                 <div class="form_input form_input_comments">
-                    <textarea ng-model="product.qualityHeader.comments" maxlength="500" name="Product_{{productIndex}}_productQualityComments" ></textarea>
+                    <textarea decode-input-format ng-model="product.qualityHeader.comments" maxlength="500" name="Product_{{productIndex}}_productQualityComments" ></textarea>
                 </div>
             </div>
         </div>

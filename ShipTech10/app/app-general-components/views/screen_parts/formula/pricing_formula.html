@@ -21,7 +21,7 @@
             </label>
             <div class="form_input form_input_formula_description">
 
-                <textarea class="form-control" rows="2"  name="formula_comments" id="formula_comments" ng-model="formValues.comments" ng-maxlength="500"></textarea>
+                <textarea decode-input-format class="form-control" rows="2"  name="formula_comments" id="formula_comments" ng-model="formValues.comments" ng-maxlength="500"></textarea>
             </div>
         </div>
     </div>
@@ -42,7 +42,7 @@
                 {{ CM.app_id + '.FORMULA_QUOTES' | translate }}
             </label>
             <div class="input-group form_input form_input_formula_quotes">
-                <input ng-model="formValues.simpleFormula.systemInstrument" uib-typeahead="item as item.name for item in options.SystemInstrument | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100"  autocomplete="off"/>
+                <input decode-input-format ng-model="formValues.simpleFormula.systemInstrument" uib-typeahead="item as item.name for item in options.SystemInstrument | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100"  autocomplete="off"/>
                 <span class="input-group-addon"  ng-click="triggerModal('general', 'masters_systeminstrument', CM.app_id + '.FORMULA_QUOTES' | translate , 'formValues.simpleFormula.systemInstrument');">
                     <a   class=" btn default">
                         <i class="fa fa-search"></i>
@@ -57,7 +57,7 @@
                 {{ CM.app_id + '.FORMULA_price_type' | translate }}
             </label>
             <div class="input-group form_input form_input_formula_price_type">
-                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.MarketPriceType track by item.id" ng-model="formValues.simpleFormula.priceType">
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.MarketPriceType | decodeReadOnly track by item.id" ng-model="formValues.simpleFormula.priceType">
                     <option></option>
                 </select>
             </div>
@@ -95,7 +95,7 @@
                 {{ CM.app_id + '.FLAT_OR_PERCENTAGE' | translate }}
             </label>
             <div class="input-group form_input form_input_formula_flat_percentage">
-                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.FormulaFlatPercentage track by item.id" ng-model="formValues.simpleFormula.flatPercentage" ng-required="formValues.simpleFormula.plusMinus.id && formValues.simpleFormula.plusMinus.id != 3" ng-disabled="formValues.simpleFormula.plusMinus.id == 3">
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.FormulaFlatPercentage | decodeReadOnly track by item.id" ng-model="formValues.simpleFormula.flatPercentage" ng-required="formValues.simpleFormula.plusMinus.id && formValues.simpleFormula.plusMinus.id != 3" ng-disabled="formValues.simpleFormula.plusMinus.id == 3">
                     <option></option>
                 </select>
             </div>
@@ -107,7 +107,7 @@
                 {{ CM.app_id + '.Uom' | translate }}
             </label>
             <div class="input-group form_input form_input_formula_uom">
-                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.Uom track by item.id" ng-model="formValues.simpleFormula.uom" ng-disabled="formValues.simpleFormula.flatPercentage.id != 1 || formValues.simpleFormula.plusMinus.id == 3">
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.Uom | decodeReadOnly track by item.id" ng-model="formValues.simpleFormula.uom" ng-disabled="formValues.simpleFormula.flatPercentage.id != 1 || formValues.simpleFormula.plusMinus.id == 3">
                     <option></option>
                 </select>
             </div>

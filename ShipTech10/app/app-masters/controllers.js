@@ -3251,11 +3251,11 @@ APP_MASTERS.controller('Controller_Master', [
             if (value) {
                 if (value != Math.floor(value)) {
                     return value.toString().split('.')[1].length == 1 ? value.toFixed(1) : value.toFixed(2);
-                } 
+                }
             }
             return !value ? 0 : value;
         }
-        
+
         vm.formatSimpleDate = function(date) {
             var dateFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
             window.tenantFormatsDateFormat = dateFormat;
@@ -3483,6 +3483,7 @@ APP_MASTERS.controller('Controller_Master', [
                         } else if (id == 'allowedCompanies' && vm.screen_id == 'contract') {
                             if (itemToAdd.id != $scope.formValues.company.id) {
                                 $scope.formValues[id].push(itemToAdd);
+                                itemToAdd.name = vm.decodeHtml(itemToAdd.name) ? angular.copy(vm.decodeHtml(itemToAdd.name)) : itemToAdd.name;
                                 // $scope.formValues[id].push('asdaskdnqw');
                                 elt.tagsinput('add', {
                                     value: itemToAdd.id,
@@ -3537,6 +3538,7 @@ APP_MASTERS.controller('Controller_Master', [
                 if (id == 'agents') {
                     $.each(values, function(index, value) {
                         if (!value.isDeleted || value.isDeleted == false) {
+                            value.counterpartyName = vm.decodeHtml(value.counterpartyName) ? angular.copy(vm.decodeHtml(value.counterpartyName)) : value.counterpartyName;
                             if (index > 2) {
                                 $(this).hide();
                             }
@@ -3550,6 +3552,7 @@ APP_MASTERS.controller('Controller_Master', [
                     });
                 } else {
                     $.each(values, function(index, value) {
+                        value.name = vm.decodeHtml(value.name) ? angular.copy(vm.decodeHtml(value.name)) : value.name;
                         if (index > 2) {
                             $(this).hide();
                         }

@@ -36,7 +36,7 @@
                 <td>
                     <span class="table_data font-grey-silver">
                     	<i ng-if="formValues.temp.deliverysummary.vesselToWatchFlag" class="fa fa-flag vesselToWatchFlag"></i>
-                        {{ formValues.temp.deliverysummary.vesselName }}
+                        {{ formValues.temp.deliverysummary.vesselName | decodeReadOnly }}
                     </span>
                 </td>
             </tr>
@@ -60,7 +60,7 @@
                 </td>
                 <td>
                     <span class="table_data font-grey-silver">
-                        {{ formValues.temp.deliverysummary.counterparty.name }}
+                        {{ formValues.temp.deliverysummary.counterparty.name | decodeReadOnly}}
                     </span>
                 </td>
             </tr>
@@ -72,7 +72,7 @@
                 </td>
                 <td>
                     <span class="table_data font-grey-silver">
-                        {{ formValues.temp.deliverysummary.surveyor ?  formValues.temp.deliverysummary.surveyor : '-'}}
+                        {{ formValues.temp.deliverysummary.surveyor ? (formValues.temp.deliverysummary.surveyor | decodeReadOnly) : '-'}}
                     </span>
                 </td>
             </tr>
@@ -84,7 +84,7 @@
                 </td>
                 <td>
                     <span class="table_data font-grey-silver">
-                        {{ formValues.temp.deliverysummary.location }}
+                        {{ formValues.temp.deliverysummary.location | decodeReadOnly}}
                     </span>
                 </td>
             </tr>
@@ -134,23 +134,23 @@
                             <tr ng-repeat="(key, value) in formValues.temp.deliverysummary.products">
                                 <td style="width:40%">
                                     <span>
-                                        {{ value.product.name }}
+                                        {{ value.product.name | decodeReadOnly }}
                                     </span>
                                 </td>
                                 <td style="width:20%">
                                     <span ng-if="value.orderedQuantity.amount" ng-bind="value.orderedQuantity.amount | number: {{tenantSetting.defaultValues.quantityPrecision }}"></span>
                                     <span ng-if="!value.orderedQuantity.amount" ng-bind="0.000000 | number: {{tenantSetting.defaultValues.quantityPrecision }}"></span>
-                                    <span ng-if="value.orderedQuantity.uom.name">{{ value.orderedQuantity.uom.name }}</span>
+                                    <span ng-if="value.orderedQuantity.uom.name">{{ value.orderedQuantity.uom.name | decodeReadOnly }}</span>
                                 </td>
                                 <td style="width:20%">
                                     <span ng-if="value.deliveredQuantity.amount" ng-bind="value.deliveredQuantity.amount | number: {{tenantSetting.defaultValues.quantityPrecision }}"></span>
                                     <span ng-if="!value.deliveredQuantity.amount" ng-bind="0.000000 | number: {{tenantSetting.defaultValues.quantityPrecision }}"> - </span>
-                                    <span ng-if="value.deliveredQuantity.uom.name">{{ value.deliveredQuantity.uom.name }}</span>
+                                    <span ng-if="value.deliveredQuantity.uom.name">{{ value.deliveredQuantity.uom.name | decodeReadOnly }}</span>
                                 </td>
                                 <td style="width:20%" >
                                     <span ng-if="value.remainingQuantity.amount" ng-bind="value.remainingQuantity.amount | number: {{tenantSetting.defaultValues.quantityPrecision }}"></span>
                                     <span ng-if="!value.remainingQuantity.amount" ng-bind="0.000000 | number: {{tenantSetting.defaultValues.quantityPrecision }}"> - </span>
-                                    <span ng-if="value.remainingQuantity.uom.name">{{ value.remainingQuantity.uom.name }}</span>
+                                    <span ng-if="value.remainingQuantity.uom.name">{{ value.remainingQuantity.uom.name | decodeReadOnly }}</span>
                                 </td>
                             </tr>
                         </tbody>

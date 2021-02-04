@@ -24,7 +24,7 @@
 			                    			{{key+1}} - 
 			                    		</span>
 			                    	</span>
-	                                <span><b>{{product.product.name}}</b></span>
+	                                <span><b>{{product.product.name | decodeReadOnly}}</b></span>
 	                                 <button class="remove-button-style" ng-click="deleteDeliveryProduct(product.id, $index); $event.stopPropagation()">
 	                                    <span class="close"><i class="fa fa-times" aria-hidden="true"></i></span>
 	                                </button>
@@ -40,7 +40,7 @@
 		                        <div class="col-xs-12">
 		                            <span>{{ CM.app_id + '.ORDER_QUANTITY' | translate }}:</span>
 		                            <span>{{product.orderedQtyFromOrder = getDeliveryProductQuantityAmountFromSummary('qty',product.orderProductId)}}</span>
-	                                <span>{{product.orderedQtyFromOrderUom = getDeliveryProductQuantityAmountFromSummary('uom',product.orderProductId)}}</span>
+	                                <span>{{product.orderedQtyFromOrderUom = getDeliveryProductQuantityAmountFromSummary('uom',product.orderProductId) | decodeReadOnly }}</span>
 		                        </div>
 		                    </div>
 		                </div>

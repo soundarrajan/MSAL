@@ -84,10 +84,10 @@
 			                    <span></span>
 			                </label>							
 						</td>
-						<td style="width:25%" class="padding">{{item.name}}</td>
-						<td style="width:25%" class="padding">{{item.parent.name}}</td>
-						<td style="width:20%" class="padding">{{item.productType.name}}</td>
-						<td style="width:25%" class="padding">{{item.specGroup.name}}</td>
+						<td style="width:25%" class="padding">{{item.name | decodeReadOnly}}</td>
+						<td style="width:25%" class="padding">{{item.parent.name | decodeReadOnly}}</td>
+						<td style="width:20%" class="padding">{{item.productType.name | decodeReadOnly}}</td>
+						<td style="width:25%" class="padding">{{item.specGroup.name | decodeReadOnly}}</td>
 					</tr>
 				</tbody>
 			</table>

@@ -57,7 +57,7 @@
                 </td>
                 <td>
                     <span class="font-grey-silver order_summary_seller">
-                        {{ labOrderSummary.seller.name }}
+                        {{ labOrderSummary.seller.name | decodeReadOnly}}
                     </span>
                 </td>
             </tr>
@@ -71,11 +71,11 @@
                     <span class="order_summary_product_name">
                         <p>
                             <b>
-                                {{ value.product.name ? value.product.name : "New Product" }}
+                                {{ value.product.name ? (value.product.name | decodeReadOnly) : "New Product" }}
                             </b>
                         </p>
                         <p>
-                            Spec: {{ value.specGroup.name }}
+                            Spec: {{ value.specGroup.name | decodeReadOnly}}
                         </p>
                         <p>
                             Status:

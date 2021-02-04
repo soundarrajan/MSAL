@@ -1,8 +1,8 @@
 <span ng-if="col.colDef.cellFilter" ng-init='col.colDef.cellObject.Filter={"column":col.colDef.cellFilter, "value":$eval(col.colDef.cellFilterValue)};'></span>
 
 <div class="input-group" ng-controller="Controller_Master as CM" tooltip tooltiptrigger="hover"
-data-original-title="{{MODEL_COL_FIELD.name}}">
-    <input ng-model="MODEL_COL_FIELD" 
+data-original-title="{{MODEL_COL_FIELD.name | decodeReadOnly}}">
+    <input decode-input-format ng-model="MODEL_COL_FIELD" 
     ng-class="'colt' + col.uid" 
     uib-typeahead="item as item.name for item in grid.appScope.fVal().options[col.colDef.cellObject.Name] | typeaheadCustomFilter:$viewValue:'name'"  
     class="form-control "  

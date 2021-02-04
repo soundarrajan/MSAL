@@ -2,7 +2,7 @@
     <div class="input-group pull-left" ng-controller="Controller_Master as CM" tooltip tooltiptrigger="hover"
           data-original-title="{{MODEL_COL_FIELD.name}}">
         <div class="input-group">           
-            <input ng-model="productTypeTypeahead[rowRenderIndex]" 
+            <input decode-input-format ng-model="productTypeTypeahead[rowRenderIndex]" 
                     ng-class="'colt' + col.uid" 
                     uib-typeahead="item as item.name for item in grid.appScope.fVal().options[col.colDef.cellObject.Name] | typeaheadCustomFilter:$viewValue:'name'"  
                     class="form-control multiselect-typeahead"  
@@ -33,8 +33,8 @@
                     <span ng-show="MODEL_COL_FIELD.length" class="tag label label-info clickable st-hide-tags"  ng-click="ctrl.openList = !ctrl.openList">
                         &hellip;
                     </span>
-                    <span  class="email-tag" data-html="true" ng-if="value.isDeleted != true" ng-repeat="(key, value) in MODEL_COL_FIELD  track by $index" tooltip=""  ng-show="$index < 1 || ctrl.openList" data-original-title="{{value.productType.name}}" >
-                        {{value.productType.name}}
+                    <span  class="email-tag" data-html="true" ng-if="value.isDeleted != true" ng-repeat="(key, value) in MODEL_COL_FIELD  track by $index" tooltip=""  ng-show="$index < 1 || ctrl.openList" data-original-title="{{value.productType.name | decodeReadOnly}}" >
+                        {{value.productType.name | decodeReadOnly }}
                         <i class="fa fa-remove" ng-click="value.id == 0 ? MODEL_COL_FIELD.splice(key, 1) : MODEL_COL_FIELD[key].isDeleted = true"></i>
                     </span>
                 </div>
