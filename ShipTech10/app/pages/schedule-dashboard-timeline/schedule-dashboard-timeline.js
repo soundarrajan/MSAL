@@ -147,12 +147,12 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             ctrl.voyageData = angular.copy(vessels);
             // vessels = _.orderBy(vessels, "voyageDetail.eta");
             var groupVoyageId = _.groupBy(vessels, "voyageDetail.id");
-            var arrayHighestPriority = [];
+            var arrayLowestPriority = [];
             $.each(groupVoyageId, function(k, v) {
-                var highestPriority = _.maxBy(v, "voyageDetail.portStatusPriority");
+                var highestPriority = _.minBy(v, "voyageDetail.portStatusPriority");
                 if (highestPriority) {
-	                arrayHighestPriority[v[0].voyageDetail.id] = highestPriority
-                    // arrayHighestPriority.push(highestPriority);
+	                arrayLowestPriority[v[0].voyageDetail.id] = highestPriority
+                    // arrayLowestPriority.push(highestPriority);
                 }
             })
 
@@ -276,13 +276,13 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 // Create voyage object
                 var statusColor = statusColors.getColorCodeFromLabels(vessels[i].voyageDetail.portStatus, $listsCache.ScheduleDashboardLabelConfiguration); 
 
-                var findHighestPriority = arrayHighestPriority[vessels[i].voyageDetail.id];
-                if (findHighestPriority) {
-                    statusColor = statusColors.getColorCodeFromLabels(findHighestPriority.voyageDetail.portStatus, $listsCache.ScheduleDashboardLabelConfiguration); 
+                var findLowestPriority = arrayLowestPriority[vessels[i].voyageDetail.id];
+                if (findLowestPriority) {
+                    statusColor = statusColors.getColorCodeFromLabels(findLowestPriority.voyageDetail.portStatus, $listsCache.ScheduleDashboardLabelConfiguration); 
                 } 
 
-                if (findHighestPriority) {
-					var statusObj = findHighestPriority.voyageDetail.portStatus;
+                if (findLowestPriority) {
+					var statusObj = findLowestPriority.voyageDetail.portStatus;
                 } else {
 					var statusObj = vessels[i].voyageDetail.portStatus;
                 } 
