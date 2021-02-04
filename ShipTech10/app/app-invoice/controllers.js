@@ -1896,7 +1896,12 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                 $scope.invoiceConvertUom(null, null, $scope.formValues);
             }
             if (name == 'documentNo') {
-                $scope.formValues.documentNo = parseInt($scope.formValues.documentNo);
+                if (!isNaN(parseInt($scope.formValues.documentNo))) {
+                    $scope.formValues.documentNo = parseInt($scope.formValues.documentNo);
+                } else {
+                    $scope.formValues.documentNo = null;
+                }
+
             }
 
             if (name == 'PaymentTerm' || name == 'DeliveryDate') {
