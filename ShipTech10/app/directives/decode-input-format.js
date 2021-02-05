@@ -9,13 +9,7 @@ angular.module('shiptech.pages').directive('decodeInputFormat', [ '$window', '$i
                         return String.fromCharCode(dec);
                     });
                 };
-                if (modelValue) {
-                    console.log(modelValue);
-                }
                 return decode(_.unescape(modelValue));
-            });
-            ctrl.$parsers.unshift((viewValue) => {
-                 return viewValue;
             });
         }
     };

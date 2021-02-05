@@ -4,7 +4,7 @@
     	<span ng-if="!col.colDef.cellObject.uomBindSource" class="input-group-addon uom_group ">
             <span ng-if="col.colDef.cellObject.UniqueId">
                 <span ng-if="col.colDef.cellObject.masterSource == 'Currency'" >
-                    <select id="{{ grid.element[0].id }}_{{ col.colDef.name }}_{{ rowRenderIndex}}_1" name="{{ col.colDef.name }} Currency" class="bs-select" data-container="body" ng-model="row['entity'][col.colDef.cellObject.UniqueId]" ng-options="item as item.code for item in grid.appScope.fVal().options[col.colDef.cellObject.Name] track by item.id" ng-disabled="$eval(col.colDef.cellObject.Disabled); col.colDef.cellObject.UomDisabled" 
+                    <select id="{{ grid.element[0].id }}_{{ col.colDef.name }}_{{ rowRenderIndex}}_1" name="{{ col.colDef.name }} Currency" class="bs-select" data-container="body" ng-model="row['entity'][col.colDef.cellObject.UniqueId]" ng-options="item as item.code for item in grid.appScope.fVal().options[col.colDef.cellObject.Name] | decodeReadOnly track by item.id" ng-disabled="$eval(col.colDef.cellObject.Disabled); col.colDef.cellObject.UomDisabled" 
                     ng-change="$eval(col.colDef.cellObject.changeEvent)" 
                     ng-blur="$eval(col.colDef.cellObject.blurEvent)" 
                     ng-required="col.colDef.cellObject.UomRequired">
@@ -14,7 +14,7 @@
             </span>
 			<span ng-if="!col.colDef.cellObject.UniqueId">
 			    <span ng-if="col.colDef.cellObject.masterSource == 'Currency'">
-			        <select id="{{ grid.element[0].id }}_{{ col.colDef.name }}_{{ rowRenderIndex }}_3" name="{{ col.colDef.name }} Currency" class="bs-select" data-container="body" ng-model="grid.appScope.fVal().formValues.order" ng-options="item as item.code for item in grid.appScope.fVal().options[col.colDef.cellObject.Name] track by item.id" ng-disabled="$eval(col.colDef.cellObject.Disabled)" ng-required="col.colDef.cellObject.UomRequired">
+			        <select id="{{ grid.element[0].id }}_{{ col.colDef.name }}_{{ rowRenderIndex }}_3" name="{{ col.colDef.name }} Currency" class="bs-select" data-container="body" ng-model="grid.appScope.fVal().formValues.order" ng-options="item as item.code for item in grid.appScope.fVal().options[col.colDef.cellObject.Name] | decodeReadOnly track by item.id" ng-disabled="$eval(col.colDef.cellObject.Disabled)" ng-required="col.colDef.cellObject.UomRequired">
 			            <option></option>
 			        </select>
 			    </span>
@@ -36,13 +36,13 @@
         <span ng-if="!col.colDef.cellObject.uomBindSource" class="input-group-addon uom_group ">
             <span ng-if="col.colDef.cellObject.UniqueId">
                 <span ng-init="chg = false"></span>
-                <select  ng-if="col.colDef.name != 'invoiceRate' &&  col.colDef.cellObject.hasUom == true" ng-init="$eval(col.colDef.cellObject.changeEvent)" name="{{ col.colDef.name }} UOM" class="bs-select pull-left" data-container="body" ng-model="row['entity'][col.colDef.cellObject.additionalUomModel]" ng-options="item as item.name for item in CM.listsCache['Uom'] track by item.id"
+                <select  ng-if="col.colDef.name != 'invoiceRate' &&  col.colDef.cellObject.hasUom == true" ng-init="$eval(col.colDef.cellObject.changeEvent)" name="{{ col.colDef.name }} UOM" class="bs-select pull-left" data-container="body" ng-model="row['entity'][col.colDef.cellObject.additionalUomModel]" ng-options="item as item.name for item in CM.listsCache['Uom'] | decodeReadOnly track by item.id"
                 id="{{ grid.element[0].id }}_{{col.colDef.cellObject.masterSource}}__{{col.colDef.cellObject.Name}}_{{rowRenderIndex}}" 
                 ng-blur="$eval(col.colDef.cellObject.blurEvent); CM.chg = true;$eval(col.colDef.cellObject.changeEvent)" 
                 ng-hide="$eval(col.colDef.cellObject.FirstUomDisabled)" ng-required="col.colDef.cellObject.UomRequired">
                     <option></option>
                 </select>
-                <select ng-if="col.colDef.name == 'invoiceRate' && col.colDef.cellObject.hasUom == true" ng-init="$eval(col.colDef.cellObject.changeEvent)" name="{{ col.colDef.name }} UOM" class="bs-select pull-left" data-container="body" ng-model="row['entity'][col.colDef.cellObject.additionalUomModel]" ng-options="item as item.name for item in CM.listsCache['Uom'] track by item.id"
+                <select ng-if="col.colDef.name == 'invoiceRate' && col.colDef.cellObject.hasUom == true" ng-init="$eval(col.colDef.cellObject.changeEvent)" name="{{ col.colDef.name }} UOM" class="bs-select pull-left" data-container="body" ng-model="row['entity'][col.colDef.cellObject.additionalUomModel]" ng-options="item as item.name for item in CM.listsCache['Uom'] | decodeReadOnly track by item.id"
                 id="{{ grid.element[0].id }}_{{col.colDef.cellObject.masterSource}}__{{col.colDef.cellObject.Name}}_{{rowRenderIndex}}" 
                 ng-change="$eval(col.colDef.cellObject.keyPressEvent); CM.chg = true;$eval(col.colDef.cellObject.changeEvent)"
                 ng-hide="$eval(col.colDef.cellObject.FirstUomDisabled)" ng-required="col.colDef.cellObject.UomRequired">
@@ -58,7 +58,7 @@
                     ng-required="col.colDef.cellObject.UomRequired">
                         <option></option>
                     </select>
-                    <select ng-if="col.colDef.name == 'invoiceQuantity'" id="{{ grid.element[0].id }}_{{ col.colDef.name }}_{{ rowRenderIndex }}" name="{{ col.colDef.name }} UOM" class="bs-select" data-container="body" ng-model="row['entity'][col.colDef.cellObject.UniqueId]" ng-options="item as item.name for item in grid.appScope.fVal().options[col.colDef.cellObject.Name] track by item.id" ng-disabled="$eval(col.colDef.cellObject.Disabled); col.colDef.cellObject.UomDisabled" 
+                    <select ng-if="col.colDef.name == 'invoiceQuantity'" id="{{ grid.element[0].id }}_{{ col.colDef.name }}_{{ rowRenderIndex }}" name="{{ col.colDef.name }} UOM" class="bs-select" data-container="body" ng-model="row['entity'][col.colDef.cellObject.UniqueId]" ng-options="item as item.name for item in grid.appScope.fVal().options[col.colDef.cellObject.Name] | decodeReadOnly track by item.id" ng-disabled="$eval(col.colDef.cellObject.Disabled); col.colDef.cellObject.UomDisabled" 
                     ng-change="$eval(col.colDef.cellObject.keyPressEvent); $eval(col.colDef.cellObject.changeEvent)" 
                     ng-required="col.colDef.cellObject.UomRequired">
                         <option></option>
@@ -68,7 +68,7 @@
             </span>
             <span ng-if="!col.colDef.cellObject.UniqueId">
                 <span ng-if="col.colDef.cellObject.masterSource != 'Currency'">
-                    <select id="{{ grid.element[0].id }}_{{ col.colDef.name }}_{{ rowRenderIndex}}_2" name="{{ col.colDef.name }} UOM" class="bs-select" data-container="body" ng-model="grid.appScope.fVal().formValues.order" ng-options="item as item.name for item in grid.appScope.fVal().options[col.colDef.cellObject.Name] track by item.id" ng-disabled="$eval(col.colDef.cellObject.Disabled)" ng-required="col.colDef.cellObject.UomRequired">
+                    <select id="{{ grid.element[0].id }}_{{ col.colDef.name }}_{{ rowRenderIndex}}_2" name="{{ col.colDef.name }} UOM" class="bs-select" data-container="body" ng-model="grid.appScope.fVal().formValues.order" ng-options="item as item.name for item in grid.appScope.fVal().options[col.colDef.cellObject.Name] | decodeReadOnly track by item.id" ng-disabled="$eval(col.colDef.cellObject.Disabled)" ng-required="col.colDef.cellObject.UomRequired">
                         <option></option>
                     </select>
                 </span>

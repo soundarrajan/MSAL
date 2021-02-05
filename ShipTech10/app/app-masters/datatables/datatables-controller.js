@@ -77,7 +77,9 @@ APP_MASTERS.controller('Controller_Datatables', [
             multiSelectCell: $templateCache.get('app-general-components/views/data-table-formatters/multiSelectCell.html'),
             multiselect: $templateCache.get('app-general-components/views/data-table-formatters/multiselect.html'),
             readonlyNumber: $templateCache.get('app-general-components/views/data-table-formatters/readonlyNumber.html'),
-            customRemRow: $templateCache.get('app-general-components/views/data-table-formatters/customRemRow.html')
+            customRemRow: $templateCache.get('app-general-components/views/data-table-formatters/customRemRow.html'),
+            decodeText: $templateCache.get('app-general-components/views/data-table-formatters/decodeText.html')
+
         };
         $scope.gridScope = $scope;
         $scope.initGridDropdowns = function(id) {
@@ -655,6 +657,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                     {
                         name: 'agreementType.name',
                         displayName: 'Agreement',
+                        cellTemplate: $scope.dataTableTemplates.decodeText,
                         width: 130
                     },
                     {
@@ -3667,6 +3670,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                     {
                         name: 'product',
                         displayName: 'Product',
+                        cellTemplate: $scope.dataTableTemplates.decodeText,
                         required: true
                     },
                     {

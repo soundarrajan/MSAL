@@ -19,7 +19,7 @@
             <div class="row" ng-repeat="(index,product) in formValues.splitDelivery.items">
                 <div class="col-xs-12">
 
-                    <span class="caption-subject"> {{ product.name }} </span>
+                    <span class="caption-subject"> {{ product.name | decodeReadOnly}} </span>
                 </div>
 
                 <div class="col-xs-6 remove-padding">
@@ -32,7 +32,7 @@
                             ng-class="CM.invalid_form ? 'ng-touched' : ''"  disabled format="number:{{tenantSetting.defaultValues.quantityPrecision}}"
                             ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"/>
                             <span class="input-group-addon uom_group pseudoSelect">
-                                <select class="bs-select" name="product_{{ index + 1 }}_initialConfirmedUom" data-width="fit"  id="product_{{ index + 1 }}_initialConfirmedUom" ng-model="product.initialConfirmedUom" ng-options="item as item.name for item in options.Uom track by item.id" disabled>
+                                <select class="bs-select" name="product_{{ index + 1 }}_initialConfirmedUom" data-width="fit"  id="product_{{ index + 1 }}_initialConfirmedUom" ng-model="product.initialConfirmedUom" ng-options="item as item.name for item in options.Uom | decodeReadOnly  track by item.id" disabled>
                                     <option></option>
                                 </select>
                             </span>
@@ -51,7 +51,7 @@
                                       'ng-invalid' : !splitDeliveryInLimit[$index]}"
                             format="number:{{ tenantSetting.defaultValues.quantityPrecision }}" ng-required="true" ng-pattern="/^[0-9]+(\.[0-9]{1,4})?$/" ng-change="splitDeliveryInLimit[$index] = product.remainingConfirmedAmount <= product.orderLimit; CM.disabledSplitBtn = disabledSplitDelivery(splitDeliveryInLimit)"/>
                             <span class="input-group-addon uom_group pseudoSelect" >
-                                <select name="product_{{ index + 1 }}_remainingConfirmedUom" data-width="fit"  id="product_{{ index + 1 }}_remainingConfirmedUom" ng-model="product.remainingConfirmedUom" ng-options="item as item.name for item in options.Uom track by item.id" ng-required="product.remainingConfirmedAmount" ng-disabled="true">
+                                <select name="product_{{ index + 1 }}_remainingConfirmedUom" data-width="fit"  id="product_{{ index + 1 }}_remainingConfirmedUom" ng-model="product.remainingConfirmedUom" ng-options="item as item.name for item in options.Uom | decodeReadOnly track by item.id" ng-required="product.remainingConfirmedAmount" ng-disabled="true">
                                     <option></option>
                                 </select>
                             </span>
