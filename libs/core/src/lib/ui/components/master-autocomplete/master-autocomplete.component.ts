@@ -13,6 +13,7 @@ import { ServerGridConditionFilterEnum } from '@shiptech/core/grid/server-grid/s
 import { AutoComplete } from 'primeng/autocomplete';
 import { switchMap, takeUntil, tap } from 'rxjs/operators';
 import { query } from '@angular/animations';
+import _ from 'lodash';
 
 export class MasterAutocompleteComponent implements AfterViewInit, OnDestroy {
   @Input() disabled: boolean = false;
@@ -52,6 +53,15 @@ export class MasterAutocompleteComponent implements AfterViewInit, OnDestroy {
               }
             }
           } else {
+            const  decodeHtmlEntity = function(str) {
+              return str.replace(/&#(\d+);/g, function(match, dec) {
+                  return String.fromCharCode(dec);
+              });
+            };
+            for (let i = 0; i < results.length; i++) {
+              results[i].name =  decodeHtmlEntity(_.unescape(results[i].name));
+              results[i].displayName =  decodeHtmlEntity(_.unescape(results[i].displayName));
+            }
             this.suggestions = results || [];
           }
          

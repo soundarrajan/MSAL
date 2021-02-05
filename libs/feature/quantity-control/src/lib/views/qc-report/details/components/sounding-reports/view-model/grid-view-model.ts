@@ -24,6 +24,7 @@ import { IAppState } from '@shiptech/core/store/states/app.state.interface';
 import { Store } from '@ngxs/store';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { IGetSoundingReportListResponse } from '../../../../../../services/api/request-response/sounding-reports.request-response';
+import _ from 'lodash';
 
 function model(
   prop: keyof IQcSoundingReportItemDto
@@ -59,6 +60,11 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
   tankNameCol: ITypedColDef<IQcSoundingReportDetailsItemDto, string> = {
     headerName: QcSoundingReportDetailsColumnsLabels.tankName,
     colId: QcSoundingReportDetailsColumns.tankName,
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value;
+      return a;
+    },
     field: detailsModel('tankName')
   };
 
@@ -184,7 +190,12 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
   vesselCodeCol: ITypedColDef<IQcSoundingReportItemDto, string> = {
     headerName: QcSoundingReportListColumnsLabels.vesselCode,
     colId: QcSoundingReportListColumns.vesselCode,
-    field: model('vesselCode')
+    field: model('vesselCode'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value;
+      return a;
+    }
   };
 
   imoNoCol: ITypedColDef<IQcSoundingReportItemDto, string> = {
@@ -314,6 +325,14 @@ export class QcSoundingReportListGridViewModel extends BaseGridViewModel {
         }),
         map(response => response.items),
         tap(items => {
+          const  decodeHtmlEntity = function(str) {
+            return str.replace(/&#(\d+);/g, function(match, dec) {
+                return String.fromCharCode(dec);
+            });
+          };
+          for (let i = 0; i < items.length; i++) {
+            items[i].vesselName =  decodeHtmlEntity(_.unescape(items[i].vesselName));
+          }
           this.gridApi.setRowData(items);
 
           if (!items || !items.length) {

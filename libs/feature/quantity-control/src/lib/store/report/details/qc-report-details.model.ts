@@ -14,6 +14,7 @@ import {
 } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { IQcVesselPortCallDto } from '../../../services/api/dto/qc-vessel-port-call.interface';
 import { IStatusLookupDto } from '@shiptech/core/lookups/known-lookups/status/status-lookup.interface';
+import _ from 'lodash';
 
 export class QcReportDetailsModel {
   isNew: boolean;
@@ -53,8 +54,30 @@ export class QcReportDetailsModel {
   _isLoading: boolean;
 
   constructor(props: Partial<IQcReportDetailsState> = {}) {
+    const  decodeHtmlEntity = function(str) {
+      return str.replace(/&#(\d+);/g, function(match, dec) {
+          return String.fromCharCode(dec);
+      });
+    };
+    if (props) {
+      props.comment = props.comment ? decodeHtmlEntity(_.unescape(props.comment)) : '';
+    }
+    if (props.vesselResponse) {
+      props.vesselResponse.sludge.description = props.vesselResponse.sludge.description ? decodeHtmlEntity(_.unescape(props.vesselResponse.sludge.description)) : '';
+      props.vesselResponse.bunker.description = props.vesselResponse.bunker.description ? decodeHtmlEntity(_.unescape(props.vesselResponse.bunker.description)) : '';
+    }
+    if (props.uoms){
+      for (let i = 0; i < props.uoms.length; i++) {
+        props.uoms[i].name =  decodeHtmlEntity(_.unescape(props.uoms[i].name));
+        props.uoms[i].displayName = decodeHtmlEntity(_.unescape(props.uoms[i].displayName));
+      }
+    }
+    if (props.vessel) {
+      props.vessel.name = decodeHtmlEntity(_.unescape(props.vessel.name));
+    }
     Object.assign(this, props);
   }
+
 }
 
 export interface IQcReportDetailsState extends QcReportDetailsModel {}

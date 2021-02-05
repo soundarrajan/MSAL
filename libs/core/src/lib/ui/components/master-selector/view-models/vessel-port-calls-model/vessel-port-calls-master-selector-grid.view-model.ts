@@ -88,6 +88,13 @@ export class VesselPortCallsMasterSelectorGridViewModel extends BaseGridViewMode
     headerName: VesselPortCallsMasterListColumnsLabels.locationPort,
     colId: VesselPortCallsMasterListColumns.locationPort,
     field: model('location'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      if (params.value) {
+        a.innerHTML = params.value?.name ?? params.value?.displayName;
+      }
+      return a;
+    },
     valueFormatter: params => params.value?.name ?? params.value?.name
   };
 
@@ -95,6 +102,13 @@ export class VesselPortCallsMasterSelectorGridViewModel extends BaseGridViewMode
     headerName: VesselPortCallsMasterListColumnsLabels.voyageId,
     colId: VesselPortCallsMasterListColumns.voyageId,
     field: model('voyageId'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      if (params.value) {
+        a.innerHTML = params.value ?? params.value?.name;
+      }
+      return a;
+    },
     valueFormatter: params => params.value?.name ?? params.value?.name
   };
 
@@ -132,6 +146,13 @@ export class VesselPortCallsMasterSelectorGridViewModel extends BaseGridViewMode
     headerName: VesselPortCallsMasterListColumnsLabels.service,
     colId: VesselPortCallsMasterListColumns.service,
     field: model('service'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      if (params.value) {
+        a.innerHTML = params.value?.name ?? params.value?.displayName;
+      }
+      return a;
+    },
     valueFormatter: params => params.value?.name ?? params.value?.name
   };
 
