@@ -1,7 +1,7 @@
-﻿commit fba666a8f228264e0583d575ce139b872e585ddf
+﻿commit 16c42126fa1061738059fa4182902be549e122fa
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Thu Dec 3 16:37:02 2020 +0200
+Date:   Fri Feb 5 14:05:53 2021 +0200
 
-    Added 1.11.2 version of email template editor ckeditor
+    Fixed problems related to special characters in quantity control
 
 branch: master

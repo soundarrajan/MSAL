@@ -116,6 +116,11 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.portName,
     colId: QcReportsListColumns.portName,
     field: model('portName'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value;
+      return a;
+    },
     width: 106
   };
 
@@ -123,7 +128,11 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.vesselName,
     colId: QcReportsListColumns.vesselName,
     field: model('vesselName'),
-    cellRendererFramework: AgCellTemplateComponent,
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value;
+      return a;
+    },
     width: 129
   };
 
@@ -205,6 +214,11 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.qtyBeforeDeliveryUom,
     colId: QcReportsListColumns.qtyBeforeDeliveryUom,
     field: model('qtyBeforeDeliveryUom'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value?.name;
+      return a;
+    },
     valueFormatter: params => params.value?.name
   };
 
@@ -241,6 +255,11 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.qtyDeliveredUom,
     colId: QcReportsListColumns.qtyDeliveredUom,
     field: model('qtyDeliveredUom'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value?.name;
+      return a;
+    },
     valueFormatter: params => params.value?.name
   };
 
@@ -280,6 +299,11 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.qtyAfterDeliveryUom,
     colId: QcReportsListColumns.qtyAfterDeliveryUom,
     field: model('qtyAfterDeliveryUom'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value?.name;
+      return a;
+    },
     valueFormatter: params => params.value?.name
   };
 
@@ -343,6 +367,11 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.comment,
     colId: QcReportsListColumns.comment,
     field: model('comment'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.valueFormatted ?? params.value;
+      return a;
+    },
     tooltipValueGetter: params => params.valueFormatted ?? params.value
   };
 

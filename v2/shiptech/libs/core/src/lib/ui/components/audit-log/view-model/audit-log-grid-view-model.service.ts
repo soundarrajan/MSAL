@@ -131,6 +131,11 @@ export class AuditLogGridViewModel extends BaseGridViewModel {
     headerName: AuditLogColumnsLabels.oldValue,
     colId: AuditLogListColumns.oldValue,
     field: model('oldValue'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value;
+      return a;
+    },
     minWidth: 200,
     flex: 2
   };
@@ -139,6 +144,11 @@ export class AuditLogGridViewModel extends BaseGridViewModel {
     headerName: AuditLogColumnsLabels.newValue,
     colId: AuditLogListColumns.newValue,
     field: model('newValue'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value;
+      return a;
+    },
     minWidth: 200,
     flex: 2
   };
