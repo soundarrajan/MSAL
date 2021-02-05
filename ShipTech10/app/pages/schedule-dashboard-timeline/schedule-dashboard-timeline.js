@@ -149,10 +149,10 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             var groupVoyageId = _.groupBy(vessels, "voyageDetail.id");
             var arrayLowestPriority = [];
             $.each(groupVoyageId, function(k, v) {
-                var highestPriority = _.minBy(v, "voyageDetail.portStatusPriority");
-                if (highestPriority) {
-	                arrayLowestPriority[v[0].voyageDetail.id] = highestPriority
-                    // arrayLowestPriority.push(highestPriority);
+                var lowesPriority = _.minBy(v, "voyageDetail.portStatusPriority");
+                if (lowesPriority) {
+	                arrayLowestPriority[v[0].voyageDetail.id] = lowesPriority
+                    // arrayLowestPriority.push(lowesPriority);
                 }
             })
 
@@ -494,10 +494,10 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                             if (additionalStop) {
                                 voyage.isDeleted = false;
                             }
-                            let highestPriority = _.maxBy(voyage.additionalStops, "voyageDetail.portStatusPriority");
+                            let lowesPriority = _.minBy(voyage.additionalStops, "voyageDetail.portStatusPriority");
                             let statusColor = null;
-                            if (highestPriority) {
-                                statusColor = statusColors.getColorCodeFromLabels(highestPriority.voyageDetail.portStatus, $listsCache.ScheduleDashboardLabelConfiguration); 
+                            if (lowesPriority) {
+                                statusColor = statusColors.getColorCodeFromLabels(lowesPriority.voyageDetail.portStatus, $listsCache.ScheduleDashboardLabelConfiguration); 
                             } 
                             if(statusColor) {
                                 voyage.style += '; background-color: ' + statusColor + ' !important;' + 'color: ' + getContrastYIQ(statusColor) + ' !important;';

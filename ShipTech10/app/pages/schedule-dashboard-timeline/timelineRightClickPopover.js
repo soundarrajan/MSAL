@@ -227,33 +227,33 @@ angular.module('shiptech.components')
 		    };
 
 		    ctrl.getPriorityStatus = function(voyage) {
-                var highestPriorityStatus = _.maxBy(ctrl.groupedVoyagesDetails[voyage], 'voyageDetail.portStatusPriority');
-                if (highestPriorityStatus) {
-                    var colorCode = statusColors.getColorCodeFromLabels(highestPriorityStatus.voyageDetail.portStatus, $listsCache.ScheduleDashboardLabelConfiguration);
+                var lowestPriorityStatus = _.minBy(ctrl.groupedVoyagesDetails[voyage], 'voyageDetail.portStatusPriority');
+                if (lowestPriorityStatus) {
+                    var colorCode = statusColors.getColorCodeFromLabels(lowestPriorityStatus.voyageDetail.portStatus, $listsCache.ScheduleDashboardLabelConfiguration);
 					$.each(window.scheduleDashboardConfiguration.payload.labels, function(sk,sv){
-						if (sv.status.id == highestPriorityStatus.voyageDetail.portStatus.id && sv.transactionType.id == highestPriorityStatus.voyageDetail.portStatus.transactionTypeId && !sv.displayInDashboard ) {
-							highestPriorityStatus.voyageDetail.portStatus.hideInDashboard = true;
+						if (sv.status.id == lowestPriorityStatus.voyageDetail.portStatus.id && sv.transactionType.id == lowestPriorityStatus.voyageDetail.portStatus.transactionTypeId && !sv.displayInDashboard ) {
+							lowestPriorityStatus.voyageDetail.portStatus.hideInDashboard = true;
 						}
 					})                     
-                    highestPriorityStatus.voyageDetail.portStatus.color = colorCode;
-                    highestPriorityStatus.voyageDetail.portStatus.fontColor = getContrastYIQ(colorCode);
+                    lowestPriorityStatus.voyageDetail.portStatus.color = colorCode;
+                    lowestPriorityStatus.voyageDetail.portStatus.fontColor = getContrastYIQ(colorCode);
                 } else {
-                    highestPriorityStatus = ctrl.groupedVoyagesDetails[voyage][0];
-                    var colorCode = statusColors.getColorCodeFromLabels(highestPriorityStatus.voyageDetail.portStatus, $listsCache.ScheduleDashboardLabelConfiguration);
+                    lowestPriorityStatus = ctrl.groupedVoyagesDetails[voyage][0];
+                    var colorCode = statusColors.getColorCodeFromLabels(lowestPriorityStatus.voyageDetail.portStatus, $listsCache.ScheduleDashboardLabelConfiguration);
 					$.each(window.scheduleDashboardConfiguration.payload.labels, function(sk,sv){
-						if (sv.status.id == highestPriorityStatus.voyageDetail.portStatus.id && sv.transactionType.id == highestPriorityStatus.voyageDetail.portStatus.transactionTypeId && !sv.displayInDashboard ) {
-							highestPriorityStatus.voyageDetail.portStatus.hideInDashboard = true;
+						if (sv.status.id == lowestPriorityStatus.voyageDetail.portStatus.id && sv.transactionType.id == lowestPriorityStatus.voyageDetail.portStatus.transactionTypeId && !sv.displayInDashboard ) {
+							lowestPriorityStatus.voyageDetail.portStatus.hideInDashboard = true;
 						}
 					});                     
-                    highestPriorityStatus.voyageDetail.portStatus.color = colorCode;
-                    highestPriorityStatus.voyageDetail.portStatus.fontColor = getContrastYIQ(colorCode);
-                    if (highestPriorityStatus.voyageDetail.portStatus.hideInDashboard) {
-                        highestPriorityStatus.voyageDetail.portStatus.color = "#ffffff";
-                        highestPriorityStatus.voyageDetail.portStatus.fontColor = "#000000";
-                        highestPriorityStatus.voyageDetail.portStatus.hideInDashboard = false;
+                    lowestPriorityStatus.voyageDetail.portStatus.color = colorCode;
+                    lowestPriorityStatus.voyageDetail.portStatus.fontColor = getContrastYIQ(colorCode);
+                    if (lowestPriorityStatus.voyageDetail.portStatus.hideInDashboard) {
+                        lowestPriorityStatus.voyageDetail.portStatus.color = "#ffffff";
+                        lowestPriorityStatus.voyageDetail.portStatus.fontColor = "#000000";
+                        lowestPriorityStatus.voyageDetail.portStatus.hideInDashboard = false;
                     }
                 }
-                return highestPriorityStatus.voyageDetail.portStatus;
+                return lowestPriorityStatus.voyageDetail.portStatus;
 		    };
 
 	        ctrl.addVoyageToContractPlanning = function(voyageStop) {
