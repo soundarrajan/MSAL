@@ -596,20 +596,23 @@
                         <i class="fa fa-users font-dark"></i>
                     </a>
                 </td>
-                 <td style="max-width: 65px" ng-mouseleave="seller.viewEditRatingIcon = false"  ng-mouseover="seller.viewEditRatingIcon = true">
-                    <div style="text-align: center;">
-                        <span ng-class="seller.viewEditRatingIcon? 'rating-with-border' : '' ">
-                            <span class="hidden">
-                                {{seller.rating = $ctrl.getSellerRatingForCounterpartyForSpecificLocation(location, seller.sellerCounterparty.id)}} 
+                <td style="width: 65px !important;" ng-mouseleave="seller.viewEditRatingIcon = false"  ng-mouseover="seller.viewEditRatingIcon = true" class="padding">
+                    <div style="text-align: center; width: 65px; display: inline-flex;">
+                        <div style="width: 40px;"> 
+                            <span ng-class="seller.viewEditRatingIcon? 'rating-with-border' : '' ">
+                                <span class="hidden">
+                                    {{seller.rating = $ctrl.getSellerRatingForCounterpartyForSpecificLocation(location, seller.sellerCounterparty.id)}} 
+                                </span>
+                                {{seller.rating ? $ctrl.formatNumber(seller.rating) : 'NA'}}
                             </span>
-                            {{seller.rating ? $ctrl.formatNumber(seller.rating) : 'NA'}}
-                        </span>
-                        <span ng-click="$ctrl.viewBladeSellerRating(seller.sellerCounterparty.id, location, seller)">
-                            <i  style="color: #337AB7; font-size: 18px;" class="fa fa-star"></i>
+                        </div>
+                        <span>
+                            <i style="color: #337AB7; font-size: 18px;" ng-click="$ctrl.viewBladeSellerRating(seller.sellerCounterparty.id, location, seller)" class="fa fa-star"></i>
                         </span>
                     </div>
                 </td>
                 <td style="text-align: center;">
+
                     <i style="margin-right: 8px;" class="glyphicon glyphicon-envelope clickable {{ $ctrl.checkIfSellerHasRFQ(seller.randUniquePkg, location) }}" ng-click="$ctrl.previewEmail(seller, location)" ></i>
                
 
