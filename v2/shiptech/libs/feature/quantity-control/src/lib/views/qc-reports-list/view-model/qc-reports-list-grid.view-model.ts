@@ -360,6 +360,11 @@ export class QcReportsListGridViewModel extends BaseGridViewModel {
     headerName: QcReportsListColumnsLabels.qtySludgeDischargedUom,
     colId: QcReportsListColumns.qtySludgeDischargedUom,
     field: model('qtySludgeDischargedUom'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value?.name;
+      return a;
+    },
     valueFormatter: params => params.value?.name
   };
 

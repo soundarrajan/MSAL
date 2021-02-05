@@ -1,7 +1,7 @@
-﻿commit 16c42126fa1061738059fa4182902be549e122fa
+﻿commit 92f65373b8d3acb141c4a2c4f3cbf7906e620927
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Fri Feb 5 14:05:53 2021 +0200
+Date:   Fri Feb 5 14:56:08 2021 +0200
 
-    Fixed problems related to special characters in quantity control
+    Fixed  special characters  for sludge uom from quantity control list
 
 branch: master
