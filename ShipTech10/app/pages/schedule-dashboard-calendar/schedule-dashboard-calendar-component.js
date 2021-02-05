@@ -1371,33 +1371,50 @@ angular.module('shiptech.pages').controller('ScheduleCalendarController', [ '$ro
          * Displays a context menu on right click.
          */
         ctrl.showContextMenu = function($event, object, vsVal) {
-            // console.log(123)
             hidePopovers();
             $('schedule-dashboard-calendar > .contextmenu').remove();
             var currentElem = $($event.currentTarget);
             var html = '<div class="contextmenu alert alert-info fade in"> <a href="#" class="close" aria-label="close"> &times; </a> <div class="content" style="text-align: center;">';
             let hasRequest = false;
-            let hasBunkerPlan = false;
-            $.each(object, (k, value) => {
-                html = `${html }<span> <a class="contextAction" data-index="${ k }">`;
+            let hasBunkerPlan = false;            
+            $.each(object, (k, value) => {  
                 if (value.request == null || value.request.id == 0) {
-                    html = `${html }<span> Create Pre-request (${ value.portCode }) </span>`;
-                } else {
-                    html = `${html }<span> Edit request (${ value.portCode }) - ${ value.request.requestName } </span> `;
+                    html = `${html }<span> <a class="contextAction" data-index="${ k }">`;
+                    html = `${html }<span> Create Pre-request (${ value.portCode }) for voyage - ${value.voyageDetail.id} </span>`;
+                    html = `${html }<br/>`;
+                } else {                    
+                    let reqIds=[];   
                     hasRequest = true;
+                    $.each(value.request.requestDetail, (j, row) => {
+                        let reqId= row.requestName.replace('REQ ','');
+                        if(reqIds.indexOf(reqId) != -1)
+                         return;                  
+                        
+                        reqIds.push(reqId);
+                        if(j!=0)
+                            html = `${html }<br/>`;
+                        let editreqHref = $state.href(STATE.EDIT_REQUEST, {requestId: reqId}, {absolute: false});
+                        html = `${html }<span> <a href="${editreqHref}" target="_blank" data-index="${ k }">`;
+                        html = `${html }<span> Edit request (${ value.portCode }) - ${ row.requestName } </span> `;
+                       
+                    });               
+                    let newreqHref = $state.href(STATE.NEW_REQUEST, {voyageId: value.id}, {absolute: false});
+                    html = `${html }<span> <a href="${newreqHref}" target="_blank" data-index="${ k }">`;
+                    html = `${html }<br/> <span> Create Pre-request (${ value.portCode }) for voyage - ${value.voyageDetail.id} </span>`;
+                    html = `${html }<br/>`;
                 }
 
                 if (ctrl.bunkerDetails[value.voyageDetail.id]) {
                 	hasBunkerPlan = true;
                 }
 
-                html = `${html }</a> <br/> </span>`;
+                // html = `${html }</a> <br/> </span>`;
 
-                if ((value.request == null || value.request.id == 0) && moment.utc(value.eta) >= moment()) {
+                // if ((value.request == null || value.request.id == 0) && moment.utc(value.eta) >= moment()) {
                     html = `${html }<span> <a class="contextActionContractPlanning" data-index="${ k }">`;
-                    html = `${html }<span> Add to Contract Planning (${ value.portCode }) </span>`;
+                    html = `${html }<span> Add to Contract Planning (${ value.portCode }) for voyage - ${value.voyageDetail.id} </span>`;
                     html = `${html }</a> <br/> </span>`;
-                }
+                // }
 
                 if (k < object.length - 1) {
                     html = `${html }</br>`;
