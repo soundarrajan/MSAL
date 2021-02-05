@@ -86,6 +86,13 @@ export class ProductDetailsGridViewModel extends BaseGridViewModel {
     headerName: ProductDetailsColumnsLabels.ProductTypeName,
     colId: ProductDetailsColumns.ProductTypeName,
     field: model('productType'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      if (params.value) {
+        a.innerHTML = params.value?.displayName ?? params.value?.name;
+      }
+      return a;
+    },
     valueFormatter: params => params.value?.displayName ?? params.value?.name,
     minWidth: 250,
     flex: 2

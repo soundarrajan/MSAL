@@ -128,6 +128,11 @@ export class DocumentsMasterSelectorGridViewModel extends BaseGridViewModel {
   documentDisplayNameCol: ITypedColDef<IDocumentsMasterDto, string> = {
     headerName: DocumentsMasterListColumnsLabels.documentTypeDisplayName,
     colId: DocumentsMasterListColumns.documentTypeDisplayName,
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value;
+      return a;
+    },
     field: model('displayName'),
     minWidth: 175,
     flex: 2
