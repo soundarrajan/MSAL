@@ -93,11 +93,11 @@
 	                <tbody vs-repeat="{latch: false}" style="overflow-anchor: none;">
 	                    <tr role="row" ng-repeat="row in $ctrl.calendarDataRows track by $index">
 	                        <td class="calendarDataRowsLabelGrouped" style="width:{{$ctrl.fixedColumnsWidth}}; padding:0!important">
-	                            <div style="width:98px" class="serviceName cellContent pull-left" tooltip data-original-title="{{ row.serviceName }}">{{row.serviceName}}</div>
+	                            <div style="width:98px" class="serviceName cellContent pull-left" tooltip data-original-title="{{ row.serviceName | decodeReadOnly}}">{{row.serviceName | decodeReadOnly}}</div>
 
-	                            <div style="width:240px" class="vesselName pull-left" cellContent  tooltip data-original-title="{{ row.vesselName }} : {{ row.defaultFuel }} : {{ row.defaultDistillate }}" >{{ row.vesselName }}</div>
-	                            <div  style="width:90px" ng-if="$ctrl.displayedColumns['Buyer of the Vessel'] " class="buyerName cellContent pull-left" tooltip data-original-title="{{ row.buyerName }}" >{{ row.buyerName }}</div>
-	                            <div style="width:90px" ng-if="$ctrl.displayedColumns['Company'] " class="companyName cellContent pull-left" tooltip data-original-title="{{ row.companyName }}" >{{ row.companyName }}</div>
+	                            <div style="width:240px" class="vesselName pull-left" cellContent  tooltip data-original-title="{{ row.vesselName | decodeReadOnly}} : {{ row.defaultFuel | decodeReadOnly}} : {{ row.defaultDistillate | decodeReadOnly}}" >{{ row.vesselName | decodeReadOnly}}</div>
+	                            <div  style="width:90px" ng-if="$ctrl.displayedColumns['Buyer of the Vessel'] " class="buyerName cellContent pull-left" tooltip data-original-title="{{ row.buyerName | decodeReadOnly}}" >{{ row.buyerName | decodeReadOnly}}</div>
+	                            <div style="width:90px" ng-if="$ctrl.displayedColumns['Company'] " class="companyName cellContent pull-left" tooltip data-original-title="{{ row.companyName | decodeReadOnly}}" >{{ row.companyName | decodeReadOnly}}</div>
 	                        </td>
 
 	                        <td class="dayColumn" ng-repeat="(key, voyageStop) in row.calendar  track by $index" id="voyageStop_{{ $index }}" data-voyage-stop-id = "{{ voyageStop.id }}"  ng-class="{'clickable': voyageStop.portCode}" ng-style="voyageStop.style" style="{{ $ctrl.calendarDates[$index].isWeekend && !$ctrl.calendarDates[$index].isNow ? ' background: #dcdcdc!important;' : ''; }}{{ $ctrl.calendarDates[$index].isNow ? 'background: #99cb82!important;' : ''; }} ;width: 44px; height: 20px;" class="voyageStopCell bg-white">

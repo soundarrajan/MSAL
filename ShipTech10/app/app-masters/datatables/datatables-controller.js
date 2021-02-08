@@ -1448,13 +1448,15 @@ APP_MASTERS.controller('Controller_Datatables', [
                         name: 'port.name',
                         width: 150,
                         enableCellEdit: false,
-                        displayName: 'Port Name'
+                        displayName: 'Port Name',
+                        cellTemplate: $scope.dataTableTemplates.decodeText
                     },
                     {
                         name: 'country.name',
                         width: 130,
                         enableCellEdit: false,
-                        displayName: 'Country'
+                        displayName: 'Country',
+                        cellTemplate: $scope.dataTableTemplates.decodeText
                     },
                     {
                         name: 'eta',

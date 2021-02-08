@@ -28,8 +28,8 @@
                             </label>
                         </td>
                         <td><a href="#/masters/product/edit/{{row.id1}}" target="_blank" class="link-underline-light"> {{row.id}}</a></td>
-                        <td>{{row.name}}</td>
-                        <td>{{row.productType.name}}</td>
+                        <td>{{row.name | decodeReadOnly}}</td>
+                        <td>{{row.productType.name | decodeReadOnly}}</td>
                         <td>{{row.createdBy.name}}</td>
                         <td ng-controller="Controller_Master as CM">{{ CM.formatDateTime(row.createdOn, null, 'default') }}</td>
                         <td>{{row.lastModifiedBy.name}}</td>

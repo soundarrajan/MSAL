@@ -1076,7 +1076,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                         }
                     }
 
-                    tpl += '<div style="width: 197px;"><select ng-disabled="'+fieldDisabled+'" id="contract_planning_product_select_' + options.rowId + '" rowId="' + options.rowId + '" ng-change="CLC.changeCPRowModel(CLC.product[' + options.rowId + "], " + options.rowId + "," + columnKey + ');" ng-init="CLC.product[' + options.rowId + '].id = '+currentValue+'; CLC.changeCPRowModel(CLC.product[' + options.rowId + "], " + options.rowId + "," + columnKey + ", true" + ');" ng-model="CLC.product[' + options.rowId + ']" ng-options="item as item.name for item in CLC.listsCache.Product track by item.id" class="form-control input-group-addon contract_planning_product"></select></div>';
+                    tpl += '<div style="width: 197px;"><select ng-disabled="'+fieldDisabled+'" id="contract_planning_product_select_' + options.rowId + '" rowId="' + options.rowId + '" ng-change="CLC.changeCPRowModel(CLC.product[' + options.rowId + "], " + options.rowId + "," + columnKey + ');" ng-init="CLC.product[' + options.rowId + '].id = '+currentValue+'; CLC.changeCPRowModel(CLC.product[' + options.rowId + "], " + options.rowId + "," + columnKey + ", true" + ');" ng-model="CLC.product[' + options.rowId + ']" ng-options="item as item.name for item in CLC.listsCache.Product | decodeReadOnly track by item.id" class="form-control input-group-addon contract_planning_product"></select></div>';
 
                     // tpl +='<span ng-controller="Controller_Master as CM" class="input-group-addon " ng-click="triggerModal(\'general\', \'masters_productlist\', \'\' , \'  cpPr['+options.rowId +']\',\'\',\'\', \'Product\' )" ><i class="fa fa-search"></i></span> ';
 
@@ -1099,7 +1099,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     } else {
                         currentValue = 2;
                     }
-                    tpl = '<select rowId="' + options.rowId + '" ng-change="CLC.changeCPRowModel(agrementType[' + options.rowId + "], " + options.rowId + "," + columnKey + ', false);" ng-init="agrementType[' + options.rowId + '].id = '+currentValue+'; CLC.changeCPRowModel(agrementType[' + options.rowId + "], " + options.rowId + "," + columnKey + ', true);" ng-model="agrementType[' + options.rowId + ']" ng-options="item as item.name for item in CLC.listsCache.AgreementType track by item.id" class="form-control w100 contract_planning_agreementtype">';
+                    tpl = '<select rowId="' + options.rowId + '" ng-change="CLC.changeCPRowModel(agrementType[' + options.rowId + "], " + options.rowId + "," + columnKey + ', false);" ng-init="agrementType[' + options.rowId + '].id = '+currentValue+'; CLC.changeCPRowModel(agrementType[' + options.rowId + "], " + options.rowId + "," + columnKey + ', true);" ng-model="agrementType[' + options.rowId + ']" ng-options="item as item.name for item in CLC.listsCache.AgreementType | decodeReadOnly track by item.id" class="form-control w100 contract_planning_agreementtype">';
                         tpl += "</select>";
                     return tpl;
                 };

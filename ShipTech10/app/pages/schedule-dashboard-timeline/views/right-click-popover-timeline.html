@@ -2,13 +2,13 @@
 	<div class="popover-header">
 		<i class="fa fa-location-arrow">
 			&nbsp;&nbsp;
-		</i><span>{{$ctrl.vesselName}}</span>
+		</i><span>{{$ctrl.vesselName | decodeReadOnly}}</span>
 	</div>
 	<div class="content">
 		<div class="voyageDetailSection" ng-repeat="(key,voyage) in $ctrl.groupedVoyages.uniqueVoyages">
 			<hr ng-if="$index > 0" style="margin: 5px 0;" >
 			<div ng-init="voyageStatus = $ctrl.getPriorityStatus(voyage)" style="padding-left: 5px;">
-				Port: <b>{{$ctrl.groupedVoyagesDetails[voyage][0].voyageDetail.locationCode}}</b>
+				Port: <b>{{$ctrl.groupedVoyagesDetails[voyage][0].voyageDetail.locationCode | decodeReadOnly}}</b>
 				<!-- {{voyageStatus.hideInDashboard}} -->
 				<span ng-if="!voyageStatus.hideInDashboard" style="background: {{voyageStatus.color}}; color:{{voyageStatus.fontColor}}; padding: 0px 5px; border-radius: 200px !important;">{{voyageStatus.name}}</span>
 			</div>

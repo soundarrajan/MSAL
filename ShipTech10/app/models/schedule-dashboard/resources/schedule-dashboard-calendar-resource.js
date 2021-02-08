@@ -4,7 +4,6 @@ angular.module('shiptech.models')
         return $resource(`${API.BASE_URL_DATA_PROCUREMENT }/api/procurement/scheduledashboard/:verb`, null,
             {
     	// TODO: all methods to POST
-                fetch: { method:'POST', params:{ verb:'get' } },
                 getTable: { method:'POST', params:{ verb:'getTable' } },
                 getWSeparateBunkerPlan: { method:'POST', params:{ verb:'getWSeparateBunkerPlan' } },
             });

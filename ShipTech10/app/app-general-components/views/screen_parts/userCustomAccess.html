@@ -51,7 +51,7 @@
                                 <input type="checkbox" ng-checked="item.isSelected" onchange="change(this)"
                                         class="tree-selection" name="tree-selection" hierarchy-detail="{{item}}" hierarchy-type="{{value.id}}">
                                 <span style="background:#fff; border: 1px solid #dedede;"></span>
-                                {{item.name}}
+                                {{item.name | decodeReadOnly}}
                              </label>
                         </span>
                         <div  class="children collapse not-first-level">
@@ -60,14 +60,14 @@
                                     <label class="mt-checkbox element-user-screen" style="margin-left: 20px;">
                                       <input  ng-checked="item.isSelected" onchange="change(this)" type="checkbox" class="tree-selection" name="tree-selection" hierarchy-detail="{{item}}" hierarchy-type="{{value.id}}"> 
                                         <span style="background:#fff; border: 1px solid #dedede;"></span>
-                                        {{item.name}}
+                                        {{item.name | decodeReadOnly}}
                                      </label>
                                 </span>
                                 <span ng-if="item.children.length"  ng-include="'tree'" ng-init="depth = depth + 1" style="display: list-item">
                                     <label class="mt-checkbox element-user-screen">
                                       <input  ng-checked="item.isSelected" onchange="change(this)" type="checkbox" class="tree-selection" name="tree-selection" hierarchy-detail="{{item}}" hierarchy-type="{{value.id}}"> 
                                       <span style="background:#fff; border: 1px solid #dedede;"></span>
-                                        {{item.name}}
+                                        {{item.name | decodeReadOnly}}
                                      </label>
                                 </span>
                             </span>
