@@ -137,6 +137,12 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             }
         };
 
+        var decodeHtmlEntity = function(str) {
+            return str.replace(/&#(\d+);/g, function(match, dec) {
+                return String.fromCharCode(dec);
+            });
+        };
+
         var computeData = function(data) {
             var startComputeData = Date.now();
         	console.log(Date.now());
@@ -167,17 +173,18 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
             var arrayWithIndex = [];
             var findElementInInterval = [];
 
-            vessels = _.orderBy(vessels, function(obj){
-	            if (displayScheduleBasedOn === 'Delivery Date') {
-	            	return obj.voyageDetail.deliveryFrom;
-	            } else {
-	            	return obj.voyageDetail.eta;
-	            }
+           vessels = _.orderBy(vessels, function(obj) {                
+                if (displayScheduleBasedOn === 'Delivery Date') {                    
+                    return obj.voyageDetail.deliveryFrom && obj.voyageDetail.portStatus.id;               
+                } else {                    
+                    return obj.voyageDetail.eta && obj.voyageDetail.portStatus.id;                
+                }            
             }, 'asc');
+
             ctrl.stopsGroupedByDayAndGroup = _.uniqBy(vessels, "voyageDetail.id");
             ctrl.stopsGroupedByDayAndGroup = _.groupBy(ctrl.stopsGroupedByDayAndGroup, function(obj, key){
             	if (obj != null) {
-                    var objGroupString = obj.ServiceName + ' <> ' + obj.BuyerName + ' <> ' +  obj.VesselName + ' <> ' + obj.VesselType + ' <> ' + obj.CompanyName;
+                    var objGroupString = decodeHtmlEntity(_.unescape(obj.ServiceName)) + ' <> ' +  decodeHtmlEntity(_.unescape(obj.BuyerName)) + ' <> ' +  decodeHtmlEntity(_.unescape(obj.VesselName)) + ' <> ' + decodeHtmlEntity(_.unescape(obj.VesselType))  + ' <> ' + decodeHtmlEntity(_.unescape(obj.CompanyName));
                     if (displayScheduleBasedOn === 'Delivery Date' && obj.voyageDetail.deliveryFrom) {
                         return obj.voyageDetail.deliveryFrom.split("T")[0] + ' <> ' + objGroupString;  
                     } else {
@@ -367,8 +374,9 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                         displayDottedLine = false;
                     }
                 }
+
                 // Create unique group string to be used to find the group
-                var groupString = vessels[i].ServiceName + ' <> ' + vessels[i].BuyerName + ' <> ' +  vessels[i].VesselName + ' <> ' + vessels[i].VesselType + ' <> ' + vessels[i].CompanyName;
+                var groupString = decodeHtmlEntity(_.unescape(vessels[i].ServiceName)) + ' <> ' + decodeHtmlEntity(_.unescape(vessels[i].BuyerName))  + ' <> ' +  decodeHtmlEntity(_.unescape(vessels[i].VesselName))  + ' <> ' + decodeHtmlEntity(_.unescape(vessels[i].VesselType))  + ' <> ' + decodeHtmlEntity(_.unescape(vessels[i].CompanyName));
                
                 var uniqueCellIdentifier = startDate.split(" ")[0] + ' <> ' +  groupString;
                 voyageContent += '<span class="' + cls + '" cell-identifier="'+uniqueCellIdentifier+'" oncontextmenu="return false;" voyage-detail-id="' + vessels[i].voyageDetail.id + '"> ' + vessels[i].voyageDetail.locationCode;
