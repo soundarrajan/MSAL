@@ -60,9 +60,9 @@
 	                        </td>
 	                        <td>{{rfq.rfqDate | utcToLocal | stDateFormat}}</td>
 	                        <td>{{rfq.quoteByDate | stDateFormat}}</td>
-	                        <td>{{rfq.sellerName}}</td>
-	                        <td>{{rfq.locationName}}</td>
-	                        <td>{{rfq.productName}}</td>
+	                        <td>{{rfq.sellerName | decodeReadOnly}}</td>
+	                        <td>{{rfq.locationName | decodeReadOnly}}</td>
+	                        <td>{{rfq.productName | decodeReadOnly}}</td>
 	                        <td>{{rfq.minQuantity | number: $cntrl.numberPrecision.quantityPrecision}}</td>
 	                        <td>{{rfq.maxQuantity | number: $cntrl.numberPrecision.quantityPrecision}}</td>
 	                        <td>
