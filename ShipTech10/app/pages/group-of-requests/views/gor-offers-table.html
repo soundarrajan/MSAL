@@ -589,7 +589,7 @@
                         <i class="fa fa-user"></i>
                         <sup style="left: -5px"><i class="fa fa-commenting-o"></i></sup>
                         <span class="groupOfRequestTableTooltip"  ng-show="tooltip['seller.id'] && seller.isNotInterested ">
-                             {{seller.notInterestedComments}}
+                             {{seller.notInterestedComments | decodeReadOnly}}
                         </span>
                     </span>
                     <a ng-click="$ctrl.viewEditCounterpartyBlade(seller.sellerCounterparty.id, location, seller)" >

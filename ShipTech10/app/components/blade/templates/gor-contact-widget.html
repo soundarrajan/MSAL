@@ -9,10 +9,10 @@
 					<div class="row">
 
 					</div>
-					<div><b class="col-sm-3">Company</b><div class="col-sm-9">{{$ctrl.blade.counterpartyData.name}}</div></div>
+					<div><b class="col-sm-3">Company</b><div class="col-sm-9">{{$ctrl.blade.counterpartyData.name | decodeReadOnly}}</div></div>
 					<div class="clearfix"></div>
 					<br>
-					<div><b class="col-sm-3">Address</b><div class="col-sm-9">{{$ctrl.blade.counterpartyData.address.addressLine1}}</div></div>
+					<div><b class="col-sm-3">Address</b><div class="col-sm-9">{{$ctrl.blade.counterpartyData.address.addressLine1 | decodeReadOnly}}</div></div>
 					<div class="clearfix"></div>
 					<br>
 
