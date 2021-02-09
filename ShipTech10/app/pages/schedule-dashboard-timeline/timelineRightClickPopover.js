@@ -171,16 +171,23 @@ angular.module('shiptech.components')
                 });
                 Object.keys(groupedVoyagesRequest).forEach((item) => {
                     Object.keys(groupedVoyagesRequest[item]).forEach((item2) => {
-                        groupedVoyagesRequest[item][item2] = _.uniqBy(groupedVoyagesRequest[item][item2], 'voyageDetail.request.requestDetail.Id');
-                        groupedVoyagesRequest[item][item2] = _.groupBy(groupedVoyagesRequest[item][item2], 'voyageDetail.request.requestDetail.fuelType.name');
-                        Object.keys(groupedVoyagesRequest[item][item2]).forEach((item3) => {
-                            if (item3 != 'undefined') {
-                                groupedVoyagesRequest[item][item2][item3] = _.sumBy(groupedVoyagesRequest[item][item2][item3], 'voyageDetail.request.requestDetail.fuelMaxQuantity');
-                                allProductTypes[item].push(item3);
-                            } else {
-                                delete groupedVoyagesRequest[item][item2];
-                            }
-                        });
+                        if (item2 != 'undefined') {                    
+                            groupedVoyagesRequest[item][item2] = _.uniqBy(groupedVoyagesRequest[item][item2], 'voyageDetail.request.requestDetail.Id');
+                            groupedVoyagesRequest[item][item2] = _.groupBy(groupedVoyagesRequest[item][item2], 'voyageDetail.request.requestDetail.fuelType.name');
+                            Object.keys(groupedVoyagesRequest[item][item2]).forEach((item3) => {
+                                if (item3 != 'undefined') {
+                                    groupedVoyagesRequest[item][item2][item3] = _.sumBy(groupedVoyagesRequest[item][item2][item3], 'voyageDetail.request.requestDetail.fuelMaxQuantity');
+                                    allProductTypes[item].push(item3);
+                                } else {
+                                    delete groupedVoyagesRequest[item][item2];
+                                }
+                            });                
+                        }   
+                        else
+                        {
+                            delete groupedVoyagesRequest[item][item2];
+                        }
+                    
                     });
                 });
 
