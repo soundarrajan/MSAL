@@ -67,7 +67,7 @@
             </label>
             <div class="input-group form_input form_input_product">
 
-                <select class="form-control bs-select changeIT" ng-options="item as (sumThose(index, 1) + ' - ' + item.product.name ) for (index, item) in formValues.temp.deliverysummary.products | orderBy : 'productType.id'" id="addProductToDeliverySelect" ng-model="selectedProductToAddInDelivery"></select>
+                <select class="form-control bs-select changeIT" ng-options="item as (sumThose(index, 1) + ' - ' + item.product.name | decodeReadOnly ) for (index, item) in formValues.temp.deliverysummary.products | orderBy : 'productType.id'" id="addProductToDeliverySelect" ng-model="selectedProductToAddInDelivery"></select>
             </div>
         </div>
     </div>
