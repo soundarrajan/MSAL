@@ -84,9 +84,10 @@
                            ng-click="$ctrl.sendOrderCommand($ctrl.ORDER_COMMANDS.SUBMIT_FOR_APPROVAL, $ctrl.data.id)">
                             Submit for Approval
                         </a>
-                         <a class="btn btn-default"
+                        <a class="btn btn-default"
                            ng-class="{'disabled font-dark': !$ctrl.data.id || $ctrl.buttonsDisabled || !$ctrl.hasAction($ctrl.SCREEN_ACTIONS.CLOSE)} "
-                           ng-click="$ctrl.closeOrder()">
+                           ng-click="$ctrl.closeOrder()"
+                           ng-show="$ctrl.canClose">
                             Close Order
                         </a>
                         <a class="btn btn-orange {{!$ctrl.data.id || $ctrl.buttonsDisabled || !$ctrl.hasAction($ctrl.SCREEN_ACTIONS.CONFIRM) ? '' : 'bg-yellow-gold-opacity font-white'}}"
@@ -2026,6 +2027,12 @@
                    ng-class="{'disabled': $ctrl.buttonsDisabled || !$ctrl.hasAction($ctrl.SCREEN_ACTIONS.SUBMITFORAPPROVAL)}"
                    ng-click="$ctrl.sendOrderCommand($ctrl.ORDER_COMMANDS.SUBMIT_FOR_APPROVAL, $ctrl.data.id)">
                     Submit for Approval
+                </a>
+                <a class="btn btn-default"
+                   ng-class="{'disabled font-dark': !$ctrl.data.id || $ctrl.buttonsDisabled || !$ctrl.hasAction($ctrl.SCREEN_ACTIONS.CLOSE)} "
+                   ng-click="$ctrl.closeOrder()"
+                   ng-show="$ctrl.canClose">
+                    Close Order
                 </a>
                 <a class="btn btn-default"
                    ng-class="{'disabled': !$ctrl.data.id || $ctrl.buttonsDisabled || !$ctrl.hasAction($ctrl.SCREEN_ACTIONS.CONFIRM)}"

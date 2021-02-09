@@ -151,8 +151,28 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 		        	ctrl.contractAgreementTypesList = response.payload.contractAgreementTypesList;
 		        	ctrl.spotAgreementTypesList = response.payload.spotAgreementTypesList;
 		        });
+
+                ctrl.canCloseOrder();
             });
         };
+
+        ctrl.canCloseOrder = function() {
+            let payload = {
+                Payload: ctrl.orderId
+            }
+            ctrl.canClose = false;
+            $http.post(`${API.BASE_URL_DATA_PROCUREMENT}/api/procurement/order/canClose`, payload).then((response) => {
+                if (response) {
+                    if (response.data.payload) {
+                        ctrl.canClose = true
+                    } else {
+                        ctrl.canClose = false;
+                    }
+                } else {
+                    ctrl.canClose = false;
+                }
+            });
+        }
 
         function setAdditionalCostAllowNegative() {
             // debugger;
