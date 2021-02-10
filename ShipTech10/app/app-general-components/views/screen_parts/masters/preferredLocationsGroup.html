@@ -51,10 +51,12 @@
 				    </div>
 					<div  ng-if="!value.isSpecificLocation"> NA </div>
 				</td>
-				<td style="max-width: initial; min-width: 50px;" class="padding" ng-class="!value.isSpecificLocation ? 'no-specific-location' : ''">
-					<span class="input-group-addon" ng-if="value.isSpecificLocation">
-	                    <i class="fa fa-pencil" ng-click="openSellerRatingForPreferredLocation(value.location, formValues.displayName)"></i>
-	                </span>		
+				<td style="max-width: initial; min-width: 50px; position: relative;" ng-class="!value.isSpecificLocation ? 'no-specific-location' : ''">
+					<div class="input-group" style="width: 100%; position: absolute; top: 0; height: 100%;">
+						<span class="input-group-addon" ng-if="value.isSpecificLocation">
+		                    <i class="fa fa-pencil" ng-click="openSellerRatingForPreferredLocation(value.location, formValues.displayName)"></i>
+		                </span>	
+		            </div>	
 				</td>
 				<td style="max-width: initial; min-width: 220px;"  class="padding">
 					{{value.lastModifiedBy.name}}
