@@ -4710,3 +4710,20 @@ select option {
     margin-top: 0px !important; 
     font-size: 16px !important;
 }
+
+.page-header.navbar .page-logo img {
+    width: 90px !important;
+}
+
+.page-header.navbar .page-logo .logo-default  {
+    margin-top: 6px  !important;
+}
+
+.main-navbar .navbar-text {
+    margin: 11px 0 !important;
+}
+
+.page-header.navbar .page-logo  {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+}
