@@ -51,7 +51,7 @@
 					 <span class="insert" ng-click="formValues.products[index_0].additionalCosts.push({'id':0, 'currency': tenantSetting.tenantFormats.currency})"></span>
                 </td>
                 <td style="width:12%">
-                    <select name="Item Name" class="form-control" ng-options="item as item.name for item in CM.listsCache.AdditionalCost | decodeReadOnly track by item.id " ng-change="value.costType = setDefaultCostType(value.additionalCost); resetUom(index_0,key)" ng-model="value.additionalCost" ng-required="!value.isDeleted"></select>
+                    <select name="Item Name" class="form-control" ng-options="item as item.name for item in CM.listsCache.AdditionalCost | decodeReadOnly track by item.id " ng-change="value.costType = setDefaultCostType(value.additionalCost); resetUom(index_0,key); setIsAllowingNegativeAmmount(index_0, key)" ng-model="value.additionalCost" ng-required="!value.isDeleted"></select>
                 </td>
                 <td style="width:12%">
                     <select name="Type" class="form-control" ng-options="item as item.name for item in filterCostTypesByAdditionalCost(value.additionalCost.id) | decodeReadOnly track by item.id " ng-model="value.costType" ng-change="resetUom(index_0,key)" ng-required="!value.isDeleted"></select>

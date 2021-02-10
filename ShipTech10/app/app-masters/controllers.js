@@ -1288,6 +1288,37 @@ APP_MASTERS.controller('Controller_Master', [
                 });
             }
 
+            if (vm.app_id == 'contracts' && vm.screen_id == 'contract') {
+                let additionalCost = [];
+                for (let i = 0; i < $scope.formValues.products.length; i++) {
+                    for (let j = 0; j < $scope.formValues.products[i].additionalCosts.length; j++) {
+                        if (!$scope.formValues.products[i].additionalCosts[j].isDeleted) {
+                            let amount = parseInt($scope.formValues.products[i].additionalCosts[j].amount);
+                            if (amount < 0 && !$scope.formValues.products[i].additionalCosts[j].isAllowingNegativeAmmount) {
+                                additionalCost.push($scope.formValues.products[i].additionalCosts[j].additionalCost.name);
+                            }
+                        }
+                    }
+                }
+                additionalCost = _.uniq(additionalCost);
+                let additionalCostString = '';
+                for (let i = 0; i < additionalCost.length; i++) {
+                    additionalCostString += additionalCost[i] + ',';
+                }
+                if (additionalCostString[additionalCostString.length - 1] == ',') {
+                    additionalCostString =  additionalCostString.substring(0,  additionalCostString.length - 1);
+                }
+                if (additionalCostString != ''  && additionalCost.length > 1) {
+                    toastr.warning('The additional costs ' + additionalCostString + ' does not allow negative amounts!');
+                    return;
+                }
+                if (additionalCostString != '' && additionalCost.length == 1) {
+                    toastr.warning('The additional cost ' + additionalCostString + ' does not allow negative amounts!');
+                    return;
+                }
+
+            }
+
             /* END Contract Validations*/
             if (vm.editInstance.$valid) {
                 if (vm.app_id == 'admin' &&  vm.screen_id == 'sellerrating') {
@@ -6317,6 +6348,7 @@ APP_MASTERS.controller('Controller_Master', [
             });
             return defaultCostType;
         };
+
         $scope.resetUom = function(key1, key2) {
             if ($scope.formValues.products[key1].additionalCosts[key2].costType.name != 'Unit') {
                 $scope.formValues.products[key1].additionalCosts[key2].uom = null;
@@ -6324,6 +6356,19 @@ APP_MASTERS.controller('Controller_Master', [
                 $scope.formValues.products[key1].additionalCosts[key2].uom = $scope.tenantSetting.tenantFormats.uom;
             }
         };
+
+        $scope.setIsAllowingNegativeAmmount = function(key1, key2) {
+            let additionalCost = $scope.formValues.products[key1].additionalCosts[key2].additionalCost;
+            let findAdditionalCostComponent = _.find(vm.additionalCostsComponentTypes, function(obj) {
+                return obj.id == additionalCost.id;
+            });
+            if (findAdditionalCostComponent) {
+                $scope.formValues.products[key1].additionalCosts[key2].isAllowingNegativeAmmount = findAdditionalCostComponent.isAllowingNegativeAmmount;
+            }
+           
+
+        }
+
         $scope.clearSchedules = function() {
             $scope.formValues.pricingScheduleOptionDateRange = null;
             $scope.formValues.pricingScheduleOptionSpecificDate = null;
