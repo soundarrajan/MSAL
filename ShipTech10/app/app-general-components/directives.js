@@ -584,7 +584,7 @@ Number(function() {
                                 CLC.tableParams.Filters = scope.Filters;
                             }
                             if ((scope.$root.currentColumnRoute.indexOf('labs') != -1 || scope.$root.currentColumnRoute.indexOf('claims') != -1) && scope.id == 'orders_orders') {
-                                CLC.tableParams.PageFilters = [
+                                CLC.tableParams.PageFilters.push(
                                     {
                                         ColumnType: 'Text',
                                         ConditionValue: '!=',
@@ -592,16 +592,20 @@ Number(function() {
                                         Values: [ 'Stemmed' ],
                                         columnValue: 'OrderStatus_DisplayName',
                                         isComputedColumn: false
-                                    }, 
-                                    {
+                                    }
+                                );
+                                CLC.tableParams.PageFilters.push(
+                                   {
                                         ColumnType: 'Text',
                                         ConditionValue: '!=',
                                         FilterOperator: 1,
                                         Values: [ 'Cancelled' ],
                                         columnValue: 'OrderStatus_DisplayName',
                                         isComputedColumn: false
-                                    },
-                                    {
+                                    }
+                                );
+                                CLC.tableParams.PageFilters.push(
+                                   {
                                         ColumnType: 'Text',
                                         ConditionValue: '!=',
                                         FilterOperator: 1,
@@ -609,7 +613,7 @@ Number(function() {
                                         columnValue: 'OrderStatus_DisplayName',
                                         isComputedColumn: false
                                     }
-                                ]
+                                );
                             }
                             if (scope.id == 'admin_userlist' && scope.$root.currentColumnRoute.indexOf('claims') != -1) {
                                 if (CLC.tableParams.PageFilters.length == 0) {
