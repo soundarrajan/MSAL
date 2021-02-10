@@ -1,7 +1,7 @@
-﻿commit 92f65373b8d3acb141c4a2c4f3cbf7906e620927
+﻿commit 677808dc8ac1cf0c7abd4246f5e9fce1431b35b2
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Fri Feb 5 14:56:08 2021 +0200
+Date:   Wed Feb 10 15:40:35 2021 +0200
 
-    Fixed  special characters  for sludge uom from quantity control list
+    Added new product logo used in Shiptech
 
 branch: master
