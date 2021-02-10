@@ -34,7 +34,7 @@
         <div class="portlet light">
             <div class="portlet-title ">
                 <div class="tools ">
-                    <a   class="collapse" data-original-title="" title=""></a>
+                    <a   class="expand" data-original-title="" title="" ng-click="CM.selectedLocation = getFirstIndex(formValues.applications[getFirstModule(formValues.applications)].specificLocations)"></a>
                 </div>
                 <div class="caption ">
                     <span class="caption-subject pull-left ">
@@ -42,9 +42,9 @@
                     </span>
                 </div>
             </div>
-            <div class="portlet-body">
+            <div class="portlet-body portlet-collapsed">
                 <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" ng-repeat="(key,value) in formValues.applications" ng-if="!value.isDeleted" ng-click="CM.selectedLocation = getFirstIndex(formValues.applications[key].specificLocations)">
+                    <li role="presentation" ng-repeat="(key,value) in formValues.applications" ng-if="!value.isDeleted" ng-click="CM.selectedLocation = getFirstIndex(formValues.applications[key].specificLocations)" ng-class="$index == getFirstModule(formValues.applications) ? 'active in ' : ''">
                         <a href="#{{ value.module.name == 'Counterparty Master' ? 'CounterpartyMaster' :  value.module.name }}" aria-controls="{{value.module.name == 'Counterparty Master' ? 'CounterpartyMaster' :  value.module.name }}" role="tab" data-toggle="tab">
                             {{ value.module.name }}
                         </a>
@@ -52,7 +52,7 @@
                 </ul>
                 <br/>
                 <div class="tab-content">
-                    <div ng-repeat="(key1,value1) in formValues.applications" role="tabpanel" class="tab-pane" id="{{ value1.module.name == 'Counterparty Master' ? 'CounterpartyMaster' :  value1.module.name }}">
+                    <div ng-repeat="(key1,value1) in formValues.applications" role="tabpanel" class="tab-pane" id="{{ value1.module.name == 'Counterparty Master' ? 'CounterpartyMaster' :  value1.module.name }}"  ng-class="$index == getFirstModule(formValues.applications) ? 'active in ' : ''">
                         <div class="row">
                             <span ng-init='CM.getOptions({"Name": "Location", "Type": "dropdown", "masterSource": "Location"})'></span>
                             <div class="col-md-4">
@@ -205,7 +205,7 @@
         <div class="portlet light">
             <div class="portlet-title ">
                 <div class="tools ">
-                    <a   class="collapse" data-original-title="" title=""></a>
+                    <a   class="expand" data-original-title="" title=""></a>
                 </div>
                 <div class="caption ">
                     <span class="caption-subject pull-left ">
@@ -213,9 +213,9 @@
                     </span>
                 </div>
             </div>
-            <div class="portlet-body">
+            <div class="portlet-body portlet-collapsed">
                <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" ng-repeat="(key,value) in formValues.applications"  ng-if="!value.isDeleted" >
+                    <li role="presentation" ng-repeat="(key,value) in formValues.applications"  ng-if="!value.isDeleted"  ng-class="$index == getFirstModule(formValues.applications) ? 'active in ' : ''">
                         <a href="#{{ value.module.name == 'Counterparty Master' ? 'CounterpartyMaster' :  value.module.name }}allLocations" aria-controls="{{ value.module.name == 'Counterparty Master' ? 'CounterpartyMaster' :  value.module.name  }}" role="tab" data-toggle="tab">
                             {{ value.module.name }}
                         </a>
@@ -223,7 +223,7 @@
                 </ul>
                 <br/>
                 <div class="tab-content">
-                    <div ng-repeat="(key1,value1) in formValues.applications" role="tabpanel" class="tab-pane" id="{{ value1.module.name == 'Counterparty Master' ? 'CounterpartyMaster' :  value1.module.name  }}allLocations">
+                    <div ng-repeat="(key1,value1) in formValues.applications" role="tabpanel" class="tab-pane" id="{{ value1.module.name == 'Counterparty Master' ? 'CounterpartyMaster' :  value1.module.name  }}allLocations"  ng-class="$index == getFirstModule(formValues.applications) ? 'active in ' : ''">
                         <span ng-init="!formValues.applications[key1].allLocations.categories ? formValues.applications[key1].allLocations.categories=[{'id':0}] : '' "></span>
                         <!-- {{value1}} -->
                         <div class="col-md-push-8">

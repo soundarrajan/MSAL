@@ -1261,4 +1261,13 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
             return findIndex;
         }
     }
+
+    $scope.getFirstModule = function(modules) {
+        let findIndex = _.findIndex(modules, function(obj) {
+            return !obj.isDeleted;
+        });
+        if (findIndex != -1) {
+            return findIndex;
+        }
+    }
 } ]);
