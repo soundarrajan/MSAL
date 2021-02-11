@@ -1,7 +1,7 @@
-﻿commit 677808dc8ac1cf0c7abd4246f5e9fce1431b35b2
+﻿commit 97dec8d65800eaef339ababff59b7ed932d6303e
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Wed Feb 10 15:40:35 2021 +0200
+Date:   Thu Feb 11 11:27:55 2021 +0200
 
-    Added new product logo used in Shiptech
+    Removed the box from the logo
 
 branch: master
