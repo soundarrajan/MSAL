@@ -176,8 +176,8 @@ APP_MASTERS.controller('Master_Seller_Rating_Counterparty', [
 
 
         $scope.changeNameAndDate = function(category) {
-        	category.createdOn = moment().format();
-        	category.createdBy = $rootScope.user;
+        	category.newCreatedOn = moment().format();
+        	category.newCreatedBy = $rootScope.user;
         }
 
 
