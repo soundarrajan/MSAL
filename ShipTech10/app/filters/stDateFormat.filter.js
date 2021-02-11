@@ -20,7 +20,18 @@
             // return moment.utc(utcDateString).format(format);
 
             // convert and format date using the built in angularjs date filter
-            let formattedDate = moment.utc(utcDateString).format(format);
+            var formattedDate = utcDateString;
+            var dateFormat = tenantService.getDateFormat();
+            var hasDayOfWeek = false;
+            if (dateFormat.startsWith('DDD ')) {
+                hasDayOfWeek = true;
+                dateFormat = dateFormat.split('DDD ')[1];
+            }
+            formattedDate = moment.utc(utcDateString).format(dateFormat);
+            if (hasDayOfWeek) {
+                formattedDate = `${moment(utcDateString).format('ddd') } ${ formattedDate}`;
+            }
+            
             if(formattedDate == 'Invalid date') {
                 // date in of type date only => results in invalid, give specific format
                 let formattedDateOnly = moment.utc(moment(utcDateString, 'DD/MM/YYYY')).format(format);
