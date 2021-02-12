@@ -1047,6 +1047,22 @@ APP_MASTERS.factory('Factory_Master', [ '$window', '$http', '$Api_Service', 'API
                 callback(false);
             });
         },
+        getCounterpartyLocations: function(data, callback) {
+            let payload = {
+                Payload: data
+            };
+            let url =`${API.BASE_URL_DATA_SELLERRATING }/api/sellerrating/sellerrating/getCounterpartyLocations`;
+            $http({
+                method: 'POST',
+                url: url,
+                data: payload
+            }).then((response) => {
+                callback(response.data.payload);
+            }, (response) => {
+                console.log(response);
+                callback(false);
+            });
+        },
         updateSellerRatingReview: function(data, callback) {
             let payload = {
                 Payload: data

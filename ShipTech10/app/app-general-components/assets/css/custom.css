@@ -4727,3 +4727,15 @@ select option {
     padding-left: 15px !important;
     padding-right: 15px !important;
 }
+
+.sellerRating .seller-rating-location-counterparty {
+    border: 1px solid; 
+    color: #669bc9;
+    padding-left:6px;
+    font-weight: 400;
+}
+
+.label-counterparty-seller-rating {
+    position: relative;
+    top: 8px;
+}

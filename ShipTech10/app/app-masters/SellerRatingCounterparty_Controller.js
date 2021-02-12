@@ -36,17 +36,13 @@ APP_MASTERS.controller('Master_Seller_Rating_Counterparty', [
 		let vm = this;
 		$scope.screen_id = $state.params.screen_id;
 		$scope.entity_id = $state.params.entity_id;
-		$scope.location_id = $state.params.location_id;
+		$scope.location_id = parseInt($state.params.location_id);
 		$scope.options = [];
 		$scope.tenantSettings = $tenantSettings;
 
 
 		vm.getData = function (callback) {
-			payload = {
-				"locationId": $scope.location_id,
-				"moduleId": 12
-			}
-			Factory_Master.getSellerRatingConfig(payload, (response) => {
+			Factory_Master.getCounterpartyLocations($scope.entity_id, (response) => {
 				if (response) {
 					callback(response);
 				} else {
@@ -85,8 +81,38 @@ APP_MASTERS.controller('Master_Seller_Rating_Counterparty', [
 		}
 
 		vm.getData(function (response) {
-			$scope.formValues.applications = {};
-			$scope.formValues.applications = response;
+			$scope.formValues.applications = [];
+			$scope.formValues.locations =  response;
+			$scope.formValues.specificLocations = [];
+			let allLocations = _.find($scope.formValues.locations, function(object) {
+				return !object.location;
+			});
+
+			$scope.formValues.specificLocations = _.filter($scope.formValues.locations, function(object) {
+				return object.location;
+			});
+			let selectedPrefferedLocation, otherLocations;
+
+			if ($scope.formValues.specificLocations.length) {
+				selectedPrefferedLocation = _.find($scope.formValues.specificLocations, function(object) {
+					return  object.location.id == parseInt($scope.location_id);
+				});
+				otherLocations = _.filter($scope.formValues.specificLocations, function(object) {
+					return object.location.id != parseInt($scope.location_id);
+				});
+			}
+			if (selectedPrefferedLocation) {
+				$scope.formValues.applications.push(selectedPrefferedLocation);
+			} 
+			if (otherLocations && otherLocations.length) {
+				for (let i = 0; i < otherLocations.length; i++) {
+					$scope.formValues.applications.push(otherLocations[i]);
+				}
+			}
+			if (allLocations) {
+				$scope.formValues.applications.push(allLocations);
+			}
+			vm.selectedLocation = $scope.getFirstIndex($scope.formValues.applications);
 			Factory_Master.getSellerRatingReview($scope.entity_id, (response) => {
 				if (response) {
 					$scope.formValues.sellerRatingReviewCategories = response.sellerRatingReviewCategories;
@@ -102,7 +128,16 @@ APP_MASTERS.controller('Master_Seller_Rating_Counterparty', [
 	      	console.log($scope.formValues.applications);
 			// initExpanders()
 
-		})
+		});
+
+		$scope.getFirstIndex = function(locations) {
+	        let findIndex = _.findIndex(locations, function(obj) {
+	            return obj.location;
+	        });
+	        if (findIndex != -1) {
+	            return findIndex;
+	        }
+    	}
 
  		$scope.formatDateTime = function(elem) {
             if (elem) {
