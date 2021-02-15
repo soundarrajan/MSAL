@@ -4653,8 +4653,7 @@ APP_MASTERS.controller('Controller_Master', [
         $scope.downloadDocument = function(rowId, docName, content) {
             var payload = {
                 "id": rowId,
-                "name": docName,
-                "content": content
+                "name": docName
             }
             Factory_Master.get_document_file(
                 {
