@@ -175,9 +175,9 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
            vessels = _.orderBy(vessels, function(obj) {                
                 if (displayScheduleBasedOn === 'Delivery Date') {                    
-                    return obj.voyageDetail.deliveryFrom && obj.voyageDetail.portStatus.id;               
+                    return obj.voyageDetail.deliveryFrom;               
                 } else {                    
-                    return obj.voyageDetail.eta && obj.voyageDetail.portStatus.id;                
+                    return obj.voyageDetail.eta;                
                 }            
             }, 'asc');
 
