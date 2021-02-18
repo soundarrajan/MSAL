@@ -7862,7 +7862,7 @@ APP_API.factory('$Api_Service', [
                         );
                         return;
                     }
-                    if (param.app == 'masters' && param.field.masterSource.includes('Parent')) {
+                    if (param.app == 'masters' && param.field.masterSource && param.field.masterSource.includes('Parent')) {
                         var apiJSON = {
                             Payload: {}
                         };
