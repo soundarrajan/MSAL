@@ -127,12 +127,41 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 ctrl.lists.Seller = _.uniqBy(_.concat(ctrl.lists.Seller, ctrl.lists.Sludge), 'id');
                 setAdditionalCostAllowNegative();
 
-                lookupModel.getAdditionalCostTypes().then((data) => {
-                    ctrl.additionalCostTypes = normalizeArrayToHash(data.payload, 'id');
-                    // console.log(ctrl.additionalCostTypes);
-                    // Get the order data from server. Replace hardcoded order ID with $scope parameter.
+                if (!window.clickOnSaveAndSend) {
+                    lookupModel.getAdditionalCostTypes().then((data) => {
+                        ctrl.additionalCostTypes = normalizeArrayToHash(data.payload, 'id');
+                        // console.log(ctrl.additionalCostTypes);
+                        // Get the order data from server. Replace hardcoded order ID with $scope parameter.
 
-                    orderModel.get(ctrl.orderId).then((data) => {
+                        orderModel.get(ctrl.orderId).then((data) => {
+                            loadData(data);
+                            $timeout(() => {
+                                updateOrderSummary();
+                                initDataTables();
+                                ctrl.defaultMaxQtyFromConfirmed('init');
+                            });
+                        });
+                    });
+                    lookupModel.getSellerAutocompleteList([ IDS.BARGE_COUNTERPARTY_ID ]).then((data) => {
+                        ctrl.lists.bargeCounterparties = data.payload;
+                    });
+                    // listsModel.get().then(function (data) {
+                    // });
+
+                    Factory_Admin.getAgreementTypeIndividualList(true, (response) => {
+                        ctrl.contractAgreementTypesList = response.payload.contractAgreementTypesList;
+                        ctrl.spotAgreementTypesList = response.payload.spotAgreementTypesList;
+                    });
+
+                    ctrl.canCloseOrder();
+                } else {
+                    ctrl.additionalCostTypes = angular.copy(window.orderDetails.additionalCostTypes);
+                    let data =  {
+                        'payload': ''
+                    };
+                    orderModel.getOrderMailSent(ctrl.orderId).then((mailSent) => {
+                        window.orderDetails.data.mailSent = angular.copy(mailSent.payload);
+                        data.payload = angular.copy(window.orderDetails.data);
                         loadData(data);
                         $timeout(() => {
                             updateOrderSummary();
@@ -140,19 +169,14 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                             ctrl.defaultMaxQtyFromConfirmed('init');
                         });
                     });
-                });
-                lookupModel.getSellerAutocompleteList([ IDS.BARGE_COUNTERPARTY_ID ]).then((data) => {
-                    ctrl.lists.bargeCounterparties = data.payload;
-                });
-                // listsModel.get().then(function (data) {
-                // });
 
-		        Factory_Admin.getAgreementTypeIndividualList(true, (response) => {
-		        	ctrl.contractAgreementTypesList = response.payload.contractAgreementTypesList;
-		        	ctrl.spotAgreementTypesList = response.payload.spotAgreementTypesList;
-		        });
+                    ctrl.lists.bargeCounterparties =  angular.copy(window.orderDetails.lists.bargeCounterparties);
 
-                ctrl.canCloseOrder();
+                    ctrl.contractAgreementTypesList = angular.copy(window.orderDetails.contractAgreementTypesList);
+                    ctrl.spotAgreementTypesList = angular.copy(window.orderDetails.spotAgreementTypesList);
+
+                    ctrl.canClose = angular.copy(window.orderDetails.canClose);
+                }
             });
         };
 
@@ -177,17 +201,22 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         function setAdditionalCostAllowNegative() {
             // debugger;
             // get val.id, make call to get all info about additional cost
-            Factory_Master.get_master_list_filtered('masters', 'additionalcost', 'masters_additionalcostlist', (response) => {
-                // console.log(response);
-                $.each(response.rows, (key0, value0) => {
-	                    $.each(ctrl.lists.AdditionalCost, (key1, value1) => {
-	                    	if (value0.id == value1.id) {
-			                    ctrl.lists.AdditionalCost[key1].allowNegative = value0.isAllowingNegativeAmmount;
-	                    	}
-	                    });
+            if (!window.clickOnSaveAndSend) {
+                Factory_Master.get_master_list_filtered('masters', 'additionalcost', 'masters_additionalcostlist', (response) => {
+                    // console.log(response);
+                    $.each(response.rows, (key0, value0) => {
+                            $.each(ctrl.lists.AdditionalCost, (key1, value1) => {
+                                if (value0.id == value1.id) {
+                                    ctrl.lists.AdditionalCost[key1].allowNegative = value0.isAllowingNegativeAmmount;
+                                }
+                            });
+                    });
+                    console.log(ctrl.lists.AdditionalCost);
                 });
-                console.log(ctrl.lists.AdditionalCost);
-            });
+            } else {
+                ctrl.lists.AdditionalCost = angular.copy(window.orderDetails.lists.AdditionalCost);
+            }
+          
             // $.each(ctrl.lists.AdditionalCost, function (key, val) {
             // })
         }
@@ -286,7 +315,21 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         	});
         };
 
-        ctrl.getOrderContractOptions = function(product, onlyBuildPayload, responseCallback) {
+        ctrl.getOrderContractOptions = function(product, onlyBuildPayload, responseCallback, key) {
+            if (window.clickOnSaveAndSend) {
+                if(typeof ctrl.orderContractOptions == 'undefined') {
+                    ctrl.orderContractOptions = {};
+                }
+                if(typeof ctrl.orderContractOptions[product.product.id] == 'undefined') {
+                    ctrl.orderContractOptions[product.product.id] = [];
+                }
+                ctrl.orderContractOptions[product.product.id] = angular.copy(window.orderDetails.orderContractOptions[product.product.id]);
+                if (ctrl.data.products.length - 1 == key) {
+                    window.clickOnSaveAndSend = false;
+                    window.orderDetails = null;
+                }
+                return;
+            }
         	if (ctrl.disabledProduct[product.id] || product.requestOfferId) {
         		return;
         	}
@@ -459,17 +502,21 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 
             for (var i = 0; i < ctrl.data.products.length; i++) {
                 if (ctrl.data.products[i].product) {
-                    listsModel.getSpecGroupByProduct(ctrl.data.products[i].product.id, i).then((server_data) => {
-                    	filteredIsDeleted = _.filter(server_data.data.payload, function(o) { 
-							return o.isDeleted == false; 
-						});
-						if (ctrl.data.products[server_data.id].specGroup) {
-							if (ctrl.data.products[server_data.id].specGroup.isDeleted) {
-								filteredIsDeleted.push(ctrl.data.products[server_data.id].specGroup);		
-							}
-						}
-                        ctrl.data.products[server_data.id].specGroups = filteredIsDeleted;
-                    });
+                    if (window.clickOnSaveAndSend) {
+                        ctrl.data.products[i].specGroups = angular.copy(window.orderDetails.data.products[i].specGroups);
+                    } else {
+                        listsModel.getSpecGroupByProduct(ctrl.data.products[i].product.id, i).then((server_data) => {
+                            filteredIsDeleted = _.filter(server_data.data.payload, function(o) { 
+                                return o.isDeleted == false; 
+                            });
+                            if (ctrl.data.products[server_data.id].specGroup) {
+                                if (ctrl.data.products[server_data.id].specGroup.isDeleted) {
+                                    filteredIsDeleted.push(ctrl.data.products[server_data.id].specGroup);       
+                                }
+                            }
+                            ctrl.data.products[server_data.id].specGroups = filteredIsDeleted;
+                        });
+                    }
                 }
             }
 
@@ -2219,6 +2266,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         };
         ctrl.orderPreviewEmail = function() {
             if (ctrl.orderId) {
+                window.orderDetails = angular.copy(ctrl);
                 var canSend = false;
                 var canSendStatuses = [ 'Approved', 'Confirmed', 'Amended', 'Delivered', 'PartiallyDelivered', 'Invoiced', 'PartiallyInvoiced', 'Stemmed' ];
                 if (ctrl.data.status) {
@@ -2703,9 +2751,14 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         }
 
         function getOrderListForRequest() {
-            orderModel.getOrderListForRequest(ctrl.orderId).then((data) => {
-                ctrl.relatedOrders = data.payload;
-            });
+            if (!window.clickOnSaveAndSend) {
+                orderModel.getOrderListForRequest(ctrl.orderId).then((data) => {
+                    ctrl.relatedOrders = data.payload;
+                });
+            } else {
+                ctrl.relatedOrders = angular.copy(window.orderDetails.relatedOrders);
+            }
+
         }
 
         /**

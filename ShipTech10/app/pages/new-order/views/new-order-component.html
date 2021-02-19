@@ -1444,7 +1444,7 @@
                                        style="display: block; float: left;margin-top: 10px; margin-right: 10px;">
                                         show
                                     </a>
-                                    <div class="input-group" ng-init="$ctrl.getOrderContractOptions(product)">
+                                    <div class="input-group" ng-init="$ctrl.getOrderContractOptions(product, false, false, key)">
                                         <input class="typeahead form-control"
                                                id="product_contract_{{ $index }}"
                                                name="{{ $ctrl.productColumns.contract.name }}"

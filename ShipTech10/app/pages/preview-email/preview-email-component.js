@@ -776,6 +776,7 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
                 return;
             }
 
+            window.clickOnSaveAndSend = true;
             ctrl.saveComments(action, false).then(() => {
                 if (action != 'sendRFQ') {
                     // ctrl.sendEmail(true);
