@@ -168,9 +168,9 @@ angular.module('shiptech.models').factory('orderModel', [ '$q', 'orderResource',
             });
         }
 
-         function getOrderMailSent(data) {
+         function getOrderDiffAfterMail(data) {
             let request_data = payloadDataModel.create(data);
-            return orderResource.getOrderMailSent(request_data).$promise.then((data) => {
+            return orderResource.getOrderDiffAfterMail(request_data).$promise.then((data) => {
                 return data;
             });
         }
@@ -438,7 +438,7 @@ angular.module('shiptech.models').factory('orderModel', [ '$q', 'orderResource',
             list: list,
             create: create,
             close: close,
-            getOrderMailSent: getOrderMailSent,
+            getOrderDiffAfterMail: getOrderDiffAfterMail,
             update: update,
             verifyOrders: verifyOrders,
             confirm: confirm,

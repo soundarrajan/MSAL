@@ -159,8 +159,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     let data =  {
                         'payload': ''
                     };
-                    orderModel.getOrderMailSent(ctrl.orderId).then((mailSent) => {
-                        window.orderDetails.data.mailSent = angular.copy(mailSent.payload);
+                    orderModel.getOrderDiffAfterMail(ctrl.orderId).then((list) => {
+                        window.orderDetails.data.mailSent = angular.copy(list.payload.mailSent);
+                        window.orderDetails.data.screenActions  = angular.copy(list.payload.screenActions);
                         data.payload = angular.copy(window.orderDetails.data);
                         loadData(data);
                         $timeout(() => {
