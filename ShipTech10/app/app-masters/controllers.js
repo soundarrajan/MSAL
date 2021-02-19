@@ -7828,6 +7828,8 @@ APP_MASTERS.controller('Controller_Master', [
             if (window.initialUomConversionDone.product != 0) {
                 if (formValues.productDetails.length == window.initialUomConversionDone.product && $('form[name="CM.editInstance"]').hasClass('ng-pristine') && $('form[name="CM.editInstance"]').hasClass('ng-invalid')) {
                     return;
+                } else if (formValues.productDetails.length == window.initialUomConversionDone.product && vm.entity_id == '') {
+                    return;
                 }
             } else if (window.initialUomConversionDone.cost != 0) {
                 if (formValues.costDetails.length == window.initialUomConversionDone.cost && $('form[name="CM.editInstance"]').hasClass('ng-pristine')) {
