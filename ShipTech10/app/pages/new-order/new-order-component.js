@@ -2097,6 +2097,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             			}
                 });
             		console.log(foundEmailTemplates);
+                    window.orderDetails = ctrl;
 
             		if (!isContractOrder) {
             			var defaultTemplate = _.filter(foundEmailTemplates, (email) => {
@@ -2159,7 +2160,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 	            		isContractOrder = true;
         			}
         		});
-
+                window.orderDetails = ctrl;
         		if (isContractOrder) {
         			defaultTemplate = _.filter(foundEmailTemplates, (email) => {
 					    return email.process.indexOf('Contract') != -1;
