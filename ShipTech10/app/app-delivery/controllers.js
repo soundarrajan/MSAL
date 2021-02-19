@@ -21,6 +21,8 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
         vm.screen_id = $state.params.screen_id;
     }
     $scope.finalQuantityRules = [];
+    $scope.getRelatedDeliveriesFlag = false;
+    $scope.getDeliveryOrderSummaryFlag = false;
     vm.deliveryTree = [];
     vm.deliveryCatalog = function() {
         vm.deliveryTree = [ {
@@ -170,6 +172,8 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
                     }
                 });
             }
+            $scope.getRelatedDeliveriesFlag =  true;
+            $scope.getDeliveryOrderSummaryFlag =  true;
             $scope.getRelatedDeliveries($scope.formValues.order.id);
             $scope.getDeliveryOrderSummary($scope.formValues.order.id);
         }
@@ -232,7 +236,11 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
             // $scope.setLimitForPickers();
         }
     };
-    $scope.getDeliveryOrderSummary = function(orderId) {
+    $scope.getDeliveryOrderSummary = function(orderId, deliveryType) {
+        if (deliveryType == 'fromOrderSummaryGroupHtml' && $scope.getDeliveryOrderSummaryFlag) {
+            $scope.getDeliveryOrderSummaryFlag = false;
+            return;
+        } 
         Factory_Master.get_master_entity(orderId, 'deliverysummary', vm.app_id, (response) => {
             if (typeof $scope.formValues.temp == 'undefined') {
                 $scope.formValues.temp = {};
@@ -1326,6 +1334,10 @@ APP_DELIVERY.controller('Controller_Delivery', [ '$scope', '$rootScope', '$Api_S
 
     /* DeliveryList*/
     $scope.getRelatedDeliveries = function(orderId, deliveryType) {
+        if (deliveryType == 'fromDeliveryListHtml' && $scope.getRelatedDeliveriesFlag) {
+            $scope.getRelatedDeliveriesFlag = false;
+            return;
+        }
         if (deliveryType == 'new_delivery') {
             $scope.relatedDeliveries = [];
             $scope.relatedDeliveries.push({

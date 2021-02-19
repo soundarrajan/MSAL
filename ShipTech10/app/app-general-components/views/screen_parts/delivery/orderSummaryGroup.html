@@ -1,5 +1,5 @@
 
-<span ng-if="formValues.order.id" ng-init="formValues.temp.deliverysummary = getDeliveryOrderSummary(formValues.order.id)"></span>
+<span ng-if="formValues.order.id" ng-init="formValues.temp.deliverysummary = getDeliveryOrderSummary(formValues.order.id,  'fromOrderSummaryGroupHtml')"></span>
 <span ng-if="formValues.temp.deliverysummary" ng-init="orderProductsByProductType('summaryProducts')"></span>
 <div class="">
     <div class="mt-element-ribbon bg-grey-steel">

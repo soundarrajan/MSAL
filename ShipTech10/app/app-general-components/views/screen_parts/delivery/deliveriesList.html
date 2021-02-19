@@ -1,7 +1,6 @@
 
-<span ng-if="formValues.order.id" ng-init="getRelatedDeliveries(formValues.order.id)"></span>
+<span ng-if="formValues.order.id" ng-init="getRelatedDeliveries(formValues.order.id, 'fromDeliveryListHtml')"></span>
 <span ng-if="!formValues.order.id && !CM.entity_id" ng-init="getRelatedDeliveries(0,'new_delivery'); CM.selectedDelivery = 0"></span>
-
 <span ng-if="relatedDeliveries.length > 0" ng-init="setSelectedDelivery()"></span>
 <div class="deliveries_list">
     <div class="row" ng-init="end = CM.initCarouselStep('end'); start = CM.initCarouselStep('start')">
