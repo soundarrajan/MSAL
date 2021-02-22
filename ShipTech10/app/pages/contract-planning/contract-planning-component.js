@@ -450,6 +450,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', [ '$sc
 		                    rowObject.product = value.product;
 		                    rowObject.contractProductId = value.contractProductId;
 		                    rowObject.preplanningDetailId = response.payload;
+                            $(Elements.table[Elements.settings['flat_contract_planning'].table]).trigger('reloadGrid');
 		                }
 		                return;
 		            });
