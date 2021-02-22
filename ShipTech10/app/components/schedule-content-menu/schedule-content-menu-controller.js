@@ -1,7 +1,9 @@
-angular.module('shiptech').controller('ScheduleContentMenuController', [ '$scope', '$state', '$tenantSettings', 'STATE',
-    function($scope, $state, $tenantSettings, STATE) {
+angular.module('shiptech').controller('ScheduleContentMenuController', [ '$scope', '$state', '$tenantSettings', 'STATE', '$tenantConfiguration',
+    function($scope, $state, $tenantSettings, STATE, $tenantConfiguration) {
     	$scope.tenantSettings = $tenantSettings;
         $scope.state = $state;
         $scope.STATE = STATE;
+
+        $scope.isShowCalanderView = $tenantConfiguration.scheduleDashboardConfiguration.showCalenderView;
     }
 ]);
