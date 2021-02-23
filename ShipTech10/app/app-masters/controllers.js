@@ -5677,6 +5677,28 @@ APP_MASTERS.controller('Controller_Master', [
 
         	$scope.saveClaimEmail(true, (resp) => {
         		if (resp == true) {
+                    let  toOthersString = [], ccOthersString = [];
+                    if(typeof $rootScope.previewEmail.toOthers == 'string') {
+                        toOthersString = $rootScope.previewEmail.toOthers;
+                    }else{
+                        $.each($rootScope.previewEmail.toOthers, (k, v) => {
+                            toOthersString.push(v);
+                        });
+                        toOthersString = toOthersString.toString();
+                    }
+
+                    if(typeof $rootScope.previewEmail.ccOthers == 'string') {
+                        ccOthersString = $rootScope.previewEmail.ccOthers;
+                    }else{
+                        $.each($rootScope.previewEmail.ccOthers, (k, v) => {
+                            ccOthersString.push(v);
+                        });
+                        ccOthersString = ccOthersString.toString();
+                    }
+
+                    $rootScope.previewEmail.toOthers = angular.copy(toOthersString);
+                    $rootScope.previewEmail.ccOthers = angular.copy(ccOthersString);
+
         			data = { Payload: $rootScope.previewEmail };
 
 		            let toString = [],
@@ -5689,6 +5711,10 @@ APP_MASTERS.controller('Controller_Master', [
 		            });
 		            toString = toString.toString();
 		            ccString = ccString.toString();
+
+                    toOthersString = $rootScope.previewEmail.toOthers.toString();
+                    ccOthersString = $rootScope.previewEmail.ccOthers.toString();
+
 
                     var request_data = payloadDataModel.create(data.Payload);
 
