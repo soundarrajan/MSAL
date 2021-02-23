@@ -779,7 +779,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             if (!product) {
                 product = ctrl.data.products[0];
             }
-            if (ctrl.defaultValueUom) {
+            if (ctrl.defaultValueUom && !additionalCost.priceUom) {
                 additionalCost.priceUom = ctrl.defaultValueUom;
             }
          
