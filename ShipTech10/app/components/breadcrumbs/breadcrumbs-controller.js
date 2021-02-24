@@ -189,6 +189,13 @@ angular.module('shiptech').controller('BreadcrumbsController', [ '$rootScope', '
 	        	console.log(new Date());
 	            if($state.current.name == STATE.DASHBOARD_TABLE || $state.current.name == STATE.DASHBOARD_CALENDAR || $state.current.name == STATE.DASHBOARD_TIMELINE || $state.current.name == STATE.HOME) {
 			    	if (window.scheduleDashboardConfiguration) {
+                        if (window.scheduleDashboardConfiguration.payload.labels) {
+                            let sortedLabelsByDisplayOrder = _.orderBy(window.scheduleDashboardConfiguration.payload.labels, function(obj) {                
+                                return obj.displayOrder;          
+                            }, 'asc');
+                            window.scheduleDashboardConfiguration.payload.labels = sortedLabelsByDisplayOrder;
+                        }
+                        
 		            	$scope.adminDashboardStatuses = $filter('filter')(window.scheduleDashboardConfiguration.payload.labels, { displayInDashboard : true }, true);
 		                if ($scope.calendarStatuses) {
 		                	$scope.statusList = $scope.createStatusFilters();

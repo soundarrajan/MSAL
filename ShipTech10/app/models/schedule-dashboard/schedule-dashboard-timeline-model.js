@@ -91,6 +91,12 @@ angular.module('shiptech.models').factory('scheduleDashboardTimelineModel', [ 's
             }
             let requestData = payloadDataModel.create();
             return scheduleDashboardStatusResource.fetch(requestData).$promise.then((data) => {
+                if (data.payload.labels) {
+                    let sortedLabelsByDisplayOrder = _.orderBy(data.payload.labels, function(obj) {                
+                        return obj.displayOrder;          
+                    }, 'asc');
+                    data.payload.labels = sortedLabelsByDisplayOrder;
+                }
                 statuses = data.payload;
                 return statuses;
             });
