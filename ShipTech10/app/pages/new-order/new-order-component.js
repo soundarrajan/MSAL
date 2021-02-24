@@ -127,7 +127,30 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 ctrl.lists.Seller = _.uniqBy(_.concat(ctrl.lists.Seller, ctrl.lists.Sludge), 'id');
                 setAdditionalCostAllowNegative();
 
-                if (!window.clickOnSaveAndSend) {
+                if (window.clickOnSaveAndSend && window.orderDetails) {
+                    ctrl.additionalCostTypes = angular.copy(window.orderDetails.additionalCostTypes);
+                    let data =  {
+                        'payload': ''
+                    };
+                    orderModel.getOrderDiffAfterMail(ctrl.orderId).then((list) => {
+                        window.orderDetails.data.mailSent = angular.copy(list.payload.mailSent);
+                        window.orderDetails.data.screenActions  = angular.copy(list.payload.screenActions);
+                        data.payload = angular.copy(window.orderDetails.data);
+                        loadData(data);
+                        $timeout(() => {
+                            updateOrderSummary();
+                            initDataTables();
+                            ctrl.defaultMaxQtyFromConfirmed('init');
+                        });
+                    });
+
+                    ctrl.lists.bargeCounterparties =  angular.copy(window.orderDetails.lists.bargeCounterparties);
+
+                    ctrl.contractAgreementTypesList = angular.copy(window.orderDetails.contractAgreementTypesList);
+                    ctrl.spotAgreementTypesList = angular.copy(window.orderDetails.spotAgreementTypesList);
+
+                    ctrl.canClose = angular.copy(window.orderDetails.canClose);
+                } else {
                     lookupModel.getAdditionalCostTypes().then((data) => {
                         ctrl.additionalCostTypes = normalizeArrayToHash(data.payload, 'id');
                         // console.log(ctrl.additionalCostTypes);
@@ -154,29 +177,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     });
 
                     ctrl.canCloseOrder();
-                } else {
-                    ctrl.additionalCostTypes = angular.copy(window.orderDetails.additionalCostTypes);
-                    let data =  {
-                        'payload': ''
-                    };
-                    orderModel.getOrderDiffAfterMail(ctrl.orderId).then((list) => {
-                        window.orderDetails.data.mailSent = angular.copy(list.payload.mailSent);
-                        window.orderDetails.data.screenActions  = angular.copy(list.payload.screenActions);
-                        data.payload = angular.copy(window.orderDetails.data);
-                        loadData(data);
-                        $timeout(() => {
-                            updateOrderSummary();
-                            initDataTables();
-                            ctrl.defaultMaxQtyFromConfirmed('init');
-                        });
-                    });
-
-                    ctrl.lists.bargeCounterparties =  angular.copy(window.orderDetails.lists.bargeCounterparties);
-
-                    ctrl.contractAgreementTypesList = angular.copy(window.orderDetails.contractAgreementTypesList);
-                    ctrl.spotAgreementTypesList = angular.copy(window.orderDetails.spotAgreementTypesList);
-
-                    ctrl.canClose = angular.copy(window.orderDetails.canClose);
                 }
             });
         };
@@ -202,7 +202,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         function setAdditionalCostAllowNegative() {
             // debugger;
             // get val.id, make call to get all info about additional cost
-            if (!window.clickOnSaveAndSend) {
+            if (window.clickOnSaveAndSend && window.orderDetails) {
+                ctrl.lists.AdditionalCost = angular.copy(window.orderDetails.lists.AdditionalCost);
+            } else {
                 Factory_Master.get_master_list_filtered('masters', 'additionalcost', 'masters_additionalcostlist', (response) => {
                     // console.log(response);
                     $.each(response.rows, (key0, value0) => {
@@ -214,8 +216,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     });
                     console.log(ctrl.lists.AdditionalCost);
                 });
-            } else {
-                ctrl.lists.AdditionalCost = angular.copy(window.orderDetails.lists.AdditionalCost);
             }
           
             // $.each(ctrl.lists.AdditionalCost, function (key, val) {
@@ -317,14 +317,16 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         };
 
         ctrl.getOrderContractOptions = function(product, onlyBuildPayload, responseCallback, key) {
-            if (window.clickOnSaveAndSend) {
+            if (window.clickOnSaveAndSend && window.orderDetails) {
                 if(typeof ctrl.orderContractOptions == 'undefined') {
                     ctrl.orderContractOptions = {};
                 }
                 if(typeof ctrl.orderContractOptions[product.product.id] == 'undefined') {
                     ctrl.orderContractOptions[product.product.id] = [];
                 }
-                ctrl.orderContractOptions[product.product.id] = angular.copy(window.orderDetails.orderContractOptions[product.product.id]);
+                if (window.orderDetails.orderContractOptions) {
+                    ctrl.orderContractOptions[product.product.id] = angular.copy(window.orderDetails.orderContractOptions[product.product.id]);
+                }
                 if (ctrl.data.products.length - 1 == key) {
                     window.clickOnSaveAndSend = false;
                     window.orderDetails = null;
@@ -503,8 +505,10 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 
             for (var i = 0; i < ctrl.data.products.length; i++) {
                 if (ctrl.data.products[i].product) {
-                    if (window.clickOnSaveAndSend) {
-                        ctrl.data.products[i].specGroups = angular.copy(window.orderDetails.data.products[i].specGroups);
+                    if (window.clickOnSaveAndSend && window.orderDetails) {
+                        if (window.orderDetails.data) {
+                            ctrl.data.products[i].specGroups = angular.copy(window.orderDetails.data.products[i].specGroups);
+                        }
                     } else {
                         listsModel.getSpecGroupByProduct(ctrl.data.products[i].product.id, i).then((server_data) => {
                             filteredIsDeleted = _.filter(server_data.data.payload, function(o) { 
@@ -2753,12 +2757,12 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         }
 
         function getOrderListForRequest() {
-            if (!window.clickOnSaveAndSend) {
+            if (window.clickOnSaveAndSend && window.orderDetails) {
+                ctrl.relatedOrders = angular.copy(window.orderDetails.relatedOrders);
+            } else {
                 orderModel.getOrderListForRequest(ctrl.orderId).then((data) => {
                     ctrl.relatedOrders = data.payload;
                 });
-            } else {
-                ctrl.relatedOrders = angular.copy(window.orderDetails.relatedOrders);
             }
 
         }
