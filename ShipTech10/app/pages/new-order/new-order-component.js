@@ -157,6 +157,11 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                         // Get the order data from server. Replace hardcoded order ID with $scope parameter.
 
                         orderModel.get(ctrl.orderId).then((data) => {
+                            if (window.orderDetails) {
+                                if (window.orderDetails.comfirmCancelOrder) {
+                                    window.orderDetails.data = data.payload;
+                                }
+                            }
                             loadData(data);
                             $timeout(() => {
                                 updateOrderSummary();
