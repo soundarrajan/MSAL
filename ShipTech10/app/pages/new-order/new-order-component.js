@@ -2490,6 +2490,15 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 ctrl.data.verifiedOn = moment().format();
             }
 
+            $.each(ctrl.data.products, (pk, pv) => {
+                if (pv.additionalCosts.length > 0) {
+                    $.each(pv.additionalCosts, (ack, acv) => {
+                        if (acv.costType.name == 'Flat') {
+                            acv.priceUom = null;
+                        }
+                    });
+                }
+            });
 
             angular.copy(ctrl.data, payload);
             if ($.isEmptyObject(payload.broker) || !payload.broker.name) {
