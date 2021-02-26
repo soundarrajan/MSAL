@@ -859,6 +859,16 @@ APP_MASTERS.controller('Controller_Master', [
                 }
 
             }
+
+            if (vm.app_id == 'claims' && vm.screen_id == 'claims') { 
+                if ($scope.formValues.claimDetails.claimQuantity) {
+                    if ($scope.formValues.claimDetails.claimQuantity < 0) {
+                        toastr.error('Please enter a value greater than zero for claim quantity!');
+                        vm.editInstance.$valid = false;
+                        return;
+                    }
+                }
+            }
             
             if (vm.app_id == 'admin' && vm.screen_id == 'users') {
                 var dataSrcs = {
