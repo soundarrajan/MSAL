@@ -2491,7 +2491,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             }
 
             $.each(ctrl.data.products, (pk, pv) => {
-                if (pv.additionalCosts.length > 0) {
+                if (pv.additionalCosts && pv.additionalCosts.length > 0) {
                     $.each(pv.additionalCosts, (ack, acv) => {
                         if (acv.costType.name == 'Flat') {
                             acv.priceUom = null;
