@@ -84,55 +84,102 @@ export class VesselMasterSelectorGridViewModel extends BaseGridViewModel {
   nameCol: ITypedColDef<IVesselMasterDto, string> = {
     headerName: VesselMasterListColumnsLabels.name,
     colId: VesselMasterListColumns.name,
-    field: model('name')
+    field: model('name'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value;
+      return a;
+    }
   };
 
   displayNameCol: ITypedColDef<IVesselMasterDto, string> = {
     headerName: VesselMasterListColumnsLabels.displayName,
     colId: VesselMasterListColumns.displayName,
-    field: model('displayName')
+    field: model('displayName'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value;
+      return a;
+    }
   };
 
   codeCol: ITypedColDef<IVesselMasterDto, string> = {
     headerName: VesselMasterListColumnsLabels.code,
     colId: VesselMasterListColumns.code,
-    field: model('code')
+    field: model('code'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value;
+      return a;
+    }
   };
 
   imoNoCol: ITypedColDef<IVesselMasterDto, string> = {
     headerName: VesselMasterListColumnsLabels.imoNo,
     colId: VesselMasterListColumns.imoNo,
-    field: model('imoNo')
+    field: model('imoNo'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value;
+      return a;
+    }
   };
 
   vesselFlagCol: ITypedColDef<IVesselMasterDto, string> = {
     headerName: VesselMasterListColumnsLabels.vesselFlag,
     colId: VesselMasterListColumns.vesselFlag,
-    field: model('vesselFlag')
+    field: model('vesselFlag'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value;
+      return a;
+    }
   };
 
   buyerCol: ITypedColDef<IVesselMasterDto, string> = {
     headerName: VesselMasterListColumnsLabels.buyer,
     colId: VesselMasterListColumns.buyer,
-    field: model('buyer')
+    field: model('buyer'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value;
+      return a;
+    }
   };
 
   operatingCompanyCol: ITypedColDef<IVesselMasterDto, string> = {
     headerName: VesselMasterListColumnsLabels.operatingCompany,
     colId: VesselMasterListColumns.operatingCompany,
-    field: model('operatingCompany')
+    field: model('operatingCompany'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value;
+      return a;
+    }
   };
 
   emailCol: ITypedColDef<IVesselMasterDto, string> = {
     headerName: VesselMasterListColumnsLabels.email,
     colId: VesselMasterListColumns.email,
-    field: model('email')
+    field: model('email'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value;
+      return a;
+    }
   };
 
   defaultHfoCol: ITypedColDef<IVesselMasterDto, IDisplayLookupDto> = {
     headerName: VesselMasterListColumnsLabels.defaultHfo,
     colId: VesselMasterListColumns.defaultHfo,
     field: model('fuel'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      if (params.value) {
+        a.innerHTML = params.value?.name ?? params.value?.displayName;
+      }
+      return a;
+    },
     valueFormatter: params => params.value?.name ?? params.value?.displayName
   };
 
@@ -140,6 +187,13 @@ export class VesselMasterSelectorGridViewModel extends BaseGridViewModel {
     headerName: VesselMasterListColumnsLabels.hfoSpecs,
     colId: VesselMasterListColumns.hfoSpecs,
     field: model('fuelSpecGroup'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      if (params.value) {
+        a.innerHTML = params.value?.name ?? params.value?.displayName;
+      }
+      return a;
+    },
     valueFormatter: params => params.value?.name ?? params.value?.displayName
   };
 
@@ -147,6 +201,13 @@ export class VesselMasterSelectorGridViewModel extends BaseGridViewModel {
     headerName: VesselMasterListColumnsLabels.defaultMgo,
     colId: VesselMasterListColumns.defaultMgo,
     field: model('distillate'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      if (params.value) {
+        a.innerHTML = params.value?.name ?? params.value?.displayName;
+      }
+      return a;
+    },
     valueFormatter: params => params.value?.name ?? params.value?.displayName
   };
 
@@ -154,6 +215,13 @@ export class VesselMasterSelectorGridViewModel extends BaseGridViewModel {
     headerName: VesselMasterListColumnsLabels.mgoSpecs,
     colId: VesselMasterListColumns.mgoSpecs,
     field: model('distillateSpecGroup'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      if (params.value) {
+        a.innerHTML = params.value?.name ?? params.value?.displayName;
+      }
+      return a;
+    },
     valueFormatter: params => params.value?.name ?? params.value?.displayName
   };
 
@@ -161,6 +229,13 @@ export class VesselMasterSelectorGridViewModel extends BaseGridViewModel {
     headerName: VesselMasterListColumnsLabels.defaultUlsfo,
     colId: VesselMasterListColumns.defaultUlsfo,
     field: model('lsfo'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      if (params.value) {
+        a.innerHTML = params.value?.name ?? params.value?.displayName;
+      }
+      return a;
+    },
     valueFormatter: params => params.value?.name ?? params.value?.displayName
   };
 
@@ -168,37 +243,69 @@ export class VesselMasterSelectorGridViewModel extends BaseGridViewModel {
     headerName: VesselMasterListColumnsLabels.ulsfoSpecs,
     colId: VesselMasterListColumns.ulsfoSpecs,
     field: model('lsfoSpecsGroup'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      if (params.value) {
+        a.innerHTML = params.value?.name ?? params.value?.displayName;
+      }
+      return a;
+    },
     valueFormatter: params => params.value?.name ?? params.value?.displayName
   };
 
   serviceCol: ITypedColDef<IVesselMasterDto, string> = {
     headerName: VesselMasterListColumnsLabels.service,
     colId: VesselMasterListColumns.service,
-    field: model('service')
+    field: model('service'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value;
+      return a;
+    }
   };
 
   labCol: ITypedColDef<IVesselMasterDto, string> = {
     headerName: VesselMasterListColumnsLabels.lab,
     colId: VesselMasterListColumns.lab,
-    field: model('lab')
+    field: model('lab'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value;
+      return a;
+    }
   };
 
   commentsCol: ITypedColDef<IVesselMasterDto, string> = {
     headerName: VesselMasterListColumnsLabels.comments,
     colId: VesselMasterListColumns.comments,
-    field: model('comments')
+    field: model('comments'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value;
+      return a;
+    }
   };
 
   charteredVesselCol: ITypedColDef<IVesselMasterDto, string> = {
     headerName: VesselMasterListColumnsLabels.charteredVessel,
     colId: VesselMasterListColumns.charteredVessel,
-    field: model('charteredVessel')
+    field: model('charteredVessel'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value;
+      return a;
+    }
   };
 
   chartererNameCol: ITypedColDef<IVesselMasterDto, string> = {
     headerName: VesselMasterListColumnsLabels.chartererName,
     colId: VesselMasterListColumns.chartererName,
-    field: model('chartererName')
+    field: model('chartererName'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value;
+      return a;
+    }
   };
 
   deliveryDateCol: ITypedColDef<IVesselMasterDto, string> = {
@@ -244,7 +351,12 @@ export class VesselMasterSelectorGridViewModel extends BaseGridViewModel {
   redeliveryPortCol: ITypedColDef<IVesselMasterDto, string> = {
     headerName: VesselMasterListColumnsLabels.redeliveryPort,
     colId: VesselMasterListColumns.redeliveryPort,
-    field: model('redeliveryPort')
+    field: model('redeliveryPort'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value;
+      return a;
+    }
   };
 
   robHsfoOnDeliveryCol: ITypedColDef<IVesselMasterDto, number> = {
@@ -292,7 +404,12 @@ export class VesselMasterSelectorGridViewModel extends BaseGridViewModel {
   mainEngineCol: ITypedColDef<IVesselMasterDto, string> = {
     headerName: VesselMasterListColumnsLabels.mainEngine,
     colId: VesselMasterListColumns.mainEngine,
-    field: model('mainEngine')
+    field: model('mainEngine'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value;
+      return a;
+    }
   };
 
   teuNominalCol: ITypedColDef<IVesselMasterDto, number> = {
@@ -305,7 +422,12 @@ export class VesselMasterSelectorGridViewModel extends BaseGridViewModel {
   vesselTypeCol: ITypedColDef<IVesselMasterDto, string> = {
     headerName: VesselMasterListColumnsLabels.vesselType,
     colId: VesselMasterListColumns.vesselType,
-    field: model('vesselType')
+    field: model('vesselType'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value;
+      return a;
+    }
   };
 
   flowMeterAvailableCol: ITypedColDef<IVesselMasterDto, boolean> = {
