@@ -15,7 +15,8 @@
     "expireOffsetSeconds": 10
   },
   "tenantConfigs": {
-    "translations": "CMA"
+    "translations": "CMA",
+    "showCalenderView": false
   },
   "STATE": {
     "DEFAULT": "default",

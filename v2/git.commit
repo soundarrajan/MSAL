@@ -1,7 +1,7 @@
-﻿commit 6c240641db1e89470ef80f58ceac484fd8178256
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Thu Feb 11 13:24:33 2021 +0200
+﻿commit d9101d06c7549c8bc67f00fc55c79cd7cf5dacb9
+Author: Edwin Francis <edwin.f@Inatech.com>
+Date:   Mon Mar 1 17:42:36 2021 +0530
 
-    Removed the box from the logo
+    Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_git/Shiptech10-UI
 
 branch: master
