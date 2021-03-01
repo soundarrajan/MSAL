@@ -17,6 +17,7 @@ import {
 import { transformMenu } from '../models/sidebar-view.model';
 import * as jp from 'jsonpath';
 import { ScrollPanel } from 'primeng/scrollpanel';
+import { AppConfig } from '@shiptech/core/config/app-config';
 
 @Component({
   selector: 'shiptech-sidebar',
@@ -56,7 +57,7 @@ export class SidebarComponent implements OnInit, AfterContentInit {
   @ViewChild('layoutMenuScroller', { static: true })
   layoutMenuScrollerViewChild: ScrollPanel;
 
-  constructor(public app: LayoutMainComponent) {}
+  constructor(public app: LayoutMainComponent, private appConfig: AppConfig) {}
 
   ngOnInit(): void {
     // TODO: replace this with values from tenant settings
@@ -72,6 +73,11 @@ export class SidebarComponent implements OnInit, AfterContentInit {
       'masters.items.company.items.new_company.label',
       'New Company'
     );
+
+    if(!this.appConfig.v1.tenantConfigs.showCalenderView){
+      const dashBoardItems = jp.query(BASE_MENU, 'procurement.items.schedule_dashboard.items[?(!@.schedule_dashboard_calendar)]');
+      jp.value(BASE_MENU, 'procurement.items.schedule_dashboard.items', dashBoardItems.splice(1));
+    }
 
     this.model = transformMenu(BASE_MENU, {
       masters: {

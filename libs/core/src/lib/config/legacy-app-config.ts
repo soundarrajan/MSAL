@@ -14,6 +14,7 @@ export interface IAuthLegacyConfig {
 
 export interface ITenantLegacyConfig {
   translations: string;
+  showCalenderView: boolean;
 }
 
 export interface IStateLegacyConfig {
