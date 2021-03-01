@@ -101,6 +101,11 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     headerName: QcSurveyHistoryListColumnsLabels.portName,
     colId: QcSurveyHistoryListColumns.portName,
     field: model('portName'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value;
+      return a;
+    },
     width: 106
   };
 
@@ -108,6 +113,11 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     headerName: QcSurveyHistoryListColumnsLabels.vesselName,
     colId: QcSurveyHistoryListColumns.vesselName,
     field: model('vesselName'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value;
+      return a;
+    },
     width: 129
   };
 
@@ -202,7 +212,12 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     colId: QcSurveyHistoryListColumns.qtyBeforeDeliveryUom,
     field: model('qtyBeforeDeliveryUom'),
     filter: 'agNumberColumnFilter',
-    valueFormatter: params => params.value?.name
+    valueFormatter: params => params.value?.name,
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value?.name;
+      return a;
+    }
   };
 
   bdnQuantityCol: ITypedColDef<IQcSurveyHistoryListItemDto, number> = {
@@ -238,6 +253,11 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     colId: QcSurveyHistoryListColumns.qtyDeliveredUom,
     field: model('qtyDeliveredUom'),
     filter: 'agNumberColumnFilter',
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value?.name;
+      return a;
+    },
     valueFormatter: params => params.value?.name
   };
 
@@ -280,6 +300,11 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     headerName: QcSurveyHistoryListColumnsLabels.qtyAfterDeliveryUom,
     colId: QcSurveyHistoryListColumns.qtyAfterDeliveryUom,
     field: model('qtyAfterDeliveryUom'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value?.name;
+      return a;
+    },
     valueFormatter: params => params.value?.name
   };
 
@@ -335,13 +360,23 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
     headerName: QcSurveyHistoryListColumnsLabels.qtySludgeDischargedUom,
     colId: QcSurveyHistoryListColumns.qtySludgeDischargedUom,
     field: model('qtySludgeDischargedUom'),
-    valueFormatter: params => params.value?.name
+    valueFormatter: params => params.value?.name,
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.value ? params.value?.name : '';
+      return a;
+    }
   };
 
   commentCol: ITypedColDef<IQcSurveyHistoryListItemDto, string> = {
     headerName: QcSurveyHistoryListColumnsLabels.comment,
     colId: QcSurveyHistoryListColumns.comment,
     field: model('comment'),
+    cellRenderer: params => {
+      var a = document.createElement('div');
+      a.innerHTML = params.valueFormatted ?? params.value;
+      return a;
+    },
     tooltipValueGetter: params => params.valueFormatted ?? params.value
   };
 
