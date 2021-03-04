@@ -890,10 +890,17 @@ APP_MASTERS.controller('Controller_Master', [
                     $scope.formValues[dataSrcs[type]] = [];
                     for (let i = 0; i < $rootScope.tabData[type].length; i++) {
                         console.log($rootScope.tabData[type][i]);
-                        setAllChild($rootScope.tabData[type][i],dataSrcs[type]);
+                        setAllChild($rootScope.tabData[type][i], dataSrcs[type]);
+                        if (type == 'vessel_access') {
+                            let vesselType = $rootScope.tabData[type][i];
+                            let result = [];
+                            result = _.filter($scope.formValues[dataSrcs[type]], function (object) {
+                                return object.name != vesselType.name;
+                            });
+                            $scope.formValues[dataSrcs[type]] = angular.copy(result);
+                        }
                     }
-
-                })
+                });
                
             }
 
@@ -7864,9 +7871,7 @@ APP_MASTERS.controller('Controller_Master', [
             if (window.initialUomConversionDone.product != 0) {
                 if (formValues.productDetails.length == window.initialUomConversionDone.product && $('form[name="CM.editInstance"]').hasClass('ng-pristine') && $('form[name="CM.editInstance"]').hasClass('ng-invalid')) {
                     return;
-                } else if (formValues.productDetails.length == window.initialUomConversionDone.product && vm.entity_id == '') {
-                    return;
-                }
+                } 
             } else if (window.initialUomConversionDone.cost != 0) {
                 if (formValues.costDetails.length == window.initialUomConversionDone.cost && $('form[name="CM.editInstance"]').hasClass('ng-pristine')) {
                     return;
@@ -7917,10 +7922,12 @@ APP_MASTERS.controller('Controller_Master', [
 	                        calculate(vm.old_cost, response.data.payload[1].id, vm.old_costType);
 	                    });
 	                } else {
-	                   if (!formValues.productDetails[0].invoicedProduct) {
-                            return;
-                        }
-                        calculate(vm.old_cost, formValues.productDetails[0].invoicedProduct.id, vm.old_costType);
+                        if (formValues.productDetails[0]) {
+                            if (!formValues.productDetails[0].invoicedProduct) {
+                                return;
+                            }
+                        } 
+                        calculate(vm.old_cost, formValues.productDetails[0] ? formValues.productDetails[0].invoicedProduct.id : null, vm.old_costType);
 	                }
 	            } else {
 	                calculate(vm.old_cost, vm.old_product, vm.old_costType);
@@ -7973,7 +7980,7 @@ APP_MASTERS.controller('Controller_Master', [
 	                    calculateGrand(formValues);
 	                    return;
 	                }
-	                $scope.getUomConversionFactor(vm.product, 1, quantityUom, rateUom, 1, (response) => {
+	                $scope.getUomConversionFactor(vm.product, 1, quantityUom, rateUom, null, 1, (response) => {
 	                    if (vm.costType) {
 	                        if (vm.costType.name == 'Unit') {
 	                            formValues.costDetails[rowIndex].invoiceAmount = response * convertDecimalSeparatorStringToNumber(vm.cost.invoiceRate) * convertDecimalSeparatorStringToNumber(vm.cost.invoiceQuantity);
@@ -8152,13 +8159,13 @@ APP_MASTERS.controller('Controller_Master', [
                     ContractProductId: contractProductId ? contractProductId : null
 	            }
 	        };
-	        if (!productId || !toUomId || !fromUomId) {
-	        	return;
-	        }
 	        if (toUomId == fromUomId) {
 	            callback(1);
 	            return;
 	        }
+            if (!productId || !toUomId || !fromUomId) {
+                return;
+            }
 	        Factory_Master.getUomConversionFactor(data, (response) => {
 	            if (response) {
 	                if (response.status == true) {

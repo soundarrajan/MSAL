@@ -59,6 +59,7 @@ export class SidebarComponent implements OnInit, AfterContentInit {
 
   constructor(public app: LayoutMainComponent, private appConfig: AppConfig) {}
 
+  
   ngOnInit(): void {
     // TODO: replace this with values from tenant settings
     // TODO: TsList disable double qoues
@@ -73,6 +74,10 @@ export class SidebarComponent implements OnInit, AfterContentInit {
       'masters.items.company.items.new_company.label',
       'New Company'
     );
+    if(!this.appConfig.v1.tenantConfigs.showCalenderView){
+      const dashBoardItems = jp.query(BASE_MENU, 'procurement.items.schedule_dashboard.items[?(!@.schedule_dashboard_calendar)]');
+      jp.value(BASE_MENU, 'procurement.items.schedule_dashboard.items', dashBoardItems.splice(1));
+    }
 
     if(!this.appConfig.v1.tenantConfigs.showCalenderView){
       const dashBoardItems = jp.query(BASE_MENU, 'procurement.items.schedule_dashboard.items[?(!@.schedule_dashboard_calendar)]');

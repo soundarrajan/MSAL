@@ -2593,7 +2593,7 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
                     calculateGrand(formValues);
                     return;
                 }
-                $scope.getUomConversionFactor(vm.product, 1, quantityUom, rateUom, (response) => {
+                $scope.getUomConversionFactor(vm.product, 1, quantityUom, rateUom, null, 1, (response) => {
                     if (vm.costType) {
                         if (vm.costType.name == 'Unit') {
                             formValues.costDetails[rowIndex].invoiceAmount = response * vm.cost.invoiceRate * vm.cost.invoiceQuantity;
