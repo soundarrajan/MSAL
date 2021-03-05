@@ -45,7 +45,12 @@
             <a aria-controls="home" role="tab" data-toggle="tab" ng-click="config_tab = 9">
                 {{ 'Reports' | translate }}
             </a>
-        </li>        
+        </li>
+        <li role="presentation" ng-show="tenantSetting.shiptechLite !== true">
+            <a aria-controls="home" role="tab" data-toggle="tab" ng-click="config_tab = 11">
+                {{ 'Masters' | translate }}
+            </a>
+        </li>
 
     </ul>
     <!-- Tab panes -->
@@ -1553,6 +1558,11 @@
                     </div>
                 </div>
             </div>
+        </div>
+	    <div role="tabpanel" class="tab-panel " id="masters" ng-show="config_tab == 11">
+            <!-- <div class="col-sm-12"> -->
+            <span ng-include="'app-general-components/views/screen_parts/AdminConfigurationMasters.html'"></span>
+            <!-- </div> -->
         </div>
      
     </div>
