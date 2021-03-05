@@ -8845,6 +8845,16 @@ APP_MASTERS.controller('Controller_Master', [
             $location.path(`/${ vm.app_id }/${ vm.screen_id }/seller-rating/${ vm.entity_id }/0`);
         }
 
+        $scope.isCustomerCounterparty = function() {
+        	var isCustomer = false;
+        	$.each($scope.formValues.counterpartyTypes, (k,v) => {
+        		if (v.internalName == "Customer" || v.name == "Customer") {
+		        	isCustomer = true;
+        		}
+        	})
+        	return isCustomer;
+        }
+
           // modal close
         $scope.prettyCloseModal = function() {
             let modalStyles = {

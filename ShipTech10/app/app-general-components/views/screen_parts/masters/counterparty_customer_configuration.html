@@ -1,0 +1,40 @@
+<!-- {{formValues.counterpartyTypes}} -->
+<div class="row">
+	<div class="col-md-4">
+	      <div class="form-group row dropdown-control">
+	      	<label class="control-label" style="height: 30px; padding-top: 0px;">
+		        Mail Template
+		    </label>
+		    <div class="form_input">
+		      	<select ng-model="formValues.counterpartyCustomerConfiguration.customerMailConfiguration"
+		      	name="CustomerMailConfiguration"
+		      	id="CustomerMailConfiguration"
+		      	class="form-control"
+		      	ng-options="item as (item.displayName ? item.displayName : item.name) for item in CM.listsCache.CustomerMailConfiguration track by item.id"></select>
+		    </div>
+	      </div>
+	</div>
+</div>
+
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group  form-inline row ng-scope">
+		    <label class="mt-checkbox">
+		        <input type="checkbox" name="ValidateVesselExpiryDate" id="inlineCheckboxValidateVesselExpiryDate" ng-model="formValues.counterpartyCustomerConfiguration.validateVesselExpiryDate" >
+		        <span></span>
+		        Validate Vessel Expiry Date
+		    </label>
+		</div>
+	</div>		
+	<div class="col-md-4">
+		<div class="form-group  form-inline row ng-scope">
+		    <label class="mt-checkbox">
+		        <input type="checkbox" name="SendSingleEmail" id="inlineCheckboxSendSingleEmail" ng-model="formValues.counterpartyCustomerConfiguration.sendSingleEmail" >
+		        <span></span>
+		        Send Single Email 
+		    </label>
+		</div>
+	</div>			
+</div>
+
