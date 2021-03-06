@@ -1268,7 +1268,12 @@
     "AUTOPOPULATE_LAB_FROM": "Auto Populate Lab from",
     "PRICING_EVENT_DATE_MANUAL_OVERRIDE": "Pricing date manual override",
     "AUTO_FINAL_QUANTITY": "Auto-populate Final Qty based on",
-    "AUTO_VERIFY_LAB_RESULTS": "Auto Verify Lab Results"
+    "AUTO_VERIFY_LAB_RESULTS": "Auto Verify Lab Results",
+    "DISPLAY_VESSEL_BOPS_DETAILS": "Display BOPS Details",
+    "DISPLAY_PORT_SEQUENCE": "Display Port Sequence",
+    "DISPLAY_TERMINAL": "Display Terminal",
+    "DISPLAY_LOCATION_BOPS_DETAILS": "Display BOPS Details",
+    "ADD_COUNTERPARTY_BANK_ACCOUNT": "Add Bank Account Number"
   },
   "recon": {
     "VESSEL_NAME": "Vessel Name",

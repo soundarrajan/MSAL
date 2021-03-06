@@ -5918,8 +5918,7 @@ APP_API.factory('$Api_Service', [
                         let lab = $http.post(`${API.BASE_URL_DATA_ADMIN }/api/admin/labConfiguration/update`, {
                             Payload: data.lab
                         });
-                        // let master = $http.post(`${API.BASE_URL_DATA_ADMIN }/api/admin/masterConfiguration/update`, {
-                        let master = $http.post(`http://localhost:62751/api/admin/masterConfiguration/update`, { //TEMP_TEST
+                        let master = $http.post(`${API.BASE_URL_DATA_ADMIN }/api/admin/masterConfiguration/update`, {
                             Payload: data.master
                         });
                         $q.all([ contract, email, general, procurement, schedule, delivery, invoice, report, lab, master ]).then(
