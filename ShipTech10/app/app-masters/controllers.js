@@ -180,7 +180,7 @@ APP_MASTERS.controller('Controller_Master', [
         };
         //its used to hide LocationTerminals ScreenLayout
         $scope.isLocationTerminalVisible=function(){
-            var isLoactionterminals=true;
+            var isLoactionterminals=false;
             if($rootScope.adminConfiguration.master.isLocationTerminalVisible==true){
                 isLoactionterminals=true;
             } else {
