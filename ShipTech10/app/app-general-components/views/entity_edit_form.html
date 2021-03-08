@@ -22,7 +22,7 @@
                     </ul>
                 </div>
                 <div  ng-class="type == 'tabs' ? 'tab-content grp_unit' : ''">
-                    <div  class="group_{{ parents.id.replace(' ','_') }} " ng-hide="visible_sections.indexOf(parents.id) < 0 || (CM.shiptechLite && parents.id == 'Energy Calculation Formula') || (parents.id=='customerConfigurations' && !isCustomerCounterparty()) || (parents.id=='portSequence' && !isPortSequenceVisible())" data-ng-repeat="parents in formFields" id="tab_{{ $index }}"  ng-class="{ 'tab-pane fade': parents.isTab && type == 'tabs', 'active in': $index == 0 , 'col-md-12': !parents.Columns[0].Value, 'col-md-{{ parents.Columns[0].Value }}': parents.Columns[0].Value }" ng-if="!parents.hidden">
+                    <div  class="group_{{ parents.id.replace(' ','_') }} " ng-hide="visible_sections.indexOf(parents.id) < 0 || (CM.shiptechLite && parents.id == 'Energy Calculation Formula') || (parents.id=='customerConfigurations' && !isCustomerCounterparty()) || (parents.id=='locationTerminals' && !isLocationTerminalVisible()) || (parents.id=='portSequence' && isPortSequenceVisible() == false)" data-ng-repeat="parents in formFields" id="tab_{{ $index }}"  ng-class="{ 'tab-pane fade': parents.isTab && type == 'tabs', 'active in': $index == 0 , 'col-md-12': !parents.Columns[0].Value, 'col-md-{{ parents.Columns[0].Value }}': parents.Columns[0].Value }" ng-if="!parents.hidden">
                         <div class="col-md-12 portlet light ">
                             <div class="portlet-title" ng-if="parents.name != 'General' && CM.screen_id != 'formula' && CM.app_id != 'alerts'" ng-controller="Controller_Delivery as CD">
                                 <div class="tools">
