@@ -1,0 +1,49 @@
+<div  class="row custom-hardcoded-table tableheader" style="overflow: auto;" >
+    <table id="params_history_table" class="table-body" style="width:100%;min-width: 1190px;">
+        <thead>
+            <tr style="border: 1px solid #e2e6ea;">
+                <th  style="width:50px" class="padding border border-grey">Port</th>
+                <th  style="width:50px" class="padding border border-grey">Port Code</th>
+                <th  style="width:25px" class="padding border border-grey">Direction</th>
+                <th  style="width:25px" class="padding border border-grey">Operator Ack</th>
+                <th  style="width:50px" class="padding border border-grey">Business Address</th>
+                <th  style="width:25px" class="padding border border-grey">Min SOA</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr  ng-repeat="(key, value) in formValues.portSequences"  class="ng-scope">
+                
+                    <td style="width:50px">
+                        <input type="label" name="Port" readonly class="form-control"  ng-model="value.location.name"></input>
+                    </td>
+                    <td style="width:50px">
+                        <input type="label" name="Code" readonly class="form-control"  ng-model="value.location.code"></input>
+                    </td>
+                    <td style="width:25px">
+                        <input type="text" name="Direction" readonly class="form-control"  ng-model="value.direction"></input>
+                    </td>
+                    <td style="width:25px" class="text-center ng-scope">
+                        <!-- <input type="checkbox" name="isOperatorAck" class="form-control"  ng-model="value.isOperatorAck"></input> -->
+
+                       <label class="mt-checkbox" >                      
+                           <input type="checkbox"  ng-model="value.isOperatorAck"/>
+                        <span></span>
+                        
+                    </label>
+                    </td>
+                    
+                    <td style="width:50px">
+                        <input type="email" name="businessAddressEmail" class="form-control"  ng-model="value.businessAddressEmail"></input>
+                    </td>
+                    
+                    <td style="width:25px"  class="text-center ng-scope">
+                        <!-- <input type="checkbox" name="isMinSOA"  class="form-control mt-checkbox" ng-model="value.isMinSOA"></input> -->
+                        <label class="mt-checkbox" >                      
+                            <input type="checkbox"  ng-model="value.isMinSOA"/>
+                         <span> </span>
+                    </td>         
+            
+            </tr>  
+        </tbody>
+    </table>
+</div>

@@ -22,7 +22,7 @@
                     </ul>
                 </div>
                 <div  ng-class="type == 'tabs' ? 'tab-content grp_unit' : ''">
-                    <div  class="group_{{ parents.id.replace(' ','_') }} " ng-hide="visible_sections.indexOf(parents.id) < 0 || (CM.shiptechLite && parents.id == 'Energy Calculation Formula') || (parents.id=='customerConfigurations' && !isCustomerCounterparty()) || (parents.id=='locationTerminals' && !isLocationTerminalVisible())"  data-ng-repeat="parents in formFields" id="tab_{{ $index }}"  ng-class="{ 'tab-pane fade': parents.isTab && type == 'tabs', 'active in': $index == 0 , 'col-md-12': !parents.Columns[0].Value, 'col-md-{{ parents.Columns[0].Value }}': parents.Columns[0].Value }" ng-if="!parents.hidden">
+                    <div  class="group_{{ parents.id.replace(' ','_') }} " ng-hide="visible_sections.indexOf(parents.id) < 0 || (CM.shiptechLite && parents.id == 'Energy Calculation Formula') || (parents.id=='customerConfigurations' && !isCustomerCounterparty()) || (parents.id=='portSequence' && !isPortSequenceVisible()) " data-ng-repeat="parents in formFields" id="tab_{{ $index }}"  ng-class="{ 'tab-pane fade': parents.isTab && type == 'tabs', 'active in': $index == 0 , 'col-md-12': !parents.Columns[0].Value, 'col-md-{{ parents.Columns[0].Value }}': parents.Columns[0].Value }" ng-if="!parents.hidden">
                         <div class="col-md-12 portlet light ">
                             <div class="portlet-title" ng-if="parents.name != 'General' && CM.screen_id != 'formula' && CM.app_id != 'alerts'" ng-controller="Controller_Delivery as CD">
                                 <div class="tools">
@@ -199,12 +199,15 @@
                                         <span ng-switch-when="labTestResultsGroup">
 
                                             <span ng-include="'app-labs/views/components/lab_test_results.html'"></span>
-                                        </span>               
-
+                                        </span>              
+                                        
                                         <span ng-switch-when="customerConfigurationsGroup" ng-if="isCustomerCounterparty()">
                                             <span ng-include="'app-general-components/views/screen_parts/masters/counterparty_customer_configuration.html'"></span>
                                         </span>
 
+                                        <div ng-switch-when="portGroup" ng-if ="isPortSequencEnable()">                                     
+                                            <span ng-include="'app-general-components/views/screen_parts/masters/portSequence.html'"></span>
+                                        </div> 
                                         <div class="form-group  form-inline row" ng-switch-when="CLC">
                                             <div class=" group_{{ field.Unique_ID }}">
                                                 <span ng-include="'app-general-components/views/controls/dataTable.html'"></span>
@@ -294,6 +297,7 @@
                                             <span ng-switch-when="bdnInformation">
                                                 <span ng-include="'app-general-components/views/screen_parts/delivery/bdnInformation.html'"></span>
                                             </span>
+                                            
                                             <span ng-switch-when="chiefEngineerFeedback">
                                                 <span ng-include="'app-general-components/views/screen_parts/delivery/chiefEngineerFeedback.html'"></span>
                                             </span>
@@ -320,9 +324,6 @@
                                             </span>
                                             <span ng-switch-when="LocationAdditionalCost">
                                                 <span ng-include="'app-general-components/views/screen_parts/LocationAdditionalCosts.html'"></span>
-                                            </span>
-                                            <span ng-switch-when="locationTerminalsGroup" ng-if="isLocationTerminalVisible()">
-                                                <span ng-include="'app-general-components/views/screen_parts/masters/locationTerminals.html'"></span>
                                             </span>
                                             <span ng-switch-when="vesselsContacts">
                                                 <span ng-include="'app-general-components/views/screen_parts/masters/vesselsContactsSection.html'"></span>

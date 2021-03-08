@@ -813,7 +813,6 @@
         "PUMPING_RATE_LSFO": "Pumping Rate LSFO (MT/Hour)",
         "PUMPING_RATE_DOGO": "Pumping Rate DOGO (MT/Hour)",
         "BARGE_COUNTERPARTY": "Barge Counterparty",
-        "IS_VERIFIED": "Is Verified",
         "COPY_VESSEL_ID": "Copy Vessel ID",
         "LSDIS_RESERVE":"LSDIS Reserve(MT)",
         "100_MCR":"100% MCR (kw)",
@@ -832,7 +831,13 @@
         "1_DAY_RESERVE":"1 Day reserve(MT)",
         "VESSEL_ISO":"Vessel ISO",
         "VESSEL_ACCOUNT":"Vessel Account",
-        "OPERATIONAL_DEPARTMENT":"Operational Department"
+        "OPERATIONAL_DEPARTMENT":"Operational Department",
+        "IS_VERIFIED": "Is Verified",
+        "REFER_ULITIZATION(%)":"Refer Utilization(%)",
+        "MAX_LIFT_UPDATE":"Max Lift Update",
+        "GSP Email":"GSP Email",
+        "2M EMAIL":"2M Email"
+
     },
     "labs": {
         "ORDER_ID": "Order No",

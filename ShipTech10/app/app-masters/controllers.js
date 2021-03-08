@@ -179,14 +179,26 @@ APP_MASTERS.controller('Controller_Master', [
             }
         };
         //its used to hide LocationTerminals ScreenLayout
-        $scope.isLocationTerminalVisible=function(){
-            var isLoactionterminals=false;
-            if($rootScope.adminConfiguration.master.isLocationTerminalVisible==true){
-                isLoactionterminals=true;
+        $scope.isLocationTerminalVisible = function () {
+            var isLoactionterminals = false;
+            if ($rootScope.adminConfiguration.master.isLocationTerminalVisible == true) {
+                isLoactionterminals = true;
             } else {
-                isLoactionterminals=false;
+                isLoactionterminals = false;
             }
             return isLoactionterminals;
+        }
+
+        
+         //its used to hide PortSequence ScreenLayout
+         $scope.isPortSequenceVisible=function(){
+            var isPortSequences=true;
+            if($rootScope.adminConfiguration.master.isPortSequenceVisible==true){
+                isPortSequences=true;
+            } else {
+                isPortSequences=false;
+            }
+            return isPortSequences;
         }
 
         if (!vm.entity_id) {
@@ -8865,6 +8877,8 @@ APP_MASTERS.controller('Controller_Master', [
         	})
         	return isCustomer;
         }
+        
+        
 
           // modal close
         $scope.prettyCloseModal = function() {
