@@ -192,7 +192,7 @@ APP_MASTERS.controller('Controller_Master', [
         
          //its used to hide PortSequence ScreenLayout
          $scope.isPortSequenceVisible=function(){
-            var isPortSequences=true;
+            var isPortSequences=false;
             if($rootScope.adminConfiguration.master.isPortSequenceVisible==true){
                 isPortSequences=true;
             } else {
