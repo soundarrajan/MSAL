@@ -1,0 +1,38 @@
+<div class="custom-hardcoded-table ng-scope" >
+    <table class="table-body" style="width:50%">
+        <thead>
+            <tr>
+                <td style="width:2%"></td>
+                <td style="width:2%">                   
+                	<span class="insert" ng-click="formValues.terminals ? formValues.terminals.push({id:0}) : formValues.terminals=[{id:0}]"></span>
+                </td>
+                <td style="width:12%">
+                    <b>
+                        Terminal Code
+                    </b>
+                </td>
+                <td style="width:12%">
+                    <b>
+                        Terminal Name
+                    </b>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="(key, value) in formValues.terminals" ng-if="value.isDeleted != true" class="ng-scope">
+                <td style="width:2%">
+                    <span class="remove" style="display: block;pointer-events: all; opacity: 1" ng-click="value.id == 0 ? formValues.terminals.splice(key,1) : value.isDeleted = true"></span>
+                </td>
+                <td style="width:2%">
+                    <span class="insert" ng-click="formValues.terminals.push({id:0})"></span>
+                </td>
+                <td style="width:12%">
+                    <input type="text" name="Terminal Code" class="form-control" ng-model="value.terminalCode"/>
+                </td>     
+                <td style="width:12%">
+                    <input type="text" name="Terminal Name" class="form-control" ng-model="value.descriptions"/>
+                </td>   
+            </tr>
+        </tbody>
+    </table>
+</div>

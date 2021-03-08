@@ -178,6 +178,17 @@ APP_MASTERS.controller('Controller_Master', [
                 });
             }
         };
+        //its used to hide LocationTerminals ScreenLayout
+        $scope.isLocationTerminalVisible=function(){
+            var isLoactionterminals=true;
+            if($rootScope.adminConfiguration.master.isLocationTerminalVisible==true){
+                isLoactionterminals=true;
+            } else {
+                isLoactionterminals=false;
+            }
+            return isLoactionterminals;
+        }
+
         if (!vm.entity_id) {
             $scope.isEdit = false;
             vm.isEdit = false;
