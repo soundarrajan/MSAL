@@ -1322,6 +1322,9 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                             case 'CompanyName':
                                 payload[i]['displayName'] = 'Company'; 
                                 break;
+                            case 'VoyageDetail_RegionName':
+                                payload[i]['displayName'] = 'Region'; 
+                                break;
                         }
                         if (payload[i].ColumnValue && payload[i].ColumnValue == 'VoyageDetail_PortStatus_DisplayName') {
                             payload[i].displayName = 'Port Status';
@@ -1418,6 +1421,9 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                                 break;
                             case 'CompanyName':
                                 payload[i]['displayName'] = 'Company'; 
+                                break;
+                            case 'VoyageDetail_RegionName':
+                                payload[i]['displayName'] = 'Region'; 
                                 break;
                         }
                         if (payload[i].ColumnValue && payload[i].ColumnValue == 'VoyageDetail_PortStatus_DisplayName') {

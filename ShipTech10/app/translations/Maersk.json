@@ -604,6 +604,7 @@
     "BUNKERABLE_PORT": "Bunkerable Port",
     "USD_RESTRICTIONS": "USD Restrictions",
     "PORT_TYPE": "Port type",
+    "REGION": "Region",
     "CLAIM_TYPE": "Claim Type",
     "ALLOW_REBATE": "Allow Rebate",
     "MIN_LIFT": "Min Lift",
