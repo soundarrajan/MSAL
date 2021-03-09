@@ -211,6 +211,18 @@ APP_MASTERS.controller('Controller_Master', [
             }
             return isCounterpartyBankAccountAddable;
         }
+        // Used in Vessel screen for BOPS details visibility. 
+        $scope.isVesselBopsDetailsVisible = function (field) {
+            if(vm.screen_id == 'vessel' && ((field.Unique_ID == 'isVesselManagable') || (field.Unique_ID == 'isFlowMeterAvailable') || (field.Unique_ID == 'departments'))) {
+                if ($rootScope.adminConfiguration.master.isLocationTerminalVisible){
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return true;
+            }
+        }
 
         if (!vm.entity_id) {
             $scope.isEdit = false;
