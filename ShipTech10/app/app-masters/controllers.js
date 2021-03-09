@@ -199,6 +199,17 @@ APP_MASTERS.controller('Controller_Master', [
                 isPortSequences=false;
             }
             return isPortSequences;
+         }
+
+        //its used to hide BankAccount Number isCounterpartyBankAccountAddable ScreenLayout
+        $scope.isCounterpartyBankAccountAddable = function () {
+            var isCounterpartyBankAccountAddable = false;
+            if ($rootScope.adminConfiguration.master.isCounterpartyBankAccountAddable == true) {
+                isCounterpartyBankAccountAddable = true;
+            } else {
+                isCounterpartyBankAccountAddable = false;
+            }
+            return isCounterpartyBankAccountAddable;
         }
 
         if (!vm.entity_id) {
