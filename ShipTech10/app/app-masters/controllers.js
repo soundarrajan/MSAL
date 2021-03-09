@@ -4905,7 +4905,13 @@ APP_MASTERS.controller('Controller_Master', [
             // if (!duplicated_row) {
             // Check if modal triggered from datatable
             if (!formvalue) {
-                $scope.assignObjValue($scope, elements, $scope.selected_value);
+                if(element.name == 'Tank Product'){
+                    let productIdx = element.source.split('.')[3];
+                    $scope.assignObjValue_tankproduct(productIdx, $scope.selected_value);
+                }
+                else
+                    $scope.assignObjValue($scope, elements, $scope.selected_value);
+
                 if (element.screen == 'productlist' && element.name == 'Product' && element.app == 'masters') {
                     let productIndex = element.source.split('.')[2];
                     $scope.addProductToConversion(productIndex, null, true);
@@ -4936,6 +4942,8 @@ APP_MASTERS.controller('Controller_Master', [
             $scope.triggerChangeFields(field_name, elements[1]);
         };
 
+        
+
         $scope.assignObjValue = function(obj, keyPath, value) {
             var lastKeyIndex = keyPath.length - 1;
             for (let i = 0; i < lastKeyIndex; ++i) {
@@ -4955,6 +4963,57 @@ APP_MASTERS.controller('Controller_Master', [
             }
             obj[keyPath[lastKeyIndex]] = value;
         };
+
+        $scope.assignObjValue_tankproduct = function(idx,value){
+            $scope.formValues.vesselProducts[idx].product = value;
+        }
+
+        $scope.addnewTankDetail = function(index){
+            var newItem ={
+                'vessel':$scope.formValues.vesselProducts[index].vessel, 
+                'vesselProduct':$scope.formValues.vesselProducts[index].product, 
+                'isDeleted': false,
+                'createdBy':$rootScope.user,
+                'clientIpAddress': null,
+                'lastModifiedByUser': null,
+                'lastModifiedOn': null,
+                'modulePathUrl': null,
+                'userAction': null,
+                'createdOn': moment().format()
+            }
+            if($scope.formValues.vesselProducts[index].vesselProductTanks) 
+                $scope.formValues.vesselProducts[index].vesselProductTanks.push(newItem);
+            else
+                $scope.formValues.vesselProducts[index]['vesselProductTanks']=([newItem]);
+        }
+
+        $scope.addnewTankProduct = function(index){
+            var newItem ={
+                'clientIpAddress': null,
+                'createdBy':$rootScope.user,
+                'isDeleted': false,
+                'lastModifiedByUser': null,
+                'lastModifiedOn': null,
+                'modulePathUrl': null,
+                'userAction': null,
+                'createdOn': moment().format(),
+                'vessel':{
+                    'clientIpAddress':  $scope.formValues.clientIpAddress,
+                    'code': $scope.formValues.code,
+                    'collectionName': $scope.formValues.collectionName,
+                    'customNonMandatoryAttribute1': $scope.formValues.customNonMandatoryAttribute1,
+                    'displayName': $scope.formValues.displayName,
+                    'id': $scope.formValues.id,
+                    'internalName': $scope.formValues.internalName,
+                    'isDeleted': $scope.formValues.isDeleted,
+                    'modulePathUrl': $scope.formValues.modulePathUrl,
+                    'name': $scope.formValues.name,
+                    'userAction': $scope.formValues.userAction                   
+                }
+            }
+            $scope.formValues.vesselProducts.push(newItem);
+            //$scope.addnewTankDetail(formValues.vesselProducts.length-1);
+        }
 
         $scope.initInvoiceTypeOptions = function() {
 	        vm.getOptions({
