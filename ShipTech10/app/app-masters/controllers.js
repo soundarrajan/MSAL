@@ -4971,7 +4971,9 @@ APP_MASTERS.controller('Controller_Master', [
         $scope.addnewTankDetail = function(index){
             var newItem ={
                 'vessel':$scope.formValues.vesselProducts[index].vessel, 
-                'vesselProduct':$scope.formValues.vesselProducts[index].product, 
+                'vesselProduct':{
+                    id:$scope.formValues.vesselProducts? $scope.formValues.vesselProducts[index].id:0
+                },
                 'isDeleted': false,
                 'createdBy':$rootScope.user,
                 'clientIpAddress': null,
@@ -5011,8 +5013,12 @@ APP_MASTERS.controller('Controller_Master', [
                     'userAction': $scope.formValues.userAction                   
                 }
             }
-            $scope.formValues.vesselProducts.push(newItem);
-            //$scope.addnewTankDetail(formValues.vesselProducts.length-1);
+            if($scope.formValues.vesselProducts) 
+                $scope.formValues.vesselProducts.push(newItem);
+            else
+                $scope.formValues['vesselProducts']=[(newItem)];
+            // $scope.formValues.vesselProducts.push(newItem);
+            $scope.addnewTankDetail(formValues.vesselProducts.length-1);
         }
 
         $scope.initInvoiceTypeOptions = function() {
