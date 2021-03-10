@@ -1,0 +1,90 @@
+
+
+<div>
+    <div id="modal_close_bar1" class="row float_right">
+        <button type="button" class="close" ng-click="prettyCloseModal()" aria-hidden="true"></button>
+    </div>
+    <br>
+    <div class="col-sm-12">
+        <div class="portlet">
+            <div class="portlet-title row">
+            	<div class="col-sm-12">
+	                <div class="caption-subject pull-left">
+
+	                    Barge Cost Details
+	                </div>
+					<a ng-click="saveBargeCostDetails();" class="btn btn-default  btn-outline mt-ladda-btn ladda-button ng-scope pull-right">
+				        <span class="ladda-label ng-binding">
+							Save
+				        </span>
+				    </a>            		
+					<div class="input-group st-content-search-box pull-right" style="width: 200px;">
+					   
+					</div>    
+            	</div>
+            </div>
+        </div>
+    </div>
+
+	 <div class="col-sm-12">
+		<div class="custom-hardcoded-table admin" style="max-height: 500px;">
+			<table class="table-body" style="min-width: 500px;">
+				<thead>
+					<tr>
+						<td style="max-width: initial; min-width: 50px;"  class="padding"></td>
+						<td  style="max-width: initial; min-width: 50px;" class="padding">
+							<span class="insert" ng-click="formValues.additionalCosts[CurrentadditionalCostsdetails].additionalCostDetails ? formValues.additionalCosts[CurrentadditionalCostsdetails].additionalCostDetails.push({id:0}) : formValues.additionalCosts[CurrentadditionalCostsdetails].additionalCostDetails=[{id:0}]"></span></td>
+						<td  style="max-width: initial; min-width: 220px;" class="padding"><b>Category</b></td>
+						<td style="max-width: initial; min-width: 250px;" class="padding"><b>Quantity From</b></td>
+						<td style="max-width: initial; min-width: 250px;" class="padding"><b>Quantity To</b></td>
+						<td style="max-width: initial; min-width: 300px;" class="padding"><b>Type</b></td>
+						<td style="max-width: initial; min-width: 120px;" class="padding"><b>Amount</b></td>
+					</tr>
+				</thead>
+				<tbody>
+				
+					<tr ng-repeat="(key, value) in formValues.additionalCosts[CurrentadditionalCostsdetails].additionalCostDetails" ng-if="!value.isDeleted">   
+						<td style="max-width: initial; min-width: 50px;"><span class="remove" style="display: block;pointer-events: all; opacity: 1" ng-click="value.id == 0 ? formValues.additionalCosts[CurrentadditionalCostsdetails].additionalCostDetails.splice(key,1) : deleteLocation(key)"></span></td>
+						<td  style="max-width: initial; min-width: 50px;"><span class="insert" ng-click="formValues.additionalCosts[CurrentadditionalCostsdetails].additionalCostDetails.push({id:key})"></span></td>
+						<td style="max-width: initial; min-width: 200px;">
+							<input decode-input-format class="form-control" type="text" ng-model="value.category"></td>
+							<td style="max-width: initial; min-width: 200px;">
+								<input decode-input-format class="form-control" type="text" ng-model="value.qtyFrom" ng-change="getValidFromTo(value.qtyFrom, value.qtyTo)" ></td>
+								<td style="max-width: initial; min-width: 200px;">
+									<input decode-input-format class="form-control"  type="text" ng-model="value.qtyTo"></td> 
+									<td style="width:12%"> 
+										<select name="Type"  class="form-control" ng-options="item as item.name for item in filterBargeCostTypes() track by item.id " ng-model="value.costType"></select>
+									</td>
+						<td style="max-width: initial; min-width: 100px; text-align: center;">
+							<div class="input-group">
+								
+								<input name="Amount" style="width: 70%;" type="text" class="form-control" ng-model="value.amount" format="number">
+								<select style="width: 30%;" name="currency" class="form-control" ng-options="item as item.code for item in CM.listsCache.Currency track by item.id " ng-model="value.currency"
+								
+								></select>
+							</div>
+						</td>
+		
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	 	
+	 </div>
+
+	 
+
+   <!-- <div class="col-sm-12 ng-binding">
+	   	<br><br>
+		Showing {{locationMasterPreferredSellerProductsTableConfig.skip+1}} to {{locationMasterPreferredSellerProductsTableConfig.skip+locationMasterPreferredSellerProductsTableConfig.take > locationPreferredSellerProductsDataLength ? locationPreferredSellerProductsDataLength : locationMasterPreferredSellerProductsTableConfig.skip+locationMasterPreferredSellerProductsTableConfig.take }}  of {{locationPreferredSellerProductsDataLength}}
+		<div class="notification-pagination ng-binding" ng-init="currentPage = 1">
+			Page
+			<span class="prevPage" ng-disabled="locationMasterPreferredSellerProductsTableConfig.currentPage <= 1" ng-click="locationMasterPreferredSellerProductsTableConfig.currentPage = locationMasterPreferredSellerProductsTableConfig.currentPage-1; createLocationPreferredSellerProductsPayload(true)"> &lt; </span>
+			<span class="currentPage ng-binding">{{locationMasterPreferredSellerProductsTableConfig.currentPage}}</span>
+			<span class="nextPage" ng-disabled="locationMasterPreferredSellerProductsTableConfig.currentPage >= locationPreferredSellerProductsDataLength/locationMasterPreferredSellerProductsTableConfig.take" ng-click="locationMasterPreferredSellerProductsTableConfig.currentPage = locationMasterPreferredSellerProductsTableConfig.currentPage+1; createLocationPreferredSellerProductsPayload(true)"> &gt; </span>
+			of {{locationPreferredSellerProductsDataPages}}
+		</div>
+	   	<br><br>
+	</div>  -->
+</div>
+

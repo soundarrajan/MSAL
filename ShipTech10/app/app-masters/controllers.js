@@ -830,7 +830,6 @@ APP_MASTERS.controller('Controller_Master', [
             }
             return false;
         }
-
         $scope.save_master_changes = function(ev, sendEmails, noReload, completeCallback) {
             screenLoader.showLoader();
             $('form').addClass('submitted');
@@ -6406,7 +6405,7 @@ APP_MASTERS.controller('Controller_Master', [
 		        	console.log('--- *** --- getAdditionalCostsComponentTypes');
 	                Factory_Master.getAdditionalCosts(0, (response) => {
 			    		// $rootScope.called_getAdditionalCostsCM = false;
-	                    console.log(response);
+	                    console.log("++++++++++++++",response);
                         vm.additionalCostsComponentTypes = response.data.payload;
                         $rootScope.additionalCostsComponentTypes = response.data.payload;
 	    				$scope.filterCostTypesByAdditionalCost(null);
@@ -6454,9 +6453,21 @@ APP_MASTERS.controller('Controller_Master', [
             return availableCosts;
         };
 
+        // Cost Type filter for Barge Additional Cost Details popup
+        
+        $scope.filterBargeCostTypes = function() {
+                var availableCosts = [];
+                    $.each(vm.listsCache.CostType, (k, v) => {
+                        if (v.id == 1 || v.id == 2) {
+                            availableCosts.push(v);
+                        }
+                    });
+               
+                return availableCosts;
+        };
         $scope.filterCostTypesByAdditionalCost = function(cost, rowRenderIndex) {
             var currentCost = cost;
-
+            debugger;
 
             let doFiltering = function(addCostCompTypes, cost) {
                 var costType = null;
@@ -6480,6 +6491,16 @@ APP_MASTERS.controller('Controller_Master', [
                         }
                     });
                 }
+                $scope.EnableBargeCostDetails = false;
+                if (costType == 4) {
+                    $.each(vm.listsCache.CostType, (k, v) => {
+                        if (v.id == 4 || v.id == 5) {
+                            $scope.EnableBargeCostDetails = true;
+                            availableCosts.push(v);
+                        }
+                    });
+                }
+
                 return availableCosts;
             };
 
@@ -6491,6 +6512,18 @@ APP_MASTERS.controller('Controller_Master', [
             }else{
                 return doFiltering(vm.additionalCostsComponentTypes);
             }
+        };
+        
+        $scope.setDefaultCurrency = function(additionalCost) {
+            var defaultCostType;
+            if(additionalCost.name == 'Range' || additionalCost.name == 'Total'){
+                defaultCostType = $scope.vm.tenantSetting.tenantFormats.currency;
+            }
+            return defaultCostType;
+        };
+        $scope.SetEmptydata = function(){
+            var EmptyVal = null;
+            return EmptyVal
         };
         $scope.setDefaultCostType = function(additionalCost) {
             var defaultCostType;
@@ -6861,6 +6894,8 @@ APP_MASTERS.controller('Controller_Master', [
 	            };
             }
 
+
+            
             // preferred products
             $scope.preferredProductsForSellerInLocation = [];
             if (!$scope.NOTpreferredProductsForSellerInLocation) {
@@ -6917,6 +6952,26 @@ APP_MASTERS.controller('Controller_Master', [
                 }
             });
         };
+
+/* Location Master Preffered Seller Product Table*/
+$scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
+    var objMapping;
+     $scope.CurrentadditionalCostsdetails  = formvalues;
+     if($scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails == undefined ){
+        $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails = [];
+        $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails.push({'id':0,'currency':$scope.vm.tenantSetting.tenantFormats.currency})
+        
+     }
+    tpl = $templateCache.get('app-general-components/views/modal_BargeCostDetails.html');
+    $scope.modalInstance = $uibModal.open({
+        template: tpl,
+        size: 'full',
+        appendTo: angular.element(document.getElementsByClassName('page-container')),
+        windowTopClass: 'fullWidthModal',
+        scope: $scope // passed current scope to the modal
+    });
+};
+
 
         $scope.createLocationPreferredSellerProductsPayload = function(reloadTable) {
             if (!$scope.locationMasterPreferredSellerProductsTableConfig.currentPage) {
@@ -7031,6 +7086,55 @@ APP_MASTERS.controller('Controller_Master', [
 
             $scope.formValues[objMapping][$scope.locationCurrentPreferredSellerKey].products = preferredProducts;
         };
+        $scope.getValidFromTo = function(ValueFrom, ValueTo){
+          
+            if(ValueFrom != undefined && ValueTo != undefined){
+                if(ValueFrom > ValueTo){
+                toastr.error("Quantity From should be Graterthan Quantity To")
+                }
+            }
+        }
+
+        $scope.saveBargeCostDetails = function() {
+            if($scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails.length > 0)
+            {
+                $.each($scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails, (k, v) => {
+                    if(v.category == undefined || v.category == ''){
+                        toastr.error('Enter'+ k +' th row Category Field');
+                        return
+                    }
+                    else if(v.qtyFrom == undefined || v.qtyFrom == ''){
+                        toastr.error('Enter'+ k +' th row Quantity From Field');
+                        return
+                    }
+                    else if(v.qtyTo == undefined || v.qtyTo == ''){
+                        toastr.error('Enter'+ k +' th row Quantity To Field');
+                        return
+                    }
+                    else if(v.costType == undefined || v.costType == ''){
+                        toastr.error('Enter'+ k +' th row costType Field');
+                        return
+                    }
+                    else if(v.amount == undefined || v.amount == ''){
+                        toastr.error('Enter'+ k +' th row Amount Field');
+                        return
+                    }
+                    else if(v.currency == undefined || v.currency == ''){
+                        toastr.error('Enter'+ k +' th row Currency Field');
+                        return
+                    }
+                    else if((v.qtyFrom != undefined && v.qtyFrom != '') && (v.qtyTo != undefined && v.qtyTo != '')){
+                        if(v.qtyFrom > v.qtyTo){
+                            toastr.error(k +' th row Quentity From Should less than Quantity To');
+                            return  
+                        }
+                    }
+                });  
+                $scope.prettyCloseModal();
+            }
+        };
+
+
         $scope.preferredSellersSelectAllProducts = function(selectAll) {
             if (!selectAll) {
                 $scope.preferredProductsForSellerInLocation = [];

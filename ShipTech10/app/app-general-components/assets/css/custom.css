@@ -2678,7 +2678,16 @@ span.weightage {
     padding-right: 15px;
     z-index: 10001;
 }
-
+/* For Barging Additional Cost details */
+#modal_close_bar1 {
+    position: absolute;
+    right: -5px;
+    top: 10px;
+    /* width: 100%; */
+    /* padding-top: 15px; */
+    padding-right: 15px;
+    z-index: 10001;
+}
 .modal-body {
     margin: 10px auto 30px auto;
     /* width: fit-content;
