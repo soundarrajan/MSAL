@@ -5018,7 +5018,7 @@ APP_MASTERS.controller('Controller_Master', [
             else
                 $scope.formValues['vesselProducts']=[(newItem)];
             // $scope.formValues.vesselProducts.push(newItem);
-            $scope.addnewTankDetail(formValues.vesselProducts.length-1);
+            $scope.addnewTankDetail( $scope.formValues.vesselProducts.length-1);
         }
 
         $scope.initInvoiceTypeOptions = function() {
