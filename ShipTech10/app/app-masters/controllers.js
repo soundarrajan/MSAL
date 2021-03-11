@@ -1085,7 +1085,7 @@ APP_MASTERS.controller('Controller_Master', [
                 if ($scope.isCustomerCounterparty()) {
                 	$scope.formValues.counterpartyCustomerConfiguration.isDeleted = false;
                 } else {
-                	$scope.formValues.counterpartyCustomerConfiguration = {isDeleted: true};
+                    $scope.formValues.counterpartyCustomerConfiguration = {isDeleted: true};
                 }
             }
 
@@ -9234,22 +9234,18 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
             location.lastModifiedOn = null
         }
         
-        $scope.getLocationDetails = function(index){ 
+        $scope.preferredcontacts = [];
 
-            const counterpartyids = $scope.formValues.sellers.map(a => a.id);    
-            const string_counterpartyids = $scope.formValues.sellers.map(a => a.id.toString());    
-            const current_counterpartyids = Object.keys($scope.preferredcontacts);
+        $scope.getLocationDetails = function(index){        
+            const counterpartyids = $scope.formValues.sellers.map(a => a.counterparty.id);    
+            const current_counterpartyids =  $scope.preferredcontacts.map(b => b.id);
 
-            if(JSON.stringify(string_counterpartyids)!=JSON.stringify(current_counterpartyids)){
+            if(counterpartyids.toString() != current_counterpartyids.toString() ){
                 Factory_Master.getContacts((counterpartyids) => {
-                    if (callback) {
-                        const results = callback.reduce(function(results, org) {
-                            (results[org.id] = results[org.id] || []).push(org);
-                            return results;
-                        }, {})
-                        $scope.preferredcontacts = results;
-                    }
-                });
+                if (callback) {
+                    $scope.preferredcontacts = callback;
+                }
+            });
             }            
         }
         
