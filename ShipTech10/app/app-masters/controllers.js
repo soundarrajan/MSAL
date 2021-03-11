@@ -36,6 +36,7 @@ APP_MASTERS.controller('Controller_Master', [
     	// extendScreenLayout(window.masterCTRL, this, statusColors);
 
         $scope.vm = this;
+        $scope.isHideVesselBopsDetails = !($rootScope.adminConfiguration && $rootScope.adminConfiguration.master.isVesselBopsDetailsVisible? $rootScope.adminConfiguration.master.isVesselBopsDetailsVisible : false);
         $controller('ScreenLayout_Controller', {
             $scope: $scope
         });
@@ -210,18 +211,6 @@ APP_MASTERS.controller('Controller_Master', [
                 isCounterpartyBankAccountAddable = false;
             }
             return isCounterpartyBankAccountAddable;
-        }
-        // Used in Vessel screen for BOPS details visibility. 
-        $scope.isVesselBopsDetailsVisible = function (field) {
-            if(vm.screen_id == 'vessel' && ((field.Unique_ID == 'vesselAccount') || (field.Unique_ID == 'isVesselManagable') || (field.Unique_ID == 'isFlowMeterAvailable') || (field.Unique_ID == 'departments'))) {
-                if ($rootScope.adminConfiguration.master.isVesselBopsDetailsVisible) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return true;
-            }
         }
 
         if (!vm.entity_id) {
