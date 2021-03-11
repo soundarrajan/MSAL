@@ -1131,6 +1131,21 @@ APP_MASTERS.factory('Factory_Master', [ '$window', '$http', '$Api_Service', 'API
                     res.message = 'An error has ocurred!';
                 }
             );
+        },
+        getContacts: function(data, callback) {
+            let url = `${API.BASE_URL_DATA_MASTERS }/api/masters/counterparties/getcounterpartycontacts`;
+            let payload = {
+                Payload: data
+            };
+            $http({
+                method: 'POST',
+                url: url,
+                data: payload
+            }).then((response) => {                
+                callback(response.data.payload);
+            }, (response) => {
+                // console.log(response);
+            });
         }
 
 

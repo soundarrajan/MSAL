@@ -9233,6 +9233,24 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
             location.lastModifiedBy = null;
             location.lastModifiedOn = null
         }
+        
+        $scope.getLocationDetails = function(index){ 
 
+            const counterpartyids = $scope.formValues.sellers.map(a => a.id);    
+            const string_counterpartyids = $scope.formValues.sellers.map(a => a.id.toString());    
+            const current_counterpartyids = Object.keys($scope.preferredcontacts);
+
+            if(JSON.stringify(string_counterpartyids)!=JSON.stringify(current_counterpartyids)){
+                Factory_Master.getContacts((counterpartyids) => {
+                    if (callback) {
+                        const results = callback.reduce(function(results, org) {
+                            (results[org.id] = results[org.id] || []).push(org);
+                            return results;
+                        }, {})
+                        $scope.preferredcontacts = results;
+                    }
+                });
+            }            
+        }
     }
 ]);

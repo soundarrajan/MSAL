@@ -4748,3 +4748,11 @@ select option {
     position: relative;
     top: 9px;
 }
+
+.multiselect .btn{
+    text-align: left !important;
+}
+
+.multiselect .dropdown-menu{
+    margin-top: 0px;
+}

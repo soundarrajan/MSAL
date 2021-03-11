@@ -46,7 +46,7 @@
 					<select name="Item Name" class="form-control" ng-options="item as item.name for item in CM.listsCache.CounterpartyStatus track by item.id " ng-model="value.status"></select>
 				</td>
 				<td>
-					<multiselect ng-model="formValues.counterpartyLocations[$index].locationContact" options= "formValues.contacts" display-prop="email" id-prop="id" show-search="false"></multiselect>
+					<multiselect class="multiselect" ng-model="formValues.counterpartyLocations[$index].locationContact" options= "formValues.contacts" display-prop="email" id-prop="id" show-search="false"></multiselect>
 				</td>
 				<td style="max-width: initial; min-width: 250px;"><input decode-input-format class="form-control" type="text" ng-model="value.comments"></td>
 				<td style="max-width: initial; min-width: 170px; border-right: 0px !important" class="padding">
