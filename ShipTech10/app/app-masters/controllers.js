@@ -1085,7 +1085,7 @@ APP_MASTERS.controller('Controller_Master', [
                 if ($scope.isCustomerCounterparty()) {
                 	$scope.formValues.counterpartyCustomerConfiguration.isDeleted = false;
                 } else {
-                	$scope.formValues.counterpartyCustomerConfiguration.isDeleted = true;
+                	$scope.formValues.counterpartyCustomerConfiguration = {isDeleted: true};
                 }
             }
 
