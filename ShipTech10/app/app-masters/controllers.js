@@ -1093,6 +1093,11 @@ APP_MASTERS.controller('Controller_Master', [
                     });
                     $scope.formValues.counterpartyTypes = validCounterpartyTypes;
                 }
+                if ($scope.isCustomerCounterparty()) {
+                	$scope.formValues.counterpartyCustomerConfiguration.isDeleted = false;
+                } else {
+                	$scope.formValues.counterpartyCustomerConfiguration.isDeleted = true;
+                }
             }
 
           
