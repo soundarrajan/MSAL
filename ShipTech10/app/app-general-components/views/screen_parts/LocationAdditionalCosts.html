@@ -54,18 +54,18 @@
 
                 </td>
                 <td style="width:12%">
-                    <select name="Item Name" class="form-control" ng-options="item as item.name for item in CM.listsCache.AdditionalCost track by item.id " ng-change="value.costType = setDefaultCostType(value.additionalCost);value.amount ='';value.priceUom ='';value.extrasPercentage='';value.additionalCostDetails=[]" ng-model="value.additionalCost"></select>
+                    <select name="Item Name" class="form-control" ng-options="item as item.name for item in CM.listsCache.AdditionalCost track by item.id " ng-change="value.costType = setDefaultCostType(value.additionalCost,key)" ng-model="value.additionalCost"></select>
                 </td>
                 <td style="width:12%">
-                    <select name="Type" class="form-control" ng-options="item as item.name for item in filterCostTypesByAdditionalCost(value.additionalCost.id) track by item.id " ng-change="value.currency = setDefaultCurrency(value.costType) && value.amount = SetEmptydata() ;value.additionalCostDetails=[] " ng-model="value.costType"></select>
+                    <select name="Type" class="form-control" ng-options="item as item.name for item in filterCostTypesByAdditionalCost(value.additionalCost.id) track by item.id " ng-change="value.currency = setDefaultCurrency(value.costType,key)" ng-model="value.costType"></select>
                 </td>
                 <td style="width:12%">
-                    <input name="Description" type="text" class="form-control" ng-model="value.Description">
+                    <input type="text"  decode-input-format name="CostDescription"   class="form-control" ng-model="value.CostDescription">
                 </td>
                 <td style="width:12%">
                     
                     <div class="input-group">
-                        <input name="Amount" type="text" ng-disabled="value.costType.name == 'Range' || value.costType.name == 'Total'" class="form-control" ng-model="value.amount" format="number"​​​>
+                        <input name="Amount" type="text" format='number:{{ tenantSetting.defaultValues.amountPrecision }}' ng-disabled="value.costType.name == 'Range' || value.costType.name == 'Total'" class="form-control" ng-model="value.amount" format="number">
 	                    <span class="input-group-addon">
 	                    	&nbsp;&nbsp;  
 	                    	<i class="fa fa-pencil-square-o" ng-if="!EnableBargeCostDetails" style="cursor: not-allowed;"></i>
@@ -84,9 +84,7 @@
                     <input name="Extra" ng-disabled="value.costType.name == 'Range' || value.costType.name == 'Total'" type="number" format="number" class="form-control" ng-model="value.extrasPercentage">
                 </td>
                 <td style="width:12%">
-					<select name="Currency" ng-disabled="value.costType.name == 'Range' || value.costType.name == 'Total'" class="form-control" ng-options="item as item.name for item in CM.listsCache.Currency track by item.id " ng-model="value.currency" ng-required ="value.currency = tenantSetting.tenantFormats.currency">
-                        
-                    </select>
+					<select name="Currency" ng-disabled="value.costType.name == 'Range' || value.costType.name == 'Total'" class="form-control" ng-options="item as item.name for item in CM.listsCache.Currency track by item.id " ng-model="value.currency"></select>
                 </td>
 
             </tr>

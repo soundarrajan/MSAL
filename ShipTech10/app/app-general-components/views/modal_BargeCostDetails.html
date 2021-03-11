@@ -28,12 +28,12 @@
 
 	 <div class="col-sm-12">
 		<div class="custom-hardcoded-table admin" style="max-height: 500px;">
-			<table class="table-body" style="min-width: 500px; margin-bottom:100px">
+			<table class="table-body" style="min-width: 100%; margin-bottom:100px">
 				<thead>
 					<tr>
 						<td style="max-width: initial; min-width: 50px;"  class="padding"></td>
 						<td  style="max-width: initial; min-width: 50px;" class="padding">
-						<span class="insert" ng-click="formValues.additionalCosts[CurrentadditionalCostsdetails].additionalCostDetails ? formValues.additionalCosts[CurrentadditionalCostsdetails].additionalCostDetails.push({id:0}) : formValues.additionalCosts[CurrentadditionalCostsdetails].additionalCostDetails=[{id:0}]"></span></td>
+						<span class="insert" ng-click="formValues.additionalCosts[CurrentadditionalCostsdetails].additionalCostDetails ? formValues.additionalCosts[CurrentadditionalCostsdetails].additionalCostDetails.push({id:0,currency:vm.tenantSetting.tenantFormats.currency}) : formValues.additionalCosts[CurrentadditionalCostsdetails].additionalCostDetails=[{id:0,currency:vm.tenantSetting.tenantFormats.currency}]"></span></td>
 						<td  style="max-width: initial; min-width: 200px;" class="padding"><b>Category</b></td>
 						<td style="max-width: initial; min-width: 120px;" class="padding"><b>Quantity From</b></td>
 						<td style="max-width: initial; min-width: 120px;" class="padding"><b>Quantity To</b></td>
@@ -44,23 +44,26 @@
 				<tbody>
 				
 					<tr ng-repeat="(key, value) in formValues.additionalCosts[CurrentadditionalCostsdetails].additionalCostDetails" ng-if="!value.isDeleted">   
-						<td style="max-width: initial; min-width: 50px;"><span class="remove" style="display: block;pointer-events: all; opacity: 1" ng-click="value.id == 0 ? formValues.additionalCosts[CurrentadditionalCostsdetails].additionalCostDetails.splice(key,1) : deleteLocation(key)"></span></td>
+						<td style="max-width: initial; min-width: 50px;"><span class="remove" style="display: block;pointer-events: all; opacity: 1" ng-click="value.id == 0 ? formValues.additionalCosts[CurrentadditionalCostsdetails].additionalCostDetails.splice(key,1) : deleteBargeCostDetails(key)"></span></td>
 						<td  style="max-width: initial; min-width: 50px;"><span class="insert" ng-click="formValues.additionalCosts[CurrentadditionalCostsdetails].additionalCostDetails.push({id:key})"></span></td>
 						<td style="max-width: initial; min-width: 200px;">
-							<input decode-input-format class="form-control" type="text" ng-model="value.category"></td>
+							<input class="form-control" type="text" ecode-input-format ng-model="value.category">
+							
+						</td>
 							<td style="max-width: initial; min-width: 200px;">
-								<input decode-input-format class="form-control" type="number" ng-model="value.qtyFrom" ng-change="getValidFromTo(value.qtyFrom, value.qtyTo)" ></td>
+								<input  class="form-control" ng-required="true" type="text" decode-input-format ng-model="value.qtyFrom" format='number:{{ tenantSetting.defaultValues.amountPrecision }}' ng-change="getValidFromTo(value.qtyFrom, value.qtyTo)" ></td>
 								<td style="max-width: initial; min-width: 200px;">
-									<input decode-input-format class="form-control"  type="number" ng-model="value.qtyTo"></td> 
+									<input decode-input-format class="form-control" format='number:{{ tenantSetting.defaultValues.amountPrecision }}' type="text" ng-model="value.qtyTo"></td> 
 									<td style="width:12%"> 
 										<select name="Type"  class="form-control" ng-options="item as item.name for item in filterBargeCostTypes() track by item.id " ng-model="value.costType"></select>
 									</td>
 						<td style="max-width: initial; min-width: 100px; text-align: center;">
-							<div class="input-group">								
-								<input name="Amount" style="width: 70%;" type="text" class="form-control" ng-model="value.amount" format ="number" st-number-format="{​​​​​{​​​​​ $ctrl.numberPrecision.amountPrecision }​​​​​}​​​​">
-								<select style="width: 30%;" name="currency" class="form-control" ng-options="item as item.code for item in CM.listsCache.Currency track by item.id " ng-model="value.currency" ng-click="formValues.additionalCosts[index_0].additionalCosts.push({'id':0, 'currency': tenantSetting.tenantFormats.currency})">
+							<div class="input-group" style="width: 100%;">
 								
-								</select>
+								<input required name="Amount" style="width: 70%;" type="text" class="form-control" ng-model="value.amount" format='number:{{ tenantSetting.defaultValues.amountPrecision }}'>
+								<select required style="width: 30%;" name="currency" class="form-control" ng-options="item as item.code for item in CM.listsCache.Currency track by item.id " ng-model="value.currency"
+								
+								></select>
 							</div>
 						</td>
 		
