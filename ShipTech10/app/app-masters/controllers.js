@@ -9252,5 +9252,17 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
                 });
             }            
         }
+        
+        $scope.deleteVesselProduct = function(key) {
+            //Delete childs
+            angular.forEach($scope.formValues.vesselProducts[key].vesselProductTanks, (input, vptKey) => {
+                $scope.formValues.vesselProducts[key].vesselProductTanks[vptKey].isDeleted = true;
+            });
+            $scope.formValues.vesselProducts[key].isDeleted = true;
+        }
+
+        $scope.deleteVesselProductTank = function(vpKey, vptKey) {
+            $scope.formValues.vesselProducts[vpKey].vesselProductTanks[vptKey].isDeleted = true;
+        }
     }
 ]);
