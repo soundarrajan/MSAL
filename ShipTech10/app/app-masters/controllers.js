@@ -1010,6 +1010,18 @@ APP_MASTERS.controller('Controller_Master', [
             }
 
             if(vm.app_id == 'masters' && vm.screen_id == 'location') {
+                debugger;
+               
+                // if($scope.formValues.additionalCosts != undefined && $scope.formValues.additionalCosts.length >0){
+                //     $.each($scope.formValues.additionalCosts, (k, v) => {
+                //         if(v.costType != undefined && v.costType.length != null && v.costType.name != undefined && v.costType.name != null){
+                //             if(v.costType.name == 'Range' || v.costType.name == 'Total'){
+                //                 $scope.formValues.additionalCosts[0].additionalCostDetails.length
+                //             }
+                //         }
+                        
+                //     });  
+                // }
                  if ($scope.formValues && $scope.formValues.productsSystemInstruments) {
                     let errors = '';
                     let products = [];
@@ -2772,6 +2784,7 @@ APP_MASTERS.controller('Controller_Master', [
         };
 
         $scope.triggerChangeFields = function(name, id) {
+            debugger;
             $rootScope.formDataFields = $scope.formValues;
             var fields = [ 'OrderID', 'labResultID', 'deliveryNumber', 'Product' ];
             var company_id = $('#companylistCompany').val();
@@ -2803,7 +2816,7 @@ APP_MASTERS.controller('Controller_Master', [
             if (vm.app_id == 'masters') {
                 if (vm.screen_id == 'additionalcost' && name == 'CostType' &&
                     $scope.formValues && $scope.formValues.costType) {
-                    if($scope.formValues.costType.name == 'Flat' || $scope.formValues.costType.name == 'Unit') {
+                    if($scope.formValues.costType.name == 'Flat' || $scope.formValues.costType.name == 'Unit' || $scope.formValues.costType.name == 'Range' || $scope.formValues.costType.name == 'Total') {
                         $scope.formValues.componentType = null;
                         $('.edit_form_fields_ComponentType_masters').hide();
                     } else {
@@ -9191,27 +9204,17 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
         };
 
         $scope.deleteBargeCostDetails = function(key) {
-           
             if($scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails.length >0){
-
                 $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails.splice(key, 1);
             }
-
-
-            // if ($scope.formValues.counterpartyLocations[key].isSpecificLocation && $scope.formValues.counterpartyLocations[key].rating && $scope.formValues.counterpartyLocations[key].lastModifiedBy && $scope.formValues.counterpartyLocations[key].lastModifiedOn) {
-            //     $scope.key = key;
-            //     $scope.showModalConfirmDeletePreferredLocationWithRating('Seller Rating also would be removed. Do you still want to remove the location?', true, (modalResponse) => {
-            //         console.log(modalResponse);
-            //         if (modalResponse) {
-            //             $scope.prettyCloseModal();
-            //         }
-            //     });
-            // } else {
-            //     $scope.formValues.counterpartyLocations[key].isDeleted = true;
-            // }
-          
         }
-
+        
+        $scope.deleteCouterpartyaccountno = function(key) {
+          debugger;
+            if($scope.formValues.counterpartyBankAccounts.length >0){
+                $scope.formValues.counterpartyBankAccounts.splice(key, 1);
+            }
+        }
         $scope.deleteLocation = function(key) {
             if ($scope.formValues.counterpartyLocations[key].isSpecificLocation && $scope.formValues.counterpartyLocations[key].rating && $scope.formValues.counterpartyLocations[key].lastModifiedBy && $scope.formValues.counterpartyLocations[key].lastModifiedOn) {
                 $scope.key = key;

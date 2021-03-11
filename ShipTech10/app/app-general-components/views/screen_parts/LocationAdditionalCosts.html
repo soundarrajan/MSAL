@@ -60,7 +60,7 @@
                     <select name="Type" class="form-control" ng-options="item as item.name for item in filterCostTypesByAdditionalCost(value.additionalCost.id) track by item.id " ng-change="value.currency = setDefaultCurrency(value.costType,key)" ng-model="value.costType"></select>
                 </td>
                 <td style="width:12%">
-                    <input type="text"  decode-input-format name="CostDescription"   class="form-control" ng-model="value.CostDescription">
+                    <input type="text"  decode-input-format name="costDescription"   class="form-control" ng-model="value.costDescription">
                 </td>
                 <td style="width:12%">
                     
