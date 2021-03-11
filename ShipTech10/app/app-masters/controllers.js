@@ -213,8 +213,8 @@ APP_MASTERS.controller('Controller_Master', [
         }
         // Used in Vessel screen for BOPS details visibility. 
         $scope.isVesselBopsDetailsVisible = function (field) {
-            if(vm.screen_id == 'vessel' && ((field.Unique_ID == 'isVesselManagable') || (field.Unique_ID == 'isFlowMeterAvailable') || (field.Unique_ID == 'departments'))) {
-                if ($rootScope.adminConfiguration.master.isLocationTerminalVisible){
+            if(vm.screen_id == 'vessel' && ((field.Unique_ID == 'vesselAccount') || (field.Unique_ID == 'isVesselManagable') || (field.Unique_ID == 'isFlowMeterAvailable') || (field.Unique_ID == 'departments'))) {
+                if ($rootScope.adminConfiguration.master.isVesselBopsDetailsVisible) {
                     return true;
                 } else {
                     return false;
