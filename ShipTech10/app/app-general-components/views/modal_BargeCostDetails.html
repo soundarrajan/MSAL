@@ -28,17 +28,17 @@
 
 	 <div class="col-sm-12">
 		<div class="custom-hardcoded-table admin" style="max-height: 500px;">
-			<table class="table-body" style="min-width: 500px;">
+			<table class="table-body" style="min-width: 500px; margin-bottom:100px">
 				<thead>
 					<tr>
 						<td style="max-width: initial; min-width: 50px;"  class="padding"></td>
 						<td  style="max-width: initial; min-width: 50px;" class="padding">
-							<span class="insert" ng-click="formValues.additionalCosts[CurrentadditionalCostsdetails].additionalCostDetails ? formValues.additionalCosts[CurrentadditionalCostsdetails].additionalCostDetails.push({id:0}) : formValues.additionalCosts[CurrentadditionalCostsdetails].additionalCostDetails=[{id:0}]"></span></td>
-						<td  style="max-width: initial; min-width: 220px;" class="padding"><b>Category</b></td>
-						<td style="max-width: initial; min-width: 250px;" class="padding"><b>Quantity From</b></td>
-						<td style="max-width: initial; min-width: 250px;" class="padding"><b>Quantity To</b></td>
-						<td style="max-width: initial; min-width: 300px;" class="padding"><b>Type</b></td>
-						<td style="max-width: initial; min-width: 120px;" class="padding"><b>Amount</b></td>
+						<span class="insert" ng-click="formValues.additionalCosts[CurrentadditionalCostsdetails].additionalCostDetails ? formValues.additionalCosts[CurrentadditionalCostsdetails].additionalCostDetails.push({id:0}) : formValues.additionalCosts[CurrentadditionalCostsdetails].additionalCostDetails=[{id:0}]"></span></td>
+						<td  style="max-width: initial; min-width: 200px;" class="padding"><b>Category</b></td>
+						<td style="max-width: initial; min-width: 120px;" class="padding"><b>Quantity From</b></td>
+						<td style="max-width: initial; min-width: 120px;" class="padding"><b>Quantity To</b></td>
+						<td style="max-width: initial; min-width: 120px;" class="padding"><b>Type</b></td>
+						<td style="max-width: initial; min-width: 200px;" class="padding"><b>Amount</b></td>
 					</tr>
 				</thead>
 				<tbody>
@@ -49,19 +49,18 @@
 						<td style="max-width: initial; min-width: 200px;">
 							<input decode-input-format class="form-control" type="text" ng-model="value.category"></td>
 							<td style="max-width: initial; min-width: 200px;">
-								<input decode-input-format class="form-control" type="text" ng-model="value.qtyFrom" ng-change="getValidFromTo(value.qtyFrom, value.qtyTo)" ></td>
+								<input decode-input-format class="form-control" type="number" ng-model="value.qtyFrom" ng-change="getValidFromTo(value.qtyFrom, value.qtyTo)" ></td>
 								<td style="max-width: initial; min-width: 200px;">
-									<input decode-input-format class="form-control"  type="text" ng-model="value.qtyTo"></td> 
+									<input decode-input-format class="form-control"  type="number" ng-model="value.qtyTo"></td> 
 									<td style="width:12%"> 
 										<select name="Type"  class="form-control" ng-options="item as item.name for item in filterBargeCostTypes() track by item.id " ng-model="value.costType"></select>
 									</td>
 						<td style="max-width: initial; min-width: 100px; text-align: center;">
-							<div class="input-group">
+							<div class="input-group">								
+								<input name="Amount" style="width: 70%;" type="text" class="form-control" ng-model="value.amount" format ="number" st-number-format="{​​​​​{​​​​​ $ctrl.numberPrecision.amountPrecision }​​​​​}​​​​">
+								<select style="width: 30%;" name="currency" class="form-control" ng-options="item as item.code for item in CM.listsCache.Currency track by item.id " ng-model="value.currency" ng-click="formValues.additionalCosts[index_0].additionalCosts.push({'id':0, 'currency': tenantSetting.tenantFormats.currency})">
 								
-								<input name="Amount" style="width: 70%;" type="text" class="form-control" ng-model="value.amount" format="number">
-								<select style="width: 30%;" name="currency" class="form-control" ng-options="item as item.code for item in CM.listsCache.Currency track by item.id " ng-model="value.currency"
-								
-								></select>
+								</select>
 							</div>
 						</td>
 		
