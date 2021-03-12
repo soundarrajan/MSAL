@@ -483,7 +483,7 @@ APP_MASTERS.controller('Controller_Master', [
         //             screenLoader.hideLoader();
         //             $scope.screenId = callback.id;
         //             delete callback.id;
-        //             // debugger;
+        //             //  
         //             $scope.formFields = callback;
         //             // multiple layouts
         //             if (callback.children) {
@@ -1010,7 +1010,7 @@ APP_MASTERS.controller('Controller_Master', [
             }
 
             if(vm.app_id == 'masters' && vm.screen_id == 'location') {
-                debugger;
+                 
                
                 // if($scope.formValues.additionalCosts != undefined && $scope.formValues.additionalCosts.length >0){
                 //     $.each($scope.formValues.additionalCosts, (k, v) => {
@@ -1022,6 +1022,7 @@ APP_MASTERS.controller('Controller_Master', [
                         
                 //     });  
                 // }
+                
                  if ($scope.formValues && $scope.formValues.productsSystemInstruments) {
                     let errors = '';
                     let products = [];
@@ -2784,7 +2785,7 @@ APP_MASTERS.controller('Controller_Master', [
         };
 
         $scope.triggerChangeFields = function(name, id) {
-            debugger;
+             
             $rootScope.formDataFields = $scope.formValues;
             var fields = [ 'OrderID', 'labResultID', 'deliveryNumber', 'Product' ];
             var company_id = $('#companylistCompany').val();
@@ -3329,7 +3330,7 @@ APP_MASTERS.controller('Controller_Master', [
                     return vm.formatDate(elem, 'dd/MM/yyyy');
                 }
                 if (fieldUniqueId == 'resultDate' || fieldUniqueId == 'eta' || fieldUniqueId == 'orderDetails.eta' || fieldUniqueId == 'etb' || fieldUniqueId == 'etd' || fieldUniqueId.toLowerCase().indexOf('delivery') >= 0 || fieldUniqueId == 'pricingDate') {
-                    // debugger;
+                    //  
                     // return moment.utc(elem).format($scope.tenantSetting.tenantFormatss.dateFormat.name);
                     var utcDate = moment.utc(elem).format();
                     formattedDate = $filter('date')(utcDate, dateFormat, 'UTC');
@@ -3902,14 +3903,14 @@ APP_MASTERS.controller('Controller_Master', [
             $scope.formValues.contacts.push({
                 isActive: true
             });
-            // debugger;
+            //  
         };
         vm.addVesselContact = function() {
             $scope.formValues.contacts.push({
                 isActive: true,
                 id: 0
             });
-            // debugger;
+            //  
         };
         vm.cloneField = function(field, index) {
             $scope.formFields[field.Group].children.splice(index, 0, angular.copy(field));
@@ -4103,10 +4104,12 @@ APP_MASTERS.controller('Controller_Master', [
         };
 
         vm.loadShiptechLite = function() {
+          
             if ($rootScope.adminConfiguration) {
                 vm.shiptechLite = $rootScope.adminConfiguration.general.shiptechLite;
             }
         };
+        
         // vm.load_eef_config = function(structure) {
         //     $scope.formFields = structure;
         // };
@@ -6474,7 +6477,7 @@ APP_MASTERS.controller('Controller_Master', [
         };
         $scope.filterCostTypesByAdditionalCost = function(cost, rowRenderIndex) {
             var currentCost = cost;
-            debugger;
+             
 
             let doFiltering = function(addCostCompTypes, cost) {
                 var costType = null;
@@ -6549,7 +6552,7 @@ APP_MASTERS.controller('Controller_Master', [
         };
       
         $scope.setDefaultCostType = function(additionalCost, key) {
-            debugger;
+             
             if($scope.formValues.additionalCosts.length >0){
                 if($scope.formValues.additionalCosts[key].amount != undefined){
                     $scope.formValues.additionalCosts[key].amount = ''; 
@@ -6902,6 +6905,7 @@ APP_MASTERS.controller('Controller_Master', [
 
         /* Location Master Preffered Seller Product Table*/
         $scope.openLocationPreferredSellerProducts = function(currentSellerKey, master) {
+             
             var objMapping;
         	if (master) {
         		if (master == 'counterpartyMaster') {
@@ -7079,6 +7083,7 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
             return payload;
         };
         $scope.savePrefferedSellerProducts = function() {
+             
             var objMapping;
     		if (vm.screen_id == 'counterparty') {
     			objMapping = 'counterpartyLocations';
@@ -7127,6 +7132,8 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
             });
 
             $scope.formValues[objMapping][$scope.locationCurrentPreferredSellerKey].products = preferredProducts;
+
+           // $scope.getLocationDetails();
         };
         $scope.getValidFromTo = function(ValueFrom, ValueTo){
           
@@ -7145,7 +7152,7 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
         }
 
         $scope.saveBargeCostDetails = function() {
-            debugger;
+             
             if($scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails.length > 0)
             {
                 var FormvalueLength = $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails.length -1;
@@ -8437,7 +8444,7 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
 		        Factory_Master.getAdditionalCosts(data, (response) => {
 		            if (response) {
 		                if (response.status == true) {
-		                    // debugger;
+		                    //  
 		                    $rootScope.additionalCostsData = response.data.payload;
 
 		                    return response.data.payload;
@@ -9209,8 +9216,9 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
             }
         }
         
+       
         $scope.deleteCouterpartyaccountno = function(key) {
-          debugger;
+           
             if($scope.formValues.counterpartyBankAccounts.length >0){
                 $scope.formValues.counterpartyBankAccounts.splice(key, 1);
             }
@@ -9237,9 +9245,10 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
             location.lastModifiedOn = null
         }
         
-        $scope.preferredcontacts = [];
+//        $scope.preferredcontacts = [];
 
-        $scope.getLocationDetails = function(index){        
+        $scope.getLocationDetails = function(index){  
+                   
             const counterpartyids = $scope.formValues.sellers.map(a => a.counterparty.id);    
             const current_counterpartyids =  $scope.preferredcontacts.map(b => b.id);
 
@@ -9247,12 +9256,46 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
                 let payload = {
                     Payload:counterpartyids
                 }
+                 
             Factory_Master.getContacts(payload, (callback) => {
                 if (callback) {
                     $scope.preferredcontacts = callback;
 
+                        var Temppreferredcontacts = [];
+                 Temppreferredcontacts = [
+                    {
+                      "contact": {
+                        "id": 1819,
+                        "name": "Tpe Opndept",
+                        "internalName": null,
+                        "displayName": "tpe.opndeptqzmpqzmp@qzmpqzmpcnc-line.com",
+                        "code": null,
+                        "collectionName": null,
+                        "customNonMandatoryAttribute1": null,
+                        "isDeleted": false,
+                        "modulePathUrl": null,
+                        "clientIpAddress": null,
+                        "userAction": null
+                      },
+                      "id": 0,
+                      "isDeleted": false,
+                      "modulePathUrl": null,
+                      "clientIpAddress": null,
+                      "userAction": null
+                    }
+                  ]
+                   
+                  formValues.sellers[0].locationContact = Temppreferredcontacts;
+
+                    angular.forEach($scope.formValues.vesselProducts[key].vesselProductTanks, (input, vptKey) => {
+                        $scope.formValues.vesselProducts[key].vesselProductTanks[vptKey].isDeleted = true;
+                    });
+
+
                 }
             });
+            
+           
             }            
         }
         
