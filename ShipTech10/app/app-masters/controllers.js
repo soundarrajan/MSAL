@@ -9244,9 +9244,13 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
             const current_counterpartyids =  $scope.preferredcontacts.map(b => b.id);
 
             if(counterpartyids.toString() != current_counterpartyids.toString() ){
-                Factory_Master.getContacts((counterpartyids) => {
+                let payload = {
+                    Payload:counterpartyids
+                }
+            Factory_Master.getContacts(payload, (callback) => {
                 if (callback) {
                     $scope.preferredcontacts = callback;
+
                 }
             });
             }            

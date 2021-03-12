@@ -1132,15 +1132,12 @@ APP_MASTERS.factory('Factory_Master', [ '$window', '$http', '$Api_Service', 'API
                 }
             );
         },
-        getContacts: function(data, callback) {
+        getContacts: function(contactsdata, callback) {
             let url = `${API.BASE_URL_DATA_MASTERS }/api/masters/counterparties/getcounterpartycontacts`;
-            let payload = {
-                Payload: data
-            };
             $http({
                 method: 'POST',
                 url: url,
-                data: payload
+                data: contactsdata
             }).then((response) => {                
                 callback(response.data.payload);
             }, (response) => {
