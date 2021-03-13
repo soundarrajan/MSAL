@@ -3887,6 +3887,7 @@ APP_MASTERS.controller('Controller_Master', [
                 $(`${element } .portlet`).css('height', calcHeight);
                 $(`${element } .portlet`).css('overflow', 'auto');
             }, 1000);
+            debugger;
         };
         vm.cloneEntity = function(group, obj) {
             if (obj) {
@@ -3979,10 +3980,12 @@ APP_MASTERS.controller('Controller_Master', [
                     addedFields.push(info.Unique_ID);
                 });
             });
+            debugger;
             if ($.inArray(ele.Unique_ID, addedFields) >= 0) {
                 toastr.error('Field is already added. Please clone it!');
                 return;
             }
+            debugger;
             $scope.current_field = createNewField();
             $scope.activeField(ele);
             angular.merge($scope.current_field, ele);
@@ -4012,6 +4015,7 @@ APP_MASTERS.controller('Controller_Master', [
                 $('#fieldSettingTab_lnk').tab('show');
             }
         };
+
         $scope.activeField = function(f) {
             $scope.current_field.Active = false;
             f.Active = false;
@@ -6905,7 +6909,7 @@ APP_MASTERS.controller('Controller_Master', [
 
         /* Location Master Preffered Seller Product Table*/
         $scope.openLocationPreferredSellerProducts = function(currentSellerKey, master) {
-             
+             debugger;
             var objMapping;
         	if (master) {
         		if (master == 'counterpartyMaster') {
@@ -9248,46 +9252,30 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
 //        $scope.preferredcontacts = [];
 
         $scope.getLocationDetails = function(index){  
-                   
-            const counterpartyids = $scope.formValues.sellers.map(a => a.counterparty.id);    
-            const current_counterpartyids =  $scope.preferredcontacts.map(b => b.id);
+               debugger;    
+               const counterpartyids = $scope.formValues.sellers[0].counterparty.id; 
+               debugger;
+            //    const string_counterpartyids = $scope.formValues.sellers.map(a => a.id.toString()); 
+            //    const current_counterpartyids = Object.keys($scope.preferredcontacts);
 
-            if(counterpartyids.toString() != current_counterpartyids.toString() ){
+            // if(JSON.stringify(string_counterpartyids)!=JSON.stringify(current_counterpartyids)){
                 let payload = {
-                    Payload:counterpartyids
+                    Payload:[counterpartyids]
                 }
-                 
+                $scope.preferredcontacts = [];
             Factory_Master.getContacts(payload, (callback) => {
                 if (callback) {
-                    $scope.preferredcontacts = callback;
+                    $.each(callback, (k, v) => {
+                        $scope.preferredcontacts[k] = callback[k].locationContact[0];
+                       
+                    });
+                    // ng-model="formValues.sellers[$index].locationContact" options="preferredcontacts" 
+                    debugger;
+                    
 
-                        var Temppreferredcontacts = [];
-                 Temppreferredcontacts = [
-                    {
-                      "contact": {
-                        "id": 1819,
-                        "name": "Tpe Opndept",
-                        "internalName": null,
-                        "displayName": "tpe.opndeptqzmpqzmp@qzmpqzmpcnc-line.com",
-                        "code": null,
-                        "collectionName": null,
-                        "customNonMandatoryAttribute1": null,
-                        "isDeleted": false,
-                        "modulePathUrl": null,
-                        "clientIpAddress": null,
-                        "userAction": null
-                      },
-                      "id": 0,
-                      "isDeleted": false,
-                      "modulePathUrl": null,
-                      "clientIpAddress": null,
-                      "userAction": null
-                    }
-                  ]
-                   
-                  formValues.sellers[0].locationContact = Temppreferredcontacts;
 
-                    angular.forEach($scope.formValues.vesselProducts[key].vesselProductTanks, (input, vptKey) => {
+
+                                       angular.forEach($scope.formValues.vesselProducts[key].vesselProductTanks, (input, vptKey) => {
                         $scope.formValues.vesselProducts[key].vesselProductTanks[vptKey].isDeleted = true;
                     });
 
@@ -9296,7 +9284,83 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
             });
             
            
-            }            
+            // }  
+            
+            
+            // $scope.preferredcontacts = [];
+            // $scope.preferredcontacts =
+            // [
+            //     {
+            //         "counterparty": {
+            //           "id": 37,
+            //           "name": null,
+            //           "internalName": null,
+            //           "displayName": null,
+            //           "code": null,
+            //           "collectionName": null,
+            //           "customNonMandatoryAttribute1": null,
+            //           "isDeleted": false,
+            //           "modulePathUrl": null,
+            //           "clientIpAddress": null,
+            //           "userAction": null
+            //         },
+            //         "location": {
+            //           "id": 0,
+            //           "name": null,
+            //           "internalName": null,
+            //           "displayName": null,
+            //           "code": null,
+            //           "collectionName": null,
+            //           "customNonMandatoryAttribute1": null,
+            //           "isDeleted": false,
+            //           "modulePathUrl": null,
+            //           "clientIpAddress": null,
+            //           "userAction": null
+            //         },
+            //         "comments": null,
+            //         "products": null,
+            //         "locationContact": 
+            //         [
+            //           {
+            //             "contact": {
+            //               "id": 1732,
+            //               "name": "Helder Laurindo",
+            //               "internalName": null,
+            //               "displayName": "helderlaurindoqzmpqzmp@qzmpqzmpdebor.co",
+            //               "code": null,
+            //               "collectionName": null,
+            //               "customNonMandatoryAttribute1": null,
+            //               "isDeleted": false,
+            //               "modulePathUrl": null,
+            //               "clientIpAddress": null,
+            //               "userAction": null
+            //             },
+            //             "email": "helderlaurindoqzmpqzmp@qzmpqzmpdebor.co",
+            //             "id": 100,
+            //             "isDeleted": false,
+            //             "modulePathUrl": null,
+            //             "clientIpAddress": null,
+            //             "userAction": null
+            //           }
+            //         ],
+            //         "status": null,
+            //         "lastModifiedBy": null,
+            //         "lastModifiedOn": null,
+            //         "isSpecificLocation": false,
+            //         "rating": 0.0,
+            //         "id": 0,
+            //         "isDeleted": false,
+            //         "modulePathUrl": null,
+            //         "clientIpAddress": null,
+            //         "userAction": null
+            //       }
+                
+            // ]
+            // debugger;
+            // $scope.formValues.sellers[0].locationContact = [];
+            // $scope.formValues.sellers[0].locationContact = $scope.preferredcontacts[0].locationContact;
+            // debugger;
+
         }
         
         $scope.deleteVesselProduct = function(key) {

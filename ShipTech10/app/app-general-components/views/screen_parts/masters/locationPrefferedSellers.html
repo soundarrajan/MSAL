@@ -1,5 +1,8 @@
 <div class="custom-hardcoded-table admin" style="min-height: 250px;">
-
+<!-- {{formValues.sellers[0].locationContact}}
+{{preferredcontacts[$index].locationContact}} -->
+{{CurrentPreferredLocationCon}}
+<!-- {{formValues.sellers}} -->
 	<table class="table-body"> 
 		<thead>
 			<tr>
@@ -26,7 +29,7 @@
 	                    </span>		
 	                    <span class="input-group-addon">
 	                    	&nbsp;&nbsp;
-	                    	<i class="fa fa-file" ng-click="openLocationPreferredSellerProducts(key)"></i>
+	                    	<i class="fa fa-file" ng-click="openLocationPreferredSellerProducts(key);getLocationDetails()"></i>
 	                    	&nbsp;&nbsp;
 	                    </span>				
 					</div>
@@ -43,7 +46,8 @@
 					<select name="Item Name" class="form-control" ng-options="item as item.name for item in CM.listsCache.CounterpartyStatus track by item.id " ng-model="value.status"></select>
 				</td>
 				<td>
-					<multiselect ng-disabled="!preferredcontacts[$index]" ng-model="formValues.sellers[$index].locationContact" options="preferredcontacts[$index].locationContact" class="multiselect" display-prop="contact.displayName" id-prop="id" show-search="false" ng-click="getLocationDetails()"></multiselect>
+					<!-- <multiselect ng-disabled="!preferredcontacts[value.id]" class="multiselect" ng-model="formValues.sellers[$index].locationContact" options="preferredcontacts[value.id]" display-prop="email" id-prop="id" show-search="false" ng-click="getLocationDetails()"></multiselect> -->
+					<multiselect ng-disabled="!preferredcontacts[$index]" ng-model="formValues.sellers[0].locationContact" options="preferredcontacts" class="multiselect" display-prop="email" id-prop="id" show-search="false"></multiselect>
 					<!-- <multiselect ng-disabled="!preferredcontacts[$index]" ng-model="formValues.sellers[$index].locationContact[0].contacts" options="preferredcontacts[$index].locationContact[$index].contact" class="multiselect" display-prop="email" id-prop="id" show-search="false" ng-click="getLocationDetails()"></multiselect> -->
 				</td>
 				<td style="width:30%"><input class="form-control" type="text" decode-input-format ng-model="value.comments"></td>
