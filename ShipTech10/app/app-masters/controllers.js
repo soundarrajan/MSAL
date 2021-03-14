@@ -4988,6 +4988,7 @@ APP_MASTERS.controller('Controller_Master', [
                     id:$scope.formValues.vesselProducts? $scope.formValues.vesselProducts[index].id:0
                 },
                 'isDeleted': false,
+                'isActive': true,
                 'createdBy':$rootScope.user,
                 'clientIpAddress': null,
                 'lastModifiedByUser': null,
