@@ -389,6 +389,15 @@ APP_MASTERS.controller('Controller_Master', [
         $scope.addedFields = new Object();
         $scope.formFields = new Object();
         $scope.formValues = new Object();
+        
+        //These constants are used for calculating Vessel - One Day Reserve. (sfocMe, sfocAe, mcrPart, oneReeferConsumption)
+        if (vm.app_id == 'masters' && vm.screen_id == 'vessel' && !$scope.isHideVesselBopsDetails) {
+            $scope.formValues.sfocMe = 200.0; //200 g/KWH
+            $scope.formValues.sfocAe = 235.0; //235 g/KWH
+            $scope.formValues.mcrPart = 0.5; //50%
+            $scope.formValues.oneReeferConsumption = 4.0; //4 KWH
+        }
+
         $scope.locationReload = function() {
             if ($scope.copiedId > 0) {
                 localStorage.setItem(`${vm.app_id + vm.screen_id }_copy`, $scope.copiedId);
@@ -2835,6 +2844,24 @@ APP_MASTERS.controller('Controller_Master', [
                             $scope.$apply();
                 		}
                 	}, 500);
+                }
+                if(vm.screen_id == 'vessel' && id == 'defaultService') {
+                    if (!$scope.isHideVesselBopsDetails) {
+                        data = { Payload: $scope.formValues.defaultService.id };
+
+                        Factory_Master.getService(data, (callback) => {
+                            if (callback) {
+                                if (callback.status == true) {
+                                    let serviceObj = callback.data.payload;
+                                    if(!serviceObj.length) {
+                                        $scope.formValues.reeferUtilization = serviceObj.referUtilization;
+                                    }
+                                } else {
+                                    toastr.error('An error has occured!');
+                                }
+                            }
+                        });
+                    };
                 }
                 if (name == 'Buyer' && vm.screen_id == 'buyer') {
                     if($scope.formValues.user) {

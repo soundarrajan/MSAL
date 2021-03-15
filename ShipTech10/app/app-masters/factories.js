@@ -748,6 +748,11 @@ APP_MASTERS.factory('Factory_Master', [ '$window', '$http', '$Api_Service', 'API
                 callback(result);
             });
         },
+        getService: function(data, callback) {
+            $Api_Service.masters.getService(data, (result) => {
+                callback(result);
+            });
+        },
         claim_preview_email: function(data, callback) {
             $Api_Service.claim.claimPreviewEmail(data, (result) => {
                 callback(result);

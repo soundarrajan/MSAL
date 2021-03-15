@@ -10499,6 +10499,30 @@ APP_API.factory('$Api_Service', [
                             console.log('HTTP ERROR while trying to specGroupGetByProduct!');
                         }
                     );
+                },
+                getService: function(param, callback) {
+                    let url = `${API.BASE_URL_DATA_MASTERS }/api/masters/services/get`;
+                    $http.post(url, param).then(
+                        (response) => {
+                            if (response.status == 200) {
+                                var res = new Object();
+                                res.data = response.data;
+                                res.status = true;
+                                callback(res);
+                            } else {
+                                var res = new Object();
+                                res.status = false;
+                                res.message = response.data.ErrorMessage;
+                            }
+                        },
+                        (response) => {
+                            let res = new Object();
+                            res.status = false;
+                            res.message = response.data.ErrorMessage;
+                            callback(res);
+                            console.log('HTTP ERROR while trying getSevice!');
+                        }
+                    );
                 }
             },
             request: {

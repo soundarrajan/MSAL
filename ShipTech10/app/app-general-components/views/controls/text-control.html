@@ -21,18 +21,15 @@
 
         <input type="email" ng-if="field.Name == 'Service2MEmail'"
         decode-input-format
-        ng-value="{{field.DefaultValue}}"
         ng-blur="formValues.service2MEmail=validateEmails(formValues.service2MEmail)"
         compute-formula="$eval(field.Formula)" class="form-control " name="{{ field.Name }}" id="{{ field.Name }}"  dynamic-model="'formValues.' + field.Unique_ID " ng-required='$eval(field.Required) > 0 || field.Required == true ? true : false  && isVisible(field.masterSource + field.Name)' dynamic-condition="{{field.Conditional}}" dynamic-condition-type="{{field.ConditionalType}}" ng-class="CM.invalid_form ? 'ng-touched' : ''" ng-disabled="$eval(field.Disabled) == true || field.Disabled == true ? true : false"  dynamic-pattern="{{field.Pattern}}"  ng-change="triggerChangeFields(field.Name, field.Unique_ID)" format="{{field.Filter}}" unique-id="{{field.Unique_ID}}">
 
         <input type="number" ng-if="field.Name == 'ReferUtilization'"
         decode-input-format
-        ng-value="{{field.DefaultValue}}"
         compute-formula="$eval(field.Formula)" class="form-control " name="{{ field.Name }}" id="{{ field.Name }}"  dynamic-model="'formValues.' + field.Unique_ID " ng-required='$eval(field.Required) > 0 || field.Required == true ? true : false  && isVisible(field.masterSource + field.Name)' dynamic-condition="{{field.Conditional}}" dynamic-condition-type="{{field.ConditionalType}}" ng-class="CM.invalid_form ? 'ng-touched' : ''" ng-disabled="$eval(field.Disabled) == true || field.Disabled == true ? true : false"  dynamic-pattern="{{field.Pattern}}"  ng-change="triggerChangeFields(field.Name, field.Unique_ID)" format="{{field.Filter}}" unique-id="{{field.Unique_ID}}">
     
         <input type="number" ng-if="field.Name == 'MaxLiftUpdate'"
         decode-input-format
-        ng-value="{{field.DefaultValue}}"
         compute-formula="$eval(field.Formula)" class="form-control " name="{{ field.Name }}" id="{{ field.Name }}"  dynamic-model="'formValues.' + field.Unique_ID " ng-required='$eval(field.Required) > 0 || field.Required == true ? true : false  && isVisible(field.masterSource + field.Name)' dynamic-condition="{{field.Conditional}}" dynamic-condition-type="{{field.ConditionalType}}" ng-class="CM.invalid_form ? 'ng-touched' : ''" ng-disabled="$eval(field.Disabled) == true || field.Disabled == true ? true : false"  dynamic-pattern="{{field.Pattern}}"  ng-change="triggerChangeFields(field.Name, field.Unique_ID)" format="{{field.Filter}}" unique-id="{{field.Unique_ID}}">
    
     </div>
