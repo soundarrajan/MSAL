@@ -9250,118 +9250,32 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
             location.lastModifiedOn = null
         }
         
-//        $scope.preferredcontacts = [];
 
         $scope.getLocationDetails = function(index){  
-               debugger;    
-               const counterpartyids = $scope.formValues.sellers[0].counterparty.id; 
-               debugger;
-            //    const string_counterpartyids = $scope.formValues.sellers.map(a => a.id.toString()); 
-            //    const current_counterpartyids = Object.keys($scope.preferredcontacts);
-
-            // if(JSON.stringify(string_counterpartyids)!=JSON.stringify(current_counterpartyids)){
+               const counterpartyids = $scope.formValues.sellers[0].counterparty.id;               
                 let payload = {
                     Payload:[counterpartyids]
                 }
                 $scope.preferredcontacts = [];
-            Factory_Master.getContacts(payload, (callback) => {
-                if (callback) {
-                    $.each(callback, (k, v) => {
-                        $scope.preferredcontacts[k] = callback[k].locationContact[0];
-                       
-                    });
-                    // ng-model="formValues.sellers[$index].locationContact" options="preferredcontacts" 
-                    debugger;
-                    
+                Factory_Master.getContacts(payload, (callback) => {
+                    if (callback) {
+                        $.each(callback, (k, v) => {
+                            $scope.preferredcontacts[k] = callback[k].locationContact[0];
+                        
+                        });
+                        angular.forEach($scope.formValues.vesselProducts[key].vesselProductTanks, (input, vptKey) => {
+                            $scope.formValues.vesselProducts[key].vesselProductTanks[vptKey].isDeleted = true;
+                        });
+                    }
+                });
+        }
 
-
-
-                                       angular.forEach($scope.formValues.vesselProducts[key].vesselProductTanks, (input, vptKey) => {
-                        $scope.formValues.vesselProducts[key].vesselProductTanks[vptKey].isDeleted = true;
-                    });
-
-
-                }
-            });
-            
-           
-            // }  
-            
-            
-            // $scope.preferredcontacts = [];
-            // $scope.preferredcontacts =
-            // [
-            //     {
-            //         "counterparty": {
-            //           "id": 37,
-            //           "name": null,
-            //           "internalName": null,
-            //           "displayName": null,
-            //           "code": null,
-            //           "collectionName": null,
-            //           "customNonMandatoryAttribute1": null,
-            //           "isDeleted": false,
-            //           "modulePathUrl": null,
-            //           "clientIpAddress": null,
-            //           "userAction": null
-            //         },
-            //         "location": {
-            //           "id": 0,
-            //           "name": null,
-            //           "internalName": null,
-            //           "displayName": null,
-            //           "code": null,
-            //           "collectionName": null,
-            //           "customNonMandatoryAttribute1": null,
-            //           "isDeleted": false,
-            //           "modulePathUrl": null,
-            //           "clientIpAddress": null,
-            //           "userAction": null
-            //         },
-            //         "comments": null,
-            //         "products": null,
-            //         "locationContact": 
-            //         [
-            //           {
-            //             "contact": {
-            //               "id": 1732,
-            //               "name": "Helder Laurindo",
-            //               "internalName": null,
-            //               "displayName": "helderlaurindoqzmpqzmp@qzmpqzmpdebor.co",
-            //               "code": null,
-            //               "collectionName": null,
-            //               "customNonMandatoryAttribute1": null,
-            //               "isDeleted": false,
-            //               "modulePathUrl": null,
-            //               "clientIpAddress": null,
-            //               "userAction": null
-            //             },
-            //             "email": "helderlaurindoqzmpqzmp@qzmpqzmpdebor.co",
-            //             "id": 100,
-            //             "isDeleted": false,
-            //             "modulePathUrl": null,
-            //             "clientIpAddress": null,
-            //             "userAction": null
-            //           }
-            //         ],
-            //         "status": null,
-            //         "lastModifiedBy": null,
-            //         "lastModifiedOn": null,
-            //         "isSpecificLocation": false,
-            //         "rating": 0.0,
-            //         "id": 0,
-            //         "isDeleted": false,
-            //         "modulePathUrl": null,
-            //         "clientIpAddress": null,
-            //         "userAction": null
-            //       }
-                
-            // ]
-            // debugger;
-            // $scope.formValues.sellers[0].locationContact = [];
-            // $scope.formValues.sellers[0].locationContact = $scope.preferredcontacts[0].locationContact;
-            // debugger;
-
+        $scope.locationContactChange= function(index){
+            // as per API requirement
+            $scope.formValues.counterpartyLocations[index].locationContact.forEach(function (element) {
+                console.log(element);
+                element.contact = {'id':element.id};
+              });
         }
         
         $scope.deleteVesselProduct = function(key) {
