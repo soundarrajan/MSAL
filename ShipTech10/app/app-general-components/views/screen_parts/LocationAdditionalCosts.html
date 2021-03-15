@@ -81,7 +81,7 @@
                     ></select>
                 </td>
                 <td style="width:12%">
-                    <input name="Extra" ng-disabled="value.costType.name == 'Range' || value.costType.name == 'Total'" type="number" format="number" class="form-control" ng-model="value.extrasPercentage">
+                    <input name="Extra"  type="number" format="number" class="form-control" ng-model="value.extrasPercentage">
                 </td>
                 <td style="width:12%">
 					<select name="Currency" ng-disabled="value.costType.name == 'Range' || value.costType.name == 'Total'" class="form-control" ng-options="item as item.name for item in CM.listsCache.Currency track by item.id " ng-model="value.currency"></select>
