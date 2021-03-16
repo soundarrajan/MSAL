@@ -225,8 +225,10 @@ angular.module('shiptech').config([
                                         console.log("TIME AT ACTION LEVEL!")
                                         console.log('Last End: ==============: ', Date.now() - window.firstApiCallStartTime);
                                         if (appInsightsInstance) {
-                                            appInsightsInstance.context.user.id = '{id: ' + $rootScope.user.id  + '; name: ' + $rootScope.user.name + ' }';
-                                            appInsightsInstance.setAuthenticatedUserContext($rootScope.user.name);
+                                            if ($rootScope.user) {
+                                                appInsightsInstance.context.user.id = '{id: ' + $rootScope.user.id  + '; name: ' + $rootScope.user.name + ' }';
+                                                appInsightsInstance.setAuthenticatedUserContext($rootScope.user.name);
+                                            }
                                             appInsightsInstance.trackMetric({ name:  window.actionLevel ? window.actionLevel + ' ' + window.location.href : window.location.href, average: Date.now() - window.firstApiCallStartTime}, window.location);
                                             appInsightsInstance.stopTrackEvent(window.actionLevel ? window.actionLevel + ' ' + window.location.href : window.location.href, { type: window.actionLevel ? 'Action Level' : 'PAGE LOAD TIME' });
                                             appInsightsInstance.trackPageView();

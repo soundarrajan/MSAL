@@ -23,7 +23,7 @@
             var formattedDate = utcDateString;
             var dateFormat = tenantService.getDateFormat();
             var hasDayOfWeek = false;
-            if (dateFormat.startsWith('DDD ')) {
+            if (dateFormat && dateFormat.startsWith('DDD ')) {
                 hasDayOfWeek = true;
                 dateFormat = dateFormat.split('DDD ')[1];
             }
