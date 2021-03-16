@@ -201,7 +201,7 @@ Number(function() {
                                 } else {
                                     id = Elements.scope[table_id].id;
                                 }
-                                // debugger;
+                                //  
                                 let generic_layout = false;
                                 if(id == 'entity_documents') {
                                     generic_layout = {
@@ -284,7 +284,7 @@ Number(function() {
                                     defaultColumns.clc.colModel = angular.copy(scope.source.colModel);
                                 }
 
-                                // debugger;
+                                //  
                                 // 2. loop custom col mod el & match default ones (to keep column order)
                                 $.each(userColumns.clc.colModel, (_, usr_val) => {
                                     // 2.1 check for match in default (based on index or name)
@@ -760,7 +760,7 @@ Number(function() {
                                             });
                                         }
                                         var oldTableParams = angular.copy(CLC.tableParams);
-                                        // debugger;
+                                        //  
                                         // store all grid data (rows)
                                         $(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.gridData = callback.rows;
                                         console.log('GRID DATA', $(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.gridData);
@@ -1750,12 +1750,20 @@ Number(function() {
                     if (!attrs.dynamicPattern) {
                         return;
                     }
+                   
                     var pattern = '';
                     if (attrs.dynamicPattern == 'decimalNumber' || attrs.dynamicPattern == 'Number') {
                         pattern = /^[-,+]*\d{1,6}(,\d{3})*(\.\d*)?$/;
                     } else if (attrs.dynamicPattern == 'longNumber') {
                         pattern = /^[-,+]*\d{1,15}(,\d{3})*(\.\d*)?$/;
-                    } else if (attrs.dynamicPattern == 'website') {
+                    } 
+                    else if(attrs.dynamicPattern == 'char'){
+                        pattern = /^[a-zA-Z._-]+$/;
+                    }
+                    else if(attrs.dynamicPattern == 'alphaNumeric'){
+                        pattern = /^[a-zA-Z0-9._-]+$/;
+                    }
+                    else if (attrs.dynamicPattern == 'website') {
                         pattern = /^((https?|ftp):\/\/)?([a-z]+[.])?[a-z0-9-]+([.][a-z]{1,20}){1,20}(\/.*[?].*)?[.]?$/;
                     } else if (attrs.dynamicPattern == 'email') {
                         // pattern = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-][.]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -2301,7 +2309,7 @@ Number(function() {
                                 returnData = $filter(filter)(ctrl.$modelValue, fraction);
                             } catch(error) {
                                 console.error(error);
-                                debugger;
+                                 
                             }
                         }
                         return returnData;
@@ -2498,7 +2506,7 @@ Number(function() {
     });
     APP_GENERAL_COMPONENTS.filter('sumOfValueArray', () => {
         return function(data, key) {
-            // debugger;
+            //  
             if (angular.isUndefined(data) || angular.isUndefined(key)) {
                 return 0;
             }
