@@ -126,6 +126,16 @@ APP_MASTERS.controller('Controller_Master', [
         vm.listsCache = $listsCache;
 
         vm.formValues = $rootScope.formValues;
+        
+        let mcrPart = 0.5; //50%
+        let oneReeferConsumption = 4.0; //4 KWH
+
+        //These constants are used for calculating Vessel - One Day Reserve. (mcrPart, oneReeferConsumption)
+        if (vm.app_id == 'masters' && vm.screen_id == 'vessel' && !$scope.isHideVesselBopsDetails) {
+            vm.formValues.mcrPart = mcrPart;
+            vm.formValues.oneReeferConsumption = oneReeferConsumption;
+        }
+
         $scope.host = $location.$$host;
         $scope.changedFields = 0;
         $scope.submitedAction = false;
@@ -390,12 +400,12 @@ APP_MASTERS.controller('Controller_Master', [
         $scope.formFields = new Object();
         $scope.formValues = new Object();
         
-        //These constants are used for calculating Vessel - One Day Reserve. (sfocMe, sfocAe, mcrPart, oneReeferConsumption)
+        //These constants are used for calculating Vessel - One Day Reserve. (sfocMe, sfocAe,  mcrPart, oneReeferConsumption)
         if (vm.app_id == 'masters' && vm.screen_id == 'vessel' && !$scope.isHideVesselBopsDetails) {
             $scope.formValues.sfocMe = 200.0; //200 g/KWH
             $scope.formValues.sfocAe = 235.0; //235 g/KWH
-            $scope.formValues.mcrPart = 0.5; //50%
-            $scope.formValues.oneReeferConsumption = 4.0; //4 KWH
+            $scope.formValues.mcrPart = mcrPart;
+            $scope.formValues.oneReeferConsumption = oneReeferConsumption;
         }
 
         $scope.locationReload = function() {
