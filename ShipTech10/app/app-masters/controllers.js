@@ -1,7 +1,7 @@
 /**
  * Master Controller
  */
-APP_MASTERS.controller('Controller_Master', [
+ APP_MASTERS.controller('Controller_Master', [
     'API',
     '$tenantSettings',
     'tenantService',
@@ -2808,7 +2808,7 @@ APP_MASTERS.controller('Controller_Master', [
         };
 
         $scope.triggerChangeFields = function(name, id) {
-             
+             debugger;
             $rootScope.formDataFields = $scope.formValues;
             var fields = [ 'OrderID', 'labResultID', 'deliveryNumber', 'Product' ];
             var company_id = $('#companylistCompany').val();
@@ -3928,7 +3928,7 @@ APP_MASTERS.controller('Controller_Master', [
                 $(`${element } .portlet`).css('height', calcHeight);
                 $(`${element } .portlet`).css('overflow', 'auto');
             }, 1000);
-            debugger;
+            
         };
         vm.cloneEntity = function(group, obj) {
             if (obj) {
@@ -4021,12 +4021,12 @@ APP_MASTERS.controller('Controller_Master', [
                     addedFields.push(info.Unique_ID);
                 });
             });
-            debugger;
+            
             if ($.inArray(ele.Unique_ID, addedFields) >= 0) {
                 toastr.error('Field is already added. Please clone it!');
                 return;
             }
-            debugger;
+            
             $scope.current_field = createNewField();
             $scope.activeField(ele);
             angular.merge($scope.current_field, ele);
@@ -4997,6 +4997,7 @@ APP_MASTERS.controller('Controller_Master', [
         };
 
         
+
 
         $scope.assignObjValue = function(obj, keyPath, value) {
             var lastKeyIndex = keyPath.length - 1;
@@ -6522,6 +6523,7 @@ APP_MASTERS.controller('Controller_Master', [
                 return availableCosts;
         };
         $scope.filterCostTypesByAdditionalCost = function(cost, rowRenderIndex) {
+		   
             var currentCost = cost;
              
 
@@ -6548,9 +6550,18 @@ APP_MASTERS.controller('Controller_Master', [
                     });
                 }
                 $scope.EnableBargeCostDetails = false;
+                $scope.EnableBargeCostDetails = false;
                 if (costType == 4) {
                     $.each(vm.listsCache.CostType, (k, v) => {
-                        if (v.id == 4 || v.id == 5) {
+                        if (v.id == 4) {
+                            $scope.EnableBargeCostDetails = true;
+                            availableCosts.push(v);
+                        }
+                    });
+                }
+                if (costType == 5) {
+                    $.each(vm.listsCache.CostType, (k, v) => {
+                        if (v.id == 5) {
                             $scope.EnableBargeCostDetails = true;
                             availableCosts.push(v);
                         }
@@ -6571,6 +6582,7 @@ APP_MASTERS.controller('Controller_Master', [
         };
         
         $scope.setDefaultCurrency = function(additionalCost,key) {
+            debugger;
             var defaultCostType;
             if($scope.formValues.additionalCosts.length >0){
                 if($scope.formValues.additionalCosts[key].amount != undefined){
@@ -6585,20 +6597,28 @@ APP_MASTERS.controller('Controller_Master', [
             }
             $scope.CurrentadditionalCostsdetails  = key;
             // if($scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails == undefined ){
-                $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails = [];
-                $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails.push({'id':0,'currency':$scope.vm.tenantSetting.tenantFormats.currency})
                 
             // }
             
             // }
             if(additionalCost.name == 'Range' || additionalCost.name == 'Total'){
                 defaultCostType = $scope.vm.tenantSetting.tenantFormats.currency;
+                $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails = [];
+                $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails.push({'id':0,'currency':$scope.vm.tenantSetting.tenantFormats.currency})
+               
+            }
+            else{
+                if($scope.formValues.additionalCosts[key].additionalCostDetails != undefined){
+                    $scope.formValues.additionalCosts[key].additionalCostDetails = undefined;
+                }
             }
             return defaultCostType;
         };
       
         $scope.setDefaultCostType = function(additionalCost, key) {
-             
+            debugger 
+
+
             if($scope.formValues.additionalCosts.length >0){
                 if($scope.formValues.additionalCosts[key].amount != undefined){
                     $scope.formValues.additionalCosts[key].amount = ''; 
@@ -6610,6 +6630,10 @@ APP_MASTERS.controller('Controller_Master', [
                     $scope.formValues.additionalCosts[key].extrasPercentage = ''; 
                 }
             }
+            if($scope.formValues.additionalCosts[key].additionalCostDetails != undefined){
+                $scope.formValues.additionalCosts[key].additionalCostDetails = undefined;
+            }
+
             var defaultCostType;
             $.each(vm.additionalCostsComponentTypes, (k, v) => {
                 if (v.id == additionalCost.id) {
@@ -6617,6 +6641,7 @@ APP_MASTERS.controller('Controller_Master', [
                 }
                 if((v.costType.id == 4 || v.costType.id == 5) && v.id == additionalCost.id){
                     $scope.formValues.additionalCosts[key].currency = $scope.vm.tenantSetting.tenantFormats.currency; 
+                    
                 }
                 else{
                     $scope.formValues.additionalCosts[key].currency = '';
@@ -6642,6 +6667,7 @@ APP_MASTERS.controller('Controller_Master', [
                 $scope.formValues.products[key1].additionalCosts[key2].isAllowingNegativeAmmount = findAdditionalCostComponent.isAllowingNegativeAmmount;
             }
            
+
 
         }
 
@@ -6951,7 +6977,7 @@ APP_MASTERS.controller('Controller_Master', [
 
         /* Location Master Preffered Seller Product Table*/
         $scope.openLocationPreferredSellerProducts = function(currentSellerKey, master) {
-             debugger;
+             
             var objMapping;
         	if (master) {
         		if (master == 'counterpartyMaster') {
@@ -7198,7 +7224,7 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
         }
 
         $scope.saveBargeCostDetails = function() {
-             
+          
             if($scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails.length > 0)
             {
                 var FormvalueLength = $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails.length -1;
@@ -7214,6 +7240,10 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
                         }
                         else if(IsDataExists(v.qtyTo)){
                             toastr.error('Enter Quantity To Field');
+                            return
+                        }
+                        else if(IsDataExists(v.priceUom)){
+                            toastr.error('Enter priceUom To Field');
                             return
                         }
                         else if(IsDataExists(v.costType)){
@@ -7244,6 +7274,10 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
                         }
                         else if(IsDataExists(v.qtyTo)){
                             toastr.error('Enter Quantity To Field');
+                            return
+                        }
+                        else if(IsDataExists(v.priceUom)){
+                            toastr.error('Enter priceUom To Field');
                             return
                         }
                         else if(IsDataExists(v.costType)){
@@ -9285,6 +9319,7 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
         }
 
         $scope.resetLocationData = function(location) {
+		   
             location.isSpecificLocation = false;
             location.rating = null;
             location.lastModifiedBy = null;
@@ -9293,7 +9328,13 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
         
 
         $scope.getLocationDetails = function(index){  
-               const counterpartyids = $scope.formValues.sellers[0].counterparty.id;               
+               debugger;    
+               const counterpartyids = $scope.formValues.sellers[0].counterparty.id; 
+               debugger;
+            //    const string_counterpartyids = $scope.formValues.sellers.map(a => a.id.toString()); 
+            //    const current_counterpartyids = Object.keys($scope.preferredcontacts);
+
+            // if(JSON.stringify(string_counterpartyids)!=JSON.stringify(current_counterpartyids)){
                 let payload = {
                     Payload:[counterpartyids]
                 }
