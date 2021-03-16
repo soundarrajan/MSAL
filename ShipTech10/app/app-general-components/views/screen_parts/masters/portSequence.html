@@ -12,7 +12,7 @@
         </thead>
         <tbody>
             <tr  ng-repeat="(key, value) in formValues.portSequences"  class="ng-scope">
-                
+               
                     <td style="width:50px">
                         <input type="label" name="Port" readonly class="form-control"  ng-model="value.location.name"></input>
                     </td>
@@ -33,7 +33,9 @@
                     </td>
                     
                     <td style="width:50px">
-                        <input type="email" name="businessAddressEmail" class="form-control"  ng-model="value.businessAddressEmail"></input>
+                        <input type="text" name="businessAddressEmail" class="form-control"
+                        ng-blur="value.businessAddressEmail=validateEmailPattern(value.businessAddressEmail)"
+                          ng-model="value.businessAddressEmail"></input>
                     </td>
                     
                     <td style="width:25px"  class="text-center ng-scope">
