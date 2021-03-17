@@ -259,6 +259,9 @@
             },
             "NEW_ORDER": {
                   "VESSEL": "Vessel",
+				  "PRE_TEST_LABS": "Pre Test Labs",
+				  "CUSTOMER": "Customer",        
+				  "PRETEST" : "Pre Test",          
                   "VESSEL_IMO_NO": "IMO",
                   "SERVICE_CODE": "Service Code",
                   "EMAIL_COMMENTS": "Email Comments",

@@ -532,27 +532,26 @@
                                                         </div>
                                                     </div></div>
                                                     <div>
-                                                        <div class="form-group row"
-                                                             ng-if="$ctrl.vesselDetailsFields.ExchangeRate.visible">
+                                                        <div class="form-group row" ng-if="$ctrl.vesselDetailsFields.ExchangeRate.visible">
 
                                                         <!-- exchange rate -->
-                                                        <span ng-if="!$ctrl.data.exchangeRate"
-                                                              ng-init="$ctrl.data.exchangeRate = 1"></span>
-                                                        <label class="{{ $ctrl.portFields.comments.name }}_label"
-                                                               for="exchangeRate">
-                                                            {{ 'PAGES.NEW_ORDER.EXCHANGE_RATE' | translate }}
-                                                        </label>
-                                                        <div class="input-group form_input">
+	                                                        <span ng-if="!$ctrl.data.exchangeRate"
+	                                                              ng-init="$ctrl.data.exchangeRate = 1"></span>
+	                                                        <label class="{{ $ctrl.portFields.comments.name }}_label"
+	                                                               for="exchangeRate">
+	                                                            {{ 'PAGES.NEW_ORDER.EXCHANGE_RATE' | translate }}
+	                                                        </label>
+	                                                        <div class="input-group form_input">
 
-                                                            <input class="col-md-12 form-control" format="number:4"
-                                                                   id="exchangeRate" name="exchangeRate"
-                                                                   ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id"
-                                                                   ng-model="$ctrl.data.exchangeRate"
-                                                                   decode-input-format
-                                                                   type="text">
+	                                                            <input class="col-md-12 form-control" format="number:4"
+	                                                                   id="exchangeRate" name="exchangeRate"
+	                                                                   ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id"
+	                                                                   ng-model="$ctrl.data.exchangeRate"
+	                                                                   decode-input-format
+	                                                                   type="text">
 
-                                                        </div>
-                                                    </div>
+	                                                        </div>
+	                                                    </div>
                                                     </div>
                                                 </div>
 
@@ -589,9 +588,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                    <div ng-if="$ctrl.portFields.locationName.visible"
-                                                         ng-show="$ctrl.orderId">
-                                                    <div class="form-group  row">
+                                            	<div ng-if="$ctrl.portFields.locationName.visible" ng-show="$ctrl.orderId">
+                                                    <div class="form-group row">
                                                         <label class="{{ $ctrl.portFields.locationName.name }}_label"
                                                                for="{{ $ctrl.portFields.locationName.name }}">
                                                             {{ $ctrl.portFields.locationName.caption | translate }}
@@ -711,26 +709,26 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div ng-if="$ctrl.isDeliveryWindow">
-                                                    <div class="form-group row">
-                                                        <label class="deliveryDate_label" for="deliveryDate">
-                                                            {{ 'PAGES.NEW_REQUEST.DELIVERY_FROM' | translate }}
-                                                        </label>
-                                                        <div class="input-group form_input form_input_deliveryDate">
-                                                            <div class="input-group w100">
-                                                           <input
-                                                                   class="form-control date-mask new-date-picker"
-                                                                   id="deliveryFrom"
-                                                                   name="deliveryFrom"
-                                                                   new-date-picker
-                                                                   ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Closed'].id"
-                                                                   ng-class="{'etb_invalid': $ctrl.data.deliveryFrom > $ctrl.data.deliveryTo}"
-                                                                   ng-model="$ctrl.data.deliveryFrom"
-                                                                   picker-type="dynamic">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+	                                                <div ng-if="$ctrl.isDeliveryWindow">
+	                                                    <div class="form-group row">
+	                                                        <label class="deliveryDate_label" for="deliveryDate">
+	                                                            {{ 'PAGES.NEW_REQUEST.DELIVERY_FROM' | translate }}
+	                                                        </label>
+	                                                        <div class="input-group form_input form_input_deliveryDate">
+	                                                            <div class="input-group w100">
+	                                                        	   <input
+	                                                                   class="form-control date-mask new-date-picker"
+	                                                                   id="deliveryFrom"
+	                                                                   name="deliveryFrom"
+	                                                                   new-date-picker
+	                                                                   ng-disabled="$ctrl.data.status.id === $ctrl.STATUS['Closed'].id"
+	                                                                   ng-class="{'etb_invalid': $ctrl.data.deliveryFrom > $ctrl.data.deliveryTo}"
+	                                                                   ng-model="$ctrl.data.deliveryFrom"
+	                                                                   picker-type="dynamic">
+	                                                            </div>
+	                                                        </div>
+	                                                    </div>
+	                                                </div>
                                                     <div ng-if="$ctrl.isDeliveryWindow && !($ctrl.isRecentETA && $ctrl.portFields.recentEta.visible)">
                                                         <div class="form-group row">
                                                             <label class="deliveryDate_label" for="deliveryDate">
@@ -751,6 +749,53 @@
                                                             </div>
                                                         </div>
                                                     </div>
+
+                                                    <div ng-if="!$ctrl.procurementSettings.fieldVisibility.isPreTestLabCounterpartyHidden">
+                                                        <div class="form-group row">
+                                                            <label class="deliveryDate_label" for="deliveryDate">
+                                                                {{ 'PRE_TEST_LABS' | translate }}
+                                                            </label>
+															<div class="form_input form_input_pretestlabs input-group">
+	                                                            <input autocomplete="off"
+	                                                                   class="typeahead form-control"
+	                                                                   id="id_pretestlabs"
+	                                                                   name="{{ 'PRE_TEST_LABS' | translate }}"
+	                                                                   ng-model="$ctrl.data.preTestLabCounterparty" 
+	                                                                   decode-input-format
+	                                                                   ng-required="$ctrl.procurementSettings.fieldVisibility.isPreTestLabCounterpartyMandatory"
+	                                                                   typeahead-append-to-body="true"
+	                                                                   typeahead-editable="false"
+	                                                                   typeahead-min-length="1"
+	                                                                   typeahead-show-hint="true"
+	                                                                   typeahead-wait-ms="100"
+	                                                                   uib-typeahead="lab as lab.name for lab in $ctrl.lists.Lab | typeaheadCustomFilter:$viewValue:'name'"/>
+	                                                            <span class="input-group-addon ng-scope"
+	                                                                  ng-click="triggerModal('general', 'masters_counterpartylist_labs', 'Lab' ,'lab',null,null,null,'labsList');"
+	                                                                  ng-controller="Controller_Master as CM">
+	                                                                <a class=" btn default" href="">
+	                                                                    <i class="fa fa-search"></i>
+	                                                                </a>
+	                                                            </span>
+	                                                        </div>
+                                                        </div>
+                                                    </div>     
+                                                    
+                                                    <div ng-if="!$ctrl.procurementSettings.fieldVisibility.isCustomerHidden">
+                                                        <div class="form-group row">
+                                                            <label class="deliveryDate_label" for="deliveryDate">
+                                                                {{ 'CUSTOMER' | translate }}
+                                                            </label>
+															<div class="form_input form_input_pretestlabs input-group">
+	                                                            <input class="form-control"
+	                                                                   id="id_customer"
+	                                                                   name="{{ 'CUSTOMER' | translate }}"
+	                                                                   ng-model="$ctrl.data.customer.name"
+	                                                                   disabled="true" 
+	                                                                   decode-input-format />
+	                                                        </div>
+                                                        </div>
+                                                    </div>                                                                                                    
+
                                                 </div>
 
                                                 <div class="col-md-3">
@@ -1370,6 +1415,18 @@
                                                     ng-model="product.currency"
                                                     ng-options="item as item.code for item in $ctrl.lists.Currency | decodeReadOnly track by item.id"
                                             ></select>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td ng-if="!$ctrl.procurementSettings.fieldVisibility.isPreTestHidden">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <label class="mt-checkbox">
+                                                <input id="product_preTest_{{ $index }}"
+                                                       ng-model="product.preTest"
+                                                       type="checkbox">
+                                                <span></span>
+                                            </label>
                                         </div>
                                     </div>
                                 </td>

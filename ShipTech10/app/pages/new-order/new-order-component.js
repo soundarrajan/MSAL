@@ -120,6 +120,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     if(v.name == 'manualPricingDateOverride' && !ctrl.enableManualPricingDateOverride) {
                         ctrl.productColumns[k].visible = false;
                     }
+                    if(v.name == 'pretest' && ctrl.procurementSettings.fieldVisibility.isPreTestHidden) {
+                        ctrl.productColumns[k].visible = false;
+                    }                    
                 });
 
                 // Get general-purpose data to be used in lookups etc.
@@ -1246,6 +1249,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 if (ctrl.data.buyer === null) {
                     ctrl.data.buyer = {};
                 }
+                ctrl.data.customer = data.customer;
                 ctrl.data.lab = data.defaultLab;
                 ctrl.data.vessel.vesselToWatchFlag = data.vesselToWatchFlag;
                 newRequestModel.getDefaultBuyer(data.id).then((buyer) => {
