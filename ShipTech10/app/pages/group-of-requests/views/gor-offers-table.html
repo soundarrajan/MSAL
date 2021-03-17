@@ -434,8 +434,40 @@
     
                     ng-init="productTop.productLocations['L' + location[0].uniqueLocationIdentifier] ? product = productTop.productLocations['L' + location[0].uniqueLocationIdentifier] : ''">
                     <span ng-if="product" ng-init="maxQuantity = $ctrl.getProductMaxQuantityOnLocation(product, location);">
-                        <span style="line-height: 40px;">Market Price</span>
+                        <span style="line-height: 40px;">Market Price</span>  
+                        <span>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"  data-hover="dropdown" data-close-others="true" ng-click="$ctrl.getMarketPriceData(product, location)" >
+                                <img  src="img/info.png" alt="logo" class="logo-default" tooltip data-original-title="click to see market price history" />
+                            </a>
+                            <ul class="dropdown-menu" >
+                                <li>
+                                    <div class="custom-hardcoded-table admin">
+                                        <table style="width:100%" style="width:100%;" ng-if="marketPriceHistoryList.length>0">  
+                                            <thead>
+                                                <tr> 
+                                                    <td colspan="2" style="width:100%;background-color: white;" >Market Price History<button type="button" class="close" data-dismiss="modal"></button><br></td>                 
+                                                </tr> 
 
+                                                <tr style="width:100%;min-width:initial;background-color: white;">   
+                                                    <td style="width:25%">Location:&nbsp;&nbsp;<b>{{location[0].location.name | decodeReadOnly}}</b></td> 
+                                                    <td style="width:25%">Product:&nbsp;&nbsp;<b>{{product.product.name | decodeReadOnly}}</b></td> 
+                                                </tr> 
+                                                <tr class="table-head"  style="width:100%;min-width:initial">  
+                                                    <td style="width:25%">Date</td> 
+                                                    <td style="width:25%">Market Price</td> 
+                                                </tr>
+                                            </thead>  
+                                            <tbody class="table-body" style="width:100%;min-width:initial">
+                                                <tr  ng-repeat="entity in marketPriceHistoryList"> 
+                                                    <td style="width:25%">{{entity.date | date :'dd/MM/yyyy'}}</td> 
+                                                    <td style="width:25%">{{entity.price}}</td> 
+                                                </tr>
+                                            </tbody>                                     
+                                        </table>
+                                    </div>
+                                </li>
+                            </ul>
+                        </span> 
                         <span class="pull-right bg-grey font-dark" style="padding: 5px;position: absolute;right: 0;top: 50%;transform: translateY(-50%);" ng-mouseover="$ctrl.getWidth('.groupOfRequestTableTooltipLastProduct'); marketPrice['seller.id + product.id'] = true;" ng-mouseout="marketPrice['seller.id + product.id'] = false">
                             <span style="z-index: 999;" ng-class="requestProducts.length - 1 == $index ? 'groupOfRequestTableTooltipLastProduct' : 'groupOfRequestTableTooltip'" ng-show="marketPrice['seller.id + product.id'] && $ctrl.getMarketPricePopup(product, location)" ng-bind-html="$ctrl.getMarketPricePopup(product, location)"></span>
                             <span class="pull-right" ng-mouseover="$ctrl.gettWidthTooltip(groupOfRequestTableTooltip)">

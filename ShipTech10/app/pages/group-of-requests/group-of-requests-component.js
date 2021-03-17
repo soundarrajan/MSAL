@@ -6482,6 +6482,39 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
             }
             return popupHtml;
         };
+        ctrl.getMarketPriceData = function(product, locations) {
+            data = {};
+            let theLocation;
+            for (let i = 0; i < locations.length; i++) {
+                if (locations[i].requestId === product.requestId) {
+                    theLocation = locations[i];
+                    break;
+                }
+            }
+            if (!theLocation) {
+                return 0;
+            }
+            var productList = [];
+            $.each(theLocation.products, (k, v) => {
+                if (v.product.id == product.product.id) {
+                    product = v;
+                }
+            }); 
+            let LocationId,ProductId;
+            let payload={
+            	payload:[{LocationId:theLocation.location.id,ProductId:product.product.id}]
+            }
+            $http.post(`${API.BASE_URL_DATA_PROCUREMENT}/api/procurement/rfq/getPriceByLocationAndProduct`, payload).then((response) => {
+                if (response) {
+                    if (response.data) {
+                         $scope.marketPriceHistoryList=[];
+                         $scope.marketPriceHistoryList=response.data.payload;
+                    }
+                } else {
+                    ctrl.hasAccess = false;
+                }
+            });  
+        }
         ctrl.openContactCounterpartyModal = function(seller, theLocation) {
             // ctrl.OptionsContactCounterpartyModal = ctrl.sellerContactList["s" + seller.id];
             // tpl = $templateCache.get("components/sellers-dialog/views/contactCounterpartyModal.html");
@@ -7431,7 +7464,6 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
             // var maxHeight = 175;
             // console.log($(event.target).parents("td").find(".groupOfRequestTableTooltip"));
         };
-
         ctrl.undoComments = function() {
             if (initialValueExternalComments != null) {
                 ctrl.externalComments = initialValueExternalComments.replace(/<br\s?\/?>/g, '\n');
