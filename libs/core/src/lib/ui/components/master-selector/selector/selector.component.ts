@@ -23,6 +23,9 @@ import { IVesselMasterDto } from '@shiptech/core/services/masters-api/request-re
 import { VesselPortCallsMasterSelectorGridViewModel } from '@shiptech/core/ui/components/master-selector/view-models/vessel-port-calls-model/vessel-port-calls-master-selector-grid.view-model';
 import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/request-response-dtos/vessel-port-call';
 import { throwError } from 'rxjs';
+import { OrderListSelectorGridViewModel } from '../view-models/order-model/order-list-selector-grid.view-model';
+import { ProductListSelectorGridViewModel } from '../view-models/product-model/product-list-selector-grid.view-model';
+import { PhysicalSupplierListSelectorGridViewModel } from '../view-models/physical-supplier-model/physical-supplier-list-selector-grid.view-model';
 
 @Component({
   selector: 'shiptech-shared-master-selector',
@@ -37,7 +40,10 @@ import { throwError } from 'rxjs';
     },
     DocumentsMasterSelectorGridViewModel,
     VesselMasterSelectorGridViewModel,
-    VesselPortCallsMasterSelectorGridViewModel
+    VesselPortCallsMasterSelectorGridViewModel,
+    OrderListSelectorGridViewModel,
+    ProductListSelectorGridViewModel,
+    PhysicalSupplierListSelectorGridViewModel
   ],
   exportAs: 'sharedMasterSelector',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -118,6 +124,30 @@ export class SelectorComponent
       case knownMastersAutocomplete.documents: {
         this.gridViewModel = this.injector.get(
           DocumentsMasterSelectorGridViewModel
+        );
+        this.gridViewModel.entityId = this.entityId;
+        this.gridViewModel.entityName = this.entityName;
+        break;
+      }
+      case knownMastersAutocomplete.orders: {
+        this.gridViewModel = this.injector.get(
+         OrderListSelectorGridViewModel
+        );
+        this.gridViewModel.entityId = this.entityId;
+        this.gridViewModel.entityName = this.entityName;
+        break;
+      }
+      case knownMastersAutocomplete.products: {
+        this.gridViewModel = this.injector.get(
+          ProductListSelectorGridViewModel
+        );
+        this.gridViewModel.entityId = this.entityId;
+        this.gridViewModel.entityName = this.entityName;
+        break;
+      }
+      case knownMastersAutocomplete.physicalSupplier: {
+        this.gridViewModel = this.injector.get(
+          PhysicalSupplierListSelectorGridViewModel
         );
         this.gridViewModel.entityId = this.entityId;
         this.gridViewModel.entityName = this.entityName;

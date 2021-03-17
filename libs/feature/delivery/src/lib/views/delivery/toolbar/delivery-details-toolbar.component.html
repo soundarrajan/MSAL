@@ -1,0 +1,39 @@
+<shiptech-wunderbar-delivery>
+  <div class="row">
+    <div class="col-6 d-flex delivery-header">
+      <div *ngFor="let menuItem of menuItems">
+          <div [ngClass]="menuItem.styleClass">
+            <span *ngIf="menuItem.routerLink">
+              <a href="{{menuItem.routerLink}}" target="_blank">
+                {{menuItem.label}}
+              </a>
+            </span>
+            <span *ngIf="!menuItem.routerLink">
+              {{menuItem.label}}
+            </span>
+          </div>   
+      </div>
+    </div>
+    <ng-content></ng-content>
+  </div>
+</shiptech-wunderbar-delivery>
+<shiptech-wundertab-delivery>
+  <div class="row">
+    <div class="col-12">
+      <div style="float:right; display: inline-flex;">
+        <div *ngFor="let deliveryTab of deliveryTabs">
+          <div [ngClass]="deliveryTab.styleClass">
+            <span *ngIf="deliveryTab.routerLink">
+              <a href="{{deliveryTab.routerLink}}" target="_blank">
+                {{deliveryTab.label}}
+              </a>
+            </span>
+            <span *ngIf="!deliveryTab.routerLink">
+              {{deliveryTab.label}}
+            </span>
+          </div>   
+      </div>
+      </div>
+    </div>     
+  </div>
+</shiptech-wundertab-delivery>

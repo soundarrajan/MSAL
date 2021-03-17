@@ -1,0 +1,19 @@
+::ng-deep {
+  .ag-layout-auto-height{
+   height: 100%;
+  }
+}
+
+.cell-minus {
+  display: block!important;
+  padding: 0 12px;
+}
+
+#quantityControlEventsLog > div > div.ag-root-wrapper-body.ag-layout-auto-height {
+  min-height: 200px;
+}
+
+#quantityControlEventsLog > .ag-root-wrapper > :not(.ag-theme-balham) + .ag-theme-balham > .ag-menu {
+  position: absolute;
+  width: 222px;
+}

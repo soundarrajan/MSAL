@@ -1,0 +1,172 @@
+<div class="col-md-12">
+    <div class="product-quality-header">
+        Product quality details
+    </div>
+</div>
+<div class="col-md-12  product-details-container" *ngIf="formValues.deliveryProducts[deliveryProductIndex].qualityHeader">
+    <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+        <mat-form-field class="without-search" appearance="legacy"  [ngClass]="{'date-invalid':isAnalysedOnDateInvalid, 'date-valid':!isAnalysedOnDateInvalid}">
+            <mat-label>Analysed on</mat-label>
+            <input [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].qualityHeader.analysedOn" 
+                  matInput 
+                  [matDatepicker]="analysedOnDate" 
+                  (focus)="analysedOnDate.open()"
+                  autocomplete="off"
+                  placeholder="Analysed on"
+                  (dateInput)="onChange($event, 'analysedOnDate')"
+                  (dateChange)="formValues.deliveryProducts[deliveryProductIndex].qualityHeader.analysedOn = formatDateForBe(formValues.deliveryProducts[deliveryProductIndex].qualityHeader.analysedOn)">
+                  <mat-datepicker-toggle matSuffix [for]="analysedOnDate">
+                    <mat-icon matDatepickerToggleIcon [svgIcon]="!switchTheme?'data-picker-gray':'data-picker-white'">
+                    </mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker #analysedOnDate [panelClass]="switchTheme?'datepicker-darktheme':''"></mat-datepicker>
+          </mat-form-field>
+    </div>
+    <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+        <mat-form-field class="without-search" appearance="legacy">
+          <mat-label>Net specific energy</mat-label>
+          <input  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].qualityHeader.netSpecificEnergy"
+                matInput 
+                autocomplete="off"
+                placeholder="Net specific energy">
+        </mat-form-field>
+    </div>
+    <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+        <mat-form-field class="without-search" appearance="legacy">
+          <mat-label>CCAI</mat-label>
+          <input  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].qualityHeader.ccai"
+                matInput 
+                autocomplete="off"
+                placeholder="CCAI">
+        </mat-form-field>
+    </div>
+</div>
+<div class="col-md-12 product-quality-header-container" *ngIf="formValues.deliveryProducts[deliveryProductIndex].qualityParameters && formValues.deliveryProducts[deliveryProductIndex].qualityParameters.length">
+    <table class="product-quality-table table table-stripped table-hover">
+        <thead>
+            <tr>
+                <td style="width:16%">
+                    <span>Parameters</span>
+                </td>
+                <td style="width:7%">
+                    <span>Min</span>
+                </td>
+                <td style="width:7%">
+                    <span>Max</span>
+                </td>
+                <td style="width:12%">
+                    <span>UOM</span>
+                </td>
+                <td style="width:12%">
+                    <span>BDN</span>
+                </td>
+                <td style="width:12%">
+                    <span>Survey Analysis</span>
+                </td>
+                <td style="width:12%">
+                    <span>Variance</span>
+                </td>
+                <td style="width:12%">
+                    <span>Recon Status</span>
+                </td>
+                <td style="width:12%">
+                    <span>Claim</span>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let qualityParameter of formValues.deliveryProducts[deliveryProductIndex].qualityParameters">
+                <td style="width:16%">
+                    <span>{{qualityParameter.specParameter.name}}</span>
+                </td>
+                <td style="width:12%">
+                    <span *ngIf="qualityParameter.min != null">
+                        {{ qualityParameter.min  }}
+                    </span>
+                    <span *ngIf="qualityParameter.min == null">
+                        -
+                    </span>
+                </td>
+                <td style="width:12%">
+                    <span *ngIf="qualityParameter.max != null">
+                        {{ qualityParameter.max }}
+                    </span>
+                    <span *ngIf="qualityParameter.max == null">
+                        -
+                    </span>
+                </td>
+                <td style="width:12%">
+                    <span *ngIf="qualityParameter.uom != null">
+                        {{ qualityParameter.uom }}
+                    </span>
+                    <span *ngIf="qualityParameter.uom  == null">
+                        -
+                    </span>
+                </td>
+                <td style="width:12%">
+                    <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+                        <mat-form-field class="without-search" appearance="legacy">
+                          <input [(ngModel)]="qualityParameter.bdnValue"
+                                (ngModelChange)="qualityParameter.qualityMatch = setQualityMatch(qualityParameter.bdnValue, qualityParameter.surveyValue, qualityParameter.min, qualityParameter.max)"
+                                matInput 
+                                autocomplete="off"
+                                name="Product_{{ deliveryProductIndex }}_{{ qualityParameter.specParameter.name}}_BDN">
+                        </mat-form-field>
+                    </div>
+                </td>
+                <td style="width:12%">
+                    <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+                        <mat-form-field class="without-search" appearance="legacy">
+                          <input [(ngModel)]="qualityParameter.surveyValue"
+                                (ngModelChange)="qualityParameter.qualityMatch = setQualityMatch(qualityParameter.bdnValue, qualityParameter.surveyValue, qualityParameter.min, qualityParameter.max)"
+                                matInput 
+                                autocomplete="off"
+                                name="Product_{{ deliveryProductIndex }}_{{ qualityParameter.specParameter.name}}_SURVEY">
+                        </mat-form-field>
+                    </div>
+                </td>
+                <td style="width:12%" class="padding">
+                    <!-- Variance = Survey Analysis Value – BDN Value -->
+                    <span *ngIf="!(qualityParameter.surveyValue == null && qualityParameter.bdnValue  == null)">
+                        {{ quantityFormatValue(qualityParameter.surveyValue - qualityParameter.bdnValue)}}
+                    </span>
+                    <span  *ngIf="(qualityParameter.surveyValuee == null && qualityParameter.bdnValue  == null)">
+                            -
+                    </span>
+                </td>
+                <td style="width:12%" >
+                    <span  *ngIf="qualityParameter.qualityMatch && qualityParameter.qualityMatch.id == '2'"  class="quality-table-data-false">
+                        <b>
+                            Failed
+                        </b>
+                    </span>
+                    <span *ngIf="qualityParameter.qualityMatch && qualityParameter.qualityMatch.id == '1'" class="quality-table-data-true">
+                        <b>
+                            Passed
+                        </b>
+                    </span>
+                </td>
+                <td style="width:12%">
+                    <span *ngIf="!qualityParameter.claim" class="quality-table-data-false">
+                        <b>
+                            No
+                        </b>
+                    </span>
+                    <span *ngIf="qualityParameter.claim" class="quality-table-data-true">
+                        <b>
+                            Yes
+                        </b>
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="col-md-12 custom-form-field product-quality-comments"  *ngIf="formValues.deliveryProducts[deliveryProductIndex].qualityHeader" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+    <mat-form-field class="without-search" appearance="legacy">
+        <mat-label>Comments</mat-label>
+        <textarea  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].qualityHeader.comments"
+            matInput 
+            autocomplete="off"></textarea>
+    </mat-form-field>
+</div>

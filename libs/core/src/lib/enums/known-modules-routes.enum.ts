@@ -3,5 +3,6 @@ export enum KnownPrimaryRoutes {
   EmailTemplateEditor = 'email-template-editor',
   Invoices = 'invoices',
   LazyLoad = 'lazy-load',
-  Root = ''
+  Root = '',
+  Delivery = 'delivery'
 }

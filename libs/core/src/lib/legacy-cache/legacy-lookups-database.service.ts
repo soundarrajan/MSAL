@@ -39,6 +39,15 @@ export class LegacyLookupsDatabase extends Dexie {
   readonly transactionType: Dexie.Table<IDisplayLookupDto, number>;
   readonly invoiceCustomStatus: Dexie.Table<IStatusLookupDto, number>;
   readonly orderedStatus: Dexie.Table<IStatusLookupDto, number>;
+  readonly barge: Dexie.Table<IDisplayLookupDto, number>;
+  readonly product: Dexie.Table<IDisplayLookupDto, number>;
+  readonly supplier: Dexie.Table<IDisplayLookupDto, number>;
+  readonly qualityMatch: Dexie.Table<IDisplayLookupDto, number>;
+  readonly deliveryFeedback: Dexie.Table<IDisplayLookupDto, number>;
+  readonly satisfactionLevel: Dexie.Table<IDisplayLookupDto, number>;
+  readonly claimType: Dexie.Table<IDisplayLookupDto, number>;
+  readonly quantityCategory: Dexie.Table<IDisplayLookupDto, number>;
+
   /**
    * For some entities we want to map from the BE dto more than the default IDisplayLookup props, for these cases we use a transformer.
    * Note: In case a transformer is not defined {@link fromLegacyLookup} is used as default mapper
@@ -95,6 +104,14 @@ export class LegacyLookupsDatabase extends Dexie {
       [nameof<LegacyLookupsDatabase>('uomMass')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('status')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('vessel')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('barge')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('product')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('supplier')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('qualityMatch')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('quantityCategory')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('deliveryFeedback')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('satisfactionLevel')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('claimType')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('reconMatch')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('documentType')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('emailStatus')]: lookupSchema,
@@ -121,6 +138,12 @@ export class LegacyLookupsDatabase extends Dexie {
     });
   }
 
+  async getScheduleDashboardLabelConfiguration(){
+    const db = this.table('scheduleDashboardLabelConfiguration');
+    let getScheduleDashboardLabelConfigurationList = await db.toArray();
+    return getScheduleDashboardLabelConfigurationList;
+  }
+
   async getTable(statusName: string): Promise<number[]> {
     const db = this.table('status');
     console.log(db);
@@ -129,6 +152,65 @@ export class LegacyLookupsDatabase extends Dexie {
       .equals(statusName)
       .toArray();
   }
+
+  async getBargeTable(){
+    const db = this.table('barge');
+    let bargeList = await db.toArray();
+    return bargeList;
+  }
+
+  
+  async getClaimTypeTable(){
+    const db = this.table('claimType');
+    let claimTypeList = await db.toArray();
+    return claimTypeList;
+  }
+
+  async getUomTable(){
+    const db = this.table('uom');
+    let uomList = await db.toArray();
+    return uomList;
+  }
+
+  async getQuantityCategory(){
+    const db = this.table('quantityCategory');
+    let quantityCategoryList = await db.toArray();
+    return quantityCategoryList;
+  }
+
+
+  async getProductList(){
+    const db = this.table('product');
+    let productList = await db.toArray();
+    return productList;
+  }
+
+  async getPhysicalSupplierList(){
+    const db = this.table('supplier');
+    let physicalSupplierList = await db.toArray();
+    return physicalSupplierList;
+  }
+
+  async getQualityMatchList(){
+    const db = this.table('qualityMatch');
+    let qualityMatchList = await db.toArray();
+    return qualityMatchList;
+  }
+
+  
+  async getDeliveryFeedbackList(){
+    const db = this.table('deliveryFeedback');
+    let deliveryFeedbackList = await db.toArray();
+    return deliveryFeedbackList;
+  }
+
+  async getSatisfactionLevelList(){
+    const db = this.table('satisfactionLevel');
+    let satisfactionLevelList = await db.toArray();
+    return satisfactionLevelList;
+  }
+
+
 
   private async ensureVersion(): Promise<any> {
     // TODO: add proper logging
