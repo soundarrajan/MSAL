@@ -531,6 +531,7 @@
       },
       "masters": {
             "ADDL_TECHNICAL_DETAILS": "Addl. Technical Details",
+            "CUSTOMER" : "Customer",
             "CONTACT_ADDRESS": "Contact Address",
             "CURRENT_ROB_HSFO": "Current ROB HSFO",
             "CURRENT_ROB_LSFO": "Current ROB LSFO",
