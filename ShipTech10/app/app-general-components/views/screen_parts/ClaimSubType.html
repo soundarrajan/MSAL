@@ -1,58 +1,59 @@
 ﻿<input type="hidden" value="{{ formValues.orderDetails.deliveryProductId }}" id="deliveryProductId"/>
 <span hidden>{{availableSubtypesLength = calculateAvailableSubtypesLength()}}</span>
-<div class="row form-group " ng-if="formValues.claimType.claimType.name == 'Quantity'" ng-init="CM.getClaimOptions('claimSubtype',formValues.claimType.claimType.id);checkSubtype();table = 'a'">
-
-
-    <label class="control-label">
-        {{ CM.app_id + '.' + field.Label | translate }}
-    </label>
-    <div class="">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group  row">
-
-                    <div class="form_input form_input_Parameter input-group">
-                        <select class="form-control bs-select"  id="quantity_Parameter" ng-model="quantity_Parameter"  ng-change="setQuantitySub() " ng-disabled="formValues.isEditable == false || formValues.claimDetails.status.name ==  'Cancelled'">
-                            <option value=""></option>
-                            <option value="{{ value.payload }}" data-opt="{{ value.isQuantitySubtype }}"  ng-repeat="(key, value) in claimsOptions"   >
-                                {{ value.name }}
-                            </option>
-                        </select>
-                        <input type="hidden" ng-model="IsQuantitySubtype"/>
-                        <span class="input-group-addon"  ng-if="IsQuantitySubtype == true">
-                            <a class="btn btn-default  " ng-click="addClaimData('$scope.formValues.quantitySubtypes', quantity_Parameter, 'quantitySubtypes');" ng-if="quantity_Parameter">
-                                Add New
-                            </a>
-                        </span>
-                        <span class="input-group-addon"  ng-if="IsQuantitySubtype == false">
-                            <a class="btn btn-default  " ng-click="addClaimData('$scope.formValues.densitySubtypes', quantity_Parameter, 'densitySubtypes');" ng-if="quantity_Parameter">
-                                Add New
-                            </a>
-                        </span>
-                    </div>
-                </div>
+<div class="row" ng-if="formValues.claimType.claimType.name == 'Quantity'" ng-init="CM.getClaimOptions('claimSubtype',formValues.claimType.claimType.id);checkSubtype();table = 'a'">
+    <div class="col-md-4">
+        <div class="form-group row">
+            <label>
+                 {{ CM.app_id + '.' + field.Label | translate }}
+            </label>
+            <div class="input-group form_input form_input_quantity_parameter">
+               <select class="form-control bs-select"  id="quantity_Parameter" ng-model="quantity_Parameter"  ng-change="setQuantitySub() " ng-disabled="formValues.isEditable == false || formValues.claimDetails.status.name ==  'Cancelled'">
+                    <option value=""></option>
+                    <option value="{{ value.payload }}" data-opt="{{ value.isQuantitySubtype }}"  ng-repeat="(key, value) in claimsOptions"   >
+                        {{ value.name }}
+                    </option>
+                </select>
+                <input type="hidden" ng-model="IsQuantitySubtype"/>
+                <span class="input-group-addon"  ng-if="IsQuantitySubtype == true">
+                    <a class="btn btn-default  " ng-click="addClaimData('$scope.formValues.quantitySubtypes', quantity_Parameter, 'quantitySubtypes');" ng-if="quantity_Parameter">
+                        Add New
+                    </a>
+                </span>
+                <span class="input-group-addon"  ng-if="IsQuantitySubtype == false">
+                    <a class="btn btn-default  " ng-click="addClaimData('$scope.formValues.densitySubtypes', quantity_Parameter, 'densitySubtypes');" ng-if="quantity_Parameter">
+                        Add New
+                    </a>
+                </span>
             </div>
         </div>
+    </div>
+    <div class="col-md-4" ng-if="formValues.claimType.claimType.id == 1 && !IsQuantitySubtype">
+        <div class="form-group row">
+            <label>
+                {{ CM.app_id + '.RETESTED_DENSITY' | translate }}
+            </label>
+            <div class="input-group form_input form_input_retestedDensity">
+               <input type="text" class="form-control" name="claimType.retestedDensity" id="claimType.retestedDensity" ng-class="CM.invalid_form ? 'ng-touched' : ''" ng-change="triggerChangeFieldsAppSpecific('claimType.retestedDensity', 'claimType.retestedDensity')" unique-id="claimType.retestedDensity" ng-model="formValues.claimType.retestedDensity" dynamic-pattern="decimalNumber" ng-if="formValues.claimType.claimType.id == 1 && !IsQuantitySubtype">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row form-group " ng-if="formValues.claimType.claimType.name == 'Quantity'" ng-init="CM.getClaimOptions('claimSubtype',formValues.claimType.claimType.id);checkSubtype();table = 'a'">
+    <div class="">
         <span  ng-if="availableSubtypesLength.quantitySubtypes > 0 ">
             <span class="hidden" ng-if="!formValues.claimDetails.estimatedSettlementAmount">
-
             </span>
             <span class="hidden" ng-if="claimsOptions[0].payload.sellerQuantity && claimsOptions[0].payload.buyerQuantity && !formValues.claimType.quantityShortage ;">
                 {{  formValues.claimType.quantityShortageUom = claimsOptions[0].payload.quantityUom }}
-
             </span>
             <span ng-init="initGridDropdowns('quantitySubtypes');"></span>
             <div id="grid_quantitySubtypes" external-scopes="clickHandler"  ui-grid-edit ui-grid-row-edit ui-grid-auto-resize class="dataGrid"  ui-grid="gridOptions['quantitySubtypes']"></div>
         </span>
         <span ng-if="availableSubtypesLength.densitySubtypes > 0 ">
-
             <span class="hidden" ng-if="!formValues.claimDetails.estimatedSettlementAmount">
-
             </span>
-
             <span class="hidden" ng-if="claimsOptions[13].payload.bdnDensity && claimsOptions[13].payload.labDensity && claimsOptions[13].payload.bdnQuantity  && !formValues.claimType.quantityShortage">
                 {{ formValues.claimType.quantityShortageUom = claimsOptions[13].payload.bdnQuantityUom }}
-
             </span>
             <span ng-init="initGridDropdowns('densitySubtypes');"></span>
             <div id="grid_densitySubtypes" external-scopes="clickHandler"  ui-grid-edit ui-grid-row-edit ui-grid-auto-resize class="dataGrid"  ui-grid="gridOptions['densitySubtypes']"></div>
@@ -67,7 +68,6 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group  row">
-
                     <div class="form_input form_input_Parameter input-group">
                         <select class="form-control bs-select"  id="quality_Parameter" ng-model="quality_Parameter"  ng-disabled="formValues.isEditable == false || formValues.claimDetails.status.name ==  'Cancelled'">
                             <option value=""></option>
@@ -96,7 +96,6 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group  row">
-
                     <div class="form_input form_input_Parameter input-group">
                         <select class="form-control bs-select"  id="compliance_Parameter" ng-model="compliance_Parameter" ng-disabled="formValues.isEditable == false || formValues.claimDetails.status.name ==  ''Cancelled''">
                             <option value=""></option>

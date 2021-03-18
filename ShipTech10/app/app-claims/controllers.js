@@ -332,6 +332,12 @@ APP_CLAIMS.controller('Controller_Claims', [
             });
         };
 
+        var calcResaleAmount = function() {
+            let resaleQty = convertDecimalSeparatorStringToNumber($scope.formValues.claimDebunkerDetails.resaleQuantity);
+            let debunkerQty = convertDecimalSeparatorStringToNumber($scope.formValues.claimDebunkerDetails.debunkerQuantity);
+            return (resaleQty > 0 ? resaleQty : debunkerQty) * $scope.formValues.claimDebunkerDetails.salePrice
+        }
+
         $scope.triggerChangeFieldsAppSpecific = function(name, id) {
             // if (!$rootScope.createDebunkerFromClaim && vm.entity_id < 1) {
             //     $.each($listsCache.ClaimType, function(k, v) {
@@ -363,6 +369,11 @@ APP_CLAIMS.controller('Controller_Claims', [
                 // }
             }
             if (name == 'OrderID') {
+                // reset bdn qty, vessel qty
+                $scope.formValues.claimDetails.bdnQuantity = null;
+                $scope.formValues.claimDetails.bdnQuantityUom = null;
+                $scope.formValues.claimDetails.vesselQuantity = null;
+                $scope.formValues.claimDetails.vesselQuantityUom = null;
                 // suprascriem niste date
                 Factory_Master.get_master_entity($scope.formValues.orderDetails.order.id, 'orders', 'orders', (response) => {
                     if (response) {
@@ -445,6 +456,12 @@ APP_CLAIMS.controller('Controller_Claims', [
                         if (response.paymentCompany) {
                             $scope.formValues.orderDetails.company = response.paymentCompany.name;
                         }
+                        if (response.trader) {
+                            $scope.formValues.orderDetails.trader = response.trader.name;
+                        }
+                        if (response.customer) {
+                            $scope.formValues.orderDetails.customer = response.customer.name;
+                        }
                         if (response.products && response.products.length > 0) {
                             $scope.formValues.temp = { tempProductforType: response.products };
                             if ($scope.formValues.orderDetails.product) {
@@ -466,8 +483,17 @@ APP_CLAIMS.controller('Controller_Claims', [
                         if (!$scope.formValues.claimDetails.estimatedSettlementAmountCurrency) {
                             $scope.formValues.claimDetails.estimatedSettlementAmountCurrency = $scope.tenantCurrency;
                         }
+                        if (!$scope.formValues.claimDebunkerDetails.salePriceCurrency) {
+                            $scope.formValues.claimDebunkerDetails.salePriceCurrency = $scope.tenantCurrency;
+                        }
                         if (!$scope.formValues.claimDetails.claimQuantityUom) {
                             $scope.formValues.claimDetails.claimQuantityUom = $tenantSettings.tenantFormats.uom;
+                        }
+                        if (!$scope.formValues.claimDetails.bdnQuantityUom) {
+                            $scope.formValues.claimDetails.bdnQuantityUom = $tenantSettings.tenantFormats.uom;
+                        }
+                        if (!$scope.formValues.claimDetails.vesselQuantityUom) {
+                            $scope.formValues.claimDetails.vesselQuantityUom = $tenantSettings.tenantFormats.uom;
                         }
                         
                         if (!$scope.formValues.claimDetails.claimDate) {
@@ -507,6 +533,12 @@ APP_CLAIMS.controller('Controller_Claims', [
                 });
             }
             if (name == 'deliveryNumber') {
+                // reset bdn qty, vessel qty
+                $scope.formValues.claimDetails.bdnQuantity = null;
+                $scope.formValues.claimDetails.bdnQuantityUom = null;
+                $scope.formValues.claimDetails.vesselQuantity = null;
+                $scope.formValues.claimDetails.vesselQuantityUom = null;
+
                 if ($scope.formValues.orderDetails.deliveryNo) {
                     if ($scope.formValues.orderDetails.deliveryProductId === null) {
                         $scope.formValues.orderDetails.deliveryProductId = '';
@@ -563,6 +595,9 @@ APP_CLAIMS.controller('Controller_Claims', [
                     var id = $scope.formValues.orderDetails.product.id;
                     if ($scope.formValues.orderDetails.product.payload) {
 	                    angular.merge($scope.formValues.orderDetails, $scope.formValues.orderDetails.product.payload.orderDetails);
+                        if($scope.formValues.orderDetails.deliveryNo && $scope.formValues.orderDetails.product.payload.claimDetails){
+                            angular.merge($scope.formValues.claimDetails, $scope.formValues.orderDetails.product.payload.claimDetails);
+                        }
                     }
                     delete $scope.formValues.initialOrderPrice;
                     delete $scope.formValues.orderDetails.product.payload;
@@ -646,15 +681,20 @@ APP_CLAIMS.controller('Controller_Claims', [
             }
             if (name == 'DebunkerQuantitywithUOM') {
                 if ($scope.formValues.orderDetails) {
-                    $scope.formValues.claimDebunkerDetails.debunkerAmount = $scope.formValues.orderDetails.orderPrice * $scope.formValues.claimDebunkerDetails.debunkerQuantity;
+                    $scope.formValues.claimDebunkerDetails.debunkerAmount = $scope.formValues.orderDetails.orderPrice * convertDecimalSeparatorStringToNumber($scope.formValues.claimDebunkerDetails.debunkerQuantity);
                     $scope.formValues.claimDebunkerDetails.debunkerAmountCurrency = $scope.formValues.orderDetails.currency;
                 }
-                $scope.formValues.claimDebunkerDetails.resaleAmount = $scope.formValues.claimDebunkerDetails.debunkerQuantity * $scope.formValues.claimDebunkerDetails.salePrice;
+                $scope.formValues.claimDebunkerDetails.resaleAmount = calcResaleAmount();
+                $scope.formValues.claimDebunkerDetails.resaleAmountCurrency = $scope.formValues.claimDebunkerDetails.salePriceCurrency;
+                $scope.refreshSelect();
+            }
+            if (name == 'ResaleQuantitywithUOM') {
+                $scope.formValues.claimDebunkerDetails.resaleAmount = calcResaleAmount();
                 $scope.formValues.claimDebunkerDetails.resaleAmountCurrency = $scope.formValues.claimDebunkerDetails.salePriceCurrency;
                 $scope.refreshSelect();
             }
             if (name == 'SalePricewithCurrency') {
-                $scope.formValues.claimDebunkerDetails.resaleAmount = $scope.formValues.claimDebunkerDetails.debunkerQuantity * $scope.formValues.claimDebunkerDetails.salePrice;
+                $scope.formValues.claimDebunkerDetails.resaleAmount = calcResaleAmount();
                 $scope.formValues.claimDebunkerDetails.resaleAmountCurrency = $scope.formValues.claimDebunkerDetails.salePriceCurrency;
                 if ($scope.formValues.orderDetails && $scope.formValues.claimDebunkerDetails.salePriceCurrency) {
                     var salePriceConverted = $scope.convertCurrency($scope.formValues.claimDebunkerDetails.salePriceCurrency.id, $scope.formValues.orderDetails.currency.id, null, $scope.formValues.claimDebunkerDetails.salePrice, (response) => {
@@ -677,7 +717,12 @@ APP_CLAIMS.controller('Controller_Claims', [
             }
             if(name == 'claimQuantity')
                 $scope.getQuantityShortage()
-
+            if(name == 'claimType.retestedDensity') {
+                if ($scope.formValues.densitySubtypes && $scope.formValues.densitySubtypes.length == 1) {
+                    $scope.formValues.densitySubtypes[0].labDensity = $scope.formValues.claimType.retestedDensity;
+                    $scope.computeDensityDifference(0, $scope.formValues);
+                }
+            }
         };
         $scope.cancel_claim = function() {
             vm.fields = angular.toJson($scope.formValues.id);
@@ -775,6 +820,11 @@ APP_CLAIMS.controller('Controller_Claims', [
 		        	$('.group_debunkerDetails').show();
         		}
         	}
+        });
+        $scope.$watchGroup(['formValues.claimType.quantityShortage', 'formValues.claimDetails.bdnQuantity'], () => {
+            if($scope.formValues != undefined && $scope.formValues.claimType != undefined && $scope.formValues.claimDetails != undefined) {
+                calculateQuantityShortagePercentage($scope.formValues.claimType.quantityShortage, $scope.formValues.claimDetails.bdnQuantity);
+            }
         });
         $scope.disabledCreateDebunker = function() {
             let object = $filter('filter')(vm.listsCache.ClaimType, { name: 'Debunker' })[0];
@@ -1257,6 +1307,13 @@ APP_CLAIMS.controller('Controller_Claims', [
             });
         };
 
+        var calculateQuantityShortagePercentage = function(qtyShortage, bdnQty) {
+            if(qtyShortage >= 0 && bdnQty > 0) {
+                $scope.formValues.claimType.quantityShortagePercent = ((qtyShortage / bdnQty) * 100).toFixed(2);
+            } else {
+                $scope.formValues.claimType.quantityShortagePercent = null;
+            }
+        }
 
         function convertDecimalSeparatorStringToNumber(number) {
             var numberToReturn = number;

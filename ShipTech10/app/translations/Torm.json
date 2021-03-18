@@ -527,7 +527,15 @@
             "DEBUNKER_AMOUNT": "Debunker Amount",
             "DOCUMENT_TYPE": "Document Type",
             "CLAIM_EDIT_CREATE_CREDIT_NOTE": "Create Credit / Debit Note",
-            "CLAIM_QUANTITY":"Claim Quantity"
+            "CLAIM_QUANTITY":"Claim Quantity",
+            "CUSTOMER": "Customer",
+            "TRADER": "Trader",
+            "BARGE": "Barge",
+            "BDN_QUANTITY": "Bdn QTY",
+            "VESSEL_QUANTITY": "Vessel QTY",
+            "QUANTITY_SHORTAGE_PERCENT": "Quantity Shortage %",
+            "RETESTED_DENSITY": "Retested Density (kg/m3)",
+            "RESALE_QUANTITY": "Resale Quantity"
       },
       "masters": {
             "ADDL_TECHNICAL_DETAILS": "Addl. Technical Details",

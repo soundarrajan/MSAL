@@ -3763,6 +3763,15 @@ APP_MASTERS.controller('Controller_Datatables', [
 			            	}
 			            }
             	}
+                // If density subtype then on each new addition take retested density as lab density if available
+                if(stv == 'densitySubtypes') {
+                    for (let k = 0; k <= $scope.formValues[stv].length - 1; k++) {
+                        if ($scope.formValues.claimType.retestedDensity) {
+                            $scope.formValues[stv][k].labDensity = $scope.formValues.claimType.retestedDensity;
+                            $scope.computeDensityDifference(0, $scope.formValues);
+                        }
+                    }
+                }
             });
         };
         $scope.removeData = function(obj, index) {

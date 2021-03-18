@@ -7330,6 +7330,12 @@ APP_API.factory('$Api_Service', [
                                                             claimQuantity : entry.bdnQuantityAmount,
                                                             claimQuantityUom : entry.bdnUom
                                                         },
+                                                        claimDetails: {
+                                                            bdnQuantity: entry.bdnQuantityAmount,
+                                                            bdnQuantityUom : entry.bdnUom,
+                                                            vesselQuantity: entry.bdnQuantityAmount,
+                                                            vesselQuantityUom : entry.vesselQuantityUom
+                                                        },
                                                         productTypeId: entry.productType.id
                                                     }
                                                 });
