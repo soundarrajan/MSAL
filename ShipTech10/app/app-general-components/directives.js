@@ -595,26 +595,30 @@ Number(function() {
                                         isComputedColumn: false
                                     }
                                 );
-                                CLC.tableParams.PageFilters.push(
-                                   {
-                                        ColumnType: 'Text',
-                                        ConditionValue: '!=',
-                                        FilterOperator: 1,
-                                        Values: [ 'Cancelled' ],
-                                        columnValue: 'OrderStatus_DisplayName',
-                                        isComputedColumn: false
-                                    }
-                                );
-                                CLC.tableParams.PageFilters.push(
-                                   {
-                                        ColumnType: 'Text',
-                                        ConditionValue: '!=',
-                                        FilterOperator: 1,
-                                        Values: [ 'Closed' ],
-                                        columnValue: 'OrderStatus_DisplayName',
-                                        isComputedColumn: false
-                                    }
-                                );
+                                if(scope.$root.currentColumnRoute.indexOf('labs') != -1){
+                                    CLC.tableParams.PageFilters.push(
+                                        {
+                                             ColumnType: 'Text',
+                                             ConditionValue: '!=',
+                                             FilterOperator: 1,
+                                             Values: [ 'Cancelled' ],
+                                             columnValue: 'OrderStatus_DisplayName',
+                                             isComputedColumn: false
+                                         }
+                                     );
+                                }
+                                if(scope.$root.currentColumnRoute.indexOf('labs') != -1){
+                                    CLC.tableParams.PageFilters.push(
+                                    {
+                                            ColumnType: 'Text',
+                                            ConditionValue: '!=',
+                                            FilterOperator: 1,
+                                            Values: [ 'Closed' ],
+                                            columnValue: 'OrderStatus_DisplayName',
+                                            isComputedColumn: false
+                                        }
+                                    );
+                                }
                             }
                             if (scope.id == 'admin_userlist' && scope.$root.currentColumnRoute.indexOf('claims') != -1) {
                                 if (CLC.tableParams.PageFilters.length == 0) {

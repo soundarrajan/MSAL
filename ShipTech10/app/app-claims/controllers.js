@@ -100,9 +100,34 @@ APP_CLAIMS.controller('Controller_Claims', [
         };
 
         vm.getRelatedClaims = function(id) {
+            debugger;
             console.log($scope.formValues);
+            
             Factory_Claims.getRelatedClaims(id, (callback) => {
                 if (callback) {
+                    setTimeout(() => {
+                        if($scope.formValues.orderDetails.orderStatusName != undefined && $scope.formValues.orderDetails.orderStatusName == 'Cancelled'){
+                            if($scope.CM.listsCache.ClaimType != undefined && $scope.CM.listsCache.ClaimType.length >0){
+                                $.each($scope.CM.listsCache.ClaimType, (k, v) => {
+                                    if(v.name === 'Cancellation') {
+                                        if($scope.formValues.claimType == undefined){
+                                            $scope.formValues.claimType = {};
+                                            $scope.formValues.claimType.claimType = v;
+                                            $('#ClaimTypeClaimType').attr('disabled', 'disabled');
+                                            // $scope.formValues.claimType.claimType.Disabled = true;
+
+                                        }
+                                        else{
+                                            $scope.formValues.claimType.claimType = v ;
+                                        }
+                                        
+                                    }
+                                });
+                                
+                            }
+                        }	
+                	}, 500);
+                   
                     if (callback.status == true) {
                         vm.relatedClaims = callback.data;
                         $scope.relatedClaims = callback.data;
