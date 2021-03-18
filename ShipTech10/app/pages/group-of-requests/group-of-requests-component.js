@@ -6482,6 +6482,33 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
             }
             return popupHtml;
         };
+        ctrl.formatDate = function(elem, dateFormat) {
+            if (elem) {
+                var formattedDate = elem;
+                var dateFormat = ctrl.tenantSetting.tenantFormats.dateFormat.name;
+                var hasDayOfWeek = false;
+                if (dateFormat.startsWith('DDD ')) {
+                    hasDayOfWeek = true;
+                    dateFormat = dateFormat.split('DDD ')[1];
+                }
+                let date = Date.parse(elem);
+                date = new Date(date);
+                if (date) {
+                    let utc = date.getTime() + date.getTimezoneOffset() * 60000;
+                    // var utc = date.getTime();
+                    if (dateFormat.name) {
+                        dateFormat = dateFormat.name.replace(/d/g, 'D').replace(/y/g, 'Y');
+                    } else {
+                        dateFormat = dateFormat.replace(/d/g, 'D').replace(/y/g, 'Y');
+                    }
+                    formattedDate = fecha.format(utc, dateFormat);
+                }
+                if (hasDayOfWeek) {
+                    formattedDate = `${moment(elem).format('ddd') } ${ formattedDate}`;
+                }
+                return formattedDate.split('00:00')[0];
+            }
+        };
         ctrl.getMarketPriceData = function(product, locations) {
             data = {};
             let theLocation;
