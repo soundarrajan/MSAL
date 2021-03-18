@@ -212,7 +212,7 @@
                 isPortSequences=false;
             }
             return isPortSequences;
-         }
+        }
 
         //its used to hide BankAccount Number isCounterpartyBankAccountAddable ScreenLayout
         $scope.isCounterpartyBankAccountAddable = function () {
@@ -2905,7 +2905,7 @@
                                 if (callback.status == true) {
                                     let serviceObj = callback.data.payload;
                                     if(!serviceObj.length) {
-                                        $scope.formValues.reeferUtilization = serviceObj.referUtilization;
+                                        $scope.formValues.reeferUtilization = serviceObj.reeferUtilization;
                                     }
                                 } else {
                                     toastr.error('An error has occured!');
@@ -4996,13 +4996,7 @@
             // if (!duplicated_row) {
             // Check if modal triggered from datatable
             if (!formvalue) {
-                if(element.name == 'Tank Product'){
-                    let productIdx = element.source.split('.')[3];
-                    $scope.assignObjValue_tankproduct(productIdx, $scope.selected_value);
-                }
-                else
-                    $scope.assignObjValue($scope, elements, $scope.selected_value);
-
+                $scope.assignObjValue($scope, elements, $scope.selected_value);
                 if (element.screen == 'productlist' && element.name == 'Product' && element.app == 'masters') {
                     let productIndex = element.source.split('.')[2];
                     $scope.addProductToConversion(productIndex, null, true);
