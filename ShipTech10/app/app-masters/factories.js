@@ -1137,8 +1137,8 @@ APP_MASTERS.factory('Factory_Master', [ '$window', '$http', '$Api_Service', 'API
                 }
             );
         },
-        getContacts: function(contactsdata, callback) {
-            let url = `${API.BASE_URL_DATA_MASTERS }/api/masters/counterparties/getcounterpartycontacts`;
+        getLocationSellerContacts: function(contactsdata, callback) {
+            let url = `${API.BASE_URL_DATA_MASTERS }/api/masters/locations/getsellercontacts`;
             $http({
                 method: 'POST',
                 url: url,

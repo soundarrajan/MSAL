@@ -37,6 +37,8 @@
 
         $scope.vm = this;
         $scope.isHideVesselBopsDetails = !($rootScope.adminConfiguration && $rootScope.adminConfiguration.master.isVesselBopsDetailsVisible? $rootScope.adminConfiguration.master.isVesselBopsDetailsVisible : false);
+        $scope.preferredContacts = [];
+
         $controller('ScreenLayout_Controller', {
             $scope: $scope
         });
@@ -937,12 +939,12 @@
                     }
                     $scope.formValues.company = newCompany;
                 }
-                console.log($scope.formValues);
-                console.log($rootScope.tabData);
+                // console.log($scope.formValues);
+                // console.log($rootScope.tabData);
                 _.forEach(types, function(type) {
                     $scope.formValues[dataSrcs[type]] = [];
                     for (let i = 0; i < $rootScope.tabData[type].length; i++) {
-                        console.log($rootScope.tabData[type][i]);
+                        // console.log($rootScope.tabData[type][i]);
                         setAllChild($rootScope.tabData[type][i], dataSrcs[type]);
                         if (type == 'vessel_access') {
                             let vesselType = $rootScope.tabData[type][i];
@@ -1042,77 +1044,110 @@
                 //     });  
                 // }
                 
-                 if ($scope.formValues && $scope.formValues.productsSystemInstruments) {
-                    let errors = '';
-                    let products = [];
-                    let systemInstruments = [];
-                    let location = {
-                        'name': $scope.formValues.name,
-                        'id': $scope.formValues.id
-                    }
-                    for (let i = 0; i < $scope.formValues.productsSystemInstruments.length; i++) {
-                        $scope.formValues.productsSystemInstruments[i].location = location;
-                        if ($scope.formValues.productsSystemInstruments[i].isBunkerwireDefault && !$scope.formValues.productsSystemInstruments[i].isDeleted) {
-                            let element = $scope.formValues.productsSystemInstruments[i];
-                            var findCombinationProductAndSystemInstrumentBunkerwireDefault = _.filter($scope.formValues.productsSystemInstruments, function(object) {
-                                if (object.systemInstrument && object.product && element.systemInstrument && element.product) {
-                                    return !object.isDeleted && object.systemInstrument.name == element.systemInstrument.name && object.product.name == element.product.name && object.isBunkerwireDefault;
+                 if ($scope.formValues) {
+                    if($scope.formValues.productsSystemInstruments){
+                        let errors = '';
+                        let products = [];
+                        let systemInstruments = [];
+                        let location = {
+                            'name': $scope.formValues.name,
+                            'id': $scope.formValues.id
+                        }
+                        for (let i = 0; i < $scope.formValues.productsSystemInstruments.length; i++) {
+                            $scope.formValues.productsSystemInstruments[i].location = location;
+                            if ($scope.formValues.productsSystemInstruments[i].isBunkerwireDefault && !$scope.formValues.productsSystemInstruments[i].isDeleted) {
+                                let element = $scope.formValues.productsSystemInstruments[i];
+                                var findCombinationProductAndSystemInstrumentBunkerwireDefault = _.filter($scope.formValues.productsSystemInstruments, function(object) {
+                                    if (object.systemInstrument && object.product && element.systemInstrument && element.product) {
+                                        return !object.isDeleted && object.systemInstrument.name == element.systemInstrument.name && object.product.name == element.product.name && object.isBunkerwireDefault;
+                                    }
+                                });
+                                if (findCombinationProductAndSystemInstrumentBunkerwireDefault.length > 1) {
+                                    products.push(element.product.name);
+                                    systemInstruments.push(element.systemInstrument.name);
                                 }
-                            });
-                            if (findCombinationProductAndSystemInstrumentBunkerwireDefault.length > 1) {
-                                products.push(element.product.name);
-                                systemInstruments.push(element.systemInstrument.name);
-                            }
-                        } else if ($scope.formValues.productsSystemInstruments[i].isCargoDefault && !$scope.formValues.productsSystemInstruments[i].isDeleted) {
-                            let element = $scope.formValues.productsSystemInstruments[i];
-                            var findCombinationProductAndSystemInstrumentCargoDefault = _.filter($scope.formValues.productsSystemInstruments, function(object) {
-                                if (object.systemInstrument && object.product && element.systemInstrument && element.product) {
-                                    return  !object.isDeleted && object.systemInstrument.name == element.systemInstrument.name && object.product.name == element.product.name && object.isCargoDefault;
+                            } else if ($scope.formValues.productsSystemInstruments[i].isCargoDefault && !$scope.formValues.productsSystemInstruments[i].isDeleted) {
+                                let element = $scope.formValues.productsSystemInstruments[i];
+                                var findCombinationProductAndSystemInstrumentCargoDefault = _.filter($scope.formValues.productsSystemInstruments, function(object) {
+                                    if (object.systemInstrument && object.product && element.systemInstrument && element.product) {
+                                        return  !object.isDeleted && object.systemInstrument.name == element.systemInstrument.name && object.product.name == element.product.name && object.isCargoDefault;
+                                    }
+                                });
+                                if (findCombinationProductAndSystemInstrumentCargoDefault.length > 1 ) {
+                                    products.push(element.product.name);
+                                    systemInstruments.push(element.systemInstrument.name);
                                 }
-                            });
-                            if (findCombinationProductAndSystemInstrumentCargoDefault.length > 1 ) {
-                                products.push(element.product.name);
-                                systemInstruments.push(element.systemInstrument.name);
                             }
                         }
+                        products = _.uniq(products);
+                        systemInstruments = _.uniq(systemInstruments);
+                        let productsString = '';
+                        let systemInstrumentsString = '';
+                        for (let i = 0; i < products.length; i++) {
+                            productsString += products[i] + ',';
+                        }
+                        for (let i = 0; i < systemInstruments.length; i++) {
+                            systemInstrumentsString += systemInstruments[i] + ',';
+                        }
+                        if (productsString[productsString.length - 1] == ',') {
+                            productsString =  productsString.substring(0,  productsString.length - 1);
+                        }
+                        if (systemInstrumentsString[systemInstrumentsString.length - 1] == ',') {
+                            systemInstrumentsString =  systemInstrumentsString.substring(0,  systemInstrumentsString.length - 1);
+                        }
+                        if (productsString != '' && systemInstrumentsString != '' && products.length > 1) {
+                            toastr.warning('Default bunkerwire quote is already available for the products ' + productsString + ' and system instruments' + systemInstrumentsString + '. Please check and update');
+                            return;
+                        }
+                        if (productsString != '' && systemInstrumentsString != '' && products.length == 1) {
+                            toastr.warning('Default bunkerwire quote is already available for the product ' + productsString + ' and system instrument ' + systemInstrumentsString + '. Please check and update');
+                            return;
+                        }
                     }
-                    products = _.uniq(products);
-                    systemInstruments = _.uniq(systemInstruments);
-                    let productsString = '';
-                    let systemInstrumentsString = '';
-                    for (let i = 0; i < products.length; i++) {
-                        productsString += products[i] + ',';
-                    }
-                    for (let i = 0; i < systemInstruments.length; i++) {
-                        systemInstrumentsString += systemInstruments[i] + ',';
-                    }
-                    if (productsString[productsString.length - 1] == ',') {
-                        productsString =  productsString.substring(0,  productsString.length - 1);
-                    }
-                    if (systemInstrumentsString[systemInstrumentsString.length - 1] == ',') {
-                        systemInstrumentsString =  systemInstrumentsString.substring(0,  systemInstrumentsString.length - 1);
-                    }
-                    if (productsString != '' && systemInstrumentsString != '' && products.length > 1) {
-                        toastr.warning('Default bunkerwire quote is already available for the products ' + productsString + ' and system instruments' + systemInstrumentsString + '. Please check and update');
-                        return;
-                    }
-                    if (productsString != '' && systemInstrumentsString != '' && products.length == 1) {
-                        toastr.warning('Default bunkerwire quote is already available for the product ' + productsString + ' and system instrument ' + systemInstrumentsString + '. Please check and update');
-                        return;
+
+                    if($scope.formValues.sellers){
+                        angular.forEach($scope.formValues.sellers, (sellerContact) => {
+                            let savedContacts = $filter('filter')(sellerContact.sellerContacts, function(value){ return (value.id > 0);},true );
+                            if(savedContacts.length > 0){
+                                angular.forEach(savedContacts, (contact) => {
+                                    let isDeleted = $filter('filter')(sellerContact.locationContacts, { id: contact.id}).length == 0;
+                                    if(isDeleted){
+                                        contact.isDeleted = true;
+                                        sellerContact.locationContacts.push(contact);
+                                    }
+                                });
+                            }
+                        });
                     }
                 }
             }
 
 
             if(vm.app_id == 'masters' && vm.screen_id == 'counterparty') {
-                if($scope.formValues && $scope.formValues.counterpartyTypes) {
-                    let validCounterpartyTypes = [];
-                    $.each($scope.formValues.counterpartyTypes, (k, v) => {
-                        if(v.id != 0) {
-                            validCounterpartyTypes.push(v);
-                        }
-                    });
-                    $scope.formValues.counterpartyTypes = validCounterpartyTypes;
+                if($scope.formValues) {
+                    if($scope.formValues.counterpartyTypes){
+                        let validCounterpartyTypes = [];
+                        $.each($scope.formValues.counterpartyTypes, (k, v) => {
+                            if(v.id != 0) {
+                                validCounterpartyTypes.push(v);
+                            }
+                        });
+                        $scope.formValues.counterpartyTypes = validCounterpartyTypes;
+                    }
+                    if($scope.formValues.counterpartyLocations){
+                        angular.forEach($scope.formValues.counterpartyLocations, (counterpartyLocation, locIndex) => {
+                            let savedContacts = $filter('filter')($scope.preferredContacts[locIndex], { isNewContact : false} )
+                            if(savedContacts.length > 0){
+                                angular.forEach(savedContacts, (contact) => {
+                                    let isDeleted = $filter('filter')(counterpartyLocation.locationContacts, { id: contact.id}).length == 0;
+                                    if(isDeleted){
+                                        contact.isDeleted = true;
+                                        counterpartyLocation.locationContacts.push(contact);
+                                    }
+                                });
+                            }
+                        });
+                    }
                 }
                 if ($scope.isCustomerCounterparty()) {
                 	$scope.formValues.counterpartyCustomerConfiguration.isDeleted = false;
@@ -1123,6 +1158,8 @@
 	                    $scope.formValues.counterpartyCustomerConfiguration = null;
                 	}
                 }
+
+               
             }
 
           
@@ -1437,7 +1474,7 @@
                             'locations': value.specificLocations
                         }
 
-                        console.log($scope.formValues.applications[i]);
+                        // console.log($scope.formValues.applications[i]);
                     }
                 }
                 $scope.filterFromData = {};
@@ -1531,7 +1568,7 @@
                     });
                 }
                 if (vm.app_id == 'admin' && vm.screen_id == 'role') {
-                    console.log($scope.formValues.deepmerge);
+                    // console.log($scope.formValues.deepmerge);
                     var roles = $scope.formValues.roles;
                     $.each(roles.rights, (key, module) => {
                         $.each(module.moduleScreenConfigurations, (key2, screen) => {
@@ -1831,7 +1868,7 @@
             Factory_Master.save_terms_and_conditions(id, $scope.formValues.termsAndConditions, (response) => {
                 if (response) {
                     if (response.status == true) {
-                        console.log(response.data);
+                        // console.log(response.data);
                         toastr.success(response.message);
                     } else {
                         toastr.error(response.message);
@@ -2045,8 +2082,8 @@
             });
         };
         $scope.modalSpecGroupParametersUpdateUom = function(specParamId, index) {
-            console.log(specParamId);
-            console.log(index);
+            // console.log(specParamId);
+            // console.log(index);
             Factory_Master.get_master_entity(specParamId.id, 'specparameter', 'masters', (response) => {
                 if (response) {
                     $scope.modalSpecGroupParameters[index].uom = response.uom;
@@ -2055,9 +2092,9 @@
             });
         };
         $scope.saveProcurementSpecGroup = function(data, application) {
-            console.log(application);
-            console.log(vm.activeProductForSpecGroupEdit);
-            console.log(data);
+            // console.log(application);
+            // console.log(vm.activeProductForSpecGroupEdit);
+            // console.log(data);
             if (application == 'request') {
                 $.each(data, (key, spec) => {
                     data[key].requestProduct = {};
@@ -2092,7 +2129,7 @@
                     } else {
                         toastr.error(response.message);
                     }
-                    console.log(response);
+                    //console.log(response);
                 } else {
                     toastr.error('An error has occured');
                 }
@@ -2404,8 +2441,8 @@
             if (!$scope.modalClosed) {
                 if (typeof $scope.modalInstance != 'undefined') {
                     event.preventDefault();
-                    console.log($rootScope.modalInstance);
-                    console.log($scope.modalInstance);
+                    //console.log($rootScope.modalInstance);
+                    //console.log($scope.modalInstance);
                     $scope.prettyCloseModal();
                     $scope.modalClosed = true;
                 }
@@ -3179,7 +3216,7 @@
                     $scope.options.etaFreezeStatus = angular.copy($scope.listsCache.RequestStatus);
                 }
                 if (field.Name == 'numberOfCounterpartiesToDisplay') {
-                    console.log(vm.listsCache);
+                    //console.log(vm.listsCache);
                     $scope.options.numberOfCounterpartiesToDisplay = [];
                     $.each(vm.listsCache.ItemsToDisplay, (key, val) => {
                         $scope.options.numberOfCounterpartiesToDisplay.push(val.name);
@@ -6915,6 +6952,28 @@
                     }
                 });
             }
+            if (vm.screen_id == 'counterparty') {
+                vm.preparePreferredContacts($scope.formValues.counterpartyLocations);
+            }
+            if(vm.screen_id == 'location'){
+                // location seller contacts to be in synch with counterparty location contacts
+                _.each($scope.formValues.sellers, (seller, index) =>{
+                    if(seller.sellerContacts && seller.sellerContacts.length > 0 && seller.sellerContacts[0].indexId === undefined){
+                        let sellerContacts = [];
+                        _.each(seller.sellerContacts, (sellerContact, contactIndex) => {
+                            let savedSellerContacts = $filter('filter')(seller.locationContacts, { contactId: sellerContact.id });
+                            let sellerContactId = 0
+                            if(savedSellerContacts.length > 0){
+                                sellerContactId = savedSellerContacts[0].id;
+                                savedSellerContacts[0].indexId = contactIndex;
+                            }
+                            sellerContact = { indexId: contactIndex, contactId: sellerContact.id, id: sellerContactId, email: sellerContact.email}
+                            sellerContacts.push(sellerContact);
+                        });
+                        $scope.formValues.sellers[index].sellerContacts = sellerContacts;
+                    }
+                });
+            }
         });
         $('body').on('click', () => {
 		    $('[role="tooltip"]').remove();
@@ -6955,6 +7014,22 @@
                 }
             });
         };
+        vm.preparePreferredContacts = function(locationSellerGroups){
+            _.each(locationSellerGroups, (value, key) => {
+                let contacts = [];
+                _.each(value.locationContacts, (contact, contactIndex) => {
+                    let isExistAlready = $scope.preferredContacts[key]? 
+                                    $filter('filter')($scope.preferredContacts[key], { contactId: contact.contactId }).length > 0 : false;
+                    if(!isExistAlready){
+                        contact.indexId = contacts.length + 1;
+                        contact.isNewContact = false;
+                        contacts.push(contact);
+                    }
+                });
+                $scope.preferredContacts[key] = contacts;
+            });
+        }
+
         $scope.defaultHolidayRuleDays = function() {
             if ($scope.formValues.pricingScheduleOptionEventBasedContinuous.period.id != 4) {
                 $scope.formValues.pricingScheduleOptionEventBasedContinuous.sundayHolidayRule = $scope.options.HolidayRule[1];
@@ -7205,7 +7280,6 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
 
             $scope.formValues[objMapping][$scope.locationCurrentPreferredSellerKey].products = preferredProducts;
 
-           // $scope.getLocationDetails();
         };
         $scope.getValidFromTo = function(ValueFrom, ValueTo){
           
@@ -9314,8 +9388,13 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
                 });
             } else {
                 $scope.formValues.counterpartyLocations[key].isDeleted = true;
+
+                let locationContacts = $filter('filter')($scope.formValues.counterpartyLocations, {isNewContact: false});
+                angular.forEach(locationContacts, (locationContact) => {
+                    locationContact.isDeleted = false;
+                });
+                $scope.formValues.counterpartyLocations[key].locationContacts = locationContacts;
             }
-          
         }
 
         $scope.resetLocationData = function(location) {
@@ -9325,39 +9404,87 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
             location.lastModifiedBy = null;
             location.lastModifiedOn = null
         }
-        
 
-        $scope.getLocationDetails = function(index){  
-               debugger;    
-               const counterpartyids = $scope.formValues.sellers[0].counterparty.id; 
-               debugger;
-            //    const string_counterpartyids = $scope.formValues.sellers.map(a => a.id.toString()); 
-            //    const current_counterpartyids = Object.keys($scope.preferredcontacts);
-
-            // if(JSON.stringify(string_counterpartyids)!=JSON.stringify(current_counterpartyids)){
-                let payload = {
-                    Payload:[counterpartyids]
+        $scope.setNewLocationContacts = function(counterpartyLocationIndex){
+            let locationContacts = [];
+            _.each($scope.formValues.contacts, (contact) => {
+                if(contact.email){
+                    locationContacts.push({ email: contact.email, contactId: contact.id, indexId: locationContacts.length + 1, isNewContact: true });
                 }
-                $scope.preferredcontacts = [];
-                Factory_Master.getContacts(payload, (callback) => {
+            });
+            $scope.preferredContacts[counterpartyLocationIndex] = locationContacts;
+        }
+
+        $scope.addEmptyLocationContact = function(){
+            if($scope.formValues.counterpartyLocations){
+                $scope.setNewLocationContacts($scope.formValues.counterpartyLocations.length);
+                $scope.formValues.counterpartyLocations.push({id:0, locationContacts:[]});
+            } else{
+                $scope.setNewLocationContacts(0);
+                $scope.formValues.counterpartyLocations = [{id:0, locationContacts:[]}];
+            }
+        }
+
+        $scope.getLocationDetails = function(){  
+            const index = $scope.formValues.sellers && $scope.formValues.sellers.length >0 ? $scope.formValues.sellers.length-1 : 0;
+            const counterpartyId = $scope.formValues.sellers[index].counterparty.id; 
+            const locationId = $scope.formValues? $scope.formValues.id : 0;
+
+            if(locationId > 0){
+                let payload = {
+                    Payload: {counterparty: {id: counterpartyId}, location: {id: locationId}}
+                }
+                
+                Factory_Master.getLocationSellerContacts(payload, (callback) => {
                     if (callback) {
                         $.each(callback, (k, v) => {
-                            $scope.preferredcontacts[k] = callback[k].locationContact[0];
-                        
-                        });
-                        angular.forEach($scope.formValues.vesselProducts[key].vesselProductTanks, (input, vptKey) => {
-                            $scope.formValues.vesselProducts[key].vesselProductTanks[vptKey].isDeleted = true;
+                            $scope.preferredContacts[k] = callback[k].locationContact[0];
                         });
                     }
                 });
+            }
         }
 
-        $scope.locationContactChange= function(index){
+        $scope.locationContactsChange= function(index){
             // as per API requirement
-            $scope.formValues.counterpartyLocations[index].locationContact.forEach(function (element) {
-                console.log(element);
-                element.contact = {'id':element.id};
+            let counterpartyLocations = $scope.formValues.counterpartyLocations[index];
+
+            if(counterpartyLocations.locationContacts && counterpartyLocations.locationContacts.length > 0){
+            counterpartyLocations.locationContacts.forEach(function (element) {
+                if(element.id && element.id > 0 && counterpartyLocations.id && counterpartyLocations.id >0 && counterpartyLocations.id != element.locationSellerId){
+                    element.id = 0;
+                    element.locationSellerId = counterpartyLocations.id;
+                }
+                if(counterpartyLocations.id && counterpartyLocations.id >0 && counterpartyLocations.id != element.locationSellerId){
+                    element.locationSellerId = counterpartyLocations.id;
+                }
               });
+            }
+        }
+
+        $scope.$watch('formValues.contacts', function (newValue, oldValue) {
+            if (newValue === oldValue)
+                return;
+            _.each($scope.preferredContacts, (locationContacts, index) => {
+                locationContacts = $filter('filter')(locationContacts, { isNewContact: false });
+                _.each($scope.formValues.contacts, (contact) => {
+                    let isAlreadyExists = contact.id == 0 ? false : $filter('filter')(locationContacts, { contactId: contact.id }).length > 0;
+                    if (contact.email && !isAlreadyExists) {
+                        locationContacts.push({ email: contact.email, contactId: contact.id, indexId: locationContacts.length + 1, isNewContact: true });
+                    }
+                });
+                $scope.preferredContacts[index] = locationContacts;
+            });
+        }, true);
+
+        $scope.deleteSeller = function(key) {
+            $scope.formValues.sellers[key].isDeleted = true;
+
+            let locationContacts = $filter('filter')($scope.formValues.sellers[key].locationContacts, {isNewContact: false});
+            angular.forEach(locationContacts, (locationContact) => {
+                locationContact.isDeleted = false;
+            });
+            $scope.formValues.counterpartyLocations[key].locationContacts = locationContacts;
         }
         
         $scope.deleteVesselProduct = function(key) {

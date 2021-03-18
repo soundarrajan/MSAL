@@ -7,7 +7,7 @@
 		<thead>
 			<tr>
 				<td style="width:5%" class="padding"></td>
-				<td style="width:5%" class="padding"><span class="insert" ng-click="formValues.sellers ? formValues.sellers.push({id:0}): formValues.sellers=[{id:0}]"></span></td>
+				<td style="width:5%" class="padding"><span class="insert" ng-click="formValues.sellers ? formValues.sellers.push({id:0, locationContacts:[], sellerContacts: []}): formValues.sellers=[{id:0, locationContacts:[], sellerContacts: []}]"></span></td>
 				<td style="width:20%" class="padding"><b>Counterparty</b></td>
 				<td style="width:20%" class="padding"><b>Preferred Products</b></td>
 				<td style="width:20%" class="padding"><b>Status</b></td>
@@ -17,11 +17,11 @@
 		</thead>
 		<tbody>
 			<tr ng-repeat="(key, value) in formValues.sellers track by $index" ng-if="!value.isDeleted">
-				<td style="width:5%"><span class="remove" style="display: block;pointer-events: all; opacity: 1" ng-click="value.id == 0 ? formValues.sellers.splice(key,1) : value.isDeleted = true"></span></td>
-				<td style="width:5%"><span class="insert" ng-click="formValues.sellers.push({id:0})"></span></td>
+				<td style="width:5%"><span class="remove" style="display: block;pointer-events: all; opacity: 1" ng-click="value.id == 0 ? formValues.sellers.splice(key,1) : deleteSeller(key)"></span></td>
+				<td style="width:5%"><span class="insert" ng-click="formValues.sellers.push({id:0, locationContacts:[], sellerContacts: []})"></span></td>
 				<td style="width:20%">
 					<div class="input-group">
-	                    <input decode-input-format ng-model="value.counterparty"  typeahead-on-select="getLocationDetails()" uib-typeahead="item as item.name for item in CM.listsCache.Counterparty | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-limit="5" typeahead-append-to-body="true" typeahead-wait-ms="100" name="PrefferedSeller_{{ key }}" autocomplete="off" />
+	                    <input decode-input-format ng-model="value.counterparty" typeahead-on-select="getLocationDetails()" uib-typeahead="item as item.name for item in CM.listsCache.Counterparty | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-limit="5" typeahead-append-to-body="true" typeahead-wait-ms="100" name="PrefferedSeller_{{ key }}" autocomplete="off" />
 	                    <span class="input-group-addon" ng-click="triggerModal('general', 'masters_counterpartylist', 'Counterparty' , 'formValues.sellers.'+key+'.counterparty');" ng-init="modal = false">
 	                        <a   class=" btn default">
 	                            <i class="fa fa-search"></i>
@@ -29,7 +29,7 @@
 	                    </span>		
 	                    <span class="input-group-addon">
 	                    	&nbsp;&nbsp;
-	                    	<i class="fa fa-file" ng-click="openLocationPreferredSellerProducts(key);getLocationDetails()"></i>
+	                    	<i class="fa fa-file" ng-click="openLocationPreferredSellerProducts(key);"></i>
 	                    	&nbsp;&nbsp;
 	                    </span>				
 					</div>
@@ -46,9 +46,7 @@
 					<select name="Item Name" class="form-control" ng-options="item as item.name for item in CM.listsCache.CounterpartyStatus track by item.id " ng-model="value.status"></select>
 				</td>
 				<td>
-					<!-- <multiselect ng-disabled="!preferredcontacts[value.id]" class="multiselect" ng-model="formValues.sellers[$index].locationContact" options="preferredcontacts[value.id]" display-prop="email" id-prop="id" show-search="false" ng-click="getLocationDetails()"></multiselect> -->
-					<multiselect ng-disabled="!preferredcontacts[$index]" ng-model="formValues.sellers[0].locationContact" options="preferredcontacts" class="multiselect" display-prop="email" id-prop="id" show-search="false"></multiselect>
-					<!-- <multiselect ng-disabled="!preferredcontacts[$index]" ng-model="formValues.sellers[$index].locationContact[0].contacts" options="preferredcontacts[$index].locationContact[$index].contact" class="multiselect" display-prop="email" id-prop="id" show-search="false" ng-click="getLocationDetails()"></multiselect> -->
+					<multiselect ng-model="formValues.sellers[$index].locationContacts" options="formValues.sellers[$index].sellerContacts" class="multiselect" display-prop="email" id-prop="indexId" show-search="false"></multiselect>
 				</td>
 				<td style="width:30%"><input class="form-control" type="text" decode-input-format ng-model="value.comments"></td>
 			</tr>
