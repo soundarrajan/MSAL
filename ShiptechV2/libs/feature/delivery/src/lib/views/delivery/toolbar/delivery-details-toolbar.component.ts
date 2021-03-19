@@ -37,6 +37,8 @@ export class DeliveryDetailsToolbarComponent
   implements OnInit, OnDestroy, AfterViewInit {
   navBar: any;
   deliveryId: any;
+  navigationItems: any[];
+  activeItemId: string;
   @Input('navBar') set _setNavBar(navBar) { 
     if (!navBar) {
       return;
@@ -63,12 +65,8 @@ export class DeliveryDetailsToolbarComponent
               private navBarService: NavBarApiService, 
               private appConfig: AppConfig,
               private chRef: ChangeDetectorRef) {
-    if (!environment.production) {
-      this.baseOrigin =
-        appConfig.baseOrigin || new URL(window.location.href).origin;
-    } else {
       this.baseOrigin = new URL(window.location.href).origin;
-    }
+      console.log(this.baseOrigin);
   }
 
   ngOnInit(): void {
@@ -76,8 +74,11 @@ export class DeliveryDetailsToolbarComponent
       let navBar = {
         'deliveryId': params.deliveryId
       };
+      this.activeItemId = 'delivery';
       this.deliveryId = params.deliveryId;
       this.setNavIds(params, this.navBar);
+      this.createNavigationItems(this.navBar);
+      this.markNavigationItems();
     });
   }
 
@@ -92,71 +93,7 @@ export class DeliveryDetailsToolbarComponent
     ];
     this.menuItems = [
       {
-        label: 'Request',
-        routerLink: typeof navBarList != 'undefined' && navBarList.requestId ? `${this.baseOrigin}/#/edit-request/${ navBarList.requestId}` : null,
-        routerLinkActiveOptions: { exact: true },
-        styleClass: 'delivery-menu-tab request'
-      },
-      {
-        label: 'Contract',
-        routerLink: typeof navBarList != 'undefined' && navBarList.contractId ? `${this.baseOrigin}/#/contracts/contract/edit/${ navBarList.contractId}` : null,
-        routerLinkActiveOptions: { exact: true },
-        disabled,
-        styleClass: 'delivery-menu-tab contract'
-      },
-      {
-        label: 'RFQ',
-        routerLink: typeof navBarList != 'undefined' && navBarList.requestGroupId ? `${this.baseOrigin}/#/group-of-requests/${ navBarList.requestGroupId}` : null,
-        routerLinkActiveOptions: { exact: true },
-        disabled,
-        styleClass: 'delivery-menu-tab rfq'
-      },
-      {
-        label: 'Order',
-        routerLink: typeof navBarList != 'undefined' && navBarList.orderId ? `${this.baseOrigin}/#/edit-order/${ navBarList.orderId}` : null,
-        routerLinkActiveOptions: { exact: true },
-        disabled,
-        styleClass: 'delivery-menu-tab order'
-      },
-      {
-        label: 'Delivery',
-        routerLink: typeof navBarList != 'undefined' && navBarList.deliveryId ? `${this.baseOrigin}/#/delivery/delivery/edit/${ navBarList.deliveryId}` : null,
-        routerLinkActiveOptions: { exact: true },
-        disabled,
-        styleClass: 'delivery-active-tab delivery'
-      },
-      {
-        label: 'Lab',
-        routerLink: typeof navBarList != 'undefined' && navBarList.labId ? `${this.baseOrigin}/#/labs/labresult/edit/${ navBarList.labId}` : null,
-        routerLinkActiveOptions: { exact: true },
-        disabled,
-        styleClass: 'delivery-menu-tab lab'
-      },
-      {
-        label: 'Claims',
-        routerLink: typeof navBarList != 'undefined' && navBarList.claimId ? `${this.baseOrigin}/#/claims/claim/edit/${ navBarList.claimId}` : null,
-        routerLinkActiveOptions: { exact: true },
-        disabled,
-        styleClass: 'delivery-menu-tab claims'
-      },
-      {
-        label: 'Invoices',
-        routerLink: typeof navBarList != 'undefined' && navBarList.invoiceId ? `${this.baseOrigin}/#/invoices/claims/edit/${ navBarList.invoiceId}` : null,
-        routerLinkActiveOptions: { exact: true },
-        disabled,
-        styleClass: 'delivery-menu-tab invoices'
-      },
-      {
-        label: 'Recon',
-        routerLink: typeof navBarList != 'undefined' && navBarList.orderId ? `${this.baseOrigin}/#/recon/reconlist/edit/${ navBarList.orderId}` : null,
-        routerLinkActiveOptions: { exact: true },
-        disabled,
-        styleClass: 'delivery-menu-tab recon'
-      }
-    ];
-    this.deliveryTabs = [
-      {
-        label: 'Details',
+        label: 'Main Page',
         routerLink: [
           ...routeLinkToReportDetails,
           KnownDeliverylRoutes.DeliveryDetails
@@ -166,28 +103,28 @@ export class DeliveryDetailsToolbarComponent
       },
       {
         label: 'Documents',
-        routerLink: parseFloat(deliveryId) ? `${this.baseOrigin}/#/delivery/delivery/documents/${deliveryId}` : null,
+        url: parseFloat(deliveryId) ? `${this.baseOrigin}/#/delivery/delivery/documents/${deliveryId}`: null,
         routerLinkActiveOptions: { exact: true },
         disabled,
         styleClass: 'tab'
       },
       {
         label: 'Audit Log',
-        routerLink: parseFloat(deliveryId) ? `${this.baseOrigin}/#/delivery/delivery/audit/${deliveryId}` : null,
+        url: parseFloat(deliveryId) ? `${this.baseOrigin}/#/delivery/delivery/audit/${deliveryId}` : null,
         routerLinkActiveOptions: { exact: true },
         disabled,
         styleClass: 'tab'
       },
       {
         label: 'Email Log',
-        routerLink: parseFloat(deliveryId) ? `${this.baseOrigin}/#/delivery/delivery/email-log/${deliveryId}` : null,
+        url: parseFloat(deliveryId) ? `${this.baseOrigin}/#/delivery/delivery/email-log/${deliveryId}` : null,
         routerLinkActiveOptions: { exact: true },
         disabled,
         styleClass: 'tab'
       },
       {
         label: 'Seller Rating',
-        routerLink: null,
+        url: null,
         routerLinkActiveOptions: { exact: true },
         disabled,
         styleClass: 'tab'
@@ -195,6 +132,163 @@ export class DeliveryDetailsToolbarComponent
     ];
     this.chRef.detectChanges();
   }
+
+  createNavigationItems(payload) {
+     // indexStatus = calculate if is previous, current or next
+    if(typeof payload != 'undefined') {
+      console.log('the payload', payload);
+    }
+
+    var navigationItems = [
+    {
+      id: 'request',
+      displayName : 'Request',
+      url : typeof payload != 'undefined' && payload.requestId ? `${this.baseOrigin}/#/edit-request/${ payload.requestId}` : '',
+      entityId : typeof payload != 'undefined' && payload.requestId ? payload.requestId : '',
+      indexStatus : null,
+      hidden : false
+    },
+    {
+      id: 'rfq',
+      displayName : typeof payload != 'undefined' && payload.hasQuote ? 'Offer' : 'RFQ',
+      url : typeof payload != 'undefined' && payload.requestGroupId ? `${this.baseOrigin}/#/group-of-requests/${ payload.requestGroupId}` : '',
+      entityId : typeof payload != 'undefined' && payload.requestGroupId ? payload.requestGroupId : '',
+      indexStatus : null,
+      hidden : false
+    },
+    {
+      id: 'order',
+      displayName : 'Order',
+      url : typeof payload != 'undefined' && payload.orderId ? `${this.baseOrigin}/#/edit-order/${ payload.orderId}` : '',
+      entityId : typeof payload != 'undefined' && payload.orderId ? payload.orderId : '',
+      indexStatus : null,
+      hidden : false
+    }	    		
+  ];
+  var shiptechLiteTransactions;
+  if (typeof payload != 'undefined' && payload.invoiceClaimDetailId) {   
+      shiptechLiteTransactions = [
+          {
+              id: 'contract',
+              displayName : 'Contract',
+              url : typeof payload != 'undefined' && payload.contractId ? `${this.baseOrigin}/#/contracts/contract/edit/${ payload.contractId}` : '',
+              entityId : typeof payload != 'undefined' && payload.contractId ? payload.contractId : '',
+              indexStatus : null,
+          },
+          {
+              id: 'delivery',
+              displayName : 'Delivery',
+              url : typeof payload != 'undefined' && payload.deliveryId ? `${this.baseOrigin}/#/delivery/delivery/edit/${ payload.deliveryId}` : '',
+              entityId : typeof payload != 'undefined' && payload.deliveryId ? payload.deliveryId : '',
+              indexStatus : null,
+              hidden : false
+          },
+          {
+              id: 'labs',
+              displayName : 'Labs',
+              url : typeof payload != 'undefined' && payload.labId ? `${this.baseOrigin}/#/labs/labresult/edit/${ payload.labId}` : '',
+              entityId : typeof payload != 'undefined' && payload.labId ? payload.labId : '',
+              indexStatus : null,
+              hidden : false
+          },
+          {
+              id: 'claims',
+              displayName : 'Claims',
+              url : typeof payload != 'undefined' && payload.claimId ? `${this.baseOrigin}/#/claims/claim/edit/${ payload.claimId}` : '',
+              entityId : typeof payload != 'undefined' && payload.claimId ? payload.claimId : '',
+              indexStatus : null,
+              hidden : false
+          },
+          {
+              id: 'invoices',
+              displayName : 'Invoices',
+              url: typeof payload != 'undefined' && payload.invoiceId ? `${this.baseOrigin}/#/invoices/claims/edit/${ payload.invoiceId}` : '',
+              entityId : typeof payload != 'undefined' && payload.invoiceId ? payload.invoiceId : '',
+              indexStatus : null,
+              hidden : false
+          },
+          {
+              id: 'recon',
+              displayName : 'Recon',
+              url : typeof payload != 'undefined' && payload.orderId ? `${this.baseOrigin}/#/recon/reconlist/edit/${ payload.orderId}` : '',
+              entityId : typeof payload != 'undefined' && payload.orderId ? payload.orderId : '',
+              indexStatus : null,
+              hidden : false
+          }
+      ]
+  } else {
+      shiptechLiteTransactions = [
+          {
+              id: 'contract',
+              displayName : 'Contract',
+              url : typeof payload != 'undefined' && payload.contractId ? `${this.baseOrigin}/#/contracts/contract/edit/${ payload.contractId}` : '',
+              entityId : typeof payload != 'undefined' && payload.contractId ? payload.contractId : '',
+              indexStatus : null,
+          },
+          {
+              id: 'delivery',
+              displayName : 'Delivery',
+              url : typeof payload != 'undefined' && payload.deliveryId ? `${this.baseOrigin}/#/delivery/delivery/edit/${ payload.deliveryId}` : '',
+              entityId : typeof payload != 'undefined' && payload.deliveryId ? payload.deliveryId : '',
+              indexStatus : null,
+              hidden : false
+          },
+          {
+              id: 'labs',
+              displayName : 'Labs',
+              url : typeof payload != 'undefined' && payload.labId ? `${this.baseOrigin}/#/labs/labresult/edit/${ payload.labId}` : '',
+              entityId : typeof payload != 'undefined' && payload.labId ? payload.labId : '',
+              indexStatus : null,
+              hidden : false
+          },
+          {
+              id: 'claims',
+              displayName : 'Claims',
+              url : typeof payload != 'undefined' && payload.claimId ? `${this.baseOrigin}/#/claims/claim/edit/${ payload.claimId}` : '',
+              entityId : typeof payload != 'undefined' && payload.claimId ? payload.claimId : '',
+              indexStatus : null,
+              hidden : false
+          },
+          {
+              id: 'invoices',
+              displayName : 'Invoices',
+              url: typeof payload != 'undefined' && payload.invoiceId ? `${this.baseOrigin}/#/invoices/invoice/edit/${ payload.invoiceId}` : '',
+              entityId : typeof payload != 'undefined' && payload.invoiceId ? payload.invoiceId : '',
+              indexStatus : null,
+              hidden : false
+          },
+          {
+              id: 'recon',
+              displayName : 'Recon',
+              url : typeof payload != 'undefined' && payload.orderId ? `${this.baseOrigin}/#/recon/reconlist/edit/${ payload.orderId}` : '',
+              entityId : typeof payload != 'undefined' && payload.orderId ? payload.orderId : '',
+              indexStatus : null,
+              hidden : false
+          }
+      ]
+    }
+    this.navigationItems = [...navigationItems, ...shiptechLiteTransactions];
+    console.log(this.navigationItems);
+
+  }
+
+  markNavigationItems() {
+    let activeItemIndex = -1;
+    this.navigationItems.forEach((itemVal, itemKey) => {
+      if (itemVal.id == this.activeItemId) {
+        itemVal.indexStatus = 'navigationBar-active';
+        activeItemIndex = itemKey;
+      }
+    });
+    this.navigationItems.forEach((itemVal, itemKey) => {
+      if (itemKey < activeItemIndex) {
+          itemVal.indexStatus = 'navigationBar-previous';
+      }
+      if (itemKey > activeItemIndex) {
+          itemVal.indexStatus = 'navigationBar-next';
+      }
+    });
+  };
 
   ngOnDestroy(): void {
     this._destroy$.next();

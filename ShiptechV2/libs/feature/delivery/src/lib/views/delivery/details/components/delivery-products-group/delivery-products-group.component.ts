@@ -97,8 +97,10 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
   summaryProducts: any;
   quantityFormat: string;
   @Input() eventsSaveButton: Observable<void>;
+  @Input() eventsConversionInfoData: Observable<void>;
   eventsSaveButtonSubscription: any;
   buttonClicked: any;
+  eventsConversionInfoDataSubscription: Subscription;
 
   @Input('quantityCategory') set _setQuantityCategory(quantityCategory) { 
     if (!quantityCategory) {
@@ -114,6 +116,12 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
     this.uoms = uoms;
   }
 
+  @Input('conversionInfoData') set _setConversionInfoData(conversionInfoData) { 
+    if (!conversionInfoData) {
+      return;
+    } 
+    this.conversionInfoData = conversionInfoData;
+  }
 
 
   @Input('model') set _setFormValues(formValues) { 
@@ -178,11 +186,15 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
   }
 
   ngOnInit(){  
-    this.formValues.deliveryProducts.forEach((product, key) => {
-      this.initGetConversionInfo(product.product.id, key);
-    });
     this.eventsSubscription = this.events.subscribe((data) => this.setDeliveryForm(data));
-    this.eventsSaveButtonSubscription = this.eventsSaveButton.subscribe((data) => this.setRequiredFields(data))
+    this.eventsSaveButtonSubscription = this.eventsSaveButton.subscribe((data) => this.setRequiredFields(data));
+    this.eventsConversionInfoDataSubscription = this.eventsConversionInfoData.subscribe((data) => this.setConversionInfo(data));
+  }
+
+  setConversionInfo(conversionInfoData) {
+    this.conversionInfoData = conversionInfoData;
+    this.conversionDataInfoSubject.next(this.conversionInfoData);
+    console.log(this.conversionInfoData);
   }
 
   setRequiredFields(data) {
@@ -205,28 +217,7 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
   }
 
 
-  /* END SELCTIONS FOR RAISE CLAIM IN DELIVERY*/
-  /* delivery quantity variance and status calculations*/
-  initGetConversionInfo(productID, productIdx) {
-    if (typeof this.formValues.temp.variances == 'undefined') {
-      this.formValues.temp.variances = [];
-    }
 
-    this.deliveryService
-    .loadConversionInfo(productID)
-    .pipe(
-      finalize(() => {
-      })
-    )
-    .subscribe(response => {
-      this.formValues.temp.variances[`product_${ productIdx}`] = null;
-      this.conversionInfoData[productIdx] = response;
-      this.calculateVarianceAndReconStatus(productIdx);
-      this.changeDetectorRef.detectChanges();
-      this.conversionDataInfoSubject.next(this.conversionInfoData);
-
-    });
-  };
 
   ngAfterViewInit(): void {
   
@@ -371,7 +362,7 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
           })
         )
         .subscribe(response => {
-          this.conversionInfoData.push(response);
+          this.conversionInfoData[this.selectedProduct] = response;
           let productIndex = this.formValues.deliveryProducts.length - 1;
           this.selectedProduct = productIndex;
           this.calculateVarianceAndReconStatus(productIndex);
@@ -379,7 +370,7 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
           this.orderProductsByProductType('summaryProducts');
           this.changeDetectorRef.detectChanges();
           this.deliveryFormSubject.next(this.formValues);
-          this.conversionDataInfoSubject.next(this.conversionInfoData);
+          //this.conversionDataInfoSubject.next(this.conversionInfoData);
         });
       
     } else{
@@ -585,8 +576,8 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
 
     // rules are in order, check for each if quantity exists and set that
     // if not, go on
-
-    this.finalQuantityRules.forEach( (rule, _) => {
+    for (let i = 0; i < this.finalQuantityRules.length; i ++) {
+      let rule = this.finalQuantityRules[i];
       if (typeof this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Uom`] != 'undefined' &&
         this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Amount`] != '' &&
         this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Amount`] != null) {
@@ -595,11 +586,10 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
         this.formValues.deliveryProducts[productIdx].finalQuantityAmount = this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Amount`];
         dataSet = true;
       }
-
       if (dataSet) {
-        return false;
+        break;
       } // break loop
-    });
+    }
 
     if (!dataSet) {
       this.formValues.deliveryProducts[productIdx].finalQuantityUom = null;

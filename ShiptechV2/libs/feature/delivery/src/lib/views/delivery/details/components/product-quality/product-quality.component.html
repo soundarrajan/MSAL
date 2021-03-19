@@ -28,7 +28,8 @@
           <input  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].qualityHeader.netSpecificEnergy"
                 matInput 
                 autocomplete="off"
-                placeholder="Net specific energy">
+                placeholder="Net specific energy"
+                myNumberOnly>
         </mat-form-field>
     </div>
     <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
@@ -37,7 +38,8 @@
           <input  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].qualityHeader.ccai"
                 matInput 
                 autocomplete="off"
-                placeholder="CCAI">
+                placeholder="CCAI"
+                myNumberOnly>
         </mat-form-field>
     </div>
 </div>
@@ -109,6 +111,7 @@
                           <input [(ngModel)]="qualityParameter.bdnValue"
                                 (ngModelChange)="qualityParameter.qualityMatch = setQualityMatch(qualityParameter.bdnValue, qualityParameter.surveyValue, qualityParameter.min, qualityParameter.max)"
                                 matInput 
+                                myNumberOnly
                                 autocomplete="off"
                                 name="Product_{{ deliveryProductIndex }}_{{ qualityParameter.specParameter.name}}_BDN">
                         </mat-form-field>
@@ -120,6 +123,7 @@
                           <input [(ngModel)]="qualityParameter.surveyValue"
                                 (ngModelChange)="qualityParameter.qualityMatch = setQualityMatch(qualityParameter.bdnValue, qualityParameter.surveyValue, qualityParameter.min, qualityParameter.max)"
                                 matInput 
+                                myNumberOnly
                                 autocomplete="off"
                                 name="Product_{{ deliveryProductIndex }}_{{ qualityParameter.specParameter.name}}_SURVEY">
                         </mat-form-field>

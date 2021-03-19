@@ -6,28 +6,16 @@ import { AppConfig } from '@shiptech/core/config/app-config';
 import { MenuItem } from 'primeng/api';
 
 @Component({
-  selector: 'shiptech-breadcrumbs',
+  selector: 'shiptech-breadcrumbs-delivery',
   template: `
-    <div
-      fxLayout="row"
-      fxLayoutAlign="start center"
-      class="breadcrumbs-container"
-      [ngClass]="{'remove-container': delivery}"
-    >
-      <p-breadcrumb fxFlex="auto" [model]="breadcrumbs"></p-breadcrumb>
+    <div>
+      IOANA
     </div>
   `,
-  styleUrls: ['./breadcrumbs.scss'],
+  styleUrls: ['./breadcrumbs-delivery.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class BreadcrumbComponent implements OnInit, OnDestroy {
-  delivery: any = false;
-  @Input('delivery') set _setDelivery(delivery) { 
-    if (!delivery) {
-      return;
-    } 
-    this.delivery = delivery;
-  }
+export class BreadcrumbDeliveryComponent implements OnInit, OnDestroy {
   // All the breadcrumbs
   public breadcrumbs: MenuItem[];
   private _destroy$ = new Subject();

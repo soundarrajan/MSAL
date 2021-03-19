@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  Inject,
   OnDestroy,
   OnInit
 } from '@angular/core';
@@ -32,7 +33,7 @@ import { roundDecimals } from '@shiptech/core/utils/math';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { IQcVesselPortCallDto } from '../../../services/api/dto/qc-vessel-port-call.interface';
 import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/request-response-dtos/vessel-port-call';
-import { Location } from '@angular/common';
+import { DecimalPipe, Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
 import { KnownDeliverylRoutes } from '../../../known-delivery.routes';
@@ -59,6 +60,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { RaiseClaimModalComponent } from './components/raise-claim-modal/raise-claim-modal.component';
 import { SplitDeliveryModalComponent } from './components/split-delivery-modal/split-delivery-modal.component';
 import { NavBarApiService } from '@shiptech/core/services/navbar/navbar-api.service';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+import { throws } from 'assert';
+import { LoadingBarService } from '@ngx-loading-bar/core';
 
 interface DialogData {
   email: string;
@@ -90,6 +94,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   orderNumberOptions: any;
   eventsSubject: Subject<any> = new Subject<any>();
   eventsSubject2: Subject<any> = new Subject<any>();
+  eventsSubject3: Subject<any> = new Subject<any>();
   anyChanges: boolean;
   deliverySettings: IDeliveryTenantSettings;
   finalQuantityRules: any[];
@@ -121,6 +126,9 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   quantityCategory: any;
   saveButtonClicked: boolean;
   buttonClicked: boolean;
+  conversionInfoData: any = [];
+  quantityFormat: string;
+  openedScreenLoaders: number = 0;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -142,7 +150,10 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     private deliveryService: DeliveryService,
     private spinner: NgxSpinnerService,
     public dialog: MatDialog,
-    private navBarService: NavBarApiService
+    private navBarService: NavBarApiService,
+    @Inject(DecimalPipe) private _decimalPipe,
+    private tenantService: TenantFormattingService,
+    private loadingBar: LoadingBarService
     ) {
     this.formValues = {
       'sellerName': '',
@@ -157,6 +168,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       'bdnDate': '',
       'berthingTime': '',
       'bargeAlongside': '',
+      'deliveryStatus': '',
       'info': {},
       'temp': {
         'orderedProducts': {},
@@ -182,7 +194,9 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     this.adminConfiguration = tenantSettingsService.getModuleTenantSettings<
           IGeneralTenantSettings
         >(TenantSettingsModuleName.General);
+    this.quantityFormat = '1.' + this.tenantService.quantityPrecision + '-' + this.tenantService.quantityPrecision;
     console.log(this.deliverySettings);
+    //this.loadingBar.start();
   }
 
   ngOnInit(): void {
@@ -190,8 +204,18 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       this.entityId = params.deliveryId;
     });
     this.route.data.subscribe(data => {
+      if (localStorage.getItem('parentSplitDelivery')) {
+        this.isLoading = true;
+        this.openedScreenLoaders = 0;
+        this.initSplitDelivery();
+      }
       if (localStorage.getItem('deliveriesFromOrder')) {
-        this.createDeliveryFromOrdersToDeliveriesList();
+        this.isLoading = true;
+        this.createDeliveryWithMultipleProductsFromOrdersToBeDeliveriesList();
+      }
+      if (localStorage.getItem('deliveryFromOrder')) {
+        this.isLoading = true;
+        this.createDeliveryWithOneProductFromOrdersToBeDeliveriesList();
       }
       console.log('Check route resolver data')
       console.log(data);
@@ -221,16 +245,579 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       this.setDeliverySettings(deliveryData);
       if (this.formValues.deliveryProducts[this.selectedProductIndex]) {
         const product = this.formValues.deliveryProducts[this.selectedProductIndex];
-        this.getClaimInfo([...product.qualityParameters], product.id);
+        if (product.qualityParameters) {
+          this.getClaimInfo([...product.qualityParameters], product.id);
+        }
+      }
+
+      if (this.formValues.deliveryProducts) {
+        this.formValues.deliveryProducts.forEach((product, key) => {
+          this.initGetConversionInfo(product.product.id, key);
+        });
       }
     });
 
     //this.changeDetectorRef.detectChanges();
   }
 
-  createDeliveryFromOrdersToDeliveriesList() {
+  initSplitDelivery() {
+    this.formValues = {
+      'sellerName': '',
+      'port': '',
+      'OrderBuyer': '',
+      'surveyorName': '',
+      'bdnInformation': '',
+      'orderNumber': '',
+      'deliveryDate': '',
+      'order': null,
+      'barge': null,
+      'bdnDate': '',
+      'berthingTime': '',
+      'bargeAlongside': '',
+      'deliveryStatus': '',
+      'info': {},
+      'temp': {
+        'orderedProducts': {},
+        'deliverysummary': {},
+        'deliveryProducts': [],
+        'buyerPrecedenceRule': {},
+        'sellerPrecedenceRule': {},
+        'finalQtyPrecedenceLogicRules': {},
+        'isShowQuantityReconciliationSection': {},
+        'isShowDeliveryEmailToLabsButton': {},
+        'hiddenFields': {},
+        'savedProdForCheck': {}
+      },
+      'deliveryProducts': [],
+      'feedback': {}
+    };
+    let data = JSON.parse(localStorage.getItem('parentSplitDelivery'));
+    this.formValues.order = data.order;
+    if (typeof this.formValues.deliveryProducts == 'undefined') {
+      this.formValues.deliveryProducts = [];
+    }
+    data.deliveryProducts.forEach((val, key) => {
+      this.formValues.deliveryProducts.push({
+          product: val.product,
+          id: val.id,
+          orderedProduct: val.orderedProduct,
+          orderProductId: val.orderProductId
+      });
+    });
+    this.formValues.splittedDeliveryId = data.splitDelivery.splittedDeliveryId;
+    // set confirmed amount
+    this.formValues.deliveryProducts.forEach((deliveryProd, _) => {
+      data.splitDelivery.items.forEach((splitProd, key) => {
+        if (splitProd.orderProductId == deliveryProd.orderProductId) {
+          deliveryProd.confirmedQuantityAmount = splitProd.remainingConfirmedAmount;
+          deliveryProd.confirmedQuantityUom = splitProd.remainingConfirmedUom;
+        }
+      });
+    });
+    // set quality & qty params
+    data.temp.deliverysummary.products.forEach((summaryProd, _) => {
+      this.formValues.deliveryProducts.forEach((deliveryProd, key) => {
+        if (summaryProd.id == deliveryProd.orderProductId) {
+          deliveryProd.orderProductId = summaryProd.id;
+          deliveryProd.productType = { ... summaryProd.productType };
+          deliveryProd.productTypeId = summaryProd.productType.id;
+
+          const orderProductId = summaryProd.id;
+          const orderProductSpecGroupId = summaryProd.specGroup.id;
+
+          var dataForInfo = {
+              Payload: {
+                  Filters: [ {
+                      ColumnName: 'OrderProductId',
+                      Value: orderProductId
+                  }, {
+                      ColumnName: 'SpecGroupId',
+                      Value: orderProductSpecGroupId
+                  } ]
+              }
+          };
+          this.openedScreenLoaders += 1;
+          this.deliveryService
+          .loadDeliverySpecParameters(dataForInfo)
+          .pipe(
+            finalize(() => {
+              this.openedScreenLoaders -= 1;
+              if (!this.openedScreenLoaders) {
+                this.isLoading = false;
+              }
+            })
+          )
+          .subscribe((response: any) => {
+            deliveryProd.qualityParameters = response;
+          });
+
+          this.openedScreenLoaders += 1;
+          this.deliveryService
+            .loadDeliveryQuantityParameters(dataForInfo)
+            .pipe(
+              finalize(() => {
+                this.openedScreenLoaders -= 1;
+                if (!this.openedScreenLoaders) {
+                  this.isLoading = false;
+                }
+              })
+            )
+            .subscribe((response: any) => {
+              deliveryProd.quantityParameters = response;
+            });
+        }
+      });
+    });
+
+    console.log(this.formValues);
+
+  }
+
+    /* END SELCTIONS FOR RAISE CLAIM IN DELIVERY*/
+  /* delivery quantity variance and status calculations*/
+  initGetConversionInfo(productID, productIdx) {
+    if (typeof this.formValues.temp.variances == 'undefined') {
+      this.formValues.temp.variances = [];
+    }
+    //this.openedScreenLoaders += 1;
+    this.deliveryService
+    .loadConversionInfo(productID)
+    .pipe(
+      finalize(() => {
+        //this.openedScreenLoaders -= 1;
+        if (!this.openedScreenLoaders) {
+          //this.isLoading = false;
+          console.log('loadConversionInfo(',  this.isLoading);
+        }
+      })
+    )
+    .subscribe(response => {
+      this.formValues.temp.variances[`product_${ productIdx}`] = null;
+      this.conversionInfoData[productIdx] = response;
+      this.calculateVarianceAndReconStatus(productIdx);
+      this.eventsSubject3.next(this.conversionInfoData);
+      this.changeDetectorRef.detectChanges();
+    });
+  };
+
+  setQuantityFormat(value) {
+    let viewValue = `${value}`;
+    let plainNumber = viewValue.replace(/[^\d|\-+|\.+]/g, '');
+    return plainNumber;
+  }
+  
+  calculateVarianceAndReconStatus(productIdx) {
+    // function called for all quantities, call here calculate final quantity
+    this.calculateFinalQuantity(productIdx);
+    let confirmedQuantityUom, vesselQuantityUom, bdnQuantityUom,vesselFlowMeterQuantityUom, surveyorQuantityUom;
+    let conversionInfo = this.conversionInfoData[productIdx];
+    let activeProduct = this.formValues.deliveryProducts[productIdx];
+    // get fields values and uom
+    activeProduct.confirmedQuantityUom == null ? confirmedQuantityUom = null : confirmedQuantityUom = activeProduct.confirmedQuantityUom.name;
+    activeProduct.vesselQuantityUom == null ? vesselQuantityUom = null : vesselQuantityUom = activeProduct.vesselQuantityUom.name;
+    activeProduct.bdnQuantityUom == null ? bdnQuantityUom = null : bdnQuantityUom = activeProduct.bdnQuantityUom.name;
+    activeProduct.vesselFlowMeterQuantityUom == null ? vesselFlowMeterQuantityUom = null : vesselFlowMeterQuantityUom = activeProduct.vesselFlowMeterQuantityUom.name;
+    // activeProduct.bargeFlowMeterQuantityUom == null ? bargeFlowMeterQuantityUom = null : bargeFlowMeterQuantityUom = activeProduct.bargeFlowMeterQuantityUom.name;
+    activeProduct.surveyorQuantityUom == null ? surveyorQuantityUom = null : surveyorQuantityUom = activeProduct.surveyorQuantityUom.name;
+    let Confirm = {
+      val: this.setQuantityFormat(activeProduct.confirmedQuantityAmount),
+      uom: confirmedQuantityUom
+    };
+    let Vessel = {
+      val: this.setQuantityFormat(activeProduct.vesselQuantityAmount),
+      uom: vesselQuantityUom
+    };
+    let Bdn = {
+      val: this.setQuantityFormat(activeProduct.bdnQuantityAmount),
+      uom: bdnQuantityUom
+    };
+    let VesselFlowMeter = {
+      val: this.setQuantityFormat(activeProduct.vesselFlowMeterQuantityAmount),
+      uom: vesselFlowMeterQuantityUom
+    };
+    // BargeFlowMeter = {
+    //     'val': activeProduct.bargeFlowMeterQuantityAmount,
+    //     'uom': bargeFlowMeterQuantityUom
+    // };
+    let Surveyor = {
+      val: this.setQuantityFormat(activeProduct.surveyorQuantityAmount),
+      uom: surveyorQuantityUom
+    };
+    let currentFieldValues = {
+      Confirm: Confirm,
+      Vessel: Vessel,
+      Bdn: Bdn,
+      VesselFlowMeter: VesselFlowMeter,
+      Surveyor: Surveyor
+    };
+    // "BargeFlowMeter": BargeFlowMeter,
+    let fieldUoms = {
+      Confirm: 'confirmedQuantityUom',
+      Vessel: 'vesselQuantityUom',
+      Bdn: 'bdnQuantityUom',
+      VesselFlowMeter: 'vesselFlowMeterQuantityUom',
+      Surveyor: 'surveyorQuantityUom'
+    };
+    // "BargeFlowMeter": 'bargeFlowMeterQuantityUom',
+    let convertedFields : any = {};
+    let baseUom : any = {};
+    let convFact = 1;
+    if (typeof conversionInfo == 'undefined') {
+      conversionInfo = {};
+    }
+    if (productIdx == 0 && typeof this.formValues.temp.variances == 'undefined') {
+      this.formValues.temp.variances = [];
+    }
+    if (this.formValues.deliveryProducts[productIdx].sellerQuantityType  && typeof this.formValues.deliveryProducts[productIdx].sellerQuantityType.name != 'undefined') {
+      let uomObjId = fieldUoms[this.formValues.deliveryProducts[productIdx].sellerQuantityType.name];
+      baseUom = this.formValues.deliveryProducts[productIdx][uomObjId];
+    }
+    if (!baseUom) {
+      this.formValues.temp.variances[`uom_${ productIdx}`] = null;
+      this.formValues.temp.variances[`product_${ productIdx}`] = null;
+      this.setVarianceColor(productIdx);
+      // return;
+    }
+
+    const currentFieldValuesProps = Object.keys(currentFieldValues);
+    for (let fieldKey of currentFieldValuesProps) { 
+      const fieldVal = currentFieldValues[fieldKey];
+      conversionInfo.uomConversionFactors.forEach((factVal, factKey) => {
+        if (fieldVal.uom == factVal.sourceUom.name) {
+          const convertedValue = fieldVal.val * factVal.conversionFactor;
+          convertedFields[fieldKey] = convertedValue;
+        }
+      });
+    }
+    if (baseUom && conversionInfo.toleranceQuantityUom) {
+      if (baseUom.name != conversionInfo.toleranceQuantityUom.name) {
+        conversionInfo.uomConversionFactors.forEach((factVal, factKey) => {
+          if (baseUom.name == factVal.sourceUom.name) {
+              convFact = factVal.conversionFactor;
+          }
+        });
+      } else {
+        convFact = 1;
+      }
+    }
+
+    this.formValues.temp.variances[`mfm_product_${ productIdx}`] = null;
+    this.formValues.temp.variances[`mfm_uom_${ productIdx}`] = null;
+    if (activeProduct.vesselFlowMeterQuantityUom && activeProduct.bdnQuantityUom && activeProduct.bdnQuantityAmount && activeProduct.vesselFlowMeterQuantityAmount) {
+      let mfm_baseUom = activeProduct.vesselFlowMeterQuantityUom;
+      if (mfm_baseUom && conversionInfo.toleranceQuantityUom) {
+        if (mfm_baseUom.name != conversionInfo.toleranceQuantityUom.name) {
+          conversionInfo.uomConversionFactors.forEach((factVal, factKey) => {
+            if (mfm_baseUom.name == factVal.sourceUom.name) {
+                var mfm_convFact = factVal.conversionFactor;
+            }
+          });
+        } else {
+          console.log('same');
+          var mfm_convFact = 1;
+        }
+        var mfm_qty = convertedFields.VesselFlowMeter;
+        var bdn_qty = convertedFields.Bdn;
+        var variance = mfm_qty - bdn_qty;
+        var mfm_variance = (mfm_qty - bdn_qty) / mfm_convFact;
+        this.formValues.temp.variances[`mfm_product_${ productIdx}`] =  this._decimalPipe.transform(mfm_variance, this.quantityFormat);
+        this.formValues.temp.variances[`mfm_uom_${ productIdx}`] = mfm_baseUom.name;
+      }
+    }
+
+    if (!activeProduct.buyerQuantityType) {
+      return;
+    }
+    if (!activeProduct.sellerQuantityType) {
+        return;
+    }
+    var buyerOption = activeProduct.buyerQuantityType.name;
+    var sellerOption = activeProduct.sellerQuantityType.name;
+    var buyerConvertedValue = convertedFields[buyerOption];
+    var sellerConvertedValue = convertedFields[sellerOption];
+    if (!sellerConvertedValue || !buyerConvertedValue) {
+      variance = null;
+      this.formValues.temp.variances[`product_${ productIdx}`] = variance;
+      this.setVarianceColor(productIdx);
+    } else {
+      // this is where variance is calculated. rn it's buyer - seler (15/08)
+      variance = buyerConvertedValue - sellerConvertedValue;
+
+      //
+      var varianceDisplay = variance / convFact;
+      this.formValues.temp.variances[`product_${ productIdx}`] = this._decimalPipe.transform(varianceDisplay, this.quantityFormat);
+      this.formValues.temp.variances[`uom_${ productIdx}`] = baseUom.name;
+      this.setVarianceColor(productIdx);
+    }
+    if (typeof this.formValues.temp.reconStatus == 'undefined') {
+      this.formValues.temp.reconStatus = [];
+    }
+    if (variance != null) {
+      if (conversionInfo.quantityReconciliation.name == 'Flat') {
+        if (variance < conversionInfo.minToleranceLimit) {
+            this.formValues.temp.reconStatus[`product_${ productIdx}`] = 1; // Matched Green
+        }
+        if (variance > conversionInfo.minToleranceLimit && variance < conversionInfo.maxToleranceLimit) {
+            this.formValues.temp.reconStatus[`product_${ productIdx}`] = 2; // Unmatched Amber
+        }
+        if (variance > conversionInfo.maxToleranceLimit) {
+            this.formValues.temp.reconStatus[`product_${ productIdx}`] = 3; // Unmatched Red
+        }
+      } else {
+        var minValue = conversionInfo.minToleranceLimit * this.formValues.deliveryProducts[productIdx].confirmedQuantityAmount / 100;
+        var maxValue = conversionInfo.maxToleranceLimit * this.formValues.deliveryProducts[productIdx].confirmedQuantityAmount / 100;
+        if (variance < minValue) {
+            this.formValues.temp.reconStatus[`product_${ productIdx}`] = 1; // Matched Green
+        }
+        if (variance > minValue && variance < maxValue) {
+            this.formValues.temp.reconStatus[`product_${ productIdx}`] = 2; // Unmatched Amber
+        }
+        if (variance > maxValue) {
+            this.formValues.temp.reconStatus[`product_${ productIdx}`] = 3; // Unmatched Red
+        }
+      }
+    } else {
+      this.formValues.temp.reconStatus[`product_${ productIdx}`] = null;
+    }
+
+     // Update buyer & seller amount and uom
+     this.setBuyerSellerQuantityAndUom('buyer');
+     this.setBuyerSellerQuantityAndUom('seller');
+  }
+
+  setBuyerSellerQuantityAndUom(qtyToChange) {
+    if (qtyToChange == 'seller') {
+      let sellerQty = this.formValues.temp.sellerPrecedenceRule.name;
+      if (sellerQty == 'Surveyor') {
+        this.formValues.deliveryProducts.forEach((val, key) => {
+            this.formValues.deliveryProducts[key].sellerQuantityUom = this.formValues.deliveryProducts[key].surveyorQuantityUom;
+            this.formValues.deliveryProducts[key].sellerQuantityAmount = this.formValues.deliveryProducts[key].surveyorQuantityAmount;
+        });
+      }
+      if (sellerQty == 'Bdn') {
+        this.formValues.deliveryProducts.forEach((val, key) => {
+          this.formValues.deliveryProducts[key].sellerQuantityUom = this.formValues.deliveryProducts[key].bdnQuantityUom;
+          this.formValues.deliveryProducts[key].sellerQuantityAmount = this.formValues.deliveryProducts[key].bdnQuantityAmount;
+        });
+      }
+      if (sellerQty == 'Vessel') {
+        this.formValues.deliveryProducts.forEach((val, key) => {
+          this.formValues.deliveryProducts[key].sellerQuantityUom = this.formValues.deliveryProducts[key].vesselQuantityUom;
+          this.formValues.deliveryProducts[key].sellerQuantityAmount = this.formValues.deliveryProducts[key].vesselQuantityAmount;
+       });
+      }
+      if (sellerQty == 'VesselFlowMeter') {
+        this.formValues.deliveryProducts.forEach((val, key) => {
+          this.formValues.deliveryProducts[key].sellerQuantityUom = this.formValues.deliveryProducts[key].vesselFlowMeterQuantityUom;
+          this.formValues.deliveryProducts[key].sellerQuantityAmount = this.formValues.deliveryProducts[key].vesselFlowMeterQuantityAmount;
+        });
+      }
+      if (sellerQty == 'Confirm') {
+        this.formValues.deliveryProducts.forEach((val, key) => {
+          this.formValues.deliveryProducts[key].sellerQuantityUom = this.formValues.deliveryProducts[key].confirmedQuantityUom;
+          this.formValues.deliveryProducts[key].sellerQuantityAmount = this.formValues.deliveryProducts[key].confirmedQuantityAmount;
+        });
+      }
+    }
+
+    if (qtyToChange == 'buyer') {
+      let buyerQty = this.formValues.temp.buyerPrecedenceRule.name;
+      if (buyerQty == 'Surveyor') {
+        this.formValues.deliveryProducts.forEach((val, key) => {
+          this.formValues.deliveryProducts[key].buyerQuantityUom = this.formValues.deliveryProducts[key].surveyorQuantityUom;
+          this.formValues.deliveryProducts[key].buyerQuantityAmount = this.formValues.deliveryProducts[key].surveyorQuantityAmount;
+        });
+      }
+      if (buyerQty == 'Bdn') {
+        this.formValues.deliveryProducts.forEach((val, key) => {
+          this.formValues.deliveryProducts[key].buyerQuantityUom = this.formValues.deliveryProducts[key].bdnQuantityUom;
+          this.formValues.deliveryProducts[key].buyerQuantityAmount = this.formValues.deliveryProducts[key].bdnQuantityAmount;
+        });
+      }
+      if (buyerQty == 'Vessel') {
+        this.formValues.deliveryProducts.forEach((val, key) => {
+          this.formValues.deliveryProducts[key].buyerQuantityUom = this.formValues.deliveryProducts[key].vesselQuantityUom;
+          this.formValues.deliveryProducts[key].buyerQuantityAmount = this.formValues.deliveryProducts[key].vesselQuantityAmount;
+        });
+      }
+      if (buyerQty == 'VesselFlowMeter') {
+        this.formValues.deliveryProducts.forEach((val, key) => {
+          this.formValues.deliveryProducts[key].buyerQuantityUom = this.formValues.deliveryProducts[key].vesselFlowMeterQuantityUom;
+          this.formValues.deliveryProducts[key].buyerQuantityAmount = this.formValues.deliveryProducts[key].vesselFlowMeterQuantityAmount;
+        });
+      }
+      if (buyerQty == 'Confirm') {
+        this.formValues.deliveryProducts.forEach((val, key) => {
+          this.formValues.deliveryProducts[key].buyerQuantityUom = this.formValues.deliveryProducts[key].confirmedQuantityUom;
+          this.formValues.deliveryProducts[key].buyerQuantityAmount = this.formValues.deliveryProducts[key].confirmedQuantityAmount;
+        });
+      }
+    }
+
+    // function called for all quantities, call here calculate final quantity
+    this.calculateFinalQuantity(this.selectedProductIndex);
+  }
+
+  calculateFinalQuantity(productIdx) {
+    if (typeof productIdx == 'undefined') {
+      return;
+    }
+    if (typeof this.formValues.deliveryProducts[productIdx] == 'undefined') {
+      return;
+    }
+    let dataSet = false;
+
+    // rules are in order, check for each if quantity exists and set that
+    // if not, go on
+    for (let i = 0; i < this.finalQuantityRules.length; i ++) {
+      let rule = this.finalQuantityRules[i];
+      if (typeof this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Uom`] != 'undefined' &&
+        this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Amount`] != '' &&
+        this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Amount`] != null) {
+        // quantity exists, set it
+        this.formValues.deliveryProducts[productIdx].finalQuantityUom = this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Uom`];
+        this.formValues.deliveryProducts[productIdx].finalQuantityAmount = this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Amount`];
+        dataSet = true;
+      }
+      if (dataSet) {
+        break;
+      } // break loop
+    }
+
+    if (!dataSet) {
+      this.formValues.deliveryProducts[productIdx].finalQuantityUom = null;
+      this.formValues.deliveryProducts[productIdx].finalQuantityAmount = null;
+    }
+  }
+
+  setVarianceColor(idx) {
+    // debugger
+    if (typeof this.formValues.temp.variances[`color_${ idx}`] == 'undefined') {
+      this.formValues.temp.variances[`color_${ idx}`] = '';
+    }
+    if (typeof this.formValues.temp.variances[`mfm_color_${ idx}`] == 'undefined') {
+        this.formValues.temp.variances[`mfm_color_${ idx}`] = '';
+    }
+
+    if (this.formValues.temp.variances[`product_${ idx}`] != null) {
+      // new color code
+      // 1. If the variance is Negative value and exceeds Max tolerance, then display the “Variance Qty” value field in “Red” colour
+      // 2. If the variance is Negative value and less than Max tolerance, then display the “Variance Qty” value field in “Amber” colour
+      // 3. If the variance is Positive value, then display the “Variance Qty” value field in “Green” colour
+
+      if (parseFloat(this.formValues.temp.variances[`product_${ idx}`]) < 0) {
+        // 1 or 2
+        if (Math.abs(parseFloat(this.formValues.temp.variances[`product_${ idx}`])) < parseFloat(this.toleranceLimits.maxToleranceLimit)) {
+            this.formValues.temp.variances[`color_${ idx}`] = 'amber';
+        }
+
+        if (Math.abs(parseFloat(this.formValues.temp.variances[`product_${ idx}`])) >= parseFloat(this.toleranceLimits.maxToleranceLimit)) {
+            this.formValues.temp.variances[`color_${ idx}`] = 'red';
+        }
+      } else {
+        this.formValues.temp.variances[`color_${ idx}`] = 'green';
+      }
+    } else {
+      // if variance is null, set color to white
+      this.formValues.temp.variances[`color_${ idx}`] = 'white';
+    }
+
+    if (this.formValues.temp.variances[`mfm_product_${ idx}`] != null) {
+      if(parseFloat(this.formValues.temp.variances[`mfm_product_${ idx}`]) < 0) {
+          if(Math.abs(parseFloat(this.formValues.temp.variances[`mfm_product_${ idx}`])) <= parseFloat(this.toleranceLimits.maxToleranceLimit)) {
+              this.formValues.temp.variances[`mfm_color_${ idx}`] = 'amber';
+          }
+
+          if(Math.abs(parseFloat(this.formValues.temp.variances[`mfm_product_${ idx}`])) > parseFloat(this.toleranceLimits.maxToleranceLimit)) {
+              this.formValues.temp.variances[`mfm_color_${ idx}`] = 'red';
+          }
+      } else {
+          this.formValues.temp.variances[`mfm_color_${ idx}`] = 'green';
+      }
+    } else {
+      // if variance is null, set color to white
+      this.formValues.temp.variances[`mfm_color_${ idx}`] = 'white';
+    }
+  }
+
+  createDeliveryWithOneProductFromOrdersToBeDeliveriesList() {
+    let data = JSON.parse(localStorage.getItem('deliveryFromOrder'));
+    this.formValues.order = data.order;
+    this.formValues.surveyor = data.surveyor;
+    if (typeof this.formValues.deliveryProducts == 'undefined') {
+      this.formValues.deliveryProducts = [];
+    }
+
+    this.formValues.deliveryProducts.push({
+      orderedProduct: data.product,
+      product: data.product,
+      confirmedQuantityAmount: data.confirmedQuantityAmount,
+      confirmedQuantityUom: data.confirmedQuantityUom,
+      productTypeId: data.productType.id,
+      orderProductId: data.orderProductId
+    });
+    // add quality and quantity params for product
+    const orderProductId = data.orderProductId;
+    const orderProductSpecGroupId = data.specGroup.id;
+    const dataForInfo = {
+      Payload: {
+          Filters: [ {
+              ColumnName: 'OrderProductId',
+              Value: orderProductId
+          }, {
+              ColumnName: 'SpecGroupId',
+              Value: orderProductSpecGroupId
+          } ]
+      }
+    };
+
+    this.isLoading = true;
+    this.deliveryService
+      .loadDeliverySpecParameters(dataForInfo)
+      .pipe(
+        finalize(() => {
+        })
+      )
+      .subscribe((response: any) => {
+        this.formValues.deliveryProducts[0].qualityParameters = response;
+        console.log(this.formValues.deliveryProducts[0]);
+      });
+
+    this.deliveryService
+      .loadDeliveryQuantityParameters(dataForInfo)
+      .pipe(
+        finalize(() => {
+        })
+      )
+      .subscribe((response: any) => {
+        this.formValues.deliveryProducts[0].quantityParameters = response;
+        console.log(this.formValues.deliveryProducts[0]);
+      });
+
+      this.deliveryService
+      .loadOrder(this.formValues.order.id)
+      .pipe(
+        finalize(() => {
+  
+        })
+      )
+      .subscribe((response: any)  => {
+        this.formValues.info.vesselName = response.vessel.name;
+        this.formValues.info.locationName = response.location.name;
+        this.formValues.info.eta = response.eta;
+        this.formValues.info.etb = response.etb;
+        this.formValues.temp.orderedProducts = response.products;
+        if (response.surveyorCounterparty) {
+            this.formValues.surveyorName = response.surveyorCounterparty.name;
+        }
+      });
+
+  }
+
+  createDeliveryWithMultipleProductsFromOrdersToBeDeliveriesList() {
+    this.isLoading = true;
     let data = JSON.parse(localStorage.getItem('deliveriesFromOrder'));
-    localStorage.removeItem('deliveriesFromOrder');
+    //localStorage.removeItem('deliveriesFromOrder');
     this.formValues.order = data[0].order;
     this.formValues.surveyor = data[0].surveyor;
     if (typeof this.formValues.deliveryProducts == 'undefined') {
@@ -257,6 +844,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
             } ]
         }
       };
+      this.openedScreenLoaders += 1;
       this.deliveryService
       .loadDeliverySpecParameters(dataForInfo)
       .pipe(
@@ -264,10 +852,19 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((response: any) => {
-        this.formValues.deliveryProducts[key].qualityParameters = response;
-        console.log(this.formValues.deliveryProducts[key]);
+        this.openedScreenLoaders -= 1;
+        if (!this.openedScreenLoaders) {
+          this.isLoading = false;
+        }
+        if (typeof response == 'string') {
+          this.isLoading = false;
+        } else {
+          this.formValues.deliveryProducts[key].qualityParameters = response;
+          console.log(this.formValues.deliveryProducts[key]);
+        }
       });
 
+      this.openedScreenLoaders += 1;
       this.deliveryService
       .loadDeliveryQuantityParameters(dataForInfo)
       .pipe(
@@ -275,10 +872,19 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((response: any) => {
-        this.formValues.deliveryProducts[key].quantityParameters = response;
-        console.log(this.formValues.deliveryProducts[key]);
+        this.openedScreenLoaders -= 1;
+        if (!this.openedScreenLoaders) {
+          this.isLoading = false;
+        }
+        if (typeof response == 'string') {
+          this.isLoading = false;
+        } else {
+          this.formValues.deliveryProducts[key].quantityParameters = response;
+          console.log(this.formValues.deliveryProducts[key]);
+        }
       });
     });
+    this.openedScreenLoaders += 1;
     this.deliveryService
     .loadOrder(this.formValues.order.id)
     .pipe(
@@ -287,23 +893,37 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       })
     )
     .subscribe((response: any)  => {
-      this.formValues.sellerName = response.seller.name;
-      this.formValues.port = response.location.name;
-      this.formValues.OrderBuyer = response.buyer.name;
-      this.formValues.temp.orderedProducts = response.products;
-      if (response.surveyorCounterparty) {
-          this.formValues.surveyorName = response.surveyorCounterparty.name;
+      this.openedScreenLoaders -= 1;
+      if (!this.openedScreenLoaders) {
+        this.isLoading = false;
+      }
+      if (typeof response == 'string') {
+        this.isLoading = false;
+      } else {
+        this.formValues.info.vesselName = response.vessel.name;
+        this.formValues.info.locationName = response.location.name;
+        this.formValues.info.eta = response.eta;
+        this.formValues.info.etb = response.etb;
+        this.formValues.temp.orderedProducts = response.products;
+        if (response.surveyorCounterparty) {
+            this.formValues.surveyorName = response.surveyorCounterparty.name;
+        }
       }
     });
     //this.getDeliveryOrderSummary(this.formValues.order.id);
   }
 
   getDeliveryOrderSummary(orderId: number) {
+    this.openedScreenLoaders +=1;
     this.deliveryService
     .loadDeliveryOrderSummary(orderId)
     .pipe(
         finalize(() => {
-          //this.isLoading = false;
+          this.openedScreenLoaders -=1;
+          if (!this.openedScreenLoaders) {
+            this.isLoading = false;
+            console.log('loadDeliveryOrderSummary', this.isLoading);
+          }
         })
     )
     .subscribe((response: any) => {
@@ -312,7 +932,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         this.formValues.temp = {};
       }
       this.formValues.temp.deliverysummary = response;
-      if (!this.entityId) {
+      if (!parseFloat(this.entityId)) {
         // new delivery
         // also set pricing date for delivery to delivery date if null
         this.formValues.deliveryProducts.forEach((deliveryProd, _) => {
@@ -410,12 +1030,16 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
 
   
   getRelatedDeliveries(orderId: number) {
+    this.openedScreenLoaders += 1;
     let duplicate = false;
     this.deliveryService
     .loadDeliveryInfoForOrder(orderId)
     .pipe(
         finalize(() => {
-          this.isLoading = true;
+           this.openedScreenLoaders -= 1;
+           if (!this.openedScreenLoaders) {
+             this.isLoading = false;
+           }
         })
     )
     .subscribe((response: any) => {
@@ -927,6 +1551,8 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     }
     return false;
   }
+
+  
 
   
 }

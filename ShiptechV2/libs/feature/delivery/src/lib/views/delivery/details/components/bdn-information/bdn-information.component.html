@@ -212,28 +212,12 @@
   <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
     <mat-form-field class="without-search" appearance="legacy">
         <mat-label>Barge</mat-label>
-        <!-- <mat-select disableOptionCentering 
-                    [panelClass]="{'darkPanel':switchTheme}"
-                    [(ngModel)]="formValues.barge"
-                    placeholder="Barge"
-                    [compareWith]="compareUomObjects" >
-            <mat-option *ngFor="let option of bargeList" [value]="option">
-                {{option.name}}
-            </mat-option>
-        </mat-select> -->
-        <!-- <select matNativeControl [(ngModel)]="formValues.barge" name="car"  [compareWith]="compareUomObjects" >
-          <option value="" selected></option>
-          <option *ngFor="let option of bargeList$ " [value]="option">
-            {{option.name}}
-          </option>
-        </select> -->
         <input class="free-text-field" 
           type="text"
           matInput 
           [(ngModel)]="formValues.barge"
           [matAutocomplete]="auto1"
-          placeholder="Barge"
-          required>
+          placeholder="Barge">
         <mat-autocomplete #auto1="matAutocomplete" 
                           class="darkPanelAuto"
                           [displayWith]="displayFn">
