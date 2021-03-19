@@ -734,6 +734,7 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
             buyer_access: 'accessBuyers',
             company_access: 'accessCompanies'
         }
+        $rootScope.listOfVesselTypes = [];
         $.each($scope.entities, (key, val) => {
             Factory_Admin.getTabData(val.id, (response) => {
                 if (response) {
@@ -746,6 +747,13 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
                             $scope.detectInitialAllSelected();
                         } else {
                             var aligendObject = $scope.setParentUnselectable(response.payload, $scope.formValues.accessVessels);
+                            for (let i = 0; i < aligendObject.length; i++) {
+                                let vesselType = {
+                                    'id': aligendObject[i].id,
+                                    'name': aligendObject[i].name
+                                };
+                                $rootScope.listOfVesselTypes.push(vesselType);
+                            }
                             $scope.tabData[val.id] = aligendObject;
                             $scope.checkData[val.id] = false;
                             $scope.tabData['buyer_access'] = $scope.buildTree($scope.tabInitalData['buyer_access'], $scope.formValues.accessBuyers);
@@ -756,6 +764,12 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
                         $scope.checkData[val.id] = false;
                         $scope.tabData[val.id] = response.payload
                         $scope.tabInitalData[val.id] = response.payload;
+                        if (val.id == 'buyer_access') {
+                            $scope.tabData[val.id] = $scope.buildTree($scope.tabInitalData[val.id], $scope.formValues.accessBuyers);
+                        } else if (val.id == 'company_access') {
+                            $scope.tabData[val.id] = $scope.buildTree($scope.tabInitalData[val.id], $scope.formValues.accessCompanies);
+                        }
+                        $scope.detectInitialAllSelected();
                     }
                 }
             });
