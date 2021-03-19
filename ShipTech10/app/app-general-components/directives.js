@@ -197,7 +197,7 @@ Number(function() {
                             // }
                             function loadDefaultUi() {
 
-                                if (['masters_counterpartylist_surveyors', 'masters_counterpartylist_labs', 'masters_counterpartylist_physicalsuppliers', 'masters_counterpartylist_seller', 'masters_counterpartylist_broker', 'masters_counterpartylist_barge', 'masters_counterpartylist_customer'].includes(Elements.scope[table_id].id)) {
+                                if (['masters_counterpartylist_surveyors', 'masters_counterpartylist_labs', 'masters_counterpartylist_physicalsuppliers', 'masters_counterpartylist_seller', 'masters_counterpartylist_broker', 'masters_counterpartylist_barge', 'masters_counterpartylist_customers'].includes(Elements.scope[table_id].id)) {
                                     id = 'masters_counterpartylist';
                                 } else {
                                     id = Elements.scope[table_id].id;
