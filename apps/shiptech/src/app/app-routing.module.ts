@@ -44,6 +44,22 @@ const routes: Routes = [
   {
     path: '',
     data: {
+      breadcrumb: 'Delivery List',
+      breadcrumbUrl: '/#/delivery',
+      breadcrumbIcon: 'fa fa-home'
+    },
+    children: [
+      {
+        path: KnownPrimaryRoutes.Delivery,
+        canActivate: [AuthenticationGuard],
+        loadChildren: () =>
+          import('@shiptech/feature/delivery').then(m => m.DeliveryModule)
+      }
+    ]
+  },
+  {
+    path: '',
+    data: {
       breadcrumb: 'Invoice List',
       breadcrumbUrl: '/#/invoice',
       breadcrumbIcon: 'fa fa-home'

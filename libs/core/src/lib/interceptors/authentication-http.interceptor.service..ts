@@ -8,10 +8,11 @@ import {
 } from '@angular/common/http';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { catchError, mergeMap } from 'rxjs/operators';
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { LoggerFactory } from '@shiptech/core/logging/logger-factory.service';
 import { ILogger } from '@shiptech/core/logging/logger';
 import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Injectable()
 export class AuthenticationInterceptor implements HttpInterceptor {
@@ -20,7 +21,8 @@ export class AuthenticationInterceptor implements HttpInterceptor {
   constructor(
     private authService: AuthenticationService,
     private toastrService: ToastrService,
-    loggerFactory: LoggerFactory
+    private spinner: NgxSpinnerService, 
+    loggerFactory: LoggerFactory,
   ) {
     this.logger = loggerFactory.createLogger(AuthenticationInterceptor.name);
   }
@@ -28,7 +30,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  ): Observable<any> {
     if (!this.authService.isInitialized) {
       return next.handle(req);
     }
@@ -59,11 +61,12 @@ export class AuthenticationInterceptor implements HttpInterceptor {
         return next.handle(authorizedRequest);
       }),
       catchError(error => {
+        // this.spinner.hide();
         if (error instanceof HttpErrorResponse) {
           if (error.status === 401) {
             this.toastrService.error('You do not have authorization to perform this action.');
             localStorage.setItem("authorization", "0");
-            return;
+            return throwError(error);
           }
         }
         localStorage.setItem("authorization", "1");

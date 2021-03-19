@@ -1,0 +1,61 @@
+.container-fluid-delivery {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.bdn-container  {
+  background-color: white;
+}
+
+.delivery-products-container {
+  background: #FCFCFC;
+}
+
+.container-delivery-screen {
+  padding-left: unset;
+  padding-right: unset;
+}
+
+.split-deliveries:before {
+  content: url(/assets/layout/images/pages/splitDeliveries.svg);
+}
+
+
+
+.raise-claim:before {
+  content: url(/assets/layout/images/pages/raiseClaim.svg);
+}
+
+.label-for-delivery-menu {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #FFFFFF;
+  position: relative;
+  top: -18px;
+  left: 5px;
+}
+
+#raise-claim {
+  position: relative;
+  width: 39px;
+  height: 39px;
+  left: 2px;
+}
+
+
+.save-button {
+  background: #00AAE2;
+  border-radius: 3px;
+}
+
+.btn-i-blue-color {
+  color: #FFFFFF  !important;
+  background: #00AAE2  !important;
+  border-radius: 3px !important;
+  margin-right: 10px;
+  height: 30px;
+  min-width: 85px;
+  font-size: 12px !important;
+}
