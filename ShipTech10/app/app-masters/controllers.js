@@ -399,6 +399,7 @@
         if (vm.app_id == 'masters' && vm.screen_id == 'vessel' && !$scope.isHideVesselBopsDetails) {
             $scope.formValues.sfocMe = 200.0; //200 g/KWH
             $scope.formValues.sfocAe = 235.0; //235 g/KWH
+            $scope.formValues.pilotSpeed = 0;
             $scope.formValues.mcrPart = mcrPart;
             $scope.formValues.oneReeferConsumption = oneReeferConsumption;
         }
@@ -2848,7 +2849,6 @@
         };
 
         $scope.triggerChangeFields = function(name, id) {
-             debugger;
             $rootScope.formDataFields = $scope.formValues;
 
            
@@ -6584,7 +6584,6 @@
         };
         
         $scope.setDefaultCurrency = function(additionalCost,key) {
-            
             var defaultCostType;
             if($scope.formValues.additionalCosts.length >0){
                 if($scope.formValues.additionalCosts[key].amount != undefined){
@@ -6618,9 +6617,6 @@
         };
       
         $scope.setDefaultCostType = function(additionalCost, key) {
-            debugger 
-
-
             if($scope.formValues.additionalCosts.length >0){
                 if($scope.formValues.additionalCosts[key].amount != undefined){
                     $scope.formValues.additionalCosts[key].amount = ''; 
@@ -8466,7 +8462,6 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
 	            if (!vm.cost.estimatedRate || !vm.cost.invoiceAmount) {
 	                return;
 	            }
-	            // debugger
 	            $http.post(`${API.BASE_URL_DATA_RECON }/api/recon/invoicecost`, {
 	                payload: vm.cost
 	            }).then((response) => {

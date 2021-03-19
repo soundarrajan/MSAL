@@ -491,6 +491,12 @@ APP_CLAIMS.controller('Controller_Claims', [
                         if (!$scope.formValues.claimDebunkerDetails.salePriceCurrency) {
                             $scope.formValues.claimDebunkerDetails.salePriceCurrency = $scope.tenantCurrency;
                         }
+                        if (!$scope.formValues.claimDebunkerDetails.debunkerQuantityUom) {
+                            $scope.formValues.claimDebunkerDetails.debunkerQuantityUom = $tenantSettings.tenantFormats.uom;
+                        }
+                        if (!$scope.formValues.claimDebunkerDetails.resaleQuantityUom) {
+                            $scope.formValues.claimDebunkerDetails.resaleQuantityUom = $tenantSettings.tenantFormats.uom;
+                        }
                         if (!$scope.formValues.claimDetails.claimQuantityUom) {
                             $scope.formValues.claimDetails.claimQuantityUom = $tenantSettings.tenantFormats.uom;
                         }
