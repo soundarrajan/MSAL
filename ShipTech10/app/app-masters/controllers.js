@@ -9451,6 +9451,7 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
                 }
                 if(counterpartyLocations.id && counterpartyLocations.id >0 && counterpartyLocations.id != element.locationSellerId){
                     element.locationSellerId = counterpartyLocations.id;
+                    element.contact = {id: element.contactId, email: element.email}
                 }
               });
             }
