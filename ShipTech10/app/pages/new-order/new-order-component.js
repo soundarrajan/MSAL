@@ -1581,6 +1581,11 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             lookupModel.get(LOOKUP_TYPE.PRODUCTS, productId).then((server_data) => {
                 product = server_data.payload;
                 var getContractOptionParam = { product: product };
+	            if (product.productType.name == "VLSFO") {
+                	ctrl.data.products[index].preTest = true;
+                } else {
+                	ctrl.data.products[index].preTest = false;
+                }
                 if (typeof(index) != 'undefined' ) {
                 	getContractOptionParam.quantityUom = ctrl.data.products[index].quantityUom;
                 	ctrl.data.products[index].contract = null;
