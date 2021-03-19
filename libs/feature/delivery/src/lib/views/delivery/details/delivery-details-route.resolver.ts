@@ -13,6 +13,7 @@ import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
 import { DeliveryService } from '../../../services/delivery.service';
 import { BdnInformationApiService } from '@shiptech/core/delivery-api/bdn-information/bdn-information-api.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Injectable()
 export class DeliveryDetailsRouteResolver implements Resolve<any> {
@@ -23,7 +24,8 @@ export class DeliveryDetailsRouteResolver implements Resolve<any> {
     private appErrorHandler: AppErrorHandler,
     private reportService: QcReportService,
     private deliveryService: DeliveryService,
-    private bdnInformationService: BdnInformationApiService
+    private bdnInformationService: BdnInformationApiService,
+    private spinner: NgxSpinnerService
   ) {}
 
   resolve(
@@ -47,7 +49,6 @@ export class DeliveryDetailsRouteResolver implements Resolve<any> {
         'RequestStatuses': '13,19'
       }
     };
-
     return this.bdnInformationService.getForTransactionForSearch(payload);
   }
 

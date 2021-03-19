@@ -5,7 +5,7 @@
 </div>
 <div class="col-md-12  product-details-container" *ngIf="formValues.deliveryProducts[deliveryProductIndex].quantityHeader">
     <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-        <mat-form-field class="without-search" appearance="legacy" *ngIf="formValues.temp.deliverysummary">
+        <mat-form-field class="without-search" appearance="legacy" *ngIf="formValues.temp.deliverysummary && formValues.temp.deliverysummary.products[prodOrderInTemp]">
           <mat-label>CCAI offered</mat-label>
           <input  [(ngModel)]="formValues.temp.deliverysummary.products[prodOrderInTemp].ccai"
                 matInput 
@@ -24,7 +24,7 @@
         </mat-form-field>
     </div>
     <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-        <mat-form-field class="without-search" appearance="legacy"  *ngIf="formValues.temp.deliverysummary">
+        <mat-form-field class="without-search" appearance="legacy"  *ngIf="formValues.temp.deliverysummary && formValues.temp.deliverysummary.products[prodOrderInTemp]">
           <mat-label>CCAI variance</mat-label>
           <input  [(ngModel)]="formValues.temp.deliverysummary.products[prodOrderInTemp].ccaiVariance"
                 matInput 
@@ -73,6 +73,7 @@
                               <input   [(ngModel)]="quantityParameter.bdn"
                                     matInput 
                                     quantityFormat
+                                    myNumberOnly
                                     autocomplete="off"
                                     name="Product_{{ deliveryProductIndex }}_{{ quantityParameter.parameter.name}}_BDN">
                             </mat-form-field>

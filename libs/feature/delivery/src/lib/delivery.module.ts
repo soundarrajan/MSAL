@@ -138,6 +138,8 @@ import { ClaimTypeRouteResolver } from './views/delivery/details/claim-type-rout
 import { ScheduleDashboardLabelsRouteResolver } from './views/delivery/details/schedule-dashboard-labels-route.resolver';
 import { SplitDeliveryModalComponent } from './views/delivery/details/components/split-delivery-modal/split-delivery-modal.component';
 import { QuantityCategoryRouteResolver } from './views/delivery/details/quantity-category-route.resolver';
+import { NumberOnlyDirective } from './views/delivery/details/directives/number-only.directive';
+import { BreadcrumbsModule } from '@shiptech/core/ui/components/breadcrumbs/breadcrumbs.module';
 
 
 @NgModule({
@@ -232,7 +234,8 @@ import { QuantityCategoryRouteResolver } from './views/delivery/details/quantity
     NgxMatNativeDateModule,
     NgxSpinnerModule,
     MatFormFieldModule,
-    MatSelectInfiniteScrollModule
+    MatSelectInfiniteScrollModule,
+    BreadcrumbsModule
   ],
   declarations: [
     MainDeliveryComponent,
@@ -256,6 +259,7 @@ import { QuantityCategoryRouteResolver } from './views/delivery/details/quantity
     ProductQuantityComponent,
     BdnAdditionalInformationComponent,
     QuantityTenantFormatDirective,
+    NumberOnlyDirective,
     RaiseClaimModalComponent,
     SplitDeliveryModalComponent
     //PSpinnerDisableKeysSpinDirective,
@@ -264,7 +268,8 @@ import { QuantityCategoryRouteResolver } from './views/delivery/details/quantity
   entryComponents: [RaiseClaimComponent, RaiseClaimModalComponent, SplitDeliveryModalComponent],
   exports: [
     MainDeliveryComponent,
-    QuantityTenantFormatDirective
+    QuantityTenantFormatDirective,
+    NumberOnlyDirective 
    // PSpinnerDisableKeysSpinDirective,
     //PSpinnerTenantFormatDirective
   ],

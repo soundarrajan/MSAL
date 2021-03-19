@@ -64,6 +64,7 @@ import { MatRadioChange } from '@angular/material/radio';
 import { Router } from '@angular/router';
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
 import { KnownDeliverylRoutes } from 'libs/feature/delivery/src/lib/known-delivery.routes';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'shiptech-split-delivery-modal',
@@ -80,13 +81,17 @@ export class SplitDeliveryModalComponent implements OnInit {
   splitDeliveryInLimit: any[];
   uoms: any;
   disabledSplitBtn;
+  quantityFormat: string;
   constructor(
     public dialogRef: MatDialogRef<SplitDeliveryModalComponent>,
     private ren: Renderer2,
     private changeDetectorRef: ChangeDetectorRef,
     private deliveryService: DeliveryService,
     private router: Router,
+    private tenantService: TenantFormattingService,
+    @Inject(DecimalPipe) private _decimalPipe,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
+      this.quantityFormat = '1.' + this.tenantService.quantityPrecision + '-' + this.tenantService.quantityPrecision;
       this.formValues = data.formValues;
       this.uoms = data.uoms;
       console.log(this.formValues);
@@ -110,24 +115,24 @@ export class SplitDeliveryModalComponent implements OnInit {
       delProd = {
           name: value.orderedProduct.name,
           deliveryProductId: value.id,
-          initialConfirmedAmount: value.confirmedQuantityAmount,
+          initialConfirmedAmount: this.quantityFormatValue(value.confirmedQuantityAmount),
           initialConfirmedUom: value.confirmedQuantityUom,
           remainingConfirmedAmount: null,
           remainingConfirmedUom: value.confirmedQuantityUom,
           updateAgreedQuantityAmount: false,
-          initialAgreedAmount: value.agreedQuantityAmount,
+          initialAgreedAmount: this.quantityFormatValue(value.agreedQuantityAmount),
           remainingAgreedAmount: null,
           updateVesselQuantityAmount: false,
-          initialVesselAmount: value.vesselQuantityAmount,
+          initialVesselAmount: this.quantityFormatValue(value.vesselQuantityAmount),
           remainingVesselAmount: null,
           updateVesselFlowQuantityAmount: false,
-          initialVesselFlowAmount: value.vesselFlowMeterQuantityAmount,
+          initialVesselFlowAmount: this.quantityFormatValue(value.vesselFlowMeterQuantityAmount),
           remainingVesselFlowAmount: null,
           updateSurveyorQuantityAmount: false,
-          initialSurveyorAmount: value.surveyorQuantityAmount,
+          initialSurveyorAmount: this.quantityFormatValue(value.surveyorQuantityAmount),
           remainingSurveyorAmount: null,
           updateBDNQuantityAmount: false,
-          initialBDNAmount: value.bdnQuantityAmount,
+          initialBDNAmount: this.quantityFormatValue(value.bdnQuantityAmount),
           remainingBDNAmount: null,
           productId: value.product.id,
           orderProductId: value.orderProductId
@@ -154,7 +159,7 @@ export class SplitDeliveryModalComponent implements OnInit {
         response.forEach((respProd, _) => {
             if(respProd.orderProductId == splitProd.orderProductId) {
                 splitProd.orderLimit = respProd.orderLimit;
-                splitProd.remainingConfirmedAmount = respProd.remainingConfirmedAmount;
+                splitProd.remainingConfirmedAmount = this.quantityFormatValue(respProd.remainingConfirmedAmount);
                 this.splitDeliveryInLimit[key] = true;
             }
         });
@@ -164,6 +169,25 @@ export class SplitDeliveryModalComponent implements OnInit {
     });
 
   }
+
+  quantityFormatValue(value) {
+    if (!value) {
+      return null;
+    }
+    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    let number = parseFloat(plainNumber);
+    if (isNaN(number)) {
+      return null;
+    }
+    if (plainNumber) {
+      if(this.tenantService.quantityPrecision == 0) {
+        return plainNumber;
+      } else {
+        return this._decimalPipe.transform(plainNumber, this.quantityFormat);
+      }
+    }
+  }
+
 
   disabledSplitDelivery(splitDeliveryInLimit) {
     console.log(splitDeliveryInLimit);
@@ -189,7 +213,7 @@ export class SplitDeliveryModalComponent implements OnInit {
       this.formValues.deliveryProducts.forEach((prod_val, key) => {
             if(split_val.deliveryProductId == prod_val.id) {
                 if(split_val.remainingConfirmedAmount != 0) {
-                    newProductsList.push(prod_val);
+                  newProductsList.push(prod_val);
                 }
             }
       });
@@ -197,8 +221,7 @@ export class SplitDeliveryModalComponent implements OnInit {
     this.formValues.deliveryProducts = [...newProductsList];
     this.formValues.splitDelivery.splittedDeliveryId = this.formValues.id;
 
-    var dataToAdd = { ...this.formValues };
-    localStorage.setItem('parentSplitDelivery', { ... dataToAdd});
+    localStorage.setItem('parentSplitDelivery',  JSON.stringify(this.formValues));
     this.dialogRef.close();
     this.router
     .navigate([

@@ -1,39 +1,42 @@
-<shiptech-wunderbar-delivery>
-  <div class="row">
-    <div class="col-6 d-flex delivery-header">
-      <div *ngFor="let menuItem of menuItems">
-          <div [ngClass]="menuItem.styleClass">
-            <span *ngIf="menuItem.routerLink">
-              <a href="{{menuItem.routerLink}}" target="_blank">
-                {{menuItem.label}}
-              </a>
-            </span>
-            <span *ngIf="!menuItem.routerLink">
-              {{menuItem.label}}
-            </span>
-          </div>   
+<div
+  fxLayout="row"
+  fxLayoutAlign="start center"
+  class="page-bar"
+  >
+  <shiptech-breadcrumbs class="col-md-6">
+  </shiptech-breadcrumbs>
+  <div class="st-breadcrumbs-progress-bar col-md-6">
+    <ul class="page-breadcrumb">
+      <li class="btn btn-fit-height {{navItem.indexStatus}}"  *ngFor="let navItem of navigationItems">          
+        <a *ngIf="navItem.url" href="{{navItem.url}}" target="_blank">
+            {{navItem.displayName}}
+        </a>
+        <span *ngIf="!navItem.url">
+            {{navItem.displayName}}
+        </span>
+      </li>
+    </ul>
+  </div>	
+</div>
+
+<shiptech-wunderbar>
+  <!-- TODO: Remove inline style-->
+  <div class="row" style="margin: 5px 0;">
+    <div class="col-6 d-flex">
+      <div class="shiptech-tab ui-tabmenu ui-widget ui-widget-content ui-corner-all">
+        <ul class="ui-tabmenu-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
+          <li role="tab" class="ui-tabmenuitem ui-state-default ui-corner-top" *ngFor="let menuItem of menuItems">
+            <a  *ngIf="menuItem.url" class="ui-menuitem-link ui-corner-all" href="{{menuItem.url}}" target="_blank">
+              <span class="ui-menuitem-text">{{menuItem.label}}</span>
+            </a>
+            <a  *ngIf="!menuItem.url" class="ui-menuitem-link ui-corner-all">
+              <span class="ui-menuitem-text">{{menuItem.label}}</span>
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
+
     <ng-content></ng-content>
   </div>
-</shiptech-wunderbar-delivery>
-<shiptech-wundertab-delivery>
-  <div class="row">
-    <div class="col-12">
-      <div style="float:right; display: inline-flex;">
-        <div *ngFor="let deliveryTab of deliveryTabs">
-          <div [ngClass]="deliveryTab.styleClass">
-            <span *ngIf="deliveryTab.routerLink">
-              <a href="{{deliveryTab.routerLink}}" target="_blank">
-                {{deliveryTab.label}}
-              </a>
-            </span>
-            <span *ngIf="!deliveryTab.routerLink">
-              {{deliveryTab.label}}
-            </span>
-          </div>   
-      </div>
-      </div>
-    </div>     
-  </div>
-</shiptech-wundertab-delivery>
+</shiptech-wunderbar>

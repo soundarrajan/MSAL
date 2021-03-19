@@ -557,21 +557,20 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
 
     // rules are in order, check for each if quantity exists and set that
     // if not, go on
-
-    this.finalQuantityRules.forEach((rule, _) => {
-      if(typeof this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Uom`] != 'undefined' &&
-          this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Amount`] != '' &&
-          this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Amount`] != null) {
-          // quantity exists, set it
-          this.formValues.deliveryProducts[productIdx].finalQuantityUom = this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Uom`];
-          this.formValues.deliveryProducts[productIdx].finalQuantityAmount = this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Amount`];
-          dataSet = true;
+    for (let i = 0; i < this.finalQuantityRules.length; i ++) {
+      let rule = this.finalQuantityRules[i];
+      if (typeof this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Uom`] != 'undefined' &&
+        this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Amount`] != '' &&
+        this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Amount`] != null) {
+        // quantity exists, set it
+        this.formValues.deliveryProducts[productIdx].finalQuantityUom = this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Uom`];
+        this.formValues.deliveryProducts[productIdx].finalQuantityAmount = this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Amount`];
+        dataSet = true;
       }
-
-      if(dataSet) {
-          return false;
+      if (dataSet) {
+        break;
       } // break loop
-    });
+    }
 
     if(!dataSet) {
       this.formValues.deliveryProducts[productIdx].finalQuantityUom = null;
@@ -838,10 +837,14 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
 
   quantityFormatValue(value) {
     let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    let number = parseFloat(plainNumber);
+    if (isNaN(number)) {
+      return null;
+    }
     if (plainNumber) {
       if(this.tenantService.quantityPrecision == 0) {
         return plainNumber;
-      } else{
+      } else {
         return this._decimalPipe.transform(plainNumber, this.quantityFormat);
       }
     }

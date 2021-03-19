@@ -33,6 +33,7 @@
                               autocomplete="off" 
                               placeholder="Initial Confirmed Amount"
                               quantityFormat
+                              myNumberOnly
                               disabled>
                   </mat-form-field>
                   <mat-form-field style="width: 36%" 
@@ -64,7 +65,8 @@
                             (ngModelChange)="
                             splitDeliveryInLimit[product.key] = product.value.remainingConfirmedAmount <= product.value.orderLimit;
                             disabledSplitBtn = disabledSplitDelivery(splitDeliveryInLimit)"
-                            quantityFormat>
+                            quantityFormat
+                            myNumberOnly>
                 </mat-form-field>
                 <mat-form-field style="width: 36%" 
                                 appearance="legacy">
