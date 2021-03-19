@@ -1,7 +1,7 @@
 /**
  * Controller_Configurable_List_Control
  */
-APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
+ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
     "$tenantSettings",
     "$scope",
     "$rootScope",
@@ -350,6 +350,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
             };
         };        
         $scope.prettyCloseModal = function() {
+			
             var modalStyles = {
                 transition: "0.3s",
                 opacity: "0",
@@ -471,6 +472,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
 
         // Do Entity Action
         vm.do_entity_action = function(action, id, url_id, ev, checkProcurement) {
+					debugger; 
             if (typeof checkProcurement == "undefined") checkProcurement = -1;
             switch (action) {
                 case "copy":
@@ -1185,6 +1187,10 @@ APP_GENERAL_COMPONENTS.controller("Controller_Configurable_List_Control", [
                     return '<span class="jqgrid-ng-action copy centeredIcon" ng-click="CLC.openNotes(' + rowObject.id + ',\'table_modal\')" title="Copy">Copy</span>';
 
                 };
+
+																   
+					 
+				 
                 var documents_verified_checkbox = function(cellValue, options, rowObject) {
                     console.log(cellValue, options);
                     console.log(rowObject);
@@ -3884,9 +3890,38 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                 return String.fromCharCode(dec);
             });
         };
+														 
+				   
+																								 
+								  
+											  
+					
+				 
+																  
+								  
+				  
+														   
+																													 
+																											 
+						  
+
+
+					
+				  
+			   
+		
+
         $rootScope.$on("formValues", function(event, payload) {
+			 
             if (payload) {
+				 
+										   
                 $scope.formValues = payload;
+																			   
+															
+							 
+																									  
+				  
                 if ($scope.formValues.documentType && $state.params.path[2].uisref.split(".")[1] == "documents") {
                     $scope.formValues.documentType = null;
                 } 
@@ -3906,6 +3941,11 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
         setTimeout(function() {
             console.log("$rootScope", $rootScope.formValues);
             console.log("$scope", $scope.formValues);
+            if($scope.formValues.orderDetails != undefined && $scope.formValues.orderDetails.orderStatusName != undefined){
+                if($scope.formValues.orderDetails.orderStatusName == 'Cancelled'){
+                    $('#ClaimTypeClaimType').attr('disabled', 'disabled');
+                }
+            }
         }, 3000);
         vm.app_id = $state.params.path[0].uisref.split(".")[0];
         vm.section_id = $state.params.section_id;
@@ -4344,7 +4384,13 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
             absolute: false
         };
         $rootScope.$on("formValues", function(event, data) {
+		  
             $scope.formValues = data;
+																		   
+														
+						 
+																								  
+			  
         });
         vm.taxi_start = function() {
             if (vm.taxi.url) {

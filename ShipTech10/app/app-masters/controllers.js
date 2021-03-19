@@ -43,8 +43,6 @@
             $scope: $scope
         });
 
-        // console.log("--------", onlyInScreenLayout_Controller);
-
         let vm = this;
         vm.scope = $scope;
         if ($state.params.path) {
@@ -173,9 +171,7 @@
         };
         vm.adminConfiguration = {};
         $scope.getAdminConfiguration = function() {
-            // console.log(1);
             if (!$rootScope.getAdminConfigurationCall) {
-                // console.log("from Master");
                 $rootScope.getAdminConfigurationCall = true;
                 if (vm.app_id == 'admin' && vm.screen_id == 'configuration') {
                     return;
@@ -184,7 +180,6 @@
                     if (callback2) {
                     	$rootScope.$broadcast('adminConfiguration', callback2);
                         $rootScope.getAdminConfigurationCall = false;
-                        // console.log("from Master done");
                         vm.adminConfiguration = callback2;
                         $rootScope.adminConfiguration = callback2;
                     }
@@ -256,7 +251,6 @@
             return statusColor;
         };
         $scope.$on('visible_sections', (event, object) => {
-            // console.log(12)
             $scope.visible_sections = object;
             if (vm.app_id == 'contracts') {
                 if ($rootScope.formValues.productQuantityRequired) {
@@ -397,7 +391,6 @@
         $scope.refreshValue = 0;
         $scope.tenantSetting = $tenantSettings;
         vm.tenantSetting = $tenantSettings;
-        // console.log('tenantSetting', $scope.tenantSetting);
         $scope.addedFields = new Object();
         $scope.formFields = new Object();
         $scope.formValues = new Object();
@@ -436,9 +429,6 @@
         //         vm.get_master_elements(screenChild);
         //     }
         //     var generic_layout = false;
-
-        //     console.log('get_master_structure',$state);
-
 
         //     //load default screen and app
         //     var app_id = vm.app_id;
@@ -730,6 +720,7 @@
             });
         };
         $scope.save_master_structure = function() {
+            debugger;
             vm.structure = angular.toJson($scope.formFields);
             Factory_Master.save_master_structure(vm.app_id, vm.screen_id, $scope.formFields, (callback, response) => {
                 if (response != false) {
@@ -841,10 +832,13 @@
             return false;
         }
         $scope.save_master_changes = function(ev, sendEmails, noReload, completeCallback) {
+            debugger;
             screenLoader.showLoader();
             $('form').addClass('submitted');
             vm.invalid_form = false;
-            // console.log(vm.editInstance);
+           
+           
+            
             if(vm.app_id == 'masters' && vm.screen_id == 'strategy') {
                 if ($scope.formValues.mtmType.id != 1) {
                     $scope.formValues.mtmFormulaProducts = _.filter($scope.formValues.mtmFormulaProducts, function(object) {
@@ -939,13 +933,12 @@
                     }
                     $scope.formValues.company = newCompany;
                 }
-                console.log($scope.formValues);
-                console.log($rootScope.tabData);
-                console.log($rootScope.listOfVesselTypes);
+                // console.log($scope.formValues);
+                // console.log($rootScope.tabData);
                 _.forEach(types, function(type) {
                     $scope.formValues[dataSrcs[type]] = [];
                     for (let i = 0; i < $rootScope.tabData[type].length; i++) {
-                        // console.log($rootScope.tabData[type][i]);
+                        console.log($rootScope.tabData[type][i]);
                         setAllChild($rootScope.tabData[type][i], dataSrcs[type]);
                     }
                 });
@@ -1484,7 +1477,7 @@
                             'locations': value.specificLocations
                         }
 
-                        // console.log($scope.formValues.applications[i]);
+                        console.log($scope.formValues.applications[i]);
                     }
                 }
                 $scope.filterFromData = {};
@@ -1578,7 +1571,7 @@
                     });
                 }
                 if (vm.app_id == 'admin' && vm.screen_id == 'role') {
-                    // console.log($scope.formValues.deepmerge);
+                    console.log($scope.formValues.deepmerge);
                     var roles = $scope.formValues.roles;
                     $.each(roles.rights, (key, module) => {
                         $.each(module.moduleScreenConfigurations, (key2, screen) => {
@@ -1762,6 +1755,7 @@
                             } else if(completeCallback) {
                                 toastr.success('Saved');
                                 toastr.warning('Preparing to complete');
+                                $('#ClaimTypeClaimType').attr('disabled', 'disabled');
                                 completeCallback();
                             }
                         } else {
@@ -1795,6 +1789,7 @@
                                 Factory_Master.get_master_entity(vm.entity_id, vm.screen_id, vm.app_id, (callback2) => {
                                     if (callback2) {
                                         $scope.formValues = callback2;
+                                        
                                     }
                                 });
                             } else {
@@ -1871,6 +1866,8 @@
                 }, 100);
             }
         };
+
+
         $scope.save_terms_and_conditions = function(id) {
             //  console.log(id);
             //  console.log(vm.entity_id);
@@ -2198,7 +2195,6 @@
         //               if (typeof clc != "undefined") {
         //                   clcs = clc.split("_");
         //               } else {
-        //                   console.log("CLC not defined for modal!");
         //                   return;
         //               }
         //           }
@@ -2451,8 +2447,6 @@
             if (!$scope.modalClosed) {
                 if (typeof $scope.modalInstance != 'undefined') {
                     event.preventDefault();
-                    //console.log($rootScope.modalInstance);
-                    //console.log($scope.modalInstance);
                     $scope.prettyCloseModal();
                     $scope.modalClosed = true;
                 }
@@ -2539,7 +2533,6 @@
         //     	}
 
         //        vm.get_master_structure(screenChild);
-        //        // console.log(screenChild);
         //        setTimeout(function() {
         //            vm.addHeadeActions();
         //        }, 10);
@@ -2857,6 +2850,8 @@
         $scope.triggerChangeFields = function(name, id) {
              debugger;
             $rootScope.formDataFields = $scope.formValues;
+
+           
             var fields = [ 'OrderID', 'labResultID', 'deliveryNumber', 'Product' ];
             var company_id = $('#companylistCompany').val();
             var market_id = $('#MarketInstrumentMarketInstrument').val();
@@ -2883,6 +2878,7 @@
                 //     }
                 //   });
                 // }
+                
             }
             if (vm.app_id == 'masters') {
                 if (vm.screen_id == 'additionalcost' && name == 'CostType' &&
@@ -3052,6 +3048,7 @@
             if (vm.app_id == 'labs' && name == 'OrderID' && id == 'order') {
                 vm.checkVerifiedDeliveryFromLabs('orderChange');
             }
+             
         };
 
         vm.getDataTable = function(id, data, obj, idx, app, screen) {
@@ -3202,7 +3199,6 @@
                                 }
                                 $scope.$watchGroup([ $scope.formValues, $scope.options ], () => {
                                     // $timeout(function() {
-	                                    // console.log(' ***** $watchGroup([$scope.formValues, $scope.options]')
                                     var id;
                                     if (field.Type == 'textUOM') {
                                         id = `#${ field.Name}`;
@@ -3226,7 +3222,7 @@
                     $scope.options.etaFreezeStatus = angular.copy($scope.listsCache.RequestStatus);
                 }
                 if (field.Name == 'numberOfCounterpartiesToDisplay') {
-                    //console.log(vm.listsCache);
+                    console.log(vm.listsCache);
                     $scope.options.numberOfCounterpartiesToDisplay = [];
                     $.each(vm.listsCache.ItemsToDisplay, (key, val) => {
                         $scope.options.numberOfCounterpartiesToDisplay.push(val.name);
@@ -3399,7 +3395,6 @@
             return _utc;
         };
         vm.formatDateTime = function(elem, dateFormat, fieldUniqueId) {
-            // console.log(fieldUniqueId)
             if (elem) {
                 var dateFormat = $scope.tenantSetting.tenantFormats.dateFormat.name;
             	let hasDayOfWeek = false;
@@ -3567,7 +3562,6 @@
             }, 50);
         };
         $scope.multiTags = function(id, idx, name) {
-            console.log('$scope.multiTags');
             let elt = $(`.object_tagsinput_${ id}`),
                 elt_plus = $(`.object_tagsinput_add_${ id}`);
             elt.tagsinput({
@@ -3594,13 +3588,10 @@
                         if (typeof value == 'undefined') {
                             return;
                         }
-                        console.log(value.id);
-                        console.log(idToRemove);
                         if (id == 'agents') {
                             comparator = 'counterpartyId';
                             if (value[comparator] == idToRemove) {
                                 indexRmv = index;
-                                console.log($scope.formValues[id][index]);
                                 $('*').tooltip('destroy');
                                 if ($scope.formValues[id][index].id > 0) {
                                     $scope.formValues[id][index].isDeleted = true;
@@ -3689,7 +3680,6 @@
                             $.each($scope.formValues.agents, (index, value) => {
                                 added.push(value.counterpartyId);
                             });
-                            console.log(itemToAdd);
                             if ($.inArray(itemToAdd.counterpartyId, added) == -1 && itemToAdd.id >= 0) {
                                 $scope.formValues.agents.push(itemToAdd);
                                 elt.tagsinput('add', {
@@ -3731,7 +3721,6 @@
                             if (index > 2) {
                                 $(this).hide();
                             }
-                            console.log(value);
                             elt.tagsinput('add', {
                                 value: value.counterpartyId,
                                 text: value.counterpartyName
@@ -4027,7 +4016,6 @@
                     $scope.formValues.products[productId].additionalCosts.splice(key, 1);
                 } else if (emptyArray) {
                     $scope.formValues.products[productId].additionalCosts = [];
-                    console.log($scope.formValues.products[productId].additionalCosts);
                 } else {
                     $scope.formValues.products[productId].additionalCosts[key] = {};
                 }
@@ -4165,10 +4153,6 @@
 	        // }, 50);
         }
 
-        vm.testFunction = function(el) {
-            console.log(el);
-        };
-
         $scope.checkIfTab = function() {
             $scope.$watch('formFields', () => {
                 $timeout(() => {
@@ -4176,7 +4160,6 @@
                         .children('.tab-pane')
                         .first()
                         .addClass('active in');
-                    // console.log(tab);
                     $('#tabs_navigation')
                         .insertBefore(tab)
                         .removeClass('hidden');
@@ -4373,7 +4356,6 @@
                 row.isDeleted = true;
                 if(vm.app_id !== 'claims' && vm.screen_id !== 'claims') {
                     if (vm.app_id == 'default' && (window.location.href.indexOf('request') != -1 || window.location.href.indexOf('order') != -1)) {
-                        console.log("--");
                     } else {
                         obj.push({
                             id: 0
@@ -4575,9 +4557,6 @@
 	        //     if ($rootScope.formValues.isVerified.name == "Yes") {isVerified = true}
 	        // 	if ($rootScope.formValues.isVerified.name != "Yes") {isVerified = false}
             // }
-            // console.log(vm.app_id);
-            // console.log(vm.screen_id);
-            // console.log($state.current.name);
             let verifiedRequired = {
                 'default.view-request-documents': true,
                 'default.view-order-documents': true,
@@ -4724,7 +4703,6 @@
             // finally set transaction type
             data.request.Payload.transactionType = transactionType;
             var file;
-            console.log('$state.params.screen_id', $state.params.screen_id);
             if($state.current.name == 'masters.documents' && $state.params.screen_id == 'documenttype') {
                 // for master documenttype (only with documents upload) set referenceNo to a big number
                 data.request.Payload.referenceNo = Number.MAX_SAFE_INTEGER;
@@ -4878,6 +4856,7 @@
             });
         };
         $scope.selectedModalValue = function(element) {
+
             // if (!element)return
             if (!element) {
                 if ($rootScope.modalParams) {
@@ -4886,7 +4865,6 @@
                     return;
                 }
             }
-            // console.log($rootScope)
             var id = element.clc;
             var object = element.source;
             var formvalue = element.formvalue;
@@ -5575,9 +5553,6 @@
                 };
         		treasurySummaryFilters.push(newFilterItem);
             }
-
-            console.log($rootScope.rawFilters);
-
             $.each(treasurySummaryFilters, (k, v) => {
             	$rootScope.rawFilters.push(v);
             });
@@ -5628,11 +5603,9 @@
              */
             if (vm.app_id == 'labs') {
                 // labVal = bdn; labMin = survey; labMax = min;
-                // // console.log(typeof(labVal), typeof(null));
                 // if(typeof(labVal) != 'number'){
                 //     if(typeof(labVal) == 'string'){
                 //         labVal = parseFloat(labVal);
-                //         console.log(typeof(labVal),labVal);
                 //     }
                 //     if(typeof(labVal) != 'number') return;
                 //     if (labVal == NaN) return;
@@ -5879,7 +5852,6 @@
         });
         if (!$scope.onMyEvent) {
             $scope.onMyEvent = $scope.$on('tableLayoutLoaded', (e, arg) => {
-                // console.log(1)
                 vm.delayaddModalActions();
             });
         }
@@ -6014,7 +5986,6 @@
             var selectedParamClaimType = parseInt(event.currentTarget.attributes['claim-type'].value); // claim.claim.id (actual id to send)
             var selectedParamRadioId = event.currentTarget.attributes['radio-id'].value; // claim.id (given id for validation)
             var selectedClaimId = selectedParamRadioId.split('_')[3];
-            // console.log(selectedClaimId);
             // cancel selection if disabled
             if (selectedDisabled == 'true') {
                 event.currentTarget.checked = false;
@@ -6083,10 +6054,8 @@
         $scope.deliveryProductChanged = function(prod) {
             if (prod.product != $scope.formValues.temp.savedProdForCheck) {
                 $rootScope.deliveryProductChanged = true;
-                console.log($rootScope.deliveryProductChanged);
             } else {
                 $rootScope.deliveryProductChanged = false;
-                console.log($rootScope.deliveryProductChanged);
             }
         };
 
@@ -6112,9 +6081,7 @@
         //     //             $rootScope.selectDeliveryRows.push(rowData);
         //     //         }
         //     //     })
-        //     //     console.log($rootScope.selectDeliveryRows);
         //     // }
-        //     console.log($rootScope.selectDeliveryRows);
         //     if ($rootScope.selectDeliveryRows) {
         //      if ($rootScope.selectDeliveryRows.length == 1) {
         //          localStorage.setItem('deliveryFromOrder', angular.toJson($rootScope.selectDeliveryRows[0]));
@@ -6160,14 +6127,12 @@
         //         var qualityParams = {};
         //         var quantityParams = {};
         //         Factory_Master.getSpecParamsDeliveryProduct(dataForInfo, function(response) {
-        //             console.log(response);
         //             $scope.formValues.deliveryProducts[0].qualityParameters = response;
         //         })
         //         Factory_Master.getQtyParamsDeliveryProsuct(dataForInfo, function(response) {
         //             quantityParams = response;
         //             $scope.formValues.deliveryProducts[0].quantityParameters = response;
         //         })
-        //         console.log($scope.formValues.deliveryProducts);
         //         Factory_Master.get_master_entity($scope.formValues.order.id, 'orders', 'orders', function(response) {
         //             $scope.formValues.sellerName = response.seller.name;
         //             $scope.formValues.port = response.location.name;
@@ -6221,7 +6186,6 @@
         //                 $scope.formValues.deliveryProducts[key].quantityParameters = response;
         //             })
         //         });
-        //         console.log($scope.formValues.deliveryProducts);
         //         Factory_Master.get_master_entity($scope.formValues.order.id, 'orders', 'orders', function(response) {
         //             $scope.formValues.sellerName = response.seller.name;
         //             $scope.formValues.port = response.location.name;
@@ -6320,7 +6284,6 @@
 
         /* END ContractDelivery*/
         $scope.$on('copyAlertAction', (event) => {
-            console.log($scope.formValues);
             $rootScope.copyAlertAction = true;
         });
         vm.displayStatusInHeader = function() {
@@ -6500,10 +6463,8 @@
             if (!vm.additionalCostsComponentTypes) {
 		    	if (!$rootScope.called_getAdditionalCostsCM) {
 		    		$rootScope.called_getAdditionalCostsCM = 1;
-		        	console.log('--- *** --- getAdditionalCostsComponentTypes');
 	                Factory_Master.getAdditionalCosts(0, (response) => {
 			    		// $rootScope.called_getAdditionalCostsCM = false;
-	                    console.log("++++++++++++++",response);
                         vm.additionalCostsComponentTypes = response.data.payload;
                         $rootScope.additionalCostsComponentTypes = response.data.payload;
 	    				$scope.filterCostTypesByAdditionalCost(null);
@@ -6623,7 +6584,7 @@
         };
         
         $scope.setDefaultCurrency = function(additionalCost,key) {
-            debugger;
+            
             var defaultCostType;
             if($scope.formValues.additionalCosts.length >0){
                 if($scope.formValues.additionalCosts[key].amount != undefined){
@@ -6729,8 +6690,6 @@
             return tooltipName;
         };
         $scope.goToFormulaScreen = function(id) {
-            console.log(id);
-            console.log($scope.formValues);
             // if (localStorage.getItem("uneditableFormula")) {
             //     localStorage.removeItem("uneditableFormula");
             // }
@@ -6740,7 +6699,6 @@
             //     localStorage.setItem("uneditableFormula", id);
             // }
             $window.open(`${location.origin }/#/masters/formula/edit/${ id}`, '_blank');
-            // console.log( location.origin + '/#/masters/formula/edit/' + id)
         };
         $scope.checkEditableFormula = function(isEditable) {
             if (!isEditable) {
@@ -6751,7 +6709,6 @@
         vm.checkVerifiedDelivery = [ false, false ];
         vm.checkVerifiedDeliveryFromLabs = function(orderChange) {
             if (orderChange == 'orderChange') {
-                // console.log(orderChange)
                 $('#DeliveryDeliveryID')[0].disabled = '';
                 $('#DeliveryDeliveryID')[0].options[0].text = '';
                 return;
@@ -6766,15 +6723,12 @@
                 if (vm.checkVerifiedDelivery[1]) {
                     $timeout(() => {
                         let someValidOption = false;
-                        console.log('#DeliveryDeliveryID', $('#DeliveryDeliveryID'));
                         $.each($('#DeliveryDeliveryID')[0].options, (key, val) => {
-                            console.log(val.value);
                             if (val.value != '?' && val.value != '' && val.value != ' ') {
                                 someValidOption = true;
                             }
                         });
                         if (!someValidOption && vm.entity_id > 0) {
-                            console.log('#DeliveryDeliveryID', $('#DeliveryDeliveryID'));
                             $('#DeliveryDeliveryID')[0].disabled = true;
                             if ($scope.formValues.delivery != null) {
                                 $('#DeliveryDeliveryID')[0].options[0].text = `${$scope.formValues.delivery.name } is not Verified`;
@@ -6923,7 +6877,6 @@
         //                  $(options).removeAttr("disabled");
         //                  $('.selectpicker').selectpicker('refresh');
         //              }
-        //              console.log(selectedOptions);
         //          }
         // $('.selectpicker').selectpicker('refresh');
         //      },300)
@@ -7124,18 +7077,10 @@
                     	});
                     });
                     $scope.locationPreferredSellerProductsData = response.data.payload;
-
-
-                    // all products
                     if(!$scope.locationPreferredSellerProductsDataAllProd) {
                         $scope.locationPreferredSellerProductsDataAllProd = [];
                     }
                     $scope.locationPreferredSellerProductsDataAllProd = _.union($scope.locationPreferredSellerProductsDataAllProd, response.data.payload);
-
-
-                    console.log($scope.locationPreferredSellerProductsDataAllProd);
-
-
                     $scope.locationPreferredSellerProductsDataLength = response.data.matchedCount;
                     $scope.locationPreferredSellerProductsDataPages = Math.ceil($scope.locationPreferredSellerProductsDataLength / $scope.locationMasterPreferredSellerProductsTableConfig.take);
                     $scope.modalInstance = $uibModal.open({
@@ -7766,10 +7711,6 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
         		// $scope.sweetConfirmHasResponded(sweetConfirmResponse)
         	});
         };
-        // $scope.sweetConfirmHasResponded = function(data) {
-        // 	console.log(data);
-        // }
-
         vm.useDisplayName = function(fieldName) {
             let displayNameList = [ 'invoiceStatus', 'customStatus', 'ClaimType' ];
             let found = _.indexOf(displayNameList, fieldName);
@@ -7798,7 +7739,6 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
 		            return;
 		        }
 		    }
-		    console.log(type);
 		    var data = {
 		        action: type,
 		        notificationId: $rootScope.selectedNotifications
@@ -7853,7 +7793,6 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
             // api/masters/vessels/listRobsVessel
             Factory_Master.bring_rob_status(data, (callback) => {
 		        if (callback) {
-                    console.log('rob status', callback);
 		            if (callback.status == true) {
                         let robValues = callback.data.payload;
                         $scope.formValues.robs = robValues;
@@ -7988,7 +7927,6 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
                 if(fileLocation == 'input') {
                     if($('#fileUpload')[0].files) {
                         $.each($('#fileUpload')[0].files, (i, file) => {
-                            console.log(file.type);
                             if(file.type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
                                 formData.append('file', file);
                             }else{
@@ -7998,7 +7936,6 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
                     }
                 }
                 if(fileLocation == 'dropped') {
-                    console.log($scope.droppedDoc.type);
                     if($scope.droppedDoc.type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
                         formData.append('file', $scope.droppedDoc);
                     }else{
@@ -8105,7 +8042,6 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
 	    };
 
         $scope.goToEmailTemplate = function(id) {
-            console.log(id);
             window.open("/v2/email-template-editor/" + id, "_blank");
         }
 
@@ -8353,10 +8289,8 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
 	                if (product.invoiceQuantityUom == null || product.invoiceRateUom == null /* || typeof(product.invoiceAmount) == 'undefined'*/) {
 	                    return;
 	                };
-	                console.log('called getUomConversionFactor with params:', product.product.id, product.invoiceRateUom.id, product.invoiceQuantityUom.id);
 	                $scope.getUomConversionFactor(product.product.id, 1, product.invoiceQuantityUom.id, product.invoiceRateUom.id, product.contractProductId, product.orderProductId ? product.orderProductId : product.id, (response) => {
                         var conversionFactor = response;
-                		console.log($filter('number')(formValues.productDetails[currentRowIndex].invoiceQuantity, 2));
 	                    formValues.productDetails[currentRowIndex].invoiceAmount = convertDecimalSeparatorStringToNumber(formValues.productDetails[currentRowIndex].invoiceQuantity) * (convertDecimalSeparatorStringToNumber(formValues.productDetails[currentRowIndex].invoiceRate) * conversionFactor);
 	                    // formValues.productDetails[currentRowIndex].invoiceComputedAmount = formValues.productDetails[currentRowIndex].invoiceAmount;
 	                    formValues.productDetails[currentRowIndex].difference = parseFloat(formValues.productDetails[currentRowIndex].invoiceAmount) - parseFloat(formValues.productDetails[currentRowIndex].estimatedAmount);
@@ -8458,7 +8392,6 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
 	                        formValues.costDetails[rowIndex].difference = convertDecimalSeparatorStringToNumber(formValues.costDetails[rowIndex].invoiceTotalAmount) - convertDecimalSeparatorStringToNumber(formValues.costDetails[rowIndex].estimatedTotalAmount);
 
 	                        formValues.costDetails[rowIndex].deliveryProductId = formValues.costDetails[rowIndex].product.deliveryProductId ? formValues.costDetails[rowIndex].product.deliveryProductId : formValues.costDetails[rowIndex].deliveryProductId;
-	                        console.log('-----------------------', formValues.costDetails[rowIndex].deliveryProductId);
 	                        // calculate grandTotal
 	                        if (vm.cost) {
 	                            calculateCostRecon();
@@ -8470,12 +8403,9 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
 	        }
 
             function getDefaultUomForAdditionalCost(additionalCost, index, isAll) {
-                console.log(additionalCost);
-                console.log(product);
                 if (!$scope.listProductTypeGroupsDefaults) {
                     let payload1 = { Payload: {} };
                     $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/listProductTypeGroupsDefaults`, payload1).then((response) => {
-                        console.log(response);
                         if (response.data.payload != 'null') {
                             $scope.listProductTypeGroupsDefaults = response.data.payload;
                             let payload;
@@ -8540,7 +8470,6 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
 	            $http.post(`${API.BASE_URL_DATA_RECON }/api/recon/invoicecost`, {
 	                payload: vm.cost
 	            }).then((response) => {
-	                console.log(response);
 	                if (response.data == 1) {
 	                    obj = {
 	                        id: 1,
@@ -8567,7 +8496,6 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
 	            $http.post(`${API.BASE_URL_DATA_RECON }/api/recon/invoiceproduct`, {
 	                payload: product
 	            }).then((response) => {
-	                console.log(response);
 	                if (response.data == 1) {
 	                    obj = {
 	                        id: 1,
@@ -8848,7 +8776,6 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
         };
 
         vm.getCurrencyCodeFiltered = function() {
-            console.log('getCurrencyCodeFiltered');
 
             let data = {
                 app: 'masters',
@@ -8869,14 +8796,11 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
 
 
             $Api_Service.entity.list(data, (result) => {
-                console.log(result);
                 $scope.options.CurrencyCode = result.rows;
             });
         };
 
         vm.getDocumentTypesFiltered = function() {
-        	console.log('getDocumentTypesFiltered');
-
             let screen_name = $state.params.screen_id.toLowerCase();
         	let transactionTypeName = {
         		// 'claim': 'Claims',
@@ -8932,12 +8856,10 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
 
 
             $Api_Service.entity.list(data, (result) => {
-                console.log(result);
             	$scope.options.DocumentType = result.rows;
             });
         };
         $scope.createOrderFromOrderList = function() {
-            console.log($rootScope.selectedOrderListRows);
             if ($rootScope.selectedOrderListRows) {
                 if ($rootScope.selectedOrderListRows.length == 1) {
                     localStorage.setItem('ordersFromOrderList', angular.toJson($rootScope.selectedOrderListRows[0]));
@@ -9031,7 +8953,6 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
                         $scope.formValues.products[index].conversionFactors.forEach((value, key) => {
                             if (value.product.id != $scope.formValues.products[index].product.id) {
                                 var idIndex = _.findIndex(allowProducts, (o) => {
-                                    console.log(o.id);
                                     return o.id == value.product.id;
                                 });
                                 if (idIndex == -1) {
@@ -9072,7 +8993,6 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
                 if (!isAlreadyAdded && indexDeleted == -1 && selectedProduct) {
                     payload = { Payload: selectedProduct.product.id };
                     $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/getProdDefaultConversionFactors`, payload).then((response) => {
-                        console.log(response);
                         if (response.data.payload != 'null') {
                             let contractConversionFactor = {
                                 id: 3,
@@ -9103,12 +9023,10 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
                         let sludgeProductTypeGroup = _.find(vm.listsCache.ProductTypeGroup, { name : 'Sludge' });
                         payload = { Payload: {} };
                         $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/listProductTypeGroupsDefaults`, payload).then((response) => {
-                            console.log(response);
                             if (response.data.payload != 'null') {
                                let defaultUomAndCompany = _.find(response.data.payload, function(object) {
                                     return object.id == productTypeGroup.id;
                                });
-                               console.log(defaultUomAndCompany);
                                if (defaultUomAndCompany) {
                                     if (defaultUomAndCompany.id == sludgeProductTypeGroup.id) {
                                         $scope.formValues.products[index].priceUom = defaultUomAndCompany.defaultUom;
@@ -9141,18 +9059,15 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
             if (conversionFactorsDropdown && conversionFactors.contractConversionFactorOptions.id == 3) {
                 payload = { Payload: conversionFactors.product.id };
                 $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/getProdDefaultConversionFactors`, payload).then((response) => {
-                    console.log(response);
                     if (response.data.payload != 'null') {
                         conversionFactors.value = response.data.payload.value;
                         conversionFactors.massUom = response.data.payload.massUom;
                         conversionFactors.volumeUom = response.data.payload.volumeUom;
                         if (conversionFactors.contractProductId) {
-                            console.log(conversionFactors);
                             let conversionFactorsList = [];
                             conversionFactorsList.push(conversionFactors);
                             payload = { Payload: conversionFactorsList };
                             $http.post(`${API.BASE_URL_DATA_CONTRACTS  }/api/contract/contract/saveConversionFactorsForContractProduct`, payload).then((response) => {
-                                console.log(response);
                                 if (response.data.payload != 'null') {
                                     let res = response.data.payload[0];
                                     ctrl.data.products[index].convFactorMassUom = res.massUom;
@@ -9167,12 +9082,10 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
 
             } else {
                 if (conversionFactors.contractProductId) {
-                    console.log(conversionFactors);
                     let conversionFactorsList = [];
                     conversionFactorsList.push(conversionFactors);
                     payload = { Payload: conversionFactorsList };
                     $http.post(`${API.BASE_URL_DATA_CONTRACTS  }/api/contract/contract/saveConversionFactorsForContractProduct`, payload).then((response) => {
-                        console.log(response);
                         if (response.data.payload != 'null') {
                             let res = response.data.payload[0];
                             ctrl.data.products[index].convFactorMassUom = res.massUom;
@@ -9194,37 +9107,31 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
             let id = parseFloat(window.location.href.split('/#/')[1].split('/')[length]);
             if (!isNaN(id)) {
                 if (window.location.href.indexOf('request/') != -1) {
-                    console.log("request");
                     payload = { Payload: {
                         "requestId": id,
                         "requestNotes": generalNotesScope.formValues.notes
                     }};
                     $http.post(`${API.BASE_URL_DATA_PROCUREMENT}/api/procurement/request/autosave`, payload).then((response) => {
-                        console.log(response);
                         if (response.data.payload != 'null') {
                             generalNotesScope.formValues.notes = response.data.payload;
                         }
                     }); 
                 } else  if (window.location.href.indexOf('order/') != -1) {
-                    console.log("order");
                     payload = { Payload: {
                         "orderId": id,
                         "orderNotes": generalNotesScope.formValues.notes
                     }};
                     $http.post(`${API.BASE_URL_DATA_PROCUREMENT}/api/procurement/order/autosave`, payload).then((response) => {
-                        console.log(response);
                         if (response.data.payload != 'null') {
                             generalNotesScope.formValues.notes = response.data.payload;
                         }
                     }); 
                 } else if (window.location.href.indexOf('group-of-requests/') != -1) {
-                    console.log("negociation");
                     payload = { Payload: {
                         "rfqId": id,
                         "rfqNotes": generalNotesScope.formValues.notes
                     }};
                     $http.post(`${API.BASE_URL_DATA_PROCUREMENT}/api/procurement/rfq/autosave`, payload).then((response) => {
-                        console.log(response);
                         if (response.data.payload != 'null') {
                             generalNotesScope.formValues.notes = response.data.payload;
                         }
@@ -9281,8 +9188,6 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
 
 
         $scope.openSellerRatingForPreferredLocation = function(location, counterparty) {
-            console.log(location);
-            console.log(counterparty);
             let data = {
                 "location": location,
                 "counterparty": counterparty
@@ -9385,7 +9290,6 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
             if ($scope.formValues.counterpartyLocations[key].isSpecificLocation && $scope.formValues.counterpartyLocations[key].rating && $scope.formValues.counterpartyLocations[key].lastModifiedBy && $scope.formValues.counterpartyLocations[key].lastModifiedOn) {
                 $scope.key = key;
                 $scope.showModalConfirmDeletePreferredLocationWithRating('Seller Rating also would be removed. Do you still want to remove the location?', true, (modalResponse) => {
-                    console.log(modalResponse);
                     if (modalResponse) {
                         $scope.prettyCloseModal();
                     }
@@ -9461,7 +9365,6 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
                 }
                 if(counterpartyLocations.id && counterpartyLocations.id >0 && counterpartyLocations.id != element.locationSellerId){
                     element.locationSellerId = counterpartyLocations.id;
-                    element.contact = {id: element.contactId, email: element.email}
                 }
               });
             }
