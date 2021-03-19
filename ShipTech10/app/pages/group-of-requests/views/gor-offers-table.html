@@ -1,5 +1,5 @@
 
-<div style="position: relative; zoom:0.75; overflow: auto" id="negotiation-table-fixed-container">
+<div style="position: relative; zoom:0.75; overflow: auto;" id="negotiation-table-fixed-container">
 
 
     <table id="group_of_requests_table" class="table table-bordered table-hover table-striped table-condensed st-group-of-requests-table bg-white" ng-cloak >
@@ -432,56 +432,57 @@
     
                 <td ng-repeat-start="productTop in requestProducts track by $index" style="position: relative;" ng-show="!$ctrl.isRequestTabExpanded($parent.$index)"
     
-                    ng-init="productTop.productLocations['L' + location[0].uniqueLocationIdentifier] ? product = productTop.productLocations['L' + location[0].uniqueLocationIdentifier] : ''">
-                    <span ng-if="product" ng-init="maxQuantity = $ctrl.getProductMaxQuantityOnLocation(product, location);">
-                        <span >Market Price</span>  
-                        <span>
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"  data-hover="dropdown" data-close-others="true" ng-click="$ctrl.getMarketPriceData(product, location)" >
-                                <span ng-mouseover="portSellerStatustooltip['marketPrice'] = true; " ng-mouseleave="portSellerStatustooltip['marketPrice'] = false;"  style="position:relative;overflow:hidden; top: 7px;">
-                                    <span style="max-width: 100%; overflow: hidden;display: block; text-overflow: ellipsis;" class="ng-binding">
-                                        <img  style="width: 30px; height: 30px" src="img/info.png" alt="logo" class="logo-default" />
-                                    </span>
-                                    <span class="groupOfRequestTableTooltip ng-binding ng-hide" ng-show="portSellerStatustooltip['marketPrice']" style="opacity: 1;">
-                                        click to see market price history
-                                    </span>
+                ng-init="productTop.productLocations['L' + location[0].uniqueLocationIdentifier] ? product = productTop.productLocations['L' + location[0].uniqueLocationIdentifier] : ''">
+                <span ng-if="product" ng-init="maxQuantity = $ctrl.getProductMaxQuantityOnLocation(product, location);">
+                    <span >Market Price</span>  
+                    <span>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"  data-hover="dropdown" data-close-others="true" ng-click="$ctrl.getMarketPriceData(product, location)" >
+                            <span ng-mouseover="portSellerStatustooltip['marketPrice'] = true; " ng-mouseleave="portSellerStatustooltip['marketPrice'] = false;"  style="position:relative;overflow:hidden; top: 7px;">
+                                <span style="max-width: 100%; overflow: hidden;display: initial; text-overflow: ellipsis;" class="ng-binding">
+                                    <img  style="width: 30px; height: 30px" src="img/info.png" alt="logo" class="logo-default" />
                                 </span>
-                            </a>
-                            <ul class="dropdown-menu" >
-                                <li>
-                                    <div class="custom-hardcoded-table">
-                                        <table style="width:100%;overflow:hidden;" ng-if="marketPriceHistoryList.length>0">  
-                                            <thead>
-                                                <tr> 
-                                                    <td colspan="2" style="width:100%;background-color: white;" >Market Price History<button type="button" class="close" data-dismiss="modal"></button><br></td>                 
-                                                </tr> 
-                                                <tr style="width:100%;min-width:initial;background-color: white;">   
-                                                    <td style="width:25%">Location:&nbsp;&nbsp;<b>{{location[0].location.name | decodeReadOnly}}</b></td> 
-                                                    <td style="width:25%">Product:&nbsp;&nbsp;<b>{{product.product.name | decodeReadOnly}}</b></td> 
-                                                </tr> 
-                                                <tr  style="width:100%;min-width:initial">  
-                                                    <td style="width:25%">Date</td> 
-                                                    <td style="width:25%">Market Price</td> 
-                                                </tr>
-                                            </thead>  
-                                            <tbody style="width:100%;min-width:initial">
-                                                <tr  ng-repeat="entity in marketPriceHistoryList"> 
-                                                    <td style="width:25%">{{$ctrl.formatDate(entity.date, $ctrl.tenantSetting.tenantFormats.dateFormat.name)}} </td>
-                                                    <td style="width:25%">{{entity.price | number : $ctrl.numberPrecision.pricePrecision}}&nbsp;{{entity.currencies }}</td> 
-                                                </tr>
-                                            </tbody>                                     
-                                        </table>
-                                    </div>
-                                </li>
-                            </ul>
-                        </span> 
-                        <span class="pull-right bg-grey font-dark" style="padding: 5px;position: absolute;right: 0;top: 50%;transform: translateY(-50%);" ng-mouseover="$ctrl.getWidth('.groupOfRequestTableTooltipLastProduct'); marketPrice['seller.id + product.id'] = true;" ng-mouseout="marketPrice['seller.id + product.id'] = false">
-                            <span style="z-index: 999;" ng-class="requestProducts.length - 1 == $index ? 'groupOfRequestTableTooltipLastProduct' : 'groupOfRequestTableTooltip'" ng-show="marketPrice['seller.id + product.id'] && $ctrl.getMarketPricePopup(product, location)" ng-bind-html="$ctrl.getMarketPricePopup(product, location)"></span>
-                            <span class="pull-right" ng-mouseover="$ctrl.gettWidthTooltip(groupOfRequestTableTooltip)">
-                                {{maxQuantity.quotePrice != null ? (maxQuantity.quotePrice | number : $ctrl.numberPrecision.amountPrecision) : "-"}}
+                                <span class="groupOfRequestTableTooltip ng-binding ng-hide" ng-show="portSellerStatustooltip['marketPrice']" style="opacity: 1;">
+                                    click to see market price history
+                                </span>
                             </span>
+                        </a>
+                        <ul class="dropdown-menu" style="z-index: 120000;overflow:auto">
+                            <li>
+                                <div class="form-group-sm" >
+                                    <table class="table table-bordered"  ng-if="marketPriceHistoryList.length>0">  
+                                        <thead>
+                                            <tr> 
+                                                <td colspan="2" style="width:100%;background-color: white;" >Market Price History<button type="button" class="close" data-dismiss="modal"></button><br></td>                 
+                                            </tr> 
+                                            <tr style="width:100%;min-width:initial;background-color: white;">   
+                                                <td style="width:25%">Location:&nbsp;&nbsp;<b>{{location[0].location.name | decodeReadOnly}}</b></td> 
+                                                <td style="width:25%">Product:&nbsp;&nbsp;<b>{{product.product.name | decodeReadOnly}}</b></td> 
+                                            </tr> 
+                                            <tr  style="width:100%;min-width:initial;background-color: rgb(235, 230, 230);">  
+                                                <td style="width:25%">Date</td> 
+                                                <td style="width:25%">Market Price</td> 
+                                            </tr>
+                                        </thead>  
+                                        <tbody style="width:100%;min-width:initial">
+                                            <tr  ng-repeat="entity in marketPriceHistoryList"> 
+                                                <td style="width:25%">{{$ctrl.formatDate(entity.date, $ctrl.tenantSetting.tenantFormats.dateFormat.name)}} </td>
+                                                <td style="width:25%">{{entity.price | number : $ctrl.numberPrecision.pricePrecision}}&nbsp;{{entity.currencies }}</td> 
+                                            </tr>
+                                        </tbody>                                     
+                                    </table>
+
+                                </div>
+                            </li>
+                        </ul>
+                    </span> 
+                    <span class="pull-right bg-grey font-dark" style="padding: 5px;position: absolute;right: 0;top: 50%;transform: translateY(-50%);" ng-mouseover="$ctrl.getWidth('.groupOfRequestTableTooltipLastProduct'); marketPrice['seller.id + product.id'] = true;" ng-mouseout="marketPrice['seller.id + product.id'] = false">
+                        <span style="z-index: 999;" ng-class="requestProducts.length - 1 == $index ? 'groupOfRequestTableTooltipLastProduct' : 'groupOfRequestTableTooltip'" ng-show="marketPrice['seller.id + product.id'] && $ctrl.getMarketPricePopup(product, location)" ng-bind-html="$ctrl.getMarketPricePopup(product, location)"></span>
+                        <span class="pull-right" ng-mouseover="$ctrl.gettWidthTooltip(groupOfRequestTableTooltip)">
+                            {{maxQuantity.quotePrice != null ? (maxQuantity.quotePrice | number : $ctrl.numberPrecision.amountPrecision) : "-"}}
                         </span>
                     </span>
-                </td>
+                </span>
+            </td>
 
                 <td ng-repeat-end ng-show="!$ctrl.isRequestTabExpanded($parent.$index)" style="padding: 0px !important;">
     
