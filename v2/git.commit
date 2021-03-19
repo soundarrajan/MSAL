@@ -1,9 +1,9 @@
-﻿commit eae13fa180f2b7eb8e03ea16a497e1652c045da3
+﻿commit 20c7ddc5908dc467108775ec72cc3a93b93fd3ec
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri Mar 19 10:25:27 2021 +0000
+Date:   Fri Mar 19 10:55:21 2021 +0000
 
-    Merged PR 9360: Changed svg for calendar icon
+    Merged PR 9366: Fixed angular.json
     
-    Changed svg for calendar icon
+    Fixed angular.json
 
 branch: master
