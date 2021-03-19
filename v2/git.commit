@@ -1,7 +1,11 @@
-﻿commit d9101d06c7549c8bc67f00fc55c79cd7cf5dacb9
-Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Mon Mar 1 17:42:36 2021 +0530
+﻿commit 6dfb93441a0ac26b448131672b68d40c59750bad
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Fri Mar 19 08:58:35 2021 +0000
 
-    Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_git/Shiptech10-UI
+    Merged PR 9302: Added delivery screen on v2
+    
+    Added delivery screen on v2
+    
+    Related work items: #25541
 
 branch: master

@@ -6,12 +6,14 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
+import { BreadcrumbsDeliveryModule } from '../../components/breadcrumbs-delivery/breadcrumbs-delivery.module';
 
 @NgModule({
   imports: [
     CommonModule,
     NavigationModule,
     BreadcrumbsModule,
+    BreadcrumbsDeliveryModule,
     RouterModule,
     ConfirmDialogModule
   ],

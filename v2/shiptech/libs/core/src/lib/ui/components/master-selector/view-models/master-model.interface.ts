@@ -4,6 +4,9 @@ import { DocumentsMasterSelectorGridViewModel } from '@shiptech/core/ui/componen
 import { VesselMasterSelectorGridViewModel } from '@shiptech/core/ui/components/master-selector/view-models/vessel-model/vessel-master-selector-grid.view-model';
 import { VesselPortCallsMasterSelectorGridViewModel } from '@shiptech/core/ui/components/master-selector/view-models/vessel-port-calls-model/vessel-port-calls-master-selector-grid.view-model';
 import { IPageSizeOption } from '@shiptech/core/ui/components/page-size-selector/page-size-selector.component';
+import { OrderListSelectorGridViewModel } from './order-model/order-list-selector-grid.view-model';
+import { ProductListSelectorGridViewModel } from './product-model/product-list-selector-grid.view-model';
+import { PhysicalSupplierListSelectorGridViewModel } from './physical-supplier-model/physical-supplier-list-selector-grid.view-model';
 
 export interface IMasterModelInterface {
   entityId?: number;
@@ -23,6 +26,9 @@ export interface IMasterModelInterface {
   pageSizeOption?: IPageSizeOption;
   DocumentsMasterSelectorGridViewModel?: DocumentsMasterSelectorGridViewModel;
   VesselMasterSelectorGridViewModel?: VesselMasterSelectorGridViewModel;
+  OrderListSelectorGridViewModel?: OrderListSelectorGridViewModel;
+  ProductListSelectorGridViewModel?: ProductListSelectorGridViewModel;
+  PhysicalSupplierListSelectorGridViewModel?: PhysicalSupplierListSelectorGridViewModel;
   VesselPortCallsMasterSelectorGridViewModel?: VesselPortCallsMasterSelectorGridViewModel;
   markServerSideDataSourceReady(): void;
   onSearch(event: string): void;
