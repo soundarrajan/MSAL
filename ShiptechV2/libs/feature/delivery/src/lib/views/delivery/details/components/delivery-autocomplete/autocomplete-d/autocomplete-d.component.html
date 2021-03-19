@@ -1,0 +1,38 @@
+{{inputModel.id}}
+{{inputModel.name}}
+<div>
+  <mat-form-field appearance="outline">
+    <mat-label>{{inputLabel}}</mat-label>
+    <input type="text"
+            placeholder="{{inputLabel}}"
+            matInput
+            [ngModel]="inputModel"
+            [matAutocomplete]="auto"
+            (ngModelChange)="onModelChanged($event)"
+            >
+    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+      <mat-option *ngFor="let option of " [value]="option">
+        {{option.name}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <button style=" position: relative;
+  border: unset !important;
+  left: -30px;
+  border-left: 1px solid gray !important; height: 45px;
+    top: -3px;" pButton type="button" icon="pi pi-search" class="ui-button-warn search-square-button" [disabled]="disabled"
+  appMasterSelectorTrigger [masterSelector]="masterSelector" #masterSelectorTrigger="masterSelectorTrigger" [header]="getHeaderNameSelector()">
+  </button>
+  <ng-template cdkPortal #masterSelector="cdkPortal" >
+  <shiptech-shared-master-selector (selectedChange)="selectorSelectionChange($event); masterSelectorTrigger.close()" (shouldCloseModal)="masterSelectorTrigger.close()" [selectorType]="autocompleteType"
+                                [disabled]="disabled"
+                                [readonly]="readonly"
+                                [multiple]="autoComplete.multiple"
+                                [entityName]="entityName"
+                                [entityId]="entityId"
+                                [vesselId]="vesselId"
+                                [headerName]="getHeaderNameSelector()"
+  ></shiptech-shared-master-selector>
+  </ng-template>  
+</div>
+

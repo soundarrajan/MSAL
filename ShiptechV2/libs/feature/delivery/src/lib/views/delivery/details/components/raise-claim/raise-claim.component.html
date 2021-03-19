@@ -1,0 +1,22 @@
+<div class="row" style="margin-top: -20px;">
+  <div class="col-6">
+    <h2  class="headerh1 blue">Raise claim</h2>
+  </div>
+  <div class="col-6" fxLayout="row" fxLayoutAlign="end center">
+    <button (click)="raiseClaim()" class="ui-button-warning mr-2 btn-i-yellow" label="Raise" pButton type="button"></button>
+    <div>
+      <span (click)="dialogRef.close()" class="pi pi-times color-gray" style="cursor: pointer"></span>
+    </div>
+  </div>
+</div>
+<hr class="line m-t-m-2 m-b-14">
+
+<app-ag-filter-display [grid]="agGridAngular"></app-ag-filter-display>
+<ag-grid-angular
+  #agGridAngular
+  [gridOptions]="gridViewModel.gridOptions"
+  appAgGridSizeToFit
+  class="ag-theme-balham  shiptech-radio-grid"
+  id="qc-order-products-list"
+  style="height:300px">
+</ag-grid-angular>

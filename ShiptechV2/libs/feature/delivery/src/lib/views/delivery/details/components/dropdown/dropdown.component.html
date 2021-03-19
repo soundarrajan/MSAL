@@ -1,0 +1,35 @@
+<!-- <mat-form-field appearance="outline">
+  <mat-label>{{inputLabel}}</mat-label>
+  <mat-select placeholder="{{inputLabel}}" 
+              [disableOptionCentering]="true"
+              [formControl]="animalControl">
+    <mat-option *ngFor="let option of options2" [value]="option">
+      {{option.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field> -->
+<!-- 
+<mat-form-field appearance="outline">
+  <mat-label>{{inputLabel}}</mat-label>
+  <select [ngModel]="inputModel.name" 
+          (ngModelChange)="onModelChanged($event)" 
+          matNativeControl 
+          class="custom-color box">
+    <option *ngFor="let option of options2" [value]="option">
+      {{option.name}}
+    </option>
+  </select>
+</mat-form-field> -->
+<mat-form-field appearance="outline" class="delivery-dropdown-field">
+  <mat-label>{{inputLabel}}</mat-label>
+  <select matNativeControl class="custom-color box" style="display: none;">
+    <option *ngFor="let option of options" [value]="option">
+      {{option.name}}
+    </option>
+  </select>
+  <p-dropdown  (ngModelChange)="onModelChanged($event)" 
+            [ngModel]="1" 
+            [options]="options" 
+            class="dropdown-delivery"></p-dropdown>
+</mat-form-field>
+

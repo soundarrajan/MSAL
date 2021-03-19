@@ -1,4 +1,4 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
   templateUrl: './layout-main.component.html'
 })
 export class LayoutMainComponent implements AfterViewInit {
+
   menuMode = 'static';
 
   overlayMenuActive: boolean;
@@ -44,10 +45,15 @@ export class LayoutMainComponent implements AfterViewInit {
   isRTL: boolean;
   isEmailTemplateEditor: boolean = false;
   moduleLoaded: any;
+  isDelivery: boolean = false;
 
   constructor(private router: Router) {
+    this.isDelivery = false;
     if (this.router.url.includes('email-template-editor')) {
       this.isEmailTemplateEditor = true;
+    }
+    if (this.router.url.includes('delivery')) {
+      this.isDelivery = true;
     }
   }
 

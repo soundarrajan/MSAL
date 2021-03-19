@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -12,6 +12,7 @@ import { MenuItem } from 'primeng/api';
       fxLayout="row"
       fxLayoutAlign="start center"
       class="breadcrumbs-container"
+      [ngClass]="{'remove-container': delivery}"
     >
       <p-breadcrumb fxFlex="auto" [model]="breadcrumbs"></p-breadcrumb>
     </div>
@@ -20,6 +21,13 @@ import { MenuItem } from 'primeng/api';
   encapsulation: ViewEncapsulation.None
 })
 export class BreadcrumbComponent implements OnInit, OnDestroy {
+  delivery: any = false;
+  @Input('delivery') set _setDelivery(delivery) { 
+    if (!delivery) {
+      return;
+    } 
+    this.delivery = delivery;
+  }
   // All the breadcrumbs
   public breadcrumbs: MenuItem[];
   private _destroy$ = new Subject();

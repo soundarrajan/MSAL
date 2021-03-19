@@ -1,0 +1,278 @@
+<div class="col-md-12 row bdn-additional-information-header">
+  <div class="col-md-6  bdn-additional-information-header bdn-additional-information-container">
+      BDN Additional Information
+  </div>
+  <div class="col-md-4  bdn-additional-information-header feedback-information-container">
+    Chief Enginner Feedback
+  </div>
+  <div class="col-md-2 satisfaction-level-header">
+     Satisfaction level
+  </div>
+</div>
+<div class="col-md-12 row  bdn-additional-information">
+  <div class="col-md-6 bdn-additional-information-container">
+    <div class="hidden">
+      {{getTimeBetweenBerthinAndBargeDates(formValues.berthingTime, formValues.bargeAlongside)}}
+    </div>
+    <div class="custom-form-field bdn-additional-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+      <mat-form-field class="without-search" appearance="legacy">
+        <mat-label>Barge delay</mat-label>
+        <input  [(ngModel)]="formValues.bargeDelay"
+              matInput 
+              autocomplete="off"
+              placeholder="Barge delay"
+              disabled>
+      </mat-form-field>
+    </div>
+    <div class="custom-form-field bdn-additional-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+      <mat-form-field class="without-search" appearance="legacy"  [ngClass]="{'date-invalid':isBargePumpingRateStartTimeInvalid, 'date-valid':!isBargePumpingRateStartTimeInvalid}">
+        <mat-label>Pumping start</mat-label>
+        <input [(ngModel)]="formValues.bargePumpingRateStartTime" 
+              matInput 
+              [matDatepicker]="bargePumpingRateStartTime" 
+              (focus)="bargePumpingRateStartTime.open()"
+              autocomplete="off"
+              placeholder="Pumping start"
+              (dateInput)="onChange($event, 'bargePumpingRateStartTime')"
+              (dateChange)="formValues.bargePumpingRateStartTime = formatDateForBe(formValues.bargePumpingRateStartTime)">
+              <mat-datepicker-toggle matSuffix [for]="bargePumpingRateStartTime">
+                <mat-icon matDatepickerToggleIcon [svgIcon]="!switchTheme?'data-picker-gray':'data-picker-white'">
+                </mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #bargePumpingRateStartTime [panelClass]="switchTheme?'datepicker-darktheme':''"></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="custom-form-field bdn-additional-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+      <mat-form-field class="without-search" appearance="legacy"  [ngClass]="{'date-invalid':isBargePumpingRateEndTimeInvalid, 'date-valid':!isBargePumpingRateEndTimeInvalid}">
+        <mat-label>Pumping end</mat-label>
+        <input [(ngModel)]="formValues.bargePumpingRateEndTime" 
+              matInput 
+              [matDatepicker]="bargePumpingRateEndTime" 
+              (focus)="bargePumpingRateEndTime.open()"
+              autocomplete="off"
+              placeholder="Pumping end"
+              (dateInput)="onChange($event, 'bargePumpingRateEndTime')"
+              (dateChange)="formValues.bargePumpingRateEndTime = formatDateForBe(formValues.bargePumpingRateEndTime);">
+              <mat-datepicker-toggle matSuffix [for]="bargePumpingRateEndTime">
+                <mat-icon matDatepickerToggleIcon [svgIcon]="!switchTheme?'data-picker-gray':'data-picker-white'">
+                </mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #bargePumpingRateEndTime [panelClass]="switchTheme?'datepicker-darktheme':''"></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="custom-form-field bdn-additional-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+      <div class="hidden">
+        {{getTimeBetweenDates(formValues.bargePumpingRateStartTime, formValues.bargePumpingRateEndTime)}}
+      </div>
+      <mat-form-field class="without-search" appearance="legacy">
+        <mat-label>Pumping duration</mat-label>
+        <input  [(ngModel)]="formValues.pumpingDuration"
+              matInput 
+              type="text"
+              autocomplete="off"
+              placeholder="Pumping duration"
+              disabled>
+      </mat-form-field>
+    </div>
+    <div class="custom-form-field bdn-additional-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+      <mat-form-field class="without-search" appearance="legacy">
+        <mat-label>Pumping rate (MT/hr)</mat-label>
+        <input  [(ngModel)]="formValues.pumpingRate"
+              matInput 
+              autocomplete="off"
+              placeholder="Pumping rate (MT/hr)"
+              disabled>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="col-md-4 dropdown-container">
+    <div class="col-md-12 row select-container">
+      <div class="col-md-6 select-label-name">
+        Letter of protest
+      </div>
+      <div class="col-md-6">
+        <div class="custom-form-field-select" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+          <div class="feedback-component">
+            <div class="block col-md-12">
+                <div class="inline-dropdown">
+                  <mat-select [disableOptionCentering]="true"
+                      [panelClass]="{'darkPanel':switchTheme}"
+                      [(ngModel)]="formValues.feedback.hasLetterOfProtest" 
+                      [compareWith]="compareUomObjects">
+                    <mat-option *ngFor="let option of deliveryFeedback" [value]="option">
+                        {{option.name}}
+                    </mat-option>
+                  </mat-select>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 row select-container">
+      <div class="col-md-6 select-label-name">
+        Delivered as scheduled
+      </div>
+      <div class="col-md-6">
+        <div class="custom-form-field-select" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+          <div class="feedback-component">
+            <div class="block col-md-12">
+                <div class="inline-dropdown">
+                  <mat-select [disableOptionCentering]="true"
+                      [panelClass]="{'darkPanel':switchTheme}"
+                      [(ngModel)]="formValues.feedback.deliveredAsScheduled" 
+                      [compareWith]="compareUomObjects">
+                    <mat-option *ngFor="let option of deliveryFeedback" [value]="option">
+                        {{option.name}}
+                    </mat-option>
+                  </mat-select>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 row select-container">
+      <div class="col-md-6 select-label-name">
+        Requested qty fully delivered
+      </div>
+      <div class="col-md-6">
+        <div class="custom-form-field-select" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+          <div class="feedback-component">
+            <div class="block col-md-12">
+                <div class="inline-dropdown">
+                  <mat-select [disableOptionCentering]="true"
+                      [panelClass]="{'darkPanel':switchTheme}"
+                      [(ngModel)]="formValues.feedback.requestedQuantityFullyDelivered" 
+                      [compareWith]="compareUomObjects">
+                    <mat-option *ngFor="let option of deliveryFeedback" [value]="option">
+                        {{option.name}}
+                    </mat-option>
+                  </mat-select>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 row select-container">
+      <div class="col-md-6 select-label-name">
+        Filter Clogging
+      </div>
+      <div class="col-md-6">
+        <div class="custom-form-field-select" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+          <div class="feedback-component">
+            <div class="block col-md-12">
+                <div class="inline-dropdown">
+                  <mat-select [disableOptionCentering]="true"
+                      [panelClass]="{'darkPanel':switchTheme}"
+                      [(ngModel)]="formValues.feedback.filterClogging" 
+                      [compareWith]="compareUomObjects">
+                    <mat-option *ngFor="let option of deliveryFeedback" [value]="option">
+                        {{option.name}}
+                    </mat-option>
+                  </mat-select>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 row select-container">
+      <div class="col-md-6 select-label-name">
+        Purifier Problems
+      </div>
+      <div class="col-md-6">
+        <div class="custom-form-field-select" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+          <div class="feedback-component">
+            <div class="block col-md-12">
+                <div class="inline-dropdown">
+                  <mat-select [disableOptionCentering]="true"
+                      [panelClass]="{'darkPanel':switchTheme}"
+                      [(ngModel)]="formValues.feedback.purifierProblems" 
+                      [compareWith]="compareUomObjects">
+                    <mat-option *ngFor="let option of deliveryFeedback" [value]="option">
+                        {{option.name}}
+                    </mat-option>
+                  </mat-select>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 row select-container">
+      <div class="col-md-6 select-label-name">
+        Combustion Problems
+      </div>
+      <div class="col-md-6">
+        <div class="custom-form-field-select" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+          <div class="feedback-component">
+            <div class="block col-md-12">
+                <div class="inline-dropdown">
+                  <mat-select [disableOptionCentering]="true"
+                      [panelClass]="{'darkPanel':switchTheme}"
+                      [(ngModel)]="formValues.feedback.combustionProblem" 
+                      [compareWith]="compareUomObjects">
+                    <mat-option *ngFor="let option of deliveryFeedback" [value]="option">
+                        {{option.name}}
+                    </mat-option>
+                  </mat-select>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-2 satisfaction-level-container">
+    <div class="col-md-12 row">
+      <div class="custom-form-field satisfaction-level-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+        <mat-form-field class="without-search" appearance="legacy">
+          <mat-label>Agent coordination</mat-label>
+          <mat-select [disableOptionCentering]="true"
+                      [panelClass]="{'darkPanel':switchTheme}"
+                      [(ngModel)]="formValues.feedback.agentCoordination" 
+                      [compareWith]="compareUomObjects"
+                      placeholder="Agent coordination">
+              <mat-option *ngFor="let option of satisfactionLevel" [value]="option">
+                  {{option.name}}
+              </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="col-md-12 row">
+      <div class="custom-form-field satisfaction-level-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+        <mat-form-field class="without-search" appearance="legacy">
+          <mat-label>Bunker Operator</mat-label>
+          <mat-select [disableOptionCentering]="true"
+                      [panelClass]="{'darkPanel':switchTheme}"
+                      [(ngModel)]="formValues.feedback.bunkerOperator" 
+                      [compareWith]="compareUomObjects"
+                      placeholder="Bunker Operator">
+              <mat-option *ngFor="let option of satisfactionLevel" [value]="option">
+                  {{option.name}}
+              </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="col-md-12 row">
+      <div class="custom-form-field satisfaction-level-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+        <mat-form-field class="without-search" appearance="legacy">
+          <mat-label>Surveyor</mat-label>
+          <mat-select [disableOptionCentering]="true"
+                      [panelClass]="{'darkPanel':switchTheme}"
+                      [(ngModel)]="formValues.feedback.surveyor" 
+                      [compareWith]="compareUomObjects"
+                      placeholder="Surveyor">
+              <mat-option *ngFor="let option of satisfactionLevel" [value]="option">
+                  {{option.name}}
+              </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</div>
