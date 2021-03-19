@@ -33,7 +33,11 @@
                 {{ CM.app_id + '.RETESTED_DENSITY' | translate }}
             </label>
             <div class="input-group form_input form_input_retestedDensity">
-               <input type="text" class="form-control" name="claimType.retestedDensity" id="claimType.retestedDensity" ng-class="CM.invalid_form ? 'ng-touched' : ''" ng-change="triggerChangeFieldsAppSpecific('claimType.retestedDensity', 'claimType.retestedDensity')" unique-id="claimType.retestedDensity" ng-model="formValues.claimType.retestedDensity" dynamic-pattern="decimalNumber" ng-if="formValues.claimType.claimType.id == 1 && !IsQuantitySubtype">
+                <input type="text" class="form-control" name="claimType.retestedDensity" id="claimType.retestedDensity"
+                    ng-class="CM.invalid_form ? 'ng-touched' : ''" ng-change="triggerChangeFieldsAppSpecific('claimType.retestedDensity', 'claimType.retestedDensity')"
+                    unique-id="claimType.retestedDensity" ng-model="formValues.claimType.retestedDensity" dynamic-pattern="decimalNumber"
+                    ng-if="formValues.claimType.claimType.id == 1 && !IsQuantitySubtype"
+                    ng-disabled="formValues.claimDetails.status.name == 'Completed' || formValues.claimDetails.status.name == 'Cancelled'">
             </div>
         </div>
     </div>
