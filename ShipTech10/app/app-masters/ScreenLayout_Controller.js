@@ -74,6 +74,8 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                             $scope.loaded = true;
                             toastr.success(response.message);
                             $scope.formValues = response.data;
+
+                           
                             // $location.path(vm.app_id + '/claims/edit/');
                         } else {
                             $scope.loaded = true;
@@ -110,6 +112,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                             $scope.loaded = true;
                             toastr.success(response.message);
                             $scope.formValues = response.data;
+                            
                             // $location.path(vm.app_id + '/claims/edit/');
                         } else {
                             $scope.loaded = true;
@@ -548,6 +551,9 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                                         }
                                     });
                                     $scope.formValues.id = 0;
+                                    console.log("6666666666666 vm.screen_id", vm.screen_id);
+                                    console.log("6666666666666 $scope.formValues", $scope.formValues);
+                                    console.log("6666666666666 $scope.formValues.counterpartyLocations", $scope.formValues.counterpartyLocations);
                                     if (vm.screen_id == 'counterparty') {
                                     	$scope.formValues.address.id = 0;
                                     	$.each($scope.formValues.counterpartyLocations, (key, val) => {
@@ -624,8 +630,11 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                                     }
                                     if (vm.app_id == 'claims' && vm.screen_id == 'claims') {
                                         $scope.formValues = {};
+                                        
                                         $scope.formValues.claimsPossibleActions = null;
                                         $scope.formValues.isEditable = true;
+                                        debugger;
+                                        
                                         $scope.formValues.orderDetails = response.orderDetails;
                                         $scope.formValues.deliveryDate = response.deliveryDate;
                                         $scope.triggerChangeFields('OrderID', 'orderDetails.order');
@@ -677,10 +686,12 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                         	return;
                         }
                         Factory_Master.get_master_entity(
-                            vm.entity_id,
+                           
+                           vm.entity_id,
                             vm.screen_id,
                             vm.app_id,
                             (callback) => {
+                                debugger;
                                 screenLoader.hideLoader();
                                 if (callback) {
 	                                $scope.formValues = callback;
@@ -739,7 +750,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
 				                        }
 				                    }
 				                    if (vm.app_id == 'masters' && vm.screen_id == 'additionalcost') {
-					                    if($scope.formValues.costType.name == 'Flat' || $scope.formValues.costType.name == 'Unit') {
+					                    if($scope.formValues.costType.name == 'Flat' || $scope.formValues.costType.name == 'Unit' || $scope.formValues.costType.name == 'Range' || $scope.formValues.costType.name == 'Total') {
 					                        $scope.formValues.componentType = null;
 					                        $('.edit_form_fields_ComponentType_masters').hide();
 					                    } else {
@@ -827,6 +838,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                         data = angular.fromJson(localStorage.getItem(`${vm.app_id + vm.screen_id }_newEntity`));
                         localStorage.removeItem(`${vm.app_id + vm.screen_id }_newEntity`);
                         $scope.formValues = data;
+                        
                     }
                 }
             }
@@ -955,7 +967,8 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                     screenLoader.hideLoader();
                     $scope.screenId = callback.id;
                     delete callback.id;
-                    // debugger;
+                    //  
+                    debugger;
                     $scope.formFields = callback;
                     // multiple layouts
                     if (callback.children) {
@@ -981,7 +994,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                     	}
                     }
                     if (vm.app_id == 'masters' && vm.screen_id == 'additionalcost') {
-	                    if($scope.formValues.costType.name == 'Flat' || $scope.formValues.costType.name == 'Unit') {
+	                    if($scope.formValues.costType.name == 'Flat' || $scope.formValues.costType.name == 'Unit' || $scope.formValues.costType.name == 'Range' || $scope.formValues.costType.name == 'Total') {
 	                        $scope.formValues.componentType = null;
 	                        setTimeout(() => {
 		                        $('.edit_form_fields_ComponentType_masters').hide();
@@ -1063,6 +1076,8 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
         };
 
         $scope.triggerModal = function(template, clc, name, id, formvalue, idx, field_name, filter, ctrlData) {
+            debugger;
+            console.log("---------------")
         	if (!clc && (window.location.href.indexOf('preview-email?reportId') != -1 || $rootScope.reportId)) {
         		clc = 'QuantityControlReport';
         	}
