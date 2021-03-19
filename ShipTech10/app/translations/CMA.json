@@ -539,6 +539,7 @@
   },
   "masters": {
     "ADDL_TECHNICAL_DETAILS": "Addl. Technical Details",
+    "CUSTOMER" : "Customer",
     "CONTACT_ADDRESS": "Contact Address",
     "TERMS_AND_CONDITIONS": "Terms and Conditions",
     "ENERGY_PARAMETER_TYPE": "Parameter Type",
