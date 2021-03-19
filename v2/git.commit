@@ -1,11 +1,9 @@
-﻿commit 6dfb93441a0ac26b448131672b68d40c59750bad
+﻿commit eae13fa180f2b7eb8e03ea16a497e1652c045da3
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri Mar 19 08:58:35 2021 +0000
+Date:   Fri Mar 19 10:25:27 2021 +0000
 
-    Merged PR 9302: Added delivery screen on v2
+    Merged PR 9360: Changed svg for calendar icon
     
-    Added delivery screen on v2
-    
-    Related work items: #25541
+    Changed svg for calendar icon
 
 branch: master
