@@ -924,13 +924,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 }
             });
         };
-        $scope.vesselIsoSpecGroupName=function(){
-           var vesselGroupName= ctrl.request.vesselDetails.vessel.vesselIsoSpecGroup.name ;
-           var splitString=vesselGroupName.split(" ",1);
-           return splitString.toString();
-           
-        }
-
+       
 
         ctrl.showDeleteLocationConfirm = function(location) {
             ctrl.entityToDelete = 'location';

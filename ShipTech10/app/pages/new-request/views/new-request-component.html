@@ -121,7 +121,7 @@
                         Vessel Details 
                         
                         <span ng-repeat="location in $ctrl.request.locations | limitTo:1 " ng-if="location.service.is2MDelivery==1"  class="entity-status ng-binding ng-scope" style="color:red">
-                2M DELIVERY {{vesselIsoSpecGroupName()}}
+                2M DELIVERY {{$ctrl.request.vesselDetails.vessel.vesselIsoSpecGroup.name.split(" ",1)[0]}}
                         </span>
                     
                 </span>
