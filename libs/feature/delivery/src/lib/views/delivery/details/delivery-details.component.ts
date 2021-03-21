@@ -293,6 +293,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       'feedback': {}
     };
     let data = JSON.parse(localStorage.getItem('parentSplitDelivery'));
+    localStorage.removeItem('parentSplitDelivery');
     this.formValues.order = data.order;
     if (typeof this.formValues.deliveryProducts == 'undefined') {
       this.formValues.deliveryProducts = [];
@@ -743,6 +744,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
 
   createDeliveryWithOneProductFromOrdersToBeDeliveriesList() {
     let data = JSON.parse(localStorage.getItem('deliveryFromOrder'));
+    localStorage.removeItem('deliveryFromOrder');
     this.formValues.order = data.order;
     this.formValues.surveyor = data.surveyor;
     if (typeof this.formValues.deliveryProducts == 'undefined') {
@@ -818,7 +820,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   createDeliveryWithMultipleProductsFromOrdersToBeDeliveriesList() {
     this.isLoading = true;
     let data = JSON.parse(localStorage.getItem('deliveriesFromOrder'));
-    //localStorage.removeItem('deliveriesFromOrder');
+    localStorage.removeItem('deliveriesFromOrder');
     this.formValues.order = data[0].order;
     this.formValues.surveyor = data[0].surveyor;
     if (typeof this.formValues.deliveryProducts == 'undefined') {

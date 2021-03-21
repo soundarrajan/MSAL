@@ -104,8 +104,10 @@
             <div class="col-md-12 related-information">
               <div class="related-deliveries-container col-md-6">
                 <span *ngFor="let relatedDelivery of relatedDeliveries">
-                  <span class="related-deliveries-dot-container"></span>
-                  {{relatedDelivery.deliveryNumber}}
+                  <a *ngIf="relatedDelivery"  href="{{getRelatedDeliveryLink(relatedDelivery.deliveryId)}}">
+                    <span class="related-deliveries-dot-container"></span>
+                    {{relatedDelivery.deliveryNumber}}
+                  </a>
                 </span>
               </div>
               <div class="related-deliveries-complete-delivery">
