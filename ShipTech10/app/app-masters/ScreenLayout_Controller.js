@@ -489,6 +489,13 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
         	}
 
             if (vm.entity_id != '0') {
+            	if (vm.app_id == 'claims' && vm.screen_id == 'claims') {
+            		if (localStorage.getItem('raiseNewClaimData')){
+            			data = JSON.parse(localStorage.getItem('raiseNewClaimData'));
+            			localStorage.removeItem('raiseNewClaimData');
+            			$rootScope.transportData = data;
+            		}
+            	}
                 // $rootScope.transportData este variabila globala folosita pentru cazurile in care avem nevoie
                 // sa populam un ecran de create, atunci cand datele vin in urma unei actiuni.
                 if ($rootScope.transportData != null) {
