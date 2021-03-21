@@ -1,7 +1,6 @@
 <div class="col-md-12 row delivery-products-group">
   <a class="add-product-dropdown-icon" (click)="addNewProduct()"></a>
   <div class="product-tabs" *ngIf="formValues.deliveryProducts && formValues.deliveryProducts.length">
-    {{selectedProduct}}
       <div *ngFor="let deliveryProduct of formValues.deliveryProducts | keyvalue">
         <div (click)="selectProduct(deliveryProduct.key)"  class="product-tab" >
             <div class="bootstrap-tagsinput"> 

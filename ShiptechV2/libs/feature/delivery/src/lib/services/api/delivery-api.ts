@@ -72,7 +72,7 @@ export namespace DeliveryApiPaths {
   export const verifyDelivery = () =>  `api/delivery/verify`;
   export const revertVerifyDelivery = () =>  `api/delivery/revert`;
   export const getSplitDeliveryLimits = () =>  `api/delivery/getDeliverySplitLimits`;
-
+  export const raiseClaim = () =>  `/api/claims/new`;
 
 }
 
@@ -88,6 +88,9 @@ export class DeliveryApi implements IDeliveryApiService {
   
   @ApiCallUrl()
   private _procurementApiUrl = this.appConfig.v1.API.BASE_URL_DATA_PROCUREMENT;
+
+  @ApiCallUrl()
+  private _claimsApiUrl = this.appConfig.v1.API.BASE_URL_DATA_CLAIMS;
 
   constructor(private http: HttpClient, private appConfig: AppConfig) {}
 
@@ -240,6 +243,18 @@ export class DeliveryApi implements IDeliveryApiService {
     ).pipe(
       map((body: any) => body.payload),
       catchError((body: any) => of('Error, could not get split delivery limits'))
+    );
+  }
+
+  raiseClaim(
+    request: any
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${this._claimsApiUrl}/${DeliveryApiPaths.raiseClaim()}`,
+      { payload: request }
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of('Error, could not raise note of protest'))
     );
   }
 
