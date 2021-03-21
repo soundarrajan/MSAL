@@ -177,6 +177,16 @@ export class DeliveryService extends BaseStoreService implements OnDestroy {
    }
 
 
+   /**
+   * Raise claim
+   *  @param  
+  */
+   @ObservableException()
+   raiseClaim(payload: any) {
+      return this.deliveryApi.raiseClaim(payload);
+    }
+ 
+
   
     
   ngOnDestroy(): void {
