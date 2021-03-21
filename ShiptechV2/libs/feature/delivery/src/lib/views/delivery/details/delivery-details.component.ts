@@ -114,7 +114,8 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   CM: any = {
     'listsCache': {
       'ClaimType': []
-    }
+    },
+    'selectedProduct': 0
   };
   claimType: any;
   scheduleDashboardConfiguration: any;
@@ -1169,7 +1170,13 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   openRaiseClaimDialog(raiseClaimData: any): void {
     const dialogRef = this.dialog.open(RaiseClaimModalComponent, {
       width: '600px',
-      data:  { availableClaimTypes: raiseClaimData, deliveryProducts: this.formValues.deliveryProducts }
+      data:  { 
+          availableClaimTypes: raiseClaimData, 
+          deliveryProducts: this.formValues.deliveryProducts, 
+          raiseClaimInfo: this.raiseClaimInfo,
+          selectedProductIndex: this.selectedProductIndex,
+          formValues: this.formValues,
+          CM: this.CM }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -1272,7 +1279,8 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
 
   public getSelectedProduct(selectedProduct: any):void {
     console.log('Selected product ', selectedProduct);
-    this.selectedProductIndex = selectedProduct;
+    this.selectedProductIndex = parseFloat(selectedProduct);
+    this.CM.selectedProduct = selectedProduct;
     const product = this.formValues.deliveryProducts[this.selectedProductIndex];
     if (product.qualityParameters) {
       this.getClaimInfo([...product.qualityParameters], product.id);
@@ -1311,7 +1319,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       .saveDeliveryInfo(this.formValues)
       .pipe(
           finalize(() => {
-            this.isLoading = true;
+          
           })
       )
       .subscribe((result: any) => {
@@ -1321,7 +1329,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
             this.toastrService.error(result);
           } else {
             console.log('success');
-            this.toastrService.success('Report saved successfully');
+            this.toastrService.success('Delivery saved successfully');
             let navBar = {
               'deliveryId': result
             };
@@ -1329,8 +1337,6 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
             .getNavBarIdsList(navBar)
             .pipe(
               finalize(() => {
-                this.isLoading = true;
-                //this.spinner.hide();
               })
             )
             .subscribe(res => {
@@ -1377,7 +1383,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       .updateDeliveryInfo(this.formValues)
       .pipe(
           finalize(() => {
-            this.isLoading = true;
+            
           })
       )
       .subscribe((result: any) => {
@@ -1400,7 +1406,6 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
                   .loadDeliverytDetails(result.id)
                   .pipe(
                     finalize(() => {
-                      this.isLoading = true;
                       this.spinner.hide();
                     })
                   )
@@ -1423,7 +1428,6 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       .verifyDelivery(this.formValues)
       .pipe(
         finalize(() => {
-          this.isLoading = true;
         })
       )
       .subscribe((response: any) => {
@@ -1480,7 +1484,6 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       .revertVerifyDelivery(payload)
       .pipe(
         finalize(() => {
-          this.isLoading = true;
         })
       )
       .subscribe((response: any) => {
