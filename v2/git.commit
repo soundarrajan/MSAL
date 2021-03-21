@@ -1,9 +1,9 @@
-﻿commit 772f10fadd3b5d1054c54895efeedb93383aa791
+﻿commit e304ed7d08de0f3926d32ac69739bd9ad73b26b3
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Sun Mar 21 18:02:56 2021 +0000
+Date:   Sun Mar 21 18:19:00 2021 +0000
 
-    Merged PR 9374: Fixed raise claim info pop up
+    Merged PR 9375: Added link for related deliveries
     
-    Fixed raise claim info pop up
+    Added link for related deliveries
 
 branch: master
