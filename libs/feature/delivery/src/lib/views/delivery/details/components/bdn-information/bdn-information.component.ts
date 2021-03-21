@@ -434,6 +434,7 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
   isBargeAlongsideDateInvalid: boolean;
   statusColorCode: any;
   buttonClicked: any;
+  baseOrigin: string;
 
   @Input() set autocompleteType(value: string) {
     this._autocompleteType = value;
@@ -562,6 +563,7 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
     this.dateTimeFormats.display.dateInput = this.format.dateFormat;
     CUSTOM_DATE_FORMATS.display.dateInput = this.format.dateFormat;
     PICK_FORMATS.display.dateInput = this.format.dateFormat;
+    this.baseOrigin = new URL(window.location.href).origin;
     //this.dateTimeFormats.parse.dateInput = this.format.dateFormat;
 
   }
@@ -951,5 +953,9 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
   formatDateForBe(value) {
     let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
     return `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`
+  }
+
+  getRelatedDeliveryLink(deliveryId) {
+    return `${this.baseOrigin}/v2/delivery/delivery/${deliveryId}/details`;
   }
 }
