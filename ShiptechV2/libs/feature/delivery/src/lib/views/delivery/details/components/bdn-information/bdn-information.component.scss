@@ -268,7 +268,7 @@
 }
 
 .related-deliveries-dot-container:before {
-  content: url(../../../../../../../../../../assets/layout/images/pages/dot-related-delivery-number.svg);
+  content: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNiIgaGVpZ2h0PSI1IiB2aWV3Qm94PSIwIDAgNiA1IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPg0KPGNpcmNsZSBjeD0iMy4wMjkyIiBjeT0iMi4zNSIgcj0iMi4zNSIgZmlsbD0iIzAwQUFFMiIvPg0KPC9zdmc+DQo=");
 }
 
 .related-deliveries-container-header {
@@ -813,4 +813,8 @@
 
 .white-color {
   color: white !important;
+}
+
+.icon-date {
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTMiIHZpZXdCb3g9IjAgMCAxMyAxMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik05Ljc0OTk2IDUuODUwMUg4LjQ0OTk1VjcuMTUwMTFIOS43NDk5NlY1Ljg1MDFaIiBmaWxsPSIjMzY0MTUwIi8+DQo8cGF0aCBkPSJNNy4xNDk5OCA1Ljg1MDFINS44NDk5OFY3LjE1MDExSDcuMTQ5OThWNS44NTAxWiIgZmlsbD0iIzM2NDE1MCIvPg0KPHBhdGggZD0iTTQuNTUwMDIgNS44NTAxSDMuMjVWNy4xNTAxMUg0LjU1MDAyVjUuODUwMVoiIGZpbGw9IiMzNjQxNTAiLz4NCjxwYXRoIGQ9Ik0xMS4wNSAxLjMwMDAxSDEwLjRWMEg5LjA5OTk4VjEuMzAwMDFIMy44OTk5N1YwSDIuNTk5OTZWMS4zMDAwMUgxLjk0OTk3QzEuMjI4NDcgMS4zMDAwMSAwLjY1NjQ4NCAxLjg4NTAxIDAuNjU2NDg0IDIuNjAwMDJMMC42NDk5NjMgMTEuN0MwLjY0OTk2MyAxMi40MTUgMS4yMjg0NyAxMyAxLjk0OTk3IDEzSDExLjA1QzExLjc2NSAxMyAxMi4zNSAxMi40MTUgMTIuMzUgMTEuN1YyLjU5OTk5QzEyLjM1IDEuODg1MDEgMTEuNzY1IDEuMzAwMDEgMTEuMDUgMS4zMDAwMVpNMTEuMDUgMTEuN0gxLjk0OTk3VjQuNTQ5OTlIMTEuMDVWMTEuN1oiIGZpbGw9IiMzNjQxNTAiLz4NCjwvc3ZnPg0K');
 }
