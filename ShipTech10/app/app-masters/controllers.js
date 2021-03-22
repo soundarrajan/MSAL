@@ -1238,6 +1238,21 @@
                         delete v.voyageUpdated;
                 	}
                 });
+                if (!$scope.isHideVesselBopsDetails && $scope.formValues.departments.length < 1) {
+                    setTimeout(() => {
+                        $scope.submitedAction = false;
+                    }, 100);
+                    vm.editInstance.$valid = false;
+                    if(vm.editInstance) {
+                        if(!vm.editInstance.$error) {
+                            vm.editInstance.$error = {};
+                        }
+                        if(!vm.editInstance.$error.required) {
+                            vm.editInstance.$error.required = [];
+                        }
+                        vm.editInstance.$error.required.push(vm.editInstance['OperationalDepartment']);
+                    }
+                }
             }
             if (vm.app_id == 'masters' && vm.screen_id == 'vesseltype') {
                 var minMaxError = false;

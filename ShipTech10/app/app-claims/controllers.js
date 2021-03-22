@@ -478,36 +478,36 @@ APP_CLAIMS.controller('Controller_Claims', [
                                 });
                             }
                         }
-                        if ($scope.formValues.claimDetails.actualSettlementAmount == 0) {
+                        if ($scope.formValues.claimDetails && $scope.formValues.claimDetails.actualSettlementAmount == 0) {
                             $scope.formValues.claimDetails.actualSettlementAmount = $scope.formValues.claimDetails.actualSettlementAmount.toString();
                         }
-                        if ($scope.formValues.claimDetails.estimatedSettlementAmount == 0) {
+                        if ($scope.formValues.claimDetails && $scope.formValues.claimDetails.estimatedSettlementAmount == 0) {
                             $scope.formValues.claimDetails.estimatedSettlementAmount = $scope.formValues.claimDetails.estimatedSettlementAmount.toString();
                         }
                         // retrigger de dropdowns delivery, labs, products
-                        if (!$scope.formValues.claimDetails.estimatedSettlementAmountCurrency) {
+                        if ($scope.formValues.claimDetails && !$scope.formValues.claimDetails.estimatedSettlementAmountCurrency) {
                             $scope.formValues.claimDetails.estimatedSettlementAmountCurrency = $scope.tenantCurrency;
                         }
-                        if (!$scope.formValues.claimDebunkerDetails.salePriceCurrency) {
+                        if ($scope.formValues.claimDebunkerDetails && !$scope.formValues.claimDebunkerDetails.salePriceCurrency) {
                             $scope.formValues.claimDebunkerDetails.salePriceCurrency = $scope.tenantCurrency;
                         }
-                        if (!$scope.formValues.claimDebunkerDetails.debunkerQuantityUom) {
+                        if ($scope.formValues.claimDebunkerDetails && !$scope.formValues.claimDebunkerDetails.debunkerQuantityUom) {
                             $scope.formValues.claimDebunkerDetails.debunkerQuantityUom = $tenantSettings.tenantFormats.uom;
                         }
-                        if (!$scope.formValues.claimDebunkerDetails.resaleQuantityUom) {
+                        if ($scope.formValues.claimDebunkerDetails && !$scope.formValues.claimDebunkerDetails.resaleQuantityUom) {
                             $scope.formValues.claimDebunkerDetails.resaleQuantityUom = $tenantSettings.tenantFormats.uom;
                         }
-                        if (!$scope.formValues.claimDetails.claimQuantityUom) {
+                        if ($scope.formValues.claimDetails && !$scope.formValues.claimDetails.claimQuantityUom) {
                             $scope.formValues.claimDetails.claimQuantityUom = $tenantSettings.tenantFormats.uom;
                         }
-                        if (!$scope.formValues.claimDetails.bdnQuantityUom) {
+                        if ($scope.formValues.claimDetails && !$scope.formValues.claimDetails.bdnQuantityUom) {
                             $scope.formValues.claimDetails.bdnQuantityUom = $tenantSettings.tenantFormats.uom;
                         }
-                        if (!$scope.formValues.claimDetails.vesselQuantityUom) {
+                        if ($scope.formValues.claimDetails && !$scope.formValues.claimDetails.vesselQuantityUom) {
                             $scope.formValues.claimDetails.vesselQuantityUom = $tenantSettings.tenantFormats.uom;
                         }
                         
-                        if (!$scope.formValues.claimDetails.claimDate) {
+                        if ($scope.formValues.claimDetails && !$scope.formValues.claimDetails.claimDate) {
                             $scope.formValues.claimDetails.claimDate = moment().format();
                         }
         

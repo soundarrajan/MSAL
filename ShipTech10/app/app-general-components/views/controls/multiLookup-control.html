@@ -17,7 +17,6 @@
 
     </div>
     <div class="multi_lookup_tags tagsFor{{ field.Name }}" multi-tags name="{{ field.Name }}" unique-id="{{field.Unique_ID}}">
-        <input ng-if="field.Unique_ID=='departments'&& CM.screen_id=='vessel'" decode-input-format name="{{ field.Name }}" unique-id="{{field.Unique_ID}}" type="text"  class="input-as-label form-control typeahead object_tagsinput_{{ field.Unique_ID }}" dynamic-model="'formValues.' + field.Name +'.id'"   ng-required='{{field.Required}}' ng-change="dummyModel = null"/>
-        <input ng-if="!(field.Name=='OperationalDepartment'&& CM.screen_id=='vessel')" decode-input-format name="{{ field.Name }}" unique-id="{{field.Unique_ID}}" type="text"  class="input-as-label form-control typeahead object_tagsinput_{{ field.Unique_ID }}" dynamic-model="'formValues.' + field.Name +'.id'"   ng-required='{{field.Required}} && isVisible(field.Name)' ng-change="dummyModel = null"/>
+        <input decode-input-format name="{{ field.Name }}" unique-id="{{field.Unique_ID}}" type="text"  class="input-as-label form-control typeahead object_tagsinput_{{ field.Unique_ID }}" dynamic-model="'formValues.' + field.Name +'.id'"   ng-required='{{field.Required}} && isVisible(field.Name)' ng-change="dummyModel = null"/>
     </div>
 </div>
