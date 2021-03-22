@@ -63,6 +63,7 @@ import { NavBarApiService } from '@shiptech/core/services/navbar/navbar-api.serv
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { throws } from 'assert';
 import { LoadingBarService } from '@ngx-loading-bar/core';
+import { ProductListColumnServerKeys } from '@shiptech/core/ui/components/master-selector/view-models/product-model/product-list.columns';
 
 interface DialogData {
   email: string;
@@ -221,6 +222,9 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       this.orderNumberOptions = data.orderNumbers;
       if (data.delivery) {
         this.formValues = data.delivery;
+        this.setQuantityFormatValues();
+        this.decodeFields();
+        
       }
       if (typeof this.formValues.feedback == 'undefined' || !this.formValues.feedback) {
         this.formValues.feedback = {};
@@ -352,6 +356,11 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
           )
           .subscribe((response: any) => {
             deliveryProd.qualityParameters = response;
+            if (deliveryProd.qualityParameters) {
+              deliveryProd.qualityParameters.forEach((productParameter, key1) => {
+                productParameter.specParameter.name = this.decodeSpecificField(productParameter.specParameter.name);
+              });
+            }
           });
 
           this.openedScreenLoaders += 1;
@@ -774,45 +783,72 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
           } ]
       }
     };
-
-    this.isLoading = true;
+    this.openedScreenLoaders += 1;
     this.deliveryService
       .loadDeliverySpecParameters(dataForInfo)
       .pipe(
         finalize(() => {
+          this.openedScreenLoaders -= 1;
+          if (!this.openedScreenLoaders) {
+            this.isLoading = false;
+          }
         })
       )
       .subscribe((response: any) => {
-        this.formValues.deliveryProducts[0].qualityParameters = response;
-        console.log(this.formValues.deliveryProducts[0]);
+        if (typeof response == 'string') {
+          this.toastrService.error(response);
+        } else {
+          this.formValues.deliveryProducts[0].qualityParameters = response;
+          if (this.formValues.deliveryProducts[0].qualityParameters) {
+            this.formValues.deliveryProducts[0].qualityParameters.forEach((productParameter, key1) => {
+              productParameter.specParameter.name = this.decodeSpecificField(productParameter.specParameter.name);
+            });
+          }
+          console.log(this.formValues.deliveryProducts[0]);
+        }
       });
-
+    this.openedScreenLoaders += 1;
     this.deliveryService
       .loadDeliveryQuantityParameters(dataForInfo)
       .pipe(
         finalize(() => {
+          this.openedScreenLoaders -= 1;
+          if (!this.openedScreenLoaders) {
+            this.isLoading = false;
+          }
         })
       )
       .subscribe((response: any) => {
-        this.formValues.deliveryProducts[0].quantityParameters = response;
-        console.log(this.formValues.deliveryProducts[0]);
+        if (typeof response == 'string') {
+          this.toastrService.error(response);
+        } else {
+          this.formValues.deliveryProducts[0].quantityParameters = response;
+          console.log(this.formValues.deliveryProducts[0]);
+        }
       });
-
+      this.openedScreenLoaders += 1;
       this.deliveryService
       .loadOrder(this.formValues.order.id)
       .pipe(
         finalize(() => {
-  
+          this.openedScreenLoaders -= 1;
+          if (!this.openedScreenLoaders) {
+            this.isLoading = false;
+          }
         })
       )
       .subscribe((response: any)  => {
-        this.formValues.info.vesselName = response.vessel.name;
-        this.formValues.info.locationName = response.location.name;
-        this.formValues.info.eta = response.eta;
-        this.formValues.info.etb = response.etb;
-        this.formValues.temp.orderedProducts = response.products;
-        if (response.surveyorCounterparty) {
-            this.formValues.surveyorName = response.surveyorCounterparty.name;
+        if (typeof response == 'string') {
+          this.toastrService.error(response);
+        } else {
+          this.formValues.info.vesselName = response.vessel.name;
+          this.formValues.info.locationName = response.location.name;
+          this.formValues.info.eta = response.eta;
+          this.formValues.info.etb = response.etb;
+          this.formValues.temp.orderedProducts = response.products;
+          if (response.surveyorCounterparty) {
+              this.formValues.surveyorName = response.surveyorCounterparty.name;
+          }
         }
       });
 
@@ -853,17 +889,22 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       .loadDeliverySpecParameters(dataForInfo)
       .pipe(
         finalize(() => {
+          this.openedScreenLoaders -= 1;
+          if (!this.openedScreenLoaders) {
+            this.isLoading = false;
+          }
         })
       )
       .subscribe((response: any) => {
-        this.openedScreenLoaders -= 1;
-        if (!this.openedScreenLoaders) {
-          this.isLoading = false;
-        }
         if (typeof response == 'string') {
-          this.isLoading = false;
+          this.toastrService.error(response);
         } else {
           this.formValues.deliveryProducts[key].qualityParameters = response;
+          if (this.formValues.deliveryProducts[key].qualityParameters) {
+            this.formValues.deliveryProducts[key].qualityParameters.forEach((productParameter, key1) => {
+              productParameter.specParameter.name = this.decodeSpecificField(productParameter.specParameter.name);
+            });
+          }
           console.log(this.formValues.deliveryProducts[key]);
         }
       });
@@ -873,15 +914,15 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       .loadDeliveryQuantityParameters(dataForInfo)
       .pipe(
         finalize(() => {
+          this.openedScreenLoaders -= 1;
+          if (!this.openedScreenLoaders) {
+            this.isLoading = false;
+          }
         })
       )
       .subscribe((response: any) => {
-        this.openedScreenLoaders -= 1;
-        if (!this.openedScreenLoaders) {
-          this.isLoading = false;
-        }
         if (typeof response == 'string') {
-          this.isLoading = false;
+          this.toastrService.error(response);
         } else {
           this.formValues.deliveryProducts[key].quantityParameters = response;
           console.log(this.formValues.deliveryProducts[key]);
@@ -893,16 +934,15 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     .loadOrder(this.formValues.order.id)
     .pipe(
       finalize(() => {
-
+        this.openedScreenLoaders -= 1;
+        if (!this.openedScreenLoaders) {
+          this.isLoading = false;
+        }
       })
     )
     .subscribe((response: any)  => {
-      this.openedScreenLoaders -= 1;
-      if (!this.openedScreenLoaders) {
-        this.isLoading = false;
-      }
       if (typeof response == 'string') {
-        this.isLoading = false;
+        this.toastrService.error(response);
       } else {
         this.formValues.info.vesselName = response.vessel.name;
         this.formValues.info.locationName = response.location.name;
@@ -1344,6 +1384,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
             this.spinner.hide();
             this.isLoading = true;
             console.log('success');
+            this.decodeFields();
             this.toastrService.success('Delivery saved successfully');
             this.router
             .navigate([
@@ -1374,28 +1415,20 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
           } else {
             console.log('success');
             this.toastrService.success('Delivery saved successfully');
-            this.router
-              .navigate([
-                KnownPrimaryRoutes.Delivery,
-                `${KnownDeliverylRoutes.Delivery}`,
-                result.id,
-                KnownDeliverylRoutes.DeliveryDetails
-              ])
-              .then(() => {
-                this.deliveryService
-                  .loadDeliverytDetails(result.id)
-                  .pipe(
-                    finalize(() => {
-                      this.spinner.hide();
-                    })
-                  )
-                  .subscribe((data: any) => {
-                    console.log(this.formValues);
-                    console.log(data);
-                    this.formValues = _.merge(this.formValues, data);
-                    console.log(this.formValues);
-                    this.setQuantityFormatValues();
-                  })
+            this.deliveryService
+              .loadDeliverytDetails(result.id)
+              .pipe(
+                finalize(() => {
+                  this.spinner.hide();
+                })
+              )
+              .subscribe((data: any) => {
+                console.log(this.formValues);
+                console.log(data);
+                this.formValues = _.merge(this.formValues, data);
+                console.log(this.formValues);
+                this.setQuantityFormatValues();
+                this.decodeFields();
               });
           }
        });
@@ -1425,34 +1458,26 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         } else {
           console.log('success');
           this.toastrService.success('Verify success!');
-          this.router
-            .navigate([
-              KnownPrimaryRoutes.Delivery,
-              `${KnownDeliverylRoutes.Delivery}`,
-              this.entityId,
-              KnownDeliverylRoutes.DeliveryDetails
-            ])
-            .then(() => {
-              this.deliveryService
-                .loadDeliverytDetails(parseFloat(this.entityId))
-                .pipe(
-                  finalize(() => {
-                    this.spinner.hide();
-                  })
-                )
-                .subscribe((data: any) => {
-                  console.log(this.formValues);
-                  console.log(data);
-                  this.formValues = _.merge(this.formValues, data);
-                  this.setQuantityFormatValues();
-                  console.log(this.formValues);
-                  if (typeof this.formValues.deliveryStatus != 'undefined') {
-                    if (this.formValues.deliveryStatus.name) {
-                        this.statusColorCode = this.getColorCodeFromLabels(this.formValues.deliveryStatus, this.scheduleDashboardLabelConfiguration);
-                        console.log(this.statusColorCode)
-                    }
-                  } 
-                });
+          this.deliveryService
+            .loadDeliverytDetails(parseFloat(this.entityId))
+            .pipe(
+              finalize(() => {
+                this.spinner.hide();
+              })
+            )
+            .subscribe((data: any) => {
+              console.log(this.formValues);
+              console.log(data);
+              this.formValues = _.merge(this.formValues, data);
+              this.setQuantityFormatValues();
+              this.decodeFields();
+              console.log(this.formValues);
+              if (typeof this.formValues.deliveryStatus != 'undefined') {
+                if (this.formValues.deliveryStatus.name) {
+                    this.statusColorCode = this.getColorCodeFromLabels(this.formValues.deliveryStatus, this.scheduleDashboardLabelConfiguration);
+                    console.log(this.statusColorCode)
+                }
+              } 
             });
         }
       }, error => {
@@ -1485,35 +1510,27 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         } else {
           console.log('success');
           this.toastrService.success('Revert Verify success!');
-          this.router
-            .navigate([
-              KnownPrimaryRoutes.Delivery,
-              `${KnownDeliverylRoutes.Delivery}`,
-              this.entityId,
-              KnownDeliverylRoutes.DeliveryDetails
-            ])
-            .then(() => {
-              this.deliveryService
-                .loadDeliverytDetails(parseFloat(this.entityId))
-                .pipe(
-                  finalize(() => {
-                    this.spinner.hide();
-                  })
-                )
-                .subscribe((data: any) => {
-                  console.log(this.formValues);
-                  console.log(data);
-                  this.formValues = _.merge(this.formValues, data);
-                  console.log(this.formValues);
-                  this.setQuantityFormatValues();
-                  if (typeof this.formValues.deliveryStatus != 'undefined') {
-                    if (this.formValues.deliveryStatus.name) {
-                        this.statusColorCode = this.getColorCodeFromLabels(this.formValues.deliveryStatus, this.scheduleDashboardLabelConfiguration);
-                        console.log(this.statusColorCode)
-                    }
-                  }
-                })
-            });
+          this.deliveryService
+            .loadDeliverytDetails(parseFloat(this.entityId))
+            .pipe(
+              finalize(() => {
+                this.spinner.hide();
+              })
+            )
+            .subscribe((data: any) => {
+              console.log(this.formValues);
+              console.log(data);
+              this.formValues = _.merge(this.formValues, data);
+              console.log(this.formValues);
+              this.setQuantityFormatValues();
+              this.decodeFields();
+              if (typeof this.formValues.deliveryStatus != 'undefined') {
+                if (this.formValues.deliveryStatus.name) {
+                    this.statusColorCode = this.getColorCodeFromLabels(this.formValues.deliveryStatus, this.scheduleDashboardLabelConfiguration);
+                    console.log(this.statusColorCode)
+                }
+              }
+            })
         }
         
       }, error => {
@@ -1573,6 +1590,18 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         if (product.finalQuantityAmount) {
           product.finalQuantityAmount = this.quantityFormatValue(product.finalQuantityAmount);
         }
+        if (product.quantityParameters) {
+          product.quantityParameters.forEach((productQuantity, key2) => {
+            if (productQuantity.bdn) {
+              productQuantity.bdn = this.quantityFormatValue(productQuantity.bdn);
+            }
+          });
+        }
+        if (product.quantityHeader) {
+          if (product.quantityHeader.ccaiDelivered) {
+            product.quantityHeader.ccaiDelivered = this.quantityFormatValue(product.quantityHeader.ccaiDelivered);
+          }
+        }
       });
     }
   }
@@ -1590,6 +1619,42 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         return this._decimalPipe.transform(plainNumber, this.quantityFormat);
       }
     }
+  }
+
+  decodeFields() {
+    console.log(this.formValues);
+    if (this.formValues.deliveryProducts.length) {
+      this.formValues.deliveryProducts.forEach((product, key) => {
+        if (product.qualityHeader) {
+          if (product.qualityHeader.comments) {
+            product.qualityHeader.comments = this.decodeSpecificField(product.qualityHeader.comments);
+            console.log(product.qualityHeader.comments);
+          }
+        }
+        if (product.quantityHeader) {
+          if (product.quantityHeader.comments) {
+            product.quantityHeader.comments = this.decodeSpecificField(product.quantityHeader.comments);
+            console.log(product.quantityHeader.comments);
+          }
+        }
+        if (product.qualityParameters) {
+          product.qualityParameters.forEach((productParameter, key1) => {
+            productParameter.specParameter.name = this.decodeSpecificField(productParameter.specParameter.name);
+          });
+        }
+      });
+    }
+
+  }
+
+
+  decodeSpecificField(modelValue) {
+    let decode = function(str) {
+      return str.replace(/&#(\d+);/g, function(match, dec) {
+          return String.fromCharCode(dec);
+      });
+    };
+    return decode(_.unescape(modelValue));
   }
 
   
