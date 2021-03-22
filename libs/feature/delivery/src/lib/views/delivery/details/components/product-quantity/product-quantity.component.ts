@@ -182,6 +182,9 @@ export class ProductQuantityComponent implements OnInit{
       this.formQuantityHeaders(this.formValues.deliveryProducts[this.deliveryProductIndex].orderProductId, 
                               this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader.ccaiDelivered);
     }
+    if (!this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader) {
+      this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader = {};
+    }
     this.changeDetectorRef.detectChanges();
   }
   setDeliveryForm(form){

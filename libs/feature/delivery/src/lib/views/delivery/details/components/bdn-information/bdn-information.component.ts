@@ -496,6 +496,7 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
   @Output() changeInputBdn = new EventEmitter<any>();
   @Output() onDatePicked = new EventEmitter<any>();
 
+  @Output() onOrderNumberChanged = new EventEmitter<any>();
 
   @Select(UserProfileState.displayName) displayName$: Observable<string>;
   @Select(UserProfileState.username) username$: Observable<string>;
@@ -695,8 +696,11 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
      filterValue = this.formValues.barge.name ? this.formValues.barge.name.toLowerCase() : this.formValues.barge.toLowerCase();
     }
     if (this.bargeList$) {
-    return this.bargeList$.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0)
-      .slice(0, 10);
+      const list =  this.bargeList$.filter((item: any) => {
+        return item.name.toLowerCase().includes(filterValue.toLowerCase());
+      }).splice(0,10);
+      console.log(list);
+      return list;
     } else {
       return [];
     }
@@ -725,6 +729,7 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
       this.getRelatedDeliveries(orderId);
       this.getDeliveryOrderSummary(orderId);
       console.log(this.formValues);
+      this.onOrderNumberChanged.emit(true);
     }
   }
 
@@ -744,6 +749,8 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
       this.getRelatedDeliveries(orderId);
       this.getDeliveryOrderSummary(orderId);
     }
+
+    this.onOrderNumberChanged.emit(true);
   }
 
   getOrder(orderId: number) {
@@ -760,21 +767,25 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
         })
     )
     .subscribe((response: any) => {
-      this.formValues.sellerName = response.seller.name;
-      this.formValues.port = response.location.name;
-      this.formValues.OrderBuyer = response.buyer.name;
-      this.formValues.temp.orderedProducts = response.products;
-      this.formValues.deliveryProducts = [];
+      if (typeof response == 'string') {
+        this.toastr.error('An error has occurred!');
+      } else {
+        this.formValues.sellerName = response.seller.name;
+        this.formValues.port = response.location.name;
+        this.formValues.OrderBuyer = response.buyer.name;
+        this.formValues.temp.orderedProducts = response.products;
+        this.formValues.deliveryProducts = [];
 
-      //set order info for delivery
-      this.formValues.info.vesselName = response.vessel.name;
-      this.formValues.info.locationName = response.location.name;
-      this.formValues.info.eta = response.eta;
-      this.formValues.info.etb = response.etb;
-      if (response.surveyorCounterparty) {
-          this.formValues.surveyorName = response.surveyorCounterparty.name;
+        //set order info for delivery
+        this.formValues.info.vesselName = response.vessel.name;
+        this.formValues.info.locationName = response.location.name;
+        this.formValues.info.eta = response.eta;
+        this.formValues.info.etb = response.etb;
+        if (response.surveyorCounterparty) {
+            this.formValues.surveyorName = response.surveyorCounterparty.name;
+        }
+        this.changeDetectorRef.markForCheck();
       }
-      this.changeDetectorRef.markForCheck();
     });
   }
 
@@ -794,6 +805,7 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
     .subscribe((response: any) => {
         if (typeof response == 'string') {
           console.log('eroare');
+          this.toastr.error('An error has occurred!');
         } else {
           response.forEach((val, key) => {
             this.relatedDeliveries.forEach((val2, key2) => {
@@ -825,49 +837,55 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
         })
     )
     .subscribe((response: any) => {
-      console.log(this._entityId);
-      if (typeof this.formValues.temp == 'undefined') {
-        this.formValues.temp = {};
-      }
-      this.formValues.temp.deliverysummary = response;
-      this.formValues.temp.deliverySummaryProducts = [ ... response.products];
-      if (!parseInt(this._entityId)) {
-        // new delivery
-        // also set pricing date for delivery to delivery date if null
-        this.formValues.deliveryProducts.forEach((deliveryProd, _) => {
-          this.formValues.temp.deliverysummary.products.forEach((summaryProd, _) => {
-              if (summaryProd.id == deliveryProd.orderProductId) {
-                  if (summaryProd.pricingDate != null) {
-                      deliveryProd.pricingDate = summaryProd.pricingDate;
-                  } else {
-                      deliveryProd.pricingDate = this.formValues.temp.deliverysummary.deliveryDate;
-                  }
-                  if (summaryProd.convFactorOptions) {
-                      deliveryProd.convFactorOptions = summaryProd.convFactorOptions;
-                  }
-                  if (summaryProd.convFactorMassUom != null) {
-                      deliveryProd.convFactorMassUom = summaryProd.convFactorMassUom;
-                  }
-                  if (summaryProd.convFactorValue != null) {
-                      deliveryProd.convFactorValue = summaryProd.convFactorValue;
-                  }
-                  if (summaryProd.convFactorVolumeUom != null) {
-                      deliveryProd.convFactorVolumeUom = summaryProd.convFactorVolumeUom;
-                  }
-              }
-          });
-        });
-        if (this.deliverySettings.deliveryDateFlow.internalName == 'Yes') {
-          this.formValues.deliveryDate = this.formValues.temp.deliverysummary.deliveryDate;
+      if (typeof response == 'string') {
+        this.toastr.error('An error has occurred!');
+      } else {
+        console.log(this._entityId);
+        if (typeof this.formValues.temp == 'undefined') {
+          this.formValues.temp = {};
         }
+        this.formValues.temp.deliverysummary = response;
+        this.formValues.temp.deliverySummaryProducts = [ ... response.products];
+        if (!parseInt(this._entityId)) {
+          // new delivery
+          // also set pricing date for delivery to delivery date if null
+          this.formValues.deliveryProducts.forEach((deliveryProd, _) => {
+            this.formValues.temp.deliverysummary.products.forEach((summaryProd, _) => {
+                if (summaryProd.id == deliveryProd.orderProductId) {
+                    if (summaryProd.pricingDate != null) {
+                        deliveryProd.pricingDate = summaryProd.pricingDate;
+                    } else {
+                        deliveryProd.pricingDate = this.formValues.temp.deliverysummary.deliveryDate;
+                    }
+                    if (summaryProd.convFactorOptions) {
+                        deliveryProd.convFactorOptions = summaryProd.convFactorOptions;
+                    }
+                    if (summaryProd.convFactorMassUom != null) {
+                        deliveryProd.convFactorMassUom = summaryProd.convFactorMassUom;
+                    }
+                    if (summaryProd.convFactorValue != null) {
+                        deliveryProd.convFactorValue = summaryProd.convFactorValue;
+                    }
+                    if (summaryProd.convFactorVolumeUom != null) {
+                        deliveryProd.convFactorVolumeUom = summaryProd.convFactorVolumeUom;
+                    }
+                }
+            });
+          });
+          if (this.deliverySettings.deliveryDateFlow.internalName == 'Yes') {
+            this.formValues.deliveryDate = this.formValues.temp.deliverysummary.deliveryDate;
+          }
+        }
+        this.orderProductsByProductType('summaryProducts');
+        if (this.formValues.deliveryProducts) {
+          this.setProductsPhysicalSupplier();
+          this.setQtyUoms();
+        }
+        //this.changeInputBdn.emit(this.formValues);
+        this.changeDetectorRef.markForCheck();
+
       }
-      this.orderProductsByProductType('summaryProducts');
-      if (this.formValues.deliveryProducts) {
-        this.setProductsPhysicalSupplier();
-        this.setQtyUoms();
-      }
-      //this.changeInputBdn.emit(this.formValues);
-      this.changeDetectorRef.markForCheck();
+
 
     });
   }
@@ -951,8 +969,12 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
   }
 
   formatDateForBe(value) {
-    let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
-    return `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`
+    if (value) {
+      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+      return `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+    } else {
+      return null;
+    }
   }
 
   getRelatedDeliveryLink(deliveryId) {

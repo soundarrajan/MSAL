@@ -77,13 +77,6 @@ interface DialogData {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DeliveryDetailsComponent implements OnInit, OnDestroy {
-
-
-  @Select(QcReportState.isReadOnly) isReadOnly$: Observable<boolean>;
-  @Select(QcReportState.isBusy) isBusy$: Observable<boolean>;
-  @Select(QcReportState.isNew) isNew$: Observable<boolean>;
-
-  hasVerifiedStatus$ = new BehaviorSubject<boolean>(false);
   private _destroy$ = new Subject();
 
   private quantityPrecision: number;
@@ -95,6 +88,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   eventsSubject: Subject<any> = new Subject<any>();
   eventsSubject2: Subject<any> = new Subject<any>();
   eventsSubject3: Subject<any> = new Subject<any>();
+  eventsSubject4: Subject<any> = new Subject<any>();
   anyChanges: boolean;
   deliverySettings: IDeliveryTenantSettings;
   finalQuantityRules: any[];
@@ -206,15 +200,19 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     });
     this.route.data.subscribe(data => {
       if (localStorage.getItem('parentSplitDelivery')) {
+        this.buttonClicked = false;
+        this.eventsSubject2.next(this.buttonClicked);
         this.isLoading = true;
         this.openedScreenLoaders = 0;
         this.initSplitDelivery();
       }
       if (localStorage.getItem('deliveriesFromOrder')) {
+        this.openedScreenLoaders = 0;
         this.isLoading = true;
         this.createDeliveryWithMultipleProductsFromOrdersToBeDeliveriesList();
       }
       if (localStorage.getItem('deliveryFromOrder')) {
+        this.openedScreenLoaders = 0;
         this.isLoading = true;
         this.createDeliveryWithOneProductFromOrdersToBeDeliveriesList();
       }
@@ -295,6 +293,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     let data = JSON.parse(localStorage.getItem('parentSplitDelivery'));
     localStorage.removeItem('parentSplitDelivery');
     this.formValues.order = data.order;
+    this.formValues.info = data.info;
     if (typeof this.formValues.deliveryProducts == 'undefined') {
       this.formValues.deliveryProducts = [];
     }
@@ -1206,12 +1205,14 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       }
       const params = [];
       this.raiseClaimInfo.allSpecParams.forEach((paramVal, paramKey) => {
-        paramVal.claimTypes.forEach((element, key) => {
+        if (paramVal.claimType) {
+          paramVal.claimTypes.forEach((element, key) => {
             if (element.id == val.id) {
                 paramVal.disabled = 'false';
                 params.push({...paramVal});
             }
-        });
+          });
+        }
       });
       console.log(params);
       const claimType = {
@@ -1321,7 +1322,8 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       .saveDeliveryInfo(this.formValues)
       .pipe(
           finalize(() => {
-          
+            this.buttonClicked = false;
+            this.eventsSubject2.next(this.buttonClicked);
           })
       )
       .subscribe((result: any) => {
@@ -1356,7 +1358,6 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
                 .loadDeliverytDetails(result)
                 .pipe(
                   finalize(() => {
-                    this.isLoading = true;
                     this.spinner.hide();
                   })
                 )
@@ -1366,6 +1367,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
                       console.log(this.formValues);
                       console.log(data);
                       this.formValues = _.merge(this.formValues, data);
+                      this.setQuantityFormatValues();
                       console.log(this.formValues);
                       if (typeof this.formValues.deliveryStatus != 'undefined') {
                         if (this.formValues.deliveryStatus.name) {
@@ -1385,7 +1387,8 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       .updateDeliveryInfo(this.formValues)
       .pipe(
           finalize(() => {
-            
+            this.buttonClicked = false;
+            this.eventsSubject2.next(this.buttonClicked);
           })
       )
       .subscribe((result: any) => {
@@ -1416,6 +1419,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
                     console.log(data);
                     this.formValues = _.merge(this.formValues, data);
                     console.log(this.formValues);
+                    this.setQuantityFormatValues();
                   })
               });
           }
@@ -1425,11 +1429,17 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
 
   
   verify() {
+    let hasMandatoryFields = this.validateRequiredFields();
+    if (hasMandatoryFields) {
+      return;
+    }
     this.spinner.show();
     this.deliveryService
       .verifyDelivery(this.formValues)
       .pipe(
         finalize(() => {
+          this.buttonClicked = false;
+          this.eventsSubject2.next(this.buttonClicked);
         })
       )
       .subscribe((response: any) => {
@@ -1452,7 +1462,6 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
                 .loadDeliverytDetails(parseFloat(this.entityId))
                 .pipe(
                   finalize(() => {
-                    this.isLoading = true;
                     this.spinner.hide();
                   })
                 )
@@ -1460,6 +1469,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
                   console.log(this.formValues);
                   console.log(data);
                   this.formValues = _.merge(this.formValues, data);
+                  this.setQuantityFormatValues();
                   console.log(this.formValues);
                   if (typeof this.formValues.deliveryStatus != 'undefined') {
                     if (this.formValues.deliveryStatus.name) {
@@ -1476,8 +1486,11 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       });
   }
 
-
   revertVerify() {
+    let hasMandatoryFields = this.validateRequiredFields();
+    if (hasMandatoryFields) {
+      return;
+    }
     let payload = {
       "DeliveryId": this.formValues.id
     }
@@ -1486,6 +1499,8 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       .revertVerifyDelivery(payload)
       .pipe(
         finalize(() => {
+          this.buttonClicked = false;
+          this.eventsSubject2.next(this.buttonClicked);
         })
       )
       .subscribe((response: any) => {
@@ -1507,7 +1522,6 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
                 .loadDeliverytDetails(parseFloat(this.entityId))
                 .pipe(
                   finalize(() => {
-                    this.isLoading = true;
                     this.spinner.hide();
                   })
                 )
@@ -1516,6 +1530,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
                   console.log(data);
                   this.formValues = _.merge(this.formValues, data);
                   console.log(this.formValues);
+                  this.setQuantityFormatValues();
                   if (typeof this.formValues.deliveryStatus != 'undefined') {
                     if (this.formValues.deliveryStatus.name) {
                         this.statusColorCode = this.getColorCodeFromLabels(this.formValues.deliveryStatus, this.scheduleDashboardLabelConfiguration);
@@ -1555,6 +1570,51 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       return true;
     }
     return false;
+  }
+
+  getOrderNumberChanged(value) {
+    console.log(value);
+    this.eventsSubject4.next(value);
+  }
+
+  setQuantityFormatValues() {
+    if (this.formValues.deliveryProducts) {
+      this.formValues.deliveryProducts.forEach((product, key) => {
+        if (product.confirmedQuantityAmount) {
+          product.confirmedQuantityAmount = this.quantityFormatValue(product.confirmedQuantityAmount);
+        }
+        if (product.bdnQuantityAmount) {
+          product.bdnQuantityAmount = this.quantityFormatValue(product.bdnQuantityAmount);
+        }
+        if (product.vesselQuantityAmount) {
+          product.vesselQuantityAmount = this.quantityFormatValue(product.vesselQuantityAmount);
+        }
+        if (product.surveyorQuantityAmount) {
+          product.surveyorQuantityAmount = this.quantityFormatValue(product.surveyorQuantityAmount);
+        }
+        if (product.vesselFlowMeterQuantityAmount) {
+          product.vesselFlowMeterQuantityAmount = this.quantityFormatValue(product.vesselFlowMeterQuantityAmount);
+        }
+        if (product.finalQuantityAmount) {
+          product.finalQuantityAmount = this.quantityFormatValue(product.finalQuantityAmount);
+        }
+      });
+    }
+  }
+
+  quantityFormatValue(value) {
+    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    let number = parseFloat(plainNumber);
+    if (isNaN(number)) {
+      return null;
+    }
+    if (plainNumber) {
+      if(this.tenantService.quantityPrecision == 0) {
+        return plainNumber;
+      } else {
+        return this._decimalPipe.transform(plainNumber, this.quantityFormat);
+      }
+    }
   }
 
   

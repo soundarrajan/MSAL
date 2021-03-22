@@ -333,12 +333,14 @@ export class RaiseClaimModalComponent implements OnInit {
       }
       const params = [];
       this.raiseClaimInfo.allSpecParams.forEach((paramVal, paramKey) => {
-        paramVal.claimTypes.forEach((element, key) => {
+        if (paramVal.claimTypes) {
+          paramVal.claimTypes.forEach((element, key) => {
             if (element.id == val.id) {
                 paramVal.disabled = 'false';
                 params.push({...paramVal});
             }
-        });
+          });
+        }
       });
       console.log(params);
       const claimType = {
