@@ -1025,8 +1025,9 @@
             }
 
             if(vm.app_id == 'masters' && vm.screen_id == 'location') {
-                 
-               if(!$scope.SaveAdditionalCostDetValidation()){
+                 var SaveAdditionalCostDetValidation = $scope.SaveAdditionalCostDetValidation();
+                console.log("SaveAdditionalCostDetValidation")
+               if(!SaveAdditionalCostDetValidation){
                    return
                }
                     
@@ -1871,68 +1872,98 @@
             toastr.error(toastererror);
 
         };
+
         $scope.SaveAdditionalCostDetValidation = function () {
+            $('#ItemName').removeClass('ng-invalid'); 
+            $('#Type').removeClass('ng-invalid');
+            $('#Amount').removeClass('ng-invalid');
+            $('#Currency').removeClass('ng-invalid');
             var returnresult = false;
             if ($scope.formValues.additionalCosts != undefined && $scope.formValues.additionalCosts.length > 0) {
                 $.each($scope.formValues.additionalCosts, (k, v) => {
-                    if (v.costType != undefined && v.costType.name != undefined && v.costType.name != null) {
-                        if (v.costType.name == 'Range' || v.costType.name == 'Total') {
-                            if (v.additionalCostDetails != undefined && v.additionalCostDetails.length != 0) {
-                                //if ($scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails.length > 0) {
-                                var FormvalueLength = v.additionalCostDetails.length - 1;
-                                $.each(v.additionalCostDetails, (i, j) => {
-                                    if (FormvalueLength != i) {
-                                        if (IsDataExists(j.qtyFrom) || IsDataExists(j.qtyTo) || IsDataExists(j.priceUom) || IsDataExists(j.costType) || IsDataExists(j.amount) || IsDataExists(j.currency)) {
-                                            toastr.error('Please fill all required details in Port Additional Cost Details');
-                                            returnresult = false
-                                        }
-                                        else if (parseInt(j.qtyFrom) >= parseInt(j.qtyTo)) {
-                                            toastr.error('Quantity From Should be less than Quantity To');
-                                            returnresult = false
-                                        }
-                                        else{
-                                            returnresult = true
-                                        }
+                    if((v.additionalCost == undefined || v.additionalCost == "") || (v.costType == undefined || v.costType == ""))
+                    {
+                        $('#ItemName').addClass('ng-invalid'); 
+                        $('#Type').addClass('ng-invalid');
+                        $('#Amount').addClass('ng-invalid');
+                        $('#Currency').addClass('ng-invalid');
+                        toastr.error('Please fill all required details');
+                        return returnresult = false   
+                    }
+                    else{
+                        if(v.costType.name == 'Range' || v.costType.name == 'Total'){
+                            /* Additional Cost Details Validations start */
+                                    if (v.additionalCostDetails != undefined && v.additionalCostDetails.length != 0) {
+                                        var FormvalueLength = v.additionalCostDetails.length - 1;
+                                        $.each(v.additionalCostDetails, (i, j) => {
+                                            if (FormvalueLength != i) {
+                                                if (IsDataExists(j.qtyFrom) || IsDataExists(j.qtyTo) || IsDataExists(j.priceUom) || IsDataExists(j.costType) || IsDataExists(j.amount) || IsDataExists(j.currency)) {
+                                                    toastr.error('Please fill all required details in Port Additional Cost Details');
+                                                    return returnresult = false
+                                                }
+                                                else if (parseInt(j.qtyFrom) >= parseInt(j.qtyTo)) {
+                                                    toastr.error('Quantity From Should be less than Quantity To');
+                                                    return returnresult = false
+                                                }
+                                                else {
+                                                    return returnresult = true
+                                                }
+                                            }
+                                            else {
+                                                if (IsDataExists(j.qtyFrom) || IsDataExists(j.qtyTo) || IsDataExists(j.priceUom) || IsDataExists(j.costType) || IsDataExists(j.amount) || IsDataExists(j.currency)) {
+                                                    toastr.error('Please fill all required details in Port Additional Cost Details');
+                                                    return returnresult = false
+                                                }
+                                                else if (parseInt(j.qtyFrom) >= parseInt(j.qtyTo)) {
+                                                    toastr.error('Quantity From Should be less than Quantity To');
+                                                    return returnresult = false
+
+                                                }
+                                                else {
+                                                    return returnresult = true
+                                                }
+                                            }
+                                        });
                                     }
                                     else {
-                                        if (IsDataExists(j.qtyFrom) || IsDataExists(j.qtyTo) || IsDataExists(j.priceUom) || IsDataExists(j.costType) || IsDataExists(j.amount) || IsDataExists(j.currency)) {
-                                            toastr.error('Please fill all required details in Port Additional Cost Details');
-                                            returnresult = false
-                                        }
-                                        else if (parseInt(j.qtyFrom) >= parseInt(j.qtyTo)) {
-                                            toastr.error('Quantity From Should be less than Quantity To');
-                                            returnresult = false
-                                        }
-                                        else{
-                                            returnresult = true
-                                        }
+                                        toastr.error('Please fill all required details in Port Additional Cost Details');
+                                        return returnresult = false
                                     }
-                                });
-                                //}
-                            }
-                            else {
-                                toastr.error('Please fill all required details in Port Additional Cost Details');
-                                return returnresult = false
-                            }
+
+                            /* Additional Cost Details Validations End */
                         }
                         else{
-                            if((v.amount == undefined || v.amount == "")|| (v.currency == undefined || v.currency == "")){
+                            //AdditionalCostDetails should be empty
+                            if(v.amount == undefined || v.amount == ""){
+                                $('#Amount').addClass('ng-invalid');
+                                    if(v.currency == undefined || v.currency == ""){
+                                        $('#Currency').addClass('ng-invalid'); 
+                                    }
                                 toastr.error('Please fill all required details');
-                                return returnresult = false
+                                return returnresult = false   
                             }
-                            else{
+                            else if(v.currency == undefined || v.currency == ""){
+                                $('#Currency').addClass('ng-invalid');
+                                toastr.error('Please fill all required details');
+                                return returnresult = false 
+                            }
+                            else
+                            {
+                                return returnresult = true
+                            }   
 
-                                return returnresult = true 
-                            }
-                            
                         }
                     }
-
                 });
-               // return returnresult
+            }
+            else
+            {
+                return returnresult = true
             }
             return returnresult
+            console.log("returnresult", returnresult)
         };
+
 
         $scope.save_terms_and_conditions = function(id) {
            
@@ -6661,6 +6692,7 @@
             
             // }
             if(additionalCost.name == 'Range' || additionalCost.name == 'Total'){
+
                 defaultCostType = $scope.vm.tenantSetting.tenantFormats.currency;
                 $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails = [];
                 $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails.push({'id':0,'currency':$scope.vm.tenantSetting.tenantFormats.currency})
@@ -6675,6 +6707,10 @@
         };
       
         $scope.setDefaultCostType = function(additionalCost, key) {
+            $('#ItemName').removeClass('ng-invalid'); 
+            $('#Type').removeClass('ng-invalid');
+           
+
             if($scope.formValues.additionalCosts.length >0){
                 if($scope.formValues.additionalCosts[key].amount != undefined){
                     $scope.formValues.additionalCosts[key].amount = ''; 
@@ -6694,14 +6730,16 @@
             $.each(vm.additionalCostsComponentTypes, (k, v) => {
                 if (v.id == additionalCost.id) {
                     defaultCostType = v.costType;
+                    if((v.costType.id == 4 || v.costType.id == 5) && v.id == additionalCost.id){
+                        $scope.formValues.additionalCosts[key].currency = $scope.vm.tenantSetting.tenantFormats.currency; 
+                        $('#Currency').removeClass('ng-invalid'); 
+                        $('#Amount').removeClass('ng-invalid');
+                    }
+                    else{
+                        $scope.formValues.additionalCosts[key].currency = '';
+                    }
                 }
-                if((v.costType.id == 4 || v.costType.id == 5) && v.id == additionalCost.id){
-                    $scope.formValues.additionalCosts[key].currency = $scope.vm.tenantSetting.tenantFormats.currency; 
-                    
-                }
-                else{
-                    $scope.formValues.additionalCosts[key].currency = '';
-                }
+                
             });
             return defaultCostType;
         };
