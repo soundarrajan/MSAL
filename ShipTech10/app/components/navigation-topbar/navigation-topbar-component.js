@@ -105,7 +105,7 @@ angular.module('shiptech').controller('NavigationTopBarController', [ '$rootScop
                     {
                         id: 'delivery',
                         displayName : 'Delivery',
-                        url : typeof payload != 'undefined' && payload.deliveryId ? `#/delivery/delivery/edit/${ payload.deliveryId}` : '',
+                        url : typeof payload != 'undefined' && payload.deliveryId ? `v2/delivery/delivery/${ payload.deliveryId}/details` : '',
                         entityId : typeof payload != 'undefined' && payload.deliveryId ? payload.deliveryId : '',
                         indexStatus : null,
                         hidden : false
@@ -156,7 +156,7 @@ angular.module('shiptech').controller('NavigationTopBarController', [ '$rootScop
                     {
                         id: 'delivery',
                         displayName : 'Delivery',
-                        url : typeof payload != 'undefined' && payload.deliveryId ? `#/delivery/delivery/edit/${ payload.deliveryId}` : '',
+                        url : typeof payload != 'undefined' && payload.deliveryId ? `v2/delivery/delivery/${ payload.deliveryId}/details` : '',
                         entityId : typeof payload != 'undefined' && payload.deliveryId ? payload.deliveryId : '',
                         indexStatus : null,
                         hidden : false
