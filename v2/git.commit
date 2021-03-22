@@ -1,9 +1,9 @@
-﻿commit 347288be571e68275b23d1788f9abc39b43b5913
+﻿commit c9cbc7cbc437cbddcb3d4c0a0cf7064bc5e4d7ba
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon Mar 22 16:29:30 2021 +0000
+Date:   Mon Mar 22 17:07:34 2021 +0000
 
-    Merged PR 9406: Fixed icons for date
+    Merged PR 9407: Fixed split delivery and raise claim button
     
-    Fixed icons for date
+    Fixed split delivery and raise claim button
 
 branch: master
