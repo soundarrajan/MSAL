@@ -7333,7 +7333,7 @@ APP_API.factory('$Api_Service', [
                                                         claimDetails: {
                                                             bdnQuantity: entry.bdnQuantityAmount,
                                                             bdnQuantityUom : entry.bdnUom,
-                                                            vesselQuantity: entry.bdnQuantityAmount,
+                                                            vesselQuantity: entry.vesselQuantityAmount,
                                                             vesselQuantityUom : entry.vesselQuantityUom
                                                         },
                                                         productTypeId: entry.productType.id
