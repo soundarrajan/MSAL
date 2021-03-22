@@ -288,13 +288,16 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
         })
       )
       .subscribe((result: any) => {
-        newProductData.qualityHeader = {};
-        newProductData.qualityParameters = result;
-        console.log(newProductData);
-        this.changeDetectorRef.detectChanges();
-        this.deliveryFormSubject.next(this.formValues);
-        console.log(this.formValues);
-
+        if (typeof result == 'string') {
+          this.toastr.error(result);
+        } else {
+          newProductData.qualityHeader = {};
+          newProductData.qualityParameters = result;
+          console.log(newProductData);
+          this.changeDetectorRef.detectChanges();
+          this.deliveryFormSubject.next(this.formValues);
+          console.log(this.formValues);
+        }
       });
       this.openedScreenLoaders += 1;
       this.deliveryService
@@ -308,12 +311,16 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
         })
       )
       .subscribe((result: any) => {
-        newProductData.quantityHeader = {};
-        newProductData.quantityParameters = result;
-        console.log(newProductData);
-        this.deliveryFormSubject.next(this.formValues);
-        this.changeDetectorRef.detectChanges();
-        console.log(this.formValues);
+        if (typeof result == 'string') {
+          this.toastr.error(result);
+        } else {
+          newProductData.quantityHeader = {};
+          newProductData.quantityParameters = result;
+          console.log(newProductData);
+          this.deliveryFormSubject.next(this.formValues);
+          this.changeDetectorRef.detectChanges();
+          console.log(this.formValues);
+        }
       });
       newProductData.confirmedQuantityAmount = this.quantityFormatValue(selectedProductToAddInDelivery.orderedQuantity.amount);
       newProductData.confirmedQuantityUom = selectedProductToAddInDelivery.orderedQuantity.uom;
@@ -371,16 +378,20 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
           })
         )
         .subscribe(response => {
-          let productIndex = this.formValues.deliveryProducts.length - 1;
-          this.selectedProduct = productIndex;
-          this.selectProduct(productIndex);
-          this.conversionInfoData[this.selectedProduct] = response;
-          this.calculateVarianceAndReconStatus(productIndex);
-          // this.orderProductsByProductType('deliveryProducts');
-          this.orderProductsByProductType('summaryProducts');
-          this.changeDetectorRef.detectChanges();
-          this.deliveryFormSubject.next(this.formValues);
-          //this.conversionDataInfoSubject.next(this.conversionInfoData);
+          if (typeof response == 'string') {
+            this.toastr.error(response);
+          } else {
+            let productIndex = this.formValues.deliveryProducts.length - 1;
+            this.selectedProduct = productIndex;
+            this.selectProduct(productIndex);
+            this.conversionInfoData[this.selectedProduct] = response;
+            this.calculateVarianceAndReconStatus(productIndex);
+            // this.orderProductsByProductType('deliveryProducts');
+            this.orderProductsByProductType('summaryProducts');
+            this.changeDetectorRef.detectChanges();
+            this.deliveryFormSubject.next(this.formValues);
+            //this.conversionDataInfoSubject.next(this.conversionInfoData);
+          }
         });
       
     } else{
@@ -756,6 +767,48 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
     let filterSummaryProducts = this.formValues.temp.deliverysummary.products.filter((summaryProd) => summaryProd.product.name.toLowerCase().includes(value));
     console.log(filterSummaryProducts);
     this.formValues.temp.deliverySummaryProducts = [ ... filterSummaryProducts];
+  }
+
+  deleteDeliveryProduct(productId, productIdx) {
+    if (typeof productId == 'undefined') {
+      // simply erase product from list
+      let okay = false;
+      this.formValues.deliveryProducts.forEach((v, k) => {
+          if (typeof v.id == 'undefined') {
+              if(k == productIdx) {
+                  okay = true;
+              }
+          }
+      });
+
+      if(okay) {
+        // product is there and not saved
+        this.formValues.deliveryProducts.splice(productIdx, 1);
+        this.selectedProduct = 0;
+      }
+    } else {
+      // make call to delete product
+      this.toastr.info('Deleting product...');
+      this.spinner.show();
+      this.deliveryService
+      .deleteDeliveryProduct(productId)
+      .pipe(
+        finalize(() => {
+          this.spinner.hide();
+          
+        })
+      )
+      .subscribe(response => {
+        if (typeof response == 'string') {
+          this.toastr.error(response);
+        } else {
+          this.toastr.success('Product deleted!');
+          this.formValues.deliveryProducts.splice(productIdx, 1);
+          this.selectedProduct = 0;
+        }
+      });
+    }
+
   }
 
   

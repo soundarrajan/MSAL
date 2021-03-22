@@ -7,7 +7,9 @@
             [ngClass]="{'not-selected-product-container': deliveryProduct.key != selectedProduct}">
             <div class="bootstrap-tagsinput"> 
                 <span class="tag label border-default">
-                    <a><i class="fa fa-close font-red-thunderbird" ></i></a>
+                  <div (click)="deleteDeliveryProduct(deliveryProduct.value.id, deliveryProduct.key)" class="remove-product-container">
+                    <a class="remove-line"></a>
+                  </div>
                   {{deliveryProduct.value.product.name}}
                 </span>
             </div>
