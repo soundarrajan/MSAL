@@ -293,6 +293,11 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
         } else {
           newProductData.qualityHeader = {};
           newProductData.qualityParameters = result;
+          if (newProductData.qualityParameters) {
+            newProductData.qualityParameters.forEach((productParameter, key1) => {
+              productParameter.specParameter.name = this.decodeSpecificField(productParameter.specParameter.name);
+            });
+          }
           console.log(newProductData);
           this.changeDetectorRef.detectChanges();
           this.deliveryFormSubject.next(this.formValues);
@@ -810,6 +815,16 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
     }
 
   }
+
+  decodeSpecificField(modelValue) {
+    let decode = function(str) {
+      return str.replace(/&#(\d+);/g, function(match, dec) {
+          return String.fromCharCode(dec);
+      });
+    };
+    return decode(_.unescape(modelValue));
+  }
+
 
   
 }
