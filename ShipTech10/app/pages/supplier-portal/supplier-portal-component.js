@@ -257,12 +257,14 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ 'API',
                             ctrl.requests = [];
                             ctrl.activerequestid = null;
 
-                        	if (ctrl.procurementSettings.fieldVisibility.isSupplyQuantityHidden) {
-								delete ctrl.productColumns["supplyQuantity"];
-							}
-                        	if (ctrl.procurementSettings.fieldVisibility.isSupplyDeliveryDateHidden) {
-								delete ctrl.productColumns["supplyDeliveryDate"];
-							}
+                            if (ctrl.procurementSettings) {
+	                        	if (ctrl.procurementSettings.fieldVisibility.isSupplyQuantityHidden) {
+									delete ctrl.productColumns["supplyQuantity"];
+								}
+	                        	if (ctrl.procurementSettings.fieldVisibility.isSupplyDeliveryDateHidden) {
+									delete ctrl.productColumns["supplyDeliveryDate"];
+								}
+                            }
 
 
                             lookupModel.getAdditionalCostTypes().then((data) => {
