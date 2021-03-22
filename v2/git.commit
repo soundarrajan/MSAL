@@ -1,11 +1,9 @@
-﻿commit 45bfd90f6aea237dd5b062612782d4f1a73b564c
+﻿commit 10a1f286b02e7b7fdcadb60318bfe89897e4cc34
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon Mar 22 12:54:32 2021 +0000
+Date:   Mon Mar 22 14:41:27 2021 +0000
 
-    Merged PR 9398: Fixed topbar delivery
+    Merged PR 9403: Added removed product from delivery
     
-    Fixed topbar delivery
-    
-    Related work items: #25541
+    Added removed product from delivery
 
 branch: master

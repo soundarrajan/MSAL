@@ -72,7 +72,8 @@ export namespace DeliveryApiPaths {
   export const verifyDelivery = () =>  `api/delivery/verify`;
   export const revertVerifyDelivery = () =>  `api/delivery/revert`;
   export const getSplitDeliveryLimits = () =>  `api/delivery/getDeliverySplitLimits`;
-  export const raiseClaim = () =>  `/api/claims/new`;
+  export const raiseClaim = () =>  `api/claims/new`;
+  export const deleteDeliveryProduct = () =>  `api/delivery/products/delete`;
 
 }
 
@@ -255,6 +256,18 @@ export class DeliveryApi implements IDeliveryApiService {
     ).pipe(
       map((body: any) => body.payload),
       catchError((body: any) => of('Error, could not raise note of protest'))
+    );
+  }
+
+  deleteDeliveryProduct(
+    request: any
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${this._apiUrl}/${DeliveryApiPaths.deleteDeliveryProduct()}`,
+      { payload: request }
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage + body.error.Reference))
     );
   }
 

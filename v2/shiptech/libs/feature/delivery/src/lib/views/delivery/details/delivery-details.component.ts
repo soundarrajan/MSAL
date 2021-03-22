@@ -1039,6 +1039,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
 
   
   getRelatedDeliveries(orderId: number) {
+    this.relatedDeliveries = [];
     this.openedScreenLoaders += 1;
     let duplicate = false;
     this.deliveryService
