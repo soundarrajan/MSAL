@@ -442,7 +442,7 @@
                     (dateInput)="onChange($event, 'pricingEventDate')"
                     (dateChange)="formValues.deliveryProducts[deliveryProductIndex].pricingDate = formatDateForBe(formValues.deliveryProducts[deliveryProductIndex].pricingDate)">
                     <mat-datepicker-toggle matSuffix [for]="pricingEventDate">
-                        <mat-icon matDatepickerToggleIcon [svgIcon]="!switchTheme?'data-picker-gray':'data-picker-white'">
+                        <mat-icon matDatepickerToggleIcon class="icon-date">
                         </mat-icon>
                     </mat-datepicker-toggle>
                     <mat-datepicker #pricingEventDate [panelClass]="switchTheme?'datepicker-darktheme':''"></mat-datepicker>

@@ -98,6 +98,10 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
       breadcrumbs[0].url = '/#/admin/configuration/edit/1';
     }
 
+    if (this.router.url.includes('delivery/delivery')) {
+      breadcrumbs[0].url = '/#/delivery/delivery';
+    }
+
     return this.createBreadcrumbs(child, url, breadcrumbs);
   }
 }

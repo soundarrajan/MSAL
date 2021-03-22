@@ -36,7 +36,7 @@
               (dateInput)="onChange($event, 'bargePumpingRateStartTime')"
               (dateChange)="formValues.bargePumpingRateStartTime = formatDateForBe(formValues.bargePumpingRateStartTime)">
               <mat-datepicker-toggle matSuffix [for]="bargePumpingRateStartTime">
-                <mat-icon matDatepickerToggleIcon [svgIcon]="!switchTheme?'data-picker-gray':'data-picker-white'">
+                <mat-icon matDatepickerToggleIcon class="icon-date">
                 </mat-icon>
             </mat-datepicker-toggle>
             <mat-datepicker #bargePumpingRateStartTime [panelClass]="switchTheme?'datepicker-darktheme':''"></mat-datepicker>
@@ -54,7 +54,7 @@
               (dateInput)="onChange($event, 'bargePumpingRateEndTime')"
               (dateChange)="formValues.bargePumpingRateEndTime = formatDateForBe(formValues.bargePumpingRateEndTime);">
               <mat-datepicker-toggle matSuffix [for]="bargePumpingRateEndTime">
-                <mat-icon matDatepickerToggleIcon [svgIcon]="!switchTheme?'data-picker-gray':'data-picker-white'">
+                <mat-icon matDatepickerToggleIcon class="icon-date">
                 </mat-icon>
             </mat-datepicker-toggle>
             <mat-datepicker #bargePumpingRateEndTime [panelClass]="switchTheme?'datepicker-darktheme':''"></mat-datepicker>
