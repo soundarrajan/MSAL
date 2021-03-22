@@ -298,7 +298,13 @@ export class RaiseClaimModalComponent implements OnInit {
   }
 
   changeProduct(value) {
-    console.log(value);
+    let findProductIndex = _.findIndex(this.formValues.deliveryProducts, function(object: any) {
+      return object.product.id == value.product.id && object.product.name == value.product.name;
+    });
+    if (findProductIndex != -1) {
+      this.CM.selectedProduct = findProductIndex;
+      console.log(findProductIndex);
+    }
     const product = value;
     if (product.qualityParameters) {
       this.getClaimInfo([...product.qualityParameters], product.id);
