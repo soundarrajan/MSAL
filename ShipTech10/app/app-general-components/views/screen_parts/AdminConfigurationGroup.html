@@ -1063,7 +1063,45 @@
                                     </td>
                                     <td class="padding">
                                     </td>
-                                </tr>                                
+                                </tr> 
+                                <tr>
+                                    <td class="padding">
+                                        Supply Quantity
+                                    </td>
+                                    <td class="padding">
+                                        <label class="mt-checkbox">
+                                            <input type="checkbox" ng-model="formValues.procurement.fieldVisibility.isSupplyQuantityHidden" ng-click="formValues.procurement.fieldVisibility.isSupplyQuantityMandatory = false"
+                                            />
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td class="padding">
+                                        <label class="mt-checkbox">
+                                            <input type="checkbox" ng-model="formValues.procurement.fieldVisibility.isSupplyQuantityMandatory" ng-click="formValues.procurement.fieldVisibility.isSupplyQuantityHidden = false"
+                                            />
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="padding">
+                                        Supply Delivery Date
+                                    </td>
+                                    <td class="padding">
+                                        <label class="mt-checkbox">
+                                            <input type="checkbox" ng-model="formValues.procurement.fieldVisibility.isSupplyDeliveryDateHidden" ng-click="formValues.procurement.fieldVisibility.isSupplyDeliveryDateMandatory = false"
+                                            />
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td class="padding">
+                                        <label class="mt-checkbox">
+                                            <input type="checkbox" ng-model="formValues.procurement.fieldVisibility.isSupplyDeliveryDateMandatory" ng-click="formValues.procurement.fieldVisibility.isSupplyDeliveryDateHidden = false"
+                                            />
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                </tr>                                                                                               
                             </tbody>
                         </table>
                     </div>

@@ -294,7 +294,10 @@
                                 <i style="font-weight: bold;" class="fa fa-angle-double-up" ng-show="location[0].fullLocationSellersExpanded" ng-click="location[0].fullLocationSellersExpanded = !location[0].fullLocationSellersExpanded"></i>
                             </b>
                             &nbsp;&nbsp;
-                            <b tooltip tooltip-trigger="hover" data-original-title="{{location[0].portRestrictionComments | decodeReadOnly}}">{{location[0].location.name | decodeReadOnly}}</b>
+                            <b tooltip tooltip-trigger="hover" data-original-title="{{location[0].portRestrictionComments | decodeReadOnly}}">
+                            {{location[0].location.name | decodeReadOnly}} 
+                        	{{location[0].optionId ?  (" - " +  location[0].optionId) : '' | decodeReadOnly}} 
+                        	- {{location[0].terminalId | decodeReadOnly}}</b>
                         </div>
                     </form>
                 </th>

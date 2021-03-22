@@ -640,7 +640,6 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                                         
                                         $scope.formValues.claimsPossibleActions = null;
                                         $scope.formValues.isEditable = true;
-                                        debugger;
                                         
                                         $scope.formValues.orderDetails = response.orderDetails;
                                         $scope.formValues.deliveryDate = response.deliveryDate;
@@ -698,7 +697,6 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                             vm.screen_id,
                             vm.app_id,
                             (callback) => {
-                                debugger;
                                 screenLoader.hideLoader();
                                 if (callback) {
 	                                $scope.formValues = callback;
@@ -975,7 +973,6 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                     $scope.screenId = callback.id;
                     delete callback.id;
                     //  
-                    debugger;
                     $scope.formFields = callback;
                     // multiple layouts
                     if (callback.children) {
@@ -1083,7 +1080,6 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
         };
 
         $scope.triggerModal = function(template, clc, name, id, formvalue, idx, field_name, filter, ctrlData) {
-            debugger;
             console.log("---------------")
         	if (!clc && (window.location.href.indexOf('preview-email?reportId') != -1 || $rootScope.reportId)) {
         		clc = 'QuantityControlReport';

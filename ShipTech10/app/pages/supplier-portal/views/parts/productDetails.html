@@ -219,7 +219,8 @@
                                                     </a>
                                                 </a>
                                             </td>
-                                               <td style="min-width: 220px">
+                                            
+                                            <td style="min-width: 220px">
                                                 <div class="input-group">
                                                     <input class="form-control" value="{{ product.minQuantity | number: $ctrl.numberPrecision.quantityPrecision }} - {{ product.maxQuantity | number: $ctrl.numberPrecision.quantityPrecision }}" readonly disabled/>
                                                     <div class="input-group-btn">
@@ -238,7 +239,28 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                               <td style="min-width: 220px">
+
+                                            <td style="min-width: 220px" ng-if="!$ctrl.procurementSettings.fieldVisibility.isSupplyQuantityHidden">
+                                                <div class="input-group">
+                                                    <input class="form-control" name="product_{{$index}}_supplyQuantity" ng-model="product.sellers[0].offers[0].supplyQuantity" ng-required="$ctrl.procurementSettings.fieldVisibility.isSupplyQuantityMandatory"/>
+
+                                                    <div class="input-group-btn">
+                                                         <select name="" id="" class="form-control no-padding"
+                                                         disabled="true"                                                          
+                                                        ng-model="product.sellers[0].offers[0].priceQuantityUom"
+                                                        ng-options="uom as uom.name for uom in $ctrl.lists.Uom | decodeReadOnly track by uom.id"
+                                                        style="min-width:60px"></select>
+                                                    </div>
+                                                </div>
+                                            </td>   
+                                            <td style="min-width: 220px" ng-if="!$ctrl.procurementSettings.fieldVisibility.isSupplyDeliveryDateHidden">
+	            	                            <div class="input-group form_input date form_meridian_datetime w100">
+					                                <input name="supplyDeliveryDate" id="product_{{$index}}_supplyDeliveryDate" ng-required="$ctrl.procurementSettings.fieldVisibility.isSupplyDeliveryDateMandatory" class="form-control date-mask new-date-picker" new-date-picker ng-model="product.sellers[0].offers[0].supplyDeliveryDate" />
+					                            </div>
+                                            </td>                                         
+
+
+                                            <td style="min-width: 220px">
                                                 <div class="input-group">
                                                     <div class="input-group-btn">
                                                         <span ng-if="!$ctrl.token" ng-init="product.sellers[0].offers[0].currency = $ctrl.currency"></span>

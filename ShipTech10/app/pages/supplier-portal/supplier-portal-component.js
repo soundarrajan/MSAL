@@ -246,6 +246,7 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ 'API',
                         uiApiModel.get(MOCKUP_MAP['unrouted.seller-card']).then((data) => {
                             ctrl.lookupType = 'products';
                             ctrl.ui = data;
+
                             // Normalize relevant data for use in template.
                             ctrl.requestDetailsFields = normalizeArrayToHash(ctrl.ui.requestDetails.fields, 'name');
                             ctrl.bunkerablePortsFields = normalizeArrayToHash(ctrl.ui.bunkerablePorts.fields, 'name');
@@ -255,6 +256,15 @@ angular.module('shiptech.pages').controller('SupplierPortalController', [ 'API',
                             ctrl.additionalCostColumns = normalizeArrayToHash(ctrl.ui.additionalCost.columns, 'name');
                             ctrl.requests = [];
                             ctrl.activerequestid = null;
+
+                        	if (ctrl.procurementSettings.fieldVisibility.isSupplyQuantityHidden) {
+								delete ctrl.productColumns["supplyQuantity"];
+							}
+                        	if (ctrl.procurementSettings.fieldVisibility.isSupplyDeliveryDateHidden) {
+								delete ctrl.productColumns["supplyDeliveryDate"];
+							}
+
+
                             lookupModel.getAdditionalCostTypes().then((data) => {
                                 setTimeout(() => {
                                     ctrl.additionalCostTypes = normalizeArrayToHash(data.payload, 'id');

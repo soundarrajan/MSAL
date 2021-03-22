@@ -106,6 +106,11 @@
         "visible": true
       },
       {
+        "name": "MinMaxQty",
+        "caption": "PAGES.SELLER_CARD.MIN_MAX_QTY",
+        "visible": true
+      },
+      {
         "name": "supplyQuantity",
         "caption": "PAGES.SELLER_CARD.SUPPLY_QUANTITY",
         "visible": true
@@ -113,11 +118,6 @@
       {
         "name": "supplyDeliveryDate",
         "caption": "PAGES.SELLER_CARD.SUPPLY_DELIVERY_DATE",
-        "visible": true
-      },
-      {
-        "name": "MinMaxQty",
-        "caption": "PAGES.SELLER_CARD.MIN_MAX_QTY",
         "visible": true
       },
       {

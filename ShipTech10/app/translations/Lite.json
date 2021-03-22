@@ -221,6 +221,7 @@
     },
     "SELLER_CARD": {
       "VESSEL": "Vessel",
+	"SUPPLY_QUANTITY" : "Supply Qty.",      
       "IMO": "IMO",
       "SELLER": "Seller",
       "QUOTED_BY": "Quoted by",
