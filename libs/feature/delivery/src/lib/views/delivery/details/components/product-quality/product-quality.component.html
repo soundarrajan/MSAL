@@ -16,7 +16,7 @@
                   (dateInput)="onChange($event, 'analysedOnDate')"
                   (dateChange)="formValues.deliveryProducts[deliveryProductIndex].qualityHeader.analysedOn = formatDateForBe(formValues.deliveryProducts[deliveryProductIndex].qualityHeader.analysedOn)">
                   <mat-datepicker-toggle matSuffix [for]="analysedOnDate">
-                    <mat-icon matDatepickerToggleIcon [svgIcon]="!switchTheme?'data-picker-gray':'data-picker-white'">
+                    <mat-icon matDatepickerToggleIcon class="icon-date">
                     </mat-icon>
                 </mat-datepicker-toggle>
                 <mat-datepicker #analysedOnDate [panelClass]="switchTheme?'datepicker-darktheme':''"></mat-datepicker>
@@ -111,6 +111,7 @@
                           <input [(ngModel)]="qualityParameter.bdnValue"
                                 (ngModelChange)="qualityParameter.qualityMatch = setQualityMatch(qualityParameter.bdnValue, qualityParameter.surveyValue, qualityParameter.min, qualityParameter.max)"
                                 matInput 
+                                [disabled]="formValues.deliveryStatus.name == 'Verified'"
                                 myNumberOnly
                                 autocomplete="off"
                                 name="Product_{{ deliveryProductIndex }}_{{ qualityParameter.specParameter.name}}_BDN">
