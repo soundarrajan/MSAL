@@ -45,11 +45,15 @@ ul, li {
 }
 
 .raise-claim-modal .mat-checkbox-disabled .mat-checkbox-inner-container, .mat-radio-button.mat-radio-disabled .mat-radio-outer-circle{
-    background-color: #EBEBEB !important;
+    background: #EBEBEB !important;
 }
 
 .raise-claim-modal .mat-checkbox-checked.mat-accent .mat-checkbox-background {
     background: #37414F;
+}
+
+.mat-checkbox-checked:not(.mat-checkbox-disabled).mat-accent .mat-ripple-element, .mat-checkbox:active:not(.mat-checkbox-disabled).mat-accent .mat-ripple-element {
+  background: #EBEBEB !important;
 }
 
 

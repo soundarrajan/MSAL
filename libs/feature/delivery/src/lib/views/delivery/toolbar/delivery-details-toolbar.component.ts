@@ -44,8 +44,13 @@ export class DeliveryDetailsToolbarComponent
       return;
     } 
     this.navBar = navBar;
+    let params = {
+      'deliveryId': this.deliveryId
+    }
     if (this.deliveryId) {
-      this.setNavIds(this.deliveryId, this.navBar);
+      this.setNavIds(params, this.navBar);
+      this.createNavigationItems(this.navBar);
+      this.markNavigationItems();
     }
   }
   
