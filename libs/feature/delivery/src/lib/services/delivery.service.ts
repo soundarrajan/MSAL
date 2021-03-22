@@ -184,8 +184,18 @@ export class DeliveryService extends BaseStoreService implements OnDestroy {
    @ObservableException()
    raiseClaim(payload: any) {
       return this.deliveryApi.raiseClaim(payload);
-    }
+  }
  
+
+  
+   /**
+   * Delete Delivery Product
+   *  @param  
+  */
+    @ObservableException()
+    deleteDeliveryProduct(payload: any) {
+       return this.deliveryApi.deleteDeliveryProduct(payload);
+   }
 
   
     

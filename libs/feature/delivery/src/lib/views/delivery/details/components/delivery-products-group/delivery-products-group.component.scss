@@ -188,3 +188,33 @@
   box-sizing: border-box;
   border-radius: 3px;
 }
+
+.delete-product-close-button {
+  float: right;
+  color: white;
+}
+
+.delete-product-close-button:hover {
+  color: lightgray;
+}
+
+.remove-line {
+  border-top: 1px solid white;
+  display: block;
+  position: relative;
+  top: 7px;
+}
+
+.not-selected-product-container .remove-line {
+  border-bottom: 1px solid black;
+}
+
+.product-tab .bootstrap-tagsinput .tag{
+  display: inline-flex;
+}
+
+.remove-product-container {
+  width: 15px  !important;
+  position: relative;
+  right: 5px;
+}
