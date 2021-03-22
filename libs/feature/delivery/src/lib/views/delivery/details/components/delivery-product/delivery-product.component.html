@@ -6,9 +6,16 @@
             </div>
         </div>
         <div class="col-md-12  row" style="margin-left: 0px;">
-            <div class="col-md-6 product-variance-container-1 no-padding-product-variance">
-                <div class="variance-product-container col-md-6">
-                    <div class="block col-md-6">
+            <div class="product-variance-container-1 no-padding-product-variance"
+                [ngClass]="{'col-md-3':  formValues.temp.hiddenFields.buyerQty && formValues.temp.hiddenFields.sellerQty, 
+                        'col-md-6': !formValues.temp.hiddenFields.buyerQty || !formValues.temp.hiddenFields.sellerQty}">
+                <div class="variance-product-container"
+                    [ngClass]="{'display-none-product-variance': formValues.temp.hiddenFields.buyerQty && formValues.temp.hiddenFields.sellerQty,
+                            'col-md-6': !formValues.temp.hiddenFields.buyerQty || !formValues.temp.hiddenFields.sellerQty}">
+                    <div class="block" 
+                        *ngIf="!formValues.temp.hiddenFields.buyerQty"
+                        [ngClass]="{'col-md-12': !formValues.temp.hiddenFields.buyerQty && formValues.temp.hiddenFields.sellerQty, 
+                            'col-md-6': !formValues.temp.hiddenFields.buyerQty && !formValues.temp.hiddenFields.sellerQty}">
                         <div class="title">Buyer's Using</div>
                         <div class="inline-dropdown">
                             <mat-form-field appearance="none">
@@ -16,6 +23,7 @@
                                     (ngModelChange)="setVarianceQty('buyer', formValues.temp.buyerPrecedenceRule)"
                                     [compareWith]="compareUomObjects"
                                     disableOptionCentering
+                                    panelClass="inline-dropdown-select-container"
                                     [disabled]="formValues.deliveryStatus.name == 'Verified'">
                                     <mat-option *ngFor="let buyerOption of quantityCategory" 
                                         [value]="buyerOption">{{buyerOption.name}} Qty</mat-option>
@@ -23,13 +31,17 @@
                             </mat-form-field>
                         </div>
                     </div>
-                    <div class="block col-md-6">
+                    <div class="block"
+                        *ngIf="!formValues.temp.hiddenFields.sellerQty"
+                        [ngClass]="{'col-md-12': formValues.temp.hiddenFields.buyerQty && !formValues.temp.hiddenFields.sellerQty, 
+                            'col-md-6': !formValues.temp.hiddenFields.buyerQty && !formValues.temp.hiddenFields.sellerQty}">
                         <div class="title">Seller's Using</div>
                         <div class="inline-dropdown">
                             <mat-form-field appearance="none">
                                 <mat-select [(ngModel)]="formValues.temp.sellerPrecedenceRule"
                                     (ngModelChange)="setVarianceQty('seller', formValues.temp.sellerPrecedenceRule)"
                                     disableOptionCentering
+                                    panelClass="inline-dropdown-select-container"
                                     [compareWith]="compareUomObjects"
                                     [disabled]="formValues.deliveryStatus.name == 'Verified'">
                                 <mat-option *ngFor="let buyerOption of quantityCategory" 
@@ -39,7 +51,9 @@
                         </div>
                     </div>
                 </div> 
-                <div class="vessel-variance-container col-md-6 product-variance-qty" >
+                <div class="vessel-variance-container"
+                    [ngClass]="{'col-md-12': formValues.temp.hiddenFields.buyerQty && formValues.temp.hiddenFields.sellerQty, 
+                        'col-md-6 product-variance-qty': !formValues.temp.hiddenFields.buyerQty || !formValues.temp.hiddenFields.sellerQty}">
                     <div class="block col-md-12">
                         <div class="readonlyInfoLabel">
                             <div class="label-block col-md-4" *ngIf="formValues.temp.buyerPrecedenceRule">
@@ -415,12 +429,12 @@
                 </mat-form-field>
             </div>
         </div>
-        <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}"  [ngClass]="{'date-invalid': isPricingEventDateInvalid, 'date-valid': !isPricingEventDateInvalid}">
+        <div  *ngIf="!formValues.temp.hiddenFields.pricingDate" class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}"  [ngClass]="{'date-invalid': isPricingEventDateInvalid, 'date-valid': !isPricingEventDateInvalid}">
             <mat-form-field class="without-search" appearance="legacy">
                 <mat-label>Pricing event date</mat-label>
                 <input [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].pricingDate" 
                     matInput 
-                    [disabled]="formValues.deliveryStatus.name == 'Verified'"
+                    [disabled]="formValues.deliveryStatus.name == 'Verified' || !formValues.deliveryProducts[deliveryProductIndex].manualPricingDateOverride"
                     [matDatepicker]="pricingEventDate" 
                     (focus)="pricingEventDate.open()"
                     autocomplete="off"

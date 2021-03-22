@@ -84,7 +84,8 @@
                                 [deliveryProductIndex]="deliveryProduct.key"
                                 [events]="deliveryFormSubject.asObservable()">
       </shiptech-product-quality>
-      <shiptech-product-quantity [formValues]="formValues"
+      <shiptech-product-quantity *ngIf="formValues.temp.isShowQuantityReconciliationSection"
+                                [formValues]="formValues"
                                 [deliveryProductIndex]="deliveryProduct.key"
                                 [events]="deliveryFormSubject.asObservable()">
       </shiptech-product-quantity>
