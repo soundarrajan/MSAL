@@ -1,9 +1,11 @@
-﻿commit 8fcbb50b03a5b7f44ace546ccfa1f002796464ab
+﻿commit 45bfd90f6aea237dd5b062612782d4f1a73b564c
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon Mar 22 08:27:41 2021 +0000
+Date:   Mon Mar 22 12:54:32 2021 +0000
 
-    Merged PR 9385: Made non-editable fields for verified status
+    Merged PR 9398: Fixed topbar delivery
     
-    Made non-editable fields for verified status
+    Fixed topbar delivery
+    
+    Related work items: #25541
 
 branch: master

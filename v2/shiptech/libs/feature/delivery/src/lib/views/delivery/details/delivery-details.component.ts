@@ -200,20 +200,20 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     });
     this.route.data.subscribe(data => {
       if (localStorage.getItem('parentSplitDelivery')) {
-        this.buttonClicked = false;
-        this.eventsSubject2.next(this.buttonClicked);
         this.isLoading = true;
         this.openedScreenLoaders = 0;
+        this.buttonClicked = false;
+        this.eventsSubject2.next(this.buttonClicked);
         this.initSplitDelivery();
       }
       if (localStorage.getItem('deliveriesFromOrder')) {
-        this.openedScreenLoaders = 0;
         this.isLoading = true;
+        this.openedScreenLoaders = 0;
         this.createDeliveryWithMultipleProductsFromOrdersToBeDeliveriesList();
       }
       if (localStorage.getItem('deliveryFromOrder')) {
-        this.openedScreenLoaders = 0;
         this.isLoading = true;
+        this.openedScreenLoaders = 0;
         this.createDeliveryWithOneProductFromOrdersToBeDeliveriesList();
       }
       console.log('Check route resolver data')
@@ -234,6 +234,8 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       this.quantityCategory = data.quantityCategory;
       this.scheduleDashboardLabelConfiguration = data.scheduleDashboardLabelConfiguration;
       if (this.formValues.order && this.formValues.order.id) {
+        this.isLoading = true;
+        this.openedScreenLoaders = 0;
         this.getDeliveryOrderSummary(this.formValues.order.id);
         this.getRelatedDeliveries(this.formValues.order.id);
       }
@@ -929,55 +931,60 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         })
     )
     .subscribe((response: any) => {
-      console.log(this.entityId);
-      if (typeof this.formValues.temp == 'undefined') {
-        this.formValues.temp = {};
-      }
-      this.formValues.temp.deliverysummary = response;
-      if (!parseFloat(this.entityId)) {
-        // new delivery
-        // also set pricing date for delivery to delivery date if null
-        this.formValues.deliveryProducts.forEach((deliveryProd, _) => {
-          this.formValues.temp.deliverysummary.products.forEach((summaryProd, _) => {
-              if (summaryProd.id == deliveryProd.orderProductId) {
-                  if (summaryProd.pricingDate != null) {
-                      deliveryProd.pricingDate = summaryProd.pricingDate;
-                  } else {
-                      deliveryProd.pricingDate = this.formValues.temp.deliverysummary.deliveryDate;
-                  }
-                  if (summaryProd.convFactorOptions) {
-                      deliveryProd.convFactorOptions = summaryProd.convFactorOptions;
-                  }
-                  if (summaryProd.convFactorMassUom != null) {
-                      deliveryProd.convFactorMassUom = summaryProd.convFactorMassUom;
-                  }
-                  if (summaryProd.convFactorValue != null) {
-                      deliveryProd.convFactorValue = summaryProd.convFactorValue;
-                  }
-                  if (summaryProd.convFactorVolumeUom != null) {
-                      deliveryProd.convFactorVolumeUom = summaryProd.convFactorVolumeUom;
-                  }
-              }
+      if (typeof response == 'string') {
+        this.toastrService.error('An error has occurred!');
+      } else {
+        console.log(this.entityId);
+        if (typeof this.formValues.temp == 'undefined') {
+          this.formValues.temp = {};
+        }
+        this.formValues.temp.deliverysummary = response;
+        if (!parseFloat(this.entityId)) {
+          // new delivery
+          // also set pricing date for delivery to delivery date if null
+          this.formValues.deliveryProducts.forEach((deliveryProd, _) => {
+            this.formValues.temp.deliverysummary.products.forEach((summaryProd, _) => {
+                if (summaryProd.id == deliveryProd.orderProductId) {
+                    if (summaryProd.pricingDate != null) {
+                        deliveryProd.pricingDate = summaryProd.pricingDate;
+                    } else {
+                        deliveryProd.pricingDate = this.formValues.temp.deliverysummary.deliveryDate;
+                    }
+                    if (summaryProd.convFactorOptions) {
+                        deliveryProd.convFactorOptions = summaryProd.convFactorOptions;
+                    }
+                    if (summaryProd.convFactorMassUom != null) {
+                        deliveryProd.convFactorMassUom = summaryProd.convFactorMassUom;
+                    }
+                    if (summaryProd.convFactorValue != null) {
+                        deliveryProd.convFactorValue = summaryProd.convFactorValue;
+                    }
+                    if (summaryProd.convFactorVolumeUom != null) {
+                        deliveryProd.convFactorVolumeUom = summaryProd.convFactorVolumeUom;
+                    }
+                }
+            });
           });
-        });
-        if (this.deliverySettings.deliveryDateFlow.internalName == 'Yes') {
-          this.formValues.deliveryDate = this.formValues.temp.deliverysummary.deliveryDate;
+          if (this.deliverySettings.deliveryDateFlow.internalName == 'Yes') {
+            this.formValues.deliveryDate = this.formValues.temp.deliverysummary.deliveryDate;
+          }
         }
-      }
-      if (typeof this.formValues.deliveryStatus != 'undefined') {
-        if (this.formValues.deliveryStatus.name) {
-            this.statusColorCode = this.getColorCodeFromLabels(this.formValues.deliveryStatus, this.scheduleDashboardLabelConfiguration);
-            console.log(this.statusColorCode)
+        if (typeof this.formValues.deliveryStatus != 'undefined') {
+          if (this.formValues.deliveryStatus.name) {
+              this.statusColorCode = this.getColorCodeFromLabels(this.formValues.deliveryStatus, this.scheduleDashboardLabelConfiguration);
+              console.log(this.statusColorCode)
+          }
         }
+        // this.orderProductsByProductType('summaryProducts');
+        if (this.formValues.deliveryProducts) {
+          this.setProductsPhysicalSupplier();
+          this.setQtyUoms();
+        }
+        console.log(this.formValues);
+        this.changeDetectorRef.detectChanges();
+        this.eventsSubject.next(this.formValues);
       }
-      // this.orderProductsByProductType('summaryProducts');
-      if (this.formValues.deliveryProducts) {
-        this.setProductsPhysicalSupplier();
-        this.setQtyUoms();
-      }
-      console.log(this.formValues);
-      this.changeDetectorRef.detectChanges();
-      this.eventsSubject.next(this.formValues);
+  
     });
   }
 
@@ -1047,6 +1054,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     .subscribe((response: any) => {
         if (typeof response == 'string') {
           console.log('eroare');
+          this.toastrService.error('An error has occurred!');
         } else {
           response.forEach((val, key) => {
             this.relatedDeliveries.forEach((val2, key2) => {
@@ -1205,7 +1213,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       }
       const params = [];
       this.raiseClaimInfo.allSpecParams.forEach((paramVal, paramKey) => {
-        if (paramVal.claimType) {
+        if (paramVal.claimTypes) {
           paramVal.claimTypes.forEach((element, key) => {
             if (element.id == val.id) {
                 paramVal.disabled = 'false';
@@ -1332,53 +1340,19 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
             this.spinner.hide();
             this.toastrService.error(result);
           } else {
+            this.spinner.hide();
+            this.isLoading = true;
             console.log('success');
             this.toastrService.success('Delivery saved successfully');
-            let navBar = {
-              'deliveryId': result
-            };
-            this.navBarService
-            .getNavBarIdsList(navBar)
-            .pipe(
-              finalize(() => {
-              })
-            )
-            .subscribe(res => {
-              console.log(res);
-              this.navBar = res;
-              this.router
-              .navigate([
-                KnownPrimaryRoutes.Delivery,
-                `${KnownDeliverylRoutes.Delivery}`,
-                result,
-                KnownDeliverylRoutes.DeliveryDetails
-              ])
-              .then(() => {
-                this.deliveryService
-                .loadDeliverytDetails(result)
-                .pipe(
-                  finalize(() => {
-                    this.spinner.hide();
-                  })
-                )
-                .subscribe((data: any) => {
-                      console.log(res);
-                      this.navBar = res;
-                      console.log(this.formValues);
-                      console.log(data);
-                      this.formValues = _.merge(this.formValues, data);
-                      this.setQuantityFormatValues();
-                      console.log(this.formValues);
-                      if (typeof this.formValues.deliveryStatus != 'undefined') {
-                        if (this.formValues.deliveryStatus.name) {
-                            this.statusColorCode = this.getColorCodeFromLabels(this.formValues.deliveryStatus, this.scheduleDashboardLabelConfiguration);
-                            console.log(this.statusColorCode)
-                        }
-                      }
-                  });
-                })
+            this.router
+            .navigate([
+              KnownPrimaryRoutes.Delivery,
+              `${KnownDeliverylRoutes.Delivery}`,
+              result,
+              KnownDeliverylRoutes.DeliveryDetails
+            ])
+            .then(() => {
             });
-
           }
       });
     } else {
