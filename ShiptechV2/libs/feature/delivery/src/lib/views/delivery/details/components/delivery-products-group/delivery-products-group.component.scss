@@ -155,7 +155,6 @@
   line-height: 16px;
   text-align: right;
   color: #FFFFFF;
-  margin-right: 20px;
 }
 
 .select-product {
@@ -173,4 +172,19 @@
   margin-right: 0px !important;
   padding-left: 0px !important;
   padding-right: 0px !important;
+}
+
+
+.divider {
+  border-right: 1px solid #37414f;
+  height: 38px;
+  margin-left: 10px;
+}
+
+.not-selected-product-container {
+  background-color: white !important;
+  color: #364150;
+  border: 1px solid #E0E1E4;
+  box-sizing: border-box;
+  border-radius: 3px;
 }
