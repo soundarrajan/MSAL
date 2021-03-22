@@ -186,7 +186,7 @@
             (dateChange)="formValues.deliveryDate = formatDateForBe(formValues.deliveryDate)"
             required>
             <mat-datepicker-toggle matSuffix [for]="deliveryDate">
-              <mat-icon matDatepickerToggleIcon [svgIcon]="!switchTheme?'data-picker-gray':'data-picker-white'">
+              <mat-icon matDatepickerToggleIcon class="icon-date">
               </mat-icon>
           </mat-datepicker-toggle>
           <mat-datepicker #deliveryDate [panelClass]="switchTheme?'datepicker-darktheme':''"></mat-datepicker>
@@ -215,7 +215,7 @@
             (dateInput)="onChange($event, 'bdnDate')"
             (dateChange)="formValues.bdnDate = formatDateForBe(formValues.bdnDate)">
             <mat-datepicker-toggle matSuffix [for]="bdnDate">
-              <mat-icon matDatepickerToggleIcon [svgIcon]="!switchTheme?'data-picker-gray':'data-picker-white'">
+              <mat-icon matDatepickerToggleIcon class="icon-date">
               </mat-icon>
           </mat-datepicker-toggle>
           <mat-datepicker #bdnDate [panelClass]="switchTheme?'datepicker-darktheme':''"></mat-datepicker>
@@ -252,7 +252,7 @@
             autocomplete="off"
             placeholder="Berthing time">
           <button mat-icon-button matSuffix (click)="berthingTime.open(); $event.stopPropagation();">
-            <mat-icon  [svgIcon]="!switchTheme?'data-picker-gray':'data-picker-white'">
+            <mat-icon  class="icon-date">
             </mat-icon>
           </button>      
           <ngx-mat-datetime-picker #berthingTime></ngx-mat-datetime-picker>
@@ -270,7 +270,7 @@
             autocomplete="off"
             placeholder="Barge alongside">
           <button mat-icon-button matSuffix (click)="bargeAlongside.open(); $event.stopPropagation();">
-            <mat-icon  [svgIcon]="!switchTheme?'data-picker-gray':'data-picker-white'">
+            <mat-icon  class="icon-date">
             </mat-icon>
           </button>      
           <ngx-mat-datetime-picker #bargeAlongside></ngx-mat-datetime-picker>
