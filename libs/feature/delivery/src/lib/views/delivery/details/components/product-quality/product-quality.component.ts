@@ -229,6 +229,9 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
     this.eventsSubscription = this.events.subscribe((data) => this.setDeliveryForm(data));
     console.log('index');
     console.log(this.deliveryProductIndex);
+    if (!this.formValues.deliveryProducts[this.deliveryProductIndex].qualityHeader) {
+      this.formValues.deliveryProducts[this.deliveryProductIndex].qualityHeader = {};
+    }
     const product = this.formValues.deliveryProducts[this.deliveryProductIndex];
     this.getClaimInfo(product.qualityParameters, product.id);
     this.getQualityMatchList();

@@ -46,8 +46,8 @@
               [entityId]="entityId"
               [orderNumberOptions]="orderNumberOptions"
               [relatedDeliveries]="relatedDeliveries"
-              [entityId]="entityId"
               (changeInputBdn)="detectChanges($event)"
+              (onOrderNumberChanged)="getOrderNumberChanged($event)"
               [bargeList]="bargeList"
               [statusColorCode]="statusColorCode"
               [eventsSaveButton]="eventsSubject2.asObservable()"
@@ -77,7 +77,8 @@
                 class="col-12"
                 (onProductSelected)="getSelectedProduct($event)"
                 [eventsConversionInfoData]="eventsSubject3.asObservable()"
-                [eventsSaveButton]="eventsSubject2.asObservable()">
+                [eventsSaveButton]="eventsSubject2.asObservable()"
+                [eventsChangedOrderNumber]="eventsSubject4.asObservable()">
           </shiptech-delivery-products-group>  
         </div>
       </p-panel>

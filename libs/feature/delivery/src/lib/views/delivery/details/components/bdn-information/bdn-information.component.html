@@ -72,17 +72,22 @@
                 </span>
                 Delivery Number
               </span>
-              <div *ngIf="formValues.deliveryNumber" class="value">
+              <div *ngIf="formValues.deliveryNumber" class="value white-color">
                 {{formValues.deliveryNumber}}
               </div>
             </div>
           </div>
-          <div class="delivery-number col-md-2">
+          <div class="delivery-number col-md-3">
             <div>
               <span class="label">
-                <span class="delivery-number-dot">
+                <span *ngIf="formValues.deliveryStatus" class="delivery-number-dot">
                   <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" fill="#9E9E9E" [ngStyle]="{'fill': statusColorCode }"/>
+                  </svg>
+                </span>
+                <span *ngIf="!formValues.deliveryStatus" class="delivery-number-dot">
+                  <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" fill="#9E9E9E"/>
                   </svg>
                 </span>
                 Status
@@ -95,7 +100,7 @@
               </div>
             </div>
           </div>
-          <div class="related-deliveries related-deliveries-information-container col-md-8 no-padding">
+          <div class="related-deliveries related-deliveries-information-container col-md-7 no-padding">
             <div class="col-md-12 related-deliveries-header">
               <div class="related-deliveries-container-header col-md-12">
                 Related deliveries
@@ -112,7 +117,9 @@
               </div>
               <div class="related-deliveries-complete-delivery">
                 <mat-checkbox 
-                      [color]="'primary'">
+                    [color]="'primary'"
+                    [disabled]="formValues.deliveryStatus.name != 'Verified'"
+                    [(ngModel)]="formValues.completed">
                     Mark order as completed
                 </mat-checkbox>
               </div>
@@ -126,15 +133,16 @@
 <div class="col-md-12 row bdn-info">
   <div class="custom-form-field lookup-delivery-container" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
     <div class="d-flex">
-      <mat-form-field class="with-search" appearance="legacy" [ngClass]="{'date-invalid': (buttonClicked && !orderNumberField.valid)}">
+      <mat-form-field class="with-search" appearance="legacy" [ngClass]="{'date-invalid': (buttonClicked && !orderNumberField.valid && !formValues.order.name)}">
         <mat-label>Order Number</mat-label>
         <input class="free-text-field" 
                type="text"
                 matInput 
-                [(ngModel)]="formValues.order"
                 #orderNumberField="ngModel" 
+                [(ngModel)]="formValues.order"
                 [matAutocomplete]="auto"
                 placeholder="Order Number"
+                [disabled]="formValues.deliveryStatus.name == 'Verified'"
                 required>
         <mat-autocomplete #auto="matAutocomplete" 
                           class="darkPanelAuto"
@@ -146,7 +154,9 @@
             </mat-option>
         </mat-autocomplete>
       </mat-form-field>
-      <button class="search-icon" appMasterSelectorTrigger [masterSelector]="masterSelector" #masterSelectorTrigger="masterSelectorTrigger" [header]="getHeaderNameSelector()">
+      <button [disabled]="formValues.deliveryStatus.name == 'Verified'"
+            [ngClass]="{'search-icon-disabled': formValues.deliveryStatus.name == 'Verified'}"
+            class="search-icon" appMasterSelectorTrigger [masterSelector]="masterSelector" #masterSelectorTrigger="masterSelectorTrigger" [header]="getHeaderNameSelector()">
         <div class="img">
           <ng-template cdkPortal #masterSelector="cdkPortal" >
             <shiptech-shared-master-selector (selectedChange)="selectorOrderNumberSelectionChange($event); masterSelectorTrigger.close()" (shouldCloseModal)="masterSelectorTrigger.close()" [selectorType]="autocompleteVessel"

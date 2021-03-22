@@ -1,8 +1,10 @@
 <div class="col-md-12 row delivery-products-group">
   <a class="add-product-dropdown-icon" (click)="addNewProduct()"></a>
   <div class="product-tabs" *ngIf="formValues.deliveryProducts && formValues.deliveryProducts.length">
-      <div *ngFor="let deliveryProduct of formValues.deliveryProducts | keyvalue">
-        <div (click)="selectProduct(deliveryProduct.key)"  class="product-tab" >
+      <div *ngFor="let deliveryProduct of formValues.deliveryProducts | keyvalue" style="display: inline-flex; margin-right: 10px;">
+        <div (click)="selectProduct(deliveryProduct.key)"  
+            class="product-tab" 
+            [ngClass]="{'not-selected-product-container': deliveryProduct.key != selectedProduct}">
             <div class="bootstrap-tagsinput"> 
                 <span class="tag label border-default">
                     <a><i class="fa fa-close font-red-thunderbird" ></i></a>
@@ -10,6 +12,7 @@
                 </span>
             </div>
         </div>
+        <div class="divider" *ngIf="deliveryProduct.key < formValues.deliveryProducts.length - 1"></div>
       </div>
   </div>
   <div *ngIf="!hideDropdown" class="select-product">
@@ -18,6 +21,7 @@
       <mat-select [disableOptionCentering]="true" 
                   panelClass="select-product-container"
                   [(ngModel)]="selectedProductToAddInDelivery"
+                  [disabled]="formValues.deliveryStatus.name == 'Verified'"
                   (selectionChange)="addSelectedProductInDelivery(selectedProductToAddInDelivery)">
         <div class="col-md-12 header-container-product">
           <div class="search-product-container col-md-10">
