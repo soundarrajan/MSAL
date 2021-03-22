@@ -42,7 +42,7 @@ data-original-title="{{ field.Unique_ID ==	'product' || field.Unique_ID ==	'Prod
             </a>
         </span>
     </div>
-    <span ng-if=" CM.app_id == 'masters' && CM.screen_id == 'vessel' && formValues[field.Unique_ID] && formValues[field.Unique_ID] != 'defaultService'" ng-init="triggerChangeFields(field.Name, field.Unique_ID)"></span>
+    <span ng-if=" CM.app_id == 'masters' && CM.screen_id == 'vessel' && formValues[field.Unique_ID] && field.Unique_ID != 'defaultService'" ng-init="triggerChangeFields(field.Name, field.Unique_ID)"></span>
 </div>
 <span ng-if="CM.entity_id && CM.entity_id < 1" ng-init="formValues[field.Unique_ID] = tenantSetting.tenantFormats[field.masterSource.toLowerCase()]"></span>
 <span ng-if="field.Name == 'OrderID'">
