@@ -279,3 +279,22 @@
 .mat-form-field-disabled {
   background-color: #EEEEEE !important;
 }
+
+.mat-form-field.mat-form-field-disabled .mat-form-field-empty mat-label{
+  background-color: unset !important;
+}
+
+.bdn-additional-select-container.mat-select-panel {
+  min-width: calc(100% + 12px) !important;
+  transform: translateX(10px) !important
+}
+
+.bdn-additional-select-container.mat-select-panel{
+  position: relative;
+  top: 26px;
+}
+
+.bdn-additional-select-container .mat-option {
+  height: 20px  !important;
+  padding: 15px;
+}

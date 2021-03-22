@@ -867,8 +867,12 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
   }
 
   formatDateForBe(value) {
-    let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
-    return `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`
+    if (value) {
+      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+      return `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+    } else {
+      return null;
+    }
   }
 
 

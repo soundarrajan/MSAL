@@ -1,9 +1,9 @@
-﻿commit e304ed7d08de0f3926d32ac69739bd9ad73b26b3
+﻿commit 8fcbb50b03a5b7f44ace546ccfa1f002796464ab
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Sun Mar 21 18:19:00 2021 +0000
+Date:   Mon Mar 22 08:27:41 2021 +0000
 
-    Merged PR 9375: Added link for related deliveries
+    Merged PR 9385: Made non-editable fields for verified status
     
-    Added link for related deliveries
+    Made non-editable fields for verified status
 
 branch: master

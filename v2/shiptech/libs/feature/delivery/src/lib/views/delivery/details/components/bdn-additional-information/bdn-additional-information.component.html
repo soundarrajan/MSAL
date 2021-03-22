@@ -96,7 +96,7 @@
             <div class="block col-md-12">
                 <div class="inline-dropdown">
                   <mat-select [disableOptionCentering]="true"
-                      [panelClass]="{'darkPanel':switchTheme}"
+                      panelClass="bdn-additional-select-container"
                       [(ngModel)]="formValues.feedback.hasLetterOfProtest" 
                       [compareWith]="compareUomObjects">
                     <mat-option *ngFor="let option of deliveryFeedback" [value]="option">
@@ -119,7 +119,7 @@
             <div class="block col-md-12">
                 <div class="inline-dropdown">
                   <mat-select [disableOptionCentering]="true"
-                      [panelClass]="{'darkPanel':switchTheme}"
+                      panelClass="bdn-additional-select-container"
                       [(ngModel)]="formValues.feedback.deliveredAsScheduled" 
                       [compareWith]="compareUomObjects">
                     <mat-option *ngFor="let option of deliveryFeedback" [value]="option">
@@ -142,7 +142,7 @@
             <div class="block col-md-12">
                 <div class="inline-dropdown">
                   <mat-select [disableOptionCentering]="true"
-                      [panelClass]="{'darkPanel':switchTheme}"
+                      panelClass="bdn-additional-select-container"
                       [(ngModel)]="formValues.feedback.requestedQuantityFullyDelivered" 
                       [compareWith]="compareUomObjects">
                     <mat-option *ngFor="let option of deliveryFeedback" [value]="option">
@@ -165,7 +165,7 @@
             <div class="block col-md-12">
                 <div class="inline-dropdown">
                   <mat-select [disableOptionCentering]="true"
-                      [panelClass]="{'darkPanel':switchTheme}"
+                      panelClass="bdn-additional-select-container"
                       [(ngModel)]="formValues.feedback.filterClogging" 
                       [compareWith]="compareUomObjects">
                     <mat-option *ngFor="let option of deliveryFeedback" [value]="option">
@@ -188,7 +188,7 @@
             <div class="block col-md-12">
                 <div class="inline-dropdown">
                   <mat-select [disableOptionCentering]="true"
-                      [panelClass]="{'darkPanel':switchTheme}"
+                      panelClass="bdn-additional-select-container"
                       [(ngModel)]="formValues.feedback.purifierProblems" 
                       [compareWith]="compareUomObjects">
                     <mat-option *ngFor="let option of deliveryFeedback" [value]="option">
@@ -211,7 +211,7 @@
             <div class="block col-md-12">
                 <div class="inline-dropdown">
                   <mat-select [disableOptionCentering]="true"
-                      [panelClass]="{'darkPanel':switchTheme}"
+                      panelClass="bdn-additional-select-container"
                       [(ngModel)]="formValues.feedback.combustionProblem" 
                       [compareWith]="compareUomObjects">
                     <mat-option *ngFor="let option of deliveryFeedback" [value]="option">
@@ -231,7 +231,7 @@
         <mat-form-field class="without-search" appearance="legacy">
           <mat-label>Agent coordination</mat-label>
           <mat-select [disableOptionCentering]="true"
-                      [panelClass]="{'darkPanel':switchTheme}"
+                      panelClass="bdn-additional-select-container"
                       [(ngModel)]="formValues.feedback.agentCoordination" 
                       [compareWith]="compareUomObjects"
                       placeholder="Agent coordination">
@@ -247,7 +247,7 @@
         <mat-form-field class="without-search" appearance="legacy">
           <mat-label>Bunker Operator</mat-label>
           <mat-select [disableOptionCentering]="true"
-                      [panelClass]="{'darkPanel':switchTheme}"
+                      panelClass="bdn-additional-select-container"
                       [(ngModel)]="formValues.feedback.bunkerOperator" 
                       [compareWith]="compareUomObjects"
                       placeholder="Bunker Operator">
@@ -263,7 +263,7 @@
         <mat-form-field class="without-search" appearance="legacy">
           <mat-label>Surveyor</mat-label>
           <mat-select [disableOptionCentering]="true"
-                      [panelClass]="{'darkPanel':switchTheme}"
+                      panelClass="bdn-additional-select-container"
                       [(ngModel)]="formValues.feedback.surveyor" 
                       [compareWith]="compareUomObjects"
                       placeholder="Surveyor">

@@ -97,10 +97,12 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
   summaryProducts: any;
   quantityFormat: string;
   @Input() eventsSaveButton: Observable<void>;
+  @Input() eventsChangedOrderNumber: Observable<void>;
   @Input() eventsConversionInfoData: Observable<void>;
   eventsSaveButtonSubscription: any;
   buttonClicked: any;
   eventsConversionInfoDataSubscription: Subscription;
+  eventsOrderNumberSubscription: Subscription;
 
   @Input('quantityCategory') set _setQuantityCategory(quantityCategory) { 
     if (!quantityCategory) {
@@ -189,6 +191,12 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
     this.eventsSubscription = this.events.subscribe((data) => this.setDeliveryForm(data));
     this.eventsSaveButtonSubscription = this.eventsSaveButton.subscribe((data) => this.setRequiredFields(data));
     this.eventsConversionInfoDataSubscription = this.eventsConversionInfoData.subscribe((data) => this.setConversionInfo(data));
+    this.eventsOrderNumberSubscription = this.eventsChangedOrderNumber.subscribe((data) => this.orderNumberChanged(data));
+  }
+
+  orderNumberChanged(data) {
+    this.hideDropdown = !data;
+    console.log(this.hideDropdown);
   }
 
   setConversionInfo(conversionInfoData) {
@@ -214,6 +222,7 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
       this.formValues.temp.deliverySummaryProducts = [ ... this.formValues.temp.deliverysummary.products];
     }
     this.deliveryFormSubject.next(this.formValues);
+    this.hideDropdown = false;
   }
 
 
@@ -362,9 +371,10 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
           })
         )
         .subscribe(response => {
-          this.conversionInfoData[this.selectedProduct] = response;
           let productIndex = this.formValues.deliveryProducts.length - 1;
           this.selectedProduct = productIndex;
+          this.selectProduct(productIndex);
+          this.conversionInfoData[this.selectedProduct] = response;
           this.calculateVarianceAndReconStatus(productIndex);
           // this.orderProductsByProductType('deliveryProducts');
           this.orderProductsByProductType('summaryProducts');
