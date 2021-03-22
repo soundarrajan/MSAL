@@ -437,8 +437,8 @@
                     <span >Market Price</span>  
                     <span>
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"  data-hover="dropdown" data-close-others="true" ng-click="$ctrl.getMarketPriceData(product, location)" >
-                            <span ng-mouseover="portSellerStatustooltip['marketPrice'] = true; " ng-mouseleave="portSellerStatustooltip['marketPrice'] = false;"  style="position:relative;overflow:hidden; top: 7px;">
-                                <span style="max-width: 100%; overflow: hidden;display: initial; text-overflow: ellipsis;" class="ng-binding">
+                            <span ng-mouseover="portSellerStatustooltip['marketPrice'] = true; " ng-mouseleave="portSellerStatustooltip['marketPrice'] = false;"  style="position:relative;overflow:auto; top: 7px;">
+                                <span style="max-width: 100%;overflow: auto;display: initial; text-overflow: ellipsis;" class="ng-binding">
                                     <img  style="width: 30px; height: 30px" src="img/info.png" alt="logo" class="logo-default" />
                                 </span>
                                 <span class="groupOfRequestTableTooltip ng-binding ng-hide" ng-show="portSellerStatustooltip['marketPrice']" style="opacity: 1;">
@@ -446,31 +446,36 @@
                                 </span>
                             </span>
                         </a>
-                        <ul class="dropdown-menu" style="z-index: 120000;overflow:auto">
+                        <ul class="dropdown-menu" style="z-index: 100000;overflow:auto;">
                             <li>
-                                <div class="form-group-sm" >
-                                    <table class="table table-bordered"  ng-if="marketPriceHistoryList.length>0">  
-                                        <thead>
-                                            <tr> 
-                                                <td colspan="2" style="width:100%;background-color: white;" >Market Price History<button type="button" class="close" data-dismiss="modal"></button><br></td>                 
-                                            </tr> 
-                                            <tr style="width:100%;min-width:initial;background-color: white;">   
-                                                <td style="width:25%">Location:&nbsp;&nbsp;<b>{{location[0].location.name | decodeReadOnly}}</b></td> 
-                                                <td style="width:25%">Product:&nbsp;&nbsp;<b>{{product.product.name | decodeReadOnly}}</b></td> 
-                                            </tr> 
-                                            <tr  style="width:100%;min-width:initial;background-color: rgb(235, 230, 230);">  
-                                                <td style="width:25%">Date</td> 
-                                                <td style="width:25%">Market Price</td> 
-                                            </tr>
-                                        </thead>  
-                                        <tbody style="width:100%;min-width:initial">
-                                            <tr  ng-repeat="entity in marketPriceHistoryList"> 
-                                                <td style="width:25%">{{$ctrl.formatDate(entity.date, $ctrl.tenantSetting.tenantFormats.dateFormat.name)}} </td>
-                                                <td style="width:25%">{{entity.price | number : $ctrl.numberPrecision.pricePrecision}}&nbsp;{{entity.currencies }}</td> 
-                                            </tr>
-                                        </tbody>                                     
-                                    </table>
-
+                                <div class="col-sm-12">
+                                    <div style="display: flex;align-items: center;justify-content: space-around;font-size: 14px;height: 100%;padding-top: 7px;" >
+                                        <table class="table table-condensed" cellpadding='6' cellspacing='6' style="font-weight:bold;font-size:1.1em;padding-left: 5px;border: 1px solid lightgray;border-left: 4px solid lightgray;"  ng-if="marketPriceHistoryList.length>0">  
+                                            <thead>
+                                                <tr> 
+                                                    <td colspan="2" style="background-color: white;" >
+                                                        Market Price History
+                                                        <button type="button" class="close" data-dismiss="modal"></button>
+                                                        <br>
+                                                    </td>                 
+                                                </tr> 
+                                                <tr style="min-width:initial;background-color: white;">   
+                                                    <td >Location:&nbsp;&nbsp;<b>{{location[0].location.name | decodeReadOnly}}</b></td> 
+                                                    <td >Product:&nbsp;&nbsp;<b>{{product.product.name | decodeReadOnly}}</b></td> 
+                                                </tr> 
+                                                <tr  style="width:100%;min-width:initial;background-color: rgb(235, 230, 230);">  
+                                                    <td style="width:25%;border-right: 5px solid #fff;">Date</td> 
+                                                    <td style="width:25%;">Market Price</td> 
+                                                </tr>
+                                            </thead>  
+                                            <tbody style="min-width:initial">
+                                                <tr  ng-repeat="entity in marketPriceHistoryList"> 
+                                                    <td >{{$ctrl.formatDate(entity.date, $ctrl.tenantSetting.tenantFormats.dateFormat.name)}} </td>
+                                                    <td >{{entity.price | number : $ctrl.numberPrecision.pricePrecision}}&nbsp;{{entity.currencies }}</td> 
+                                                </tr>
+                                            </tbody>                                     
+                                        </table> 
+                                    </div>
                                 </div>
                             </li>
                         </ul>
