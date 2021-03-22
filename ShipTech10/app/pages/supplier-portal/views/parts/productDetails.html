@@ -255,7 +255,7 @@
                                             </td>   
                                             <td style="min-width: 220px" ng-if="!$ctrl.procurementSettings.fieldVisibility.isSupplyDeliveryDateHidden">
 	            	                            <div class="input-group form_input date form_meridian_datetime w100">
-					                                <input name="supplyDeliveryDate" id="product_{{$index}}_supplyDeliveryDate" ng-required="$ctrl.procurementSettings.fieldVisibility.isSupplyDeliveryDateMandatory" class="form-control date-mask new-date-picker" new-date-picker ng-model="product.sellers[0].offers[0].supplyDeliveryDate" />
+					                                <input name="supplyDeliveryDate" id="product_{{$index}}_supplyDeliveryDate" ng-required="$ctrl.procurementSettings.fieldVisibility.isSupplyDeliveryDateMandatory" class="form-control date-mask new-date-picker" picker-type="date" new-date-picker ng-model="product.sellers[0].offers[0].supplyDeliveryDate" />
 					                            </div>
                                             </td>                                         
 
