@@ -721,7 +721,7 @@
             });
         };
         $scope.save_master_structure = function() {
-            debugger;
+            
             vm.structure = angular.toJson($scope.formFields);
             Factory_Master.save_master_structure(vm.app_id, vm.screen_id, $scope.formFields, (callback, response) => {
                 if (response != false) {
@@ -833,7 +833,7 @@
             return false;
         }
         $scope.save_master_changes = function(ev, sendEmails, noReload, completeCallback) {
-            debugger;
+            
             screenLoader.showLoader();
             $('form').addClass('submitted');
             vm.invalid_form = false;
@@ -934,32 +934,22 @@
                     }
                     $scope.formValues.company = newCompany;
                 }
-                // console.log($scope.formValues);
-                // console.log($rootScope.tabData);
+                
                 _.forEach(types, function(type) {
                     $scope.formValues[dataSrcs[type]] = [];
                     for (let i = 0; i < $rootScope.tabData[type].length; i++) {
-                        console.log($rootScope.tabData[type][i]);
+                      //  console.log($rootScope.tabData[type][i]);
                         setAllChild($rootScope.tabData[type][i], dataSrcs[type]);
-                    }
-                });
-                if ($scope.formValues.accessVessels && $rootScope.listOfVesselTypes) {
-                    for (let i = 0; i < $rootScope.listOfVesselTypes.length; i++) {
-                        let vesselType = $rootScope.listOfVesselTypes[i];
-                        let checkIfIsVesselType = _.filter($scope.formValues.accessVessels, function(object) {
-                            return object.name == vesselType.name && object.id == vesselType.id;
-                        });
-                        if (checkIfIsVesselType.length) {
+                        if (type == 'vessel_access') {
+                            let vesselType = $rootScope.tabData[type][i];
                             let result = [];
-                            result = _.filter($scope.formValues.accessVessels, function (object) {
+                            result = _.filter($scope.formValues[dataSrcs[type]], function (object) {
                                 return object.name != vesselType.name;
                             });
-                            $scope.formValues.accessVessels = result;
-                            console.log($scope.formValues);
+                            $scope.formValues[dataSrcs[type]] = angular.copy(result);
                         }
                     }
-                           
-                }
+                });
                
             }
 
@@ -1036,18 +1026,10 @@
 
             if(vm.app_id == 'masters' && vm.screen_id == 'location') {
                  
-               
-                // if($scope.formValues.additionalCosts != undefined && $scope.formValues.additionalCosts.length >0){
-                //     $.each($scope.formValues.additionalCosts, (k, v) => {
-                //         if(v.costType != undefined && v.costType.length != null && v.costType.name != undefined && v.costType.name != null){
-                //             if(v.costType.name == 'Range' || v.costType.name == 'Total'){
-                //                 $scope.formValues.additionalCosts[0].additionalCostDetails.length
-                //             }
-                //         }
-                        
-                //     });  
-                // }
-                
+               if(!$scope.SaveAdditionalCostDetValidation()){
+                   return
+               }
+                    
                  if ($scope.formValues) {
                     if($scope.formValues.productsSystemInstruments){
                         let errors = '';
@@ -1587,7 +1569,7 @@
                     });
                 }
                 if (vm.app_id == 'admin' && vm.screen_id == 'role') {
-                    console.log($scope.formValues.deepmerge);
+                   // console.log($scope.formValues.deepmerge);
                     var roles = $scope.formValues.roles;
                     $.each(roles.rights, (key, module) => {
                         $.each(module.moduleScreenConfigurations, (key2, screen) => {
@@ -1769,7 +1751,9 @@
                                 $state.reload();
                                 screenLoader.hideLoader();
                             } else if(completeCallback) {
+                                
                                 toastr.success('Saved');
+                                
                                 toastr.warning('Preparing to complete');
                                 $('#ClaimTypeClaimType').attr('disabled', 'disabled');
                                 completeCallback();
@@ -1883,15 +1867,79 @@
             }
         };
 
+        $scope.throwerror = function (toastererror) {
+            toastr.error(toastererror);
+
+        };
+        $scope.SaveAdditionalCostDetValidation = function () {
+            var returnresult = false;
+            if ($scope.formValues.additionalCosts != undefined && $scope.formValues.additionalCosts.length > 0) {
+                $.each($scope.formValues.additionalCosts, (k, v) => {
+                    if (v.costType != undefined && v.costType.name != undefined && v.costType.name != null) {
+                        if (v.costType.name == 'Range' || v.costType.name == 'Total') {
+                            if (v.additionalCostDetails != undefined && v.additionalCostDetails.length != 0) {
+                                //if ($scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails.length > 0) {
+                                var FormvalueLength = v.additionalCostDetails.length - 1;
+                                $.each(v.additionalCostDetails, (i, j) => {
+                                    if (FormvalueLength != i) {
+                                        if (IsDataExists(j.qtyFrom) || IsDataExists(j.qtyTo) || IsDataExists(j.priceUom) || IsDataExists(j.costType) || IsDataExists(j.amount) || IsDataExists(j.currency)) {
+                                            toastr.error('Please fill all required details in Port Additional Cost Details');
+                                            returnresult = false
+                                        }
+                                        else if (parseInt(j.qtyFrom) >= parseInt(j.qtyTo)) {
+                                            toastr.error('Quantity From Should be less than Quantity To');
+                                            returnresult = false
+                                        }
+                                        else{
+                                            returnresult = true
+                                        }
+                                    }
+                                    else {
+                                        if (IsDataExists(j.qtyFrom) || IsDataExists(j.qtyTo) || IsDataExists(j.priceUom) || IsDataExists(j.costType) || IsDataExists(j.amount) || IsDataExists(j.currency)) {
+                                            toastr.error('Please fill all required details in Port Additional Cost Details');
+                                            returnresult = false
+                                        }
+                                        else if (parseInt(j.qtyFrom) >= parseInt(j.qtyTo)) {
+                                            toastr.error('Quantity From Should be less than Quantity To');
+                                            returnresult = false
+                                        }
+                                        else{
+                                            returnresult = true
+                                        }
+                                    }
+                                });
+                                //}
+                            }
+                            else {
+                                toastr.error('Please fill all required details in Port Additional Cost Details');
+                                return returnresult = false
+                            }
+                        }
+                        else{
+                            if((v.amount == undefined || v.amount == "")|| (v.currency == undefined || v.currency == "")){
+                                toastr.error('Please fill all required details');
+                                return returnresult = false
+                            }
+                            else{
+
+                                return returnresult = true 
+                            }
+                            
+                        }
+                    }
+
+                });
+               // return returnresult
+            }
+            return returnresult
+        };
 
         $scope.save_terms_and_conditions = function(id) {
-            //  console.log(id);
-            //  console.log(vm.entity_id);
-            // console.log($scope.formValues)
+           
             Factory_Master.save_terms_and_conditions(id, $scope.formValues.termsAndConditions, (response) => {
                 if (response) {
                     if (response.status == true) {
-                        // console.log(response.data);
+                        console.log(response.data);
                         toastr.success(response.message);
                     } else {
                         toastr.error(response.message);
@@ -2105,8 +2153,7 @@
             });
         };
         $scope.modalSpecGroupParametersUpdateUom = function(specParamId, index) {
-            // console.log(specParamId);
-            // console.log(index);
+            
             Factory_Master.get_master_entity(specParamId.id, 'specparameter', 'masters', (response) => {
                 if (response) {
                     $scope.modalSpecGroupParameters[index].uom = response.uom;
@@ -2115,9 +2162,7 @@
             });
         };
         $scope.saveProcurementSpecGroup = function(data, application) {
-            // console.log(application);
-            // console.log(vm.activeProductForSpecGroupEdit);
-            // console.log(data);
+            
             if (application == 'request') {
                 $.each(data, (key, spec) => {
                     data[key].requestProduct = {};
@@ -2152,7 +2197,7 @@
                     } else {
                         toastr.error(response.message);
                     }
-                    //console.log(response);
+                    console.log(response);
                 } else {
                     toastr.error('An error has occured');
                 }
@@ -3237,7 +3282,6 @@
                     $scope.options.etaFreezeStatus = angular.copy($scope.listsCache.RequestStatus);
                 }
                 if (field.Name == 'numberOfCounterpartiesToDisplay') {
-                    console.log(vm.listsCache);
                     $scope.options.numberOfCounterpartiesToDisplay = [];
                     $.each(vm.listsCache.ItemsToDisplay, (key, val) => {
                         $scope.options.numberOfCounterpartiesToDisplay.push(val.name);
@@ -4871,7 +4915,6 @@
             });
         };
         $scope.selectedModalValue = function(element) {
-
             // if (!element)return
             if (!element) {
                 if ($rootScope.modalParams) {
@@ -7245,7 +7288,7 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
           
             if(ValueFrom != undefined && ValueTo != undefined){
                 if(ValueFrom > ValueTo){
-                toastr.error("Quantity From should be Graterthan Quantity To")
+                toastr.error("Quantity From should be Greater than Quantity To")
                 }
             }
         }
@@ -7258,76 +7301,27 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
         }
 
         $scope.saveBargeCostDetails = function() {
-          
             if($scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails.length > 0)
             {
                 var FormvalueLength = $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails.length -1;
                 $.each($scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails, (k, v) => {
                     if(FormvalueLength != k){
-                        if(IsDataExists(v.category)){
-                            toastr.error('Enter Category Field');
-                            return
-                        }
-                        else if(IsDataExists(v.qtyFrom)){
-                           toastr.error('Enter Quantity From Field');
-                            return
-                        }
-                        else if(IsDataExists(v.qtyTo)){
-                            toastr.error('Enter Quantity To Field');
-                            return
-                        }
-                        else if(IsDataExists(v.priceUom)){
-                            toastr.error('Enter priceUom To Field');
-                            return
-                        }
-                        else if(IsDataExists(v.costType)){
-                            toastr.error('Enter costType Field');
-                            return
-                        }
-                        else if(IsDataExists(v.amount)){
-                            toastr.error('Enter Amount Field');
-                            return
-                        }
-                        else if(IsDataExists(v.currency)){
-                            toastr.error('Enter Currency Field');
+                        if(IsDataExists(v.qtyFrom) || IsDataExists(v.qtyTo) || IsDataExists(v.priceUom) || IsDataExists(v.costType) || IsDataExists(v.amount)  || IsDataExists(v.currency)){
+                            toastr.error('Please fill all required details');
                             return
                         }
                         else if(parseInt(v.qtyFrom) >= parseInt(v.qtyTo)){
-                                toastr.error('Quantity From Should less than Quantity To');
+                                toastr.error('Quantity From Should be less than Quantity To');
                                 return  
                         }
                     }
                     else{
-                        if(IsDataExists(v.category)){
-                            toastr.error('Enter Category Field');
-                            return
-                        }
-                        else if(IsDataExists(v.qtyFrom)){
-                           toastr.error('Enter Quantity From Field');
-                            return
-                        }
-                        else if(IsDataExists(v.qtyTo)){
-                            toastr.error('Enter Quantity To Field');
-                            return
-                        }
-                        else if(IsDataExists(v.priceUom)){
-                            toastr.error('Enter priceUom To Field');
-                            return
-                        }
-                        else if(IsDataExists(v.costType)){
-                            toastr.error('Enter costType Field');
-                            return
-                        }
-                        else if(IsDataExists(v.amount)){
-                            toastr.error('Enter Amount Field');
-                            return
-                        }
-                        else if(IsDataExists(v.currency)){
-                            toastr.error('Enter Currency Field');
+                        if(IsDataExists(v.qtyFrom) || IsDataExists(v.qtyTo) || IsDataExists(v.priceUom) || IsDataExists(v.costType) || IsDataExists(v.amount)  || IsDataExists(v.currency)){
+                            toastr.error('Please fill all required details');
                             return
                         }
                         else if(parseInt(v.qtyFrom) >= parseInt(v.qtyTo)){
-                                toastr.error('Quantity From Should less than Quantity To');
+                                toastr.error('Quantity From Should be less than Quantity To');
                                 return  
                         }
                         else{
@@ -7341,8 +7335,6 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
             }
            
         };
-
-
         $scope.preferredSellersSelectAllProducts = function(selectAll) {
             if (!selectAll) {
                 $scope.preferredProductsForSellerInLocation = [];

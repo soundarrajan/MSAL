@@ -262,7 +262,7 @@
             }
         };
         vm.verifyDocument = function(documentId, rowId){
-            // debugger;
+            // 
             // console.log($scope.formValues);
             // console.log(documentId);
             // console.log(rowId);
@@ -472,7 +472,7 @@
 
         // Do Entity Action
         vm.do_entity_action = function(action, id, url_id, ev, checkProcurement) {
-					debugger; 
+					 
             if (typeof checkProcurement == "undefined") checkProcurement = -1;
             switch (action) {
                 case "copy":
