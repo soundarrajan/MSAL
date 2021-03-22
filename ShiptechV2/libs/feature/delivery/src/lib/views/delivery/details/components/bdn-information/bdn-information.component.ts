@@ -790,6 +790,7 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
   }
 
   getRelatedDeliveries(orderId: number) {
+    this.relatedDeliveries = [];
     this.openedScreenLoaders += 1;
     let duplicate = false;
     this.deliveryService
