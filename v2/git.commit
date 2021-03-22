@@ -1,9 +1,9 @@
-﻿commit 10a1f286b02e7b7fdcadb60318bfe89897e4cc34
+﻿commit 347288be571e68275b23d1788f9abc39b43b5913
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon Mar 22 14:41:27 2021 +0000
+Date:   Mon Mar 22 16:29:30 2021 +0000
 
-    Merged PR 9403: Added removed product from delivery
+    Merged PR 9406: Fixed icons for date
     
-    Added removed product from delivery
+    Fixed icons for date
 
 branch: master
