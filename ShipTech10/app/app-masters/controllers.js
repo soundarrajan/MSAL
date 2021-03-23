@@ -1874,19 +1874,65 @@
         };
 
         $scope.SaveAdditionalCostDetValidation = function () {
-            $('#ItemName').removeClass('ng-invalid'); 
-            $('#Type').removeClass('ng-invalid');
-            $('#Amount').removeClass('ng-invalid');
-            $('#Currency').removeClass('ng-invalid');
+            
+           
             var returnresult = false;
+
             if ($scope.formValues.additionalCosts != undefined && $scope.formValues.additionalCosts.length > 0) {
+                $.each($scope.formValues.additionalCosts, (m, n) => {
+                    if(n.additionalCost == undefined || n.additionalCost == ""){
+                        $('#ItemName'+ m).addClass('ng-invalid');   
+                    }
+                    else
+                    {
+                        $('#ItemName'+ m).removeClass('ng-invalid'); 
+                    }
+                    if(n.costType == undefined || n.costType == ""){
+                        $('#Type'+ m).addClass('ng-invalid');   
+                    }
+                    else
+                    {
+                        $('#Type'+ m).removeClass('ng-invalid'); 
+                    }
+                    if(n.costType != undefined && n.costType.name != undefined){
+                        if (n.costType.name == 'Range' || n.costType.name == 'Total') {
+                            $('#Amount' + m).removeClass('ng-invalid');
+                        }
+                        else
+                        {
+                            if (n.amount == undefined || n.amount == "") {
+                                $('#Amount' + m).addClass('ng-invalid');
+                            }
+                            else {
+                                $('#Amount' + m).removeClass('ng-invalid');
+                            }
+                        }
+                    }
+                    else{
+                        if (n.amount == undefined || n.amount == "") {
+                            $('#Amount' + m).addClass('ng-invalid');
+                        }
+                        else {
+                            $('#Amount' + m).removeClass('ng-invalid');
+                        }
+                    }
+                    
+                    if(n.currency == undefined || n.currency == ""){
+                        $('#Currency'+ m).addClass('ng-invalid');   
+                    }
+                    else
+                    {
+                        $('#Currency'+ m).removeClass('ng-invalid'); 
+                    }
+
+                });
+               
+
+
                 $.each($scope.formValues.additionalCosts, (k, v) => {
                     if((v.additionalCost == undefined || v.additionalCost == "") || (v.costType == undefined || v.costType == ""))
                     {
-                        $('#ItemName').addClass('ng-invalid'); 
-                        $('#Type').addClass('ng-invalid');
-                        $('#Amount').addClass('ng-invalid');
-                        $('#Currency').addClass('ng-invalid');
+                       
                         toastr.error('Please fill all required details');
                         return returnresult = false   
                     }
@@ -6705,12 +6751,19 @@
             }
             return defaultCostType;
         };
+        $scope.setAmountValidation = function(key){
+            
+            $('#Amount'+ key).removeClass('ng-invalid');
+        };
+        $scope.setCurrencyValidation = function(key){
+            
+            $('#Currency'+ key).removeClass('ng-invalid'); 
+        };
       
         $scope.setDefaultCostType = function(additionalCost, key) {
-            $('#ItemName').removeClass('ng-invalid'); 
-            $('#Type').removeClass('ng-invalid');
+            $('#ItemName'+ key).removeClass('ng-invalid'); 
+            $('#Type'+ key).removeClass('ng-invalid');
            
-
             if($scope.formValues.additionalCosts.length >0){
                 if($scope.formValues.additionalCosts[key].amount != undefined){
                     $scope.formValues.additionalCosts[key].amount = ''; 
@@ -6732,8 +6785,8 @@
                     defaultCostType = v.costType;
                     if((v.costType.id == 4 || v.costType.id == 5) && v.id == additionalCost.id){
                         $scope.formValues.additionalCosts[key].currency = $scope.vm.tenantSetting.tenantFormats.currency; 
-                        $('#Currency').removeClass('ng-invalid'); 
-                        $('#Amount').removeClass('ng-invalid');
+                        $('#Currency'+ key).removeClass('ng-invalid'); 
+                        $('#Amount'+ key).removeClass('ng-invalid');
                     }
                     else{
                         $scope.formValues.additionalCosts[key].currency = '';
@@ -9326,6 +9379,46 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
                 $scope.formValues.counterpartyBankAccounts.splice(key, 1);
             }
         }
+
+        /*Additional Cost Details Popup Close Modal start*/
+       
+        $scope.PopupprettyCloseModal = function(){
+        $scope.showModalAdditionalCostDetailsConfirmation('Do you still want to Cancel Additional Cost Details?', true, (modalResponse) => {
+            if (modalResponse) {
+                $scope.prettyCloseModal();
+            }
+        });
+    }
+       
+        $scope.showModalAdditionalCostDetailsConfirmation = function(message, additionalData, callback) {
+            
+          
+            $scope.confirmModalAdditionalData = additionalData;
+            $('.AdditionalCostDetailsModalConfirmation').modal();
+            $('.AdditionalCostDetailsModalConfirmation').removeClass('hide');
+            $('.modal-open.page-overflow .modal-scrollable').css("overflow-x", "hidden !important");
+            $scope.confirmModalData = {
+                message : message
+            };
+            
+            $scope.confirmedModal = false;
+            $('.confirmAction1').on('click', () => {
+                if ($scope.confirmedModal) {
+                    return;
+                }
+                else{
+                    if($scope.formValues.additionalCosts != undefined && $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails != undefined){
+                        $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails = undefined;
+                    }
+                }
+               
+                $scope.key = -1;
+                $scope.confirmedModal = true;
+                $scope.$apply();
+                return callback($scope.confirmModalAdditionalData);
+            });
+        };
+        /*Additional Cost Details Popup Close Modal End*/
         $scope.deleteLocation = function(key) {
             if ($scope.formValues.counterpartyLocations[key].isSpecificLocation && $scope.formValues.counterpartyLocations[key].rating && $scope.formValues.counterpartyLocations[key].lastModifiedBy && $scope.formValues.counterpartyLocations[key].lastModifiedOn) {
                 $scope.key = key;

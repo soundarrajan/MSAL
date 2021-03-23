@@ -54,10 +54,10 @@
 
                 </td>
                 <td style="width:12%">
-                    <select name="Item Name" id="ItemName" class="form-control" ng-options="item as item.name for item in CM.listsCache.AdditionalCost track by item.id " ng-change="value.costType = setDefaultCostType(value.additionalCost,key)" ng-model="value.additionalCost"></select>
+                    <select name="Item Name" id="ItemName{{key}}" class="form-control" ng-options="item as item.name for item in CM.listsCache.AdditionalCost track by item.id " ng-change="value.costType = setDefaultCostType(value.additionalCost,key)" ng-model="value.additionalCost"></select>
                 </td>
                 <td style="width:12%">
-                    <select name="Type" id="Type" class="form-control" ng-options="item as item.name for item in filterCostTypesByAdditionalCost(value.additionalCost.id) track by item.id " ng-change="value.currency = setDefaultCurrency(value.costType,key)" ng-model="value.costType"></select>
+                    <select name="Type" id="Type{{key}}" class="form-control" ng-options="item as item.name for item in filterCostTypesByAdditionalCost(value.additionalCost.id) track by item.id " ng-change="value.currency = setDefaultCurrency(value.costType,key)" ng-model="value.costType"></select>
                 </td>
                 <td style="width:12%">
                     <input type="text"  decode-input-format name="costDescription"   class="form-control" ng-model="value.costDescription">
@@ -65,7 +65,7 @@
                 <td style="width:12%">
                     
                     <div class="input-group">
-                        <input name="Amount" id="Amount" type="text" format='number:{{ tenantSetting.defaultValues.amountPrecision }}' ng-disabled="value.costType.name == 'Range' || value.costType.name == 'Total'" class="form-control" ng-model="value.amount" format="number">
+                        <input name="Amount" id="Amount{{key}}" type="text" format='number:{{ tenantSetting.defaultValues.amountPrecision }}' ng-disabled="value.costType.name == 'Range' || value.costType.name == 'Total'" class="form-control" ng-change="setAmountValidation(key)" ng-model="value.amount" format="number">
 	                    <span class="input-group-addon">
 	                    	&nbsp;&nbsp;  
 	                    	<i class="fa fa-pencil-square-o" ng-if="!EnableBargeCostDetails" style="cursor: not-allowed;"></i>
@@ -84,10 +84,37 @@
                     <input name="Extra"  type="number" format="number" class="form-control" ng-model="value.extrasPercentage">
                 </td>
                 <td style="width:12%">
-					<select name="Currency" id="Currency" ng-disabled="value.costType.name == 'Range' || value.costType.name == 'Total'" class="form-control" ng-options="item as item.name for item in CM.listsCache.Currency track by item.id " ng-model="value.currency"></select>
+					<select name="Currency" id="Currency{{key}}" ng-disabled="value.costType.name == 'Range' || value.costType.name == 'Total'" class="form-control" ng-options="item as item.name for item in CM.listsCache.Currency track by item.id " ng-change="setCurrencyValidation(key)" ng-model="value.currency"></select>
                 </td>
 
             </tr>
         </tbody>
     </table>
 </div>
+
+
+
+
+<div aria-labelledby="mySmallModalLabel"
+	     class="AdditionalCostDetailsModalConfirmation confirmModal1 fade bs-modal hide"
+	      role="dialog"
+	     style="transform: translateY(90px);" tabindex="-1">
+	    <div class="modal-dialog modal-sm" style="width: 500px;" role="document">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span>
+	                </button>
+	                <h4 class="modal-title" id="gridSystemModalLabel">Confirm</h4>
+	            </div>
+	            <div class="modal-body">
+	                {{confirmModalData.message}}
+	            </div>
+	            <div class="modal-footer">
+	                <button class="btn btn-default" data-dismiss="modal" type="button">No</button>
+	                <button class="btn btn-default  btn-outline orange confirmAction1" data-dismiss="modal" type="button">
+	                    Yes
+	                </button>
+	            </div>
+	        </div>
+	    </div>
+	</div>
