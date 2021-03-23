@@ -208,7 +208,8 @@
                             (ngModelChange)="calculateVarianceAndReconStatus(deliveryProductIndex)"
                             (blur)="calculateVarianceAndReconStatus(deliveryProductIndex)"
                             #bdnQuantityAmountField="ngModel" 
-                            matInput 
+                            matInput
+                            [disabled]="formValues.deliveryStatus.name == 'Verified'" 
                             class="text-ellipsis"
                             autocomplete="off" 
                             placeholder="BDN Qty"
@@ -223,6 +224,7 @@
                             (ngModelChange)="calculateVarianceAndReconStatus(deliveryProductIndex)"
                             [compareWith]="compareUomObjects"
                             [disableOptionCentering]="true"
+                            [disabled]="formValues.deliveryStatus.name == 'Verified'" 
                             panelClass="delivery-product-select-container">
                         <mat-option *ngFor="let uom of uoms" [value]="uom">{{uom.name}}</mat-option>
                     </mat-select>
@@ -236,6 +238,7 @@
                     <input  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].vesselQuantityAmount"
                             (ngModelChange)="calculateVarianceAndReconStatus(deliveryProductIndex)"
                             matInput 
+                            [disabled]="formValues.deliveryStatus.name == 'Verified'" 
                             class="text-ellipsis"
                             autocomplete="off" 
                             placeholder="Vessel Qty"
@@ -248,6 +251,7 @@
                             [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].vesselQuantityUom"
                             (ngModelChange)="calculateVarianceAndReconStatus(deliveryProductIndex)"
                             [compareWith]="compareUomObjects"
+                            [disabled]="formValues.deliveryStatus.name == 'Verified'" 
                             [disableOptionCentering]="true"
                             panelClass="delivery-product-select-container">
                         <mat-option *ngFor="let uom of uoms" [value]="uom">{{uom.name}}</mat-option>
@@ -261,7 +265,7 @@
                     <mat-label>Surveyor Qty</mat-label>
                     <input  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].surveyorQuantityAmount"
                             (ngModelChange)="calculateVarianceAndReconStatus(deliveryProductIndex)"
-                            matInput 
+                            matInput  
                             class="text-ellipsis"
                             autocomplete="off" 
                             placeholder="Surveyor Qty"
@@ -288,6 +292,7 @@
                     <input  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].vesselFlowMeterQuantityAmount"
                             (ngModelChange)="calculateVarianceAndReconStatus(deliveryProductIndex)"
                             matInput 
+                            [disabled]="formValues.deliveryStatus.name == 'Verified'"
                             class="text-ellipsis"
                             autocomplete="off" 
                             placeholder="MFM Qty"
@@ -299,6 +304,7 @@
                     <mat-select disableRipple 
                             [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].vesselFlowMeterQuantityUom"
                             (ngModelChange)="calculateVarianceAndReconStatus(deliveryProductIndex)"
+                            [disabled]="formValues.deliveryStatus.name == 'Verified'"
                             [compareWith]="compareUomObjects"
                             [disableOptionCentering]="true"
                             panelClass="delivery-product-select-container">
@@ -313,6 +319,7 @@
                     <mat-label>Quantity to Invoice</mat-label>
                     <input  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].finalQuantityAmount"
                             matInput 
+                            [disabled]="formValues.deliveryStatus.name == 'Verified'"
                             class="text-ellipsis"
                             autocomplete="off" 
                             placeholder="Quantity to Invoice"
@@ -325,6 +332,7 @@
                     <mat-select disableRipple 
                             [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].finalQuantityUom"
                             [compareWith]="compareUomObjects"
+                            [disabled]="formValues.deliveryStatus.name == 'Verified'"
                             [disableOptionCentering]="true"
                             panelClass="delivery-product-select-container"
                             disabled>
@@ -342,6 +350,7 @@
                     <input class="free-text-field" 
                             type="text"
                             matInput 
+                            [disabled]="formValues.deliveryStatus.name == 'Verified'"
                             [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].product"
                             [matAutocomplete]="auto"
                             placeholder="Product delivered">
@@ -354,7 +363,10 @@
                         </mat-option>
                     </mat-autocomplete>
                 </mat-form-field>
-                <button class="search-icon" appMasterSelectorTrigger [masterSelector]="masterSelector" #masterSelectorTrigger="masterSelectorTrigger" [header]="getHeaderNameSelector()">
+                <button class="search-icon" 
+                    [disabled]="formValues.deliveryStatus.name == 'Verified'"
+                    [ngClass]="{'search-icon-disabled': formValues.deliveryStatus.name == 'Verified'}"
+                    appMasterSelectorTrigger [masterSelector]="masterSelector" #masterSelectorTrigger="masterSelectorTrigger" [header]="getHeaderNameSelector()">
                 <div class="img">
                     <ng-template cdkPortal #masterSelector="cdkPortal" >
                         <shiptech-shared-master-selector (selectedChange)="selectorProductSelectionChange($event); masterSelectorTrigger.close()" (shouldCloseModal)="masterSelectorTrigger.close()" [selectorType]="autocompleteProducts"
@@ -377,6 +389,7 @@
                     <input class="free-text-field" 
                             type="text"
                             matInput 
+                            [disabled]="formValues.deliveryStatus.name == 'Verified'"
                             [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].physicalSupplier"
                             [matAutocomplete]="auto1"
                             placeholder="Physical supplier">
@@ -389,7 +402,10 @@
                         </mat-option>
                     </mat-autocomplete>
                 </mat-form-field>
-                <button class="search-icon"   appMasterSelectorTrigger [masterSelector]="masterSelector1" #masterSelectorTrigger1="masterSelectorTrigger" [header]="getHeaderNameSelector1()">
+                <button class="search-icon" 
+                    [disabled]="formValues.deliveryStatus.name == 'Verified'"
+                    [ngClass]="{'search-icon-disabled': formValues.deliveryStatus.name == 'Verified'}"
+                    appMasterSelectorTrigger [masterSelector]="masterSelector1" #masterSelectorTrigger1="masterSelectorTrigger" [header]="getHeaderNameSelector1()">
                 <div class="img">
                     <ng-template cdkPortal #masterSelector1="cdkPortal" >
                         <shiptech-shared-master-selector (selectedChange)="selectorPhysicalSupplierSelectionChange($event); masterSelectorTrigger1.close()" (shouldCloseModal)="masterSelectorTrigger1.close()" [selectorType]="autocompletePhysicalSupplier"
@@ -411,6 +427,7 @@
                     <mat-label>Delivered volume</mat-label>
                     <input [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].deliveredVolume"
                             matInput 
+                            [disabled]="formValues.deliveryStatus.name == 'Verified'"
                             class="text-ellipsis"
                             autocomplete="off" 
                             placeholder="Delivered volume"
@@ -422,6 +439,7 @@
                     <mat-select disableRipple 
                             [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].deliveredVolumeUom"
                             [compareWith]="compareUomObjects"
+                            [disabled]="formValues.deliveryStatus.name == 'Verified'"
                             [disableOptionCentering]="true"
                             panelClass="delivery-product-select-container">
                         <mat-option *ngFor="let uom of uoms" [value]="uom">{{uom.name}}</mat-option>
@@ -452,6 +470,7 @@
             <mat-form-field class="without-search" appearance="legacy">
                 <mat-label>Sludge production</mat-label>
                 <input  [(ngModel)]="formValues.sludgeProduction"
+                    [disabled]="formValues.deliveryStatus.name == 'Verified'"
                     matInput 
                     autocomplete="off"
                     placeholder="Sludge production"

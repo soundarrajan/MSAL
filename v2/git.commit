@@ -1,9 +1,11 @@
-﻿commit c9cbc7cbc437cbddcb3d4c0a0cf7064bc5e4d7ba
+﻿commit ffede30127df207b223e701b622efc3b50b2aee2
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon Mar 22 17:07:34 2021 +0000
+Date:   Tue Mar 23 10:54:47 2021 +0000
 
-    Merged PR 9407: Fixed split delivery and raise claim button
+    Merged PR 9431: Made non-editable all fields expects pumping start date, pumping end date and...
     
-    Fixed split delivery and raise claim button
+    Made non-editable all fields expects pumping start date, pumping end date and Surveyor quantity when delivery is verified
+    
+    Related work items: #25541
 
 branch: master
