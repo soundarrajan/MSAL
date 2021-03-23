@@ -51,6 +51,10 @@ APP_CLAIMS.controller('Controller_Claims', [
                     }
                 }
             }
+            if ($scope.formValues.claimDebunkerDetails) {
+                $scope.formValues.claimDebunkerDetails.resaleAmount = calcDebunkerResaleAmount();
+                $scope.formValues.claimDebunkerDetails.resaleAmountCurrency = $scope.formValues.claimDebunkerDetails.salePriceCurrency;
+            }
         });
         $rootScope.$on('editInstance', (value) => {
             vm.editInstance = value;
@@ -318,7 +322,7 @@ APP_CLAIMS.controller('Controller_Claims', [
             });
         };
 
-        var calcResaleAmount = function() {
+        var calcDebunkerResaleAmount = function() {
             let resaleQty = convertDecimalSeparatorStringToNumber($scope.formValues.claimDebunkerDetails.resaleQuantity);
             let debunkerQty = convertDecimalSeparatorStringToNumber($scope.formValues.claimDebunkerDetails.debunkerQuantity);
             return (resaleQty > 0 ? resaleQty : debunkerQty) * $scope.formValues.claimDebunkerDetails.salePrice
@@ -695,17 +699,17 @@ APP_CLAIMS.controller('Controller_Claims', [
                     $scope.formValues.claimDebunkerDetails.debunkerAmount = $scope.formValues.orderDetails.orderPrice * convertDecimalSeparatorStringToNumber($scope.formValues.claimDebunkerDetails.debunkerQuantity);
                     $scope.formValues.claimDebunkerDetails.debunkerAmountCurrency = $scope.formValues.orderDetails.currency;
                 }
-                $scope.formValues.claimDebunkerDetails.resaleAmount = calcResaleAmount();
+                $scope.formValues.claimDebunkerDetails.resaleAmount = calcDebunkerResaleAmount();
                 $scope.formValues.claimDebunkerDetails.resaleAmountCurrency = $scope.formValues.claimDebunkerDetails.salePriceCurrency;
                 $scope.refreshSelect();
             }
             if (name == 'ResaleQuantitywithUOM') {
-                $scope.formValues.claimDebunkerDetails.resaleAmount = calcResaleAmount();
+                $scope.formValues.claimDebunkerDetails.resaleAmount = calcDebunkerResaleAmount();
                 $scope.formValues.claimDebunkerDetails.resaleAmountCurrency = $scope.formValues.claimDebunkerDetails.salePriceCurrency;
                 $scope.refreshSelect();
             }
             if (name == 'SalePricewithCurrency') {
-                $scope.formValues.claimDebunkerDetails.resaleAmount = calcResaleAmount();
+                $scope.formValues.claimDebunkerDetails.resaleAmount = calcDebunkerResaleAmount();
                 $scope.formValues.claimDebunkerDetails.resaleAmountCurrency = $scope.formValues.claimDebunkerDetails.salePriceCurrency;
                 if ($scope.formValues.orderDetails && $scope.formValues.claimDebunkerDetails.salePriceCurrency) {
                     var salePriceConverted = $scope.convertCurrency($scope.formValues.claimDebunkerDetails.salePriceCurrency.id, $scope.formValues.orderDetails.currency.id, null, $scope.formValues.claimDebunkerDetails.salePrice, (response) => {

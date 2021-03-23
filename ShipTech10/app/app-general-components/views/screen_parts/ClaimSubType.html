@@ -37,7 +37,7 @@
                     ng-class="CM.invalid_form ? 'ng-touched' : ''" ng-change="triggerChangeFieldsAppSpecific('claimType.retestedDensity', 'claimType.retestedDensity')"
                     unique-id="claimType.retestedDensity" ng-model="formValues.claimType.retestedDensity" dynamic-pattern="decimalNumber"
                     ng-if="formValues.claimType.claimType.id == 1 && !IsQuantitySubtype"
-                    ng-disabled="formValues.claimDetails.status.name == 'Completed' || formValues.claimDetails.status.name == 'Cancelled'">
+                    ng-disabled="formValues.claimDetails.status.name == 'Completed' || formValues.claimDetails.status.name == 'Cancelled' || formValues.claimDetails.status.name == 'Invoiced'">
             </div>
         </div>
     </div>
