@@ -1,0 +1,33 @@
+ag-grid-angular {
+  height: 60vh;
+}
+
+.requestStatus {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  color: white;
+  text-align: center;
+  background-color: grey;
+  .Quoted {
+    background-color: #87870b
+  }
+  .Stemmed {
+    background-color: #1AB01E
+  }
+  .Validated {
+    background-color: #7bd4aa
+  }
+  .PartiallyInquired {
+    background-color: #CA0000
+  }
+  .PartiallyQuoted {
+    background-color: #d1d14b
+  }
+  .PartiallyStemmed {
+    background-color: #aed6af
+  }
+  .Cancelled {
+    background-color: #CA0000
+  }
+}
