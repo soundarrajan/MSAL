@@ -96,6 +96,7 @@
             <div class="block col-md-12">
                 <div class="inline-dropdown">
                   <mat-select [disableOptionCentering]="true"
+                      [disabled]="formValues.deliveryStatus.name == 'Verified'"
                       panelClass="bdn-additional-select-container"
                       [(ngModel)]="formValues.feedback.hasLetterOfProtest" 
                       [compareWith]="compareUomObjects">
@@ -119,6 +120,7 @@
             <div class="block col-md-12">
                 <div class="inline-dropdown">
                   <mat-select [disableOptionCentering]="true"
+                      [disabled]="formValues.deliveryStatus.name == 'Verified'"
                       panelClass="bdn-additional-select-container"
                       [(ngModel)]="formValues.feedback.deliveredAsScheduled" 
                       [compareWith]="compareUomObjects">
@@ -142,6 +144,7 @@
             <div class="block col-md-12">
                 <div class="inline-dropdown">
                   <mat-select [disableOptionCentering]="true"
+                      [disabled]="formValues.deliveryStatus.name == 'Verified'"
                       panelClass="bdn-additional-select-container"
                       [(ngModel)]="formValues.feedback.requestedQuantityFullyDelivered" 
                       [compareWith]="compareUomObjects">
@@ -165,6 +168,7 @@
             <div class="block col-md-12">
                 <div class="inline-dropdown">
                   <mat-select [disableOptionCentering]="true"
+                      [disabled]="formValues.deliveryStatus.name == 'Verified'"
                       panelClass="bdn-additional-select-container"
                       [(ngModel)]="formValues.feedback.filterClogging" 
                       [compareWith]="compareUomObjects">
@@ -188,6 +192,7 @@
             <div class="block col-md-12">
                 <div class="inline-dropdown">
                   <mat-select [disableOptionCentering]="true"
+                      [disabled]="formValues.deliveryStatus.name == 'Verified'"
                       panelClass="bdn-additional-select-container"
                       [(ngModel)]="formValues.feedback.purifierProblems" 
                       [compareWith]="compareUomObjects">
@@ -211,6 +216,7 @@
             <div class="block col-md-12">
                 <div class="inline-dropdown">
                   <mat-select [disableOptionCentering]="true"
+                      [disabled]="formValues.deliveryStatus.name == 'Verified'"
                       panelClass="bdn-additional-select-container"
                       [(ngModel)]="formValues.feedback.combustionProblem" 
                       [compareWith]="compareUomObjects">
@@ -232,6 +238,7 @@
           <mat-label>Agent coordination</mat-label>
           <mat-select [disableOptionCentering]="true"
                       panelClass="bdn-additional-select-container"
+                      [disabled]="formValues.deliveryStatus.name == 'Verified'"
                       [(ngModel)]="formValues.feedback.agentCoordination" 
                       [compareWith]="compareUomObjects"
                       placeholder="Agent coordination">
@@ -248,6 +255,7 @@
           <mat-label>Bunker Operator</mat-label>
           <mat-select [disableOptionCentering]="true"
                       panelClass="bdn-additional-select-container"
+                      [disabled]="formValues.deliveryStatus.name == 'Verified'"
                       [(ngModel)]="formValues.feedback.bunkerOperator" 
                       [compareWith]="compareUomObjects"
                       placeholder="Bunker Operator">
@@ -264,6 +272,7 @@
           <mat-label>Surveyor</mat-label>
           <mat-select [disableOptionCentering]="true"
                       panelClass="bdn-additional-select-container"
+                      [disabled]="formValues.deliveryStatus.name == 'Verified'"
                       [(ngModel)]="formValues.feedback.surveyor" 
                       [compareWith]="compareUomObjects"
                       placeholder="Surveyor">

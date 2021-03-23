@@ -607,7 +607,7 @@ export const BASE_MENU: KeyedMenuItems = {
       },
       new_delivery: {
         label: 'New delivery',
-        url: '/#/delivery/delivery/edit/',
+        url: '/v2/delivery/delivery/0/details',
         target: '_blank'
       },
       delivery_list: {
