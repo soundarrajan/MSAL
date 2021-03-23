@@ -19,6 +19,7 @@
           <mat-label>CCAI delivered</mat-label>
           <input  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].quantityHeader.ccaiDelivered"
                 matInput 
+                [disabled]="formValues.deliveryStatus.name == 'Verified'"
                 quantityFormat
                 autocomplete="off"
                 placeholder="CCAI delivered">
@@ -73,6 +74,7 @@
                             <mat-form-field class="without-search" appearance="legacy">
                               <input   [(ngModel)]="quantityParameter.bdn"
                                     matInput 
+                                    [disabled]="formValues.deliveryStatus.name == 'Verified'"
                                     quantityFormat
                                     myNumberOnly
                                     autocomplete="off"
@@ -114,6 +116,7 @@
         <mat-label>Comments</mat-label>
         <textarea  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].quantityHeader.comments"
                     matInput 
+                    [disabled]="formValues.deliveryStatus.name == 'Verified'"
                     autocomplete="off"></textarea>
     </mat-form-field>
 </div>
