@@ -9,6 +9,7 @@
             <mat-label>Analysed on</mat-label>
             <input [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].qualityHeader.analysedOn" 
                   matInput 
+                  [disabled]="formValues.deliveryStatus.name == 'Verified'"
                   [matDatepicker]="analysedOnDate" 
                   (focus)="analysedOnDate.open()"
                   autocomplete="off"
@@ -26,7 +27,8 @@
         <mat-form-field class="without-search" appearance="legacy">
           <mat-label>Net specific energy</mat-label>
           <input  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].qualityHeader.netSpecificEnergy"
-                matInput 
+                matInput
+                [disabled]="formValues.deliveryStatus.name == 'Verified'" 
                 autocomplete="off"
                 placeholder="Net specific energy"
                 myNumberOnly>
@@ -37,6 +39,7 @@
           <mat-label>CCAI</mat-label>
           <input  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].qualityHeader.ccai"
                 matInput 
+                [disabled]="formValues.deliveryStatus.name == 'Verified'"
                 autocomplete="off"
                 placeholder="CCAI"
                 myNumberOnly>
@@ -124,6 +127,7 @@
                           <input [(ngModel)]="qualityParameter.surveyValue"
                                 (ngModelChange)="qualityParameter.qualityMatch = setQualityMatch(qualityParameter.bdnValue, qualityParameter.surveyValue, qualityParameter.min, qualityParameter.max)"
                                 matInput 
+                                [disabled]="formValues.deliveryStatus.name == 'Verified'"
                                 myNumberOnly
                                 autocomplete="off"
                                 name="Product_{{ deliveryProductIndex }}_{{ qualityParameter.specParameter.name}}_SURVEY">
@@ -172,6 +176,7 @@
         <mat-label>Comments</mat-label>
         <textarea  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].qualityHeader.comments"
             matInput 
+            [disabled]="formValues.deliveryStatus.name == 'Verified'"
             autocomplete="off"></textarea>
     </mat-form-field>
 </div>
