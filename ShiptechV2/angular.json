@@ -196,6 +196,40 @@
         }
       }
     },
+    "contract": {
+      "projectType": "library",
+      "root": "libs/feature/contract",
+      "sourceRoot": "libs/feature/contract/src",
+      "prefix": "shiptech",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/feature/contract/tsconfig.lib.json",
+              "libs/feature/contract/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/feature/contract/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/feature/contract/jest.config.js",
+            "tsConfig": "libs/feature/contract/tsconfig.spec.json",
+            "setupFile": "libs/feature/contract/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    },
     "core": {
       "projectType": "library",
       "root": "libs/core",
