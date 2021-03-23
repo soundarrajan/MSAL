@@ -178,7 +178,8 @@
       <input [(ngModel)]="formValues.deliveryDate" 
             #deliveryDateField="ngModel" 
             matInput 
-            [matDatepicker]="deliveryDate" 
+            [matDatepicker]="deliveryDate"
+            [disabled]="formValues.deliveryStatus.name == 'Verified'" 
             (focus)="deliveryDate.open()"
             autocomplete="off"
             placeholder="Delivery Date"
@@ -196,6 +197,7 @@
     <mat-form-field class="without-search" appearance="legacy">
       <mat-label>Bdn Number</mat-label>
       <input  [(ngModel)]="formValues.bdnNumber"
+            [disabled]="formValues.deliveryStatus.name == 'Verified'"
             matInput 
             autocomplete="off"
             placeholder="Bdn Number">
@@ -205,7 +207,8 @@
     <mat-form-field class="without-search" appearance="legacy"  [ngClass]="{'date-invalid': isBdnDateInvalid || (buttonClicked && !bdnDateField.valid), 'date-valid': !isBdnDateInvalid}">
       <mat-label>BDN date</mat-label>
       <input [(ngModel)]="formValues.bdnDate"
-            #bdnDateField="ngModel" 
+            #bdnDateField="ngModel"
+            [disabled]="formValues.deliveryStatus.name == 'Verified'" 
             matInput 
             required 
             [matDatepicker]="bdnDate" 
@@ -228,6 +231,7 @@
           type="text"
           matInput 
           [(ngModel)]="formValues.barge"
+          [disabled]="formValues.deliveryStatus.name == 'Verified'"
           [matAutocomplete]="auto1"
           placeholder="Barge">
         <mat-autocomplete #auto1="matAutocomplete" 
@@ -244,6 +248,7 @@
     <mat-form-field class="without-search" appearance="legacy"  [ngClass]="{'date-invalid':isBerthingTimeDateInvalid, 'date-valid':!isBerthingTimeDateInvalid}">
       <mat-label>Berthing time</mat-label>
       <input [(ngModel)]="formValues.berthingTime"
+            [disabled]="formValues.deliveryStatus.name == 'Verified'"
             matInput 
             [ngxMatDatetimePicker]="berthingTime"
             (focus)="berthingTime.open()"
@@ -263,6 +268,7 @@
       <mat-label>Barge alongside</mat-label>
       <input [(ngModel)]="formValues.bargeAlongside"
             matInput 
+            [disabled]="formValues.deliveryStatus.name == 'Verified'"
             [ngxMatDatetimePicker]="bargeAlongside"
             (focus)="bargeAlongside.open()"
             (onInput)="onChange($event, 'bargeAlongside')" 

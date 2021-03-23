@@ -775,6 +775,11 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
   }
 
   deleteDeliveryProduct(productId, productIdx) {
+    if (this.formValues.deliveryStatus) {
+      if (this.formValues.deliveryStatus.name == 'Verified') {
+        return;
+      }
+    }
     if (typeof productId == 'undefined') {
       // simply erase product from list
       let okay = false;
