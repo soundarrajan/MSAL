@@ -1,12 +1,11 @@
-﻿commit 142b4377ac55504a82c3f29a8a74d609c3569f45
+﻿commit 7adae7c4e247ee9e81783b4aaf8a0d61fefc41e7
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Mar 24 14:31:34 2021 +0000
+Date:   Wed Mar 24 16:07:14 2021 +0000
 
-    Merged PR 9481: Added delivery quantity to be mapped in
+    Merged PR 9482: Fixed pumping rate calculated
     
-    Added delivery quantity to be mapped in
-    both mass & volume uom(When any Mass UOM is selected in the BDN Qty field, only the Volume UOM's has to be loaded in  the Delivered Quantity field)
+    Fixed pumping rate calculated
     
-    Related work items: #27538
+    Related work items: #31102
 
 branch: master
