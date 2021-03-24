@@ -34,7 +34,7 @@
     'orderModel',
     function(API, $tenantSettings, tenantService, $scope, $rootScope, $sce, $Api_Service, Factory_Master, $state, $location, $q, $compile, $timeout, $interval, $templateCache, $listsCache, $uibModal, uibDateParser, uiGridConstants, $filter, $http, $window, $controller, payloadDataModel, statusColors, screenLoader, $parse, EMAIL_TRANSACTION, STATE, orderModel) {
     	// extendScreenLayout(window.masterCTRL, this, statusColors);
-
+        $rootScope.TempadditionalCosts = [];
         $scope.vm = this;
         $scope.isHideVesselBopsDetails = !($rootScope.adminConfiguration && $rootScope.adminConfiguration.master.isVesselBopsDetailsVisible? $rootScope.adminConfiguration.master.isVesselBopsDetailsVisible : false);
         $scope.preferredContacts = [];
@@ -916,6 +916,15 @@
                         toastr.error('Please enter a value greater than zero for claim quantity!');
                         vm.editInstance.$valid = false;
                         return;
+                    }
+                }
+
+                if ($scope.formValues != undefined && $scope.formValues.orderDetails != undefined && $scope.formValues.orderDetails.orderStatusName != undefined && $scope.formValues.orderDetails.orderStatusName != 'Cancelled') {
+                    if ($scope.formValues.claimType != undefined && $scope.formValues.claimType.claimType != undefined && $scope.formValues.claimType.claimType.name != undefined && $scope.formValues.claimType.claimType.name != '') {
+                       if($scope.formValues.claimType.claimType.name == 'Cancellation') {
+                           toastr.warning("Kindly change the Claim Type");
+                           return
+                       }
                     }
                 }
             }
@@ -2986,6 +2995,7 @@
         };
 
         $scope.triggerChangeFields = function(name, id) {
+            
             $rootScope.formDataFields = $scope.formValues;
 
            
@@ -3006,6 +3016,14 @@
                                 toastr.info('The estimated settlement amount cannot be negative. The settlement type has been set to "Receive" and the amount is positive.');
                             }
                         });
+                    }
+                }
+                
+                if ($scope.formValues != undefined && $scope.formValues.orderDetails != undefined && $scope.formValues.orderDetails.orderStatusName != undefined && $scope.formValues.orderDetails.orderStatusName != 'Cancelled') {
+                    if ($scope.formValues.claimType != undefined && $scope.formValues.claimType.claimType != undefined && $scope.formValues.claimType.claimType.name != undefined && $scope.formValues.claimType.claimType.name != '') {
+                       if($scope.formValues.claimType.claimType.name == 'Cancellation') {
+                           toastr.warning("Kindly change the Claim Type");
+                       }
                     }
                 }
                 // else if($scope.formValues.claimDetails.estimatedSettlementAmount > 0) {
@@ -3179,6 +3197,7 @@
                 }
             }
             if (name == 'DocumentType') {
+                
                 // clone formValues to $rootScope { liviu.m. }
                 $rootScope.formValues = $scope.formValues;
             }
@@ -4606,6 +4625,7 @@
             }
         };
         $scope.$watch('formValues', (data) => {
+            
             $rootScope.formValues = data;
 	    	if (vm.entity_id == '') {
 	          	if (vm.app_id === 'masters' && vm.screen_id === 'service') {
@@ -6424,6 +6444,7 @@
         vm.displayStatusInHeader = function() {
             $rootScope.$watch('formValues', () => {
                 if ($state.params.screen_id == 'claim') {
+                    
                     if (typeof $rootScope.formValues != 'undefined' && typeof $rootScope.formValues.claimDetails != 'undefined' && typeof $rootScope.formValues.claimDetails.status != 'undefined') {
                         if (!$state.params.status || typeof $state.params.status == 'undefined') {
                             $state.params.status = {};
@@ -7241,8 +7262,17 @@
 
 /* Location Master Preffered Seller Product Table*/
 $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
+    
     var objMapping;
      $scope.CurrentadditionalCostsdetails  = formvalues;
+     if($scope.formValues != undefined && $scope.formValues.additionalCosts != undefined)
+     {
+       console.log("1111111111", $scope.formValues.additionalCosts);
+       console.log("1111111111", $rootScope.RootTempadditionalCosts)
+           if($rootScope.RootTempadditionalCosts == undefined){
+            $rootScope.RootTempadditionalCosts = angular.copy($scope.formValues.additionalCosts);
+           }
+     }
      if($scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails == undefined ){
         $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails = [];
         $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails.push({'id':0,'currency':$scope.vm.tenantSetting.tenantFormats.currency})
@@ -9353,6 +9383,7 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
             };
             $scope.confirmedModal = false;
             $('.confirmAction1').on('click', () => {
+                
                 if ($scope.confirmedModal) {
                     return;
                 }
@@ -9403,17 +9434,20 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
             
             $scope.confirmedModal = false;
             $('.confirmAction1').on('click', () => {
+                
                 if ($scope.confirmedModal) {
                     return;
                 }
                 else{
-                    if($scope.formValues.additionalCosts != undefined && $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails != undefined){
-                        $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails = undefined;
+                    
+                    if($rootScope.RootTempadditionalCosts != undefined && $rootScope.RootTempadditionalCosts.length !=0){ 
+                       $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails = angular.copy($rootScope.RootTempadditionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails);
                     }
                 }
                
                 $scope.key = -1;
                 $scope.confirmedModal = true;
+               // $scope.$digest()
                 $scope.$apply();
                 return callback($scope.confirmModalAdditionalData);
             });
