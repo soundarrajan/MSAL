@@ -610,8 +610,11 @@ APP_CLAIMS.controller('Controller_Claims', [
                     var id = $scope.formValues.orderDetails.product.id;
                     if ($scope.formValues.orderDetails.product.payload) {
 	                    angular.merge($scope.formValues.orderDetails, $scope.formValues.orderDetails.product.payload.orderDetails);
-                        if($scope.formValues.orderDetails.deliveryNo && $scope.formValues.orderDetails.product.payload.claimDetails){
-                            angular.merge($scope.formValues.claimDetails, $scope.formValues.orderDetails.product.payload.claimDetails);
+                        if($scope.formValues.orderDetails.deliveryNo && $scope.formValues.claimDetails && $scope.formValues.orderDetails.product.payload.claimDetails) {
+                            $scope.formValues.claimDetails.bdnQuantity = $scope.formValues.orderDetails.product.payload.claimDetails.bdnQuantity;
+                            $scope.formValues.claimDetails.bdnQuantityUom = $scope.formValues.orderDetails.product.payload.claimDetails.bdnQuantityUom;
+                            $scope.formValues.claimDetails.vesselQuantity = $scope.formValues.orderDetails.product.payload.claimDetails.vesselQuantity;
+                            $scope.formValues.claimDetails.vesselQuantityUom = $scope.formValues.orderDetails.product.payload.claimDetails.vesselQuantityUom;
                         }
                     }
                     delete $scope.formValues.initialOrderPrice;
