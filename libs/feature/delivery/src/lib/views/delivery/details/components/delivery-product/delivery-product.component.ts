@@ -899,15 +899,17 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
 
   setDeliveredQuantityUomList(deliveryProductIndex) {
     let bdnUom = this.formValues.deliveryProducts[deliveryProductIndex].bdnQuantityUom;
-    let verifyIfBdnUomIsMassUom = _.find(this.uomMass, function(object) {
-      return object.name == bdnUom.name && object.id == bdnUom.id;
-    });
-    if (verifyIfBdnUomIsMassUom) {
-      this.formValues.deliveryProducts[deliveryProductIndex].deliveredVolumeUom = null;
-      this.deliveredQuantityUoms = [...this.uomVolume];
-    } else {
-      this.formValues.deliveryProducts[deliveryProductIndex].deliveredVolumeUom = null;
-      this.deliveredQuantityUoms = [...this.uomMass];
+    if (bdnUom) {
+      let verifyIfBdnUomIsMassUom = _.find(this.uomMass, function(object) {
+        return object.name == bdnUom.name && object.id == bdnUom.id;
+      });
+      if (verifyIfBdnUomIsMassUom) {
+        this.formValues.deliveryProducts[deliveryProductIndex].deliveredVolumeUom = null;
+        this.deliveredQuantityUoms = [...this.uomVolume];
+      } else {
+        this.formValues.deliveryProducts[deliveryProductIndex].deliveredVolumeUom = null;
+        this.deliveredQuantityUoms = [...this.uomMass];
+      }
     }
   }
 
