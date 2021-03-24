@@ -6533,17 +6533,44 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
             let payload={
             	payload:[{LocationId:theLocation.location.id,ProductId:product.product.id}]
             }
+            $scope.marketPriceHistoryList=[];
             $http.post(`${API.BASE_URL_DATA_PROCUREMENT}/api/procurement/rfq/getPriceByLocationAndProduct`, payload).then((response) => {
                 if (response) {
                     if (response.data) {
-                         $scope.marketPriceHistoryList=[];
-                         $scope.marketPriceHistoryList=response.data.payload;
+						$scope.marketPriceHistoryList=[];
+						$scope.marketPriceHistoryList=response.data.payload;
+                        setTimeout(()=>{
+                        	$scope.adjustMarketPricePopupPosition();
+                        })
                     }
                 } else {
                     ctrl.hasAccess = false;
                 }
             });  
         }
+
+        $scope.adjustMarketPricePopupPosition = () => {
+        	var popupElement = $(".marketPriceHistoryListPopup:visible");
+        	if (popupElement.length > 0) {
+	        	var triggerElement = $(popupElement).parent().children(".dropdown-toggle");
+	        	var triggerElementOffsetTop = $(triggerElement).offset().top - window.scrollY;
+	        	var triggerElementOffsetLeft = $(triggerElement).offset().left;
+	        	$(popupElement).css("top", triggerElementOffsetTop);
+	        	$(popupElement).css("left", triggerElementOffsetLeft);
+	        	$(popupElement).css("z-index", "100");
+	        	$(popupElement).css("position", "fixed");
+	        	$(popupElement).css("transform", "translate(-90% , 10px)");
+        	}
+        }
+
+        $(window).on("scroll", ()=> {
+        	$scope.adjustMarketPricePopupPosition();
+        })
+		$('.marketPriceHistoryListPopup').on('hide.bs.dropdown', function () {
+		   console.log("dropdown closed");
+		});
+
+
         ctrl.openContactCounterpartyModal = function(seller, theLocation) {
             // ctrl.OptionsContactCounterpartyModal = ctrl.sellerContactList["s" + seller.id];
             // tpl = $templateCache.get("components/sellers-dialog/views/contactCounterpartyModal.html");
