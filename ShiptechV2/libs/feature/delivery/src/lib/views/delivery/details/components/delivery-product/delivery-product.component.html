@@ -221,7 +221,7 @@
                                 appearance="legacy">
                     <mat-select disableRipple 
                             [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].bdnQuantityUom"
-                            (ngModelChange)="calculateVarianceAndReconStatus(deliveryProductIndex)"
+                            (ngModelChange)="calculateVarianceAndReconStatus(deliveryProductIndex); setDeliveredQuantityUomList(deliveryProductIndex);"
                             [compareWith]="compareUomObjects"
                             [disableOptionCentering]="true"
                             [disabled]="formValues.deliveryStatus.name == 'Verified'" 
@@ -424,13 +424,13 @@
         <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
             <div class="split-field">
                 <mat-form-field class="without-search long-label-field input-field-container" style="width: 64%;border: none;" appearance="legacy">
-                    <mat-label>Delivered volume</mat-label>
+                    <mat-label>Delivered Quantity</mat-label>
                     <input [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].deliveredVolume"
                             matInput 
                             [disabled]="formValues.deliveryStatus.name == 'Verified'"
                             class="text-ellipsis"
                             autocomplete="off" 
-                            placeholder="Delivered volume"
+                            placeholder="Delivered Quantity"
                             quantityFormat
                             myNumberOnly>
                 </mat-form-field>
@@ -442,7 +442,7 @@
                             [disabled]="formValues.deliveryStatus.name == 'Verified'"
                             [disableOptionCentering]="true"
                             panelClass="delivery-product-select-container">
-                        <mat-option *ngFor="let uom of uoms" [value]="uom">{{uom.name}}</mat-option>
+                        <mat-option *ngFor="let uom of deliveredQuantityUoms" [value]="uom">{{uom.name}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
