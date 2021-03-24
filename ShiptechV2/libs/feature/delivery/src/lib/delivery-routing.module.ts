@@ -21,6 +21,8 @@ import { BargeRouteResolver } from './views/delivery/details/barge-route.resolve
 import { ClaimTypeRouteResolver } from './views/delivery/details/claim-type-route.resolver';
 import { ScheduleDashboardLabelsRouteResolver } from './views/delivery/details/schedule-dashboard-labels-route.resolver';
 import { QuantityCategoryRouteResolver } from './views/delivery/details/quantity-category-route.resolver';
+import { UomVolumeRouteResolver } from './views/delivery/details/uom-volume-route.resolver';
+import { UomMassRouteResolver } from './views/delivery/details/uom-mass-route.resolver';
 
 interface IDeliveryDetailsRouteData {
   [KnownDeliverylRoutes.DeliveryIdParam]: Type<
@@ -73,7 +75,9 @@ const routes: Routes = [
                   satisfactionLevel: SatisfactionLevelRouteResolver,
                   claimType: ClaimTypeRouteResolver,
                   quantityCategory: QuantityCategoryRouteResolver,
-                  scheduleDashboardLabelConfiguration: ScheduleDashboardLabelsRouteResolver
+                  scheduleDashboardLabelConfiguration: ScheduleDashboardLabelsRouteResolver,
+                  uomVolume: UomVolumeRouteResolver,
+                  uomMass: UomMassRouteResolver
                 },
                 data: {
                   title: 'Delivery Details',

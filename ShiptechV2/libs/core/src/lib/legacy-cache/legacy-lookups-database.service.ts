@@ -210,6 +210,18 @@ export class LegacyLookupsDatabase extends Dexie {
     return satisfactionLevelList;
   }
 
+  async getUomMass() {
+    const db = this.table('uomMass');
+    let uomMass = await db.toArray();
+    return uomMass;
+  }
+
+  async getUomVolume() {
+    const db = this.table('uomVolume');
+    let uomVolume = await db.toArray();
+    return uomVolume;
+  }
+
 
 
   private async ensureVersion(): Promise<any> {
