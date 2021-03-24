@@ -1,11 +1,11 @@
-﻿commit ffede30127df207b223e701b622efc3b50b2aee2
+﻿commit 0f09d483187e7c4d6ec6794e11be7ea22d193968
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Tue Mar 23 10:54:47 2021 +0000
+Date:   Wed Mar 24 10:42:51 2021 +0000
 
-    Merged PR 9431: Made non-editable all fields expects pumping start date, pumping end date and...
+    Merged PR 9468: Added date picker with time for pumping start and pumping end
     
-    Made non-editable all fields expects pumping start date, pumping end date and Surveyor quantity when delivery is verified
+    Added date picker with time for pumping start and pumping end
     
-    Related work items: #25541
+    Related work items: #31070
 
 branch: master
