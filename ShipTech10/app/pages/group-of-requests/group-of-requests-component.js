@@ -433,6 +433,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
             // initialize the various data arrays needed by the template
             $.each(ctrl.requests, (reqK, reqV) => {
                 $.each(reqV.locations, (locK, locV) => {
+                	loopLocation = locV;
                     $.each(locV.products, (prodK, prodV) => {
                         prodV.requestId = reqV.id;
                         $.each(prodV.sellers, (sellerK, sellerV) => {
@@ -441,6 +442,7 @@ angular.module('shiptech.pages').controller('GroupOfRequestsController', [
                             var packageType = 'individual';
                             if (typeof seller.offers != 'undefined') {
                                 if (seller.offers.length > 0) {
+                                	seller.offers[0].computedEta = loopLocation.recentEta ? loopLocation.recentEta : loopLocation.eta
                                     if (seller.offers[0].physicalSupplierCounterparty) {
                                         uniqueIdentifier = `${seller.sellerCounterparty.id }-${ seller.offers[0].physicalSupplierCounterparty.id}`;
                                     }
