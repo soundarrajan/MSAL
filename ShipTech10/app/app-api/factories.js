@@ -5133,6 +5133,16 @@ APP_API.factory('$Api_Service', [
                             }
                         ];
                     }
+                    if (param.app == 'masters' && param.screen == 'counterpartylist' && param.clc_id == 'masters_counterpartylist_customers') {
+                        console.log(param);
+                        url = `${API.BASE_URL_DATA_MASTERS }/api/masters/counterparties/listByTypes`;
+                        apiJSON.Payload.Filters = [
+                            {
+                                ColumnName: 'CounterpartyTypes',
+                                Value: 4
+                            }
+                        ];
+                    }                    
                     if (param.app == 'masters' && param.screen == 'counterpartylist' && param.clc_id == 'masters_counterpartylist_seller') {
                         console.log(param);
                         url = `${API.BASE_URL_DATA_MASTERS }/api/masters/counterparties/listByTypes`;
