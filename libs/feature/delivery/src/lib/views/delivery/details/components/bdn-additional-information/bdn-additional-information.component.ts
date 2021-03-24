@@ -421,6 +421,7 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
   satisfactionLevel: any;
   isBargePumpingRateStartTimeInvalid: boolean;
   isBargePumpingRateEndTimeInvalid: boolean;
+  pumpingRateUom: any;
 
   @Input('satisfactionLevel') set _setSatisfactionLevel(satisfactionLevel) { 
     if (!satisfactionLevel) {
@@ -435,6 +436,14 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
     } 
     this.deliveryFeedback = deliveryFeedback;
   }
+
+  @Input('pumpingRateUom') set _setPumpingRateUom(pumpingRateUom) { 
+    if (!pumpingRateUom) {
+      return;
+    } 
+    this.pumpingRateUom = pumpingRateUom;
+  }
+
   
   @Input('model') set _setFormValues(formValues) { 
     if (!formValues) {
@@ -561,7 +570,7 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
       this.isBargePumpingRateStartTimeInvalid = false;
       this.isBargePumpingRateEndTimeInvalid = false;
     }
-
+    
   }
 
   formatDateForBe(value) {
@@ -604,6 +613,7 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
       return;
     }
     this.formValues.pumpingDuration = result;
+    this.calculatePumpingRate(this.formValues.pumpingDuration, 0);
   }
 
   getTimeBetweenBerthinAndBargeDates(start, end) {
@@ -636,6 +646,29 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
     this.formValues.bargeDelay = result;
 
   }
+
+  calculatePumpingRate(timeString, prodIndex) {
+    if (typeof timeString == 'undefined' || typeof this.formValues.deliveryProducts == 'undefined') {
+        return;
+    }
+    if (typeof this.formValues.deliveryProducts[prodIndex].bdnQuantityUom == 'undefined' || this.formValues.deliveryProducts[prodIndex].bdnQuantityUom == null || this.formValues.deliveryProducts[prodIndex].bdnQuantityAmount == null) {
+        return;
+    }
+    if (typeof this.formValues.pumpingRate == 'undefined') {
+        this.formValues.pumpingRate = '';
+        this.formValues.pumpingRateUom = '';
+    }
+    var pumpingTime = (parseInt(timeString.split(':')[0]) * 60 + parseInt(timeString.split(':')[1])) / 60;
+    this.formValues.pumpingRate = this.formValues.deliveryProducts[prodIndex].bdnQuantityAmount / pumpingTime;
+    this.pumpingRateUom.forEach((val, key) => {
+      if (val.name.split('/')[0] == this.formValues.deliveryProducts[prodIndex].bdnQuantityUom.name) {
+        this.formValues.pumpingRateUom = val;
+      }
+    });
+    console.log(this.formValues.pumpingRate);
+    console.log(this.formValues.pumpingRateUom);
+  };
+
 
 
  
