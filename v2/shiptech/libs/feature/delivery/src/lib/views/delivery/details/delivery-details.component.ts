@@ -125,6 +125,8 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   conversionInfoData: any = [];
   quantityFormat: string;
   openedScreenLoaders: number = 0;
+  uomVolume: any;
+  uomMass: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -237,6 +239,8 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       this.CM.listsCache.ClaimType = data.claimType;
       this.quantityCategory = data.quantityCategory;
       this.scheduleDashboardLabelConfiguration = data.scheduleDashboardLabelConfiguration;
+      this.uomMass = data.uomMass;
+      this.uomVolume = data.uomVolume;
       if (this.formValues.order && this.formValues.order.id) {
         this.isLoading = true;
         this.openedScreenLoaders = 0;
