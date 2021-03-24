@@ -144,6 +144,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
   uomVolume: any;
   uomMass: any;
   deliveredQuantityUoms: any;
+  pumpingRateUom: any;
 
 
   @Input('finalQuantityRules') set _setFinalQuantityRules(finalQuantityRules) { 
@@ -165,6 +166,13 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
       return;
     } 
     this.quantityCategory = quantityCategory;
+  }
+  
+  @Input('pumpingRateUom') set _setPumpingRateUom(pumpingRateUom) { 
+    if (!pumpingRateUom) {
+      return;
+    } 
+    this.pumpingRateUom = pumpingRateUom;
   }
 
   @Input('uoms') set _setUoms(uoms) { 
@@ -902,6 +910,29 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
       this.deliveredQuantityUoms = [...this.uomMass];
     }
   }
+
+  calculatePumpingRate(timeString, prodIndex) {
+    console.log(timeString);
+    if (typeof timeString == 'undefined' || typeof this.formValues.deliveryProducts == 'undefined') {
+        return;
+    }
+    if (typeof this.formValues.deliveryProducts[prodIndex].bdnQuantityUom == 'undefined' || this.formValues.deliveryProducts[prodIndex].bdnQuantityUom == null || this.formValues.deliveryProducts[prodIndex].bdnQuantityAmount == null) {
+        return;
+    }
+    if (typeof this.formValues.pumpingRate == 'undefined') {
+        this.formValues.pumpingRate = '';
+        this.formValues.pumpingRateUom = '';
+    }
+    var pumpingTime = (parseInt(timeString.split(':')[0]) * 60 + parseInt(timeString.split(':')[1])) / 60;
+    this.formValues.pumpingRate = this.formValues.deliveryProducts[prodIndex].bdnQuantityAmount / pumpingTime;
+    this.pumpingRateUom.forEach((val, key) => {
+      if (val.name.split('/')[0] == this.formValues.deliveryProducts[prodIndex].bdnQuantityUom.name) {
+        this.formValues.pumpingRateUom = val;
+      }
+    });
+    console.log(this.formValues.pumpingRate);
+    console.log(this.formValues.pumpingRateUom);
+  };
 
 
   

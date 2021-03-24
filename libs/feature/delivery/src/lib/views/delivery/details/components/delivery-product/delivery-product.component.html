@@ -205,8 +205,8 @@
                 <mat-form-field class="without-search long-label-field input-field-container" style="width: 64%;border: none;" appearance="legacy">
                     <mat-label>BDN Qty</mat-label>
                     <input  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].bdnQuantityAmount"
-                            (ngModelChange)="calculateVarianceAndReconStatus(deliveryProductIndex)"
-                            (blur)="calculateVarianceAndReconStatus(deliveryProductIndex)"
+                            (ngModelChange)="calculateVarianceAndReconStatus(deliveryProductIndex);"
+                            (blur)="calculateVarianceAndReconStatus(deliveryProductIndex); calculatePumpingRate(formValues.pumpingDuration, 0)"
                             #bdnQuantityAmountField="ngModel" 
                             matInput
                             [disabled]="formValues.deliveryStatus.name == 'Verified'" 
@@ -222,6 +222,7 @@
                     <mat-select disableRipple 
                             [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].bdnQuantityUom"
                             (ngModelChange)="calculateVarianceAndReconStatus(deliveryProductIndex); setDeliveredQuantityUomList(deliveryProductIndex);"
+                            (blur)="calculateVarianceAndReconStatus(deliveryProductIndex); calculatePumpingRate(formValues.pumpingDuration, 0)"
                             [compareWith]="compareUomObjects"
                             [disableOptionCentering]="true"
                             [disabled]="formValues.deliveryStatus.name == 'Verified'" 
