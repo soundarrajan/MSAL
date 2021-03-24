@@ -105,12 +105,20 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
   eventsOrderNumberSubscription: Subscription;
   uomVolume: any;
   uomMass: any;
+  pumpingRateUom: any;
 
   @Input('quantityCategory') set _setQuantityCategory(quantityCategory) { 
     if (!quantityCategory) {
       return;
     } 
     this.quantityCategory = quantityCategory;
+  }
+
+  @Input('pumpingRateUom') set _setPumpingRateUom(pumpingRateUom) { 
+    if (!pumpingRateUom) {
+      return;
+    } 
+    this.pumpingRateUom = pumpingRateUom;
   }
 
   @Input('uoms') set _setUoms(uoms) { 

@@ -23,6 +23,7 @@ import { ScheduleDashboardLabelsRouteResolver } from './views/delivery/details/s
 import { QuantityCategoryRouteResolver } from './views/delivery/details/quantity-category-route.resolver';
 import { UomVolumeRouteResolver } from './views/delivery/details/uom-volume-route.resolver';
 import { UomMassRouteResolver } from './views/delivery/details/uom-mass-route.resolver';
+import { PumpingRateUomRouteResolver } from './views/delivery/details/pumping-rate-uom-route.resolver';
 
 interface IDeliveryDetailsRouteData {
   [KnownDeliverylRoutes.DeliveryIdParam]: Type<
@@ -76,6 +77,7 @@ const routes: Routes = [
                   claimType: ClaimTypeRouteResolver,
                   quantityCategory: QuantityCategoryRouteResolver,
                   scheduleDashboardLabelConfiguration: ScheduleDashboardLabelsRouteResolver,
+                  pumpingRateUom: PumpingRateUomRouteResolver,
                   uomVolume: UomVolumeRouteResolver,
                   uomMass: UomMassRouteResolver
                 },
