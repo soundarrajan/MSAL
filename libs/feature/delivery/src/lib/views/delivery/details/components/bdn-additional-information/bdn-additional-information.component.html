@@ -29,17 +29,17 @@
         <mat-label>Pumping start</mat-label>
         <input [(ngModel)]="formValues.bargePumpingRateStartTime" 
               matInput 
-              [matDatepicker]="bargePumpingRateStartTime" 
+              [ngxMatDatetimePicker]="bargePumpingRateStartTime"
               (focus)="bargePumpingRateStartTime.open()"
               autocomplete="off"
               placeholder="Pumping start"
               (dateInput)="onChange($event, 'bargePumpingRateStartTime')"
               (dateChange)="formValues.bargePumpingRateStartTime = formatDateForBe(formValues.bargePumpingRateStartTime)">
-              <mat-datepicker-toggle matSuffix [for]="bargePumpingRateStartTime">
-                <mat-icon matDatepickerToggleIcon class="icon-date">
+              <button mat-icon-button matSuffix (click)="bargePumpingRateStartTime.open(); $event.stopPropagation();">
+                <mat-icon  class="icon-date">
                 </mat-icon>
-            </mat-datepicker-toggle>
-            <mat-datepicker #bargePumpingRateStartTime [panelClass]="switchTheme?'datepicker-darktheme':''"></mat-datepicker>
+              </button>      
+              <ngx-mat-datetime-picker #bargePumpingRateStartTime></ngx-mat-datetime-picker>
       </mat-form-field>
     </div>
     <div class="custom-form-field bdn-additional-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
@@ -47,17 +47,17 @@
         <mat-label>Pumping end</mat-label>
         <input [(ngModel)]="formValues.bargePumpingRateEndTime" 
               matInput 
-              [matDatepicker]="bargePumpingRateEndTime" 
+              [ngxMatDatetimePicker]="bargePumpingRateEndTime" 
               (focus)="bargePumpingRateEndTime.open()"
               autocomplete="off"
               placeholder="Pumping end"
               (dateInput)="onChange($event, 'bargePumpingRateEndTime')"
               (dateChange)="formValues.bargePumpingRateEndTime = formatDateForBe(formValues.bargePumpingRateEndTime);">
-              <mat-datepicker-toggle matSuffix [for]="bargePumpingRateEndTime">
-                <mat-icon matDatepickerToggleIcon class="icon-date">
+              <button mat-icon-button matSuffix (click)="bargePumpingRateEndTime.open(); $event.stopPropagation();">
+                <mat-icon  class="icon-date">
                 </mat-icon>
-            </mat-datepicker-toggle>
-            <mat-datepicker #bargePumpingRateEndTime [panelClass]="switchTheme?'datepicker-darktheme':''"></mat-datepicker>
+              </button>      
+              <ngx-mat-datetime-picker #bargePumpingRateEndTime></ngx-mat-datetime-picker>
       </mat-form-field>
     </div>
     <div class="custom-form-field bdn-additional-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
