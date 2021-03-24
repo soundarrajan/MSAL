@@ -60,6 +60,7 @@ import { IDeliveryTenantSettings } from 'libs/feature/delivery/src/lib/core/sett
 import { DecimalPipe } from '@angular/common';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { throws } from 'assert';
 
 export const PICK_FORMATS = {
   display: {
@@ -140,6 +141,9 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
   isPricingEventDateInvalid: boolean;
   buttonClicked: any;
   events2Subscription: Subscription;
+  uomVolume: any;
+  uomMass: any;
+  deliveredQuantityUoms: any;
 
 
   @Input('finalQuantityRules') set _setFinalQuantityRules(finalQuantityRules) { 
@@ -168,6 +172,21 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
       return;
     } 
     this.uoms = uoms;
+    this.deliveredQuantityUoms = uoms;
+  }
+
+  @Input('uomVolume') set _setUomVolume(uomVolume) { 
+    if (!uomVolume) {
+      return;
+    } 
+    this.uomVolume = uomVolume;
+  }
+
+  @Input('uomMass') set _setUomMass(uomMass) { 
+    if (!uomMass) {
+      return;
+    } 
+    this.uomMass = uomMass;
   }
 
   @Input('conversionInfoData') set _setConversionInfoData(conversionInfoData) { 
@@ -254,6 +273,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
       this.formValues.deliveryProducts[this.deliveryProductIndex].finalQuantityAmount = this.quantityFormatValue(this.formValues.deliveryProducts[this.deliveryProductIndex].finalQuantityAmount);
     }
     console.log(this.formValues.deliveryProducts);
+    this.setDeliveredQuantityUomList(this.deliveryProductIndex);
   }
 
  
@@ -329,8 +349,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     }
     console.log('aici');
     this.formValues = form;
-    console.log(this.formValues);
-  
+    console.log(this.formValues);  
     //this.changeDetectorRef.detectChanges();
   }
 
@@ -870,8 +889,18 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
   }
 
 
-  submitFunction(form) {
-
+  setDeliveredQuantityUomList(deliveryProductIndex) {
+    let bdnUom = this.formValues.deliveryProducts[deliveryProductIndex].bdnQuantityUom;
+    let verifyIfBdnUomIsMassUom = _.find(this.uomMass, function(object) {
+      return object.name == bdnUom.name && object.id == bdnUom.id;
+    });
+    if (verifyIfBdnUomIsMassUom) {
+      this.formValues.deliveryProducts[deliveryProductIndex].deliveredVolumeUom = null;
+      this.deliveredQuantityUoms = [...this.uomVolume];
+    } else {
+      this.formValues.deliveryProducts[deliveryProductIndex].deliveredVolumeUom = null;
+      this.deliveredQuantityUoms = [...this.uomMass];
+    }
   }
 
 
