@@ -1,11 +1,11 @@
-﻿commit 2262fb8eaa1fc0bf229a32a93fe0e9c4fa9b59d4
+﻿commit 2e765c41c73cdd4fba4c3c0f813d34ea5ff4f686
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Mar 25 08:51:38 2021 +0000
+Date:   Thu Mar 25 10:49:48 2021 +0000
 
-    Merged PR 9494: Fixed creating delivery from orders to be delivered
+    Merged PR 9498: Added email to labs button and added delivery list to invoice menu list from v2
     
-    Fixed creating delivery from orders to be delivered
+    Added email to labs button and added delivery list to invoice menu list from v2
     
-    Related work items: #27538
+    Related work items: #31101, #31118
 
 branch: master

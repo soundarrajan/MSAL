@@ -1,6 +1,10 @@
 <div class="col-md-12">
     <div class="product-quality-header">
-        Product quality details
+        <span class="product-quality-header-name">Product quality details</span>
+        <button mat-raised-button 
+            *ngIf="formValues.temp.isShowDeliveryEmailToLabsButton"
+            class="email-to-labs"
+            (click)="sendLabsTemplateEmail(formValues.deliveryProducts[deliveryProductIndex].id)">Email to Labs</button>
     </div>
 </div>
 <div class="col-md-12  product-details-container" *ngIf="formValues.deliveryProducts[deliveryProductIndex].qualityHeader">
