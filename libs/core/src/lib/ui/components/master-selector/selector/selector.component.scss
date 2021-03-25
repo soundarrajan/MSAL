@@ -1,5 +1,7 @@
 .cell-background {
   color: white;
+  padding-left: 10px;
+  padding-right: 10px;
 
   &.bad {
     background-color: #e9585a;
@@ -12,6 +14,36 @@
   &.inactive {
     background-color: #e9585a;
   }
+
+}
+
+.success {
+  background: #99cb82;
+  color: #FFFFFF !important;
+  padding: 5px 15px;
+  width: 100%;
+  display: block !important;
+  text-transform: capitalize;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+.denger {
+  background: #e7505a;
+  color: #FFFFFF !important;
+  padding: 5px 15px;
+  width: 100%;
+  display: block !important;
+  text-transform: capitalize;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.filter-name {
+  max-width: 15% !important;
 }
 
 .btn-select {
