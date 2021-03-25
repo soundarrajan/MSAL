@@ -1,11 +1,9 @@
-﻿commit 9310fff607d0aef47b0b612625d209053e39cf48
+﻿commit 757155b2c2f6dfcaa9ab7e0fdb0643edb98dcb5c
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Mar 25 15:09:41 2021 +0000
+Date:   Thu Mar 25 15:58:20 2021 +0000
 
-    Merged PR 9515: Fixed issues with ETA and ETB
+    Merged PR 9516: Fixed creating deliveries from order to be delivered list
     
-    Fixed issues with ETA and ETB
-    
-    Related work items: #31081
+    Fixed creating deliveries from order to be delivered list
 
 branch: master
