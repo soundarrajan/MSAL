@@ -1,11 +1,11 @@
-﻿commit eac8de37a1f699ec3ecf560097efbe1283c90fae
+﻿commit 9310fff607d0aef47b0b612625d209053e39cf48
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Mar 25 13:59:12 2021 +0000
+Date:   Thu Mar 25 15:09:41 2021 +0000
 
-    Merged PR 9512: Fixed colour code for "Blacklisted" column in physical supplier lookup
+    Merged PR 9515: Fixed issues with ETA and ETB
     
-    Fixed colour code for "Blacklisted" column in physical supplier lookup
+    Fixed issues with ETA and ETB
     
-    Related work items: #31095
+    Related work items: #31081
 
 branch: master
