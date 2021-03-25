@@ -176,13 +176,13 @@ export class ProductQuantityComponent implements OnInit{
     this.eventsSubscription = this.events.subscribe((data) => this.setDeliveryForm(data));
     this.getQualityMatchList();
     if (this.formValues.temp.deliverysummary) {
-      if (!this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader) {
+      if (this.formValues.deliveryProducts[this.deliveryProductIndex] && !this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader) {
         this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader = {};
       }
       this.formQuantityHeaders(this.formValues.deliveryProducts[this.deliveryProductIndex].orderProductId, 
                               this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader.ccaiDelivered);
     }
-    if (!this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader) {
+    if (this.formValues.deliveryProducts[this.deliveryProductIndex] && !this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader) {
       this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader = {};
     }
     this.changeDetectorRef.detectChanges();
@@ -195,8 +195,10 @@ export class ProductQuantityComponent implements OnInit{
     this.formValues = form;
     console.log(this.formValues);
     if (this.formValues.temp.deliverysummary) {
-      if (!this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader) {
-        this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader = {};
+      if (this.formValues.deliveryProducts[this.deliveryProductIndex]) {
+        if (!this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader) {
+          this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader = {};
+        }
       }
       this.formQuantityHeaders(this.formValues.deliveryProducts[this.deliveryProductIndex].orderProductId, 
                               this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader.ccaiDelivered);
