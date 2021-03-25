@@ -1,9 +1,9 @@
-﻿commit 757155b2c2f6dfcaa9ab7e0fdb0643edb98dcb5c
+﻿commit 27ee287c5ff0c2b1f1688146ae35dc88d472604e
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Mar 25 15:58:20 2021 +0000
+Date:   Thu Mar 25 16:18:45 2021 +0000
 
-    Merged PR 9516: Fixed creating deliveries from order to be delivered list
+    Merged PR 9518: Fixed quantity header
     
-    Fixed creating deliveries from order to be delivered list
+    Fixed quantity header
 
 branch: master
