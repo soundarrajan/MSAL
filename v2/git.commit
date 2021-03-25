@@ -1,11 +1,11 @@
-﻿commit 9263e4fb78b5ecd96cd54180b0e68b9702f08a39
+﻿commit eac8de37a1f699ec3ecf560097efbe1283c90fae
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Mar 25 11:15:30 2021 +0000
+Date:   Thu Mar 25 13:59:12 2021 +0000
 
-    Merged PR 9501: Added uom for net specific energy
+    Merged PR 9512: Fixed colour code for "Blacklisted" column in physical supplier lookup
     
-    Added uom for net specific energy
+    Fixed colour code for "Blacklisted" column in physical supplier lookup
     
-    Related work items: #31089
+    Related work items: #31095
 
 branch: master
