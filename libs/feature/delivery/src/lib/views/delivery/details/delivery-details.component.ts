@@ -367,6 +367,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
                 productParameter.specParameter.name = this.decodeSpecificField(productParameter.specParameter.name);
               });
             }
+            this.changeDetectorRef.detectChanges();
           });
 
           this.openedScreenLoaders += 1;
@@ -382,6 +383,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
             )
             .subscribe((response: any) => {
               deliveryProd.quantityParameters = response;
+              this.changeDetectorRef.detectChanges();
             });
         }
       });
@@ -811,6 +813,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
             });
           }
           console.log(this.formValues.deliveryProducts[0]);
+          this.changeDetectorRef.detectChanges();
         }
       });
     this.openedScreenLoaders += 1;
@@ -830,6 +833,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         } else {
           this.formValues.deliveryProducts[0].quantityParameters = response;
           console.log(this.formValues.deliveryProducts[0]);
+          this.changeDetectorRef.detectChanges();
         }
       });
       this.openedScreenLoaders += 1;
@@ -855,6 +859,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
           if (response.surveyorCounterparty) {
               this.formValues.surveyorName = response.surveyorCounterparty.name;
           }
+          this.changeDetectorRef.detectChanges();
         }
       });
 
@@ -912,6 +917,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
             });
           }
           console.log(this.formValues.deliveryProducts[key]);
+          this.changeDetectorRef.detectChanges();
         }
       });
 
@@ -932,6 +938,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         } else {
           this.formValues.deliveryProducts[key].quantityParameters = response;
           console.log(this.formValues.deliveryProducts[key]);
+          this.changeDetectorRef.detectChanges();
         }
       });
     });
@@ -958,6 +965,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         if (response.surveyorCounterparty) {
             this.formValues.surveyorName = response.surveyorCounterparty.name;
         }
+        this.changeDetectorRef.detectChanges();
       }
     });
     //this.getDeliveryOrderSummary(this.formValues.order.id);
