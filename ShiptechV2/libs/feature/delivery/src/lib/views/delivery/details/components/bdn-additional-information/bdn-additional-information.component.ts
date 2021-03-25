@@ -648,7 +648,7 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
   }
 
   calculatePumpingRate(timeString, prodIndex) {
-    if (typeof timeString == 'undefined' || typeof this.formValues.deliveryProducts == 'undefined') {
+    if (typeof timeString == 'undefined' || typeof this.formValues.deliveryProducts == 'undefined' || !this.formValues.deliveryProducts.length) {
         return;
     }
     if (typeof this.formValues.deliveryProducts[prodIndex].bdnQuantityUom == 'undefined' || this.formValues.deliveryProducts[prodIndex].bdnQuantityUom == null || this.formValues.deliveryProducts[prodIndex].bdnQuantityAmount == null) {
