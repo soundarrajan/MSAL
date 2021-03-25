@@ -1,11 +1,13 @@
-﻿<general-header actions="{
+﻿<general-header  actions="{
     primary: [  {label: 'Upload', method: 'uploadDocument(\'#fileUpload\')', extern: true},
     ],
-    secondary: [{
+    secondary: [  
+     {
         label: 'Main Page',
         type: 'goto',
-        url: 'edit/:entity_id'
-    }, {
+        url: 'v2/delivery/delivery/:entity_id/details'
+     },
+     {
         label: 'Documents',
         active: true
     }, {
@@ -21,8 +23,7 @@
         method: 'triggerModal(\'sellerrating\')',
         extern:true
     }]
-}"></general-header>
-
+    }"></general-header>
 <entity-edit-form screenchild="'entity_documents'"></entity-edit-form>
 
 <span ng-controller="Controller_Configurable_List_Control as CLC">

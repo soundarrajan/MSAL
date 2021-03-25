@@ -4035,6 +4035,14 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                         // var url = $state.$current.url.prefix + $state.params.screen_id;
                         $state.reload();
                     }
+
+                    if (url.indexOf('v2/delivery/delivery/:entity_id/details') != -1) {
+                        url = '/v2/delivery/delivery/:entity_id/details';
+                        url = url.replace(/:entity_id/g, $state.params.entity_id);
+                        window.open(url, '_blank');
+                        break;
+                    }
+
                     // inject entity_id
                     if ($state.params.entity_id) {
                         url = JSON.stringify(url);
@@ -4612,7 +4620,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
             return false;
         }
 
-
+   
         /*GET SCREEN ACTIONS*/
         //     $rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
         //    $('clc-table-list').remove()
