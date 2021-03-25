@@ -28,14 +28,17 @@
           </mat-form-field>
     </div>
     <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-        <mat-form-field class="without-search" appearance="legacy">
-          <mat-label>Net specific energy</mat-label>
-          <input  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].qualityHeader.netSpecificEnergy"
+        <mat-form-field class="without-search with-labels" appearance="legacy">
+            <mat-label>Net specific energy</mat-label>
+            <input  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].qualityHeader.netSpecificEnergy"
                 matInput
                 [disabled]="formValues.deliveryStatus.name == 'Verified'" 
                 autocomplete="off"
                 placeholder="Net specific energy"
                 myNumberOnly>
+            <div matSuffix class="d-flex" style="display:flex;align-items: center;">
+                <div class="label">{{formValues.deliveryProducts[deliveryProductIndex].qualityHeader.netSpecificEnergyUom}}</div>
+            </div>   
         </mat-form-field>
     </div>
     <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
