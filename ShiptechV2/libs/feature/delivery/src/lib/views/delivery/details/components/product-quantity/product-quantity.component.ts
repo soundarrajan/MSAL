@@ -200,8 +200,10 @@ export class ProductQuantityComponent implements OnInit{
           this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader = {};
         }
       }
-      this.formQuantityHeaders(this.formValues.deliveryProducts[this.deliveryProductIndex].orderProductId, 
-                              this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader.ccaiDelivered);
+      if (this.formValues.deliveryProducts[this.deliveryProductIndex]) {
+        this.formQuantityHeaders(this.formValues.deliveryProducts[this.deliveryProductIndex].orderProductId, 
+          this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader.ccaiDelivered);
+      }
     // this.changeDetectorRef.detectChanges();          
     }
   }
