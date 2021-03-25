@@ -19,7 +19,7 @@ import { QcReportService } from '../../../../../services/qc-report.service';
 import { BehaviorSubject, Observable, pipe, Subject, Subscription } from 'rxjs';
 import { QcReportState } from '../../../../../store/report/qc-report.state';
 import { ToastrService } from 'ngx-toastr';
-import { finalize, map, scan, startWith, timeout } from 'rxjs/operators';
+import { finalize, map, scan, startWith, takeUntil, timeout } from 'rxjs/operators';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { BdnInformationApiService } from '@shiptech/core/services/delivery-api/bdn-information/bdn-information-api.service';
 import { TransactionForSearch } from 'libs/feature/delivery/src/lib/services/api/request-response/bdn-information';
@@ -60,6 +60,8 @@ import { IDeliveryTenantSettings } from 'libs/feature/delivery/src/lib/core/sett
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DecimalPipe } from '@angular/common';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ActivatedRoute } from '@angular/router';
 
 export const PICK_FORMATS = {
   display: {
@@ -137,28 +139,12 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
   raiseClaimInfo: any;
   isAnalysedOnDateInvalid: boolean;
   quantityFormat: string;
+  entityId: any;
+  entityName: string;
   @Input() set autocompleteType(value: string) {
     this._autocompleteType = value;
   }
 
-  get entityId(): number {
-    return this._entityId;
-  }
-
-  get entityName(): string {
-    return this._entityName;
-  }
-
-  @Input() set entityId(value: number) {
-    this._entityId = value;
-    this.gridViewModel.entityId = this.entityId;
-  }
-
-  @Input() set entityName(value: string) {
-    this._entityName = value;
-    this.gridViewModel.entityName = this.entityName;
-  }
-     
   @Input('formValues') set _setFormValues(formValues) { 
     if (!formValues) {
       return;
@@ -186,7 +172,7 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
   @Input() vesselId: number;
   @Input() data;
   autocompleteVessel: knownMastersAutocomplete;
-  _entityId: number;
+  _entityId: string;
   _entityName: string;
   deliveryProductIndex: any;
   constructor(
@@ -205,7 +191,9 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
     iconRegistry: MatIconRegistry, 
     private tenantService: TenantFormattingService,
     sanitizer: DomSanitizer,
-    @Inject(DecimalPipe) private _decimalPipe
+    @Inject(DecimalPipe) private _decimalPipe,
+    private spinner: NgxSpinnerService,
+    private route: ActivatedRoute
 
   ) {
     super(changeDetectorRef);
@@ -219,6 +207,9 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
   }
 
   ngOnInit(){  
+    this.route.params.pipe(takeUntil(this._destroy$)).subscribe(params => {
+      this.entityId = params.deliveryId;
+    });
     this.entityName = 'Delivery';
     this.eventsSubscription = this.events.subscribe((data) => this.setDeliveryForm(data));
     console.log('index');
@@ -312,6 +303,31 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
         return this._decimalPipe.transform(plainNumber, this.quantityFormat);
       }
     }
+  }
+
+
+  sendLabsTemplateEmail(prodId) {
+    console.log(this.entityId);
+    let data = {
+      deliveryId: parseInt(this.entityId),
+      deliveryProductId: prodId
+    };
+    this.spinner.show();
+    this.deliveryService
+    .sendLabsTemplateEmail(data)
+    .pipe(
+      finalize(() => {
+        this.spinner.hide();
+
+      })
+    )
+    .subscribe((result: any) => {
+      if (typeof result == 'string') {
+        this.toastr.error(result);
+      } else {
+         this.toastr.success('Email Template Sent');
+      }
+    });
   }
   
 }
