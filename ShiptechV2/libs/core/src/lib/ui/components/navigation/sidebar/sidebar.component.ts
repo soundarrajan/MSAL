@@ -88,14 +88,6 @@ export class SidebarComponent implements OnInit, AfterContentInit {
             }
           }
         }
-      },
-      invoices: {
-        label: 'Invoices',
-        items: {
-          invoice_list: {
-            label: 'Invoice List'
-          }
-        }
       }
     });
   }

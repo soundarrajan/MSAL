@@ -918,15 +918,15 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
 
   calculatePumpingRate(timeString, prodIndex) {
     console.log(timeString);
-    if (typeof timeString == 'undefined' || typeof this.formValues.deliveryProducts == 'undefined') {
-        return;
+    if (typeof timeString == 'undefined' || typeof this.formValues.deliveryProducts == 'undefined' || !this.formValues.deliveryProducts.length) {
+      return;
     }
     if (typeof this.formValues.deliveryProducts[prodIndex].bdnQuantityUom == 'undefined' || this.formValues.deliveryProducts[prodIndex].bdnQuantityUom == null || this.formValues.deliveryProducts[prodIndex].bdnQuantityAmount == null) {
-        return;
+      return;
     }
     if (typeof this.formValues.pumpingRate == 'undefined') {
-        this.formValues.pumpingRate = '';
-        this.formValues.pumpingRateUom = '';
+      this.formValues.pumpingRate = '';
+      this.formValues.pumpingRateUom = '';
     }
     var pumpingTime = (parseInt(timeString.split(':')[0]) * 60 + parseInt(timeString.split(':')[1])) / 60;
     this.formValues.pumpingRate = this.formValues.deliveryProducts[prodIndex].bdnQuantityAmount / pumpingTime;
