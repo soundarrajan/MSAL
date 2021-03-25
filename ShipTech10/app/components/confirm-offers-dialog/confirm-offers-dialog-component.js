@@ -15,6 +15,7 @@ angular.module('shiptech.components').controller('ConfirmOffersDialogController'
         };
         tenantService.procurementSettings.then((settings) => {
             ctrl.captureConfirmedQuantity = settings.payload.order.captureConfirmedQuantity;
+            ctrl.procurementSettings = settings.payload;
         });
         tenantService.tenantSettings.then((settings) => {
             ctrl.tenantSettings = settings.payload;
@@ -64,6 +65,9 @@ angular.module('shiptech.components').controller('ConfirmOffersDialogController'
                     ctrl.isBestOffer = data.payload.isBestOffer;
                     for (let offr in ctrl.requestOfferItems) {
                         ctrl.requestOfferItems[offr].confirmedQuantity = ctrl.requestOfferItems[offr].maxQuantity;
+                        if (!ctrl.procurementSettings.fieldVisibility.isSupplyQuantityHidden && ctrl.requestOfferItems[offr].supplyQuantity) {
+	                        ctrl.requestOfferItems[offr].confirmedQuantity = ctrl.requestOfferItems[offr].supplyQuantity;
+                        }
                     }
                     ctrl.availableContractItems = data.payload.availableContractItems;
                 }
