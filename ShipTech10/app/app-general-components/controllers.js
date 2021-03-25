@@ -1514,7 +1514,7 @@
                     }
                     element = var_bind(":entity_id", rowObject["id"], element);
                     if (options.gid == "flat_contractproductdeliveries") {
-                        var tpl = '  <a ng-href="#/delivery/delivery/edit/' + rowObject["deliveryId"] + '" ><span class="formatter edit_link" data-formatter-type="status">' + rowObject["deliveryNo"] + "</span></a>";
+                        var tpl = '  <a target="_blank" ng-href="v2/delivery/delivery/' + rowObject["deliveryId"] + '/details" ><span class="formatter edit_link" data-formatter-type="status">' + rowObject["deliveryNo"] + "</span></a>";
                         if (rowObject["deliveryId"] != null) {
                             // return '<span class="formatter edit_link"><a href="#/deliveries/delivery/edit/'+rowObject["deliveryId"]+'" target="_blank">'+rowObject["deliveryNo"]+'</a></span>';
                             return tpl;
@@ -1754,7 +1754,7 @@
                 var edit_delivery_link_from_claims = function(cellValue, options, rowObject) {
                     cellValue == null ? (cellValue = "") : "";
                     if (cellValue) {
-                        var tpl = '  <a target="_blank" href="#/delivery/delivery/edit/' + cellValue + '" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none">' + cellValue + "</span></a>";
+                        var tpl = '  <a target="_blank" href="v2/delivery/delivery/' + cellValue + '/details" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none">' + cellValue + "</span></a>";
                     } else {
                         var tpl = '  <a target="_blank" style="width: calc(100% - 20px);"><span class="formatter edit_link" style="white-space:none" data-formatter-type="status">' + cellValue + "</span></a>";
                     }

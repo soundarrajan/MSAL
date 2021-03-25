@@ -894,7 +894,8 @@ APP_MASTERS.controller('Controller_Datatables', [
                         name: 'delivery',
                         displayName: 'Del. ID',
                         cellTemplate: $scope.dataTableTemplates.link,
-                        cellLink: '#/delivery/delivery/edit/'
+                        cellLink: 'v2/delivery/delivery/',
+                        isDeliveryLink: true
                     },
                     {
                         name: 'product',
