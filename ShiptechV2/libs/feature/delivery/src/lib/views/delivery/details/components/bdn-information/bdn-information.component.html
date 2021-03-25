@@ -1,35 +1,41 @@
 <div class="col-md-12 row detail-container">
-  <div class="col-md-5 vessel-details">
-    <div class="col-md-12 row vessel-details-container">
-      <div class="col-md-3">
+  <div class="col-md-5 vessel-details vessel-details-component" style="display: flex;justify-content: flex-start;">
+    <div class="badge-header">
+      <div>
+        <span class="label">
           <span class="dot-image"></span> 
           Vessel 
+        </span>
+        <div class="value order-details"  *ngIf="formValues.info && formValues.info.vesselName">
+          {{ formValues.info.vesselName }}
+        </div>
       </div>
-      <div class="col-md-3">
-        <span class="dot-image"></span> 
+      <div> 
+        <span class="label">
+          <span class="dot-image"></span> 
           Port 
+        </span>
+        <div class="value order-details"  *ngIf="formValues.info && formValues.info.locationName">
+          {{ formValues.info.locationName }}
+        </div>
       </div>
-      <div class="col-md-3">
-        <span class="dot-image"></span> 
-        Eta
+      <div>
+        <span class="label">
+          <span class="dot-image"></span> 
+            Eta 
+        </span>
+        <div class="value order-details" *ngIf="formValues.info && formValues.info.eta">
+          {{ formatDate(formValues.info.eta)  }}  
+        </div>
       </div>
-      <div class="col-md-3">
-        <span class="dot-image"></span> 
-        Etb
-      </div>
-    </div>
-    <div class="col-md-12 row vessel-details-container" *ngIf="formValues.info">
-      <div class="col-md-3 order-details" *ngIf="formValues.info.vesselName">
-        {{ formValues.info.vesselName }} 
-      </div>
-      <div class="col-md-3 order-details" *ngIf="formValues.info.locationName">
-        {{ formValues.info.locationName }}  
-      </div>
-      <div class="col-md-3 order-details" *ngIf="formValues.info.eta">
-        {{ formatDate(formValues.info.eta)  }}  
-      </div>
-      <div class="col-md-3 order-details" *ngIf="formValues.info.etb">
-        {{ formatDate(formValues.info.etb) }}  
+      <div>
+        <span class="label">
+          <span class="dot-image"></span> 
+            Etb 
+        </span>
+        <div class="value order-details"  *ngIf="formValues.info && formValues.info.etb">
+          {{ formatDate(formValues.info.etb)  }}  
+        </div>
       </div>
     </div>
   </div>
@@ -94,9 +100,6 @@
               </span>
               <div *ngIf="formValues.deliveryStatus" class="value" [ngStyle]="{'color': statusColorCode }">
                 {{formValues.deliveryStatus.name}}
-              </div>
-              <div *ngIf="!formValues.deliveryStatus" class="value">
-                DRAFT
               </div>
             </div>
           </div>
