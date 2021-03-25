@@ -1,11 +1,11 @@
-﻿commit 745d8a699554b2ff863b706c72321356f3f5ba45
+﻿commit 2262fb8eaa1fc0bf229a32a93fe0e9c4fa9b59d4
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Mar 24 16:51:55 2021 +0000
+Date:   Thu Mar 25 08:51:38 2021 +0000
 
-    Merged PR 9484: Replaced engineer feedback name
+    Merged PR 9494: Fixed creating delivery from orders to be delivered
     
-    Replaced engineer feedback name
+    Fixed creating delivery from orders to be delivered
     
-    Related work items: #31084
+    Related work items: #27538
 
 branch: master
