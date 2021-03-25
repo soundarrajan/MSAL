@@ -214,13 +214,13 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
     this.eventsSubscription = this.events.subscribe((data) => this.setDeliveryForm(data));
     console.log('index');
     console.log(this.deliveryProductIndex);
-    if (!this.formValues.deliveryProducts[this.deliveryProductIndex].qualityHeader) {
+    if (this.formValues.deliveryProducts[this.deliveryProductIndex] && !this.formValues.deliveryProducts[this.deliveryProductIndex].qualityHeader) {
       this.formValues.deliveryProducts[this.deliveryProductIndex].qualityHeader = {};
       if (!this.formValues.deliveryProducts[this.deliveryProductIndex].qualityHeader.netSpecificEnergyUom) {
         this.formValues.deliveryProducts[this.deliveryProductIndex].qualityHeader.netSpecificEnergyUom = 'MJ/KG';
       }
     } else {
-      if (!this.formValues.deliveryProducts[this.deliveryProductIndex].qualityHeader.netSpecificEnergyUom) {
+      if (this.formValues.deliveryProducts[this.deliveryProductIndex] && !this.formValues.deliveryProducts[this.deliveryProductIndex].qualityHeader.netSpecificEnergyUom) {
         this.formValues.deliveryProducts[this.deliveryProductIndex].qualityHeader.netSpecificEnergyUom = 'MJ/KG';
       }
     }
