@@ -1,11 +1,11 @@
-﻿commit 2e765c41c73cdd4fba4c3c0f813d34ea5ff4f686
+﻿commit 9263e4fb78b5ecd96cd54180b0e68b9702f08a39
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Mar 25 10:49:48 2021 +0000
+Date:   Thu Mar 25 11:15:30 2021 +0000
 
-    Merged PR 9498: Added email to labs button and added delivery list to invoice menu list from v2
+    Merged PR 9501: Added uom for net specific energy
     
-    Added email to labs button and added delivery list to invoice menu list from v2
+    Added uom for net specific energy
     
-    Related work items: #31101, #31118
+    Related work items: #31089
 
 branch: master
