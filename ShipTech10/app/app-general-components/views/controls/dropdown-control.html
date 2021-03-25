@@ -31,5 +31,6 @@
 
 <span ng-if="(CM.app_id == 'claims' && field.Name == 'ClaimType') && (CM.entity_id > -1 && formValues.claimType.claimType.name != 'Debunker') && options[field.Name]" ng-init="options[field.Name][getIndex(options[field.Name], 'Debunker')].disabled = true">
 </span>
-
+<span ng-if="(CM.app_id == 'claims' && field.Name == 'ClaimType') && (CM.entity_id > -1) && options[field.Name]" ng-init="options[field.Name][getIndex(options[field.Name], 'Cancellation')].disabled = true">
+</span>
 <span ng-if="(CM.app_id == 'labs' && field.Name == 'DeliveryID')" ng-init="CM.checkVerifiedDeliveryFromLabs('loadedControl')"></span>

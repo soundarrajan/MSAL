@@ -387,7 +387,7 @@ APP_CLAIMS.controller('Controller_Claims', [
                         if (response.orderDate) {
                             $scope.formValues.orderDetails.orderDate = response.orderDate;
                         }
-                        if (response.status) {
+                        if (response.status) {                            
                             // $scope.formValues.orderDetails.orderStatusName = response.status.name;
                             $scope.formValues.orderDetails.orderStatusName = response.status.displayName;
                             if($scope.formValues.orderDetails.orderStatusName != undefined && $scope.formValues.orderDetails.orderStatusName == 'Cancelled'){
@@ -407,6 +407,16 @@ APP_CLAIMS.controller('Controller_Claims', [
                                     });
                                     
                                 }
+                            }
+                            else
+                            {   
+                                                       
+                                if ($scope.formValues.claimType.claimType.name == 'Cancellation')
+                                {                                   
+                                    $('#ClaimTypeClaimType').attr('disabled',false);
+                                    $scope.formValues.claimType.claimType = undefined;
+                                }
+                                
                             }
 
                         }
