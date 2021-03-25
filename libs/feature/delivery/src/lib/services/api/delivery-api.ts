@@ -74,6 +74,7 @@ export namespace DeliveryApiPaths {
   export const getSplitDeliveryLimits = () =>  `api/delivery/getDeliverySplitLimits`;
   export const raiseClaim = () =>  `api/claims/new`;
   export const deleteDeliveryProduct = () =>  `api/delivery/products/delete`;
+  export const sendLabsTemplateEmail = () =>  `api/delivery/SendLabsTemplateEmail`;
 
 }
 
@@ -267,7 +268,19 @@ export class DeliveryApi implements IDeliveryApiService {
       { payload: request }
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+    );
+  }
+
+  sendLabsTemplateEmail(
+    request: any
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${this._apiUrl}/${DeliveryApiPaths.sendLabsTemplateEmail()}`,
+      { payload: request }
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
     );
   }
 
