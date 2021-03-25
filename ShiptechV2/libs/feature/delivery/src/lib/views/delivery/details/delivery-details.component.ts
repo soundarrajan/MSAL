@@ -1433,6 +1433,12 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
                 console.log(data);
                 this.formValues = _.merge(this.formValues, data);
                 console.log(this.formValues);
+                if (typeof this.formValues.deliveryStatus != 'undefined') {
+                  if (this.formValues.deliveryStatus.name) {
+                    this.statusColorCode = this.getColorCodeFromLabels(this.formValues.deliveryStatus, this.scheduleDashboardLabelConfiguration);
+                    console.log(this.statusColorCode)
+                  }
+                }
                 this.setQuantityFormatValues();
                 this.decodeFields();
               });
