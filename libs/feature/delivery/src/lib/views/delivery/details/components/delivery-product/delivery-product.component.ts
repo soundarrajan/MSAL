@@ -357,6 +357,9 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     }
     console.log('aici');
     this.formValues = form;
+    if (this.formValues.deliveryProducts) {
+      this.setDeliveredQuantityUomList(0);
+    }
     console.log(this.formValues);  
     //this.changeDetectorRef.detectChanges();
   }
