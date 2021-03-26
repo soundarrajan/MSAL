@@ -1,0 +1,35 @@
+<div id="dark-filter-search" class="d-flex justify-content-between align-items-center">
+    <button mat-icon-button style="width:24px;outline: none;">
+        <mat-icon id="searchIcon" matPrefix>search</mat-icon>
+    </button>
+    <!-- [matAutocompleteDisabled]=true -->
+    <div style="display: flex;align-items: center;justify-content:space-between;width: 125px;">
+        <input #vessel id="vesselSearch" (click)="onClickInput(vessel)" (keydown)="onKeyDown(autoTrigger,$event)"
+            type="text" placeholder="Search for vessel" aria-label="Number"
+            [matAutocompleteDisabled]="enableVesselList?true:false" [formControl]="searchVesselControl"
+            [matAutocomplete]="auto" #autoTrigger="matAutocompleteTrigger">
+        <div id="clear" *ngIf="displayClose">
+            <div class="clear-icon" (click)="clearSearch()"></div>
+            <!-- <mat-icon (click)="clearSearch()">close</mat-icon> -->
+        </div>
+    </div>
+
+    <div style="border-left: 1px solid #54617A;">
+        <div style="width:22px;text-align: center;" (click)="enableVesselList && toggleVesselList($event,autoTrigger)">
+            <i id="filter-icon" class="fas icon fa-chevron-down "
+                [ngClass]="{'disableIcon':!enableVesselList,'rotate180':enableVesselList && autoTrigger.panelOpen}"></i>
+        </div>
+    </div>
+    <!-- VesselIMONO -->
+    <mat-autocomplete #filter class="filter" #auto="matAutocomplete" (optionSelected)='onVesselSelected(autoTrigger)'
+        classList="{'dark-theme':theme,'light-theme':!theme}">
+        <mat-optgroup *ngIf="enableVesselList" label="My Vessels List"
+            [ngClass]="{'dark-theme':theme,'light-theme':!theme}"></mat-optgroup>
+        <mat-option id="option" *ngFor="let vessel of enableVesselList?vesselList:(filteredOptions | async)"
+            [ngClass]="{'dark-theme':theme,'light-theme':!theme}" [value]="vessel.VesselIMONO"
+            >
+            {{vessel.VesselName}}
+        </mat-option>
+        <!-- [ngClass]="{'selected':vessel.VesselIMONO == selectedValue}" -->
+    </mat-autocomplete>
+</div>

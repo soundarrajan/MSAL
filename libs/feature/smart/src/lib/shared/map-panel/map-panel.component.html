@@ -1,0 +1,77 @@
+<div *ngIf="!hidePanel" id="over_map"
+  [ngStyle]="{'opacity': highIntensity ? '1':'0.6','pointer-events':highIntensity ? null:'none'}">
+  <div class="row">
+    <div class="col-md-1">
+      <!--Search Box -->
+      <div id="smart-search-box" class="d-flex justify-content-between align-items-center">
+        <button mat-icon-button style="outline: none;">
+          <mat-icon id="searchIcon" matPrefix>search</mat-icon>
+        </button>
+        <div style="display: flex;align-items: center;width: 190px;">
+          <input #item id="vesselSearch" (click)="onClickInput(item)" (keydown)="onKeyDown(autoTrigger,$event)"
+            type="text" placeholder="Search Map" aria-label="Number"
+            [matAutocompleteDisabled]="enableVesselPortList?true:false" [formControl]="searchControl"
+            [matAutocomplete]="auto" #autoTrigger="matAutocompleteTrigger">
+          <div id="clear" *ngIf="displayClose">
+            <mat-icon (click)="clearSearch()">close</mat-icon>
+          </div>
+        </div>
+        <div class="br">
+          <div (click)="enableVesselPortList && changeTab(true,false);toggleVesselPortList($event,autoTrigger)">
+            <i id="filter-icon" class="fas icon fa-chevron-down "
+              [ngClass]="{'disableFilter':!enableVesselPortList,'rotate180':enableVesselPortList && autoTrigger.panelOpen}"></i>
+          </div>
+        </div>
+
+        <mat-autocomplete #filter class="smartFilter" #auto="matAutocomplete" 
+          (optionSelected)='onVesselSelected($event,autoTrigger)'>
+          <mat-optgroup *ngIf="enableVesselPortList" [ngClass]="{'dark-theme':theme,'light-theme':!theme}">
+            <div style="font-size: 10px;color: #5780A6;">Showing list of:</div>
+            <div [ngClass]="{'activeTab':isActiveVessel,'inactiveTab':!isActiveVessel}" (click)="changeTab(true,false)">
+              All Vessels</div>
+            <div [ngClass]="{'activeTab':isActivePort,'inactiveTab':!isActivePort}" (click)="changeTab(false,true)">All
+              Ports</div>
+          </mat-optgroup>
+          <mat-option id="option" *ngFor="let item of enableVesselPortList?list:(filteredOptions | async)"  
+          [ngClass]="{'dark-theme':theme,'light-theme':!theme}"
+            [value]="{id:item.id,type:item.type}" >
+            <!-- [ngClass]="{'selected':item.type!='' && item.id == selectedValue}" -->
+            <div style="display: flex;align-items: center;height: 100%;">
+              <div style="padding-right: 10px;border-right: 1px solid #ededed12;color: #66B0D6;height: 100%;display: flex;align-items: center;"
+                *ngIf="!enableVesselPortList">{{item.type}}</div>
+              <div style="padding-left: 10px;display: flex;align-items: center;height: 100%;">{{item.name}}</div>
+            </div>
+          </mat-option>
+
+        </mat-autocomplete>
+      </div>
+      <!-- #end Search Box -->
+    </div>
+  </div>
+</div>
+<!-- #region zoom button -->
+<div id="zoomButton">
+  <div id="zoomIn" [ngClass]="{'disabled':maxZoomLimit}" (click)="this.zoomInEvent.emit()">
+    <div *ngIf="!maxZoomLimit;else disableZoomIn" class="maximize-icon"></div>
+    <!-- <img *ngIf="!maxZoomLimit;else disableZoomIn" src="../../../assets/customicons/maximize.svg" alt="Mazimize"> -->
+    <ng-template #disableZoomIn>
+      <img src="../../../assets/customicons/maximize-disable.svg" alt="Mazimize">
+    </ng-template>
+  </div>
+  <div id="zoomOut" [ngClass]="{'disabled':minZoomLimit}" (click)="this.zoomOutEvent.emit()">
+    <div *ngIf="!minZoomLimit;else disableZoomOut" class="minimize-icon"></div>
+    <!-- <img *ngIf="!minZoomLimit;else disableZoomOut" src="../../../assets/customicons/minimize.svg" alt="Minimize"> -->
+    <ng-template #disableZoomOut>
+      <img src="../../../assets/customicons/minimize-disable.svg" alt="Minimize">
+    </ng-template>
+  </div>
+</div>
+<!-- #endregion zoom button -->
+<div id="table_img" [ngStyle]="{'opacity': highIntensity ? '1':'0.6','pointer-events':highIntensity ? null:'none'}">
+  <button mat-button class="dark-iconbutton" (click)="this.showTableViewEvent.emit()"
+    style="min-width: 50px !important; margin:0 !important; "
+    matTooltip="Table View" matTooltipShowDelay="700">
+    <div class="table-view-icon"></div>
+    <!-- <img src="../../assets/customicons/table.svg" alt="Table View" style="width: 20px; height: auto;"> -->
+  </button>
+</div>

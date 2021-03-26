@@ -1,0 +1,37 @@
+<div class="st-header-navbar header-navbar" style="display: flex;align-items: center;position: sticky;">
+  <div class="logo">
+    <a href="javascript:;">
+      <img class="img-fluid" src="assets/customicons/burger_menu.svg" alt="Shiptech Logo"
+        style="padding-right: 1rem !important;" />
+    </a>
+    <a>
+      <img class="img-fluid" src="assets/customicons/shiptech-logo.svg" alt="Shiptech Logo" style="padding-top: 5px;" />
+    </a>
+  </div>
+
+  <div class="page-title">
+    <div class="main-heading">
+      Smart Operator
+    </div>
+    <div class="sub-heading">
+      Bunkering Plan
+    </div>
+  </div>
+
+  <div style="display: flex;align-items: center;padding-right: 18px;">
+    <div (click)="toggleMenuFlag()" style="margin:0px 5px;">
+      <img src="assets/customicons/dot-group.svg" alt="Help" class="hand" title="Menu"
+        style="width:20px;height:auto;">
+    </div>
+    <div (click)="toggleHelpFlag()"  style="margin:0px 2px;">
+      <img src="assets/customicons/help.svg" alt="Help" class="header-icon-group hand" title="Help">
+    </div>
+    <div (click)="toggleNotifFlag()"  style="margin:0px 2px;">
+      <img src="assets/customicons/notif.svg" alt="Help" class="header-icon-group hand" title="Help">
+      <div class="notif-count">4</div>
+    </div>
+    <div (click)="toggleLogoutFlag()" class="header-icon-group nav-user-bg" title="Profile">{{nameInitials | uppercase}}</div>
+  </div>
+
+
+</div>
