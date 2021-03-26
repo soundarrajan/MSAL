@@ -264,7 +264,6 @@
   text-decoration-line: underline;
   color: #00AAE2;
   position: relative;
-  padding: 5px;
 }
 
 .related-deliveries-dot-container:before {
@@ -366,7 +365,7 @@
   max-width: 35%;
 }
 
-.mat-checkbox-layout .mat-checkbox-label {
+.related-deliveries-complete-delivery .mat-checkbox-layout .mat-checkbox-label {
   position: relative;
   font-family: Roboto;
   font-style: normal;
@@ -374,9 +373,10 @@
   font-size: 12px;
   line-height: 12px;
   color: #9E9E9E;
+  top: 3px;
 }
 
-.mat-checkbox-layout {
+.related-deliveries-complete-delivery .mat-checkbox-layout {
   white-space: unset;
 }
 

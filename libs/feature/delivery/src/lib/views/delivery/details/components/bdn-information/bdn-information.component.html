@@ -106,7 +106,7 @@
           <div class="readonly-label-related-delivery related-deliveries col-md-6">
             <div class="label-block">
               <div class="title">Related Deliveries</div>
-              <div class="value">
+              <div class="value related-deliveries-container">
                 <span *ngFor="let relatedDelivery of relatedDeliveries">
                   <a *ngIf="relatedDelivery"  href="{{getRelatedDeliveryLink(relatedDelivery.deliveryId)}}">
                     <span class="related-deliveries-dot-container"></span>
