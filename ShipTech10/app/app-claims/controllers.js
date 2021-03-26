@@ -390,7 +390,7 @@ APP_CLAIMS.controller('Controller_Claims', [
                         if (response.status) {                            
                             // $scope.formValues.orderDetails.orderStatusName = response.status.name;
                             $scope.formValues.orderDetails.orderStatusName = response.status.displayName;
-                            if($scope.formValues.orderDetails.orderStatusName != undefined && $scope.formValues.orderDetails.orderStatusName == 'Cancelled'){
+                            if($scope.formValues.orderDetails && $scope.formValues.orderDetails.orderStatusName != undefined && $scope.formValues.orderDetails.orderStatusName == 'Cancelled'){
                                 if($scope.CM.listsCache.ClaimType != undefined && $scope.CM.listsCache.ClaimType.length >0){
                                     $.each($scope.CM.listsCache.ClaimType, (k, v) => {
                                         if(v.name === 'Cancellation') {
@@ -410,8 +410,8 @@ APP_CLAIMS.controller('Controller_Claims', [
                             }
                             else
                             {   
-                                                       
-                                if ($scope.formValues.claimType.claimType.name == 'Cancellation')
+                               
+                                if ($scope.formValues.claimType && $scope.formValues.claimType.claimType && $scope.formValues.claimType.claimType.name == 'Cancellation')
                                 {                                   
                                     $('#ClaimTypeClaimType').attr('disabled',false);
                                     $scope.formValues.claimType.claimType = undefined;
