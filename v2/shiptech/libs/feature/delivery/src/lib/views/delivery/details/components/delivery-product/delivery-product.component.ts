@@ -280,6 +280,12 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     if (this.formValues.deliveryProducts[this.deliveryProductIndex].finalQuantityAmount) {
       this.formValues.deliveryProducts[this.deliveryProductIndex].finalQuantityAmount = this.quantityFormatValue(this.formValues.deliveryProducts[this.deliveryProductIndex].finalQuantityAmount);
     }
+    if (this.formValues.deliveryProducts[this.deliveryProductIndex].agreedQuantityAmount) {
+      this.formValues.deliveryProducts[this.deliveryProductIndex].agreedQuantityAmount = this.quantityFormatValue(this.formValues.deliveryProducts[this.deliveryProductIndex].agreedQuantityAmount);
+    }
+    if (!this.formValues.deliveryProducts[this.deliveryProductIndex].fuelManifoldTemperatureUom) {
+      this.formValues.deliveryProducts[this.deliveryProductIndex].fuelManifoldTemperatureUom  = 'Celsius';
+    }
     console.log(this.formValues.deliveryProducts);
     this.setDeliveredQuantityUomList(this.deliveryProductIndex);
   }
@@ -588,7 +594,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
         this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Amount`] != null) {
         // quantity exists, set it
         this.formValues.deliveryProducts[productIdx].finalQuantityUom = this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Uom`];
-        this.formValues.deliveryProducts[productIdx].finalQuantityAmount = this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Amount`];
+        this.formValues.deliveryProducts[productIdx].finalQuantityAmount = this.quantityFormatValue(this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Amount`]);
         dataSet = true;
       }
       if (dataSet) {

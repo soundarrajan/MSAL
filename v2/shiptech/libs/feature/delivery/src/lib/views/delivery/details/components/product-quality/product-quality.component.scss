@@ -99,3 +99,37 @@ td .custom-form-field{
 .email-to-labs {
     border: 1px solid lightgray;
 }
+
+.custom-form-field-comments {
+    width: 100% !important;
+}
+
+textarea.mat-input-element {
+    height: 80px;
+}
+
+.custom-form-field-comments.mat-form-field-appearance-outline .mat-form-field-outline {
+    background: #ffffff;
+    box-sizing: border-box;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    color: #a5a5a5;
+}
+
+mat-form-field {
+    .mat-form-field-label {
+        box-sizing: border-box;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 16px;
+        color: #37414f !important;
+    }
+ }
+
+
+.quality-comments-container {
+    margin-top: 10px;
+}
