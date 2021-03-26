@@ -1610,6 +1610,9 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         if (product.finalQuantityAmount) {
           product.finalQuantityAmount = this.quantityFormatValue(product.finalQuantityAmount);
         }
+        if (product.agreedQuantityAmount) {
+          product.agreedQuantityAmount = this.quantityFormatValue(product.agreedQuantityAmount);
+        }
         if (product.quantityParameters) {
           product.quantityParameters.forEach((productQuantity, key2) => {
             if (productQuantity.bdn) {

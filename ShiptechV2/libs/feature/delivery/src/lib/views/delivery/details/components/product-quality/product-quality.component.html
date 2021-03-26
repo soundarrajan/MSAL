@@ -143,11 +143,11 @@
                 </td>
                 <td style="width:12%" class="padding">
                     <!-- Variance = Survey Analysis Value – BDN Value -->
-                    <span *ngIf="!(qualityParameter.surveyValue == null && qualityParameter.bdnValue  == null)">
+                    <span *ngIf="!(qualityParameter.surveyValue == null && qualityParameter.bdnValue == null)">
                         {{ quantityFormatValue(qualityParameter.surveyValue - qualityParameter.bdnValue)}}
                     </span>
-                    <span  *ngIf="(qualityParameter.surveyValuee == null && qualityParameter.bdnValue  == null)">
-                            -
+                    <span *ngIf="qualityParameter.surveyValue == null && qualityParameter.bdnValue == null">
+                         - 
                     </span>
                 </td>
                 <td style="width:12%" >
@@ -178,11 +178,11 @@
         </tbody>
     </table>
 </div>
-<div class="col-md-12 custom-form-field product-quality-comments"  *ngIf="formValues.deliveryProducts[deliveryProductIndex].qualityHeader" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-    <mat-form-field class="without-search" appearance="legacy">
+<div class="col-md-12 quality-comments-container"  *ngIf="formValues.deliveryProducts[deliveryProductIndex].qualityHeader" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+    <mat-form-field appearance="outline" class="custom-form-field-comments">
         <mat-label>Comments</mat-label>
         <textarea  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].qualityHeader.comments"
-            matInput 
+            matInput
             [disabled]="formValues.deliveryStatus.name == 'Verified'"
             autocomplete="off"></textarea>
     </mat-form-field>
