@@ -22,7 +22,7 @@
       <div>
         <span class="label">
           <span class="dot-image"></span> 
-            Eta 
+            ETA
         </span>
         <div class="value order-details" *ngIf="formValues.info && formValues.info.eta">
           {{ formatDate(formValues.info.eta)  }}  
@@ -31,7 +31,7 @@
       <div>
         <span class="label">
           <span class="dot-image"></span> 
-            Etb 
+            ETB
         </span>
         <div class="value order-details"  *ngIf="formValues.info && formValues.info.etb">
           {{ formatDate(formValues.info.etb)  }}  
@@ -103,14 +103,10 @@
               </div>
             </div>
           </div>
-          <div class="related-deliveries related-deliveries-information-container col-md-7 no-padding">
-            <div class="col-md-12 related-deliveries-header">
-              <div class="related-deliveries-container-header col-md-12">
-                Related deliveries
-              </div>
-            </div>
-            <div class="col-md-12 related-information">
-              <div class="related-deliveries-container col-md-6">
+          <div class="readonly-label-related-delivery related-deliveries col-md-6">
+            <div class="label-block">
+              <div class="title">Related Deliveries</div>
+              <div class="value">
                 <span *ngFor="let relatedDelivery of relatedDeliveries">
                   <a *ngIf="relatedDelivery"  href="{{getRelatedDeliveryLink(relatedDelivery.deliveryId)}}">
                     <span class="related-deliveries-dot-container"></span>
@@ -118,12 +114,15 @@
                   </a>
                 </span>
               </div>
-              <div class="related-deliveries-complete-delivery">
+            </div>
+            <div class="related-deliveries-complete-delivery label-block">
+              <div class="title" style="visibility: hidden;">Related Deliveries</div>
+              <div class="value"> 
                 <mat-checkbox 
-                    [color]="'primary'"
-                    [disabled]="formValues.deliveryStatus.name != 'Verified'"
-                    [(ngModel)]="formValues.completed">
-                    Mark order as completed
+                  [color]="'primary'"
+                  [disabled]="formValues.deliveryStatus.name != 'Verified'"
+                  [(ngModel)]="formValues.completed">
+                  Mark order as completed
                 </mat-checkbox>
               </div>
             </div>
