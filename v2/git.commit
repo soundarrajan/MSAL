@@ -1,12 +1,11 @@
-﻿commit 79a6e1522b1a3269de6d4b6c489a44d944076cd3
+﻿commit c3a86b23c2fe8795d8191e4998139ac5a3b88ed2
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri Mar 26 14:52:10 2021 +0000
+Date:   Fri Mar 26 15:47:24 2021 +0000
 
-    Merged PR 9554: Added agreed quantity and fuel manifold temperature in product details section,
+    Merged PR 9556: Fixed mark order as completed label
     
-    Added agreed quantity and fuel manifold temperature in product details section,
-    fixed issues from comments section
+    Fixed mark order as completed label
     
-    Related work items: #31100
+    Related work items: #31068
 
 branch: master
