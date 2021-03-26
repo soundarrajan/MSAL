@@ -340,7 +340,7 @@
                 </mat-form-field>
             </div>
         </div>
-        <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+        <div *ngIf="!formValues.temp.hiddenFields.agreedQty" class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
             <div class="split-field">
                 <mat-form-field class="without-search long-label-field input-field-container" style="width: 64%;border: none;" appearance="legacy">
                     <mat-label>Agreed QTY</mat-label>
