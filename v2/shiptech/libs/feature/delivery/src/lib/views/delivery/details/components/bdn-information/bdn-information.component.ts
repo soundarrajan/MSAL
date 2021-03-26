@@ -962,11 +962,12 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
     }
 
   }
+  
 
   formatDateForBe(value) {
     if (value) {
-      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm') }+00:00`;
-      return `${moment(value).format('YYYY-MM-DDTHH:mm') }+00:00`;
+      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+      return `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
     } else {
       return null;
     }
