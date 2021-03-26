@@ -171,7 +171,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-12 product-details-container" *ngIf="formValues.deliveryProducts[deliveryProductIndex]">
+    <div class="col-md-12 row product-information-container" *ngIf="formValues.deliveryProducts[deliveryProductIndex]">
         <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
             <div class="split-field">
                 <mat-form-field class="without-search long-label-field" style="width: 64%;border: none;" appearance="legacy">
@@ -320,10 +320,37 @@
                     <mat-label>Quantity to Invoice</mat-label>
                     <input  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].finalQuantityAmount"
                             matInput 
-                            [disabled]="formValues.deliveryStatus.name == 'Verified'"
+                            [disabled]="true"
                             class="text-ellipsis"
                             autocomplete="off" 
                             placeholder="Quantity to Invoice"
+                            quantityFormat
+                            myNumberOnly>
+                </mat-form-field>
+                <mat-form-field style="width: 36%" 
+                                appearance="legacy">
+                    <mat-select disableRipple 
+                            [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].finalQuantityUom"
+                            [compareWith]="compareUomObjects"
+                            [disableOptionCentering]="true"
+                            panelClass="delivery-product-select-container"
+                            [disabled]="true">
+                        <mat-option *ngFor="let uom of uoms" [value]="uom">{{uom.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+            <div class="split-field">
+                <mat-form-field class="without-search long-label-field input-field-container" style="width: 64%;border: none;" appearance="legacy">
+                    <mat-label>Agreed QTY</mat-label>
+                    <input  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].agreedQuantityAmount"
+                            (ngModelChange)="calculateVarianceAndReconStatus(deliveryProductIndex)"
+                            matInput 
+                            [disabled]="formValues.deliveryStatus.name == 'Verified'"
+                            class="text-ellipsis"
+                            autocomplete="off" 
+                            placeholder="Agreed QTY"
                             quantityFormat
                             myNumberOnly
                             disabled>
@@ -331,7 +358,8 @@
                 <mat-form-field style="width: 36%" 
                                 appearance="legacy">
                     <mat-select disableRipple 
-                            [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].finalQuantityUom"
+                            [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].agreedQuantityUom"
+                            (ngModelChange)="calculateVarianceAndReconStatus(deliveryProductIndex)"
                             [compareWith]="compareUomObjects"
                             [disabled]="formValues.deliveryStatus.name == 'Verified'"
                             [disableOptionCentering]="true"
@@ -342,8 +370,6 @@
                 </mat-form-field>
             </div>
         </div>
-    </div>
-    <div class="col-md-12  product-details-container " *ngIf="formValues.deliveryProducts[deliveryProductIndex]">
         <div class="custom-form-field field-lookup-container" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
             <div class="d-flex">
                 <mat-form-field class="with-search" appearance="legacy">
@@ -470,7 +496,7 @@
         <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
             <mat-form-field class="without-search" appearance="legacy">
                 <mat-label>Sludge production</mat-label>
-                <input  [(ngModel)]="formValues.sludgeProduction"
+                <input  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].sludgeProduction"
                     [disabled]="formValues.deliveryStatus.name == 'Verified'"
                     matInput 
                     autocomplete="off"
@@ -478,6 +504,19 @@
                     myNumberOnly>
             </mat-form-field>  
         </div>
+        <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+            <mat-form-field class="without-search with-labels" appearance="legacy">
+                <mat-label>Fuel Manifold Temperature</mat-label>
+                <input  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].fuelManifoldTemperature"
+                    matInput
+                    [disabled]="formValues.deliveryStatus.name == 'Verified'" 
+                    autocomplete="off"
+                    placeholder="Fuel Manifold Temperature"
+                    myNumberOnly>
+                <div matSuffix class="d-flex" style="display:flex;align-items: center;">
+                    <div class="label">{{formValues.deliveryProducts[deliveryProductIndex].fuelManifoldTemperatureUom}}</div>
+                </div>   
+            </mat-form-field>
+        </div>
     </div>
 </div>
-
