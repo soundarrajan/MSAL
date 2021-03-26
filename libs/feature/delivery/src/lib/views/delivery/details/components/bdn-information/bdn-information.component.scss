@@ -219,9 +219,9 @@
   min-height: 46px;
   background: #364150;
   border-radius: 4px;
-  height: min-content;
-  flex: unset !important;
-  max-width: unset !important;
+  //height: min-content;
+  // flex: unset !important;
+  // max-width: unset !important;
 }
 
 .delivery-number-container {
@@ -318,7 +318,7 @@
   font-size: 12px;
   line-height: 12px;
   color: #9E9E9E;
-  position: relative;
+  padding-left: 10px;
 }
 
 .mat-checkbox-frame {
@@ -374,7 +374,6 @@
   font-size: 12px;
   line-height: 12px;
   color: #9E9E9E;
-  width: 73px;
 }
 
 .mat-checkbox-layout {
@@ -858,4 +857,30 @@
     }
   }
 
+}
+
+.readonly-label-related-delivery {
+  display: flex;
+  //align-items: center;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  .label-block {
+    float: left;
+    .title {
+      font-weight: normal;
+      font-size: 12px;
+      color:white;
+    }
+    .value {
+      font-weight: 500;
+      font-size: 14px;
+      color:white;
+    
+    }
+  }
+  .divider {
+    border-right: 1px solid #eceef1;
+    height: 28px;
+    margin: 0px 10px;
+  }
 }
