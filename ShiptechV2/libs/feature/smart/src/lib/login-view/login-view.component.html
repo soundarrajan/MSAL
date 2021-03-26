@@ -1,0 +1,26 @@
+<div class="bg">
+<div class="login-page">
+  <div class="login-block">
+    <div class="sign-in"><h3 style="font-weight: 100;">Smart Operator</h3>
+      <span><img class="it-logo"src="/assets/icon/inatech-new-color.svg" alt="inatech_logo"></span>
+    </div>    
+    <div class="container">
+      <div>
+      <mat-form-field>
+        <input type="text" matInput name="username" [(ngModel)]="username"  placeholder="username">
+      </mat-form-field>
+      <mat-form-field>
+        <input type="password" matInput name="password" [(ngModel)]="password"  placeholder="password" (keyup.enter)="checkLogin()">
+      </mat-form-field>
+      </div>
+      <span class="txt3" style="color:red" *ngIf="loginError"> Invalid username or password</span>
+      <button (click)=checkLogin() class="mat-raised-button login-btn" color="primary">
+        Login
+      </button>
+      <span class="p-r-50"> <div *ngIf="isloading" class="loader"></div></span>
+    </div>
+      
+    
+  </div>
+</div>
+</div>

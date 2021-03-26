@@ -4,5 +4,6 @@ export enum KnownPrimaryRoutes {
   Invoices = 'invoices',
   LazyLoad = 'lazy-load',
   Root = '',
-  Delivery = 'delivery'
+  Delivery = 'delivery',
+  Smart = 'smart'
 }

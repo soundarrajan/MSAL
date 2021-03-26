@@ -285,6 +285,40 @@
           "styleext": "scss"
         }
       }
+    },
+    "smart": {
+      "projectType": "library",
+      "root": "libs/feature/smart",
+      "sourceRoot": "libs/feature/smart/src",
+      "prefix": "shiptech",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/feature/smart/tsconfig.lib.json",
+              "libs/feature/smart/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/feature/smart/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/feature/smart/jest.config.js",
+            "tsConfig": "libs/feature/smart/tsconfig.spec.json",
+            "setupFile": "libs/feature/smart/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
     }
   },
   "cli": {

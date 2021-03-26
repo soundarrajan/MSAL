@@ -1,0 +1,15 @@
+.logout-list{
+    list-style-type: none;
+    top: 13px;
+    position: relative;
+    right: -30px;
+}
+.up-arrow{
+    &:before {
+        left: 130px !important;
+    }
+
+    &:after {
+        left: 130px !important;
+    }
+}
