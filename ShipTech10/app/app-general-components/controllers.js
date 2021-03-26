@@ -4037,9 +4037,11 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                     }
 
                     if (url.indexOf('v2/delivery/delivery/:entity_id/details') != -1) {
-                        url = '/v2/delivery/delivery/:entity_id/details';
+                        url = 'v2/delivery/delivery/:entity_id/details';
                         url = url.replace(/:entity_id/g, $state.params.entity_id);
-                        window.open(url, '_blank');
+                        $location.path = 
+                        $location.$$absUrl = $location.$$absUrl.replace($location.$$path, url);
+                        console.log($location);
                         break;
                     }
 
@@ -4615,6 +4617,13 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
             var listScreens = ["counterparty", "location", "buyer", "strategy", "service", "product", "company"];
             if (listScreens.indexOf(vm.screen_id) != -1 && 
             	window.location.href.endsWith(vm.screen_id)) {
+                return true;
+            }
+            return false;
+        }
+
+        vm.checkIfIsDelivery =  function() {
+            if (window.location.href.indexOf('delivery/delivery/') != -1 )  {
                 return true;
             }
             return false;
