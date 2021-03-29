@@ -150,6 +150,26 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 });
             }
         }
+        ctrl.get_MIN_QUANTITY_TO_REACHData = function() {
+            if (ctrl.showReport) {
+                let payload = {
+                    Payload: { ScreenType: 4}
+                    
+                }
+                $http.post(`${API.BASE_URL_DATA_INFRASTRUCTURE}/api/infrastructure/screenlayout/get`, payload).then((response) => {
+                    if (response) {
+                        if (response.data) {
+                            $scope.best_contract = [];
+                            $scope.best_contract = [];
+                            ctrl.hasAccess = true;
+                        }
+                    } else {
+                        ctrl.hasAccess = false;
+                    }
+                });
+            }
+        }
+
         ctrl.defaultProductsTooltip = function() {
             let ret = '';
             if (ctrl.selectedVessel && ctrl.selectedVessel.defaultDistillateProduct && ctrl.selectedVessel.distillateSpecGroup) {
@@ -1443,11 +1463,14 @@ angular.module('shiptech.pages').controller('NewRequestController', [
          * Returns a promise so we can do extra work afterwards
          */
         function addLocation(locationId, voyageId, vesselVoyageDetailId, extraInfo) {
-            let location, productList;
+            let location, productList,locationTerminal;
             let agent = null;
             let deferred = $q.defer();
             lookupModel.getForRequest(LOOKUP_TYPE.LOCATIONS, locationId).then(
                 (server_data) => {
+                    $scope.locationTerminal = [];
+                    $scope.locationTerminal = angular.copy(server_data.payload.terminals);
+                    console.log("suresh r test", $scope.locationTerminal)
                     location = server_data.payload;
                     let agent = {};
                     // only set agent if agent field is of type lookup
@@ -1588,6 +1611,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             let location;
             for (let i = 0; i < ctrl.request.locations.length; i++) {
                 location = ctrl.request.locations[i];
+                console.log("2222", location);
                 if (location.location.id === locationId && location.vesselVoyageId == vesselVoyageId && !location.eta && !location.etb && !location.etd) {
                     location.eta = eta;
                     location.etb = etb;
@@ -1640,6 +1664,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             let location;
             for (let i = 0; i < ctrl.request.locations.length; i++) {
                 location = ctrl.request.locations[i];
+                console.log("3333", location);
                 if (location.location.id === locationId && location.vesselVoyageId == vesselVoyageId) {
                 	if (ctrl.requestTenantSettings.displayOfService.id == 2) {
 	                    location.service = data.service;
@@ -2393,6 +2418,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             ctrl.lookupInput.buyer.id = buyer.id;
         };
         ctrl.selectVesselSchedules = function(locations) {
+            debugger;
             // console.log(ctrl.scheduleVoyageID );
             angular.forEach(locations, (location, key) => {
                 addLocation(location.locationId, location.voyageId, location.vesselVoyageDetailId, location).then(() => {
@@ -2400,6 +2426,61 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     setDefaultLocationFields(location.locationId, location.vesselVoyageId || location.voyageId, location);
                 });
             });
+        };
+        
+        ctrl.selectVesselSchedulesMintoReach = function(locations) {
+            debugger;
+            console.log("Suresh R", locations);
+
+            // $scope.formValues.minimumQuantitiesToReach = locations;
+            if(ctrl.request.minimumQuantitiesToReach != undefined){
+                let Minquantitytoreach  = {
+                    PortId: [
+                        {
+                            id: locations[0].vesselVoyageDetailId,
+                            code: locations[0].voyageCode,
+                            name: locations[0].locationName
+                        }
+                    ],
+                    Eta:locations[0].eta,
+                    EstimatedPrice:100
+                };
+               
+                ctrl.request.minimumQuantitiesToReach[ctrl.CurrentSelectRow] = Minquantitytoreach;
+           // ctrl.request.minimumQuantitiesToReach.push(Minquantitytoreach);
+            console.log("Suresh R", ctrl.request.minimumQuantitiesToReach);
+            }
+            else{
+                ctrl.request.minimumQuantitiesToReach = [];
+                let Minquantitytoreach  = {
+                    PortId: [
+                        {
+                            id: locations[0].vesselVoyageDetailId,
+                            code: locations[0].voyageCode,
+                            name: locations[0].locationName
+                        }
+                    ],
+                    Eta:locations[0].eta,
+                    EstimatedPrice:''
+                };
+                   
+                    ctrl.request.minimumQuantitiesToReach[ctrl.CurrentSelectRow] = Minquantitytoreach;
+               // ctrl.request.minimumQuantitiesToReach.push(Minquantitytoreach);
+                console.log("Suresh R", ctrl.request.minimumQuantitiesToReach);
+            }
+           
+
+           
+
+
+
+
+            // angular.forEach(locations, (location, key) => {
+            //     addLocation(location.locationId, location.voyageId, location.vesselVoyageDetailId, location).then(() => {
+            //         setLocationDates(location.locationId, location.voyageId, location.eta, location.etb, location.etd, location.recentETA);
+            //         setDefaultLocationFields(location.locationId, location.vesselVoyageId || location.voyageId, location);
+            //     });
+            // });
         };
         ctrl.minQtyBlur = function(product) {
             if (product.maxQuantity < product.minQuantity || !product.maxQuantity) {
@@ -3549,7 +3630,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 
 
             ctrl.request.locations[locationIdx][`destination${ nextAvailableDestinationIndex }VesselVoyageDetailId`] = data.destinationVesselVoyageDetailId;
-            // debugger;
+            //  
             ctrl.request.locations[locationIdx][`destination${ nextAvailableDestinationIndex}`] = {
                 id: data.id,
                 name: data.name,
@@ -3767,6 +3848,16 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         ctrl.getVesselSchedules = function() {
         	if (ctrl.request.vesselDetails.vessel) {
 	        	if (ctrl.request.vesselDetails.vessel.id) {
+                    debugger;
+                    $scope.$broadcast('getVesselSchedules', ctrl.request.vesselDetails.vessel.id);
+	        	}
+        	}
+        };
+        ctrl.getVesselSchedulesSingleselect = function(key) {
+            ctrl.CurrentSelectRow =key;
+        	if (ctrl.request.vesselDetails.vessel) {
+	        	if (ctrl.request.vesselDetails.vessel.id) {
+                    debugger;
                     $scope.$broadcast('getVesselSchedules', ctrl.request.vesselDetails.vessel.id);
 	        	}
         	}

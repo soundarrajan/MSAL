@@ -127,3 +127,4 @@ angular.module('shiptech.components').component('vesselSchedule', {
         onVesselSchedulesSelect: '&',
     }
 });
+

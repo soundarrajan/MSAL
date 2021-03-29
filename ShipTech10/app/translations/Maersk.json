@@ -88,7 +88,7 @@
       "COMPANY": "Company",
       "POOL": "Pool",
       "PRODUCT_TYPE": "Product Type",
-      "REASON_FOR_CANCELING_REQUEST": "Reason for canceling request",
+      "REASON_FOR_CANCELING_REQUEST": "Reason",
       "EARLIEST_REDELIVERY_DATE": "Earliest Redelivery Date",
       "ESTIMATED_REDELIVERY_DATE": "Estimated Redelivery Date",
       "LATEST_REDELIVERY_DATE": "Latest Redelivery Date",
@@ -131,7 +131,17 @@
       "LAST_MODIFIED_BY": "Last Modified By",
       "LAST_MODIFIED_ON": "Last Modified On",
       "VALIDATED_BY": "Validated by",
-      "COMMENTS": "Comments"
+      "COMMENTS": "Comments",
+      "PRE_TEST":"PreTest",
+      "EXPECTED_PRICE":"ExpectedPrice",
+      "SUGGESTED_LIFT":"SuggestedLift",
+      "Is_OperatorAck":"Acknowledged by Operator",
+      "OPERATOR":"Operator",
+      "SEND_REQUEST_CANCELLATION_EMAIL":"Send Request Cancellation Email",
+      "FORCE_REQUESTBP":"Force Request on BOPS",
+      "PONUMBER":"PONumber",
+      "TERMINAL":"Terminal"
+
     },
     "VIEW_RFQ": {
       "RFQ_ID": "RFQ ID",
@@ -263,7 +273,6 @@
       "VESSEL": "Vessel",
       "PRE_TEST_LABS": "Pre Test Labs",
       "CUSTOMER": "Customer",      
-      "PRETEST" : "Pre Test",
 	  "EMAIL_COMMENTS" : "Email Comments",      
       "VESSEL_IMO_NO": "IMO",
       "SERVICE_CODE": "Service Code",
