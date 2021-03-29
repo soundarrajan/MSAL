@@ -128,6 +128,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   uomVolume: any;
   uomMass: any;
   pumpingRateUom: any;
+  sampleSource: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -243,6 +244,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       this.pumpingRateUom = data.pumpingRateUom;
       this.uomMass = data.uomMass;
       this.uomVolume = data.uomVolume;
+      this.sampleSource = data.sampleSource;
       if (this.formValues.order && this.formValues.order.id) {
         this.isLoading = true;
         this.openedScreenLoaders = 0;
@@ -1439,6 +1441,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
               .subscribe((data: any) => {
                 console.log(this.formValues);
                 console.log(data);
+                this.formValues.sampleSources = data.sampleSources;
                 this.formValues = _.merge(this.formValues, data);
                 console.log(this.formValues);
                 if (typeof this.formValues.deliveryStatus != 'undefined') {

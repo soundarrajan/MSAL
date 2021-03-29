@@ -305,6 +305,7 @@ export class PhysicalSupplierListSelectorGridViewModel extends BaseGridViewModel
     colId: PhysicalSupplierListColumns.createdOn,
     field: model('createdOn'),
     filter: 'agDateColumnFilter',
+    valueFormatter: params => this.format.date(params.value),
     minWidth: 250,
     flex: 2
   };
@@ -323,6 +324,7 @@ export class PhysicalSupplierListSelectorGridViewModel extends BaseGridViewModel
     colId: PhysicalSupplierListColumns.lastModifiedOn,
     field: model('lastModifiedOn'),
     filter: 'agDateColumnFilter',
+    valueFormatter: params => this.format.date(params.value),
     minWidth: 250,
     flex: 2
   };

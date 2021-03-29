@@ -1,9 +1,11 @@
-﻿commit e790cd0f3540008252059e2a59d789f4cbe0fdf0
+﻿commit 152f1966441a8405acf287ff1cf651bc66dbc6f3
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri Mar 26 16:01:20 2021 +0000
+Date:   Mon Mar 29 14:48:10 2021 +0000
 
-    Merged PR 9557: Fixed agreed quantity based on the configuration
+    Merged PR 9586: Added sample details section, fixed ui top navigation indication for the rela...
     
-    Fixed agreed quantity based on the configuration
+    Added sample details section, fixed ui top navigation indication for the related screens, format for created on and last modified and barge dropdown
+    
+    Related work items: #27727, #31090, #31096
 
 branch: master
