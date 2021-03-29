@@ -47,15 +47,25 @@
               "apps/shiptech/src/web.config"
             ],
             "styles": [
+              "assets/sass/themes/common/base.scss",
+              "assets/sass/themes/defaultweb/smart-operator.scss",
+              "assets/sass/themes/defaultweb/_aggrid.scss",
+              "assets/sass/themes/defaultweb/_dark_theme.scss",
+              "assets/sass/themes/defaultweb/_light_theme.scss",
+              "assets/sass/themes/defaultweb/_smart-operator-mixins.scss",
+              "assets/sass/themes/defaultweb/_smart-operator-utils.scss",
+              "assets/sass/themes/defaultweb/_smart-operator-variables.scss",
               "node_modules/ngx-toastr/toastr.css",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeicons/primeicons.css",
               "node_modules/bootstrap/dist/css/bootstrap-grid.css",
               "node_modules/@ag-grid-community/all-modules/dist/styles/ag-grid.css",
               "node_modules/@ag-grid-community/all-modules/dist/styles/ag-theme-balham.css",
+              "node_modules/@ag-grid-community/all-modules/dist/styles/ag-theme-material.css",
               "node_modules/@fortawesome/fontawesome-free/css/all.css",
               "apps/shiptech/src/styles.scss",
               "assets/sass/skinning/base-skinning.scss"
+              
             ],
             "scripts": [],
             "stylePreprocessorOptions": {
