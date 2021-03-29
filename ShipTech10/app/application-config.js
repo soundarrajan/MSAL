@@ -562,8 +562,8 @@ angular.module('shiptech')
         // def   prefix: API.BASE_URL_OPEN_SERVER + '/translations/',
 
         $translateProvider.useStaticFilesLoader({
-            // prefix: `${API.BASE_URL_OPEN_SERVER }/translations/`,
-            prefix: `http://localhost:9015/translations/`,
+            prefix: `${API.BASE_URL_OPEN_SERVER }/translations/`,
+            // prefix: `http://localhost:9015/translations/`,
             suffix: '.json'
         });
         window.isCMATranslations = tenantConfigs.translations == 'CMA' ? true : false;
