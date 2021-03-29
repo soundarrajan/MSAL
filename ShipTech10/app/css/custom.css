@@ -1819,6 +1819,9 @@
             .st-product-info-table input.form-control {
                 min-width: 40px;
             }
+            .st-product-info-table input.form-control.ng-invalid-required {
+            	border-color: red;
+            }
 
             @media (max-width: 5660px) {
                 .st-new-request-form .form-group-sm select {
