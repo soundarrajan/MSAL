@@ -78,6 +78,7 @@
         },
         "NEW_REQUEST": {
             "VESSEL": "Vessel",
+            "PO_NUMBER" : "PO Number",
             "CONTRACT_ID": "Contract Id",
             "VESSEL_IMO_NO": "IMO",
             "SERVICE_CODE": "Service Code",

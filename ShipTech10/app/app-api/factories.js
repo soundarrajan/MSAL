@@ -8186,7 +8186,8 @@ APP_API.factory('$Api_Service', [
                             procurement_buyerslist: `${API.BASE_URL_DATA_MASTERS }/api/masters/buyer/list`,
                             contractplanning_contractlist: `${API.BASE_URL_DATA_PROCUREMENT }/api/procurement/request/searchForPopup`,
                             order_contract: `${API.BASE_URL_DATA_PROCUREMENT }/api/procurement/order/getContractProductForOrderProduct`,
-                            order_contract_autocomplete: `${API.BASE_URL_DATA_PROCUREMENT }/api/procurement/order/getAutocompleteContractProductForOrderProduct`
+                            order_contract_autocomplete: `${API.BASE_URL_DATA_PROCUREMENT }/api/procurement/order/getAutocompleteContractProductForOrderProduct`,
+                            admin_users: `${API.BASE_URL_DATA_ADMIN }/api/admin/user/list`
                         };
 
 

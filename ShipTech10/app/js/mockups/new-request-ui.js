@@ -159,6 +159,13 @@
                         "visible": true,
                         "alwaysVisible": true,
                         "sortable": false
+                    },                    
+                    {
+                        "name": "SuggestedLift",
+                        "caption": "PAGES.NEW_REQUEST.SUGGESTEDLIFT",
+                        "visible": true,
+                        "alwaysVisible": true,
+                        "sortable": false
                     },
                     {
                         "name": "Uom",
@@ -184,6 +191,20 @@
                     {
                         "name": "Comment",
                         "caption": "PAGES.NEW_REQUEST.COMMENT",
+                        "visible": true,
+                        "alwaysVisible": true,
+                        "sortable": false
+                    },   
+                    {
+                        "name": "PreTest",
+                        "caption": "PAGES.NEW_REQUEST.PRETEST",
+                        "visible": true,
+                        "alwaysVisible": true,
+                        "sortable": false
+                    },                                     
+                    {
+                        "name": "expectedPrice",
+                        "caption": "PAGES.NEW_REQUEST.EXPECTEDPRICE",
                         "visible": true,
                         "alwaysVisible": true,
                         "sortable": false

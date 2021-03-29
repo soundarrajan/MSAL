@@ -1857,6 +1857,9 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 };
             });
         };
+        ctrl.selectOperator = function(operator) {
+            ctrl.request.operatorBy = operator;
+        };
         ctrl.selectCompany = function(companyId) {
             if (ctrl.companyInLocationIndex != null) {
                 ctrl.selectCompanyInLocation(companyId, ctrl.companyInLocationIndex);

@@ -289,15 +289,15 @@
 						   
 
 
-                            <div ng-if="$ctrl.vesselDetailsFields.VesselImoNo.visible" class="col-md-4" ng-init='CM.getOptions({"Name": "VesselWithImo","masterSource": "VesselWithImo"})' data-html="true" >
+                            <div class="col-md-4" data-html="true" >
                                 <div class="row">
                                     <label class="control-label col-md-5">
-                                        {{ $ctrl.vesselDetailsFields.Operator.caption | translate }}
+                                        {{ 'PAGES.NEW_REQUEST.OPERATOR' | translate }}
                                     </label>
                                     <div class="form-group-sm00">
-                                        <div class="input-group col-md-7">
-                                            <input decode-input-format ng-disabled="$ctrl.requestId ? true : false || $ctrl.disableAllFields" name="{{ $ctrl.vesselDetailsFields.Operator.name }}" id="id_{{ $ctrl.vesselDetailsFields.Operator.name }}" uib-typeahead="entity.username as entity.username for entity in userLists | typeaheadCustomFilter:$viewValue:'name'"  typeahead-editable="true" class="typeahead form-control"  ng-model="$ctrl.request.vesselDetails.Operator" required>
-                                            <span class="input-group-addon" ng-click="triggerModal('general', 'admin_userlist', $ctrl.vesselDetailsFields.Operator.caption | translate, '$ctrl.request.vesselDetails.Operator','','',$ctrl.vesselDetailsFields.Operator.name)" ng-class="{'disabled' : $ctrl.isReadonlyForm}">
+                                        <div class="input-group col-md-7" ng-init='CM.getOptions({"Name": "usersList","masterSource": "admin_users"})'>
+                                            <input decode-input-format ng-disabled="$ctrl.disableAllFields" name="{{ $ctrl.vesselDetailsFields.Operator.name }}" id="id_{{ $ctrl.vesselDetailsFields.Operator.name }}" uib-typeahead="entity.username as entity.username for entity in options.usersList | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.selectOperator($item)" typeahead-editable="true" class="typeahead form-control"  ng-model="$ctrl.request.operatorBy" required>
+                                            <span class="input-group-addon" ng-click="triggerModal('general', 'admin_userlist', 'Operator' , '$ctrl.request.vesselDetails.Operator','','',$ctrl.vesselDetailsFields.Operator.name)" ng-class="{'disabled' : $ctrl.isReadonlyForm}">
                                                 <i class="fa fa-search"></i>
                                             </span>
                                         </div>
@@ -310,7 +310,7 @@
                             <div class="col-md-4 ">
                                 <div class="row">
                                     <label class="control-label col-md-5">
-                                        {{ $ctrl.vesselDetailsFields.PONumber.caption | translate }}
+                                        {{ "PAGES.NEW_REQUEST.PO_NUMBER" | translate }}
                                     </label>
                                     <div class="form-group-sm00">
                                         <div class="input-group col-md-7">
@@ -346,59 +346,10 @@
                     </div>
                 </div>
 									 
-												  
-											
-										  
-					   
-				  
-		   
                 <div class="portlet-body" style="padding: 15px;">
 
                     <form id="charteringDetails" class="form-inline st-new-request-form collapse in" novalidate autocomplete="off">
 						   
-								 
-							 
-																	  
-						 
-			   
-									
-									
-																																							   
-				 
-			 
-				  
-				 
-								 
-							 
-																	  
-						
-			   
-									
-									
-																																				 
-																	  
-															   
-					  
-				 
-			 
-				  
-				 
-								 
-							 
-																	  
-					  
-			   
-									 
-									
-																																			  
-																	  
-															   
-					  
-				 
-			 
-				  
-						  
-																																																								  
                         <div class="row">
                             <div class="col-sm-4">
                                 <div class="row">
@@ -1262,7 +1213,7 @@
 
                                                     <div class="form-group-sm00">
                                                         <div class="input-group col-md-8 col-sm-12">
-                                                            <select name ="terminal" ng-options="terminal as terminal.descriptions for terminal in locationTerminal track by terminal.terminalCode" ng-model="location.terminal"  data-original-title="{{ location.descriptions }}" class="form-control pull-left"  style="width: calc(100% - 20px);"></select>
+                                                            <select name ="terminal" ng-options="terminal as terminal.descriptions for terminal in locationTerminal track by terminal.terminalCode" ng-model="location.terminal"  data-original-title="{{ location.descriptions }}" class="form-control pull-left"></select>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1372,12 +1323,12 @@
 
                                                 <td ng-if="$ctrl.productInfoColumns.MinQty.visible" style="width:8%;min-width: 95px;">
                                                     <input type="text" format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" name="MinQuantity_{{$index}}" id="product_MinQuantity_{{$index}}" class="form-control input-sm" ng-model="product.minQuantity" max="{{ product.maxQuantity }}" ng-required="$ctrl.requiredQty && (product.productStatus.name != 'Cancelled' && product.productStatus.name != 'Stemmed')" ng-blur="product.minQuantity = $ctrl.validateMinMaxQuantity(product.minQuantity, product.maxQuantity)['minQuantity']; $ctrl.minQtyBlur(product)" data-original-title="{{ product.minQuantity }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" ng-change="$ctrl.invalidMinMax(product.minQuantity,product.maxQuantity,$index,locationIdx)">
-                                                </td>
+                                                </td>                                              
                                                 <td ng-if="$ctrl.productInfoColumns.MaxQty.visible" style="width:8%;min-width: 95px;">
                                                     <input type="text" format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" name="MaxQuantity_{{$index}}" id="product_MaxQuantity_{{$index}}" class="form-control input-sm" ng-model="product.maxQuantity" ng-required="$ctrl.requiredQty && (product.productStatus.name != 'Cancelled' && product.productStatus.name != 'Stemmed')" ng-min="{{ product.minQuantity }}" data-original-title="{{ product.maxQuantity }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" ng-blur="product.maxQuantity = $ctrl.validateMinMaxQuantity(product.minQuantity, product.maxQuantity)['maxQuantity'];" ng-change="$ctrl.invalidMinMax(product.minQuantity,product.maxQuantity,$index,locationIdx)">
-                                                </td>
-                                                <td ng-if="$ctrl.productInfoColumns.SuggestedLift.visible" style="width:8%;min-width: 80px;">
-                                                    <input type="text" id="suggestedLift" class="form-control input-sm" ng-model="product.suggestedLift">
+                                                </td>                                            
+                                                <td ng-if="$ctrl.productInfoColumns.SuggestedLift.visible" style="width:8%;min-width: 95px;">
+                                                    <input type="text" format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" name="suggestedLift_{{$index}}" id="product_suggestedLift_{{$index}}" class="form-control input-sm" ng-model="product.suggestedLift" data-original-title="{{ product.suggestedLift }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields">
                                                 </td>
                                                 <td ng-if="$ctrl.productInfoColumns.Uom.visible" style="width:8%;min-width: 80px;">
                                                     <select ng-options="uomItem as uomItem.name for uomItem in $ctrl.lists.Uom | decodeReadOnly  track by uomItem.id" ng-model="product.uom" class="form-control" ng-required="product.product !== null && !$ctrl.requestTenantSettings.isPrerequestEnabled" data-original-title="{{ product.uom.name }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields"
@@ -1407,13 +1358,13 @@
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td ng-if="$ctrl.productInfoColumns.Reason.visible" style="width:35%;min-width: 100px;">
+<!--                                                 <td ng-if="$ctrl.productInfoColumns.Reason.visible" style="width:35%;min-width: 100px;">
                                                 
                                                     <select ng-options="reason as reason.name for reason in $ctrl.lists.Reason | decodeReadOnly track by reason.id" ng-model="product.reason" class="form-control" ng-required="product.product !== null" data-original-title="{{ product.reason.name }} " ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" id="product_agreementType_{{ $index }}"></select>
-                                                </td>
-                                                <td ng-if="$ctrl.productInfoColumns.ExpectedPrice.visible" style="width:8%;min-width: 80px;">
-                                                    <input type="text" id="expectedPrice" class="form-control input-sm" ng-model="product.expectedPrice">
-                                                </td>
+                                                </td> -->
+                                                <td ng-if="$ctrl.productInfoColumns.ExpectedPrice.visible" style="width:8%;min-width: 95px;">
+                                                    <input type="text" format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" name="expectedPrice_{{$index}}" id="product_expectedPrice_{{$index}}" class="form-control input-sm" ng-model="product.expectedPrice" data-original-title="{{ product.expectedPrice }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields">
+                                                </td>                                                
                                                 <td style="max-width: 250px; min-width: 165px">
                                                     <div class="input-group">
                                                         <input style="font-size: 12px;" type="text" format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" name="roundVoyageConsumption" id="product_roundVoyageConsumption_{{ $index }}" class="form-control input-md" ng-model="product.roundVoyageConsumption" data-original-title="{{ product.roundVoyageConsumption }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields">
