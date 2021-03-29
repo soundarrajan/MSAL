@@ -296,8 +296,8 @@
                                     </label>
                                     <div class="form-group-sm00">
                                         <div class="input-group col-md-7" ng-init='CM.getOptions({"Name": "usersList","masterSource": "admin_users"})'>
-                                            <input decode-input-format ng-disabled="$ctrl.disableAllFields" name="{{ $ctrl.vesselDetailsFields.Operator.name }}" id="id_{{ $ctrl.vesselDetailsFields.Operator.name }}" uib-typeahead="entity.username as entity.username for entity in options.usersList | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.selectOperator($item)" typeahead-editable="true" class="typeahead form-control"  ng-model="$ctrl.request.operatorBy" required>
-                                            <span class="input-group-addon" ng-click="triggerModal('general', 'admin_userlist', 'Operator' , '$ctrl.request.vesselDetails.Operator','','',$ctrl.vesselDetailsFields.Operator.name)" ng-class="{'disabled' : $ctrl.isReadonlyForm}">
+                                            <input decode-input-format ng-disabled="$ctrl.disableAllFields" name="operatorBy" id="id_{{ $ctrl.vesselDetailsFields.Operator.name }}" uib-typeahead="entity as entity.name for entity in options.usersList | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.selectOperator($item)" typeahead-editable="true" class="typeahead form-control"  ng-model="$ctrl.request.operatorBy.name" required>
+                                            <span class="input-group-addon" ng-click="triggerModal('general', 'admin_userlist', 'Operator' , '$ctrl.request.vesselDetails.Operator','','',$ctrl.request.operatorBy.name)" ng-class="{'disabled' : $ctrl.isReadonlyForm}">
                                                 <i class="fa fa-search"></i>
                                             </span>
                                         </div>
@@ -1362,10 +1362,13 @@
                                                 
                                                     <select ng-options="reason as reason.name for reason in $ctrl.lists.Reason | decodeReadOnly track by reason.id" ng-model="product.reason" class="form-control" ng-required="product.product !== null" data-original-title="{{ product.reason.name }} " ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" id="product_agreementType_{{ $index }}"></select>
                                                 </td> -->
-                                                <td ng-if="$ctrl.productInfoColumns.ExpectedPrice.visible" style="width:8%;min-width: 95px;">
+                                                <td ng-if="$ctrl.productInfoColumns.expectedPrice.visible" style="width:8%;min-width: 95px;">
                                                     <input type="text" format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" name="expectedPrice_{{$index}}" id="product_expectedPrice_{{$index}}" class="form-control input-sm" ng-model="product.expectedPrice" data-original-title="{{ product.expectedPrice }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields">
                                                 </td>                                                
-                                                <td style="max-width: 250px; min-width: 165px">
+                                                <td ng-if="$ctrl.productInfoColumns.ProductStatus.visible" style="width:10%">
+                                                    {{ product.productStatus.displayName ? product.productStatus.displayName: product.productStatus.name }}
+                                                </td>
+                                                <td ng-if="$ctrl.productInfoColumns.RoundVoyageConsumption.visible" style="max-width: 250px; min-width: 165px">
                                                     <div class="input-group">
                                                         <input style="font-size: 12px;" type="text" format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" name="roundVoyageConsumption" id="product_roundVoyageConsumption_{{ $index }}" class="form-control input-md" ng-model="product.roundVoyageConsumption" data-original-title="{{ product.roundVoyageConsumption }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields">
                                                         <div class="input-group-btn" ng-init="!product.roundVoyageConsumptionUom.id ? product.roundVoyageConsumptionUom = product.uom : '' ">
@@ -1374,9 +1377,6 @@
                                                                     id="product_roundVoyageConsumptionUom_{{ $index }}"></select>
                                                         </div>
                                                     </div>
-                                                </td>
-                                                <td ng-if="$ctrl.productInfoColumns.ProductStatus.visible" style="width:10%">
-                                                    {{ product.productStatus.displayName ? product.productStatus.displayName: product.productStatus.name }}
                                                 </td>
                                             </tr>
                                         </tbody>

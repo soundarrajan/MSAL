@@ -3511,6 +3511,10 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     if (a.elem[a.elem.length - 1] == 'autocompleteContract') {
                         ctrl.selectContract(a.val.id1);
                         return;
+                    }                    
+                    if (a.elem[a.elem.length - 1] == 'Operator') {
+                    	ctrl.request.operatorBy = a.val;
+                        return;
                     }
                     if (a.elem[a.elem.length - 1] == 'new_location') {
                         // var location = ctrl.getLocationObj(a.val.id);
