@@ -144,7 +144,7 @@
                 <td style="width:12%" class="padding">
                     <!-- Variance = Survey Analysis Value – BDN Value -->
                     <span *ngIf="!(qualityParameter.surveyValue == null && qualityParameter.bdnValue == null)">
-                        {{ quantityFormatValue(qualityParameter.surveyValue - qualityParameter.bdnValue)}}
+                        {{ quantityFormatValueQuality(qualityParameter.surveyValue, qualityParameter.bdnValue)}}
                     </span>
                     <span *ngIf="qualityParameter.surveyValue == null && qualityParameter.bdnValue == null">
                          - 
@@ -183,7 +183,7 @@
         <mat-label>Comments</mat-label>
         <textarea  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].qualityHeader.comments"
             matInput
-            [disabled]="formValues.deliveryStatus.name == 'Verified'"
-            autocomplete="off"></textarea>
+            autocomplete="off"
+            [disabled]="formValues.deliveryStatus.name == 'Verified'"></textarea>
     </mat-form-field>
 </div>

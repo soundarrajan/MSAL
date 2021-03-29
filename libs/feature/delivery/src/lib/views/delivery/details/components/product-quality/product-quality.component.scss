@@ -118,6 +118,14 @@ textarea.mat-input-element {
     color: #a5a5a5;
 }
 
+
+.custom-form-field-comments.mat-form-field-disabled   {
+    background-color: unset !important;
+}
+
+.custom-form-field-comments.mat-form-field-appearance-outline.mat-form-field-disabled .mat-form-field-outline {
+    background-color: #EEEEEE !important;
+}
 mat-form-field {
     .mat-form-field-label {
         box-sizing: border-box;
