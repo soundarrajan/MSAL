@@ -232,7 +232,7 @@
     "SELLER_CARD": {
       "VESSEL": "Vessel",
       "SUPPLY_QUANTITY" : "Supply Qty.",
-      "SUPPLY_DELIVERY_DATE" : "Delivery Date",
+      "SUPPLY_DELIVERY_DATE" : "Supply Delivery Date",
       "IMO": "IMO",
       "SELLER": "Seller",
       "QUOTED_BY": "Quoted by",
