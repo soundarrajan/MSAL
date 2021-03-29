@@ -215,6 +215,7 @@ export class ProductListSelectorGridViewModel extends BaseGridViewModel {
     colId: ProductListColumns.createdOn,
     field: model('createdOn'),
     filter: 'agDateColumnFilter',
+    valueFormatter: params => this.format.date(params.value),
     minWidth: 250,
     flex: 2
   };
@@ -233,6 +234,7 @@ export class ProductListSelectorGridViewModel extends BaseGridViewModel {
     colId: ProductListColumns.lastModifiedOn,
     field: model('lastModifiedOn'),
     filter: 'agDateColumnFilter',
+    valueFormatter: params => this.format.date(params.value),
     minWidth: 250,
     flex: 2
   };

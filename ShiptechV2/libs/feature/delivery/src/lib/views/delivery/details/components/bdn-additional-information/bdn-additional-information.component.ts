@@ -422,6 +422,14 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
   isBargePumpingRateStartTimeInvalid: boolean;
   isBargePumpingRateEndTimeInvalid: boolean;
   pumpingRateUom: any;
+  simpleSource: any;
+
+  @Input('sampleSource') set _setSimpleSource(simpleSource) { 
+    if (!simpleSource) {
+      return;
+    } 
+    this.simpleSource = simpleSource;
+  }
 
   @Input('satisfactionLevel') set _setSatisfactionLevel(satisfactionLevel) { 
     if (!satisfactionLevel) {
@@ -670,6 +678,27 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
   };
 
 
+  addSampleSources() {
+    if (this.formValues.deliveryStatus.name == 'Verified') {
+      return;
+    }
+    if (!this.formValues.sampleSources) {
+      this.formValues.sampleSources = [];
+    }
+    this.formValues.sampleSources.push({'id':0});
+  }
+
+
+  removeSampleSources(key) {
+    if (this.formValues.deliveryStatus.name == 'Verified') {
+      return;
+    }
+    if (this.formValues.sampleSources[key].id) {
+      this.formValues.sampleSources[key].isDeleted = true;
+    } else {
+      this.formValues.sampleSources.splice(key, 1);
+    }
+  }
 
  
   
