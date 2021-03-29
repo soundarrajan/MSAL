@@ -229,7 +229,7 @@
   <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
     <mat-form-field class="without-search" appearance="legacy">
         <mat-label>Barge</mat-label>
-        <input class="free-text-field" 
+        <!-- <input class="free-text-field" 
           type="text"
           matInput 
           [(ngModel)]="formValues.barge"
@@ -243,7 +243,15 @@
                   [value]="option">
                 {{option.name}}
             </mat-option>
-        </mat-autocomplete>
+        </mat-autocomplete> -->
+        <mat-select  
+          [(ngModel)]="formValues.barge"
+          [compareWith]="compareUomObjects"
+          [disabled]="formValues.deliveryStatus.name == 'Verified'"
+          [disableOptionCentering]="true"
+          panelClass="barge-select-container">
+            <mat-option *ngFor="let barge of bargeList" [value]="barge">{{barge.name}}</mat-option>
+        </mat-select>
     </mat-form-field>
   </div>
   <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">

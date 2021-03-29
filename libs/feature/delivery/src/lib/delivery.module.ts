@@ -143,6 +143,7 @@ import { BreadcrumbsModule } from '@shiptech/core/ui/components/breadcrumbs/brea
 import { UomMassRouteResolver } from './views/delivery/details/uom-mass-route.resolver';
 import { UomVolumeRouteResolver } from './views/delivery/details/uom-volume-route.resolver';
 import { PumpingRateUomRouteResolver } from './views/delivery/details/pumping-rate-uom-route.resolver';
+import { SampleSourceRouteResolver } from './views/delivery/details/sample-source-route.resolver';
 
 
 @NgModule({
@@ -292,6 +293,7 @@ import { PumpingRateUomRouteResolver } from './views/delivery/details/pumping-ra
     UomVolumeRouteResolver,
     UomMassRouteResolver,
     PumpingRateUomRouteResolver,
+    SampleSourceRouteResolver,
     {
       provide: QUANTITY_CONTROL_API_SERVICE,
       useClass: environment.production

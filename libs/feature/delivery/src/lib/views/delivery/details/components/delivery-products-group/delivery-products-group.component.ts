@@ -106,7 +106,7 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
   uomVolume: any;
   uomMass: any;
   pumpingRateUom: any;
-
+  expandProductPopUp: any = false;
   @Input('quantityCategory') set _setQuantityCategory(quantityCategory) { 
     if (!quantityCategory) {
       return;
