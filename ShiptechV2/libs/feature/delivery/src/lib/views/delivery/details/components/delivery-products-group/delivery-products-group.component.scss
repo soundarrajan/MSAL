@@ -218,3 +218,84 @@
   position: relative;
   right: 5px;
 }
+
+
+.expand-select-product-container .mat-table {
+  background-color: #364150 !important;
+  box-shadow: unset !important;
+}
+
+.expand-select-product-container th.mat-header-cell {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: #FFFFFF;
+}
+
+.expand-select-product-container tr.mat-row, .expand-select-product-container tr.mat-header-row  {
+  height: 30px ;
+}
+
+.expand-select-product-container th.mat-header-cell:first-of-type, .expand-select-product-container td.mat-cell:first-of-type{
+  padding-left: unset;
+}
+
+.expand-select-product-container td.mat-cell:last-of-type, .expand-select-product-container th.mat-header-cell:last-of-type {
+  padding-right: unset;
+}
+
+.expand-select-product-container td.mat-cell, .expand-select-product-container th.mat-header-cell {
+  border-bottom-style: unset;
+}
+
+
+
+.expand-select-product-container {
+  background-color: #364150 !important;
+  padding: 15px;
+  width: 50vw !important;
+  height: 50vh !important;
+  width: fit-content;
+  max-width: unset !important;
+  max-height: fit-content;
+  position: relative;
+  top: -25px;
+}
+
+.expand-select-product-container .mat-option {
+  padding: unset !important;
+  display: block;
+}
+
+.expand-select-product-container .mat-option-text  {
+  font-size: 14px  !important;
+  color: white !important;
+}
+
+.expand-select-product-container .mat-radio-outer-circle {
+  border-color: unset !important;
+}
+
+.expand-select-product-container .mat-radio-button.mat-accent .mat-radio-inner-circle, .expand-select-product-container .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
+  background: #00AAE2;
+}
+ 
+.product-header {
+  display: flex;
+  top: 10px;
+}
+
+.expand-select-product-container .search-product-container {
+  height: 40px;
+  border: 1px solid #FFFFFF;
+  box-sizing: border-box;
+  border-radius: 4px;
+  display: inline-flex;
+}
+
+
+.expand-img {
+  float: right;
+}

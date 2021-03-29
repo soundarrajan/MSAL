@@ -48,6 +48,7 @@ export class LegacyLookupsDatabase extends Dexie {
   readonly claimType: Dexie.Table<IDisplayLookupDto, number>;
   readonly quantityCategory: Dexie.Table<IDisplayLookupDto, number>;
   readonly pumpingRateUom: Dexie.Table<IDisplayLookupDto, number>;
+  readonly sampleSource: Dexie.Table<IDisplayLookupDto, number>;
 
   /**
    * For some entities we want to map from the BE dto more than the default IDisplayLookup props, for these cases we use a transformer.
@@ -113,6 +114,7 @@ export class LegacyLookupsDatabase extends Dexie {
       [nameof<LegacyLookupsDatabase>('deliveryFeedback')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('satisfactionLevel')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('pumpingRateUom')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('sampleSource')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('claimType')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('reconMatch')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('documentType')]: lookupSchema,
@@ -228,6 +230,12 @@ export class LegacyLookupsDatabase extends Dexie {
     const db = this.table('pumpingRateUom');
     let pumpingRateUom = await db.toArray();
     return pumpingRateUom;
+  }
+
+  async getSampleSource() {
+    const db = this.table('sampleSource');
+    let sampleSource = await db.toArray();
+    return sampleSource;
   }
 
 

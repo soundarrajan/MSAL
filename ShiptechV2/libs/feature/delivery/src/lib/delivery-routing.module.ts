@@ -24,6 +24,7 @@ import { QuantityCategoryRouteResolver } from './views/delivery/details/quantity
 import { UomVolumeRouteResolver } from './views/delivery/details/uom-volume-route.resolver';
 import { UomMassRouteResolver } from './views/delivery/details/uom-mass-route.resolver';
 import { PumpingRateUomRouteResolver } from './views/delivery/details/pumping-rate-uom-route.resolver';
+import { SampleSourceRouteResolver } from './views/delivery/details/sample-source-route.resolver';
 
 interface IDeliveryDetailsRouteData {
   [KnownDeliverylRoutes.DeliveryIdParam]: Type<
@@ -71,7 +72,7 @@ const routes: Routes = [
                   delivery: DeliveryRouteResolver,
                   navBar: NavBarResolver,
                   uoms: UomsRouteResolver,
-                  //bargeList: BargeRouteResolver,
+                  bargeList: BargeRouteResolver,
                   deliveryFeedback: DeliveryFeedbackRouteResolver,
                   satisfactionLevel: SatisfactionLevelRouteResolver,
                   claimType: ClaimTypeRouteResolver,
@@ -79,7 +80,8 @@ const routes: Routes = [
                   scheduleDashboardLabelConfiguration: ScheduleDashboardLabelsRouteResolver,
                   pumpingRateUom: PumpingRateUomRouteResolver,
                   uomVolume: UomVolumeRouteResolver,
-                  uomMass: UomMassRouteResolver
+                  uomMass: UomMassRouteResolver,
+                  sampleSource: SampleSourceRouteResolver
                 },
                 data: {
                   title: 'Delivery Details',

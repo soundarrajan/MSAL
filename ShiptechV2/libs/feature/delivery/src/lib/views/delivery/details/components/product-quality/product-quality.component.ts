@@ -301,7 +301,11 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
   }
 
 
-  quantityFormatValue(value) {
+  quantityFormatValueQuality(surveyValue, bdnValue) {
+    if ((surveyValue == '' && bdnValue == null) || (surveyValue == null && bdnValue == '') || (surveyValue == '' && bdnValue == '')) {
+      return '-';
+    }
+    let value = surveyValue - bdnValue;
     let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
     if (plainNumber) {
       if(this.tenantService.quantityPrecision == 0) {
