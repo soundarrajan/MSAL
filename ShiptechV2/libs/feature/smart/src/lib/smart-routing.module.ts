@@ -5,7 +5,7 @@ import { AuthGaurdService } from './services/auth-guard.service';
 import { MapViewModule } from './map-view/map-view.module';
 
 const routes: Routes = [
-  { path: 'mapview/dashboard', component : MapViewModule , canActivate: [AuthGaurdService]},
+  { path: 'mapview', loadChildren: () => import('./map-view/map-view.module').then(m => m.MapViewModule) },
   { path: 'login', component : LoginViewComponent },
   { path: '**', redirectTo : 'smart' }
 ];
