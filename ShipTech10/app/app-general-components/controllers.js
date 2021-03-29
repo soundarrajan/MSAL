@@ -1708,7 +1708,7 @@
                 var go_to_request_ordersdelivery = function(cellValue, options, rowObject) {
                     var tpl = "";
                     if (cellValue) {
-                        var tpl = ' <a href="#/edit-request/' + rowObject.reqId + '" style="width: calc(100% + 30px);"> <span class="formatter edit_link" data-formatter-type="link" style="white-space:none">' + cellValue + "</span></a>";
+                        var tpl = ' <a target="_blank" href="#/edit-request/' + rowObject.reqId + '" style="width: calc(100% + 30px);"> <span class="formatter edit_link" data-formatter-type="link" style="white-space:none">' + cellValue + "</span></a>";
                     }
                     var element = tpl;
                     return element;
@@ -1721,7 +1721,7 @@
                     //     }
                     // }else{
                     if (cellValue && rowObject.order) {
-                        var tpl = ' <a href="#/edit-order/' + rowObject.order.id + '" style="width: calc(100% + 30px);"> <span class="formatter edit_link" data-formatter-type="link" style="white-space:none">' + rowObject.order.name + "</span></a>";
+                        var tpl = ' <a target="_blank" href="#/edit-order/' + rowObject.order.id + '" style="width: calc(100% + 30px);"> <span class="formatter edit_link" data-formatter-type="link" style="white-space:none">' + rowObject.order.name + "</span></a>";
                     }
                     // }
                     var element = tpl;
@@ -1763,7 +1763,7 @@
                 var requestNoFromRequestId = function(cellValue, options, rowObject) {
                     var tpl = "";
                     if (cellValue && rowObject.requestNo) {
-                        var tpl = ' <a href="#/edit-request/' + cellValue + '" style="width: calc(100% + 30px);"> <span class="formatter edit_link" data-formatter-type="link" style="white-space:none">' + rowObject.requestNo + "</span></a>";
+                        var tpl = ' <a target="_blank" href="#/edit-request/' + cellValue + '" style="width: calc(100% + 30px);"> <span class="formatter edit_link" data-formatter-type="link" style="white-space:none">' + rowObject.requestNo + "</span></a>";
                     }
                     var element = tpl;
                     return element;
