@@ -37,19 +37,10 @@
     <div class="col-12">
       <p-panel [showHeader]="false">
         <div fxLayout="row">
-          <shiptech-bdn-information-contract
-              [events]="eventsSubject.asObservable()"
-              [model]="formValues"
-              [entityId]="entityId"
-              [orderNumberOptions]="orderNumberOptions"
-              [relatedDeliveries]="relatedDeliveries"
-              [bargeList]="bargeList"
-              [statusColorCode]="statusColorCode"
-              [eventsSaveButton]="eventsSubject2.asObservable()"
-              class="col-12"
-              style="padding-top: 20px; margin-right: 0px !important;
-              padding-right: 0px !important;">
-          </shiptech-bdn-information-contract>  
+          <shiptech-general-information-contract
+                [model]="formValues"
+                class="col-12">
+          </shiptech-general-information-contract>  
         </div>
       </p-panel>
     </div>

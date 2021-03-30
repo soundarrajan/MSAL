@@ -52,7 +52,7 @@ export class LayoutMainComponent implements AfterViewInit {
     if (this.router.url.includes('email-template-editor')) {
       this.isEmailTemplateEditor = true;
     }
-    if (this.router.url.includes('delivery')) {
+    if (this.router.url.includes('delivery') || this.router.url.includes('contract')) {
       this.isDelivery = true;
     }
   }

@@ -25,139 +25,20 @@ export class ContractService extends BaseStoreService implements OnDestroy {
 
 
   /**
-   * @param deliveryId deliveryId in case of editing or falsy in case of new
+   * @param contractId contractId in case of editing or false in case of new
    */
   @ObservableException()
-  loadDeliverytDetails(deliveryId: number): Observable<unknown> {
-    return this.contractApi.getDeliveryDetails(deliveryId);
+  loadContractDetails(contractId: number): Observable<unknown> {
+    return this.contractApi.getContractDetails(contractId);
   }
 
   /**
-   * Load related deliveries
-   * @param orderId deliveryId in case of editing or falsy in case of new
-   */
+ * @param payload = False 
+ */
   @ObservableException()
-  loadDeliveryInfoForOrder(orderId: number): Observable<unknown> {
-    return this.contractApi.getDeliveryInfoForOrder(orderId);
+  getTenantConfiguration(payload: boolean): Observable<unknown> {
+    return this.contractApi.getTenantConfiguration(payload);
   }
-
-
-  /**
-   * Load order summary
-   * @param orderId deliveryId in case of editing or falsy in case of new
-   */
-  @ObservableException()
-  loadDeliveryOrderSummary(orderId: number): Observable<unknown> {
-    return this.contractApi.getDeliveryOrderSummary(orderId);
-  }
-
-  /**
-   * Load order details
-   * @param orderId deliveryId in case of editing or falsy in case of new
-   */
-  @ObservableException()
-  loadOrder(orderId: number): Observable<unknown> {
-    return this.contractApi.getOrder(orderId);
-  }
-
-  /**
-   * Load  Delivery Spec Parameters
-   * @param OrderProductId SpecGroupId
-   */
-  @ObservableException()
-  loadDeliverySpecParameters(payload): Observable<unknown> {
-    return this.contractApi.getDeliverySpecParameters(payload);
-  }
-
-
-  /**
-   * Load Delivery Quantity Parameters
-   *  @param OrderProductId SpecGroupId
-   */
-  @ObservableException()
-  loadDeliveryQuantityParameters(payload): Observable<unknown>  {
-    return this.contractApi.getDeliveryQuantityParameters(payload);
-  }
-
-  
-    /**
-   * Load conversion info
-   *  @param productId 
-   */
-  @ObservableException()
-  loadConversionInfo(productId: number): Observable<unknown>  {
-    return this.contractApi.getConversionInfo(productId);
-  }
-
-    /**
-   * Save delivery
-   *  @param formValues 
-   */
-  @ObservableException()
-  saveDeliveryInfo(formValues: any): Observable<unknown>  {
-    return this.contractApi.saveDelivery(formValues);
-  }
-
-     /**
-   * Update delivery
-   *  @param formValues 
-   */
-  @ObservableException()
-  updateDeliveryInfo(formValues: any): Observable<unknown>  {
-    return this.contractApi.updateDelivery(formValues);
-  }
-
-  
-      /**
-   * Verify delivery
-   *  @param formValues 
-   */
-  @ObservableException()
-  verifyDelivery(formValues: any): Observable<unknown>  {
-    return this.contractApi.verifyDelivery(formValues);
-  }
-
-  
-  /**
-   * Revert verify delivery
-   *  @param deliveryId 
-  */
-  @ObservableException()
-  revertVerifyDelivery(deliveryId: any) {
-    return this.contractApi.revertVerifyDelivery(deliveryId);
-  }
-
-    
-  /**
-   * Get split delivery limits
-   *  @param  
-  */
-   @ObservableException()
-   getSplitDeliveryLimits(payload: any) {
-     return this.contractApi.getSplitDeliveryLimits(payload);
-   }
-
-
-   /**
-   * Raise claim
-   *  @param  
-  */
-   @ObservableException()
-   raiseClaim(payload: any) {
-      return this.contractApi.raiseClaim(payload);
-  }
- 
-
-  
-   /**
-   * Delete Delivery Product
-   *  @param  
-  */
-    @ObservableException()
-    deleteDeliveryProduct(payload: any) {
-       return this.contractApi.deleteDeliveryProduct(payload);
-   }
-
   
     
   ngOnDestroy(): void {

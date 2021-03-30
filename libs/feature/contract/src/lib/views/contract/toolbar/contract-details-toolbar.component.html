@@ -7,7 +7,7 @@
   </shiptech-breadcrumbs>
   <div class="st-breadcrumbs-progress-bar col-md-6">
     <ul class="page-breadcrumb">
-      <li class="btn btn-fit-height {{navItem.indexStatus}}"  *ngFor="let navItem of navigationItems">          
+      <li class="btn btn-fit-height {{navItem.indexStatus}}" title="{{navItem.entityId}}" *ngFor="let navItem of navigationItems">          
         <a *ngIf="navItem.url" href="{{navItem.url}}" target="_blank">
             {{navItem.displayName}}
         </a>

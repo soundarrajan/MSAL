@@ -99,13 +99,11 @@ import { ContractRoutingModule } from './contract-routing.module';
 import { DeliveryAutocompleteModule } from './views/contract/details/components/delivery-autocomplete/delivery-autocomplete.module';
 import { MainContractComponent } from './views/main-contract.component';
 import { ContractDetailsComponent } from './views/contract/details/contract-details.component';
-import { BdnInformationContractComponent } from './views/contract/details/components/bdn-information/bdn-information.component';
 import { AutocompleteInputComponent } from './views/contract/details/components/autocomplete-input/autocomplete-input.component';
 import { ContractDetailsToolbarComponent } from './views/contract/toolbar/contract-details-toolbar.component';
 import { ContractDetailsDocumentsComponent } from './views/contract/documents/contract-details-documents.component';
 import { QuantityTenantFormatDirective } from './views/contract/details/directives/quantity-tenant-format.directive';
 import { NumberOnlyDirective } from './views/contract/details/directives/number-only.directive';
-import { RaiseClaimModalComponent } from './views/contract/details/components/raise-claim-modal/raise-claim-modal.component';
 import { ContractRouteResolver } from './views/contract/details/contract-route.resolver';
 import { ContractModuleResolver } from './contract-route.resolver';
 import { SatisfactionLevelRouteResolver } from './views/contract/details/satisfaction-level-route.resolver';
@@ -119,6 +117,7 @@ import { NavBarResolver } from './views/contract/details/navbar-route.resolver';
 import { ContractDetailsRouteResolver } from './views/contract/details/contract-details-route.resolver';
 import { ContractDetailsUnsavedChangesGuard } from './guards/contract-details-unsaved-changes-guard.service';
 import { ContractApi, CONTRACT_API_SERVICE } from './services/api/contract-api';
+import { GeneralInformationContract } from './views/contract/details/components/general-information-contract/general-information-contract.component';
 
 
 @NgModule({
@@ -219,17 +218,16 @@ import { ContractApi, CONTRACT_API_SERVICE } from './services/api/contract-api';
   declarations: [
     MainContractComponent,
     ContractDetailsComponent,
-    BdnInformationContractComponent,
+    GeneralInformationContract,
     AutocompleteInputComponent,
     ContractDetailsToolbarComponent,
     ContractDetailsDocumentsComponent,
     QuantityTenantFormatDirective,
-    NumberOnlyDirective,
-    RaiseClaimModalComponent,
+    NumberOnlyDirective
     //PSpinnerDisableKeysSpinDirective,
     //PSpinnerTenantFormatDirective
   ],
-  entryComponents: [RaiseClaimModalComponent],
+  entryComponents: [],
   exports: [
     MainContractComponent,
     QuantityTenantFormatDirective,

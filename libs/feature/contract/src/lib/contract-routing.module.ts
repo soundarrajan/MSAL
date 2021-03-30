@@ -59,16 +59,11 @@ const routes: Routes = [
                 canDeactivate: [ContractDetailsUnsavedChangesGuard],
                 component: ContractDetailsComponent,
                 resolve:{
-                  // Note: ReportId is expected in child routes in the data.
-                  orderNumbers : ContractDetailsRouteResolver,
-                  delivery: ContractRouteResolver,
+                  // Note: contractId is expected in child routes in the data.
+                  tenantConfiguration : ContractDetailsRouteResolver,
+                  contract: ContractRouteResolver,
                   navBar: NavBarResolver,
                   uoms: UomsRouteResolver,
-                  //bargeList: BargeRouteResolver,
-                  deliveryFeedback: ContractFeedbackRouteResolver,
-                  satisfactionLevel: SatisfactionLevelRouteResolver,
-                  claimType: ClaimTypeRouteResolver,
-                  quantityCategory: QuantityCategoryRouteResolver,
                   scheduleDashboardLabelConfiguration: ScheduleDashboardLabelsRouteResolver
                 },
                 data: {
