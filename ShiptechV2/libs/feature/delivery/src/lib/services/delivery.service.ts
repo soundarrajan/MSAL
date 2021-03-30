@@ -197,6 +197,15 @@ export class DeliveryService extends BaseStoreService implements OnDestroy {
        return this.deliveryApi.deleteDeliveryProduct(payload);
    }
 
+     /**
+   * Send Email to labs
+   *  @param  
+  */
+    @ObservableException()
+    sendLabsTemplateEmail(payload: any) {
+      return this.deliveryApi.sendLabsTemplateEmail(payload);
+    }
+
   
     
   ngOnDestroy(): void {

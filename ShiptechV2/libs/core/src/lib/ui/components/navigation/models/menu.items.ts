@@ -655,8 +655,8 @@ export const BASE_MENU: KeyedMenuItems = {
   invoices: {
     label: 'Invoices',
     items: {
-      invoice_list: {
-        label: 'TO BE OVERRIDEN',
+      invoice_deliveries_list: {
+        label: 'Deliveries list',
         url: '/#/invoices/deliveries',
         target: '_blank'
       },

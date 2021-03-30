@@ -103,7 +103,10 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
   buttonClicked: any;
   eventsConversionInfoDataSubscription: Subscription;
   eventsOrderNumberSubscription: Subscription;
-
+  uomVolume: any;
+  uomMass: any;
+  pumpingRateUom: any;
+  expandProductPopUp: any = false;
   @Input('quantityCategory') set _setQuantityCategory(quantityCategory) { 
     if (!quantityCategory) {
       return;
@@ -111,11 +114,32 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
     this.quantityCategory = quantityCategory;
   }
 
+  @Input('pumpingRateUom') set _setPumpingRateUom(pumpingRateUom) { 
+    if (!pumpingRateUom) {
+      return;
+    } 
+    this.pumpingRateUom = pumpingRateUom;
+  }
+
   @Input('uoms') set _setUoms(uoms) { 
     if (!uoms) {
       return;
     } 
     this.uoms = uoms;
+  }
+
+  @Input('uomVolume') set _setUomVolume(uomVolume) { 
+    if (!uomVolume) {
+      return;
+    } 
+    this.uomVolume = uomVolume;
+  }
+
+  @Input('uomMass') set _setUomMass(uomMass) { 
+    if (!uomMass) {
+      return;
+    } 
+    this.uomMass = uomMass;
   }
 
   @Input('conversionInfoData') set _setConversionInfoData(conversionInfoData) { 

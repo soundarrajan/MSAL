@@ -162,11 +162,14 @@ export class PhysicalSupplierListSelectorGridViewModel extends BaseGridViewModel
     headerName: PhysicalSupplierListColumnsLabels.isDeleted,
     colId: PhysicalSupplierListColumns.isDeleted,
     field: model('isDeleted'),
-    valueFormatter: params => (params.value ? 'YES' : 'NO'), // TODO hardcoded values
+    cellRenderer: params => {
+      var a = document.createElement('span');
+      a.innerHTML = params.value ? 'Yes' : 'No';
+      !params.value ? a.classList.add('success') : a.classList.add('denger');
+      return a;
+    },
     cellClass: 'cell-background',
-    cellClassRules: {
-      bad: params => !(params.data?.isDeleted ?? false)
-    }
+    width: 150
   };
 
   reasonCol: ITypedColDef<IPhysicalSupplierListDto, string> = {
@@ -207,121 +210,77 @@ export class PhysicalSupplierListSelectorGridViewModel extends BaseGridViewModel
     headerName: PhysicalSupplierListColumnsLabels.supplier,
     colId: PhysicalSupplierListColumns.supplier,
     field: model('supplier'),
-    valueFormatter: params => (params.value ? 'YES' : 'NO'), // TODO hardcoded values
-    cellClass: 'cell-background',
-    cellClassRules: {
-      bad: params => !(params.data?.supplier ?? false)
-    }
+    valueFormatter: params => (params.value ? 'Yes' : 'No') // TODO hardcoded values
   };
 
   sellerCol: ITypedColDef<IPhysicalSupplierListDto, boolean> = {
     headerName: PhysicalSupplierListColumnsLabels.seller,
     colId: PhysicalSupplierListColumns.seller,
     field: model('seller'),
-    valueFormatter: params => (params.value ? 'YES' : 'NO'), // TODO hardcoded values
-    cellClass: 'cell-background',
-    cellClassRules: {
-      bad: params => !(params.data?.seller ?? false)
-    }
+    valueFormatter: params => (params.value ? 'Yes' : 'No') // TODO hardcoded values
   };
 
   brokerCol: ITypedColDef<IPhysicalSupplierListDto, boolean> = {
     headerName: PhysicalSupplierListColumnsLabels.broker,
     colId: PhysicalSupplierListColumns.broker,
     field: model('broker'),
-    valueFormatter: params => (params.value ? 'YES' : 'NO'), // TODO hardcoded values
-    cellClass: 'cell-background',
-    cellClassRules: {
-      bad: params => !(params.data?.broker ?? false)
-    }
+    valueFormatter: params => (params.value ? 'Yes' : 'No') // TODO hardcoded values
   };
 
   customerCol: ITypedColDef<IPhysicalSupplierListDto, boolean> = {
     headerName: PhysicalSupplierListColumnsLabels.customer,
     colId: PhysicalSupplierListColumns.customer,
     field: model('customer'),
-    valueFormatter: params => (params.value ? 'YES' : 'NO'), // TODO hardcoded values
-    cellClass: 'cell-background',
-    cellClassRules: {
-      bad: params => !(params.data?.customer ?? false)
-    }
+    valueFormatter: params => (params.value ? 'Yes' : 'No') // TODO hardcoded values
   };
 
   agentCol: ITypedColDef<IPhysicalSupplierListDto, boolean> = {
     headerName: PhysicalSupplierListColumnsLabels.agent,
     colId: PhysicalSupplierListColumns.agent,
     field: model('agent'),
-    valueFormatter: params => (params.value ? 'YES' : 'NO'), // TODO hardcoded values
-    cellClass: 'cell-background',
-    cellClassRules: {
-      bad: params => !(params.data?.agent ?? false)
-    }
+    valueFormatter: params => (params.value ? 'Yes' : 'No') // TODO hardcoded values
   };
 
   surveyorCol: ITypedColDef<IPhysicalSupplierListDto, boolean> = {
     headerName: PhysicalSupplierListColumnsLabels.surveyor,
     colId: PhysicalSupplierListColumns.surveyor,
     field: model('surveyor'),
-    valueFormatter: params => (params.value ? 'YES' : 'NO'), // TODO hardcoded values
-    cellClass: 'cell-background',
-    cellClassRules: {
-      bad: params => !(params.data?.surveyor ?? false)
-    }
+    valueFormatter: params => (params.value ? 'Yes' : 'No') // TODO hardcoded values
   };
   
   bargeCol: ITypedColDef<IPhysicalSupplierListDto, boolean> = {
     headerName: PhysicalSupplierListColumnsLabels.barge,
     colId: PhysicalSupplierListColumns.barge,
     field: model('barge'),
-    valueFormatter: params => (params.value ? 'YES' : 'NO'), // TODO hardcoded values
-    cellClass: 'cell-background',
-    cellClassRules: {
-      bad: params => !(params.data?.barge ?? false)
-    }
+    valueFormatter: params => (params.value ? 'Yes' : 'No') // TODO hardcoded values
   };
 
   labCol: ITypedColDef<IPhysicalSupplierListDto, boolean> = {
     headerName: PhysicalSupplierListColumnsLabels.lab,
     colId: PhysicalSupplierListColumns.lab,
     field: model('lab'),
-    valueFormatter: params => (params.value ? 'YES' : 'NO'), // TODO hardcoded values
-    cellClass: 'cell-background',
-    cellClassRules: {
-      bad: params => !(params.data?.lab ?? false)
-    }
+    valueFormatter: params => (params.value ? 'Yes' : 'No') // TODO hardcoded values
   };
 
   plannerCol: ITypedColDef<IPhysicalSupplierListDto, boolean> = {
     headerName: PhysicalSupplierListColumnsLabels.planner,
     colId: PhysicalSupplierListColumns.planner,
     field: model('planner'),
-    valueFormatter: params => (params.value ? 'YES' : 'NO'), // TODO hardcoded values
-    cellClass: 'cell-background',
-    cellClassRules: {
-      bad: params => !(params.data?.planner ?? false)
-    }
+    valueFormatter: params => (params.value ? 'Yes' : 'No') // TODO hardcoded values
   };
 
   internalCol: ITypedColDef<IPhysicalSupplierListDto, boolean> = {
     headerName: PhysicalSupplierListColumnsLabels.internal,
     colId: PhysicalSupplierListColumns.internal,
     field: model('internal'),
-    valueFormatter: params => (params.value ? 'YES' : 'NO'), // TODO hardcoded values
-    cellClass: 'cell-background',
-    cellClassRules: {
-      bad: params => !(params.data?.internal ?? false)
-    }
+    valueFormatter: params => (params.value ? 'Yes' : 'No') // TODO hardcoded value
   };
 
   sludgeCol: ITypedColDef<IPhysicalSupplierListDto, boolean> = {
     headerName: PhysicalSupplierListColumnsLabels.sludge,
     colId: PhysicalSupplierListColumns.sludge,
     field: model('sludge'),
-    valueFormatter: params => (params.value ? 'YES' : 'NO'), // TODO hardcoded values
-    cellClass: 'cell-background',
-    cellClassRules: {
-      bad: params => !(params.data?.sludge ?? false)
-    }
+    valueFormatter: params => (params.value ? 'Yes' : 'No') // TODO hardcoded values
   };
 
   countryCol: ITypedColDef<IPhysicalSupplierListDto, string> = {
@@ -346,6 +305,7 @@ export class PhysicalSupplierListSelectorGridViewModel extends BaseGridViewModel
     colId: PhysicalSupplierListColumns.createdOn,
     field: model('createdOn'),
     filter: 'agDateColumnFilter',
+    valueFormatter: params => this.format.date(params.value),
     minWidth: 250,
     flex: 2
   };
@@ -364,6 +324,7 @@ export class PhysicalSupplierListSelectorGridViewModel extends BaseGridViewModel
     colId: PhysicalSupplierListColumns.lastModifiedOn,
     field: model('lastModifiedOn'),
     filter: 'agDateColumnFilter',
+    valueFormatter: params => this.format.date(params.value),
     minWidth: 250,
     flex: 2
   };
@@ -372,7 +333,7 @@ export class PhysicalSupplierListSelectorGridViewModel extends BaseGridViewModel
     headerName: PhysicalSupplierListColumnsLabels.hasNoMoreChildren,
     colId: PhysicalSupplierListColumns.hasNoMoreChildren,
     field: model('hasNoMoreChildren'),
-    valueFormatter: params => (params.value ? 'YES' : 'NO'), // TODO hardcoded values
+    valueFormatter: params => (params.value ? 'Yes' : 'No'), // TODO hardcoded values
     cellClass: 'cell-background',
     cellClassRules: {
       bad: params => !(params.data?.hasNoMoreChildren ?? false)
@@ -394,7 +355,7 @@ export class PhysicalSupplierListSelectorGridViewModel extends BaseGridViewModel
     private mastersListApiService: MastersListApiService
   ) {
     super(
-      'physical-supplier-list-selector-grid-4',
+      'physical-supplier-list-selector-grid-8',
       columnPreferences,
       changeDetector,
       loggerFactory.createLogger(PhysicalSupplierListSelectorGridViewModel.name)
