@@ -913,10 +913,8 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
         return object.name == bdnUom.name && object.id == bdnUom.id;
       });
       if (verifyIfBdnUomIsMassUom) {
-        this.formValues.deliveryProducts[deliveryProductIndex].deliveredVolumeUom = null;
         this.deliveredQuantityUoms = [...this.uomVolume];
       } else {
-        this.formValues.deliveryProducts[deliveryProductIndex].deliveredVolumeUom = null;
         this.deliveredQuantityUoms = [...this.uomMass];
       }
     }
