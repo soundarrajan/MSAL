@@ -171,7 +171,14 @@ export class SplitDeliveryModalComponent implements OnInit {
   }
 
   quantityFormatValue(value) {
-    if (!value) {
+    if (value == 0) {
+      if(this.tenantService.quantityPrecision == 0) {
+        return 0;
+      } else {
+        return this._decimalPipe.transform(0, this.quantityFormat);
+      }
+    }
+    if (value == null) {
       return null;
     }
     let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');

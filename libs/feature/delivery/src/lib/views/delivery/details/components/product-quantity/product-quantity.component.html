@@ -1,6 +1,6 @@
 <div class="col-md-12">
     <div class="product-quantity-header">
-        Product quantity details
+        Product quantity reconciliation
     </div>
 </div>
 <div class="col-md-12  product-details-container" *ngIf="formValues.deliveryProducts[deliveryProductIndex].quantityHeader">
@@ -110,9 +110,9 @@
         </tbody>
     </table>
 </div>
-<div class="col-md-12 custom-form-field product-quantity-comments" *ngIf="formValues.deliveryProducts[deliveryProductIndex].quantityHeader"
+<div class="col-md-12 quantity-comments-container" *ngIf="formValues.deliveryProducts[deliveryProductIndex].quantityHeader"
          [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-    <mat-form-field class="without-search" appearance="legacy">
+    <mat-form-field class="custom-form-field-comments" appearance="outline">
         <mat-label>Comments</mat-label>
         <textarea  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].quantityHeader.comments"
                     matInput 

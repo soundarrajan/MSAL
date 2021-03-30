@@ -17,7 +17,7 @@
 </div>
 
 <div class="row mb-2">
-  <div class="col-1 d-flex">
+  <div class="col-1 d-flex filter-name">
     <app-page-size-selector (selectedOptionChange)="onPageSizeChange($event)"
                             [options]="gridViewModel?.pageSizeOptions" [selectedOption]="gridViewModel?.pageSize">
     </app-page-size-selector>
