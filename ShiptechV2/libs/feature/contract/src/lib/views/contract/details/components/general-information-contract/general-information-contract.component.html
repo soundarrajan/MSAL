@@ -1,0 +1,67 @@
+<div class="col-md-12 row">
+  <div class="col-md-2">
+    <div id="custom-btn-toggle-v2">
+      <mat-button-toggle-group #group="matButtonToggleGroup" [value]="selectedVal" (change)="onValChange(group.value)" >
+        <mat-button-toggle value="dateSpecific">
+          <span *ngIf="selectedVal == 'dateSpecific'" class="toggle-icon"></span> 
+          Date specific
+        </mat-button-toggle>
+        <mat-button-toggle value="evergreen">
+          <span  *ngIf="selectedVal == 'evergreen'" class="toggle-icon"></span> 
+          Evergreen
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="contract-created-container">
+      <div class="contract-created-information">
+        <div>
+          <div class="value">Created by: 
+            <span class="created-by-field">
+              {{formValues.createdBy ? formValues.createdBy.displayName : ''}}
+            </span>
+          </div>
+        </div>
+        <div class="border_line"></div>
+        <div> 
+          <div class="value">Created On: 
+            <span class="created-on-field">
+              {{formValues.createdOn ? formatDate(formValues.createdOn) : ''}}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="contract-qty-section" style="display: flex;justify-content: flex-start;">
+        <div class="total-exposure">
+          <div><span class="label">Total Exposure</span>
+            <div class="value">42,000 GAL</div>
+          </div>
+        </div>
+        <div class="total-exposure">
+          <div><span class="label">Total Exposure</span>
+            <div class="value">42,000 GAL</div>
+          </div>
+        </div>
+        <div class="total-exposure">
+          <div><span class="label">Total Exposure</span>
+            <div class="value">42,000 GAL</div>
+          </div>
+        </div>
+        <div class="total-exposure">
+          <div><span class="label">Total Exposure</span>
+            <div class="value">42,000 GAL</div>
+          </div>
+        </div>
+        <div class="total-exposure">
+          <div><span class="label">Total Exposure</span>
+            <div class="value">42,000 GAL</div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+

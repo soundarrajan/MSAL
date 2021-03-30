@@ -41,31 +41,8 @@ export class ContractDetailsRouteResolver implements Resolve<any> {
       ]);
     }
 
-    let payload = {
-      'Payload': {},
-      'UIFilters': {
-        'RequestStatuses': '13,19'
-      }
-    };
-    return this.bdnInformationService.getForTransactionForSearch(payload);
+    return this.contractService.getTenantConfiguration(false);
   }
 
-  getForTransactionForSearch() {
-    let payload = {
-      'Payload': {},
-      'UIFilters': {
-        'RequestStatuses': '13,19'
-      }
-    };
-    this.bdnInformationService
-    .getForTransactionForSearch(payload)
-    .pipe(
-        finalize(() => {
-            this.isLoading = false;
-        })
-    )
-    .subscribe((result: any) => {
-      this.options = result;
-    }); 
-  }
+ 
 }

@@ -38,7 +38,7 @@ export class ContractRouteResolver implements Resolve<any> {
         KnownContractRoutes.ContractList
       ]);
     }
-    return contractId ? this.contractService.loadDeliverytDetails(contractId) : null;
+    return contractId ? this.contractService.loadContractDetails(contractId) : null;
   }
 
 }

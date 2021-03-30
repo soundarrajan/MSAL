@@ -92,6 +92,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   conversionInfoData: any = [];
   quantityFormat: string;
   openedScreenLoaders: number = 0;
+  tenantConfiguration: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -168,23 +169,9 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       this.entityId = params.deliveryId;
     });
     this.route.data.subscribe(data => {
-      console.log('Check route resolver data')
-      console.log(data);
-      this.orderNumberOptions = data.orderNumbers;
-      if (typeof this.formValues.feedback == 'undefined' || !this.formValues.feedback) {
-        this.formValues.feedback = {};
-      }
-      this.uoms = data.uoms;
-      this.deliveryFeedback = data.deliveryFeedback;
-      this.satisfactionLevel = data.satisfactionLevel;
-      this.bargeList = data.bargeList;
-      this.navBar = data.navBar;
-      this.CM.listsCache.ClaimType = data.claimType;
-      this.quantityCategory = data.quantityCategory;
-      this.scheduleDashboardLabelConfiguration = data.scheduleDashboardLabelConfiguration;
-      const deliveryData = {
-        'data': this.deliverySettings
-      }
+        console.log(data);
+      this.tenantConfiguration = data.tenantConfiguration;
+      this.formValues = data.contract;
     });
   }
 
