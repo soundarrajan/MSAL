@@ -1,11 +1,11 @@
-﻿commit 152f1966441a8405acf287ff1cf651bc66dbc6f3
+﻿commit 78cdc53a87e6e01ea977070d21686e23499d2163
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon Mar 29 14:48:10 2021 +0000
+Date:   Tue Mar 30 08:26:27 2021 +0000
 
-    Merged PR 9586: Added sample details section, fixed ui top navigation indication for the rela...
+    Merged PR 9609: Defaulting the remaining confirmed amount if is zero fixed delivered quantity...
     
-    Added sample details section, fixed ui top navigation indication for the related screens, format for created on and last modified and barge dropdown
+    Defaulting the remaining confirmed amount if is zero fixed delivered quantity uom
     
-    Related work items: #27727, #31090, #31096
+    Related work items: #31105, #31144
 
 branch: master
