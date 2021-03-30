@@ -1,11 +1,11 @@
-﻿commit 78cdc53a87e6e01ea977070d21686e23499d2163
+﻿commit 861f4a049a57c580d5f8faa1e68fa339a0e0974c
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Tue Mar 30 08:26:27 2021 +0000
+Date:   Tue Mar 30 11:50:32 2021 +0000
 
-    Merged PR 9609: Defaulting the remaining confirmed amount if is zero fixed delivered quantity...
+    Merged PR 9622: Made  seal number only alpha numeric
     
-    Defaulting the remaining confirmed amount if is zero fixed delivered quantity uom
+    Made  seal number only alpha numeric
     
-    Related work items: #31105, #31144
+    Related work items: #27727
 
 branch: master
