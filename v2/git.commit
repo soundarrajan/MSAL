@@ -1,10 +1,10 @@
-﻿commit 861f4a049a57c580d5f8faa1e68fa339a0e0974c
+﻿commit e7ad739100d61394dd58070fe0de6fc34b994add
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Tue Mar 30 11:50:32 2021 +0000
+Date:   Tue Mar 30 12:31:28 2021 +0000
 
-    Merged PR 9622: Made  seal number only alpha numeric
+    Merged PR 9624: Added default value for sample sources dropdown
     
-    Made  seal number only alpha numeric
+    Added default value for sample sources dropdown
     
     Related work items: #27727
 

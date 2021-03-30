@@ -685,7 +685,8 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
     if (!this.formValues.sampleSources) {
       this.formValues.sampleSources = [];
     }
-    this.formValues.sampleSources.push({'id':0});
+    let firstSampleSourceOption = this.simpleSource[0];
+    this.formValues.sampleSources.push({'id':0, 'sampleSource': firstSampleSourceOption});
   }
 
 
