@@ -1,7 +1,7 @@
-<div class="col-md-12 row">
-  <div class="col-md-2">
+<div class="col-md-12 row contract-no-padding">
+  <div class="col-md-3">
     <div id="custom-btn-toggle-v2">
-      <mat-button-toggle-group #group="matButtonToggleGroup" [value]="selectedVal" (change)="onValChange(group.value)" >
+      <mat-button-toggle-group  #group="matButtonToggleGroup" [value]="selectedVal" (change)="onValChange(group.value)" >
         <mat-button-toggle value="dateSpecific">
           <span *ngIf="selectedVal == 'dateSpecific'" class="toggle-icon"></span> 
           Date specific
@@ -34,7 +34,7 @@
       </div>
     </div>
   </div>
-  <div class="col-md-6">
+  <div class="col-md-6 contract-no-padding">
     <div class="contract-qty-section" style="display: flex;justify-content: flex-start;">
         <div class="total-exposure">
           <div><span class="label">Total Exposure</span>

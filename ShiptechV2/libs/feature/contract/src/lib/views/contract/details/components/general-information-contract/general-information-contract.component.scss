@@ -15,7 +15,7 @@
     font-size: 14px;
     line-height: 16px;
     color: #848B9E;
-    width: 130px;
+    width: 50%;
     height: 40px;
     display: flex;
     align-items: center;
@@ -28,7 +28,7 @@
       font-size: 14px;
       line-height: 16px;
       color: #FFFFFF;
-      width: 130px;
+      width: 50%;
       z-index: 1;
     }
   }
@@ -99,6 +99,7 @@
   line-height: 16px;
   color: #252a32;
   width: 100%;
+  padding: 10px;
   .total-exposure {
     background: #364150;
     border-radius: 4px;
@@ -122,4 +123,9 @@
       color: #ffffff;
     }
   }
+}
+
+.contract-no-padding {
+  padding-right: 0px;
+  margin-right: 0px;
 }
