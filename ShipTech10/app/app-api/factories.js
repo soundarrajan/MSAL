@@ -3183,7 +3183,59 @@ APP_API.factory('$Api_Service', [
                             endpoint: `${API.BASE_URL_DATA_MAIL }/api/mail/templates/listByTypeAndProcess`
                         }
                     }
-                }
+                },
+                tradebooks:{
+                    layout: {
+                        get: {
+                            json: {
+                                Payload: {
+                                    ScreenType: 215
+                                }
+                            },
+                            endpoint: `${API.BASE_URL_DATA_INFRASTRUCTURE }/api/infrastructure/screenlayout/get`
+                        },
+                        update: {
+                            endpoint: `${API.BASE_URL_DATA_INFRASTRUCTURE }/api/infrastructure/screenlayout/update`
+                        }
+                    },
+                    entity: {
+                        list: {
+                            json: {},
+                            endpoint: `${API.BASE_URL_DATA_ADMIN }/api/admin/tradeBookMapping/list`
+                        },
+                        get: {
+                            endpoint: `${API.BASE_URL_DATA_ADMIN }/api/admin/tradeBookMapping/get`
+                        }
+                    }
+                },
+                tradebook: {
+                    layout: {
+                        get: {
+                            json: {
+                                Payload: {
+                                    ScreenType: 216
+                                }
+                            },
+                            endpoint: `${API.BASE_URL_DATA_INFRASTRUCTURE }/api/infrastructure/screenlayout/get`
+                        },
+                        update: {
+                            endpoint: `${API.BASE_URL_DATA_INFRASTRUCTURE }/api/infrastructure/screenlayout/update`
+                        }
+                    },
+                    entity: {
+                        get: {
+                            endpoint: `${API.BASE_URL_DATA_ADMIN }/api/admin/tradeBookMapping/get`
+                        },
+                        update: {
+                            endpoint: `${API.BASE_URL_DATA_ADMIN }/api/admin/tradeBookMapping/update`
+                        },
+                        create: {
+                            endpoint: `${API.BASE_URL_DATA_ADMIN }/api/admin/tradeBookMapping/create`
+                        }
+                    },
+                    lookup: {
+                    }
+                },
             },
             claims: {
                 claimslist: {

@@ -5251,6 +5251,20 @@
             $scope.addnewTankDetail( $scope.formValues.vesselProducts.length-1);
         }
 
+        $scope.addnewTradebookItem = function (){
+            var newItem = {
+                location:null,
+                productType:null,
+                product:null
+            }
+            if($scope.formValues['tradeBookMappings'] == null){
+                $scope.formValues.tradeBookMappings = [];
+                $scope.formValues['tradeBookMappings'].push(newItem);
+            }
+            else
+                $scope.formValues['tradeBookMappings'].push(newItem);
+        }
+
         $scope.initInvoiceTypeOptions = function() {
 	        vm.getOptions({
 	            Name: 'DocumentTypeEnum',
@@ -9572,6 +9586,10 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
 
         $scope.deleteVesselProductTank = function(vpKey, vptKey) {
             $scope.formValues.vesselProducts[vpKey].vesselProductTanks[vptKey].isDeleted = true;
+        }
+
+        $scope.deleteTradeBookItem = function(key) {
+            $scope.formValues.TradeBookMappings[key].isDeleted = true;
         }
     }
 ]);

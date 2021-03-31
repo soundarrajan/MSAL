@@ -1303,6 +1303,32 @@
 
                     </ul>
                 </li>
+                <li class="nav-item  ">
+                    <a class="nav-link nav-toggle">
+                        <span class="">
+                            Trade Book
+                        </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item  ">
+
+                            <a ng-click="openInNewTab('url','/admin/tradebook')" class="nav-link ">
+                                <span class="">
+                                    Trade Book List
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+
+                            <a ng-click="openInNewTab('url','/admin/tradebook/edit/')" class="nav-link ">
+                                <span class="">
+                                    New Trade Book
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </li>
         <li class="nav-item" ng-show="!tenantSettings.shiptechLite">

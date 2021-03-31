@@ -19,6 +19,7 @@ APP_ADMIN.constant('ADMIN_STATE', {
     IMPORT: 'admin.import',
     SELLERRATING: 'admin.sellerRating',
     TRANSLATE: 'admin.translate',
+    TRADEBOOK: 'admin.tradebook'
 });
 // Config
 APP_ADMIN.config([ '$stateProvider', '$urlRouterProvider', 'ADMIN_STATE', function($stateProvider, $urlRouterProvider, ADMIN_STATE) {
@@ -186,7 +187,27 @@ APP_ADMIN.config([ '$stateProvider', '$urlRouterProvider', 'ADMIN_STATE', functi
             url: '/admin/order-import',
             requireADLogin: true,
             templateUrl: 'app-admin/views/lists/order-import.html'
-        });
+        }).state(ADMIN_STATE.TRADEBOOK, {
+            params: {
+            path: [
+                {
+                    label: 'Admin',
+                    uisref: ADMIN_STATE.HOME
+                }, 
+                {
+                    label: 'Trade Book List',
+                    uisref: ADMIN_STATE.TRADEBOOK
+                }],
+                title: 'Trade Book List'
+            },
+            url: '/admin/tradebook',
+            requireADLogin: true,
+            // templateUrl: 'app-admin/views/lists/tradebook.html'
+            templateUrl: function($stateParams) {
+                console.log($stateParams);
+                return `app-admin/views/lists/${ $stateParams.screen_id }.html`;
+            }
+        })
 } ]);
 // ON RUN
 APP_ADMIN.run([ '$state', '$rootScope', 'ADMIN_STATE', function($state, $rootScope, ADMIN_STATE) {
@@ -198,6 +219,7 @@ APP_ADMIN.run([ '$state', '$rootScope', 'ADMIN_STATE', function($state, $rootSco
     titleMap[ADMIN_STATE.PASSWORD] = 'User Password Change';
     titleMap[ADMIN_STATE.TRANSLATE] = 'Translate';
     titleMap[ADMIN_STATE.IMPORT] = 'IMPORT';
+    titleMap[ADMIN_STATE.TRADEBOOK] = 'Trade Book List';
     let screenMap = {
         users: 'Users',
         user_role: 'User Role',
@@ -206,7 +228,8 @@ APP_ADMIN.run([ '$state', '$rootScope', 'ADMIN_STATE', function($state, $rootSco
         sellerRating: 'sellerRating',
         subscriptionslist: 'Subscription',
         translate: 'Translate',
-        import: 'Import'
+        import: 'Import',
+        tradebook: 'Trade Book List'
     };
     let entityMap = {}; // if needed :)
     // do not edit below
@@ -226,6 +249,19 @@ APP_ADMIN.run([ '$state', '$rootScope', 'ADMIN_STATE', function($state, $rootSco
                 $state.current.params.title = 'Order to Invoice  Import';
                 $state.params.path[1].label = 'Order to Invoice  Import';
                 $state.params.title = 'Order to Invoice Import';
+            }
+
+            // if ($state.params.screen_id == 'tradebooks') {
+            //     $state.current.params.path[1].label = 'Trade Book List';
+            //     $state.current.params.title = 'Trade Book List';
+            //     $state.params.path[1].label = 'Trade Book List';
+            //     $state.params.title = 'Trade Book List';
+            // }
+            if ($state.params.screen_id == 'tradebook') {
+                $state.current.params.path[1].label = 'Trade Book';
+                $state.current.params.title = 'Trade Book';
+                $state.params.path[1].label = 'Trade Book';
+                $state.params.title = 'Trade Book';
             }
         }
     };
