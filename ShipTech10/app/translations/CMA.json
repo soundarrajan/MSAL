@@ -321,6 +321,8 @@
       "MIN_MAX_QTY": "Min/Max Qty.",
       "QUANTITY": "Quantity",
       "PRICE": "Unit Price",
+      "PRETEST": "Pre Test",
+      "BARGEMFM": "Barge MFM",
       "AVERAGE_PRICE": "Average Price",
       "CONTRACT_ID": "Contract Id",
       "FORMULA_DESCRIPTION": "Forml. Desc.",
