@@ -106,7 +106,6 @@ import { QuantityTenantFormatDirective } from './views/contract/details/directiv
 import { NumberOnlyDirective } from './views/contract/details/directives/number-only.directive';
 import { ContractRouteResolver } from './views/contract/details/contract-route.resolver';
 import { ContractModuleResolver } from './contract-route.resolver';
-import { SatisfactionLevelRouteResolver } from './views/contract/details/satisfaction-level-route.resolver';
 import { UomsRouteResolver } from './views/contract/details/uoms-route.resolver';
 import { ContractFeedbackRouteResolver } from './views/contract/details/contract-feedback-route.resolver';
 import { QuantityCategoryRouteResolver } from './views/contract/details/quantity-category-route.resolver';
@@ -118,6 +117,7 @@ import { ContractDetailsRouteResolver } from './views/contract/details/contract-
 import { ContractDetailsUnsavedChangesGuard } from './guards/contract-details-unsaved-changes-guard.service';
 import { ContractApi, CONTRACT_API_SERVICE } from './services/api/contract-api';
 import { GeneralInformationContract } from './views/contract/details/components/general-information-contract/general-information-contract.component';
+import { StaticListsRouteResolver } from './views/contract/details/static-lists-route.resolver';
 
 
 @NgModule({
@@ -223,7 +223,7 @@ import { GeneralInformationContract } from './views/contract/details/components/
     ContractDetailsToolbarComponent,
     ContractDetailsDocumentsComponent,
     QuantityTenantFormatDirective,
-    NumberOnlyDirective
+    NumberOnlyDirective,
     //PSpinnerDisableKeysSpinDirective,
     //PSpinnerTenantFormatDirective
   ],
@@ -241,7 +241,7 @@ import { GeneralInformationContract } from './views/contract/details/components/
     ContractRouteResolver,
     UomsRouteResolver,
     ContractFeedbackRouteResolver,
-    SatisfactionLevelRouteResolver,
+    StaticListsRouteResolver,
     ContractDetailsRouteResolver,
     NavBarResolver,
     BargeRouteResolver,

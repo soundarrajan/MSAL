@@ -51,6 +51,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ContractService } from 'libs/feature/contract/src/lib/services/contract.service';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatRadioChange } from '@angular/material/radio';
 
 
 
@@ -399,16 +401,67 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
 })
 export class GeneralInformationContract extends DeliveryAutocompleteComponent
   implements OnInit{
+  switchTheme; //false-Light Theme, true- Dark Theme
   formValues: any;
   baseOrigin: string;
-  entityName: string;
   selectedVal: string;
+  private _autocompleteType: any;
+  autocompleteVessel: knownMastersAutocomplete;
+  _entityName: string;
+  _entityId: number;
+  autocompleteSellers: knownMastersAutocomplete;
+  autocompleteCompany: knownMastersAutocomplete;
+  sellerList: any;
+  companyList: any;
+  selectedCompany: any;
+  companyListForSearch: any;
+  searchCompanyModel: any;
+  expandCompanyPopUp: boolean = false;
+  @Input() set autocompleteType(value: string) {
+    this._autocompleteType = value;
+  }
+
+  get entityId(): number {
+    return this._entityId;
+  }
+
+  get entityName(): string {
+    return this._entityName;
+  }
+
+  @Input() set entityId(value: number) {
+    this._entityId = value;
+    this.gridViewModel.entityId = this.entityId;
+  }
+
+  @Input() set entityName(value: string) {
+    this._entityName = value;
+    this.gridViewModel.entityName = this.entityName;
+  }
+     
+  @Input() vesselId: number;
 
   @Input('model') set _setFormValues(formValues) { 
     if (!formValues) {
       return;
     } 
     this.formValues = formValues;
+    this.selectedVal = this.formValues.evergreen ? 'evergreen' : 'dateSpecific';
+  }
+
+  @Input('sellerList') set _setSellerList(sellerList) { 
+    if (!sellerList) {
+      return;
+    } 
+    this.sellerList = sellerList;
+  }
+
+  @Input('companyList') set _setCompanyList(companyList) { 
+    if (!companyList) {
+      return;
+    } 
+    this.companyList = companyList;
+    this.companyListForSearch = this.companyList;
   }
 
 
@@ -429,6 +482,7 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
     iconRegistry: MatIconRegistry, 
+    public dialog: MatDialog, 
     sanitizer: DomSanitizer) {
     
     super(changeDetectorRef);
@@ -438,8 +492,9 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
     CUSTOM_DATE_FORMATS.display.dateInput = this.format.dateFormat;
     PICK_FORMATS.display.dateInput = this.format.dateFormat;
     this.baseOrigin = new URL(window.location.href).origin;
+    this.autocompleteSellers = knownMastersAutocomplete.sellers;
+    this.autocompleteCompany = knownMastersAutocomplete.company;
     //this.dateTimeFormats.parse.dateInput = this.format.dateFormat;
-    this.selectedVal = 'dateSpecific';
 
   }
 
@@ -474,7 +529,167 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
     }
   }
 
+  displayFn(value): string {
+    return value && value.name ? value.name : '';
+  }
+
+  selectSeller(event: MatAutocompleteSelectedEvent) {
+    this.formValues.seller = event.option.value;
+    this.getCounterpartyById(this.formValues.seller.id);
+  }
+
+  
+  selectorSellerSelectionChange(
+    selection: IOrderLookupDto
+  ): void {
+    if (selection === null || selection === undefined) {
+      this.formValues.seller = '';
+    } else {
+      const obj = {
+        'id': selection.id,
+        'name': selection.name
+      };
+      this.formValues.seller = obj; 
+      this.getCounterpartyById(this.formValues.seller.id);
+      this.changeDetectorRef.detectChanges();   
+    }
+  }
+
+  getCounterpartyById(counterpartyId: number) {
+    this.spinner.show();
+    this.contractService
+      .getCounterparty(this.formValues.seller.id)
+      .pipe(
+        finalize(() => {
+          this.spinner.hide();
+        })
+    )
+    .subscribe((response: any) => {
+      if (typeof response == 'string') {
+        this.toastr.error(response);
+      } else {
+        if (response.defaultPaymentTerm != null) {
+          this.formValues.paymentTerm = response.defaultPaymentTerm;
+        }
+        console.log(this.formValues.paymentTerm);
+      }
+    });
+
+  }
+
+  selectCompany(event: MatAutocompleteSelectedEvent) {
+    this.formValues.company = event.option.value;
+    console.log(this.entityId);
+    console.log(this.formValues.company);
+    this.addAllowedCompanies();
+  }
+
+  selectorCompanySelectionChange(
+    selection: IOrderLookupDto
+  ): void {
+    if (selection === null || selection === undefined) {
+      this.formValues.company = '';
+    } else {
+      const obj = {
+        'id': selection.id,
+        'name': selection.name
+      };
+      this.formValues.company = obj; 
+      this.addAllowedCompanies();
+      this.changeDetectorRef.detectChanges();   
+    }
+  }
+
+  addAllowedCompanies() {
+    if (!this.entityId) {
+      this.formValues.allowedCompanies = [];
+      this.companyList.forEach((v, k) => {
+        if (v.id != this.formValues.company.id) {
+          this.formValues.allowedCompanies.push(v);
+        }
+      });
+    }
+    console.log(this.formValues.allowedCompanies);
+  }
+
+  getHeaderNameSelector(): string {
+    switch (this._autocompleteType) {
+      case knownMastersAutocomplete.sellers:
+        return knowMastersAutocompleteHeaderName.sellers;
+      default:
+        return knowMastersAutocompleteHeaderName.sellers;
+    }
+  }
+
+
+  getHeaderNameSelector1(): string {
+    switch (this._autocompleteType) {
+      case knownMastersAutocomplete.company:
+        return knowMastersAutocompleteHeaderName.company;
+      default:
+        return knowMastersAutocompleteHeaderName.company;
+    }
+  }
+
+  
+  compareUomObjects(object1: any, object2: any) {
+    return object1 && object2 && object1.id == object2.id;
+  }
+
+  public filterSellerList() {
+    let filterValue = '';
+    filterValue = this.formValues.seller.name ? this.formValues.seller.name.toLowerCase() : this.formValues.seller.toLowerCase();
+    if (this.sellerList) {
+      const list =  this.sellerList.filter((item: any) => {
+        return item.name.toLowerCase().includes(filterValue.toLowerCase());
+      }).splice(0,10);
+      console.log(list);
+      return list;
+    } else {
+      return [];
+    }
+  }
+
+  
+  public filterCompanyList() {
+    let filterValue = '';
+    filterValue = this.formValues.company.name ? this.formValues.company.name.toLowerCase() : this.formValues.company.toLowerCase();
+    if (this.companyList) {
+      const list =  this.companyList.filter((item: any) => {
+        return item.name.toLowerCase().includes(filterValue.toLowerCase());
+      }).splice(0,10);
+      console.log(list);
+      return list;
+    } else {
+      return [];
+    }
+  }
+
+
+
+  searchCompanyList(value: string): void {
+    let filterCompany = this.companyList.filter((company) => company.name.toLowerCase().includes(value));
+    console.log(filterCompany);
+    this.companyListForSearch = [ ... filterCompany];
+  }
+
+
+  resetCompanyData() {
+    this.searchCompanyModel = null;
+    this.selectedCompany = null;
+    this.companyListForSearch = this.companyList;
+    this.expandCompanyPopUp = false;
+  }
+
+  radioCompanyChange($event: MatRadioChange) {
+    if ($event.value) {
+      this.formValues.company = $event.value;
+    }
+  }
+
+
   ngAfterViewInit(): void {
   
   }
 }
+

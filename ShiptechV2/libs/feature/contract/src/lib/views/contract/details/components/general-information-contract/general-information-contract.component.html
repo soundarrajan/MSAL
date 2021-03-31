@@ -1,4 +1,4 @@
-<div class="col-md-12 row contract-no-padding">
+<div class="col-md-12 d-flex contract-section contract-no-padding">
   <div class="col-md-3">
     <div id="custom-btn-toggle-v2">
       <mat-button-toggle-group  #group="matButtonToggleGroup" [value]="selectedVal" (change)="onValChange(group.value)" >
@@ -34,34 +34,198 @@
       </div>
     </div>
   </div>
-  <div class="col-md-6 contract-no-padding">
+  <div class="col-md-6">
     <div class="contract-qty-section" style="display: flex;justify-content: flex-start;">
-        <div class="total-exposure">
-          <div><span class="label">Total Exposure</span>
+        <div class="contract-qty-container">
+          <div>
+            <span class="label">
+              <span>
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" fill="#9E9E9E"/>
+                </svg>
+              </span>
+              Status
+            </span>
             <div class="value">42,000 GAL</div>
           </div>
         </div>
-        <div class="total-exposure">
-          <div><span class="label">Total Exposure</span>
+        <div class="contract-qty-container">
+          <div>
+            <span class="label">
+              <span>
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" fill="#9E9E9E"/>
+                </svg>
+              </span>
+              Total Qty
+            </span>
             <div class="value">42,000 GAL</div>
           </div>
         </div>
-        <div class="total-exposure">
-          <div><span class="label">Total Exposure</span>
+        <div class="contract-qty-container">
+          <div>
+            <span class="label">
+              <span>
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" fill="#9E9E9E"/>
+                </svg>
+              </span>
+              Planned Qty
+            </span>
             <div class="value">42,000 GAL</div>
           </div>
         </div>
-        <div class="total-exposure">
-          <div><span class="label">Total Exposure</span>
+        <div class="contract-qty-container">
+          <div>
+            <span class="label">
+              <span>
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" fill="#9E9E9E"/>
+                </svg>
+              </span>
+              Utilised Qty
+            </span>
             <div class="value">42,000 GAL</div>
           </div>
         </div>
-        <div class="total-exposure">
-          <div><span class="label">Total Exposure</span>
+        <div class="contract-qty-container">
+          <div>
+            <span class="label">
+              <span>
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" fill="#9E9E9E"/>
+                </svg>
+              </span>
+              Available Qty
+            </span>
             <div class="value">42,000 GAL</div>
           </div>
         </div>
     </div>
   </div>
 </div>
+<div class="col-md-12 d-flex contract-section contract-no-padding">
+  <div class="col-md-6 d-flex">
+    <div class="custom-form-field custom-field-general" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+      <mat-form-field class="without-search" appearance="legacy">
+        <mat-label>Contract name</mat-label>
+        <input matInput
+            [(ngModel)]="formValues.name"
+            placeholder="Contract name"
+            autocomplete="off"
+            required>
+        </mat-form-field>
+    </div>
+    <div class="custom-form-field lookup-delivery-container custom-field-general-lookup" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+      <div class="d-flex">
+        <mat-form-field class="with-search" appearance="legacy">
+          <mat-label>Seller name</mat-label>
+          <input class="free-text-field" 
+                  type="text"
+                  matInput 
+                  [(ngModel)]="formValues.seller"
+                  [matAutocomplete]="auto"
+                  placeholder="Seller name"
+                  required>
+          <mat-autocomplete #auto="matAutocomplete" 
+                            class="darkPanelAuto"
+                            [displayWith]="displayFn"
+                            (optionSelected)="selectSeller($event)">
+              <mat-option *ngFor="let option of filterSellerList()" 
+                    [value]="option">
+                  {{option.name}}
+              </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <button 
+              class="search-icon" appMasterSelectorTrigger [masterSelector]="masterSelector" #masterSelectorTrigger="masterSelectorTrigger" [header]="getHeaderNameSelector()">
+          <div class="img">
+            <ng-template cdkPortal #masterSelector="cdkPortal" >
+              <shiptech-shared-master-selector (selectedChange)="selectorSellerSelectionChange($event); masterSelectorTrigger.close()" (shouldCloseModal)="masterSelectorTrigger.close()" [selectorType]="autocompleteSellers"
+                                            [disabled]="disabled"
+                                            [readonly]="readonly"
+                                            [entityName]="entityName"
+                                            [entityId]="entityId"
+                                            [vesselId]="vesselId"
+                                            [headerName]="getHeaderNameSelector()"
+              ></shiptech-shared-master-selector>
+            </ng-template> 
+          </div>
+        </button>
+      </div>
+    </div>
+    <div class="custom-form-field lookup-delivery-container custom-field-general-lookup" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+      <div class="d-flex">
+        <mat-form-field class="with-search" appearance="legacy">
+          <mat-label>Company name</mat-label>
+          <input class="free-text-field" 
+                  type="text"
+                  matInput 
+                  [(ngModel)]="formValues.company"
+                  [matAutocomplete]="auto1"
+                  placeholder="Company name"
+                  required>
+          <mat-autocomplete #auto1="matAutocomplete" 
+                            class="darkPanelAuto"
+                            [displayWith]="displayFn"
+                            (optionSelected)="selectCompany($event)">
+              <mat-option *ngFor="let option of filterCompanyList()" 
+                    [value]="option">
+                  {{option.name}}
+              </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <div class="search-icon"  [matMenuTriggerFor]="menu" (click)="resetCompanyData()">
+          <div class="img"></div>
+        </div>
+        <mat-menu #menu="matMenu" class="company-modal">
+          <div [ngClass]="{'container-modal': !expandCompanyPopUp, 'container-modal-expand': expandCompanyPopUp}">
+            <div class="col-md-12 header-container-company">
+              <div class="select-company-container col-md-10">
+                <span class="search-company-lookup">
+                </span>
+                <input matInput 
+                      placeholder="Type company name"
+                      class="search-company-input"
+                      autocomplete="off"
+                      [(ngModel)]="searchCompanyModel"
+                      (click)="$event.stopPropagation();$event.preventDefault();"
+                      (input)="searchCompanyList($event.target.value)">
+              </div>
+              <div class="col-md-2"  (click)="$event.stopPropagation();$event.preventDefault();">
+                  <img  [ngClass]="{'expand-company-img': expandCompanyPopUp}" (click)="expandCompanyPopUp = !expandCompanyPopUp;" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
+              </div>
+            </div>
+            <div class="col-md-12 row company-container-header">
+              Company Name
+            </div>
+            <mat-radio-group
+              class="company-container"
+              [(ngModel)]="selectedCompany"
+              (change)="radioCompanyChange($event)">
+              <mat-radio-button class="company-container-radio-button" *ngFor="let company of companyListForSearch" [value]="company">
+                {{company.name}}
+              </mat-radio-button>
+            </mat-radio-group>
+          </div>        
+        </mat-menu>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+      <div class="allowed-companies-container">
+        <div class="allowed-companies-header d-flex">
+          <div class="col-md-6">
+            Allowed Companies
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
 
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-spin-clockwise-fade">
+</ngx-spinner>

@@ -13,6 +13,9 @@ import { IContractApiService } from './contract.api.service.interface';
 export namespace ContractApiPaths {
   export const getContractDetails = () => `api/contract/contract/get`;
   export const getTenantConfiguration = () => `api/admin/tenantConfiguration/get`;
+  export const getStaticLists = () =>  `api/infrastructure/static/lists`;
+  export const getCounterparty = () =>  `api/masters/counterparties/get`;
+
 }
 
 
@@ -20,7 +23,7 @@ export namespace ContractApiPaths {
 @Injectable({
   providedIn: 'root'
 })
-export class ContractApi implements IDeliveryApiService {
+export class ContractApi implements IContractApiService {
 
   @ApiCallUrl()
   private _apiUrl = this.appConfig.v1.API.BASE_URL_DATA_CONTRACTS;
@@ -30,6 +33,12 @@ export class ContractApi implements IDeliveryApiService {
 
   @ApiCallUrl()
   private _adminApiUrl = this.appConfig.v1.API.BASE_URL_DATA_ADMIN;
+
+  @ApiCallUrl()
+  private _infrastructureApiUrl = this.appConfig.v1.API.BASE_URL_DATA_INFRASTRUCTURE;
+
+  @ApiCallUrl()
+  private _masterApiUrl = this.appConfig.v1.API.BASE_URL_DATA_MASTERS;
 
   constructor(private http: HttpClient, private appConfig: AppConfig) {}
 
@@ -43,7 +52,7 @@ export class ContractApi implements IDeliveryApiService {
       { payload: request }
     ).pipe(
       map((body: any) => body.payload),
-      catchError(() => of('Error, could not load the contract'))
+      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
     );
   }
 
@@ -58,7 +67,34 @@ export class ContractApi implements IDeliveryApiService {
       { Payload: request }
     ).pipe(
       map((body: any) => body.payload),
-      catchError(() => of('Error, could not load the tenant config'))
+      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+    );
+  }
+
+    
+  @ObservableException()
+  getStaticLists(
+    request: any
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${this._infrastructureApiUrl}/${ContractApiPaths.getStaticLists()}`,
+      { Payload: request }
+    ).pipe(
+      map((body: any) => body),
+      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+    );
+  }
+
+  @ObservableException()
+  getCounterparty(
+    request: any
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${this._masterApiUrl}/${ContractApiPaths.getCounterparty()}`,
+      { Payload: request }
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
     );
   }
 

@@ -4,7 +4,9 @@ export enum knownMastersAutocomplete {
   vesselPort = 'vesselPort',
   orders = 'orders',
   products = 'products',
-  physicalSupplier = 'physicalSupplier'
+  physicalSupplier = 'physicalSupplier',
+  sellers = 'sellers',
+  company = 'company'
 }
 
 export enum knowMastersAutocompleteHeaderName {
@@ -13,5 +15,7 @@ export enum knowMastersAutocompleteHeaderName {
   vesselPort = 'SELECT VESSEL PORT',
   orders = 'SELECT ORDER',
   products = 'SELECT PRODUCT',
-  physicalSupplier = 'SELECT PHYSICAL SUPPLIER'
+  physicalSupplier = 'SELECT PHYSICAL SUPPLIER',
+  sellers = 'SELECT SELLER',
+  company = 'SELECT COMPANY'
 }

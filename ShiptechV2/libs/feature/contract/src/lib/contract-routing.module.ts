@@ -11,13 +11,13 @@ import { MainContractComponent } from './views/main-contract.component';
 import { ContractDetailsComponent } from './views/contract/details/contract-details.component';
 import { NavBarResolver } from './views/contract/details/navbar-route.resolver';
 import { UomsRouteResolver } from './views/contract/details/uoms-route.resolver';
-import { SatisfactionLevelRouteResolver } from './views/contract/details/satisfaction-level-route.resolver';
 import { ClaimTypeRouteResolver } from './views/contract/details/claim-type-route.resolver';
 import { QuantityCategoryRouteResolver } from './views/contract/details/quantity-category-route.resolver';
 import { ScheduleDashboardLabelsRouteResolver } from './views/contract/details/schedule-dashboard-labels-route.resolver';
 import { ContractDetailsDocumentsComponent } from './views/contract/documents/contract-details-documents.component';
 import { ContractFeedbackRouteResolver } from './views/contract/details/contract-feedback-route.resolver';
 import { ContractRouteResolver } from './views/contract/details/contract-route.resolver';
+import { StaticListsRouteResolver } from './views/contract/details/static-lists-route.resolver';
 
 interface IContractDetailsRouteData {
   [KnownContractRoutes.ContractIdParam]: Type<
@@ -63,6 +63,7 @@ const routes: Routes = [
                   tenantConfiguration : ContractDetailsRouteResolver,
                   contract: ContractRouteResolver,
                   navBar: NavBarResolver,
+                  staticLists: StaticListsRouteResolver,
                   uoms: UomsRouteResolver,
                   scheduleDashboardLabelConfiguration: ScheduleDashboardLabelsRouteResolver
                 },

@@ -7,6 +7,8 @@ import { IPageSizeOption } from '@shiptech/core/ui/components/page-size-selector
 import { OrderListSelectorGridViewModel } from './order-model/order-list-selector-grid.view-model';
 import { ProductListSelectorGridViewModel } from './product-model/product-list-selector-grid.view-model';
 import { PhysicalSupplierListSelectorGridViewModel } from './physical-supplier-model/physical-supplier-list-selector-grid.view-model';
+import { SellerListSelectorGridViewModel } from './seller-model/seller-list-selector-grid.view-model';
+import { CompanyListSelectorGridViewModel } from './company-model/company-list-selector-grid.view-model';
 
 export interface IMasterModelInterface {
   entityId?: number;
@@ -29,6 +31,8 @@ export interface IMasterModelInterface {
   OrderListSelectorGridViewModel?: OrderListSelectorGridViewModel;
   ProductListSelectorGridViewModel?: ProductListSelectorGridViewModel;
   PhysicalSupplierListSelectorGridViewModel?: PhysicalSupplierListSelectorGridViewModel;
+  SellerListSelectorGridViewModel?: SellerListSelectorGridViewModel;
+  CompanyListSelectorGridViewModel?: CompanyListSelectorGridViewModel;
   VesselPortCallsMasterSelectorGridViewModel?: VesselPortCallsMasterSelectorGridViewModel;
   markServerSideDataSourceReady(): void;
   onSearch(event: string): void;

@@ -12,15 +12,17 @@ import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.en
 import { BdnInformationApiService } from '@shiptech/core/delivery-api/bdn-information/bdn-information-api.service';
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 import { KnownContractRoutes } from '../../../known-contract.routes';
+import { ContractService } from '../../../services/contract.service';
 
 @Injectable()
-export class SatisfactionLevelRouteResolver implements Resolve<any> {
+export class StaticListsRouteResolver implements Resolve<any> {
   isLoading: boolean;
   options: any;
   constructor(
     private router: Router,
     private appErrorHandler: AppErrorHandler,
     private legacyLookupsDatabase: LegacyLookupsDatabase,
+    private contractService: ContractService
 
   ) {}
 
@@ -38,7 +40,7 @@ export class SatisfactionLevelRouteResolver implements Resolve<any> {
         KnownContractRoutes.ContractList
       ]);
     }
-    return  this.legacyLookupsDatabase.getSatisfactionLevelList();
+    return  this.contractService.getStaticLists(['Company','Seller']);
 
   }
 
