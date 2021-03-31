@@ -49,7 +49,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
 
   private quantityPrecision: number;
 
-  entityId: string;
+  entityId: number;
   entityName: string;
   isLoading: boolean;
   orderNumberOptions: any;
@@ -93,6 +93,9 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   quantityFormat: string;
   openedScreenLoaders: number = 0;
   tenantConfiguration: any;
+  staticLists: any;
+  companyList: any;
+  sellerList: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -118,9 +121,9 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     private loadingBar: LoadingBarService
     ) {
     this.formValues = {
-      'sellerName': '',
-      'port': '',
-      'OrderBuyer': '',
+      'name': '',
+      'seller': '',
+      'company': '',
       'surveyorName': '',
       'bdnInformation': '',
       'orderNumber': '',
@@ -166,13 +169,37 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.route.params.pipe(takeUntil(this._destroy$)).subscribe(params => {
-      this.entityId = params.deliveryId;
+      this.entityId = parseFloat(params.contractId);
     });
     this.route.data.subscribe(data => {
         console.log(data);
       this.tenantConfiguration = data.tenantConfiguration;
-      this.formValues = data.contract;
+      if (data.contract) {
+        this.formValues = data.contract;
+      }
+      this.staticLists = data.staticLists;
+      console.log(this.staticLists);
+      this.setListFromStaticLists();
     });
+  }
+
+  setListFromStaticLists() {
+    let companyList = _.find(this.staticLists, function(object) {
+      return object.name == 'Company';
+    });
+    if (companyList != -1) {
+      this.companyList = companyList?.items;
+    }
+
+    let sellerList = _.find(this.staticLists, function(object) {
+      return object.name == 'Seller';
+    });
+    if (sellerList != -1) {
+      this.sellerList = sellerList?.items;
+    }
+
+    console.log(this.companyList);
+    console.log(this.sellerList);
   }
 
   

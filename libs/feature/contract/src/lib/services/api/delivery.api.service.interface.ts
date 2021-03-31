@@ -13,6 +13,11 @@ export interface IDeliveryApiService {
     request: any
   ): Observable<any>;
 
+  getStaticLists(
+    request: any
+  ): Observable<any>;
+
+
 
 
 }

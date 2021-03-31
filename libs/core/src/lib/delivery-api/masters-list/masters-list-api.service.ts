@@ -21,6 +21,8 @@ import { IPhysicalSupplierListRequest, IPhysicalSupplierListResponse, IProductLi
 export namespace MastersApiPaths {
   export const getProductList = () => `api/masters/products/list`;
   export const getPhysicalSupplierList = () => `api/masters/counterparties/listByTypes`;
+  export const getSellerList = () => `api/masters/counterparties/listByTypes`;
+  export const getCompanyList = () => `api/masters/companies/list`
 }
 
 // @dynamic
@@ -61,6 +63,29 @@ export class MastersListApiService
       catchError(() => of('Error, could not load the physical supplier list'))
     );
   }
+
+  @ObservableException()
+  getSellerList(
+    request: IPhysicalSupplierListRequest
+  ): Observable<IPhysicalSupplierListResponse> {
+    const requestUrl = `${this._apiUrl}/${MastersApiPaths.getSellerList()}`;
+    return this.http.post(requestUrl, {'payload': request}).pipe(
+      map((body: any) => body),
+      catchError(() => of('Error, could not load the seller list'))
+    );
+  }
+
+  @ObservableException()
+  getCompanyList(
+    request: IPhysicalSupplierListRequest
+  ): Observable<any> {
+    const requestUrl = `${this._apiUrl}/${MastersApiPaths.getCompanyList()}`;
+    return this.http.post(requestUrl, {'payload': request}).pipe(
+      map((body: any) => body),
+      catchError(() => of('Error, could not load the company list'))
+    );
+  }
+
 
   ngOnDestroy(): void {
     this._destroy$.next();

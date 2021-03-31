@@ -6,25 +6,25 @@
       <button  class="ui-button-info mr-1 btn-i-blue-color" label="Save"
               pButton
               type="button"></button>
-      <button *ngIf="formValues.deliveryStatus && (formValues.deliveryStatus.name == 'NotVerified' || formValues.deliveryStatus.name == 'Open')" 
+      <button 
             class="ui-button-info mr-1 btn-i-blue-color" 
             label="Verify"
             pButton
             type="button"></button>
-      <button *ngIf="formValues.deliveryStatus &&  formValues.deliveryStatus.name == 'Verified'" 
+      <button 
             class="ui-button-info mr-1 btn-i-blue-color" 
             label="Revert Verify"
             pButton
             type="button"></button>
-      <button mat-icon-button [matMenuTriggerFor]="menu" [disabled]="!formValues.deliveryStatus">
+      <button mat-icon-button [matMenuTriggerFor]="menu" >
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #menu="matMenu" class="delivery-mat-menu-panel">
-        <button mat-menu-item  *ngIf="formValues.deliveryStatus && formValues.deliveryStatus.name != 'Verified'">
+        <button mat-menu-item >
           <img id="split-deliveries" alt="Shiptech" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACcAAAAnCAYAAACMo1E1AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAFgSURBVFhH7ZetS0RBFEcXDMKCQTAsCAZBMAgGYbvNtGwxiG2TYDBpki0GsW0SDJbdptVqtlqt/iMjZ+DCMF5m7wwPdpQJJ7z3u7w5M2/u++gNj8euVppcKf9D7uD00m0+vLmN2XsnbN88qeOEmOQORxO3tvhyvZfvThncztXxBJMcs+RiO1czNRf2z699HSuj5cLRyZlbf/70tVouZMkxuJYLVjmgpskJK5Hbvbj3F6NjtVzIkaMZltWZ5GK27l69cHw+JUcTWCYYki2HGAL9x49fWUpubzL1GY8kq2CWXCjGSsT5stvKaucImuVEDNgvNEkINbEcx3EdE7MKmuTklqSgLpZDJq4L0bZGyN9fOaHaPSekBFNyuWKQLQcIQnw+JYcQL3urGJjkqn5DsJEZlMG1XMiRo4ZaLROanEbnclV+CVf9DwF0apV/X6uiyZXS5EppcqU0uVKaXCkVy43dDwKUKPtf2PlPAAAAAElFTkSuQmCC">
           <span class="label-for-delivery-menu">Split deliveries</span>
         </button>
-        <button mat-menu-item  *ngIf="formValues.deliveryStatus">
+        <button mat-menu-item>
           <img id="raise-claim" alt="Shiptech" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAmCAYAAABOFCLqAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAGPSURBVFhH7ZahSwRBFIcPDIJgEAyCYBAEg2AQrttMcsUgtkuCwaRJLAa5dkkwWLRptZqtVqv/yMg38INxnTc7ygwqTvjY2dt3M9++927mBsPtkfstNBmLvyuztbPv5q6e3eD+rZf56ZOPj81jkS0TiixePLj1gxOTtfG5j1s9vIzOZZElIxGxfHodjQtBJicupFdGIjN3r/6Nf1SGCZk4ZOV4Go0NqSZDM8aepaguQ5m4T0EMsdVlFiaPfpxCAv+rTPySWCQFexCxjKvK5PQMmx6x1WU29o4+7bZdNnfHPra6TE6ZaHJiGVeV+QrVZZbObv1YxHZiPpu9efmQKZWuj6IyPEeAK/2js4xzLUeoWJlYDBH9bUAAWR206qUUxWSIozy6D3sGQe71zKJXhlQzEW8XlqgLIlz1PTKhc4qSFZEBJuMtU7DzsqB6g75hX2LMszBrFlkyuZA9QIh+QYYrkspSiqIyLI6MykoTMyZzsfguRWWEzjCykrvHQBWZ79JkLJqMRZOxaDIWTSbOyL0D13+tsyqU0oUAAAAASUVORK5CYII=">
           <span class="label-for-delivery-menu">Raise claim</span>
         </button>
@@ -39,6 +39,9 @@
         <div fxLayout="row">
           <shiptech-general-information-contract
                 [model]="formValues"
+                [sellerList]="sellerList"
+                [companyList]="companyList"
+                [entityId]="entityId"
                 class="col-12"
                 style="padding-left: 0px; padding-right: 0px;">
           </shiptech-general-information-contract>  

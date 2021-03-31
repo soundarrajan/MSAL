@@ -39,6 +39,24 @@ export class ContractService extends BaseStoreService implements OnDestroy {
   getTenantConfiguration(payload: boolean): Observable<unknown> {
     return this.contractApi.getTenantConfiguration(payload);
   }
+
+  
+  /**
+ * @param payload = False 
+ */
+   @ObservableException()
+   getStaticLists(payload: any): Observable<unknown> {
+     return this.contractApi.getStaticLists(payload);
+   }
+
+     /**
+ * @param counterpartyId 
+ */
+  @ObservableException()
+  getCounterparty(counterpartyId: number): Observable<unknown> {
+    return this.contractApi.getCounterparty(counterpartyId);
+  }
+     
   
     
   ngOnDestroy(): void {
