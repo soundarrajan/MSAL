@@ -26,7 +26,12 @@
         <tbody>
             <tr ng-repeat="row in $ctrl.data track by $index">
                 <td>
-                    <label class="mt-checkbox mt-checkbox-outline">
+                    <!-- {{$ctrl.EnableSingleSelect}} -->
+                    <label ng-if="$ctrl.EnableSingleSelect"  class="mt-checkbox mt-checkbox-outline">
+                        <input type="checkbox" value="$ctrl.selectedLocationsSingle[$index]" ng-click="$ctrl.selectedLocationsSingle($index)"/>
+                        <span></span>
+                    </label>
+                    <label ng-if="!$ctrl.EnableSingleSelect" class="mt-checkbox mt-checkbox-outline">
                         <input type="checkbox" ng-model="$ctrl.selectedLocations[$index]"/>
                         <span></span>
                     </label>

@@ -705,6 +705,239 @@
             <div class="portlet">
                 <div class="portlet-title">
                     <span class="caption-subject ">
+                        Hide/Unhide Fields
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="custom-hardcoded-table admin">
+                        <table class="table-body" style="width:100%">
+                            <thead class="table-head">
+                                <tr style="background-color: #fff">
+                                    <td>
+                                        Field
+                                    </td>
+                                    <td>
+                                        Hide
+                                    </td>
+                                    <td>
+                                        Mandatory
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="padding">
+                                        PO Number
+                                    </td>
+                                    <td class="padding">
+                                        <label class="mt-checkbox">
+                                            <input type="checkbox" ng-model="formValues.procurement.request.isRequestPoNumberHidden" ng-click="formValues.procurement.request.isRequestPoNumberMandatory = false"
+                                            />
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td class="padding">
+                                        <label class="mt-checkbox">
+                                            <input type="checkbox" ng-model="formValues.procurement.request.isRequestPoNumberMandatory" ng-click="formValues.procurement.request.isRequestPoNumberHidden = false"
+                                            />
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="padding">
+                                        Operator
+                                    </td>
+                                    <td class="padding">
+                                        <label class="mt-checkbox">
+                                            <input type="checkbox" ng-model="formValues.procurement.request.isRequestOperatorHidden" ng-click="formValues.procurement.request.isRequestOperatorMandatory = false"
+                                            />
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td class="padding">
+                                        <label class="mt-checkbox">
+                                            <input type="checkbox" ng-model="formValues.procurement.request.isRequestOperatorMandatory" ng-click="formValues.procurement.request.isRequestOperatorHidden = false"
+                                            />
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="padding">
+                                        Terminal
+                                    </td>
+                                    <td class="padding">
+                                        <label class="mt-checkbox">
+                                            <input type="checkbox" ng-model="formValues.procurement.request.isRequestTerminalHidden" ng-click="formValues.procurement.request.isRequestTerminalMandatory = false"
+                                            />
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td class="padding">
+                                        <label class="mt-checkbox">
+                                            <input type="checkbox" ng-model="formValues.procurement.request.isRequestTerminalMandatory" ng-click="formValues.procurement.request.isRequestTerminalHidden = false"
+                                            />
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="padding">
+                                        Suggested Lift
+                                    </td>
+                                    <td class="padding">
+                                        <label class="mt-checkbox">
+                                            <input type="checkbox" ng-model="formValues.procurement.request.isRequestSuggestedLiftHidden" ng-click="formValues.procurement.request.isRequestSuggestedLiftMandatory = false"/>
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td class="padding">
+                                        <label class="mt-checkbox">
+                                            <input type="checkbox" ng-model="formValues.procurement.request.isRequestSuggestedLiftMandatory" ng-click="formValues.procurement.request.isRequestSuggestedLiftHidden = false"
+                                            />
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                </tr>                                
+                                <tr>
+                                    <td class="padding">
+                                        Pre Test
+                                    </td>
+                                    <td class="padding">
+                                        <label class="mt-checkbox">
+                                            <input type="checkbox" ng-model="formValues.procurement.request.isRequestPreTestHidden" ng-click="formValues.procurement.request.isRequestPreTestMandatory = false"/>
+                                              <span></span>
+                                        </label>
+                                    </td>
+                                    <td class="padding">
+                                        <label class="mt-checkbox">
+                                            <input type="checkbox" ng-model="formValues.procurement.request.isRequestPreTestMandatory" ng-click="formValues.procurement.request.isRequestPreTestHidden = false"
+                                            />
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                </tr>        
+                                <tr>
+                                    <td class="padding">
+                                        Reason
+                                    </td>
+                                    <td class="padding">
+                                        <label class="mt-checkbox">
+                                            <input type="checkbox" ng-model="formValues.procurement.request.isRequestReasonHidden" ng-click="formValues.procurement.request.isRequestReasonMandatory = false"/>
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td class="padding">
+                                        <label class="mt-checkbox">
+                                            <input type="checkbox" ng-model="formValues.procurement.request.isRequestReasonMandatory" ng-click="formValues.procurement.request.isRequestReasonHidden = false"
+                                            />
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                </tr> 
+                                <tr>
+                                    <td class="padding">
+                                        Expected Price
+                                    </td>
+                                    <td class="padding">
+                                        <label class="mt-checkbox">
+                                            <input type="checkbox" ng-model="formValues.procurement.request.isRequestExpectedPriceHidden" ng-click="formValues.procurement.request.isRequestExpectedPriceMandatory = false"/>
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td class="padding">
+                                        <label class="mt-checkbox">
+                                            <input type="checkbox" ng-model="formValues.procurement.request.isRequestExpectedPriceMandatory" ng-click="formValues.procurement.request.isRequestExpectedPriceHidden = false"
+                                            />
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                </tr>  
+                                <tr>
+                                    <td class="padding">
+                                        Minimum Quantity to Reach section
+                                    </td>
+                                    <td class="padding">
+                                        <label class="mt-checkbox">
+                                            <input type="checkbox" ng-model="formValues.procurement.request.isRequestMinimumQuantityToReachHidden" ng-click="formValues.procurement.request.isRequestMinimumQuantityToReachMandatory = false"/>
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td class="padding">
+                                        <label class="mt-checkbox">
+                                            <input type="checkbox" ng-model="formValues.procurement.request.isRequestMinimumQuantityToReachMandatory" ng-click="formValues.procurement.request.isRequestMinimumQuantityToReachHidden = false"
+                                            />
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                </tr>   
+                                <tr>
+                                    <td class="padding">
+                                        Force Request on BOPS
+                                    </td>
+                                    <td class="padding">
+                                        <label class="mt-checkbox">
+                                            <input type="checkbox" ng-model="formValues.procurement.request.isRequestForceRequestOnBopsHidden" ng-click="formValues.procurement.request.isRequestForceRequestOnBopsMandatory = false"/>
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td class="padding">
+                                        <label class="mt-checkbox">
+                                            <input type="checkbox" ng-model="formValues.procurement.request.isRequestForceRequestOnBopsMandatory" ng-click="formValues.procurement.request.isRequestForceRequestOnBopsHidden = false"
+                                            />
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                </tr>  
+                                <tr>
+                                    <td class="padding">
+                                       Send Request Cancellation Email
+                                    </td>
+                                    <td class="padding">
+                                        <label class="mt-checkbox">
+                                            <input type="checkbox" ng-model="formValues.procurement.request.isRequestSendRequestCancellationEmailHidden" ng-click="formValues.procurement.request.isRequestSendRequestCancellationEmailMandatory = false"/>
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td class="padding">
+                                        <label class="mt-checkbox">
+                                            <input type="checkbox" ng-model="formValues.procurement.request.isRequestSendRequestCancellationEmailMandatory" ng-click="formValues.procurement.request.isRequestSendRequestCancellationEmailHidden = false"
+                                            />
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                </tr>  
+                                <tr>
+                                    <td class="padding">
+                                        Acknowledged by Operator
+                                    </td>
+                                    <td class="padding">
+                                        <label class="mt-checkbox">
+                                            <input type="checkbox" ng-model="formValues.procurement.request.isRequestAckByOperatorHidden" ng-click="formValues.procurement.request.isRequestAckByOperatorMandatory = false"/>
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td class="padding">
+                                        <label class="mt-checkbox">
+                                            <input type="checkbox" ng-model="formValues.procurement.request.isRequestAckByOperatorMandatory" ng-click="formValues.procurement.request.isRequestAckByOperatorHidden = false"/>
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                </tr>                    
+                            </tbody>
+                        </table>
+                    </div>
+                    <br/>
+                    <br/>
+                </div>
+            </div>
+
+            <div class="portlet">
+                <div class="portlet-title">
+                    <span class="caption-subject ">
                         Offer
                     </span>
                 </div>

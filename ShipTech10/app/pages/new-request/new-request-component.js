@@ -93,6 +93,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         }
 
         $rootScope.$on('tenantConfiguration', (event, value) => {
+            console.log("000000000000000", value)
             ctrl.numberPrecision = value.general.defaultValues;
             ctrl.requestTenantSettings = value.procurement.request;
         	ctrl.emailSettings = value.email;
@@ -535,6 +536,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     // });
                 })
                 .then((data) => {
+                   
                     initDataTables();
                     $timeout(() => {
                     });
@@ -828,9 +830,37 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             }
             return response;
         };
+        ctrl.validateQtyPretest = function(min, max) {
+            debugger;
+            if(typeof min == 'string') {
+                min = parseFloat(min);
+            }
+            if(typeof max == 'string') {
+                max = parseFloat(max);
+            }
+            var response = {
+                MinQtyToReach: min,
+                MinQtyToReachPretest: max
+            };
+            if (isNaN(min)) {
+                min = null;
+            }
+            if (isNaN(max)) {
+                max = null;
+            }
+            if (min && min > max) {  
+                response.MinQtyToReachPretest = null;
+            }
+            if (max && min > max) {
+                response.MinQtyToReach = null;
+            }
+            if (min && max && min > max) {
+                toastr.error('Quantity without Pretest should be greater than Quantity with Pretest');
+            }
+        };
+
 
         ctrl.saveRequest = function() {
-            console.log($rootScope.notes);
             ctrl.request.requestNotes = $rootScope.notes;
             ctrl.buttonsDisabled = true;
             var valid;
@@ -900,6 +930,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 }
                 if (ctrl.isNewRequest) {
                     screenLoader.showLoader();
+                    
                     newRequestModel.createRequest(ctrl.request).then(
                         (responseData) => {
                             ctrl.buttonsDisabled = false;
@@ -915,6 +946,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         ctrl.buttonsDisabled = false;
                     });
                 } else {
+                    
                     var validActiveSpecGroupMessage = ctrl.checkInactiveSpecGroup();
                     if (validActiveSpecGroupMessage != true) {
                         toastr.error(validActiveSpecGroupMessage);
@@ -1470,7 +1502,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 (server_data) => {
                     $scope.locationTerminal = [];
                     $scope.locationTerminal = angular.copy(server_data.payload.terminals);
-                    console.log("suresh r test", $scope.locationTerminal)
                     location = server_data.payload;
                     let agent = {};
                     // only set agent if agent field is of type lookup
@@ -2421,7 +2452,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             ctrl.lookupInput.buyer.id = buyer.id;
         };
         ctrl.selectVesselSchedules = function(locations) {
-            debugger;
+            
             // console.log(ctrl.scheduleVoyageID );
             angular.forEach(locations, (location, key) => {
                 addLocation(location.locationId, location.voyageId, location.vesselVoyageDetailId, location).then(() => {
@@ -2432,9 +2463,8 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         };
         
         ctrl.selectVesselSchedulesMintoReach = function(locations) {
-            debugger;
-            console.log("Suresh R", locations);
-
+            
+            ctrl.EnableSingleSelect = false;
             // $scope.formValues.minimumQuantitiesToReach = locations;
             if(ctrl.request.minimumQuantitiesToReach != undefined){
                 let Minquantitytoreach  = {
@@ -2451,7 +2481,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                
                 ctrl.request.minimumQuantitiesToReach[ctrl.CurrentSelectRow] = Minquantitytoreach;
            // ctrl.request.minimumQuantitiesToReach.push(Minquantitytoreach);
-            console.log("Suresh R", ctrl.request.minimumQuantitiesToReach);
             }
             else{
                 ctrl.request.minimumQuantitiesToReach = [];
@@ -2469,7 +2498,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                    
                     ctrl.request.minimumQuantitiesToReach[ctrl.CurrentSelectRow] = Minquantitytoreach;
                // ctrl.request.minimumQuantitiesToReach.push(Minquantitytoreach);
-                console.log("Suresh R", ctrl.request.minimumQuantitiesToReach);
             }
            
 
@@ -2490,6 +2518,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 product.maxQuantity = product.minQuantity;
             }
         };
+        
         ctrl.hasAction = function(action) {
         	if (action == 'GoSpot') {
 	            var hasGoSpot = false;
@@ -3853,19 +3882,22 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 
 
         ctrl.getVesselSchedules = function() {
+            ctrl.EnableSingleSelect = false;
         	if (ctrl.request.vesselDetails.vessel) {
 	        	if (ctrl.request.vesselDetails.vessel.id) {
-                    debugger;
-                    $scope.$broadcast('getVesselSchedules', ctrl.request.vesselDetails.vessel.id);
+                    
+                    $scope.$broadcast('getVesselSchedules', ctrl.request.vesselDetails.vessel.id, false);
 	        	}
         	}
         };
         ctrl.getVesselSchedulesSingleselect = function(key) {
+            
+            ctrl.EnableSingleSelect = true;
             ctrl.CurrentSelectRow =key;
         	if (ctrl.request.vesselDetails.vessel) {
 	        	if (ctrl.request.vesselDetails.vessel.id) {
-                    debugger;
-                    $scope.$broadcast('getVesselSchedules', ctrl.request.vesselDetails.vessel.id);
+                    
+                    $scope.$broadcast('getVesselSchedules', ctrl.request.vesselDetails.vessel.id, true);
 	        	}
         	}
         };

@@ -5,8 +5,11 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope', '$
         let ctrl = this;
         ctrl.table = null;
         ctrl.selectedLocations = [];
+        ctrl.EnableSingleSelect = false
         let vesselScheduleEndpoint = MOCKUP_MAP['unrouted.vessel-schedule'];
         ctrl.$onInit = function() {
+            
+            
             uiApiModel.get(vesselScheduleEndpoint).then((data) => {
                 ctrl.ui = data;
             });
@@ -17,8 +20,9 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope', '$
             }
         };
 
-	    $scope.$on('getVesselSchedules', (evt, value) => {
-        // console.log(value);
+	    $scope.$on('getVesselSchedules', (evt, value,EnableSingleselect) => {
+            
+            ctrl.EnableSingleSelect = EnableSingleselect;
         // $scope.accessSelection = value;
  	       if (value == 0) {
                 return false;
@@ -72,6 +76,7 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope', '$
             }
         }
         $scope.formatDate = function(cellValue) {
+            
             let dateFormat = $scope.momentDateFormat;
             let hasDayOfWeek = false;
             dateFormat = dateFormat.replace(/D/g, 'd').replace(/Y/g, 'y');
@@ -97,8 +102,31 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope', '$
             }
             return '';
         };
-
+        ctrl.selectedLocationsSingle = function(index){
+        ctrl.selectedLocations = [];
+        ctrl.selectedLocations[index] = true;
+        };
         ctrl.confirmVesselSchedulesSelection = function() {
+            
+            let selectedLocations = [];
+            angular.forEach(ctrl.selectedLocations, (value, key) => {
+                if (value) {
+                    // if(ctrl.data[key].destinationVesselVoyageDetailId) {
+                    ctrl.data[key].destinationName = [
+                        ctrl.data[key].destinationLocationCode,
+                        ctrl.data[key].voyageCode,
+                        ctrl.data[key].destinationEtaFormated,
+                    ].join(' - ');
+                    // }
+                    selectedLocations.push(ctrl.data1[key]);
+                }
+            });
+            ctrl.onVesselSchedulesSelect({
+                locations: selectedLocations
+            });
+            ctrl.selectedLocations = [];
+        };
+        ctrl.confirmVesselSchedulesSingleSelection = function() {
             let selectedLocations = [];
             angular.forEach(ctrl.selectedLocations, (value, key) => {
                 if (value) {
