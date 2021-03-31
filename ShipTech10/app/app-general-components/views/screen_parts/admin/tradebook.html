@@ -1,0 +1,42 @@
+<div class="custom-hardcoded-table admin" style="margin-bottom: 30px;">
+	<table class="table-body">
+		<thead>
+			<tr>
+				<td style="max-width: initial; min-width: 50px;" class="padding"><span class="insert" ng-click="addnewTradebookItem()"></span></td>
+				<td  style="max-width: initial; min-width: 220px;" class="padding"><b>Port Code</b></td>
+				<td style="max-width: initial; min-width: 230px;" class="padding"><b>Product Type</b></td>
+				<td style="max-width: initial; min-width: 180px;" class="padding"><b>Product</b></td>
+			</tr>
+		</thead>
+		<tbody ng-repeat="(key, value) in formValues.tradeBookMappings track by $index" ng-init="$rowIndex = $index" ng-if="!value.isDeleted">
+			<tr>
+				<td style="max-width: initial; min-width: 50px;">
+					<span class="remove" style="display: block;pointer-events: all; opacity: 1" ng-click="deleteTradeBookItem(key)"></span>
+				</td>				
+				<td>
+					<div class="input-group form_input" tooltip tooltiptrigger="hover" data-original-title="{{ getProductTooltipByProductId(formValues.tradeBookMappings[$index].location.code) }}">
+						<input decode-input-format ng-required="true" ng-model="formValues.tradeBookMappings[$index].location" uib-typeahead="item as item.name for item in CM.listsCache.Location | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-limit="5" typeahead-append-to-body="true" typeahead-wait-ms="100" name="PrefferedSeller_{{ key }}" autocomplete="off" />
+						<span class="input-group-addon" ng-click="triggerModal('general', 'masters_locationlist', 'Location' , 'formValues.tradeBookMappings.'+key+'.location');" ng-init="modal = false">
+							<a class=" btn default">
+								<i class="fa fa-search"></i>
+							</a>
+						</span>
+					</div>
+				</td>	
+				<td>
+					<select name="productType_{{ $index }}" ng-required="true" class="form-control" ng-model="formValues.tradeBookMappings[$index].productType" ng-options="item as item.name for item in CM.listsCache.ProductType track by item.id"> 
+			   </td>	
+			   <td>
+				<div class="input-group form_input" tooltip tooltiptrigger="hover" data-original-title="{{ getProductTooltipByProductId(formValues.tradeBookMappings[$index].product.id) }}">
+						<input decode-input-format ng-required="true" ng-model="formValues.tradeBookMappings[$index].product" uib-typeahead="item as item.name for item in CM.listsCache.Product | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-limit="5" typeahead-append-to-body="true" typeahead-wait-ms="100" name="PrefferedSeller_{{ key }}" autocomplete="off" />
+					<span class="input-group-addon" ng-click="triggerModal('general', 'masters_productlist', 'Product' , 'formValues.tradeBookMappings.'+key+'.product')" ng-init="modal = false">
+						<a class=" btn default">
+							<i class="fa fa-search"></i>
+						</a>
+					</span>
+				</div>
+		   		</td>			
+			</tr>
+		</tbody>
+	</table>
+</div>
