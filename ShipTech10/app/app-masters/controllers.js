@@ -833,7 +833,7 @@
             return false;
         }
         $scope.save_master_changes = function(ev, sendEmails, noReload, completeCallback) {
-            
+            debugger;
             screenLoader.showLoader();
             $('form').addClass('submitted');
             vm.invalid_form = false;
@@ -1143,6 +1143,10 @@
                                 });
                             }
                         });
+                    }
+
+                    if($rootScope.TempcounterpartyBankAccounts != undefined && $rootScope.TempcounterpartyBankAccounts.length !=0){
+                        $scope.formValues.counterpartyBankAccounts = angular.merge($scope.formValues.counterpartyBankAccounts, $rootScope.TempcounterpartyBankAccounts);
                     }
                 }
                 if ($scope.isCustomerCounterparty()) {
@@ -9421,6 +9425,14 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
         $scope.deleteCouterpartyaccountno = function(key) {
            
             if($scope.formValues.counterpartyBankAccounts.length >0){
+                if($rootScope.TempcounterpartyBankAccounts != undefined){
+                    $scope.formValues.counterpartyBankAccounts[key].isDeleted =true
+                    $rootScope.TempcounterpartyBankAccounts.push($scope.formValues.counterpartyBankAccounts[key]); 
+                }else{
+                    $rootScope.TempcounterpartyBankAccounts = [];
+                    $scope.formValues.counterpartyBankAccounts[key].isDeleted =true
+                    $rootScope.TempcounterpartyBankAccounts.push($scope.formValues.counterpartyBankAccounts[key]); 
+                }
                 $scope.formValues.counterpartyBankAccounts.splice(key, 1);
             }
         }
