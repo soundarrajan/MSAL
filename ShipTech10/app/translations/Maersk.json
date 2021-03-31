@@ -1306,7 +1306,8 @@
     "DISPLAY_PORT_SEQUENCE": "Display Port Sequence",
     "DISPLAY_TERMINAL": "Display Terminal",
     "DISPLAY_LOCATION_BOPS_DETAILS": "Display BOPS Details",
-    "ADD_COUNTERPARTY_BANK_ACCOUNT": "Add Bank Account Number"
+    "ADD_COUNTERPARTY_BANK_ACCOUNT": "Add Bank Account Number",
+    "TRADE_BOOK": "Name"
   },
   "recon": {
     "VESSEL_NAME": "Vessel Name",
