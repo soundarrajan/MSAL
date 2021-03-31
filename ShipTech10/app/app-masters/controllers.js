@@ -9589,7 +9589,11 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
         }
 
         $scope.deleteTradeBookItem = function(key) {
-            $scope.formValues.TradeBookMappings[key].isDeleted = true;
+            if( $scope.formValues.id)
+                $scope.formValues.tradeBookMappings[key].isDeleted = true;
+            else
+                $scope.formValues.tradeBookMappings.splice(key, 1);
+
         }
     }
 ]);
