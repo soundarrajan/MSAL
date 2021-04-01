@@ -5438,7 +5438,8 @@ APP_API.factory('$Api_Service', [
                             invoice: 'Invoice',
                             claims: 'Invoice',
                             labresult: 'LabResult',
-                            reconlist: 'Reconlist'
+                            reconlist: 'Reconlist',
+                            tradebook: 'Tradebook'
                         };
                         let transactionId = availableTransactions[$state.params.screen_id];
                         console.log(`Listing Audit Logs for BusinessId: ${ $state.params.entity_id } AND Transaction: ${ transactionId}`);
