@@ -55,7 +55,10 @@
               "node_modules/@ag-grid-community/all-modules/dist/styles/ag-theme-balham.css",
               "node_modules/@fortawesome/fontawesome-free/css/all.css",
               "apps/shiptech/src/styles.scss",
-              "assets/sass/skinning/base-skinning.scss"
+              "assets/sass/skinning/base-skinning.scss",
+              "assets/theme/common/designsystem-v2-theme/v2-component.scss",
+              "assets/theme/common/designsystem-v2-theme/shiptech.scss",
+              "assets/theme/common/designsystem-v2-theme/techoil.scss"
             ],
             "scripts": [],
             "stylePreprocessorOptions": {
@@ -115,7 +118,10 @@
               "apps/shiptech/tsconfig.app.json",
               "apps/shiptech/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!apps/shiptech/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/shiptech/**"
+            ]
           }
         },
         "test": {
@@ -209,7 +215,10 @@
               "libs/core/tsconfig.lib.json",
               "libs/core/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/core/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/core/**"
+            ]
           }
         },
         "test": {
@@ -240,7 +249,10 @@
               "libs/feature/lazy-load-poc/tsconfig.lib.json",
               "libs/feature/lazy-load-poc/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/feature/lazy-load-poc/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/feature/lazy-load-poc/**"
+            ]
           }
         },
         "test": {
@@ -271,7 +283,10 @@
               "libs/feature/invoice/tsconfig.lib.json",
               "libs/feature/invoice/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/feature/invoice/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/feature/invoice/**"
+            ]
           }
         },
         "test": {
@@ -302,7 +317,10 @@
               "libs/feature/ete/tsconfig.lib.json",
               "libs/feature/ete/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/feature/ete/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/feature/ete/**"
+            ]
           }
         },
         "test": {
@@ -326,7 +344,8 @@
       "typescriptMismatch": false,
       "versionMismatch": false
     },
-    "defaultCollection": "@nrwl/angular"
+    "defaultCollection": "@nrwl/angular",
+    "analytics": false
   },
   "schematics": {
     "@nrwl/angular:application": {

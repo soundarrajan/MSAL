@@ -1,0 +1,30 @@
+//@import '../common/base.scss';
+@import 'variables';
+@import 'mixins';
+@import 'utils';
+@import 'functions';
+@import 'aggrid';
+//----------------------------------
+//
+/*---- #region COMMON STYLES ----*/
+
+.invoice-main-container{
+    background-color: red;
+    .details{
+        .section1{
+            padding-top: 15px;
+            border-top: solid 2px #dce3eb;
+        }
+    }    
+}
+
+.chip-container{
+    width: 100%;
+    min-height: 100px;
+    background-color:#e0e1e4;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+}
