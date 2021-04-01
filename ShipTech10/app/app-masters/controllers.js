@@ -9748,10 +9748,13 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
 
 
         $scope.deleteTradeBookItem = function(key) {
-            if( $scope.formValues.id)
-                $scope.formValues.tradeBookMappings[key].isDeleted = true;
-            else
-                $scope.formValues.tradeBookMappings.splice(key, 1);
+            if($scope.formValues.tradeBookMappings.length>1){
+                if($scope.formValues.id)
+                    $scope.formValues.tradeBookMappings[key].isDeleted = true;
+                else
+                    $scope.formValues.tradeBookMappings.splice(key, 1);
+            }
+            
 
         }
     }
