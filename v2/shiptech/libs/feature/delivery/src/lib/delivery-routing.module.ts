@@ -25,6 +25,7 @@ import { UomVolumeRouteResolver } from './views/delivery/details/uom-volume-rout
 import { UomMassRouteResolver } from './views/delivery/details/uom-mass-route.resolver';
 import { PumpingRateUomRouteResolver } from './views/delivery/details/pumping-rate-uom-route.resolver';
 import { SampleSourceRouteResolver } from './views/delivery/details/sample-source-route.resolver';
+import { StaticListsRouteResolver } from './views/delivery/details/static-lists-route.resolver';
 
 interface IDeliveryDetailsRouteData {
   [KnownDeliverylRoutes.DeliveryIdParam]: Type<
@@ -71,17 +72,7 @@ const routes: Routes = [
                   orderNumbers : DeliveryDetailsRouteResolver,
                   delivery: DeliveryRouteResolver,
                   navBar: NavBarResolver,
-                  uoms: UomsRouteResolver,
-                  bargeList: BargeRouteResolver,
-                  deliveryFeedback: DeliveryFeedbackRouteResolver,
-                  satisfactionLevel: SatisfactionLevelRouteResolver,
-                  claimType: ClaimTypeRouteResolver,
-                  quantityCategory: QuantityCategoryRouteResolver,
-                  scheduleDashboardLabelConfiguration: ScheduleDashboardLabelsRouteResolver,
-                  pumpingRateUom: PumpingRateUomRouteResolver,
-                  uomVolume: UomVolumeRouteResolver,
-                  uomMass: UomMassRouteResolver,
-                  sampleSource: SampleSourceRouteResolver
+                  staticLists: StaticListsRouteResolver
                 },
                 data: {
                   title: 'Delivery Details',

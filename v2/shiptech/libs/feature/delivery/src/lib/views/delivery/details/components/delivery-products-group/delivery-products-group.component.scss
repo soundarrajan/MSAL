@@ -64,7 +64,7 @@
 
 .select-product-container {
   background-color: #364150 !important;
-  padding: 15px;
+  padding: 15px  !important;
   min-width: 311px !important;
   width: fit-content;
   max-width: unset !important;
@@ -107,9 +107,9 @@
 .search-product-input {
   position: relative;
   height: 40px;
-  width: 90%;
+  width: 90% !important;
   float: right;
-  color: white;
+  color: white !important;
 }
 
 .search-product-input::placeholder {

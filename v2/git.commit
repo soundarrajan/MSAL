@@ -1,11 +1,9 @@
-﻿commit e7ad739100d61394dd58070fe0de6fc34b994add
+﻿commit d616d2202fe03192bcfe7a524aae648c50f02d75
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Tue Mar 30 12:31:28 2021 +0000
+Date:   Thu Apr 1 11:18:27 2021 +0000
 
-    Merged PR 9624: Added default value for sample sources dropdown
+    Merged PR 9697: Added validation message when verifying the delivery if buyer and seller qty...
     
-    Added default value for sample sources dropdown
-    
-    Related work items: #27727
+    Related work items: #31245
 
 branch: master

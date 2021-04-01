@@ -144,6 +144,7 @@ import { UomMassRouteResolver } from './views/delivery/details/uom-mass-route.re
 import { UomVolumeRouteResolver } from './views/delivery/details/uom-volume-route.resolver';
 import { PumpingRateUomRouteResolver } from './views/delivery/details/pumping-rate-uom-route.resolver';
 import { SampleSourceRouteResolver } from './views/delivery/details/sample-source-route.resolver';
+import { StaticListsRouteResolver } from './views/delivery/details/static-lists-route.resolver';
 
 
 @NgModule({
@@ -294,6 +295,7 @@ import { SampleSourceRouteResolver } from './views/delivery/details/sample-sourc
     UomMassRouteResolver,
     PumpingRateUomRouteResolver,
     SampleSourceRouteResolver,
+    StaticListsRouteResolver,
     {
       provide: QUANTITY_CONTROL_API_SERVICE,
       useClass: environment.production
