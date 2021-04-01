@@ -75,6 +75,8 @@ export namespace DeliveryApiPaths {
   export const raiseClaim = () =>  `api/claims/new`;
   export const deleteDeliveryProduct = () =>  `api/delivery/products/delete`;
   export const sendLabsTemplateEmail = () =>  `api/delivery/SendLabsTemplateEmail`;
+  export const getStaticLists = () =>  `api/infrastructure/static/lists`;
+
 
 }
 
@@ -93,6 +95,9 @@ export class DeliveryApi implements IDeliveryApiService {
 
   @ApiCallUrl()
   private _claimsApiUrl = this.appConfig.v1.API.BASE_URL_DATA_CLAIMS;
+
+  @ApiCallUrl()
+  private _infrastructureApiUrl = this.appConfig.v1.API.BASE_URL_DATA_INFRASTRUCTURE;
 
   constructor(private http: HttpClient, private appConfig: AppConfig) {}
 
@@ -283,6 +288,19 @@ export class DeliveryApi implements IDeliveryApiService {
       catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
     );
   }
+
+  getStaticLists(
+    request: any
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${this._infrastructureApiUrl}/${DeliveryApiPaths.getStaticLists()}`,
+      { payload: request }
+    ).pipe(
+      map((body: any) => body),
+      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+    );
+  }
+
 
 
 

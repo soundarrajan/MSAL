@@ -41,8 +41,8 @@
       <p-panel [showHeader]="false">
         <div fxLayout="row">
           <shiptech-bdn-information
-              [events]="eventsSubject.asObservable()"
-              [model]="formValues"
+              [formValues]="formValues"
+              [bargeId]="bargeId"
               [entityId]="entityId"
               [orderNumberOptions]="orderNumberOptions"
               [relatedDeliveries]="relatedDeliveries"
@@ -67,8 +67,8 @@
       <p-panel [showHeader]="false">
         <div fxLayout="row">
           <shiptech-delivery-products-group
-                [events]="eventsSubject.asObservable()"
-                [model]="formValues"
+                [formValues]="formValues"
+                [prodOrderInTemp]="prodOrderInTemp"
                 [finalQuantityRules]="finalQuantityRules"
                 [toleranceLimits]="toleranceLimits"
                 [uoms]="uoms"
@@ -79,7 +79,6 @@
                 [quantityCategory]="quantityCategory"
                 class="col-12"
                 (onProductSelected)="getSelectedProduct($event)"
-                [eventsConversionInfoData]="eventsSubject3.asObservable()"
                 [eventsSaveButton]="eventsSubject2.asObservable()"
                 [eventsChangedOrderNumber]="eventsSubject4.asObservable()">
           </shiptech-delivery-products-group>  
@@ -94,8 +93,8 @@
       <p-panel [showHeader]="false">
         <div fxLayout="row">
           <shiptech-bdn-additional-information
+                [formValues]="formValues"
                 [events]="eventsSubject.asObservable()"
-                [model]="formValues"
                 [finalQuantityRules]="finalQuantityRules"
                 [toleranceLimits]="toleranceLimits"
                 [deliveryFeedback]="deliveryFeedback"
