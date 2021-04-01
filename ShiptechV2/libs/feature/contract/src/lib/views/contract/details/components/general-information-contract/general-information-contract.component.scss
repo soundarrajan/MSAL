@@ -483,7 +483,7 @@
 .allowed-companies-container {
   background: #F1F1F2;
   border-radius: 4px;
-  min-height: 40px;
+  height: 50px  !important;
 }
 
 .allowed-companies-header {
@@ -495,3 +495,29 @@
   color: #252A32;
   padding: 5px;
 }
+
+.dot-allow-company::before {
+  content: url(../../../../../../../../../../assets/layout/images/pages/dot-allow-companies.svg);
+}
+
+
+.allow-company {
+  width: 87px;
+  height: 30px;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: start;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: inline-block;
+  line-height: 30px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: #252A32;
+  margin-right: 10px;
+}
+

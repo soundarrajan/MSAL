@@ -219,6 +219,13 @@
             Allowed Companies
           </div>
         </div>
+        <div class="allowed-container col-md-12">
+          <span class="allow-company" *ngFor="let allowedCompany of formValues.allowedCompanies">
+            <span class="dot-allow-company">
+            </span>
+            {{allowedCompany.name}}
+          </span>
+        </div>
       </div>
   </div>
 </div>
