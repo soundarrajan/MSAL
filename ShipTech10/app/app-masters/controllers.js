@@ -3758,6 +3758,26 @@
                                     $scope.formValues[id].splice(index, 1);
                                 }
                             }
+                        } else if (["locationProductTypes"].includes(id)) {
+                            if (value.productType.id == idToRemove) {
+                                indexRmv = index;
+                                $('*').tooltip('destroy');
+                                if ($scope.formValues[id][index].id > 0) {
+                                    $scope.formValues[id][index].isDeleted = true;
+                                } else {
+                                    $scope.formValues[id].splice(index, 1);
+                                }
+                            }
+                        } else if (["locationHSFO05Grades","locationDistillateGrades","locationHSFO35Grades"].includes(id)) {
+                            if (value.product.id == idToRemove) {
+                                indexRmv = index;
+                                $('*').tooltip('destroy');
+                                if ($scope.formValues[id][index].id > 0) {
+                                    $scope.formValues[id][index].isDeleted = true;
+                                } else {
+                                    $scope.formValues[id].splice(index, 1);
+                                }
+                            }
                         } else {
                             comparator = 'id';
                             if (value[comparator] == idToRemove) {
@@ -3887,7 +3907,29 @@
                             selectDefaultAgent(id, index);
                         }
                     });
-                } else {
+                } else if (id == "locationProductTypes") {
+                    $.each(values, function(index, value) {
+                        if (index > 2) {
+                            $(this).hide();
+                        }
+                        elt.tagsinput("add", {
+                            value: value.productType.id,
+                            text: value.productType.name
+                        });
+                    });
+                    $scope.initMultiTags(id);
+                } else if (["locationHSFO05Grades","locationDistillateGrades","locationHSFO35Grades"].includes(id)) {
+                    $.each(values, function(index, value) {
+                        if (index > 2) {
+                            $(this).hide();
+                        }
+                        elt.tagsinput("add", {
+                            value: value.product.id,
+                            text: value.product.name
+                        });
+                    });
+                    $scope.initMultiTags(id);                	
+                }else {
                     $.each(values, function(index, value) {
                         value.name = vm.decodeHtml(value.name) ? angular.copy(vm.decodeHtml(value.name)) : value.name;
                         if (index > 2) {
@@ -3990,10 +4032,22 @@
                 var values = $scope.formValues[id];
             }
             $.each(values, (index, value) => {
-                elt.tagsinput('add', {
-                    value: value.id,
-                    text: value.name
-                });
+            	if (id == "locationProductTypes") {
+	                elt.tagsinput('add', {
+	                    value: value.productType.id,
+	                    text: value.productType.name
+	                });
+                } else if (["locationHSFO05Grades","locationDistillateGrades","locationHSFO35Grades"].includes(id)) {
+	                elt.tagsinput('add', {
+	                    value: value.product.id,
+	                    text: value.product.name
+	                });
+                } else {
+	                elt.tagsinput('add', {
+	                    value: value.id,
+	                    text: value.name
+	                });
+                }
             });
             hideTheChildren();
 
@@ -4037,6 +4091,12 @@
             }
         };
         $scope.addTagToMulti = function(model, data) {
+        	if (vm.app_id == 'masters' && vm.screen_id == 'location') {
+           		if (["locationProductTypes","locationHSFO05Grades","locationDistillateGrades","locationHSFO35Grades"].includes(model) ) {
+        			$scope.addTagToMultiInLocationMaster(model, data);
+        			return;
+        		}
+        	}
             vm.plusClickedMultilookup = true;
             var alreadyAdded = false;
             if (!$scope.formValues[model] || typeof $scope.formValues[model] == 'undefined') {
@@ -4058,6 +4118,70 @@
                 });
             }
         };
+
+        $scope.addTagToMultiInLocationMaster = (model, data) => {
+            vm.plusClickedMultilookup = true;
+            var alreadyAdded = false;
+            if (!$scope.formValues[model] || typeof $scope.formValues[model] == 'undefined') {
+                $scope.formValues[model] = [];
+            }
+            if (model != '' && typeof $scope.formValues[model] != 'undefined') {
+            	if (model == "locationProductTypes") {
+	                $.each($scope.formValues[model], (k, v) => {
+	                    if (v.productType.id == data.id) {
+	                    	if (v.isDeleted) {
+	                    		v.isDeleted = false;
+	                    		return false;
+	                    	}
+	                        alreadyAdded = true;
+	                    }
+	                });
+            	} else if (["locationHSFO05Grades","locationDistillateGrades","locationHSFO35Grades"].includes(model)) {
+            		$.each($scope.formValues[model], (k, v) => {
+            			if (v.product.id == data.id) {
+            				if (v.isDeleted) {
+            					v.isDeleted = false;
+            					return false;
+            				}
+            				alreadyAdded = true;
+            			}
+            		});
+	            }
+            }
+            if (alreadyAdded == true) {
+                toastr.error('Field is already added!');
+            } else {
+            	if (model == "locationProductTypes") {
+	            	modeledData = {
+	            		"productType" : data,
+	            		"id" : 0,
+	            		"name" : data.name
+	            	}
+            	} else if (["locationHSFO05Grades","locationDistillateGrades","locationHSFO35Grades"].includes(model)) {
+            		if (model == "locationHSFO05Grades") {
+            			productGrade = 2;
+            		}
+            		if (model == "locationDistillateGrades") {
+            			productGrade = 1;
+            		}
+            		if (model == "locationHSFO35Grades") {
+            			productGrade = 3;
+            		}            		            		
+	            	modeledData = {
+	            		"product" : data,
+	            		"productGrade" : {"id":productGrade},
+	            		"location" : {"id":vm.entity_id},
+	            		"id" : 0,
+	            		"name" : data.name
+	            	}            		
+            	}
+                $scope.formValues[model].push(modeledData);
+                setTimeout(() => {
+                    $scope.initBoostrapTagsInputTooltip();
+                });
+            }        	
+        }
+
         vm.initDropZone = function(id) {
             $timeout(() => {
                 Dropzone.autoDiscover = false;
@@ -9599,6 +9723,30 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
         $scope.deleteVesselProductTank = function(vpKey, vptKey) {
             $scope.formValues.vesselProducts[vpKey].vesselProductTanks[vptKey].isDeleted = true;
         }
+
+        $scope.addnewLocationProduct = () => {
+        	if (!$scope.formValues.locationProducts) {
+        		$scope.formValues.locationProducts = [];
+        	}
+        	$scope.formValues.locationProducts.push({"id":0});
+        }
+
+        $scope.initMultilookupsForLocationProducts = () => {
+        	$scope.multilookupsForLocationProducts = [
+	        	{"Unique_ID":"locationProductTypes", "Name":"locationProductTypes", "Label":"LOCATION_PRODUCT_TYPES", "Required":false, "masterSource":"ProductType", "LastOnRow":true},
+				{"Unique_ID":"locationHSFO05Grades", "Name":"locationHSFO05Grades", "Label":"LOCATION_HSFO_05_GRADES", "Required":false, "masterSource":"Product", "LastOnRow":true},
+				{"Unique_ID":"locationDistillateGrades", "Name":"locationDistillateGrades", "Label":"LOCATION_DISTILLATE_GRADES", "Required":false, "masterSource":"ProductType", "LastOnRow":true},
+				{"Unique_ID":"locationHSFO35Grades", "Name":"locationHSFO35Grades", "Label":"LOCATION_HSFO_05_GRADES", "Required":false, "masterSource":"Product", "LastOnRow":true}
+        	]
+        }
+
+        $scope.isLocationBopsDetailsVisible = () => {
+        	if ($rootScope.adminConfiguration.master.isLocationBopsDetailsVisible) {
+        		return true;
+        	}
+    		return false;
+        }
+
 
         $scope.deleteTradeBookItem = function(key) {
             if( $scope.formValues.id)

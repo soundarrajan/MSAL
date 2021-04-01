@@ -1,0 +1,44 @@
+<div class="custom-hardcoded-table admin">
+	<table class="table-body" width="100%">
+		<thead>
+			<tr>
+				<td style="max-width: initial; min-width: 50px;" class="padding"><span class="insert" ng-click="addnewLocationProduct()"></span></td>
+				<td  style="max-width: initial; min-width: 220px;" class="padding"><b>Product Type</b></td>
+				<td  style="max-width: initial; min-width: 220px;" class="padding"><b>Max Transfer Rate (mt/h)</b></td>
+				<td style="max-width: initial; min-width: 230px;" class="padding"><b>Min Supply Qty (MT)</b></td>
+				<td style="max-width: initial; min-width: 230px;" class="padding"><b>Max Supply Qty (MT)</b></td>
+				<td style="max-width: initial; min-width: 180px;" class="padding"><b>Lowest Grade Available</b></td>
+			</tr>
+		</thead>
+		<tbody ng-repeat="(key, value) in formValues.locationProducts track by $index" ng-init="$rowIndex = $index" ng-if="!value.isDeleted">
+			<tr>
+				<td style="max-width: initial; min-width: 50px;">
+					<span class="remove" style="display: block;pointer-events: all; opacity: 1" ng-click="value.id == 0 ? formValues.locationProducts.splice(key,1) : formValues.locationProducts[key].isDeleted=true"></span>
+				</td>
+				<td>
+					 <select name="productType_{{ $index }}" class="form-control" ng-model="formValues.locationProducts[$index].productType" ng-options="item as item.name for item in CM.listsCache.ProductType track by item.id">
+				 </td>
+				<td>
+					<input type="text" name="maxTransferRate_{{ $index }}" ng-required="formValues.locationProducts[$index].productType?true:false" type="number" class="form-control" ng-model="formValues.locationProducts[$index].maxTransferRate" format="number">
+				</td>
+				<td>
+					<input type="text" name="minSupplyQuantity_{{ $index }}" ng-required="formValues.locationProducts[$index].productType?true:false" type="number" class="form-control" ng-model="formValues.locationProducts[$index].minSupplyQty" format="number">
+				</td>
+				<td>
+					<input type="text" name="maxSupplyQuantity_{{ $index }}" ng-required="formValues.locationProducts[$index].productType?true:false" type="number" class="form-control" ng-model="formValues.locationProducts[$index].maxSupplyQty" format="number">
+				</td>
+				<td>
+					<input decode-input-format name="lowestGradeAvailable_{{ $index }}" id="lowestGradeAvailable_{{ $index }}" uib-typeahead="product as product.name for product in options.Product | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.selectCompanyInLocation($item.id, $index)" ng-required="formValues.locationProducts[$index].productType?true:false" typeahead-editable="false" class="typeahead form-control" ng-model="formValues.locationProducts[$index].product" >
+
+<!--                     <span class="input-group-addon" ng-click="triggerModal('general', 'masters_companylist', $ctrl.tenantSettings.serviceDisplayName.name + ' Code' | translate, '$ctrl.location[' + $index + '].company' ,'','',Location + $index+1 + $ctrl.tenantSettings.companyDisplayName.name)" ng-disabled="$ctrl.disableAllFields">
+                        <i class="fa fa-search"></i>
+                    </span> -->
+
+
+<!-- 					 <select name="productType_{{ $index }}" class="form-control" ng-model="formValues.locationProducts[$index].product" ng-options="item as item.name for item in CM.listsCache.Product track by item.id">					
+					<input type="text" name="lowestGradeAvailable_{{ $index }}" ng-required="formValues.locationProducts[$index].productType?true:false" type="number" class="form-control" ng-model="formValues.locationProducts[$index].lowestGradeAvailable" format="number"> -->
+				</td>			
+			</tr>
+		</tbody>
+	</table>
+</div>

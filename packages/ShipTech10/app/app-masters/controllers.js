@@ -2684,6 +2684,17 @@
                             selectDefaultAgent(id, index);
                         }
                     });
+                } else if (id="locationProductTypes"){
+                    $.each(values, function(index, value) {
+                        if (index > 2) {
+                            $(this).hide();
+                        }
+                        elt.tagsinput("add", {
+                            value: value.id,
+                            text: value.productType.name
+                        });
+                    });
+                    $scope.initMultiTags(id);
                 } else {
                     $.each(values, function(index, value) {
                         if (index > 2) {

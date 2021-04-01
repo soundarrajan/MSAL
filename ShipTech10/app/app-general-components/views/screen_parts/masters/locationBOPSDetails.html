@@ -1,0 +1,123 @@
+<div class="row">
+	<div class="col-sm-9">
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="form-group row dropdown-control">
+					<label class="control-label" style="height: 30px; padding-top: 0px; width:200px;">
+						Distance out of SECA Area (NM)
+					</label>
+					<div class="form_input" style="width:calc(100% - 200px)">
+						<input type="text" class="form-control" name="distanceSECAArea" id="distanceSECAArea" ng-model="formValues.distanceSECAArea">
+					</div>				
+				</div>				
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group row dropdown-control">
+					<label class="control-label" style="height: 30px; padding-top: 0px; width:200px;">
+						Pilot Time in (hrs)
+					</label>
+					<div class="form_input" style="width:calc(100% - 200px)">
+						<input type="text" class="form-control" name="pilotInTime" id="pilotInTime" ng-model="formValues.pilotInTime">
+					</div>				
+				</div>					
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group row dropdown-control">
+					<label class="control-label" style="height: 30px; padding-top: 0px; width:200px;">
+						Earliest Port Trading Time (days)
+					</label>
+					<div class="form_input" style="width:calc(100% - 200px)">
+						<input type="text" class="form-control" name="earliestPortTradingTime" id="earliestPortTradingTime" ng-model="formValues.earliestPortTradingTime">
+					</div>				
+				</div>					
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group row dropdown-control">
+					<label class="control-label" style="height: 30px; padding-top: 0px; width:200px;">
+						Area ID
+					</label>
+					<div class="form_input" style="width:calc(100% - 200px)">
+						<select ng-model="formValues.area"
+						name="area"
+						id="area"
+						class="form-control"
+						ng-options="item as (item.displayName ? item.displayName : item.name) for item in CM.listsCache.Area track by item.id"></select>
+					</div>
+				</div>				
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group row dropdown-control">
+					<label class="control-label" style="height: 30px; padding-top: 0px; width:200px;">
+						Pilot Time out (hrs)
+					</label>
+					<div class="form_input" style="width:calc(100% - 200px)">
+						<input type="text" class="form-control" name="pilotOutTime" id="pilotOutTime" ng-model="formValues.pilotOutTime">
+					</div>				
+				</div>					
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group row dropdown-control">
+					<label class="control-label" style="height: 30px; padding-top: 0px; width:200px;">
+						Latest Port Trading Time (days)
+					</label>
+					<div class="form_input" style="width:calc(100% - 200px)">
+						<input type="text" class="form-control" name="latestPortTradingTime" id="latestPortTradingTime" ng-model="formValues.latestPortTradingTime">
+					</div>				
+				</div>					
+			</div>
+			<div class="col-sm-12">
+				<div class="row"> 
+					<div class="col-sm-8" ng-init="initMultilookupsForLocationProducts();">
+						
+						<div class="row" ng-repeat="field in multilookupsForLocationProducts">
+							<div class="col-sm-6">
+								<span ng-include="'app-general-components/views/controls/multiLookup-control.html'"></span>
+							</div>
+						</div>		
+
+					</div>
+					<div class="col-sm-4">
+						<div class="form-group  form-inline row">
+						    <label class="mt-checkbox">
+						        <input type="checkbox" name="isPreTest" id="inlineCheckboxisPreTest" ng-model="formValues.isPreTest" >
+						        <span></span>
+						        Pre-test Available
+						    </label>
+						</div>						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>		
+	
+	<div class="col-sm-3">
+		<div class="form-group  form-inline row">
+		    <label class="mt-checkbox">
+		        <input type="checkbox" name="isCaliforniaSalesTax" id="inlineCheckboxIsCaliforniaSalesTax" ng-model="formValues.isCaliforniaSalesTax" >
+		        <span></span>
+		        California Sales Tax
+		    </label>
+		</div>
+		<div class="form-group  form-inline row">
+		    <label class="mt-checkbox">
+		        <input type="checkbox" name="isIncludeBargeCostPrice" id="inlineCheckboxIsIncludeBargeCostPrice" ng-model="formValues.isIncludeBargeCostPrice" >
+		        <span></span>
+		        Barge Cost included in Price
+		    </label>
+		</div>
+		<div class="form-group  form-inline row">
+		    <label class="mt-checkbox">
+		        <input type="checkbox" name="isMandatoryLSDISConsumption" id="inlineCheckboxIsMandatoryLSDISConsumption" ng-model="formValues.isMandatoryLSDISConsumption" >
+		        <span></span>
+		        Mandatory LSDIS Consumption
+		    </label>
+		</div>
+		<div class="form-group  form-inline row">
+		    <label class="mt-checkbox">
+		        <input type="checkbox" name="isScrubberNotAllowed" id="inlineCheckboxIsScrubberNotAllowed" ng-model="formValues.isScrubberNotAllowed" >
+		        <span></span>
+		        Scrubber not allowed
+		    </label>
+		</div>						
+	</div>		
+</div>
