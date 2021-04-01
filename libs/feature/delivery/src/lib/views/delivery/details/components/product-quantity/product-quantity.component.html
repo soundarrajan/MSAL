@@ -76,7 +76,7 @@
                                     matInput 
                                     [disabled]="formValues.deliveryStatus.name == 'Verified'"
                                     quantityFormat
-                                    myNumberOnly
+                                    (keypress)="keyPressNumber($event)"
                                     autocomplete="off"
                                     name="Product_{{ deliveryProductIndex }}_{{ quantityParameter.parameter.name}}_BDN">
                             </mat-form-field>
