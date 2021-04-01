@@ -60,7 +60,7 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { IDeliveryTenantSettings } from 'libs/feature/delivery/src/lib/core/settings/delivery-tenant-settings';
 import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
-import _ from 'lodash';
+import _, { find } from 'lodash';
 import { NgxMatDateAdapter, NgxMatDateFormats, NgxMatNativeDateAdapter, NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
 import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/general-tenant-settings.interface';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -419,7 +419,6 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
   orderDetails: any;
   deliverySettings: any;
   bargeList$: any;
-  formValues: any;
   isLoading: boolean;
   eventsSubscription: any;
   eventsSaveButtonSubscription: any;
@@ -435,6 +434,10 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
   statusColorCode: any;
   buttonClicked: any;
   baseOrigin: string;
+
+  @Input() formValues: any; 
+
+  @Input() bargeId: any; 
 
   @Input() set autocompleteType(value: string) {
     this._autocompleteType = value;
@@ -453,12 +456,7 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
     } 
     this.bargeList = bargeList;
   }
-  @Input('model') set _setFormValues(formValues) { 
-    if (!formValues) {
-      return;
-    } 
-    this.formValues = formValues;
-  }
+
 
   @Input('relatedDeliveries') set _relatedDeliveries(relatedDeliveries) {
     if (!relatedDeliveries) {
@@ -564,12 +562,8 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
   }
 
   ngOnInit(){  
-    this.setOrderNumberOptions();
-    this.getBargeList();
     this.entityName = 'Delivery';
-    this.eventsSubscription = this.events.subscribe((data) => this.setDeliveryForm(data));
     this.eventsSaveButtonSubscription = this.eventsSaveButton.subscribe((data) => this.setRequiredFields(data))
-    this.eventsSubject.next();
 
   }
 
@@ -578,24 +572,14 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
     console.log('check required fields');
   }
 
-  compareUomObjects(object1: any, object2: any) {
-    console.log(object1 && object2 && object1.id == object2.id);
-    return object1 && object2 && object1.id == object2.id;
-  }
-
-
-  
-  setDeliveryForm(form){
-    if (!form) {
-      return;
+  setBarge(value) {
+    let findBarge = _.find(this.bargeList, function(object){
+      return object.id == value;
+    });
+    if (findBarge != -1) {
+      this.formValues.barge = findBarge;
     }
-    console.log('aici');
-    console.log(form);
-    this.formValues = form;
-    this.changeDetectorRef.detectChanges();
   }
-
-
 
 
   ngAfterViewInit(): void {
@@ -637,16 +621,8 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
   }
 
 
-  setOrderNumberOptions() {
-    // this.filteredOptions = this.deliveryForm.controls['order'].valueChanges
-    //   .pipe(
-    //       startWith(''),
-    //       map(value => typeof value === 'string' ? value : value.name),
-    //       map(name => name ? this._filter(name) : this.options.slice(0, 10))
-    // ); 
-    console.log(this.filteredOptions);
-  }
 
+  
   onPageChange(page: number): void {
     this.gridViewModel.page = page;
   }

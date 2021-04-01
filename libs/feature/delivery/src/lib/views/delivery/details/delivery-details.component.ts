@@ -3,8 +3,10 @@ import {
   ChangeDetectorRef,
   Component,
   Inject,
+  OnChanges,
   OnDestroy,
-  OnInit
+  OnInit,
+  SimpleChanges
 } from '@angular/core';
 import { EntityStatusService } from '@shiptech/core/ui/components/entity-status/entity-status.service';
 import { Select, Store } from '@ngxs/store';
@@ -77,7 +79,7 @@ interface DialogData {
   providers: [ConfirmationService, DialogService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DeliveryDetailsComponent implements OnInit, OnDestroy {
+export class DeliveryDetailsComponent implements OnInit, OnDestroy, OnChanges  {
   private _destroy$ = new Subject();
 
   private quantityPrecision: number;
@@ -129,6 +131,10 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   uomMass: any;
   pumpingRateUom: any;
   sampleSource: any;
+  staticLists: any;
+  deliveryProductIndex: number;
+  prodOrderInTemp: any;
+  bargeId: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -223,9 +229,13 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       }
       console.log('Check route resolver data')
       console.log(data);
+      this.staticLists = data.staticLists;
       this.orderNumberOptions = data.orderNumbers;
       if (data.delivery) {
         this.formValues = data.delivery;
+        if (this.formValues.barge) {
+          this.bargeId = this.formValues.barge.id;
+        }
         this.setQuantityFormatValues();
         this.decodeFields();
         
@@ -233,18 +243,19 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       if (typeof this.formValues.feedback == 'undefined' || !this.formValues.feedback) {
         this.formValues.feedback = {};
       }
-      this.uoms = data.uoms;
-      this.deliveryFeedback = data.deliveryFeedback;
-      this.satisfactionLevel = data.satisfactionLevel;
-      this.bargeList = data.bargeList;
       this.navBar = data.navBar;
-      this.CM.listsCache.ClaimType = data.claimType;
-      this.quantityCategory = data.quantityCategory;
-      this.scheduleDashboardLabelConfiguration = data.scheduleDashboardLabelConfiguration;
-      this.pumpingRateUom = data.pumpingRateUom;
-      this.uomMass = data.uomMass;
-      this.uomVolume = data.uomVolume;
-      this.sampleSource = data.sampleSource;
+      this.uoms = this.setStaticLists('Uom');
+      this.deliveryFeedback =  this.setStaticLists('DeliveryFeedback');
+      this.satisfactionLevel = this.setStaticLists('SatisfactionLevel');
+      this.bargeList = this.setStaticLists('Barge');
+      this.CM.listsCache.ClaimType = this.setStaticLists('ClaimType');
+      this.quantityCategory = this.setStaticLists('QuantityCategory');
+      this.scheduleDashboardLabelConfiguration = this.setStaticLists('ScheduleDashboardLabelConfiguration');
+      this.pumpingRateUom = this.setStaticLists('PumpingRateUom');
+      this.uomMass = this.setStaticLists('UomMass');
+      this.uomVolume = this.setStaticLists('UomVolume');
+      this.sampleSource = this.setStaticLists('SampleSource'); 
+      console.log(this.uoms);
       if (this.formValues.order && this.formValues.order.id) {
         this.isLoading = true;
         this.openedScreenLoaders = 0;
@@ -271,6 +282,20 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     });
 
     //this.changeDetectorRef.detectChanges();
+  }
+
+  ngOnChanges(c: SimpleChanges) {
+    console.log('Parent changes: This doesnt happen often ', c);
+  }
+
+
+  setStaticLists(name) {
+    let findList = _.find(this.staticLists, function(object) {
+      return object.name == name;
+    });
+    if (findList != -1) {
+      return findList?.items;
+    }
   }
 
   initSplitDelivery() {
@@ -417,7 +442,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       this.formValues.temp.variances[`product_${ productIdx}`] = null;
       this.conversionInfoData[productIdx] = response;
       this.calculateVarianceAndReconStatus(productIdx);
-      this.eventsSubject3.next(this.conversionInfoData);
+      //this.eventsSubject3.next(this.conversionInfoData);
       this.changeDetectorRef.detectChanges();
     });
   };
@@ -995,6 +1020,18 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
           this.formValues.temp = {};
         }
         this.formValues.temp.deliverysummary = response;
+        this.deliveryProductIndex = 0;
+        this.formValues.temp.deliverySummaryProducts = [ ... this.formValues.temp.deliverysummary.products];
+        if (this.formValues.temp.deliverysummary) {
+          if (this.formValues.deliveryProducts[this.deliveryProductIndex] && !this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader) {
+            this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader = {};
+          }
+          this.formQuantityHeaders(this.formValues.deliveryProducts[this.deliveryProductIndex].orderProductId, 
+                                  this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader.ccaiDelivered);
+        }
+        if (this.formValues.deliveryProducts[this.deliveryProductIndex] && !this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader) {
+          this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader = {};
+        }
         if (!parseFloat(this.entityId)) {
           // new delivery
           // also set pricing date for delivery to delivery date if null
@@ -1038,10 +1075,36 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         }
         console.log(this.formValues);
         this.changeDetectorRef.detectChanges();
-        this.eventsSubject.next(this.formValues);
+        //this.eventsSubject.next(this.formValues);
       }
   
     });
+  }
+
+  formQuantityHeaders(orderProdId, ccaiDelivered) {
+    if (typeof this.formValues.temp.deliverysummary.products == 'undefined') {
+      this.formValues.temp.deliverysummary.products = [];
+    }
+    // returns index based on prodId
+    this.formValues.temp.deliverysummary.products.forEach((summaryProd, idx) => {
+      if (summaryProd.id == orderProdId) {
+        if (!ccaiDelivered) {
+            summaryProd.ccaiDelivered = '';
+            summaryProd.ccaiVariance = '';
+        } else {
+            summaryProd.ccaiDelivered = ccaiDelivered;
+            summaryProd.ccaiVariance = this.calculatCccaiVariance(summaryProd.ccai, summaryProd.ccaiDelivered);
+        }
+        this.prodOrderInTemp = idx;
+      }
+   });
+  }
+
+  calculatCccaiVariance(offered, delivered) {
+    if (offered && delivered) {
+        return offered - delivered;
+    }
+    return;
   }
 
   setProductsPhysicalSupplier() {
@@ -1084,10 +1147,12 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   };
 
   getColorCodeFromLabels(statusObj, labels) {
-    for(let i = 0; i < labels.length; i++) {
-      if (statusObj) {
-        if(statusObj.id === labels[i].id && statusObj.transactionTypeId === labels[i].transactionTypeId) {
-            return labels[i].code;
+    if (labels && labels.length) {
+      for(let i = 0; i < labels.length; i++) {
+        if (statusObj) {
+          if(statusObj.id === labels[i].id && statusObj.transactionTypeId === labels[i].transactionTypeId) {
+              return labels[i].code;
+          }
         }
       }
     }
@@ -1125,7 +1190,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
           });
           console.log(this.relatedDeliveries);
           this.changeDetectorRef.detectChanges();
-          this.eventsSubject.next(this.formValues);
+          //this.eventsSubject.next(this.formValues);
         }
     });
   }
@@ -1460,6 +1525,16 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
 
   
   verify() {
+    let hasFinalQuantityError = false;
+    this.formValues.deliveryProducts.forEach((product, k) => {
+      if (!product.finalQuantityAmount) {
+        hasFinalQuantityError = true;
+        this.toastrService.error(`Please make sure that Quantity to be invoiced for ${product.product.name } is computed based on seller/buyer quantity`);
+      }
+    });
+    if (hasFinalQuantityError) {
+      return;
+    }
     let hasMandatoryFields = this.validateRequiredFields();
     if (hasMandatoryFields) {
       return;
