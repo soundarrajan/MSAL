@@ -453,13 +453,7 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
   }
 
   
-  @Input('model') set _setFormValues(formValues) { 
-    if (!formValues) {
-      return;
-    } 
-    this.formValues = formValues;
-    this.changeDetectorRef.detectChanges();
-  }
+  @Input() formValues: any;
   
   @Input('finalQuantityRules') set _setFinalQuantityRules(finalQuantityRules) { 
     if (!finalQuantityRules) {
@@ -485,7 +479,6 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
 
   deliveryFormSubject: Subject<any> = new Subject<any>();
   toleranceLimits: any;
-  formValues: any;
   openedScreenLoaders: number = 0;
   finalQuantityRules: any;
   constructor(
@@ -523,21 +516,9 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
   }
 
   ngOnInit(){  
-    this.eventsSubscription = this.events.subscribe((data) => this.setDeliveryForm(data));
-    this.getDeliveryFeedbackList();
-    //this.getTimeBetweenDates(this.formValues.bargePumpingRateStartTime, this.formValues.bargePumpingRateEndTime);
+    this.getTimeBetweenDates(this.formValues.bargePumpingRateStartTime, this.formValues.bargePumpingRateEndTime);
   }
 
-  setDeliveryForm(form){
-    if (!form) {
-      return;
-    }
-    console.log('aici');
-    console.log(form);
-    this.formValues = form;
-    this.deliveryFormSubject.next(form);
-    this.changeDetectorRef.detectChanges();
-  }
 
   async getDeliveryFeedbackList() {
     this.deliveryFeedbackList$ = await this.legacyLookupsDatabase.getDeliveryFeedbackList();
@@ -667,7 +648,7 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
         this.formValues.pumpingRateUom = '';
     }
     var pumpingTime = (parseInt(timeString.split(':')[0]) * 60 + parseInt(timeString.split(':')[1])) / 60;
-    this.formValues.pumpingRate = this.formValues.deliveryProducts[prodIndex].bdnQuantityAmount / pumpingTime;
+    this.formValues.pumpingRate = this.setQuantityFormat(this.formValues.deliveryProducts[prodIndex].bdnQuantityAmount) / pumpingTime;
     this.pumpingRateUom.forEach((val, key) => {
       if (val.name.split('/')[0] == this.formValues.deliveryProducts[prodIndex].bdnQuantityUom.name) {
         this.formValues.pumpingRateUom = val;
@@ -676,6 +657,12 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
     console.log(this.formValues.pumpingRate);
     console.log(this.formValues.pumpingRateUom);
   };
+
+  setQuantityFormat(value) {
+    let viewValue = `${value}`;
+    let plainNumber = viewValue.replace(/[^\d|\-+|\.+]/g, '');
+    return parseFloat(plainNumber);
+  }
 
 
   addSampleSources() {

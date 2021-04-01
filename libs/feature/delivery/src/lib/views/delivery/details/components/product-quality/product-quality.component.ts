@@ -133,7 +133,6 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
   physicalSupplierList: any[];
   autocompletePhysicalSupplier: knownMastersAutocomplete;
   qualityMatchList: any[];
-  formValues: any;
   toleranceLimits: any;
   _autocompleteType: string;
   raiseClaimInfo: any;
@@ -145,12 +144,8 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
     this._autocompleteType = value;
   }
 
-  @Input('formValues') set _setFormValues(formValues) { 
-    if (!formValues) {
-      return;
-    } 
-    this.formValues = formValues;
-  }
+  @Input() formValues: any;
+
 
   @Input('deliveryProductIndex') set _setDeliveryProductIndex(deliveryProductIndex) { 
     if (!deliveryProductIndex) {
@@ -211,7 +206,7 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
       this.entityId = params.deliveryId;
     });
     this.entityName = 'Delivery';
-    this.eventsSubscription = this.events.subscribe((data) => this.setDeliveryForm(data));
+    //this.eventsSubscription = this.events.subscribe((data) => this.setDeliveryForm(data));
     console.log('index');
     console.log(this.deliveryProductIndex);
     if (this.formValues.deliveryProducts[this.deliveryProductIndex] && !this.formValues.deliveryProducts[this.deliveryProductIndex].qualityHeader) {
@@ -236,15 +231,6 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
     console.log(this.raiseClaimInfo);
   }
 
-  setDeliveryForm(form){
-    if (!form) {
-      return;
-    }
-    console.log('aici');
-    this.formValues = form;
-    console.log(this.formValues);
-    //this.changeDetectorRef.detectChanges();
-  }
 
   async getQualityMatchList() {
     this.qualityMatchList = await this.legacyLookupsDatabase.getQualityMatchList();

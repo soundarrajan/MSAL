@@ -81,18 +81,15 @@
                                 [quantityCategory]="quantityCategory"
                                 [finalQuantityRules]="finalQuantityRules"
                                 [toleranceLimits]="toleranceLimits"
-                                [events]="deliveryFormSubject.asObservable()"
-                                [events1]="conversionDataInfoSubject.asObservable()"
                                 [events2]="requiredInfoSubject.asObservable()">
       </shiptech-delivery-product>
       <shiptech-product-quality  [formValues]="formValues"
-                                [deliveryProductIndex]="deliveryProduct.key"
-                                [events]="deliveryFormSubject.asObservable()">
+                                [deliveryProductIndex]="deliveryProduct.key">
       </shiptech-product-quality>
       <shiptech-product-quantity *ngIf="formValues.temp.isShowQuantityReconciliationSection"
                                 [formValues]="formValues"
-                                [deliveryProductIndex]="deliveryProduct.key"
-                                [events]="deliveryFormSubject.asObservable()">
+                                [prodOrderInTemp]="prodOrderInTemp"
+                                [deliveryProductIndex]="deliveryProduct.key">
       </shiptech-product-quantity>
     </div>
   </div>
