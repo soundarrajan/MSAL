@@ -1,35 +1,41 @@
 <div class="col-md-12 row detail-container">
-  <div class="col-md-5 vessel-details">
-    <div class="col-md-12 row vessel-details-container">
-      <div class="col-md-3">
+  <div class="col-md-5 vessel-details vessel-details-component" style="display: flex;justify-content: flex-start;">
+    <div class="badge-header">
+      <div>
+        <span class="label">
           <span class="dot-image"></span> 
           Vessel 
+        </span>
+        <div class="value order-details"  *ngIf="formValues.info && formValues.info.vesselName">
+          {{ formValues.info.vesselName }}
+        </div>
       </div>
-      <div class="col-md-3">
-        <span class="dot-image"></span> 
+      <div> 
+        <span class="label">
+          <span class="dot-image"></span> 
           Port 
+        </span>
+        <div class="value order-details"  *ngIf="formValues.info && formValues.info.locationName">
+          {{ formValues.info.locationName }}
+        </div>
       </div>
-      <div class="col-md-3">
-        <span class="dot-image"></span> 
-        Eta
+      <div>
+        <span class="label">
+          <span class="dot-image"></span> 
+            ETA
+        </span>
+        <div class="value order-details" *ngIf="formValues.info && formValues.info.eta">
+          {{ formatDate(formValues.info.eta)  }}  
+        </div>
       </div>
-      <div class="col-md-3">
-        <span class="dot-image"></span> 
-        Etb
-      </div>
-    </div>
-    <div class="col-md-12 row vessel-details-container" *ngIf="formValues.info">
-      <div class="col-md-3 order-details" *ngIf="formValues.info.vesselName">
-        {{ formValues.info.vesselName }} 
-      </div>
-      <div class="col-md-3 order-details" *ngIf="formValues.info.locationName">
-        {{ formValues.info.locationName }}  
-      </div>
-      <div class="col-md-3 order-details" *ngIf="formValues.info.eta">
-        {{ formatDate(formValues.info.eta)  }}  
-      </div>
-      <div class="col-md-3 order-details" *ngIf="formValues.info.etb">
-        {{ formatDate(formValues.info.etb) }}  
+      <div>
+        <span class="label">
+          <span class="dot-image"></span> 
+            ETB
+        </span>
+        <div class="value order-details"  *ngIf="formValues.info && formValues.info.etb">
+          {{ formatDate(formValues.info.etb)  }}  
+        </div>
       </div>
     </div>
   </div>
@@ -70,7 +76,7 @@
                     <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" fill="#9E9E9E"/>
                   </svg>
                 </span>
-                Delivery Number
+                Delivery No
               </span>
               <div *ngIf="formValues.deliveryNumber" class="value white-color">
                 {{formValues.deliveryNumber}}
@@ -95,19 +101,12 @@
               <div *ngIf="formValues.deliveryStatus" class="value" [ngStyle]="{'color': statusColorCode }">
                 {{formValues.deliveryStatus.name}}
               </div>
-              <div *ngIf="!formValues.deliveryStatus" class="value">
-                DRAFT
-              </div>
             </div>
           </div>
-          <div class="related-deliveries related-deliveries-information-container col-md-7 no-padding">
-            <div class="col-md-12 related-deliveries-header">
-              <div class="related-deliveries-container-header col-md-12">
-                Related deliveries
-              </div>
-            </div>
-            <div class="col-md-12 related-information">
-              <div class="related-deliveries-container col-md-6">
+          <div class="readonly-label-related-delivery related-deliveries col-md-6">
+            <div class="label-block">
+              <div class="title">Related Deliveries</div>
+              <div class="value related-deliveries-container">
                 <span *ngFor="let relatedDelivery of relatedDeliveries">
                   <a *ngIf="relatedDelivery"  href="{{getRelatedDeliveryLink(relatedDelivery.deliveryId)}}">
                     <span class="related-deliveries-dot-container"></span>
@@ -115,12 +114,15 @@
                   </a>
                 </span>
               </div>
-              <div class="related-deliveries-complete-delivery">
+            </div>
+            <div class="related-deliveries-complete-delivery label-block">
+              <div class="title" style="visibility: hidden;">Related Deliveries</div>
+              <div class="value"> 
                 <mat-checkbox 
-                    [color]="'primary'"
-                    [disabled]="formValues.deliveryStatus.name != 'Verified'"
-                    [(ngModel)]="formValues.completed">
-                    Mark order as completed
+                  [color]="'primary'"
+                  [disabled]="formValues.deliveryStatus.name != 'Verified'"
+                  [(ngModel)]="formValues.completed">
+                  Mark order as completed
                 </mat-checkbox>
               </div>
             </div>
@@ -227,7 +229,7 @@
   <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
     <mat-form-field class="without-search" appearance="legacy">
         <mat-label>Barge</mat-label>
-        <input class="free-text-field" 
+        <!-- <input class="free-text-field" 
           type="text"
           matInput 
           [(ngModel)]="formValues.barge"
@@ -241,7 +243,15 @@
                   [value]="option">
                 {{option.name}}
             </mat-option>
-        </mat-autocomplete>
+        </mat-autocomplete> -->
+        <mat-select  
+          [(ngModel)]="formValues.barge"
+          [compareWith]="compareUomObjects"
+          [disabled]="formValues.deliveryStatus.name == 'Verified'"
+          [disableOptionCentering]="true"
+          panelClass="barge-select-container">
+            <mat-option *ngFor="let barge of bargeList" [value]="barge">{{barge.name}}</mat-option>
+        </mat-select>
     </mat-form-field>
   </div>
   <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">

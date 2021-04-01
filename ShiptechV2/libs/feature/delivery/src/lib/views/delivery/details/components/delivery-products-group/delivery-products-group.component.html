@@ -21,7 +21,7 @@
     <mat-form-field  appearance="fill">
       <mat-label>Add product</mat-label>
       <mat-select [disableOptionCentering]="true" 
-                  panelClass="select-product-container"
+                  panelClass="{{!expandProductPopUp ? 'select-product-container' : 'expand-select-product-container'}}"
                   [(ngModel)]="selectedProductToAddInDelivery"
                   [disabled]="formValues.deliveryStatus.name == 'Verified'"
                   (selectionChange)="addSelectedProductInDelivery(selectedProductToAddInDelivery)">
@@ -30,12 +30,12 @@
             <span class="search-product-lookup">
             </span>
             <input matInput 
-                  placeholder="Search all and select a location"
+                  placeholder="Search all and select a product"
                   class="search-product-input"
                   (input)="search($event.target.value)">
           </div>
           <div class="col-md-2">
-              <img alt="Shiptech" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
+              <img [ngClass]="{'expand-img': expandProductPopUp}" (click)="expandProductPopUp = !expandProductPopUp;" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
           </div>
         </div>
         <table *ngIf="formValues.temp.deliverySummaryProducts" class="delivery-products-pop-up col-md-12 no-padding" mat-table [dataSource]="formValues.temp.deliverySummaryProducts">
@@ -75,6 +75,9 @@
                                 [conversionInfoData]="conversionInfoData"
                                 [buttonClicked]="buttonClicked"
                                 [uoms]="uoms"
+                                [pumpingRateUom]="pumpingRateUom"
+                                [uomVolume]="uomVolume"
+                                [uomMass]="uomMass"
                                 [quantityCategory]="quantityCategory"
                                 [finalQuantityRules]="finalQuantityRules"
                                 [toleranceLimits]="toleranceLimits"
