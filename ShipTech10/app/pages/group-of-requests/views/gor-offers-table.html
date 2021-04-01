@@ -437,12 +437,12 @@
     
                 ng-init="productTop.productLocations['L' + location[0].uniqueLocationIdentifier] ? product = productTop.productLocations['L' + location[0].uniqueLocationIdentifier] : ''">
                 <span ng-if="product" ng-init="maxQuantity = $ctrl.getProductMaxQuantityOnLocation(product, location);">
-                    <span >Market Price</span>  
+                    <span style="font-size: 12px">Market Price</span>  
                     <span>
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"  data-hover="dropdown" data-close-others="true" ng-click="$ctrl.getMarketPriceData(product, location)" >
                             <span ng-mouseover="portSellerStatustooltip['marketPrice'] = true; " ng-mouseleave="portSellerStatustooltip['marketPrice'] = false;"  style="position:relative;overflow:auto; top: 7px;">
                                 <span style="max-width: 100%;overflow: auto;display: initial; text-overflow: ellipsis;" class="ng-binding">
-                                    <img  style="width: 30px; height: 30px" src="img/info.png" alt="logo" class="logo-default" />
+                                    <img  style="width: 20px; height: 20px" src="img/info.png" alt="logo" class="logo-default" />
                                 </span>
                                 <span class="groupOfRequestTableTooltip ng-binding ng-hide" ng-show="portSellerStatustooltip['marketPrice']" style="opacity: 1;">
                                     click to see market price history
