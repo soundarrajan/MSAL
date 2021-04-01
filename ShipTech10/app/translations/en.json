@@ -1304,7 +1304,8 @@
         "DISPLAY_TERMINAL": "Display Terminal",
         "DISPLAY_LOCATION_BOPS_DETAILS": "Display BOPS Details",
         "ADD_COUNTERPARTY_BANK_ACCOUNT": "Add Bank Account Number",
-        "TRADE_BOOK": "Name"
+        "TRADE_BOOK": "Name",
+        "PRE_CLAIM_CN_AVAILABLE": "Display Withheld Amount and Pre Claim CN"
     },
     "recon": {
         "VESSEL_NAME": "Vessel Name",

@@ -5685,6 +5685,7 @@ APP_API.factory('$Api_Service', [
                                     result.report = response.data.reportConfiguration;
                                     result.lab = response.data.labConfiguration;
                                     result.master = response.data.masterConfiguration;
+                                    result.claim = response.data.claimConfiguration;
                                     $rootScope.$broadcast('tenantConfiguration', result);
                                     $rootScope.tenantConfigurationResponseData = result;
                                     callback(result);
@@ -5701,6 +5702,7 @@ APP_API.factory('$Api_Service', [
                                 result.report = $tenantConfiguration.reportConfiguration;
                                 result.lab = $tenantConfiguration.labConfiguration;
                                 result.master = $tenantConfiguration.masterConfiguration;
+                                result.claim = $tenantConfiguration.claimConfiguration;
     							$rootScope.$broadcast('tenantConfiguration', result);
                                 $rootScope.tenantConfigurationResponseData = result;
 	                            callback(result);
@@ -5993,7 +5995,10 @@ APP_API.factory('$Api_Service', [
                         let master = $http.post(`${API.BASE_URL_DATA_ADMIN }/api/admin/masterConfiguration/update`, {
                             Payload: data.master
                         });
-                        $q.all([ contract, email, general, procurement, schedule, delivery, invoice, report, lab, master ]).then(
+                        let claim = $http.post(`${API.BASE_URL_DATA_ADMIN }/api/admin/claimConfiguration/update`, {
+                            Payload: data.claim
+                        });
+                        $q.all([ contract, email, general, procurement, schedule, delivery, invoice, report, lab, master, claim ]).then(
                             (responses) => {
                                 let result = {};
                                 result.status = true;
@@ -6052,6 +6057,11 @@ APP_API.factory('$Api_Service', [
                                     result.message = `${result.message }Master settings saved!<br>`;
                                 } else {
                                     result.message = `${result.message }Master settings failed to save!<br>`;
+                                }
+                                if (responses[10].status == 200) {
+                                    result.message = `${result.message }Claim settings saved!<br>`;
+                                } else {
+                                    result.message = `${result.message }Claim settings failed to save!<br>`;
                                 }
                                 
                                 callback(result);
