@@ -14,8 +14,8 @@
 					<span class="remove" style="display: block;pointer-events: all; opacity: 1" ng-click="deleteTradeBookItem(key)"></span>
 				</td>				
 				<td>
-					<div class="form_input" tooltip tooltiptrigger="hover" data-original-title="{{ getProductTooltipByProductId(formValues.tradeBookMappings[$index].location.code) }}">
-						<input decode-input-format ng-required="true" ng-model="formValues.tradeBookMappings[$index].location" uib-typeahead="item as item.name for item in CM.listsCache.Location | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-limit="5" typeahead-append-to-body="true" typeahead-wait-ms="100" name="Port_{{ key }}" autocomplete="off" />
+					<div class="input-group form_input" tooltip tooltiptrigger="hover" data-original-title="{{ getProductTooltipByProductId(formValues.tradeBookMappings[$index].location.code) }}">
+						<input decode-input-format ng-required="true" ng-model="formValues.tradeBookMappings[$index].location" uib-typeahead="item as item.name for item in CM.listsCache.Location | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-limit="5" typeahead-append-to-body="true" typeahead-wait-ms="100" name="Location_{{ key }}" autocomplete="off" />
 						<span class="input-group-addon" ng-click="triggerModal('general', 'masters_locationlist', 'Location' , 'formValues.tradeBookMappings.'+key+'.location');" ng-init="modal = false">
 							<a class=" btn default">
 								<i class="fa fa-search"></i>
