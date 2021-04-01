@@ -94,6 +94,7 @@
         <div fxLayout="row">
           <shiptech-bdn-additional-information
                 [formValues]="formValues"
+                [events]="eventsSubject.asObservable()"
                 [finalQuantityRules]="finalQuantityRules"
                 [toleranceLimits]="toleranceLimits"
                 [deliveryFeedback]="deliveryFeedback"
