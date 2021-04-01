@@ -60,6 +60,7 @@ import { IDeliveryTenantSettings } from 'libs/feature/delivery/src/lib/core/sett
 import { DecimalPipe } from '@angular/common';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { throws } from 'assert';
 
 export const PICK_FORMATS = {
   display: {
@@ -140,6 +141,10 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
   isPricingEventDateInvalid: boolean;
   buttonClicked: any;
   events2Subscription: Subscription;
+  uomVolume: any;
+  uomMass: any;
+  deliveredQuantityUoms: any;
+  pumpingRateUom: any;
 
 
   @Input('finalQuantityRules') set _setFinalQuantityRules(finalQuantityRules) { 
@@ -162,12 +167,34 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     } 
     this.quantityCategory = quantityCategory;
   }
+  
+  @Input('pumpingRateUom') set _setPumpingRateUom(pumpingRateUom) { 
+    if (!pumpingRateUom) {
+      return;
+    } 
+    this.pumpingRateUom = pumpingRateUom;
+  }
 
   @Input('uoms') set _setUoms(uoms) { 
     if (!uoms) {
       return;
     } 
     this.uoms = uoms;
+    this.deliveredQuantityUoms = uoms;
+  }
+
+  @Input('uomVolume') set _setUomVolume(uomVolume) { 
+    if (!uomVolume) {
+      return;
+    } 
+    this.uomVolume = uomVolume;
+  }
+
+  @Input('uomMass') set _setUomMass(uomMass) { 
+    if (!uomMass) {
+      return;
+    } 
+    this.uomMass = uomMass;
   }
 
   @Input('conversionInfoData') set _setConversionInfoData(conversionInfoData) { 
@@ -253,7 +280,14 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     if (this.formValues.deliveryProducts[this.deliveryProductIndex].finalQuantityAmount) {
       this.formValues.deliveryProducts[this.deliveryProductIndex].finalQuantityAmount = this.quantityFormatValue(this.formValues.deliveryProducts[this.deliveryProductIndex].finalQuantityAmount);
     }
+    if (this.formValues.deliveryProducts[this.deliveryProductIndex].agreedQuantityAmount) {
+      this.formValues.deliveryProducts[this.deliveryProductIndex].agreedQuantityAmount = this.quantityFormatValue(this.formValues.deliveryProducts[this.deliveryProductIndex].agreedQuantityAmount);
+    }
+    if (!this.formValues.deliveryProducts[this.deliveryProductIndex].fuelManifoldTemperatureUom) {
+      this.formValues.deliveryProducts[this.deliveryProductIndex].fuelManifoldTemperatureUom  = 'Celsius';
+    }
     console.log(this.formValues.deliveryProducts);
+    this.setDeliveredQuantityUomList(this.deliveryProductIndex);
   }
 
  
@@ -329,8 +363,10 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     }
     console.log('aici');
     this.formValues = form;
-    console.log(this.formValues);
-  
+    if (this.formValues.deliveryProducts) {
+      this.setDeliveredQuantityUomList(0);
+    }
+    console.log(this.formValues);  
     //this.changeDetectorRef.detectChanges();
   }
 
@@ -558,7 +594,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
         this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Amount`] != null) {
         // quantity exists, set it
         this.formValues.deliveryProducts[productIdx].finalQuantityUom = this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Uom`];
-        this.formValues.deliveryProducts[productIdx].finalQuantityAmount = this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Amount`];
+        this.formValues.deliveryProducts[productIdx].finalQuantityAmount = this.quantityFormatValue(this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Amount`]);
         dataSet = true;
       }
       if (dataSet) {
@@ -870,9 +906,42 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
   }
 
 
-  submitFunction(form) {
-
+  setDeliveredQuantityUomList(deliveryProductIndex) {
+    let bdnUom = this.formValues.deliveryProducts[deliveryProductIndex].bdnQuantityUom;
+    if (bdnUom) {
+      let verifyIfBdnUomIsMassUom = _.find(this.uomMass, function(object) {
+        return object.name == bdnUom.name && object.id == bdnUom.id;
+      });
+      if (verifyIfBdnUomIsMassUom) {
+        this.deliveredQuantityUoms = [...this.uomVolume];
+      } else {
+        this.deliveredQuantityUoms = [...this.uomMass];
+      }
+    }
   }
+
+  calculatePumpingRate(timeString, prodIndex) {
+    console.log(timeString);
+    if (typeof timeString == 'undefined' || typeof this.formValues.deliveryProducts == 'undefined' || !this.formValues.deliveryProducts.length) {
+      return;
+    }
+    if (typeof this.formValues.deliveryProducts[prodIndex].bdnQuantityUom == 'undefined' || this.formValues.deliveryProducts[prodIndex].bdnQuantityUom == null || this.formValues.deliveryProducts[prodIndex].bdnQuantityAmount == null) {
+      return;
+    }
+    if (typeof this.formValues.pumpingRate == 'undefined') {
+      this.formValues.pumpingRate = '';
+      this.formValues.pumpingRateUom = '';
+    }
+    var pumpingTime = (parseInt(timeString.split(':')[0]) * 60 + parseInt(timeString.split(':')[1])) / 60;
+    this.formValues.pumpingRate = this.formValues.deliveryProducts[prodIndex].bdnQuantityAmount / pumpingTime;
+    this.pumpingRateUom.forEach((val, key) => {
+      if (val.name.split('/')[0] == this.formValues.deliveryProducts[prodIndex].bdnQuantityUom.name) {
+        this.formValues.pumpingRateUom = val;
+      }
+    });
+    console.log(this.formValues.pumpingRate);
+    console.log(this.formValues.pumpingRateUom);
+  };
 
 
   
