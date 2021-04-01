@@ -119,7 +119,10 @@ Number(function() {
 
                     function checkCanBuildTable(table_id, checkProcurement) {
                         var isDev = 0;
-                        if (window.Elements && typeof window.Elements.scope[table_id].controls !== 'undefined' && typeof Elements.scope[table_id].screen !== 'undefined' && typeof Elements.scope[table_id].id !== 'undefined' && typeof Elements.scope[table_id].app !== 'undefined') {
+                        if (window.Elements && typeof window.Elements.scope[table_id].controls !== 'undefined' && 
+                        	typeof Elements.scope[table_id].screen !== 'undefined' && 
+                        	typeof Elements.scope[table_id].id !== 'undefined' && 
+                        	typeof Elements.scope[table_id].app !== 'undefined') {
                             var id = scope.modal ? `/${ table_id}` : '';
 
                             var appScreen;
