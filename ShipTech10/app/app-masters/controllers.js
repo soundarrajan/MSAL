@@ -833,7 +833,6 @@
             return false;
         }
         $scope.save_master_changes = function(ev, sendEmails, noReload, completeCallback) {
-            debugger;
             screenLoader.showLoader();
             $('form').addClass('submitted');
             vm.invalid_form = false;
@@ -9735,7 +9734,7 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
         	$scope.multilookupsForLocationProducts = [
 	        	{"Unique_ID":"locationProductTypes", "Name":"locationProductTypes", "Label":"LOCATION_PRODUCT_TYPES", "Required":false, "masterSource":"ProductType", "LastOnRow":true},
 				{"Unique_ID":"locationHSFO05Grades", "Name":"locationHSFO05Grades", "Label":"LOCATION_HSFO_05_GRADES", "Required":false, "masterSource":"Product", "LastOnRow":true},
-				{"Unique_ID":"locationDistillateGrades", "Name":"locationDistillateGrades", "Label":"LOCATION_DISTILLATE_GRADES", "Required":false, "masterSource":"ProductType", "LastOnRow":true},
+				{"Unique_ID":"locationDistillateGrades", "Name":"locationDistillateGrades", "Label":"LOCATION_DISTILLATE_GRADES", "Required":false, "masterSource":"Product", "LastOnRow":true},
 				{"Unique_ID":"locationHSFO35Grades", "Name":"locationHSFO35Grades", "Label":"LOCATION_HSFO_05_GRADES", "Required":false, "masterSource":"Product", "LastOnRow":true}
         	]
         }
