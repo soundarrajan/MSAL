@@ -1,0 +1,177 @@
+<div id="comments-wrapper">
+  <div class="comments-container">
+    <div class="left-panel" *ngIf="expanded">
+      <div id="dark-search-box">
+        <button mat-icon-button>
+          <mat-icon id="searchIcon" matPrefix>search</mat-icon>
+        </button>
+        <div class="br">
+          <input id="messageSearch" type="text" placeholder="Search for messages">
+        </div>
+      </div>
+
+      <section id="table-comments-wrapper" style="position: relative;">
+        <div class="grey-box">
+          <div class="section-title">Filter by Participants</div>
+          <div class="available-comments">
+            <ng-container *ngFor="let item of participants">
+              <!-- Single Comment Start -->
+              <div class="comments-box">
+                <div style="display: flex;">
+                  <div class="comment-user">{{item.placeholder == loginUser? 'Me': item.placeholder}}</div>
+                </div>
+                <div class="container">
+                  <div style="display: flex;">
+                    <div class="name">{{item.name}}</div>
+                    <div class="date">{{item.time}}
+                    </div>
+                  </div>
+                  <div class="comment">
+                    {{item.comment}}
+                  </div>
+                </div>
+              </div>
+              <!-- Single Comment End -->
+            </ng-container>
+          </div>
+        </div>
+      </section>
+
+    </div>
+    <div [ngClass]="{'full-panel':!expanded,'right-panel':expanded}" class="right-panel">
+      <div id="expanded-comments-wrapper" style="border-radius: 10px;">
+        <div class="blue-tab" style="padding-bottom: 10px;">
+          <mat-tab-group #tabGroup (selectedTabChange)="onTabChange($event)">
+            <mat-tab label="Bunker Plan(3)">
+              <div [ngStyle]="{'height':!expanded?'42vh':'46vh'}" style="overflow-y: scroll;">
+                <ng-container *ngFor="let item of bunkerPlanData">
+                  <div class="comments-section">
+                    <!-- Single Comment Start -->
+                    <div class="dark-comment" [ngClass]="{'blue-comment':item.placeholder == loginUser}">
+                      <div class="row">
+                        <div style="flex:0 0 5%">
+                          <div class="comment-user">{{item.placeholder}}</div>
+                        </div>
+                        <div>
+                          <div class="row pl5">
+                            <div class="name float-left" matTooltip="Adam Smith" matTooltipShowDelay="700">
+                              <div class="truncate-180">{{item.name}}</div>
+                            </div>
+                            <div class="date ml-auto">{{item.date}} {{item.time}}
+                              <i class="fas fa-chevron-down"></i>
+                            </div>
+                          </div>
+                          <div class="row pl5">
+                            <div class="comment">
+                              {{item.comment}}
+                            </div>
+                          </div>
+                          <div class="row pl5" style="padding: 5px 3px;">
+                            <div class="attachment" style="padding-right: 25px;" *ngFor="let i of item.attachment">
+                              <div class="attachment-icon float-left">
+                                <img src="../../../assets/customicons/attachment.svg" alt="Attachment">
+                              </div>
+                              <div class="attachment-text float-left pt5">
+                                <a href="#" target="_blank" rel="noopener">{{i}}</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Single Comment End -->
+
+                  </div>
+                </ng-container>
+              </div>
+            </mat-tab>
+            <mat-tab label="Requests (2)">
+              <div [ngStyle]="{'height':!expanded?'42vh':'46vh'}" style="overflow-y: scroll;">
+                <ng-container *ngFor="let item of requests">
+                  <div class="comments-section">
+                    <!-- Single Comment Start -->
+                    <div class="dark-comment" [ngClass]="{'blue-comment':item.placeholder == loginUser}">
+                      <div class="row">
+                        <div style="flex:0 0 5%">
+                          <div class="comment-user">{{item.placeholder}}</div>
+                        </div>
+                        <div>
+                          <div class="row pl5">
+                            <div class="name float-left" matTooltip="Adam Smith" matTooltipShowDelay="700">
+                              <div class="truncate-180">{{item.name}}</div>
+                            </div>
+                            <div class="date ml-auto">{{item.date}} {{item.time}}
+                              <i class="fas fa-chevron-down"></i>
+                            </div>
+                          </div>
+                          <div class="row pl5">
+                            <div class="comment">
+                              {{item.comment}}
+                            </div>
+                          </div>
+                          <div class="row pl5" style="padding: 5px 3px;">
+                            <div class="attachment" style="padding-right: 25px;" *ngFor="let i of item.attachment">
+                              <div class="attachment-icon float-left">
+                                <img src="../../../assets/customicons/attachment.svg" alt="Attachment">
+                              </div>
+                              <div class="attachment-text float-left pt5">
+                                <a href="#" target="_blank" rel="noopener">{{i}}</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Single Comment End -->
+
+                  </div>
+                </ng-container>
+              </div>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+        <div class="new-comment-section">
+          <div class="row">
+            <div [ngStyle]="{'flex':!expanded?'0 0 95%':'0 0 94%'}">
+              <div class="new-comment">
+                <textarea class="new-comment-field" matInput [(ngModel)]="newComment"
+                  placeholder="Type your messages here" (keyup.enter)="addNewComment(tabGroup)"></textarea>
+                <div class="image-upload">
+                  <label for="file-input">
+                    <img class="hand" src="../../../assets/customicons/image-search.svg" alt="search-icon">
+                  </label>
+                  <input #att (change)="upload($event.target.files)" id="file-input" type="file" />
+                </div>
+              </div>
+            </div>
+            <div>
+              <button mat-flat-button class="post-btn">
+                <img class="hand" src="../../../assets/customicons/send.svg" alt="send"
+                  (click)="addNewComment(tabGroup)">
+              </button>
+            </div>
+          </div>
+          <div class="row" style="margin-top: 10px;">
+            <div class="new-attachment" *ngFor="let i of newAttachment">
+              <div>
+                <div class="attachment-icon float-left">
+                  <img src="../../../assets/customicons/attachment.svg" alt="Attachment">
+                </div>
+                <div class="attachment-text float-left pt5">
+                  <a href="#" target="_blank" rel="noopener">{{i}}</a>
+                </div>
+              </div>
+              <div class="icon">
+                <img class="icon-active" (click)="removeFile(i)" src="../../../assets/customicons/delete.svg"
+                  alt="Attachment">
+                <img class="icon-disable" (click)="removeFile(i)" src="../../../assets/customicons/delete_disable.svg"
+                  alt="Attachment">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
