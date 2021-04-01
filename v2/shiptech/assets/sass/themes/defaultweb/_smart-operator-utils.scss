@@ -1,0 +1,14 @@
+@import 'smart-operator-mixins';
+
+.truncate-f85 {
+  @include truncate(85px);
+}
+.w-50{
+  width: 50%;
+}
+.w-auto{
+  width:auto;
+}
+.p-lr-5{
+  padding :0 5px;
+}

@@ -1,0 +1,262 @@
+<div class="dark-wrapper" id="newRequest">
+  <div class="info-bar" style="justify-content: space-between;">
+    <div class="from-to-data" style="flex: 0 0 40%;">
+      <div style="height:32px;margin:0 5px;display:flex;align-items: center;">
+        <div class="label-text m-l-r-5">Vessel ID </div>
+        <div class="value m-l-r-5"> 12829ED </div>
+        <div class="label-text m-l-r-5"> | </div>
+        <div class="label-text m-l-r-5">Operational Dept </div>
+        <div class="value m-l-r-5"> LINE,MLAS </div>
+        <div class="label-text m-l-r-5"> | </div>
+        <div class="label-text m-l-r-5">Created By </div>
+        <div class="value m-l-r-5"> BOPS </div>
+      </div>
+    </div>
+    <div id="display" style="flex: 0 0 40%;">
+      <mat-checkbox class="label dark-checkbox noborder" [checked]="true">Force Request on BOPS</mat-checkbox>
+    </div>
+    <div><button mat-button matTooltip="Save" [matTooltipShowDelay]="500" class="blue-button">Save</button></div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <section>
+        <div class="dark-card" style="margin-top:20px;height: 71vh;">
+          <div class="dark-card-title">Request Details</div>
+          <div class="dark-card-bdyody" style="padding:5px 10px;">
+            <div class="row">
+              <div class="col-8 pd-0">
+                <section id="location">
+                  <div class="section1 dark-box">
+                    <i class="fas fa-circle"></i>
+                  </div>
+                  <div class="dark-table" style="min-height: 32vh;">
+                    <div class="dark-table-title">
+                      <div class="row header">
+                        <div class="col-7 section1">
+                          <span>Marseille</span>
+                          <i class="fas fa-chevron-down m-l-r-5"></i>
+                        </div>
+                        <div class="col-5 section2">
+                          <span>Terminal: </span>
+                          <mat-form-field style="width:30%;margin-left: 5px;font-weight: 300;font-size: 14px;">
+                            <mat-select value="OICT Terminal">
+                              <mat-option value="OICT Terminal">
+                                OICT Terminal
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          <span class="m-l-r-5">|</span>
+                          <span>Agent:</span>
+                          <mat-form-field style="width:30%;margin-left: 5px;font-weight: 300;font-size: 14px;">
+                            <mat-select value="John Smith">
+                              <mat-option value="John Smith">
+                                John Smith
+                              </mat-option>
+                              <mat-option value="Tom Marcus">
+                                Tom Marcus
+                              </mat-option>
+                              <mat-option value="Cameron Paul">
+                                Cameron Paul
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="dark-table-body">
+                      <div class="row">
+                        <div class="dark-card" style="margin:0px 10px 10px;">
+                          <div class="dark-card-body" style="display: flex;padding:5px 0px;">
+                            <div class="col-sm-3" style="padding-right: 0px; padding-left: 5px;">
+                              <div class="dark-table-title">Schedule</div>
+                              <div class="dark-table">
+                                <div class="dark-table-body">
+                                  <ul style="padding-left: 10%;;">
+                                    <li><span class="estimate">ETA: </span>
+                                      <span>
+                                        <mat-form-field class="date-time-picker">
+                                          <input [formControl]="date" id="eta" class="text-center" matInput
+                                            [owlDateTime]="eta" />
+                                          <mat-icon matDatepickerToggleIcon matSuffix svgIcon="date-picker"
+                                            [owlDateTimeTrigger]="eta" class="timer-size"></mat-icon>
+                                          <owl-date-time #eta></owl-date-time>
+                                        </mat-form-field>
+                                      </span>
+                                    </li>
+                                    <li><span class="estimate">ETB: </span>
+                                      <span>
+                                        <mat-form-field class="date-time-picker">
+                                          <input [formControl]="date" id="etb" class="text-center" matInput
+                                            [owlDateTime]="etb" />
+                                          <mat-icon matDatepickerToggleIcon matSuffix svgIcon="date-picker"
+                                            [owlDateTimeTrigger]="etb" class="timer-size"></mat-icon>
+                                          <owl-date-time #etb></owl-date-time>
+                                        </mat-form-field>
+                                      </span>
+                                    </li>
+                                    <li><span class="estimate">ETD: </span>
+                                      <span>
+                                        <mat-form-field class="date-time-picker">
+                                          <input [formControl]="date" id="etd" class="text-center" matInput
+                                            [owlDateTime]="etd" />
+                                          <mat-icon matDatepickerToggleIcon matSuffix svgIcon="date-picker"
+                                            [owlDateTimeTrigger]="etd" class="timer-size"></mat-icon>
+                                          <owl-date-time #etd></owl-date-time>
+                                        </mat-form-field>
+                                      </span>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-9" style="padding-left: 5px; padding-right: 5px;">
+                              <div class="dark-table-title">Product Details</div>
+                              <div class="dark-table">
+                                <div class="dark-table-body" id="product">
+                                  <table class="table">
+                                    <tr>
+                                      <th></th>
+                                      <th>
+                                        <div>Product</div>
+                                      </th>
+                                      <th>
+                                        <div>Spec Group</div>
+                                      </th>
+                                      <th style="text-align: right;">
+                                        <div style="padding-right: 10px;">Minimum Qty
+                                        </div>
+                                      </th>
+                                      <th style="text-align: right;">
+                                        <div style="padding-right: 10px;">Maximum Qty</div>
+                                      </th>
+                                    </tr>
+                                    <tr *ngFor="let item of productDetails"
+                                      [ngClass]="{'rowSelect':item.selected,'rowUnselect':!item.selected}"
+                                      (click)="onRowSelect(item.prod)">
+                                      <td (click)="remove(item.prod)"><img class="remove-icon"
+                                          src="../../../assets/customicons/remove.svg" alt="expand-icon"></td>
+                                      <ng-container *ngIf="item.selected; else readonlyMode">
+                                        <td>
+                                          <input [value]="item.prod">
+                                        </td>
+                                        <td>
+                                          <input [value]="item.specGrp">
+                                        </td>
+                                        <td style="text-align: right;">
+                                          <input [value]="item.minQty">
+                                        </td>
+                                        <td style="text-align: right;">
+                                          <input [value]="item.maxQty">
+                                        </td>
+                                      </ng-container>
+                                      <ng-template #readonlyMode>
+                                        <td>{{item.prod}}</td>
+                                        <td>{{item.specGrp}}</td>
+                                        <td style="text-align: right;">{{item.minQty}}</td>
+                                        <td style="text-align: right;">{{item.maxQty}}</td>
+                                      </ng-template>
+                                    </tr>
+                                    <tr *ngFor="let item of newProducts" class="newRow">
+                                      <td (click)="remove(item.prod)"><img class="remove-icon"
+                                          src="../../../assets/customicons/remove.svg" alt="expand-icon"></td>
+                                      <td>
+                                        <input [value]="item.prod">
+                                      </td>
+                                      <td>
+                                        <input [value]="item.specGrp">
+                                      </td>
+                                      <td style="text-align: right;">
+                                        <input [value]="item.minQty">
+                                      </td>
+                                      <td style="text-align: right;">
+                                        <input [value]="item.maxQty">
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td></td>
+                                      <td (click)="addProduct()">+ Add New Product</td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                    </tr>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </div>
+
+              <div class="col-4  pd-0">
+                <section id="quantity">
+                  <div class="dark-table" style="padding:12px;min-height: 32vh;">
+                    <div class="dark-table-body">
+                      <div class="dark-card">
+                        <div class="dark-card-body" style="padding:0px;">
+                          <div class="dark-table-title"
+                            style="padding:0px 5px;font-size: 15px;display: flex;justify-content: space-between;align-items: center;">
+                            Min QTY to Reach
+                            <div class="product-dropdown">{{productName}}</div>
+                          </div>
+                          <div class="dark-table">
+                            <div class="dark-table-body" id="port">
+                              <table class="table">
+                                <tr>
+                                  <th>
+                                    <div>Outstanding Port</div>
+                                  </th>
+                                  <th>
+                                    <div>ETA</div>
+                                  </th>
+                                  <th style="text-align: right;">
+                                    <div style="padding-right: 10px;">Required Qty
+                                    </div>
+                                  </th>
+                                </tr>
+                                <tr *ngFor="let item of portDetails">
+                                  <td><input [value]="item.name"></td>
+                                  <td><input [value]="item.eta"></td>
+                                  <td style="text-align: right;"><input [value]="item.reqQty"></td>
+                                </tr>
+                                <tr>
+                                  <td>+ Add New Port</td>
+                                  <td></td>
+                                  <td style="text-align: right;"></td>
+                                </tr>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+
+              </div>
+            </div>
+            <div class="row" style="margin-top: 10px !important;">
+              <div class="col-12 pd-0 dark-row" style="display: flex;">
+                <div class="section1 dark-box">
+                  <i class="fas fa-circle"></i>
+                </div>
+                <div
+                  style="font-size:18px;font-weight:normal;display: flex;align-items: center; height: 50px;margin-left: 10px;">
+                  <span><img class="remove-icon" src="../../../assets/customicons/dark-plus.svg" alt="Add"></span>
+                  <span class="m-l-r-5">Add Location</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+  </div>
+</div>

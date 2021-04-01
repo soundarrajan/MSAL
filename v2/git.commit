@@ -1,9 +1,11 @@
-﻿commit d616d2202fe03192bcfe7a524aae648c50f02d75
+﻿commit 17d6b166f8e8edf8f962b76e1cbe3fb4325668d6
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Apr 1 11:18:27 2021 +0000
+Date:   Thu Apr 1 12:56:45 2021 +0000
 
-    Merged PR 9697: Added validation message when verifying the delivery if buyer and seller qty...
+    Merged PR 9703: Fixed overwriting the quantity fields in delivery screen
     
-    Related work items: #31245
+    Fixed overwriting the quantity fields in delivery screen
+    
+    Related work items: #31316
 
 branch: master
