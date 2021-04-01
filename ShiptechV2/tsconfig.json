@@ -29,7 +29,10 @@
       ],
       "@shiptech/feature/invoice": ["libs/feature/invoice/src/index.ts"],
       "@shiptech/feature/delivery": ["libs/feature/delivery/src/index.ts"],
-      "@shiptech/feature/ete": ["libs/feature/ete/src/index.ts"]
+      "@shiptech/feature/ete": ["libs/feature/ete/src/index.ts"],
+      "@shiptech/feature/smart": [
+        "libs/feature/smart/src/index.ts"
+      ]
     },
     "resolveJsonModule": true,
     "esModuleInterop": true,
