@@ -147,11 +147,6 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
   pumpingRateUom: any;
 
 
-  @Input() formValues: any;
-
-  @Input() conversionInfoData: any;
-
-
   @Input('finalQuantityRules') set _setFinalQuantityRules(finalQuantityRules) { 
     if (!finalQuantityRules) {
       return;
@@ -202,6 +197,12 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     this.uomMass = uomMass;
   }
 
+  @Input('conversionInfoData') set _setConversionInfoData(conversionInfoData) { 
+    if (!conversionInfoData) {
+      return;
+    } 
+    this.conversionInfoData = conversionInfoData;
+  }
 
   @Input('buttonClicked') set _setButtonClicked(buttonClicked) { 
     if (!buttonClicked) {
@@ -246,6 +247,12 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
   options: any;
   productList: any[];
   private _autocompleteType: any;
+  @Input('formValues') set _setFormValues(formValues) { 
+    if (!formValues) {
+      return;
+    } 
+    this.formValues = formValues;
+  }
 
   @Input('deliveryProductIndex') set _setDeliveryProductIndex(deliveryProductIndex) { 
     if (!deliveryProductIndex) {
@@ -291,10 +298,12 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
   autocompleteProducts: knownMastersAutocomplete;
   physicalSupplierList: any[];
   autocompletePhysicalSupplier: knownMastersAutocomplete;
+  formValues: any;
   deliveryForm: FormGroup;
   selectedProductToAddInDelivery: any;
   deliveryProduct: FormGroup;
   hideDropdown: boolean;
+  conversionInfoData: any = {};
   finalQuantityRules: any;
   constructor(
     public gridViewModel: OrderListGridViewModel,
@@ -326,7 +335,10 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
 
   ngOnInit(){  
     this.entityName = 'Delivery';
+    this.eventsSubscription = this.events.subscribe((data) => this.setDeliveryForm(data));
+    this.events1Subscription = this.events1.subscribe((data) => this.setConversionDataInfo(data));
     this.events2Subscription = this.events2.subscribe((data) => this.setRequiredFields(data));
+    this.getUomList();
     this.getProductList();
     this.getPhysicalSupplierList();
   }
@@ -336,6 +348,27 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     console.log('check required fields');
   }
 
+  setConversionDataInfo(conversionInfo) {
+    if (!conversionInfo) {
+      return;
+    }
+
+    this.conversionInfoData = conversionInfo;
+    console.log(this.conversionInfoData);
+  }
+
+  setDeliveryForm(form){
+    if (!form) {
+      return;
+    }
+    console.log('aici');
+    this.formValues = form;
+    if (this.formValues.deliveryProducts) {
+      this.setDeliveredQuantityUomList(this.deliveryProductIndex);
+    }
+    console.log(this.formValues);  
+    //this.changeDetectorRef.detectChanges();
+  }
 
   
   
@@ -357,6 +390,11 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     }
   }
 
+
+  getUomList() {
+    this.uomList$ =  this.legacyLookupsDatabase.getUomTable();
+    console.log(this.uomList$);
+  }
 
   async getProductList() {
     this.productList = await this.legacyLookupsDatabase.getProductList();
@@ -904,6 +942,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     console.log(this.formValues.pumpingRate);
     console.log(this.formValues.pumpingRateUom);
   };
+
 
   // Only Number
   keyPressNumber(event) {

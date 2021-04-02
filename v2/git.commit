@@ -1,11 +1,9 @@
-﻿commit 17d6b166f8e8edf8f962b76e1cbe3fb4325668d6
+﻿commit 3c9c0939cdc28d7dd201547e5a6518570b315a16
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Apr 1 12:56:45 2021 +0000
+Date:   Fri Apr 2 08:44:41 2021 +0000
 
-    Merged PR 9703: Fixed overwriting the quantity fields in delivery screen
+    Merged PR 9708: Fixed delivered quantity uom
     
-    Fixed overwriting the quantity fields in delivery screen
-    
-    Related work items: #31316
+    Related work items: #31144
 
 branch: master
