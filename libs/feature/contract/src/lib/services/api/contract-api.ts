@@ -15,7 +15,7 @@ export namespace ContractApiPaths {
   export const getTenantConfiguration = () => `api/admin/tenantConfiguration/get`;
   export const getStaticLists = () =>  `api/infrastructure/static/lists`;
   export const getCounterparty = () =>  `api/masters/counterparties/get`;
-
+  export const getAgreementType = () =>  `api/masters/agreementType/individualLists`;
 }
 
 
@@ -94,6 +94,18 @@ export class ContractApi implements IContractApiService {
       { Payload: request }
     ).pipe(
       map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+    );
+  }
+
+  @ObservableException()
+  getAgreementType(
+    request: any
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${this._masterApiUrl}/${ContractApiPaths.getAgreementType()}`, request 
+    ).pipe(
+      map((body: any) => body.payload.contractAgreementTypesList),
       catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
     );
   }

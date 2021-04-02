@@ -96,6 +96,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   staticLists: any;
   companyList: any;
   sellerList: any;
+  agreementTypeList: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -178,6 +179,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
         this.formValues = data.contract;
       }
       this.staticLists = data.staticLists;
+      this.agreementTypeList = data.agreementTypeList;
       console.log(this.staticLists);
       this.setListFromStaticLists();
     });

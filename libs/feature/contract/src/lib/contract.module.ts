@@ -118,6 +118,7 @@ import { ContractDetailsUnsavedChangesGuard } from './guards/contract-details-un
 import { ContractApi, CONTRACT_API_SERVICE } from './services/api/contract-api';
 import { GeneralInformationContract } from './views/contract/details/components/general-information-contract/general-information-contract.component';
 import { StaticListsRouteResolver } from './views/contract/details/static-lists-route.resolver';
+import { AgreementTypeRouteResolver } from './views/contract/details/agreement-type-route.resolver';
 
 
 @NgModule({
@@ -247,6 +248,7 @@ import { StaticListsRouteResolver } from './views/contract/details/static-lists-
     BargeRouteResolver,
     ClaimTypeRouteResolver,
     ScheduleDashboardLabelsRouteResolver,
+    AgreementTypeRouteResolver,
     QuantityCategoryRouteResolver,
     {
       provide: CONTRACT_API_SERVICE,

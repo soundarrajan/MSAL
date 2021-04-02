@@ -18,6 +18,7 @@ import { ContractDetailsDocumentsComponent } from './views/contract/documents/co
 import { ContractFeedbackRouteResolver } from './views/contract/details/contract-feedback-route.resolver';
 import { ContractRouteResolver } from './views/contract/details/contract-route.resolver';
 import { StaticListsRouteResolver } from './views/contract/details/static-lists-route.resolver';
+import { AgreementTypeRouteResolver } from './views/contract/details/agreement-type-route.resolver';
 
 interface IContractDetailsRouteData {
   [KnownContractRoutes.ContractIdParam]: Type<
@@ -64,6 +65,7 @@ const routes: Routes = [
                   contract: ContractRouteResolver,
                   navBar: NavBarResolver,
                   staticLists: StaticListsRouteResolver,
+                  agreementTypeList: AgreementTypeRouteResolver,
                   uoms: UomsRouteResolver,
                   scheduleDashboardLabelConfiguration: ScheduleDashboardLabelsRouteResolver
                 },
