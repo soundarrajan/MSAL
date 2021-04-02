@@ -419,6 +419,7 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
   expandCompanyPopUp: boolean = false;
   expandAllowCompanies: boolean = false;
   expandCompanylistPopUp: boolean = false;
+  agreementTypeList: any;
   @Input() set autocompleteType(value: string) {
     this._autocompleteType = value;
   }
@@ -466,8 +467,12 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
     this.companyListForSearch = this.companyList;
   }
 
-
-
+  @Input('agreementTypeList') set _setAgremeentType(agreementTypeList) { 
+    if (!agreementTypeList) {
+      return;
+    } 
+    this.agreementTypeList = agreementTypeList;
+  }
 
   constructor(
     public gridViewModel: OrderListGridViewModel,

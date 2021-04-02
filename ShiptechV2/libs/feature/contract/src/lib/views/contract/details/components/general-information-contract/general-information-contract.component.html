@@ -261,15 +261,16 @@
   </div>
 </div>
 <div class="col-md-12 d-flex contract-section contract-no-padding">
-  <div class="col-md-6 d-flex">
+  <div class="col-md-12 d-flex">
     <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
       <mat-form-field class="without-search" appearance="legacy">
         <mat-label>Agent coordination</mat-label>
         <mat-select [disableOptionCentering]="true"
                     panelClass="general-information-select-container"
+                    [panelClass]="{'darkPanel':switchTheme}"
                     [compareWith]="compareUomObjects"
                     placeholder="Agent coordination">
-            <mat-option *ngFor="let option of []" [value]="option">
+            <mat-option *ngFor="let option of agreementTypeList" [value]="option">
                 {{option.name}}
             </mat-option>
         </mat-select>

@@ -56,6 +56,17 @@ export class ContractService extends BaseStoreService implements OnDestroy {
   getCounterparty(counterpartyId: number): Observable<unknown> {
     return this.contractApi.getCounterparty(counterpartyId);
   }
+
+  
+     /**
+ * @param payload 
+ */
+  @ObservableException()
+  getAgreementType(payload): Observable<unknown> {
+    return this.contractApi.getAgreementType(payload);
+  }
+         
+      
      
   
     

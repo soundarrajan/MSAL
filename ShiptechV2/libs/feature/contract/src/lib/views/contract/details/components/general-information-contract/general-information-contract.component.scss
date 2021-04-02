@@ -646,3 +646,17 @@
   height: 20px  !important;
   padding: 15px;
 }
+
+
+.darkPanel {
+  &.mat-select-panel,
+  &.mat-selected {
+    background: #364150;
+  }
+  .mat-option-text {
+    color: #ffffff;
+  }
+  &.light-dropdown {
+    background: #ffffff;
+  }
+}
