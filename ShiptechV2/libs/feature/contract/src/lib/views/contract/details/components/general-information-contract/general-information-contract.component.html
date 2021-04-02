@@ -260,7 +260,24 @@
       </div>
   </div>
 </div>
+<div class="col-md-12 d-flex contract-section contract-no-padding">
+  <div class="col-md-6 d-flex">
+    <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+      <mat-form-field class="without-search" appearance="legacy">
+        <mat-label>Agent coordination</mat-label>
+        <mat-select [disableOptionCentering]="true"
+                    panelClass="general-information-select-container"
+                    [compareWith]="compareUomObjects"
+                    placeholder="Agent coordination">
+            <mat-option *ngFor="let option of []" [value]="option">
+                {{option.name}}
+            </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
 
+</div>
 <ngx-spinner
   bdColor="rgba(51,51,51,0.8)"
   size="medium"

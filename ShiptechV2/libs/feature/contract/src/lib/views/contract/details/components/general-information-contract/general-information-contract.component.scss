@@ -142,7 +142,7 @@
 .custom-form-field {
   margin: 0px 20px 0px 0px;
   border-radius: 4px;
-  //width: 13%;
+  width: 13%;
   &.darkTheme {
     .mat-form-field {
       background: #434f60;
@@ -630,4 +630,19 @@
 
 .allowed-company-modal-expand {
   width: 30vw !important;
+}
+
+.general-information-select-container.mat-select-panel {
+  min-width: calc(100% + 12px) !important;
+  transform: translateX(10px) !important
+}
+
+.general-information-select-container.mat-select-panel{
+  position: relative;
+  top: 26px;
+}
+
+.general-information-select-container .mat-option {
+  height: 20px  !important;
+  padding: 15px;
 }
