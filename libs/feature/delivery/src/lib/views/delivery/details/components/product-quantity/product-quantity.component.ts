@@ -92,8 +92,10 @@ export class ProductQuantityComponent implements OnInit{
   physicalSupplierList: any[];
   autocompletePhysicalSupplier: knownMastersAutocomplete;
   qualityMatchList: any[];
+  formValues: any;
   toleranceLimits: any;
   _autocompleteType: string;
+  prodOrderInTemp: number = 0;
   @Input() set autocompleteType(value: string) {
     this._autocompleteType = value;
   }
@@ -116,25 +118,21 @@ export class ProductQuantityComponent implements OnInit{
     this.gridViewModel.entityName = this.entityName;
   }
      
-  @Input() formValues: any;
-
-  @Input() prodOrderInTemp: any;
+  @Input('formValues') set _setFormValues(formValues) { 
+    if (!formValues) {
+      return;
+    } 
+    this.formValues = formValues;
+  }
 
   @Input('deliveryProductIndex') set _setDeliveryProductIndex(deliveryProductIndex) { 
     if (!deliveryProductIndex) {
       return;
     } 
     this.deliveryProductIndex = deliveryProductIndex;
-    if (this.formValues.temp.deliverysummary) {
-      if (this.formValues.deliveryProducts[this.deliveryProductIndex] && !this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader) {
-        this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader = {};
-      }
-      this.formQuantityHeaders(this.formValues.deliveryProducts[this.deliveryProductIndex].orderProductId, 
-                              this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader.ccaiDelivered);
-    }
-    if (this.formValues.deliveryProducts[this.deliveryProductIndex] && !this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader) {
-      this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader = {};
-    }
+    // if (this.deliveryForm.controls['deliveryProducts'].value[deliveryProductIndex]){
+    //   this.deliveryProduct = this.deliveryForm.controls['deliveryProducts'].value[deliveryProductIndex];
+    // }
   }
 
   @Input('toleranceLimits') set _setToleranceLimits(toleranceLimits) { 
@@ -175,7 +173,39 @@ export class ProductQuantityComponent implements OnInit{
 
   ngOnInit(){  
     this.entityName = 'Delivery';
+    this.eventsSubscription = this.events.subscribe((data) => this.setDeliveryForm(data));
     this.getQualityMatchList();
+    if (this.formValues.temp.deliverysummary) {
+      if (this.formValues.deliveryProducts[this.deliveryProductIndex] && !this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader) {
+        this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader = {};
+      }
+      this.formQuantityHeaders(this.formValues.deliveryProducts[this.deliveryProductIndex].orderProductId, 
+                              this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader.ccaiDelivered);
+    }
+    if (this.formValues.deliveryProducts[this.deliveryProductIndex] && !this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader) {
+      this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader = {};
+    }
+    this.changeDetectorRef.detectChanges();
+  }
+  setDeliveryForm(form){
+    if (!form) {
+      return;
+    }
+    console.log('aici');
+    this.formValues = form;
+    console.log(this.formValues);
+    if (this.formValues.temp.deliverysummary) {
+      if (this.formValues.deliveryProducts[this.deliveryProductIndex]) {
+        if (!this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader) {
+          this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader = {};
+        }
+      }
+      if (this.formValues.deliveryProducts[this.deliveryProductIndex]) {
+        this.formQuantityHeaders(this.formValues.deliveryProducts[this.deliveryProductIndex].orderProductId, 
+          this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader.ccaiDelivered);
+      }
+    // this.changeDetectorRef.detectChanges();          
+    }
   }
 
   async getQualityMatchList() {
@@ -232,7 +262,6 @@ export class ProductQuantityComponent implements OnInit{
       return this.qualityMatchList[1];
   }
 
-
   // Only Number
   keyPressNumber(event) {
     var inp = String.fromCharCode(event.keyCode);
@@ -246,5 +275,6 @@ export class ProductQuantityComponent implements OnInit{
       return false;
     }
   }
+
   
 }
