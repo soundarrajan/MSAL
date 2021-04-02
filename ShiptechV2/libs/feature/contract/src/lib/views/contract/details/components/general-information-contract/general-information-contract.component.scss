@@ -484,6 +484,13 @@
   background: #F1F1F2;
   border-radius: 4px;
   height: 50px  !important;
+  overflow: hidden;
+}
+
+.allowed-companies-container-expand {
+  background: #F1F1F2;
+  border-radius: 4px;
+  height: fit-content;
 }
 
 .allowed-companies-header {
@@ -500,6 +507,11 @@
   content: url(../../../../../../../../../../assets/layout/images/pages/dot-allow-companies.svg);
 }
 
+
+.dot-allow-company {
+  position: relative;
+  top: -2px;
+}
 
 .allow-company {
   width: 87px;
@@ -521,3 +533,101 @@
   margin-right: 10px;
 }
 
+
+
+.edit-allow-companies::before {
+  content: url(../../../../../../../../../../assets/layout/images/pages/edit-allow-companies.svg);
+  float: right  !important;
+}
+
+
+.more-button {
+  width: 45px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  text-align: right;
+  color: #252A32;
+}
+
+.allowed-list {
+  width: calc(100% - 30px);
+}
+
+.allowed-company-modal {
+  background: #364150;
+  border: 1px solid #364150;
+  box-sizing: border-box;
+  box-shadow: 0px 6px 7px rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+  padding: 15px;
+  min-width: 235px !important;
+  width: fit-content;
+  max-width: unset !important;
+  max-height: fit-content;
+  position: relative;
+}
+
+.allowed-company-header{
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  
+  color: #FFFFFF;
+}
+
+.header-allowed-company {
+  padding-right: unset !important;
+  padding-left: unset !important;
+  display: inline-flex;
+}
+
+.expand-allowed-companies {
+  top: -10px;
+}
+
+.allowed-company-line {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+
+  color: #FFFFFF;
+}
+
+.allowed-company-line .mat-checkbox-background {
+  background-color: white !important;
+}
+
+.allowed-company-line  .mat-checkbox-checkmark-path  {
+  stroke: black !important;
+}
+
+
+.allowed-company-line  .mat-checkbox-disabled .mat-checkbox-inner-container, .mat-radio-button.mat-radio-disabled .mat-radio-outer-circle{
+  background: #EBEBEB !important;
+}
+
+
+.allowed-company-line  .mat-checkbox-checked:not(.mat-checkbox-disabled).mat-accent .mat-ripple-element, .mat-checkbox:active:not(.mat-checkbox-disabled).mat-accent .mat-ripple-element {
+  background: #EBEBEB !important;
+}
+
+.btn-i-blue-color {
+  color: #FFFFFF  !important;
+  background: #00AAE2  !important;
+  border-radius: 3px !important;
+  margin-right: 10px;
+  height: 30px;
+  min-width: 85px;
+  font-size: 12px !important;
+}
+
+.allowed-company-modal-expand {
+  width: 30vw !important;
+}
