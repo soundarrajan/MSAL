@@ -417,6 +417,8 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
   companyListForSearch: any;
   searchCompanyModel: any;
   expandCompanyPopUp: boolean = false;
+  expandAllowCompanies: boolean = false;
+  expandCompanylistPopUp: boolean = false;
   @Input() set autocompleteType(value: string) {
     this._autocompleteType = value;
   }
@@ -500,6 +502,9 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
 
   ngOnInit(){  
     this.entityName = 'Contract';
+    if (this.formValues.allowedCompanies) {
+      this.selectedAllowedCompanies();
+    }
     //this.eventsSubscription = this.events.subscribe((data) => this.setDeliveryForm(data));
     //this.eventsSaveButtonSubscription = this.eventsSaveButton.subscribe((data) => this.setRequiredFields(data))
     //this.eventsSubject.next();
@@ -508,6 +513,22 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
 
   public onValChange(val: string) {
     this.selectedVal = val;
+  }
+
+
+  selectedAllowedCompanies() {
+    this.formValues.allowedCompanies.forEach((allowedCompany, k) => {
+      let findCompanyIndex = _.findIndex(this.companyList, function(object: any) {
+        return object.id == allowedCompany.id;
+      });
+      if (findCompanyIndex != -1) {
+        this.companyList[findCompanyIndex].isSelected = true;
+      }
+    });
+
+    console.log(this.companyList);
+
+    
   }
 
   formatDate(date?: any) {
@@ -684,6 +705,21 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
   radioCompanyChange($event: MatRadioChange) {
     if ($event.value) {
       this.formValues.company = $event.value;
+    }
+  }
+
+
+  saveAllowedCompanies() {
+    let companyList = this.companyList;
+    this.formValues.allowedCompanies = [];
+    for (let i = 0; i < companyList.length; i++) {
+      if (companyList[i].isSelected) {
+        let allowedCompany = {
+          'id': companyList[i].id,
+          'name': companyList[i].name
+        }
+        this.formValues.allowedCompanies.push(allowedCompany);
+      }
     }
   }
 

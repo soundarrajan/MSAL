@@ -213,18 +213,49 @@
     </div>
   </div>
   <div class="col-md-6">
-      <div class="allowed-companies-container">
+      <div [ngClass]="{'allowed-companies-container': !expandAllowCompanies, 'allowed-companies-container-expand': expandAllowCompanies}">
         <div class="allowed-companies-header d-flex">
           <div class="col-md-6">
             Allowed Companies
           </div>
+          <div class="col-md-6 edit-allow-companies"  [matMenuTriggerFor]="menu1">
+          </div>
+          <mat-menu #menu1="matMenu" class="allowed-company-modal">
+            <div class="col-md-12 header-allowed-company">
+              <div class="allowed-company-header col-md-10 contract-no-padding" >
+                Allowed companies
+              </div>
+              <div class="col-md-2 contract-no-padding expand-allowed-companies"  (click)="$event.stopPropagation();$event.preventDefault();">
+                  <img  [ngClass]="{'expand-company-img': expandCompanylistPopUp}" (click)="expandCompanylistPopUp = !expandCompanylistPopUp;" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
+              </div>
+            </div>
+            <div (click)="$event.stopPropagation();" class="col-md-12 contract-no-padding allowed-company-line"  *ngFor="let company of companyListForSearch">
+              <mat-checkbox [(ngModel)]="company.isSelected">
+                {{company.name}}
+              </mat-checkbox>
+            </div>
+            <div class="col-md-12">
+              <button  class="ui-button-info mr-1 btn-i-blue-color" label="Save"
+                pButton
+                (click)="saveAllowedCompanies()"
+                style="float:right"
+                type="button"></button>
+            </div>
+          </mat-menu>
         </div>
-        <div class="allowed-container col-md-12">
-          <span class="allow-company" *ngFor="let allowedCompany of formValues.allowedCompanies">
-            <span class="dot-allow-company">
-            </span>
-            {{allowedCompany.name}}
-          </span>
+        <div class="allowed-container col-md-12 d-flex">
+          <div class="allowed-list">
+            <ng-container  *ngFor="let allowedCompany of formValues.allowedCompanies"> 
+              <span class="allow-company">
+                <span class="dot-allow-company">
+                </span>
+                {{allowedCompany.name}}
+              </span>
+            </ng-container>
+          </div>
+          <div class="more-button" (click)="expandAllowCompanies = !expandAllowCompanies" >
+            ...more
+          </div>
         </div>
       </div>
   </div>
