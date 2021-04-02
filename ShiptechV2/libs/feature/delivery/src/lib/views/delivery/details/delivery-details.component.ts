@@ -895,7 +895,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy, OnChanges  {
   createDeliveryWithMultipleProductsFromOrdersToBeDeliveriesList() {
     this.isLoading = true;
     let data = JSON.parse(localStorage.getItem('deliveriesFromOrder'));
-    localStorage.removeItem('deliveriesFromOrder');
+    //localStorage.removeItem('deliveriesFromOrder');
     this.formValues.order = data[0].order;
     this.formValues.surveyor = data[0].surveyor;
     if (typeof this.formValues.deliveryProducts == 'undefined') {
@@ -938,13 +938,15 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy, OnChanges  {
           this.toastrService.error(response);
         } else {
           this.formValues.deliveryProducts[key].qualityParameters = response;
+          this.changeDetectorRef.detectChanges();
           if (this.formValues.deliveryProducts[key].qualityParameters) {
             this.formValues.deliveryProducts[key].qualityParameters.forEach((productParameter, key1) => {
               productParameter.specParameter.name = this.decodeSpecificField(productParameter.specParameter.name);
             });
+           
           }
           console.log(this.formValues.deliveryProducts[key]);
-          this.changeDetectorRef.detectChanges();
+          //this.changeDetectorRef.detectChanges();
         }
       });
 
