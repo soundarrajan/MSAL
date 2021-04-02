@@ -449,6 +449,7 @@
             </div>
         </div>
         <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+            {{formValues.deliveryProducts[deliveryProductIndex].deliveredVolumeUom ? formValues.deliveryProducts[deliveryProductIndex].deliveredVolumeUom.name : ''}}
             <div class="split-field">
                 <mat-form-field class="without-search long-label-field input-field-container" style="width: 64%;border: none;" appearance="legacy">
                     <mat-label>Delivered Quantity</mat-label>

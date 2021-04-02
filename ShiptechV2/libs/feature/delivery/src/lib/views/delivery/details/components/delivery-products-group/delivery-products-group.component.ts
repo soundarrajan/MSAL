@@ -12,9 +12,7 @@ import {
   EventEmitter,
   AfterViewInit,
   Inject,
-  ChangeDetectorRef,
-  OnChanges,
-  SimpleChanges
+  ChangeDetectorRef
 } from '@angular/core';
 import { Select } from '@ngxs/store';
 import { QcReportService } from '../../../../../services/qc-report.service';
@@ -89,9 +87,10 @@ export class PickDateAdapter extends NativeDateAdapter {
               {provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS}]
 })
 export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponent
-  implements OnInit {
+  implements OnInit{
   @Input() data;
   toleranceLimits: any;
+  formValues: any;
   openedScreenLoaders: number = 0;
   uoms: any;
   quantityCategory: any;
@@ -108,17 +107,6 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
   uomMass: any;
   pumpingRateUom: any;
   expandProductPopUp: any = false;
-
-  //below get updated value every time value changes in parent  
-  @Input() formValues: any;
-
-  @Input() prodOrderInTemp: any;
-
-
-
-  @Input() conversionInfoData: any;
-
-
   @Input('quantityCategory') set _setQuantityCategory(quantityCategory) { 
     if (!quantityCategory) {
       return;
@@ -154,7 +142,21 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
     this.uomMass = uomMass;
   }
 
+  @Input('conversionInfoData') set _setConversionInfoData(conversionInfoData) { 
+    if (!conversionInfoData) {
+      return;
+    } 
+    this.conversionInfoData = conversionInfoData;
+  }
 
+
+  @Input('model') set _setFormValues(formValues) { 
+    if (!formValues) {
+      return;
+    } 
+    this.formValues = formValues;
+    this.changeDetectorRef.detectChanges();
+  }
   
   @Input('finalQuantityRules') set _setFinalQuantityRules(finalQuantityRules) { 
     if (!finalQuantityRules) {
@@ -179,6 +181,7 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
   selectedProductToAddInDelivery: any;
   deliveryProducts: any[] = [];
   hideDropdown: boolean;
+  conversionInfoData: any = [];
   finalQuantityRules: any;
   selectedProduct: number = 0;
   deliveryFormSubject: Subject<any> = new Subject<any>();
@@ -209,8 +212,9 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
   }
 
   ngOnInit(){  
-    this.hideDropdown = false;
+    this.eventsSubscription = this.events.subscribe((data) => this.setDeliveryForm(data));
     this.eventsSaveButtonSubscription = this.eventsSaveButton.subscribe((data) => this.setRequiredFields(data));
+    this.eventsConversionInfoDataSubscription = this.eventsConversionInfoData.subscribe((data) => this.setConversionInfo(data));
     this.eventsOrderNumberSubscription = this.eventsChangedOrderNumber.subscribe((data) => this.orderNumberChanged(data));
   }
 
@@ -219,11 +223,33 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
     console.log(this.hideDropdown);
   }
 
+  setConversionInfo(conversionInfoData) {
+    this.conversionInfoData = conversionInfoData;
+    this.conversionDataInfoSubject.next(this.conversionInfoData);
+    console.log(this.conversionInfoData);
+  }
+
   setRequiredFields(data) {
     this.buttonClicked = data;
     console.log('check required fields');
     this.requiredInfoSubject.next(this.buttonClicked);
   }
+
+  setDeliveryForm(form){
+    if (!form) {
+      return;
+    }
+    console.log('aici');
+    console.log(form);
+    this.formValues = form;
+    if (this.formValues.temp.deliverysummary) {
+      this.formValues.temp.deliverySummaryProducts = [ ... this.formValues.temp.deliverysummary.products];
+    }
+    this.deliveryFormSubject.next(this.formValues);
+    this.hideDropdown = false;
+  }
+
+
 
 
   ngAfterViewInit(): void {
