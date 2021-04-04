@@ -1460,6 +1460,16 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
 
   
   verify() {
+    let hasFinalQuantityError = false;
+    this.formValues.deliveryProducts.forEach((product, k) => {
+      if (!product.finalQuantityAmount) {
+        hasFinalQuantityError = true;
+        this.toastrService.error(`Please make sure that Quantity to be invoiced for ${product.product.name } is computed based on seller/buyer quantity`);
+      }
+    });
+    if (hasFinalQuantityError) {
+      return;
+    }
     let hasMandatoryFields = this.validateRequiredFields();
     if (hasMandatoryFields) {
       return;
