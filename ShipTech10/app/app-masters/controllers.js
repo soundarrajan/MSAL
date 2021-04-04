@@ -1038,7 +1038,7 @@
                if(!SaveAdditionalCostDetValidation){
                    return
                }
-                    
+               $rootScope.RootTempadditionalCosts = undefined;
                  if ($scope.formValues) {
                     if($scope.formValues.productsSystemInstruments){
                         let errors = '';
@@ -7403,7 +7403,6 @@
 
 /* Location Master Preffered Seller Product Table*/
 $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
-    
     var objMapping;
      $scope.CurrentadditionalCostsdetails  = formvalues;
      if($scope.formValues != undefined && $scope.formValues.additionalCosts != undefined)
