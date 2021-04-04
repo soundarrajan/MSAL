@@ -749,3 +749,194 @@
   padding-top: 5px;
   padding-bottom: 5px;
 }
+
+.add-contract-quantity-icon::before {
+  content: url(../../../../../../../../../../assets/layout/images/pages/add-product-dropdown.svg);
+}
+
+.add-contract-quantity-icon {
+  width: 25px;
+  height: 25px;
+  position: relative;
+  top: 5px;
+}
+
+
+.remove-contract-quantity-icon::before {
+  content: url(../../../../../../../../../../assets/layout/images/pages/remove-sample-details.svg);
+}
+
+.remove-contract-quantity-icon {
+  width: 25px;
+  height: 25px;
+  position: relative;
+}
+
+.sample-details-container {
+  padding-left: 0px !important;
+  padding-right: 0px  !important;
+}
+
+.contract-quantity-select-component .mat-select-arrow {
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 6px solid;
+  margin: 0 4px;
+  color: #364150 !important;
+}
+
+.contract-quantity-container {
+  background: #ffffff;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: #252a32;
+  width: 100%;
+  .quantity-header {
+    background: #f1f1f2;
+    border-radius: 4px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 10px;
+    line-height: 12px;
+    color: #252a32;
+    padding: 6px;
+    display: flex;
+    justify-content: space-around;
+    margin-right: 20px;
+    width: 100%;
+    .value {
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 16px;
+      color: #252A32;
+    }
+    .label {
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 10px;
+      line-height: 12px;
+      /* identical to box height */
+      color: #252A32;
+    }
+    .border_line {
+      border-right: 1px solid #252a32;
+    }
+
+    .label-content {
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 16px;
+      color: #252A32;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+}
+
+.custom-form-contract-quantity {
+  width: 100%;
+}
+
+.legend2-component-v2 {
+  background: #364150;
+  border-radius: 3px;
+  border-radius: 4px;
+  //width: 257px;
+  height: 25px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  >div {
+    //width: 33%;
+    color: white;
+    padding: 0px 5px;
+    &.dropdown {
+      .mat-select-value-text {
+        color: white;
+        font-weight: 500;
+        padding-left: 0;
+      }
+      .mat-form-field-wrapper{
+        padding: 2px;
+      }
+      .mat-form-field-infix {
+        padding: 2px;
+        border-top: none;
+      }
+      .mat-form-field-underline {
+        display: none;
+      }
+      .mat-select-arrow {
+        color: #37414f;
+      }
+    }
+    .text {
+      font-size: 10px;
+      color: #37414f;
+      line-height: 12px;
+    }
+    .value {
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 16px;
+    }
+    &:not(:last-child){
+      border-right: 1px solid #37414F;
+    }
+  }
+  &.darkTheme {
+    background: #37414f;
+    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+    >div {
+      color: #ffffff;
+      &.dropdown {
+        .mat-select-value-text {
+          color: #ffffff;
+        }
+        .mat-select-arrow {
+          color: #ffffff;
+        }
+      }
+      .text {
+        color: #a5a5a5;
+      }
+      &:not(:last-child){
+        border-right: 1px solid #545D6A;
+      }
+    }
+  }
+}
+
+
+.contract-quantity-select-container.mat-select-panel {
+  min-width: calc(100% + 12px) !important;
+  transform: translateX(10px) !important
+}
+
+.contract-quantity-select-container.mat-select-panel{
+  position: relative;
+  top: 19px;
+}
+
+.contract-quantity-select-container .mat-option {
+  height: 20px  !important;
+  padding: 15px;
+}
+
+
+
+.contract-quantity-select-container .mat-select-arrow {
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 6px solid;
+  margin: 0 4px;
+  color: white !important;
+}

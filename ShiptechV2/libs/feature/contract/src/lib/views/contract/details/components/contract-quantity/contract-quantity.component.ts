@@ -468,6 +468,33 @@ export class ContractQuantity extends DeliveryAutocompleteComponent
 
   }
 
+  compareUomObjects(object1: any, object2: any) {
+    return object1 && object2 && object1.id == object2.id;
+  }
+
+  addSampleSources() {
+    if (this.formValues.deliveryStatus.name == 'Verified') {
+      return;
+    }
+    if (!this.formValues.sampleSources) {
+      this.formValues.sampleSources = [];
+    }
+    this.formValues.sampleSources.push({'id':0});
+  }
+
+
+  removeSampleSources(key) {
+    if (this.formValues.deliveryStatus.name == 'Verified') {
+      return;
+    }
+    if (this.formValues.sampleSources[key].id) {
+      this.formValues.sampleSources[key].isDeleted = true;
+    } else {
+      this.formValues.sampleSources.splice(key, 1);
+    }
+  }
+
+
 
 
   ngAfterViewInit(): void {
