@@ -1,9 +1,9 @@
-﻿commit 3b9c29ea9371f7c1cf77d3750cd79c877fa25c1e
+﻿commit b79e4784c52564f2b716de4d173d67e51f796140
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri Apr 2 13:43:37 2021 +0000
+Date:   Sun Apr 4 14:52:42 2021 +0000
 
-    Merged PR 9709: Fixed color of selected element from dropdown
+    Merged PR 9711: Fixed chrome scrollbar in delivery page
     
-    Fixed color of selected element from dropdown
+    Fixed chrome scrollbar in delivery page
 
 branch: master
