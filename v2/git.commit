@@ -1,9 +1,9 @@
-﻿commit b79e4784c52564f2b716de4d173d67e51f796140
+﻿commit 6af6c21b26aa10499246f22c696804a990813e4c
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Sun Apr 4 14:52:42 2021 +0000
+Date:   Sun Apr 4 15:11:08 2021 +0000
 
-    Merged PR 9711: Fixed chrome scrollbar in delivery page
+    Merged PR 9712: Fixed build error
     
-    Fixed chrome scrollbar in delivery page
+    Fixed build error
 
 branch: master
