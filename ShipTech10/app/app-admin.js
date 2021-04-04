@@ -220,6 +220,7 @@ APP_ADMIN.run([ '$state', '$rootScope', 'ADMIN_STATE', function($state, $rootSco
     titleMap[ADMIN_STATE.TRANSLATE] = 'Translate';
     titleMap[ADMIN_STATE.IMPORT] = 'IMPORT';
     titleMap[ADMIN_STATE.TRADEBOOK] = 'Trade Book List';
+    titleMap[ADMIN_STATE.AUDIT] = ':screen_id :: Audit :entity_id';
     let screenMap = {
         users: 'Users',
         user_role: 'User Role',
@@ -229,7 +230,8 @@ APP_ADMIN.run([ '$state', '$rootScope', 'ADMIN_STATE', function($state, $rootSco
         subscriptionslist: 'Subscription',
         translate: 'Translate',
         import: 'Import',
-        tradebook: 'Trade Book List'
+        tradebook: 'Trade Book List',
+        audit:'Audit Log'
     };
     let entityMap = {}; // if needed :)
     // do not edit below
@@ -250,13 +252,6 @@ APP_ADMIN.run([ '$state', '$rootScope', 'ADMIN_STATE', function($state, $rootSco
                 $state.params.path[1].label = 'Order to Invoice  Import';
                 $state.params.title = 'Order to Invoice Import';
             }
-
-            // if ($state.params.screen_id == 'tradebooks') {
-            //     $state.current.params.path[1].label = 'Trade Book List';
-            //     $state.current.params.title = 'Trade Book List';
-            //     $state.params.path[1].label = 'Trade Book List';
-            //     $state.params.title = 'Trade Book List';
-            // }
             if ($state.params.screen_id == 'tradebook') {
                 $state.current.params.path[1].label = 'Trade Book';
                 $state.current.params.title = 'Trade Book';

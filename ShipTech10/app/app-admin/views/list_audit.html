@@ -1,0 +1,19 @@
+﻿<span  ng-controller="Controller_Master as CM">
+    <general-header actions="{
+        primary: [
+        ],
+        secondary: [
+            {label: 'Edit', type: 'goto', url: 'edit/:entity_id'},
+            {label: 'Audit Log', active: true}
+        ],
+    }"></general-header>     
+</span>
+<span ng-controller="Controller_Configurable_List_Control as CLC">
+    <clc-table-list
+        id="'entity_audit_log'"
+        app="'admin'"
+        screen="CLC.get_documents_screen_name()"
+        controls="'[info, pager]'"
+    ></clc-table-list>
+</span>
+

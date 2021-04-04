@@ -1381,6 +1381,11 @@ Number(function() {
                                                     actions = `<a href="/#/masters/emaillogs/edit/${ rowObject.id }" target="_blank" ><span class="jqgrid-ng-action edit"></span></a>`;
                                                     return actions;
                                                 }
+                                                
+                                                if (table_id == 'flat_trade_book_mapping_list' && rowObject.tradeBook) {
+                                                    actions = `<span class="jqgrid-ng-action ${ v.class }" ng-click="CLC.do_entity_action('${ v.class }', '${ rowObject.tradeBook.id }', '', null, '${ checkProcurement }')"></span></a>`;
+                                                    return actions;
+                                                }
                                                 var cellAttrs;
                                                 if (v.data_attributes) {
                                                     cellAttrs = `<a ng-disabled ="!${ eval(v.disabled) }"${ v.data_attributes } ng-click="CLC.dataAction('${ v.action }', '${ encodeURIComponent(JSON.stringify(rowObject)) }')" class=" ${ v.class }">${ v.label }</a>`;

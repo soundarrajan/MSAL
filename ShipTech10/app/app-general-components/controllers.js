@@ -2823,7 +2823,8 @@
                 role: "rolelist", // admin
                 configuration: "configurationlist", // admin
                 claim: "claimslist", // claims
-                contract: "contractlist" // contracts
+                contract: "contractlist", // contracts
+                tradebook:"tradebook"
             };
             
             var _dns = _screen_map[$state.params.screen_id] ? _screen_map[$state.params.screen_id] : "undefined";
