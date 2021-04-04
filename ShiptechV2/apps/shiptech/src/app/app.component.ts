@@ -51,7 +51,7 @@ export class AppComponent {
             let style = styles[i];
             let rules = style.sheet.cssRules;
             for(let r = 0; r < rules.length; r++) {
-                let rule = rules[r];
+                const rule: any = rules[r];
                 if(rule.selectorText === '::-webkit-scrollbar') {
                     style.sheet.deleteRule(r);
                 }
