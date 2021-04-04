@@ -213,71 +213,166 @@
     </div>
   </div>
   <div class="col-md-6">
-      <div [ngClass]="{'allowed-companies-container': !expandAllowCompanies, 'allowed-companies-container-expand': expandAllowCompanies}">
-        <div class="allowed-companies-header d-flex">
-          <div class="col-md-6">
-            Allowed Companies
-          </div>
-          <div class="col-md-6 edit-allow-companies"  [matMenuTriggerFor]="menu1">
-          </div>
-          <mat-menu #menu1="matMenu" class="allowed-company-modal">
-            <div class="col-md-12 header-allowed-company">
-              <div class="allowed-company-header col-md-10 contract-no-padding" >
-                Allowed companies
-              </div>
-              <div class="col-md-2 contract-no-padding expand-allowed-companies"  (click)="$event.stopPropagation();$event.preventDefault();">
-                  <img  [ngClass]="{'expand-company-img': expandCompanylistPopUp}" (click)="expandCompanylistPopUp = !expandCompanylistPopUp;" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
-              </div>
-            </div>
-            <div (click)="$event.stopPropagation();" class="col-md-12 contract-no-padding allowed-company-line"  *ngFor="let company of companyListForSearch">
-              <mat-checkbox [(ngModel)]="company.isSelected">
-                {{company.name}}
-              </mat-checkbox>
-            </div>
-            <div class="col-md-12">
-              <button  class="ui-button-info mr-1 btn-i-blue-color" label="Save"
-                pButton
-                (click)="saveAllowedCompanies()"
-                style="float:right"
-                type="button"></button>
-            </div>
-          </mat-menu>
+    <div [ngClass]="{'allowed-companies-container': !expandAllowCompanies, 'allowed-companies-container-expand': expandAllowCompanies}">
+      <div class="allowed-container col-md-12 d-flex">
+        <div class="allowed-list-modal-container">
+            Allowed Company
         </div>
-        <div class="allowed-container col-md-12 d-flex">
-          <div class="allowed-list">
-            <ng-container  *ngFor="let allowedCompany of formValues.allowedCompanies"> 
-              <span class="allow-company">
-                <span class="dot-allow-company">
-                </span>
-                {{allowedCompany.name}}
+        <div  [matMenuTriggerFor]="menu1" class="edit-allow-companies">
+        </div>
+        <mat-menu #menu1="matMenu" class="allowed-company-modal">
+          <div class="col-md-12 header-allowed-company">
+            <div class="allowed-company-header col-md-10 contract-no-padding" >
+              Allowed companies
+            </div>
+            <div class="col-md-2 contract-no-padding expand-allowed-companies"  (click)="$event.stopPropagation();$event.preventDefault();">
+                <img  [ngClass]="{'expand-company-img': expandCompanylistPopUp}" (click)="expandCompanylistPopUp = !expandCompanylistPopUp;" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
+            </div>
+          </div>
+          <div (click)="$event.stopPropagation();" class="col-md-12 contract-no-padding allowed-company-line"  *ngFor="let company of companyListForSearch">
+            <mat-checkbox [(ngModel)]="company.isSelected">
+              {{company.name}}
+            </mat-checkbox>
+          </div>
+          <div class="col-md-12">
+            <button  class="ui-button-info mr-1 btn-i-blue-color" label="Save"
+              pButton
+              (click)="saveAllowedCompanies()"
+              style="float:right"
+              type="button"></button>
+          </div>
+        </mat-menu>
+      </div>
+      <div class="allowed-container col-md-12 d-flex">
+        <div class="allowed-list">
+          <ng-container  *ngFor="let allowedCompany of formValues.allowedCompanies"> 
+            <span class="allow-company">
+              <span class="dot-allow-company">
               </span>
-            </ng-container>
-          </div>
-          <div class="more-button" (click)="expandAllowCompanies = !expandAllowCompanies" >
-            ...more
-          </div>
+              {{allowedCompany.name}}
+            </span>
+          </ng-container>
+        </div>
+        <div class="more-button" (click)="expandAllowCompanies = !expandAllowCompanies" >
+          ...more
         </div>
       </div>
+    </div>
   </div>
 </div>
-<div class="col-md-12 d-flex contract-section contract-no-padding">
-  <div class="col-md-12 d-flex">
+<div class="col-md-12 d-flex contract-section">
     <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
       <mat-form-field class="without-search" appearance="legacy">
-        <mat-label>Agent coordination</mat-label>
-        <mat-select [disableOptionCentering]="true"
+        <mat-label>Agreement Type</mat-label>
+        <mat-select 
+                    [(ngModel)]="formValues.agreementType"
+                    (selectionChange)="changeAgreementType()"
+                    [disableOptionCentering]="true"
                     panelClass="general-information-select-container"
-                    [panelClass]="{'darkPanel':switchTheme}"
                     [compareWith]="compareUomObjects"
-                    placeholder="Agent coordination">
+                    placeholder="Agreement Type"
+                    required>
             <mat-option *ngFor="let option of agreementTypeList" [value]="option">
                 {{option.name}}
             </mat-option>
         </mat-select>
       </mat-form-field>
     </div>
-  </div>
-
+    <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+      <mat-form-field class="without-search" appearance="legacy">
+        <mat-label>Payment Term</mat-label>
+        <mat-select 
+                    [(ngModel)]="formValues.paymentTerm"
+                    [disableOptionCentering]="true"
+                    panelClass="general-information-select-container"
+                    [compareWith]="compareUomObjects"
+                    placeholder="Payment Term">
+            <mat-option *ngFor="let option of paymentTermList" [value]="option">
+                {{option.name}}
+            </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+      <mat-form-field class="without-search" appearance="legacy">
+        <mat-label>Delivery Term</mat-label>
+        <mat-select 
+                    [(ngModel)]="formValues.incoterm"
+                    [disableOptionCentering]="true"
+                    panelClass="general-information-select-container"
+                    [compareWith]="compareUomObjects"
+                    placeholder="Delivery Term">
+            <mat-option *ngFor="let option of incotermList" [value]="option">
+                {{option.name}}
+            </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="custom-form-field" 
+        [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+      <mat-form-field class="without-search" 
+          appearance="legacy"
+          [ngClass]="{'date-invalid': isValidFromDateInvalid , 'date-valid': !isValidFromDateInvalid}">
+        <mat-label>Start Date</mat-label>
+        <input [(ngModel)]="formValues.validFrom" 
+              #validFromDateField="ngModel" 
+              matInput 
+              [matDatepicker]="validFrom"
+              (focus)="validFrom.open()"
+              autocomplete="off"
+              placeholder="Start Date"
+              (dateInput)="onChange($event, 'validFrom')"
+              (dateChange)="formValues.validFrom= formatDateForBe(formValues.validFrom)"
+              required>
+              <mat-datepicker-toggle matSuffix [for]="validFrom">
+                <mat-icon matDatepickerToggleIcon class="icon-date">
+                </mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #validFrom [panelClass]="switchTheme?'datepicker-darktheme':''"></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="custom-form-field" 
+         [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+      <mat-form-field class="without-search" 
+          appearance="legacy"
+          [ngClass]="{'date-invalid': isValidToDateInvalid , 'date-valid': !isValidToDateInvalid}">
+        <mat-label>End Date</mat-label>
+        <input [(ngModel)]="formValues.validTo" 
+              #validToDateField="ngModel" 
+              matInput 
+              [matDatepicker]="validTo"
+              (focus)="validTo.open()"
+              autocomplete="off"
+              placeholder="End Date"
+              (dateInput)="onChange($event, 'validTo')"
+              (dateChange)="formValues.validTo= formatDateForBe(formValues.validTo)"
+              required>
+              <mat-datepicker-toggle matSuffix [for]="validTo">
+                <mat-icon matDatepickerToggleIcon class="icon-date">
+                </mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #validTo [panelClass]="switchTheme?'datepicker-darktheme':''"></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+      <mat-form-field class="without-search" appearance="legacy">
+        <mat-label>Date apply on</mat-label>
+        <mat-select 
+                    [(ngModel)]="formValues.applyTo"
+                    [disableOptionCentering]="true"
+                    panelClass="general-information-select-container"
+                    [compareWith]="compareUomObjects"
+                    placeholder="Date apply on">
+            <mat-option *ngFor="let option of applyToList" [value]="option">
+                {{option.name}}
+            </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="inital-end-date-readonly">
+      <div class="label">Initial End Date</div>
+      <div class="value">: --/--/---</div>
+    </div>
 </div>
 <ngx-spinner
   bdColor="rgba(51,51,51,0.8)"

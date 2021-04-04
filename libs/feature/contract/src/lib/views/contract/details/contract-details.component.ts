@@ -97,6 +97,9 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   companyList: any;
   sellerList: any;
   agreementTypeList: any;
+  paymentTermList: any;
+  incotermList: any;
+  applyToList: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -180,28 +183,22 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       }
       this.staticLists = data.staticLists;
       this.agreementTypeList = data.agreementTypeList;
+      this.companyList = this.setListFromStaticLists('Company');
+      this.sellerList = this.setListFromStaticLists('Seller');
+      this.paymentTermList = this.setListFromStaticLists('PaymentTerm');
+      this.incotermList = this.setListFromStaticLists('Incoterm');
+      this.applyToList = this.setListFromStaticLists('ApplyTo');
       console.log(this.staticLists);
-      this.setListFromStaticLists();
     });
   }
 
-  setListFromStaticLists() {
-    let companyList = _.find(this.staticLists, function(object) {
-      return object.name == 'Company';
+  setListFromStaticLists(name) {
+    let findList = _.find(this.staticLists, function(object) {
+      return object.name == name;
     });
-    if (companyList != -1) {
-      this.companyList = companyList?.items;
+    if (findList != -1) {
+      return findList?.items;
     }
-
-    let sellerList = _.find(this.staticLists, function(object) {
-      return object.name == 'Seller';
-    });
-    if (sellerList != -1) {
-      this.sellerList = sellerList?.items;
-    }
-
-    console.log(this.companyList);
-    console.log(this.sellerList);
   }
 
   

@@ -1,0 +1,72 @@
+<div class="col-md-12 d-flex contract-section">
+  <table class="contract-quantity-table table table-stripped table-hover" style="width:100%">
+    <thead>
+        <tr>
+            <td class="padding" style="width:17%">
+                <b>Parameters</b>
+            </td>
+            <td class="padding" style="width:8%">
+                <b>UOM</b>
+            </td>
+            <td class="padding" style="width:25%">
+                <b>BDN Value</b>
+            </td>
+            <td class="padding" style="width:25%">
+                <b>Lab Value</b>
+            </td>
+            <td class="padding" style="width:10%">
+                <b>Variance</b>
+            </td>
+            <td class="padding" style="width:15%">
+                <b>%Deviation</b>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let quantityParameter of []">
+            <td class="padding" style="width:17%">
+                <span>{{quantityParameter.parameter.name}}</span>
+            </td>
+            <td class="padding" style="width:8%">
+                <span>{{quantityParameter.uom}}</span>
+            </td>
+            <td wclass="padding" idth="25%">
+                <span>
+                    <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+                        <mat-form-field class="without-search" appearance="legacy">
+                          <input 
+                                matInput 
+                                quantityFormat
+                                myNumberOnly
+                                autocomplete="off">
+                        </mat-form-field>
+                    </div>
+                </span>
+            </td>
+            <td class="padding" style="width:25%">
+                <span>
+                    {{quantityParameter.lab}}
+                </span>
+            </td>
+            <td class="padding" style="width:10%">
+                <!-- Difference in BDR = Lab value – BDN value -->
+                <span *ngIf="(quantityParameter.parameter.id != 3)">
+                    <span *ngIf="quantityParameter.bdn != null && quantityParameter.lab != null">
+                        {{quantityParameter.lab - quantityParameter.bdn}}
+                    </span>
+                </span>
+                <span *ngIf="!(quantityParameter.bdn != null && quantityParameter.lab != null) || (quantityParameter.parameter.id == 3)"> – </span>
+            </td>
+            <td class="padding" style="width:15%">
+                <!-- % of Deviation = Difference in BDR / BDN Value -->
+                <span *ngIf="(quantityParameter.parameter.id != 2) && (quantityParameter.parameter.id != 3)">
+                    <span *ngIf="quantityParameter.bdn">
+                        {{((quantityParameter.lab - quantityParameter.bdn) / quantityParameter.bdn)*100}}
+                    </span>
+                </span>
+                <span *ngIf="((!quantityParameter.bdn) || (quantityParameter.parameter.id == 2) || (quantityParameter.parameter.id == 3))"> -</span>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>

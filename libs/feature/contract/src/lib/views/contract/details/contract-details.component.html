@@ -42,10 +42,30 @@
                 [sellerList]="sellerList"
                 [companyList]="companyList"
                 [agreementTypeList]="agreementTypeList"
+                [paymentTermList]="paymentTermList"
+                [incotermList]="incotermList"
+                [applyToList]="applyToList"
                 [entityId]="entityId"
                 class="col-12"
                 style="padding-left: 0px; padding-right: 0px;">
           </shiptech-general-information-contract>  
+        </div>
+      </p-panel>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid-delivery">
+  <div class="row m-b-4">
+    <div class="col-12">
+      <p-panel [showHeader]="false">
+        <div fxLayout="row">
+          <shiptech-contract-quantity
+                [model]="formValues"
+                [entityId]="entityId"
+                class="col-12"
+                style="padding-left: 0px; padding-right: 0px;">
+          </shiptech-contract-quantity>  
         </div>
       </p-panel>
     </div>
