@@ -65,6 +65,15 @@ export class ContractService extends BaseStoreService implements OnDestroy {
   getAgreementType(payload): Observable<unknown> {
     return this.contractApi.getAgreementType(payload);
   }
+
+  
+     /**
+ * @param agreementTypeId 
+ */
+  @ObservableException()
+  getAgreementTypeById(agreementTypeId : number): Observable<unknown> {
+    return this.contractApi.getAgreementTypeById(agreementTypeId);
+  }
          
       
      

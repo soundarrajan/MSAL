@@ -382,9 +382,9 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
   }
 }
 @Component({
-  selector: 'shiptech-general-information-contract',
-  templateUrl: './general-information-contract.component.html',
-  styleUrls: ['./general-information-contract.component.scss'],
+  selector: 'shiptech-contract-quantity',
+  templateUrl: './contract-quantity.component.html',
+  styleUrls: ['./contract-quantity.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   providers: [OrderListGridViewModel, 
@@ -399,35 +399,13 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
               },
               { provide: NGX_MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS }]
 })
-export class GeneralInformationContract extends DeliveryAutocompleteComponent
+export class ContractQuantity extends DeliveryAutocompleteComponent
   implements OnInit{
   switchTheme; //false-Light Theme, true- Dark Theme
   formValues: any;
-  baseOrigin: string;
-  selectedVal: string;
-  private _autocompleteType: any;
-  autocompleteVessel: knownMastersAutocomplete;
-  _entityName: string;
   _entityId: number;
-  autocompleteSellers: knownMastersAutocomplete;
-  autocompleteCompany: knownMastersAutocomplete;
-  sellerList: any;
-  companyList: any;
-  selectedCompany: any;
-  companyListForSearch: any;
-  searchCompanyModel: any;
-  expandCompanyPopUp: boolean = false;
-  expandAllowCompanies: boolean = false;
-  expandCompanylistPopUp: boolean = false;
-  agreementTypeList: any;
-  paymentTermList: any;
-  incotermList: any;
-  isValidFromDateInvalid: boolean;
-  isValidToDateInvalid: boolean;
-  applyToList: any;
-  @Input() set autocompleteType(value: string) {
-    this._autocompleteType = value;
-  }
+  baseOrigin: string;
+  _entityName: string;
 
   get entityId(): number {
     return this._entityId;
@@ -454,53 +432,7 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
       return;
     } 
     this.formValues = formValues;
-    this.selectedVal = this.formValues.evergreen ? 'evergreen' : 'dateSpecific';
   }
-
-
-  @Input('applyToList') set _setApplyToList(applyToList) { 
-    if (!applyToList) {
-      return;
-    } 
-    this.applyToList = applyToList;
-  }
-
-  @Input('sellerList') set _setSellerList(sellerList) { 
-    if (!sellerList) {
-      return;
-    } 
-    this.sellerList = sellerList;
-  }
-
-  @Input('companyList') set _setCompanyList(companyList) { 
-    if (!companyList) {
-      return;
-    } 
-    this.companyList = companyList;
-    this.companyListForSearch = this.companyList;
-  }
-
-  @Input('agreementTypeList') set _setAgremeentType(agreementTypeList) { 
-    if (!agreementTypeList) {
-      return;
-    } 
-    this.agreementTypeList = agreementTypeList;
-  }
-
-  @Input('paymentTermList') set _setPaymentTermList(paymentTermList) { 
-    if (!paymentTermList) {
-      return;
-    } 
-    this.paymentTermList = paymentTermList;
-  }
-
-  @Input('incotermList') set _setIncotermList(incotermList) { 
-    if (!incotermList) {
-      return;
-    } 
-    this.incotermList = incotermList;
-  }
-
 
   constructor(
     public gridViewModel: OrderListGridViewModel,
@@ -527,288 +459,15 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
     CUSTOM_DATE_FORMATS.display.dateInput = this.format.dateFormat;
     PICK_FORMATS.display.dateInput = this.format.dateFormat;
     this.baseOrigin = new URL(window.location.href).origin;
-    this.autocompleteSellers = knownMastersAutocomplete.sellers;
-    this.autocompleteCompany = knownMastersAutocomplete.company;
-    //this.dateTimeFormats.parse.dateInput = this.format.dateFormat;
 
   }
 
   ngOnInit(){  
     this.entityName = 'Contract';
-    if (this.formValues.allowedCompanies) {
-      this.selectedAllowedCompanies();
-    }
-    //this.eventsSubscription = this.events.subscribe((data) => this.setDeliveryForm(data));
-    //this.eventsSaveButtonSubscription = this.eventsSaveButton.subscribe((data) => this.setRequiredFields(data))
-    //this.eventsSubject.next();
+ 
 
   }
 
-  public onValChange(val: string) {
-    this.selectedVal = val;
-  }
-
-
-  selectedAllowedCompanies() {
-    this.formValues.allowedCompanies.forEach((allowedCompany, k) => {
-      let findCompanyIndex = _.findIndex(this.companyList, function(object: any) {
-        return object.id == allowedCompany.id;
-      });
-      if (findCompanyIndex != -1) {
-        this.companyList[findCompanyIndex].isSelected = true;
-      }
-    });
-
-    console.log(this.companyList);
-
-    
-  }
-
-  formatDate(date?: any) {
-    if (date) {    
-      let currentFormat = this.format.dateFormat;
-      let hasDayOfWeek;
-      if (currentFormat.startsWith('DDD ')) {
-          hasDayOfWeek = true;
-          currentFormat = currentFormat.split('DDD ')[1];
-      }
-      currentFormat = currentFormat.replace(/d/g, 'D');
-      currentFormat = currentFormat.replace(/y/g, 'Y');
-      let elem = moment(date, 'YYYY-MM-DDTHH:mm:ss');
-      let formattedDate = moment(elem).format(currentFormat);
-      if (hasDayOfWeek) {
-        formattedDate = `${moment(date).format('ddd') } ${ formattedDate}`;
-      }
-      return formattedDate;
-    }
-  }
-
-  displayFn(value): string {
-    return value && value.name ? value.name : '';
-  }
-
-  selectSeller(event: MatAutocompleteSelectedEvent) {
-    this.formValues.seller = event.option.value;
-    this.getCounterpartyById(this.formValues.seller.id);
-  }
-
-  
-  selectorSellerSelectionChange(
-    selection: IOrderLookupDto
-  ): void {
-    if (selection === null || selection === undefined) {
-      this.formValues.seller = '';
-    } else {
-      const obj = {
-        'id': selection.id,
-        'name': selection.name
-      };
-      this.formValues.seller = obj; 
-      this.getCounterpartyById(this.formValues.seller.id);
-      this.changeDetectorRef.detectChanges();   
-    }
-  }
-
-  getCounterpartyById(counterpartyId: number) {
-    this.spinner.show();
-    this.contractService
-      .getCounterparty(this.formValues.seller.id)
-      .pipe(
-        finalize(() => {
-          this.spinner.hide();
-        })
-    )
-    .subscribe((response: any) => {
-      if (typeof response == 'string') {
-        this.toastr.error(response);
-      } else {
-        if (response.defaultPaymentTerm != null) {
-          this.formValues.paymentTerm = response.defaultPaymentTerm;
-        }
-        console.log(this.formValues.paymentTerm);
-      }
-    });
-
-  }
-
-  selectCompany(event: MatAutocompleteSelectedEvent) {
-    this.formValues.company = event.option.value;
-    console.log(this.entityId);
-    console.log(this.formValues.company);
-    this.addAllowedCompanies();
-  }
-
-  selectorCompanySelectionChange(
-    selection: IOrderLookupDto
-  ): void {
-    if (selection === null || selection === undefined) {
-      this.formValues.company = '';
-    } else {
-      const obj = {
-        'id': selection.id,
-        'name': selection.name
-      };
-      this.formValues.company = obj; 
-      this.addAllowedCompanies();
-      this.changeDetectorRef.detectChanges();   
-    }
-  }
-
-  addAllowedCompanies() {
-    if (!this.entityId) {
-      this.formValues.allowedCompanies = [];
-      this.companyList.forEach((v, k) => {
-        if (v.id != this.formValues.company.id) {
-          this.formValues.allowedCompanies.push(v);
-        }
-      });
-    }
-    console.log(this.formValues.allowedCompanies);
-  }
-
-  getHeaderNameSelector(): string {
-    switch (this._autocompleteType) {
-      case knownMastersAutocomplete.sellers:
-        return knowMastersAutocompleteHeaderName.sellers;
-      default:
-        return knowMastersAutocompleteHeaderName.sellers;
-    }
-  }
-
-
-  getHeaderNameSelector1(): string {
-    switch (this._autocompleteType) {
-      case knownMastersAutocomplete.company:
-        return knowMastersAutocompleteHeaderName.company;
-      default:
-        return knowMastersAutocompleteHeaderName.company;
-    }
-  }
-
-  
-  compareUomObjects(object1: any, object2: any) {
-    return object1 && object2 && object1.id == object2.id;
-  }
-
-  public filterSellerList() {
-    let filterValue = '';
-    filterValue = this.formValues.seller.name ? this.formValues.seller.name.toLowerCase() : this.formValues.seller.toLowerCase();
-    if (this.sellerList) {
-      const list =  this.sellerList.filter((item: any) => {
-        return item.name.toLowerCase().includes(filterValue.toLowerCase());
-      }).splice(0,10);
-      console.log(list);
-      return list;
-    } else {
-      return [];
-    }
-  }
-
-  
-  public filterCompanyList() {
-    let filterValue = '';
-    filterValue = this.formValues.company.name ? this.formValues.company.name.toLowerCase() : this.formValues.company.toLowerCase();
-    if (this.companyList) {
-      const list =  this.companyList.filter((item: any) => {
-        return item.name.toLowerCase().includes(filterValue.toLowerCase());
-      }).splice(0,10);
-      console.log(list);
-      return list;
-    } else {
-      return [];
-    }
-  }
-
-
-
-  searchCompanyList(value: string): void {
-    let filterCompany = this.companyList.filter((company) => company.name.toLowerCase().includes(value));
-    console.log(filterCompany);
-    this.companyListForSearch = [ ... filterCompany];
-  }
-
-
-  resetCompanyData() {
-    this.searchCompanyModel = null;
-    this.selectedCompany = null;
-    this.companyListForSearch = this.companyList;
-    this.expandCompanyPopUp = false;
-  }
-
-  radioCompanyChange($event: MatRadioChange) {
-    if ($event.value) {
-      this.formValues.company = $event.value;
-    }
-  }
-
-
-  saveAllowedCompanies() {
-    let companyList = this.companyList;
-    this.formValues.allowedCompanies = [];
-    for (let i = 0; i < companyList.length; i++) {
-      if (companyList[i].isSelected) {
-        let allowedCompany = {
-          'id': companyList[i].id,
-          'name': companyList[i].name
-        }
-        this.formValues.allowedCompanies.push(allowedCompany);
-      }
-    }
-  }
-
-
-  changeAgreementType() {
-    this.spinner.show();
-    this.contractService
-    .getAgreementTypeById(this.formValues.agreementType.id)
-    .pipe(
-      finalize(() => {
-        this.spinner.hide();
-      })
-  )
-  .subscribe((response: any) => {
-    if (typeof response == 'string') {
-      this.toastr.error(response);
-    } else {
-      console.log(response);
-      if (response) {
-        this.formValues.incoterm = response.defaultIncoterm;
-        this.formValues.strategy = response.defaultStrategy;
-      }
-    }
-  });
-    
-  }
-
-  onChange($event, field) {
-    if ($event.value) {
-      let beValue = `${moment($event.value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
-      if (field == 'validFrom') {
-        this.isValidFromDateInvalid = false;
-      } else if (field == 'validTo') {
-        this.isValidToDateInvalid = false;
-      }
-      console.log(beValue);
-    } else {
-      if (field == 'validFrom') {
-        this.isValidFromDateInvalid = true;
-      } else if (field == 'validTo') {
-        this.isValidToDateInvalid = false;
-      }
-      this.toastr.error('Please enter the correct format');
-    }
-
-  }
-  
-
-  formatDateForBe(value) {
-    if (value) {
-      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
-      return `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
-    } else {
-      return null;
-    }
-  }
 
 
   ngAfterViewInit(): void {
