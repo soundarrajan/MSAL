@@ -1426,6 +1426,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
          * Set the global lookupInput to the given model.
          */
         ctrl.setLookupInput = function(field) {
+            debugger;
             ctrl.lookupInput = field;
         };
 
@@ -1999,7 +2000,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             ctrl.request.locations[ctrl.locationIdx].destination = {};
             ctrl.request.locations[ctrl.locationIdx].destination.id = extraInfo.locationId;
             ctrl.request.locations[ctrl.locationIdx].destination.name = extraInfo.name;
-            // alert(1)
             // addLocation(locationId, null, null).then(function() {
             //     $timeout(function() {
             //         ctrl.initializeDateInputs();
@@ -2294,6 +2294,8 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         });
         ctrl.selectProduct = function(productId) {
             // var product;
+            debugger;
+           
             var productKey;
             var locIdx = ctrl.requestProductDataOnChange.location;
             var prodIdx = ctrl.requestProductDataOnChange.product;
@@ -2305,10 +2307,22 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 	    	});   
 
             lookupModel.get(LOOKUP_TYPE.PRODUCTS, productId).then((server_data) => {
+               debugger;
 				ctrl.request.locations[locIdx].products[productKey].product = server_data.payload;
-
+                
                 listsModel.getProductTypeByProduct(server_data.payload.id).then((server_data1) => {
                 	ctrl.request.locations[locIdx].products[productKey].productType = server_data1.data.payload
+                    if(ctrl.request.locations[locIdx].products[productKey].product != undefined && ctrl.request.locations[locIdx].products[productKey].product.productType != undefined){
+                        if(ctrl.request.locations[locIdx].products[productKey].product.productType.name != undefined && ctrl.request.locations[locIdx].products[productKey].product.productType.name != '')
+                        {
+                            if(ctrl.request.locations[locIdx].products[productKey].product.productType.name.includes('VLSFO')){
+                                ctrl.request.locations[locIdx].products[productKey].isPretestRequired = true; 
+                            }
+                        }
+                        
+                        
+                    }
+
 	                listsModel.getSpecGroupByProductAndVessel(server_data.payload.id, ctrl.request.vesselDetails.vessel.id).then((server_data2) => {
 	                    ctrl.request.locations[locIdx].products[productKey].specGroups = server_data2.data.payload;
 	                    ctrl.request.locations[locIdx].products[productKey].specGroup = null;
@@ -2340,7 +2354,9 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     if (typeof $scope.filteredSpecs == 'undefined') {
                         $scope.filteredSpecs = {};
                     }
+
                     $scope.filteredSpecs[`product_${ productId}`] = server_data.payload;
+                   
                 });
             });
         };
