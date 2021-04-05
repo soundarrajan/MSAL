@@ -100,6 +100,8 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   paymentTermList: any;
   incotermList: any;
   applyToList: any;
+  contractualQuantityOptionList: any;
+  uomList: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -183,11 +185,13 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       }
       this.staticLists = data.staticLists;
       this.agreementTypeList = data.agreementTypeList;
+      this.uomList = this.setListFromStaticLists('Uom');
       this.companyList = this.setListFromStaticLists('Company');
       this.sellerList = this.setListFromStaticLists('Seller');
       this.paymentTermList = this.setListFromStaticLists('PaymentTerm');
       this.incotermList = this.setListFromStaticLists('Incoterm');
       this.applyToList = this.setListFromStaticLists('ApplyTo');
+      this.contractualQuantityOptionList = this.setListFromStaticLists('ContractualQuantityOption');
       console.log(this.staticLists);
     });
   }
