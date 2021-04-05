@@ -53,6 +53,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ContractService } from 'libs/feature/contract/src/lib/services/contract.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatRadioChange } from '@angular/material/radio';
+import { DecimalPipe } from '@angular/common';
 
 
 
@@ -406,6 +407,9 @@ export class ContractQuantity extends DeliveryAutocompleteComponent
   _entityId: number;
   baseOrigin: string;
   _entityName: string;
+  contractualQuantityOptionList: any;
+  uomList: any;
+  quantityFormat: string;
 
   get entityId(): number {
     return this._entityId;
@@ -427,12 +431,33 @@ export class ContractQuantity extends DeliveryAutocompleteComponent
      
   @Input() vesselId: number;
 
+
+  @Input('uomList') set _setUomList(uomList) { 
+    if (!uomList) {
+      return;
+    } 
+    this.uomList = uomList;
+  }
+
   @Input('model') set _setFormValues(formValues) { 
     if (!formValues) {
       return;
     } 
     this.formValues = formValues;
+    if (this.formValues.details) {
+      this.formatDetailsQuantity();
+    }
   }
+
+  @Input('contractualQuantityOptionList') set _setContractualQuantityOptionList(contractualQuantityOptionList) { 
+    if (!contractualQuantityOptionList) {
+      return;
+    } 
+    this.contractualQuantityOptionList = contractualQuantityOptionList;
+  }
+
+  index = 0;
+
 
   constructor(
     public gridViewModel: OrderListGridViewModel,
@@ -450,6 +475,8 @@ export class ContractQuantity extends DeliveryAutocompleteComponent
     private toastr: ToastrService,
     iconRegistry: MatIconRegistry, 
     public dialog: MatDialog, 
+    @Inject(DecimalPipe) private _decimalPipe,
+    private tenantService: TenantFormattingService,
     sanitizer: DomSanitizer) {
     
     super(changeDetectorRef);
@@ -459,7 +486,7 @@ export class ContractQuantity extends DeliveryAutocompleteComponent
     CUSTOM_DATE_FORMATS.display.dateInput = this.format.dateFormat;
     PICK_FORMATS.display.dateInput = this.format.dateFormat;
     this.baseOrigin = new URL(window.location.href).origin;
-
+    this.quantityFormat = '1.' + this.tenantService.quantityPrecision + '-' + this.tenantService.quantityPrecision;
   }
 
   ngOnInit(){  
@@ -472,29 +499,49 @@ export class ContractQuantity extends DeliveryAutocompleteComponent
     return object1 && object2 && object1.id == object2.id;
   }
 
-  addSampleSources() {
-    if (this.formValues.deliveryStatus.name == 'Verified') {
-      return;
+  addContractQuantityDetail() {
+    if (!this.formValues.details) {
+      this.formValues.details = [];
     }
-    if (!this.formValues.sampleSources) {
-      this.formValues.sampleSources = [];
-    }
-    this.formValues.sampleSources.push({'id':0});
+    this.formValues.details.push({'id':0});
   }
 
-
-  removeSampleSources(key) {
-    if (this.formValues.deliveryStatus.name == 'Verified') {
-      return;
-    }
-    if (this.formValues.sampleSources[key].id) {
-      this.formValues.sampleSources[key].isDeleted = true;
+  removeContractQuantityDetail(key) {
+    if (this.formValues.details[key].id) {
+      this.formValues.details[key].isDeleted = true;
     } else {
-      this.formValues.sampleSources.splice(key, 1);
+      this.formValues.details.splice(key, 1);
+    }
+  }
+
+  formatDetailsQuantity() {
+    for (let i = 0; i < this.formValues.details.length; i++) {
+      if (this.formValues.details[i].minContractQuantity) {
+        this.formValues.details[i].minContractQuantity = this.quantityFormatValue(this.formValues.details[i].minContractQuantity);
+      }
+      if (this.formValues.details[i].maxContractQuantity) {
+        this.formValues.details[i].maxContractQuantity = this.quantityFormatValue(this.formValues.details[i].maxContractQuantity);
+      }
     }
   }
 
 
+
+  quantityFormatValue(value) {
+    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    let number = parseFloat(plainNumber);
+    if (isNaN(number)) {
+      return null;
+    }
+    if (plainNumber) {
+      if(this.tenantService.quantityPrecision == 0) {
+        return plainNumber;
+      } else {
+        return this._decimalPipe.transform(plainNumber, this.quantityFormat);
+      }
+    }
+  }
+    
 
 
   ngAfterViewInit(): void {

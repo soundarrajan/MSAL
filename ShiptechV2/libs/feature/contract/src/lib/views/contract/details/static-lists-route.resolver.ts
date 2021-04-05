@@ -40,7 +40,8 @@ export class StaticListsRouteResolver implements Resolve<any> {
         KnownContractRoutes.ContractList
       ]);
     }
-    return  this.contractService.getStaticLists(['Company','Seller', 'PaymentTerm', 'Incoterm', 'ApplyTo']);
+    return  this.contractService.getStaticLists(['Company','Seller', 'PaymentTerm', 
+      'Incoterm', 'ApplyTo', 'ContractualQuantityOption', 'Uom']);
 
   }
 

@@ -1,85 +1,110 @@
-<div class="col-md-12 d-flex contract-section contract-no-padding">
-  <div class="contract-quantity-container col-md-6">
-    <div class="quantity-header">
-      <div class="label-content ">
-        Quantity:
-      </div>
-      <div style="padding: 3px;">
-        <div class="legend2-component-v2" [ngClass]="{'darkTheme':switchTheme}">
-          <div class="dropdown">
-            <mat-form-field appearance="legacy" class="contract-quantity-select-container">
-              <mat-select value="usd" disableOptionCentering 
-                [panelClass]="'contract-quantity-select-container'">
-                <mat-option value="usd">USD</mat-option>
-                <mat-option value="eur">EUR</mat-option>
-                <mat-option value="inr">INR</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </div>
-      </div>
-      <div class="border_line"></div>
-      <div>
-        <span class="label">Min</span>
-        <div class="value">11/09/2020</div>
-      </div>
-      <div class="border_line"></div>
-      <div>
-          <span class="label">Max</span>
-        <div class="value">ICE Brent Oct 2020</div>
-      </div>
-      <div class="border_line"></div>
-      <div>
-        <span class="label">Uom</span>
-        <div class="value">Oct 2020</div>
-      </div>
-      <div class="border_line"></div>
-      <div>
-        <span class="label">Tolerance %</span>
-        <div class="value">11/09/2020</div>
-      </div>
-    </div>
+<div class="row col-md-12 contract-section" style="margin-left: 0px;">
+  <div (click)="addContractQuantityDetail()"  class="add-contract-quantity-section">
+    <a class="add-contract-quantity-icon"></a>
   </div>
-  <div class="contract-quantity-container col-md-6">
-    <div class="quantity-header">
-      <div class="label-content ">
-        Quantity:
-      </div>
-      <div style="padding: 3px;">
-        <div class="legend2-component-v2" [ngClass]="{'darkTheme':switchTheme}">
-          <div class="dropdown">
-            <mat-form-field appearance="legacy" class="contract-quantity-select-container">
-              <mat-select value="usd" disableOptionCentering 
-                [panelClass]="'contract-quantity-select-container'">
-                <mat-option value="usd">USD</mat-option>
-                <mat-option value="eur">EUR</mat-option>
-                <mat-option value="inr">INR</mat-option>
-              </mat-select>
-            </mat-form-field>
+  <div class="contract-quantity-section row">
+    <ng-container *ngFor="let contractDetail of formValues.details | keyvalue">
+      <div *ngIf="!contractDetail.value.isDeleted" class="contract-quantity-container col-md-6" [ngClass]="{'no-padding-right': contractDetail.key % 2 == 1}">
+        <div class="quantity-header">
+          <div class="label-content col-md-2">
+            <a class="remove-contract-quantity-icon" (click)="removeContractQuantityDetail(contractDetail.key)"></a>
+            Quantity:
+          </div>
+          <div style="display: flex; align-items: center; flex: 0 0 20%; max-width: 20%;" class="col-md-2">
+            <div class="select-contract-quantity-container value" [ngClass]="{'darkTheme':switchTheme}">
+              <div class="dropdown">
+                <mat-form-field appearance="legacy" class="contract-quantity-select-container">
+                  <mat-select
+                    [(ngModel)]="contractDetail.value.contractualQuantityOption"
+                    disableOptionCentering 
+                    [panelClass]="'contract-quantity-select-container'"
+                    [compareWith]="compareUomObjects">
+                    <mat-option *ngFor="let option of contractualQuantityOptionList"
+                        [value]="option">
+                        <mat-radio-button [value]="option">   
+                          {{option.name}}
+                        </mat-radio-button>
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="border_line"></div>
+          <div  class="col-md-2">
+            <span class="label">Min</span>
+            <div class="value">
+              <div class="custom-form-field custom-field-contract-quantity" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+                <mat-form-field class="without-search" appearance="legacy">
+                  <input 
+                      [(ngModel)]="contractDetail.value.minContractQuantity"
+                      (ngModelChange)="contractDetail.value.tolerance = null"
+                      matInput
+                      autocomplete="off"
+                      quantityFormat
+                      [disabled]="contractDetail.value.tolerance != '' && contractDetail.value.tolerance">
+                  </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="border_line"></div>
+          <div  class="col-md-2">
+            <span class="label">Max</span>
+            <div class="value">
+              <div class="value">
+                <div class="custom-form-field custom-field-contract-quantity" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+                  <mat-form-field class="without-search" appearance="legacy">
+                    <input 
+                        [(ngModel)]="contractDetail.value.maxContractQuantity"
+                        matInput
+                        autocomplete="off"
+                        quantityFormat>
+                    </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="border_line"></div>
+          <div  class="col-md-2">
+            <span class="label">Uom</span>
+            <div class="value">
+              <div class="custom-form-field custom-field-contract-quantity" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+                <mat-form-field class="without-search" appearance="legacy">
+                  <mat-select 
+                        [(ngModel)]="contractDetail.value.uom"
+                        [disableOptionCentering]="true"
+                        panelClass="general-information-select-container"
+                        [compareWith]="compareUomObjects">
+                      <mat-option *ngFor="let option of uomList" [value]="option">
+                          {{option.name}}
+                      </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="border_line"></div>
+          <div  class="col-md-2">
+            <span class="label">Tolerance %</span>
+            <div class="value">
+              <div class="value">
+                <div class="custom-form-field custom-field-contract-quantity" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+                  <mat-form-field class="without-search" appearance="legacy">
+                    <input 
+                        [(ngModel)]="contractDetail.value.tolerance"
+                        (ngModelChange)="contractDetail.value.minContractQuantity = null"
+                        matInput
+                        autocomplete="off"
+                        required
+                        [disabled]="contractDetail.value.minContractQuantity != '' && contractDetail.value.minContractQuantity">
+                    </mat-form-field>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="border_line"></div>
-      <div>
-        <span class="label">Min</span>
-        <div class="value">11/09/2020</div>
-      </div>
-      <div class="border_line"></div>
-      <div>
-          <span class="label">Max</span>
-        <div class="value">ICE Brent Oct 2020</div>
-      </div>
-      <div class="border_line"></div>
-      <div>
-        <span class="label">Uom</span>
-        <div class="value">Oct 2020</div>
-      </div>
-      <div class="border_line"></div>
-      <div>
-        <span class="label">Tolerance %</span>
-        <div class="value">11/09/2020</div>
-      </div>
-    </div>
+    </ng-container>
   </div>
 </div>
  
