@@ -130,37 +130,15 @@
                         2M DELIVERY {{ $ctrl.request.vesselDetails.vessel.vesselIsoSpecGroup.name.split(" ",1)[0] }}
                         </span> -->
                        </span>
-																									   
-											
                 </div>
             </div>			 
-
             <div class="portlet-body" ng-controller="Controller_Master as CM">
-										  
-																  
-																						  
-																								   
-																			 
-									   
-									
-														 
-																   
-																																																																																																																																																													 
-																																																																																																	
-																	
-
                 <form id="vesselDetails" class="form-inline st-new-request-form collapse in" name="forms.vesselDetailsForm" novalidate autocomplete="off">
                     <div sorted-form field-ids="$ctrl.ui.vesselDetails.fields" get-from-id="vesselDetails">
                         <!-- Not implemented -->
-										   
-									  
-								  
-							  
                     </div>
-
                     <div class="container-fluid">
                         <div class="row">
-
                             <div ng-if="$ctrl.vesselDetailsFields.Vessel.visible" class="col-md-4" ng-init='CM.getOptions({"Name": "Vessel","masterSource": "Vessel"})' data-html="true" tooltip data-original-title="{{ $ctrl.defaultProductsTooltip() }}">
                                 <div class="row">
                                     <label class="control-label col-md-5">
@@ -174,7 +152,6 @@
                                             <input decode-input-format name="{{ $ctrl.vesselDetailsFields.Vessel.name }}" id="id_{{ $ctrl.vesselDetailsFields.Vessel.name }}" uib-typeahead="vessel as vessel.name  for vessel in options.Vessel | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.selectVessel($item.id); CM.getOptions({'Name': 'BunkerablePort','masterSource': 'masters_locations', 'filters': $ctrl.request.vesselDetails.vessel})" typeahead-editable="false" class="typeahead form-control" ng-model="$ctrl.request.vesselDetails.vessel.name" required ng-disabled="$ctrl.request.id || $ctrl.disableAllFields">
                                             <span class="input-group-addon" ng-click="triggerModal('general', 'masters_vessellist', $ctrl.vesselDetailsFields.Vessel.caption | translate, '$ctrl.request.vesselDetails.vessel','','',$ctrl.vesselDetailsFields.Vessel.name)" ng-class="{'disabled' : ($ctrl.isReadonlyForm || $ctrl.request.id)}" ng-disabled="$ctrl.request.id || $ctrl.disableAllFields">
                                                 <i class="fa fa-search"></i>
-
                                             </span>
                                             <span class="input-group-addon" data-toggle="modal" ng-click="$ctrl.getVesselSchedules()" href="#route_schedule" data-html="true" tooltip data-original-title="View Vessel Voyage" ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-disabled="!$ctrl.request.vesselDetails.vessel || $ctrl.disableAllFields">
                                                 <i class="fa fa-anchor"></i>
@@ -183,10 +160,6 @@
                                     </div>
                                 </div>
                             </div>
-							  
-						  
-
-																					   
                             <div ng-if="$ctrl.vesselDetailsFields.VesselImoNo.visible" class="col-md-4" ng-init='CM.getOptions({"Name": "VesselWithImo","masterSource": "VesselWithImo"})' data-html="true" tooltip data-original-title="{{ $ctrl.defaultProductsTooltip() }}">
                                 <div class="row">
                                     <label class="control-label col-md-5">
@@ -458,8 +431,6 @@
                                 </div>
                             </div>
                         </div>
-						  
-																																																								
                         <div class="row">
                             <div class="col-sm-4">
                                 <div class="row">
@@ -552,171 +523,11 @@
                                 </div>
                             </div>
                         </div>
-						  
-								 
-							 
-																	  
-								 
-			   
-									
-									
-																																												
-																																																																																															  
-																		   
-																	 
-																	
-										   
-				 
-			 
-				  
-				 
-
-				
                     </form>
-
-
-																																			 
-
-								 
-								 
-							 
-																	  
-				   
-			   
-									
-									
-																																	
-																	  
-															   
-					  
-				 
-			 
-				  
-				 
-				
-								 
-								 
-							 
-																	  
-							   
-			   
-									
-									
-																																	 
-																	  
-															   
-					  
-				 
-			 
-				  
-				 
-								 
-							 
-																	  
-							   
-			   
-									
-									
-																																	 
-																	  
-															   
-					  
-				 
-			 
-				  
-				 
-								 
-							 
-																	  
-							   
-			   
-									 
-									
-																																	 
-																	  
-															   
-					  
-				 
-			 
-				  
-				 
-								 
-							 
-																	  
-								
-			   
-									 
-									
-																																	   
-																	  
-																 
-					  
-				 
-			 
-				  
-				 
-								 
-							 
-																	  
-								 
-			   
-									 
-									
-																																	   
-																	  
-																 
-					  
-				 
-			 
-				  
-				 
-								 
-							 
-																	  
-								  
-			   
-									 
-									
-																																	   
-																	  
-																 
-					  
-				 
-			 
-				  
-				 
-				
-
-				
                     <div class="clearfix"></div>
                 </div>
-
-	   
-						
-
-																						 
-								   
-							   
-																		  
             </div>
-								 
-											  
             <!-- END ROB Details -->
-					   
-				  
-																		  
-				   
-											 
-																					  
-														   
-						
-					
-				  
-			  
-								  
-							 
-									   
-
             <div class="portlet light" ng-hide="visible_sections.indexOf('request_details') < 0">
                 <div class="portlet-title">
                     <div class="tools">
@@ -775,6 +586,9 @@
                 </div>
             </div>
             <hr>
+            <!-- vesselDetailsFields:{{$ctrl.vesselDetailsFields}}
+            options:{{$ctrl.options}}
+            NEW_REQUEST:{{'PAGES.NEW_REQUEST'}} -->
             <div class=" product-info" ng-controller="Controller_Master as CM">
                 <div ng-repeat="(locationIdx, location) in $ctrl.request.locations track by $index" ng-if="!location.isDeleted && location.location !== null">
                     <div class="" ng-init="$ctrl.initializeDateInputs(); $ctrl.isEnabledEta(locationIdx)" ng-mouseover="$ctrl.initializeDateInputs()">
@@ -795,6 +609,7 @@
                                 <form class="st-new-request-form form-horizontal" name="forms.locationForm[$index]" novalidate autocomplete="off">
                                     <div class="col-md-12" ng-init="">
                                         <div class="row">
+                                            <!-- {{$ctrl.productInfoFields}} -->
                                             <div ng-if="$ctrl.productInfoFields.Eta.visible" class="col-md-4">
                                                 <div class="row">
                                                     <label class="control-label col-md-4">
@@ -893,61 +708,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-										 
-
-																	  
-																																   
-															  
-																					   
-																										
-														 
-																			  
-																								 
-																
-																			  
-																						  
-																										
-																						 
-																												   
-																		   
-																				 
-																			
-																							  
-														   
-													   
-												   
-											   
-																																   
-															  
-																					   
-																									  
-														 
-																			  
-																															 
-																
-																			
-																	 
-																								 
-																										
-																						
-																													
-																		   
-																				 
-																			
-																							  
-														   
-													   
-												   
-											   
-																		  
-																																														   
-															  
-																					   
-																													  
-														 
-																			  
-																								 
-
                                             <!-- DELIVERYWINDOWDISPLAY -->
                                             <div class="col-md-4" ng-if="$ctrl.requestTenantSettings.deliveryWindowDisplay.id == 1">
                                                 <div class="row">
@@ -998,51 +758,7 @@
                                                     </label>
                                                     <div class="form-group-sm00">
                                                         <div class="input-group col-md-8 col-sm-12">
-
                                                             <input decode-input-format name="{{ $ctrl.productInfoFields.DestinationPort.name }}{{ $index }}" id="id_{{ $ctrl.productInfoFields.DestinationPort.name }}{{ $index }}" class="typeahead form-control" ng-model="location.destinationInput" uib-typeahead="destPort as destPort.name for destPort in updateDestinations($viewValue, 'DestinationPort', location)" typeahead-on-select="$ctrl.selectDestinationPort($item, locationIdx)" typeahead-editable="false" ng-model-options="{ allowInvalid: false, debounce: 100 }" typeahead-loading="$ctrl.loadedTypeaheadPort" typeahead-wait-ms="100" data-origina-title="{{ location.destination.name }}" ng-disabled="$ctrl.disableAllFields">
-																						 
-																
-																																																																							   
-																							 
-																
-														   
-													   
-												   
- 
-																								  
-																																						 
-																																																																																							   
-									  
-															 
-					 
-											
-																																						   
-																																																																																								   
-									  
-															  
-					 
-											
-																																						   
-																																																																																								   
-									  
-															  
-					 
-											
-																																						   
-																																																																																								   
-									  
-															  
-					 
-											
-																																						   
-																																																																																								   
-									  
-															  
-					 
-											
-				  
-
-											   
                                                             <span class="input-group-addon" ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-click="triggerModal('general', 'procurement_destinationport', 'Destination Port', '$ctrl.location[' + $index + '].destinationInput','','', $ctrl.productInfoFields.DestinationPort.name + $index, $ctrl.request.vesselDetails.vessel, location)" ng-disabled="$ctrl.disableAllFields">
                                                                 <i class="fa fa-search"></i>
                                                             </span>
@@ -1085,35 +801,15 @@
                                                         </span>
                                                     </div>
                                                 </div>
-
-																																																																																													
-																									   
-																
                                             </div>
-													   
-												   
-											   
                                             <div ng-if="$ctrl.productInfoFields.Buyer.visible" class="col-md-4">
                                                 <div class="row">
                                                     <label class="control-label col-md-4">
                                                         {{ $ctrl.productInfoFields.Buyer.caption | translate }}
                                                     </label>
-																			  
-
                                                     <div class="form-group-sm00">
                                                         <div class="input-group col-md-8 col-sm-12">
                                                             <input decode-input-format name="{{ $ctrl.productInfoFields.Buyer.name }}" id="id_{{ $ctrl.productInfoFields.Buyer.name }}" placeholder="{{ $ctrl.productInfoFields.Buyer.placeholder }}" class="typeahed form-control" uib-typeahead="buyer as buyer.name for buyer in  $ctrl.listsCache.Buyer | typeaheadCustomFilter:$viewValue:'name'" ng-model="location.buyer" required typeahead-editable="false" ng-focus="$ctrl.setLookupInput(location)" ng-blur="location.buyer.name == null || location.buyer.name == '' ? location.buyer = null : '' " ng-value="location.buyer.name" ng-disabled="$ctrl.disableAllFields">
-																																																																																		   
-																									   
-																
-														   
-																																									  
-																																																																				   
-														   
-													   
-												   
-											   
-
                                                             <span class="input-group-addon" ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-click="triggerModal('general', 'procurement_buyerlist', 'Select Buyer','$ctrl.location[' + $index + '].buyer' ,'','', $$ctrl.productInfoFields.Buyer.name, $ctrl.request.vesselDetails.vessel)" ng-disabled="$ctrl.disableAllFields">
                                                                 <i class="glyphicon glyphicon-search"></i>
                                                             </span>
@@ -1127,18 +823,7 @@
                                                         {{ $ctrl.productInfoFields.Agent.caption | translate }}
                                                     </label>
                                                     <div class="form-group-sm00">
-											
-										
-									
-								
-
                                                         <div class="input-group col-md-8 col-sm-12" ng-if="$ctrl.requestTenantSettings.agentDisplay.name == 'Lookup'">
-											
-																		
-																									
-										  
-															   
-																				  
                                                             <input decode-input-format name="{{ $ctrl.productInfoFields.Agent.name }}" id="id_{{ $ctrl.productInfoFields.Agent.name }}" class="typeahead form-control" uib-typeahead="ag as ag.name for ag in options.Agent | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.agentLocationIdx = $index; $ctrl.selectAgent($item.id)" ng-model="location.agent" typeahead-editable="false" ng-blur="location.agent.name == null || location.agent.name == '' ? location.agent = null : '' " ng-value="location.agent.name" ng-disabled="$ctrl.disableAllFields">
                                                             <span class="input-group-addon" ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-click="triggerModal('general', 'procurement_agentlist', 'Select Agent', '$ctrl.location[' + $index + '].agent' ,'','', $$ctrl.productInfoFields.Agent.name)" ng-disabled="$ctrl.disableAllFields">
                                                                 <i class="glyphicon glyphicon-search"></i>
@@ -1150,7 +835,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
                                             <div class="col-md-4" ng-if="$ctrl.requestTenantSettings.displayOfService.id == 2" ng-init='CM.getOptions({"Name": "Service","masterSource": "Service"})' data-html="true" tooltip data-original-title="{{ $ctrl.serviceTooltip('Port', $index) }}">
                                                 <span ng-if="location.service.id" ng-init="$ctrl.selectServiceInLocation(location.service.id, $index); "></span>
                                                 <div class="row">
@@ -1191,9 +875,11 @@
                                                         
                                                     </label>
 
+                                                    
                                                     <div class="form-group-sm00">
                                                         <div class="input-group col-md-8 col-sm-12">
-                                                            <select name ="terminal" ng-options="terminal as terminal.descriptions for terminal in locationTerminal track by terminal.terminalCode" ng-model="location.terminal"  data-original-title="{{ location.descriptions }}" class="form-control pull-left" ng-required="$ctrl.requestTenantSettings.isRequestTerminalMandatory"></select>
+                                                            <select name ="terminal" ng-options="terminal as terminal.descriptions for terminal in locationTerminal track by terminal.terminalCode" 
+                                                            ng-model="location.terminal"  data-original-title="{{ location.descriptions }}" class="form-control pull-left" ng-required="$ctrl.requestTenantSettings.isRequestTerminalMandatory"></select>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1250,7 +936,6 @@
 
                                                 <td ng-if="$ctrl.productInfoColumns.Product.visible" style="width:11%;min-width: 190px;" ng-init="CM.getOptions({'Name': 'Product', 'masterSource': 'Product'})">
                                                     <div class="input-group" tooltip tooltiptrigger="hover" data-original-title="{{ $ctrl.getProductTooltipByProductId(product.product.id) | decodeReadOnly }}">
-															
                                                         <input decode-input-format
                                                                name="{{ $ctrl.productInfoColumns.Product.name }}" id="product_product_{{ $index }}"
                                                                placeholder="{{ $ctrl.productInfoColumns.Product.placeholder }}" class="typeahead form-control"
@@ -1266,26 +951,16 @@
                                                         <span class="input-group-addon {{(['Inquired', 'Quoted', 'Stemmed', 'Amended', 'Cancelled'].indexOf(product.productStatus.name) != -1) ? 'disabled' : ''}}" ng-click="triggerModal('general', 'masters_productlist', '' , '$ctrl.location[' + locationIdx + '].products[' +  productIdx + ']','','', $ctrl.productInfoColumns.Product.name ); $ctrl.requestProductDataOnChange = {'product':product.uniqueIdUI, 'location': locationIdx}" ng-disabled="(['Inquired', 'Quoted', 'Stemmed', 'Amended', 'Cancelled'].indexOf(product.productStatus.name) != -1) || $ctrl.disableAllFields" ng-mouseover="$ctrl.actveProductUniqueIdUi = product.uniqueIdUI">
                                                             <i class="fa fa-search"></i>
                                                         </span>
-
                                                     </div>
                                                 </td>
-
                                                 <td ng-if="$ctrl.productInfoColumns.ProductType.visible" style="width:8%">
                                                     <input decode-input-format type="text" name="ProductType" id="product_ProductType_{{ $index }}" class="form-control input-sm" ng-model="product.productType.name" ng-disabled="true">
-
                                                 </td>
-											 
-																																		
-																																																																																																																																																											 
-
                                                 <td ng-if="$ctrl.productInfoColumns.SpecGroup.visible" style="width:11%;min-width: 150px;">
                                                     <select name="Spec Group" ng-options="specGroup as specGroup.name for specGroup in product.specGroups | decodeReadOnly track by specGroup.id" ng-model="product.specGroup" class="form-control pull-left" ng-required="product.product !== null && product.productStatus.name !== 'Cancelled' && $ctrl.specGroupIsRequired" data-original-title="{{ product.specGroup.name }}" style="width: calc(100% - 20px);" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields" id="product_specGroup_{{ $index }}"></select>
-													 
-
                                                     <a ng-controller="Controller_Master" ng-click="modalSpecGroupEdit(product, NAV.requestId,  'request')" class="pull-left" style="line-height: 34px;margin-left: 5px;" ng-hide="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed'" tooltip data-original-title="Open Spec group" ng-disabled="$ctrl.disableAllFields">
                                                         <i class="fa fa-file-text font-grey-cascade"></i>
                                                     </a>
-
                                                 </td>
                                                 <td ng-if="$ctrl.productInfoColumns.RobOnArrival.visible" style="max-width: 250px; min-width: 165px">
                                                     <div class="input-group">
@@ -1329,9 +1004,9 @@
                                                     <!-- <input type="checkbox" class="mt-checkbox" id="preTest" class="form-control input-sm" ng-model="product.preTest" > -->
                                                     <div class="form-group">
                                                         <div class="input-group">
-                                                            <label class="mt-checkbox">
+                                                            <label class="mt-checkbox" style="margin-left: 35px !important">
                                                                 <input id="product_preTest"
-                                                                       ng-model="product.isPretestRequired"
+                                                                       ng-model="product.isPretestRequired" 
                                                                        type="checkbox" ng-required="$ctrl.requestTenantSettings.isRequestPreTestMandatory">
                                                                 <span></span>
                                                             </label>
@@ -1345,7 +1020,9 @@
                                                 <td ng-hide="$ctrl.requestTenantSettings.isRequestExpectedPriceHidden" style="width:8%;min-width: 95px;">
                                                     <input type="text" format="number:{{ $ctrl.numberPrecision.amountPrecision }}" name="expectedPrice_{{$index}}" id="product_expectedPrice_{{$index}}" class="form-control input-sm" ng-model="product.expectedPrice" data-original-title="{{ product.expectedPrice }}" ng-disabled="true" ng-required="$ctrl.requestTenantSettings.isRequestExpectedPriceMandatory">
                                                 </td>                                                
-                                                
+                                                <td ng-if="$ctrl.productInfoColumns.ProductStatus.visible" style="width:10%">
+                                                    {{ product.productStatus.displayName ? product.productStatus.displayName: product.productStatus.name }}
+                                                </td>	
                                                 <td style="max-width: 250px; min-width: 165px">
                                                     <div class="input-group">
                                                         <input style="font-size: 12px;" type="text" format="number:{{ $ctrl.numberPrecision.quantityPrecision }}" name="roundVoyageConsumption" id="product_roundVoyageConsumption_{{ $index }}" class="form-control input-md" ng-model="product.roundVoyageConsumption" data-original-title="{{ product.roundVoyageConsumption }}" ng-disabled="product.productStatus.name == 'Cancelled' || product.productStatus.name == 'Stemmed' || $ctrl.disableAllFields">
@@ -1356,9 +1033,7 @@
                                                         </div>
                                                     </div>
                                                 </td>
-												<td ng-if="$ctrl.productInfoColumns.ProductStatus.visible" style="width:10%">
-                                                    {{ product.productStatus.displayName ? product.productStatus.displayName: product.productStatus.name }}
-                                                </td>																	 
+																												 
                                             </tr>
                                         </tbody>
                                     </table>
