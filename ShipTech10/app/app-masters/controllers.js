@@ -5388,8 +5388,6 @@
                 $scope.formValues.tradeBookMappings = [];
                 $scope.formValues['tradeBookMappings'].push(newItem);
             }
-            else
-                $scope.formValues['tradeBookMappings'].push(newItem);
         }
 
         $scope.initInvoiceTypeOptions = function() {
