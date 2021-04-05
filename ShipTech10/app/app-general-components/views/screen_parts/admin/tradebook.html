@@ -15,7 +15,7 @@
 				</td>				
 				<td>
 					<div class="input-group-flex" tooltip tooltiptrigger="hover" data-original-title="{{formValues.tradeBookMappings[$index].location.code}}">
-						<input class="form-control" decode-input-format ng-required="true" ng-model="formValues.tradeBookMappings[$index].location" uib-typeahead="item as item.name for item in CM.listsCache.Location | typeaheadCustomFilter:$viewValue:'name'" typeahead-show-hint="true" typeahead-min-length="1" typeahead-limit="5" typeahead-append-to-body="true" typeahead-wait-ms="100" name="Location_{{ key }}" autocomplete="off" />
+						<input class="form-control" decode-input-format ng-required="true" ng-model="formValues.tradeBookMappings[$index].location" uib-typeahead="item as item.name for item in CM.listsCache.Location | typeaheadCustomFilter:$viewValue:'name'" typeahead-show-hint="true" typeahead-min-length="1" typeahead-limit="5" typeahead-append-to-body="true" typeahead-wait-ms="100" name="Port_{{ key }}" autocomplete="off" />
 						<span class="input-group-addon" ng-click="triggerModal('general', 'masters_locationlist', 'Location' , 'formValues.tradeBookMappings.'+key+'.location');" ng-init="modal = false">
 							<a class=" btn default">
 								<i class="fa fa-search"></i>
