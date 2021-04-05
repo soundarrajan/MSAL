@@ -1038,7 +1038,7 @@
                if(!SaveAdditionalCostDetValidation){
                    return
                }
-               $rootScope.RootTempadditionalCosts = undefined;
+                    
                  if ($scope.formValues) {
                     if($scope.formValues.productsSystemInstruments){
                         let errors = '';
@@ -5378,16 +5378,24 @@
             $scope.addnewTankDetail( $scope.formValues.vesselProducts.length-1);
         }
 
-        $scope.addnewTradebookItem = function (){
+        $scope.addnewTradebookItem = function (isNew){
             var newItem = {
                 location:null,
                 productType:null,
                 product:null
             }
-            if($scope.formValues['tradeBookMappings'] == null){
+            if(isNew && !vm.entity_id){
                 $scope.formValues.tradeBookMappings = [];
                 $scope.formValues['tradeBookMappings'].push(newItem);
             }
+            else if(!isNew){
+                if($scope.formValues['tradeBookMappings'] == null){
+                    $scope.formValues.tradeBookMappings = [];
+                    $scope.formValues['tradeBookMappings'].push(newItem);
+                }
+                else
+                    $scope.formValues['tradeBookMappings'].push(newItem);
+            }           
         }
 
         $scope.initInvoiceTypeOptions = function() {
@@ -7400,7 +7408,7 @@
         };
 
 /* Location Master Preffered Seller Product Table*/
-$scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
+$scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {    
     var objMapping;
      $scope.CurrentadditionalCostsdetails  = formvalues;
      if($scope.formValues != undefined && $scope.formValues.additionalCosts != undefined)
@@ -9743,16 +9751,15 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
     		return false;
         }
 
-
         $scope.deleteTradeBookItem = function(key) {
-            if($scope.formValues.tradeBookMappings.length>1){
-                if($scope.formValues.id)
-                    $scope.formValues.tradeBookMappings[key].isDeleted = true;
-                else
-                    $scope.formValues.tradeBookMappings.splice(key, 1);
+            if($scope.formValues.tradeBookMappings.length>1)
+                $scope.formValues.tradeBookMappings.splice(key, 1);
+            else{
+                $scope.formValues.tradeBookMappings[0].id=null;
+                $scope.formValues.tradeBookMappings[0].location =null;
+                $scope.formValues.tradeBookMappings[0].productType =null;
+                $scope.formValues.tradeBookMappings[0].product =null;
             }
-            
-
         }
     }
 ]);
