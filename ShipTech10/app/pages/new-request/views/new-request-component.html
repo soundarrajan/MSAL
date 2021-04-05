@@ -118,28 +118,22 @@
                 </div>
                 <div class="caption">
                     <span class="caption-subject">
-                        Vessel Details
-						
-				
-                        <span ng-repeat="location in $ctrl.request.locations | limitTo:1" ng-if="location.service.is2MDelivery==1" class="entity-status ng-binding ng-scope" style="color:red">
+                        Vessel Details			
+                        <span  ng-if="$ctrl.request.vesselDetails.vessel.is2MDelivery==1" class="entity-status ng-binding ng-scope" style="color:red">
                             2M DELIVERY
                         </span>
                         <span style="color:red"> {{ $ctrl.request.vesselDetails.vessel.vesselIsoSpecGroup.name }}</span>
                         <!--
-                                                <span class="caption-subject" >
-                                                    Vessel Details
-                                                    <span ng-repeat="location in $ctrl.request.locations | limitTo:1" ng-if="location.service.is2MDelivery==1"  class="entity-status ng-binding ng-scope" style="color:red">
-                                            2M DELIVERY {{ $ctrl.request.vesselDetails.vessel.vesselIsoSpecGroup.name.split(" ",1)[0] }}
-                                                    </span> -->
-			  
-																		  
-
-                    </span>
+                        <span class="caption-subject" >
+                        Vessel Details
+                        <span ng-repeat="location in $ctrl.request.locations | limitTo:1" ng-if="location.service.is2MDelivery==1"  class="entity-status ng-binding ng-scope" style="color:red">
+                        2M DELIVERY {{ $ctrl.request.vesselDetails.vessel.vesselIsoSpecGroup.name.split(" ",1)[0] }}
+                        </span> -->
+                       </span>
 																									   
 											
                 </div>
-            </div>
-								 
+            </div>			 
 
             <div class="portlet-body" ng-controller="Controller_Master as CM">
 										  
