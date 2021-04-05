@@ -64,6 +64,7 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
 import { throws } from 'assert';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { ProductListColumnServerKeys } from '@shiptech/core/ui/components/master-selector/view-models/product-model/product-list.columns';
+import { Title } from '@angular/platform-browser';
 
 interface DialogData {
   email: string;
@@ -153,7 +154,8 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     private navBarService: NavBarApiService,
     @Inject(DecimalPipe) private _decimalPipe,
     private tenantService: TenantFormattingService,
-    private loadingBar: LoadingBarService
+    private loadingBar: LoadingBarService,
+    private titleService: Title
     ) {
     this.formValues = {
       'sellerName': '',
@@ -185,6 +187,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       'deliveryProducts': [],
       'feedback': {}
     };
+
     this.entityName = 'Delivery'
     const generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
     this.quantityPrecision = generalTenantSettings.defaultValues.quantityPrecision;
@@ -226,6 +229,11 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       this.orderNumberOptions = data.orderNumbers;
       if (data.delivery) {
         this.formValues = data.delivery;
+        if (this.formValues.info.request) {
+          this.titleService.setTitle('Delivery' + ' - ' + 'REQ ' + this.formValues.info.request.id + ' - ' + this.formValues.info.vesselName);
+        } else {
+          this.titleService.setTitle('Delivery' + ' - ' + this.formValues.order.name + ' - ' + this.formValues.info.vesselName);
+        }
         this.setQuantityFormatValues();
         this.decodeFields();
         

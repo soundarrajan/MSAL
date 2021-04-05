@@ -18,9 +18,10 @@
       </div>
   </div>
   <div *ngIf="!hideDropdown" class="select-product">
-    <mat-form-field  appearance="fill">
+    <mat-form-field  appearance="fill" (click)="openAddProductSelect()">
       <mat-label>Add product</mat-label>
       <mat-select [disableOptionCentering]="true" 
+                  #mySelect
                   panelClass="{{!expandProductPopUp ? 'select-product-container' : 'expand-select-product-container'}}"
                   [(ngModel)]="selectedProductToAddInDelivery"
                   [disabled]="formValues.deliveryStatus.name == 'Verified'"
@@ -30,6 +31,7 @@
             <span class="search-product-lookup">
             </span>
             <input matInput 
+                  [(ngModel)]="searchProductInput"
                   placeholder="Search all and select a product"
                   class="search-product-input"
                   (input)="search($event.target.value)">
