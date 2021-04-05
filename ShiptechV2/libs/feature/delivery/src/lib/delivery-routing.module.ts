@@ -81,7 +81,7 @@ const routes: Routes = [
                   sampleSource: SampleSourceRouteResolver
                 },
                 data: {
-                  title: 'Delivery Entity Edit',
+                  title: 'New Delivery',
                   breadcrumb: 'Delivery Entity Edit'
                 }
               },
