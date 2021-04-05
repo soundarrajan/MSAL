@@ -9752,14 +9752,18 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
         }
 
         $scope.deleteTradeBookItem = function(key) {
-            if($scope.formValues.tradeBookMappings.length>1)
+            if($scope.formValues.tradeBookMappings[key].id){
+                $scope.formValues.tradeBookMappings[key].isDeleted = true;                
+            }               
+            else
                 $scope.formValues.tradeBookMappings.splice(key, 1);
-            else{
-                $scope.formValues.tradeBookMappings[0].id=null;
-                $scope.formValues.tradeBookMappings[0].location =null;
-                $scope.formValues.tradeBookMappings[0].productType =null;
-                $scope.formValues.tradeBookMappings[0].product =null;
-            }
+
+            let noDeleted = $scope.formValues.tradeBookMappings.filter(function(item){
+                return item.isDeleted == true;
+            });
+            
+            if(noDeleted.length ==  $scope.formValues.tradeBookMappings.length )
+                $scope.addnewTradebookItem(false);
         }
     }
 ]);
