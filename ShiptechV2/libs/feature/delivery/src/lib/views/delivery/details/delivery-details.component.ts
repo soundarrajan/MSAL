@@ -229,7 +229,11 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       this.orderNumberOptions = data.orderNumbers;
       if (data.delivery) {
         this.formValues = data.delivery;
-        this.titleService.setTitle('Delivery' + ' - ' + 'REQ ' + this.formValues.info.request.id + ' - ' + this.formValues.info.vesselName);
+        if (this.formValues.info.request) {
+          this.titleService.setTitle('Delivery' + ' - ' + 'REQ ' + this.formValues.info.request.id + ' - ' + this.formValues.info.vesselName);
+        } else {
+          this.titleService.setTitle('Delivery' + ' - ' + this.formValues.order.name + ' - ' + this.formValues.info.vesselName);
+        }
         this.setQuantityFormatValues();
         this.decodeFields();
         
