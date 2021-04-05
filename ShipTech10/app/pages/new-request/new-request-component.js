@@ -513,6 +513,40 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 			        });
 
                     ctrl.ui = data.layout.children.edit;
+                    if(ctrl.requestTenantSettings != undefined){
+
+                        $.each(ctrl.ui.Locations.columns, (a, b) => {
+                            if (b.name == 'PreTest') {
+                                if(ctrl.requestTenantSettings.isRequestPreTestHidden != undefined && ctrl.requestTenantSettings.isRequestPreTestHidden == true){
+                                    b.visible = false;
+                                }
+                                else
+                                {
+                                    b.visible = true;
+                                }
+                            }
+                            if (b.name == 'expectedPrice') {
+                                if(ctrl.requestTenantSettings.isRequestExpectedPriceHidden != undefined && ctrl.requestTenantSettings.isRequestExpectedPriceHidden == true){
+                                    b.visible = false;
+                                }
+                                else
+                                {
+                                    b.visible = true;
+                                }
+                            }
+                            if (b.name == 'SuggestedLift') {
+                                if(ctrl.requestTenantSettings.isRequestSuggestedLiftHidden != undefined && ctrl.requestTenantSettings.isRequestSuggestedLiftHidden == true){
+                                    b.visible = false;
+                                }
+                                else
+                                {
+                                    b.visible = true;
+                                }
+                            }
+
+                        });
+                        
+                    }
                     ctrl.screenActions = uiApiModel.getScreenActions();
                     $scope.formFieldsNew = data;
                     // Normalize relevant data for use in template.
@@ -831,7 +865,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             return response;
         };
         ctrl.validateQtyPretest = function(min, max) {
-            debugger;
+            
             if(typeof min == 'string') {
                 min = parseFloat(min);
             }
@@ -1426,7 +1460,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
          * Set the global lookupInput to the given model.
          */
         ctrl.setLookupInput = function(field) {
-            debugger;
+            
             ctrl.lookupInput = field;
         };
 
@@ -1496,6 +1530,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
          * Returns a promise so we can do extra work afterwards
          */
         function addLocation(locationId, voyageId, vesselVoyageDetailId, extraInfo) {
+            
             let location, productList,locationTerminal;
             let agent = null;
             let deferred = $q.defer();
@@ -2294,7 +2329,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         });
         ctrl.selectProduct = function(productId) {
             // var product;
-            debugger;
+            
            
             var productKey;
             var locIdx = ctrl.requestProductDataOnChange.location;
@@ -2307,7 +2342,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 	    	});   
 
             lookupModel.get(LOOKUP_TYPE.PRODUCTS, productId).then((server_data) => {
-               debugger;
+               
 				ctrl.request.locations[locIdx].products[productKey].product = server_data.payload;
                 
                 listsModel.getProductTypeByProduct(server_data.payload.id).then((server_data1) => {
