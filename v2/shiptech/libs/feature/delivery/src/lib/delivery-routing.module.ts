@@ -40,9 +40,6 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        data: {
-          breadcrumb: 'Delivery List'
-        },
         children: [
           {
             path: '',
@@ -84,8 +81,8 @@ const routes: Routes = [
                   sampleSource: SampleSourceRouteResolver
                 },
                 data: {
-                  title: 'Delivery Details',
-                  breadcrumb: 'Delivery Details'
+                  title: 'New Delivery',
+                  breadcrumb: 'Delivery Entity Edit'
                 }
               },
               {

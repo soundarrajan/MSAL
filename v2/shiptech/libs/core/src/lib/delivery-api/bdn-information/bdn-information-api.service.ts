@@ -53,7 +53,7 @@ export class BdnInformationApiService
   
   @ObservableException()
   getOrderList(
-    request: IOrderListRequest
+    request: any
   ): Observable<IOrderListResponse> {
     const requestUrl = `${this._apiUrl}/${BdnInformationApiPaths.getOrderList()}`;
     return this.http.post(requestUrl, {'payload': request}).pipe(

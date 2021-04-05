@@ -1,9 +1,9 @@
-﻿commit 6af6c21b26aa10499246f22c696804a990813e4c
+﻿commit 4266341e0fd4849b3a1cbdd0f2352b87e6a520db
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Sun Apr 4 15:11:08 2021 +0000
+Date:   Mon Apr 5 15:18:52 2021 +0000
 
-    Merged PR 9712: Fixed build error
+    Merged PR 9729: Fixed Tab name  for new delivery screen, removed closed orders from order number lookup and fix Add product field after searching the product name.
     
-    Fixed build error
+    Related work items: #31157, #31264, #31320
 
 branch: master
