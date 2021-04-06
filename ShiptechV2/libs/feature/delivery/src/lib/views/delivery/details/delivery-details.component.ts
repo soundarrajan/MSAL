@@ -1039,6 +1039,12 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
               console.log(this.statusColorCode)
           }
         }
+
+        if (this.formValues.info.request) {
+          this.titleService.setTitle('Delivery' + ' - ' + 'REQ ' + this.formValues.info.request.id + ' - ' + this.formValues.info.vesselName);
+        } else {
+          this.titleService.setTitle('Delivery' + ' - ' + this.formValues.order.name + ' - ' + this.formValues.info.vesselName);
+        }
         // this.orderProductsByProductType('summaryProducts');
         if (this.formValues.deliveryProducts) {
           this.setProductsPhysicalSupplier();
