@@ -560,6 +560,7 @@
     "LOCATION_DISTILLATE_GRADES" : "Distillate Fuel Grade",
     "LOCATION_HSFO_35_GRADES" : "HSFO 3.5 Grade",  	
     "ADDL_TECHNICAL_DETAILS": "Addl. Technical Details",
+    "SUBDEPARTMENT" : "Sub Department",
     "CUSTOMER" : "Customer",
     "CONTACT_ADDRESS": "Contact Address",
     "TERMS_AND_CONDITIONS": "Terms and Conditions",

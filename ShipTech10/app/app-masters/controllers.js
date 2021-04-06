@@ -3101,6 +3101,13 @@
                         });
                     };
                 }
+                if(vm.screen_id == 'vessel' && id == 'customer') {
+                    Factory_Master.get_master_entity($scope.formValues.customer.id, 'counterparty', 'masters', (response) => {
+                        if (response) {
+                            $scope.options.subdepartment = response.subDepartments;
+                        }
+                    });
+                }                
                 if (name == 'Buyer' && vm.screen_id == 'buyer') {
                     if($scope.formValues.user) {
                     // $scope.formValues.name = $scope.formValues.user.displayName;
