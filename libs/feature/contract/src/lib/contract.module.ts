@@ -121,6 +121,8 @@ import { StaticListsRouteResolver } from './views/contract/details/static-lists-
 import { AgreementTypeRouteResolver } from './views/contract/details/agreement-type-route.resolver';
 import { ContractQuantity } from './views/contract/details/components/contract-quantity/contract-quantity.component';
 import { ContractProduct } from './views/contract/details/components/contract-product/contract-product.component';
+import { LocationMasterRouteResolver } from './views/contract/details/location-master-route.resolver';
+import { ProductMasterRouteResolver } from './views/contract/details/product-master-route.resolver';
 
 
 @NgModule({
@@ -254,6 +256,8 @@ import { ContractProduct } from './views/contract/details/components/contract-pr
     ScheduleDashboardLabelsRouteResolver,
     AgreementTypeRouteResolver,
     QuantityCategoryRouteResolver,
+    ProductMasterRouteResolver,
+    LocationMasterRouteResolver,
     {
       provide: CONTRACT_API_SERVICE,
       useClass: environment.production
