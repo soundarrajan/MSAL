@@ -32,7 +32,7 @@
     </div>
   </div>
 </shiptech-contract-details-toolbar>
-<div class="container-fluid-delivery">
+<div class="container-fluid-contract">
   <div class="row m-b-4">
     <div class="col-12">
       <p-panel [showHeader]="false">
@@ -55,7 +55,7 @@
   </div>
 </div>
 
-<div class="container-fluid-delivery">
+<div class="container-fluid-contract">
   <div class="row m-b-4">
     <div class="col-12">
       <p-panel [showHeader]="false">
@@ -68,6 +68,24 @@
                 class="col-12"
                 style="padding-left: 0px; padding-right: 0px;">
           </shiptech-contract-quantity>  
+        </div>
+      </p-panel>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid-contract">
+  <div class="row m-b-4">
+    <div class="col-12">
+      <p-panel [showHeader]="false">
+        <div fxLayout="row">
+          <shiptech-contract-product
+                [model]="formValues"
+                [entityId]="entityId"
+                [uomList]="uomList"
+                class="col-12"
+                style="padding-left: 0px; padding-right: 0px;">
+          </shiptech-contract-product>  
         </div>
       </p-panel>
     </div>

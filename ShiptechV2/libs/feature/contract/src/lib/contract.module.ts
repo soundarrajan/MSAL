@@ -120,6 +120,7 @@ import { GeneralInformationContract } from './views/contract/details/components/
 import { StaticListsRouteResolver } from './views/contract/details/static-lists-route.resolver';
 import { AgreementTypeRouteResolver } from './views/contract/details/agreement-type-route.resolver';
 import { ContractQuantity } from './views/contract/details/components/contract-quantity/contract-quantity.component';
+import { ContractProduct } from './views/contract/details/components/contract-product/contract-product.component';
 
 
 @NgModule({
@@ -222,6 +223,7 @@ import { ContractQuantity } from './views/contract/details/components/contract-q
     ContractDetailsComponent,
     GeneralInformationContract,
     ContractQuantity,
+    ContractProduct,
     AutocompleteInputComponent,
     ContractDetailsToolbarComponent,
     ContractDetailsDocumentsComponent,
