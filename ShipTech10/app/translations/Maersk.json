@@ -555,10 +555,10 @@
     "RESALE_QUANTITY": "Resale Quantity"
   },
   "masters": {
-	"LOCATION_PRODUCT_TYPES" : "Bunkerable Port",
-	"LOCATION_HSFO_05_GRADES" : "HSFO 0.5 Grades",
-	"LOCATION_DISTILLATE_GRADES" : "Distillate Fuel Grade",
-	"LOCATION_HSFO_05_GRADES" : "HSFO 3.5 Grade",  	
+    "LOCATION_PRODUCT_TYPES" : "Bunkerable Port",
+    "LOCATION_HSFO_05_GRADES" : "HSFO 0.5 Grades",
+    "LOCATION_DISTILLATE_GRADES" : "Distillate Fuel Grade",
+    "LOCATION_HSFO_35_GRADES" : "HSFO 3.5 Grade",  	
     "ADDL_TECHNICAL_DETAILS": "Addl. Technical Details",
     "CUSTOMER" : "Customer",
     "CONTACT_ADDRESS": "Contact Address",

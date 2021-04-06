@@ -197,7 +197,7 @@
             return isLoactionterminals;
         }
 
-        
+
          //its used to hide PortSequence ScreenLayout
          $scope.isPortSequenceVisible=function(){
             var isPortSequences=false;
@@ -1038,7 +1038,12 @@
                if(!SaveAdditionalCostDetValidation){
                    return
                }
-                    
+               var SaveLocationProductsValidation = $scope.SaveLocationProductsValidation();
+               console.log("SaveLocationProductsValidation")
+              if(!SaveLocationProductsValidation){
+                  return
+              }
+
                  if ($scope.formValues) {
                     if($scope.formValues.productsSystemInstruments){
                         let errors = '';
@@ -1511,7 +1516,7 @@
                         }
                     }
                 });
-                
+
 	            if (vm.app_id == 'claims' && vm.screen_id == 'claims') {
 	                let type = $scope.filterFromData.claimType.claimType.name;
 	                if (type.toLowerCase() != 'debunker') {
@@ -1885,6 +1890,24 @@
 
         };
 
+        $scope.SaveLocationProductsValidation = function () {
+            var returnresult = false;
+            if ($scope.formValues.locationProducts != undefined && $scope.formValues.locationProducts.length > 0) {
+                $.each($scope.formValues.locationProducts, (k, v) => {
+                    if((v.locationProducts == undefined || v.locationProducts == "") || (v.productType == undefined || v.productType == ""))
+                        {                       
+                        toastr.error('Please fill all required details');
+                            return returnresult =false
+                        }
+                    });  
+            }
+            else
+            {
+                return returnresult = true
+            }  
+            return returnresult
+            console.log("returnresult", returnresult)
+        }
         $scope.SaveAdditionalCostDetValidation = function () {
             
            
@@ -3934,10 +3957,10 @@
                         if (index > 2) {
                             $(this).hide();
                         }
-                        elt.tagsinput('add', {
+                         elt.tagsinput('add', {
                             value: value.id,
-                            text: value.name
-                        });
+                             text: value.name
+                         });
                     });
                     $scope.initMultiTags(id);
                 }
@@ -9740,7 +9763,7 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
 	        	{"Unique_ID":"locationProductTypes", "Name":"locationProductTypes", "Label":"LOCATION_PRODUCT_TYPES", "Required":false, "masterSource":"ProductType", "LastOnRow":true},
 				{"Unique_ID":"locationHSFO05Grades", "Name":"locationHSFO05Grades", "Label":"LOCATION_HSFO_05_GRADES", "Required":false, "masterSource":"Product", "LastOnRow":true},
 				{"Unique_ID":"locationDistillateGrades", "Name":"locationDistillateGrades", "Label":"LOCATION_DISTILLATE_GRADES", "Required":false, "masterSource":"Product", "LastOnRow":true},
-				{"Unique_ID":"locationHSFO35Grades", "Name":"locationHSFO35Grades", "Label":"LOCATION_HSFO_05_GRADES", "Required":false, "masterSource":"Product", "LastOnRow":true}
+				{"Unique_ID":"locationHSFO35Grades", "Name":"locationHSFO35Grades", "Label":"LOCATION_HSFO_35_GRADES", "Required":false, "masterSource":"Product", "LastOnRow":true}
         	]
         }
 
