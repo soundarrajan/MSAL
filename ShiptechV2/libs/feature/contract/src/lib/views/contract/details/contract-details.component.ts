@@ -102,6 +102,8 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   applyToList: any;
   contractualQuantityOptionList: any;
   uomList: any;
+  productMasterList: any;
+  locationMasterList: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -184,6 +186,8 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
         this.formValues = data.contract;
       }
       this.staticLists = data.staticLists;
+      this.locationMasterList = data.locationList;
+      this.productMasterList = data.productList;
       this.agreementTypeList = data.agreementTypeList;
       this.uomList = this.setListFromStaticLists('Uom');
       this.companyList = this.setListFromStaticLists('Company');

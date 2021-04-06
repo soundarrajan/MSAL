@@ -15,7 +15,8 @@ import {
   ChangeDetectorRef,
   Injectable,
   InjectionToken,
-  Optional
+  Optional,
+  ViewChildren
 } from '@angular/core';
 import { Select } from '@ngxs/store';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
@@ -54,6 +55,8 @@ import { ContractService } from 'libs/feature/contract/src/lib/services/contract
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatRadioChange } from '@angular/material/radio';
 import { DecimalPipe } from '@angular/common';
+import { MatSelect } from '@angular/material/select';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 
 
@@ -410,6 +413,25 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   contractualQuantityOptionList: any;
   uomList: any;
   quantityFormat: string;
+  locationList: any;
+  productList: any;
+  locationMasterList: any;
+
+  displayedColumns: string[] = ['name', 'country'];
+  displayedProductColumns: string[] = ['product', 'productType'];
+
+  @ViewChild('mySelect') mySelect: MatSelect;
+  @ViewChildren('locationMenuTrigger') locationMenuTrigger;
+
+
+
+  productMasterList: any;
+  expandLocationProductPopUp =  false;
+  locationMasterSearchList: any[];
+  searchLocationInput: any;
+  expandCompanyPopUp: any;
+  searchCompanyModel: any;
+
 
   get entityId(): number {
     return this._entityId;
@@ -431,6 +453,21 @@ export class ContractProduct extends DeliveryAutocompleteComponent
      
   @Input() vesselId: number;
 
+  @Input('locationMasterList') set _setLocationMasterList(locationMasterList) { 
+    if (!locationMasterList) {
+      return;
+    } 
+    this.locationMasterList = locationMasterList;
+    this.locationMasterSearchList = [ ...locationMasterList];
+
+  }
+
+  @Input('productMasterList') set _setProductMasterList(productMasterList) { 
+    if (!productMasterList) {
+      return;
+    } 
+    this.productMasterList = productMasterList;
+  }
 
   @Input('uomList') set _setUomList(uomList) { 
     if (!uomList) {
@@ -447,7 +484,9 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   }
 
   index = 0;
-
+  expandLocationPopUp = false;
+  array = [0,1,2,3,4,5,6,7,8,9,10];
+  isMenuOpen = true;
 
   constructor(
     public gridViewModel: OrderListGridViewModel,
@@ -483,6 +522,47 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     this.entityName = 'Contract';
  
 
+  }
+
+  searchLocations(value: string): void {
+    let filterLocations = this.locationMasterList.filter((location) => location.name.toLowerCase().includes(value));
+    console.log(filterLocations);
+    this.locationMasterSearchList = [ ... filterLocations];
+    this.changeDetectorRef.detectChanges();
+  }
+
+    
+  openAddLocationSelect() {
+    this.searchLocationInput = null;
+    if (this.locationMasterList) {
+      this.locationMasterSearchList = [ ... this.locationMasterList];
+      this.changeDetectorRef.detectChanges();
+    }
+    this.mySelect.close();
+    this.mySelect.open();
+
+  }
+
+
+  clickAdd(key) {
+    console.log('as');
+    let trigger = this.locationMenuTrigger._results;
+    for (let i = 0 ; i < this.locationMenuTrigger._results.length; i++) {
+      if (i != key) {
+        trigger[i].closeMenu();
+      } else {
+        trigger[i].openMenu();
+      }
+    }
+
+    console.log(trigger);
+    this.isMenuOpen = true;
+
+    
+  }
+
+  onClickedOutside(event) {
+    console.log(event);
   }
 
 

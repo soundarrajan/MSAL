@@ -19,6 +19,8 @@ import { ContractFeedbackRouteResolver } from './views/contract/details/contract
 import { ContractRouteResolver } from './views/contract/details/contract-route.resolver';
 import { StaticListsRouteResolver } from './views/contract/details/static-lists-route.resolver';
 import { AgreementTypeRouteResolver } from './views/contract/details/agreement-type-route.resolver';
+import { LocationMasterRouteResolver } from './views/contract/details/location-master-route.resolver';
+import { ProductMasterRouteResolver } from './views/contract/details/product-master-route.resolver';
 
 interface IContractDetailsRouteData {
   [KnownContractRoutes.ContractIdParam]: Type<
@@ -63,6 +65,8 @@ const routes: Routes = [
                   // Note: contractId is expected in child routes in the data.
                   tenantConfiguration : ContractDetailsRouteResolver,
                   contract: ContractRouteResolver,
+                  locationList: LocationMasterRouteResolver,
+                  productList: ProductMasterRouteResolver,
                   navBar: NavBarResolver,
                   staticLists: StaticListsRouteResolver,
                   agreementTypeList: AgreementTypeRouteResolver,

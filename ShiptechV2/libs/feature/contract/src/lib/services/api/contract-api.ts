@@ -17,6 +17,8 @@ export namespace ContractApiPaths {
   export const getCounterparty = () =>  `api/masters/counterparties/get`;
   export const getAgreementType = () =>  `api/masters/agreementType/individualLists`;
   export const getAgreementTypeById = () =>  `api/masters/agreementtype/get`;
+  export const getLocationList = () =>  `api/masters/locations/list`;
+  export const getProductList = () =>  `api/masters/products/list`;
 
 }
 
@@ -119,6 +121,32 @@ export class ContractApi implements IContractApiService {
     return this.http.post<any>(
       `${this._masterApiUrl}/${ContractApiPaths.getAgreementTypeById()}`,
       { Payload: request }
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+    );
+  }
+
+  @ObservableException()
+  getLocationList(
+    request: any
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${this._masterApiUrl}/${ContractApiPaths.getLocationList()}`,
+     request 
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+    );
+  }
+
+  @ObservableException()
+  getProductList(
+    request: any
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${this._masterApiUrl}/${ContractApiPaths.getProductList()}`,
+      request 
     ).pipe(
       map((body: any) => body.payload),
       catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
