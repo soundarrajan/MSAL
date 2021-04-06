@@ -54,6 +54,11 @@ export class AppComponent {
                 const rule: any = rules[r];
                 if(rule.selectorText === '::-webkit-scrollbar') {
                     style.sheet.deleteRule(r);
+                    r--;
+                } 
+                if (rule.selectorText == 'ag-grid-angular ::-webkit-scrollbar') {
+                  style.sheet.deleteRule(r);
+                  r--;
                 }
             }
         }
