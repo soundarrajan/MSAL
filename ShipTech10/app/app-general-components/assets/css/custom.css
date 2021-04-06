@@ -1782,6 +1782,9 @@ th.hstyle-background-green, th.hstyle-background-green.ui-state-hover {
     max-width: 120px;
     overflow: hidden;
     text-overflow: ellipsis;
+    opacity: 1 !important;
+    transition: none;
+    display: block !important;
 }
 
 .form-group .tagsForagents .bootstrap-tagsinput .tag {

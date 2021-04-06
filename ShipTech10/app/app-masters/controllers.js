@@ -1034,15 +1034,15 @@
 
             if(vm.app_id == 'masters' && vm.screen_id == 'location') {
                  var SaveAdditionalCostDetValidation = $scope.SaveAdditionalCostDetValidation();
-                console.log("SaveAdditionalCostDetValidation")
-               if(!SaveAdditionalCostDetValidation){
-                   return
-               }
-               var SaveLocationProductsValidation = $scope.SaveLocationProductsValidation();
-               console.log("SaveLocationProductsValidation")
-              if(!SaveLocationProductsValidation){
-                  return
-              }
+                 console.log("SaveAdditionalCostDetValidation")
+                 if(!SaveAdditionalCostDetValidation){
+                 	return
+                 }
+                 // var SaveLocationProductsValidation = $scope.SaveLocationProductsValidation();
+                 // console.log("SaveLocationProductsValidation")
+                 // if(!SaveLocationProductsValidation){
+                 // 	return
+                 // }
 
                  if ($scope.formValues) {
                     if($scope.formValues.productsSystemInstruments){
@@ -1889,7 +1889,7 @@
             toastr.error(toastererror);
 
         };
-
+ 
         $scope.SaveLocationProductsValidation = function () {
             var returnresult = false;
             if ($scope.formValues.locationProducts != undefined && $scope.formValues.locationProducts.length > 0) {
@@ -3922,55 +3922,60 @@
                 var values = $scope.formValues[id];
             }
             if (values) {
-                if (id == 'agents') {
-                    $.each(values, function(index, value) {
-                        if (!value.isDeleted || value.isDeleted == false) {
-                            value.counterpartyName = vm.decodeHtml(value.counterpartyName) ? angular.copy(vm.decodeHtml(value.counterpartyName)) : value.counterpartyName;
-                            if (index > 2) {
-                                $(this).hide();
-                            }
-                            elt.tagsinput('add', {
-                                value: value.counterpartyId,
-                                text: value.counterpartyName
-                            });
-                            selectDefaultAgent(id, index);
-                        }
-                    });
-                } else if (id == "locationProductTypes") {
-                    $.each(values, function(index, value) {
-                        if (index > 2) {
-                            $(this).hide();
-                        }
-                        elt.tagsinput("add", {
-                            value: value.productType.id,
-                            text: value.productType.name
-                        });
-                    });
-                    $scope.initMultiTags(id);
-                } else if (["locationHSFO05Grades","locationDistillateGrades","locationHSFO35Grades"].includes(id)) {
-                    $.each(values, function(index, value) {
-                        if (index > 2) {
-                            $(this).hide();
-                        }
-                        elt.tagsinput("add", {
-                            value: value.product.id,
-                            text: value.product.name
-                        });
-                    });
-                    $scope.initMultiTags(id);                	
-                }else {
-                    $.each(values, function(index, value) {
-                        value.name = vm.decodeHtml(value.name) ? angular.copy(vm.decodeHtml(value.name)) : value.name;
-                        if (index > 2) {
-                            $(this).hide();
-                        }
-                         elt.tagsinput('add', {
-                            value: value.id,
-                             text: value.name
-                         });
-                    });
-                    $scope.initMultiTags(id);
-                }
+                setTimeout(()=>{
+	                if (id == 'agents') {
+	                    $.each(values, function(index, value) {
+	                        if (!value.isDeleted || value.isDeleted == false) {
+	                            value.counterpartyName = vm.decodeHtml(value.counterpartyName) ? angular.copy(vm.decodeHtml(value.counterpartyName)) : value.counterpartyName;
+	                            if (index > 2) {
+	                                $(this).hide();
+	                            }
+	                            elt.tagsinput('add', {
+	                                value: value.counterpartyId,
+	                                text: value.counterpartyName
+	                            });
+	                            selectDefaultAgent(id, index);
+	                        }
+	                    });
+	                } else if (id == "locationProductTypes") {
+	                    $.each(values, function(index, value) {
+	                        if (index > 2) {
+	                            $(this).hide();
+	                        }
+	                        if (!value.isDeleted) {
+		                        elt.tagsinput("add", {
+		                            value: value.productType.id,
+		                            text: value.productType.name
+		                        });
+	                        }
+	                    });
+	                    $scope.initMultiTags(id);
+	                } else if (["locationHSFO05Grades","locationDistillateGrades","locationHSFO35Grades"].includes(id)) {
+	                    $.each(values, function(index, value) {
+	                        if (index > 2) {
+	                            $(this).hide();
+	                        }
+	                        if (!value.isDeleted) {
+		                        elt.tagsinput("add", {
+		                            value: value.product.id,
+		                            text: value.product.name
+		                        });
+	                        }
+	                    });
+	                }else {
+	                    $.each(values, function(index, value) {
+	                        value.name = vm.decodeHtml(value.name) ? angular.copy(vm.decodeHtml(value.name)) : value.name;
+	                        if (index > 2) {
+	                            $(this).hide();
+	                        }
+	                         elt.tagsinput('add', {
+	                            value: value.id,
+	                             text: value.name
+	                         });
+	                    });
+	                    $scope.initMultiTags(id);
+	                }
+                })
             }
             hideTheChildren();
 
@@ -3978,7 +3983,7 @@
             	$scope.initBoostrapTagsInputTooltip();
                 currentTags = elt.next('.bootstrap-tagsinput').children('.label');
                 currentTags.removeAttr('big-child');
-                currentTags.show();
+                currentTags.css("display", "block");
                 currentTags.css('clear', 'none');
                 currentTags
                     .parent('.bootstrap-tagsinput')
@@ -4062,15 +4067,19 @@
             }
             $.each(values, (index, value) => {
             	if (id == "locationProductTypes") {
-	                elt.tagsinput('add', {
-	                    value: value.productType.id,
-	                    text: value.productType.name
-	                });
+                	if (!value.isDeleted) {
+		                elt.tagsinput('add', {
+		                    value: value.productType.id,
+		                    text: value.productType.name
+		                });
+                	}
                 } else if (["locationHSFO05Grades","locationDistillateGrades","locationHSFO35Grades"].includes(id)) {
-	                elt.tagsinput('add', {
-	                    value: value.product.id,
-	                    text: value.product.name
-	                });
+                	if (!value.isDeleted) {
+		                elt.tagsinput('add', {
+		                    value: value.product.id,
+		                    text: value.product.name
+		                });
+                	}
                 } else {
 	                elt.tagsinput('add', {
 	                    value: value.id,

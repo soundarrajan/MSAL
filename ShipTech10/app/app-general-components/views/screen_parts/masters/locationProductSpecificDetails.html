@@ -16,7 +16,7 @@
 					<span class="remove" style="display: block;pointer-events: all; opacity: 1" ng-click="value.id == 0 ? formValues.locationProducts.splice(key,1) : formValues.locationProducts[key].isDeleted=true"></span>
 				</td>
 				<td>
-					 <select name="productType_{{ $index }}" class="form-control" ng-model="formValues.locationProducts[$index].productType" ng-options="item as item.name for item in CM.listsCache.ProductType track by item.id">
+					 <select name="productType_{{ $index }}" class="form-control" ng-model="formValues.locationProducts[$index].productType" ng-options="item as item.name for item in CM.listsCache.ProductType track by item.id" ng-required="true">
 				 </td>
 				<td>
 					<input type="text" name="maxTransferRate_{{ $index }}" ng-required="formValues.locationProducts[$index].productType?true:false" type="number" class="form-control" ng-model="formValues.locationProducts[$index].maxTransferRate" format="number">
@@ -28,15 +28,7 @@
 					<input type="text" name="maxSupplyQuantity_{{ $index }}" ng-required="formValues.locationProducts[$index].productType?true:false" type="number" class="form-control" ng-model="formValues.locationProducts[$index].maxSupplyQty" format="number">
 				</td>
 				<td>
-					<input decode-input-format name="lowestGradeAvailable_{{ $index }}" id="lowestGradeAvailable_{{ $index }}" uib-typeahead="product as product.name for product in options.Product | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.selectCompanyInLocation($item.id, $index)" ng-required="formValues.locationProducts[$index].productType?true:false" typeahead-editable="false" class="typeahead form-control" ng-model="formValues.locationProducts[$index].product" >
-
-<!--                     <span class="input-group-addon" ng-click="triggerModal('general', 'masters_companylist', $ctrl.tenantSettings.serviceDisplayName.name + ' Code' | translate, '$ctrl.location[' + $index + '].company' ,'','',Location + $index+1 + $ctrl.tenantSettings.companyDisplayName.name)" ng-disabled="$ctrl.disableAllFields">
-                        <i class="fa fa-search"></i>
-                    </span> -->
-
-
-<!-- 					 <select name="productType_{{ $index }}" class="form-control" ng-model="formValues.locationProducts[$index].product" ng-options="item as item.name for item in CM.listsCache.Product track by item.id">					
-					<input type="text" name="lowestGradeAvailable_{{ $index }}" ng-required="formValues.locationProducts[$index].productType?true:false" type="number" class="form-control" ng-model="formValues.locationProducts[$index].lowestGradeAvailable" format="number"> -->
+					<input decode-input-format name="lowestGradeAvailable_{{ $index }}" id="lowestGradeAvailable_{{ $index }}" uib-typeahead="product as product.name for product in options.Product | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.selectCompanyInLocation($item.id, $index)" ng-required="true" typeahead-editable="false" class="typeahead form-control" ng-model="formValues.locationProducts[$index].product" >
 				</td>			
 			</tr>
 		</tbody>
