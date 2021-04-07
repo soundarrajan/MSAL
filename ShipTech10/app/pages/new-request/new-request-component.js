@@ -411,6 +411,18 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     } else if (typeof requestId != 'undefined' && requestId !== null) {
                         newRequestModel.getRequest(requestId).then((newRequestData) => {
                             ctrl.request = newRequestData.payload;
+                            
+                            $.each(ctrl.request.locations, (i, j) => {
+                                
+                                if(j.terminal != null && j.terminal.length != 0){
+                                    
+                                    j.terminal.descriptions = j.terminal.name;
+                                    j.terminal.terminalCode = j.terminal.code;
+
+                                }
+
+                                getTerminalLocations('locations',j.location.id);
+                            });
                             ctrl.request.footerSection.comments =  decodeHtmlEntity(_.unescape(ctrl.request.footerSection.comments));
                             ctrl.getOperationalReportParameters();
                             ctrl.disableAllFields = false;
@@ -717,8 +729,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 return;
             }
             if (verifyContracts) {
-                console.log(ctrl.bestContractsList);
-                console.log(ctrl.checkedProducts);
                 var contractExistsForSelection = false;
                 ctrl.existingContractLocations = [];
                 $.each(ctrl.bestContractsList, (k, v) => {
@@ -1132,8 +1142,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         		if (extraInfo.vesselVoyageDetailId) {
 		            newProduct.vesselVoyageDetailId = extraInfo.vesselVoyageDetailId;
                     newRequestModel.getBunkerPlansForVesselVoyageDetailId(extraInfo.vesselVoyageDetailId).then((response) => {
-                        console.log(newProduct);
-                        console.log(response);
                         if (response.payload) {
                             $.each(response.payload, (k, v) => {
                                 if (v.productTypeDto.id == newProduct.productType.id) {
@@ -1170,13 +1178,10 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         let sludgeProductTypeGroup = _.find(ctrl.listsCache.ProductTypeGroup, { name : 'Sludge' });
                         let payload1 = { Payload: {} };
                         $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/listProductTypeGroupsDefaults`, payload1).then((response) => {
-                            console.log(response);
                             if (response.data.payload != 'null') {
                                let defaultUomAndCompany = _.find(response.data.payload, function(object) {
                                     return object.id == productTypeGroup.id;
                                });
-                               console.log(defaultUomAndCompany);
-                               console.log(newProduct);
                                if (defaultUomAndCompany) {
                                     newProduct.robOnArrivalUom = defaultUomAndCompany.defaultUom;
                                     newProduct.uom = defaultUomAndCompany.defaultUom;
@@ -1481,7 +1486,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
          */
         ctrl.initializeDynamicDateInput = function(event) {
             let date = $(event.currentTarget);
-            console.log('dynamic');
             if (date.data('datetimepicker') !== undefined) {
                 return false;
             }
@@ -1525,6 +1529,38 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 });
         }
 
+        function getTerminalLocations(LOCATIONS, locationId){
+
+            lookupModel.getForRequest(LOCATIONS, locationId).then(
+                (server_data) => {
+                    
+                    $.each(ctrl.request.locations, (e, f) => {
+                        
+                        if(f.location.id == server_data.payload.id){
+                            if($scope.locationTerminal == undefined){
+                                $scope.locationTerminal = [];
+                                if(server_data.payload.terminals.length == 0 || server_data.payload.terminals == []){
+                                    $scope.locationTerminal[e] = [];
+                                }
+                                else{
+                                    $scope.locationTerminal[e] = angular.copy(server_data.payload.terminals);
+                                }
+                            
+                            }
+                            else{
+                                if(server_data.payload.terminals.length == 0 || server_data.payload.terminals == []){
+                                    $scope.locationTerminal[e] = [];
+                                }
+                                else{
+                                    $scope.locationTerminal[e] = angular.copy(server_data.payload.terminals);
+                                }
+        
+                            }
+                        }
+                    });
+                }
+            );
+        }
         /**
          * Adds a port to the request locations array.
          * Returns a promise so we can do extra work afterwards
@@ -1536,10 +1572,17 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             let deferred = $q.defer();
             lookupModel.getForRequest(LOOKUP_TYPE.LOCATIONS, locationId).then(
                 (server_data) => {
-                    $scope.locationTerminal = [];
-                    $scope.locationTerminal = angular.copy(server_data.payload.terminals);
+                    
+                    if($scope.locationTerminal == undefined){
+                        $scope.locationTerminal = [];
+                    $scope.locationTerminal.push(angular.copy(server_data.payload.terminals));
+                    }
+                    else{
+                        $scope.locationTerminal.push(angular.copy(server_data.payload.terminals));
+
+                    }
                     location = server_data.payload;
-                    let agent = {};
+                    let agent = {}; 
                     // only set agent if agent field is of type lookup
                     // if its free text, let the user fill in info
                     if (ctrl.requestTenantSettings.agentDisplay.name == 'Lookup') {
@@ -1678,7 +1721,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             let location;
             for (let i = 0; i < ctrl.request.locations.length; i++) {
                 location = ctrl.request.locations[i];
-                console.log("2222", location);
                 if (location.location.id === locationId && location.vesselVoyageId == vesselVoyageId && !location.eta && !location.etb && !location.etd) {
                     location.eta = eta;
                     location.etb = etb;
@@ -1731,7 +1773,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             let location;
             for (let i = 0; i < ctrl.request.locations.length; i++) {
                 location = ctrl.request.locations[i];
-                console.log("3333", location);
                 if (location.location.id === locationId && location.vesselVoyageId == vesselVoyageId) {
                 	if (ctrl.requestTenantSettings.displayOfService.id == 2) {
 	                    location.service = data.service;
@@ -2143,7 +2184,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             var contractProductIds = [];
             var contractIds = [];
             var errors = 0;
-            console.log(ctrl.selectedContracts);
             $.each(ctrl.selectedContracts, (ck, cv) => {
                 if (cv.requestProductId) {
                     if (requestProductIds.indexOf(cv.requestProductId) > -1) {

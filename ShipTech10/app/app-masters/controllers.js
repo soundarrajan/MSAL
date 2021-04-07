@@ -1238,7 +1238,7 @@
                         delete v.voyageUpdated;
                 	}
                 });
-                if (!$scope.isHideVesselBopsDetails && $scope.formValues.departments.length < 1) {
+                if (!$scope.isHideVesselBopsDetails && ($scope.formValues.departments == undefined || $scope.formValues.departments.length < 1)) {
                     setTimeout(() => {
                         $scope.submitedAction = false;
                     }, 100);

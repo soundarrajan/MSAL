@@ -870,18 +870,24 @@
                                             </div>
                                             <div class="col-md-4" ng-hide="$ctrl.requestTenantSettings.isRequestTerminalHidden"> 
                                                 <div class="row">
+                                                    <!-- {{location}} -->
                                                     <label class="control-label col-md-4">
                                                         {{ 'PAGES.NEW_REQUEST.TERMINAL' | translate }}  
-                                                        
                                                     </label>
-
-                                                    
+                                                    <!-- ng-options="item as item.name for item in CM.listsCache.Uom track by item.id " -->
                                                     <div class="form-group-sm00">
+                                                        <div class="input-group col-md-8 col-sm-12">
+                                                            <select name ="terminal" ng-options="terminal as terminal.descriptions for terminal in locationTerminal[$index] track by terminal.terminalCode" 
+                                                            ng-model="location.terminal"  data-original-title="{{ location.descriptions }}" class="form-control pull-left" ng-required="$ctrl.requestTenantSettings.isRequestTerminalMandatory"></select>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- <div class="form-group-sm00">
                                                         <div class="input-group col-md-8 col-sm-12">
                                                             <select name ="terminal" ng-options="terminal as terminal.descriptions for terminal in locationTerminal track by terminal.terminalCode" 
                                                             ng-model="location.terminal"  data-original-title="{{ location.descriptions }}" class="form-control pull-left" ng-required="$ctrl.requestTenantSettings.isRequestTerminalMandatory"></select>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                             </div>
 
