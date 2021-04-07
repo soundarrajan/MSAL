@@ -4,6 +4,16 @@
 </span>
 <general-header actions="{
     primary: [
+        {
+            label: 'Create Pre-claim CN',
+            special: false,
+            url: '#',
+            type: 'goto',
+            method: 'createPreclaimCreditNote()',
+            extern: true,
+            Conditional: 'adminConfiguration.claim.isPreclaimCNFeatureAvailable,
+            ConditionalType: 'ng-show'
+        },
         {label: 'Resale Credit Note', special: false, url: '#', type: 'goto', method: 'createResaleCreditNote()', extern: true},
         {label: 'Debunker Credit Note', special: false, url: '#', type: 'goto', method: 'createDebunkerCreditNote()', extern: true},
         {label: 'Create Credit/Debit Note', special: true, url: '#', type: 'goto', method: 'createCreditNote()', extern: true},
@@ -137,6 +147,16 @@
 
 <general-header class="footer-general-header" color="'white'" actions="{
     primary: [
+        {
+            label: 'Create Pre-claim CN',
+            special: false,
+            url: '#',
+            type: 'goto',
+            method: 'createPreclaimCreditNote()',
+            extern: true,
+            Conditional: 'adminConfiguration.claim.isPreclaimCNFeatureAvailable',
+            ConditionalType: 'ng-show'
+        },
         {label: 'Resale Credit Note', special: false, url: '#', type: 'goto', method: 'createResaleCreditNote()', extern: true},
         {label: 'Debunker Credit Note', special: false, url: '#', type: 'goto', method: 'createDebunkerCreditNote()', extern: true},
         {label: 'Create Credit/Debit Note', special: true, url: '#', type: 'goto', method: 'createCreditNote()', extern: true},

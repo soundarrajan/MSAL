@@ -640,6 +640,11 @@ APP_MASTERS.factory('Factory_Master', [ '$window', '$http', '$Api_Service', 'API
                 callback(result);
             });
         },
+        claims_create_preclaim_cn: function(data, callback) {
+            $Api_Service.claim.createPreclaimCN(data, (result) => {
+                callback(result);
+            });
+        },
         get_conversion_info: function(data, callback) {
             $Api_Service.delivery.getConversionInfo(data, (result) => {
                 // console.log(result);

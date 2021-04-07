@@ -552,7 +552,8 @@
     "VESSEL_QUANTITY": "Vessel QTY",
     "QUANTITY_SHORTAGE_PERCENT": "Quantity Shortage %",
     "RETESTED_DENSITY": "Retested Density (kg/m3)",
-    "RESALE_QUANTITY": "Resale Quantity"
+    "RESALE_QUANTITY": "Resale Quantity",
+    "WITHHELD_AMOUNT": "Withheld Amount"
   },
   "masters": {
     "LOCATION_PRODUCT_TYPES" : "Bunkerable Port",

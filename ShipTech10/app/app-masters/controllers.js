@@ -182,6 +182,7 @@
                         $rootScope.getAdminConfigurationCall = false;
                         vm.adminConfiguration = callback2;
                         $rootScope.adminConfiguration = callback2;
+                        //$rootScope.adminConfiguration.claim = {}; $rootScope.adminConfiguration.claim.isPreclaimCNFeatureAvailable = true;
                     }
                 });
             }
@@ -671,6 +672,24 @@
                     */
                 } else {
                     toastr.error('You can\'t create resale credit note for this claim');
+                }
+            } else {
+                toastr.error('Please select one claim');
+            }
+        };
+        $scope.createPreclaimCreditNote = function() {
+            let selectedRowData = $('#invoices_app_deliveries_list').jqGrid.Ascensys.selectedRowData;
+            if (selectedRowData) {
+                let claimId = selectedRowData.id;
+                if (selectedRowData.claimsPossibleActions.canCreatePreClaimCreditNote) {
+                    let data = {
+                        ClaimId: claimId,
+                        IsPreclaimCN: 1
+                    };
+                    localStorage.setItem('createPreclaimCreditNoteFromInvoiceClaims', JSON.stringify(data));
+                    window.open(`/#/${ vm.app_id }/` + 'claims' + '/edit/', '_blank');
+                } else {
+                    toastr.error('You can\'t create pre-claim credit note for this claim');
                 }
             } else {
                 toastr.error('Please select one claim');

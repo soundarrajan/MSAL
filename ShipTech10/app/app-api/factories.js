@@ -8821,6 +8821,39 @@ APP_API.factory('$Api_Service', [
                         }
                     );
                 },
+                createPreclaimCN: function(param, callback) {
+                    console.log(param);
+                    if (_debug) {
+                        console.log('$APIService invoice.createPreclaimCN called with the following params:', param);
+                    }
+                    let apiJSON = {
+                        Payload: param
+                    };
+                    let url = `${API.BASE_URL_DATA_INVOICES }/api/invoice/newPreclaimCN`;
+                    $http.post(url, apiJSON).then(
+                        (response) => {
+                            if (response.status == 200) {
+                                var res = new Object();
+                                res.status = true;
+                                res.message = 'Pre-claim Credit note Created!';
+                                res.data = response.data.payload;
+                                callback(res);
+                            } else {
+                                var res = new Object();
+                                res.status = false;
+                                res.message = 'Could not create pre-claim credit note!';
+                                callback(res);
+                            }
+                        },
+                        (response) => {
+                            let res = new Object();
+                            res.status = false;
+                            res.message = 'Could not create pre-claim credit note!';
+                            callback(res);
+                            console.log('HTTP ERROR while trying to save pre-claim credit note!');
+                        }
+                    );
+                },
                 getWorkingDueDate: function(param, callback) {
                     console.log(param);
                     if (_debug) {
@@ -9988,6 +10021,39 @@ APP_API.factory('$Api_Service', [
                             res.message = 'Could not create credit note!';
                             callback(res);
                             console.log('HTTP ERROR while trying to save credit note!');
+                        }
+                    );
+                },
+                createPreclaimCN: function(param, callback) {
+                    console.log(param);
+                    if (_debug) {
+                        console.log('$APIService invoice.createPreclaimCN called with the following params:', param);
+                    }
+                    let apiJSON = {
+                        Payload: param
+                    };
+                    let url = `${API.BASE_URL_DATA_INVOICES }/api/invoice/newPreclaimCN`;
+                    $http.post(url, apiJSON).then(
+                        (response) => {
+                            if (response.status == 200) {
+                                var res = new Object();
+                                res.status = true;
+                                res.message = 'Pre-claim Credit note Created!';
+                                res.data = response.data.payload;
+                                callback(res);
+                            } else {
+                                var res = new Object();
+                                res.status = false;
+                                res.message = 'Could not create pre-claim credit note!';
+                                callback(res);
+                            }
+                        },
+                        (response) => {
+                            let res = new Object();
+                            res.status = false;
+                            res.message = 'Could not create pre-claim credit note!';
+                            callback(res);
+                            console.log('HTTP ERROR while trying to save pre-claim credit note!');
                         }
                     );
                 },

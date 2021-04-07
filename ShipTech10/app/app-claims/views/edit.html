@@ -23,6 +23,13 @@
         ConditionalType: 'ng-show',
         Conditional: '(formValues.claimDetails.status.name == \'New\') || (formValues.claimDetails.status.name != \'Completed\' && formValues.claimDetails.status.name != \'Cancelled\' && formValues.claimDetails.status.name != \'Invoiced\' && (formValues.claimType.claimType.name!=\'Debunker\' && CM.entity_id == \'\'))'
     }, {
+        label: 'Create Pre-claim CN',
+        url: '#',
+        method: 'claims_create_preclaim_cn(3)',
+        Conditional: 'adminConfiguration.claim.isPreclaimCNFeatureAvailable && formValues.claimsPossibleActions.canCreatePreClaimCreditNote && hasWithheldAmount',
+        ConditionalType: 'ng-show',
+        extern: true
+    }, {
         label: 'Create Debunker Claim',
         url: '#',
         method: 'createDebunker()',
@@ -65,7 +72,7 @@
             label: 'Debunker Credit Note',
             url: '#',
             method: 'claims_create_credit_note(2)',
-             Conditional: 'formValues.claimsPossibleActions.canCreateDebunkerCreditNote',
+            Conditional: 'formValues.claimsPossibleActions.canCreateDebunkerCreditNote',
             ConditionalType: 'ng-show',
             extern: true,
             main: true
@@ -129,6 +136,13 @@
         extern: true,
         ConditionalType: 'ng-show',
         Conditional: '(formValues.claimDetails.status.name == \'New\') || (formValues.claimDetails.status.name != \'Completed\' && formValues.claimDetails.status.name != \'Cancelled\' && formValues.claimDetails.status.name != \'Invoiced\' && (formValues.claimType.claimType.name!=\'Debunker\' && CM.entity_id == \'\'))'
+    }, {
+        label: 'Create Pre-claim CN',
+        url: '#',
+        method: 'claims_create_preclaim_cn(3)',
+        Conditional: 'adminConfiguration.claim.isPreclaimCNFeatureAvailable && formValues.claimsPossibleActions.canCreatePreClaimCreditNote && hasWithheldAmount',
+        ConditionalType: 'ng-show',
+        extern: true
     }, {
         label: 'Create Debunker Claim',
         url: '#',

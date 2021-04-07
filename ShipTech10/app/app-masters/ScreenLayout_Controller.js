@@ -124,6 +124,23 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                 localStorage.removeItem('createCreditNoteFromInvoiceClaims');
             }
 
+            if (localStorage.getItem('createPreclaimCreditNoteFromInvoiceClaims')) {
+                Factory_Master.create_credit_note(JSON.parse(localStorage.getItem('createPreclaimCreditNoteFromInvoiceClaims')), (response) => {
+                    if (response) {
+                        if (response.status == true) {
+                            $scope.loaded = true;
+                            toastr.success(response.message);
+                            $scope.formValues = response.data;
+                        } else {
+                            $scope.loaded = true;
+                            toastr.error(response.message);
+                        }
+                    }
+                });
+                $rootScope.transportData = null;
+                localStorage.removeItem('createPreclaimCreditNoteFromInvoiceClaims');
+            }
+
          	if (localStorage.getItem('invoiceFromDelivery')) {
          		// $rootScope.transportData = angular.copy(JSON.parse(localStorage.getItem("invoiceFromDelivery")));
 

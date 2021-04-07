@@ -21,6 +21,7 @@ APP_CLAIMS.controller('Controller_Claims', [
     function($scope, $filter, $rootScope, $Api_Service, Factory_Claims, $state, $location, $q, $compile, $timeout, Factory_Master, $listsCache, $tenantSettings, screenLoader, $http, API) {
         let vm = this;
         let guid = '';
+        $scope.hasWithheldAmount = false;
         vm.screen_id = 'claims';
         if ($state.params.path) {
             vm.app_id = $state.params.path[0].uisref.split('.')[0];
@@ -502,6 +503,9 @@ APP_CLAIMS.controller('Controller_Claims', [
                         if ($scope.formValues.claimDetails && !$scope.formValues.claimDetails.estimatedSettlementAmountCurrency) {
                             $scope.formValues.claimDetails.estimatedSettlementAmountCurrency = $scope.tenantCurrency;
                         }
+                        if ($scope.formValues.claimDetails && !$scope.formValues.claimDetails.withheldAmountCurrency) {
+                            $scope.formValues.claimDetails.withheldAmountCurrency = $scope.tenantCurrency;
+                        }
                         if ($scope.formValues.claimDebunkerDetails && !$scope.formValues.claimDebunkerDetails.salePriceCurrency) {
                             $scope.formValues.claimDebunkerDetails.salePriceCurrency = $scope.tenantCurrency;
                         }
@@ -539,6 +543,11 @@ APP_CLAIMS.controller('Controller_Claims', [
                              _.forEach($scope.formValues.qualitySubtypes, function(object) {
                                 object.specParameter.name = decodeHtmlEntity(_.unescape(object.specParameter.name));
                             });
+                        }
+                        if ($scope.formValues.claimDetails && convertDecimalSeparatorStringToNumber($scope.formValues.claimDetails.withheldAmount) > 0) {
+                            $scope.hasWithheldAmount = true;
+                        } else {
+                            $scope.hasWithheldAmount = false;
                         }
                         let field2;
                         field2 = vm.formFieldSearch($scope.formFields, 'orderDetails.deliveryNo');
@@ -749,6 +758,13 @@ APP_CLAIMS.controller('Controller_Claims', [
                 if ($scope.formValues.densitySubtypes && $scope.formValues.densitySubtypes.length == 1) {
                     $scope.formValues.densitySubtypes[0].labDensity = $scope.formValues.claimType.retestedDensity;
                     $scope.computeDensityDifference(0, $scope.formValues);
+                }
+            }
+            if(name == 'WithheldAmount') {
+                if ($scope.formValues.claimDetails && convertDecimalSeparatorStringToNumber($scope.formValues.claimDetails.withheldAmount) > 0) {
+                    $scope.hasWithheldAmount = true;
+                } else {
+                    $scope.hasWithheldAmount = false;
                 }
             }
         };
@@ -1150,7 +1166,32 @@ APP_CLAIMS.controller('Controller_Claims', [
             if (id == 2) {
                 data.IsDebunker = true;
             }
+            if (id == 3) {
+                data.IsPreclaimCN = true;
+            }
             Factory_Master.claims_create_credit_note(data, (response) => {
+                if (response) {
+                    if (response.status == true) {
+                        $scope.loaded = true;
+                        toastr.success(response.message);
+                        $rootScope.transportData = response.data;
+                        $location.path('invoices/claims/edit/');
+                    } else {
+                        $scope.loaded = true;
+                        toastr.error(response.message);
+                    }
+                }
+            });
+        };
+        $scope.claims_create_preclaim_cn = function(id) {
+            let data = {
+                claimId: vm.entity_id,
+                InvoiceTypeName: 'CreditNote'
+            };
+            if (id == 3) {
+                data.IsPreclaimCN = true;
+            }
+            Factory_Master.claims_create_preclaim_cn(data, (response) => {
                 if (response) {
                     if (response.status == true) {
                         $scope.loaded = true;
