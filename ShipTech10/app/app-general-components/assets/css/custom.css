@@ -1784,6 +1784,8 @@ th.hstyle-background-green, th.hstyle-background-green.ui-state-hover {
     text-overflow: ellipsis;
     opacity: 1 !important;
     transition: none;
+}
+.form-group .bootstrap-tagsinput .tag:not["big-child"] {
     display: block !important;
 }
 

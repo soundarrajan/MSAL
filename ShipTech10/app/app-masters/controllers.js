@@ -3922,7 +3922,6 @@
                 var values = $scope.formValues[id];
             }
             if (values) {
-                setTimeout(()=>{
 	                if (id == 'agents') {
 	                    $.each(values, function(index, value) {
 	                        if (!value.isDeleted || value.isDeleted == false) {
@@ -3975,7 +3974,6 @@
 	                    });
 	                    $scope.initMultiTags(id);
 	                }
-                })
             }
             hideTheChildren();
 
