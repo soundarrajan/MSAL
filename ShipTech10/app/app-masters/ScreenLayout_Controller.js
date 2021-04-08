@@ -1260,6 +1260,26 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
 		    		$scope.filters = $scope.modal.filters;
                 } 
 
+                if (clc == 'masters_counterpartylist_subdepartment') {
+                    $scope.modal.app = 'masters';
+                    $scope.modal.screen = 'counterpartylist';
+                    if (vm.screen_id == "vessel") {
+                    	if (!$scope.formValues.customer) {
+                    		toastr.error("Please select customer first!");
+                    		return false;
+                    	}
+                    	counterpartyId = $scope.formValues.customer.id
+                    }
+
+			    	$scope.modal.filters = [
+			    		{
+			    			ColumnName: 'CounterpartyId',
+			    			Value: counterpartyId
+			    		}
+		    		];
+		    		$scope.filters = $scope.modal.filters;
+                } 
+
                 if (clc == 'Requote') {
                     $scope.modal.app = 'procurement';
                     $scope.modal.screen = 'request_entity_documents';

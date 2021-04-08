@@ -5125,6 +5125,10 @@ APP_API.factory('$Api_Service', [
                         localStorage.removeItem('uniqueModalTableIdentifier');
                     }
 
+                    if (param.clc_id == "masters_counterpartylist_subdepartment") {
+                    	url = `${API.BASE_URL_DATA_MASTERS }/api/masters/counterparties/subDepartmentPaginatedList`;
+                    }
+
                     // payableTo URL (invoices)
                     if ((param.app == 'invoices' && param.screen == 'invoice' || param.app == 'masters' && param.screen == 'counterpartylist') && param.clc_id == 'payableTo') {
                         url = `${API.BASE_URL_DATA_MASTERS }/api/masters/counterparties/listByTypes`;
