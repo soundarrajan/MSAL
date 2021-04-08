@@ -8,6 +8,7 @@
       <div class="add-new-location-with-product">
         <div class="add-new-location-placeholder"
           *ngIf="!contractProduct.value.location" 
+          (click)="locationMasterSearchList = locationMasterList; searchLocationInput = null"
           [matMenuTriggerFor]="menu">
           Add location
           <span class="dropdown-icon dropdown-location-icon" >
@@ -15,6 +16,7 @@
         </div>
         <div class="location-container-tab" 
           [matMenuTriggerFor]="menu"
+          (click)="locationMasterSearchList = locationMasterList; searchLocationInput = null"
           *ngIf="contractProduct.value.location">
           {{contractProduct.value.location.name}}
           <span class="dropdown-icon-white dropdown-location-icon" >
@@ -22,6 +24,7 @@
         </div>
         <div class="add-new-location-placeholder"
           [matMenuTriggerFor]="menu1"
+          (click)="productMasterSearchList = productMasterList; searchProductInput = null"
           *ngIf="!contractProduct.value.product">
           Add product
           <span class="dropdown-icon dropdown-product-icon">
@@ -86,7 +89,7 @@
           <span class="search-location-lookup" (click)="$event.stopPropagation();$event.preventDefault();searchProducts(searchProductInput)">
           </span>
           <input matInput 
-                placeholder="Search all and select a prtoduct"
+                placeholder="Search all and select a product"
                 [(ngModel)]="searchProductInput"
                 (click)="$event.stopPropagation();$event.preventDefault();"
                 class="search-location-input">
@@ -121,4 +124,7 @@
       </table>
     </div>
   </mat-menu>
+</div>
+<div class="row col-md-12 contract-section selected-product-container" style="margin-left: 0px;">
+
 </div>
