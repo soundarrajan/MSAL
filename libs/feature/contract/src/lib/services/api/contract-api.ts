@@ -70,7 +70,7 @@ export class ContractApi implements IContractApiService {
       `${this._adminApiUrl}/${ContractApiPaths.getTenantConfiguration()}`,
       { Payload: request }
     ).pipe(
-      map((body: any) => body.payload),
+      map((body: any) => body),
       catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
     );
   }

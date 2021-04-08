@@ -1,24 +1,43 @@
 <div class="row col-md-12 contract-section" style="margin-left: 0px;" id="container-contract">
-  <div class="add-contract-product-section">
+  {{selectedTabIndex}}
+  <div class="add-contract-product-section" (click)="addProductToContract()">
     <a class="add-contract-product-icon"></a>
   </div>
-  <div class="add-new-location-with-product">
-    <div class="add-new-location-placeholder" 
-      [matMenuTriggerFor]="menu"
-      #locationMenuTrigger="matMenuTrigger"
-      (click)="clickAdd(0)">
-      Add location
-      <span class="dropdown-icon" >
-      </span>
+  <ng-container *ngFor="let contractProduct of formValues.products | keyvalue">
+    <div (click)="selectedTabIndex =  contractProduct.key">
+      <div class="add-new-location-with-product">
+        <div class="add-new-location-placeholder"
+          *ngIf="!contractProduct.value.location" 
+          [matMenuTriggerFor]="menu">
+          Add location
+          <span class="dropdown-icon dropdown-location-icon" >
+          </span>
+        </div>
+        <div class="location-container-tab" 
+          [matMenuTriggerFor]="menu"
+          *ngIf="contractProduct.value.location">
+          {{contractProduct.value.location.name}}
+          <span class="dropdown-icon-white dropdown-location-icon" >
+          </span>
+        </div>
+        <div class="add-new-location-placeholder"
+          [matMenuTriggerFor]="menu1"
+          *ngIf="!contractProduct.value.product">
+          Add product
+          <span class="dropdown-icon dropdown-product-icon">
+          </span>
+        </div>
+        <div class="product-container-tab" 
+          [matMenuTriggerFor]="menu1"
+          *ngIf="contractProduct.value.product">
+          {{contractProduct.value.product.name}}
+          <span class="dropdown-icon-white dropdown-location-icon" >
+          </span>
+        </div>
+      </div>
     </div>
-    <div class="add-new-location-placeholder">
-      Add product
-      <span class="dropdown-icon">
-      </span>
-    </div>
-
-  </div>
-  <mat-menu #menu="matMenu"  class="select-location-container" overlapTrigger="true">
+  </ng-container>
+  <mat-menu #menu="matMenu" class="select-location-container" overlapTrigger="false">
     <div>
       <div class="col-md-12 header-container-location no-padding">
         <div class="search-location-container col-md-10 no-padding">
@@ -39,27 +58,67 @@
         <ng-container matColumnDef="name">
           <th mat-header-cell *matHeaderCellDef> Most used locations </th>
           <td mat-cell *matCellDef="let element"> 
-            <mat-option [value]="element">
-              <mat-radio-button [value]="element">   
-                {{element.name}} 
-              </mat-radio-button>
-            </mat-option>
+            <mat-radio-group 
+              name="radioOpt1" 
+              [(ngModel)]="selectedLocation">
+              <mat-radio-button   class="location-container-radio-button"
+                  [value]="element">{{element.name}}</mat-radio-button>
+            </mat-radio-group>
           </td>
         </ng-container>
 
         <!-- Country Column -->
         <ng-container matColumnDef="country">
           <th mat-header-cell *matHeaderCellDef style="float: right; position: relative; top: 5px;"> Country </th>
-          <td mat-cell *matCellDef="let element" style="float: right"> 
-            <mat-option [value]="element">
+          <td mat-cell *matCellDef="let element" style="float: right" class="location-container-radio-button"> 
               {{element.country.name}} 
-            </mat-option>
           </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
-    </div>        
+    </div>
   </mat-menu>
+  <mat-menu #menu1="matMenu" class="select-location-container" overlapTrigger="false">
+    <div>
+      <div class="col-md-12 header-container-location no-padding">
+        <div class="search-location-container col-md-10 no-padding">
+          <span class="search-location-lookup" (click)="$event.stopPropagation();$event.preventDefault();searchProducts(searchProductInput)">
+          </span>
+          <input matInput 
+                placeholder="Search all and select a prtoduct"
+                [(ngModel)]="searchProductInput"
+                (click)="$event.stopPropagation();$event.preventDefault();"
+                class="search-location-input">
+        </div>
+        <div class="col-md-2 no-padding">
+            <img style="float: right;" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
+        </div>
+      </div>
+      <table *ngIf="productMasterSearchList" class="delivery-products-pop-up col-md-12 no-padding" mat-table [dataSource]="productMasterSearchList">
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Most used products </th>
+          <td mat-cell *matCellDef="let element"> 
+            <mat-radio-group 
+              name="radioOpt1" 
+              [(ngModel)]="selectedLocation">
+              <mat-radio-button   class="location-container-radio-button"
+                  [value]="element">{{element.name}}</mat-radio-button>
+            </mat-radio-group>
+          </td>
+        </ng-container>
 
+        <!-- Product type Column -->
+        <ng-container matColumnDef="productType">
+          <th mat-header-cell *matHeaderCellDef style="float: right; position: relative; top: 5px;"> Country </th>
+          <td mat-cell *matCellDef="let element" style="float: right" class="location-container-radio-button"> 
+              {{element.productType.name}} 
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedProductColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedProductColumns;"></tr>
+      </table>
+    </div>
+  </mat-menu>
 </div>

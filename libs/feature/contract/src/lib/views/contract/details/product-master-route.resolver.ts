@@ -39,7 +39,7 @@ export class ProductMasterRouteResolver implements Resolve<any> {
       ]);
     }
     let payload = {"Payload":{"Order":null,"PageFilters":{"Filters":[]},"SortList":{"SortList":[]},"Filters":[],"SearchText":null,"Pagination":{"Skip":0,"Take":99999}}};
-    return this.contractService.getLocationList(payload);
+    return this.contractService.getProductList(payload);
   }
 
 }

@@ -104,6 +104,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   uomList: any;
   productMasterList: any;
   locationMasterList: any;
+  generalTenantSettings: IGeneralTenantSettings;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -159,8 +160,8 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       'feedback': {}
     };
     this.entityName = 'Delivery'
-    const generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
-    this.quantityPrecision = generalTenantSettings.defaultValues.quantityPrecision;
+    this.generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
+    this.quantityPrecision = this.generalTenantSettings.defaultValues.quantityPrecision;
     this.deliverySettings = tenantSettingsService.getModuleTenantSettings<
             IDeliveryTenantSettings
           >(TenantSettingsModuleName.Delivery);
