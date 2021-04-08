@@ -22,14 +22,21 @@
 					<input type="text" name="maxTransferRate_{{ $index }}" ng-required="formValues.locationProducts[$index].productType?true:false" type="number" class="form-control" ng-model="formValues.locationProducts[$index].maxTransferRate" format="number">
 				</td>
 				<td>
-					<input type="text" name="minSupplyQuantity_{{ $index }}" ng-required="formValues.locationProducts[$index].productType?true:false" type="number" class="form-control" ng-model="formValues.locationProducts[$index].minSupplyQty" format="number">
+					<input type="text" name="minSupplyQuantity_{{ $index }}" ng-required="formValues.locationProducts[$index].productType?true:false" type="number" class="form-control" ng-model="formValues.locationProducts[$index].minSupplyQty" format="number" ng-blur="formValues.locationProducts[$index].minSupplyQty =validateMinMaxQuantity(formValues.locationProducts[$index].minSupplyQty,formValues.locationProducts[$index].maxSupplyQty) ['minSupplyQty']; $ctrl.minQtyBlur(formValues.locationProducts)">
 				</td>
 				<td>
-					<input type="text" name="maxSupplyQuantity_{{ $index }}" ng-required="formValues.locationProducts[$index].productType?true:false" type="number" class="form-control" ng-model="formValues.locationProducts[$index].maxSupplyQty" format="number">
+					<input type="text" name="maxSupplyQuantity_{{ $index }}" ng-required="formValues.locationProducts[$index].productType?true:false" type="number" class="form-control" ng-model="formValues.locationProducts[$index].maxSupplyQty" format="number" ng-blur="formValues.locationProducts[$index].maxSupplyQty =validateMinMaxQuantity(formValues.locationProducts[$index].minSupplyQty,formValues.locationProducts[$index].maxSupplyQty)['maxSupplyQty']; ">
 				</td>
 				<td>
-					<input decode-input-format name="lowestGradeAvailable_{{ $index }}" id="lowestGradeAvailable_{{ $index }}" uib-typeahead="product as product.name for product in options.Product | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.selectCompanyInLocation($item.id, $index)" ng-required="true" typeahead-editable="false" class="typeahead form-control" ng-model="formValues.locationProducts[$index].product" >
-				</td>			
+					<div class="input-group-flex" tooltip tooltiptrigger="hover" data-original-title="{{ getProductTooltipByProductId(formValues.locationProducts[$index].product.id) }}">
+						<input decode-input-format ng-model="formValues.locationProducts[$index].product" uib-typeahead="product as product.name for product in options.Product  | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-limit="5" typeahead-append-to-body="true" typeahead-wait-ms="100" name="lowestGradeAvailable_{{ key }}" autocomplete="off" />
+						<span class="input-group-addon" ng-click="triggerModal('general', 'masters_productlist', 'Product' , 'formValues.locationProducts.'+key+'.product')" ng-init="modal = false">
+							<a class=" btn default">
+								<i class="fa fa-search"></i>
+							</a>
+						</span>
+					</div>
+				</td>
 			</tr>
 		</tbody>
 	</table>

@@ -34,6 +34,7 @@
     'orderModel',
     function(API, $tenantSettings, tenantService, $scope, $rootScope, $sce, $Api_Service, Factory_Master, $state, $location, $q, $compile, $timeout, $interval, $templateCache, $listsCache, $uibModal, uibDateParser, uiGridConstants, $filter, $http, $window, $controller, payloadDataModel, statusColors, screenLoader, $parse, EMAIL_TRANSACTION, STATE, orderModel) {
     	// extendScreenLayout(window.masterCTRL, this, statusColors);
+        let ctrl=this;
         $rootScope.TempadditionalCosts = [];
         $scope.vm = this;
         $scope.isHideVesselBopsDetails = !($rootScope.adminConfiguration && $rootScope.adminConfiguration.master.isVesselBopsDetailsVisible? $rootScope.adminConfiguration.master.isVesselBopsDetailsVisible : false);
@@ -424,6 +425,34 @@
             });
         };
 
+        ///min/max Validation
+        ctrl.minQtyBlur = function(locationProducts) {
+            if (locationProducts.maxSupplyQty < locationProducts.minSupplyQty || !locationProducts.maxSupplyQty) {
+                locationProducts.maxSupplyQty = locationProducts.minSupplyQty;
+            }
+        };
+        $scope.validateMinMaxQuantity = function(min, max) {
+            if(typeof min == 'string') {
+                min = parseFloat(min);
+            }
+            if(typeof max == 'string') {
+                max = parseFloat(max);
+            }
+            var response = {
+                minSupplyQty: min,
+                maxSupplyQty: max
+            };
+            if (min && min > max) {
+                response.maxSupplyQty = null;
+            }
+            if (max && min > max) {
+                response.minSupplyQty = null;
+            }
+            if (min && max && min > max) {
+                toastr.warning('Min Quantity can\'t be greater than Max Quantity');
+            }
+            return response;
+        };
         // vm.get_master_structure = function(screenChild) {
         //     screenLoader.showLoader();
         //     $scope.getAdminConfiguration();
