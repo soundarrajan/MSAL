@@ -1,7 +1,9 @@
-﻿commit cf136349bf6bac1d93cac402d59e769bd5df4f4c
+﻿commit 7c6ca1885624d44bdb3813706e1797f6259aff97
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Tue Apr 6 08:18:58 2021 +0000
+Date:   Thu Apr 8 12:08:59 2021 +0000
 
-    Merged PR 9731: Fixed grid scrollbar
+    Merged PR 9791: Fixed scrollbar
+    
+    Fixed scrollbar
 
 branch: master
