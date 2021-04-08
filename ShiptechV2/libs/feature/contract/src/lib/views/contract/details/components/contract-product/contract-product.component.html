@@ -1,8 +1,8 @@
 <div class="row col-md-12 contract-section" style="margin-left: 0px;" id="container-contract">
-  {{selectedTabIndex}}
   <div class="add-contract-product-section" (click)="addProductToContract()">
     <a class="add-contract-product-icon"></a>
   </div>
+  {{selectedTabIndex}}
   <ng-container *ngFor="let contractProduct of formValues.products | keyvalue">
     <div (click)="selectedTabIndex =  contractProduct.key">
       <div class="add-new-location-with-product">
@@ -125,6 +125,74 @@
     </div>
   </mat-menu>
 </div>
-<div class="row col-md-12 contract-section selected-product-container" style="margin-left: 0px;">
-
-</div>
+<div class="row col-md-12 contract-section" style="margin-left: 0px;">
+  <div class="col-md-6 selected-product-container">
+    <div class="col-md-12 no-padding d-flex">
+      <div class="header-product-details col-md-2">
+          Product details
+      </div>
+      <div class="contract-details-info col-md-10" style="text-align: right;">
+        <span>
+          Main location
+          <span class="location-contract-info">
+            {{ formValues.products[selectedTabIndex] && formValues.products[selectedTabIndex].location ? formValues.products[selectedTabIndex].location.name : ''}}
+          </span>
+        </span>
+        <span>
+          Main product
+          <span class="product-contract-info">
+            {{ formValues.products[selectedTabIndex] && formValues.products[selectedTabIndex].product ? formValues.products[selectedTabIndex].product.name : ''}}
+          </span>
+        </span> 
+      </div>
+    </div>
+    <div class="col-md-12 allowed-locations-section no-padding">
+      <div [ngClass]="{'allowed-locations-container': !expandAllowCompanies, 'allowed-locations-container-expand': expandAllowCompanies}">
+        <div class="allowed-container col-md-12 d-flex">
+          <div class="allowed-list-modal-container">
+              Allowed Locations
+          </div>
+          <div  [matMenuTriggerFor]="menu2" class="edit-allow-locations">
+          </div>
+          <mat-menu #menu2="matMenu" class="allowed-company-modal">
+            <div class="col-md-12 header-allowed-company">
+              <div class="allowed-company-header col-md-10 contract-no-padding" >
+                Allowed locations
+              </div>
+              <div class="col-md-2 contract-no-padding expand-allowed-locations"  (click)="$event.stopPropagation();$event.preventDefault();">
+                  <img   alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
+              </div>
+            </div>
+            <div (click)="$event.stopPropagation();" class="col-md-12 contract-no-padding allowed-company-line"  *ngFor="let company of formValues.allowedCompanies">
+              <mat-checkbox [(ngModel)]="company.isSelected">
+                {{company.name}}
+              </mat-checkbox>
+            </div>
+            <div class="col-md-12">
+              <button  class="ui-button-info mr-1 btn-i-blue-color" label="Save"
+                pButton
+                style="float:right"
+                type="button"></button>
+            </div>
+          </mat-menu>
+        </div>
+        <div class="allowed-container col-md-12 d-flex">
+          <div class="allowed-list">
+            <ng-container  *ngFor="let allowedCompany of formValues.allowedCompanies"> 
+              <span class="allow-company">
+                <span class="dot-allow-company">
+                </span>
+                {{allowedCompany.name}}
+              </span>
+            </ng-container>
+          </div>
+          <div class="more-button">
+            ...more
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<div>
+ 
+  

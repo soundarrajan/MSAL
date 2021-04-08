@@ -65,7 +65,6 @@
   width: fit-content;
   max-width: unset !important;
   position: relative;
-  top: -25px;
 }
 
 .select-location-container .mat-option {
@@ -235,11 +234,73 @@
   color: white !important;
 }
 
-.selected-product-container {
+.selected-product-container, .additional-product-container {
   /* Lightwhite */
   height: 424px;
   background: #FCFCFC;
   border: 1px solid #E0E1E4;
   box-sizing: border-box;
   border-radius: 4px;
+}
+
+.header-product-details {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: #252A32;
+}
+
+
+.contract-details-info  {
+  position: relative;
+  float: right;
+}
+
+.location-contract-info, .product-contract-info  {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: #252A32;
+}
+
+.location-contract-info {
+  margin-right: 20px;
+}
+
+
+.allowed-locations-container {
+  background: #F1F1F2;
+  border-radius: 4px;
+  height: 50px  !important;
+  overflow: hidden;
+}
+
+.allowed-locations-container-expand {
+  background: #F1F1F2;
+  border-radius: 4px;
+  height: fit-content;
+}
+
+.allowed-locations-header {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 14px;
+  color: #252A32;
+  padding: 5px;
+}
+
+.edit-allow-locations::before {
+  content: url(../../../../../../../../../../assets/layout/images/pages/edit-allow-companies.svg);
+  float: right  !important;
+}
+
+
+.allowed-locations-section {
+  top: 15px;
 }
