@@ -18,7 +18,10 @@
   width: 25px;
   height: 25px;
   position: relative;
-  top: 5px;
+}
+
+.dropdown-icon-white::before {
+  content: url(../../../../../../../../../../assets/layout/images/pages/dropdown-icon-white.svg);
 }
 
 
@@ -153,19 +156,21 @@
 }
 
 .cdk-overlay-container  {
-  pointer-events: unset !important;
-  width: unset  !important;
-  height: unset !important;
+  // pointer-events: unset !important;
+  // width: unset  !important;
+  // height: unset !important;
 }
 
 .add-new-location-with-product {
   border: 1px solid #E0E1E4;
   box-sizing: border-box;
-  border-radius: 3px;
-  width: 234px;
+  //min-width: 234px !important;
+  max-width: max-content !important;
   height: 28px;
   display: flex;
   align-items: center;
+  margin-right: 20px;
+  border-radius: 3px 0px 0px 3px;
 }
 
 .add-new-location-placeholder {
@@ -177,4 +182,55 @@
   padding: 5px;
   color: #C3C6CC;
 
+}
+
+.location-container {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+}
+
+.location-container-radio-button {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  color: #FFFFFF;
+}
+
+
+.location-container-radio-button .mat-radio-label-content {
+  width: 100%;
+  display: inline-flex;
+}
+
+.location-container-tab{
+  background: #364150;
+  border: 1px solid #364150;
+  box-sizing: border-box;
+  border-radius: 3px 0px 0px 3px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  padding: 5px;
+  color: white !important;
+}
+
+.product-container-tab  {
+  background: #364150;
+  border: 1px solid #364150;
+  box-sizing: border-box;
+  border-radius: 0px 3px 3px 0px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  padding: 5px;
+  color: white !important;
 }

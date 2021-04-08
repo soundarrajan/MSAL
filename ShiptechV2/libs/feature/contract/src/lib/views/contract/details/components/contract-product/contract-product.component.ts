@@ -57,6 +57,7 @@ import { MatRadioChange } from '@angular/material/radio';
 import { DecimalPipe } from '@angular/common';
 import { MatSelect } from '@angular/material/select';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { OverlayContainer } from '@angular/cdk/overlay';
 
 
 
@@ -418,10 +419,12 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   locationMasterList: any;
 
   displayedColumns: string[] = ['name', 'country'];
-  displayedProductColumns: string[] = ['product', 'productType'];
+  displayedProductColumns: string[] = ['name', 'productType'];
 
   @ViewChild('mySelect') mySelect: MatSelect;
+
   @ViewChildren('locationMenuTrigger') locationMenuTrigger;
+  @ViewChildren('productMenuTrigger') productMenuTrigger;
 
 
 
@@ -431,6 +434,15 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   searchLocationInput: any;
   expandCompanyPopUp: any;
   searchCompanyModel: any;
+  productMasterSearchList: any[];
+  generalTenantSettings: any;
+
+  selectedLocation: any;
+  selectedProduct: any;
+  selectedTabIndex: number = 0;
+  expandAllowCompanies: false;
+
+  searchProductInput: any;
 
 
   get entityId(): number {
@@ -466,7 +478,10 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     if (!productMasterList) {
       return;
     } 
+
     this.productMasterList = productMasterList;
+    this.productMasterSearchList = [ ...productMasterList];
+
   }
 
   @Input('uomList') set _setUomList(uomList) { 
@@ -483,10 +498,19 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     this.formValues = formValues;
   }
 
+  @Input('generalTenantSettings') set _setGeneralTenantSettings(generalTenantSettings) { 
+    if (!generalTenantSettings) {
+      return;
+    } 
+    this.generalTenantSettings = generalTenantSettings;
+  }
+
+
   index = 0;
   expandLocationPopUp = false;
   array = [0,1,2,3,4,5,6,7,8,9,10];
   isMenuOpen = true;
+
 
   constructor(
     public gridViewModel: OrderListGridViewModel,
@@ -506,7 +530,8 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     public dialog: MatDialog, 
     @Inject(DecimalPipe) private _decimalPipe,
     private tenantService: TenantFormattingService,
-    sanitizer: DomSanitizer) {
+    sanitizer: DomSanitizer,
+    private overlayContainer: OverlayContainer) {
     
     super(changeDetectorRef);
     this.dateFormats.display.dateInput = this.format.dateFormat;
@@ -528,6 +553,13 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     let filterLocations = this.locationMasterList.filter((location) => location.name.toLowerCase().includes(value));
     console.log(filterLocations);
     this.locationMasterSearchList = [ ... filterLocations];
+    this.changeDetectorRef.detectChanges();
+  }
+
+  searchProducts(value: string): void {
+    let filterProducts = this.productMasterList.filter((location) => location.name.toLowerCase().includes(value));
+    console.log(filterProducts);
+    this.productMasterSearchList = [ ... filterProducts];
     this.changeDetectorRef.detectChanges();
   }
 
@@ -564,6 +596,59 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   onClickedOutside(event) {
     console.log(event);
   }
+
+  
+  @HostListener('document:click', ['$event.target'])
+  public onClick(targetElement) {
+    console.log(targetElement);
+  }
+  addProductToContract() {
+    console.log(this.formValues);
+    let emptyProductObj = {
+        id: 0,
+        details: [
+            {
+                contractualQuantityOption: {
+                    id: 1,
+                    name: 'TotalContractualQuantity',
+                    code: '',
+                    collectionName: null
+                },
+                id: 0,
+                uom : this.generalTenantSettings.tenantFormats.uom
+            }
+        ],
+        additionalCosts: [],
+        fixedPrice: true,
+        mtmFixed:true
+    };
+    if (this.formValues) {
+        if (!this.formValues.products) {
+            this.formValues.products = [];
+            this.formValues.products.push(emptyProductObj);
+        } else {
+            this.formValues.products.push(emptyProductObj);
+        }
+    } else {
+        this.formValues = {};
+        this.formValues.products = [];
+        this.formValues.products.push(emptyProductObj);
+    };
+
+    this.changeDetectorRef.detectChanges();
+
+    console.log(this.formValues);
+  }
+
+  preventCloseOnClickOut() {
+    this.overlayContainer.getContainerElement().classList.add('disable-backdrop-click');
+  }
+
+  allowCloseOnClickOut() {
+    this.overlayContainer.getContainerElement().classList.remove('disable-backdrop-click');
+  }
+
+  
 
 
 
