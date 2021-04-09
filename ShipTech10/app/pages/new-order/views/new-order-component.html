@@ -1422,7 +1422,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td style="min-width:75px" ng-init="!product.pricePrecision ? product.pricePrecision = $ctrl.pricePrecision : '' ">
+                                <td style="min-width:75px" ng-init="!product.pricePrecision ? product.pricePrecision = $ctrl.pricePrecision : '' ; $ctrl.recomputeProductPricePrecision(key) ">
 									<select name="pricePrecision" 
 										class="form-control bs-select" 
 										id="product_pricePrecision_{{ $index }}" 
