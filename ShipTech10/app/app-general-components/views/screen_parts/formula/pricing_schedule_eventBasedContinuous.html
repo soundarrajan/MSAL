@@ -3,10 +3,11 @@
         <div class="form-group  row">
             <label for="schedule_description_add" class="schedule_description_add_label">
                 {{ CM.app_id + '.SCHEDULE_DESCRIPTION' | translate }}
-                <span ng-if="field.Required" class="orange-txt">
+                <span  class="orange-txt">
                     *
                 </span>
             </label>
+     
             <div class="input-group form_input_schedule_description_add" ng-class="!field.Label ? 'no-label' : ''">
                 <input type="text" class="form-control " name="schedule_description_add" id="schedule_description_add" ng-model="formValues.pricingScheduleOptionEventBasedContinuous.name"/>
                 <span class="input-group-btn">
@@ -23,6 +24,7 @@
         <div class="form-group row" ng-init='options.PricingSchedulePeriod ? return :  CM.getOptions({"Name": "PricingSchedulePeriod", "Type": "dropdown", "masterSource": "PricingSchedulePeriod"}); '>
             <label for="HolidayRuleHolidayRule" class="formula_flat_percentage_label" class="simpleLookupLabel">
                 {{ CM.app_id + '.TYPE' | translate }}
+                <span class="orange-txt" >*</span>
             </label>
             <div class="input-group form_input form_input_formula_flat_percentage">
                 <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.PricingSchedulePeriod track by item.id" ng-model="formValues.pricingScheduleOptionEventBasedContinuous.period" ng-change="defaultHolidayRuleDays()"></select>
@@ -33,6 +35,7 @@
         <div class="form-group row" ng-init='options.Event ? return :  CM.getOptions({"Name": "Event", "Type": "dropdown", "masterSource": "Event"});options.Event.push({"name":"None", "id":-1}) '>
             <label for="HolidayRuleHolidayRule" class="formula_flat_percentage_label" class="simpleLookupLabel">
                 {{ CM.app_id + '.AVERAGE_OF_THE_EVENT' | translate }}
+                <span class="orange-txt" >*</span>
             </label>
             <div class="input-group form_input form_input_formula_flat_percentage">
                 <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.Event track by item.id" ng-model="formValues.pricingScheduleOptionEventBasedContinuous.event"></select>
@@ -65,6 +68,7 @@
         <div class="form-group row" ng-init='options.DayOfWeek ? return :  CM.getOptions({"Name": "DayOfWeek", "Type": "dropdown", "masterSource": "DayOfWeek"}); '>
             <label for="HolidayRuleHolidayRule" class="formula_flat_percentage_label" class="simpleLookupLabel">
                 {{ CM.app_id + '.WHERE_THE_WEEK_STARTS_FROM' | translate }}
+                <span class="orange-txt" >*</span>
             </label>
             <div class="input-group form_input form_input_formula_flat_percentage">
             	<span ng-init="!formValues.pricingScheduleOptionEventBasedContinuous.weekStartsOn ? formValues.pricingScheduleOptionEventBasedContinuous.weekStartsOn = options.DayOfWeek[options.DayOfWeek.length-1] : ''"></span>

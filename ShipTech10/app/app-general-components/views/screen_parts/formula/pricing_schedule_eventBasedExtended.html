@@ -3,7 +3,7 @@
         <div class="form-group  row">
             <label for="schedule_description_add" class="schedule_description_add_label">
                 {{ CM.app_id + '.SCHEDULE_DESCRIPTION' | translate }}
-                <span ng-if="field.Required" class="orange-txt">
+                <span class="orange-txt">
                     *
                 </span>
             </label>
@@ -23,6 +23,7 @@
         <div class="form-group  row ">
             <label  for="pricing_schedule_from" class="pricing_schedule_from_label">
                 {{ CM.app_id + '.FROM' | translate }}
+                <span class="orange-txt" >*</span>
             </label>
             <div class="form_input form_input_pricing_schedule_from">
                 <input class="form-control" type="text" id="pricing_schedule_days_before" ng-model="formValues.pricingScheduleOptionEventBasedExtended.fromNoOfBusinessDaysBefore"/>
@@ -58,6 +59,7 @@
         <div class="form-group  row ">
             <label  for="pricing_schedule_to" class="pricing_schedule_to_label">
                 {{ CM.app_id + '.TO' | translate }}
+                <span class="orange-txt" >*</span>
             </label>
             <div class="form_input form_input_pricing_schedule_to">
                 <input class="form-control" type="text" id="pricing_schedule_days_before" ng-model="formValues.pricingScheduleOptionEventBasedExtended.toNoOfBusinessDaysAfter"/>
@@ -93,6 +95,7 @@
         <div class="form-group row" ng-init='options.Event ? return : CM.getOptions({"Name": "Event", "Type": "dropdown", "masterSource": "Event"});'>
             <label  for="pricing_schedule_days_after" class="pricing_schedule_days_after_label">
                 {{ CM.app_id + '.EVENT' | translate }}
+                <span class="orange-txt" >*</span>
             </label>
             <div class="input-group form_input form_input_formula_quotes">
                 <select class="form-control changeIT bs-select " ng-options="item as item.name for item in options.Event track by item.id " ng-model="formValues.pricingScheduleOptionEventBasedExtended.event"></select>
@@ -101,8 +104,9 @@
     </div>
     <div class="col-md-3">
         <div class="form-group row" ng-init='options.FormulaEventInclude ? return : CM.getOptions({"Name": "FormulaEventInclude", "Type": "dropdown", "masterSource": "FormulaEventInclude"});'>
-            <label  for="pricing_schedule_days_after" class="pricing_schedule_days_after_label">
+            <label  for="pricing_schedule_days_after" class="pricing_schedule_days_after_label" >
                 {{ CM.app_id + '.WHERE_EVENT_DATE' | translate }}
+                <span style=" color: orange;position: absolute;font-size: 9px;"> * </span>
             </label>
             <div class="input-group form_input form_input_formula_quotes">
                 <select class="form-control changeIT bs-select " ng-options="item as item.name for item in options.FormulaEventInclude track by item.id " ng-model="formValues.pricingScheduleOptionEventBasedExtended.isEventIncluded"></select>

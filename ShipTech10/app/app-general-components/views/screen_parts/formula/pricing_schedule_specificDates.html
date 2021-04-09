@@ -3,7 +3,7 @@
         <div class="form-group  row">
             <label for="schedule_description_add" class="schedule_description_add_label">
                 {{ CM.app_id + '.SCHEDULE_DESCRIPTION' | translate }}
-                <span ng-if="field.Required" class="orange-txt">
+                <span  class="orange-txt">
                     *
                 </span>
             </label>
@@ -26,6 +26,7 @@
         <div class="form-group row">
             <label  for="Schedule_{{ key }}_pricing_schedule_from" class="pricing_schedule_from_label">
                 {{ CM.app_id + '.DATE' | translate }}
+                <span class="orange-txt" >*</span>
             </label>
 
             <div class="form_input form_input_pricing_schedule_from">

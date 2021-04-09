@@ -40,6 +40,7 @@
         <div class="form-group row" ng-init='options.SystemInstrument ? return : CM.getOptions({"Name": "SystemInstrument", "Type": "simpleLookup", "masterSource": "SystemInstrument"})'>
             <label for="SystemInstrumentSystemInstrument" class="formula_quotes_label" class="simpleLookupLabel">
                 {{ CM.app_id + '.FORMULA_QUOTES' | translate }}
+                <span class="orange-txt" >*</span>
             </label>
             <div class="input-group form_input form_input_formula_quotes">
                 <input decode-input-format ng-model="formValues.simpleFormula.systemInstrument" uib-typeahead="item as item.name for item in options.SystemInstrument | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-append-to-body="true" typeahead-wait-ms="100"  autocomplete="off"/>
@@ -55,6 +56,7 @@
         <div class="form-group row" ng-init='options.MarketPriceType ? return : CM.getOptions({"Name": "MarketPriceType", "Type": "dropdown", "masterSource": "MarketPriceType"}); '>
             <label for="MarketPriceTypeMarketPriceType" class="formula_price_type_label" class="simpleLookupLabel">
                 {{ CM.app_id + '.FORMULA_price_type' | translate }}
+                <span class="orange-txt" >*</span>
             </label>
             <div class="input-group form_input form_input_formula_price_type">
                 <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.MarketPriceType | decodeReadOnly track by item.id" ng-model="formValues.simpleFormula.priceType">
@@ -67,6 +69,7 @@
         <div class="form-group row" ng-init='options.FormulaPlusMinus ? return : CM.getOptions({"Name": "FormulaPlusMinus", "Type": "dropdown", "masterSource": "FormulaPlusMinus"}); '>
             <label for="FormulaPlusMinusFormulaPlusMinus" class="formula_plus_minus_label" class="simpleLookupLabel">
                 + / -
+                <span class="orange-txt" >*</span>
             </label>
             <div class="input-group form_input form_input_formula_plus_minus">
                 <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.FormulaPlusMinus track by item.id" ng-model="formValues.simpleFormula.plusMinus">
@@ -79,7 +82,7 @@
         <div class="form-group  row">
             <label  for="formula_amount" class="formula_amount_label">
                 {{ CM.app_id + '.AMOUNT' | translate }}
-                <span ng-if="field.Required" class="orange-txt">
+                <span  class="orange-txt" ng-if="formValues.simpleFormula.plusMinus.id == 1 || formValues.simpleFormula.plusMinus.id == 2">
                     *
                 </span>
             </label>
@@ -93,6 +96,7 @@
         <div class="form-group row" ng-init='options.FormulaFlatPercentage ? return : CM.getOptions({"Name": "FormulaFlatPercentage", "Type": "dropdown", "masterSource": "FormulaFlatPercentage"}); '>
             <label for="FormulaFlatPercentageFormulaFlatPercentage" class="formula_flat_percentage_label" class="simpleLookupLabel">
                 {{ CM.app_id + '.FLAT_OR_PERCENTAGE' | translate }}
+                <span class="orange-txt" ng-if="formValues.simpleFormula.plusMinus.id == 1 || formValues.simpleFormula.plusMinus.id == 2" >*</span>
             </label>
             <div class="input-group form_input form_input_formula_flat_percentage">
                 <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.FormulaFlatPercentage | decodeReadOnly track by item.id" ng-model="formValues.simpleFormula.flatPercentage" ng-required="formValues.simpleFormula.plusMinus.id && formValues.simpleFormula.plusMinus.id != 3" ng-disabled="formValues.simpleFormula.plusMinus.id == 3">
@@ -105,6 +109,7 @@
         <div class="form-group row" ng-init='options.Uom ? return : CM.getOptions({"Name": "Uom", "Type": "dropdown", "masterSource": "Uom"}); re()'>
             <label for="UomUom" class="formula_uom_label" class="simpleLookupLabel">
                 {{ CM.app_id + '.Uom' | translate }}
+                <span class="orange-txt" ng-if="formValues.simpleFormula.flatPercentage.id == 1 ">*</span>
             </label>
             <div class="input-group form_input form_input_formula_uom">
                 <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.Uom | decodeReadOnly track by item.id" ng-model="formValues.simpleFormula.uom" ng-disabled="formValues.simpleFormula.flatPercentage.id != 1 || formValues.simpleFormula.plusMinus.id == 3">
