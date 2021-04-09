@@ -142,10 +142,11 @@
                             <div ng-if="$ctrl.vesselDetailsFields.Vessel.visible" class="col-md-4" ng-init='CM.getOptions({"Name": "Vessel","masterSource": "Vessel"})' data-html="true" tooltip data-original-title="{{ $ctrl.defaultProductsTooltip() }}">
                                 <div class="row">
                                     <label class="control-label col-md-5">
-                                        {{ $ctrl.vesselDetailsFields.Vessel.caption | translate }}
+                                        {{ $ctrl.vesselDetailsFields.Vessel.caption | translate }}    
                                         <span ng-if="$ctrl.request.vesselDetails.vessel.vesselToWatchFlag">
                                             <i class="fa fa-flag vesselToWatchFlag"></i>
                                         </span>
+                                        <span style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;">*</span>
                                     </label>
                                     <div class="form-group-sm00">
                                         <div class="input-group col-md-7">
@@ -164,6 +165,7 @@
                                 <div class="row">
                                     <label class="control-label col-md-5">
                                         {{ $ctrl.vesselDetailsFields.VesselImoNo.caption | translate }}
+                                        <span style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;"> * </span>
                                     </label>
                                     <div class="form-group-sm00">
                                         <span ng-init="$ctrl.options.VesselWithImo = options.VesselWithImo" ng-if="$ctrl.options.VesselWithImo"></span>
@@ -217,6 +219,7 @@
                                     <div class="row">
                                         <label class="control-label col-md-5">
                                             {{ $ctrl.tenantSettings.companyDisplayName.name | translate }}
+                                            <span style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;"> * </span>
                                         </label>
                                         <div class="form-group-sm00">
                                             <div class="input-group col-md-7">
@@ -250,6 +253,7 @@
                                 <div class="row">
                                     <label class="control-label col-md-5">
                                         {{ 'PAGES.NEW_REQUEST.OPERATOR' | translate }}
+                                        <span style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;"> * </span>
                                     </label>
                                     <div class="form-group-sm00">
                                         <div class="input-group col-md-7" ng-init='CM.getOptions({"Name": "usersList","masterSource": "admin_users"})'>
@@ -559,6 +563,7 @@
                                         <span class="hidden" ng-if="!$ctrl.isNewRequest" ng-init='CM.getOptions({"Name": "BunkerablePort","masterSource": "masters_locations"})'></span>
                                         <label class="control-label col-md-5">
                                             Select Bunkerable Port
+                                            <span style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;"> * </span>
                                         </label>
                                         <div class="form-group-sm00">
                                             <div class="input-group col-md-7">
@@ -614,6 +619,7 @@
                                                 <div class="row">
                                                     <label class="control-label col-md-4">
                                                         {{ $ctrl.productInfoFields.Eta.caption | translate }}
+                                                        <span style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;"> * </span>
                                                     </label>
 
                                                     <!-- disabled ETA -->
@@ -645,6 +651,7 @@
                                                 <div class="row">
                                                     <label class="control-label col-md-4">
                                                         {{ $ctrl.productInfoFields.Etb.caption | translate }}
+                                                        <span style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;"> * </span>
                                                     </label>
                                                     <div class="form-group-sm00">
                                                         <div class="input-group col-md-8 col-sm-12">
@@ -666,6 +673,7 @@
                                                 <div class="row">
                                                     <label class="control-label col-md-4">
                                                         {{ $ctrl.productInfoFields.Etd.caption | translate }}
+                                                        <span style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;"> * </span>
                                                     </label>
                                                     <div class="form-group-sm00">
                                                         <div class="input-group col-md-8 col-sm-12">
@@ -713,6 +721,7 @@
                                                 <div class="row">
                                                     <label class="control-label col-md-4">
                                                         {{ 'PAGES.NEW_REQUEST.DELIVERY_FROM' | translate }}
+                                                        <span style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;"> * </span>
                                                     </label>
                                                     <div class="form-group-sm00">
                                                         <div class="input-group col-md-8 col-sm-12">
@@ -733,6 +742,7 @@
                                                 <div class="row">
                                                     <label class="control-label col-md-4">
                                                         {{ 'PAGES.NEW_REQUEST.DELIVERY_TO' | translate }}
+                                                        <span style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;"> * </span>
                                                     </label>
                                                     <div class="form-group-sm00">
                                                         <div class="input-group date form_meridian_datetime col-md-8 col-sm-12">
@@ -806,6 +816,7 @@
                                                 <div class="row">
                                                     <label class="control-label col-md-4">
                                                         {{ $ctrl.productInfoFields.Buyer.caption | translate }}
+                                                        <span  style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;">*</span>                                                       
                                                     </label>
                                                     <div class="form-group-sm00">
                                                         <div class="input-group col-md-8 col-sm-12">
@@ -856,6 +867,7 @@
                                                 <div class="row">
                                                     <label class="control-label col-md-4">
                                                         {{ $ctrl.tenantSettings.companyDisplayName.name | translate }}
+                                                        <span style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;"> * </span>
                                                     </label>
                                                     <div class="form-group-sm00">
                                                         <div class="input-group col-md-8 col-sm-12">
@@ -912,9 +924,11 @@
                                                 <th id="generatedThId200"></th>
                                                 <th id="generatedThId201" ng-repeat="column in $ctrl.ui.Locations.columns" ng-if="column.visible && column.caption != 'PAGES.NEW_REQUEST.CONTRACT_ID' && $ctrl.tenantSettings.shiptechLite">
                                                     {{ column.caption | translate }}
+                                                    <span ng-if="column.caption=='PAGES.NEW_REQUEST.PRODUCT_TYPE' || column.caption=='PAGES.NEW_REQUEST.SPEC_GROUP' || column.caption=='PAGES.NEW_REQUEST.MIN_QTY'|| column.caption=='PAGES.NEW_REQUEST.MAX_QTY'" style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;">*</span>
                                                 </th>
                                                 <th id="generatedThId201" ng-repeat="column in $ctrl.ui.Locations.columns" ng-if="column.visible  && !$ctrl.tenantSettings.shiptechLite">
                                                     {{ column.caption | translate }}
+                                                    <span ng-if="column.caption=='PAGES.NEW_REQUEST.PRODUCT_TYPE' || column.caption=='PAGES.NEW_REQUEST.SPEC_GROUP' || column.caption=='PAGES.NEW_REQUEST.MIN_QTY'|| column.caption=='PAGES.NEW_REQUEST.MAX_QTY'" style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;">*</span>
                                                 </th>
                                             </tr>
                                         </thead>
@@ -959,7 +973,7 @@
                                                         </span>
                                                     </div>
                                                 </td>
-                                                <td ng-if="$ctrl.productInfoColumns.ProductType.visible" style="width:8%">
+                                                <td ng-if="$ctrl.productInfoColumns.ProductType.visible" style="width:8%">                         
                                                     <input decode-input-format type="text" name="ProductType" id="product_ProductType_{{ $index }}" class="form-control input-sm" ng-model="product.productType.name" ng-disabled="true">
                                                 </td>
                                                 <td ng-if="$ctrl.productInfoColumns.SpecGroup.visible" style="width:11%;min-width: 150px;">
@@ -1268,6 +1282,13 @@
                     </div>
                 </form>
             </div>
+        </div>
+    </div>
+    <div>
+
+        <div class="row">
+            <!-- <clc-table-list id="'request_MinQunatityToReach'" style="max-width: calc(100vw - 50px);padding-left: 15px;" app="'procurement'"  screen="'request_MinQunatityToReach'" controls="'[entries, columns, info, pager]'"></clc-table-list> -->
+            <clc-table-list style="max-width: calc(100vw - 50px);padding-left: 15px;" id="'min_quantity_to_reach'" app="'procurement'" screen="'min_quantity_to_reach'" controls="'[entries, columns, info, pager]'"></clc-table-list>
         </div>
     </div>
 								   

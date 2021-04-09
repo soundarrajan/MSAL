@@ -5,6 +5,7 @@
         <div class="form-group row">
             <label>
                  {{ CM.app_id + '.' + field.Label | translate }}
+                 <span style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;">*</span>
             </label>
             <div class="input-group form_input form_input_quantity_parameter">
                <select class="form-control bs-select"  id="quantity_Parameter" ng-model="quantity_Parameter"  ng-change="setQuantitySub() " ng-disabled="formValues.isEditable == false || formValues.claimDetails.status.name ==  'Cancelled'">
@@ -67,6 +68,7 @@
 <div class="row form-group " ng-if="formValues.claimType.claimType.name == 'Quality'"  ng-init="CM.getClaimOptions('claimSubtype',formValues.claimType.claimType.id);quality_Parameter = ''">
     <label class="control-label">
         {{ CM.app_id + '.' + field.Label | translate }}
+        <span style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;">*</span>
     </label>
     <div class="">
         <div class="row">
@@ -95,6 +97,7 @@
 <div class="row form-group " ng-if="formValues.claimType.claimType.name == 'Compliance'"  ng-init="CM.getClaimOptions('claimSubtype',formValues.claimType.claimType.id);compliance_Parameter = ''">
     <label class="control-label">
         {{ CM.app_id + '.' + field.Label | translate }}
+        <span style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;">*</span>
     </label>
     <div class="">
         <div class="row">

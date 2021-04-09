@@ -73,7 +73,7 @@
                             </label>
     
                             <label class="mt-checkbox mt-checkbox-outline" ng-if="$ctrl.shouldDisplayCounterpartyTypeFilter(1)" style="white-space: nowrap; margin-bottom: 5px; margin-top: 5px; padding-left: 20px; margin-left:5px; margin-right:15px; padding-right: 15px;">
-                                Physical Supplier
+                                Physical Supplier <span style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;"> * </span>
                                 <input ng-model="$ctrl.sellerTypeCheckboxes.Supplier" ng-change="$ctrl.changeSellerTypes()" type="checkbox"/>
                                 <span></span>
                                 <i class="fa fa-user font-yellow-lemon" style="position: absolute;right: 0;top: 4px;"></i>
@@ -438,6 +438,7 @@
                 ng-init="productTop.productLocations['L' + location[0].uniqueLocationIdentifier] ? product = productTop.productLocations['L' + location[0].uniqueLocationIdentifier] : ''">
                 <span ng-if="product" ng-init="maxQuantity = $ctrl.getProductMaxQuantityOnLocation(product, location);">
                     <span style="font-size: 12px">Market Price</span>  
+                    <span style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;">*</span>
                     <span>
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"  data-hover="dropdown" data-close-others="true" ng-click="$ctrl.getMarketPriceData(product, location)" >
                             <span ng-mouseover="portSellerStatustooltip['marketPrice'] = true; " ng-mouseleave="portSellerStatustooltip['marketPrice'] = false;"  style="position:relative;overflow:auto; top: 7px;">
