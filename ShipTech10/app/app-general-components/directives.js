@@ -2036,13 +2036,17 @@ Number(function() {
                     'formValues',
                     (newValue, oldValue) => {
                         if (newValue) {
-                            if (window.location.href.indexOf("contracts/contract/edit/") != -1) {
-                                if (!oldValue.company || (oldValue.company && oldValue.company.name != newValue.company.name) || (oldValue.allowedCompanies.length != newValue.allowedCompanies.length)) {
-                                    scope.multiTags(attrs.uniqueId, -1, attrs.name);
-                                }
-                            } else {
-                                scope.multiTags(attrs.uniqueId, -1, attrs.name);
-                            }
+	                            if (window.location.href.indexOf("contracts/contract/edit/") != -1) {
+	                                if (!oldValue.company || (oldValue.company && oldValue.company.name != newValue.company.name) || (oldValue.allowedCompanies.length != newValue.allowedCompanies.length)) {
+	                                    scope.multiTags(attrs.uniqueId, -1, attrs.name);
+	                                }
+	                            } else {
+		                        	tagNewValue = JSON.stringify(newValue[attrs.uniqueId]);
+		                        	tagOldValue = JSON.stringify(oldValue[attrs.uniqueId]);
+			                    	if (tagNewValue != tagOldValue && typeof tagNewValue !=  'undefined' ) {
+		                                scope.multiTags(attrs.uniqueId, -1, attrs.name);
+			                    	}
+	                            }
                         }
                     },
                     true
