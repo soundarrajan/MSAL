@@ -33,7 +33,7 @@
                             <i class="glyphicon glyphicon-envelope" style="font-size: 18px;line-height: 15px;"></i>
                         </a>
                         <a class="btn btn-default"
-                           ng-class="{'disabled': $ctrl.buttonsDisabled || $ctrl.data.status.name == 'Cancelled' || $ctrl.data.status.name == 'Closed'}"
+                           ng-class="{'disabled': $ctrl.buttonsDisabled || $ctrl.data.status.name == 'Cancelled' || $ctrl.data.status.name == 'Closed' || $ctrl.data.status.name == 'Invoiced'}"
                            ng-click="$ctrl.saveOrder()"
                            ng-show="$ctrl.canSave($ctrl.screenActions)">
                             Save
@@ -2050,7 +2050,7 @@
                     <i class="glyphicon glyphicon-envelope" style="font-size: 18px;line-height: 15px;"></i>
                 </a>
                 <a class="btn btn-default"
-                   ng-class="{'disabled': $ctrl.buttonsDisabled || $ctrl.data.status.name == 'Cancelled'}"
+                   ng-class="{'disabled': $ctrl.buttonsDisabled || $ctrl.data.status.name == 'Cancelled' || $ctrl.data.status.name == 'Closed' || $ctrl.data.status.name == 'Invoiced'}"
                    ng-click="$ctrl.saveOrder()"
                    ng-show="$ctrl.canSave($ctrl.screenActions)">
                     Save
