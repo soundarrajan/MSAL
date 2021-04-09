@@ -41,7 +41,7 @@ export class StaticListsRouteResolver implements Resolve<any> {
       ]);
     }
     return  this.contractService.getStaticLists(['Company','Seller', 'PaymentTerm', 
-      'Incoterm', 'ApplyTo', 'ContractualQuantityOption', 'Uom']);
+      'Incoterm', 'ApplyTo', 'ContractualQuantityOption', 'Uom', 'UomMass', 'UomVolume', 'ContractConversionFactorOptions']);
 
   }
 

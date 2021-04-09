@@ -258,6 +258,8 @@
   float: right;
 }
 
+
+
 .location-contract-info, .product-contract-info  {
   font-family: Roboto;
   font-style: normal;
@@ -302,5 +304,184 @@
 
 
 .allowed-locations-section {
-  top: 15px;
+  margin-top: 15px;
+}
+
+
+.allowed-locations-modal {
+  background: #364150;
+  border: 1px solid #364150;
+  box-sizing: border-box;
+  box-shadow: 0px 6px 7px rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+  padding: 15px;
+  min-width: 235px !important;
+  width: fit-content;
+  max-width: unset !important;
+ // max-height: fit-content;
+  //position: relative;
+}
+
+.allowed-locations-header{
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  
+  color: #FFFFFF;
+}
+
+.header-allowed-locations {
+  padding-right: unset !important;
+  padding-left: unset !important;
+  display: inline-flex;
+}
+
+
+.allowed-locations-line {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+
+  color: #FFFFFF;
+}
+
+.allowed-locations-line .mat-checkbox-background {
+  background-color: white !important;
+}
+
+.allowed-locations-line  .mat-checkbox-checkmark-path  {
+  stroke: black !important;
+}
+
+
+.allowed-locations-line  .mat-checkbox-disabled .mat-checkbox-inner-container, .mat-radio-button.mat-radio-disabled .mat-radio-outer-circle{
+  background: #EBEBEB !important;
+}
+
+
+.allowed-locations-line  .mat-checkbox-checked:not(.mat-checkbox-disabled).mat-accent .mat-ripple-element, .mat-checkbox:active:not(.mat-checkbox-disabled).mat-accent .mat-ripple-element {
+  background: #EBEBEB !important;
+}
+
+
+.dot-allow-location::before {
+  content: url(../../../../../../../../../../assets/layout/images/pages/dot-allow-companies.svg);
+}
+
+
+.dot-allow-location {
+  position: relative;
+  top: -2px;
+}
+
+.allow-location {
+  width: 87px;
+  height: 30px;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: start;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: inline-block;
+  line-height: 30px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: #252A32;
+  margin-right: 10px;
+}
+
+
+.product-details-table {
+  display: table !important;
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  border: 1px solid #E0E1E4;
+  box-sizing: border-box;
+  border-radius: 4px;
+  margin-top: 15px;
+}
+
+.product-details-table thead tr {
+  height: 40px;
+  background: #F1F1F2;
+  border: 1px solid #E0E1E4;
+  box-sizing: border-box;
+  border-radius: 4px 4px 0px 0px;
+}
+
+.product-details-table thead tr td {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: #252A32;
+  padding: 10px;
+}
+
+.product-details-table tbody tr td {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #252A32;
+  // padding-left: 10px;
+  // padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+
+.conversion-factor-info {
+  margin-bottom: unset  !important;
+  width: 100%;
+}
+
+.conversion-factor-dropdown-component {
+  border: unset !important;
+  background: unset  !important;
+}
+
+.conversion-factor-dropdown-component .mat-select-arrow {
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 6px solid;
+  margin: 0 4px;
+  color: #364150 !important;
+}
+
+.conversion-factor-dropdown-component .mat-select-value-text {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: #252A32;
+  margin-right: 20px;
+}
+
+.padding-left  {
+  padding-left: 5px;
+}
+
+.mat-select-arrow {
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 6px solid;
+  margin: 0 4px;
+  color: #364150 !important;
+}
+
+.product-details {
+  width: 25% !important;
 }
