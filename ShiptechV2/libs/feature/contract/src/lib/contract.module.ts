@@ -123,6 +123,7 @@ import { ContractQuantity } from './views/contract/details/components/contract-q
 import { ContractProduct } from './views/contract/details/components/contract-product/contract-product.component';
 import { LocationMasterRouteResolver } from './views/contract/details/location-master-route.resolver';
 import { ProductMasterRouteResolver } from './views/contract/details/product-master-route.resolver';
+import { ProductSpecGroupModalComponent } from './views/contract/details/components/product-spec-group-modal/product-spec-group-modal.component';
 
 
 @NgModule({
@@ -231,10 +232,11 @@ import { ProductMasterRouteResolver } from './views/contract/details/product-mas
     ContractDetailsDocumentsComponent,
     QuantityTenantFormatDirective,
     NumberOnlyDirective,
+    ProductSpecGroupModalComponent
     //PSpinnerDisableKeysSpinDirective,
     //PSpinnerTenantFormatDirective
   ],
-  entryComponents: [],
+  entryComponents: [ProductSpecGroupModalComponent],
   exports: [
     MainContractComponent,
     QuantityTenantFormatDirective,

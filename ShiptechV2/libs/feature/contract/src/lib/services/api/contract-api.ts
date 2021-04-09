@@ -20,6 +20,10 @@ export namespace ContractApiPaths {
   export const getLocationList = () =>  `api/masters/locations/list`;
   export const getProductList = () =>  `api/masters/products/list`;
   export const specGroupGetByProduct = () =>  `api/masters/specGroups/getByProduct`;
+  export const getSpecForProcurement = () =>  `api/contract/contract/getSpecParameterForContractProduct`;
+  export const getSpecParameterById = () =>  `api/masters/specparameters/get`;
+  export const saveSpecParameterForContractProduct = () =>  `api/contract/contract/saveSpecParameterForContractProduct`;
+  export const getProdDefaultConversionFactors = () =>  `api/masters/products/getProdDefaultConversionFactors`;
 
 }
 
@@ -167,6 +171,65 @@ export class ContractApi implements IContractApiService {
       catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
     );
   }
+
+  
+  @ObservableException()
+  getSpecForProcurement(
+    request: any
+  ): Observable<IDeliveryDetailsResponse> {
+    return this.http.post<IDeliveryDetailsResponse>(
+      `${this._apiUrl}/${ContractApiPaths.getSpecForProcurement()}`,
+      request 
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+    );
+  }
+
+  
+  @ObservableException()
+  getSpecParameterById(
+    request: any
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${this._masterApiUrl}/${ContractApiPaths.getSpecParameterById()}`,
+      { Payload: request } 
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+    );
+  }
+
+  @ObservableException()
+  saveSpecParameterForContractProduct(
+    request: any
+  ): Observable<IDeliveryDetailsResponse> {
+    return this.http.post<IDeliveryDetailsResponse>(
+      `${this._apiUrl}/${ContractApiPaths.saveSpecParameterForContractProduct()}`,
+      { Payload: request } 
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+    );
+  }
+
+
+  @ObservableException()
+  getProdDefaultConversionFactors(
+    request: any
+  ): Observable<IDeliveryDetailsResponse> {
+    return this.http.post<IDeliveryDetailsResponse>(
+      `${this._masterApiUrl}/${ContractApiPaths.getProdDefaultConversionFactors()}`,
+       request  
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+    );
+  }
+
+
+
+
 
   
   
