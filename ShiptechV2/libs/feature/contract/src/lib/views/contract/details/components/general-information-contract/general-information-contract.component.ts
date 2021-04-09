@@ -766,18 +766,18 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
       finalize(() => {
         this.spinner.hide();
       })
-  )
-  .subscribe((response: any) => {
-    if (typeof response == 'string') {
-      this.toastr.error(response);
-    } else {
-      console.log(response);
-      if (response) {
-        this.formValues.incoterm = response.defaultIncoterm;
-        this.formValues.strategy = response.defaultStrategy;
+    )
+    .subscribe((response: any) => {
+      if (typeof response == 'string') {
+        this.toastr.error(response);
+      } else {
+        console.log(response);
+        if (response) {
+          this.formValues.incoterm = response.defaultIncoterm;
+          this.formValues.strategy = response.defaultStrategy;
+        }
       }
-    }
-  });
+    });
     
   }
 
