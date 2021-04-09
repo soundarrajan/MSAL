@@ -490,3 +490,7 @@
 .mat-form-field-disabled {
   background-color: #EEEEEE !important;
 }
+
+.select-location-container .unchecked-mat-radio .mat-radio-button.mat-accent .mat-radio-inner-circle {
+  background-color: unset !important;
+}

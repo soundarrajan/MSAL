@@ -65,6 +65,7 @@
           <td mat-cell *matCellDef="let element"> 
             <mat-radio-group 
               name="radioOpt1" 
+              [ngClass]="{'unchecked-mat-radio': !selectedLocation}"
               [(ngModel)]="selectedLocation"
               (change)="setLocationChange(selectedLocation, selectedTabIndex); selectedLocation = null">
               <mat-radio-button   class="location-container-radio-button"
@@ -109,10 +110,11 @@
             <mat-radio-group 
               name="radioOpt1" 
               [(ngModel)]="selectedProduct"
-              [value]="selectedProduct"
-              (change)="setProductChange(selectedProduct, selectedTabIndex);">
-              <mat-radio-button   class="location-container-radio-button"
-                  [value]="element">{{element.name}}</mat-radio-button>
+              (change)="setProductChange(selectedProduct, selectedTabIndex);"
+              [ngClass]="{'unchecked-mat-radio': !selectedProduct}">
+              <mat-radio-button class="location-container-radio-button"
+                  [value]="element"
+                  [checked]="selectedProduct">{{element.name}}</mat-radio-button>
             </mat-radio-group>
           </td>
         </ng-container>
