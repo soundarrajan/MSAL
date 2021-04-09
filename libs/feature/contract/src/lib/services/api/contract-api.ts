@@ -19,6 +19,7 @@ export namespace ContractApiPaths {
   export const getAgreementTypeById = () =>  `api/masters/agreementtype/get`;
   export const getLocationList = () =>  `api/masters/locations/list`;
   export const getProductList = () =>  `api/masters/products/list`;
+  export const specGroupGetByProduct = () =>  `api/masters/specGroups/getByProduct`;
 
 }
 
@@ -146,6 +147,20 @@ export class ContractApi implements IContractApiService {
   ): Observable<any> {
     return this.http.post<any>(
       `${this._masterApiUrl}/${ContractApiPaths.getProductList()}`,
+      request 
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+    );
+  }
+
+
+  @ObservableException()
+  getSpecGroupGetByProduct(
+    request: any
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${this._masterApiUrl}/${ContractApiPaths.specGroupGetByProduct()}`,
       request 
     ).pipe(
       map((body: any) => body.payload),

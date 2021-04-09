@@ -455,6 +455,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   physicalSupplierList: any[];
   autocompletePhysicalSupplier: knownMastersAutocomplete;
   _autocompleteType: any;
+  productSpecGroup: any[];
 
 
   get entityId(): number {
@@ -541,6 +542,9 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     this.formValues = formValues;
     if (formValues.products[this.selectedTabIndex] && !formValues.products[this.selectedTabIndex].physicalSuppliers)  {
       this.formValues.products[this.selectedTabIndex].physicalSuppliers = [];
+    }
+    for (let i = 0; i < this.formValues.products.length; i++) {
+      this.getSpecGroupByProduct(this.formValues.products[i].product.id, this.formValues.products[i].specGroup);
     }
   }
 
@@ -842,6 +846,61 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       console.log(this.formValues.products[this.selectedTabIndex]);
     }
   }
+
+
+  getSpecGroupByProduct(productId, additionalSpecGroup) {
+    var data = {
+        Payload: {
+            Filters: [
+                {
+                    ColumnName: 'ProductId',
+                    Value: productId
+                }
+            ]
+        }
+    };
+    if (typeof this.productSpecGroup == 'undefined') {
+        this.productSpecGroup = [];
+    }
+
+    // if spec group for product exists, do not make call again
+    if (typeof this.productSpecGroup[productId] != 'undefined') {
+        return;
+    }
+
+    this.contractService
+    .getSpecGroupGetByProduct(data)
+    .pipe(
+      finalize(() => {
+      })
+    )
+    .subscribe((response: any) => {
+      if (typeof response == 'string') {
+        this.toastr.error(response);
+      } else {
+        console.log(response);
+        if (response) {
+          response  = _.filter(response, function(o) { 
+            return o.isDeleted == false; 
+          });
+          if (additionalSpecGroup) {
+            var additionalSpecIsInArray = false;
+            response.forEach(function(v, k){
+              if (v.id == additionalSpecGroup.id) {
+                additionalSpecIsInArray = true;
+              }
+            })
+            if (!additionalSpecIsInArray) {
+              response.push(additionalSpecGroup);		
+            }
+          }
+          this.productSpecGroup[productId] = response;
+          this.changeDetectorRef.detectChanges();
+        }
+      }
+    });
+  
+};
 
 
 
