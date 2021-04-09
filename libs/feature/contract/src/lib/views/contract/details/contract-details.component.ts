@@ -105,6 +105,9 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   productMasterList: any;
   locationMasterList: any;
   generalTenantSettings: IGeneralTenantSettings;
+  uomMassList: any;
+  uomVolumeList: any;
+  contractConversionFactorOptions: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -197,6 +200,10 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       this.incotermList = this.setListFromStaticLists('Incoterm');
       this.applyToList = this.setListFromStaticLists('ApplyTo');
       this.contractualQuantityOptionList = this.setListFromStaticLists('ContractualQuantityOption');
+      this.uomMassList = this.setListFromStaticLists('UomMass');
+      this.uomVolumeList = this.setListFromStaticLists('UomVolume');
+      this.contractConversionFactorOptions = this.setListFromStaticLists('ContractConversionFactorOptions');
+
       console.log(this.staticLists);
     });
   }

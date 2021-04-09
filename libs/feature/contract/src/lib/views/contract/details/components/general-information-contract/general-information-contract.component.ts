@@ -743,17 +743,18 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
 
 
   saveAllowedCompanies() {
+    let allowedCompanyList = [];
     let companyList = this.companyList;
-    this.formValues.allowedCompanies = [];
     for (let i = 0; i < companyList.length; i++) {
       if (companyList[i].isSelected) {
         let allowedCompany = {
           'id': companyList[i].id,
           'name': companyList[i].name
         }
-        this.formValues.allowedCompanies.push(allowedCompany);
+        allowedCompanyList.push(allowedCompany);
       }
     }
+    this.formValues.allowedCompanies = [ ... allowedCompanyList ];
   }
 
 

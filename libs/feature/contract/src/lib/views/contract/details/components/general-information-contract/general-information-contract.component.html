@@ -1,5 +1,5 @@
-<div class="col-md-12 row no-padding-right">
-  <div class="col-md-3">
+<div class="col-md-12 d-flex contract-section">
+  <div class="col-md-3" style="padding-left: 0px;">
     <div id="custom-btn-toggle-v2">
       <mat-button-toggle-group  #group="matButtonToggleGroup" [value]="selectedVal" (change)="onValChange(group.value)" >
         <mat-button-toggle value="dateSpecific">
@@ -104,8 +104,8 @@
     </div>
   </div>
 </div>
-<div class="col-md-12 row no-padding-right contract-section">
-  <div class="col-md-6 d-flex">
+<div class="col-md-12 d-flex contract-section">
+  <div class="col-md-6 no-padding d-flex">
     <div class="custom-form-field custom-field-general" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
       <mat-form-field class="without-search" appearance="legacy">
         <mat-label>Contract name</mat-label>
@@ -229,7 +229,7 @@
                 <img  [ngClass]="{'expand-company-img': expandCompanylistPopUp}" (click)="expandCompanylistPopUp = !expandCompanylistPopUp;" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
             </div>
           </div>
-          <div (click)="$event.stopPropagation();" class="col-md-12 contract-no-padding allowed-company-line"  *ngFor="let company of companyListForSearch">
+          <div (click)="$event.stopPropagation();" class="col-md-12 contract-no-padding allowed-company-line"  *ngFor="let company of companyList">
             <mat-checkbox [(ngModel)]="company.isSelected">
               {{company.name}}
             </mat-checkbox>

@@ -443,6 +443,18 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   expandAllowCompanies: false;
 
   searchProductInput: any;
+  selectedLocationList: any[];
+  selectedProductList: any[];
+
+  expandAllowLocations: boolean = false;
+  expandAllowProducts: boolean = false;
+  uomVolumeList: any;
+  uomMassList: any;
+  contractConversionFactorOptions: any;
+  isDealDateInvalid: boolean;
+  physicalSupplierList: any[];
+  autocompletePhysicalSupplier: knownMastersAutocomplete;
+  _autocompleteType: any;
 
 
   get entityId(): number {
@@ -471,6 +483,10 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     } 
     this.locationMasterList = locationMasterList;
     this.locationMasterSearchList = [ ...locationMasterList];
+    this.selectedLocationList = [ ...locationMasterList];
+    if (this.formValues.products) {
+      this.setAllowedLocations(this.selectedTabIndex);
+    }
 
   }
 
@@ -481,6 +497,10 @@ export class ContractProduct extends DeliveryAutocompleteComponent
 
     this.productMasterList = productMasterList;
     this.productMasterSearchList = [ ...productMasterList];
+    this.selectedProductList = [ ...productMasterList];
+    if (this.formValues.products) {
+      this.setAllowedProducts(this.selectedTabIndex);
+    }
 
   }
 
@@ -491,11 +511,37 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     this.uomList = uomList;
   }
 
+
+  @Input('uomVolumeList') set _setUomVolumeList(uomVolumeList) { 
+    if (!uomVolumeList) {
+      return;
+    } 
+    this.uomVolumeList = uomVolumeList;
+  }
+
+  
+  @Input('uomMassList') set _setUomMassList(uomMassList) { 
+    if (!uomMassList) {
+      return;
+    } 
+    this.uomMassList = uomMassList;
+  }
+
+  @Input('contractConversionFactorOptions') set _setContractConversionFactorOptions(contractConversionFactorOptions) { 
+    if (!contractConversionFactorOptions) {
+      return;
+    } 
+    this.contractConversionFactorOptions = contractConversionFactorOptions;
+  }
+
   @Input('model') set _setFormValues(formValues) { 
     if (!formValues) {
       return;
     } 
     this.formValues = formValues;
+    if (formValues.products[this.selectedTabIndex] && !formValues.products[this.selectedTabIndex].physicalSuppliers)  {
+      this.formValues.products[this.selectedTabIndex].physicalSuppliers = [];
+    }
   }
 
   @Input('generalTenantSettings') set _setGeneralTenantSettings(generalTenantSettings) { 
@@ -532,8 +578,8 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     private tenantService: TenantFormattingService,
     sanitizer: DomSanitizer,
     private overlayContainer: OverlayContainer) {
-    
     super(changeDetectorRef);
+    this.autocompletePhysicalSupplier = knownMastersAutocomplete.physicalSupplier;
     this.dateFormats.display.dateInput = this.format.dateFormat;
     this.dateFormats.parse.dateInput = this.format.dateFormat;
     this.dateTimeFormats.display.dateInput = this.format.dateFormat;
@@ -545,9 +591,29 @@ export class ContractProduct extends DeliveryAutocompleteComponent
 
   ngOnInit(){  
     this.entityName = 'Contract';
- 
+    this.getPhysicalSupplierList();
+
 
   }
+
+  
+  async getPhysicalSupplierList() {
+    this.physicalSupplierList = await this.legacyLookupsDatabase.getPhysicalSupplierList();
+    console.log(this.physicalSupplierList);
+  }
+
+
+  getHeaderNameSelector1(): string {
+    switch (this._autocompleteType) {
+      case knownMastersAutocomplete.physicalSupplier:
+        return knowMastersAutocompleteHeaderName.physicalSupplier;
+      default:
+        return knowMastersAutocompleteHeaderName.physicalSupplier;
+    }
+  }
+
+  
+
 
   searchLocations(value: string): void {
     let filterLocations = this.locationMasterList.filter((location) => location.name.toLowerCase().includes(value));
@@ -647,6 +713,141 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   allowCloseOnClickOut() {
     this.overlayContainer.getContainerElement().classList.remove('disable-backdrop-click');
   }
+
+  setAllowedLocations(selectedTabIndex) {
+    let contractProduct = this.formValues.products[selectedTabIndex];
+    if (contractProduct.allowedLocations && contractProduct.allowedLocations.length) {
+      for (let i = 0; i < contractProduct.allowedLocations.length; i++) {
+        let allowedLocation = contractProduct.allowedLocations[i];
+        let findIndexOfLocationInLocationList = _.findIndex(this.selectedLocationList, function(obj) {
+          return obj.id == allowedLocation.id && obj.name == allowedLocation.name;
+        });
+        if (findIndexOfLocationInLocationList != -1) {
+          this.selectedLocationList[findIndexOfLocationInLocationList].isSelected = true;
+        }
+      }
+    }
+    console.log(this.selectedLocationList);
+  }
+
+  saveAllowedLocations(selectedTabIndex){
+    let newAllowedLocations = [];
+    let allowedLocations = this.selectedLocationList;
+    for (let i = 0; i < allowedLocations.length; i++) {
+      if (allowedLocations[i].isSelected) {
+        let allowedLocation = {
+          'id': allowedLocations[i].id,
+          'name': allowedLocations[i].name
+        }
+        newAllowedLocations.push(allowedLocation);
+      }
+    }
+
+    this.formValues.products[selectedTabIndex].allowedLocations = [ ... newAllowedLocations];
+  }
+
+  setAllowedProducts(selectedTabIndex) {
+    let contractProduct = this.formValues.products[selectedTabIndex];
+    if (contractProduct.allowedProducts && contractProduct.allowedProducts.length) {
+      for (let i = 0; i < contractProduct.allowedProducts.length; i++) {
+        let allowedProduct = contractProduct.allowedProducts[i];
+        let findIndexOfProductInProductList = _.findIndex(this.selectedProductList, function(obj) {
+          return obj.id == allowedProduct.id && obj.name == allowedProduct.name;
+        });
+        if (findIndexOfProductInProductList != -1) {
+          this.selectedProductList[findIndexOfProductInProductList].isSelected = true;
+        }
+      }
+    }
+    console.log(this.selectedProductList);
+  }
+
+
+  saveAllowedProducts(selectedTabIndex){
+    let newAllowedProducts = [];
+    let allowedProducts = this.selectedProductList;
+    for (let i = 0; i < allowedProducts.length; i++) {
+      if (allowedProducts[i].isSelected) {
+        let allowedProduct = {
+          'id': allowedProducts[i].id,
+          'name': allowedProducts[i].name
+        }
+        newAllowedProducts.push(allowedProduct);
+      }
+    }
+
+    this.formValues.products[selectedTabIndex].allowedProducts = [ ... newAllowedProducts];
+  }
+
+  compareUomObjects(object1: any, object2: any) {
+    return object1 && object2 && object1.id == object2.id;
+  }
+
+  onChange($event, field) {
+    if ($event.value) {
+      let beValue = `${moment($event.value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+      if (field == 'dealDate') {
+        this.isDealDateInvalid = false;
+      } 
+      console.log(beValue);
+    } else {
+      if (field == 'dealDate') {
+        this.isDealDateInvalid = true;
+      } 
+      this.toastr.error('Please enter the correct format');
+    }
+
+  }
+
+  formatDateForBe(value) {
+    if (value) {
+      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+      return `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+    } else {
+      return null;
+    }
+  }
+
+  displayFn(product): string {
+    return product && product.name ? product.name : '';
+  }
+
+  filterPhysicalSupplierList() {
+    if (this.formValues.products[this.selectedTabIndex].physicalSuppliers[0]) {
+      const filterValue = this.formValues.products[this.selectedTabIndex].physicalSuppliers[0].name ? this.formValues.products[this.selectedTabIndex].physicalSuppliers[0].name.toLowerCase() : this.formValues.products[this.selectedTabIndex].physicalSuppliers[0].toLowerCase();
+      console.log(filterValue);
+      if (this.physicalSupplierList) {
+        return this.physicalSupplierList.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0)
+          .slice(0, 10);
+      } else {
+        return [];
+      }
+    } else {
+      return [];
+    }
+  }
+
+  selectorPhysicalSupplierSelectionChange(
+    selection: IDisplayLookupDto
+  ): void {
+    if (selection === null || selection === undefined) {
+      this.formValues.products[this.selectedTabIndex].physicalSuppliers[0] = '';
+    } else {
+      const obj = {
+        'id': selection.id,
+        'name': selection.name
+      };
+      this.formValues.products[this.selectedTabIndex].physicalSuppliers[0] = obj; 
+      this.changeDetectorRef.detectChanges();   
+      console.log(this.formValues.products[this.selectedTabIndex]);
+    }
+  }
+
+
+
+
+
+
 
   
 
