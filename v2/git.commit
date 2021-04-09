@@ -1,9 +1,9 @@
-﻿commit 7c6ca1885624d44bdb3813706e1797f6259aff97
+﻿commit 0c79dbdf147c7473367bdaea7e6c2975cb4f9195
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Apr 8 12:08:59 2021 +0000
+Date:   Fri Apr 9 07:10:12 2021 +0000
 
-    Merged PR 9791: Fixed scrollbar
+    Merged PR 9808: Fixed scroll in ag grid pop-up
     
-    Fixed scrollbar
+    Fixed scroll in ag grid pop-up
 
 branch: master
