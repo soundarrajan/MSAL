@@ -54,10 +54,12 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ContractService } from 'libs/feature/contract/src/lib/services/contract.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatRadioChange } from '@angular/material/radio';
-import { DecimalPipe } from '@angular/common';
+import { DecimalPipe, KeyValue } from '@angular/common';
 import { MatSelect } from '@angular/material/select';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { OverlayContainer } from '@angular/cdk/overlay';
+import { ProductSpecGroupModalComponent } from '../product-spec-group-modal/product-spec-group-modal.component';
+import { OVERLAY_KEYBOARD_DISPATCHER_PROVIDER_FACTORY } from '@angular/cdk/overlay/dispatchers/overlay-keyboard-dispatcher';
 
 
 
@@ -456,6 +458,11 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   autocompletePhysicalSupplier: knownMastersAutocomplete;
   _autocompleteType: any;
   productSpecGroup: any[];
+  modalSpecGroupParameters: any;
+  modalSpecGroupParametersEditable: boolean;
+  canChangeSpec: boolean;
+  specParameterList: any;
+  activeProductForSpecGroupEdit: any;
 
 
   get entityId(): number {
@@ -482,9 +489,9 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     if (!locationMasterList) {
       return;
     } 
-    this.locationMasterList = locationMasterList;
-    this.locationMasterSearchList = [ ...locationMasterList];
-    this.selectedLocationList = [ ...locationMasterList];
+    this.locationMasterList = _.cloneDeep(locationMasterList);
+    this.locationMasterSearchList = _.cloneDeep(locationMasterList);
+    this.selectedLocationList = _.cloneDeep(locationMasterList);
     if (this.formValues.products) {
       this.setAllowedLocations(this.selectedTabIndex);
     }
@@ -496,14 +503,22 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       return;
     } 
 
-    this.productMasterList = productMasterList;
-    this.productMasterSearchList = [ ...productMasterList];
-    this.selectedProductList = [ ...productMasterList];
+    this.productMasterList =  _.cloneDeep(productMasterList);
+    this.productMasterSearchList = _.cloneDeep(this.productMasterList);
+    this.selectedProductList = _.cloneDeep(this.productMasterList);
     if (this.formValues.products) {
       this.setAllowedProducts(this.selectedTabIndex);
     }
 
   }
+
+  @Input('specParameterList') set _setSpecParameterList(specParameterList) { 
+    if (!specParameterList) {
+      return;
+    } 
+    this.specParameterList = specParameterList;
+  }
+
 
   @Input('uomList') set _setUomList(uomList) { 
     if (!uomList) {
@@ -668,29 +683,30 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   }
 
   
-  @HostListener('document:click', ['$event.target'])
-  public onClick(targetElement) {
-    console.log(targetElement);
-  }
   addProductToContract() {
     console.log(this.formValues);
     let emptyProductObj = {
-        id: 0,
-        details: [
-            {
-                contractualQuantityOption: {
-                    id: 1,
-                    name: 'TotalContractualQuantity',
-                    code: '',
-                    collectionName: null
-                },
-                id: 0,
-                uom : this.generalTenantSettings.tenantFormats.uom
-            }
-        ],
-        additionalCosts: [],
-        fixedPrice: true,
-        mtmFixed:true
+      id: 0,
+      details: [
+        {
+          contractualQuantityOption: {
+              id: 1,
+              name: 'TotalContractualQuantity',
+              code: '',
+              collectionName: null
+          },
+          id: 0,
+          uom : this.generalTenantSettings.tenantFormats.uom
+        }
+      ],
+      additionalCosts: [],
+      fixedPrice: true,
+      mtmFixed: true, 
+      specGroup: null,
+      dealDate: null,
+      physicalSuppliers: [],
+      allowedProducts: [],
+      allowedLocations: []
     };
     if (this.formValues) {
         if (!this.formValues.products) {
@@ -705,20 +721,17 @@ export class ContractProduct extends DeliveryAutocompleteComponent
         this.formValues.products.push(emptyProductObj);
     };
 
+    this.selectedTabIndex =  this.formValues.products.length - 1;
+    this.setAllowedLocations(this.selectedTabIndex);
+    this.setAllowedProducts(this.selectedTabIndex);
     this.changeDetectorRef.detectChanges();
 
     console.log(this.formValues);
   }
 
-  preventCloseOnClickOut() {
-    this.overlayContainer.getContainerElement().classList.add('disable-backdrop-click');
-  }
-
-  allowCloseOnClickOut() {
-    this.overlayContainer.getContainerElement().classList.remove('disable-backdrop-click');
-  }
 
   setAllowedLocations(selectedTabIndex) {
+    this.selectedLocationList = _.cloneDeep(this.locationMasterList);
     let contractProduct = this.formValues.products[selectedTabIndex];
     if (contractProduct.allowedLocations && contractProduct.allowedLocations.length) {
       for (let i = 0; i < contractProduct.allowedLocations.length; i++) {
@@ -747,10 +760,11 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       }
     }
 
-    this.formValues.products[selectedTabIndex].allowedLocations = [ ... newAllowedLocations];
+    this.formValues.products[selectedTabIndex].allowedLocations = _.cloneDeep(newAllowedLocations);
   }
 
   setAllowedProducts(selectedTabIndex) {
+    this.selectedProductList = _.cloneDeep(this.productMasterList);
     let contractProduct = this.formValues.products[selectedTabIndex];
     if (contractProduct.allowedProducts && contractProduct.allowedProducts.length) {
       for (let i = 0; i < contractProduct.allowedProducts.length; i++) {
@@ -763,6 +777,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
         }
       }
     }
+    this.changeDetectorRef.detectChanges();
     console.log(this.selectedProductList);
   }
 
@@ -780,7 +795,36 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       }
     }
 
-    this.formValues.products[selectedTabIndex].allowedProducts = [ ... newAllowedProducts];
+    let previousAllowedProducts = _.cloneDeep(this.formValues.products[selectedTabIndex].allowedProducts);
+    this.formValues.products[selectedTabIndex].allowedProducts = _.cloneDeep(newAllowedProducts);
+
+    //check new  allowed products added
+    for (let i = 0; i < this.formValues.products[selectedTabIndex].allowedProducts.length; i++) {
+      let allowedProduct = { ... this.formValues.products[selectedTabIndex].allowedProducts[i]}
+      let findProductIfExistsInPreviousAllowedProducts = _.find(previousAllowedProducts, function(obj) {
+        return obj.id == allowedProduct.id && obj.name == allowedProduct.name;
+      });
+      //new allowed product added
+      if (!findProductIfExistsInPreviousAllowedProducts) {
+        this.addProductToConversion(selectedTabIndex, allowedProduct, false);
+      }
+    }
+
+    //check allowed products removed
+    for (let i = 0; i < previousAllowedProducts.length; i++) {
+      let previousAllowedProduct = { ... previousAllowedProducts[i]}
+      let findProductIfExistsInAllowedProducts = _.find(this.formValues.products[selectedTabIndex].allowedProducts, function(obj) {
+        return obj.id == previousAllowedProduct.id && obj.name == previousAllowedProduct.name;
+      });
+      //product was removed from allowed product
+      if (!findProductIfExistsInAllowedProducts) {
+        this.addProductToConversion(selectedTabIndex, null, false);
+      }
+  }
+  
+
+
+    
   }
 
   compareUomObjects(object1: any, object2: any) {
@@ -815,6 +859,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   displayFn(product): string {
     return product && product.name ? product.name : '';
   }
+
 
   filterPhysicalSupplierList() {
     if (this.formValues.products[this.selectedTabIndex].physicalSuppliers[0]) {
@@ -900,17 +945,230 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       }
     });
   
-};
+  };
+
+
+  openSpecGroupPopUp(product) {
+    this.activeProductForSpecGroupEdit = product;
+    var productId = product.product.id;
+    var data = {
+        Payload: {
+            Filters: [
+                {
+                    ColumnName: 'ContractProductId',
+                    Value: product.id ? product.id : null
+                },
+                {
+                    ColumnName: 'SpecGroupId',
+                    Value: product.specGroup.id
+                },
+                {
+                    ColumnName: 'ProductId',
+                    Value: productId
+                }
+            ]
+        }
+    };
+    if (this.formValues.status.name != 'Confirmed' && product.id != 0) {
+      this.modalSpecGroupParametersEditable = true;
+      this.canChangeSpec = true;
+
+    }
+    this.spinner.show();
+    this.contractService
+    .getSpecForProcurement(data)
+    .pipe(
+      finalize(() => {
+        this.spinner.hide();
+      })
+    )
+    .subscribe((response: any) => {
+      if (typeof response == 'string') {
+        this.toastr.error(response);
+      } else {
+        console.log(response);
+        if (response) {
+          this.modalSpecGroupParameters = response;
+          for (let i = 0; i < this.modalSpecGroupParameters.length; i++) {
+              this.modalSpecGroupParameters[i].specParameter.name = this.decodeSpecificField(this.modalSpecGroupParameters[i].specParameter.name);
+          }
+          const dialogRef = this.dialog.open(ProductSpecGroupModalComponent, {
+            width: '50%',
+            data:  {
+              'modalSpecGroupParameters': this.modalSpecGroupParameters,
+              'modalSpecGroupParametersEditable': this.modalSpecGroupParametersEditable,
+              'specParameterList': this.specParameterList,
+              'activeProductForSpecGroupEdit': this.activeProductForSpecGroupEdit
+            }
+          });
+      
+          dialogRef.afterClosed().subscribe(result => {
+            console.log(result);
+          });
+        }
+      }
+    });
+   
+  }
+
+ 
+  decodeSpecificField(modelValue) {
+    let decode = function(str) {
+      return str.replace(/&#(\d+);/g, function(match, dec) {
+          return String.fromCharCode(dec);
+      });
+    };
+    return decode(_.unescape(modelValue));
+  }
 
 
 
+  setLocationChange(location, index) {
+    console.log(location);
+    console.log(index);
+    console.log(this.formValues.products[index]);
+    let objectLocation =  {
+      'id': location.id,
+      'name': location.name
+    }
+    this.selectedLocation = null;
+    this.formValues.products[index].location = { ... objectLocation };
+    this.changeDetectorRef.detectChanges();
+
+  }
 
 
+  setProductChange(product, index) {
+    console.log(product);
+    console.log(index);
+    console.log(this.formValues.products[index]);
+    let objectProduct =  {
+      'id': product.id,
+      'name': product.name
+    }
+    this.formValues.products[index].product = { ... objectProduct };
+    this.selectedProduct = null;
+    this.changeDetectorRef.detectChanges();
+    this.addProductToConversion(index, null, true);
+  }
 
+  addProductToConversion(index, allowProduct, isMainProduct) {
+    if (!this.formValues.products[index].conversionFactors) {
+      this.formValues.products[index].conversionFactors = [];
+    }
+    let selectedProduct, isAlreadyAdded = 0, indexDeleted = -1;
+    let payload;
 
+    if (isMainProduct) {
+      selectedProduct = this.formValues.products[index];
+      if (this.formValues.products[index].conversionFactors.length) {
+        var allowProducts = this.formValues.products[index].allowedProducts;
+        if (allowProducts.length) {
+          this.formValues.products[index].conversionFactors.forEach((value, key) => {
+            var idIndex = _.findIndex(allowProducts, (o: any) => {
+                return o.id == value.product.id;
+            });
+            if (idIndex == -1) {
+                if (value.id == 0) {
+                    this.formValues.products[index].conversionFactors.splice(key, 1);
+                    return;
+                }
+                this.formValues.products[index].conversionFactors[key].isDeleted = true;
+            }
+          });
+        } else {
+          var indexProduct = this.formValues.products[index].conversionFactors.length - 1;
+          this.formValues.products[index].conversionFactors[indexProduct].isDeleted = true;
+        }
+      }
+    } else if (allowProduct != null) {
+      selectedProduct = { product: allowProduct };
+    } else if (allowProduct == null) {
+        var allowProducts = this.formValues.products[index].allowedProducts;
+        if (allowProducts.length) {
+          this.formValues.products[index].conversionFactors.forEach((value, key) => {
+            if (value.product.id != this.formValues.products[index].product.id) {
+              var idIndex = _.findIndex(allowProducts, (o : any) => {
+                  return o.id == value.product.id;
+              });
+              if (idIndex == -1) {
+                  indexDeleted = key;
+                  if (value.id == 0) {
+                      this.formValues.products[index].conversionFactors.splice(indexDeleted, 1);
+                      return;
+                  }
+                  this.formValues.products[index].conversionFactors[indexDeleted].isDeleted = true;
+              }
+            }
+          });
+        } else {
+          this.formValues.products[index].conversionFactors.forEach((value, key) => {
+            if (value.product.id != this.formValues.products[index].product.id && !value.isDeleted) {
+                if (value.id == 0) {
+                    this.formValues.products[index].conversionFactors.splice(key, 1);
+                    return;
+                }
+                this.formValues.products[index].conversionFactors[key].isDeleted = true;
+            }
+          });
+        }
+    }
+    if (this.formValues.products[index].conversionFactors) {
+      if (selectedProduct) {
+        let indexProduct = _.findLastIndex(this.formValues.products[index].conversionFactors, (o: any) => {
+          return o.product.id == selectedProduct.product.id;
+        });
+        if (indexProduct != -1) {
+            if (!this.formValues.products[index].conversionFactors[indexProduct].isDeleted) {
+              this.toastr.error('Product is already added');
+              isAlreadyAdded = 1;
+            }
+        }
+      }
+    }
+    if (!isAlreadyAdded && indexDeleted == -1 && selectedProduct) {
+      payload = { Payload: selectedProduct.product.id };
+      this.spinner.show();
+      this.contractService
+      .getProdDefaultConversionFactors(payload)
+      .pipe(
+        finalize(() => {
+          this.spinner.hide();
+        })
+      )
+      .subscribe((response: any) => {
+        if (typeof response == 'string') {
+          this.toastr.error(response);
+        } else {
+          console.log(response);
+          let contractConversionFactor = {
+            id: 3,
+            name: "Standard (Product)"
+          }
+          let object = {
+              id: 0,
+              product : selectedProduct.product,
+              value: response.value,
+              massUom: response.massUom,
+              volumeUom: response.volumeUom,
+              contractConversionFactorOptions: contractConversionFactor
+          };
+          this.formValues.products[index].conversionFactors.push(object);
+          this.changeDetectorRef.detectChanges();
+        }
+      });
   
+    
+    }
 
 
+  }
+
+
+
+  originalOrder = (a: KeyValue<number, any>, b: KeyValue<number, any>): number => {
+    return 0;
+  }
 
   ngAfterViewInit(): void {
   

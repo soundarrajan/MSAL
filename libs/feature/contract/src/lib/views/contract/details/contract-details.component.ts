@@ -31,7 +31,6 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
 import { throws } from 'assert';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { ContractService } from '../../../services/contract.service';
-import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
 
 interface DialogData {
   email: string;
@@ -109,6 +108,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   uomMassList: any;
   uomVolumeList: any;
   contractConversionFactorOptions: any;
+  specParameterList: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -204,6 +204,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       this.uomMassList = this.setListFromStaticLists('UomMass');
       this.uomVolumeList = this.setListFromStaticLists('UomVolume');
       this.contractConversionFactorOptions = this.setListFromStaticLists('ContractConversionFactorOptions');
+      this.specParameterList = this.setListFromStaticLists('SpecParameter');
 
       console.log(this.staticLists);
     });

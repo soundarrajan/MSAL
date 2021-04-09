@@ -2,19 +2,21 @@
   <div class="add-contract-product-section" (click)="addProductToContract()">
     <a class="add-contract-product-icon"></a>
   </div>
-  <ng-container *ngFor="let contractProduct of formValues.products | keyvalue">
-    <div (click)="selectedTabIndex =  contractProduct.key">
+  {{selectedTabIndex}}
+  {{selectedProduct ? selectedProduct.name : ''}}
+  <ng-container *ngFor="let contractProduct of formValues.products | keyvalue: originalOrder">
+    <div (click)="selectedTabIndex = contractProduct.key; setAllowedLocations(selectedTabIndex); setAllowedProducts(selectedTabIndex)">
       <div class="add-new-location-with-product">
         <div class="add-new-location-placeholder"
           *ngIf="!contractProduct.value.location"
-          (click)="locationMasterSearchList = locationMasterList; searchLocationInput = null"
+          (click)="searchLocationInput = null;"
           [matMenuTriggerFor]="locationMenu">
           Add location
           <span class="dropdown-icon dropdown-location-icon" >
           </span>
         </div>
         <div class="location-container-tab" 
-          (click)="locationMasterSearchList = locationMasterList; searchLocationInput = null"
+          (click)="searchLocationInput = null;"
           *ngIf="contractProduct.value.location">
           {{contractProduct.value.location.name}}
           <span class="dropdown-icon-white dropdown-location-icon"           
@@ -22,18 +24,19 @@
           </span>
         </div>
         <div class="add-new-location-placeholder"
+          (click)="searchProductInput = null; "
           [matMenuTriggerFor]="productMenu"
-          (click)="productMasterSearchList = productMasterList; searchProductInput = null"
           *ngIf="!contractProduct.value.product">
           Add product
           <span class="dropdown-icon dropdown-product-icon">
           </span>
         </div>
         <div class="product-container-tab" 
+          (click)="searchProductInput = null; "
           *ngIf="contractProduct.value.product">
           {{contractProduct.value.product.name}}
           <span class="dropdown-icon-white dropdown-location-icon" 
-            [matMenuTriggerFor]="locationMenu">
+            [matMenuTriggerFor]="productMenu">
           </span>
         </div>
       </div>
@@ -62,7 +65,8 @@
           <td mat-cell *matCellDef="let element"> 
             <mat-radio-group 
               name="radioOpt1" 
-              [(ngModel)]="selectedLocation">
+              [(ngModel)]="selectedLocation"
+              (change)="setLocationChange(selectedLocation, selectedTabIndex); selectedLocation = null">
               <mat-radio-button   class="location-container-radio-button"
                   [value]="element">{{element.name}}</mat-radio-button>
             </mat-radio-group>
@@ -104,7 +108,9 @@
           <td mat-cell *matCellDef="let element"> 
             <mat-radio-group 
               name="radioOpt1" 
-              [(ngModel)]="selectedLocation">
+              [(ngModel)]="selectedProduct"
+              [value]="selectedProduct"
+              (change)="setProductChange(selectedProduct, selectedTabIndex);">
               <mat-radio-button   class="location-container-radio-button"
                   [value]="element">{{element.name}}</mat-radio-button>
             </mat-radio-group>
@@ -244,12 +250,14 @@
                 [disableOptionCentering]="true"
                 panelClass="general-information-select-container"
                 [compareWith]="compareUomObjects">
-              <mat-option *ngFor="let option of productSpecGroup[formValues.products[selectedTabIndex].product.id]" [value]="option">
+              <ng-container *ngIf="formValues.products[selectedTabIndex].product">
+                <mat-option *ngFor="let option of productSpecGroup[formValues.products[selectedTabIndex].product.id]" [value]="option">
                   {{option.name}}
               </mat-option>
+              </ng-container>
           </mat-select>
           </mat-form-field>
-          <div class="search-icon">
+          <div class="search-icon" (click)="openSpecGroupPopUp(formValues.products[selectedTabIndex])">
             <div class="img"></div>
           </div>
         </div>
@@ -337,7 +345,7 @@
         </thead>
         <tbody>
             <ng-container  *ngFor="let conversionFactor of formValues.products[selectedTabIndex].conversionFactors">
-              <tr>
+              <tr *ngIf="!conversionFactor.isDeleted">
                 <td class="padding-left"  style="width:20%">
                   {{conversionFactor.product.name}}
                 </td>
@@ -400,9 +408,14 @@
               </tr>
             </ng-container>
         </tbody>
-    </table>
+      </table>
     </div>
   </div>
 <div>
  
-  
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-spin-clockwise-fade">
+</ngx-spinner>

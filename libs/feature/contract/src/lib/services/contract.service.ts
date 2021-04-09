@@ -101,11 +101,42 @@ export class ContractService extends BaseStoreService implements OnDestroy {
   getSpecGroupGetByProduct(payload): Observable<unknown> {
     return this.contractApi.getSpecGroupGetByProduct(payload);
   }
-               
-      
      
+  /**
+ * @param payload 
+ */
+  @ObservableException()
+  getSpecForProcurement(payload): Observable<unknown> {
+    return this.contractApi.getSpecForProcurement(payload);
+  }
+
+    /**
+ * @param payload 
+ */
+  @ObservableException()
+  getSpecParameterById(specId : number): Observable<unknown> {
+    return this.contractApi.getSpecParameterById(specId);
+  }
+
+
+      /**
+ * @param payload 
+ */
+  @ObservableException()
+  saveSpecParameterForContractProduct(payload): Observable<unknown> {
+    return this.contractApi.saveSpecParameterForContractProduct(payload);
+  }
+     
+
+       /**
+ * @param payload 
+ */
+  @ObservableException()
+  getProdDefaultConversionFactors(payload): Observable<unknown> {
+    return this.contractApi.getProdDefaultConversionFactors(payload);
+  }
+                
   
-    
   ngOnDestroy(): void {
     super.onDestroy();
   }

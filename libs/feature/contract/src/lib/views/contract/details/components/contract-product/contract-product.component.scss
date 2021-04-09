@@ -236,7 +236,8 @@
 
 .selected-product-container, .additional-product-container {
   /* Lightwhite */
-  height: 424px;
+  min-height: 424px;
+  max-height: max-content;
   background: #FCFCFC;
   border: 1px solid #E0E1E4;
   box-sizing: border-box;
@@ -484,4 +485,8 @@
 
 .product-details {
   width: 25% !important;
+}
+
+.mat-form-field-disabled {
+  background-color: #EEEEEE !important;
 }
