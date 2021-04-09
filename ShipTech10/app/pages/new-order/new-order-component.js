@@ -3865,6 +3865,22 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 	     		ctrl.data.isVerifiedBool = false;
             });
         };
+        ctrl.recomputeProductPricePrecision = (productKey) => {
+        	var producInitialPrice = ctrl.data.products[productKey].price;
+        	ctrl.data.products[productKey].price = 0
+        	$timeout(()=>{
+	        	ctrl.data.products[productKey].price = producInitialPrice;
+        	})
+        }
+        $scope.createRange = function(min, max) {
+	        min = parseInt(min);
+	        max = parseInt(max);
+	        var input = [];
+	        for (let i = min; i <= max; i++) {
+	            input.push(i);
+	        }
+	        return input;
+	    };
     }
 ]);
 angular.module('shiptech.pages').component('newOrder', {

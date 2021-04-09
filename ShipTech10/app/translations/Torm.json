@@ -275,6 +275,7 @@
             },
             "NEW_ORDER": {
                   "VESSEL": "Vessel",
+                  "PRICEPRECISION" : "Price precision",
 				  "PRE_TEST_LABS": "Pre Test Labs",
 				  "CUSTOMER": "Customer",                  
                   "EMAIL_COMMENTS" : "Email Comments",

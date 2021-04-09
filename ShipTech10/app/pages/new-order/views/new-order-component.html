@@ -1382,7 +1382,7 @@
                                     <div class="input-group">
                                         <!-- price -->
                                         <input class="form-control"
-                                               format="number:{{ $ctrl.numberPrecision.pricePrecision }}"
+                                               format="number:{{ product.pricePrecision }}"
                                                id="product_price_{{ $index }}"
                                                name="{{ $ctrl.productColumns.price.name }}"
                                                ng-change="$ctrl.productPriceChanged(product)"
@@ -1421,6 +1421,15 @@
                                             ></select>
                                         </div>
                                     </div>
+                                </td>
+                                <td style="min-width:75px" ng-init="!product.pricePrecision ? product.pricePrecision = $ctrl.pricePrecision : '' ">
+									<select name="pricePrecision" 
+										class="form-control bs-select" 
+										id="product_pricePrecision_{{ $index }}" 
+										ng-options="item as item for item in createRange(0,4) track by item" 
+										ng-model="product.pricePrecision"
+										ng-change="$ctrl.recomputeProductPricePrecision(key)"> 
+									</select>
                                 </td>
                                 <td ng-if="!$ctrl.procurementSettings.fieldVisibility.isPreTestHidden">
                                     <div class="form-group">
