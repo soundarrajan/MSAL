@@ -2395,24 +2395,6 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
             toastr.error('Please select one claim');
         }
     };
-    $scope.createPreclaimCreditNote = function() {
-        let selectedRowData = $('#invoices_app_deliveries_list').jqGrid.Ascensys.selectedRowData;
-        if (selectedRowData) {
-            let claimId = selectedRowData.id;
-            if (selectedRowData.claimsPossibleActions.canCreatePreClaimCreditNote) {
-                let data = {
-                    ClaimId: claimId,
-                    IsPreclaimCN: 1
-                };
-                localStorage.setItem('createPreclaimCreditNoteFromInvoiceClaims', JSON.stringify(data));
-                window.open(`/#/${ vm.app_id }/` + 'claims' + '/edit/', '_blank');
-            } else {
-                toastr.error('You can\'t create pre-claim credit note for this claim');
-            }
-        } else {
-            toastr.error('Please select one claim');
-        }
-    };
 
     /* INVOICES - CLAIMS*/
     $scope.saveTreasury = function() {

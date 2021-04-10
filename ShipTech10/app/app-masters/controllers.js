@@ -183,7 +183,6 @@
                         $rootScope.getAdminConfigurationCall = false;
                         vm.adminConfiguration = callback2;
                         $rootScope.adminConfiguration = callback2;
-                        //$rootScope.adminConfiguration.claim = {}; $rootScope.adminConfiguration.claim.isPreclaimCNFeatureAvailable = true;
                     }
                 });
             }

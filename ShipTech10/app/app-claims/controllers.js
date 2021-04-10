@@ -761,6 +761,10 @@ APP_CLAIMS.controller('Controller_Claims', [
                 }
             }
             if(name == 'WithheldAmount') {
+                // Allow only positive numbers in withheld amount
+                if ($scope.formValues.claimDetails && convertDecimalSeparatorStringToNumber($scope.formValues.claimDetails.withheldAmount) < 0) {
+                    $scope.formValues.claimDetails.withheldAmount = 0;
+                }
                 if ($scope.formValues.claimDetails && convertDecimalSeparatorStringToNumber($scope.formValues.claimDetails.withheldAmount) > 0) {
                     $scope.hasWithheldAmount = true;
                 } else {
@@ -1165,9 +1169,6 @@ APP_CLAIMS.controller('Controller_Claims', [
             }
             if (id == 2) {
                 data.IsDebunker = true;
-            }
-            if (id == 3) {
-                data.IsPreclaimCN = true;
             }
             Factory_Master.claims_create_credit_note(data, (response) => {
                 if (response) {
