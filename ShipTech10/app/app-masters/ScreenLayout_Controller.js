@@ -125,7 +125,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
             }
 
             if (localStorage.getItem('createPreclaimCreditNoteFromInvoiceClaims')) {
-                Factory_Master.create_credit_note(JSON.parse(localStorage.getItem('createPreclaimCreditNoteFromInvoiceClaims')), (response) => {
+                Factory_Master.claims_create_preclaim_cn(JSON.parse(localStorage.getItem('createPreclaimCreditNoteFromInvoiceClaims')), (response) => {
                     if (response) {
                         if (response.status == true) {
                             $scope.loaded = true;
