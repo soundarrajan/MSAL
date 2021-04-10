@@ -1492,42 +1492,78 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
+                <!-- <div class="row"> -->
 
-                <div class="col-md-4 ">
-                    <div class="form-group row">
-                        <div class="form_input form_input_overrideSellerEmailWithBrokerEmail">
-                            <div class="">
-                                <label class="mt-checkbox">
-                                    <input type="checkbox" name="inlineRadiosoverrideSellerEmailWithBrokerEmail" id="overrideSellerEmailWithBrokerEmail"
-                                        ng-model="formValues.procurement.order.overrideSellerEmailWithBrokerEmail" /> {{ CM.app_id + '.OVERRIDE_SELLER_EMAIL_WITH_BROKER_EMAIL?' | translate }}
-                                    <span></span>
-                                </label>
+                    <div class="col-md-4 ">
+                        <div class="form-group row">
+                            <div class="form_input form_input_overrideSellerEmailWithBrokerEmail">
+                                <div class="">
+                                    <label class="mt-checkbox">
+                                        <input type="checkbox" name="inlineRadiosoverrideSellerEmailWithBrokerEmail" id="overrideSellerEmailWithBrokerEmail"
+                                            ng-model="formValues.procurement.order.overrideSellerEmailWithBrokerEmail" /> {{ CM.app_id + '.OVERRIDE_SELLER_EMAIL_WITH_BROKER_EMAIL?' | translate }}
+                                        <span></span>
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-               <div class="col-md-4">
-                    <div class="form-group row" ng-init='CM.getOptions({"Name": "captureReasonToCancelTheOrder", "Type": "dropdown", "masterSource": "YesNoOptions"})'>
-                        <label for="captureReasonToCancelTheOrder" class="simpleLookupLabel" style="max-height: initial;">
-                            Capture Reason to cancel the order
+    
+                   <div class="col-md-4">
+                        <div class="form-group row" ng-init='CM.getOptions({"Name": "captureReasonToCancelTheOrder", "Type": "dropdown", "masterSource": "YesNoOptions"})'>
+                            <label for="captureReasonToCancelTheOrder" class="simpleLookupLabel" style="max-height: initial;">
+                                Capture Reason to cancel the order
+                            </label>
+                            <div class="input-group form_input form_input_captureReasonToCancelTheOrder">
+                                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.captureReasonToCancelTheOrder track by item.id"
+                                    ng-required="true" id="captureReasonToCancelTheOrder" ng-model="formValues.procurement.order.captureReasonToCancelTheOrder"></select>
+                            </div>
+                        </div>
+                    </div>
+    
+                   
+                <!-- </div> -->
+    
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group row" ng-init='CM.getOptions({"Name": "orderVerificationReq", "Type": "dropdown", "masterSource": "YesNoOptions"})'>
+                        <label for="orderVerificationReq" class="simpleLookupLabel" style="max-height: initial;">
+                            Order Verification Required
                         </label>
-                        <div class="input-group form_input form_input_captureReasonToCancelTheOrder">
-                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.captureReasonToCancelTheOrder track by item.id"
-                                ng-required="true" id="captureReasonToCancelTheOrder" ng-model="formValues.procurement.order.captureReasonToCancelTheOrder"></select>
+                        <div class="input-group form_input form_input_orderVerificationReq">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.orderVerificationReq track by item.id"
+                                ng-required="true" id="orderVerificationReq" ng-model="formValues.procurement.order.orderVerificationReq"></select>
                         </div>
                     </div>
                 </div>
-
-               
+                <div class="col-md-4">
+                    <div class="form-group row" ng-init='CM.getOptions({"Name": "closeOrder", "Type": "dropdown", "masterSource": "YesNoOptions"})'>
+                        <label for="closeOrder" class="simpleLookupLabel" style="max-height: initial;">
+                            Close the Order
+                        </label>
+                        <div class="input-group form_input form_input_closeOrder">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.closeOrder track by item.id"
+                                ng-required="true" id="closeOrder" ng-model="formValues.procurement.order.closeOption"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row" ng-init='CM.getOptions({"Name": "OptionToChangePortId", "Type": "dropdown", "masterSource": "YesNoOptions"})'>
+                        <label for="OptionToChangePortId" class="simpleLookupLabel" style="max-height: initial;">
+                            Option to change Port in Order
+                        </label>
+                        <div class="input-group form_input form_input_closeOrder">
+                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.OptionToChangePortId track by item.id"
+                                ng-required="true" id="OptionToChangePortId" ng-model="formValues.procurement.order.OptionToChangePortId"></select>
+                        </div>
+                </div>
             </div>
 
             <div class="row">
+                <!-- <div class="col-sm-3"></div> -->
                 <div class="col-sm-6">
                     <div class="custom-hardcoded-table admin">
-                        <table class="table-body" style="width:100%">
+                        <table class="table-body" style="min-width:749px!important;">
                             <thead class="table-head">
                                 <tr style="background-color: #fff">
                                     <td>
@@ -1569,28 +1605,11 @@
                     <br/>
                     <br/>
                 </div>
-                <div class="col-md-13">
-                    <div class="form-group row" ng-init='CM.getOptions({"Name": "orderVerificationReq", "Type": "dropdown", "masterSource": "YesNoOptions"})'>
-                        <label for="orderVerificationReq" class="simpleLookupLabel" style="max-height: initial;">
-                            Order Verification Required
-                        </label>
-                        <div class="input-group form_input form_input_orderVerificationReq">
-                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.orderVerificationReq track by item.id"
-                                ng-required="true" id="orderVerificationReq" ng-model="formValues.procurement.order.orderVerificationReq"></select>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-13">
-                    <div class="form-group row" ng-init='CM.getOptions({"Name": "closeOrder", "Type": "dropdown", "masterSource": "YesNoOptions"})'>
-                        <label for="closeOrder" class="simpleLookupLabel" style="max-height: initial;">
-                            Close the Order
-                        </label>
-                        <div class="input-group form_input form_input_closeOrder">
-                            <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.closeOrder track by item.id"
-                                ng-required="true" id="closeOrder" ng-model="formValues.procurement.order.closeOption"></select>
-                        </div>
-                    </div>
-                </div>
+                <div class="col-sm-6"></div>
+                               
+            </div>
+
+            <div class="row">
                 <div class="clearfix"></div>
                 <div class="col-sm-12">
 		            <div class="portlet">
@@ -1601,9 +1620,11 @@
 		                </div>
 		            </div>                
                 </div>	
-				<div class="col-md-6">
+				<div class="col-md-12 row">
+                    
+                    <div class="col-md-6">
                     <div class="custom-hardcoded-table admin">
-                        <table class="table-body" style="width:100%">
+                        <table class="table-body" style="min-width:734px !important">
                             <thead class="table-head">
                                 <tr style="background-color: #fff">
                                     <td>
@@ -1678,8 +1699,11 @@
                             </tbody>
                         </table>
                         <br>
-                    </div>					
-				</div>	                
+                    </div>	
+                    </div>
+                <div class="col-md-6"></div>
+                    <!-- <div class="col-md-3"></div>				 -->
+				</div>	 
             </div>
         
 

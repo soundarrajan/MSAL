@@ -189,6 +189,27 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             });
         };
 
+        ctrl.getPortVisible = function(orderId,data){
+            ctrl.PortLocationEditable = false;
+            if(orderId != null && data.status != null && data.status != undefined){
+                ctrl.isEnabledVessel = false;
+                if(data.status.name == 'Stemmed' || data.status.name == 'Confirmed' || data.status.name == 'Approved'){
+                    ctrl.PortLocationEditable = true;
+                    ctrl.isEnabledVessel = true;
+                }
+
+                // data.status.name == 'Cancelled' || data.status.name == 'Delivered' || data.status.name == 'PartiallyDelivered' || data.status.name == 'Invoiced' || data.status.name == 'PartiallyInvoiced'
+                // else if(data.status == null || $ctrl.data.status.name == 'Stemmed' || $ctrl.data.status.name == 'Confirmed' || $ctrl.data.status.name == 'Approved')
+
+            }
+            else{
+                ctrl.isEnabledVessel = false;
+                ctrl.PortLocationEditable = true;
+            }
+            
+
+        };
+
         ctrl.canCloseOrder = function() {
             let payload = {
                 Payload: ctrl.orderId
@@ -208,7 +229,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         }
 
         function setAdditionalCostAllowNegative() {
-            // debugger;
+            //  
             // get val.id, make call to get all info about additional cost
             if (window.clickOnSaveAndSend && window.orderDetails) {
                 ctrl.lists.AdditionalCost = angular.copy(window.orderDetails.lists.AdditionalCost);
@@ -449,6 +470,21 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         getOrderListForRequest();
         function loadData(data) {
             ctrl.data = data.payload;
+            ctrl.PortLocationEditable = false;
+            if(ctrl.data != undefined && ctrl.data != null){
+                if(ctrl.orderId != null && ctrl.data.status != null && ctrl.data.status != undefined){
+                   ctrl.isEnabledVessel = false;
+                    if(ctrl.relatedOrders[0].deliveryCount ==0 && ctrl.data.vesselVoyageDetailId != null && (ctrl.data.status.name == 'Stemmed' || ctrl.data.status.name == 'Confirmed' || ctrl.data.status.name == 'Approved')){
+                        ctrl.PortLocationEditable = true;
+                        ctrl.isEnabledVessel = true;
+                        
+                    }
+                }
+                else{
+                    ctrl.PortLocationEditable = true;
+                    ctrl.isEnabledVessel = false;
+                }
+            }
             $.each(ctrl.data.products, (k, v) => {
                 if ((!v.physicalSupplier || !_.get(v, 'physicalSupplier.id')) && _.get(v, 'status.name') !== 'Cancelled') {
                     ctrl.data.missingPhysicalSupplier = true;
@@ -633,6 +669,27 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             }
         }
 
+        ctrl.getVesselSchedules = function() {
+            ctrl.EnableSingleSelect = true;
+                    $scope.$broadcast('getVesselSchedules', ctrl.data.vessel.id, false);
+        };
+
+        ctrl.selectVesselSchedulesPort = function(locations) {
+            ctrl.EnableSingleSelect = false;
+            toastr.warning("Whether if the port is available in contract or not , the contract has to be reset");
+            ctrl.data.location = locations[0];
+
+            
+
+           $.each(ctrl.data.products, (k, v) => {
+            v.price =null;
+            v.contract = null;
+            ctrl.productPriceChanged(v);
+            ctrl.changedProductContract();
+            });
+
+        }
+
         function updatePageTitle() {
             if (!ctrl.data.vessel) {
                 return $state.params.title;
@@ -708,7 +765,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
          */
         function calculateProductsAmountField() {
             for (let i = 0; i < ctrl.data.products.length; i++) {
-                // debugger;
+                //  
                 productUomChg(ctrl.data.products[i]);
                 // .data.products[i].amount = +ctrl.data.products[i].confirmedQtyPrice * +ctrl.data.products[i].confirmedQuantity * +ctrl.data.products[i].price;
             }
@@ -1118,7 +1175,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                             additionalCost.confirmedQuantity = ctrl.data.products[i].confirmedQuantity;
                             // console.log(1)
                             additionalCost.quantityUom = ctrl.data.products[i].quantityUom;
-                            // debugger;
+                            //  
                             additionalCost = calculateAdditionalCostAmounts(additionalCost, ctrl.data.products[i]);
                         }
                         if (result) {
@@ -1141,7 +1198,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                   ctrl.data.status.name == 'Delivered' ||
                   ctrl.data.status.name == 'PartiallyInvoiced' ||
                   ctrl.data.status.name == 'Invoiced')) {
-                    additionalCost.disabled = true;
+                   additionalCost.disabled = true;
                 }
                 ctrl.costTypeChanged(additionalCost);
             });
@@ -1149,6 +1206,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             updateOrderSummary();
             return result;
         };
+
+
+        
 
         /**
          * Performs certain actions when the users changes the payment company:
@@ -2451,7 +2511,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             }
 
             // check products agreement type + pricing type
-            /*           debugger;
+            /*            
             $.each(ctrl.data.products, function(key,val){
                 if((val.agreementType.name.toLowerCase() == "spot") && (val.pricingType.name.toLowerCase() == "formula")){
                     var idx = key + 1;
