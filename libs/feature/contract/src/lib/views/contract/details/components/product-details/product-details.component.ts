@@ -389,9 +389,9 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
   }
 }
 @Component({
-  selector: 'shiptech-contract-product',
-  templateUrl: './contract-product.component.html',
-  styleUrls: ['./contract-product.component.scss'],
+  selector: 'shiptech-product-details',
+  templateUrl: './product-details.component.html',
+  styleUrls: ['./product-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   providers: [OrderListGridViewModel, 
@@ -406,7 +406,7 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
               },
               { provide: NGX_MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS }]
 })
-export class ContractProduct extends DeliveryAutocompleteComponent
+export class ProductDetails extends DeliveryAutocompleteComponent
   implements OnInit{
   switchTheme; //false-Light Theme, true- Dark Theme
   formValues: any;
@@ -463,11 +463,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   canChangeSpec: boolean;
   specParameterList: any;
   activeProductForSpecGroupEdit: any;
-  formulaTypeList: any;
-  systemInstumentList: any;
-  marketPriceList: any;
-  formulaPlusMinusList: any;
-  formulaFlatPercentageList: any;
+  eventsSubscription: any;
 
 
   get entityId(): number {
@@ -490,8 +486,12 @@ export class ContractProduct extends DeliveryAutocompleteComponent
      
   @Input() vesselId: number;
 
-  contractFormSubject: Subject<any> = new Subject<any>();
-
+  @Input('contractProductIndex') set _setContractProductIndex(contractProductIndex) { 
+    if (!contractProductIndex) {
+      return;
+    } 
+    this.selectedTabIndex = contractProductIndex;
+  }
 
   @Input('locationMasterList') set _setLocationMasterList(locationMasterList) { 
     if (!locationMasterList) {
@@ -500,6 +500,9 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     this.locationMasterList = _.cloneDeep(locationMasterList);
     this.locationMasterSearchList = _.cloneDeep(locationMasterList);
     this.selectedLocationList = _.cloneDeep(locationMasterList);
+    if (this.formValues.products) {
+      this.setAllowedLocations(this.selectedTabIndex);
+    }
 
   }
 
@@ -509,8 +512,12 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     } 
 
     this.productMasterList =  _.cloneDeep(productMasterList);
-    this.productMasterList =  _.cloneDeep(productMasterList);
     this.productMasterSearchList = _.cloneDeep(this.productMasterList);
+    this.selectedProductList = _.cloneDeep(this.productMasterList);
+    if (this.formValues.products) {
+      this.setAllowedProducts(this.selectedTabIndex);
+    }
+
   }
 
   @Input('specParameterList') set _setSpecParameterList(specParameterList) { 
@@ -527,45 +534,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     } 
     this.uomList = uomList;
   }
-  
-  @Input('formulaTypeList') set _setFormulaTypeList(formulaTypeList) { 
-    if (!formulaTypeList) {
-      return;
-    } 
-    this.formulaTypeList = formulaTypeList;
-  }
 
-  @Input('systemInstumentList') set _setSystemInstumentList(systemInstumentList) { 
-    if (!systemInstumentList) {
-      return;
-    } 
-    this.systemInstumentList = systemInstumentList;
-  }
-
-
-  @Input('marketPriceList') set _setMarketPriceList(marketPriceList) { 
-    if (!marketPriceList) {
-      return;
-    } 
-    this.marketPriceList = marketPriceList;
-  }
-
-  @Input('formulaFlatPercentageList') set _setFormulaFlatPercentageList(formulaFlatPercentageList) { 
-    if (!formulaFlatPercentageList) {
-      return;
-    } 
-    this.formulaFlatPercentageList = formulaFlatPercentageList;
-  }
-
-
-  @Input('formulaPlusMinusList') set _setFormulaPlusMinusList(formulaPlusMinusList) { 
-    if (!formulaPlusMinusList) {
-      return;
-    } 
-    this.formulaPlusMinusList = formulaPlusMinusList;
-  }
-
-  
 
   @Input('uomVolumeList') set _setUomVolumeList(uomVolumeList) { 
     if (!uomVolumeList) {
@@ -594,6 +563,14 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       return;
     } 
     this.formValues = formValues;
+    if (formValues.products[this.selectedTabIndex] && !formValues.products[this.selectedTabIndex].physicalSuppliers)  {
+      this.formValues.products[this.selectedTabIndex].physicalSuppliers = [];
+    }
+    for (let i = 0; i < this.formValues.products.length; i++) {
+      if (this.formValues.products[i].product) {
+        this.getSpecGroupByProduct(this.formValues.products[i].product.id, this.formValues.products[i].specGroup);
+      }
+    }
   }
 
   @Input('generalTenantSettings') set _setGeneralTenantSettings(generalTenantSettings) { 
@@ -608,6 +585,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   expandLocationPopUp = false;
   array = [0,1,2,3,4,5,6,7,8,9,10];
   isMenuOpen = true;
+  @Input() events: Observable<void>;
 
 
   constructor(
@@ -643,9 +621,36 @@ export class ContractProduct extends DeliveryAutocompleteComponent
 
   ngOnInit(){  
     this.entityName = 'Contract';
+    this.getPhysicalSupplierList();
+    this.eventsSubscription = this.events.subscribe((data) => this.setContractForm(data));
+
 
 
   }
+
+  setContractForm(form) {
+    this.formValues = form;
+    this.changeDetectorRef.detectChanges();
+    console.log(this.formValues);
+  }
+
+  
+  async getPhysicalSupplierList() {
+    this.physicalSupplierList = await this.legacyLookupsDatabase.getPhysicalSupplierList();
+    console.log(this.physicalSupplierList);
+  }
+
+
+  getHeaderNameSelector1(): string {
+    switch (this._autocompleteType) {
+      case knownMastersAutocomplete.physicalSupplier:
+        return knowMastersAutocompleteHeaderName.physicalSupplier;
+      default:
+        return knowMastersAutocompleteHeaderName.physicalSupplier;
+    }
+  }
+
+  
 
 
   searchLocations(value: string): void {
@@ -662,6 +667,39 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     this.changeDetectorRef.detectChanges();
   }
 
+    
+  openAddLocationSelect() {
+    this.searchLocationInput = null;
+    if (this.locationMasterList) {
+      this.locationMasterSearchList = [ ... this.locationMasterList];
+      this.changeDetectorRef.detectChanges();
+    }
+    this.mySelect.close();
+    this.mySelect.open();
+
+  }
+
+
+  clickAdd(key) {
+    console.log('as');
+    let trigger = this.locationMenuTrigger._results;
+    for (let i = 0 ; i < this.locationMenuTrigger._results.length; i++) {
+      if (i != key) {
+        trigger[i].closeMenu();
+      } else {
+        trigger[i].openMenu();
+      }
+    }
+
+    console.log(trigger);
+    this.isMenuOpen = true;
+
+    
+  }
+
+  onClickedOutside(event) {
+    console.log(event);
+  }
 
   
   addProductToContract() {
@@ -929,6 +967,69 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   };
 
 
+  openSpecGroupPopUp(product) {
+    this.activeProductForSpecGroupEdit = product;
+    var productId = product.product.id;
+    var data = {
+        Payload: {
+            Filters: [
+                {
+                    ColumnName: 'ContractProductId',
+                    Value: product.id ? product.id : null
+                },
+                {
+                    ColumnName: 'SpecGroupId',
+                    Value: product.specGroup.id
+                },
+                {
+                    ColumnName: 'ProductId',
+                    Value: productId
+                }
+            ]
+        }
+    };
+    if (this.formValues.status.name != 'Confirmed' && product.id != 0) {
+      this.modalSpecGroupParametersEditable = true;
+      this.canChangeSpec = true;
+
+    }
+    this.spinner.show();
+    this.contractService
+    .getSpecForProcurement(data)
+    .pipe(
+      finalize(() => {
+        this.spinner.hide();
+      })
+    )
+    .subscribe((response: any) => {
+      if (typeof response == 'string') {
+        this.toastr.error(response);
+      } else {
+        console.log(response);
+        if (response) {
+          this.modalSpecGroupParameters = response;
+          for (let i = 0; i < this.modalSpecGroupParameters.length; i++) {
+              this.modalSpecGroupParameters[i].specParameter.name = this.decodeSpecificField(this.modalSpecGroupParameters[i].specParameter.name);
+          }
+          const dialogRef = this.dialog.open(ProductSpecGroupModalComponent, {
+            width: '50%',
+            data:  {
+              'modalSpecGroupParameters': this.modalSpecGroupParameters,
+              'modalSpecGroupParametersEditable': this.modalSpecGroupParametersEditable,
+              'specParameterList': this.specParameterList,
+              'activeProductForSpecGroupEdit': this.activeProductForSpecGroupEdit
+            }
+          });
+      
+          dialogRef.afterClosed().subscribe(result => {
+            console.log(result);
+          });
+        }
+      }
+    });
+   
+  }
+
  
   decodeSpecificField(modelValue) {
     let decode = function(str) {
@@ -952,7 +1053,6 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     this.selectedLocation = null;
     this.formValues.products[index].location = { ... objectLocation };
     this.changeDetectorRef.detectChanges();
-    this.contractFormSubject.next(this.formValues);
 
   }
 
@@ -969,8 +1069,6 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     this.selectedProduct = null;
     this.changeDetectorRef.detectChanges();
     this.addProductToConversion(index, null, true);
-    this.contractFormSubject.next(this.formValues);
-
   }
 
   addProductToConversion(index, allowProduct, isMainProduct) {

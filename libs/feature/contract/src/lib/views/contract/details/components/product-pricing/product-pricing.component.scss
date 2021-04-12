@@ -499,3 +499,15 @@
   opacity: 0.5;
   background-color: black;
 }
+
+
+.create-new-formula-icon::before {
+  content: url(../../../../../../../../../../assets/layout/images/pages/add-product-dropdown.svg);
+}
+
+.create-new-formula-icon {
+  width: 25px;
+  height: 25px;
+  position: relative;
+  top: 11px;
+}

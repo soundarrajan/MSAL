@@ -1,0 +1,208 @@
+
+<div class="row col-md-12 create-new-formula-modal-top">
+  <div class="col-md-12">
+    <a (click)="closeClick()" class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all close-button create-new-formula-close-button" role="button">
+      <span class="pi pi-times cl-content"></span>
+    </a>
+  </div>
+  <div class="col-md-12">
+    <div style="float: left;" class="header-create-new-formula">
+      Pricing Details
+    </div>
+    <div  style="float: right;">
+      <button  type="button" mat-raised-button class="new-formula-button cancel-button">
+        Cancel
+      </button>  
+      <button  type="button" mat-raised-button class="new-formula-button">
+        Save
+      </button>    
+    </div>
+  </div>
+</div>
+<div mat-dialog-content>
+  <div class="row d-flex col-md-12">
+    <div class="col-md-6 pricing-formula-tab" style="display: flex;justify-content: flex-start;">
+      <div class="pricing-formula-tab-header col-md-12">
+        <div [ngClass]="{'selected-tab': selectedFormulaTab == 'Pricing formula', 
+          'unselected-tab': selectedFormulaTab != 'Pricing formula'}"
+          (click)="selectedFormulaTab = 'Pricing formula'">
+          <div class="value">Pricing formula</div>
+        </div>
+        <div class="border_line"></div>
+        <div [ngClass]="{'selected-tab': selectedFormulaTab == 'Pricing schedule', 
+          'unselected-tab': selectedFormulaTab != 'Pricing schedule'}"
+          (click)="selectedFormulaTab = 'Pricing schedule'">
+          <div class="value">Pricing schedule</div>
+        </div>
+        <div class="border_line"></div>
+        <div [ngClass]="{'selected-tab': selectedFormulaTab == 'Discount rules',
+          'unselected-tab': selectedFormulaTab != 'Discount rules'}"
+          (click)="selectedFormulaTab = 'Discount rules'">
+          <div class="value">Discount rules</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}" style="width: 100% !important;">
+        <mat-form-field class="without-search" appearance="legacy">
+          <mat-label>Formula Name</mat-label>
+          <input matInput
+              [(ngModel)]="formValues.name"
+              placeholder="Formula Name"
+              autocomplete="off">
+          </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div class="row d-flex col-md-12">
+    <div class="col-md-12">
+      <div class="pricing-type-container">
+        <div class="col-md-12 pricing-container">
+          <div class="pricing-container-formula-list row col-md-6 no-padding" style="margin-top: 15px;">
+            <div class="col-md-12 pricing-container-formula-list-header">
+              Pricing Type
+            </div>
+            <div class="col-md-12">
+              <mat-radio-group
+              [(ngModel)]="formValues.formulaType.id"
+              class="pricing-container-radio-group">
+              <mat-radio-button class="pricing-container-radio-button" *ngFor="let option of formulaTypeList" [value]="option.id">
+                {{option.name}}
+              </mat-radio-button>
+            </mat-radio-group>
+            </div>
+          </div>
+          <div class="row" *ngIf="formValues.formulaType && formValues.formulaType.id == 1">
+            <div class="col-md-12 formula-description-header">
+              Formula description
+            </div>
+            <div class="col-md-12 d-flex" style="margin-top: 15px;">
+              <div class="custom-form-field create-new-formula-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+                <div class="d-flex">
+                  <mat-form-field class="with-search" appearance="legacy">
+                    <mat-label>System instument</mat-label>
+                    <input class="free-text-field" 
+                            type="text"
+                            matInput 
+                            [(ngModel)]="formValues.simpleFormula.systemInstrument"
+                            [matAutocomplete]="auto"
+                            placeholder="System instument">
+                    <mat-autocomplete #auto="matAutocomplete" 
+                                      class="darkPanelAuto"
+                                      [displayWith]="displayFn"
+                                      (optionSelected)="selectSystemInstrument($event)">
+                        <mat-option *ngFor="let option of filterSystemInstrumenttList()" 
+                              [value]="option">
+                            {{option.name}}
+                        </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                  <button 
+                        class="search-icon" appMasterSelectorTrigger [masterSelector]="masterSelector" #masterSelectorTrigger="masterSelectorTrigger" [header]="getHeaderNameSelector()">
+                    <div class="img">
+                      <ng-template cdkPortal #masterSelector="cdkPortal" >
+                        <shiptech-shared-master-selector (selectedChange)="selectorSystemInstumentSelectionChange($event); masterSelectorTrigger.close()" (shouldCloseModal)="masterSelectorTrigger.close()" [selectorType]="autocompleteSystemInstrument"
+                                                      [disabled]="disabled"
+                                                      [entityName]="entityName"
+                                                      [headerName]="getHeaderNameSelector()"
+                        ></shiptech-shared-master-selector>
+                      </ng-template> 
+                    </div>
+                  </button>
+                </div>
+              </div>
+              <div class="custom-form-field create-new-formula-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+                <mat-form-field class="without-search" appearance="legacy">
+                  <mat-label>Price Type</mat-label>
+                  <mat-select 
+                            [(ngModel)]="formValues.simpleFormula.priceType"
+                            [disableOptionCentering]="true"
+                            panelClass="general-information-select-container"
+                            [compareWith]="compareUomObjects"
+                            placeholder="Price Type">
+                      <mat-option *ngFor="let option of marketPriceList" [value]="option">
+                          {{option.name}}
+                      </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="custom-form-field create-new-formula-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+                <mat-form-field class="without-search" appearance="legacy">
+                  <mat-label>Premium/Discount</mat-label>
+                  <mat-select 
+                            [(ngModel)]="formValues.simpleFormula.plusMinus"
+                            [disableOptionCentering]="true"
+                            panelClass="general-information-select-container"
+                            [compareWith]="compareUomObjects"
+                            placeholder="Premium/Discount">
+                      <mat-option *ngFor="let option of formulaPlusMinusList" [value]="option">
+                          {{option.name}}
+                      </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="custom-form-field create-new-formula-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+                <mat-form-field class="without-search" appearance="legacy">
+                  <mat-label>Amount</mat-label>
+                  <input matInput
+                      [(ngModel)]="formValues.simpleFormula.amount"
+                      placeholder="Amount"
+                      autocomplete="off"
+                      required
+                      amountFormat
+                      [disabled]= "formValues.simpleFormula.plusMinus.id == 3">
+                  </mat-form-field>
+              </div>
+              <div class="custom-form-field create-new-formula-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+                <mat-form-field class="without-search" appearance="legacy">
+                  <mat-label>Flat/percentage</mat-label>
+                  <mat-select 
+                            [(ngModel)]="formValues.simpleFormula.flatPercentage"
+                            [disableOptionCentering]="true"
+                            panelClass="general-information-select-container"
+                            [compareWith]="compareUomObjects"
+                            placeholder="Flat/percentage"
+                            [disabled]= "formValues.simpleFormula.plusMinus.id == 3">
+                      <mat-option *ngFor="let option of formulaFlatPercentageList" [value]="option">
+                          {{option.name}}
+                      </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="custom-form-field create-new-formula-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+                <mat-form-field class="without-search" appearance="legacy">
+                  <mat-label>Uom</mat-label>
+                  <mat-select 
+                            [(ngModel)]="formValues.simpleFormula.uom"
+                            [disableOptionCentering]="true"
+                            panelClass="general-information-select-container"
+                            [compareWith]="compareUomObjects"
+                            placeholder="Uom"
+                            [disabled]= "formValues.simpleFormula.plusMinus.id == 3">
+                      <mat-option *ngFor="let option of uomList" [value]="option">
+                          {{option.name}}
+                      </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+            <div>
+             
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div mat-dialog-actions style="display: none;">
+  <button mat-button [mat-dialog-close]="data.email" cdkFocusInitial>Yes</button>
+</div>
+ 
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-spin-clockwise-fade">
+</ngx-spinner>

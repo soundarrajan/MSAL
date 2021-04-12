@@ -28,6 +28,7 @@ import { ProductListSelectorGridViewModel } from '../view-models/product-model/p
 import { PhysicalSupplierListSelectorGridViewModel } from '../view-models/physical-supplier-model/physical-supplier-list-selector-grid.view-model';
 import { SellerListSelectorGridViewModel } from '../view-models/seller-model/seller-list-selector-grid.view-model';
 import { CompanyListSelectorGridViewModel } from '../view-models/company-model/company-list-selector-grid.view-model';
+import { SystemInstrumentListSelectorGridViewModel } from '../view-models/system-instrument-model/system-instrument-list-selector-grid.view-model';
 
 @Component({
   selector: 'shiptech-shared-master-selector',
@@ -47,7 +48,8 @@ import { CompanyListSelectorGridViewModel } from '../view-models/company-model/c
     ProductListSelectorGridViewModel,
     PhysicalSupplierListSelectorGridViewModel,
     SellerListSelectorGridViewModel,
-    CompanyListSelectorGridViewModel
+    CompanyListSelectorGridViewModel,
+    SystemInstrumentListSelectorGridViewModel
   ],
   exportAs: 'sharedMasterSelector',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -152,6 +154,14 @@ export class SelectorComponent
       case knownMastersAutocomplete.physicalSupplier: {
         this.gridViewModel = this.injector.get(
           PhysicalSupplierListSelectorGridViewModel
+        );
+        this.gridViewModel.entityId = this.entityId;
+        this.gridViewModel.entityName = this.entityName;
+        break;
+      }
+      case knownMastersAutocomplete.systemInstrument: {
+        this.gridViewModel = this.injector.get(
+          SystemInstrumentListSelectorGridViewModel
         );
         this.gridViewModel.entityId = this.entityId;
         this.gridViewModel.entityName = this.entityName;

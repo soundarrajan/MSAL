@@ -1,6 +1,7 @@
 
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { IServerGridInfo } from '@shiptech/core/grid/server-grid/server-grid-request-response';
+import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
 
 export interface IProductListDto extends IDisplayLookupDto {
   id: number;
@@ -124,4 +125,17 @@ export interface ICompanyListRequest extends IServerGridInfo {}
 export interface ICompanyListResponse {
   payload: ICompanyListDto[];
   matchedCount: number;
+}
+
+
+export interface ISystemInstrumentListDto extends IDisplayLookupDto {
+  id: number;
+  name: string;
+  code: string;
+  marketInstrument: ILookupDto;
+  createdBy: IDisplayLookupDto;
+  createdOn: IDisplayLookupDto;
+  lastModifiedBy: IDisplayLookupDto;
+  lastModifiedOn: IDisplayLookupDto;
+  isDeleted: boolean;
 }
