@@ -9350,9 +9350,17 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
             if (index == "tanks") {
                 return;
             }
-            if (!$scope.formValues.products[index].conversionFactors) {
-                $scope.formValues.products[index].conversionFactors = [];
+            if($scope.formValues.tradeBookMappings.length>0 && $scope.formValues.tradeBookMappings.count!=0){
+                if (!$scope.formValues.tradeBookMappings[index].conversionFactors) {
+                    $scope.formValues.tradeBookMappings[index].conversionFactors = [];
+                }
+            }else{
+                if (!$scope.formValues.products[index].conversionFactors) {
+                    $scope.formValues.products[index].conversionFactors = [];
+                }
+                
             }
+  
             let selectedProduct, isAlreadyAdded = 0, indexDeleted = -1;
             let payload;
             setTimeout(() => {

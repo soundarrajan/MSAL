@@ -851,6 +851,7 @@
                                                 <div class="row">
                                                     <label class="control-label col-md-4">
                                                         {{ $ctrl.tenantSettings.serviceDisplayName.name + ' Code' | translate }}
+                                                        <span style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;"> * </span>
                                                     </label>
                                                     <div class="form-group-sm00">
                                                         <div class="input-group col-md-8 col-sm-12">
@@ -893,13 +894,6 @@
                                                             ng-model="location.terminal"  data-original-title="{{ location.descriptions }}" class="form-control pull-left" ng-required="$ctrl.requestTenantSettings.isRequestTerminalMandatory"></select>
                                                         </div>
                                                     </div>
-
-                                                    <!-- <div class="form-group-sm00">
-                                                        <div class="input-group col-md-8 col-sm-12">
-                                                            <select name ="terminal" ng-options="terminal as terminal.descriptions for terminal in locationTerminal track by terminal.terminalCode" 
-                                                            ng-model="location.terminal"  data-original-title="{{ location.descriptions }}" class="form-control pull-left" ng-required="$ctrl.requestTenantSettings.isRequestTerminalMandatory"></select>
-                                                        </div>
-                                                    </div> -->
                                                 </div>
                                             </div>
 
