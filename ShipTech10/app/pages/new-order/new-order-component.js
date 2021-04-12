@@ -674,12 +674,60 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     $scope.$broadcast('getVesselSchedules', ctrl.data.vessel.id, false);
         };
 
+        $scope.portValuechange = function(val){
+            // if(ctrl.data.oldLocation == null){
+                ctrl.data.oldLocation = 
+                    {
+                        clientIpAddress: null,
+                        code: null,
+                        collectionName: null,
+                        customNonMandatoryAttribute1: null,
+                        displayName: null,
+                        id: val.id,
+                        internalName: null,
+                        isDeleted: false,
+                        modulePathUrl: null,
+                        name: val.name,
+                        userAction: null
+                    }
+                
+               // ctrl.data.oldLocation = angular.copy(ctrl.data.location);
+            // }
+            // if(ctrl.data.location == null){
+                ctrl.data.location = 
+                    {
+                        clientIpAddress: null,
+                        code: null,
+                        collectionName: null,
+                        customNonMandatoryAttribute1: null,
+                        displayName: null,
+                        id: val.id,
+                        internalName: null,
+                        isDeleted: false,
+                        modulePathUrl: null,
+                        name: val.name,
+                        userAction: null
+                    }
+                
+            // }
+           
+           
+
+        }
         ctrl.selectVesselSchedulesPort = function(locations) {
             ctrl.EnableSingleSelect = false;
+            ctrl.data.oldLocation = angular.copy(ctrl.data.location);
             toastr.warning("Whether if the port is available in contract or not , the contract has to be reset");
-            ctrl.data.location = locations[0];
+            // ctrl.data.location = locations[0];
+            ctrl.data.location.name = locations[0].locationName;
+            ctrl.data.location.name = locations[0].locationName;
+            ctrl.data.location.displayName = locations[0].locationId;
 
-            
+            // code: "JPABU"
+            // displayName: "ABURATSU"
+            // id: 595
+            // name: "ABURATSU"
+
 
            $.each(ctrl.data.products, (k, v) => {
             v.price =null;

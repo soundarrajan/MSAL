@@ -562,7 +562,8 @@
                                         </span>
                                     </span>
                                 </div>
-                               
+                               <!-- Ctrl.data.location: {{$ctrl.data.location}} -->
+                               <!-- $ctrl.lists.Location: {{$ctrl.lists.Location}} -->
                                 <!-- Status: {{$ctrl.STATUS}}
                                 ctrl: {{$ctrl}} -->
                                     <span class="clearfix"></span>
@@ -865,7 +866,7 @@
                                                                 <input class="typeahead form-control" id="id_{{ $ctrl.portFields.locationName.name }}"
                                                                     name="{{ $ctrl.portFields.locationName.caption | translate }}"
                                                                     ng-click="$ctrl.initLookup($ctrl.portFields.locationName.name, $ctrl.data.location)"
-                                                                    ng-model="$ctrl.data.location.locationName" decode-input-format required typeahead-append-to-body="true"
+                                                                    ng-model="$ctrl.data.location" decode-input-format required typeahead-append-to-body="true"
                                                                     typeahead-editable="false" typeahead-on-select="$ctrl.selectPort($item.id)"
                                                                     uib-typeahead="location as location.name for location in $ctrl.lists.Location | typeaheadCustomFilter:$viewValue:'name'" />
                                                                     <span ng-if="!$ctrl.isEnabledVessel" class="input-group-addon ng-scope"
@@ -881,7 +882,7 @@
                                                                         <a class=" btn default">
                                                                             <i class="fa fa-anchor"></i>
                                                                         </a>
-                                                                    </span>
+                                                                    </span> 
                                                             </div>
                                                         </div>
                                                     </div>
