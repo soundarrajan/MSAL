@@ -435,6 +435,7 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
   statusColorCode: any;
   buttonClicked: any;
   baseOrigin: string;
+  bargeId: any;
 
   @Input() set autocompleteType(value: string) {
     this._autocompleteType = value;
@@ -458,6 +459,9 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
       return;
     } 
     this.formValues = formValues;
+    if (this.formValues.barge) {
+      this.bargeId = this.formValues.barge.id;
+    }
   }
 
   @Input('relatedDeliveries') set _relatedDeliveries(relatedDeliveries) {
@@ -592,6 +596,9 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
     console.log('aici');
     console.log(form);
     this.formValues = form;
+    if (this.formValues.barge) {
+      this.bargeId = this.formValues.barge.id;
+    }
     this.changeDetectorRef.detectChanges();
   }
 
@@ -975,5 +982,14 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
 
   getRelatedDeliveryLink(deliveryId) {
     return `${this.baseOrigin}/v2/delivery/delivery/${deliveryId}/details`;
+  }
+
+  setBarge(value) {
+    let findBarge = _.find(this.bargeList, function(object){
+      return object.id == value;
+    });
+    if (findBarge != -1) {
+      this.formValues.barge = findBarge;
+    }
   }
 }

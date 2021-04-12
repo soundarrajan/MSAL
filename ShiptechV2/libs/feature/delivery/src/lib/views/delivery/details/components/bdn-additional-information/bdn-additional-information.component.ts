@@ -720,7 +720,5 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
   
   }
 
- 
-
   
 }

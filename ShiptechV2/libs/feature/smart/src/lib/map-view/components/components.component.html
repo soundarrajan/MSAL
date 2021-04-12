@@ -1,0 +1,65 @@
+<div id="v2components">
+  <div style="display: flex;justify-content: space-around;">
+    <div>
+      <h3>Vessel Popup</h3>
+      <app-vessel-popup [status]="'higher-warning-view'"></app-vessel-popup>
+      <app-vessel-popup [status]="'minor-warning-view'"></app-vessel-popup>
+      <app-vessel-popup></app-vessel-popup>
+    </div>
+    <div>
+      <h3>Port Popup</h3>
+      <app-port-popup [status]="'higher-warning-view'"></app-port-popup>
+      <app-port-popup [status]="'minor-warning-view'"></app-port-popup>
+      <app-port-popup></app-port-popup>
+    </div>
+  </div>
+  <div>
+    <h3>Table Legends</h3>
+    <app-custom-stepper></app-custom-stepper>
+  </div>
+  <div>
+    <div style="float: left;">
+      <div class="side-nav">
+        <div class="side-nav-icon"><img src="../../../assets/customicons/checklist.svg" alt="expand-icon">B Plan
+        </div>
+      </div>
+      <div style="float: right;position: relative;top: 60px;">
+        <div class="side-nav">
+          <div class="side-nav-icon"><img src="../../../assets/customicons/route.svg" alt="expand-icon">Route
+          </div>
+        </div>
+      </div>
+      <div style="float: right;position: relative;top:120px">
+        <div class="side-nav">
+          <div class="side-nav-icon"><img src="../../../assets/customicons/create-request.svg" alt="expand-icon">Create
+            Request
+          </div>
+        </div>
+      </div>
+      <div style="float: right;position: relative;top:180px">
+        <div class="side-nav">
+          <div class="side-nav-icon message">
+            <div class="comment-icon"></div>
+            <div>Message</div>
+            <div class="comment-count-position">
+              <div class="comment-count">3</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div>
+    <h3 style="text-align: right;">Smart Messenger</h3>
+    <app-smart-messenger></app-smart-messenger>
+  </div> -->
+  <div>
+    <h3 style="text-align: right;">Notifications</h3>
+    <app-notifications></app-notifications>
+  </div>
+  <div>
+    <h3 style="text-align: center;">Warning Popup</h3>
+    <app-confirmation-popup></app-confirmation-popup>
+  </div>
+</div>

@@ -364,7 +364,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     console.log('aici');
     this.formValues = form;
     if (this.formValues.deliveryProducts) {
-      this.setDeliveredQuantityUomList(0);
+      this.setDeliveredQuantityUomList(this.deliveryProductIndex);
     }
     console.log(this.formValues);  
     //this.changeDetectorRef.detectChanges();
@@ -913,9 +913,13 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
         return object.name == bdnUom.name && object.id == bdnUom.id;
       });
       if (verifyIfBdnUomIsMassUom) {
-        this.deliveredQuantityUoms = [...this.uomVolume];
+        if (this.uomVolume) {
+          this.deliveredQuantityUoms = [...this.uomVolume];
+        }
       } else {
-        this.deliveredQuantityUoms = [...this.uomMass];
+        if (this.uomMass) {
+          this.deliveredQuantityUoms = [...this.uomMass];
+        }
       }
     }
   }
@@ -942,6 +946,21 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     console.log(this.formValues.pumpingRate);
     console.log(this.formValues.pumpingRateUom);
   };
+
+
+  // Only Number
+  keyPressNumber(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (inp == '.' || inp == ',') {
+      return true;
+    }
+    if (/^[-,+]*\d{1,6}(,\d{3})*(\.\d*)?$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
 
 
   
