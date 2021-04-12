@@ -109,6 +109,11 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   uomVolumeList: any;
   contractConversionFactorOptions: any;
   specParameterList: any;
+  formulaTypeList: any;
+  systemInstumentList: any;
+  marketPriceList: any;
+  formulaPlusMinusList: any;
+  formulaFlatPercentageList: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -205,7 +210,17 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       this.uomVolumeList = this.setListFromStaticLists('UomVolume');
       this.contractConversionFactorOptions = this.setListFromStaticLists('ContractConversionFactorOptions');
       this.specParameterList = this.setListFromStaticLists('SpecParameter');
+      this.formulaTypeList = this.setListFromStaticLists('FormulaType');
+      this.systemInstumentList = this.setListFromStaticLists('SystemInstrument');
+      this.marketPriceList = this.setListFromStaticLists('MarketPriceType');
+      this.formulaPlusMinusList = this.setListFromStaticLists('FormulaPlusMinus');
+      this.formulaFlatPercentageList = this.setListFromStaticLists('FormulaFlatPercentage');
 
+  
+
+
+
+  
       console.log(this.staticLists);
     });
   }

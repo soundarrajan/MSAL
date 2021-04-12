@@ -124,6 +124,10 @@ import { ContractProduct } from './views/contract/details/components/contract-pr
 import { LocationMasterRouteResolver } from './views/contract/details/location-master-route.resolver';
 import { ProductMasterRouteResolver } from './views/contract/details/product-master-route.resolver';
 import { ProductSpecGroupModalComponent } from './views/contract/details/components/product-spec-group-modal/product-spec-group-modal.component';
+import { ProductDetails } from './views/contract/details/components/product-details/product-details.component';
+import { ProductPricing } from './views/contract/details/components/product-pricing/product-pricing.component';
+import { CreateNewFormulaModalComponent } from './views/contract/details/components/create-new-formula-modal/create-new-formula-modal.component';
+import { AmountTenantFormatDirective } from './views/contract/details/directives/amount-tenant-format.directive';
 
 
 @NgModule({
@@ -227,20 +231,25 @@ import { ProductSpecGroupModalComponent } from './views/contract/details/compone
     GeneralInformationContract,
     ContractQuantity,
     ContractProduct,
+    ProductDetails,
+    ProductPricing,
     AutocompleteInputComponent,
     ContractDetailsToolbarComponent,
     ContractDetailsDocumentsComponent,
     QuantityTenantFormatDirective,
+    AmountTenantFormatDirective,
     NumberOnlyDirective,
-    ProductSpecGroupModalComponent
+    ProductSpecGroupModalComponent,
+    CreateNewFormulaModalComponent
     //PSpinnerDisableKeysSpinDirective,
     //PSpinnerTenantFormatDirective
   ],
-  entryComponents: [ProductSpecGroupModalComponent],
+  entryComponents: [ProductSpecGroupModalComponent, CreateNewFormulaModalComponent],
   exports: [
     MainContractComponent,
     QuantityTenantFormatDirective,
-    NumberOnlyDirective 
+    NumberOnlyDirective,
+    AmountTenantFormatDirective
    // PSpinnerDisableKeysSpinDirective,
     //PSpinnerTenantFormatDirective
   ],

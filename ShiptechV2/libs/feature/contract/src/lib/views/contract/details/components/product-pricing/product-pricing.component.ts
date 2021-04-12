@@ -60,6 +60,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ProductSpecGroupModalComponent } from '../product-spec-group-modal/product-spec-group-modal.component';
 import { OVERLAY_KEYBOARD_DISPATCHER_PROVIDER_FACTORY } from '@angular/cdk/overlay/dispatchers/overlay-keyboard-dispatcher';
+import { CreateNewFormulaModalComponent } from '../create-new-formula-modal/create-new-formula-modal.component';
 
 
 
@@ -389,9 +390,9 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
   }
 }
 @Component({
-  selector: 'shiptech-contract-product',
-  templateUrl: './contract-product.component.html',
-  styleUrls: ['./contract-product.component.scss'],
+  selector: 'shiptech-product-pricing',
+  templateUrl: './product-pricing.component.html',
+  styleUrls: ['./product-pricing.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   providers: [OrderListGridViewModel, 
@@ -406,7 +407,7 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
               },
               { provide: NGX_MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS }]
 })
-export class ContractProduct extends DeliveryAutocompleteComponent
+export class ProductPricing extends DeliveryAutocompleteComponent
   implements OnInit{
   switchTheme; //false-Light Theme, true- Dark Theme
   formValues: any;
@@ -463,6 +464,8 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   canChangeSpec: boolean;
   specParameterList: any;
   activeProductForSpecGroupEdit: any;
+  eventsSubscription: any;
+  selectedVal: string;
   formulaTypeList: any;
   systemInstumentList: any;
   marketPriceList: any;
@@ -490,36 +493,14 @@ export class ContractProduct extends DeliveryAutocompleteComponent
      
   @Input() vesselId: number;
 
-  contractFormSubject: Subject<any> = new Subject<any>();
-
-
-  @Input('locationMasterList') set _setLocationMasterList(locationMasterList) { 
-    if (!locationMasterList) {
+  @Input('contractProductIndex') set _setContractProductIndex(contractProductIndex) { 
+    if (!contractProductIndex) {
       return;
     } 
-    this.locationMasterList = _.cloneDeep(locationMasterList);
-    this.locationMasterSearchList = _.cloneDeep(locationMasterList);
-    this.selectedLocationList = _.cloneDeep(locationMasterList);
+    this.selectedTabIndex = contractProductIndex;
+    this.selectedVal = this.formValues.products[contractProductIndex].isFormula ? 'formula' : 'fixed';
 
   }
-
-  @Input('productMasterList') set _setProductMasterList(productMasterList) { 
-    if (!productMasterList) {
-      return;
-    } 
-
-    this.productMasterList =  _.cloneDeep(productMasterList);
-    this.productMasterList =  _.cloneDeep(productMasterList);
-    this.productMasterSearchList = _.cloneDeep(this.productMasterList);
-  }
-
-  @Input('specParameterList') set _setSpecParameterList(specParameterList) { 
-    if (!specParameterList) {
-      return;
-    } 
-    this.specParameterList = specParameterList;
-  }
-
 
   @Input('uomList') set _setUomList(uomList) { 
     if (!uomList) {
@@ -527,12 +508,26 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     } 
     this.uomList = uomList;
   }
-  
+
   @Input('formulaTypeList') set _setFormulaTypeList(formulaTypeList) { 
     if (!formulaTypeList) {
       return;
     } 
     this.formulaTypeList = formulaTypeList;
+  }
+
+  @Input('marketPriceList') set _setMarketPriceList(marketPriceList) { 
+    if (!marketPriceList) {
+      return;
+    } 
+    this.marketPriceList = marketPriceList;
+  }
+
+  @Input('formulaPlusMinusList') set _setFormulaPlusMinusList(formulaPlusMinusList) { 
+    if (!formulaPlusMinusList) {
+      return;
+    } 
+    this.formulaPlusMinusList = formulaPlusMinusList;
   }
 
   @Input('systemInstumentList') set _setSystemInstumentList(systemInstumentList) { 
@@ -542,14 +537,6 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     this.systemInstumentList = systemInstumentList;
   }
 
-
-  @Input('marketPriceList') set _setMarketPriceList(marketPriceList) { 
-    if (!marketPriceList) {
-      return;
-    } 
-    this.marketPriceList = marketPriceList;
-  }
-
   @Input('formulaFlatPercentageList') set _setFormulaFlatPercentageList(formulaFlatPercentageList) { 
     if (!formulaFlatPercentageList) {
       return;
@@ -557,43 +544,12 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     this.formulaFlatPercentageList = formulaFlatPercentageList;
   }
 
-
-  @Input('formulaPlusMinusList') set _setFormulaPlusMinusList(formulaPlusMinusList) { 
-    if (!formulaPlusMinusList) {
-      return;
-    } 
-    this.formulaPlusMinusList = formulaPlusMinusList;
-  }
-
-  
-
-  @Input('uomVolumeList') set _setUomVolumeList(uomVolumeList) { 
-    if (!uomVolumeList) {
-      return;
-    } 
-    this.uomVolumeList = uomVolumeList;
-  }
-
-  
-  @Input('uomMassList') set _setUomMassList(uomMassList) { 
-    if (!uomMassList) {
-      return;
-    } 
-    this.uomMassList = uomMassList;
-  }
-
-  @Input('contractConversionFactorOptions') set _setContractConversionFactorOptions(contractConversionFactorOptions) { 
-    if (!contractConversionFactorOptions) {
-      return;
-    } 
-    this.contractConversionFactorOptions = contractConversionFactorOptions;
-  }
-
   @Input('model') set _setFormValues(formValues) { 
     if (!formValues) {
       return;
     } 
     this.formValues = formValues;
+
   }
 
   @Input('generalTenantSettings') set _setGeneralTenantSettings(generalTenantSettings) { 
@@ -608,6 +564,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   expandLocationPopUp = false;
   array = [0,1,2,3,4,5,6,7,8,9,10];
   isMenuOpen = true;
+  @Input() events: Observable<void>;
 
 
   constructor(
@@ -643,454 +600,57 @@ export class ContractProduct extends DeliveryAutocompleteComponent
 
   ngOnInit(){  
     this.entityName = 'Contract';
+    this.eventsSubscription = this.events.subscribe((data) => this.setContractForm(data));
+
 
 
   }
 
-
-  searchLocations(value: string): void {
-    let filterLocations = this.locationMasterList.filter((location) => location.name.toLowerCase().includes(value));
-    console.log(filterLocations);
-    this.locationMasterSearchList = [ ... filterLocations];
+  setContractForm(form) {
+    this.formValues = form;
     this.changeDetectorRef.detectChanges();
-  }
-
-  searchProducts(value: string): void {
-    let filterProducts = this.productMasterList.filter((location) => location.name.toLowerCase().includes(value));
-    console.log(filterProducts);
-    this.productMasterSearchList = [ ... filterProducts];
-    this.changeDetectorRef.detectChanges();
-  }
-
-
-  
-  addProductToContract() {
-    console.log(this.formValues);
-    let emptyProductObj = {
-      id: 0,
-      details: [
-        {
-          contractualQuantityOption: {
-              id: 1,
-              name: 'TotalContractualQuantity',
-              code: '',
-              collectionName: null
-          },
-          id: 0,
-          uom : this.generalTenantSettings.tenantFormats.uom
-        }
-      ],
-      additionalCosts: [],
-      fixedPrice: true,
-      mtmFixed: true, 
-      specGroup: null,
-      dealDate: null,
-      physicalSuppliers: [],
-      allowedProducts: [],
-      allowedLocations: []
-    };
-    if (this.formValues) {
-        if (!this.formValues.products) {
-            this.formValues.products = [];
-            this.formValues.products.push(emptyProductObj);
-        } else {
-            this.formValues.products.push(emptyProductObj);
-        }
-    } else {
-        this.formValues = {};
-        this.formValues.products = [];
-        this.formValues.products.push(emptyProductObj);
-    };
-
-    this.selectedTabIndex =  this.formValues.products.length - 1;
-    this.setAllowedLocations(this.selectedTabIndex);
-    this.setAllowedProducts(this.selectedTabIndex);
-    this.changeDetectorRef.detectChanges();
-
     console.log(this.formValues);
   }
 
 
-  setAllowedLocations(selectedTabIndex) {
-    this.selectedLocationList = _.cloneDeep(this.locationMasterList);
-    let contractProduct = this.formValues.products[selectedTabIndex];
-    if (contractProduct.allowedLocations && contractProduct.allowedLocations.length) {
-      for (let i = 0; i < contractProduct.allowedLocations.length; i++) {
-        let allowedLocation = contractProduct.allowedLocations[i];
-        let findIndexOfLocationInLocationList = _.findIndex(this.selectedLocationList, function(obj) {
-          return obj.id == allowedLocation.id && obj.name == allowedLocation.name;
-        });
-        if (findIndexOfLocationInLocationList != -1) {
-          this.selectedLocationList[findIndexOfLocationInLocationList].isSelected = true;
-        }
-      }
-    }
-    console.log(this.selectedLocationList);
+  public onValChange(val: string) {
+    this.selectedVal = val;
   }
 
-  saveAllowedLocations(selectedTabIndex){
-    let newAllowedLocations = [];
-    let allowedLocations = this.selectedLocationList;
-    for (let i = 0; i < allowedLocations.length; i++) {
-      if (allowedLocations[i].isSelected) {
-        let allowedLocation = {
-          'id': allowedLocations[i].id,
-          'name': allowedLocations[i].name
-        }
-        newAllowedLocations.push(allowedLocation);
-      }
-    }
-
-    this.formValues.products[selectedTabIndex].allowedLocations = _.cloneDeep(newAllowedLocations);
-  }
-
-  setAllowedProducts(selectedTabIndex) {
-    this.selectedProductList = _.cloneDeep(this.productMasterList);
-    let contractProduct = this.formValues.products[selectedTabIndex];
-    if (contractProduct.allowedProducts && contractProduct.allowedProducts.length) {
-      for (let i = 0; i < contractProduct.allowedProducts.length; i++) {
-        let allowedProduct = contractProduct.allowedProducts[i];
-        let findIndexOfProductInProductList = _.findIndex(this.selectedProductList, function(obj) {
-          return obj.id == allowedProduct.id && obj.name == allowedProduct.name;
-        });
-        if (findIndexOfProductInProductList != -1) {
-          this.selectedProductList[findIndexOfProductInProductList].isSelected = true;
-        }
-      }
-    }
-    this.changeDetectorRef.detectChanges();
-    console.log(this.selectedProductList);
-  }
-
-
-  saveAllowedProducts(selectedTabIndex){
-    let newAllowedProducts = [];
-    let allowedProducts = this.selectedProductList;
-    for (let i = 0; i < allowedProducts.length; i++) {
-      if (allowedProducts[i].isSelected) {
-        let allowedProduct = {
-          'id': allowedProducts[i].id,
-          'name': allowedProducts[i].name
-        }
-        newAllowedProducts.push(allowedProduct);
-      }
-    }
-
-    let previousAllowedProducts = _.cloneDeep(this.formValues.products[selectedTabIndex].allowedProducts);
-    this.formValues.products[selectedTabIndex].allowedProducts = _.cloneDeep(newAllowedProducts);
-
-    //check new  allowed products added
-    for (let i = 0; i < this.formValues.products[selectedTabIndex].allowedProducts.length; i++) {
-      let allowedProduct = { ... this.formValues.products[selectedTabIndex].allowedProducts[i]}
-      let findProductIfExistsInPreviousAllowedProducts = _.find(previousAllowedProducts, function(obj) {
-        return obj.id == allowedProduct.id && obj.name == allowedProduct.name;
-      });
-      //new allowed product added
-      if (!findProductIfExistsInPreviousAllowedProducts) {
-        this.addProductToConversion(selectedTabIndex, allowedProduct, false);
-      }
-    }
-
-    //check allowed products removed
-    for (let i = 0; i < previousAllowedProducts.length; i++) {
-      let previousAllowedProduct = { ... previousAllowedProducts[i]}
-      let findProductIfExistsInAllowedProducts = _.find(this.formValues.products[selectedTabIndex].allowedProducts, function(obj) {
-        return obj.id == previousAllowedProduct.id && obj.name == previousAllowedProduct.name;
-      });
-      //product was removed from allowed product
-      if (!findProductIfExistsInAllowedProducts) {
-        this.addProductToConversion(selectedTabIndex, null, false);
-      }
-  }
-  
-
-
-    
-  }
-
-  compareUomObjects(object1: any, object2: any) {
-    return object1 && object2 && object1.id == object2.id;
-  }
-
-  onChange($event, field) {
-    if ($event.value) {
-      let beValue = `${moment($event.value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
-      if (field == 'dealDate') {
-        this.isDealDateInvalid = false;
-      } 
-      console.log(beValue);
-    } else {
-      if (field == 'dealDate') {
-        this.isDealDateInvalid = true;
-      } 
-      this.toastr.error('Please enter the correct format');
-    }
-
-  }
-
-  formatDateForBe(value) {
-    if (value) {
-      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
-      return `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
-    } else {
-      return null;
-    }
-  }
-
-  displayFn(product): string {
-    return product && product.name ? product.name : '';
-  }
-
-
-  filterPhysicalSupplierList() {
-    if (this.formValues.products[this.selectedTabIndex].physicalSuppliers[0]) {
-      const filterValue = this.formValues.products[this.selectedTabIndex].physicalSuppliers[0].name ? this.formValues.products[this.selectedTabIndex].physicalSuppliers[0].name.toLowerCase() : this.formValues.products[this.selectedTabIndex].physicalSuppliers[0].toLowerCase();
-      console.log(filterValue);
-      if (this.physicalSupplierList) {
-        return this.physicalSupplierList.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0)
-          .slice(0, 10);
-      } else {
-        return [];
-      }
-    } else {
-      return [];
-    }
-  }
-
-  selectorPhysicalSupplierSelectionChange(
-    selection: IDisplayLookupDto
-  ): void {
-    if (selection === null || selection === undefined) {
-      this.formValues.products[this.selectedTabIndex].physicalSuppliers[0] = '';
-    } else {
-      const obj = {
-        'id': selection.id,
-        'name': selection.name
-      };
-      this.formValues.products[this.selectedTabIndex].physicalSuppliers[0] = obj; 
-      this.changeDetectorRef.detectChanges();   
-      console.log(this.formValues.products[this.selectedTabIndex]);
-    }
-  }
-
-
-  getSpecGroupByProduct(productId, additionalSpecGroup) {
-    var data = {
-        Payload: {
-            Filters: [
-                {
-                    ColumnName: 'ProductId',
-                    Value: productId
-                }
-            ]
-        }
-    };
-    if (typeof this.productSpecGroup == 'undefined') {
-        this.productSpecGroup = [];
-    }
-
-    // if spec group for product exists, do not make call again
-    if (typeof this.productSpecGroup[productId] != 'undefined') {
-        return;
-    }
-
+  createNewFormulaPopup(selectedTabIndex) {
+    let formulaId = 889;
+    this.spinner.show();
     this.contractService
-    .getSpecGroupGetByProduct(data)
+    .getFormulaId(formulaId)
     .pipe(
       finalize(() => {
+        this.spinner.hide();
       })
     )
     .subscribe((response: any) => {
       if (typeof response == 'string') {
         this.toastr.error(response);
       } else {
-        console.log(response);
-        if (response) {
-          response  = _.filter(response, function(o) { 
-            return o.isDeleted == false; 
-          });
-          if (additionalSpecGroup) {
-            var additionalSpecIsInArray = false;
-            response.forEach(function(v, k){
-              if (v.id == additionalSpecGroup.id) {
-                additionalSpecIsInArray = true;
-              }
-            })
-            if (!additionalSpecIsInArray) {
-              response.push(additionalSpecGroup);		
-            }
+        const dialogRef = this.dialog.open(CreateNewFormulaModalComponent, {
+          width: '80%',
+          data:  {
+            'formValues': response,
+            'selectedTabIndex': this.selectedTabIndex,
+            'formulaTypeList': this.formulaTypeList,
+            'systemInstumentList': this.systemInstumentList,
+            'marketPriceList': this.marketPriceList,
+            'formulaPlusMinusList': this.formulaPlusMinusList,
+            'formulaFlatPercentageList': this.formulaFlatPercentageList,
+            'uomList': this.uomList
           }
-          this.productSpecGroup[productId] = response;
-          this.changeDetectorRef.detectChanges();
-        }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+          console.log(result);
+        });
       }
     });
-  
-  };
-
-
- 
-  decodeSpecificField(modelValue) {
-    let decode = function(str) {
-      return str.replace(/&#(\d+);/g, function(match, dec) {
-          return String.fromCharCode(dec);
-      });
-    };
-    return decode(_.unescape(modelValue));
   }
-
-
-
-  setLocationChange(location, index) {
-    console.log(location);
-    console.log(index);
-    console.log(this.formValues.products[index]);
-    let objectLocation =  {
-      'id': location.id,
-      'name': location.name
-    }
-    this.selectedLocation = null;
-    this.formValues.products[index].location = { ... objectLocation };
-    this.changeDetectorRef.detectChanges();
-    this.contractFormSubject.next(this.formValues);
-
-  }
-
-
-  setProductChange(product, index) {
-    console.log(product);
-    console.log(index);
-    console.log(this.formValues.products[index]);
-    let objectProduct =  {
-      'id': product.id,
-      'name': product.name
-    }
-    this.formValues.products[index].product = { ... objectProduct };
-    this.selectedProduct = null;
-    this.changeDetectorRef.detectChanges();
-    this.addProductToConversion(index, null, true);
-    this.contractFormSubject.next(this.formValues);
-
-  }
-
-  addProductToConversion(index, allowProduct, isMainProduct) {
-    if (!this.formValues.products[index].conversionFactors) {
-      this.formValues.products[index].conversionFactors = [];
-    }
-    let selectedProduct, isAlreadyAdded = 0, indexDeleted = -1;
-    let payload;
-
-    if (isMainProduct) {
-      selectedProduct = this.formValues.products[index];
-      if (this.formValues.products[index].conversionFactors.length) {
-        var allowProducts = this.formValues.products[index].allowedProducts;
-        if (allowProducts.length) {
-          this.formValues.products[index].conversionFactors.forEach((value, key) => {
-            var idIndex = _.findIndex(allowProducts, (o: any) => {
-                return o.id == value.product.id;
-            });
-            if (idIndex == -1) {
-                if (value.id == 0) {
-                    this.formValues.products[index].conversionFactors.splice(key, 1);
-                    return;
-                }
-                this.formValues.products[index].conversionFactors[key].isDeleted = true;
-            }
-          });
-        } else {
-          var indexProduct = this.formValues.products[index].conversionFactors.length - 1;
-          this.formValues.products[index].conversionFactors[indexProduct].isDeleted = true;
-        }
-      }
-    } else if (allowProduct != null) {
-      selectedProduct = { product: allowProduct };
-    } else if (allowProduct == null) {
-        var allowProducts = this.formValues.products[index].allowedProducts;
-        if (allowProducts.length) {
-          this.formValues.products[index].conversionFactors.forEach((value, key) => {
-            if (value.product.id != this.formValues.products[index].product.id) {
-              var idIndex = _.findIndex(allowProducts, (o : any) => {
-                  return o.id == value.product.id;
-              });
-              if (idIndex == -1) {
-                  indexDeleted = key;
-                  if (value.id == 0) {
-                      this.formValues.products[index].conversionFactors.splice(indexDeleted, 1);
-                      return;
-                  }
-                  this.formValues.products[index].conversionFactors[indexDeleted].isDeleted = true;
-              }
-            }
-          });
-        } else {
-          this.formValues.products[index].conversionFactors.forEach((value, key) => {
-            if (value.product.id != this.formValues.products[index].product.id && !value.isDeleted) {
-                if (value.id == 0) {
-                    this.formValues.products[index].conversionFactors.splice(key, 1);
-                    return;
-                }
-                this.formValues.products[index].conversionFactors[key].isDeleted = true;
-            }
-          });
-        }
-    }
-    if (this.formValues.products[index].conversionFactors) {
-      if (selectedProduct) {
-        let indexProduct = _.findLastIndex(this.formValues.products[index].conversionFactors, (o: any) => {
-          return o.product.id == selectedProduct.product.id;
-        });
-        if (indexProduct != -1) {
-            if (!this.formValues.products[index].conversionFactors[indexProduct].isDeleted) {
-              this.toastr.error('Product is already added');
-              isAlreadyAdded = 1;
-            }
-        }
-      }
-    }
-    if (!isAlreadyAdded && indexDeleted == -1 && selectedProduct) {
-      payload = { Payload: selectedProduct.product.id };
-      this.spinner.show();
-      this.contractService
-      .getProdDefaultConversionFactors(payload)
-      .pipe(
-        finalize(() => {
-          this.spinner.hide();
-        })
-      )
-      .subscribe((response: any) => {
-        if (typeof response == 'string') {
-          this.toastr.error(response);
-        } else {
-          console.log(response);
-          let contractConversionFactor = {
-            id: 3,
-            name: "Standard (Product)"
-          }
-          let object = {
-              id: 0,
-              product : selectedProduct.product,
-              value: response.value,
-              massUom: response.massUom,
-              volumeUom: response.volumeUom,
-              contractConversionFactorOptions: contractConversionFactor
-          };
-          this.formValues.products[index].conversionFactors.push(object);
-          this.changeDetectorRef.detectChanges();
-        }
-      });
-  
-    
-    }
-
-
-  }
-
-
-
-  originalOrder = (a: KeyValue<number, any>, b: KeyValue<number, any>): number => {
-    return 0;
-  }
-
 
 
   ngAfterViewInit(): void {

@@ -9,6 +9,7 @@ import { ProductListSelectorGridViewModel } from './product-model/product-list-s
 import { PhysicalSupplierListSelectorGridViewModel } from './physical-supplier-model/physical-supplier-list-selector-grid.view-model';
 import { SellerListSelectorGridViewModel } from './seller-model/seller-list-selector-grid.view-model';
 import { CompanyListSelectorGridViewModel } from './company-model/company-list-selector-grid.view-model';
+import { SystemInstrumentListSelectorGridViewModel } from './system-instrument-model/system-instrument-list-selector-grid.view-model';
 
 export interface IMasterModelInterface {
   entityId?: number;
@@ -34,6 +35,7 @@ export interface IMasterModelInterface {
   SellerListSelectorGridViewModel?: SellerListSelectorGridViewModel;
   CompanyListSelectorGridViewModel?: CompanyListSelectorGridViewModel;
   VesselPortCallsMasterSelectorGridViewModel?: VesselPortCallsMasterSelectorGridViewModel;
+  SystemInstrumentListSelectorGridViewModel?: SystemInstrumentListSelectorGridViewModel,
   markServerSideDataSourceReady(): void;
   onSearch(event: string): void;
 }

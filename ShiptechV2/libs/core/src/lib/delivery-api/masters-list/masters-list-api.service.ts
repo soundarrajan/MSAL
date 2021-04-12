@@ -22,7 +22,9 @@ export namespace MastersApiPaths {
   export const getProductList = () => `api/masters/products/list`;
   export const getPhysicalSupplierList = () => `api/masters/counterparties/listByTypes`;
   export const getSellerList = () => `api/masters/counterparties/listByTypes`;
-  export const getCompanyList = () => `api/masters/companies/list`
+  export const getCompanyList = () => `api/masters/companies/list`;
+  export const getSystemInstumentList = () => `api/masters/systeminstruments/list`;
+
 }
 
 // @dynamic
@@ -83,6 +85,17 @@ export class MastersListApiService
     return this.http.post(requestUrl, {'payload': request}).pipe(
       map((body: any) => body),
       catchError(() => of('Error, could not load the company list'))
+    );
+  }
+
+  @ObservableException()
+  getSystemInstumentList(
+    request: IPhysicalSupplierListRequest
+  ): Observable<IPhysicalSupplierListResponse> {
+    const requestUrl = `${this._apiUrl}/${MastersApiPaths.getSystemInstumentList()}`;
+    return this.http.post(requestUrl, {'payload': request}).pipe(
+      map((body: any) => body),
+      catchError(() => of('Error, could not load the system instrument list'))
     );
   }
 

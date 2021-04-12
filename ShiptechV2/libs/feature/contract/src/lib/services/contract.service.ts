@@ -135,6 +135,16 @@ export class ContractService extends BaseStoreService implements OnDestroy {
   getProdDefaultConversionFactors(payload): Observable<unknown> {
     return this.contractApi.getProdDefaultConversionFactors(payload);
   }
+
+
+     /**
+ * @param payload 
+ */
+  @ObservableException()
+  getFormulaId(formulaId : number): Observable<unknown> {
+    return this.contractApi.getFormulaById(formulaId);
+  }
+    
                 
   
   ngOnDestroy(): void {
