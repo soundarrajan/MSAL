@@ -5350,9 +5350,14 @@
                 $scope.assignObjValue($scope, elements, $scope.selected_value);
                 if (element.screen == 'productlist' && element.name == 'Product' && element.app == 'masters') {
                     let productIndex = element.source.split('.')[2];
-                    $scope.addProductToConversion(productIndex, null, true);
+                    if(elements[1]=='locationProducts'){
+                        $scope.addLocationProductToConversion(productIndex, null, true);
+                    }else{
+                        $scope.addProductToConversion(productIndex, null, true);  
+                    }
+
                 }
-                if (element.screen == 'rfqrequestslist') {
+                  if (element.screen == 'rfqrequestslist') {
                 	$scope.selected_value = [];
                     var rowsData = CLC.jqGrid('getGridParam', 'selarrrow');
                 	$.each(rowsData, (k, v) => {
@@ -9263,6 +9268,82 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
             $scope.changeCurrencyValues(res);
         });
 
+        $scope.addLocationProductToConversion = function(index, allowProduct, isMainProduct) {
+            if (!$scope.formValues.locationProducts[index].conversionFactors) {
+                $scope.formValues.locationProducts[index].conversionFactors = [];
+            }
+            let selectedProduct, isAlreadyAdded = 0, indexDeleted = -1;
+            let payload;
+            setTimeout(() => {
+                if (isMainProduct) {
+                    selectedProduct = $scope.formValues.locationProducts[index];
+                    if ($scope.formValues.locationProducts[index].conversionFactors.length) {
+                        var allowProducts = $scope.formValues.locationProducts[index].allowedProducts;
+                        if (allowProducts.length) {
+                            $scope.formValues.locationProducts[index].conversionFactors.forEach((value, key) => {
+                                var idIndex = _.findIndex(allowProducts, (o) => {
+                                    return o.id == value.product.id;
+                                });
+                                if (idIndex == -1) {
+                                    if (value.id == 0) {
+                                        $scope.formValues.locationProducts[index].conversionFactors.splice(key, 1);
+                                        return;
+                                    }
+                                    $scope.formValues.locationProducts[index].conversionFactors[key].isDeleted = true;
+                                }
+                            });
+                        } else {
+                            var indexProduct = $scope.formValues.locationProducts[index].conversionFactors.length - 1;
+                            $scope.formValues.locationProducts[index].conversionFactors[indexProduct].isDeleted = true;
+                        }
+                    }
+                }else if (allowProduct != null) {
+                    selectedProduct = { product: allowProduct };
+                } else if (allowProduct == null) {
+                    var allowProducts = $scope.formValues.locationProducts[index].allowedProducts;
+                    if (allowProducts.length) {
+                        $scope.formValues.locationProducts[index].conversionFactors.forEach((value, key) => {
+                            if (value.product.id != $scope.formValues.locationProducts[index].product.id) {
+                                var idIndex = _.findIndex(allowProducts, (o) => {
+                                    return o.id == value.product.id;
+                                });
+                                if (idIndex == -1) {
+                                    indexDeleted = key;
+                                    if (value.id == 0) {
+                                        $scope.formValues.locationProducts[index].conversionFactors.splice(indexDeleted, 1);
+                                        return;
+                                    }
+                                    $scope.formValues.locationProducts[index].conversionFactors[indexDeleted].isDeleted = true;
+                                }
+                            }
+                        });
+                    } else {
+                        $scope.formValues.locationProducts[index].conversionFactors.forEach((value, key) => {
+                            if (value.product.id != $scope.formValues.locationProducts[index].product.id && !value.isDeleted) {
+                                if (value.id == 0) {
+                                    $scope.formValues.locationProducts[index].conversionFactors.splice(key, 1);
+                                    return;
+                                }
+                                $scope.formValues.locationProducts[index].conversionFactors[key].isDeleted = true;
+                            }
+                        });
+                    }
+                }
+                if ($scope.formValues.locationProducts[index].conversionFactors) {
+                    if (selectedProduct) {
+                        let indexProduct = _.findLastIndex($scope.formValues.locationProducts[index].conversionFactors, (o) => {
+                            return o.product.id == selectedProduct.product.id;
+                        });
+                        if (indexProduct != -1) {
+                            if (!$scope.formValues.locationProducts[index].conversionFactors[indexProduct].isDeleted) {
+                                toastr.error('Product is already added');
+                                isAlreadyAdded = 1;
+                            }
+                        }
+                    }
+                }
+            });
+        };
         $scope.addProductToConversion = function(index, allowProduct, isMainProduct) {
             if (index == "tanks") {
                 return;

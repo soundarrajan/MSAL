@@ -924,11 +924,9 @@
                                                 <th id="generatedThId200"></th>
                                                 <th id="generatedThId201" ng-repeat="column in $ctrl.ui.Locations.columns" ng-if="column.visible && column.caption != 'PAGES.NEW_REQUEST.CONTRACT_ID' && $ctrl.tenantSettings.shiptechLite">
                                                     {{ column.caption | translate }}
-                                                    <span ng-if="column.caption=='PAGES.NEW_REQUEST.PRODUCT_TYPE' || column.caption=='PAGES.NEW_REQUEST.SPEC_GROUP' || column.caption=='PAGES.NEW_REQUEST.MIN_QTY'|| column.caption=='PAGES.NEW_REQUEST.MAX_QTY'" style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;">*</span>
                                                 </th>
                                                 <th id="generatedThId201" ng-repeat="column in $ctrl.ui.Locations.columns" ng-if="column.visible  && !$ctrl.tenantSettings.shiptechLite">
-                                                    {{ column.caption | translate }}
-                                                    <span ng-if="column.caption=='PAGES.NEW_REQUEST.PRODUCT_TYPE' || column.caption=='PAGES.NEW_REQUEST.SPEC_GROUP' || column.caption=='PAGES.NEW_REQUEST.MIN_QTY'|| column.caption=='PAGES.NEW_REQUEST.MAX_QTY'" style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;">*</span>
+                                                    {{ column.caption | translate }}                                         
                                                 </th>
                                             </tr>
                                         </thead>
