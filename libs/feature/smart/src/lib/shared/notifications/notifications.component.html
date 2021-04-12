@@ -1,0 +1,420 @@
+<div [ngClass]="{'inactive-alerts':!active}">
+</div>
+<div *ngIf="!showSettingNotification" id="notifications">
+  <div class="notification-holder"
+    style="border-radius: 8px;box-shadow: 0 0 20px rgba(0,0,0,.2);margin:10px;height: 95%;">
+    <div class="notification-header">
+      <div class="header">Notifications ({{count}})</div>
+      <button mat-stroked-button class="clear-btn" (click)="clearNotifications()"
+        [ngStyle]="{'opacity':active?1:0.4}">Clear all notifications</button>
+    </div>
+    <div class="notif-container">
+
+      <ng-container *ngIf="alerts.length >0; else noAlerts">
+        <!-- Single Alert Start -->
+        <div class="alert-setting" [ngClass]="alert.severity" *ngFor="let alert of alerts">
+          <div class="alert-title">
+            <div class="d-flex align-items-center" style="justify-content: space-between;width:100%">
+              <div>{{alert.name}}</div>
+              <div class="alert-date">{{alert.date}}<i class="fas icon fa-chevron-down m-l-r-5"></i></div>
+            </div>
+
+          </div>
+          <div class="alert-body">
+            <div>
+              <span style="font-weight: 500;">{{alert.vessel}},</span> {{alert.description}}
+            </div>
+          </div>
+        </div>
+        <!-- Single Alert End -->
+      </ng-container>
+      <ng-template #noAlerts>
+        <div class="no-alerts">You currently have no new notifications!</div>
+      </ng-template>
+    </div>
+  </div>
+</div>
+<div *ngIf="!showSettingNotification" class="notif-footer">
+  <button mat-stroked-button class="settings-btn" [ngStyle]="{'opacity':active?1:0.4}"
+    (click)="showSettingNotification = true">Alert Settings</button>
+</div>
+<div class="screen-overlay2" (click)="showSettingNotification = false;" *ngIf="showSettingNotification"></div>
+
+<div *ngIf="showSettingNotification">
+
+  <!-- Alert Config Start -->
+  <section id="alertConfig" [ngClass]="showSettingNotification ? 'active' : 'inactive'">
+    <div id="alertConfigHeader">Alert Configuration </div>
+    <div class="alertConfigPanel">
+      <div id="alertConfigContent">
+        <mat-accordion>
+          <!-- New Rule Panel Start -->
+          <!-- <mat-expansion-panel *ngIf="!isOpen" class="dark-panel" (click)="showhideDeleteRule=false"> -->
+          <mat-expansion-panel class="dark-panel">
+            <mat-expansion-panel-header [collapsedHeight]="newPanelCollapsedHeight"
+              [expandedHeight]="newPanelExpandedHeight" class="p-r-15">
+              <mat-panel-title>
+                <div class="panel-circle"></div>
+                <!-- <img src="../../assets/customicons/blue-plus.svg" alt="plus" style="width: 17px; margin-right: 10px;"> -->
+                <div class="add-rule" style="width: 17px; margin-right: 10px;"></div>
+                <div class="rule-name">New Alert</div>
+
+                <mat-form-field class="dark-input new-rule" style="width: 450px;">
+                  <input matInput value="" (click)="$event.stopPropagation()">
+                </mat-form-field>
+              </mat-panel-title>
+
+              <div class="panel-action">
+                <button class="blue-btn" mat-stroked-button>+ Create New</button>
+              </div>
+            </mat-expansion-panel-header>
+            <!-- Body Content -->
+            <div class="d-flex align-items-center justify-content-between"
+              style="border-bottom: 1px solid rgba(84, 97, 122, 0.3); padding-left: 16px; padding-right: 16px;">
+              <div class="d-flex align-items-baseline" style="width: 500px;">
+                <div style="width: 85px;">
+                  Alert Type:
+                </div>
+                <mat-form-field class="dark-select" style="width: 160px;">
+                  <mat-select #type [value]="newAlert.type" disableOptionCentering
+                    (selectionChange)="selectionChanged($event.value)">
+                    <mat-option value="vessel">Vessel</mat-option>
+                    <mat-option value="port">Port</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div style="width: 158px; display: flex; align-items: center; justify-content: center;"
+                (mouseover)="showMenu = true;">
+                <mat-slide-toggle labelPosition='before' class="transparent-slider" checked>Status
+                </mat-slide-toggle>
+
+                <div id="dark-menu-button">
+                  <div id="dot1" class="whitedot"></div>
+                  <div id="dot2" class="whitedot"></div>
+                  <div id="dot3" class="whitedot"></div>
+                  <div id="dot4" class="whitedot"></div>
+                  <div id="dot5" class="whitedot"></div>
+                  <div id="dot6" class="whitedot"></div>
+                  <div id="dot7" class="whitedot"></div>
+                  <div id="dot8" class="whitedot"></div>
+                  <div id="dot9" class="whitedot"></div>
+
+                  <div class="menu-panel" *ngIf="showMenu" (click)="showMenu=false;">
+                    <div class="icon bb-dark">
+                      <img src="../../assets/customicons/duplicate.svg" alt="duplicate">
+                      <span>Duplicate Rule</span>
+                    </div>
+                    <div class="icon bb-dark">
+                      <img src="../../assets/customicons/delete-b.svg" alt="delete">
+                      <span>Delete Rule</span>
+                    </div>
+                    <div class="icon bb-dark">
+                      <img src="../../assets/customicons/new-trigger.svg" alt="trigger">
+                      <span>Add New Trigger</span>
+                    </div>
+                    <div class="icon">
+                      <img src="../../assets/customicons/reset.svg" alt="reset">
+                      <span>Reset Values</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div *ngFor="let rules of newAlert.triggerRule;let i=index" style="padding: 24px 16px 0 16px;">
+              <div class="row" style="display: flex;">
+                <div class="col-7 pl-0 pr-0" style="flex: 1;min-height: 90px;max-height: 135px;">
+                  Trigger Rule
+                  <div class="delete-rule-menu" (mouseover)="showhideDeleteRule=true;">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+
+                  <div class="delete-rule" *ngIf="showhideDeleteRule" (mouseleave)="showhideDeleteRule=false;">
+                    <div class="delete-icon"></div>
+                    <span>Delete Rule 1</span>
+                  </div>
+                  <div class="rounded-group-box p-r-0" style="font-size: 14px;">
+                    <div>
+                      <div id="rules" class="row">
+                        <div class="icon">
+                          <div class="remove-circle"></div>
+                          <!-- <mat-icon style="font-size: 20px;height: unset; color: rgba(143, 155, 171, 0.5);">
+                            remove_circle
+                          </mat-icon> -->
+                        </div>
+                        <mat-form-field class="dark-select" style="width: 27%; margin: 0 10px;">
+                          <mat-select matNativeControl disableOptionCentering>
+                            <mat-option value="Bunker plan delay">Bunker plan delay</mat-option>
+                            <mat-option value="Operating Region">Operating Region</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                        <mat-form-field class="dark-select" style="width: 27%; margin: 0 10px;">
+                          <mat-select matNativeControl disableOptionCentering>
+                            <mat-option value="less than">less than</mat-option>
+                            <mat-option value="greater than">greater than</mat-option>
+                            <mat-option value="in">in</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field class="dark-select" style="width: 27%; margin: 0 10px;">
+                          <input matInput>
+                        </mat-form-field>
+                      </div>
+
+                      <div class="row align-items-center"
+                        style="cursor: pointer;padding-top: 5px;line-height: 16px;margin-top: 5px;">
+                        <div class="add-icon">
+                          <!-- <mat-icon style="font-size: 20px;">add_circle</mat-icon> -->
+                        </div>
+                        <div style="margin-left: 10px;">Add more</div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="col-5 pr-0" style="flex: 1;min-height: 90px;max-height: 135px;">
+                  Display Message
+                  <div class="rounded-group-box">
+
+                    <mat-form-field id="text-area" class="dark-select" style="width: 100%;">
+                      <textarea matInput value=""></textarea>
+                    </mat-form-field>
+                    <!-- <div style="font-size: 15px;">
+                      For the vessel <span class="keyword">Vessel Name</span>, ROB is lesser than <span
+                        class="keyword">2000
+                        BBL</span>
+                    </div> -->
+                  </div>
+                </div>
+              </div>
+
+              <div class="bb-dark d-flex" style="align-items: center;justify-content: space-between;">
+                <div>
+                  Alert Criticality:
+                  <mat-form-field id="alert" class="dark-select" style="width: 175px;">
+                    <img *ngIf="rules.alert=='red'" src="../../assets/customicons/red-alert.svg" alt="alert"
+                      style="padding: 0px 3px;">
+                    <img *ngIf="rules.alert=='yellow'" src="../../assets/customicons/yellow-alert.svg" alt="alert"
+                      style="padding: 0px 3px;">
+                    <mat-select #alert matNativeControl disableOptionCentering [(ngModel)]="rules.alert">
+                      <mat-option value="red">
+                        Red Alert</mat-option>
+                      <mat-option value="yellow">
+                        Yellow Alert</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <div style="font-size: 14px; position: relative;">
+                  <mat-checkbox class="blue-checkbox" [checked]="rules.vesselFlag">Flag Vessel</mat-checkbox>
+                  <mat-checkbox class="blue-checkbox" [checked]="rules.email">Email</mat-checkbox>
+                  <mat-checkbox class="blue-checkbox" [checked]="rules.notification">Notification</mat-checkbox>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top: 10px;margin-left: 15px;">
+              <button mat-stroked-button class="dark-trans-btn">+ New Trigger Rule</button>
+            </div>
+            <!-- Body Content -->
+          </mat-expansion-panel>
+          <!-- New Rule Panel End -->
+
+          <!-- Single Panel Start -->
+          <!-- <mat-expansion-panel *ngIf="!isOpen || (isOpen && openId==item.id)" class="dark-panel" -->
+          <mat-expansion-panel *ngFor="let item of items" class="dark-panel" #panel
+            [ngClass]="{'green':item.active,'grey':!item.active}" (opened)="panelOpened(item.id)"
+            (closed)="panelClosed()">
+            <mat-expansion-panel-header [collapsedHeight]="panelCollapsedHeight" [expandedHeight]="panelExpandedHeight"
+              class="p-r-15">
+              <mat-panel-title>
+                <div class="panel-circle"></div>
+                <div class="panel-collapse-indicator" style="width: 17px; margin-right: 10px;"></div>
+                <!-- <img class="panel-collapse-indicator" src="../../assets/customicons/panel-collapse-icon.svg"
+                  alt="collapse-icon" style="width: 17px; margin-right: 10px;"> -->
+                {{item.name}}
+              </mat-panel-title>
+
+              <div class="panel-description">
+                <div>App: Vessel</div>
+                <div class="small-text">Last Updated: 12/04/2019</div>
+              </div>
+              <div class="panel-action">
+                <button class="blue-btn" mat-stroked-button (click)="$event.stopPropagation(); enableUpdate=false;"
+                  [disabled]="!enableUpdate">Update</button>
+              </div>
+            </mat-expansion-panel-header>
+            <ng-container *ngIf="panel.expanded">
+              <!-- Body Content -->
+              <div class="d-flex align-items-center justify-content-between"
+                style="border-bottom: 1px solid rgba(84, 97, 122, 0.3); padding-left: 16px; padding-right: 16px;">
+                <div class="d-flex align-items-baseline" style="width: 500px;">
+                  <div style="width: 85px;">
+                    Alert Type:
+                  </div>
+                  <mat-form-field class="dark-select" style="width: 160px;">
+                    <mat-select #type [value]="item.type" disableOptionCentering
+                      (selectionChange)="selectionChanged($event.value)">
+                      <mat-option value="vessel">Vessel</mat-option>
+                      <mat-option value="port">Port</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div style="width: 158px; display: flex; align-items: center; justify-content: center;">
+                  <mat-slide-toggle labelPosition='before' class="transparent-slider" checked>Status
+                  </mat-slide-toggle>
+
+                  <div id="dark-menu-button" (mouseover)="showMenu = true;">
+                    <div id="dot1" class="whitedot"></div>
+                    <div id="dot2" class="whitedot"></div>
+                    <div id="dot3" class="whitedot"></div>
+                    <div id="dot4" class="whitedot"></div>
+                    <div id="dot5" class="whitedot"></div>
+                    <div id="dot6" class="whitedot"></div>
+                    <div id="dot7" class="whitedot"></div>
+                    <div id="dot8" class="whitedot"></div>
+                    <div id="dot9" class="whitedot"></div>
+
+                    <div class="menu-panel" *ngIf="showMenu" (click)="showMenu=false;">
+                      <div class="icon bb-dark">
+                        <img src="../../assets/customicons/duplicate.svg" alt="duplicate">
+                        <span>Duplicate Rule</span>
+                      </div>
+                      <div class="icon bb-dark">
+                        <img src="../../assets/customicons/delete-b.svg" alt="delete">
+                        <span>Delete Rule</span>
+                      </div>
+                      <div class="icon bb-dark">
+                        <img src="../../assets/customicons/new-trigger.svg" alt="trigger">
+                        <span>Add New Trigger</span>
+                      </div>
+                      <div class="icon">
+                        <img src="../../assets/customicons/reset.svg" alt="reset">
+                        <span>Reset Values</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <div *ngFor="let rules of item.triggerRule;let i=index" style="padding: 24px 16px 0 16px;">
+                <div class="row" style="display: flex;">
+                  <div class="col-7 pl-0 pr-0" style="flex: 1;min-height: 90px;max-height: 135px;">
+                    Trigger Rule {{i+1}}
+                    <div class="delete-rule-menu" (mouseover)="showhideDeleteRule=true;">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </div>
+
+                    <div class="delete-rule" *ngIf="showhideDeleteRule" (mouseleave)="showhideDeleteRule=false;">
+                      <div class="delete-icon"></div>
+                      <span>Delete Rule 1</span>
+                    </div>
+                    <div class="rounded-group-box p-r-0" style="font-size: 14px;">
+                      <div>
+                        <div *ngFor="let rule of rules.rule" id="rules" class="row">
+                          <div class="icon">
+                            <div class="remove-circle"></div>
+                            <!-- <mat-icon style="font-size: 20px;height: unset; color: rgba(143, 155, 171, 0.5);">
+                            remove_circle
+                          </mat-icon> -->
+                          </div>
+                          <mat-form-field class="dark-select" style="width: 27%; margin: 0 10px;">
+                            <mat-select matNativeControl [value]="rule.rule" disableOptionCentering
+                              (selectionChange)="selectionChanged($event.value)">
+                              <mat-option value="Bunker plan delay">Bunker plan delay</mat-option>
+                              <mat-option value="Operating Region">Operating Region</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          <mat-form-field class="dark-select" style="width: 27%; margin: 0 10px;">
+                            <mat-select matNativeControl [value]="rule.condition" disableOptionCentering
+                              (selectionChange)="selectionChanged($event.value)">
+                              <mat-option value="less than">less than</mat-option>
+                              <mat-option value="greater than">greater than</mat-option>
+                              <mat-option value="in">in</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+
+                          <mat-form-field class="dark-select" style="width: 27%; margin: 0 10px;">
+                            <input matInput [value]="rule.value" (keyup)="selectionChanged($event.value)">
+                            <!-- <mat-select matNativeControl [value]="rule.value" disableOptionCentering
+                            (selectionChange)="selectionChanged($event.value)">
+                            <mat-option value="24 hours">24 hours</mat-option>
+                            <mat-option value="Europe">Europe</mat-option>
+                            <mat-option value="2000 MT">2000 MT</mat-option>
+                          </mat-select> -->
+                          </mat-form-field>
+                        </div>
+
+                        <!-- <div *ngIf="type.value=='vessel'" class="row align-items-center" -->
+                        <div class="row align-items-center"
+                          style="cursor: pointer;padding-top: 5px;line-height: 16px;margin-top: 5px;">
+                          <div class="add-icon">
+                            <!-- <mat-icon style="font-size: 20px;">add_circle</mat-icon> -->
+                          </div>
+                          <div style="margin-left: 10px;">Add more</div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                  <div class="col-5 pr-0" style="flex: 1;min-height: 90px;max-height: 135px;">
+                    Display Message
+                    <div class="rounded-group-box">
+
+                      <mat-form-field id="text-area" class="dark-select" style="width: 100%;">
+                        <textarea matInput value=""></textarea>
+                      </mat-form-field>
+                      <!-- <div style="font-size: 15px;">
+                      For the vessel <span class="keyword">Vessel Name</span>, ROB is lesser than <span
+                        class="keyword">2000
+                        BBL</span>
+                    </div> -->
+                    </div>
+                  </div>
+                </div>
+
+                <div class="bb-dark d-flex" style="align-items: center;justify-content: space-between;">
+                  <div>
+                    Alert Criticality:
+                    <mat-form-field id="alert" class="dark-select" style="width: 175px;">
+                      <img *ngIf="rules.alert=='red'" src="../../assets/customicons/red-alert.svg" alt="alert"
+                        style="padding: 0px 3px;">
+                      <img *ngIf="rules.alert=='yellow'" src="../../assets/customicons/yellow-alert.svg" alt="alert"
+                        style="padding: 0px 3px;">
+                      <mat-select #alert matNativeControl disableOptionCentering [(ngModel)]="rules.alert">
+                        <mat-option value="red">
+                          Red Alert</mat-option>
+                        <mat-option value="yellow">
+                          Yellow Alert</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <div style="font-size: 14px; position: relative;">
+                    <mat-checkbox class="blue-checkbox" [checked]="rules.vesselFlag">Flag Vessel</mat-checkbox>
+                    <mat-checkbox class="blue-checkbox" [checked]="rules.email">Email</mat-checkbox>
+                    <mat-checkbox class="blue-checkbox" [checked]="rules.notification">Notification</mat-checkbox>
+                  </div>
+                </div>
+              </div>
+
+              <div style="margin-top: 10px;margin-left: 15px;">
+                <button mat-stroked-button class="dark-trans-btn">+ New Trigger Rule</button>
+              </div>
+              <!-- Body Content -->
+            </ng-container>
+          </mat-expansion-panel>
+          <!-- Single Panel End -->
+        </mat-accordion>
+      </div>
+
+    </div>
+  </section>
+  <!-- Alert Config End -->
+</div>

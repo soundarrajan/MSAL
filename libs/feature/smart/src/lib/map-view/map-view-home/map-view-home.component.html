@@ -1,0 +1,120 @@
+<div [ngClass]="{'dark-theme':themeDark,'light-theme':!themeDark}">
+    <app-header-panel [showHelp]="showHelp" [showNotifications]="showNotifications" [showMenu]="showMenu" (toggleHelp)="toggleHelp($event)" (toggleNotif)="toggleNotif($event)"
+    (toggleLogout)="toggleLogout($event)"
+        (toggleMenu)="toggleMenu($event)"></app-header-panel>
+    <app-ol-map *ngIf="!showTable" (toggleTableViewEmit)="toggle()" [displayHelp]="showHelp"
+        [displayNotifications]="showNotifications" [hidePanel]="showTable || showVesselDetails"
+        (showBunkerPlan)="toggleBPlan($event)" (openRoutes)="toggleRoutes($event)" (onMapClick)="onMapClick1()"
+        (showPortInfoScreen)="togglePortInfo($event)">
+    </app-ol-map>
+    <app-smart-operator *ngIf="showTable" (clickEvent)="onClick()" (showTableViewEmit)="this.toggle()">
+    </app-smart-operator>
+
+    <app-vessel-details *ngIf="showBPlan" (closeBPlan)="showBPlan = false;olmap.isBunkerPlanOpen =false"
+        (changeVessel)="changeVessel($event)">
+    </app-vessel-details>
+    <app-port-details *ngIf="showPortInfo" [portData]="portData"
+        (portInfoClose)="showPortInfo = false;olmap.isPortInfoOpen = false"></app-port-details>
+
+    <div class="screen-overlay2" (click)="onMapClick1()" *ngIf="showHelp  || showMenu"></div>
+    <div class="screen-overlay" (click)="onMapClick2()" *ngIf="showNotifications"></div>
+
+    <div *ngIf="showBPlan" style="float: left;position: absolute;top: 125px;">
+        <div style="float: right;">
+            <div class="side-nav" [ngStyle]="{'opacity':showBPlan?'1':'0.9'}">
+                <div class="side-nav-icon" [ngStyle]="{'opacity':showBPlan?'1':'0.3'}"><img
+                        src="../../../assets/customicons/checklist.svg" alt="expand-icon">B Plan
+                </div>
+            </div>
+        </div>
+        <div style="float: right;position: relative;top: 54px;" (click)="clickRoute()">
+            <div class="side-nav" [ngStyle]="{'opacity':showRoute?'1':'0.9'}">
+                <div class="side-nav-icon" [ngStyle]="{'opacity':showRoute?'1':'0.3'}"><img
+                        src="../../../assets/customicons/route.svg" alt="expand-icon">Route
+                </div>
+            </div>
+        </div>
+        <!-- <div style="float: right;position: relative;top:108px">
+                <div class="side-nav" [ngStyle]="{'opacity':showCreateReq?'1':'0.9'}">
+                    <div class="side-nav-icon" [ngStyle]="{'opacity':showCreateReq?'1':'0.3'}"><img
+                            src="../../../assets/customicons/create-request.svg" alt="expand-icon">Create
+                        Request
+                    </div>
+                </div>
+            </div>
+            <div style="float: right;position: relative;top:162px">
+                <div class="side-nav" [ngStyle]="{'opacity':showChat?'1':'0.9'}">
+                    <div class="side-nav-icon" [ngStyle]="{'opacity':showChat?'1':'0.3'}"><img
+                            src="../../../assets/customicons/message.svg" alt="expand-icon">Message
+                    </div>
+                </div>
+            </div> -->
+    </div>
+
+    <div *ngIf="showMenu" class="header-menu" style="position: fixed;top:45px;;right:115px;z-index: 1050;">
+        <div class="panel-up-arrow">
+            <div class="mode">
+                <div>Turn {{themeDark?'on':'off'}} Light Mode</div>
+                <img src="../../../assets/customicons/mode-icon.svg" alt="mode" [ngStyle]="{'transform':themeDark?'rotate(180deg)':'rotate(0deg)'}" (click)="changeTheme()">
+                <!-- <mat-slide-toggle disabled></mat-slide-toggle> -->
+            </div>
+            <div class="date-format">
+                <div>Date Format Standard</div>
+                <div id="date-format-select" class="d-flex justify-content-between align-items-center">
+                    <div style="display: flex;align-items: center;justify-content:space-between;width: 125px;">
+                        <mat-form-field appearance="fill">
+                            <mat-select panelClass="dateFormatMenu" id="date-menu" value="United States Format"
+                                disableOptionCentering>
+                                <mat-option style="height:25px;" value="Europe Date Format">Europe Date Format
+                                </mat-option>
+                                <mat-option style="height:25px;" value="United States Format">United States Format
+                                </mat-option>
+                                <mat-option style="height:25px;" value="International Format">International Format
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div style="border-left: 1px solid #54617A;">
+                        <div style="width:22px;text-align: center;">
+                            <i id="filter-icon" class="fas icon fa-chevron-down "></i>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="showHelp" style="position: fixed;top: 9%;z-index: 1050;">
+        <app-custom-stepper (close)="showHelp = false;"></app-custom-stepper>
+    </div>
+    <div *ngIf="showNotifications" class="notifications">
+        <app-notifications></app-notifications>
+    </div>
+    <div *ngIf="showLogout" class="header-menu" style="position: fixed;top:45px;;right:17px;z-index: 1050;">
+        <div class="up-arrow" style="height: 55px; width :155px">
+            <!-- <button> Logout </button> -->
+            <li class="hand logout-list" id="logout" (click)="logout()">
+                <img (click)="logout()" alt="logout-icon" id="logout-icon" src="/assets/icon/logout.svg" style="width: 22px; height: auto; margin-right: 15px;"> Logout 
+            </li>
+        </div>
+
+        <!-- <div id="user-box" style="position: relative;">
+            <ul class="show-notification profile-notification">
+                <mat-icon class="mat-icon material-icons mat-icon-no-color" id="user-box-arrow" role="img" style="position: absolute;" aria-hidden="true">play_arrow</mat-icon><li class="user-bottom-border"><div class="float-left" style="padding-right: 5px"><div class="user-bg">KM</div>
+                </div>
+                <li>
+                    <div class="float-left">
+                        <div class="user-name">Kevin Miranda</div>
+                        <div class="user-email">kevin.m@inatech.com</div>
+                        <div class="my-profile"><a href="#">My Profile</a></div>
+                    </div>
+                </li>
+                <li class="hand" id="refresh-menu"><img alt="reload" id="refresh-icon" src="../../assets/customicons/reload_w.svg" style="width: 22px; height: auto; margin-right: 15px;"> Refresh Menu </li>
+                <li class="hand" id="refresh-cache"><img alt="reload" id="refresh-icon" src="../../assets/customicons/reload_w.svg" style="width: 22px; height: auto; margin-right: 15px;"> Refresh Cache </li>
+                <li class="hand" id="logout">
+                    <img alt="logout-icon" id="logout-icon" src="../../assets/customicons/power_w.svg" style="width: 22px; height: auto; margin-right: 15px;"> Logout 
+                </li>
+            </ul></div> -->
+    </div>
+</div>

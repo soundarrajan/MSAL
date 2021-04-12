@@ -57,6 +57,8 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import _ from 'lodash';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { DecimalPipe } from '@angular/common';
+import { MatSelect } from '@angular/material/select';
+import { throws } from 'assert';
 
 export const PICK_FORMATS = {
   display: {
@@ -107,6 +109,9 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
   uomMass: any;
   pumpingRateUom: any;
   expandProductPopUp: any = false;
+  @ViewChild('mySelect') mySelect: MatSelect;
+  searchProductInput: any;
+
   @Input('quantityCategory') set _setQuantityCategory(quantityCategory) { 
     if (!quantityCategory) {
       return;
@@ -856,4 +861,14 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
 
 
   
+  openAddProductSelect() {
+    this.searchProductInput = null;
+    if (this.formValues.temp.deliverysummary) {
+      this.formValues.temp.deliverySummaryProducts = [ ... this.formValues.temp.deliverysummary.products];
+      this.changeDetectorRef.detectChanges();
+    }
+    this.mySelect.close();
+    this.mySelect.open();
+
+  }
 }

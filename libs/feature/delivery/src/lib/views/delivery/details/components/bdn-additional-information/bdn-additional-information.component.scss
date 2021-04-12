@@ -419,3 +419,8 @@
   margin-bottom: unset  !important;
   width: 100%;
 }
+
+.mat-select-panel .mat-option.mat-selected.mat-active {
+  background-color: #37414f!important;
+  color: #fff!important;
+}

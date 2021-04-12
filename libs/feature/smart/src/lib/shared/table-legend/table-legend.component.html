@@ -1,0 +1,33 @@
+<div id="table-legend">
+  <section class="example-container">
+    <header>
+      <span (click)="closeHelp.emit()">
+        <mat-icon class="closeBtn">close</mat-icon>
+      </span>
+      <h3>Get Started</h3>
+      <h4> Bunker Plan Table Legends</h4>
+      <div>Below you will see different font colours and background used in Bunker Plan each of which stands for how the
+        values have been arrived</div>
+
+
+    </header>
+    <div class="content">
+      <!-- <button class="example-nav-button" cdkStepperPrevious>
+        <img src="../../../assets/customicons/nav-left-blue.svg" alt="Left-icon">
+      </button> -->
+      <div [style.display]="selected ? 'block' : 'none'" style="flex:0 0 88%;margin:auto;">
+        <ng-container [ngTemplateOutlet]="selected.content"></ng-container>
+      </div>
+      <!-- <button class="example-nav-button" cdkStepperNext>
+        <img src="../../../assets/customicons/nav-right-blue.svg" alt="Right-icon">
+      </button> -->
+    </div>
+    <footer class="example-step-navigation-bar">
+
+      <!-- <button class="example-step" *ngFor="let step of _steps; let i = index" (click)="onClick(i)">
+        <span class="dot" [ngClass]="{ 'example-active': selectedIndex === i }"></span>
+      </button> -->
+
+    </footer>
+  </section>
+</div>
