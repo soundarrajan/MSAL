@@ -109,7 +109,7 @@
         <div class="form-group row" ng-init='options.Uom ? return : CM.getOptions({"Name": "Uom", "Type": "dropdown", "masterSource": "Uom"}); re()'>
             <label for="UomUom" class="formula_uom_label" class="simpleLookupLabel">
                 {{ CM.app_id + '.Uom' | translate }}
-                <span class="orange-txt" ng-if="formValues.simpleFormula.flatPercentage.id == 1 ">*</span>
+                <span class="orange-txt" ng-if="formValues.simpleFormula.flatPercentage.id == 1 && (formValues.simpleFormula.plusMinus.id == 1 || formValues.simpleFormula.plusMinus.id ==2)">*</span>
             </label>
             <div class="input-group form_input form_input_formula_uom">
                 <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.Uom | decodeReadOnly track by item.id" ng-model="formValues.simpleFormula.uom" ng-disabled="formValues.simpleFormula.flatPercentage.id != 1 || formValues.simpleFormula.plusMinus.id == 3">
