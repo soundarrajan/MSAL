@@ -2223,12 +2223,14 @@ APP_INVOICE.controller('Controller_Invoice', [ 'API', '$scope', '$rootScope', 'F
             text: ''
         }));
         $.each(vm.listsCache.DocumentTypeEnum, (k, v) => {
-            $('#newInvoiceType').append($('<option>', {
-                // value: v.name,
-                value: v.internalName,
-                internalName: `${v.internalName }`,
-                text: `${v.name }`
-            }));
+            if(v.internalName != 'PreclaimCreditNote' && v.internalName != 'PreclaimDebitNote') {
+                $('#newInvoiceType').append($('<option>', {
+                    // value: v.name,
+                    value: v.internalName,
+                    internalName: `${v.internalName }`,
+                    text: `${v.name }`
+                }));
+            }
         });
     };
     $scope.createInvoiceFromDelivery = function() {
