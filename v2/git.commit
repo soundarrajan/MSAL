@@ -1,9 +1,7 @@
-﻿commit 0c79dbdf147c7473367bdaea7e6c2975cb4f9195
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri Apr 9 07:10:12 2021 +0000
+﻿commit 68654c328a90e1e723ff04534d2d8b9fb4db0af9
+Author: Gokul Dhas Simson <gokul.s@Inatech.com>
+Date:   Mon Apr 12 15:23:18 2021 +0530
 
-    Merged PR 9808: Fixed scroll in ag grid pop-up
-    
-    Fixed scroll in ag grid pop-up
+    Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_git/Shiptech10-UI into invoice-new-ui
 
 branch: master
