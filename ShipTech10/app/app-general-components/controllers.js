@@ -749,10 +749,11 @@
             			return "";
             		}
             		return cellValue;
-            	}
+            	} 
                 var composed = function(cellValue, options, rowObject) {
-                    if (!options.colModel.secondUnit) return;
-                    if (!rowObject[options.colModel.secondUnit]) return;
+                	console.log("askdnaksdn");
+                    // if (!options.colModel.secondUnit) return;
+                    // if (!rowObject[options.colModel.secondUnit]) return;
                     return $filter("number")(cellValue, $scope.tenantSettings.defaultValues[options.colModel.secondUnit.indexOf("Uom") ? "quantityPrecision" : "pricePrecision"]) + " " + rowObject[options.colModel.secondUnit].name;
                 };
                 var confirmOrder = function(cellValue, options, rowObject) {
@@ -2046,8 +2047,12 @@
                 };
                 var price = function(cellValue, options, rowObject) {
                     element = "";
+                    pricePrecision = $scope.tenantSettings.defaultValues.pricePrecision;
+                    if (options.gid == "flat_orders_list" && options.colModel.name == "price") {
+	                    pricePrecision = rowObject.pricePrecision ? rowObject.pricePrecision : $scope.tenantSettings.defaultValues.pricePrecision;
+                    }
                     if (cellValue != null) {
-                        element = $filter("number")(cellValue, $scope.tenantSettings.defaultValues.pricePrecision);
+                        element = $filter("number")(cellValue, pricePrecision);
                     }
                     return element;
                 };
