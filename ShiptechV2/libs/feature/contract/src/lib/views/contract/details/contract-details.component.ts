@@ -114,6 +114,10 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   marketPriceList: any;
   formulaPlusMinusList: any;
   formulaFlatPercentageList: any;
+  currencyList: any;
+  formulaOperationList: any;
+  marketPriceTypeList: any;
+  formulaFunctionList: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -215,10 +219,12 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       this.marketPriceList = this.setListFromStaticLists('MarketPriceType');
       this.formulaPlusMinusList = this.setListFromStaticLists('FormulaPlusMinus');
       this.formulaFlatPercentageList = this.setListFromStaticLists('FormulaFlatPercentage');
+      this.currencyList = this.setListFromStaticLists('Currency');
+      this.formulaOperationList = this.setListFromStaticLists('FormulaOperation');
+      this.formulaFunctionList = this.setListFromStaticLists('FormulaFunction');
+      this.marketPriceTypeList = this.setListFromStaticLists('MarketPriceType');
 
   
-
-
 
   
       console.log(this.staticLists);

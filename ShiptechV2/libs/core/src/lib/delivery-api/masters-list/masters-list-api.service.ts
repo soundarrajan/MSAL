@@ -24,6 +24,7 @@ export namespace MastersApiPaths {
   export const getSellerList = () => `api/masters/counterparties/listByTypes`;
   export const getCompanyList = () => `api/masters/companies/list`;
   export const getSystemInstumentList = () => `api/masters/systeminstruments/list`;
+  export const getCurrencyList = () => `api/masters/currencies/list`;
 
 }
 
@@ -96,6 +97,17 @@ export class MastersListApiService
     return this.http.post(requestUrl, {'payload': request}).pipe(
       map((body: any) => body),
       catchError(() => of('Error, could not load the system instrument list'))
+    );
+  }
+
+  @ObservableException()
+  getCurrencyList(
+    request: IPhysicalSupplierListRequest
+  ): Observable<IPhysicalSupplierListResponse> {
+    const requestUrl = `${this._apiUrl}/${MastersApiPaths.getCurrencyList()}`;
+    return this.http.post(requestUrl, {'payload': request}).pipe(
+      map((body: any) => body),
+      catchError(() => of('Error, could not load the currency list'))
     );
   }
 

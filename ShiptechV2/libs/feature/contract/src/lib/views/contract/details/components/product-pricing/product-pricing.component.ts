@@ -471,6 +471,10 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   marketPriceList: any;
   formulaPlusMinusList: any;
   formulaFlatPercentageList: any;
+  currencyList: any;
+  formulaOperationList: any;
+  formulaFunctionList: any;
+  marketPriceTypeList: any;
 
 
   get entityId(): number {
@@ -560,6 +564,38 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   }
 
 
+  @Input('currencyList') set _setCurrencyList(currencyList) { 
+    if (!currencyList) {
+      return;
+    } 
+    this.currencyList = currencyList;
+  }
+
+  @Input('formulaOperationList') set _setFormulaOperationList(formulaOperationList) { 
+    if (!formulaOperationList) {
+      return;
+    } 
+    this.formulaOperationList = formulaOperationList;
+  }
+  
+
+  @Input('formulaFunctionList') set _setFormulaFunctionList(formulaFunctionList) { 
+    if (!formulaFunctionList) {
+      return;
+    } 
+    this.formulaFunctionList = formulaFunctionList;
+  }
+
+  @Input('marketPriceTypeList') set _setMarketPriceTypeList(marketPriceTypeList) { 
+    if (!marketPriceTypeList) {
+      return;
+    } 
+    this.marketPriceTypeList = marketPriceTypeList;
+  }
+
+
+  
+
   index = 0;
   expandLocationPopUp = false;
   array = [0,1,2,3,4,5,6,7,8,9,10];
@@ -641,7 +677,11 @@ export class ProductPricing extends DeliveryAutocompleteComponent
             'marketPriceList': this.marketPriceList,
             'formulaPlusMinusList': this.formulaPlusMinusList,
             'formulaFlatPercentageList': this.formulaFlatPercentageList,
-            'uomList': this.uomList
+            'uomList': this.uomList,
+            'currencyList': this.currencyList,
+            'formulaOperationList': this.formulaOperationList,
+            'formulaFunctionList': this.formulaFunctionList,
+            'marketPriceTypeList': this.marketPriceTypeList
           }
         });
 

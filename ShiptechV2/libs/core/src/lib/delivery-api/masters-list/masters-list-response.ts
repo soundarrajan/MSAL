@@ -139,3 +139,14 @@ export interface ISystemInstrumentListDto extends IDisplayLookupDto {
   lastModifiedOn: IDisplayLookupDto;
   isDeleted: boolean;
 }
+
+export interface ICurrencyListDto extends IDisplayLookupDto {
+  id: number;
+  name: string;
+  code: string;
+  createdBy: IDisplayLookupDto;
+  createdOn: IDisplayLookupDto;
+  lastModifiedBy: IDisplayLookupDto;
+  lastModifiedOn: IDisplayLookupDto;
+  isDeleted: boolean;
+}
