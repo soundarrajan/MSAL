@@ -178,12 +178,9 @@
         </tbody>
     </table>
 </div>
-<div class="col-md-12 quality-comments-container"  *ngIf="formValues.deliveryProducts[deliveryProductIndex].qualityHeader" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-    <mat-form-field appearance="outline" class="custom-form-field-comments">
-        <mat-label>Comments</mat-label>
-        <textarea  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].qualityHeader.comments"
-            matInput
-            autocomplete="off"
-            [disabled]="formValues.deliveryStatus.name == 'Verified'"></textarea>
-    </mat-form-field>
+<div style="margin-top: 10px" class="col-md-12 productQualityComments"  *ngIf="formValues.deliveryProducts[deliveryProductIndex].qualityHeader">
+    <label>Comments</label>
+    <textarea  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].qualityHeader.comments" 
+        autocomplete="off"
+        [disabled]="formValues.deliveryStatus.name == 'Verified'"></textarea>
 </div>
