@@ -1764,15 +1764,15 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group row"
-                        ng-init='CM.getOptions({"Name": "OptionToChangePortId", "Type": "dropdown", "masterSource": "YesNoOptions"})'>
-                        <label for="OptionToChangePortId" class="simpleLookupLabel" style="max-height: initial;">
+                        ng-init='CM.getOptions({"Name": "optionToChangePort", "Type": "dropdown", "masterSource": "YesNoOptions"})'>
+                        <label for="optionToChangePort" class="simpleLookupLabel" style="max-height: initial;">
                             Option to change Port in Order
                         </label>
                         <div class="input-group form_input form_input_closeOrder">
                             <select class="form-control bs-select changeIT"
-                                ng-options="item as item.name for item in options.OptionToChangePortId track by item.id"
-                                ng-required="true" id="OptionToChangePortId"
-                                ng-model="formValues.procurement.order.OptionToChangePortId"></select>
+                                ng-options="item as item.name for item in options.optionToChangePort track by item.id"
+                                ng-required="true" id="optionToChangePort"
+                                ng-model="formValues.procurement.order.optionToChangePort"></select>
                         </div>
                     </div>
                 </div>
