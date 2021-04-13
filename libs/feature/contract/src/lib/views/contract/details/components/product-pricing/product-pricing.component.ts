@@ -502,7 +502,9 @@ export class ProductPricing extends DeliveryAutocompleteComponent
       return;
     } 
     this.selectedTabIndex = contractProductIndex;
-    this.selectedVal = this.formValues.products[contractProductIndex].isFormula ? 'formula' : 'fixed';
+    if (this.formValues && this.formValues.products[contractProductIndex]) {
+      this.selectedVal = this.formValues.products[contractProductIndex].isFormula ? 'formula' : 'fixed';
+    }
 
   }
 
@@ -553,6 +555,9 @@ export class ProductPricing extends DeliveryAutocompleteComponent
       return;
     } 
     this.formValues = formValues;
+    if (this.formValues && this.formValues.products[this.selectedTabIndex]) {
+      this.selectedVal = this.formValues.products[this.selectedTabIndex].isFormula ? 'formula' : 'fixed';
+    }
 
   }
 
@@ -644,8 +649,10 @@ export class ProductPricing extends DeliveryAutocompleteComponent
 
   setContractForm(form) {
     this.formValues = form;
-    this.changeDetectorRef.detectChanges();
     console.log(this.formValues);
+    if (this.formValues && this.formValues.products[this.selectedTabIndex]) {
+      this.selectedVal = this.formValues.products[this.selectedTabIndex].isFormula ? 'formula' : 'fixed';
+    }
   }
 
 
