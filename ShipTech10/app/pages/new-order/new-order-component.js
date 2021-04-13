@@ -3762,6 +3762,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     if (a.elem[0] == 'surveyorCounterparty') {
                         ctrl.data.surveyorCounterparty = a.val;
                     }
+                    if (a.elem[0] == 'pretestlab') {
+                        ctrl.data.preTestLabCounterparty = a.val;
+                    }                    
                     if (a.elem[0] == 'paymentTerm') {
                         ctrl.selectPaymntTerm(a.val);
                     }
