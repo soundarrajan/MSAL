@@ -475,6 +475,8 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   formulaOperationList: any;
   formulaFunctionList: any;
   marketPriceTypeList: any;
+  pricingScheduleList: any;
+  holidayRuleList: any;
 
 
   get entityId(): number {
@@ -599,6 +601,21 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   }
 
 
+  @Input('pricingScheduleList') set _setPricingScheduleList(pricingScheduleList) { 
+    if (!pricingScheduleList) {
+      return;
+    } 
+    this.pricingScheduleList = pricingScheduleList;
+  }
+
+  @Input('holidayRuleList') set _setHolidayRuleList(holidayRuleList) { 
+    if (!holidayRuleList) {
+      return;
+    } 
+    this.holidayRuleList = holidayRuleList;
+  }
+
+
   
 
   index = 0;
@@ -688,7 +705,9 @@ export class ProductPricing extends DeliveryAutocompleteComponent
             'currencyList': this.currencyList,
             'formulaOperationList': this.formulaOperationList,
             'formulaFunctionList': this.formulaFunctionList,
-            'marketPriceTypeList': this.marketPriceTypeList
+            'marketPriceTypeList': this.marketPriceTypeList,
+            'pricingScheduleList': this.pricingScheduleList,
+            'holidayRuleList': this.holidayRuleList
           }
         });
 

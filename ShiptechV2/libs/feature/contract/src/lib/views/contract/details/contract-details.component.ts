@@ -118,6 +118,8 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   formulaOperationList: any;
   marketPriceTypeList: any;
   formulaFunctionList: any;
+  pricingScheduleList: any;
+  holidayRuleList: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -223,8 +225,9 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       this.formulaOperationList = this.setListFromStaticLists('FormulaOperation');
       this.formulaFunctionList = this.setListFromStaticLists('FormulaFunction');
       this.marketPriceTypeList = this.setListFromStaticLists('MarketPriceType');
+      this.pricingScheduleList = this.setListFromStaticLists('PricingSchedule');
+      this.holidayRuleList = this.setListFromStaticLists('HolidayRule');
 
-  
 
   
       console.log(this.staticLists);
