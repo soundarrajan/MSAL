@@ -1,9 +1,9 @@
-﻿commit a6739fc3460502908f385d846a2df916089ac723
+﻿commit 638eb2c704072baea4ffe22debf96cbabe41411b
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Tue Apr 13 10:37:08 2021 +0000
+Date:   Tue Apr 13 11:16:17 2021 +0000
 
-    Merged PR 9868: Fixed Overflow scroll in comments section
+    Merged PR 9872: Fixed ag-grid-cell-actions from invoice screen
     
-    Related work items: #31123
+    Fixed ag-grid-cell-actions from invoice screen
 
 branch: master
