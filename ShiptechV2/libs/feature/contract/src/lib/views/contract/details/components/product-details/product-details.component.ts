@@ -500,7 +500,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     this.locationMasterList = _.cloneDeep(locationMasterList);
     this.locationMasterSearchList = _.cloneDeep(locationMasterList);
     this.selectedLocationList = _.cloneDeep(locationMasterList);
-    if (this.formValues.products) {
+    if (this.formValues && this.formValues.products) {
       this.setAllowedLocations(this.selectedTabIndex);
     }
 
@@ -514,7 +514,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     this.productMasterList =  _.cloneDeep(productMasterList);
     this.productMasterSearchList = _.cloneDeep(this.productMasterList);
     this.selectedProductList = _.cloneDeep(this.productMasterList);
-    if (this.formValues.products) {
+    if (this.formValues && this.formValues.products) {
       this.setAllowedProducts(this.selectedTabIndex);
     }
 
@@ -630,7 +630,6 @@ export class ProductDetails extends DeliveryAutocompleteComponent
 
   setContractForm(form) {
     this.formValues = form;
-    this.changeDetectorRef.detectChanges();
     console.log(this.formValues);
   }
 

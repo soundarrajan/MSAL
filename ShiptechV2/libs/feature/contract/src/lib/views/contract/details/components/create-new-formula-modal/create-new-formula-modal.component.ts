@@ -30,6 +30,7 @@ import { DeliveryAutocompleteComponent } from '../delivery-autocomplete/delivery
 import { knowMastersAutocompleteHeaderName, knownMastersAutocomplete } from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
 import { IOrderLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'shiptech-create-new-formula-modal',
@@ -295,6 +296,15 @@ export class CreateNewFormulaModalComponent extends DeliveryAutocompleteComponen
       this.toastr.error('Min 1 Quote');
     }
   }
+
+  isMeanChange(ob: MatCheckboxChange) {
+    console.log("checked: " + ob.checked);
+    if (ob.checked) {
+      for (let i = 0; i < this.formValues.complexFormulaQuoteLines.length; i++) {
+        this.formValues.complexFormulaQuoteLines[i].formulaOperation.id = 3;
+      }
+    }
+  } 
   
   
   

@@ -237,7 +237,8 @@
                 </div>
               </div>
               <mat-checkbox
-                [(ngModel)]="formValues.isMean">Apply mean for entire table</mat-checkbox>
+                [(ngModel)]="formValues.isMean"
+                (change)="isMeanChange($event)">Apply mean for entire table</mat-checkbox>
             </div>
             <div class="col-md-12">
               <table class="complex-formula-quote-lines table table-stripped table-hover" style="width:100%">
