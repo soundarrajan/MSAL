@@ -7,7 +7,8 @@ export enum knownMastersAutocomplete {
   physicalSupplier = 'physicalSupplier',
   sellers = 'sellers',
   company = 'company',
-  systemInstrument = 'systemInstrument'
+  systemInstrument = 'systemInstrument',
+  currency = 'currency'
 }
 
 export enum knowMastersAutocompleteHeaderName {
@@ -19,5 +20,6 @@ export enum knowMastersAutocompleteHeaderName {
   physicalSupplier = 'SELECT PHYSICAL SUPPLIER',
   sellers = 'SELECT SELLER',
   company = 'SELECT COMPANY',
-  systemInstrument = 'SELECT SYSTEM INSTRUMENT'
+  systemInstrument = 'SELECT SYSTEM INSTRUMENT',
+  currency = 'SELECT CURRENCY'
 }

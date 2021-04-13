@@ -32,12 +32,12 @@ import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookup
 import { BdnInformationApiService } from '@shiptech/core/delivery-api/bdn-information/bdn-information-api.service';
 import { IOrderListDto } from '@shiptech/core/delivery-api/request-reponse-dtos/order-list.dtos';
 import { MastersListApiService } from '@shiptech/core/delivery-api/masters-list/masters-list-api.service';
-import { IPhysicalSupplierListDto, IProductListDto, ISystemInstrumentListDto } from '@shiptech/core/delivery-api/masters-list/masters-list-response';
-import { SystemInstrumentListColumns, SystemInstrumentListColumnServerKeys, SystemInstrumentListColumnsLabels } from './system-instrument-list.columns';
+import { CurrencyListColumns, CurrencyListColumnServerKeys, CurrencyListColumnsLabels } from './currency-list.columns';
+import { ICurrencyListDto } from '@shiptech/core/delivery-api/masters-list/masters-list-response';
 
 
 
-function model(prop: keyof ISystemInstrumentListDto): keyof ISystemInstrumentListDto {
+function model(prop: keyof ICurrencyListDto): keyof ICurrencyListDto {
   return prop;
 }
 
@@ -45,7 +45,7 @@ function model(prop: keyof ISystemInstrumentListDto): keyof ISystemInstrumentLis
 const TRANSACTION_TYPE_ID: number = 46;
 
 @Injectable()
-export class SystemInstrumentListSelectorGridViewModel extends BaseGridViewModel {
+export class CurrencyListSelectorGridViewModel extends BaseGridViewModel {
   get entityId(): number {
     return this._entityId;
   }
@@ -116,52 +116,43 @@ export class SystemInstrumentListSelectorGridViewModel extends BaseGridViewModel
     cellClass: 'cell-border-green'
   };
 
-  idCol: ITypedColDef<ISystemInstrumentListDto, number> = {
-    headerName: SystemInstrumentListColumnsLabels.id,
-    colId: SystemInstrumentListColumns.id,
+  idCol: ITypedColDef<ICurrencyListDto, number> = {
+    headerName: CurrencyListColumnsLabels.id,
+    colId: CurrencyListColumns.id,
     field: model('id'),
     minWidth: 250,
     flex: 1
   };
 
 
-  nameCol: ITypedColDef<ISystemInstrumentListDto, string> = {
-    headerName: SystemInstrumentListColumnsLabels.name,
-    colId: SystemInstrumentListColumns.name,
+  nameCol: ITypedColDef<ICurrencyListDto, string> = {
+    headerName: CurrencyListColumnsLabels.name,
+    colId: CurrencyListColumns.name,
     field: model('name'),
     minWidth: 250,
     flex: 2
   };
 
-  codeCol: ITypedColDef<ISystemInstrumentListDto, string> = {
-    headerName: SystemInstrumentListColumnsLabels.code,
-    colId: SystemInstrumentListColumns.code,
+  codeCol: ITypedColDef<ICurrencyListDto, string> = {
+    headerName: CurrencyListColumnsLabels.code,
+    colId: CurrencyListColumns.code,
     field: model('code'),
     minWidth: 250,
     flex: 2
   };
 
-  marketInstumentCol: ITypedColDef<ISystemInstrumentListDto, IDisplayLookupDto> = {
-    headerName: SystemInstrumentListColumnsLabels.marketInstrument,
-    colId: SystemInstrumentListColumns.marketInstrument,
-    field: model('marketInstrument'),
-    valueFormatter: params => params.value?.name,
-    minWidth: 250,
-    flex: 2
-  };
-
-  createdByCol: ITypedColDef<ISystemInstrumentListDto, IDisplayLookupDto> = {
-    headerName: SystemInstrumentListColumnsLabels.createdBy,
-    colId: SystemInstrumentListColumns.createdBy,
+  createdByCol: ITypedColDef<ICurrencyListDto, IDisplayLookupDto> = {
+    headerName: CurrencyListColumnsLabels.createdBy,
+    colId: CurrencyListColumns.createdBy,
     field: model('createdBy'),
     valueFormatter: params => params.value?.name,
     minWidth: 250,
     flex: 2
   };
 
-  createdOnCol: ITypedColDef<ISystemInstrumentListDto, string> = {
-    headerName: SystemInstrumentListColumnsLabels.createdOn,
-    colId: SystemInstrumentListColumns.createdOn,
+  createdOnCol: ITypedColDef<ICurrencyListDto, string> = {
+    headerName: CurrencyListColumnsLabels.createdOn,
+    colId: CurrencyListColumns.createdOn,
     field: model('createdOn'),
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.date(params.value),
@@ -169,18 +160,18 @@ export class SystemInstrumentListSelectorGridViewModel extends BaseGridViewModel
     flex: 2
   };
 
-  lastModifiedByCol: ITypedColDef<ISystemInstrumentListDto, IDisplayLookupDto> = {
-    headerName: SystemInstrumentListColumnsLabels.lastModifiedBy,
-    colId: SystemInstrumentListColumns.lastModifiedBy,
+  lastModifiedByCol: ITypedColDef<ICurrencyListDto, IDisplayLookupDto> = {
+    headerName: CurrencyListColumnsLabels.lastModifiedBy,
+    colId: CurrencyListColumns.lastModifiedBy,
     field: model('lastModifiedBy'),
     valueFormatter: params => params.value?.name,
     minWidth: 250,
     flex: 2
   };
 
-  lastModifiedOnCol: ITypedColDef<ISystemInstrumentListDto, string> = {
-    headerName: SystemInstrumentListColumnsLabels.lastModifiedOn,
-    colId: SystemInstrumentListColumns.lastModifiedOn,
+  lastModifiedOnCol: ITypedColDef<ICurrencyListDto, string> = {
+    headerName: CurrencyListColumnsLabels.lastModifiedOn,
+    colId: CurrencyListColumns.lastModifiedOn,
     field: model('lastModifiedOn'),
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.date(params.value),
@@ -188,9 +179,9 @@ export class SystemInstrumentListSelectorGridViewModel extends BaseGridViewModel
     flex: 2
   };
 
-  isDeletedCol: ITypedColDef<ISystemInstrumentListDto, boolean> = {
-    headerName: SystemInstrumentListColumnsLabels.isDeleted,
-    colId: SystemInstrumentListColumns.isDeleted,
+  isDeletedCol: ITypedColDef<ICurrencyListDto, boolean> = {
+    headerName: CurrencyListColumnsLabels.isDeleted,
+    colId: CurrencyListColumns.isDeleted,
     field: model('isDeleted'),
     cellRenderer: params => {
       var a = document.createElement('span');
@@ -213,10 +204,10 @@ export class SystemInstrumentListSelectorGridViewModel extends BaseGridViewModel
     private mastersListApiService: MastersListApiService
   ) {
     super(
-      'system-instrument-list-selector-grid-5',
+      'currency-list-selector-grid-1',
       columnPreferences,
       changeDetector,
-      loggerFactory.createLogger(SystemInstrumentListSelectorGridViewModel.name)
+      loggerFactory.createLogger(CurrencyListSelectorGridViewModel.name)
     );
     this.init(this.gridOptions, true);
   }
@@ -227,7 +218,6 @@ export class SystemInstrumentListSelectorGridViewModel extends BaseGridViewModel
       this.idCol,
       this.nameCol,
       this.codeCol,
-      this.marketInstumentCol,
       this.createdByCol,
       this.createdOnCol,
       this.lastModifiedByCol,
@@ -244,11 +234,11 @@ export class SystemInstrumentListSelectorGridViewModel extends BaseGridViewModel
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     const filters: ServerQueryFilter[] = [];
     this.mastersListApiService
-      .getSystemInstumentList({
+      .getCurrencyList({
         ...transformLocalToServeGridInfo(
           this.gridApi,
           params,
-          SystemInstrumentListColumnServerKeys,
+          CurrencyListColumnServerKeys,
           this.searchText
         ),
         filters

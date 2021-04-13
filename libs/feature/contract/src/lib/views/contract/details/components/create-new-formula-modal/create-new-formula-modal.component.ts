@@ -65,6 +65,12 @@ export class CreateNewFormulaModalComponent extends DeliveryAutocompleteComponen
   formulaPlusMinusList: any;
   formulaFlatPercentageList: any;
   uomList: any;
+  autocompleteCurrency: knownMastersAutocomplete;
+  currencyList: any;
+  formulaOperationList: any;
+  formulaFunctionList: any;
+  marketPriceTypeList: any;
+  systemInstumentList1: any;
   constructor(
     public dialogRef: MatDialogRef<CreateNewFormulaModalComponent>,
     private ren: Renderer2,
@@ -87,11 +93,17 @@ export class CreateNewFormulaModalComponent extends DeliveryAutocompleteComponen
       this.formulaPlusMinusList = data.formulaPlusMinusList;
       this.formulaFlatPercentageList = data.formulaFlatPercentageList;
       this.uomList = data.uomList;
+      this.currencyList = data.currencyList;
+      this.formulaOperationList = data.formulaOperationList;
+      this.formulaFunctionList = data.formulaFunctionList;
+      this.marketPriceTypeList = data.marketPriceTypeList;
     }
 
   ngOnInit() {
     this.entityName = 'Contract';
     this.autocompleteSystemInstrument = knownMastersAutocomplete.systemInstrument;
+    this.autocompleteCurrency = knownMastersAutocomplete.currency;
+
 
   }
 
@@ -101,6 +113,15 @@ export class CreateNewFormulaModalComponent extends DeliveryAutocompleteComponen
         return knowMastersAutocompleteHeaderName.systemInstrument;
       default:
         return knowMastersAutocompleteHeaderName.systemInstrument;
+    }
+  }
+
+  getHeaderNameSelector1(): string {
+    switch (this._autocompleteType) {
+      case knownMastersAutocomplete.currency:
+        return knowMastersAutocompleteHeaderName.currency;
+      default:
+        return knowMastersAutocompleteHeaderName.currency;
     }
   }
   
@@ -119,12 +140,60 @@ export class CreateNewFormulaModalComponent extends DeliveryAutocompleteComponen
     }
   }
 
+  selectorCurrencySelectionChange(
+    selection: IOrderLookupDto
+  ): void {
+    if (selection === null || selection === undefined) {
+      this.formValues.currency = '';
+    } else {
+      const obj = {
+        'id': selection.id,
+        'name': selection.name
+      };
+      this.formValues.currency = obj; 
+      this.changeDetectorRef.detectChanges();   
+    }
+  }
+
+
+
   filterSystemInstrumenttList() {
     if (this.formValues.simpleFormula.systemInstrument) {
       const filterValue = this.formValues.simpleFormula.systemInstrument.name ? this.formValues.simpleFormula.systemInstrument.name.toLowerCase() : this.formValues.simpleFormula.systemInstrument.toLowerCase();
       console.log(filterValue);
       if (this.systemInstumentList) {
         return this.systemInstumentList.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0)
+          .slice(0, 10);
+      } else {
+        return [];
+      }
+    } else {
+      return [];
+    }
+  }
+
+  filterSystemInstrumentListFromComplexFormulaQuoteLine(value) {
+    if (value) {
+      const  filterValue = value.toLowerCase();
+      if (this.systemInstumentList) {
+        return this.systemInstumentList.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0)
+          .slice(0, 10);
+      } else {
+        return [];
+      }
+    } else {
+      return [];
+    }
+  }
+
+
+  
+  filterCurrencyList() {
+    if (this.formValues.currency) {
+      const filterValue = this.formValues.currency.name ? this.formValues.currency.name.toLowerCase() : this.formValues.currency.toLowerCase();
+      console.log(filterValue);
+      if (this.currencyList) {
+        return this.currencyList.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0)
           .slice(0, 10);
       } else {
         return [];
@@ -155,13 +224,77 @@ export class CreateNewFormulaModalComponent extends DeliveryAutocompleteComponen
     this.formValues.simpleFormula.systemInstrument = event.option.value;
   }
 
+  selectCurrency(event: MatAutocompleteSelectedEvent) {
+    this.formValues.currency = event.option.value;
+  }
+
+
   compareUomObjects(object1: any, object2: any) {
     return object1 && object2 && object1.id == object2.id;
   }
 
 
+  selectSystemInstrumentFromComplexFormulaQuoteLine(value, line, key) {
+    this.formValues.complexFormulaQuoteLines[line].systemInstruments[key].systemInstrument = value;
+  }
+
  
-  
+  addComplexFormulaQuoteLine() {
+    if (!this.formValues.complexFormulaQuoteLines) {
+      this.formValues.complexFormulaQuoteLines = [];
+    }
+    var count = 0;
+    this.formValues.complexFormulaQuoteLines.forEach((val, key) => {
+      if(!val.isDeleted) {
+          count++;
+      }
+    });
+    if (count < 3) {
+      this.formValues.complexFormulaQuoteLines.push({
+          id: 0,
+          formulaOperation: {
+              id: this.formValues.isMean ? 3 : 1,
+              name: this.formValues.isMean ? 'Mean' : 'Add',
+              internalName: null,
+              code: null
+          },
+          weight: '100',
+          formulaFunction: {
+              id: 1,
+              name: 'Min',
+              internalName: null,
+              code: null
+          },
+          systemInstruments: [ 
+            {
+              id: 0
+            }, 
+            {
+              id: 0
+            }, 
+            {
+              id: 0
+            }
+        ]
+      });
+    } else {
+      this.toastr.error('Max 3 Quotes allowed');
+    }
+  }
+
+
+  removeComplexFormulaQuoteLine(key) {
+    var count = this.formValues.complexFormulaQuoteLines.length;
+    if (count > 1) {
+      if (this.formValues.complexFormulaQuoteLines[key].id > 0) {
+        this.formValues.complexFormulaQuoteLines[key].isDeleted = true;
+      } else {
+        this.formValues.complexFormulaQuoteLines.splice(key, 1);
+      }
+    } else {
+      this.toastr.error('Min 1 Quote');
+    }
+  }
   
   
   

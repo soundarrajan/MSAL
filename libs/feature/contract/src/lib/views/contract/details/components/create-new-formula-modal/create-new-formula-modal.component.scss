@@ -345,7 +345,6 @@
   border: 1px solid #F5F5F5;
   box-sizing: border-box;
   border-radius: 4px;
-  height: 278px;
   margin-top: 10px;
   padding: 5px;
 }
@@ -414,4 +413,156 @@
 
 .create-new-formula-form-field {
   width: 15%;
+}
+
+
+.custom-form-field-comments {
+  width: 100% !important;
+}
+
+textarea.mat-input-element {
+  height: 80px;
+}
+
+.custom-form-field-comments.mat-form-field-appearance-outline .mat-form-field-outline {
+  background: #ffffff;
+  box-sizing: border-box;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #a5a5a5;
+}
+
+
+.custom-form-field-comments.mat-form-field-disabled   {
+  background-color: unset !important;
+}
+
+.custom-form-field-comments.mat-form-field-appearance-outline.mat-form-field-disabled .mat-form-field-outline {
+  background-color: #EEEEEE !important;
+}
+mat-form-field {
+  .mat-form-field-label {
+      box-sizing: border-box;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 16px;
+      color: #37414f !important;
+  }
+}
+
+
+.quality-comments-container {
+  margin-top: 10px;
+}
+
+.complex-formula-quote-lines {
+  display: table !important;
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  border: 1px solid #E0E1E4;
+  box-sizing: border-box;
+  border-radius: 4px;
+  margin-top: 15px;
+}
+
+.complex-formula-quote-lines thead tr {
+  height: 40px;
+  background: #F1F1F2;
+  border: 1px solid #E0E1E4;
+  box-sizing: border-box;
+  border-radius: 4px 4px 0px 0px;
+}
+
+.complex-formula-quote-lines thead tr td {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: #252A32;
+  padding: 10px;
+}
+
+.complex-formula-quote-lines tbody tr td {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #252A32;
+  // padding-left: 10px;
+  // padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.add-new-quote-line-icon::before {
+  content: url(../../../../../../../../../../assets/layout/images/pages/add-product-dropdown.svg);
+}
+
+.add-new-quote-line-icon {
+  width: 25px;
+  height: 25px;
+  position: relative;
+  top: 5px;
+}
+
+
+.remove-new-quote-line-icon::before {
+  content: url(../../../../../../../../../../assets/layout/images/pages/remove-sample-details.svg);
+}
+
+.remove-new-quote-line-icon {
+  width: 25px;
+  height: 25px;
+  position: relative;
+}
+
+
+.complex-formula-quote-info {
+  margin-bottom: unset  !important;
+  width: 100%;
+}
+
+.complex-formula-quote-dropdown-component {
+  border: unset !important;
+  background: unset  !important;
+}
+
+.complex-formula-quote-dropdown-component .mat-select-arrow {
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 6px solid;
+  margin: 0 4px;
+  color: #364150 !important;
+}
+
+.complex-formula-quote-dropdown-component .mat-select-value-text {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: #252A32;
+  margin-right: 20px;
+}
+
+.mat-checkbox-disabled .mat-checkbox-inner-container, .mat-radio-button.mat-radio-disabled .mat-radio-outer-circle{
+  background: #EBEBEB !important;
+}
+
+.mat-checkbox-checked.mat-accent .mat-checkbox-background {
+  background: #37414F;
+}
+
+.mat-radio-button.mat-accent .mat-radio-inner-circle, .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
+  background: #37414F;
+}
+
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+  border-color: #37414F;
 }

@@ -468,6 +468,10 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   marketPriceList: any;
   formulaPlusMinusList: any;
   formulaFlatPercentageList: any;
+  currencyList: any;
+  formulaOperationList: any;
+  formulaFunctionList: any;
+  marketPriceTypeList: any;
 
 
   get entityId(): number {
@@ -526,6 +530,22 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       return;
     } 
     this.uomList = uomList;
+  }
+
+  @Input('currencyList') set _setCurrencyList(currencyList) { 
+    if (!currencyList) {
+      return;
+    } 
+    this.currencyList = currencyList;
+  }
+
+  
+
+  @Input('formulaOperationList') set _setFormulaOperationList(formulaOperationList) { 
+    if (!formulaOperationList) {
+      return;
+    } 
+    this.formulaOperationList = formulaOperationList;
   }
   
   @Input('formulaTypeList') set _setFormulaTypeList(formulaTypeList) { 
@@ -602,6 +622,21 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     } 
     this.generalTenantSettings = generalTenantSettings;
   }
+
+  @Input('formulaFunctionList') set _setFormulaFunctionList(formulaFunctionList) { 
+    if (!formulaFunctionList) {
+      return;
+    } 
+    this.formulaFunctionList = formulaFunctionList;
+  }
+
+  @Input('marketPriceTypeList') set _setMarketPriceTypeList(marketPriceTypeList) { 
+    if (!marketPriceTypeList) {
+      return;
+    } 
+    this.marketPriceTypeList = marketPriceTypeList;
+  }
+
 
 
   index = 0;
