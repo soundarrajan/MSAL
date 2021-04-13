@@ -566,3 +566,74 @@ mat-form-field {
 .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
   border-color: #37414F;
 }
+
+.date-invalid {
+  border-color: #e73d4a!important;
+  .mat-form-field-label mat-label {
+    color: #e73d4a!important;
+  }
+}
+
+.border_line {
+  border-right: 1px solid #252a32;
+}
+
+.formula-description-header .title {
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+}
+
+
+.formula-description-header .checkbox {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+
+.calendar-option-table {
+  display: table !important;
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  border: 1px solid #E0E1E4;
+  box-sizing: border-box;
+  border-radius: 4px;
+  margin-top: 15px;
+}
+
+.calendar-option-table thead tr {
+  height: 40px;
+  background: #F1F1F2;
+  border: 1px solid #E0E1E4;
+  box-sizing: border-box;
+  border-radius: 4px 4px 0px 0px;
+}
+
+.calendar-option-table thead tr td {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: #252A32;
+  padding: 10px;
+}
+
+.calendar-option-table tbody tr td {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #252A32;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+
+.mat-checkbox-checked:not(.mat-checkbox-disabled).mat-accent .mat-ripple-element, .mat-checkbox:active:not(.mat-checkbox-disabled).mat-accent .mat-ripple-element {
+  background-color: black  !important;
+}

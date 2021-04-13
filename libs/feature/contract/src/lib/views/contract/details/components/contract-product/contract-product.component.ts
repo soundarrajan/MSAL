@@ -472,6 +472,8 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   formulaOperationList: any;
   formulaFunctionList: any;
   marketPriceTypeList: any;
+  pricingScheduleList: any;
+  holidayRuleList: any;
 
 
   get entityId(): number {
@@ -636,6 +638,22 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     } 
     this.marketPriceTypeList = marketPriceTypeList;
   }
+
+  
+  @Input('pricingScheduleList') set _setPricingScheduleList(pricingScheduleList) { 
+    if (!pricingScheduleList) {
+      return;
+    } 
+    this.pricingScheduleList = pricingScheduleList;
+  }
+
+  @Input('holidayRuleList') set _setHolidayRuleList(holidayRuleList) { 
+    if (!holidayRuleList) {
+      return;
+    } 
+    this.holidayRuleList = holidayRuleList;
+  }
+
 
 
 
