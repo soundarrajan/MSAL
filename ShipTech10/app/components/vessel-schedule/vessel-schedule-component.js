@@ -20,9 +20,15 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope', '$
             }
         };
 
-	    $scope.$on('getVesselSchedules', (evt, value,EnableSingleselect) => {
+	    $scope.$on('getVesselSchedules', (evt, value,EnableSingleselect,Page) => {
             
             ctrl.EnableSingleSelect = EnableSingleselect;
+            if(Page == 'NewOrder'){
+                ctrl.isvoyagePortchangeEnabled = true;
+            }
+            else{
+                ctrl.isvoyagePortchangeEnabled = false;
+            }
         // $scope.accessSelection = value;
  	       if (value == 0) {
                 return false;

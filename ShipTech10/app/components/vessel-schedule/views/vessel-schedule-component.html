@@ -53,6 +53,8 @@
 
 <div class="modal-footer">
     <div class="pull-right">
-        <a class="btn btn-outline orange" ng-click="$ctrl.confirmVesselSchedulesSelection()" data-dismiss="modal">Add to Request</a>
+        <a class="btn btn-outline orange" ng-if="$ctrl.isvoyagePortchangeEnabled" ng-click="$ctrl.confirmVesselSchedulesSelection()" data-dismiss="modal">Add to Order</a>
+        <a class="btn btn-outline orange" ng-if="!$ctrl.isvoyagePortchangeEnabled" ng-click="$ctrl.confirmVesselSchedulesSelection()" data-dismiss="modal">Add to Request</a>
     </div>
 </div>
+
