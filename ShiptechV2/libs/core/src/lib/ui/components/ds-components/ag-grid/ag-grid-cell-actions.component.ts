@@ -90,7 +90,7 @@ export class AGGridCellActionsComponent implements ICellRendererAngularComp {
         });
     }
 
-    navigateTo() {
+    navigateTo(event) {
         this.params.onClick(this.params);
     }
 
