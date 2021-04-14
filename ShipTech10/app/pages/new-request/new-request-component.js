@@ -1887,6 +1887,23 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 if (!ctrl.request.vesselDetails.vessel) {
                     ctrl.request.vesselDetails.vessel = {};
                 }
+                if (vessel.validateVesselExpiryDate && vessel.expiry) {
+                	todayOffset = moment.utc().add(ctrl.requestTenantSettings.vesselExpiryNoOfDays, "days");
+                	if(moment.utc(todayOffset).isAfter(moment.utc(vessel.expiry))){
+
+	                    var dateFormat = ctrl.tenantSettings.tenantFormats.dateFormat.name;
+	                    var hasDayOfWeek = false;
+	                    if (dateFormat.startsWith("DDD ")) {
+	                        hasDayOfWeek = true;
+	                        dateFormat = dateFormat.split("DDD ")[1];
+	                    }
+	                    formattedVesselExpiry = $filter("date")(vessel.expiry, dateFormat.split(" ")[0], "UTC");
+
+                		daysRemaining = moment.utc(vessel.expiry).diff(moment.utc(), 'days') + 1 ; /* +1day because it returns full days remaining */
+                		warningMessage = `${vessel.name} will expire on ${formattedVesselExpiry}. ${daysRemaining} days remaining`
+	                	toastr.warning(warningMessage);
+                	}
+                }
                 newRequestModel.getDefaultBuyer(vessel.id).then((buyer) => {
                     ctrl.buyer = buyer.payload;
                     ctrl.request.vesselDetails.vessel = angular.copy(vessel);
