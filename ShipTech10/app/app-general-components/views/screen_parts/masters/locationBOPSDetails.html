@@ -6,8 +6,8 @@
 					<label class="control-label" style="height: 30px; padding-top: 0px; width:200px;">
 						Distance out of SECA Area (NM)
 					</label>
-					<div class="form_input" style="width:calc(100% - 200px)">
-						<input type="text" class="form-control" name="distanceSECAArea" id="distanceSECAArea" ng-model="formValues.distanceSECAArea">
+					<div class="form_input" style="width:calc(100% - 200px)" ng-init="!formValues.distanceSECAArea ? formValues.distanceSECAArea = 0 : '' ">
+						<input type="number" class="form-control" ng-pattern="/^[0-9]*$/" name="distanceSECAArea" id="distanceSECAArea" ng-model="formValues.distanceSECAArea">
 					</div>				
 				</div>				
 			</div>
@@ -17,7 +17,7 @@
 						Pilot Time in (hrs) <span  class="orange-txt "> * </span>
 					</label>
 					<div class="form_input" style="width:calc(100% - 200px)">
-						<input type="text" class="form-control" name="pilotInTime" id="pilotInTime" ng-model="formValues.pilotInTime" ng-required="true">
+						<input type="number" ng-init="!formValues.pilotInTime ? formValues.pilotInTime = 1 : '' " class="form-control" ng-pattern="/^[0-9]*$/" name="pilotInTime" id="pilotInTime" ng-model="formValues.pilotInTime" ng-required="true">
 					</div>				
 				</div>					
 			</div>
@@ -27,7 +27,7 @@
 						Earliest Port Trading Time (days) <span  class="orange-txt "> * </span>
 					</label>
 					<div class="form_input" style="width:calc(100% - 200px)">
-						<input type="text" class="form-control" name="earliestPortTradingTime" id="earliestPortTradingTime" ng-model="formValues.earliestPortTradingTime" ng-required="true">
+						<input type="number" ng-init="!formValues.earliestPortTradingTime ? formValues.earliestPortTradingTime = 14 : '' " class="form-control" ng-pattern="/^[0-9]*$/" name="earliestPortTradingTime" id="earliestPortTradingTime" ng-model="formValues.earliestPortTradingTime" ng-required="true">
 					</div>				
 				</div>					
 			</div>
@@ -51,7 +51,7 @@
 						Pilot Time out (hrs) <span  class="orange-txt "> * </span>
 					</label>
 					<div class="form_input" style="width:calc(100% - 200px)">
-						<input type="text" class="form-control" name="pilotOutTime" id="pilotOutTime" ng-model="formValues.pilotOutTime" ng-required="true">
+						<input type="number" class="form-control" ng-pattern="/^[0-9]*$/" name="pilotOutTime" id="pilotOutTime" ng-model="formValues.pilotOutTime" ng-required="true">
 					</div>				
 				</div>					
 			</div>
@@ -61,7 +61,7 @@
 						Latest Port Trading Time (days) <span  class="orange-txt "> * </span>
 					</label>
 					<div class="form_input" style="width:calc(100% - 200px)">
-						<input type="text" class="form-control" name="latestPortTradingTime" id="latestPortTradingTime" ng-model="formValues.latestPortTradingTime" ng-required="true">
+						<input type="number" ng-init="!formValues.latestPortTradingTime ? formValues.latestPortTradingTime = 3 : '' " class="form-control" ng-pattern="/^[0-9]*$/" name="latestPortTradingTime" id="latestPortTradingTime" ng-model="formValues.latestPortTradingTime" ng-required="true">
 					</div>				
 				</div>					
 			</div>
