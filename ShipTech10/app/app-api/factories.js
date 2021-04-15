@@ -5118,7 +5118,7 @@ APP_API.factory('$Api_Service', [
 
                     if (param.app == 'masters' && param.clc_id == 'masters_productlist') {
                         let uniqueModalTableIdentifier = localStorage.getItem('uniqueModalTableIdentifier');
-                        if (uniqueModalTableIdentifier == 'productsInVesselMaster') {
+                        if (uniqueModalTableIdentifier == 'productsInVesselMaster' || uniqueModalTableIdentifier =='productsInTradeBookMapping' ) {
                         	url = `${API.BASE_URL_DATA_MASTERS }/api/masters/products/listMasters`;
                         	apiJSON.Payload.PageFilters.Filters = param.params.filters;
                         }
@@ -5585,7 +5585,7 @@ APP_API.factory('$Api_Service', [
 	                    	apiJSON.Payload.PageFilters.Filters.push(v);
                     	});
                     }
-
+                     ///url='http://localhost:3661/api/masters/products/listMasters'
                     $http.post(url, angular.toJson(apiJSON)).then(
                         (response) => {
                         	 $rootScope.$broadcast('scheduleDashboardTableGetResponse', response.data);

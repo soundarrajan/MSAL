@@ -35,6 +35,7 @@
     function(API, $tenantSettings, tenantService, $scope, $rootScope, $sce, $Api_Service, Factory_Master, $state, $location, $q, $compile, $timeout, $interval, $templateCache, $listsCache, $uibModal, uibDateParser, uiGridConstants, $filter, $http, $window, $controller, payloadDataModel, statusColors, screenLoader, $parse, EMAIL_TRANSACTION, STATE, orderModel) {
     	// extendScreenLayout(window.masterCTRL, this, statusColors);
         let ctrl=this;
+        $scope.tradeBookfilter=[];
         $rootScope.TempadditionalCosts = [];
         $scope.vm = this;
         $scope.isHideVesselBopsDetails = !($rootScope.adminConfiguration && $rootScope.adminConfiguration.master.isVesselBopsDetailsVisible? $rootScope.adminConfiguration.master.isVesselBopsDetailsVisible : false);
@@ -127,7 +128,7 @@
         vm.listsCache = $listsCache;
 
         vm.formValues = $rootScope.formValues;
-        
+
         let mcrPart = 0.5; //50%
         let oneReeferConsumption = 4.0; //4 KWH
 
@@ -150,7 +151,7 @@
                     let id = parseFloat(window.location.href.split('/#/')[1].split('/')[length]);
                     if (!isNaN(id)) {
                         window.actionLevel = 'Update';
-                    } 
+                    }
                 }
                 if ($(event.target).parents('li').length && ($(event.target).parents('.dropdown-menu.st-extra-buttons').length || $(event.target).parents('.dropdown-menu.pull-right').length)) {
                     window.actionLevel = event.target.outerText.trim();
@@ -395,7 +396,7 @@
         $scope.addedFields = new Object();
         $scope.formFields = new Object();
         $scope.formValues = new Object();
-        
+
         //These constants are used for calculating Vessel - One Day Reserve. (sfocMe, sfocAe,  mcrPart, oneReeferConsumption)
         if (vm.app_id == 'masters' && vm.screen_id == 'vessel' && !$scope.isHideVesselBopsDetails) {
             $scope.formValues.sfocMe = 200.0; //200 g/KWH
@@ -524,7 +525,7 @@
         //             screenLoader.hideLoader();
         //             $scope.screenId = callback.id;
         //             delete callback.id;
-        //             //  
+        //             //
         //             $scope.formFields = callback;
         //             // multiple layouts
         //             if (callback.children) {
@@ -715,7 +716,7 @@
                 };
                 localStorage.setItem('createPreclaimCreditNoteFromInvoiceClaims', JSON.stringify(data));
                 window.open(`/#/${ vm.app_id }/` + 'claims' + '/edit/', '_blank');
-            
+
             } else {
                 toastr.error('Please select one claim');
             }
@@ -765,7 +766,7 @@
             });
         };
         $scope.save_master_structure = function() {
-            
+
             vm.structure = angular.toJson($scope.formFields);
             Factory_Master.save_master_structure(vm.app_id, vm.screen_id, $scope.formFields, (callback, response) => {
                 if (response != false) {
@@ -855,7 +856,7 @@
         function setAllChild(object, type) {
             if (object.isSelected) {
                 $scope.formValues[type].push({id: object.id, name: object.name});
-            }   
+            }
             if (object.children && object.children.length) {
                 for (var i = 0; i < object.children.length; i++) {
                     setAllChild(object.children[i], type);
@@ -880,9 +881,9 @@
             screenLoader.showLoader();
             $('form').addClass('submitted');
             vm.invalid_form = false;
-           
-           
-            
+
+
+
             if(vm.app_id == 'masters' && vm.screen_id == 'strategy') {
                 if ($scope.formValues.mtmType.id != 1) {
                     $scope.formValues.mtmFormulaProducts = _.filter($scope.formValues.mtmFormulaProducts, function(object) {
@@ -936,14 +937,14 @@
                                     if (findIndex != -1) {
                                         ratingRequired = true;
                                     }
-                                }                        
+                                }
                         }
                         if (ratingRequired && $scope.formValues.applications[i].allLocations.totalWeightage != 100) {
                             hasTotalWeightDifferentBy100 = true;
                         }
                         }
 
-                    }                    
+                    }
 
                 }
                 if (hasTotalWeightDifferentBy100) {
@@ -953,7 +954,7 @@
 
             }
 
-            if (vm.app_id == 'claims' && vm.screen_id == 'claims') { 
+            if (vm.app_id == 'claims' && vm.screen_id == 'claims') {
                 if ($scope.formValues.claimDetails.claimQuantity) {
                     if ($scope.formValues.claimDetails.claimQuantity < 0) {
                         toastr.error('Please enter a value greater than zero for claim quantity!');
@@ -971,7 +972,7 @@
                     }
                 }
             }
-            
+
             if (vm.app_id == 'admin' && vm.screen_id == 'users') {
                 var dataSrcs = {
                     vessel_access: 'accessVessels',
@@ -986,7 +987,7 @@
                     }
                     $scope.formValues.company = newCompany;
                 }
-                
+
                 _.forEach(types, function(type) {
                     $scope.formValues[dataSrcs[type]] = [];
                     for (let i = 0; i < $rootScope.tabData[type].length; i++) {
@@ -1002,7 +1003,7 @@
                         }
                     }
                 });
-               
+
             }
 
             if(vm.app_id == 'masters' && vm.screen_id == 'systeminstrument') {
@@ -1207,10 +1208,10 @@
                 	}
                 }
 
-               
+
             }
 
-          
+
             if(vm.app_id === 'masters' && vm.screen_id === 'buyer') {
             	// if(!$scope.formValues.code) {
 	            	if(!$scope.formValues.code) {
@@ -1599,7 +1600,7 @@
                     if ($scope.formValues.temp && $scope.formValues.temp.tanks) {
                         if ($scope.formValues.temp.tanks.availableCapacity && $scope.formValues.temp.tanks.usableCapacity && !$scope.formValues.temp.tanks.tankCategory && !$scope.formValues.temp.tanks.product && !$scope.formValues.temp.tanks.uom) {
                             $scope.formValues.temp.tanks = {};
-                        } 
+                        }
                         if ($scope.formValues.temp.tanks && JSON.stringify($scope.formValues.temp.tanks) != JSON.stringify({})) {
                             $scope.filterFromData.tanks.push($scope.formValues.temp.tanks);
                         }
@@ -1749,7 +1750,7 @@
                 if (vm.app_id == 'masters' && vm.screen_id == 'formula') {
                     if ($scope.filterFromData.pricingScheduleOptionSpecificDate) {
                         $scope.filterFromData.pricingScheduleOptionSpecificDate.dates = _.filter($scope.filterFromData.pricingScheduleOptionSpecificDate.dates, function(object) {
-                            return (!object.id && !object.isDeleted) || object.id; 
+                            return (!object.id && !object.isDeleted) || object.id;
                         });
                     }
                 }
@@ -1813,9 +1814,9 @@
                                 $state.reload();
                                 screenLoader.hideLoader();
                             } else if(completeCallback) {
-                                
+
                                 toastr.success('Saved');
-                                
+
                                 toastr.warning('Preparing to complete');
                                 $('#ClaimTypeClaimType').attr('disabled', 'disabled');
                                 completeCallback();
@@ -1851,7 +1852,7 @@
                                 Factory_Master.get_master_entity(vm.entity_id, vm.screen_id, vm.app_id, (callback2) => {
                                     if (callback2) {
                                         $scope.formValues = callback2;
-                                        
+
                                     }
                                 });
                             } else {
@@ -1912,7 +1913,7 @@
                     message = `${message }<br>${ val.$name}`;
                     hasMessage = true;
                 });
-              
+
                 $.each(vm.editInstance.$error.min, (key, val) => {
                     message_min = `${message_min }<br>${val.$name ? val.$name : val.$$attr.id}`;
                     isMin = true;
@@ -1933,45 +1934,45 @@
             toastr.error(toastererror);
 
         };
- 
+
         $scope.SaveLocationProductsValidation = function () {
             var returnresult = false;
             if ($scope.formValues.locationProducts != undefined && $scope.formValues.locationProducts.length > 0) {
                 $.each($scope.formValues.locationProducts, (k, v) => {
                     if((v.locationProducts == undefined || v.locationProducts == "") || (v.productType == undefined || v.productType == ""))
-                        {                       
+                        {
                         toastr.error('Please fill all required details');
                             return returnresult =false
                         }
-                    });  
+                    });
             }
             else
             {
                 return returnresult = true
-            }  
+            }
             return returnresult
             console.log("returnresult", returnresult)
         }
         $scope.SaveAdditionalCostDetValidation = function () {
-            
-           
+
+
             var returnresult = false;
 
             if ($scope.formValues.additionalCosts != undefined && $scope.formValues.additionalCosts.length > 0) {
                 $.each($scope.formValues.additionalCosts, (m, n) => {
                     if(n.additionalCost == undefined || n.additionalCost == ""){
-                        $('#ItemName'+ m).addClass('ng-invalid');   
+                        $('#ItemName'+ m).addClass('ng-invalid');
                     }
                     else
                     {
-                        $('#ItemName'+ m).removeClass('ng-invalid'); 
+                        $('#ItemName'+ m).removeClass('ng-invalid');
                     }
                     if(n.costType == undefined || n.costType == ""){
-                        $('#Type'+ m).addClass('ng-invalid');   
+                        $('#Type'+ m).addClass('ng-invalid');
                     }
                     else
                     {
-                        $('#Type'+ m).removeClass('ng-invalid'); 
+                        $('#Type'+ m).removeClass('ng-invalid');
                     }
                     if(n.costType != undefined && n.costType.name != undefined){
                         if (n.costType.name == 'Range' || n.costType.name == 'Total') {
@@ -1995,25 +1996,25 @@
                             $('#Amount' + m).removeClass('ng-invalid');
                         }
                     }
-                    
+
                     if(n.currency == undefined || n.currency == ""){
-                        $('#Currency'+ m).addClass('ng-invalid');   
+                        $('#Currency'+ m).addClass('ng-invalid');
                     }
                     else
                     {
-                        $('#Currency'+ m).removeClass('ng-invalid'); 
+                        $('#Currency'+ m).removeClass('ng-invalid');
                     }
 
                 });
-               
+
 
 
                 $.each($scope.formValues.additionalCosts, (k, v) => {
                     if((v.additionalCost == undefined || v.additionalCost == "") || (v.costType == undefined || v.costType == ""))
                     {
-                       
+
                         toastr.error('Please fill all required details');
-                        return returnresult = false   
+                        return returnresult = false
                     }
                     else{
                         if(v.costType.name == 'Range' || v.costType.name == 'Total'){
@@ -2062,20 +2063,20 @@
                             if(v.amount == undefined || v.amount == ""){
                                 $('#Amount').addClass('ng-invalid');
                                     if(v.currency == undefined || v.currency == ""){
-                                        $('#Currency').addClass('ng-invalid'); 
+                                        $('#Currency').addClass('ng-invalid');
                                     }
                                 toastr.error('Please fill all required details');
-                                return returnresult = false   
+                                return returnresult = false
                             }
                             else if(v.currency == undefined || v.currency == ""){
                                 $('#Currency').addClass('ng-invalid');
                                 toastr.error('Please fill all required details');
-                                return returnresult = false 
+                                return returnresult = false
                             }
                             else
                             {
                                 return returnresult = true
-                            }   
+                            }
 
                         }
                     }
@@ -2091,7 +2092,7 @@
 
 
         $scope.save_terms_and_conditions = function(id) {
-           
+
             Factory_Master.save_terms_and_conditions(id, $scope.formValues.termsAndConditions, (response) => {
                 if (response) {
                     if (response.status == true) {
@@ -2309,7 +2310,7 @@
             });
         };
         $scope.modalSpecGroupParametersUpdateUom = function(specParamId, index) {
-            
+
             Factory_Master.get_master_entity(specParamId.id, 'specparameter', 'masters', (response) => {
                 if (response) {
                     $scope.modalSpecGroupParameters[index].uom = response.uom;
@@ -2318,7 +2319,7 @@
             });
         };
         $scope.saveProcurementSpecGroup = function(data, application) {
-            
+
             if (application == 'request') {
                 $.each(data, (key, spec) => {
                     data[key].requestProduct = {};
@@ -2371,6 +2372,16 @@
             $rootScope.modalParams = obj;
             // return obj
         };
+        $scope.tradeBookFilters = function(template, clc, name, id, formvalue, idx) {
+            if ($scope.formValues.tradeBookMappings[idx].productType!=null) {
+                $scope.tradeBookfilter = [
+                    {columnValue: "ProductType_Id", ColumnType: "Number", ConditionValue: "=", Values: [$scope.formValues.tradeBookMappings[idx].productType.id], FilterOperator: 0}
+                    ];
+            localStorage.setItem("uniqueModalTableIdentifier", "productsInTradeBookMapping");
+            }else{
+                $scope.tradeBookfilter =[];
+            }
+        }
         //   $scope.triggerModal = function(template, clc, name, id, formvalue, idx, field_name, filter) {
         //       tpl = "";
         //       if (template == "formula") {
@@ -3065,10 +3076,10 @@
         };
 
         $scope.triggerChangeFields = function(name, id) {
-            
+
             $rootScope.formDataFields = $scope.formValues;
 
-           
+
             var fields = [ 'OrderID', 'labResultID', 'deliveryNumber', 'Product' ];
             var company_id = $('#companylistCompany').val();
             var market_id = $('#MarketInstrumentMarketInstrument').val();
@@ -3088,7 +3099,7 @@
                         });
                     }
                 }
-                
+
                 if ($scope.formValues != undefined && $scope.formValues.orderDetails != undefined && $scope.formValues.orderDetails.orderStatusName != undefined && $scope.formValues.orderDetails.orderStatusName != 'Cancelled') {
                     if ($scope.formValues.claimType != undefined && $scope.formValues.claimType.claimType != undefined && $scope.formValues.claimType.claimType.name != undefined && $scope.formValues.claimType.claimType.name != '') {
                        if($scope.formValues.claimType.claimType.name == 'Cancellation') {
@@ -3103,7 +3114,7 @@
                 //     }
                 //   });
                 // }
-                
+
             }
             if (vm.app_id == 'masters') {
                 if (vm.screen_id == 'additionalcost' && name == 'CostType' &&
@@ -3151,7 +3162,7 @@
                             $scope.options.subDepartment = response.subDepartments;
                         }
                     });
-                }                
+                }
                 if (name == 'Buyer' && vm.screen_id == 'buyer') {
                     if($scope.formValues.user) {
                     // $scope.formValues.name = $scope.formValues.user.displayName;
@@ -3274,14 +3285,14 @@
                 }
             }
             if (name == 'DocumentType') {
-                
+
                 // clone formValues to $rootScope { liviu.m. }
                 $rootScope.formValues = $scope.formValues;
             }
             if (vm.app_id == 'labs' && name == 'OrderID' && id == 'order') {
                 vm.checkVerifiedDeliveryFromLabs('orderChange');
             }
-             
+
         };
 
         vm.getDataTable = function(id, data, obj, idx, app, screen) {
@@ -3320,7 +3331,7 @@
             }
             return true;
         };
-        vm.getOptions = function(field, fromListsCache) {        
+        vm.getOptions = function(field, fromListsCache) {
             // Move this somewhere nice and warm
             var objectByString = function(obj, string) {
                 if (string.includes('.')) {
@@ -3332,7 +3343,7 @@
                 if (field == 'agreementType') {
                     field = { name: 'AgreementType' };
                 }
-                
+
                 if (field) {
                     if (!$scope.options) {
                         $scope.options = [];
@@ -3412,8 +3423,8 @@
                                 ColumnName: 'ProductId',
                                 Value: vm.entity_id
                             },
-                        ]; 
-					}                	
+                        ];
+					}
 
                     if (!$scope.optionsCache) {
                         $scope.optionsCache = {};
@@ -3645,7 +3656,7 @@
                     return vm.formatDate(elem, 'dd/MM/yyyy');
                 }
                 if (fieldUniqueId == 'resultDate' || fieldUniqueId == 'eta' || fieldUniqueId == 'orderDetails.eta' || fieldUniqueId == 'etb' || fieldUniqueId == 'etd' || fieldUniqueId.toLowerCase().indexOf('delivery') >= 0 || fieldUniqueId == 'pricingDate') {
-                    //  
+                    //
                     // return moment.utc(elem).format($scope.tenantSetting.tenantFormatss.dateFormat.name);
                     var utcDate = moment.utc(elem).format();
                     formattedDate = $filter('date')(utcDate, dateFormat, 'UTC');
@@ -4246,20 +4257,20 @@
             		}
             		if (model == "locationHSFO35Grades") {
             			productGrade = 3;
-            		}            		            		
+            		}
 	            	modeledData = {
 	            		"product" : data,
 	            		"productGrade" : {"id":productGrade},
 	            		"location" : {"id":vm.entity_id},
 	            		"id" : 0,
 	            		"name" : data.name
-	            	}            		
+	            	}
             	}
                 $scope.formValues[model].push(modeledData);
                 setTimeout(() => {
                     $scope.initBoostrapTagsInputTooltip();
                 });
-            }        	
+            }
         }
 
         vm.initDropZone = function(id) {
@@ -4327,7 +4338,7 @@
                 $(`${element } .portlet`).css('height', calcHeight);
                 $(`${element } .portlet`).css('overflow', 'auto');
             }, 1000);
-            
+
         };
         vm.cloneEntity = function(group, obj) {
             if (obj) {
@@ -4344,14 +4355,14 @@
             $scope.formValues.contacts.push({
                 isActive: true
             });
-            //  
+            //
         };
         vm.addVesselContact = function() {
             $scope.formValues.contacts.push({
                 isActive: true,
                 id: 0
             });
-            //  
+            //
         };
         vm.cloneField = function(field, index) {
             $scope.formFields[field.Group].children.splice(index, 0, angular.copy(field));
@@ -4419,12 +4430,12 @@
                     addedFields.push(info.Unique_ID);
                 });
             });
-            
+
             if ($.inArray(ele.Unique_ID, addedFields) >= 0) {
                 toastr.error('Field is already added. Please clone it!');
                 return;
             }
-            
+
             $scope.current_field = createNewField();
             $scope.activeField(ele);
             angular.merge($scope.current_field, ele);
@@ -4542,12 +4553,12 @@
         };
 
         vm.loadShiptechLite = function() {
-          
+
             if ($rootScope.adminConfiguration) {
                 vm.shiptechLite = $rootScope.adminConfiguration.general.shiptechLite;
             }
         };
-        
+
         // vm.load_eef_config = function(structure) {
         //     $scope.formFields = structure;
         // };
@@ -4833,7 +4844,7 @@
             }
         };
         $scope.$watch('formValues', (data) => {
-            
+
             $rootScope.formValues = data;
 	    	if (vm.entity_id == '') {
 	          	if (vm.app_id === 'masters' && vm.screen_id === 'service') {
@@ -5344,7 +5355,7 @@
                     elements.push(object);
                 }
             }
-            // if (!duplicated_row) {
+             // if (!duplicated_row) {
             // Check if modal triggered from datatable
             if (!formvalue) {
                 $scope.assignObjValue($scope, elements, $scope.selected_value);
@@ -5353,7 +5364,7 @@
                     if(elements[1]=='locationProducts'){
                         $scope.addLocationProductToConversion(productIndex, null, true);
                     }else{
-                        $scope.addProductToConversion(productIndex, null, true);  
+                        $scope.addProductToConversion(productIndex, null, true);
                     }
 
                 }
@@ -5383,7 +5394,7 @@
             $scope.triggerChangeFields(field_name, elements[1]);
         };
 
-        
+
 
 
         $scope.assignObjValue = function(obj, keyPath, value) {
@@ -5412,7 +5423,7 @@
 
         $scope.addnewTankDetail = function(index){
             var newItem ={
-                'vessel':$scope.formValues.vesselProducts[index].vessel, 
+                'vessel':$scope.formValues.vesselProducts[index].vessel,
                 'vesselProduct':{
                     id:$scope.formValues.vesselProducts? $scope.formValues.vesselProducts[index].id:0
                 },
@@ -5426,7 +5437,7 @@
                 'userAction': null,
                 'createdOn': moment().format()
             }
-            if($scope.formValues.vesselProducts[index].vesselProductTanks) 
+            if($scope.formValues.vesselProducts[index].vesselProductTanks)
                 $scope.formValues.vesselProducts[index].vesselProductTanks.push(newItem);
             else
                 $scope.formValues.vesselProducts[index]['vesselProductTanks']=([newItem]);
@@ -5453,10 +5464,10 @@
                     'isDeleted': $scope.formValues.isDeleted,
                     'modulePathUrl': $scope.formValues.modulePathUrl,
                     'name': $scope.formValues.name,
-                    'userAction': $scope.formValues.userAction                   
+                    'userAction': $scope.formValues.userAction
                 }
             }
-            if($scope.formValues.vesselProducts) 
+            if($scope.formValues.vesselProducts)
                 $scope.formValues.vesselProducts.push(newItem);
             else
                 $scope.formValues['vesselProducts']=[(newItem)];
@@ -5481,7 +5492,7 @@
                 }
                 else
                     $scope.formValues['tradeBookMappings'].push(newItem);
-            }           
+            }
         }
 
         $scope.initInvoiceTypeOptions = function() {
@@ -6679,7 +6690,7 @@
         vm.displayStatusInHeader = function() {
             $rootScope.$watch('formValues', () => {
                 if ($state.params.screen_id == 'claim') {
-                    
+
                     if (typeof $rootScope.formValues != 'undefined' && typeof $rootScope.formValues.claimDetails != 'undefined' && typeof $rootScope.formValues.claimDetails.status != 'undefined') {
                         if (!$state.params.status || typeof $state.params.status == 'undefined') {
                             $state.params.status = {};
@@ -6815,7 +6826,7 @@
 	                		}
 	                	})
 	                	if (!additionalSpecIsInArray) {
-	                		callback.data.payload.push(additionalSpecGroup);		
+	                		callback.data.payload.push(additionalSpecGroup);
 	                	}
                 	}
                     vm.productSpecGroup[productId] = callback.data.payload;
@@ -6904,7 +6915,7 @@
         };
 
         // Cost Type filter for Barge Additional Cost Details popup
-        
+
         $scope.filterBargeCostTypes = function() {
                 var availableCosts = [];
                     $.each(vm.listsCache.CostType, (k, v) => {
@@ -6912,13 +6923,13 @@
                             availableCosts.push(v);
                         }
                     });
-               
+
                 return availableCosts;
         };
         $scope.filterCostTypesByAdditionalCost = function(cost, rowRenderIndex) {
-		   
+
             var currentCost = cost;
-             
+
 
             let doFiltering = function(addCostCompTypes, cost) {
                 var costType = null;
@@ -6973,32 +6984,32 @@
                 return doFiltering(vm.additionalCostsComponentTypes);
             }
         };
-        
+
         $scope.setDefaultCurrency = function(additionalCost,key) {
             var defaultCostType;
             if($scope.formValues.additionalCosts.length >0){
                 if($scope.formValues.additionalCosts[key].amount != undefined){
-                    $scope.formValues.additionalCosts[key].amount = ''; 
-                }  
+                    $scope.formValues.additionalCosts[key].amount = '';
+                }
                 if($scope.formValues.additionalCosts[key].priceUom != undefined){
-                    $scope.formValues.additionalCosts[key].priceUom = ''; 
+                    $scope.formValues.additionalCosts[key].priceUom = '';
                 }
                 if($scope.formValues.additionalCosts[key].extrasPercentage != undefined){
-                    $scope.formValues.additionalCosts[key].extrasPercentage = ''; 
+                    $scope.formValues.additionalCosts[key].extrasPercentage = '';
                 }
             }
             $scope.CurrentadditionalCostsdetails  = key;
             // if($scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails == undefined ){
-                
+
             // }
-            
+
             // }
             if(additionalCost.name == 'Range' || additionalCost.name == 'Total'){
 
                 defaultCostType = $scope.vm.tenantSetting.tenantFormats.currency;
                 $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails = [];
                 $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails.push({'id':0,'currency':$scope.vm.tenantSetting.tenantFormats.currency})
-               
+
             }
             else{
                 if($scope.formValues.additionalCosts[key].additionalCostDetails != undefined){
@@ -7008,27 +7019,27 @@
             return defaultCostType;
         };
         $scope.setAmountValidation = function(key){
-            
+
             $('#Amount'+ key).removeClass('ng-invalid');
         };
         $scope.setCurrencyValidation = function(key){
-            
-            $('#Currency'+ key).removeClass('ng-invalid'); 
+
+            $('#Currency'+ key).removeClass('ng-invalid');
         };
-      
+
         $scope.setDefaultCostType = function(additionalCost, key) {
-            $('#ItemName'+ key).removeClass('ng-invalid'); 
+            $('#ItemName'+ key).removeClass('ng-invalid');
             $('#Type'+ key).removeClass('ng-invalid');
-           
+
             if($scope.formValues.additionalCosts.length >0){
                 if($scope.formValues.additionalCosts[key].amount != undefined){
-                    $scope.formValues.additionalCosts[key].amount = ''; 
-                }  
+                    $scope.formValues.additionalCosts[key].amount = '';
+                }
                 if($scope.formValues.additionalCosts[key].priceUom != undefined){
-                    $scope.formValues.additionalCosts[key].priceUom = ''; 
+                    $scope.formValues.additionalCosts[key].priceUom = '';
                 }
                 if($scope.formValues.additionalCosts[key].extrasPercentage != undefined){
-                    $scope.formValues.additionalCosts[key].extrasPercentage = ''; 
+                    $scope.formValues.additionalCosts[key].extrasPercentage = '';
                 }
             }
             if($scope.formValues.additionalCosts[key].additionalCostDetails != undefined){
@@ -7040,15 +7051,15 @@
                 if (v.id == additionalCost.id) {
                     defaultCostType = v.costType;
                     if((v.costType.id == 4 || v.costType.id == 5) && v.id == additionalCost.id){
-                        $scope.formValues.additionalCosts[key].currency = $scope.vm.tenantSetting.tenantFormats.currency; 
-                        $('#Currency'+ key).removeClass('ng-invalid'); 
+                        $scope.formValues.additionalCosts[key].currency = $scope.vm.tenantSetting.tenantFormats.currency;
+                        $('#Currency'+ key).removeClass('ng-invalid');
                         $('#Amount'+ key).removeClass('ng-invalid');
                     }
                     else{
                         $scope.formValues.additionalCosts[key].currency = '';
                     }
                 }
-                
+
             });
             return defaultCostType;
         };
@@ -7069,7 +7080,7 @@
             if (findAdditionalCostComponent) {
                 $scope.formValues.products[key1].additionalCosts[key2].isAllowingNegativeAmmount = findAdditionalCostComponent.isAllowingNegativeAmmount;
             }
-           
+
 
 
         }
@@ -7183,7 +7194,7 @@
                             var currentFile = this.files[0];
                             fileScope.$apply(() => {
                                 fileScope.droppedDoc = currentFile;
-                            });                            
+                            });
                             $rootScope.droppedDoc = currentFile;
                         	return;
                         }
@@ -7205,7 +7216,7 @@
 	                    // if (!label) {
 	                    // 	return;
 	                    // }
-                
+
                         if (window.location.href.indexOf("/company/") != -1 || window.location.href.indexOf("/pool/") != -1) {
                             $scope.uploadFiles();
                         } else {
@@ -7376,7 +7387,7 @@
             _.each(locationSellerGroups, (value, key) => {
                 let contacts = [];
                 _.each(value.locationContacts, (contact, contactIndex) => {
-                    let isExistAlready = $scope.preferredContacts[key]? 
+                    let isExistAlready = $scope.preferredContacts[key]?
                                     $filter('filter')($scope.preferredContacts[key], { contactId: contact.contactId }).length > 0 : false;
                     if(!isExistAlready){
                         contact.indexId = contacts.length + 1;
@@ -7410,7 +7421,7 @@
 
         /* Location Master Preffered Seller Product Table*/
         $scope.openLocationPreferredSellerProducts = function(currentSellerKey, master) {
-             
+
             var objMapping;
         	if (master) {
         		if (master == 'counterpartyMaster') {
@@ -7445,7 +7456,7 @@
             }
 
 
-            
+
             // preferred products
             $scope.preferredProductsForSellerInLocation = [];
             if (!$scope.NOTpreferredProductsForSellerInLocation) {
@@ -7496,7 +7507,7 @@
         };
 
 /* Location Master Preffered Seller Product Table*/
-$scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {    
+$scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
     var objMapping;
      $scope.CurrentadditionalCostsdetails  = formvalues;
      if($scope.formValues != undefined && $scope.formValues.additionalCosts != undefined)
@@ -7510,9 +7521,9 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
      if($scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails == undefined ){
         $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails = [];
         $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails.push({'id':0,'currency':$scope.vm.tenantSetting.tenantFormats.currency})
-        
+
      }
-   
+
     tpl = $templateCache.get('app-general-components/views/modal_BargeCostDetails.html');
     $scope.modalInstance = $uibModal.open({
         template: tpl,
@@ -7588,7 +7599,7 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
             return payload;
         };
         $scope.savePrefferedSellerProducts = function() {
-             
+
             var objMapping;
     		if (vm.screen_id == 'counterparty') {
     			objMapping = 'counterpartyLocations';
@@ -7640,7 +7651,7 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
 
         };
         $scope.getValidFromTo = function(ValueFrom, ValueTo){
-          
+
             if(ValueFrom != undefined && ValueTo != undefined){
                 if(ValueFrom > ValueTo){
                 toastr.error("Quantity From should be Greater than Quantity To")
@@ -7667,7 +7678,7 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
                         }
                         else if(parseInt(v.qtyFrom) >= parseInt(v.qtyTo)){
                                 toastr.error('Quantity From Should be less than Quantity To');
-                                return  
+                                return
                         }
                     }
                     else{
@@ -7677,18 +7688,18 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
                         }
                         else if(parseInt(v.qtyFrom) >= parseInt(v.qtyTo)){
                                 toastr.error('Quantity From Should be less than Quantity To');
-                                return  
+                                return
                         }
                         else{
                             $scope.prettyCloseModal();
                         }
 
                     }
-                    
-                });  
-                
+
+                });
+
             }
-           
+
         };
         $scope.preferredSellersSelectAllProducts = function(selectAll) {
             if (!selectAll) {
@@ -8621,7 +8632,7 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
                     }
                 }
                 $rootScope.addNewCost = false;
-            }           
+            }
             var currentRowIndex = rowIndex;
 	    	if (!window.initialUomConversionDone) {
 	    		window.initialUomConversionDone = {
@@ -8632,7 +8643,7 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
             if (window.initialUomConversionDone.product != 0) {
                 if (formValues.productDetails.length == window.initialUomConversionDone.product && $('form[name="CM.editInstance"]').hasClass('ng-pristine') && $('form[name="CM.editInstance"]').hasClass('ng-invalid')) {
                     return;
-                } 
+                }
             } else if (window.initialUomConversionDone.cost != 0) {
                 if (formValues.costDetails.length == window.initialUomConversionDone.cost && $('form[name="CM.editInstance"]').hasClass('ng-pristine')) {
                     return;
@@ -8685,7 +8696,7 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
                             if (!formValues.productDetails[0].invoicedProduct) {
                                 return;
                             }
-                        } 
+                        }
                         calculate(vm.old_cost, formValues.productDetails[0] ? formValues.productDetails[0].invoicedProduct.id : null, vm.old_costType);
 	                }
 	            } else {
@@ -8782,14 +8793,14 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
                                         formValues.costDetails[index].invoiceRateUom = defaultUomAndCompany.defaultUom;
                                         formValues.costDetails[index].invoiceQuantityUom = defaultUomAndCompany.defaultUom;
 
-                                    }                               
+                                    }
                                 }
-                            }); 
+                            });
                         }
-                    });  
+                    });
 
                 } else {
-                    let payload; 
+                    let payload;
                     if (isAll) {
                         payload = { Payload: formValues.productDetails[0].product.id };
                     } else {
@@ -8804,12 +8815,12 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
                             if (defaultUomAndCompany) {
                                 formValues.costDetails[index].invoiceRateUom = defaultUomAndCompany.defaultUom;
                                 formValues.costDetails[index].invoiceQuantityUom = defaultUomAndCompany.defaultUom;
-                            } 
-                           
+                            }
+
                         }
                     });
                 }
-            
+
             }
 
 	        function recalculatePercentAdditionalCosts(formValues) {
@@ -8887,7 +8898,7 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
 		        Factory_Master.getAdditionalCosts(data, (response) => {
 		            if (response) {
 		                if (response.status == true) {
-		                    //  
+		                    //
 		                    $rootScope.additionalCostsData = response.data.payload;
 
 		                    return response.data.payload;
@@ -9117,7 +9128,7 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
 
         vm.enabledEmailToVessel = function() {
             if (window.location.href.indexOf("delivery/delivery") != -1 ) {
-                return false; 
+                return false;
             }
             var enabledEmailToVessel = true;
             if (typeof $rootScope.adminConfiguration != 'undefined') {
@@ -9358,9 +9369,9 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
                 if (!$scope.formValues.products[index].conversionFactors) {
                     $scope.formValues.products[index].conversionFactors = [];
                 }
-                
+
             }
-  
+
             let selectedProduct, isAlreadyAdded = 0, indexDeleted = -1;
             let payload;
             setTimeout(() => {
@@ -9484,13 +9495,13 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
                                             $scope.formValues.products[index].details[i].uom = defaultUomAndCompany.defaultUom;
                                         }
                                     }
-                                  
+
                                }
-                              
+
                             }
-                        });    
-                        
-                       
+                        });
+
+
                     }
             });
 
@@ -9516,7 +9527,7 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
                                     ctrl.data.products[index].convFactorVolumeUom = res.volumeUom;
 
                                 }
-                            }); 
+                            });
                         }
                     }
                 });
@@ -9534,12 +9545,12 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
                             ctrl.data.products[index].convFactorVolumeUom = res.volumeUom;
 
                         }
-                    }); 
+                    });
                 }
             }
-         
-           
-           
+
+
+
         }
 
         $scope.autoSaveNotes = function() {
@@ -9556,7 +9567,7 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
                         if (response.data.payload != 'null') {
                             generalNotesScope.formValues.notes = response.data.payload;
                         }
-                    }); 
+                    });
                 } else  if (window.location.href.indexOf('order/') != -1) {
                     payload = { Payload: {
                         "orderId": id,
@@ -9566,7 +9577,7 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
                         if (response.data.payload != 'null') {
                             generalNotesScope.formValues.notes = response.data.payload;
                         }
-                    }); 
+                    });
                 } else if (window.location.href.indexOf('group-of-requests/') != -1) {
                     payload = { Payload: {
                         "rfqId": id,
@@ -9576,12 +9587,12 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
                         if (response.data.payload != 'null') {
                             generalNotesScope.formValues.notes = response.data.payload;
                         }
-                    }); 
+                    });
 
                 }
             }
         }
-        
+
 
          $scope.setRatingC = function() {
             let rating = $(".my-rating");
@@ -9603,7 +9614,7 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
                             console.log('DOM element ', $el);
                         }
                     });
-                }           
+                }
             }
         }
 
@@ -9623,7 +9634,7 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
                 let rate =  $(rating[i]).attr("rating");
                 if (Number(rate) > 0) {
                     $(rating[i]).rate("setValue", Number(rate));
-                }           
+                }
             }
         }
 
@@ -9654,7 +9665,7 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
                 $location.path(`/${ vm.app_id }/${ vm.screen_id }/seller-rating/${ vm.entity_id }/${ vm.location_id }`);
                 return;
             }
-            localStorage.setItem('counterparty', JSON.stringify($scope.formValues.displayName)); 
+            localStorage.setItem('counterparty', JSON.stringify($scope.formValues.displayName));
             $location.path(`/${ vm.app_id }/${ vm.screen_id }/seller-rating/${ vm.entity_id }/0`);
         }
 
@@ -9667,8 +9678,8 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
         	})
         	return isCustomer;
         }
-        
-        
+
+
 
           // modal close
         $scope.prettyCloseModal = function() {
@@ -9701,7 +9712,7 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
             };
             $scope.confirmedModal = false;
             $('.confirmAction1').on('click', () => {
-                
+
                 if ($scope.confirmedModal) {
                     return;
                 }
@@ -9720,25 +9731,25 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
                 $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails.splice(key, 1);
             }
         }
-        
-       
+
+
         $scope.deleteCouterpartyaccountno = function(key) {
-           
+
             if($scope.formValues.counterpartyBankAccounts.length >0){
                 if($rootScope.TempcounterpartyBankAccounts != undefined){
                     $scope.formValues.counterpartyBankAccounts[key].isDeleted =true
-                    $rootScope.TempcounterpartyBankAccounts.push($scope.formValues.counterpartyBankAccounts[key]); 
+                    $rootScope.TempcounterpartyBankAccounts.push($scope.formValues.counterpartyBankAccounts[key]);
                 }else{
                     $rootScope.TempcounterpartyBankAccounts = [];
                     $scope.formValues.counterpartyBankAccounts[key].isDeleted =true
-                    $rootScope.TempcounterpartyBankAccounts.push($scope.formValues.counterpartyBankAccounts[key]); 
+                    $rootScope.TempcounterpartyBankAccounts.push($scope.formValues.counterpartyBankAccounts[key]);
                 }
                 $scope.formValues.counterpartyBankAccounts.splice(key, 1);
             }
         }
 
         /*Additional Cost Details Popup Close Modal start*/
-       
+
         $scope.PopupprettyCloseModal = function(){
         $scope.showModalAdditionalCostDetailsConfirmation('Do you still want to Cancel Additional Cost Details?', true, (modalResponse) => {
             if (modalResponse) {
@@ -9746,10 +9757,10 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
             }
         });
     }
-       
+
         $scope.showModalAdditionalCostDetailsConfirmation = function(message, additionalData, callback) {
-            
-          
+
+
             $scope.confirmModalAdditionalData = additionalData;
             $('.AdditionalCostDetailsModalConfirmation').modal();
             $('.AdditionalCostDetailsModalConfirmation').removeClass('hide');
@@ -9757,20 +9768,20 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
             $scope.confirmModalData = {
                 message : message
             };
-            
+
             $scope.confirmedModal = false;
             $('.confirmAction1').on('click', () => {
-                
+
                 if ($scope.confirmedModal) {
                     return;
                 }
                 else{
-                    
-                    if($rootScope.RootTempadditionalCosts != undefined && $rootScope.RootTempadditionalCosts.length !=0){ 
+
+                    if($rootScope.RootTempadditionalCosts != undefined && $rootScope.RootTempadditionalCosts.length !=0){
                        $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails = angular.copy($rootScope.RootTempadditionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails);
                     }
                 }
-               
+
                 $scope.key = -1;
                 $scope.confirmedModal = true;
                // $scope.$digest()
@@ -9799,7 +9810,7 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
         }
 
         $scope.resetLocationData = function(location) {
-		   
+
             location.isSpecificLocation = false;
             location.rating = null;
             location.lastModifiedBy = null;
@@ -9826,16 +9837,16 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
             }
         }
 
-        $scope.getLocationDetails = function(){  
+        $scope.getLocationDetails = function(){
             const index = $scope.formValues.sellers && $scope.formValues.sellers.length >0 ? $scope.formValues.sellers.length-1 : 0;
-            const counterpartyId = $scope.formValues.sellers[index].counterparty.id; 
+            const counterpartyId = $scope.formValues.sellers[index].counterparty.id;
             const locationId = $scope.formValues? $scope.formValues.id : 0;
 
             if(locationId > 0){
                 let payload = {
                     Payload: {counterparty: {id: counterpartyId}, location: {id: locationId}}
                 }
-                
+
                 Factory_Master.getLocationSellerContacts(payload, (callback) => {
                     if (callback) {
                         $.each(callback, (k, v) => {
@@ -9887,7 +9898,7 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
             });
             $scope.formValues.counterpartyLocations[key].locationContacts = locationContacts;
         }
-        
+
         $scope.deleteVesselProduct = function(key) {
             //Delete childs
             angular.forEach($scope.formValues.vesselProducts[key].vesselProductTanks, (input, vptKey) => {
@@ -9925,15 +9936,15 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
 
         $scope.deleteTradeBookItem = function(key) {
             if($scope.formValues.tradeBookMappings[key].id){
-                $scope.formValues.tradeBookMappings[key].isDeleted = true;                
-            }               
+                $scope.formValues.tradeBookMappings[key].isDeleted = true;
+            }
             else
                 $scope.formValues.tradeBookMappings.splice(key, 1);
 
             let noDeleted = $scope.formValues.tradeBookMappings.filter(function(item){
                 return item.isDeleted == true;
             });
-            
+
             if(noDeleted.length ==  $scope.formValues.tradeBookMappings.length )
                 $scope.addnewTradebookItem(false);
         }
