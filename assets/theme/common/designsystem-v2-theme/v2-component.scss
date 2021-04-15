@@ -333,11 +333,11 @@ div.component-viewer-nav-content
         }
       }
       box-sizing: border-box;
-      height: 40px;
+      height: 45px;
       font-style: normal;
       font-weight: normal;
       font-size: 14px;
-      line-height: 16px;
+      line-height: 20px;
       color: #37414f;
       .mat-form-field-underline {
         display: none;
@@ -421,7 +421,7 @@ div.component-viewer-nav-content
     font-size: 14px;
     line-height: 16px;
     color: #848b9e;
-    width: 164px;
+    width: 120px;
     height: 40px;
     display: flex;
     align-items: center;
@@ -434,7 +434,7 @@ div.component-viewer-nav-content
       font-size: 14px;
       line-height: 16px;
       color: #ffffff;
-      width: 164px;
+      width: 120px !important;
       z-index: 1;
     }
   }
@@ -755,14 +755,14 @@ div.component-viewer-nav-content
 
 // <!--  Movement Id with different status Start-->
 .badge-header-v2 {
-  width: 198px !important;
+  width: 330px !important;
   height: 40px;
   background: #f1f1f2;
   border-radius: 4px;
   font-style: normal;
   font-weight: normal;
-  font-size: 10px;
-  line-height: 12px;
+  font-size: 14px;
+  line-height: 28px;
   color: #252a32;
   padding: 6px;
   display: flex;
