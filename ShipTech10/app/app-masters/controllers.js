@@ -1954,8 +1954,8 @@
             console.log("returnresult", returnresult)
         }
         $scope.SaveAdditionalCostDetValidation = function () {
-
-
+            
+           
             var returnresult = false;
 
             if ($scope.formValues.additionalCosts != undefined && $scope.formValues.additionalCosts.length > 0) {
@@ -3331,7 +3331,7 @@
             }
             return true;
         };
-        vm.getOptions = function(field, fromListsCache) {
+        vm.getOptions = function(field, fromListsCache) {        
             // Move this somewhere nice and warm
             var objectByString = function(obj, string) {
                 if (string.includes('.')) {
@@ -3434,6 +3434,7 @@
                         $scope.optionsCache[field.Name] = JSON.stringify(field);
                         Factory_Master.get_master_list(app_id, screen_id, field, (callback) => {
                             if (callback) {
+                              
                                 $scope.options[field.Name] = _.orderBy(callback, [item => item.name.toLowerCase()], ['asc']);
                                 if (vm.app_id == 'masters' && vm.screen_id == 'vessel') {
                                     vm.checkSpecGroup(field);
@@ -5231,6 +5232,7 @@
             });
         };
         $scope.selectedModalValue = function(element) {
+            debugger;
             // if (!element)return
             if (!element) {
                 if ($rootScope.modalParams) {
@@ -5268,7 +5270,8 @@
                     name: rowData.name,
                     isContractReference: rowData.isContractReference
                 };
-            } else if (element.screen == 'bunkerableport' && vm.app_id == 'default') {
+            } 
+            else if (element.screen == 'bunkerableport' && vm.app_id == 'default') {
                 $scope.selected_value = angular.copy(rowData);
                 // id from row data is order in table, actual locationId is in rowData.locationId
                 if (!angular.equals($scope.selected_value, {})) {
@@ -5314,6 +5317,10 @@
                     }
                 });
             }
+
+            // if (element.screen == 'locationlist'  && vm.app_id == 'default'){
+            //     $scope.portValuechange(rowData);
+            // }
             if (angular.equals($scope.selected_value, {})) {
                 toastr.error('Please select one row');
                 return;
@@ -7667,28 +7674,29 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
         }
 
         $scope.saveBargeCostDetails = function() {
+            if($scope.formValues.additionalCosts)
             if($scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails.length > 0)
             {
+                var isvalidbargecostdetails = true;
+                var isvalidminmaxqty = true;
                 var FormvalueLength = $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails.length -1;
                 $.each($scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails, (k, v) => {
                     if(FormvalueLength != k){
                         if(IsDataExists(v.qtyFrom) || IsDataExists(v.qtyTo) || IsDataExists(v.priceUom) || IsDataExists(v.costType) || IsDataExists(v.amount)  || IsDataExists(v.currency)){
-                            toastr.error('Please fill all required details');
-                            return
+                            isvalidbargecostdetails = false;
+                          
                         }
                         else if(parseInt(v.qtyFrom) >= parseInt(v.qtyTo)){
-                                toastr.error('Quantity From Should be less than Quantity To');
-                                return
+                            isvalidminmaxqty = false;
+                               
                         }
                     }
                     else{
                         if(IsDataExists(v.qtyFrom) || IsDataExists(v.qtyTo) || IsDataExists(v.priceUom) || IsDataExists(v.costType) || IsDataExists(v.amount)  || IsDataExists(v.currency)){
-                            toastr.error('Please fill all required details');
-                            return
+                            isvalidbargecostdetails = false;
                         }
                         else if(parseInt(v.qtyFrom) >= parseInt(v.qtyTo)){
-                                toastr.error('Quantity From Should be less than Quantity To');
-                                return
+                            isvalidminmaxqty = false;     
                         }
                         else{
                             $scope.prettyCloseModal();
@@ -7697,6 +7705,16 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
                     }
 
                 });
+
+                if(!isvalidbargecostdetails){
+                    toastr.error('Please fill all required details');
+                    return
+                }
+                if(!isvalidminmaxqty){
+                    toastr.error('Quantity From Should be less than Quantity To');
+                                return
+
+                }
 
             }
 
