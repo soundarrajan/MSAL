@@ -17,94 +17,139 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
   public gridOptions_data: GridOptions;
   public gridOptions_ac: GridOptions;
-  public chipData =[
-    {Title:'Title 1', Data:'Data 1234'},
-    {Title:'Title 2', Data:'Data 1234'},
-    {Title:'Title 3', Data:'Data 1234'},
-    {Title:'Title 4', Data:'Data 1234'},
-    {Title:'Title 5', Data:'Data 1234'},
-    {Title:'Title 6', Data:'Data 1234'},
-    {Title:'Title 7', Data:'Data 1234'},
-    {Title:'Title 8', Data:'Data 1234'},
-    {Title:'Title 9', Data:'Data 1234'}
+  public chipData = [
+    { Title: 'Title 1', Data: 'Data 1234' },
+    { Title: 'Title 2', Data: 'Data 1234' },
+    { Title: 'Title 3', Data: 'Data 1234' },
+    { Title: 'Title 4', Data: 'Data 1234' },
+    { Title: 'Title 5', Data: 'Data 1234' },
+    { Title: 'Title 6', Data: 'Data 1234' },
+    { Title: 'Title 7', Data: 'Data 1234' },
+    { Title: 'Title 8', Data: 'Data 1234' },
+    { Title: 'Title 9', Data: 'Data 1234' }
   ]
-
-  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer){
+  public orderDetails = {
+    contents: [
+      {
+        label: "Vessel",
+        value: "Puget Shipping",
+        customLabelClass: [],
+        customValueClass: [],
+      },
+      {
+        label: "Vessel Code",
+        value: "PUGET",
+        customLabelClass: [],
+        customValueClass: [],
+      },
+      {
+        label: "Port",
+        value: "Melbourne",
+        customLabelClass: [],
+        customValueClass: [],
+      },
+      {
+        label: "ETA",
+        value: "12/12/2020",
+        customLabelClass: [],
+        customValueClass: [],
+      }
+    ],
+    hasSeparator: false
+  }
+  public counterpartyDetails = {
+    contents: [
+      {
+        label: "Seller",
+        value: "AA Fuel Solns",
+        customLabelClass: [],
+        customValueClass: [],
+      },
+      {
+        label: "Broker",
+        value: "Marine Brokerage",
+        customLabelClass: [],
+        customValueClass: [],
+      }
+    ],
+    hasSeparator: true
+  }
+  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon(
       'data-picker-gray',
       sanitizer.bypassSecurityTrustResourceUrl('../../assets/customicons/calendar-dark.svg'));
 
-      this.gridOptions_data = <GridOptions>{
-        defaultColDef: {
-          resizable: true,
-          filtering: false,
-          sortable: false
-        },
-        columnDefs: this.columnDef_aggrid,
-        suppressRowClickSelection: true,
-        suppressCellSelection: true,
-        headerHeight: 35,
-        rowHeight: 35,
-        animateRows: false,
-  
-        onGridReady: (params) => {
-          this.gridOptions_data.api = params.api;
-          this.gridOptions_data.columnApi = params.columnApi;
-          this.gridOptions_data.api.sizeColumnsToFit();
-          this.gridOptions_data.api.setRowData(this.rowData_aggrid);
-          this.addCustomHeaderEventListener();
-  
-        },
-        onColumnResized: function (params) {
-          if (params.columnApi.getAllDisplayedColumns().length <= 9 && params.type === 'columnResized' && params.finished === true && params.source === 'uiColumnDragged') {
-            params.api.sizeColumnsToFit();
-          }
-        },
-        onColumnVisible: function (params) {
-          if (params.columnApi.getAllDisplayedColumns().length <= 9) {
-            params.api.sizeColumnsToFit();
-  
-          }
+    this.gridOptions_data = <GridOptions>{
+      defaultColDef: {
+        resizable: true,
+        filtering: false,
+        sortable: false
+      },
+      columnDefs: this.columnDef_aggrid,
+      suppressRowClickSelection: true,
+      suppressCellSelection: true,
+      headerHeight: 35,
+      rowHeight: 35,
+      animateRows: false,
+
+      onGridReady: (params) => {
+        this.gridOptions_data.api = params.api;
+        this.gridOptions_data.columnApi = params.columnApi;
+        this.gridOptions_data.api.sizeColumnsToFit();
+        this.gridOptions_data.api.setRowData(this.rowData_aggrid);
+        this.addCustomHeaderEventListener();
+
+      },
+      onColumnResized: function (params) {
+        if (params.columnApi.getAllDisplayedColumns().length <= 9 && params.type === 'columnResized' && params.finished === true && params.source === 'uiColumnDragged') {
+          params.api.sizeColumnsToFit();
+        }
+      },
+      onColumnVisible: function (params) {
+        if (params.columnApi.getAllDisplayedColumns().length <= 9) {
+          params.api.sizeColumnsToFit();
+
         }
       }
+    }
 
-      this.gridOptions_ac= <GridOptions>{
-        defaultColDef: {
-          resizable: true,
-          filtering: false,
-          sortable: false
-        },
-        columnDefs: this.columnDef_aggrid_ac,
-        suppressRowClickSelection: true,
-        suppressCellSelection: true,
-        headerHeight: 35,
-        rowHeight: 35,
-        animateRows: false,
-  
-        onGridReady: (params) => {
-          this.gridOptions_data.api = params.api;
-          this.gridOptions_data.columnApi = params.columnApi;
-          this.gridOptions_data.api.sizeColumnsToFit();
-          this.gridOptions_data.api.setRowData(this.rowData_aggrid);
-          this.addCustomHeaderEventListener();
-  
-        },
-        onColumnResized: function (params) {
-          if (params.columnApi.getAllDisplayedColumns().length <= 9 && params.type === 'columnResized' && params.finished === true && params.source === 'uiColumnDragged') {
-            params.api.sizeColumnsToFit();
-          }
-        },
-        onColumnVisible: function (params) {
-          if (params.columnApi.getAllDisplayedColumns().length <= 9) {
-            params.api.sizeColumnsToFit();
-  
-          }
+    this.gridOptions_ac = <GridOptions>{
+      defaultColDef: {
+        resizable: true,
+        filtering: false,
+        sortable: false
+      },
+      columnDefs: this.columnDef_aggrid_ac,
+      suppressRowClickSelection: true,
+      suppressCellSelection: true,
+      headerHeight: 35,
+      rowHeight: 35,
+      animateRows: false,
+
+      onGridReady: (params) => {
+        this.gridOptions_data.api = params.api;
+        this.gridOptions_data.columnApi = params.columnApi;
+        this.gridOptions_data.api.sizeColumnsToFit();
+        this.gridOptions_data.api.setRowData(this.rowData_aggrid);
+        this.addCustomHeaderEventListener();
+
+      },
+      onColumnResized: function (params) {
+        if (params.columnApi.getAllDisplayedColumns().length <= 9 && params.type === 'columnResized' && params.finished === true && params.source === 'uiColumnDragged') {
+          params.api.sizeColumnsToFit();
+        }
+      },
+      onColumnVisible: function (params) {
+        if (params.columnApi.getAllDisplayedColumns().length <= 9) {
+          params.api.sizeColumnsToFit();
+
         }
       }
+    }
 
-  } 
+  }
 
-  
+
   private columnDef_aggrid = [
     {
       resizable: false,
@@ -212,9 +257,9 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     });
 
   }
-   
+
   ngOnInit(): void {
-      
+
   }
 
   ngOnDestroy(): void {

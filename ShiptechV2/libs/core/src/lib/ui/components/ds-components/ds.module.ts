@@ -10,6 +10,7 @@ import { OperationalAmountDialog } from './pop-ups/operational-amount.component'
 import { OpsSpecParameterDialog } from './pop-ups/ops-spec-parameter.component';
 import { SpecParameterDialog } from './pop-ups/spec-parameter.component';
 import { TabsComponent } from './tabs/tabs.component';
+import { ReadonlyDetailsComponent } from './readonly-details/readonly-details.component';
 
 @NgModule({ 
   imports: [
@@ -21,7 +22,8 @@ import { TabsComponent } from './tabs/tabs.component';
   ],
   exports: [ 
     TabsComponent,
-    MasterChip
+    MasterChip,
+    ReadonlyDetailsComponent
   ],
   declarations: [
     TabsComponent,
@@ -30,7 +32,8 @@ import { TabsComponent } from './tabs/tabs.component';
     OpsSpecParameterDialog,
     OperationalAmountDialog,
     SpecParameterDialog,
-    MasterChip
+    MasterChip,
+    ReadonlyDetailsComponent
   ],
 })
 export class DSComponentsModule {}
