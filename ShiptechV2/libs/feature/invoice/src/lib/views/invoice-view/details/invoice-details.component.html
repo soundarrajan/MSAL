@@ -1,7 +1,7 @@
 <!-- <app-button-toggle [data]="buttonToggleData"></app-button-toggle> -->
 <div class="section1">
     <div class="row">
-        <div class="col-md-6 col-sm-12 col-12">
+        <div class="col-md-6 col-sm-12 col-12 pt-4" style="line-height: 55px;">
             <div class="row">
                 <div class="col-md-6">
                     <div id="custom-btn-toggle-v2">
@@ -13,61 +13,66 @@
                         </mat-button-toggle-group>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <!-- Text here -->
+                <div class="col-md-6" style="padding-left: 80px; padding-top: 7px;">
+                    <div class="badge-header-v2">
+                        <span>Created by: <b>Yusuf Hassan</b></span>
+                        <span class="border_line"></span>
+                        <span>On: <b>17/06/2020</b></span>
+                    </div>
                 </div>
-                <div class="row pt-3">
-                    <div class="col-md-3">
-                        <div id="custom-form-field" class="custom-form-field" class="lightTheme">
-                            <mat-form-field class="without-search" appearance="legacy">
-                                <mat-label>Service invoice number</mat-label>
-                                <input matInput>
-                            </mat-form-field>
-                        </div>
+            </div>            
+            <div class="row pt-3">
+                <div class="col-md-3">
+                    <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
+                        <mat-form-field class="without-search" appearance="legacy">
+                            <mat-label>Seller Invoice No.*</mat-label>
+                            <input matInput>
+                        </mat-form-field>
                     </div>
-                    <div class="col-md-3">
-                        <div id="custom-form-field" class="lightTheme">
-                            <mat-form-field class="without-search" appearance="legacy">
-                                <mat-label>Invoice Date</mat-label>
-                                <input matInput [matDatepicker]="picker1" (focus)="picker1.open()">
-                                <mat-datepicker-toggle matSuffix [for]="picker1">
-                                    <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
-                                    </mat-icon>
-                                </mat-datepicker-toggle>
-                                <mat-datepicker #picker1></mat-datepicker>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div id="custom-form-field" class="lightTheme">
-                            <mat-form-field class="without-search" appearance="legacy">
-                                <mat-label>Received Date</mat-label>
-                                <input matInput [matDatepicker]="picker2" (focus)="picker2.open()">
-                                <mat-datepicker-toggle matSuffix [for]="picker2">
-                                    <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
-                                    </mat-icon>
-                                </mat-datepicker-toggle>
-                                <mat-datepicker #picker2></mat-datepicker>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div id="custom-form-field" class="custom-form-field" class="lightTheme">
-                            <mat-form-field class="without-search" appearance="legacy">
-                                <mat-label>Payment Terms</mat-label>
-                                <input matInput>
-                            </mat-form-field>
-                        </div>
+                </div>
+                <div class="col-md-3">
+                    <div id="custom-form-field" class="lightTheme">
+                        <mat-form-field class="without-search" appearance="legacy">
+                                 <mat-label>Invoice Date*</mat-label>
+                                 <input matInput [matDatepicker]="picker1" (focus)="picker1.open()">
+                                 <mat-datepicker-toggle matSuffix [for]="picker1">
+                                     <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
+                                     </mat-icon>
+                                 </mat-datepicker-toggle>
+                                 <mat-datepicker #picker1></mat-datepicker>
+                             </mat-form-field>
+                     </div>
+                </div>
+                <div class="col-md-3">
+                    <div id="custom-form-field" class="lightTheme">
+                        <mat-form-field class="without-search" appearance="legacy">
+                                 <mat-label>Received Date*</mat-label>
+                                 <input matInput [matDatepicker]="picker2" (focus)="picker2.open()">
+                                 <mat-datepicker-toggle matSuffix [for]="picker2">
+                                     <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
+                                     </mat-icon>
+                                 </mat-datepicker-toggle>
+                                 <mat-datepicker #picker2></mat-datepicker>
+                             </mat-form-field>
+                     </div>
+                </div>
+                <div class="col-md-3">
+                    <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
+                        <mat-form-field class="without-search" appearance="legacy">
+                            <mat-label>Payment Terms</mat-label>
+                            <input matInput value="30 DOD">
+                        </mat-form-field>
                     </div>
                 </div>
             </div>
-            <div class="row pt-3">
-                <div class="col-md-3">
-                    <div id="custom-form-field" class="custom-form-field" class="lightTheme">
-                        <mat-form-field class="without-search" appearance="legacy">
-                            <mat-label>Invoice Currency Details</mat-label>
-                            <input matInput>
-                        </mat-form-field>
+            <div class="row pt-3">           
+                    <div class="col-md-3">
+                        <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
+                            <mat-form-field class="without-search" appearance="legacy">
+                                <mat-label>Invoice Currency Details</mat-label>
+                                <input matInput value="USD">
+                            </mat-form-field>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -95,13 +100,13 @@
                             <mat-datepicker #picker4></mat-datepicker>
                         </mat-form-field>
                     </div>
-                </div>
-                <div class="col-md-3">
-                    <div id="custom-form-field" class="custom-form-field" class="lightTheme">
-                        <mat-form-field class="without-search" appearance="legacy">
-                            <mat-label>Document No.</mat-label>
-                            <input matInput>
-                        </mat-form-field>
+                    <div class="col-md-3">
+                        <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
+                            <mat-form-field class="without-search" appearance="legacy">
+                                <mat-label>Document No.</mat-label>
+                                <input matInput value="9886">
+                            </mat-form-field>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -157,63 +162,61 @@
                     </div>
                 </div>
             </div>
+    </div>
+    <div class="col-md-6 col-sm-12 col-12" style="line-height: 54px;">
+        <div class="row" style="padding-left: 15px;">
+            <div id="custom-btn-toggle-v2">
+                <div class="chip-container">
+                    <div *ngFor="let cData of chipData">
+                        <m-chip [info]="cData"></m-chip>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-md-6 col-sm-12 col-12">
-            <div class="row">
-                <div id="custom-btn-toggle-v2">
-                    <div class="chip-container">
-                        <div *ngFor="let cData of chipData">
-                            <m-chip [info]="cData"></m-chip>
-                        </div>
-                    </div>
+        <div class="row pt-4">
+            <div class="col-md-3">
+                <div id="custom-form-field" class="lightTheme">
+                    <mat-form-field class="without-search" appearance="legacy">
+                        <mat-label>Invoice Status</mat-label>
+                        <mat-select disableOptionCentering>
+                            <mat-option>Option1</mat-option>
+                            <mat-option>Option2</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-4 col-sm-12 col-12">
-                    <div id="custom-form-field" class="lightTheme">
-                        <mat-form-field class="without-search" appearance="legacy">
-                            <mat-label>Payment Status</mat-label>
-                            <mat-select disableOptionCentering>
-                                <mat-option>Option1</mat-option>
-                                <mat-option>Option2</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-12 col-12">
-                    <div id="custom-form-field" class="lightTheme">
-                        <mat-form-field class="without-search" appearance="legacy">
-                            <mat-label>Accountancy Date</mat-label>
-                            <input matInput [matDatepicker]="pickerAD" (focus)="pickerAD.open()">
-                            <mat-datepicker-toggle matSuffix [for]="pickerAD">
-                                <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
-                                </mat-icon>
-                            </mat-datepicker-toggle>
-                            <mat-datepicker #pickerAD></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-12 col-12">
-                    <div id="custom-form-field" class="custom-form-field" class="lightTheme">
-                        <mat-form-field class="without-search" appearance="legacy">
-                            <mat-label>Account No.</mat-label>
-                            <input matInput>
-                        </mat-form-field>
-                    </div>
+            <div class="col-md-3">
+                <div id="custom-form-field" class="lightTheme">
+                    <mat-form-field class="without-search" appearance="legacy">
+                        <mat-label>Accountancy Date</mat-label>
+                        <input matInput [matDatepicker]="pickerAD" (focus)="pickerAD.open()">
+                        <mat-datepicker-toggle matSuffix [for]="pickerAD">
+                            <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
+                            </mat-icon>
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #pickerAD></mat-datepicker>
+                    </mat-form-field>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-4 col-sm-12 col-12">
-                    <div id="custom-form-field" class="custom-form-field" class="lightTheme">
-                        <mat-form-field class="without-search" appearance="legacy">
-                            <mat-label>Paid Amount</mat-label>
-                            <input matInput>
-                        </mat-form-field>
-                    </div>
+            <div class="col-md-3">
+                <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
+                    <mat-form-field class="without-search" appearance="legacy">
+                        <mat-label>Account No.</mat-label>
+                        <input matInput>
+                    </mat-form-field>
                 </div>
             </div>
-
-        </div>
+        </div>  
+        <div class="row pt-3">
+            <div class="col-md-3">
+                <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
+                    <mat-form-field class="without-search" appearance="legacy">
+                        <mat-label>Paid Amount</mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>         
     </div>
 </div>
 <div class="section1 mt-4">
