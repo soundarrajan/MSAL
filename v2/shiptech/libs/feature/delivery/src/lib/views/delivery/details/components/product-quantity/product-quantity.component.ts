@@ -191,9 +191,7 @@ export class ProductQuantityComponent implements OnInit{
     if (!form) {
       return;
     }
-    console.log('aici');
     this.formValues = form;
-    console.log(this.formValues);
     if (this.formValues.temp.deliverysummary) {
       if (this.formValues.deliveryProducts[this.deliveryProductIndex]) {
         if (!this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader) {
@@ -210,7 +208,6 @@ export class ProductQuantityComponent implements OnInit{
 
   async getQualityMatchList() {
     this.qualityMatchList = await this.legacyLookupsDatabase.getQualityMatchList();
-    console.log(this.qualityMatchList);
   }
 
 

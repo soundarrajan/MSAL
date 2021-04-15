@@ -1,9 +1,11 @@
-﻿commit 638eb2c704072baea4ffe22debf96cbabe41411b
+﻿commit 9f7b749199c45fa7fab07ad20052cd266401dab3
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Tue Apr 13 11:16:17 2021 +0000
+Date:   Thu Apr 15 08:06:24 2021 +0000
 
-    Merged PR 9872: Fixed ag-grid-cell-actions from invoice screen
+    Merged PR 9890: Fixed open status in delivery screen
     
-    Fixed ag-grid-cell-actions from invoice screen
+    Fixed open status in delivery screen
+    
+    Related work items: #31203
 
 branch: master
