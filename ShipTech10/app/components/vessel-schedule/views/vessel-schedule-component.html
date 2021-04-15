@@ -28,7 +28,7 @@
                 <td>
                     <!-- {{$ctrl.EnableSingleSelect}} -->
                     <label ng-if="$ctrl.EnableSingleSelect"  class="mt-checkbox mt-checkbox-outline">
-                        <input type="checkbox" value="$ctrl.selectedLocationsSingle[$index]" ng-click="$ctrl.selectedLocationsSingle($index)"/>
+                        <input type="checkbox" ng-model="$ctrl.selectedLocationsSingle[$index]"  ng-click="selectedLocationsSingle($index)"/>
                         <span></span>
                     </label>
                     <label ng-if="!$ctrl.EnableSingleSelect" class="mt-checkbox mt-checkbox-outline">
@@ -53,7 +53,7 @@
 
 <div class="modal-footer">
     <div class="pull-right">
-        <a class="btn btn-outline orange" ng-if="$ctrl.isvoyagePortchangeEnabled" ng-click="$ctrl.confirmVesselSchedulesSelection()" data-dismiss="modal">Add to Order</a>
+        <a class="btn btn-outline orange" ng-if="$ctrl.isvoyagePortchangeEnabled" ng-click="$ctrl.confirmVesselSchedulesOrderSelection()" data-dismiss="modal">Add to Order</a>
         <a class="btn btn-outline orange" ng-if="!$ctrl.isvoyagePortchangeEnabled" ng-click="$ctrl.confirmVesselSchedulesSelection()" data-dismiss="modal">Add to Request</a>
     </div>
 </div>

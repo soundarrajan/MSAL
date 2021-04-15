@@ -93,7 +93,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         }
 
         $rootScope.$on('tenantConfiguration', (event, value) => {
-            console.log("000000000000000", value)
             ctrl.numberPrecision = value.general.defaultValues;
             ctrl.requestTenantSettings = value.procurement.request;
         	ctrl.emailSettings = value.email;
@@ -344,6 +343,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     } else if (typeof voyageId != 'undefined' && voyageId !== null) {
                         newRequestModel.newRequest(voyageId).then((newRequestData) => {
                             ctrl.request = newRequestData.payload;
+                       
                             setPageTitle();
                             setRequestStatusHeader();
 
@@ -385,6 +385,10 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                                     if (ctrl.request.locations[j].products[i].product) {
                                         listsModel.getProductTypeByProduct(ctrl.request.locations[j].products[i].product.id, j, i).then((server_data) => {
                                             ctrl.request.locations[server_data.id].products[server_data.id2].productType = server_data.data.payload;
+                                            if(ctrl.request.locations[server_data.id].products[server_data.id2].productType.name.includes('VLSFO')){
+                                                ctrl.request.locations[server_data.id].products[server_data.id2].isPretestRequired = true; 
+                                            }
+
                                             $scope.productTypesLoadedPerLocation.loadedProducts += 1;
                                         });
                                     }
@@ -411,16 +415,11 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     } else if (typeof requestId != 'undefined' && requestId !== null) {
                         newRequestModel.getRequest(requestId).then((newRequestData) => {
                             ctrl.request = newRequestData.payload;
-                            
                             $.each(ctrl.request.locations, (i, j) => {
-                                
                                 if(j.terminal != null && j.terminal.length != 0){
-                                    
                                     j.terminal.descriptions = j.terminal.name;
                                     j.terminal.terminalCode = j.terminal.code;
-
                                 }
-
                                 getTerminalLocations('locations',j.location.id);
                             });
                             ctrl.request.footerSection.comments =  decodeHtmlEntity(_.unescape(ctrl.request.footerSection.comments));
@@ -1156,10 +1155,22 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 		            });
         		}
         	}
+            debugger;
             newProduct.product = product;
             newProduct.defaultProduct = angular.copy(product);
             newProduct.screenActions = [];
             newProduct.productType = angular.copy(ctrl.getProductTypeObjById(productTypeId));
+            if(newProduct.productType != null && newProduct.productType.name != null){
+
+
+                if(newProduct.productType.name.includes('VLSFO')){
+                    newProduct.isPretestRequired = true; 
+                }
+                else{
+                    newProduct.isPretestRequired = false; 
+                }
+            }
+
             cancelAction = ctrl.getScreenActionByName(ctrl.SCREEN_ACTIONS.CANCEL);
             if (cancelAction != null) {
                 newProduct.screenActions.push(cancelAction);
@@ -1657,6 +1668,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         locationObject.destinationEta = extraInfo.destinationEta;
                     }
                     ctrl.request.locations.push(locationObject);
+                    
                     ctrl.etaEnabled[ctrl.request.locations.length - 1] = true;
                     productList = ctrl.request.locations[ctrl.request.locations.length - 1].products;
                     if (ctrl.selectedVessel) {
@@ -2571,7 +2583,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         };
         
         ctrl.selectVesselSchedulesMintoReach = function(locations) {
-            
             ctrl.EnableSingleSelect = false;
             // $scope.formValues.minimumQuantitiesToReach = locations;
             if(ctrl.request.minimumQuantitiesToReach != undefined){
@@ -3994,7 +4005,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         	if (ctrl.request.vesselDetails.vessel) {
 	        	if (ctrl.request.vesselDetails.vessel.id) {
                     
-                    $scope.$broadcast('getVesselSchedules', ctrl.request.vesselDetails.vessel.id, false);
+                    $scope.$broadcast('getVesselSchedules', ctrl.request.vesselDetails.vessel.id, false,'NewRequest');
 	        	}
         	}
         };
@@ -4005,7 +4016,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         	if (ctrl.request.vesselDetails.vessel) {
 	        	if (ctrl.request.vesselDetails.vessel.id) {
                     
-                    $scope.$broadcast('getVesselSchedules', ctrl.request.vesselDetails.vessel.id, true);
+                    $scope.$broadcast('getVesselSchedules', ctrl.request.vesselDetails.vessel.id, true,'NewRequest');
 	        	}
         	}
         };

@@ -674,7 +674,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         ctrl.getVesselSchedules = function() {
             ctrl.EnableSingleSelect = true;
             ctrl.voyagePortchangeEnabled = true;
-                    $scope.$broadcast('getVesselSchedules', ctrl.data.vessel.id, false,'NewOrder');
+                    $scope.$broadcast('getVesselSchedules', ctrl.data.vessel.id, ctrl.EnableSingleSelect,'NewOrder');
         };
 
         $scope.portValuechange = function(val){
@@ -717,17 +717,40 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
            
 
         }
+
+        
         ctrl.selectVesselSchedulesPort = function(locations) {
-            debugger;
+
             ctrl.EnableSingleSelect = false;
             ctrl.data.oldLocation = angular.copy(ctrl.data.location);
             ctrl.data.location.name = locations[0].locationName;
             ctrl.data.location.id = locations[0].locationId;
-            toastr.warning("Whether if the port is available in contract or not , the contract has to be reset");
+            ctrl.data.eta = locations[0].eta;
+            ctrl.data.recentEta = locations[0].recentETA;
+
+            var isAvailablecontract = false;
+            if(ctrl.data.products != undefined && ctrl.data.products.length != 0){
+                $.each(ctrl.data.products, (i, e) => {
+                    if(e.contractId != null){
+                        isAvailablecontract = true;
+                    }
+                });
+                if(isAvailablecontract){
+                    toastr.warning("Whether if the port is available in contract or not , the contract has to be reset");
+                }
+            }
+
+            
+            console.log("Suresh R", ctrl.data)
+           
             ctrl.selectPort(ctrl.data.location.id);
            $.each(ctrl.data.products, (k, v) => {
             v.price =null;
             v.contract = null;
+            v.formula = null;
+            v.formulaDescription = null;
+            v.contractId = null;
+
             ctrl.productPriceChanged(v);
             ctrl.changedProductContract();
             });
@@ -1660,7 +1683,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         };
 
         ctrl.selectPort = function(locationId) {
-            debugger;
             let location,
                 productList,
                 agent = {};
