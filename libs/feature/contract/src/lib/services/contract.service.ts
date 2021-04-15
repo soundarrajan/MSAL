@@ -144,6 +144,22 @@ export class ContractService extends BaseStoreService implements OnDestroy {
   getFormulaId(formulaId : number): Observable<unknown> {
     return this.contractApi.getFormulaById(formulaId);
   }
+
+       /**
+ * @param payload 
+ */
+  @ObservableException()
+  saveFormula(payload): Observable<unknown> {
+    return this.contractApi.saveFormula(payload);
+  }
+
+        /**
+ * @param payload 
+ */
+  @ObservableException()
+  updateFormula(payload): Observable<unknown> {
+    return this.contractApi.updateFormula(payload);
+  }
     
                 
   

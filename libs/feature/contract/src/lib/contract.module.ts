@@ -128,6 +128,16 @@ import { ProductDetails } from './views/contract/details/components/product-deta
 import { ProductPricing } from './views/contract/details/components/product-pricing/product-pricing.component';
 import { CreateNewFormulaModalComponent } from './views/contract/details/components/create-new-formula-modal/create-new-formula-modal.component';
 import { AmountTenantFormatDirective } from './views/contract/details/directives/amount-tenant-format.directive';
+import { PricingFormulaSimple } from './views/contract/details/components/pricing-formula-simple/pricing-formula-simple.component';
+import { PricingFormulaComplex } from './views/contract/details/components/pricing-formula-complex/pricing-formula-complex.component';
+import { DateRange } from './views/contract/details/components/date-range/date-range.component';
+import { SpecificDates } from './views/contract/details/components/specific-dates/specific-dates.component';
+import { EventBasedContinuous } from './views/contract/details/components/event-based-continuous/event-based-continuous.component';
+import { EventBasedExtended } from './views/contract/details/components/event-based-extended/event-based-extended.component';
+import { EventBasedSimple } from './views/contract/details/components/event-based-simple/event-based-simple.component';
+import { QuantityBased } from './views/contract/details/components/quantity-based/quantity-based.component';
+import { ProductBased } from './views/contract/details/components/product-based/product-based.component';
+import { VesselLocationBased } from './views/contract/details/components/vessel-location-based/vessel-location-based.component';
 
 
 @NgModule({
@@ -233,6 +243,16 @@ import { AmountTenantFormatDirective } from './views/contract/details/directives
     ContractProduct,
     ProductDetails,
     ProductPricing,
+    PricingFormulaSimple,
+    PricingFormulaComplex,
+    DateRange,
+    SpecificDates,
+    EventBasedContinuous,
+    EventBasedExtended,
+    ProductBased,
+    VesselLocationBased,
+    EventBasedSimple,
+    QuantityBased,
     AutocompleteInputComponent,
     ContractDetailsToolbarComponent,
     ContractDetailsDocumentsComponent,
