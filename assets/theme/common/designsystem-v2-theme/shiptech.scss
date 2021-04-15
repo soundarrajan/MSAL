@@ -8,6 +8,9 @@
 //
 /*---- #region COMMON STYLES ----*/
 
+.pd-0{
+    padding: 0px !important;
+  }
 .invoice-main-container{
     background-color: red;
     .details{
@@ -27,4 +30,67 @@
     display: flex;
     flex-wrap: wrap;
     padding: 10px;
+}
+
+// Order and Counterparty Details
+.section-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    .header-label{
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 16px;
+        color: #252A32;
+    }
+    .header-data{
+        font-style: normal;
+        font-weight: normal;
+        font-size: 10px;
+        line-height: 12px;
+        color: #252A32;
+    }
+    .request-id{
+        font-size: 12px;
+        color: #00AAE2;
+    }
+}
+.section-content{
+    // background: #FCFCFC;
+    border: 1px solid #E0E1E4;
+    box-sizing: border-box;
+    border-radius: 4px;
+    padding: 10px;
+    &.order-details{
+        .form-fields{
+            display: flex;
+            justify-content: space-between;
+            margin: 12px 0px;
+            flex-wrap: wrap;
+            #custom-form-field{
+                margin: 0px;
+            }
+        }
+        .field-textarea{
+            textarea{
+                border: 1px solid #252A32;
+                box-sizing: border-box;
+                border-radius: 4px;
+                width: 100%;
+                font-style: normal;
+                font-weight: normal;
+                font-size: 14px;
+                line-height: 16px;
+                color: #252A32;
+                resize: none;
+            }
+            textarea::placeholder {
+                font-size: 14px;
+                line-height: 16px;
+                color: #C3C6CC;
+              }
+        }
+    }
 }
