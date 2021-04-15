@@ -693,7 +693,7 @@
     .value {
       font-family: Roboto;
       font-style: normal;
-      font-weight: 500;
+      font-weight: 500  !important;
       font-size: 18px;
       line-height: 21px;
       color: #9E9E9E;
@@ -903,5 +903,19 @@
 
 .barge-select-container .mat-option-text  {
   font-size: 14px  !important;
+  color: white !important;
+}
+
+
+.status-entity {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  text-shadow: none!important;
+  font-size: 16px  !important;
+  padding: 3px 6px 3px 6px;
+  text-align: center;
+  white-space: nowrap;
+  width: fit-content;
   color: white !important;
 }

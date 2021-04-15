@@ -225,18 +225,15 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
 
   orderNumberChanged(data) {
     this.hideDropdown = !data;
-    console.log(this.hideDropdown);
   }
 
   setConversionInfo(conversionInfoData) {
     this.conversionInfoData = conversionInfoData;
     this.conversionDataInfoSubject.next(this.conversionInfoData);
-    console.log(this.conversionInfoData);
   }
 
   setRequiredFields(data) {
     this.buttonClicked = data;
-    console.log('check required fields');
     this.requiredInfoSubject.next(this.buttonClicked);
   }
 
@@ -244,8 +241,6 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
     if (!form) {
       return;
     }
-    console.log('aici');
-    console.log(form);
     this.formValues = form;
     if (this.formValues.temp.deliverysummary) {
       this.formValues.temp.deliverySummaryProducts = [ ... this.formValues.temp.deliverysummary.products];
@@ -274,7 +269,6 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
 
   addSelectedProductInDelivery(selectedProductToAddInDelivery) {
 
-    console.log(selectedProductToAddInDelivery);
     if (!this.formValues.deliveryProducts) {
         this.formValues.deliveryProducts = [];
     }
@@ -327,10 +321,8 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
               productParameter.specParameter.name = this.decodeSpecificField(productParameter.specParameter.name);
             });
           }
-          console.log(newProductData);
           this.changeDetectorRef.detectChanges();
           this.deliveryFormSubject.next(this.formValues);
-          console.log(this.formValues);
         }
       });
       this.openedScreenLoaders += 1;
@@ -350,10 +342,8 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
         } else {
           newProductData.quantityHeader = {};
           newProductData.quantityParameters = result;
-          console.log(newProductData);
           this.deliveryFormSubject.next(this.formValues);
           this.changeDetectorRef.detectChanges();
-          console.log(this.formValues);
         }
       });
       newProductData.confirmedQuantityAmount = this.quantityFormatValue(selectedProductToAddInDelivery.orderedQuantity.amount);
@@ -399,7 +389,6 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
       this.formValues.deliveryProducts.push(newProductData);
       //this.changeDetectorRef.detectChanges();
      // this.deliveryFormSubject.next(this.formValues);
-      console.log(this.formValues);
       this.openedScreenLoaders += 1;
       this.deliveryService
         .loadConversionInfo(selectedProductToAddInDelivery.product.id)
@@ -548,7 +537,6 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
             }
           });
         } else {
-          console.log('same');
           var mfm_convFact = 1;
         }
         var mfm_qty = convertedFields.VesselFlowMeter;
@@ -799,7 +787,6 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
 
   search(value: string): void {
     let filterSummaryProducts = this.formValues.temp.deliverysummary.products.filter((summaryProd) => summaryProd.product.name.toLowerCase().includes(value));
-    console.log(filterSummaryProducts);
     this.formValues.temp.deliverySummaryProducts = [ ... filterSummaryProducts];
   }
 

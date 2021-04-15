@@ -98,7 +98,7 @@
                 </span>
                 Status
               </span>
-              <div *ngIf="formValues.deliveryStatus" class="value" [ngStyle]="{'color': statusColorCode }">
+              <div *ngIf="formValues.deliveryStatus" class="value status-entity" [ngStyle]="{'backgroundColor': statusColorCode}">
                 {{formValues.deliveryStatus.name}}
               </div>
             </div>
