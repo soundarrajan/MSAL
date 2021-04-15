@@ -8,7 +8,8 @@ export enum knownMastersAutocomplete {
   sellers = 'sellers',
   company = 'company',
   systemInstrument = 'systemInstrument',
-  currency = 'currency'
+  currency = 'currency',
+  formula = 'formula'
 }
 
 export enum knowMastersAutocompleteHeaderName {
@@ -21,5 +22,6 @@ export enum knowMastersAutocompleteHeaderName {
   sellers = 'SELECT SELLER',
   company = 'SELECT COMPANY',
   systemInstrument = 'SELECT SYSTEM INSTRUMENT',
-  currency = 'SELECT CURRENCY'
+  currency = 'SELECT CURRENCY',
+  formula = 'SELECT FORMULA'
 }

@@ -150,3 +150,14 @@ export interface ICurrencyListDto extends IDisplayLookupDto {
   lastModifiedOn: IDisplayLookupDto;
   isDeleted: boolean;
 }
+
+
+export interface IFormulaListDto extends IDisplayLookupDto {
+  id: number;
+  name: string;
+  createdBy: IDisplayLookupDto;
+  createdOn: IDisplayLookupDto;
+  lastModifiedBy: IDisplayLookupDto;
+  lastModifiedOn: IDisplayLookupDto;
+  isDeleted: boolean;
+}

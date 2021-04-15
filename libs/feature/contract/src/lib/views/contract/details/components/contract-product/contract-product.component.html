@@ -150,6 +150,7 @@
       </shiptech-product-details>
       <shiptech-product-pricing  [generalTenantSettings]="generalTenantSettings"
                     [model]="formValues"
+                    [entityId]="_entityId"
                     [contractProductIndex]="contractProduct.key"
                     [uomList]="uomList"
                     [formulaTypeList]="formulaTypeList"
@@ -171,6 +172,7 @@
                     [quantityTypeList]="quantityTypeList"
                     [productList]="productList"
                     [locationList]="locationList"
+                    [contractFormulaList]="contractFormulaList"
                     [events]="contractFormSubject.asObservable()"
                     class="col-md-6">
       </shiptech-product-pricing>

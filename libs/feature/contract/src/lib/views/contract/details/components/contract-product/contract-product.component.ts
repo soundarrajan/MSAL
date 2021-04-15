@@ -480,6 +480,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   businessCalendarList: any;
   formulaEventIncludeList: any;
   quantityTypeList: any;
+  contractFormulaList: any;
 
 
   get entityId(): number {
@@ -763,6 +764,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
 
   ngOnInit(){  
     this.entityName = 'Contract';
+    this.getContractFormulaList1();
 
 
   }
@@ -825,9 +827,79 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     this.selectedTabIndex =  this.formValues.products.length - 1;
     this.setAllowedLocations(this.selectedTabIndex);
     this.setAllowedProducts(this.selectedTabIndex);
+    this.getContractFormulaList();
     this.changeDetectorRef.detectChanges();
 
     console.log(this.formValues);
+  }
+
+  getContractFormulaList1() {
+    console.log(this._entityId);
+    let data = {
+      Payload: {
+          PageFilters: {
+              Filters: []
+          },
+          Filters: [ {
+              ColumnName: 'ContractId',
+              Value:  this._entityId ? this._entityId : null
+          } ],
+          SearchText: null,
+          Pagination: {
+              Skip: 0,
+              Take: 999
+          }
+      }
+    };
+    this.contractService
+    .getContractFormulaList(data)
+    .pipe(
+      finalize(() => {
+      })
+    )
+    .subscribe((response: any) => {
+      if (typeof response == 'string') {
+        this.toastr.error(response);
+      } else {
+        this.contractFormulaList = response;
+      }
+    });
+  }
+
+  getContractFormulaList() {
+    console.log(this._entityId);
+    let data = {
+      Payload: {
+          PageFilters: {
+              Filters: []
+          },
+          Filters: [ {
+              ColumnName: 'ContractId',
+              Value:  this._entityId ? this._entityId : null
+          } ],
+          SearchText: null,
+          Pagination: {
+              Skip: 0,
+              Take: 999
+          }
+      }
+    };
+    this.spinner.show();
+    this.contractService
+    .getContractFormulaList(data)
+    .pipe(
+      finalize(() => {
+        this.spinner.hide();
+      })
+    )
+    .subscribe((response: any) => {
+      if (typeof response == 'string') {
+        this.toastr.error(response);
+      } else {
+        this.contractFormulaList = response;
+        this.toastr.success('Operation completed successfully!')
+      }
+    });
   }
 
 
