@@ -466,7 +466,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
           });
         };
 
-        // set all data mappings
+        // set all data mappings 
         getOrderListForRequest();
         function loadData(data) {
             ctrl.data = data.payload;
@@ -474,10 +474,12 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             if(ctrl.data != undefined && ctrl.data != null){
                 if(ctrl.orderId != null && ctrl.data.status != null && ctrl.data.status != undefined){
                    ctrl.isEnabledVessel = false;
-                    if(ctrl.relatedOrders[0].deliveryCount ==0 && ctrl.data.vesselVoyageDetailId != null && (ctrl.data.status.name == 'Stemmed' || ctrl.data.status.name == 'Confirmed' || ctrl.data.status.name == 'Approved')){
-                        ctrl.PortLocationEditable = true;
-                        ctrl.isEnabledVessel = true;
-                        
+                    if (ctrl.relatedOrders.length > 0) {
+	                    if(ctrl.relatedOrders[0].deliveryCount ==0 && ctrl.data.vesselVoyageDetailId != null && (ctrl.data.status.name == 'Stemmed' || ctrl.data.status.name == 'Confirmed' || ctrl.data.status.name == 'Approved')){
+	                        ctrl.PortLocationEditable = true;
+	                        ctrl.isEnabledVessel = true;
+	                        
+	                    }
                     }
                 }
                 else{
