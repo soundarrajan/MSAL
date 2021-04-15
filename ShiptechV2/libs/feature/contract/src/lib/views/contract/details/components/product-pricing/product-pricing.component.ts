@@ -477,6 +477,12 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   marketPriceTypeList: any;
   pricingScheduleList: any;
   holidayRuleList: any;
+  pricingSchedulePeriodList: any;
+  eventList: any;
+  dayOfWeekList: any;
+  businessCalendarList: any;
+  formulaEventIncludeList: any;
+  quantityTypeList: any;
 
 
   get entityId(): number {
@@ -615,6 +621,68 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     this.holidayRuleList = holidayRuleList;
   }
 
+  @Input('pricingSchedulePeriodList') set _setPricingSchedulePeriodList(pricingSchedulePeriodList) { 
+    if (!pricingSchedulePeriodList) {
+      return;
+    } 
+    this.pricingSchedulePeriodList = pricingSchedulePeriodList;
+  }
+
+  @Input('eventList') set _setEventList(eventList) { 
+    if (!eventList) {
+      return;
+    } 
+    this.eventList = eventList;
+  }
+  
+    
+  @Input('dayOfWeekList') set _setDayOfWeekListt(dayOfWeekList) { 
+    if (!dayOfWeekList) {
+      return;
+    } 
+    this.dayOfWeekList = dayOfWeekList;
+  }
+
+      
+  @Input('businessCalendarList') set _setBusinessCalendarList(businessCalendarList) { 
+    if (!businessCalendarList) {
+      return;
+    } 
+    this.businessCalendarList = businessCalendarList;
+  }
+
+        
+  @Input('formulaEventIncludeList') set _setFormulaEventIncludeList(formulaEventIncludeList) { 
+    if (!formulaEventIncludeList) {
+      return;
+    } 
+    this.formulaEventIncludeList = formulaEventIncludeList;
+  }
+
+          
+  @Input('quantityTypeList') set _setQuantityTypeList(quantityTypeList) { 
+    if (!quantityTypeList) {
+      return;
+    } 
+    this.quantityTypeList = quantityTypeList;
+  }
+
+  
+  @Input('productList') set _setProductList(productList) { 
+    if (!productList) {
+      return;
+    } 
+    this.productList = productList;
+  }
+
+
+  @Input('locationList') set _setLocationList(locationList) { 
+    if (!locationList) {
+      return;
+    } 
+    this.locationList = locationList;
+  }
+
 
   
 
@@ -707,7 +775,15 @@ export class ProductPricing extends DeliveryAutocompleteComponent
             'formulaFunctionList': this.formulaFunctionList,
             'marketPriceTypeList': this.marketPriceTypeList,
             'pricingScheduleList': this.pricingScheduleList,
-            'holidayRuleList': this.holidayRuleList
+            'holidayRuleList': this.holidayRuleList,
+            'pricingSchedulePeriodList': this.pricingSchedulePeriodList,
+            'eventList': this.eventList,
+            'dayOfWeekList': this.dayOfWeekList,
+            'businessCalendarList': this.businessCalendarList,
+            'formulaEventIncludeList': this.formulaEventIncludeList,
+            'quantityTypeList': this.quantityTypeList,
+            'productList': this.productList,
+            'locationList': this.locationList
           }
         });
 

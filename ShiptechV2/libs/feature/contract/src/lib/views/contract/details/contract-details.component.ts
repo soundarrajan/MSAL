@@ -120,6 +120,14 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   formulaFunctionList: any;
   pricingScheduleList: any;
   holidayRuleList: any;
+  pricingSchedulePeriodList: any;
+  eventList: any;
+  dayOfWeekList: any;
+  businessCalendarList: any;
+  formulaEventIncludeList: any;
+  quantityTypeList: any;
+  productList: any;
+  locationList: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -227,9 +235,16 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       this.marketPriceTypeList = this.setListFromStaticLists('MarketPriceType');
       this.pricingScheduleList = this.setListFromStaticLists('PricingSchedule');
       this.holidayRuleList = this.setListFromStaticLists('HolidayRule');
+      this.pricingSchedulePeriodList = this.setListFromStaticLists('PricingSchedulePeriod');
+      this.eventList = this.setListFromStaticLists('Event');
+      this.dayOfWeekList = this.setListFromStaticLists('DayOfWeek');
+      this.businessCalendarList = this.setListFromStaticLists('BusinessCalendar');
+      this.formulaEventIncludeList = this.setListFromStaticLists('FormulaEventInclude');
+      this.quantityTypeList = this.setListFromStaticLists('QuantityType');
+      this.productList = this.setListFromStaticLists('Product');
+      this.locationList = this.setListFromStaticLists('Location');
 
 
-  
       console.log(this.staticLists);
     });
   }

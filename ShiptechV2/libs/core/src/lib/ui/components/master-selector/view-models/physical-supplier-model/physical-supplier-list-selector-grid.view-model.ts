@@ -355,7 +355,7 @@ export class PhysicalSupplierListSelectorGridViewModel extends BaseGridViewModel
     private mastersListApiService: MastersListApiService
   ) {
     super(
-      'physical-supplier-list-selector-grid-8',
+      'physical-supplier-list-selector-grid-9',
       columnPreferences,
       changeDetector,
       loggerFactory.createLogger(PhysicalSupplierListSelectorGridViewModel.name)

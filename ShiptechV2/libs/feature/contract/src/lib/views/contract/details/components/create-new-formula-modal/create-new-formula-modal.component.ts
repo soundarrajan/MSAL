@@ -418,6 +418,16 @@ export class CreateNewFormulaModalComponent extends DeliveryAutocompleteComponen
   isValidFromDateInvalid: boolean;
   isValidToDateInvalid: boolean;
   holidayRuleList: any;
+  isValidSpecDateInvalid: boolean;
+  pricingSchedulePeriodList: any;
+  eventList: any;
+  dayOfWeekList: any;
+  businessCalendarList: any;
+  formulaEventIncludeList: any;
+  rules: any = 1;
+  quantityTypeList: any;
+  productList: any;
+  locationList: any;
   constructor(
     public dialogRef: MatDialogRef<CreateNewFormulaModalComponent>,
     private ren: Renderer2,
@@ -454,111 +464,21 @@ export class CreateNewFormulaModalComponent extends DeliveryAutocompleteComponen
       this.marketPriceTypeList = data.marketPriceTypeList;
       this.pricingScheduleList = data.pricingScheduleList;
       this.holidayRuleList = data.holidayRuleList;
+      this.pricingSchedulePeriodList = data.pricingSchedulePeriodList;
+      this.eventList = data.eventList;
+      this.dayOfWeekList = data.dayOfWeekList;
+      this.businessCalendarList = data.businessCalendarList;
+      this.formulaEventIncludeList = data.formulaEventIncludeList;
+      this.quantityTypeList = data.quantityTypeList;
+      this.productList = data.productList;
+      this.locationList = data.locationList;
     }
 
   ngOnInit() {
     this.entityName = 'Contract';
-    this.autocompleteSystemInstrument = knownMastersAutocomplete.systemInstrument;
-    this.autocompleteCurrency = knownMastersAutocomplete.currency;
-
 
   }
 
-  getHeaderNameSelector(): string {
-    switch (this._autocompleteType) {
-      case knownMastersAutocomplete.systemInstrument:
-        return knowMastersAutocompleteHeaderName.systemInstrument;
-      default:
-        return knowMastersAutocompleteHeaderName.systemInstrument;
-    }
-  }
-
-  getHeaderNameSelector1(): string {
-    switch (this._autocompleteType) {
-      case knownMastersAutocomplete.currency:
-        return knowMastersAutocompleteHeaderName.currency;
-      default:
-        return knowMastersAutocompleteHeaderName.currency;
-    }
-  }
-  
-  selectorSystemInstumentSelectionChange(
-    selection: IOrderLookupDto
-  ): void {
-    if (selection === null || selection === undefined) {
-      this.formValues.simpleFormula.systemInstrument = '';
-    } else {
-      const obj = {
-        'id': selection.id,
-        'name': selection.name
-      };
-      this.formValues.simpleFormula.systemInstrument = obj; 
-      this.changeDetectorRef.detectChanges();   
-    }
-  }
-
-  selectorCurrencySelectionChange(
-    selection: IOrderLookupDto
-  ): void {
-    if (selection === null || selection === undefined) {
-      this.formValues.currency = '';
-    } else {
-      const obj = {
-        'id': selection.id,
-        'name': selection.name
-      };
-      this.formValues.currency = obj; 
-      this.changeDetectorRef.detectChanges();   
-    }
-  }
-
-
-
-  filterSystemInstrumenttList() {
-    if (this.formValues.simpleFormula.systemInstrument) {
-      const filterValue = this.formValues.simpleFormula.systemInstrument.name ? this.formValues.simpleFormula.systemInstrument.name.toLowerCase() : this.formValues.simpleFormula.systemInstrument.toLowerCase();
-      console.log(filterValue);
-      if (this.systemInstumentList) {
-        return this.systemInstumentList.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0)
-          .slice(0, 10);
-      } else {
-        return [];
-      }
-    } else {
-      return [];
-    }
-  }
-
-  filterSystemInstrumentListFromComplexFormulaQuoteLine(value) {
-    if (value) {
-      const  filterValue = value.toLowerCase();
-      if (this.systemInstumentList) {
-        return this.systemInstumentList.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0)
-          .slice(0, 10);
-      } else {
-        return [];
-      }
-    } else {
-      return [];
-    }
-  }
-
-
-  
-  filterCurrencyList() {
-    if (this.formValues.currency) {
-      const filterValue = this.formValues.currency.name ? this.formValues.currency.name.toLowerCase() : this.formValues.currency.toLowerCase();
-      console.log(filterValue);
-      if (this.currencyList) {
-        return this.currencyList.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0)
-          .slice(0, 10);
-      } else {
-        return [];
-      }
-    } else {
-      return [];
-    }
-  }
 
 
   closeClick(): void {
@@ -577,156 +497,80 @@ export class CreateNewFormulaModalComponent extends DeliveryAutocompleteComponen
   
   }
 
-  selectSystemInstrument(event: MatAutocompleteSelectedEvent) {
-    this.formValues.simpleFormula.systemInstrument = event.option.value;
-  }
-
-  selectCurrency(event: MatAutocompleteSelectedEvent) {
-    this.formValues.currency = event.option.value;
-  }
-
-
-  compareUomObjects(object1: any, object2: any) {
-    return object1 && object2 && object1.id == object2.id;
-  }
-
-
-  selectSystemInstrumentFromComplexFormulaQuoteLine(value, line, key) {
-    this.formValues.complexFormulaQuoteLines[line].systemInstruments[key].systemInstrument = value;
-  }
-
- 
-  addComplexFormulaQuoteLine() {
-    if (!this.formValues.complexFormulaQuoteLines) {
-      this.formValues.complexFormulaQuoteLines = [];
+  clearSchedules(id) {
+    this.formValues.pricingScheduleOptionDateRange = null;
+    this.formValues.pricingScheduleOptionSpecificDate = null;
+    this.formValues.pricingScheduleOptionEventBasedSimple = null;
+    this.formValues.pricingScheduleOptionEventBasedExtended = null;
+    this.formValues.pricingScheduleOptionEventBasedContinuous = null;
+    if (id == 4) {
+      this.formValues.pricingScheduleOptionDateRange = {};
+      this.formValues.pricingScheduleOptionDateRange.sundayHolidayRule = {};
+      this.formValues.pricingScheduleOptionDateRange.mondayHolidayRule = {};
+      this.formValues.pricingScheduleOptionDateRange.tuesdayHolidayRule = {};
+      this.formValues.pricingScheduleOptionDateRange.wednesdayHolidayRule = {};
+      this.formValues.pricingScheduleOptionDateRange.thursdayHolidayRule = {};
+      this.formValues.pricingScheduleOptionDateRange.fridayHolidayRule = {};
+      this.formValues.pricingScheduleOptionDateRange.saturdayHolidayRule = {};
+    } else if (id == 5) {
+      this.formValues.pricingScheduleOptionSpecificDate = {};
+      this.formValues.pricingScheduleOptionSpecificDate.sundayHolidayRule = {};
+      this.formValues.pricingScheduleOptionSpecificDate.mondayHolidayRule = {};
+      this.formValues.pricingScheduleOptionSpecificDate.tuesdayHolidayRule = {};
+      this.formValues.pricingScheduleOptionSpecificDate.wednesdayHolidayRule = {};
+      this.formValues.pricingScheduleOptionSpecificDate.thursdayHolidayRule = {};
+      this.formValues.pricingScheduleOptionSpecificDate.fridayHolidayRule = {};
+      this.formValues.pricingScheduleOptionSpecificDate.saturdayHolidayRule = {};
+    } else if (id == 6) {
+      this.formValues.pricingScheduleOptionEventBasedSimple = {};
+      this.formValues.pricingScheduleOptionEventBasedSimple.sundayHolidayRule = {};
+      this.formValues.pricingScheduleOptionEventBasedSimple.mondayHolidayRule = {};
+      this.formValues.pricingScheduleOptionEventBasedSimple.tuesdayHolidayRule = {};
+      this.formValues.pricingScheduleOptionEventBasedSimple.wednesdayHolidayRule = {};
+      this.formValues.pricingScheduleOptionEventBasedSimple.thursdayHolidayRule = {};
+      this.formValues.pricingScheduleOptionEventBasedSimple.fridayHolidayRule = {};
+      this.formValues.pricingScheduleOptionEventBasedSimple.saturdayHolidayRule = {};
+    } else if (id == 7) {
+      this.formValues.pricingScheduleOptionEventBasedExtended = {};
+      this.formValues.pricingScheduleOptionEventBasedExtended.sundayHolidayRule = {};
+      this.formValues.pricingScheduleOptionEventBasedExtended.mondayHolidayRule = {};
+      this.formValues.pricingScheduleOptionEventBasedExtended.tuesdayHolidayRule = {};
+      this.formValues.pricingScheduleOptionEventBasedExtended.wednesdayHolidayRule = {};
+      this.formValues.pricingScheduleOptionEventBasedExtended.thursdayHolidayRule = {};
+      this.formValues.pricingScheduleOptionEventBasedExtended.fridayHolidayRule = {};
+      this.formValues.pricingScheduleOptionEventBasedExtended.saturdayHolidayRule = {};
+    } else if (id == 8) {
+      this.formValues.pricingScheduleOptionEventBasedContinuous = {};
+      this.formValues.pricingScheduleOptionEventBasedContinuous.sundayHolidayRule = {};
+      this.formValues.pricingScheduleOptionEventBasedContinuous.mondayHolidayRule = {};
+      this.formValues.pricingScheduleOptionEventBasedContinuous.tuesdayHolidayRule = {};
+      this.formValues.pricingScheduleOptionEventBasedContinuous.wednesdayHolidayRule = {};
+      this.formValues.pricingScheduleOptionEventBasedContinuous.thursdayHolidayRule = {};
+      this.formValues.pricingScheduleOptionEventBasedContinuous.fridayHolidayRule = {};
+      this.formValues.pricingScheduleOptionEventBasedContinuous.saturdayHolidayRule = {};
     }
-    var count = 0;
-    this.formValues.complexFormulaQuoteLines.forEach((val, key) => {
-      if(!val.isDeleted) {
-          count++;
-      }
-    });
-    if (count < 3) {
-      this.formValues.complexFormulaQuoteLines.push({
-          id: 0,
-          formulaOperation: {
-              id: this.formValues.isMean ? 3 : 1,
-              name: this.formValues.isMean ? 'Mean' : 'Add',
-              internalName: null,
-              code: null
-          },
-          weight: '100',
-          formulaFunction: {
-              id: 1,
-              name: 'Min',
-              internalName: null,
-              code: null
-          },
-          systemInstruments: [ 
-            {
-              id: 0
-            }, 
-            {
-              id: 0
-            }, 
-            {
-              id: 0
-            }
-        ]
-      });
-    } else {
-      this.toastr.error('Max 3 Quotes allowed');
-    }
+
   }
 
-
-  removeComplexFormulaQuoteLine(key) {
-    var count = this.formValues.complexFormulaQuoteLines.length;
-    if (count > 1) {
-      if (this.formValues.complexFormulaQuoteLines[key].id > 0) {
-        this.formValues.complexFormulaQuoteLines[key].isDeleted = true;
-      } else {
-        this.formValues.complexFormulaQuoteLines.splice(key, 1);
-      }
-    } else {
-      this.toastr.error('Min 1 Quote');
-    }
-  }
-
-  isMeanChange(ob: MatCheckboxChange) {
-    console.log("checked: " + ob.checked);
-    if (ob.checked) {
-      for (let i = 0; i < this.formValues.complexFormulaQuoteLines.length; i++) {
-        this.formValues.complexFormulaQuoteLines[i].formulaOperation.id = 3;
-        this.formValues.complexFormulaQuoteLines[i].formulaOperation.name = 'Mean';
-      }
-      this.changeDetectorRef.detectChanges();
-    }
-  } 
-
-
-  calendarOptionChange(ob: MatCheckboxChange, object, id, name) {
-    console.log("checked: " + ob.checked);
-    if (ob.checked) {
-      if (typeof object == 'undefined') {
-        object = {
-          'id': id,
-          'name': name
+  saveFormula() {
+    if (this.formValues.id) {
+      this.spinner.show();
+      this.contractService
+      .updateFormula(this.formValues)
+      .pipe(
+        finalize(() => {
+          this.spinner.hide();
+        })
+      )
+      .subscribe((response: any) => {
+        if (typeof response == 'string') {
+          this.toastr.error(response);
+        } else {
+          this.toastr.success('Operation completed successfully!')
+          this.dialogRef.close();
         }
-        this.changeDetectorRef.detectChanges();
-      }
-      object.id = id;
-      object.name = name;
-    }
-  }
+      });
   
-
-  setFormulaOperation(value, line) {
-    let findObject = _.find(this.formulaOperationList, function(obj) {
-      return obj.id == value;
-    });
-    if (findObject != -1) {
-      this.formValues.complexFormulaQuoteLines[line].formulaOperation = _.cloneDeep(findObject);
-    }
-    console.log(value);
-    
-  }
-
-  clearSchedules() {
-    this.formValues.pricingScheduleOptionDateRange = {};
-    this.formValues.pricingScheduleOptionSpecificDate = {};
-    this.formValues.pricingScheduleOptionEventBasedSimple = {};
-    this.formValues.pricingScheduleOptionEventBasedExtended = {};
-    this.formValues.pricingScheduleOptionEventBasedContinuous = {};
-  }
-
-  onChange($event, field) {
-    if ($event.value) {
-      let beValue = `${moment($event.value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
-      if (field == 'from') {
-        this.isValidFromDateInvalid = false;
-      } else if (field == 'to') {
-        this.isValidToDateInvalid = false;
-      }
-      console.log(beValue);
-    } else {
-      if (field == 'from') {
-        this.isValidFromDateInvalid = true;
-      } else if (field == 'to') {
-        this.isValidToDateInvalid = false;
-      }
-      this.toastr.error('Please enter the correct format');
-    }
-
-  }
-  
-
-  formatDateForBe(value) {
-    if (value) {
-      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
-      return `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
-    } else {
-      return null;
     }
   }
 

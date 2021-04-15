@@ -44,7 +44,9 @@ export class StaticListsRouteResolver implements Resolve<any> {
       'Incoterm', 'ApplyTo', 'ContractualQuantityOption', 'Uom', 'UomMass', 'UomVolume', 'ContractConversionFactorOptions'
       , 'SpecParameter', 'FormulaType', 'SystemInstrument', 'MarketPriceType'
       , 'FormulaPlusMinus', 'FormulaFlatPercentage', 'Currency',
-      'FormulaOperation', 'FormulaFunction', 'MarketPriceType', 'PricingSchedule', 'HolidayRule']);
+      'FormulaOperation', 'FormulaFunction', 'MarketPriceType', 'PricingSchedule', 'HolidayRule',
+      'PricingSchedulePeriod', 'Event', 'DayOfWeek', 'BusinessCalendar', 'FormulaEventInclude',
+      'QuantityType', 'Product', 'Location']);
 
   }
 
