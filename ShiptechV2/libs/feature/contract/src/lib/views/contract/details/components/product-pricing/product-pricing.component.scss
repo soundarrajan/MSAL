@@ -511,3 +511,41 @@
   position: relative;
   top: 11px;
 }
+
+
+.disabled-formula::before {
+  content: url(../../../../../../../../../../assets/layout/images/pages/disabled-create-new-formula.svg);
+}
+
+.formula-container {
+  /* Lightblue */
+  background: #F5F5F5;
+  border-radius: 4px;
+}
+
+.formula-name {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+
+  /* Blackfont */
+
+  color: #333333;
+}
+
+
+.remove-formula-icon::before {
+  content: url(../../../../../../../../../../assets/layout/images/pages/remove-sample-details.svg);
+}
+
+.remove-formula-icon {
+  width: 25px;
+  height: 25px;
+  position: relative;
+}
+
+.view-formula-icon::before{
+  content: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAASCAYAAABIB77kAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAFFSURBVEhL3ZQhawNBEEbzq+pbXUpdILa0soW4mKioihITKFS1ou5EVYmIiAhE1JRAXEJtGr16yjtYmJub3TtRQoj4SJidnTff3Nx1QghySB03cLP9keLjUyYvb6Ve3wv5Xq3d3JRaAaezufRuHuTs/NrVxWWvbGD3u3fva2WBFOgPRpXiV91bGY6e5HH8XGuCsybHSSAwWxCQzcM9DmMO/3PQJPDuflCB4ZQ4xQBzDowYvzoXKM9b14tygSyGLoAA4Vq7QRHKOHWchmxd5ALtZUR8sfyqxaNzOxHkjdYFMjJ7GXcUsHGWhzsWyCS8rXWBzN+OjjFzppthqSiKdC7iHbV1UXJp7HPU20dDjDfm2lfH2+aoJBB5UGIAceV9EHIwlAUiXOW+MlE0kxqjViMwCjd0rzcYCOME5C2Ip9bA/9KpA4P8AQ+AixFDLt2pAAAAAElFTkSuQmCC")
+}

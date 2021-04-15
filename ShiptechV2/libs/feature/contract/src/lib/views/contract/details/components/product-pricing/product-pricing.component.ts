@@ -483,6 +483,8 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   businessCalendarList: any;
   formulaEventIncludeList: any;
   quantityTypeList: any;
+  contractFormulaList: any;
+  autocompleteFormula: knownMastersAutocomplete;
 
 
   get entityId(): number {
@@ -682,6 +684,13 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     } 
     this.locationList = locationList;
   }
+  
+  @Input('contractFormulaList') set _setContractFormulaList(contractFormulaList) { 
+    if (!contractFormulaList) {
+      return;
+    } 
+    this.contractFormulaList = contractFormulaList;
+  }
 
 
   
@@ -714,13 +723,14 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     sanitizer: DomSanitizer,
     private overlayContainer: OverlayContainer) {
     super(changeDetectorRef);
-    this.autocompletePhysicalSupplier = knownMastersAutocomplete.physicalSupplier;
+    this.autocompletePhysicalSupplier = knownMastersAutocomplete.formula;
     this.dateFormats.display.dateInput = this.format.dateFormat;
     this.dateFormats.parse.dateInput = this.format.dateFormat;
     this.dateTimeFormats.display.dateInput = this.format.dateFormat;
     CUSTOM_DATE_FORMATS.display.dateInput = this.format.dateFormat;
     PICK_FORMATS.display.dateInput = this.format.dateFormat;
     this.baseOrigin = new URL(window.location.href).origin;
+    this.autocompleteFormula = knownMastersAutocomplete.formula;
     this.quantityFormat = '1.' + this.tenantService.quantityPrecision + '-' + this.tenantService.quantityPrecision;
   }
 
@@ -746,7 +756,93 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   }
 
   createNewFormulaPopup(selectedTabIndex) {
-    let formulaId = 889;
+    if (!this.formValues.products[selectedTabIndex].formula) {
+      const dialogRef = this.dialog.open(CreateNewFormulaModalComponent, {
+        width: '80%',
+        data:  {
+          'formValues': {},
+          'selectedTabIndex': this.selectedTabIndex,
+          'formulaTypeList': this.formulaTypeList,
+          'systemInstumentList': this.systemInstumentList,
+          'marketPriceList': this.marketPriceList,
+          'formulaPlusMinusList': this.formulaPlusMinusList,
+          'formulaFlatPercentageList': this.formulaFlatPercentageList,
+          'uomList': this.uomList,
+          'currencyList': this.currencyList,
+          'formulaOperationList': this.formulaOperationList,
+          'formulaFunctionList': this.formulaFunctionList,
+          'marketPriceTypeList': this.marketPriceTypeList,
+          'pricingScheduleList': this.pricingScheduleList,
+          'holidayRuleList': this.holidayRuleList,
+          'pricingSchedulePeriodList': this.pricingSchedulePeriodList,
+          'eventList': this.eventList,
+          'dayOfWeekList': this.dayOfWeekList,
+          'businessCalendarList': this.businessCalendarList,
+          'formulaEventIncludeList': this.formulaEventIncludeList,
+          'quantityTypeList': this.quantityTypeList,
+          'productList': this.productList,
+          'locationList': this.locationList
+        }
+      });        
+    } 
+  
+  }
+
+  
+  getHeaderNameSelector1(): string {
+    switch (this._autocompleteType) {
+      case knownMastersAutocomplete.formula:
+        return knowMastersAutocompleteHeaderName.formula;
+      default:
+        return knowMastersAutocompleteHeaderName.formula;
+    }
+  }
+
+  selectorFormulaSelectionChange(
+    selection: IDisplayLookupDto
+  ): void {
+    if (selection === null || selection === undefined) {
+      this.formValues.products[this.selectedTabIndex].formula = '';
+    } else {
+      const obj = {
+        'id': selection.id,
+        'name': selection.name
+      };
+      this.formValues.products[this.selectedTabIndex].formula = obj; 
+      this.changeDetectorRef.detectChanges();   
+      console.log(this.formValues.products[this.selectedTabIndex]);
+    }
+  }
+
+  filterContractFormulaList() {
+    if (this.formValues.products[this.selectedTabIndex].formula) {
+      const filterValue = this.formValues.products[this.selectedTabIndex].formula.name ? this.formValues.products[this.selectedTabIndex].formula.name.toLowerCase() : this.formValues.products[this.selectedTabIndex].formula.toLowerCase();
+      console.log(filterValue);
+      if (this.contractFormulaList) {
+        return this.contractFormulaList.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0)
+          .slice(0, 10);
+      } else {
+        return [];
+      }
+    } else {
+      return [];
+    }
+  }
+
+  displayFn(value): string {
+    return value && value.name ? value.name : '';
+  }
+
+
+  removeFormula(selectedTabIndex) {
+    this.formValues.products[selectedTabIndex].formula = null;
+  }
+
+  viewFormula(selectedTabIndex) {
+    let formulaId = this.formValues.products[selectedTabIndex].formula ? this.formValues.products[selectedTabIndex].formula.id : null;
+    if (!formulaId) {
+      return;
+    }
     this.spinner.show();
     this.contractService
     .getFormulaId(formulaId)
@@ -792,6 +888,7 @@ export class ProductPricing extends DeliveryAutocompleteComponent
         });
       }
     });
+
   }
 
 
