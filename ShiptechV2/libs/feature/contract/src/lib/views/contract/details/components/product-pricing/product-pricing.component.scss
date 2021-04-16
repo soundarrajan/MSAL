@@ -621,3 +621,11 @@
   height: 25px;
   position: relative;
 }
+
+
+.required-field {
+  border: 1px solid #e73d4a!important;
+  .mat-form-field-label mat-label {
+    color: #e73d4a!important;
+  }
+}

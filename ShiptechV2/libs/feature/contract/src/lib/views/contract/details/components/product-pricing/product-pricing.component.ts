@@ -61,6 +61,7 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { ProductSpecGroupModalComponent } from '../product-spec-group-modal/product-spec-group-modal.component';
 import { OVERLAY_KEYBOARD_DISPATCHER_PROVIDER_FACTORY } from '@angular/cdk/overlay/dispatchers/overlay-keyboard-dispatcher';
 import { CreateNewFormulaModalComponent } from '../create-new-formula-modal/create-new-formula-modal.component';
+import { throws } from 'assert';
 
 
 
@@ -409,6 +410,7 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
 })
 export class ProductPricing extends DeliveryAutocompleteComponent
   implements OnInit{
+  [x: string]: any;
   switchTheme; //false-Light Theme, true- Dark Theme
   formValues: any;
   _entityId: number;
@@ -571,6 +573,8 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     this.formValues = formValues;
     if (this.formValues && this.formValues.products[this.selectedTabIndex]) {
       this.selectedVal = this.formValues.products[this.selectedTabIndex].isFormula ? 'formula' : 'fixed';
+      this.formatAdditionalCostValue();
+      this.formatPrice();
     }
 
   }
@@ -710,6 +714,13 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     this.costTypeList = costTypeList;
   }
 
+  @Input('buttonClicked1') set _setButtonClicked1(buttonClicked1) { 
+    if (!buttonClicked1) {
+      return;
+    } 
+    this.buttonClicked1 = buttonClicked1;
+  }
+
 
 
 
@@ -719,6 +730,9 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   array = [0,1,2,3,4,5,6,7,8,9,10];
   isMenuOpen = true;
   @Input() events: Observable<void>;
+  @Input() eventsSaveButton: Observable<void>;
+  priceFormat: any;
+
 
 
   constructor(
@@ -751,15 +765,16 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     this.baseOrigin = new URL(window.location.href).origin;
     this.autocompleteFormula = knownMastersAutocomplete.formula;
     this.quantityFormat = '1.' + this.tenantService.quantityPrecision + '-' + this.tenantService.quantityPrecision;
+    this.amountFormat = '1.' + this.tenantService.amountPrecision + '-' + this.tenantService.amountPrecision;
+    this.priceFormat = '1.' + this.tenantService.pricePrecision + '-' + this.tenantService.pricePrecision;
+
   }
 
   ngOnInit(){  
     this.entityName = 'Contract';
     this.eventsSubscription = this.events.subscribe((data) => this.setContractForm(data));
     this.getAdditionalCostsComponentTypes();
-
-
-
+    this.eventsSaveButtonSubscription = this.eventsSaveButton.subscribe((data) => this.setRequiredFields(data))
   }
 
   setContractForm(form) {
@@ -767,9 +782,17 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     console.log(this.formValues);
     if (this.formValues && this.formValues.products[this.selectedTabIndex]) {
       this.selectedVal = this.formValues.products[this.selectedTabIndex].isFormula ? 'formula' : 'fixed';
+      this.formatAdditionalCostValue();
+      this.formatPrice();
     }
   }
 
+  
+  setRequiredFields(data) {
+    this.buttonClicked = data;
+    this.changeDetectorRef.detectChanges();
+    console.log(this.buttonClicked);
+  }
 
   public onValChange(val: string) {
     this.selectedVal = val;
@@ -922,12 +945,12 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   }
 
   getAdditionalCostsComponentTypes() {
-    this.spinner.show();
+    //this.spinner.show();
     this.contractService
     .getAdditionalCostsComponentTypes({})
     .pipe(
       finalize(() => {
-        this.spinner.hide();
+        //this.spinner.hide();
       })
     )
     .subscribe((response: any) => {
@@ -935,6 +958,7 @@ export class ProductPricing extends DeliveryAutocompleteComponent
         this.toastr.error(response);
       } else {
         this.additionalCostsComponentTypes = response;
+        this.changeDetectorRef.detectChanges();
       }
     });
   }
@@ -993,6 +1017,98 @@ export class ProductPricing extends DeliveryAutocompleteComponent
         return this.doFiltering(this.additionalCostsComponentTypes, 0, currentCost);
     }
   }
+
+  resetUom(key1, key2) {
+    console.log(this.generalTenantSettings);
+    if (this.formValues.products[key1].additionalCosts[key2].costType.name != 'Unit') {
+        this.formValues.products[key1].additionalCosts[key2].uom = null;
+    } else {
+        this.formValues.products[key1].additionalCosts[key2].uom = this.generalTenantSettings.tenantFormats.uom;
+    }
+  };
+
+  addNewAdditionalCostLine() {
+    if (!this.formValues.products[this.selectedTabIndex].additionalCosts) {
+      this.formValues.products[this.selectedTabIndex].additionalCosts = [];
+    }
+    this.formValues.products[this.selectedTabIndex].additionalCosts.push({'id':0, 'currency': this.generalTenantSettings.tenantFormats.currency})
+
+  }
+
+  removeAdditionalCostLine(key) {
+    if (this.formValues.products[this.selectedTabIndex].additionalCosts.id) {
+      this.formValues.products[this.selectedTabIndex].additionalCosts.isDeleted = true;
+    } else {
+      this.formValues.products[this.selectedTabIndex].additionalCosts.splice(key, 1);
+    }
+  }
+
+  setDefaultCostType(additionalCost) {
+    let defaultCostType;
+    this.additionalCostsComponentTypes.forEach((v, k) => {
+        if (v.id == additionalCost.id) {
+            defaultCostType = v.costType;
+        }
+    });
+    return defaultCostType;
+  }
+
+  setIsAllowingNegativeAmmount(key1, key2) {
+    let additionalCost = this.formValues.products[key1].additionalCosts[key2].additionalCost;
+    let findAdditionalCostComponent = _.find(this.additionalCostsComponentTypes, function(obj) {
+        return obj.id == additionalCost.id;
+    });
+    if (findAdditionalCostComponent) {
+      this.formValues.products[key1].additionalCosts[key2].isAllowingNegativeAmmount = findAdditionalCostComponent.isAllowingNegativeAmmount;
+    }
+  }
+
+  formatAdditionalCostValue() {
+    if (this.formValues.products[this.selectedTabIndex].additionalCosts) {
+      for (let i = 0; i < this.formValues.products[this.selectedTabIndex].additionalCosts.length; i++) {
+        this.formValues.products[this.selectedTabIndex].additionalCosts[i].amount = this.amountFormatValue(this.formValues.products[this.selectedTabIndex].additionalCosts[i].amount);
+      }
+    }
+
+  }
+
+  formatPrice() {
+    if (this.formValues.products[this.selectedTabIndex].price) {
+      this.formValues.products[this.selectedTabIndex].price = this.priceFormatValue(this.formValues.products[this.selectedTabIndex].price);
+    }
+  }
+
+  
+  amountFormatValue(value) {
+    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    let number = parseFloat(plainNumber);
+    if (isNaN(number)) {
+      return null;
+    }
+    if (plainNumber) {
+      if(this.tenantService.quantityPrecision == 0) {
+        return plainNumber;
+      } else {
+        return this._decimalPipe.transform(plainNumber, this.amountFormat);
+      }
+    }
+  }
+
+  priceFormatValue(value) {
+    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    let number = parseFloat(plainNumber);
+    if (isNaN(number)) {
+      return null;
+    }
+    if (plainNumber) {
+      if(this.tenantService.quantityPrecision == 0) {
+        return plainNumber;
+      } else {
+        return this._decimalPipe.transform(plainNumber, this.priceFormat);
+      }
+    }
+  }
+
 
   ngAfterViewInit(): void {
   
