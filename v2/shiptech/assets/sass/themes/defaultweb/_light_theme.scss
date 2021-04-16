@@ -1,9 +1,10 @@
 @import 'smart-operator-variables';
+@import '_dark_theme';
 
 //Font Colours
 $text_title:#333333;
 $text_content:#000000;
-$theme-font:var(--basecolor-l2);
+$theme-font: $basecolor-l2;
 $table_text:#37414F;
 //Base Colours
 $basecolor-l1 :#FFFFFF;
@@ -723,10 +724,10 @@ $white:#FFFFFF;
 					font-weight: 400;
 				}
 				.dot-icon {
-					background-color: var(--medium-grey2);
+					background-color: $medium-grey2;
 				}
 				.clock-icon {
-					color: var(--medium-grey2);
+					color: $medium-grey2;
 				}
 			}
 		}
@@ -1352,7 +1353,7 @@ $white:#FFFFFF;
 			color: $theme-font;
 		}
 		.aggrid-dark-cell {
-			background-color: var(--dark4);
+			background-color: $dark4;
 		}
 		.ag-header-cell-text,
 		.ag-header-group-text {
@@ -1562,7 +1563,7 @@ $white:#FFFFFF;
 					.date {
 						color: $theme-font;
 						.fa-chevron-down {
-							color: var(--darkl4);
+							color: $darkl4;
 						}
 					}
 					.comment {
