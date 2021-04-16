@@ -21,7 +21,6 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope', '$
         };
 
 	    $scope.$on('getVesselSchedules', (evt, value,EnableSingleselect,Page) => {
-            
             ctrl.EnableSingleSelect = EnableSingleselect;
             if(Page == 'NewOrder'){
                 ctrl.isvoyagePortchangeEnabled = true;
@@ -108,12 +107,36 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope', '$
             }
             return '';
         };
-        ctrl.selectedLocationsSingle = function(index){
-        ctrl.selectedLocations = [];
-        ctrl.selectedLocations[index] = true;
+        
+        
+
+        $scope.selectedLocationsSingle = function(index){
+            ctrl.selectedLocationsSingle = [];
+            ctrl.selectedLocationsSingle[index] = true;
+        };
+        ctrl.confirmVesselSchedulesOrderSelection = function() {
+            let selectedLocations = [];
+            angular.forEach(ctrl.selectedLocationsSingle, (value, key) => {
+                if (value) {
+                    // if(ctrl.data[key].destinationVesselVoyageDetailId) {
+                    ctrl.data[key].destinationName = [
+                        ctrl.data[key].destinationLocationCode,
+                        ctrl.data[key].voyageCode,
+                        ctrl.data[key].destinationEtaFormated,
+                        ctrl.data[key].eta,
+                        ctrl.data[key].recentETA,
+                    ].join(' - ');
+                    // }
+                    selectedLocations.push(ctrl.data1[key]);
+                }
+            });
+            ctrl.onVesselSchedulesSelect({
+                locations: selectedLocations
+            });
+            ctrl.selectedLocations = [];
         };
         ctrl.confirmVesselSchedulesSelection = function() {
-            
+           
             let selectedLocations = [];
             angular.forEach(ctrl.selectedLocations, (value, key) => {
                 if (value) {
