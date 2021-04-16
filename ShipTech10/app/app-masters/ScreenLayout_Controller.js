@@ -503,7 +503,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
 		            	$scope.triggerChangeFields('OrderID');
 	            	});
 	            }
-        	}
+            }
 
             if (vm.entity_id != '0') {
             	if (vm.app_id == 'claims' && vm.screen_id == 'claims') {
@@ -778,7 +778,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
 					                    } else {
 					                        $('.edit_form_fields_ComponentType_masters').show();
 					                    }
-				                    }
+                                    }
 
 				                    if (vm.screen_id == 'claims' && vm.app_id == 'claims' && vm.entity_id) {
 				                		$rootScope.reloadClaimPage = true;
@@ -1365,6 +1365,9 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                 if (clc == 'contactplanning_contractlist') {
                     $scope.modal.filters = filter;
                 }
+                if (clc == 'masters_productlist') {
+                    $scope.modal.filters = filter;
+                }
                 if (clc == 'procurement_bunkerableport' || clc == 'procurement_destinationport') {
                 	$scope.modal.filters = [
                         {
@@ -1485,6 +1488,13 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                             Value: 7
                         }
                     ];
+                }
+               
+                if (clc=="masters_productlist" && template=="general") {
+                    if($scope.formValues.tradeBookMappings.length>0){
+                        $scope.modal.filters = $scope.tradeBookfilter;
+                        localStorage.setItem("uniqueModalTableIdentifier", "productsInTradeBookMapping");
+                    }                   
                 }
                 if (filter == 'price_period_filter') {
                     $scope.modal.filters = [

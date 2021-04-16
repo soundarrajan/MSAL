@@ -5585,7 +5585,6 @@ APP_API.factory('$Api_Service', [
 	                    	apiJSON.Payload.PageFilters.Filters.push(v);
                     	});
                     }
-                     ///url='http://localhost:3661/api/masters/products/listMasters'
                     $http.post(url, angular.toJson(apiJSON)).then(
                         (response) => {
                         	 $rootScope.$broadcast('scheduleDashboardTableGetResponse', response.data);
