@@ -47,15 +47,27 @@
               "apps/shiptech/src/web.config"
             ],
             "styles": [
+              "assets/sass/themes/common/base.scss",
+              "assets/sass/themes/defaultweb/smart-operator.scss",
+              "assets/sass/themes/defaultweb/_aggrid.scss",
+              "assets/sass/themes/defaultweb/_dark_theme.scss",
+              "assets/sass/themes/defaultweb/_light_theme.scss",
+              "assets/sass/themes/defaultweb/_smart-operator-mixins.scss",
+              "assets/sass/themes/defaultweb/_smart-operator-utils.scss",
+              "assets/sass/themes/defaultweb/_smart-operator-variables.scss",
               "node_modules/ngx-toastr/toastr.css",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeicons/primeicons.css",
               "node_modules/bootstrap/dist/css/bootstrap-grid.css",
               "node_modules/@ag-grid-community/all-modules/dist/styles/ag-grid.css",
               "node_modules/@ag-grid-community/all-modules/dist/styles/ag-theme-balham.css",
+              "node_modules/@ag-grid-community/all-modules/dist/styles/ag-theme-material.css",
               "node_modules/@fortawesome/fontawesome-free/css/all.css",
               "apps/shiptech/src/styles.scss",
-              "assets/sass/skinning/base-skinning.scss"
+              "assets/sass/skinning/base-skinning.scss",
+              "assets/theme/common/designsystem-v2-theme/v2-component.scss",
+              "assets/theme/common/designsystem-v2-theme/shiptech.scss",
+              "assets/theme/common/designsystem-v2-theme/techoil.scss"
             ],
             "scripts": [],
             "stylePreprocessorOptions": {
@@ -115,7 +127,10 @@
               "apps/shiptech/tsconfig.app.json",
               "apps/shiptech/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!apps/shiptech/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/shiptech/**"
+            ]
           }
         },
         "test": {
@@ -243,7 +258,10 @@
               "libs/core/tsconfig.lib.json",
               "libs/core/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/core/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/core/**"
+            ]
           }
         },
         "test": {
@@ -274,7 +292,10 @@
               "libs/feature/lazy-load-poc/tsconfig.lib.json",
               "libs/feature/lazy-load-poc/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/feature/lazy-load-poc/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/feature/lazy-load-poc/**"
+            ]
           }
         },
         "test": {
@@ -305,7 +326,10 @@
               "libs/feature/invoice/tsconfig.lib.json",
               "libs/feature/invoice/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/feature/invoice/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/feature/invoice/**"
+            ]
           }
         },
         "test": {
@@ -336,7 +360,10 @@
               "libs/feature/ete/tsconfig.lib.json",
               "libs/feature/ete/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/feature/ete/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/feature/ete/**"
+            ]
           }
         },
         "test": {
@@ -353,6 +380,40 @@
           "styleext": "scss"
         }
       }
+    },
+    "smart": {
+      "projectType": "library",
+      "root": "libs/feature/smart",
+      "sourceRoot": "libs/feature/smart/src",
+      "prefix": "shiptech",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/feature/smart/tsconfig.lib.json",
+              "libs/feature/smart/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/feature/smart/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/feature/smart/jest.config.js",
+            "tsConfig": "libs/feature/smart/tsconfig.spec.json",
+            "setupFile": "libs/feature/smart/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
     }
   },
   "cli": {
@@ -360,7 +421,8 @@
       "typescriptMismatch": false,
       "versionMismatch": false
     },
-    "defaultCollection": "@nrwl/angular"
+    "defaultCollection": "@nrwl/angular",
+    "analytics": false
   },
   "schematics": {
     "@nrwl/angular:application": {

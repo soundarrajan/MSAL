@@ -95,6 +95,22 @@ const routes: Routes = [
     loadChildren: () =>
       import('@shiptech/feature/lazy-load-poc').then(m => m.LazyLoadPocModule)
   },
+  {
+    path: '',
+    data: {
+      breadcrumb: 'Smart',
+      breadcrumbUrl: '/#/smart',
+      breadcrumbIcon: 'fa fa-home'
+    },
+    children: [
+      {
+        path: KnownPrimaryRoutes.Smart,
+        canActivate: [AuthenticationGuard],
+        loadChildren: () =>
+          import('@shiptech/feature/smart').then(m => m.SmartModule)
+      }
+    ]
+  },
   { path: '**', redirectTo: '' }
 ];
 

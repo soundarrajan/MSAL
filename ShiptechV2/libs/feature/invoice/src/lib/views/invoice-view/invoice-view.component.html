@@ -1,0 +1,22 @@
+<div class="invoice-main-container">
+    <div id="custom-tabs-v2">
+        <mat-tab-group #tabs (selectedIndexChange)="selectedTab = tabs.selectedIndex" mat-align-tabs="end">
+            <mat-tab *ngFor="let item of tabData" [disabled]="item.disabled">
+                <ng-template mat-tab-label>
+                    <div class="custom-tab-ui"></div>
+                    <span class="custom-label">{{item.name}}</span>
+                </ng-template>
+                <ng-container>
+                    <div *ngIf="item.name=='Details'" class="details"> 
+                        <shiptech-invoice-detail></shiptech-invoice-detail>
+                    </div>
+                    <div *ngIf="item.name=='Related Invoices'" class="custom-tab-container"> Tab container 2</div>
+                    <div *ngIf="item.name=='Documents'" class="custom-tab-container"> Tab container 3</div>
+                    <div *ngIf="item.name=='Email Log'" class="custom-tab-container"> Tab container 4</div>
+                    <div *ngIf="item.name=='Seller Rating'" class="custom-tab-container"> Tab container 5</div>
+                    <div *ngIf="item.name=='Audit Log'" class="custom-tab-container"> Tab container 6</div>
+                </ng-container>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

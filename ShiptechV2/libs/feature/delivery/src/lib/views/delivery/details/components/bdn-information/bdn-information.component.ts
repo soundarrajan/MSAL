@@ -341,7 +341,6 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
       currentFormat = currentFormat.replace(/y/g, 'Y');
       let elem = moment(value, 'YYYY-MM-DDTHH:mm:ss');
       let newVal = moment(elem).format(currentFormat);
-      console.log(newVal);
       if (elem && this.isValid(elem)) {
         return elem;
       }
@@ -435,6 +434,8 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
   statusColorCode: any;
   buttonClicked: any;
   baseOrigin: string;
+  bargeId: any;
+  backgroundColor: string;
 
   @Input() set autocompleteType(value: string) {
     this._autocompleteType = value;
@@ -445,7 +446,7 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
       return;
     } 
     this.statusColorCode = statusColorCode;
-    console.log(this.statusColorCode);
+    this.backgroundColor = this.getContrastYIQ(this.statusColorCode);
   }
   @Input('bargeList') set _setBargeList(bargeList) { 
     if (!bargeList) {
@@ -458,6 +459,9 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
       return;
     } 
     this.formValues = formValues;
+    if (this.formValues.barge) {
+      this.bargeId = this.formValues.barge.id;
+    }
   }
 
   @Input('relatedDeliveries') set _relatedDeliveries(relatedDeliveries) {
@@ -573,13 +577,21 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
 
   }
 
+  getContrastYIQ(hexcolor){
+    if (!hexcolor) { return "black"; }
+      hexcolor = hexcolor.replace("#", "");
+      var r = parseInt(hexcolor.substr(0,2),16);
+      var g = parseInt(hexcolor.substr(2,2), 16);
+      var b = parseInt(hexcolor.substr(4,2),16);
+      var yiq = ((r*299)+(g*587)+(b*114))/1000;
+      return (yiq >= 128) ? 'black' : 'white';
+  }
+
   setRequiredFields(data) {
     this.buttonClicked = data;
-    console.log('check required fields');
   }
 
   compareUomObjects(object1: any, object2: any) {
-    console.log(object1 && object2 && object1.id == object2.id);
     return object1 && object2 && object1.id == object2.id;
   }
 
@@ -589,9 +601,10 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
     if (!form) {
       return;
     }
-    console.log('aici');
-    console.log(form);
     this.formValues = form;
+    if (this.formValues.barge) {
+      this.bargeId = this.formValues.barge.id;
+    }
     this.changeDetectorRef.detectChanges();
   }
 
@@ -623,7 +636,6 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
 
   async getBargeList() {
     this.bargeList$ =  await this.legacyLookupsDatabase.getBargeTable();
-    console.log(this.bargeList$);
   }
 
   
@@ -644,7 +656,6 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
     //       map(value => typeof value === 'string' ? value : value.name),
     //       map(name => name ? this._filter(name) : this.options.slice(0, 10))
     // ); 
-    console.log(this.filteredOptions);
   }
 
   onPageChange(page: number): void {
@@ -667,14 +678,12 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
   }
 
   public filterOrderNumberList() {
-    console.log(this.formValues);
     if (this.formValues.order) {
       const filterValue = this.formValues.order.name ? this.formValues.order.name : this.formValues.order;
       if (this.options) {
         const list =  this.options.filter((item: any) => {
             return item.name.toLowerCase().includes(filterValue.toLowerCase());
         }).splice(0,10);
-        console.log(list);
         return list;
       } else {
         return [];
@@ -693,7 +702,6 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
       const list =  this.bargeList$.filter((item: any) => {
         return item.name.toLowerCase().includes(filterValue.toLowerCase());
       }).splice(0,10);
-      console.log(list);
       return list;
     } else {
       return [];
@@ -722,7 +730,6 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
       }
       this.getRelatedDeliveries(orderId);
       this.getDeliveryOrderSummary(orderId);
-      console.log(this.formValues);
       this.onOrderNumberChanged.emit(true);
     }
   }
@@ -799,7 +806,6 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
     )
     .subscribe((response: any) => {
         if (typeof response == 'string') {
-          console.log('eroare');
           this.toastr.error('An error has occurred!');
         } else {
           response.forEach((val, key) => {
@@ -835,7 +841,6 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
       if (typeof response == 'string') {
         this.toastr.error('An error has occurred!');
       } else {
-        console.log(this._entityId);
         if (typeof this.formValues.temp == 'undefined') {
           this.formValues.temp = {};
         }
@@ -947,7 +952,6 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
       } else if (field == 'bargeAlongside') {
         this.isBargeAlongsideDateInvalid = false;
       }
-      console.log(beValue);
     } else {
       if (field == 'deliveryDate') {
         this.isDeliveryDateInvalid = true;
@@ -975,5 +979,14 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
 
   getRelatedDeliveryLink(deliveryId) {
     return `${this.baseOrigin}/v2/delivery/delivery/${deliveryId}/details`;
+  }
+
+  setBarge(value) {
+    let findBarge = _.find(this.bargeList, function(object){
+      return object.id == value;
+    });
+    if (findBarge != -1) {
+      this.formValues.barge = findBarge;
+    }
   }
 }

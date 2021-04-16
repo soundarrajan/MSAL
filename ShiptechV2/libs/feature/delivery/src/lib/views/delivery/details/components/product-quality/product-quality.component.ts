@@ -212,8 +212,6 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
     });
     this.entityName = 'Delivery';
     this.eventsSubscription = this.events.subscribe((data) => this.setDeliveryForm(data));
-    console.log('index');
-    console.log(this.deliveryProductIndex);
     if (this.formValues.deliveryProducts[this.deliveryProductIndex] && !this.formValues.deliveryProducts[this.deliveryProductIndex].qualityHeader) {
       this.formValues.deliveryProducts[this.deliveryProductIndex].qualityHeader = {};
       if (!this.formValues.deliveryProducts[this.deliveryProductIndex].qualityHeader.netSpecificEnergyUom) {
@@ -233,22 +231,18 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
     this.raiseClaimInfo = {};
     this.raiseClaimInfo.allSpecParams = specParams;
     this.raiseClaimInfo.productId = prodId;
-    console.log(this.raiseClaimInfo);
   }
 
   setDeliveryForm(form){
     if (!form) {
       return;
     }
-    console.log('aici');
     this.formValues = form;
-    console.log(this.formValues);
     //this.changeDetectorRef.detectChanges();
   }
 
   async getQualityMatchList() {
     this.qualityMatchList = await this.legacyLookupsDatabase.getQualityMatchList();
-    console.log(this.qualityMatchList);
   }
 
   ngAfterViewInit() {
@@ -285,7 +279,6 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
       if (field == 'analysedOnDate') {
         this.isAnalysedOnDateInvalid = false;
       }
-      console.log(beValue);
     } else {
       if (field == 'analysedOnDate') {
         this.isAnalysedOnDateInvalid = true;
@@ -318,7 +311,6 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
 
 
   sendLabsTemplateEmail(prodId) {
-    console.log(this.entityId);
     let data = {
       deliveryId: parseInt(this.entityId),
       deliveryProductId: prodId
@@ -339,6 +331,20 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
          this.toastr.success('Email Template Sent');
       }
     });
+  }
+
+  // Only Number
+  keyPressNumber(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (inp == '.' || inp == ',') {
+      return true;
+    }
+    if (/^[-,+]*\d{1,6}(,\d{3})*(\.\d*)?$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
   }
   
 }
