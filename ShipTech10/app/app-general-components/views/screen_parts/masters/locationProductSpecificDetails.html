@@ -31,8 +31,8 @@
 					<span class="hide">
 						<input ng-model="formValues.locationProducts[$index].conversionFactors">
 					</span>
-					<div class="input-group form_input" tooltip tooltiptrigger="hover" ng-required="formValues.locationProducts[$index].productType?true:false" data-original-title="{{ getProductTooltipByProductId(formValues.locationProducts[$index].product.id) }}">
-						<input  decode-input-format ng-model="formValues.locationProducts[$index].product" uib-typeahead="item as item.name for item in options.Product | typeaheadCustomFilter:$viewValue:'name' "
+					<div class="input-group form_input" tooltip tooltiptrigger="hover"  data-original-title="{{ getProductTooltipByProductId(formValues.locationProducts[$index].product.id) }}">
+						<input  decode-input-format ng-model="formValues.locationProducts[$index].product" ng-required="formValues.locationProducts[$index].productType?true:false" uib-typeahead="item as item.name for item in options.Product | typeaheadCustomFilter:$viewValue:'name' "
 							class="form-control"  typeahead-on-select="addLocationProductToConversion($index, false ,true)" typeahead-show-hint="true" typeahead-min-length="1" typeahead-limit="5" typeahead-append-to-body="true" typeahead-wait-ms="100" name="lowestGradeAvailable_{{ key }}" autocomplete="off" 					
 						/>
 						<span class="input-group-addon" ng-click="triggerModal('general', 'masters_productlist', 'Product' , 'formValues.locationProducts.'+key+'.product')" ng-init="modal = false">
