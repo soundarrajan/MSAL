@@ -1,11 +1,7 @@
-﻿commit 2b2cc9abb058bc0c18b9306a8656c9b479f5fae5
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Thu Apr 15 19:19:34 2021 +0000
+﻿commit 1e7ec9ab6cc058ce0c35a83591919ae8df248bee
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Fri Apr 16 07:21:50 2021 +0000
 
-    Merged PR 9916: Style updates for dark and light theme
-    
-    Style updates for dark and light theme
-    
-    Related work items: #31317
+    Merged PR 9917: Added contract in v2
 
 branch: master

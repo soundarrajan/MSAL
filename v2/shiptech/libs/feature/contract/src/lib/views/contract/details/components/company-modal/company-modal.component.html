@@ -1,0 +1,26 @@
+<div class="container-modal">
+  <div class="col-md-12 header-container-company">
+    <div class="select-company-container col-md-10">
+      <span class="search-company-lookup">
+      </span>
+      <input matInput 
+            placeholder="Search all and select a product"
+            class="search-company-input"
+            autocomplete="off">
+    </div>
+    <div class="col-md-2">
+        <img  alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
+    </div>
+  </div>
+  <div class="col-md-12 row company-container-header">
+    Company Name
+  </div>
+  <mat-radio-group
+    class="company-container"
+    [(ngModel)]="selectedCompany">
+    <mat-radio-button class="company-container-radio-button" *ngFor="let company of companyList" [value]="company">
+      {{company.name}}
+    </mat-radio-button>
+  </mat-radio-group>
+</div>
+

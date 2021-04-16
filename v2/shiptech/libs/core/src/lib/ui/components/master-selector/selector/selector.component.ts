@@ -26,6 +26,11 @@ import { throwError } from 'rxjs';
 import { OrderListSelectorGridViewModel } from '../view-models/order-model/order-list-selector-grid.view-model';
 import { ProductListSelectorGridViewModel } from '../view-models/product-model/product-list-selector-grid.view-model';
 import { PhysicalSupplierListSelectorGridViewModel } from '../view-models/physical-supplier-model/physical-supplier-list-selector-grid.view-model';
+import { SellerListSelectorGridViewModel } from '../view-models/seller-model/seller-list-selector-grid.view-model';
+import { CompanyListSelectorGridViewModel } from '../view-models/company-model/company-list-selector-grid.view-model';
+import { SystemInstrumentListSelectorGridViewModel } from '../view-models/system-instrument-model/system-instrument-list-selector-grid.view-model';
+import { CurrencyListSelectorGridViewModel } from '../view-models/currency-model/currency-list-selector-grid.view-model';
+import { FormulaListSelectorGridViewModel } from '../view-models/formula-model/formula-list-selector-grid.view-model';
 
 @Component({
   selector: 'shiptech-shared-master-selector',
@@ -43,7 +48,12 @@ import { PhysicalSupplierListSelectorGridViewModel } from '../view-models/physic
     VesselPortCallsMasterSelectorGridViewModel,
     OrderListSelectorGridViewModel,
     ProductListSelectorGridViewModel,
-    PhysicalSupplierListSelectorGridViewModel
+    PhysicalSupplierListSelectorGridViewModel,
+    SellerListSelectorGridViewModel,
+    CompanyListSelectorGridViewModel,
+    SystemInstrumentListSelectorGridViewModel,
+    CurrencyListSelectorGridViewModel,
+    FormulaListSelectorGridViewModel
   ],
   exportAs: 'sharedMasterSelector',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -148,6 +158,46 @@ export class SelectorComponent
       case knownMastersAutocomplete.physicalSupplier: {
         this.gridViewModel = this.injector.get(
           PhysicalSupplierListSelectorGridViewModel
+        );
+        this.gridViewModel.entityId = this.entityId;
+        this.gridViewModel.entityName = this.entityName;
+        break;
+      }
+      case knownMastersAutocomplete.formula: {
+        this.gridViewModel = this.injector.get(
+          FormulaListSelectorGridViewModel
+        );
+        this.gridViewModel.entityId = this.entityId;
+        this.gridViewModel.entityName = this.entityName;
+        break;
+      }
+      case knownMastersAutocomplete.systemInstrument: {
+        this.gridViewModel = this.injector.get(
+          SystemInstrumentListSelectorGridViewModel
+        );
+        this.gridViewModel.entityId = this.entityId;
+        this.gridViewModel.entityName = this.entityName;
+        break;
+      }
+      case knownMastersAutocomplete.currency: {
+        this.gridViewModel = this.injector.get(
+          CurrencyListSelectorGridViewModel
+        );
+        this.gridViewModel.entityId = this.entityId;
+        this.gridViewModel.entityName = this.entityName;
+        break;
+      }
+      case knownMastersAutocomplete.sellers: {
+        this.gridViewModel = this.injector.get(
+          SellerListSelectorGridViewModel
+        );
+        this.gridViewModel.entityId = this.entityId;
+        this.gridViewModel.entityName = this.entityName;
+        break;
+      }
+      case knownMastersAutocomplete.company: {
+        this.gridViewModel = this.injector.get(
+          CompanyListSelectorGridViewModel
         );
         this.gridViewModel.entityId = this.entityId;
         this.gridViewModel.entityName = this.entityName;
