@@ -337,7 +337,6 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
       currentFormat = currentFormat.replace(/y/g, 'Y');
       let elem = moment(value, 'YYYY-MM-DDTHH:mm:ss');
       let newVal = moment(elem).format(currentFormat);
-      console.log(newVal);
       if (elem && this.isValid(elem)) {
         return elem;
       }
@@ -532,8 +531,6 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
     if (!form) {
       return;
     }
-    console.log('aici');
-    console.log(form);
     this.formValues = form;
     this.deliveryFormSubject.next(form);
     this.changeDetectorRef.detectChanges();
@@ -555,7 +552,6 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
       } else if (field == 'bargePumpingRateEndTime') {
         this.isBargePumpingRateEndTimeInvalid = false;
       }
-      console.log(beValue);
     } else {
       if (field == 'bargePumpingRateStartTime') {
         this.isBargePumpingRateStartTimeInvalid = true;
@@ -673,8 +669,6 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
         this.formValues.pumpingRateUom = val;
       }
     });
-    console.log(this.formValues.pumpingRate);
-    console.log(this.formValues.pumpingRateUom);
   };
 
 
@@ -685,7 +679,8 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
     if (!this.formValues.sampleSources) {
       this.formValues.sampleSources = [];
     }
-    this.formValues.sampleSources.push({'id':0});
+    let firstSampleSourceOption = this.simpleSource[0];
+    this.formValues.sampleSources.push({'id':0, 'sampleSource': firstSampleSourceOption});
   }
 
 
@@ -718,8 +713,6 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
   ngAfterViewInit(): void {
   
   }
-
- 
 
   
 }

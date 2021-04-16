@@ -5,6 +5,7 @@ import { InvoiceCompleteListComponent } from './views/invoice-complete-list/invo
 import { MainInvoiceComponent } from './views/main-invoice.component';
 import { InvoiceListComponent } from './views/invoice-list/invoice-list.component';
 import { KnownInvoiceRoutes } from './known-invoice.routes';
+import { InvoiceViewComponent } from './views/invoice-view/invoice-view.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,11 @@ const routes: Routes = [
         path: KnownInvoiceRoutes.InvoiceList,
         component: InvoiceListComponent,
         data: { title: 'INVOICES LIST', breadcrumb: 'Invoices List' }
+      },
+      {
+        path: KnownInvoiceRoutes.InvoiceView,
+        component: InvoiceViewComponent,
+        data: { title: 'VIEW INVOICES', breadcrumb: 'View Invoice' }
       }
     ]
   }

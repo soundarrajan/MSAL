@@ -94,7 +94,6 @@ export class SplitDeliveryModalComponent implements OnInit {
       this.quantityFormat = '1.' + this.tenantService.quantityPrecision + '-' + this.tenantService.quantityPrecision;
       this.formValues = data.formValues;
       this.uoms = data.uoms;
-      console.log(this.formValues);
       this.initSplitModalContent();
     }
 
@@ -149,12 +148,10 @@ export class SplitDeliveryModalComponent implements OnInit {
       splitLimits.push(pair);
   });
   this.splitDeliveryInLimit = [];
-  console.log(splitLimits);
   this.deliveryService
     .getSplitDeliveryLimits(splitLimits)
     .pipe()
     .subscribe((response: any) => {
-      console.log(response);
       this.formValues.splitDelivery.items.forEach((splitProd, key) => {
         response.forEach((respProd, _) => {
             if(respProd.orderProductId == splitProd.orderProductId) {
@@ -165,7 +162,6 @@ export class SplitDeliveryModalComponent implements OnInit {
         });
       });
       this.changeDetectorRef.detectChanges();
-      console.log(this.splitDeliveryInLimit);
     });
 
   }
@@ -197,7 +193,6 @@ export class SplitDeliveryModalComponent implements OnInit {
 
 
   disabledSplitDelivery(splitDeliveryInLimit) {
-    console.log(splitDeliveryInLimit);
     if(splitDeliveryInLimit.indexOf(false) < 0) {
         return false;
     }
@@ -211,7 +206,6 @@ export class SplitDeliveryModalComponent implements OnInit {
 
 
   changeGender(e) {
-    console.log(e.target.value);
   }
 
   splitDelivery() {
@@ -238,9 +232,21 @@ export class SplitDeliveryModalComponent implements OnInit {
       KnownDeliverylRoutes.DeliveryDetails
     ])
     .then(() => {
-      console.log(this.formValues);
-      console.log('aici');
     });
+  }
+
+  // Only Number
+  keyPressNumber(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (inp == '.' || inp == ',') {
+      return true;
+    }
+    if (/^[-,+]*\d{1,6}(,\d{3})*(\.\d*)?$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
   }
   
 }

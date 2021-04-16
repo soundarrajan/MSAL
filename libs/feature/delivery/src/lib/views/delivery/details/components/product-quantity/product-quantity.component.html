@@ -76,7 +76,7 @@
                                     matInput 
                                     [disabled]="formValues.deliveryStatus.name == 'Verified'"
                                     quantityFormat
-                                    myNumberOnly
+                                    (keypress)="keyPressNumber($event)"
                                     autocomplete="off"
                                     name="Product_{{ deliveryProductIndex }}_{{ quantityParameter.parameter.name}}_BDN">
                             </mat-form-field>
@@ -110,13 +110,9 @@
         </tbody>
     </table>
 </div>
-<div class="col-md-12 quantity-comments-container" *ngIf="formValues.deliveryProducts[deliveryProductIndex].quantityHeader"
-         [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-    <mat-form-field class="custom-form-field-comments" appearance="outline">
-        <mat-label>Comments</mat-label>
-        <textarea  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].quantityHeader.comments"
-                    matInput 
-                    [disabled]="formValues.deliveryStatus.name == 'Verified'"
-                    autocomplete="off"></textarea>
-    </mat-form-field>
+<div style="margin-top: 10px" class="col-md-12 productQuantityReconciliationComments"  *ngIf="formValues.deliveryProducts[deliveryProductIndex].quantityHeader">
+    <label>Comments</label>
+    <textarea  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].quantityHeader.comments" 
+        autocomplete="off"
+        [disabled]="formValues.deliveryStatus.name == 'Verified'"></textarea>
 </div>

@@ -32,6 +32,7 @@ import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookup
 import { BdnInformationApiService } from '@shiptech/core/delivery-api/bdn-information/bdn-information-api.service';
 import { OrderListColumns, OrderListColumnServerKeys, OrderListColumnsLabels } from './order-list.columns';
 import { IOrderListDto } from '@shiptech/core/delivery-api/request-reponse-dtos/order-list.dtos';
+import { IServerGridPageFilters } from '@shiptech/core/grid/server-grid/server-grid-request-response';
 
 
 
@@ -221,17 +222,30 @@ export class OrderListSelectorGridViewModel extends BaseGridViewModel {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    const filters: ServerQueryFilter[] = [
-      {
-        columnName: 'ReferenceNo',
-        value: this.entityId.toString(10)
-      },
-      {
-        columnName: 'TransactionTypeId',
-        value: TRANSACTION_TYPE_ID.toString(10)
-      },
-
-    ];
+    const pageFilters =  {
+      "Filters": [
+        {
+            "columnValue": "OrderStatus_DisplayName",
+            "ColumnType": "Text",
+            "isComputedColumn": false,
+            "ConditionValue": "=",
+            "Values": [
+                "Confirmed"
+            ],
+            "FilterOperator": 0
+        },
+        {
+            "columnValue": "OrderStatus_DisplayName",
+            "ColumnType": "Text",
+            "isComputedColumn": false,
+            "ConditionValue": "=",
+            "Values": [
+                "PartiallyDelivered"
+            ],
+            "FilterOperator": 2
+        }
+      ]
+   };
     this.bdnInformationApiService
       .getOrderList({
         ...transformLocalToServeGridInfo(
@@ -240,7 +254,7 @@ export class OrderListSelectorGridViewModel extends BaseGridViewModel {
           OrderListColumnServerKeys,
           this.searchText
         ),
-        filters
+        pageFilters
       })
       .pipe(takeUntil(this.destroy$))
       .subscribe(
