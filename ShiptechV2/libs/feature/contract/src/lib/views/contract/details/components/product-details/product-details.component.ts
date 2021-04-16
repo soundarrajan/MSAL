@@ -1182,6 +1182,79 @@ export class ProductDetails extends DeliveryAutocompleteComponent
 
   }
 
+  saveConversionFactors(conversionFactors, conversionFactorsDropdown) {
+    if (conversionFactorsDropdown && conversionFactors.contractConversionFactorOptions.id == 3) {
+      let payload = { Payload: conversionFactors.product.id };
+      this.spinner.show();
+      this.contractService
+      .getProdDefaultConversionFactors(payload)
+      .pipe(
+        finalize(() => {
+        })
+      )
+      .subscribe((response: any) => {
+        if (typeof response == 'string') {
+          this.toastr.error(response);
+          this.spinner.hide();
+        } else {
+          console.log(response);
+          if (response) {
+            conversionFactors.value = response.value;
+            conversionFactors.massUom = response.massUom;
+            conversionFactors.volumeUom = response.volumeUom;
+            if (conversionFactors.contractProductId) {
+              let conversionFactorsList = [];
+              conversionFactorsList.push(conversionFactors);
+              payload = { Payload: conversionFactorsList };
+              this.spinner.show();
+              this.contractService
+                .saveConversionFactorsForContractProduct(payload)
+                .pipe(
+                  finalize(() => {
+                    this.spinner.hide();
+                  })
+                )
+                .subscribe((response: any) => {
+                  if (typeof response == 'string') {
+                    this.toastr.error(response);
+                  } else if (response) {
+                    let res = response[0];
+                    this.formValues.products[this.selectedTabIndex].convFactorMassUom = res.massUom;
+                    this.formValues.products[this.selectedTabIndex].convFactorValue = res.value;
+                    this.formValues.products[this.selectedTabIndex].convFactorVolumeUom = res.volumeUom;
+                  }
+                });
+            }
+          }
+        }
+      });
+    } else {
+      if (conversionFactors.contractProductId) {
+        let conversionFactorsList = [];
+        conversionFactorsList.push(conversionFactors);
+        let payload = { Payload: conversionFactorsList };
+        this.spinner.show();
+        this.contractService
+          .saveConversionFactorsForContractProduct(payload)
+          .pipe(
+            finalize(() => {
+              this.spinner.hide();
+            })
+          )
+          .subscribe((response: any) => {
+            if (typeof response == 'string') {
+              this.toastr.error(response);
+            } else if (response) {
+              let res = response[0];
+              this.formValues.products[this.selectedTabIndex].convFactorMassUom = res.massUom;
+              this.formValues.products[this.selectedTabIndex].convFactorValue = res.value;
+              this.formValues.products[this.selectedTabIndex].convFactorVolumeUom = res.volumeUom;
+            }
+          });
+    }
+    }
+  }
+
 
 
   originalOrder = (a: KeyValue<number, any>, b: KeyValue<number, any>): number => {
