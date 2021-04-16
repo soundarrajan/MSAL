@@ -18,15 +18,15 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   public gridOptions_data: GridOptions;
   public gridOptions_ac: GridOptions;
   public chipData = [
-    { Title: 'Title 1', Data: 'Data 1234' },
-    { Title: 'Title 2', Data: 'Data 1234' },
-    { Title: 'Title 3', Data: 'Data 1234' },
-    { Title: 'Title 4', Data: 'Data 1234' },
-    { Title: 'Title 5', Data: 'Data 1234' },
-    { Title: 'Title 6', Data: 'Data 1234' },
-    { Title: 'Title 7', Data: 'Data 1234' },
-    { Title: 'Title 8', Data: 'Data 1234' },
-    { Title: 'Title 9', Data: 'Data 1234' }
+    {Title:'Invoice No', Data:''},
+    {Title:'Status', Data:'Draft'},
+    {Title:'Invoice Total', Data:''},
+    {Title:'Estimated Total', Data:'33,898.00 USD'},
+    {Title:'Total Difference', Data:'-33.898.00 USD'},
+    {Title:'Provisional Inv No.', Data:''},
+    {Title:'Provisional Total', Data:''},
+    {Title:'Deductions', Data:'USD'},
+    {Title:'Net Payable', Data:''}
   ]
   public orderDetails = {
     contents: [
