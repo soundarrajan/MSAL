@@ -7,20 +7,24 @@
   </div>
   <div class="col-md-12 no-padding d-flex" style="margin-top: 10px;">
     <div class="col-md-4 no-padding">
-      <div id="custom-btn-toggle-v2">
+      {{formValues.products[selectedTabIndex].isFormula}}
+      {{formValues.products[selectedTabIndex].fixedPrice}}
+      <div id="custom-contract-btn-toggle-v2">
         <mat-button-toggle-group  #group="matButtonToggleGroup" [value]="selectedVal" (change)="onValChange(group.value)" >
-          <mat-button-toggle value="formula">
+          <mat-button-toggle value="formula" (click)="formValues.products[selectedTabIndex].isFormula = true;
+            formValues.products[selectedTabIndex].fixedPrice = false;">
             <span *ngIf="selectedVal == 'formula'" class="toggle-icon"></span> 
             Formula based
           </mat-button-toggle>
-          <mat-button-toggle value="fixed">
+          <mat-button-toggle value="fixed" (click)="formValues.products[selectedTabIndex].isFormula = false;
+          formValues.products[selectedTabIndex].fixedPrice = true;">
             <span  *ngIf="selectedVal == 'fixed'" class="toggle-icon"></span> 
             Fixed
           </mat-button-toggle>
         </mat-button-toggle-group>
       </div>
     </div>
-    <div class="contract-details-info col-md-8 no-padding" style="text-align: right;">
+    <div *ngIf="formValues.products[selectedTabIndex].isFormula" class="contract-details-info col-md-8 no-padding" style="text-align: right;">
       <span>
         <a *ngIf="!formValues.products[selectedTabIndex].formula" class="create-new-formula-icon" (click)="createNewFormulaPopup(selectedTabIndex)"></a>
       </span>
@@ -31,7 +35,50 @@
       </span>
     </div>
   </div>
-  <div class="col-md-12 no-padding d-flex" style="margin-top: 10px;" *ngIf="formValues.products[selectedTabIndex].formula">
+  <div *ngIf="formValues.products[selectedTabIndex].fixedPrice" class="col-md-12 no-padding d-flex" style="margin-top: 10px;">
+    <div class="custom-form-field product-details" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+      <mat-form-field class="without-search" appearance="legacy">
+        <mat-label>Price</mat-label>
+        <input  
+            [(ngModel)]="formValues.products[selectedTabIndex].price"
+            matInput 
+            autocomplete="off"
+            placeholder="Price"
+            priceFormat>
+      </mat-form-field>
+    </div>
+    <div class="custom-form-field product-details" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+      <mat-form-field class="without-search" appearance="legacy">
+        <mat-label>Currency</mat-label>
+        <mat-select 
+            [(ngModel)]="formValues.products[selectedTabIndex].currency"
+            placeholder="Currency"
+            [disableOptionCentering]="true"
+            panelClass="general-information-select-container"
+            [compareWith]="compareUomObjects">
+            <mat-option *ngFor="let option of currencyList" [value]="option">
+              {{option.name}}
+          </mat-option>
+      </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="custom-form-field product-details" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+      <mat-form-field class="without-search" appearance="legacy">
+        <mat-label>Uom</mat-label>
+        <mat-select 
+            [(ngModel)]="formValues.products[selectedTabIndex].priceUom"
+            placeholder="Uom"
+            [disableOptionCentering]="true"
+            panelClass="general-information-select-container"
+            [compareWith]="compareUomObjects">
+            <mat-option *ngFor="let option of uomList" [value]="option">
+              {{option.name}}
+          </mat-option>
+      </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div  *ngIf="formValues.products[selectedTabIndex].isFormula && formValues.products[selectedTabIndex].formula" class="col-md-12 no-padding d-flex" style="margin-top: 10px;" >
     <div class="formula-container col-md-12 no-padding">
       <div class="formula-header col-md-12">
          Formula Name
@@ -59,7 +106,7 @@
       </div>
     </div>
   </div>
-  <div class="col-md-12 no-padding d-flex" style="margin-top: 10px;">
+  <div  *ngIf="formValues.products[selectedTabIndex].isFormula" class="col-md-12 no-padding d-flex" style="margin-top: 10px;">
     <div class="custom-form-field product-details" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}" style="width: 100% !important; margin: 0px  !important;">
       <div class="d-flex">
           <mat-form-field class="with-search" appearance="legacy">
@@ -69,7 +116,8 @@
                       matInput 
                       [(ngModel)]="formValues.products[selectedTabIndex].formula"
                       [matAutocomplete]="auto1"
-                      placeholder="Type formula name">
+                      placeholder="Type formula name"
+                      >
               <mat-autocomplete #auto1="matAutocomplete" 
                                   class="darkPanelAuto"
                                   [displayWith]="displayFn">
@@ -105,7 +153,7 @@
       <thead>
         <tr>
           <td class="padding" style="width: 30px;">
-            <a class="add-icon"></a>
+            <a class="add-icon" (click)="addNewAdditionalCostLine()"></a>
           </td>
           <td class="padding" style="width:15%">
             <b>Item name</b>
@@ -134,13 +182,19 @@
           <ng-container  *ngFor="let additionalCost of formValues.products[selectedTabIndex].additionalCosts | keyvalue : originalOrder">
             <tr *ngIf="!additionalCost.value.isDeleted">
               <td class="padding" style="padding-left: 0px  !important; padding-right: 0px  !important;">
-                <a class="remove-icon" style="margin-left: 10px;"></a>
+                <a class="remove-icon" style="margin-left: 10px;" (click)="removeAdditionalCostLine(additionalCost.key)"></a>
               </td>
               <td  style="width:15%">
                 <div class="custom-form-field conversion-factor-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                  <mat-form-field class="without-search conversion-factor-dropdown-component" appearance="legacy">
+                  <mat-form-field name="Item Name" 
+                      class="without-search conversion-factor-dropdown-component " 
+                      [ngClass]="{'required-field': (buttonClicked && !additionalCost.value.additionalCost)}"
+                      appearance="legacy">
                     <mat-select 
                             [(ngModel)]="additionalCost.value.additionalCost"
+                            (selectionChange)="additionalCost.value.costType = setDefaultCostType(additionalCost.value.additionalCost); 
+                              resetUom(selectedTabIndex, additionalCost.key);
+                              setIsAllowingNegativeAmmount(selectedTabIndex, additionalCost.key)"
                             [disableOptionCentering]="true"
                             panelClass="general-information-select-container"
                             [compareWith]="compareUomObjects">
@@ -153,20 +207,86 @@
               </td> 
               <td  style="width:15%">
                 <div class="custom-form-field conversion-factor-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                  <mat-form-field class="without-search conversion-factor-dropdown-component" appearance="legacy">
+                  <mat-form-field class="without-search conversion-factor-dropdown-component" 
+                    appearance="legacy"
+                    [ngClass]="{'required-field': (buttonClicked && !additionalCost.value.costType)}">
                     <mat-select 
                             [(ngModel)]="additionalCost.value.costType"
+                            (selectionChange)="resetUom(selectedTabIndex, additionalCost.key)"
                             [disableOptionCentering]="true"
                             panelClass="general-information-select-container"
                             [compareWith]="compareUomObjects">
-                        <mat-option *ngFor="let option of filterCostTypesByAdditionalCost(additionalCost.value.additionalCost.id, 0)" [value]="option">
+                        <mat-option *ngFor="let option of filterCostTypesByAdditionalCost(additionalCost.value.additionalCost ? additionalCost.value.additionalCost.id : 0, 0)" [value]="option">
                             {{option.name}}
                         </mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>
               </td> 
-             
+              <td style="width:15%">
+                <div class="custom-form-field conversion-factor-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+                  <mat-form-field class="without-search" 
+                    appearance="legacy"
+                    [ngClass]="{'required-field': (buttonClicked && !additionalCost.value.amount)}">
+                    <input  
+                        [(ngModel)]="additionalCost.value.amount"
+                        matInput 
+                        amountFormat
+                        autocomplete="off">
+                  </mat-form-field>
+                </div>
+              </td>
+              <td  style="width:15%">
+                <div class="custom-form-field conversion-factor-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+                  <mat-form-field class="without-search conversion-factor-dropdown-component" appearance="legacy">
+                    <mat-select 
+                            [(ngModel)]="additionalCost.value.uom"
+                            [disableOptionCentering]="true"
+                            panelClass="general-information-select-container"
+                            [compareWith]="compareUomObjects"
+                            [disabled]="additionalCost.value.costType && additionalCost.value.costType.name != 'Unit'">
+                        <mat-option *ngFor="let option of uomList" [value]="option">
+                            {{option.name}}
+                        </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </td> 
+              <td style="width:15%">
+                <div class="custom-form-field conversion-factor-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+                  <mat-form-field class="without-search" appearance="legacy">
+                    <input  
+                        [(ngModel)]="additionalCost.value.extras"
+                        matInput 
+                        autocomplete="off">
+                  </mat-form-field>
+                </div>
+              </td>
+              <td  style="width:15%">
+                <div class="custom-form-field conversion-factor-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+                  <mat-form-field class="without-search conversion-factor-dropdown-component" appearance="legacy">
+                    <mat-select 
+                            [(ngModel)]="additionalCost.value.currency"
+                            [disableOptionCentering]="true"
+                            panelClass="general-information-select-container"
+                            [compareWith]="compareUomObjects">
+                        <mat-option *ngFor="let option of currencyList" [value]="option">
+                            {{option.name}}
+                        </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </td> 
+              <td style="width:15%">
+                <div class="custom-form-field conversion-factor-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+                  <mat-form-field class="without-search" appearance="legacy">
+                    <input  
+                        [(ngModel)]="additionalCost.value.comments"
+                        matInput 
+                        autocomplete="off">
+                  </mat-form-field>
+                </div>
+              </td>
             </tr>
           </ng-container>
       </tbody>

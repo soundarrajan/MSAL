@@ -4,8 +4,13 @@
   <div class="col-6">
     <div style="float:right">
       <button  class="ui-button-info mr-1 btn-i-blue-color" label="Save"
-              pButton
-              type="button"></button>
+            pButton
+            type="button"
+            (click)="saveContract()"></button>
+      <button  class="ui-button-info mr-1 btn-i-blue-color" label="Confirm"
+          pButton
+          type="button"
+          (click)="confirmContract()"></button>
       <button mat-icon-button [matMenuTriggerFor]="menu" >
         <mat-icon>more_vert</mat-icon>
       </button>
@@ -101,6 +106,8 @@
                 [locationList]="locationList"
                 [additionalCostList]="additionalCostList"
                 [costTypeList]="costTypeList"
+                [buttonClicked1]="buttonClicked"
+                [eventsSaveButton]="eventsSubject2.asObservable()"
                 class="col-12"
                 style="padding-left: 0px; padding-right: 0px;">
           </shiptech-contract-product>  

@@ -483,6 +483,9 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   contractFormulaList: any;
   additionalCostList: any;
   costTypeList: any;
+  eventsSaveButtonSubscription: any;
+  buttonClicked: any;
+  buttonClicked1: any;
 
 
   get entityId(): number {
@@ -739,13 +742,23 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     this.costTypeList = costTypeList;
   }
 
+  @Input('buttonClicked1') set _setButtonClicked1(buttonClicked1) { 
+    if (!buttonClicked1) {
+      return;
+    } 
+    this.buttonClicked1 = buttonClicked1;
+  }
+
+
+  
 
 
   index = 0;
   expandLocationPopUp = false;
   array = [0,1,2,3,4,5,6,7,8,9,10];
   isMenuOpen = true;
-
+  @Input() eventsSaveButton: Observable<void>;
+  eventsSubject2: Subject<any> = new Subject<any>();
 
   constructor(
     public gridViewModel: OrderListGridViewModel,
@@ -781,8 +794,16 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   ngOnInit(){  
     this.entityName = 'Contract';
     this.getContractFormulaList1();
+    this.eventsSaveButtonSubscription = this.eventsSaveButton.subscribe((data) => this.setRequiredFields(data))
 
 
+
+  }
+
+  setRequiredFields(data) {
+    this.buttonClicked = data;
+    console.log(this.buttonClicked);
+    this.eventsSubject2.next(this.buttonClicked);
   }
 
 
@@ -825,7 +846,9 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       dealDate: null,
       physicalSuppliers: [],
       allowedProducts: [],
-      allowedLocations: []
+      allowedLocations: [],
+      priceUom: this.generalTenantSettings.tenantFormats.uom,
+      currency: this.generalTenantSettings.tenantFormats.currency
     };
     if (this.formValues) {
         if (!this.formValues.products) {

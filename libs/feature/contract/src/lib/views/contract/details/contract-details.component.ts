@@ -138,7 +138,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     private location: Location,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService,
-    private toastrService: ToastrService,
+    private toastr: ToastrService,
     private reconStatusLookups: ReconStatusLookup,
     private tenantSettingsService: TenantSettingsService,
     private statusLookup: StatusLookup,
@@ -260,6 +260,72 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     if (findList != -1) {
       return findList?.items;
     }
+  }
+
+  saveContract() {
+    this.buttonClicked = true;
+    this.eventsSubject2.next(this.buttonClicked);
+    let additionalCost = [];
+    let additionalCostRequired = [];
+    for (let i = 0; i < this.formValues.products.length; i++) {
+        for (let j = 0; j < this.formValues.products[i].additionalCosts.length; j++) {
+            if (!this.formValues.products[i].additionalCosts[j].isDeleted) {
+                let amount = parseInt(this.formValues.products[i].additionalCosts[j].amount);
+                if (amount < 0 && !this.formValues.products[i].additionalCosts[j].isAllowingNegativeAmmount) {
+                    additionalCost.push(this.formValues.products[i].additionalCosts[j].additionalCost.name);
+                }
+                if (!this.formValues.products[i].additionalCosts[j].additionalCosts) {
+                  additionalCostRequired.push('Item Name');
+                } 
+                if (!this.formValues.products[i].additionalCosts[j].costType) {
+                  additionalCostRequired.push('Type');
+                } 
+                if (!this.formValues.products[i].additionalCosts[j].amount) {
+                  additionalCostRequired.push('Amount');
+                }
+            }
+        }
+    }
+
+    additionalCostRequired =_.uniq(additionalCostRequired);
+    let additionalCostRequiredString = '';
+    for (let i = 0; i < additionalCostRequired.length; i++) {
+      additionalCostRequiredString += additionalCostRequired[i] + ',';
+    }
+    if (additionalCostRequiredString[additionalCostRequiredString.length - 1] == ',') {
+      additionalCostRequiredString =  additionalCostRequiredString.substring(0,  additionalCostRequiredString.length - 1);
+    }
+
+    if (additionalCostRequiredString != ''  && additionalCostRequired.length > 1) {
+      this.toastr.error('Please fill in required fields: ' + additionalCostRequiredString);
+      return;
+    }
+    if (additionalCostRequiredString != '' && additionalCostRequired.length == 1) {
+      this.toastr.error('Please fill in required fields: ' + additionalCostRequiredString);
+      return;
+    }
+
+    additionalCost = _.uniq(additionalCost);
+    let additionalCostString = '';
+    for (let i = 0; i < additionalCost.length; i++) {
+      additionalCostString += additionalCost[i] + ',';
+    }
+    if (additionalCostString[additionalCostString.length - 1] == ',') {
+      additionalCostString =  additionalCostString.substring(0,  additionalCostString.length - 1);
+    }
+    if (additionalCostString != ''  && additionalCost.length > 1) {
+      this.toastr.warning('The additional costs ' + additionalCostString + ' does not allow negative amounts!');
+      return;
+    }
+    if (additionalCostString != '' && additionalCost.length == 1) {
+      this.toastr.warning('The additional cost ' + additionalCostString + ' does not allow negative amounts!');
+      return;
+    }
+  }
+
+  confirmContract() {
+    this.buttonClicked = false;
+    this.eventsSubject2.next(this.buttonClicked);
   }
 
   
