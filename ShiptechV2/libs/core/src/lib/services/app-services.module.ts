@@ -110,6 +110,10 @@ export class AppServicesModule {
           provide: EXPORT_API_SERVICE,
           useClass: environment.production ? ExportApiService : ExportApiService
         },
+        // {
+        //   provide: RouteReuseStrategy,
+        //   useClass: AppRouteReuseStrategy
+        // },
         // Note: Providing/Initializing ROUTES_TO_CACHE to avoid RouteReuseStrategy crash because of null token
         {
           provide: ROUTES_TO_CACHE,
@@ -120,3 +124,4 @@ export class AppServicesModule {
     };
   }
 }
+a
