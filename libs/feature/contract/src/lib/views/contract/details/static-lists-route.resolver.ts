@@ -46,7 +46,7 @@ export class StaticListsRouteResolver implements Resolve<any> {
       , 'FormulaPlusMinus', 'FormulaFlatPercentage', 'Currency',
       'FormulaOperation', 'FormulaFunction', 'MarketPriceType', 'PricingSchedule', 'HolidayRule',
       'PricingSchedulePeriod', 'Event', 'DayOfWeek', 'BusinessCalendar', 'FormulaEventInclude',
-      'QuantityType', 'Product', 'Location']);
+      'QuantityType', 'Product', 'Location', 'AdditionalCost', 'CostType']);
 
   }
 

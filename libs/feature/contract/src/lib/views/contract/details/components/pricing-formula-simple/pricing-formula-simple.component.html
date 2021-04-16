@@ -45,6 +45,7 @@
                 [disableOptionCentering]="true"
                 panelClass="general-information-select-container"
                 [compareWith]="compareUomObjects"
+                required
                 placeholder="Price Type">
           <mat-option *ngFor="let option of marketPriceList" [value]="option">
               {{option.name}}
@@ -60,6 +61,7 @@
                 [disableOptionCentering]="true"
                 panelClass="general-information-select-container"
                 [compareWith]="compareUomObjects"
+                required
                 placeholder="Premium/Discount">
           <mat-option *ngFor="let option of formulaPlusMinusList" [value]="option">
               {{option.name}}
@@ -74,9 +76,8 @@
           [(ngModel)]="formValues.simpleFormula.amount"
           placeholder="Amount"
           autocomplete="off"
-          required
           amountFormat
-          [disabled]= "formValues.simpleFormula.plusMinus.id == 3">
+          [disabled]="formValues.simpleFormula.plusMinus && formValues.simpleFormula.plusMinus.id == 3">
       </mat-form-field>
   </div>
   <div class="custom-form-field create-new-formula-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
@@ -88,8 +89,7 @@
                 panelClass="general-information-select-container"
                 [compareWith]="compareUomObjects"
                 placeholder="Flat/percentage"
-                required
-                [disabled]= "formValues.simpleFormula.plusMinus.id == 3">
+                [disabled]="formValues.simpleFormula.plusMinus && formValues.simpleFormula.plusMinus.id == 3">
           <mat-option *ngFor="let option of formulaFlatPercentageList" [value]="option">
               {{option.name}}
           </mat-option>
@@ -105,8 +105,7 @@
                 panelClass="general-information-select-container"
                 [compareWith]="compareUomObjects"
                 placeholder="Uom"
-                required
-                [disabled]= "formValues.simpleFormula.plusMinus.id == 3">
+                [disabled]= "formValues.simpleFormula.plusMinus && formValues.simpleFormula.plusMinus.id == 3">
           <mat-option *ngFor="let option of uomList" [value]="option">
               {{option.name}}
           </mat-option>
@@ -114,14 +113,5 @@
     </mat-form-field>
   </div>
 </div>
-<div style="margin-top: 15px" class="col-md-12" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-  <mat-form-field appearance="outline" class="custom-form-field-comments">
-      <mat-label>Comments</mat-label>
-      <textarea  
-          [(ngModel)]="formValues.comments"
-          matInput
-          autocomplete="off"
-          ></textarea>
-  </mat-form-field>
-</div>
+
 

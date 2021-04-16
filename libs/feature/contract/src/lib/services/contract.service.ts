@@ -170,6 +170,16 @@ export class ContractService extends BaseStoreService implements OnDestroy {
     return this.contractApi.getContractFormulaList(payload);
   }
            
+
+        /**
+ * @param payload 
+ */
+  @ObservableException()
+  getAdditionalCostsComponentTypes(payload): Observable<unknown> {
+    return this.contractApi.getAdditionalCostsComponentTypes(payload);
+  }
+               
+  
               
   
   ngOnDestroy(): void {

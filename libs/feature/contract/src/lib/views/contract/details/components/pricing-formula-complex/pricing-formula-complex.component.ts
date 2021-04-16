@@ -369,7 +369,46 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
 
   selectCurrency(event: MatAutocompleteSelectedEvent) {
     this.formValues.currency = event.option.value;
+    if (!this.formValues.complexFormulaQuoteLines || !this.formValues.complexFormulaQuoteLines.length) {
+      this.formValues.complexFormulaQuoteLines = [
+          {
+              id: 0,
+              weight: '100',
+              formulaFunction: {
+                  id: 1,
+                  name: 'Min',
+                  internalName: null,
+                  code: null
+              }
+          }
+      ];
+      if (!this.formValues.isMean) {
+          this.formValues.complexFormulaQuoteLines[0].formulaOperation = {
+              id: 1,
+              name: 'Add',
+              internalName: null,
+              code: null
+          };
+      } else {
+          this.formValues.complexFormulaQuoteLines[0].formulaOperation = {
+              id: 3,
+              name: 'Mean',
+              internalName: null,
+              code: null
+          };
+      }
+      this.formValues.complexFormulaQuoteLines[0].systemInstruments = [  {
+        id: 0
+      }, 
+      {
+        id: 0
+      }, 
+      {
+        id: 0
+      } ];
+    }
   }
+
 
     
   filterCurrencyList() {

@@ -485,6 +485,10 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   quantityTypeList: any;
   contractFormulaList: any;
   autocompleteFormula: knownMastersAutocomplete;
+  additionalCostList: any;
+  additionalCostsComponentTypes: any;
+  costTypeList: any;
+  EnableBargeCostDetails: boolean;
 
 
   get entityId(): number {
@@ -692,9 +696,24 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     this.contractFormulaList = contractFormulaList;
   }
 
+  @Input('additionalCostList') set _setAdditionalCostListt(additionalCostList) { 
+    if (!additionalCostList) {
+      return;
+    } 
+    this.additionalCostList = additionalCostList;
+  }
+
+  @Input('costTypeList') set _setCostTypeList(costTypeList) { 
+    if (!costTypeList) {
+      return;
+    } 
+    this.costTypeList = costTypeList;
+  }
+
+
+
 
   
-
   index = 0;
   expandLocationPopUp = false;
   array = [0,1,2,3,4,5,6,7,8,9,10];
@@ -737,6 +756,7 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   ngOnInit(){  
     this.entityName = 'Contract';
     this.eventsSubscription = this.events.subscribe((data) => this.setContractForm(data));
+    this.getAdditionalCostsComponentTypes();
 
 
 
@@ -760,7 +780,7 @@ export class ProductPricing extends DeliveryAutocompleteComponent
       const dialogRef = this.dialog.open(CreateNewFormulaModalComponent, {
         width: '80%',
         data:  {
-          'formValues': {},
+          'formValues': null,
           'selectedTabIndex': this.selectedTabIndex,
           'formulaTypeList': this.formulaTypeList,
           'systemInstumentList': this.systemInstumentList,
@@ -891,6 +911,88 @@ export class ProductPricing extends DeliveryAutocompleteComponent
 
   }
 
+  originalOrder = (a: KeyValue<number, any>, b: KeyValue<number, any>): number => {
+    return 0;
+  }
+
+
+
+  compareUomObjects(object1: any, object2: any) {
+    return object1 && object2 && object1.id == object2.id;
+  }
+
+  getAdditionalCostsComponentTypes() {
+    this.spinner.show();
+    this.contractService
+    .getAdditionalCostsComponentTypes({})
+    .pipe(
+      finalize(() => {
+        this.spinner.hide();
+      })
+    )
+    .subscribe((response: any) => {
+      if (typeof response == 'string') {
+        this.toastr.error(response);
+      } else {
+        this.additionalCostsComponentTypes = response;
+      }
+    });
+  }
+  doFiltering(addCostCompTypes, cost, currentCost) {
+    var costType = null;
+    addCostCompTypes.forEach((v, k) => {
+      if (v.id == currentCost) {
+        costType = v.costType.id;
+      }
+    });
+    var availableCosts = [];
+    if (costType == 1 || costType == 2) {
+      this.costTypeList.forEach((v, k) => {
+        if (v.id == 1 || v.id == 2) {
+          availableCosts.push(v);
+        }
+      });
+    }
+    if (costType == 3) {
+      this.costTypeList.forEach((v, k) => {
+        if (v.id == 3) {
+          availableCosts.push(v);
+        }
+      });
+    }
+    this.EnableBargeCostDetails = false;
+    if (costType == 4) {
+      this.costTypeList.forEach((v, k) => {
+        if (v.id == 4) {
+          this.EnableBargeCostDetails = true;
+          availableCosts.push(v);
+        }
+      });
+    }
+    if (costType == 5) {
+      this.costTypeList.forEach((v, k) => {
+        if (v.id == 5) {
+          this.EnableBargeCostDetails = true;
+          availableCosts.push(v);
+        }
+      });
+    }
+
+    return availableCosts;
+  }
+
+  filterCostTypesByAdditionalCost(cost, rowRenderIndex) {
+       
+    var currentCost = cost;
+    // return doFiltering(vm.additionalCostsComponentTypes, currentCost);
+    if(this.additionalCostsComponentTypes === undefined) {
+        // this.getAdditionalCostsComponentTypes((additionalCostsComponentTypes) => {
+        //     return doFiltering(additionalCostsComponentTypes);
+        // });
+    }else{
+        return this.doFiltering(this.additionalCostsComponentTypes, 0, currentCost);
+    }
+  }
 
   ngAfterViewInit(): void {
   
