@@ -32,7 +32,7 @@
         <div class="border_line"></div>
         <div [ngClass]="{'selected-tab': selectedFormulaTab == 'Pricing schedule', 
           'unselected-tab': selectedFormulaTab != 'Pricing schedule'}"
-          (click)="selectedFormulaTab = 'Pricing schedule';  initialized = 2">
+          (click)="selectedFormulaTab = 'Pricing schedule';  initialized = 2; setPricingType()">
           <div class="value">Pricing schedule</div>
         </div>
         <div class="border_line"></div>
@@ -66,6 +66,7 @@
             <div class="col-md-12">
               <mat-radio-group
               [(ngModel)]="formValues.formulaType.id"
+              (ngModelChange)="setFormulaTypeSelected(formValues.formulaType.id)"
               class="pricing-container-radio-group">
               <mat-radio-button class="pricing-container-radio-button" *ngFor="let option of formulaTypeList" [value]="option.id">
                 {{option.name}}
@@ -95,7 +96,17 @@
               [formulaOperationList]="formulaOperationList"
               [formulaFunctionList]="formulaFunctionList"
               [marketPriceTypeList]="marketPriceTypeList">
-          </shiptech-pricing-formula-complex>
+            </shiptech-pricing-formula-complex>
+          </div>
+          <div style="margin-top: 15px" class="col-md-12 no-padding" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+            <mat-form-field appearance="outline" class="custom-form-field-comments">
+                <mat-label>Comments</mat-label>
+                <textarea  
+                    [(ngModel)]="formValues.comments"
+                    matInput
+                    autocomplete="off"
+                    ></textarea>
+            </mat-form-field>
           </div>
         </div>
       </div>

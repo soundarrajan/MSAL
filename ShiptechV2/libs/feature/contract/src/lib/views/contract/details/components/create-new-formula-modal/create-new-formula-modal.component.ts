@@ -452,6 +452,31 @@ export class CreateNewFormulaModalComponent extends DeliveryAutocompleteComponen
       PICK_FORMATS.display.dateInput = this.format.dateFormat;
       console.log(data);
       this.formValues = data.formValues;
+      if (!this.formValues) {
+        this.formValues = {
+          formulaType: {}
+        };
+        // this.formValues = {
+        //   comments: null,
+        //   complexFormulaQuoteLines: [],
+        //   currency: null,
+        //   formulaType: {},
+        //   pricingSchedule: {},
+        //   pricingScheduleOptionDateRange: null,
+        //   pricingScheduleOptionEventBasedContinuous: null,
+        //   pricingScheduleOptionEventBasedExtended: null,
+        //   pricingScheduleOptionEventBasedSimple: null,
+        //   pricingScheduleOptionSpecificDate: null,
+        //   quantityDiscountRules: [],
+        //   productDiscountRules: [],
+        //   locationDiscountRules: [],
+        //   simpleFormula: {}
+
+
+
+
+        // }
+      }
       this.formulaTypeList = data.formulaTypeList;
       this.systemInstumentList = data.systemInstumentList;
       this.marketPriceList =  data.marketPriceList;
@@ -571,6 +596,49 @@ export class CreateNewFormulaModalComponent extends DeliveryAutocompleteComponen
         }
       });
   
+    } else {
+      this.spinner.show();
+      this.contractService
+      .saveFormula(this.formValues)
+      .pipe(
+        finalize(() => {
+          this.spinner.hide();
+        })
+      )
+      .subscribe((response: any) => {
+        if (typeof response == 'string') {
+          this.toastr.error(response);
+        } else {
+          this.toastr.success('Operation completed successfully!')
+          this.dialogRef.close();
+        }
+      });
+    }
+  }
+
+  isEmptyObject(obj) {
+    return (obj && (Object.keys(obj).length === 0));
+  }
+
+  setFormulaTypeSelected(id) {
+    if (id == 2) {
+      let isEmptyObject = this.isEmptyObject(this.formValues.simpleFormula);
+      if (this.isEmptyObject(this.formValues.simpleFormula)) {
+        this.formValues.simpleFormula = null;
+      }
+      if (!this.formValues.complexFormulaQuoteLines) {
+        this.formValues.complexFormulaQuoteLines = [];
+      }
+    } else {
+      if (!this.formValues.simpleFormula) {
+        this.formValues.simpleFormula = {}; 
+      }
+    }
+  }
+
+  setPricingType() {
+    if (!this.formValues.pricingSchedule) {
+      this.formValues.pricingSchedule = {};
     }
   }
 

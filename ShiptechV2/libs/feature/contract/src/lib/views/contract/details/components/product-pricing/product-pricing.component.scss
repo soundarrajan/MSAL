@@ -549,3 +549,75 @@
 .view-formula-icon::before{
   content: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAASCAYAAABIB77kAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAFFSURBVEhL3ZQhawNBEEbzq+pbXUpdILa0soW4mKioihITKFS1ou5EVYmIiAhE1JRAXEJtGr16yjtYmJub3TtRQoj4SJidnTff3Nx1QghySB03cLP9keLjUyYvb6Ve3wv5Xq3d3JRaAaezufRuHuTs/NrVxWWvbGD3u3fva2WBFOgPRpXiV91bGY6e5HH8XGuCsybHSSAwWxCQzcM9DmMO/3PQJPDuflCB4ZQ4xQBzDowYvzoXKM9b14tygSyGLoAA4Vq7QRHKOHWchmxd5ALtZUR8sfyqxaNzOxHkjdYFMjJ7GXcUsHGWhzsWyCS8rXWBzN+OjjFzppthqSiKdC7iHbV1UXJp7HPU20dDjDfm2lfH2+aoJBB5UGIAceV9EHIwlAUiXOW+MlE0kxqjViMwCjd0rzcYCOME5C2Ip9bA/9KpA4P8AQ+AixFDLt2pAAAAAElFTkSuQmCC")
 }
+
+.product-additional-costs-table {
+  display: table !important;
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  border: 1px solid #E0E1E4;
+  box-sizing: border-box;
+  border-radius: 4px;
+  margin-top: 15px;
+}
+
+.product-additional-costs-table thead tr {
+  height: 40px;
+  background: #F1F1F2;
+  border: 1px solid #E0E1E4;
+  box-sizing: border-box;
+  border-radius: 4px 4px 0px 0px;
+}
+
+.product-additional-costs-table thead tr td {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: #252A32;
+  padding: 10px;
+}
+
+.product-additional-costs-table tbody tr td {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #252A32;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+
+
+.product-additional-costs-info {
+  margin-bottom: unset  !important;
+  width: 100%;
+}
+
+.add-icon::before {
+  content: url(../../../../../../../../../../assets/layout/images/pages/add-product-dropdown.svg);
+}
+
+.add-icon {
+  width: 25px;
+  height: 25px;
+  position: relative;
+  top: 5px;
+}
+
+
+
+.remove-icon::before {
+  content: url(../../../../../../../../../../assets/layout/images/pages/remove-sample-details.svg);
+}
+
+.remove-icon {
+  width: 25px;
+  height: 25px;
+  position: relative;
+}

@@ -481,6 +481,8 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   formulaEventIncludeList: any;
   quantityTypeList: any;
   contractFormulaList: any;
+  additionalCostList: any;
+  costTypeList: any;
 
 
   get entityId(): number {
@@ -722,6 +724,20 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     this.locationList = locationList;
   }
 
+    
+  @Input('additionalCostList') set _setAdditionalCostListt(additionalCostList) { 
+    if (!additionalCostList) {
+      return;
+    } 
+    this.additionalCostList = additionalCostList;
+  }
+
+  @Input('costTypeList') set _setCostTypeList(costTypeList) { 
+    if (!costTypeList) {
+      return;
+    } 
+    this.costTypeList = costTypeList;
+  }
 
 
 

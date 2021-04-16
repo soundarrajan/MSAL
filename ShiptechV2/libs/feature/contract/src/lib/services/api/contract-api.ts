@@ -25,9 +25,11 @@ export namespace ContractApiPaths {
   export const saveSpecParameterForContractProduct = () =>  `api/contract/contract/saveSpecParameterForContractProduct`;
   export const getProdDefaultConversionFactors = () =>  `api/masters/products/getProdDefaultConversionFactors`;
   export const getFormulaById = () =>  `api/masters/formulas/get`;
-  export const saveFormula = () =>  `api/masters/formulas/save`;
+  export const saveFormula = () =>  `api/masters/formulas/create`;
   export const updateFormula = () =>  `api/masters/formulas/update`;
   export const getContractFormulaList = () =>  `api/masters/formulas/listMasters`;
+  export const getAdditionalCostsComponentTypes = () =>  `api/masters/additionalcosts/listApps`;
+
 
 
 
@@ -280,6 +282,19 @@ export class ContractApi implements IContractApiService {
     return this.http.post<IDeliveryDetailsResponse>(
       `${this._masterApiUrl}/${ContractApiPaths.getContractFormulaList()}`,
       request 
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+    );
+  }
+
+  @ObservableException()
+  getAdditionalCostsComponentTypes(
+    request: any
+  ): Observable<IDeliveryDetailsResponse> {
+    return this.http.post<IDeliveryDetailsResponse>(
+      `${this._masterApiUrl}/${ContractApiPaths.getAdditionalCostsComponentTypes()}`,
+      {Payload: request}
     ).pipe(
       map((body: any) => body.payload),
       catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))

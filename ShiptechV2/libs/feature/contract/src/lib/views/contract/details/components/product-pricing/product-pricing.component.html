@@ -60,7 +60,6 @@
     </div>
   </div>
   <div class="col-md-12 no-padding d-flex" style="margin-top: 10px;">
-    {{formValues.products[selectedTabIndex].formula ? formValues.products[selectedTabIndex].formula.name : ''}}
     <div class="custom-form-field product-details" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}" style="width: 100% !important; margin: 0px  !important;">
       <div class="d-flex">
           <mat-form-field class="with-search" appearance="legacy">
@@ -97,6 +96,81 @@
           </button>
       </div>
     </div>
+  </div>
+  <div class="header-product-details col-md-12 no-padding" style="margin-top: 10px;">
+    Product additional costs
+  </div>
+  <div class="col-md-12 d-flex no-padding">
+    <table class="product-additional-costs-table table table-stripped table-hover" style="width:100%">
+      <thead>
+        <tr>
+          <td class="padding" style="width: 30px;">
+            <a class="add-icon"></a>
+          </td>
+          <td class="padding" style="width:15%">
+            <b>Item name</b>
+          </td>
+          <td class="padding" style="width:15%">
+            <b>Type</b>
+          </td>
+          <td class="padding" style="width:15%">
+            <b>Amount</b>
+          </td>
+          <td class="padding" style="width:15%">
+            <b>Price Uom</b>
+          </td>
+          <td class="padding" style="width:15%">
+            <b>Extra%</b>
+          </td>
+          <td class="padding" style="width:15%">
+            <b>Currency</b>
+          </td>
+          <td class="padding" style="width:15%">
+            <b>Comment</b>
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+          <ng-container  *ngFor="let additionalCost of formValues.products[selectedTabIndex].additionalCosts | keyvalue : originalOrder">
+            <tr *ngIf="!additionalCost.value.isDeleted">
+              <td class="padding" style="padding-left: 0px  !important; padding-right: 0px  !important;">
+                <a class="remove-icon" style="margin-left: 10px;"></a>
+              </td>
+              <td  style="width:15%">
+                <div class="custom-form-field conversion-factor-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+                  <mat-form-field class="without-search conversion-factor-dropdown-component" appearance="legacy">
+                    <mat-select 
+                            [(ngModel)]="additionalCost.value.additionalCost"
+                            [disableOptionCentering]="true"
+                            panelClass="general-information-select-container"
+                            [compareWith]="compareUomObjects">
+                        <mat-option *ngFor="let option of additionalCostList" [value]="option">
+                            {{option.name}}
+                        </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </td> 
+              <td  style="width:15%">
+                <div class="custom-form-field conversion-factor-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+                  <mat-form-field class="without-search conversion-factor-dropdown-component" appearance="legacy">
+                    <mat-select 
+                            [(ngModel)]="additionalCost.value.costType"
+                            [disableOptionCentering]="true"
+                            panelClass="general-information-select-container"
+                            [compareWith]="compareUomObjects">
+                        <mat-option *ngFor="let option of filterCostTypesByAdditionalCost(additionalCost.value.additionalCost.id, 0)" [value]="option">
+                            {{option.name}}
+                        </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </td> 
+             
+            </tr>
+          </ng-container>
+      </tbody>
+    </table>
   </div>
 <div>
 <ngx-spinner

@@ -128,6 +128,8 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   quantityTypeList: any;
   productList: any;
   locationList: any;
+  additionalCostList: any;
+  costTypeList: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -243,8 +245,10 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       this.quantityTypeList = this.setListFromStaticLists('QuantityType');
       this.productList = this.setListFromStaticLists('Product');
       this.locationList = this.setListFromStaticLists('Location');
+      this.additionalCostList = this.setListFromStaticLists('AdditionalCost');
+      this.costTypeList = this.setListFromStaticLists('CostType');
 
-
+      
       console.log(this.staticLists);
     });
   }

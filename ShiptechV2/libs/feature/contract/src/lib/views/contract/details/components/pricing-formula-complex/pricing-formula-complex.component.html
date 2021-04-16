@@ -38,6 +38,7 @@
   </div>
   <mat-checkbox
     [(ngModel)]="formValues.isMean"
+    class="is-mean-checkbox"
     (change)="isMeanChange($event)">Apply mean for entire table</mat-checkbox>
 </div>
 <div class="col-md-12">
@@ -305,14 +306,4 @@
         </ng-container>
     </tbody>
   </table>
-</div>
-<div style="margin-top: 15px" class="col-md-12" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-  <mat-form-field appearance="outline" class="custom-form-field-comments">
-      <mat-label>Comments</mat-label>
-      <textarea  
-          [(ngModel)]="formValues.comments"
-          matInput
-          autocomplete="off"
-          ></textarea>
-  </mat-form-field>
 </div>
