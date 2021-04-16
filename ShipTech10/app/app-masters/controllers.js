@@ -9379,7 +9379,7 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
             if (index == "tanks") {
                 return;
             }
-            if($scope.formValues.tradeBookMappings.length>0 && $scope.formValues.tradeBookMappings.count!=0){
+            if($scope.formValues.tradeBookMappings && $scope.formValues.tradeBookMappings.length>0 && $scope.formValues.tradeBookMappings.count!=0){
                 if (!$scope.formValues.tradeBookMappings[index].conversionFactors) {
                     $scope.formValues.tradeBookMappings[index].conversionFactors = [];
                 }
