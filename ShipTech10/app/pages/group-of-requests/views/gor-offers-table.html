@@ -228,7 +228,6 @@
     
 
                 <th id="generatedThId167" ng-repeat-end style="background: #f1f5f8 !important; padding: 0 !important; border-left: 2px solid #86cdd8; position: relative;   " ng-if="!$ctrl.isRequestTabExpanded($parent.$index)">
-
                         <div class="wrapper" ng-show="!$ctrl.isRequestTabExpanded($parent.$parent.$index)"  >
                             <span ng-init="$ctrl.priceDetailsDefaultView.id == 1 ? $ctrl.priceExpanded['prod'+product.requestId+reqProdKey] = true : $ctrl.priceExpanded['prod'+product.requestId+reqProdKey] = false "> <!-- if Expanded --> </span>
                             <div ng-show="$ctrl.energyContentExpanded['prod'+product.requestId+reqProdKey]" style="width:100px" class="energy-content-cell">Price Diff</div>
@@ -444,7 +443,7 @@
                                 <span style="max-width: 100%;overflow: auto;display: initial; text-overflow: ellipsis;" class="ng-binding">
                                     <img  style="width: 20px; height: 20px" src="img/info.png" alt="logo" class="logo-default" />
                                 </span>
-                                <span class="groupOfRequestTableTooltip ng-binding ng-hide" ng-show="portSellerStatustooltip['marketPrice']" style="opacity: 1;">
+                                <span class="groupOfRequestTableTooltip marketPricePopup" ng-show="portSellerStatustooltip['marketPrice']" style="opacity: 1;">
                                     click to see market price history
                                 </span>
                             </span>

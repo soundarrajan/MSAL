@@ -4393,6 +4393,9 @@ a[disabled]{
     /*white-space: initial;*/
     transform: translate(-50%, -100%);
 }
+.groupOfRequestTableTooltip.marketPricePopup{
+    transform: translate(-80%, -100%);
+}
 
 .groupOfRequestTableTooltipLastProduct {
     display: block !important;
