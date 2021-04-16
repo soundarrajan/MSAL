@@ -32,7 +32,8 @@
       "@shiptech/feature/ete": ["libs/feature/ete/src/index.ts"],
       "@shiptech/feature/smart": [
         "libs/feature/smart/src/index.ts"
-      ]
+      ],
+      "@shiptech/feature/contract": ["libs/feature/contract/src/index.ts"],
     },
     "resolveJsonModule": true,
     "esModuleInterop": true,
