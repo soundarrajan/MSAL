@@ -22,6 +22,7 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
         // $scope.reconMatchDisplayName();
         $scope.setStatusForHeader('init');
         $scope.registerDropdowns();
+        $scope.formValues.notes = data.labNotes;
         if (!JSON.stringify($state.params.path).contains('labs.documents')) {
 	        $.each($scope.formFields, (index, value) => {
 	            $.each(value.children, (key, val) => {

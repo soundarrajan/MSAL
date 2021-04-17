@@ -4676,6 +4676,21 @@
                     }
                 });
             }
+            if (vm.app_id == 'labs' && vm.screen_id == 'labresult') {
+                $.each(obj, (key, val) => {
+                    if (val.id == 0) {
+                        if (typeof val.createdBy == 'undefined') {
+                            val.createdBy = $rootScope.user;
+                            val.createdBy.displayName = null;
+                            val.createdBy.code = null;
+                            val.createdBy.collectionName = null;
+                        }
+                        if (typeof val.createdAt == 'undefined') {
+                            val.createdAt = moment().format();
+                        }
+                    }
+                });
+            }
         };
         $scope.remData = function(obj, row, idx) {
             let autoSave = false;
@@ -4730,7 +4745,7 @@
             } else if (row.id > 0) {
                 row.isDeleted = true;
                 if(vm.app_id !== 'claims' && vm.screen_id !== 'claims') {
-                    if (vm.app_id == 'default' && (window.location.href.indexOf('request') != -1 || window.location.href.indexOf('order') != -1)) {
+                    if (vm.app_id == 'default' && (window.location.href.indexOf('request') != -1 || window.location.href.indexOf('order') != -1 || window.location.href.indexOf('labresult') != -1)) {
                     } else {
                         obj.push({
                             id: 0
@@ -9607,6 +9622,16 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
                         }
                     });
 
+                } else  if (window.location.href.indexOf('labresult/') != -1) {
+                    payload = { Payload: {
+                        "LabResultId": id,
+                        "labNotes": generalNotesScope.formValues.notes
+                    }};
+                    $http.post(`${API.BASE_URL_DATA_LABS}/api/labs/autosave`, payload).then((response) => {
+                        if (response && response.data && response.data.payload != 'null') {
+                            generalNotesScope.formValues.notes = response.data.payload;
+                        }
+                    });
                 }
             }
         }
