@@ -392,7 +392,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
                 if (amount < 0 && !this.formValues.products[i].additionalCosts[j].isAllowingNegativeAmmount) {
                     additionalCost.push(this.formValues.products[i].additionalCosts[j].additionalCost.name);
                 }
-                if (!this.formValues.products[i].additionalCosts[j].additionalCosts) {
+                if (!this.formValues.products[i].additionalCosts[j].additionalCost) {
                   additionalCostRequired.push('Item Name');
                 } 
                 if (!this.formValues.products[i].additionalCosts[j].costType) {
