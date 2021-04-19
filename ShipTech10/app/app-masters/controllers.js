@@ -4073,35 +4073,7 @@
                 $compile($('.defaulttag'))($scope);
                 return;
             }
-            let childExpanded = false;
-            $('body').on('click', '.bootstrap-tagsinput .hideTagsChild', function() {
-                $scope.initBoostrapTagsInputTooltip();
-                if (childExpanded == true) {
-                    $(this)
-                        .parent('.bootstrap-tagsinput')
-                        .children('span.tag[big-child=\'true\']')
-                        .hide();
-                    $(this)
-                        .parent('.bootstrap-tagsinput')
-                        .removeClass('expanded');
-                    $(this)
-                        .parents('.multi_lookup_tags')
-                        .removeClass('expanded');
-                    childExpanded = false;
-                } else {
-                    $(this)
-                        .parent('.bootstrap-tagsinput')
-                        .children('span.tag[big-child=\'true\']')
-                        .show();
-                    $(this)
-                        .parent('.bootstrap-tagsinput')
-                        .addClass('expanded');
-                    $(this)
-                        .parents('.multi_lookup_tags')
-                        .addClass('expanded');
-                    childExpanded = true;
-                }
-            });
+
         };
         $scope.initMultiTags = function(id) {
             let elt = $(`.object_tagsinput_${ id}`);
@@ -9993,3 +9965,51 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
         }
     }
 ]);
+
+$('body').on('click', '.bootstrap-tagsinput .hideTagsChild', function(e) {
+	$(this).parent('.bootstrap-tagsinput').addClass("current");
+    $(".bootstrap-tagsinput.expanded:not(.current)").removeClass("expanded").children('span.tag[big-child=\'true\']').hide();
+    $(".multi_lookup_tags.expanded:not(.current)").removeClass("expanded");
+	$(this).parent('.bootstrap-tagsinput').removeClass("current");
+	childExpanded = false;
+    if ($(this).parent('.bootstrap-tagsinput').hasClass("expanded")) {
+    	childExpanded = true;
+    }
+    // $scope.initBoostrapTagsInputTooltip();
+    if (childExpanded == true) {
+        $(this)
+            .parent('.bootstrap-tagsinput')
+            .children('span.tag[big-child=\'true\']')
+            .hide();
+        $(this)
+            .parent('.bootstrap-tagsinput')
+            .removeClass('expanded');
+        $(this)
+            .parents('.multi_lookup_tags')
+            .removeClass('expanded');
+    } else {
+        $(this)
+            .parent('.bootstrap-tagsinput')
+            .children('span.tag[big-child=\'true\']')
+            .show();
+        $(this)
+            .parent('.bootstrap-tagsinput')
+            .addClass('expanded');
+        $(this)
+            .parents('.multi_lookup_tags')
+            .addClass('expanded');
+        childExpanded = true;
+    }
+});
+
+$("body").on("click", (e)=>{
+	if (!$(e.target).hasClass("bootstrap-tagsinput") && $(e.target).parents(".bootstrap-tagsinput").length == 0) {
+	    $('.bootstrap-tagsinput')
+	        .children('span.tag[big-child=\'true\']')
+	        .hide();
+	    $('.bootstrap-tagsinput')
+	        .removeClass('expanded');
+	    $('.multi_lookup_tags')
+	        .removeClass('expanded');
+	}
+})
