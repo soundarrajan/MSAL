@@ -179,9 +179,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     console.log(this.deliverySettings);
     //this.loadingBar.start();
   }
-  ngOnDestroy(): void {
-    throw new Error('Method not implemented.');
-  }
+
 
   ngOnInit(): void {
     this.route.params.pipe(takeUntil(this._destroy$)).subscribe(params => {
@@ -465,10 +463,11 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
             .navigate([
               KnownPrimaryRoutes.Contract,
               `${KnownPrimaryRoutes.Contract}`,
-              result,
-              KnownContractRoutes.Contract
+              result.id,
+              KnownContractRoutes.ContractDetails
             ])
             .then(() => {
+              this.isLoading = false;
             });
           }
       });
@@ -543,6 +542,10 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
             });
         }
      });
+  }
+
+  ngOnDestroy(): void {
+
   }
 
   
