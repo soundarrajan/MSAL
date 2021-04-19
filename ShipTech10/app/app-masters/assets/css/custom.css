@@ -139,6 +139,11 @@
     margin-left: 2px;
 }
 
+.dynamic_form_editor .orange-label {
+    color: orange;
+    font-size: 9px;
+    margin-left: 2px;
+}
 .dynamic_form_editor span.input-group-addon select:disabled {
     background: #eef1f5;
 }

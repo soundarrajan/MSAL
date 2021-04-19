@@ -1172,6 +1172,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="portlet-body">
                     <form autocomplete="off" class="" name="forms.productsForm" novalidate>
                         <table class="table table-hover table-bordered table-stripped" id="new_order_products">
@@ -1187,10 +1188,16 @@
                                 <th id="generatedThId194" ng-if="$ctrl.data.status.id != $ctrl.STATUS['Cancelled'].id && $ctrl.data.status.id != $ctrl.STATUS['Closed'].id"
                                     style="vertical-align: middle;"></th>
                                 <th id="generatedThId195" ng-if="column.visible && column.caption != 'PAGES.NEW_ORDER.CONTRACT_ID' &&  column.caption != 'PAGES.NEW_ORDER.FORMULA_DESCRIPTION' && column.caption != 'PAGES.NEW_ORDER.FORMULA_DETAILS' && column.caption != 'PAGES.NEW_ORDER.PRICING_DATE' && column.caption != 'PAGES.NEW_ORDER.MANUAL_PRICING_DATE_OVERRIDE' && $ctrl.tenantSettings.shiptechLite" ng-repeat="column in $ctrl.productColumns">
-                                    {{ column.caption | translate }}
+                                    <span>
+                                        <span>{{ column.caption | translate }} </span> 
+                                        <span ng-show="column.caption=='PAGES.NEW_ORDER.PRODUCT' || column.caption=='PAGES.NEW_ORDER.PHYSICAL_SUPPLIER' || column.caption=='PAGES.NEW_ORDER.MIN_QUANTITY'|| column.caption=='PAGES.NEW_ORDER.MAX_QUANTITY' || column.caption=='PAGES.NEW_ORDER.CONFIRMEDQUANTITY' || column.caption=='PAGES.NEW_ORDER.SPEC_GROUP'" class="orange-label">*</span>
+                                    </span>                                             
                                 </th>
                                 <th id="generatedThId195" ng-if="column.visible  && !$ctrl.tenantSettings.shiptechLite" ng-repeat="column in $ctrl.productColumns">
-                                    {{ column.caption | translate }}                              
+                                    <span>
+                                        <span>{{ column.caption | translate }} </span> 
+                                        <span ng-show="column.caption=='PAGES.NEW_ORDER.PRODUCT' || column.caption=='PAGES.NEW_ORDER.PHYSICAL_SUPPLIER' || column.caption=='PAGES.NEW_ORDER.MIN_QUANTITY'|| column.caption=='PAGES.NEW_ORDER.MAX_QUANTITY' || column.caption=='PAGES.NEW_ORDER.CONFIRMEDQUANTITY' || column.caption=='PAGES.NEW_ORDER.SPEC_GROUP'" class="orange-label">*</span>
+                                    </span>                            
                                 </th>
                                 <th>
                                     Conversion Factor
@@ -1234,7 +1241,6 @@
                                                ng-if="!$ctrl.refreshProduct" ng-model="product.tempProduct"
                                                decode-input-format
                                                ng-required="true && product.status.id != $ctrl.STATUS['Cancelled'].id"
-                                               typeahead-append-to-body="true"
                                                typeahead-append-to-body="true"
                                                typeahead-editable="false"
                                                typeahead-on-select="$ctrl.selectProduct($item.id, $index)"
@@ -1742,14 +1748,17 @@
                                 </th>
                                 <th id="generatedThId197"></th>
                                 <th id="generatedThId198" ng-repeat="column in $ctrl.additionalCostColumns">
-                                    {{ column.caption | translate }}
-                                </th>
-										
-											
-										 
-										
-												 
-										 
+                                    <span>
+                                        <span>{{ column.caption | translate }} </span> 
+                                        <span ng-show="column.caption=='PAGES.NEW_ORDER.NAME' || column.caption=='PAGES.NEW_ORDER.CONFIRMEDQUANTITY'" class="orange-label">*</span>
+                                    </span>  
+                                </th>	
+                                
+
+
+
+
+
                             </tr>
                             </thead>
                             <tbody>
