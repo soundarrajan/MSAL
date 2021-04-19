@@ -56,6 +56,7 @@
     padding-bottom: 5px;
 }
 
+
 .product-quantity-field-container {
     width: 13%;
     margin-right: 20px !important;
@@ -85,11 +86,15 @@ td .custom-form-field{
 
 
 .product-quantity-comments {
-    padding-top: 10px;
+    padding: 15px;
     width: 100%;
 }
 
 
 .custom-form-field.product-quantity-comments.lightTheme .mat-form-field.without-search {
     height: 50px  !important;
+}
+
+.quantity-comments-container {
+    margin-top: 10px;
 }

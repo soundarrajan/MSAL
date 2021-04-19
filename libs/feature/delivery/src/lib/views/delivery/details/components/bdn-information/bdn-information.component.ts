@@ -341,7 +341,6 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
       currentFormat = currentFormat.replace(/y/g, 'Y');
       let elem = moment(value, 'YYYY-MM-DDTHH:mm:ss');
       let newVal = moment(elem).format(currentFormat);
-      console.log(newVal);
       if (elem && this.isValid(elem)) {
         return elem;
       }
@@ -434,6 +433,9 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
   isBargeAlongsideDateInvalid: boolean;
   statusColorCode: any;
   buttonClicked: any;
+  baseOrigin: string;
+  bargeId: any;
+  backgroundColor: string;
 
   @Input() set autocompleteType(value: string) {
     this._autocompleteType = value;
@@ -444,7 +446,7 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
       return;
     } 
     this.statusColorCode = statusColorCode;
-    console.log(this.statusColorCode);
+    this.backgroundColor = this.getContrastYIQ(this.statusColorCode);
   }
   @Input('bargeList') set _setBargeList(bargeList) { 
     if (!bargeList) {
@@ -457,6 +459,9 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
       return;
     } 
     this.formValues = formValues;
+    if (this.formValues.barge) {
+      this.bargeId = this.formValues.barge.id;
+    }
   }
 
   @Input('relatedDeliveries') set _relatedDeliveries(relatedDeliveries) {
@@ -495,6 +500,7 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
   @Output() changeInputBdn = new EventEmitter<any>();
   @Output() onDatePicked = new EventEmitter<any>();
 
+  @Output() onOrderNumberChanged = new EventEmitter<any>();
 
   @Select(UserProfileState.displayName) displayName$: Observable<string>;
   @Select(UserProfileState.username) username$: Observable<string>;
@@ -544,12 +550,6 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
     sanitizer: DomSanitizer) {
     
     super(changeDetectorRef);
-    iconRegistry.addSvgIcon(
-      'data-picker-gray',
-      sanitizer.bypassSecurityTrustResourceUrl('../../../../../../../../../../assets/layout/images/pages/calendar-dark.svg'));
-    iconRegistry.addSvgIcon(
-      'data-picker-white',
-      sanitizer.bypassSecurityTrustResourceUrl('../../../../../../../../../../assets/layout/images/pages/calendar-dark.svg'));
     this.deliverySettings = tenantSettingsService.getModuleTenantSettings<
                           IDeliveryTenantSettings
                         >(TenantSettingsModuleName.Delivery);
@@ -562,6 +562,7 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
     this.dateTimeFormats.display.dateInput = this.format.dateFormat;
     CUSTOM_DATE_FORMATS.display.dateInput = this.format.dateFormat;
     PICK_FORMATS.display.dateInput = this.format.dateFormat;
+    this.baseOrigin = new URL(window.location.href).origin;
     //this.dateTimeFormats.parse.dateInput = this.format.dateFormat;
 
   }
@@ -576,13 +577,21 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
 
   }
 
+  getContrastYIQ(hexcolor){
+    if (!hexcolor) { return "black"; }
+      hexcolor = hexcolor.replace("#", "");
+      var r = parseInt(hexcolor.substr(0,2),16);
+      var g = parseInt(hexcolor.substr(2,2), 16);
+      var b = parseInt(hexcolor.substr(4,2),16);
+      var yiq = ((r*299)+(g*587)+(b*114))/1000;
+      return (yiq >= 128) ? 'black' : 'white';
+  }
+
   setRequiredFields(data) {
     this.buttonClicked = data;
-    console.log('check required fields');
   }
 
   compareUomObjects(object1: any, object2: any) {
-    console.log(object1 && object2 && object1.id == object2.id);
     return object1 && object2 && object1.id == object2.id;
   }
 
@@ -592,9 +601,10 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
     if (!form) {
       return;
     }
-    console.log('aici');
-    console.log(form);
     this.formValues = form;
+    if (this.formValues.barge) {
+      this.bargeId = this.formValues.barge.id;
+    }
     this.changeDetectorRef.detectChanges();
   }
 
@@ -626,7 +636,6 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
 
   async getBargeList() {
     this.bargeList$ =  await this.legacyLookupsDatabase.getBargeTable();
-    console.log(this.bargeList$);
   }
 
   
@@ -647,7 +656,6 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
     //       map(value => typeof value === 'string' ? value : value.name),
     //       map(name => name ? this._filter(name) : this.options.slice(0, 10))
     // ); 
-    console.log(this.filteredOptions);
   }
 
   onPageChange(page: number): void {
@@ -670,14 +678,12 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
   }
 
   public filterOrderNumberList() {
-    console.log(this.formValues);
     if (this.formValues.order) {
       const filterValue = this.formValues.order.name ? this.formValues.order.name : this.formValues.order;
       if (this.options) {
         const list =  this.options.filter((item: any) => {
             return item.name.toLowerCase().includes(filterValue.toLowerCase());
         }).splice(0,10);
-        console.log(list);
         return list;
       } else {
         return [];
@@ -693,8 +699,10 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
      filterValue = this.formValues.barge.name ? this.formValues.barge.name.toLowerCase() : this.formValues.barge.toLowerCase();
     }
     if (this.bargeList$) {
-    return this.bargeList$.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0)
-      .slice(0, 10);
+      const list =  this.bargeList$.filter((item: any) => {
+        return item.name.toLowerCase().includes(filterValue.toLowerCase());
+      }).splice(0,10);
+      return list;
     } else {
       return [];
     }
@@ -722,7 +730,7 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
       }
       this.getRelatedDeliveries(orderId);
       this.getDeliveryOrderSummary(orderId);
-      console.log(this.formValues);
+      this.onOrderNumberChanged.emit(true);
     }
   }
 
@@ -742,6 +750,8 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
       this.getRelatedDeliveries(orderId);
       this.getDeliveryOrderSummary(orderId);
     }
+
+    this.onOrderNumberChanged.emit(true);
   }
 
   getOrder(orderId: number) {
@@ -758,25 +768,30 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
         })
     )
     .subscribe((response: any) => {
-      this.formValues.sellerName = response.seller.name;
-      this.formValues.port = response.location.name;
-      this.formValues.OrderBuyer = response.buyer.name;
-      this.formValues.temp.orderedProducts = response.products;
-      this.formValues.deliveryProducts = [];
+      if (typeof response == 'string') {
+        this.toastr.error('An error has occurred!');
+      } else {
+        this.formValues.sellerName = response.seller.name;
+        this.formValues.port = response.location.name;
+        this.formValues.OrderBuyer = response.buyer.name;
+        this.formValues.temp.orderedProducts = response.products;
+        this.formValues.deliveryProducts = [];
 
-      //set order info for delivery
-      this.formValues.info.vesselName = response.vessel.name;
-      this.formValues.info.locationName = response.location.name;
-      this.formValues.info.eta = response.eta;
-      this.formValues.info.etb = response.etb;
-      if (response.surveyorCounterparty) {
-          this.formValues.surveyorName = response.surveyorCounterparty.name;
+        //set order info for delivery
+        this.formValues.info.vesselName = response.vessel.name;
+        this.formValues.info.locationName = response.location.name;
+        this.formValues.info.eta = response.eta;
+        this.formValues.info.etb = response.etb;
+        if (response.surveyorCounterparty) {
+            this.formValues.surveyorName = response.surveyorCounterparty.name;
+        }
+        this.changeDetectorRef.markForCheck();
       }
-      this.changeDetectorRef.markForCheck();
     });
   }
 
   getRelatedDeliveries(orderId: number) {
+    this.relatedDeliveries = [];
     this.openedScreenLoaders += 1;
     let duplicate = false;
     this.deliveryService
@@ -791,7 +806,7 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
     )
     .subscribe((response: any) => {
         if (typeof response == 'string') {
-          console.log('eroare');
+          this.toastr.error('An error has occurred!');
         } else {
           response.forEach((val, key) => {
             this.relatedDeliveries.forEach((val2, key2) => {
@@ -823,49 +838,54 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
         })
     )
     .subscribe((response: any) => {
-      console.log(this._entityId);
-      if (typeof this.formValues.temp == 'undefined') {
-        this.formValues.temp = {};
-      }
-      this.formValues.temp.deliverysummary = response;
-      this.formValues.temp.deliverySummaryProducts = [ ... response.products];
-      if (!parseInt(this._entityId)) {
-        // new delivery
-        // also set pricing date for delivery to delivery date if null
-        this.formValues.deliveryProducts.forEach((deliveryProd, _) => {
-          this.formValues.temp.deliverysummary.products.forEach((summaryProd, _) => {
-              if (summaryProd.id == deliveryProd.orderProductId) {
-                  if (summaryProd.pricingDate != null) {
-                      deliveryProd.pricingDate = summaryProd.pricingDate;
-                  } else {
-                      deliveryProd.pricingDate = this.formValues.temp.deliverysummary.deliveryDate;
-                  }
-                  if (summaryProd.convFactorOptions) {
-                      deliveryProd.convFactorOptions = summaryProd.convFactorOptions;
-                  }
-                  if (summaryProd.convFactorMassUom != null) {
-                      deliveryProd.convFactorMassUom = summaryProd.convFactorMassUom;
-                  }
-                  if (summaryProd.convFactorValue != null) {
-                      deliveryProd.convFactorValue = summaryProd.convFactorValue;
-                  }
-                  if (summaryProd.convFactorVolumeUom != null) {
-                      deliveryProd.convFactorVolumeUom = summaryProd.convFactorVolumeUom;
-                  }
-              }
-          });
-        });
-        if (this.deliverySettings.deliveryDateFlow.internalName == 'Yes') {
-          this.formValues.deliveryDate = this.formValues.temp.deliverysummary.deliveryDate;
+      if (typeof response == 'string') {
+        this.toastr.error('An error has occurred!');
+      } else {
+        if (typeof this.formValues.temp == 'undefined') {
+          this.formValues.temp = {};
         }
+        this.formValues.temp.deliverysummary = response;
+        this.formValues.temp.deliverySummaryProducts = [ ... response.products];
+        if (!parseInt(this._entityId)) {
+          // new delivery
+          // also set pricing date for delivery to delivery date if null
+          this.formValues.deliveryProducts.forEach((deliveryProd, _) => {
+            this.formValues.temp.deliverysummary.products.forEach((summaryProd, _) => {
+                if (summaryProd.id == deliveryProd.orderProductId) {
+                    if (summaryProd.pricingDate != null) {
+                        deliveryProd.pricingDate = summaryProd.pricingDate;
+                    } else {
+                        deliveryProd.pricingDate = this.formValues.temp.deliverysummary.deliveryDate;
+                    }
+                    if (summaryProd.convFactorOptions) {
+                        deliveryProd.convFactorOptions = summaryProd.convFactorOptions;
+                    }
+                    if (summaryProd.convFactorMassUom != null) {
+                        deliveryProd.convFactorMassUom = summaryProd.convFactorMassUom;
+                    }
+                    if (summaryProd.convFactorValue != null) {
+                        deliveryProd.convFactorValue = summaryProd.convFactorValue;
+                    }
+                    if (summaryProd.convFactorVolumeUom != null) {
+                        deliveryProd.convFactorVolumeUom = summaryProd.convFactorVolumeUom;
+                    }
+                }
+            });
+          });
+          if (this.deliverySettings.deliveryDateFlow.internalName == 'Yes') {
+            this.formValues.deliveryDate = this.formValues.temp.deliverysummary.deliveryDate;
+          }
+        }
+        this.orderProductsByProductType('summaryProducts');
+        if (this.formValues.deliveryProducts) {
+          this.setProductsPhysicalSupplier();
+          this.setQtyUoms();
+        }
+        //this.changeInputBdn.emit(this.formValues);
+        this.changeDetectorRef.markForCheck();
+
       }
-      this.orderProductsByProductType('summaryProducts');
-      if (this.formValues.deliveryProducts) {
-        this.setProductsPhysicalSupplier();
-        this.setQtyUoms();
-      }
-      //this.changeInputBdn.emit(this.formValues);
-      this.changeDetectorRef.markForCheck();
+
 
     });
   }
@@ -932,7 +952,6 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
       } else if (field == 'bargeAlongside') {
         this.isBargeAlongsideDateInvalid = false;
       }
-      console.log(beValue);
     } else {
       if (field == 'deliveryDate') {
         this.isDeliveryDateInvalid = true;
@@ -947,9 +966,27 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
     }
 
   }
+  
 
   formatDateForBe(value) {
-    let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
-    return `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`
+    if (value) {
+      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+      return `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+    } else {
+      return null;
+    }
+  }
+
+  getRelatedDeliveryLink(deliveryId) {
+    return `${this.baseOrigin}/v2/delivery/delivery/${deliveryId}/details`;
+  }
+
+  setBarge(value) {
+    let findBarge = _.find(this.bargeList, function(object){
+      return object.id == value;
+    });
+    if (findBarge != -1) {
+      this.formValues.barge = findBarge;
+    }
   }
 }

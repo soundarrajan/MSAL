@@ -472,3 +472,30 @@
   padding-left: 15px;
 }
 
+
+.inline-dropdown .mat-form-field {
+  height: 25px  !important;
+}
+
+.display-none-product-variance {
+  display: none;
+}
+
+.inline-dropdown-select-container.mat-select-panel {
+  min-width: calc(100% + 12px) !important;
+  transform: translateX(4px) !important
+}
+
+.inline-dropdown-select-container.mat-select-panel{
+  position: relative;
+  top: 26px;
+}
+
+.inline-dropdown-select-container .mat-option {
+  height: 20px  !important;
+}
+
+.product-information-container {
+  margin-left: 0px;
+  margin-right: 0px;
+}

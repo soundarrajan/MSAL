@@ -57,6 +57,8 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import _ from 'lodash';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { DecimalPipe } from '@angular/common';
+import { MatSelect } from '@angular/material/select';
+import { throws } from 'assert';
 
 export const PICK_FORMATS = {
   display: {
@@ -97,10 +99,18 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
   summaryProducts: any;
   quantityFormat: string;
   @Input() eventsSaveButton: Observable<void>;
+  @Input() eventsChangedOrderNumber: Observable<void>;
   @Input() eventsConversionInfoData: Observable<void>;
   eventsSaveButtonSubscription: any;
   buttonClicked: any;
   eventsConversionInfoDataSubscription: Subscription;
+  eventsOrderNumberSubscription: Subscription;
+  uomVolume: any;
+  uomMass: any;
+  pumpingRateUom: any;
+  expandProductPopUp: any = false;
+  @ViewChild('mySelect') mySelect: MatSelect;
+  searchProductInput: any;
 
   @Input('quantityCategory') set _setQuantityCategory(quantityCategory) { 
     if (!quantityCategory) {
@@ -109,11 +119,32 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
     this.quantityCategory = quantityCategory;
   }
 
+  @Input('pumpingRateUom') set _setPumpingRateUom(pumpingRateUom) { 
+    if (!pumpingRateUom) {
+      return;
+    } 
+    this.pumpingRateUom = pumpingRateUom;
+  }
+
   @Input('uoms') set _setUoms(uoms) { 
     if (!uoms) {
       return;
     } 
     this.uoms = uoms;
+  }
+
+  @Input('uomVolume') set _setUomVolume(uomVolume) { 
+    if (!uomVolume) {
+      return;
+    } 
+    this.uomVolume = uomVolume;
+  }
+
+  @Input('uomMass') set _setUomMass(uomMass) { 
+    if (!uomMass) {
+      return;
+    } 
+    this.uomMass = uomMass;
   }
 
   @Input('conversionInfoData') set _setConversionInfoData(conversionInfoData) { 
@@ -189,17 +220,20 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
     this.eventsSubscription = this.events.subscribe((data) => this.setDeliveryForm(data));
     this.eventsSaveButtonSubscription = this.eventsSaveButton.subscribe((data) => this.setRequiredFields(data));
     this.eventsConversionInfoDataSubscription = this.eventsConversionInfoData.subscribe((data) => this.setConversionInfo(data));
+    this.eventsOrderNumberSubscription = this.eventsChangedOrderNumber.subscribe((data) => this.orderNumberChanged(data));
+  }
+
+  orderNumberChanged(data) {
+    this.hideDropdown = !data;
   }
 
   setConversionInfo(conversionInfoData) {
     this.conversionInfoData = conversionInfoData;
     this.conversionDataInfoSubject.next(this.conversionInfoData);
-    console.log(this.conversionInfoData);
   }
 
   setRequiredFields(data) {
     this.buttonClicked = data;
-    console.log('check required fields');
     this.requiredInfoSubject.next(this.buttonClicked);
   }
 
@@ -207,13 +241,12 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
     if (!form) {
       return;
     }
-    console.log('aici');
-    console.log(form);
     this.formValues = form;
     if (this.formValues.temp.deliverysummary) {
       this.formValues.temp.deliverySummaryProducts = [ ... this.formValues.temp.deliverysummary.products];
     }
     this.deliveryFormSubject.next(this.formValues);
+    this.hideDropdown = false;
   }
 
 
@@ -236,7 +269,6 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
 
   addSelectedProductInDelivery(selectedProductToAddInDelivery) {
 
-    console.log(selectedProductToAddInDelivery);
     if (!this.formValues.deliveryProducts) {
         this.formValues.deliveryProducts = [];
     }
@@ -279,13 +311,19 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
         })
       )
       .subscribe((result: any) => {
-        newProductData.qualityHeader = {};
-        newProductData.qualityParameters = result;
-        console.log(newProductData);
-        this.changeDetectorRef.detectChanges();
-        this.deliveryFormSubject.next(this.formValues);
-        console.log(this.formValues);
-
+        if (typeof result == 'string') {
+          this.toastr.error(result);
+        } else {
+          newProductData.qualityHeader = {};
+          newProductData.qualityParameters = result;
+          if (newProductData.qualityParameters) {
+            newProductData.qualityParameters.forEach((productParameter, key1) => {
+              productParameter.specParameter.name = this.decodeSpecificField(productParameter.specParameter.name);
+            });
+          }
+          this.changeDetectorRef.detectChanges();
+          this.deliveryFormSubject.next(this.formValues);
+        }
       });
       this.openedScreenLoaders += 1;
       this.deliveryService
@@ -299,12 +337,14 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
         })
       )
       .subscribe((result: any) => {
-        newProductData.quantityHeader = {};
-        newProductData.quantityParameters = result;
-        console.log(newProductData);
-        this.deliveryFormSubject.next(this.formValues);
-        this.changeDetectorRef.detectChanges();
-        console.log(this.formValues);
+        if (typeof result == 'string') {
+          this.toastr.error(result);
+        } else {
+          newProductData.quantityHeader = {};
+          newProductData.quantityParameters = result;
+          this.deliveryFormSubject.next(this.formValues);
+          this.changeDetectorRef.detectChanges();
+        }
       });
       newProductData.confirmedQuantityAmount = this.quantityFormatValue(selectedProductToAddInDelivery.orderedQuantity.amount);
       newProductData.confirmedQuantityUom = selectedProductToAddInDelivery.orderedQuantity.uom;
@@ -349,7 +389,6 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
       this.formValues.deliveryProducts.push(newProductData);
       //this.changeDetectorRef.detectChanges();
      // this.deliveryFormSubject.next(this.formValues);
-      console.log(this.formValues);
       this.openedScreenLoaders += 1;
       this.deliveryService
         .loadConversionInfo(selectedProductToAddInDelivery.product.id)
@@ -362,15 +401,20 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
           })
         )
         .subscribe(response => {
-          this.conversionInfoData[this.selectedProduct] = response;
-          let productIndex = this.formValues.deliveryProducts.length - 1;
-          this.selectedProduct = productIndex;
-          this.calculateVarianceAndReconStatus(productIndex);
-          // this.orderProductsByProductType('deliveryProducts');
-          this.orderProductsByProductType('summaryProducts');
-          this.changeDetectorRef.detectChanges();
-          this.deliveryFormSubject.next(this.formValues);
-          //this.conversionDataInfoSubject.next(this.conversionInfoData);
+          if (typeof response == 'string') {
+            this.toastr.error(response);
+          } else {
+            let productIndex = this.formValues.deliveryProducts.length - 1;
+            this.selectedProduct = productIndex;
+            this.selectProduct(productIndex);
+            this.conversionInfoData[this.selectedProduct] = response;
+            this.calculateVarianceAndReconStatus(productIndex);
+            // this.orderProductsByProductType('deliveryProducts');
+            this.orderProductsByProductType('summaryProducts');
+            this.changeDetectorRef.detectChanges();
+            this.deliveryFormSubject.next(this.formValues);
+            //this.conversionDataInfoSubject.next(this.conversionInfoData);
+          }
         });
       
     } else{
@@ -493,7 +537,6 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
             }
           });
         } else {
-          console.log('same');
           var mfm_convFact = 1;
         }
         var mfm_qty = convertedFields.VesselFlowMeter;
@@ -744,9 +787,75 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
 
   search(value: string): void {
     let filterSummaryProducts = this.formValues.temp.deliverysummary.products.filter((summaryProd) => summaryProd.product.name.toLowerCase().includes(value));
-    console.log(filterSummaryProducts);
     this.formValues.temp.deliverySummaryProducts = [ ... filterSummaryProducts];
   }
 
+  deleteDeliveryProduct(productId, productIdx) {
+    if (this.formValues.deliveryStatus) {
+      if (this.formValues.deliveryStatus.name == 'Verified') {
+        return;
+      }
+    }
+    if (typeof productId == 'undefined') {
+      // simply erase product from list
+      let okay = false;
+      this.formValues.deliveryProducts.forEach((v, k) => {
+          if (typeof v.id == 'undefined') {
+              if(k == productIdx) {
+                  okay = true;
+              }
+          }
+      });
+
+      if(okay) {
+        // product is there and not saved
+        this.formValues.deliveryProducts.splice(productIdx, 1);
+        this.selectedProduct = 0;
+      }
+    } else {
+      // make call to delete product
+      this.toastr.info('Deleting product...');
+      this.spinner.show();
+      this.deliveryService
+      .deleteDeliveryProduct(productId)
+      .pipe(
+        finalize(() => {
+          this.spinner.hide();
+          
+        })
+      )
+      .subscribe(response => {
+        if (typeof response == 'string') {
+          this.toastr.error(response);
+        } else {
+          this.toastr.success('Product deleted!');
+          this.formValues.deliveryProducts.splice(productIdx, 1);
+          this.selectedProduct = 0;
+        }
+      });
+    }
+
+  }
+
+  decodeSpecificField(modelValue) {
+    let decode = function(str) {
+      return str.replace(/&#(\d+);/g, function(match, dec) {
+          return String.fromCharCode(dec);
+      });
+    };
+    return decode(_.unescape(modelValue));
+  }
+
+
   
+  openAddProductSelect() {
+    this.searchProductInput = null;
+    if (this.formValues.temp.deliverysummary) {
+      this.formValues.temp.deliverySummaryProducts = [ ... this.formValues.temp.deliverysummary.products];
+      this.changeDetectorRef.detectChanges();
+    }
+    this.mySelect.close();
+    this.mySelect.open();
+
+  }
 }

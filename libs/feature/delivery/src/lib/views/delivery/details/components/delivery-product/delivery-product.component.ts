@@ -60,6 +60,7 @@ import { IDeliveryTenantSettings } from 'libs/feature/delivery/src/lib/core/sett
 import { DecimalPipe } from '@angular/common';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { throws } from 'assert';
 
 export const PICK_FORMATS = {
   display: {
@@ -140,6 +141,10 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
   isPricingEventDateInvalid: boolean;
   buttonClicked: any;
   events2Subscription: Subscription;
+  uomVolume: any;
+  uomMass: any;
+  deliveredQuantityUoms: any;
+  pumpingRateUom: any;
 
 
   @Input('finalQuantityRules') set _setFinalQuantityRules(finalQuantityRules) { 
@@ -162,12 +167,34 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     } 
     this.quantityCategory = quantityCategory;
   }
+  
+  @Input('pumpingRateUom') set _setPumpingRateUom(pumpingRateUom) { 
+    if (!pumpingRateUom) {
+      return;
+    } 
+    this.pumpingRateUom = pumpingRateUom;
+  }
 
   @Input('uoms') set _setUoms(uoms) { 
     if (!uoms) {
       return;
     } 
     this.uoms = uoms;
+    this.deliveredQuantityUoms = uoms;
+  }
+
+  @Input('uomVolume') set _setUomVolume(uomVolume) { 
+    if (!uomVolume) {
+      return;
+    } 
+    this.uomVolume = uomVolume;
+  }
+
+  @Input('uomMass') set _setUomMass(uomMass) { 
+    if (!uomMass) {
+      return;
+    } 
+    this.uomMass = uomMass;
   }
 
   @Input('conversionInfoData') set _setConversionInfoData(conversionInfoData) { 
@@ -253,7 +280,13 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     if (this.formValues.deliveryProducts[this.deliveryProductIndex].finalQuantityAmount) {
       this.formValues.deliveryProducts[this.deliveryProductIndex].finalQuantityAmount = this.quantityFormatValue(this.formValues.deliveryProducts[this.deliveryProductIndex].finalQuantityAmount);
     }
-    console.log(this.formValues.deliveryProducts);
+    if (this.formValues.deliveryProducts[this.deliveryProductIndex].agreedQuantityAmount) {
+      this.formValues.deliveryProducts[this.deliveryProductIndex].agreedQuantityAmount = this.quantityFormatValue(this.formValues.deliveryProducts[this.deliveryProductIndex].agreedQuantityAmount);
+    }
+    if (!this.formValues.deliveryProducts[this.deliveryProductIndex].fuelManifoldTemperatureUom) {
+      this.formValues.deliveryProducts[this.deliveryProductIndex].fuelManifoldTemperatureUom  = 'Celsius';
+    }
+    this.setDeliveredQuantityUomList(this.deliveryProductIndex);
   }
 
  
@@ -290,12 +323,6 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     sanitizer: DomSanitizer
   ) {
     super(changeDetectorRef);
-    iconRegistry.addSvgIcon(
-      'data-picker-gray',
-      sanitizer.bypassSecurityTrustResourceUrl('../../../../../../../../../../assets/layout/images/pages/calendar-dark.svg'));
-    iconRegistry.addSvgIcon(
-      'data-picker-white',
-      sanitizer.bypassSecurityTrustResourceUrl('../../../../../../../../../../assets/layout/images/pages/calendar-dark.svg'));
     this.autocompleteProducts = knownMastersAutocomplete.products;
     this.autocompletePhysicalSupplier = knownMastersAutocomplete.physicalSupplier;
     this.dateFormats.display.dateInput = this.format.dateFormat;
@@ -317,7 +344,6 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
 
   setRequiredFields(data) {
     this.buttonClicked = data;
-    console.log('check required fields');
   }
 
   setConversionDataInfo(conversionInfo) {
@@ -326,17 +352,16 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     }
 
     this.conversionInfoData = conversionInfo;
-    console.log(this.conversionInfoData);
   }
 
   setDeliveryForm(form){
     if (!form) {
       return;
     }
-    console.log('aici');
     this.formValues = form;
-    console.log(this.formValues);
-  
+    if (this.formValues.deliveryProducts) {
+      this.setDeliveredQuantityUomList(this.deliveryProductIndex);
+    }
     //this.changeDetectorRef.detectChanges();
   }
 
@@ -363,17 +388,14 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
 
   getUomList() {
     this.uomList$ =  this.legacyLookupsDatabase.getUomTable();
-    console.log(this.uomList$);
   }
 
   async getProductList() {
     this.productList = await this.legacyLookupsDatabase.getProductList();
-    console.log(this.productList);
   }
 
   async getPhysicalSupplierList() {
     this.physicalSupplierList = await this.legacyLookupsDatabase.getPhysicalSupplierList();
-    console.log(this.physicalSupplierList);
   }
 
   
@@ -389,7 +411,6 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
       };
       this.formValues.deliveryProducts[this.deliveryProductIndex].physicalSupplier = obj; 
       this.changeDetectorRef.detectChanges();   
-      console.log(this.formValues.deliveryProducts[this.deliveryProductIndex]);
     }
   }
 
@@ -405,13 +426,11 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
       };
       this.formValues.deliveryProducts[this.deliveryProductIndex].product  = obj;
       this.changeDetectorRef.detectChanges();
-      console.log(this.formValues.deliveryProducts[this.deliveryProductIndex]);
     }
   }
 
   filterProductList() {
     const filterValue = this.formValues.deliveryProducts[this.deliveryProductIndex].product.name ? this.formValues.deliveryProducts[this.deliveryProductIndex].product.name.toLowerCase() : this.formValues.deliveryProducts[this.deliveryProductIndex].product.toLowerCase();
-    console.log(filterValue);
     if (this.productList) {
       return this.productList.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0)
         .slice(0, 10);
@@ -423,7 +442,6 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
   filterPhysicalSupplierList() {
     if (this.formValues.deliveryProducts[this.deliveryProductIndex].physicalSupplier) {
       const filterValue = this.formValues.deliveryProducts[this.deliveryProductIndex].physicalSupplier.name ? this.formValues.deliveryProducts[this.deliveryProductIndex].physicalSupplier.name.toLowerCase() : this.formValues.deliveryProducts[this.deliveryProductIndex].physicalSupplier.toLowerCase();
-      console.log(filterValue);
       if (this.physicalSupplierList) {
         return this.physicalSupplierList.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0)
           .slice(0, 10);
@@ -448,14 +466,12 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
   }
 
   valueChange(value){
-    console.log(value);
     this.formValues.deliveryProducts[this.deliveryProductIndex].confirmedQuantityAmount  = value;
   
   }
 
   setVarianceQty(qtyToChange, rule) {
     // sets buyer/seller qty for all products
-    console.log(rule);
     if (qtyToChange == 'seller') {
       this.formValues.deliveryProducts.forEach((val, key) => {
         val.sellerQuantityType = rule;
@@ -564,7 +580,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
         this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Amount`] != null) {
         // quantity exists, set it
         this.formValues.deliveryProducts[productIdx].finalQuantityUom = this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Uom`];
-        this.formValues.deliveryProducts[productIdx].finalQuantityAmount = this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Amount`];
+        this.formValues.deliveryProducts[productIdx].finalQuantityAmount = this.quantityFormatValue(this.formValues.deliveryProducts[productIdx][`${rule.deliveryMapping }Amount`]);
         dataSet = true;
       }
       if (dataSet) {
@@ -692,7 +708,6 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
             }
           });
         } else {
-          console.log('same');
           var mfm_convFact = 1;
         }
         var mfm_qty = convertedFields.VesselFlowMeter;
@@ -832,7 +847,6 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
         // if variance is null, set color to white
         this.formValues.temp.variances[`mfm_color_${ idx}`] = 'white';
     }
-    console.log(this.formValues.temp.variances);
   }
 
   quantityFormatValue(value) {
@@ -856,7 +870,6 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
       if (field == 'pricingEventDate') {
         this.isPricingEventDateInvalid = false;
       } 
-      console.log(beValue);
     } else {
       if (field == 'pricingEventDate') {
         this.isPricingEventDateInvalid = true;
@@ -867,13 +880,66 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
   }
 
   formatDateForBe(value) {
-    let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
-    return `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`
+    if (value) {
+      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+      return `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+    } else {
+      return null;
+    }
   }
 
 
-  submitFunction(form) {
+  setDeliveredQuantityUomList(deliveryProductIndex) {
+    let bdnUom = this.formValues.deliveryProducts[deliveryProductIndex].bdnQuantityUom;
+    if (bdnUom) {
+      let verifyIfBdnUomIsMassUom = _.find(this.uomMass, function(object) {
+        return object.name == bdnUom.name && object.id == bdnUom.id;
+      });
+      if (verifyIfBdnUomIsMassUom) {
+        if (this.uomVolume) {
+          this.deliveredQuantityUoms = [...this.uomVolume];
+        }
+      } else {
+        if (this.uomMass) {
+          this.deliveredQuantityUoms = [...this.uomMass];
+        }
+      }
+    }
+  }
 
+  calculatePumpingRate(timeString, prodIndex) {
+    if (typeof timeString == 'undefined' || typeof this.formValues.deliveryProducts == 'undefined' || !this.formValues.deliveryProducts.length) {
+      return;
+    }
+    if (typeof this.formValues.deliveryProducts[prodIndex].bdnQuantityUom == 'undefined' || this.formValues.deliveryProducts[prodIndex].bdnQuantityUom == null || this.formValues.deliveryProducts[prodIndex].bdnQuantityAmount == null) {
+      return;
+    }
+    if (typeof this.formValues.pumpingRate == 'undefined') {
+      this.formValues.pumpingRate = '';
+      this.formValues.pumpingRateUom = '';
+    }
+    var pumpingTime = (parseInt(timeString.split(':')[0]) * 60 + parseInt(timeString.split(':')[1])) / 60;
+    this.formValues.pumpingRate = this.formValues.deliveryProducts[prodIndex].bdnQuantityAmount / pumpingTime;
+    this.pumpingRateUom.forEach((val, key) => {
+      if (val.name.split('/')[0] == this.formValues.deliveryProducts[prodIndex].bdnQuantityUom.name) {
+        this.formValues.pumpingRateUom = val;
+      }
+    });
+  };
+
+
+  // Only Number
+  keyPressNumber(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (inp == '.' || inp == ',') {
+      return true;
+    }
+    if (/^[-,+]*\d{1,6}(,\d{3})*(\.\d*)?$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
   }
 
 

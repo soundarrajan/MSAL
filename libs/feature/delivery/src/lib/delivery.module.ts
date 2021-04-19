@@ -140,6 +140,11 @@ import { SplitDeliveryModalComponent } from './views/delivery/details/components
 import { QuantityCategoryRouteResolver } from './views/delivery/details/quantity-category-route.resolver';
 import { NumberOnlyDirective } from './views/delivery/details/directives/number-only.directive';
 import { BreadcrumbsModule } from '@shiptech/core/ui/components/breadcrumbs/breadcrumbs.module';
+import { UomMassRouteResolver } from './views/delivery/details/uom-mass-route.resolver';
+import { UomVolumeRouteResolver } from './views/delivery/details/uom-volume-route.resolver';
+import { PumpingRateUomRouteResolver } from './views/delivery/details/pumping-rate-uom-route.resolver';
+import { SampleSourceRouteResolver } from './views/delivery/details/sample-source-route.resolver';
+import { StaticListsRouteResolver } from './views/delivery/details/static-lists-route.resolver';
 
 
 @NgModule({
@@ -286,6 +291,11 @@ import { BreadcrumbsModule } from '@shiptech/core/ui/components/breadcrumbs/brea
     ClaimTypeRouteResolver,
     ScheduleDashboardLabelsRouteResolver,
     QuantityCategoryRouteResolver,
+    UomVolumeRouteResolver,
+    UomMassRouteResolver,
+    PumpingRateUomRouteResolver,
+    SampleSourceRouteResolver,
+    StaticListsRouteResolver,
     {
       provide: QUANTITY_CONTROL_API_SERVICE,
       useClass: environment.production

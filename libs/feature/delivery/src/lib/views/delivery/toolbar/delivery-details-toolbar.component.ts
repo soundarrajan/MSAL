@@ -44,8 +44,13 @@ export class DeliveryDetailsToolbarComponent
       return;
     } 
     this.navBar = navBar;
+    let params = {
+      'deliveryId': this.deliveryId
+    }
     if (this.deliveryId) {
-      this.setNavIds(this.deliveryId, this.navBar);
+      this.setNavIds(params, this.navBar);
+      this.createNavigationItems(this.navBar);
+      this.markNavigationItems();
     }
   }
   
@@ -66,7 +71,6 @@ export class DeliveryDetailsToolbarComponent
               private appConfig: AppConfig,
               private chRef: ChangeDetectorRef) {
       this.baseOrigin = new URL(window.location.href).origin;
-      console.log(this.baseOrigin);
   }
 
   ngOnInit(): void {
@@ -136,7 +140,6 @@ export class DeliveryDetailsToolbarComponent
   createNavigationItems(payload) {
      // indexStatus = calculate if is previous, current or next
     if(typeof payload != 'undefined') {
-      console.log('the payload', payload);
     }
 
     var navigationItems = [
@@ -268,7 +271,6 @@ export class DeliveryDetailsToolbarComponent
       ]
     }
     this.navigationItems = [...navigationItems, ...shiptechLiteTransactions];
-    console.log(this.navigationItems);
 
   }
 

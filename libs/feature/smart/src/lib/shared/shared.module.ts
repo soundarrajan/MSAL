@@ -40,13 +40,14 @@ import { VesselArrivalsComponent } from './vessel-arrivals/vessel-arrivals.compo
 import { PortInfoComponent } from './port-info/port-info.component';
 import { AuthGaurdService } from '../services/auth-guard.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [HeaderComponent, FilterchipsComponent, MapPanelComponent, SmartOperatorComponent, OlMapComponent, VesselDetailsComponent, HeaderPanelComponent,
     AGGridCellRendererComponent, AGGridCellDataComponent, VesselInfoComponent, AuditLogComponent, RequestsDetailsComponent, CommentsComponent, NewRequestComponent,
     CurrentBunkeringPlanComponent, PreviousBunkeringPlanComponent, HeaderPanelComponent, VesselPopupComponent, PortPopupComponent, NotificationsComponent, ConfirmationPopupComponent,
     TableLegendComponent, CustomStepperComponent, SmartMessengerComponent, SearchVesselComponent, BunkeringPlanComponent, BunkerPlanComponent, FilterPipe, WarningComponent,
-    PortMenuComponent, VesselMenuComponent, VesselArrivalsComponent, PortInfoComponent, HoverMenuComponent],
+    PortMenuComponent, VesselMenuComponent, VesselArrivalsComponent, PortInfoComponent, HoverMenuComponent, ConfirmDialogComponent],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -62,8 +63,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     VesselInfoComponent, AuditLogComponent, RequestsDetailsComponent, CommentsComponent, NewRequestComponent, CurrentBunkeringPlanComponent,
     PreviousBunkeringPlanComponent, VesselPopupComponent, PortPopupComponent, NotificationsComponent, ConfirmationPopupComponent, TableLegendComponent,
     CustomStepperComponent, SmartMessengerComponent, SearchVesselComponent, BunkeringPlanComponent, BunkerPlanComponent, FilterPipe, WarningComponent,
-    PortMenuComponent, VesselMenuComponent, PortInfoComponent, VesselArrivalsComponent, HoverMenuComponent],
+    PortMenuComponent, VesselMenuComponent, PortInfoComponent, VesselArrivalsComponent, HoverMenuComponent, ConfirmDialogComponent],
   providers: [LocalService, LoggerService, AuthGaurdService],
-  entryComponents: [VesselDetailsComponent, ConfirmationPopupComponent, WarningComponent]
+  entryComponents: [VesselDetailsComponent, ConfirmationPopupComponent, WarningComponent, ConfirmDialogComponent]
 })
 export class SharedModule { }

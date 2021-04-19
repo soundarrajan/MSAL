@@ -1,35 +1,41 @@
 <div class="col-md-12 row detail-container">
-  <div class="col-md-5 vessel-details">
-    <div class="col-md-12 row vessel-details-container">
-      <div class="col-md-3">
+  <div class="col-md-5 vessel-details vessel-details-component" style="display: flex;justify-content: flex-start;">
+    <div class="badge-header">
+      <div>
+        <span class="label">
           <span class="dot-image"></span> 
           Vessel 
+        </span>
+        <div class="value order-details"  *ngIf="formValues.info && formValues.info.vesselName">
+          {{ formValues.info.vesselName }}
+        </div>
       </div>
-      <div class="col-md-3">
-        <span class="dot-image"></span> 
+      <div> 
+        <span class="label">
+          <span class="dot-image"></span> 
           Port 
+        </span>
+        <div class="value order-details"  *ngIf="formValues.info && formValues.info.locationName">
+          {{ formValues.info.locationName }}
+        </div>
       </div>
-      <div class="col-md-3">
-        <span class="dot-image"></span> 
-        Eta
+      <div>
+        <span class="label">
+          <span class="dot-image"></span> 
+            ETA
+        </span>
+        <div class="value order-details" *ngIf="formValues.info && formValues.info.eta">
+          {{ formatDate(formValues.info.eta)  }}  
+        </div>
       </div>
-      <div class="col-md-3">
-        <span class="dot-image"></span> 
-        Etb
-      </div>
-    </div>
-    <div class="col-md-12 row vessel-details-container" *ngIf="formValues.info">
-      <div class="col-md-3 order-details" *ngIf="formValues.info.vesselName">
-        {{ formValues.info.vesselName }} 
-      </div>
-      <div class="col-md-3 order-details" *ngIf="formValues.info.locationName">
-        {{ formValues.info.locationName }}  
-      </div>
-      <div class="col-md-3 order-details" *ngIf="formValues.info.eta">
-        {{ formatDate(formValues.info.eta)  }}  
-      </div>
-      <div class="col-md-3 order-details" *ngIf="formValues.info.etb">
-        {{ formatDate(formValues.info.etb) }}  
+      <div>
+        <span class="label">
+          <span class="dot-image"></span> 
+            ETB
+        </span>
+        <div class="value order-details"  *ngIf="formValues.info && formValues.info.etb">
+          {{ formatDate(formValues.info.etb)  }}  
+        </div>
       </div>
     </div>
   </div>
@@ -59,7 +65,7 @@
     </div>
   </div>
   <div class="col-md-4 related-deliveries-information" >
-    <div class="summaryLabel-component-v2">
+    <div class="related-deliveries-component-v2">
       <div class="row">
         <div class="col-md-12" style="display: flex;justify-content: flex-start;">
           <div class="delivery-number col-md-2">
@@ -70,48 +76,53 @@
                     <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" fill="#9E9E9E"/>
                   </svg>
                 </span>
-                Delivery Number
+                Delivery No
               </span>
-              <div *ngIf="formValues.deliveryNumber" class="value">
+              <div *ngIf="formValues.deliveryNumber" class="value white-color">
                 {{formValues.deliveryNumber}}
               </div>
             </div>
           </div>
-          <div class="delivery-number col-md-2">
+          <div class="delivery-number col-md-3">
             <div>
               <span class="label">
-                <span class="delivery-number-dot">
+                <span *ngIf="formValues.deliveryStatus" class="delivery-number-dot">
                   <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" fill="#9E9E9E" [ngStyle]="{'fill': statusColorCode }"/>
                   </svg>
                 </span>
+                <span *ngIf="!formValues.deliveryStatus" class="delivery-number-dot">
+                  <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" fill="#9E9E9E"/>
+                  </svg>
+                </span>
                 Status
               </span>
-              <div *ngIf="formValues.deliveryStatus" class="value" [ngStyle]="{'color': statusColorCode }">
+              <div *ngIf="formValues.deliveryStatus" class="value status-entity" [ngStyle]="{'backgroundColor': statusColorCode}">
                 {{formValues.deliveryStatus.name}}
-              </div>
-              <div *ngIf="!formValues.deliveryStatus" class="value">
-                DRAFT
               </div>
             </div>
           </div>
-          <div class="related-deliveries related-deliveries-information-container col-md-8 no-padding">
-            <div class="col-md-12 related-deliveries-header">
-              <div class="related-deliveries-container-header col-md-12">
-                Related deliveries
-              </div>
-            </div>
-            <div class="col-md-12 related-information">
-              <div class="related-deliveries-container col-md-6">
+          <div class="readonly-label-related-delivery related-deliveries col-md-6">
+            <div class="label-block">
+              <div class="title">Related Deliveries</div>
+              <div class="value related-deliveries-container">
                 <span *ngFor="let relatedDelivery of relatedDeliveries">
-                  <span class="related-deliveries-dot-container"></span>
-                  {{relatedDelivery.deliveryNumber}}
+                  <a *ngIf="relatedDelivery"  href="{{getRelatedDeliveryLink(relatedDelivery.deliveryId)}}">
+                    <span class="related-deliveries-dot-container"></span>
+                    {{relatedDelivery.deliveryNumber}}
+                  </a>
                 </span>
               </div>
-              <div class="related-deliveries-complete-delivery">
+            </div>
+            <div class="related-deliveries-complete-delivery label-block">
+              <div class="title" style="visibility: hidden;">Related Deliveries</div>
+              <div class="value"> 
                 <mat-checkbox 
-                      [color]="'primary'">
-                    Mark order as completed
+                  [color]="'primary'"
+                  [disabled]="formValues.deliveryStatus.name != 'Verified'"
+                  [(ngModel)]="formValues.completed">
+                  Mark order as completed
                 </mat-checkbox>
               </div>
             </div>
@@ -124,15 +135,16 @@
 <div class="col-md-12 row bdn-info">
   <div class="custom-form-field lookup-delivery-container" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
     <div class="d-flex">
-      <mat-form-field class="with-search" appearance="legacy" [ngClass]="{'date-invalid': (buttonClicked && !orderNumberField.valid)}">
+      <mat-form-field class="with-search" appearance="legacy" [ngClass]="{'date-invalid': (buttonClicked && !orderNumberField.valid && !formValues.order.name)}">
         <mat-label>Order Number</mat-label>
         <input class="free-text-field" 
                type="text"
                 matInput 
-                [(ngModel)]="formValues.order"
                 #orderNumberField="ngModel" 
+                [(ngModel)]="formValues.order"
                 [matAutocomplete]="auto"
                 placeholder="Order Number"
+                [disabled]="formValues.deliveryStatus.name == 'Verified'"
                 required>
         <mat-autocomplete #auto="matAutocomplete" 
                           class="darkPanelAuto"
@@ -144,7 +156,9 @@
             </mat-option>
         </mat-autocomplete>
       </mat-form-field>
-      <button class="search-icon" appMasterSelectorTrigger [masterSelector]="masterSelector" #masterSelectorTrigger="masterSelectorTrigger" [header]="getHeaderNameSelector()">
+      <button [disabled]="formValues.deliveryStatus.name == 'Verified'"
+            [ngClass]="{'search-icon-disabled': formValues.deliveryStatus.name == 'Verified'}"
+            class="search-icon" appMasterSelectorTrigger [masterSelector]="masterSelector" #masterSelectorTrigger="masterSelectorTrigger" [header]="getHeaderNameSelector()">
         <div class="img">
           <ng-template cdkPortal #masterSelector="cdkPortal" >
             <shiptech-shared-master-selector (selectedChange)="selectorOrderNumberSelectionChange($event); masterSelectorTrigger.close()" (shouldCloseModal)="masterSelectorTrigger.close()" [selectorType]="autocompleteVessel"
@@ -166,7 +180,8 @@
       <input [(ngModel)]="formValues.deliveryDate" 
             #deliveryDateField="ngModel" 
             matInput 
-            [matDatepicker]="deliveryDate" 
+            [matDatepicker]="deliveryDate"
+            [disabled]="formValues.deliveryStatus.name == 'Verified'" 
             (focus)="deliveryDate.open()"
             autocomplete="off"
             placeholder="Delivery Date"
@@ -174,7 +189,7 @@
             (dateChange)="formValues.deliveryDate = formatDateForBe(formValues.deliveryDate)"
             required>
             <mat-datepicker-toggle matSuffix [for]="deliveryDate">
-              <mat-icon matDatepickerToggleIcon [svgIcon]="!switchTheme?'data-picker-gray':'data-picker-white'">
+              <mat-icon matDatepickerToggleIcon class="icon-date">
               </mat-icon>
           </mat-datepicker-toggle>
           <mat-datepicker #deliveryDate [panelClass]="switchTheme?'datepicker-darktheme':''"></mat-datepicker>
@@ -183,7 +198,8 @@
   <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
     <mat-form-field class="without-search" appearance="legacy">
       <mat-label>Bdn Number</mat-label>
-      <input  [(ngModel)]="formValues.bdnInformation"
+      <input  [(ngModel)]="formValues.bdnNumber"
+            [disabled]="formValues.deliveryStatus.name == 'Verified'"
             matInput 
             autocomplete="off"
             placeholder="Bdn Number">
@@ -193,7 +209,8 @@
     <mat-form-field class="without-search" appearance="legacy"  [ngClass]="{'date-invalid': isBdnDateInvalid || (buttonClicked && !bdnDateField.valid), 'date-valid': !isBdnDateInvalid}">
       <mat-label>BDN date</mat-label>
       <input [(ngModel)]="formValues.bdnDate"
-            #bdnDateField="ngModel" 
+            #bdnDateField="ngModel"
+            [disabled]="formValues.deliveryStatus.name == 'Verified'" 
             matInput 
             required 
             [matDatepicker]="bdnDate" 
@@ -203,7 +220,7 @@
             (dateInput)="onChange($event, 'bdnDate')"
             (dateChange)="formValues.bdnDate = formatDateForBe(formValues.bdnDate)">
             <mat-datepicker-toggle matSuffix [for]="bdnDate">
-              <mat-icon matDatepickerToggleIcon [svgIcon]="!switchTheme?'data-picker-gray':'data-picker-white'">
+              <mat-icon matDatepickerToggleIcon class="icon-date">
               </mat-icon>
           </mat-datepicker-toggle>
           <mat-datepicker #bdnDate [panelClass]="switchTheme?'datepicker-darktheme':''"></mat-datepicker>
@@ -212,26 +229,21 @@
   <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
     <mat-form-field class="without-search" appearance="legacy">
         <mat-label>Barge</mat-label>
-        <input class="free-text-field" 
-          type="text"
-          matInput 
-          [(ngModel)]="formValues.barge"
-          [matAutocomplete]="auto1"
-          placeholder="Barge">
-        <mat-autocomplete #auto1="matAutocomplete" 
-                          class="darkPanelAuto"
-                          [displayWith]="displayFn">
-            <mat-option *ngFor="let option of filterBargeList()" 
-                  [value]="option">
-                {{option.name}}
-            </mat-option>
-        </mat-autocomplete>
+        <mat-select  
+          [(ngModel)]="bargeId"
+          (ngModelChange)="setBarge($event)"
+          [disabled]="formValues.deliveryStatus.name == 'Verified'"
+          [disableOptionCentering]="true"
+          panelClass="barge-select-container">
+            <mat-option *ngFor="let barge of bargeList" [value]="barge.id">{{barge.name}}</mat-option>
+        </mat-select>
     </mat-form-field>
   </div>
   <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
     <mat-form-field class="without-search" appearance="legacy"  [ngClass]="{'date-invalid':isBerthingTimeDateInvalid, 'date-valid':!isBerthingTimeDateInvalid}">
       <mat-label>Berthing time</mat-label>
       <input [(ngModel)]="formValues.berthingTime"
+            [disabled]="formValues.deliveryStatus.name == 'Verified'"
             matInput 
             [ngxMatDatetimePicker]="berthingTime"
             (focus)="berthingTime.open()"
@@ -240,7 +252,7 @@
             autocomplete="off"
             placeholder="Berthing time">
           <button mat-icon-button matSuffix (click)="berthingTime.open(); $event.stopPropagation();">
-            <mat-icon  [svgIcon]="!switchTheme?'data-picker-gray':'data-picker-white'">
+            <mat-icon  class="icon-date">
             </mat-icon>
           </button>      
           <ngx-mat-datetime-picker #berthingTime></ngx-mat-datetime-picker>
@@ -251,6 +263,7 @@
       <mat-label>Barge alongside</mat-label>
       <input [(ngModel)]="formValues.bargeAlongside"
             matInput 
+            [disabled]="formValues.deliveryStatus.name == 'Verified'"
             [ngxMatDatetimePicker]="bargeAlongside"
             (focus)="bargeAlongside.open()"
             (onInput)="onChange($event, 'bargeAlongside')" 
@@ -258,7 +271,7 @@
             autocomplete="off"
             placeholder="Barge alongside">
           <button mat-icon-button matSuffix (click)="bargeAlongside.open(); $event.stopPropagation();">
-            <mat-icon  [svgIcon]="!switchTheme?'data-picker-gray':'data-picker-white'">
+            <mat-icon  class="icon-date">
             </mat-icon>
           </button>      
           <ngx-mat-datetime-picker #bargeAlongside></ngx-mat-datetime-picker>

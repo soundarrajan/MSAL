@@ -1,6 +1,10 @@
 <div class="col-md-12">
     <div class="product-quality-header">
-        Product quality details
+        <span class="product-quality-header-name">Product quality details</span>
+        <button mat-raised-button 
+            *ngIf="formValues.temp.isShowDeliveryEmailToLabsButton"
+            class="email-to-labs"
+            (click)="sendLabsTemplateEmail(formValues.deliveryProducts[deliveryProductIndex].id)">Email to Labs</button>
     </div>
 </div>
 <div class="col-md-12  product-details-container" *ngIf="formValues.deliveryProducts[deliveryProductIndex].qualityHeader">
@@ -9,6 +13,7 @@
             <mat-label>Analysed on</mat-label>
             <input [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].qualityHeader.analysedOn" 
                   matInput 
+                  [disabled]="formValues.deliveryStatus.name == 'Verified'"
                   [matDatepicker]="analysedOnDate" 
                   (focus)="analysedOnDate.open()"
                   autocomplete="off"
@@ -16,20 +21,24 @@
                   (dateInput)="onChange($event, 'analysedOnDate')"
                   (dateChange)="formValues.deliveryProducts[deliveryProductIndex].qualityHeader.analysedOn = formatDateForBe(formValues.deliveryProducts[deliveryProductIndex].qualityHeader.analysedOn)">
                   <mat-datepicker-toggle matSuffix [for]="analysedOnDate">
-                    <mat-icon matDatepickerToggleIcon [svgIcon]="!switchTheme?'data-picker-gray':'data-picker-white'">
+                    <mat-icon matDatepickerToggleIcon class="icon-date">
                     </mat-icon>
                 </mat-datepicker-toggle>
                 <mat-datepicker #analysedOnDate [panelClass]="switchTheme?'datepicker-darktheme':''"></mat-datepicker>
           </mat-form-field>
     </div>
     <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-        <mat-form-field class="without-search" appearance="legacy">
-          <mat-label>Net specific energy</mat-label>
-          <input  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].qualityHeader.netSpecificEnergy"
-                matInput 
+        <mat-form-field class="without-search with-labels" appearance="legacy">
+            <mat-label>Net specific energy</mat-label>
+            <input  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].qualityHeader.netSpecificEnergy"
+                matInput
+                [disabled]="formValues.deliveryStatus.name == 'Verified'" 
                 autocomplete="off"
                 placeholder="Net specific energy"
-                myNumberOnly>
+                (keypress)="keyPressNumber($event)">
+            <div matSuffix class="d-flex" style="display:flex;align-items: center;">
+                <div class="label">{{formValues.deliveryProducts[deliveryProductIndex].qualityHeader.netSpecificEnergyUom}}</div>
+            </div>   
         </mat-form-field>
     </div>
     <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
@@ -37,9 +46,10 @@
           <mat-label>CCAI</mat-label>
           <input  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].qualityHeader.ccai"
                 matInput 
+                [disabled]="formValues.deliveryStatus.name == 'Verified'"
                 autocomplete="off"
                 placeholder="CCAI"
-                myNumberOnly>
+                (keypress)="keyPressNumber($event)">
         </mat-form-field>
     </div>
 </div>
@@ -111,7 +121,8 @@
                           <input [(ngModel)]="qualityParameter.bdnValue"
                                 (ngModelChange)="qualityParameter.qualityMatch = setQualityMatch(qualityParameter.bdnValue, qualityParameter.surveyValue, qualityParameter.min, qualityParameter.max)"
                                 matInput 
-                                myNumberOnly
+                                [disabled]="formValues.deliveryStatus.name == 'Verified'"
+                                (keypress)="keyPressNumber($event)"
                                 autocomplete="off"
                                 name="Product_{{ deliveryProductIndex }}_{{ qualityParameter.specParameter.name}}_BDN">
                         </mat-form-field>
@@ -123,7 +134,8 @@
                           <input [(ngModel)]="qualityParameter.surveyValue"
                                 (ngModelChange)="qualityParameter.qualityMatch = setQualityMatch(qualityParameter.bdnValue, qualityParameter.surveyValue, qualityParameter.min, qualityParameter.max)"
                                 matInput 
-                                myNumberOnly
+                                [disabled]="formValues.deliveryStatus.name == 'Verified'"
+                                (keypress)="keyPressNumber($event)"
                                 autocomplete="off"
                                 name="Product_{{ deliveryProductIndex }}_{{ qualityParameter.specParameter.name}}_SURVEY">
                         </mat-form-field>
@@ -131,11 +143,11 @@
                 </td>
                 <td style="width:12%" class="padding">
                     <!-- Variance = Survey Analysis Value – BDN Value -->
-                    <span *ngIf="!(qualityParameter.surveyValue == null && qualityParameter.bdnValue  == null)">
-                        {{ quantityFormatValue(qualityParameter.surveyValue - qualityParameter.bdnValue)}}
+                    <span *ngIf="!(qualityParameter.surveyValue == null && qualityParameter.bdnValue == null)">
+                        {{ quantityFormatValueQuality(qualityParameter.surveyValue, qualityParameter.bdnValue)}}
                     </span>
-                    <span  *ngIf="(qualityParameter.surveyValuee == null && qualityParameter.bdnValue  == null)">
-                            -
+                    <span *ngIf="qualityParameter.surveyValue == null && qualityParameter.bdnValue == null">
+                         - 
                     </span>
                 </td>
                 <td style="width:12%" >
@@ -166,11 +178,9 @@
         </tbody>
     </table>
 </div>
-<div class="col-md-12 custom-form-field product-quality-comments"  *ngIf="formValues.deliveryProducts[deliveryProductIndex].qualityHeader" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-    <mat-form-field class="without-search" appearance="legacy">
-        <mat-label>Comments</mat-label>
-        <textarea  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].qualityHeader.comments"
-            matInput 
-            autocomplete="off"></textarea>
-    </mat-form-field>
+<div style="margin-top: 10px" class="col-md-12 productQualityComments"  *ngIf="formValues.deliveryProducts[deliveryProductIndex].qualityHeader">
+    <label>Comments</label>
+    <textarea  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].qualityHeader.comments" 
+        autocomplete="off"
+        [disabled]="formValues.deliveryStatus.name == 'Verified'"></textarea>
 </div>

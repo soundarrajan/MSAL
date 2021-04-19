@@ -21,6 +21,13 @@ import { IPhysicalSupplierListRequest, IPhysicalSupplierListResponse, IProductLi
 export namespace MastersApiPaths {
   export const getProductList = () => `api/masters/products/list`;
   export const getPhysicalSupplierList = () => `api/masters/counterparties/listByTypes`;
+  export const getSellerList = () => `api/masters/counterparties/listByTypes`;
+  export const getCompanyList = () => `api/masters/companies/list`;
+  export const getSystemInstumentList = () => `api/masters/systeminstruments/list`;
+  export const getCurrencyList = () => `api/masters/currencies/list`;
+  export const getFormulaList = () => `api/masters/formulas/list`;
+
+
 }
 
 // @dynamic
@@ -61,6 +68,62 @@ export class MastersListApiService
       catchError(() => of('Error, could not load the physical supplier list'))
     );
   }
+
+  @ObservableException()
+  getSellerList(
+    request: IPhysicalSupplierListRequest
+  ): Observable<IPhysicalSupplierListResponse> {
+    const requestUrl = `${this._apiUrl}/${MastersApiPaths.getSellerList()}`;
+    return this.http.post(requestUrl, {'payload': request}).pipe(
+      map((body: any) => body),
+      catchError(() => of('Error, could not load the seller list'))
+    );
+  }
+
+  @ObservableException()
+  getCompanyList(
+    request: IPhysicalSupplierListRequest
+  ): Observable<any> {
+    const requestUrl = `${this._apiUrl}/${MastersApiPaths.getCompanyList()}`;
+    return this.http.post(requestUrl, {'payload': request}).pipe(
+      map((body: any) => body),
+      catchError(() => of('Error, could not load the company list'))
+    );
+  }
+
+  @ObservableException()
+  getSystemInstumentList(
+    request: IPhysicalSupplierListRequest
+  ): Observable<IPhysicalSupplierListResponse> {
+    const requestUrl = `${this._apiUrl}/${MastersApiPaths.getSystemInstumentList()}`;
+    return this.http.post(requestUrl, {'payload': request}).pipe(
+      map((body: any) => body),
+      catchError(() => of('Error, could not load the system instrument list'))
+    );
+  }
+
+  @ObservableException()
+  getCurrencyList(
+    request: IPhysicalSupplierListRequest
+  ): Observable<IPhysicalSupplierListResponse> {
+    const requestUrl = `${this._apiUrl}/${MastersApiPaths.getCurrencyList()}`;
+    return this.http.post(requestUrl, {'payload': request}).pipe(
+      map((body: any) => body),
+      catchError(() => of('Error, could not load the currency list'))
+    );
+  }
+
+  @ObservableException()
+  getFormulaList(
+    request: IPhysicalSupplierListRequest
+  ): Observable<IPhysicalSupplierListResponse> {
+    const requestUrl = `${this._apiUrl}/${MastersApiPaths.getFormulaList()}`;
+    return this.http.post(requestUrl, {'payload': request}).pipe(
+      map((body: any) => body),
+      catchError(() => of('Error, could not load the formula list'))
+    );
+  }
+
 
   ngOnDestroy(): void {
     this._destroy$.next();

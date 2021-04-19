@@ -5,5 +5,6 @@ export enum KnownPrimaryRoutes {
   LazyLoad = 'lazy-load',
   Root = '',
   Delivery = 'delivery',
-  Smart = 'smart'
+  Smart = 'smart',
+  Contract = 'contract'
 }
