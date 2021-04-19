@@ -2953,7 +2953,7 @@ label {
 			}
 		}
 	}
-	#hsdisDetails {
+	#arbitrageDetails {
 		align-items: flex-end;
 		display: flex;
 		flex-direction: column;
@@ -6958,6 +6958,9 @@ label {
 			}
 			&.blue-button {
 				background-color: $blue;
+			}
+			&.black-button {
+				background-color: $black;
 			}
 		}
 	}

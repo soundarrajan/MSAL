@@ -84,10 +84,73 @@ td .custom-form-field{
 }
 
 .product-quality-comments {
-    padding-top: 10px;
+    padding: 15px;
     width: 100%;
 }
 
 .custom-form-field.product-quality-comments.lightTheme .mat-form-field.without-search {
     height: 50px  !important;
+}
+
+.product-quality-header-name {
+    padding-right: 20px;
+}
+
+.email-to-labs {
+    border: 1px solid lightgray;
+}
+
+.custom-form-field-comments {
+    width: 100% !important;
+}
+
+textarea.mat-input-element {
+    height: 80px; 
+    overflow-y: scroll  !important;
+}
+
+
+
+
+.custom-form-field-comments.mat-form-field-appearance-outline .mat-form-field-outline {
+    background: #ffffff;
+    box-sizing: border-box;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    color: #a5a5a5;
+}
+
+
+.custom-form-field-comments.mat-form-field-disabled   {
+    background-color: unset !important;
+}
+
+.custom-form-field-comments.mat-form-field-appearance-outline.mat-form-field-disabled .mat-form-field-outline {
+    background-color: #EEEEEE !important;
+}
+mat-form-field {
+    .mat-form-field-label {
+        box-sizing: border-box;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 16px;
+        color: #37414f !important;
+    }
+ }
+
+
+.quality-comments-container {
+    margin-top: 10px;
+}
+
+.productQualityComments textarea, .productQuantityReconciliationComments textarea {
+    width: 100% !important;
+    height: 80px;
+    border: 1px solid #a5a5a5;
+    overflow: auto;
+    resize: vertical;
+    border-radius: 4px;
 }

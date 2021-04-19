@@ -3,7 +3,7 @@
     <div class="label-title"> Currently viewing:</div>
     <div class="label-text" style="margin: 0px 5px;">Vessel</div>
     <div class="search-vessel">
-      <app-search-vessel (changeVessel)="changeVessel.emit($event)" [vesselList]="vesselList" [vesselData]="vesselData">
+      <app-search-vessel (changeVessel)="changeVesselTrigger($event)" [vesselList]="vesselList" [vesselData]="vesselData">
       </app-search-vessel>
     </div>
   </div>
@@ -11,32 +11,32 @@
     <tbody>
       <tr>
         <td class="label-text">Scrubber Date:</td>
-        <td class="value">13/09/2019</td>
+        <td class="value">{{bunkerPlanHeaderDetail.scrubberDate | date: 'd/m/yyyy'}}</td>
         <td class="separator">|</td>
         <td class="label-text">Ownership:</td>
-        <td class="value">Own Vessel</td>
+        <td class="value">{{bunkerPlanHeaderDetail.vesselType}}</td>
       </tr>
     </tbody>
   </table>
   <div  class="border-r" style="display: flex;flex:0 0 11%;align-items: center;justify-content: space-evenly;">
-    <mat-checkbox [checked]="true" class="dark-bg-checkbox dark-checkbox noborder"></mat-checkbox>
+    <mat-checkbox (change)="saveDefaultView($event)" [checked]="bunkerPlanHeaderDetail?.myDefaultView" class="dark-bg-checkbox dark-checkbox noborder"></mat-checkbox>
     <div class="default-view">My Default View</div>
   </div>
   <div  style="flex:0 0 13%;display: flex;align-items: center; justify-content: space-evenly;">
-    <mat-checkbox [checked]="true" class="dark-bg-checkbox dark-checkbox noborder"></mat-checkbox>
+    <mat-checkbox (change)="TriggerdontSendPlanReminder($event)" [checked]="bunkerPlanHeaderDetail?.planSendMsg" class="dark-bg-checkbox dark-checkbox noborder"></mat-checkbox>
     <div class="reminder-view">Do not send plan reminder</div>
   </div>
   <div class="border-l-r" style="flex:0 0 20%;display:flex;flex-direction:column;padding:0 10px;font-weight: lighter;">
     <div style="display:flex;align-items: center;justify-content: space-between;">
       <div class="sml-txt" style="display:flex;flex: 10%;">Latest plan recieved</div><span class="label-text">:</span>
-      <div class="sml-txt" style="display:flex">10/09/2019 <div class="m-l-r-5">|</div>
-        ID:716273</div>
+      <div class="sml-txt" style="display:flex">{{bunkerPlanHeaderDetail.lastPlanRecieved | date: 'd/m/yyyy'}} <div class="m-l-r-5">|</div>
+        ID:{{bunkerPlanHeaderDetail.vesselIMONo}}</div>
     </div>
     <div style="display:flex;align-items: center;justify-content: space-between;">
       <div class="sml-txt" style="display:flex;flex: 10%;">Latest plan sent
       </div><span class="label-text">:</span>
-      <div class="sml-txt" style="display:flex"> 10/09/2019 <div class="m-l-r-5">|</div>
-        ID:716273</div>
+      <div class="sml-txt" style="display:flex"> {{bunkerPlanHeaderDetail.lastPlanSentDate | date: 'd/m/yyyy'}} <div class="m-l-r-5">|</div>
+        ID:{{bunkerPlanHeaderDetail.vesselIMONo}}</div>
     </div>
   </div>
 </div>
@@ -49,7 +49,7 @@
       <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="34px">
         <mat-panel-title>
           <img class="expand-icon" src="../../../assets/customicons/expand.svg" alt="expand-icon">
-          Current ROB and HSDIS Request Details
+          Current ROB and Arbitrage Details
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div class="panel-body">
@@ -74,26 +74,26 @@
                           </tr>
                           <tr>
                             <th scope="row">Current ROB</th>
-                            <td>0</td>
-                            <td>1764</td>
-                            <td>300</td>
-                            <td>50</td>
-                            <td>0</td>
+                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event.target.textContent, '3.5 QTY')">{{ROBArbitrageData?.hsfoCurrentStock}}</div></td>
+                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event.target.textContent, '0.5 QTY')">{{ROBArbitrageData?.hsfO05CurrentStock}}</div></td>
+                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event.target.textContent, 'ULSFO')">{{ROBArbitrageData?.ulsfoCurrentStock}}</div></td>
+                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event.target.textContent, 'LSDIS')">{{ROBArbitrageData?.lsdisCurrentStock}}</div></td>
+                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event.target.textContent, 'HSDIS')">{{ROBArbitrageData?.hsdisCurrentStock}}</div></td>
                           </tr>
                           <tr>
                             <th scope="row">MSPS</th>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>301</td>
-                            <td>48</td>
-                            <td>1804</td>
+                            <td>{{ROBArbitrageData?.mspshsfo}}</td>
+                            <td>{{ROBArbitrageData?.mspshsfo05}}</td>
+                            <td>{{ROBArbitrageData?.mspsulsfo}}</td>
+                            <td>{{ROBArbitrageData?.mspslsdis}}</td>
+                            <td>{{ROBArbitrageData?.mspsdis}}</td>
                           </tr>
                           <tr>
                             <th scope="row">Unpumpables</th>
-                            <td colspan=2>173</td>
-                            <td>30</td>
-                            <td>20</td>
-                            <td>20</td>
+                            <td colspan=2>{{ROBArbitrageData?.uphsfo}}</td>
+                            <td>{{ROBArbitrageData?.uplsds}}</td>
+                            <td>{{ROBArbitrageData?.uplsdis}}</td>
+                            <td>{{ROBArbitrageData?.upsdis}}</td>
                           </tr>
                         </table>
                       </div>
@@ -105,11 +105,23 @@
             <div class="col-6 pr-0">
               <div class="row">
                 <div class="col-12 p-0">
-                  <section id="hsdisDetails">
-                    <div class="dark-table-title">HSDIS Request Details</div>
+                  <section id="arbitrageDetails">
+                    <div class="dark-table-title">Arbitrage Details</div>
                     <div class="dark-table">
                       <div class="dark-table-body">
-                        <table class="table">
+                        <div class="row">
+                          <div class="col-5 p-0">
+                            <div>Arbitrage Volume : {{ROBArbitrageData?.arbitrageVolume}}</div>
+                            <div>Contango Volume : {{ROBArbitrageData?.contangoVolume}}</div>
+                            <div>Arbitrage Bunkerable Port : {{ROBArbitrageData?.arbitrageBunkerPort}}</div>
+                          </div>
+                          <div class="col-7 p-0">
+                            <div>Arbitrage Bunker Port ETA : {{ROBArbitrageData?.arbitrageBunkerPortETA}}</div>
+                            <div>Arbitrage Discharge Port : {{ROBArbitrageData?.arbitrageDischargePort}}</div>
+                            <div>Arbitrage Discharge Port ETA : {{ROBArbitrageData?.arbitrageDischargePortETA}}</div>
+                          </div>
+                        </div>
+                        <!-- <table class="table">
                           <tr>
                             <th>
                               <div>Fuel Grade</div>
@@ -142,7 +154,7 @@
                             <td></td>
                             <td></td>
                           </tr>
-                        </table>
+                        </table> -->
                       </div>
                     </div>
                   </section>
@@ -216,7 +228,7 @@
                     class="btn">Generate</button>
                   <button mat-button disabled matTooltip="Send" [matTooltipShowDelay]="500" class="btn">Send</button>
                   <button mat-button matTooltip="Save" [matTooltipShowDelay]="500" class="btn savebtn"
-                    (click)="saveCurrentBPlan($event)">Save</button>
+                    (click)="SaveCurrntROB();saveCurrentBPlan($event)">Save</button>
                 </div>
                 <div style="flex:0 0 4%;text-align: center;">
                   <div  *ngIf="!expandBplan; else collapseBlock" (click)="toggleBPlan($event)" class="expand-accordion-icon hand"></div>

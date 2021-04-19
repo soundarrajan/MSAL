@@ -10,9 +10,12 @@ export class TenantFormattingService {
   public readonly dateFormat: string = 'DDD dd/MM/yyyy HH:mm';
   public readonly quantityPrecision: number = 3;
   public readonly pricePrecision: number = 3;
+  public readonly amountPrecision: number = 3;
 
   private quantityFormatter: Intl.NumberFormat;
   private priceFormatter: Intl.NumberFormat;
+  private amountFormatter: Intl.NumberFormat;
+
 
   constructor(tenantSettings: TenantSettingsService) {
     const generalTenantSettings = tenantSettings.getGeneralTenantSettings();
@@ -21,6 +24,7 @@ export class TenantFormattingService {
     this.quantityPrecision =
       generalTenantSettings.defaultValues.quantityPrecision;
     this.pricePrecision = generalTenantSettings.defaultValues.pricePrecision;
+    this.amountPrecision = generalTenantSettings.defaultValues.amountPrecision;
 
     this.quantityFormatter = new Intl.NumberFormat('en', {
       minimumFractionDigits: this.quantityPrecision,
@@ -30,6 +34,23 @@ export class TenantFormattingService {
       minimumFractionDigits: this.pricePrecision,
       maximumFractionDigits: this.pricePrecision
     });
+    this.amountFormatter = new Intl.NumberFormat('en', {
+      minimumFractionDigits: this.amountPrecision,
+      maximumFractionDigits: this.amountPrecision
+    });
+  }
+
+  public amount(value: number | string): string | undefined {
+    if (value === null || value === undefined) return undefined;
+
+    const actualValue =
+      typeof value !== 'number'
+        ? parseFloat(value.toString().replace(',', ''))
+        : value;
+
+    if (isNaN(actualValue)) return undefined;
+
+    return this.amountFormatter.format(actualValue);
   }
 
   public quantity(value: number | string): string | undefined {

@@ -12,7 +12,9 @@ import {
   EventEmitter,
   AfterViewInit,
   Inject,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  Injectable,
+  InjectionToken
 } from '@angular/core';
 import { Select } from '@ngxs/store';
 import { QcReportService } from '../../../../../services/qc-report.service';
@@ -48,8 +50,8 @@ import { HttpClient } from '@angular/common/http';
 import { IVesselMastersApi, VESSEL_MASTERS_API_SERVICE } from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
 import { DeliveryService } from 'libs/feature/delivery/src/lib/services/delivery.service';
 import { DeliveryInfoForOrder, DeliveryProduct, DeliveryProductDto, IDeliveryInfoForOrderDto, OrderInfoDetails } from 'libs/feature/delivery/src/lib/services/api/dto/delivery-details.dto';
-import { DateAdapter, MAT_DATE_FORMATS, NativeDateAdapter } from '@angular/material/core';
-import moment from 'moment';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } from '@angular/material/core';
+import moment, { Moment, MomentFormatSpecification, MomentInput } from 'moment';
 import dateTimeAdapter from '@shiptech/core/utils/dotnet-moment-format-adapter';
 import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
@@ -60,11 +62,24 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
 import { IDeliveryTenantSettings } from 'libs/feature/delivery/src/lib/core/settings/delivery-tenant-settings';
 import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
 import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/general-tenant-settings.interface';
-import { NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
+import { NgxMatDateAdapter, NgxMatDateFormats, NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
+import { Optional } from '@ag-grid-enterprise/all-modules';
 
-  
+
+const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
+  parse: {
+    dateInput: 'YYYY-MM-DD HH:mm'
+  },
+  display: {
+    dateInput: 'YYYY-MM-DD HH:mm',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  }
+};
+
 export const PICK_FORMATS = {
   display: {
     dateInput: 'DD MMM YYYY',
@@ -116,6 +131,266 @@ export class PickDateAdapter extends NativeDateAdapter {
 }
 
 
+export interface NgxMatMomentDateAdapterOptions {
+
+  strict?: boolean;
+
+  useUtc?: boolean;
+}
+
+export const MAT_MOMENT_DATE_ADAPTER_OPTIONS = new InjectionToken<NgxMatMomentDateAdapterOptions>(
+  'MAT_MOMENT_DATE_ADAPTER_OPTIONS', {
+    providedIn: 'root',
+    factory: MAT_MOMENT_DATE_ADAPTER_OPTIONS_FACTORY
+  });
+
+export function MAT_MOMENT_DATE_ADAPTER_OPTIONS_FACTORY(): NgxMatMomentDateAdapterOptions {
+  return {
+    useUtc: false
+  };
+}
+
+function range<T>(length: number, valueFunction: (index: number) => T): T[] {
+  const valuesArray = Array(length);
+  for (let i = 0; i < length; i++) {
+    valuesArray[i] = valueFunction(i);
+  }
+  return valuesArray;
+}
+
+@Injectable()
+export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
+  private _localeData: {
+    firstDayOfWeek: number,
+    longMonths: string[],
+    shortMonths: string[],
+    dates: string[],
+    longDaysOfWeek: string[],
+    shortDaysOfWeek: string[],
+    narrowDaysOfWeek: string[]
+  };
+
+  constructor(@Optional() @Inject(MAT_DATE_LOCALE) dateLocale: string,
+              @Optional() @Inject(MAT_MOMENT_DATE_ADAPTER_OPTIONS)
+              private _options?: NgxMatMomentDateAdapterOptions) {
+
+    super();
+    this.setLocale(dateLocale || moment.locale());
+  }
+
+  setLocale(locale: string) {
+    super.setLocale(locale);
+
+    const momentLocaleData = moment.localeData(locale);
+    this._localeData = {
+      firstDayOfWeek: momentLocaleData.firstDayOfWeek(),
+      longMonths: momentLocaleData.months(),
+      shortMonths: momentLocaleData.monthsShort(),
+      dates: range(31, (i) => this.createDate(2017, 0, i + 1).format('D')),
+      longDaysOfWeek: momentLocaleData.weekdays(),
+      shortDaysOfWeek: momentLocaleData.weekdaysShort(),
+      narrowDaysOfWeek: momentLocaleData.weekdaysMin(),
+    };
+  }
+
+  getYear(date: Moment): number {
+    return this.clone(date).year();
+  }
+
+  getMonth(date: Moment): number {
+    return this.clone(date).month();
+  }
+
+  getDate(date: Moment): number {
+    return this.clone(date).date();
+  }
+
+  getDayOfWeek(date: Moment): number {
+    return this.clone(date).day();
+  }
+
+  getMonthNames(style: 'long' | 'short' | 'narrow'): string[] {
+    // Moment.js doesn't support narrow month names, so we just use short if narrow is requested.
+    return style === 'long' ? this._localeData.longMonths : this._localeData.shortMonths;
+  }
+
+  getDateNames(): string[] {
+    return this._localeData.dates;
+  }
+
+  getDayOfWeekNames(style: 'long' | 'short' | 'narrow'): string[] {
+    if (style === 'long') {
+      return this._localeData.longDaysOfWeek;
+    }
+    if (style === 'short') {
+      return this._localeData.shortDaysOfWeek;
+    }
+    return this._localeData.narrowDaysOfWeek;
+  }
+
+  getYearName(date: Moment): string {
+    return this.clone(date).format('YYYY');
+  }
+
+  getFirstDayOfWeek(): number {
+    return this._localeData.firstDayOfWeek;
+  }
+
+  getNumDaysInMonth(date: Moment): number {
+    return this.clone(date).daysInMonth();
+  }
+
+  clone(date: Moment): Moment {
+    return date.clone().locale(this.locale);
+  }
+
+  createDate(year: number, month: number, date: number): Moment {
+    if (month < 0 || month > 11) {
+      throw Error(`Invalid month index "${month}". Month index has to be between 0 and 11.`);
+    }
+
+    if (date < 1) {
+      throw Error(`Invalid date "${date}". Date has to be greater than 0.`);
+    }
+
+    const result = this._createMoment({ year, month, date }).locale(this.locale);
+    if (!result.isValid()) {
+      throw Error(`Invalid date "${date}" for month with index "${month}".`);
+    }
+
+    return result;
+  }
+
+  today(): Moment {
+    // @ts-ignore
+    return this._createMoment().locale(this.locale);
+  }
+
+  parse(value: any, parseFormat: string | string[]): Moment | null {
+    let currentFormat = PICK_FORMATS.display.dateInput;
+    let hasDayOfWeek;
+    if (currentFormat.startsWith('DDD ')) {
+        hasDayOfWeek = true;
+        currentFormat = currentFormat.split('DDD ')[1];
+    }
+    currentFormat = currentFormat.replace(/d/g, 'D');
+    currentFormat = currentFormat.replace(/y/g, 'Y');
+    let elem = moment(value, currentFormat);
+    const isValid = this.isValid(elem);
+    return this.isValid(elem) ? elem : null;
+  }
+
+  format(date: Moment, displayFormat: string): string {
+    date = this.clone(date);
+    if (!this.isValid(date)) {
+      throw Error('MomentDateAdapter: Cannot format invalid date.');
+    }
+    let currentFormat = CUSTOM_DATE_FORMATS.display.dateInput;
+    let hasDayOfWeek;
+    if (currentFormat.startsWith('DDD ')) {
+        hasDayOfWeek = true;
+        currentFormat = currentFormat.split('DDD ')[1];
+    }
+    currentFormat = currentFormat.replace(/d/g, 'D');
+    currentFormat = currentFormat.replace(/y/g, 'Y');
+    let formattedDate = moment(date).format(currentFormat);
+    if (hasDayOfWeek) {
+      formattedDate = `${moment(date).format('ddd') } ${ formattedDate}`;
+    }
+    return formattedDate;
+  }
+
+  addCalendarYears(date: Moment, years: number): Moment {
+    return this.clone(date).add({ years });
+  }
+
+  addCalendarMonths(date: Moment, months: number): Moment {
+    return this.clone(date).add({ months });
+  }
+
+  addCalendarDays(date: Moment, days: number): Moment {
+    return this.clone(date).add({ days });
+  }
+
+  toIso8601(date: Moment): string {
+    return this.clone(date).format();
+  }
+
+  deserialize(value: any): Moment | null {
+    let date;
+    if (value instanceof Date) {
+      date = this._createMoment(value);
+    } else if (this.isDateInstance(value)) {
+      return this.clone(value);
+    }
+    if (typeof value === 'string') {
+      if (!value) {
+        return null;
+      }
+      let currentFormat = PICK_FORMATS.display.dateInput;
+      let hasDayOfWeek;
+      if (currentFormat.startsWith('DDD ')) {
+          hasDayOfWeek = true;
+          currentFormat = currentFormat.split('DDD ')[1];
+      }
+      currentFormat = currentFormat.replace(/d/g, 'D');
+      currentFormat = currentFormat.replace(/y/g, 'Y');
+      let elem = moment(value, 'YYYY-MM-DDTHH:mm:ss');
+      let newVal = moment(elem).format(currentFormat);
+      if (elem && this.isValid(elem)) {
+        return elem;
+      }
+    }
+    return super.deserialize(value);
+  }
+
+  isDateInstance(obj: any): boolean {
+    return moment.isMoment(obj);
+  }
+
+  isValid(date: Moment): boolean {
+    return this.clone(date).isValid();
+  }
+
+  invalid(): Moment {
+    return moment.invalid();
+  }
+
+  getHour(date: Moment): number {
+    const el = date.hours();
+    const elem = moment(date).utcOffset(0);
+    return date.hours();
+  }
+  getMinute(date: Moment): number {
+    return date.minutes();
+  }
+  getSecond(date: Moment): number {
+    return date.seconds();
+  }
+  setHour(date: Moment, value: number): void {
+    date.hours(value);
+  }
+  setMinute(date: Moment, value: number): void {
+    date.minutes(value)
+  }
+  setSecond(date: Moment, value: number): void {
+    date.seconds(value);
+  }
+
+  private _createMoment(
+    date: MomentInput,
+    format?: MomentFormatSpecification,
+    locale?: string,
+  ): Moment {
+    const { strict, useUtc }: NgxMatMomentDateAdapterOptions = this._options || {};
+
+    return useUtc
+      ? moment.utc(date, format, locale, strict)
+      : moment(date, format, locale, strict);
+  }
+}
+
+
 @Component({
   selector: 'shiptech-bdn-additional-information',
   templateUrl: './bdn-additional-information.component.html',
@@ -126,7 +401,13 @@ export class PickDateAdapter extends NativeDateAdapter {
               DialogService, 
               ConfirmationService,
               {provide: DateAdapter, useClass: PickDateAdapter},
-              {provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS}]
+              {provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS},
+              {
+                provide: NgxMatDateAdapter,
+                useClass: CustomNgxDatetimeAdapter,
+                deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+              },
+              { provide: NGX_MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS }]
 })
 export class BdnAdditionalInformationComponent extends DeliveryAutocompleteComponent
   implements OnInit{
@@ -139,6 +420,15 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
   satisfactionLevel: any;
   isBargePumpingRateStartTimeInvalid: boolean;
   isBargePumpingRateEndTimeInvalid: boolean;
+  pumpingRateUom: any;
+  simpleSource: any;
+
+  @Input('sampleSource') set _setSimpleSource(simpleSource) { 
+    if (!simpleSource) {
+      return;
+    } 
+    this.simpleSource = simpleSource;
+  }
 
   @Input('satisfactionLevel') set _setSatisfactionLevel(satisfactionLevel) { 
     if (!satisfactionLevel) {
@@ -153,6 +443,14 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
     } 
     this.deliveryFeedback = deliveryFeedback;
   }
+
+  @Input('pumpingRateUom') set _setPumpingRateUom(pumpingRateUom) { 
+    if (!pumpingRateUom) {
+      return;
+    } 
+    this.pumpingRateUom = pumpingRateUom;
+  }
+
   
   @Input('model') set _setFormValues(formValues) { 
     if (!formValues) {
@@ -210,12 +508,6 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
 
   ) {
     super(changeDetectorRef);
-    iconRegistry.addSvgIcon(
-      'data-picker-gray',
-      sanitizer.bypassSecurityTrustResourceUrl('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTMiIHZpZXdCb3g9IjAgMCAxMyAxMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik05Ljc0OTk2IDUuODUwMUg4LjQ0OTk1VjcuMTUwMTFIOS43NDk5NlY1Ljg1MDFaIiBmaWxsPSIjMzY0MTUwIi8+DQo8cGF0aCBkPSJNNy4xNDk5OCA1Ljg1MDFINS44NDk5OFY3LjE1MDExSDcuMTQ5OThWNS44NTAxWiIgZmlsbD0iIzM2NDE1MCIvPg0KPHBhdGggZD0iTTQuNTUwMDIgNS44NTAxSDMuMjVWNy4xNTAxMUg0LjU1MDAyVjUuODUwMVoiIGZpbGw9IiMzNjQxNTAiLz4NCjxwYXRoIGQ9Ik0xMS4wNSAxLjMwMDAxSDEwLjRWMEg5LjA5OTk4VjEuMzAwMDFIMy44OTk5N1YwSDIuNTk5OTZWMS4zMDAwMUgxLjk0OTk3QzEuMjI4NDcgMS4zMDAwMSAwLjY1NjQ4NCAxLjg4NTAxIDAuNjU2NDg0IDIuNjAwMDJMMC42NDk5NjMgMTEuN0MwLjY0OTk2MyAxMi40MTUgMS4yMjg0NyAxMyAxLjk0OTk3IDEzSDExLjA1QzExLjc2NSAxMyAxMi4zNSAxMi40MTUgMTIuMzUgMTEuN1YyLjU5OTk5QzEyLjM1IDEuODg1MDEgMTEuNzY1IDEuMzAwMDEgMTEuMDUgMS4zMDAwMVpNMTEuMDUgMTEuN0gxLjk0OTk3VjQuNTQ5OTlIMTEuMDVWMTEuN1oiIGZpbGw9IiMzNjQxNTAiLz4NCjwvc3ZnPg0K'));
-    iconRegistry.addSvgIcon(
-      'data-picker-white',
-      sanitizer.bypassSecurityTrustResourceUrl('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTMiIHZpZXdCb3g9IjAgMCAxMyAxMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik05Ljc0OTk2IDUuODUwMUg4LjQ0OTk1VjcuMTUwMTFIOS43NDk5NlY1Ljg1MDFaIiBmaWxsPSIjMzY0MTUwIi8+DQo8cGF0aCBkPSJNNy4xNDk5OCA1Ljg1MDFINS44NDk5OFY3LjE1MDExSDcuMTQ5OThWNS44NTAxWiIgZmlsbD0iIzM2NDE1MCIvPg0KPHBhdGggZD0iTTQuNTUwMDIgNS44NTAxSDMuMjVWNy4xNTAxMUg0LjU1MDAyVjUuODUwMVoiIGZpbGw9IiMzNjQxNTAiLz4NCjxwYXRoIGQ9Ik0xMS4wNSAxLjMwMDAxSDEwLjRWMEg5LjA5OTk4VjEuMzAwMDFIMy44OTk5N1YwSDIuNTk5OTZWMS4zMDAwMUgxLjk0OTk3QzEuMjI4NDcgMS4zMDAwMSAwLjY1NjQ4NCAxLjg4NTAxIDAuNjU2NDg0IDIuNjAwMDJMMC42NDk5NjMgMTEuN0MwLjY0OTk2MyAxMi40MTUgMS4yMjg0NyAxMyAxLjk0OTk3IDEzSDExLjA1QzExLjc2NSAxMyAxMi4zNSAxMi40MTUgMTIuMzUgMTEuN1YyLjU5OTk5QzEyLjM1IDEuODg1MDEgMTEuNzY1IDEuMzAwMDEgMTEuMDUgMS4zMDAwMVpNMTEuMDUgMTEuN0gxLjk0OTk3VjQuNTQ5OTlIMTEuMDVWMTEuN1oiIGZpbGw9IiMzNjQxNTAiLz4NCjwvc3ZnPg0K'));
     this.deliverySettings = tenantSettingsService.getModuleTenantSettings<
                           IDeliveryTenantSettings
                         >(TenantSettingsModuleName.Delivery);
@@ -224,6 +516,8 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
                     >(TenantSettingsModuleName.General);
     this.dateFormats.display.dateInput = this.format.dateFormat;
     this.dateFormats.parse.dateInput = this.format.dateFormat;
+    this.dateTimeFormats.display.dateInput = this.format.dateFormat;
+    CUSTOM_DATE_FORMATS.display.dateInput = this.format.dateFormat;
     PICK_FORMATS.display.dateInput = this.format.dateFormat;
   }
 
@@ -237,8 +531,6 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
     if (!form) {
       return;
     }
-    console.log('aici');
-    console.log(form);
     this.formValues = form;
     this.deliveryFormSubject.next(form);
     this.changeDetectorRef.detectChanges();
@@ -254,13 +546,12 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
 
   onChange($event, field) {
     if ($event.value) {
-      let beValue = `${moment($event.value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+      let beValue = `${moment($event.value).format('YYYY-MM-DDTHH:mm') }+00:00`;
       if (field == 'bargePumpingRateStartTime') {
         this.isBargePumpingRateStartTimeInvalid = false;
       } else if (field == 'bargePumpingRateEndTime') {
         this.isBargePumpingRateEndTimeInvalid = false;
       }
-      console.log(beValue);
     } else {
       if (field == 'bargePumpingRateStartTime') {
         this.isBargePumpingRateStartTimeInvalid = true;
@@ -270,7 +561,11 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
       this.toastr.error('Please enter the correct format');
     }
 
-    if (moment.utc(this.formValues.bargePumpingRateEndTime).isBefore(moment.utc(this.formValues.bargePumpingRateStartTime))) {
+    let bargePumpingRateEndTime = this.formatDateForBe(this.formValues.bargePumpingRateEndTime);
+    let bargePumpingRateStartTime = this.formatDateForBe(this.formValues.bargePumpingRateStartTime);
+
+
+    if (moment.utc(bargePumpingRateEndTime).isBefore(moment.utc(bargePumpingRateStartTime))) {
       let errorMessage = 'Pumping Start must be lower or equal to Pumping End.';
       this.isBargePumpingRateStartTimeInvalid = true;
       this.isBargePumpingRateEndTimeInvalid = true;
@@ -279,12 +574,19 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
       this.isBargePumpingRateStartTimeInvalid = false;
       this.isBargePumpingRateEndTimeInvalid = false;
     }
-
+    
   }
 
   formatDateForBe(value) {
-    let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
-    return `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`
+    if (typeof value == 'string') {
+      return value;
+    }
+    if (value) {
+      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm') }+00:00`;
+      return `${moment(value).format('YYYY-MM-DDTHH:mm') }+00:00`;
+    } else {
+      return null;
+    }
   }
 
   getTimeBetweenDates(start, end) {
@@ -315,6 +617,7 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
       return;
     }
     this.formValues.pumpingDuration = result;
+    this.calculatePumpingRate(this.formValues.pumpingDuration, 0);
   }
 
   getTimeBetweenBerthinAndBargeDates(start, end) {
@@ -348,15 +651,68 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
 
   }
 
+  calculatePumpingRate(timeString, prodIndex) {
+    if (typeof timeString == 'undefined' || typeof this.formValues.deliveryProducts == 'undefined' || !this.formValues.deliveryProducts.length) {
+        return;
+    }
+    if (typeof this.formValues.deliveryProducts[prodIndex].bdnQuantityUom == 'undefined' || this.formValues.deliveryProducts[prodIndex].bdnQuantityUom == null || this.formValues.deliveryProducts[prodIndex].bdnQuantityAmount == null) {
+        return;
+    }
+    if (typeof this.formValues.pumpingRate == 'undefined') {
+        this.formValues.pumpingRate = '';
+        this.formValues.pumpingRateUom = '';
+    }
+    var pumpingTime = (parseInt(timeString.split(':')[0]) * 60 + parseInt(timeString.split(':')[1])) / 60;
+    this.formValues.pumpingRate = this.formValues.deliveryProducts[prodIndex].bdnQuantityAmount / pumpingTime;
+    this.pumpingRateUom.forEach((val, key) => {
+      if (val.name.split('/')[0] == this.formValues.deliveryProducts[prodIndex].bdnQuantityUom.name) {
+        this.formValues.pumpingRateUom = val;
+      }
+    });
+  };
 
+
+  addSampleSources() {
+    if (this.formValues.deliveryStatus.name == 'Verified') {
+      return;
+    }
+    if (!this.formValues.sampleSources) {
+      this.formValues.sampleSources = [];
+    }
+    let firstSampleSourceOption = this.simpleSource[0];
+    this.formValues.sampleSources.push({'id':0, 'sampleSource': firstSampleSourceOption});
+  }
+
+
+  removeSampleSources(key) {
+    if (this.formValues.deliveryStatus.name == 'Verified') {
+      return;
+    }
+    if (this.formValues.sampleSources[key].id) {
+      this.formValues.sampleSources[key].isDeleted = true;
+    } else {
+      this.formValues.sampleSources.splice(key, 1);
+    }
+  }
+
+  // Only AlphaNumeric
+  keyPressAlphaNumeric(event) {
+
+    var inp = String.fromCharCode(event.keyCode);
+
+    if (/[a-zA-Z0-9]/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
  
   
 
   ngAfterViewInit(): void {
   
   }
-
- 
 
   
 }

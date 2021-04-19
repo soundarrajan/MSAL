@@ -6,30 +6,44 @@
             </div>
         </div>
         <div class="col-md-12  row" style="margin-left: 0px;">
-            <div class="col-md-6 product-variance-container-1 no-padding-product-variance">
-                <div class="variance-product-container col-md-6">
-                    <div class="block col-md-6">
+            <div class="product-variance-container-1 no-padding-product-variance"
+                [ngClass]="{'col-md-3':  formValues.temp.hiddenFields.buyerQty && formValues.temp.hiddenFields.sellerQty, 
+                        'col-md-6': !formValues.temp.hiddenFields.buyerQty || !formValues.temp.hiddenFields.sellerQty}">
+                <div class="variance-product-container"
+                    [ngClass]="{'display-none-product-variance': formValues.temp.hiddenFields.buyerQty && formValues.temp.hiddenFields.sellerQty,
+                            'col-md-6': !formValues.temp.hiddenFields.buyerQty || !formValues.temp.hiddenFields.sellerQty}">
+                    <div class="block" 
+                        *ngIf="!formValues.temp.hiddenFields.buyerQty"
+                        [ngClass]="{'col-md-12': !formValues.temp.hiddenFields.buyerQty && formValues.temp.hiddenFields.sellerQty, 
+                            'col-md-6': !formValues.temp.hiddenFields.buyerQty && !formValues.temp.hiddenFields.sellerQty}">
                         <div class="title">Buyer's Using</div>
                         <div class="inline-dropdown">
                             <mat-form-field appearance="none">
                                 <mat-select [(ngModel)]="formValues.temp.buyerPrecedenceRule"
                                     (ngModelChange)="setVarianceQty('buyer', formValues.temp.buyerPrecedenceRule)"
                                     [compareWith]="compareUomObjects"
-                                    disableOptionCentering>
+                                    disableOptionCentering
+                                    panelClass="inline-dropdown-select-container"
+                                    [disabled]="formValues.deliveryStatus.name == 'Verified'">
                                     <mat-option *ngFor="let buyerOption of quantityCategory" 
                                         [value]="buyerOption">{{buyerOption.name}} Qty</mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
                     </div>
-                    <div class="block col-md-6">
+                    <div class="block"
+                        *ngIf="!formValues.temp.hiddenFields.sellerQty"
+                        [ngClass]="{'col-md-12': formValues.temp.hiddenFields.buyerQty && !formValues.temp.hiddenFields.sellerQty, 
+                            'col-md-6': !formValues.temp.hiddenFields.buyerQty && !formValues.temp.hiddenFields.sellerQty}">
                         <div class="title">Seller's Using</div>
                         <div class="inline-dropdown">
                             <mat-form-field appearance="none">
                                 <mat-select [(ngModel)]="formValues.temp.sellerPrecedenceRule"
                                     (ngModelChange)="setVarianceQty('seller', formValues.temp.sellerPrecedenceRule)"
                                     disableOptionCentering
-                                    [compareWith]="compareUomObjects">
+                                    panelClass="inline-dropdown-select-container"
+                                    [compareWith]="compareUomObjects"
+                                    [disabled]="formValues.deliveryStatus.name == 'Verified'">
                                 <mat-option *ngFor="let buyerOption of quantityCategory" 
                                     [value]="buyerOption">{{buyerOption.name}} Qty</mat-option>
                             </mat-select>
@@ -37,7 +51,9 @@
                         </div>
                     </div>
                 </div> 
-                <div class="vessel-variance-container col-md-6 product-variance-qty" >
+                <div class="vessel-variance-container"
+                    [ngClass]="{'col-md-12': formValues.temp.hiddenFields.buyerQty && formValues.temp.hiddenFields.sellerQty, 
+                        'col-md-6 product-variance-qty': !formValues.temp.hiddenFields.buyerQty || !formValues.temp.hiddenFields.sellerQty}">
                     <div class="block col-md-12">
                         <div class="readonlyInfoLabel">
                             <div class="label-block col-md-4" *ngIf="formValues.temp.buyerPrecedenceRule">
@@ -102,49 +118,17 @@
                     <div class="block col-md-12">
                         <div class="readonlyInfoLabel">
                             <div class="label-block col-md-4" *ngIf="formValues.temp.buyerPrecedenceRule">
-                                <div class="title">{{formValues.temp.buyerPrecedenceRule.name}} Qty</div>
-                                <div class="value" *ngIf="formValues.temp.buyerPrecedenceRule.name == 'Confirm'">
-                                    {{formValues.deliveryProducts[deliveryProductIndex].confirmedQuantityAmount ? ( quantityFormatValue(formValues.deliveryProducts[deliveryProductIndex].confirmedQuantityAmount)): '-'}}
-                                    {{formValues.deliveryProducts[deliveryProductIndex].confirmedQuantityUom && formValues.deliveryProducts[deliveryProductIndex].confirmedQuantityUom.name ? ( formValues.deliveryProducts[deliveryProductIndex].confirmedQuantityUom.name) : '-'}}
-                                </div>
-                                <div class="value" *ngIf="formValues.temp.buyerPrecedenceRule.name == 'Vessel'">
-                                    {{formValues.deliveryProducts[deliveryProductIndex].vesselQuantityAmount ? ( quantityFormatValue(formValues.deliveryProducts[deliveryProductIndex].vesselQuantityAmount)): '-'}}
-                                    {{formValues.deliveryProducts[deliveryProductIndex].vesselQuantityUom && formValues.deliveryProducts[deliveryProductIndex].vesselQuantityUom.name ? ( formValues.deliveryProducts[deliveryProductIndex].vesselQuantityUom.name) : '-'}}
-                                </div>
-                                <div class="value" *ngIf="formValues.temp.buyerPrecedenceRule.name == 'Bdn'">
-                                    {{formValues.deliveryProducts[deliveryProductIndex].bdnQuantityAmount ? ( quantityFormatValue(formValues.deliveryProducts[deliveryProductIndex].bdnQuantityAmount)): '-'}}
-                                    {{formValues.deliveryProducts[deliveryProductIndex].bdnQuantityUom && formValues.deliveryProducts[deliveryProductIndex].bdnQuantityUom.name ? ( formValues.deliveryProducts[deliveryProductIndex].bdnQuantityUom.name) : '-'}}
-                                </div>
-                                <div class="value" *ngIf="formValues.temp.buyerPrecedenceRule.name == 'Surveyor'">
-                                    {{formValues.deliveryProducts[deliveryProductIndex].surveyorQuantityAmount ? ( quantityFormatValue(formValues.deliveryProducts[deliveryProductIndex].surveyorQuantityAmount)): '-'}}
-                                    {{formValues.deliveryProducts[deliveryProductIndex].surveyorQuantityUom && formValues.deliveryProducts[deliveryProductIndex].surveyorQuantityUom.name ? ( formValues.deliveryProducts[deliveryProductIndex].surveyorQuantityUom.name) : '-'}}
-                                </div>
-                                <div class="value" *ngIf="formValues.temp.buyerPrecedenceRule.name == 'VesselFlowMeter'">
+                                <div class="title">MFM Qty</div>
+                                <div class="value">
                                     {{formValues.deliveryProducts[deliveryProductIndex].vesselFlowMeterQuantityAmount ? ( quantityFormatValue(formValues.deliveryProducts[deliveryProductIndex].vesselFlowMeterQuantityAmount)): '-'}}
                                     {{formValues.deliveryProducts[deliveryProductIndex].vesselFlowMeterQuantityUom && formValues.deliveryProducts[deliveryProductIndex].vesselFlowMeterQuantityUom.name ? ( formValues.deliveryProducts[deliveryProductIndex].vesselFlowMeterQuantityUom.name) : '-'}}
                                 </div>
                             </div>
                             <div class="label-block col-md-4" *ngIf="formValues.temp.sellerPrecedenceRule">
-                                <div class="title">{{formValues.temp.sellerPrecedenceRule.name}} Qty</div>
-                                <div class="value" *ngIf="formValues.temp.sellerPrecedenceRule.name == 'Confirm'">
-                                    {{formValues.deliveryProducts[deliveryProductIndex].confirmedQuantityAmount ? ( quantityFormatValue(formValues.deliveryProducts[deliveryProductIndex].confirmedQuantityAmount)): '-'}}
-                                    {{formValues.deliveryProducts[deliveryProductIndex].confirmedQuantityUom && formValues.deliveryProducts[deliveryProductIndex].confirmedQuantityUom.name ? ( formValues.deliveryProducts[deliveryProductIndex].confirmedQuantityUom.name) : '-'}}
-                                </div>
-                                <div class="value" *ngIf="formValues.temp.sellerPrecedenceRule.name == 'Vessel'">
-                                    {{formValues.deliveryProducts[deliveryProductIndex].vesselQuantityAmount ? ( quantityFormatValue(formValues.deliveryProducts[deliveryProductIndex].vesselQuantityAmount)): '-'}}
-                                    {{formValues.deliveryProducts[deliveryProductIndex].vesselQuantityUom && formValues.deliveryProducts[deliveryProductIndex].vesselQuantityUom.name ? ( formValues.deliveryProducts[deliveryProductIndex].vesselQuantityUom.name) : '-'}}
-                                </div>
-                                <div class="value" *ngIf="formValues.temp.sellerPrecedenceRule.name == 'Bdn'">
+                                <div class="title">BDN Qty</div>
+                                <div class="value">
                                     {{formValues.deliveryProducts[deliveryProductIndex].bdnQuantityAmount ? ( quantityFormatValue(formValues.deliveryProducts[deliveryProductIndex].bdnQuantityAmount)): '-'}}
                                     {{formValues.deliveryProducts[deliveryProductIndex].bdnQuantityUom && formValues.deliveryProducts[deliveryProductIndex].bdnQuantityUom.name ? ( formValues.deliveryProducts[deliveryProductIndex].bdnQuantityUom.name) : '-'}}
-                                </div>
-                                <div class="value" *ngIf="formValues.temp.sellerPrecedenceRule.name == 'Surveyor'">
-                                    {{formValues.deliveryProducts[deliveryProductIndex].surveyorQuantityAmount ? ( quantityFormatValue(formValues.deliveryProducts[deliveryProductIndex].surveyorQuantityAmount)): '-'}}
-                                    {{formValues.deliveryProducts[deliveryProductIndex].surveyorQuantityUom && formValues.deliveryProducts[deliveryProductIndex].surveyorQuantityUom.name ? ( formValues.deliveryProducts[deliveryProductIndex].surveyorQuantityUom.name) : '-'}}
-                                </div>
-                                <div class="value" *ngIf="formValues.temp.sellerPrecedenceRule.name == 'VesselFlowMeter'">
-                                    {{formValues.deliveryProducts[deliveryProductIndex].vesselFlowMeterQuantityAmount ? ( quantityFormatValue(formValues.deliveryProducts[deliveryProductIndex].vesselFlowMeterQuantityAmount)): '-'}}
-                                    {{formValues.deliveryProducts[deliveryProductIndex].vesselFlowMeterQuantityUom && formValues.deliveryProducts[deliveryProductIndex].vesselFlowMeterQuantityUom.name ? ( formValues.deliveryProducts[deliveryProductIndex].vesselFlowMeterQuantityUom.name) : '-'}}
                                 </div>
                             </div>
                             <div class="label-block col-md-4"  *ngIf="formValues.temp.variances">
@@ -187,7 +171,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-12 product-details-container" *ngIf="formValues.deliveryProducts[deliveryProductIndex]">
+    <div class="col-md-12 row product-information-container" *ngIf="formValues.deliveryProducts[deliveryProductIndex]">
         <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
             <div class="split-field">
                 <mat-form-field class="without-search long-label-field" style="width: 64%;border: none;" appearance="legacy">
@@ -199,7 +183,8 @@
                         autocomplete="off" 
                         placeholder="Ordered Qty"
                         quantityFormat
-                        myNumberOnly>
+                        (keypress)="keyPressNumber($event)"
+                        [disabled]="true">
                 </mat-form-field>
                 <mat-form-field style="width: 36%" 
                                 appearance="legacy">
@@ -208,6 +193,7 @@
                         (ngModelChange)="calculateVarianceAndReconStatus(deliveryProductIndex)"
                         [compareWith]="compareUomObjects"
                         [disableOptionCentering]="true"
+                        [disabled]="true"
                         panelClass="delivery-product-select-container">
                         <mat-option *ngFor="let uom of uoms" [value]="uom">{{uom.name}}</mat-option>
                     </mat-select>
@@ -219,24 +205,27 @@
                 <mat-form-field class="without-search long-label-field input-field-container" style="width: 64%;border: none;" appearance="legacy">
                     <mat-label>BDN Qty</mat-label>
                     <input  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].bdnQuantityAmount"
-                            (ngModelChange)="calculateVarianceAndReconStatus(deliveryProductIndex)"
-                            (blur)="calculateVarianceAndReconStatus(deliveryProductIndex)"
+                            (ngModelChange)="calculateVarianceAndReconStatus(deliveryProductIndex);"
+                            (blur)="calculateVarianceAndReconStatus(deliveryProductIndex); calculatePumpingRate(formValues.pumpingDuration, 0)"
                             #bdnQuantityAmountField="ngModel" 
-                            matInput 
+                            matInput
+                            [disabled]="formValues.deliveryStatus.name == 'Verified'" 
                             class="text-ellipsis"
                             autocomplete="off" 
                             placeholder="BDN Qty"
                             quantityFormat
-                            myNumberOnly
+                            (keypress)="keyPressNumber($event)"
                             required>
                 </mat-form-field>
                 <mat-form-field style="width: 36%" 
                                 appearance="legacy">
                     <mat-select disableRipple 
                             [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].bdnQuantityUom"
-                            (ngModelChange)="calculateVarianceAndReconStatus(deliveryProductIndex)"
+                            (ngModelChange)="calculateVarianceAndReconStatus(deliveryProductIndex); setDeliveredQuantityUomList(deliveryProductIndex);"
+                            (blur)="calculateVarianceAndReconStatus(deliveryProductIndex); calculatePumpingRate(formValues.pumpingDuration, 0)"
                             [compareWith]="compareUomObjects"
                             [disableOptionCentering]="true"
+                            [disabled]="formValues.deliveryStatus.name == 'Verified'" 
                             panelClass="delivery-product-select-container">
                         <mat-option *ngFor="let uom of uoms" [value]="uom">{{uom.name}}</mat-option>
                     </mat-select>
@@ -250,11 +239,12 @@
                     <input  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].vesselQuantityAmount"
                             (ngModelChange)="calculateVarianceAndReconStatus(deliveryProductIndex)"
                             matInput 
+                            [disabled]="formValues.deliveryStatus.name == 'Verified'" 
                             class="text-ellipsis"
                             autocomplete="off" 
                             placeholder="Vessel Qty"
                             quantityFormat
-                            myNumberOnly>
+                            (keypress)="keyPressNumber($event)">
                 </mat-form-field>
                 <mat-form-field style="width: 36%" 
                                 appearance="legacy">
@@ -262,6 +252,7 @@
                             [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].vesselQuantityUom"
                             (ngModelChange)="calculateVarianceAndReconStatus(deliveryProductIndex)"
                             [compareWith]="compareUomObjects"
+                            [disabled]="formValues.deliveryStatus.name == 'Verified'" 
                             [disableOptionCentering]="true"
                             panelClass="delivery-product-select-container">
                         <mat-option *ngFor="let uom of uoms" [value]="uom">{{uom.name}}</mat-option>
@@ -275,12 +266,12 @@
                     <mat-label>Surveyor Qty</mat-label>
                     <input  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].surveyorQuantityAmount"
                             (ngModelChange)="calculateVarianceAndReconStatus(deliveryProductIndex)"
-                            matInput 
+                            matInput  
                             class="text-ellipsis"
                             autocomplete="off" 
                             placeholder="Surveyor Qty"
                             quantityFormat
-                            myNumberOnly>
+                            (keypress)="keyPressNumber($event)">
                 </mat-form-field>
                 <mat-form-field style="width: 36%" 
                                 appearance="legacy">
@@ -302,17 +293,19 @@
                     <input  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].vesselFlowMeterQuantityAmount"
                             (ngModelChange)="calculateVarianceAndReconStatus(deliveryProductIndex)"
                             matInput 
+                            [disabled]="formValues.deliveryStatus.name == 'Verified'"
                             class="text-ellipsis"
                             autocomplete="off" 
                             placeholder="MFM Qty"
                             quantityFormat
-                            myNumberOnly>
+                            (keypress)="keyPressNumber($event)">
                 </mat-form-field>
                 <mat-form-field style="width: 36%" 
                                 appearance="legacy">
                     <mat-select disableRipple 
                             [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].vesselFlowMeterQuantityUom"
                             (ngModelChange)="calculateVarianceAndReconStatus(deliveryProductIndex)"
+                            [disabled]="formValues.deliveryStatus.name == 'Verified'"
                             [compareWith]="compareUomObjects"
                             [disableOptionCentering]="true"
                             panelClass="delivery-product-select-container">
@@ -327,12 +320,12 @@
                     <mat-label>Quantity to Invoice</mat-label>
                     <input  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].finalQuantityAmount"
                             matInput 
+                            [disabled]="true"
                             class="text-ellipsis"
                             autocomplete="off" 
                             placeholder="Quantity to Invoice"
                             quantityFormat
-                            myNumberOnly
-                            disabled>
+                            (keypress)="keyPressNumber($event)">
                 </mat-form-field>
                 <mat-form-field style="width: 36%" 
                                 appearance="legacy">
@@ -341,14 +334,42 @@
                             [compareWith]="compareUomObjects"
                             [disableOptionCentering]="true"
                             panelClass="delivery-product-select-container"
+                            [disabled]="true">
+                        <mat-option *ngFor="let uom of uoms" [value]="uom">{{uom.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div *ngIf="!formValues.temp.hiddenFields.agreedQty" class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+            <div class="split-field">
+                <mat-form-field class="without-search long-label-field input-field-container" style="width: 64%;border: none;" appearance="legacy">
+                    <mat-label>Agreed QTY</mat-label>
+                    <input  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].agreedQuantityAmount"
+                            (ngModelChange)="calculateVarianceAndReconStatus(deliveryProductIndex)"
+                            matInput 
+                            [disabled]="formValues.deliveryStatus.name == 'Verified'"
+                            class="text-ellipsis"
+                            autocomplete="off" 
+                            placeholder="Agreed QTY"
+                            quantityFormat
+                            (keypress)="keyPressNumber($event)"
+                            disabled>
+                </mat-form-field>
+                <mat-form-field style="width: 36%" 
+                                appearance="legacy">
+                    <mat-select disableRipple 
+                            [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].agreedQuantityUom"
+                            (ngModelChange)="calculateVarianceAndReconStatus(deliveryProductIndex)"
+                            [compareWith]="compareUomObjects"
+                            [disabled]="formValues.deliveryStatus.name == 'Verified'"
+                            [disableOptionCentering]="true"
+                            panelClass="delivery-product-select-container"
                             disabled>
                         <mat-option *ngFor="let uom of uoms" [value]="uom">{{uom.name}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
         </div>
-    </div>
-    <div class="col-md-12  product-details-container " *ngIf="formValues.deliveryProducts[deliveryProductIndex]">
         <div class="custom-form-field field-lookup-container" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
             <div class="d-flex">
                 <mat-form-field class="with-search" appearance="legacy">
@@ -356,6 +377,7 @@
                     <input class="free-text-field" 
                             type="text"
                             matInput 
+                            [disabled]="formValues.deliveryStatus.name == 'Verified'"
                             [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].product"
                             [matAutocomplete]="auto"
                             placeholder="Product delivered">
@@ -368,7 +390,10 @@
                         </mat-option>
                     </mat-autocomplete>
                 </mat-form-field>
-                <button class="search-icon" appMasterSelectorTrigger [masterSelector]="masterSelector" #masterSelectorTrigger="masterSelectorTrigger" [header]="getHeaderNameSelector()">
+                <button class="search-icon" 
+                    [disabled]="formValues.deliveryStatus.name == 'Verified'"
+                    [ngClass]="{'search-icon-disabled': formValues.deliveryStatus.name == 'Verified'}"
+                    appMasterSelectorTrigger [masterSelector]="masterSelector" #masterSelectorTrigger="masterSelectorTrigger" [header]="getHeaderNameSelector()">
                 <div class="img">
                     <ng-template cdkPortal #masterSelector="cdkPortal" >
                         <shiptech-shared-master-selector (selectedChange)="selectorProductSelectionChange($event); masterSelectorTrigger.close()" (shouldCloseModal)="masterSelectorTrigger.close()" [selectorType]="autocompleteProducts"
@@ -391,6 +416,7 @@
                     <input class="free-text-field" 
                             type="text"
                             matInput 
+                            [disabled]="formValues.deliveryStatus.name == 'Verified'"
                             [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].physicalSupplier"
                             [matAutocomplete]="auto1"
                             placeholder="Physical supplier">
@@ -403,7 +429,10 @@
                         </mat-option>
                     </mat-autocomplete>
                 </mat-form-field>
-                <button class="search-icon"   appMasterSelectorTrigger [masterSelector]="masterSelector1" #masterSelectorTrigger1="masterSelectorTrigger" [header]="getHeaderNameSelector1()">
+                <button class="search-icon" 
+                    [disabled]="formValues.deliveryStatus.name == 'Verified'"
+                    [ngClass]="{'search-icon-disabled': formValues.deliveryStatus.name == 'Verified'}"
+                    appMasterSelectorTrigger [masterSelector]="masterSelector1" #masterSelectorTrigger1="masterSelectorTrigger" [header]="getHeaderNameSelector1()">
                 <div class="img">
                     <ng-template cdkPortal #masterSelector1="cdkPortal" >
                         <shiptech-shared-master-selector (selectedChange)="selectorPhysicalSupplierSelectionChange($event); masterSelectorTrigger1.close()" (shouldCloseModal)="masterSelectorTrigger1.close()" [selectorType]="autocompletePhysicalSupplier"
@@ -422,32 +451,35 @@
         <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
             <div class="split-field">
                 <mat-form-field class="without-search long-label-field input-field-container" style="width: 64%;border: none;" appearance="legacy">
-                    <mat-label>Delivered volume</mat-label>
+                    <mat-label>Delivered Quantity</mat-label>
                     <input [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].deliveredVolume"
                             matInput 
+                            [disabled]="formValues.deliveryStatus.name == 'Verified'"
                             class="text-ellipsis"
                             autocomplete="off" 
-                            placeholder="Delivered volume"
+                            placeholder="Delivered Quantity"
                             quantityFormat
-                            myNumberOnly>
+                            (keypress)="keyPressNumber($event)">
                 </mat-form-field>
                 <mat-form-field style="width: 36%" 
                                 appearance="legacy">
                     <mat-select disableRipple 
                             [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].deliveredVolumeUom"
                             [compareWith]="compareUomObjects"
+                            [disabled]="formValues.deliveryStatus.name == 'Verified'"
                             [disableOptionCentering]="true"
                             panelClass="delivery-product-select-container">
-                        <mat-option *ngFor="let uom of uoms" [value]="uom">{{uom.name}}</mat-option>
+                        <mat-option *ngFor="let uom of deliveredQuantityUoms" [value]="uom">{{uom.name}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
         </div>
-        <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}"  [ngClass]="{'date-invalid': isPricingEventDateInvalid, 'date-valid': !isPricingEventDateInvalid}">
+        <div  *ngIf="!formValues.temp.hiddenFields.pricingDate" class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}"  [ngClass]="{'date-invalid': isPricingEventDateInvalid, 'date-valid': !isPricingEventDateInvalid}">
             <mat-form-field class="without-search" appearance="legacy">
                 <mat-label>Pricing event date</mat-label>
                 <input [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].pricingDate" 
                     matInput 
+                    [disabled]="formValues.deliveryStatus.name == 'Verified' || !formValues.deliveryProducts[deliveryProductIndex].manualPricingDateOverride"
                     [matDatepicker]="pricingEventDate" 
                     (focus)="pricingEventDate.open()"
                     autocomplete="off"
@@ -455,7 +487,7 @@
                     (dateInput)="onChange($event, 'pricingEventDate')"
                     (dateChange)="formValues.deliveryProducts[deliveryProductIndex].pricingDate = formatDateForBe(formValues.deliveryProducts[deliveryProductIndex].pricingDate)">
                     <mat-datepicker-toggle matSuffix [for]="pricingEventDate">
-                        <mat-icon matDatepickerToggleIcon [svgIcon]="!switchTheme?'data-picker-gray':'data-picker-white'">
+                        <mat-icon matDatepickerToggleIcon class="icon-date">
                         </mat-icon>
                     </mat-datepicker-toggle>
                     <mat-datepicker #pricingEventDate [panelClass]="switchTheme?'datepicker-darktheme':''"></mat-datepicker>
@@ -464,12 +496,27 @@
         <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
             <mat-form-field class="without-search" appearance="legacy">
                 <mat-label>Sludge production</mat-label>
-                <input  [(ngModel)]="formValues.sludgeProduction"
+                <input  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].sludgeProduction"
+                    [disabled]="formValues.deliveryStatus.name == 'Verified'"
                     matInput 
                     autocomplete="off"
-                    placeholder="Sludge production">
+                    placeholder="Sludge production"
+                    (keypress)="keyPressNumber($event)">
             </mat-form-field>  
+        </div>
+        <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+            <mat-form-field class="without-search with-labels" appearance="legacy">
+                <mat-label>Fuel Manifold Temperature</mat-label>
+                <input  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].fuelManifoldTemperature"
+                    matInput
+                    [disabled]="formValues.deliveryStatus.name == 'Verified'" 
+                    autocomplete="off"
+                    placeholder="Fuel Manifold Temperature"
+                    (keypress)="keyPressNumber($event)">
+                <div matSuffix class="d-flex" style="display:flex;align-items: center;">
+                    <div class="label">{{formValues.deliveryProducts[deliveryProductIndex].fuelManifoldTemperatureUom}}</div>
+                </div>   
+            </mat-form-field>
         </div>
     </div>
 </div>
-

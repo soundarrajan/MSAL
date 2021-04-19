@@ -1,6 +1,6 @@
 <div class="col-md-12">
     <div class="product-quantity-header">
-        Product quantity details
+        Product quantity reconciliation
     </div>
 </div>
 <div class="col-md-12  product-details-container" *ngIf="formValues.deliveryProducts[deliveryProductIndex].quantityHeader">
@@ -19,6 +19,8 @@
           <mat-label>CCAI delivered</mat-label>
           <input  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].quantityHeader.ccaiDelivered"
                 matInput 
+                [disabled]="formValues.deliveryStatus.name == 'Verified'"
+                quantityFormat
                 autocomplete="off"
                 placeholder="CCAI delivered">
         </mat-form-field>
@@ -72,8 +74,9 @@
                             <mat-form-field class="without-search" appearance="legacy">
                               <input   [(ngModel)]="quantityParameter.bdn"
                                     matInput 
+                                    [disabled]="formValues.deliveryStatus.name == 'Verified'"
                                     quantityFormat
-                                    myNumberOnly
+                                    (keypress)="keyPressNumber($event)"
                                     autocomplete="off"
                                     name="Product_{{ deliveryProductIndex }}_{{ quantityParameter.parameter.name}}_BDN">
                             </mat-form-field>
@@ -107,12 +110,9 @@
         </tbody>
     </table>
 </div>
-<div class="col-md-12 custom-form-field product-quantity-comments" *ngIf="formValues.deliveryProducts[deliveryProductIndex].quantityHeader"
-         [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-    <mat-form-field class="without-search" appearance="legacy">
-        <mat-label>Comments</mat-label>
-        <textarea  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].quantityHeader.comments"
-                    matInput 
-                    autocomplete="off"></textarea>
-    </mat-form-field>
+<div style="margin-top: 10px" class="col-md-12 productQuantityReconciliationComments"  *ngIf="formValues.deliveryProducts[deliveryProductIndex].quantityHeader">
+    <label>Comments</label>
+    <textarea  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].quantityHeader.comments" 
+        autocomplete="off"
+        [disabled]="formValues.deliveryStatus.name == 'Verified'"></textarea>
 </div>

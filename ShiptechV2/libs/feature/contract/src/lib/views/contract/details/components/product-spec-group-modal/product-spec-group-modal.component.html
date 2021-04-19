@@ -1,0 +1,116 @@
+
+<div class="row product-spec-group-modal-top">
+  <div class="col-md-12">
+    <a (click)="closeClick()" class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all close-button product-spec-group-close-button" role="button">
+      <span class="pi pi-times cl-content"></span>
+    </a>
+  </div>
+  <div class="col-md-9 product-spec-group-modal-header">
+    SPEC GROUP
+  </div>
+  <div class="col-md-3">
+    <button  type="button" mat-raised-button 
+          (click)="saveProcurementSpecGroup(modalSpecGroupParameters)">
+      Save
+    </button>    
+  </div>
+</div>
+<div mat-dialog-content>
+  <div class="col-md-12 no-padding">
+    <table class="product-spec-group-table table table-stripped table-hover" style="width:100%">
+      <thead>
+        <tr>
+            <td class="padding" style="width: 30px;">
+                <a class="add-product-spec-group-icon" (click)="addProductSpecGroup()"></a>
+            </td>
+            <td class="padding" style="width:20%">
+              <b>Spec Parameter</b>
+            </td>
+            <td class="padding" style="width:20%">
+              <b>Min</b>
+            </td>
+            <td class="padding" style="width:20%">
+              <b>Max</b>
+            </td>
+            <td class="padding" style="width:20%">
+              <b>UOM</b>
+            </td>
+        </tr>
+      </thead>
+      <tbody *ngIf="modalSpecGroupParametersEditable">
+          <ng-container  *ngFor="let specGroupParameter of modalSpecGroupParameters |  keyvalue: originalOrder">
+            <tr *ngIf="specGroupParameter.value.isDeleted == false || !specGroupParameter.value.isDeleted">
+              <td class="padding" style="width: 30px;">
+                <a class="remove-product-spec-group-icon" (click)="removeProductSpecGroup(specGroupParameter.key)"></a>
+              </td>
+              <td style="width:20%">
+                <div class="custom-form-field product-spec-group-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+                  <mat-form-field class="without-search" appearance="legacy">
+                    <input  
+                        *ngIf="specGroupParameter.value.editable != true"
+                        [(ngModel)]="specGroupParameter.value.specParameter.name"
+                        matInput 
+                        autocomplete="off"
+                        disabled>
+                    <input class="free-text-field" 
+                        [(ngModel)]="specGroupParameter.value.specParameter"
+                        type="text"
+                        matInput 
+                        *ngIf="specGroupParameter.value.editable == true"
+                        [matAutocomplete]="auto1"
+                        required>
+                      <mat-autocomplete #auto1="matAutocomplete" 
+                                    class="darkPanelAuto"
+                                    [displayWith]="displayFn"
+                                    (optionSelected)="modalSpecGroupParametersUpdateUom($event.option.value, specGroupParameter.key)">
+                          <mat-option *ngFor="let option of filterSpecParameterList(specGroupParameter.value.specParameter)" 
+                                [value]="option">
+                              {{option.name}}
+                          </mat-option>
+                      </mat-autocomplete>
+                  </mat-form-field>
+                </div>
+              </td>
+              <td style="width:20%">
+                <div class="custom-form-field product-spec-group-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+                  <mat-form-field class="without-search" appearance="legacy">
+                    <input  
+                        type="number"
+                        [(ngModel)]="specGroupParameter.value.min"
+                        matInput 
+                        autocomplete="off">
+                  </mat-form-field>
+                </div>
+              </td>
+              <td style="width:20%">
+                <div class="custom-form-field product-spec-group-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+                  <mat-form-field class="without-search" appearance="legacy">
+                    <input  
+                        type="number"
+                        [(ngModel)]="specGroupParameter.value.max"
+                        matInput 
+                        autocomplete="off">
+                  </mat-form-field>
+                </div>
+              </td>
+              <td style="width:20%"> 
+                {{ specGroupParameter.value.uom }}
+              </td>
+             
+            </tr>
+          </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div mat-dialog-actions style="display: none;">
+  <button mat-button [mat-dialog-close]="data.email" cdkFocusInitial>Yes</button>
+</div>
+ 
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-spin-clockwise-fade">
+</ngx-spinner>

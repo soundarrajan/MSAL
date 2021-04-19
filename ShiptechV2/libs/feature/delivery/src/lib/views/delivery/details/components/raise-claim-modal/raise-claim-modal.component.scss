@@ -1,10 +1,35 @@
 .raise-claim-modal-header {
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 16px;
-    color: #364150;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: #364150;
+  position: relative;
+  top: 15px;
+}
+
+.mat-dialog-content {
+  position: relative;
+  margin: 0 -15px;
+  padding: 0 15px;
+}
+
+
+.raise-claim-modal-top {
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid  #E5E4E4;
+}
+
+.raise-claim-modal-top .mat-raised-button {
+  background: #00AAE2;
+  border-radius: 3px;
+  opacity: 1;
+  .mat-button-wrapper {
+      color: white;
+  }
 }
 
 .raise-claim-modal .mat-radio-button.mat-accent .mat-radio-inner-circle, .raise-claim-modal .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
@@ -14,22 +39,21 @@
 .raise-claim-modal .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
     border-color: #37414F;
 }
-.mat-dialog-content {
-    overflow: unset !important;
-    position: relative;
-    top: 15px;
-}
 
 ul, li { 
     list-style-type: none;
 }
 
 .raise-claim-modal .mat-checkbox-disabled .mat-checkbox-inner-container, .mat-radio-button.mat-radio-disabled .mat-radio-outer-circle{
-    background-color: #EBEBEB !important;
+    background: #EBEBEB !important;
 }
 
 .raise-claim-modal .mat-checkbox-checked.mat-accent .mat-checkbox-background {
     background: #37414F;
+}
+
+.mat-checkbox-checked:not(.mat-checkbox-disabled).mat-accent .mat-ripple-element, .mat-checkbox:active:not(.mat-checkbox-disabled).mat-accent .mat-ripple-element {
+  background: #EBEBEB !important;
 }
 
 
@@ -38,26 +62,27 @@ ul, li {
 }
 
 .raise-claim-modal-top {
-    padding-bottom: 15px;
-    border-bottom: 1px solid  #E5E4E4;
+  padding-bottom: 15px;
+  border-bottom: 1px solid  #E5E4E4;
 }
 
 .raise-claim-modal-top .mat-raised-button {
-    background: #00AAE2;
-    border-radius: 3px;
-    .mat-button-wrapper {
-        color: white;
-    }
+  background: #00AAE2;
+  border-radius: 3px;
+  .mat-button-wrapper {
+      color: white;
+  }
 }
 
 .mat-dialog-container {
-    padding: 15px !important;
-    overflow: unset !important;
+  padding: 15px !important;
+  overflow: unset !important;
 }
 
 
 .custom-form-field-modal {
-    margin: 0px 20px;
+    margin: 0px 15px;
+    margin-top: 15px;
     border-radius: 4px;
     &.darkTheme {
       .mat-form-field {
@@ -197,3 +222,20 @@ ul, li {
 }
 
 
+.raise-claim-close-button {
+  float: right;
+  color: #65656a;
+}
+
+.raise-claim-close-button:hover {
+  color: #313133;
+}
+
+.claimRadioBtn {
+  padding-left: 15px;
+  padding-top: 10px;
+}
+
+.spec-parameter-container {
+  padding-left: 0px !important;
+}

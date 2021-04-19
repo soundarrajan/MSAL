@@ -14,6 +14,7 @@ export interface ITenantFormatsSettings {
 export interface ITenantDefaultValuesSettings {
   pricePrecision: number;
   quantityPrecision: number;
+  amountPrecision: number;
 }
 
 export interface IGeneralTenantSettings extends IModuleTenantSettings {

@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "nx": "nx generate library ete",
-    "start": "ng serve --port 9016",
+    "start": "ng serve --port 9015",
     "build": "ng build",
     "build:stats": "ng build --prod --stats-json",
     "webpack:analyzer": "webpack-bundle-analyzer dist/apps/shiptech/stats-es2015.json",
@@ -76,6 +76,9 @@
     "@types/reflect-metadata": "^0.1.0",
     "@types/url-parse": "^1.4.3",
     "adal-angular-wrapper": "1.0.3",
+    "ag-grid-angular": "^25.1.0",
+    "ag-grid-community": "^25.1.0",
+    "ag-grid-enterprise": "^25.1.0",
     "barrelsby": "^2.2.0",
     "bootstrap": "^4.5.3",
     "chance": "^1.1.7",

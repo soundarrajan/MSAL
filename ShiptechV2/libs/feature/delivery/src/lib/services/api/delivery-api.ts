@@ -72,6 +72,10 @@ export namespace DeliveryApiPaths {
   export const verifyDelivery = () =>  `api/delivery/verify`;
   export const revertVerifyDelivery = () =>  `api/delivery/revert`;
   export const getSplitDeliveryLimits = () =>  `api/delivery/getDeliverySplitLimits`;
+  export const raiseClaim = () =>  `api/claims/new`;
+  export const deleteDeliveryProduct = () =>  `api/delivery/products/delete`;
+  export const sendLabsTemplateEmail = () =>  `api/delivery/SendLabsTemplateEmail`;
+  export const getStaticLists = () =>  `api/infrastructure/static/lists`;
 
 
 }
@@ -88,6 +92,12 @@ export class DeliveryApi implements IDeliveryApiService {
   
   @ApiCallUrl()
   private _procurementApiUrl = this.appConfig.v1.API.BASE_URL_DATA_PROCUREMENT;
+
+  @ApiCallUrl()
+  private _claimsApiUrl = this.appConfig.v1.API.BASE_URL_DATA_CLAIMS;
+
+  @ApiCallUrl()
+  private _infrastructureApiUrl = this.appConfig.v1.API.BASE_URL_DATA_INFRASTRUCTURE;
 
   constructor(private http: HttpClient, private appConfig: AppConfig) {}
 
@@ -242,6 +252,55 @@ export class DeliveryApi implements IDeliveryApiService {
       catchError((body: any) => of('Error, could not get split delivery limits'))
     );
   }
+
+  raiseClaim(
+    request: any
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${this._claimsApiUrl}/${DeliveryApiPaths.raiseClaim()}`,
+      { payload: request }
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of('Error, could not raise note of protest'))
+    );
+  }
+
+  deleteDeliveryProduct(
+    request: any
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${this._apiUrl}/${DeliveryApiPaths.deleteDeliveryProduct()}`,
+      { payload: request }
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+    );
+  }
+
+  sendLabsTemplateEmail(
+    request: any
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${this._apiUrl}/${DeliveryApiPaths.sendLabsTemplateEmail()}`,
+      { payload: request }
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+    );
+  }
+
+  getStaticLists(
+    request: any
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${this._infrastructureApiUrl}/${DeliveryApiPaths.getStaticLists()}`,
+      { payload: request }
+    ).pipe(
+      map((body: any) => body),
+      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+    );
+  }
+
 
 
 

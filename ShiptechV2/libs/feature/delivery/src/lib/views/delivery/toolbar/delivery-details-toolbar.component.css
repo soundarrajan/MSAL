@@ -3,127 +3,6 @@
     top: 20px;
 }
 
-.delivery-menu-tab::before {
-    content: url(./../../../../../../../../assets/layout/images/pages/tab.svg);
-    display:block;
-}
-
-.delivery-active-tab::before {
-    content: url(./../../../../../../../../assets/layout/images/pages/activeTab.svg);
-    display:block;
-}
-
-.delivery-menu-tab, .delivery-active-tab {
-    position: relative;
-    height: 30px;
-}
-
-
-.delivery-menu-tab span, .delivery-active-tab span{
-    display: table-cell !important;
-    width: 100px !important;
-    text-align: center !important;
-    position: relative;
-    top: -25px;
-}
-
-.delivery-menu-tab  span a {
-    cursor: pointer;
-    color: black  !important;
-}
-
-.delivery-active-tab span a {
-    cursor: pointer;
-    color: white !important;
-}
-
-.request {
-    position: absolute;
-    left: 20px;
-    z-index: 10;
-}
-
-.contract {
-    position: absolute;
-    left: 94px;
-    z-index: 9;
-}
-
-.rfq {
-    position: absolute;
-    left: 164px;
-    z-index: 8;
-}
-
-.order {
-    position: absolute;
-    left: 227px;
-    z-index: 7;
-
-}
-
-.delivery {
-    position: absolute;
-    left: 296px;
-    color: white !important;
-    z-index: 10;
-}
-
-.lab {
-    position: absolute;
-    left: 361px;
-    z-index: 9;
-}
-
-.claims {
-    position: absolute;
-    left: 428px;
-    z-index: 8;
-}
-
-.invoices {
-    position: absolute;
-    left: 495px;
-    z-index: 7;
-}
-
-.recon {
-    position: absolute;
-    left: 558px;
-    z-index: 6;
-
-}
-
-.tab::before {
-    content: url(./../../../../../../../../assets/layout/images/pages/deliveryTab.svg);
-    display:block;
-}
-
-
-.details-tab::before {
-    content: url(./../../../../../../../../assets/layout/images/pages/deliveryActiveTab.svg);
-    display:block;
-}
-
-.tab span, .details-tab span{
-    display: table-cell !important;
-    width: 100px !important;
-    text-align: center !important;
-    position: relative;
-    top: -25px;
-}
-
-.tab span a {
-    cursor: pointer;
-    color: black  !important;
-}
-
-.details-tab  span a {
-    cursor: pointer;
-    color: white !important;
-}
-
-
 .st-breadcrumbs-progress-bar .page-breadcrumb {
     /* width: 100%; */
     padding: 0;
@@ -144,7 +23,7 @@
     margin-bottom: 0;
     /*height: 57px;*/
     margin: 0 -20px;
-    z-index: 9999;
+    /* z-index: 9999; */
     position: relative;
 }
 
@@ -408,3 +287,7 @@ table-layout: fixed;*/
 }
 
 /* TOP NAVIGATION COMPONENT */
+
+a.breadcrumb-a:active, a.breadcrumb-a:focus, a.breadcrumb-a:hover {
+    text-decoration: underline;
+}

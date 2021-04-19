@@ -19,7 +19,7 @@ import { QcReportService } from '../../../../../services/qc-report.service';
 import { BehaviorSubject, Observable, pipe, Subject, Subscription } from 'rxjs';
 import { QcReportState } from '../../../../../store/report/qc-report.state';
 import { ToastrService } from 'ngx-toastr';
-import { finalize, map, scan, startWith, timeout } from 'rxjs/operators';
+import { finalize, map, scan, startWith, takeUntil, timeout } from 'rxjs/operators';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { BdnInformationApiService } from '@shiptech/core/services/delivery-api/bdn-information/bdn-information-api.service';
 import { TransactionForSearch } from 'libs/feature/delivery/src/lib/services/api/request-response/bdn-information';
@@ -60,6 +60,8 @@ import { IDeliveryTenantSettings } from 'libs/feature/delivery/src/lib/core/sett
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DecimalPipe } from '@angular/common';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ActivatedRoute } from '@angular/router';
 
 export const PICK_FORMATS = {
   display: {
@@ -137,28 +139,12 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
   raiseClaimInfo: any;
   isAnalysedOnDateInvalid: boolean;
   quantityFormat: string;
+  entityId: any;
+  entityName: string;
   @Input() set autocompleteType(value: string) {
     this._autocompleteType = value;
   }
 
-  get entityId(): number {
-    return this._entityId;
-  }
-
-  get entityName(): string {
-    return this._entityName;
-  }
-
-  @Input() set entityId(value: number) {
-    this._entityId = value;
-    this.gridViewModel.entityId = this.entityId;
-  }
-
-  @Input() set entityName(value: string) {
-    this._entityName = value;
-    this.gridViewModel.entityName = this.entityName;
-  }
-     
   @Input('formValues') set _setFormValues(formValues) { 
     if (!formValues) {
       return;
@@ -186,7 +172,7 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
   @Input() vesselId: number;
   @Input() data;
   autocompleteVessel: knownMastersAutocomplete;
-  _entityId: number;
+  _entityId: string;
   _entityName: string;
   deliveryProductIndex: any;
   constructor(
@@ -205,16 +191,12 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
     iconRegistry: MatIconRegistry, 
     private tenantService: TenantFormattingService,
     sanitizer: DomSanitizer,
-    @Inject(DecimalPipe) private _decimalPipe
+    @Inject(DecimalPipe) private _decimalPipe,
+    private spinner: NgxSpinnerService,
+    private route: ActivatedRoute
 
   ) {
     super(changeDetectorRef);
-    iconRegistry.addSvgIcon(
-      'data-picker-gray',
-      sanitizer.bypassSecurityTrustResourceUrl('../../../../../../../../../../assets/layout/images/pages/calendar-dark.svg'));
-    iconRegistry.addSvgIcon(
-      'data-picker-white',
-      sanitizer.bypassSecurityTrustResourceUrl('../../../../../../../../../../assets/layout/images/pages/calendar-dark.svg'));
     this.autocompleteProducts = knownMastersAutocomplete.products;
     this.autocompletePhysicalSupplier = knownMastersAutocomplete.physicalSupplier;
     this.dateFormats.display.dateInput = this.format.dateFormat;
@@ -225,10 +207,21 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
   }
 
   ngOnInit(){  
+    this.route.params.pipe(takeUntil(this._destroy$)).subscribe(params => {
+      this.entityId = params.deliveryId;
+    });
     this.entityName = 'Delivery';
     this.eventsSubscription = this.events.subscribe((data) => this.setDeliveryForm(data));
-    console.log('index');
-    console.log(this.deliveryProductIndex);
+    if (this.formValues.deliveryProducts[this.deliveryProductIndex] && !this.formValues.deliveryProducts[this.deliveryProductIndex].qualityHeader) {
+      this.formValues.deliveryProducts[this.deliveryProductIndex].qualityHeader = {};
+      if (!this.formValues.deliveryProducts[this.deliveryProductIndex].qualityHeader.netSpecificEnergyUom) {
+        this.formValues.deliveryProducts[this.deliveryProductIndex].qualityHeader.netSpecificEnergyUom = 'MJ/KG';
+      }
+    } else {
+      if (this.formValues.deliveryProducts[this.deliveryProductIndex] && !this.formValues.deliveryProducts[this.deliveryProductIndex].qualityHeader.netSpecificEnergyUom) {
+        this.formValues.deliveryProducts[this.deliveryProductIndex].qualityHeader.netSpecificEnergyUom = 'MJ/KG';
+      }
+    }
     const product = this.formValues.deliveryProducts[this.deliveryProductIndex];
     this.getClaimInfo(product.qualityParameters, product.id);
     this.getQualityMatchList();
@@ -238,22 +231,18 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
     this.raiseClaimInfo = {};
     this.raiseClaimInfo.allSpecParams = specParams;
     this.raiseClaimInfo.productId = prodId;
-    console.log(this.raiseClaimInfo);
   }
 
   setDeliveryForm(form){
     if (!form) {
       return;
     }
-    console.log('aici');
     this.formValues = form;
-    console.log(this.formValues);
     //this.changeDetectorRef.detectChanges();
   }
 
   async getQualityMatchList() {
     this.qualityMatchList = await this.legacyLookupsDatabase.getQualityMatchList();
-    console.log(this.qualityMatchList);
   }
 
   ngAfterViewInit() {
@@ -290,7 +279,6 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
       if (field == 'analysedOnDate') {
         this.isAnalysedOnDateInvalid = false;
       }
-      console.log(beValue);
     } else {
       if (field == 'analysedOnDate') {
         this.isAnalysedOnDateInvalid = true;
@@ -306,7 +294,11 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
   }
 
 
-  quantityFormatValue(value) {
+  quantityFormatValueQuality(surveyValue, bdnValue) {
+    if ((surveyValue == '' && bdnValue == null) || (surveyValue == null && bdnValue == '') || (surveyValue == '' && bdnValue == '')) {
+      return '-';
+    }
+    let value = surveyValue - bdnValue;
     let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
     if (plainNumber) {
       if(this.tenantService.quantityPrecision == 0) {
@@ -314,6 +306,44 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
       } else{
         return this._decimalPipe.transform(plainNumber, this.quantityFormat);
       }
+    }
+  }
+
+
+  sendLabsTemplateEmail(prodId) {
+    let data = {
+      deliveryId: parseInt(this.entityId),
+      deliveryProductId: prodId
+    };
+    this.spinner.show();
+    this.deliveryService
+    .sendLabsTemplateEmail(data)
+    .pipe(
+      finalize(() => {
+        this.spinner.hide();
+
+      })
+    )
+    .subscribe((result: any) => {
+      if (typeof result == 'string') {
+        this.toastr.error(result);
+      } else {
+         this.toastr.success('Email Template Sent');
+      }
+    });
+  }
+
+  // Only Number
+  keyPressNumber(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (inp == '.' || inp == ',') {
+      return true;
+    }
+    if (/^[-,+]*\d{1,6}(,\d{3})*(\.\d*)?$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
     }
   }
   
