@@ -1,9 +1,10 @@
+
 <div class="row col-md-12 contract-section" style="margin-left: 0px;">
   <div (click)="addContractQuantityDetail()"  class="add-contract-quantity-section">
     <a class="add-contract-quantity-icon"></a>
   </div>
   <div class="contract-quantity-section row">
-    <ng-container *ngFor="let contractDetail of formValues.details | keyvalue">
+    <ng-container *ngFor="let contractDetail of formValues.details | keyvalue : originalOrder">
       <div *ngIf="!contractDetail.value.isDeleted" class="contract-quantity-container col-md-6" [ngClass]="{'no-padding-right': contractDetail.key % 2 == 1}">
         <div class="quantity-header">
           <div class="label-content col-md-2">
