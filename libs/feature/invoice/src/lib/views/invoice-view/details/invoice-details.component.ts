@@ -85,7 +85,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         filtering: false,
         sortable: false
       },
-      columnDefs: this.columnDef_aggrid,
+      columnDefs: this.columnDef_aggrid_pd,
       suppressRowClickSelection: true,
       suppressCellSelection: true,
       headerHeight: 35,
@@ -96,7 +96,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         this.gridOptions_data.api = params.api;
         this.gridOptions_data.columnApi = params.columnApi;
         this.gridOptions_data.api.sizeColumnsToFit();
-        this.gridOptions_data.api.setRowData(this.rowData_aggrid);
+        this.gridOptions_data.api.setRowData(this.rowData_aggrid_pd);
         this.addCustomHeaderEventListener();
 
       },
@@ -150,7 +150,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   }
 
 
-  private columnDef_aggrid = [
+  private columnDef_aggrid_pd = [
     {
       resizable: false,
       width: 30,
@@ -166,32 +166,25 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       cellRendererFramework: AGGridCellActionsComponent, cellRendererParams: { type: 'row-remove-icon' }
     },
     {
-      headerName: 'Delivery No. / Order Product', editable: true, headerTooltip: 'Delivery No. / Order Product', field: 'cost', cellClass: ['editable-cell'],
-      cellRendererFramework: AGGridCellEditableComponent, cellRendererParams: { type: 'cell-edit-dropdown', label: 'cost-type', items: ['Pay', 'Receive'] }
+      headerName: 'Delivery No./ Order Product', headerTooltip: 'Delivery No./ Order Product', field: 'del_no'
     },
     {
-      headerName: 'Deliv Product', headerTooltip: 'Deliv Product', field: 'name', cellClass: ['editable-cell'],
-      cellRendererFramework: AGGridCellEditableComponent, cellRendererParams: { type: 'cell-edit-autocomplete', label: 'cost-name' }
+      headerName: 'Deliv Product', headerTooltip: 'Deliv Product', field: 'del_product'
     },
     {
-      headerName: 'Deliv. Qty', headerTooltip: 'Deliv. Qty', field: 'provider', cellClass: ['editable-cell'],
-      cellRendererFramework: AGGridCellEditableComponent, cellRendererParams: { type: 'cell-edit-autocomplete', label: 'service-provider' }
+      headerName: 'Deliv. Qty', headerTooltip: 'Deliv. Qty', field: 'del_qty'
     },
     {
-      headerName: 'Estd. Rate', editable: true, headerTooltip: 'Estd. Rate', field: 'type', cellClass: ['editable-cell'],
-      cellRendererFramework: AGGridCellEditableComponent, cellRendererParams: { type: 'cell-edit-dropdown', label: 'rate-type', items: ['Flat', 'Option 2'] }
+      headerName: 'Estd. Rate', editable: true, headerTooltip: 'Estd. Rate', field: 'est_rate'
     },
-    { headerName: 'Amount', headerTooltip: 'Amount', field: 'currency' },
-    { headerName: 'Invoice Product', headerTooltip: 'Invoice Product', field: 'name' },
-    { headerName: 'Invoice Qty', headerTooltip: 'Invoice Qty', field: 'name' },
-    { headerName: 'Invoice Rate', headerTooltip: 'Invoice Rate', field: 'name' },
-    { headerName: 'Amount', headerTooltip: 'Amount', field: 'name' },
-    { headerName: 'Recon status', headerTooltip: 'Recon status', field: 'name' },
-    { headerName: 'Sulpher content', headerTooltip: 'Sulpher content', field: 'name' }
-    // { headerName: 'Phy. supplier', headerTooltip: 'Phy. supplier', field: 'name' },
-    // { headerName: 'Rate', editable: true, singleClickEdit: true, headerTooltip: 'Rate', field: 'rate', type: "numericColumn", cellClass: ['aggridtextalign-right editable-cell cell-align'] },
-    // { headerName: 'UOM', headerTooltip: 'UOM', field: 'uom' },
-    // { headerName: 'Invoice ID', headerTooltip: 'Invoice ID', field: 'id' },
+    { headerName: 'Amount', headerTooltip: 'Amount', field: 'amount1' },
+    { headerName: 'Invoice Product', headerTooltip: 'Invoice Product', field: 'inv_product' },
+    { headerName: 'Invoice Qty', headerTooltip: 'Invoice Qty', field: 'inv_qty' },
+    { headerName: 'Invoice Rate', headerTooltip: 'Invoice Rate', field: 'inv_rate' },
+    { headerName: 'Amount', headerTooltip: 'Amount', field: 'amount2' },
+    { headerName: 'Recon status', headerTooltip: 'Recon status', field: 'recon_status' },
+    { headerName: 'Sulpher content', headerTooltip: 'Sulpher content', field: 'sulpher_content' },
+    { headerName: 'Phy. suppier', headerTooltip: 'Phy. supplier', field: 'phy_supplier' }
   ];
 
   private columnDef_aggrid_ac = [
@@ -210,19 +203,19 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       cellRendererFramework: AGGridCellActionsComponent, cellRendererParams: { type: 'row-remove-icon' }
     },
     {
-      headerName: 'Item', editable: true, headerTooltip: 'Item', field: 'cost', cellClass: ['editable-cell'],
+      headerName: 'Item', editable: true, headerTooltip: 'Item', field: 'cost',
       cellRendererFramework: AGGridCellEditableComponent, cellRendererParams: { type: 'cell-edit-dropdown', label: 'cost-type', items: ['Pay', 'Receive'] }
     },
     {
-      headerName: 'Cost Type', headerTooltip: 'Cost Type', field: 'name', cellClass: ['editable-cell'],
+      headerName: 'Cost Type', headerTooltip: 'Cost Type', field: 'name',
       cellRendererFramework: AGGridCellEditableComponent, cellRendererParams: { type: 'cell-edit-autocomplete', label: 'cost-name' }
     },
     {
-      headerName: '%of', headerTooltip: '% of', field: 'provider', cellClass: ['editable-cell'],
+      headerName: '%of', headerTooltip: '% of', field: 'provider',
       cellRendererFramework: AGGridCellEditableComponent, cellRendererParams: { type: 'cell-edit-autocomplete', label: 'service-provider' }
     },
     {
-      headerName: 'BDN Qty', editable: true, headerTooltip: 'BDN Qty', field: 'type', cellClass: ['editable-cell'],
+      headerName: 'BDN Qty', editable: true, headerTooltip: 'BDN Qty', field: 'type',
       cellRendererFramework: AGGridCellEditableComponent, cellRendererParams: { type: 'cell-edit-dropdown', label: 'rate-type', items: ['Flat', 'Option 2'] }
     },
     { headerName: 'Estd. Rate', headerTooltip: 'Estd. Rate', field: 'currency' },
@@ -240,19 +233,41 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     { headerName: 'Difference', headerTooltip: 'Difference', field: 'name' }
   ];
 
-  private rowData_aggrid = [
+  private rowData_aggrid_pd = [
     {
-      type: 'Flat', provider: 'Kinder Morgan', currency: 'USD', rate: '100', cost: 'Pay', name: 'Barging', id: "", uom: "GAL"
+      del_no: '23243/DMA 0.1%', del_product: 'DMA 0.1%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
+      inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Unmatched', sulpher_content: '0.05', phy_supplier: 'British Petroleum' 
+    },
+    {
+      del_no: '23243/RMK 380 3.5', del_product: '380 3.5%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
+      inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Unmatched', sulpher_content: '0.05', phy_supplier: 'British Petroleum' 
+    },
+    {
+      del_no: '23243/RMK 380 3.5', del_product: '380 3.5%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
+      inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Unmatched', sulpher_content: '0.05', phy_supplier: 'British Petroleum' 
     }
-  ]
+  ];
+
+  private rowData_aggrid = [];
 
   addCustomHeaderEventListener() {
     let addButtonElement = document.getElementsByClassName('add-btn');
     addButtonElement[0].addEventListener('click', (event) => {
       this.gridOptions_data.api.applyTransaction({
-        add: [{
-          type: 'Flat', provider: 'Kinder Morgan', currency: 'USD', rate: '100', cost: 'Pay', name: 'Barging', id: "", uom: "GAL"
-        }]
+        add: [
+          {
+            del_no: '23243', order_product: 'DMA 0.1%', del_product: 'DMA 0.1%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
+            inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Unmatched', sulpher_content: '0.05', phy_supplier: 'British Petroleum'     
+          },
+          {
+            del_no: '23243/RMK 380 3.5', del_product: '380 3.5%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
+            inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Unmatched', sulpher_content: '0.05', phy_supplier: 'British Petroleum' 
+          },
+          {
+            del_no: '23243/RMK 380 3.5', del_product: '380 3.5%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
+            inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Unmatched', sulpher_content: '0.05', phy_supplier: 'British Petroleum' 
+          }
+      ]
       });
     });
 
