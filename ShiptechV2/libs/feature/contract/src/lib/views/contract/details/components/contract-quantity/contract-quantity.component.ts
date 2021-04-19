@@ -445,7 +445,7 @@ export class ContractQuantity extends DeliveryAutocompleteComponent
     } 
     this.formValues = formValues;
     if (this.formValues.details) {
-      this.formatDetailsQuantity();
+      //this.formatDetailsQuantity();
     }
   }
 

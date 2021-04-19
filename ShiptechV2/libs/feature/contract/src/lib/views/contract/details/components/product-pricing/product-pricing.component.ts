@@ -573,7 +573,7 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     this.formValues = formValues;
     if (this.formValues && this.formValues.products[this.selectedTabIndex]) {
       this.selectedVal = this.formValues.products[this.selectedTabIndex].isFormula ? 'formula' : 'fixed';
-      this.formatAdditionalCostValue();
+      //this.formatAdditionalCostValue();
       this.formatPrice();
     }
 
