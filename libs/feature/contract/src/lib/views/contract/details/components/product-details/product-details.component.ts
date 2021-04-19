@@ -457,13 +457,14 @@ export class ProductDetails extends DeliveryAutocompleteComponent
   physicalSupplierList: any[];
   autocompletePhysicalSupplier: knownMastersAutocomplete;
   _autocompleteType: any;
-  productSpecGroup: any[];
+  productSpecGroup: any = [];
   modalSpecGroupParameters: any;
   modalSpecGroupParametersEditable: boolean;
   canChangeSpec: boolean;
   specParameterList: any;
   activeProductForSpecGroupEdit: any;
   eventsSubscription: any;
+  events1Subscription: any;
 
 
   get entityId(): number {
@@ -586,6 +587,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
   array = [0,1,2,3,4,5,6,7,8,9,10];
   isMenuOpen = true;
   @Input() events: Observable<void>;
+  @Input() events1: Observable<void>;
 
 
   constructor(
@@ -623,9 +625,13 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     this.entityName = 'Contract';
     this.getPhysicalSupplierList();
     this.eventsSubscription = this.events.subscribe((data) => this.setContractForm(data));
+    this.events1Subscription = this.events1.subscribe((data) => this.setProductSpecGroup(data));
 
+  }
 
-
+  setProductSpecGroup(data) {
+    console.log(data);
+    this.productSpecGroup = data;
   }
 
   setContractForm(form) {
@@ -967,6 +973,10 @@ export class ProductDetails extends DeliveryAutocompleteComponent
 
 
   openSpecGroupPopUp(product) {
+    if (!product.specGroup) {
+      this.toastr.error('Please select a spec group!');
+      return;
+    }
     this.activeProductForSpecGroupEdit = product;
     var productId = product.product.id;
     var data = {
@@ -987,10 +997,11 @@ export class ProductDetails extends DeliveryAutocompleteComponent
             ]
         }
     };
-    if (this.formValues.status.name != 'Confirmed' && product.id != 0) {
-      this.modalSpecGroupParametersEditable = true;
-      this.canChangeSpec = true;
-
+    if (this.formValues.status) {
+      if (this.formValues.status.name != 'Confirmed' && product.id != 0) {
+        this.modalSpecGroupParametersEditable = true;
+        this.canChangeSpec = true;
+      }
     }
     this.spinner.show();
     this.contractService

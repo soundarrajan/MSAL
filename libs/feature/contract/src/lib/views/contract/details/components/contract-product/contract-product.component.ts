@@ -509,6 +509,8 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   @Input() vesselId: number;
 
   contractFormSubject: Subject<any> = new Subject<any>();
+  productSpecGroupSubject: Subject<any> = new Subject<any>();
+
 
 
   @Input('locationMasterList') set _setLocationMasterList(locationMasterList) { 
@@ -841,7 +843,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       ],
       additionalCosts: [],
       fixedPrice: true,
-      mtmFixed: true, 
+      mtmFixed: false, 
       specGroup: null,
       dealDate: null,
       physicalSuppliers: [],
@@ -1105,6 +1107,52 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   }
 
 
+ 
+  decodeSpecificField(modelValue) {
+    let decode = function(str) {
+      return str.replace(/&#(\d+);/g, function(match, dec) {
+          return String.fromCharCode(dec);
+      });
+    };
+    return decode(_.unescape(modelValue));
+  }
+
+
+
+  setLocationChange(location, index) {
+    console.log(location);
+    console.log(index);
+    console.log(this.formValues.products[index]);
+    let objectLocation =  {
+      'id': location.id,
+      'name': location.name
+    }
+    this.selectedLocation = null;
+    this.formValues.products[index].location = { ... objectLocation };
+    this.changeDetectorRef.detectChanges();
+    this.contractFormSubject.next(this.formValues);
+
+  }
+
+
+  setProductChange(product, index) {
+    console.log(product);
+    console.log(index);
+    console.log(this.formValues.products[index]);
+    let objectProduct =  {
+      'id': product.id,
+      'name': product.name
+    }
+    this.formValues.products[index].product = { ... objectProduct };
+    this.selectedProduct = null;
+    this.addProductToConversion(index, null, true);
+    this.getSpecGroupByProduct(product.id, null);
+    this.changeDetectorRef.detectChanges();
+    this.contractFormSubject.next(this.formValues);
+
+  }
+
+
   getSpecGroupByProduct(productId, additionalSpecGroup) {
     var data = {
         Payload: {
@@ -1152,57 +1200,13 @@ export class ContractProduct extends DeliveryAutocompleteComponent
             }
           }
           this.productSpecGroup[productId] = response;
-          this.changeDetectorRef.detectChanges();
+          this.productSpecGroupSubject.next(this.productSpecGroup);
         }
       }
     });
   
   };
 
-
- 
-  decodeSpecificField(modelValue) {
-    let decode = function(str) {
-      return str.replace(/&#(\d+);/g, function(match, dec) {
-          return String.fromCharCode(dec);
-      });
-    };
-    return decode(_.unescape(modelValue));
-  }
-
-
-
-  setLocationChange(location, index) {
-    console.log(location);
-    console.log(index);
-    console.log(this.formValues.products[index]);
-    let objectLocation =  {
-      'id': location.id,
-      'name': location.name
-    }
-    this.selectedLocation = null;
-    this.formValues.products[index].location = { ... objectLocation };
-    this.changeDetectorRef.detectChanges();
-    this.contractFormSubject.next(this.formValues);
-
-  }
-
-
-  setProductChange(product, index) {
-    console.log(product);
-    console.log(index);
-    console.log(this.formValues.products[index]);
-    let objectProduct =  {
-      'id': product.id,
-      'name': product.name
-    }
-    this.formValues.products[index].product = { ... objectProduct };
-    this.selectedProduct = null;
-    this.changeDetectorRef.detectChanges();
-    this.addProductToConversion(index, null, true);
-    this.contractFormSubject.next(this.formValues);
-
-  }
 
   addProductToConversion(index, allowProduct, isMainProduct) {
     if (!this.formValues.products[index].conversionFactors) {

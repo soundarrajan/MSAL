@@ -380,7 +380,7 @@ export class PricingFormulaSimple extends DeliveryAutocompleteComponent
       return null;
     }
     if (plainNumber) {
-      if(this.tenantService.quantityPrecision == 0) {
+      if(this.tenantService.amountPrecision == 0) {
         return plainNumber;
       } else {
         return this._decimalPipe.transform(plainNumber, this.amountFormat);

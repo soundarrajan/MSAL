@@ -2,11 +2,11 @@
   <div class="col-md-3" style="padding-left: 0px;">
     <div id="custom-contract-btn-toggle-v2">
       <mat-button-toggle-group  #group="matButtonToggleGroup" [value]="selectedVal" (change)="onValChange(group.value)" >
-        <mat-button-toggle value="dateSpecific">
+        <mat-button-toggle value="dateSpecific"  (click)="formValues.evergreen = false">
           <span *ngIf="selectedVal == 'dateSpecific'" class="toggle-icon"></span> 
           Date specific
         </mat-button-toggle>
-        <mat-button-toggle value="evergreen">
+        <mat-button-toggle value="evergreen" (click)="formValues.evergreen = true">
           <span  *ngIf="selectedVal == 'evergreen'" class="toggle-icon"></span> 
           Evergreen
         </mat-button-toggle>
@@ -39,66 +39,144 @@
         <div class="contract-qty-container">
           <div>
             <span class="label">
-              <span>
+              <span *ngIf="formValues.status" class="delivery-number-dot">
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" fill="#9E9E9E" [ngStyle]="{'fill': statusColorCode }"/>
+                </svg>
+              </span>
+              <span *ngIf="!formValues.status" class="delivery-number-dot">
                 <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" fill="#9E9E9E"/>
                 </svg>
               </span>
               Status
             </span>
-            <div class="value">42,000 GAL</div>
+            <div *ngIf="formValues.status" class="value status-entity" [ngStyle]="{'color': statusColorCode}">
+              {{formValues.status.name}}
+            </div>
           </div>
         </div>
         <div class="contract-qty-container">
           <div>
             <span class="label">
-              <span>
+              <span *ngIf="formValues.summary.contractedQuantity">
                 <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" fill="#9E9E9E"/>
+                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" [ngStyle]="{'fill': '#00AAE2' }"/>
+                </svg>
+              </span>
+              <span *ngIf="!formValues.summary.contractedQuantity">
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" [ngStyle]="{'fill': 'white' }"/>
                 </svg>
               </span>
               Total Qty
             </span>
-            <div class="value">42,000 GAL</div>
+            <div *ngIf="formValues.summary.contractedQuantity" class="value" [ngStyle]="{'color': '#00AAE2'}">
+              {{ quantityFormatValue(formValues.summary.contractedQuantity) }}
+              {{ formValues.summary.uom }}
+            </div>
+            <div *ngIf="!formValues.summary.contractedQuantity" class="value" [ngStyle]="{'color': 'white'}">
+              {{ quantityFormatValue(0) }}
+              {{ formValues.summary.uom }}
+            </div>
           </div>
         </div>
         <div class="contract-qty-container">
           <div>
             <span class="label">
-              <span>
+              <span *ngIf="formValues.summary.plannedQuantity">
                 <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" fill="#9E9E9E"/>
+                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" [ngStyle]="{'fill': '#00AAE2' }"/>
+                </svg>
+              </span>
+              <span *ngIf="!formValues.summary.plannedQuantity">
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" [ngStyle]="{'fill': 'white' }"/>
                 </svg>
               </span>
               Planned Qty
             </span>
-            <div class="value">42,000 GAL</div>
+            <div *ngIf="formValues.summary.plannedQuantity" class="value" [ngStyle]="{'color': '#00AAE2'}">
+              {{ quantityFormatValue(formValues.summary.plannedQuantity) }}
+              {{ formValues.summary.uom }}
+            </div>
+            <div *ngIf="!formValues.summary.plannedQuantity" class="value" [ngStyle]="{'color': 'white'}">
+              {{ quantityFormatValue(0) }}
+              {{ formValues.summary.uom }}
+            </div>
           </div>
         </div>
         <div class="contract-qty-container">
           <div>
             <span class="label">
-              <span>
+              <span *ngIf="formValues.summary.utilizedQuantity">
                 <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" fill="#9E9E9E"/>
+                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" [ngStyle]="{'fill': '#00AAE2' }"/>
+                </svg>
+              </span>
+              <span *ngIf="!formValues.summary.utilizedQuantity">
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" [ngStyle]="{'fill': 'white' }"/>
                 </svg>
               </span>
               Utilised Qty
             </span>
-            <div class="value">42,000 GAL</div>
+            <div *ngIf="formValues.summary.utilizedQuantity" class="value" [ngStyle]="{'color': '#00AAE2'}">
+              {{ quantityFormatValue(formValues.summary.utilizedQuantity) }}
+              {{ formValues.summary.uom }}
+            </div>
+            <div *ngIf="!formValues.summary.utilizedQuantity" class="value" [ngStyle]="{'color': 'white'}">
+              {{ quantityFormatValue(0) }}
+              {{ formValues.summary.uom }}
+            </div>
           </div>
         </div>
         <div class="contract-qty-container">
           <div>
             <span class="label">
-              <span>
+              <span *ngIf="formValues.summary.availableQuantity">
                 <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" fill="#9E9E9E"/>
+                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" [ngStyle]="{'fill': '#00AAE2' }"/>
+                </svg>
+              </span>
+              <span *ngIf="!formValues.summary.availableQuantity">
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" [ngStyle]="{'fill': 'white' }"/>
                 </svg>
               </span>
               Available Qty
             </span>
-            <div class="value">42,000 GAL</div>
+            <div *ngIf="formValues.summary.availableQuantity" class="value" [ngStyle]="{'color': '#00AAE2'}">
+              {{ quantityFormatValue(formValues.summary.availableQuantity) }}
+              {{ formValues.summary.uom }}
+            </div>
+            <div *ngIf="!formValues.summary.availableQuantity" class="value" [ngStyle]="{'color': 'white'}">
+              {{ quantityFormatValue(0) }}
+              {{ formValues.summary.uom }}
+            </div>
+          </div>
+        </div>
+        <div class="contract-qty-container">
+          <div>
+            <span class="label">
+              <span *ngIf="formValues.noOfDaysBeforeExpiry">
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" [ngStyle]="{'fill': '#9CD7B6' }"/>
+                </svg>
+              </span>
+              <span *ngIf="!formValues.noOfDaysBeforeExpiry">
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" [ngStyle]="{'fill': 'white' }"/>
+                </svg>
+              </span>
+              Expiry Count down
+            </span>
+            <div *ngIf="formValues.noOfDaysBeforeExpiry" class="value" [ngStyle]="{'color': '#9CD7B6'}">
+              {{ noOfDaysBeforeExpiryFormatValue(formValues.noOfDaysBeforeExpiry) }}
+            </div>
+            <div *ngIf="!formValues.noOfDaysBeforeExpiry" class="value" [ngStyle]="{'color': 'white'}">
+              {{ quantityFormatValue(0) }}
+            </div>
           </div>
         </div>
     </div>
@@ -107,7 +185,9 @@
 <div class="col-md-12 d-flex contract-section">
   <div class="col-md-6 no-padding d-flex">
     <div class="custom-form-field custom-field-general" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-      <mat-form-field class="without-search" appearance="legacy">
+      <mat-form-field class="without-search" 
+        appearance="legacy"
+        [ngClass]="{'required-field': (buttonClicked && !formValues.name)}">
         <mat-label>Contract name</mat-label>
         <input matInput
             [(ngModel)]="formValues.name"
@@ -118,7 +198,9 @@
     </div>
     <div class="custom-form-field lookup-delivery-container custom-field-general-lookup" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
       <div class="d-flex">
-        <mat-form-field class="with-search" appearance="legacy">
+        <mat-form-field class="with-search" 
+          appearance="legacy"
+          [ngClass]="{'required-field': (buttonClicked && (!formValues.seller || (formValues.seller && !formValues.seller.name)))}">
           <mat-label>Seller name</mat-label>
           <input class="free-text-field" 
                   type="text"
@@ -156,7 +238,9 @@
     </div>
     <div class="custom-form-field lookup-delivery-container custom-field-general-lookup" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
       <div class="d-flex">
-        <mat-form-field class="with-search" appearance="legacy">
+        <mat-form-field 
+          class="with-search" appearance="legacy"
+          [ngClass]="{'required-field': (buttonClicked && (!formValues.company || (formValues.company && !formValues.company.name)))}">
           <mat-label>Company name</mat-label>
           <input class="free-text-field" 
                   type="text"
@@ -218,7 +302,9 @@
         <div class="allowed-list-modal-container">
             Allowed Company
         </div>
-        <div  [matMenuTriggerFor]="menu1" class="edit-allow-companies">
+        <div *ngIf="formValues.company" [matMenuTriggerFor]="menu1" class="edit-allow-companies">
+        </div>
+        <div *ngIf="!formValues.company" class="edit-allow-companies">
         </div>
         <mat-menu #menu1="matMenu" class="allowed-company-modal">
           <div class="col-md-12 header-allowed-company">
@@ -262,7 +348,9 @@
 </div>
 <div class="col-md-12 d-flex contract-section">
     <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-      <mat-form-field class="without-search" appearance="legacy">
+      <mat-form-field class="without-search" 
+        appearance="legacy"
+        [ngClass]="{'required-field': (buttonClicked && !formValues.agreementType)}">
         <mat-label>Agreement Type</mat-label>
         <mat-select 
                     [(ngModel)]="formValues.agreementType"
@@ -294,14 +382,17 @@
       </mat-form-field>
     </div>
     <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-      <mat-form-field class="without-search" appearance="legacy">
+      <mat-form-field class="without-search" 
+        appearance="legacy"
+        [ngClass]="{'required-field': (buttonClicked && !formValues.incoterm)}">
         <mat-label>Delivery Term</mat-label>
         <mat-select 
                     [(ngModel)]="formValues.incoterm"
                     [disableOptionCentering]="true"
                     panelClass="general-information-select-container"
                     [compareWith]="compareUomObjects"
-                    placeholder="Delivery Term">
+                    placeholder="Delivery Term"
+                    required>
             <mat-option *ngFor="let option of incotermList" [value]="option">
                 {{option.name}}
             </mat-option>
@@ -312,7 +403,8 @@
         [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
       <mat-form-field class="without-search" 
           appearance="legacy"
-          [ngClass]="{'date-invalid': isValidFromDateInvalid , 'date-valid': !isValidFromDateInvalid}">
+          [ngClass]="{'required-field': (buttonClicked && !formValues.validFrom), 
+              'date-invalid': isValidFromDateInvalid , 'date-valid': !isValidFromDateInvalid}">
         <mat-label>Start Date</mat-label>
         <input [(ngModel)]="formValues.validFrom" 
               #validFromDateField="ngModel" 
@@ -331,11 +423,13 @@
             <mat-datepicker #validFrom [panelClass]="switchTheme?'datepicker-darktheme':''"></mat-datepicker>
       </mat-form-field>
     </div>
-    <div class="custom-form-field" 
-         [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+    <div *ngIf="!formValues.evergreen"
+        class="custom-form-field" 
+        [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
       <mat-form-field class="without-search" 
           appearance="legacy"
-          [ngClass]="{'date-invalid': isValidToDateInvalid , 'date-valid': !isValidToDateInvalid}">
+          [ngClass]="{'required-field': (buttonClicked && !formValues.validTo),
+            'date-invalid': isValidToDateInvalid , 'date-valid': !isValidToDateInvalid}">
         <mat-label>End Date</mat-label>
         <input [(ngModel)]="formValues.validTo" 
               #validToDateField="ngModel" 
@@ -369,7 +463,7 @@
         </mat-select>
       </mat-form-field>
     </div>
-    <div class="inital-end-date-readonly">
+    <div class="inital-end-date-readonly" *ngIf="!formValues.evergreen">
       <div class="label">Initial End Date</div>
       <div class="value">: --/--/---</div>
     </div>

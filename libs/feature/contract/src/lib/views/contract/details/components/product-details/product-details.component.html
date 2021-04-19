@@ -180,8 +180,7 @@
                 autocomplete="off"
                 placeholder="Deal Date"
                 (dateInput)="onChange($event, 'dealDate')"
-                (dateChange)="formValues.products[selectedTabIndex].dealDate = formatDateForBe(formValues.products[selectedTabIndex].dealDate)"
-                required>
+                (dateChange)="formValues.products[selectedTabIndex].dealDate = formatDateForBe(formValues.products[selectedTabIndex].dealDate)">
                 <mat-datepicker-toggle matSuffix [for]="dealDate">
                   <mat-icon matDatepickerToggleIcon class="icon-date">
                   </mat-icon>
