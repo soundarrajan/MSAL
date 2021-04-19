@@ -59,6 +59,7 @@ export interface IApiUrlsLegacyConfig {
   BASE_URL_DATA_EMAIL: string;
   BASE_URL_DATA_MASTERS: string;
   BASE_URL_DATA_ADMIN: string;
+  BASE_URL_DATA_BOPS: string;
   BASE_URL_DATA_INFRASTRUCTURE: string;
   BASE_URL_DATA_SELLER_PORTAL: string;
   BASE_URL_DATA_CLAIMS: string;
