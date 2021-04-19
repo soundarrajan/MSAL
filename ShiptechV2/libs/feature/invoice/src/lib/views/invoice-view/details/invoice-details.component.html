@@ -235,6 +235,9 @@
                                 <mat-option>Option1</mat-option>
                                 <mat-option>Option2</mat-option>
                             </mat-select>
+                            <div class="search-icon">
+                                <div class="img"></div>
+                            </div>
                         </mat-form-field>
                     </div>
                     <div id="custom-form-field" class="lightTheme">
@@ -295,7 +298,30 @@
                             </textarea>
                         </div>
                     </div>
-                    <div class="col-md-6 pd-0"></div>
+                    <span class="seperator-line"></span>
+                    <div class="col-md-5 pd-0" style="line-height: 48px; margin-top: -10px;">
+                        <div class="form-fields">
+                            <div id="custom-form-field" class="lightTheme">
+                                <mat-form-field class="without-search" appearance="legacy">
+                                    <mat-label>Payable To</mat-label>
+                                    <mat-select disableOptionCentering>
+                                        <mat-option>M A Marina</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <!-- <div class="search-icon">
+                                    <div class="img"></div>
+                                </div> -->
+                            </div>
+                            
+                        </div>
+                        <div>
+                            <mat-checkbox class="example-margin">Payment proof received</mat-checkbox>
+                        </div>
+                        <div class="field-textarea sizing">
+                            <textarea rows="4" cols="50" placeholder="Type back office comments here">
+                            </textarea>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -420,6 +446,30 @@
 </div> -->
 
 <div class="section1 mt-4">
+    <div class="match-grid" style="border-bottom: 4px solid #e5e5e5;">
+        <div class="title">Product Details</div>
+        <div class="agGrid-v2" style="margin: 0">
+            <div style="width:100%;height: 200px;">
+                <ag-grid-angular style="width: 100%;height: 100%;" [gridOptions]="gridOptions_data"
+                    class="ag-theme-material ag-grid-v2 angular-v9 with-total"></ag-grid-angular>
+            </div>
+        </div>
+      </div>
+</div>
+
+<div class="section1 mt-4">
+    <div class="match-grid" style="border-bottom: 4px solid #e5e5e5;">
+        <div class="title">Additional Costs</div>
+        <div class="agGrid-v2" style="margin: 0">
+            <div style="width:100%;height: 125px;">
+                <ag-grid-angular style="width: 100%;height: 100%;" [gridOptions]="gridOptions_ac"
+                    class="ag-theme-material ag-grid-v2 angular-v9 with-total"></ag-grid-angular>
+            </div>
+        </div>
+      </div>
+</div>
+
+<!-- <div class="section1 mt-4">
     <div class="row" style="width:100%;height: calc(100vh - 500px);min-height: 230px;">
         <ag-grid-angular style="width: 100%;height: 100%;" [gridOptions]="gridOptions_data"
             class="ag-theme-material ag-grid-v2 angular-v9 "></ag-grid-angular>
@@ -432,4 +482,4 @@
             class="ag-theme-material ag-grid-v2 angular-v9 "></ag-grid-angular>
 
     </div>
-</div>
+</div> -->

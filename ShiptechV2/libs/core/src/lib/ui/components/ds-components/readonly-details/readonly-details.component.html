@@ -1,4 +1,4 @@
-<div class="readonly-details-component">
+<div class="readonly-details-component" [ngClass]="{'section2-details' : data.hasSeparator}">
     <div class="details-content-holder" *ngFor="let item of data.contents">
         <div>
             <div class="label" [ngClass]="customLabelClass">{{item.label}}</div>

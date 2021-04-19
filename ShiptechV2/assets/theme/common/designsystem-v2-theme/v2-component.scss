@@ -1692,7 +1692,8 @@ div.component-viewer-nav-content
       color: #252A32;
     }
     .border_line {
-      height: 20px;
+      height: 25px;
+      padding-left: 40px;
       border-right: 1px solid #252a32;
     }
     &:last-child{
@@ -1701,5 +1702,9 @@ div.component-viewer-nav-content
       }
     }
   }
+  &.section2-details{
+    width: 325px !important;
+  }
 }
+
 /**** Readonly Details Component End ****/
