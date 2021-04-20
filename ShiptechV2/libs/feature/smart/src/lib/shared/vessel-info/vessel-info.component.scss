@@ -3,3 +3,9 @@
         line-height: 31px;
     }
 }
+
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+    background-color: transparent;
+}
