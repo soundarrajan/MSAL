@@ -169,7 +169,8 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       incoterm: null,
       status: null,
       summary: {},
-      createdOn: null
+      createdOn: null,
+      products: []
 
     };
     this.entityName = 'Contract';
@@ -458,7 +459,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     if (!this.formValues.validTo) {
       message += ' End Date,';
     }
-    
+
     this.buttonClicked = true;
     this.eventsSubject2.next(this.buttonClicked);
 
