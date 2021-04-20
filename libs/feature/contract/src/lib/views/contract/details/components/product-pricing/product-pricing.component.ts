@@ -579,6 +579,13 @@ export class ProductPricing extends DeliveryAutocompleteComponent
 
   }
 
+  @Input('additionalCostsComponentTypes') set _setAdditionalCostsComponentTypes(additionalCostsComponentTypes) { 
+    if (!additionalCostsComponentTypes) {
+      return;
+    } 
+    this.additionalCostsComponentTypes = additionalCostsComponentTypes;
+  }
+
   @Input('generalTenantSettings') set _setGeneralTenantSettings(generalTenantSettings) { 
     if (!generalTenantSettings) {
       return;
@@ -773,7 +780,6 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   ngOnInit(){  
     this.entityName = 'Contract';
     this.eventsSubscription = this.events.subscribe((data) => this.setContractForm(data));
-    this.getAdditionalCostsComponentTypes();
     this.eventsSaveButtonSubscription = this.eventsSaveButton.subscribe((data) => this.setRequiredFields(data))
   }
 
@@ -790,7 +796,7 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   
   setRequiredFields(data) {
     this.buttonClicked = data;
-    this.changeDetectorRef.detectChanges();
+    //this.changeDetectorRef.detectChanges();
     console.log(this.buttonClicked);
   }
 
@@ -826,7 +832,17 @@ export class ProductPricing extends DeliveryAutocompleteComponent
           'productList': this.productList,
           'locationList': this.locationList
         }
-      });        
+      }); 
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('RESULT');
+        if (result) {
+          this.formValues.products[this.selectedTabIndex].formula = {
+            'id': result.id,
+            'name': result.name
+          }
+          this.changeDetectorRef.detectChanges();
+        }
+      });       
     } 
   
   }
@@ -925,9 +941,8 @@ export class ProductPricing extends DeliveryAutocompleteComponent
             'locationList': this.locationList
           }
         });
-
         dialogRef.afterClosed().subscribe(result => {
-          console.log(result);
+          console.log('RESULT');
         });
       }
     });
@@ -944,24 +959,7 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     return object1 && object2 && object1.id == object2.id;
   }
 
-  getAdditionalCostsComponentTypes() {
-    //this.spinner.show();
-    this.contractService
-    .getAdditionalCostsComponentTypes({})
-    .pipe(
-      finalize(() => {
-        //this.spinner.hide();
-      })
-    )
-    .subscribe((response: any) => {
-      if (typeof response == 'string') {
-        this.toastr.error(response);
-      } else {
-        this.additionalCostsComponentTypes = response;
-        this.changeDetectorRef.detectChanges();
-      }
-    });
-  }
+  
   doFiltering(addCostCompTypes, cost, currentCost) {
     var costType = null;
     addCostCompTypes.forEach((v, k) => {
@@ -1080,6 +1078,9 @@ export class ProductPricing extends DeliveryAutocompleteComponent
 
   
   amountFormatValue(value) {
+    if (typeof value == 'undefined') {
+      return null;
+    }
     let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
     let number = parseFloat(plainNumber);
     if (isNaN(number)) {
@@ -1095,6 +1096,9 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   }
 
   priceFormatValue(value) {
+    if (typeof value == 'undefined') {
+      return null;
+    }
     let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
     let number = parseFloat(plainNumber);
     if (isNaN(number)) {

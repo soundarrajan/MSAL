@@ -419,6 +419,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
   locationList: any;
   productList: any;
   locationMasterList: any;
+  productSpecGroup: any = [];
 
   displayedColumns: string[] = ['name', 'country'];
   displayedProductColumns: string[] = ['name', 'productType'];
@@ -457,7 +458,6 @@ export class ProductDetails extends DeliveryAutocompleteComponent
   physicalSupplierList: any[];
   autocompletePhysicalSupplier: knownMastersAutocomplete;
   _autocompleteType: any;
-  productSpecGroup: any = [];
   modalSpecGroupParameters: any;
   modalSpecGroupParametersEditable: boolean;
   canChangeSpec: boolean;
@@ -536,6 +536,14 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     this.uomList = uomList;
   }
 
+  @Input('productSpecGroup') set _setProductSpecGroup(productSpecGroup) { 
+    if (!productSpecGroup) {
+      return;
+    } 
+    this.productSpecGroup = productSpecGroup;
+  }
+
+
 
   @Input('uomVolumeList') set _setUomVolumeList(uomVolumeList) { 
     if (!uomVolumeList) {
@@ -567,11 +575,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     if (formValues.products[this.selectedTabIndex] && !formValues.products[this.selectedTabIndex].physicalSuppliers)  {
       this.formValues.products[this.selectedTabIndex].physicalSuppliers = [];
     }
-    for (let i = 0; i < this.formValues.products.length; i++) {
-      if (this.formValues.products[i].product) {
-        this.getSpecGroupByProduct(this.formValues.products[i].product.id, this.formValues.products[i].specGroup);
-      }
-    }
+   
   }
 
   @Input('generalTenantSettings') set _setGeneralTenantSettings(generalTenantSettings) { 

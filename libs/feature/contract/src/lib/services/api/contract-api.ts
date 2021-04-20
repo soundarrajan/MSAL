@@ -262,7 +262,7 @@ export class ContractApi implements IContractApiService {
       `${this._masterApiUrl}/${ContractApiPaths.saveFormula()}`,
        { Payload: request  }
     ).pipe(
-      map((body: any) => body.payload),
+      map((body: any) => body.upsertedId),
       catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
     );
   }
