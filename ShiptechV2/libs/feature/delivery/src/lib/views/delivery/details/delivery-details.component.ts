@@ -1366,8 +1366,23 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
  
 
   save() {
+    let Isvalid=false;
     let hasMandatoryFields = this.validateRequiredFields();
     if (hasMandatoryFields) {
+      return;
+    }
+    this.formValues.deliveryProducts.forEach((deliveryProd, key) => { 
+      if(deliveryProd!=null){
+        deliveryProd.qualityParameters.forEach((qualityParameter, key) => {
+          if (qualityParameter.isDisplayedInDelivery==true && qualityParameter.isMandatoryInDelivery==true && (qualityParameter.bdnValue==null || qualityParameter.bdnValue=="")){
+            Isvalid=true;
+            document.getElementById("bdnIdx"+key).classList.add('date-invalid');
+          }
+        });
+      }
+    });
+    if(Isvalid){
+      this.toastrService.error('Please fill the required bdn value...');
       return;
     }
     let id = parseFloat(this.entityId);
