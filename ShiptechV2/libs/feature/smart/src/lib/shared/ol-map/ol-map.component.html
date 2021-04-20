@@ -1,0 +1,84 @@
+<div id="wrapper" style="overflow: hidden;height: 92vh;" [ngClass]="{'dark-click':lightclick}">
+  <div id="mapContainer" #olmap style="width:100%;height:100vh;position:fixed !important;"
+  [ngClass]="{'maxbg':showVesselPop || showPortList.length >0 }"></div>
+  <!-- <div class="ol-popup" style="margin-left: 80px;margin-bottom: 90px;">
+    <div class="popup-content" >
+      <div><span class="days"> 3 Days</span> to <span class="port">Marseille</span></div>
+      <div> ETA</div>
+      <div><span class="date">2019-01-19</span><span class="time">10:00</span></div>
+    </div>
+  </div> -->
+  <!-- vessel-hoverpopup -->
+  <div #vessel_hover class="popup" style="position: absolute;float: left;top: -2px;left: -11px;">
+    <!-- <img class="vessel_hover_circle" src="../../../assets/customicons/vessel/vessel-hover-circle.svg" alt="Arrow right"> -->
+    <div class="vessel-tooltip m-r-10" style="float:left;margin-left:24px;position:fixed" [ngClass]="hoverVesselColor">
+      {{hoverVesselName}} </div>
+  </div>
+
+  <!-- vessel-round-hoverpopup -->
+  <div #hover_circle>
+  </div>
+
+  <!-- port-hoverpopup -->
+  <div #port_hover class="major-port" style="position: absolute;float: left;top: -2px;left: -11px;">
+    <!-- <div #port_hover class="major-port" style="position: relative;bottom:2px;right:12px;float:left">> -->
+    <!-- <img class="port_hover_circle" src="../../../assets/customicons/vessel/vessel-hover-circle.svg" alt="Arrow right"> -->
+    <div class="vessel-tooltip m-r-10" style="float:left;margin-left:26px;position:fixed" [ngClass]="hoverPopupColor">
+      {{hoverPortName}}
+    </div>
+  </div>
+
+  <map-panel [isShowPanel]="false" [hidePanel]="hidePanel || showVesselPop || showLocationPop"
+    [highIntensity]="highIntensity" (zoomInEvent)="mapZoom(true)" (zoomOutEvent)="mapZoom(false)"
+    [maxZoomLimit]="maxZoomLimit" [minZoomLimit]="minZoomLimit" (showTableViewEvent)="this.toggleTableViewEmit.emit()"
+    [vesselList]="vesselList" [portList]="portList" (changeVessel)="showVessel($event)" (changePort)="showPort($event)">
+  </map-panel>
+  <div id="vessel_filter">
+    <div class="float-left">
+    </div>
+  </div>
+
+  <app-filterchips [highIntensity]="highIntensity" (filterClick)="filterChipClick($event)" [filterData]="filterData"
+    [lastUpdatedOn]="lastUpdatedOn">
+  </app-filterchips>
+  <div class="map-overlay-bg" (click)="overlayClick()" style="height: 100vh;width: 100%;position: absolute;"
+    *ngIf="isBunkerPlanOpen || isPortInfoOpen"></div>
+  <div *ngIf="!displayRoute && !isPortInfoOpen;else showRoute"
+    [ngClass]="{'two-popup':popupCount==2,'one-popup':popupCount!=2}"
+    [ngStyle]="{'float':(popupCount==2 && showVesselPop)?'left':(popupCount==2 && !showVesselPop)?'right':'unset'}">
+    <div *ngIf="showVesselPop" [@vesselPopupAnimation]="vesselPopData.name"
+      [ngClass]="{'minOpacity':isBunkerPlanOpen || isPortInfoOpen}" cdkDrag>
+      <app-vessel-popup [status]="vessel_view" style="cursor:pointer;" [vesselData]="vesselPopData"
+        (showBPlan)="showBplan($event)" (showRoutes)="showRoutes($event)" (closePopup)="closeVesselPopup()">
+      </app-vessel-popup>
+    </div>
+    <div *ngFor="let port of showPortList" cdkDrag [ngStyle]="{'order':port.position}"
+      [ngClass]="{'minOpacity':isBunkerPlanOpen || isPortInfoOpen}" cdkDrag [@portPopupAnimation]="port.position">
+      <app-port-popup [status]="port.port_view" [portData]="port" style="cursor:pointer;"
+        (showPortInfo)="showPortInfo($event)" (closePopup)="closeLocationPopup($event)">
+      </app-port-popup>
+    </div>
+  </div>
+  <ng-template #showRoute>
+    <div class="route-vessel" [ngClass]="{'minOpacity':isBunkerPlanOpen || isPortInfoOpen}">
+      <div *ngIf="showVesselPop && showPortList.length==0" cdkDrag>
+        <app-vessel-popup [status]="vessel_view" style="cursor:pointer;" [vesselData]="vesselPopData"
+          (showBPlan)="showBplan(true)" (showRoutes)="showRoutes($event)" (closePopup)="closeVesselPopup()">
+        </app-vessel-popup>
+      </div>
+      <div cdkDrag *ngFor="let port of showPortList">
+        <app-port-popup [status]="port.port_view" [portData]="port" style="cursor:pointer;"
+          (showPortInfo)="showPortInfo($event)" (closePopup)="closeLocationPopup($event)">
+        </app-port-popup>
+      </div>
+    </div>
+  </ng-template>
+</div>
+
+
+
+
+<div id="overlay" class="map-overlay" *ngIf="isLoading">
+  <div id="text"></div>
+  <div class="lds-dual-ring"></div>
+</div>

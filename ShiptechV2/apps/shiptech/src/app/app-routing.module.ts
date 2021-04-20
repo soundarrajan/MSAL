@@ -60,6 +60,22 @@ const routes: Routes = [
   {
     path: '',
     data: {
+      breadcrumb: 'Contract List',
+      breadcrumbUrl: '/#/contract',
+      breadcrumbIcon: 'fa fa-home'
+    },
+    children: [
+      {
+        path: KnownPrimaryRoutes.Contract,
+        canActivate: [AuthenticationGuard],
+        loadChildren: () =>
+          import('@shiptech/feature/contract').then(m => m.ContractModule)
+      }
+    ]
+  },
+  {
+    path: '',
+    data: {
       breadcrumb: 'Invoice List',
       breadcrumbUrl: '/#/invoice',
       breadcrumbIcon: 'fa fa-home'
@@ -78,6 +94,22 @@ const routes: Routes = [
     canActivate: [AuthenticationGuard],
     loadChildren: () =>
       import('@shiptech/feature/lazy-load-poc').then(m => m.LazyLoadPocModule)
+  },
+  {
+    path: '',
+    data: {
+      breadcrumb: 'Smart',
+      breadcrumbUrl: '/#/smart',
+      breadcrumbIcon: 'fa fa-home'
+    },
+    children: [
+      {
+        path: KnownPrimaryRoutes.Smart,
+        canActivate: [AuthenticationGuard],
+        loadChildren: () =>
+          import('@shiptech/feature/smart').then(m => m.SmartModule)
+      }
+    ]
   },
   { path: '**', redirectTo: '' }
 ];

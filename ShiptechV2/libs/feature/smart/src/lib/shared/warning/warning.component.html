@@ -1,0 +1,16 @@
+<div id="confirmation-popup">
+  <div class="close-btn">
+    <mat-icon class="icon" (click)="close()">close</mat-icon>
+  </div>
+  <div class="warning-title"><img id="warning-icon" src="../../../assets/customicons/warning_r.svg"
+      alt="list"><span style="padding-left: 5px;">Warning</span></div>
+  <div class="warning-text">The changes made to the bunkerplan will be lost, do you want to continue?</div>
+  <div class="yes-no">
+    <button mat-raised-button class="red-button" [mat-dialog-close]="false">
+      <span>Yes</span>
+    </button>
+    <button mat-raised-button class="blue-button" [mat-dialog-close]="true">
+      <span>No</span>
+    </button>
+  </div>
+</div>

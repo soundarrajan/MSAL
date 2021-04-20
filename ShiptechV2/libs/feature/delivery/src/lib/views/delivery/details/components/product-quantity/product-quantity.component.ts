@@ -191,9 +191,7 @@ export class ProductQuantityComponent implements OnInit{
     if (!form) {
       return;
     }
-    console.log('aici');
     this.formValues = form;
-    console.log(this.formValues);
     if (this.formValues.temp.deliverysummary) {
       if (this.formValues.deliveryProducts[this.deliveryProductIndex]) {
         if (!this.formValues.deliveryProducts[this.deliveryProductIndex].quantityHeader) {
@@ -210,7 +208,6 @@ export class ProductQuantityComponent implements OnInit{
 
   async getQualityMatchList() {
     this.qualityMatchList = await this.legacyLookupsDatabase.getQualityMatchList();
-    console.log(this.qualityMatchList);
   }
 
 
@@ -260,6 +257,20 @@ export class ProductQuantityComponent implements OnInit{
           return this.qualityMatchList[0];
       }
       return this.qualityMatchList[1];
+  }
+
+  // Only Number
+  keyPressNumber(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (inp == '.' || inp == ',') {
+      return true;
+    }
+    if (/^[-,+]*\d{1,6}(,\d{3})*(\.\d*)?$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
   }
 
   
