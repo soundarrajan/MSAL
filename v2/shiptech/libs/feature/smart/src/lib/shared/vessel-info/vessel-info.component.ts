@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, Input, ViewEncapsulation } from '@angular/core';
 import { LocalService } from '../../services/local-service.service';
 import { CommentsComponent } from '../comments/comments.component';
 import { CurrentBunkeringPlanComponent } from '../current-bunkering-plan/current-bunkering-plan.component';
@@ -8,7 +8,8 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 @Component({
   selector: 'app-vessel-info',
   templateUrl: './vessel-info.component.html',
-  styleUrls: ['./vessel-info.component.scss']
+  styleUrls: ['./vessel-info.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class VesselInfoComponent implements OnInit {
   selectedUserRole: any;
@@ -69,7 +70,7 @@ export class VesselInfoComponent implements OnInit {
     switch (column) {
       case '3.5 QTY':
         this.currentROBObj['3.5 QTY'] = value;
-        
+
         break;
         case '0.5 QTY':
         this.currentROBObj['0.5 QTY'] = value;
