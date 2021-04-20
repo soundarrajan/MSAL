@@ -458,7 +458,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
           } else {
             this.spinner.hide();
             this.isLoading = true;
-            this.toastr.success('Delivery saved successfully');
+            this.toastr.success('Contract saved successfully');
             this.router
             .navigate([
               KnownPrimaryRoutes.Contract,
@@ -486,7 +486,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
             this.spinner.hide();
             this.toastr.error(result);
           } else {
-            this.toastr.success('Delivery saved successfully');
+            this.toastr.success('Contract saved successfully');
             this.contractService
               .loadContractDetails(this.formValues.id)
               .pipe(
@@ -524,7 +524,41 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
           this.spinner.hide();
           this.toastr.error(result);
         } else {
-          this.toastr.success('Delivery confirmed successfully');
+          this.toastr.success('Contract confirmed!');
+          this.contractService
+            .loadContractDetails(this.formValues.id)
+            .pipe(
+              finalize(() => {
+                this.spinner.hide();
+              })
+            )
+            .subscribe((data: any) => {
+              this.formValues = _.merge(this.formValues, data);
+              if (typeof this.formValues.status != 'undefined') {
+                if (this.formValues.status.name) {
+                  this.statusColorCode = this.getColorCodeFromLabels(this.formValues.status, this.scheduleDashboardLabelConfiguration);
+                }
+              }
+            });
+        }
+    });
+  }
+
+  undoContract() {
+    this.spinner.show();
+    this.contractService
+    .undoConfirmContract(this.formValues)
+    .pipe(
+        finalize(() => {
+
+        })
+    )
+    .subscribe((result: any) => {
+        if (typeof result == 'string') {
+          this.spinner.hide();
+          this.toastr.error(result);
+        } else {
+          this.toastr.success('Contract unconfirmed!');
           this.contractService
             .loadContractDetails(this.formValues.id)
             .pipe(
