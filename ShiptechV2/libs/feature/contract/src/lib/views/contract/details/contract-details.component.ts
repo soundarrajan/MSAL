@@ -524,7 +524,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
           this.spinner.hide();
           this.toastr.error(result);
         } else {
-          this.toastr.success('Delivery saved successfully');
+          this.toastr.success('Delivery confirmed successfully');
           this.contractService
             .loadContractDetails(this.formValues.id)
             .pipe(
