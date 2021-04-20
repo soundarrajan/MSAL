@@ -124,8 +124,12 @@
                                     <span ng-if="CM.app_id == 'invoices' && CM.screen_id == 'treasuryreport'">
                                         <span ng-include="'app-invoice/views/treasury-report-currency-panel.html'"></span>
                                     </span>
-                                    <div ng-repeat="field in parents.children" style="min-height: 50px;" ng-switch on="field.Type" class=" col-md-{{ field.Columns[0].Value }} fe_entity edit_form_fields_{{ field.Name.replace('.','_') }}_{{ CM.app_id }} " ng-class="{'clear':field.LastOnRow, 'conditional_hidden':!$eval(field.Conditional)}" data-show="{{ field.ShowOn.split(',')[1] }}" data-dependent="{{ field.ShowOn.split(',')[0] }}" ng-hide="{{(CM.screen_id == 'vessel' && isHideVesselBopsDetails && (field.Unique_ID == 'vesselAccount' || field.Unique_ID == 'isFlowMeterAvailable' || field.Unique_ID == 'departments' || field.Unique_ID == 'isVesselManagable') || field.Hidden)}}">
-                                        <span ng-switch-when="text">
+                                    <!-- {{!( ['vesselAccount', 'isFlowMeterAvailable', 'departments', 'isVesselManagable'].includes(field.Unique_ID) && CM.screen_id == 'vessel' && isHideVesselBopsDetails)}} -->
+                                    <div ng-repeat="field in parents.children" style="min-height: 50px;" ng-switch on="field.Type" class=" col-md-{{ field.Columns[0].Value }} fe_entity edit_form_fields_{{ field.Name.replace('.','_') }}_{{ CM.app_id }} " ng-class="{'clear':field.LastOnRow, 'conditional_hidden':!$eval(field.Conditional)}" data-show="{{ field.ShowOn.split(',')[1] }}" data-dependent="{{ field.ShowOn.split(',')[0] }}" ng-hide="{{field.Hidden}}" 
+                                    ng-if="!(CM.screen_id == 'vessel' && !adminConfiguration.master.isVesselBopsDetailsVisible && (field.Unique_ID == 'vesselAccount' || field.Unique_ID == 'isFlowMeterAvailable' || field.Unique_ID == 'departments' || field.Unique_ID == 'isVesselManagable'))">
+
+                                    
+                                        <span ng-switch-when="text"> 
                                             <span ng-include="'app-general-components/views/controls/text-control.html'"></span>
                                         </span>
                                         <span ng-switch-when="number">

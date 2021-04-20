@@ -38,9 +38,8 @@
         $scope.tradeBookfilter=[];
         $rootScope.TempadditionalCosts = [];
         $scope.vm = this;
-        $scope.isHideVesselBopsDetails = !($rootScope.adminConfiguration && $rootScope.adminConfiguration.master.isVesselBopsDetailsVisible? $rootScope.adminConfiguration.master.isVesselBopsDetailsVisible : false);
         $scope.preferredContacts = [];
-
+ 
         $controller('ScreenLayout_Controller', {
             $scope: $scope
         });
@@ -184,6 +183,7 @@
                         $rootScope.getAdminConfigurationCall = false;
                         vm.adminConfiguration = callback2;
                         $rootScope.adminConfiguration = callback2;
+				        $scope.isHideVesselBopsDetails = !$rootScope.adminConfiguration.master.isVesselBopsDetailsVisible;
                     }
                 });
             }
