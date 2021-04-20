@@ -393,6 +393,13 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
                         return;
                     }
                 }
+                if (template.name.toLowerCase().indexOf('pretest') !== -1) {
+                    if (ctrl.data.missingPretest) {
+                        toastr.error('PreTest is mandatory');
+                        ctrl.template = null;
+                        return;
+                    }
+                }                
             }
 
             let payload;
@@ -870,6 +877,16 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
 	                });
         			return;
         		}
+        		if (ctrl.email.comment.emailTemplate.name.indexOf('PreTestNominationConfirmation') != -1) {
+	                orderModel.sendOrderCommand('confirmPretest', ctrl.email.businessId)
+	                .then((response) => {
+	                	window.history.back();
+	                    ctrl.buttonsDisabled = false;
+	                }).catch((error) => {
+	                    ctrl.buttonsDisabled = false;
+	                });
+        			return;
+        		}        		
             }
             if (ctrl.transaction == EMAIL_TRANSACTION.REQUOTE) {
             	// ctrl.email.businessId = ctrl.data.groupId;

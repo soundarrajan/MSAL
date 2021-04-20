@@ -32,6 +32,7 @@ angular.module('shiptech.models')
                 confirmToSurveyor: { method:'POST', params:{ verb:'confirmToSurveyor' }, interceptor: resourceInterceptor },
                 confirmToAll: { method:'POST', params:{ verb:'confirmToAll' }, interceptor: resourceInterceptor },
                 confirmToLab: { method:'POST', params:{ verb:'confirmToLab' }, interceptor: resourceInterceptor },
+                confirmPretest: { method:'POST', params:{ verb:'confirmPretest' }, interceptor: resourceInterceptor },
                 updateCancelOrderReason: { method:'POST', params:{ verb:'updateCancelOrderReason' }, interceptor: resourceInterceptor },
                 getManualCancellationEmail: { method:'POST', params:{ verb:'getManualCancellationEmail' }, interceptor: resourceInterceptor },
                 getContractProductAdditionalCosts: { method:'POST', params:{ verb:'getContractProductAdditionalCosts' }, interceptor: resourceInterceptor },
@@ -49,3 +50,5 @@ angular.module('shiptech.models')
                 },
             });
     } ]);
+
+

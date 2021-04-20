@@ -10,6 +10,9 @@ angular.module('shiptech.components')
                     return false;
                 }
                 ctrl.messageType = changes.messageType.currentValue;
+                if (ctrl.messageType == 'hardPretest') {
+                    ctrl.messageText = 'You did not send pre test confirmation.';
+                }
                 if (ctrl.messageType == 'hardVessel') {
                     ctrl.messageText = 'You did not send a confirmation email to Vessel.';
                 }

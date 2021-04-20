@@ -501,7 +501,12 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             ctrl.data.missingSurveyor = !ctrl.data.surveyorCounterparty && ctrl.isSurveyorMandatory;
             ctrl.data.missingAgent = ctrl.isAgentMandatory && (ctrl.isAgentFreeText ? !ctrl.data.agentCounterpartyFreeText : !ctrl.data.agentCounterparty);
             ctrl.data.missingLab = !ctrl.data.lab;
-
+            ctrl.data.missingPretest = true;
+            $.each(ctrl.data.products, (k,v) => {
+            	if (v.preTest) {
+		            ctrl.data.missingPretest = false;
+            	}
+            })
 
             ctrl.data.products = $filter('orderBy')(ctrl.data.products, 'productType.id');
 
@@ -3163,6 +3168,13 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     }
                 });
             }
+            var isPretestMailSent = false; 
+            $.each(ctrl.data.mailSent, (k,v) => {
+            	if (v.emailTemplate.name.includes("PreTestNominationConfirmation")) {
+            		isPretestMailSent = true;
+            	}
+            })
+
             if (ctrl.showSpecGroupModal) {
                 // show spec group modal validatiom
                 $scope.modalInstance = $uibModal.open({
@@ -3172,6 +3184,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     windowClass: 'limited-max-height',
                     scope: $scope
                 });
+            } else if (!ctrl.procurementSettings.fieldVisibility.isPreTestHidden && !isPretestMailSent) {
+            	 ctrl.messageType = 'hardPretest';
+            	 $('order-email-dialog').modal('show');
             } else if (ctrl.dtoHasAction(SCREEN_ACTIONS.SHOWHARDSTOPCONFIRMEMAIL) || ctrl.dtoHasAction(SCREEN_ACTIONS.SHOWHARDSTOPSELLEREMAIL)) {
                 // ctrl.messageType = SCREEN_ACTIONS.SHOWSOFTSTOPCONFIRMEMAIL;
                 if (ctrl.dtoHasAction(SCREEN_ACTIONS.SHOWHARDSTOPCONFIRMEMAIL)) {
@@ -3946,6 +3961,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             data.data.missingPhysicalSupplier = ctrl.data.missingPhysicalSupplier;
             data.data.missingSpecGroup = ctrl.data.missingSpecGroup;
             data.data.missingLab = ctrl.data.missingLab;
+            data.data.missingPretest = ctrl.data.missingPretest;
+
 
             localStorage.setItem('previewEmailData', JSON.stringify(data));
             let url = $state.href(STATE.PREVIEW_EMAIL);
@@ -3995,6 +4012,17 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 	     		ctrl.data.isVerifiedBool = false;
             });
         };
+
+		ctrl.isPretestChecked = () => {
+            var pretestChecked = false;
+            $.each(ctrl.data.products, (k,v) => {
+            	if (v.preTest) {
+		            pretestChecked = true;
+            	}
+            })
+            return pretestChecked;
+		}
+
         ctrl.recomputeProductPricePrecision = (productKey) => {
         	var producInitialPrice = ctrl.data.products[productKey].price;
         	ctrl.data.products[productKey].price = 0
