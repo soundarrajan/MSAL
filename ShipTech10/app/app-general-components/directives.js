@@ -2314,14 +2314,20 @@ Number(function() {
                                 }
                             });
                         }
-                        if(fraction == 0) {
-                            if (parseInt(ctrl.$modelValue) == 0) {
-                                return null;
+                        elem.bind('keydown keypress', (e) => {
+                        	// prevent "e" char
+                            if (e.keyCode == 69) {
+                                e.preventDefault();
                             }
+                        });                        
+                        if(fraction == 0) {
+                            // if (parseInt(ctrl.$modelValue) == 0) {
+                            //     return null;
+                            // }
                             return parseInt(ctrl.$modelValue);
                         }
                         var returnData = null;
-                        if (ctrl.$modelValue != null && ctrl.$modelValue != '' && typeof ctrl.$modelValue != 'undefined') {
+                        if (ctrl.$modelValue != null && ctrl.$modelValue !== '' && typeof ctrl.$modelValue != 'undefined') {
                             try {
                                 returnData = $filter(filter)(ctrl.$modelValue, fraction);
                             } catch(error) {

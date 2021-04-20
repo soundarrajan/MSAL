@@ -9963,6 +9963,15 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
             if(noDeleted.length ==  $scope.formValues.tradeBookMappings.length )
                 $scope.addnewTradebookItem(false);
         }
+
+        $scope.initLocationBopsDetailsDefaultValues = () => {
+        	$timeout(()=>{
+				!$scope.formValues.distanceSECAArea ? $scope.formValues.distanceSECAArea = 0 : "";
+				!$scope.formValues.pilotInTime ? $scope.formValues.pilotInTime = 1 : "";
+				!$scope.formValues.earliestPortTradingTime ? $scope.formValues.earliestPortTradingTime = 14 : "";
+				!$scope.formValues.latestPortTradingTime ? $scope.formValues.latestPortTradingTime = 3 : "";
+        	})
+        }
     }
 ]);
 
