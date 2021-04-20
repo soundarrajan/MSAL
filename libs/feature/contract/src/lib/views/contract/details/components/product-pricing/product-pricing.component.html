@@ -1,23 +1,28 @@
-{{selectedTabIndex}}
 <div class="col-md-12 contract-section selected-product-container" style="margin-left: 0px;">
   <div class="col-md-12 no-padding d-flex" style="margin-top: 10px;">
     <div class="header-product-details col-md-2 no-padding">
       Product pricing
     </div>
   </div>
+  {{formValues.products[selectedTabIndex].isFormula}}
+  {{formValues.products[selectedTabIndex].fixedPrice}}
   <div class="col-md-12 no-padding d-flex" style="margin-top: 10px;">
     <div class="col-md-4 no-padding">
-      {{formValues.products[selectedTabIndex].isFormula}}
-      {{formValues.products[selectedTabIndex].fixedPrice}}
       <div id="custom-contract-btn-toggle-v2">
-        <mat-button-toggle-group  #group="matButtonToggleGroup" [value]="selectedVal" (change)="onValChange(group.value)" >
-          <mat-button-toggle value="formula" (click)="formValues.products[selectedTabIndex].isFormula = true;
+        <mat-button-toggle-group 
+          [disabled]="formValues.status && formValues.status.name == 'Confirmed'" 
+          #group="matButtonToggleGroup" [value]="selectedVal" (change)="onValChange(group.value)" >
+          <mat-button-toggle value="formula" 
+            [disabled]="formValues.status && formValues.status.name == 'Confirmed'" 
+            (click)="formValues.products[selectedTabIndex].isFormula = true;
             formValues.products[selectedTabIndex].fixedPrice = false;">
             <span *ngIf="selectedVal == 'formula'" class="toggle-icon"></span> 
             Formula based
           </mat-button-toggle>
-          <mat-button-toggle value="fixed" (click)="formValues.products[selectedTabIndex].isFormula = false;
-          formValues.products[selectedTabIndex].fixedPrice = true;">
+          <mat-button-toggle value="fixed" 
+            [disabled]="formValues.status && formValues.status.name == 'Confirmed'" 
+            (click)="formValues.products[selectedTabIndex].isFormula = false;
+            formValues.products[selectedTabIndex].fixedPrice = true;">
             <span  *ngIf="selectedVal == 'fixed'" class="toggle-icon"></span> 
             Fixed
           </mat-button-toggle>
@@ -41,6 +46,7 @@
         <mat-label>Price</mat-label>
         <input  
             [(ngModel)]="formValues.products[selectedTabIndex].price"
+            [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
             matInput 
             autocomplete="off"
             placeholder="Price"
@@ -55,7 +61,8 @@
             placeholder="Currency"
             [disableOptionCentering]="true"
             panelClass="general-information-select-container"
-            [compareWith]="compareUomObjects">
+            [compareWith]="compareUomObjects"
+            [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
             <mat-option *ngFor="let option of currencyList" [value]="option">
               {{option.name}}
           </mat-option>
@@ -70,7 +77,8 @@
             placeholder="Uom"
             [disableOptionCentering]="true"
             panelClass="general-information-select-container"
-            [compareWith]="compareUomObjects">
+            [compareWith]="compareUomObjects"
+            [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
             <mat-option *ngFor="let option of uomList" [value]="option">
               {{option.name}}
           </mat-option>
@@ -88,14 +96,14 @@
         <div class="col-md-6 no-padding" style="text-align: end;">
           <div style="bottom: 5px;position: relative;">
             <span style="margin-right: 5px;">
-              <a class="remove-formula-icon" (click)="removeFormula(selectedTabIndex)">
+              <a class="remove-formula-icon" (click)="formValues.status && formValues.status.name == 'Confirmed' ? '' : removeFormula(selectedTabIndex)">
               </a>
               <span>
                 Remove
               </span>
             </span>
             <span>
-              <a (click)="viewFormula(selectedTabIndex)" class="view-formula-icon" style="position: relative; top: 3px;">
+              <a (click)="formValues.status && formValues.status.name == 'Confirmed' ? '': viewFormula(selectedTabIndex)" class="view-formula-icon" style="position: relative; top: 3px;">
               </a>
               <span>
                 View formula 
@@ -117,6 +125,7 @@
                       [(ngModel)]="formValues.products[selectedTabIndex].formula"
                       [matAutocomplete]="auto1"
                       placeholder="Type formula name"
+                      [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
                       >
               <mat-autocomplete #auto1="matAutocomplete" 
                                   class="darkPanelAuto"
@@ -127,7 +136,9 @@
                   </mat-option>
               </mat-autocomplete>
           </mat-form-field>
-          <button class="search-icon" 
+          <button class="search-icon"
+              [disabled]="formValues.status && formValues.status.name == 'Confirmed'" 
+              [ngClass]="{'search-icon-disabled': formValues.status && formValues.status.name == 'Confirmed'}" 
               appMasterSelectorTrigger [masterSelector]="masterSelector1" #masterSelectorTrigger1="masterSelectorTrigger" [header]="getHeaderNameSelector1()">
           <div class="img">
               <ng-template cdkPortal #masterSelector1="cdkPortal" >
@@ -197,7 +208,8 @@
                               setIsAllowingNegativeAmmount(selectedTabIndex, additionalCost.key)"
                             [disableOptionCentering]="true"
                             panelClass="general-information-select-container"
-                            [compareWith]="compareUomObjects">
+                            [compareWith]="compareUomObjects"
+                            [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
                         <mat-option *ngFor="let option of additionalCostList" [value]="option">
                             {{option.name}}
                         </mat-option>
@@ -215,7 +227,8 @@
                             (selectionChange)="resetUom(selectedTabIndex, additionalCost.key)"
                             [disableOptionCentering]="true"
                             panelClass="general-information-select-container"
-                            [compareWith]="compareUomObjects">
+                            [compareWith]="compareUomObjects"
+                            [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
                         <mat-option *ngFor="let option of filterCostTypesByAdditionalCost(additionalCost.value.additionalCost ? additionalCost.value.additionalCost.id : 0, 0)" [value]="option">
                             {{option.name}}
                         </mat-option>
@@ -232,7 +245,8 @@
                         [(ngModel)]="additionalCost.value.amount"
                         matInput 
                         amountFormat
-                        autocomplete="off">
+                        autocomplete="off"
+                        [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
                   </mat-form-field>
                 </div>
               </td>
@@ -244,7 +258,8 @@
                             [disableOptionCentering]="true"
                             panelClass="general-information-select-container"
                             [compareWith]="compareUomObjects"
-                            [disabled]="additionalCost.value.costType && additionalCost.value.costType.name != 'Unit'">
+                            [disabled]="(additionalCost.value.costType && additionalCost.value.costType.name != 'Unit')
+                              || (formValues.status && formValues.status.name == 'Confirmed')">
                         <mat-option *ngFor="let option of uomList" [value]="option">
                             {{option.name}}
                         </mat-option>
@@ -258,7 +273,8 @@
                     <input  
                         [(ngModel)]="additionalCost.value.extras"
                         matInput 
-                        autocomplete="off">
+                        autocomplete="off"
+                        [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
                   </mat-form-field>
                 </div>
               </td>
@@ -269,7 +285,8 @@
                             [(ngModel)]="additionalCost.value.currency"
                             [disableOptionCentering]="true"
                             panelClass="general-information-select-container"
-                            [compareWith]="compareUomObjects">
+                            [compareWith]="compareUomObjects"
+                            [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
                         <mat-option *ngFor="let option of currencyList" [value]="option">
                             {{option.name}}
                         </mat-option>
@@ -283,6 +300,7 @@
                     <input  
                         [(ngModel)]="additionalCost.value.comments"
                         matInput 
+                        [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
                         autocomplete="off">
                   </mat-form-field>
                 </div>
