@@ -117,7 +117,8 @@
                 placeholder="Spec Group"
                 [disableOptionCentering]="true"
                 panelClass="general-information-select-container"
-                [compareWith]="compareUomObjects">
+                [compareWith]="compareUomObjects"
+                [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
               <ng-container *ngIf="formValues.products[selectedTabIndex].product">
                 <mat-option *ngFor="let option of productSpecGroup[formValues.products[selectedTabIndex].product.id]" [value]="option">
                   {{option.name}}
@@ -135,11 +136,12 @@
             <mat-form-field class="with-search" appearance="legacy">
                 <mat-label>Supplier</mat-label>
                 <input class="free-text-field" 
-                        [(ngModel)]="formValues.products[selectedTabIndex].physicalSuppliers[0]"
-                        type="text"
-                        matInput 
-                        [matAutocomplete]="auto1"
-                        placeholder="Supplier">
+                      [(ngModel)]="formValues.products[selectedTabIndex].physicalSuppliers[0]"
+                      type="text"
+                      matInput 
+                      [matAutocomplete]="auto1"
+                      placeholder="Supplier"
+                      [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
                 <mat-autocomplete #auto1="matAutocomplete" 
                                     class="darkPanelAuto"
                                     [displayWith]="displayFn">
@@ -151,18 +153,18 @@
             </mat-form-field>
             <button class="search-icon" 
                 appMasterSelectorTrigger [masterSelector]="masterSelector1" #masterSelectorTrigger1="masterSelectorTrigger" [header]="getHeaderNameSelector1()">
-            <div class="img">
-                <ng-template cdkPortal #masterSelector1="cdkPortal" >
-                    <shiptech-shared-master-selector (selectedChange)="selectorPhysicalSupplierSelectionChange($event); masterSelectorTrigger1.close()" (shouldCloseModal)="masterSelectorTrigger1.close()" [selectorType]="autocompletePhysicalSupplier"
-                                                    [disabled]="disabled"
-                                                    [readonly]="readonly"
-                                                    [entityName]="entityName"
-                                                    [entityId]="entityId"
-                                                    [vesselId]="vesselId"
-                                                    [headerName]="getHeaderNameSelector1()"
-                    ></shiptech-shared-master-selector>
-                </ng-template> 
-            </div>
+                <div class="img">
+                  <ng-template cdkPortal #masterSelector1="cdkPortal" >
+                      <shiptech-shared-master-selector (selectedChange)="selectorPhysicalSupplierSelectionChange($event); masterSelectorTrigger1.close()" (shouldCloseModal)="masterSelectorTrigger1.close()" [selectorType]="autocompletePhysicalSupplier"
+                                                      [disabled]="disabled"
+                                                      [readonly]="readonly"
+                                                      [entityName]="entityName"
+                                                      [entityId]="entityId"
+                                                      [vesselId]="vesselId"
+                                                      [headerName]="getHeaderNameSelector1()"
+                      ></shiptech-shared-master-selector>
+                  </ng-template> 
+                </div>
             </button>
         </div>
       </div>
@@ -175,6 +177,7 @@
           <input [(ngModel)]="formValues.products[selectedTabIndex].dealDate" 
                 #validToDateField="ngModel" 
                 matInput 
+                [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
                 [matDatepicker]="dealDate"
                 (focus)="dealDate.open()"
                 autocomplete="off"
