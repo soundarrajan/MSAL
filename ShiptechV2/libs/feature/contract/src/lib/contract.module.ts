@@ -139,6 +139,7 @@ import { QuantityBased } from './views/contract/details/components/quantity-base
 import { ProductBased } from './views/contract/details/components/product-based/product-based.component';
 import { VesselLocationBased } from './views/contract/details/components/vessel-location-based/vessel-location-based.component';
 import { PriceTenantFormatDirective } from './views/contract/details/directives/price-tenant-format.directive';
+import { ExtendContractModalComponent } from './views/contract/details/components/extend-contract-modal/extend-contract-modal.component';
 
 
 @NgModule({
@@ -262,11 +263,12 @@ import { PriceTenantFormatDirective } from './views/contract/details/directives/
     PriceTenantFormatDirective,
     NumberOnlyDirective,
     ProductSpecGroupModalComponent,
-    CreateNewFormulaModalComponent
+    CreateNewFormulaModalComponent,
+    ExtendContractModalComponent
     //PSpinnerDisableKeysSpinDirective,
     //PSpinnerTenantFormatDirective
   ],
-  entryComponents: [ProductSpecGroupModalComponent, CreateNewFormulaModalComponent],
+  entryComponents: [ProductSpecGroupModalComponent, CreateNewFormulaModalComponent,ExtendContractModalComponent],
   exports: [
     MainContractComponent,
     QuantityTenantFormatDirective,

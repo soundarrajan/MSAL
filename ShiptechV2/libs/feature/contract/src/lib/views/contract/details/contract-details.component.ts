@@ -33,6 +33,7 @@ import { LoadingBarService } from '@ngx-loading-bar/core';
 import { ContractService } from '../../../services/contract.service';
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
 import { KnownContractRoutes } from '../../../known-contract.routes';
+import { ExtendContractModalComponent } from './components/extend-contract-modal/extend-contract-modal.component';
 
 interface DialogData {
   email: string;
@@ -576,6 +577,53 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
             });
         }
      });
+  }
+
+  deleteContract() {
+    this.spinner.show();
+    this.contractService
+    .deleteContract(this.formValues)
+    .pipe(
+        finalize(() => {
+
+        })
+    )
+    .subscribe((result: any) => {
+        if (typeof result == 'string') {
+          this.spinner.hide();
+          this.toastr.error(result);
+        } else {
+          this.toastr.success('Contract deleted!');
+          this.contractService
+            .loadContractDetails(this.formValues.id)
+            .pipe(
+              finalize(() => {
+                this.spinner.hide();
+              })
+            )
+            .subscribe((data: any) => {
+              this.formValues = _.merge(this.formValues, data);
+              if (typeof this.formValues.status != 'undefined') {
+                if (this.formValues.status.name) {
+                  this.statusColorCode = this.getColorCodeFromLabels(this.formValues.status, this.scheduleDashboardLabelConfiguration);
+                }
+              }
+            });
+        }
+     });
+  }
+
+  extendContract() {
+    const dialogRef = this.dialog.open(ExtendContractModalComponent, {
+      width: '600px',
+      data:  { formValues: this.formValues}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log("close extend pop-up");
+        this.formValues = result;
+      }
+    });
   }
 
   ngOnDestroy(): void {
