@@ -1,9 +1,7 @@
-﻿commit 9ac1a2f6329f866924117532736f9c6533ece51d
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Mon Apr 19 11:38:54 2021 +0000
+﻿commit e25c636335ed99f91b915969dde1fac3c781ba62
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Tue Apr 20 07:51:35 2021 +0000
 
-    Merged PR 9960: Requirement 29806, Requirement 29778 related changes has done
-    
-    Related work items: #29778, #29806
+    Merged PR 9986: Added min-height for delivery textarea
 
 branch: master
