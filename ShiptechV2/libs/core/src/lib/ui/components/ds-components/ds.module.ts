@@ -11,7 +11,7 @@ import { OpsSpecParameterDialog } from './pop-ups/ops-spec-parameter.component';
 import { SpecParameterDialog } from './pop-ups/spec-parameter.component';
 import { TabsComponent } from './tabs/tabs.component';
 import { ReadonlyDetailsComponent } from './readonly-details/readonly-details.component';
-
+import { AgGridCellStyleComponent } from './ag-grid/ag-grid-cell-style.component';
 @NgModule({ 
   imports: [
     CommonModule,
@@ -33,7 +33,8 @@ import { ReadonlyDetailsComponent } from './readonly-details/readonly-details.co
     OperationalAmountDialog,
     SpecParameterDialog,
     MasterChip,
-    ReadonlyDetailsComponent
+    ReadonlyDetailsComponent,
+    AgGridCellStyleComponent
   ],
 })
 export class DSComponentsModule {}
