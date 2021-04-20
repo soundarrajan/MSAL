@@ -8,7 +8,7 @@
   <div class="st-breadcrumbs-progress-bar col-md-6">
     <ul class="page-breadcrumb">
       <li class="btn btn-fit-height {{navItem.indexStatus}}"  title="{{navItem.entityId}}"  *ngFor="let navItem of navigationItems">          
-        <a *ngIf="navItem.url" href="{{navItem.url}}">
+        <a *ngIf="navItem.url" href="{{navItem.url}}" class="breadcrumb-a">
             {{navItem.displayName}}
         </a>
         <span *ngIf="!navItem.url">

@@ -119,7 +119,6 @@ export class RaiseClaimModalComponent implements OnInit {
       this.baseOrigin = new URL(window.location.href).origin;
       this.selectedProductIndex = data.selectedProductIndex;
       this.selectedProduct = this.deliveryProducts[this.selectedProductIndex];
-      console.log(this.selectedProductIndex);
     }
 
   onNoClick(): void {
@@ -134,12 +133,7 @@ export class RaiseClaimModalComponent implements OnInit {
   }
 
   selectParamToRaiseClaim(claimTypeKey, paramKey) {
-    console.log(claimTypeKey);
-    console.log(paramKey);
-    console.log(this.CM.availableClaimTypes);
     this.CM.availableClaimTypes.forEach((typeV, typeK) => {
-      console.log(typeV);
-      console.log(typeV.specParams);
       typeV.specParams.forEach((specV, specK) => {
         if (typeK != claimTypeKey) {
           specV.isDisabled = true;
@@ -169,12 +163,9 @@ export class RaiseClaimModalComponent implements OnInit {
     } else {
       this.CM.availableClaimTypes[claimTypeKey].isTypeSelected = false;
     }
-    console.log(this.CM.availableClaimTypes);
   };
 
   selectAllParamsToRaiseClaim(claimTypeKey, checked) {
-    console.log(claimTypeKey);
-    console.log(checked);
     if (checked) {
       this.CM.availableClaimTypes.forEach((typeV, typeK) => {
           if (typeK != claimTypeKey) {
@@ -197,12 +188,10 @@ export class RaiseClaimModalComponent implements OnInit {
           });
       });
     }
-    console.log(this.CM.availableClaimTypes);
     this.changeDetectorRef.detectChanges();
   };
 
   changeGender(e) {
-    console.log(e.target.value);
   }
 
   closeClick(): void {
@@ -213,7 +202,6 @@ export class RaiseClaimModalComponent implements OnInit {
   raiseClaim() {
     if (this.raiseClaimInfo) {
       let DeliveryProductId = `${this.raiseClaimInfo.productId }`;
-      console.log(this.CM.availableClaimTypes);
       let specParamsIds = [];
       let claimTypeId;
       this.CM.availableClaimTypes.forEach((typeV, typeK) => {
@@ -242,12 +230,10 @@ export class RaiseClaimModalComponent implements OnInit {
         ClaimTypeId: claimTypeId
       };
       this.raiseNewClaim(data);
-      console.log(data);
     }
   }
 
   raiseNewClaim(data) {
-    console.log(this.CM.availableClaimTypes);
     let specParamsIds = [], claimId;
     this.CM.availableClaimTypes.forEach((typeV, typeK) => {
       typeV.specParams.forEach((specV, specK) => {
@@ -286,12 +272,10 @@ export class RaiseClaimModalComponent implements OnInit {
       })
     )
     .subscribe((response: any) => {
-      console.log(response);
         if (typeof response == 'string') {
           this.toastrService.error(response);
         } else {
           localStorage.setItem('raiseNewClaimData', JSON.stringify(response));
-          console.log('-----', response);
           window.location.href = `${this.baseOrigin}/#/claims/claim/edit/`;
         }
       });
@@ -303,7 +287,6 @@ export class RaiseClaimModalComponent implements OnInit {
     });
     if (findProductIndex != -1) {
       this.CM.selectedProduct = findProductIndex;
-      console.log(findProductIndex);
     }
     const product = value;
     if (product.qualityParameters) {
@@ -315,7 +298,6 @@ export class RaiseClaimModalComponent implements OnInit {
     this.raiseClaimInfo = {};
     this.raiseClaimInfo.allSpecParams = [...specParams];
     this.raiseClaimInfo.productId = prodId;
-    console.log(this.raiseClaimInfo);
     this.raiseNewClaimWhenChangeProduct();
   }
 
@@ -324,14 +306,12 @@ export class RaiseClaimModalComponent implements OnInit {
       this.toastrService.error('Claim can not be raised for this product!');
       return;
     }
-    console.log('this.raiseClaimInfo', this.raiseClaimInfo);
     this.CM.availableClaimTypes = [];
     const claimType = {
       displayName: '',
       claim: {},
       specParams: [],
     };
-    console.log('this.CM.listsCache.ClaimType', this.CM.listsCache.ClaimType);
     this.CM.listsCache.ClaimType.forEach((val, ind) => {
       // only allow these 3 types of claim
       if (val.id != 1 && val.id != 3 && val.id != 6 && val.id != 2) {
@@ -348,7 +328,6 @@ export class RaiseClaimModalComponent implements OnInit {
           });
         }
       });
-      console.log(params);
       const claimType = {
         claim: val,
         specParams: [...params],
@@ -408,7 +387,6 @@ export class RaiseClaimModalComponent implements OnInit {
       }
     });
     this.raiseClaimInfo.currentSpecParamIds = [];
-    console.log('this.CM.availableClaimTypes', this.CM.availableClaimTypes);
   }
 
 

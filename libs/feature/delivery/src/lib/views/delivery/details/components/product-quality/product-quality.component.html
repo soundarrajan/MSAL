@@ -35,7 +35,7 @@
                 [disabled]="formValues.deliveryStatus.name == 'Verified'" 
                 autocomplete="off"
                 placeholder="Net specific energy"
-                myNumberOnly>
+                (keypress)="keyPressNumber($event)">
             <div matSuffix class="d-flex" style="display:flex;align-items: center;">
                 <div class="label">{{formValues.deliveryProducts[deliveryProductIndex].qualityHeader.netSpecificEnergyUom}}</div>
             </div>   
@@ -49,7 +49,7 @@
                 [disabled]="formValues.deliveryStatus.name == 'Verified'"
                 autocomplete="off"
                 placeholder="CCAI"
-                myNumberOnly>
+                (keypress)="keyPressNumber($event)">
         </mat-form-field>
     </div>
 </div>
@@ -122,7 +122,7 @@
                                 (ngModelChange)="qualityParameter.qualityMatch = setQualityMatch(qualityParameter.bdnValue, qualityParameter.surveyValue, qualityParameter.min, qualityParameter.max)"
                                 matInput 
                                 [disabled]="formValues.deliveryStatus.name == 'Verified'"
-                                myNumberOnly
+                                (keypress)="keyPressNumber($event)"
                                 autocomplete="off"
                                 name="Product_{{ deliveryProductIndex }}_{{ qualityParameter.specParameter.name}}_BDN">
                         </mat-form-field>
@@ -135,7 +135,7 @@
                                 (ngModelChange)="qualityParameter.qualityMatch = setQualityMatch(qualityParameter.bdnValue, qualityParameter.surveyValue, qualityParameter.min, qualityParameter.max)"
                                 matInput 
                                 [disabled]="formValues.deliveryStatus.name == 'Verified'"
-                                myNumberOnly
+                                (keypress)="keyPressNumber($event)"
                                 autocomplete="off"
                                 name="Product_{{ deliveryProductIndex }}_{{ qualityParameter.specParameter.name}}_SURVEY">
                         </mat-form-field>
@@ -178,12 +178,9 @@
         </tbody>
     </table>
 </div>
-<div class="col-md-12 quality-comments-container"  *ngIf="formValues.deliveryProducts[deliveryProductIndex].qualityHeader" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-    <mat-form-field appearance="outline" class="custom-form-field-comments">
-        <mat-label>Comments</mat-label>
-        <textarea  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].qualityHeader.comments"
-            matInput
-            autocomplete="off"
-            [disabled]="formValues.deliveryStatus.name == 'Verified'"></textarea>
-    </mat-form-field>
+<div style="margin-top: 10px" class="col-md-12 productQualityComments"  *ngIf="formValues.deliveryProducts[deliveryProductIndex].qualityHeader">
+    <label>Comments</label>
+    <textarea  [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].qualityHeader.comments" 
+        autocomplete="off"
+        [disabled]="formValues.deliveryStatus.name == 'Verified'"></textarea>
 </div>

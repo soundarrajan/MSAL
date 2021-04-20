@@ -1,0 +1,20 @@
+<div class="fillterchip-container"
+  [ngStyle]="{'opacity': highIntensity ? '1':'0.5','pointer-events':highIntensity ? null:'none'}">
+  <ng-container>
+    <div *ngFor="let item of filterData; let i = index">
+      <div class="status-badge" (click)="selectedFillterTag!=item.name && filter(item)" [ngClass]="{'selected':selectedFillterTag==item.name}"
+        [ngStyle]="{'opacity': selectedFillterTag ==null ? '1': selectedFillterTag==item.name ? '1':'0.5' }">
+        {{item.name}}
+        <div class="status-indicator" >
+          <div class="count">{{item.count}}</div>
+          <div class="bar" [ngStyle]="{'background-color':item.color}"></div>
+        </div>
+      </div>
+    </div>
+    <div  [ngStyle]="{'opacity': '0.5' }" class="more-status-badge">
+      <span class="dot"></span><span class="dot" style="margin: 0px 2px;"></span><span class="dot"></span>
+    </div>
+  </ng-container>
+  <div id="last_updated" style="z-index: 0;">
+    <span>Vessel Last Updated :</span> <span id="datetime">{{this.lastUpdatedOn}}</span> </div>
+</div>

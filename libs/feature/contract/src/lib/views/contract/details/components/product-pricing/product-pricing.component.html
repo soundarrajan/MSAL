@@ -1,0 +1,182 @@
+{{selectedTabIndex}}
+<div class="col-md-12 contract-section selected-product-container" style="margin-left: 0px;">
+  <div class="col-md-12 no-padding d-flex" style="margin-top: 10px;">
+    <div class="header-product-details col-md-2 no-padding">
+      Product pricing
+    </div>
+  </div>
+  <div class="col-md-12 no-padding d-flex" style="margin-top: 10px;">
+    <div class="col-md-4 no-padding">
+      <div id="custom-btn-toggle-v2">
+        <mat-button-toggle-group  #group="matButtonToggleGroup" [value]="selectedVal" (change)="onValChange(group.value)" >
+          <mat-button-toggle value="formula">
+            <span *ngIf="selectedVal == 'formula'" class="toggle-icon"></span> 
+            Formula based
+          </mat-button-toggle>
+          <mat-button-toggle value="fixed">
+            <span  *ngIf="selectedVal == 'fixed'" class="toggle-icon"></span> 
+            Fixed
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    </div>
+    <div class="contract-details-info col-md-8 no-padding" style="text-align: right;">
+      <span>
+        <a *ngIf="!formValues.products[selectedTabIndex].formula" class="create-new-formula-icon" (click)="createNewFormulaPopup(selectedTabIndex)"></a>
+      </span>
+      <span *ngIf="!formValues.products[selectedTabIndex].formula" class="location-contract-info">
+        Create new formula
+      </span>
+      <span *ngIf="formValues.products[selectedTabIndex].formula" class="disabled-formula">
+      </span>
+    </div>
+  </div>
+  <div class="col-md-12 no-padding d-flex" style="margin-top: 10px;" *ngIf="formValues.products[selectedTabIndex].formula">
+    <div class="formula-container col-md-12 no-padding">
+      <div class="formula-header col-md-12">
+         Formula Name
+      </div>
+      <div class="col-md-12 d-flex formula-name">
+        <div class="col-md-6 no-padding">{{formValues.products[selectedTabIndex].formula.name}}</div>
+        <div class="col-md-6 no-padding" style="text-align: end;">
+          <div style="bottom: 5px;position: relative;">
+            <span style="margin-right: 5px;">
+              <a class="remove-formula-icon" (click)="removeFormula(selectedTabIndex)">
+              </a>
+              <span>
+                Remove
+              </span>
+            </span>
+            <span>
+              <a (click)="viewFormula(selectedTabIndex)" class="view-formula-icon" style="position: relative; top: 3px;">
+              </a>
+              <span>
+                View formula 
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12 no-padding d-flex" style="margin-top: 10px;">
+    <div class="custom-form-field product-details" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}" style="width: 100% !important; margin: 0px  !important;">
+      <div class="d-flex">
+          <mat-form-field class="with-search" appearance="legacy">
+              <mat-label>Type formula name</mat-label>
+              <input class="free-text-field" 
+                      type="text"
+                      matInput 
+                      [(ngModel)]="formValues.products[selectedTabIndex].formula"
+                      [matAutocomplete]="auto1"
+                      placeholder="Type formula name">
+              <mat-autocomplete #auto1="matAutocomplete" 
+                                  class="darkPanelAuto"
+                                  [displayWith]="displayFn">
+                  <mat-option *ngFor="let formula of filterContractFormulaList()" 
+                          [value]="formula">
+                      {{formula.name}}
+                  </mat-option>
+              </mat-autocomplete>
+          </mat-form-field>
+          <button class="search-icon" 
+              appMasterSelectorTrigger [masterSelector]="masterSelector1" #masterSelectorTrigger1="masterSelectorTrigger" [header]="getHeaderNameSelector1()">
+          <div class="img">
+              <ng-template cdkPortal #masterSelector1="cdkPortal" >
+                  <shiptech-shared-master-selector (selectedChange)="selectorFormulaSelectionChange($event); masterSelectorTrigger1.close()" (shouldCloseModal)="masterSelectorTrigger1.close()" [selectorType]="autocompletePhysicalSupplier"
+                                                  [disabled]="disabled"
+                                                  [readonly]="readonly"
+                                                  [entityName]="entityName"
+                                                  [entityId]="_entityId"
+                                                  [vesselId]="vesselId"
+                                                  [headerName]="getHeaderNameSelector1()"
+                  ></shiptech-shared-master-selector>
+              </ng-template> 
+          </div>
+          </button>
+      </div>
+    </div>
+  </div>
+  <div class="header-product-details col-md-12 no-padding" style="margin-top: 10px;">
+    Product additional costs
+  </div>
+  <div class="col-md-12 d-flex no-padding">
+    <table class="product-additional-costs-table table table-stripped table-hover" style="width:100%">
+      <thead>
+        <tr>
+          <td class="padding" style="width: 30px;">
+            <a class="add-icon"></a>
+          </td>
+          <td class="padding" style="width:15%">
+            <b>Item name</b>
+          </td>
+          <td class="padding" style="width:15%">
+            <b>Type</b>
+          </td>
+          <td class="padding" style="width:15%">
+            <b>Amount</b>
+          </td>
+          <td class="padding" style="width:15%">
+            <b>Price Uom</b>
+          </td>
+          <td class="padding" style="width:15%">
+            <b>Extra%</b>
+          </td>
+          <td class="padding" style="width:15%">
+            <b>Currency</b>
+          </td>
+          <td class="padding" style="width:15%">
+            <b>Comment</b>
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+          <ng-container  *ngFor="let additionalCost of formValues.products[selectedTabIndex].additionalCosts | keyvalue : originalOrder">
+            <tr *ngIf="!additionalCost.value.isDeleted">
+              <td class="padding" style="padding-left: 0px  !important; padding-right: 0px  !important;">
+                <a class="remove-icon" style="margin-left: 10px;"></a>
+              </td>
+              <td  style="width:15%">
+                <div class="custom-form-field conversion-factor-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+                  <mat-form-field class="without-search conversion-factor-dropdown-component" appearance="legacy">
+                    <mat-select 
+                            [(ngModel)]="additionalCost.value.additionalCost"
+                            [disableOptionCentering]="true"
+                            panelClass="general-information-select-container"
+                            [compareWith]="compareUomObjects">
+                        <mat-option *ngFor="let option of additionalCostList" [value]="option">
+                            {{option.name}}
+                        </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </td> 
+              <td  style="width:15%">
+                <div class="custom-form-field conversion-factor-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+                  <mat-form-field class="without-search conversion-factor-dropdown-component" appearance="legacy">
+                    <mat-select 
+                            [(ngModel)]="additionalCost.value.costType"
+                            [disableOptionCentering]="true"
+                            panelClass="general-information-select-container"
+                            [compareWith]="compareUomObjects">
+                        <mat-option *ngFor="let option of filterCostTypesByAdditionalCost(additionalCost.value.additionalCost.id, 0)" [value]="option">
+                            {{option.name}}
+                        </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </td> 
+             
+            </tr>
+          </ng-container>
+      </tbody>
+    </table>
+  </div>
+<div>
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-spin-clockwise-fade">
+</ngx-spinner>
+  

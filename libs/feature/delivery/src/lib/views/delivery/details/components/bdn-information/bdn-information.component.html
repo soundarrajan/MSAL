@@ -65,7 +65,7 @@
     </div>
   </div>
   <div class="col-md-4 related-deliveries-information" >
-    <div class="summaryLabel-component-v2">
+    <div class="related-deliveries-component-v2">
       <div class="row">
         <div class="col-md-12" style="display: flex;justify-content: flex-start;">
           <div class="delivery-number col-md-2">
@@ -98,7 +98,7 @@
                 </span>
                 Status
               </span>
-              <div *ngIf="formValues.deliveryStatus" class="value" [ngStyle]="{'color': statusColorCode }">
+              <div *ngIf="formValues.deliveryStatus" class="value status-entity" [ngStyle]="{'backgroundColor': statusColorCode}">
                 {{formValues.deliveryStatus.name}}
               </div>
             </div>
@@ -229,28 +229,13 @@
   <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
     <mat-form-field class="without-search" appearance="legacy">
         <mat-label>Barge</mat-label>
-        <!-- <input class="free-text-field" 
-          type="text"
-          matInput 
-          [(ngModel)]="formValues.barge"
-          [disabled]="formValues.deliveryStatus.name == 'Verified'"
-          [matAutocomplete]="auto1"
-          placeholder="Barge">
-        <mat-autocomplete #auto1="matAutocomplete" 
-                          class="darkPanelAuto"
-                          [displayWith]="displayFn">
-            <mat-option *ngFor="let option of filterBargeList()" 
-                  [value]="option">
-                {{option.name}}
-            </mat-option>
-        </mat-autocomplete> -->
         <mat-select  
-          [(ngModel)]="formValues.barge"
-          [compareWith]="compareUomObjects"
+          [(ngModel)]="bargeId"
+          (ngModelChange)="setBarge($event)"
           [disabled]="formValues.deliveryStatus.name == 'Verified'"
           [disableOptionCentering]="true"
           panelClass="barge-select-container">
-            <mat-option *ngFor="let barge of bargeList" [value]="barge">{{barge.name}}</mat-option>
+            <mat-option *ngFor="let barge of bargeList" [value]="barge.id">{{barge.name}}</mat-option>
         </mat-select>
     </mat-form-field>
   </div>

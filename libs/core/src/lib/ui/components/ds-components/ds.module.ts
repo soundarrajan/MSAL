@@ -1,0 +1,36 @@
+import { AgGridModule } from '@ag-grid-community/angular';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MaterialModule } from '../../material.module';
+import { AGGridCellActionsComponent } from './ag-grid/ag-grid-cell-actions.component';
+import { AGGridCellEditableComponent } from './ag-grid/ag-grid-cell-editable.component';
+import { MasterChip } from './master-chip/master-chip.component';
+import { OperationalAmountDialog } from './pop-ups/operational-amount.component';
+import { OpsSpecParameterDialog } from './pop-ups/ops-spec-parameter.component';
+import { SpecParameterDialog } from './pop-ups/spec-parameter.component';
+import { TabsComponent } from './tabs/tabs.component';
+
+@NgModule({ 
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MaterialModule,
+    AgGridModule.withComponents([])
+  ],
+  exports: [ 
+    TabsComponent,
+    MasterChip
+  ],
+  declarations: [
+    TabsComponent,
+    AGGridCellActionsComponent,    
+    AGGridCellEditableComponent,
+    OpsSpecParameterDialog,
+    OperationalAmountDialog,
+    SpecParameterDialog,
+    MasterChip
+  ],
+})
+export class DSComponentsModule {}

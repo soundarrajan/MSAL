@@ -144,6 +144,8 @@ import { UomMassRouteResolver } from './views/delivery/details/uom-mass-route.re
 import { UomVolumeRouteResolver } from './views/delivery/details/uom-volume-route.resolver';
 import { PumpingRateUomRouteResolver } from './views/delivery/details/pumping-rate-uom-route.resolver';
 import { SampleSourceRouteResolver } from './views/delivery/details/sample-source-route.resolver';
+import { StaticListsRouteResolver } from './views/delivery/details/static-lists-route.resolver';
+import { TextareaAutoresizeDirective } from './views/delivery/details/directives/textarea-autoresize.directive';
 
 
 @NgModule({
@@ -264,6 +266,7 @@ import { SampleSourceRouteResolver } from './views/delivery/details/sample-sourc
     BdnAdditionalInformationComponent,
     QuantityTenantFormatDirective,
     NumberOnlyDirective,
+    TextareaAutoresizeDirective,
     RaiseClaimModalComponent,
     SplitDeliveryModalComponent
     //PSpinnerDisableKeysSpinDirective,
@@ -273,7 +276,8 @@ import { SampleSourceRouteResolver } from './views/delivery/details/sample-sourc
   exports: [
     MainDeliveryComponent,
     QuantityTenantFormatDirective,
-    NumberOnlyDirective 
+    NumberOnlyDirective,
+    TextareaAutoresizeDirective
    // PSpinnerDisableKeysSpinDirective,
     //PSpinnerTenantFormatDirective
   ],
@@ -294,6 +298,7 @@ import { SampleSourceRouteResolver } from './views/delivery/details/sample-sourc
     UomMassRouteResolver,
     PumpingRateUomRouteResolver,
     SampleSourceRouteResolver,
+    StaticListsRouteResolver,
     {
       provide: QUANTITY_CONTROL_API_SERVICE,
       useClass: environment.production
