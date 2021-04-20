@@ -1097,7 +1097,6 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
         };
 
         $scope.triggerModal = function(template, clc, name, id, formvalue, idx, field_name, filter, ctrlData) {
-            console.log("---------------")
         	if (!clc && (window.location.href.indexOf('preview-email?reportId') != -1 || $rootScope.reportId)) {
         		clc = 'QuantityControlReport';
         	}
@@ -1491,7 +1490,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                 }
                
                 if (clc=="masters_productlist" && template=="general") {
-                    if($scope.formValues.tradeBookMappings.length>0){
+                    if($scope.formValues.tradeBookMappings != undefined && $scope.formValues.tradeBookMappings.length>0){
                         $scope.modal.filters = $scope.tradeBookfilter;
                         localStorage.setItem("uniqueModalTableIdentifier", "productsInTradeBookMapping");
                     }                   
