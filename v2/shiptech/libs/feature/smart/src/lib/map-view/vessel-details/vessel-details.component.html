@@ -18,7 +18,14 @@
               </ng-container>
               {{vesselName}}
             </ng-template>
-            <app-vessel-info [vesselList]="vesselList" [vesselData]="vesselData" (changeVessel)="vesselChange($event)">
+            <app-vessel-info 
+            [vesselList]="vesselList" 
+            [vesselData]="vesselData" 
+            [selectedUserRole]="selectedUserRole"
+            (onDefaultViewChange)="onDefaultViewChange($event)" 
+            (dontSendPlanReminder)="dontSendPlanReminder($event)" 
+            (changeVessel)="vesselChange($event)"
+            >
             </app-vessel-info>
           </mat-tab>
           <mat-tab #requests label="Requests">
@@ -38,10 +45,10 @@
         <div id="currentuser">
 
           <div class="label">Currently using as:</div>
-          <mat-select #currentuser panelClass="currentuser" value="operator" [disabled]="!enableSelection" class="user" disableOptionCentering
+          <mat-select #currentuser panelClass="currentuser" [compareWith]="selectedUserRoleFn" [(ngModel)]="selectedRole" (selectionChange)="loadBunkerPlan($event)" [disabled]="!enableSelection" class="user" disableOptionCentering
             (openedChange)="enableSelection && currentuser.disabled=true;enableSelection=false;" [panelClass]="{'dark-theme':theme,'light-theme':!theme}">
-            <mat-option value="vessel">Vessel</mat-option>
-            <mat-option value="operator">Operator</mat-option>
+            <mat-option *ngFor="let roleObj of bunkerUserRole" [value]="roleObj">{{roleObj.name}}</mat-option>
+            <!-- <mat-option value="operator">Operator</mat-option> -->
           </mat-select>
           <div class="more">
             <mat-icon style="cursor: pointer;"

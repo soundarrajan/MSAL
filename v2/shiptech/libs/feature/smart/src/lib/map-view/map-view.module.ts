@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AuthenticationModule } from '@shiptech/core/authentication/authentication.module';
 import { MaterialModule } from '../material-module'; 
 import { SharedModule } from '../shared/shared.module';
 import { MapViewRoutingModule } from './map-view-routing.module';
@@ -13,6 +14,7 @@ import { PortDetailsComponent } from './port-details/port-details.component';
   declarations: [MapViewHomeComponent, VesselDetailsComponent, ComponentsComponent, PortDetailsComponent],
   imports: [
     CommonModule,
+    AuthenticationModule.forFeature(),
     MapViewRoutingModule,
     MaterialModule,
     SharedModule

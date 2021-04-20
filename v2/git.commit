@@ -1,7 +1,9 @@
-﻿commit 1e7ec9ab6cc058ce0c35a83591919ae8df248bee
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri Apr 16 07:21:50 2021 +0000
+﻿commit 9ac1a2f6329f866924117532736f9c6533ece51d
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Mon Apr 19 11:38:54 2021 +0000
 
-    Merged PR 9917: Added contract in v2
+    Merged PR 9960: Requirement 29806, Requirement 29778 related changes has done
+    
+    Related work items: #29778, #29806
 
 branch: master
