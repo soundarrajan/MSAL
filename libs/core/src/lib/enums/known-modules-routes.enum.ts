@@ -6,5 +6,5 @@ export enum KnownPrimaryRoutes {
   Root = '',
   Delivery = 'delivery',
   Smart = 'smart',
-  Contract = 'contract'
+  Contract = 'contracts'
 }

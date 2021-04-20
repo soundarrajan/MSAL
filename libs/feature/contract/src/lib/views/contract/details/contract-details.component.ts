@@ -133,6 +133,8 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   locationList: any;
   additionalCostList: any;
   costTypeList: any;
+  appId: string;
+  screenId: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -170,7 +172,9 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       createdOn: null
 
     };
-    this.entityName = 'Delivery'
+    this.entityName = 'Contract';
+    this.appId = 'contracts';
+    this.screenId = 'contract';
     this.generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
     this.quantityPrecision = this.generalTenantSettings.defaultValues.quantityPrecision;
     this.adminConfiguration = tenantSettingsService.getModuleTenantSettings<
@@ -187,6 +191,11 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       this.entityId = parseFloat(params.contractId);
     });
     this.route.data.subscribe(data => {
+      if (localStorage.getItem(`${this.appId + this.screenId }_copy`)) {
+        console.log('copy contract');
+        this.isLoading = true;
+        this.setFormValuesAfterCopyContract();
+      }
       console.log(data);
       this.tenantConfiguration = data.tenantConfiguration;
       this.scheduleDashboardLabelConfiguration = data.scheduleDashboardLabelConfiguration;
@@ -203,6 +212,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
         	this.formValues.applyTo = { id:3 };
         }
       }
+
       this.staticLists = data.staticLists;
       this.locationMasterList = data.locationList;
       this.productMasterList = data.productList;
@@ -280,8 +290,77 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
+  setFormValuesAfterCopyContract() {
+    var contractId = localStorage.getItem(`${this.appId + this.screenId }_copy`);
+    localStorage.removeItem(`${this.appId + this.screenId }_copy`);
+    console.log("id", contractId);
+    this.contractService
+    .loadContractDetails(parseFloat(contractId))
+    .pipe(
+      finalize(() => {
+        this.isLoading = false;
+        this.changeDetectorRef.detectChanges();
+      })
+    )
+    .subscribe((result: any) => {
+        if (typeof result == 'string') {
+          this.toastr.error(result);
+        } else {
+          console.log('Copy field');
+          console.log(result);
+          this.formValues = _.cloneDeep(result);
+          this.formValues.lastModifiedBy = null;
+          this.formValues.lastModifiedByUser = null;
+          this.formValues.lastModifiedOn = null;
+          this.formValues.id = 0;
+          if (typeof this.formValues.name != 'undefined') {
+            this.formValues.name = null;
+          }
+          if (this.formValues.conversionFactor) {
+            this.formValues.conversionFactor.id = 0;
+          }
+          this.formValues.status = null;
+          this.formValues.details.forEach((v, k) => {
+            v.id = 0;
+          });
+          this.formValues.products.forEach((v, k) => {
+            v.id = 0;
+            v.details.forEach((v1, k1) => {
+              v1.id = 0;
+            });
+            v.additionalCosts.forEach((v1, k1) => {
+              v1.id = 0;
+            });
+            v.conversionFactors.forEach((v1, k1) => {
+              v1.id = 0;
+              if (v1.contractProduct) {
+                v1.contractProduct.id = 0;
+              }
+              if (v1.contractProductId) {
+                v1.contractProductId = 0;
+              }
+            });
+            v.formula = null;
+            v.mtmFormula = null;
+            v.price = null;
+            v.mtmPrice = null;
+          });
+          this.formValues.summary.plannedQuantity = 0;
+          this.formValues.summary.utilizedQuantity = 0;
+          this.formValues.summary.availableQuantity = this.formValues.summary.contractedQuantity;
+          this.formValues.summary.copiedContract = true;
+          this.formValues.createdBy = null;
+          this.formValues.hasInvoicedOrder = false;
+          console.log(this.formValues);
+          this.changeDetectorRef.detectChanges();
+          this.toastr.info('Formula and MTM Formula was reset for all products');
+          this.toastr.success('Entity copied');
+        }
+     });
+  }
 
-   convertDecimalSeparatorStringToNumber(number) {
+
+  convertDecimalSeparatorStringToNumber(number) {
     var numberToReturn = number;
     var decimalSeparator, thousandsSeparator;
     if (typeof number == 'string') {
@@ -624,6 +703,21 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
         this.formValues = result;
       }
     });
+  }
+
+  copyContract() {
+    localStorage.setItem(`${this.appId + this.screenId }_copy`, this.entityId.toString());
+    this.router
+      .navigate([
+        KnownPrimaryRoutes.Contract,
+        `${KnownContractRoutes.Contract}`,
+        0,
+        KnownContractRoutes.ContractDetails
+      ])
+      .then(() => {
+        console.log("copy contract");
+      });
+
   }
 
   ngOnDestroy(): void {
