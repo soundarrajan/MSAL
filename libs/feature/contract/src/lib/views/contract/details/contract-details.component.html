@@ -4,7 +4,7 @@
   <div class="col-6">
     <div style="float:right">
       <button  class="ui-button-info mr-1 btn-i-blue-color" label="Save"
-        *ngIf="formValues.status && formValues.status.name != 'Confirmed' && formValues.status.name != 'Delivered'"
+        *ngIf="!formValues.status || (formValues.status && formValues.status.name != 'Confirmed' && formValues.status.name != 'Delivered')"
         pButton
         type="button"
         (click)="saveContract()"
