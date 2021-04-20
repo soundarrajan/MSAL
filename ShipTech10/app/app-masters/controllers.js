@@ -1512,6 +1512,11 @@
 
             }
 
+            if(vm.app_id == 'labs' && vm.screen_id == 'labresult') {
+                var generalNotesScope = angular.element($('.grid_generalNotes')).scope();
+                $scope.formValues.labNotes = generalNotesScope.formValues.notes;
+            }
+
             /* END Contract Validations*/
             if (vm.editInstance.$valid) {
                 if (vm.app_id == 'admin' &&  vm.screen_id == 'sellerrating') {
@@ -4717,7 +4722,7 @@
             } else if (row.id > 0) {
                 row.isDeleted = true;
                 if(vm.app_id !== 'claims' && vm.screen_id !== 'claims') {
-                    if (vm.app_id == 'default' && (window.location.href.indexOf('request') != -1 || window.location.href.indexOf('order') != -1 || window.location.href.indexOf('labresult') != -1)) {
+                    if (vm.app_id == 'default' && (window.location.href.indexOf('request') != -1 || window.location.href.indexOf('order') != -1) || (vm.app_id == 'labs' && vm.screen_id == 'labresult')) {
                     } else {
                         obj.push({
                             id: 0
@@ -9594,7 +9599,7 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
                         }
                     });
 
-                } else  if (window.location.href.indexOf('labresult/') != -1) {
+                } else  if (vm.app_id == 'labs' && vm.screen_id == 'labresult' && id > 0) {
                     payload = { Payload: {
                         "LabResultId": id,
                         "labNotes": generalNotesScope.formValues.notes

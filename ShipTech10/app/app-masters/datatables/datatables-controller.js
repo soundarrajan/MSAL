@@ -3262,54 +3262,6 @@ APP_MASTERS.controller('Controller_Datatables', [
                     }, 10);
                 }
             },
-            labNotes: {
-                data: 'formValues.labNotes',
-                multiSelect: false,
-                noUnselect: true,
-                rowHeight: 40,
-                excessRows: 999,
-                rowEditWaitInterval: -1, // Important for skipping the promise
-                columnDefs: [
-                    {
-                        name: '  ',
-                        width: 40,
-                        enableCellEdit: false,
-                        enableSorting: false,
-                        cellClass: 'actionsCol',
-                        cellTemplate: $scope.dataTableTemplates.remRow,
-                        headerCellTemplate: $scope.dataTableTemplates.addRow
-                    },
-                    {
-                        name: 'labNote',
-                        displayName: 'Lab Notes',
-                        cellTemplate: $scope.dataTableTemplates.text
-                    },
-                    {
-                        name: 'createdBy.name',
-                        width: 200,
-                        displayName: 'Added By',
-                        enableCellEdit: false
-                    },
-                    {
-                        name: 'createdOn',
-                        width: 150,
-                        displayName: 'Date & Time',
-                        cellTemplate: $scope.dataTableTemplates.dateDisplay,
-                        enableCellEdit: false
-                    }
-                ],
-                onRegisterApi: function(api) {
-                    setTimeout(() => {
-                        api.core.handleWindowResize();
-                        if (angular.equals($scope.formValues, {}) || !$scope.formValues.labNotes) {
-                            $scope.formValues.labNotes = [];
-                            if (!$scope.entity_id) {
-                                $scope.formValues.isEditable = true;
-                            }
-                        }
-                    }, 10);
-                }
-            },
             quantitySubtypes: {
                 data: 'formValues.quantitySubtypes',
                 multiSelect: false,
