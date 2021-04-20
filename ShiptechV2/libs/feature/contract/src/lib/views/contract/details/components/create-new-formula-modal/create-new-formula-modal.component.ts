@@ -609,10 +609,13 @@ export class CreateNewFormulaModalComponent extends DeliveryAutocompleteComponen
         if (typeof response == 'string') {
           this.toastr.error(response);
         } else {
+          this.dialogRef.close({
+            'name': this.formValues.name,
+            'id': response });
           this.toastr.success('Operation completed successfully!')
-          this.dialogRef.close();
         }
       });
+
     }
   }
 

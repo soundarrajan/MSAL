@@ -458,10 +458,13 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     if (!this.formValues.validTo) {
       message += ' End Date,';
     }
+    
+    this.buttonClicked = true;
+    this.eventsSubject2.next(this.buttonClicked);
+
     if (message != 'Please fill in required fields:') {
-      this.buttonClicked = true;
-      this.eventsSubject2.next(this.buttonClicked);
       this.toastr.error(message);
+      return;
     }
     let additionalCost = [];
     let additionalCostRequired = [];

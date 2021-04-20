@@ -486,6 +486,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   eventsSaveButtonSubscription: any;
   buttonClicked: any;
   buttonClicked1: any;
+  additionalCostsComponentTypes: any;
 
 
   get entityId(): number {
@@ -630,6 +631,12 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       return;
     } 
     this.formValues = formValues;
+    for (let i = 0; i < this.formValues.products.length; i++) {
+      if (this.formValues.products[i].product) {
+        this.getSpecGroupByProduct(this.formValues.products[i].product.id, this.formValues.products[i].specGroup);
+      }
+    }
+    this.getAdditionalCostsComponentTypes();
   }
 
   @Input('generalTenantSettings') set _setGeneralTenantSettings(generalTenantSettings) { 
@@ -938,7 +945,8 @@ export class ContractProduct extends DeliveryAutocompleteComponent
         this.toastr.error(response);
       } else {
         this.contractFormulaList = response;
-        this.toastr.success('Operation completed successfully!')
+        this.changeDetectorRef.detectChanges();
+        //this.toastr.success('Operation completed successfully!')
       }
     });
   }
@@ -1200,12 +1208,33 @@ export class ContractProduct extends DeliveryAutocompleteComponent
             }
           }
           this.productSpecGroup[productId] = response;
-          this.productSpecGroupSubject.next(this.productSpecGroup);
+          this.changeDetectorRef.detectChanges();
+          //this.productSpecGroupSubject.next(this.productSpecGroup);
         }
       }
     });
   
   };
+
+
+  getAdditionalCostsComponentTypes() {
+    //this.spinner.show();
+    this.contractService
+    .getAdditionalCostsComponentTypes({})
+    .pipe(
+      finalize(() => {
+        //this.spinner.hide();
+      })
+    )
+    .subscribe((response: any) => {
+      if (typeof response == 'string') {
+        this.toastr.error(response);
+      } else {
+        this.additionalCostsComponentTypes = response;
+        this.changeDetectorRef.detectChanges();
+      }
+    });
+  }
 
 
   addProductToConversion(index, allowProduct, isMainProduct) {
