@@ -3,6 +3,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AGGridCellActionsComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-actions.component';
 import { AGGridCellEditableComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-editable.component';
+import { AgGridCellStyleComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-style.component';
 import { GridOptions } from 'ag-grid-community';
 
 @Component({
@@ -169,15 +170,19 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       headerName: 'Delivery No./ Order Product', headerTooltip: 'Delivery No./ Order Product', field: 'del_no'
     },
     {
-      headerName: 'Deliv Product', headerTooltip: 'Deliv Product', field: 'del_product'
+      children: [{
+        headerName: 'Deliv Product', headerTooltip: 'Deliv Product', field: 'del_product',
+        cellClass:'border-padding-5 p-r-0',
+        cellRendererFramework:AgGridCellStyleComponent, cellRendererParams: {cellClass: ['cell-bg-border'],label:'div-in-cell'}
+      },
+      {
+        headerName: 'Deliv. Qty', headerTooltip: 'Deliv. Qty', field: 'del_qty'
+      },
+      {
+        headerName: 'Estd. Rate', editable: true, headerTooltip: 'Estd. Rate', field: 'est_rate'
+      },
+      { headerName: 'Amount', headerTooltip: 'Amount', field: 'amount1' }]
     },
-    {
-      headerName: 'Deliv. Qty', headerTooltip: 'Deliv. Qty', field: 'del_qty'
-    },
-    {
-      headerName: 'Estd. Rate', editable: true, headerTooltip: 'Estd. Rate', field: 'est_rate'
-    },
-    { headerName: 'Amount', headerTooltip: 'Amount', field: 'amount1' },
     { headerName: 'Invoice Product', headerTooltip: 'Invoice Product', field: 'inv_product' },
     { headerName: 'Invoice Qty', headerTooltip: 'Invoice Qty', field: 'inv_qty' },
     { headerName: 'Invoice Rate', headerTooltip: 'Invoice Rate', field: 'inv_rate' },
