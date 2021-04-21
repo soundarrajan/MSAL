@@ -2,45 +2,53 @@
   <div class="add-contract-product-section" (click)="addProductToContract()">
     <a class="add-contract-product-icon"></a>
   </div>
-  {{selectedTabIndex}}
-  {{selectedProduct ? selectedProduct.name : ''}}
   <ng-container *ngFor="let contractProduct of formValues.products | keyvalue: originalOrder">
-    <div (click)="selectedTabIndex = contractProduct.key; setAllowedLocations(selectedTabIndex); setAllowedProducts(selectedTabIndex)">
-      <div class="add-new-location-with-product">
-        <div class="add-new-location-placeholder"
-          *ngIf="!contractProduct.value.location"
-          (click)="searchLocationInput = null;"
-          [matMenuTriggerFor]="locationMenu">
-          Add location
-          <span class="dropdown-icon dropdown-location-icon" >
-          </span>
-        </div>
-        <div class="location-container-tab" 
-          (click)="searchLocationInput = null;"
-          *ngIf="contractProduct.value.location">
-          {{contractProduct.value.location.name}}
-          <span class="dropdown-icon-white dropdown-location-icon"           
-            [matMenuTriggerFor]="locationMenu">
-          </span>
-        </div>
-        <div class="add-new-location-placeholder"
-          (click)="searchProductInput = null; "
-          [matMenuTriggerFor]="productMenu"
-          *ngIf="!contractProduct.value.product">
-          Add product
-          <span class="dropdown-icon dropdown-product-icon">
-          </span>
-        </div>
-        <div class="product-container-tab" 
-          (click)="searchProductInput = null; "
-          *ngIf="contractProduct.value.product">
-          {{contractProduct.value.product.name}}
-          <span class="dropdown-icon-white dropdown-location-icon" 
-            [matMenuTriggerFor]="productMenu">
-          </span>
+    <ng-container *ngIf="!contractProduct.value.isDeleted">
+      <div (click)="selectedTabIndex = contractProduct.key; setAllowedLocations(selectedTabIndex); setAllowedProducts(selectedTabIndex)">
+        <div class="add-new-location-with-product">
+          <div class="add-new-location-placeholder"
+            *ngIf="!contractProduct.value.location"
+            (click)="searchLocationInput = null;">
+            Add location
+            <span class="dropdown-icon dropdown-location-icon"  [matMenuTriggerFor]="locationMenu">
+            </span>
+          </div>
+          <div class="location-container-tab" 
+            (click)="searchLocationInput = null;"
+            *ngIf="contractProduct.value.location"
+            [ngClass]="{'not-selected-container': contractProduct.key != selectedTabIndex}">
+            {{contractProduct.value.location.name}}
+            <span class="dropdown-location-icon"  
+              [ngClass]="{'dropdown-icon-white': contractProduct.key == selectedTabIndex,
+                        'dropdown-icon': contractProduct.key != selectedTabIndex}"         
+              [matMenuTriggerFor]="locationMenu">
+            </span>
+          </div>
+          <div class="add-new-location-placeholder"
+            (click)="searchProductInput = null; "
+            *ngIf="!contractProduct.value.product">
+            <a class="remove-product-black-icon remove-product-icon" (click)="removeProductFromContract(contractProduct.key)">
+            </a>
+            Add product
+            <span class="dropdown-icon dropdown-location-icon"  [matMenuTriggerFor]="productMenu">
+            </span>
+          </div>
+          <div class="product-container-tab" 
+            (click)="searchProductInput = null; "
+            *ngIf="contractProduct.value.product"
+            [ngClass]="{'not-selected-container': contractProduct.key != selectedTabIndex}">
+            <a class="remove-product-white-icon remove-product-icon" (click)="removeProductFromContract(contractProduct.key)">
+            </a>
+            {{contractProduct.value.product.name}}
+            <span class="dropdown-location-icon"
+              [ngClass]="{'dropdown-icon-white': contractProduct.key == selectedTabIndex,
+                      'dropdown-icon': contractProduct.key != selectedTabIndex}"  
+              [matMenuTriggerFor]="productMenu">
+            </span>
+          </div>
         </div>
       </div>
-    </div>
+    </ng-container>
   </ng-container>
   <mat-menu #locationMenu="matMenu" class="select-location-container" overlapTrigger="false">
     <div>
@@ -134,55 +142,58 @@
 </div>
 <div *ngIf="formValues.products && formValues.products.length"> 
   <div  *ngFor="let contractProduct of formValues.products | keyvalue : originalOrder">
-    <div *ngIf="contractProduct.key == selectedTabIndex" class="row col-md-12">
-      <shiptech-product-details  [generalTenantSettings]="generalTenantSettings"
+    <ng-container *ngIf="!contractProduct.value.isDeleted">
+      <div *ngIf="contractProduct.key == selectedTabIndex" class="row col-md-12">
+        <shiptech-product-details  [generalTenantSettings]="generalTenantSettings"
+                        [model]="formValues"
+                        [contractProductIndex]="contractProduct.key"
+                        [locationMasterList]="locationMasterList"
+                        [productMasterList]="productMasterList"
+                        [uomMassList]="uomMassList"
+                        [uomVolumeList]="uomVolumeList"
+                        [contractConversionFactorOptions]="contractConversionFactorOptions"
+                        [specParameterList]="specParameterList"
+                        [uomList]="uomList"
+                        [productSpecGroup]="productSpecGroup"
+                        [events]="contractFormSubject.asObservable()"
+                        [events1]="productSpecGroupSubject.asObservable()"
+                        class="col-md-6">
+        </shiptech-product-details>
+        <shiptech-product-pricing  [generalTenantSettings]="generalTenantSettings"
                       [model]="formValues"
+                      [entityId]="_entityId"
                       [contractProductIndex]="contractProduct.key"
-                      [locationMasterList]="locationMasterList"
-                      [productMasterList]="productMasterList"
-                      [uomMassList]="uomMassList"
-                      [uomVolumeList]="uomVolumeList"
-                      [contractConversionFactorOptions]="contractConversionFactorOptions"
-                      [specParameterList]="specParameterList"
                       [uomList]="uomList"
-                      [productSpecGroup]="productSpecGroup"
+                      [formulaTypeList]="formulaTypeList"
+                      [systemInstumentList]="systemInstumentList"
+                      [marketPriceList]="marketPriceList"
+                      [formulaPlusMinusList]="formulaPlusMinusList"
+                      [formulaFlatPercentageList]="formulaFlatPercentageList"
+                      [currencyList]="currencyList"
+                      [formulaOperationList]="formulaOperationList"
+                      [formulaFunctionList]="formulaFunctionList"
+                      [marketPriceTypeList]="marketPriceTypeList"
+                      [pricingScheduleList]="pricingScheduleList"
+                      [holidayRuleList]="holidayRuleList"
+                      [pricingSchedulePeriodList]="pricingSchedulePeriodList"
+                      [eventList]="eventList"
+                      [dayOfWeekList]="dayOfWeekList"
+                      [businessCalendarList]="businessCalendarList"
+                      [formulaEventIncludeList]="formulaEventIncludeList"
+                      [quantityTypeList]="quantityTypeList"
+                      [productList]="productList"
+                      [locationList]="locationList"
+                      [contractFormulaList]="contractFormulaList"
+                      [additionalCostList]="additionalCostList"
+                      [costTypeList]="costTypeList"
+                      [additionalCostsComponentTypes]="additionalCostsComponentTypes"
+                      [eventsSaveButton]="eventsSubject2.asObservable()"
                       [events]="contractFormSubject.asObservable()"
-                      [events1]="productSpecGroupSubject.asObservable()"
                       class="col-md-6">
-      </shiptech-product-details>
-      <shiptech-product-pricing  [generalTenantSettings]="generalTenantSettings"
-                    [model]="formValues"
-                    [entityId]="_entityId"
-                    [contractProductIndex]="contractProduct.key"
-                    [uomList]="uomList"
-                    [formulaTypeList]="formulaTypeList"
-                    [systemInstumentList]="systemInstumentList"
-                    [marketPriceList]="marketPriceList"
-                    [formulaPlusMinusList]="formulaPlusMinusList"
-                    [formulaFlatPercentageList]="formulaFlatPercentageList"
-                    [currencyList]="currencyList"
-                    [formulaOperationList]="formulaOperationList"
-                    [formulaFunctionList]="formulaFunctionList"
-                    [marketPriceTypeList]="marketPriceTypeList"
-                    [pricingScheduleList]="pricingScheduleList"
-                    [holidayRuleList]="holidayRuleList"
-                    [pricingSchedulePeriodList]="pricingSchedulePeriodList"
-                    [eventList]="eventList"
-                    [dayOfWeekList]="dayOfWeekList"
-                    [businessCalendarList]="businessCalendarList"
-                    [formulaEventIncludeList]="formulaEventIncludeList"
-                    [quantityTypeList]="quantityTypeList"
-                    [productList]="productList"
-                    [locationList]="locationList"
-                    [contractFormulaList]="contractFormulaList"
-                    [additionalCostList]="additionalCostList"
-                    [costTypeList]="costTypeList"
-                    [additionalCostsComponentTypes]="additionalCostsComponentTypes"
-                    [eventsSaveButton]="eventsSubject2.asObservable()"
-                    [events]="contractFormSubject.asObservable()"
-                    class="col-md-6">
-      </shiptech-product-pricing>
-    </div>
+        </shiptech-product-pricing>
+      </div>
+    </ng-container>
+  
   </div>
 </div>
  

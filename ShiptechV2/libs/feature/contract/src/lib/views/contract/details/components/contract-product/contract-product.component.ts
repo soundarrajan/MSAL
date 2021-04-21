@@ -480,13 +480,14 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   businessCalendarList: any;
   formulaEventIncludeList: any;
   quantityTypeList: any;
-  contractFormulaList: any;
+  contractFormulaList: any = [];
   additionalCostList: any;
   costTypeList: any;
   eventsSaveButtonSubscription: any;
   buttonClicked: any;
   buttonClicked1: any;
   additionalCostsComponentTypes: any;
+  eventsSelectedTabIndexSubscription: any;
 
 
   get entityId(): number {
@@ -759,14 +760,13 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   }
 
 
-  
-
-
   index = 0;
   expandLocationPopUp = false;
   array = [0,1,2,3,4,5,6,7,8,9,10];
   isMenuOpen = true;
   @Input() eventsSaveButton: Observable<void>;
+  @Input() eventsSelectedTabIndex: Observable<void>;
+
   eventsSubject2: Subject<any> = new Subject<any>();
 
   constructor(
@@ -803,10 +803,12 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   ngOnInit(){  
     this.entityName = 'Contract';
     this.getContractFormulaList1();
-    this.eventsSaveButtonSubscription = this.eventsSaveButton.subscribe((data) => this.setRequiredFields(data))
+    this.eventsSaveButtonSubscription = this.eventsSaveButton.subscribe((data) => this.setRequiredFields(data));
+    this.eventsSelectedTabIndexSubscription = this.eventsSelectedTabIndex.subscribe((data) => this.setSelectedTab(data));
+  }
 
-
-
+  setSelectedTab(index) {
+    this.selectedTabIndex = index;
   }
 
   setRequiredFields(data) {
@@ -875,7 +877,9 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     this.selectedTabIndex =  this.formValues.products.length - 1;
     this.setAllowedLocations(this.selectedTabIndex);
     this.setAllowedProducts(this.selectedTabIndex);
-    this.getContractFormulaList();
+    if (!this.contractFormulaList.length) {
+      this.getContractFormulaList();
+    }
     this.changeDetectorRef.detectChanges();
 
     console.log(this.formValues);
@@ -1346,7 +1350,16 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     
     }
 
+  }
 
+
+  removeProductFromContract(key) {
+    console.log(key);
+    if (!this.formValues.products[key].id){
+      this.formValues.products.splice(key, 1) 
+    } else {
+      this.formValues.products[key].isDeleted = true;
+    } 
   }
 
 
