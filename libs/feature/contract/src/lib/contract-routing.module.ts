@@ -70,7 +70,7 @@ const routes: Routes = [
                   scheduleDashboardLabelConfiguration: ScheduleDashboardLabelsRouteResolver
                 },
                 data: {
-                  title: 'New Contract',
+                  title: 'Contract Entity Edit',
                   breadcrumb: 'Contract Entity Edit'
                 }
               },
