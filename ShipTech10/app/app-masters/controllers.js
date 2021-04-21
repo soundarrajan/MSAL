@@ -1295,6 +1295,7 @@
                         if(!vm.editInstance.$error.required) {
                             vm.editInstance.$error.required = [];
                         }
+                        $('#departments').addClass('invalid');
                         vm.editInstance.$error.required.push(vm.editInstance['OperationalDepartment']);
                     }
                 }
@@ -5224,7 +5225,6 @@
             });
         };
         $scope.selectedModalValue = function(element) {
-            debugger;
             // if (!element)return
             if (!element) {
                 if ($rootScope.modalParams) {
@@ -7150,6 +7150,7 @@
             }
         };
         $scope.showMultiLookupWarning = function(model) {
+            $('#departments').removeClass('invalid');
             setTimeout(() => {
                 if (model) {
                     if (model.id && !vm.plusClickedMultilookup) {
