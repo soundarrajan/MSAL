@@ -135,6 +135,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   costTypeList: any;
   appId: string;
   screenId: string;
+  selectedTabIndex: number;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -579,12 +580,14 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
                 })
               )
               .subscribe((data: any) => {
-                this.formValues = _.merge(this.formValues, data);
+                this.formValues = _.cloneDeep(data);
+                this.eventsSubject3.next(0);
                 if (typeof this.formValues.status != 'undefined') {
                   if (this.formValues.status.name) {
                     this.statusColorCode = this.getColorCodeFromLabels(this.formValues.status, this.scheduleDashboardLabelConfiguration);
                   }
                 }
+                this.changeDetectorRef.detectChanges();
               });
           }
        });
@@ -617,7 +620,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
               })
             )
             .subscribe((data: any) => {
-              this.formValues = _.merge(this.formValues, data);
+              this.formValues = _.cloneDeep(data);
               if (typeof this.formValues.status != 'undefined') {
                 if (this.formValues.status.name) {
                   this.statusColorCode = this.getColorCodeFromLabels(this.formValues.status, this.scheduleDashboardLabelConfiguration);
@@ -651,7 +654,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
               })
             )
             .subscribe((data: any) => {
-              this.formValues = _.merge(this.formValues, data);
+              this.formValues = _.cloneDeep(data);
               if (typeof this.formValues.status != 'undefined') {
                 if (this.formValues.status.name) {
                   this.statusColorCode = this.getColorCodeFromLabels(this.formValues.status, this.scheduleDashboardLabelConfiguration);
@@ -685,7 +688,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
               })
             )
             .subscribe((data: any) => {
-              this.formValues = _.merge(this.formValues, data);
+              this.formValues = _.cloneDeep(data);
               if (typeof this.formValues.status != 'undefined') {
                 if (this.formValues.status.name) {
                   this.statusColorCode = this.getColorCodeFromLabels(this.formValues.status, this.scheduleDashboardLabelConfiguration);
