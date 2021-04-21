@@ -15,7 +15,9 @@ import {
   ChangeDetectorRef,
   Injectable,
   InjectionToken,
-  Optional
+  Optional,
+  ViewChildren,
+  Renderer2
 } from '@angular/core';
 import { Select } from '@ngxs/store';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
@@ -53,7 +55,12 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ContractService } from 'libs/feature/contract/src/lib/services/contract.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatRadioChange } from '@angular/material/radio';
-import { DecimalPipe } from '@angular/common';
+import { DecimalPipe, KeyValue } from '@angular/common';
+import { MatSelect } from '@angular/material/select';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { OverlayContainer } from '@angular/cdk/overlay';
+import { ProductSpecGroupModalComponent } from '../product-spec-group-modal/product-spec-group-modal.component';
+import { OVERLAY_KEYBOARD_DISPATCHER_PROVIDER_FACTORY } from '@angular/cdk/overlay/dispatchers/overlay-keyboard-dispatcher';
 
 
 
@@ -383,9 +390,9 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
   }
 }
 @Component({
-  selector: 'shiptech-general-information-contract',
-  templateUrl: './general-information-contract.component.html',
-  styleUrls: ['./general-information-contract.component.scss'],
+  selector: 'shiptech-extend-contract-modal',
+  templateUrl: './extend-contract-modal.component.html',
+  styleUrls: ['./extend-contract-modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   providers: [OrderListGridViewModel, 
@@ -400,443 +407,93 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
               },
               { provide: NGX_MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS }]
 })
-export class GeneralInformationContract extends DeliveryAutocompleteComponent
-  implements OnInit{
-  switchTheme; //false-Light Theme, true- Dark Theme
+export class ExtendContractModalComponent implements OnInit{
   formValues: any;
-  baseOrigin: string;
-  selectedVal: string;
-  private _autocompleteType: any;
-  autocompleteVessel: knownMastersAutocomplete;
-  _entityName: string;
-  _entityId: number;
-  autocompleteSellers: knownMastersAutocomplete;
-  autocompleteCompany: knownMastersAutocomplete;
-  sellerList: any;
-  companyList: any;
-  selectedCompany: any;
-  companyListForSearch: any;
-  searchCompanyModel: any;
-  expandCompanyPopUp: boolean = false;
-  expandAllowCompanies: boolean = false;
-  expandCompanylistPopUp: boolean = false;
-  agreementTypeList: any;
-  paymentTermList: any;
-  incotermList: any;
-  isValidFromDateInvalid: boolean;
-  isValidToDateInvalid: boolean;
-  applyToList: any;
-  eventsSaveButtonSubscription: any;
-  buttonClicked: any;
-  statusColorCode: any;
-  quantityFormat: string;
-  quantityPrecision: string;
-  @Input() set autocompleteType(value: string) {
-    this._autocompleteType = value;
-  }
-
-  get entityId(): number {
-    return this._entityId;
-  }
-
-  get entityName(): string {
-    return this._entityName;
-  }
-
-  @Input() set entityId(value: number) {
-    this._entityId = value;
-    this.gridViewModel.entityId = this.entityId;
-  }
-
-  @Input() set entityName(value: string) {
-    this._entityName = value;
-    this.gridViewModel.entityName = this.entityName;
-  }
-     
-  @Input() vesselId: number;
-
-  @Input('model') set _setFormValues(formValues) { 
-    if (!formValues) {
-      return;
-    } 
-    this.formValues = formValues;
-    this.selectedVal = this.formValues.evergreen ? 'evergreen' : 'dateSpecific';
-  }
-
-
-  @Input('applyToList') set _setApplyToList(applyToList) { 
-    if (!applyToList) {
-      return;
-    } 
-    this.applyToList = applyToList;
-  }
-
-  @Input('sellerList') set _setSellerList(sellerList) { 
-    if (!sellerList) {
-      return;
-    } 
-    this.sellerList = sellerList;
-  }
-
-  @Input('companyList') set _setCompanyList(companyList) { 
-    if (!companyList) {
-      return;
-    } 
-    this.companyList = companyList;
-    this.companyListForSearch = this.companyList;
-  }
-
-  @Input('agreementTypeList') set _setAgremeentType(agreementTypeList) { 
-    if (!agreementTypeList) {
-      return;
-    } 
-    this.agreementTypeList = agreementTypeList;
-  }
-
-  @Input('paymentTermList') set _setPaymentTermList(paymentTermList) { 
-    if (!paymentTermList) {
-      return;
-    } 
-    this.paymentTermList = paymentTermList;
-  }
-
-  @Input('incotermList') set _setIncotermList(incotermList) { 
-    if (!incotermList) {
-      return;
-    } 
-    this.incotermList = incotermList;
-  }
-
-  @Input('statusColorCode') set _setsStatusColorCode(statusColorCode) { 
-    if (!statusColorCode) {
-      return;
-    } 
-    this.statusColorCode = statusColorCode;
-  }
-
-  @Input() eventsSaveButton: Observable<void>;
-  eventsSubject2: Subject<any> = new Subject<any>();
-
-
+  switchTheme; //false-Light Theme, true- Dark Theme
+  isEffectiveFromDateInvalid: boolean;
   constructor(
+    public dialogRef: MatDialogRef<ExtendContractModalComponent>,
+    private ren: Renderer2,
+    private changeDetectorRef: ChangeDetectorRef,
+    private tenantService: TenantFormattingService,
+    private format: TenantFormattingService,
     public gridViewModel: OrderListGridViewModel,
     @Inject(VESSEL_MASTERS_API_SERVICE) private mastersApi: IVesselMastersApi,
     private legacyLookupsDatabase: LegacyLookupsDatabase,
     private appConfig: AppConfig,
     private httpClient: HttpClient,
-    changeDetectorRef: ChangeDetectorRef,
     private contractService: ContractService,
     @Inject(MAT_DATE_FORMATS) private dateFormats,
     @Inject(NGX_MAT_DATE_FORMATS) private dateTimeFormats,
-    private format: TenantFormattingService,
+    private tenantSettingsService: TenantSettingsService,
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
     iconRegistry: MatIconRegistry, 
     public dialog: MatDialog, 
+    @Inject(DecimalPipe) private _decimalPipe,
     sanitizer: DomSanitizer,
-    private tenantService: TenantFormattingService,
-    @Inject(DecimalPipe) private _decimalPipe,) {
-    
-    super(changeDetectorRef);
+    private overlayContainer: OverlayContainer,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
     this.dateFormats.display.dateInput = this.format.dateFormat;
     this.dateFormats.parse.dateInput = this.format.dateFormat;
     this.dateTimeFormats.display.dateInput = this.format.dateFormat;
     CUSTOM_DATE_FORMATS.display.dateInput = this.format.dateFormat;
     PICK_FORMATS.display.dateInput = this.format.dateFormat;
-    this.baseOrigin = new URL(window.location.href).origin;
-    this.autocompleteSellers = knownMastersAutocomplete.sellers;
-    this.autocompleteCompany = knownMastersAutocomplete.company;
-    //this.dateTimeFormats.parse.dateInput = this.format.dateFormat;
-    this.quantityPrecision = '1.' + this.tenantService.quantityPrecision + '-' + this.tenantService.quantityPrecision;
-
+    this.formValues = data.formValues;
 
   }
 
   ngOnInit(){  
-    this.entityName = 'Contract';
-    if (this.formValues.allowedCompanies) {
-      this.selectedAllowedCompanies();
-    }
-    this.eventsSaveButtonSubscription = this.eventsSaveButton.subscribe((data) => this.setRequiredFields(data))
-    //this.eventsSubscription = this.events.subscribe((data) => this.setDeliveryForm(data));
-    //this.eventsSaveButtonSubscription = this.eventsSaveButton.subscribe((data) => this.setRequiredFields(data))
-    //this.eventsSubject.next();
-
-  }
-
-  setRequiredFields(data) {
-    this.buttonClicked = data;
-  }
-
-
-  public onValChange(val: string) {
-    this.selectedVal = val;
-    if (val == 'evergreen') {
-      this.formValues.evergreen = true;
-    } else {
-      this.formValues.evergreen = false;
-    }
-  }
-
-
-  selectedAllowedCompanies() {
-    this.formValues.allowedCompanies.forEach((allowedCompany, k) => {
-      let findCompanyIndex = _.findIndex(this.companyList, function(object: any) {
-        return object.id == allowedCompany.id;
-      });
-      if (findCompanyIndex != -1) {
-        this.companyList[findCompanyIndex].isSelected = true;
-      }
-    });
-
-    console.log(this.companyList);
-
-    
-  }
-
-  formatDate(date?: any) {
-    if (date) {    
-      let currentFormat = this.format.dateFormat;
-      let hasDayOfWeek;
-      if (currentFormat.startsWith('DDD ')) {
-          hasDayOfWeek = true;
-          currentFormat = currentFormat.split('DDD ')[1];
-      }
-      currentFormat = currentFormat.replace(/d/g, 'D');
-      currentFormat = currentFormat.replace(/y/g, 'Y');
-      let elem = moment(date, 'YYYY-MM-DDTHH:mm:ss');
-      let formattedDate = moment(elem).format(currentFormat);
-      if (hasDayOfWeek) {
-        formattedDate = `${moment(date).format('ddd') } ${ formattedDate}`;
-      }
-      return formattedDate;
-    }
-  }
-
-  displayFn(value): string {
-    return value && value.name ? value.name : '';
-  }
-
-  selectSeller(event: MatAutocompleteSelectedEvent) {
-    this.formValues.seller = event.option.value;
-    this.getCounterpartyById(this.formValues.seller.id);
-  }
-
   
-  selectorSellerSelectionChange(
-    selection: IOrderLookupDto
-  ): void {
-    if (selection === null || selection === undefined) {
-      this.formValues.seller = '';
-    } else {
-      const obj = {
-        'id': selection.id,
-        'name': selection.name
-      };
-      this.formValues.seller = obj; 
-      this.getCounterpartyById(this.formValues.seller.id);
-      this.changeDetectorRef.detectChanges();   
-    }
+
   }
 
-  getCounterpartyById(counterpartyId: number) {
+  closeClick(): void {
+    this.dialogRef.close();
+  }
+
+  sendExtendContractData() {
     this.spinner.show();
     this.contractService
-      .getCounterparty(this.formValues.seller.id)
-      .pipe(
+    .extendContract(this.formValues)
+    .pipe(
         finalize(() => {
-          this.spinner.hide();
+
         })
     )
-    .subscribe((response: any) => {
-      if (typeof response == 'string') {
-        this.toastr.error(response);
-      } else {
-        if (response.defaultPaymentTerm != null) {
-          this.formValues.paymentTerm = response.defaultPaymentTerm;
+    .subscribe((result: any) => {
+        if (typeof result == 'string') {
+          this.spinner.hide();
+          this.toastr.error(result);
+        } else {
+          this.toastr.success('Contract extended!');
+          this.contractService
+            .loadContractDetails(this.formValues.id)
+            .pipe(
+              finalize(() => {
+                this.spinner.hide();
+              })
+            )
+            .subscribe((data: any) => {
+              this.formValues = _.merge(this.formValues, data);
+              console.log(this.formValues);
+              this.dialogRef.close(this.formValues);
+            });
         }
-        console.log(this.formValues.paymentTerm);
-      }
-    });
-
-  }
-
-  selectCompany(event: MatAutocompleteSelectedEvent) {
-    this.formValues.company = event.option.value;
-    console.log(this.entityId);
-    console.log(this.formValues.company);
-    this.addAllowedCompanies();
-  }
-
-  selectorCompanySelectionChange(
-    selection: IOrderLookupDto
-  ): void {
-    if (selection === null || selection === undefined) {
-      this.formValues.company = '';
-    } else {
-      const obj = {
-        'id': selection.id,
-        'name': selection.name
-      };
-      this.formValues.company = obj; 
-      this.addAllowedCompanies();
-      this.changeDetectorRef.detectChanges();   
-    }
-  }
-
-  addAllowedCompanies() {
-    if (!this.entityId) {
-      this.formValues.allowedCompanies = [];
-      this.companyList.forEach((v, k) => {
-        if (v.id != this.formValues.company.id) {
-          this.formValues.allowedCompanies.push(v);
-        }
-      });
-    }
-    console.log(this.formValues.allowedCompanies);
-  }
-
-  getHeaderNameSelector(): string {
-    switch (this._autocompleteType) {
-      case knownMastersAutocomplete.sellers:
-        return knowMastersAutocompleteHeaderName.sellers;
-      default:
-        return knowMastersAutocompleteHeaderName.sellers;
-    }
-  }
-
-
-  getHeaderNameSelector1(): string {
-    switch (this._autocompleteType) {
-      case knownMastersAutocomplete.company:
-        return knowMastersAutocompleteHeaderName.company;
-      default:
-        return knowMastersAutocompleteHeaderName.company;
-    }
-  }
-
-  
-  compareUomObjects(object1: any, object2: any) {
-    return object1 && object2 && object1.id == object2.id;
-  }
-
-  public filterSellerList() {
-    if (this.formValues.seller) {
-      let filterValue = '';
-      filterValue = this.formValues.seller.name ? this.formValues.seller.name.toLowerCase() : this.formValues.seller.toLowerCase();
-      if (this.sellerList) {
-        const list =  this.sellerList.filter((item: any) => {
-          return item.name.toLowerCase().includes(filterValue.toLowerCase());
-        }).splice(0,10);
-        console.log(list);
-        return list;
-      } else {
-        return [];
-      }
-    } else {
-      return [];
-    }
- 
-  }
-
-  
-  public filterCompanyList() {
-    if (this.formValues.company) {
-      let filterValue = '';
-      filterValue = this.formValues.company.name ? this.formValues.company.name.toLowerCase() : this.formValues.company.toLowerCase();
-      if (this.companyList) {
-        const list =  this.companyList.filter((item: any) => {
-          return item.name.toLowerCase().includes(filterValue.toLowerCase());
-        }).splice(0,10);
-        console.log(list);
-        return list;
-      } else {
-        return [];
-      }
-    } else {
-      return [];
-    }
- 
-  }
-
-
-
-  searchCompanyList(value: string): void {
-    let filterCompany = this.companyList.filter((company) => company.name.toLowerCase().includes(value));
-    console.log(filterCompany);
-    this.companyListForSearch = [ ... filterCompany];
-  }
-
-
-  resetCompanyData() {
-    this.searchCompanyModel = null;
-    this.selectedCompany = null;
-    this.companyListForSearch = this.companyList;
-    this.expandCompanyPopUp = false;
-  }
-
-  radioCompanyChange($event: MatRadioChange) {
-    if ($event.value) {
-      this.formValues.company = $event.value;
-      this.addAllowedCompanies();
-    }
-  }
-
-
-  saveAllowedCompanies() {
-    let allowedCompanyList = [];
-    let companyList = this.companyList;
-    for (let i = 0; i < companyList.length; i++) {
-      if (companyList[i].isSelected) {
-        let allowedCompany = {
-          'id': companyList[i].id,
-          'name': companyList[i].name
-        }
-        allowedCompanyList.push(allowedCompany);
-      }
-    }
-    this.formValues.allowedCompanies = [ ... allowedCompanyList ];
-  }
-
-
-  changeAgreementType() {
-    this.spinner.show();
-    this.contractService
-    .getAgreementTypeById(this.formValues.agreementType.id)
-    .pipe(
-      finalize(() => {
-        this.spinner.hide();
-      })
-    )
-    .subscribe((response: any) => {
-      if (typeof response == 'string') {
-        this.toastr.error(response);
-      } else {
-        console.log(response);
-        if (response) {
-          this.formValues.incoterm = response.defaultIncoterm;
-          //this.formValues.strategy = response.defaultStrategy;
-        }
-      }
-    });
-    
+     });
   }
 
   onChange($event, field) {
     if ($event.value) {
       let beValue = `${moment($event.value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
-      if (field == 'validFrom') {
-        this.isValidFromDateInvalid = false;
-      } else if (field == 'validTo') {
-        this.isValidToDateInvalid = false;
+      if (field == 'effectiveFrom') {
+        this.isEffectiveFromDateInvalid = false;
       }
       console.log(beValue);
     } else {
-      if (field == 'validFrom') {
-        this.isValidFromDateInvalid = true;
-      } else if (field == 'validTo') {
-        this.isValidToDateInvalid = false;
-      }
+      if (field == 'effectiveFrom') {
+        this.isEffectiveFromDateInvalid = true;
+      } 
       this.toastr.error('Please enter the correct format');
     }
 
@@ -852,25 +509,8 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
     }
   }
 
-  
-  quantityFormatValue(value) {
-    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
-    let number = parseFloat(plainNumber);
-    if (isNaN(number)) {
-      return null;
-    }
-    if (plainNumber) {
-      if(this.tenantService.quantityPrecision == 0) {
-        return plainNumber;
-      } else {
-        return this._decimalPipe.transform(plainNumber, this.quantityPrecision);
-      }
-    }
-  }
 
-  noOfDaysBeforeExpiryFormatValue(value) {
-    return value.toFixed(0);
-  }
+  
 
 
   ngAfterViewInit(): void {

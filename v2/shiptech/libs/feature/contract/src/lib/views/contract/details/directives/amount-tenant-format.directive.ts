@@ -26,8 +26,12 @@ export class AmountTenantFormatDirective implements OnInit {
   }
 
   ngOnInit() {
-    this.el.value = this._decimalPipe.transform(this.el.value, this.format);
+    if (this.el) {
+      setTimeout(() => this.onBlur(this.el.value));
+    }
   }
+
+  
 
 
   @HostListener("blur", ["$event.target.value"])

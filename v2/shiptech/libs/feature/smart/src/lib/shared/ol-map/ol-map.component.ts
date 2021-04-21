@@ -568,8 +568,8 @@ export class OlMapComponent implements OnInit {
         rotation: this.getRotationForVessel(vesselDetail.EndLocation.Latitude, vesselDetail.EndLocation.Longitude,
           vesselDetail.CurrentLocation.Latitude, vesselDetail.CurrentLocation.Longitude),
         // src: "http://cdn.mapmarker.io/api/v1/pin?text=P&size=50&hoffset=1",
-        // src: vesselDetail.ColorFlag == 0 ? "../assets/icon/ROB_blue.svg" : vesselDetail.ColorFlag == 1 ? "../assets/icon/ROB_red.svg" : "../assets/icon/ROB_amber.svg",
-        src: vesselDetail.ROB.Color.indexOf('orange') > 0 ? "../assets/icon/ROB_amber.svg" : vesselDetail.ROB.Color.indexOf('red') > 0 ? "../assets/icon/ROB_red.svg" : "../assets/icon/ROB_blue.svg",
+        // src: vesselDetail.ColorFlag == 0 ? "./assets/icon/ROB_blue.svg" : vesselDetail.ColorFlag == 1 ? "./assets/icon/ROB_red.svg" : "./assets/icon/ROB_amber.svg",
+        src: vesselDetail.ROB.Color.indexOf('orange') > 0 ? "./assets/icon/ROB_amber.svg" : vesselDetail.ROB.Color.indexOf('red') > 0 ? "./assets/icon/ROB_red.svg" : "./assets/icon/ROB_blue.svg",
       }))
     });
     return iconStyle;
@@ -586,7 +586,7 @@ export class OlMapComponent implements OnInit {
         anchorYUnits: 'fraction',
         rotation: this.getRotationForVessel(vesselDetail.EndLocation.Latitude, vesselDetail.EndLocation.Longitude,
           vesselDetail.CurrentLocation.Latitude, vesselDetail.CurrentLocation.Longitude),
-        src: vesselDetail.ROB.Color.indexOf('orange') > 0 ? "../assets/icon/ROB_amber.svg" : vesselDetail.ROB.Color.indexOf('red') > 0 ? "../assets/icon/ROB_red.svg" : "../assets/icon/ROB_blue.svg",
+        src: vesselDetail.ROB.Color.indexOf('orange') > 0 ? "./assets/icon/ROB_amber.svg" : vesselDetail.ROB.Color.indexOf('red') > 0 ? "./assets/icon/ROB_red.svg" : "./assets/icon/ROB_blue.svg",
 
         // src: "../assets/icon/ROB_red.svg",
         // src: "../assets/customicons/vessel/ROB_amber_hover_3.svg",

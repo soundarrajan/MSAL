@@ -10,7 +10,8 @@
   </div>
   <div class="col-md-3">
     <button  type="button" mat-raised-button 
-          (click)="saveProcurementSpecGroup(modalSpecGroupParameters)">
+        *ngIf="modalSpecGroupParametersEditable"
+        (click)="saveProcurementSpecGroup(modalSpecGroupParameters)">
       Save
     </button>    
   </div>
@@ -20,23 +21,41 @@
     <table class="product-spec-group-table table table-stripped table-hover" style="width:100%">
       <thead>
         <tr>
-            <td class="padding" style="width: 30px;">
-                <a class="add-product-spec-group-icon" (click)="addProductSpecGroup()"></a>
-            </td>
-            <td class="padding" style="width:20%">
-              <b>Spec Parameter</b>
-            </td>
-            <td class="padding" style="width:20%">
-              <b>Min</b>
-            </td>
-            <td class="padding" style="width:20%">
-              <b>Max</b>
-            </td>
-            <td class="padding" style="width:20%">
-              <b>UOM</b>
-            </td>
+          <td *ngIf="modalSpecGroupParametersEditable" class="padding" style="width: 30px;">
+            <a class="add-product-spec-group-icon" (click)="addProductSpecGroup()"></a>
+          </td>
+          <td class="padding" style="width:20%">
+            <b>Spec Parameter</b>
+          </td>
+          <td class="padding" style="width:20%">
+            <b>Min</b>
+          </td>
+          <td class="padding" style="width:20%">
+            <b>Max</b>
+          </td>
+          <td class="padding" style="width:20%">
+            <b>UOM</b>
+          </td>
         </tr>
       </thead>
+      <tbody *ngIf="!modalSpecGroupParametersEditable">
+        <ng-container  *ngFor="let specGroupParameter of modalSpecGroupParameters |  keyvalue: originalOrder">
+          <tr *ngIf="specGroupParameter.value.isDeleted == false || !specGroupParameter.value.isDeleted">
+            <td style="width:20%" class="padding">
+              {{ specGroupParameter.value.specParameter.name }}
+            </td>
+            <td style="width:20%" class="padding">
+                {{ specGroupParameter.value.min }}
+            </td>
+            <td style="width:20%" class="padding">
+                {{ specGroupParameter.value.max }}
+            </td>
+            <td style="width:20%" class="padding">
+                {{ specGroupParameter.value.uom }}
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
       <tbody *ngIf="modalSpecGroupParametersEditable">
           <ng-container  *ngFor="let specGroupParameter of modalSpecGroupParameters |  keyvalue: originalOrder">
             <tr *ngIf="specGroupParameter.value.isDeleted == false || !specGroupParameter.value.isDeleted">

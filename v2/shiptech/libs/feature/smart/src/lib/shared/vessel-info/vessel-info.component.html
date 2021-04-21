@@ -11,10 +11,10 @@
     <tbody>
       <tr>
         <td class="label-text">Scrubber Date:</td>
-        <td class="value">{{bunkerPlanHeaderDetail.scrubberDate | date: 'd/m/yyyy'}}</td>
+        <td class="value">{{bunkerPlanHeaderDetail?.scrubberDate | date: 'd/m/yyyy'}}</td>
         <td class="separator">|</td>
         <td class="label-text">Ownership:</td>
-        <td class="value">{{bunkerPlanHeaderDetail.vesselType}}</td>
+        <td class="value">{{bunkerPlanHeaderDetail?.ownership}}</td>
       </tr>
     </tbody>
   </table>
@@ -23,20 +23,21 @@
     <div class="default-view">My Default View</div>
   </div>
   <div  style="flex:0 0 13%;display: flex;align-items: center; justify-content: space-evenly;">
-    <mat-checkbox (change)="TriggerdontSendPlanReminder($event)" [checked]="bunkerPlanHeaderDetail?.planSendMsg" class="dark-bg-checkbox dark-checkbox noborder"></mat-checkbox>
+    <mat-checkbox (change)="TriggerdontSendPlanReminder($event)" [checked]="bunkerPlanHeaderDetail?.dockPortFlag" class="dark-bg-checkbox dark-checkbox noborder"></mat-checkbox>
     <div class="reminder-view">Do not send plan reminder</div>
+    <mat-icon matTooltip="Plan reminder disabled since vessel is Dry Dock" *ngIf="bunkerPlanHeaderDetail?.dockPortFlag">info</mat-icon>
   </div>
   <div class="border-l-r" style="flex:0 0 20%;display:flex;flex-direction:column;padding:0 10px;font-weight: lighter;">
     <div style="display:flex;align-items: center;justify-content: space-between;">
       <div class="sml-txt" style="display:flex;flex: 10%;">Latest plan recieved</div><span class="label-text">:</span>
-      <div class="sml-txt" style="display:flex">{{bunkerPlanHeaderDetail.lastPlanRecieved | date: 'd/m/yyyy'}} <div class="m-l-r-5">|</div>
-        ID:{{bunkerPlanHeaderDetail.vesselIMONo}}</div>
+      <div class="sml-txt" style="display:flex">{{bunkerPlanHeaderDetail?.lastPlanReceivedDate | date: 'd/m/yyyy'}} <div class="m-l-r-5">|</div>
+        ID:{{bunkerPlanHeaderDetail?.lastPlanReceivedId}}</div>
     </div>
     <div style="display:flex;align-items: center;justify-content: space-between;">
       <div class="sml-txt" style="display:flex;flex: 10%;">Latest plan sent
       </div><span class="label-text">:</span>
       <div class="sml-txt" style="display:flex"> {{bunkerPlanHeaderDetail.lastPlanSentDate | date: 'd/m/yyyy'}} <div class="m-l-r-5">|</div>
-        ID:{{bunkerPlanHeaderDetail.vesselIMONo}}</div>
+        ID:{{bunkerPlanHeaderDetail.lastPlanSentId}}</div>
     </div>
   </div>
 </div>
@@ -48,7 +49,7 @@
       [expanded]="false">
       <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="34px">
         <mat-panel-title>
-          <img class="expand-icon" src="../../../assets/customicons/expand.svg" alt="expand-icon">
+          <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
           Current ROB and Arbitrage Details
         </mat-panel-title>
       </mat-expansion-panel-header>
@@ -170,17 +171,17 @@
       [ngClass]="{'fullheight':expandComments}" hideToggle="true" (closed)="expandComments = false">
       <mat-expansion-panel-header #panelCommentH collapsedHeight="31px" expandedHeight="34px">
         <mat-panel-title>
-          <img class="expand-icon" src="../../../assets/customicons/expand.svg" alt="expand-icon">
+          <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
           <div style="flex: 0 0 17%;">Comments(5)</div>
           <div style="flex:0 0 80%;display: flex;align-items: center;justify-content: flex-end;">
             <ng-container *ngIf="commentpanel.expanded">
               <div style="text-align: center;">
                 <div  *ngIf="!expandComments; else collapseBlock" (click)="toggleComments($event)" class="expand-accordion-icon hand"></div>
                 <!-- <img *ngIf="!expandComments; else collapseBlock" class="hand" (click)="toggleComments($event)"
-                  src="../../../assets/customicons/expand-icon.svg" alt="expand-icon"> -->
+                  src="./assets/customicons/expand-icon.svg" alt="expand-icon"> -->
                 <ng-template #collapseBlock>
                   <div  (click)="toggleComments($event)" class="collapse-accordion-icon hand"></div>
-                  <!-- <img class="hand" (click)="toggleComments($event)" src="../../../assets/customicons/collapse-icon.svg"
+                  <!-- <img class="hand" (click)="toggleComments($event)" src="./assets/customicons/collapse-icon.svg"
                     alt="collapse-icon"> -->
                 </ng-template>
               </div>
@@ -198,7 +199,7 @@
       (closed)="currentBplan.gridChanged && togglecurrentBPlan(panel)">
       <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="34px">
         <mat-panel-title>
-          <img class="expand-icon" src="../../../assets/customicons/expand.svg" alt="expand-icon">
+          <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
           <div style="display: flex;align-items: center;width: 100%;">
             <div style="flex: 0 0 17%;">Current Bunkering Plan</div>
             <div style="flex:0 0 80%;display: flex;align-items: center;">
@@ -213,8 +214,8 @@
                   style="display: flex;flex: 0 0 44%;justify-content: space-between;padding: 0px 5px;">
                   <!-- <button [disabled]="!enableCreateReq" matTooltip="Create Request" [matTooltipShowDelay]="500"
                     class="create-btn">
-                    <img class="disablePlus" src="../../../assets/customicons/plus-noborder.svg" alt="create">
-                    <img class="activePlus" src="../../../assets/customicons/plus-noborder-white.svg" alt="create">
+                    <img class="disablePlus" src="./assets/customicons/plus-noborder.svg" alt="create">
+                    <img class="activePlus" src="./assets/customicons/plus-noborder-white.svg" alt="create">
                     <span class="createReq">Create Request</span>
                   </button> -->
                   <div class="border-rightside" style="padding-right: 5px;"
@@ -234,10 +235,10 @@
                 <div style="flex:0 0 4%;text-align: center;">
                   <div  *ngIf="!expandBplan; else collapseBlock" (click)="toggleBPlan($event)" class="expand-accordion-icon hand"></div>
                   <!-- <img *ngIf="!expandBplan; else collapseBlock" class="hand" (click)="toggleBPlan($event)"
-                    src="../../../assets/customicons/expand-icon.svg" alt="expand-icon"> -->
+                    src="./assets/customicons/expand-icon.svg" alt="expand-icon"> -->
                   <ng-template #collapseBlock>
                     <div  (click)="toggleBPlan($event)" class="collapse-accordion-icon hand"></div>
-                    <!-- <img class="hand" (click)="toggleBPlan($event)" src="../../../assets/customicons/collapse-icon.svg"
+                    <!-- <img class="hand" (click)="toggleBPlan($event)" src="./assets/customicons/collapse-icon.svg"
                       alt="collapse-icon"> -->
                   </ng-template>
                 </div>
@@ -256,7 +257,7 @@
       hideToggle="true" id="bunker-plan" [expanded]="false" (closed)="expandPrevBPlan = false">
       <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="34px">
         <mat-panel-title>
-          <img class="expand-icon" src="../../../assets/customicons/expand.svg" alt="expand-icon">
+          <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
           <div style="display: flex;align-items: center;width: 100%;">
             <div style="flex: 0 0 17%;">Previous Bunkering Plan</div>
             <div style="flex:0 0 80%;display: flex;align-items: center;">
@@ -273,11 +274,11 @@
               <div style="flex:0 0 4%;text-align: center;">
                 <div  *ngIf="!expandPrevBPlan; else collapseBlock"  (click)="togglePrevBPlan($event)" class="expand-accordion-icon hand"></div>
                 <!-- <img *ngIf="!expandPrevBPlan; else collapseBlock" class="hand" (click)="togglePrevBPlan($event)"
-                  src="../../../assets/customicons/expand-icon.svg" alt="expand-icon"> -->
+                  src="./assets/customicons/expand-icon.svg" alt="expand-icon"> -->
                 <ng-template #collapseBlock>
                   <div  (click)="togglePrevBPlan($event)" class="collapse-accordion-icon hand"></div>
                   <!-- <img class="hand" (click)="togglePrevBPlan($event)"
-                    src="../../../assets/customicons/collapse-icon.svg" alt="collapse-icon"> -->
+                    src="./assets/customicons/collapse-icon.svg" alt="collapse-icon"> -->
                 </ng-template>
               </div>
             </ng-container>
