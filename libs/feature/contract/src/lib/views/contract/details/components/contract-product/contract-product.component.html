@@ -18,11 +18,18 @@
             *ngIf="contractProduct.value.location"
             [ngClass]="{'not-selected-container': contractProduct.key != selectedTabIndex}">
             {{contractProduct.value.location.name}}
-            <span class="dropdown-location-icon"  
-              [ngClass]="{'dropdown-icon-white': contractProduct.key == selectedTabIndex,
+            <span *ngIf="!(formValues.status && formValues.status.name == 'Confirmed')"  
+                class="dropdown-location-icon"  
+                [ngClass]="{'dropdown-icon-white': contractProduct.key == selectedTabIndex,
                         'dropdown-icon': contractProduct.key != selectedTabIndex}"         
-              [matMenuTriggerFor]="locationMenu">
+                [matMenuTriggerFor]="locationMenu">
             </span>
+            <span *ngIf="formValues.status && formValues.status.name == 'Confirmed'" 
+                class="dropdown-location-icon"  
+                [ngClass]="{'dropdown-icon-white': contractProduct.key == selectedTabIndex,
+                      'dropdown-icon': contractProduct.key != selectedTabIndex}">
+            </span>
+            
           </div>
           <div class="add-new-location-placeholder"
             (click)="searchProductInput = null; "
@@ -40,10 +47,16 @@
             <a class="remove-product-white-icon remove-product-icon" (click)="removeProductFromContract(contractProduct.key)">
             </a>
             {{contractProduct.value.product.name}}
-            <span class="dropdown-location-icon"
-              [ngClass]="{'dropdown-icon-white': contractProduct.key == selectedTabIndex,
-                      'dropdown-icon': contractProduct.key != selectedTabIndex}"  
-              [matMenuTriggerFor]="productMenu">
+            <span *ngIf="!(formValues.status && formValues.status.name == 'Confirmed')" 
+                class="dropdown-location-icon"
+                [ngClass]="{'dropdown-icon-white': contractProduct.key == selectedTabIndex,
+                        'dropdown-icon': contractProduct.key != selectedTabIndex}"  
+                [matMenuTriggerFor]="productMenu">
+            </span>
+            <span *ngIf="formValues.status && formValues.status.name == 'Confirmed'" 
+                class="dropdown-location-icon"
+                [ngClass]="{'dropdown-icon-white': contractProduct.key == selectedTabIndex,
+                        'dropdown-icon': contractProduct.key != selectedTabIndex}"  >
             </span>
           </div>
         </div>
@@ -60,7 +73,8 @@
                 placeholder="Search all and select a location"
                 [(ngModel)]="searchLocationInput"
                 (click)="$event.stopPropagation();$event.preventDefault();"
-                class="search-location-input">
+                class="search-location-input"
+                autocomplete="off">
         </div>
         <div class="col-md-2 no-padding">
             <img style="float: right;" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
@@ -104,7 +118,8 @@
                 placeholder="Search all and select a product"
                 [(ngModel)]="searchProductInput"
                 (click)="$event.stopPropagation();$event.preventDefault();"
-                class="search-location-input">
+                class="search-location-input"
+                autocomplete="off">
         </div>
         <div class="col-md-2 no-padding">
             <img style="float: right;" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">

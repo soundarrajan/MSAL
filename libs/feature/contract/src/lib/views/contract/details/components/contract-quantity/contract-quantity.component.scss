@@ -1082,3 +1082,8 @@
   margin-right: 5px;
   
 }
+
+
+.select-contract-quantity-container .mat-form-field.mat-form-field-disabled {
+  background-color: unset !important;
+}
