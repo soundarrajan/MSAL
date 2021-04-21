@@ -24,7 +24,6 @@
   content: url(../../../../../../../../../../assets/layout/images/pages/dropdown-icon-white.svg);
 }
 
-
 .select-location-container .mat-table {
   background-color: #364150 !important;
   box-shadow: unset !important;
@@ -217,7 +216,7 @@
   font-size: 14px;
   line-height: 16px;
   padding: 5px;
-  color: white !important;
+  color: white;
 }
 
 .product-container-tab  {
@@ -231,7 +230,7 @@
   font-size: 14px;
   line-height: 16px;
   padding: 5px;
-  color: white !important;
+  color: white;
 }
 
 .selected-product-container, .additional-product-container {
@@ -498,4 +497,40 @@
 .cdk-overlay-transparent-backdrop, .cdk-overlay-transparent-backdrop.cdk-overlay-backdrop-showing  {
   opacity: 0.5;
   background-color: black;
+}
+
+.remove-product-black-icon::before {
+  content: url(../../../../../../../../../../assets/layout/images/pages/remove-product-black.svg);
+}
+
+.remove-product-white-icon::before {
+  content: url(../../../../../../../../../../assets/layout/images/pages/remove-product-white.svg);
+}
+
+
+.remove-product-icon {
+  position: relative;
+  top: -5px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+
+.dropdown-location-icon {
+  position: relative;
+  top: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.not-selected-container {
+  box-sizing: border-box;
+  background-color: white !important;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: #364150;
+  border: unset !important;
 }

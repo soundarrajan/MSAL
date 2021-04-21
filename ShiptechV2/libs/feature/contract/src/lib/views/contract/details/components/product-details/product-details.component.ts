@@ -419,6 +419,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
   locationList: any;
   productList: any;
   locationMasterList: any;
+  productSpecGroup: any = [];
 
   displayedColumns: string[] = ['name', 'country'];
   displayedProductColumns: string[] = ['name', 'productType'];
@@ -457,13 +458,13 @@ export class ProductDetails extends DeliveryAutocompleteComponent
   physicalSupplierList: any[];
   autocompletePhysicalSupplier: knownMastersAutocomplete;
   _autocompleteType: any;
-  productSpecGroup: any[];
   modalSpecGroupParameters: any;
   modalSpecGroupParametersEditable: boolean;
   canChangeSpec: boolean;
   specParameterList: any;
   activeProductForSpecGroupEdit: any;
   eventsSubscription: any;
+  events1Subscription: any;
 
 
   get entityId(): number {
@@ -535,6 +536,14 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     this.uomList = uomList;
   }
 
+  @Input('productSpecGroup') set _setProductSpecGroup(productSpecGroup) { 
+    if (!productSpecGroup) {
+      return;
+    } 
+    this.productSpecGroup = productSpecGroup;
+  }
+
+
 
   @Input('uomVolumeList') set _setUomVolumeList(uomVolumeList) { 
     if (!uomVolumeList) {
@@ -566,11 +575,8 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     if (formValues.products[this.selectedTabIndex] && !formValues.products[this.selectedTabIndex].physicalSuppliers)  {
       this.formValues.products[this.selectedTabIndex].physicalSuppliers = [];
     }
-    for (let i = 0; i < this.formValues.products.length; i++) {
-      if (this.formValues.products[i].product) {
-        this.getSpecGroupByProduct(this.formValues.products[i].product.id, this.formValues.products[i].specGroup);
-      }
-    }
+
+   
   }
 
   @Input('generalTenantSettings') set _setGeneralTenantSettings(generalTenantSettings) { 
@@ -586,6 +592,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
   array = [0,1,2,3,4,5,6,7,8,9,10];
   isMenuOpen = true;
   @Input() events: Observable<void>;
+  @Input() events1: Observable<void>;
 
 
   constructor(
@@ -621,11 +628,22 @@ export class ProductDetails extends DeliveryAutocompleteComponent
 
   ngOnInit(){  
     this.entityName = 'Contract';
+    console.log('Product details');
+    console.log(this.locationMasterList);
+    console.log(this.formValues);
+    if (this.formValues && this.formValues.products) {
+      this.setAllowedLocations(this.selectedTabIndex);
+      this.setAllowedProducts(this.selectedTabIndex);
+    }
     this.getPhysicalSupplierList();
     this.eventsSubscription = this.events.subscribe((data) => this.setContractForm(data));
+    this.events1Subscription = this.events1.subscribe((data) => this.setProductSpecGroup(data));
 
+  }
 
-
+  setProductSpecGroup(data) {
+    console.log(data);
+    this.productSpecGroup = data;
   }
 
   setContractForm(form) {
@@ -967,6 +985,10 @@ export class ProductDetails extends DeliveryAutocompleteComponent
 
 
   openSpecGroupPopUp(product) {
+    if (!product.specGroup) {
+      this.toastr.error('Please select a spec group!');
+      return;
+    }
     this.activeProductForSpecGroupEdit = product;
     var productId = product.product.id;
     var data = {
@@ -987,10 +1009,11 @@ export class ProductDetails extends DeliveryAutocompleteComponent
             ]
         }
     };
-    if (this.formValues.status.name != 'Confirmed' && product.id != 0) {
-      this.modalSpecGroupParametersEditable = true;
-      this.canChangeSpec = true;
-
+    if (this.formValues.status) {
+      if (this.formValues.status.name != 'Confirmed' && product.id != 0) {
+        this.modalSpecGroupParametersEditable = true;
+        this.canChangeSpec = true;
+      }
     }
     this.spinner.show();
     this.contractService
@@ -1180,6 +1203,79 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     }
 
 
+  }
+
+  saveConversionFactors(conversionFactors, conversionFactorsDropdown) {
+    if (conversionFactorsDropdown && conversionFactors.contractConversionFactorOptions.id == 3) {
+      let payload = { Payload: conversionFactors.product.id };
+      this.spinner.show();
+      this.contractService
+      .getProdDefaultConversionFactors(payload)
+      .pipe(
+        finalize(() => {
+        })
+      )
+      .subscribe((response: any) => {
+        if (typeof response == 'string') {
+          this.toastr.error(response);
+          this.spinner.hide();
+        } else {
+          console.log(response);
+          if (response) {
+            conversionFactors.value = response.value;
+            conversionFactors.massUom = response.massUom;
+            conversionFactors.volumeUom = response.volumeUom;
+            if (conversionFactors.contractProductId) {
+              let conversionFactorsList = [];
+              conversionFactorsList.push(conversionFactors);
+              payload = { Payload: conversionFactorsList };
+              this.spinner.show();
+              this.contractService
+                .saveConversionFactorsForContractProduct(payload)
+                .pipe(
+                  finalize(() => {
+                    this.spinner.hide();
+                  })
+                )
+                .subscribe((response: any) => {
+                  if (typeof response == 'string') {
+                    this.toastr.error(response);
+                  } else if (response) {
+                    let res = response[0];
+                    this.formValues.products[this.selectedTabIndex].convFactorMassUom = res.massUom;
+                    this.formValues.products[this.selectedTabIndex].convFactorValue = res.value;
+                    this.formValues.products[this.selectedTabIndex].convFactorVolumeUom = res.volumeUom;
+                  }
+                });
+            }
+          }
+        }
+      });
+    } else {
+      if (conversionFactors.contractProductId) {
+        let conversionFactorsList = [];
+        conversionFactorsList.push(conversionFactors);
+        let payload = { Payload: conversionFactorsList };
+        this.spinner.show();
+        this.contractService
+          .saveConversionFactorsForContractProduct(payload)
+          .pipe(
+            finalize(() => {
+              this.spinner.hide();
+            })
+          )
+          .subscribe((response: any) => {
+            if (typeof response == 'string') {
+              this.toastr.error(response);
+            } else if (response) {
+              let res = response[0];
+              this.formValues.products[this.selectedTabIndex].convFactorMassUom = res.massUom;
+              this.formValues.products[this.selectedTabIndex].convFactorValue = res.value;
+              this.formValues.products[this.selectedTabIndex].convFactorVolumeUom = res.volumeUom;
+            }
+          });
+    }
+    }
   }
 
 

@@ -25,7 +25,9 @@
           <div class="allowed-list-modal-container">
               Allowed Locations
           </div>
-          <div  [matMenuTriggerFor]="menuAllowedLocations" class="edit-allow-locations">
+          <div *ngIf="formValues.status && formValues.status.name == 'Confirmed'"  class="edit-allow-locations">
+          </div>
+          <div *ngIf="!(formValues.status && formValues.status.name == 'Confirmed')"  [matMenuTriggerFor]="menuAllowedLocations" class="edit-allow-locations">
           </div>
           <mat-menu #menuAllowedLocations="matMenu" class="allowed-locations-modal ">
             <div class="col-md-12 header-allowed-locations">
@@ -69,7 +71,9 @@
           <div class="allowed-list-modal-container">
               Allowed products
           </div>
-          <div  [matMenuTriggerFor]="menuAllowedProducts" class="edit-allow-locations">
+          <div *ngIf="!(formValues.status && formValues.status.name == 'Confirmed')" [matMenuTriggerFor]="menuAllowedProducts" class="edit-allow-locations">
+          </div>
+          <div  *ngIf="formValues.status && formValues.status.name == 'Confirmed'" class="edit-allow-locations">
           </div>
           <mat-menu #menuAllowedProducts="matMenu" class="allowed-locations-modal ">
             <div class="col-md-12 header-allowed-locations">
@@ -117,7 +121,8 @@
                 placeholder="Spec Group"
                 [disableOptionCentering]="true"
                 panelClass="general-information-select-container"
-                [compareWith]="compareUomObjects">
+                [compareWith]="compareUomObjects"
+                [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
               <ng-container *ngIf="formValues.products[selectedTabIndex].product">
                 <mat-option *ngFor="let option of productSpecGroup[formValues.products[selectedTabIndex].product.id]" [value]="option">
                   {{option.name}}
@@ -125,7 +130,8 @@
               </ng-container>
           </mat-select>
           </mat-form-field>
-          <div class="search-icon" (click)="openSpecGroupPopUp(formValues.products[selectedTabIndex])">
+          <div [ngClass]="{'search-icon-disabled': formValues.status && formValues.status.name == 'Confirmed'}"
+             class="search-icon" (click)="(formValues.status && formValues.status.name == 'Confirmed') ? '' : openSpecGroupPopUp(formValues.products[selectedTabIndex])">
             <div class="img"></div>
           </div>
         </div>
@@ -135,11 +141,12 @@
             <mat-form-field class="with-search" appearance="legacy">
                 <mat-label>Supplier</mat-label>
                 <input class="free-text-field" 
-                        [(ngModel)]="formValues.products[selectedTabIndex].physicalSuppliers[0]"
-                        type="text"
-                        matInput 
-                        [matAutocomplete]="auto1"
-                        placeholder="Supplier">
+                      [(ngModel)]="formValues.products[selectedTabIndex].physicalSuppliers[0]"
+                      type="text"
+                      matInput 
+                      [matAutocomplete]="auto1"
+                      placeholder="Supplier"
+                      [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
                 <mat-autocomplete #auto1="matAutocomplete" 
                                     class="darkPanelAuto"
                                     [displayWith]="displayFn">
@@ -149,20 +156,22 @@
                     </mat-option>
                 </mat-autocomplete>
             </mat-form-field>
-            <button class="search-icon" 
+            <button class="search-icon"
+              [disabled]="formValues.status && formValues.status.name == 'Confirmed'" 
+              [ngClass]="{'search-icon-disabled': formValues.status && formValues.status.name == 'Confirmed'}" 
                 appMasterSelectorTrigger [masterSelector]="masterSelector1" #masterSelectorTrigger1="masterSelectorTrigger" [header]="getHeaderNameSelector1()">
-            <div class="img">
-                <ng-template cdkPortal #masterSelector1="cdkPortal" >
-                    <shiptech-shared-master-selector (selectedChange)="selectorPhysicalSupplierSelectionChange($event); masterSelectorTrigger1.close()" (shouldCloseModal)="masterSelectorTrigger1.close()" [selectorType]="autocompletePhysicalSupplier"
-                                                    [disabled]="disabled"
-                                                    [readonly]="readonly"
-                                                    [entityName]="entityName"
-                                                    [entityId]="entityId"
-                                                    [vesselId]="vesselId"
-                                                    [headerName]="getHeaderNameSelector1()"
-                    ></shiptech-shared-master-selector>
-                </ng-template> 
-            </div>
+                <div class="img">
+                  <ng-template cdkPortal #masterSelector1="cdkPortal" >
+                      <shiptech-shared-master-selector (selectedChange)="selectorPhysicalSupplierSelectionChange($event); masterSelectorTrigger1.close()" (shouldCloseModal)="masterSelectorTrigger1.close()" [selectorType]="autocompletePhysicalSupplier"
+                                                      [disabled]="disabled"
+                                                      [readonly]="readonly"
+                                                      [entityName]="entityName"
+                                                      [entityId]="entityId"
+                                                      [vesselId]="vesselId"
+                                                      [headerName]="getHeaderNameSelector1()"
+                      ></shiptech-shared-master-selector>
+                  </ng-template> 
+                </div>
             </button>
         </div>
       </div>
@@ -175,13 +184,13 @@
           <input [(ngModel)]="formValues.products[selectedTabIndex].dealDate" 
                 #validToDateField="ngModel" 
                 matInput 
+                [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
                 [matDatepicker]="dealDate"
                 (focus)="dealDate.open()"
                 autocomplete="off"
                 placeholder="Deal Date"
                 (dateInput)="onChange($event, 'dealDate')"
-                (dateChange)="formValues.products[selectedTabIndex].dealDate = formatDateForBe(formValues.products[selectedTabIndex].dealDate)"
-                required>
+                (dateChange)="formValues.products[selectedTabIndex].dealDate = formatDateForBe(formValues.products[selectedTabIndex].dealDate)">
                 <mat-datepicker-toggle matSuffix [for]="dealDate">
                   <mat-icon matDatepickerToggleIcon class="icon-date">
                   </mat-icon>
@@ -222,12 +231,26 @@
                 </td>
                 <td  style="width:20%">
                   <div class="custom-form-field conversion-factor-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                    <mat-form-field class="without-search conversion-factor-dropdown-component" appearance="legacy">
+                    <mat-form-field *ngIf="conversionFactor.contractConversionFactorOptions.id == 1"
+                      class="without-search conversion-factor-dropdown-component" appearance="legacy">
                       <mat-select 
-                              [(ngModel)]="conversionFactor.massUom"
-                              [disableOptionCentering]="true"
-                              panelClass="general-information-select-container"
-                              [compareWith]="compareUomObjects">
+                          [disableOptionCentering]="true"
+                          panelClass="general-information-select-container"
+                          [disabled]="true">
+                          <mat-option *ngFor="let option of []" [value]="option">
+                              {{option.name}}
+                          </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-form-field  *ngIf="conversionFactor.contractConversionFactorOptions.id != 1"
+                      class="without-search conversion-factor-dropdown-component" appearance="legacy">
+                      <mat-select 
+                          [(ngModel)]="conversionFactor.massUom"
+                          [disableOptionCentering]="true"
+                          panelClass="general-information-select-container"
+                          [compareWith]="compareUomObjects"
+                          (selectionChange)="saveConversionFactors(conversionFactor, false)"
+                          [disabled]="conversionFactor.contractConversionFactorOptions.id == 3 || (formValues.hasInvoicedOrder && conversionFactor.contractConversionFactorOptions.id == 2)">
                           <mat-option *ngFor="let option of uomMassList" [value]="option">
                               {{option.name}}
                           </mat-option>
@@ -237,12 +260,26 @@
                 </td> 
                 <td  style="width:20%">
                   <div class="custom-form-field conversion-factor-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                    <mat-form-field class="without-search conversion-factor-dropdown-component" appearance="legacy">
+                    <mat-form-field *ngIf="conversionFactor.contractConversionFactorOptions.id == 1"
+                      class="without-search conversion-factor-dropdown-component" appearance="legacy">
                       <mat-select 
-                              [(ngModel)]="conversionFactor.volumeUom"
-                              [disableOptionCentering]="true"
-                              panelClass="general-information-select-container"
-                              [compareWith]="compareUomObjects">
+                            [disableOptionCentering]="true"
+                            panelClass="general-information-select-container"
+                            [disabled]="true">
+                          <mat-option *ngFor="let option of []" [value]="option">
+                              {{option.name}}
+                          </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-form-field *ngIf="conversionFactor.contractConversionFactorOptions.id != 1"
+                      class="without-search conversion-factor-dropdown-component" appearance="legacy">
+                      <mat-select 
+                            [(ngModel)]="conversionFactor.volumeUom"
+                            [disableOptionCentering]="true"
+                            panelClass="general-information-select-container"
+                            [compareWith]="compareUomObjects"
+                            (selectionChange)="saveConversionFactors(conversionFactor, false)"
+                            [disabled]="conversionFactor.contractConversionFactorOptions.id == 3 || (formValues.hasInvoicedOrder && conversionFactor.contractConversionFactorOptions.id == 2)">
                           <mat-option *ngFor="let option of uomVolumeList" [value]="option">
                               {{option.name}}
                           </mat-option>
@@ -254,10 +291,12 @@
                   <div class="custom-form-field conversion-factor-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
                     <mat-form-field class="without-search conversion-factor-dropdown-component" appearance="legacy">
                       <mat-select 
-                              [(ngModel)]="conversionFactor.contractConversionFactorOptions"
-                              [disableOptionCentering]="true"
-                              panelClass="general-information-select-container"
-                              [compareWith]="compareUomObjects">
+                            [(ngModel)]="conversionFactor.contractConversionFactorOptions"
+                            [disableOptionCentering]="true"
+                            panelClass="general-information-select-container"
+                            [compareWith]="compareUomObjects"
+                            (selectionChange)="saveConversionFactors(conversionFactor, true)"
+                            [disabled]="formValues.hasInvoicedOrder">
                           <mat-option *ngFor="let option of contractConversionFactorOptions" [value]="option">
                               {{option.name}}
                           </mat-option>
@@ -267,11 +306,21 @@
                 </td> 
                 <td style="width:20%">
                   <div class="custom-form-field conversion-factor-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                    <mat-form-field class="without-search" appearance="legacy">
+                    <mat-form-field *ngIf="conversionFactor.contractConversionFactorOptions.id == 1" 
+                      class="without-search" appearance="legacy">
+                      <input  
+                          matInput 
+                          autocomplete="off"
+                          [disabled]="true">
+                    </mat-form-field>
+                    <mat-form-field *ngIf="conversionFactor.contractConversionFactorOptions.id != 1" 
+                      class="without-search" appearance="legacy">
                       <input  
                           [(ngModel)]="conversionFactor.value"
                           matInput 
-                          autocomplete="off">
+                          autocomplete="off"
+                          (blur)="saveConversionFactors(conversionFactor, false)"
+                          [disabled]="conversionFactor.contractConversionFactorOptions.id == 3 || (formValues.hasInvoicedOrder && conversionFactor.contractConversionFactorOptions.id == 2)">
                     </mat-form-field>
                 </div>
                 </td>
