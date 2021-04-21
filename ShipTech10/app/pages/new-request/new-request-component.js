@@ -917,6 +917,10 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             }
             ctrl.isSpecGroupIsRequired();
 
+            if (ctrl.showVesselExpiryWarningMessage && !ctrl.request.id) {
+            	toastr.warning(ctrl.showVesselExpiryWarningMessage);
+            }
+
             $timeout(() => {
                 $('form').addClass('submitted');
                 ctrl.saved = true;
@@ -1899,6 +1903,8 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 if (!ctrl.request.vesselDetails.vessel) {
                     ctrl.request.vesselDetails.vessel = {};
                 }
+
+                ctrl.showVesselExpiryWarningMessage = false;
                 if (vessel.validateVesselExpiryDate && vessel.expiry) {
                 	todayOffset = moment.utc().add(ctrl.requestTenantSettings.vesselExpiryNoOfDays, "days");
                 	if(moment.utc(todayOffset).isAfter(moment.utc(vessel.expiry))){
@@ -1912,8 +1918,10 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 	                    formattedVesselExpiry = $filter("date")(vessel.expiry, dateFormat.split(" ")[0], "UTC");
 
                 		daysRemaining = moment.utc(vessel.expiry).diff(moment.utc(), 'days') + 1 ; /* +1day because it returns full days remaining */
-                		warningMessage = `${vessel.name} will expire on ${formattedVesselExpiry}. ${daysRemaining} days remaining`
-	                	toastr.warning(warningMessage);
+                		ctrl.showVesselExpiryWarningMessage = `${vessel.name} will expire on ${formattedVesselExpiry}. ${daysRemaining} days remaining`
+                		if ($("#id_Vessel").hasClass("ng-dirty")) {
+		                	toastr.warning(ctrl.showVesselExpiryWarningMessage);
+                		}
                 	}
                 }
                 newRequestModel.getDefaultBuyer(vessel.id).then((buyer) => {
