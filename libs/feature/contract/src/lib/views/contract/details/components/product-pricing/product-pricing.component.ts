@@ -802,6 +802,13 @@ export class ProductPricing extends DeliveryAutocompleteComponent
 
   public onValChange(val: string) {
     this.selectedVal = val;
+    if (val == 'formula') {
+      this.formValues.products[this.selectedTabIndex].fixedPrice = false;
+      this.formValues.products[this.selectedTabIndex].isFormula = true;
+    } else {
+      this.formValues.products[this.selectedTabIndex].isFormula = false;
+      this.formValues.products[this.selectedTabIndex].fixedPrice = true;
+    }
   }
 
   createNewFormulaPopup(selectedTabIndex) {
@@ -1026,6 +1033,9 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   };
 
   addNewAdditionalCostLine() {
+    if (this.formValues.status && this.formValues.status.name == 'Confirmed') {
+      return;
+    }
     if (!this.formValues.products[this.selectedTabIndex].additionalCosts) {
       this.formValues.products[this.selectedTabIndex].additionalCosts = [];
     }
@@ -1034,6 +1044,9 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   }
 
   removeAdditionalCostLine(key) {
+    if (this.formValues.status && this.formValues.status.name == 'Confirmed') {
+      return;
+    }
     if (this.formValues.products[this.selectedTabIndex].additionalCosts.id) {
       this.formValues.products[this.selectedTabIndex].additionalCosts.isDeleted = true;
     } else {
@@ -1111,6 +1124,10 @@ export class ProductPricing extends DeliveryAutocompleteComponent
         return this._decimalPipe.transform(plainNumber, this.priceFormat);
       }
     }
+  }
+
+  changePricing(type) {
+    console.log(type);
   }
 
 
