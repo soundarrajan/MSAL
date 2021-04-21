@@ -773,6 +773,7 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
   radioCompanyChange($event: MatRadioChange) {
     if ($event.value) {
       this.formValues.company = $event.value;
+      this.addAllowedCompanies();
     }
   }
 

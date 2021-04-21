@@ -19,6 +19,7 @@
                     [(ngModel)]="contractDetail.value.contractualQuantityOption"
                     disableOptionCentering 
                     [panelClass]="'contract-quantity-select-container'"
+                    [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
                     [compareWith]="compareUomObjects">
                     <mat-option *ngFor="let option of contractualQuantityOptionList"
                         [value]="option">
