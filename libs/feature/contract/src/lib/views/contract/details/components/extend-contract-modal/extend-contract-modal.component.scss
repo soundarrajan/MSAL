@@ -59,3 +59,10 @@
   padding-right: 0px !important;
   margin-top: 10px;
 }
+
+.date-invalid {
+  border-color: #e73d4a!important;
+  .mat-form-field-label mat-label {
+    color: #e73d4a!important;
+  }
+}

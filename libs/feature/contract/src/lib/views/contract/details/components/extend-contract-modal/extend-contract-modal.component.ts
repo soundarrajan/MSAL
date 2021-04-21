@@ -13,38 +13,56 @@ import {
   AfterViewInit,
   Inject,
   ChangeDetectorRef,
-  Renderer2,
   Injectable,
-  InjectionToken
+  InjectionToken,
+  Optional,
+  ViewChildren,
+  Renderer2
 } from '@angular/core';
-
+import { Select } from '@ngxs/store';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
+import { finalize, map, scan, startWith, timeout } from 'rxjs/operators';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { BdnInformationApiService } from '@shiptech/core/services/delivery-api/bdn-information/bdn-information-api.service';
+import { TransactionForSearch } from 'libs/feature/delivery/src/lib/services/api/request-response/bdn-information';
+import { DialogService } from 'primeng/dynamicdialog';
+import { ConfirmationService } from 'primeng/api';
+import { IDisplayLookupDto, IOrderLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
+import { knowMastersAutocompleteHeaderName, knownMastersAutocomplete } from '@shiptech/core/ui/components/master-autocomplete/masters-autocomplete.enum';
+import { OrderListGridViewModel } from '@shiptech/core/ui/components/delivery/view-model/order-list-grid-view-model.service';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
+import { DeliveryAutocompleteComponent } from '../delivery-autocomplete/delivery-autocomplete.component';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { HttpClient } from '@angular/common/http';
 import { IVesselMastersApi, VESSEL_MASTERS_API_SERVICE } from '@shiptech/core/services/masters-api/vessel-masters-api.service.interface';
-import { DeliveryService } from 'libs/feature/delivery/src/lib/services/delivery.service';
-import { DeliveryInfoForOrder, DeliveryProduct, DeliveryProductDto, IDeliveryInfoForOrderDto, OrderInfoDetails } from 'libs/feature/delivery/src/lib/services/api/dto/delivery-details.dto';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter, ThemePalette } from '@angular/material/core';
+import { DeliveryInfoForOrder, IDeliveryInfoForOrderDto, OrderInfoDetails } from 'libs/feature/delivery/src/lib/services/api/dto/delivery-details.dto';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } from '@angular/material/core';
 import moment, { Moment, MomentFormatSpecification, MomentInput } from 'moment';
 import dateTimeAdapter from '@shiptech/core/utils/dotnet-moment-format-adapter';
-import { ILookupDto } from '@shiptech/core/lookups/lookup-dto.interface';
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import _ from 'lodash';
-import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
+import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { IDeliveryTenantSettings } from 'libs/feature/delivery/src/lib/core/settings/delivery-tenant-settings';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ColumnsToolPanelModule, Optional } from '@ag-grid-enterprise/all-modules';
-import { MatRadioChange } from '@angular/material/radio';
-import { Router } from '@angular/router';
-import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
-import { KnownDeliverylRoutes } from 'libs/feature/delivery/src/lib/known-delivery.routes';
-import { DecimalPipe } from '@angular/common';
-import { NgxMatDateAdapter, NgxMatDateFormats, NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
-import { ContractService } from 'libs/feature/contract/src/lib/services/contract.service';
+import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
+import _ from 'lodash';
+import { NgxMatDateAdapter, NgxMatDateFormats, NgxMatNativeDateAdapter, NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
+import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/general-tenant-settings.interface';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { ToastrService } from 'ngx-toastr';
-import { finalize } from 'rxjs/operators';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
+import { ContractService } from 'libs/feature/contract/src/lib/services/contract.service';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatRadioChange } from '@angular/material/radio';
+import { DecimalPipe, KeyValue } from '@angular/common';
+import { MatSelect } from '@angular/material/select';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { OverlayContainer } from '@angular/cdk/overlay';
+import { ProductSpecGroupModalComponent } from '../product-spec-group-modal/product-spec-group-modal.component';
+import { OVERLAY_KEYBOARD_DISPATCHER_PROVIDER_FACTORY } from '@angular/cdk/overlay/dispatchers/overlay-keyboard-dispatcher';
+
+
 
 const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
   parse: {
@@ -371,56 +389,63 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
       : moment(date, format, locale, strict);
   }
 }
-
 @Component({
   selector: 'shiptech-extend-contract-modal',
   templateUrl: './extend-contract-modal.component.html',
   styleUrls: ['./extend-contract-modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  providers: [
-    {provide: DateAdapter, useClass: PickDateAdapter},
-    {provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS},
-    {
-      provide: NgxMatDateAdapter,
-      useClass: CustomNgxDatetimeAdapter,
-      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
-    },
-    { provide: NGX_MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS }]
+  providers: [OrderListGridViewModel, 
+              DialogService, 
+              ConfirmationService,
+              {provide: DateAdapter, useClass: PickDateAdapter},
+              {provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS},
+              {
+                provide: NgxMatDateAdapter,
+                useClass: CustomNgxDatetimeAdapter,
+                deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+              },
+              { provide: NGX_MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS }]
 })
-
-export class ExtendContractModalComponent implements OnInit {
-  deliveryProducts: any;
-  switchTheme;
-  selectedProduct;
+export class ExtendContractModalComponent implements OnInit{
   formValues: any;
-  splitDeliveryInLimit: any[];
-  uoms: any;
-  disabledSplitBtn;
-  quantityFormat: string;
+  switchTheme; //false-Light Theme, true- Dark Theme
+  isEffectiveFromDateInvalid: boolean;
   constructor(
     public dialogRef: MatDialogRef<ExtendContractModalComponent>,
     private ren: Renderer2,
     private changeDetectorRef: ChangeDetectorRef,
-    private router: Router,
     private tenantService: TenantFormattingService,
     private format: TenantFormattingService,
+    public gridViewModel: OrderListGridViewModel,
+    @Inject(VESSEL_MASTERS_API_SERVICE) private mastersApi: IVesselMastersApi,
+    private legacyLookupsDatabase: LegacyLookupsDatabase,
+    private appConfig: AppConfig,
+    private httpClient: HttpClient,
     private contractService: ContractService,
-    private spinner: NgxSpinnerService,
-    private toastr: ToastrService,
-    @Inject(DecimalPipe) private _decimalPipe,
     @Inject(MAT_DATE_FORMATS) private dateFormats,
     @Inject(NGX_MAT_DATE_FORMATS) private dateTimeFormats,
+    private tenantSettingsService: TenantSettingsService,
+    private spinner: NgxSpinnerService,
+    private toastr: ToastrService,
+    iconRegistry: MatIconRegistry, 
+    public dialog: MatDialog, 
+    @Inject(DecimalPipe) private _decimalPipe,
+    sanitizer: DomSanitizer,
+    private overlayContainer: OverlayContainer,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
-      this.formValues = data.formValues;
-      this.dateFormats.display.dateInput = this.format.dateFormat;
-      this.dateFormats.parse.dateInput = this.format.dateFormat;
-      this.dateTimeFormats.display.dateInput = this.format.dateFormat;
-      CUSTOM_DATE_FORMATS.display.dateInput = this.format.dateFormat;
-      PICK_FORMATS.display.dateInput = this.format.dateFormat;
-    }
+    this.dateFormats.display.dateInput = this.format.dateFormat;
+    this.dateFormats.parse.dateInput = this.format.dateFormat;
+    this.dateTimeFormats.display.dateInput = this.format.dateFormat;
+    CUSTOM_DATE_FORMATS.display.dateInput = this.format.dateFormat;
+    PICK_FORMATS.display.dateInput = this.format.dateFormat;
+    this.formValues = data.formValues;
 
-  ngOnInit() {
+  }
+
+  ngOnInit(){  
+  
+
   }
 
   closeClick(): void {
@@ -458,6 +483,38 @@ export class ExtendContractModalComponent implements OnInit {
      });
   }
 
- 
+  onChange($event, field) {
+    if ($event.value) {
+      let beValue = `${moment($event.value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+      if (field == 'effectiveFrom') {
+        this.isEffectiveFromDateInvalid = false;
+      }
+      console.log(beValue);
+    } else {
+      if (field == 'effectiveFrom') {
+        this.isEffectiveFromDateInvalid = true;
+      } 
+      this.toastr.error('Please enter the correct format');
+    }
+
+  }
   
+
+  formatDateForBe(value) {
+    if (value) {
+      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+      return `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+    } else {
+      return null;
+    }
+  }
+
+
+  
+
+
+  ngAfterViewInit(): void {
+  
+  }
 }
+
