@@ -3168,12 +3168,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     }
                 });
             }
-            var isPretestMailSent = false; 
-            $.each(ctrl.data.mailSent, (k,v) => {
-            	if (v.emailTemplate.name.includes("PreTestNominationConfirmation")) {
-            		isPretestMailSent = true;
-            	}
-            })
 
             if (ctrl.showSpecGroupModal) {
                 // show spec group modal validatiom
@@ -3184,7 +3178,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     windowClass: 'limited-max-height',
                     scope: $scope
                 });
-            } else if (!ctrl.procurementSettings.fieldVisibility.isPreTestHidden && !isPretestMailSent) {
+            } else if (ctrl.dtoHasAction(SCREEN_ACTIONS.SHOWHARDSTOPPRETESTEMAIL)) {
             	 ctrl.messageType = 'hardPretest';
             	 $('order-email-dialog').modal('show');
             } else if (ctrl.dtoHasAction(SCREEN_ACTIONS.SHOWHARDSTOPCONFIRMEMAIL) || ctrl.dtoHasAction(SCREEN_ACTIONS.SHOWHARDSTOPSELLEREMAIL)) {
