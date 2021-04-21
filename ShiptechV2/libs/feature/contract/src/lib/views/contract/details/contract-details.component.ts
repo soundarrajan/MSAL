@@ -218,6 +218,9 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
         if (!this.formValues.applyTo) {
         	this.formValues.applyTo = { id:3 };
         }
+
+        this.titleService.setTitle('New Contract');
+
       }
 
 
