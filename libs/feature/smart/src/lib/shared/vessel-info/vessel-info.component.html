@@ -25,7 +25,7 @@
   <div  style="flex:0 0 13%;display: flex;align-items: center; justify-content: space-evenly;">
     <mat-checkbox (change)="TriggerdontSendPlanReminder($event)" [checked]="bunkerPlanHeaderDetail?.dockPortFlag" class="dark-bg-checkbox dark-checkbox noborder"></mat-checkbox>
     <div class="reminder-view">Do not send plan reminder</div>
-    <img class="infoIcon" src="./assets/customicons/info_amber.svg" alt="info">
+    <mat-icon matTooltip="Plan reminder disabled since vessel is Dry Dock" *ngIf="bunkerPlanHeaderDetail?.dockPortFlag">info</mat-icon>
   </div>
   <div class="border-l-r" style="flex:0 0 20%;display:flex;flex-direction:column;padding:0 10px;font-weight: lighter;">
     <div style="display:flex;align-items: center;justify-content: space-between;">
