@@ -15,7 +15,8 @@
     [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}"
     style="width: 80%;">
       <mat-form-field class="without-search" 
-          appearance="legacy">
+          appearance="legacy"
+          [ngClass]="{'date-invalid': isEffectiveFromDateInvalid , 'date-valid': !isEffectiveFromDateInvalid}">
         <mat-label>Effective From</mat-label>
         <input 
             [(ngModel)]="formValues.effectiveFrom"
@@ -23,7 +24,9 @@
             [matDatepicker]="effectiveFrom"
             (focus)="effectiveFrom.open()"
             autocomplete="off"
-            placeholder="Effective From">
+            placeholder="Effective From"
+            (dateInput)="onChange($event, 'effectiveFrom')"
+            (dateChange)="formValues.effectiveFrom= formatDateForBe(formValues.effectiveFrom)">
             <mat-datepicker-toggle matSuffix [for]="effectiveFrom">
               <mat-icon matDatepickerToggleIcon class="icon-date">
               </mat-icon>
