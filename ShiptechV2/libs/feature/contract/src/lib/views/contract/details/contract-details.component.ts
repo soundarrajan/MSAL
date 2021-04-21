@@ -553,12 +553,13 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
             this.router
             .navigate([
               KnownPrimaryRoutes.Contract,
-              `${KnownPrimaryRoutes.Contract}`,
+              `${KnownContractRoutes.Contract}`,
               result.id,
               KnownContractRoutes.ContractDetails
             ])
             .then(() => {
               this.isLoading = false;
+              this.eventsSubject3.next(0);
             });
           }
       });
@@ -627,6 +628,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
             )
             .subscribe((data: any) => {
               this.formValues = _.cloneDeep(data);
+              this.eventsSubject3.next(0);
               if (typeof this.formValues.status != 'undefined') {
                 if (this.formValues.status.name) {
                   this.statusColorCode = this.getColorCodeFromLabels(this.formValues.status, this.scheduleDashboardLabelConfiguration);
@@ -661,6 +663,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
             )
             .subscribe((data: any) => {
               this.formValues = _.cloneDeep(data);
+              this.eventsSubject3.next(0);
               if (typeof this.formValues.status != 'undefined') {
                 if (this.formValues.status.name) {
                   this.statusColorCode = this.getColorCodeFromLabels(this.formValues.status, this.scheduleDashboardLabelConfiguration);
@@ -695,6 +698,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
             )
             .subscribe((data: any) => {
               this.formValues = _.cloneDeep(data);
+              this.eventsSubject3.next(0);
               if (typeof this.formValues.status != 'undefined') {
                 if (this.formValues.status.name) {
                   this.statusColorCode = this.getColorCodeFromLabels(this.formValues.status, this.scheduleDashboardLabelConfiguration);
