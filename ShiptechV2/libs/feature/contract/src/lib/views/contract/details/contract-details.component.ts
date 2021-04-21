@@ -34,6 +34,7 @@ import { ContractService } from '../../../services/contract.service';
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
 import { KnownContractRoutes } from '../../../known-contract.routes';
 import { ExtendContractModalComponent } from './components/extend-contract-modal/extend-contract-modal.component';
+import { Title } from '@angular/platform-browser';
 
 interface DialogData {
   email: string;
@@ -158,7 +159,8 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     private navBarService: NavBarApiService,
     @Inject(DecimalPipe) private _decimalPipe,
     private tenantService: TenantFormattingService,
-    private loadingBar: LoadingBarService
+    private loadingBar: LoadingBarService,
+    private titleService: Title
     ) {
     this.formValues = {
       name: null,
@@ -204,6 +206,9 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       console.log(this.scheduleDashboardLabelConfiguration);
       if (data.contract) {
         this.formValues = data.contract;
+        if (this.entityId) {
+          this.titleService.setTitle('Contract' + ' - ' + this.formValues.name);
+        } 
         if (typeof this.formValues.status != 'undefined') {
           if (this.formValues.status.name) {
               this.statusColorCode = this.getColorCodeFromLabels(this.formValues.status, this.scheduleDashboardLabelConfiguration);
@@ -214,6 +219,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
         	this.formValues.applyTo = { id:3 };
         }
       }
+
 
       this.staticLists = data.staticLists;
       this.locationMasterList = data.locationList;
