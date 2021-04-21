@@ -10,17 +10,11 @@
         <mat-button-toggle-group 
           [disabled]="formValues.status && formValues.status.name == 'Confirmed'" 
           #group="matButtonToggleGroup" [value]="selectedVal" (change)="onValChange(group.value)" >
-          <mat-button-toggle value="formula" 
-            [disabled]="formValues.status && formValues.status.name == 'Confirmed'" 
-            (click)="formValues.products[selectedTabIndex].isFormula = true;
-            formValues.products[selectedTabIndex].fixedPrice = false;">
+          <mat-button-toggle value="formula">
             <span *ngIf="selectedVal == 'formula'" class="toggle-icon"></span> 
             Formula based
           </mat-button-toggle>
-          <mat-button-toggle value="fixed" 
-            [disabled]="formValues.status && formValues.status.name == 'Confirmed'" 
-            (click)="formValues.products[selectedTabIndex].isFormula = false;
-            formValues.products[selectedTabIndex].fixedPrice = true;">
+          <mat-button-toggle value="fixed">
             <span  *ngIf="selectedVal == 'fixed'" class="toggle-icon"></span> 
             Fixed
           </mat-button-toggle>

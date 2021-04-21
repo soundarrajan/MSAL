@@ -4,15 +4,11 @@
       <mat-button-toggle-group  
         [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
         #group="matButtonToggleGroup" [value]="selectedVal" (change)="onValChange(group.value)" >
-        <mat-button-toggle  [disabled]="formValues.status && formValues.status.name == 'Confirmed'" 
-          value="dateSpecific"  
-          (click)="(formValues.status && formValues.status.name == 'Confirmed') ? '' : formValues.evergreen = false">
+        <mat-button-toggle value="dateSpecific">
           <span *ngIf="selectedVal == 'dateSpecific'" class="toggle-icon"></span> 
           Date specific
         </mat-button-toggle>
-        <mat-button-toggle [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
-          value="evergreen" 
-          (click)="(formValues.status && formValues.status.name == 'Confirmed') ? '' : formValues.evergreen = true">
+        <mat-button-toggle value="evergreen" >
           <span  *ngIf="selectedVal == 'evergreen'" class="toggle-icon"></span> 
           Evergreen
         </mat-button-toggle>
