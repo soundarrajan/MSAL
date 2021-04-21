@@ -179,9 +179,10 @@
             </span>
             <div *ngIf="formValues.noOfDaysBeforeExpiry" class="value" [ngStyle]="{'color': '#9CD7B6'}">
               {{ noOfDaysBeforeExpiryFormatValue(formValues.noOfDaysBeforeExpiry) }}
+              Days
             </div>
             <div *ngIf="!formValues.noOfDaysBeforeExpiry" class="value" [ngStyle]="{'color': 'white'}">
-              {{ quantityFormatValue(0) }}
+               0 Days
             </div>
           </div>
         </div>

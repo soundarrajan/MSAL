@@ -60,6 +60,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ProductSpecGroupModalComponent } from '../product-spec-group-modal/product-spec-group-modal.component';
 import { OVERLAY_KEYBOARD_DISPATCHER_PROVIDER_FACTORY } from '@angular/cdk/overlay/dispatchers/overlay-keyboard-dispatcher';
+import { Console } from 'console';
 
 
 
@@ -575,6 +576,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     if (formValues.products[this.selectedTabIndex] && !formValues.products[this.selectedTabIndex].physicalSuppliers)  {
       this.formValues.products[this.selectedTabIndex].physicalSuppliers = [];
     }
+
    
   }
 
@@ -627,6 +629,13 @@ export class ProductDetails extends DeliveryAutocompleteComponent
 
   ngOnInit(){  
     this.entityName = 'Contract';
+    console.log('Product details');
+    console.log(this.locationMasterList);
+    console.log(this.formValues);
+    if (this.formValues && this.formValues.products) {
+      this.setAllowedLocations(this.selectedTabIndex);
+      this.setAllowedProducts(this.selectedTabIndex);
+    }
     this.getPhysicalSupplierList();
     this.eventsSubscription = this.events.subscribe((data) => this.setContractForm(data));
     this.events1Subscription = this.events1.subscribe((data) => this.setProductSpecGroup(data));
