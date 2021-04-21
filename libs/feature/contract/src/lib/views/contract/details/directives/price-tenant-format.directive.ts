@@ -6,8 +6,8 @@ import { DecimalPipe } from '@angular/common';
 export type TenantNumberFormatType = 'price' | 'quantity';
 const PADDING = "000000";
 
-@Directive({ selector: "[quantityFormat]" })
-export class QuantityTenantFormatDirective implements OnInit {
+@Directive({ selector: "[priceFormat]" })
+export class PriceTenantFormatDirective implements OnInit {
   private el: HTMLInputElement;
   format: any;
   DECIMAL_SEPARATOR: string;
@@ -19,7 +19,7 @@ export class QuantityTenantFormatDirective implements OnInit {
     private tenantService: TenantFormattingService,
   ) {
     this.el = this.elementRef.nativeElement;
-    this.format = '1.' + this.tenantService.quantityPrecision + '-' + this.tenantService.quantityPrecision;
+    this.format = '1.' + this.tenantService.pricePrecision + '-' + this.tenantService.pricePrecision;
       // TODO comes from configuration settings
     this.DECIMAL_SEPARATOR = ".";
     this.THOUSANDS_SEPARATOR = "'";

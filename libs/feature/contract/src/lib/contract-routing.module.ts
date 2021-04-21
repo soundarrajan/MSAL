@@ -36,9 +36,6 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        data: {
-          breadcrumb: 'Contract List'
-        },
         children: [
           {
             path: '',
@@ -47,7 +44,6 @@ const routes: Routes = [
           },
           {
             path: KnownContractRoutes.ContractList,
-            data: { title: 'Contract List' }
           },
           {
             path: `${KnownContractRoutes.Contract}/:${KnownContractRoutes.ContractIdParam}`,
@@ -74,8 +70,8 @@ const routes: Routes = [
                   scheduleDashboardLabelConfiguration: ScheduleDashboardLabelsRouteResolver
                 },
                 data: {
-                  title: 'Contract Details',
-                  breadcrumb: 'Contract Details'
+                  title: 'Contract Entity Edit',
+                  breadcrumb: 'Contract Entity Edit'
                 }
               },
               {

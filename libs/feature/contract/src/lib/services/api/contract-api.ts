@@ -24,13 +24,19 @@ export namespace ContractApiPaths {
   export const getSpecParameterById = () =>  `api/masters/specparameters/get`;
   export const saveSpecParameterForContractProduct = () =>  `api/contract/contract/saveSpecParameterForContractProduct`;
   export const getProdDefaultConversionFactors = () =>  `api/masters/products/getProdDefaultConversionFactors`;
+  export const saveConversionFactorsForContractProduct = () =>  `api/contract/contract/saveConversionFactorsForContractProduct`;
   export const getFormulaById = () =>  `api/masters/formulas/get`;
   export const saveFormula = () =>  `api/masters/formulas/create`;
   export const updateFormula = () =>  `api/masters/formulas/update`;
   export const getContractFormulaList = () =>  `api/masters/formulas/listMasters`;
   export const getAdditionalCostsComponentTypes = () =>  `api/masters/additionalcosts/listApps`;
-
-
+  export const createContract = () =>  `api/contract/contract/create`;
+  export const updateContract = () =>  `api/contract/contract/update`;
+  export const confirmContract = () =>  `api/contract/contract/confirm`;
+  export const undoConfirmContract = () =>  `api/contract/contract/undo`;
+  export const cancelContract = () =>  `api/contract/contract/cancel`;
+  export const extendContract = () =>  `api/contract/contract/extend`;
+  export const deleteContract = () =>  `api/contract/contract/delete`;
 
 
 }
@@ -256,7 +262,7 @@ export class ContractApi implements IContractApiService {
       `${this._masterApiUrl}/${ContractApiPaths.saveFormula()}`,
        { Payload: request  }
     ).pipe(
-      map((body: any) => body.payload),
+      map((body: any) => body.upsertedId),
       catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
     );
   }
@@ -300,6 +306,112 @@ export class ContractApi implements IContractApiService {
       catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
     );
   }
+
+  @ObservableException()
+  saveConversionFactorsForContractProduct(
+    request: any
+  ): Observable<IDeliveryDetailsResponse> {
+    return this.http.post<IDeliveryDetailsResponse>(
+      `${this._apiUrl}/${ContractApiPaths.saveConversionFactorsForContractProduct()}`,
+      request
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+    );
+  }
+
+  @ObservableException()
+  createContract(
+    request: any
+  ): Observable<IDeliveryDetailsResponse> {
+    return this.http.post<IDeliveryDetailsResponse>(
+      `${this._apiUrl}/${ContractApiPaths.createContract()}`,
+      {Payload: request}
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+    );
+  }
+
+  @ObservableException()
+  updateContract(
+    request: any
+  ): Observable<IDeliveryDetailsResponse> {
+    return this.http.post<IDeliveryDetailsResponse>(
+      `${this._apiUrl}/${ContractApiPaths.updateContract()}`,
+      {Payload: request}
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+    );
+  }
+
+
+  @ObservableException()
+  confirmContract(
+    request: any
+  ): Observable<IDeliveryDetailsResponse> {
+    return this.http.post<IDeliveryDetailsResponse>(
+      `${this._apiUrl}/${ContractApiPaths.confirmContract()}`,
+      {Payload: request}
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+    );
+  }
+
+  @ObservableException()
+  undoConfirmContract(
+    request: any
+  ): Observable<IDeliveryDetailsResponse> {
+    return this.http.post<IDeliveryDetailsResponse>(
+      `${this._apiUrl}/${ContractApiPaths.undoConfirmContract()}`,
+      {Payload: request}
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+    );
+  }
+
+  @ObservableException()
+  cancelContract(
+    request: any
+  ): Observable<IDeliveryDetailsResponse> {
+    return this.http.post<IDeliveryDetailsResponse>(
+      `${this._apiUrl}/${ContractApiPaths.cancelContract()}`,
+      {Payload: request}
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+    );
+  }
+
+  @ObservableException()
+  extendContract(
+    request: any
+  ): Observable<IDeliveryDetailsResponse> {
+    return this.http.post<IDeliveryDetailsResponse>(
+      `${this._apiUrl}/${ContractApiPaths.extendContract()}`,
+      {Payload: request}
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+    );
+  }
+
+  @ObservableException()
+  deleteContract(
+    request: any
+  ): Observable<IDeliveryDetailsResponse> {
+    return this.http.post<IDeliveryDetailsResponse>(
+      `${this._apiUrl}/${ContractApiPaths.deleteContract()}`,
+      {Payload: request}
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+    );
+  }
+
 
 
 

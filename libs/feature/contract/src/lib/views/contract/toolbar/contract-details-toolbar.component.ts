@@ -107,22 +107,43 @@ export class ContractDetailsToolbarComponent
         styleClass: 'details-tab'
       },
       {
-        label: 'Documents',
-        url: parseFloat(contractId) ? `${this.baseOrigin}/#/delivery/delivery/documents/${contractId}`: null,
+        label: 'Preview Contract',
+        url: parseFloat(contractId) ? `${this.baseOrigin}/#/contracts/contract/preview/${contractId}`: null,
         routerLinkActiveOptions: { exact: true },
         disabled,
         styleClass: 'tab'
       },
       {
-        label: 'Audit Log',
-        url: parseFloat(contractId) ? `${this.baseOrigin}/#/delivery/delivery/audit/${contractId}` : null,
+        label: 'Preview Email',
+        url: parseFloat(contractId) ? `${this.baseOrigin}/#/contracts/contract/email-preview/${contractId}` : null,
+        routerLinkActiveOptions: { exact: true },
+        disabled,
+        styleClass: 'tab'
+      },
+      {
+        label: 'Deliveries',
+        url: parseFloat(contractId) ? `${this.baseOrigin}/#/contracts/contract/productdelivery/${contractId}` : null,
+        routerLinkActiveOptions: { exact: true },
+        disabled,
+        styleClass: 'tab'
+      },
+      {
+        label: 'Documents',
+        url: parseFloat(contractId) ? `${this.baseOrigin}/#/contracts/contract/documents/${contractId}` : null,
         routerLinkActiveOptions: { exact: true },
         disabled,
         styleClass: 'tab'
       },
       {
         label: 'Email Log',
-        url: parseFloat(contractId) ? `${this.baseOrigin}/#/delivery/delivery/email-log/${contractId}` : null,
+        url: parseFloat(contractId) ? `${this.baseOrigin}/#/contracts/contract/email-log/${contractId}` : null,
+        routerLinkActiveOptions: { exact: true },
+        disabled,
+        styleClass: 'tab'
+      },
+      {
+        label: 'Audit Log',
+        url: parseFloat(contractId) ? `${this.baseOrigin}/#/contracts/contract/audit-log/${contractId}` : null,
         routerLinkActiveOptions: { exact: true },
         disabled,
         styleClass: 'tab'

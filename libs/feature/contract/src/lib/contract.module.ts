@@ -138,6 +138,8 @@ import { EventBasedSimple } from './views/contract/details/components/event-base
 import { QuantityBased } from './views/contract/details/components/quantity-based/quantity-based.component';
 import { ProductBased } from './views/contract/details/components/product-based/product-based.component';
 import { VesselLocationBased } from './views/contract/details/components/vessel-location-based/vessel-location-based.component';
+import { PriceTenantFormatDirective } from './views/contract/details/directives/price-tenant-format.directive';
+import { ExtendContractModalComponent } from './views/contract/details/components/extend-contract-modal/extend-contract-modal.component';
 
 
 @NgModule({
@@ -258,18 +260,21 @@ import { VesselLocationBased } from './views/contract/details/components/vessel-
     ContractDetailsDocumentsComponent,
     QuantityTenantFormatDirective,
     AmountTenantFormatDirective,
+    PriceTenantFormatDirective,
     NumberOnlyDirective,
     ProductSpecGroupModalComponent,
-    CreateNewFormulaModalComponent
+    CreateNewFormulaModalComponent,
+    ExtendContractModalComponent
     //PSpinnerDisableKeysSpinDirective,
     //PSpinnerTenantFormatDirective
   ],
-  entryComponents: [ProductSpecGroupModalComponent, CreateNewFormulaModalComponent],
+  entryComponents: [ProductSpecGroupModalComponent, CreateNewFormulaModalComponent,ExtendContractModalComponent],
   exports: [
     MainContractComponent,
     QuantityTenantFormatDirective,
     NumberOnlyDirective,
-    AmountTenantFormatDirective
+    AmountTenantFormatDirective,
+    PriceTenantFormatDirective
    // PSpinnerDisableKeysSpinDirective,
     //PSpinnerTenantFormatDirective
   ],
