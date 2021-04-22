@@ -197,6 +197,9 @@
             placeholder="Contract name"
             autocomplete="off"
             required
+            [matTooltip]="formValues.name"
+            [matTooltipPosition]="'above'"
+            matTooltipClass="custom-tooltip"
             [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
         </mat-form-field>
     </div>
