@@ -488,7 +488,9 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   buttonClicked1: any;
   additionalCostsComponentTypes: any;
   eventsSelectedTabIndexSubscription: any;
-
+  contractConfiguration: any;
+  expandLocation: any = false;
+  expandProduct: any = false;
 
   get entityId(): number {
     return this._entityId;
@@ -757,6 +759,14 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       return;
     } 
     this.buttonClicked1 = buttonClicked1;
+  }
+
+  
+  @Input('contractConfiguration') set _setContractConfiguration(contractConfiguration) { 
+    if (!contractConfiguration) {
+      return;
+    } 
+    this.contractConfiguration = contractConfiguration;
   }
 
 
@@ -1140,6 +1150,8 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       'name': location.name
     }
     this.selectedLocation = null;
+    this.locationMasterSearchList = _.cloneDeep(this.locationMasterList);
+    this.searchLocationInput = null;
     this.formValues.products[index].location = { ... objectLocation };
     this.changeDetectorRef.detectChanges();
     this.contractFormSubject.next(this.formValues);
@@ -1157,6 +1169,8 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     }
     this.formValues.products[index].product = { ... objectProduct };
     this.selectedProduct = null;
+    this.productMasterSearchList = _.cloneDeep(this.productMasterList);
+    this.searchProductInput = null;
     this.addProductToConversion(index, null, true);
     this.getSpecGroupByProduct(product.id, null);
     this.changeDetectorRef.detectChanges();
@@ -1361,7 +1375,6 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       this.formValues.products[key].isDeleted = true;
     } 
   }
-
 
 
   originalOrder = (a: KeyValue<number, any>, b: KeyValue<number, any>): number => {
