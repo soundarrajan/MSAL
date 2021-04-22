@@ -524,7 +524,7 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
 
   @Input() eventsSaveButton: Observable<void>;
   eventsSubject2: Subject<any> = new Subject<any>();
-
+  expandAllowedCompanylistPopUp: any = false;
 
   constructor(
     public gridViewModel: OrderListGridViewModel,
