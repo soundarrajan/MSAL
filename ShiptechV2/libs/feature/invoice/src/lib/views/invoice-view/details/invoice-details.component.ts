@@ -440,7 +440,6 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-<<<<<<< HEAD
     this.getInvoiceItem();
   }
 
@@ -457,9 +456,6 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         // this.invoiceDetails = response;
         // console.log(this.invoiceDetails.payload.sellerInvoiceNo);
     });
-=======
-
->>>>>>> origin/invoice-new-ui
   }
 
   ngOnDestroy(): void {
