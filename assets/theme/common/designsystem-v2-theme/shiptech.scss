@@ -128,6 +128,11 @@
       .pd-0{
         padding: 0px !important;
       }
+      .ag-cell{
+        border: none !important;
+        box-shadow: none !important;
+      }
+
             // .ag-layout-auto-height{//Display ag-menu over the grid
       //   overflow: visible;
       // }
@@ -443,4 +448,36 @@
       top: 13px;
       cursor: pointer;
     }
+  }
+
+  .custom-chip-type1 {
+    margin: 10px 0px !important;
+    width: 100px;
+    height: 23px;
+    //border-radius: 20px;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 13px;
+    &.red-chip{
+      background-color: #ED6161;
+    }
+    &.mediumgreen{
+      background-color: #87DCAC;
+    }
+  }
+
+  .dashed-border{
+    border: 1px dashed #A5A5A5;
+    box-sizing: border-box;
+    height: 35px;
+    margin: 4px 0px;
+  }
+
+  .expand-arrow{
+    content: url(/assets/customicons/expand-dark.svg);
+    margin: -3px 5px;
   }

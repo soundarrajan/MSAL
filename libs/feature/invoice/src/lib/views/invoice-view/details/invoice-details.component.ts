@@ -3,6 +3,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AGGridCellActionsComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-actions.component';
 import { AGGridCellEditableComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-editable.component';
+import { AGGridCellRendererComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-renderer.component';
 import { AgGridCellStyleComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-style.component';
 import { GridOptions } from 'ag-grid-community';
 
@@ -90,7 +91,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       suppressRowClickSelection: true,
       suppressCellSelection: true,
       headerHeight: 35,
-      rowHeight: 35,
+      rowHeight: 45,
       animateRows: false,
 
       onGridReady: (params) => {
@@ -124,7 +125,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       suppressRowClickSelection: true,
       suppressCellSelection: true,
       headerHeight: 35,
-      rowHeight: 35,
+      rowHeight: 45,
       animateRows: false,
 
       onGridReady: (params) => {
@@ -171,15 +172,13 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     },
     {
       children: [{
-        headerName: 'Deliv Product', headerTooltip: 'Deliv Product', field: 'del_product',
-        cellClass:'border-padding-5 p-r-0',
-        cellRendererFramework:AgGridCellStyleComponent, cellRendererParams: {cellClass: ['cell-bg-border'],label:'div-in-cell'}
+        headerName: 'Deliv Product', headerTooltip: 'Deliv Product', field: 'del_product'
       },
       {
         headerName: 'Deliv. Qty', headerTooltip: 'Deliv. Qty', field: 'del_qty'
       },
       {
-        headerName: 'Estd. Rate', editable: true, headerTooltip: 'Estd. Rate', field: 'est_rate'
+        headerName: 'Estd. Rate', editable: true, headerTooltip: 'Estd. Rate', field: 'est_rate' 
       },
       { headerName: 'Amount', headerTooltip: 'Amount', field: 'amount1' }]
     },
@@ -187,9 +186,21 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     { headerName: 'Invoice Qty', headerTooltip: 'Invoice Qty', field: 'inv_qty' },
     { headerName: 'Invoice Rate', headerTooltip: 'Invoice Rate', field: 'inv_rate' },
     { headerName: 'Amount', headerTooltip: 'Amount', field: 'amount2' },
-    { headerName: 'Recon status', headerTooltip: 'Recon status', field: 'recon_status' },
-    { headerName: 'Sulpher content', headerTooltip: 'Sulpher content', field: 'sulpher_content' },
-    { headerName: 'Phy. suppier', headerTooltip: 'Phy. supplier', field: 'phy_supplier' }
+    { headerName: 'Recon status', headerTooltip: 'Recon status', field: 'recon_status',
+    cellRendererFramework:AGGridCellRendererComponent, cellRendererParams: function(params) { 
+      var classArray:string[] =[]; 
+        classArray.push('aggridtextalign-center');
+        let newClass= params.value==='Unmatched'?'custom-chip-type1 red-chip':
+                      params.value==='Matched'?'custom-chip-type1 mediumgreen':
+                      'custom-chip-type1';
+                      classArray.push(newClass);
+        return {cellClass: classArray.length>0?classArray:null} }},
+    { headerName: 'Sulpher content', headerTooltip: 'Sulpher content', field: 'sulpher_content',
+      cellRendererFramework:AGGridCellActionsComponent, cellRendererParams: {type: 'dashed-border'}
+    },
+    { headerName: 'Phy. suppier', headerTooltip: 'Phy. supplier', field: 'phy_supplier', width: 250,
+      cellRendererFramework:AGGridCellActionsComponent, cellRendererParams: {type: 'dashed-border-with-expand'}
+    }
   ];
 
   private columnDef_aggrid_ac = [
@@ -241,7 +252,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   private rowData_aggrid_pd = [
     {
       del_no: '23243/DMA 0.1%', del_product: 'DMA 0.1%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
-      inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Unmatched', sulpher_content: '0.05', phy_supplier: 'British Petroleum' 
+      inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Matched', sulpher_content: '0.05', phy_supplier: 'British Petroleum' 
     },
     {
       del_no: '23243/RMK 380 3.5', del_product: '380 3.5%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
@@ -249,7 +260,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     },
     {
       del_no: '23243/RMK 380 3.5', del_product: '380 3.5%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
-      inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Unmatched', sulpher_content: '0.05', phy_supplier: 'British Petroleum' 
+      inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Matched', sulpher_content: '0.05', phy_supplier: 'British Petroleum' 
     }
   ];
 
@@ -262,7 +273,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         add: [
           {
             del_no: '23243', order_product: 'DMA 0.1%', del_product: 'DMA 0.1%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
-            inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Unmatched', sulpher_content: '0.05', phy_supplier: 'British Petroleum'     
+            inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Matched', sulpher_content: '0.05', phy_supplier: 'British Petroleum'     
           },
           {
             del_no: '23243/RMK 380 3.5', del_product: '380 3.5%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
@@ -270,7 +281,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
           },
           {
             del_no: '23243/RMK 380 3.5', del_product: '380 3.5%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
-            inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Unmatched', sulpher_content: '0.05', phy_supplier: 'British Petroleum' 
+            inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Matched', sulpher_content: '0.05', phy_supplier: 'British Petroleum' 
           }
       ]
       });
