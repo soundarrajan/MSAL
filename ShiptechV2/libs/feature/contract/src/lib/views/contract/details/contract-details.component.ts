@@ -202,6 +202,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
         this.setFormValuesAfterCopyContract();
       }
       console.log(data);
+      this.navBar = data.navBar;
       this.tenantConfiguration = data.tenantConfiguration;
       if (data.tenantConfiguration && data.tenantConfiguration.contractConfiguration) {
         this.contractConfiguration = data.tenantConfiguration.contractConfiguration;
