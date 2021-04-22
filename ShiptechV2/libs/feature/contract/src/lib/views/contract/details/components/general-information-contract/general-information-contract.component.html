@@ -486,8 +486,8 @@
       </mat-form-field>
     </div>
     <div class="inital-end-date-readonly" *ngIf="!formValues.evergreen">
-      <div class="label">Initial End Date</div>
-      <div class="value">: --/--/---</div>
+      <div class="label">Initial End Date :</div>
+      <div class="value">{{formValues.initialValidTo ? formatDate(formValues.initialValidTo) : ' --/--/---'}}</div>
     </div>
 </div>
 <ngx-spinner

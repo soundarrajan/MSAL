@@ -613,6 +613,7 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
       }
       currentFormat = currentFormat.replace(/d/g, 'D');
       currentFormat = currentFormat.replace(/y/g, 'Y');
+      currentFormat = currentFormat.replace(/HH:mm/g, '');
       let elem = moment(date, 'YYYY-MM-DDTHH:mm:ss');
       let formattedDate = moment(elem).format(currentFormat);
       if (hasDayOfWeek) {
