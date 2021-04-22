@@ -559,6 +559,14 @@
                             var url = procurement_apps[checkProcurement].editPath + id;
                             // console.log(procurement_apps[checkProcurement].editPath)
                         }
+                        if (window.location.href.indexOf("delivery/deliveriestobeverified") != -1) {
+                            window.open("/v2/delivery/delivery/"+ parseFloat(id) + "/details", "_blank");
+                            return;
+                        }
+                        if (window.location.href.indexOf("contracts/contract") != -1) {
+                            window.open("/v2/contracts/contract/"+ parseFloat(id) + "/details", "_blank");
+                            return;
+                        }
                         window.open($location.$$absUrl.replace($location.$$path, url), '_blank');
                         // $location.path(url);
                     }
@@ -1055,7 +1063,7 @@
                 	</i>`;
 
                 	if (rowObject.contract) {
-                		tpl += `<div id="contract-planning-contract-link-${options.rowId}"><a target="_blank" href="#/contracts/contract/edit/${rowObject.contract.id}"> <span class="formatter edit_link edit_link_contract_id" data-formatter-type="link"> <i style="float: none;" class="fa fa-edit"></i>${rowObject.contract.id}</span></a> </div>`;
+                		tpl += `<div id="contract-planning-contract-link-${options.rowId}"><a target="_blank" href="v2/contracts/contract/${rowObject.contract.id}/details"> <span class="formatter edit_link edit_link_contract_id" data-formatter-type="link"> <i style="float: none;" class="fa fa-edit"></i>${rowObject.contract.id}</span></a> </div>`;
                 	} else {
                 		tpl += `<div id="contract-planning-contract-link-${options.rowId}"></div>`;
                 	}
@@ -1550,6 +1558,9 @@
 
                         var tpl = '<a ng-href="#/' + entity_name + '/edit/' + cellValue + '" data-html="true" target="_blank"><span class="formatter edit_link" data-formatter-type="status">' + cellValue + "</span></a>";
 
+                        if (options.colModel.name == "contract.id") {
+                            var tpl = '<a ng-href="v2/contracts/contract/' + cellValue + '/details" data-html="true" target="_blank"><span class="formatter edit_link" data-formatter-type="status">' + cellValue + "</span></a>";
+                        }
                         if (options.colModel.name == "formulaDescription") {
                             var tpl = '<a ng-href="#/' + entity_name + '/edit/' + rowObject["formulaId"] + '" data-html="true" target="_blank"><span class="formatter edit_link" data-formatter-type="status">' + rowObject["formulaDescription"] + "</span></a>";
                         }
@@ -1575,7 +1586,7 @@
                 var contract_link = function(cellValue, options, rowObject) {
                     cellValue == null ? (cellValue = "") : "";
                     if (rowObject.contract) {
-                        var tpl = '  <a  href="#/contracts/contract/edit/' + rowObject.contract.id + '" target="_blank" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none">' + cellValue + "</span></a>";
+                        var tpl = '  <a  href="v2/contracts/contract/' + rowObject.contract.id + '/details" target="_blank" style="width: calc(100% - 20px);"><span class="formatter edit_link" data-formatter-type="status" style="white-space:none">' + cellValue + "</span></a>";
                     } else {
                         var tpl = '  <a  style="width: calc(100% - 20px); target="_blank""><span class="formatter edit_link" style="white-space:none" data-formatter-type="status">' + cellValue + "</span></a>";
                     }
@@ -3410,8 +3421,8 @@
                 $("#flat_contract_planning").jqGrid("setCell", rowId, "contractMaxQuantity", contract.contractMaxQuantity);
                 $("#flat_contract_planning").jqGrid("setCell", rowId, "qtyUom", contract.qtyUom);
 
-                $('#contract-planning-contract-link-' + rowId).html('<a target="_blank" href="#/contracts/contract/edit/' +
-                  contractObj.id + '"> <span class="formatter edit_link edit_link_contract_id" data-formatter-type="link"> <i style="float: none;" class="fa fa-edit"></i>' +
+                $('#contract-planning-contract-link-' + rowId).html('<a target="_blank" href="v2/contracts/contract/' +
+                  contractObj.id + '/details"> <span class="formatter edit_link edit_link_contract_id" data-formatter-type="link"> <i style="float: none;" class="fa fa-edit"></i>' +
                   contractObj.id + '</span></a>');
             } else {
                 $("#flat_contract_planning").jqGrid("setCell", rowId, "contract", null);
@@ -4635,6 +4646,13 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
 
         vm.checkIfIsDelivery =  function() {
             if (window.location.href.indexOf('delivery/delivery/') != -1 )  {
+                return true;
+            }
+            return false;
+        }
+
+        vm.checkIfIsContract = function() {
+            if (window.location.href.indexOf('contracts/contract') != -1) {
                 return true;
             }
             return false;

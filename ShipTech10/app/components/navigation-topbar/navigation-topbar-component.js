@@ -97,7 +97,7 @@ angular.module('shiptech').controller('NavigationTopBarController', [ '$rootScop
                     {
                         id: 'contract',
                         displayName : 'Contract',
-                        url : typeof payload != 'undefined' && payload.contractId ? `#/contracts/contract/edit/${ payload.contractId}` : '',
+                        url : typeof payload != 'undefined' && payload.contractId ? `v2/contracts/contract/${ payload.contractId}/details` : '',
                         entityId : typeof payload != 'undefined' && payload.contractId ? payload.contractId : '',
                         indexStatus : null,
                         hidden : !(typeof payload != 'undefined' && payload.contractId || $scope.currentPage == 'contracts.edit')
@@ -148,7 +148,7 @@ angular.module('shiptech').controller('NavigationTopBarController', [ '$rootScop
                     {
                         id: 'contract',
                         displayName : 'Contract',
-                        url : typeof payload != 'undefined' && payload.contractId ? `#/contracts/contract/edit/${ payload.contractId}` : '',
+                        url : typeof payload != 'undefined' && payload.contractId ? `#v2/contracts/contract/${ payload.contractId}/details` : '',
                         entityId : typeof payload != 'undefined' && payload.contractId ? payload.contractId : '',
                         indexStatus : null,
                         hidden : !(typeof payload != 'undefined' && payload.contractId || $scope.currentPage == 'contracts.edit')
