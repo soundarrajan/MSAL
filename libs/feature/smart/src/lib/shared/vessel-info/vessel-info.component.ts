@@ -4,6 +4,8 @@ import { CommentsComponent } from '../comments/comments.component';
 import { CurrentBunkeringPlanComponent } from '../current-bunkering-plan/current-bunkering-plan.component';
 import { WarningComponent } from '../warning/warning.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { DomSanitizer } from '@angular/platform-browser';
+import { MatIconRegistry } from '@angular/material/icon';
 
 @Component({
   selector: 'app-vessel-info',
@@ -35,7 +37,11 @@ export class VesselInfoComponent implements OnInit {
   public step = 0;
   public dialogRef: MatDialogRef<WarningComponent>;
 
-  constructor(private localService: LocalService, public dialog: MatDialog) { }
+  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private localService: LocalService, public dialog: MatDialog) {
+    iconRegistry.addSvgIcon(
+      'info-icon',
+      sanitizer.bypassSecurityTrustResourceUrl('./assets/customicons/info_amber.svg'));
+   }
 
   ngOnInit() {
     console.log(this.selectedUserRole);
