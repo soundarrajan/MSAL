@@ -489,8 +489,8 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   additionalCostsComponentTypes: any;
   eventsSelectedTabIndexSubscription: any;
   contractConfiguration: any;
-  expandLocation: any;
-
+  expandLocation: any = false;
+  expandProduct: any = false;
 
   get entityId(): number {
     return this._entityId;

@@ -60,7 +60,7 @@
     </ng-container>
   </ng-container>
   <mat-menu #locationMenu="matMenu" class="select-location-container"  overlapTrigger="false">
-    <div>
+    <div [ngClass]="{'expand-select-location-container': expandLocation}">
       <div class="col-md-12 header-container-location no-padding">
         <div class="search-location-container col-md-10 no-padding">
           <span class="search-location-lookup" (click)="$event.stopPropagation();$event.preventDefault();searchLocations(searchLocationInput)">
@@ -105,7 +105,7 @@
     </div>
   </mat-menu>
   <mat-menu #productMenu="matMenu" class="select-location-container" overlapTrigger="false">
-    <div>
+    <div [ngClass]="{'expand-select-location-container': expandProduct}">
       <div class="col-md-12 header-container-location no-padding">
         <div class="search-location-container col-md-10 no-padding">
           <span class="search-location-lookup" (click)="$event.stopPropagation();$event.preventDefault();searchProducts(searchProductInput)">
@@ -117,8 +117,8 @@
                 class="search-location-input"
                 autocomplete="off">
         </div>
-        <div class="col-md-2 no-padding">
-            <img style="float: right;" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
+        <div class="col-md-2 no-padding" (click)="$event.stopPropagation();$event.preventDefault();">
+            <img style="float: right;" (click)="expandProduct = !expandProduct;" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
         </div>
       </div>
       <table *ngIf="productMasterSearchList" class="delivery-products-pop-up col-md-12 no-padding" mat-table [dataSource]="productMasterSearchList">
