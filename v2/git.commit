@@ -1,9 +1,7 @@
-﻿commit 45fb54850cf8450896a268a2bec607f04b4b9c88
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Apr 22 11:04:27 2021 +0000
+﻿commit 05947de0a2c005fa0ec40022da991aa794dfa10b
+Author: Prabaharan P <prabaharan.p@Inatech.com>
+Date:   Thu Apr 22 17:16:20 2021 +0530
 
-    Merged PR 10073: Added navigations items in contract screen
-    
-    Related work items: #25280
+    Work item:27548 has completed
 
 branch: master
