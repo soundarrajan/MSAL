@@ -137,6 +137,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   appId: string;
   screenId: string;
   selectedTabIndex: number;
+  contractConfiguration: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -202,6 +203,9 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       }
       console.log(data);
       this.tenantConfiguration = data.tenantConfiguration;
+      if (data.tenantConfiguration && data.tenantConfiguration.contractConfiguration) {
+        this.contractConfiguration = data.tenantConfiguration.contractConfiguration;
+      }
       this.scheduleDashboardLabelConfiguration = data.scheduleDashboardLabelConfiguration;
       console.log(this.scheduleDashboardLabelConfiguration);
       if (data.contract) {
