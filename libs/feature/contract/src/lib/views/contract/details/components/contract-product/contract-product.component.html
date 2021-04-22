@@ -7,13 +7,15 @@
       <div (click)="selectedTabIndex = contractProduct.key; setAllowedLocations(selectedTabIndex); setAllowedProducts(selectedTabIndex)">
         <div class="add-new-location-with-product">
           <div class="add-new-location-placeholder"
-            *ngIf="!contractProduct.value.location">
+            *ngIf="!contractProduct.value.location"
+            (click)="expandLocation = false;">
             Add location
             <span class="dropdown-icon dropdown-location-icon"  [matMenuTriggerFor]="locationMenu">
             </span>
           </div>
           <div class="location-container-tab" 
             *ngIf="contractProduct.value.location"
+            (click)="expandLocation = false;"
             [ngClass]="{'not-selected-container': contractProduct.key != selectedTabIndex}">
             {{contractProduct.value.location.name}}
             <span *ngIf="!(formValues.status && formValues.status.name == 'Confirmed')"  
@@ -30,7 +32,8 @@
             
           </div>
           <div class="add-new-location-placeholder"
-            *ngIf="!contractProduct.value.product">
+            *ngIf="!contractProduct.value.product"
+            (click)="expandProduct = false;">
             <a class="remove-product-black-icon remove-product-icon" (click)="removeProductFromContract(contractProduct.key)">
             </a>
             Add product
@@ -39,7 +42,8 @@
           </div>
           <div class="product-container-tab" 
             *ngIf="contractProduct.value.product"
-            [ngClass]="{'not-selected-container': contractProduct.key != selectedTabIndex}">
+            [ngClass]="{'not-selected-container': contractProduct.key != selectedTabIndex}"
+            (click)="expandProduct = false;">
             <a class="remove-product-white-icon remove-product-icon" (click)="removeProductFromContract(contractProduct.key)">
             </a>
             {{contractProduct.value.product.name}}
