@@ -431,6 +431,7 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
   statusColorCode: any;
   quantityFormat: string;
   quantityPrecision: string;
+  contractConfiguration: any;
   @Input() set autocompleteType(value: string) {
     this._autocompleteType = value;
   }
@@ -514,9 +515,16 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
     this.statusColorCode = statusColorCode;
   }
 
+  @Input('contractConfiguration') set _setContractConfiguration(contractConfiguration) { 
+    if (!contractConfiguration) {
+      return;
+    } 
+    this.contractConfiguration = contractConfiguration;
+  }
+
   @Input() eventsSaveButton: Observable<void>;
   eventsSubject2: Subject<any> = new Subject<any>();
-
+  expandAllowedCompanylistPopUp: any = false;
 
   constructor(
     public gridViewModel: OrderListGridViewModel,
@@ -573,6 +581,7 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
     this.selectedVal = val;
     if (val == 'evergreen') {
       this.formValues.evergreen = true;
+      this.formValues.validTo = null;
     } else {
       this.formValues.evergreen = false;
     }
@@ -604,6 +613,7 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
       }
       currentFormat = currentFormat.replace(/d/g, 'D');
       currentFormat = currentFormat.replace(/y/g, 'Y');
+      currentFormat = currentFormat.replace(/HH:mm/g, '');
       let elem = moment(date, 'YYYY-MM-DDTHH:mm:ss');
       let formattedDate = moment(elem).format(currentFormat);
       if (hasDayOfWeek) {
@@ -795,7 +805,7 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
         allowedCompanyList.push(allowedCompany);
       }
     }
-    this.formValues.allowedCompanies = [ ... allowedCompanyList ];
+    this.formValues.allowedCompanies = _.cloneDeep(allowedCompanyList);
   }
 
 

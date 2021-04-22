@@ -53,6 +53,7 @@
         <div fxLayout="row">
           <shiptech-general-information-contract
                 [model]="formValues"
+                [contractConfiguration]="contractConfiguration"
                 [sellerList]="sellerList"
                 [companyList]="companyList"
                 [agreementTypeList]="agreementTypeList"
@@ -98,6 +99,7 @@
           <shiptech-contract-product
                 [generalTenantSettings]="generalTenantSettings"
                 [model]="formValues"
+                [contractConfiguration]="contractConfiguration"
                 [locationMasterList]="locationMasterList"
                 [productMasterList]="productMasterList"
                 [uomMassList]="uomMassList"

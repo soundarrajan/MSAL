@@ -8,14 +8,14 @@
         <div class="add-new-location-with-product">
           <div class="add-new-location-placeholder"
             *ngIf="!contractProduct.value.location"
-            (click)="searchLocationInput = null;">
+            (click)="expandLocation = false;">
             Add location
             <span class="dropdown-icon dropdown-location-icon"  [matMenuTriggerFor]="locationMenu">
             </span>
           </div>
           <div class="location-container-tab" 
-            (click)="searchLocationInput = null;"
             *ngIf="contractProduct.value.location"
+            (click)="expandLocation = false;"
             [ngClass]="{'not-selected-container': contractProduct.key != selectedTabIndex}">
             {{contractProduct.value.location.name}}
             <span *ngIf="!(formValues.status && formValues.status.name == 'Confirmed')"  
@@ -32,8 +32,8 @@
             
           </div>
           <div class="add-new-location-placeholder"
-            (click)="searchProductInput = null; "
-            *ngIf="!contractProduct.value.product">
+            *ngIf="!contractProduct.value.product"
+            (click)="expandProduct = false;">
             <a class="remove-product-black-icon remove-product-icon" (click)="removeProductFromContract(contractProduct.key)">
             </a>
             Add product
@@ -41,9 +41,9 @@
             </span>
           </div>
           <div class="product-container-tab" 
-            (click)="searchProductInput = null; "
             *ngIf="contractProduct.value.product"
-            [ngClass]="{'not-selected-container': contractProduct.key != selectedTabIndex}">
+            [ngClass]="{'not-selected-container': contractProduct.key != selectedTabIndex}"
+            (click)="expandProduct = false;">
             <a class="remove-product-white-icon remove-product-icon" (click)="removeProductFromContract(contractProduct.key)">
             </a>
             {{contractProduct.value.product.name}}
@@ -63,8 +63,8 @@
       </div>
     </ng-container>
   </ng-container>
-  <mat-menu #locationMenu="matMenu" class="select-location-container" overlapTrigger="false">
-    <div>
+  <mat-menu #locationMenu="matMenu" class="select-location-container"  overlapTrigger="false">
+    <div [ngClass]="{'expand-select-location-container': expandLocation}">
       <div class="col-md-12 header-container-location no-padding">
         <div class="search-location-container col-md-10 no-padding">
           <span class="search-location-lookup" (click)="$event.stopPropagation();$event.preventDefault();searchLocations(searchLocationInput)">
@@ -76,8 +76,8 @@
                 class="search-location-input"
                 autocomplete="off">
         </div>
-        <div class="col-md-2 no-padding">
-            <img style="float: right;" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
+        <div class="col-md-2 no-padding"  (click)="$event.stopPropagation();$event.preventDefault();">
+            <img style="float: right;" (click)="expandLocation = !expandLocation;" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
         </div>
       </div>
       <table *ngIf="locationMasterSearchList" class="delivery-products-pop-up col-md-12 no-padding" mat-table [dataSource]="locationMasterSearchList">
@@ -109,7 +109,7 @@
     </div>
   </mat-menu>
   <mat-menu #productMenu="matMenu" class="select-location-container" overlapTrigger="false">
-    <div>
+    <div [ngClass]="{'expand-select-location-container': expandProduct}">
       <div class="col-md-12 header-container-location no-padding">
         <div class="search-location-container col-md-10 no-padding">
           <span class="search-location-lookup" (click)="$event.stopPropagation();$event.preventDefault();searchProducts(searchProductInput)">
@@ -121,8 +121,8 @@
                 class="search-location-input"
                 autocomplete="off">
         </div>
-        <div class="col-md-2 no-padding">
-            <img style="float: right;" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
+        <div class="col-md-2 no-padding" (click)="$event.stopPropagation();$event.preventDefault();">
+            <img style="float: right;" (click)="expandProduct = !expandProduct;" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
         </div>
       </div>
       <table *ngIf="productMasterSearchList" class="delivery-products-pop-up col-md-12 no-padding" mat-table [dataSource]="productMasterSearchList">
@@ -160,6 +160,7 @@
     <ng-container *ngIf="!contractProduct.value.isDeleted">
       <div *ngIf="contractProduct.key == selectedTabIndex" class="row col-md-12">
         <shiptech-product-details  [generalTenantSettings]="generalTenantSettings"
+                        [contractConfiguration]="contractConfiguration"
                         [model]="formValues"
                         [contractProductIndex]="contractProduct.key"
                         [locationMasterList]="locationMasterList"

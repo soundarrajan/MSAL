@@ -137,6 +137,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   appId: string;
   screenId: string;
   selectedTabIndex: number;
+  contractConfiguration: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -201,7 +202,11 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
         this.setFormValuesAfterCopyContract();
       }
       console.log(data);
+      this.navBar = data.navBar;
       this.tenantConfiguration = data.tenantConfiguration;
+      if (data.tenantConfiguration && data.tenantConfiguration.contractConfiguration) {
+        this.contractConfiguration = data.tenantConfiguration.contractConfiguration;
+      }
       this.scheduleDashboardLabelConfiguration = data.scheduleDashboardLabelConfiguration;
       console.log(this.scheduleDashboardLabelConfiguration);
       if (data.contract) {
@@ -466,7 +471,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     if (!this.formValues.validFrom) {
       message += ' Start Date,';
     }
-    if (!this.formValues.validTo) {
+    if (!this.formValues.validTo && !this.formValues.evergreen) {
       message += ' End Date,';
     }
 
@@ -474,6 +479,9 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     this.eventsSubject2.next(this.buttonClicked);
 
     if (message != 'Please fill in required fields:') {
+      if (message[message.length - 1] == ',') {
+        message =  message.substring(0,  message.length - 1);
+      }
       this.toastr.error(message);
       return;
     }
