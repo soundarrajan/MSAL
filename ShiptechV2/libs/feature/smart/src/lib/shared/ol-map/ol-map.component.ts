@@ -536,7 +536,7 @@ export class OlMapComponent implements OnInit {
         anchorYUnits: 'fraction',
         rotation: this.getRotationForVessel(vesselDetail.EndLocation.Latitude, vesselDetail.EndLocation.Longitude,
           vesselDetail.CurrentLocation.Latitude, vesselDetail.CurrentLocation.Longitude),
-        src: vesselDetail.ROB.Color.indexOf('orange') > 0 ? "../assets/customicons/vessel/hover-amber.svg" : vesselDetail.ROB.Color.indexOf('red') > 0 ? "../assets/customicons/vessel/hover-red.svg" : "../assets/customicons/vessel/hover-blue.svg",
+        src: vesselDetail.ROB.Color.indexOf('orange') > 0 ? "./assets/customicons/vessel/hover-amber.svg" : vesselDetail.ROB.Color.indexOf('red') > 0 ? "./assets/customicons/vessel/hover-red.svg" : "./assets/customicons/vessel/hover-blue.svg",
       }))
     });
     return iconStyle;
@@ -550,7 +550,7 @@ export class OlMapComponent implements OnInit {
         anchor: [0.8, 0.8],
         anchorXUnits: 'fraction',
         anchorYUnits: 'fraction',
-        src: '../assets/customicons/port/hover' + (portDetail.flag == 'higher-warning-view' ? '-red' : (portDetail.flag == 'minor-warning-view' ? '-amber' : '-blue')) + '.svg', //portType -major:minor
+        src: './assets/customicons/port/hover' + (portDetail.flag == 'higher-warning-view' ? '-red' : (portDetail.flag == 'minor-warning-view' ? '-amber' : '-blue')) + '.svg', //portType -major:minor
       }))
     });
     return iconStyle;
@@ -588,8 +588,8 @@ export class OlMapComponent implements OnInit {
           vesselDetail.CurrentLocation.Latitude, vesselDetail.CurrentLocation.Longitude),
         src: vesselDetail.ROB.Color.indexOf('orange') > 0 ? "./assets/icon/ROB_amber.svg" : vesselDetail.ROB.Color.indexOf('red') > 0 ? "./assets/icon/ROB_red.svg" : "./assets/icon/ROB_blue.svg",
 
-        // src: "../assets/icon/ROB_red.svg",
-        // src: "../assets/customicons/vessel/ROB_amber_hover_3.svg",
+        // src: "./assets/icon/ROB_red.svg",
+        // src: "./assets/customicons/vessel/ROB_amber_hover_3.svg",
       }))
     });
     return iconStyle;
@@ -605,7 +605,7 @@ export class OlMapComponent implements OnInit {
         anchorYUnits: 'fraction',
         rotation: this.getRotationForVessel(vesselDetail.EndLocation.Latitude, vesselDetail.EndLocation.Longitude,
           vesselDetail.CurrentLocation.Latitude, vesselDetail.CurrentLocation.Longitude),
-        src: "../assets/customicons/vessel/vessel_grey.svg"
+        src: "./assets/customicons/vessel/vessel_grey.svg"
       }))
     });
     return iconStyle;
@@ -618,7 +618,7 @@ export class OlMapComponent implements OnInit {
           anchor: [0.5, 0.5],
           anchorXUnits: 'fraction',
           anchorYUnits: 'fraction',
-          src: '../assets/images/glow_' + color + '.svg',
+          src: './assets/images/glow_' + color + '.svg',
           opacity: 0.2,
           anchorOrigin: 'bottom-left',
           scale: 1.4
@@ -632,7 +632,7 @@ export class OlMapComponent implements OnInit {
           anchor: [0.5, 0.5],
           anchorXUnits: 'fraction',
           anchorYUnits: 'fraction',
-          src: '../assets/images/glow_' + color + '.svg',
+          src: './assets/images/glow_' + color + '.svg',
           opacity: 0.8,
           anchorOrigin: 'bottom-left',
         }))
@@ -648,7 +648,7 @@ export class OlMapComponent implements OnInit {
           anchor: [0.75, 0.35],
           anchorXUnits: 'fraction',
           anchorYUnits: 'fraction',
-          src: '../assets/customicons/port/start-grey.svg',
+          src: './assets/customicons/port/start-grey.svg',
           opacity: 1,
           anchorOrigin: 'bottom-left',
           scale: 1
@@ -662,9 +662,9 @@ export class OlMapComponent implements OnInit {
         //   anchor: [0.8, 0.15],
         //   anchorXUnits: 'fraction',
         //   anchorYUnits: 'fraction',
-        //  src: '../assets/customicons/port/major-port' + (flag == 'higher-warning-view' ? '-red' : (flag == 'minor-warning-view' ? '-amber' : '-blue')) + '.png', //portType -major:minor
+        //  src: './assets/customicons/port/major-port' + (flag == 'higher-warning-view' ? '-red' : (flag == 'minor-warning-view' ? '-amber' : '-blue')) + '.png', //portType -major:minor
 
-        //   //src: '../assets/customicons/port/start' + (flag == 'higher-warning-view' ? '-red' : (flag == 'minor-warning-view' ? '-amber' : '-blue')) + '.svg',
+        //   //src: './assets/customicons/port/start' + (flag == 'higher-warning-view' ? '-red' : (flag == 'minor-warning-view' ? '-amber' : '-blue')) + '.svg',
         //   opacity: 0.65,
         //   anchorOrigin: 'bottom-left',
         //   scale: 0.45
@@ -673,7 +673,7 @@ export class OlMapComponent implements OnInit {
           anchor: [0.8, 0.35],
           anchorXUnits: 'fraction',
           anchorYUnits: 'fraction',
-          src: '../assets/customicons/port/start' + (flag == 'higher-warning-view' ? '-red' : (flag == 'minor-warning-view' ? '-amber' : '-blue')) + '.svg',
+          src: './assets/customicons/port/start' + (flag == 'higher-warning-view' ? '-red' : (flag == 'minor-warning-view' ? '-amber' : '-blue')) + '.svg',
           opacity: 0.85,
           anchorOrigin: 'bottom-left',
           scale: 1
@@ -690,7 +690,7 @@ export class OlMapComponent implements OnInit {
         anchor: [0.69, 0.05],
         anchorXUnits: 'fraction',
         anchorYUnits: 'fraction',
-        src: '../assets/customicons/port/end-' + color + '.svg',
+        src: './assets/customicons/port/end-' + color + '.svg',
         opacity: 1,
         anchorOrigin: 'bottom-left',
         scale: 1.5
@@ -719,7 +719,7 @@ export class OlMapComponent implements OnInit {
         anchor: [0.8, 0.35],
         anchorXUnits: 'fraction',
         anchorYUnits: 'fraction',
-        src: '../assets/customicons/port/destination' + (flag == 'higher-warning-view' ? '-red' : (flag == 'minor-warning-view' ? '-amber' : '-blue')) + '.svg',
+        src: './assets/customicons/port/destination' + (flag == 'higher-warning-view' ? '-red' : (flag == 'minor-warning-view' ? '-amber' : '-blue')) + '.svg',
         opacity: 1,
         anchorOrigin: 'bottom-left',
         scale: 1.45
@@ -731,7 +731,7 @@ export class OlMapComponent implements OnInit {
   private getPortStyle(name, isMajorPort, flag): Style {
     var iconStyle = new Style({
       image: new Icon(({
-        src: '../assets/customicons/port/' + (isMajorPort ? 'major' : 'minor') + '-port' + (flag == 'higher-warning-view' ? '-red' : (flag == 'minor-warning-view' ? '-amber' : '-blue')) + '.png', //portType -major:minor
+        src: './assets/customicons/port/' + (isMajorPort ? 'major' : 'minor') + '-port' + (flag == 'higher-warning-view' ? '-red' : (flag == 'minor-warning-view' ? '-amber' : '-blue')) + '.png', //portType -major:minor
         rotation: 0,
         anchor: [1, 1],
         // scale: -1,
@@ -1334,18 +1334,18 @@ export class OlMapComponent implements OnInit {
     if (data.LocationName == 'CRISTOBAL') {
       element.innerHTML = `<div class="popup-content">
       <div style="white-space:nowrap;display:flex;align-items:center;"> 
-      <span style="padding-right:5px;">   <img src="../../../assets/customicons/port-icon.svg">
+      <span style="padding-right:5px;">   <img src="./assets/customicons/port-icon.svg">
       </span>
       <span class="days"> 3 Days </span> <span style="padding:0px 5px;font-weight:500;">to</span> <span class="days">${data.LocationName}</span> </div>
         <div style="line-height: 23px;padding:0px 2px;font-weight:500;"> ETA <span class="date"> 2019-01-19 </span><span class="time">10:00</span> </div>
         <div style="line-height: 23px;padding:0px 2px;font-weight:500;"> ETD <span class="date"> 2019-01-19 </span><span class="time">10:00</span> </div>
-        <div class="strategic-port"><img style="padding:0px 5px;" src="../../../assets/customicons/strategic-port.svg" >Strategic Port</div>
+        <div class="strategic-port"><img style="padding:0px 5px;" src="./assets/customicons/strategic-port.svg" >Strategic Port</div>
           </div>`;
     }
     else {
       element.innerHTML = `<div class="popup-content">
       <div style="white-space:nowrap;display:flex;align-items:center;"> 
-      <span style="padding-right:5px;">   <img src="../../../assets/customicons/port-icon.svg">
+      <span style="padding-right:5px;">   <img src="./assets/customicons/port-icon.svg">
       </span>
       <span class="days"> 3 Days </span> <span style="padding:0px 5px;font-weight:500;">to</span> <span class="days">${data.LocationName}</span> </div>
         <div style="line-height: 23px;padding:0px 2px;font-weight:500;"> ETA <span class="date"> 2019-01-19 </span><span class="time">10:00</span> </div>
@@ -1371,18 +1371,18 @@ export class OlMapComponent implements OnInit {
       if (data.LocationName == 'CRISTOBAL') {
         element.innerHTML = `<div class="popup-content">
         <div style="white-space:nowrap;display:flex;align-items:center;"> 
-        <span style="padding-right:5px;">   <img src="../../../assets/customicons/port-icon.svg">
+        <span style="padding-right:5px;">   <img src="./assets/customicons/port-icon.svg">
         </span>
         <span class="days"> 3 Days </span> <span style="padding:0px 5px;">to</span> <span class="days">${data.LocationName}</span> </div>
           <div style="line-height: 23px;padding:0px 2px;"> ETA <span class="date"> 2019-01-19 </span><span class="time">10:00</span> </div>
           <div style="line-height: 23px;padding:0px 2px;"> ETD <span class="date"> 2019-01-19 </span><span class="time">10:00</span> </div>
-          <div class="strategic-port"><img style="padding:0px 5px;" src="../../../assets/customicons/strategic-port.svg" >Strategic Port</div>
+          <div class="strategic-port"><img style="padding:0px 5px;" src="./assets/customicons/strategic-port.svg" >Strategic Port</div>
             </div>`;
       }
       else {
         element.innerHTML = `<div class="popup-content">
         <div style="white-space:nowrap;display:flex;align-items:center;"> 
-        <span style="padding-right:5px;">   <img src="../../../assets/customicons/port-icon.svg">
+        <span style="padding-right:5px;">   <img src="./assets/customicons/port-icon.svg">
         </span>
         <span class="days"> 3 Days </span> <span style="padding:0px 5px;">to</span> <span class="days">${data.LocationName}</span> </div>
           <div style="line-height: 23px;padding:0px 2px;"> ETA <span class="date"> 2019-01-19 </span><span class="time">10:00</span> </div>
