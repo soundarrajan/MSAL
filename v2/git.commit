@@ -1,7 +1,9 @@
-﻿commit 792156f0edec44e178996a41b7328ab9dc9b1a62
+﻿commit 3e0ad8f384a28fc003e10513521e66adea752324
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Apr 22 14:50:14 2021 +0000
+Date:   Thu Apr 22 14:54:54 2021 +0000
 
-    Merged PR 10083: Added visible fields based on the contract configuration
+    Merged PR 10084: Added visible fields based on the contract configuration
+    
+    Added visible fields based on the contract configuration
 
 branch: master
