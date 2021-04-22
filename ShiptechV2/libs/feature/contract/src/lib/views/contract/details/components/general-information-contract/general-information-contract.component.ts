@@ -581,6 +581,7 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
     this.selectedVal = val;
     if (val == 'evergreen') {
       this.formValues.evergreen = true;
+      this.formValues.validTo = null;
     } else {
       this.formValues.evergreen = false;
     }
