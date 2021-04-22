@@ -249,6 +249,18 @@ Number(function() {
                                                     }
                                                 }
                                             }
+	                                        if (window.procurementSettings) {
+		                                        if (window.procurementSettings.fieldVisibility.isCustomerHidden) {
+	                                                if (callback.clc.table_name == "Orders list") {
+	                                                	for (var i = callback.clc.colModel.length - 1; i >= 0; i--) {
+	                                                		callback.clc.colModel[i]
+	                                                        if (callback.clc.colModel[i].name == "customerName") {
+	                                                            callback.clc.colModel.splice(i, 1);
+	                                                        }
+	                                                	}
+	                                                }
+		                                        }
+	                                        }                                            
                                             $.each(callback.clc.colModel, (k, v) => {
                                                 v.label = v.label.replace('Service', scope.tenantSetting.serviceDisplayName.name);
                                                 v.label = v.label.replace('Company', scope.tenantSetting.companyDisplayName.name);
@@ -413,6 +425,18 @@ Number(function() {
                                                 }
                                             }
                                         }
+                                        if (window.procurementSettings) {
+	                                        if (window.procurementSettings.fieldVisibility.isCustomerHidden) {
+                                                if (callback.clc.table_name == "Orders list") {
+                                                	for (var i = callback.clc.colModel.length - 1; i >= 0; i--) {
+                                                		callback.clc.colModel[i]
+                                                        if (callback.clc.colModel[i].name == "customerName") {
+                                                            callback.clc.colModel.splice(i, 1);
+                                                        }
+                                                	}
+                                                }
+	                                        }
+                                        }  
 
                                         Layout.table_id = `${Layout.view_type }_${ Layout.table_name.replace(/ /g, '_').toLowerCase()}`;
                                         Layout.pager_id = `${Layout.view_type }_${ Layout.table_name.replace(/ /g, '_').toLowerCase() }_pager`;
