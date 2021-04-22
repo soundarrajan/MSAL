@@ -1153,6 +1153,22 @@ APP_MASTERS.factory('Factory_Master', [ '$window', '$http', '$Api_Service', 'API
             }, (response) => {
                 // console.log(response);
             });
+        },
+
+        get_counterpartySubDepartments : (counterpartyId, callback) => {
+            let url = `${API.BASE_URL_DATA_MASTERS }/api/masters/counterparties/subDepartmentList`;
+            let payload = {
+                Payload: counterpartyId
+            };            
+            $http({
+                method: 'POST',
+                url: url,
+                data: payload
+            }).then((response) => {                
+                callback(response.data.payload);
+            }, (response) => {
+                // console.log(response);
+            });
         }
 
 

@@ -3163,9 +3163,13 @@
                     };
                 }
                 if(vm.screen_id == 'vessel' && id == 'customer') {
-                    Factory_Master.get_master_entity($scope.formValues.customer.id, 'counterparty', 'masters', (response) => {
+                	if ($scope.firstSubdepartmentLoaded) {
+	                	$scope.formValues.subDepartment = null;
+                	}
+                    Factory_Master.get_counterpartySubDepartments($scope.formValues.customer.id, (response) => {
+                        $scope.firstSubdepartmentLoaded = true;
                         if (response) {
-                            $scope.options.subDepartment = response.subDepartments;
+                            $scope.options.subDepartment = response;
                         }
                     });
                 }
