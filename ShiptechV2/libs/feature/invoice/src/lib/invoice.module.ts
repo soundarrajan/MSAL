@@ -40,6 +40,7 @@ import {
 } from './services/api/invoice-complete-api';
 import { InvoiceCompleteApiMock } from './services/api/invoice-complete-api.mock';
 import { InvoiceCompleteService } from './services/invoice-complete.service';
+import { InvoiceDetailsService } from './services/invoice-details.service';
 import { InvoiceCompleteListComponent } from './views/invoice-complete-list/invoice-complete-list.component';
 import { InvoiceListComponent } from './views/invoice-list/invoice-list.component';
 import { InvoiceDetailComponent } from './views/invoice-view/details/invoice-details.component';
@@ -100,7 +101,8 @@ import { MainInvoiceComponent } from './views/main-invoice.component';
         ? InvoiceCompleteApi
         : InvoiceCompleteApiMock
     },
-    InvoiceCompleteService
+    InvoiceCompleteService,
+    InvoiceDetailsService
   ]
 })
 export class InvoiceModule {}
