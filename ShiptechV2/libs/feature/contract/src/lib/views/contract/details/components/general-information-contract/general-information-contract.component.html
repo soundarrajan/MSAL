@@ -361,7 +361,9 @@
   </div>
 </div>
 <div class="col-md-12 d-flex contract-section">
-    <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+    <div class="custom-form-field" 
+      [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}"
+      *ngIf="contractConfiguration && contractConfiguration.agreementTypeDisplay.id == 1">
       <mat-form-field class="without-search" 
         appearance="legacy"
         [ngClass]="{'required-field': (buttonClicked && !formValues.agreementType)}">

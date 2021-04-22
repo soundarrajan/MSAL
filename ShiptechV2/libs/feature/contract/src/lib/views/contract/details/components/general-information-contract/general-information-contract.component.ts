@@ -431,6 +431,7 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
   statusColorCode: any;
   quantityFormat: string;
   quantityPrecision: string;
+  contractConfiguration: any;
   @Input() set autocompleteType(value: string) {
     this._autocompleteType = value;
   }
@@ -512,6 +513,13 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
       return;
     } 
     this.statusColorCode = statusColorCode;
+  }
+
+  @Input('contractConfiguration') set _setContractConfiguration(contractConfiguration) { 
+    if (!contractConfiguration) {
+      return;
+    } 
+    this.contractConfiguration = contractConfiguration;
   }
 
   @Input() eventsSaveButton: Observable<void>;
@@ -795,7 +803,7 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
         allowedCompanyList.push(allowedCompany);
       }
     }
-    this.formValues.allowedCompanies = [ ... allowedCompanyList ];
+    this.formValues.allowedCompanies = _.cloneDeep(allowedCompanyList);
   }
 
 

@@ -488,6 +488,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   buttonClicked1: any;
   additionalCostsComponentTypes: any;
   eventsSelectedTabIndexSubscription: any;
+  contractConfiguration: any;
 
 
   get entityId(): number {
@@ -757,6 +758,14 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       return;
     } 
     this.buttonClicked1 = buttonClicked1;
+  }
+
+  
+  @Input('contractConfiguration') set _setContractConfiguration(contractConfiguration) { 
+    if (!contractConfiguration) {
+      return;
+    } 
+    this.contractConfiguration = contractConfiguration;
   }
 
 
@@ -1361,7 +1370,6 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       this.formValues.products[key].isDeleted = true;
     } 
   }
-
 
 
   originalOrder = (a: KeyValue<number, any>, b: KeyValue<number, any>): number => {
