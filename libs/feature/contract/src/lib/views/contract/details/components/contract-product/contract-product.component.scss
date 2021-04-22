@@ -101,7 +101,7 @@
   height: 40px;
   width: 90%;
   float: right;
-  color: white;
+  color: white !important;
 }
 
 
@@ -533,4 +533,8 @@
   line-height: 16px;
   color: #364150;
   border: unset !important;
+}
+
+.expand-select-location-container {
+  width: 50vw !important;
 }

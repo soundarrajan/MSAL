@@ -154,6 +154,13 @@ export class ContractDetailsToolbarComponent
         routerLinkActiveOptions: { exact: true },
         disabled,
         styleClass: 'tab'
+      },
+      {
+        label: 'Terms & Conditions ',
+        url: parseFloat(contractId) ? `${this.baseOrigin}/#/contracts/contract/terms-conditions/${contractId}` : null,
+        routerLinkActiveOptions: { exact: true },
+        disabled,
+        styleClass: 'tab'
       }
     ];
     this.chRef.detectChanges();

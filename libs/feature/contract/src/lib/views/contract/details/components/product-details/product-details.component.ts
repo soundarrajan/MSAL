@@ -465,6 +465,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
   activeProductForSpecGroupEdit: any;
   eventsSubscription: any;
   events1Subscription: any;
+  contractConfiguration: any;
 
 
   get entityId(): number {
@@ -584,6 +585,13 @@ export class ProductDetails extends DeliveryAutocompleteComponent
       return;
     } 
     this.generalTenantSettings = generalTenantSettings;
+  }
+
+  @Input('contractConfiguration') set _setContractConfiguration(contractConfiguration) { 
+    if (!contractConfiguration) {
+      return;
+    } 
+    this.contractConfiguration = contractConfiguration;
   }
 
 
