@@ -502,6 +502,10 @@
                     }
 
                     localStorage.setItem(vm.app_id + $state.params.screen_id + "_copy", id);
+                    if (window.location.href.indexOf('contracts/contract') != -1) {
+                        window.open("/v2/contracts/contract/0/details", "_blank");
+                        return;
+                    }
                     // window.open($location.$$absUrl.replace($location.$$path, url), '_blank');
                     // var url = $state.$current.url.prefix + $state.params.screen_id + '/edit/';
                     $location.path(url);
