@@ -12,6 +12,7 @@ import { SpecParameterDialog } from './pop-ups/spec-parameter.component';
 import { TabsComponent } from './tabs/tabs.component';
 import { ReadonlyDetailsComponent } from './readonly-details/readonly-details.component';
 import { AgGridCellStyleComponent } from './ag-grid/ag-grid-cell-style.component';
+import { AGGridCellRendererComponent } from './ag-grid/ag-grid-cell-renderer.component';
 @NgModule({ 
   imports: [
     CommonModule,
@@ -34,7 +35,8 @@ import { AgGridCellStyleComponent } from './ag-grid/ag-grid-cell-style.component
     SpecParameterDialog,
     MasterChip,
     ReadonlyDetailsComponent,
-    AgGridCellStyleComponent
+    AgGridCellStyleComponent,
+    AGGridCellRendererComponent
   ],
 })
 export class DSComponentsModule {}
