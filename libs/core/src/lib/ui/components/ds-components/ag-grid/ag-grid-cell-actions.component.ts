@@ -52,6 +52,13 @@ import { OperationalAmountDialog } from "../pop-ups/operational-amount.component
     <div *ngIf="params.type=='revert'">
         <img  src="../../../assets/customicons/revert.svg" width="13" alt="Revert">
     </div>
+    <div *ngIf="params.type==='dashed-border'">
+      <div class="dashed-border">{{params.value}}</div>
+    </div>
+    <div *ngIf="params.type==='dashed-border-with-expand'">
+      <span class="dashed-border">{{params.value}}</span>
+      <span class="expand-arrow"></span>
+    </div>
 `
 })
 
