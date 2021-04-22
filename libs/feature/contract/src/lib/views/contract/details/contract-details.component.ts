@@ -470,7 +470,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     if (!this.formValues.validFrom) {
       message += ' Start Date,';
     }
-    if (!this.formValues.validTo) {
+    if (!this.formValues.validTo && !this.formValues.evergreen) {
       message += ' End Date,';
     }
 
@@ -478,6 +478,9 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     this.eventsSubject2.next(this.buttonClicked);
 
     if (message != 'Please fill in required fields:') {
+      if (message[message.length - 1] == ',') {
+        message =  message.substring(0,  message.length - 1);
+      }
       this.toastr.error(message);
       return;
     }
