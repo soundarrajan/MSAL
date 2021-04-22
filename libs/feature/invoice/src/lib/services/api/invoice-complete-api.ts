@@ -13,12 +13,14 @@ import {
   IGetInvoiceListRequest,
   IGetInvoiceListResponse
 } from './dto/invoice-list-item.dto';
+import { IInvoiceDetailsItemRequest, IInvoiceDetailsItemResponse } from './dto/invoice-details-item.dto';
 
 export namespace InvoiceApiPaths {
   export const getCompletesList = () => `api/invoice/completeViewList`;
   export const getInvoicesList = () => `api/invoice/list`;
   export const getCompletesListExport = () => 'api/invoice/exportCompleteView';
   export const getInvoicesListExport = () => `api/invoice/export`;
+  export const getInvoiceItem = () => `api/invoice/get`;
 }
 
 @Injectable({
@@ -56,6 +58,15 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
 
   getInvoiceListExportUrl(): string {
     return `${this._apiUrl}/${InvoiceApiPaths.getInvoicesListExport()}`;
+  }
+
+  @ObservableException()
+  getInvoicDetails(
+    request: IInvoiceDetailsItemRequest
+  ): Observable<IInvoiceDetailsItemResponse> {
+    return this.http.post<IInvoiceDetailsItemResponse>(
+      `${this._apiUrl}/${InvoiceApiPaths.getInvoiceItem()}`, 
+      request );
   }
 }
 
