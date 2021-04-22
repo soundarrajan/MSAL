@@ -1,7 +1,7 @@
-﻿commit 90c09c59af032bb505cf6685dd206ca9b47860c8
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Apr 21 14:01:01 2021 +0000
+﻿commit 5b43baed4cfef1ce0e86bc08989dd976506a5fad
+Author: Gokul Dhas Simson <gokul.s@Inatech.com>
+Date:   Thu Apr 22 12:46:57 2021 +0530
 
-    Merged PR 10039: Worked on contract ui changes, added actions
+    Invoice detail page changes
 
 branch: master
