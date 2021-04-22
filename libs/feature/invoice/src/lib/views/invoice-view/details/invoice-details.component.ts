@@ -35,6 +35,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     {Title:'Deductions', Data:'USD'},
     {Title:'Net Payable', Data:''}
   ]
+
+  private productDetailsData = [];
   public orderDetails = {
     contents: [
       {
@@ -87,39 +89,6 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       'data-picker-gray',
       sanitizer.bypassSecurityTrustResourceUrl('../../assets/customicons/calendar-dark.svg'));
 
-    this.gridOptions_data = <GridOptions>{
-      defaultColDef: {
-        resizable: true,
-        filtering: false,
-        sortable: false
-      },
-      columnDefs: this.columnDef_aggrid_pd,
-      suppressRowClickSelection: true,
-      suppressCellSelection: true,
-      headerHeight: 35,
-      rowHeight: 45,
-      animateRows: false,
-
-      onGridReady: (params) => {
-        this.gridOptions_data.api = params.api;
-        this.gridOptions_data.columnApi = params.columnApi;
-        this.gridOptions_data.api.sizeColumnsToFit();
-        this.gridOptions_data.api.setRowData(this.rowData_aggrid_pd);
-        this.addCustomHeaderEventListener();
-
-      },
-      onColumnResized: function (params) {
-        if (params.columnApi.getAllDisplayedColumns().length <= 9 && params.type === 'columnResized' && params.finished === true && params.source === 'uiColumnDragged') {
-          params.api.sizeColumnsToFit();
-        }
-      },
-      onColumnVisible: function (params) {
-        if (params.columnApi.getAllDisplayedColumns().length <= 9) {
-          params.api.sizeColumnsToFit();
-
-        }
-      }
-    }
 
     this.gridOptions_ac = <GridOptions>{
       defaultColDef: {
@@ -138,7 +107,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         this.gridOptions_data.api = params.api;
         this.gridOptions_data.columnApi = params.columnApi;
         this.gridOptions_data.api.sizeColumnsToFit();
-        this.gridOptions_data.api.setRowData(this.rowData_aggrid);
+        this.gridOptions_data.api.setRowData(this.rowData_aggrid_pd);
         this.addCustomHeaderEventListener();
 
       },
@@ -172,7 +141,18 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       cellRendererFramework: AGGridCellActionsComponent, cellRendererParams: { type: 'row-remove-icon' }
     },
     {
-      headerName: 'Delivery No./ Order Product', headerTooltip: 'Delivery No./ Order Product', field: 'del_no'
+      children: [{headerName: 'Delivery No./ ', headerTooltip: 'Delivery No./ Order Product', field: 'del_no',
+      cellRendererFramework: AGGridCellActionsComponent, cellRendererParams: function(params) {
+                  let keyData = params.value;
+                  let newLink = 
+                  `<a href= "https://www.figma.com/proto/vdYj7vV3e5WCNVIxzpMkzA/Shiptech-Invoice-screen_Final?node-id=94%3A7895&scaling=min-zoom"
+                  target="_blank">${keyData}</a>`;
+                  return newLink;
+              }
+      },
+      {
+        headerName: 'Order Product', headerTooltip: 'Order Product', field: 'order_product'
+      }]
     },
     {
       children: [{
@@ -254,18 +234,18 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   ];
 
   private rowData_aggrid_pd = [
-    {
-      del_no: '23243/DMA 0.1%', del_product: 'DMA 0.1%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
-      inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Matched', sulpher_content: '0.05', phy_supplier: 'British Petroleum'
-    },
-    {
-      del_no: '23243/RMK 380 3.5', del_product: '380 3.5%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
-      inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Unmatched', sulpher_content: '0.05', phy_supplier: 'British Petroleum'
-    },
-    {
-      del_no: '23243/RMK 380 3.5', del_product: '380 3.5%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
-      inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Matched', sulpher_content: '0.05', phy_supplier: 'British Petroleum'
-    }
+    // {
+    //   del_no: '23243/DMA 0.1%', del_product: 'DMA 0.1%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
+    //   inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Matched', sulpher_content: '0.05', phy_supplier: 'British Petroleum'
+    // },
+    // {
+    //   del_no: '23243/RMK 380 3.5', del_product: '380 3.5%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
+    //   inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Unmatched', sulpher_content: '0.05', phy_supplier: 'British Petroleum'
+    // },
+    // {
+    //   del_no: '23243/RMK 380 3.5', del_product: '380 3.5%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
+    //   inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Matched', sulpher_content: '0.05', phy_supplier: 'British Petroleum'
+    // }
   ];
 
   private rowData_aggrid = [];
@@ -332,90 +312,6 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     userAction: '',
   };
 
-  // constructor(private iconRegistry: MatIconRegistry,
-  //   private sanitizer: DomSanitizer,
-  //   private invoiceService: InvoiceDetailsService){
-  //   iconRegistry.addSvgIcon(
-  //     'data-picker-gray',
-  //     sanitizer.bypassSecurityTrustResourceUrl('../../assets/customicons/calendar-dark.svg'));
-
-  //     this.gridOptions_data = <GridOptions>{
-  //       defaultColDef: {
-  //         resizable: true,
-  //         filtering: false,
-  //         sortable: false
-  //       },
-  //       columnDefs: this.columnDef_aggrid,
-  //       suppressRowClickSelection: true,
-  //       suppressCellSelection: true,
-  //       headerHeight: 35,
-  //       rowHeight: 35,
-  //       animateRows: false,
-
-  //       onGridReady: (params) => {
-  //         this.gridOptions_data.api = params.api;
-  //         this.gridOptions_data.columnApi = params.columnApi;
-  //         this.gridOptions_data.api.sizeColumnsToFit();
-  //         this.gridOptions_data.api.setRowData(this.rowData_aggrid);
-  //         this.addCustomHeaderEventListener();
-
-  //       },
-  //       onColumnResized: function (params) {
-  //         if (params.columnApi.getAllDisplayedColumns().length <= 9 && params.type === 'columnResized' && params.finished === true && params.source === 'uiColumnDragged') {
-  //           params.api.sizeColumnsToFit();
-  //         }
-  //       },
-  //       onColumnVisible: function (params) {
-  //         if (params.columnApi.getAllDisplayedColumns().length <= 9) {
-  //           params.api.sizeColumnsToFit();
-
-  //         }
-  //       }
-  //     }
-
-  //     this.gridOptions_ac= <GridOptions>{
-  //       defaultColDef: {
-  //         resizable: true,
-  //         filtering: false,
-  //         sortable: false
-  //       },
-  //       columnDefs: this.columnDef_aggrid_ac,
-  //       suppressRowClickSelection: true,
-  //       suppressCellSelection: true,
-  //       headerHeight: 35,
-  //       rowHeight: 35,
-  //       animateRows: false,
-
-  //       onGridReady: (params) => {
-  //         this.gridOptions_data.api = params.api;
-  //         this.gridOptions_data.columnApi = params.columnApi;
-  //         this.gridOptions_data.api.sizeColumnsToFit();
-  //         this.gridOptions_data.api.setRowData(this.rowData_aggrid);
-  //         this.addCustomHeaderEventListener();
-
-  //       },
-  //       onColumnResized: function (params) {
-  //         if (params.columnApi.getAllDisplayedColumns().length <= 9 && params.type === 'columnResized' && params.finished === true && params.source === 'uiColumnDragged') {
-  //           params.api.sizeColumnsToFit();
-  //         }
-  //       },
-  //       onColumnVisible: function (params) {
-  //         if (params.columnApi.getAllDisplayedColumns().length <= 9) {
-  //           params.api.sizeColumnsToFit();
-
-  //         }
-  //       }
-  //     }
-
-
-  //     // const form: InvoiceFormModel<IInvoiceDetailsItemDto> = {
-  //     //   // firstName: ['', Validators.required],
-  //     //   // lastName: ['', Validators.required],
-  //     //   // email: ['', [Validators.required, Validators.email]],
-  //     //   // favoriteAnimals: this.formBuilder.group(subForm)
-  //     // };
-  // }
-
   addCustomHeaderEventListener() {
     let addButtonElement = document.getElementsByClassName('add-btn');
     addButtonElement[0].addEventListener('click', (event) => {
@@ -441,6 +337,64 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getInvoiceItem();
+    this.buildProductDetilsGrid();
+  }
+
+  buildProductDetilsGrid(){
+    this.gridOptions_data = <GridOptions>{
+      defaultColDef: {
+        resizable: true,
+        filtering: false,
+        sortable: false
+      },
+      columnDefs: this.columnDef_aggrid_pd,
+      suppressRowClickSelection: true,
+      suppressCellSelection: true,
+      headerHeight: 35,
+      rowHeight: 45,
+      animateRows: false,
+
+      onGridReady: (params) => {
+        this.gridOptions_data.api = params.api;
+        this.gridOptions_data.columnApi = params.columnApi;
+        this.gridOptions_data.api.sizeColumnsToFit();
+        this.gridOptions_data.api.setRowData(this.rowData_aggrid_pd);
+        this.addCustomHeaderEventListener();
+
+      },
+      onColumnResized: function (params) {
+        if (params.columnApi.getAllDisplayedColumns().length <= 9 && params.type === 'columnResized' && params.finished === true && params.source === 'uiColumnDragged') {
+          params.api.sizeColumnsToFit();
+        }
+      },
+      onColumnVisible: function (params) {
+        if (params.columnApi.getAllDisplayedColumns().length <= 9) {
+          params.api.sizeColumnsToFit();
+
+        }
+      }
+    }
+  }
+
+  parseProductDetailData( productDetails : IInvoiceDetailsItemProductDetails[]){
+    for ( let value of productDetails) {
+      let productdetail = {
+        del_no: value.deliveryId,
+        order_product: value.invoicedProduct.name,
+        del_product: value.product.name,
+        del_qty: value.deliveryQuantity +' '+ value.deliveryQuantityUom.name,
+        est_rate: value.estimatedRate +' '+ value.estimatedRateCurrency.code,
+        amount1: value.estimatedAmount + ' '+ value.estimatedRateCurrency.code,
+        inv_product: value.invoicedProduct.name,
+        inv_qty: value.invoiceQuantity +' '+ value.invoiceQuantityUom.name,
+        inv_rate: value.invoiceRate + ' '+ value.invoiceRateCurrency.code,
+        amount2: value.invoiceComputedAmount + ' '+ value.invoiceRateCurrency.code,
+        recon_status: value.reconStatus.name,
+        sulpher_content: value.sulphurContent,
+        phy_supplier: value.physicalSupplierCounterparty.name
+      }
+      this.rowData_aggrid_pd.push(productdetail);
+    };
   }
 
   getInvoiceItem() {
@@ -453,6 +407,9 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     .getInvoicDetails(data)
     .subscribe((response: IInvoiceDetailsItemResponse) => {
       console.log(response);
+       this.parseProductDetailData(response.payload.productDetails);
+
+
         // this.invoiceDetails = response;
         // console.log(this.invoiceDetails.payload.sellerInvoiceNo);
     });
