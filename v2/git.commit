@@ -1,7 +1,7 @@
-﻿commit 39cd3a2de374d176af5b92d37d4e151e6659588f
+﻿commit 6884cf4b6ef2cec8fd3945a921de324e81ac26e5
 Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Thu Apr 22 14:23:10 2021 +0530
+Date:   Thu Apr 22 15:33:59 2021 +0530
 
-    merge conflict fix for invoice screen.
+    Fix build prod error while invoice detail page merge.
 
 branch: master
