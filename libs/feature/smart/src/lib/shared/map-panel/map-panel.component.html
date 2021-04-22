@@ -53,16 +53,16 @@
 <div id="zoomButton">
   <div id="zoomIn" [ngClass]="{'disabled':maxZoomLimit}" (click)="this.zoomInEvent.emit()">
     <div *ngIf="!maxZoomLimit;else disableZoomIn" class="maximize-icon"></div>
-    <!-- <img *ngIf="!maxZoomLimit;else disableZoomIn" src="../../../assets/customicons/maximize.svg" alt="Mazimize"> -->
+    <!-- <img *ngIf="!maxZoomLimit;else disableZoomIn" src="./assets/customicons/maximize.svg" alt="Mazimize"> -->
     <ng-template #disableZoomIn>
-      <img src="../../../assets/customicons/maximize-disable.svg" alt="Mazimize">
+      <img src="./assets/customicons/maximize-disable.svg" alt="Mazimize">
     </ng-template>
   </div>
   <div id="zoomOut" [ngClass]="{'disabled':minZoomLimit}" (click)="this.zoomOutEvent.emit()">
     <div *ngIf="!minZoomLimit;else disableZoomOut" class="minimize-icon"></div>
-    <!-- <img *ngIf="!minZoomLimit;else disableZoomOut" src="../../../assets/customicons/minimize.svg" alt="Minimize"> -->
+    <!-- <img *ngIf="!minZoomLimit;else disableZoomOut" src="./assets/customicons/minimize.svg" alt="Minimize"> -->
     <ng-template #disableZoomOut>
-      <img src="../../../assets/customicons/minimize-disable.svg" alt="Minimize">
+      <img src="./assets/customicons/minimize-disable.svg" alt="Minimize">
     </ng-template>
   </div>
 </div>
