@@ -214,6 +214,7 @@
                   matInput 
                   [(ngModel)]="formValues.seller"
                   [matAutocomplete]="auto"
+                  autocomplete="off"
                   placeholder="Seller name"
                   required
                   [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
@@ -257,6 +258,7 @@
                   [(ngModel)]="formValues.company"
                   [matAutocomplete]="auto1"
                   placeholder="Company name"
+                  autocomplete="off"
                   required
                   [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
           <mat-autocomplete #auto1="matAutocomplete" 
