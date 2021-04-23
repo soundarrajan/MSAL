@@ -571,7 +571,6 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
     //this.eventsSubscription = this.events.subscribe((data) => this.setDeliveryForm(data));
     //this.eventsSaveButtonSubscription = this.eventsSaveButton.subscribe((data) => this.setRequiredFields(data))
     //this.eventsSubject.next();
-
   }
 
   setRequiredFields(data) {
@@ -595,10 +594,11 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
       let findCompanyIndex = _.findIndex(this.companyList, function(object: any) {
         return object.id == allowedCompany.id;
       });
-      if (findCompanyIndex != -1) {
+      if (findCompanyIndex != -1 && this.companyList) {
         this.companyList[findCompanyIndex].isSelected = true;
       }
     });
+    this.changeDetectorRef.detectChanges();
 
     console.log(this.companyList);
 

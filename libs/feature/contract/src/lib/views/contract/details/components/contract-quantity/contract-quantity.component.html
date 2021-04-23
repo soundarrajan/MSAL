@@ -42,7 +42,6 @@
                 <mat-form-field class="without-search" appearance="legacy">
                   <input 
                       [(ngModel)]="contractDetail.value.minContractQuantity"
-                      (ngModelChange)="contractDetail.value.tolerance = null"
                       matInput
                       autocomplete="off"
                       quantityFormat
@@ -102,7 +101,6 @@
                   <mat-form-field class="without-search" appearance="legacy">
                     <input 
                         [(ngModel)]="contractDetail.value.tolerance"
-                        (ngModelChange)="contractDetail.value.minContractQuantity = null"
                         matInput
                         autocomplete="off"
                         required

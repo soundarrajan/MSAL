@@ -1,5 +1,5 @@
 <div class="row col-md-12 contract-section" style="margin-left: 0px;" id="container-contract">
-  <div class="add-contract-product-section" (click)="addProductToContract()" style="position: relative;
+  <div class="add-contract-product-section" (click)="(formValues.status && formValues.status.name == 'Confirmed') ? '' : addProductToContract()" style="position: relative;
   top: 5px;">
     <a class="add-contract-product-icon"></a>
   </div>
@@ -18,7 +18,9 @@
                 #singleSelect
                 disableOptionCentering 
                 [panelClass]="'location-select-container'"
-                [compareWith]="compareUomObjects">
+                [compareWith]="compareUomObjects"
+                [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
+                >
                 <div [ngClass]="{'expand-select-location-container': expandLocation}">
                   <div class="col-md-12 header-container-location no-padding">
                     <div class="search-location-container col-md-10 no-padding">
@@ -64,8 +66,9 @@
               </mat-select>
             </mat-form-field>
           </div>
-          <div [ngClass]="{'container-product-with-value': contractProduct.value.product  && selectedTabIndex == contractProduct.key}">
-            <a class="remove-product-black-icon remove-product-icon" (click)="removeProductFromContract(contractProduct.key)" >
+          <div [ngClass]="{'container-product-with-value': contractProduct.value.product  && selectedTabIndex == contractProduct.key,
+              'mat-form-field-disabled': formValues.status && formValues.status.name == 'Confirmed' && selectedTabIndex != contractProduct.key}">
+            <a class="remove-product-black-icon remove-product-icon" (click)="(formValues.status && formValues.status.name == 'Confirmed') ? '' : removeProductFromContract(contractProduct.key)" >
             </a>
           </div>
           <div class="custom-form-field custom-form-field-location"  [ngClass]="{'darkTheme':switchTheme,
@@ -78,7 +81,8 @@
                 disableOptionCentering 
                 [panelClass]="'location-select-container'"
                 [compareWith]="compareUomObjects"
-                (ngModelChange)="setProductChange(contractProduct.value.product, contractProduct.key)">
+                (ngModelChange)="setProductChange(contractProduct.value.product, contractProduct.key)"
+                [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
                 <div [ngClass]="{'expand-select-location-container': expandLocation}">
                   <div class="col-md-12 header-container-location no-padding">
                     <div class="search-location-container col-md-10 no-padding">

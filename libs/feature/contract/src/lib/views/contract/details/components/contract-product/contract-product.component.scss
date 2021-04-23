@@ -780,3 +780,8 @@ td.mat-cell {
   position: relative;
   top: 2px;
 }
+
+
+.custom-form-field-location .mat-form-field.mat-form-field-disabled {
+  //background-color: unset !important;
+}
