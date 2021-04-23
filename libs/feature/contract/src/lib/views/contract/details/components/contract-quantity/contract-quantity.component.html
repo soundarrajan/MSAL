@@ -34,7 +34,9 @@
           </div>
           <div class="border_line"></div>
           <div  class="col-md-2">
-            <span class="label">Min</span>
+            <span class="label">Min
+              <span style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;">*</span>
+            </span>
             <div class="value">
               <div class="custom-form-field custom-field-contract-quantity" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
                 <mat-form-field class="without-search" appearance="legacy">
@@ -45,15 +47,16 @@
                       autocomplete="off"
                       quantityFormat
                       (keypress)="keyPressNumber($event)"
-                      [disabled]="(contractDetail.value.tolerance != '' && contractDetail.value.tolerance) || 
-                          (formValues.status && formValues.status.name == 'Confirmed')">
+                      [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
                   </mat-form-field>
               </div>
             </div>
           </div>
           <div class="border_line"></div>
           <div  class="col-md-2">
-            <span class="label">Max</span>
+            <span class="label">Max
+              <span style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;">*</span>
+            </span>
             <div class="value">
               <div class="value">
                 <div class="custom-form-field custom-field-contract-quantity" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
@@ -103,8 +106,7 @@
                         matInput
                         autocomplete="off"
                         required
-                        [disabled]="(contractDetail.value.minContractQuantity != '' && contractDetail.value.minContractQuantity)
-                          || (formValues.status && formValues.status.name == 'Confirmed')">
+                        [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
                     </mat-form-field>
                 </div>
               </div>
