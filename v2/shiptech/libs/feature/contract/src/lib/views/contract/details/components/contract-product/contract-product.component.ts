@@ -491,7 +491,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   contractConfiguration: any;
   expandLocation: any = false;
   expandProduct: any = false;
-
+  bankFilterCtrl: any = new FormControl();
   get entityId(): number {
     return this._entityId;
   }
@@ -522,7 +522,14 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       return;
     } 
     this.locationMasterList = _.cloneDeep(locationMasterList);
-    this.locationMasterSearchList = _.cloneDeep(locationMasterList);
+    this.locationMasterSearchList = [];
+    for (let i = 0; i < this.locationMasterList.length; i++) {
+      this.locationMasterSearchList.push({
+        'id': this.locationMasterList[i].id,
+        'name':  this.locationMasterList[i].name,
+        'country': this.locationMasterList[i].country
+      });
+    }
     this.selectedLocationList = _.cloneDeep(locationMasterList);
 
   }
@@ -776,6 +783,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   isMenuOpen = true;
   @Input() eventsSaveButton: Observable<void>;
   @Input() eventsSelectedTabIndex: Observable<void>;
+  expandProductPopUp: any =  false;
 
   eventsSubject2: Subject<any> = new Subject<any>();
 
@@ -1142,19 +1150,15 @@ export class ContractProduct extends DeliveryAutocompleteComponent
 
 
   setLocationChange(location, index) {
-    console.log(location);
-    console.log(index);
-    console.log(this.formValues.products[index]);
-    let objectLocation =  {
+    //this.locationMasterSearchList = _.cloneDeep(this.locationMasterList);
+    this.searchLocationInput = null;
+    this.formValues.products[index].location = {
       'id': location.id,
       'name': location.name
-    }
+    };
     this.selectedLocation = null;
-    this.locationMasterSearchList = _.cloneDeep(this.locationMasterList);
-    this.searchLocationInput = null;
-    this.formValues.products[index].location = { ... objectLocation };
-    this.changeDetectorRef.detectChanges();
-    this.contractFormSubject.next(this.formValues);
+    // this.changeDetectorRef.detectChanges();
+    //this.contractFormSubject.next(this.formValues);
 
   }
 
@@ -1168,7 +1172,6 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       'name': product.name
     }
     this.formValues.products[index].product = { ... objectProduct };
-    this.selectedProduct = null;
     this.productMasterSearchList = _.cloneDeep(this.productMasterList);
     this.searchProductInput = null;
     this.addProductToConversion(index, null, true);

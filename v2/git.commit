@@ -1,9 +1,7 @@
-﻿commit b6254a476854881dcfaa4275e4416f72263f443e
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Fri Apr 23 12:04:30 2021 +0000
+﻿commit ea9d2ddd7217c5ff9d2b75f3ccf1e31e65dbc7e7
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Fri Apr 23 13:17:24 2021 +0000
 
-    Merged PR 10111: #29829 - update trigger event has removed due to nav causes in bunkering plan screen
-    
-    Related work items: #29829
+    Merged PR 10116: Added the asterisk symbol for min/max qty and price
 
 branch: master
