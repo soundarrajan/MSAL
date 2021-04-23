@@ -2063,7 +2063,14 @@
                 var price = function(cellValue, options, rowObject) {
                     element = "";
                     pricePrecision = $scope.tenantSettings.defaultValues.pricePrecision;
-                    if (options.gid == "flat_orders_list" && options.colModel.name == "price") {
+                    if (
+                    	(options.gid == "flat_orders_list" && options.colModel.name == "price")
+                    	|| (options.gid == "flat_orders_delivery_list" && options.colModel.name == "unitPrice")	
+                    	|| (options.gid == "flat_invoices_app_deliveries_list" && options.colModel.name == "estimatedRate")	
+                    	|| (options.gid == "flat_invoices_app_deliveries_list" && options.colModel.name == "price")	
+                    	|| (options.gid == "flat_invoices_app_invoice_list" && options.colModel.name == "orderPrice")	
+                    	|| (options.gid == "flat_invoices_app_complete_view_list" && options.colModel.name == "orderPrice")	
+                	) {
 	                    pricePrecision = rowObject.pricePrecision ? rowObject.pricePrecision : $scope.tenantSettings.defaultValues.pricePrecision;
                     }
                     if (cellValue != null) {
