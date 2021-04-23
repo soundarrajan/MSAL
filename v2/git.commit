@@ -1,9 +1,9 @@
-﻿commit 7f4493f7ba3447ee09388ea168de2b2d48316aac
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri Apr 23 07:19:27 2021 +0000
+﻿commit 1d4bdda18bb89e7efa1985763028722cc57c9cb4
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Fri Apr 23 07:44:47 2021 +0000
 
-    Merged PR 10090: Fixed allowed company selection
+    Merged PR 10095: #29829 - bessel list api integration log code removed
     
-    Related work items: #25280
+    Related work items: #29829
 
 branch: master
