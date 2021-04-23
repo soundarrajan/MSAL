@@ -834,8 +834,9 @@
 															<div class="form_input form_input_pretestlabs input-group">
 	                                                            <input class="form-control"
 	                                                                   id="id_customer"
-	                                                                   name="{{ 'CUSTOMER' | translate }}"
+	                                                                   name="{{ 'PAGES.NEW_ORDER.CUSTOMER' | translate }}"
 	                                                                   ng-model="$ctrl.data.customer.name"
+	                                                                   ng-required="$ctrl.procurementSettings.fieldVisibility.isCustomerMandatory"
 	                                                                   disabled="true" 
 	                                                                   decode-input-format />
 	                                                        </div>
