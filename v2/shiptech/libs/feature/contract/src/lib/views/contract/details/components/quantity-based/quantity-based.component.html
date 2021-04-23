@@ -112,6 +112,7 @@
                   <mat-form-field class="without-search" appearance="legacy">
                     <input matInput
                         [(ngModel)]="quantityDiscountRule.value.amount"
+                        (keypress)="keyPressNumber($event)"
                         autocomplete="off"
                         required
                         amountFormat

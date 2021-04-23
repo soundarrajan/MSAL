@@ -1047,8 +1047,8 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     if (this.formValues.status && this.formValues.status.name == 'Confirmed') {
       return;
     }
-    if (this.formValues.products[this.selectedTabIndex].additionalCosts.id) {
-      this.formValues.products[this.selectedTabIndex].additionalCosts.isDeleted = true;
+    if (this.formValues.products[this.selectedTabIndex].additionalCosts[key].id) {
+      this.formValues.products[this.selectedTabIndex].additionalCosts[key].isDeleted = true;
     } else {
       this.formValues.products[this.selectedTabIndex].additionalCosts.splice(key, 1);
     }
@@ -1128,6 +1128,20 @@ export class ProductPricing extends DeliveryAutocompleteComponent
 
   changePricing(type) {
     console.log(type);
+  }
+
+   // Only Number
+   keyPressNumber(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (inp == '.' || inp == ',' || inp == '-') {
+      return true;
+    }
+    if (/^[-,+]*\d{1,6}(,\d{3})*(\.\d*)?$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
   }
 
 

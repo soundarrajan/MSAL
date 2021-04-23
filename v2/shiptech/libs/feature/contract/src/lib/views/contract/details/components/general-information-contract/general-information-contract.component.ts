@@ -432,6 +432,7 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
   quantityFormat: string;
   quantityPrecision: string;
   contractConfiguration: any;
+  initialCompanyList: any;
   @Input() set autocompleteType(value: string) {
     this._autocompleteType = value;
   }
@@ -483,8 +484,9 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
     if (!companyList) {
       return;
     } 
-    this.companyList = companyList;
-    this.companyListForSearch = this.companyList;
+    this.companyList = _.cloneDeep(companyList);
+    this.initialCompanyList = _.cloneDeep(companyList);
+    this.companyListForSearch = _.cloneDeep(this.companyList);
   }
 
   @Input('agreementTypeList') set _setAgremeentType(agreementTypeList) { 
@@ -697,9 +699,12 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
   addAllowedCompanies() {
     if (!this.entityId) {
       this.formValues.allowedCompanies = [];
+      this.companyList = _.cloneDeep(this.initialCompanyList);
       this.companyList.forEach((v, k) => {
         if (v.id != this.formValues.company.id) {
           this.formValues.allowedCompanies.push(v);
+          this.companyList[k].isSelected = true;
+          
         }
       });
     }
