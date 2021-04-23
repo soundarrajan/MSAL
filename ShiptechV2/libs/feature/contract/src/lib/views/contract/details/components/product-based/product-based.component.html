@@ -73,6 +73,7 @@
                   <mat-form-field class="without-search" appearance="legacy">
                     <input matInput
                         [(ngModel)]="productDiscountRule.value.amount"
+                        (keypress)="keyPressNumber($event)"
                         amountFormat
                         autocomplete="off"
                         [disabled]= "productDiscountRule.value.plusMinus && productDiscountRule.value.plusMinus.id == 3"
