@@ -109,7 +109,8 @@ export class VesselDetailsComponent implements OnInit {
         setTimeout(() => {
           _this.selectedRole = _this.bunkerUserRole.find((role)=> (role.name==_this.previousUserRole?.name) );
           _this.selectedUserRole = _this.selectedRole;
-          document.body.click();
+          let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
+          titleEle.click();
         }, 500);
       }
     });
