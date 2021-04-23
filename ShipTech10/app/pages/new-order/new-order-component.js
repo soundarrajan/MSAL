@@ -1714,7 +1714,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 product = server_data.payload;
                 var getContractOptionParam = { product: product };
 	            if (product.productType.name.includes("VLSFO") ) {
-                	ctrl.data.products[index].preTest = true;
+	            	if (!ctrl.procurementSettings.fieldVisibility.isPreTestHidden) {
+	                	ctrl.data.products[index].preTest = true;
+	            	}
                 } else {
                 	ctrl.data.products[index].preTest = false;
                 }
@@ -4007,14 +4009,21 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             });
         };
 
-		ctrl.isPretestChecked = () => {
-            var pretestChecked = false;
+		ctrl.isPretestLabMandatory = () => {
+			if (!ctrl.data) { return false;}
+            var pretestLabMandatory = false;
+            productPretestChecked = false;
             $.each(ctrl.data.products, (k,v) => {
             	if (v.preTest) {
-		            pretestChecked = true;
+		            productPretestChecked = true;
             	}
             })
-            return pretestChecked;
+            if (productPretestChecked) {
+				if (ctrl.procurementSettings.fieldVisibility.isPreTestLabCounterpartyMandatory) {
+		            pretestLabMandatory = true;
+				}				            	
+            }
+            return pretestLabMandatory;
 		}
 
         ctrl.recomputeProductPricePrecision = (productKey) => {

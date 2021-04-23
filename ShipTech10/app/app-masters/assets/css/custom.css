@@ -1095,3 +1095,7 @@ display: flex;
 .priceUploadBtn{
     text-align: right;
 }
+
+label.mt-checkbox input.ng-invalid-required + span {
+	border-color:red;
+}

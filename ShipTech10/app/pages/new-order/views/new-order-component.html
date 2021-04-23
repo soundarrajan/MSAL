@@ -796,52 +796,52 @@
                                                     </div>
                                                 </div>
 
-                                                    <div ng-if="!$ctrl.procurementSettings.fieldVisibility.isPreTestLabCounterpartyHidden">
-                                                        <div class="form-group row">
-                                                            <label class="deliveryDate_label" for="deliveryDate">
-                                                                {{ 'PAGES.NEW_ORDER.PRE_TEST_LABS' | translate }}
-                                                            </label>
-															<div class="form_input form_input_pretestlabs input-group">
-	                                                            <input autocomplete="off"
-	                                                                   class="typeahead form-control"
-	                                                                   id="id_pretestlabs"
-	                                                                   name="{{ 'PAGES.NEW_ORDER.PRE_TEST_LABS' | translate }}"
-	                                                                   ng-model="$ctrl.data.preTestLabCounterparty" 
-	                                                                   ng-required="$ctrl.isPretestChecked()" 
-	                                                                   decode-input-format
-	                                                                   typeahead-append-to-body="true"
-	                                                                   typeahead-editable="false"
-	                                                                   typeahead-min-length="1"
-	                                                                   typeahead-show-hint="true"
-	                                                                   typeahead-wait-ms="100"
-	                                                                   uib-typeahead="lab as lab.name for lab in $ctrl.lists.Lab | typeaheadCustomFilter:$viewValue:'name'"/>
-	                                                            <span class="input-group-addon ng-scope"
-	                                                                  ng-click="triggerModal('general', 'masters_counterpartylist_labs', 'Pre Test Lab' ,'pretestlab',null,null,null,'labsList');"
-	                                                                  ng-controller="Controller_Master as CM">
-	                                                                <a class=" btn default" href="">
-	                                                                    <i class="fa fa-search"></i>
-	                                                                </a>
-	                                                            </span>
-	                                                        </div>
+                                                <div ng-if="!$ctrl.procurementSettings.fieldVisibility.isPreTestLabCounterpartyHidden">
+                                                    <div class="form-group row">
+                                                        <label class="deliveryDate_label" for="deliveryDate">
+                                                            {{ 'PAGES.NEW_ORDER.PRE_TEST_LABS' | translate }}
+                                                        </label>
+
+                                                    <div
+                                                        class="form_input form_input_preTestLabCounterparty input-group">
+                                                        <input autocomplete="off" class="typeahead form-control"
+                                                            id="id_pretestlabs"
+                                                            name="{{ 'PAGES.NEW_ORDER.PRE_TEST_LABS' | translate }}"
+                                                            ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)"
+                                                            ng-model="$ctrl.data.preTestLabCounterparty" decode-input-format
+                                                            ng-attr-required="{{ ctrl.isPretestLabMandatory() }}"
+                                                            typeahead-append-to-body="true"
+                                                            typeahead-editable="false" typeahead-min-length="1"
+                                                            typeahead-show-hint="true" typeahead-wait-ms="100"
+                                                            uib-typeahead="lab as lab.name for lab in $ctrl.lists.Lab | typeaheadCustomFilter:$viewValue:'name'" />
+                                                            <span class="input-group-addon ng-scope"
+                                                                  ng-click="triggerModal('general', 'masters_counterpartylist_labs', 'Pre Test Lab' ,'pretestlab',null,null,null,'labsList');"
+                                                                  ng-controller="Controller_Master as CM">
+                                                                <a class=" btn default" href="">
+                                                                    <i class="fa fa-search"></i>
+                                                                </a>
+                                                            </span>
+                                                    </div>
+
+                                                    </div>
+                                                </div>     
+                                                
+                                                <div ng-if="!$ctrl.procurementSettings.fieldVisibility.isCustomerHidden">
+                                                    <div class="form-group row">
+                                                        <label class="deliveryDate_label" for="deliveryDate">
+                                                            {{ 'PAGES.NEW_ORDER.CUSTOMER' | translate }}
+                                                        </label>
+														<div class="form_input form_input_pretestlabs input-group">
+                                                            <input class="form-control"
+                                                                   id="id_customer"
+                                                                   name="{{ 'PAGES.NEW_ORDER.CUSTOMER' | translate }}"
+                                                                   ng-model="$ctrl.data.customer.name"
+                                                                   ng-required="$ctrl.procurementSettings.fieldVisibility.isCustomerMandatory"
+                                                                   disabled="true" 
+                                                                   decode-input-format />
                                                         </div>
-                                                    </div>     
-                                                    
-                                                    <div ng-if="!$ctrl.procurementSettings.fieldVisibility.isCustomerHidden">
-                                                        <div class="form-group row">
-                                                            <label class="deliveryDate_label" for="deliveryDate">
-                                                                {{ 'PAGES.NEW_ORDER.CUSTOMER' | translate }}
-                                                            </label>
-															<div class="form_input form_input_pretestlabs input-group">
-	                                                            <input class="form-control"
-	                                                                   id="id_customer"
-	                                                                   name="{{ 'PAGES.NEW_ORDER.CUSTOMER' | translate }}"
-	                                                                   ng-model="$ctrl.data.customer.name"
-	                                                                   ng-required="$ctrl.procurementSettings.fieldVisibility.isCustomerMandatory"
-	                                                                   disabled="true" 
-	                                                                   decode-input-format />
-	                                                        </div>
-                                                        </div>
-                                                    </div>                                                                                                    
+                                                    </div>
+                                                </div>                                                                                                    
 
                                             </div>
 
@@ -1458,7 +1458,7 @@
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <label class="mt-checkbox">
-                                                    <input id="product_preTest_{{ $index }}" ng-model="product.preTest"
+                                                    <input id="product_preTest_{{ $index }}" name="product_{{ $index }}_preTest" ng-model="product.preTest" ng-required="$ctrl.procurementSettings.fieldVisibility.isPreTestMandatory"
                                                         type="checkbox">
                                                     <span></span>
                                                 </label>
