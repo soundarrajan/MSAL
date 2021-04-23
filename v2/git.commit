@@ -1,9 +1,7 @@
-﻿commit 440fe9881c37506a0a182e9ed8131203012c71b4
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri Apr 23 14:24:02 2021 +0000
+﻿commit 2eb0c4e6819eea81e63c64521caf80bfbe92de8e
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Fri Apr 23 17:54:48 2021 +0300
 
-    Merged PR 10122: Fixed selected allowed company
-    
-    Fixed selected allowed company
+    Fixed scroll bar page
 
 branch: master
