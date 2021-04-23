@@ -1,8 +1,8 @@
-﻿commit 1d4bdda18bb89e7efa1985763028722cc57c9cb4
+﻿commit 9c2102b67ea0b14cdc88201f2671d92d13813995
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Fri Apr 23 07:44:47 2021 +0000
+Date:   Fri Apr 23 11:10:27 2021 +0000
 
-    Merged PR 10095: #29829 - bessel list api integration log code removed
+    Merged PR 10104: #29829 - document click event has changed to title event due to click event issue on body on bunkering plan screen
     
     Related work items: #29829
 
