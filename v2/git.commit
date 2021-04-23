@@ -1,7 +1,9 @@
-﻿commit ea9d2ddd7217c5ff9d2b75f3ccf1e31e65dbc7e7
+﻿commit 440fe9881c37506a0a182e9ed8131203012c71b4
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri Apr 23 13:17:24 2021 +0000
+Date:   Fri Apr 23 14:24:02 2021 +0000
 
-    Merged PR 10116: Added the asterisk symbol for min/max qty and price
+    Merged PR 10122: Fixed selected allowed company
+    
+    Fixed selected allowed company
 
 branch: master
