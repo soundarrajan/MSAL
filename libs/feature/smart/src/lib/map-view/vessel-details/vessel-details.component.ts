@@ -54,7 +54,7 @@ export class VesselDetailsComponent implements OnInit {
     })
   }
   getVesselList() {
-    // under test - load vessel list
+    // load vessel list for vessel search option
     this.localService.getVesselListImono(false).subscribe((tenantConfRes)=> {
       console.log('tenantConfRes for vessel imono',tenantConfRes);
       tenantConfRes = tenantConfRes.items
