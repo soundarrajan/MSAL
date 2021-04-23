@@ -1,8 +1,8 @@
-﻿commit 9c2102b67ea0b14cdc88201f2671d92d13813995
+﻿commit b6254a476854881dcfaa4275e4416f72263f443e
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Fri Apr 23 11:10:27 2021 +0000
+Date:   Fri Apr 23 12:04:30 2021 +0000
 
-    Merged PR 10104: #29829 - document click event has changed to title event due to click event issue on body on bunkering plan screen
+    Merged PR 10111: #29829 - update trigger event has removed due to nav causes in bunkering plan screen
     
     Related work items: #29829
 
