@@ -510,7 +510,7 @@ export class LocalService {
     getVesselListImono(request: any): Observable<any> {
       return this.http.post<any>(
         `${this._apiUrlInfra}/${VesselListApiPaths.getVesselList()}`,
-        { payload: request }, { headers: this.headersProp }
+        { payload: request }
       ).pipe(
           map(txs => txs.find(txn => txn.name == "VesselWithImo"))
       );
