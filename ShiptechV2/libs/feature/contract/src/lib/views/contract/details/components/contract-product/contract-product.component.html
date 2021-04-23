@@ -1,5 +1,6 @@
 <div class="row col-md-12 contract-section" style="margin-left: 0px;" id="container-contract">
-  <div class="add-contract-product-section" (click)="addProductToContract()">
+  <div class="add-contract-product-section" (click)="addProductToContract()" style="position: relative;
+  top: 5px;">
     <a class="add-contract-product-icon"></a>
   </div>
   <ng-container *ngFor="let contractProduct of formValues.products | keyvalue: originalOrder">
@@ -7,7 +8,8 @@
       <div (click)="selectedTabIndex = contractProduct.key; setAllowedLocations(selectedTabIndex); setAllowedProducts(selectedTabIndex)">
         <div class="contract-location-with-product-container d-flex">
           <div class="custom-form-field custom-form-field-location"  [ngClass]="{'darkTheme':switchTheme,
-            'lightTheme':!switchTheme, 'container-location-with-value': contractProduct.value.location}">
+            'lightTheme':!switchTheme,
+            'container-location-with-value': contractProduct.value.location && selectedTabIndex == contractProduct.key}">
             <mat-form-field 
               class="without-search"
               appearance="legacy">
@@ -62,12 +64,12 @@
               </mat-select>
             </mat-form-field>
           </div>
-          <div  (click)="removeProductFromContract(contractProduct.key)"  [ngClass]="{'container-product-with-value': contractProduct.value.product }">
-            <a class="remove-product-black-icon remove-product-icon">
+          <div [ngClass]="{'container-product-with-value': contractProduct.value.product  && selectedTabIndex == contractProduct.key}">
+            <a class="remove-product-black-icon remove-product-icon" (click)="removeProductFromContract(contractProduct.key)" >
             </a>
           </div>
           <div class="custom-form-field custom-form-field-location"  [ngClass]="{'darkTheme':switchTheme,
-            'lightTheme':!switchTheme, 'container-product-with-value without-search': contractProduct.value.product}">
+            'lightTheme':!switchTheme, 'container-product-with-value without-search': contractProduct.value.product  && selectedTabIndex == contractProduct.key}">
             <mat-form-field   class="without-search" 
               appearance="legacy">
               <mat-label *ngIf="!contractProduct.value.product">Add product</mat-label>
@@ -75,7 +77,8 @@
                 #singleSelect
                 disableOptionCentering 
                 [panelClass]="'location-select-container'"
-                [compareWith]="compareUomObjects">
+                [compareWith]="compareUomObjects"
+                (ngModelChange)="setProductChange(contractProduct.value.product, contractProduct.key)">
                 <div [ngClass]="{'expand-select-location-container': expandLocation}">
                   <div class="col-md-12 header-container-location no-padding">
                     <div class="search-location-container col-md-10 no-padding">
