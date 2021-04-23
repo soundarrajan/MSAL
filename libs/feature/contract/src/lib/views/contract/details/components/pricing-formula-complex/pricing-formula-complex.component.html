@@ -263,6 +263,7 @@
                 <mat-form-field class="without-search" appearance="legacy">
                   <input 
                       [(ngModel)]="complexFormulaQuoteLine.value.amount" 
+                      (keypress)="keyPressNumber($event)"
                       [disabled]= "complexFormulaQuoteLine.value.formulaPlusMinus && complexFormulaQuoteLine.value.formulaPlusMinus.id == 3"
                       matInput 
                       autocomplete="off"

@@ -381,6 +381,20 @@ export class VesselLocationBased extends DeliveryAutocompleteComponent
     }
   }
 
+    // Only Number
+    keyPressNumber(event) {
+      var inp = String.fromCharCode(event.keyCode);
+      if (inp == '.' || inp == ',' || inp == '-') {
+        return true;
+      }
+      if (/^[-,+]*\d{1,6}(,\d{3})*(\.\d*)?$/.test(inp)) {
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
+    }
+
   
  
 

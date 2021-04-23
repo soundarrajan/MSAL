@@ -44,6 +44,7 @@
                       matInput
                       autocomplete="off"
                       quantityFormat
+                      (keypress)="keyPressNumber($event)"
                       [disabled]="(contractDetail.value.tolerance != '' && contractDetail.value.tolerance) || 
                           (formValues.status && formValues.status.name == 'Confirmed')">
                   </mat-form-field>
@@ -60,6 +61,7 @@
                     <input 
                         [(ngModel)]="contractDetail.value.maxContractQuantity"
                         matInput
+                        (keypress)="keyPressNumber($event)"
                         [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
                         autocomplete="off"
                         quantityFormat>

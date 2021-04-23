@@ -39,6 +39,7 @@
         <input  
           [(ngModel)]="formValues.products[selectedTabIndex].price"
           [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
+          (keypress)="keyPressNumber($event)"
           matInput 
           autocomplete="off"
           placeholder="Price"
@@ -239,6 +240,7 @@
                         matInput 
                         amountFormat
                         autocomplete="off"
+                        (keypress)="keyPressNumber($event)"
                         [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
                   </mat-form-field>
                 </div>
