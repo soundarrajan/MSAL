@@ -280,6 +280,10 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       if (typeof this.formValues.details == 'undefined') {
         this.formValues.details = [ firstEntry ];
       }
+      if (this.formValues.allowedCompanies) {
+        this.selectedAllowedCompanies();
+        this.changeDetectorRef.detectChanges();
+      }
 
       
       console.log(this.staticLists);
@@ -293,6 +297,22 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     if (findList != -1) {
       return findList?.items;
     }
+  }
+
+  selectedAllowedCompanies() {
+    this.formValues.allowedCompanies.forEach((allowedCompany, k) => {
+      let findCompanyIndex = _.findIndex(this.companyList, function(object: any) {
+        return object.id == allowedCompany.id;
+      });
+      if (findCompanyIndex != -1 && this.companyList) {
+        this.companyList[findCompanyIndex].isSelected = true;
+      }
+    });
+    this.changeDetectorRef.detectChanges();
+
+    console.log(this.companyList);
+
+    
   }
 
 
