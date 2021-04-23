@@ -51,7 +51,8 @@ export class VesselInfoComponent implements OnInit {
   }
   
   public loadBunkerPlanHeader(event) {
-    this.localService.getBunkerPlanHeader(348).subscribe((data)=> {
+    let vesselId = event.id? event.id: 348;
+    this.localService.getBunkerPlanHeader(vesselId).subscribe((data)=> {
       console.log('bunker plan header',data);
       this.bunkerPlanHeaderDetail = (data?.payload && data?.payload.length)? data.payload[0]: {};
       this.vesselData = this.bunkerPlanHeaderDetail;
@@ -62,7 +63,7 @@ export class VesselInfoComponent implements OnInit {
 
   public loadROBArbitrage() {
     let vesselId = this.vesselData?.vesselId;
-      this.localService.getBunkerPlanId(348).subscribe((data)=> {
+      this.localService.getBunkerPlanId(vesselId).subscribe((data)=> {
         console.log('bunker plan id res',data);
         let bunkerPlanId = (data?.payload && data?.payload.length)? (data.payload)[0].latestPlanID: null;
         this.localService.loadROBArbitrage(bunkerPlanId).subscribe((data)=> {
