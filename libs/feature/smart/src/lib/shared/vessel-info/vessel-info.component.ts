@@ -57,7 +57,8 @@ export class VesselInfoComponent implements OnInit {
       this.bunkerPlanHeaderDetail = (data?.payload && data?.payload.length)? data.payload[0]: {};
       this.vesselData = this.bunkerPlanHeaderDetail;
       this.loadROBArbitrage();
-      document.body.click();
+      let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
+          titleEle.click();
     })
   }
 
