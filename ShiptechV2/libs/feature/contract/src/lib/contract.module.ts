@@ -140,6 +140,7 @@ import { ProductBased } from './views/contract/details/components/product-based/
 import { VesselLocationBased } from './views/contract/details/components/vessel-location-based/vessel-location-based.component';
 import { PriceTenantFormatDirective } from './views/contract/details/directives/price-tenant-format.directive';
 import { ExtendContractModalComponent } from './views/contract/details/components/extend-contract-modal/extend-contract-modal.component';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 
 @NgModule({
@@ -234,6 +235,7 @@ import { ExtendContractModalComponent } from './views/contract/details/component
     NgxMatNativeDateModule,
     NgxSpinnerModule,
     MatFormFieldModule,
+    NgxMatSelectSearchModule,
     MatSelectInfiniteScrollModule,
     BreadcrumbsModule
   ],
