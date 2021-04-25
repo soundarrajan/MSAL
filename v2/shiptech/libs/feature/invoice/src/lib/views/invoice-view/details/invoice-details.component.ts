@@ -5,6 +5,7 @@ import { AGGridCellActionsComponent } from '@shiptech/core/ui/components/ds-comp
 import { AGGridCellEditableComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-editable.component';
 import { AGGridCellRendererComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-renderer.component';
 import { GridOptions } from 'ag-grid-community';
+import { from } from 'rxjs';
 import { IInvoiceDetailsItemBaseInfo, IInvoiceDetailsItemCounterpartyDetails, IInvoiceDetailsItemDto, IInvoiceDetailsItemInvoiceCheck, IInvoiceDetailsItemInvoiceSummary, IInvoiceDetailsItemOrderDetails, IInvoiceDetailsItemPaymentDetails, IInvoiceDetailsItemProductDetails, IInvoiceDetailsItemRequest, IInvoiceDetailsItemRequestInfo, IInvoiceDetailsItemResponse, IInvoiceDetailsItemStatus } from '../../../services/api/dto/invoice-details-item.dto';
 import { InvoiceDetailsService } from '../../../services/invoice-details.service';
 @Component({
@@ -37,42 +38,42 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     contents: [
       {
         label: "Vessel",
-        value: "Puget Shipping",
+        value: "",
         customLabelClass: [],
         customValueClass: [],
       },
       {
         label: "Vessel Code",
-        value: "PUGET",
+        value: "",
         customLabelClass: [],
         customValueClass: [],
       },
       {
         label: "Port",
-        value: "Melbourne",
+        value: "",
         customLabelClass: [],
         customValueClass: [],
       },
       {
         label: "ETA",
-        value: "12/12/2020",
+        value: "00/00/2020",
         customLabelClass: [],
         customValueClass: [],
       }
     ],
     hasSeparator: false
   }
-  public counterpartyDetails = {
+  public counterpartyDetails ={
     contents: [
       {
         label: "Seller",
-        value: "AA Fuel Solns",
+        value: "",
         customLabelClass: [],
         customValueClass: [],
       },
       {
         label: "Broker",
-        value: "Marine Brokerage",
+        value: "",
         customLabelClass: [],
         customValueClass: [],
       }
@@ -260,7 +261,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     invoiceChecks: <IInvoiceDetailsItemInvoiceCheck[]>[],
     invoiceAmount: 0,
 	  invoiceTotalPrice: 0,
-    createdByUser:<IInvoiceDetailsItemBaseInfo>{},
+    createdByUser:<IInvoiceDetailsItemBaseInfo>{name:''},
     createdAt: '',
     invoiceDate: '',
     lastModifiedByUser: <IInvoiceDetailsItemBaseInfo>{},
@@ -395,13 +396,27 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     .getInvoicDetails(data)
     .subscribe((response: IInvoiceDetailsItemResponse) => {
       console.log(response);
-       this.formValues = response.payload;
+       this.formValues = <IInvoiceDetailsItemDto>response.payload;
        this.parseProductDetailData(this.formValues.productDetails);
+       this.setOrderDetailsLables(this.formValues.orderDetails);
+       this.setcounterpartyDetailsLables(this.formValues.counterpartyDetails);
 
 
         // this.invoiceDetails = response;
         // console.log(this.invoiceDetails.payload.sellerInvoiceNo);
     });
+  }
+
+  setOrderDetailsLables(orderDetails){
+    this.orderDetails.contents[0].value = orderDetails?.vesselName? orderDetails?.vesselName: "";
+    this.orderDetails.contents[1].value = orderDetails?.vesselCode? orderDetails?.vesselCode:"";
+    this.orderDetails.contents[2].value = orderDetails?.portName? orderDetails?.portName:"";
+    this.orderDetails.contents[3].value = orderDetails?.eta? orderDetails?.eta: "";
+  }
+
+  setcounterpartyDetailsLables(counterpartyDetails){
+    this.counterpartyDetails.contents[0].value = counterpartyDetails?.sellerName? counterpartyDetails?.sellerName : "";
+    this.counterpartyDetails.contents[1].value = counterpartyDetails?.brokerName? counterpartyDetails?.brokerName : "";
   }
 
   ngOnDestroy(): void {
