@@ -25,7 +25,7 @@
                     <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
                         <mat-form-field class="without-search" appearance="legacy">
                             <mat-label>Seller Invoice No.*</mat-label>
-                            <input matInput [( ngModel )]="formValues.sellerInvoiceNo">
+                            <input matInput [(ngModel)]="formValues.sellerInvoiceNo">
                         </mat-form-field>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
                     <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
                         <mat-form-field class="without-search" appearance="legacy">
                             <mat-label>Payment Terms</mat-label>
-                            <input matInput [( ngModel )]="formValues.paymentTerm.name">
+                            <input matInput [(ngModel)]="formValues.counterpartyDetails.paymentTerm.name">
                         </mat-form-field>
                     </div>
                 </div>
@@ -69,7 +69,7 @@
                         <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
                             <mat-form-field class="without-search" appearance="legacy">
                                 <mat-label>Invoice Currency Details</mat-label>
-                                <input matInput [( ngModel )]="formValues.invoiceRateCurrency.code">
+                                <input matInput [(ngModel)]="formValues.invoiceRateCurrency.code">
                             </mat-form-field>
                         </div>
                     </div>
@@ -103,7 +103,7 @@
                         <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
                             <mat-form-field class="without-search" appearance="legacy">
                                 <mat-label>Document No.</mat-label>
-                                <input matInput [( ngModel )]="formValues.documentNo">
+                                <input matInput [(ngModel)]="formValues.documentNo">
                             </mat-form-field>
                         </div>
                     </div>
@@ -200,7 +200,7 @@
                     <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
                         <mat-form-field class="without-search" appearance="legacy">
                             <mat-label>Account No.</mat-label>
-                            <input matInput [( ngModel )]="formValues.accountNumber">
+                            <input matInput [(ngModel)]="formValues.accountNumber">
                         </mat-form-field>
                     </div>
                 </div>
@@ -210,7 +210,7 @@
                     <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
                         <mat-form-field class="without-search" appearance="legacy">
                             <mat-label>Paid Amount</mat-label>
-                            <input matInput [( ngModel )]="formValues.paymentDetails.paidAmount">
+                            <input matInput [(ngModel)]="formValues.paymentDetails.paidAmount">
                         </mat-form-field>
                     </div>
                 </div>
@@ -224,7 +224,7 @@
         <div class="col-md-5">
             <div class="section-header">
                 <div class="header-label">Order Details</div>
-                <div class="header-data">Request ID: <span class="request-id">formValues.requestInfo.request.id</span></div>
+                <div class="header-data">Request ID: <span class="request-id">{{formValues.requestInfo.request.id}}</span></div>
             </div>
             <div class="section-content order-details">
                 <readonly-details [data]="orderDetails"></readonly-details>
