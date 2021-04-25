@@ -1,16 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { UrlService } from '@shiptech/core/services/url/url.service';
 import { AGGridCellActionsComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-actions.component';
 import { AGGridCellEditableComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-editable.component';
 import { AGGridCellRendererComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-renderer.component';
-import { AgGridCellStyleComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-style.component';
 import { GridOptions } from 'ag-grid-community';
-import { IInvoiceDetailsItemBaseInfo, IInvoiceDetailsItemCounterpartyDetails, IInvoiceDetailsItemDto, IInvoiceDetailsItemInvoiceCheck, IInvoiceDetailsItemInvoiceSummary, IInvoiceDetailsItemOrderDetails, IInvoiceDetailsItemPaymentDetails, IInvoiceDetailsItemProductDetails, IInvoiceDetailsItemRequest, IInvoiceDetailsItemRequestInfo, IInvoiceDetailsItemResponse, IInvoiceDetailsItemStatus, InvoiceFormModel } from '../../../services/api/dto/invoice-details-item.dto';
-import { InvoiceCompleteService } from '../../../services/invoice-complete.service';
+import { IInvoiceDetailsItemBaseInfo, IInvoiceDetailsItemCounterpartyDetails, IInvoiceDetailsItemDto, IInvoiceDetailsItemInvoiceCheck, IInvoiceDetailsItemInvoiceSummary, IInvoiceDetailsItemOrderDetails, IInvoiceDetailsItemPaymentDetails, IInvoiceDetailsItemProductDetails, IInvoiceDetailsItemRequest, IInvoiceDetailsItemRequestInfo, IInvoiceDetailsItemResponse, IInvoiceDetailsItemStatus } from '../../../services/api/dto/invoice-details-item.dto';
 import { InvoiceDetailsService } from '../../../services/invoice-details.service';
-
 @Component({
   selector: 'shiptech-invoice-detail',
   templateUrl: './invoice-details.component.html',
@@ -272,14 +268,18 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     relatedInvoices: '',
 	  relatedInvoicesSummary: [],
     orderDetails: <IInvoiceDetailsItemOrderDetails>{},
-    counterpartyDetails: <IInvoiceDetailsItemCounterpartyDetails>{},
+    counterpartyDetails: <IInvoiceDetailsItemCounterpartyDetails>{
+      paymentTerm:<IInvoiceDetailsItemBaseInfo>{name:''}
+    },
     paymentDetails: <IInvoiceDetailsItemPaymentDetails>{},
     productDetails: <IInvoiceDetailsItemProductDetails[]>[],
     costDetails: [],
     invoiceClaimDetails: [],
     invoiceSummary: <IInvoiceDetailsItemInvoiceSummary>{},
     screenActions: <IInvoiceDetailsItemBaseInfo[]>[],
-    requestInfo: <IInvoiceDetailsItemRequestInfo>{},
+    requestInfo: <IInvoiceDetailsItemRequestInfo>{
+      request:<IInvoiceDetailsItemBaseInfo>{id:0}
+    },
     isCreatedFromIntegration: false,
     hasManualPaymentDate: false,
     attachments: [],
