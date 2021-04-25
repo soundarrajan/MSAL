@@ -233,24 +233,11 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     { headerName: 'Difference', headerTooltip: 'Difference', field: 'name' }
   ];
 
-  private rowData_aggrid_pd = [
-    // {
-    //   del_no: '23243/DMA 0.1%', del_product: 'DMA 0.1%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
-    //   inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Matched', sulpher_content: '0.05', phy_supplier: 'British Petroleum'
-    // },
-    // {
-    //   del_no: '23243/RMK 380 3.5', del_product: '380 3.5%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
-    //   inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Unmatched', sulpher_content: '0.05', phy_supplier: 'British Petroleum'
-    // },
-    // {
-    //   del_no: '23243/RMK 380 3.5', del_product: '380 3.5%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
-    //   inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Matched', sulpher_content: '0.05', phy_supplier: 'British Petroleum'
-    // }
-  ];
+  private rowData_aggrid_pd = [];
 
   private rowData_aggrid = [];
 
-  formValues: IInvoiceDetailsItemDto = {
+  public formValues: IInvoiceDetailsItemDto = {
     sellerInvoiceNo: 0,
     documentNo: 0,
     invoiceId: 0,
@@ -293,7 +280,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     invoiceSummary: <IInvoiceDetailsItemInvoiceSummary>{},
     screenActions: <IInvoiceDetailsItemBaseInfo[]>[],
     requestInfo: <IInvoiceDetailsItemRequestInfo>{},
-    isCreatedFromIntegration: false,    hasManualPaymentDate: false,
+    isCreatedFromIntegration: false,
+    hasManualPaymentDate: false,
     attachments: [],
     customNonMandatoryAttribute1: '',
     customNonMandatoryAttribute2: '',
@@ -407,7 +395,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     .getInvoicDetails(data)
     .subscribe((response: IInvoiceDetailsItemResponse) => {
       console.log(response);
-       this.parseProductDetailData(response.payload.productDetails);
+       this.formValues = response.payload;
+       this.parseProductDetailData(this.formValues.productDetails);
 
 
         // this.invoiceDetails = response;
