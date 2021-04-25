@@ -269,7 +269,7 @@
                 </div>
                 
                 <div class="field-textarea">
-                    <textarea rows="4" cols="50" placeholder="Type front office comments here"></textarea>
+                    <textarea rows="4" cols="50" placeholder="Type front office comments here" [(ngModel)]="formValues.orderDetails.frontOfficeComments"></textarea>
                 </div>
             </div>
         </div>
@@ -313,7 +313,7 @@
                             </div>
                         </div>
                         <div class="field-textarea">
-                            <textarea rows="4" cols="50" placeholder="Type back office comments here"></textarea>
+                            <textarea rows="4" cols="50" placeholder="Type back office comments here" [(ngModel)]="formValues.backOfficeComments"></textarea>
                         </div>
                     </div>
                     <span class="seperator-line"></span>
@@ -342,10 +342,10 @@
                             </div>
                         </div>
                         <div style="padding-top: 5px;">
-                            <mat-checkbox class="example-margin">Payment proof received</mat-checkbox>
+                            <mat-checkbox class="example-margin" [(ngModel)]="formValues.paymentDetails.paymentProofReceived">Payment proof received</mat-checkbox>
                         </div>
                         <div class="field-textarea sizing">
-                            <textarea rows="4" cols="50" placeholder="Payment Proof comments"></textarea>
+                            <textarea rows="4" cols="50" placeholder="Payment Proof comments" [(ngModel)]="formValues.paymentDetails.comments"></textarea>
                         </div>
                     </div>
                 </div>

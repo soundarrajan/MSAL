@@ -1,11 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
 import { AGGridCellActionsComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-actions.component';
 import { AGGridCellEditableComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-editable.component';
 import { AGGridCellRendererComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-renderer.component';
 import { GridOptions } from 'ag-grid-community';
 import { from } from 'rxjs';
+import { KnownInvoiceRoutes } from '../../../known-invoice.routes';
 import { IInvoiceDetailsItemBaseInfo, IInvoiceDetailsItemCounterpartyDetails, IInvoiceDetailsItemDto, IInvoiceDetailsItemInvoiceCheck, IInvoiceDetailsItemInvoiceSummary, IInvoiceDetailsItemOrderDetails, IInvoiceDetailsItemPaymentDetails, IInvoiceDetailsItemProductDetails, IInvoiceDetailsItemRequest, IInvoiceDetailsItemRequestInfo, IInvoiceDetailsItemResponse, IInvoiceDetailsItemStatus } from '../../../services/api/dto/invoice-details-item.dto';
 import { InvoiceDetailsService } from '../../../services/invoice-details.service';
 @Component({
@@ -18,19 +20,21 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
   _entityId;
   activeBtn = 'Final';
+  emptyStringVal = '--';
+  emptyNumberVal = '00';
 
   public gridOptions_data: GridOptions;
   public gridOptions_ac: GridOptions;
   public chipData = [
-    {Title:'Invoice No', Data:''},
-    {Title:'Status', Data:'Draft'},
-    {Title:'Invoice Total', Data:''},
-    {Title:'Estimated Total', Data:'33,898.00 USD'},
-    {Title:'Total Difference', Data:'-33.898.00 USD'},
-    {Title:'Provisional Inv No.', Data:''},
-    {Title:'Provisional Total', Data:''},
-    {Title:'Deductions', Data:'USD'},
-    {Title:'Net Payable', Data:''}
+    {Title:'Invoice No', Data:this.emptyStringVal},
+    {Title:'Status', Data:this.emptyStringVal},
+    {Title:'Invoice Total', Data:this.emptyStringVal},
+    {Title:'Estimated Total', Data:this.emptyStringVal},
+    {Title:'Total Difference', Data:this.emptyStringVal},
+    {Title:'Provisional Inv No.', Data:this.emptyStringVal},
+    {Title:'Provisional Total', Data:this.emptyStringVal},
+    {Title:'Deductions', Data:this.emptyStringVal},
+    {Title:'Net Payable', Data:this.emptyStringVal}
   ]
 
   private productDetailsData = [];
@@ -38,25 +42,25 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     contents: [
       {
         label: "Vessel",
-        value: "",
+        value: this.emptyStringVal,
         customLabelClass: [],
         customValueClass: [],
       },
       {
         label: "Vessel Code",
-        value: "",
+        value: this.emptyStringVal,
         customLabelClass: [],
         customValueClass: [],
       },
       {
         label: "Port",
-        value: "",
+        value: this.emptyStringVal,
         customLabelClass: [],
         customValueClass: [],
       },
       {
         label: "ETA",
-        value: "00/00/2020",
+        value: this.emptyStringVal,
         customLabelClass: [],
         customValueClass: [],
       }
@@ -67,13 +71,13 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     contents: [
       {
         label: "Seller",
-        value: "",
+        value: this.emptyStringVal,
         customLabelClass: [],
         customValueClass: [],
       },
       {
         label: "Broker",
-        value: "",
+        value: this.emptyStringVal,
         customLabelClass: [],
         customValueClass: [],
       }
@@ -81,10 +85,12 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     hasSeparator: true
   }
 
-  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private invoiceService: InvoiceDetailsService) {
+  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private invoiceService: InvoiceDetailsService, route: ActivatedRoute) {
     iconRegistry.addSvgIcon(
       'data-picker-gray',
       sanitizer.bypassSecurityTrustResourceUrl('../../assets/customicons/calendar-dark.svg'));
+
+    this._entityId = route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
 
 
     this.gridOptions_ac = <GridOptions>{
@@ -387,7 +393,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   }
 
   getInvoiceItem() {
-    this._entityId = 10851;
+    // this._entityId = 10851;
     let data : IInvoiceDetailsItemRequest = {
       Payload: this._entityId
     };
@@ -400,23 +406,39 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
        this.parseProductDetailData(this.formValues.productDetails);
        this.setOrderDetailsLables(this.formValues.orderDetails);
        this.setcounterpartyDetailsLables(this.formValues.counterpartyDetails);
-
-
+       this.setChipDatas();
         // this.invoiceDetails = response;
         // console.log(this.invoiceDetails.payload.sellerInvoiceNo);
     });
   }
 
   setOrderDetailsLables(orderDetails){
-    this.orderDetails.contents[0].value = orderDetails?.vesselName? orderDetails?.vesselName: "";
-    this.orderDetails.contents[1].value = orderDetails?.vesselCode? orderDetails?.vesselCode:"";
-    this.orderDetails.contents[2].value = orderDetails?.portName? orderDetails?.portName:"";
-    this.orderDetails.contents[3].value = orderDetails?.eta? orderDetails?.eta: "";
+    this.orderDetails.contents[0].value = orderDetails?.vesselName? orderDetails?.vesselName:this.emptyStringVal;
+    this.orderDetails.contents[1].value = orderDetails?.vesselCode? orderDetails?.vesselCode:this.emptyStringVal;
+    this.orderDetails.contents[2].value = orderDetails?.portName? orderDetails?.portName:this.emptyStringVal;
+    this.orderDetails.contents[3].value = orderDetails?.eta? orderDetails?.eta:this.emptyStringVal;
+
+    this.formValues.orderDetails.frontOfficeComments = this.formValues.orderDetails.frontOfficeComments?.trim() ==''? null :this.formValues.orderDetails.frontOfficeComments;
+    this.formValues.backOfficeComments = this.formValues.backOfficeComments?.trim() ==''? null :this.formValues.backOfficeComments;
+    this.formValues.paymentDetails.comments = this.formValues.paymentDetails.comments?.trim() ==''? null :this.formValues.paymentDetails.comments;
   }
 
   setcounterpartyDetailsLables(counterpartyDetails){
-    this.counterpartyDetails.contents[0].value = counterpartyDetails?.sellerName? counterpartyDetails?.sellerName : "";
-    this.counterpartyDetails.contents[1].value = counterpartyDetails?.brokerName? counterpartyDetails?.brokerName : "";
+    this.counterpartyDetails.contents[0].value = counterpartyDetails?.sellerName? counterpartyDetails?.sellerName : this.emptyStringVal;
+    this.counterpartyDetails.contents[1].value = counterpartyDetails?.brokerName? counterpartyDetails?.brokerName : this.emptyStringVal;
+  }
+
+  setChipDatas(){
+    var ivs =  this.formValues.invoiceSummary;
+    this.chipData[0].Data = this.formValues.id?.toString();
+    this.chipData[1].Data = this.formValues.status.displayName? this.formValues.status.displayName : this.emptyStringVal;
+    this.chipData[2].Data = this.formValues.invoiceTotalPrice? this.formValues.invoiceTotalPrice?.toString():this.emptyNumberVal;
+    this.chipData[3].Data = ivs?.estimatedAmountGrandTotal? ivs?.estimatedAmountGrandTotal.toString():this.emptyNumberVal;
+    this.chipData[4].Data = ivs?.totalDifference? ivs?.totalDifference?.toString():this.emptyNumberVal;
+    this.chipData[5].Data = ivs?.provisionalInvoiceNo? ivs?.provisionalInvoiceNo?.toString():this.emptyNumberVal;
+    this.chipData[6].Data = ivs?.provisionalInvoiceAmount? ivs?.provisionalInvoiceAmount?.toString(): this.emptyNumberVal;
+    this.chipData[7].Data = ivs?.deductions? ivs?.deductions?.toString() : this.emptyNumberVal;
+    this.chipData[8].Data = ivs?.netPayable? ivs?.netPayable?.toString() : this.emptyNumberVal;
   }
 
   ngOnDestroy(): void {
