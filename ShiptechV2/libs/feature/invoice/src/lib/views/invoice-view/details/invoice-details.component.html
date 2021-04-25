@@ -1,6 +1,6 @@
 <!-- <app-button-toggle [data]="buttonToggleData"></app-button-toggle> -->
 <div class="section1">   
-    <div class="row">
+    <div class="row" style="margin:0px">
         <div class="col-md-6 col-sm-12 col-12 pt-4" style="line-height: 55px; padding: 0px; margin: 0px -15px;">
             <div class="row">
                 <div class="col-md-6">
@@ -14,9 +14,9 @@
                 </div>
                 <div class="col-md-6" style="padding-left: 88px; padding-top: 7px;">
                     <div class="badge-header-v2">
-                        <span>Created by: <b>Yusuf Hassan</b></span>
+                        <span>Created by: <b>{{formValues.createdByUser.displayName}}</b></span>
                         <span class="border_line"></span>
-                        <span>On: <b>17/06/2020</b></span>
+                        <span>On: <b>{{formValues.createdAt}}</b></span>
                     </div>
                 </div>
             </div>            
@@ -227,41 +227,7 @@
                 <div class="header-data">Request ID: <span class="request-id">{{formValues.requestInfo.request.id}}</span></div>
             </div>
             <div class="section-content order-details">
-                <readonly-details [data]="orderDetails"></readonly-details>
-                <!-- <div class="form-fields">
-                    <div id="custom-form-field" class="lightTheme">
-                        <mat-form-field class="without-search" appearance="legacy">
-                            <mat-label>Payment Company</mat-label>
-                            <mat-select disableOptionCentering>
-                                <mat-option>Option1</mat-option>
-                                <mat-option>Option2</mat-option>
-                            </mat-select>
-                            <div class="search-icon">
-                                <div class="img"></div>
-                            </div>
-                        </mat-form-field>
-                    </div>
-                    <div id="custom-form-field" class="lightTheme">
-                        <mat-form-field class="without-search" appearance="legacy">
-                            <mat-label>Delivery Date</mat-label>
-                            <input matInput [matDatepicker]="pickerDD" (focus)="pickerDD.open()">
-                            <mat-datepicker-toggle matSuffix [for]="pickerDD">
-                                <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
-                                </mat-icon>
-                            </mat-datepicker-toggle>
-                            <mat-datepicker #pickerDD></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-                    <div id="custom-form-field" class="lightTheme">
-                        <mat-form-field class="without-search" appearance="legacy">
-                            <mat-label>Carrier</mat-label>
-                            <mat-select disableOptionCentering>
-                                <mat-option>Option1</mat-option>
-                                <mat-option>Option2</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div> -->
+                <readonly-details [options]="orderDetails"></readonly-details>                
                 <div class="form-fields">
                     <div class="custom-form-field-with-search lightTheme">
                         <div class="d-flex">
@@ -314,7 +280,7 @@
             <div class="section-content order-details">
                 <div class="row">
                     <div class="col-md-6 pd-0">
-                        <readonly-details [data]="counterpartyDetails"></readonly-details>
+                        <readonly-details [options]="counterpartyDetails"></readonly-details>
                         <div class="form-fields" style="margin: 0px -15px;">
                             <div id="custom-form-field" class="lightTheme">
                                 <mat-form-field class="without-search" appearance="legacy">
