@@ -6,10 +6,23 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./readonly-details.component.css']
 })
 export class ReadonlyDetailsComponent implements OnInit {
-  @Input('data') data;
+  @Input('options') data:IRODataValues;
   constructor() { }
 
   ngOnInit(): void {
+
   }
 
+}
+
+export interface IRODataValues{
+  contents:IROItemdata[], 
+  hasSeparator:boolean
+}
+
+export interface IROItemdata{
+  label:string,
+  value:string,
+  customLabelClass?:string[],
+  customValueClass?:string[],
 }

@@ -31,7 +31,14 @@ const routes: Routes = [
       {
         path: KnownInvoiceRoutes.InvoiceView,
         component: InvoiceViewComponent,
-        data: { title: 'VIEW INVOICES', breadcrumb: 'View Invoice' }
+        data: { title: 'VIEW INVOICES', breadcrumb: 'View Invoice' },
+        children: [
+          {
+            path: `:${KnownInvoiceRoutes.InvoiceIdParam}/`+KnownInvoiceRoutes.InvoiceDetails,
+            component: InvoiceViewComponent,
+            data: { title: 'VIEW INVOICES', breadcrumb: 'View Invoice' }
+          }
+        ]
       }
     ]
   }
