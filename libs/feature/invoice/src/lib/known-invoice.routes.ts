@@ -1,7 +1,7 @@
 export enum KnownInvoiceRoutes {
   CompleteView = 'complete_view',
   InvoiceList = 'invoice',
-  InvoiceView = 'invoice',
+  InvoiceView = 'edit',
   InvoiceIdParam = 'invoiceid',
   InvoiceDetails = 'details',
 }
