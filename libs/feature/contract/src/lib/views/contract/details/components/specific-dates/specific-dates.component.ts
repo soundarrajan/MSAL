@@ -146,6 +146,9 @@ export class SpecificDates extends DeliveryAutocompleteComponent
   isValidToDateInvalid: boolean;
 
 
+  expandPricingDayCalendar: any = false;
+  expandEventDayCalendar: any = false;
+
   get entityId(): number {
     return this._entityId;
   }

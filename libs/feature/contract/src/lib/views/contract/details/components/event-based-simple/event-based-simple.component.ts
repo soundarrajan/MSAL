@@ -232,6 +232,10 @@ export class EventBasedSimple extends DeliveryAutocompleteComponent
 
   @Input() events: Observable<void>;
 
+  expandPricingDayCalendar: any = false;
+  expandEventDayCalendar: any = false;
+
+
 
   constructor(
     public gridViewModel: OrderListGridViewModel,
