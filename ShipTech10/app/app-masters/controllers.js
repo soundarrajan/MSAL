@@ -3866,12 +3866,16 @@
                         } else if (["locationHSFO05Grades","locationDistillateGrades","locationHSFO35Grades"].includes(id)) {
                             if (value.product.id == idToRemove) {
                                 indexRmv = index;
-                                $('*').tooltip('destroy');
-                                if ($scope.formValues[id][index].id > 0) {
-                                    $scope.formValues[id][index].isDeleted = true;
-                                } else {
-                                    $scope.formValues[id].splice(index, 1);
-                                }
+                                $timeout(()=>{
+	                                $('*').tooltip('destroy');
+	                                if ($scope.formValues[id][index]) {
+		                                if ($scope.formValues[id][index].id > 0) {
+		                                    $scope.formValues[id][index].isDeleted = true;
+		                                } else {
+		                                    $scope.formValues[id].splice(index, 1);
+		                                }
+	                                }
+                                })
                             }
                         } else {
                             comparator = 'id';

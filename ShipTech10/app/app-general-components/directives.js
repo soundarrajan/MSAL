@@ -2067,7 +2067,7 @@ Number(function() {
 	                            } else {
 		                        	tagNewValue = JSON.stringify(newValue[attrs.uniqueId]);
 		                        	tagOldValue = JSON.stringify(oldValue[attrs.uniqueId]);
-			                    	if (tagNewValue != tagOldValue && typeof tagNewValue !=  'undefined' ) {
+			                    	if (tagNewValue != tagOldValue || tagOldValue == undefined) {
 		                                scope.multiTags(attrs.uniqueId, -1, attrs.name);
 			                    	}
 	                            }
