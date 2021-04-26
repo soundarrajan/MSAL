@@ -12,11 +12,11 @@
                         </mat-button-toggle-group>
                     </div>
                 </div>
-                <div class="col-md-6" style="padding-left: 88px; padding-top: 7px;">
+                <div class="col-md-6" style="padding-left: 75px; padding-top: 7px;">
                     <div class="badge-header-v2">
-                        <span>Created by: <b>{{formValues.createdByUser.displayName}}</b></span>
+                        <span class="label_text" matTooltip={{formValues.createdByUser.displayName}}>Created by: <b>{{formValues.createdByUser.displayName}}</b></span>
                         <span class="border_line"></span>
-                        <span>On: <b>{{formValues.createdAt}}</b></span>
+                        <span class="label_text" matTooltip={{formValues.createdAt}}>On: <b>{{formValues.createdAt}}</b></span>
                     </div>
                 </div>
             </div>            
@@ -176,7 +176,9 @@
                     <div id="custom-form-field" class="lightTheme">
                         <mat-form-field class="without-search" appearance="legacy">
                             <mat-label>Invoice Status</mat-label>
-                            <mat-select disableOptionCentering>
+                            <mat-select 
+                                [disableOptionCentering]="true"
+                                panelClass="bdn-additional-select-container">
                                 <mat-option>Option1</mat-option>
                                 <mat-option>Option2</mat-option>
                             </mat-select>
@@ -237,7 +239,7 @@
                                     <mat-option>Payment Company</mat-option>
                                 </mat-select>
                             </mat-form-field>                            
-                            <div class="search-icon">
+                            <div class="search-icon" (click)="openSearchPopup()">
                                 <div class="img"></div>
                             </div>
                         </div>
