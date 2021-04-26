@@ -600,3 +600,8 @@
   height: 20px  !important;
   padding: 15px;
 }
+
+
+.custom-form-field.lightTheme .mat-form-field .mat-placeholder-required {
+  color: orange !important;
+}
