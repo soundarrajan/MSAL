@@ -911,6 +911,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             ctrl.request.requestNotes = $rootScope.notes;
             ctrl.buttonsDisabled = true;
             var valid;
+            ctrl.isRequiredMinMax(false);
             if (ctrl.request.requestStatus) {
                 if (ctrl.request.requestStatus.name == "Validated" || !ctrl.requestTenantSettings.isPrerequestEnabled) {
                     valid = ctrl.checkValidQuantities();
@@ -980,6 +981,12 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 	                ctrl.request.footerSection.isPrerequest = ctrl.requestTenantSettings.isPrerequestEnabled;
                 }
                 if (ctrl.isNewRequest) {
+                    var validActiveSpecGroupMessage = ctrl.checkInactiveSpecGroup();
+                    if (validActiveSpecGroupMessage != true) {
+                        toastr.error(validActiveSpecGroupMessage);
+                        ctrl.buttonsDisabled = false;
+                        return;
+                    } 
                     screenLoader.showLoader();
                     
                     newRequestModel.createRequest(ctrl.request).then(
@@ -1681,7 +1688,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     productList = ctrl.request.locations[ctrl.request.locations.length - 1].products;
                     if (ctrl.selectedVessel) {
                         // console.log('ctrl.selectedVessel',ctrl.selectedVessel);
-
                         if (ctrl.selectedVessel.defaultFuelOilProduct != null) {
                             ctrl.addProductAndSpecGroupToList(ctrl.selectedVessel.defaultFuelOilProduct, ctrl.selectedVessel.fuelOilSpecGroup, ctrl.selectedVessel.defaultFuelOilProductTypeId, productList, extraInfo);
                         }
@@ -1691,7 +1697,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         if (ctrl.selectedVessel.defaultLsfoProduct != null) {
                             ctrl.addProductAndSpecGroupToList(ctrl.selectedVessel.defaultLsfoProduct, ctrl.selectedVessel.lsfoSpecGroup, ctrl.selectedVessel.defaultLsfoProductTypeId, productList, extraInfo);
                         }
-
                         if (ctrl.selectedVessel.buyer !== null) {
                             locationObject.buyer = ctrl.buyer;
                         }
@@ -3062,7 +3067,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                             }
                         }
                     } else {
-                    	if (val2.product && ctrl.request.id) {
+                    	if (val2.product) {
                             if (val2.productStatus) {
                                 if ( val2.productStatus.name != "Cancelled") {
                                     specGroupErrors.push(`Please select a specGroup for "`+val2.product.name+`" from ` + val.location.name + `.`);
