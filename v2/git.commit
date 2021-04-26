@@ -1,9 +1,11 @@
-﻿commit f7274b8ec00f5544dc626d73241bac4b796873f8
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Mon Apr 26 08:15:27 2021 +0000
+﻿commit 28d14831828dd25ddf620bf7a0a4bfcd923449e3
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Mon Apr 26 08:29:44 2021 +0000
 
-    Merged PR 10147: #31690: Field Name is showing wrong in Current ROB & Arbitrage details has fixed
+    Merged PR 10149: Changed contract page URL when opening from Contract module/List from new ang...
     
-    Related work items: #31690
+    Changed contract page URL when opening from Contract module/List from new angular
+    
+    Related work items: #31852
 
 branch: master
