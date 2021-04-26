@@ -96,7 +96,7 @@ $denim: #5780A6;
 		.mat-selected {
 			background: $basecolor-l2 !important;
 			.mat-option-text {
-				color: var(--text_color_content);
+				color: $text_color_content;
 			}
 		}
 	}
@@ -316,7 +316,7 @@ $denim: #5780A6;
 	}
 	#alertConfig {
 		background-color: $basecolor-l2;
-		color: var(--white);
+		color: $white;
 		.delete-rule-menu {
 			span {
 				background: #8F9BAB;
@@ -1119,6 +1119,7 @@ $denim: #5780A6;
 		}
 		.more {
 			color: #8F9BAB;
+			content: none;
 		}
 		.mat-select-value {
 			color: #FFFFFF;
@@ -1556,7 +1557,7 @@ $denim: #5780A6;
 				}
 			}
 		}
-		#hsdisDetails {
+		#arbitrageDetails {
 			.dark-table {
 				background: $darkl1;
 				color: #8F9BAB !important;

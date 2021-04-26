@@ -16,13 +16,13 @@
       <div style="margin-right:20px;" class="close" title="Close" (click)="closePopup.emit()">
         <div class ="inactive"></div>
         <div class ="active"></div>
-        <!-- <img class="inactive" src="../../../assets/customicons/close-disable.svg" alt="close-icon">
-        <img class="active" src="../../../assets/customicons/close-active.svg" alt="close-icon"> -->
+        <!-- <img class="inactive" src="./assets/customicons/close-disable.svg" alt="close-icon">
+        <img class="active" src="./assets/customicons/close-active.svg" alt="close-icon"> -->
       </div>
     </div>
     <div style="float: right;">
       <div class="side-nav">
-        <div class="side-nav-icon" (click)="showBPlan.emit(true)"><img src="../../../assets/customicons/checklist.svg"
+        <div class="side-nav-icon" (click)="showBPlan.emit(true)"><img src="./assets/customicons/checklist.svg"
             alt="expand-icon">B Plan
         </div>
       </div>
@@ -30,20 +30,20 @@
     <div style="float: right;position: relative;top: 54px;">
       <div class="side-nav" [ngStyle]="{'opacity':popup_data.routeAvailable?'1':'0.5'}">
         <div class="side-nav-icon" (click)="popup_data.routeAvailable && showRoutes.emit(true)"><img
-            src="../../../assets/customicons/route.svg" alt="expand-icon">Route
+            src="./assets/customicons/route.svg" alt="expand-icon">Route
         </div>
       </div>
     </div>
     <!-- <div style="float: right;position: relative;top:108px">
       <div class="side-nav">
-        <div class="side-nav-icon"><img src="../../../assets/customicons/create-request.svg" alt="expand-icon">Create
+        <div class="side-nav-icon"><img src="./assets/customicons/create-request.svg" alt="expand-icon">Create
           Request
         </div>
       </div>
     </div>
     <div style="float: right;position: relative;top:162px">
       <div class="side-nav">
-        <div class="side-nav-icon"><img src="../../../assets/customicons/message.svg" alt="expand-icon">Message
+        <div class="side-nav-icon"><img src="./assets/customicons/message.svg" alt="expand-icon">Message
         </div>
       </div>
     </div> -->
@@ -61,7 +61,7 @@
 
                 <div class="voyage-details-header popup-header-icon">
                   <div>
-                    <img class="icon-circle-background" src="../../../assets/customicons/loader.png" alt="loader-icon">
+                    <img class="icon-circle-background" src="./assets/customicons/loader.png" alt="loader-icon">
                   </div>
                   <div style="flex:0 0 20%;display: flex;flex-direction: column;">
                     <div class="label">Service ID</div>
@@ -69,7 +69,7 @@
                   </div>
                   <div class="icon-seperator" style="padding-right: 5px;">|</div>
                   <div>
-                    <img class="icon-circle-background" src="../../../assets/customicons/community.svg" alt="community-icon">
+                    <img class="icon-circle-background" src="./assets/customicons/community.svg" alt="community-icon">
                   </div>
                   <div style="flex:0 0 20%;display: flex;flex-direction: column;">
                     <div class="label">Dept ID</div>
@@ -77,7 +77,7 @@
                   </div>
                   <div class="icon-seperator" style="padding-right: 5px;">|</div>
                   <div>
-                    <img class="icon-circle-background" src="../../../assets/customicons/shield.svg" alt="shield-icon">
+                    <img class="icon-circle-background" src="./assets/customicons/shield.svg" alt="shield-icon">
                   </div>
                   <div style="flex:0 0 20%;display: flex;flex-direction: column;">
                     <div class="label">Ownership</div>
@@ -90,9 +90,9 @@
               <div class="destination">
                 <div class="row" style="height: 34px;">
                   <div class="col-1">
-                    <img src="../../../assets/customicons/pin.svg" style="padding:0px 8px;margin-top: -12px;"
+                    <img src="./assets/customicons/pin.svg" style="padding:0px 8px;margin-top: -12px;"
                       alt="pin-icon">
-                    <img class="dot-icon" style="margin-top: -25px;" src="../../../assets/customicons/dot.svg"
+                    <img class="dot-icon" style="margin-top: -25px;" src="./assets/customicons/dot.svg"
                       alt="dot-icon">
                   </div>
                   <div class="col-3" style="padding-right: 0px;">
@@ -112,9 +112,9 @@
 
                 <div class="row" style="height: 34px;">
                   <div class="col-1">
-                    <img class="dot-icon" style="margin-top: -15px;" src="../../../assets/customicons/dot.svg"
+                    <img class="dot-icon" style="margin-top: -15px;" src="./assets/customicons/dot.svg"
                       alt="dot-icon">
-                    <img src="../../../assets/customicons/location.svg" style="padding:0px 8px;margin-top: -25px;"
+                    <img src="./assets/customicons/location.svg" style="padding:0px 8px;margin-top: -25px;"
                       alt="location-icon">
                   </div>
                   <div class="col-3" style="padding-right: 0px;">
@@ -179,7 +179,7 @@
               (opened)="changeDefault()">
               <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
                 <mat-panel-title>
-                  <img class="expand-icon" src="../../../assets/customicons/expand.svg" alt="expand-icon">
+                  <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
                   <div>Vessel Alerts</div>
                   <div class="alerts-count">
                     <div class="red-alerts">
@@ -201,11 +201,11 @@
                         <div class="alert-title">
                           <div class="d-flex align-items-center">
                             <ng-container [ngSwitch]="item.priority">
-                              <img *ngSwitchCase="1" class="icon" src="../../../assets/customicons/red-warning-o.svg"
+                              <img *ngSwitchCase="1" class="icon" src="./assets/customicons/red-warning-o.svg"
                                 alt="warning-icon">
-                              <img *ngSwitchCase="2" class="icon" src="../../../assets/customicons/amber-warning-o.svg"
+                              <img *ngSwitchCase="2" class="icon" src="./assets/customicons/amber-warning-o.svg"
                                 alt="warning-icon">
-                              <img *ngSwitchCase="3" class="icon" src="../../../assets/customicons/green-warning-o.svg"
+                              <img *ngSwitchCase="3" class="icon" src="./assets/customicons/green-warning-o.svg"
                                 alt="warning-icon">
                             </ng-container>
                             <div>{{item.alert}}</div>
@@ -217,11 +217,11 @@
                             </ng-container>
                             <ng-container *ngIf="item.status=='Pending'" class="alert-status">
                               <img style="flex: 0 0 22%;" class="status-icon"
-                                src="../../../assets/customicons/seen-icon.svg" alt="seen-icon">
+                                src="./assets/customicons/seen-icon.svg" alt="seen-icon">
                               <div style="flex: 0 0 56%;">Pending</div>
                             </ng-container>
                             <ng-container *ngIf="item.status=='Resolved'" class="alert-status">
-                              <img style="flex: 0 0 22%;" class="tick-icon" src="../../../assets/customicons/tick.svg"
+                              <img style="flex: 0 0 22%;" class="tick-icon" src="./assets/customicons/tick.svg"
                                 alt="tick-icon">
                               <div style="flex: 0 0 56%;">Resolved</div>
                             </ng-container>
@@ -245,7 +245,7 @@
               (opened)="changeDefault()">
               <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
                 <mat-panel-title>
-                  <img class="expand-icon" src="../../../assets/customicons/expand.svg" alt="expand-icon">
+                  <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
                   <div>Outstanding Request</div>
                   <div class="count">4
                   </div>
@@ -260,7 +260,7 @@
               (opened)="changeDefault()">
               <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
                 <mat-panel-title>
-                  <img class="expand-icon" src="../../../assets/customicons/expand.svg" alt="expand-icon">
+                  <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
                   Vessel redelivery information
                 </mat-panel-title>
               </mat-expansion-panel-header>
@@ -268,7 +268,7 @@
 
                 <div class="popup-header-icon">
                   <div>
-                    <img class="icon-circle-background"  src="../../../assets/customicons/shield.svg" alt="shield-icon">
+                    <img class="icon-circle-background"  src="./assets/customicons/shield.svg" alt="shield-icon">
                   </div>
                   <div style="flex:0 0 20%;display: flex;flex-direction: column;align-items: self-start;">
                     <div class="label">Vessel ID</div>
@@ -276,7 +276,7 @@
                   </div>
                   <div class="icon-seperator" style="padding-right: 5px;">|</div>
                   <div>
-                    <img class="icon-circle-background" src="../../../assets/customicons/calendar.svg" alt="calendar-icon">
+                    <img class="icon-circle-background" src="./assets/customicons/calendar.svg" alt="calendar-icon">
                   </div>
                   <div style="flex:0 0 25%;display: flex;flex-direction: column;align-items: self-start;">
                     <div class="label">Vessel Expiry Date</div>
@@ -284,7 +284,7 @@
                   </div>
                   <div class="icon-seperator" style="padding-right: 5px;">|</div>
                   <div>
-                    <img class="icon-circle-background" src="../../../assets/customicons/countdown.svg" alt="time-icon">
+                    <img class="icon-circle-background" src="./assets/customicons/countdown.svg" alt="time-icon">
                   </div>
                   <div style="flex:0 0 20%;display: flex;flex-direction: column;align-items: self-start;">
                     <div class="label">Redelivery</div>
@@ -356,7 +356,7 @@
               (opened)="changeDefault()">
               <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
                 <mat-panel-title>
-                  <img class="expand-icon" src="../../../assets/customicons/expand.svg" alt="expand-icon">
+                  <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
                   <div>Vessel schedule list</div>
                   <div class="count">5
                   </div>
@@ -367,14 +367,14 @@
                 <div class="row">
                   <div class="col-3" style="line-height: 9px;display: flex;">
                     <div class="grey">
-                      <img src="../../../assets/customicons/location.svg" alt="location">
-                      <img class="dot-icon" src="../../../assets/customicons/dot.svg" alt="dot-icon">
-                      <img class="dot-icon" src="../../../assets/customicons/dot.svg" alt="dot-icon">
+                      <img src="./assets/customicons/location.svg" alt="location">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
                     </div>
                     <div class="white">
-                      <img src="../../../assets/customicons/location-w.svg" alt="location">
-                      <img class="dot-icon" src="../../../assets/customicons/dot.svg" alt="dot-icon">
-                      <img class="dot-icon" src="../../../assets/customicons/dot.svg" alt="dot-icon">
+                      <img src="./assets/customicons/location-w.svg" alt="location">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
                     </div>
                     <!-- </div>
                   <div class="col-2 pd-0"> -->
@@ -393,14 +393,14 @@
                 <div class="row">
                   <div class="col-3" style="line-height: 9px;display: flex;">
                     <div class="grey">
-                      <img src="../../../assets/customicons/location.svg" alt="location">
-                      <img class="dot-icon" src="../../../assets/customicons/dot.svg" alt="dot-icon">
-                      <img class="dot-icon" src="../../../assets/customicons/dot.svg" alt="dot-icon">
+                      <img src="./assets/customicons/location.svg" alt="location">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
                     </div>
                     <div class="white">
-                      <img src="../../../assets/customicons/location-w.svg" alt="location">
-                      <img class="dot-icon" src="../../../assets/customicons/dot.svg" alt="dot-icon">
-                      <img class="dot-icon" src="../../../assets/customicons/dot.svg" alt="dot-icon">
+                      <img src="./assets/customicons/location-w.svg" alt="location">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
                     </div>
                     <!-- </div>
                   <div class="col-2 pd-0"> -->
@@ -420,14 +420,14 @@
                 <div class="row">
                   <div class="col-3" style="line-height: 9px;display: flex;">
                     <div class="grey">
-                      <img src="../../../assets/customicons/location.svg" alt="location">
-                      <img class="dot-icon" src="../../../assets/customicons/dot.svg" alt="dot-icon">
-                      <img class="dot-icon" src="../../../assets/customicons/dot.svg" alt="dot-icon">
+                      <img src="./assets/customicons/location.svg" alt="location">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
                     </div>
                     <div class="white">
-                      <img src="../../../assets/customicons/location-w.svg" alt="location">
-                      <img class="dot-icon" src="../../../assets/customicons/dot.svg" alt="dot-icon">
-                      <img class="dot-icon" src="../../../assets/customicons/dot.svg" alt="dot-icon">
+                      <img src="./assets/customicons/location-w.svg" alt="location">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
                     </div>
 
                     <!-- </div>
@@ -447,14 +447,14 @@
                 <div class="row">
                   <div class="col-3" style="line-height: 9px;display: flex;">
                     <div class="grey">
-                      <img src="../../../assets/customicons/location.svg" alt="location">
-                      <img class="dot-icon" src="../../../assets/customicons/dot.svg" alt="dot-icon">
-                      <img class="dot-icon" src="../../../assets/customicons/dot.svg" alt="dot-icon">
+                      <img src="./assets/customicons/location.svg" alt="location">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
                     </div>
                     <div class="white">
-                      <img src="../../../assets/customicons/location-w.svg" alt="location">
-                      <img class="dot-icon" src="../../../assets/customicons/dot.svg" alt="dot-icon">
-                      <img class="dot-icon" src="../../../assets/customicons/dot.svg" alt="dot-icon">
+                      <img src="./assets/customicons/location-w.svg" alt="location">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
                     </div>
 
                     <!-- </div>
@@ -474,9 +474,9 @@
                 </div>
                 <div class="row">
                   <div class="col-3" style="display: flex;">
-                    <img class="grey" src="../../../assets/customicons/pin.svg" style="margin-top: -8px;"
+                    <img class="grey" src="./assets/customicons/pin.svg" style="margin-top: -8px;"
                       alt="pin-icon">
-                    <img class="white" src="../../../assets/customicons/pin-w.svg" style="margin-top: -8px;"
+                    <img class="white" src="./assets/customicons/pin-w.svg" style="margin-top: -8px;"
                       alt="pin-icon">
                     <!-- </div>
                   <div class="col-2 pd-0"> -->

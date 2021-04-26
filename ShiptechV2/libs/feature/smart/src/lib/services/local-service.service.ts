@@ -1,9 +1,37 @@
 import { Injectable } from '@angular/core';
+import { ApiCallUrl } from '@shiptech/core/utils/decorators/api-call.decorator';
+import { AppConfig } from '@shiptech/core/config/app-config';
+import { ApiServiceBase } from '@shiptech/core/api/api-base.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
 import { Observable, throwError } from 'rxjs';
 import { map, retry, catchError } from 'rxjs/operators';
 import { VesselDataModel, FuelDetails, VesselLocation, RequestDetail } from '../shared/models/vessel.data.model';
 import { BehaviorSubject } from 'rxjs';
+
+export namespace UserRoleApiPaths {
+    export const getUserRole = () => `api/BOPS/Roles/GetBOPSRoles`;
+}
+export namespace VesselListApiPaths {
+    export const getVesselList = () => `api/infrastructure/static/lists`;
+}
+export namespace VesselImportPlanStatusApiPaths {
+    export const GetVesselImportPlanStatus = () => `api/BOPS/Roles/GetVesselImportPlanStatus`;
+}
+export namespace BunkerPlanHeaderApiPaths {
+    export const GetBunkerPlanHeader = () => `api/BOPS/bunkerplan/get/header`;
+}
+
+export namespace GetROBArbitrageApiPaths {
+    export const GetROBArbitrageUrl = () => `api/BOPS/bunkerplan/get/BunkerPlanHeader`;
+}
+
+export namespace GetbunkerPlanIDApiPaths {
+    export const GetbunkerPlanIDUrl = () => `api/BOPS/bunkerplan/get/PlanId`;
+}
+export namespace GetCurrentROBApiPaths {
+    export const GetCurrentROB = () => `api/BOPS/bunkerplan/get/CurrentROB`;
+}
 
 @Injectable({
     providedIn: 'root'
@@ -32,8 +60,15 @@ export class LocalService {
     api: any;
     headersProp: HttpHeaders;
 
-    constructor(private http: HttpClient) {
-        this.headersProp = new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }, );   
+    @ApiCallUrl()
+    protected _apiUrlAdmin = this.appConfig.v1.API.BASE_URL_DATA_ADMIN;
+    protected _apiUrl = this.appConfig.v1.API.BASE_URL_DATA_BOPS;
+    protected _apiUrlInfra = this.appConfig.v1.API.BASE_URL_DATA_INFRASTRUCTURE;
+
+    constructor(private http: HttpClient, private appConfig: AppConfig) {
+        // this.headersProp = new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }, );   
+        this.headersProp = new HttpHeaders();
+        this.headersProp.append('Content-Type', 'application/json');   
         this.getVesselsList().subscribe(data => {
             // console.log(data);
         });
@@ -460,6 +495,93 @@ export class LocalService {
             var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
             return v.toString(16);
         });
+    }
+
+    // getBunkerUserRole to get bunker user roles
+    @ObservableException()
+    getBunkerUserRole(request: any): Observable<any> {
+      return this.http.post<any>(
+        `${this._apiUrl}/${UserRoleApiPaths.getUserRole()}`,
+        { payload: request }, { headers: this.headersProp }
+      );
+    }
+    // VesselListApiPaths to get vessel imono data
+    @ObservableException()
+    getVesselListImono(request: any): Observable<any> {
+      return this.http.post<any>(
+        `${this._apiUrlInfra}/${VesselListApiPaths.getVesselList()}`,
+        { payload: request }
+      ).pipe(
+          map(txs => txs.find(txn => txn.name == "VesselWithImo"))
+      );
+    }
+
+    // getBunkerUserRole to get bunker user roles
+    @ObservableException()
+    getVesselList(request: any=undefined): Observable<any> {
+    let db;
+    let dbReq = indexedDB.open('Shiptech-UI.Lookups', 10);
+    return new Observable((observer) => {
+            dbReq.onsuccess = function(event) {
+                db = dbReq.result;
+                var transaction = db.transaction(['vessel'], 'readonly');
+                var objectStore = transaction.objectStore("vessel");
+                var objectStoreRequest = objectStore.getAll();
+
+                objectStoreRequest.onsuccess = function(event) {
+                   var response = event.target.result;
+                   
+                   if (response) {
+                    observer.next(response);
+                    observer.complete();
+                   }
+                }
+            }
+            dbReq.onerror = function(event) {
+              alert('error opening database ' + event.target);
+            }
+        })
+    }
+    
+    // getBunkerUserRole to get bunker user roles
+    @ObservableException()
+    checkVesselHasNewPlan(request: any): Observable<any> {
+      return this.http.post<any>(
+        `${this._apiUrl}/${VesselImportPlanStatusApiPaths.GetVesselImportPlanStatus()}`,
+        { payload: request }
+      );
+    }
+    // getBunkerPalnHeader to get bunker plan header details based on vessel change
+    @ObservableException()
+    getBunkerPlanHeader(request: any): Observable<any> {
+      return this.http.post<any>(
+        `${this._apiUrl}/${BunkerPlanHeaderApiPaths.GetBunkerPlanHeader()}`,
+        { payload: request }
+      );
+    }
+    // loadROBArbitrage to get roband arbitrage details based on vessel change
+    @ObservableException()
+    loadROBArbitrage(request: any): Observable<any> {
+      return this.http.post<any>(
+        `${this._apiUrl}/${GetCurrentROBApiPaths.GetCurrentROB()}`,
+        {payload: request}
+      );
+    }
+    // bunkerplanId to get plan id for rob, arbitrage details based on vessel change
+    @ObservableException()
+    getBunkerPlanId(request: any): Observable<any> {
+      return this.http.post<any>(
+        `${this._apiUrl}/${GetbunkerPlanIDApiPaths.GetbunkerPlanIDUrl()}`,
+        {payload: request}
+      );
+    }
+    // updateROBArbitrageChanges to put current ROB row detail on vessel role
+    @ObservableException()
+    updateROBArbitrageChanges(request: any): Observable<any> {
+      return this.http.post<any>(
+        `${this._apiUrl}/${GetROBArbitrageApiPaths.GetROBArbitrageUrl()}`,
+        {payload: request}
+      );
     }
 
     // public getVesselByName(vesselName): Observable<any> {

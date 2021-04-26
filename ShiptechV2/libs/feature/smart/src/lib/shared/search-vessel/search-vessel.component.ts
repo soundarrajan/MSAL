@@ -46,7 +46,7 @@ export class SearchVesselComponent implements OnInit, OnChanges {
     if (filterValue == "")
       return;
     else
-      return this.filterList.filter(option => (option.VesselName.toLowerCase().indexOf(filterValue) > -1));
+      return this.filterList.filter(option => (option.displayName.toLowerCase().indexOf(filterValue) > -1));
   }
   clearSearch() {
     this.searchVesselControl.setValue('');
@@ -92,11 +92,11 @@ export class SearchVesselComponent implements OnInit, OnChanges {
 
   setVesselList() {
     //Make a list of vesselname and vessel ID
-    this.vesselList.forEach(vessel => {
-      this.filterList.push({ VesselIMONO: vessel.VesselIMONO, VesselName: vessel.VesselIMONO });
-      this.filterList.push({ VesselIMONO: vessel.VesselIMONO, VesselName: vessel.VesselName })
-    })
-
+    // this.vesselList.forEach(vessel => {
+    //   // this.filterList.push({ VesselIMONO: vessel.VesselIMONO, VesselName: vessel.VesselIMONO });
+    //   this.filterList.push({ VesselIMONO: vessel.imono, displayName: vessel.displayName })
+    // })
+    this.filterList = [...this.vesselList];
   }
   onVesselSelected(trigger: MatAutocompleteTrigger) {
     this.selectedValue = this.searchVesselControl.value;
@@ -106,8 +106,8 @@ export class SearchVesselComponent implements OnInit, OnChanges {
     if (document.getElementById('vesselSearch')) {
       document.getElementById('vesselSearch').blur();
     }
-    let vessel = this.vesselList.filter(element => (element.VesselIMONO == this.searchVesselControl.value) ||
-      (element.VesselName.toLowerCase() == this.searchVesselControl.value.toLowerCase()));
+    let vessel = this.vesselList.filter(element => (element.imono == this.searchVesselControl.value) ||
+      (element.imono.toLowerCase() == this.searchVesselControl.value.toLowerCase()));
     if (vessel.length > 0)
       this.changeVessel.emit(vessel[0]);
   }
