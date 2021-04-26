@@ -7,16 +7,16 @@
 
 /* Scrollbar */
 
-::-webkit-scrollbar {
-	width: 4px;
-	height: 4px;
-	background-color: transparent;
-}
+// ::-webkit-scrollbar {
+// 	width: 4px !important;
+// 	height: 4px !important;
+// 	background-color: transparent !important;
+// }
 
-::-webkit-scrollbar-track {
-	border-radius: 10px;
-	background-color: transparent;
-}
+// ::-webkit-scrollbar-track {
+// 	border-radius: 10px !important;
+// 	background-color: transparent !important;
+// }
 
 // ::-webkit-scrollbar-thumb {
 // 	border-radius: 10px;
@@ -1802,6 +1802,7 @@ label {
 	}
 	.more {
 		display: flex;
+		content: none;
 		//color: $grey2;
 	}
 	.mat-select-value {
@@ -2333,6 +2334,10 @@ label {
 		.mat-checkbox-inner-container {
 		//	background: $dark-l2 !important;
 			border-radius: 4px;
+			width: 16px;
+    		height: 16px;
+    		right: 0;
+    		top: 0;
 		}
 		.mat-checkbox-background {
 			// background-color: $dark-l2 !important;
@@ -2953,7 +2958,7 @@ label {
 			}
 		}
 	}
-	#hsdisDetails {
+	#arbitrageDetails {
 		align-items: flex-end;
 		display: flex;
 		flex-direction: column;
@@ -6958,6 +6963,9 @@ label {
 			}
 			&.blue-button {
 				background-color: $blue;
+			}
+			&.black-button {
+				background-color: $black;
 			}
 		}
 	}

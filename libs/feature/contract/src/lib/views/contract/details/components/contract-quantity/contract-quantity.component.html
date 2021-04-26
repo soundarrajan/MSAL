@@ -1,0 +1,118 @@
+
+<div class="row col-md-12 contract-section" style="margin-left: 0px;">
+  <div (click)="formValues.status && formValues.status.name == 'Confirmed' ? '': addContractQuantityDetail()"  class="add-contract-quantity-section">
+    <a class="add-contract-quantity-icon"></a>
+  </div>
+  <div class="contract-quantity-section row">
+    <ng-container *ngFor="let contractDetail of formValues.details | keyvalue : originalOrder">
+      <div *ngIf="!contractDetail.value.isDeleted" class="contract-quantity-container col-md-6" [ngClass]="{'no-padding-right': contractDetail.key % 2 == 1}">
+        <div class="quantity-header">
+          <div class="label-content col-md-2">
+            <a class="remove-contract-quantity-icon" (click)="formValues.status && formValues.status.name == 'Confirmed' ? '': removeContractQuantityDetail(contractDetail.key)"></a>
+            Quantity:
+          </div>
+          <div style="display: flex; align-items: center; flex: 0 0 20%; max-width: 20%;" class="col-md-2">
+            <div class="select-contract-quantity-container value" [ngClass]="{'darkTheme':switchTheme}">
+              <div class="dropdown">
+                <mat-form-field appearance="legacy" class="contract-quantity-select-container">
+                  <mat-select
+                    [(ngModel)]="contractDetail.value.contractualQuantityOption"
+                    disableOptionCentering 
+                    [panelClass]="'contract-quantity-select-container'"
+                    [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
+                    [compareWith]="compareUomObjects">
+                    <mat-option *ngFor="let option of contractualQuantityOptionList"
+                        [value]="option">
+                        <mat-radio-button [value]="option">   
+                          {{option.name}}
+                        </mat-radio-button>
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="border_line"></div>
+          <div  class="col-md-2">
+            <span class="label">Min
+              <span style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;">*</span>
+            </span>
+            <div class="value">
+              <div class="custom-form-field custom-field-contract-quantity" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+                <mat-form-field class="without-search" appearance="legacy">
+                  <input 
+                      [(ngModel)]="contractDetail.value.minContractQuantity"
+                      matInput
+                      autocomplete="off"
+                      quantityFormat
+                      (keypress)="keyPressNumber($event)"
+                      [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
+                  </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="border_line"></div>
+          <div  class="col-md-2">
+            <span class="label">Max
+              <span style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;">*</span>
+            </span>
+            <div class="value">
+              <div class="value">
+                <div class="custom-form-field custom-field-contract-quantity" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+                  <mat-form-field class="without-search" appearance="legacy">
+                    <input 
+                        [(ngModel)]="contractDetail.value.maxContractQuantity"
+                        matInput
+                        (keypress)="keyPressNumber($event)"
+                        [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
+                        autocomplete="off"
+                        quantityFormat>
+                    </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="border_line"></div>
+          <div  class="col-md-2">
+            <span class="label">Uom</span>
+            <div class="value">
+              <div class="custom-form-field custom-field-contract-quantity" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+                <mat-form-field class="without-search" appearance="legacy">
+                  <mat-select 
+                        [(ngModel)]="contractDetail.value.uom"
+                        [disableOptionCentering]="true"
+                        panelClass="general-information-select-container"
+                        [compareWith]="compareUomObjects"
+                        [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
+                      <mat-option *ngFor="let option of uomList" [value]="option">
+                          {{option.name}}
+                      </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="border_line"></div>
+          <div  class="col-md-2">
+            <span class="label">Tolerance %</span>
+            <div class="value">
+              <div class="value">
+                <div class="custom-form-field custom-field-contract-quantity" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+                  <mat-form-field class="without-search" appearance="legacy">
+                    <input 
+                        [(ngModel)]="contractDetail.value.tolerance"
+                        matInput
+                        autocomplete="off"
+                        required
+                        [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
+                    </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
+ 

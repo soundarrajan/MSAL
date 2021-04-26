@@ -28,20 +28,20 @@
       <div style="margin-right:20px;" class="close" title="Close" (click)="closePopup.emit(popup_data.name)">
         <div class="inactive"></div>
         <div class="active"></div>
-        <!-- <img class="inactive" src="../../../assets/customicons/close-disable.svg" alt="close-icon">
-        <img class="active" src="../../../assets/customicons/close-active.svg" alt="close-icon"> -->
+        <!-- <img class="inactive" src="./assets/customicons/close-disable.svg" alt="close-icon">
+        <img class="active" src="./assets/customicons/close-active.svg" alt="close-icon"> -->
       </div>
     </div>
     <div style="float: right;position: relative;" (click)="setPortInfo(popup_data)">
       <div class="side-nav">
-        <div class="side-nav-icon"><img src="../../../assets/customicons/vessel_arrival.svg" alt="expand-icon">
+        <div class="side-nav-icon"><img src="./assets/customicons/vessel_arrival.svg" alt="expand-icon">
           Vessel Arrivals
         </div>
       </div>
     </div>
     <!-- <div style="float: right;position: relative;top:54px">
       <div class="side-nav">
-        <div class="side-nav-icon"><img src="../../../assets/customicons/message.svg" alt="expand-icon">Message
+        <div class="side-nav-icon"><img src="./assets/customicons/message.svg" alt="expand-icon">Message
         </div>
       </div>
     </div> -->
@@ -59,7 +59,7 @@
 
                 <div class="voyage-details-header popup-header-icon">
                   <div>
-                    <img class="icon-circle-background" src="../../../assets/customicons/calendar.svg"
+                    <img class="icon-circle-background" src="./assets/customicons/calendar.svg"
                       alt="community-icon">
                   </div>
                   <div
@@ -70,7 +70,7 @@
                   </div>
                   <div class="icon-seperator" style="padding-right: 5px;">|</div>
                   <div>
-                    <img class="icon-circle-background" src="../../../assets/customicons/calendar.svg"
+                    <img class="icon-circle-background" src="./assets/customicons/calendar.svg"
                       alt="community-icon">
                   </div>
                   <div
@@ -111,7 +111,7 @@
               (opened)="changeDefault()">
               <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
                 <mat-panel-title>
-                  <img class="expand-icon" src="../../../assets/customicons/expand.svg" alt="expand-icon">
+                  <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
                   <div>Port Remarks</div>
                   <div class="count">{{alerts.length}}
                   </div>
@@ -125,11 +125,11 @@
                       <div class="alert-title">
                         <div class="d-flex align-items-center">
                           <ng-container [ngSwitch]="item.priority">
-                            <img *ngSwitchCase="1" class="icon" src="../../../assets/customicons/red-warning-o.svg"
+                            <img *ngSwitchCase="1" class="icon" src="./assets/customicons/red-warning-o.svg"
                               alt="warning-icon">
-                            <img *ngSwitchCase="2" class="icon" src="../../../assets/customicons/amber-warning-o.svg"
+                            <img *ngSwitchCase="2" class="icon" src="./assets/customicons/amber-warning-o.svg"
                               alt="warning-icon">
-                            <img *ngSwitchCase="3" class="icon" src="../../../assets/customicons/green-warning-o.svg"
+                            <img *ngSwitchCase="3" class="icon" src="./assets/customicons/green-warning-o.svg"
                               alt="warning-icon">
                           </ng-container>
                           <div>{{item.alert}}</div>
@@ -140,11 +140,11 @@
                           </ng-container>
                           <ng-container *ngIf="item.status=='Pending'" class="alert-status">
                             <img style="flex: 0 0 22%;" class="status-icon"
-                              src="../../../assets/customicons/seen-icon.svg" alt="seen-icon">
+                              src="./assets/customicons/seen-icon.svg" alt="seen-icon">
                             <div style="flex: 0 0 56%;">Pending</div>
                           </ng-container>
                           <ng-container *ngIf="item.status=='Resolved'" class="alert-status">
-                            <img style="flex: 0 0 22%;" class="tick-icon" src="../../../assets/customicons/tick.svg"
+                            <img style="flex: 0 0 22%;" class="tick-icon" src="./assets/customicons/tick.svg"
                               alt="tick-icon">
                             <div style="flex: 0 0 56%;">Resolved</div>
                           </ng-container>
@@ -159,7 +159,7 @@
                 <div class="alert-notif">
                   <div class="alert-title">
                     <div class="d-flex align-items-center">
-                      <img class="disable-icon icon" src="../../../assets/customicons/disable-warning.svg"
+                      <img class="disable-icon icon" src="./assets/customicons/disable-warning.svg"
                         alt="warning-icon">
                       <div class="newRemark">New Port Remarks</div>
                     </div>
@@ -190,11 +190,11 @@
                             <div style="margin-bottom: 5px;">
                               <ng-container [ngSwitch]="severity">
                                 <img *ngSwitchCase="1" class="warning-icon"
-                                  src="../../../assets/customicons/red-warning-o.svg" alt="warning-icon">
+                                  src="./assets/customicons/red-warning-o.svg" alt="warning-icon">
                                 <img *ngSwitchCase="2" class="warning-icon"
-                                  src="../../../assets/customicons/amber-warning-o.svg" alt="warning-icon">
+                                  src="./assets/customicons/amber-warning-o.svg" alt="warning-icon">
                                 <img *ngSwitchCase="3" class="warning-icon"
-                                  src="../../../assets/customicons/green-warning-o.svg" alt="warning-icon">
+                                  src="./assets/customicons/green-warning-o.svg" alt="warning-icon">
                               </ng-container>
                             </div>
                             <div class="warning-title">
@@ -237,7 +237,7 @@
               (opened)="changeDefault()">
               <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
                 <mat-panel-title>
-                  <img class="expand-icon" src="../../../assets/customicons/expand.svg" alt="expand-icon">
+                  <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
                   Product Availability
                 </mat-panel-title>
               </mat-expansion-panel-header>
@@ -296,7 +296,7 @@
               (opened)="changeDefault()">
               <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
                 <mat-panel-title>
-                  <img class="expand-icon" src="../../../assets/customicons/expand.svg" alt="expand-icon">
+                  <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
                   BOPS Prices
                 </mat-panel-title>
               </mat-expansion-panel-header>
@@ -318,7 +318,7 @@
                             <table class="header-table">
                               <tr style="display: flex;justify-content: center;align-items: center;">
                                 <td style="flex:0 0 10%;">
-                                  <img class="expand-popup-icon" src="../../../assets/customicons/expand-popup.svg"
+                                  <img class="expand-popup-icon" src="./assets/customicons/expand-popup.svg"
                                     alt="icon">
                                 </td>
                                 <td style="flex:0 0 18%;">
@@ -439,7 +439,7 @@
                             <table class="header-table">
                               <tr style="display: flex;justify-content: center;">
                                 <td style="flex:0 0 10%;">
-                                  <img class="expand-popup-icon" src="../../../assets/customicons/expand-popup.svg"
+                                  <img class="expand-popup-icon" src="./assets/customicons/expand-popup.svg"
                                     alt="icon">
                                 </td>
                                 <td style="flex:0 0 18%;">
@@ -595,7 +595,7 @@
                             <table class="header-table">
                               <tr style="display: flex;justify-content: center;">
                                 <td style="flex:0 0 10%;">
-                                  <img class="expand-popup-icon" src="../../../assets/customicons/expand-popup.svg"
+                                  <img class="expand-popup-icon" src="./assets/customicons/expand-popup.svg"
                                     alt="icon">
                                 </td>
                                 <td style="flex:0 0 18%;">
@@ -681,7 +681,7 @@
                             <table class="header-table">
                               <tr style="display: flex;justify-content: center;">
                                 <td style="flex:0 0 10%;">
-                                  <img class="expand-popup-icon" src="../../../assets/customicons/expand-popup.svg"
+                                  <img class="expand-popup-icon" src="./assets/customicons/expand-popup.svg"
                                     alt="icon">
                                 </td>
                                 <td style="flex:0 0 18%;">
@@ -820,7 +820,7 @@
               (opened)="changeDefault()">
               <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
                 <mat-panel-title>
-                  <img class="expand-icon" src="../../../assets/customicons/expand.svg" alt="expand-icon">
+                  <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
                   Agents Information
                 </mat-panel-title>
               </mat-expansion-panel-header>
@@ -832,10 +832,10 @@
                   <div class="address">{{item.address}}</div>
                   <div class="contact">
                     <div>
-                      <img src="../../../assets/customicons/telephone.svg" alt="telephone-icon">{{item.tele}}
+                      <img src="./assets/customicons/telephone.svg" alt="telephone-icon">{{item.tele}}
                     </div>
                     <div>
-                      <img src="../../../assets/customicons/mail.svg" alt="mail-icon">{{item.email}}
+                      <img src="./assets/customicons/mail.svg" alt="mail-icon">{{item.email}}
                     </div>
                   </div>
                 </div>
@@ -845,7 +845,7 @@
               (opened)="changeDefault()">
               <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
                 <mat-panel-title>
-                  <img class="expand-icon" src="../../../assets/customicons/expand.svg" alt="expand-icon">
+                  <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
                   Other Port Details
                 </mat-panel-title>
               </mat-expansion-panel-header>

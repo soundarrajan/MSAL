@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="vessel-details-wrapper">
     <div id="popupCloser" (click)="closePanel()">
-      <img src="../../../assets/customicons/arrow-right.svg" alt="Arrow right">
+      <img src="./assets/customicons/arrow-right.svg" alt="Arrow right">
     </div>
     <div class="tab-wrapper">
       <div [ngClass]="portData.port_view">
@@ -9,11 +9,11 @@
           <mat-tab>
             <ng-template mat-tab-label>
               <ng-container [ngSwitch]="portData.port_view">
-                <img *ngSwitchCase="'higher-warning-view'" id=""  src=".. /../../assets/customicons/port_red.svg"
+                <img *ngSwitchCase="'higher-warning-view'" id=""  src="./assets/customicons/port_red.svg"
                    alt="" style="width: 20px; margin-right: 7px;">
-                <img *ngSwitchCase="'minor-warning-view'" id=""  src=".. /../../assets/customicons/port_amber.svg"
+                <img *ngSwitchCase="'minor-warning-view'" id=""  src="./assets/customicons/port_amber.svg"
                    alt="" style="width: 20px; margin-right: 7px;">
-                <img *ngSwitchCase="'standard-view'" id=""  src=".. /../../assets/customicons/port_blue.svg"  alt=""
+                <img *ngSwitchCase="'standard-view'" id=""  src="./assets/customicons/port_blue.svg"  alt=""
                   style="width: 20px; margin-right: 7px;">
               </ng-container>
               {{portData.name}}

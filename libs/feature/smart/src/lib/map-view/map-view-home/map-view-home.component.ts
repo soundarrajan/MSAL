@@ -98,12 +98,13 @@ export class MapViewHomeComponent implements OnInit {
     
   }
   changeVessel(event) {
-    let view = event.ROB.Color.indexOf('red') > 0 ? 'higher-warning-view' :
-      event.ROB.Color.indexOf('orange') > 0 ? 'minor-warning-view' : 'standard-view';
+    // let view = event.ROB.Color.indexOf('red') > 0 ? 'higher-warning-view' :
+    //   event.ROB.Color.indexOf('orange') > 0 ? 'minor-warning-view' : 'standard-view';
+    let view = 'standard-view';
     this.olmap.vesselPopData = {
-      name: event.VesselName,
+      name: event.displayName,
       vesselView: view,
-      id: event.VesselIMONO,
+      id: event.displayName,
       destination: 'Marseille',
       eta1: '2020-04-13 10:00',
       eta2: '2020-04-14 10:00',

@@ -1177,11 +1177,11 @@
   display: flex;
   flex-direction: column;
 }
-::-webkit-scrollbar {
-  background: transparent;
-  width: 12px;
-  height: 6px;
-}
+// ::-webkit-scrollbar {
+//   background: transparent;
+//   width: 12px;
+//   height: 6px;
+// }
 
 ::-webkit-scrollbar-track {
   background: #F2F2F2;

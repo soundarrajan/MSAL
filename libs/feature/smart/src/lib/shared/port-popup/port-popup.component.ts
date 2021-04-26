@@ -216,11 +216,11 @@ export class PortPopupComponent implements OnInit {
     <div style="margin-bottom: 5px;">
       <ng-container [ngSwitch]="item.priority">
         <img *ngSwitchCase="1" class="warning-icon"
-          src="../../../assets/customicons/red-warning-o.svg" alt="warning-icon">
+          src="./assets/customicons/red-warning-o.svg" alt="warning-icon">
         <img *ngSwitchCase="2" class="warning-icon"
-          src="../../../assets/customicons/amber-warning-o.svg" alt="warning-icon">
+          src="./assets/customicons/amber-warning-o.svg" alt="warning-icon">
         <img *ngSwitchCase="3" class="warning-icon"
-          src="../../../assets/customicons/green-warning-o.svg" alt="warning-icon">
+          src="./assets/customicons/green-warning-o.svg" alt="warning-icon">
       </ng-container>
     </div>
     <div class="warning-title">

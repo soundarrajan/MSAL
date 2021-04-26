@@ -333,6 +333,12 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
     });
   }
 
+  IsValidRemove(value,i){
+    debugger;
+    var bdnId= 'bdnIdx'+i;
+    var element = document.getElementById(bdnId);
+    element.classList.remove('date-invalid');
+  }
   // Only Number
   keyPressNumber(event) {
     var inp = String.fromCharCode(event.keyCode);

@@ -46,17 +46,6 @@ export class AppComponent {
         event instanceof NavigationError
       ) {
         this.isLoading = false;
-        let styles = document.getElementsByTagName('style');
-        for(let i = 0; i < styles.length; i++) {
-            let style = styles[i];
-            let rules = style.sheet.cssRules;
-            for(let r = 0; r < rules.length; r++) {
-                const rule: any = rules[r];
-                if(rule.selectorText === '::-webkit-scrollbar') {
-                    style.sheet.deleteRule(r);
-                } 
-            }
-        }
         changeDetector.markForCheck();
       }
       if (event instanceof NavigationStart) {

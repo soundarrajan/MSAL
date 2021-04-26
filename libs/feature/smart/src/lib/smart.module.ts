@@ -1,6 +1,7 @@
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { LoggingModule } from '@shiptech/core/logging/logging.module';
+import { HttpClient } from '@angular/common/http';
 import { SmartRoutingModule } from './smart-routing.module';
 import { SmartComponent } from './smart.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -10,6 +11,7 @@ import { map, catchError } from 'rxjs/operators';
 import { LoginViewComponent } from './login-view/login-view.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { AuthenticationModule } from '@shiptech/core/authentication/authentication.module';
 
 @NgModule({
   declarations: [
@@ -18,12 +20,14 @@ import { MatInputModule } from '@angular/material/input';
   ],
   imports: [
     SmartRoutingModule,
-    HttpClientModule,
+    LoggingModule,
+    AuthenticationModule.forFeature(),
+    // HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    CommonModule 
+    CommonModule,
   ],
   providers: [
     {
