@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AGGridCellActionsComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-actions.component';
 import { AGGridCellEditableComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-editable.component';
 import { AGGridCellRendererComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-renderer.component';
+import { AgGridCellStyleComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-style.component';
 import { GridOptions } from 'ag-grid-community';
 import { from } from 'rxjs';
 import { KnownInvoiceRoutes } from '../../../known-invoice.routes';
@@ -18,7 +19,6 @@ import { InvoiceDetailsService } from '../../../services/invoice-details.service
 export class InvoiceDetailComponent implements OnInit, OnDestroy {
   buttonToggleData = { names: ['Final', 'Provisional', 'Credit', 'Debit'] }
 
-  _entityId;
   activeBtn = 'Final';
   emptyStringVal = '--';
   emptyNumberVal = '00';
@@ -36,8 +36,6 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     {Title:'Deductions', Data:this.emptyStringVal},
     {Title:'Net Payable', Data:this.emptyStringVal}
   ]
-
-  private productDetailsData = [];
   public orderDetails = {
     contents: [
       {
@@ -110,7 +108,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         this.gridOptions_data.api = params.api;
         this.gridOptions_data.columnApi = params.columnApi;
         this.gridOptions_data.api.sizeColumnsToFit();
-        this.gridOptions_data.api.setRowData(this.rowData_aggrid_pd);
+        this.gridOptions_data.api.setRowData(this.rowData_aggrid);
         this.addCustomHeaderEventListener();
 
       },
@@ -128,6 +126,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     }
 
   }
+
+
   private columnDef_aggrid_pd = [
     {
       resizable: false,
@@ -144,38 +144,44 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       cellRendererFramework: AGGridCellActionsComponent, cellRendererParams: { type: 'row-remove-icon' }
     },
     {
-      children: [{headerName: 'Delivery No./ ', headerTooltip: 'Delivery No./ Order Product', field: 'del_no',
-      cellRendererFramework: AGGridCellActionsComponent, cellRendererParams: function(params) {
-                  let keyData = params.value;
-                  let newLink = 
-                  `<a href= "https://www.figma.com/proto/vdYj7vV3e5WCNVIxzpMkzA/Shiptech-Invoice-screen_Final?node-id=94%3A7895&scaling=min-zoom"
-                  target="_blank">${keyData}</a>`;
-                  return newLink;
-              }
-      },
-      {
-        headerName: 'Order Product', headerTooltip: 'Order Product', field: 'order_product'
-      }]
+      headerName: 'Delivery No. / Order Product', width: 250, headerTooltip: 'Delivery No. / Order Product', field: 'del_no',
+      cellRendererFramework:AGGridCellActionsComponent, cellRendererParams: {type: 'border-cell'}
     },
     {
       children: [{
-        headerName: 'Deliv Product', headerTooltip: 'Deliv Product', field: 'del_product'
+        headerName: 'Deliv Product', headerTooltip: 'Deliv Product', field: 'del_product', cellClass:'border-padding-5 p-r-0',
+        cellRendererFramework:AgGridCellStyleComponent, cellRendererParams: {cellClass: ['cell-bg-border'],label:'div-in-cell'}
       },
       {
-        headerName: 'Deliv. Qty', headerTooltip: 'Deliv. Qty', field: 'del_qty'
+        headerName: 'Deliv. Qty', headerTooltip: 'Deliv. Qty', field: 'del_qty',cellClass:'blue-opacity-cell pad-lr-0'
       },
       {
-        headerName: 'Estd. Rate', editable: true, headerTooltip: 'Estd. Rate', field: 'est_rate'
+        headerName: 'Estd. Rate', editable: true, headerTooltip: 'Estd. Rate', field: 'est_rate',cellClass:'blue-opacity-cell pad-lr-0' 
       },
-      { headerName: 'Amount', headerTooltip: 'Amount', field: 'amount1' }]
+      { headerName: 'Amount', headerTooltip: 'Amount', field: 'amount1', cellClass:'blue-opacity-cell pad-lr-5' } ]
     },
-    { headerName: 'Invoice Product', headerTooltip: 'Invoice Product', field: 'inv_product' },
-    { headerName: 'Invoice Qty', headerTooltip: 'Invoice Qty', field: 'inv_qty' },
-    { headerName: 'Invoice Rate', headerTooltip: 'Invoice Rate', field: 'inv_rate' },
-    { headerName: 'Amount', headerTooltip: 'Amount', field: 'amount2' },
+    {
+      children: [
+        { headerName: 'Invoice Product', headerTooltip: 'Invoice Product', field: 'inv_product', cellClass:'border-padding-5 p-r-0',
+          cellRendererFramework:AGGridCellActionsComponent, cellRendererParams: {type: 'dashed-border-dark'}
+        },
+        { 
+          headerName: 'Invoice Qty', headerTooltip: 'Invoice Qty', field: 'inv_qty', cellClass:'blue-opacity-cell dark pad-lr-0',
+          cellRendererFramework:AGGridCellActionsComponent, cellRendererParams: {type: 'dashed-border-darkcell'}
+        },
+        { 
+          headerName: 'Invoice Rate', headerTooltip: 'Invoice Rate', field: 'inv_rate', cellClass:'blue-opacity-cell dark pad-lr-0',
+          cellRendererFramework:AGGridCellActionsComponent, cellRendererParams: {type: 'dashed-border-darkcell'}
+        },
+        { 
+          headerName: 'Amount', headerTooltip: 'Amount', field: 'amount2', cellClass:'blue-opacity-cell dark pad-lr-5',
+          cellRendererFramework:AGGridCellActionsComponent, cellRendererParams: {type: 'dashed-border-darkcell'}
+        }
+      ]
+    },
     { headerName: 'Recon status', headerTooltip: 'Recon status', field: 'recon_status',
-    cellRendererFramework:AGGridCellRendererComponent, cellRendererParams: function(params) {
-      var classArray:string[] =[];
+    cellRendererFramework:AGGridCellRendererComponent, cellRendererParams: function(params) { 
+      var classArray:string[] =[]; 
         classArray.push('aggridtextalign-center');
         let newClass= params.value==='Unmatched'?'custom-chip-type1 red-chip':
                       params.value==='Matched'?'custom-chip-type1 mediumgreen':
@@ -235,10 +241,6 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     { headerName: 'Total', headerTooltip: 'Total', field: 'name' },
     { headerName: 'Difference', headerTooltip: 'Difference', field: 'name' }
   ];
-
-  private rowData_aggrid_pd = [];
-
-  private rowData_aggrid = [];
 
   public formValues: IInvoiceDetailsItemDto = {
     sellerInvoiceNo: 0,
@@ -307,22 +309,39 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     userAction: '',
   };
 
+  private rowData_aggrid_pd = [
+    {
+      del_no: {no: '23243', order_prod: 'DMA 0.1%'}, del_product: 'DMA 0.1%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
+      inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Matched', sulpher_content: '0.05', phy_supplier: 'British Petroleum' 
+    },
+    {
+      del_no: {no: '23243', order_prod: '380 3.5%'}, del_product: '380 3.5%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
+      inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Unmatched', sulpher_content: '0.05', phy_supplier: 'British Petroleum' 
+    },
+    {
+      del_no: {no: '23243', order_prod: '380 3.5%'}, del_product: '380 3.5%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
+      inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Matched', sulpher_content: '0.05', phy_supplier: 'British Petroleum' 
+    }
+  ];
+
+  private rowData_aggrid = [];
+
   addCustomHeaderEventListener() {
     let addButtonElement = document.getElementsByClassName('add-btn');
     addButtonElement[0].addEventListener('click', (event) => {
       this.gridOptions_data.api.applyTransaction({
         add: [
           {
-            del_no: '23243', order_product: 'DMA 0.1%', del_product: 'DMA 0.1%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
-            inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Matched', sulpher_content: '0.05', phy_supplier: 'British Petroleum'
+            del_no: {no: '23243', order_prod: 'DMA 0.1%'}, del_product: 'DMA 0.1%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
+            inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Matched', sulpher_content: '0.05', phy_supplier: 'British Petroleum' 
           },
           {
-            del_no: '23243/RMK 380 3.5', del_product: '380 3.5%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
-            inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Unmatched', sulpher_content: '0.05', phy_supplier: 'British Petroleum'
+            del_no: {no: '23243', order_prod: '380 3.5%'}, del_product: '380 3.5%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
+            inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Unmatched', sulpher_content: '0.05', phy_supplier: 'British Petroleum' 
           },
           {
-            del_no: '23243/RMK 380 3.5', del_product: '380 3.5%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
-            inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Matched', sulpher_content: '0.05', phy_supplier: 'British Petroleum'
+            del_no: {no: '23243', order_prod: '380 3.5%'}, del_product: '380 3.5%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
+            inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Matched', sulpher_content: '0.05', phy_supplier: 'British Petroleum' 
           }
       ]
       });
@@ -331,23 +350,6 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.getInvoiceItem();
-    this.buildProductDetilsGrid();
-  }
-
-  buildProductDetilsGrid(){
-    this.gridOptions_data = <GridOptions>{
-      defaultColDef: {
-        resizable: true,
-        filtering: false,
-        sortable: false
-      },
-      columnDefs: this.columnDef_aggrid_pd,
-      suppressRowClickSelection: true,
-      suppressCellSelection: true,
-      headerHeight: 35,
-      rowHeight: 45,
-      animateRows: false,
 
       onGridReady: (params) => {
         this.gridOptions_data.api = params.api;

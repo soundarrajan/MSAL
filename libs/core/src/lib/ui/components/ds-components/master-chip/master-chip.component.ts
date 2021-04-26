@@ -3,7 +3,7 @@ import { Component, OnInit, Input } from '@angular/core';
     selector: 'm-chip',
     template: `
       <div class="mchip-container">
-      <div [ngClass]="{'dashed-border': info.Title === 'Deductions'}" >         
+      <div [ngClass]="{'dashed-border-chip': info.Title === 'Deductions'}" >         
           <div class="title">
             <span class="chip-circle"></span>
             <span>{{info.Title}}</span>
@@ -29,7 +29,7 @@ import { Component, OnInit, Input } from '@angular/core';
                 content: url(/assets/customicons/circle.svg);
                 padding-right: 5px;
               }
-              .dashed-border{
+              .dashed-border-chip{
                 height: 40px;
                 padding: 0px 6px;
                 border-style: dashed;

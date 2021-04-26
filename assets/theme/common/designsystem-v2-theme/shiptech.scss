@@ -16,6 +16,7 @@
     .details{
         .section1{
             padding-top: 15px;
+            margin: 0px 15px;
             border-top: solid 2px #dce3eb;
         }
     }    
@@ -131,6 +132,43 @@
       .ag-cell{
         border: none !important;
         box-shadow: none !important;
+        &.pad-lr-0{
+          padding: 0 !important;
+        }
+        &.blue-opacity-cell{
+          background-color: #E0E1E4 !important;
+          height: 34px;
+          margin: 4px 0px;        
+        }
+        &.dark{
+          background: #364150 !important;
+          color: #FFFFFF;
+        } 
+      }
+      .cell-bg-border{
+        border-left: 2px solid #F1F1F2;
+        .inner-cell{
+          padding-right: 7px;
+          margin: 4px 0px 5px 4px;
+          background: #E0E1E4;
+          //text-align: right;
+          &.dark{
+            background: #364150 !important;
+            color: #FFFFFF;
+          }
+        }
+
+      }
+      &.border-padding-5{
+        padding-left: 5px !important;
+        padding-right: 0 !important;
+      }
+      .div-in-cell{
+        box-shadow: inset -10px 0 9px -7px rgba(0,0,0,0.4);
+        text-align: center;
+        position: relative;
+        left: 5px;
+        //box-shadow: 32px 0 56px -6px #000;
       }
 
             // .ag-layout-auto-height{//Display ag-menu over the grid
@@ -222,9 +260,11 @@
         color: #252a32;
         padding: 0px 10px;
       }
+
       .add-btn {
         cursor: pointer;
-        margin: 0px -4px;
+        padding: 0px !important;
+        margin: 0px -4px !important;
         content: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7.99998 0C3.58001 0 0 3.58001 0 7.99998C0 12.42 3.58001 16 7.99998 16C12.42 16 16 12.42 16 7.99998C16 3.57997 12.42 0 7.99998 0ZM12 8.80001H8.80001V12H7.19999V8.80001H4.00001V7.19999H7.19999V4.00001H8.80001V7.19999H12V8.80001Z' fill='%23364150'/%3E%3C/svg%3E%0A");
       }
       .remove-icon {
@@ -473,11 +513,46 @@
   .dashed-border{
     border: 1px dashed #A5A5A5;
     box-sizing: border-box;
-    height: 35px;
+    height: 27px;
+    width: 115px;
+    line-height: 25px;
+    padding-left: 8px;
+    margin: 8px 0px;
+    &.with-expand{
+      float: left;
+      width: 120px !important;
+    }
+    &.with-search{
+      margin-left: 8px;
+      padding: 4px;
+    }
+  }
+
+  .dark-dashed-border{
     margin: 4px 0px;
+  }
+
+  .search-icon-dark{
+    content: url(/assets/customicons/search-icon-dark.svg);
+    padding: 0px 8px;
   }
 
   .expand-arrow{
     content: url(/assets/customicons/expand-dark.svg);
-    margin: -3px 5px;
+    padding: 13px 0px;
+    cursor: pointer;
+    float: right;
+  }
+
+  .border-cell{
+    border: 1px solid #364150;
+    box-sizing: border-box;
+    border-radius: 3px;
+    width: 150px;
+    .left-data{
+      float: left;
+    }
+    .right-data{
+      float: right;
+    }
   }

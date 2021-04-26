@@ -4,9 +4,9 @@ import { ICellRendererAngularComp } from "ag-grid-angular";
 
 @Component({
   selector: 'app-ag-grid-cell-style',
-  template: `<!-- <div [ngClass]="params.cellClass">
+  template: `<div [ngClass]="params.cellClass">
   <div class="truncate-100p inner-cell" style="padding-right: 10px;">{{params.value}}</div>
-  </div> -->
+  </div>
   `,
   styles: [`
   .ng-star-inserted{
