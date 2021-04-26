@@ -53,7 +53,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ContractService } from 'libs/feature/contract/src/lib/services/contract.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatRadioChange } from '@angular/material/radio';
-import { DecimalPipe } from '@angular/common';
+import { DecimalPipe, KeyValue } from '@angular/common';
 
 
 
@@ -445,7 +445,7 @@ export class ContractQuantity extends DeliveryAutocompleteComponent
     } 
     this.formValues = formValues;
     if (this.formValues.details) {
-      this.formatDetailsQuantity();
+      //this.formatDetailsQuantity();
     }
   }
 
@@ -503,7 +503,9 @@ export class ContractQuantity extends DeliveryAutocompleteComponent
     if (!this.formValues.details) {
       this.formValues.details = [];
     }
+    console.log('Add');
     this.formValues.details.push({'id':0});
+    this.changeDetectorRef.detectChanges();
   }
 
   removeContractQuantityDetail(key) {
@@ -541,6 +543,25 @@ export class ContractQuantity extends DeliveryAutocompleteComponent
       }
     }
   }
+
+  originalOrder = (a: KeyValue<number, any>, b: KeyValue<number, any>): number => {
+    return 0;
+  }
+
+    // Only Number
+    keyPressNumber(event) {
+      var inp = String.fromCharCode(event.keyCode);
+      if (inp == '.' || inp == ',' || inp == '-') {
+        return true;
+      }
+      if (/^[-,+]*\d{1,6}(,\d{3})*(\.\d*)?$/.test(inp)) {
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
+    }
+
     
 
 

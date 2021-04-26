@@ -149,6 +149,7 @@ mat-form-field {
 .productQualityComments textarea, .productQuantityReconciliationComments textarea {
     width: 100% !important;
     height: 80px;
+    min-height: 80px !important;
     border: 1px solid #a5a5a5;
     overflow: auto;
     resize: vertical;

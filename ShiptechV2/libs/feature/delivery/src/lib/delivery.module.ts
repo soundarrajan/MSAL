@@ -145,6 +145,7 @@ import { UomVolumeRouteResolver } from './views/delivery/details/uom-volume-rout
 import { PumpingRateUomRouteResolver } from './views/delivery/details/pumping-rate-uom-route.resolver';
 import { SampleSourceRouteResolver } from './views/delivery/details/sample-source-route.resolver';
 import { StaticListsRouteResolver } from './views/delivery/details/static-lists-route.resolver';
+import { TextareaAutoresizeDirective } from './views/delivery/details/directives/textarea-autoresize.directive';
 
 
 @NgModule({
@@ -265,6 +266,7 @@ import { StaticListsRouteResolver } from './views/delivery/details/static-lists-
     BdnAdditionalInformationComponent,
     QuantityTenantFormatDirective,
     NumberOnlyDirective,
+    TextareaAutoresizeDirective,
     RaiseClaimModalComponent,
     SplitDeliveryModalComponent
     //PSpinnerDisableKeysSpinDirective,
@@ -274,7 +276,8 @@ import { StaticListsRouteResolver } from './views/delivery/details/static-lists-
   exports: [
     MainDeliveryComponent,
     QuantityTenantFormatDirective,
-    NumberOnlyDirective 
+    NumberOnlyDirective,
+    TextareaAutoresizeDirective
    // PSpinnerDisableKeysSpinDirective,
     //PSpinnerTenantFormatDirective
   ],

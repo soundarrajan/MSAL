@@ -480,11 +480,18 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   businessCalendarList: any;
   formulaEventIncludeList: any;
   quantityTypeList: any;
-  contractFormulaList: any;
+  contractFormulaList: any = [];
   additionalCostList: any;
   costTypeList: any;
-
-
+  eventsSaveButtonSubscription: any;
+  buttonClicked: any;
+  buttonClicked1: any;
+  additionalCostsComponentTypes: any;
+  eventsSelectedTabIndexSubscription: any;
+  contractConfiguration: any;
+  expandLocation: any = false;
+  expandProduct: any = false;
+  bankFilterCtrl: any = new FormControl();
   get entityId(): number {
     return this._entityId;
   }
@@ -506,6 +513,8 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   @Input() vesselId: number;
 
   contractFormSubject: Subject<any> = new Subject<any>();
+  productSpecGroupSubject: Subject<any> = new Subject<any>();
+
 
 
   @Input('locationMasterList') set _setLocationMasterList(locationMasterList) { 
@@ -513,7 +522,14 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       return;
     } 
     this.locationMasterList = _.cloneDeep(locationMasterList);
-    this.locationMasterSearchList = _.cloneDeep(locationMasterList);
+    this.locationMasterSearchList = [];
+    for (let i = 0; i < this.locationMasterList.length; i++) {
+      this.locationMasterSearchList.push({
+        'id': this.locationMasterList[i].id,
+        'name':  this.locationMasterList[i].name,
+        'country': this.locationMasterList[i].country
+      });
+    }
     this.selectedLocationList = _.cloneDeep(locationMasterList);
 
   }
@@ -625,6 +641,12 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       return;
     } 
     this.formValues = formValues;
+    for (let i = 0; i < this.formValues.products.length; i++) {
+      if (this.formValues.products[i].product) {
+        this.getSpecGroupByProduct(this.formValues.products[i].product.id, this.formValues.products[i].specGroup);
+      }
+    }
+    this.getAdditionalCostsComponentTypes();
   }
 
   @Input('generalTenantSettings') set _setGeneralTenantSettings(generalTenantSettings) { 
@@ -739,13 +761,31 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     this.costTypeList = costTypeList;
   }
 
+  @Input('buttonClicked1') set _setButtonClicked1(buttonClicked1) { 
+    if (!buttonClicked1) {
+      return;
+    } 
+    this.buttonClicked1 = buttonClicked1;
+  }
+
+  
+  @Input('contractConfiguration') set _setContractConfiguration(contractConfiguration) { 
+    if (!contractConfiguration) {
+      return;
+    } 
+    this.contractConfiguration = contractConfiguration;
+  }
 
 
   index = 0;
   expandLocationPopUp = false;
   array = [0,1,2,3,4,5,6,7,8,9,10];
   isMenuOpen = true;
+  @Input() eventsSaveButton: Observable<void>;
+  @Input() eventsSelectedTabIndex: Observable<void>;
+  expandProductPopUp: any =  false;
 
+  eventsSubject2: Subject<any> = new Subject<any>();
 
   constructor(
     public gridViewModel: OrderListGridViewModel,
@@ -781,8 +821,18 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   ngOnInit(){  
     this.entityName = 'Contract';
     this.getContractFormulaList1();
+    this.eventsSaveButtonSubscription = this.eventsSaveButton.subscribe((data) => this.setRequiredFields(data));
+    this.eventsSelectedTabIndexSubscription = this.eventsSelectedTabIndex.subscribe((data) => this.setSelectedTab(data));
+  }
 
+  setSelectedTab(index) {
+    this.selectedTabIndex = index;
+  }
 
+  setRequiredFields(data) {
+    this.buttonClicked = data;
+    console.log(this.buttonClicked);
+    this.eventsSubject2.next(this.buttonClicked);
   }
 
 
@@ -820,12 +870,14 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       ],
       additionalCosts: [],
       fixedPrice: true,
-      mtmFixed: true, 
+      mtmFixed: false, 
       specGroup: null,
       dealDate: null,
       physicalSuppliers: [],
       allowedProducts: [],
-      allowedLocations: []
+      allowedLocations: [],
+      priceUom: this.generalTenantSettings.tenantFormats.uom,
+      currency: this.generalTenantSettings.tenantFormats.currency
     };
     if (this.formValues) {
         if (!this.formValues.products) {
@@ -843,7 +895,9 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     this.selectedTabIndex =  this.formValues.products.length - 1;
     this.setAllowedLocations(this.selectedTabIndex);
     this.setAllowedProducts(this.selectedTabIndex);
-    this.getContractFormulaList();
+    if (!this.contractFormulaList.length) {
+      this.getContractFormulaList();
+    }
     this.changeDetectorRef.detectChanges();
 
     console.log(this.formValues);
@@ -913,7 +967,8 @@ export class ContractProduct extends DeliveryAutocompleteComponent
         this.toastr.error(response);
       } else {
         this.contractFormulaList = response;
-        this.toastr.success('Operation completed successfully!')
+        this.changeDetectorRef.detectChanges();
+        //this.toastr.success('Operation completed successfully!')
       }
     });
   }
@@ -1082,6 +1137,51 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   }
 
 
+ 
+  decodeSpecificField(modelValue) {
+    let decode = function(str) {
+      return str.replace(/&#(\d+);/g, function(match, dec) {
+          return String.fromCharCode(dec);
+      });
+    };
+    return decode(_.unescape(modelValue));
+  }
+
+
+
+  setLocationChange(location, index) {
+    //this.locationMasterSearchList = _.cloneDeep(this.locationMasterList);
+    this.searchLocationInput = null;
+    this.formValues.products[index].location = {
+      'id': location.id,
+      'name': location.name
+    };
+    this.selectedLocation = null;
+    // this.changeDetectorRef.detectChanges();
+    //this.contractFormSubject.next(this.formValues);
+
+  }
+
+
+  setProductChange(product, index) {
+    console.log(product);
+    console.log(index);
+    console.log(this.formValues.products[index]);
+    let objectProduct =  {
+      'id': product.id,
+      'name': product.name
+    }
+    this.formValues.products[index].product = { ... objectProduct };
+    this.productMasterSearchList = _.cloneDeep(this.productMasterList);
+    this.searchProductInput = null;
+    this.addProductToConversion(index, null, true);
+    this.getSpecGroupByProduct(product.id, null);
+    this.changeDetectorRef.detectChanges();
+    this.contractFormSubject.next(this.formValues);
+
+  }
+
+
   getSpecGroupByProduct(productId, additionalSpecGroup) {
     var data = {
         Payload: {
@@ -1130,6 +1230,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
           }
           this.productSpecGroup[productId] = response;
           this.changeDetectorRef.detectChanges();
+          //this.productSpecGroupSubject.next(this.productSpecGroup);
         }
       }
     });
@@ -1137,49 +1238,25 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   };
 
 
- 
-  decodeSpecificField(modelValue) {
-    let decode = function(str) {
-      return str.replace(/&#(\d+);/g, function(match, dec) {
-          return String.fromCharCode(dec);
-      });
-    };
-    return decode(_.unescape(modelValue));
+  getAdditionalCostsComponentTypes() {
+    //this.spinner.show();
+    this.contractService
+    .getAdditionalCostsComponentTypes({})
+    .pipe(
+      finalize(() => {
+        //this.spinner.hide();
+      })
+    )
+    .subscribe((response: any) => {
+      if (typeof response == 'string') {
+        this.toastr.error(response);
+      } else {
+        this.additionalCostsComponentTypes = response;
+        this.changeDetectorRef.detectChanges();
+      }
+    });
   }
 
-
-
-  setLocationChange(location, index) {
-    console.log(location);
-    console.log(index);
-    console.log(this.formValues.products[index]);
-    let objectLocation =  {
-      'id': location.id,
-      'name': location.name
-    }
-    this.selectedLocation = null;
-    this.formValues.products[index].location = { ... objectLocation };
-    this.changeDetectorRef.detectChanges();
-    this.contractFormSubject.next(this.formValues);
-
-  }
-
-
-  setProductChange(product, index) {
-    console.log(product);
-    console.log(index);
-    console.log(this.formValues.products[index]);
-    let objectProduct =  {
-      'id': product.id,
-      'name': product.name
-    }
-    this.formValues.products[index].product = { ... objectProduct };
-    this.selectedProduct = null;
-    this.changeDetectorRef.detectChanges();
-    this.addProductToConversion(index, null, true);
-    this.contractFormSubject.next(this.formValues);
-
-  }
 
   addProductToConversion(index, allowProduct, isMainProduct) {
     if (!this.formValues.products[index].conversionFactors) {
@@ -1290,9 +1367,17 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     
     }
 
-
   }
 
+
+  removeProductFromContract(key) {
+    console.log(key);
+    if (!this.formValues.products[key].id){
+      this.formValues.products.splice(key, 1) 
+    } else {
+      this.formValues.products[key].isDeleted = true;
+    } 
+  }
 
 
   originalOrder = (a: KeyValue<number, any>, b: KeyValue<number, any>): number => {
