@@ -1366,7 +1366,6 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
  
 
   save() {
-    this.setReconMatchIdBasedOnProductVarianceColor();
     let hasMandatoryFields = this.validateRequiredFields();
     if (hasMandatoryFields) {
       return;
@@ -1439,21 +1438,6 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
           }
        });
     }
-  }
-
-  setReconMatchIdBasedOnProductVarianceColor() {
-    this.formValues.deliveryProducts.forEach((product, k) => {
-      if (this.formValues.temp.variances) {
-        let getColor = this.formValues.temp.variances['color_' + k];
-        console.log(getColor);
-        if (getColor == 'amber') {
-          product.reconMatch = {
-            'id': 3
-          }
-        }
-
-      }
-    });
   }
 
   
