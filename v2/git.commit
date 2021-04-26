@@ -1,9 +1,9 @@
-﻿commit 792d0555b5499c221ca75abc81a5a9d4bef06d6a
-Author: Padmashree S <padmashree.s@inatech.com>
-Date:   Mon Apr 26 19:34:09 2021 +0530
+﻿commit 4607e81e238696aaf79a84d8432efb9f66c97a23
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Mon Apr 26 14:20:42 2021 +0000
 
-    Invoice UI changes
+    Merged PR 10172: Fixed  overlapping of seller name suggestions
     
-    Invoice UI changes
+    Fixed  overlapping of seller name suggestions
 
 branch: master
