@@ -1,9 +1,9 @@
-﻿commit e49c6de7fb0fbcecd879168577f431f10a3851f8
+﻿commit f7274b8ec00f5544dc626d73241bac4b796873f8
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Mon Apr 26 08:11:55 2021 +0000
+Date:   Mon Apr 26 08:15:27 2021 +0000
 
-    Merged PR 10146: Bug 31689: Header name is wrongly shown for Current ROB & Arbitrage details
+    Merged PR 10147: #31690: Field Name is showing wrong in Current ROB & Arbitrage details has fixed
     
-    Related work items: #31689
+    Related work items: #31690
 
 branch: master
