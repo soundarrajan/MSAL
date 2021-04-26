@@ -1,11 +1,9 @@
-﻿commit 28d14831828dd25ddf620bf7a0a4bfcd923449e3
+﻿commit 97aa5b32e827d4bb6959a73aecf1cd7a31cfd9b6
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon Apr 26 08:29:44 2021 +0000
+Date:   Mon Apr 26 10:32:48 2021 +0000
 
-    Merged PR 10149: Changed contract page URL when opening from Contract module/List from new ang...
+    Merged PR 10157: Changed color of asterisk * symbol
     
-    Changed contract page URL when opening from Contract module/List from new angular
-    
-    Related work items: #31852
+    Changed color of asterisk * symbol
 
 branch: master
