@@ -8,7 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
             <span class="chip-circle"></span>
             <span>{{info.Title}}</span>
           </div>
-          <div class="data" [ngStyle]="{'float': info.Title === 'Deductions' ? 'right' : 'left'}">{{info.Data}}</div>
+          <div class="data" [ngClass]="{'tile-2': info.Title === 'Status', 'tile-4-5' : info.Title === 'Estimated Total' || info.Title === 'Total Difference' || info.Title === 'Net Payable', 'tile-8' : info.Title === 'Deductions' }" >{{info.Data}}</div>
         </div>
     </div>
     `,
@@ -35,6 +35,19 @@ import { Component, OnInit, Input } from '@angular/core';
                 border-style: dashed;
                 border-width: 1px;
                 border-radius: 2px;
+              }
+              .tile-2{
+                font-weight: 500;
+                font-size: 14px;
+                line-height: 16px;
+                color: #9E9E9E;
+              }
+              .tile-4-5{
+                font-size: 18px;
+                text-align: center;
+              }
+              .tile-8{
+                float: right;
               }
             `]
   })

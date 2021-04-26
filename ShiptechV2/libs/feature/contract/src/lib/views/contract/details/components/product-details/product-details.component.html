@@ -156,6 +156,7 @@
                 </mat-autocomplete>
             </mat-form-field>
             <button class="search-icon"
+              (click)="openSupplier()"
               [disabled]="formValues.status && formValues.status.name == 'Confirmed'" 
               [ngClass]="{'search-icon-disabled': formValues.status && formValues.status.name == 'Confirmed'}" 
                 appMasterSelectorTrigger [masterSelector]="masterSelector1" #masterSelectorTrigger1="masterSelectorTrigger" [header]="getHeaderNameSelector1()">

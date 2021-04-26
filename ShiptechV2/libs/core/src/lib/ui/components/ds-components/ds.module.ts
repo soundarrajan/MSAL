@@ -13,6 +13,7 @@ import { TabsComponent } from './tabs/tabs.component';
 import { ReadonlyDetailsComponent } from './readonly-details/readonly-details.component';
 import { AgGridCellStyleComponent } from './ag-grid/ag-grid-cell-style.component';
 import { AGGridCellRendererComponent } from './ag-grid/ag-grid-cell-renderer.component';
+import { SearchPopupDialog } from './pop-ups/search-popup.component';
 @NgModule({ 
   imports: [
     CommonModule,
@@ -36,7 +37,8 @@ import { AGGridCellRendererComponent } from './ag-grid/ag-grid-cell-renderer.com
     MasterChip,
     ReadonlyDetailsComponent,
     AgGridCellStyleComponent,
-    AGGridCellRendererComponent
+    AGGridCellRendererComponent,
+    SearchPopupDialog
   ],
 })
 export class DSComponentsModule {}

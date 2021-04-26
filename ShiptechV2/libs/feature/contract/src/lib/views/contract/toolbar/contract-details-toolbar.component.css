@@ -3,6 +3,10 @@
     top: 20px;
 }
 
+.ui-tabmenu .ui-tabmenu-nav {
+    background-color: unset !important;
+    background: unset !important;
+}
 .st-breadcrumbs-progress-bar .page-breadcrumb {
     /* width: 100%; */
     padding: 0;
