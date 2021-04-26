@@ -380,7 +380,8 @@
                             [disabled]="formValues.deliveryStatus.name == 'Verified'"
                             [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].product"
                             [matAutocomplete]="auto"
-                            placeholder="Product delivered">
+                            placeholder="Product delivered"
+                            required>
                     <mat-autocomplete #auto="matAutocomplete" 
                                         class="darkPanelAuto"
                                         [displayWith]="displayFn">
