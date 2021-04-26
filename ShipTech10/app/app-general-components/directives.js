@@ -2318,7 +2318,7 @@ Number(function() {
                     }
                     if (!attrs.format) {
                         return;
-                    }
+                    }                  
                     ctrl.$formatters.unshift((a) => {
                         var filter, fraction;
                         if (attrs.format.split(':')[1]) {

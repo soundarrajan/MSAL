@@ -23,9 +23,10 @@
                     <div class="formatter-uom-label pull-left">{{value.confirmedQuantityUom.name}}</div>
 					<div class="pull-left" style="padding: 8px;">{{value.confirmedQuantity | number:CM.tenantSetting.defaultValues.quantityPrecision}}</div>
 				</td>
-				<td style="min-width: 200px;" >
+				<td style="min-width: 200px;" ng-init="value.pricePrecision ? (estRatePricePrecision = value.pricePrecision) : (estRatePricePrecision = CM.tenantSetting.defaultValues.pricePrecision)">
+					<!-- {{estRatePricePrecision}} -->
 					<div class="formatter-uom-label pull-left">{{value.estimatedRateCurrency.code | decodeReadOnly}}</div>
-					<div class="pull-left" style="padding: 8px;">{{value.estimatedRate | number:CM.tenantSetting.defaultValues.amountPrecision}}</div>
+					<div class="pull-left" style="padding: 8px;">{{value.estimatedRate | number:estRatePricePrecision}}</div>
 					<div class="formatter-uom-label pull-right" style="margin: 0;">{{value.estimatedRateUom.name | decodeReadOnly}}</div>
 				</td>
 				<td  style="min-width: 200px;" class="">

@@ -628,7 +628,17 @@ APP_CLAIMS.controller('Controller_Claims', [
                 if ($scope.formValues.orderDetails.product) {
                     var id = $scope.formValues.orderDetails.product.id;
                     if ($scope.formValues.orderDetails.product.payload) {
+                    	$scope.formValues.orderDetails.pricePrecision = $scope.formValues.orderDetails.product.pricePrecision;
 	                    angular.merge($scope.formValues.orderDetails, $scope.formValues.orderDetails.product.payload.orderDetails);
+	                    $scope.formValues.orderDetails.initialOrderPrice = $scope.formValues.orderDetails.orderPrice
+
+						/*trick to trigger dynamic number format for pricePrecision on orderPrice*/
+                    	$scope.formValues.orderDetails.orderPrice = false;
+	                    $timeout(()=>{
+	                    	$scope.formValues.orderDetails.orderPrice = $scope.formValues.orderDetails.initialOrderPrice; 
+	                    })
+	                    
+                        
                         if($scope.formValues.orderDetails.deliveryNo && $scope.formValues.claimDetails && $scope.formValues.orderDetails.product.payload.claimDetails) {
                             $scope.formValues.claimDetails.bdnQuantity = $scope.formValues.orderDetails.product.payload.claimDetails.bdnQuantity;
                             $scope.formValues.claimDetails.bdnQuantityUom = $scope.formValues.orderDetails.product.payload.claimDetails.bdnQuantityUom;
@@ -637,7 +647,7 @@ APP_CLAIMS.controller('Controller_Claims', [
                         }
                     }
                     delete $scope.formValues.initialOrderPrice;
-                    delete $scope.formValues.orderDetails.product.payload;
+                    // delete $scope.formValues.orderDetails.product.payload;
                     $scope.formValues.claimDetails.estimatedSettlementAmountCurrency = $scope.formValues.orderDetails.currency;
                     $.each($scope.formValues.temp.tempProductforType, (k, v) => {
                         if (v.product.id && v.product.id == $scope.formValues.orderDetails.product.id) {
@@ -655,11 +665,12 @@ APP_CLAIMS.controller('Controller_Claims', [
                             }
 
                         }
-                    });
+                    }); 
                     $.each($scope.options.Product, (k, v) => {
                         if (v.id === id) {
-                            $scope.formValues.orderDetails.deliveryProductId = v.payload.orderDetails.deliveryProductId;
-                            
+                        	if (v.payload) {
+	                            $scope.formValues.orderDetails.deliveryProductId = v.payload.orderDetails.deliveryProductId;
+                        	}
                         }
                     });
                     $timeout(() => {
@@ -858,14 +869,16 @@ APP_CLAIMS.controller('Controller_Claims', [
         });
         $scope.$watchGroup([ 'formValues.claimType.claimType' ], () => {
         	if (typeof $scope.formValues.claimType != 'undefined') {
-        		if ($scope.formValues.claimType.claimType.name.toLowerCase() == 'debunker') {
-        			if (!$scope.formValues.claimType.claimType.displayName) {
-        				$scope.formValues.claimType.claimType.displayName = $scope.formValues.claimType.claimType.name;
-        			}
-        			if ($scope.options) {
-			        	$scope.options.ClaimType.push($scope.formValues.claimType.claimType);
-        			}
-		        	$('.group_debunkerDetails').show();
+        		if ($scope.formValues.claimType.claimType) {
+	        		if ($scope.formValues.claimType.claimType.name.toLowerCase() == 'debunker') {
+	        			if (!$scope.formValues.claimType.claimType.displayName) {
+	        				$scope.formValues.claimType.claimType.displayName = $scope.formValues.claimType.claimType.name;
+	        			}
+	        			if ($scope.options) {
+				        	$scope.options.ClaimType.push($scope.formValues.claimType.claimType);
+	        			}
+			        	$('.group_debunkerDetails').show();
+	        		}
         		}
         	}
         });

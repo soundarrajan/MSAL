@@ -7396,6 +7396,7 @@ APP_API.factory('$Api_Service', [
                                                 result.push({
                                                     id: entry.product.id,
                                                     name: entry.product.name,
+                                                    pricePrecision: entry.pricePrecision,
                                                     payload: {
                                                         orderDetails: {
                                                             orderProductId: entry.orderProductId,
