@@ -343,7 +343,11 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     } else if (typeof voyageId != 'undefined' && voyageId !== null) {
                         newRequestModel.newRequest(voyageId).then((newRequestData) => {
                             ctrl.request = newRequestData.payload;
-                       
+                           
+                            $.each(ctrl.request.locations, (i, j) => {
+                               
+                                getTerminalLocations('locations',j.location.id);
+                            });
                             setPageTitle();
                             setRequestStatusHeader();
 
