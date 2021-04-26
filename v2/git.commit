@@ -1,9 +1,9 @@
-﻿commit 5c4cfe0e323465c75ce1f8d0a76e811acae01808
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Mon Apr 26 07:29:54 2021 +0000
+﻿commit c01677222796969cfbad1bf00490900db3dfb1a6
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Mon Apr 26 08:09:52 2021 +0000
 
-    Merged PR 10142: #29778 -header section update issue fixed in bunker plan page
+    Merged PR 10143: Change recon match id for amber color
     
-    Related work items: #29778, #29806, #29829
+    Change recon match id for amber color
 
 branch: master
