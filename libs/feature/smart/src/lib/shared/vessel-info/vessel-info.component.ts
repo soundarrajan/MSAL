@@ -1,14 +1,17 @@
-import { Component, OnInit, Output, EventEmitter, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, Input, ViewEncapsulation } from '@angular/core';
 import { LocalService } from '../../services/local-service.service';
 import { CommentsComponent } from '../comments/comments.component';
 import { CurrentBunkeringPlanComponent } from '../current-bunkering-plan/current-bunkering-plan.component';
 import { WarningComponent } from '../warning/warning.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { DomSanitizer } from '@angular/platform-browser';
+import { MatIconRegistry } from '@angular/material/icon';
 
 @Component({
   selector: 'app-vessel-info',
   templateUrl: './vessel-info.component.html',
-  styleUrls: ['./vessel-info.component.scss']
+  styleUrls: ['./vessel-info.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class VesselInfoComponent implements OnInit {
   selectedUserRole: any;
@@ -34,7 +37,11 @@ export class VesselInfoComponent implements OnInit {
   public step = 0;
   public dialogRef: MatDialogRef<WarningComponent>;
 
-  constructor(private localService: LocalService, public dialog: MatDialog) { }
+  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private localService: LocalService, public dialog: MatDialog) {
+    iconRegistry.addSvgIcon(
+      'info-icon',
+      sanitizer.bypassSecurityTrustResourceUrl('./assets/customicons/info_amber.svg'));
+   }
 
   ngOnInit() {
     console.log(this.selectedUserRole);
@@ -44,18 +51,20 @@ export class VesselInfoComponent implements OnInit {
   }
   
   public loadBunkerPlanHeader(event) {
-    this.localService.getBunkerPlanHeader(348).subscribe((data)=> {
+    let vesselId = event.id? event.id: 348;
+    this.localService.getBunkerPlanHeader(vesselId).subscribe((data)=> {
       console.log('bunker plan header',data);
       this.bunkerPlanHeaderDetail = (data?.payload && data?.payload.length)? data.payload[0]: {};
       this.vesselData = this.bunkerPlanHeaderDetail;
       this.loadROBArbitrage();
-      document.body.click();
+      let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
+          titleEle.click();
     })
   }
 
   public loadROBArbitrage() {
     let vesselId = this.vesselData?.vesselId;
-      this.localService.getBunkerPlanId(796).subscribe((data)=> {
+      this.localService.getBunkerPlanId(vesselId).subscribe((data)=> {
         console.log('bunker plan id res',data);
         let bunkerPlanId = (data?.payload && data?.payload.length)? (data.payload)[0].latestPlanID: null;
         this.localService.loadROBArbitrage(bunkerPlanId).subscribe((data)=> {
@@ -69,7 +78,7 @@ export class VesselInfoComponent implements OnInit {
     switch (column) {
       case '3.5 QTY':
         this.currentROBObj['3.5 QTY'] = value;
-        
+
         break;
         case '0.5 QTY':
         this.currentROBObj['0.5 QTY'] = value;

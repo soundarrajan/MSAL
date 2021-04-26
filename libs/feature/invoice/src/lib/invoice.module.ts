@@ -16,6 +16,8 @@ import { AgDatePickerComponent } from '@shiptech/core/ui/components/ag-grid/ag-d
 import { AgGridExtensionsModule } from '@shiptech/core/ui/components/ag-grid/ag-grid-extensions.module';
 import { AGGridCellActionsComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-actions.component';
 import { AGGridCellEditableComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-editable.component';
+import { AGGridCellRendererComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-renderer.component';
+import { AgGridCellStyleComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-style.component';
 import { DSComponentsModule } from '@shiptech/core/ui/components/ds-components/ds.module';
 import { EntityStatusModule } from '@shiptech/core/ui/components/entity-status/entity-status.module';
 import { ExportModule } from '@shiptech/core/ui/components/export/export.module';
@@ -40,6 +42,7 @@ import {
 } from './services/api/invoice-complete-api';
 import { InvoiceCompleteApiMock } from './services/api/invoice-complete-api.mock';
 import { InvoiceCompleteService } from './services/invoice-complete.service';
+import { InvoiceDetailsService } from './services/invoice-details.service';
 import { InvoiceCompleteListComponent } from './views/invoice-complete-list/invoice-complete-list.component';
 import { InvoiceListComponent } from './views/invoice-list/invoice-list.component';
 import { InvoiceDetailComponent } from './views/invoice-view/details/invoice-details.component';
@@ -74,7 +77,9 @@ import { MainInvoiceComponent } from './views/main-invoice.component';
       AgCheckBoxRendererComponent,
       AgAsyncBackgroundFillComponent,
       AGGridCellActionsComponent,
-      AGGridCellEditableComponent
+      AGGridCellEditableComponent,
+      AgGridCellStyleComponent,
+      AGGridCellRendererComponent
     ]),
     AgFilterDisplayModule,
     AgFooterModule,
@@ -100,7 +105,8 @@ import { MainInvoiceComponent } from './views/main-invoice.component';
         ? InvoiceCompleteApi
         : InvoiceCompleteApiMock
     },
-    InvoiceCompleteService
+    InvoiceCompleteService,
+    InvoiceDetailsService
   ]
 })
 export class InvoiceModule {}

@@ -563,7 +563,7 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
       return null;
     }
     if (plainNumber) {
-      if(this.tenantService.quantityPrecision == 0) {
+      if(this.tenantService.amountPrecision == 0) {
         return plainNumber;
       } else {
         return this._decimalPipe.transform(plainNumber, this.amountFormat);
@@ -571,6 +571,20 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
     }
   }
 
+
+   // Only Number
+   keyPressNumber(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (inp == '.' || inp == ',' || inp == '-') {
+      return true;
+    }
+    if (/^[-,+]*\d{1,6}(,\d{3})*(\.\d*)?$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
 
 
 

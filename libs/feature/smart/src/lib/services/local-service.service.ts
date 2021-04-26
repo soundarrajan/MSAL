@@ -13,7 +13,7 @@ export namespace UserRoleApiPaths {
     export const getUserRole = () => `api/BOPS/Roles/GetBOPSRoles`;
 }
 export namespace VesselListApiPaths {
-    export const getVesselList = () => `api/admin/tenantConfiguration/get`;
+    export const getVesselList = () => `api/infrastructure/static/lists`;
 }
 export namespace VesselImportPlanStatusApiPaths {
     export const GetVesselImportPlanStatus = () => `api/BOPS/Roles/GetVesselImportPlanStatus`;
@@ -63,6 +63,7 @@ export class LocalService {
     @ApiCallUrl()
     protected _apiUrlAdmin = this.appConfig.v1.API.BASE_URL_DATA_ADMIN;
     protected _apiUrl = this.appConfig.v1.API.BASE_URL_DATA_BOPS;
+    protected _apiUrlInfra = this.appConfig.v1.API.BASE_URL_DATA_INFRASTRUCTURE;
 
     constructor(private http: HttpClient, private appConfig: AppConfig) {
         // this.headersProp = new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }, );   
@@ -502,6 +503,16 @@ export class LocalService {
       return this.http.post<any>(
         `${this._apiUrl}/${UserRoleApiPaths.getUserRole()}`,
         { payload: request }, { headers: this.headersProp }
+      );
+    }
+    // VesselListApiPaths to get vessel imono data
+    @ObservableException()
+    getVesselListImono(request: any): Observable<any> {
+      return this.http.post<any>(
+        `${this._apiUrlInfra}/${VesselListApiPaths.getVesselList()}`,
+        { payload: request }
+      ).pipe(
+          map(txs => txs.find(txn => txn.name == "VesselWithImo"))
       );
     }
 
