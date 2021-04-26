@@ -750,7 +750,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
            
             ctrl.selectPort(ctrl.data.location.id);
            $.each(ctrl.data.products, (k, v) => {
-            v.price =null;
+           // v.price =null;
             v.contract = null;
             v.formula = null;
             v.formulaDescription = null;
