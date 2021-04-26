@@ -1,15 +1,19 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { AGGridCellActionsComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-actions.component';
 import { AGGridCellEditableComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-editable.component';
 import { AGGridCellRendererComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-renderer.component';
+import { AgGridCellStyleComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-style.component';
+import { SearchPopupDialog } from '@shiptech/core/ui/components/ds-components/pop-ups/search-popup.component';
 import { GridOptions } from 'ag-grid-community';
 import { from } from 'rxjs';
 import { KnownInvoiceRoutes } from '../../../known-invoice.routes';
 import { IInvoiceDetailsItemBaseInfo, IInvoiceDetailsItemCounterpartyDetails, IInvoiceDetailsItemDto, IInvoiceDetailsItemInvoiceCheck, IInvoiceDetailsItemInvoiceSummary, IInvoiceDetailsItemOrderDetails, IInvoiceDetailsItemPaymentDetails, IInvoiceDetailsItemProductDetails, IInvoiceDetailsItemRequest, IInvoiceDetailsItemRequestInfo, IInvoiceDetailsItemResponse, IInvoiceDetailsItemStatus } from '../../../services/api/dto/invoice-details-item.dto';
 import { InvoiceDetailsService } from '../../../services/invoice-details.service';
+
 @Component({
   selector: 'shiptech-invoice-detail',
   templateUrl: './invoice-details.component.html',
@@ -36,7 +40,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     {Title:'Deductions', Data:this.emptyStringVal},
     {Title:'Net Payable', Data:this.emptyStringVal}
   ]
-
+  public popupOpen: boolean;
   private productDetailsData = [];
   public orderDetails = {
     contents: [
@@ -85,7 +89,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     hasSeparator: true
   }
 
-  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private invoiceService: InvoiceDetailsService, route: ActivatedRoute) {
+  constructor(public dialog: MatDialog, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private invoiceService: InvoiceDetailsService, route: ActivatedRoute) {
     iconRegistry.addSvgIcon(
       'data-picker-gray',
       sanitizer.bypassSecurityTrustResourceUrl('../../assets/customicons/calendar-dark.svg'));
@@ -143,7 +147,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       cellClass: ['aggridtextalign-left'],
       cellRendererFramework: AGGridCellActionsComponent, cellRendererParams: { type: 'row-remove-icon' }
     },
-    {
+    /* {
       children: [{headerName: 'Delivery No./ ', headerTooltip: 'Delivery No./ Order Product', field: 'del_no',
       cellRendererFramework: AGGridCellActionsComponent, cellRendererParams: function(params) {
                   let keyData = params.value;
@@ -156,23 +160,44 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       {
         headerName: 'Order Product', headerTooltip: 'Order Product', field: 'order_product'
       }]
+    }, */
+    {
+      headerName: 'Delivery No. / Order Product', width: 250, headerTooltip: 'Delivery No. / Order Product', field: 'del_no',
+      cellRendererFramework:AGGridCellActionsComponent, cellRendererParams: {type: 'border-cell'} 
     },
     {
-      children: [{
-        headerName: 'Deliv Product', headerTooltip: 'Deliv Product', field: 'del_product'
+      children: [
+      {
+        headerName: 'Deliv Product', headerTooltip: 'Deliv Product', field: 'del_product', cellClass:'border-padding-5 p-r-0',
+        cellRendererFramework:AgGridCellStyleComponent, cellRendererParams: {cellClass: ['cell-bg-border'],label:'div-in-cell'}      
       },
       {
-        headerName: 'Deliv. Qty', headerTooltip: 'Deliv. Qty', field: 'del_qty'
+        headerName: 'Deliv. Qty', headerTooltip: 'Deliv. Qty', field: 'del_qty',cellClass:'blue-opacity-cell pad-lr-0' 
       },
       {
-        headerName: 'Estd. Rate', editable: true, headerTooltip: 'Estd. Rate', field: 'est_rate'
+        headerName: 'Estd. Rate', editable: true, headerTooltip: 'Estd. Rate', field: 'est_rate',cellClass:'blue-opacity-cell pad-lr-0'  
       },
-      { headerName: 'Amount', headerTooltip: 'Amount', field: 'amount1' }]
+      {
+        headerName: 'Amount', headerTooltip: 'Amount', field: 'amount1', cellClass:'blue-opacity-cell pad-lr-5' } ]
     },
-    { headerName: 'Invoice Product', headerTooltip: 'Invoice Product', field: 'inv_product' },
-    { headerName: 'Invoice Qty', headerTooltip: 'Invoice Qty', field: 'inv_qty' },
-    { headerName: 'Invoice Rate', headerTooltip: 'Invoice Rate', field: 'inv_rate' },
-    { headerName: 'Amount', headerTooltip: 'Amount', field: 'amount2' },
+    {
+        children: [
+          { headerName: 'Invoice Product', headerTooltip: 'Invoice Product', field: 'inv_product', cellClass:'border-padding-5 p-r-0',
+            cellRendererFramework:AGGridCellActionsComponent, cellRendererParams: {type: 'dashed-border-dark'}
+          },
+          { 
+            headerName: 'Invoice Qty', headerTooltip: 'Invoice Qty', field: 'inv_qty', cellClass:'blue-opacity-cell dark pad-lr-0',
+            cellRendererFramework:AGGridCellActionsComponent, cellRendererParams: {type: 'dashed-border-darkcell'}
+          },
+          { 
+            headerName: 'Invoice Rate', headerTooltip: 'Invoice Rate', field: 'inv_rate', cellClass:'blue-opacity-cell dark pad-lr-0',
+            cellRendererFramework:AGGridCellActionsComponent, cellRendererParams: {type: 'dashed-border-darkcell'}
+          },
+          { 
+            headerName: 'Amount', headerTooltip: 'Amount', field: 'amount2', cellClass:'blue-opacity-cell dark pad-lr-5'
+          }
+        ]
+      },
     { headerName: 'Recon status', headerTooltip: 'Recon status', field: 'recon_status',
     cellRendererFramework:AGGridCellRendererComponent, cellRendererParams: function(params) {
       var classArray:string[] =[];
@@ -310,24 +335,27 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   addCustomHeaderEventListener() {
     let addButtonElement = document.getElementsByClassName('add-btn');
     addButtonElement[0].addEventListener('click', (event) => {
-      this.gridOptions_data.api.applyTransaction({
-        add: [
-          {
-            del_no: '23243', order_product: 'DMA 0.1%', del_product: 'DMA 0.1%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
-            inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Matched', sulpher_content: '0.05', phy_supplier: 'British Petroleum'
-          },
-          {
-            del_no: '23243/RMK 380 3.5', del_product: '380 3.5%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
-            inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Unmatched', sulpher_content: '0.05', phy_supplier: 'British Petroleum'
-          },
-          {
-            del_no: '23243/RMK 380 3.5', del_product: '380 3.5%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
-            inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Matched', sulpher_content: '0.05', phy_supplier: 'British Petroleum'
-          }
-      ]
-      });
+      /* this.gridOptions_data.api.applyTransaction({
+        add: []
+      }); */
+      let productdetail = [];
+      this.rowData_aggrid_pd.push(productdetail);
+      console.log('add btn');
     });
 
+  }
+
+  openSearchPopup() {
+    this.popupOpen = true;
+        const dialogRef = this.dialog.open(SearchPopupDialog, {
+            width: '600px',
+            maxHeight: '600px',
+            panelClass: 'popup-grid'
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            this.popupOpen = false;
+        });
   }
 
   ngOnInit(): void {
@@ -374,8 +402,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   parseProductDetailData( productDetails : IInvoiceDetailsItemProductDetails[]){
     for ( let value of productDetails) {
       let productdetail = {
-        del_no: value.deliveryId,
-        order_product: value.invoicedProduct.name,
+        del_no: {no: value.deliveryId, order_prod: value.invoicedProduct.name},
         del_product: value.product.name,
         del_qty: value.deliveryQuantity +' '+ value.deliveryQuantityUom.name,
         est_rate: value.estimatedRate +' '+ value.estimatedRateCurrency.code,
