@@ -1,7 +1,9 @@
-﻿commit 28a04ccf2a9657700c12109e4de6106ae0351b12
-Author: Prabaharan P <prabaharan.p@Inatech.com>
-Date:   Mon Apr 26 17:48:28 2021 +0530
+﻿commit a837f4688dbabbf5a3938fd92e7568e98a5849f7
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Mon Apr 26 13:24:03 2021 +0000
 
-    Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_git/Shiptech10-UI
+    Merged PR 10169: Bug 31693: Current ROB & Arbitrage details : Table size and Font style should be updated as per given UI
+    
+    Related work items: #31693
 
 branch: master

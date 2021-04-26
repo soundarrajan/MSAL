@@ -4,8 +4,8 @@
       Product pricing
     </div>
   </div>
-  <div class="col-md-12 no-padding d-flex" style="margin-top: 10px;">
-    <div class="col-md-4 no-padding">
+  <div class="col-md-12 row no-padding d-flex" style="margin-top: 10px;">
+    <div class="col-md-6 no-padding">
       <div id="custom-contract-btn-toggle-v2">
         <mat-button-toggle-group 
           [disabled]="formValues.status && formValues.status.name == 'Confirmed'" 
@@ -21,7 +21,7 @@
         </mat-button-toggle-group>
       </div>
     </div>
-    <div *ngIf="formValues.products[selectedTabIndex].isFormula" class="contract-details-info col-md-8 no-padding" style="text-align: right;">
+    <div *ngIf="formValues.products[selectedTabIndex].isFormula" class="contract-details-info col-md-6 no-padding" style="text-align: right;">
       <span>
         <a *ngIf="!(formValues.products[selectedTabIndex].formula && formValues.products[selectedTabIndex].formula.name)" class="create-new-formula-icon" (click)="createNewFormulaPopup(selectedTabIndex)"></a>
       </span>
@@ -30,6 +30,24 @@
       </span>
       <span *ngIf="formValues.products[selectedTabIndex].formula && formValues.products[selectedTabIndex].formula.name" class="disabled-formula">
       </span>
+    </div>
+    <div *ngIf="!formValues.products[selectedTabIndex].isFormula" class="contract-details-info col-md-6 no-padding" style="text-align: right;">
+      <div class="custom-form-field product-details" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}" style="width: 50% !important; margin-left: 40px !important;">
+        <mat-form-field class="without-search" appearance="legacy">
+          <mat-label>Price Precision</mat-label>
+          <mat-select 
+              [(ngModel)]="formValues.products[selectedTabIndex].pricePrecision"
+              placeholder="Price Precision"
+              [disableOptionCentering]="true"
+              panelClass="price-precision-select-container"
+              [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
+              (selectionChange)="recomputeProductPricePrecision(selectedTabIndex)">
+              <mat-option *ngFor="let option of createRange(0, 4)" [value]="option">
+                {{option}}
+            </mat-option>
+        </mat-select>
+        </mat-form-field>
+      </div>
     </div>
   </div>
   <div *ngIf="formValues.products[selectedTabIndex].fixedPrice" class="col-md-12 no-padding d-flex" style="margin-top: 10px;">
@@ -44,6 +62,7 @@
           autocomplete="off"
           placeholder="Price"
           priceFormat
+          [pricePrecision]="formValues.products[selectedTabIndex].pricePrecision"
           required>
       </mat-form-field>
     </div>
