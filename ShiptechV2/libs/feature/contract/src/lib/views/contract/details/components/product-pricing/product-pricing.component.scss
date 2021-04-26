@@ -585,3 +585,18 @@
     color: #e73d4a!important;
   }
 }
+
+.price-precision-select-container.mat-select-panel {
+  min-width: calc(100% + 12px) !important;
+  transform: translateX(10px) !important
+}
+
+.price-precision-select-container.mat-select-panel{
+  position: relative;
+  top: 26px;
+}
+
+.price-precision-select-container .mat-option {
+  height: 20px  !important;
+  padding: 15px;
+}
