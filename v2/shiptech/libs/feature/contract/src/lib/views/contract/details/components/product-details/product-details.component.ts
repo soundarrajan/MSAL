@@ -41,7 +41,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } fro
 import moment, { Moment, MomentFormatSpecification, MomentInput } from 'moment';
 import dateTimeAdapter from '@shiptech/core/utils/dotnet-moment-format-adapter';
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger, _MatAutocompleteBase } from '@angular/material/autocomplete';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { IDeliveryTenantSettings } from 'libs/feature/delivery/src/lib/core/settings/delivery-tenant-settings';
 import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
@@ -602,6 +602,8 @@ export class ProductDetails extends DeliveryAutocompleteComponent
   @Input() events: Observable<void>;
   @Input() events1: Observable<void>;
 
+  @Input('auto1')
+  autocomplete: _MatAutocompleteBase;
 
   constructor(
     public gridViewModel: OrderListGridViewModel,
@@ -1284,6 +1286,10 @@ export class ProductDetails extends DeliveryAutocompleteComponent
           });
     }
     }
+  }
+
+  openSupplier() {
+    document.getElementsByTagName('body')[0].click();
   }
 
 

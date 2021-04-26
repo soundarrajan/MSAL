@@ -1,9 +1,11 @@
-﻿commit a837f4688dbabbf5a3938fd92e7568e98a5849f7
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Mon Apr 26 13:24:03 2021 +0000
+﻿commit 4f071837868392f99f798bab9f91adf0db54a746
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Mon Apr 26 13:45:01 2021 +0000
 
-    Merged PR 10169: Bug 31693: Current ROB & Arbitrage details : Table size and Font style should be updated as per given UI
+    Merged PR 10170: Fixed overlapping of seller name suggestion
     
-    Related work items: #31693
+    Fixed overlapping of seller name suggestion
+    
+    Related work items: #31900
 
 branch: master
