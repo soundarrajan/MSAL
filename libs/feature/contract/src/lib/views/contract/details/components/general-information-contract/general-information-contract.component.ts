@@ -887,6 +887,11 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
     return value.toFixed(0);
   }
 
+  openSeller() {
+    document.getElementsByTagName('body')[0].click();
+  }
+
+
 
   ngAfterViewInit(): void {
   

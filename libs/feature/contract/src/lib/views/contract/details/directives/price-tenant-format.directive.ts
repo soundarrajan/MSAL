@@ -13,6 +13,8 @@ export class PriceTenantFormatDirective implements OnInit {
   DECIMAL_SEPARATOR: string;
   THOUSANDS_SEPARATOR: string;
 
+  @Input() pricePrecision: number;
+
   constructor(
     private elementRef: ElementRef,
     @Inject(DecimalPipe) private _decimalPipe,
@@ -34,13 +36,14 @@ export class PriceTenantFormatDirective implements OnInit {
 
   @HostListener("blur", ["$event.target.value"])
   onBlur(value) {
+  
     let viewValue = `${value}`;
     let plainNumber = viewValue.replace(/[^\d|\-+|\.+]/g, '');
     if (plainNumber) {
-      if(this.tenantService.quantityPrecision == 0) {
+      if(this.pricePrecision == 0) {
         this.el.value = plainNumber;
       } else{
-        this.el.value = this._decimalPipe.transform(plainNumber, this.format);
+        this.el.value = this._decimalPipe.transform(plainNumber, '1.' + this.pricePrecision + '-' + this.pricePrecision);
       }
     }
   } 

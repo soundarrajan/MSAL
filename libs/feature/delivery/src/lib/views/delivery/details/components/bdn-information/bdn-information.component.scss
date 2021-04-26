@@ -918,3 +918,7 @@
   width: fit-content;
   color: white !important;
 }
+
+.custom-form-field.lightTheme .mat-form-field .mat-placeholder-required {
+  color: orange !important;
+}

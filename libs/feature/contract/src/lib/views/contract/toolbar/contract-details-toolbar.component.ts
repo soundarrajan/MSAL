@@ -276,14 +276,14 @@ export class ContractDetailsToolbarComponent
           {
               id: 'contract',
               displayName : 'Contract',
-              url : typeof payload != 'undefined' && payload.contractId ? `${this.baseOrigin}/#/contracts/contract/edit/${ payload.contractId}` : '',
+              url : typeof payload != 'undefined' && payload.contractId ? `${this.baseOrigin}/v2/contracts/contract/${ payload.contractId}/details` : '',
               entityId : typeof payload != 'undefined' && payload.contractId ? payload.contractId : '',
               indexStatus : null,
           },
           {
               id: 'delivery',
               displayName : 'Delivery',
-              url : typeof payload != 'undefined' && payload.deliveryId ? `${this.baseOrigin}/#/delivery/delivery/edit/${ payload.deliveryId}` : '',
+              url : typeof payload != 'undefined' && payload.deliveryId ? `${this.baseOrigin}/v2/delivery/delivery/${ payload.deliveryId}/details` : '',
               entityId : typeof payload != 'undefined' && payload.deliveryId ? payload.deliveryId : '',
               indexStatus : null,
               hidden : false
@@ -326,14 +326,14 @@ export class ContractDetailsToolbarComponent
           {
               id: 'contract',
               displayName : 'Contract',
-              url : typeof payload != 'undefined' && payload.contractId ? `${this.baseOrigin}/#/contracts/contract/edit/${ payload.contractId}` : '',
+              url : typeof payload != 'undefined' && payload.contractId ? `${this.baseOrigin}/v2/contracts/contract/${ payload.contractId}/details` : '',
               entityId : typeof payload != 'undefined' && payload.contractId ? payload.contractId : '',
               indexStatus : null,
           },
           {
               id: 'delivery',
               displayName : 'Delivery',
-              url : typeof payload != 'undefined' && payload.deliveryId ? `${this.baseOrigin}/#/delivery/delivery/edit/${ payload.deliveryId}` : '',
+              url : typeof payload != 'undefined' && payload.deliveryId ? `${this.baseOrigin}/v2/delivery/delivery/${ payload.deliveryId}/details` : '',
               entityId : typeof payload != 'undefined' && payload.deliveryId ? payload.deliveryId : '',
               indexStatus : null,
               hidden : false
