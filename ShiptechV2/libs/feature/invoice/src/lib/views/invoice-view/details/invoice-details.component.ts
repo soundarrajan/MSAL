@@ -435,7 +435,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   }
 
   getInvoiceItem() {
-    this._entityId = 10851;
+    //this._entityId = 10851;
     let data : IInvoiceDetailsItemRequest = {
       Payload: this._entityId
     };
