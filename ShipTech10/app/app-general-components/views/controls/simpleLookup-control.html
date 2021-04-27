@@ -4,7 +4,7 @@ data-original-title="{{ field.Unique_ID ==	'product' || field.Unique_ID ==	'Prod
 
     <label ng-if="field.Label" for="{{ field.Name }}" class="{{ field.Name }}_label" class="simpleLookupLabel">
         {{ CM.app_id + '.'+ field.Label | translate }}
-        <span ng-if="($eval(field.Required)> 0 || field.Required == true ? true : false) && field.Unique_ID != 'documentType'" class="orange-txt">
+        <span ng-if="(CM.screen_id == 'claims' && field.Label == 'DEBUNKER_LOCATION')  || ($eval(field.Required)> 0 || field.Required == true ? true : false) && field.Unique_ID != 'documentType'" class="orange-txt">
             *
         </span>
     </label>

@@ -4,7 +4,7 @@
 			<i class="fa fa-warning font-yellow-lemon font-lg" tooltip data-original-title="Unless a value is manually set, Due Date and related data will be automatically computed after the Invoice is saved."></i>			
 		</span>
         {{ CM.app_id + '.' + field.Label | translate }}
-        <span ng-if="$eval(field.Required) > 0 || field.Required == true ? true : false " class="orange-txt">
+        <span ng-if="(CM.screen_id == 'claims' && field.Label == 'DEBUNKER_DATE') || (CM.screen_id == 'claims' && field.Label == 'SETTLEMENT_DATE') || $eval(field.Required) > 0 || field.Required == true ? true : false " class="orange-txt">
             *
         </span>
     </label>
