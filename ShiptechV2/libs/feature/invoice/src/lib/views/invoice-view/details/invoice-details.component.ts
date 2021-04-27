@@ -339,7 +339,20 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       /* this.gridOptions_data.api.applyTransaction({
         add: []
       }); */
-      let productdetail = {};
+      let productdetail = {
+        del_no: {no: '', order_prod: ''},
+        del_product: '',
+        del_qty: '',
+        est_rate: '',
+        amount1: '',
+        inv_product: '',
+        inv_qty: '',
+        inv_rate: '',
+        amount2: '',
+        recon_status: '',
+        sulpher_content: '',
+        phy_supplier: '',
+      };
       this.rowData_aggrid_pd.push(productdetail);
       console.log('add btn');
     });
