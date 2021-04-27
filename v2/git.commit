@@ -1,9 +1,7 @@
-﻿commit 8400be76f69d0ad421a64f39f11d98dba01f0a93
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Tue Apr 27 14:16:55 2021 +0000
+﻿commit 8b8c03abca4ff7d2d419c88c7412222c4d801900
+Author: Gokul <gokul.s@inatech.com>
+Date:   Tue Apr 27 20:30:12 2021 +0530
 
-    Merged PR 10212: Fixed price precision
-    
-    Fixed price precision
+    commented the static value
 
 branch: master
