@@ -1099,6 +1099,7 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   recomputeProductPricePrecision (productKey) {
     if (this.formValues.products[productKey].price) {
       this.formValues.products[productKey].price = this.priceFormatValue(this.formValues.products[productKey].price, this.formValues.products[productKey].pricePrecision);
+      this.changeDetectorRef.detectChanges();
     }
   }
   
@@ -1130,11 +1131,7 @@ export class ProductPricing extends DeliveryAutocompleteComponent
       return null;
     }
     if (number) {
-      if(pricePrecision == 0) {
-        return number;
-      } else {
-        return this._decimalPipe.transform(number, '1.' + pricePrecision +  '-' + pricePrecision);
-      }
+      return this._decimalPipe.transform(number, '1.' + pricePrecision +  '-' + pricePrecision);
     }
   }
 
