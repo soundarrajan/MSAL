@@ -372,6 +372,16 @@
     }
   }
 
+  .prod-details{
+    .ag-header-row{
+      top: 0px !important;
+    }
+    .ag-header{
+      height: 38px !important;
+      min-height: 38px !important;
+    }
+  }
+
   .add-cost{
     .ag-overlay-no-rows-center{
         display: none !important;
@@ -520,6 +530,10 @@
     margin: 8px 0px;
     &.with-expand{
       float: left;
+      display: block;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
       width: 120px !important;
     }
     &.with-search{
