@@ -32,27 +32,43 @@
                 <div class="col-md-3">
                     <div id="custom-form-field" class="lightTheme">
                         <mat-form-field class="without-search" appearance="legacy">
-                                 <mat-label>Invoice Date*</mat-label>
-                                 <input matInput [matDatepicker]="picker1" (focus)="picker1.open()" >
-                                 <mat-datepicker-toggle matSuffix [for]="picker1">
-                                     <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
-                                     </mat-icon>
-                                 </mat-datepicker-toggle>
-                                 <mat-datepicker #picker1></mat-datepicker>
-                             </mat-form-field>
+                            <mat-label>Invoice Date*</mat-label>
+                            <input [(ngModel)]="formValues.sellerInvoiceDate" 
+                            #validToDateField="ngModel" 
+                            matInput 
+                            [matDatepicker]="sellerInvoiceDate"
+                            (focus)="sellerInvoiceDate.open()"
+                            autocomplete="off"
+                            placeholder="Invoice Date"
+                            (dateInput)="onChange($event, 'sellerInvoiceDate')"
+                            (dateChange)="formValues.sellerInvoiceDate = formatDateForBe(formValues.sellerInvoiceDate)">
+                            <mat-datepicker-toggle matSuffix [for]="sellerInvoiceDate">
+                                <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
+                                </mat-icon>
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #sellerInvoiceDate></mat-datepicker>
+                        </mat-form-field>
                      </div>
                 </div>
                 <div class="col-md-3">
                     <div id="custom-form-field" class="lightTheme">
                         <mat-form-field class="without-search" appearance="legacy">
-                                 <mat-label>Received Date*</mat-label>
-                                 <input matInput [matDatepicker]="picker2" (focus)="picker2.open()">
-                                 <mat-datepicker-toggle matSuffix [for]="picker2">
-                                     <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
-                                     </mat-icon>
-                                 </mat-datepicker-toggle>
-                                 <mat-datepicker #picker2></mat-datepicker>
-                             </mat-form-field>
+                            <mat-label>Received Date*</mat-label>
+                            <input [(ngModel)]="formValues.receivedDate" 
+                            #validToDateField="ngModel" 
+                            matInput 
+                            [matDatepicker]="receivedDate"
+                            (focus)="receivedDate.open()"
+                            autocomplete="off"
+                            placeholder="Received Date"
+                            (dateInput)="onChange($event, 'receivedDate')"
+                            (dateChange)="formValues.receivedDate = formatDateForBe(formValues.receivedDate)">
+                            <mat-datepicker-toggle matSuffix [for]="receivedDate">
+                                <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
+                                </mat-icon>
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #receivedDate></mat-datepicker>
+                        </mat-form-field>
                      </div>
                 </div>
                 <div class="col-md-3">
@@ -76,27 +92,43 @@
                     <div class="col-md-3">
                         <div id="custom-form-field" class="lightTheme">
                             <mat-form-field class="without-search" appearance="legacy">
-                                     <mat-label>Due Date</mat-label>
-                                     <input matInput [matDatepicker]="picker3" (focus)="picker3.open()">
-                                     <mat-datepicker-toggle matSuffix [for]="picker3">
-                                         <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
-                                         </mat-icon>
-                                     </mat-datepicker-toggle>
-                                     <mat-datepicker #picker3></mat-datepicker>
-                                 </mat-form-field>
+                                <mat-label>Due Date</mat-label>
+                                <input [(ngModel)]="formValues.dueDate" 
+                                #validToDateField="ngModel" 
+                                matInput 
+                                [matDatepicker]="dueDate"
+                                (focus)="dueDate.open()"
+                                autocomplete="off"
+                                placeholder="Due Date"
+                                (dateInput)="onChange($event, 'dueDate')"
+                                (dateChange)="formValues.dueDate = formatDateForBe(formValues.dueDate)">
+                                <mat-datepicker-toggle matSuffix [for]="dueDate">
+                                    <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
+                                    </mat-icon>
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #dueDate></mat-datepicker>
+                            </mat-form-field>
                          </div>
                     </div>
                     <div class="col-md-3">
                         <div id="custom-form-field" class="lightTheme">
                             <mat-form-field class="without-search" appearance="legacy">
-                                     <mat-label>Working due date</mat-label>
-                                     <input matInput [matDatepicker]="picker4" (focus)="picker4.open()">
-                                     <mat-datepicker-toggle matSuffix [for]="picker4">
-                                         <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
-                                         </mat-icon>
-                                     </mat-datepicker-toggle>
-                                     <mat-datepicker #picker4></mat-datepicker>
-                                 </mat-form-field>
+                                <mat-label>Working due date</mat-label>
+                                <input [(ngModel)]="formValues.workingDueDate" 
+                                #validToDateField="ngModel" 
+                                matInput 
+                                [matDatepicker]="workingDueDate"
+                                (focus)="workingDueDate.open()"
+                                autocomplete="off"
+                                placeholder="Working Due Date"
+                                (dateInput)="onChange($event, 'workingDueDate')"
+                                (dateChange)="formValues.workingDueDate = formatDateForBe(formValues.workingDueDate)">
+                                <mat-datepicker-toggle matSuffix [for]="workingDueDate">
+                                    <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
+                                    </mat-icon>
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #workingDueDate></mat-datepicker>
+                            </mat-form-field>
                          </div>
                     </div>
                     <div class="col-md-3">
@@ -113,40 +145,64 @@
                     <div id="custom-form-field" class="lightTheme">
                         <mat-form-field class="without-search" appearance="legacy">
                             <mat-label>Seller Due Date</mat-label>
-                            <input matInput [matDatepicker]="pickerSDD" (focus)="pickerSDD.open()">
-                            <mat-datepicker-toggle matSuffix [for]="pickerSDD">
+                            <input [(ngModel)]="formValues.sellerDueDate" 
+                            #validToDateField="ngModel" 
+                            matInput 
+                            [matDatepicker]="sellerDueDate"
+                            (focus)="sellerDueDate.open()"
+                            autocomplete="off"
+                            placeholder="Seller Due Date"
+                            (dateInput)="onChange($event, 'sellerDueDate')"
+                            (dateChange)="formValues.sellerDueDate = formatDateForBe(formValues.sellerDueDate)">
+                            <mat-datepicker-toggle matSuffix [for]="sellerDueDate">
                                 <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
                                 </mat-icon>
                             </mat-datepicker-toggle>
-                            <mat-datepicker #pickerSDD></mat-datepicker>
+                            <mat-datepicker #sellerDueDate></mat-datepicker>
                         </mat-form-field>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div id="custom-form-field" class="lightTheme">
                         <mat-form-field class="without-search" appearance="legacy">
-                                    <mat-label>Payment Date</mat-label>
-                                    <input matInput [matDatepicker]="picker5" (focus)="picker5.open()">
-                                    <mat-datepicker-toggle matSuffix [for]="picker5">
-                                        <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
-                                        </mat-icon>
-                                    </mat-datepicker-toggle>
-                                    <mat-datepicker #picker5></mat-datepicker>
+                            <mat-label>Payment Date</mat-label>
+                            <input [(ngModel)]="formValues.paymentDate" 
+                            #validToDateField="ngModel" 
+                            matInput 
+                            [matDatepicker]="paymentDate"
+                            (focus)="paymentDate.open()"
+                            autocomplete="off"
+                            placeholder="Payment Date"
+                            (dateInput)="onChange($event, 'paymentDate')"
+                            (dateChange)="formValues.paymentDate = formatDateForBe(formValues.paymentDate)">
+                            <mat-datepicker-toggle matSuffix [for]="paymentDate">
+                                <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
+                                </mat-icon>
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #paymentDate></mat-datepicker>
                         </mat-form-field>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div id="custom-form-field" class="lightTheme">
                         <mat-form-field class="without-search" appearance="legacy">
-                                    <mat-label>Validation Date</mat-label>
-                                    <input matInput [matDatepicker]="picker6" (focus)="picker6.open()">
-                                    <mat-datepicker-toggle matSuffix [for]="picker6">
-                                        <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
-                                        </mat-icon>
-                                    </mat-datepicker-toggle>
-                                    <mat-datepicker #picker6></mat-datepicker>
-                                </mat-form-field>
-                        </div>
+                            <mat-label>Validation Date</mat-label>
+                            <input [(ngModel)]="formValues.accountancyDate" 
+                            #validToDateField="ngModel" 
+                            matInput 
+                            [matDatepicker]="validationDate"
+                            (focus)="validationDate.open()"
+                            autocomplete="off"
+                            placeholder="Validation Date"
+                            (dateInput)="onChange($event, 'validationDate')"
+                            (dateChange)="formValues.accountancyDate = formatDateForBe(formValues.accountancyDate)">
+                            <mat-datepicker-toggle matSuffix [for]="validationDate">
+                                <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
+                                </mat-icon>
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #validationDate></mat-datepicker>
+                        </mat-form-field>
+                    </div>
                 </div>
                 <div class="col-md-3">
                     <div id="custom-form-field" class="lightTheme">
@@ -187,12 +243,20 @@
                     <div id="custom-form-field" class="lightTheme">
                         <mat-form-field class="without-search" appearance="legacy">
                             <mat-label>Accountancy Date</mat-label>
-                            <input matInput [matDatepicker]="pickerAD" (focus)="pickerAD.open()">
-                            <mat-datepicker-toggle matSuffix [for]="pickerAD">
+                            <input [(ngModel)]="formValues.accountancyDate" 
+                            #validToDateField="ngModel" 
+                            matInput 
+                            [matDatepicker]="accountancyDate"
+                            (focus)="accountancyDate.open()"
+                            autocomplete="off"
+                            placeholder="Accountancy Date"
+                            (dateInput)="onChange($event, 'accountancyDate')"
+                            (dateChange)="formValues.accountancyDate = formatDateForBe(formValues.accountancyDate)">
+                            <mat-datepicker-toggle matSuffix [for]="accountancyDate">
                                 <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
                                 </mat-icon>
-                            </mat-datepicker-toggle>
-                            <mat-datepicker #pickerAD></mat-datepicker>
+                          </mat-datepicker-toggle>
+                          <mat-datepicker #accountancyDate></mat-datepicker>
                         </mat-form-field>
                     </div>
                 </div>
