@@ -1712,15 +1712,12 @@
                     <form class="" name="forms.additionalCostsForm" novalidate>
                         <table class="table table-hover table-bordered table-stripped" id="new_order_additional_costs">
                             <thead>
-                                <tr>
-                                    <th id="generatedThId196">
-
-
-
-
-                                        <span class="clickable" id="addCost_addRow_header"
-                                            ng-click="$ctrl.addAdditionalCost()"
-                                            ng-if="['Delivered', 'PartiallyDelivered', 'Invoiced', 'PartiallyInvoiced', 'Closed'].indexOf($ctrl.data.status.name) == -1">
+                            <tr>
+                                <th id="generatedThId196">
+                                        <span class="clickable"
+                                              id="addCost_addRow_header"
+                                              ng-click="$ctrl.addAdditionalCost()"
+                                              ng-if="['Invoiced', 'PartiallyInvoiced', 'Closed'].indexOf($ctrl.data.status.name) == -1">
                                             <i class="fa fa-plus st-btn-icon"></i>
                                         </span>
                                 </th>
@@ -1728,12 +1725,6 @@
                                 <th id="generatedThId198" ng-repeat="column in $ctrl.additionalCostColumns">
                                     {{ column.caption | translate }}
                                 </th>
-										
-											
-										 
-										
-												 
-										 
                             </tr>
                             </thead>
                             <tbody>
@@ -1742,16 +1733,18 @@
 
                                     <td>
 
-                                        <span class="clickable" id="addCost_addRow_{{ $index }}"
-                                            ng-click="$ctrl.addAdditionalCost()"
-                                            ng-if="['Delivered', 'PartiallyDelivered', 'Invoiced', 'PartiallyInvoiced', 'Closed'].indexOf($ctrl.data.status.name) == -1">
+                                    <span class="clickable"
+                                          id="addCost_addRow_{{ $index }}"
+                                          ng-click="$ctrl.addAdditionalCost()"
+                                          ng-if="['Invoiced', 'PartiallyInvoiced', 'Closed'].indexOf($ctrl.data.status.name) == -1">
                                             <i class="fa fa-plus st-btn-icon"></i>
                                         </span>
-                                    </td>
-                                    <td>
-                                        <span class="clickable" id="addCost_remRow_{{ $index }}"
-                                            ng-click="$ctrl.deleteAdditionalCost(additionalCost)"
-                                            ng-if="['Delivered', 'PartiallyDelivered', 'Invoiced', 'PartiallyInvoiced', 'Closed'].indexOf($ctrl.data.status.name) == -1">
+                                </td>
+                                <td>
+                                        <span class="clickable"
+                                              id="addCost_remRow_{{ $index }}"
+                                              ng-click="$ctrl.deleteAdditionalCost(additionalCost)"
+                                              ng-if="['Invoiced', 'PartiallyInvoiced', 'Closed'].indexOf($ctrl.data.status.name) == -1">
                                             <i class="fa fa-minus st-btn-icon"></i>
                                         </span>
                                     </td>
@@ -1763,7 +1756,7 @@
                                             id="additional_cost_additional_cost_{{ $index }}"
                                             name="{{ $ctrl.additionalCostColumns.name.name }}"
                                             ng-change="$ctrl.getDefaultUomForAdditionalCost(additionalCost, $ctrl.additionalCostApplicableFor[additionalCost.fakeId]); $ctrl.additionalCostNameChanged(additionalCost); $ctrl.validateAdditionalCostAllowNegative(additionalCost.price,additionalCost.additionalCost.allowNegative, $index, additionalCost.additionalCost); additionalCost.costLineChanged = true"
-                                            ng-disabled="additionalCost.disabled || ($ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id  || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id || ['Delivered', 'PartiallyDelivered', 'Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) != -1))"
+                                            ng-disabled="(additionalCost.disabled && additionalCost.id > 0) || ($ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id  || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id || ['Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) != -1))"
                                             ng-model="additionalCost.additionalCost"
                                             ng-options="addCost as addCost.name for addCost in $ctrl.lists.AdditionalCost | decodeReadOnly track by addCost.id"></select>
                                     </td>
@@ -1772,7 +1765,7 @@
                                         <select class="select2 form-control" id="additional_cost_type_{{ $index }}"
                                             name="{{ $ctrl.additionalCostColumns.type.name }}"
                                             ng-change="$ctrl.costTypeChanged(additionalCost); additionalCost.costLineChanged = true"
-                                            ng-disabled="additionalCost.disabled || ($ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id || ['Delivered', 'PartiallyDelivered', 'Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) != -1))"
+                                            ng-disabled="(additionalCost.disabled && additionalCost.id > 0) || ($ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id || ['Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) != -1))"
                                             ng-model="additionalCost.costType"
                                             ng-options="costType as costType.name for costType in getAdditionalCostDefaultCostType(additionalCost) | decodeReadOnly track by costType.id"
                                             ng-required="additionalCost.additionalCost"></select>
@@ -1837,7 +1830,7 @@
                                                 <select class="bs-select pull-right uomWidth" id=""
                                                     id="additional_cost_priceUom_{{ $index }}" name=""
                                                     ng-change="$ctrl.addPriceUomChanged(additionalCost)"
-                                                    ng-disabled="!$ctrl.additionalCostPriceUomEnabled(additionalCost) || ($ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id || ['Delivered', 'PartiallyDelivered', 'Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) != -1))"
+                                                    ng-disabled="!$ctrl.additionalCostPriceUomEnabled(additionalCost) || ($ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id || ['Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) != -1))"
                                                     ng-model="additionalCost.priceUom"
                                                     ng-options="item as item.name for item in $ctrl.lists.Uom | decodeReadOnly track by item.id"></select>
 
@@ -1879,7 +1872,7 @@
                                             id="{{ $ctrl.additionalCostColumns.ApplicableFor.name + '_' + $index }}"
                                             name="{{ $ctrl.additionalCostColumns.ApplicableFor.name }}"
                                             ng-change="$ctrl.applicableForChange(additionalCost, $ctrl.additionalCostApplicableFor[additionalCost.fakeId])"
-                                            ng-disabled="!additionalCost.additionalCost || ($ctrl.data.status != null && ( $ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id || additionalCost.disabledApplicableFor || (additionalCost.isTaxComponent && additionalCost.costType.name == 'Percent') || ['Delivered', 'PartiallyDelivered', 'Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) != -1))"
+                                            ng-disabled="!additionalCost.additionalCost || ($ctrl.data.status != null && ( $ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id || additionalCost.disabledApplicableFor || (additionalCost.isTaxComponent && additionalCost.costType.name == 'Percent') || ['Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) != -1))"
                                             ng-model="$ctrl.additionalCostApplicableFor[additionalCost.fakeId]"
                                             ng-options="product as ($ctrl.sumThose(idx,1) +' - '+ product.product.name) | decodeReadOnly for (idx, product) in $ctrl.data.products | aplicableCostForProduct | orderBy : 'productType.id' ">
 
