@@ -1,9 +1,9 @@
-﻿commit 6e1bb2440151b6517ddc5c368ba8021a5fa1a1e7
+﻿commit 4d05cd8506a008ceb6c6c6da8287bf2b051d9dcc
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Tue Apr 27 12:55:11 2021 +0000
+Date:   Tue Apr 27 13:41:13 2021 +0000
 
-    Merged PR 10205: Disabled amount  from additional cost section when user select cost type with...
+    Merged PR 10209: Fixed product pricing
     
-    Disabled amount  from additional cost section when user select cost type with id equals with 4 (Range) or 5(Total)
+    Fixed product pricing
 
 branch: master
