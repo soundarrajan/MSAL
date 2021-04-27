@@ -21,7 +21,6 @@ APP_CLAIMS.controller('Controller_Claims', [
     function($scope, $filter, $rootScope, $Api_Service, Factory_Claims, $state, $location, $q, $compile, $timeout, Factory_Master, $listsCache, $tenantSettings, screenLoader, $http, API) {
         let vm = this;
         let guid = '';
-        $scope.hasWithheldAmount = false;
         vm.screen_id = 'claims';
         if ($state.params.path) {
             vm.app_id = $state.params.path[0].uisref.split('.')[0];
@@ -544,11 +543,6 @@ APP_CLAIMS.controller('Controller_Claims', [
                                 object.specParameter.name = decodeHtmlEntity(_.unescape(object.specParameter.name));
                             });
                         }
-                        if ($scope.formValues.claimDetails && convertDecimalSeparatorStringToNumber($scope.formValues.claimDetails.withheldAmount) > 0) {
-                            $scope.hasWithheldAmount = true;
-                        } else {
-                            $scope.hasWithheldAmount = false;
-                        }
                         let field2;
                         field2 = vm.formFieldSearch($scope.formFields, 'orderDetails.deliveryNo');
                         if (field2) {
@@ -775,11 +769,6 @@ APP_CLAIMS.controller('Controller_Claims', [
                 // Allow only positive numbers in withheld amount
                 if ($scope.formValues.claimDetails && convertDecimalSeparatorStringToNumber($scope.formValues.claimDetails.withheldAmount) < 0) {
                     $scope.formValues.claimDetails.withheldAmount = 0;
-                }
-                if ($scope.formValues.claimDetails && convertDecimalSeparatorStringToNumber($scope.formValues.claimDetails.withheldAmount) > 0) {
-                    $scope.hasWithheldAmount = true;
-                } else {
-                    $scope.hasWithheldAmount = false;
                 }
             }
         };
