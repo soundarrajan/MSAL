@@ -27,7 +27,7 @@ export namespace GetROBArbitrageApiPaths {
 }
 
 export namespace GetbunkerPlanIDApiPaths {
-    export const GetbunkerPlanIDUrl = () => `api/BOPS/bunkerplan/get/PlanId`;
+    export const GetbunkerPlanIDUrl = () => `api/BOPS/bunkerplan/getBunkerPlanInitial`;
 }
 export namespace GetCurrentROBApiPaths {
     export const GetCurrentROB = () => `api/BOPS/bunkerplan/get/CurrentROB`;

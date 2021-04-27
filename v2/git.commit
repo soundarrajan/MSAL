@@ -1,9 +1,9 @@
-﻿commit cc12f808acda723e0db1a13c3516da446c24c167
-Author: Padmashree S <padmashree.s@inatech.com>
-Date:   Tue Apr 27 08:48:46 2021 +0530
+﻿commit 7f3b37be290b90745316b0c54fd57d25dbaa51b7
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Tue Apr 27 07:32:20 2021 +0000
 
-    Invoices details UI
+    Merged PR 10185: #29778 - header section api changes has updated
     
-    Invoices details UI
+    Related work items: #29778
 
 branch: master

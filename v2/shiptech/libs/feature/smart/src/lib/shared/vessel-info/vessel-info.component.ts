@@ -64,9 +64,10 @@ export class VesselInfoComponent implements OnInit {
 
   public loadROBArbitrage() {
     let vesselId = this.vesselData?.vesselId;
-      this.localService.getBunkerPlanId(vesselId).subscribe((data)=> {
+    let requestPayload = {'shipId': vesselId, 'planStatus':'C'}
+      this.localService.getBunkerPlanId(requestPayload).subscribe((data)=> {
         console.log('bunker plan id res',data);
-        let bunkerPlanId = (data?.payload && data?.payload.length)? (data.payload)[0].latestPlanID: null;
+        let bunkerPlanId = (data?.payload && data?.payload.length)? (data.payload)[0].planId: null;
         this.localService.loadROBArbitrage(bunkerPlanId).subscribe((data)=> {
           this.ROBArbitrageData = (data?.payload && data?.payload.length)? data.payload[0]: {};
         })
