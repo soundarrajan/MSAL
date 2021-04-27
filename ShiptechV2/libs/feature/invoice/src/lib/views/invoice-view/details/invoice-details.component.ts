@@ -1,14 +1,18 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { UrlService } from '@shiptech/core/services/url/url.service';
+import { ActivatedRoute } from '@angular/router';
 import { AGGridCellActionsComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-actions.component';
 import { AGGridCellEditableComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-editable.component';
 import { AGGridCellRendererComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-renderer.component';
 import { AgGridCellStyleComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-style.component';
+import { OpsSpecParameterDialog } from '@shiptech/core/ui/components/ds-components/pop-ups/ops-spec-parameter.component';
+import { SearchPopupDialog } from '@shiptech/core/ui/components/ds-components/pop-ups/search-popup.component';
 import { GridOptions } from 'ag-grid-community';
-import { IInvoiceDetailsItemBaseInfo, IInvoiceDetailsItemCounterpartyDetails, IInvoiceDetailsItemDto, IInvoiceDetailsItemInvoiceCheck, IInvoiceDetailsItemInvoiceSummary, IInvoiceDetailsItemOrderDetails, IInvoiceDetailsItemPaymentDetails, IInvoiceDetailsItemProductDetails, IInvoiceDetailsItemRequest, IInvoiceDetailsItemRequestInfo, IInvoiceDetailsItemResponse, IInvoiceDetailsItemStatus, InvoiceFormModel } from '../../../services/api/dto/invoice-details-item.dto';
-import { InvoiceCompleteService } from '../../../services/invoice-complete.service';
+import { from } from 'rxjs';
+import { KnownInvoiceRoutes } from '../../../known-invoice.routes';
+import { IInvoiceDetailsItemBaseInfo, IInvoiceDetailsItemCounterpartyDetails, IInvoiceDetailsItemDto, IInvoiceDetailsItemInvoiceCheck, IInvoiceDetailsItemInvoiceSummary, IInvoiceDetailsItemOrderDetails, IInvoiceDetailsItemPaymentDetails, IInvoiceDetailsItemProductDetails, IInvoiceDetailsItemRequest, IInvoiceDetailsItemRequestInfo, IInvoiceDetailsItemResponse, IInvoiceDetailsItemStatus } from '../../../services/api/dto/invoice-details-item.dto';
 import { InvoiceDetailsService } from '../../../services/invoice-details.service';
 
 @Component({
@@ -21,62 +25,64 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
   _entityId;
   activeBtn = 'Final';
+  emptyStringVal = '--';
+  emptyNumberVal = '00';
 
   public gridOptions_data: GridOptions;
   public gridOptions_ac: GridOptions;
   public chipData = [
-    {Title:'Invoice No', Data:''},
-    {Title:'Status', Data:'Draft'},
-    {Title:'Invoice Total', Data:''},
-    {Title:'Estimated Total', Data:'33,898.00 USD'},
-    {Title:'Total Difference', Data:'-33.898.00 USD'},
-    {Title:'Provisional Inv No.', Data:''},
-    {Title:'Provisional Total', Data:''},
-    {Title:'Deductions', Data:'USD'},
-    {Title:'Net Payable', Data:''}
+    {Title:'Invoice No', Data:this.emptyStringVal},
+    {Title:'Status', Data:this.emptyStringVal},
+    {Title:'Invoice Total', Data:this.emptyStringVal},
+    {Title:'Estimated Total', Data:this.emptyStringVal},
+    {Title:'Total Difference', Data:this.emptyStringVal},
+    {Title:'Provisional Inv No.', Data:this.emptyStringVal},
+    {Title:'Provisional Total', Data:this.emptyStringVal},
+    {Title:'Deductions', Data:this.emptyStringVal},
+    {Title:'Net Payable', Data:this.emptyStringVal}
   ]
-
+  public popupOpen: boolean;
   private productDetailsData = [];
   public orderDetails = {
     contents: [
       {
         label: "Vessel",
-        value: "Puget Shipping",
+        value: this.emptyStringVal,
         customLabelClass: [],
         customValueClass: [],
       },
       {
         label: "Vessel Code",
-        value: "PUGET",
+        value: this.emptyStringVal,
         customLabelClass: [],
         customValueClass: [],
       },
       {
         label: "Port",
-        value: "Melbourne",
+        value: this.emptyStringVal,
         customLabelClass: [],
         customValueClass: [],
       },
       {
         label: "ETA",
-        value: "12/12/2020",
+        value: this.emptyStringVal,
         customLabelClass: [],
         customValueClass: [],
       }
     ],
     hasSeparator: false
   }
-  public counterpartyDetails = {
+  public counterpartyDetails ={
     contents: [
       {
         label: "Seller",
-        value: "AA Fuel Solns",
+        value: this.emptyStringVal,
         customLabelClass: [],
         customValueClass: [],
       },
       {
         label: "Broker",
-        value: "Marine Brokerage",
+        value: this.emptyStringVal,
         customLabelClass: [],
         customValueClass: [],
       }
@@ -84,10 +90,12 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     hasSeparator: true
   }
 
-  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private invoiceService: InvoiceDetailsService) {
+  constructor(public dialog: MatDialog, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private invoiceService: InvoiceDetailsService, route: ActivatedRoute) {
     iconRegistry.addSvgIcon(
       'data-picker-gray',
       sanitizer.bypassSecurityTrustResourceUrl('../../assets/customicons/calendar-dark.svg'));
+
+    this._entityId = route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
 
 
     this.gridOptions_ac = <GridOptions>{
@@ -107,7 +115,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         this.gridOptions_data.api = params.api;
         this.gridOptions_data.columnApi = params.columnApi;
         this.gridOptions_data.api.sizeColumnsToFit();
-        this.gridOptions_data.api.setRowData(this.rowData_aggrid_pd);
+        this.gridOptions_data.api.setRowData(this.rowData_aggrid_ac);
         this.addCustomHeaderEventListener();
 
       },
@@ -140,7 +148,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       cellClass: ['aggridtextalign-left'],
       cellRendererFramework: AGGridCellActionsComponent, cellRendererParams: { type: 'row-remove-icon' }
     },
-    {
+    /* {
       children: [{headerName: 'Delivery No./ ', headerTooltip: 'Delivery No./ Order Product', field: 'del_no',
       cellRendererFramework: AGGridCellActionsComponent, cellRendererParams: function(params) {
                   let keyData = params.value;
@@ -153,23 +161,44 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       {
         headerName: 'Order Product', headerTooltip: 'Order Product', field: 'order_product'
       }]
+    }, */
+    {
+      headerName: 'Delivery No. / Order Product', width: 250, headerTooltip: 'Delivery No. / Order Product', field: 'del_no',
+      cellRendererFramework:AGGridCellActionsComponent, cellRendererParams: {type: 'border-cell'} 
     },
     {
-      children: [{
-        headerName: 'Deliv Product', headerTooltip: 'Deliv Product', field: 'del_product'
+      children: [
+      {
+        headerName: 'Deliv Product', headerTooltip: 'Deliv Product', field: 'del_product', cellClass:'border-padding-5 p-r-0',
+        cellRendererFramework:AgGridCellStyleComponent, cellRendererParams: {cellClass: ['cell-bg-border'],label:'div-in-cell'}      
       },
       {
-        headerName: 'Deliv. Qty', headerTooltip: 'Deliv. Qty', field: 'del_qty'
+        headerName: 'Deliv. Qty', headerTooltip: 'Deliv. Qty', field: 'del_qty',cellClass:'blue-opacity-cell pad-lr-0' 
       },
       {
-        headerName: 'Estd. Rate', editable: true, headerTooltip: 'Estd. Rate', field: 'est_rate'
+        headerName: 'Estd. Rate', editable: true, headerTooltip: 'Estd. Rate', field: 'est_rate',cellClass:'blue-opacity-cell pad-lr-0'  
       },
-      { headerName: 'Amount', headerTooltip: 'Amount', field: 'amount1' }]
+      {
+        headerName: 'Amount', headerTooltip: 'Amount', field: 'amount1', cellClass:'blue-opacity-cell pad-lr-5' } ]
     },
-    { headerName: 'Invoice Product', headerTooltip: 'Invoice Product', field: 'inv_product' },
-    { headerName: 'Invoice Qty', headerTooltip: 'Invoice Qty', field: 'inv_qty' },
-    { headerName: 'Invoice Rate', headerTooltip: 'Invoice Rate', field: 'inv_rate' },
-    { headerName: 'Amount', headerTooltip: 'Amount', field: 'amount2' },
+    {
+        children: [
+          { headerName: 'Invoice Product', headerTooltip: 'Invoice Product', field: 'inv_product', cellClass:'border-padding-5 p-r-0',
+            cellRendererFramework:AGGridCellActionsComponent, cellRendererParams: {type: 'dashed-border-dark'}
+          },
+          { 
+            headerName: 'Invoice Qty', headerTooltip: 'Invoice Qty', field: 'inv_qty', cellClass:'blue-opacity-cell dark pad-lr-0',
+            cellRendererFramework:AGGridCellActionsComponent, cellRendererParams: {type: 'dashed-border-darkcell'}
+          },
+          { 
+            headerName: 'Invoice Rate', headerTooltip: 'Invoice Rate', field: 'inv_rate', cellClass:'blue-opacity-cell dark pad-lr-0',
+            cellRendererFramework:AGGridCellActionsComponent, cellRendererParams: {type: 'dashed-border-darkcell'}
+          },
+          { 
+            headerName: 'Amount', headerTooltip: 'Amount', field: 'amount2', cellClass:'blue-opacity-cell dark pad-lr-5'
+          }
+        ]
+      },
     { headerName: 'Recon status', headerTooltip: 'Recon status', field: 'recon_status',
     cellRendererFramework:AGGridCellRendererComponent, cellRendererParams: function(params) {
       var classArray:string[] =[];
@@ -233,24 +262,11 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     { headerName: 'Difference', headerTooltip: 'Difference', field: 'name' }
   ];
 
-  private rowData_aggrid_pd = [
-    // {
-    //   del_no: '23243/DMA 0.1%', del_product: 'DMA 0.1%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
-    //   inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Matched', sulpher_content: '0.05', phy_supplier: 'British Petroleum'
-    // },
-    // {
-    //   del_no: '23243/RMK 380 3.5', del_product: '380 3.5%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
-    //   inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Unmatched', sulpher_content: '0.05', phy_supplier: 'British Petroleum'
-    // },
-    // {
-    //   del_no: '23243/RMK 380 3.5', del_product: '380 3.5%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
-    //   inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Matched', sulpher_content: '0.05', phy_supplier: 'British Petroleum'
-    // }
-  ];
+  private rowData_aggrid_pd = [];
 
-  private rowData_aggrid = [];
+  private rowData_aggrid_ac = [];
 
-  formValues: IInvoiceDetailsItemDto = {
+  public formValues: IInvoiceDetailsItemDto = {
     sellerInvoiceNo: 0,
     documentNo: 0,
     invoiceId: 0,
@@ -277,7 +293,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     invoiceChecks: <IInvoiceDetailsItemInvoiceCheck[]>[],
     invoiceAmount: 0,
 	  invoiceTotalPrice: 0,
-    createdByUser:<IInvoiceDetailsItemBaseInfo>{},
+    createdByUser:<IInvoiceDetailsItemBaseInfo>{name:''},
     createdAt: '',
     invoiceDate: '',
     lastModifiedByUser: <IInvoiceDetailsItemBaseInfo>{},
@@ -285,15 +301,20 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     relatedInvoices: '',
 	  relatedInvoicesSummary: [],
     orderDetails: <IInvoiceDetailsItemOrderDetails>{},
-    counterpartyDetails: <IInvoiceDetailsItemCounterpartyDetails>{},
+    counterpartyDetails: <IInvoiceDetailsItemCounterpartyDetails>{
+      paymentTerm:<IInvoiceDetailsItemBaseInfo>{name:''}
+    },
     paymentDetails: <IInvoiceDetailsItemPaymentDetails>{},
     productDetails: <IInvoiceDetailsItemProductDetails[]>[],
     costDetails: [],
     invoiceClaimDetails: [],
     invoiceSummary: <IInvoiceDetailsItemInvoiceSummary>{},
     screenActions: <IInvoiceDetailsItemBaseInfo[]>[],
-    requestInfo: <IInvoiceDetailsItemRequestInfo>{},
-    isCreatedFromIntegration: false,    hasManualPaymentDate: false,
+    requestInfo: <IInvoiceDetailsItemRequestInfo>{
+      request:<IInvoiceDetailsItemBaseInfo>{id:0}
+    },
+    isCreatedFromIntegration: false,
+    hasManualPaymentDate: false,
     attachments: [],
     customNonMandatoryAttribute1: '',
     customNonMandatoryAttribute2: '',
@@ -315,24 +336,27 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   addCustomHeaderEventListener() {
     let addButtonElement = document.getElementsByClassName('add-btn');
     addButtonElement[0].addEventListener('click', (event) => {
-      this.gridOptions_data.api.applyTransaction({
-        add: [
-          {
-            del_no: '23243', order_product: 'DMA 0.1%', del_product: 'DMA 0.1%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
-            inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Matched', sulpher_content: '0.05', phy_supplier: 'British Petroleum'
-          },
-          {
-            del_no: '23243/RMK 380 3.5', del_product: '380 3.5%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
-            inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Unmatched', sulpher_content: '0.05', phy_supplier: 'British Petroleum'
-          },
-          {
-            del_no: '23243/RMK 380 3.5', del_product: '380 3.5%', del_qty: '1200 MT', est_rate: '1290 USD', amount1: '120,000 USD',
-            inv_product: 'RMG 380', inv_qty: '1200 MT', inv_rate: '', amount2: '0.00 USD', recon_status: 'Matched', sulpher_content: '0.05', phy_supplier: 'British Petroleum'
-          }
-      ]
-      });
+      /* this.gridOptions_data.api.applyTransaction({
+        add: []
+      }); */
+      let productdetail = {};
+      this.rowData_aggrid_pd.push(productdetail);
+      console.log('add btn');
     });
 
+  }
+
+  openSearchPopup() {
+    this.popupOpen = true;
+        const dialogRef = this.dialog.open(OpsSpecParameterDialog, {
+            width: '600px',
+            maxHeight: '600px',
+            panelClass: 'popup-grid'
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            this.popupOpen = false;
+        });
   }
 
   ngOnInit(): void {
@@ -379,8 +403,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   parseProductDetailData( productDetails : IInvoiceDetailsItemProductDetails[]){
     for ( let value of productDetails) {
       let productdetail = {
-        del_no: value.deliveryId,
-        order_product: value.invoicedProduct.name,
+        del_no: {no: value.deliveryId, order_prod: value.invoicedProduct.name},
         del_product: value.product.name,
         del_qty: value.deliveryQuantity +' '+ value.deliveryQuantityUom.name,
         est_rate: value.estimatedRate +' '+ value.estimatedRateCurrency.code,
@@ -398,7 +421,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   }
 
   getInvoiceItem() {
-    this._entityId = 10851;
+    // this._entityId = 10851;
     let data : IInvoiceDetailsItemRequest = {
       Payload: this._entityId
     };
@@ -406,13 +429,46 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     this.invoiceService
     .getInvoicDetails(data)
     .subscribe((response: IInvoiceDetailsItemResponse) => {
+      console.log('resp');
       console.log(response);
-       this.parseProductDetailData(response.payload.productDetails);
-
-
+       this.formValues = <IInvoiceDetailsItemDto>response.payload;
+       this.parseProductDetailData(this.formValues.productDetails);
+       console.log(this.parseProductDetailData);
+       this.setOrderDetailsLables(this.formValues.orderDetails);
+       this.setcounterpartyDetailsLables(this.formValues.counterpartyDetails);
+       this.setChipDatas();
         // this.invoiceDetails = response;
         // console.log(this.invoiceDetails.payload.sellerInvoiceNo);
     });
+  }
+
+  setOrderDetailsLables(orderDetails){
+    this.orderDetails.contents[0].value = orderDetails?.vesselName? orderDetails?.vesselName:this.emptyStringVal;
+    this.orderDetails.contents[1].value = orderDetails?.vesselCode? orderDetails?.vesselCode:this.emptyStringVal;
+    this.orderDetails.contents[2].value = orderDetails?.portName? orderDetails?.portName:this.emptyStringVal;
+    this.orderDetails.contents[3].value = orderDetails?.eta? orderDetails?.eta:this.emptyStringVal;
+
+    this.formValues.orderDetails.frontOfficeComments = this.formValues.orderDetails.frontOfficeComments?.trim() ==''? null :this.formValues.orderDetails.frontOfficeComments;
+    this.formValues.backOfficeComments = this.formValues.backOfficeComments?.trim() ==''? null :this.formValues.backOfficeComments;
+    this.formValues.paymentDetails.comments = this.formValues.paymentDetails.comments?.trim() ==''? null :this.formValues.paymentDetails.comments;
+  }
+
+  setcounterpartyDetailsLables(counterpartyDetails){
+    this.counterpartyDetails.contents[0].value = counterpartyDetails?.sellerName? counterpartyDetails?.sellerName : this.emptyStringVal;
+    this.counterpartyDetails.contents[1].value = counterpartyDetails?.brokerName? counterpartyDetails?.brokerName : this.emptyStringVal;
+  }
+
+  setChipDatas(){
+    var ivs =  this.formValues.invoiceSummary;
+    this.chipData[0].Data = this.formValues.id?.toString();
+    this.chipData[1].Data = this.formValues.status.displayName? this.formValues.status.displayName : this.emptyStringVal;
+    this.chipData[2].Data = this.formValues.invoiceTotalPrice? this.formValues.invoiceTotalPrice?.toString():this.emptyNumberVal;
+    this.chipData[3].Data = ivs?.estimatedAmountGrandTotal? ivs?.estimatedAmountGrandTotal.toString():this.emptyNumberVal;
+    this.chipData[4].Data = ivs?.totalDifference? ivs?.totalDifference?.toString():this.emptyNumberVal;
+    this.chipData[5].Data = ivs?.provisionalInvoiceNo? ivs?.provisionalInvoiceNo?.toString():this.emptyNumberVal;
+    this.chipData[6].Data = ivs?.provisionalInvoiceAmount? ivs?.provisionalInvoiceAmount?.toString(): this.emptyNumberVal;
+    this.chipData[7].Data = ivs?.deductions? ivs?.deductions?.toString() : this.emptyNumberVal;
+    this.chipData[8].Data = ivs?.netPayable? ivs?.netPayable?.toString() : this.emptyNumberVal;
   }
 
   ngOnDestroy(): void {

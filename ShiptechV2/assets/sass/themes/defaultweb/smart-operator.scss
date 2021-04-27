@@ -2904,6 +2904,10 @@ label {
 }
 
 #currentRequestDetails {
+	.table {
+		width: 100%;
+		border-collapse: collapse;
+	}
 	.row {
 		margin: 0 !important;
 	}

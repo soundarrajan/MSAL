@@ -27,7 +27,7 @@ export namespace GetROBArbitrageApiPaths {
 }
 
 export namespace GetbunkerPlanIDApiPaths {
-    export const GetbunkerPlanIDUrl = () => `api/BOPS/bunkerplan/get/PlanId`;
+    export const GetbunkerPlanIDUrl = () => `api/BOPS/bunkerplan/getBunkerPlanInitial`;
 }
 export namespace GetCurrentROBApiPaths {
     export const GetCurrentROB = () => `api/BOPS/bunkerplan/get/CurrentROB`;
@@ -510,7 +510,7 @@ export class LocalService {
     getVesselListImono(request: any): Observable<any> {
       return this.http.post<any>(
         `${this._apiUrlInfra}/${VesselListApiPaths.getVesselList()}`,
-        { payload: request }, { headers: this.headersProp }
+        { payload: request }
       ).pipe(
           map(txs => txs.find(txn => txn.name == "VesselWithImo"))
       );

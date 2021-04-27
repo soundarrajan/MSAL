@@ -57,17 +57,18 @@ export class VesselInfoComponent implements OnInit {
       this.bunkerPlanHeaderDetail = (data?.payload && data?.payload.length)? data.payload[0]: {};
       this.vesselData = this.bunkerPlanHeaderDetail;
       this.loadROBArbitrage();
-      
-      // let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
-      //     titleEle.click();
+      let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
+          titleEle.click();
     })
   }
 
   public loadROBArbitrage() {
     let vesselId = this.vesselData?.vesselId;
-      this.localService.getBunkerPlanId(vesselId).subscribe((data)=> {
+    let requestPayload = {'shipId': vesselId.toString(), 'planStatus':'C'}
+    
+      this.localService.getBunkerPlanId(requestPayload).subscribe((data)=> {
         console.log('bunker plan id res',data);
-        let bunkerPlanId = (data?.payload && data?.payload.length)? (data.payload)[0].latestPlanID: null;
+        let bunkerPlanId = (data?.payload && data?.payload.length)? (data.payload)[0].planId: null;
         this.localService.loadROBArbitrage(bunkerPlanId).subscribe((data)=> {
           this.ROBArbitrageData = (data?.payload && data?.payload.length)? data.payload[0]: {};
         })
