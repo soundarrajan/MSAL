@@ -1,5 +1,4 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { GridOptions } from "ag-grid-community";
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 @Component({
     selector: 'search-popup-dialog',

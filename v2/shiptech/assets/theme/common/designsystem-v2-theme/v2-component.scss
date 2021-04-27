@@ -505,14 +505,14 @@ div.component-viewer-nav-content
   .mat-tab-label {
     min-width: 108px;
     padding: 0px;
-    margin: -11px -5px 0px 0px !important;
+    margin: -5px -5px 0px 0px !important;
   }
   .mat-ink-bar {
     background-color: transparent;
   }
   .mat-tab-label-container {
     height: 39px;
-    background-color: #ffffff !important
+    background-color: #eee !important
   }
   .mat-tab-header {
     border-bottom: none;
@@ -555,6 +555,20 @@ div.component-viewer-nav-content
   }
   .custom-tab-container {
     margin: 15px;
+  }
+  .header-buttons{
+    display: flex;
+    z-index: 1;
+    position: absolute;
+    right: 15px;
+    top: 100px;
+  }
+  .cust-btn{
+    width: 150px;
+    line-height: 3px;
+    height: 30px;
+    border-radius: 1px;
+    border: 1px solid #364150;
   }
 }
 //<!-- Tabs End-->
