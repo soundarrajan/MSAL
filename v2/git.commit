@@ -1,7 +1,9 @@
-﻿commit 8f2373d264c8a72a7c4427b6bd2c5f069e201d97
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Tue Apr 27 10:52:10 2021 +0300
+﻿commit e0b5160c2e19af9319ceb7e4a4842a2906ec5491
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Tue Apr 27 12:31:08 2021 +0000
 
-    Replaced mail.24software.ro -> shiptech.24software.ro in v2 part
+    Merged PR 10202: Fixed view formula for confirmed status
+    
+    Related work items: #31931
 
 branch: master
