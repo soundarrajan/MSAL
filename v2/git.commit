@@ -1,9 +1,11 @@
-﻿commit 7f3b37be290b90745316b0c54fd57d25dbaa51b7
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Tue Apr 27 07:32:20 2021 +0000
+﻿commit bbf73e86a0480bc74341f1ecc7d64aa152ccad2a
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Tue Apr 27 07:46:40 2021 +0000
 
-    Merged PR 10185: #29778 - header section api changes has updated
+    Merged PR 10187: Fixed Agreement type validation
     
-    Related work items: #29778
+    Fixed Agreement type validation
+    
+    Related work items: #31917
 
 branch: master
