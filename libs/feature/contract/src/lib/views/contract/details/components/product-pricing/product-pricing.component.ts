@@ -949,7 +949,13 @@ export class ProductPricing extends DeliveryAutocompleteComponent
           }
         });
         dialogRef.afterClosed().subscribe(result => {
-          console.log('RESULT');
+          if (result) {
+            this.formValues.products[this.selectedTabIndex].formula = {
+              'id': result.id,
+              'name': result.name
+            }
+            this.changeDetectorRef.detectChanges();
+          }
         });
       }
     });
