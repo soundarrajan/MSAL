@@ -1,9 +1,9 @@
-﻿commit 6fe5099c4efb7407d79708adeed2224fe2bb7841
+﻿commit 8400be76f69d0ad421a64f39f11d98dba01f0a93
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Tue Apr 27 13:58:55 2021 +0000
+Date:   Tue Apr 27 14:16:55 2021 +0000
 
-    Merged PR 10210: Fixed contract topbar
+    Merged PR 10212: Fixed price precision
     
-    Fixed contract topbar
+    Fixed price precision
 
 branch: master
