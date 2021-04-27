@@ -1123,11 +1123,11 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     if (isNaN(number)) {
       return null;
     }
-    if (plainNumber) {
+    if (number) {
       if(pricePrecision == 0) {
-        return plainNumber;
+        return number;
       } else {
-        return this._decimalPipe.transform(plainNumber, '1.' + pricePrecision +  '-' + pricePrecision);
+        return this._decimalPipe.transform(number, '1.' + pricePrecision +  '-' + pricePrecision);
       }
     }
   }
