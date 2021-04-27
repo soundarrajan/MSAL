@@ -1,11 +1,7 @@
-﻿commit bbf73e86a0480bc74341f1ecc7d64aa152ccad2a
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Tue Apr 27 07:46:40 2021 +0000
+﻿commit 8f2373d264c8a72a7c4427b6bd2c5f069e201d97
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Tue Apr 27 10:52:10 2021 +0300
 
-    Merged PR 10187: Fixed Agreement type validation
-    
-    Fixed Agreement type validation
-    
-    Related work items: #31917
+    Replaced mail.24software.ro -> shiptech.24software.ro in v2 part
 
 branch: master
