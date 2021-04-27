@@ -708,3 +708,7 @@
   border-radius: 4px;
   color: white;
 }
+
+.custom-form-field.lightTheme .mat-form-field .mat-placeholder-required {
+  color: orange !important;
+}
