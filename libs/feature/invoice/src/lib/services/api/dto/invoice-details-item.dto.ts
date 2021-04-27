@@ -98,14 +98,14 @@ export interface IInvoiceDetailsItemOrderDetails {
 }
 
 export interface IInvoiceDetailsItemCounterpartyDetails {
-    sellerName: string;
-    payableTo: IInvoiceDetailsItemBaseInfo;
-    brokerName: string;
-    paymentTerm: IInvoiceDetailsItemBaseInfo;
-    orderPaymentTerm: IInvoiceDetailsItemBaseInfo;
-	modulePathUrl: string;
-    clientIpAddress: string;
-    userAction: any;
+    sellerName?: string;
+    payableTo?: IInvoiceDetailsItemBaseInfo;
+    brokerName?: string;
+    paymentTerm?: IInvoiceDetailsItemBaseInfo;
+    orderPaymentTerm?: IInvoiceDetailsItemBaseInfo;
+	modulePathUrl?: string;
+    clientIpAddress?: string;
+    userAction?: any;
 }
 
 export interface IInvoiceDetailsItemPaymentDetails {
@@ -184,28 +184,28 @@ export interface IInvoiceDetailsItemInvoiceSummary {
 }
 
 export interface IInvoiceDetailsItemRequestInfo{
-    request: IInvoiceDetailsItemBaseInfo;
-    vesselName: string;
-    locationName: string;
-    eta: Date | string;
-    etb: Date | string;
-    modulePathUrl: string;
-    clientIpAddress: string;
-    userAction: any;
+    request?: IInvoiceDetailsItemBaseInfo;
+    vesselName?: string;
+    locationName?: string;
+    eta?: Date | string;
+    etb?: Date | string;
+    modulePathUrl?: string;
+    clientIpAddress?: string;
+    userAction?: any;
 }
 
 export interface IInvoiceDetailsItemBaseInfo {
-    id: number;
-    name: string;
-    internalName: string;
-    displayName: string;
-    code: any;
-    collectionName: string;
-    customNonMandatoryAttribute1: any;
-    isDeleted: boolean;
-    modulePathUrl: string;
-    clientIpAddress: string;
-    userAction: any;
+    id?: number;
+    name?: string;
+    internalName?: string;
+    displayName?: string;
+    code?: any;
+    collectionName?: string;
+    customNonMandatoryAttribute1?: any;
+    isDeleted?: boolean;
+    modulePathUrl?: string;
+    clientIpAddress?: string;
+    userAction?: any;
 }
 
 export interface IInvoiceDetailsItemResponse {

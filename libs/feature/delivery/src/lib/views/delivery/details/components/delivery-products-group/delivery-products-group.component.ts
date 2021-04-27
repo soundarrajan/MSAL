@@ -196,6 +196,7 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
   @Output() onProductSelected = new EventEmitter<any>();
   @Output() onConversionSelected = new EventEmitter<any>();
   constructor(
+    public qcReportService:QcReportService,
     public gridViewModel: OrderListGridViewModel,
     public bdnInformationService: BdnInformationApiService,
     @Inject(VESSEL_MASTERS_API_SERVICE) private mastersApi: IVesselMastersApi,
@@ -775,6 +776,7 @@ export class DeliveryProductsGroupComponent extends DeliveryAutocompleteComponen
   }
 
   selectProduct(key) {
+    this.qcReportService.selectedProduct=key;
     this.selectedProduct = key;
     this.onProductSelected.emit(this.selectedProduct);
     this.onConversionSelected.emit(this.conversionInfoData);

@@ -65,7 +65,7 @@ export class UrlService {
   }
 
   public editInvoice(invoiceId: string | number): string {
-    return `${this.baseOrigin}/#/invoices/invoice/edit/${invoiceId}`;
+    return `${this.baseOrigin}/v2/invoices/edit/${invoiceId}`;
   }
 
   public editReconListOrder(orderId: string | number): string {

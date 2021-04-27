@@ -1084,11 +1084,17 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   }
 
   formatPrice() {
-    if (this.formValues.products[this.selectedTabIndex].price) {
-      this.formValues.products[this.selectedTabIndex].price = this.priceFormatValue(this.formValues.products[this.selectedTabIndex].price);
+    if (!this.formValues.products[this.selectedTabIndex].pricePrecision) {
+      this.formValues.products[this.selectedTabIndex].pricePrecision = this.tenantService.pricePrecision;
     }
   }
 
+
+  recomputeProductPricePrecision (productKey) {
+    if (this.formValues.products[productKey].price) {
+      this.formValues.products[productKey].price = this.priceFormatValue(this.formValues.products[productKey].price, this.formValues.products[productKey].pricePrecision);
+    }
+  }
   
   amountFormatValue(value) {
     if (typeof value == 'undefined') {
@@ -1108,7 +1114,7 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     }
   }
 
-  priceFormatValue(value) {
+  priceFormatValue(value, pricePrecision) {
     if (typeof value == 'undefined') {
       return null;
     }
@@ -1117,11 +1123,11 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     if (isNaN(number)) {
       return null;
     }
-    if (plainNumber) {
-      if(this.tenantService.pricePrecision == 0) {
-        return plainNumber;
+    if (number) {
+      if(pricePrecision == 0) {
+        return number;
       } else {
-        return this._decimalPipe.transform(plainNumber, this.priceFormat);
+        return this._decimalPipe.transform(number, '1.' + pricePrecision +  '-' + pricePrecision);
       }
     }
   }
@@ -1144,6 +1150,16 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     }
   }
 
+
+  createRange(min, max) {
+    min = parseInt(min);
+    max = parseInt(max);
+    var input = [];
+    for (let i = min; i <= max; i++) {
+        input.push(i);
+    }
+    return input;
+  }
 
   ngAfterViewInit(): void {
   
