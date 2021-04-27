@@ -2,8 +2,8 @@
 <shiptech-contract-details-toolbar
 [navBar]="navBar"
 [contractConfiguration]="contractConfiguration">
-<div>
-  <div style="float:right">
+<div style="width: 220px;">
+  <div style="float:right;">
     <button  class="ui-button-info mr-1 btn-i-blue-color" label="Save"
       *ngIf="!formValues.status || (formValues.status && formValues.status.name != 'Confirmed' && formValues.status.name != 'Delivered')"
       pButton
