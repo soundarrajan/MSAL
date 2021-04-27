@@ -50,6 +50,7 @@
       </div>
     </div>
   </div>
+  {{formValues.products[selectedTabIndex].price}}
   <div *ngIf="formValues.products[selectedTabIndex].fixedPrice" class="col-md-12 no-padding d-flex" style="margin-top: 10px;">
     <div class="custom-form-field product-details" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
       <mat-form-field class="without-search" appearance="legacy">
@@ -253,14 +254,15 @@
                 <div class="custom-form-field conversion-factor-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
                   <mat-form-field class="without-search" 
                     appearance="legacy"
-                    [ngClass]="{'required-field': (buttonClicked && !additionalCost.value.amount)}">
+                    [ngClass]="{'required-field': (buttonClicked && !additionalCost.value.amount && additionalCost.value.costType.id != 4 && additionalCost.value.costType.id != 5) }">
                     <input  
                         [(ngModel)]="additionalCost.value.amount"
                         matInput 
                         amountFormat
                         autocomplete="off"
                         (keypress)="keyPressNumber($event)"
-                        [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
+                        [disabled]="(additionalCost.value.costType && (additionalCost.value.costType.id == 4 || additionalCost.value.costType.id == 5)) 
+                              || (formValues.status && formValues.status.name == 'Confirmed')">
                   </mat-form-field>
                 </div>
               </td>
