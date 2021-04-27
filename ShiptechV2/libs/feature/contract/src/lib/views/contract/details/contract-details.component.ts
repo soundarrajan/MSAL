@@ -472,6 +472,12 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       return;
     }
 
+    // test dates
+    let notValid = this.testForValidDates();
+    if(notValid) {
+      return;
+    }
+
     let message = 'Please fill in required fields:';
     if (!this.formValues.name) {
       message += ' Name,';
@@ -631,6 +637,22 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
        });
     }
   }
+
+  testForValidDates() {
+    var notValidDates = false;
+    if(!this.formValues.evergreen) {
+      let start = new Date(this.formValues.validFrom);
+      let startDate = start.getTime();
+      let end = new Date(this.formValues.validTo);
+      let endDate = end.getTime();
+
+      if (startDate > endDate) {
+        this.toastr.error('Contract Start Date must be lesser than Contract End Date');
+        notValidDates = true;
+      }
+    }
+    return notValidDates;
+};
 
   confirmContract() {
     this.buttonClicked = true;
