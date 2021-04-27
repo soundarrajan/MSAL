@@ -1,9 +1,9 @@
-﻿commit e0b5160c2e19af9319ceb7e4a4842a2906ec5491
+﻿commit 6e1bb2440151b6517ddc5c368ba8021a5fa1a1e7
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Tue Apr 27 12:31:08 2021 +0000
+Date:   Tue Apr 27 12:55:11 2021 +0000
 
-    Merged PR 10202: Fixed view formula for confirmed status
+    Merged PR 10205: Disabled amount  from additional cost section when user select cost type with...
     
-    Related work items: #31931
+    Disabled amount  from additional cost section when user select cost type with id equals with 4 (Range) or 5(Total)
 
 branch: master

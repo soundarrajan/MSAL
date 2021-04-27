@@ -528,8 +528,10 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
                 if (!this.formValues.products[i].additionalCosts[j].costType) {
                   additionalCostRequired.push('Type');
                 } 
-                if (!this.formValues.products[i].additionalCosts[j].amount) {
-                  additionalCostRequired.push('Amount');
+                if (this.formValues.products[i].additionalCosts[j].costType && this.formValues.products[i].additionalCosts[j].costType.id != 4 && this.formValues.products[i].additionalCosts[j].costType.id != 5) {
+                  if (!this.formValues.products[i].additionalCosts[j].amount) {
+                    additionalCostRequired.push('Amount');
+                  }
                 }
             }
         }
