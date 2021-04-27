@@ -809,7 +809,7 @@
                                                             name="{{ 'PAGES.NEW_ORDER.PRE_TEST_LABS' | translate }}"
                                                             ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)"
                                                             ng-model="$ctrl.data.preTestLabCounterparty" decode-input-format
-                                                            ng-attr-required="{{ ctrl.isPretestLabMandatory() }}"
+                                                            ng-required="$ctrl.isPretestLabMandatory()"
                                                             typeahead-append-to-body="true"
                                                             typeahead-editable="false" typeahead-min-length="1"
                                                             typeahead-show-hint="true" typeahead-wait-ms="100"

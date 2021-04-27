@@ -4010,18 +4010,19 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         };
 
 		ctrl.isPretestLabMandatory = () => {
-			if (!ctrl.data) { return false;}
             var pretestLabMandatory = false;
             productPretestChecked = false;
-            $.each(ctrl.data.products, (k,v) => {
-            	if (v.preTest) {
-		            productPretestChecked = true;
-            	}
-            })
+            if (ctrl.data) {
+                if (ctrl.data.products) {
+                    $.each(ctrl.data.products, (k,v) => {
+                    	if (v.preTest) {
+        		            productPretestChecked = true;
+                    	}
+                    })
+                }
+            }
             if (productPretestChecked) {
-				if (ctrl.procurementSettings.fieldVisibility.isPreTestLabCounterpartyMandatory) {
-		            pretestLabMandatory = true;
-				}				            	
+	            pretestLabMandatory = true;
             }
             return pretestLabMandatory;
 		}
