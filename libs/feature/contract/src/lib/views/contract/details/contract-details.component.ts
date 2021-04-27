@@ -488,8 +488,10 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     if (!this.formValues.company) {
       message += ' Company,';
     }
-    if (!this.formValues.agreementType) {
-      message += ' Agreement Type,';
+    if (this.contractConfiguration && this.contractConfiguration.agreementTypeDisplay.id == 1) {
+      if (!this.formValues.agreementType) {
+        message += ' Agreement Type,';
+      }
     }
     if (!this.formValues.incoterm) {
       message += ' Delivery Term,';
