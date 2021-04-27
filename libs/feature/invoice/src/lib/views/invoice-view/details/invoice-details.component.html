@@ -153,8 +153,8 @@
                         <mat-form-field class="without-search" appearance="legacy">
                             <mat-label>Payment Status</mat-label>
                             <mat-select disableOptionCentering>
-                                <mat-option>Option1</mat-option>
-                                <mat-option>Option2</mat-option>
+                                <mat-option value="Option1">Option1</mat-option>
+                                <mat-option value="Option2">Option2</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
@@ -176,11 +176,9 @@
                     <div id="custom-form-field" class="lightTheme">
                         <mat-form-field class="without-search" appearance="legacy">
                             <mat-label>Invoice Status</mat-label>
-                            <mat-select 
-                                [disableOptionCentering]="true"
-                                panelClass="bdn-additional-select-container">
-                                <mat-option>Option1</mat-option>
-                                <mat-option>Option2</mat-option>
+                            <mat-select>
+                                <mat-option value="Option1">Option1</mat-option>
+                                <mat-option value="Option2">Option2</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
@@ -236,7 +234,7 @@
                             <mat-form-field class="without-search" appearance="legacy">
                                 <mat-label>Payment Company</mat-label>
                                 <mat-select disableOptionCentering>
-                                    <mat-option>Payment Company</mat-option>
+                                    <mat-option value="Payment Company">Payment Company</mat-option>
                                 </mat-select>
                             </mat-form-field>                            
                             <div class="search-icon" (click)="openSearchPopup()">
@@ -260,7 +258,7 @@
                             <mat-form-field class="without-search" appearance="legacy">
                                 <mat-label>Carrier</mat-label>
                                 <mat-select disableOptionCentering>
-                                    <mat-option>Carrier</mat-option>
+                                    <mat-option value="Carrier">Carrier</mat-option>
                                 </mat-select>
                             </mat-form-field>                            
                             <div class="search-icon">
@@ -288,7 +286,7 @@
                                 <mat-form-field class="without-search" appearance="legacy">
                                     <mat-label>Bank account no.</mat-label>
                                     <mat-select disableOptionCentering>
-                                        <mat-option>YS Marine</mat-option>
+                                        <mat-option value="YS Marine">YS Marine</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>
@@ -305,7 +303,7 @@
                                     <mat-form-field class="without-search" appearance="legacy">
                                         <mat-label>Customer</mat-label>
                                         <mat-select disableOptionCentering>
-                                            <mat-option>YS Marine</mat-option>
+                                            <mat-option value="YS Marine">YS Marine</mat-option>
                                         </mat-select>
                                     </mat-form-field>                            
                                     <div class="search-icon">
@@ -335,7 +333,7 @@
                                 <mat-form-field class="without-search" appearance="legacy">
                                     <mat-label>Payable To</mat-label>
                                     <mat-select disableOptionCentering>
-                                        <mat-option>M A Marina</mat-option>
+                                        <mat-option value="M A Marina">M A Marina</mat-option>
                                     </mat-select>
                                 </mat-form-field>                            
                                 <div class="search-icon">
@@ -362,7 +360,7 @@
         <div class="agGrid-v2" style="margin: 0">
             <div style="width:100%;height: 250px;">
                 <ag-grid-angular style="width: 100%;height: 100%;" [gridOptions]="gridOptions_data"
-                    class="ag-theme-material ag-grid-v2 angular-v9"></ag-grid-angular>
+                    class="ag-theme-material ag-grid-v2 angular-v9 prod-details"></ag-grid-angular>
             </div>
         </div>
       </div>
