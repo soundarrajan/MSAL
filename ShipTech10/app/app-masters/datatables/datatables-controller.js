@@ -3634,12 +3634,23 @@ APP_MASTERS.controller('Controller_Datatables', [
             },
             related_labs: {
                 data: 'formValues.orderRelatedLabResults',
-                multiSelect: false,
+                multiSelect: true,
                 noUnselect: true,
                 rowHeight: 40,
                 excessRows: 0,
                 rowEditWaitInterval: -1, // Important for skipping the promise
                 columnDefs: [
+                    {
+                        name: ' ',
+                        displayName: ' ',
+                        cellName: 'labResults',
+                        cellParams: true,
+                        cellAction:'grid.appScope.em(row, rowRenderIndex)',
+                        cellTemplate: $scope.dataTableTemplates.checkbox,
+                        cellCondition: 'false',
+                        cellConditionType: 'ng-disabled',
+                        field: 'isSelected'
+                    },
                     {
                         name: 'id',
                         displayName: 'Lab Result ID',

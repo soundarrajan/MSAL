@@ -1,7 +1,7 @@
 /**
  * Labs Controller
  */
-APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service', 'Factory_Labs', '$state', '$location', '$q', '$compile', '$timeout', 'Factory_Master', '$listsCache', '$filter', 'statusColors', function($scope, $rootScope, $Api_Service, Factory_Labs, $state, $location, $q, $compile, $timeout, Factory_Master, $listsCache, $filter, statusColors) {
+APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 'Factory_Labs', '$state', '$location', '$q', '$compile', '$timeout', 'Factory_Master', '$listsCache', '$filter', '$templateCache', '$uibModal', '$http', 'API', 'statusColors', function ($scope, $rootScope, $Api_Service, Factory_Labs, $state, $location, $q, $compile, $timeout, Factory_Master, $listsCache, $filter, $templateCache, $uibModal, $http, API, statusColors) {
     let vm = this;
     let guid = '';
     vm.master_id = $state.params.master_id;
@@ -24,20 +24,20 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
         $scope.registerDropdowns();
         $scope.formValues.notes = data.labNotes;
         if (!JSON.stringify($state.params.path).contains('labs.documents')) {
-	        $.each($scope.formFields, (index, value) => {
-	            $.each(value.children, (key, val) => {
-	            	if (val.Name != 'DocumentType') {
-		            	if ($scope.formValues.status.name == 'Verified') {
-		            		val.disabled = true;
-		            		val.Disabled = true;
-		            	}
-	            	}
-	            });
-	        });
+            $.each($scope.formFields, (index, value) => {
+                $.each(value.children, (key, val) => {
+                    if (val.Name != 'DocumentType') {
+                        if ($scope.formValues.status.name == 'Verified') {
+                            val.disabled = true;
+                            val.Disabled = true;
+                        }
+                    }
+                });
+            });
         }
     });
 
-    $scope.setStatusForHeader = function(value) {
+    $scope.setStatusForHeader = function (value) {
         // value is true or false
         // only statuses that can be calculated are 3,4
         // for 5 (failed) and 2 (verified), display status but do not allow recalculation
@@ -46,7 +46,7 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
             return;
         }
         if (window.location.href.indexOf("/invoices/") != -1) {
-           return;
+            return;
         }
         if (value == 'init') {
             if (typeof $scope.formValues.status != 'undefined') {
@@ -94,7 +94,7 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
         }
     };
 
-    $scope.reconMatchDisplayName = function(setOnTheFly, value) {
+    $scope.reconMatchDisplayName = function (setOnTheFly, value) {
         if (!setOnTheFly) {
             $.each($listsCache.QualityMatch, (key, val) => {
                 if (val.id == $scope.formValues.reconMatch.id) {
@@ -126,7 +126,7 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
         // console.log($scope.formValues.reconMatch);
     };
 
-    $scope.registerDropdowns = function() {
+    $scope.registerDropdowns = function () {
         let field = new Object();
         field = vm.formFieldSearch($scope.formFields, 'delivery');
         if (field) {
@@ -140,13 +140,13 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
     };
 
 
-    var decodeHtmlEntity = function(str) {
-        return str.replace(/&#(\d+);/g, function(match, dec) {
+    var decodeHtmlEntity = function (str) {
+        return str.replace(/&#(\d+);/g, function (match, dec) {
             return String.fromCharCode(dec);
         });
     };
 
-    $scope.triggerChangeFieldsAppSpecific = function(name, id) {
+    $scope.triggerChangeFieldsAppSpecific = function (name, id) {
         if (name == 'OrderID' && id == 'order') {
             // suprascriem niste date
             Factory_Master.get_master_entity($scope.formValues.order.id, 'orders', 'orders', (response) => {
@@ -164,7 +164,7 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
                     } else {
                         lab = 'Lab New';
                     }
-                    $state.params.title = `${$scope.formValues.order.name }- DEL - ${ del } - ${ lab}`;
+                    $state.params.title = `${$scope.formValues.order.name}- DEL - ${del} - ${lab}`;
                     if (typeof $scope.formValues.vessel == 'undefined') {
                         $scope.formValues.vessel = {};
                     }
@@ -209,12 +209,12 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
                     if (response.lab) {
                         $scope.thirdParty.labs = response.lab.name;
                         if (!$scope.formValues.counterparty) {
-	                        $scope.formValues.counterparty = response.lab;
+                            $scope.formValues.counterparty = response.lab;
                         }
                     }
 
                     if ($scope.formValues.labTestResults && $scope.formValues.labTestResults.length) {
-                        _.forEach($scope.formValues.labTestResults, function(object) {
+                        _.forEach($scope.formValues.labTestResults, function (object) {
                             object.specParameter.name = decodeHtmlEntity(_.unescape(object.specParameter.name));
                         });
                     }
@@ -319,28 +319,28 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
             } else {
                 lab = 'Lab New';
             }
-            $state.params.title = `${lab } - ${ $scope.formValues.order.name } - DEL ${ del}`;
+            $state.params.title = `${lab} - ${$scope.formValues.order.name} - DEL ${del}`;
         }
         if (name == 'Product' && $scope.formValues.product) {
-        	if (!$scope.formValues.isFromIntegration) {
-	            if (typeof $scope.temp != 'undefined') {
-	                var filteredSpecGroup = $filter('filter')($scope.temp.products, { product: { id: $scope.formValues.product.id } })[0];
-	                if (filteredSpecGroup) {
-	                    filteredSpecGroup = filteredSpecGroup.specGroup;
-	                }
-	                if (filteredSpecGroup) {
-	                    $scope.formValues.specGroup = filteredSpecGroup.name;
-	                }
-	            }
-	            if (typeof $scope.formValues.labTestResults != 'undefined') {
-	                for (let i = $scope.formValues.labTestResults.length - 1; i >= 0; i--) {
-	                    if ($scope.formValues.labTestResults[i].id != 0) {
-	                        $scope.formValues.labTestResults[i].isDeleted = true;
-	                    } else {
-	                        $scope.formValues.labTestResults.splice(i, 1);
-	                    }
-	                }
-	            }
+            if (!$scope.formValues.isFromIntegration) {
+                if (typeof $scope.temp != 'undefined') {
+                    var filteredSpecGroup = $filter('filter')($scope.temp.products, { product: { id: $scope.formValues.product.id } })[0];
+                    if (filteredSpecGroup) {
+                        filteredSpecGroup = filteredSpecGroup.specGroup;
+                    }
+                    if (filteredSpecGroup) {
+                        $scope.formValues.specGroup = filteredSpecGroup.name;
+                    }
+                }
+                if (typeof $scope.formValues.labTestResults != 'undefined') {
+                    for (let i = $scope.formValues.labTestResults.length - 1; i >= 0; i--) {
+                        if ($scope.formValues.labTestResults[i].id != 0) {
+                            $scope.formValues.labTestResults[i].isDeleted = true;
+                        } else {
+                            $scope.formValues.labTestResults.splice(i, 1);
+                        }
+                    }
+                }
             }
             vm.setorderProdId();
             if (typeof vm.changed == 'undefined') {
@@ -349,25 +349,25 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
             if (!$scope.formValues.order && !$scope.formValues.orderProductId) {
                 return;
             }
-        	if (!$scope.formValues.isFromIntegration) {
-	            setTimeout(() => {
-	                var data = {
-	                    orderId: $scope.formValues.order.id,
-	                    orderProductId: $scope.formValues.orderProductId,
-	                    deliveryProductId: $scope.formValues.deliveryProductId
-	                };
-	                console.log(data);
-	                console.log($scope.formValues);
-	                if (vm.changed > 0 && vm.entity_id > 0 || vm.changed >= 0 && vm.entity_id < 1) {
-	                    vm.getDataTable('spec', data, 'labTestResults');
-	                }
-	            }, 100);
-        	}
+            if (!$scope.formValues.isFromIntegration) {
+                setTimeout(() => {
+                    var data = {
+                        orderId: $scope.formValues.order.id,
+                        orderProductId: $scope.formValues.orderProductId,
+                        deliveryProductId: $scope.formValues.deliveryProductId
+                    };
+                    console.log(data);
+                    console.log($scope.formValues);
+                    if (vm.changed > 0 && vm.entity_id > 0 || vm.changed >= 0 && vm.entity_id < 1) {
+                        vm.getDataTable('spec', data, 'labTestResults');
+                    }
+                }, 100);
+            }
             vm.changed++;
             vm.setPhysicalSupplier();
         }
     };
-    vm.getDataTable = function(id, data, obj, idx, app, screen) {
+    vm.getDataTable = function (id, data, obj, idx, app, screen) {
         $scope.dynamicTable = [];
         if (!app) {
             app = vm.app_id;
@@ -393,7 +393,7 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
                             });
                         }
                         if ($scope.formValues.labTestResults && $scope.formValues.labTestResults.length) {
-                            _.forEach($scope.formValues.labTestResults, function(object) {
+                            _.forEach($scope.formValues.labTestResults, function (object) {
                                 object.specParameter.name = decodeHtmlEntity(_.unescape(object.specParameter.name));
                             });
                         }
@@ -409,11 +409,11 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
             });
         }
     };
-    vm.getOptions = function(field) {
+    vm.getOptions = function (field) {
         // Move this somewhere nice and warm
-        var objectByString = function(obj, string) {
+        var objectByString = function (obj, string) {
             if (string.includes('.')) {
-                return objectByString(obj[string.split('.', 1)], string.replace(`${string.split('.', 1) }.`, ''));
+                return objectByString(obj[string.split('.', 1)], string.replace(`${string.split('.', 1)}.`, ''));
             }
             return obj[string];
         };
@@ -430,7 +430,7 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
                     }
                     let temp = 0;
                     try {
-                        temp = _.get($scope, "formValues[" +  entry.ValueFrom.split(".").join("][") + "]");
+                        temp = _.get($scope, "formValues[" + entry.ValueFrom.split(".").join("][") + "]");
                     } catch (error) { }
                     entry.Value = temp;
                 });
@@ -443,14 +443,14 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
                     $scope.options[field.Name] = [];
                     console.log('emptied options', $scope.options[field.Name]);
                     $scope.options[field.Name] = callback;
-                    $scope.$watchGroup([ $scope.formValues, $scope.options ], () => {
+                    $scope.$watchGroup([$scope.formValues, $scope.options], () => {
                         vm.setPhysicalSupplier();
                         $timeout(() => {
                             var id;
                             if (field.Type == 'textUOM') {
-                                id = `#${ field.Name}`;
+                                id = `#${field.Name}`;
                             } else {
-                                id = `#${ field.masterSource }${field.Name}`;
+                                id = `#${field.masterSource}${field.Name}`;
                             }
                             if ($(id).data('val')) {
                                 $(id).val($(id).data('val'));
@@ -464,7 +464,7 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
             });
         }
     };
-    vm.setorderProdId = function() {
+    vm.setorderProdId = function () {
         $scope.formValues.orderProductId = null;
         $scope.formValues.deliveryProductId = null;
         if (!$scope.formValues.product) {
@@ -481,7 +481,7 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
         });
     };
 
-    vm.setPhysicalSupplier = function() {
+    vm.setPhysicalSupplier = function () {
         if (!$scope.formValues.product) {
             return;
         }
@@ -493,7 +493,7 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
             }
         });
     };
-    vm.formFieldSearch = function(formFields, Unique_ID) {
+    vm.formFieldSearch = function (formFields, Unique_ID) {
         for (let key in formFields) {
             if (typeof formFields[key] == 'string') {
                 if (key == 'Unique_ID' && formFields[key] == Unique_ID) {
@@ -508,10 +508,172 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
         }
         return false;
     };
-    $scope.labsActions = function(action) {
+    $scope.checkboxLabresultComparision = function (rowData) {
+        $scope.orderRelatedLabResults_product = [];
+        $scope.labResults_specParamIds = [];
+        $scope.selectedClaimTypeIds = [];
+        var currentChecksNo = 0;
+        $.each($scope.formValues.orderRelatedLabResults, (k, v) => {
+            if (v.isSelected) {
+                // $.each(v.product, (k1, v1) => {
+                $scope.orderRelatedLabResults_product.push(v.product);
+                // });
+                // $scope.labResults_specParamIds.push(v.id);
+            }
+        });
+    }
+    // modal close
+    $scope.prettyCloseModal = function () {
+        let modalStyles = {
+            transition: '0.3s',
+            opacity: '0',
+            transform: 'translateY(-50px)'
+        };
+        let bckStyles = {
+            opacity: '0',
+            transition: '0.3s'
+        };
+        $('[modal-render=\'true\']').css(modalStyles);
+        $('.modal-backdrop').css(bckStyles);
+        setTimeout(() => {
+            if ($scope.modalInstance) {
+                $scope.modalInstance.close();
+            }
+            // $(".modal-scrollable").css("display", "none")
+        }, 500);
+    };
+    $scope.displayLabComparedResults = function () {
+        let LabResultComparisionData;
+        if (!$scope.SelectedCheckbox || $scope.SelectedCheckbox.length < 2) {
+            toastr.error('Please select 2 Lab results for comparison.');
+            return;
+        }
+        let labResultIds = [];
+        for (i = 0; i < $scope.SelectedCheckbox.length; i++) {
+            labResultIds.push($scope.SelectedCheckbox[i].id);
+        }
+        let payload = {
+            payload: labResultIds
+        }
+        $http.post(`${API.BASE_URL_DATA_LABS}/api/labs/GetLabTestResultsbyIds`, payload).then((response) => {
+            if (response) {
+                if (response.data) {
+                    $scope.comparedLabResult = [];
+                    $scope.compare_LabTestResultTestType = [];
+                    $scope.compare_LabTestResultId = [];
+                    $scope.comparableLabResults = [];
+                    $scope.comparedLabResult = response.data.payload;
+                    if ($scope.comparedLabResult.length > 0) {
+                        var initArr = $scope.comparedLabResult[0].labTestResult.length == Math.min($scope.comparedLabResult[0].labTestResult.length, $scope.comparedLabResult[1].labTestResult.length) ?
+                            $scope.comparedLabResult[0] : $scope.comparedLabResult[1];
+                        for (let i = 0; i < initArr.labTestResult.length; i++) {
+                            let firstLTR = {};
+                            let secondLTR = {};
+                            for (let j = 0; j < $scope.comparedLabResult[0].labTestResult.length; j++) {
+                                if ($scope.comparedLabResult[0].labTestResult[i].specParameter.id == initArr.labTestResult[i].specParameter.id) {
+                                    firstLTR = $scope.comparedLabResult[0].labTestResult[i];
+                                    break;
+                                }
+                            }
+                            for (let j = 0; j < $scope.comparedLabResult[1].labTestResult.length; j++) {
+                                if ($scope.comparedLabResult[1].labTestResult[i].specParameter.id == initArr.labTestResult[i].specParameter.id) {
+                                    secondLTR = $scope.comparedLabResult[1].labTestResult[i];
+                                    break;
+                                }
+                            }
+
+                            $scope.comparableLabResults.push({
+                                'item_0_id': firstLTR?.specParameter.id,
+                                'item_1_id': secondLTR?.specParameter.id,
+                                'orderSpecParamName': initArr.labTestResult[i].specParameter.name,
+                                'bdnValue': initArr.labTestResult[i].bdnValue,
+
+                                'item_0_labs': firstLTR?.value,
+                                'item_0_qualityMatch': firstLTR?.qualityMatch,
+
+                                'item_1_labs': secondLTR?.value,
+                                'item_1_qualityMatch': secondLTR?.qualityMatch
+                            });
+                        }
+
+                        for (let i = 0; i < $scope.comparedLabResult.length; i++) {
+                            if ($scope.compare_LabTestResultId != undefined && $scope.compare_LabTestResultId != null && $scope.compare_LabTestResultTestType != undefined && $scope.compare_LabTestResultTestType != null) {
+                                $scope.compare_LabTestResultId.push($scope.comparedLabResult[i].labTestResult);
+                            }
+                            if ($scope.compare_LabTestResultTestType != undefined && $scope.compare_LabTestResultTestType != null) {
+                                $scope.compare_LabTestResultTestType.push($scope.comparedLabResult[i].testType);
+                            }
+                        }
+                        var tpl = $templateCache.get('app-labs/views/components/lab-result-comparison.html');
+                        $scope.modalInstance = $uibModal.open({
+                            template: tpl,
+                            size: 'full',
+                            appendTo: angular.element(document.getElementsByClassName('page-container')),
+                            windowTopClass: 'fullWidthModal autoWidthModal',
+                            scope: $scope
+                        });
+                    }
+                }
+            } else {
+                ctrl.hasAccess = false;
+            }
+        });
+
+    }
+    $scope.em = function (row, rowIdx) {
+        let el = angular.element(document.getElementsByName('labResults_' + rowIdx));
+        let labCompareLimit = 2;
+        if (el[0].checked) {
+            if ($scope.SelectedCheckbox == undefined) {
+                $scope.SelectedCheckbox = [];
+                $scope.SelectedCheckbox_ProductMismatch = [];
+                $scope.LabTestResultsForCompare = [];
+                $scope.LabTestResultsForCompare.push({ "Id": row.entity.id });
+                $scope.SelectedCheckbox.push({ "id": row.entity.id, "product": row.entity.product });
+                $.each($scope.formValues.labTestResults, (key, row) => {
+                    if (row && row.entity) {
+                        var isEnabled = false;
+                        row.entity.disableCheckbox = isEnabled;
+
+                        if ($scope.LabTestResultsForCompare.length != -1) {
+                            isEnabled = true;
+                        }
+                        row.entity.disableCheckbox = !isEnabled;
+                    }
+                });
+            }
+            else {
+                if ($scope.SelectedCheckbox && $scope.SelectedCheckbox[0].product == row.entity.product) {
+                    if ($scope.SelectedCheckbox.length >= labCompareLimit) {
+                        toastr.error('Please select a maximum of ' + labCompareLimit.toString() + ' Lab results for comparison.');
+                        row.entity.isSelected = false;
+                        return;
+                    }
+                    else {
+                        $scope.SelectedCheckbox.push({ "id": row.entity.id, "product": row.entity.product });
+                    }
+                }
+                else {
+                    toastr.error('Please select Lab result of same product type for comparison.');
+                }
+            }
+        }
+        else {
+            if ($scope.SelectedCheckbox && $scope.SelectedCheckbox.length > 0) {
+                for (i = 0; i < $scope.SelectedCheckbox.length; i++) {
+                    if ($scope.SelectedCheckbox[i].id == row.entity.id) {
+                        $scope.SelectedCheckbox.splice(i, 1);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    $scope.labsActions = function (action) {
         if (action == 1) {
-        	$scope.verifyLab();
-        	return;
+            $scope.verifyLab();
+            return;
         }
         let id = $scope.formValues.id;
         let status = $scope.formValues.status;
@@ -528,8 +690,8 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
         });
     };
 
-    $scope.verifyLab = function() {
-    	data = angular.copy($scope.formValues);
+    $scope.verifyLab = function () {
+        data = angular.copy($scope.formValues);
         Factory_Master.verify_lab(data, (callback) => {
             if (callback.status == true) {
                 $scope.loaded = true;
@@ -547,35 +709,35 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
         });
     };
 
-    $scope.selectUniqueClaim = function(labClaimTypeSelection) {
-    	$scope.labResults_claimId = labClaimTypeSelection.id;
-    	$rootScope.selectedLabResults_claimId = labClaimTypeSelection.id;
+    $scope.selectUniqueClaim = function (labClaimTypeSelection) {
+        $scope.labResults_claimId = labClaimTypeSelection.id;
+        $rootScope.selectedLabResults_claimId = labClaimTypeSelection.id;
     };
-    $scope.raiseClaim = function(data) {
-    	// if (true) {
-    	if ($scope.labResults_claimId.length > 1 && !$rootScope.selectedLabResults_claimId) {
+    $scope.raiseClaim = function (data) {
+        // if (true) {
+        if ($scope.labResults_claimId.length > 1 && !$rootScope.selectedLabResults_claimId) {
             $('.claimTypeSelectionModal').modal();
             $('.claimTypeSelectionModal').removeClass('hide fade');
             $('.claimTypeSelectionModal').css('transform', 'translateY(100px)');
-    		$scope.claimTypeSelectionModalOptions = [];
+            $scope.claimTypeSelectionModalOptions = [];
             var uniqueClaimTypes = _.uniq($scope.labResults_claimId);
-    		$.each($listsCache.ClaimType, (k, v) => {
-    			$.each(uniqueClaimTypes, (ck, cv) => {
-    				if (v.id == cv) {
-    					$scope.claimTypeSelectionModalOptions.push(v);
-    				}
-    			});
-    		});
-    		return;
-    	}
-    	    if ($scope.labResults_claimId.length != 1) {
-    	        $scope.labResults_claimId = $rootScope.selectedLabResults_claimId;
-    	    }
+            $.each($listsCache.ClaimType, (k, v) => {
+                $.each(uniqueClaimTypes, (ck, cv) => {
+                    if (v.id == cv) {
+                        $scope.claimTypeSelectionModalOptions.push(v);
+                    }
+                });
+            });
+            return;
+        }
+        if ($scope.labResults_claimId.length != 1) {
+            $scope.labResults_claimId = $rootScope.selectedLabResults_claimId;
+        }
 
 
-    	if ($scope.labResults_claimId[0]) {
-    	    $scope.labResults_claimId = $scope.labResults_claimId[0];
-    	}
+        if ($scope.labResults_claimId[0]) {
+            $scope.labResults_claimId = $scope.labResults_claimId[0];
+        }
 
         if (!data) {
             var data = {
@@ -604,7 +766,7 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
         // })
     };
 
-    $scope.invalidLab = function(data) {
+    $scope.invalidLab = function (data) {
         // console.log($scope.formValues.id);
         var data = {
             Payload: $scope.formValues.id
@@ -626,11 +788,11 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
         });
     };
 
-    $scope.initLabsPreviewEmail = function(id) {
+    $scope.initLabsPreviewEmail = function (id) {
         $rootScope.currentEmailTemplate = 38;
         var data = {
             Payload: {
-                Filters: [ {
+                Filters: [{
                     ColumnName: 'LabResultId',
                     Value: id
                 }, {
@@ -639,19 +801,19 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
                 }, {
                     ColumnName: 'TemplateName',
                     Value: 'LabResultEmail'
-                } ]
+                }]
             }
         };
         Factory_Master.labs_preview_email(data, (response) => {
             if (response) {
                 if (response.status == true) {
-                	if (response.data) {
-                		if (response.data.comment) {
-                			if (response.data.comment.emailTemplate) {
-                				response.data.emailTemplateId = response.data.comment.emailTemplate.id;
-                			}
-                		}
-                	}
+                    if (response.data) {
+                        if (response.data.comment) {
+                            if (response.data.comment.emailTemplate) {
+                                response.data.emailTemplateId = response.data.comment.emailTemplate.id;
+                            }
+                        }
+                    }
                     $scope.$emit('previewEmail', response.data);
                 } else {
                     $scope.loaded = true;
@@ -660,7 +822,7 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
             }
         });
     };
-    $scope.deleteRelatedLab = function(labId) {
+    $scope.deleteRelatedLab = function (labId) {
         Factory_Master.deleteLab(labId, (callback) => {
             if (callback) {
                 if (callback.status == true) {
@@ -672,7 +834,7 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
                         }
                     }
                     if (vm.entity_id == labId) {
-                        $location.path(`/labs/labresult/edit/${ vm.relatedLabs[0].id}`);
+                        $location.path(`/labs/labresult/edit/${vm.relatedLabs[0].id}`);
                     } else {
                         $state.reload();
                     }
@@ -713,20 +875,20 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
     }, true);
 
     $('#Vessel').removeAttr('disabled').removeAttr('ng-disabled').attr('readonly', 'true');
-    $scope.setPageTitle = function(lab, vessel) {
+    $scope.setPageTitle = function (lab, vessel) {
         // tab title
-        let title = `Labs - ${ lab } - ${ vessel}`;
+        let title = `Labs - ${lab} - ${vessel}`;
         $rootScope.$broadcast('$changePageTitle', {
             title: title
         });
     };
 
-    $scope.formattedData = function(rowVal) {
+    $scope.formattedData = function (rowVal) {
         if (rowVal.bdnValue) {
             var array = '';
             var bdnValue = rowVal.bdnValue.split(',');
-            for (var i = 0; i < bdnValue.length; i++)  {
-                 array += bdnValue[i];
+            for (var i = 0; i < bdnValue.length; i++) {
+                array += bdnValue[i];
             }
             rowVal.bdnValue = array;
         }
@@ -734,27 +896,27 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
         if (rowVal.value) {
             var array2 = '';
             var value = rowVal.value.split(',');
-            for (var i = 0; i < value.length; i++)  {
+            for (var i = 0; i < value.length; i++) {
                 array2 += value[i];
             }
             rowVal.value = array2;
         }
-    
+
 
     }
 
-    $scope.calculatePassedFailedInLab = function(rowVal) {
+    $scope.calculatePassedFailedInLab = function (rowVal) {
         var passedStatus = null;
         var failedStatus = null;
-    	$.each($listsCache.QualityMatch, (k, v) => {
-    		if (v.name == 'Passed') {
-    			passedStatus = v;
-    		}
-    		if (v.name == 'Failed') {
-    			failedStatus = v;
-    		}
-    	});
-    	var currentStatusResponse = null;
+        $.each($listsCache.QualityMatch, (k, v) => {
+            if (v.name == 'Passed') {
+                passedStatus = v;
+            }
+            if (v.name == 'Failed') {
+                failedStatus = v;
+            }
+        });
+        var currentStatusResponse = null;
         if (rowVal.value != '') {
             if (rowVal.min != null && rowVal.max != null) {
                 if (rowVal.value >= rowVal.min && rowVal.value <= rowVal.max) {
@@ -779,59 +941,59 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
                 }
             }
         }
-    	rowVal.qualityMatch = currentStatusResponse;
-    	if (currentStatusResponse != null) {
+        rowVal.qualityMatch = currentStatusResponse;
+        if (currentStatusResponse != null) {
             console.log(currentStatusResponse.name);
         }
     };
 
-    $scope.calculateQualityClaimType = function(rowData) {
-    	$scope.labResults_claimId = [];
+    $scope.calculateQualityClaimType = function (rowData) {
+        $scope.labResults_claimId = [];
         $scope.labResults_specParamIds = [];
         $scope.selectedClaimTypeIds = [];
         var currentChecksNo = 0;
-    	$.each($scope.formValues.labTestResults, (k, v) => {
-    		if (v.isSelected) {
-	    		$.each(v.claimTypes, (k1, v1) => {
-	    			$scope.labResults_claimId.push(v1.id);
-	    		});
-		        $scope.labResults_specParamIds.push(v.id);
-    		}
-    	});
+        $.each($scope.formValues.labTestResults, (k, v) => {
+            if (v.isSelected) {
+                $.each(v.claimTypes, (k1, v1) => {
+                    $scope.labResults_claimId.push(v1.id);
+                });
+                $scope.labResults_specParamIds.push(v.id);
+            }
+        });
         if ($scope.labResults_claimId.length > 0) {
-	    	$.each($scope.formValues.labTestResults, (key, row) => {
-	    		row.disableCheckbox = false;
-	    		var isEnabled = false;
-		    	$.each(row.claimTypes, (k, v) => {
-			    	if ($scope.labResults_claimId.indexOf(v.id) != -1) {
-			    		isEnabled = true;
-			    	}
-		    	});
-	    		row.disableCheckbox = !isEnabled;
-	    	});
+            $.each($scope.formValues.labTestResults, (key, row) => {
+                row.disableCheckbox = false;
+                var isEnabled = false;
+                $.each(row.claimTypes, (k, v) => {
+                    if ($scope.labResults_claimId.indexOf(v.id) != -1) {
+                        isEnabled = true;
+                    }
+                });
+                row.disableCheckbox = !isEnabled;
+            });
         } else {
-	    	$.each($scope.formValues.labTestResults, (key, row) => {
-	    		row.disableCheckbox = false;
-	    	});
+            $.each($scope.formValues.labTestResults, (key, row) => {
+                row.disableCheckbox = false;
+            });
         }
     };
 
-    $scope.isInSelectedClaimTypes = function(row) {
-    	if (!$scope.labResults_claimId) {
-    		return false;
-    	}
-    	return isEnabled;
+    $scope.isInSelectedClaimTypes = function (row) {
+        if (!$scope.labResults_claimId) {
+            return false;
+        }
+        return isEnabled;
     };
 
     $scope.$on('formValues', () => {
         // console.log($scope.formValues);
-        if(vm.app_id == 'labs') {
-            if($scope.formValues.name) {
+        if (vm.app_id == 'labs') {
+            if ($scope.formValues.name) {
                 // 1. if lab linked to delivery
-                if($scope.formValues.requestInfo) {
+                if ($scope.formValues.requestInfo) {
                     //  if order linked to delivery has a req, display req id
-                    if($scope.formValues.requestInfo) {
-                        if($scope.formValues.requestInfo.request) {
+                    if ($scope.formValues.requestInfo) {
+                        if ($scope.formValues.requestInfo.request) {
                             $scope.setPageTitle($scope.formValues.requestInfo.request.name, $scope.formValues.requestInfo.vesselName);
                             return;
                         }
@@ -839,17 +1001,17 @@ APP_LABS.controller('Controller_Labs', [ '$scope', '$rootScope', '$Api_Service',
                 }
 
                 // 2 if order linked to deleivery does not have a req, display order id
-                if($scope.formValues.order) {
+                if ($scope.formValues.order) {
                     $scope.setPageTitle($scope.formValues.order.name, $scope.formValues.vessel.name);
                     return;
                 }
 
 
                 // 3. else display lab name
-                if($scope.formValues.vessel) {
+                if ($scope.formValues.vessel) {
                     $scope.setPageTitle($scope.formValues.name, $scope.formValues.vessel.name);
                 }
             }
         }
     });
-} ]);
+}]);

@@ -1,5 +1,14 @@
 <general-header actions="{
-    primary: [{
+    primary: [
+    {
+        label: 'Compare',
+        url: '#',
+        method: 'displayLabComparedResults()',
+        extern: true,
+        main: false,
+      
+    },
+    {
         label: 'Save',
         special: 'false',
         url: '#',
@@ -78,7 +87,16 @@
 
 
 <entity-edit-form structure='' type="" screen="'labresult'" edit-action=''></entity-edit-form>
-<general-header class="footer-general-header" actions="{  primary: [{
+<general-header class="footer-general-header" actions="{  primary: [
+    {
+        label: 'Compare',
+        url: '#',
+        method: 'displayLabComparedResults()',
+        extern: true,
+        main: false,
+      
+    },
+    {
         label: 'Save',
         special: 'false',
         url: '#',
