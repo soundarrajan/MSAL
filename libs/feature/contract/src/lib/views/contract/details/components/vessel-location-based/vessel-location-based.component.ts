@@ -101,6 +101,7 @@ export class VesselLocationBased extends DeliveryAutocompleteComponent
   productList: any;
   locationList: any;
   amountFormat: string;
+  hasInvoicedOrder: any;
  
 
 
@@ -260,6 +261,13 @@ export class VesselLocationBased extends DeliveryAutocompleteComponent
   }
 
 
+  
+  @Input('hasInvoicedOrder') set _setHasInvoicedOrder(hasInvoicedOrder) { 
+    if (!hasInvoicedOrder) {
+      return;
+    } 
+    this.hasInvoicedOrder = hasInvoicedOrder;
+  }
 
 
   
