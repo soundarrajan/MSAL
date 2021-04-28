@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, ViewEncapsulation } from '@angular/core';
 import { LocalService } from '../../services/local-service.service';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import moment, { Moment, MomentFormatSpecification, MomentInput } from 'moment';
@@ -8,19 +8,23 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'app-bunkering-plan',
   templateUrl: './bunkering-plan.component.html',
-  styleUrls: ['./bunkering-plan.component.scss']
+  styleUrls: ['./bunkering-plan.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class BunkeringPlanComponent implements OnInit {
 
   @Output() changeVessel = new EventEmitter();
   @Input('vesselData') vesselData;
   @Input('vesselList') vesselList;
-
+  currentDate = new Date();
+  defaultFromDate: Date = new Date(this.currentDate.setMonth((this.currentDate.getMonth())-3));
+  selectedToDate: Date = new Date();
+  
   isDateInvalid: boolean;
   fromLogDate : any;
   toLogDate : any;
   selectedStatus : any;
-  planStatus : 'all';
+  planStatus = 'all';
   bunkerPlanLogDetail: any = [];
   requestPayload : any = {};
 
@@ -39,6 +43,11 @@ export class BunkeringPlanComponent implements OnInit {
     this.toLogDate = this.formatDateForBe(new Date());
   
     this.loadBunkerPlanHistory(this.vesselData);
+  }
+
+  onFromToDateChange(event) {
+    console.log('selected date', event);
+    
   }
 
   onDateChange($event, field) {

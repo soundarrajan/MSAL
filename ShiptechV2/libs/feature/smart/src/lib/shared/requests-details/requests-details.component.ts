@@ -15,6 +15,9 @@ export class RequestsDetailsComponent implements OnInit {
   public colResizeDefault;
   public rowCount: Number;
   public date = new FormControl(new Date());
+  currentDate = new Date();
+  selectedFromDate: Date = new Date(this.currentDate.setMonth((this.currentDate.getMonth())-3));
+  selectedToDate: Date = new Date();
 
   constructor() {
     this.gridOptions = <GridOptions>{
@@ -55,6 +58,11 @@ export class RequestsDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  onDateChange(event) {
+    console.log('selected date', event);
+    
   }
 
   private columnDefs = [

@@ -41,13 +41,15 @@ import { PortInfoComponent } from './port-info/port-info.component';
 import { AuthGaurdService } from '../services/auth-guard.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { DatePickerFromToComponent } from './date-picker-from-to/date-picker-from-to.component';
 
 @NgModule({
   declarations: [HeaderComponent, FilterchipsComponent, MapPanelComponent, SmartOperatorComponent, OlMapComponent, VesselDetailsComponent, HeaderPanelComponent,
     AGGridCellRendererComponent, AGGridCellDataComponent, VesselInfoComponent, AuditLogComponent, RequestsDetailsComponent, CommentsComponent, NewRequestComponent,
     CurrentBunkeringPlanComponent, PreviousBunkeringPlanComponent, HeaderPanelComponent, VesselPopupComponent, PortPopupComponent, NotificationsComponent, ConfirmationPopupComponent,
     TableLegendComponent, CustomStepperComponent, SmartMessengerComponent, SearchVesselComponent, BunkeringPlanComponent, BunkerPlanComponent, FilterPipe, WarningComponent,
-    PortMenuComponent, VesselMenuComponent, VesselArrivalsComponent, PortInfoComponent, HoverMenuComponent, ConfirmDialogComponent],
+    PortMenuComponent, VesselMenuComponent, VesselArrivalsComponent, PortInfoComponent, HoverMenuComponent, ConfirmDialogComponent, DatePickerFromToComponent],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -57,6 +59,7 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     MatFormFieldModule,
     FormsModule,
     OwlDateTimeModule, OwlNativeDateTimeModule,
+    MatDatepickerModule,
     AgGridModule.withComponents([AGGridCellRendererComponent, AGGridCellDataComponent])
   ],
   exports: [ReactiveFormsModule, FormsModule, FilterchipsComponent, MapPanelComponent, SmartOperatorComponent, OlMapComponent, HeaderPanelComponent,
