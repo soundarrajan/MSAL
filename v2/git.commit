@@ -1,11 +1,7 @@
-﻿commit b71f67eee09c8d751927b88d5996a7ac7758ba20
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Wed Apr 28 11:58:38 2021 +0000
+﻿commit 17de820d727495c64724c0a30ae4c6eb52892b19
+Author: Edwin Francis <edwin.f@Inatech.com>
+Date:   Wed Apr 28 18:01:23 2021 +0530
 
-    Merged PR 10238: Current bplan grid port highlight
-    
-    Current bplan grid port highlight
-    
-    Related work items: #29780
+    System Instrument converison factor at contract level for formula based - Changeset 30130
 
 branch: master
