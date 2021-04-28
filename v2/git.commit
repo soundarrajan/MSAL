@@ -1,7 +1,11 @@
-﻿commit 8b8c03abca4ff7d2d419c88c7412222c4d801900
-Author: Gokul <gokul.s@inatech.com>
-Date:   Tue Apr 27 20:30:12 2021 +0530
+﻿commit d2d23b8ccb02c65a189abed8b9858fb0c05bca92
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Wed Apr 28 06:58:48 2021 +0000
 
-    commented the static value
+    Merged PR 10217: Changed the color of Asterisk from black to orange  for mandatory fields
+    
+    Changed the color of Asterisk from black to orange  for mandatory fields
+    
+    Related work items: #31959
 
 branch: master
