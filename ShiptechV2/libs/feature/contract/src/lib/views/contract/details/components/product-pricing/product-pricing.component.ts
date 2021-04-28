@@ -949,7 +949,13 @@ export class ProductPricing extends DeliveryAutocompleteComponent
           }
         });
         dialogRef.afterClosed().subscribe(result => {
-          console.log('RESULT');
+          if (result) {
+            this.formValues.products[this.selectedTabIndex].formula = {
+              'id': result.id,
+              'name': result.name
+            }
+            this.changeDetectorRef.detectChanges();
+          }
         });
       }
     });
@@ -1093,6 +1099,12 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   recomputeProductPricePrecision (productKey) {
     if (this.formValues.products[productKey].price) {
       this.formValues.products[productKey].price = this.priceFormatValue(this.formValues.products[productKey].price, this.formValues.products[productKey].pricePrecision);
+      
+      if (!this.formValues.products[productKey].pricePrecision) {
+        (<HTMLInputElement>document.getElementById('price_'+ productKey)).value = this.formValues.products[productKey].price;
+      }
+
+      this.changeDetectorRef.detectChanges();
     }
   }
   
@@ -1123,12 +1135,11 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     if (isNaN(number)) {
       return null;
     }
-    if (plainNumber) {
-      if(pricePrecision == 0) {
-        return plainNumber;
-      } else {
-        return this._decimalPipe.transform(plainNumber, '1.' + pricePrecision +  '-' + pricePrecision);
+    if (number) {
+      if (pricePrecision == 0) {
+        return number;
       }
+      return this._decimalPipe.transform(number, '1.' + pricePrecision +  '-' + pricePrecision);
     }
   }
 

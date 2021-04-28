@@ -62,6 +62,7 @@
           autocomplete="off"
           placeholder="Price"
           priceFormat
+          id="price_{{selectedTabIndex}}"
           [pricePrecision]="formValues.products[selectedTabIndex].pricePrecision"
           required>
       </mat-form-field>
@@ -116,7 +117,7 @@
               </span>
             </span>
             <span>
-              <a (click)="formValues.status && formValues.status.name == 'Confirmed' ? '': viewFormula(selectedTabIndex)" class="view-formula-icon" style="position: relative; top: 3px;">
+              <a (click)="viewFormula(selectedTabIndex)" class="view-formula-icon" style="position: relative; top: 3px;">
               </a>
               <span>
                 View formula 
@@ -253,14 +254,15 @@
                 <div class="custom-form-field conversion-factor-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
                   <mat-form-field class="without-search" 
                     appearance="legacy"
-                    [ngClass]="{'required-field': (buttonClicked && !additionalCost.value.amount)}">
+                    [ngClass]="{'required-field': (buttonClicked && !additionalCost.value.amount && additionalCost.value.costType.id != 4 && additionalCost.value.costType.id != 5) }">
                     <input  
                         [(ngModel)]="additionalCost.value.amount"
                         matInput 
                         amountFormat
                         autocomplete="off"
                         (keypress)="keyPressNumber($event)"
-                        [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
+                        [disabled]="(additionalCost.value.costType && (additionalCost.value.costType.id == 4 || additionalCost.value.costType.id == 5)) 
+                              || (formValues.status && formValues.status.name == 'Confirmed')">
                   </mat-form-field>
                 </div>
               </td>

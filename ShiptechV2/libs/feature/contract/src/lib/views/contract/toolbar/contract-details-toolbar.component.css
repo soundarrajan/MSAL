@@ -295,3 +295,7 @@ table-layout: fixed;*/
 a.breadcrumb-a:active, a.breadcrumb-a:focus, a.breadcrumb-a:hover {
     text-decoration: underline;
 }
+
+.contract-topbar {
+    width: calc(100% - 220px) !important;
+}

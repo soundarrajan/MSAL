@@ -19,7 +19,7 @@ export namespace VesselImportPlanStatusApiPaths {
     export const GetVesselImportPlanStatus = () => `api/BOPS/Roles/GetVesselImportPlanStatus`;
 }
 export namespace BunkerPlanHeaderApiPaths {
-    export const GetBunkerPlanHeader = () => `api/BOPS/bunkerplan/get/header`;
+    export const GetBunkerPlanHeader = () => `api/BOPS/bunkerplan/getHeader`;
 }
 
 export namespace GetROBArbitrageApiPaths {
@@ -27,10 +27,10 @@ export namespace GetROBArbitrageApiPaths {
 }
 
 export namespace GetbunkerPlanIDApiPaths {
-    export const GetbunkerPlanIDUrl = () => `api/BOPS/bunkerplan/get/PlanId`;
+    export const GetbunkerPlanIDUrl = () => `api/BOPS/bunkerplan/getBunkerPlanInitial`;
 }
 export namespace GetCurrentROBApiPaths {
-    export const GetCurrentROB = () => `api/BOPS/bunkerplan/get/CurrentROB`;
+    export const GetCurrentROB = () => `api/BOPS/bunkerplan/getCurrentROB`;
 }
 
 @Injectable({
