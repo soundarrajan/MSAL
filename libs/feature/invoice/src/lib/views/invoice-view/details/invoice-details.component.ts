@@ -7,8 +7,10 @@ import { AGGridCellActionsComponent } from '@shiptech/core/ui/components/ds-comp
 import { AGGridCellEditableComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-editable.component';
 import { AGGridCellRendererComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-renderer.component';
 import { AgGridCellStyleComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-style.component';
+import { OpsSpecParameterDialog } from '@shiptech/core/ui/components/ds-components/pop-ups/ops-spec-parameter.component';
 import { SearchPopupDialog } from '@shiptech/core/ui/components/ds-components/pop-ups/search-popup.component';
 import { GridOptions } from 'ag-grid-community';
+import moment from 'moment';
 import { from } from 'rxjs';
 import { KnownInvoiceRoutes } from '../../../known-invoice.routes';
 import { IInvoiceDetailsItemBaseInfo, IInvoiceDetailsItemCounterpartyDetails, IInvoiceDetailsItemDto, IInvoiceDetailsItemInvoiceCheck, IInvoiceDetailsItemInvoiceSummary, IInvoiceDetailsItemOrderDetails, IInvoiceDetailsItemPaymentDetails, IInvoiceDetailsItemProductDetails, IInvoiceDetailsItemRequest, IInvoiceDetailsItemRequestInfo, IInvoiceDetailsItemResponse, IInvoiceDetailsItemStatus } from '../../../services/api/dto/invoice-details-item.dto';
@@ -114,7 +116,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         this.gridOptions_data.api = params.api;
         this.gridOptions_data.columnApi = params.columnApi;
         this.gridOptions_data.api.sizeColumnsToFit();
-        this.gridOptions_data.api.setRowData(this.rowData_aggrid_pd);
+        this.gridOptions_data.api.setRowData(this.rowData_aggrid_ac);
         this.addCustomHeaderEventListener();
 
       },
@@ -263,7 +265,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
   private rowData_aggrid_pd = [];
 
-  private rowData_aggrid = [];
+  private rowData_aggrid_ac = [];
 
   public formValues: IInvoiceDetailsItemDto = {
     sellerInvoiceNo: 0,
@@ -338,7 +340,20 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       /* this.gridOptions_data.api.applyTransaction({
         add: []
       }); */
-      let productdetail = [];
+      let productdetail = {
+        del_no: {no: '', order_prod: ''},
+        del_product: '',
+        del_qty: '',
+        est_rate: '',
+        amount1: '',
+        inv_product: '',
+        inv_qty: '',
+        inv_rate: '',
+        amount2: '',
+        recon_status: '',
+        sulpher_content: '',
+        phy_supplier: '',
+      };
       this.rowData_aggrid_pd.push(productdetail);
       console.log('add btn');
     });
@@ -347,7 +362,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
   openSearchPopup() {
     this.popupOpen = true;
-        const dialogRef = this.dialog.open(SearchPopupDialog, {
+        const dialogRef = this.dialog.open(OpsSpecParameterDialog, {
             width: '600px',
             maxHeight: '600px',
             panelClass: 'popup-grid'
@@ -420,7 +435,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   }
 
   getInvoiceItem() {
-    // this._entityId = 10851;
+    //this._entityId = 10851;
     let data : IInvoiceDetailsItemRequest = {
       Payload: this._entityId
     };
@@ -428,9 +443,11 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     this.invoiceService
     .getInvoicDetails(data)
     .subscribe((response: IInvoiceDetailsItemResponse) => {
+      console.log('resp');
       console.log(response);
        this.formValues = <IInvoiceDetailsItemDto>response.payload;
        this.parseProductDetailData(this.formValues.productDetails);
+       console.log(this.parseProductDetailData);
        this.setOrderDetailsLables(this.formValues.orderDetails);
        this.setcounterpartyDetailsLables(this.formValues.counterpartyDetails);
        this.setChipDatas();
@@ -466,6 +483,31 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     this.chipData[6].Data = ivs?.provisionalInvoiceAmount? ivs?.provisionalInvoiceAmount?.toString(): this.emptyNumberVal;
     this.chipData[7].Data = ivs?.deductions? ivs?.deductions?.toString() : this.emptyNumberVal;
     this.chipData[8].Data = ivs?.netPayable? ivs?.netPayable?.toString() : this.emptyNumberVal;
+  }
+
+  formatDateForBe(value) {
+    if (value) {
+      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+      return `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+    } else {
+      return null;
+    }
+  }
+
+  onChange($event, field) {
+    if ($event.value) {
+      let beValue = `${moment($event.value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+      if (field == 'dealDate') {
+        //this.isDealDateInvalid = false;
+      } 
+      console.log(beValue);
+    } else {
+      if (field == 'dealDate') {
+       // this.isDealDateInvalid = true;
+      } 
+     // this.toastr.error('Please enter the correct format');
+    }
+
   }
 
   ngOnDestroy(): void {

@@ -1,10 +1,9 @@
 <div class="invoice-main-container">
     <div id="custom-tabs-v2">
-        <mat-tab-group #tabs (selectedIndexChange)="selectedTab = tabs.selectedIndex" mat-align-tabs="end">
+        <mat-tab-group #tabs (selectedIndexChange)="selectedTab = tabs.selectedIndex">
             <mat-tab *ngFor="let item of tabData" [disabled]="item.disabled">
                 <ng-template mat-tab-label>
-                    <div class="custom-tab-ui"></div>
-                    <span class="custom-label">{{item.name}}</span>
+                    <span>{{item.name}}</span>
                 </ng-template>
                 <ng-container>
                     <div *ngIf="item.name=='Details'" class="details"> 
@@ -17,22 +16,34 @@
                     <div *ngIf="item.name=='Audit Log'" class="custom-tab-container"> Tab container 6</div>
                 </ng-container>
             </mat-tab>
+            <span>sdddddddddddd</span>
         </mat-tab-group>
-    </div>
-    <!-- <div class="row" style="margin: 5px 0;">
-        <div class="col-6 d-flex">
-          <div class="shiptech-tab ui-tabmenu ui-widget ui-widget-content ui-corner-all">
-            <ul class="ui-tabmenu-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
-              <li role="tab" class="ui-tabmenuitem ui-state-default ui-corner-top" *ngFor="let menuItem of menuItems">
-                <a  *ngIf="menuItem.url" class="ui-menuitem-link ui-corner-all" href="{{menuItem.url}}">
-                  <span class="ui-menuitem-text">{{menuItem.label}}</span>
-                </a>
-                <a  *ngIf="!menuItem.url" class="ui-menuitem-link ui-corner-all">
-                  <span class="ui-menuitem-text">{{menuItem.label}}</span>
-                </a>
-              </li>
-            </ul>
+        <div class="header-buttons">
+          <div matTooltip="Back Office Report" matTooltipShowDelay="500" style="padding-left: 7px;">
+            <button class="cust-btn">
+                <span style="top: -1px;position: relative;">Back Office Report</span>
+            </button>
+          </div>
+          <div matTooltip="Save" matTooltipShowDelay="500" style="padding-left: 7px;">
+            <button class="cust-btn">
+                <span style="top: -1px;position: relative;">Save</span>
+            </button>
+          </div>
+          <div matTooltip="Approve Invoice" matTooltipShowDelay="500" style="padding-left: 7px;">
+            <button class="cust-btn">
+                <span style="top: -1px;position: relative;">Approve Invoice</span>
+            </button>
+          </div>
+          <div matTooltip="Revert" matTooltipShowDelay="500" style="padding-left: 7px;">
+            <button class="cust-btn" disabled>
+                <span style="top: -1px;position: relative;">Revert</span>
+            </button>
+          </div>
+          <div matTooltip="..." matTooltipShowDelay="500" style="padding-left: 7px;">
+            <button class="cust-btn">
+                <span style="top: -1px;position: relative;">...</span>
+            </button>
           </div>
         </div>
-    </div> -->
+    </div>
 </div>
