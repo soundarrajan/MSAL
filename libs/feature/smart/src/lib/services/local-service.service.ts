@@ -595,6 +595,14 @@ export class LocalService {
         {payload: request}
       );
     }
+    // getOutstandRequestData to put current ROB row detail on vessel role
+    @ObservableException()
+    getOutstandRequestData(request: any): Observable<any> {
+      return this.http.post<any>(
+        `${this._apiUrl}/${GetROBArbitrageApiPaths.GetROBArbitrageUrl()}`,
+        {payload: request}
+      );
+    }
 
     // public getVesselByName(vesselName): Observable<any> {
     //     console.log(vesselName)
