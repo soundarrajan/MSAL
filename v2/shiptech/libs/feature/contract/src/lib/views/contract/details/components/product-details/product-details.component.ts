@@ -1217,11 +1217,34 @@ export class ProductDetails extends DeliveryAutocompleteComponent
 
   saveConversionFactors(conversionFactors, conversionFactorsDropdown) {
     if (conversionFactorsDropdown && (conversionFactors.contractConversionFactorOptions.id == 3 || conversionFactors.contractConversionFactorOptions.id == 4)) {
-      let payloadProductDefault = {Payload: { ProductId: conversionFactors.product.id } };
-      let payload = { Payload: conversionFactors.product.id };
+      let payload = {};
+      if (conversionFactors.contractConversionFactorOptions.id == 4) {
+        let product = this.formValues.products[this.selectedTabIndex];
+        if (product.fixedPrice) {
+          this.toastr.warning("Please select formula for using system instrument conversion");
+          return;
+        }
+        if (product.isFormula) {
+          if (!(product.formula && product.formula.id)) {
+            this.toastr.warning("Please select formula for using system instrument conversion");
+            return;
+          }
+
+          if (product.formula && product.formula.id) {
+            payload = {
+              Payload: {
+                ProductId: conversionFactors.product.id,
+                FormulaId: product.formula.id
+              }
+            };
+          }
+        }
+      } else {
+        payload = {Payload: { ProductId: conversionFactors.product.id } };
+      } 
       this.spinner.show();
       this.contractService
-      .getProdDefaultConversionFactors(payloadProductDefault)
+      .getProdDefaultConversionFactors(payload)
       .pipe(
         finalize(() => {
         })

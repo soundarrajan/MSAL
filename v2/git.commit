@@ -1,7 +1,9 @@
-﻿commit c87d9e57269531df61fab6d922bbda75046b3287
+﻿commit 48775aa93ae1653ab812bff6739d27a8afad5564
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Apr 28 12:49:32 2021 +0000
+Date:   Wed Apr 28 13:56:49 2021 +0000
 
-    Merged PR 10242: Disabled formula fields in the Contract when has Invoice approved
+    Merged PR 10246: Added formulaId on getProdDefaultConversionFactors for  contractConversionFac...
+    
+    Added formulaId on getProdDefaultConversionFactors for  contractConversionFactorOptionsId equal with 4
 
 branch: master
