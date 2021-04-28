@@ -1,11 +1,11 @@
-﻿commit 46b64a7e5519df26164a368bad1bae4cadcf69e5
+﻿commit b71f67eee09c8d751927b88d5996a7ac7758ba20
 Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Wed Apr 28 08:50:45 2021 +0000
+Date:   Wed Apr 28 11:58:38 2021 +0000
 
-    Merged PR 10228: Current, Previous and All Bunkering Plan changes and api integration.
+    Merged PR 10238: Current bplan grid port highlight
     
-    Current, Previous and All Bunkering Plan changes and api integration.
+    Current bplan grid port highlight
     
-    Related work items: #29780, #29822, #29823
+    Related work items: #29780
 
 branch: master
