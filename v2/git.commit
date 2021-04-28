@@ -1,11 +1,9 @@
-﻿commit d2d23b8ccb02c65a189abed8b9858fb0c05bca92
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Apr 28 06:58:48 2021 +0000
+﻿commit f34f4af61f0fe592a5e72132c449f030486c579b
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Wed Apr 28 07:27:42 2021 +0000
 
-    Merged PR 10217: Changed the color of Asterisk from black to orange  for mandatory fields
+    Merged PR 10220: #29829 - header date format issue has fixed in bunker plan page
     
-    Changed the color of Asterisk from black to orange  for mandatory fields
-    
-    Related work items: #31959
+    Related work items: #29829
 
 branch: master
