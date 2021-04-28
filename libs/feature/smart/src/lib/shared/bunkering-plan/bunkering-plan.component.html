@@ -4,52 +4,27 @@
     <div class="label-text" style="margin: 0px 5px;">Vessel</div>
     <app-search-vessel (changeVessel)="changeVessel.emit($event)" [vesselList]="vesselList" [vesselData]="vesselData"></app-search-vessel>
   </div>
-  <div style="display: flex;align-items: center; flex: 0 0 10%;justify-content: center;">
+  <div style="margin:0 5px;display:flex;align-items: center;">
     <div class="label-text"> Bunker Log</div>
-  </div>
-  <div style="display: flex;align-items: center; flex: 0 0 15%;justify-content: center;">
-    <div class="custom-form-field create-new-formula-form-field">
-      <mat-form-field class="with-search" appearance="legacy">
-        <mat-label>From</mat-label>
-        <input 
-        [(ngModel)]="fromLogDate"
-         #FromLogDate="ngModel"
-        matInput [matDatepicker]="FromLogDate"
-        (dateInput)="onDateChange($event, 'FromLogDate')"
-        (dateChange)="fromLogDate = formatDateForBe(FromLogDate)">
-        <mat-datepicker-toggle matSuffix [for]="FromLogDate"></mat-datepicker-toggle>
-        <mat-datepicker #FromLogDate></mat-datepicker>
-      </mat-form-field>
-    </div>
-  </div>
-  <div></div>
-  <div style="display: flex;align-items: center; flex: 0 0 15%;justify-content: center;">
-    <div class="custom-form-field create-new-formula-form-field">
-      <mat-form-field>
-        <mat-label>To</mat-label>
-        <input 
-        [(ngModel)]="toLogDate"
-         #ToLogDate="ngModel"
-        matInput [matDatepicker]="ToLogDate" 
-        (dateInput)="onDateChange_to($event, 'FromLogDate')"       
-        (dateChange)="toLogDate = formatDateForBe(ToLogDate)">
-        <mat-datepicker-toggle matSuffix [for]="ToLogDate"></mat-datepicker-toggle>
-        <mat-datepicker #ToLogDate></mat-datepicker>
-      </mat-form-field>
-    </div>
+    <shiptech-date-picker-from-to
+         [selectedFromDate]="defaultFromDate"
+         [selectedToDate]="selectedToDate"
+         (onDateChange)="onFromToDateChange($event)"
+         >
+        </shiptech-date-picker-from-to>
   </div>
   <div style="display: flex;align-items: center; flex: 0 0 10%;justify-content: center;">
     <div class="label-text" style="margin: 0px 5px;">Plan Status</div>
   </div>
 
-<div style="display: flex;align-items: center; flex: 0 0 2%;justify-content: center;">
+<div class="plan-status" style="display: flex;align-items: center; flex: 0 0 2%;justify-content: center;">
   <mat-form-field appearance="fill">
-    <mat-select [(ngModel)]="planStatus" [placeholder]="planStatus" (selectionChange)="onStatusChange($event)">
+    <mat-select [(value)]="planStatus" (selectionChange)="onStatusChange($event)">
       <mat-option value="all">All</mat-option>
       <mat-option value="invalid">Invalid</mat-option>
       <mat-option value="valid">Valid</mat-option>
     </mat-select>
-  </mat-form-field>    
+  </mat-form-field> 
 </div>
 
 </div>
