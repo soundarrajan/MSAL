@@ -256,8 +256,8 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div class="panel-body">
-        <app-bunkering-plan *ngIf="panel.expanded && planId" [isExpanded]="expandBplan"
-          (enableCreateReq)="toggleCreateReq($event)" [planId]="planId" [bPlanType]="bPlanType.curr" [selectedUserRole]="selectedUserRole">
+        <app-bunkering-plan *ngIf="panel.expanded" [isExpanded]="expandBplan"
+          (enableCreateReq)="toggleCreateReq($event)" [planId]="planId" [bPlanType]="bPlanType.curr" >
         </app-bunkering-plan>
       </div>
     </mat-expansion-panel>
