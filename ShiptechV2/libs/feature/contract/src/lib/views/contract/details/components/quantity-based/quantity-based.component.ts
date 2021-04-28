@@ -100,6 +100,7 @@ export class QuantityBased extends DeliveryAutocompleteComponent
   uomList: any;
   amountFormat: string;
   quantityFormat: string;
+  hasInvoicedOrder: any;
  
 
 
@@ -250,6 +251,14 @@ export class QuantityBased extends DeliveryAutocompleteComponent
     } 
     this.uomList = uomList;
   }
+
+  @Input('hasInvoicedOrder') set _setHasInvoicedOrder(hasInvoicedOrder) { 
+    if (!hasInvoicedOrder) {
+      return;
+    } 
+    this.hasInvoicedOrder = hasInvoicedOrder;
+  }
+
 
   
 
