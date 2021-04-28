@@ -10,6 +10,7 @@ import { AgGridCellStyleComponent } from '@shiptech/core/ui/components/ds-compon
 import { OpsSpecParameterDialog } from '@shiptech/core/ui/components/ds-components/pop-ups/ops-spec-parameter.component';
 import { SearchPopupDialog } from '@shiptech/core/ui/components/ds-components/pop-ups/search-popup.component';
 import { GridOptions } from 'ag-grid-community';
+import moment from 'moment';
 import { from } from 'rxjs';
 import { KnownInvoiceRoutes } from '../../../known-invoice.routes';
 import { IInvoiceDetailsItemBaseInfo, IInvoiceDetailsItemCounterpartyDetails, IInvoiceDetailsItemDto, IInvoiceDetailsItemInvoiceCheck, IInvoiceDetailsItemInvoiceSummary, IInvoiceDetailsItemOrderDetails, IInvoiceDetailsItemPaymentDetails, IInvoiceDetailsItemProductDetails, IInvoiceDetailsItemRequest, IInvoiceDetailsItemRequestInfo, IInvoiceDetailsItemResponse, IInvoiceDetailsItemStatus } from '../../../services/api/dto/invoice-details-item.dto';
@@ -339,7 +340,20 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       /* this.gridOptions_data.api.applyTransaction({
         add: []
       }); */
-      let productdetail = {};
+      let productdetail = {
+        del_no: {no: '', order_prod: ''},
+        del_product: '',
+        del_qty: '',
+        est_rate: '',
+        amount1: '',
+        inv_product: '',
+        inv_qty: '',
+        inv_rate: '',
+        amount2: '',
+        recon_status: '',
+        sulpher_content: '',
+        phy_supplier: '',
+      };
       this.rowData_aggrid_pd.push(productdetail);
       console.log('add btn');
     });
@@ -421,7 +435,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   }
 
   getInvoiceItem() {
-    // this._entityId = 10851;
+    //this._entityId = 10851;
     let data : IInvoiceDetailsItemRequest = {
       Payload: this._entityId
     };
@@ -469,6 +483,31 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     this.chipData[6].Data = ivs?.provisionalInvoiceAmount? ivs?.provisionalInvoiceAmount?.toString(): this.emptyNumberVal;
     this.chipData[7].Data = ivs?.deductions? ivs?.deductions?.toString() : this.emptyNumberVal;
     this.chipData[8].Data = ivs?.netPayable? ivs?.netPayable?.toString() : this.emptyNumberVal;
+  }
+
+  formatDateForBe(value) {
+    if (value) {
+      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+      return `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+    } else {
+      return null;
+    }
+  }
+
+  onChange($event, field) {
+    if ($event.value) {
+      let beValue = `${moment($event.value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+      if (field == 'dealDate') {
+        //this.isDealDateInvalid = false;
+      } 
+      console.log(beValue);
+    } else {
+      if (field == 'dealDate') {
+       // this.isDealDateInvalid = true;
+      } 
+     // this.toastr.error('Please enter the correct format');
+    }
+
   }
 
   ngOnDestroy(): void {
