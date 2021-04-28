@@ -73,6 +73,7 @@ export interface IApiUrlsLegacyConfig {
   BASE_URL_DATA_HANGFIRE: string;
   BASE_URL_DATA_MAIL: string;
   BASE_URL_DATA_IMPORTEXPORT: string;
+  BASE_URL_DATA_SMART: string;
   BASE_URL_UI: string;
   BASE_URL_OPEN_SERVER: string;
   BASE_HEADER_FOR_NOTIFICATIONS: string;
