@@ -428,6 +428,7 @@ export class CreateNewFormulaModalComponent extends DeliveryAutocompleteComponen
   quantityTypeList: any;
   productList: any;
   locationList: any;
+  hasInvoicedOrder: any;
   constructor(
     public dialogRef: MatDialogRef<CreateNewFormulaModalComponent>,
     private ren: Renderer2,
@@ -497,6 +498,7 @@ export class CreateNewFormulaModalComponent extends DeliveryAutocompleteComponen
       this.quantityTypeList = data.quantityTypeList;
       this.productList = data.productList;
       this.locationList = data.locationList;
+      this.hasInvoicedOrder = data.hasInvoicedOrder;
     }
 
   ngOnInit() {
@@ -593,7 +595,7 @@ export class CreateNewFormulaModalComponent extends DeliveryAutocompleteComponen
         } else {
           this.dialogRef.close({
             'name': this.formValues.name,
-            'id': response });
+            'id': this.formValues.id });
           this.toastr.success('Operation completed successfully!')
         }
       });
