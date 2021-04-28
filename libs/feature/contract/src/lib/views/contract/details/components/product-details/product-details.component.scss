@@ -455,3 +455,7 @@
 //   opacity: 0.5;
 //   background-color: black;
 // }
+
+.mat-form-field.mat-form-field-disabled .mat-form-field-empty mat-label {
+  background-color: unset !important;
+}
