@@ -1,9 +1,9 @@
-﻿commit 48775aa93ae1653ab812bff6739d27a8afad5564
+﻿commit 5640a0e6bd00e03b79400ba0006a93d6a7fd11d8
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Apr 28 13:56:49 2021 +0000
+Date:   Wed Apr 28 14:37:53 2021 +0000
 
-    Merged PR 10246: Added formulaId on getProdDefaultConversionFactors for  contractConversionFac...
+    Merged PR 10247: Fixed payload of getProdDefaultConversionFactors
     
-    Added formulaId on getProdDefaultConversionFactors for  contractConversionFactorOptionsId equal with 4
+    Fixed payload of getProdDefaultConversionFactors
 
 branch: master
