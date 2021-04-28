@@ -152,6 +152,7 @@
           [(ngModel)]="formValues.comments"
           matInput
           autocomplete="off"
+          [disabled]="hasInvoicedOrder"
           ></textarea>
   </mat-form-field>
 </div>
