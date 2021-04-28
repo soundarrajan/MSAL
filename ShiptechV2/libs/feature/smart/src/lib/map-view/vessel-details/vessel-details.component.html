@@ -38,8 +38,8 @@
             <app-new-request></app-new-request>
           </mat-tab> -->
           <mat-tab #bunkerPlans label="Bunkering Plans">
-            <app-bunkering-plan (changeVessel)="vesselChange($event)" [vesselList]="vesselList"
-              [vesselData]="vesselData" *ngIf="bunkerPlans.isActive"></app-bunkering-plan>
+            <app-all-bunkering-plan (changeVessel)="vesselChange($event)" [vesselList]="vesselList"
+              [vesselData]="vesselData" *ngIf="bunkerPlans.isActive"></app-all-bunkering-plan>
           </mat-tab>
         </mat-tab-group>
         <div id="currentuser">

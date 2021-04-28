@@ -21,8 +21,7 @@ import { RequestsDetailsComponent } from './requests-details/requests-details.co
 import { CommentsComponent } from './comments/comments.component';
 import { NewRequestComponent } from './new-request/new-request.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
-import { CurrentBunkeringPlanComponent } from './current-bunkering-plan/current-bunkering-plan.component';
-import { PreviousBunkeringPlanComponent } from './previous-bunkering-plan/previous-bunkering-plan.component';
+import { BunkeringPlanComponent } from './bunkering-plan/bunkering-plan.component';
 import { HeaderPanelComponent } from './header-panel/header-panel.component';
 import { VesselPopupComponent, VesselMenuComponent } from './vessel-popup/vessel-popup.component';
 import { PortPopupComponent, PortMenuComponent } from './port-popup/port-popup.component';
@@ -32,10 +31,10 @@ import { TableLegendComponent } from './table-legend/table-legend.component';
 import { CustomStepperComponent } from './custom-stepper/custom-stepper.component';
 import { SmartMessengerComponent } from './smart-messenger/smart-messenger.component';
 import { SearchVesselComponent } from './search-vessel/search-vessel.component';
-import { BunkeringPlanComponent } from './bunkering-plan/bunkering-plan.component';
-import { BunkerPlanComponent } from './bunker-plan/bunker-plan.component';
-import { FilterPipe } from './bunkering-plan/bunkering-plan.component';
+import { AllBunkeringPlanComponent } from './all-bunkering-plan/all-bunkering-plan.component';
+import { FilterPipe } from './all-bunkering-plan/all-bunkering-plan.component';
 import { WarningComponent } from './warning/warning.component';
+import { NoDataComponent } from './no-data-popup/no-data-popup.component';
 import { VesselArrivalsComponent } from './vessel-arrivals/vessel-arrivals.component';
 import { PortInfoComponent } from './port-info/port-info.component';
 import { AuthGaurdService } from '../services/auth-guard.service';
@@ -45,9 +44,9 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
 @NgModule({
   declarations: [HeaderComponent, FilterchipsComponent, MapPanelComponent, SmartOperatorComponent, OlMapComponent, VesselDetailsComponent, HeaderPanelComponent,
     AGGridCellRendererComponent, AGGridCellDataComponent, VesselInfoComponent, AuditLogComponent, RequestsDetailsComponent, CommentsComponent, NewRequestComponent,
-    CurrentBunkeringPlanComponent, PreviousBunkeringPlanComponent, HeaderPanelComponent, VesselPopupComponent, PortPopupComponent, NotificationsComponent, ConfirmationPopupComponent,
-    TableLegendComponent, CustomStepperComponent, SmartMessengerComponent, SearchVesselComponent, BunkeringPlanComponent, BunkerPlanComponent, FilterPipe, WarningComponent,
-    PortMenuComponent, VesselMenuComponent, VesselArrivalsComponent, PortInfoComponent, HoverMenuComponent, ConfirmDialogComponent],
+    BunkeringPlanComponent, HeaderPanelComponent, VesselPopupComponent, PortPopupComponent, NotificationsComponent, ConfirmationPopupComponent,
+    TableLegendComponent, CustomStepperComponent, SmartMessengerComponent, SearchVesselComponent, AllBunkeringPlanComponent, FilterPipe, WarningComponent,
+    PortMenuComponent, VesselMenuComponent, VesselArrivalsComponent, PortInfoComponent, HoverMenuComponent, ConfirmDialogComponent, NoDataComponent],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -60,11 +59,11 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     AgGridModule.withComponents([AGGridCellRendererComponent, AGGridCellDataComponent])
   ],
   exports: [ReactiveFormsModule, FormsModule, FilterchipsComponent, MapPanelComponent, SmartOperatorComponent, OlMapComponent, HeaderPanelComponent,
-    VesselInfoComponent, AuditLogComponent, RequestsDetailsComponent, CommentsComponent, NewRequestComponent, CurrentBunkeringPlanComponent,
-    PreviousBunkeringPlanComponent, VesselPopupComponent, PortPopupComponent, NotificationsComponent, ConfirmationPopupComponent, TableLegendComponent,
-    CustomStepperComponent, SmartMessengerComponent, SearchVesselComponent, BunkeringPlanComponent, BunkerPlanComponent, FilterPipe, WarningComponent,
-    PortMenuComponent, VesselMenuComponent, PortInfoComponent, VesselArrivalsComponent, HoverMenuComponent, ConfirmDialogComponent],
+    VesselInfoComponent, AuditLogComponent, RequestsDetailsComponent, CommentsComponent, NewRequestComponent, BunkeringPlanComponent,
+    VesselPopupComponent, PortPopupComponent, NotificationsComponent, ConfirmationPopupComponent, TableLegendComponent,
+    CustomStepperComponent, SmartMessengerComponent, SearchVesselComponent, AllBunkeringPlanComponent,FilterPipe, WarningComponent,
+    PortMenuComponent, VesselMenuComponent, PortInfoComponent, VesselArrivalsComponent, HoverMenuComponent, ConfirmDialogComponent, NoDataComponent],
   providers: [LocalService, LoggerService, AuthGaurdService],
-  entryComponents: [VesselDetailsComponent, ConfirmationPopupComponent, WarningComponent, ConfirmDialogComponent]
+  entryComponents: [VesselDetailsComponent, ConfirmationPopupComponent, WarningComponent, ConfirmDialogComponent,NoDataComponent]
 })
 export class SharedModule { }
