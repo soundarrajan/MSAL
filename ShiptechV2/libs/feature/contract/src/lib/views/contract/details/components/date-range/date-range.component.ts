@@ -144,6 +144,7 @@ export class DateRange extends DeliveryAutocompleteComponent
   marketPriceTypeList: any;
   isValidFromDateInvalid: boolean;
   isValidToDateInvalid: boolean;
+  hasInvoicedOrder: any;
 
 
   get entityId(): number {
@@ -301,6 +302,14 @@ export class DateRange extends DeliveryAutocompleteComponent
     } 
     this.marketPriceTypeList = marketPriceTypeList;
   }
+
+  @Input('hasInvoicedOrder') set _setHasInvoicedOrder(hasInvoicedOrder) { 
+    if (!hasInvoicedOrder) {
+      return;
+    } 
+    this.hasInvoicedOrder = hasInvoicedOrder;
+  }
+
 
 
 
