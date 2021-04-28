@@ -649,6 +649,10 @@ export class CreateNewFormulaModalComponent extends DeliveryAutocompleteComponen
     }
   }
 
+  cancelFormula() {
+    this.dialogRef.close();
+  }
+
   
   
 }
