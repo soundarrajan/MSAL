@@ -89,7 +89,7 @@ export class BunkeringPlanComponent implements OnInit {
           width: 45,
           cellClassRules: {
             'lightgreen': function (params) {
-              return params.value == 0;
+              return params.value == 0?true:false;
             }
           },
           cellClass: ['custom-check-box aggrid-content-center aggrid-left-ribbon '],
