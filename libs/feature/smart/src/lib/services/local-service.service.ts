@@ -19,7 +19,7 @@ export namespace VesselImportPlanStatusApiPaths {
     export const GetVesselImportPlanStatus = () => `api/BOPS/Roles/GetVesselImportPlanStatus`;
 }
 export namespace BunkerPlanHeaderApiPaths {
-    export const GetBunkerPlanHeader = () => `api/BOPS/bunkerplan/get/header`;
+    export const GetBunkerPlanHeader = () => `api/BOPS/bunkerplan/getHeader`;
 }
 
 export namespace GetROBArbitrageApiPaths {
@@ -30,7 +30,7 @@ export namespace GetbunkerPlanIDApiPaths {
     export const GetbunkerPlanIDUrl = () => `api/BOPS/bunkerplan/getBunkerPlanInitial`;
 }
 export namespace GetCurrentROBApiPaths {
-    export const GetCurrentROB = () => `api/BOPS/bunkerplan/get/CurrentROB`;
+    export const GetCurrentROB = () => `api/BOPS/bunkerplan/getCurrentROB`;
 }
 
 @Injectable({
@@ -578,6 +578,14 @@ export class LocalService {
     // updateROBArbitrageChanges to put current ROB row detail on vessel role
     @ObservableException()
     updateROBArbitrageChanges(request: any): Observable<any> {
+      return this.http.post<any>(
+        `${this._apiUrl}/${GetROBArbitrageApiPaths.GetROBArbitrageUrl()}`,
+        {payload: request}
+      );
+    }
+    // getOutstandRequestData to put current ROB row detail on vessel role
+    @ObservableException()
+    getOutstandRequestData(request: any): Observable<any> {
       return this.http.post<any>(
         `${this._apiUrl}/${GetROBArbitrageApiPaths.GetROBArbitrageUrl()}`,
         {payload: request}
