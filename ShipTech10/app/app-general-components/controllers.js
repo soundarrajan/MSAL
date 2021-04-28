@@ -1365,6 +1365,10 @@
                         element = var_bind(":content", "Unmatched", element);
                         element = var_bind(":css_formatting", "danger lowercase", element);
                     }
+                    if (cellValue == "WithinLimit") {
+                        element = var_bind(":content", "Within Tolerance ", element);
+                        element = var_bind(":css_formatting", "amber lowercase", element);
+                    }
                     if (cellValue == "" || cellValue == null) {
                         element = var_bind(":content", "", element);
                     } else {
