@@ -137,6 +137,7 @@ export class PricingFormulaSimple extends DeliveryAutocompleteComponent
   marketPriceList: any;
   autocompleteSystemInstrument: knownMastersAutocomplete;
   amountFormat: string;
+  hasInvoicedOrder: any;
 
 
   get entityId(): number {
@@ -267,6 +268,12 @@ export class PricingFormulaSimple extends DeliveryAutocompleteComponent
     this.marketPriceList = marketPriceList;
   }
 
+  @Input('hasInvoicedOrder') set _setHasInvoicedOrder(hasInvoicedOrder) { 
+    if (!hasInvoicedOrder) {
+      return;
+    } 
+    this.hasInvoicedOrder = hasInvoicedOrder;
+  }
 
 
 
