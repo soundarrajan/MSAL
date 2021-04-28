@@ -3487,15 +3487,17 @@
         $scope.$watchGroup(
             [ 'formValues.defaultFuelOilProduct', 'formValues.defaultDistillateProduct', 'formValues.defaultLsfoProduct' ],
             (newVal, oldVal) => {
-                if ($scope.formValues.defaultFuelOilProduct == '' || $scope.formValues.defaultFuelOilProduct == null) {
-                    $scope.formValues.fuelOilSpecGroup = null;
-                }
-                if ($scope.formValues.defaultDistillateProduct == '' || $scope.formValues.defaultDistillateProduct == null) {
-                    $scope.formValues.distillateSpecGroup = null;
-                }
-                if ($scope.formValues.defaultLsfoProduct == '' || $scope.formValues.defaultLsfoProduct == null) {
-                    $scope.formValues.lsfoSpecGroup = null;
-                }
+            	if (vm.screen_id == "vessel") {
+	                if ($scope.formValues.defaultFuelOilProduct == '' || $scope.formValues.defaultFuelOilProduct == null) {
+	                    $scope.formValues.fuelOilSpecGroup = null;
+	                }
+	                if ($scope.formValues.defaultDistillateProduct == '' || $scope.formValues.defaultDistillateProduct == null) {
+	                    $scope.formValues.distillateSpecGroup = null;
+	                }
+	                if ($scope.formValues.defaultLsfoProduct == '' || $scope.formValues.defaultLsfoProduct == null) {
+	                    $scope.formValues.lsfoSpecGroup = null;
+	                }
+            	}
             },
             true
         );
