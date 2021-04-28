@@ -1,9 +1,11 @@
-﻿commit f34f4af61f0fe592a5e72132c449f030486c579b
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Wed Apr 28 07:27:42 2021 +0000
+﻿commit 46b64a7e5519df26164a368bad1bae4cadcf69e5
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Wed Apr 28 08:50:45 2021 +0000
 
-    Merged PR 10220: #29829 - header date format issue has fixed in bunker plan page
+    Merged PR 10228: Current, Previous and All Bunkering Plan changes and api integration.
     
-    Related work items: #29829
+    Current, Previous and All Bunkering Plan changes and api integration.
+    
+    Related work items: #29780, #29822, #29823
 
 branch: master
