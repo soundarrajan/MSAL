@@ -51,7 +51,7 @@
 <!-- ACCORDION -->
 <div id="accordion-container-dark">
   <mat-accordion multi="true">
-    <mat-expansion-panel *ngIf="!expandBplan && !expandComments && !expandPrevBPlan" hideToggle="true"
+    <mat-expansion-panel *ngIf="!expandComments" hideToggle="true"
       [expanded]="false">
       <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="34px">
         <mat-panel-title>
@@ -173,7 +173,7 @@
         </div>
       </div>
     </mat-expansion-panel>
-    <mat-expansion-panel #commentpanel *ngIf="!expandBplan && !expandPrevBPlan"
+    <mat-expansion-panel #commentpanel *ngIf="!expandComments"
       [ngClass]="{'fullheight':expandComments}" hideToggle="true" (closed)="expandComments = false">
       <mat-expansion-panel-header #panelCommentH collapsedHeight="31px" expandedHeight="34px">
         <mat-panel-title>
@@ -201,7 +201,7 @@
 
     </mat-expansion-panel>
     <mat-expansion-panel *ngIf="!expandComments && !expandPrevBPlan" [ngClass]="{'fullheight':expandBplan}" #panel
-      id="current-bunker-plan" hideToggle="true" [expanded]="true"
+      id="current-bunker-plan" hideToggle="true" [expanded]="statusCurrBPlan"
       (closed)="currentBplan.gridChanged && togglecurrentBPlan(panel)">
       <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="34px">
         <mat-panel-title>
@@ -209,12 +209,14 @@
           <div style="display: flex;align-items: center;width: 100%;">
             <div style="flex: 0 0 17%;">Current Bunkering Plan</div>
             <div style="flex:0 0 80%;display: flex;align-items: center;">
-              <div id="plan-id" class="border-leftside" style="flex:0 0 10%;text-align: center;"><span class="title">Plan ID
-                  :
-                </span><span class="content">716273</span></div>
+              <div id="plan-id" class="border-leftside" style="flex:0 0 10%;text-align: center;"><span class="title">Plan ID :
+              </span><span class="content">{{this.planId}}</span></div>
               <div id="plan-date" class="border-l-rightside" style="flex:0 0 13%;text-align: center;"><span class="title">Plan
                   Date :
-                </span><span class="content">12/09/2020</span></div>
+                </span><span class="content">{{this.planDate}}</span></div>
+                <div id="plan-status" class="border-l-rightside" style="flex:0 0 13%;text-align: center;"><span class="title">
+                  Status :
+                </span><span [ngClass]="this.statusCurr == undefined?'content': (this.statusCurr =='INVALID'? 'content content_invalid' : 'content content_valid')" style="padding: 3% 16% !important; ">{{this.statusCurr}}</span></div>
               <ng-container *ngIf="panel.expanded">
                 <div class="border-rightside"
                   style="display: flex;flex: 0 0 44%;justify-content: space-between;padding: 0px 5px;">
@@ -254,13 +256,13 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div class="panel-body">
-        <app-current-bunkering-plan *ngIf="panel.expanded" [isExpanded]="expandBplan"
-          (enableCreateReq)="toggleCreateReq($event)">
-        </app-current-bunkering-plan>
+        <app-bunkering-plan *ngIf="panel.expanded && planId" [isExpanded]="expandBplan"
+          (enableCreateReq)="toggleCreateReq($event)" [planId]="planId" [bPlanType]="bPlanType.curr" [selectedUserRole]="selectedUserRole">
+        </app-bunkering-plan>
       </div>
     </mat-expansion-panel>
     <mat-expansion-panel #panel1 *ngIf="!expandBplan && !expandComments" [ngClass]="{'fullheight':expandPrevBPlan}"
-      hideToggle="true" id="bunker-plan" [expanded]="false" (closed)="expandPrevBPlan = false">
+      hideToggle="true" id="bunker-plan" [expanded]="statusPrevBPlan" (closed)="expandPrevBPlan = false">
       <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="34px">
         <mat-panel-title>
           <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
@@ -269,11 +271,15 @@
             <div style="flex:0 0 80%;display: flex;align-items: center;">
               <div id="plan-id" class="border-leftside" style="flex:0 0 10%;text-align: center;">
                 <span class="title">Plan ID :</span>
-                <span class="content">7162734</span>
+                <span class="content">{{this.prevPlanId}}</span>
               </div>
               <div id="plan-date" class="border-l-rightside" style="flex:0 0 13%;text-align: center;">
                 <span class="title">Plan Date :</span>
-                <span class="content">12/09/2020</span>
+                <span class="content">{{this.prevPlanDate}}</span>
+              </div>
+              <div id="plan-status" class="border-l-rightside" style="flex:0 0 13%;text-align: center;">
+                <span class="title">Status : </span>
+                <span [ngClass]="this.statusPrev == undefined?'content' : (this.statusPrev =='INVALID'? 'content content_invalid' : ' content content_valid')" style="padding: 3% 16% !important; ">{{this.statusPrev}}</span>
               </div>
             </div>
             <ng-container *ngIf="panel1.expanded">
@@ -292,7 +298,7 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div class="panel-body">
-        <app-bunker-plan [isExpanded]="expandPrevBPlan" *ngIf="panel1.expanded"></app-bunker-plan>
+        <app-bunkering-plan [isExpanded]="expandPrevBPlan" *ngIf="panel1.expanded" [planId]="planId" [bPlanType]="bPlanType.prev"></app-bunkering-plan>
       </div>
     </mat-expansion-panel>
   </mat-accordion>
