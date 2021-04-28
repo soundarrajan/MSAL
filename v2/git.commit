@@ -1,7 +1,7 @@
-﻿commit 17de820d727495c64724c0a30ae4c6eb52892b19
-Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Wed Apr 28 18:01:23 2021 +0530
+﻿commit c87d9e57269531df61fab6d922bbda75046b3287
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Wed Apr 28 12:49:32 2021 +0000
 
-    System Instrument converison factor at contract level for formula based - Changeset 30130
+    Merged PR 10242: Disabled formula fields in the Contract when has Invoice approved
 
 branch: master
