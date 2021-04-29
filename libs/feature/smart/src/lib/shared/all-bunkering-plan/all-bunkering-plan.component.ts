@@ -59,10 +59,15 @@ export class AllBunkeringPlanComponent implements OnInit {
     this.planStatus = $event.value;
     this.loadBunkerPlanHistory(this.vesselData);
   }
+
+  changeVesselTrigger(event) {
+    this.loadBunkerPlanHistory(event);
+    this.changeVessel.emit(event);
+  }
  
   public loadBunkerPlanHistory(event) {
     let vesselId = event.id? event.id: 348;
-    this.requestPayload = {'FromLogDate': this.defaultFromDate,'ToLogDate': this.selectedToDate,'VesselId': 348,'IsDefaultDate':false, 'PlanStatus': this.planStatus};
+    this.requestPayload = {'FromLogDate': this.defaultFromDate,'ToLogDate': this.selectedToDate,'VesselId': vesselId,'IsDefaultDate':false, 'PlanStatus': this.planStatus};
     this.localService.getBunkerPlanLog(this.requestPayload).subscribe((data)=> {
       console.log('bunker plan Log',data);
       this.bunkerPlanLogDetail = (data?.payload && data?.payload.length)? data.payload: {};

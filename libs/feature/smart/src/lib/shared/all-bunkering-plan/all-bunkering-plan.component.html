@@ -2,7 +2,7 @@
   <div style="display: flex;align-items: center; flex: 0 0 25%;justify-content: center;">
     <div class="label-title"> Currently viewing:</div>
     <div class="label-text" style="margin: 0px 5px;">Vessel</div>
-    <app-search-vessel (changeVessel)="changeVessel.emit($event)" [vesselList]="vesselList" [vesselData]="vesselData"></app-search-vessel>
+    <app-search-vessel (changeVessel)="changeVesselTrigger($event)" [vesselList]="vesselList" [vesselData]="vesselData"></app-search-vessel>
   </div>
   <div style="margin:0 5px;display:flex;align-items: center;">
     <div class="label-text"> Bunker Log</div>
