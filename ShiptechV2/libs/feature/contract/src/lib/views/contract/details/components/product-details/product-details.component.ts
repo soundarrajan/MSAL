@@ -1346,6 +1346,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     document.getElementsByTagName('body')[0].click();
   }
 
+  
 
 
   originalOrder = (a: KeyValue<number, any>, b: KeyValue<number, any>): number => {
