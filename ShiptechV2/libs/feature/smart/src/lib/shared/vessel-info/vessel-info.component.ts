@@ -47,6 +47,8 @@ export class VesselInfoComponent implements OnInit {
   public statusPrevBPlan : boolean;
   public statusCurr : any;
   public statusPrev : any;
+  public shiptechRequestUrl :any;
+  public voyageDetailId: any;
 
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private localService: LocalService, public dialog: MatDialog, private bunkerPlanService : BunkeringPlanService) {
     iconRegistry.addSvgIcon(
@@ -131,7 +133,7 @@ export class VesselInfoComponent implements OnInit {
   }
 
   public loadBunkerPlanDetails(){
-     let Id = '1';//this.vesselData?.vesselId;
+     let Id = 1;//this.vesselData?.vesselId;
      let req = { shipId : Id ,  planStatus   : 'C' }
      this.loadCurrentBunkeringPlan(req);
      req = { shipId : Id ,  planStatus : 'P' }
@@ -142,7 +144,7 @@ export class VesselInfoComponent implements OnInit {
   loadCurrentBunkeringPlan(request){
     this.bunkerPlanService.getBunkerPlanIdAndStatus(request).subscribe((data)=>{
       console.log('bunker plan Id and status details', data);
-      this.currPlanIdDetails = (data?.payload && data?.payload.length)? data.payload[0] : {};
+      this.currPlanIdDetails = (data.payload && data.payload.length)? data.payload[0] : {};
       this.planId = this.currPlanIdDetails?.planId;
       this.statusCurrBPlan = this.currPlanIdDetails?.isPlanInvalid === 'N' ? true:false;
       this.statusCurr = this.currPlanIdDetails?.isPlanInvalid === 'Y' ? 'INVALID' : 'VALID';
@@ -154,7 +156,7 @@ export class VesselInfoComponent implements OnInit {
   loadPrevBunkeringPlan(request){
     this.bunkerPlanService.getBunkerPlanIdAndStatus(request).subscribe((data)=>{
       console.log('bunker plan Id and status details', data);
-      this.prevPlanIdDetails = (data?.payload && data?.payload.length)? data.payload[0] : {};
+      this.prevPlanIdDetails = (data.payload && data.payload.length)? data.payload[0] : {};
       this.prevPlanId = this.prevPlanIdDetails?.planId;
       if(this.currPlanIdDetails?.isPlanInvalid === 'Y')
           this.statusPrevBPlan = this.prevPlanIdDetails?.isPlanInvalid === 'N' ? true:false ;

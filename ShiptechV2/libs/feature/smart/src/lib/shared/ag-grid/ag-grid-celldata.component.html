@@ -14,7 +14,9 @@
   </div>
   
   <div *ngIf="params.type=='link'">
-    <div matTooltip="{{params.value}}" [ngClass]="params.cellClass">{{params.value}}</div>
+    <div matTooltip="{{params.value}}" [ngClass]="params.cellClass">
+      <a href="{{shiptechOrderUrl}}/{{params.data?.order_id_vlsfo}}">{{params.value}}</a>
+    </div>
   </div>
   
   <div *ngIf="params.type=='popup-multiple-values'">
@@ -24,6 +26,10 @@
   
   <div *ngIf="params.type=='edit'">
     <div [matTooltip]="inp.value"><input #inp [ngClass]="params.cellClass" [value]=params.value
+        (keydown)="triggerChangeEvent()"></div>
+  </div>
+  <div *ngIf="params.type=='edit-safe-port'">
+    <div [matTooltip]="inp.value"><input #inp [ngClass]="params.cellClass" [value]=params.valueFormatted
         (keydown)="triggerChangeEvent()"></div>
   </div>
 
@@ -39,6 +45,9 @@
   
   <div *ngIf="params.type=='edit-disabled'">
     <div [matTooltip]="inp.value"><input #inp disabled [ngClass]="params.cellClass" [value]=params.value></div>
+  </div>
+  <div *ngIf="params.type=='edit-disabled-safe-port'">
+    <div [matTooltip]="inp.value"><input #inp disabled [ngClass]="params.cellClass" [value]=params.valueFormatted></div>
   </div>
   
   <div *ngIf="params.type=='disable-with-popup'">
@@ -56,7 +65,7 @@
     <div class="edit-input-menu" [ngClass]="{'light-theme':!theme}">
       <div class="row header">
         <div>
-          Port of Alboraya ({{menuData.port}})
+          Port of {{params.data?.port_id}} ({{params.data?.port_id}})
         </div>
         <div class="line"></div>
         <div (click)="cancel()">
@@ -94,7 +103,7 @@
     <div class="edit-input-menu" [ngClass]="{'light-theme':!theme}">
       <div class="row header">
         <div>
-          Port of Alboraya ({{menuData.port}})
+          Port of {{params.data?.port_id}} ({{params.data?.port_id}})
         </div>
         <div class="line"></div>
         <div (click)="cancel()">
@@ -143,7 +152,7 @@
     <div id="edit-checkbox-menu" [ngClass]="{'light-theme':!theme}">
       <div class="row header">
         <div>
-          Port of Alboraya ({{menuData.port}})
+          Port of {{params.data?.port_id}} ({{params.data?.port_id}})
         </div>
         <div class="line"></div>
         <div (click)="cancel()">
@@ -190,7 +199,7 @@
     <div id="edit-checkbox-menu" [ngClass]="{'light-theme':!theme}">
       <div class="row header">
         <div>
-          Port of Alboraya ({{menuData.port}})
+          Port of {{params.data?.port_id}} ({{params.data?.port_id}})
         </div>
         <div class="line"></div>
         <div (click)="cancel()">
@@ -232,11 +241,10 @@
         (change)="portClicked()">
       </mat-checkbox>
     </div>
-    <div matTooltip="{{params.value}}"
-      style="text-align: left;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;margin: 0px 5px;width: 45px;">
+    <div matTooltip="{{params.value}}" style="text-align: left;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;margin: 0px 5px;width: 45px;">
       {{params.value}}
     </div>
-    <div style="width:15px;">
+    <div >
       <div class="info-i" (click)="toggleMenu3Info($event)" 
         (mouseenter)="!menuClick  && toggleMenuInfo($event,params.value);"
         (mouseleave)="!menuClick  && toggleMenu2Info();">
@@ -248,13 +256,19 @@
   
     </div>
   </div>
+  <li *ngIf="params.data?.redelivery_port" style="width:15px;" style="color:red;margin-bottom:11px;"> </li>
   <mat-menu  #infoPopup="matMenu" xPosition="after" class="common">
     <ng-template matMenuContent let-data="data">
       <div class="info_popup" [ngClass]="{'light-theme':!theme}">
         <div class="row info-header">
           <div>
-            Port of Alboraya ({{data}})
+            Port of {{params.data.port_id}} ({{params.data.port_id}})
           </div>
+          <div *ngIf="params.data?.redelivery_port">
+            <ul style="padding-right:65px;padding-left:10px; margin: 3px 4px 6px;">
+            <li><span class="sub-content-title">Port for Redelivery</span></li>
+            </ul>
+          </div>  
           <div class="line"></div>
           <div (click)="cancelMenu()">
             <mat-icon class="close">close</mat-icon>
@@ -266,53 +280,74 @@
           </div>
           <div>
             <ul style="padding-left: 14px;vertical-align: middle; margin: 6px 0px 0px;">
-              <li><span class="sub-content-title">ETA: </span><span class="sub-content-value"> 2020-04-13
-                  10:00</span></li>
-              <li><span class="sub-content-title">ETD: </span><span class="sub-content-value"> 2020-04-13
-                  10:00</span></li>
+              <li><span class="sub-content-title">ETA: </span><span class="sub-content-value">{{params.data.eta_date}} | {{etaDays}} days</span></li>
+              <li><span class="sub-content-title">ETD: </span><span class="sub-content-value">{{params.data.etd_date}} | {{etdDays}} days</span></li>
             </ul>
           </div>
         </div>
         <div class="line"></div>
         <div class="row info-content">
           <div>
-            Reserve Rule - Distillates
+            Reserve Rule - excluding unpumpables
           </div>
           <div class="chip">
             <div class="row chips">
               <div class="col-3 pd-0 m-r-5">
                 <div class="chip-value">
-                  58
+                  {{params.data.hsfo_reserve}}
                   <span class="unit">MT</span>
                 </div>
                 <div class="chip-name">
-                  DMA
+                  HSFO
                 </div>
               </div>
               <div class="col-3 pd-0 m-l-r-5">
                 <div class="chip-value">
-                  120
+                  {{params.data.eca_reserve}}
                   <span class="unit">MT</span>
                 </div>
                 <div class="chip-name">
-                  DMB
+                  ECA
                 </div>
               </div>
               <div class="col-3 pd-0 m-l-5">
                 <div class="chip-value">
-                  10
+                  {{params.data.lsdis_reserve}}
                   <span class="unit">MT</span>
                 </div>
                 <div class="chip-name">
-                  DMX
+                  LSDIS
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div class="line"></div>
+        <div class="row info-content">
+          <div >
+            Service details
+          </div>
+          <div>
+            <ul style="padding-right:65px;padding-left:10px; margin: 6px 0px 0px;">
+              <li><span class="sub-content-title">Service ID: </span><span class="sub-content-value">{{params.data.service_code}}</span></li>
+              <li><span class="sub-content-title">End of Service: </span><span class="sub-content-value">{{params.data.is_end_of_service=='N'?'NO':'YES'}}</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="line"></div>
+        <div class="row info-content">
+          <div>
+            Voyage details
+          </div>
+          <div>
+            <ul style="padding-right:65px;padding-left:10px; margin: 6px 0px 0px;">
+              <li><span class="sub-content-title">End of Voyage: </span><span class="sub-content-value">{{params.data?.is_end_of_voyage=='N'?'NO':'YES'}}</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="line"></div>
         <div class="row info-footer">
-          <span (click)="closeInfoPopup()"> Link to Port Master</span>
+          <a href="{{shiptechPortUrl}}/{{params.data?.port_id}}">Link to Port Master</a>
         </div>
       </div>
     </ng-template>

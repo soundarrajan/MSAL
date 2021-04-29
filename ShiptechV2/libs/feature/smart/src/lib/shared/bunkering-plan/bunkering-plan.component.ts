@@ -7,6 +7,7 @@ import { BunkeringPlanColmGroupLabels, BunkeringPlanColumnsLabels } from './view
 import { LocalService } from '../../services/local-service.service';
 import { BunkeringPlanService } from '../../services/bunkering-plan.service';
 import { LoadBunkeringPlanDetailsAction } from '../../store/bunker-plan/bunkering-plan.action';
+
 @Component({
   selector: 'app-bunkering-plan',
   templateUrl: './bunkering-plan.component.html',
@@ -26,6 +27,7 @@ export class BunkeringPlanComponent implements OnInit {
   @Input('planId') planId;
   @Input('bPlanType') bPlanType;
   @Input('selectedUserRole')selectedUserRole;
+  @Input('currentROBObj') currentROBObj;
   constructor(private bplanService: BunkeringPlanService, private localService: LocalService, private store: Store) {
     
     //Fetch B plan grid row data
@@ -39,6 +41,7 @@ export class BunkeringPlanComponent implements OnInit {
       headerHeight: 50,
       rowHeight: 30,
       groupHeaderHeight: 20,
+      enableCellChangeFlash: true,
       defaultColDef: {
         filter: false,
         sortable: false,
@@ -77,7 +80,7 @@ export class BunkeringPlanComponent implements OnInit {
 
   ngOnInit() {
   }
-
+  
   columnDefs = [
     {
       headerClass: ['cell-border-bottom '],
@@ -96,14 +99,14 @@ export class BunkeringPlanComponent implements OnInit {
           headerClass: ['aggrid-text-align-c '],
           cellRendererFramework: AGGridCellDataComponent,
           cellRendererParams: (params)=>{
-            return {type: this.bPlanType == 'C'?'checkbox' : 'checkbox-disabled', cellClass: ['aggrid-white-checkbox'], context: { componentParent: this } }
+            return {type: 'checkbox', cellClass: this.bPlanType == 'C'?['aggrid-white-checkbox'] :['custom-check-box readonly aggrid-left-ribbon  aggrid-content-center'], context: { componentParent: this } }
           }
         },
         {
           headerName: BunkeringPlanColumnsLabels.PortCode, headerTooltip: BunkeringPlanColumnsLabels.PortCode, field: 'port_id', width: 96, cellRendererFramework: AGGridCellDataComponent,
          cellClassRules: {
             'aggrid-cell-color light-cell': function (params) {
-              return params.rowIndex == params.rowCount;
+              return params.rowIndex == params.api?.rowModel?.rowsToDisplay?.length -1 ;
             }
           },cellRendererParams: (params) =>{
            return { type: this.bPlanType == 'C'?'port' : 'port-readOnly', context: { componentParent: this } } 
@@ -118,12 +121,19 @@ export class BunkeringPlanComponent implements OnInit {
           headerClass: ['aggrid-columgroup-splitter-left aggrid-text-align-c '],
           children: [
             {
-              headerName: BunkeringPlanColumnsLabels.HsfoMaxLift, field: 'hsfo_max_lift', headerTooltip: BunkeringPlanColumnsLabels.HsfoMaxLift, width: 50, cellRendererFramework: AGGridCellDataComponent, cellClass: params=>{if (this.bPlanType == 'C') return 'aggrid-green-editable-cell editable'; else return 'aggrid-green-editable-cell ag-cell' }, headerClass: ['aggrid-colum-splitter-left'],
+              headerName: BunkeringPlanColumnsLabels.HsfoMaxLift, field: 'hsfo_max_lift', headerTooltip: BunkeringPlanColumnsLabels.HsfoMaxLift, width: 50, cellRendererFramework: AGGridCellDataComponent, cellClass: params=>{if (this.bPlanType == 'C'&& this.selectedUserRole?.id === 1) return 'aggrid-green-editable-cell editable'; else return 'aggrid-green-editable-cell ag-cell' }, headerClass: ['aggrid-colum-splitter-left'],
               cellRendererParams: (params) => {
                 var classArray: string[] = [];
-                let newClass = 'aggrid-cell-color mediumred'
+                let newClass;
+                if(params.data?.hsfo_max_lift_color === 'G')
+                  newClass = 'aggrid-cell-color darkgreen';
+                else if(params.data?.hsfo_max_lift_color === 'M')
+                  newClass = 'aggrid-cell-color magenta';
+                else
+                  newClass = 'aggrid-cell-color brown';
+
                 classArray.push(newClass);
-                return { type: this.bPlanType == 'C'? 'edit':'edit-disabled', context: { componentParent: this },cellClass: classArray.length > 0 ? classArray : null }
+                return { type: this.bPlanType == 'C'&& this.selectedUserRole?.id === 1? 'edit':'edit-disabled', context: { componentParent: this },cellClass: classArray.length > 0 ? classArray : null }
               }
             },
             { headerName: BunkeringPlanColumnsLabels.HsfoEstdSoa, headerTooltip: BunkeringPlanColumnsLabels.HsfoEstdSoa, field: 'hsfo_current_stock', width: 50,
@@ -134,32 +144,47 @@ export class BunkeringPlanComponent implements OnInit {
               cellRendererParams: { type: 'edit-soa', context: { componentParent: this } },  cellClass: ['aggrid-content-right '], headerClass: ['aggrid-colum-splitter-left'] 
             },
             {
-              headerName: BunkeringPlanColumnsLabels.HsfoEstdCons, headerTooltip: BunkeringPlanColumnsLabels.HsfoEstdCons, field: 'hsfo_estimated_consumption', width: 50, cellRendererFramework: AGGridCellDataComponent, headerClass: ['aggrid-colum-splitter-left'], cellClass: params=>{if (this.bPlanType == 'C') return 'aggrid-green-editable-cell editable'; else return 'aggrid-green-editable-cell ag-cell' },
+              headerName: BunkeringPlanColumnsLabels.HsfoEstdCons, headerTooltip: BunkeringPlanColumnsLabels.HsfoEstdCons, field: 'hsfo_estimated_consumption', width: 50, cellRendererFramework: AGGridCellDataComponent, headerClass: ['aggrid-colum-splitter-left'], cellClass: params=>{if (this.bPlanType == 'C'&& this.selectedUserRole?.id === 1) return 'aggrid-green-editable-cell editable'; else return 'aggrid-green-editable-cell ag-cell' },
               cellRendererParams: (params) => {
                 var classArray: string[] = [];
-                let newClass = 'aggrid-cell-color lightgreen'
+                let newClass;
+                if(params.data?.hsfo_est_consumption_color === 'G')
+                  newClass = 'aggrid-cell-color darkgreen';
+                else if(params.data?.hsfo_est_consumption_color === 'M')
+                  newClass = 'aggrid-cell-color magenta';
+                else
+                  newClass = 'aggrid-cell-color brown';
+
                 classArray.push(newClass);
-                return { type: this.bPlanType == 'C'? 'edit-cons':'edit-disabled', context: { componentParent: this }, cellClass: classArray.length > 0 ? classArray : null }
+                return { type: this.bPlanType == 'C'&& this.selectedUserRole?.id === 1? 'edit-cons':'edit-disabled', context: { componentParent: this }, cellClass: classArray.length > 0 ? classArray : null }
               }
             },
             {
               headerName: BunkeringPlanColumnsLabels.HsfoConfPlanLift, headerTooltip: BunkeringPlanColumnsLabels.HsfoConfPlanLift, field: 'hsfo_estimated_lift', width: 50, cellRendererFramework: AGGridCellDataComponent, cellClass: 'pd-1 aggrid-content-right', headerClass: ['aggrid-colum-splitter-left'],
               cellRendererParams: function (params) {
                 var classArray: string[] = ['pd-6'];
-                let newClass = 'aggrid-link-bplan aggrid-blue-cell'
-                if (params.data.req_created)
+                let newClass;
+                if(params.data?.order_id_hsfo && !params.data?.request_id_hsfo){
+                  newClass = 'aggrid-link-bplan aggrid-red-cell'
                   classArray.push(newClass);
+                }
+                else if(params.data?.request_id_hsfo && !params.data?.order_id_hsfo){
+                  newClass = 'aggrid-link-bplan aggrid-blue-cell';
+                  classArray.push(newClass);
+                }
+                  
                 return { type: 'link', cellClass: classArray.length > 0 ? classArray : null }
               }
             },
             {
-              headerName: BunkeringPlanColumnsLabels.HsfoSafePort, headerTooltip: BunkeringPlanColumnsLabels.HsfoSafePort, field: 'hsfo_safe_port', width: 50, cellClass: params=>{if (this.bPlanType == 'C') return 'aggrid-columgroup-splitter aggrid-green-editable-cell editable'; else return 'aggrid-green-editable-cell ag-cell' }, headerClass: ['aggrid-columgroup-splitter aggrid-colum-splitter-left'],
+              headerName: BunkeringPlanColumnsLabels.HsfoSafePort, headerTooltip: BunkeringPlanColumnsLabels.HsfoSafePort, field: 'hsfo_safe_port', width: 50, cellClass: params=>{if (this.bPlanType == 'C'&& this.selectedUserRole?.id === 1) return 'aggrid-columgroup-splitter aggrid-green-editable-cell editable'; else return 'aggrid-green-editable-cell ag-cell' }, headerClass: ['aggrid-columgroup-splitter aggrid-colum-splitter-left'],
               cellRendererFramework: AGGridCellDataComponent,
+              valueFormatter : (params)=> { if (params.value === 0) return '';},
               cellRendererParams: (params) => {
                 var classArray: string[] = [];
                 let newClass = 'aggrid-cell-color lightgreen'
                 classArray.push(newClass);
-                return { type: this.bPlanType == 'C'? 'edit':'edit-disabled', context: { componentParent: this }, cellClass: classArray.length > 0 ? classArray : null }
+                return { type: this.bPlanType == 'C'&& this.selectedUserRole?.id === 1? 'edit-safe-port':'edit-disabled-safe-port', context: { componentParent: this }, cellClass: classArray.length > 0 ? classArray : null }
               }
             },
           ]
@@ -178,21 +203,29 @@ export class BunkeringPlanComponent implements OnInit {
           headerClass: ['aggrid-columgroup-splitter'],
           children: [
             {
-              headerName: BunkeringPlanColumnsLabels.EcaEstdCons, headerTooltip: BunkeringPlanColumnsLabels.EcaEstdCons, field: 'eca_estimated_consumption', width: 50, cellClass: params=>{if (this.bPlanType == 'C') return 'aggrid-green-editable-cell editable'; else return 'aggrid-green-editable-cell ag-cell' }, cellRendererFramework: AGGridCellDataComponent,
+              headerName: BunkeringPlanColumnsLabels.EcaEstdCons, headerTooltip: BunkeringPlanColumnsLabels.EcaEstdCons, field: 'eca_estimated_consumption', width: 50, cellClass: params=>{if (this.bPlanType == 'C'&& this.selectedUserRole?.id === 1) return 'aggrid-green-editable-cell editable'; else return 'aggrid-green-editable-cell ag-cell' }, cellRendererFramework: AGGridCellDataComponent,
               cellRendererParams: (params) => {
                 var classArray: string[] = [];
-                let newClass = 'aggrid-cell-color lightgreen'
+                let newClass;
+                if(params.data?.ulsfo_est_consumption_color === 'G')
+                  newClass = 'aggrid-cell-color darkgreen';
+                else if(params.data?.ulsfo_est_consumption_color === 'M')
+                  newClass = 'aggrid-cell-color magenta';
+                else
+                  newClass = 'aggrid-cell-color brown';
+
                 classArray.push(newClass);
-                return { type: this.bPlanType == 'C'? 'edit':'edit-disabled', context: { componentParent: this }, cellClass: classArray.length > 0 ? classArray : null }
+                return { type: this.bPlanType == 'C'&& this.selectedUserRole?.id === 1? 'edit':'edit-disabled', context: { componentParent: this }, cellClass: classArray.length > 0 ? classArray : null }
               }
             },
             {
-              headerName: BunkeringPlanColumnsLabels.EcaSafePort, headerTooltip: BunkeringPlanColumnsLabels.EcaSafePort, field: 'eca_safe_port', width: 50, headerClass: ['aggrid-columgroup-splitter aggrid-colum-splitter-left'], cellClass:params=>{if (this.bPlanType == 'c') return 'splitter-dual  aggrid-green-editable-cell editable'; else return 'aggrid-green-editable-cell ag-cell' }, cellRendererFramework: AGGridCellDataComponent,
+              headerName: BunkeringPlanColumnsLabels.EcaSafePort, headerTooltip: BunkeringPlanColumnsLabels.EcaSafePort, field: 'eca_safe_port', width: 50, headerClass: ['aggrid-columgroup-splitter aggrid-colum-splitter-left'], cellClass:params=>{if (this.bPlanType == 'C'&& this.selectedUserRole?.id === 1) return 'splitter-dual  aggrid-green-editable-cell editable'; else return 'aggrid-green-editable-cell ag-cell' }, cellRendererFramework: AGGridCellDataComponent,
+              valueFormatter : (params)=> { if (params.value === 0) return '';},
               cellRendererParams: (params) => {
                 var classArray: string[] = [];
                 let newClass = 'aggrid-cell-color lightgreen'
                 classArray.push(newClass);
-                return { type: this.bPlanType == 'C'? 'edit':'edit-disabled', context: { componentParent: this }, cellClass: classArray.length > 0 ? classArray : null }
+                return { type: this.bPlanType == 'C'&& this.selectedUserRole?.id === 1? 'edit-safe-port':'edit-disabled-safe-port', context: { componentParent: this }, cellClass: classArray.length > 0 ? classArray : null }
               }
             }
           ]
@@ -205,12 +238,19 @@ export class BunkeringPlanComponent implements OnInit {
           headerClass: ['aggrid-columgroup-splitter'],
           children: [
             {
-              headerName: BunkeringPlanColumnsLabels.UlsfoMaxLift, field: 'ulsfo_max_lift', headerTooltip: BunkeringPlanColumnsLabels.UlsfoMaxLift, width: 50,cellClass: params=>{if (this.bPlanType == 'C') return 'aggrid-green-editable-cell editable'; else return 'aggrid-green-editable-cell ag-cell' }, cellRendererFramework: AGGridCellDataComponent,
+              headerName: BunkeringPlanColumnsLabels.UlsfoMaxLift, field: 'ulsfo_max_lift', headerTooltip: BunkeringPlanColumnsLabels.UlsfoMaxLift, width: 50,cellClass: params=>{if (this.bPlanType == 'C'&& this.selectedUserRole?.id === 1) return 'aggrid-green-editable-cell editable'; else return 'aggrid-green-editable-cell ag-cell' }, cellRendererFramework: AGGridCellDataComponent,
               cellRendererParams: (params) => {
                 var classArray: string[] = [];
-                let newClass = 'aggrid-cell-color lightgreen'
+                let newClass;
+                if(params.data?.ulsfo_max_lift_color === 'G')
+                  newClass = 'aggrid-cell-color darkgreen';
+                else if(params.data?.ulsfo_max_lift_color === 'M')
+                  newClass = 'aggrid-cell-color magenta';
+                else
+                  newClass = 'aggrid-cell-color brown';
+
                 classArray.push(newClass);
-                return { type: this.bPlanType == 'C'? 'edit':'edit-disabled', context: { componentParent: this }, cellClass: classArray.length > 0 ? classArray : null }
+                return { type: this.bPlanType == 'C'&& this.selectedUserRole?.id === 1? 'edit':'edit-disabled', context: { componentParent: this }, cellClass: classArray.length > 0 ? classArray : null }
               }
             },
             { headerName: BunkeringPlanColumnsLabels.UlsfoEstdSoa, headerTooltip: BunkeringPlanColumnsLabels.UlsfoEstdSoa, field: 'ulsfo_current_stock', width: 40, headerClass: ['aggrid-colum-splitter-left'], 
@@ -219,9 +259,15 @@ export class BunkeringPlanComponent implements OnInit {
               headerName: BunkeringPlanColumnsLabels.UlsfoConfPlanLift, headerTooltip: BunkeringPlanColumnsLabels.UlsfoConfPlanLift, field: 'ulsfo_estimated_lift', width: 45, headerClass: ['aggrid-columgroup-splitter aggrid-colum-splitter-left'], cellRendererFramework: AGGridCellDataComponent, cellClass: ['aggrid-columgroup-splitter pd-1 aggrid-content-right'],
               cellRendererParams: function (params) {
                 var classArray: string[] = ['pd-6'];
-                let newClass = 'aggrid-link-bplan aggrid-blue-cell'
-                if (params.data.ulsfo_plan_lift != '0')
+                let newClass;
+                if(params.data?.order_id_ulsfo && !params.data?.request_id_ulsfo){
+                  newClass = 'aggrid-link-bplan aggrid-red-cell'
                   classArray.push(newClass);
+                }
+                else if(params.data?.request_id_ulsfo && !params.data?.order_id_ulsfo){
+                  newClass = 'aggrid-link-bplan aggrid-blue-cell';
+                  classArray.push(newClass);
+                }
                 return { type: 'link', cellClass: classArray.length > 0 ? classArray : null }
               }
             }
@@ -235,37 +281,57 @@ export class BunkeringPlanComponent implements OnInit {
           headerClass: ['aggrid-columgroup-splitter '],
           children: [
             {
-              headerName: BunkeringPlanColumnsLabels.LsdisMaxLift, field: 'lsdis_max_lift', headerTooltip: BunkeringPlanColumnsLabels.LsdisMaxLift, width: 50, cellClass: params=>{if (this.bPlanType == 'C') return 'aggrid-green-editable-cell editable'; else return 'aggrid-green-editable-cell ag-cell' }, cellRendererFramework: AGGridCellDataComponent,
+              headerName: BunkeringPlanColumnsLabels.LsdisMaxLift, field: 'lsdis_max_lift', headerTooltip: BunkeringPlanColumnsLabels.LsdisMaxLift, width: 50, cellClass: params=>{if (this.bPlanType == 'C'&& this.selectedUserRole?.id === 1) return 'aggrid-green-editable-cell editable'; else return 'aggrid-green-editable-cell ag-cell' }, cellRendererFramework: AGGridCellDataComponent,
               cellRendererParams: (params) => {
                 var classArray: string[] = [];
-                let newClass = params.data.confirmed_by_box ? 'aggrid-cell-color mediumred' : 'aggrid-cell-color lightgreen'
+                let newClass;
+                if(params.data?.lsdis_max_lift_color === 'G')
+                  newClass = 'aggrid-cell-color darkgreen';
+                else if(params.data?.lsdis_max_lift_color === 'M')
+                  newClass = 'aggrid-cell-color magenta';
+                else
+                  newClass = 'aggrid-cell-color brown';
+
                 classArray.push(newClass);
-                return { type: this.bPlanType == 'C'? 'edit':'edit-disabled', context: { componentParent: this }, cellClass: classArray.length > 0 ? classArray : null }
+                return { type: this.bPlanType == 'C'&& this.selectedUserRole?.id === 1? 'edit':'edit-disabled', context: { componentParent: this }, cellClass: classArray.length > 0 ? classArray : null }
               }
             },
             { headerName: BunkeringPlanColumnsLabels.LsdisEstdSoa, headerTooltip: BunkeringPlanColumnsLabels.LsdisEstdSoa, field: 'lsdis_current_stock', width: 50, headerClass: ['aggrid-colum-splitter-left'], 
               cellClass: ['aggrid-content-right'] },
             {
-              headerName: BunkeringPlanColumnsLabels.LsdisEstdCons, headerTooltip: BunkeringPlanColumnsLabels.LsdisEstdCons, field: 'lsdis_estimated_consumption', width: 50,cellClass: params=>{if (this.bPlanType == 'C') return 'aggrid-green-editable-cell editable'; else return 'aggrid-green-editable-cell ag-cell' }, cellRendererFramework: AGGridCellDataComponent, headerClass: ['aggrid-colum-splitter-left aggrid-colum-splitter-left'],
+              headerName: BunkeringPlanColumnsLabels.LsdisEstdCons, headerTooltip: BunkeringPlanColumnsLabels.LsdisEstdCons, field: 'lsdis_estimated_consumption', width: 50,cellClass: params=>{if (this.bPlanType == 'C' && this.selectedUserRole?.id === 1) return 'aggrid-green-editable-cell editable'; else return 'aggrid-green-editable-cell ag-cell' }, cellRendererFramework: AGGridCellDataComponent, headerClass: ['aggrid-colum-splitter-left aggrid-colum-splitter-left'],
               cellRendererParams: (params) => {
                 var classArray: string[] = [];
-                let newClass = 'aggrid-cell-color lightgreen'
+                let newClass;
+                if(params.data?.lsdis_est_consumption_color === 'G')
+                  newClass = 'aggrid-cell-color darkgreen';
+                else if(params.data?.lsdis_est_consumption_color === 'M')
+                  newClass = 'aggrid-cell-color magenta';
+                else
+                  newClass = 'aggrid-cell-color brown';
+
                 classArray.push(newClass);
-                return { type: this.bPlanType == 'C'? 'edit':'edit-disabled', context: { componentParent: this }, cellClass: classArray.length > 0 ? classArray : null }
+                return { type: this.bPlanType == 'C'&& this.selectedUserRole?.id === 1? 'edit':'edit-disabled', context: { componentParent: this }, cellClass: classArray.length > 0 ? classArray : null }
               }
             },
             {
               headerName: BunkeringPlanColumnsLabels.LsdisConfPlanLift, headerTooltip: BunkeringPlanColumnsLabels.LsdisConfPlanLift, field: 'lsdis_estimated_lift', width: 45, cellRendererFramework: AGGridCellDataComponent, cellClass: 'pd-1 aggrid-content-right', headerClass: ['aggrid-colum-splitter-left'],
               cellRendererParams: function (params) {
                 var classArray: string[] = ['pd-6'];
-                let newClass = 'aggrid-link-bplan aggrid-blue-cell'
-                if (params.data.req_created)
+                let newClass;
+                if(params.data?.order_id_lsdis && !params.data?.request_id_lsdis){
+                  newClass = 'aggrid-link-bplan aggrid-red-cell'
                   classArray.push(newClass);
+                }
+                else if(params.data?.request_id_lsdis && !params.data?.order_id_lsdis){
+                  newClass = 'aggrid-link-bplan aggrid-blue-cell';
+                  classArray.push(newClass);
+                }
                 return { type: 'link', cellClass: classArray.length > 0 ? classArray : null }
               }
             },
             { headerName: BunkeringPlanColumnsLabels.LsdisSafePort, headerTooltip: BunkeringPlanColumnsLabels.LsdisSafePort, field: 'lsdis_safe_port', width: 40, headerClass: ['aggrid-columgroup-splitter aggrid-colum-splitter-left'],
-              cellClass: ['aggrid-blue-cell aggrid-columgroup-splitter  aggrid-content-right'] },
+            valueFormatter : (params)=> { if (params.value === 0) return '';},cellClass: ['aggrid-blue-cell aggrid-columgroup-splitter  aggrid-content-right'] },
           ]
         },
       ]
@@ -277,7 +343,22 @@ export class BunkeringPlanComponent implements OnInit {
         { headerName: BunkeringPlanColumnsLabels.TotalMaxSod, headerTooltip: BunkeringPlanColumnsLabels.TotalMaxSod, field: 'hsfo_min_sod', width: 55, cellRendererFramework: AGGridCellDataComponent, cellRendererParams: { type: 'edit-with-popup', cellClass: 'aggrid-cell-color white', context: { componentParent: this } }, cellClass:params=>{if (this.bPlanType == 'C') return 'aggrid-blue-editable-cell editable'; else return 'aggrid-blue-editable-cell ag-cell' } , headerClass: ['aggrid-colum-splitter-left'] },
         { headerName: BunkeringPlanColumnsLabels.MinEcaBunkerSod, headerTooltip:  BunkeringPlanColumnsLabels.MinEcaBunkerSod, field: 'eca_min_sod', width: 55, cellRendererFramework: AGGridCellDataComponent,cellRendererParams: { type: 'edit-with-popup', cellClass: 'aggrid-cell-color white', context: { componentParent: this } }, cellClass:params=>{if (this.bPlanType == 'C') return 'aggrid-blue-editable-cell editable'; else return 'aggrid-blue-editable-cell ag-cell' } , headerClass: ['aggrid-colum-splitter-left'] },
         { headerName: BunkeringPlanColumnsLabels.TotalMaxSod, headerTooltip:  BunkeringPlanColumnsLabels.TotalMaxSod, field: 'max_sod', width: 55, cellRendererFramework: AGGridCellDataComponent,cellRendererParams: { type: 'edit-with-popup', cellClass: 'aggrid-cell-color white', context: { componentParent: this } }, cellClass:params=>{if (this.bPlanType == 'C') return 'aggrid-blue-editable-cell editable'; else return 'aggrid-blue-editable-cell ag-cell' } , headerClass: ['aggrid-colum-splitter-left'] },
-        { headerName: BunkeringPlanColumnsLabels.HsdisConfReqLift, headerTooltip: BunkeringPlanColumnsLabels.HsdisConfReqLift, field: 'hsdis_estimated_lift', width: 50, headerClass: ['aggrid-colum-splitter-left'], cellClass: ['aggrid-content-right'] },
+        { headerName: BunkeringPlanColumnsLabels.HsdisConfReqLift, headerTooltip: BunkeringPlanColumnsLabels.HsdisConfReqLift, field: 'hsdis_estimated_lift', width: 50, headerClass: ['aggrid-colum-splitter-left'],
+          cellClass:['aggrid-content-right'] ,
+          cellRendererParams: function (params) {
+            var classArray: string[] = ['pd-6'];
+            let newClass;
+            if(params.data?.order_id_hsdis && !params.data?.request_id_hsdis){
+              newClass = 'aggrid-link-bplan aggrid-red-cell'
+              classArray.push(newClass);
+            }
+            else if(params.data?.request_id_hsdis && !params.data?.order_id_hsdis){
+              newClass = 'aggrid-link-bplan aggrid-blue-cell';
+              classArray.push(newClass);
+            }
+            return { type: 'link', cellClass: classArray.length > 0 ? classArray : null }
+          }
+        },
         { headerName: BunkeringPlanColumnsLabels.BusinessAddress, field: 'business_address', headerTooltip: BunkeringPlanColumnsLabels.BusinessAddress, width: 60,cellRendererFramework: AGGridCellRendererComponent,cellRendererParams: { cellClass: ['text-ellipsis editable'] }, headerClass: ['aggrid-colum-splitter-left'] },
 
         {
@@ -293,7 +374,7 @@ export class BunkeringPlanComponent implements OnInit {
   ];
 
   public loadBunkeringPlanDetails(){
-    let req = { shipId : '1', planId : '02M2100023'}
+    let req = { shipId : 1, planId : '02M2100023'}
     this.bplanService.getBunkeringPlanDetails(req).subscribe((data)=> {
       console.log('bunker plan details',data);
       this.rowData = (data.payload && data.payload.length)? data.payload: [];
@@ -332,5 +413,12 @@ export class BunkeringPlanComponent implements OnInit {
     // this.gridOptions.api.applyTransaction({
     //   update: [data]
     // })
+  }
+  refreshGrid($event){
+    var params = {
+      force: true,
+      // suppressFlash: isSuppressFlashSelected(),
+    };
+    this.gridOptions.api.refreshCells(params);
   }
 }

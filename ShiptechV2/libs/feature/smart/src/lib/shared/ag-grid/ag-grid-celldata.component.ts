@@ -5,6 +5,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatInput } from '@angular/material/input';
 import { LocalService } from '../../services/local-service.service';
+import moment  from 'moment';
+const today = new Date();
 
 @Component({
   selector: 'aggrid-cell-data',
@@ -22,6 +24,12 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   public usercomments;
   public isChecked;
   public theme:boolean = true;
+  public etaDays: any;
+  public etaInTime: any;
+  public etdDays: any;
+  public etdInTime: any;
+  public shiptechPortUrl: any;
+  public shiptechOrderUrl: any;
   constructor(public router: Router, public dialog: MatDialog, private elem: ElementRef,private localService:LocalService) {
   }
 
@@ -36,6 +44,14 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     // this.usercomments = params.value.comments ? params.value.comments : '';
     this.isChecked = params.value;
     this.toolTip = params.value;
+  //**ETA/ETD date format and days calculation
+    this.params.data.eta_date = moment(params.data?.eta_date).format("YYYY-MM-DD hh:mm");
+    this.etaInTime = today.getTime() - new Date(params.data?.eta_date).getTime();
+    this.etaDays = (this.etaInTime/(1000 * 3600 * 24)).toFixed(0);
+    this.params.data.etd_date = moment(params.data?.etd_date).format("YYYY-MM-DD hh:mm");
+    this.etdInTime = today.getTime() - new Date(params.data?.etd_date).getTime();
+    this.etdDays = (this.etdInTime/(1000 * 3600 * 24)).toFixed(0);
+
   }
 
   refresh(): boolean {
