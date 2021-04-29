@@ -1333,7 +1333,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       }
     }
     if (!isAlreadyAdded && indexDeleted == -1 && selectedProduct) {
-      payload = {Payload: { ProductId: selectedProduct.product.id} };
+      payload = { Payload: selectedProduct.product.id };
       this.spinner.show();
       this.contractService
       .getProdDefaultConversionFactors(payload)

@@ -1,9 +1,10 @@
-﻿commit 5640a0e6bd00e03b79400ba0006a93d6a7fd11d8
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed Apr 28 14:37:53 2021 +0000
+﻿commit a1969ce8ded1dc708f140bc51e949c4ef5198453
+Author: Subhashini Vasanthakumar <subhashini.k@Inatech.com>
+Date:   Thu Apr 29 10:14:20 2021 +0530
 
-    Merged PR 10247: Fixed payload of getProdDefaultConversionFactors
+    Revert "Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_git/Shiptech10-UI"
     
-    Fixed payload of getProdDefaultConversionFactors
+    This reverts commit 8a0c52808fb41718f4798213117582ac49c633f8, reversing
+    changes made to eb1502dfc111b321b91ad712a6ee21e254bb142b.
 
 branch: master
