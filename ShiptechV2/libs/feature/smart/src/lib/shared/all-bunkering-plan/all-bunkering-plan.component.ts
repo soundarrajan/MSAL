@@ -33,7 +33,7 @@ export class AllBunkeringPlanComponent implements OnInit {
   }
   
   public loadBunkeringPlanDetails(){
-    let Id = '022'; //this.vesselData?.vesselId;
+    let Id = '02M'; //this.vesselData?.vesselId;
     let req = { shipId : Id ,  planStatus : 'A' }
     this.loadAllBunkeringPlan(req);
   }
