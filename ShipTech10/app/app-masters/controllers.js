@@ -3860,9 +3860,14 @@
                                 indexRmv = index;
                                 $('*').tooltip('destroy');
                                 if ($scope.formValues[id][index].id > 0) {
-                                    $scope.formValues[id][index].isDeleted = true;
+                                	$timeout(()=>{
+	                                    $scope.formValues[id][index].isDeleted = true;
+                                	})
                                 } else {
-                                    $scope.formValues[id].splice(index, 1);
+                                	$timeout(()=>{
+	                                    $scope.formValues[id][index].isDeleted = true;
+	                                    $scope.formValues[id].splice(index, 1);
+                                	})
                                 }
                             }
                         } else if (["locationHSFO05Grades","locationDistillateGrades","locationHSFO35Grades"].includes(id)) {
@@ -3874,6 +3879,7 @@
 		                                if ($scope.formValues[id][index].id > 0) {
 		                                    $scope.formValues[id][index].isDeleted = true;
 		                                } else {
+		                                    $scope.formValues[id][index].isDeleted = true;
 		                                    $scope.formValues[id].splice(index, 1);
 		                                }
 	                                }
@@ -4008,13 +4014,13 @@
 	                            selectDefaultAgent(id, index);
 	                        }
 	                    });
-	                } else if (id == "locationProductTypes") {
+	                } else if (id == "locationProductTypes") {	                
 	                    $.each(values, function(index, value) {
 	                        if (index > 2) {
 	                            $(this).hide();
 	                        }
 	                        if (!value.isDeleted) {
-		                        elt.tagsinput("add", {
+		                        elt.tagsinput('add', {
 		                            value: value.productType.id,
 		                            text: value.productType.name
 		                        });
@@ -4027,12 +4033,13 @@
 	                            $(this).hide();
 	                        }
 	                        if (!value.isDeleted) {
-		                        elt.tagsinput("add", {
+		                        elt.tagsinput('add', {
 		                            value: value.product.id,
 		                            text: value.product.name
 		                        });
 	                        }
 	                    });
+	                    $scope.initMultiTags(id);
 	                }else {
 	                    $.each(values, function(index, value) {
 	                        value.name = vm.decodeHtml(value.name) ? angular.copy(vm.decodeHtml(value.name)) : value.name;
