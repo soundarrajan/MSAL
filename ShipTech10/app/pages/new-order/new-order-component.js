@@ -1473,7 +1473,12 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 // newProduct.specGroups = server_data.data.payload;
             });
             payload = { Payload: product.id };
-            $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/getProdDefaultConversionFactors`, payload).then((response) => {
+            payload2 = {
+              Payload: {
+                ProductId: product.id 
+              }
+            };
+            $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/getProdDefaultConversionFactors`, payload2).then((response) => {
                 console.log(response);
                 if (response.data.payload != 'null') {
                     newProduct.convFactorMassUom = response.data.payload.massUom;
@@ -1733,7 +1738,12 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 					ctrl.data.products[index].formulaDescription = null;
 					ctrl.data.products[index].changedOnConfirmedOrder = true;
                     payload = { Payload: product.id };
-                    $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/getProdDefaultConversionFactors`, payload).then((response) => {
+                    payload2 = {
+                      Payload: {
+                        ProductId: product.id 
+                      }
+                    };
+                    $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/getProdDefaultConversionFactors`, payload2).then((response) => {
                         console.log(response);
                         if (response.data.payload != 'null') {
                             ctrl.data.products[index].convFactorMassUom = response.data.payload.massUom;
@@ -3691,7 +3701,11 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 
         ctrl.overrideConversion = function(product, index) {
             if (!product.overrideConversionFactor && !product.contract) {
-                payload = { Payload: product.product.id };
+                payload = {
+                  Payload: {
+                    ProductId: product.product.id  
+                  }
+                };
                 $http.post(`${API.BASE_URL_DATA_MASTERS }/api/masters/products/getProdDefaultConversionFactors`, payload).then((response) => {
                     console.log(response);
                     if (response.data.payload != 'null') {
