@@ -1,9 +1,7 @@
-﻿commit bc99e91c9387e58441d685e9d4dfd378f213f9ee
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Apr 29 12:21:05 2021 +0000
+﻿commit 70238661dd31d99db63d7dad41ec98e58584c828
+Author: Subhashini Vasanthakumar <subhashini.k@Inatech.com>
+Date:   Thu Apr 29 19:19:40 2021 +0530
 
-    Merged PR 10282: Added cancel action in contract screen
-    
-    Added cancel action in contract screen
+    Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_git/Shiptech10-UI
 
 branch: master
