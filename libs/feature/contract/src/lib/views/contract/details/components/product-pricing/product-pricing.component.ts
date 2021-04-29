@@ -1256,32 +1256,32 @@ export class ProductPricing extends DeliveryAutocompleteComponent
       ContractProductId : productId
     };
     this.spinner.show();
-    this.contractService
-    .getContractFormulas(payload)
-    .pipe(
-      finalize(() => {
-        this.spinner.hide();
-      })
-    )
-    .subscribe((response: any) => {
-      if (typeof response == 'string') {
-        this.toastr.error(response);
-      } else {
-        console.log(response);
-        if (response) {
-          const dialogRef = this.dialog.open(FormulaHistoryModalComponent, {
-            width: '80%',
-            data:  {
-              'formulaHistoryDataResponse': response
-            }
-          });
+    // this.contractService
+    // .getContractFormulas(payload)
+    // .pipe(
+    //   finalize(() => {
+    //     this.spinner.hide();
+    //   })
+    // )
+    // .subscribe((response: any) => {
+    //   if (typeof response == 'string') {
+    //     this.toastr.error(response);
+    //   } else {
+    //     console.log(response);
+    //     if (response) {
+    //       const dialogRef = this.dialog.open(FormulaHistoryModalComponent, {
+    //         width: '80%',
+    //         data:  {
+    //           'formulaHistoryDataResponse': response
+    //         }
+    //       });
 
-          dialogRef.afterClosed().subscribe(result => {
-            console.log(result);
-          });
-        }
-      }
-    });
+    //       dialogRef.afterClosed().subscribe(result => {
+    //         console.log(result);
+    //       });
+    //     }
+    //   }
+    // });
   }
     
 
