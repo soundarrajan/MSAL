@@ -54,10 +54,6 @@ body {
 
                 .ui-menuitem-icon {
                     color:white;
-                    &.fa-home{
-                        padding-right: 3px;
-                        padding-bottom: 2px;
-                    }
                 }
             }
         }
@@ -401,7 +397,7 @@ body {
                 border-top: 1px solid transparent;
                 border-left: 1px solid transparent;
                 border-right: 1px solid transparent;
-                //border-bottom: $panelHeaderBorder;
+                border-bottom: $panelHeaderBorder;
                 background-color: $panelHeaderBgColor;
                 font-weight: $panelHeaderFontWeight;
                 margin-right: 0;
@@ -412,11 +408,10 @@ body {
                 display: inline-block;
                 vertical-align: top;
                 float: none;
-                line-height: 12px;
 
                 .ui-menuitem-link {
                     color: $panelHeaderTextColor;
-                    padding: $panelHeaderSmallPadding;
+                    padding: $panelHeaderPadding;
 
                     .ui-menuitem-text {
                         color: $panelHeaderTextColor;

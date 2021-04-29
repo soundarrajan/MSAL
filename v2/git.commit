@@ -1,7 +1,9 @@
-﻿commit 70238661dd31d99db63d7dad41ec98e58584c828
-Author: Subhashini Vasanthakumar <subhashini.k@Inatech.com>
-Date:   Thu Apr 29 19:19:40 2021 +0530
+﻿commit 547068eafc7eb73711f586aa08576668acd4a0d6
+Author: Subhashini Vasanthakumar <subhashini.k@inatech.com>
+Date:   Thu Apr 29 13:58:13 2021 +0000
 
-    Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_git/Shiptech10-UI
+    Merged PR 10286: Revert "Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_gi...
+    
+    Revert "Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_git/Shiptech10-UI"
 
 branch: master
