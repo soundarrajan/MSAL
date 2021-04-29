@@ -75,7 +75,7 @@ export class ContractApi implements IContractApiService {
       { payload: request }
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : 'An error has occured!'))
     );
   }
 
@@ -90,7 +90,7 @@ export class ContractApi implements IContractApiService {
       { Payload: request }
     ).pipe(
       map((body: any) => body),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : 'An error has occured!'))
     );
   }
 
@@ -104,7 +104,7 @@ export class ContractApi implements IContractApiService {
       { Payload: request }
     ).pipe(
       map((body: any) => body),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : 'An error has occured!'))
     );
   }
 
@@ -117,7 +117,7 @@ export class ContractApi implements IContractApiService {
       { Payload: request }
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : 'An error has occured!'))
     );
   }
 
@@ -129,7 +129,7 @@ export class ContractApi implements IContractApiService {
       `${this._masterApiUrl}/${ContractApiPaths.getAgreementType()}`, request 
     ).pipe(
       map((body: any) => body.payload.contractAgreementTypesList),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : 'An error has occured!'))
     );
   }
 
@@ -142,7 +142,7 @@ export class ContractApi implements IContractApiService {
       { Payload: request }
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : 'An error has occured!'))
     );
   }
 
@@ -155,7 +155,7 @@ export class ContractApi implements IContractApiService {
      request 
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : 'An error has occured!'))
     );
   }
 
@@ -168,7 +168,7 @@ export class ContractApi implements IContractApiService {
       request 
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : 'An error has occured!'))
     );
   }
 
@@ -182,7 +182,7 @@ export class ContractApi implements IContractApiService {
       request 
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : 'An error has occured!'))
     );
   }
 
@@ -196,7 +196,7 @@ export class ContractApi implements IContractApiService {
       request 
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : 'An error has occured!'))
     );
   }
 
@@ -210,7 +210,7 @@ export class ContractApi implements IContractApiService {
       { Payload: request } 
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : 'An error has occured!'))
     );
   }
 
@@ -223,7 +223,7 @@ export class ContractApi implements IContractApiService {
       { Payload: request } 
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : 'An error has occured!'))
     );
   }
 
@@ -237,7 +237,7 @@ export class ContractApi implements IContractApiService {
        request  
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : 'An error has occured!'))
     );
   }
 
@@ -250,7 +250,7 @@ export class ContractApi implements IContractApiService {
        { Payload: request  }
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : 'An error has occured!'))
     );
   }
 
@@ -263,7 +263,7 @@ export class ContractApi implements IContractApiService {
        { Payload: request  }
     ).pipe(
       map((body: any) => body.upsertedId),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : 'An error has occured!'))
     );
   }
 
@@ -276,7 +276,7 @@ export class ContractApi implements IContractApiService {
        { Payload: request  }
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : 'An error has occured!'))
     );
   }
 
@@ -290,7 +290,7 @@ export class ContractApi implements IContractApiService {
       request 
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : 'An error has occured!'))
     );
   }
 
@@ -303,7 +303,7 @@ export class ContractApi implements IContractApiService {
       {Payload: request}
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : 'An error has occured!'))
     );
   }
 
@@ -316,7 +316,7 @@ export class ContractApi implements IContractApiService {
       request
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : 'An error has occured!'))
     );
   }
 
@@ -329,7 +329,7 @@ export class ContractApi implements IContractApiService {
       {Payload: request}
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : 'An error has occured!'))
     );
   }
 
@@ -342,7 +342,7 @@ export class ContractApi implements IContractApiService {
       {Payload: request}
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : 'An error has occured!'))
     );
   }
 
@@ -356,7 +356,7 @@ export class ContractApi implements IContractApiService {
       {Payload: request}
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : 'An error has occured!'))
     );
   }
 
@@ -369,7 +369,7 @@ export class ContractApi implements IContractApiService {
       {Payload: request}
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : 'An error has occured!'))
     );
   }
 
@@ -382,7 +382,7 @@ export class ContractApi implements IContractApiService {
       {Payload: request}
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : 'An error has occured!'))
     );
   }
 
@@ -395,7 +395,7 @@ export class ContractApi implements IContractApiService {
       {Payload: request}
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : 'An error has occured!'))
     );
   }
 
@@ -408,7 +408,7 @@ export class ContractApi implements IContractApiService {
       {Payload: request}
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : 'An error has occured!'))
     );
   }
 
