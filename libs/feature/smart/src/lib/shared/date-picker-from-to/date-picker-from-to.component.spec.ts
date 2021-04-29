@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BunkerPlanComponent } from './bunker-plan.component';
+import { DatePickerFromToComponent } from './date-picker-from-to.component';
 
-describe('BunkerPlanComponent', () => {
-  let component: BunkerPlanComponent;
-  let fixture: ComponentFixture<BunkerPlanComponent>;
+describe('DatePickerFromToComponent', () => {
+  let component: DatePickerFromToComponent;
+  let fixture: ComponentFixture<DatePickerFromToComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BunkerPlanComponent ]
+      declarations: [ DatePickerFromToComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BunkerPlanComponent);
+    fixture = TestBed.createComponent(DatePickerFromToComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

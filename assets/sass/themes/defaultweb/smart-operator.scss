@@ -2513,6 +2513,29 @@ label {
 		font-style: italic;
 	}
 }
+#plan-status {
+	.title {
+		color: $darkl4;
+		font-style: normal;
+		font-weight: normal;
+		font-size: 11px;
+		line-height: 13px;
+	}
+	.content {
+		color: $text_title;
+		font-style: normal;
+		font-weight: normal;
+		font-size: 11px;
+		line-height: 13px;
+				
+	}
+	.content_invalid{
+		background: rgb(170, 63, 63) !important; 
+	}
+	.content_valid{
+		background: rgb(39, 175, 39) !important;
+	}
+}
 
 .comments-expand {
 	cursor: pointer;
@@ -3574,6 +3597,10 @@ label {
 
 .dark-cell {
 	background: #2F3845 !important;
+}
+.light-cell{
+	background: white !important;
+	color: #2F3845 !important;
 }
 
 .port-cell {

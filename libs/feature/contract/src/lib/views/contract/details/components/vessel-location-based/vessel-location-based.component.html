@@ -8,10 +8,10 @@
       <thead>
         <tr>
           <td class="padding" style="width: 30px;">
-            <a class="add-icon" (click)="addNewLocationBasedLine()"></a>
+            <a class="add-icon" (click)="hasInvoicedOrder ? '' : addNewLocationBasedLine()"></a>
           </td>
           <td class="padding" style="width:20%">
-            <b>Product</b>
+            <b>Vessel - Location</b>
           </td>
           <td class="padding" style="width:20%">
             <b>+/-</b>
@@ -31,7 +31,7 @@
           <ng-container  *ngFor="let locationDiscountRule of formValues.locationDiscountRules | keyvalue : originalOrder">
             <tr *ngIf="!locationDiscountRule.value.isDeleted">
               <td class="padding" style="padding-left: 0px  !important; padding-right: 0px  !important;">
-                <a class="remove-icon" style="margin-left: 10px;" (click)="removeLocationBasedLine(locationDiscountRule.key)"></a>
+                <a class="remove-icon" style="margin-left: 10px;" (click)="hasInvoicedOrder ? '' : removeLocationBasedLine(locationDiscountRule.key)"></a>
               </td>
               <td  style="width:20%">
                 <div class="custom-form-field product-based-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
@@ -40,7 +40,8 @@
                             type="text"
                             [(ngModel)]="locationDiscountRule.value.location"
                             matInput 
-                            [matAutocomplete]="auto">
+                            [matAutocomplete]="auto"
+                            [disabled]="hasInvoicedOrder">
                     <mat-autocomplete #auto="matAutocomplete" 
                                     class="darkPanelAuto"
                                     [displayWith]="displayFn"
@@ -60,7 +61,8 @@
                             [(ngModel)]="locationDiscountRule.value.plusMinus"
                             [disableOptionCentering]="true"
                             panelClass="general-information-select-container"
-                            [compareWith]="compareUomObjects">
+                            [compareWith]="compareUomObjects"
+                            [disabled]="hasInvoicedOrder">
                         <mat-option *ngFor="let option of formulaPlusMinusList" [value]="option">
                             {{option.name}}
                         </mat-option>
@@ -77,7 +79,7 @@
                         autocomplete="off"
                         required
                         amountFormat
-                        [disabled]= "locationDiscountRule.value.plusMinus && locationDiscountRule.value.plusMinus.id == 3">
+                        [disabled]="hasInvoicedOrder || (locationDiscountRule.value.plusMinus && locationDiscountRule.value.plusMinus.id == 3)">
                     </mat-form-field>
                 </div>
               </td> 
@@ -89,7 +91,7 @@
                             [disableOptionCentering]="true"
                             panelClass="general-information-select-container"
                             [compareWith]="compareUomObjects"
-                            [disabled]= "locationDiscountRule.value.plusMinus && locationDiscountRule.value.plusMinus.id == 3">
+                            [disabled]="hasInvoicedOrder || (locationDiscountRule.value.plusMinus && locationDiscountRule.value.plusMinus.id == 3)">
                         <mat-option *ngFor="let option of formulaFlatPercentageList" [value]="option">
                             {{option.name}}
                         </mat-option>
@@ -105,7 +107,9 @@
                             [disableOptionCentering]="true"
                             panelClass="general-information-select-container"
                             [compareWith]="compareUomObjects"
-                            [disabled]= "locationDiscountRule.value.plusMinus && locationDiscountRule.value.plusMinus.id == 3">
+                            [disabled]="hasInvoicedOrder 
+                                || (locationDiscountRule.value.plusMinus && locationDiscountRule.value.plusMinus.id == 3)
+                                || (locationDiscountRule.value.flatPercentage && locationDiscountRule.value.flatPercentage.id != 1)">
                         <mat-option *ngFor="let option of uomList" [value]="option">
                             {{option.name}}
                         </mat-option>
@@ -125,6 +129,7 @@
           [(ngModel)]="formValues.comments"
           matInput
           autocomplete="off"
+          [disabled]="hasInvoicedOrder"
           ></textarea>
   </mat-form-field>
 </div>

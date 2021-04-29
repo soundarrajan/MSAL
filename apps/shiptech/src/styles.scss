@@ -29,3 +29,8 @@
         padding-right: 30px !important;
     }
 }
+
+
+.ui-dialog-visible {
+    z-index: 1000000 !important;
+}
