@@ -131,7 +131,7 @@ export class VesselInfoComponent implements OnInit {
   }
 
   public loadBunkerPlanDetails(){
-     let Id = '02M';//this.vesselData?.vesselId;
+     let Id = '1';//this.vesselData?.vesselId;
      let req = { shipId : Id ,  planStatus   : 'C' }
      this.loadCurrentBunkeringPlan(req);
      req = { shipId : Id ,  planStatus : 'P' }
