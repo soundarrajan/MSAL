@@ -1,7 +1,7 @@
-﻿commit 32b88b1685e473cf6f5d428248697d7bd9d665a7
+﻿commit 28afcf104c9e2e48d54d34fdfc30a5181e7fea27
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Apr 29 11:18:30 2021 +0000
+Date:   Thu Apr 29 11:45:36 2021 +0000
 
-    Merged PR 10277: Updated conversion factor when user select formula for contractConversionFactor with id 4 and added search option in allowed locations and allowed products
+    Merged PR 10279: Commit ebd5934c: Disabled uom when user selects the  flat/percentage as "Percentage" in Pricing formula->pricing type: Simple Pricing formula->pricing type: Complex Discount rules-> Product-based Discount rules-> Vessel location-based
 
 branch: master

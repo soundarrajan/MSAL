@@ -11,7 +11,7 @@
             <a class="add-icon" (click)="hasInvoicedOrder ? '' : addNewLocationBasedLine()"></a>
           </td>
           <td class="padding" style="width:20%">
-            <b>Vessel-Location</b>
+            <b>Vessel - Location</b>
           </td>
           <td class="padding" style="width:20%">
             <b>+/-</b>
@@ -107,7 +107,9 @@
                             [disableOptionCentering]="true"
                             panelClass="general-information-select-container"
                             [compareWith]="compareUomObjects"
-                            [disabled]="hasInvoicedOrder || (locationDiscountRule.value.plusMinus && locationDiscountRule.value.plusMinus.id == 3)">
+                            [disabled]="hasInvoicedOrder 
+                                || (locationDiscountRule.value.plusMinus && locationDiscountRule.value.plusMinus.id == 3)
+                                || (locationDiscountRule.value.flatPercentage && locationDiscountRule.value.flatPercentage.id != 1)">
                         <mat-option *ngFor="let option of uomList" [value]="option">
                             {{option.name}}
                         </mat-option>
