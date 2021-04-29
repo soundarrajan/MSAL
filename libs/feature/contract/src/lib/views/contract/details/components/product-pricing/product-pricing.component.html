@@ -145,7 +145,8 @@
                                   class="darkPanelAuto"
                                   [displayWith]="displayFn">
                   <mat-option *ngFor="let formula of filterContractFormulaList()" 
-                          [value]="formula">
+                          [value]="formula"
+                          (onSelectionChange)="updateConversionFactor(formula)">
                       {{formula.name}}
                   </mat-option>
               </mat-autocomplete>
