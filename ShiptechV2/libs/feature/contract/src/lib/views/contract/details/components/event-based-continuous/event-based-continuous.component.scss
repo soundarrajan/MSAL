@@ -456,3 +456,11 @@
 //   opacity: 0.5;
 //   background-color: black;
 // }
+
+.expand-icon-for-calendar-option::before {
+  content: url(../../../../../../../../../../assets/layout/images/pages/expand.svg);
+}
+
+.collapse-icon-for-calendar-option::before {
+  content: url(../../../../../../../../../../assets/layout/images/pages/collapse.svg);
+}

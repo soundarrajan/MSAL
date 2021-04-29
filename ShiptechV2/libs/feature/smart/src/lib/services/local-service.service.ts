@@ -21,7 +21,9 @@ export namespace VesselImportPlanStatusApiPaths {
 export namespace BunkerPlanHeaderApiPaths {
     export const GetBunkerPlanHeader = () => `api/BOPS/bunkerplan/getHeader`;
 }
-
+export namespace BunkerPlanLogApiPaths {
+    export const GetBunkerPlanLog = () => `api/BOPS/bunkerplan/getLog`;
+}
 export namespace GetROBArbitrageApiPaths {
     export const GetROBArbitrageUrl = () => `api/BOPS/bunkerplan/get/BunkerPlanHeader`;
 }
@@ -567,6 +569,16 @@ export class LocalService {
         {payload: request}
       );
     }
+
+    // getBunkerPlanLog to get bunker plan log details based on vessel change
+    @ObservableException()
+    getBunkerPlanLog(request: any): Observable<any> {
+      return this.http.post<any>(
+        `${this._apiUrl}/${BunkerPlanHeaderApiPaths.GetBunkerPlanHeader()}`,
+        { payload: request }
+      );
+    }
+      
     // bunkerplanId to get plan id for rob, arbitrage details based on vessel change
     @ObservableException()
     getBunkerPlanId(request: any): Observable<any> {
@@ -578,6 +590,14 @@ export class LocalService {
     // updateROBArbitrageChanges to put current ROB row detail on vessel role
     @ObservableException()
     updateROBArbitrageChanges(request: any): Observable<any> {
+      return this.http.post<any>(
+        `${this._apiUrl}/${GetROBArbitrageApiPaths.GetROBArbitrageUrl()}`,
+        {payload: request}
+      );
+    }
+    // getOutstandRequestData to put current ROB row detail on vessel role
+    @ObservableException()
+    getOutstandRequestData(request: any): Observable<any> {
       return this.http.post<any>(
         `${this._apiUrl}/${GetROBArbitrageApiPaths.GetROBArbitrageUrl()}`,
         {payload: request}

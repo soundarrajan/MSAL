@@ -455,3 +455,21 @@
 //   opacity: 0.5;
 //   background-color: black;
 // }
+
+.mat-form-field.mat-form-field-disabled .mat-form-field-empty mat-label {
+  background-color: unset !important;
+}
+
+.header-allowed {
+  display: inline-block; 
+}
+
+.header-allowed-name {
+  float: left;
+  position: relative;
+  margin-top: 5px;
+}
+
+.header-button-name {
+  float: right;
+}

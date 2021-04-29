@@ -12,7 +12,8 @@
                 [(ngModel)]="formValues.simpleFormula.systemInstrument"
                 [matAutocomplete]="auto"
                 required
-                placeholder="System instument">
+                placeholder="System instument"
+                [disabled]="hasInvoicedOrder">
         <mat-autocomplete #auto="matAutocomplete" 
                           class="darkPanelAuto"
                           [displayWith]="displayFn"
@@ -24,7 +25,9 @@
         </mat-autocomplete>
       </mat-form-field>
       <button 
-            class="search-icon" appMasterSelectorTrigger [masterSelector]="masterSelector" #masterSelectorTrigger="masterSelectorTrigger" [header]="getHeaderNameSelector()">
+        [disabled]="hasInvoicedOrder" 
+        [ngClass]="{'search-icon-disabled': hasInvoicedOrder}"
+        class="search-icon" appMasterSelectorTrigger [masterSelector]="masterSelector" #masterSelectorTrigger="masterSelectorTrigger" [header]="getHeaderNameSelector()">
         <div class="img">
           <ng-template cdkPortal #masterSelector="cdkPortal" >
             <shiptech-shared-master-selector (selectedChange)="selectorSystemInstumentSelectionChange($event); masterSelectorTrigger.close()" (shouldCloseModal)="masterSelectorTrigger.close()" [selectorType]="autocompleteSystemInstrument"
@@ -46,7 +49,8 @@
                 panelClass="general-information-select-container"
                 [compareWith]="compareUomObjects"
                 required
-                placeholder="Price Type">
+                placeholder="Price Type"
+                [disabled]="hasInvoicedOrder">
           <mat-option *ngFor="let option of marketPriceList" [value]="option">
               {{option.name}}
           </mat-option>
@@ -62,7 +66,8 @@
                 panelClass="general-information-select-container"
                 [compareWith]="compareUomObjects"
                 required
-                placeholder="Premium/Discount">
+                placeholder="Premium/Discount"
+                [disabled]="hasInvoicedOrder">
           <mat-option *ngFor="let option of formulaPlusMinusList" [value]="option">
               {{option.name}}
           </mat-option>
@@ -78,7 +83,7 @@
           autocomplete="off"
           amountFormat
           (keypress)="keyPressNumber($event)"
-          [disabled]="formValues.simpleFormula.plusMinus && formValues.simpleFormula.plusMinus.id == 3">
+          [disabled]="hasInvoicedOrder || (formValues.simpleFormula.plusMinus && formValues.simpleFormula.plusMinus.id == 3)">
       </mat-form-field>
   </div>
   <div class="custom-form-field create-new-formula-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
@@ -90,7 +95,7 @@
                 panelClass="general-information-select-container"
                 [compareWith]="compareUomObjects"
                 placeholder="Flat/percentage"
-                [disabled]="formValues.simpleFormula.plusMinus && formValues.simpleFormula.plusMinus.id == 3">
+                [disabled]="hasInvoicedOrder || (formValues.simpleFormula.plusMinus && formValues.simpleFormula.plusMinus.id == 3)">
           <mat-option *ngFor="let option of formulaFlatPercentageList" [value]="option">
               {{option.name}}
           </mat-option>
@@ -106,7 +111,9 @@
                 panelClass="general-information-select-container"
                 [compareWith]="compareUomObjects"
                 placeholder="Uom"
-                [disabled]= "formValues.simpleFormula.plusMinus && formValues.simpleFormula.plusMinus.id == 3">
+                [disabled]="hasInvoicedOrder 
+                  || (formValues.simpleFormula.plusMinus && formValues.simpleFormula.plusMinus.id == 3)
+                  || (formValues.simpleFormula.flatPercentage && formValues.simpleFormula.flatPercentage.id != 1)">
           <mat-option *ngFor="let option of uomList" [value]="option">
               {{option.name}}
           </mat-option>

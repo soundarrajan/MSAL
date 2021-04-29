@@ -766,6 +766,42 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
      });
   }
 
+
+  cancelContract() {
+    this.spinner.show();
+    this.contractService
+    .cancelContract(this.formValues)
+    .pipe(
+        finalize(() => {
+
+        })
+    )
+    .subscribe((result: any) => {
+        if (typeof result == 'string') {
+          this.spinner.hide();
+          this.toastr.error(result);
+        } else {
+          this.toastr.success('Contract cancelled!');
+          this.contractService
+            .loadContractDetails(this.formValues.id)
+            .pipe(
+              finalize(() => {
+                this.spinner.hide();
+              })
+            )
+            .subscribe((data: any) => {
+              this.formValues = _.cloneDeep(data);
+              this.eventsSubject3.next(0);
+              if (typeof this.formValues.status != 'undefined') {
+                if (this.formValues.status.name) {
+                  this.statusColorCode = this.getColorCodeFromLabels(this.formValues.status, this.scheduleDashboardLabelConfiguration);
+                }
+              }
+            });
+        }
+     });
+  }
+
   extendContract() {
     const dialogRef = this.dialog.open(ExtendContractModalComponent, {
       width: '600px',

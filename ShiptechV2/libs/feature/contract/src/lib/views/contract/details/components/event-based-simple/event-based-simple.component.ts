@@ -95,6 +95,7 @@ export class EventBasedSimple extends DeliveryAutocompleteComponent
   isValidFromDateInvalid: boolean;
   businessCalendarList: any;
   formulaEventIncludeList: any;
+  hasInvoicedOrder: any;
  
 
 
@@ -228,6 +229,14 @@ export class EventBasedSimple extends DeliveryAutocompleteComponent
     } 
     this.formulaEventIncludeList = formulaEventIncludeList;
   }
+
+  @Input('hasInvoicedOrder') set _setHasInvoicedOrder(hasInvoicedOrder) { 
+    if (!hasInvoicedOrder) {
+      return;
+    } 
+    this.hasInvoicedOrder = hasInvoicedOrder;
+  }
+
 
 
   @Input() events: Observable<void>;

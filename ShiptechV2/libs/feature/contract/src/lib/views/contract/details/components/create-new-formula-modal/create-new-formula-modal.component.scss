@@ -758,3 +758,11 @@ mat-form-field {
   margin-bottom: unset  !important;
   width: 100%;
 }
+
+.custom-form-field.lightTheme .mat-form-field .mat-placeholder-required {
+  color: orange !important;
+}
+
+.mat-form-field.mat-form-field-disabled .mat-form-field-empty mat-label {
+  background-color: unset !important;
+}
