@@ -43,7 +43,7 @@ export class AllBunkeringPlanComponent implements OnInit {
   }
   
   public loadBunkeringPlanDetails(){
-    let Id = '1'; //this.vesselData?.vesselId;
+    let Id = 1; //this.vesselData?.vesselId;
     let req = { shipId : Id ,  planStatus : 'A' }
     this.loadAllBunkeringPlan(req);
   }
@@ -77,7 +77,7 @@ export class AllBunkeringPlanComponent implements OnInit {
   loadAllBunkeringPlan(request){
     this.bunkerPlanService.getBunkerPlanIdAndStatus(request).subscribe((data)=>{
       console.log('bunker plan Id and status details', data);
-      this.allBunkerPlanIds = (data?.payload && data?.payload.length)? data.payload : '';
+      this.allBunkerPlanIds = (data.payload && data.payload.length)? data.payload : '';
       if(this.allBunkerPlanIds == '' ){
         const dialogRef = this.dialog.open(NoDataComponent, {
           panelClass: ['confirmation-popup']
