@@ -16,9 +16,6 @@ export class RequestsDetailsComponent implements OnInit {
   public colResizeDefault;
   public rowCount: Number;
   public date = new FormControl(new Date());
-  currentDate = new Date();
-  selectedFromDate: Date = new Date(this.currentDate.setMonth((this.currentDate.getMonth())-3));
-  selectedToDate: Date = new Date();
 
   public RequestDetails : any = [];
 
@@ -68,11 +65,6 @@ export class RequestsDetailsComponent implements OnInit {
     this.localService.getOutstandRequestData({}).subscribe((data)=> {
       this.RequestDetails = (data?.payload && data?.payload.length)? data.payload[0]: {};
     })
-  }
-
-  onDateChange(event) {
-    console.log('selected date', event);
-    
   }
 
   private columnDefs = [
