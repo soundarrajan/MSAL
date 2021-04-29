@@ -228,7 +228,9 @@
                   </button> -->
                   <div class="border-rightside" style="padding-right: 5px;"
                     [ngClass]="{'createReqEnable':enableCreateReq,'createReqDisable':!enableCreateReq}"
-                    (click)="$event.stopPropagation()"> Create Request </div>
+                    (click)="$event.stopPropagation()"> 
+                    <a href="{{shiptechRequestUrl}}/{{voyageDetailId}}">Create Request </a>
+                  </div>
                   <button mat-button matTooltip="Import GSIS" [matTooltipShowDelay]="500" class="import-btn">Import
                     GSIS</button>
                 </div>
@@ -257,7 +259,8 @@
       </mat-expansion-panel-header>
       <div class="panel-body">
         <app-bunkering-plan *ngIf="panel.expanded" [isExpanded]="expandBplan"
-          (enableCreateReq)="toggleCreateReq($event)" [planId]="planId" [bPlanType]="bPlanType.curr">
+          (enableCreateReq)="toggleCreateReq($event)" [planId]="planId" [bPlanType]="bPlanType.curr" [selectedUserRole]="selectedUserRole"
+          [currentROBObj]="currentROBObj">
         </app-bunkering-plan>
       </div>
     </mat-expansion-panel>
@@ -298,7 +301,7 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div class="panel-body">
-        <app-bunkering-plan [isExpanded]="expandPrevBPlan" *ngIf="panel1.expanded" [planId]="planId" [bPlanType]="bPlanType.prev"></app-bunkering-plan>
+        <app-bunkering-plan [isExpanded]="expandPrevBPlan" *ngIf="panel1.expanded" [planId]="planId" [bPlanType]="bPlanType.prev" [selectedUserRole]="selectedUserRole"></app-bunkering-plan>
       </div>
     </mat-expansion-panel>
   </mat-accordion>
