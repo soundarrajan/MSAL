@@ -1,8 +1,68 @@
-<div style="position: relative;" (currentBPlanSave)="toggleSave()">
-  <ag-grid-angular [ngStyle]="{'height':isExpanded?'79vh':'55vh'}" id="bunkerplangrid"
-    style="width: 100%;overflow-y: scroll;" 
-    [rowData]="rowData"
-    [columnDefs]="columnDefs"
-    (gridReady)="gridOptions.onGridReady($event)" [gridOptions]="gridOptions" class="ag-theme-balham-dark"></ag-grid-angular>
+<div class="dark-wrapper info-bar">
+  <div style="display: flex;align-items: center; flex: 0 0 25%;justify-content: center;">
+    <div class="label-title"> Currently viewing:</div>
+    <div class="label-text" style="margin: 0px 5px;">Vessel</div>
+    <app-search-vessel (changeVessel)="changeVessel.emit($event)" [vesselList]="vesselList" [vesselData]="vesselData"></app-search-vessel>
+  </div>
+  <div style="margin:0 5px;display:flex;align-items: center;">
+    <div class="label-text"> Bunker Log</div>
+    <shiptech-date-picker-from-to
+         [selectedFromDate]="defaultFromDate"
+         [selectedToDate]="selectedToDate"
+         (onDateChange)="onFromToDateChange($event)"
+         >
+        </shiptech-date-picker-from-to>
+  </div>
+  <div style="display: flex;align-items: center; flex: 0 0 10%;justify-content: center;">
+    <div class="label-text" style="margin: 0px 5px;">Plan Status</div>
+  </div>
+
+<div class="plan-status" style="display: flex;align-items: center; flex: 0 0 2%;justify-content: center;">
+  <mat-form-field appearance="fill">
+    <mat-select [(value)]="planStatus" (selectionChange)="onStatusChange($event)">
+      <mat-option value="all">All</mat-option>
+      <mat-option value="invalid">Invalid</mat-option>
+      <mat-option value="valid">Valid</mat-option>
+    </mat-select>
+  </mat-form-field> 
 </div>
-<hr>
+
+</div>
+<!-- BUNKERING PLANS -->
+<div *ngIf="bunkerPlanLogDetail.length > 1" id="accordion-container-dark">  
+  <mat-accordion multi="false">
+    <mat-expansion-panel #panel *ngFor="let item of bunkerPlanLogDetail" hideToggle="true" id="bunker-plan"
+      [ngClass]="{'fullheight':item.expanded}" [expanded]="false" (opened)="item.expanded = true"
+      (closed)="item.expanded = false">
+      <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="34px">
+        <mat-panel-title>
+          <div class="">
+            <div *ngIf="!panel.expanded;else collapseBlock" class="expand-accordion-icon2 expand-collapse-icon"></div>
+            <!-- <img *ngIf="!panel.expanded;else collapseBlock" src="./assets/customicons/expand-icon2.svg"
+              alt="expand-icon"> -->
+            <ng-template #collapseBlock>
+              <div class="collapse-accordion-icon2 expand-collapse-icon"></div>
+              <!-- <img src="./assets/customicons/collapse-icon2.svg" alt="collapse-icon"> -->
+            </ng-template>
+          </div>
+          <div style="display: flex;align-items: center;width: 100%;">
+            <div style="flex: 0 0 20%;"><span style="margin-left: 10px;">Bunkering Plan ID: {{item.planId}}</span></div>
+            <div style="flex:0 0 80%;display: flex;align-items: center;">
+              <div id="plan-date" class="border-l-rightside" style="flex:0 0 15%;text-align: center;">
+                <span class="title">Plan Date :</span>
+                <span class="content">{{item.createdOn | date: 'dd/MM/yyyy'}}</span>
+               </div>
+               <div id="plan-date" class="border-l-rightside" style="flex:0 0 15%;text-align: center;">
+                <span class="content">{{item.planStatus}}</span>
+               </div>
+            </div>
+          </div>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="panel-body">
+        <app-bunker-plan *ngIf="panel.expanded"  [isExpanded]="panel.expanded"></app-bunker-plan>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
+<!-- ------------------- -->
