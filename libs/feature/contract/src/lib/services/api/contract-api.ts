@@ -382,7 +382,7 @@ export class ContractApi implements IContractApiService {
       {Payload: request}
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+      catchError((body: any) => of(body.error && body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : null))
     );
   }
 
