@@ -31,7 +31,7 @@ import { CustomStepperComponent } from './custom-stepper/custom-stepper.componen
 import { SmartMessengerComponent } from './smart-messenger/smart-messenger.component';
 import { SearchVesselComponent } from './search-vessel/search-vessel.component';
 import { BunkeringPlanComponent } from './bunkering-plan/bunkering-plan.component';
-import { FilterPipe } from './bunkering-plan/bunkering-plan.component';
+import { AllBunkeringPlanComponent, FilterPipe } from './all-bunkering-plan/all-bunkering-plan.component';
 import { WarningComponent } from './warning/warning.component';
 import { VesselArrivalsComponent } from './vessel-arrivals/vessel-arrivals.component';
 import { PortInfoComponent } from './port-info/port-info.component';
@@ -40,14 +40,16 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { DatePickerFromToComponent } from './date-picker-from-to/date-picker-from-to.component';
+import { NoDataComponent } from './no-data-popup/no-data-popup.component'
 
 @NgModule({
   declarations: [HeaderComponent, FilterchipsComponent, MapPanelComponent, SmartOperatorComponent, OlMapComponent, VesselDetailsComponent, HeaderPanelComponent,
     AGGridCellRendererComponent, AGGridCellDataComponent, VesselInfoComponent, AuditLogComponent, RequestsDetailsComponent, CommentsComponent, NewRequestComponent,
     HeaderPanelComponent, VesselPopupComponent, PortPopupComponent, NotificationsComponent, ConfirmationPopupComponent,
-    TableLegendComponent, CustomStepperComponent, SmartMessengerComponent, SearchVesselComponent, BunkeringPlanComponent, FilterPipe, WarningComponent,
+    TableLegendComponent, CustomStepperComponent, SmartMessengerComponent, SearchVesselComponent, BunkeringPlanComponent, WarningComponent,
     PortMenuComponent, VesselMenuComponent, VesselArrivalsComponent, PortInfoComponent, HoverMenuComponent, ConfirmDialogComponent,
-    DatePickerFromToComponent],
+    DatePickerFromToComponent,
+    FilterPipe, AllBunkeringPlanComponent,NoDataComponent],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -62,9 +64,10 @@ import { DatePickerFromToComponent } from './date-picker-from-to/date-picker-fro
   ],
   exports: [ReactiveFormsModule, FormsModule, FilterchipsComponent, MapPanelComponent, SmartOperatorComponent, OlMapComponent, HeaderPanelComponent,
     VesselInfoComponent, AuditLogComponent, RequestsDetailsComponent, CommentsComponent, NewRequestComponent, VesselPopupComponent, PortPopupComponent, NotificationsComponent, ConfirmationPopupComponent, TableLegendComponent,
-    CustomStepperComponent, SmartMessengerComponent, SearchVesselComponent, BunkeringPlanComponent, FilterPipe, WarningComponent,
-    PortMenuComponent, VesselMenuComponent, PortInfoComponent, VesselArrivalsComponent, HoverMenuComponent, ConfirmDialogComponent],
+    CustomStepperComponent, SmartMessengerComponent, SearchVesselComponent, BunkeringPlanComponent, WarningComponent,
+    PortMenuComponent, VesselMenuComponent, PortInfoComponent, VesselArrivalsComponent, HoverMenuComponent, ConfirmDialogComponent,
+    FilterPipe,AllBunkeringPlanComponent,NoDataComponent],
   providers: [LocalService, LoggerService, AuthGaurdService],
-  entryComponents: [VesselDetailsComponent, ConfirmationPopupComponent, WarningComponent, ConfirmDialogComponent]
+  entryComponents: [VesselDetailsComponent, ConfirmationPopupComponent, WarningComponent, ConfirmDialogComponent,NoDataComponent]
 })
 export class SharedModule { }

@@ -466,6 +466,9 @@ export class ProductDetails extends DeliveryAutocompleteComponent
   eventsSubscription: any;
   events1Subscription: any;
   contractConfiguration: any;
+  filteredOptions: Observable<string[]>;
+  filteredAllowedLocationOptions: Observable<string[]>;
+  filteredAllowedProductOptions: Observable<string[]>;
 
 
   get entityId(): number {
@@ -605,6 +608,11 @@ export class ProductDetails extends DeliveryAutocompleteComponent
   @Input('auto1')
   autocomplete: _MatAutocompleteBase;
 
+  searchAllowedLocation: any = '';
+  allowedLocationSearch = new FormControl();
+  allowedProductSearch = new FormControl();
+
+
   constructor(
     public gridViewModel: OrderListGridViewModel,
     @Inject(VESSEL_MASTERS_API_SERVICE) private mastersApi: IVesselMastersApi,
@@ -648,8 +656,30 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     this.getPhysicalSupplierList();
     this.eventsSubscription = this.events.subscribe((data) => this.setContractForm(data));
     this.events1Subscription = this.events1.subscribe((data) => this.setProductSpecGroup(data));
+    this.filteredAllowedLocationOptions = this.allowedLocationSearch.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    );
+
+    this.filteredAllowedProductOptions = this.allowedProductSearch.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter1(value))
+    );
 
   }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.selectedLocationList.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
+  }
+
+  private _filter1(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.selectedProductList.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
+  }
+
 
   setProductSpecGroup(data) {
     console.log(data);

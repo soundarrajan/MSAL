@@ -1,9 +1,7 @@
-﻿commit a2d4d62da827ca2aab9dbce3505e3f67c23479aa
+﻿commit 32b88b1685e473cf6f5d428248697d7bd9d665a7
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Apr 29 08:28:08 2021 +0000
+Date:   Thu Apr 29 11:18:30 2021 +0000
 
-    Merged PR 10267: Fixed error message
-    
-    Fixed error message
+    Merged PR 10277: Updated conversion factor when user select formula for contractConversionFactor with id 4 and added search option in allowed locations and allowed products
 
 branch: master
