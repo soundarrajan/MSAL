@@ -141,6 +141,7 @@ import { VesselLocationBased } from './views/contract/details/components/vessel-
 import { PriceTenantFormatDirective } from './views/contract/details/directives/price-tenant-format.directive';
 import { ExtendContractModalComponent } from './views/contract/details/components/extend-contract-modal/extend-contract-modal.component';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { FormulaHistoryModalComponent } from './views/contract/details/components/formula-history-modal/formula-history-modal.component';
 
 
 @NgModule({
@@ -266,11 +267,12 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     NumberOnlyDirective,
     ProductSpecGroupModalComponent,
     CreateNewFormulaModalComponent,
-    ExtendContractModalComponent
+    ExtendContractModalComponent,
+    FormulaHistoryModalComponent
     //PSpinnerDisableKeysSpinDirective,
     //PSpinnerTenantFormatDirective
   ],
-  entryComponents: [ProductSpecGroupModalComponent, CreateNewFormulaModalComponent,ExtendContractModalComponent],
+  entryComponents: [ProductSpecGroupModalComponent, CreateNewFormulaModalComponent,ExtendContractModalComponent, FormulaHistoryModalComponent],
   exports: [
     MainContractComponent,
     QuantityTenantFormatDirective,

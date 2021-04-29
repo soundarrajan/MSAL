@@ -62,6 +62,7 @@ import { ProductSpecGroupModalComponent } from '../product-spec-group-modal/prod
 import { OVERLAY_KEYBOARD_DISPATCHER_PROVIDER_FACTORY } from '@angular/cdk/overlay/dispatchers/overlay-keyboard-dispatcher';
 import { CreateNewFormulaModalComponent } from '../create-new-formula-modal/create-new-formula-modal.component';
 import { throws } from 'assert';
+import { FormulaHistoryModalComponent } from '../formula-history-modal/formula-history-modal.component';
 
 
 
@@ -1218,7 +1219,7 @@ export class ProductPricing extends DeliveryAutocompleteComponent
                 let conversionFactorsList = [];
                 conversionFactorsList.push(conversionFactors);
                 payload = { Payload: conversionFactorsList };
-                this.spinner.show();
+               // this.spinner.show();
                 this.contractService
                   .saveConversionFactorsForContractProduct(payload)
                   .pipe(
@@ -1246,6 +1247,41 @@ export class ProductPricing extends DeliveryAutocompleteComponent
         });
       }
     }
+  }
+
+  openFormulaHistory(productId) {
+    console.log(this._entityId);
+    let payload = {
+      ContractId :  this._entityId,
+      ContractProductId : productId
+    };
+    this.spinner.show();
+    this.contractService
+    .getContractFormulas(payload)
+    .pipe(
+      finalize(() => {
+        this.spinner.hide();
+      })
+    )
+    .subscribe((response: any) => {
+      if (typeof response == 'string') {
+        this.toastr.error(response);
+      } else {
+        console.log(response);
+        if (response) {
+          const dialogRef = this.dialog.open(FormulaHistoryModalComponent, {
+            width: '80%',
+            data:  {
+              'formulaHistoryDataResponse': response
+            }
+          });
+
+          dialogRef.afterClosed().subscribe(result => {
+            console.log(result);
+          });
+        }
+      }
+    });
   }
     
 

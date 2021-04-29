@@ -37,6 +37,7 @@ export namespace ContractApiPaths {
   export const cancelContract = () =>  `api/contract/contract/cancel`;
   export const extendContract = () =>  `api/contract/contract/extend`;
   export const deleteContract = () =>  `api/contract/contract/delete`;
+  export const getContractFormulas = () =>  `api/contract/contract/getContractFormulas`;
 
 
 }
@@ -405,6 +406,20 @@ export class ContractApi implements IContractApiService {
   ): Observable<IDeliveryDetailsResponse> {
     return this.http.post<IDeliveryDetailsResponse>(
       `${this._apiUrl}/${ContractApiPaths.deleteContract()}`,
+      {Payload: request}
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
+  }
+
+  
+  @ObservableException()
+  getContractFormulas(
+    request: any
+  ): Observable<IDeliveryDetailsResponse> {
+    return this.http.post<IDeliveryDetailsResponse>(
+      `${this._apiUrl}/${ContractApiPaths.getContractFormulas()}`,
       {Payload: request}
     ).pipe(
       map((body: any) => body.payload),
