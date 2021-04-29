@@ -49,6 +49,7 @@ export class FormulaHistoryModalComponent implements OnInit {
   specParameterList: any;
   activeProductForSpecGroupEdit: any;
   formulaHistoryDataResponse: any;
+  baseOrigin: string;
   constructor(
     public dialogRef: MatDialogRef<FormulaHistoryModalComponent>,
     private ren: Renderer2,
@@ -62,6 +63,8 @@ export class FormulaHistoryModalComponent implements OnInit {
     @Inject(DecimalPipe) private _decimalPipe,
     
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
+      this.baseOrigin = new URL(window.location.href).origin;
+      console.log(this.baseOrigin);
       console.log(data);
       this.formulaHistoryDataResponse = data.formulaHistoryDataResponse;
 
@@ -95,6 +98,10 @@ export class FormulaHistoryModalComponent implements OnInit {
       }
       return formattedDate;
     }
+  }
+
+  formulaLink(formulaId) {
+    return `${this.baseOrigin}/#/masters/formula/edit/${formulaId}` 
   }
 
   

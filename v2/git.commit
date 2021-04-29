@@ -1,9 +1,9 @@
-﻿commit 691b91c9f2d33f753b34c7fd0d8285015a4420bb
+﻿commit 21f086637eddfcae01606896357c44bec046c3ef
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Apr 29 14:08:44 2021 +0000
+Date:   Thu Apr 29 15:03:05 2021 +0000
 
-    Merged PR 10285: Added formula history pop-up
+    Merged PR 10290: Fixed formula link from formula history
     
-    Added formula history pop-up
+    Fixed formula link from formula history
 
 branch: master
