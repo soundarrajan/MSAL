@@ -107,7 +107,9 @@
                             [disableOptionCentering]="true"
                             panelClass="general-information-select-container"
                             [compareWith]="compareUomObjects"
-                            [disabled]="hasInvoicedOrder || (productDiscountRule.value.plusMinus && productDiscountRule.value.plusMinus.id == 3)">
+                            [disabled]="hasInvoicedOrder 
+                              || (productDiscountRule.value.plusMinus && productDiscountRule.value.plusMinus.id == 3)
+                              || (productDiscountRule.value.flatPercentage && productDiscountRule.value.flatPercentage.id != 1)">
                         <mat-option *ngFor="let option of uomList" [value]="option">
                             {{option.name}}
                         </mat-option>
