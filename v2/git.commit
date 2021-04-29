@@ -1,9 +1,9 @@
-﻿commit 21f086637eddfcae01606896357c44bec046c3ef
+﻿commit 01ff3aee3a2e2913238a4b8018e738ded125bde3
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu Apr 29 15:03:05 2021 +0000
+Date:   Thu Apr 29 15:30:37 2021 +0000
 
-    Merged PR 10290: Fixed formula link from formula history
+    Merged PR 10291: Made editable fields from formula modal based on the formValues.isEditable
     
-    Fixed formula link from formula history
+    Made editable fields from formula modal based on the formValues.isEditable
 
 branch: master
