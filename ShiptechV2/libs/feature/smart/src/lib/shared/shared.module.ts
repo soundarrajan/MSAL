@@ -46,7 +46,8 @@ import { DatePickerFromToComponent } from './date-picker-from-to/date-picker-fro
     AGGridCellRendererComponent, AGGridCellDataComponent, VesselInfoComponent, AuditLogComponent, RequestsDetailsComponent, CommentsComponent, NewRequestComponent,
     HeaderPanelComponent, VesselPopupComponent, PortPopupComponent, NotificationsComponent, ConfirmationPopupComponent,
     TableLegendComponent, CustomStepperComponent, SmartMessengerComponent, SearchVesselComponent, BunkeringPlanComponent, FilterPipe, WarningComponent,
-    PortMenuComponent, VesselMenuComponent, VesselArrivalsComponent, PortInfoComponent, HoverMenuComponent, ConfirmDialogComponent, DatePickerFromToComponent],
+    PortMenuComponent, VesselMenuComponent, VesselArrivalsComponent, PortInfoComponent, HoverMenuComponent, ConfirmDialogComponent,
+    DatePickerFromToComponent],
   imports: [
     CommonModule,
     HttpClientModule,
