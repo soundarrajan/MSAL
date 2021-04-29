@@ -59,12 +59,12 @@
                 {{formulaHistoryLine.contractId}}
               </td>
               <td class="padding" style="width:10%">
-                <a *ngIf="formulaHistoryLine.formula" href="#/masters/formula/edit/{{formulaHistoryLine.formula.id}}" target="_blank">
+                <a *ngIf="formulaHistoryLine.formula" href="{{formulaLink(formulaHistoryLine.formula.id)}}" target="_blank">
                   {{formulaHistoryLine.formula.id}}
                 </a>
               </td>
               <td class="padding" style="width:10%">
-                <a *ngIf="formulaHistoryLine.mtmFormula" href="#/masters/formula/edit/{{formulaHistoryLine.mtmFormula.id}}" target="_blank">
+                <a *ngIf="formulaHistoryLine.mtmFormula" href="{{formulaLink(formulaHistoryLine.mtmFormula.id)}}" target="_blank">
                   {{formulaHistoryLine.mtmFormula.id}}
                 </a>
               </td>
