@@ -609,3 +609,19 @@
 .mat-form-field.mat-form-field-disabled .mat-form-field-empty mat-label {
   background-color: unset !important;
 }
+
+.formula-history {
+  display: inline-block;
+}
+
+.formula-history-name {
+  text-shadow: none;
+  color: #337ab7;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.formula-history-name:focus, .formula-history-name:hover {
+  color: #23527c;
+  text-decoration: underline;
+}

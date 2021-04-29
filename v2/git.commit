@@ -1,9 +1,9 @@
-﻿commit 547068eafc7eb73711f586aa08576668acd4a0d6
-Author: Subhashini Vasanthakumar <subhashini.k@inatech.com>
-Date:   Thu Apr 29 13:58:13 2021 +0000
+﻿commit 691b91c9f2d33f753b34c7fd0d8285015a4420bb
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Thu Apr 29 14:08:44 2021 +0000
 
-    Merged PR 10286: Revert "Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_gi...
+    Merged PR 10285: Added formula history pop-up
     
-    Revert "Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_git/Shiptech10-UI"
+    Added formula history pop-up
 
 branch: master
