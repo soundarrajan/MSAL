@@ -393,13 +393,13 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
                         return;
                     }
                 }
-                if (template.name.toLowerCase().indexOf('pretest') !== -1) {
-                    if (ctrl.data.missingPretest) {
-                        toastr.error('PreTest is mandatory');
-                        ctrl.template = null;
-                        return;
-                    }
-                }                
+                // if (template.name.toLowerCase().indexOf('pretest') !== -1) {
+                //     if (ctrl.data.missingPretest) {
+                //         toastr.error('PreTest is mandatory');
+                //         ctrl.template = null;
+                //         return;
+                //     }
+                // }                
             }
 
             let payload;
