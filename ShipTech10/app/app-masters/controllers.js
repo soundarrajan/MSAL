@@ -3876,12 +3876,14 @@
                                 // $timeout(()=>{
 	                                $('*').tooltip('destroy');
 	                                if ($scope.formValues[id][index]) {
-		                                if ($scope.formValues[id][index].id > 0) {
-		                                    $scope.formValues[id][index].isDeleted = true;
-		                                } else {
-		                                    $scope.formValues[id][index].isDeleted = true;
-		                                    $scope.formValues[id].splice(index, 1);
-		                                }
+	                                	$timeout(()=>{
+			                                if ($scope.formValues[id][index].id > 0) {
+			                                    $scope.formValues[id][index].isDeleted = true;
+			                                } else {
+			                                    $scope.formValues[id][index].isDeleted = true;
+			                                    $scope.formValues[id].splice(index, 1);
+			                                }
+	                                	})
 	                                }
                                 // })
                             }
