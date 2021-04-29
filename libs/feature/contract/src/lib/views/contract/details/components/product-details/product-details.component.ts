@@ -469,6 +469,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
   filteredOptions: Observable<string[]>;
   filteredAllowedLocationOptions: Observable<string[]>;
   filteredAllowedProductOptions: Observable<string[]>;
+  openedScreenLoaders: number = 0;
 
 
   get entityId(): number {
@@ -1272,11 +1273,16 @@ export class ProductDetails extends DeliveryAutocompleteComponent
       } else {
         payload = {Payload: { ProductId: conversionFactors.product.id } };
       }
+      this.openedScreenLoaders += 1;
       this.spinner.show();
       this.contractService
       .getProdDefaultConversionFactors(payload)
       .pipe(
         finalize(() => {
+          this.openedScreenLoaders -= 1;
+          if (!this.openedScreenLoaders) {
+            this.spinner.hide();
+          }
         })
       )
       .subscribe((response: any) => {
@@ -1293,12 +1299,15 @@ export class ProductDetails extends DeliveryAutocompleteComponent
               let conversionFactorsList = [];
               conversionFactorsList.push(conversionFactors);
               payload = { Payload: conversionFactorsList };
-              this.spinner.show();
+              this.openedScreenLoaders += 1;
               this.contractService
                 .saveConversionFactorsForContractProduct(payload)
                 .pipe(
                   finalize(() => {
-                    this.spinner.hide();
+                    this.openedScreenLoaders -= 1;
+                    if (!this.openedScreenLoaders) {
+                      this.spinner.hide();
+                    }
                   })
                 )
                 .subscribe((response: any) => {
@@ -1346,7 +1355,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     document.getElementsByTagName('body')[0].click();
   }
 
-  
+
 
 
   originalOrder = (a: KeyValue<number, any>, b: KeyValue<number, any>): number => {
