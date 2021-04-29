@@ -837,7 +837,8 @@ export class ProductPricing extends DeliveryAutocompleteComponent
           'formulaEventIncludeList': this.formulaEventIncludeList,
           'quantityTypeList': this.quantityTypeList,
           'productList': this.productList,
-          'locationList': this.locationList
+          'locationList': this.locationList,
+          'hasInvoicedOrder': this.formValues.hasInvoicedOrder
         }
       }); 
       dialogRef.afterClosed().subscribe(result => {
@@ -945,7 +946,8 @@ export class ProductPricing extends DeliveryAutocompleteComponent
             'formulaEventIncludeList': this.formulaEventIncludeList,
             'quantityTypeList': this.quantityTypeList,
             'productList': this.productList,
-            'locationList': this.locationList
+            'locationList': this.locationList,
+            'hasInvoicedOrder': this.formValues.hasInvoicedOrder
           }
         });
         dialogRef.afterClosed().subscribe(result => {

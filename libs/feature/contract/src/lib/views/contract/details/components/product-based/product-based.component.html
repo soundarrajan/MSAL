@@ -8,7 +8,7 @@
       <thead>
         <tr>
           <td class="padding" style="width: 30px;">
-            <a class="add-icon" (click)="addNewProductBasedLine()"></a>
+            <a class="add-icon" (click)="hasInvoicedOrder ? '' : addNewProductBasedLine()"></a>
           </td>
           <td class="padding" style="width:20%">
             <b>Product</b>
@@ -31,7 +31,7 @@
           <ng-container  *ngFor="let productDiscountRule of formValues.productDiscountRules | keyvalue : originalOrder">
             <tr *ngIf="!productDiscountRule.value.isDeleted">
               <td class="padding" style="padding-left: 0px  !important; padding-right: 0px  !important;">
-                <a class="remove-icon" style="margin-left: 10px;" (click)="removeProductBasedLine(productDiscountRule.key)"></a>
+                <a class="remove-icon" style="margin-left: 10px;" (click)="hasInvoicedOrder ? '' : removeProductBasedLine(productDiscountRule.key)"></a>
               </td>
               <td  style="width:20%">
                 <div class="custom-form-field product-based-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
@@ -40,7 +40,8 @@
                             type="text"
                             [(ngModel)]="productDiscountRule.value.product"
                             matInput 
-                            [matAutocomplete]="auto">
+                            [matAutocomplete]="auto"
+                            [disabled]="hasInvoicedOrder">
                     <mat-autocomplete #auto="matAutocomplete" 
                                     class="darkPanelAuto"
                                     [displayWith]="displayFn"
@@ -60,7 +61,8 @@
                             [(ngModel)]="productDiscountRule.value.plusMinus"
                             [disableOptionCentering]="true"
                             panelClass="general-information-select-container"
-                            [compareWith]="compareUomObjects">
+                            [compareWith]="compareUomObjects"
+                            [disabled]="hasInvoicedOrder">
                         <mat-option *ngFor="let option of formulaPlusMinusList" [value]="option">
                             {{option.name}}
                         </mat-option>
@@ -76,7 +78,7 @@
                         (keypress)="keyPressNumber($event)"
                         amountFormat
                         autocomplete="off"
-                        [disabled]= "productDiscountRule.value.plusMinus && productDiscountRule.value.plusMinus.id == 3"
+                        [disabled]="hasInvoicedOrder || (productDiscountRule.value.plusMinus && productDiscountRule.value.plusMinus.id == 3)"
                         required>
                     </mat-form-field>
                 </div>
@@ -89,7 +91,7 @@
                             [disableOptionCentering]="true"
                             panelClass="general-information-select-container"
                             [compareWith]="compareUomObjects"
-                            [disabled]= "productDiscountRule.value.plusMinus && productDiscountRule.value.plusMinus.id == 3">
+                            [disabled]="hasInvoicedOrder || (productDiscountRule.value.plusMinus && productDiscountRule.value.plusMinus.id == 3)">
                         <mat-option *ngFor="let option of formulaFlatPercentageList" [value]="option">
                             {{option.name}}
                         </mat-option>
@@ -105,7 +107,7 @@
                             [disableOptionCentering]="true"
                             panelClass="general-information-select-container"
                             [compareWith]="compareUomObjects"
-                            [disabled]= "productDiscountRule.value.plusMinus && productDiscountRule.value.plusMinus.id == 3">
+                            [disabled]="hasInvoicedOrder || (productDiscountRule.value.plusMinus && productDiscountRule.value.plusMinus.id == 3)">
                         <mat-option *ngFor="let option of uomList" [value]="option">
                             {{option.name}}
                         </mat-option>
@@ -125,6 +127,7 @@
           [(ngModel)]="formValues.comments"
           matInput
           autocomplete="off"
+          [disabled]="hasInvoicedOrder"
           ></textarea>
   </mat-form-field>
 </div>

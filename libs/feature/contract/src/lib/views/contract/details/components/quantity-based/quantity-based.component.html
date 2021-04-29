@@ -8,7 +8,7 @@
       <thead>
         <tr>
           <td class="padding" style="width: 30px;">
-            <a class="add-icon" (click)="addNewQuantityBasedLine()"></a>
+            <a class="add-icon" (click)="hasInvoicedOrder ? '' : addNewQuantityBasedLine()"></a>
           </td>
           <td class="padding" style="width:15%">
             <b>Quantity Type</b>
@@ -37,7 +37,7 @@
           <ng-container  *ngFor="let quantityDiscountRule of formValues.quantityDiscountRules | keyvalue : originalOrder">
             <tr *ngIf="!quantityDiscountRule.value.isDeleted">
               <td class="padding">
-                <a class="remove-icon" style="margin-left: 10px;" (click)="removeQuantityBasedLine(quantityDiscountRule.key)"></a>
+                <a class="remove-icon" style="margin-left: 10px;" (click)="hasInvoicedOrder ? '' : removeQuantityBasedLine(quantityDiscountRule.key)"></a>
               </td>
               <td  style="width:15%">
                 <div class="custom-form-field quantity-based-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
@@ -46,7 +46,8 @@
                             [(ngModel)]="quantityDiscountRule.value.quantityType"
                             [disableOptionCentering]="true"
                             panelClass="general-information-select-container"
-                            [compareWith]="compareUomObjects">
+                            [compareWith]="compareUomObjects"
+                            [disabled]="hasInvoicedOrder">
                         <mat-option *ngFor="let option of quantityTypeList" [value]="option">
                             {{option.name}}
                         </mat-option>
@@ -61,7 +62,8 @@
                         [(ngModel)]="quantityDiscountRule.value.quantityRangeFrom"
                         autocomplete="off"
                         required
-                        quantityFormat>
+                        quantityFormat
+                        [disabled]="hasInvoicedOrder">
                     </mat-form-field>
                 </div>
               </td>
@@ -72,7 +74,8 @@
                         [(ngModel)]="quantityDiscountRule.value.quantityRangeTo"
                         autocomplete="off"
                         required
-                        quantityFormat>
+                        quantityFormat
+                        [disabled]="hasInvoicedOrder">
                     </mat-form-field>
                 </div>
               </td>
@@ -84,7 +87,7 @@
                             [disableOptionCentering]="true"
                             panelClass="general-information-select-container"
                             [compareWith]="compareUomObjects"
-                            [disabled]= "quantityDiscountRule.value.plusMinus && quantityDiscountRule.value.plusMinus.id == 3">
+                            [disabled]="hasInvoicedOrder || (quantityDiscountRule.value.plusMinus && quantityDiscountRule.value.plusMinus.id == 3)">
                         <mat-option *ngFor="let option of uomList" [value]="option">
                             {{option.name}}
                         </mat-option>
@@ -99,7 +102,8 @@
                             [(ngModel)]="quantityDiscountRule.value.plusMinus"
                             [disableOptionCentering]="true"
                             panelClass="general-information-select-container"
-                            [compareWith]="compareUomObjects">
+                            [compareWith]="compareUomObjects"
+                            [disabled]="hasInvoicedOrder">
                         <mat-option *ngFor="let option of formulaPlusMinusList" [value]="option">
                             {{option.name}}
                         </mat-option>
@@ -116,7 +120,7 @@
                         autocomplete="off"
                         required
                         amountFormat
-                        [disabled]= "quantityDiscountRule.value.plusMinus && quantityDiscountRule.value.plusMinus.id == 3">
+                        [disabled]="hasInvoicedOrder || (quantityDiscountRule.value.plusMinus && quantityDiscountRule.value.plusMinus.id == 3)">
                     </mat-form-field>
                 </div>
               </td> 
@@ -128,7 +132,7 @@
                             [disableOptionCentering]="true"
                             panelClass="general-information-select-container"
                             [compareWith]="compareUomObjects"
-                            [disabled]= "quantityDiscountRule.value.plusMinus && quantityDiscountRule.value.plusMinus.id == 3">
+                            [disabled]="hasInvoicedOrder || (quantityDiscountRule.value.plusMinus && quantityDiscountRule.value.plusMinus.id == 3)">
                         <mat-option *ngFor="let option of formulaFlatPercentageList" [value]="option">
                             {{option.name}}
                         </mat-option>
@@ -148,6 +152,7 @@
           [(ngModel)]="formValues.comments"
           matInput
           autocomplete="off"
+          [disabled]="hasInvoicedOrder"
           ></textarea>
   </mat-form-field>
 </div>

@@ -100,6 +100,7 @@ export class ProductBased extends DeliveryAutocompleteComponent
   uomList: any;
   productList: any;
   amountFormat: string;
+  hasInvoicedOrder: any;
  
 
 
@@ -256,6 +257,14 @@ export class ProductBased extends DeliveryAutocompleteComponent
       return;
     } 
     this.productList = productList;
+  }
+
+
+  @Input('hasInvoicedOrder') set _setHasInvoicedOrder(hasInvoicedOrder) { 
+    if (!hasInvoicedOrder) {
+      return;
+    } 
+    this.hasInvoicedOrder = hasInvoicedOrder;
   }
 
 
