@@ -111,7 +111,9 @@
                 panelClass="general-information-select-container"
                 [compareWith]="compareUomObjects"
                 placeholder="Uom"
-                [disabled]="hasInvoicedOrder || (formValues.simpleFormula.plusMinus && formValues.simpleFormula.plusMinus.id == 3)">
+                [disabled]="hasInvoicedOrder 
+                  || (formValues.simpleFormula.plusMinus && formValues.simpleFormula.plusMinus.id == 3)
+                  || (formValues.simpleFormula.flatPercentage && formValues.simpleFormula.flatPercentage.id != 1)">
           <mat-option *ngFor="let option of uomList" [value]="option">
               {{option.name}}
           </mat-option>
