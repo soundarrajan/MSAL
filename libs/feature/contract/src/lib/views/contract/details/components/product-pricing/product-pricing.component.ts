@@ -491,6 +491,8 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   additionalCostsComponentTypes: any;
   costTypeList: any;
   EnableBargeCostDetails: boolean;
+  openedScreenLoaders: number = 0;
+
 
 
   get entityId(): number {
@@ -848,6 +850,7 @@ export class ProductPricing extends DeliveryAutocompleteComponent
             'id': result.id,
             'name': result.name
           }
+          this.updateConversionFactor(this.formValues.products[this.selectedTabIndex].formula);
           this.changeDetectorRef.detectChanges();
         }
       });       
@@ -876,6 +879,7 @@ export class ProductPricing extends DeliveryAutocompleteComponent
         'name': selection.name
       };
       this.formValues.products[this.selectedTabIndex].formula = obj; 
+      this.updateConversionFactor(this.formValues.products[this.selectedTabIndex].formula);
       this.changeDetectorRef.detectChanges();   
       console.log(this.formValues.products[this.selectedTabIndex]);
     }
@@ -1173,6 +1177,77 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     }
     return input;
   }
+
+  updateConversionFactor(event) {
+    console.log(event);
+    for (let i = 0; i < this.formValues.products[this.selectedTabIndex].conversionFactors.length; i++) {
+      if (this.formValues.products[this.selectedTabIndex].conversionFactors[i].contractConversionFactorOptions && this.formValues.products[this.selectedTabIndex].conversionFactors[i].contractConversionFactorOptions.id == 4) {
+        let product  = this.formValues.products[this.selectedTabIndex];
+        let conversionFactors = this.formValues.products[this.selectedTabIndex].conversionFactors[i];
+        let payload = {};
+        payload = {
+          Payload: {
+            ProductId: conversionFactors.product.id,
+            FormulaId: event.id
+          }
+        };
+        this.openedScreenLoaders += 1;
+        this.spinner.show();
+        this.contractService
+        .getProdDefaultConversionFactors(payload)
+        .pipe(
+          finalize(() => {
+            this.openedScreenLoaders -= 1;
+            if (!this.openedScreenLoaders) {
+              this.spinner.hide();
+            }
+          })
+        )
+        .subscribe((response: any) => {
+          if (typeof response == 'string') {
+            this.toastr.error(response);
+            this.spinner.hide();
+          } else {
+            console.log(response);
+            if (response) {
+              conversionFactors.value = response.value;
+              conversionFactors.massUom = response.massUom;
+              conversionFactors.volumeUom = response.volumeUom;
+              if (conversionFactors.contractProductId) {
+                this.openedScreenLoaders +=1;
+                let conversionFactorsList = [];
+                conversionFactorsList.push(conversionFactors);
+                payload = { Payload: conversionFactorsList };
+                this.spinner.show();
+                this.contractService
+                  .saveConversionFactorsForContractProduct(payload)
+                  .pipe(
+                    finalize(() => {
+                      this.openedScreenLoaders -= 1;
+                      if (!this.openedScreenLoaders) {
+                        this.spinner.hide();
+                      }
+                    })
+                  )
+                  .subscribe((response: any) => {
+                    if (typeof response == 'string') {
+                      this.toastr.error(response);
+                      this.spinner.hide();
+                    } else if (response) {
+                      let res = response[0];
+                      this.formValues.products[this.selectedTabIndex].convFactorMassUom = res.massUom;
+                      this.formValues.products[this.selectedTabIndex].convFactorValue = res.value;
+                      this.formValues.products[this.selectedTabIndex].convFactorVolumeUom = res.volumeUom;
+                    }
+                  });
+              }
+            }
+          }
+        });
+      }
+    }
+  }
+    
 
   ngAfterViewInit(): void {
   
