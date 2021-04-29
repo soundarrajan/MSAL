@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { BunkeringPlanService } from '../../services/bunkering-plan.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NoDataComponent } from '../no-data-popup/no-data-popup.component';
+import { LocalService } from '../../services/local-service.service';
 import moment from 'moment';
 
 
@@ -15,6 +16,14 @@ export class AllBunkeringPlanComponent implements OnInit {
   @Output() changeVessel = new EventEmitter();
   @Input('vesselData') vesselData;
   @Input('vesselList') vesselList;
+  currentDate = new Date();
+  defaultFromDate: Date = new Date(this.currentDate.setMonth((this.currentDate.getMonth())-1));
+  selectedToDate: Date = new Date();
+  
+  isDateInvalid: boolean;
+  planStatus = 'all';
+  bunkerPlanLogDetail: any = [];
+  requestPayload : any = {};
 
   public dialogRef: MatDialogRef<NoDataComponent>;
   public countArray = [];//Temp Variable to store the count of accordions to be displayed
@@ -23,19 +32,41 @@ export class AllBunkeringPlanComponent implements OnInit {
   public planIdDetails : any ={ planId : '777888', status: 'INP'};
   public allBunkerPlanIds : any;
 
-  constructor(private bunkerPlanService : BunkeringPlanService, public dialog: MatDialog) { }
+  constructor(private localService: LocalService, private bunkerPlanService : BunkeringPlanService, public dialog: MatDialog) { }
 
   ngOnInit() {//Temp Variable to store the count of accordions to be displayed
     for (let i = 0; i < 20; i++) {
       this.countArray.push({ expanded: false });
     }
-    this.loadBunkeringPlanDetails();
+   // this.loadBunkeringPlanDetails();
+   this.loadBunkerPlanHistory(this.vesselData);
   }
   
   public loadBunkeringPlanDetails(){
-    let Id = '02M'; //this.vesselData?.vesselId;
+    let Id = '1'; //this.vesselData?.vesselId;
     let req = { shipId : Id ,  planStatus : 'A' }
     this.loadAllBunkeringPlan(req);
+  }
+
+  onFromToDateChange(event) {
+    console.log('selected date', event);
+    this.defaultFromDate = event.fromDate;
+    this.selectedToDate = event.toDate;
+    this.loadBunkerPlanHistory(this.vesselData);    
+  }
+
+  onStatusChange($event) {
+    this.planStatus = $event.value;
+    this.loadBunkerPlanHistory(this.vesselData);
+  }
+ 
+  public loadBunkerPlanHistory(event) {
+    let vesselId = event.id? event.id: 348;
+    this.requestPayload = {'FromLogDate': this.defaultFromDate,'ToLogDate': this.selectedToDate,'VesselId': 348,'IsDefaultDate':false, 'PlanStatus': this.planStatus};
+    this.localService.getBunkerPlanLog(this.requestPayload).subscribe((data)=> {
+      console.log('bunker plan Log',data);
+      this.bunkerPlanLogDetail = (data?.payload && data?.payload.length)? data.payload: {};
+    })
   }
 
   loadAllBunkeringPlan(request){

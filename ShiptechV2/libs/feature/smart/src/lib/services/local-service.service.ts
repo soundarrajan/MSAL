@@ -574,7 +574,7 @@ export class LocalService {
     @ObservableException()
     getBunkerPlanLog(request: any): Observable<any> {
       return this.http.post<any>(
-        `${this._apiUrl}/${BunkerPlanHeaderApiPaths.GetBunkerPlanHeader()}`,
+        `${this._apiUrl}/${BunkerPlanLogApiPaths.GetBunkerPlanLog()}`,
         { payload: request }
       );
     }
