@@ -93,6 +93,7 @@ export class EventBasedContinuous extends DeliveryAutocompleteComponent
   dayOfWeekList: any;
   holidayRuleList: any;
   isValidFromDateInvalid: boolean;
+  hasInvoicedOrder: any;
  
 
 
@@ -211,6 +212,13 @@ export class EventBasedContinuous extends DeliveryAutocompleteComponent
       return;
     } 
     this.holidayRuleList = holidayRuleList;
+  }
+
+  @Input('hasInvoicedOrder') set _setHasInvoicedOrder(hasInvoicedOrder) { 
+    if (!hasInvoicedOrder) {
+      return;
+    } 
+    this.hasInvoicedOrder = hasInvoicedOrder;
   }
 
 

@@ -3,7 +3,13 @@
     <div class="from-to-data">
       <div style="margin:0 5px;display:flex;align-items: center;">
         <div class="label m-l-r-5">ETA Date: </div>
-        <div style="height:32px;margin:0 10px;display:flex;align-items: center;    border-right: solid #54617A 3px;">
+        <shiptech-date-picker-from-to
+         [selectedFromDate]="selectedFromDate"
+         [selectedToDate]="selectedToDate"
+         (onDateChange)="onDateChange($event)"
+         >
+        </shiptech-date-picker-from-to>
+        <!-- <div style="height:32px;margin:0 10px;display:flex;align-items: center;    border-right: solid #54617A 3px;">
           <span class="from-to-label">From</span>
           <span class="from-to-value m-l-r-5">10/02/20</span>
           <img id="filter-icon" class="m-l-r-5" src="../../../assets/customicons/datepicker.svg">
@@ -11,7 +17,7 @@
           <span class="from-to-label">To</span>
           <span class="from-to-value m-l-r-5">10/06/20</span>
           <img id="filter-icon" class="m-l-r-5" src="../../../assets/customicons/datepicker.svg">
-        </div>
+        </div> -->
         <div id="display" class="m-l-r-5">
           <mat-checkbox class="label noborder" [checked]="true">Display</mat-checkbox>
           <span class="value m-l-r-5" style="vertical-align: middle;">Cancelled</span>

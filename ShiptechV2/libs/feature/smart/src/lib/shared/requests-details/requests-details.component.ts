@@ -3,6 +3,7 @@ import { GridOptions } from '@ag-grid-community/core';
 import { AGGridCellRendererComponent } from '../ag-grid/ag-grid-cell-renderer.component';
 import { AGGridCellDataComponent } from '../ag-grid/ag-grid-celldata.component';
 import { FormControl } from '@angular/forms';
+import { LocalService } from '../../services/local-service.service';
 
 @Component({
   selector: 'app-requests-details',
@@ -15,8 +16,13 @@ export class RequestsDetailsComponent implements OnInit {
   public colResizeDefault;
   public rowCount: Number;
   public date = new FormControl(new Date());
+  currentDate = new Date();
+  selectedFromDate: Date = new Date(this.currentDate.setMonth((this.currentDate.getMonth())-3));
+  selectedToDate: Date = new Date();
 
-  constructor() {
+  public RequestDetails : any = [];
+
+  constructor(private localService: LocalService) {
     this.gridOptions = <GridOptions>{
       columnDefs: this.columnDefs,
       //enableColResize: true,
@@ -55,6 +61,18 @@ export class RequestsDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadOutstandRequestData();
+  }
+
+  loadOutstandRequestData() {
+    this.localService.getOutstandRequestData({}).subscribe((data)=> {
+      this.RequestDetails = (data?.payload && data?.payload.length)? data.payload[0]: {};
+    })
+  }
+
+  onDateChange(event) {
+    console.log('selected date', event);
+    
   }
 
   private columnDefs = [
