@@ -1,7 +1,7 @@
-﻿commit 4dda4abaa6adc94c4352eabf5f9caf983dacefbf
+﻿commit e5869ae5d957b3804501dc98e2f68a5dd856cf69
 Author: Subhashini Vasanthakumar <subhashini.k@Inatech.com>
-Date:   Thu Apr 29 21:56:36 2021 +0530
+Date:   Thu Apr 29 23:02:33 2021 +0530
 
-    Integrating View All Bunkering Plans
+    removed hardcoded vesselIds
 
 branch: master
