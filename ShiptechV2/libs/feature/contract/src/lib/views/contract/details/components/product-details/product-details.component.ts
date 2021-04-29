@@ -1271,7 +1271,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
         }
       } else {
         payload = {Payload: { ProductId: conversionFactors.product.id } };
-      } 
+      }
       this.spinner.show();
       this.contractService
       .getProdDefaultConversionFactors(payload)
