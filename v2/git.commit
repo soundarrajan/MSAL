@@ -1,10 +1,9 @@
-﻿commit a1969ce8ded1dc708f140bc51e949c4ef5198453
-Author: Subhashini Vasanthakumar <subhashini.k@Inatech.com>
-Date:   Thu Apr 29 10:14:20 2021 +0530
+﻿commit a2d4d62da827ca2aab9dbce3505e3f67c23479aa
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Thu Apr 29 08:28:08 2021 +0000
 
-    Revert "Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_git/Shiptech10-UI"
+    Merged PR 10267: Fixed error message
     
-    This reverts commit 8a0c52808fb41718f4798213117582ac49c633f8, reversing
-    changes made to eb1502dfc111b321b91ad712a6ee21e254bb142b.
+    Fixed error message
 
 branch: master
