@@ -23,6 +23,7 @@ import { EntityStatusModule } from '@shiptech/core/ui/components/entity-status/e
 import { ExportModule } from '@shiptech/core/ui/components/export/export.module';
 import { FilterPresetsModule } from '@shiptech/core/ui/components/filter-preferences/filter-presets.module';
 import { MasterAutocompleteModule } from '@shiptech/core/ui/components/master-autocomplete/master-autocomplete.module';
+import { MasterSelectorModule } from '@shiptech/core/ui/components/master-selector/master-selector.module';
 import { MessageBoxModule } from '@shiptech/core/ui/components/message-box/message-box.module';
 import { RelatedLinksModule } from '@shiptech/core/ui/components/related-links/related-links.module';
 import { SearchBoxModule } from '@shiptech/core/ui/components/search-box/search-box.module';
@@ -33,6 +34,7 @@ import { UIModule } from '@shiptech/core/ui/ui.module';
 import { environment } from '@shiptech/environment';
 import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
 import { ButtonModule } from 'primeng/button';
+import { DialogService } from 'primeng/dynamicdialog';
 import { MessagesModule } from 'primeng/messages';
 import { ModuleLoggerFactory } from '../../../quantity-control/src/lib/core/logging/module-logger-factory';
 import { FeatureInvoiceModuleResolver } from './invoice-route.resolver';
@@ -87,7 +89,8 @@ import { MainInvoiceComponent } from './views/main-invoice.component';
     WunderBarModule,
     ButtonModule,
     MessagesModule,
-    ExportModule
+    ExportModule,
+    MasterSelectorModule
   ],
   declarations: [
     MainInvoiceComponent,
@@ -106,7 +109,11 @@ import { MainInvoiceComponent } from './views/main-invoice.component';
         : InvoiceCompleteApiMock
     },
     InvoiceCompleteService,
-    InvoiceDetailsService
+    InvoiceDetailsService,    
+    DialogService
+  ],
+  entryComponents:[
+    
   ]
 })
 export class InvoiceModule {}

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
 
 @Component({
@@ -8,7 +8,7 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 })
 export class InvoiceViewComponent implements OnInit, OnDestroy {
 
-  
+  @ViewChild("invoiceDetails") invoiceDetailsComponent: any;
   constructor(){
   }
   selectedTab = 0;
@@ -26,5 +26,9 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+  }
+
+  detailsSave(){
+    this.invoiceDetailsComponent.saveInvoiceDetails();
   }
 }

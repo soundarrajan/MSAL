@@ -7,7 +7,9 @@
                 </ng-template>
                 <ng-container>
                     <div *ngIf="item.name=='Details'" class="details"> 
-                        <shiptech-invoice-detail></shiptech-invoice-detail>
+
+                        <!-- Invoice Detail Component -->
+                        <shiptech-invoice-detail #invoiceDetails></shiptech-invoice-detail>
                     </div>
                     <div *ngIf="item.name=='Related Invoices'" class="custom-tab-container"> Tab container 2</div>
                     <div *ngIf="item.name=='Documents'" class="custom-tab-container"> Tab container 3</div>
@@ -16,7 +18,7 @@
                     <div *ngIf="item.name=='Audit Log'" class="custom-tab-container"> Tab container 6</div>
                 </ng-container>
             </mat-tab>
-            <span>sdddddddddddd</span>
+            <span>--</span>
         </mat-tab-group>
         <div class="header-buttons">
           <div matTooltip="Back Office Report" matTooltipShowDelay="500" style="padding-left: 7px;">
@@ -25,8 +27,8 @@
             </button>
           </div>
           <div matTooltip="Save" matTooltipShowDelay="500" style="padding-left: 7px;">
-            <button class="cust-btn">
-                <span style="top: -1px;position: relative;">Save</span>
+            <button class="cust-btn" (click)="detailsSave()">
+                <span style="top: -1px;position: relative;" >Save</span>
             </button>
           </div>
           <div matTooltip="Approve Invoice" matTooltipShowDelay="500" style="padding-left: 7px;">
