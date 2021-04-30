@@ -1,7 +1,7 @@
-﻿commit d6c6f0da3cab71ddddab1827d7a6240fe712e184
+﻿commit 19e8b1924c5608c8d8196c9d1378c2f024a31e2d
 Author: Soundar <soundarrajan.s@inatech.com>
-Date:   Fri Apr 30 18:23:55 2021 +0530
+Date:   Fri Apr 30 18:29:46 2021 +0530
 
-    Delivery screen - UI Fix _ VSTS-31536,31508
+    Delivery screen - UI Fix
 
 branch: master
