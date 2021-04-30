@@ -711,7 +711,7 @@ export class BdnAdditionalInformationComponent extends DeliveryAutocompleteCompo
   
 
   ngAfterViewInit(): void {
-  
+  this.addSampleSources();
   }
 
   

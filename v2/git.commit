@@ -1,7 +1,7 @@
-﻿commit de5dcf321bc11e033eb9c789b315ae1d2ed5b62b
+﻿commit d6c6f0da3cab71ddddab1827d7a6240fe712e184
 Author: Soundar <soundarrajan.s@inatech.com>
-Date:   Fri Apr 30 14:06:48 2021 +0530
+Date:   Fri Apr 30 18:23:55 2021 +0530
 
-    Delivery Screen - UI Issue- VSTS 31500,04,16,22,23
+    Delivery screen - UI Fix _ VSTS-31536,31508
 
 branch: master
