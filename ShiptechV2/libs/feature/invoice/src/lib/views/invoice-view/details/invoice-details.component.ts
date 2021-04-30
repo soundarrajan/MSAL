@@ -13,6 +13,10 @@ import moment from 'moment';
 import { KnownInvoiceRoutes } from '../../../known-invoice.routes';
 import { IInvoiceDetailsItemBaseInfo, IInvoiceDetailsItemCounterpartyDetails, IInvoiceDetailsItemDto, IInvoiceDetailsItemInvoiceCheck, IInvoiceDetailsItemInvoiceSummary, IInvoiceDetailsItemOrderDetails, IInvoiceDetailsItemPaymentDetails, IInvoiceDetailsItemProductDetails, IInvoiceDetailsItemRequest, IInvoiceDetailsItemRequestInfo, IInvoiceDetailsItemResponse, IInvoiceDetailsItemStatus } from '../../../services/api/dto/invoice-details-item.dto';
 import { InvoiceDetailsService } from '../../../services/invoice-details.service';
+import { EmasterSelectiontype } from '@shiptech/core/ui/components/ds-components/pop-ups/master-selection-popup.component';
+import { ImasterSelectionPopData } from '@shiptech/core/ui/components/ds-components/pop-ups/master-selection-popup.component';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'shiptech-invoice-detail',
@@ -109,7 +113,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
   //Default Values - strats
 
-  constructor(public dialog: MatDialog, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private invoiceService: InvoiceDetailsService, route: ActivatedRoute) {
+  constructor(public dialog: MatDialog, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private invoiceService: InvoiceDetailsService, route: ActivatedRoute, private http: HttpClient) {
     iconRegistry.addSvgIcon('data-picker-gray',sanitizer.bypassSecurityTrustResourceUrl('../../assets/customicons/calendar-dark.svg'));
     this._entityId = route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
     this.setupGrid();
@@ -118,6 +122,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getInvoiceItem();
     this.buildProductDetilsGrid();
+    this.getCounterPartiesList();
   }
 
   private setupGrid(){
@@ -357,11 +362,9 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   addCustomHeaderEventListener() {
     let addButtonElement = document.getElementsByClassName('add-btn');
     addButtonElement[0].addEventListener('click', (event) => {
-      /* this.gridOptions_data.api.applyTransaction({
-        add: []
-      }); */
+      console.log('add btn');
       let productdetail = {
-        del_no: {no: '', order_prod: ''},
+        del_no: {no: 123, order_prod: ''},
         del_product: '',
         del_qty: '',
         est_rate: '',
@@ -372,28 +375,24 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         amount2: '',
         recon_status: '',
         sulpher_content: '',
-        phy_supplier: '',
-      };
-      this.rowData_aggrid_pd.push(productdetail);
-      console.log('add btn');
+        phy_supplier: ''
+      }
+  
+    var newItems = [productdetail];
+    this.gridOptions_data.api.applyTransaction({
+      add: newItems
+    });
+
+    this.rowData_aggrid_pd.push(productdetail);
+    this.gridOptions_data.api.setRowData(this.rowData_aggrid_pd);
+    this.gridOptions_data.api.redrawRows();
+    
+    // var res = this.gridOptions_data.api.applyTransaction({
+    //   add: newItems
+    // });
     });
 
   }
-
-  openSearchPopup() {
-    this.popupOpen = true;
-        const dialogRef = this.dialog.open(MasterSelectionDialog, {
-            width: '90%',
-            height: '90%',
-            panelClass: 'popup-grid'
-        });
-
-        dialogRef.afterClosed().subscribe(result => {
-            this.popupOpen = false;
-        });
-  }
-
-  
 
   buildProductDetilsGrid(){
     this.gridOptions_data = <GridOptions>{
@@ -514,6 +513,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    // this.invoiceService.getInvoicDetails().
   }
 
   public saveInvoiceDetails(){
@@ -523,17 +523,61 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   public openRequest(){
     //https://bvt.shiptech.com/#/edit-request/89053
   }
-  
-  // getHeaderNameSelector(): string {
-  //   switch (this._autocompleteType) {
-  //     case knownMastersAutocomplete.orders:
-  //       return knowMastersAutocompleteHeaderName.orders;
-  //     default:
-  //       return knowMastersAutocompleteHeaderName.orders;
-  //   }
-  // }
 
-  openSeller() {
-    document.getElementsByTagName('body')[0].click();
+  openSearchPopup() {
+    this.popupOpen = true;
+        const dialogRef = this.dialog.open(MasterSelectionDialog, {
+            width: '90%',
+            height: '90%',
+            panelClass: 'popup-grid',
+            data:<ImasterSelectionPopData>{
+              title:'Selet Company',
+              selectionType:EmasterSelectiontype.company
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+          console.log(result)
+            this.popupOpen = false;
+            this.formValues.orderDetails.paymentCompany = <IInvoiceDetailsItemBaseInfo>{id:result.id, name:result.name};
+        });
   }
+  
+  public getStates(): Observable<any> {
+    return this.http.get('https://euw-sh-int-bvt-api.azurewebsites.net/Shiptech10.Api.Masters/api/masters/counterparties/listByTypesAutocomplete');
+  }
+
+  getCounterPartiesList(){
+    // this.getStates().subscribe(response => {
+    //   console.log(response);    
+    //   }
+    // )
+  }
+
+  addNewProdut(){
+    let productdetail = {
+      del_no: {no: 123, order_prod: ''},
+      del_product: '',
+      del_qty: '',
+      est_rate: '',
+      amount1: '',
+      inv_product: '',
+      inv_qty: '',
+      inv_rate: '',
+      amount2: '',
+      recon_status: '',
+      sulpher_content: '',
+      phy_supplier: ''
+    }
+
+  var newItems = [productdetail];
+  var res = this.gridOptions_data.api.applyTransaction({
+    add: newItems
+  });
+  }
+
+  onModelChanged(evt){
+
+  }
+  
 }
