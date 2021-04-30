@@ -77,7 +77,7 @@
 </div>
 <div *ngIf="formValues.deliveryProducts && formValues.deliveryProducts.length"> 
   <div  *ngFor="let deliveryProduct of formValues.deliveryProducts | keyvalue">
-    <div *ngIf="deliveryProduct.key == selectedProduct" class="product-container">
+    <div *ngIf="deliveryProduct.key == selectedProduct" class="product-container" style="padding-bottom: 20px;">
       <div class="bottom-border"></div>
       <shiptech-delivery-product [formValues]="formValues"
                                 [deliveryProductIndex]="deliveryProduct.key"
