@@ -1,11 +1,7 @@
-﻿commit f9ab2da51e1fc2de3bca68cc0d5182164e71edb9
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Thu Apr 29 23:30:39 2021 +0000
+﻿commit fabd3aa83e8002527d5611e7b1a627fc44f3513a
+Author: Gokul Dhas Simson <gokul.s@Inatech.com>
+Date:   Fri Apr 30 09:15:57 2021 +0530
 
-    Merged PR 10293: Colour Code and port info popup of current bplan
-    
-    Colour Code and port info popup of current bplan
-    
-    Related work items: #29780
+    Invoice Changes
 
 branch: master

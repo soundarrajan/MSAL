@@ -7,11 +7,9 @@ import { AGGridCellActionsComponent } from '@shiptech/core/ui/components/ds-comp
 import { AGGridCellEditableComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-editable.component';
 import { AGGridCellRendererComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-renderer.component';
 import { AgGridCellStyleComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-style.component';
-import { OpsSpecParameterDialog } from '@shiptech/core/ui/components/ds-components/pop-ups/ops-spec-parameter.component';
-import { SearchPopupDialog } from '@shiptech/core/ui/components/ds-components/pop-ups/search-popup.component';
+import { MasterSelectionDialog } from '@shiptech/core/ui/components/ds-components/pop-ups/master-selection-popup.component';
 import { GridOptions } from 'ag-grid-community';
 import moment from 'moment';
-import { from } from 'rxjs';
 import { KnownInvoiceRoutes } from '../../../known-invoice.routes';
 import { IInvoiceDetailsItemBaseInfo, IInvoiceDetailsItemCounterpartyDetails, IInvoiceDetailsItemDto, IInvoiceDetailsItemInvoiceCheck, IInvoiceDetailsItemInvoiceSummary, IInvoiceDetailsItemOrderDetails, IInvoiceDetailsItemPaymentDetails, IInvoiceDetailsItemProductDetails, IInvoiceDetailsItemRequest, IInvoiceDetailsItemRequestInfo, IInvoiceDetailsItemResponse, IInvoiceDetailsItemStatus } from '../../../services/api/dto/invoice-details-item.dto';
 import { InvoiceDetailsService } from '../../../services/invoice-details.service';
@@ -22,15 +20,35 @@ import { InvoiceDetailsService } from '../../../services/invoice-details.service
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InvoiceDetailComponent implements OnInit, OnDestroy {
-  buttonToggleData = { names: ['Final', 'Provisional', 'Credit', 'Debit'] }
 
-  _entityId;
-  activeBtn = 'Final';
-  emptyStringVal = '--';
-  emptyNumberVal = '00';
-
+  //Default Values - strats
+  public _entityId = null;
   public gridOptions_data: GridOptions;
   public gridOptions_ac: GridOptions;
+  private rowData_aggrid_pd = [];
+  private rowData_aggrid_ac = [];
+  public popupOpen: boolean;
+  emptyStringVal = '--';
+  emptyNumberVal = '00';
+  invoice_types =[
+    {
+      displayName:'Final',
+      value:'FinalInvoice',
+    },
+    {
+      displayName:'Provisional',
+      value:'Provisional',
+    },
+    {
+      displayName:'Credit',
+      value:'Credit',
+    },
+    {
+      displayName:'Debit',
+      value:'Debit',
+    },
+  ]
+  
   public chipData = [
     {Title:'Invoice No', Data:this.emptyStringVal},
     {Title:'Status', Data:this.emptyStringVal},
@@ -42,8 +60,6 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     {Title:'Deductions', Data:this.emptyStringVal},
     {Title:'Net Payable', Data:this.emptyStringVal}
   ]
-  public popupOpen: boolean;
-  private productDetailsData = [];
   public orderDetails = {
     contents: [
       {
@@ -91,14 +107,20 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     hasSeparator: true
   }
 
+  //Default Values - strats
+
   constructor(public dialog: MatDialog, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private invoiceService: InvoiceDetailsService, route: ActivatedRoute) {
-    iconRegistry.addSvgIcon(
-      'data-picker-gray',
-      sanitizer.bypassSecurityTrustResourceUrl('../../assets/customicons/calendar-dark.svg'));
-
+    iconRegistry.addSvgIcon('data-picker-gray',sanitizer.bypassSecurityTrustResourceUrl('../../assets/customicons/calendar-dark.svg'));
     this._entityId = route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
+    this.setupGrid();
+  }
 
+  ngOnInit(): void {
+    this.getInvoiceItem();
+    this.buildProductDetilsGrid();
+  }
 
+  private setupGrid(){
     this.gridOptions_ac = <GridOptions>{
       defaultColDef: {
         resizable: true,
@@ -132,8 +154,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         }
       }
     }
-
   }
+
   private columnDef_aggrid_pd = [
     {
       resizable: false,
@@ -263,15 +285,13 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     { headerName: 'Difference', headerTooltip: 'Difference', field: 'name' }
   ];
 
-  private rowData_aggrid_pd = [];
-
-  private rowData_aggrid_ac = [];
-
   public formValues: IInvoiceDetailsItemDto = {
     sellerInvoiceNo: 0,
     documentNo: 0,
     invoiceId: 0,
-    documentType: <IInvoiceDetailsItemBaseInfo>{},
+    documentType: <IInvoiceDetailsItemBaseInfo>{
+      internalName:'FinalInvoice'
+    },
     canCreateFinalInvoice: false,
     receivedDate: '',
     dueDate: '',
@@ -362,9 +382,9 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
   openSearchPopup() {
     this.popupOpen = true;
-        const dialogRef = this.dialog.open(OpsSpecParameterDialog, {
-            width: '600px',
-            maxHeight: '600px',
+        const dialogRef = this.dialog.open(MasterSelectionDialog, {
+            width: '90%',
+            height: '90%',
             panelClass: 'popup-grid'
         });
 
@@ -373,10 +393,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         });
   }
 
-  ngOnInit(): void {
-    this.getInvoiceItem();
-    this.buildProductDetilsGrid();
-  }
+  
 
   buildProductDetilsGrid(){
     this.gridOptions_data = <GridOptions>{
@@ -435,7 +452,9 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   }
 
   getInvoiceItem() {
-    //this._entityId = 10851;
+    if(!this._entityId)
+      return;
+    
     let data : IInvoiceDetailsItemRequest = {
       Payload: this._entityId
     };
@@ -488,28 +507,33 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   formatDateForBe(value) {
     if (value) {
       let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
-      return `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+      return beValue;
     } else {
       return null;
     }
   }
 
-  onChange($event, field) {
-    if ($event.value) {
-      let beValue = `${moment($event.value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
-      if (field == 'dealDate') {
-        //this.isDealDateInvalid = false;
-      } 
-      console.log(beValue);
-    } else {
-      if (field == 'dealDate') {
-       // this.isDealDateInvalid = true;
-      } 
-     // this.toastr.error('Please enter the correct format');
-    }
-
+  ngOnDestroy(): void {
   }
 
-  ngOnDestroy(): void {
+  public saveInvoiceDetails(){
+    alert("Has to save please wait");
+  }
+
+  public openRequest(){
+    //https://bvt.shiptech.com/#/edit-request/89053
+  }
+  
+  // getHeaderNameSelector(): string {
+  //   switch (this._autocompleteType) {
+  //     case knownMastersAutocomplete.orders:
+  //       return knowMastersAutocompleteHeaderName.orders;
+  //     default:
+  //       return knowMastersAutocompleteHeaderName.orders;
+  //   }
+  // }
+
+  openSeller() {
+    document.getElementsByTagName('body')[0].click();
   }
 }
