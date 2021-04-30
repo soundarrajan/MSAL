@@ -3,24 +3,19 @@
 [navBar]="navBar">
 <div class="col-6">
   <div style="float:right">
-    <button  class="ui-button-info mr-1 btn-i-blue-color" label="Save"
-            pButton
-            type="button"
-            (click)="save()"></button>
     <button *ngIf="formValues.deliveryStatus && (formValues.deliveryStatus.name == 'NotVerified' || formValues.deliveryStatus.name == 'Open')" 
-          class="ui-button-info mr-1 btn-i-blue-color" 
-          label="Verify"
-          pButton
+          class="cust-btn" 
           type="button"
-          (click)="verify()"></button>
+          (click)="verify()"><span class="btn-text">Verify</span></button>
     <button *ngIf="formValues.deliveryStatus &&  formValues.deliveryStatus.name == 'Verified'" 
-          class="ui-button-info mr-1 btn-i-blue-color" 
-          label="Revert Verify"
-          pButton
+          class="cust-btn" 
           type="button"
-          (click)="revertVerify()"></button>
-    <button mat-icon-button [matMenuTriggerFor]="menu" [disabled]="!formValues.deliveryStatus">
-      <mat-icon>more_vert</mat-icon>
+          (click)="revertVerify()"><span class="btn-text">Revert Verify</span></button>
+    <button  class="cust-btn"
+          type="button"
+          (click)="save()"><span class="btn-text">Save</span></button>      
+    <button class="cust-menu-btn" mat-icon-button [matMenuTriggerFor]="menu" [disabled]="!formValues.deliveryStatus">
+      <mat-icon>more_horiz</mat-icon>
     </button>
     <mat-menu #menu="matMenu" class="delivery-mat-menu-panel">
       <button mat-menu-item (click)="splitDeliveries()" >
@@ -52,7 +47,7 @@
             [statusColorCode]="statusColorCode"
             [eventsSaveButton]="eventsSubject2.asObservable()"
             class="col-12"
-            style="padding-top: 20px; margin-right: 0px !important;
+            style="margin-right: 0px !important;
             padding-right: 0px !important;">
         </shiptech-bdn-information>  
       </div>
