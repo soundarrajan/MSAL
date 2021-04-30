@@ -172,6 +172,7 @@
         </div>
     </div>
     <div class="col-md-12 row product-information-container" *ngIf="formValues.deliveryProducts[deliveryProductIndex]">
+        <div class="col-md-12 row product-information-options">
         <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
             <div class="split-field">
                 <mat-form-field class="without-search long-label-field" style="width: 64%;border: none;" appearance="legacy">
@@ -449,7 +450,7 @@
                 </button>
             </div>
         </div>
-        <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+        <div class="custom-form-field" style="margin-bottom: 0 !important" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
             <div class="split-field">
                 <mat-form-field class="without-search long-label-field input-field-container" style="width: 64%;border: none;" appearance="legacy">
                     <mat-label>Delivered Quantity</mat-label>
@@ -518,6 +519,7 @@
                     <div class="label">{{formValues.deliveryProducts[deliveryProductIndex].fuelManifoldTemperatureUom}}</div>
                 </div>   
             </mat-form-field>
+        </div>
         </div>
     </div>
 </div>

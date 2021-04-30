@@ -1,9 +1,7 @@
-﻿commit 7816195bbfbd333055403d5c286234261a68d921
-Author: Padmashree S <padmashree.s@inatech.com>
-Date:   Fri Apr 30 10:12:13 2021 +0530
+﻿commit de5dcf321bc11e033eb9c789b315ae1d2ed5b62b
+Author: Soundar <soundarrajan.s@inatech.com>
+Date:   Fri Apr 30 14:06:48 2021 +0530
 
-    Delivery screen bugs fixed
-    
-    Delivery screen bugs fixed
+    Delivery Screen - UI Issue- VSTS 31500,04,16,22,23
 
 branch: master
