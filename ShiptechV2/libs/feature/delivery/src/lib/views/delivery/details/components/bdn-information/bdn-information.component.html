@@ -1,5 +1,5 @@
 <div class="col-md-12 row detail-container">
-  <div class="col-md-5 vessel-details vessel-details-component" style="display: flex;justify-content: flex-start;">
+  <div class="col-md-5 vessel-details vessel-details-component" style="margin-top: 25px;display: flex;justify-content: flex-start;">
     <div class="badge-header">
       <div>
         <span class="label">
@@ -39,7 +39,7 @@
       </div>
     </div>
   </div>
-  <div class="col-md-3 created-information">
+  <div class="col-md-3 created-information" style="margin-top: 25px;">
     <div class="created-info">
       <div class="row" style="padding-top: 5px;">
         <div class="col-md-12 no-padding">
@@ -78,8 +78,10 @@
                 </span>
                 Delivery No
               </span>
-              <div *ngIf="formValues.deliveryNumber" class="value white-color">
-                {{formValues.deliveryNumber}}
+              <div *ngIf="formValues.deliveryNumber" class="value white-color" style="padding-top: 5px;">
+                <span>
+                  {{formValues.deliveryNumber}}
+                </span>
               </div>
             </div>
           </div>
@@ -98,15 +100,17 @@
                 </span>
                 Status
               </span>
-              <div *ngIf="formValues.deliveryStatus" class="value status-entity" [ngStyle]="{'backgroundColor': statusColorCode}">
-                {{formValues.deliveryStatus.name}}
+              <div *ngIf="formValues.deliveryStatus" class="value status-entity">
+                <span [ngStyle]="{'color': statusColorCode, 'margin-left': '-4px', 'padding-top': '5px'}">
+                  {{formValues.deliveryStatus.name}}
+                </span>
               </div>
             </div>
           </div>
           <div class="readonly-label-related-delivery related-deliveries col-md-6">
             <div class="label-block">
               <div class="title">Related Deliveries</div>
-              <div class="value related-deliveries-container">
+              <div class="value related-deliveries-container" style="padding-top: 5px;">
                 <span *ngFor="let relatedDelivery of relatedDeliveries">
                   <a *ngIf="relatedDelivery"  href="{{getRelatedDeliveryLink(relatedDelivery.deliveryId)}}">
                     <span class="related-deliveries-dot-container"></span>
@@ -115,8 +119,9 @@
                 </span>
               </div>
             </div>
+            <div class="border_line"></div>
             <div class="related-deliveries-complete-delivery label-block">
-              <div class="title" style="visibility: hidden;">Related Deliveries</div>
+              <!-- <div class="title" style="visibility: hidden;">Related Deliveries</div> -->
               <div class="value"> 
                 <mat-checkbox 
                   [color]="'primary'"

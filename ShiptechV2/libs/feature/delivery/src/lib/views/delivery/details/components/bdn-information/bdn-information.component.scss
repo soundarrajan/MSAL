@@ -318,6 +318,7 @@
   line-height: 12px;
   color: #9E9E9E;
   padding-left: 10px;
+  padding-top: 6px;
 }
 
 .mat-checkbox-frame {
@@ -757,6 +758,8 @@
     }
     .border_line {
       border-right: 1px solid #252a32;
+      height: 25px;
+      margin-top: -4px;
     }
   }
   .total-exposure {
@@ -785,6 +788,12 @@
 
 .bdn-info {
   margin-top: 15px;
+  .mat-input-element:disabled{
+    color: #252A32 !important;
+  }
+  .custom-form-field.lightTheme .mat-form-field .mat-form-field-label mat-label {
+    background: #eeeeee !important;
+  }
 }
 
 .created-by-field, .created-on-field {
@@ -848,7 +857,7 @@
     .label {
       font-style: normal;
       font-weight: normal;
-      font-size: 12px;
+      font-size: 10px;
       line-height: 14px;
     }
     .border_line {
@@ -869,6 +878,7 @@
       font-weight: normal;
       font-size: 12px;
       color:white;
+      width: 125px;
     }
     .value {
       font-weight: 500;
@@ -876,6 +886,11 @@
       color:white;
     
     }
+  }
+  .border_line{
+    border-right: 1px solid #9E9E9E;
+    height: 35px;
+    margin-top: 2px;
   }
   .divider {
     border-right: 1px solid #eceef1;
