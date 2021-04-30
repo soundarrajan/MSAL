@@ -66,6 +66,10 @@
   width: 100px;
   height: 30px;
   margin: 0px 5px;
+  &.small{
+    height: 25px;
+    
+  }
 }
 
 .cust-menu-btn{
@@ -75,4 +79,8 @@
     border: 1px solid #CCCCCC;
     border-radius: 0px;
     margin: 0px 5px;
+    &.small{
+      height: 25px !important;
+      line-height: 0 !important;
+    }
 }
