@@ -1,5 +1,13 @@
 .delivery-products-group .add-product-dropdown-icon::before {
-  content: url(../../../../../../../../../../assets/layout/images/pages/add-product-dropdown.svg);
+  content: url(../../../../../../../../../../assets/layout/images/pages/add-btn.svg);
+  position: relative;
+  top: 6px;
+}
+
+.remove-icon{
+  content: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTYgMEMyLjY5MTY5IDAgMCAyLjY5MTQ2IDAgNkMwIDkuMzA4NTQgMi42OTE2OSAxMiA2IDEyQzkuMzA4MzEgMTIgMTIgOS4zMDg1NCAxMiA2QzEyIDIuNjkxNDYgOS4zMDgzMSAwIDYgMFpNOSA2Ljc1SDZIM0MyLjc0NTIzIDYuNzUgMi42NTM4NSA2LjI1NDc3IDIuNjUzODUgNkMyLjY1Mzg1IDUuNzQ1MjMgMi44NjA2MiA1LjUzODQ2IDMuMTE1MzggNS41Mzg0Nkg4Ljg4NDYyQzkuMTM5MzkgNS41Mzg0NiA5LjM0NjE1IDUuNzQ1MjMgOS4zNDYxNSA2QzkuMzQ2MTUgNi4yNTQ3NyA5LjI1NDc3IDYuNzUgOSA2Ljc1WiIgZmlsbD0iIzM2NDE1MCIvPgo8L3N2Zz4K');
+  width: 12px;
+  height: 12px;
 }
 
 .delivery-products-group .row {
@@ -9,6 +17,41 @@
 
 .delivery-products-group .mat-form-field {
   height: 40px;
+  &.custom-select{
+    width: 142px;
+    height: 28px;
+    .mat-form-field-underline{
+      display: none;
+    }
+    // .mat-form-field-hide-placeholder{
+    //   .mat-form-field-label{
+    //     width: calc(100% - 18px) !important;
+    //   }
+    // }
+    .mat-form-field-label-wrapper{
+      top: -11px;
+    }
+    .mat-form-field-label{
+      display: flex;
+      justify-content: center;
+      color: #C3C6CC !important;
+      width: calc(100% - 18px) !important;
+    }
+    .mat-select-arrow-wrapper{
+      position: relative;
+      top: 4px;
+      right: 10px;
+    }
+    .mat-form-field-wrapper{
+      .mat-form-field-flex{
+        height: 28px;
+        .mat-form-field-infix{
+          padding: 0;
+          border-top: 0;
+        }
+      }
+    }
+  }
 }
 
 .delivery-products-group {
@@ -27,7 +70,7 @@
   width: 25px;
   height: 25px;
   position: relative;
-  padding-top: 10px;
+  //padding-top: 10px;
 }
 
 .select-product-container .mat-table {
@@ -142,12 +185,12 @@
 
 .product-tab {
   position: relative;
-  height: fit-content;
-  padding: 10px;
+  height: 28px;
+  padding: 6px 10px;
   background: #364150;
   border-radius: 5px;  
   width: fit-content;
-  min-height: 40px;
+  //min-height: 40px;
   font-family: Roboto;
   font-style: normal;
   font-weight: 500;
@@ -166,7 +209,39 @@
   display: inline-flex;
 }
 
+.product-details-header {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  //padding-top: 15px;
+  padding-bottom: 15px;
+  color: #252A32;
+}
 
+.bottom-border{
+  position: absolute;
+  top: -20px;
+  width: 105%;
+  left: -29px;
+  border-bottom: 4px solid #dce3eb;
+}
+
+.addded-product{
+  .remove-icon{
+    display:none;
+  }
+  &:hover{
+    .remove-icon{
+      display:block;
+      margin-right: 15px;
+      position: relative;
+      top: 8px;
+      margin-left: 3px;
+    }
+  }
+}
 .no-padding {
   margin-left: 0px !important;
   margin-right: 0px !important;
@@ -177,8 +252,10 @@
 
 .divider {
   border-right: 1px solid #37414f;
-  height: 38px;
-  margin-left: 10px;
+  height: 16px;
+  margin: 0 5px 0 15px;
+  position: relative;
+  top: 7px;
 }
 
 .not-selected-product-container {
