@@ -56,8 +56,8 @@
 
 .delivery-products-group {
   min-height: 56px;
-  padding-top: 15px;
-  padding-bottom: 15px;
+  padding-top: 5px;
+  padding-bottom: 10px;
 }
 
 .delivery-products-group .mat-form-field-appearance-fill .mat-form-field-flex {
@@ -207,6 +207,7 @@
 .product-tabs {
   position: relative;
   display: inline-flex;
+  margin-bottom: 5px;
 }
 
 .product-details-header {
