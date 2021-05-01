@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AppConfig } from '@shiptech/core/config/app-config';
+import { EstAutoSearchType } from '@shiptech/core/enums/master-search-type';
 import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
 import { GridOptions, Optional } from "ag-grid-community";
 import { Observable, of } from 'rxjs';
@@ -35,7 +36,7 @@ export class MasterSelectionDialog {
     _apiUrl;
     constructor(private http: HttpClient, private appConfig: AppConfig, public dialogRef: MatDialogRef<MasterSelectionDialog>, @Optional() @Inject(MAT_DIALOG_DATA) public data: ImasterSelectionPopData) {
         this._apiUrl = this.appConfig.v1.API.BASE_URL_DATA_MASTERS;        
-        if(data.selectionType == EmasterSelectiontype.company){
+        if(data.selectionType == EstAutoSearchType.company){
             this.loadCompanyGridOption();
         }
     }
@@ -172,14 +173,10 @@ export enum masterURLenums {
 }
 
 export interface ImasterSelectionPopData{
-    selectionType?: EmasterSelectiontype;
+    selectionType?: EstAutoSearchType;
     dialog_gridOptions?:GridOptions;
     dialog_header?:string
 } 
-
-export enum EmasterSelectiontype {
-    company = "company"
-}
 
 function isFirstColumn(params) {
     var displayedColumns = params.columnApi.getAllDisplayedColumns();

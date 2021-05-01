@@ -41,7 +41,6 @@ export class EventsLogGridViewModel extends BaseGridViewModel
     domLayout: 'autoHeight',
     pagination: false,
     animateRows: true,
-    gridAutoHeight: true,
 
     deltaRowDataMode: true,
     suppressPaginationPanel: true,

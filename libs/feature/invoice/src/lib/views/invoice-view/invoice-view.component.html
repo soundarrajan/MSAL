@@ -11,7 +11,9 @@
                         <!-- Invoice Detail Component -->
                         <shiptech-invoice-detail #invoiceDetails></shiptech-invoice-detail>
                     </div>
-                    <div *ngIf="item.name=='Related Invoices'" class="custom-tab-container"> Tab container 2</div>
+                    <div *ngIf="item.name=='Related Invoices'" class="custom-tab-container"> 
+                      <shiptech-related-invoice></shiptech-related-invoice>
+                    </div>
                     <div *ngIf="item.name=='Documents'" class="custom-tab-container"> Tab container 3</div>
                     <div *ngIf="item.name=='Email Log'" class="custom-tab-container"> Tab container 4</div>
                     <div *ngIf="item.name=='Seller Rating'" class="custom-tab-container"> Tab container 5</div>

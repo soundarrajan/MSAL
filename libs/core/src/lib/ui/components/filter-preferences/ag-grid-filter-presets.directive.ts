@@ -29,6 +29,7 @@ import { AgGridFilterPresetsService } from './ag-filter-presets-service/ag-filte
 import { RowModelType } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { SKIP$ } from '@shiptech/core/utils/rxjs-operators';
 import { AgGridAngular } from '@ag-grid-community/angular';
+import { FilterPreferenceViewModel } from '@shiptech/core/services/user-settings/filter-preference.interface';
 
 @Directive({
   // tslint:disable-next-line:directive-selector
@@ -250,7 +251,7 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
     this.filterPresetsService.emitFiltersChanged({
       groupId: this.groupId,
       gridId: this.elementId,
-      filterPreset: event.api.getFilterModel()
+      filterPreset: <FilterPreferenceViewModel>event.api.getFilterModel()
     });
   }
 }

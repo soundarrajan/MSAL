@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
@@ -7,16 +6,11 @@ import { AGGridCellActionsComponent } from '@shiptech/core/ui/components/ds-comp
 import { AGGridCellEditableComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-editable.component';
 import { AGGridCellRendererComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-renderer.component';
 import { AgGridCellStyleComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-style.component';
-import { MasterSelectionDialog } from '@shiptech/core/ui/components/ds-components/pop-ups/master-selection-popup.component';
 import { GridOptions } from 'ag-grid-community';
 import moment from 'moment';
 import { KnownInvoiceRoutes } from '../../../known-invoice.routes';
 import { IInvoiceDetailsItemBaseInfo, IInvoiceDetailsItemCounterpartyDetails, IInvoiceDetailsItemDto, IInvoiceDetailsItemInvoiceCheck, IInvoiceDetailsItemInvoiceSummary, IInvoiceDetailsItemOrderDetails, IInvoiceDetailsItemPaymentDetails, IInvoiceDetailsItemProductDetails, IInvoiceDetailsItemRequest, IInvoiceDetailsItemRequestInfo, IInvoiceDetailsItemResponse, IInvoiceDetailsItemStatus } from '../../../services/api/dto/invoice-details-item.dto';
 import { InvoiceDetailsService } from '../../../services/invoice-details.service';
-import { EmasterSelectiontype } from '@shiptech/core/ui/components/ds-components/pop-ups/master-selection-popup.component';
-import { ImasterSelectionPopData } from '@shiptech/core/ui/components/ds-components/pop-ups/master-selection-popup.component';
-import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'shiptech-invoice-detail',
@@ -31,7 +25,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   public gridOptions_ac: GridOptions;
   private rowData_aggrid_pd = [];
   private rowData_aggrid_ac = [];
-  public popupOpen: boolean;
+  
   emptyStringVal = '--';
   emptyNumberVal = '00';
   invoice_types =[
@@ -112,8 +106,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   }
 
   //Default Values - strats
-
-  constructor(public dialog: MatDialog, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private invoiceService: InvoiceDetailsService, route: ActivatedRoute, private http: HttpClient) {
+  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private invoiceService: InvoiceDetailsService, route: ActivatedRoute) {
     iconRegistry.addSvgIcon('data-picker-gray',sanitizer.bypassSecurityTrustResourceUrl('../../assets/customicons/calendar-dark.svg'));
     this._entityId = route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
     this.setupGrid();
@@ -144,7 +137,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         this.gridOptions_data.columnApi = params.columnApi;
         this.gridOptions_data.api.sizeColumnsToFit();
         this.gridOptions_data.api.setRowData(this.rowData_aggrid_ac);
-        this.addCustomHeaderEventListener();
+        this.addCustomHeaderEventListener(params);
 
       },
       onColumnResized: function (params) {
@@ -359,7 +352,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     userAction: '',
   };
 
-  addCustomHeaderEventListener() {
+  addCustomHeaderEventListener(params) {
     let addButtonElement = document.getElementsByClassName('add-btn');
     addButtonElement[0].addEventListener('click', (event) => {
       console.log('add btn');
@@ -379,7 +372,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       }
   
     var newItems = [productdetail];
-    this.gridOptions_data.api.applyTransaction({
+    params.api.applyTransaction({
       add: newItems
     });
 
@@ -407,13 +400,13 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       headerHeight: 35,
       rowHeight: 45,
       animateRows: false,
-
+      masterDetail: true,
       onGridReady: (params) => {
         this.gridOptions_data.api = params.api;
         this.gridOptions_data.columnApi = params.columnApi;
         this.gridOptions_data.api.sizeColumnsToFit();
         this.gridOptions_data.api.setRowData(this.rowData_aggrid_pd);
-        this.addCustomHeaderEventListener();
+        this.addCustomHeaderEventListener(params);
 
       },
       onColumnResized: function (params) {
@@ -524,28 +517,9 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     //https://bvt.shiptech.com/#/edit-request/89053
   }
 
-  openSearchPopup() {
-    this.popupOpen = true;
-        const dialogRef = this.dialog.open(MasterSelectionDialog, {
-            width: '90%',
-            height: '90%',
-            panelClass: 'popup-grid',
-            data:<ImasterSelectionPopData>{
-              title:'Selet Company',
-              selectionType:EmasterSelectiontype.company
-            }
-        });
-
-        dialogRef.afterClosed().subscribe(result => {
-          console.log(result)
-            this.popupOpen = false;
-            this.formValues.orderDetails.paymentCompany = <IInvoiceDetailsItemBaseInfo>{id:result.id, name:result.name};
-        });
-  }
   
-  public getStates(): Observable<any> {
-    return this.http.get('https://euw-sh-int-bvt-api.azurewebsites.net/Shiptech10.Api.Masters/api/masters/counterparties/listByTypesAutocomplete');
-  }
+  
+
 
   getCounterPartiesList(){
     // this.getStates().subscribe(response => {
@@ -570,10 +544,10 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       phy_supplier: ''
     }
 
-  var newItems = [productdetail];
-  var res = this.gridOptions_data.api.applyTransaction({
-    add: newItems
-  });
+  // var newItems = [productdetail];
+  // params.api.applyTransaction({
+  //   add: newItems
+  // });
   }
 
   onModelChanged(evt){
