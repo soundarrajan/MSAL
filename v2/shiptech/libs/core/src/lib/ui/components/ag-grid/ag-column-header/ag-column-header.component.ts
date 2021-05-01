@@ -4,7 +4,7 @@ import {
   Component,
   TemplateRef
 } from '@angular/core';
-import { ICellRendererParams } from '@ag-grid-community/core';
+import { ICellRendererParams, IHeaderParams } from '@ag-grid-community/core';
 import { HeaderRendererConfig } from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { IHeaderAngularComp } from '@ag-grid-community/angular';
 
@@ -42,4 +42,9 @@ export class AgColumnHeaderComponent implements IHeaderAngularComp {
 
     this.changeDetector.markForCheck();
   }
+
+  refresh(params: IHeaderParams): boolean{
+    return null;
+  }
+  
 }
