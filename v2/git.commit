@@ -1,7 +1,7 @@
-﻿commit 57223ae27419ed204a60c4786b8a682fdd4cfc18
-Author: Gokul Dhas Simson <gokul.s@Inatech.com>
-Date:   Sat May 1 19:25:26 2021 +0530
+﻿commit 8c7c44eebd0d65265f8bee447937244576686ce0
+Author: Subhashini Vasanthakumar <subhashini.k@Inatech.com>
+Date:   Sat May 1 21:51:19 2021 +0530
 
-    Invoice Changes & Ag Grid upgrade for add issue
+    added styles for plan status
 
 branch: master
