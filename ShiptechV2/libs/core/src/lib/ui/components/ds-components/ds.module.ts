@@ -17,6 +17,7 @@ import { SearchPopupDialog } from './pop-ups/search-popup.component';
 import { SpecParameterDialog } from './pop-ups/spec-parameter.component';
 import { ReadonlyDetailsComponent } from './readonly-details/readonly-details.component';
 import { TabsComponent } from './tabs/tabs.component';
+import { StAutosearchSelectorComponent } from './st-autosearch-selector/st-autosearch-selector.component';
 @NgModule({ 
   imports: [
     CommonModule,
@@ -24,12 +25,18 @@ import { TabsComponent } from './tabs/tabs.component';
     ReactiveFormsModule,
     MaterialModule,
     UIModule,
-    AgGridModule.withComponents([])
+    AgGridModule.withComponents([
+      AGGridCellEditableComponent,
+      AgGridCellStyleComponent,
+      AGGridCellActionsComponent,
+      AGGridCellRendererComponent
+    ])
   ],
   exports: [ 
     TabsComponent,
     MasterChip,
-    ReadonlyDetailsComponent
+    ReadonlyDetailsComponent,
+    StAutosearchSelectorComponent
   ],
   declarations: [
     TabsComponent,
@@ -44,7 +51,8 @@ import { TabsComponent } from './tabs/tabs.component';
     AGGridCellRendererComponent,
     SearchPopupDialog,
     MasterSelectionDialog,
-    FooterV2Component
+    FooterV2Component,
+    StAutosearchSelectorComponent
   ],
   entryComponents:[
     MasterSelectionDialog
