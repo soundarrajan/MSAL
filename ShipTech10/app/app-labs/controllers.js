@@ -4,6 +4,8 @@
 APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 'Factory_Labs', '$state', '$location', '$q', '$compile', '$timeout', 'Factory_Master', '$listsCache', '$filter', '$templateCache', '$uibModal', '$http', 'API', 'statusColors', function ($scope, $rootScope, $Api_Service, Factory_Labs, $state, $location, $q, $compile, $timeout, Factory_Master, $listsCache, $filter, $templateCache, $uibModal, $http, API, statusColors) {
     let vm = this;
     let guid = '';
+    vm.relatedLabs = [];
+    $scope.relatedLabs = [];
     vm.master_id = $state.params.master_id;
     vm.entity_id = $state.params.entity_id;
     $scope.addedFields = new Object();
@@ -508,20 +510,6 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
         }
         return false;
     };
-    $scope.checkboxLabresultComparision = function (rowData) {
-        $scope.orderRelatedLabResults_product = [];
-        $scope.labResults_specParamIds = [];
-        $scope.selectedClaimTypeIds = [];
-        var currentChecksNo = 0;
-        $.each($scope.formValues.orderRelatedLabResults, (k, v) => {
-            if (v.isSelected) {
-                // $.each(v.product, (k1, v1) => {
-                $scope.orderRelatedLabResults_product.push(v.product);
-                // });
-                // $scope.labResults_specParamIds.push(v.id);
-            }
-        });
-    }
     // modal close
     $scope.prettyCloseModal = function () {
         let modalStyles = {
@@ -542,8 +530,8 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
             // $(".modal-scrollable").css("display", "none")
         }, 500);
     };
+
     $scope.displayLabComparedResults = function () {
-        let LabResultComparisionData;
         if (!$scope.SelectedCheckbox || $scope.SelectedCheckbox.length < 2) {
             toastr.error('Please select 2 Lab results for comparison.');
             return;
@@ -583,8 +571,8 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
                             }
 
                             $scope.comparableLabResults.push({
-                                'item_0_id': firstLTR?.specParameter.id,
-                                'item_1_id': secondLTR?.specParameter.id,
+                                'item_0_lrId': $scope.comparedLabResult[0].id,
+                                'item_1_lrId': $scope.comparedLabResult[1].id,
                                 'orderSpecParamName': initArr.labTestResult[i].specParameter.name,
                                 'bdnValue': initArr.labTestResult[i].bdnValue,
 
@@ -609,7 +597,7 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
                             template: tpl,
                             size: 'full',
                             appendTo: angular.element(document.getElementsByClassName('page-container')),
-                            windowTopClass: 'fullWidthModal autoWidthModal',
+                            windowTopClass: 'fullWidthModal',
                             scope: $scope
                         });
                     }
@@ -618,50 +606,40 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
                 ctrl.hasAccess = false;
             }
         });
-
     }
+
     $scope.em = function (row, rowIdx) {
-        let el = angular.element(document.getElementsByName('labResults_' + rowIdx));
         let labCompareLimit = 2;
-        if (el[0].checked) {
-            if ($scope.SelectedCheckbox == undefined) {
+        if (row.isSelected) {
+            if (!$scope.SelectedCheckbox || $scope.SelectedCheckbox.length == 0) {
                 $scope.SelectedCheckbox = [];
                 $scope.SelectedCheckbox_ProductMismatch = [];
                 $scope.LabTestResultsForCompare = [];
-                $scope.LabTestResultsForCompare.push({ "Id": row.entity.id });
-                $scope.SelectedCheckbox.push({ "id": row.entity.id, "product": row.entity.product });
-                $.each($scope.formValues.labTestResults, (key, row) => {
-                    if (row && row.entity) {
-                        var isEnabled = false;
-                        row.entity.disableCheckbox = isEnabled;
-
-                        if ($scope.LabTestResultsForCompare.length != -1) {
-                            isEnabled = true;
-                        }
-                        row.entity.disableCheckbox = !isEnabled;
-                    }
-                });
+                $scope.LabTestResultsForCompare.push({ "Id": row.id });
+                $scope.SelectedCheckbox.push({ "id": row.id, "product": row.product });
             }
             else {
-                if ($scope.SelectedCheckbox && $scope.SelectedCheckbox[0].product == row.entity.product) {
+                if ($scope.SelectedCheckbox && $scope.SelectedCheckbox[0].product == row.product) {
                     if ($scope.SelectedCheckbox.length >= labCompareLimit) {
                         toastr.error('Please select a maximum of ' + labCompareLimit.toString() + ' Lab results for comparison.');
-                        row.entity.isSelected = false;
+                        row.isSelected = false;
                         return;
                     }
                     else {
-                        $scope.SelectedCheckbox.push({ "id": row.entity.id, "product": row.entity.product });
+                        $scope.SelectedCheckbox.push({ "id": row.id, "product": row.product });
                     }
                 }
                 else {
                     toastr.error('Please select Lab result of same product type for comparison.');
+                    row.isSelected = false;
+                    return;
                 }
             }
         }
         else {
             if ($scope.SelectedCheckbox && $scope.SelectedCheckbox.length > 0) {
                 for (i = 0; i < $scope.SelectedCheckbox.length; i++) {
-                    if ($scope.SelectedCheckbox[i].id == row.entity.id) {
+                    if ($scope.SelectedCheckbox[i].id == row.id) {
                         $scope.SelectedCheckbox.splice(i, 1);
                         break;
                     }
@@ -851,6 +829,7 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
     //         // console.log(value);
     //     });
     // })
+
     $scope.$watch(() => {
         return $scope.formValues.labTestResults;
     }, (oldVal, newVal) => {

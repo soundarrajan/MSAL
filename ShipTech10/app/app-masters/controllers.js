@@ -7138,7 +7138,7 @@
         };
         vm.checkVerifiedDelivery = [ false, false ];
         vm.checkVerifiedDeliveryFromLabs = function(orderChange) {
-            if (orderChange == 'orderChange') {
+            if (orderChange == 'orderChange' &&  $('#DeliveryDeliveryID') &&  $('#DeliveryDeliveryID').length > 0) {
                 $('#DeliveryDeliveryID')[0].disabled = '';
                 $('#DeliveryDeliveryID')[0].options[0].text = '';
                 return;
@@ -7153,15 +7153,17 @@
                 if (vm.checkVerifiedDelivery[1]) {
                     $timeout(() => {
                         let someValidOption = false;
-                        $.each($('#DeliveryDeliveryID')[0].options, (key, val) => {
-                            if (val.value != '?' && val.value != '' && val.value != ' ') {
-                                someValidOption = true;
-                            }
-                        });
-                        if (!someValidOption && vm.entity_id > 0) {
-                            $('#DeliveryDeliveryID')[0].disabled = true;
-                            if ($scope.formValues.delivery != null) {
-                                $('#DeliveryDeliveryID')[0].options[0].text = `${$scope.formValues.delivery.name } is not Verified`;
+                        if($('#DeliveryDeliveryID') && $('#DeliveryDeliveryID').length > 0) {
+                            $.each($('#DeliveryDeliveryID')[0].options, (key, val) => {
+                                if (val.value != '?' && val.value != '' && val.value != ' ') {
+                                    someValidOption = true;
+                                }
+                            });
+                            if (!someValidOption && vm.entity_id > 0) {
+                                $('#DeliveryDeliveryID')[0].disabled = true;
+                                if ($scope.formValues.delivery != null) {
+                                    $('#DeliveryDeliveryID')[0].options[0].text = `${$scope.formValues.delivery.name } is not Verified`;
+                                }
                             }
                         }
                     }, 10);

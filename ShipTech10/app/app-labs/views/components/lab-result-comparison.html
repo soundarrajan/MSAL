@@ -20,15 +20,21 @@
     </div>
 </div>
 <hr>
-<div class="col-sm-12">
+<div class="col-sm-12" style="display: flex; justify-content: center;">
     <div class="custom-hardcoded-table admin">
         <table class="table-body">
             <thead>
                 <tr>
-                    <td rowspan="2" style="max-width: initial; min-width: 180px;" class="padding"><b>Order Spec Parameter</b></td>
-                    <td rowspan="2" style="max-width: initial; min-width: 180px;" class="padding"><b>BDN</b></td>
-                    <td colspan="2" style="max-width: initial; min-width: 180px;" class="padding"><b>{{compare_LabTestResultTestType[0].name}} - {{comparedLabResult[0].id}}</b></td>
-                    <td colspan="2" style="max-width: initial; min-width: 180px;" class="padding"><b>{{compare_LabTestResultTestType[1].name}} - {{comparedLabResult[1].id}}</b></td>
+                    <td rowspan="2" style="max-width: initial; min-width: 480px;" class="padding"><b>Order
+                            SpecParameter</b></td>
+                    <td rowspan="2" style="max-width: initial; min-width: 180px;" class="padding"><b>BDN</b>
+                    </td>
+                    <td colspan="2" style="max-width: initial; min-width: 180px;" class="padding">
+                        <b>{{compare_LabTestResultTestType[0].name}} - {{comparedLabResult[0].id}}</b>
+                    </td>
+                    <td colspan="2" style="max-width: initial; min-width: 180px;" class="padding">
+                        <b>{{compare_LabTestResultTestType[1].name}} - {{comparedLabResult[1].id}}</b>
+                    </td>
                 </tr>
                 <tr>
                     <td style="max-width: initial; min-width: 180px;" class="padding"><b>Labs</b></td>
@@ -39,8 +45,6 @@
             </thead>
             <tbody ng-repeat="(key, labTestResultRow) in comparableLabResults">
                 <td>
-                    <span style="display: none">labTestResult_0_Id: {{labTestResultRow.item_0_id}}</span>
-                    <span style="display: none">labTestResult_1_Id: {{labTestResultRow.item_1_id}}</span>
                     <label>{{labTestResultRow.orderSpecParamName}}</label>
                 </td>
                 <td>
@@ -50,9 +54,12 @@
                     <label>{{labTestResultRow.item_0_labs}}</label>
                 </td>
                 <td>
-                    <div class="ui-grid-cell-contents status text-center" ng-controller="Controller_Master as CM" style="background: {{ CM.getColorCodeFromLabels(labTestResultRow.item_0_qualityMatch) }}; padding: 8px 0;">
+                    <div class="ui-grid-cell-contents status text-center" ng-controller="Controller_Master as CM"
+                        style="background: {{ CM.getColorCodeFromLabels(labTestResultRow.item_0_qualityMatch) }}; padding: 8px 0;">
                         <span class="font-white ">
-                            {{labTestResultRow.item_0_qualityMatch.displayName ? labTestResultRow.item_0_qualityMatch.displayName : labTestResultRow.item_0_qualityMatch.name}}
+                            {{labTestResultRow.item_0_qualityMatch.displayName ?
+                            labTestResultRow.item_0_qualityMatch.displayName :
+                            labTestResultRow.item_0_qualityMatch.name}}
                         </span>
                     </div>
                 </td>
@@ -60,9 +67,12 @@
                     <label>{{labTestResultRow.item_1_labs}}</label>
                 </td>
                 <td>
-                    <div class="ui-grid-cell-contents status text-center" ng-controller="Controller_Master as CM" style="background: {{ CM.getColorCodeFromLabels(labTestResultRow.item_1_qualityMatch) }}; padding: 8px 0;">
+                    <div class="ui-grid-cell-contents status text-center" ng-controller="Controller_Master as CM"
+                        style="background: {{ CM.getColorCodeFromLabels(labTestResultRow.item_1_qualityMatch) }}; padding: 8px 0;">
                         <span class="font-white ">
-                            {{labTestResultRow.item_1_qualityMatch.displayName ? labTestResultRow.item_1_qualityMatch.displayName : labTestResultRow.item_1_qualityMatch.name}}
+                            {{labTestResultRow.item_1_qualityMatch.displayName ?
+                            labTestResultRow.item_1_qualityMatch.displayName :
+                            labTestResultRow.item_1_qualityMatch.name}}
                         </span>
                     </div>
                 </td>

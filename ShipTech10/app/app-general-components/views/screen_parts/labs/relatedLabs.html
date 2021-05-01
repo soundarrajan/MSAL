@@ -1,47 +1,69 @@
 <div class="row">
-<!--  related labs table -->
-<div class="related_labs_table_wrapper" style="display: none;">
-    <table>
-      <thead>
-        <th id="generatedThId18" >
-          {{ CM.app_id + '.LAB_RESULT_ID' | translate }}
-        </th>
-        <th id="generatedThId19">
-          {{ CM.app_id + '.LAB_COUNTERPARTY' | translate }}
-        </th>
-        <th id="generatedThId20">
-          {{ CM.app_id + '.LAB_STATUS' | translate }}
-        </th>
-        <th id="generatedThId21">
-          {{ CM.app_id + '.REQUEST_DATE' | translate }}
-        </th>
-        <th id="generatedThId22">
-          {{ CM.app_id + '.TEST_TYPE' | translate }}
-        </th>
-        <th id="generatedThId23">
-          {{ CM.app_id + '.PRODUCT' | translate }}
-        </th>
-        <th id="generatedThId24">
-          {{ CM.app_id + '.RECON_STATUS' | translate }}
-        </th>
-      </thead>
-      <tbody>
-        <tr ng-repeat="(key, lab) in relatedLabs">
-          <td> {{ lab.id }} </td>
-          <td> {{ lab.counterparty }} </td>
-          <td> {{ lab.status }} </td>
-          <td> {{ lab.requestDate }} </td>
-          <td> {{ lab.testType }} </td>
-          <td> {{ lab.product }} </td>
-          <td> {{ lab.reconStatus }} </td>
-        <tr>
-      </tbody>
-    </table>
+  <div class="col-sm-12" style="display: flex; justify-content: center; height: 250px;">
+    <div class="custom-hardcoded-table admin">
+      <table class="table-body">
+        <thead>
+          <tr>
+            <td style="max-width: initial; min-width: 50px;" class="padding"></td>
+            <td style="max-width: initial; min-width: 180px;" class="padding"><b>Lab Result ID</b></td>
+            <td style="max-width: initial; min-width: 240px;" class="padding"><b>Lab CounterParty</b></td>
+            <td style="max-width: initial; min-width: 240px;" class="padding"><b>Lab Status</b></td>
+            <td style="max-width: initial; min-width: 180px;" class="padding"><b>Result Date</b></td>
+            <td style="max-width: initial; min-width: 180px;" class="padding"><b>Test Type</b></td>
+            <td style="max-width: initial; min-width: 180px;" class="padding"><b>Product</b></td>
+            <td style="max-width: initial; min-width: 240px;" class="padding"><b>Recon Status</b></td>
+          </tr>
+        </thead>
+        <tbody ng-repeat="(key, relatedLabResultRow) in formValues.orderRelatedLabResults">
+          <td>
+            <div class="form-group">
+              <label class="mt-checkbox">
+                <input type="checkbox" ng-model="relatedLabResultRow.isSelected"
+                  ng-change="em(relatedLabResultRow, $index)">
+                <span style="background:#fff; border: 1px solid #dedede;"></span>
+              </label>
+            </div>
+          </td>
+          <td>
+            <a tooltip data-original-title="{{ '' }}" ng-href="#/labs/labresult/edit/{{ relatedLabResultRow.id }}"
+              target="_blank">
+              {{ relatedLabResultRow.id }}
+            </a>
+          </td>
+          <td>
+            <label>{{relatedLabResultRow.labCounterparty}}</label>
+          </td>
+          <td>
+            <div class="ui-grid-cell-contents status text-center" ng-controller="Controller_Master as CM"
+              style="background: {{ CM.getColorCodeFromLabels(relatedLabResultRow.labStatus) }}; padding: 8px 0;">
+              <span class="font-white ">
+                {{relatedLabResultRow.labStatus.displayName ?
+                relatedLabResultRow.labStatus.displayName :
+                relatedLabResultRow.labStatus.name}}
+              </span>
+            </div>
+          </td>
+          <td>
+            <div style="padding: 8px 10px;" ng-controller="Controller_Master as CM"
+              ng-bind="CM.formatDateTime(relatedLabResultRow.resultDate, null, 'resultDate')"></div>
+          </td>
+          <td>
+            <label>{{relatedLabResultRow.testType}}</label>
+          </td>
+          <td>
+            <label>{{relatedLabResultRow.product}}</label>
+          </td>
+          <td>
+            <div class="ui-grid-cell-contents status text-center" ng-controller="Controller_Master as CM"
+              style="background: {{ CM.getColorCodeFromLabels(relatedLabResultRow.reconStatus) }}; padding: 8px 0;">
+              <span class="font-white ">
+                {{relatedLabResultRow.reconStatus.displayName ?
+                relatedLabResultRow.reconStatus.displayName :
+                relatedLabResultRow.reconStatus.name}}
+              </span>
+            </div>
+          </td>
+        </tbody>
+      </table>
     </div>
-    <span ng-if="!CM.relatedLabs || CM.relatedLabs.length == 0">
-	    <div ui-grid="gridOptions['related_labs']"  id="grid_related_labs"  ui-grid-auto-resize ng-init="gridOptions.source = '$scope.formValues.orderRelatedLabResults'; "  >
-        <div class="clearfix"></div>
-	    </div>
-    </span>
-    <span ng-init="initGridDropdowns('related_labs')"></span>
-</div>
+  </div>
