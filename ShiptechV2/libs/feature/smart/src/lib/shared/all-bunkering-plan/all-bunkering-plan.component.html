@@ -52,9 +52,10 @@
                 <span class="title">Plan Date :</span>
                 <span class="content">{{item.createdOn | date: 'dd/MM/yyyy'}}</span>
                </div>
-               <div id="plan-date" class="border-l-rightside" style="flex:0 0 20%;text-align: center;">
-                <span class="content">{{item.planStatus}}</span>
-               </div>
+               <div id="plan-status" class="border-l-rightside" style="flex:0 0 13%;text-align: center;">
+                <span class="title">Status : </span>
+                <span [ngClass]="item.planStatus == undefined?'content': (item.planStatus =='Invalid'? 'content content_invalid' : 'content content_valid')" style="padding: 3% 16% !important; ">{{item.planStatus}}</span>
+              </div>
             </div>
           </div>
         </mat-panel-title>
