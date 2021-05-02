@@ -1,8 +1,8 @@
-﻿commit 4d06e192c96e7ba4f9d7710f617ebf2bc6b48dce
+﻿commit 9ce9ee90a02176f4800fbec243f8a494b319b6d0
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Sun May 2 06:46:56 2021 +0000
+Date:   Sun May 2 07:34:54 2021 +0000
 
-    Merged PR 10315: #29780 - bunkering plan hardcoded value changes has updated for vessel and planid
+    Merged PR 10317: #29780 - hardcoded value changes has updated for current bunker plan in bunkering dashboard page and click and update issue has fixed
     
     Related work items: #29780
 
