@@ -268,7 +268,7 @@
                 <readonly-details [options]="orderDetails"></readonly-details>                
                 <div class="form-fields">
                     <div class="custom-form-field-with-search lightTheme">
-                          <shiptech-st-autosearch-selector></shiptech-st-autosearch-selector>
+                          <shiptech-st-autosearch-selector [placeholder]="'company'" [name]="'Payment company'" [masterType]="'company'"></shiptech-st-autosearch-selector>
                     </div>
                     <div id="custom-form-field" class="lightTheme">
                         <mat-form-field class="without-search" appearance="legacy">
@@ -283,15 +283,7 @@
                     </div>
                     <div class="custom-form-field-with-search lightTheme">
                         <div class="d-flex">
-                            <mat-form-field class="without-search" appearance="legacy">
-                                <mat-label>Carrier</mat-label>
-                                <mat-select disableOptionCentering>
-                                    <mat-option value="Carrier">Carrier</mat-option>
-                                </mat-select>
-                            </mat-form-field>                            
-                            <div class="search-icon">
-                                <div class="img"></div>
-                            </div>
+                            <shiptech-st-autosearch-selector [placeholder]="'carrier'" [name]="'Carrier'" [masterType]="'company'"></shiptech-st-autosearch-selector>
                         </div>
                     </div>
                 </div>
@@ -320,25 +312,9 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                            <!-- <div id="custom-form-field" class="lightTheme">
-                                <mat-form-field class="without-search" appearance="legacy">
-                                    <mat-label>Customer</mat-label>
-                                    <mat-select disableOptionCentering>
-                                        <mat-option>YS Marine</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div> -->
                             <div class="custom-form-field-with-search lightTheme">
                                 <div class="d-flex">
-                                    <mat-form-field class="without-search" appearance="legacy">
-                                        <mat-label>Customer</mat-label>
-                                        <mat-select disableOptionCentering>
-                                            <mat-option value="YS Marine">YS Marine</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>                            
-                                    <div class="search-icon">
-                                        <div class="img"></div>
-                                    </div>
+                                    <shiptech-st-autosearch-selector [placeholder]="'customer'" [name]="'Customer'" [masterType]="'company'"></shiptech-st-autosearch-selector>
                                 </div>
                             </div>
                         </div>
@@ -361,6 +337,7 @@
                                 <div class="search-icon">
                                     <div class="img"></div>
                                 </div>
+                                <shiptech-st-autosearch-selector [placeholder]="'payable to'" [name]="'Payable To'" [masterType]="'company'"></shiptech-st-autosearch-selector>
                             </div>
                         </div>
                         <div style="padding-top: 5px;">
@@ -387,6 +364,20 @@
             <div style="width:100%;height: 250px;">
                 <ag-grid-angular style="width: 100%;height: 100%;" [gridOptions]="gridOptions_data"
                     class="ag-theme-material ag-grid-v2 angular-v9 prod-details"></ag-grid-angular>
+                    <mat-menu #menudd="matMenu">
+                        <button mat-menu-item>
+                          <mat-icon>dialpad</mat-icon>
+                          <span>Redial</span>
+                        </button>
+                        <button mat-menu-item disabled>
+                          <mat-icon>voicemail</mat-icon>
+                          <span>Check voice mail</span>
+                        </button>
+                        <button mat-menu-item>
+                          <mat-icon>notifications_off</mat-icon>
+                          <span>Disable alerts</span>
+                        </button>
+                      </mat-menu>
             </div>
         </div>
       </div>
@@ -396,7 +387,7 @@
     <div class="match-grid" style="border-bottom: 4px solid #e5e5e5;">
         <div class="title">Additional Costs</div>
         <div class="agGrid-v2" style="margin: 0">
-            <div style="width:100%;height: 125px;">
+            <div style="width:100%;height: 250px;">
                 <ag-grid-angular style="width: 100%;height: 100%;" [gridOptions]="gridOptions_ac"
                     class="ag-theme-material ag-grid-v2 angular-v9 add-cost"></ag-grid-angular>
             </div>

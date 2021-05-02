@@ -23,30 +23,64 @@
             <span>--</span>
         </mat-tab-group>
         <div class="header-buttons">
-          <div matTooltip="Back Office Report" matTooltipShowDelay="500" style="padding-left: 7px;">
-            <button class="cust-btn">
-                <span style="top: -1px;position: relative;">Back Office Report</span>
-            </button>
+          <div matTooltip="Back Office Report" matTooltipShowDelay="500" style="padding-left: 7px;">         
+            <a href="#" class="link-text">Link to Back offie report</a>
           </div>
-          <div matTooltip="Save" matTooltipShowDelay="500" style="padding-left: 7px;">
-            <button class="cust-btn" (click)="detailsSave()">
+          <div matTooltip="Save" matTooltipShowDelay="500" style="padding-left: 7px;" *ngIf="!isConfirm">
+            <button  class="cust-btn blue-button mat-button-base" (click)="saveDisabled=false" mat-flat-button>
                 <span style="top: -1px;position: relative;" >Save</span>
             </button>
           </div>
-          <div matTooltip="Approve Invoice" matTooltipShowDelay="500" style="padding-left: 7px;">
-            <button class="cust-btn">
-                <span style="top: -1px;position: relative;">Approve Invoice</span>
+          <div matTooltip="Confirm Invoice" matTooltipShowDelay="500" style="padding-left: 7px;" *ngIf="!isConfirm">
+            <button [disabled]="saveDisabled" class="cust-btn blue-button" mat-flat-button>
+                <span style="top: -1px;position: relative;" (click)="detailsSave()">Confirm</span>
+            </button>
+          </div> 
+          <div matTooltip="Save" matTooltipShowDelay="500" style="padding-left: 7px;" *ngIf="isConfirm">
+            <button class="cust-btn blue-button mat-button-base" (click)="detailsSave()" mat-flat-button>
+                <span style="top: -1px;position: relative;" >Unconfirm</span>
             </button>
           </div>
-          <div matTooltip="Revert" matTooltipShowDelay="500" style="padding-left: 7px;">
-            <button class="cust-btn" disabled>
-                <span style="top: -1px;position: relative;">Revert</span>
+          <div matTooltip="Confirm Invoice" matTooltipShowDelay="500" style="padding-left: 7px;" *ngIf="isConfirm">
+            <button class="cust-btn blue-button" mat-flat-button>
+                <span style="top: -1px;position: relative;">Approve</span>
             </button>
-          </div>
-          <div matTooltip="..." matTooltipShowDelay="500" style="padding-left: 7px;">
-            <button class="cust-btn">
-                <span style="top: -1px;position: relative;">...</span>
+          </div>                   
+          <div>
+            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+              <mat-icon>more_vert</mat-icon>
             </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item>
+                <mat-icon>assignment</mat-icon>
+                <span>Submit for review</span>
+              </button>
+              <button mat-menu-item disabled>
+                <mat-icon>next_week</mat-icon>
+                <span>Submit for approval</span>
+              </button>
+              <button mat-menu-item>
+                <mat-icon>backspace</mat-icon>
+                <span>Cancel invoice</span>
+              </button>
+              <button mat-menu-item>
+                <mat-icon>call made</mat-icon>
+                <span>Accept invoice</span>
+              </button>
+              <button mat-menu-item>
+                <mat-icon>redo</mat-icon>
+                <span>Revert invoice</span>
+              </button>
+              <button mat-menu-item>
+                <mat-icon>backspace</mat-icon>
+                <span>Reject invoice</span>
+              </button>
+              <button mat-menu-item>
+                <mat-icon>playlist_add</mat-icon>
+                <span>Create invoice</span>
+              </button>
+            </mat-menu>
+
           </div>
         </div>
     </div>

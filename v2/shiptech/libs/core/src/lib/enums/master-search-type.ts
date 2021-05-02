@@ -1,3 +1,4 @@
 export enum EstAutoSearchType {
-    company = 'company'
+    company = 'company',
+    carrier = 'carrier'
 }

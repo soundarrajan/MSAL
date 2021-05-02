@@ -57,5 +57,16 @@ export class ProductDetailsModalComponent implements OnInit {
     this.dataSource.filter = this.searchText.trim().toLowerCase();
   }
 
+  closeClick(): void {
+    this.dialogRef.close();
+  }
+
+  raiseClaim() {
+    this.dialogRef.close();
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
   
 }
