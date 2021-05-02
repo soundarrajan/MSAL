@@ -14,6 +14,7 @@ import { VesselDetailsComponent } from './vessel-details/vessel-details.componen
 import { AgGridModule } from '@ag-grid-community/angular';
 import { AGGridCellRendererComponent } from './ag-grid/ag-grid-cell-renderer.component';
 import { AGGridCellDataComponent ,HoverMenuComponent} from './ag-grid/ag-grid-celldata.component';
+import { AgGridInputCellEditor} from './ag-grid/ag-grid-input-cell-editor';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { VesselInfoComponent } from './vessel-info/vessel-info.component';
 import { AuditLogComponent } from './audit-log/audit-log.component';
@@ -44,7 +45,7 @@ import { NoDataComponent } from './no-data-popup/no-data-popup.component'
 
 @NgModule({
   declarations: [HeaderComponent, FilterchipsComponent, MapPanelComponent, SmartOperatorComponent, OlMapComponent, VesselDetailsComponent, HeaderPanelComponent,
-    AGGridCellRendererComponent, AGGridCellDataComponent, VesselInfoComponent, AuditLogComponent, RequestsDetailsComponent, CommentsComponent, NewRequestComponent,
+    AGGridCellRendererComponent, AGGridCellDataComponent, AgGridInputCellEditor, VesselInfoComponent, AuditLogComponent, RequestsDetailsComponent, CommentsComponent, NewRequestComponent,
     HeaderPanelComponent, VesselPopupComponent, PortPopupComponent, NotificationsComponent, ConfirmationPopupComponent,
     TableLegendComponent, CustomStepperComponent, SmartMessengerComponent, SearchVesselComponent, BunkeringPlanComponent, WarningComponent,
     PortMenuComponent, VesselMenuComponent, VesselArrivalsComponent, PortInfoComponent, HoverMenuComponent, ConfirmDialogComponent,
@@ -60,7 +61,7 @@ import { NoDataComponent } from './no-data-popup/no-data-popup.component'
     FormsModule,
     OwlDateTimeModule, OwlNativeDateTimeModule,
     MatDatepickerModule,
-    AgGridModule.withComponents([AGGridCellRendererComponent, AGGridCellDataComponent])
+    AgGridModule.withComponents([AGGridCellRendererComponent, AGGridCellDataComponent, AgGridInputCellEditor])
   ],
   exports: [ReactiveFormsModule, FormsModule, FilterchipsComponent, MapPanelComponent, SmartOperatorComponent, OlMapComponent, HeaderPanelComponent,
     VesselInfoComponent, AuditLogComponent, RequestsDetailsComponent, CommentsComponent, NewRequestComponent, VesselPopupComponent, PortPopupComponent, NotificationsComponent, ConfirmationPopupComponent, TableLegendComponent,
