@@ -22,7 +22,9 @@ export class BunkeringPlanComponent implements OnInit {
   public gridChanged: boolean = false;
   public rowData ;
   public bPlanData: any;
+  public selectedPort: any = [];
   @Output() enableCreateReq = new EventEmitter();
+  @Output() voyage_detail = new EventEmitter();
   @Input("isExpanded") isExpanded: boolean;
   @Input('planId') planId;
   @Input('bPlanType') bPlanType;
@@ -381,7 +383,12 @@ export class BunkeringPlanComponent implements OnInit {
       this.bPlanData = this.rowData;
     })
   }
-  portClicked() {
+  portClicked(params) {
+    if(params?.event?.checked) {
+      let selectedport = (params.param && params.param.data)? params.param.data: {};
+      this.selectedPort.push(selectedport);
+      this.voyage_detail.emit(this.selectedPort);
+    }
     if ((this.rowData.filter(element => element.createReqFlag == true)).length > 0)
       this.enableCreateReq.emit(true);
     else

@@ -62,8 +62,44 @@ export class RequestsDetailsComponent implements OnInit {
   ngOnInit() {
     this.loadOutstandRequestData();
   }
+
   loadOutstandRequestData() {
-    this.localService.getOutstandRequestData({}).subscribe((data)=> {
+    let requestPayload = {
+      "Payload": {
+        "Order": null,
+        "PageFilters": {
+          "Filters": [
+            {
+              "columnValue": "Eta",
+              "ColumnType": "Date",
+              "isComputedColumn": false,
+              "ConditionValue": ">=",
+              "Values": [
+                "2021-04-29T00:00" // Send Current Date
+              ],
+              "FilterOperator": 0
+            }
+          ]
+        },
+        "SortList": {
+          "SortList": [
+            {
+              "columnValue": "eta",
+              "sortIndex": 0,
+              "sortParameter": 2
+            }
+          ]
+        },
+        "Filters": [],
+        "SearchText": null,
+        "Pagination": {
+          "Skip": 0,
+          "Take": 25
+        }
+      }
+    }
+    
+    this.localService.getOutstandRequestData(requestPayload).subscribe((data)=> {
       this.RequestDetails = (data?.payload && data?.payload.length)? data.payload[0]: {};
     })
   }
