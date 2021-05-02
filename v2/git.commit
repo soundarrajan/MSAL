@@ -1,7 +1,7 @@
-﻿commit 8c7c44eebd0d65265f8bee447937244576686ce0
-Author: Subhashini Vasanthakumar <subhashini.k@Inatech.com>
-Date:   Sat May 1 21:51:19 2021 +0530
+﻿commit 946e48ee10c9817f7a033a00f8a4ce0ce761b849
+Author: Gokul <gokul.s@inatech.com>
+Date:   Sun May 2 10:41:05 2021 +0530
 
-    added styles for plan status
+    Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_git/Shiptech10-UI
 
 branch: master
