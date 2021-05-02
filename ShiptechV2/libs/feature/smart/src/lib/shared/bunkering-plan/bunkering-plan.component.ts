@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, Input, ViewChild } from '@angular/core';
 import { GridOptions } from '@ag-grid-community/core';
 import { AGGridCellDataComponent } from '../ag-grid/ag-grid-celldata.component';
-import { AgGridInputCellEditor } from '../ag-grid/ag-grid-input-cell-editor';
+// import { AgGridInputCellEditor } from '../ag-grid/ag-grid-input-cell-editor';
 import { AGGridCellRendererComponent } from '../ag-grid/ag-grid-cell-renderer.component';
 import { Store } from '@ngxs/store';
 import { BunkeringPlanColmGroupLabels, BunkeringPlanColumnsLabels } from './view-model/bunkering-plan.column';
@@ -25,17 +25,21 @@ export class BunkeringPlanComponent implements OnInit {
   public bPlanData: any;
   public selectedPort: any = [];
   vesselData: any;
+  latestPlanId: any;
   @Output() enableCreateReq = new EventEmitter();
   @Output() voyage_detail = new EventEmitter();
   @Input("isExpanded") isExpanded: boolean;
   
-  @Input() 
+  // @Input('planId') planId;
+  // @Input('vesselRef') vesselRef;
+  @Input('planId') 
   public set planId(v : string) {
-    this.planId = v;
+    this.latestPlanId = v;
   };
-  @Input() 
+  @Input('vesselRef') 
   public set vesselRef(v : string) {
     this.vesselData = v;
+    this.loadBunkeringPlanDetails();
   };
   @Input('bPlanType') bPlanType;
   @Input('selectedUserRole')selectedUserRole;
@@ -43,8 +47,8 @@ export class BunkeringPlanComponent implements OnInit {
   constructor(private bplanService: BunkeringPlanService, private localService: LocalService, private store: Store) {
     
     //Fetch B plan grid row data
-   this.loadBunkeringPlanDetails();
-       
+    // this.loadBunkeringPlanDetails();
+    
     this.gridOptions = <GridOptions>{
       columnDefs: this.columnDefs,
       enableColResize: false,
@@ -63,7 +67,7 @@ export class BunkeringPlanComponent implements OnInit {
       rowSelection: 'single',
       overlayLoadingTemplate:
     '<span class="ag-overlay-loading-center">Rows are loading...</span>',
-      
+    
       onGridReady: (params) => {
         this.gridOptions.api = params.api;
         this.gridOptions.columnApi = params.columnApi;
@@ -71,7 +75,7 @@ export class BunkeringPlanComponent implements OnInit {
         this.gridOptions.api.sizeColumnsToFit();
         this.rowCount = this.gridOptions.api.getDisplayedRowCount();
         this.gridOptions.api.showLoadingOverlay();
-
+        
       },
       onCellValueChanged: ($event) => {
       },
@@ -89,7 +93,7 @@ export class BunkeringPlanComponent implements OnInit {
       }
     };
   }
-
+  
   ngOnInit() {
   }
   
@@ -390,11 +394,13 @@ export class BunkeringPlanComponent implements OnInit {
   ];
 
   public loadBunkeringPlanDetails(){
-    let req = { shipId : this.vesselData?.vesselId, planId : this.planId}
+    let req = { shipId : this.vesselData?.vesselId, planId : this.latestPlanId}
     this.bplanService.getBunkeringPlanDetails(req).subscribe((data)=> {
       console.log('bunker plan details',data);
       this.rowData = (data.payload && data.payload.length)? data.payload: [];
       this.bPlanData = this.rowData;
+      let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
+          titleEle.click();
     })
   }
   portClicked(params) {
