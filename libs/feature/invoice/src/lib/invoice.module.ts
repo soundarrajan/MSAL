@@ -47,6 +47,7 @@ import { InvoiceDetailComponent } from './views/invoice-view/details/invoice-det
 import { InvoiceViewComponent } from './views/invoice-view/invoice-view.component';
 import { MainInvoiceComponent } from './views/main-invoice.component';
 import { RelatedInvoiceComponent } from './views/invoice-view/related-invoice/related-invoice.component';
+import { ProductDetailsModalComponent } from './views/invoice-view/details/component/product-details-modal/product-details-modal.component';
 
 @NgModule({
   imports: [
@@ -83,7 +84,7 @@ import { RelatedInvoiceComponent } from './views/invoice-view/related-invoice/re
     ButtonModule,
     MessagesModule,
     ExportModule,
-    MasterSelectorModule
+    MasterSelectorModule    
   ],
   declarations: [
     MainInvoiceComponent,
@@ -91,7 +92,8 @@ import { RelatedInvoiceComponent } from './views/invoice-view/related-invoice/re
     InvoiceCompleteListComponent,
     InvoiceViewComponent,
     InvoiceDetailComponent,
-    RelatedInvoiceComponent
+    RelatedInvoiceComponent,
+    ProductDetailsModalComponent
   ],
   providers: [
     ModuleLoggerFactory,
@@ -107,7 +109,7 @@ import { RelatedInvoiceComponent } from './views/invoice-view/related-invoice/re
     DialogService
   ],
   entryComponents:[
-    
+    ProductDetailsModalComponent
   ]
 })
 export class InvoiceModule {}

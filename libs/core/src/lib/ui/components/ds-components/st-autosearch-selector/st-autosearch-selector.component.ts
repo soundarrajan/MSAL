@@ -3,11 +3,9 @@ import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MastersListApiService } from '@shiptech/core/delivery-api/masters-list/masters-list-api.service';
 import { EstAutoSearchType } from '@shiptech/core/enums/master-search-type';
-import { getMetaData } from 'ngxs-reset-plugin';
 import { Observable } from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import { map, startWith } from 'rxjs/operators';
 import { ImasterSelectionPopData, MasterSelectionDialog } from '../pop-ups/master-selection-popup.component';
-
 export namespace MastersApiPaths {
   export const getCompanyList = () => `api/masters/companies/list`;
 }
@@ -25,6 +23,7 @@ export class StAutosearchSelectorComponent implements OnInit {
   selected:any;
   @Input() placeholder:string = 'Pick one';
   @Input() name:string = 'Select';
+  @Input() masterType:EstAutoSearchType;
   options: any[];
 
   constructor(public dialog: MatDialog, private mastersListApiService: MastersListApiService){
@@ -39,10 +38,10 @@ export class StAutosearchSelectorComponent implements OnInit {
     );    
   }
 
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
+  private _filter(value: any): string[] {
+    const filterValue = value?.toLowerCase();
     console.log(value)
-    return this.options?.filter(option => option?.toLowerCase().indexOf(filterValue) === 0);
+    return this.options?.filter(option => option?.name?.toLowerCase().indexOf(filterValue) === 0);
   }
 
   openSearchPopup() {
@@ -58,19 +57,25 @@ export class StAutosearchSelectorComponent implements OnInit {
         });
 
         dialogRef.afterClosed().subscribe(result => {
-          console.log(result)
             this.popupOpen = false;
-            this.selected = <any>{id:result.id, name:result.name};
+            this.selected = <any>result.data;
+            this.myControl.setValue(result?.data?.name);
         });
   }
 
   selectedEvent(evt){
     console.log(evt);
+    // this.selected = 
   }
 
   getOptionData(){
-    var requestParam = {"Payload":{"Filters":[{"ColumnName":"CounterpartyTypes","Value":2}]}}; 
-    this.mastersListApiService.getList(requestParam,'api/masters/counterparties/listByTypesAutocomplete')
+    if(this.masterType == EstAutoSearchType.company){
+      var requestParam = {"Payload":{"Filters":[{"ColumnName":"CounterpartyTypes","Value":2}]}}; 
+      var URL = 'api/masters/counterparties/listByTypesAutocomplete';
+    }
+    
+
+    this.mastersListApiService.getList(requestParam,URL)
     .subscribe(
       response =>{
         console.log(typeof(response.payload));

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AGGridCellActionsComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-actions.component';
+import { AGGridCellRendererComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-renderer.component';
 import { GridOptions } from 'ag-grid-community';
 
 @Component({
@@ -12,23 +13,43 @@ export class RelatedInvoiceComponent implements OnInit {
   rowData_aggrid: any = [
     {
       "id": "123",
-      "name": "Transfer Movements - Transfer Tab"
+      "order-number":"1234",
+      "type":"Final",
+      "date":"12-01-2021",
+      "amount":"120000",
+      "deductions":"1000",
+      "paid":"100000",
+      "status":"Approved"
   },
-  {
-      "id": "124",
-      "name": "Transfer Movements - Inter Transfer Tab"
+    {
+      "id": "123",
+      "order-number":"1234",
+      "type":"Provisional",
+      "date":"12-01-2021",
+      "amount":"120000",
+      "deductions":"1000",
+      "paid":"100000",
+      "status":"New"
   },
-  {
-      "id": "125",
-      "name": "Delivery Movements - Inventory Tab"
+    {
+      "id": "123",
+      "order-number":"1234",
+      "type":"Credit",
+      "date":"12-01-2021",
+      "amount":"120000",
+      "deductions":"1000",
+      "paid":"100000",
+      "status":"Approved"
   },
-  {
-      "id": "126",
-      "name": "Delivery Movements - B2B Tab"
-  },
-  {
-      "id": "127",
-      "name": "Movements - Full Screen"
+    {
+      "id": "123",
+      "order-number":"1234",
+      "type":"Debit",
+      "date":"12-01-2021",
+      "amount":"120000",
+      "deductions":"1000",
+      "paid":"100000",
+      "status":"Reverted"
   }
   ];
   constructor() {
@@ -81,38 +102,33 @@ export class RelatedInvoiceComponent implements OnInit {
   }
 
   private columnDef_aggrid = [
-    { headerName: 'ID', headerTooltip: 'ID', field: 'id', width: 100, cellClass: ['aggridtextalign-center'], headerClass: ['aggrid-text-align-c'] },
-    { headerName: 'Name', headerTooltip: 'Name', field: 'name', cellClass: ['aggridtextalign-left'] },
+    { headerName: 'Invoice ID', headerTooltip: 'Invoice ID', field: 'id', width: 100, cellClass: ['aggridlink aggridtextalign-center'], headerClass: ['aggrid-text-align-c'] },
+    { headerName: 'Order number', headerTooltip: 'Order number', field: 'order-number', cellClass: ['aggridtextalign-left'] },
     {
-      headerName: '', headerTooltip: '', field: 'download-json', cellClass: ['aggridlink aggridtextalign-center'],
-      cellRendererFramework: AGGridCellActionsComponent, cellRendererParams: {
-        type: 'download-json-btn'
-      }
+      headerName: 'Invoice Type', headerTooltip: 'Invoice Type', field: 'type'
     },
     {
-      headerName: '', headerTooltip: '', field: 'view', width: 150, cellClass: ['aggridlink aggridtextalign-center'],
-      cellRendererFramework: AGGridCellActionsComponent, cellRendererParams: {
-        type: 'view-link'
-      }
+      headerName: 'Invoice Date', headerTooltip: 'Invoice Date', field: 'date', width: 150, 
     },
     {
-      headerName: '', headerTooltip: '', field: 'edit', width: 150, cellClass: ['aggridlink aggridtextalign-center'],
-      cellRendererFramework: AGGridCellActionsComponent, cellRendererParams: {
-        type: 'edit-link'
-      }
+      headerName: 'Invoice Amt', headerTooltip: 'Invoice Amt', field: 'amount', width: 150, 
     },
     {
-      headerName: '', headerTooltip: '', field: 'copy', width: 150, cellClass: ['aggridlink aggridtextalign-center'],
-      cellRendererFramework: AGGridCellActionsComponent, cellRendererParams: {
-        type: 'copy-link'
-      }
+      headerName: 'Deductions', headerTooltip: 'Deductions', field: 'deductions', width: 150, 
     },
     {
-      headerName: '', headerTooltip: '', field: 'delete',  width: 150, cellClass: ['aggridlink aggridtextalign-center'],
-      cellRendererFramework: AGGridCellActionsComponent, cellRendererParams: {
-        type: 'delete-link'
-      }
+      headerName: 'Paid Amount', headerTooltip: 'Paid Amount', field: 'paid',  width: 150,
     },
+    { headerName: 'Invoice status', headerTooltip: 'Invoice status', field: 'status',
+        cellRendererFramework:AGGridCellRendererComponent, cellRendererParams: function(params) {
+          var classArray:string[] =[];
+            classArray.push('aggridtextalign-center');
+            let newClass= params.value==='Reverted'?'custom-chip-type1 red-chip':
+                          params.value==='Approved'?'custom-chip-type1 mediumgreen':
+                          params.value==='New'?'custom-chip-type1 dark':
+                          'custom-chip-type1';
+                          classArray.push(newClass);
+            return {cellClass: classArray.length>0?classArray:null} }}
   ];
 
 

@@ -65,23 +65,23 @@ export class MasterSelectionDialog {
         if (isNaN(params.value))
             return params.value;
         else
-            return params.value.toFixed(4);
+            return params.value?.toFixed(4);
     }
 
     private rowData = [
-        {
-            id:'123',
-            name:'test',
-            parent:{name:'test'},
-            currency:{name:'dolor'},
-            uom:{name:'BLL'},
-            createdBy:{name:'gokul'},
-            createdOn:'12/12/12:10:20',
-            lastModifiedBy:{name:'test'},
-            lastModifiedOn:'12/12/12:00:20',
-            isDeleted:false,
-            code:'ANE-23'
-        }
+        // {
+        //     id:'123',
+        //     name:'test',
+        //     parent:{name:'test'},
+        //     currency:{name:'dolor'},
+        //     uom:{name:'BLL'},
+        //     createdBy:{name:'gokul'},
+        //     createdOn:'12/12/12:10:20',
+        //     lastModifiedBy:{name:'test'},
+        //     lastModifiedOn:'12/12/12:00:20',
+        //     isDeleted:false,
+        //     code:'ANE-23'
+        // }
         
     ];
 
