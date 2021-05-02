@@ -47,8 +47,9 @@ export class VesselInfoComponent implements OnInit {
   public statusPrevBPlan : boolean;
   public statusCurr : any;
   public statusPrev : any;
-  public shiptechRequestUrl :any;
+  public shiptechRequestUrl :string = 'https://bvt.shiptech.com/#/new-request/{{voyage_detail_id}}';
   public voyageDetailId: any;
+  public selectedPort: any = [];
 
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private localService: LocalService, public dialog: MatDialog, private bunkerPlanService : BunkeringPlanService) {
     iconRegistry.addSvgIcon(
@@ -233,4 +234,21 @@ export class VesselInfoComponent implements OnInit {
     event.stopPropagation();
     this.currentBPlanSave.emit();
   }
+
+  getVoyageDetail(selectedPort) {
+    this.selectedPort = selectedPort;
+  }
+  createRequest() {
+    let _this = this;
+    console.log('selectedPort', this.selectedPort);
+    this.selectedPort.forEach((port, index) => {
+        if(port.voyage_detail_id) {
+          let voyageId = (port.voyage_detail_id).toString();
+          let requestUrl = _this.shiptechRequestUrl.replace('{{voyage_detail_id}}', voyageId);
+          window.open(requestUrl, `win ${index}`);
+        }
+    });
+  }
+
+
 }

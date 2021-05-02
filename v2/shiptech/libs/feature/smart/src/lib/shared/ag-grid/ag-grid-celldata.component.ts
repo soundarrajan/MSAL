@@ -41,7 +41,6 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   agInit(params: any): void {
     this.params = params;
     this.menuData = params.value;
-    // this.usercomments = params.value.comments ? params.value.comments : '';
     this.isChecked = params.value;
     this.toolTip = params.value;
   //**ETA/ETD date format and days calculation
@@ -172,8 +171,8 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     }
 
   }
-  portClicked() {
-    this.params.context.componentParent.portClicked();
+  portClicked(param) {
+    this.params.context.componentParent.portClicked(param);
   }
 
   toggleOperAck() {
