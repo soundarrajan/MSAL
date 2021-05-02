@@ -519,6 +519,9 @@
     &.mediumgreen{
       background-color: #87DCAC;
     }
+    &.dark{
+      background-color: #364150;
+    }
   }
 
   .dashed-border{
@@ -1289,3 +1292,100 @@
 } 
 
 /* Angular-V9 & AG-Grid V23 - END */
+
+
+//<!-- Tabs Start-->
+#custom-tabs-v2 {
+  background-color: #ffffff;
+  .mat-tab-label {
+    min-width: 108px;
+    padding: 0px;
+    margin: -5px -5px 0px 0px !important;
+  }
+  .mat-ink-bar {
+    background-color: transparent;
+  }
+  .mat-tab-label-container {
+    height: 39px;
+    background-color: #eee !important
+  }
+  .mat-tab-header {
+    border-bottom: none;
+    // border-top: solid 1px #e0e1e4;
+  }
+  .mat-tab-header-pagination {
+    display: none;
+  }
+
+  .mat-tab-header {
+    outline: 0px;
+  }
+  .custom-tab-ui {
+    content: url("data:image/svg+xml,%3Csvg width='100' height='28' viewBox='0 0 100 28' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M97.5132 18C97.5132 23.2467 93.2599 27.5 88.0132 27.5L11.9867 27.5C6.74004 27.5 2.48676 23.2467 2.48676 18L2.48676 6.05183C2.48676 4.09456 1.93968 2.17625 0.907298 0.513411L0.898966 0.499991L99.101 0.5L99.0927 0.513418C98.0603 2.17626 97.5132 4.09457 97.5132 6.05183L97.5132 18Z' fill='white' stroke='%23E0E1E4'/%3E%3C/svg%3E%0A");
+  }
+  .custom-label {
+    position: absolute;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+    color: #333333;
+  }
+  .mat-tab-label-active {
+    .custom-tab-ui {
+      content: url("data:image/svg+xml,%3Csvg width='100' height='28' viewBox='0 0 100 28' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M97.5132 18C97.5132 23.2467 93.2599 27.5 88.0132 27.5L11.9867 27.5C6.74004 27.5 2.48676 23.2467 2.48676 18L2.48676 6.05183C2.48676 4.09456 1.93968 2.17625 0.907298 0.513411L0.898966 0.499991L99.101 0.5L99.0927 0.513418C98.0603 2.17626 97.5132 4.09457 97.5132 6.05183L97.5132 18Z' fill='%23364150' stroke='%23E0E1E4'/%3E%3C/svg%3E%0A");
+    }
+    .custom-label {
+      color: #ffffff;
+    }
+  }
+  .mat-tab-disabled {
+    .custom-tab-ui {
+      content: url("data:image/svg+xml,%3Csvg width='100' height='28' viewBox='0 0 100 28' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M97.5132 18.0005C97.5132 23.2472 93.2599 27.5005 88.0132 27.5005L11.9867 27.5005C6.74004 27.5005 2.48676 23.2472 2.48676 18.0005L2.48676 6.05231C2.48676 4.09505 1.93968 2.17674 0.907298 0.5139L0.898966 0.50048L99.101 0.500488L99.0927 0.513906C98.0603 2.17675 97.5132 4.09506 97.5132 6.05232L97.5132 18.0005Z' fill='%23F1F1F1' stroke='%23E0E1E4'/%3E%3C/svg%3E%0A");
+    }
+    .custom-label {
+      color: #a5a5a5;
+    }
+  }
+  .custom-tab-container {
+    margin: 15px;
+  }
+  .header-buttons{
+    display: flex;
+    z-index: 1;
+    position: absolute;
+    right: 15px;
+    top: 103px;
+  }
+  .cust-btn{
+    width: 150px;
+    line-height: 3px;
+    height: 30px;
+    border-radius: 1px;
+    border: 0px solid #364150;
+    cursor: pointer;
+  }
+}
+//<!-- Tabs End-->
+
+.blue-button {
+  font-size: 14px;
+  font-weight: 500;
+  background-color: #1d9fff !important;
+  height: 26px;
+  width: 70px;
+  line-height: 18px;
+  border-radius: 3px !important;
+  color: #fff;
+  &:disabled {
+    background-color: #bdbdbd !important;
+  }
+}
+
+.link-text{
+  top: 7px;
+    position: relative;
+    right: 10px;
+    text-decoration: underline;
+}
