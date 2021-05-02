@@ -5,6 +5,7 @@
     [columnDefs]="columnDefs"
     (gridReady)="gridOptions.onGridReady($event)" 
     [gridOptions]="gridOptions"
+    [singleClickEdit]="true"
     (selectedUserRole)="refreshGrid($event)"class="ag-theme-balham-dark"></ag-grid-angular>
 </div>
 <hr>

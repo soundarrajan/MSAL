@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, Input, ViewChild } from '@angular/core';
 import { GridOptions } from '@ag-grid-community/core';
 import { AGGridCellDataComponent } from '../ag-grid/ag-grid-celldata.component';
+import { AgGridInputCellEditor } from '../ag-grid/ag-grid-input-cell-editor';
 import { AGGridCellRendererComponent } from '../ag-grid/ag-grid-cell-renderer.component';
 import { Store } from '@ngxs/store';
 import { BunkeringPlanColmGroupLabels, BunkeringPlanColumnsLabels } from './view-model/bunkering-plan.column';
@@ -23,10 +24,19 @@ export class BunkeringPlanComponent implements OnInit {
   public rowData ;
   public bPlanData: any;
   public selectedPort: any = [];
+  vesselData: any;
   @Output() enableCreateReq = new EventEmitter();
   @Output() voyage_detail = new EventEmitter();
   @Input("isExpanded") isExpanded: boolean;
-  @Input('planId') planId;
+  
+  @Input() 
+  public set planId(v : string) {
+    this.planId = v;
+  };
+  @Input() 
+  public set vesselRef(v : string) {
+    this.vesselData = v;
+  };
   @Input('bPlanType') bPlanType;
   @Input('selectedUserRole')selectedUserRole;
   @Input('currentROBObj') currentROBObj;
@@ -181,7 +191,11 @@ export class BunkeringPlanComponent implements OnInit {
             {
               headerName: BunkeringPlanColumnsLabels.HsfoSafePort, headerTooltip: BunkeringPlanColumnsLabels.HsfoSafePort, field: 'hsfo_safe_port', width: 50, cellClass: params=>{if (this.bPlanType == 'C'&& this.selectedUserRole?.id === 1) return 'aggrid-columgroup-splitter aggrid-green-editable-cell editable'; else return 'aggrid-green-editable-cell ag-cell' }, headerClass: ['aggrid-columgroup-splitter aggrid-colum-splitter-left'],
               cellRendererFramework: AGGridCellDataComponent,
-              valueFormatter : (params)=> { if (params.value === 0) return '';},
+              // editable:true,
+              // cellEditorFramework: AgGridInputCellEditor,
+              valueFormatter : (params)=> { 
+                if (params.value === 0) return '';
+              },
               cellRendererParams: (params) => {
                 var classArray: string[] = [];
                 let newClass = 'aggrid-cell-color lightgreen'
@@ -376,7 +390,7 @@ export class BunkeringPlanComponent implements OnInit {
   ];
 
   public loadBunkeringPlanDetails(){
-    let req = { shipId : 1, planId : '02M2100023'}
+    let req = { shipId : this.vesselData?.vesselId, planId : this.planId}
     this.bplanService.getBunkeringPlanDetails(req).subscribe((data)=> {
       console.log('bunker plan details',data);
       this.rowData = (data.payload && data.payload.length)? data.payload: [];

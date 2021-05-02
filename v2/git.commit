@@ -1,8 +1,8 @@
-﻿commit 9b54863068e85fbe0e201b9f0d7b055d041ed7e3
+﻿commit 4d06e192c96e7ba4f9d7710f617ebf2bc6b48dce
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Sun May 2 05:59:39 2021 +0000
+Date:   Sun May 2 06:46:56 2021 +0000
 
-    Merged PR 10314: #29780: Bunker plan: View Current Bunkering plan Operator Ack. Checkbox, Create Request link, Link to Port Master implementation has done
+    Merged PR 10315: #29780 - bunkering plan hardcoded value changes has updated for vessel and planid
     
     Related work items: #29780
 
