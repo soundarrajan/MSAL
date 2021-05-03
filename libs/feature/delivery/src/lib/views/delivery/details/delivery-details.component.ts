@@ -1385,22 +1385,25 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   save() {
     this.setReconMatchIdBasedOnProductVarianceColor();
     let Isvalid=false;
+    let product
     let hasMandatoryFields = this.validateRequiredFields();
     if (hasMandatoryFields) {
       return;
     }
     this.formValues.deliveryProducts.forEach((deliveryProd, key) => { 
-      if(deliveryProd!=null && key==this.reportService.selectedProduct){
+      if(deliveryProd!=null ){ 
         deliveryProd.qualityParameters.forEach((qualityParameter, key) => {
           if (qualityParameter.isDisplayedInDelivery==true && qualityParameter.isMandatoryInDelivery==true && (qualityParameter.bdnValue==null || qualityParameter.bdnValue=="" || qualityParameter.bdnValue==0)){
             Isvalid=true;
-            document.getElementById("bdnIdx"+key).classList.add('date-invalid');
+            this.buttonClicked = true;
+            this.eventsSubject2.next(this.buttonClicked);
           }
         });
       }
+     product=deliveryProd.product.name ;
     });
     if(Isvalid){
-      this.toastrService.error('Please fill the required bdn value...');
+      this.toastrService.error(`Please fill the required ${product} -bdn value...`);
       return;
     }
     let id = parseFloat(this.entityId);
@@ -1593,6 +1596,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       });
   }
 
+
   validateRequiredFields() {
     let requiredFields = 'Please fill in required fields:';
     if (!this.formValues.deliveryDate) {
@@ -1609,6 +1613,8 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       }
     } 
     
+
+
     this.buttonClicked = true;
     this.eventsSubject2.next(this.buttonClicked);
     if (requiredFields != 'Please fill in required fields:') {
