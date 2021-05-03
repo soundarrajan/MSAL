@@ -1,9 +1,9 @@
-﻿commit b01479fe31bd3ce004b9332f9e800b9351a5cc3c
+﻿commit 6e2e3bb9b25a61532932588df3f4bf145c09d558
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Mon May 3 06:33:01 2021 +0000
+Date:   Mon May 3 06:47:11 2021 +0000
 
-    Merged PR 10324: #Requirement 29780: Bunker plan: View Current Bunkering plan default vessel id has changed
+    Merged PR 10326: #29829 - bunkering plan scsrubber date format issue has fixed
     
-    Related work items: #29780
+    Related work items: #29829
 
 branch: master
