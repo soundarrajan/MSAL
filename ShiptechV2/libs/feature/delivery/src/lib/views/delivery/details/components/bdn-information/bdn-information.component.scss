@@ -791,8 +791,11 @@
   .mat-input-element:disabled{
     color: #252A32 !important;
   }
-  .custom-form-field.lightTheme .mat-form-field .mat-form-field-label mat-label {
+  /* .custom-form-field.lightTheme .mat-form-field .mat-form-field-label mat-label {
     background: #eeeeee !important;
+  } */
+  .mat-form-field.mat-focused .mat-form-field-label {
+    background-color: #eeeeee !important;
   }
 }
 
@@ -909,6 +912,7 @@
 .barge-select-container.mat-select-panel{
   position: relative;
   top: 26px;
+  padding-top: 10px;
 }
 
 .barge-select-container .mat-option {
