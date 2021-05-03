@@ -552,7 +552,7 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
                     $scope.comparableLabResults = [];
                     $scope.comparedLabResult = response.data.payload;
                     if ($scope.comparedLabResult.length > 0) {
-                        var initArr = $scope.comparedLabResult[0].labTestResult.length == Math.min($scope.comparedLabResult[0].labTestResult.length, $scope.comparedLabResult[1].labTestResult.length) ?
+                        var initArr = $scope.comparedLabResult[0].labTestResult.length == Math.max($scope.comparedLabResult[0].labTestResult.length, $scope.comparedLabResult[1].labTestResult.length) ?
                             $scope.comparedLabResult[0] : $scope.comparedLabResult[1];
                         for (let i = 0; i < initArr.labTestResult.length; i++) {
                             let firstLTR = {};
@@ -574,7 +574,7 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
                                 'item_0_lrId': $scope.comparedLabResult[0].id,
                                 'item_1_lrId': $scope.comparedLabResult[1].id,
                                 'orderSpecParamName': initArr.labTestResult[i].specParameter.name,
-                                'bdnValue': initArr.labTestResult[i].bdnValue,
+                                'bdnValue': firstLTR?.bdnValue ?? secondLTR?.bdnValue,
 
                                 'item_0_labs': firstLTR?.value,
                                 'item_0_qualityMatch': firstLTR?.qualityMatch,
@@ -630,7 +630,7 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
                     }
                 }
                 else {
-                    toastr.error('Please select Lab result of same product type for comparison.');
+                    toastr.error('Please select Lab result of same product for comparison.');
                     row.isSelected = false;
                     return;
                 }
