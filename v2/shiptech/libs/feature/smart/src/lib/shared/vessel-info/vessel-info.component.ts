@@ -4,6 +4,7 @@ import { BunkeringPlanService } from '../../services/bunkering-plan.service';
 import { CommentsComponent } from '../comments/comments.component';
 import { BunkeringPlanComponent } from '../bunkering-plan/bunkering-plan.component';
 import { WarningComponent } from '../warning/warning.component';
+import { AppConfig } from '@shiptech/core/config/app-config';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
@@ -47,11 +48,11 @@ export class VesselInfoComponent implements OnInit {
   public statusPrevBPlan : boolean;
   public statusCurr : any;
   public statusPrev : any;
-  public shiptechRequestUrl :string = 'https://bvt.shiptech.com/#/new-request/{{voyage_detail_id}}';
+  public shiptechRequestUrl :string = 'shiptechUrl/#/new-request/{{voyage_detail_id}}';
   public voyageDetailId: any;
   public selectedPort: any = [];
 
-  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private localService: LocalService, public dialog: MatDialog, private bunkerPlanService : BunkeringPlanService) {
+  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private localService: LocalService, public dialog: MatDialog, private bunkerPlanService : BunkeringPlanService,private appConfig: AppConfig) {
     iconRegistry.addSvgIcon(
       'info-icon',
       sanitizer.bypassSecurityTrustResourceUrl('./assets/customicons/info_amber.svg'));
@@ -134,7 +135,7 @@ export class VesselInfoComponent implements OnInit {
   }
 
   public loadBunkerPlanDetails(){
-     let Id = this.vesselData?.vesselId;
+     let Id = this.vesselData?.vesselId ? this.vesselData.vesselId : 348;
      let req = { shipId : Id ,  planStatus   : 'C' }
      this.loadCurrentBunkeringPlan(req);
      req = { shipId : Id ,  planStatus : 'P' }
@@ -244,11 +245,14 @@ export class VesselInfoComponent implements OnInit {
     this.selectedPort.forEach((port, index) => {
         if(port.voyage_detail_id) {
           let voyageId = (port.voyage_detail_id).toString();
-          let requestUrl = _this.shiptechRequestUrl.replace('{{voyage_detail_id}}', voyageId);
-          window.open(requestUrl, `win ${index}`);
+          _this.shiptechRequestUrl.replace('shiptechUrl',_this.appConfig.v1.API.BASE_HEADER_FOR_NOTIFICATIONS)
+          _this.shiptechRequestUrl.replace('{{voyage_detail_id}}', voyageId);
+          window.open(_this.shiptechRequestUrl, "_blank");
         }
     });
+    window.open(_this.appConfig.v1.API.BASE_HEADER_FOR_NOTIFICATIONS, "_blank");
   }
+  
 
 
 }

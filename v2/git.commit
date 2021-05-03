@@ -1,7 +1,11 @@
-﻿commit d3f82cf6c134b36be40a4bc2fcadcbb7ddbe79d5
-Author: Subhashini Vasanthakumar <subhashini.k@Inatech.com>
-Date:   Mon May 3 12:37:10 2021 +0530
+﻿commit d74c7ad521045c80e5a5461e2062a3882102b609
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Mon May 3 11:58:27 2021 +0000
 
-    Passing the vessel ref to bunkering plan component
+    Merged PR 10336: Prev Bplan PLan id error handling, link to port master
+    
+    Prev Bplan PLan id error handling, link to port master
+    
+    Related work items: #29780
 
 branch: master
