@@ -1,9 +1,7 @@
-﻿commit 0cf8a56bc34429d8bcde5e6312185bca06497a8f
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Mon May 3 12:35:12 2021 +0000
+﻿commit 9894f8569e493eaaf4fe06e7f3718e89401ed795
+Author: Edwin Francis <edwin.f@Inatech.com>
+Date:   Mon May 3 23:09:31 2021 +0530
 
-    Merged PR 10339: #32107: In Current ROB & Arbitrage details, Values are showing in decimal values for MSPS issue has fixed
-    
-    Related work items: #32107
+    Delivery Notes log error fix #29036
 
 branch: master
