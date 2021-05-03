@@ -28,6 +28,7 @@ export class AllBunkeringPlanComponent implements OnInit {
   public dialogRef: MatDialogRef<NoDataComponent>;
   public countArray = [];//Temp Variable to store the count of accordions to be displayed
   public planId: any;
+  public shipId: any;
   public bPlanType : any = 'A';
   public planIdDetails : any ={ planId : '777888', status: 'INP'};
   public allBunkerPlanIds : any;
