@@ -1,9 +1,7 @@
-﻿commit 6e2e3bb9b25a61532932588df3f4bf145c09d558
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Mon May 3 06:47:11 2021 +0000
+﻿commit d3f82cf6c134b36be40a4bc2fcadcbb7ddbe79d5
+Author: Subhashini Vasanthakumar <subhashini.k@Inatech.com>
+Date:   Mon May 3 12:37:10 2021 +0530
 
-    Merged PR 10326: #29829 - bunkering plan scsrubber date format issue has fixed
-    
-    Related work items: #29829
+    Passing the vessel ref to bunkering plan component
 
 branch: master
