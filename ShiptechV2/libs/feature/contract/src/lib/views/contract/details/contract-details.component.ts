@@ -31,6 +31,10 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
 import { throws } from 'assert';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { ContractService } from '../../../services/contract.service';
+import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
+import { KnownContractRoutes } from '../../../known-contract.routes';
+import { ExtendContractModalComponent } from './components/extend-contract-modal/extend-contract-modal.component';
+import { Title } from '@angular/platform-browser';
 
 interface DialogData {
   email: string;
@@ -130,6 +134,10 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   locationList: any;
   additionalCostList: any;
   costTypeList: any;
+  appId: string;
+  screenId: string;
+  selectedTabIndex: number;
+  contractConfiguration: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -138,7 +146,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     private location: Location,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService,
-    private toastrService: ToastrService,
+    private toastr: ToastrService,
     private reconStatusLookups: ReconStatusLookup,
     private tenantSettingsService: TenantSettingsService,
     private statusLookup: StatusLookup,
@@ -152,44 +160,28 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     private navBarService: NavBarApiService,
     @Inject(DecimalPipe) private _decimalPipe,
     private tenantService: TenantFormattingService,
-    private loadingBar: LoadingBarService
+    private loadingBar: LoadingBarService,
+    private titleService: Title
     ) {
     this.formValues = {
-      'name': '',
-      'seller': '',
-      'company': '',
-      'surveyorName': '',
-      'bdnInformation': '',
-      'orderNumber': '',
-      'deliveryDate': '',
-      'order': null,
-      'barge': null,
-      'bdnDate': '',
-      'berthingTime': '',
-      'bargeAlongside': '',
-      'deliveryStatus': '',
-      'info': {},
-      'temp': {
-        'orderedProducts': {},
-        'deliverysummary': {},
-        'deliveryProducts': [],
-        'buyerPrecedenceRule': {},
-        'sellerPrecedenceRule': {},
-        'finalQtyPrecedenceLogicRules': {},
-        'isShowQuantityReconciliationSection': {},
-        'isShowDeliveryEmailToLabsButton': {},
-        'hiddenFields': {},
-        'savedProdForCheck': {}
-      },
-      'deliveryProducts': [],
-      'feedback': {}
+      name: null,
+      company: null,
+      evergreen: false,
+      seller: null,
+      agreementType: null,
+      paymentTerm: null,
+      incoterm: null,
+      status: null,
+      summary: {},
+      createdOn: null,
+      products: []
+
     };
-    this.entityName = 'Delivery'
+    this.entityName = 'Contract';
+    this.appId = 'contracts';
+    this.screenId = 'contract';
     this.generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
     this.quantityPrecision = this.generalTenantSettings.defaultValues.quantityPrecision;
-    this.deliverySettings = tenantSettingsService.getModuleTenantSettings<
-            IDeliveryTenantSettings
-          >(TenantSettingsModuleName.Delivery);
     this.adminConfiguration = tenantSettingsService.getModuleTenantSettings<
           IGeneralTenantSettings
         >(TenantSettingsModuleName.General);
@@ -197,20 +189,46 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     console.log(this.deliverySettings);
     //this.loadingBar.start();
   }
-  ngOnDestroy(): void {
-    throw new Error('Method not implemented.');
-  }
+
 
   ngOnInit(): void {
     this.route.params.pipe(takeUntil(this._destroy$)).subscribe(params => {
       this.entityId = parseFloat(params.contractId);
     });
     this.route.data.subscribe(data => {
-        console.log(data);
+      if (localStorage.getItem(`${this.appId + this.screenId }_copy`)) {
+        console.log('copy contract');
+        this.isLoading = true;
+        this.setFormValuesAfterCopyContract();
+      }
+      console.log(data);
+      this.navBar = data.navBar;
       this.tenantConfiguration = data.tenantConfiguration;
+      if (data.tenantConfiguration && data.tenantConfiguration.contractConfiguration) {
+        this.contractConfiguration = data.tenantConfiguration.contractConfiguration;
+      }
+      this.scheduleDashboardLabelConfiguration = data.scheduleDashboardLabelConfiguration;
+      console.log(this.scheduleDashboardLabelConfiguration);
       if (data.contract) {
         this.formValues = data.contract;
+        if (this.entityId) {
+          this.titleService.setTitle('Contract' + ' - ' + this.formValues.name);
+        } 
+        if (typeof this.formValues.status != 'undefined') {
+          if (this.formValues.status.name) {
+              this.statusColorCode = this.getColorCodeFromLabels(this.formValues.status, this.scheduleDashboardLabelConfiguration);
+          }
+        }
+      } else {
+        if (!this.formValues.applyTo) {
+        	this.formValues.applyTo = { id:3 };
+        }
+
+        this.titleService.setTitle('New Contract');
+
       }
+
+
       this.staticLists = data.staticLists;
       this.locationMasterList = data.locationList;
       this.productMasterList = data.productList;
@@ -248,6 +266,25 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       this.additionalCostList = this.setListFromStaticLists('AdditionalCost');
       this.costTypeList = this.setListFromStaticLists('CostType');
 
+      var defaultUom = this.generalTenantSettings.tenantFormats.uom;
+      var defaultQuantityType = this.contractualQuantityOptionList[0];
+      let firstEntry = {
+          contractualQuantityOption: defaultQuantityType,
+          minContractQuantity: null,
+          maxContractQuantity: null,
+          convertedMaxContractQuantity: null,
+          uom: defaultUom,
+          tolerance: null,
+          id: 0
+      };
+      if (typeof this.formValues.details == 'undefined') {
+        this.formValues.details = [ firstEntry ];
+      }
+      if (this.formValues.allowedCompanies) {
+        this.selectedAllowedCompanies();
+        this.changeDetectorRef.detectChanges();
+      }
+
       
       console.log(this.staticLists);
     });
@@ -260,6 +297,541 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     if (findList != -1) {
       return findList?.items;
     }
+  }
+
+  selectedAllowedCompanies() {
+    this.formValues.allowedCompanies.forEach((allowedCompany, k) => {
+      let findCompanyIndex = _.findIndex(this.companyList, function(object: any) {
+        return object.id == allowedCompany.id;
+      });
+      if (findCompanyIndex != -1 && this.companyList) {
+        this.companyList[findCompanyIndex].isSelected = true;
+      }
+    });
+    this.changeDetectorRef.detectChanges();
+
+    console.log(this.companyList);
+
+    
+  }
+
+
+  getColorCodeFromLabels(statusObj, labels) {
+    for(let i = 0; i < labels.length; i++) {
+      if (statusObj) {
+        if(statusObj.id === labels[i].id && statusObj.transactionTypeId === labels[i].transactionTypeId) {
+            return labels[i].code;
+        }
+      }
+    }
+  }
+
+  setFormValuesAfterCopyContract() {
+    var contractId = localStorage.getItem(`${this.appId + this.screenId }_copy`);
+    localStorage.removeItem(`${this.appId + this.screenId }_copy`);
+    console.log("id", contractId);
+    this.contractService
+    .loadContractDetails(parseFloat(contractId))
+    .pipe(
+      finalize(() => {
+        this.isLoading = false;
+        this.changeDetectorRef.detectChanges();
+      })
+    )
+    .subscribe((result: any) => {
+        if (typeof result == 'string') {
+          this.toastr.error(result);
+        } else {
+          console.log('Copy field');
+          console.log(result);
+          this.formValues = _.cloneDeep(result);
+          this.formValues.lastModifiedBy = null;
+          this.formValues.lastModifiedByUser = null;
+          this.formValues.lastModifiedOn = null;
+          this.formValues.id = 0;
+          if (typeof this.formValues.name != 'undefined') {
+            this.formValues.name = null;
+          }
+          if (this.formValues.conversionFactor) {
+            this.formValues.conversionFactor.id = 0;
+          }
+          this.formValues.status = null;
+          this.formValues.details.forEach((v, k) => {
+            v.id = 0;
+          });
+          this.formValues.products.forEach((v, k) => {
+            v.id = 0;
+            v.details.forEach((v1, k1) => {
+              v1.id = 0;
+            });
+            v.additionalCosts.forEach((v1, k1) => {
+              v1.id = 0;
+            });
+            v.conversionFactors.forEach((v1, k1) => {
+              v1.id = 0;
+              if (v1.contractProduct) {
+                v1.contractProduct.id = 0;
+              }
+              if (v1.contractProductId) {
+                v1.contractProductId = 0;
+              }
+            });
+            v.formula = null;
+            v.mtmFormula = null;
+            v.price = null;
+            v.mtmPrice = null;
+          });
+          this.formValues.summary.plannedQuantity = 0;
+          this.formValues.summary.utilizedQuantity = 0;
+          this.formValues.summary.availableQuantity = this.formValues.summary.contractedQuantity;
+          this.formValues.summary.copiedContract = true;
+          this.formValues.createdBy = null;
+          this.formValues.hasInvoicedOrder = false;
+          console.log(this.formValues);
+          this.changeDetectorRef.detectChanges();
+          this.toastr.info('Formula and MTM Formula was reset for all products');
+          this.toastr.success('Entity copied');
+        }
+     });
+  }
+
+
+  convertDecimalSeparatorStringToNumber(number) {
+    var numberToReturn = number;
+    var decimalSeparator, thousandsSeparator;
+    if (typeof number == 'string') {
+        if (number.indexOf(',') != -1 && number.indexOf('.') != -1) {
+          if (number.indexOf(',') > number.indexOf('.')) {
+            decimalSeparator = ',';
+            thousandsSeparator = '.';
+          } else {
+            thousandsSeparator = ',';
+            decimalSeparator = '.';
+          }
+          numberToReturn = parseFloat(number.split(decimalSeparator)[0].replace(new RegExp(thousandsSeparator, 'g'), '')) + parseFloat(`0.${number.split(decimalSeparator)[1]}`);
+        } else {
+          numberToReturn = parseFloat(number);
+        }
+    }
+    if (isNaN(numberToReturn)) {
+      numberToReturn = 0;
+    }
+    return parseFloat(numberToReturn);
+  }
+
+  saveContract() {
+    let hasTotalContractualQuantity = false;
+    if (!this.formValues.products) {
+      this.toastr.error('You must add at least one product in the contract');
+      return;
+    }
+    // check for product location to be obj
+    let notValidLocation = false;
+    this.formValues.products.forEach((val, key) => {
+      if(typeof val.location != 'object') {
+        var keyno = key + 1;
+        this.toastr.error(`Please select a valid location for product ${ keyno }.`);
+        notValidLocation = true;
+      } else if (val.isFormula == true && typeof val.formula != 'object') {
+        var keyno = key + 1;
+        this.toastr.error(`Please select a valid Formula for Product ${ keyno }.`);
+        notValidLocation = true;
+      }
+    });
+
+    if(notValidLocation) {
+      return;
+    }
+    if (this.formValues.products.length == 0) {
+      this.toastr.error('You must add at least one product in the contract');
+      return;
+    }
+
+    let minQuyanityValidationError = false;
+    this.formValues.details.forEach((v, k) => {
+      if (typeof v != 'undefined') {
+        if(typeof v.contractualQuantityOption != 'undefined') {
+          if (v.contractualQuantityOption.name == 'TotalContractualQuantity') {
+            hasTotalContractualQuantity = true;
+          }
+        }
+        if (v.minContractQuantity && v.maxContractQuantity) {
+          if (this.convertDecimalSeparatorStringToNumber(v.minContractQuantity) > this.convertDecimalSeparatorStringToNumber(v.maxContractQuantity)) {
+            minQuyanityValidationError = true;
+          }
+        }
+      }
+    });
+
+    if (minQuyanityValidationError) {
+      this.toastr.error('Min Quantity must be smaller that Max Quantity ');
+      return;
+    }
+    if (!hasTotalContractualQuantity) {
+      this.toastr.error('TotalContractualQuantity option is required in Contractual Quantity section');
+      return;
+    }
+
+    // test dates
+    let notValid = this.testForValidDates();
+    if(notValid) {
+      return;
+    }
+
+    let message = 'Please fill in required fields:';
+    if (!this.formValues.name) {
+      message += ' Name,';
+    }
+    if (!this.formValues.seller || (this.formValues.seller && !this.formValues.seller.name)) {
+      message += ' Seller,';
+    }
+    if (!this.formValues.company) {
+      message += ' Company,';
+    }
+    if (this.contractConfiguration && this.contractConfiguration.agreementTypeDisplay.id == 1) {
+      if (!this.formValues.agreementType) {
+        message += ' Agreement Type,';
+      }
+    }
+    if (!this.formValues.incoterm) {
+      message += ' Delivery Term,';
+    }
+    if (!this.formValues.validFrom) {
+      message += ' Start Date,';
+    }
+    if (!this.formValues.validTo && !this.formValues.evergreen) {
+      message += ' End Date,';
+    }
+
+    this.buttonClicked = true;
+    this.eventsSubject2.next(this.buttonClicked);
+
+    if (message != 'Please fill in required fields:') {
+      if (message[message.length - 1] == ',') {
+        message =  message.substring(0,  message.length - 1);
+      }
+      this.toastr.error(message);
+      return;
+    }
+    let additionalCost = [];
+    let additionalCostRequired = [];
+    for (let i = 0; i < this.formValues.products.length; i++) {
+        for (let j = 0; j < this.formValues.products[i].additionalCosts.length; j++) {
+            if (!this.formValues.products[i].additionalCosts[j].isDeleted) {
+                let amount = parseInt(this.formValues.products[i].additionalCosts[j].amount);
+                if (amount < 0 && !this.formValues.products[i].additionalCosts[j].isAllowingNegativeAmmount) {
+                    additionalCost.push(this.formValues.products[i].additionalCosts[j].additionalCost.name);
+                }
+                if (!this.formValues.products[i].additionalCosts[j].additionalCost) {
+                  additionalCostRequired.push('Item Name');
+                } 
+                if (!this.formValues.products[i].additionalCosts[j].costType) {
+                  additionalCostRequired.push('Type');
+                } 
+                if (this.formValues.products[i].additionalCosts[j].costType && this.formValues.products[i].additionalCosts[j].costType.id != 4 && this.formValues.products[i].additionalCosts[j].costType.id != 5) {
+                  if (!this.formValues.products[i].additionalCosts[j].amount) {
+                    additionalCostRequired.push('Amount');
+                  }
+                }
+            }
+        }
+    }
+
+    additionalCostRequired =_.uniq(additionalCostRequired);
+    let additionalCostRequiredString = '';
+    for (let i = 0; i < additionalCostRequired.length; i++) {
+      additionalCostRequiredString += additionalCostRequired[i] + ',';
+    }
+    if (additionalCostRequiredString[additionalCostRequiredString.length - 1] == ',') {
+      additionalCostRequiredString =  additionalCostRequiredString.substring(0,  additionalCostRequiredString.length - 1);
+    }
+
+    if (additionalCostRequiredString != ''  && additionalCostRequired.length > 1) {
+      this.toastr.error('Please fill in required fields: ' + additionalCostRequiredString);
+      return;
+    }
+    if (additionalCostRequiredString != '' && additionalCostRequired.length == 1) {
+      this.toastr.error('Please fill in required fields: ' + additionalCostRequiredString);
+      return;
+    }
+
+    additionalCost = _.uniq(additionalCost);
+    let additionalCostString = '';
+    for (let i = 0; i < additionalCost.length; i++) {
+      additionalCostString += additionalCost[i] + ',';
+    }
+    if (additionalCostString[additionalCostString.length - 1] == ',') {
+      additionalCostString =  additionalCostString.substring(0,  additionalCostString.length - 1);
+    }
+    if (additionalCostString != ''  && additionalCost.length > 1) {
+      this.toastr.warning('The additional costs ' + additionalCostString + ' does not allow negative amounts!');
+      return;
+    }
+    if (additionalCostString != '' && additionalCost.length == 1) {
+      this.toastr.warning('The additional cost ' + additionalCostString + ' does not allow negative amounts!');
+      return;
+    }
+
+    let id = this.entityId;
+    if (!id) {
+      this.spinner.show();
+      this.contractService
+      .createContract(this.formValues)
+      .pipe(
+          finalize(() => {
+            this.buttonClicked = false;
+            this.eventsSubject2.next(this.buttonClicked);
+          })
+      )
+      .subscribe((result: any) => {
+          if (typeof result == 'string') {
+            this.spinner.hide();
+            this.toastr.error(result);
+          } else {
+            this.spinner.hide();
+            this.isLoading = true;
+            this.toastr.success('Contract saved successfully');
+            this.router
+            .navigate([
+              KnownPrimaryRoutes.Contract,
+              `${KnownContractRoutes.Contract}`,
+              result.id,
+              KnownContractRoutes.ContractDetails
+            ])
+            .then(() => {
+              this.isLoading = false;
+              this.eventsSubject3.next(0);
+            });
+          }
+      });
+    } else {
+      this.spinner.show();
+      this.contractService
+      .updateContract(this.formValues)
+      .pipe(
+          finalize(() => {
+            this.buttonClicked = false;
+            this.eventsSubject2.next(this.buttonClicked);
+          })
+      )
+      .subscribe((result: any) => {
+          if (typeof result == 'string') {
+            this.spinner.hide();
+            this.toastr.error(result);
+          } else {
+            this.toastr.success('Contract saved successfully');
+            this.contractService
+              .loadContractDetails(this.formValues.id)
+              .pipe(
+                finalize(() => {
+                  this.spinner.hide();
+                })
+              )
+              .subscribe((data: any) => {
+                this.formValues = _.cloneDeep(data);
+                this.eventsSubject3.next(0);
+                if (typeof this.formValues.status != 'undefined') {
+                  if (this.formValues.status.name) {
+                    this.statusColorCode = this.getColorCodeFromLabels(this.formValues.status, this.scheduleDashboardLabelConfiguration);
+                  }
+                }
+                this.changeDetectorRef.detectChanges();
+              });
+          }
+       });
+    }
+  }
+
+  testForValidDates() {
+    var notValidDates = false;
+    if(!this.formValues.evergreen) {
+      let start = new Date(this.formValues.validFrom);
+      let startDate = start.getTime();
+      let end = new Date(this.formValues.validTo);
+      let endDate = end.getTime();
+
+      if (startDate > endDate) {
+        this.toastr.error('Contract Start Date must be lesser than Contract End Date');
+        notValidDates = true;
+      }
+    }
+    return notValidDates;
+};
+
+  confirmContract() {
+    this.buttonClicked = true;
+    this.eventsSubject2.next(this.buttonClicked);
+    this.spinner.show();
+    this.contractService
+    .confirmContract(this.formValues)
+    .pipe(
+        finalize(() => {
+          this.buttonClicked = false;
+          this.eventsSubject2.next(this.buttonClicked);
+        })
+    )
+    .subscribe((result: any) => {
+        if (typeof result == 'string') {
+          this.spinner.hide();
+          this.toastr.error(result);
+        } else {
+          this.toastr.success('Contract confirmed!');
+          this.contractService
+            .loadContractDetails(this.formValues.id)
+            .pipe(
+              finalize(() => {
+                this.spinner.hide();
+              })
+            )
+            .subscribe((data: any) => {
+              this.formValues = _.cloneDeep(data);
+              this.eventsSubject3.next(0);
+              if (typeof this.formValues.status != 'undefined') {
+                if (this.formValues.status.name) {
+                  this.statusColorCode = this.getColorCodeFromLabels(this.formValues.status, this.scheduleDashboardLabelConfiguration);
+                }
+              }
+            });
+        }
+    });
+  }
+
+  undoContract() {
+    this.spinner.show();
+    this.contractService
+    .undoConfirmContract(this.formValues)
+    .pipe(
+        finalize(() => {
+
+        })
+    )
+    .subscribe((result: any) => {
+        if (typeof result == 'string') {
+          this.spinner.hide();
+          this.toastr.error(result);
+        } else {
+          this.toastr.success('Contract unconfirmed!');
+          this.contractService
+            .loadContractDetails(this.formValues.id)
+            .pipe(
+              finalize(() => {
+                this.spinner.hide();
+              })
+            )
+            .subscribe((data: any) => {
+              this.formValues = _.cloneDeep(data);
+              this.eventsSubject3.next(0);
+              if (typeof this.formValues.status != 'undefined') {
+                if (this.formValues.status.name) {
+                  this.statusColorCode = this.getColorCodeFromLabels(this.formValues.status, this.scheduleDashboardLabelConfiguration);
+                }
+              }
+            });
+        }
+     });
+  }
+
+  deleteContract() {
+    this.spinner.show();
+    this.contractService
+    .deleteContract(this.formValues)
+    .pipe(
+        finalize(() => {
+
+        })
+    )
+    .subscribe((result: any) => {
+        if (typeof result == 'string') {
+          this.spinner.hide();
+          this.toastr.error(result);
+        } else {
+          this.toastr.success('Contract deleted!');
+          this.contractService
+            .loadContractDetails(this.formValues.id)
+            .pipe(
+              finalize(() => {
+                this.spinner.hide();
+              })
+            )
+            .subscribe((data: any) => {
+              this.formValues = _.cloneDeep(data);
+              this.eventsSubject3.next(0);
+              if (typeof this.formValues.status != 'undefined') {
+                if (this.formValues.status.name) {
+                  this.statusColorCode = this.getColorCodeFromLabels(this.formValues.status, this.scheduleDashboardLabelConfiguration);
+                }
+              }
+            });
+        }
+     });
+  }
+
+
+  cancelContract() {
+    this.spinner.show();
+    this.contractService
+    .cancelContract(this.formValues)
+    .pipe(
+        finalize(() => {
+
+        })
+    )
+    .subscribe((result: any) => {
+        if (typeof result == 'string') {
+          this.spinner.hide();
+          this.toastr.error(result);
+        } else {
+          this.toastr.success('Contract cancelled!');
+          this.contractService
+            .loadContractDetails(this.formValues.id)
+            .pipe(
+              finalize(() => {
+                this.spinner.hide();
+              })
+            )
+            .subscribe((data: any) => {
+              this.formValues = _.cloneDeep(data);
+              this.eventsSubject3.next(0);
+              if (typeof this.formValues.status != 'undefined') {
+                if (this.formValues.status.name) {
+                  this.statusColorCode = this.getColorCodeFromLabels(this.formValues.status, this.scheduleDashboardLabelConfiguration);
+                }
+              }
+            });
+        }
+     });
+  }
+
+  extendContract() {
+    const dialogRef = this.dialog.open(ExtendContractModalComponent, {
+      width: '600px',
+      data:  { formValues: this.formValues}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log("close extend pop-up");
+        this.formValues = result;
+      }
+    });
+  }
+
+  copyContract() {
+    localStorage.setItem(`${this.appId + this.screenId }_copy`, this.entityId.toString());
+    this.router
+      .navigate([
+        KnownPrimaryRoutes.Contract,
+        `${KnownContractRoutes.Contract}`,
+        0,
+        KnownContractRoutes.ContractDetails
+      ])
+      .then(() => {
+        console.log("copy contract");
+      });
+
+  }
+
+  ngOnDestroy(): void {
+
   }
 
   

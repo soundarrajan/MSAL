@@ -1,22 +1,87 @@
 <div class="invoice-main-container">
     <div id="custom-tabs-v2">
-        <mat-tab-group #tabs (selectedIndexChange)="selectedTab = tabs.selectedIndex" mat-align-tabs="end">
+        <mat-tab-group #tabs (selectedIndexChange)="selectedTab = tabs.selectedIndex">
             <mat-tab *ngFor="let item of tabData" [disabled]="item.disabled">
                 <ng-template mat-tab-label>
-                    <div class="custom-tab-ui"></div>
-                    <span class="custom-label">{{item.name}}</span>
+                    <span>{{item.name}}</span>
                 </ng-template>
                 <ng-container>
                     <div *ngIf="item.name=='Details'" class="details"> 
-                        <shiptech-invoice-detail></shiptech-invoice-detail>
+
+                        <!-- Invoice Detail Component -->
+                        <shiptech-invoice-detail #invoiceDetails></shiptech-invoice-detail>
                     </div>
-                    <div *ngIf="item.name=='Related Invoices'" class="custom-tab-container"> Tab container 2</div>
+                    <div *ngIf="item.name=='Related Invoices'" class="custom-tab-container"> 
+                      <shiptech-related-invoice></shiptech-related-invoice>
+                    </div>
                     <div *ngIf="item.name=='Documents'" class="custom-tab-container"> Tab container 3</div>
                     <div *ngIf="item.name=='Email Log'" class="custom-tab-container"> Tab container 4</div>
                     <div *ngIf="item.name=='Seller Rating'" class="custom-tab-container"> Tab container 5</div>
                     <div *ngIf="item.name=='Audit Log'" class="custom-tab-container"> Tab container 6</div>
                 </ng-container>
             </mat-tab>
+            <span>--</span>
         </mat-tab-group>
+        <div class="header-buttons">
+          <div matTooltip="Back Office Report" matTooltipShowDelay="500" style="padding-left: 7px;">         
+            <a href="#" class="link-text">Link to Back offie report</a>
+          </div>
+          <div matTooltip="Save" matTooltipShowDelay="500" style="padding-left: 7px;" *ngIf="!isConfirm">
+            <button  class="cust-btn blue-button mat-button-base" (click)="saveDisabled=false" mat-flat-button>
+                <span style="top: -1px;position: relative;" >Save</span>
+            </button>
+          </div>
+          <div matTooltip="Confirm Invoice" matTooltipShowDelay="500" style="padding-left: 7px;" *ngIf="!isConfirm">
+            <button [disabled]="saveDisabled" class="cust-btn blue-button" mat-flat-button>
+                <span style="top: -1px;position: relative;" (click)="detailsSave()">Confirm</span>
+            </button>
+          </div> 
+          <div matTooltip="Save" matTooltipShowDelay="500" style="padding-left: 7px;" *ngIf="isConfirm">
+            <button class="cust-btn blue-button mat-button-base" (click)="detailsSave()" mat-flat-button>
+                <span style="top: -1px;position: relative;" >Unconfirm</span>
+            </button>
+          </div>
+          <div matTooltip="Confirm Invoice" matTooltipShowDelay="500" style="padding-left: 7px;" *ngIf="isConfirm">
+            <button class="cust-btn blue-button" mat-flat-button>
+                <span style="top: -1px;position: relative;">Approve</span>
+            </button>
+          </div>                   
+          <div>
+            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item>
+                <mat-icon>assignment</mat-icon>
+                <span>Submit for review</span>
+              </button>
+              <button mat-menu-item disabled>
+                <mat-icon>next_week</mat-icon>
+                <span>Submit for approval</span>
+              </button>
+              <button mat-menu-item>
+                <mat-icon>backspace</mat-icon>
+                <span>Cancel invoice</span>
+              </button>
+              <button mat-menu-item>
+                <mat-icon>call made</mat-icon>
+                <span>Accept invoice</span>
+              </button>
+              <button mat-menu-item>
+                <mat-icon>redo</mat-icon>
+                <span>Revert invoice</span>
+              </button>
+              <button mat-menu-item>
+                <mat-icon>backspace</mat-icon>
+                <span>Reject invoice</span>
+              </button>
+              <button mat-menu-item>
+                <mat-icon>playlist_add</mat-icon>
+                <span>Create invoice</span>
+              </button>
+            </mat-menu>
+
+          </div>
+        </div>
     </div>
 </div>

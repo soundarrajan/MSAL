@@ -144,6 +144,7 @@ export class DateRange extends DeliveryAutocompleteComponent
   marketPriceTypeList: any;
   isValidFromDateInvalid: boolean;
   isValidToDateInvalid: boolean;
+  hasInvoicedOrder: any;
 
 
   get entityId(): number {
@@ -302,6 +303,14 @@ export class DateRange extends DeliveryAutocompleteComponent
     this.marketPriceTypeList = marketPriceTypeList;
   }
 
+  @Input('hasInvoicedOrder') set _setHasInvoicedOrder(hasInvoicedOrder) { 
+    if (!hasInvoicedOrder) {
+      return;
+    } 
+    this.hasInvoicedOrder = hasInvoicedOrder;
+  }
+
+
 
 
 
@@ -311,7 +320,8 @@ export class DateRange extends DeliveryAutocompleteComponent
   array = [0,1,2,3,4,5,6,7,8,9,10];
   isMenuOpen = true;
   @Input() events: Observable<void>;
-
+  expandPricingDayCalendar: any = false;
+  expandEventDayCalendar: any = false;
 
   constructor(
     public gridViewModel: OrderListGridViewModel,

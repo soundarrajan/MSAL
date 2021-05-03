@@ -1,0 +1,9 @@
+<div class="readonly-details-component" [ngClass]="{'section2-details' : data?.hasSeparator}">
+    <div class="details-content-holder" *ngFor="let item of data?.contents">
+        <div>
+            <div class="label" Class="customLabelClass">{{item.label}}</div>
+            <div class="value" [ngClass]="{'label_text' : data?.hasSeparator}" Class="customValueClass" matTooltip={{item.value}}>{{item.value}}</div>
+        </div>
+        <div *ngIf="data?.hasSeparator" class="border_line"></div>
+    </div>
+</div>

@@ -13,24 +13,29 @@ export namespace UserRoleApiPaths {
     export const getUserRole = () => `api/BOPS/Roles/GetBOPSRoles`;
 }
 export namespace VesselListApiPaths {
-    export const getVesselList = () => `api/admin/tenantConfiguration/get`;
+    export const getVesselList = () => `api/infrastructure/static/lists`;
 }
 export namespace VesselImportPlanStatusApiPaths {
     export const GetVesselImportPlanStatus = () => `api/BOPS/Roles/GetVesselImportPlanStatus`;
 }
 export namespace BunkerPlanHeaderApiPaths {
-    export const GetBunkerPlanHeader = () => `api/BOPS/bunkerplan/get/header`;
+    export const GetBunkerPlanHeader = () => `api/BOPS/bunkerplan/getHeader`;
 }
-
+export namespace BunkerPlanLogApiPaths {
+    export const GetBunkerPlanLog = () => `api/BOPS/bunkerplan/getLog`;
+}
 export namespace GetROBArbitrageApiPaths {
     export const GetROBArbitrageUrl = () => `api/BOPS/bunkerplan/get/BunkerPlanHeader`;
 }
 
 export namespace GetbunkerPlanIDApiPaths {
-    export const GetbunkerPlanIDUrl = () => `api/BOPS/bunkerplan/get/PlanId`;
+    export const GetbunkerPlanIDUrl = () => `api/BOPS/bunkerplan/getBunkerPlanInitial`;
 }
 export namespace GetCurrentROBApiPaths {
-    export const GetCurrentROB = () => `api/BOPS/bunkerplan/get/CurrentROB`;
+    export const GetCurrentROB = () => `api/BOPS/bunkerplan/getCurrentROB`;
+}
+export namespace GetProcurementApiPaths {
+    export const GetProcurementRequest = () => `api/procurement/request/tableView`;
 }
 
 @Injectable({
@@ -63,6 +68,8 @@ export class LocalService {
     @ApiCallUrl()
     protected _apiUrlAdmin = this.appConfig.v1.API.BASE_URL_DATA_ADMIN;
     protected _apiUrl = this.appConfig.v1.API.BASE_URL_DATA_BOPS;
+    protected _apiUrlInfra = this.appConfig.v1.API.BASE_URL_DATA_INFRASTRUCTURE;
+    protected _apiUrlProcure = this.appConfig.v1.API.BASE_URL_DATA_PROCUREMENT;
 
     constructor(private http: HttpClient, private appConfig: AppConfig) {
         // this.headersProp = new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }, );   
@@ -504,6 +511,16 @@ export class LocalService {
         { payload: request }, { headers: this.headersProp }
       );
     }
+    // VesselListApiPaths to get vessel imono data
+    @ObservableException()
+    getVesselListImono(request: any): Observable<any> {
+      return this.http.post<any>(
+        `${this._apiUrlInfra}/${VesselListApiPaths.getVesselList()}`,
+        { payload: request }
+      ).pipe(
+          map(txs => txs.find(txn => txn.name == "VesselWithImo"))
+      );
+    }
 
     // getBunkerUserRole to get bunker user roles
     @ObservableException()
@@ -556,6 +573,16 @@ export class LocalService {
         {payload: request}
       );
     }
+
+    // getBunkerPlanLog to get bunker plan log details based on vessel change
+    @ObservableException()
+    getBunkerPlanLog(request: any): Observable<any> {
+      return this.http.post<any>(
+        `${this._apiUrl}/${BunkerPlanLogApiPaths.GetBunkerPlanLog()}`,
+        { payload: request }
+      );
+    }
+      
     // bunkerplanId to get plan id for rob, arbitrage details based on vessel change
     @ObservableException()
     getBunkerPlanId(request: any): Observable<any> {
@@ -570,6 +597,14 @@ export class LocalService {
       return this.http.post<any>(
         `${this._apiUrl}/${GetROBArbitrageApiPaths.GetROBArbitrageUrl()}`,
         {payload: request}
+      );
+    }
+    // getOutstandRequestData to put current ROB row detail on vessel role
+    @ObservableException()
+    getOutstandRequestData(request: any): Observable<any> {
+      return this.http.post<any>(
+        `${this._apiUrlProcure}/${GetProcurementApiPaths.GetProcurementRequest()}`,
+        request
       );
     }
 

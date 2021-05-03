@@ -97,23 +97,6 @@
   display: inline-flex;
 }
 
-.search-location-input {
-  position: relative;
-  height: 40px;
-  width: 90%;
-  float: right;
-  color: white;
-}
-
-
-.search-location-input::placeholder {
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 16px;
-  color: #A5A5A5;
-}
 
 .search-location-lookup::before {
   content: url(../../../../../../../../../../assets/layout/images/pages/search.svg);
@@ -206,33 +189,6 @@
   display: inline-flex;
 }
 
-.location-container-tab{
-  background: #364150;
-  border: 1px solid #364150;
-  box-sizing: border-box;
-  border-radius: 3px 0px 0px 3px;
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 16px;
-  padding: 5px;
-  color: white !important;
-}
-
-.product-container-tab  {
-  background: #364150;
-  border: 1px solid #364150;
-  box-sizing: border-box;
-  border-radius: 0px 3px 3px 0px;
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 16px;
-  padding: 5px;
-  color: white !important;
-}
 
 .selected-product-container, .additional-product-container {
   /* Lightwhite */
@@ -620,4 +576,52 @@
   width: 25px;
   height: 25px;
   position: relative;
+}
+
+
+.required-field {
+  border: 1px solid #e73d4a!important;
+  .mat-form-field-label mat-label {
+    color: #e73d4a!important;
+  }
+}
+
+.price-precision-select-container.mat-select-panel {
+  min-width: calc(100% + 12px) !important;
+  transform: translateX(10px) !important
+}
+
+.price-precision-select-container.mat-select-panel{
+  position: relative;
+  top: 26px;
+}
+
+.price-precision-select-container .mat-option {
+  height: 20px  !important;
+  padding: 15px;
+}
+
+
+.custom-form-field.lightTheme .mat-form-field .mat-placeholder-required {
+  color: orange !important;
+}
+
+.mat-form-field.mat-form-field-disabled .mat-form-field-empty mat-label {
+  background-color: unset !important;
+}
+
+.formula-history {
+  display: inline-block;
+}
+
+.formula-history-name {
+  text-shadow: none;
+  color: #337ab7;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.formula-history-name:focus, .formula-history-name:hover {
+  color: #23527c;
+  text-decoration: underline;
 }

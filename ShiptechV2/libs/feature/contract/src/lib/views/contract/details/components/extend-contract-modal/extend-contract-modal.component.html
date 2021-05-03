@@ -1,0 +1,59 @@
+
+<div class="row">
+  <div class="col-md-12">
+    <div style="float:right">
+      <a (click)="closeClick()" class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all close-button extend-contract-close-button" role="button">
+        <span class="pi pi-times cl-content"></span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div mat-dialog-content>
+  <div class="row">
+    <div class="custom-form-field" 
+    [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}"
+    style="width: 80%;">
+      <mat-form-field class="without-search" 
+          appearance="legacy"
+          [ngClass]="{'date-invalid': isEffectiveFromDateInvalid , 'date-valid': !isEffectiveFromDateInvalid}">
+        <mat-label>Effective From</mat-label>
+        <input 
+            [(ngModel)]="formValues.effectiveFrom"
+            matInput 
+            [matDatepicker]="effectiveFrom"
+            (focus)="effectiveFrom.open()"
+            autocomplete="off"
+            placeholder="Effective From"
+            (dateInput)="onChange($event, 'effectiveFrom')"
+            (dateChange)="formValues.effectiveFrom= formatDateForBe(formValues.effectiveFrom)">
+            <mat-datepicker-toggle matSuffix [for]="effectiveFrom">
+              <mat-icon matDatepickerToggleIcon class="icon-date">
+              </mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #effectiveFrom [panelClass]="switchTheme?'datepicker-darktheme':''"></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 extend-contract-buttons">
+      <div style="float:right">
+        <button  class="ui-button-info mr-1 btn-i-blue-color" label="Cancel"
+          pButton
+          (click)="closeClick()"
+          type="button"
+        ></button>
+        <button  class="ui-button-info mr-1 btn-i-blue-color" label="Ok"
+          [disabled]="!formValues.effectiveFrom"
+          (click)="sendExtendContractData()"
+          pButton
+          type="button"
+        ></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div mat-dialog-actions style="display: none;">
+  <button mat-button [mat-dialog-close]="data.email" cdkFocusInitial>Yes</button>
+</div>

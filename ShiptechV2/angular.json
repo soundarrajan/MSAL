@@ -47,14 +47,6 @@
               "apps/shiptech/src/web.config"
             ],
             "styles": [
-              "assets/sass/themes/common/base.scss",
-              "assets/sass/themes/defaultweb/smart-operator.scss",
-              "assets/sass/themes/defaultweb/_aggrid.scss",
-              "assets/sass/themes/defaultweb/_dark_theme.scss",
-              "assets/sass/themes/defaultweb/_light_theme.scss",
-              "assets/sass/themes/defaultweb/_smart-operator-mixins.scss",
-              "assets/sass/themes/defaultweb/_smart-operator-utils.scss",
-              "assets/sass/themes/defaultweb/_smart-operator-variables.scss",
               "node_modules/ngx-toastr/toastr.css",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeicons/primeicons.css",
@@ -67,7 +59,16 @@
               "assets/sass/skinning/base-skinning.scss",
               "assets/theme/common/designsystem-v2-theme/v2-component.scss",
               "assets/theme/common/designsystem-v2-theme/shiptech.scss",
-              "assets/theme/common/designsystem-v2-theme/techoil.scss"
+              "assets/theme/common/designsystem-v2-theme/techoil.scss",
+              "assets/theme/common/designsystem-v2-theme/_aggrid.scss",
+              "assets/sass/themes/common/base.scss",
+              "assets/sass/themes/defaultweb/smart-operator.scss",
+              "assets/sass/themes/defaultweb/_aggrid.scss",
+              "assets/sass/themes/defaultweb/_dark_theme.scss",
+              "assets/sass/themes/defaultweb/_light_theme.scss",
+              "assets/sass/themes/defaultweb/_smart-operator-mixins.scss",
+              "assets/sass/themes/defaultweb/_smart-operator-utils.scss",
+              "assets/sass/themes/defaultweb/_smart-operator-variables.scss"
             ],
             "scripts": [],
             "stylePreprocessorOptions": {

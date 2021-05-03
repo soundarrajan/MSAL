@@ -53,6 +53,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ContractService } from 'libs/feature/contract/src/lib/services/contract.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatRadioChange } from '@angular/material/radio';
+import { DecimalPipe } from '@angular/common';
 
 
 
@@ -425,6 +426,13 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
   isValidFromDateInvalid: boolean;
   isValidToDateInvalid: boolean;
   applyToList: any;
+  eventsSaveButtonSubscription: any;
+  buttonClicked: any;
+  statusColorCode: any;
+  quantityFormat: string;
+  quantityPrecision: string;
+  contractConfiguration: any;
+  initialCompanyList: any;
   @Input() set autocompleteType(value: string) {
     this._autocompleteType = value;
   }
@@ -476,8 +484,9 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
     if (!companyList) {
       return;
     } 
-    this.companyList = companyList;
-    this.companyListForSearch = this.companyList;
+    this.companyList = _.cloneDeep(companyList);
+    this.initialCompanyList = _.cloneDeep(companyList);
+    this.companyListForSearch = _.cloneDeep(this.companyList);
   }
 
   @Input('agreementTypeList') set _setAgremeentType(agreementTypeList) { 
@@ -501,6 +510,23 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
     this.incotermList = incotermList;
   }
 
+  @Input('statusColorCode') set _setsStatusColorCode(statusColorCode) { 
+    if (!statusColorCode) {
+      return;
+    } 
+    this.statusColorCode = statusColorCode;
+  }
+
+  @Input('contractConfiguration') set _setContractConfiguration(contractConfiguration) { 
+    if (!contractConfiguration) {
+      return;
+    } 
+    this.contractConfiguration = contractConfiguration;
+  }
+
+  @Input() eventsSaveButton: Observable<void>;
+  eventsSubject2: Subject<any> = new Subject<any>();
+  expandAllowedCompanylistPopUp: any = false;
 
   constructor(
     public gridViewModel: OrderListGridViewModel,
@@ -513,12 +539,13 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
     @Inject(MAT_DATE_FORMATS) private dateFormats,
     @Inject(NGX_MAT_DATE_FORMATS) private dateTimeFormats,
     private format: TenantFormattingService,
-    private tenantSettingsService: TenantSettingsService,
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
     iconRegistry: MatIconRegistry, 
     public dialog: MatDialog, 
-    sanitizer: DomSanitizer) {
+    sanitizer: DomSanitizer,
+    private tenantService: TenantFormattingService,
+    @Inject(DecimalPipe) private _decimalPipe,) {
     
     super(changeDetectorRef);
     this.dateFormats.display.dateInput = this.format.dateFormat;
@@ -530,6 +557,8 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
     this.autocompleteSellers = knownMastersAutocomplete.sellers;
     this.autocompleteCompany = knownMastersAutocomplete.company;
     //this.dateTimeFormats.parse.dateInput = this.format.dateFormat;
+    this.quantityPrecision = '1.' + this.tenantService.quantityPrecision + '-' + this.tenantService.quantityPrecision;
+
 
   }
 
@@ -538,14 +567,25 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
     if (this.formValues.allowedCompanies) {
       this.selectedAllowedCompanies();
     }
+    this.eventsSaveButtonSubscription = this.eventsSaveButton.subscribe((data) => this.setRequiredFields(data))
     //this.eventsSubscription = this.events.subscribe((data) => this.setDeliveryForm(data));
     //this.eventsSaveButtonSubscription = this.eventsSaveButton.subscribe((data) => this.setRequiredFields(data))
     //this.eventsSubject.next();
-
   }
+
+  setRequiredFields(data) {
+    this.buttonClicked = data;
+  }
+
 
   public onValChange(val: string) {
     this.selectedVal = val;
+    if (val == 'evergreen') {
+      this.formValues.evergreen = true;
+      this.formValues.validTo = null;
+    } else {
+      this.formValues.evergreen = false;
+    }
   }
 
 
@@ -554,10 +594,11 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
       let findCompanyIndex = _.findIndex(this.companyList, function(object: any) {
         return object.id == allowedCompany.id;
       });
-      if (findCompanyIndex != -1) {
+      if (findCompanyIndex != -1 && this.companyList) {
         this.companyList[findCompanyIndex].isSelected = true;
       }
     });
+    this.changeDetectorRef.detectChanges();
 
     console.log(this.companyList);
 
@@ -574,6 +615,7 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
       }
       currentFormat = currentFormat.replace(/d/g, 'D');
       currentFormat = currentFormat.replace(/y/g, 'Y');
+      currentFormat = currentFormat.replace(/HH:mm/g, '');
       let elem = moment(date, 'YYYY-MM-DDTHH:mm:ss');
       let formattedDate = moment(elem).format(currentFormat);
       if (hasDayOfWeek) {
@@ -657,9 +699,12 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
   addAllowedCompanies() {
     if (!this.entityId) {
       this.formValues.allowedCompanies = [];
+      this.companyList = _.cloneDeep(this.initialCompanyList);
       this.companyList.forEach((v, k) => {
         if (v.id != this.formValues.company.id) {
           this.formValues.allowedCompanies.push(v);
+          this.companyList[k].isSelected = true;
+          
         }
       });
     }
@@ -691,32 +736,42 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
   }
 
   public filterSellerList() {
-    let filterValue = '';
-    filterValue = this.formValues.seller.name ? this.formValues.seller.name.toLowerCase() : this.formValues.seller.toLowerCase();
-    if (this.sellerList) {
-      const list =  this.sellerList.filter((item: any) => {
-        return item.name.toLowerCase().includes(filterValue.toLowerCase());
-      }).splice(0,10);
-      console.log(list);
-      return list;
+    if (this.formValues.seller) {
+      let filterValue = '';
+      filterValue = this.formValues.seller.name ? this.formValues.seller.name.toLowerCase() : this.formValues.seller.toLowerCase();
+      if (this.sellerList) {
+        const list =  this.sellerList.filter((item: any) => {
+          return item.name.toLowerCase().includes(filterValue.toLowerCase());
+        }).splice(0,10);
+        console.log(list);
+        return list;
+      } else {
+        return [];
+      }
     } else {
       return [];
     }
+ 
   }
 
   
   public filterCompanyList() {
-    let filterValue = '';
-    filterValue = this.formValues.company.name ? this.formValues.company.name.toLowerCase() : this.formValues.company.toLowerCase();
-    if (this.companyList) {
-      const list =  this.companyList.filter((item: any) => {
-        return item.name.toLowerCase().includes(filterValue.toLowerCase());
-      }).splice(0,10);
-      console.log(list);
-      return list;
+    if (this.formValues.company) {
+      let filterValue = '';
+      filterValue = this.formValues.company.name ? this.formValues.company.name.toLowerCase() : this.formValues.company.toLowerCase();
+      if (this.companyList) {
+        const list =  this.companyList.filter((item: any) => {
+          return item.name.toLowerCase().includes(filterValue.toLowerCase());
+        }).splice(0,10);
+        console.log(list);
+        return list;
+      } else {
+        return [];
+      }
     } else {
       return [];
     }
+ 
   }
 
 
@@ -738,6 +793,7 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
   radioCompanyChange($event: MatRadioChange) {
     if ($event.value) {
       this.formValues.company = $event.value;
+      this.addAllowedCompanies();
     }
   }
 
@@ -754,7 +810,7 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
         allowedCompanyList.push(allowedCompany);
       }
     }
-    this.formValues.allowedCompanies = [ ... allowedCompanyList ];
+    this.formValues.allowedCompanies = _.cloneDeep(allowedCompanyList);
   }
 
 
@@ -774,7 +830,7 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
         console.log(response);
         if (response) {
           this.formValues.incoterm = response.defaultIncoterm;
-          this.formValues.strategy = response.defaultStrategy;
+          //this.formValues.strategy = response.defaultStrategy;
         }
       }
     });
@@ -810,6 +866,31 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
       return null;
     }
   }
+
+  
+  quantityFormatValue(value) {
+    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    let number = parseFloat(plainNumber);
+    if (isNaN(number)) {
+      return null;
+    }
+    if (plainNumber) {
+      if(this.tenantService.quantityPrecision == 0) {
+        return plainNumber;
+      } else {
+        return this._decimalPipe.transform(plainNumber, this.quantityPrecision);
+      }
+    }
+  }
+
+  noOfDaysBeforeExpiryFormatValue(value) {
+    return value.toFixed(0);
+  }
+
+  openSeller() {
+    document.getElementsByTagName('body')[0].click();
+  }
+
 
 
   ngAfterViewInit(): void {

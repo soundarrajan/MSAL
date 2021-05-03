@@ -849,6 +849,17 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     }
   }
 
+  getColorCodeFromLabels(statusObj, labels) {
+    for(let i = 0; i < labels.length; i++) {
+      if (statusObj) {
+        if(statusObj.id === labels[i].id && statusObj.transactionTypeId === labels[i].transactionTypeId) {
+            return labels[i].code;
+        }
+      }
+    }
+  }
+
+
   quantityFormatValue(value) {
     let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
     let number = parseFloat(plainNumber);
@@ -929,9 +940,10 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
 
 
   // Only Number
-  keyPressNumber(event) {
+   // Only Number
+   keyPressNumber(event) {
     var inp = String.fromCharCode(event.keyCode);
-    if (inp == '.' || inp == ',') {
+    if (inp == '.' || inp == ',' || inp == '-') {
       return true;
     }
     if (/^[-,+]*\d{1,6}(,\d{3})*(\.\d*)?$/.test(inp)) {

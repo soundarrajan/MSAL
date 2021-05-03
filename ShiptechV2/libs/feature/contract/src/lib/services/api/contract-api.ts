@@ -24,13 +24,20 @@ export namespace ContractApiPaths {
   export const getSpecParameterById = () =>  `api/masters/specparameters/get`;
   export const saveSpecParameterForContractProduct = () =>  `api/contract/contract/saveSpecParameterForContractProduct`;
   export const getProdDefaultConversionFactors = () =>  `api/masters/products/getProdDefaultConversionFactors`;
+  export const saveConversionFactorsForContractProduct = () =>  `api/contract/contract/saveConversionFactorsForContractProduct`;
   export const getFormulaById = () =>  `api/masters/formulas/get`;
   export const saveFormula = () =>  `api/masters/formulas/create`;
   export const updateFormula = () =>  `api/masters/formulas/update`;
   export const getContractFormulaList = () =>  `api/masters/formulas/listMasters`;
   export const getAdditionalCostsComponentTypes = () =>  `api/masters/additionalcosts/listApps`;
-
-
+  export const createContract = () =>  `api/contract/contract/create`;
+  export const updateContract = () =>  `api/contract/contract/update`;
+  export const confirmContract = () =>  `api/contract/contract/confirm`;
+  export const undoConfirmContract = () =>  `api/contract/contract/undo`;
+  export const cancelContract = () =>  `api/contract/contract/cancel`;
+  export const extendContract = () =>  `api/contract/contract/extend`;
+  export const deleteContract = () =>  `api/contract/contract/delete`;
+  export const getContractFormulas = () =>  `api/contract/contract/getContractFormulas`;
 
 
 }
@@ -44,7 +51,7 @@ export class ContractApi implements IContractApiService {
 
   @ApiCallUrl()
   private _apiUrl = this.appConfig.v1.API.BASE_URL_DATA_CONTRACTS;
-  
+
   @ApiCallUrl()
   private _procurementApiUrl = this.appConfig.v1.API.BASE_URL_DATA_PROCUREMENT;
 
@@ -69,12 +76,12 @@ export class ContractApi implements IContractApiService {
       { payload: request }
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
 
 
-  
+
   @ObservableException()
   getTenantConfiguration(
     request: any
@@ -84,11 +91,11 @@ export class ContractApi implements IContractApiService {
       { Payload: request }
     ).pipe(
       map((body: any) => body),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
 
-    
+
   @ObservableException()
   getStaticLists(
     request: any
@@ -98,7 +105,7 @@ export class ContractApi implements IContractApiService {
       { Payload: request }
     ).pipe(
       map((body: any) => body),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
 
@@ -111,7 +118,7 @@ export class ContractApi implements IContractApiService {
       { Payload: request }
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
 
@@ -120,10 +127,10 @@ export class ContractApi implements IContractApiService {
     request: any
   ): Observable<any> {
     return this.http.post<any>(
-      `${this._masterApiUrl}/${ContractApiPaths.getAgreementType()}`, request 
+      `${this._masterApiUrl}/${ContractApiPaths.getAgreementType()}`, request
     ).pipe(
       map((body: any) => body.payload.contractAgreementTypesList),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
 
@@ -136,7 +143,7 @@ export class ContractApi implements IContractApiService {
       { Payload: request }
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
 
@@ -146,10 +153,10 @@ export class ContractApi implements IContractApiService {
   ): Observable<any> {
     return this.http.post<any>(
       `${this._masterApiUrl}/${ContractApiPaths.getLocationList()}`,
-     request 
+     request
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
 
@@ -159,10 +166,10 @@ export class ContractApi implements IContractApiService {
   ): Observable<any> {
     return this.http.post<any>(
       `${this._masterApiUrl}/${ContractApiPaths.getProductList()}`,
-      request 
+      request
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
 
@@ -173,38 +180,38 @@ export class ContractApi implements IContractApiService {
   ): Observable<any> {
     return this.http.post<any>(
       `${this._masterApiUrl}/${ContractApiPaths.specGroupGetByProduct()}`,
-      request 
+      request
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
 
-  
+
   @ObservableException()
   getSpecForProcurement(
     request: any
   ): Observable<IDeliveryDetailsResponse> {
     return this.http.post<IDeliveryDetailsResponse>(
       `${this._apiUrl}/${ContractApiPaths.getSpecForProcurement()}`,
-      request 
+      request
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
 
-  
+
   @ObservableException()
   getSpecParameterById(
     request: any
   ): Observable<any> {
     return this.http.post<any>(
       `${this._masterApiUrl}/${ContractApiPaths.getSpecParameterById()}`,
-      { Payload: request } 
+      { Payload: request }
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
 
@@ -214,10 +221,10 @@ export class ContractApi implements IContractApiService {
   ): Observable<IDeliveryDetailsResponse> {
     return this.http.post<IDeliveryDetailsResponse>(
       `${this._apiUrl}/${ContractApiPaths.saveSpecParameterForContractProduct()}`,
-      { Payload: request } 
+      { Payload: request }
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
 
@@ -228,10 +235,10 @@ export class ContractApi implements IContractApiService {
   ): Observable<IDeliveryDetailsResponse> {
     return this.http.post<IDeliveryDetailsResponse>(
       `${this._masterApiUrl}/${ContractApiPaths.getProdDefaultConversionFactors()}`,
-       request  
+       request
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
 
@@ -244,7 +251,7 @@ export class ContractApi implements IContractApiService {
        { Payload: request  }
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
 
@@ -256,8 +263,8 @@ export class ContractApi implements IContractApiService {
       `${this._masterApiUrl}/${ContractApiPaths.saveFormula()}`,
        { Payload: request  }
     ).pipe(
-      map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      map((body: any) => body.upsertedId),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
 
@@ -270,21 +277,21 @@ export class ContractApi implements IContractApiService {
        { Payload: request  }
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
 
-  
+
   @ObservableException()
   getContractFormulaList(
     request: any
   ): Observable<IDeliveryDetailsResponse> {
     return this.http.post<IDeliveryDetailsResponse>(
       `${this._masterApiUrl}/${ContractApiPaths.getContractFormulaList()}`,
-      request 
+      request
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
 
@@ -297,14 +304,128 @@ export class ContractApi implements IContractApiService {
       {Payload: request}
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
+  }
+
+  @ObservableException()
+  saveConversionFactorsForContractProduct(
+    request: any
+  ): Observable<IDeliveryDetailsResponse> {
+    return this.http.post<IDeliveryDetailsResponse>(
+      `${this._apiUrl}/${ContractApiPaths.saveConversionFactorsForContractProduct()}`,
+      request
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
+  }
+
+  @ObservableException()
+  createContract(
+    request: any
+  ): Observable<IDeliveryDetailsResponse> {
+    return this.http.post<IDeliveryDetailsResponse>(
+      `${this._apiUrl}/${ContractApiPaths.createContract()}`,
+      {Payload: request}
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
+  }
+
+  @ObservableException()
+  updateContract(
+    request: any
+  ): Observable<IDeliveryDetailsResponse> {
+    return this.http.post<IDeliveryDetailsResponse>(
+      `${this._apiUrl}/${ContractApiPaths.updateContract()}`,
+      {Payload: request}
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
 
 
+  @ObservableException()
+  confirmContract(
+    request: any
+  ): Observable<IDeliveryDetailsResponse> {
+    return this.http.post<IDeliveryDetailsResponse>(
+      `${this._apiUrl}/${ContractApiPaths.confirmContract()}`,
+      {Payload: request}
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
+  }
 
-  
-  
+  @ObservableException()
+  undoConfirmContract(
+    request: any
+  ): Observable<IDeliveryDetailsResponse> {
+    return this.http.post<IDeliveryDetailsResponse>(
+      `${this._apiUrl}/${ContractApiPaths.undoConfirmContract()}`,
+      {Payload: request}
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
+  }
+
+  @ObservableException()
+  cancelContract(
+    request: any
+  ): Observable<IDeliveryDetailsResponse> {
+    return this.http.post<IDeliveryDetailsResponse>(
+      `${this._apiUrl}/${ContractApiPaths.cancelContract()}`,
+      {Payload: request}
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error && body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : null))
+    );
+  }
+
+  @ObservableException()
+  extendContract(
+    request: any
+  ): Observable<IDeliveryDetailsResponse> {
+    return this.http.post<IDeliveryDetailsResponse>(
+      `${this._apiUrl}/${ContractApiPaths.extendContract()}`,
+      {Payload: request}
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
+  }
+
+  @ObservableException()
+  deleteContract(
+    request: any
+  ): Observable<IDeliveryDetailsResponse> {
+    return this.http.post<IDeliveryDetailsResponse>(
+      `${this._apiUrl}/${ContractApiPaths.deleteContract()}`,
+      {Payload: request}
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
+  }
+    
+  @ObservableException()
+  getContractFormulas(
+    request: any
+  ): Observable<IDeliveryDetailsResponse> {
+    return this.http.post<IDeliveryDetailsResponse>(
+      `${this._apiUrl}/${ContractApiPaths.getContractFormulas()}`,
+      {Payload: request}
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
+  }
+
 
 }
 

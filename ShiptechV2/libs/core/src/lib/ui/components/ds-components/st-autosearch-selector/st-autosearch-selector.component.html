@@ -1,0 +1,18 @@
+<form>
+  <div class="custom-form-field lookup-delivery-container d-flex" [ngClass]="{'darkTheme':false,'lightTheme':true}">
+    <mat-form-field class="with-search">
+      <mat-label>{{name}}</mat-label>
+      <input class="free-text-field" type="text" placeholder="{{placeholder}}" aria-label="name" matInput [formControl]="myControl" [matAutocomplete]="auto">
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" class="" (optionSelected)="selectedEvent($event)">
+        <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
+          {{option.name}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <button [disabled]="false" [ngClass]="{'search-icon-disabled': false}" class="search-icon" (click)="openSearchPopup()">
+      <div class="img">
+      </div>
+    </button>
+  </div>
+</form>
+  

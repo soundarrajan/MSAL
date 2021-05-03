@@ -87,9 +87,15 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let qualityParameter of formValues.deliveryProducts[deliveryProductIndex].qualityParameters">
+            <tr *ngFor="let qualityParameter of formValues.deliveryProducts[deliveryProductIndex].qualityParameters; let i = index" >
                 <td style="width:16%">
-                    <span>{{qualityParameter.specParameter.name}}</span>
+                    <span *ngIf="qualityParameter.isDisplayedInDelivery==true && qualityParameter.isMandatoryInDelivery==true">
+                        <span>{{qualityParameter.specParameter.name}} </span> 
+                        <span style=" color: orange;font-size: 9px;margin-left: 2px;">*</span>
+                    </span>  
+                    <span *ngIf="!(qualityParameter.isDisplayedInDelivery && qualityParameter.isMandatoryInDelivery)">
+                        <span>{{qualityParameter.specParameter.name}} </span> 
+                    </span>  
                 </td>
                 <td style="width:12%">
                     <span *ngIf="qualityParameter.min != null">
@@ -117,13 +123,13 @@
                 </td>
                 <td style="width:12%">
                     <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                        <mat-form-field class="without-search" appearance="legacy">
+                        <mat-form-field class="without-search" id ="bdnIdx{{ i }}" appearance="legacy">
                           <input [(ngModel)]="qualityParameter.bdnValue"
                                 (ngModelChange)="qualityParameter.qualityMatch = setQualityMatch(qualityParameter.bdnValue, qualityParameter.surveyValue, qualityParameter.min, qualityParameter.max)"
                                 matInput 
                                 [disabled]="formValues.deliveryStatus.name == 'Verified'"
-                                (keypress)="keyPressNumber($event)"
-                                autocomplete="off"
+                                (keypress)="keyPressNumber($event); IsValidRemove($event,i)"
+                                autocomplete="off" 
                                 name="Product_{{ deliveryProductIndex }}_{{ qualityParameter.specParameter.name}}_BDN">
                         </mat-form-field>
                     </div>

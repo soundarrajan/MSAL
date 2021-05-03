@@ -7,8 +7,8 @@
   </shiptech-breadcrumbs>
   <div class="st-breadcrumbs-progress-bar col-md-6">
     <ul class="page-breadcrumb">
-      <li class="btn btn-fit-height {{navItem.indexStatus}}" title="{{navItem.entityId}}" *ngFor="let navItem of navigationItems">          
-        <a *ngIf="navItem.url" href="{{navItem.url}}" target="_blank">
+      <li class="btn btn-fit-height {{navItem.indexStatus}}"  title="{{navItem.entityId}}"  *ngFor="let navItem of navigationItems">          
+        <a *ngIf="navItem.url" href="{{navItem.url}}" class="breadcrumb-a">
             {{navItem.displayName}}
         </a>
         <span *ngIf="!navItem.url">
@@ -22,11 +22,11 @@
 <shiptech-wunderbar>
   <!-- TODO: Remove inline style-->
   <div class="row" style="margin: 5px 0;">
-    <div class="col-6 d-flex">
+    <div class="d-flex contract-topbar">
       <div class="shiptech-tab ui-tabmenu ui-widget ui-widget-content ui-corner-all">
         <ul class="ui-tabmenu-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
           <li role="tab" class="ui-tabmenuitem ui-state-default ui-corner-top" *ngFor="let menuItem of menuItems">
-            <a  *ngIf="menuItem.url" class="ui-menuitem-link ui-corner-all" href="{{menuItem.url}}" target="_blank">
+            <a  *ngIf="menuItem.url" class="ui-menuitem-link ui-corner-all" href="{{menuItem.url}}">
               <span class="ui-menuitem-text">{{menuItem.label}}</span>
             </a>
             <a  *ngIf="!menuItem.url" class="ui-menuitem-link ui-corner-all">

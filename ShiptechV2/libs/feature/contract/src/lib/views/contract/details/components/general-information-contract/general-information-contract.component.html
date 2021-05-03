@@ -1,12 +1,14 @@
 <div class="col-md-12 d-flex contract-section">
   <div class="col-md-3" style="padding-left: 0px;">
-    <div id="custom-btn-toggle-v2">
-      <mat-button-toggle-group  #group="matButtonToggleGroup" [value]="selectedVal" (change)="onValChange(group.value)" >
+    <div id="custom-contract-btn-toggle-v2">
+      <mat-button-toggle-group  
+        [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
+        #group="matButtonToggleGroup" [value]="selectedVal" (change)="onValChange(group.value)" >
         <mat-button-toggle value="dateSpecific">
           <span *ngIf="selectedVal == 'dateSpecific'" class="toggle-icon"></span> 
           Date specific
         </mat-button-toggle>
-        <mat-button-toggle value="evergreen">
+        <mat-button-toggle value="evergreen" >
           <span  *ngIf="selectedVal == 'evergreen'" class="toggle-icon"></span> 
           Evergreen
         </mat-button-toggle>
@@ -39,66 +41,145 @@
         <div class="contract-qty-container">
           <div>
             <span class="label">
-              <span>
+              <span *ngIf="formValues.status" class="delivery-number-dot">
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" fill="#9E9E9E" [ngStyle]="{'fill': statusColorCode }"/>
+                </svg>
+              </span>
+              <span *ngIf="!formValues.status" class="delivery-number-dot">
                 <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" fill="#9E9E9E"/>
                 </svg>
               </span>
               Status
             </span>
-            <div class="value">42,000 GAL</div>
+            <div *ngIf="formValues.status" class="value status-entity" [ngStyle]="{'color': statusColorCode}">
+              {{formValues.status.displayName}}
+            </div>
           </div>
         </div>
         <div class="contract-qty-container">
           <div>
             <span class="label">
-              <span>
+              <span *ngIf="formValues.summary.contractedQuantity">
                 <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" fill="#9E9E9E"/>
+                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" [ngStyle]="{'fill': '#00AAE2' }"/>
+                </svg>
+              </span>
+              <span *ngIf="!formValues.summary.contractedQuantity">
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" [ngStyle]="{'fill': 'white' }"/>
                 </svg>
               </span>
               Total Qty
             </span>
-            <div class="value">42,000 GAL</div>
+            <div *ngIf="formValues.summary.contractedQuantity" class="value" [ngStyle]="{'color': '#00AAE2'}">
+              {{ quantityFormatValue(formValues.summary.contractedQuantity) }}
+              {{ formValues.summary.uom }}
+            </div>
+            <div *ngIf="!formValues.summary.contractedQuantity" class="value" [ngStyle]="{'color': 'white'}">
+              {{ quantityFormatValue(0) }}
+              {{ formValues.summary.uom }}
+            </div>
           </div>
         </div>
         <div class="contract-qty-container">
           <div>
             <span class="label">
-              <span>
+              <span *ngIf="formValues.summary.plannedQuantity">
                 <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" fill="#9E9E9E"/>
+                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" [ngStyle]="{'fill': '#00AAE2' }"/>
+                </svg>
+              </span>
+              <span *ngIf="!formValues.summary.plannedQuantity">
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" [ngStyle]="{'fill': 'white' }"/>
                 </svg>
               </span>
               Planned Qty
             </span>
-            <div class="value">42,000 GAL</div>
+            <div *ngIf="formValues.summary.plannedQuantity" class="value" [ngStyle]="{'color': '#00AAE2'}">
+              {{ quantityFormatValue(formValues.summary.plannedQuantity) }}
+              {{ formValues.summary.uom }}
+            </div>
+            <div *ngIf="!formValues.summary.plannedQuantity" class="value" [ngStyle]="{'color': 'white'}">
+              {{ quantityFormatValue(0) }}
+              {{ formValues.summary.uom }}
+            </div>
           </div>
         </div>
         <div class="contract-qty-container">
           <div>
             <span class="label">
-              <span>
+              <span *ngIf="formValues.summary.utilizedQuantity">
                 <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" fill="#9E9E9E"/>
+                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" [ngStyle]="{'fill': '#00AAE2' }"/>
+                </svg>
+              </span>
+              <span *ngIf="!formValues.summary.utilizedQuantity">
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" [ngStyle]="{'fill': 'white' }"/>
                 </svg>
               </span>
               Utilised Qty
             </span>
-            <div class="value">42,000 GAL</div>
+            <div *ngIf="formValues.summary.utilizedQuantity" class="value" [ngStyle]="{'color': '#00AAE2'}">
+              {{ quantityFormatValue(formValues.summary.utilizedQuantity) }}
+              {{ formValues.summary.uom }}
+            </div>
+            <div *ngIf="!formValues.summary.utilizedQuantity" class="value" [ngStyle]="{'color': 'white'}">
+              {{ quantityFormatValue(0) }}
+              {{ formValues.summary.uom }}
+            </div>
           </div>
         </div>
         <div class="contract-qty-container">
           <div>
             <span class="label">
-              <span>
+              <span *ngIf="formValues.summary.availableQuantity">
                 <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" fill="#9E9E9E"/>
+                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" [ngStyle]="{'fill': '#00AAE2' }"/>
+                </svg>
+              </span>
+              <span *ngIf="!formValues.summary.availableQuantity">
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" [ngStyle]="{'fill': 'white' }"/>
                 </svg>
               </span>
               Available Qty
             </span>
-            <div class="value">42,000 GAL</div>
+            <div *ngIf="formValues.summary.availableQuantity" class="value" [ngStyle]="{'color': '#00AAE2'}">
+              {{ quantityFormatValue(formValues.summary.availableQuantity) }}
+              {{ formValues.summary.uom }}
+            </div>
+            <div *ngIf="!formValues.summary.availableQuantity" class="value" [ngStyle]="{'color': 'white'}">
+              {{ quantityFormatValue(0) }}
+              {{ formValues.summary.uom }}
+            </div>
+          </div>
+        </div>
+        <div class="contract-qty-container">
+          <div>
+            <span class="label">
+              <span *ngIf="formValues.noOfDaysBeforeExpiry">
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" [ngStyle]="{'fill': '#9CD7B6' }"/>
+                </svg>
+              </span>
+              <span *ngIf="!formValues.noOfDaysBeforeExpiry">
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <ellipse cx="4.90561" cy="4" rx="4.22642" ry="4" [ngStyle]="{'fill': 'white' }"/>
+                </svg>
+              </span>
+              Expiry Count down
+            </span>
+            <div *ngIf="formValues.noOfDaysBeforeExpiry" class="value" [ngStyle]="{'color': '#9CD7B6'}">
+              {{ noOfDaysBeforeExpiryFormatValue(formValues.noOfDaysBeforeExpiry) }}
+              Days
+            </div>
+            <div *ngIf="!formValues.noOfDaysBeforeExpiry" class="value" [ngStyle]="{'color': 'white'}">
+               0 Days
+            </div>
           </div>
         </div>
     </div>
@@ -107,26 +188,36 @@
 <div class="col-md-12 d-flex contract-section">
   <div class="col-md-6 no-padding d-flex">
     <div class="custom-form-field custom-field-general" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-      <mat-form-field class="without-search" appearance="legacy">
+      <mat-form-field class="without-search" 
+        appearance="legacy"
+        [ngClass]="{'required-field': (buttonClicked && !formValues.name)}">
         <mat-label>Contract name</mat-label>
         <input matInput
             [(ngModel)]="formValues.name"
             placeholder="Contract name"
             autocomplete="off"
-            required>
+            required
+            [matTooltip]="formValues.name"
+            [matTooltipPosition]="'above'"
+            matTooltipClass="custom-tooltip"
+            [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
         </mat-form-field>
     </div>
     <div class="custom-form-field lookup-delivery-container custom-field-general-lookup" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
       <div class="d-flex">
-        <mat-form-field class="with-search" appearance="legacy">
+        <mat-form-field class="with-search" 
+          appearance="legacy"
+          [ngClass]="{'required-field': (buttonClicked && (!formValues.seller || (formValues.seller && !formValues.seller.name)))}">
           <mat-label>Seller name</mat-label>
           <input class="free-text-field" 
                   type="text"
                   matInput 
                   [(ngModel)]="formValues.seller"
                   [matAutocomplete]="auto"
+                  autocomplete="off"
                   placeholder="Seller name"
-                  required>
+                  required
+                  [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
           <mat-autocomplete #auto="matAutocomplete" 
                             class="darkPanelAuto"
                             [displayWith]="displayFn"
@@ -137,8 +228,11 @@
               </mat-option>
           </mat-autocomplete>
         </mat-form-field>
-        <button 
-              class="search-icon" appMasterSelectorTrigger [masterSelector]="masterSelector" #masterSelectorTrigger="masterSelectorTrigger" [header]="getHeaderNameSelector()">
+        
+        <button (click)="openSeller()" 
+            [disabled]="formValues.status && formValues.status.name == 'Confirmed'" 
+            [ngClass]="{'search-icon-disabled': formValues.status && formValues.status.name == 'Confirmed'}"
+            class="search-icon" appMasterSelectorTrigger [masterSelector]="masterSelector" #masterSelectorTrigger="masterSelectorTrigger" [header]="getHeaderNameSelector()">
           <div class="img">
             <ng-template cdkPortal #masterSelector="cdkPortal" >
               <shiptech-shared-master-selector (selectedChange)="selectorSellerSelectionChange($event); masterSelectorTrigger.close()" (shouldCloseModal)="masterSelectorTrigger.close()" [selectorType]="autocompleteSellers"
@@ -156,7 +250,9 @@
     </div>
     <div class="custom-form-field lookup-delivery-container custom-field-general-lookup" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
       <div class="d-flex">
-        <mat-form-field class="with-search" appearance="legacy">
+        <mat-form-field 
+          class="with-search" appearance="legacy"
+          [ngClass]="{'required-field': (buttonClicked && (!formValues.company || (formValues.company && !formValues.company.name)))}">
           <mat-label>Company name</mat-label>
           <input class="free-text-field" 
                   type="text"
@@ -164,7 +260,9 @@
                   [(ngModel)]="formValues.company"
                   [matAutocomplete]="auto1"
                   placeholder="Company name"
-                  required>
+                  autocomplete="off"
+                  required
+                  [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
           <mat-autocomplete #auto1="matAutocomplete" 
                             class="darkPanelAuto"
                             [displayWith]="displayFn"
@@ -175,9 +273,16 @@
               </mat-option>
           </mat-autocomplete>
         </mat-form-field>
-        <div class="search-icon"  [matMenuTriggerFor]="menu" (click)="resetCompanyData()">
+        <div class="search-icon" 
+          *ngIf="!(formValues.status && formValues.status.name == 'Confirmed')"
+          [matMenuTriggerFor]="menu" (click)="resetCompanyData()">
           <div class="img"></div>
         </div>
+        <div class="search-icon" 
+          *ngIf="formValues.status && formValues.status.name == 'Confirmed'"         
+          [ngClass]="{'search-icon-disabled': formValues.status && formValues.status.name == 'Confirmed'}">
+        <div class="img"></div>
+      </div>
         <mat-menu #menu="matMenu" class="company-modal">
           <div [ngClass]="{'container-modal': !expandCompanyPopUp, 'container-modal-expand': expandCompanyPopUp}">
             <div class="col-md-12 header-container-company">
@@ -218,28 +323,32 @@
         <div class="allowed-list-modal-container">
             Allowed Company
         </div>
-        <div  [matMenuTriggerFor]="menu1" class="edit-allow-companies">
+        <div *ngIf="formValues.company && !(formValues.status && formValues.status.name == 'Confirmed')" [matMenuTriggerFor]="menu1" class="edit-allow-companies">
+        </div>
+        <div *ngIf="!formValues.company || (formValues.status && formValues.status.name == 'Confirmed')" class="edit-allow-companies">
         </div>
         <mat-menu #menu1="matMenu" class="allowed-company-modal">
-          <div class="col-md-12 header-allowed-company">
-            <div class="allowed-company-header col-md-10 contract-no-padding" >
-              Allowed companies
+          <div [ngClass]="{'expand-allowed-company-container': expandAllowedCompanylistPopUp}">
+            <div class="col-md-12 header-allowed-company">
+              <div class="allowed-company-header col-md-10 contract-no-padding" >
+                Allowed companies
+              </div>
+              <div class="col-md-2 contract-no-padding expand-allowed-companies"  (click)="$event.stopPropagation();$event.preventDefault();">
+                  <img  [ngClass]="{'expand-company-img': expandAllowedCompanylistPopUp}" (click)="expandAllowedCompanylistPopUp = !expandAllowedCompanylistPopUp;" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
+              </div>
             </div>
-            <div class="col-md-2 contract-no-padding expand-allowed-companies"  (click)="$event.stopPropagation();$event.preventDefault();">
-                <img  [ngClass]="{'expand-company-img': expandCompanylistPopUp}" (click)="expandCompanylistPopUp = !expandCompanylistPopUp;" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
+            <div (click)="$event.stopPropagation();" class="col-md-12 contract-no-padding allowed-company-line"  *ngFor="let company of companyList">
+              <mat-checkbox [(ngModel)]="company.isSelected">
+                {{company.name}}
+              </mat-checkbox>
             </div>
-          </div>
-          <div (click)="$event.stopPropagation();" class="col-md-12 contract-no-padding allowed-company-line"  *ngFor="let company of companyList">
-            <mat-checkbox [(ngModel)]="company.isSelected">
-              {{company.name}}
-            </mat-checkbox>
-          </div>
-          <div class="col-md-12">
-            <button  class="ui-button-info mr-1 btn-i-blue-color" label="Save"
-              pButton
-              (click)="saveAllowedCompanies()"
-              style="float:right"
-              type="button"></button>
+            <div class="col-md-12">
+              <button  class="ui-button-info mr-1 btn-i-blue-color" label="Save"
+                pButton
+                (click)="saveAllowedCompanies()"
+                style="float:right"
+                type="button"></button>
+            </div>
           </div>
         </mat-menu>
       </div>
@@ -261,17 +370,22 @@
   </div>
 </div>
 <div class="col-md-12 d-flex contract-section">
-    <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-      <mat-form-field class="without-search" appearance="legacy">
+    <div class="custom-form-field" 
+      [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}"
+      *ngIf="contractConfiguration && contractConfiguration.agreementTypeDisplay.id == 1">
+      <mat-form-field class="without-search" 
+        appearance="legacy"
+        [ngClass]="{'required-field': (buttonClicked && !formValues.agreementType)}">
         <mat-label>Agreement Type</mat-label>
         <mat-select 
-                    [(ngModel)]="formValues.agreementType"
-                    (selectionChange)="changeAgreementType()"
-                    [disableOptionCentering]="true"
-                    panelClass="general-information-select-container"
-                    [compareWith]="compareUomObjects"
-                    placeholder="Agreement Type"
-                    required>
+            [(ngModel)]="formValues.agreementType"
+            (selectionChange)="changeAgreementType()"
+            [disableOptionCentering]="true"
+            panelClass="general-information-select-container"
+            [compareWith]="compareUomObjects"
+            placeholder="Agreement Type"
+            required
+            [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
             <mat-option *ngFor="let option of agreementTypeList" [value]="option">
                 {{option.name}}
             </mat-option>
@@ -282,11 +396,12 @@
       <mat-form-field class="without-search" appearance="legacy">
         <mat-label>Payment Term</mat-label>
         <mat-select 
-                    [(ngModel)]="formValues.paymentTerm"
-                    [disableOptionCentering]="true"
-                    panelClass="general-information-select-container"
-                    [compareWith]="compareUomObjects"
-                    placeholder="Payment Term">
+            [(ngModel)]="formValues.paymentTerm"
+            [disableOptionCentering]="true"
+            panelClass="general-information-select-container"
+            [compareWith]="compareUomObjects"
+            [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
+            placeholder="Payment Term">
             <mat-option *ngFor="let option of paymentTermList" [value]="option">
                 {{option.name}}
             </mat-option>
@@ -294,14 +409,18 @@
       </mat-form-field>
     </div>
     <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-      <mat-form-field class="without-search" appearance="legacy">
+      <mat-form-field class="without-search" 
+        appearance="legacy"
+        [ngClass]="{'required-field': (buttonClicked && !formValues.incoterm)}">
         <mat-label>Delivery Term</mat-label>
         <mat-select 
-                    [(ngModel)]="formValues.incoterm"
-                    [disableOptionCentering]="true"
-                    panelClass="general-information-select-container"
-                    [compareWith]="compareUomObjects"
-                    placeholder="Delivery Term">
+            [(ngModel)]="formValues.incoterm"
+            [disableOptionCentering]="true"
+            panelClass="general-information-select-container"
+            [compareWith]="compareUomObjects"
+            placeholder="Delivery Term"
+            [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
+            required>
             <mat-option *ngFor="let option of incotermList" [value]="option">
                 {{option.name}}
             </mat-option>
@@ -312,7 +431,8 @@
         [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
       <mat-form-field class="without-search" 
           appearance="legacy"
-          [ngClass]="{'date-invalid': isValidFromDateInvalid , 'date-valid': !isValidFromDateInvalid}">
+          [ngClass]="{'required-field': (buttonClicked && !formValues.validFrom), 
+              'date-invalid': isValidFromDateInvalid , 'date-valid': !isValidFromDateInvalid}">
         <mat-label>Start Date</mat-label>
         <input [(ngModel)]="formValues.validFrom" 
               #validFromDateField="ngModel" 
@@ -323,7 +443,8 @@
               placeholder="Start Date"
               (dateInput)="onChange($event, 'validFrom')"
               (dateChange)="formValues.validFrom= formatDateForBe(formValues.validFrom)"
-              required>
+              required
+              [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
               <mat-datepicker-toggle matSuffix [for]="validFrom">
                 <mat-icon matDatepickerToggleIcon class="icon-date">
                 </mat-icon>
@@ -331,11 +452,13 @@
             <mat-datepicker #validFrom [panelClass]="switchTheme?'datepicker-darktheme':''"></mat-datepicker>
       </mat-form-field>
     </div>
-    <div class="custom-form-field" 
-         [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+    <div *ngIf="!formValues.evergreen"
+        class="custom-form-field" 
+        [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
       <mat-form-field class="without-search" 
           appearance="legacy"
-          [ngClass]="{'date-invalid': isValidToDateInvalid , 'date-valid': !isValidToDateInvalid}">
+          [ngClass]="{'required-field': (buttonClicked && !formValues.validTo),
+            'date-invalid': isValidToDateInvalid , 'date-valid': !isValidToDateInvalid}">
         <mat-label>End Date</mat-label>
         <input [(ngModel)]="formValues.validTo" 
               #validToDateField="ngModel" 
@@ -346,7 +469,8 @@
               placeholder="End Date"
               (dateInput)="onChange($event, 'validTo')"
               (dateChange)="formValues.validTo= formatDateForBe(formValues.validTo)"
-              required>
+              required
+              [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
               <mat-datepicker-toggle matSuffix [for]="validTo">
                 <mat-icon matDatepickerToggleIcon class="icon-date">
                 </mat-icon>
@@ -358,20 +482,21 @@
       <mat-form-field class="without-search" appearance="legacy">
         <mat-label>Date apply on</mat-label>
         <mat-select 
-                    [(ngModel)]="formValues.applyTo"
-                    [disableOptionCentering]="true"
-                    panelClass="general-information-select-container"
-                    [compareWith]="compareUomObjects"
-                    placeholder="Date apply on">
+            [(ngModel)]="formValues.applyTo"
+            [disableOptionCentering]="true"
+            panelClass="general-information-select-container"
+            [compareWith]="compareUomObjects"
+            placeholder="Date apply on"
+            [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
             <mat-option *ngFor="let option of applyToList" [value]="option">
                 {{option.name}}
             </mat-option>
         </mat-select>
       </mat-form-field>
     </div>
-    <div class="inital-end-date-readonly">
-      <div class="label">Initial End Date</div>
-      <div class="value">: --/--/---</div>
+    <div class="inital-end-date-readonly" *ngIf="!formValues.evergreen">
+      <div class="label">Initial End Date :</div>
+      <div class="value">{{formValues.initialValidTo ? formatDate(formValues.initialValidTo) : ' --/--/---'}}</div>
     </div>
 </div>
 <ngx-spinner

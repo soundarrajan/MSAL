@@ -54,12 +54,24 @@ export class VesselDetailsComponent implements OnInit {
     })
   }
   getVesselList() {
-    // load user role
-    this.localService.getVesselList(false).subscribe((data)=> {
-      console.log('getVesselList',data);
-      this.vesselList = data;
+    // load vessel list for vessel search option
+    this.localService.getVesselListImono(false).subscribe((tenantConfRes)=> {
+      console.log('tenantConfRes for vessel imono',tenantConfRes);
+      tenantConfRes = tenantConfRes.items
+      this.localService.getVesselList(false).subscribe((data)=> {
+        console.log('getVesselList',data);
+        let vesselRes = data;
+        this.vesselList = [];
+        this.vesselList = vesselRes.map(vesselItem=> {
+          let obj = tenantConfRes.find(imoItem => imoItem.id === vesselItem.id);
+          return {...vesselItem, imono:obj.name }
+        })
+        console.log(this.vesselList);
+        
+      })
 
     })
+   
   }
   
   selectedUserRoleFn(role1: any, role2: any) {
@@ -97,7 +109,8 @@ export class VesselDetailsComponent implements OnInit {
         setTimeout(() => {
           _this.selectedRole = _this.bunkerUserRole.find((role)=> (role.name==_this.previousUserRole?.name) );
           _this.selectedUserRole = _this.selectedRole;
-          document.body.click();
+          let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
+          titleEle.click();
         }, 500);
       }
     });
@@ -107,7 +120,8 @@ export class VesselDetailsComponent implements OnInit {
   }
 
   checkVesselHasNewPlan() {
-    this.localService.checkVesselHasNewPlan(348).subscribe((data)=> {
+    let vesselId = this.vesselData?.vesselId
+    this.localService.checkVesselHasNewPlan(vesselId).subscribe((data)=> {
       console.log('vessel has new plan',data);
       data = (data.payload?.length)? (data.payload)[0]: data.payload; 
       if(data.planCount>0)

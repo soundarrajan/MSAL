@@ -428,6 +428,7 @@ export class CreateNewFormulaModalComponent extends DeliveryAutocompleteComponen
   quantityTypeList: any;
   productList: any;
   locationList: any;
+  hasInvoicedOrder: any;
   constructor(
     public dialogRef: MatDialogRef<CreateNewFormulaModalComponent>,
     private ren: Renderer2,
@@ -497,6 +498,7 @@ export class CreateNewFormulaModalComponent extends DeliveryAutocompleteComponen
       this.quantityTypeList = data.quantityTypeList;
       this.productList = data.productList;
       this.locationList = data.locationList;
+      this.hasInvoicedOrder = data.hasInvoicedOrder;
     }
 
   ngOnInit() {
@@ -530,49 +532,49 @@ export class CreateNewFormulaModalComponent extends DeliveryAutocompleteComponen
     this.formValues.pricingScheduleOptionEventBasedContinuous = null;
     if (id == 4) {
       this.formValues.pricingScheduleOptionDateRange = {};
-      this.formValues.pricingScheduleOptionDateRange.sundayHolidayRule = {};
-      this.formValues.pricingScheduleOptionDateRange.mondayHolidayRule = {};
-      this.formValues.pricingScheduleOptionDateRange.tuesdayHolidayRule = {};
-      this.formValues.pricingScheduleOptionDateRange.wednesdayHolidayRule = {};
-      this.formValues.pricingScheduleOptionDateRange.thursdayHolidayRule = {};
-      this.formValues.pricingScheduleOptionDateRange.fridayHolidayRule = {};
-      this.formValues.pricingScheduleOptionDateRange.saturdayHolidayRule = {};
+      this.formValues.pricingScheduleOptionDateRange.sundayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionDateRange.mondayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionDateRange.tuesdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionDateRange.wednesdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionDateRange.thursdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionDateRange.fridayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionDateRange.saturdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
     } else if (id == 5) {
       this.formValues.pricingScheduleOptionSpecificDate = {};
-      this.formValues.pricingScheduleOptionSpecificDate.sundayHolidayRule = {};
-      this.formValues.pricingScheduleOptionSpecificDate.mondayHolidayRule = {};
-      this.formValues.pricingScheduleOptionSpecificDate.tuesdayHolidayRule = {};
-      this.formValues.pricingScheduleOptionSpecificDate.wednesdayHolidayRule = {};
-      this.formValues.pricingScheduleOptionSpecificDate.thursdayHolidayRule = {};
-      this.formValues.pricingScheduleOptionSpecificDate.fridayHolidayRule = {};
-      this.formValues.pricingScheduleOptionSpecificDate.saturdayHolidayRule = {};
+      this.formValues.pricingScheduleOptionSpecificDate.sundayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionSpecificDate.mondayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionSpecificDate.tuesdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionSpecificDate.wednesdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionSpecificDate.thursdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionSpecificDate.fridayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionSpecificDate.saturdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
     } else if (id == 6) {
       this.formValues.pricingScheduleOptionEventBasedSimple = {};
-      this.formValues.pricingScheduleOptionEventBasedSimple.sundayHolidayRule = {};
-      this.formValues.pricingScheduleOptionEventBasedSimple.mondayHolidayRule = {};
-      this.formValues.pricingScheduleOptionEventBasedSimple.tuesdayHolidayRule = {};
-      this.formValues.pricingScheduleOptionEventBasedSimple.wednesdayHolidayRule = {};
-      this.formValues.pricingScheduleOptionEventBasedSimple.thursdayHolidayRule = {};
-      this.formValues.pricingScheduleOptionEventBasedSimple.fridayHolidayRule = {};
-      this.formValues.pricingScheduleOptionEventBasedSimple.saturdayHolidayRule = {};
+      this.formValues.pricingScheduleOptionEventBasedSimple.sundayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionEventBasedSimple.mondayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionEventBasedSimple.tuesdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionEventBasedSimple.wednesdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionEventBasedSimple.thursdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionEventBasedSimple.fridayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionEventBasedSimple.saturdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
     } else if (id == 7) {
       this.formValues.pricingScheduleOptionEventBasedExtended = {};
-      this.formValues.pricingScheduleOptionEventBasedExtended.sundayHolidayRule = {};
-      this.formValues.pricingScheduleOptionEventBasedExtended.mondayHolidayRule = {};
-      this.formValues.pricingScheduleOptionEventBasedExtended.tuesdayHolidayRule = {};
-      this.formValues.pricingScheduleOptionEventBasedExtended.wednesdayHolidayRule = {};
-      this.formValues.pricingScheduleOptionEventBasedExtended.thursdayHolidayRule = {};
-      this.formValues.pricingScheduleOptionEventBasedExtended.fridayHolidayRule = {};
-      this.formValues.pricingScheduleOptionEventBasedExtended.saturdayHolidayRule = {};
+      this.formValues.pricingScheduleOptionEventBasedExtended.sundayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionEventBasedExtended.mondayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionEventBasedExtended.tuesdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionEventBasedExtended.wednesdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionEventBasedExtended.thursdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionEventBasedExtended.fridayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionEventBasedExtended.saturdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
     } else if (id == 8) {
       this.formValues.pricingScheduleOptionEventBasedContinuous = {};
-      this.formValues.pricingScheduleOptionEventBasedContinuous.sundayHolidayRule = {};
-      this.formValues.pricingScheduleOptionEventBasedContinuous.mondayHolidayRule = {};
-      this.formValues.pricingScheduleOptionEventBasedContinuous.tuesdayHolidayRule = {};
-      this.formValues.pricingScheduleOptionEventBasedContinuous.wednesdayHolidayRule = {};
-      this.formValues.pricingScheduleOptionEventBasedContinuous.thursdayHolidayRule = {};
-      this.formValues.pricingScheduleOptionEventBasedContinuous.fridayHolidayRule = {};
-      this.formValues.pricingScheduleOptionEventBasedContinuous.saturdayHolidayRule = {};
+      this.formValues.pricingScheduleOptionEventBasedContinuous.sundayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionEventBasedContinuous.mondayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionEventBasedContinuous.tuesdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionEventBasedContinuous.wednesdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionEventBasedContinuous.thursdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionEventBasedContinuous.fridayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
+      this.formValues.pricingScheduleOptionEventBasedContinuous.saturdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
     }
 
   }
@@ -591,8 +593,10 @@ export class CreateNewFormulaModalComponent extends DeliveryAutocompleteComponen
         if (typeof response == 'string') {
           this.toastr.error(response);
         } else {
+          this.dialogRef.close({
+            'name': this.formValues.name,
+            'id': this.formValues.id });
           this.toastr.success('Operation completed successfully!')
-          this.dialogRef.close();
         }
       });
   
@@ -609,10 +613,13 @@ export class CreateNewFormulaModalComponent extends DeliveryAutocompleteComponen
         if (typeof response == 'string') {
           this.toastr.error(response);
         } else {
+          this.dialogRef.close({
+            'name': this.formValues.name,
+            'id': response });
           this.toastr.success('Operation completed successfully!')
-          this.dialogRef.close();
         }
       });
+
     }
   }
 
@@ -640,6 +647,10 @@ export class CreateNewFormulaModalComponent extends DeliveryAutocompleteComponen
     if (!this.formValues.pricingSchedule) {
       this.formValues.pricingSchedule = {};
     }
+  }
+
+  cancelFormula() {
+    this.dialogRef.close();
   }
 
   

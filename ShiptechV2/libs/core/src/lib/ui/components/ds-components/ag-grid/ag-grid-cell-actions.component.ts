@@ -52,6 +52,29 @@ import { OperationalAmountDialog } from "../pop-ups/operational-amount.component
     <div *ngIf="params.type=='revert'">
         <img  src="../../../assets/customicons/revert.svg" width="13" alt="Revert">
     </div>
+    <div *ngIf="params.type==='border-cell'">
+        <div class="border-cell">
+          <span class="left-data">{{params.value.no}}</span>
+          <span class="right-data">{{params.value.order_prod}}</span>
+        </div>
+    </div>
+    <div *ngIf="params.type==='dashed-border'">
+      <div class="dashed-border">{{params.value}}</div>
+    </div>
+    <div *ngIf="params.type==='dashed-border-darkcell'">
+      <div class="dashed-border" style="margin: 4px 0px;">{{params.value}}</div>
+    </div>
+    <div *ngIf="params.type==='dashed-border-with-expand'">
+      <span class="dashed-border with-expand">{{params.value}}</span>
+      <span class="expand-arrow"></span>
+    </div>
+    <div *ngIf="params.type==='dashed-border-dark'" class="cell-bg-border">
+        <div class="truncate-100p inner-cell dark" style="padding-right: 10px;">
+            <span class="dashed-border with-search">
+                {{params.value}}<span class="search-icon-dark"></span>
+            </span>           
+        </div>
+    </div>
 `
 })
 
