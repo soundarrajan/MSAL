@@ -89,25 +89,42 @@
 </div>
 </div>
 <div class="container-fluid-delivery">
-<div class="row m-b-4">
-  <div class="col-12">
-    <p-panel [showHeader]="false">
-      <div fxLayout="row">
-        <shiptech-bdn-additional-information
-              [events]="eventsSubject.asObservable()"
-              [model]="formValues"
-              [finalQuantityRules]="finalQuantityRules"
-              [toleranceLimits]="toleranceLimits"
-              [deliveryFeedback]="deliveryFeedback"
-              [satisfactionLevel]="satisfactionLevel"
-              [pumpingRateUom]="pumpingRateUom"
-              [sampleSource]="sampleSource"
-              class="col-12">
-        </shiptech-bdn-additional-information>  
-      </div>
-    </p-panel>
+  <div class="row m-b-4">
+    <div class="col-12">
+      <p-panel [showHeader]="false">
+        <div fxLayout="row">
+          <shiptech-bdn-additional-information
+                [events]="eventsSubject.asObservable()"
+                [model]="formValues"
+                [finalQuantityRules]="finalQuantityRules"
+                [toleranceLimits]="toleranceLimits"
+                [deliveryFeedback]="deliveryFeedback"
+                [satisfactionLevel]="satisfactionLevel"
+                [pumpingRateUom]="pumpingRateUom"
+                [sampleSource]="sampleSource"
+                class="col-12">
+          </shiptech-bdn-additional-information>  
+        </div>
+      </p-panel>
+    </div>
   </div>
 </div>
+
+
+<div class="container-fluid-delivery">
+  <div class="row m-b-4">
+    <div class="col-12">
+      <p-accordion multiple="true" styleClass="shiptech-blue-accordion">
+        <p-accordionTab cache="true">
+          <p-header Class="accordionheader-blue">Notes</p-header>
+          <ng-template pTemplate="content">
+            <hr class="line m-t-7">
+            <shiptech-notes-log [DeliveryNotes]="this.formValues.deliveryNotes" (ChangedValue)="ChangedValueFun($event)"></shiptech-notes-log>
+          </ng-template>
+        </p-accordionTab>
+      </p-accordion>
+    </div>
+  </div>
 </div>
 
 <div class="bootstrap-loading" *ngIf="isLoading" style="top: 0px !important; background-color: #DCE3EB; z-index: 100000; height: 100vh;"> 
