@@ -1120,13 +1120,13 @@ export class OlMapComponent implements OnInit {
     this.vesselPopData = {
       vesselView: this.vessel_view,
       name: vData.VesselName,
-      id: vData.VesselIMONO,
+      id: 1,
       destination: 'Marseille',
       eta1: '2020-04-13 10:00',
       eta2: '2020-04-14 10:00',
       next_destination: 'Catania',
       voyageStatus: 'Laden',
-      vesselId: '1YM',
+      vesselId: '1',
       vesselExpDate: '12/06/2020',
       vesselType: 'LR1',
       bunkeringStatus: 'Created',
@@ -1145,7 +1145,7 @@ export class OlMapComponent implements OnInit {
       lsmgo: '10',
       notificationsCount: 6,
       messagesCount: 2,
-      routeAvailable: vData.VesselIMONO == '9301914' ? true : false
+      routeAvailable: true
     }
     if (this.cdkDrag.length > 0)//Reset the pop up position after drag
       this.cdkDrag.forEach(popup => popup._dragRef.reset());
