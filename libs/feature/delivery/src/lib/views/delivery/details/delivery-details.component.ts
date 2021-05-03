@@ -11,6 +11,7 @@ import { Select, Store } from '@ngxs/store';
 import { QcReportState } from '../../../store/report/qc-report.state';
 import { BehaviorSubject, empty, Observable, Subject } from 'rxjs';
 import { QcReportService } from '../../../services/qc-report.service';
+import { NotesService } from '../../../services/notes.service';
 import { catchError, filter, finalize, map, scan, skip, switchMap, takeUntil, tap } from 'rxjs/operators';
 import {
   SwitchActiveBunkerResponseAction,
@@ -65,6 +66,9 @@ import { throws } from 'assert';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { ProductListColumnServerKeys } from '@shiptech/core/ui/components/master-selector/view-models/product-model/product-list.columns';
 import { Title } from '@angular/platform-browser';
+import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
+
+
 
 interface DialogData {
   email: string;
@@ -82,7 +86,8 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   private _destroy$ = new Subject();
 
   private quantityPrecision: number;
-
+  @Select(UserProfileState) usernameobj$: Observable<object>;
+  @Select(UserProfileState.username) username$: Observable<string>;
   entityId: string;
   entityName: string;
   isLoading: boolean;
@@ -138,6 +143,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     private router: Router,
     private location: Location,
     private reportService: QcReportService,
+    private NotesService: NotesService,
     private dialogService: DialogService,
     private confirmationService: ConfirmationService,
     private toastrService: ToastrService,
@@ -172,6 +178,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       'bargeAlongside': '',
       'deliveryStatus': '',
       'info': {},
+      'DeliveryNotes':{},
       'temp': {
         'orderedProducts': {},
         'deliverysummary': {},
@@ -202,6 +209,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    debugger;
     this.route.params.pipe(takeUntil(this._destroy$)).subscribe(params => {
       this.entityId = params.deliveryId;
     });
@@ -225,11 +233,16 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       }
       this.orderNumberOptions = data.orderNumbers;
       if (data.delivery) {
+       
         this.formValues = data.delivery;
         if (this.formValues.info.request) {
           this.titleService.setTitle('Delivery' + ' - ' + 'REQ ' + this.formValues.info.request.id + ' - ' + this.formValues.info.vesselName);
         } else {
           this.titleService.setTitle('Delivery' + ' - ' + this.formValues.order.name + ' - ' + this.formValues.info.vesselName);
+        }
+
+        if(this.formValues.deliveryNotes != undefined && this.formValues.deliveryNotes.length != 0){
+
         }
         this.setQuantityFormatValues();
         this.decodeFields();
@@ -397,6 +410,10 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     });
 
 
+  }
+
+  ChangedValueFun(event){
+  this.formValues.DeliveryNotes = event;
   }
 
     /* END SELCTIONS FOR RAISE CLAIM IN DELIVERY*/
@@ -1366,6 +1383,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
  
 
   save() {
+    debugger;
     let hasMandatoryFields = this.validateRequiredFields();
     if (hasMandatoryFields) {
       return;

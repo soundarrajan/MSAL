@@ -1,0 +1,46 @@
+<div class="col-md-12 d-flex">
+  <table class="product-based-table table table-stripped table-hover"
+    style="width:100%;border-style: solid;border-color: #E7ECF1;border-width: 0px 0 0;">
+    <thead>
+      <tr style="background-color: #f1f1f2;">
+        <td class="padding" style="text-align: center; width:5%">
+          <p-button  (onClick)="add()" icon="fa fa-plus" iconPos="left"></p-button>
+        </td>
+
+        <td class="padding" style="width:45%; text-align: center">
+          <b>Notes</b>
+        </td>
+        <td class="padding" style="width:25%; text-align: center">
+          <b>Added By</b>
+        </td>
+        <td class="padding" style="width:25%; text-align: center">
+          <b>Date & Time</b>
+        </td>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let item of objNotes; let i = index">
+        <tr>
+          <td class="padding" style="text-align: center; border: 1px solid #E0E1E4; box-sizing: border-box;">
+            <p-button *ngIf="this.User.id == item.createdBy.id"  (onClick)="remove(i)" icon="fa fa-minus" iconPos="left" [disabled]="isReadOnly$ | async">
+            </p-button>
+          </td>
+          <td class="padding" style="text-align: center; border: 1px solid #E0E1E4; box-sizing: border-box;">
+            <span  *ngIf="this.User.id != item.createdBy.id" >{{item.note}}</span>
+            <span  *ngIf="this.User.id == item.createdBy.id" >
+            <textarea fxFlexFill [rows]="2" [cols]="30"  [(ngModel)] ="item.note" class="editable-textarea"></textarea>
+          </span>
+          </td>
+          <td class="padding" style="text-align: center; border: 1px solid #E0E1E4; box-sizing: border-box;">
+             {{item.createdBy.name}}
+          </td>
+          <td class=" padding" style="text-align: center; border: 1px solid #E0E1E4; box-sizing: border-box;">
+            {{item.createdAt | date:'medium'}}
+          </td>
+
+        </tr>
+
+      </ng-container>
+    </tbody>
+  </table>
+</div>
