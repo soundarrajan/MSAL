@@ -1,4 +1,5 @@
 import { Component, ViewChild, ElementRef, Input } from "@angular/core";
+import { AppConfig } from '@shiptech/core/config/app-config';
 import { Router } from '@angular/router';
 import { ICellRendererAngularComp } from '@ag-grid-community/angular';
 import { MatDialog } from '@angular/material/dialog';
@@ -28,9 +29,10 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   public etaInTime: any;
   public etdDays: any;
   public etdInTime: any;
-  public shiptechPortUrl: any;
-  public shiptechOrderUrl: any;
-  constructor(public router: Router, public dialog: MatDialog, private elem: ElementRef,private localService:LocalService) {
+  public shiptechPortUrl: string = "shiptechUrl/#/masters/locations";
+  public shiptechOrderUrl: string = "shiptechUrl/#/masters/order";
+  constructor(public router: Router, public dialog: MatDialog, private elem: ElementRef,private localService:LocalService,private appConfig: AppConfig) {
+  this.shiptechPortUrl.replace('shiptechUrl',this.appConfig.v1.API.BASE_HEADER_FOR_NOTIFICATIONS)
   }
 
   ngOnInit() {
