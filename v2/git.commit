@@ -1,9 +1,9 @@
-﻿commit 83744be3b680a69f8ac72ec020f2435861b7d42d
+﻿commit b01479fe31bd3ce004b9332f9e800b9351a5cc3c
 Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Mon May 3 06:10:57 2021 +0000
+Date:   Mon May 3 06:33:01 2021 +0000
 
-    Merged PR 10323: #29829 - bunkring plan header section dtae format issue has fixed
+    Merged PR 10324: #Requirement 29780: Bunker plan: View Current Bunkering plan default vessel id has changed
     
-    Related work items: #29829
+    Related work items: #29780
 
 branch: master
