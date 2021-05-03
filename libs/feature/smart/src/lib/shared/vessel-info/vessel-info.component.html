@@ -229,7 +229,7 @@
                   <div class="border-rightside" style="padding-right: 5px;"
                     [ngClass]="{'createReqEnable':enableCreateReq,'createReqDisable':!enableCreateReq}"
                     (click)="$event.stopPropagation()"> 
-                    <a href="javascript:void(0)" (click)="createRequest()">Create Request </a>
+                    <a (click)="createRequest()">Create Request </a>
                   </div>
                   <button mat-button matTooltip="Import GSIS" [matTooltipShowDelay]="500" class="import-btn">Import
                     GSIS</button>
@@ -303,7 +303,12 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div class="panel-body">
-        <app-bunkering-plan [isExpanded]="expandPrevBPlan" *ngIf="panel1.expanded" [planId]="planId" [bPlanType]="bPlanType.prev" [selectedUserRole]="selectedUserRole"></app-bunkering-plan>
+        <app-bunkering-plan [isExpanded]="expandPrevBPlan" *ngIf="panel1.expanded"
+          [planId]="prevPlanId" [bPlanType]="bPlanType.prev" 
+          [selectedUserRole]="selectedUserRole"
+          [currentROBObj]="currentROBObj"
+          [vesselRef]="vesselData">
+        </app-bunkering-plan>
       </div>
     </mat-expansion-panel>
   </mat-accordion>

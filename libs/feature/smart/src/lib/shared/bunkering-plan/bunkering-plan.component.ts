@@ -29,10 +29,7 @@ export class BunkeringPlanComponent implements OnInit {
   @Output() enableCreateReq = new EventEmitter();
   @Output() voyage_detail = new EventEmitter();
   @Input("isExpanded") isExpanded: boolean;
-  
-  // @Input('planId') planId;
-  // @Input('vesselRef') vesselRef;
-  @Input('planId') 
+    @Input('planId') 
   public set planId(v : string) {
     this.latestPlanId = v;
   };
@@ -394,14 +391,14 @@ export class BunkeringPlanComponent implements OnInit {
   ];
 
   public loadBunkeringPlanDetails(){
-    let req = { shipId : this.vesselData?.vesselId, planId : this.latestPlanId}
-    this.bplanService.getBunkeringPlanDetails(req).subscribe((data)=> {
-      console.log('bunker plan details',data);
-      this.rowData = (data.payload && data.payload.length)? data.payload: [];
-      this.bPlanData = this.rowData;
-      let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
-          titleEle.click();
-    })
+      let req = { shipId : this.vesselData?.vesselId, planId : this.latestPlanId}
+      this.bplanService.getBunkeringPlanDetails(req).subscribe((data)=> {
+        console.log('bunker plan details',data);
+        this.rowData = this.latestPlanId == null ?[]:(data.payload && data.payload.length)? data.payload: [];
+        this.bPlanData = this.rowData;
+        let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
+        titleEle.click();
+      })
   }
   portClicked(params) {
     if(params?.event?.checked) {

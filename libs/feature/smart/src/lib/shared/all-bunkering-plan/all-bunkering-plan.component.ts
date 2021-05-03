@@ -16,6 +16,7 @@ export class AllBunkeringPlanComponent implements OnInit {
   @Output() changeVessel = new EventEmitter();
   @Input('vesselData') vesselData;
   @Input('vesselList') vesselList;
+  @Input('currentROBObj') currentROBObj;
   currentDate = new Date();
   defaultFromDate: Date = new Date(this.currentDate.setMonth((this.currentDate.getMonth())-1));
   selectedToDate: Date = new Date();
@@ -39,12 +40,12 @@ export class AllBunkeringPlanComponent implements OnInit {
     for (let i = 0; i < 20; i++) {
       this.countArray.push({ expanded: false });
     }
-   // this.loadBunkeringPlanDetails();
+  // this.loadBunkeringPlanDetails();
    this.loadBunkerPlanHistory(this.vesselData);
   }
   
   public loadBunkeringPlanDetails(){
-    let Id = 1; //this.vesselData?.vesselId;
+    let Id = this.vesselData?.vesselId? this.vesselData.vesselId :348;
     let req = { shipId : Id ,  planStatus : 'A' }
     this.loadAllBunkeringPlan(req);
   }
