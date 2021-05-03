@@ -4,11 +4,11 @@
 <div class="col-6">
   <div style="float:right;position: relative; top: 7px;">
     <button *ngIf="formValues.deliveryStatus && (formValues.deliveryStatus.name == 'NotVerified' || formValues.deliveryStatus.name == 'Open')" 
-          class="cust-btn" 
+          class="cust-btn small" 
           type="button"
           (click)="verify()"><span class="btn-text">Verify</span></button>
     <button *ngIf="formValues.deliveryStatus &&  formValues.deliveryStatus.name == 'Verified'" 
-          class="cust-btn" 
+          class="cust-btn small" 
           type="button"
           (click)="revertVerify()"><span class="btn-text">Revert Verify</span></button>
     <button  class="cust-btn small"
