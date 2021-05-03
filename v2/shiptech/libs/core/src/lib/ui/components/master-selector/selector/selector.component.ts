@@ -80,7 +80,9 @@ export class SelectorComponent
   @Input() set entityId(value: number) {
     this._entityId = value;
   }
-
+  @Input() set productTypeId(value: number) {
+    this._productTypeId = value;
+  }
   @Input() set entityName(value: string) {
     this._entityName = value;
   }
@@ -122,7 +124,7 @@ export class SelectorComponent
   private _entityId: number;
   private _entityName: string;
   private _vesselId: number;
-
+  private _productTypeId:number;
   constructor(
     private injector: Injector,
     private toastr: ToastrService,
@@ -153,6 +155,7 @@ export class SelectorComponent
         );
         this.gridViewModel.entityId = this.entityId;
         this.gridViewModel.entityName = this.entityName;
+        this.gridViewModel.productTypeId=this.productTypeId;
         break;
       }
       case knownMastersAutocomplete.physicalSupplier: {

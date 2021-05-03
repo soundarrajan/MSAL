@@ -225,8 +225,8 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
   }
 
   @Input() set entityId(value: number) {
-    this._entityId = value;
-    this.gridViewModel.entityId = this.entityId;
+    this._entityId = this.formValues.deliveryProducts[this.deliveryProductIndex].productTypeId;
+    this.gridViewModel.entityId = this.formValues.deliveryProducts[this.deliveryProductIndex].productTypeId;
   }
 
   @Input() set entityName(value: string) {

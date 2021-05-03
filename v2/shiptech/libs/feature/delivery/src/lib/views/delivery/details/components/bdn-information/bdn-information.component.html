@@ -186,7 +186,7 @@
             #deliveryDateField="ngModel" 
             matInput 
             [matDatepicker]="deliveryDate"
-            [disabled]="formValues.deliveryStatus.name == 'Verified'" 
+            [disabled]="formValues.invoiceActiveFlag == true"
             (focus)="deliveryDate.open()"
             autocomplete="off"
             placeholder="Delivery Date"

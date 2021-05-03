@@ -123,12 +123,14 @@
                 </td>
                 <td style="width:12%">
                     <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                        <mat-form-field class="without-search" id ="bdnIdx{{ i }}" appearance="legacy">
+                        <mat-form-field class="without-search" id ="bdnIdx{{ i }}" appearance="legacy"
+                        [ngClass]="{'required-field': (buttonClicked && (qualityParameter.bdnValue=='' || qualityParameter.bdnValue==null || qualityParameter.bdnValue==0) && qualityParameter.isDisplayedInDelivery==true && qualityParameter.isMandatoryInDelivery==true)}">
                           <input [(ngModel)]="qualityParameter.bdnValue"
+                                #bdnValueField="ngModel" 
                                 (ngModelChange)="qualityParameter.qualityMatch = setQualityMatch(qualityParameter.bdnValue, qualityParameter.surveyValue, qualityParameter.min, qualityParameter.max)"
                                 matInput 
-                                [disabled]="formValues.deliveryStatus.name == 'Verified'"
-                                (keypress)="keyPressNumber($event); IsValidRemove($event,i)"
+                                [disabled]="formValues.invoiceActiveFlag == true"                 
+                                (keypress)="keyPressNumber($event);"  
                                 autocomplete="off" 
                                 name="Product_{{ deliveryProductIndex }}_{{ qualityParameter.specParameter.name}}_BDN">
                         </mat-form-field>
