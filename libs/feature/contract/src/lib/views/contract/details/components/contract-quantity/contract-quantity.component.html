@@ -1,13 +1,14 @@
+
 <div class="row col-md-12 contract-section" style="margin-left: 0px;">
-  <div (click)="addContractQuantityDetail()"  class="add-contract-quantity-section">
+  <div (click)="formValues.status && formValues.status.name == 'Confirmed' ? '': addContractQuantityDetail()"  class="add-contract-quantity-section">
     <a class="add-contract-quantity-icon"></a>
   </div>
   <div class="contract-quantity-section row">
-    <ng-container *ngFor="let contractDetail of formValues.details | keyvalue">
+    <ng-container *ngFor="let contractDetail of formValues.details | keyvalue : originalOrder">
       <div *ngIf="!contractDetail.value.isDeleted" class="contract-quantity-container col-md-6" [ngClass]="{'no-padding-right': contractDetail.key % 2 == 1}">
         <div class="quantity-header">
           <div class="label-content col-md-2">
-            <a class="remove-contract-quantity-icon" (click)="removeContractQuantityDetail(contractDetail.key)"></a>
+            <a class="remove-contract-quantity-icon" (click)="formValues.status && formValues.status.name == 'Confirmed' ? '': removeContractQuantityDetail(contractDetail.key)"></a>
             Quantity:
           </div>
           <div style="display: flex; align-items: center; flex: 0 0 20%; max-width: 20%;" class="col-md-2">
@@ -18,6 +19,7 @@
                     [(ngModel)]="contractDetail.value.contractualQuantityOption"
                     disableOptionCentering 
                     [panelClass]="'contract-quantity-select-container'"
+                    [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
                     [compareWith]="compareUomObjects">
                     <mat-option *ngFor="let option of contractualQuantityOptionList"
                         [value]="option">
@@ -32,24 +34,28 @@
           </div>
           <div class="border_line"></div>
           <div  class="col-md-2">
-            <span class="label">Min</span>
+            <span class="label">Min
+              <span style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;">*</span>
+            </span>
             <div class="value">
               <div class="custom-form-field custom-field-contract-quantity" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
                 <mat-form-field class="without-search" appearance="legacy">
                   <input 
                       [(ngModel)]="contractDetail.value.minContractQuantity"
-                      (ngModelChange)="contractDetail.value.tolerance = null"
                       matInput
                       autocomplete="off"
                       quantityFormat
-                      [disabled]="contractDetail.value.tolerance != '' && contractDetail.value.tolerance">
+                      (keypress)="keyPressNumber($event)"
+                      [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
                   </mat-form-field>
               </div>
             </div>
           </div>
           <div class="border_line"></div>
           <div  class="col-md-2">
-            <span class="label">Max</span>
+            <span class="label">Max
+              <span style=" color: orange;position: absolute;font-size: 9px;margin-left: 2px;">*</span>
+            </span>
             <div class="value">
               <div class="value">
                 <div class="custom-form-field custom-field-contract-quantity" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
@@ -57,6 +63,8 @@
                     <input 
                         [(ngModel)]="contractDetail.value.maxContractQuantity"
                         matInput
+                        (keypress)="keyPressNumber($event)"
+                        [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
                         autocomplete="off"
                         quantityFormat>
                     </mat-form-field>
@@ -74,7 +82,8 @@
                         [(ngModel)]="contractDetail.value.uom"
                         [disableOptionCentering]="true"
                         panelClass="general-information-select-container"
-                        [compareWith]="compareUomObjects">
+                        [compareWith]="compareUomObjects"
+                        [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
                       <mat-option *ngFor="let option of uomList" [value]="option">
                           {{option.name}}
                       </mat-option>
@@ -92,11 +101,10 @@
                   <mat-form-field class="without-search" appearance="legacy">
                     <input 
                         [(ngModel)]="contractDetail.value.tolerance"
-                        (ngModelChange)="contractDetail.value.minContractQuantity = null"
                         matInput
                         autocomplete="off"
                         required
-                        [disabled]="contractDetail.value.minContractQuantity != '' && contractDetail.value.minContractQuantity">
+                        [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
                     </mat-form-field>
                 </div>
               </div>

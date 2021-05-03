@@ -41,7 +41,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } fro
 import moment, { Moment, MomentFormatSpecification, MomentInput } from 'moment';
 import dateTimeAdapter from '@shiptech/core/utils/dotnet-moment-format-adapter';
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger, _MatAutocompleteBase } from '@angular/material/autocomplete';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { IDeliveryTenantSettings } from 'libs/feature/delivery/src/lib/core/settings/delivery-tenant-settings';
 import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
@@ -76,7 +76,7 @@ const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
 };
 
 
-  
+
 export const PICK_FORMATS = {
   display: {
     dateInput: 'DD MMM YYYY',
@@ -394,8 +394,8 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
   styleUrls: ['./product-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  providers: [OrderListGridViewModel, 
-              DialogService, 
+  providers: [OrderListGridViewModel,
+              DialogService,
               ConfirmationService,
               {provide: DateAdapter, useClass: PickDateAdapter},
               {provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS},
@@ -419,6 +419,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
   locationList: any;
   productList: any;
   locationMasterList: any;
+  productSpecGroup: any = [];
 
   displayedColumns: string[] = ['name', 'country'];
   displayedProductColumns: string[] = ['name', 'productType'];
@@ -457,13 +458,18 @@ export class ProductDetails extends DeliveryAutocompleteComponent
   physicalSupplierList: any[];
   autocompletePhysicalSupplier: knownMastersAutocomplete;
   _autocompleteType: any;
-  productSpecGroup: any[];
   modalSpecGroupParameters: any;
   modalSpecGroupParametersEditable: boolean;
   canChangeSpec: boolean;
   specParameterList: any;
   activeProductForSpecGroupEdit: any;
   eventsSubscription: any;
+  events1Subscription: any;
+  contractConfiguration: any;
+  filteredOptions: Observable<string[]>;
+  filteredAllowedLocationOptions: Observable<string[]>;
+  filteredAllowedProductOptions: Observable<string[]>;
+  openedScreenLoaders: number = 0;
 
 
   get entityId(): number {
@@ -483,20 +489,20 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     this._entityName = value;
     this.gridViewModel.entityName = this.entityName;
   }
-     
+
   @Input() vesselId: number;
 
-  @Input('contractProductIndex') set _setContractProductIndex(contractProductIndex) { 
+  @Input('contractProductIndex') set _setContractProductIndex(contractProductIndex) {
     if (!contractProductIndex) {
       return;
-    } 
+    }
     this.selectedTabIndex = contractProductIndex;
   }
 
-  @Input('locationMasterList') set _setLocationMasterList(locationMasterList) { 
+  @Input('locationMasterList') set _setLocationMasterList(locationMasterList) {
     if (!locationMasterList) {
       return;
-    } 
+    }
     this.locationMasterList = _.cloneDeep(locationMasterList);
     this.locationMasterSearchList = _.cloneDeep(locationMasterList);
     this.selectedLocationList = _.cloneDeep(locationMasterList);
@@ -506,10 +512,10 @@ export class ProductDetails extends DeliveryAutocompleteComponent
 
   }
 
-  @Input('productMasterList') set _setProductMasterList(productMasterList) { 
+  @Input('productMasterList') set _setProductMasterList(productMasterList) {
     if (!productMasterList) {
       return;
-    } 
+    }
 
     this.productMasterList =  _.cloneDeep(productMasterList);
     this.productMasterSearchList = _.cloneDeep(this.productMasterList);
@@ -520,64 +526,76 @@ export class ProductDetails extends DeliveryAutocompleteComponent
 
   }
 
-  @Input('specParameterList') set _setSpecParameterList(specParameterList) { 
+  @Input('specParameterList') set _setSpecParameterList(specParameterList) {
     if (!specParameterList) {
       return;
-    } 
+    }
     this.specParameterList = specParameterList;
   }
 
 
-  @Input('uomList') set _setUomList(uomList) { 
+  @Input('uomList') set _setUomList(uomList) {
     if (!uomList) {
       return;
-    } 
+    }
     this.uomList = uomList;
   }
 
+  @Input('productSpecGroup') set _setProductSpecGroup(productSpecGroup) {
+    if (!productSpecGroup) {
+      return;
+    }
+    this.productSpecGroup = productSpecGroup;
+  }
 
-  @Input('uomVolumeList') set _setUomVolumeList(uomVolumeList) { 
+
+
+  @Input('uomVolumeList') set _setUomVolumeList(uomVolumeList) {
     if (!uomVolumeList) {
       return;
-    } 
+    }
     this.uomVolumeList = uomVolumeList;
   }
 
-  
-  @Input('uomMassList') set _setUomMassList(uomMassList) { 
+
+  @Input('uomMassList') set _setUomMassList(uomMassList) {
     if (!uomMassList) {
       return;
-    } 
+    }
     this.uomMassList = uomMassList;
   }
 
-  @Input('contractConversionFactorOptions') set _setContractConversionFactorOptions(contractConversionFactorOptions) { 
+  @Input('contractConversionFactorOptions') set _setContractConversionFactorOptions(contractConversionFactorOptions) {
     if (!contractConversionFactorOptions) {
       return;
-    } 
+    }
     this.contractConversionFactorOptions = contractConversionFactorOptions;
   }
 
-  @Input('model') set _setFormValues(formValues) { 
+  @Input('model') set _setFormValues(formValues) {
     if (!formValues) {
       return;
-    } 
+    }
     this.formValues = formValues;
     if (formValues.products[this.selectedTabIndex] && !formValues.products[this.selectedTabIndex].physicalSuppliers)  {
       this.formValues.products[this.selectedTabIndex].physicalSuppliers = [];
     }
-    for (let i = 0; i < this.formValues.products.length; i++) {
-      if (this.formValues.products[i].product) {
-        this.getSpecGroupByProduct(this.formValues.products[i].product.id, this.formValues.products[i].specGroup);
-      }
-    }
+
+
   }
 
-  @Input('generalTenantSettings') set _setGeneralTenantSettings(generalTenantSettings) { 
+  @Input('generalTenantSettings') set _setGeneralTenantSettings(generalTenantSettings) {
     if (!generalTenantSettings) {
       return;
-    } 
+    }
     this.generalTenantSettings = generalTenantSettings;
+  }
+
+  @Input('contractConfiguration') set _setContractConfiguration(contractConfiguration) {
+    if (!contractConfiguration) {
+      return;
+    }
+    this.contractConfiguration = contractConfiguration;
   }
 
 
@@ -586,6 +604,14 @@ export class ProductDetails extends DeliveryAutocompleteComponent
   array = [0,1,2,3,4,5,6,7,8,9,10];
   isMenuOpen = true;
   @Input() events: Observable<void>;
+  @Input() events1: Observable<void>;
+
+  @Input('auto1')
+  autocomplete: _MatAutocompleteBase;
+
+  searchAllowedLocation: any = '';
+  allowedLocationSearch = new FormControl();
+  allowedProductSearch = new FormControl();
 
 
   constructor(
@@ -602,8 +628,8 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     private tenantSettingsService: TenantSettingsService,
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
-    iconRegistry: MatIconRegistry, 
-    public dialog: MatDialog, 
+    iconRegistry: MatIconRegistry,
+    public dialog: MatDialog,
     @Inject(DecimalPipe) private _decimalPipe,
     private tenantService: TenantFormattingService,
     sanitizer: DomSanitizer,
@@ -619,13 +645,46 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     this.quantityFormat = '1.' + this.tenantService.quantityPrecision + '-' + this.tenantService.quantityPrecision;
   }
 
-  ngOnInit(){  
+  ngOnInit(){
     this.entityName = 'Contract';
+    console.log('Product details');
+    console.log(this.locationMasterList);
+    console.log(this.formValues);
+    if (this.formValues && this.formValues.products) {
+      this.setAllowedLocations(this.selectedTabIndex);
+      this.setAllowedProducts(this.selectedTabIndex);
+    }
     this.getPhysicalSupplierList();
     this.eventsSubscription = this.events.subscribe((data) => this.setContractForm(data));
+    this.events1Subscription = this.events1.subscribe((data) => this.setProductSpecGroup(data));
+    this.filteredAllowedLocationOptions = this.allowedLocationSearch.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    );
+
+    this.filteredAllowedProductOptions = this.allowedProductSearch.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter1(value))
+    );
+
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.selectedLocationList.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
+  }
+
+  private _filter1(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.selectedProductList.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
+  }
 
 
-
+  setProductSpecGroup(data) {
+    console.log(data);
+    this.productSpecGroup = data;
   }
 
   setContractForm(form) {
@@ -633,7 +692,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     console.log(this.formValues);
   }
 
-  
+
   async getPhysicalSupplierList() {
     this.physicalSupplierList = await this.legacyLookupsDatabase.getPhysicalSupplierList();
     console.log(this.physicalSupplierList);
@@ -649,7 +708,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     }
   }
 
-  
+
 
 
   searchLocations(value: string): void {
@@ -666,7 +725,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     this.changeDetectorRef.detectChanges();
   }
 
-    
+
   openAddLocationSelect() {
     this.searchLocationInput = null;
     if (this.locationMasterList) {
@@ -693,14 +752,14 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     console.log(trigger);
     this.isMenuOpen = true;
 
-    
+
   }
 
   onClickedOutside(event) {
     console.log(event);
   }
 
-  
+
   addProductToContract() {
     console.log(this.formValues);
     let emptyProductObj = {
@@ -719,7 +778,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
       ],
       additionalCosts: [],
       fixedPrice: true,
-      mtmFixed: true, 
+      mtmFixed: true,
       specGroup: null,
       dealDate: null,
       physicalSuppliers: [],
@@ -839,10 +898,10 @@ export class ProductDetails extends DeliveryAutocompleteComponent
         this.addProductToConversion(selectedTabIndex, null, false);
       }
   }
-  
 
 
-    
+
+
   }
 
   compareUomObjects(object1: any, object2: any) {
@@ -854,12 +913,12 @@ export class ProductDetails extends DeliveryAutocompleteComponent
       let beValue = `${moment($event.value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
       if (field == 'dealDate') {
         this.isDealDateInvalid = false;
-      } 
+      }
       console.log(beValue);
     } else {
       if (field == 'dealDate') {
         this.isDealDateInvalid = true;
-      } 
+      }
       this.toastr.error('Please enter the correct format');
     }
 
@@ -904,8 +963,8 @@ export class ProductDetails extends DeliveryAutocompleteComponent
         'id': selection.id,
         'name': selection.name
       };
-      this.formValues.products[this.selectedTabIndex].physicalSuppliers[0] = obj; 
-      this.changeDetectorRef.detectChanges();   
+      this.formValues.products[this.selectedTabIndex].physicalSuppliers[0] = obj;
+      this.changeDetectorRef.detectChanges();
       console.log(this.formValues.products[this.selectedTabIndex]);
     }
   }
@@ -943,8 +1002,8 @@ export class ProductDetails extends DeliveryAutocompleteComponent
       } else {
         console.log(response);
         if (response) {
-          response  = _.filter(response, function(o) { 
-            return o.isDeleted == false; 
+          response  = _.filter(response, function(o) {
+            return o.isDeleted == false;
           });
           if (additionalSpecGroup) {
             var additionalSpecIsInArray = false;
@@ -954,7 +1013,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
               }
             })
             if (!additionalSpecIsInArray) {
-              response.push(additionalSpecGroup);		
+              response.push(additionalSpecGroup);
             }
           }
           this.productSpecGroup[productId] = response;
@@ -962,11 +1021,15 @@ export class ProductDetails extends DeliveryAutocompleteComponent
         }
       }
     });
-  
+
   };
 
 
   openSpecGroupPopUp(product) {
+    if (!product.specGroup) {
+      this.toastr.error('Please select a spec group!');
+      return;
+    }
     this.activeProductForSpecGroupEdit = product;
     var productId = product.product.id;
     var data = {
@@ -987,10 +1050,11 @@ export class ProductDetails extends DeliveryAutocompleteComponent
             ]
         }
     };
-    if (this.formValues.status.name != 'Confirmed' && product.id != 0) {
-      this.modalSpecGroupParametersEditable = true;
-      this.canChangeSpec = true;
-
+    if (this.formValues.status) {
+      if (this.formValues.status.name != 'Confirmed' && product.id != 0) {
+        this.modalSpecGroupParametersEditable = true;
+        this.canChangeSpec = true;
+      }
     }
     this.spinner.show();
     this.contractService
@@ -1019,17 +1083,17 @@ export class ProductDetails extends DeliveryAutocompleteComponent
               'activeProductForSpecGroupEdit': this.activeProductForSpecGroupEdit
             }
           });
-      
+
           dialogRef.afterClosed().subscribe(result => {
             console.log(result);
           });
         }
       }
     });
-   
+
   }
 
- 
+
   decodeSpecificField(modelValue) {
     let decode = function(str) {
       return str.replace(/&#(\d+);/g, function(match, dec) {
@@ -1145,7 +1209,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
       }
     }
     if (!isAlreadyAdded && indexDeleted == -1 && selectedProduct) {
-      payload = { Payload: selectedProduct.product.id };
+      payload = {Payload: { ProductId: selectedProduct.product.id} };
       this.spinner.show();
       this.contractService
       .getProdDefaultConversionFactors(payload)
@@ -1175,12 +1239,122 @@ export class ProductDetails extends DeliveryAutocompleteComponent
           this.changeDetectorRef.detectChanges();
         }
       });
-  
-    
+
+
     }
 
 
   }
+
+  saveConversionFactors(conversionFactors, conversionFactorsDropdown) {
+    if (conversionFactorsDropdown && (conversionFactors.contractConversionFactorOptions.id == 3 || conversionFactors.contractConversionFactorOptions.id == 4)) {
+      let payload = {};
+      if (conversionFactors.contractConversionFactorOptions.id == 4) {
+        let product = this.formValues.products[this.selectedTabIndex];
+        if (product.fixedPrice) {
+          this.toastr.warning("Please select formula for using system instrument conversion");
+          return;
+        }
+        if (product.isFormula) {
+          if (!(product.formula && product.formula.id)) {
+            this.toastr.warning("Please select formula for using system instrument conversion");
+            return;
+          }
+
+          if (product.formula && product.formula.id) {
+            payload = {
+              Payload: {
+                ProductId: conversionFactors.product.id,
+                FormulaId: product.formula.id
+              }
+            };
+          }
+        }
+      } else {
+        payload = {Payload: { ProductId: conversionFactors.product.id } };
+      }
+      this.openedScreenLoaders += 1;
+      this.spinner.show();
+      this.contractService
+      .getProdDefaultConversionFactors(payload)
+      .pipe(
+        finalize(() => {
+          this.openedScreenLoaders -= 1;
+          if (!this.openedScreenLoaders) {
+            this.spinner.hide();
+          }
+        })
+      )
+      .subscribe((response: any) => {
+        if (typeof response == 'string') {
+          this.toastr.error(response);
+          this.spinner.hide();
+        } else {
+          console.log(response);
+          if (response) {
+            conversionFactors.value = response.value;
+            conversionFactors.massUom = response.massUom;
+            conversionFactors.volumeUom = response.volumeUom;
+            if (conversionFactors.contractProductId) {
+              let conversionFactorsList = [];
+              conversionFactorsList.push(conversionFactors);
+              payload = { Payload: conversionFactorsList };
+              this.openedScreenLoaders += 1;
+              this.contractService
+                .saveConversionFactorsForContractProduct(payload)
+                .pipe(
+                  finalize(() => {
+                    this.openedScreenLoaders -= 1;
+                    if (!this.openedScreenLoaders) {
+                      this.spinner.hide();
+                    }
+                  })
+                )
+                .subscribe((response: any) => {
+                  if (typeof response == 'string') {
+                    this.toastr.error(response);
+                  } else if (response) {
+                    let res = response[0];
+                    this.formValues.products[this.selectedTabIndex].convFactorMassUom = res.massUom;
+                    this.formValues.products[this.selectedTabIndex].convFactorValue = res.value;
+                    this.formValues.products[this.selectedTabIndex].convFactorVolumeUom = res.volumeUom;
+                  }
+                });
+            }
+          }
+        }
+      });
+    } else {
+      if (conversionFactors.contractProductId) {
+        let conversionFactorsList = [];
+        conversionFactorsList.push(conversionFactors);
+        let payload = { Payload: conversionFactorsList };
+        this.spinner.show();
+        this.contractService
+          .saveConversionFactorsForContractProduct(payload)
+          .pipe(
+            finalize(() => {
+              this.spinner.hide();
+            })
+          )
+          .subscribe((response: any) => {
+            if (typeof response == 'string') {
+              this.toastr.error(response);
+            } else if (response) {
+              let res = response[0];
+              this.formValues.products[this.selectedTabIndex].convFactorMassUom = res.massUom;
+              this.formValues.products[this.selectedTabIndex].convFactorValue = res.value;
+              this.formValues.products[this.selectedTabIndex].convFactorVolumeUom = res.volumeUom;
+            }
+          });
+    }
+    }
+  }
+
+  openSupplier() {
+    document.getElementsByTagName('body')[0].click();
+  }
+
 
 
 
@@ -1191,7 +1365,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
 
 
   ngAfterViewInit(): void {
-  
+
   }
 }
 

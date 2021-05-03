@@ -146,6 +146,10 @@ export class SpecificDates extends DeliveryAutocompleteComponent
   isValidToDateInvalid: boolean;
 
 
+  expandPricingDayCalendar: any = false;
+  expandEventDayCalendar: any = false;
+  hasInvoicedOrder: any;
+
   get entityId(): number {
     return this._entityId;
   }
@@ -300,6 +304,13 @@ export class SpecificDates extends DeliveryAutocompleteComponent
       return;
     } 
     this.marketPriceTypeList = marketPriceTypeList;
+  }
+
+  @Input('hasInvoicedOrder') set _setHasInvoicedOrder(hasInvoicedOrder) { 
+    if (!hasInvoicedOrder) {
+      return;
+    } 
+    this.hasInvoicedOrder = hasInvoicedOrder;
   }
 
 

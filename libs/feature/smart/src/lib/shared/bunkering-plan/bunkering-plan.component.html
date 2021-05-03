@@ -1,78 +1,12 @@
-<div class="dark-wrapper info-bar">
-  <div style="display: flex;align-items: center; flex: 0 0 25%;justify-content: center;">
-    <div class="label-title"> Currently viewing:</div>
-    <div class="label-text" style="margin: 0px 5px;">Vessel</div>
-    <app-search-vessel (changeVessel)="changeVessel.emit($event)" [vesselList]="vesselList" [vesselData]="vesselData"></app-search-vessel>
-  </div>
-  <table style="flex: 0 0 30%;display: flex;justify-content: center;"
-    class="table table-noborder table-responsive tbl-shadow border-l">
-    <tbody>
-      <tr>
-        <td class="label-text">Scrubber Date</td>
-        <td class="value">13/09/2019</td>
-        <td class="separator">|</td>
-        <td class="label-text">Ownership</td>
-        <td class="value">Own Vessel</td>
-      </tr>
-    </tbody>
-  </table>
-  <div class="border-l" style="display: flex;align-items: center; flex: 0 0 11%;justify-content: space-evenly;">
-    <mat-checkbox [checked]="true" class="dark-bg-checkbox dark-checkbox noborder"></mat-checkbox>
-    <div class="default-view">My Default View</div>
-  </div>
-  <div class="border-l-r" style="display: flex;align-items: center; flex: 0 0 14%;justify-content: space-evenly;">
-    <mat-checkbox [checked]="true" class="dark-bg-checkbox dark-checkbox noborder"></mat-checkbox>
-    <div class="reminder-view">Do not send plan reminder</div>
-  </div>
-  <div style="display:flex;flex: 0 0 20%;flex-direction:column;padding:0 10px;font-weight: lighter;">
-    <div style="display:flex;align-items: center;justify-content: space-between;">
-      <div class="sml-txt" style="display:flex;">Latest plan recieved</div><span
-        class="label-text">:</span>
-      <div class="sml-txt" style="display:flex">10/09/2019 <div class="m-l-r-5">|</div>
-        ID:716273</div>
-    </div>
-    <div style="display:flex;align-items: center;justify-content: space-between;">
-      <div class="sml-txt" style="display:flex;">Latest plan sent
-      </div><span class="label-text">:</span>
-      <div class="sml-txt" style="display:flex"> 10/09/2019 <div class="m-l-r-5">|</div>
-        ID:716273</div>
-    </div>
-  </div>
+<div style="position: relative;" (currentBPlanSave)="toggleSave()">
+  <ag-grid-angular [ngStyle]="{'height':isExpanded?'79vh':'55vh'}" id="bunkerplangrid"
+    style="width: 100%;overflow-y: scroll;" 
+    [rowData]="rowData"
+    [columnDefs]="columnDefs"
+    (gridReady)="gridOptions.onGridReady($event)" 
+    [gridOptions]="gridOptions"
+    (selectedUserRole)="refreshGrid($event)" 
+    class="ag-theme-balham-dark">
+  </ag-grid-angular>
 </div>
-
-
-<!-- BUNKERING PLANS -->
-<div id="accordion-container-dark">
-  <mat-accordion multi="false">
-    <mat-expansion-panel #panel *ngFor="let i of (countArray | filter)" hideToggle="true" id="bunker-plan"
-      [ngClass]="{'fullheight':i.expanded}" [expanded]="false" (opened)="i.expanded = true"
-      (closed)="i.expanded = false">
-      <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="34px">
-        <mat-panel-title>
-          <div class="">
-            <div *ngIf="!panel.expanded;else collapseBlock" class="expand-accordion-icon2 expand-collapse-icon"></div>
-            <!-- <img *ngIf="!panel.expanded;else collapseBlock" src="../../../assets/customicons/expand-icon2.svg"
-              alt="expand-icon"> -->
-            <ng-template #collapseBlock>
-              <div class="collapse-accordion-icon2 expand-collapse-icon"></div>
-              <!-- <img src="../../../assets/customicons/collapse-icon2.svg" alt="collapse-icon"> -->
-            </ng-template>
-          </div>
-          <div style="display: flex;align-items: center;width: 100%;">
-            <div style="flex: 0 0 20%;"><span style="margin-left: 10px;">Bunkering Plan ID: 716274</span></div>
-            <div style="flex:0 0 80%;display: flex;align-items: center;">
-              <div id="plan-date" class="border-l-rightside" style="flex:0 0 15%;text-align: center;">
-                <span class="title">Plan Date :</span>
-                <span class="content">13/03/2019</span>
-              </div>
-            </div>
-          </div>
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-      <div class="panel-body">
-        <app-bunker-plan *ngIf="panel.expanded"  [isExpanded]="panel.expanded"></app-bunker-plan>
-      </div>
-    </mat-expansion-panel>
-  </mat-accordion>
-</div>
-<!-- ------------------- -->
+<hr>

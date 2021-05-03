@@ -333,10 +333,16 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
     });
   }
 
+  IsValidRemove(value,i){
+    debugger;
+    var bdnId= 'bdnIdx'+i;
+    var element = document.getElementById(bdnId);
+    element.classList.remove('date-invalid');
+  }
   // Only Number
   keyPressNumber(event) {
     var inp = String.fromCharCode(event.keyCode);
-    if (inp == '.' || inp == ',') {
+    if (inp == '.' || inp == ',' || inp == '-') {
       return true;
     }
     if (/^[-,+]*\d{1,6}(,\d{3})*(\.\d*)?$/.test(inp)) {

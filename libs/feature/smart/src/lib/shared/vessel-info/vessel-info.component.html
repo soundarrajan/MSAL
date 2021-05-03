@@ -11,32 +11,39 @@
     <tbody>
       <tr>
         <td class="label-text">Scrubber Date:</td>
-        <td class="value">{{bunkerPlanHeaderDetail.scrubberDate | date: 'd/m/yyyy'}}</td>
+        <td class="value" *ngIf="(bunkerPlanHeaderDetail?.scrubberDate)?.indexOf('0001')==-1">{{bunkerPlanHeaderDetail?.scrubberDate | date: 'dd/MM/yyyy'}}</td>
+        <td class="value" *ngIf="(bunkerPlanHeaderDetail?.scrubberDate)?.indexOf('0001')>-1">N/A</td>
         <td class="separator">|</td>
         <td class="label-text">Ownership:</td>
-        <td class="value">{{bunkerPlanHeaderDetail.vesselType}}</td>
+        <td class="value">{{bunkerPlanHeaderDetail?.ownership}}</td>
       </tr>
     </tbody>
   </table>
   <div  class="border-r" style="display: flex;flex:0 0 11%;align-items: center;justify-content: space-evenly;">
     <mat-checkbox (change)="saveDefaultView($event)" [checked]="bunkerPlanHeaderDetail?.myDefaultView" class="dark-bg-checkbox dark-checkbox noborder"></mat-checkbox>
-    <div class="default-view">My Default View</div>
+    <div [ngClass]="(bunkerPlanHeaderDetail.myDefaultView)? 'default-view': 'reminder-view'">My Default View</div>
   </div>
   <div  style="flex:0 0 13%;display: flex;align-items: center; justify-content: space-evenly;">
-    <mat-checkbox (change)="TriggerdontSendPlanReminder($event)" [checked]="bunkerPlanHeaderDetail?.planSendMsg" class="dark-bg-checkbox dark-checkbox noborder"></mat-checkbox>
-    <div class="reminder-view">Do not send plan reminder</div>
+    <mat-checkbox (change)="TriggerdontSendPlanReminder($event)" [checked]="bunkerPlanHeaderDetail?.dockPortFlag" class="dark-bg-checkbox dark-checkbox noborder"></mat-checkbox>
+    <div [ngClass]="(bunkerPlanHeaderDetail.dockPortFlag)? 'default-view': 'reminder-view'">Do not send plan reminder</div>
+    <!-- <mat-icon matTooltip="Plan reminder disabled since vessel is Dry Dock" *ngIf="bunkerPlanHeaderDetail?.dockPortFlag">info</mat-icon> -->
+    <mat-icon *ngIf="bunkerPlanHeaderDetail?.dockPortFlag" matTooltip="Plan reminder disabled since vessel is Dry Dock" svgIcon="info-icon" style="width: 18px;padding-right: 5px;"></mat-icon>
   </div>
   <div class="border-l-r" style="flex:0 0 20%;display:flex;flex-direction:column;padding:0 10px;font-weight: lighter;">
     <div style="display:flex;align-items: center;justify-content: space-between;">
       <div class="sml-txt" style="display:flex;flex: 10%;">Latest plan recieved</div><span class="label-text">:</span>
-      <div class="sml-txt" style="display:flex">{{bunkerPlanHeaderDetail.lastPlanRecieved | date: 'd/m/yyyy'}} <div class="m-l-r-5">|</div>
-        ID:{{bunkerPlanHeaderDetail.vesselIMONo}}</div>
+      <div class="sml-txt" style="display:flex" *ngIf="(bunkerPlanHeaderDetail?.lastPlanReceivedDate)?.indexOf('0001')==-1">{{bunkerPlanHeaderDetail?.lastPlanReceivedDate | date: 'dd/MM/yyyy'}} <div class="m-l-r-5">|</div>
+        ID:{{bunkerPlanHeaderDetail?.lastPlanReceivedId}}</div>
+      <div class="sml-txt" style="display:flex" *ngIf="(bunkerPlanHeaderDetail?.lastPlanReceivedDate)?.indexOf('0001')>-1">N/A <div class="m-l-r-5">|</div>
+        ID:N/A</div>
     </div>
     <div style="display:flex;align-items: center;justify-content: space-between;">
       <div class="sml-txt" style="display:flex;flex: 10%;">Latest plan sent
       </div><span class="label-text">:</span>
-      <div class="sml-txt" style="display:flex"> {{bunkerPlanHeaderDetail.lastPlanSentDate | date: 'd/m/yyyy'}} <div class="m-l-r-5">|</div>
-        ID:{{bunkerPlanHeaderDetail.vesselIMONo}}</div>
+      <div class="sml-txt" style="display:flex" *ngIf="(bunkerPlanHeaderDetail?.lastPlanSentDate)?.indexOf('0001')==-1"> {{bunkerPlanHeaderDetail.lastPlanSentDate | date: 'dd/MM/yyyy'}} <div class="m-l-r-5">|</div>
+        ID:{{bunkerPlanHeaderDetail.lastPlanSentId}}</div>
+      <div class="sml-txt" style="display:flex" *ngIf="(bunkerPlanHeaderDetail?.lastPlanSentDate)?.indexOf('0001')>-1"> N/A <div class="m-l-r-5">|</div>
+        ID:N/A</div>
     </div>
   </div>
 </div>
@@ -44,12 +51,12 @@
 <!-- ACCORDION -->
 <div id="accordion-container-dark">
   <mat-accordion multi="true">
-    <mat-expansion-panel *ngIf="!expandBplan && !expandComments && !expandPrevBPlan" hideToggle="true"
+    <mat-expansion-panel *ngIf="!expandComments" hideToggle="true"
       [expanded]="false">
       <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="34px">
         <mat-panel-title>
-          <img class="expand-icon" src="../../../assets/customicons/expand.svg" alt="expand-icon">
-          Current ROB and Arbitrage Details
+          <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
+          Current ROB & Arbitrage details
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div class="panel-body">
@@ -74,26 +81,27 @@
                           </tr>
                           <tr>
                             <th scope="row">Current ROB</th>
-                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event.target.textContent, '3.5 QTY')">{{ROBArbitrageData?.hsfoCurrentStock}}</div></td>
-                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event.target.textContent, '0.5 QTY')">{{ROBArbitrageData?.hsfO05CurrentStock}}</div></td>
-                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event.target.textContent, 'ULSFO')">{{ROBArbitrageData?.ulsfoCurrentStock}}</div></td>
-                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event.target.textContent, 'LSDIS')">{{ROBArbitrageData?.lsdisCurrentStock}}</div></td>
-                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event.target.textContent, 'HSDIS')">{{ROBArbitrageData?.hsdisCurrentStock}}</div></td>
+                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event.target.textContent, '3.5 QTY')">{{ROBArbitrageData?.hsfoCurrentStock? (ROBArbitrageData?.hsfoCurrentStock  | number : '1.0-0'): 0}}</div></td>
+                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event.target.textContent, '0.5 QTY')">{{ROBArbitrageData?.hsfO05CurrentStock? (ROBArbitrageData?.hsfO05CurrentStock | number : '1.0-0'): 0}}</div></td>
+                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event.target.textContent, 'ULSFO')">{{ROBArbitrageData?.ulsfoCurrentStock? (ROBArbitrageData?.ulsfoCurrentStock | number : '1.0-0'): 0}}</div></td>
+                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event.target.textContent, 'LSDIS')">{{ROBArbitrageData?.lsdisCurrentStock? (ROBArbitrageData?.lsdisCurrentStock | number : '1.0-0'): 0}}</div></td>
+                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event.target.textContent, 'HSDIS')">{{ROBArbitrageData?.hsdisCurrentStock? (ROBArbitrageData?.hsdisCurrentStock | number : '1.0-0'): 0}}</div></td>
                           </tr>
                           <tr>
                             <th scope="row">MSPS</th>
-                            <td>{{ROBArbitrageData?.mspshsfo}}</td>
-                            <td>{{ROBArbitrageData?.mspshsfo05}}</td>
-                            <td>{{ROBArbitrageData?.mspsulsfo}}</td>
-                            <td>{{ROBArbitrageData?.mspslsdis}}</td>
-                            <td>{{ROBArbitrageData?.mspsdis}}</td>
+                            <td>{{ROBArbitrageData?.mspshsfo? (ROBArbitrageData?.mspshsfo | number : '1.0-0'): 0}}</td>
+                            <td>{{ROBArbitrageData?.mspshsfO05? (ROBArbitrageData?.mspshsfO05 | number : '1.0-0'): 0}}</td>
+                            <td>{{ROBArbitrageData?.mspsulsfo? (ROBArbitrageData?.mspsulsfo | number : '1.0-0'): 0}}</td>
+                            <td>{{ROBArbitrageData?.mspslsdis? (ROBArbitrageData?.mspslsdis | number : '1.0-0'): 0}}</td>
+                            <td>{{ROBArbitrageData?.mspsdis? (ROBArbitrageData?.mspsdis | number : '1.0-0'): 0}}</td>
                           </tr>
                           <tr>
                             <th scope="row">Unpumpables</th>
-                            <td colspan=2>{{ROBArbitrageData?.uphsfo}}</td>
-                            <td>{{ROBArbitrageData?.uplsds}}</td>
-                            <td>{{ROBArbitrageData?.uplsdis}}</td>
-                            <td>{{ROBArbitrageData?.upsdis}}</td>
+                            <td colspan=2>{{ROBArbitrageData?.uphsfo? (ROBArbitrageData?.uphsfo | number : '1.0-0'): 0}}</td>
+                            <td>{{ROBArbitrageData?.upulsfo? (ROBArbitrageData?.upulsfo | number : '1.0-0'): 0}}</td>
+                            <td>{{ROBArbitrageData?.uplsdis? (ROBArbitrageData?.uplsdis | number : '1.0-0'): 0}}</td>
+                            <td>{{ROBArbitrageData?.upsdis? (ROBArbitrageData?.uphsdis | number : '1.0-0'): 0}}</td>
+                            
                           </tr>
                         </table>
                       </div>
@@ -113,7 +121,7 @@
                           <div class="col-5 p-0">
                             <div>Arbitrage Volume : {{ROBArbitrageData?.arbitrageVolume}}</div>
                             <div>Contango Volume : {{ROBArbitrageData?.contangoVolume}}</div>
-                            <div>Arbitrage Bunkerable Port : {{ROBArbitrageData?.arbitrageBunkerPort}}</div>
+                            <div>Arbitrage Bunker port : {{ROBArbitrageData?.arbitrageBunkerPort}}</div>
                           </div>
                           <div class="col-7 p-0">
                             <div>Arbitrage Bunker Port ETA : {{ROBArbitrageData?.arbitrageBunkerPortETA}}</div>
@@ -165,21 +173,21 @@
         </div>
       </div>
     </mat-expansion-panel>
-    <mat-expansion-panel #commentpanel *ngIf="!expandBplan && !expandPrevBPlan"
+    <mat-expansion-panel #commentpanel *ngIf="!expandComments"
       [ngClass]="{'fullheight':expandComments}" hideToggle="true" (closed)="expandComments = false">
       <mat-expansion-panel-header #panelCommentH collapsedHeight="31px" expandedHeight="34px">
         <mat-panel-title>
-          <img class="expand-icon" src="../../../assets/customicons/expand.svg" alt="expand-icon">
+          <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
           <div style="flex: 0 0 17%;">Comments(5)</div>
           <div style="flex:0 0 80%;display: flex;align-items: center;justify-content: flex-end;">
             <ng-container *ngIf="commentpanel.expanded">
               <div style="text-align: center;">
                 <div  *ngIf="!expandComments; else collapseBlock" (click)="toggleComments($event)" class="expand-accordion-icon hand"></div>
                 <!-- <img *ngIf="!expandComments; else collapseBlock" class="hand" (click)="toggleComments($event)"
-                  src="../../../assets/customicons/expand-icon.svg" alt="expand-icon"> -->
+                  src="./assets/customicons/expand-icon.svg" alt="expand-icon"> -->
                 <ng-template #collapseBlock>
                   <div  (click)="toggleComments($event)" class="collapse-accordion-icon hand"></div>
-                  <!-- <img class="hand" (click)="toggleComments($event)" src="../../../assets/customicons/collapse-icon.svg"
+                  <!-- <img class="hand" (click)="toggleComments($event)" src="./assets/customicons/collapse-icon.svg"
                     alt="collapse-icon"> -->
                 </ng-template>
               </div>
@@ -193,32 +201,36 @@
 
     </mat-expansion-panel>
     <mat-expansion-panel *ngIf="!expandComments && !expandPrevBPlan" [ngClass]="{'fullheight':expandBplan}" #panel
-      id="current-bunker-plan" hideToggle="true" [expanded]="true"
+      id="current-bunker-plan" hideToggle="true" [expanded]="statusCurrBPlan"
       (closed)="currentBplan.gridChanged && togglecurrentBPlan(panel)">
       <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="34px">
         <mat-panel-title>
-          <img class="expand-icon" src="../../../assets/customicons/expand.svg" alt="expand-icon">
+          <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
           <div style="display: flex;align-items: center;width: 100%;">
             <div style="flex: 0 0 17%;">Current Bunkering Plan</div>
             <div style="flex:0 0 80%;display: flex;align-items: center;">
-              <div id="plan-id" class="border-leftside" style="flex:0 0 10%;text-align: center;"><span class="title">Plan ID
-                  :
-                </span><span class="content">716273</span></div>
+              <div id="plan-id" class="border-leftside" style="flex:0 0 10%;text-align: center;"><span class="title">Plan ID :
+              </span><span class="content">{{this.planId}}</span></div>
               <div id="plan-date" class="border-l-rightside" style="flex:0 0 13%;text-align: center;"><span class="title">Plan
                   Date :
-                </span><span class="content">12/09/2020</span></div>
+                </span><span class="content">{{this.planDate}}</span></div>
+                <div id="plan-status" class="border-l-rightside" style="flex:0 0 13%;text-align: center;"><span class="title">
+                  Status :
+                </span><span [ngClass]="this.statusCurr == undefined?'content': (this.statusCurr =='INVALID'? 'content content_invalid' : 'content content_valid')" style="padding: 3% 16% !important; ">{{this.statusCurr}}</span></div>
               <ng-container *ngIf="panel.expanded">
                 <div class="border-rightside"
                   style="display: flex;flex: 0 0 44%;justify-content: space-between;padding: 0px 5px;">
                   <!-- <button [disabled]="!enableCreateReq" matTooltip="Create Request" [matTooltipShowDelay]="500"
                     class="create-btn">
-                    <img class="disablePlus" src="../../../assets/customicons/plus-noborder.svg" alt="create">
-                    <img class="activePlus" src="../../../assets/customicons/plus-noborder-white.svg" alt="create">
+                    <img class="disablePlus" src="./assets/customicons/plus-noborder.svg" alt="create">
+                    <img class="activePlus" src="./assets/customicons/plus-noborder-white.svg" alt="create">
                     <span class="createReq">Create Request</span>
                   </button> -->
                   <div class="border-rightside" style="padding-right: 5px;"
                     [ngClass]="{'createReqEnable':enableCreateReq,'createReqDisable':!enableCreateReq}"
-                    (click)="$event.stopPropagation()"> Create Request </div>
+                    (click)="$event.stopPropagation()"> 
+                    <a (click)="createRequest()">Create Request </a>
+                  </div>
                   <button mat-button matTooltip="Import GSIS" [matTooltipShowDelay]="500" class="import-btn">Import
                     GSIS</button>
                 </div>
@@ -233,10 +245,10 @@
                 <div style="flex:0 0 4%;text-align: center;">
                   <div  *ngIf="!expandBplan; else collapseBlock" (click)="toggleBPlan($event)" class="expand-accordion-icon hand"></div>
                   <!-- <img *ngIf="!expandBplan; else collapseBlock" class="hand" (click)="toggleBPlan($event)"
-                    src="../../../assets/customicons/expand-icon.svg" alt="expand-icon"> -->
+                    src="./assets/customicons/expand-icon.svg" alt="expand-icon"> -->
                   <ng-template #collapseBlock>
                     <div  (click)="toggleBPlan($event)" class="collapse-accordion-icon hand"></div>
-                    <!-- <img class="hand" (click)="toggleBPlan($event)" src="../../../assets/customicons/collapse-icon.svg"
+                    <!-- <img class="hand" (click)="toggleBPlan($event)" src="./assets/customicons/collapse-icon.svg"
                       alt="collapse-icon"> -->
                   </ng-template>
                 </div>
@@ -246,37 +258,44 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div class="panel-body">
-        <app-current-bunkering-plan *ngIf="panel.expanded" [isExpanded]="expandBplan"
-          (enableCreateReq)="toggleCreateReq($event)">
-        </app-current-bunkering-plan>
+        <app-bunkering-plan *ngIf="panel.expanded" [isExpanded]="expandBplan"
+          (enableCreateReq)="toggleCreateReq($event)" [planId]="planId" [bPlanType]="bPlanType.curr" [selectedUserRole]="selectedUserRole"
+          [currentROBObj]="currentROBObj"
+          [vesselRef]="vesselData"
+          (voyage_detail)="getVoyageDetail($event)">
+        </app-bunkering-plan>
       </div>
     </mat-expansion-panel>
     <mat-expansion-panel #panel1 *ngIf="!expandBplan && !expandComments" [ngClass]="{'fullheight':expandPrevBPlan}"
-      hideToggle="true" id="bunker-plan" [expanded]="false" (closed)="expandPrevBPlan = false">
+      hideToggle="true" id="bunker-plan" [expanded]="statusPrevBPlan" (closed)="expandPrevBPlan = false">
       <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="34px">
         <mat-panel-title>
-          <img class="expand-icon" src="../../../assets/customicons/expand.svg" alt="expand-icon">
+          <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
           <div style="display: flex;align-items: center;width: 100%;">
             <div style="flex: 0 0 17%;">Previous Bunkering Plan</div>
             <div style="flex:0 0 80%;display: flex;align-items: center;">
               <div id="plan-id" class="border-leftside" style="flex:0 0 10%;text-align: center;">
                 <span class="title">Plan ID :</span>
-                <span class="content">7162734</span>
+                <span class="content">{{this.prevPlanId}}</span>
               </div>
               <div id="plan-date" class="border-l-rightside" style="flex:0 0 13%;text-align: center;">
                 <span class="title">Plan Date :</span>
-                <span class="content">12/09/2020</span>
+                <span class="content">{{this.prevPlanDate}}</span>
+              </div>
+              <div id="plan-status" class="border-l-rightside" style="flex:0 0 13%;text-align: center;">
+                <span class="title">Status : </span>
+                <span [ngClass]="this.statusPrev == undefined?'content' : (this.statusPrev =='INVALID'? 'content content_invalid' : ' content content_valid')" style="padding: 3% 16% !important; ">{{this.statusPrev}}</span>
               </div>
             </div>
             <ng-container *ngIf="panel1.expanded">
               <div style="flex:0 0 4%;text-align: center;">
                 <div  *ngIf="!expandPrevBPlan; else collapseBlock"  (click)="togglePrevBPlan($event)" class="expand-accordion-icon hand"></div>
                 <!-- <img *ngIf="!expandPrevBPlan; else collapseBlock" class="hand" (click)="togglePrevBPlan($event)"
-                  src="../../../assets/customicons/expand-icon.svg" alt="expand-icon"> -->
+                  src="./assets/customicons/expand-icon.svg" alt="expand-icon"> -->
                 <ng-template #collapseBlock>
                   <div  (click)="togglePrevBPlan($event)" class="collapse-accordion-icon hand"></div>
                   <!-- <img class="hand" (click)="togglePrevBPlan($event)"
-                    src="../../../assets/customicons/collapse-icon.svg" alt="collapse-icon"> -->
+                    src="./assets/customicons/collapse-icon.svg" alt="collapse-icon"> -->
                 </ng-template>
               </div>
             </ng-container>
@@ -284,7 +303,12 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div class="panel-body">
-        <app-bunker-plan [isExpanded]="expandPrevBPlan" *ngIf="panel1.expanded"></app-bunker-plan>
+        <app-bunkering-plan [isExpanded]="expandPrevBPlan" *ngIf="panel1.expanded"
+          [planId]="prevPlanId" [bPlanType]="bPlanType.prev" 
+          [selectedUserRole]="selectedUserRole"
+          [currentROBObj]="currentROBObj"
+          [vesselRef]="vesselData">
+        </app-bunkering-plan>
       </div>
     </mat-expansion-panel>
   </mat-accordion>

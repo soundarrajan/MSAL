@@ -40,7 +40,7 @@ export class NavBarResolver implements Resolve<any> {
       ]);
     }
     let navBar = {
-      'contracId': contractId
+      'ContractId': contractId
     };
     return  this.navBarService.getNavBarIdsList(navBar);
 

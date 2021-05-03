@@ -2,28 +2,23 @@
 <shiptech-delivery-details-toolbar
 [navBar]="navBar">
 <div class="col-6">
-  <div style="float:right">
-    <button  class="ui-button-info mr-1 btn-i-blue-color" label="Save"
-            pButton
-            type="button"
-            (click)="save()"></button>
+  <div style="float:right;position: relative; top: 7px;">
     <button *ngIf="formValues.deliveryStatus && (formValues.deliveryStatus.name == 'NotVerified' || formValues.deliveryStatus.name == 'Open')" 
-          class="ui-button-info mr-1 btn-i-blue-color" 
-          label="Verify"
-          pButton
+          class="cust-btn small" 
           type="button"
-          (click)="verify()"></button>
+          (click)="verify()"><span class="btn-text">Verify</span></button>
     <button *ngIf="formValues.deliveryStatus &&  formValues.deliveryStatus.name == 'Verified'" 
-          class="ui-button-info mr-1 btn-i-blue-color" 
-          label="Revert Verify"
-          pButton
+          class="cust-btn small" 
           type="button"
-          (click)="revertVerify()"></button>
-    <button mat-icon-button [matMenuTriggerFor]="menu" [disabled]="!formValues.deliveryStatus">
-      <mat-icon>more_vert</mat-icon>
+          (click)="revertVerify()"><span class="btn-text">Revert Verify</span></button>
+    <button  class="cust-btn small"
+          type="button"
+          (click)="save()"><span class="btn-text">Save</span></button>      
+    <button class="cust-menu-btn small" mat-icon-button [matMenuTriggerFor]="menu" [disabled]="!formValues.deliveryStatus">
+      <mat-icon>more_horiz</mat-icon>
     </button>
     <mat-menu #menu="matMenu" class="delivery-mat-menu-panel">
-      <button mat-menu-item (click)="splitDeliveries()" *ngIf="formValues.deliveryStatus && formValues.deliveryStatus.name != 'Verified'">
+      <button mat-menu-item (click)="splitDeliveries()" >
         <img id="split-deliveries" alt="Shiptech" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACcAAAAnCAYAAACMo1E1AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAFgSURBVFhH7ZetS0RBFEcXDMKCQTAsCAZBMAgGYbvNtGwxiG2TYDBpki0GsW0SDJbdptVqtlqt/iMjZ+DCMF5m7wwPdpQJJ7z3u7w5M2/u++gNj8euVppcKf9D7uD00m0+vLmN2XsnbN88qeOEmOQORxO3tvhyvZfvThncztXxBJMcs+RiO1czNRf2z699HSuj5cLRyZlbf/70tVouZMkxuJYLVjmgpskJK5Hbvbj3F6NjtVzIkaMZltWZ5GK27l69cHw+JUcTWCYYki2HGAL9x49fWUpubzL1GY8kq2CWXCjGSsT5stvKaucImuVEDNgvNEkINbEcx3EdE7MKmuTklqSgLpZDJq4L0bZGyN9fOaHaPSekBFNyuWKQLQcIQnw+JYcQL3urGJjkqn5DsJEZlMG1XMiRo4ZaLROanEbnclV+CVf9DwF0apV/X6uiyZXS5EppcqU0uVKaXCkVy43dDwKUKPtf2PlPAAAAAElFTkSuQmCC">
         <span class="label-for-delivery-menu">Split deliveries</span>
       </button>
@@ -52,7 +47,7 @@
             [statusColorCode]="statusColorCode"
             [eventsSaveButton]="eventsSubject2.asObservable()"
             class="col-12"
-            style="padding-top: 20px; margin-right: 0px !important;
+            style="margin-right: 0px !important;
             padding-right: 0px !important;">
         </shiptech-bdn-information>  
       </div>

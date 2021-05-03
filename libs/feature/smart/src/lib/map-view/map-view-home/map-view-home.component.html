@@ -23,21 +23,21 @@
         <div style="float: right;">
             <div class="side-nav" [ngStyle]="{'opacity':showBPlan?'1':'0.9'}">
                 <div class="side-nav-icon" [ngStyle]="{'opacity':showBPlan?'1':'0.3'}"><img
-                        src="../../../assets/customicons/checklist.svg" alt="expand-icon">B Plan
+                        src="./assets/customicons/checklist.svg" alt="expand-icon">B Plan
                 </div>
             </div>
         </div>
         <div style="float: right;position: relative;top: 54px;" (click)="clickRoute()">
             <div class="side-nav" [ngStyle]="{'opacity':showRoute?'1':'0.9'}">
                 <div class="side-nav-icon" [ngStyle]="{'opacity':showRoute?'1':'0.3'}"><img
-                        src="../../../assets/customicons/route.svg" alt="expand-icon">Route
+                        src="./assets/customicons/route.svg" alt="expand-icon">Route
                 </div>
             </div>
         </div>
         <!-- <div style="float: right;position: relative;top:108px">
                 <div class="side-nav" [ngStyle]="{'opacity':showCreateReq?'1':'0.9'}">
                     <div class="side-nav-icon" [ngStyle]="{'opacity':showCreateReq?'1':'0.3'}"><img
-                            src="../../../assets/customicons/create-request.svg" alt="expand-icon">Create
+                            src="./assets/customicons/create-request.svg" alt="expand-icon">Create
                         Request
                     </div>
                 </div>
@@ -45,7 +45,7 @@
             <div style="float: right;position: relative;top:162px">
                 <div class="side-nav" [ngStyle]="{'opacity':showChat?'1':'0.9'}">
                     <div class="side-nav-icon" [ngStyle]="{'opacity':showChat?'1':'0.3'}"><img
-                            src="../../../assets/customicons/message.svg" alt="expand-icon">Message
+                            src="./assets/customicons/message.svg" alt="expand-icon">Message
                     </div>
                 </div>
             </div> -->
@@ -55,7 +55,7 @@
         <div class="panel-up-arrow">
             <div class="mode">
                 <div>Turn {{themeDark?'on':'off'}} Light Mode</div>
-                <img src="../../../assets/customicons/mode-icon.svg" alt="mode" [ngStyle]="{'transform':themeDark?'rotate(180deg)':'rotate(0deg)'}" (click)="changeTheme()">
+                <img src="./assets/customicons/mode-icon.svg" alt="mode" [ngStyle]="{'transform':themeDark?'rotate(180deg)':'rotate(0deg)'}" (click)="changeTheme()">
                 <!-- <mat-slide-toggle disabled></mat-slide-toggle> -->
             </div>
             <div class="date-format">

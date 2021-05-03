@@ -1383,9 +1383,24 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
  
 
   save() {
-    debugger;
+    this.setReconMatchIdBasedOnProductVarianceColor();
+    let Isvalid=false;
     let hasMandatoryFields = this.validateRequiredFields();
     if (hasMandatoryFields) {
+      return;
+    }
+    this.formValues.deliveryProducts.forEach((deliveryProd, key) => { 
+      if(deliveryProd!=null && key==this.reportService.selectedProduct){
+        deliveryProd.qualityParameters.forEach((qualityParameter, key) => {
+          if (qualityParameter.isDisplayedInDelivery==true && qualityParameter.isMandatoryInDelivery==true && (qualityParameter.bdnValue==null || qualityParameter.bdnValue=="" || qualityParameter.bdnValue==0)){
+            Isvalid=true;
+            document.getElementById("bdnIdx"+key).classList.add('date-invalid');
+          }
+        });
+      }
+    });
+    if(Isvalid){
+      this.toastrService.error('Please fill the required bdn value...');
       return;
     }
     let id = parseFloat(this.entityId);
@@ -1456,6 +1471,22 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
           }
        });
     }
+  }
+
+  
+  setReconMatchIdBasedOnProductVarianceColor() {
+    this.formValues.deliveryProducts.forEach((product, k) => {
+      if (this.formValues.temp.variances) {
+        let getColor = this.formValues.temp.variances['color_' + k];
+        console.log(getColor);
+        if (getColor == 'amber') {
+          product.reconMatch = {
+            'id': 3
+          }
+        }
+
+      }
+    });
   }
 
   

@@ -10,11 +10,12 @@
       Pricing Details
     </div>
     <div  style="float: right;">
-      <button  type="button" mat-raised-button class="new-formula-button cancel-button">
+      <button  type="button" mat-raised-button class="new-formula-button cancel-button" (click)="cancelFormula()">
         Cancel
       </button>  
       <button  type="button" mat-raised-button class="new-formula-button"
-        (click)="saveFormula()">
+        (click)="saveFormula()"
+        [disabled]="!formValues.isEditable">
         Save
       </button>    
     </div>
@@ -50,7 +51,8 @@
           <input matInput
               [(ngModel)]="formValues.name"
               placeholder="Formula Name"
-              autocomplete="off">
+              autocomplete="off"
+              [disabled]="!formValues.isEditable">
           </mat-form-field>
       </div>
     </div>
@@ -81,7 +83,8 @@
               [formulaPlusMinusList]="formulaPlusMinusList"
               [marketPriceList]="marketPriceList"
               [systemInstumentList]="systemInstumentList"
-              [uomList]="uomList">
+              [uomList]="uomList"
+              [hasInvoicedOrder]="hasInvoicedOrder">
             </shiptech-pricing-formula-simple>
           </div>
           <div class="row" *ngIf="formValues.formulaType && formValues.formulaType.id == 2">
@@ -95,7 +98,8 @@
               [currencyList]="currencyList"
               [formulaOperationList]="formulaOperationList"
               [formulaFunctionList]="formulaFunctionList"
-              [marketPriceTypeList]="marketPriceTypeList">
+              [marketPriceTypeList]="marketPriceTypeList"
+              [hasInvoicedOrder]="hasInvoicedOrder">
             </shiptech-pricing-formula-complex>
           </div>
           <div style="margin-top: 15px" class="col-md-12 no-padding" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
@@ -105,6 +109,7 @@
                     [(ngModel)]="formValues.comments"
                     matInput
                     autocomplete="off"
+                    [disabled]="!formValues.isEditable"
                     ></textarea>
             </mat-form-field>
           </div>
@@ -131,39 +136,57 @@
             </mat-radio-group>
             </div>
           </div>
-          <div class="row" *ngIf="formValues.pricingSchedule && formValues.pricingSchedule.id == 4">
-            <shiptech-date-range [model]="formValues">
+          <div *ngIf="formValues.pricingSchedule && formValues.pricingSchedule.id == 4">
+            <shiptech-date-range class="row" 
+              [model]="formValues" 
+              [hasInvoicedOrder]="hasInvoicedOrder">
             </shiptech-date-range>
           </div>
-          <div class="row" *ngIf="formValues.pricingSchedule && formValues.pricingSchedule.id == 5">
-            <shiptech-specific-dates [model]="formValues">
+          <div *ngIf="formValues.pricingSchedule && formValues.pricingSchedule.id == 5">
+            <shiptech-specific-dates class="row" 
+              [model]="formValues"
+              [hasInvoicedOrder]="hasInvoicedOrder">
             </shiptech-specific-dates>
           </div>
-          <div class="row" *ngIf="formValues.pricingSchedule && formValues.pricingSchedule.id == 8">
-            <shiptech-event-based-continuous [model]="formValues"
+          <div *ngIf="formValues.pricingSchedule && formValues.pricingSchedule.id == 8">
+            <shiptech-event-based-continuous class="row" [model]="formValues"
               [pricingSchedulePeriodList]="pricingSchedulePeriodList"
               [eventList]="eventList"
               [dayOfWeekList]="dayOfWeekList"
-              [holidayRuleList]="holidayRuleList">
+              [holidayRuleList]="holidayRuleList"
+              [hasInvoicedOrder]="hasInvoicedOrder">
             </shiptech-event-based-continuous>
           </div>
-          <div class="row" *ngIf="formValues.pricingSchedule && formValues.pricingSchedule.id == 7">
+          <div  *ngIf="formValues.pricingSchedule && formValues.pricingSchedule.id == 7">
             <shiptech-event-based-extended
+              class="row"
               [model]="formValues"
               [businessCalendarList]="businessCalendarList"
               [eventList]="eventList"
-              [formulaEventIncludeList]="formulaEventIncludeList">
-
+              [formulaEventIncludeList]="formulaEventIncludeList"
+              [hasInvoicedOrder]="hasInvoicedOrder">
             </shiptech-event-based-extended>
           </div>
-          <div class="row" *ngIf="formValues.pricingSchedule && formValues.pricingSchedule.id == 6">
+          <div *ngIf="formValues.pricingSchedule && formValues.pricingSchedule.id == 6">
               <shiptech-event-based-simple
+                class="row" 
                 [model]="formValues"
                 [businessCalendarList]="businessCalendarList"
                 [eventList]="eventList"
-                [formulaEventIncludeList]="formulaEventIncludeList">
-
+                [formulaEventIncludeList]="formulaEventIncludeList"
+                [hasInvoicedOrder]="hasInvoicedOrder">
               </shiptech-event-based-simple>
+          </div>
+          <div style="margin-top: 15px" class="col-md-12 no-padding" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+            <mat-form-field appearance="outline" class="custom-form-field-comments">
+                <mat-label>Comments</mat-label>
+                <textarea  
+                    [(ngModel)]="formValues.comments"
+                    matInput
+                    autocomplete="off"
+                    [disabled]="!formValues.isEditable"
+                    ></textarea>
+            </mat-form-field>
           </div>
         </div>
       </div> 
@@ -173,7 +196,7 @@
     <div class="col-md-12">
       <div class="pricing-type-container">
         <div class="col-md-12 pricing-container">
-          <div class="pricing-container-formula-list row col-md-12 no-padding" style="margin-top: 15px;">
+          <div style="margin-top: 15px;">
             <div class="col-md-12 pricing-formula-tab" style="display: flex;justify-content: flex-start;">
               <div class="pricing-formula-tab-header col-md-6">
                 <div [ngClass]="{'selected-tab': rules == 1, 
@@ -201,7 +224,8 @@
               [formulaFlatPercentageList]="formulaFlatPercentageList"
               [quantityTypeList]="quantityTypeList"
               [formulaPlusMinusList]="formulaPlusMinusList"
-              [uomList]="uomList">
+              [uomList]="uomList"
+              [hasInvoicedOrder]="hasInvoicedOrder">
 
             </shiptech-quantity-based>
           </div>
@@ -211,7 +235,8 @@
               [quantityTypeList]="quantityTypeList"
               [formulaPlusMinusList]="formulaPlusMinusList"
               [uomList]="uomList"
-              [productList]="productList">
+              [productList]="productList"
+              [hasInvoicedOrder]="hasInvoicedOrder">
 
             </shiptech-product-based>
           </div>
@@ -221,7 +246,8 @@
               [quantityTypeList]="quantityTypeList"
               [formulaPlusMinusList]="formulaPlusMinusList"
               [uomList]="uomList"
-              [locationList]="locationList">
+              [locationList]="locationList"
+              [hasInvoicedOrder]="hasInvoicedOrder">
             </shiptech-vessel-location-based>
           </div>
       </div>

@@ -39,6 +39,7 @@ export class ContractDetailsToolbarComponent
   contractId: any;
   navigationItems: any[];
   activeItemId: string;
+  contractConfiguration: any;
   @Input('navBar') set _setNavBar(navBar) { 
     if (!navBar) {
       return;
@@ -52,6 +53,13 @@ export class ContractDetailsToolbarComponent
       this.createNavigationItems(this.navBar);
       this.markNavigationItems();
     }
+  }
+
+  @Input('contractConfiguration') set _setContractConfiguration(contractConfiguration) { 
+    if (!contractConfiguration) {
+      return;
+    } 
+    this.contractConfiguration = contractConfiguration;
   }
   
   @Select(QcReportState.isBusy) isBusy$: Observable<boolean>;
@@ -96,45 +104,137 @@ export class ContractDetailsToolbarComponent
       KnownContractRoutes.Contract,
       contractId
     ];
-    this.menuItems = [
-      {
-        label: 'Main Page',
-        routerLink: [
-          ...routeLinkToReportDetails,
-          KnownContractRoutes.ContractDetails
-        ],
-        routerLinkActiveOptions: { exact: true },
-        styleClass: 'details-tab'
-      },
-      {
-        label: 'Documents',
-        url: parseFloat(contractId) ? `${this.baseOrigin}/#/delivery/delivery/documents/${contractId}`: null,
-        routerLinkActiveOptions: { exact: true },
-        disabled,
-        styleClass: 'tab'
-      },
-      {
-        label: 'Audit Log',
-        url: parseFloat(contractId) ? `${this.baseOrigin}/#/delivery/delivery/audit/${contractId}` : null,
-        routerLinkActiveOptions: { exact: true },
-        disabled,
-        styleClass: 'tab'
-      },
-      {
-        label: 'Email Log',
-        url: parseFloat(contractId) ? `${this.baseOrigin}/#/delivery/delivery/email-log/${contractId}` : null,
-        routerLinkActiveOptions: { exact: true },
-        disabled,
-        styleClass: 'tab'
-      },
-      {
-        label: 'Seller Rating',
-        url: null,
-        routerLinkActiveOptions: { exact: true },
-        disabled,
-        styleClass: 'tab'
-      }
-    ];
+    if (this.contractConfiguration && this.contractConfiguration.areTermsAndConditionsAvailable) {
+      this.menuItems = [
+        {
+          label: 'Main Page',
+          routerLink: [
+            ...routeLinkToReportDetails,
+            KnownContractRoutes.ContractDetails
+          ],
+          routerLinkActiveOptions: { exact: true },
+          styleClass: 'details-tab'
+        },
+        {
+          label: 'Preview Contract',
+          url: parseFloat(contractId) ? `${this.baseOrigin}/#/contracts/contract/preview/${contractId}`: null,
+          routerLinkActiveOptions: { exact: true },
+          disabled,
+          styleClass: 'tab'
+        },
+        {
+          label: 'Preview Email',
+          url: parseFloat(contractId) ? `${this.baseOrigin}/#/contracts/contract/email-preview/${contractId}` : null,
+          routerLinkActiveOptions: { exact: true },
+          disabled,
+          styleClass: 'tab'
+        },
+        {
+          label: 'Deliveries',
+          url: parseFloat(contractId) ? `${this.baseOrigin}/#/contracts/contract/productdelivery/${contractId}` : null,
+          routerLinkActiveOptions: { exact: true },
+          disabled,
+          styleClass: 'tab'
+        },
+        {
+          label: 'Documents',
+          url: parseFloat(contractId) ? `${this.baseOrigin}/#/contracts/contract/documents/${contractId}` : null,
+          routerLinkActiveOptions: { exact: true },
+          disabled,
+          styleClass: 'tab'
+        },
+        {
+          label: 'Email Log',
+          url: parseFloat(contractId) ? `${this.baseOrigin}/#/contracts/contract/email-log/${contractId}` : null,
+          routerLinkActiveOptions: { exact: true },
+          disabled,
+          styleClass: 'tab'
+        },
+        {
+          label: 'Audit Log',
+          url: parseFloat(contractId) ? `${this.baseOrigin}/#/contracts/contract/audit-log/${contractId}` : null,
+          routerLinkActiveOptions: { exact: true },
+          disabled,
+          styleClass: 'tab'
+        },
+        {
+          label: 'Seller Rating',
+          url: null,
+          routerLinkActiveOptions: { exact: true },
+          disabled,
+          styleClass: 'tab'
+        },
+        {
+          label: 'Terms & Conditions ',
+          url: parseFloat(contractId) ? `${this.baseOrigin}/#/contracts/contract/terms-conditions/${contractId}` : null,
+          routerLinkActiveOptions: { exact: true },
+          disabled,
+          styleClass: 'tab'
+        }
+      ];
+    } else {
+      this.menuItems = [
+        {
+          label: 'Main Page',
+          routerLink: [
+            ...routeLinkToReportDetails,
+            KnownContractRoutes.ContractDetails
+          ],
+          routerLinkActiveOptions: { exact: true },
+          styleClass: 'details-tab'
+        },
+        {
+          label: 'Preview Contract',
+          url: parseFloat(contractId) ? `${this.baseOrigin}/#/contracts/contract/preview/${contractId}`: null,
+          routerLinkActiveOptions: { exact: true },
+          disabled,
+          styleClass: 'tab'
+        },
+        {
+          label: 'Preview Email',
+          url: parseFloat(contractId) ? `${this.baseOrigin}/#/contracts/contract/email-preview/${contractId}` : null,
+          routerLinkActiveOptions: { exact: true },
+          disabled,
+          styleClass: 'tab'
+        },
+        {
+          label: 'Deliveries',
+          url: parseFloat(contractId) ? `${this.baseOrigin}/#/contracts/contract/productdelivery/${contractId}` : null,
+          routerLinkActiveOptions: { exact: true },
+          disabled,
+          styleClass: 'tab'
+        },
+        {
+          label: 'Documents',
+          url: parseFloat(contractId) ? `${this.baseOrigin}/#/contracts/contract/documents/${contractId}` : null,
+          routerLinkActiveOptions: { exact: true },
+          disabled,
+          styleClass: 'tab'
+        },
+        {
+          label: 'Email Log',
+          url: parseFloat(contractId) ? `${this.baseOrigin}/#/contracts/contract/email-log/${contractId}` : null,
+          routerLinkActiveOptions: { exact: true },
+          disabled,
+          styleClass: 'tab'
+        },
+        {
+          label: 'Audit Log',
+          url: parseFloat(contractId) ? `${this.baseOrigin}/#/contracts/contract/audit-log/${contractId}` : null,
+          routerLinkActiveOptions: { exact: true },
+          disabled,
+          styleClass: 'tab'
+        },
+        {
+          label: 'Seller Rating',
+          url: null,
+          routerLinkActiveOptions: { exact: true },
+          disabled,
+          styleClass: 'tab'
+        }
+      ];
+    }
+   
     this.chRef.detectChanges();
   }
 
@@ -176,14 +276,14 @@ export class ContractDetailsToolbarComponent
           {
               id: 'contract',
               displayName : 'Contract',
-              url : typeof payload != 'undefined' && payload.contractId ? `${this.baseOrigin}/#/contracts/contract/edit/${ payload.contractId}` : '',
+              url : typeof payload != 'undefined' && payload.contractId ? `${this.baseOrigin}/v2/contracts/contract/${ payload.contractId}/details` : '',
               entityId : typeof payload != 'undefined' && payload.contractId ? payload.contractId : '',
               indexStatus : null,
           },
           {
               id: 'delivery',
               displayName : 'Delivery',
-              url : typeof payload != 'undefined' && payload.deliveryId ? `${this.baseOrigin}/#/delivery/delivery/edit/${ payload.deliveryId}` : '',
+              url : typeof payload != 'undefined' && payload.deliveryId ? `${this.baseOrigin}/v2/delivery/delivery/${ payload.deliveryId}/details` : '',
               entityId : typeof payload != 'undefined' && payload.deliveryId ? payload.deliveryId : '',
               indexStatus : null,
               hidden : false
@@ -226,14 +326,14 @@ export class ContractDetailsToolbarComponent
           {
               id: 'contract',
               displayName : 'Contract',
-              url : typeof payload != 'undefined' && payload.contractId ? `${this.baseOrigin}/#/contracts/contract/edit/${ payload.contractId}` : '',
+              url : typeof payload != 'undefined' && payload.contractId ? `${this.baseOrigin}/v2/contracts/contract/${ payload.contractId}/details` : '',
               entityId : typeof payload != 'undefined' && payload.contractId ? payload.contractId : '',
               indexStatus : null,
           },
           {
               id: 'delivery',
               displayName : 'Delivery',
-              url : typeof payload != 'undefined' && payload.deliveryId ? `${this.baseOrigin}/#/delivery/delivery/edit/${ payload.deliveryId}` : '',
+              url : typeof payload != 'undefined' && payload.deliveryId ? `${this.baseOrigin}/v2/delivery/delivery/${ payload.deliveryId}/details` : '',
               entityId : typeof payload != 'undefined' && payload.deliveryId ? payload.deliveryId : '',
               indexStatus : null,
               hidden : false

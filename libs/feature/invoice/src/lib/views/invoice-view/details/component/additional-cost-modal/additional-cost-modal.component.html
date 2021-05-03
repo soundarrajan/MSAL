@@ -1,0 +1,24 @@
+<mat-dialog-content>
+
+    <div class="custom-form-field-with-search lightTheme">
+      <div class="d-flex">
+        <mat-form-field class="without-search" appearance="legacy">
+          <mat-label>Search</mat-label>
+          <input matInput name="search" [(ngModel)]="searchText">
+        </mat-form-field>                            
+        <div class="search-icon" (click)="applyFilter()">
+          <div class="img"></div>
+        </div>
+    </div>
+  </div>
+
+  <mat-list>
+    <mat-list-item *ngFor="let cost of costData">
+      <mat-radio-button matLine>{{cost.costType}}</mat-radio-button>
+    </mat-list-item>
+    </mat-list>
+</mat-dialog-content>
+<!-- <mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button [mat-dialog-close]="true">Delete</button>
+</mat-dialog-actions> -->

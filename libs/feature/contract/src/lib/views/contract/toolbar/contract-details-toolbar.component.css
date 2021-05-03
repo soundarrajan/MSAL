@@ -3,6 +3,10 @@
     top: 20px;
 }
 
+.ui-tabmenu .ui-tabmenu-nav {
+    background-color: unset !important;
+    background: unset !important;
+}
 .st-breadcrumbs-progress-bar .page-breadcrumb {
     /* width: 100%; */
     padding: 0;
@@ -287,3 +291,11 @@ table-layout: fixed;*/
 }
 
 /* TOP NAVIGATION COMPONENT */
+
+a.breadcrumb-a:active, a.breadcrumb-a:focus, a.breadcrumb-a:hover {
+    text-decoration: underline;
+}
+
+.contract-topbar {
+    width: calc(100% - 220px) !important;
+}

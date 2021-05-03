@@ -93,6 +93,7 @@ import {
 
 @Injectable()
 export class QcReportService extends BaseStoreService implements OnDestroy {
+  selectedProduct:any;
   constructor(
     protected store: Store,
     private urlService: UrlService,

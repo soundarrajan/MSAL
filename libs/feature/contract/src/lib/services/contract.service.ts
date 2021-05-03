@@ -178,10 +178,85 @@ export class ContractService extends BaseStoreService implements OnDestroy {
   getAdditionalCostsComponentTypes(payload): Observable<unknown> {
     return this.contractApi.getAdditionalCostsComponentTypes(payload);
   }
-               
+
+        /**
+ * @param payload 
+ */
+  @ObservableException()
+  saveConversionFactorsForContractProduct(payload): Observable<unknown> {
+    return this.contractApi.saveConversionFactorsForContractProduct(payload);
+  }
+
+
   
+  /**
+ * @param payload 
+ */
+  @ObservableException()
+  createContract(payload): Observable<unknown> {
+    return this.contractApi.createContract(payload);
+  }
+
+   /**
+ * @param payload 
+ */
+  @ObservableException()
+  updateContract(payload): Observable<unknown> {
+    return this.contractApi.updateContract(payload);
+  }
+
+   /**
+ * @param payload 
+ */
+  @ObservableException()
+  confirmContract(payload): Observable<unknown> {
+    return this.contractApi.confirmContract(payload);
+  }
+
+     /**
+ * @param payload 
+ */
+  @ObservableException()
+  undoConfirmContract(payload): Observable<unknown> {
+    return this.contractApi.undoConfirmContract(payload);
+  }
+         
+     /**
+ * @param payload 
+ */
+  @ObservableException()
+  cancelContract(payload): Observable<unknown> {
+    return this.contractApi.cancelContract(payload);
+  }
+
+       /**
+ * @param payload 
+ */
+  @ObservableException()
+  extendContract(payload): Observable<unknown> {
+    return this.contractApi.extendContract(payload);
+  }
+
+
+         /**
+ * @param payload 
+ */
+  @ObservableException()
+  deleteContract(payload): Observable<unknown> {
+    return this.contractApi.deleteContract(payload);
+  }
+            
+           /**
+ * @param payload 
+ */
+  @ObservableException()
+  getContractFormulas(payload): Observable<unknown> {
+    return this.contractApi.getContractFormulas(payload);
+  }          
+
               
   
+
   ngOnDestroy(): void {
     super.onDestroy();
   }

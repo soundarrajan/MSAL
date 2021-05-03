@@ -76,7 +76,7 @@ const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
 };
 
 
-  
+
 export const PICK_FORMATS = {
   display: {
     dateInput: 'DD MMM YYYY',
@@ -394,8 +394,8 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
   styleUrls: ['./contract-product.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  providers: [OrderListGridViewModel, 
-              DialogService, 
+  providers: [OrderListGridViewModel,
+              DialogService,
               ConfirmationService,
               {provide: DateAdapter, useClass: PickDateAdapter},
               {provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS},
@@ -480,11 +480,18 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   businessCalendarList: any;
   formulaEventIncludeList: any;
   quantityTypeList: any;
-  contractFormulaList: any;
+  contractFormulaList: any = [];
   additionalCostList: any;
   costTypeList: any;
-
-
+  eventsSaveButtonSubscription: any;
+  buttonClicked: any;
+  buttonClicked1: any;
+  additionalCostsComponentTypes: any;
+  eventsSelectedTabIndexSubscription: any;
+  contractConfiguration: any;
+  expandLocation: any = false;
+  expandProduct: any = false;
+  bankFilterCtrl: any = new FormControl();
   get entityId(): number {
     return this._entityId;
   }
@@ -502,250 +509,283 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     this._entityName = value;
     this.gridViewModel.entityName = this.entityName;
   }
-     
+
   @Input() vesselId: number;
 
   contractFormSubject: Subject<any> = new Subject<any>();
+  productSpecGroupSubject: Subject<any> = new Subject<any>();
 
 
-  @Input('locationMasterList') set _setLocationMasterList(locationMasterList) { 
+
+  @Input('locationMasterList') set _setLocationMasterList(locationMasterList) {
     if (!locationMasterList) {
       return;
-    } 
+    }
     this.locationMasterList = _.cloneDeep(locationMasterList);
-    this.locationMasterSearchList = _.cloneDeep(locationMasterList);
+    this.locationMasterSearchList = [];
+    for (let i = 0; i < this.locationMasterList.length; i++) {
+      this.locationMasterSearchList.push({
+        'id': this.locationMasterList[i].id,
+        'name':  this.locationMasterList[i].name,
+        'country': this.locationMasterList[i].country
+      });
+    }
     this.selectedLocationList = _.cloneDeep(locationMasterList);
 
   }
 
-  @Input('productMasterList') set _setProductMasterList(productMasterList) { 
+  @Input('productMasterList') set _setProductMasterList(productMasterList) {
     if (!productMasterList) {
       return;
-    } 
+    }
 
     this.productMasterList =  _.cloneDeep(productMasterList);
     this.productMasterList =  _.cloneDeep(productMasterList);
     this.productMasterSearchList = _.cloneDeep(this.productMasterList);
   }
 
-  @Input('specParameterList') set _setSpecParameterList(specParameterList) { 
+  @Input('specParameterList') set _setSpecParameterList(specParameterList) {
     if (!specParameterList) {
       return;
-    } 
+    }
     this.specParameterList = specParameterList;
   }
 
 
-  @Input('uomList') set _setUomList(uomList) { 
+  @Input('uomList') set _setUomList(uomList) {
     if (!uomList) {
       return;
-    } 
+    }
     this.uomList = uomList;
   }
 
-  @Input('currencyList') set _setCurrencyList(currencyList) { 
+  @Input('currencyList') set _setCurrencyList(currencyList) {
     if (!currencyList) {
       return;
-    } 
+    }
     this.currencyList = currencyList;
   }
 
-  
 
-  @Input('formulaOperationList') set _setFormulaOperationList(formulaOperationList) { 
+
+  @Input('formulaOperationList') set _setFormulaOperationList(formulaOperationList) {
     if (!formulaOperationList) {
       return;
-    } 
+    }
     this.formulaOperationList = formulaOperationList;
   }
-  
-  @Input('formulaTypeList') set _setFormulaTypeList(formulaTypeList) { 
+
+  @Input('formulaTypeList') set _setFormulaTypeList(formulaTypeList) {
     if (!formulaTypeList) {
       return;
-    } 
+    }
     this.formulaTypeList = formulaTypeList;
   }
 
-  @Input('systemInstumentList') set _setSystemInstumentList(systemInstumentList) { 
+  @Input('systemInstumentList') set _setSystemInstumentList(systemInstumentList) {
     if (!systemInstumentList) {
       return;
-    } 
+    }
     this.systemInstumentList = systemInstumentList;
   }
 
 
-  @Input('marketPriceList') set _setMarketPriceList(marketPriceList) { 
+  @Input('marketPriceList') set _setMarketPriceList(marketPriceList) {
     if (!marketPriceList) {
       return;
-    } 
+    }
     this.marketPriceList = marketPriceList;
   }
 
-  @Input('formulaFlatPercentageList') set _setFormulaFlatPercentageList(formulaFlatPercentageList) { 
+  @Input('formulaFlatPercentageList') set _setFormulaFlatPercentageList(formulaFlatPercentageList) {
     if (!formulaFlatPercentageList) {
       return;
-    } 
+    }
     this.formulaFlatPercentageList = formulaFlatPercentageList;
   }
 
 
-  @Input('formulaPlusMinusList') set _setFormulaPlusMinusList(formulaPlusMinusList) { 
+  @Input('formulaPlusMinusList') set _setFormulaPlusMinusList(formulaPlusMinusList) {
     if (!formulaPlusMinusList) {
       return;
-    } 
+    }
     this.formulaPlusMinusList = formulaPlusMinusList;
   }
 
-  
 
-  @Input('uomVolumeList') set _setUomVolumeList(uomVolumeList) { 
+
+  @Input('uomVolumeList') set _setUomVolumeList(uomVolumeList) {
     if (!uomVolumeList) {
       return;
-    } 
+    }
     this.uomVolumeList = uomVolumeList;
   }
 
-  
-  @Input('uomMassList') set _setUomMassList(uomMassList) { 
+
+  @Input('uomMassList') set _setUomMassList(uomMassList) {
     if (!uomMassList) {
       return;
-    } 
+    }
     this.uomMassList = uomMassList;
   }
 
-  @Input('contractConversionFactorOptions') set _setContractConversionFactorOptions(contractConversionFactorOptions) { 
+  @Input('contractConversionFactorOptions') set _setContractConversionFactorOptions(contractConversionFactorOptions) {
     if (!contractConversionFactorOptions) {
       return;
-    } 
+    }
     this.contractConversionFactorOptions = contractConversionFactorOptions;
   }
 
-  @Input('model') set _setFormValues(formValues) { 
+  @Input('model') set _setFormValues(formValues) {
     if (!formValues) {
       return;
-    } 
+    }
     this.formValues = formValues;
+    for (let i = 0; i < this.formValues.products.length; i++) {
+      if (this.formValues.products[i].product) {
+        this.getSpecGroupByProduct(this.formValues.products[i].product.id, this.formValues.products[i].specGroup);
+      }
+    }
+    this.getAdditionalCostsComponentTypes();
   }
 
-  @Input('generalTenantSettings') set _setGeneralTenantSettings(generalTenantSettings) { 
+  @Input('generalTenantSettings') set _setGeneralTenantSettings(generalTenantSettings) {
     if (!generalTenantSettings) {
       return;
-    } 
+    }
     this.generalTenantSettings = generalTenantSettings;
   }
 
-  @Input('formulaFunctionList') set _setFormulaFunctionList(formulaFunctionList) { 
+  @Input('formulaFunctionList') set _setFormulaFunctionList(formulaFunctionList) {
     if (!formulaFunctionList) {
       return;
-    } 
+    }
     this.formulaFunctionList = formulaFunctionList;
   }
 
-  @Input('marketPriceTypeList') set _setMarketPriceTypeList(marketPriceTypeList) { 
+  @Input('marketPriceTypeList') set _setMarketPriceTypeList(marketPriceTypeList) {
     if (!marketPriceTypeList) {
       return;
-    } 
+    }
     this.marketPriceTypeList = marketPriceTypeList;
   }
 
-  
-  @Input('pricingScheduleList') set _setPricingScheduleList(pricingScheduleList) { 
+
+  @Input('pricingScheduleList') set _setPricingScheduleList(pricingScheduleList) {
     if (!pricingScheduleList) {
       return;
-    } 
+    }
     this.pricingScheduleList = pricingScheduleList;
   }
 
-  @Input('holidayRuleList') set _setHolidayRuleList(holidayRuleList) { 
+  @Input('holidayRuleList') set _setHolidayRuleList(holidayRuleList) {
     if (!holidayRuleList) {
       return;
-    } 
+    }
     this.holidayRuleList = holidayRuleList;
   }
 
-  @Input('pricingSchedulePeriodList') set _setPricingSchedulePeriodList(pricingSchedulePeriodList) { 
+  @Input('pricingSchedulePeriodList') set _setPricingSchedulePeriodList(pricingSchedulePeriodList) {
     if (!pricingSchedulePeriodList) {
       return;
-    } 
+    }
     this.pricingSchedulePeriodList = pricingSchedulePeriodList;
   }
 
-  @Input('eventList') set _setEventList(eventList) { 
+  @Input('eventList') set _setEventList(eventList) {
     if (!eventList) {
       return;
-    } 
+    }
     this.eventList = eventList;
   }
 
-  
-  @Input('dayOfWeekList') set _setDayOfWeekListt(dayOfWeekList) { 
+
+  @Input('dayOfWeekList') set _setDayOfWeekListt(dayOfWeekList) {
     if (!dayOfWeekList) {
       return;
-    } 
+    }
     this.dayOfWeekList = dayOfWeekList;
   }
 
-    
-  @Input('businessCalendarList') set _setBusinessCalendarList(businessCalendarList) { 
+
+  @Input('businessCalendarList') set _setBusinessCalendarList(businessCalendarList) {
     if (!businessCalendarList) {
       return;
-    } 
+    }
     this.businessCalendarList = businessCalendarList;
   }
 
-      
-  @Input('formulaEventIncludeList') set _setFormulaEventIncludeList(formulaEventIncludeList) { 
+
+  @Input('formulaEventIncludeList') set _setFormulaEventIncludeList(formulaEventIncludeList) {
     if (!formulaEventIncludeList) {
       return;
-    } 
+    }
     this.formulaEventIncludeList = formulaEventIncludeList;
   }
 
-        
-  @Input('quantityTypeList') set _setQuantityTypeList(quantityTypeList) { 
+
+  @Input('quantityTypeList') set _setQuantityTypeList(quantityTypeList) {
     if (!quantityTypeList) {
       return;
-    } 
+    }
     this.quantityTypeList = quantityTypeList;
   }
 
-  @Input('productList') set _setProductList(productList) { 
+  @Input('productList') set _setProductList(productList) {
     if (!productList) {
       return;
-    } 
+    }
     this.productList = productList;
   }
 
-  
-  @Input('locationList') set _setLocationList(locationList) { 
+
+  @Input('locationList') set _setLocationList(locationList) {
     if (!locationList) {
       return;
-    } 
+    }
     this.locationList = locationList;
   }
 
-    
-  @Input('additionalCostList') set _setAdditionalCostListt(additionalCostList) { 
+
+  @Input('additionalCostList') set _setAdditionalCostListt(additionalCostList) {
     if (!additionalCostList) {
       return;
-    } 
+    }
     this.additionalCostList = additionalCostList;
   }
 
-  @Input('costTypeList') set _setCostTypeList(costTypeList) { 
+  @Input('costTypeList') set _setCostTypeList(costTypeList) {
     if (!costTypeList) {
       return;
-    } 
+    }
     this.costTypeList = costTypeList;
   }
 
+  @Input('buttonClicked1') set _setButtonClicked1(buttonClicked1) {
+    if (!buttonClicked1) {
+      return;
+    }
+    this.buttonClicked1 = buttonClicked1;
+  }
+
+
+  @Input('contractConfiguration') set _setContractConfiguration(contractConfiguration) {
+    if (!contractConfiguration) {
+      return;
+    }
+    this.contractConfiguration = contractConfiguration;
+  }
 
 
   index = 0;
   expandLocationPopUp = false;
   array = [0,1,2,3,4,5,6,7,8,9,10];
   isMenuOpen = true;
+  @Input() eventsSaveButton: Observable<void>;
+  @Input() eventsSelectedTabIndex: Observable<void>;
+  expandProductPopUp: any =  false;
 
+  eventsSubject2: Subject<any> = new Subject<any>();
 
   constructor(
     public gridViewModel: OrderListGridViewModel,
@@ -761,8 +801,8 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     private tenantSettingsService: TenantSettingsService,
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
-    iconRegistry: MatIconRegistry, 
-    public dialog: MatDialog, 
+    iconRegistry: MatIconRegistry,
+    public dialog: MatDialog,
     @Inject(DecimalPipe) private _decimalPipe,
     private tenantService: TenantFormattingService,
     sanitizer: DomSanitizer,
@@ -778,11 +818,21 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     this.quantityFormat = '1.' + this.tenantService.quantityPrecision + '-' + this.tenantService.quantityPrecision;
   }
 
-  ngOnInit(){  
+  ngOnInit(){
     this.entityName = 'Contract';
     this.getContractFormulaList1();
+    this.eventsSaveButtonSubscription = this.eventsSaveButton.subscribe((data) => this.setRequiredFields(data));
+    this.eventsSelectedTabIndexSubscription = this.eventsSelectedTabIndex.subscribe((data) => this.setSelectedTab(data));
+  }
 
+  setSelectedTab(index) {
+    this.selectedTabIndex = index;
+  }
 
+  setRequiredFields(data) {
+    this.buttonClicked = data;
+    console.log(this.buttonClicked);
+    this.eventsSubject2.next(this.buttonClicked);
   }
 
 
@@ -801,7 +851,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   }
 
 
-  
+
   addProductToContract() {
     console.log(this.formValues);
     let emptyProductObj = {
@@ -820,12 +870,14 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       ],
       additionalCosts: [],
       fixedPrice: true,
-      mtmFixed: true, 
+      mtmFixed: false,
       specGroup: null,
       dealDate: null,
       physicalSuppliers: [],
       allowedProducts: [],
-      allowedLocations: []
+      allowedLocations: [],
+      priceUom: this.generalTenantSettings.tenantFormats.uom,
+      currency: this.generalTenantSettings.tenantFormats.currency
     };
     if (this.formValues) {
         if (!this.formValues.products) {
@@ -843,7 +895,9 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     this.selectedTabIndex =  this.formValues.products.length - 1;
     this.setAllowedLocations(this.selectedTabIndex);
     this.setAllowedProducts(this.selectedTabIndex);
-    this.getContractFormulaList();
+    if (!this.contractFormulaList.length) {
+      this.getContractFormulaList();
+    }
     this.changeDetectorRef.detectChanges();
 
     console.log(this.formValues);
@@ -913,7 +967,8 @@ export class ContractProduct extends DeliveryAutocompleteComponent
         this.toastr.error(response);
       } else {
         this.contractFormulaList = response;
-        this.toastr.success('Operation completed successfully!')
+        this.changeDetectorRef.detectChanges();
+        //this.toastr.success('Operation completed successfully!')
       }
     });
   }
@@ -1010,10 +1065,10 @@ export class ContractProduct extends DeliveryAutocompleteComponent
         this.addProductToConversion(selectedTabIndex, null, false);
       }
   }
-  
 
 
-    
+
+
   }
 
   compareUomObjects(object1: any, object2: any) {
@@ -1025,12 +1080,12 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       let beValue = `${moment($event.value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
       if (field == 'dealDate') {
         this.isDealDateInvalid = false;
-      } 
+      }
       console.log(beValue);
     } else {
       if (field == 'dealDate') {
         this.isDealDateInvalid = true;
-      } 
+      }
       this.toastr.error('Please enter the correct format');
     }
 
@@ -1075,10 +1130,55 @@ export class ContractProduct extends DeliveryAutocompleteComponent
         'id': selection.id,
         'name': selection.name
       };
-      this.formValues.products[this.selectedTabIndex].physicalSuppliers[0] = obj; 
-      this.changeDetectorRef.detectChanges();   
+      this.formValues.products[this.selectedTabIndex].physicalSuppliers[0] = obj;
+      this.changeDetectorRef.detectChanges();
       console.log(this.formValues.products[this.selectedTabIndex]);
     }
+  }
+
+
+
+  decodeSpecificField(modelValue) {
+    let decode = function(str) {
+      return str.replace(/&#(\d+);/g, function(match, dec) {
+          return String.fromCharCode(dec);
+      });
+    };
+    return decode(_.unescape(modelValue));
+  }
+
+
+
+  setLocationChange(location, index) {
+    //this.locationMasterSearchList = _.cloneDeep(this.locationMasterList);
+    this.searchLocationInput = null;
+    this.formValues.products[index].location = {
+      'id': location.id,
+      'name': location.name
+    };
+    this.selectedLocation = null;
+    // this.changeDetectorRef.detectChanges();
+    //this.contractFormSubject.next(this.formValues);
+
+  }
+
+
+  setProductChange(product, index) {
+    console.log(product);
+    console.log(index);
+    console.log(this.formValues.products[index]);
+    let objectProduct =  {
+      'id': product.id,
+      'name': product.name
+    }
+    this.formValues.products[index].product = { ... objectProduct };
+    this.productMasterSearchList = _.cloneDeep(this.productMasterList);
+    this.searchProductInput = null;
+    this.addProductToConversion(index, null, true);
+    this.getSpecGroupByProduct(product.id, null);
+    this.changeDetectorRef.detectChanges();
+    this.contractFormSubject.next(this.formValues);
+
   }
 
 
@@ -1114,8 +1214,8 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       } else {
         console.log(response);
         if (response) {
-          response  = _.filter(response, function(o) { 
-            return o.isDeleted == false; 
+          response  = _.filter(response, function(o) {
+            return o.isDeleted == false;
           });
           if (additionalSpecGroup) {
             var additionalSpecIsInArray = false;
@@ -1125,61 +1225,38 @@ export class ContractProduct extends DeliveryAutocompleteComponent
               }
             })
             if (!additionalSpecIsInArray) {
-              response.push(additionalSpecGroup);		
+              response.push(additionalSpecGroup);
             }
           }
           this.productSpecGroup[productId] = response;
           this.changeDetectorRef.detectChanges();
+          //this.productSpecGroupSubject.next(this.productSpecGroup);
         }
       }
     });
-  
+
   };
 
 
- 
-  decodeSpecificField(modelValue) {
-    let decode = function(str) {
-      return str.replace(/&#(\d+);/g, function(match, dec) {
-          return String.fromCharCode(dec);
-      });
-    };
-    return decode(_.unescape(modelValue));
+  getAdditionalCostsComponentTypes() {
+    //this.spinner.show();
+    this.contractService
+    .getAdditionalCostsComponentTypes({})
+    .pipe(
+      finalize(() => {
+        //this.spinner.hide();
+      })
+    )
+    .subscribe((response: any) => {
+      if (typeof response == 'string') {
+        this.toastr.error(response);
+      } else {
+        this.additionalCostsComponentTypes = response;
+        this.changeDetectorRef.detectChanges();
+      }
+    });
   }
 
-
-
-  setLocationChange(location, index) {
-    console.log(location);
-    console.log(index);
-    console.log(this.formValues.products[index]);
-    let objectLocation =  {
-      'id': location.id,
-      'name': location.name
-    }
-    this.selectedLocation = null;
-    this.formValues.products[index].location = { ... objectLocation };
-    this.changeDetectorRef.detectChanges();
-    this.contractFormSubject.next(this.formValues);
-
-  }
-
-
-  setProductChange(product, index) {
-    console.log(product);
-    console.log(index);
-    console.log(this.formValues.products[index]);
-    let objectProduct =  {
-      'id': product.id,
-      'name': product.name
-    }
-    this.formValues.products[index].product = { ... objectProduct };
-    this.selectedProduct = null;
-    this.changeDetectorRef.detectChanges();
-    this.addProductToConversion(index, null, true);
-    this.contractFormSubject.next(this.formValues);
-
-  }
 
   addProductToConversion(index, allowProduct, isMainProduct) {
     if (!this.formValues.products[index].conversionFactors) {
@@ -1256,7 +1333,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       }
     }
     if (!isAlreadyAdded && indexDeleted == -1 && selectedProduct) {
-      payload = { Payload: selectedProduct.product.id };
+      payload = {Payload: { ProductId: selectedProduct.product.id} };
       this.spinner.show();
       this.contractService
       .getProdDefaultConversionFactors(payload)
@@ -1286,13 +1363,21 @@ export class ContractProduct extends DeliveryAutocompleteComponent
           this.changeDetectorRef.detectChanges();
         }
       });
-  
-    
-    }
 
+
+    }
 
   }
 
+
+  removeProductFromContract(key) {
+    console.log(key);
+    if (!this.formValues.products[key].id){
+      this.formValues.products.splice(key, 1)
+    } else {
+      this.formValues.products[key].isDeleted = true;
+    }
+  }
 
 
   originalOrder = (a: KeyValue<number, any>, b: KeyValue<number, any>): number => {
@@ -1302,7 +1387,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
 
 
   ngAfterViewInit(): void {
-  
+
   }
 }
 
