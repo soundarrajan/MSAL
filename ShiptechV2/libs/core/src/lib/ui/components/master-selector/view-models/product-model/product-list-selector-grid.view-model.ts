@@ -54,6 +54,10 @@ export class ProductListSelectorGridViewModel extends BaseGridViewModel {
     return this._entityName;
   }
 
+  get producTypeId(): number {
+    return this._producTypeId;
+  }
+
   @Input() set entityId(value: number) {
     this._entityId = value;
   }
@@ -61,8 +65,13 @@ export class ProductListSelectorGridViewModel extends BaseGridViewModel {
   @Input() set entityName(value: string) {
     this._entityName = value;
   }
+
+  @Input() set productTypeId(value: number) {
+    this._producTypeId = value;
+  }
   _entityName: string;
   _entityId: number;
+  _producTypeId:number;
 
   public searchText: string;
   public defaultColFilterParams = {
@@ -293,7 +302,12 @@ export class ProductListSelectorGridViewModel extends BaseGridViewModel {
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    const filters: ServerQueryFilter[] = [];
+    const filters: ServerQueryFilter[] = [
+      {
+        columnName: 'productTypeId',
+        value: this.producTypeId.toString(),
+      }
+    ];
     this.mastersListApiService
       .getProductList({
         ...transformLocalToServeGridInfo(
