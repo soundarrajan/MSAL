@@ -199,7 +199,7 @@ export class DeliveryApi implements IDeliveryApiService {
       { payload: request }
     ).pipe(
       map((body: any) => body.upsertedId),
-      catchError((body: any) => of(body.error.ErrorMessage + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
 
@@ -212,9 +212,10 @@ export class DeliveryApi implements IDeliveryApiService {
       { payload: request }
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
+
 
   @ObservableException()
   verifyDelivery(
@@ -273,7 +274,7 @@ export class DeliveryApi implements IDeliveryApiService {
       { payload: request }
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
 
@@ -285,7 +286,7 @@ export class DeliveryApi implements IDeliveryApiService {
       { payload: request }
     ).pipe(
       map((body: any) => body.payload),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
 
@@ -297,7 +298,7 @@ export class DeliveryApi implements IDeliveryApiService {
       { payload: request }
     ).pipe(
       map((body: any) => body),
-      catchError((body: any) => of(body.error.ErrorMessage + ' ' + body.error.Reference))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
 
