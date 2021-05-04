@@ -318,6 +318,7 @@
   line-height: 12px;
   color: #9E9E9E;
   padding-left: 10px;
+  padding-top: 6px;
 }
 
 .mat-checkbox-frame {
@@ -491,12 +492,12 @@
       &.without-search {
         width: 100%;
         border-radius: 4px;
-        border: 1px solid #a5a5a5;
+        border: 1px solid #252A32;
       }
       &.with-search {
         width: 100%;
         border-radius: 4px 0px 0px 4px;
-        border: 1px solid #a5a5a5;
+        border: 1px solid #252A32;
         border-right: none;
       }
       &.with-labels {
@@ -545,7 +546,7 @@
       }
     }
     .search-icon {
-      border: 1px solid #a5a5a5;
+      border: 1px solid #252A32;
       background-color: white;
       padding: 7px;
       cursor: pointer;
@@ -565,7 +566,7 @@
    // width: 180px;
     height: 40px;
     box-sizing: unset;
-    border: 1px solid #a5a5a5;
+    border: 1px solid #252A32;
     border-radius: 4px;
     //padding-right: 2px;
     margin-bottom: 10px;
@@ -757,6 +758,8 @@
     }
     .border_line {
       border-right: 1px solid #252a32;
+      height: 25px;
+      margin-top: -4px;
     }
   }
   .total-exposure {
@@ -785,6 +788,15 @@
 
 .bdn-info {
   margin-top: 15px;
+  .mat-input-element:disabled{
+    color: #252A32 !important;
+  }
+  /* .custom-form-field.lightTheme .mat-form-field .mat-form-field-label mat-label {
+    background: #eeeeee !important;
+  } */
+  .mat-form-field.mat-focused .mat-form-field-label {
+    background-color: #eeeeee !important;
+  }
 }
 
 .created-by-field, .created-on-field {
@@ -848,7 +860,7 @@
     .label {
       font-style: normal;
       font-weight: normal;
-      font-size: 12px;
+      font-size: 10px;
       line-height: 14px;
     }
     .border_line {
@@ -869,6 +881,7 @@
       font-weight: normal;
       font-size: 12px;
       color:white;
+      width: 125px;
     }
     .value {
       font-weight: 500;
@@ -876,6 +889,11 @@
       color:white;
     
     }
+  }
+  .border_line{
+    border-right: 1px solid #9E9E9E;
+    height: 35px;
+    margin-top: 2px;
   }
   .divider {
     border-right: 1px solid #eceef1;
@@ -894,6 +912,7 @@
 .barge-select-container.mat-select-panel{
   position: relative;
   top: 26px;
+  padding-top: 10px;
 }
 
 .barge-select-container .mat-option {

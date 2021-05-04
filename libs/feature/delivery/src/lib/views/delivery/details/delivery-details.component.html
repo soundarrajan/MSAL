@@ -2,25 +2,20 @@
 <shiptech-delivery-details-toolbar
 [navBar]="navBar">
 <div class="col-6">
-  <div style="float:right">
-    <button  class="ui-button-info mr-1 btn-i-blue-color" label="Save"
-            pButton
-            type="button"
-            (click)="save()"></button>
+  <div style="float:right;position: relative; top: 7px;">
     <button *ngIf="formValues.deliveryStatus && (formValues.deliveryStatus.name == 'NotVerified' || formValues.deliveryStatus.name == 'Open')" 
-          class="ui-button-info mr-1 btn-i-blue-color" 
-          label="Verify"
-          pButton
+          class="cust-btn small" 
           type="button"
-          (click)="verify()"></button>
+          (click)="verify()"><span class="btn-text">Verify</span></button>
     <button *ngIf="formValues.deliveryStatus &&  formValues.deliveryStatus.name == 'Verified'" 
-          class="ui-button-info mr-1 btn-i-blue-color" 
-          label="Revert Verify"
-          pButton
+          class="cust-btn small" 
           type="button"
-          (click)="revertVerify()"></button>
-    <button mat-icon-button [matMenuTriggerFor]="menu" [disabled]="!formValues.deliveryStatus">
-      <mat-icon>more_vert</mat-icon>
+          (click)="revertVerify()"><span class="btn-text">Revert Verify</span></button>
+    <button  class="cust-btn small"
+          type="button"
+          (click)="save()"><span class="btn-text">Save</span></button>      
+    <button class="cust-menu-btn small" mat-icon-button [matMenuTriggerFor]="menu" [disabled]="!formValues.deliveryStatus">
+      <mat-icon>more_horiz</mat-icon>
     </button>
     <mat-menu #menu="matMenu" class="delivery-mat-menu-panel">
       <button mat-menu-item (click)="splitDeliveries()" >
@@ -52,7 +47,7 @@
             [statusColorCode]="statusColorCode"
             [eventsSaveButton]="eventsSubject2.asObservable()"
             class="col-12"
-            style="padding-top: 20px; margin-right: 0px !important;
+            style="margin-right: 0px !important;
             padding-right: 0px !important;">
         </shiptech-bdn-information>  
       </div>
@@ -89,25 +84,42 @@
 </div>
 </div>
 <div class="container-fluid-delivery">
-<div class="row m-b-4">
-  <div class="col-12">
-    <p-panel [showHeader]="false">
-      <div fxLayout="row">
-        <shiptech-bdn-additional-information
-              [events]="eventsSubject.asObservable()"
-              [model]="formValues"
-              [finalQuantityRules]="finalQuantityRules"
-              [toleranceLimits]="toleranceLimits"
-              [deliveryFeedback]="deliveryFeedback"
-              [satisfactionLevel]="satisfactionLevel"
-              [pumpingRateUom]="pumpingRateUom"
-              [sampleSource]="sampleSource"
-              class="col-12">
-        </shiptech-bdn-additional-information>  
-      </div>
-    </p-panel>
+  <div class="row m-b-4">
+    <div class="col-12">
+      <p-panel [showHeader]="false">
+        <div fxLayout="row">
+          <shiptech-bdn-additional-information
+                [events]="eventsSubject.asObservable()"
+                [model]="formValues"
+                [finalQuantityRules]="finalQuantityRules"
+                [toleranceLimits]="toleranceLimits"
+                [deliveryFeedback]="deliveryFeedback"
+                [satisfactionLevel]="satisfactionLevel"
+                [pumpingRateUom]="pumpingRateUom"
+                [sampleSource]="sampleSource"
+                class="col-12">
+          </shiptech-bdn-additional-information>  
+        </div>
+      </p-panel>
+    </div>
   </div>
 </div>
+
+
+<div class="container-fluid-delivery">
+  <div class="row m-b-4">
+    <div class="col-12">
+      <p-accordion multiple="true" styleClass="shiptech-blue-accordion">
+        <p-accordionTab cache="true">
+          <p-header Class="accordionheader-blue">Notes</p-header>
+          <ng-template pTemplate="content">
+            <hr class="line m-t-7">
+            <shiptech-notes-log [DeliveryNotes]="this.formValues.deliveryNotes" (ChangedValue)="ChangedValueFun($event)"></shiptech-notes-log>
+          </ng-template>
+        </p-accordionTab>
+      </p-accordion>
+    </div>
+  </div>
 </div>
 
 <div class="bootstrap-loading" *ngIf="isLoading" style="top: 0px !important; background-color: #DCE3EB; z-index: 100000; height: 100vh;"> 

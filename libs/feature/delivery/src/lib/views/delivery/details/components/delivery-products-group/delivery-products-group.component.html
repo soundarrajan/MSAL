@@ -1,15 +1,21 @@
 <div class="col-md-12 row delivery-products-group">
+  <div class="col-md-12" style="padding-left: 0;">
+    <div class="product-details-header" style="padding-top: 0;">
+        Product details
+    </div>
+  </div>
   <a class="add-product-dropdown-icon" (click)="addNewProduct()"></a>
   <div class="product-tabs" *ngIf="formValues.deliveryProducts && formValues.deliveryProducts.length">
-      <div *ngFor="let deliveryProduct of formValues.deliveryProducts | keyvalue" style="display: inline-flex; margin-right: 10px;">
-        <div (click)="selectProduct(deliveryProduct.key)"  
+     <div class="addded-product" *ngFor="let deliveryProduct of formValues.deliveryProducts | keyvalue" style="display: inline-flex; margin-right: 10px;">
+      <div *ngIf="formValues.deliveryProducts.length > 1" class="remove-icon" (click)="deleteDeliveryProduct(deliveryProduct.value.id, deliveryProduct.key)"></div>   
+      <div (click)="selectProduct(deliveryProduct.key)"  
             class="product-tab" 
             [ngClass]="{'not-selected-product-container': deliveryProduct.key != selectedProduct}">
             <div class="bootstrap-tagsinput"> 
                 <span class="tag label border-default">
-                  <div (click)="deleteDeliveryProduct(deliveryProduct.value.id, deliveryProduct.key)" class="remove-product-container">
+                  <!-- <div (click)="deleteDeliveryProduct(deliveryProduct.value.id, deliveryProduct.key)" class="remove-product-container">
                     <a class="remove-line"></a>
-                  </div>
+                  </div> -->
                   {{deliveryProduct.value.product.name}}
                 </span>
             </div>
@@ -18,7 +24,7 @@
       </div>
   </div>
   <div *ngIf="!hideDropdown" class="select-product">
-    <mat-form-field  appearance="fill" (click)="openAddProductSelect()">
+    <mat-form-field  class="custom-select" appearance="fill" (click)="openAddProductSelect()">
       <mat-label>Add product</mat-label>
       <mat-select [disableOptionCentering]="true" 
                   #mySelect
@@ -71,8 +77,8 @@
 </div>
 <div *ngIf="formValues.deliveryProducts && formValues.deliveryProducts.length"> 
   <div  *ngFor="let deliveryProduct of formValues.deliveryProducts | keyvalue">
-    <div *ngIf="deliveryProduct.key == selectedProduct" class="product-container">
-      
+    <div *ngIf="deliveryProduct.key == selectedProduct" class="product-container" style="padding-bottom: 20px;">
+      <div class="bottom-border"></div>
       <shiptech-delivery-product [formValues]="formValues"
                                 [deliveryProductIndex]="deliveryProduct.key"
                                 [conversionInfoData]="conversionInfoData"
@@ -91,6 +97,7 @@
       <shiptech-product-quality  [formValues]="formValues"
                                 [deliveryProductIndex]="deliveryProduct.key"
                                 [events]="deliveryFormSubject.asObservable()">
+                                [events2]="requiredInfoSubject.asObservable()">
       </shiptech-product-quality>
       <shiptech-product-quantity *ngIf="formValues.temp.isShowQuantityReconciliationSection"
                                 [formValues]="formValues"

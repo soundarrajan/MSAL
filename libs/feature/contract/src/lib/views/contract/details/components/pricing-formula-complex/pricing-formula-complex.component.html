@@ -12,7 +12,7 @@
                 [(ngModel)]="formValues.currency"
                 [matAutocomplete]="auto"
                 placeholder="Currency"
-                [disabled]="hasInvoicedOrder">
+                [disabled]="!formValues.isEditable">
         <mat-autocomplete #auto="matAutocomplete" 
                           class="darkPanelAuto"
                           [displayWith]="displayFn"
@@ -24,8 +24,8 @@
         </mat-autocomplete>
       </mat-form-field>
       <button 
-        [disabled]="hasInvoicedOrder" 
-        [ngClass]="{'search-icon-disabled': hasInvoicedOrder}"
+        [disabled]="!formValues.isEditable" 
+        [ngClass]="{'search-icon-disabled': !formValues.isEditable}"
         class="search-icon" appMasterSelectorTrigger [masterSelector]="masterSelector1" #masterSelectorTrigger1="masterSelectorTrigger" [header]="getHeaderNameSelector1()">
         <div class="img">
           <ng-template cdkPortal #masterSelector1="cdkPortal" >
@@ -40,7 +40,7 @@
     </div>
   </div>
   <mat-checkbox
-    [disabled]="hasInvoicedOrder" 
+    [disabled]="!formValues.isEditable" 
     [(ngModel)]="formValues.isMean"
     class="is-mean-checkbox"
     (change)="isMeanChange($event)">Apply mean for entire table</mat-checkbox>
@@ -50,7 +50,7 @@
     <thead>
       <tr>
         <td class="padding" style="width: 30px;">
-          <a class="add-new-quote-line-icon"  (click)="hasInvoicedOrder ? '' : addComplexFormulaQuoteLine()"></a>
+          <a class="add-new-quote-line-icon"  (click)="!formValues.isEditable ? '' : addComplexFormulaQuoteLine()"></a>
         </td>
         <td class="padding" style="width:10%">
           <b>Operation</b>
@@ -97,7 +97,7 @@
         <ng-container  *ngFor="let complexFormulaQuoteLine of formValues.complexFormulaQuoteLines | keyvalue : originalOrder">
           <tr *ngIf="!complexFormulaQuoteLine.value.isDeleted">
             <td class="padding" style="width: 30px;">
-              <a class="remove-new-quote-line-icon" (click)="hasInvoicedOrder ? '' : removeComplexFormulaQuoteLine(complexFormulaQuoteLine.key)" style="left: 10px;"></a>
+              <a class="remove-new-quote-line-icon" (click)="!formValues.isEditable ? '' : removeComplexFormulaQuoteLine(complexFormulaQuoteLine.key)" style="left: 10px;"></a>
             </td>
             <td  style="width:10%">
               <div class="custom-form-field complex-formula-quote-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
@@ -107,7 +107,7 @@
                           (ngModelChange)="setFormulaOperation($event, complexFormulaQuoteLine.key)"
                           [disableOptionCentering]="true"
                           panelClass="general-information-select-container"
-                          [disabled]="formValues.isMean || hasInvoicedOrder"
+                          [disabled]="formValues.isMean || !formValues.isEditable"
                           >
                       <mat-option *ngFor="let option of formulaOperationList" [value]="option.id">
                           {{option.name}}
@@ -121,7 +121,7 @@
                 <mat-form-field class="without-search" appearance="legacy">
                   <input 
                       [(ngModel)]="complexFormulaQuoteLine.value.weight"
-                      [disabled]="formValues.isMean || hasInvoicedOrder" 
+                      [disabled]="formValues.isMean || !formValues.isEditable" 
                       matInput 
                       autocomplete="off">
                 </mat-form-field>
@@ -135,7 +135,7 @@
                           [disableOptionCentering]="true"
                           panelClass="general-information-select-container"
                           [compareWith]="compareUomObjects"
-                          [disabled]="hasInvoicedOrder" >
+                          [disabled]="!formValues.isEditable" >
                       <mat-option *ngFor="let option of formulaFunctionList" [value]="option">
                           {{option.name}}
                       </mat-option>
@@ -151,7 +151,7 @@
                           matInput 
                           [(ngModel)]="complexFormulaQuoteLine.value.systemInstruments[0].systemInstrument"
                           [matAutocomplete]="auto"
-                          [disabled]="hasInvoicedOrder">
+                          [disabled]="!formValues.isEditable">
                   <mat-autocomplete #auto="matAutocomplete" 
                                     class="darkPanelAuto"
                                     [displayWith]="displayFn"
@@ -172,7 +172,7 @@
                           [disableOptionCentering]="true"
                           panelClass="general-information-select-container"
                           [compareWith]="compareUomObjects"
-                          [disabled]="hasInvoicedOrder">
+                          [disabled]="!formValues.isEditable">
                       <mat-option *ngFor="let option of marketPriceTypeList" [value]="option">
                           {{option.name}}
                       </mat-option>
@@ -188,7 +188,7 @@
                           matInput 
                           [(ngModel)]="complexFormulaQuoteLine.value.systemInstruments[1].systemInstrument"
                           [matAutocomplete]="auto1"
-                          [disabled]="hasInvoicedOrder">
+                          [disabled]="!formValues.isEditable">
                   <mat-autocomplete #auto1="matAutocomplete" 
                                     class="darkPanelAuto"
                                     [displayWith]="displayFn"
@@ -209,7 +209,7 @@
                           [disableOptionCentering]="true"
                           panelClass="general-information-select-container"
                           [compareWith]="compareUomObjects"
-                          [disabled]="hasInvoicedOrder">
+                          [disabled]="!formValues.isEditable">
                       <mat-option *ngFor="let option of marketPriceTypeList" [value]="option">
                           {{option.name}}
                       </mat-option>
@@ -225,7 +225,7 @@
                           matInput 
                           [(ngModel)]="complexFormulaQuoteLine.value.systemInstruments[2].systemInstrument"
                           [matAutocomplete]="auto2"
-                          [disabled]="hasInvoicedOrder">
+                          [disabled]="!formValues.isEditable">
                   <mat-autocomplete #auto2="matAutocomplete" 
                                     class="darkPanelAuto"
                                     [displayWith]="displayFn"
@@ -246,7 +246,7 @@
                           [disableOptionCentering]="true"
                           panelClass="general-information-select-container"
                           [compareWith]="compareUomObjects"
-                          [disabled]="hasInvoicedOrder">
+                          [disabled]="!formValues.isEditable">
                       <mat-option *ngFor="let option of marketPriceTypeList" [value]="option">
                           {{option.name}}
                       </mat-option>
@@ -262,7 +262,7 @@
                           [disableOptionCentering]="true"
                           panelClass="general-information-select-container"
                           [compareWith]="compareUomObjects"
-                          [disabled]="hasInvoicedOrder">
+                          [disabled]="!formValues.isEditable">
                       <mat-option *ngFor="let option of formulaPlusMinusList" [value]="option">
                           {{option.name}}
                       </mat-option>
@@ -276,7 +276,7 @@
                   <input 
                       [(ngModel)]="complexFormulaQuoteLine.value.amount" 
                       (keypress)="keyPressNumber($event)"
-                      [disabled]="hasInvoicedOrder || (complexFormulaQuoteLine.value.formulaPlusMinus && complexFormulaQuoteLine.value.formulaPlusMinus.id == 3)"
+                      [disabled]="!formValues.isEditable || (complexFormulaQuoteLine.value.formulaPlusMinus && complexFormulaQuoteLine.value.formulaPlusMinus.id == 3)"
                       matInput 
                       autocomplete="off"
                       amountFormat>
@@ -291,7 +291,7 @@
                           [disableOptionCentering]="true"
                           panelClass="general-information-select-container"
                           [compareWith]="compareUomObjects"
-                          [disabled]="hasInvoicedOrder ||  (complexFormulaQuoteLine.value.formulaPlusMinus && complexFormulaQuoteLine.value.formulaPlusMinus.id == 3)">
+                          [disabled]="!formValues.isEditable ||  (complexFormulaQuoteLine.value.formulaPlusMinus && complexFormulaQuoteLine.value.formulaPlusMinus.id == 3)">
                       <mat-option *ngFor="let option of formulaFlatPercentageList" [value]="option">
                           {{option.name}}
                       </mat-option>
@@ -307,7 +307,9 @@
                           [disableOptionCentering]="true"
                           panelClass="general-information-select-container"
                           [compareWith]="compareUomObjects"
-                          [disabled]="hasInvoicedOrder ||  (complexFormulaQuoteLine.value.formulaPlusMinus && complexFormulaQuoteLine.value.formulaPlusMinus.id == 3)">
+                          [disabled]="!formValues.isEditable 
+                            || (complexFormulaQuoteLine.value.formulaPlusMinus && complexFormulaQuoteLine.value.formulaPlusMinus.id == 3)
+                            || (complexFormulaQuoteLine.value.formulaFlatPercentage && complexFormulaQuoteLine.value.formulaFlatPercentage.id != 1)">
                       <mat-option *ngFor="let option of uomList" [value]="option">
                           {{option.name}}
                       </mat-option>

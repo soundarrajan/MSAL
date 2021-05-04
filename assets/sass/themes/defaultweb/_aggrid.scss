@@ -350,6 +350,12 @@ padding: 6px 16px !important;
     &.dblue{
       @include  aggrid-cell-color(#1C4D91);
     }
+    &.magenta{
+        @include aggrid-cell-color(#c202c2)    
+    }
+    &.brown{
+        @include aggrid-cell-color(#5f0404)
+    }
 }
 
 .aggrid-left-ribbon{

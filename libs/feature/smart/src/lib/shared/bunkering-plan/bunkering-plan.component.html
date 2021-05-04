@@ -3,6 +3,10 @@
     style="width: 100%;overflow-y: scroll;" 
     [rowData]="rowData"
     [columnDefs]="columnDefs"
-    (gridReady)="gridOptions.onGridReady($event)" [gridOptions]="gridOptions" class="ag-theme-balham-dark"></ag-grid-angular>
+    (gridReady)="gridOptions.onGridReady($event)" 
+    [gridOptions]="gridOptions"
+    (selectedUserRole)="refreshGrid($event)" 
+    class="ag-theme-balham-dark">
+  </ag-grid-angular>
 </div>
 <hr>

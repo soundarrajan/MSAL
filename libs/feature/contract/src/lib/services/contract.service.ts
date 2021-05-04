@@ -246,7 +246,13 @@ export class ContractService extends BaseStoreService implements OnDestroy {
     return this.contractApi.deleteContract(payload);
   }
             
-               
+           /**
+ * @param payload 
+ */
+  @ObservableException()
+  getContractFormulas(payload): Observable<unknown> {
+    return this.contractApi.getContractFormulas(payload);
+  }          
 
               
   

@@ -7,14 +7,12 @@ import { AGGridCellActionsComponent } from '@shiptech/core/ui/components/ds-comp
 import { AGGridCellEditableComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-editable.component';
 import { AGGridCellRendererComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-renderer.component';
 import { AgGridCellStyleComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-style.component';
-import { OpsSpecParameterDialog } from '@shiptech/core/ui/components/ds-components/pop-ups/ops-spec-parameter.component';
-import { SearchPopupDialog } from '@shiptech/core/ui/components/ds-components/pop-ups/search-popup.component';
 import { GridOptions } from 'ag-grid-community';
 import moment from 'moment';
-import { from } from 'rxjs';
-import { KnownInvoiceRoutes } from '../../../known-invoice.routes';
-import { IInvoiceDetailsItemBaseInfo, IInvoiceDetailsItemCounterpartyDetails, IInvoiceDetailsItemDto, IInvoiceDetailsItemInvoiceCheck, IInvoiceDetailsItemInvoiceSummary, IInvoiceDetailsItemOrderDetails, IInvoiceDetailsItemPaymentDetails, IInvoiceDetailsItemProductDetails, IInvoiceDetailsItemRequest, IInvoiceDetailsItemRequestInfo, IInvoiceDetailsItemResponse, IInvoiceDetailsItemStatus } from '../../../services/api/dto/invoice-details-item.dto';
+import { IInvoiceDetailsItemBaseInfo, IInvoiceDetailsItemCounterpartyDetails, IInvoiceDetailsItemDto, IInvoiceDetailsItemInvoiceCheck, IInvoiceDetailsItemInvoiceSummary, IInvoiceDetailsItemOrderDetails, IInvoiceDetailsItemPaymentDetails, IInvoiceDetailsItemProductDetails, IInvoiceDetailsItemRequestInfo, IInvoiceDetailsItemStatus } from '../../../services/api/dto/invoice-details-item.dto';
 import { InvoiceDetailsService } from '../../../services/invoice-details.service';
+import { EsubmitMode } from '../invoice-view.component';
+import { ProductDetailsModalComponent } from './component/product-details-modal/product-details-modal.component';
 
 @Component({
   selector: 'shiptech-invoice-detail',
@@ -22,15 +20,36 @@ import { InvoiceDetailsService } from '../../../services/invoice-details.service
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InvoiceDetailComponent implements OnInit, OnDestroy {
-  buttonToggleData = { names: ['Final', 'Provisional', 'Credit', 'Debit'] }
 
-  _entityId;
-  activeBtn = 'Final';
-  emptyStringVal = '--';
-  emptyNumberVal = '00';
-
+  //Default Values - strats
+  public _entityId = null;
   public gridOptions_data: GridOptions;
   public gridOptions_ac: GridOptions;
+  private rowData_aggrid_pd = [];
+  private rowData_aggrid_ac = [];
+  invoiceSubmitMode:EsubmitMode;
+  
+  emptyStringVal = '--';
+  emptyNumberVal = '00';
+  invoice_types =[
+    {
+      displayName:'Final',
+      value:'FinalInvoice',
+    },
+    {
+      displayName:'Provisional',
+      value:'Provisional',
+    },
+    {
+      displayName:'Credit',
+      value:'Credit',
+    },
+    {
+      displayName:'Debit',
+      value:'Debit',
+    },
+  ]
+  
   public chipData = [
     {Title:'Invoice No', Data:this.emptyStringVal},
     {Title:'Status', Data:this.emptyStringVal},
@@ -42,8 +61,6 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     {Title:'Deductions', Data:this.emptyStringVal},
     {Title:'Net Payable', Data:this.emptyStringVal}
   ]
-  public popupOpen: boolean;
-  private productDetailsData = [];
   public orderDetails = {
     contents: [
       {
@@ -91,14 +108,18 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     hasSeparator: true
   }
 
-  constructor(public dialog: MatDialog, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private invoiceService: InvoiceDetailsService, route: ActivatedRoute) {
-    iconRegistry.addSvgIcon(
-      'data-picker-gray',
-      sanitizer.bypassSecurityTrustResourceUrl('../../assets/customicons/calendar-dark.svg'));
+  //Default Values - strats
+  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private invoiceService: InvoiceDetailsService,  public dialog: MatDialog) {
+    iconRegistry.addSvgIcon('data-picker-gray',sanitizer.bypassSecurityTrustResourceUrl('../../assets/customicons/calendar-dark.svg'));
+    this.setupGrid();
+  }
 
-    this._entityId = route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
+  ngOnInit(): void {
+    this.buildProductDetilsGrid();
+    this.getCounterPartiesList();
+  }
 
-
+  private setupGrid(){
     this.gridOptions_ac = <GridOptions>{
       defaultColDef: {
         resizable: true,
@@ -117,7 +138,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         this.gridOptions_data.columnApi = params.columnApi;
         this.gridOptions_data.api.sizeColumnsToFit();
         this.gridOptions_data.api.setRowData(this.rowData_aggrid_ac);
-        this.addCustomHeaderEventListener();
+        this.addCustomHeaderEventListener_AC(params);
 
       },
       onColumnResized: function (params) {
@@ -132,8 +153,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         }
       }
     }
-
   }
+
   private columnDef_aggrid_pd = [
     {
       resizable: false,
@@ -226,7 +247,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       headerClass: ['aggridtextalign-center'],
       headerComponentParams: {
         template: `<span  unselectable="on">
-             <div class="add-btn"></div>
+             <div class="add-btn-ac"></div>
              <span ref="eMenu"></span>`
       },
       cellClass: ['aggridtextalign-left'],
@@ -263,15 +284,13 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     { headerName: 'Difference', headerTooltip: 'Difference', field: 'name' }
   ];
 
-  private rowData_aggrid_pd = [];
-
-  private rowData_aggrid_ac = [];
-
   public formValues: IInvoiceDetailsItemDto = {
     sellerInvoiceNo: 0,
     documentNo: 0,
     invoiceId: 0,
-    documentType: <IInvoiceDetailsItemBaseInfo>{},
+    documentType: <IInvoiceDetailsItemBaseInfo>{
+      internalName:'FinalInvoice'
+    },
     canCreateFinalInvoice: false,
     receivedDate: '',
     dueDate: '',
@@ -334,14 +353,29 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     userAction: '',
   };
 
-  addCustomHeaderEventListener() {
+  addCustomHeaderEventListener(params) {
     let addButtonElement = document.getElementsByClassName('add-btn');
+    addButtonElement[0].addEventListener('mouseover', (event) => {
+      const dialogRef = this.dialog.open(ProductDetailsModalComponent, {
+        width: '600px',
+        data:  {  }
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        this.addrow(params);
+      });
+      });
+      
     addButtonElement[0].addEventListener('click', (event) => {
-      /* this.gridOptions_data.api.applyTransaction({
-        add: []
-      }); */
+      // this.addrow(params);
+    });
+
+  }
+
+  addrow(param){
+      console.log('add btn');
       let productdetail = {
-        del_no: {no: '', order_prod: ''},
+        del_no: {no: 123, order_prod: ''},
         del_product: '',
         del_qty: '',
         est_rate: '',
@@ -352,30 +386,24 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         amount2: '',
         recon_status: '',
         sulpher_content: '',
-        phy_supplier: '',
-      };
-      this.rowData_aggrid_pd.push(productdetail);
-      console.log('add btn');
+        phy_supplier: ''
+      }
+
+    var newItems = [productdetail];
+    param.api.applyTransaction({
+      add: newItems
+    });
+  }
+
+  addCustomHeaderEventListener_AC(params) {
+    let addButtonElementAC = document.getElementsByClassName('add-btn-ac');
+    addButtonElementAC[0].addEventListener('click', (event) => {
+      var newItems = [{}];
+         params.api.applyTransaction({
+        add: newItems
+    });
     });
 
-  }
-
-  openSearchPopup() {
-    this.popupOpen = true;
-        const dialogRef = this.dialog.open(OpsSpecParameterDialog, {
-            width: '600px',
-            maxHeight: '600px',
-            panelClass: 'popup-grid'
-        });
-
-        dialogRef.afterClosed().subscribe(result => {
-            this.popupOpen = false;
-        });
-  }
-
-  ngOnInit(): void {
-    this.getInvoiceItem();
-    this.buildProductDetilsGrid();
   }
 
   buildProductDetilsGrid(){
@@ -391,13 +419,13 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       headerHeight: 35,
       rowHeight: 45,
       animateRows: false,
-
+      masterDetail: true,
       onGridReady: (params) => {
         this.gridOptions_data.api = params.api;
         this.gridOptions_data.columnApi = params.columnApi;
         this.gridOptions_data.api.sizeColumnsToFit();
         this.gridOptions_data.api.setRowData(this.rowData_aggrid_pd);
-        this.addCustomHeaderEventListener();
+        this.addCustomHeaderEventListener(params);
 
       },
       onColumnResized: function (params) {
@@ -434,28 +462,6 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     };
   }
 
-  getInvoiceItem() {
-    //this._entityId = 10851;
-    let data : IInvoiceDetailsItemRequest = {
-      Payload: this._entityId
-    };
-
-    this.invoiceService
-    .getInvoicDetails(data)
-    .subscribe((response: IInvoiceDetailsItemResponse) => {
-      console.log('resp');
-      console.log(response);
-       this.formValues = <IInvoiceDetailsItemDto>response.payload;
-       this.parseProductDetailData(this.formValues.productDetails);
-       console.log(this.parseProductDetailData);
-       this.setOrderDetailsLables(this.formValues.orderDetails);
-       this.setcounterpartyDetailsLables(this.formValues.counterpartyDetails);
-       this.setChipDatas();
-        // this.invoiceDetails = response;
-        // console.log(this.invoiceDetails.payload.sellerInvoiceNo);
-    });
-  }
-
   setOrderDetailsLables(orderDetails){
     this.orderDetails.contents[0].value = orderDetails?.vesselName? orderDetails?.vesselName:this.emptyStringVal;
     this.orderDetails.contents[1].value = orderDetails?.vesselCode? orderDetails?.vesselCode:this.emptyStringVal;
@@ -488,28 +494,34 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   formatDateForBe(value) {
     if (value) {
       let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
-      return `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
+      return beValue;
     } else {
       return null;
     }
   }
 
-  onChange($event, field) {
-    if ($event.value) {
-      let beValue = `${moment($event.value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
-      if (field == 'dealDate') {
-        //this.isDealDateInvalid = false;
-      } 
-      console.log(beValue);
-    } else {
-      if (field == 'dealDate') {
-       // this.isDealDateInvalid = true;
-      } 
-     // this.toastr.error('Please enter the correct format');
-    }
-
-  }
-
   ngOnDestroy(): void {
+    // this.invoiceService.getInvoicDetails().
   }
+
+  public saveInvoiceDetails(){
+    alert("Has to save please wait");
+  }
+
+  public openRequest(){
+    //https://bvt.shiptech.com/#/edit-request/89053
+  }
+
+
+  getCounterPartiesList(){
+
+  }
+
+  onModelChanged(evt){
+
+  }
+
+  
+  
 }
+

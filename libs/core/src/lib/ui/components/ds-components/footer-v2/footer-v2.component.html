@@ -1,0 +1,44 @@
+<div class="product-footer"  [ngStyle]="{width:footerWidth}">
+  <div class="page-details p-r-5">
+    <div class="total-results" style="margin-right: 7px;">
+        <div style="float:left">{{ dualfooter ? 'Total:' : 'Total Results:'}}</div>
+        <span class="count" style="margin-left: 2px;">{{rowCount}}</span>
+    </div>
+    <div class="export-excel">
+      <div class="excel-icon"></div>
+      <div class="export-icon"></div>
+    </div>
+  </div>
+  <div class="show-rows">
+    <span>Show</span>
+    <span>
+      <mat-form-field>
+        <mat-select>
+          <mat-option [value]="10">
+            10
+          </mat-option>
+          <mat-option [value]="20">
+            20
+          </mat-option>
+          <mat-option [value]="30">
+            30
+          </mat-option>
+          <mat-option [value]="40">
+            40
+          </mat-option>
+          <mat-option [value]="50">
+            50
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </span>
+    <span>Rows</span>
+  </div>
+  <div class="goto-page" style="display: flex;align-items: center;">
+    <div style="width: 60px">Go to page</div>
+    <mat-form-field>
+      <input matInput>
+    </mat-form-field>
+    <div class="go-icon"></div>
+  </div>
+</div>
