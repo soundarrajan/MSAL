@@ -433,6 +433,7 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
   quantityPrecision: string;
   contractConfiguration: any;
   initialCompanyList: any;
+  generalConfiguration: any;
   @Input() set autocompleteType(value: string) {
     this._autocompleteType = value;
   }
@@ -522,6 +523,13 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
       return;
     } 
     this.contractConfiguration = contractConfiguration;
+  }
+
+  @Input('generalConfiguration') set _setGeneralConfiguration(generalConfiguration) { 
+    if (!generalConfiguration) {
+      return;
+    } 
+    this.generalConfiguration = generalConfiguration;
   }
 
   @Input() eventsSaveButton: Observable<void>;
