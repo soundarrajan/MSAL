@@ -1942,19 +1942,19 @@ p.bubble_success{
 
 // AG-Grid Scrollbar
 ag-grid-angular {
-    ::-webkit-scrollbar {
-      width: 10px;
-      height: 10px;    
-    }
+    // ::-webkit-scrollbar {
+    //   width: 10px;
+    //   height: 10px;    
+    // }
   
-    ::-webkit-scrollbar-track {    
-      background-color: transparent;
-    }
+    // ::-webkit-scrollbar-track {    
+    //   background-color: transparent;
+    // }
   
-    ::-webkit-scrollbar-thumb {
-      border-radius: 10px;
-      background-color: #C4C4C4;
-    }
+    // ::-webkit-scrollbar-thumb {
+    //   border-radius: 10px;
+    //   background-color: #C4C4C4;
+    // }
     ::-webkit-scrollbar-corner 
     {background-color: transparent;}
   
