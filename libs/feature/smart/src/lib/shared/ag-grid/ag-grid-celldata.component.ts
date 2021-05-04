@@ -29,15 +29,14 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   public etaInTime: any;
   public etdDays: any;
   public etdInTime: any;
-  public shiptechPortUrl: string = "shiptechUrl/#/masters/locations";
+  public shiptechPortUrl: string;
   public shiptechOrderUrl: string = "shiptechUrl/#/masters/order";
   constructor(public router: Router, public dialog: MatDialog, private elem: ElementRef,private localService:LocalService,private appConfig: AppConfig) {
-  this.shiptechPortUrl.replace('shiptechUrl',this.appConfig.v1.API.BASE_HEADER_FOR_NOTIFICATIONS)
+    this.shiptechPortUrl = this.appConfig.v1.API.BASE_HEADER_FOR_NOTIFICATIONS;
   }
 
   ngOnInit() {
     this.localService.themeChange.subscribe(value => this.theme = value);
-
   }
 
   agInit(params: any): void {
@@ -52,7 +51,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     this.params.data.etd_date = moment(params.data?.etd_date).format("YYYY-MM-DD hh:mm");
     this.etdInTime = today.getTime() - new Date(params.data?.etd_date).getTime();
     this.etdDays = (this.etdInTime/(1000 * 3600 * 24)).toFixed(0);
-
+    
   }
 
   refresh(): boolean {
