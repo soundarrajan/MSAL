@@ -1089,3 +1089,24 @@
 .select-contract-quantity-container .mat-form-field.mat-form-field-disabled {
   background-color: unset !important;
 }
+
+.mat-autocomplete-panel .mat-option.mat-active {
+  color: #37414f !important;
+  background: #fff !important;
+
+  .mat-option-text {
+    color: #37414f !important;
+  }
+}
+
+.mat-select-panel .mat-option.mat-selected.mat-active, 
+.mat-select-panel .mat-option.mat-active {
+  color: #37414f !important;
+  background: #fff !important;
+}
+
+.mat-select-panel .mat-option.mat-selected:not(.mat-option-disabled) {
+  background-color: #37414f !important;
+  color: white !important;
+
+}
