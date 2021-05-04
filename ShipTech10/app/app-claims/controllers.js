@@ -672,6 +672,7 @@ APP_CLAIMS.controller('Controller_Claims', [
                         $('#OrderPrice').trigger('change');
                     }, 10);
                     // $rootScope.$broadcast("changeCurrencyValues", "OrderPrice");
+                    /* Commented out below set for fixing issue - 32125, It sets isDeleted: true for all saved subtypes
                     if (typeof $scope.formValues.claimType != 'undefined') {
                         var oldClaimType = angular.copy($scope.formValues.claimType.claimType);
                         $scope.formValues.claimType.claimType = null;
@@ -698,8 +699,7 @@ APP_CLAIMS.controller('Controller_Claims', [
                             $scope.formValues.claimType.quantityShortageUom = $tenantSettings.tenantFormats.uom;
                             $scope.checkClaimType();
                         }, 100);
-                      
-                    }
+                    }*/
                 }
             }
             if (name == 'ClaimType') {
