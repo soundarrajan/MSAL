@@ -625,3 +625,24 @@
   color: #23527c;
   text-decoration: underline;
 }
+
+.mat-autocomplete-panel .mat-option.mat-active {
+  color: #37414f !important;
+  background: #fff !important;
+
+  .mat-option-text {
+    color: #37414f !important;
+  }
+}
+
+.mat-select-panel .mat-option.mat-selected.mat-active, 
+.mat-select-panel .mat-option.mat-active {
+  color: #37414f !important;
+  background: #fff !important;
+}
+
+.mat-select-panel .mat-option.mat-selected:not(.mat-option-disabled) {
+  background-color: #37414f !important;
+  color: white !important;
+
+}
