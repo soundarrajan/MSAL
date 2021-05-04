@@ -253,13 +253,13 @@
         <mat-form-field 
           class="with-search" appearance="legacy"
           [ngClass]="{'required-field': (buttonClicked && (!formValues.company || (formValues.company && !formValues.company.name)))}">
-          <mat-label>Company name</mat-label>
+          <mat-label>{{generalConfiguration && generalConfiguration.companyDisplayName ? generalConfiguration.companyDisplayName.name : 'Company'}} name</mat-label>
           <input class="free-text-field" 
                   type="text"
                   matInput 
                   [(ngModel)]="formValues.company"
                   [matAutocomplete]="auto1"
-                  placeholder="Company name"
+                  [placeholder]="generalConfiguration && generalConfiguration.companyDisplayName ? generalConfiguration.companyDisplayName.name + ' name' : 'Company name'"
                   autocomplete="off"
                   required
                   [disabled]="formValues.status && formValues.status.name == 'Confirmed'">
@@ -290,19 +290,18 @@
                 <span class="search-company-lookup">
                 </span>
                 <input matInput 
-                      placeholder="Type company name"
-                      class="search-company-input"
-                      autocomplete="off"
-                      [(ngModel)]="searchCompanyModel"
-                      (click)="$event.stopPropagation();$event.preventDefault();"
-                      (input)="searchCompanyList($event.target.value)">
+                    [placeholder]="generalConfiguration && generalConfiguration.companyDisplayName ? 'Type ' + generalConfiguration.companyDisplayName.name.toLowerCase() + ' name' : 'Type company name'"                      class="search-company-input"
+                    autocomplete="off"
+                    [(ngModel)]="searchCompanyModel"
+                    (click)="$event.stopPropagation();$event.preventDefault();"
+                    (input)="searchCompanyList($event.target.value)">
               </div>
               <div class="col-md-2"  (click)="$event.stopPropagation();$event.preventDefault();">
                   <img  [ngClass]="{'expand-company-img': expandCompanyPopUp}" (click)="expandCompanyPopUp = !expandCompanyPopUp;" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
               </div>
             </div>
             <div class="col-md-12 row company-container-header">
-              Company Name
+              {{generalConfiguration && generalConfiguration.companyDisplayName ? generalConfiguration.companyDisplayName.name : 'Company'}} Name
             </div>
             <mat-radio-group
               class="company-container"
@@ -321,7 +320,7 @@
     <div [ngClass]="{'allowed-companies-container': !expandAllowCompanies, 'allowed-companies-container-expand': expandAllowCompanies}">
       <div class="allowed-container col-md-12 d-flex">
         <div class="allowed-list-modal-container">
-            Allowed Company
+            Allowed {{generalConfiguration && generalConfiguration.companyDisplayName.name == 'Pool' ? 'Pools' : 'Companies'}}
         </div>
         <div *ngIf="formValues.company && !(formValues.status && formValues.status.name == 'Confirmed')" [matMenuTriggerFor]="menu1" class="edit-allow-companies">
         </div>
@@ -331,7 +330,7 @@
           <div [ngClass]="{'expand-allowed-company-container': expandAllowedCompanylistPopUp}">
             <div class="col-md-12 header-allowed-company">
               <div class="allowed-company-header col-md-10 contract-no-padding" >
-                Allowed companies
+                Allowed {{generalConfiguration && generalConfiguration.companyDisplayName.name == 'Pool' ? 'Pools' : 'Companies'}}
               </div>
               <div class="col-md-2 contract-no-padding expand-allowed-companies"  (click)="$event.stopPropagation();$event.preventDefault();">
                   <img  [ngClass]="{'expand-company-img': expandAllowedCompanylistPopUp}" (click)="expandAllowedCompanylistPopUp = !expandAllowedCompanylistPopUp;" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">

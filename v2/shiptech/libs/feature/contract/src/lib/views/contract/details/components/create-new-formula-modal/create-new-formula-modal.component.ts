@@ -455,28 +455,9 @@ export class CreateNewFormulaModalComponent extends DeliveryAutocompleteComponen
       this.formValues = data.formValues;
       if (!this.formValues) {
         this.formValues = {
-          formulaType: {}
+          formulaType: {},
+          isEditable: true
         };
-        // this.formValues = {
-        //   comments: null,
-        //   complexFormulaQuoteLines: [],
-        //   currency: null,
-        //   formulaType: {},
-        //   pricingSchedule: {},
-        //   pricingScheduleOptionDateRange: null,
-        //   pricingScheduleOptionEventBasedContinuous: null,
-        //   pricingScheduleOptionEventBasedExtended: null,
-        //   pricingScheduleOptionEventBasedSimple: null,
-        //   pricingScheduleOptionSpecificDate: null,
-        //   quantityDiscountRules: [],
-        //   productDiscountRules: [],
-        //   locationDiscountRules: [],
-        //   simpleFormula: {}
-
-
-
-
-        // }
       }
       this.formulaTypeList = data.formulaTypeList;
       this.systemInstumentList = data.systemInstumentList;
