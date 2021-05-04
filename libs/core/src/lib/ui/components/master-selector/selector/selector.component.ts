@@ -77,6 +77,9 @@ export class SelectorComponent
     return this._selectorType;
   }
 
+  get productTypeId(): number {
+    return this._productTypeId;
+  }
   @Input() set entityId(value: number) {
     this._entityId = value;
   }

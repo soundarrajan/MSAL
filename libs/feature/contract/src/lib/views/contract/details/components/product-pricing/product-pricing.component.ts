@@ -1181,6 +1181,9 @@ export class ProductPricing extends DeliveryAutocompleteComponent
 
   updateConversionFactor(event) {
     console.log(event);
+    if (!this.formValues.products[this.selectedTabIndex].conversionFactors) {
+      return;
+    }
     for (let i = 0; i < this.formValues.products[this.selectedTabIndex].conversionFactors.length; i++) {
       if (this.formValues.products[this.selectedTabIndex].conversionFactors[i].contractConversionFactorOptions && this.formValues.products[this.selectedTabIndex].conversionFactors[i].contractConversionFactorOptions.id == 4) {
         let product  = this.formValues.products[this.selectedTabIndex];

@@ -645,18 +645,16 @@
 .general-information-select-container.mat-select-panel{
   position: relative;
   top: 26px;
+  background: #37414f !important;
 }
 
 .general-information-select-container .mat-option {
   height: 20px  !important;
   padding: 15px;
+  color: white !important;
 }
 
 
-.mat-select-panel .mat-option.mat-selected.mat-active {
-  background-color: #37414f!important;
-  color: #fff!important;
-}
 
 .icon-date {
   background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTMiIHZpZXdCb3g9IjAgMCAxMyAxMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik05Ljc0OTk2IDUuODUwMUg4LjQ0OTk1VjcuMTUwMTFIOS43NDk5NlY1Ljg1MDFaIiBmaWxsPSIjMzY0MTUwIi8+DQo8cGF0aCBkPSJNNy4xNDk5OCA1Ljg1MDFINS44NDk5OFY3LjE1MDExSDcuMTQ5OThWNS44NTAxWiIgZmlsbD0iIzM2NDE1MCIvPg0KPHBhdGggZD0iTTQuNTUwMDIgNS44NTAxSDMuMjVWNy4xNTAxMUg0LjU1MDAyVjUuODUwMVoiIGZpbGw9IiMzNjQxNTAiLz4NCjxwYXRoIGQ9Ik0xMS4wNSAxLjMwMDAxSDEwLjRWMEg5LjA5OTk4VjEuMzAwMDFIMy44OTk5N1YwSDIuNTk5OTZWMS4zMDAwMUgxLjk0OTk3QzEuMjI4NDcgMS4zMDAwMSAwLjY1NjQ4NCAxLjg4NTAxIDAuNjU2NDg0IDIuNjAwMDJMMC42NDk5NjMgMTEuN0MwLjY0OTk2MyAxMi40MTUgMS4yMjg0NyAxMyAxLjk0OTk3IDEzSDExLjA1QzExLjc2NSAxMyAxMi4zNSAxMi40MTUgMTIuMzUgMTEuN1YyLjU5OTk5QzEyLjM1IDEuODg1MDEgMTEuNzY1IDEuMzAwMDEgMTEuMDUgMS4zMDAwMVpNMTEuMDUgMTEuN0gxLjk0OTk3VjQuNTQ5OTlIMTEuMDVWMTEuN1oiIGZpbGw9IiMzNjQxNTAiLz4NCjwvc3ZnPg0K');
@@ -715,4 +713,25 @@
 
 .mat-form-field.mat-form-field-disabled .mat-form-field-empty mat-label {
   background-color: unset !important;
+}
+
+.mat-autocomplete-panel .mat-option.mat-active {
+  color: #37414f !important;
+  background: #fff !important;
+
+  .mat-option-text {
+    color: #37414f !important;
+  }
+}
+
+.mat-select-panel .mat-option.mat-selected.mat-active, 
+.mat-select-panel .mat-option.mat-active {
+  color: #37414f !important;
+  background: #fff !important;
+}
+
+.mat-select-panel .mat-option.mat-selected:not(.mat-option-disabled) {
+  background-color: #37414f !important;
+  color: white !important;
+
 }
