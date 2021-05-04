@@ -23,9 +23,12 @@ import { QuantityControlApiMock } from './services/api/quantity-control-api.mock
 import { environment } from '@shiptech/environment';
 import { RelatedLinksModule } from '@shiptech/core/ui/components/related-links/related-links.module';
 import { QcReportService } from './services/qc-report.service';
+import { NotesService } from './services/notes.service';
 import { EntityStatusModule } from '@shiptech/core/ui/components/entity-status/entity-status.module';
+import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
 import { DeliveryModuleResolver } from './delivery-route.resolver';
 import { EventsLogComponent } from './views/delivery/details/components/events-log/events-log.component';
+import { NotesLogComponent } from './views/delivery/details/components/notes-log/notes-log.component';
 import { ProductDetailsComponent } from './views/delivery/details/components/port-call-grid/product-details.component';
 import { DeliveryDetailsRouteResolver } from './views/delivery/details/delivery-details-route.resolver';
 import { DeliveryRouteResolver } from './views/delivery/details/delivery-route.resolver';
@@ -248,6 +251,7 @@ import { TextareaAutoresizeDirective } from './views/delivery/details/directives
     DeliveryListComponent,
     DeliveryDetailsComponent,
     EventsLogComponent,
+    NotesLogComponent,
     BdnInformationComponent,
     InputComponent,
     DropdownComponent,
@@ -312,7 +316,7 @@ import { TextareaAutoresizeDirective } from './views/delivery/details/directives
         : QuantityControlApiMock
     },
     DeliveryDetailsUnsavedChangesGuard,
-    QcReportService,
+    QcReportService,NotesService,
     DeliveryService,
     DialogService,
     MessageService,

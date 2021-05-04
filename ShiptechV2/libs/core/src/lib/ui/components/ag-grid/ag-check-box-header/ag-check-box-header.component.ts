@@ -185,4 +185,9 @@ export class AgCheckBoxHeaderComponent
 
     return undefined;
   }
+
+  refresh(params: IHeaderParams): boolean{
+    return null;
+  }
+
 }

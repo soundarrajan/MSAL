@@ -135,12 +135,16 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
   qualityMatchList: any[];
   formValues: any;
   toleranceLimits: any;
+  btnClicked: any;
   _autocompleteType: string;
   raiseClaimInfo: any;
   isAnalysedOnDateInvalid: boolean;
   quantityFormat: string;
   entityId: any;
   entityName: string;
+  @Output() showValidationEmit = new EventEmitter();
+  events2Subscription: any;
+  buttonClicked: any;
   @Input() set autocompleteType(value: string) {
     this._autocompleteType = value;
   }
@@ -175,12 +179,14 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
   _entityId: string;
   _entityName: string;
   deliveryProductIndex: any;
+  @Input() events2: Observable<void>;
   constructor(
     public gridViewModel: OrderListGridViewModel,
     public bdnInformationService: BdnInformationApiService,
     @Inject(VESSEL_MASTERS_API_SERVICE) private mastersApi: IVesselMastersApi,
     private legacyLookupsDatabase: LegacyLookupsDatabase,
     private appConfig: AppConfig,
+    private reportService: QcReportService,
     private httpClient: HttpClient,
     changeDetectorRef: ChangeDetectorRef,
     private deliveryService: DeliveryService,
@@ -212,6 +218,7 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
     });
     this.entityName = 'Delivery';
     this.eventsSubscription = this.events.subscribe((data) => this.setDeliveryForm(data));
+    this.events2Subscription = this.events2.subscribe((data) => this.setRequiredFields(data));
     if (this.formValues.deliveryProducts[this.deliveryProductIndex] && !this.formValues.deliveryProducts[this.deliveryProductIndex].qualityHeader) {
       this.formValues.deliveryProducts[this.deliveryProductIndex].qualityHeader = {};
       if (!this.formValues.deliveryProducts[this.deliveryProductIndex].qualityHeader.netSpecificEnergyUom) {
@@ -273,6 +280,10 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
   
  
 
+  
+  setRequiredFields(data) {
+    this.buttonClicked = data;
+  }
   onChange($event, field) {
     if ($event.value) {
       let beValue = `${moment($event.value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
@@ -334,7 +345,6 @@ export class ProductQualityComponent extends DeliveryAutocompleteComponent
   }
 
   IsValidRemove(value,i){
-    debugger;
     var bdnId= 'bdnIdx'+i;
     var element = document.getElementById(bdnId);
     element.classList.remove('date-invalid');

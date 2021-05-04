@@ -4,6 +4,7 @@ import { BunkeringPlanService } from '../../services/bunkering-plan.service';
 import { CommentsComponent } from '../comments/comments.component';
 import { BunkeringPlanComponent } from '../bunkering-plan/bunkering-plan.component';
 import { WarningComponent } from '../warning/warning.component';
+import { AppConfig } from '@shiptech/core/config/app-config';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
@@ -47,8 +48,11 @@ export class VesselInfoComponent implements OnInit {
   public statusPrevBPlan : boolean;
   public statusCurr : any;
   public statusPrev : any;
+  public shiptechRequestUrl :string = 'shiptechUrl/#/new-request/{{voyage_detail_id}}';
+  public voyageDetailId: any;
+  public selectedPort: any = [];
 
-  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private localService: LocalService, public dialog: MatDialog, private bunkerPlanService : BunkeringPlanService) {
+  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private localService: LocalService, public dialog: MatDialog, private bunkerPlanService : BunkeringPlanService,private appConfig: AppConfig) {
     iconRegistry.addSvgIcon(
       'info-icon',
       sanitizer.bypassSecurityTrustResourceUrl('./assets/customicons/info_amber.svg'));
@@ -63,7 +67,7 @@ export class VesselInfoComponent implements OnInit {
   
   public loadBunkerPlanHeader(event) {
     let vesselId = event.id? event.id: 348;
-    this.localService.getBunkerPlanHeader(348).subscribe((data)=> {
+    this.localService.getBunkerPlanHeader(vesselId).subscribe((data)=> {
       console.log('bunker plan header',data);
       this.bunkerPlanHeaderDetail = (data?.payload && data?.payload.length)? data.payload[0]: {};
       this.vesselData = this.bunkerPlanHeaderDetail;
@@ -75,7 +79,7 @@ export class VesselInfoComponent implements OnInit {
 
   public loadROBArbitrage() {
     let vesselId = this.vesselData?.vesselId;
-    let requestPayload = {'shipId': '348', 'planStatus':'C'}
+    let requestPayload = {'shipId': vesselId, 'planStatus':'C'}
     
       this.localService.getBunkerPlanId(requestPayload).subscribe((data)=> {
         console.log('bunker plan id res',data);
@@ -131,7 +135,7 @@ export class VesselInfoComponent implements OnInit {
   }
 
   public loadBunkerPlanDetails(){
-     let Id = '02M';//this.vesselData?.vesselId;
+     let Id = this.vesselData?.vesselId ? this.vesselData.vesselId : 348;
      let req = { shipId : Id ,  planStatus   : 'C' }
      this.loadCurrentBunkeringPlan(req);
      req = { shipId : Id ,  planStatus : 'P' }
@@ -142,7 +146,7 @@ export class VesselInfoComponent implements OnInit {
   loadCurrentBunkeringPlan(request){
     this.bunkerPlanService.getBunkerPlanIdAndStatus(request).subscribe((data)=>{
       console.log('bunker plan Id and status details', data);
-      this.currPlanIdDetails = (data?.payload && data?.payload.length)? data.payload[0] : {};
+      this.currPlanIdDetails = (data.payload && data.payload.length)? data.payload[0] : {};
       this.planId = this.currPlanIdDetails?.planId;
       this.statusCurrBPlan = this.currPlanIdDetails?.isPlanInvalid === 'N' ? true:false;
       this.statusCurr = this.currPlanIdDetails?.isPlanInvalid === 'Y' ? 'INVALID' : 'VALID';
@@ -154,7 +158,7 @@ export class VesselInfoComponent implements OnInit {
   loadPrevBunkeringPlan(request){
     this.bunkerPlanService.getBunkerPlanIdAndStatus(request).subscribe((data)=>{
       console.log('bunker plan Id and status details', data);
-      this.prevPlanIdDetails = (data?.payload && data?.payload.length)? data.payload[0] : {};
+      this.prevPlanIdDetails = (data.payload && data.payload.length)? data.payload[0] : {};
       this.prevPlanId = this.prevPlanIdDetails?.planId;
       if(this.currPlanIdDetails?.isPlanInvalid === 'Y')
           this.statusPrevBPlan = this.prevPlanIdDetails?.isPlanInvalid === 'N' ? true:false ;
@@ -231,4 +235,24 @@ export class VesselInfoComponent implements OnInit {
     event.stopPropagation();
     this.currentBPlanSave.emit();
   }
+
+  getVoyageDetail(selectedPort) {
+    this.selectedPort = selectedPort;
+  }
+  createRequest() {
+    let _this = this;
+    console.log('selectedPort', this.selectedPort);
+    this.selectedPort.forEach((port, index) => {
+        if(port.voyage_detail_id) {
+          let voyageId = (port.voyage_detail_id).toString();
+          _this.shiptechRequestUrl.replace('shiptechUrl',_this.appConfig.v1.API.BASE_HEADER_FOR_NOTIFICATIONS)
+          _this.shiptechRequestUrl.replace('{{voyage_detail_id}}', voyageId);
+          window.open(_this.shiptechRequestUrl, "_blank");
+        }
+    });
+    window.open(_this.appConfig.v1.API.BASE_HEADER_FOR_NOTIFICATIONS, "_blank");
+  }
+  
+
+
 }

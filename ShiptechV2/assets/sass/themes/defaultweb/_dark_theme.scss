@@ -1193,6 +1193,9 @@ $denim: #5780A6;
 		.content_valid{
 			background: rgb(39, 175, 39) !important;
 		}
+		.content_prev{
+			background: rgb(79, 143, 168) !important;
+		}
 	}
 	.dark-wrapper {
 		background: $basecolor-l1;
@@ -1334,6 +1337,10 @@ $denim: #5780A6;
 		}
 		.aggrid-blue-cell {
 			background-color: #415A6B;
+			color: #D9DBDE;
+		}
+		.aggrid-red-cell {
+			background-color: #6b4141;
 			color: #D9DBDE;
 		}
 		.aggrid-link {

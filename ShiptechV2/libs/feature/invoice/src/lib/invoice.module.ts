@@ -14,15 +14,12 @@ import { AgColumnGroupHeaderComponent } from '@shiptech/core/ui/components/ag-gr
 import { AgColumnHeaderComponent } from '@shiptech/core/ui/components/ag-grid/ag-column-header/ag-column-header.component';
 import { AgDatePickerComponent } from '@shiptech/core/ui/components/ag-grid/ag-data-picker/ag-date-picker.component';
 import { AgGridExtensionsModule } from '@shiptech/core/ui/components/ag-grid/ag-grid-extensions.module';
-import { AGGridCellActionsComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-actions.component';
-import { AGGridCellEditableComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-editable.component';
-import { AGGridCellRendererComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-renderer.component';
-import { AgGridCellStyleComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-style.component';
 import { DSComponentsModule } from '@shiptech/core/ui/components/ds-components/ds.module';
 import { EntityStatusModule } from '@shiptech/core/ui/components/entity-status/entity-status.module';
 import { ExportModule } from '@shiptech/core/ui/components/export/export.module';
 import { FilterPresetsModule } from '@shiptech/core/ui/components/filter-preferences/filter-presets.module';
 import { MasterAutocompleteModule } from '@shiptech/core/ui/components/master-autocomplete/master-autocomplete.module';
+import { MasterSelectorModule } from '@shiptech/core/ui/components/master-selector/master-selector.module';
 import { MessageBoxModule } from '@shiptech/core/ui/components/message-box/message-box.module';
 import { RelatedLinksModule } from '@shiptech/core/ui/components/related-links/related-links.module';
 import { SearchBoxModule } from '@shiptech/core/ui/components/search-box/search-box.module';
@@ -33,6 +30,7 @@ import { UIModule } from '@shiptech/core/ui/ui.module';
 import { environment } from '@shiptech/environment';
 import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
 import { ButtonModule } from 'primeng/button';
+import { DialogService } from 'primeng/dynamicdialog';
 import { MessagesModule } from 'primeng/messages';
 import { ModuleLoggerFactory } from '../../../quantity-control/src/lib/core/logging/module-logger-factory';
 import { FeatureInvoiceModuleResolver } from './invoice-route.resolver';
@@ -48,6 +46,8 @@ import { InvoiceListComponent } from './views/invoice-list/invoice-list.componen
 import { InvoiceDetailComponent } from './views/invoice-view/details/invoice-details.component';
 import { InvoiceViewComponent } from './views/invoice-view/invoice-view.component';
 import { MainInvoiceComponent } from './views/main-invoice.component';
+import { RelatedInvoiceComponent } from './views/invoice-view/related-invoice/related-invoice.component';
+import { ProductDetailsModalComponent } from './views/invoice-view/details/component/product-details-modal/product-details-modal.component';
 
 @NgModule({
   imports: [
@@ -75,11 +75,7 @@ import { MainInvoiceComponent } from './views/main-invoice.component';
       AgDatePickerComponent,
       AgCheckBoxHeaderComponent,
       AgCheckBoxRendererComponent,
-      AgAsyncBackgroundFillComponent,
-      AGGridCellActionsComponent,
-      AGGridCellEditableComponent,
-      AgGridCellStyleComponent,
-      AGGridCellRendererComponent
+      AgAsyncBackgroundFillComponent
     ]),
     AgFilterDisplayModule,
     AgFooterModule,
@@ -87,14 +83,17 @@ import { MainInvoiceComponent } from './views/main-invoice.component';
     WunderBarModule,
     ButtonModule,
     MessagesModule,
-    ExportModule
+    ExportModule,
+    MasterSelectorModule    
   ],
   declarations: [
     MainInvoiceComponent,
     InvoiceListComponent,
     InvoiceCompleteListComponent,
     InvoiceViewComponent,
-    InvoiceDetailComponent
+    InvoiceDetailComponent,
+    RelatedInvoiceComponent,
+    ProductDetailsModalComponent
   ],
   providers: [
     ModuleLoggerFactory,
@@ -106,7 +105,11 @@ import { MainInvoiceComponent } from './views/main-invoice.component';
         : InvoiceCompleteApiMock
     },
     InvoiceCompleteService,
-    InvoiceDetailsService
+    InvoiceDetailsService,    
+    DialogService
+  ],
+  entryComponents:[
+    ProductDetailsModalComponent
   ]
 })
 export class InvoiceModule {}

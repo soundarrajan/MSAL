@@ -10,8 +10,8 @@ import { IBunkeringPlanApiService } from './api/bunkering-plan.api.service.inter
 
 
 export namespace BunkeringPlanApiPaths{
-    export const getBunkeringPlanDetails = () => `/api/BOPS/bunkerplan/getBunkerPlanDetail`;
-    export const getBunkeringPlanIdAndStatus = () => `/api/BOPS/bunkerplan/getBunkerPlanInitial` ;
+    export const getBunkeringPlanDetails = () => `api/BOPS/bunkerplan/getBunkerPlanDetail`;
+    export const getBunkeringPlanIdAndStatus = () => `api/BOPS/bunkerplan/getBunkerPlanInitial` ;
 }
 
 @Injectable({

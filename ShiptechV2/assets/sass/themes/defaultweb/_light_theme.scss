@@ -1254,6 +1254,9 @@ $white:#FFFFFF;
 		.content_valid{
 			background: rgb(39, 175, 39) !important;
 		}
+		.content_prev{
+		background: rgb(79, 143, 168) !important;
+	}
 	}
 	.dark-wrapper {
 		background: $basecolor-l1;
@@ -1426,6 +1429,10 @@ $white:#FFFFFF;
 			background-color: rgba(100, 190, 236, 0.15);
 			;
 			color: #000000;
+		}
+		.aggrid-red-cell {
+			background-color: #6b4141;
+			color: #D9DBDE;
 		}
 		.aggrid-link {
 			color: #4A71C2;

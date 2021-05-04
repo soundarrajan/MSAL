@@ -34,6 +34,9 @@ export namespace GetbunkerPlanIDApiPaths {
 export namespace GetCurrentROBApiPaths {
     export const GetCurrentROB = () => `api/BOPS/bunkerplan/getCurrentROB`;
 }
+export namespace GetProcurementApiPaths {
+    export const GetProcurementRequest = () => `api/procurement/request/tableView`;
+}
 
 @Injectable({
     providedIn: 'root'
@@ -66,6 +69,7 @@ export class LocalService {
     protected _apiUrlAdmin = this.appConfig.v1.API.BASE_URL_DATA_ADMIN;
     protected _apiUrl = this.appConfig.v1.API.BASE_URL_DATA_BOPS;
     protected _apiUrlInfra = this.appConfig.v1.API.BASE_URL_DATA_INFRASTRUCTURE;
+    protected _apiUrlProcure = this.appConfig.v1.API.BASE_URL_DATA_PROCUREMENT;
 
     constructor(private http: HttpClient, private appConfig: AppConfig) {
         // this.headersProp = new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }, );   
@@ -574,7 +578,7 @@ export class LocalService {
     @ObservableException()
     getBunkerPlanLog(request: any): Observable<any> {
       return this.http.post<any>(
-        `${this._apiUrl}/${BunkerPlanHeaderApiPaths.GetBunkerPlanHeader()}`,
+        `${this._apiUrl}/${BunkerPlanLogApiPaths.GetBunkerPlanLog()}`,
         { payload: request }
       );
     }
@@ -599,8 +603,8 @@ export class LocalService {
     @ObservableException()
     getOutstandRequestData(request: any): Observable<any> {
       return this.http.post<any>(
-        `${this._apiUrl}/${GetROBArbitrageApiPaths.GetROBArbitrageUrl()}`,
-        {payload: request}
+        `${this._apiUrlProcure}/${GetProcurementApiPaths.GetProcurementRequest()}`,
+        request
       );
     }
 

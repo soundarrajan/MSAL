@@ -1,6 +1,6 @@
 <div>
     <div  class="variance-container">
-        <div class="col-md-12">
+        <div class="col-md-12" style="padding-left:0">
             <div class="product-variance-header">
                 Product variance
             </div>
@@ -166,12 +166,13 @@
     </div>
     <div class="product-header-container">
         <div class="col-md-12">
-            <div class="product-details-header">
+            <div class="product-details-header" style="padding-top: 20px;">
                 Product details
             </div>
         </div>
     </div>
     <div class="col-md-12 row product-information-container" *ngIf="formValues.deliveryProducts[deliveryProductIndex]">
+        <div class="col-md-12 row product-information-options">
         <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
             <div class="split-field">
                 <mat-form-field class="without-search long-label-field" style="width: 64%;border: none;" appearance="legacy">
@@ -209,7 +210,7 @@
                             (blur)="calculateVarianceAndReconStatus(deliveryProductIndex); calculatePumpingRate(formValues.pumpingDuration, 0)"
                             #bdnQuantityAmountField="ngModel" 
                             matInput
-                            [disabled]="formValues.deliveryStatus.name == 'Verified'" 
+                            [disabled]="formValues.invoiceActiveFlag == true"
                             class="text-ellipsis"
                             autocomplete="off" 
                             placeholder="BDN Qty"
@@ -377,7 +378,7 @@
                     <input class="free-text-field" 
                             type="text"
                             matInput 
-                            [disabled]="formValues.deliveryStatus.name == 'Verified'"
+                            [disabled]="formValues.invoiceActiveFlag == true"
                             [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].product"
                             [matAutocomplete]="auto"
                             placeholder="Product delivered"
@@ -392,7 +393,7 @@
                     </mat-autocomplete>
                 </mat-form-field>
                 <button class="search-icon" 
-                    [disabled]="formValues.deliveryStatus.name == 'Verified'"
+                    [disabled]="formValues.invoiceActiveFlag == true"
                     [ngClass]="{'search-icon-disabled': formValues.deliveryStatus.name == 'Verified'}"
                     appMasterSelectorTrigger [masterSelector]="masterSelector" #masterSelectorTrigger="masterSelectorTrigger" [header]="getHeaderNameSelector()">
                 <div class="img">
@@ -402,6 +403,7 @@
                                                         [readonly]="readonly"
                                                         [entityName]="entityName"
                                                         [entityId]="entityId"
+                                                        [productTypeId]="formValues.deliveryProducts[deliveryProductIndex].productTypeId"
                                                         [vesselId]="vesselId"
                                                         [headerName]="getHeaderNameSelector()"
                         ></shiptech-shared-master-selector>
@@ -449,7 +451,7 @@
                 </button>
             </div>
         </div>
-        <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+        <div class="custom-form-field" style="margin-bottom: 0 !important" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
             <div class="split-field">
                 <mat-form-field class="without-search long-label-field input-field-container" style="width: 64%;border: none;" appearance="legacy">
                     <mat-label>Delivered Quantity</mat-label>
@@ -518,6 +520,7 @@
                     <div class="label">{{formValues.deliveryProducts[deliveryProductIndex].fuelManifoldTemperatureUom}}</div>
                 </div>   
             </mat-form-field>
+        </div>
         </div>
     </div>
 </div>

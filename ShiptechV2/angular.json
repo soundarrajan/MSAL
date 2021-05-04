@@ -60,6 +60,7 @@
               "assets/theme/common/designsystem-v2-theme/v2-component.scss",
               "assets/theme/common/designsystem-v2-theme/shiptech.scss",
               "assets/theme/common/designsystem-v2-theme/techoil.scss",
+              "assets/theme/common/designsystem-v2-theme/_aggrid.scss",
               "assets/sass/themes/common/base.scss",
               "assets/sass/themes/defaultweb/smart-operator.scss",
               "assets/sass/themes/defaultweb/_aggrid.scss",

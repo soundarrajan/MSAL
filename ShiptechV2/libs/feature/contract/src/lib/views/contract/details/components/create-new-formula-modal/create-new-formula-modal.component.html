@@ -15,7 +15,7 @@
       </button>  
       <button  type="button" mat-raised-button class="new-formula-button"
         (click)="saveFormula()"
-        [disabled]="hasInvoicedOrder">
+        [disabled]="!formValues.isEditable">
         Save
       </button>    
     </div>
@@ -52,7 +52,7 @@
               [(ngModel)]="formValues.name"
               placeholder="Formula Name"
               autocomplete="off"
-              [disabled]="hasInvoicedOrder">
+              [disabled]="!formValues.isEditable">
           </mat-form-field>
       </div>
     </div>
@@ -109,7 +109,7 @@
                     [(ngModel)]="formValues.comments"
                     matInput
                     autocomplete="off"
-                    [disabled]="hasInvoicedOrder"
+                    [disabled]="!formValues.isEditable"
                     ></textarea>
             </mat-form-field>
           </div>
@@ -184,7 +184,7 @@
                     [(ngModel)]="formValues.comments"
                     matInput
                     autocomplete="off"
-                    [disabled]="hasInvoicedOrder"
+                    [disabled]="!formValues.isEditable"
                     ></textarea>
             </mat-form-field>
           </div>

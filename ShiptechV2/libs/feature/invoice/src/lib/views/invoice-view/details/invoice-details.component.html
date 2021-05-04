@@ -1,13 +1,14 @@
-<!-- <app-button-toggle [data]="buttonToggleData"></app-button-toggle> -->
+<form>
+<!-- Invoice Informaiton -->
 <div class="section1">   
     <div class="row">
         <div class="col-md-6 col-sm-12 col-12 pt-4" style="line-height: 55px; padding: 0px; margin: 0px;">
             <div class="row">
                 <div class="col-md-6">
                     <div id="custom-btn-toggle-v2">
-                        <mat-button-toggle-group #btnToggle (change)="activeBtn = $event.value">
-                            <mat-button-toggle *ngFor="let btn of buttonToggleData?.names" [value]="btn" [checked]="activeBtn == btn">
-                                <span class="toggle-icon" *ngIf="activeBtn == btn"></span> {{btn}}
+                        <mat-button-toggle-group #btnToggle (change)="formValues.documentType.internalName = $event.value">
+                            <mat-button-toggle *ngFor="let items of invoice_types" [value]="items.value" [checked]="formValues.documentType.internalName == items.value">
+                                <span class="toggle-icon" *ngIf="formValues.documentType.internalName == items.value"></span> {{items.displayName}}
                             </mat-button-toggle>
                         </mat-button-toggle-group>
                     </div>
@@ -23,46 +24,33 @@
             <div class="row pt-3">
                 <div class="col-md-3">
                     <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
+
                         <mat-form-field class="without-search" appearance="legacy">
-                            <mat-label>Seller Invoice No.*</mat-label>
-                            <input matInput [(ngModel)]="formValues.sellerInvoiceNo">
+                            <mat-label>Seller Invoice No.</mat-label>
+                            <input matInput placeholder="000" type="number">
+                            <!-- <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error> -->
                         </mat-form-field>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div id="custom-form-field" class="lightTheme">
                         <mat-form-field class="without-search" appearance="legacy">
-                            <mat-label>Invoice Date*</mat-label>
-                            <input [(ngModel)]="formValues.sellerInvoiceDate" 
-                            #validToDateField="ngModel" 
-                            matInput 
-                            [matDatepicker]="sellerInvoiceDate"
-                            (focus)="sellerInvoiceDate.open()"
-                            autocomplete="off"
-                            placeholder="Invoice Date"
-                            (dateInput)="onChange($event, 'sellerInvoiceDate')"
-                            (dateChange)="formValues.sellerInvoiceDate = formatDateForBe(formValues.sellerInvoiceDate)">
-                            <mat-datepicker-toggle matSuffix [for]="sellerInvoiceDate">
+                            <mat-label>Invoice Date</mat-label>
+                            <input [(ngModel)]="formValues.invoiceDate" name="invoiceDate" #validToDateField="ngModel" 
+                            matInput [matDatepicker]="invoiceDate" (focus)="invoiceDate.open()" autocomplete="off" placeholder="Invoice Date" (dateChange)="formValues.invoiceDate = formatDateForBe(formValues.invoiceDate)">
+                            <mat-datepicker-toggle matSuffix [for]="invoiceDate">
                                 <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
                                 </mat-icon>
                             </mat-datepicker-toggle>
-                            <mat-datepicker #sellerInvoiceDate></mat-datepicker>
+                            <mat-datepicker #invoiceDate></mat-datepicker>
                         </mat-form-field>
                      </div>
                 </div>
                 <div class="col-md-3">
                     <div id="custom-form-field" class="lightTheme">
                         <mat-form-field class="without-search" appearance="legacy">
-                            <mat-label>Received Date*</mat-label>
-                            <input [(ngModel)]="formValues.receivedDate" 
-                            #validToDateField="ngModel" 
-                            matInput 
-                            [matDatepicker]="receivedDate"
-                            (focus)="receivedDate.open()"
-                            autocomplete="off"
-                            placeholder="Received Date"
-                            (dateInput)="onChange($event, 'receivedDate')"
-                            (dateChange)="formValues.receivedDate = formatDateForBe(formValues.receivedDate)">
+                            <mat-label>Received Date</mat-label>
+                            <input [(ngModel)]="formValues.receivedDate" name="receivedDate" #validToDateField="ngModel" matInput [matDatepicker]="receivedDate" (focus)="receivedDate.open()" autocomplete="off" placeholder="Received Date" (dateChange)="formValues.receivedDate = formatDateForBe(formValues.receivedDate)">
                             <mat-datepicker-toggle matSuffix [for]="receivedDate">
                                 <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
                                 </mat-icon>
@@ -75,7 +63,9 @@
                     <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
                         <mat-form-field class="without-search" appearance="legacy">
                             <mat-label>Payment Terms</mat-label>
-                            <input matInput [(ngModel)]="formValues.counterpartyDetails.paymentTerm.name">
+                            <input matInput
+                            name="paymentTerm"
+                             [(ngModel)]="formValues.counterpartyDetails.paymentTerm.name" required>
                         </mat-form-field>
                     </div>
                 </div>
@@ -85,7 +75,9 @@
                         <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
                             <mat-form-field class="without-search" appearance="legacy">
                                 <mat-label>Invoice Currency Details</mat-label>
-                                <input matInput [(ngModel)]="formValues.invoiceRateCurrency.code">
+                                <input matInput 
+                                name="invoiceRateCurrencyCode"
+                                [(ngModel)]="formValues.invoiceRateCurrency.code">
                             </mat-form-field>
                         </div>
                     </div>
@@ -93,15 +85,7 @@
                         <div id="custom-form-field" class="lightTheme">
                             <mat-form-field class="without-search" appearance="legacy">
                                 <mat-label>Due Date</mat-label>
-                                <input [(ngModel)]="formValues.dueDate" 
-                                #validToDateField="ngModel" 
-                                matInput 
-                                [matDatepicker]="dueDate"
-                                (focus)="dueDate.open()"
-                                autocomplete="off"
-                                placeholder="Due Date"
-                                (dateInput)="onChange($event, 'dueDate')"
-                                (dateChange)="formValues.dueDate = formatDateForBe(formValues.dueDate)">
+                                <input [(ngModel)]="formValues.dueDate" name="dueDate" #validToDateField="ngModel" matInput [matDatepicker]="dueDate" (focus)="dueDate.open()" autocomplete="off" placeholder="Due Date" (dateChange)="formValues.dueDate = formatDateForBe(formValues.dueDate)" required>
                                 <mat-datepicker-toggle matSuffix [for]="dueDate">
                                     <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
                                     </mat-icon>
@@ -114,15 +98,7 @@
                         <div id="custom-form-field" class="lightTheme">
                             <mat-form-field class="without-search" appearance="legacy">
                                 <mat-label>Working due date</mat-label>
-                                <input [(ngModel)]="formValues.workingDueDate" 
-                                #validToDateField="ngModel" 
-                                matInput 
-                                [matDatepicker]="workingDueDate"
-                                (focus)="workingDueDate.open()"
-                                autocomplete="off"
-                                placeholder="Working Due Date"
-                                (dateInput)="onChange($event, 'workingDueDate')"
-                                (dateChange)="formValues.workingDueDate = formatDateForBe(formValues.workingDueDate)">
+                                <input [(ngModel)]="formValues.workingDueDate" name="workingDueDate" #validToDateField="ngModel" matInput [matDatepicker]="workingDueDate" (focus)="workingDueDate.open()" autocomplete="off" placeholder="Working Due Date" (dateChange)="formValues.workingDueDate = formatDateForBe(formValues.workingDueDate)" required>
                                 <mat-datepicker-toggle matSuffix [for]="workingDueDate">
                                     <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
                                     </mat-icon>
@@ -135,7 +111,9 @@
                         <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
                             <mat-form-field class="without-search" appearance="legacy">
                                 <mat-label>Document No.</mat-label>
-                                <input matInput [(ngModel)]="formValues.documentNo">
+                                <input matInput 
+                                name="documentNo"
+                                [(ngModel)]="formValues.documentNo">
                             </mat-form-field>
                         </div>
                     </div>
@@ -145,15 +123,7 @@
                     <div id="custom-form-field" class="lightTheme">
                         <mat-form-field class="without-search" appearance="legacy">
                             <mat-label>Seller Due Date</mat-label>
-                            <input [(ngModel)]="formValues.sellerDueDate" 
-                            #validToDateField="ngModel" 
-                            matInput 
-                            [matDatepicker]="sellerDueDate"
-                            (focus)="sellerDueDate.open()"
-                            autocomplete="off"
-                            placeholder="Seller Due Date"
-                            (dateInput)="onChange($event, 'sellerDueDate')"
-                            (dateChange)="formValues.sellerDueDate = formatDateForBe(formValues.sellerDueDate)">
+                            <input [(ngModel)]="formValues.sellerDueDate" name="sellerDueDate" #validToDateField="ngModel" matInput [matDatepicker]="sellerDueDate" (focus)="sellerDueDate.open()" autocomplete="off" placeholder="Seller Due Date" (dateChange)="formValues.sellerDueDate = formatDateForBe(formValues.sellerDueDate)">
                             <mat-datepicker-toggle matSuffix [for]="sellerDueDate">
                                 <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
                                 </mat-icon>
@@ -167,13 +137,13 @@
                         <mat-form-field class="without-search" appearance="legacy">
                             <mat-label>Payment Date</mat-label>
                             <input [(ngModel)]="formValues.paymentDate" 
+                            name="paymentDate"
                             #validToDateField="ngModel" 
                             matInput 
                             [matDatepicker]="paymentDate"
                             (focus)="paymentDate.open()"
                             autocomplete="off"
                             placeholder="Payment Date"
-                            (dateInput)="onChange($event, 'paymentDate')"
                             (dateChange)="formValues.paymentDate = formatDateForBe(formValues.paymentDate)">
                             <mat-datepicker-toggle matSuffix [for]="paymentDate">
                                 <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
@@ -188,13 +158,13 @@
                         <mat-form-field class="without-search" appearance="legacy">
                             <mat-label>Validation Date</mat-label>
                             <input [(ngModel)]="formValues.accountancyDate" 
+                            name="accountancyDate"
                             #validToDateField="ngModel" 
                             matInput 
                             [matDatepicker]="validationDate"
                             (focus)="validationDate.open()"
                             autocomplete="off"
                             placeholder="Validation Date"
-                            (dateInput)="onChange($event, 'validationDate')"
                             (dateChange)="formValues.accountancyDate = formatDateForBe(formValues.accountancyDate)">
                             <mat-datepicker-toggle matSuffix [for]="validationDate">
                                 <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
@@ -244,13 +214,13 @@
                         <mat-form-field class="without-search" appearance="legacy">
                             <mat-label>Accountancy Date</mat-label>
                             <input [(ngModel)]="formValues.accountancyDate" 
+                            name="accountancyDate"
                             #validToDateField="ngModel" 
                             matInput 
                             [matDatepicker]="accountancyDate"
                             (focus)="accountancyDate.open()"
                             autocomplete="off"
                             placeholder="Accountancy Date"
-                            (dateInput)="onChange($event, 'accountancyDate')"
                             (dateChange)="formValues.accountancyDate = formatDateForBe(formValues.accountancyDate)">
                             <mat-datepicker-toggle matSuffix [for]="accountancyDate">
                                 <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
@@ -264,7 +234,9 @@
                     <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
                         <mat-form-field class="without-search" appearance="legacy">
                             <mat-label>Account No.</mat-label>
-                            <input matInput [(ngModel)]="formValues.accountNumber">
+                            <input matInput 
+                            name="accountNumber"
+                            [(ngModel)]="formValues.accountNumber">
                         </mat-form-field>
                     </div>
                 </div>
@@ -274,7 +246,9 @@
                     <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
                         <mat-form-field class="without-search" appearance="legacy">
                             <mat-label>Paid Amount</mat-label>
-                            <input matInput [(ngModel)]="formValues.paymentDetails.paidAmount">
+                            <input matInput
+                            name="paidAmount" 
+                            [(ngModel)]="formValues.paymentDetails.paidAmount">
                         </mat-form-field>
                     </div>
                 </div>
@@ -282,7 +256,7 @@
         </div>
     </div>
 </div>
-
+<!-- Order and Counterparty Details -->
 <div class="section1 mt-4">
     <div class="row">
         <div class="col-md-5">
@@ -294,17 +268,7 @@
                 <readonly-details [options]="orderDetails"></readonly-details>                
                 <div class="form-fields">
                     <div class="custom-form-field-with-search lightTheme">
-                        <div class="d-flex">
-                            <mat-form-field class="without-search" appearance="legacy">
-                                <mat-label>Payment Company</mat-label>
-                                <mat-select disableOptionCentering>
-                                    <mat-option value="Payment Company">Payment Company</mat-option>
-                                </mat-select>
-                            </mat-form-field>                            
-                            <div class="search-icon" (click)="openSearchPopup()">
-                                <div class="img"></div>
-                            </div>
-                        </div>
+                          <shiptech-st-autosearch-selector [placeholder]="'company'" [name]="'Payment company'" [masterType]="'company'"></shiptech-st-autosearch-selector>
                     </div>
                     <div id="custom-form-field" class="lightTheme">
                         <mat-form-field class="without-search" appearance="legacy">
@@ -319,21 +283,15 @@
                     </div>
                     <div class="custom-form-field-with-search lightTheme">
                         <div class="d-flex">
-                            <mat-form-field class="without-search" appearance="legacy">
-                                <mat-label>Carrier</mat-label>
-                                <mat-select disableOptionCentering>
-                                    <mat-option value="Carrier">Carrier</mat-option>
-                                </mat-select>
-                            </mat-form-field>                            
-                            <div class="search-icon">
-                                <div class="img"></div>
-                            </div>
+                            <shiptech-st-autosearch-selector [placeholder]="'carrier'" [name]="'Carrier'" [masterType]="'company'"></shiptech-st-autosearch-selector>
                         </div>
                     </div>
                 </div>
                 
                 <div class="field-textarea">
-                    <textarea rows="4" cols="50" placeholder="Type front office comments here" [(ngModel)]="formValues.orderDetails.frontOfficeComments"></textarea>
+                    <textarea rows="4" cols="50" placeholder="Type front office comments here" 
+                    name="frontOfficeComments"
+                    [(ngModel)]="formValues.orderDetails.frontOfficeComments"></textarea>
                 </div>
             </div>
         </div>
@@ -354,44 +312,20 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                            <!-- <div id="custom-form-field" class="lightTheme">
-                                <mat-form-field class="without-search" appearance="legacy">
-                                    <mat-label>Customer</mat-label>
-                                    <mat-select disableOptionCentering>
-                                        <mat-option>YS Marine</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div> -->
                             <div class="custom-form-field-with-search lightTheme">
                                 <div class="d-flex">
-                                    <mat-form-field class="without-search" appearance="legacy">
-                                        <mat-label>Customer</mat-label>
-                                        <mat-select disableOptionCentering>
-                                            <mat-option value="YS Marine">YS Marine</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>                            
-                                    <div class="search-icon">
-                                        <div class="img"></div>
-                                    </div>
+                                    <shiptech-st-autosearch-selector [placeholder]="'customer'" [name]="'Customer'" [masterType]="'company'"></shiptech-st-autosearch-selector>
                                 </div>
                             </div>
                         </div>
                         <div class="field-textarea">
-                            <textarea rows="4" cols="50" placeholder="Type back office comments here" [(ngModel)]="formValues.backOfficeComments"></textarea>
+                            <textarea rows="4" cols="50" placeholder="Type back office comments here" 
+                            name="backOfficeComments"
+                            [(ngModel)]="formValues.backOfficeComments"></textarea>
                         </div>
                     </div>
                     <span class="seperator-line"></span>
                     <div class="col-md-5 pd-0" style="margin: -10px 0px; line-height: 35px;">
-                        <!-- <div class="form-fields">
-                            <div id="custom-form-field" class="lightTheme">
-                                <mat-form-field class="without-search" appearance="legacy">
-                                    <mat-label>Payable To</mat-label>
-                                    <mat-select disableOptionCentering>
-                                        <mat-option>M A Marina</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>                           
-                        </div> -->
                         <div class="custom-form-field-with-search lightTheme">
                             <div class="d-flex">
                                 <mat-form-field class="without-search" appearance="legacy">
@@ -403,13 +337,18 @@
                                 <div class="search-icon">
                                     <div class="img"></div>
                                 </div>
+                                <shiptech-st-autosearch-selector [placeholder]="'payable to'" [name]="'Payable To'" [masterType]="'company'"></shiptech-st-autosearch-selector>
                             </div>
                         </div>
                         <div style="padding-top: 5px;">
-                            <mat-checkbox class="example-margin" [(ngModel)]="formValues.paymentDetails.paymentProofReceived">Payment proof received</mat-checkbox>
+                            <mat-checkbox class="example-margin" 
+                            name="paymentProofReceived"
+                            [(ngModel)]="formValues.paymentDetails.paymentProofReceived">Payment proof received</mat-checkbox>
                         </div>
                         <div class="field-textarea sizing">
-                            <textarea rows="4" cols="50" placeholder="Payment Proof comments" [(ngModel)]="formValues.paymentDetails.comments"></textarea>
+                            <textarea rows="4" cols="50" placeholder="Payment Proof comments" 
+                            name="paymentDetailscomments"
+                            [(ngModel)]="formValues.paymentDetails.comments"></textarea>
                         </div>
                     </div>
                 </div>
@@ -417,7 +356,7 @@
         </div>
     </div>
 </div>
-
+<!-- Product Details -->
 <div class="section1 mt-4" style="margin: 0px;">
     <div class="match-grid" style="border-bottom: 4px solid #e5e5e5;">
         <div class="title">Product Details</div>
@@ -425,20 +364,35 @@
             <div style="width:100%;height: 250px;">
                 <ag-grid-angular style="width: 100%;height: 100%;" [gridOptions]="gridOptions_data"
                     class="ag-theme-material ag-grid-v2 angular-v9 prod-details"></ag-grid-angular>
+                    <mat-menu #menudd="matMenu">
+                        <button mat-menu-item>
+                          <mat-icon>dialpad</mat-icon>
+                          <span>Redial</span>
+                        </button>
+                        <button mat-menu-item disabled>
+                          <mat-icon>voicemail</mat-icon>
+                          <span>Check voice mail</span>
+                        </button>
+                        <button mat-menu-item>
+                          <mat-icon>notifications_off</mat-icon>
+                          <span>Disable alerts</span>
+                        </button>
+                      </mat-menu>
             </div>
         </div>
       </div>
 </div>
-
+<!-- Additional Cost Details -->
 <div class="section1 mt-4" style="margin: 0px;">
     <div class="match-grid" style="border-bottom: 4px solid #e5e5e5;">
         <div class="title">Additional Costs</div>
         <div class="agGrid-v2" style="margin: 0">
-            <div style="width:100%;height: 125px;">
+            <div style="width:100%;height: 250px;">
                 <ag-grid-angular style="width: 100%;height: 100%;" [gridOptions]="gridOptions_ac"
                     class="ag-theme-material ag-grid-v2 angular-v9 add-cost"></ag-grid-angular>
             </div>
         </div>
       </div>
 </div>
+</form>
 

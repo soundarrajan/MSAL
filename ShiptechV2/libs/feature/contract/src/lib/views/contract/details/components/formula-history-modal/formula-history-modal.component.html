@@ -1,0 +1,93 @@
+
+<div class="row formula-history-modal-top">
+  <div class="col-md-12 formula-history-modal-header-container">
+    <div class="col-md-9 formula-history-modal-header">
+      FORMULA HISTORY
+    </div>
+    <div class="close-formula-history-container">
+      <a (click)="closeClick()" class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all close-button formula-history-close-button" role="button">
+        <span class="pi pi-times cl-content"></span>
+      </a>
+    </div>
+  </div>
+
+</div>
+<div mat-dialog-content>
+  <div class="col-md-12 no-padding">
+    <table class="formula-history-table table table-stripped table-hover" style="width:100%">
+      <thead>
+        <tr>
+            <td class="padding" style="width:10%">
+              <b>Effective From</b>
+            </td>
+            <td class="padding" style="width:10%">
+              <b>Effective To</b>
+            </td>
+            <td class="padding" style="width:10%">
+              <b>Contract ID</b>
+            </td>
+            <td class="padding" style="width:10%">
+              <b>Formula ID</b>
+            </td>
+            <td class="padding" style="width:10%">
+              <b>MTM Formula ID</b>
+            </td>
+            <td class="padding" style="width:10%">
+              <b>Created By</b>
+            </td>
+            <td class="padding" style="width:10%">
+              <b>Created Date</b>
+            </td>
+            <td class="padding" style="width:10%">
+              <b>Modified By</b>
+            </td>
+            <td class="padding" style="width:10%">
+              <b>Modified Date</b>
+            </td>
+        </tr>
+      </thead>
+      <tbody>
+          <ng-container  *ngFor="let formulaHistoryLine of formulaHistoryDataResponse">
+            <tr *ngIf="!formulaHistoryLine.isDeleted">
+              <td class="padding" style="width:10%">
+                {{formulaHistoryLine.effectiveFrom ? formatDate(formulaHistoryLine.effectiveFrom) : ''}}
+              </td>
+              <td class="padding" style="width:10%">
+                {{formulaHistoryLine.effectiveTo ? formatDate(formulaHistoryLine.effectiveTo) : ''}}
+              </td>
+              <td class="padding" style="width:10%">
+                {{formulaHistoryLine.contractId}}
+              </td>
+              <td class="padding" style="width:10%">
+                <a *ngIf="formulaHistoryLine.formula" href="{{formulaLink(formulaHistoryLine.formula.id)}}" target="_blank">
+                  {{formulaHistoryLine.formula.id}}
+                </a>
+              </td>
+              <td class="padding" style="width:10%">
+                <a *ngIf="formulaHistoryLine.mtmFormula" href="{{formulaLink(formulaHistoryLine.mtmFormula.id)}}" target="_blank">
+                  {{formulaHistoryLine.mtmFormula.id}}
+                </a>
+              </td>
+              <td class="padding" style="width:10%">
+                {{formulaHistoryLine.createdBy ? formulaHistoryLine.createdBy.displayName : ''}}
+              </td>
+              <td class="padding" style="width:10%">
+                {{formulaHistoryLine.createdOn ? formatDate(formulaHistoryLine.createdOn) : ''}}
+              </td>
+              <td class="padding" style="width:10%">
+                {{formulaHistoryLine.lastModifiedByUser ? formulaHistoryLine.lastModifiedByUser.displayName : ''}}
+              </td>
+              <td class="padding" style="width:10%">
+                {{formulaHistoryLine.lastModifiedOn ? formatDate(formulaHistoryLine.lastModifiedOn) : ''}}
+              </td>
+            </tr>
+          </ng-container>
+      </tbody>
+    </table>
+  </div>
+  <div>
+</div>
+
+<div mat-dialog-actions style="display: none;">
+  <button mat-button cdkFocusInitial>Yes</button>
+</div>

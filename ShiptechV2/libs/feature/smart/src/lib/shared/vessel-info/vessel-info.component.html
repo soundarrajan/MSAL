@@ -11,7 +11,7 @@
     <tbody>
       <tr>
         <td class="label-text">Scrubber Date:</td>
-        <td class="value" *ngIf="(bunkerPlanHeaderDetail?.scrubberDate)?.indexOf('0001')==-1">{{bunkerPlanHeaderDetail?.scrubberDate | date: 'd/m/yyyy'}}</td>
+        <td class="value" *ngIf="(bunkerPlanHeaderDetail?.scrubberDate)?.indexOf('0001')==-1">{{bunkerPlanHeaderDetail?.scrubberDate | date: 'dd/MM/yyyy'}}</td>
         <td class="value" *ngIf="(bunkerPlanHeaderDetail?.scrubberDate)?.indexOf('0001')>-1">N/A</td>
         <td class="separator">|</td>
         <td class="label-text">Ownership:</td>
@@ -32,7 +32,7 @@
   <div class="border-l-r" style="flex:0 0 20%;display:flex;flex-direction:column;padding:0 10px;font-weight: lighter;">
     <div style="display:flex;align-items: center;justify-content: space-between;">
       <div class="sml-txt" style="display:flex;flex: 10%;">Latest plan recieved</div><span class="label-text">:</span>
-      <div class="sml-txt" style="display:flex" *ngIf="(bunkerPlanHeaderDetail?.lastPlanReceivedDate)?.indexOf('0001')==-1">{{bunkerPlanHeaderDetail?.lastPlanReceivedDate | date: 'd/m/yyyy'}} <div class="m-l-r-5">|</div>
+      <div class="sml-txt" style="display:flex" *ngIf="(bunkerPlanHeaderDetail?.lastPlanReceivedDate)?.indexOf('0001')==-1">{{bunkerPlanHeaderDetail?.lastPlanReceivedDate | date: 'dd/MM/yyyy'}} <div class="m-l-r-5">|</div>
         ID:{{bunkerPlanHeaderDetail?.lastPlanReceivedId}}</div>
       <div class="sml-txt" style="display:flex" *ngIf="(bunkerPlanHeaderDetail?.lastPlanReceivedDate)?.indexOf('0001')>-1">N/A <div class="m-l-r-5">|</div>
         ID:N/A</div>
@@ -40,7 +40,7 @@
     <div style="display:flex;align-items: center;justify-content: space-between;">
       <div class="sml-txt" style="display:flex;flex: 10%;">Latest plan sent
       </div><span class="label-text">:</span>
-      <div class="sml-txt" style="display:flex" *ngIf="(bunkerPlanHeaderDetail?.lastPlanSentDate)?.indexOf('0001')==-1"> {{bunkerPlanHeaderDetail.lastPlanSentDate | date: 'd/m/yyyy'}} <div class="m-l-r-5">|</div>
+      <div class="sml-txt" style="display:flex" *ngIf="(bunkerPlanHeaderDetail?.lastPlanSentDate)?.indexOf('0001')==-1"> {{bunkerPlanHeaderDetail.lastPlanSentDate | date: 'dd/MM/yyyy'}} <div class="m-l-r-5">|</div>
         ID:{{bunkerPlanHeaderDetail.lastPlanSentId}}</div>
       <div class="sml-txt" style="display:flex" *ngIf="(bunkerPlanHeaderDetail?.lastPlanSentDate)?.indexOf('0001')>-1"> N/A <div class="m-l-r-5">|</div>
         ID:N/A</div>
@@ -81,26 +81,26 @@
                           </tr>
                           <tr>
                             <th scope="row">Current ROB</th>
-                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event.target.textContent, '3.5 QTY')">{{ROBArbitrageData?.hsfoCurrentStock? ROBArbitrageData?.hsfoCurrentStock: 0}}</div></td>
-                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event.target.textContent, '0.5 QTY')">{{ROBArbitrageData?.hsfO05CurrentStock? ROBArbitrageData?.hsfO05CurrentStock: 0}}</div></td>
-                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event.target.textContent, 'ULSFO')">{{ROBArbitrageData?.ulsfoCurrentStock? ROBArbitrageData?.ulsfoCurrentStock: 0}}</div></td>
-                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event.target.textContent, 'LSDIS')">{{ROBArbitrageData?.lsdisCurrentStock? ROBArbitrageData?.lsdisCurrentStock: 0}}</div></td>
-                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event.target.textContent, 'HSDIS')">{{ROBArbitrageData?.hsdisCurrentStock? ROBArbitrageData?.hsdisCurrentStock: 0}}</div></td>
+                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event.target.textContent, '3.5 QTY')">{{ROBArbitrageData?.hsfoCurrentStock? (ROBArbitrageData?.hsfoCurrentStock  | number : '1.0-0'): 0}}</div></td>
+                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event.target.textContent, '0.5 QTY')">{{ROBArbitrageData?.hsfO05CurrentStock? (ROBArbitrageData?.hsfO05CurrentStock | number : '1.0-0'): 0}}</div></td>
+                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event.target.textContent, 'ULSFO')">{{ROBArbitrageData?.ulsfoCurrentStock? (ROBArbitrageData?.ulsfoCurrentStock | number : '1.0-0'): 0}}</div></td>
+                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event.target.textContent, 'LSDIS')">{{ROBArbitrageData?.lsdisCurrentStock? (ROBArbitrageData?.lsdisCurrentStock | number : '1.0-0'): 0}}</div></td>
+                            <td><div contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (input)="ROBOnChange($event.target.textContent, 'HSDIS')">{{ROBArbitrageData?.hsdisCurrentStock? (ROBArbitrageData?.hsdisCurrentStock | number : '1.0-0'): 0}}</div></td>
                           </tr>
                           <tr>
                             <th scope="row">MSPS</th>
-                            <td>{{ROBArbitrageData?.mspshsfo? ROBArbitrageData?.mspshsfo: 0}}</td>
-                            <td>{{ROBArbitrageData?.mspshsfO05? ROBArbitrageData?.mspshsfO05: 0}}</td>
-                            <td>{{ROBArbitrageData?.mspsulsfo? ROBArbitrageData?.mspsulsfo: 0}}</td>
-                            <td>{{ROBArbitrageData?.mspslsdis? ROBArbitrageData?.mspslsdis: 0}}</td>
-                            <td>{{ROBArbitrageData?.mspsdis? ROBArbitrageData?.mspsdis: 0}}</td>
+                            <td>{{ROBArbitrageData?.mspshsfo? (ROBArbitrageData?.mspshsfo | number : '1.0-0'): 0}}</td>
+                            <td>{{ROBArbitrageData?.mspshsfO05? (ROBArbitrageData?.mspshsfO05 | number : '1.0-0'): 0}}</td>
+                            <td>{{ROBArbitrageData?.mspsulsfo? (ROBArbitrageData?.mspsulsfo | number : '1.0-0'): 0}}</td>
+                            <td>{{ROBArbitrageData?.mspslsdis? (ROBArbitrageData?.mspslsdis | number : '1.0-0'): 0}}</td>
+                            <td>{{ROBArbitrageData?.mspsdis? (ROBArbitrageData?.mspsdis | number : '1.0-0'): 0}}</td>
                           </tr>
                           <tr>
                             <th scope="row">Unpumpables</th>
-                            <td colspan=2>{{ROBArbitrageData?.uphsfo? ROBArbitrageData?.uphsfo: 0}}</td>
-                            <td>{{ROBArbitrageData?.upulsfo? ROBArbitrageData?.upulsfo: 0}}</td>
-                            <td>{{ROBArbitrageData?.uplsdis? ROBArbitrageData?.uplsdis: 0}}</td>
-                            <td>{{ROBArbitrageData?.upsdis? ROBArbitrageData?.uphsdis: 0}}</td>
+                            <td colspan=2>{{ROBArbitrageData?.uphsfo? (ROBArbitrageData?.uphsfo | number : '1.0-0'): 0}}</td>
+                            <td>{{ROBArbitrageData?.upulsfo? (ROBArbitrageData?.upulsfo | number : '1.0-0'): 0}}</td>
+                            <td>{{ROBArbitrageData?.uplsdis? (ROBArbitrageData?.uplsdis | number : '1.0-0'): 0}}</td>
+                            <td>{{ROBArbitrageData?.upsdis? (ROBArbitrageData?.uphsdis | number : '1.0-0'): 0}}</td>
                             
                           </tr>
                         </table>
@@ -228,7 +228,9 @@
                   </button> -->
                   <div class="border-rightside" style="padding-right: 5px;"
                     [ngClass]="{'createReqEnable':enableCreateReq,'createReqDisable':!enableCreateReq}"
-                    (click)="$event.stopPropagation()"> Create Request </div>
+                    (click)="$event.stopPropagation()"> 
+                    <a (click)="createRequest()">Create Request </a>
+                  </div>
                   <button mat-button matTooltip="Import GSIS" [matTooltipShowDelay]="500" class="import-btn">Import
                     GSIS</button>
                 </div>
@@ -257,7 +259,10 @@
       </mat-expansion-panel-header>
       <div class="panel-body">
         <app-bunkering-plan *ngIf="panel.expanded" [isExpanded]="expandBplan"
-          (enableCreateReq)="toggleCreateReq($event)" [planId]="planId" [bPlanType]="bPlanType.curr">
+          (enableCreateReq)="toggleCreateReq($event)" [planId]="planId" [bPlanType]="bPlanType.curr" [selectedUserRole]="selectedUserRole"
+          [currentROBObj]="currentROBObj"
+          [vesselRef]="vesselData"
+          (voyage_detail)="getVoyageDetail($event)">
         </app-bunkering-plan>
       </div>
     </mat-expansion-panel>
@@ -298,7 +303,12 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div class="panel-body">
-        <app-bunkering-plan [isExpanded]="expandPrevBPlan" *ngIf="panel1.expanded" [planId]="planId" [bPlanType]="bPlanType.prev"></app-bunkering-plan>
+        <app-bunkering-plan [isExpanded]="expandPrevBPlan" *ngIf="panel1.expanded"
+          [planId]="prevPlanId" [bPlanType]="bPlanType.prev" 
+          [selectedUserRole]="selectedUserRole"
+          [currentROBObj]="currentROBObj"
+          [vesselRef]="vesselData">
+        </app-bunkering-plan>
       </div>
     </mat-expansion-panel>
   </mat-accordion>

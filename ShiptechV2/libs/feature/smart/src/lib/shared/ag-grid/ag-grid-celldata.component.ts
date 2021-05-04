@@ -1,10 +1,13 @@
 import { Component, ViewChild, ElementRef, Input } from "@angular/core";
+import { AppConfig } from '@shiptech/core/config/app-config';
 import { Router } from '@angular/router';
 import { ICellRendererAngularComp } from '@ag-grid-community/angular';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatInput } from '@angular/material/input';
 import { LocalService } from '../../services/local-service.service';
+import moment  from 'moment';
+const today = new Date();
 
 @Component({
   selector: 'aggrid-cell-data',
@@ -22,20 +25,33 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   public usercomments;
   public isChecked;
   public theme:boolean = true;
-  constructor(public router: Router, public dialog: MatDialog, private elem: ElementRef,private localService:LocalService) {
+  public etaDays: any;
+  public etaInTime: any;
+  public etdDays: any;
+  public etdInTime: any;
+  public shiptechPortUrl: string;
+  public shiptechOrderUrl: string = "shiptechUrl/#/masters/order";
+  constructor(public router: Router, public dialog: MatDialog, private elem: ElementRef,private localService:LocalService,private appConfig: AppConfig) {
+    this.shiptechPortUrl = this.appConfig.v1.API.BASE_HEADER_FOR_NOTIFICATIONS;
   }
 
   ngOnInit() {
     this.localService.themeChange.subscribe(value => this.theme = value);
-
   }
 
   agInit(params: any): void {
     this.params = params;
     this.menuData = params.value;
-    // this.usercomments = params.value.comments ? params.value.comments : '';
     this.isChecked = params.value;
     this.toolTip = params.value;
+  //**ETA/ETD date format and days calculation
+    this.params.data.eta_date = moment(params.data?.eta_date).format("YYYY-MM-DD hh:mm");
+    this.etaInTime = today.getTime() - new Date(params.data?.eta_date).getTime();
+    this.etaDays = (this.etaInTime/(1000 * 3600 * 24)).toFixed(0);
+    this.params.data.etd_date = moment(params.data?.etd_date).format("YYYY-MM-DD hh:mm");
+    this.etdInTime = today.getTime() - new Date(params.data?.etd_date).getTime();
+    this.etdDays = (this.etdInTime/(1000 * 3600 * 24)).toFixed(0);
+    
   }
 
   refresh(): boolean {
@@ -156,8 +172,8 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     }
 
   }
-  portClicked() {
-    this.params.context.componentParent.portClicked();
+  portClicked(param) {
+    this.params.context.componentParent.portClicked(param);
   }
 
   toggleOperAck() {

@@ -124,6 +124,14 @@ export class MastersListApiService
     );
   }
 
+  @ObservableException()
+  getList(request: any, URL:string): Observable<any> {
+    const requestUrl = `${this._apiUrl}/${URL}`;
+    return this.http.post(requestUrl, {'payload': request}).pipe(
+      map((body: any) => body),
+      catchError(() => of('Error, could not load the formula list'))
+    );
+  }
 
   ngOnDestroy(): void {
     this._destroy$.next();
