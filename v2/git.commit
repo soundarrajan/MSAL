@@ -1,9 +1,9 @@
-﻿commit 1834551d8c4c038a49b815af4281a35506363e58
+﻿commit 15060446675b15c0a788f3d88d6f726c38896ee9
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Tue May 4 12:59:02 2021 +0000
+Date:   Tue May 4 13:06:18 2021 +0000
 
-    Merged PR 10375: Fixed product search in contract screen
+    Merged PR 10376: Fixed page and grid scrollbar
     
-    Fixed search product in contract screen
+    Fixed page and grid scrollbar
 
 branch: master

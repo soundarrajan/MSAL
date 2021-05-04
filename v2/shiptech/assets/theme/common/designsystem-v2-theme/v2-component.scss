@@ -32,10 +32,10 @@
         font-size: 18px;
       }
     }
-    &::-webkit-scrollbar {
-      height: 4px;
-      width: 4px;
-    }
+    // &::-webkit-scrollbar {
+    //   height: 4px;
+    //   width: 4px;
+    // }
 
     ul {
       list-style-type: none;
@@ -2090,11 +2090,11 @@ div.component-viewer-nav-content
 
 /* Scrollbar */
  
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-  background-color: transparent;
-}
+// ::-webkit-scrollbar {
+//   width: 10px;
+//   height: 10px;
+//   background-color: transparent;
+// }
  
 ::-webkit-scrollbar-track {
   border-radius: 10px;
