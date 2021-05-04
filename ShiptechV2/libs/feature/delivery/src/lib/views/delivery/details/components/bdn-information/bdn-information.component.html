@@ -180,10 +180,9 @@
     </div>
   </div>
   <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-    <mat-form-field class="without-search" appearance="legacy" [ngClass]="{'date-invalid': isDeliveryDateInvalid || (buttonClicked && !deliveryDateField.valid), 'date-valid': !isDeliveryDateInvalid}">
+    <mat-form-field class="without-search" appearance="legacy" [ngClass]="{'date-invalid': isDeliveryDateInvalid || (buttonClicked && !formValues.deliveryDate), 'date-valid': !isDeliveryDateInvalid}">
       <mat-label>Delivery Date</mat-label>
       <input [(ngModel)]="formValues.deliveryDate" 
-            #deliveryDateField="ngModel" 
             matInput 
             [matDatepicker]="deliveryDate"
             [disabled]="formValues.invoiceActiveFlag == true"
@@ -211,10 +210,9 @@
     </mat-form-field>
   </div>
   <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-    <mat-form-field class="without-search" appearance="legacy"  [ngClass]="{'date-invalid': isBdnDateInvalid || (buttonClicked && !bdnDateField.valid), 'date-valid': !isBdnDateInvalid}">
+    <mat-form-field class="without-search" appearance="legacy"  [ngClass]="{'date-invalid': isBdnDateInvalid || (buttonClicked && !formValues.bdnDate), 'date-valid': !isBdnDateInvalid}">
       <mat-label>BDN date</mat-label>
       <input [(ngModel)]="formValues.bdnDate"
-            #bdnDateField="ngModel"
             [disabled]="formValues.deliveryStatus.name == 'Verified'" 
             matInput 
             required 
