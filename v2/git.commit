@@ -1,7 +1,7 @@
-﻿commit 05d64fd93f29cb30e691b212c86de61a7000104b
+﻿commit 2321c0909054206adfcdac8e8e2ca6c995e9c4f5
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Tue May 4 11:47:30 2021 +0000
+Date:   Tue May 4 12:01:30 2021 +0000
 
-    Merged PR 10371: Fixed bdn date in delivery screen
+    Merged PR 10372: Fixed autocomplete color in contract screen
 
 branch: master
