@@ -511,7 +511,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                         displayName: 'Inv. Rate',
                         width: 190,
                         cellTemplate: $scope.dataTableTemplates.textUOM,
-                        format: vm.amount,
+                        format: vm.price,
                         cellObject: {
                             Name: 'invoiceRateCurrency',
                             masterSource: 'Currency',

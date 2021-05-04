@@ -2073,7 +2073,11 @@
                     	|| (options.gid == "flat_invoices_app_deliveries_list" && options.colModel.name == "estimatedRate")	
                     	|| (options.gid == "flat_invoices_app_deliveries_list" && options.colModel.name == "price")	
                     	|| (options.gid == "flat_invoices_app_invoice_list" && options.colModel.name == "orderPrice")	
+                    	|| (options.gid == "flat_invoices_app_invoice_list" && options.colModel.name == "price")	
                     	|| (options.gid == "flat_invoices_app_complete_view_list" && options.colModel.name == "orderPrice")	
+                    	|| (options.gid == "flat_invoices_app_complete_view_list" && options.colModel.name == "price")	
+                    	|| (options.gid == "flat_contract_app_contract_list" && options.colModel.name == "fixedPrice")	
+                    	|| (options.gid == "flat_contract_planning" && options.colModel.name == "deliveryPrice")	
                 	) {
 	                    pricePrecision = rowObject.pricePrecision ? rowObject.pricePrecision : $scope.tenantSettings.defaultValues.pricePrecision;
                     }
@@ -2201,7 +2205,8 @@
                         if(rowObject.currency != null){
 
                             var currency = rowObject.currency.name;
-                            var price =  $filter('number')(rowObject.fixedPrice, $scope.tenantSettings.defaultValues.pricePrecision);
+                            pricePrecision = rowObject.pricePrecision ? rowObject.pricePrecision : $scope.tenantSettings.defaultValues.pricePrecision;
+                            var price =  $filter('number')(rowObject.fixedPrice, pricePrecision);
 
                             tpl = '<span class="">' + currency + ' ' + price + '</span>';
                         }
@@ -2211,7 +2216,7 @@
 
                 var quantity_with_uom = function(cellValue, options, rowObject) {
                     var tpl = '<span class=""></span>';
-                    if(cellValue != null){
+	                if(cellValue != null){
                         if (rowObject.uom != null) {
                             var uom = rowObject.uom.name;
                             var qty = $filter('number')(rowObject[options.colModel.name], $scope.tenantSettings.defaultValues.quantityPrecision);

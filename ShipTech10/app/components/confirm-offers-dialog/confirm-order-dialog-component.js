@@ -1,5 +1,6 @@
 angular.module('shiptech.components').controller('ConfirmOrderDialogController', [
     '$scope',
+    '$tenantSettings',
     '$element',
     '$state',
     '$attrs',
@@ -11,8 +12,9 @@ angular.module('shiptech.components').controller('ConfirmOrderDialogController',
     'orderModel',
     'STATE',
     'tenantService',
-    function($scope, $element, $state, $attrs, $timeout, $filter, $rootScope, uiApiModel, MOCKUP_MAP, orderModel, STATE, tenantService) {
+    function($scope, $tenantSettings, $element, $state, $attrs, $timeout, $filter, $rootScope, uiApiModel, MOCKUP_MAP, orderModel, STATE, tenantService) {
         let ctrl = this;
+        ctrl.tenantSettings = $tenantSettings;
         var  changedConfirmationProductOrders;
         ctrl.warningValidation = false;
         setTimeout(() => {

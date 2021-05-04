@@ -28,10 +28,16 @@
         ng-change="$eval(col.colDef.cellObject.changeEvent)" 
         ng-blur="$eval(col.colDef.cellObject.blurEvent)" 
         format="number:{{col.colDef.format ? col.colDef.format : 2}}" ng-model-options="{ debounce: 300 }" style="width: 100% !important"/>
-        <input ng-if="col.colDef.name == 'invoiceQuantity' ||  col.colDef.name  == 'invoiceRate' " ng-readonly="col.colDef.cellObject.uomBindSource" type="text" id="{{ grid.element[0].id }}_{{ col.colDef.name }}_{{ rowRenderIndex }}" name="{{ col.colDef.name }}" ng-model="MODEL_COL_FIELD" class="form-control uomInput" ng-required='field.Required && isVisible(field.Name + field.UOMType)' ng-class="CM.invalid_form ? 'ng-touched' : ''" ng-disabled="$eval(col.colDef.cellObject.Disabled)"
+
+
+        <input ng-if="col.colDef.name == 'invoiceQuantity' " ng-readonly="col.colDef.cellObject.uomBindSource" type="text" id="{{ grid.element[0].id }}_{{ col.colDef.name }}_{{ rowRenderIndex }}" name="{{ col.colDef.name }}" ng-model="MODEL_COL_FIELD" class="form-control uomInput" ng-required='field.Required && isVisible(field.Name + field.UOMType)' ng-class="CM.invalid_form ? 'ng-touched' : ''" ng-disabled="$eval(col.colDef.cellObject.Disabled)"
         ng-keypress="$eval(col.colDef.cellObject.keyPressEvent);"  
         ng-change="$eval(col.colDef.cellObject.changeEvent); " 
         format="number:{{col.colDef.format ? col.colDef.format : 2}}" ng-model-options="{ debounce: 300 }" style="width: 100% !important"/>
+        <input ng-if="col.colDef.name  == 'invoiceRate' " ng-readonly="col.colDef.cellObject.uomBindSource" type="text" id="{{ grid.element[0].id }}_{{ col.colDef.name }}_{{ rowRenderIndex }}" name="{{ col.colDef.name }}" ng-model="MODEL_COL_FIELD" class="form-control uomInput" ng-required='field.Required && isVisible(field.Name + field.UOMType)' ng-class="CM.invalid_form ? 'ng-touched' : ''" ng-disabled="$eval(col.colDef.cellObject.Disabled)"
+        ng-keypress="$eval(col.colDef.cellObject.keyPressEvent);"  
+        ng-change="$eval(col.colDef.cellObject.changeEvent); " 
+        format="number:{{ row['entity']['pricePrecision'] ? row['entity']['pricePrecision'] : col.colDef.format }}" ng-model-options="{ debounce: 300 }" style="width: 100% !important"/>   
 
         <span ng-if="!col.colDef.cellObject.uomBindSource" class="input-group-addon uom_group ">
             <span ng-if="col.colDef.cellObject.UniqueId">
