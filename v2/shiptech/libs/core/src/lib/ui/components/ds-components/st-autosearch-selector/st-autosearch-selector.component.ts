@@ -51,8 +51,8 @@ export class StAutosearchSelectorComponent implements OnInit {
             height: '90%',
             panelClass: 'popup-grid',
             data:<ImasterSelectionPopData>{
-              title:'Selet Company',
-              selectionType:EstAutoSearchType.company
+              dialog_header: 'Select '+this.name,
+              selectionType: this.masterType
             }
         });
 
@@ -69,9 +69,18 @@ export class StAutosearchSelectorComponent implements OnInit {
   }
 
   getOptionData(){
-    if(this.masterType == EstAutoSearchType.company){
-      var requestParam = {"Payload":{"Filters":[{"ColumnName":"CounterpartyTypes","Value":2}]}}; 
-      var URL = 'api/masters/counterparties/listByTypesAutocomplete';
+    var requestParam={};var URL='';
+    if(this.masterType == EstAutoSearchType.company || this.masterType == EstAutoSearchType.carrier){
+      requestParam = {"Payload":{"Filters":[{"ColumnName":"CounterpartyTypes","Value":2}]}}; 
+      URL = 'api/masters/counterparties/listByTypesAutocomplete';
+    }else if(this.masterType == EstAutoSearchType.paymentTerms){
+      requestParam = {"Order":null,"PageFilters":{"Filters":[]},"SortList":{"SortList":[]},"Filters":[],"SearchText":null,"Pagination":{"Skip":0,"Take":25}}; 
+      URL = 'api/masters/paymentterm/list';
+    }else if(this.masterType == EstAutoSearchType.payableTo){
+      // requestParam = {"Order":null,"PageFilters":{"Filters":[]},"SortList":{"SortList":[]},"Filters":[{"ColumnName":"CounterpartyTypes","Value":"2, 11"}],"SearchText":null,"Pagination":{"Skip":0,"Take":25}}
+      // URL = 'api/masters/counterparties/listByTypes';
+      requestParam = {"Payload":{"Filters":[{"ColumnName":"CounterpartyTypes","Value":"2,11"}]}}; 
+      URL = 'api/masters/counterparties/listByTypesAutocomplete';
     }
     
 

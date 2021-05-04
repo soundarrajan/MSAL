@@ -1,9 +1,9 @@
-﻿commit a41973a1a04069f4cc37389a98c8ea1614a39f31
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Tue May 4 13:36:28 2021 +0000
+﻿commit b370be3edb52f90f154b1f3d3fdb8b09e284f250
+Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
+Date:   Tue May 4 13:56:20 2021 +0000
 
-    Merged PR 10378: Added validation when user saves the contract with the "System-Instrument" co...
+    Merged PR 10380: Popup added for payable to and payment terms
     
-    Added validation when user saves the contract with the "System-Instrument" conversion factor for the fixed-price type or without selecting the formula
+    Popup added for payable to and payment terms
 
 branch: master
