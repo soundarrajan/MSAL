@@ -8052,8 +8052,13 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
 	                    if (response.status == true) {
 	                        $scope.loaded = true;
 	                        toastr.success('Email Preview was sent!');
-	                        let url = `${$state.$current.url.prefix + $state.params.screen_id }/edit/${ $state.params.entity_id}`;
-	                        $location.path(url);
+	                       let url = `${$state.$current.url.prefix + $state.params.screen_id }/edit/${ $state.params.entity_id}`;
+                            if (window.location.href.indexOf('contracts/contract/email-preview/') != -1) {
+                                let contractUrl = 'v2/contracts/contract/' + $state.params.entity_id + '/details';
+                                window.location.href = contractUrl;
+                            } else {
+                                $location.path(url);
+                            }
 	                    } else {
 	                        $scope.loaded = true;
 	                        toastr.error(response.message);
