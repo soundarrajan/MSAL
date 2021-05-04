@@ -262,7 +262,7 @@
                 <div class="custom-form-field conversion-factor-info" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
                   <mat-form-field class="without-search" 
                     appearance="legacy"
-                    [ngClass]="{'required-field': (buttonClicked && !additionalCost.value.amount && additionalCost.value.costType.id != 4 && additionalCost.value.costType.id != 5) }">
+                    [ngClass]="{'required-field': (buttonClicked && !additionalCost.value.amount && additionalCost.value.costType && additionalCost.value.costType.id != 4 && additionalCost.value.costType.id != 5) }">
                     <input  
                         [(ngModel)]="additionalCost.value.amount"
                         matInput 
