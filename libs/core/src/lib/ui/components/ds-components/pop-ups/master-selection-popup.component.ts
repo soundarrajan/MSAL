@@ -35,9 +35,13 @@ export class MasterSelectionDialog {
     public rowCount: Number;
     _apiUrl;
     constructor(private http: HttpClient, private appConfig: AppConfig, public dialogRef: MatDialogRef<MasterSelectionDialog>, @Optional() @Inject(MAT_DIALOG_DATA) public data: ImasterSelectionPopData) {
-        this._apiUrl = this.appConfig.v1.API.BASE_URL_DATA_MASTERS;        
-        if(data.selectionType == EstAutoSearchType.company){
+        this._apiUrl = this.appConfig.v1.API.BASE_URL_DATA_MASTERS; 
+        if(data.selectionType == EstAutoSearchType.company || data.selectionType == EstAutoSearchType.carrier){
             this.loadCompanyGridOption();
+        }else if(data.selectionType == EstAutoSearchType.paymentTerms){
+            this.loadPaymentTermsGridOption();
+        }else if(data.selectionType == EstAutoSearchType.payableTo){
+            this.loadPayableToGridOption();
         }
     }
 
@@ -45,21 +49,7 @@ export class MasterSelectionDialog {
         
     }
 
-    public companyColumnDefs = [
-        { headerName: "ID", headerTooltip: "ID", field: "id", width: 50,cellClass: ["aggridtextalign-left"] },
-        { headerName: "Company", headerTooltip: "Company", field: "name", width: 150,cellClass: ["aggridtextalign-left"] },
-        { headerName: "Parent", headerTooltip: "Parent", field: "parent.name", width: 150, cellClass: ["aggridtextalign-left"] },
-        { headerName: "Base Currency", headerTooltip: "Base Currency", field: "currency.name", type: 'numericColumn', valueFormatter: this.numberFormatter, width: 75, cellClass: ["aggridtextalign-left"] },
-        { headerName: "Base UOM", headerTooltip: "Base UOM", field: "uom.name", width: 150, cellClass: ["aggridtextalign-right"] },
-        { headerName: "Created By", headerTooltip: "Created By", field: "createdBy.name", width: 150,
-            // cellClass: ["aggridtextalign-right aggridlink"],
-            cellClass: ["hoverdisable hover-cell-menu-icon"] },
-        { headerName: "Created On", headerTooltip: "Created On", field: "createdOn", width: 150, cellClass: ["aggridtextalign-right"] },
-        { headerName: "Last Modified by", headerTooltip: "Last Modified by", field: "lastModifiedBy.name", width: 150, cellClass: ["aggridtextalign-left"] },
-        { headerName: "LastModified on", headerTooltip: "LastModified on", field: "lastModifiedOn", width: 150, cellClass: ["aggridtextalign-left"] },
-        { headerName: "Status", headerTooltip: "Status", field: "isDeleted", width: 150, cellClass: ["aggridtextalign-left"] },
-        { headerName: "Company Code", headerTooltip: "Company Code", field: "code", width: 150, cellClass: ["aggridtextalign-left"] }
-    ];
+    public companyColumnDefs = [];
 
     public numberFormatter(params) {
         if (isNaN(params.value))
@@ -90,7 +80,21 @@ export class MasterSelectionDialog {
     }
 
     loadCompanyGridOption(){
-
+        this.companyColumnDefs = [
+            { headerName: "ID", headerTooltip: "ID", field: "id", width: 50,cellClass: ["aggridtextalign-left"] },
+            { headerName: "Company", headerTooltip: "Company", field: "name", width: 150,cellClass: ["aggridtextalign-left"] },
+            { headerName: "Parent", headerTooltip: "Parent", field: "parent.name", width: 150, cellClass: ["aggridtextalign-left"] },
+            { headerName: "Base Currency", headerTooltip: "Base Currency", field: "currency.name", type: 'numericColumn', valueFormatter: this.numberFormatter, width: 75, cellClass: ["aggridtextalign-left"] },
+            { headerName: "Base UOM", headerTooltip: "Base UOM", field: "uom.name", width: 150, cellClass: ["aggridtextalign-right"] },
+            { headerName: "Created By", headerTooltip: "Created By", field: "createdBy.name", width: 150,
+                // cellClass: ["aggridtextalign-right aggridlink"],
+                cellClass: ["hoverdisable hover-cell-menu-icon"] },
+            { headerName: "Created On", headerTooltip: "Created On", field: "createdOn", width: 150, cellClass: ["aggridtextalign-right"] },
+            { headerName: "Last Modified by", headerTooltip: "Last Modified by", field: "lastModifiedBy.name", width: 150, cellClass: ["aggridtextalign-left"] },
+            { headerName: "LastModified on", headerTooltip: "LastModified on", field: "lastModifiedOn", width: 150, cellClass: ["aggridtextalign-left"] },
+            { headerName: "Status", headerTooltip: "Status", field: "isDeleted", width: 150, cellClass: ["aggridtextalign-left"] },
+            { headerName: "Company Code", headerTooltip: "Company Code", field: "code", width: 150, cellClass: ["aggridtextalign-left"] }
+        ];
         this.dialog_gridOptions = <GridOptions>{
             defaultColDef: {
                 filter: true,
@@ -133,11 +137,137 @@ export class MasterSelectionDialog {
             console.log(this.rowData);
         });
     }
+    loadPayableToGridOption(){
+        this.companyColumnDefs = [
+            { headerName: "ID", headerTooltip: "ID", field: "id", width: 50,cellClass: ["aggridtextalign-left"] },
+            { headerName: "Counterparty", headerTooltip: "Counterparty", field: "name", width: 150,cellClass: ["aggridtextalign-left"] },
+            { headerName: "Parent", headerTooltip: "Parent", field: "parent.name", width: 150, cellClass: ["aggridtextalign-left"] },
+            { headerName: "Not Active", headerTooltip: "Not Active", field: "isDeleted", width: 150, cellClass: ["aggridtextalign-left"] },
+             { headerName: "Created By", headerTooltip: "Created By", field: "createdBy.name", width: 150,
+                // cellClass: ["aggridtextalign-right aggridlink"],
+                cellClass: ["hoverdisable hover-cell-menu-icon"] },
+            { headerName: "Created On", headerTooltip: "Created On", field: "createdOn", width: 150, cellClass: ["aggridtextalign-right"] },
+            { headerName: "Last Modified by", headerTooltip: "Last Modified by", field: "lastModifiedBy.name", width: 150, cellClass: ["aggridtextalign-left"] },
+            { headerName: "LastModified on", headerTooltip: "LastModified on", field: "lastModifiedOn", width: 150, cellClass: ["aggridtextalign-left"] }
+        ];
+        this.dialog_gridOptions = <GridOptions>{
+            defaultColDef: {
+                filter: true,
+                sortable: true,
+                resizable: true,
+                headerCheckboxSelection: false,
+                checkboxSelection: isFirstColumn
+            },
+            columnDefs: this.companyColumnDefs,
+            suppressRowClickSelection: true,
+            headerHeight: 30,
+            rowHeight: 30,
+            rowSelection:'single',
+            // groupIncludeTotalFooter: true,
+            onGridReady: params => {
+                this.dialog_gridOptions.api = params.api;
+                this.dialog_gridOptions.columnApi = params.columnApi;
+                this.dialog_gridOptions.api.sizeColumnsToFit();
+                this.dialog_gridOptions.api.setRowData(this.rowData);
+                this.rowCount = this.dialog_gridOptions.api.getDisplayedRowCount();
+            },
+            getRowStyle: function (params) {
+                if (params.node.rowPinned) {
+                    return { 'font-weight': '500', 'font-size': '20px' };
+                }
+            },
+            onColumnResized: function (params) {
+                if (params.columnApi.getAllDisplayedColumns().length <= 5 && params.type === 'columnResized' && params.finished === true && params.source === 'uiColumnDragged') {
+                    params.api.sizeColumnsToFit();
+                }
+            }
+        };
 
+        // Load Data
+        let payload = {"Order":null,"PageFilters":{"Filters":[]},"SortList":{"SortList":[]},"Filters":[{"ColumnName":"CounterpartyTypes","Value":"2, 11"}],"SearchText":null,"Pagination":{"Skip":0,"Take":25}};
+        this.getPayableToList(payload).subscribe((data: any) => {
+            this.rowData = data.payload;
+            if(data.payload)
+                this.dialog_gridOptions.api.setRowData(this.rowData);
+            console.log(this.rowData);
+        });
+    }
+    loadPaymentTermsGridOption(){
+        this.companyColumnDefs = [
+            { headerName: "ID", headerTooltip: "ID", field: "id", width: 50,cellClass: ["aggridtextalign-left"] },
+            { headerName: "Payment term name", headerTooltip: "Payment term name", field: "name", width: 150,cellClass: ["aggridtextalign-left"] },
+            { headerName: "Created By", headerTooltip: "Created By", field: "createdBy.name", width: 150,
+                // cellClass: ["aggridtextalign-right aggridlink"],
+                cellClass: ["hoverdisable hover-cell-menu-icon"] },
+            { headerName: "Created On", headerTooltip: "Created On", field: "createdOn", width: 150, cellClass: ["aggridtextalign-right"] },
+            { headerName: "Last Modified by", headerTooltip: "Last Modified by", field: "lastModifiedBy.name", width: 150, cellClass: ["aggridtextalign-left"] },
+            { headerName: "LastModified on", headerTooltip: "LastModified on", field: "lastModifiedOn", width: 150, cellClass: ["aggridtextalign-left"] },
+            { headerName: "Status", headerTooltip: "Status", field: "isDeleted", width: 150, cellClass: ["aggridtextalign-left"] }
+        ];
+        this.dialog_gridOptions = <GridOptions>{
+            defaultColDef: {
+                filter: true,
+                sortable: true,
+                resizable: true,
+                headerCheckboxSelection: false,
+                checkboxSelection: isFirstColumn
+            },
+            columnDefs: this.companyColumnDefs,
+            suppressRowClickSelection: true,
+            headerHeight: 30,
+            rowHeight: 30,
+            rowSelection:'single',
+            // groupIncludeTotalFooter: true,
+            onGridReady: params => {
+                this.dialog_gridOptions.api = params.api;
+                this.dialog_gridOptions.columnApi = params.columnApi;
+                this.dialog_gridOptions.api.sizeColumnsToFit();
+                this.dialog_gridOptions.api.setRowData(this.rowData);
+                this.rowCount = this.dialog_gridOptions.api.getDisplayedRowCount();
+            },
+            getRowStyle: function (params) {
+                if (params.node.rowPinned) {
+                    return { 'font-weight': '500', 'font-size': '20px' };
+                }
+            },
+            onColumnResized: function (params) {
+                if (params.columnApi.getAllDisplayedColumns().length <= 5 && params.type === 'columnResized' && params.finished === true && params.source === 'uiColumnDragged') {
+                    params.api.sizeColumnsToFit();
+                }
+            }
+        };
+
+        // Load Data
+        let payload = {"Order":null,"PageFilters":{"Filters":[]},"SortList":{"SortList":[]},"Filters":[],"SearchText":null,"Pagination":{"Skip":0,"Take":25}};
+        this.getPaymentTermList(payload).subscribe((data: any) => {
+            this.rowData = data.payload;
+            if(data.payload)
+                this.dialog_gridOptions.api.setRowData(this.rowData);
+            console.log(this.rowData);
+        });
+    }
   
   @ObservableException()
   getCompanyList(request: any): Observable<any> {
     const requestUrl = `${this._apiUrl}/${masterURLenums.companyListURL}`;
+    return this.http.post(requestUrl, {'Payload': request}).pipe(
+      map((body: any) => body),
+      catchError(() => of('Error, could not load the company list'))
+    );
+  }
+
+  @ObservableException()
+  getPaymentTermList(request: any): Observable<any> {
+    const requestUrl = `${this._apiUrl}/${masterURLenums.paymentTermListURL}`;
+    return this.http.post(requestUrl, {'Payload': request}).pipe(
+      map((body: any) => body),
+      catchError(() => of('Error, could not load the company list'))
+    );
+  }
+
+  @ObservableException()
+  getPayableToList(request: any): Observable<any> {
+    const requestUrl = `${this._apiUrl}/${masterURLenums.payableToURL}`;
     return this.http.post(requestUrl, {'Payload': request}).pipe(
       map((body: any) => body),
       catchError(() => of('Error, could not load the company list'))
@@ -168,6 +298,8 @@ export class MasterSelectionDialog {
 
 export enum masterURLenums {
     companyListURL = 'api/masters/companies/list',
+    paymentTermListURL = 'api/masters/paymentterm/list',
+    payableToURL = 'api/masters/counterparties/listByTypes',
     mock = 'Mock',
     mixed = 'Mixed'
 }
