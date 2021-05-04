@@ -724,14 +724,13 @@
   }
 }
 
-.mat-select-panel .mat-option.mat-selected.mat-active, 
-.mat-select-panel .mat-option.mat-active {
+.general-information-select-container.mat-select-panel .mat-option.mat-selected.mat-active, 
+.general-information-select-container.mat-select-panel .mat-option.mat-active {
   color: #37414f !important;
   background: #fff !important;
 }
 
-.mat-select-panel .mat-option.mat-selected:not(.mat-option-disabled) {
+.general-information-select-container.mat-select-panel .mat-option.mat-selected:not(.mat-option-disabled) {
   background-color: #37414f !important;
   color: white !important;
-
 }
