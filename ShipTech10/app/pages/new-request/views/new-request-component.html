@@ -132,6 +132,7 @@
                        </span>
                 </div>
             </div>			 
+           <!-- operatorBy: {{$ctrl.request.operatorBy}} -->
             <div class="portlet-body" ng-controller="Controller_Master as CM">
                 <form id="vesselDetails" class="form-inline st-new-request-form collapse in" name="forms.vesselDetailsForm" novalidate autocomplete="off">
                     <div sorted-form field-ids="$ctrl.ui.vesselDetails.fields" get-from-id="vesselDetails">
@@ -257,7 +258,7 @@
                                     </label>
                                     <div class="form-group-sm00">
                                         <div class="input-group col-md-7" ng-init='CM.getOptions({"Name": "usersList","masterSource": "admin_users"})'>
-                                            <input decode-input-format ng-disabled="$ctrl.disableAllFields" name="{{ $ctrl.vesselDetailsFields.Operator.name }}" id="id_{{ $ctrl.vesselDetailsFields.Operator.name }}" uib-typeahead="entity.username as entity.username for entity in options.usersList | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.selectOperator($item)" typeahead-editable="true" class="typeahead form-control"  ng-model="$ctrl.request.operatorBy" ng-required="$ctrl.requestTenantSettings.isRequestOperatorMandatory">
+                                            <input decode-input-format ng-disabled="$ctrl.disableAllFields" name="{{ $ctrl.vesselDetailsFields.Operator.name }}" id="id_{{ $ctrl.vesselDetailsFields.Operator.name }}" uib-typeahead="entity.username as entity.username for entity in options.usersList | typeaheadCustomFilter:$viewValue:'name'" typeahead-on-select="$ctrl.selectOperator($item)" typeahead-editable="true" class="typeahead form-control"  ng-model="$ctrl.request.operatorBy.name" ng-required="$ctrl.requestTenantSettings.isRequestOperatorMandatory">
                                             <span class="input-group-addon" ng-click="triggerModal('general', 'admin_userlist', 'Operator' , '$ctrl.request.vesselDetails.Operator','','',$ctrl.vesselDetailsFields.Operator.name)" ng-class="{'disabled' : $ctrl.isReadonlyForm}">
                                                 <i class="fa fa-search"></i>
                                             </span>
