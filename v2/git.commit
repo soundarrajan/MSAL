@@ -1,9 +1,9 @@
-﻿commit 15060446675b15c0a788f3d88d6f726c38896ee9
+﻿commit a41973a1a04069f4cc37389a98c8ea1614a39f31
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Tue May 4 13:06:18 2021 +0000
+Date:   Tue May 4 13:36:28 2021 +0000
 
-    Merged PR 10376: Fixed page and grid scrollbar
+    Merged PR 10378: Added validation when user saves the contract with the "System-Instrument" co...
     
-    Fixed page and grid scrollbar
+    Added validation when user saves the contract with the "System-Instrument" conversion factor for the fixed-price type or without selecting the formula
 
 branch: master
