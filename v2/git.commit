@@ -1,7 +1,7 @@
-﻿commit 1e8b2e9e3ea505a7ce04c19d0501745266b7c3a3
+﻿commit 05d64fd93f29cb30e691b212c86de61a7000104b
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Tue May 4 11:02:51 2021 +0000
+Date:   Tue May 4 11:47:30 2021 +0000
 
-    Merged PR 10370: Fixed creating formula from contract, Added company display name based on the general configuration, #32008 Fixed dropdown color in contract screen
+    Merged PR 10371: Fixed bdn date in delivery screen
 
 branch: master
