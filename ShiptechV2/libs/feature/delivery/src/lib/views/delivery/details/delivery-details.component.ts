@@ -1395,12 +1395,12 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         deliveryProd.qualityParameters.forEach((qualityParameter, key) => {
           if (qualityParameter.isDisplayedInDelivery==true && qualityParameter.isMandatoryInDelivery==true && (qualityParameter.bdnValue==null || qualityParameter.bdnValue=="" || qualityParameter.bdnValue==0)){
             Isvalid=true;
+            product=deliveryProd.product.name;
             this.buttonClicked = true;
             this.eventsSubject2.next(this.buttonClicked);
           }
         });
       }
-     product=deliveryProd.product.name ;
     });
     if(Isvalid){
       this.toastrService.error(`Please fill the required ${product} -bdn value...`);
@@ -1608,7 +1608,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     if (this.formValues.deliveryProducts) {
       for (let i = 0; i < this.formValues.deliveryProducts.length; i++) {
         if (!this.formValues.deliveryProducts[i].bdnQuantityAmount) {
-          requiredFields  +=  ' Product ' + (i + 1) + ' BDN quantity ' + "\n";
+          requiredFields  +=  this.formValues.deliveryProducts[i].product.name+ (i + 1) + ' BDN quantity ' + "\n";
         }
       }
     } 
