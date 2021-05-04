@@ -1,9 +1,7 @@
-﻿commit b370be3edb52f90f154b1f3d3fdb8b09e284f250
-Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
-Date:   Tue May 4 13:56:20 2021 +0000
+﻿commit b95d0daf53dc80d99c96c259eef33c5004bf7b25
+Author: Prabaharan P <prabaharan.p@Inatech.com>
+Date:   Tue May 4 20:57:56 2021 +0530
 
-    Merged PR 10380: Popup added for payable to and payment terms
-    
-    Popup added for payable to and payment terms
+    delivery screen validation bug fixed-27474
 
 branch: master
