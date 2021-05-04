@@ -3834,7 +3834,11 @@
             $(elt).on('itemRemoved', (event) => {
                 let idToRemove = event.item.value;
                 var comparator, indexRmv;
-                $.each($scope.formValues[id], (index, value) => {
+                // $.each($scope.formValues[id], (index, value) => {
+                // });
+                for (var index = $scope.formValues[id].length - 1; index >= 0; index--) {
+                	value = $scope.formValues[id][index];
+
                     if (id == 'applications' && vm.screen_id == 'sellerrating') {
                         if (value.module.id == idToRemove) {
                             indexRmv = index;
@@ -3860,15 +3864,11 @@
                                 indexRmv = index;
                                 $('*').tooltip('destroy');
                                 if ($scope.formValues[id][index].id > 0) {
-                                	$timeout(()=>{
 	                                    $scope.formValues[id][index].isDeleted = true;
-                                	})
                                 } else {
-                                	$timeout(()=>{
-	                                    $scope.formValues[id][index].isDeleted = true;
-	                                    $scope.formValues[id].splice(index, 1);
-                                	})
+                                    $scope.formValues[id].splice(index, 1);
                                 }
+                                $scope.$apply();
                             }
                         } else if (["locationHSFO05Grades","locationDistillateGrades","locationHSFO35Grades"].includes(id)) {
                             if (value.product.id == idToRemove) {
@@ -3876,15 +3876,14 @@
                                 // $timeout(()=>{
 	                                $('*').tooltip('destroy');
 	                                if ($scope.formValues[id][index]) {
-	                                	$timeout(()=>{
-			                                if ($scope.formValues[id][index].id > 0) {
-			                                    $scope.formValues[id][index].isDeleted = true;
-			                                } else {
-			                                    $scope.formValues[id][index].isDeleted = true;
-			                                    $scope.formValues[id].splice(index, 1);
-			                                }
-	                                	})
+		                                if ($scope.formValues[id][index].id > 0) {
+		                                    $scope.formValues[id][index].isDeleted = true;
+		                                } else {
+		                                    $scope.formValues[id][index].isDeleted = true;
+		                                    $scope.formValues[id].splice(index, 1);
+		                                }
 	                                }
+	                                $scope.$apply();
                                 // })
                             }
                         } else {
@@ -3895,7 +3894,7 @@
                             }
                         }
                     }
-                });
+                } // end for
                 hideTheChildren();
             });
             elt_plus.on('click', () => {
