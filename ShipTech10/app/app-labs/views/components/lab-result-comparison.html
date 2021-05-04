@@ -21,26 +21,26 @@
 </div>
 <hr>
 <div class="col-sm-12" style="display: flex; justify-content: center;">
-    <div class="custom-hardcoded-table admin" style="height: 70vh">
-        <table class="table-body">
+    <div class="col-sm-12 custom-hardcoded-table admin" style="height: 70vh">
+        <table class="table-body" style="width: 100% !important;">
             <thead>
                 <tr>
-                    <td rowspan="2" style="max-width: initial; min-width: 390px;" class="padding"><b>Order
+                    <td rowspan="2" style="width: 390px;" class="padding"><b>Order
                             SpecParameter</b></td>
-                    <td rowspan="2" style="max-width: initial; min-width: 100px;" class="padding"><b>BDN</b>
+                    <td rowspan="2" style="width: 100px;" class="padding"><b>BDN</b>
                     </td>
-                    <td colspan="2" style="max-width: initial; min-width: 180px;" class="padding">
+                    <td colspan="2" style="width: 180px;" class="padding">
                         <b>{{compare_LabTestResultTestType[0].name}} - {{comparedLabResult[0].id}}</b>
                     </td>
-                    <td colspan="2" style="max-width: initial; min-width: 180px;" class="padding">
+                    <td colspan="2" style="width: 180px;" class="padding">
                         <b>{{compare_LabTestResultTestType[1].name}} - {{comparedLabResult[1].id}}</b>
                     </td>
                 </tr>
                 <tr>
-                    <td style="max-width: initial; min-width: 100px;" class="padding"><b>Labs</b></td>
-                    <td style="max-width: initial; min-width: 180px;" class="padding"><b>Passed/Failed</b></td>
-                    <td style="max-width: initial; min-width: 100px;" class="padding"><b>Labs</b></td>
-                    <td style="max-width: initial; min-width: 180px;" class="padding"><b>Passed/Failed</b></td>
+                    <td style="width: 100px;" class="padding"><b>Labs</b></td>
+                    <td style="width: 180px;" class="padding"><b>Passed/Failed</b></td>
+                    <td style="width: 100px;" class="padding"><b>Labs</b></td>
+                    <td style="width: 180px;" class="padding"><b>Passed/Failed</b></td>
                 </tr>
             </thead>
             <tbody ng-repeat="(key, labTestResultRow) in comparableLabResults">
