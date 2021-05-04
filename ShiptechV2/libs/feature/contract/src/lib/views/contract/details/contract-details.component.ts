@@ -429,6 +429,30 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       this.toastr.error('You must add at least one product in the contract');
       return;
     }
+
+    let notValidConversionFactor = false;
+    for (let i = 0; i < this.formValues.products.length; i++) {
+      console.log(this.formValues.products[i]);
+      let conversionFactorForProduct = this.formValues.products[i].conversionFactors;
+      if (conversionFactorForProduct.length) {
+        let findSystemInstrumentOption = _.find(conversionFactorForProduct, function(object) {
+          return object.contractConversionFactorOptions.id == 4;
+        });
+        
+        if (findSystemInstrumentOption) {
+          if (this.formValues.products[i].fixedPrice || (this.formValues.products[i].isFormula && (!(this.formValues.products[i].formula && this.formValues.products[i].formula.id)))){
+            console.log(findSystemInstrumentOption);
+            notValidConversionFactor = true;
+            this.toastr.error(`Please select formula for using system instrument conversion for Product ${ i + 1 }.`);
+          }
+        }
+      }
+    }
+
+    if (notValidConversionFactor) {
+      return;
+    }
+
     // check for product location to be obj
     let notValidLocation = false;
     this.formValues.products.forEach((val, key) => {
@@ -481,6 +505,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     if(notValid) {
       return;
     }
+
 
     let message = 'Please fill in required fields:';
     if (!this.formValues.name) {
