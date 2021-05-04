@@ -725,13 +725,13 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 
         
         ctrl.selectVesselSchedulesPort = function(locations) {
-
             ctrl.EnableSingleSelect = false;
             ctrl.data.oldLocation = angular.copy(ctrl.data.location);
             ctrl.data.location.name = locations[0].locationName;
             ctrl.data.location.id = locations[0].locationId;
             ctrl.data.eta = locations[0].eta;
             ctrl.data.recentEta = locations[0].recentETA;
+            ctrl.data.vesselVoyageDetailId = locations[0].vesselVoyageDetailId;
 
             var isAvailablecontract = false;
             if(ctrl.data.products != undefined && ctrl.data.products.length != 0){
