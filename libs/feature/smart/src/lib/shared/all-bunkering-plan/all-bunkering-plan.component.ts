@@ -64,6 +64,9 @@ export class AllBunkeringPlanComponent implements OnInit {
 
   changeVesselTrigger(event) {
     this.loadBunkerPlanHistory(event);
+    let vesselObjFormat = Object.assign({}, event);
+    delete Object.assign(vesselObjFormat, {['vesselId']: vesselObjFormat['id'] })['id'];
+    this.vesselData = vesselObjFormat;
     this.changeVessel.emit(event);
   }
  
