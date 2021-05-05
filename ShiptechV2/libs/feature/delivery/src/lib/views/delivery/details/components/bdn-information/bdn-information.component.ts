@@ -725,9 +725,6 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
       this.formValues.SellerName = '';
       this.formValues.Port = '';
       this.formValues.OrderBuyer = '';
-      if(typeof this.formValues.order != 'undefined') {
-        this.getOrder(orderId);
-      }
       this.getRelatedDeliveries(orderId);
       this.getDeliveryOrderSummary(orderId);
       this.onOrderNumberChanged.emit(true);
@@ -746,48 +743,11 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
     this.formValues.OrderBuyer = '';
     if(typeof this.formValues.order != 'undefined') {
       this.spinner.show();
-      this.getOrder(orderId);
       this.getRelatedDeliveries(orderId);
       this.getDeliveryOrderSummary(orderId);
     }
 
     this.onOrderNumberChanged.emit(true);
-  }
-
-  getOrder(orderId: number) {
-    this.openedScreenLoaders += 1;
-    this.deliveryService
-    .loadOrder(orderId)
-    .pipe(
-        finalize(() => {
-          this.isLoading = false;
-          this.openedScreenLoaders -= 1;
-          if (!this.openedScreenLoaders) {
-            this.spinner.hide();
-          }
-        })
-    )
-    .subscribe((response: any) => {
-      if (typeof response == 'string') {
-        this.toastr.error('An error has occurred!');
-      } else {
-        this.formValues.sellerName = response.seller.name;
-        this.formValues.port = response.location.name;
-        this.formValues.OrderBuyer = response.buyer.name;
-        this.formValues.temp.orderedProducts = response.products;
-        this.formValues.deliveryProducts = [];
-
-        //set order info for delivery
-        this.formValues.info.vesselName = response.vessel.name;
-        this.formValues.info.locationName = response.location.name;
-        this.formValues.info.eta = response.eta;
-        this.formValues.info.etb = response.etb;
-        if (response.surveyorCounterparty) {
-            this.formValues.surveyorName = response.surveyorCounterparty.name;
-        }
-        this.changeDetectorRef.markForCheck();
-      }
-    });
   }
 
   getRelatedDeliveries(orderId: number) {
@@ -844,6 +804,10 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
         if (typeof this.formValues.temp == 'undefined') {
           this.formValues.temp = {};
         }
+        this.formValues.info.vesselName = response.vesselName;
+        this.formValues.info.locationName = response.location;
+        this.formValues.info.eta = response.eta;
+        this.formValues.info.etb = response.etb;
         this.formValues.temp.deliverysummary = response;
         this.formValues.temp.deliverySummaryProducts = [ ... response.products];
         if (!parseInt(this._entityId)) {
