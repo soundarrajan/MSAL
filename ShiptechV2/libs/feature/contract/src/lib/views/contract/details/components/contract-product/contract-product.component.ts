@@ -492,6 +492,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   expandLocation: any = false;
   expandProduct: any = false;
   bankFilterCtrl: any = new FormControl();
+  additionalCostForLocation: any = [];
   get entityId(): number {
     return this._entityId;
   }
@@ -1157,9 +1158,68 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       'name': location.name
     };
     this.selectedLocation = null;
+    this.getAdditionalCostsPerPort(location.id);
     // this.changeDetectorRef.detectChanges();
     //this.contractFormSubject.next(this.formValues);
 
+  }
+
+  getAdditionalCostsPerPort(locationId) {
+    if (typeof this.additionalCostForLocation == 'undefined') {
+      this.additionalCostForLocation = [];
+    }
+    if (typeof this.additionalCostForLocation == 'undefined') {
+      this.additionalCostForLocation = [];
+   }
+
+    // if addiitonal cost for product exists, do not make call again
+    if (typeof this.additionalCostForLocation[locationId] != 'undefined') {
+        return;
+    }
+
+    let payload = {"Payload":
+        {"Order":null,
+        "PageFilters":{"Filters":[]},
+        "SortList":{"SortList":[]},
+        "Filters":[{ColumnName:"LocationId", value: locationId}],
+        "SearchText":null,
+        "Pagination":{"Skip":0,"Take":25}}};
+    this.contractService
+    .getAdditionalCostsPerPort(payload)
+    .pipe(
+      finalize(() => {
+      })
+    )
+    .subscribe((response: any) => {
+      if (typeof response == 'string') {
+        this.toastr.error(response);
+      } else {
+        console.log(response);
+        this.additionalCostForLocation[locationId] = response;
+        for (let i = 0; i < this.additionalCostForLocation[locationId].length; i++) {
+          if (this.additionalCostForLocation[locationId][i].locationid) {
+            if (!this.formValues.products[this.selectedTabIndex].additionalCosts) {
+              this.formValues.products[this.selectedTabIndex].additionalCosts = [];
+            }
+            let additionalCostLine = {
+              additionalCost: {
+                id: this.additionalCostForLocation[locationId][i].additionalCostid,
+                name: this.additionalCostForLocation[locationId][i].name
+              },
+              costType: this.additionalCostForLocation[locationId][i].costType,
+              amount: this.additionalCostForLocation[locationId][i].amount,
+              uom: this.additionalCostForLocation[locationId][i].priceUom,
+              extras: this.additionalCostForLocation[locationId][i].extrasPercentage,
+              currency: this.additionalCostForLocation[locationId][i].currency,
+              comments: this.additionalCostForLocation[locationId][i].costDescription,
+            }
+            this.formValues.products[this.selectedTabIndex].additionalCosts.push(additionalCostLine);
+
+          }
+        }
+        this.changeDetectorRef.detectChanges();
+      }
+    });
   }
 
 
