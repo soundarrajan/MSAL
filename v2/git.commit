@@ -1,7 +1,9 @@
-﻿commit 82f63afbdd6cd7d0f2791f29f89016ca1ce06fae
-Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Wed May 5 21:01:26 2021 +0530
+﻿commit 3efc28287ad93a03c3f96bfaca15917cf6d8df0e
+Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
+Date:   Wed May 5 15:39:57 2021 +0000
 
-    Delivered volume quantity uom mandatory validation check for conversion issue fix - 32099. #32099
+    Merged PR 10429: To fix save api and lookup binding
+    
+    To fix save api and lookup binding
 
 branch: master

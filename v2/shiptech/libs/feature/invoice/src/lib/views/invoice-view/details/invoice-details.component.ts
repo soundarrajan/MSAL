@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -9,10 +9,11 @@ import { AGGridCellRendererComponent } from '@shiptech/core/ui/components/ds-com
 import { AgGridCellStyleComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-style.component';
 import { GridOptions } from 'ag-grid-community';
 import moment from 'moment';
-import { IInvoiceDetailsItemBaseInfo, IInvoiceDetailsItemCounterpartyDetails, IInvoiceDetailsItemDto, IInvoiceDetailsItemInvoiceCheck, IInvoiceDetailsItemInvoiceSummary, IInvoiceDetailsItemOrderDetails, IInvoiceDetailsItemPaymentDetails, IInvoiceDetailsItemProductDetails, IInvoiceDetailsItemRequestInfo, IInvoiceDetailsItemStatus } from '../../../services/api/dto/invoice-details-item.dto';
+import { IInvoiceDetailsItemBaseInfo, IInvoiceDetailsItemCounterpartyDetails,IInvoiceDetailsItemResponse, IInvoiceDetailsItemDto, IInvoiceDetailsItemInvoiceCheck, IInvoiceDetailsItemInvoiceSummary, IInvoiceDetailsItemOrderDetails, IInvoiceDetailsItemPaymentDetails, IInvoiceDetailsItemProductDetails, IInvoiceDetailsItemRequestInfo, IInvoiceDetailsItemStatus } from '../../../services/api/dto/invoice-details-item.dto';
 import { InvoiceDetailsService } from '../../../services/invoice-details.service';
 import { EsubmitMode } from '../invoice-view.component';
 import { ProductDetailsModalComponent } from './component/product-details-modal/product-details-modal.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'shiptech-invoice-detail',
@@ -107,9 +108,19 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     ],
     hasSeparator: true
   }
-
+// detailFormvalues:any;
+@Input('detailFormvalues') set _detailFormvalues(val) {
+  if(val){
+    this.formValues = val;  
+    this.parseProductDetailData(this.formValues.productDetails);
+    //  console.log(this.invoiceDetailsComponent.parseProductDetailData);
+    this.setOrderDetailsLables(this.formValues.orderDetails);
+    this.setcounterpartyDetailsLables(this.formValues.counterpartyDetails);
+    this.setChipDatas();  
+  }
+}
   //Default Values - strats
-  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private invoiceService: InvoiceDetailsService,  public dialog: MatDialog) {
+  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private invoiceService: InvoiceDetailsService,  public dialog: MatDialog,private toastrService: ToastrService,) {
     iconRegistry.addSvgIcon('data-picker-gray',sanitizer.bypassSecurityTrustResourceUrl('../../assets/customicons/calendar-dark.svg'));
     this.setupGrid();
   }
@@ -118,7 +129,6 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     this.buildProductDetilsGrid();
     this.getCounterPartiesList();
   }
-
   private setupGrid(){
     this.gridOptions_ac = <GridOptions>{
       defaultColDef: {
@@ -505,7 +515,15 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   }
 
   public saveInvoiceDetails(){
-    alert("Has to save please wait");
+    // alert("Has to save please wait");
+    let data : any = {
+      Payload: this.formValues
+    };
+    this.invoiceService
+    .updateInvoiceItem(data)
+    .subscribe((response: IInvoiceDetailsItemResponse) => {
+      this.toastrService.success('Invoice updated successfully');
+    });
   }
 
   public openRequest(){
@@ -520,7 +538,34 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   onModelChanged(evt){
 
   }
-
+  AC_valueChanges(type,event){
+    let eventValueObject = {
+      "id": event.id ? event.id : null,
+      "name": event.name ? event.name : null,
+      "internalName": event.internalName ? event.internalName : null,
+      "displayName": event.displayName ? event.displayName : null,
+      "code": event.code ? event.code : null,
+      "collectionName": event.collectionName ? event.collectionName : null,
+      "customNonMandatoryAttribute1": event.customNonMandatoryAttribute1 ? event.customNonMandatoryAttribute1 : null,
+      "isDeleted": event.isDeleted ? event.isDeleted : null,
+      "modulePathUrl": event.modulePathUrl ? event.modulePathUrl :null,
+      "clientIpAddress": event.clientIpAddress ? event.clientIpAddress : null,
+      "userAction": event.userAction ? event.userAction : null
+    };
+    if(type === 'company'){
+      this.formValues.orderDetails.paymentCompany = eventValueObject;
+      this.formValues.orderDetails.paymentCompany.displayName = event.displayName ? event.displayName : event.name ? event.name : null;
+    }else if(type === 'carrier'){
+      this.formValues.orderDetails.carrierCompany = eventValueObject;
+    }else if(type === 'customer'){
+      
+    }else if(type === 'payableto'){
+      this.formValues.counterpartyDetails.payableTo = eventValueObject;
+    }else if(type === 'paymentterms'){
+      this.formValues.counterpartyDetails.paymentTerm = eventValueObject;
+    }
+    // console.log('type',type,'evnt',event);
+  }
   
   
 }

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MastersListApiService } from '@shiptech/core/delivery-api/masters-list/masters-list-api.service';
@@ -21,9 +21,17 @@ export class StAutosearchSelectorComponent implements OnInit {
   filteredOptions: Observable<string[]>;
   popupOpen: boolean;
   selected:any;
-  @Input() placeholder:string = 'Pick one';
+  bindValue:string;
+  @Input() placeholder:string = 'Pick one';  
+  @Input('bindValue') set _bindValue(val) {
+    if(val){
+      this.bindValue = val;    
+      this.myControl.setValue(this.bindValue);
+    }
+  }
   @Input() name:string = 'Select';
   @Input() masterType:EstAutoSearchType;
+  @Output() onChanged = new EventEmitter();
   options: any[];
 
   constructor(public dialog: MatDialog, private mastersListApiService: MastersListApiService){
@@ -32,6 +40,7 @@ export class StAutosearchSelectorComponent implements OnInit {
 
   ngOnInit() {
     this.getOptionData();
+    // alert(this.bindValue);    
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value))
@@ -59,18 +68,28 @@ export class StAutosearchSelectorComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             this.popupOpen = false;
             this.selected = <any>result.data;
+            this.onChanged.emit(this.selected);
             this.myControl.setValue(result?.data?.name);
         });
   }
 
   selectedEvent(evt){
     console.log(evt);
+    if(this.options){
+      let selectedItem = this.options.filter(x=> { return x.name == evt.option.value});
+      if(selectedItem){
+        this.onChanged.emit(selectedItem[0]);
+      }
+    }
     // this.selected = 
   }
 
   getOptionData(){
     var requestParam={};var URL='';
-    if(this.masterType == EstAutoSearchType.company || this.masterType == EstAutoSearchType.carrier){
+    if(this.masterType == EstAutoSearchType.company){
+      requestParam = {"Payload":{"Filters":[{"ColumnName":"CounterpartyTypes","Value":2}]}}; 
+      URL = 'api/masters/counterparties/listByTypesAutocomplete';
+    }else if(this.masterType == EstAutoSearchType.carrier){
       requestParam = {"Payload":{"Filters":[{"ColumnName":"CounterpartyTypes","Value":2}]}}; 
       URL = 'api/masters/counterparties/listByTypesAutocomplete';
     }else if(this.masterType == EstAutoSearchType.paymentTerms){
