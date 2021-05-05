@@ -28,9 +28,13 @@ export class BunkeringPlanComponent implements OnInit {
   latestPlanId: any;
   @Output() enableCreateReq = new EventEmitter();
   @Output() voyage_detail = new EventEmitter();
+  @Output() loadBplan = new EventEmitter();
   @Input("isExpanded") isExpanded: boolean;
     @Input('planId') 
   public set planId(v : string) {
+    if (v == null)
+    this.latestPlanId = '';
+    else
     this.latestPlanId = v;
   };
   @Input('vesselRef') 
@@ -42,10 +46,7 @@ export class BunkeringPlanComponent implements OnInit {
   @Input('selectedUserRole')selectedUserRole;
   @Input('currentROBObj') currentROBObj;
   constructor(private bplanService: BunkeringPlanService, private localService: LocalService, private store: Store) {
-    
-    //Fetch B plan grid row data
-    // this.loadBunkeringPlanDetails();
-    
+       
     this.gridOptions = <GridOptions>{
       columnDefs: this.columnDefs,
       enableColResize: false,
@@ -395,7 +396,9 @@ export class BunkeringPlanComponent implements OnInit {
       this.bplanService.getBunkeringPlanDetails(req).subscribe((data)=> {
         console.log('bunker plan details',data);
         this.rowData = this.latestPlanId == null ?[]:(data.payload && data.payload.length)? data.payload: [];
-        this.bPlanData = this.rowData;
+        this.bPlanData = this.rowData;   
+        this.latestPlanId = '';
+        this.loadBplan.emit(false);
         let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
         titleEle.click();
       })
