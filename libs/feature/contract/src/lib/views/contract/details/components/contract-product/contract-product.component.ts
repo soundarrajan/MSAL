@@ -646,6 +646,10 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       if (this.formValues.products[i].product) {
         this.getSpecGroupByProduct(this.formValues.products[i].product.id, this.formValues.products[i].specGroup);
       }
+      if (this.formValues.products[i].location) {
+        this.getAdditionalCostsPerPort(this.formValues.products[i].location.id);
+
+      }
     }
     this.getAdditionalCostsComponentTypes();
   }
@@ -1158,7 +1162,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       'name': location.name
     };
     this.selectedLocation = null;
-    this.getAdditionalCostsPerPort(location.id);
+    this.getAdditionalCostsPerPortOnLocationChanging(location.id);
     // this.changeDetectorRef.detectChanges();
     //this.contractFormSubject.next(this.formValues);
 
@@ -1170,15 +1174,49 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     }
     if (typeof this.additionalCostForLocation == 'undefined') {
       this.additionalCostForLocation = [];
-   }
+    }
 
     let payload = {"Payload":
-        {"Order":null,
-        "PageFilters":{"Filters":[]},
-        "SortList":{"SortList":[]},
-        "Filters":[{ColumnName:"LocationId", value: locationId}],
-        "SearchText":null,
-        "Pagination":{"Skip":0,"Take":25}}};
+      {"Order":null,
+      "PageFilters":{"Filters":[]},
+      "SortList":{"SortList":[]},
+      "Filters":[{ColumnName:"LocationId", value: locationId}],
+      "SearchText":null,
+      "Pagination":{"Skip":0,"Take":25}}};
+
+    this.contractService
+    .getAdditionalCostsPerPort(payload)
+    .pipe(
+      finalize(() => {
+      })
+    )
+    .subscribe((response: any) => {
+      if (typeof response == 'string') {
+        this.toastr.error(response);
+      } else {
+        console.log(response);
+        this.additionalCostForLocation[locationId] = response;
+        this.changeDetectorRef.detectChanges();
+      }
+    });
+  }
+
+  getAdditionalCostsPerPortOnLocationChanging(locationId) {
+    if (typeof this.additionalCostForLocation == 'undefined') {
+      this.additionalCostForLocation = [];
+    }
+    if (typeof this.additionalCostForLocation == 'undefined') {
+      this.additionalCostForLocation = [];
+    }
+
+    let payload = {"Payload":
+      {"Order":null,
+      "PageFilters":{"Filters":[]},
+      "SortList":{"SortList":[]},
+      "Filters":[{ColumnName:"LocationId", value: locationId}],
+      "SearchText":null,
+      "Pagination":{"Skip":0,"Take":25}}};
+
     this.spinner.show();
     this.contractService
     .getAdditionalCostsPerPort(payload)
