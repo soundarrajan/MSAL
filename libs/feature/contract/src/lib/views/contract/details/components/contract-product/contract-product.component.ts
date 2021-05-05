@@ -1172,11 +1172,6 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       this.additionalCostForLocation = [];
    }
 
-    // if addiitonal cost for product exists, do not make call again
-    if (typeof this.additionalCostForLocation[locationId] != 'undefined') {
-        return;
-    }
-
     let payload = {"Payload":
         {"Order":null,
         "PageFilters":{"Filters":[]},
@@ -1184,10 +1179,12 @@ export class ContractProduct extends DeliveryAutocompleteComponent
         "Filters":[{ColumnName:"LocationId", value: locationId}],
         "SearchText":null,
         "Pagination":{"Skip":0,"Take":25}}};
+    this.spinner.show();
     this.contractService
     .getAdditionalCostsPerPort(payload)
     .pipe(
       finalize(() => {
+        this.spinner.hide();
       })
     )
     .subscribe((response: any) => {
@@ -1212,6 +1209,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
               extras: this.additionalCostForLocation[locationId][i].extrasPercentage,
               currency: this.additionalCostForLocation[locationId][i].currency,
               comments: this.additionalCostForLocation[locationId][i].costDescription,
+              isFromLocation: true
             }
             this.formValues.products[this.selectedTabIndex].additionalCosts.push(additionalCostLine);
 

@@ -986,6 +986,10 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     return object1 && object2 && object1.id == object2.id;
   }
 
+  compareAdditionalCostObjects(object1: any, object2: any) {
+    return object1 && object2 && object1.additionalCostid == object2.id;
+  }
+
   
   doFiltering(addCostCompTypes, cost, currentCost) {
     var costType = null;
