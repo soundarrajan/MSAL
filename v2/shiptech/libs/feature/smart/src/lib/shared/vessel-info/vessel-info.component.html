@@ -258,7 +258,7 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div class="panel-body">
-        <app-bunkering-plan *ngIf="panel.expanded" [isExpanded]="expandBplan"
+        <app-bunkering-plan *ngIf="panel.expanded && loadBplan" [isExpanded]="expandBplan"
           (enableCreateReq)="toggleCreateReq($event)" [planId]="planId" [bPlanType]="bPlanType.curr" [selectedUserRole]="selectedUserRole"
           [currentROBObj]="currentROBObj"
           [vesselRef]="vesselData"
@@ -303,7 +303,7 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div class="panel-body">
-        <app-bunkering-plan [isExpanded]="expandPrevBPlan" *ngIf="panel1.expanded"
+        <app-bunkering-plan [isExpanded]="expandPrevBPlan" *ngIf="panel1.expanded && loadBplan"
           [planId]="prevPlanId" [bPlanType]="bPlanType.prev" 
           [selectedUserRole]="selectedUserRole"
           [currentROBObj]="currentROBObj"

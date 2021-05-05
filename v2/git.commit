@@ -1,9 +1,11 @@
-﻿commit 5e4ea0e90ed99d92afd1cdf57a70d64b685ebd40
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Wed May 5 09:02:55 2021 +0000
+﻿commit 15faa066f0cade2f5f2adafb86f8a40e889cba76
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Wed May 5 11:20:50 2021 +0000
 
-    Merged PR 10403: #32110 - scrubber date null validation issue has fixed
+    Merged PR 10415: GetBunkerPlanDetail API 500 error fix and sync.
     
-    Related work items: #32110
+    GetBunkerPlanDetail API 500 error fix and sync.
+    
+    Related work items: #32165, #32166
 
 branch: master

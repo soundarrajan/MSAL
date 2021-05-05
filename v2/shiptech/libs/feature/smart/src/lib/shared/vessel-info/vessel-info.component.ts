@@ -51,6 +51,7 @@ export class VesselInfoComponent implements OnInit {
   public shiptechRequestUrl :string = 'shiptechUrl/#/new-request/{{voyage_detail_id}}';
   public voyageDetailId: any;
   public selectedPort: any = [];
+  public loadBplan : boolean = false;
 
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private localService: LocalService, public dialog: MatDialog, private bunkerPlanService : BunkeringPlanService,private appConfig: AppConfig) {
     iconRegistry.addSvgIcon(
@@ -61,7 +62,7 @@ export class VesselInfoComponent implements OnInit {
   ngOnInit() {
     console.log('Vessel Data ',this.vesselData)
     this.loadBunkerPlanHeader(this.vesselData);  
-    this.loadBunkerPlanDetails();
+    this.loadBunkerPlanDetails(this.vesselData);
      
   }
   
@@ -134,8 +135,8 @@ export class VesselInfoComponent implements OnInit {
     })
   }
 
-  public loadBunkerPlanDetails(){
-     let Id = this.vesselData?.vesselId ? this.vesselData.vesselId : 348;
+  public loadBunkerPlanDetails(event){
+     let Id = event.id? event.id: 348;
      let req = { shipId : Id ,  planStatus   : 'C' }
      this.loadCurrentBunkeringPlan(req);
      req = { shipId : Id ,  planStatus : 'P' }
@@ -144,6 +145,7 @@ export class VesselInfoComponent implements OnInit {
 
   //Get Plan Id and Status Details for Current Bunkering Plan
   loadCurrentBunkeringPlan(request){
+    this.loadBplan =false;
     this.bunkerPlanService.getBunkerPlanIdAndStatus(request).subscribe((data)=>{
       console.log('bunker plan Id and status details', data);
       this.currPlanIdDetails = (data.payload && data.payload.length)? data.payload[0] : {};
@@ -151,11 +153,13 @@ export class VesselInfoComponent implements OnInit {
       this.statusCurrBPlan = this.currPlanIdDetails?.isPlanInvalid === 'N' ? true:false;
       this.statusCurr = this.currPlanIdDetails?.isPlanInvalid === 'Y' ? 'INVALID' : 'VALID';
       this.planDate = moment(this.currPlanIdDetails?.planDate).format('DD/MM/YYYY');
+      this.loadBplan = true;
     })
   }
 
   //Get Plan Id and Status Details for Previous Bunkering Plan
   loadPrevBunkeringPlan(request){
+    this.loadBplan =false;
     this.bunkerPlanService.getBunkerPlanIdAndStatus(request).subscribe((data)=>{
       console.log('bunker plan Id and status details', data);
       this.prevPlanIdDetails = (data.payload && data.payload.length)? data.payload[0] : {};
@@ -166,12 +170,14 @@ export class VesselInfoComponent implements OnInit {
           this.statusPrevBPlan = false;
       this.statusPrev = this.currPlanIdDetails?.isPlanInvalid === 'Y' ? 'INVALID' : 'VALID';
       this.prevPlanDate = moment(this.prevPlanIdDetails?.planDate).format('DD/MM/YYYY');
+      this.loadBplan = true;
     })
   
   }
 
   changeVesselTrigger(event) {
     this.loadBunkerPlanHeader(event);
+    this.loadBunkerPlanDetails(event);
     this.changeVessel.emit(event);
   }
 
