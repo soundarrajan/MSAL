@@ -1,11 +1,9 @@
-﻿commit 15faa066f0cade2f5f2adafb86f8a40e889cba76
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Wed May 5 11:20:50 2021 +0000
+﻿commit 0690819713aa14e2c855fcc3d514be538a7b8f66
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Wed May 5 11:45:53 2021 +0000
 
-    Merged PR 10415: GetBunkerPlanDetail API 500 error fix and sync.
+    Merged PR 10417: Mapped vesselName, port, eta, etb from Shiptech10.Api.Delivery/api/delivery/s...
     
-    GetBunkerPlanDetail API 500 error fix and sync.
-    
-    Related work items: #32165, #32166
+    Mapped vesselName, prot, eta, etb from Shiptech10.Api.Delivery/api/delivery/summary
 
 branch: master

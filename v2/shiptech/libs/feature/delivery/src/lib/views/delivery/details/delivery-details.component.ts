@@ -209,7 +209,6 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    debugger;
     this.route.params.pipe(takeUntil(this._destroy$)).subscribe(params => {
       this.entityId = params.deliveryId;
     });
@@ -855,32 +854,6 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
           this.changeDetectorRef.detectChanges();
         }
       });
-      this.openedScreenLoaders += 1;
-      this.deliveryService
-      .loadOrder(this.formValues.order.id)
-      .pipe(
-        finalize(() => {
-          this.openedScreenLoaders -= 1;
-          if (!this.openedScreenLoaders) {
-            this.isLoading = false;
-          }
-        })
-      )
-      .subscribe((response: any)  => {
-        if (typeof response == 'string') {
-          this.toastrService.error(response);
-        } else {
-          this.formValues.info.vesselName = response.vessel.name;
-          this.formValues.info.locationName = response.location.name;
-          this.formValues.info.eta = response.eta;
-          this.formValues.info.etb = response.etb;
-          this.formValues.temp.orderedProducts = response.products;
-          if (response.surveyorCounterparty) {
-              this.formValues.surveyorName = response.surveyorCounterparty.name;
-          }
-          this.changeDetectorRef.detectChanges();
-        }
-      });
 
   }
 
@@ -959,33 +932,6 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         }
       });
     });
-    this.openedScreenLoaders += 1;
-    this.deliveryService
-    .loadOrder(this.formValues.order.id)
-    .pipe(
-      finalize(() => {
-        this.openedScreenLoaders -= 1;
-        if (!this.openedScreenLoaders) {
-          this.isLoading = false;
-        }
-      })
-    )
-    .subscribe((response: any)  => {
-      if (typeof response == 'string') {
-        this.toastrService.error(response);
-      } else {
-        this.formValues.info.vesselName = response.vessel.name;
-        this.formValues.info.locationName = response.location.name;
-        this.formValues.info.eta = response.eta;
-        this.formValues.info.etb = response.etb;
-        this.formValues.temp.orderedProducts = response.products;
-        if (response.surveyorCounterparty) {
-            this.formValues.surveyorName = response.surveyorCounterparty.name;
-        }
-        this.changeDetectorRef.detectChanges();
-      }
-    });
-    //this.getDeliveryOrderSummary(this.formValues.order.id);
   }
 
   getDeliveryOrderSummary(orderId: number) {
@@ -1007,6 +953,10 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         if (typeof this.formValues.temp == 'undefined') {
           this.formValues.temp = {};
         }
+        this.formValues.info.vesselName = response.vesselName;
+        this.formValues.info.locationName = response.location;
+        this.formValues.info.eta = response.eta;
+        this.formValues.info.etb = response.etb;
         this.formValues.temp.deliverysummary = response;
         if (!parseFloat(this.entityId)) {
           // new delivery
