@@ -1,9 +1,9 @@
-﻿commit f9559f24dbe986be2bb9be6d5c6428ae7d2e34cd
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed May 5 13:48:20 2021 +0000
+﻿commit 22c8a172c2537360125b77eff629c53c679b0a6f
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Wed May 5 15:04:08 2021 +0000
 
-    Merged PR 10423: Disabled all the Cost added from the location based on the locationAdditional...
+    Merged PR 10427: #29823 - All bunkering plan grid list view based on vessel changes issue has fixed
     
-    Disabled all the Cost added from the location based on the locationAdditionalCostId
+    Related work items: #29823
 
 branch: master
