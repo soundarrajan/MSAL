@@ -48,6 +48,19 @@
                 </div>
             </div>
     	</div>
+
+        <div class="col-md-4">
+            <div class="form_input form_input_isDebunker form-group">
+                <div class="">
+                    <label class="mt-checkbox">
+                        <input type="checkbox" name="inlineRadiosisDebunker" id="inlinecheckisDebunker" ng-model="formValues.invoice.isDebunker"/>
+                            {{ CM.app_id + '.Is_Debunker' | translate }}
+                        <span></span>
+                    </label>
+                </div>
+            </div>
+    	</div>
+
     	<div class="col-md-4 ">
             <div class="form_input form_input_autoApproveMatchedInvoice form-group">
                 <div class="">
@@ -70,7 +83,7 @@
         		</div>
         	</div>
         </div>
-
+        <div class="row">
     	<div class="col-md-4 ">
             <div class="form_input form_input_isNeedForSubmitForApproval form-group">
                 <div class="">
@@ -82,7 +95,133 @@
                 </div>
             </div>
     	</div>
+    </div>
 
+    </div>
 
+    <div class="portlet">
+        <div class="portlet-title">
+            <span class="caption-subject ">
+                Hide/Unhide Fields 
+            </span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6" style="width: 60% !important;">
+            <div class="custom-hardcoded-table admin">
+                <table class="table-body" style="width:100%">
+                    <thead class="table-head">
+                        <tr style="background-color: #fff">
+                            <td>
+                                Field
+                            </td>
+                            <td>
+                                Hide
+                            </td>
+                            <td>
+                                Mandatory
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="padding">
+                                Invoice Date 
+                            </td>
+                            <td class="padding">
+                            </td>
+                            <td class="padding">
+                                <label class="mt-checkbox">
+                                    <input type="checkbox"
+                                        ng-model="formValues.invoice.fieldVisibility.isInvoiceDateMandatory"
+                                        ng-click="formValues.invoice.fieldVisibility.isInvoiceDateHidden = false" />
+                                    <span></span>
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="padding">
+                                Received Date
+                            </td>
+                            <td class="padding">
+                                <label class="mt-checkbox">
+                                    <input type="checkbox"
+                                        ng-model="formValues.invoice.fieldVisibility.isReceivedDateHidden"
+                                        ng-click="formValues.invoice.fieldVisibility.isReceivedDateMandatory = false" />
+                                    <span></span>
+                                </label>
+                            </td>
+                            <td class="padding">
+                                <label class="mt-checkbox">
+                                    <input type="checkbox"
+                                        ng-model="formValues.invoice.fieldVisibility.isReceivedDateMandatory"
+                                        ng-click="formValues.invoice.fieldVisibility.isReceivedDateHidden = false" />
+                                    <span></span>
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="padding">
+                                Supplier Invoice Number
+                            </td>
+                            <td class="padding">
+                            </td>
+                            <td class="padding">
+                                <label class="mt-checkbox">
+                                    <input type="checkbox"
+                                        ng-model="formValues.invoice.fieldVisibility.isSupplierInvoiceNumberMandatory"
+                                        ng-click="formValues.invoice.fieldVisibility.isSupplierInvoiceNumberHidden = false" />
+                                    <span></span>
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="padding">
+                                Bank Account Number
+                            </td>
+                            <td class="padding">
+                                <label class="mt-checkbox">
+                                    <input type="checkbox"
+                                        ng-model="formValues.invoice.fieldVisibility.isBankAccountNumberHidden"
+                                        ng-click="formValues.invoice.fieldVisibility.isBankAccountNumberMandatory = false" />
+                                    <span></span>
+                                </label>
+                            </td>
+                            <td class="padding">
+                                <label class="mt-checkbox">
+                                    <input type="checkbox"
+                                        ng-model="formValues.invoice.fieldVisibility.isBankAccountNumberMandatory"
+                                        ng-click="formValues.invoice.fieldVisibility.isBankAccountNumberHidden = false" />
+                                    <span></span>
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="padding">
+                                Customer
+                            </td>
+                            <td class="padding">
+                                <label class="mt-checkbox">
+                                    <input type="checkbox"
+                                        ng-model="formValues.invoice.fieldVisibility.isInvoiceCustomerHidden"
+                                        ng-click="formValues.invoice.fieldVisibility.isInvoiceCustomerMandatory = false" />
+                                    <span></span>
+                                </label>
+                            </td>
+                            <td class="padding">
+                                <label class="mt-checkbox">
+                                    <input type="checkbox"
+                                        ng-model="formValues.invoice.fieldVisibility.isInvoiceCustomerMandatory"
+                                        ng-click="formValues.invoice.fieldVisibility.isInvoiceCustomerHidden = false" />
+                                    <span></span>
+                                </label>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <br />
+            <br />
+        </div>
     </div>
 </div>

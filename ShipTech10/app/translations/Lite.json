@@ -1253,6 +1253,7 @@
     "RECON_TOLERANCE_TYPE": "Recon tolerance type",
     "TOLERANCE_LIMIT": "Tolerance limit",
     "NEED_INVOICE_REVIEW": "Need invoice review",
+    "Is_Debunker": "Is Debunker",
     "AUTO_APPROVE_MATCHED_INVOICE": "Auto approve matched invoice",
     "NEED_WARNING_WHEN_SELLER_PAYMENT_ON_HOLD": "Need warning when seller payment on hold",
     "NEED_FOR_SUBMIT_FOR_APPROVAL": "Need for submit for approval",
