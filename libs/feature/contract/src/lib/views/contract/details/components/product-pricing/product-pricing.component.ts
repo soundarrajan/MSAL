@@ -515,6 +515,13 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   }
      
   @Input() vesselId: number;
+  @Input('additionalCostForLocation') set _setAdditionalCostForLocation(additionalCostForLocation) {
+    if (!additionalCostForLocation) {
+      return;
+    }
+    this.additionalCostForLocation = additionalCostForLocation;
+  }
+
 
   @Input('contractProductIndex') set _setContractProductIndex(contractProductIndex) { 
     if (!contractProductIndex) {

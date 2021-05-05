@@ -19,6 +19,7 @@
                 disableOptionCentering 
                 [panelClass]="'location-select-container'"
                 [compareWith]="compareUomObjects"
+                (ngModelChange)="setLocationChange(contractProduct.value.location, contractProduct.key)"
                 [disabled]="formValues.status && formValues.status.name == 'Confirmed'"
                 >
                 <div [ngClass]="{'expand-select-location-container': expandLocation}">
@@ -273,6 +274,7 @@
                       [additionalCostList]="additionalCostList"
                       [costTypeList]="costTypeList"
                       [additionalCostsComponentTypes]="additionalCostsComponentTypes"
+                      [additionalCostForLocation]="additionalCostForLocation"
                       [eventsSaveButton]="eventsSubject2.asObservable()"
                       [events]="contractFormSubject.asObservable()"
                       class="col-md-6">
