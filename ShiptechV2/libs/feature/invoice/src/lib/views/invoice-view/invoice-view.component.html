@@ -9,7 +9,7 @@
                     <div *ngIf="item.name=='Details'" class="details"> 
 
                         <!-- Invoice Detail Component -->
-                        <shiptech-invoice-detail #invoiceDetails></shiptech-invoice-detail>
+                        <shiptech-invoice-detail *ngIf="displayDetailFormvalues" #invoiceDetails [detailFormvalues]='detailFormvalues'></shiptech-invoice-detail>
                     </div>
                     <div *ngIf="item.name=='Related Invoices'" class="custom-tab-container"> 
                       <shiptech-related-invoice></shiptech-related-invoice>
@@ -27,7 +27,7 @@
             <a href="#" class="link-text">Link to Back offie report</a>
           </div>
           <div matTooltip="Save" matTooltipShowDelay="500" style="padding-left: 7px;" *ngIf="!isConfirm">
-            <button  class="cust-btn blue-button mat-button-base" (click)="saveDisabled=false" mat-flat-button>
+            <button  class="cust-btn blue-button mat-button-base" (click)="detailsSave()" mat-flat-button>
                 <span style="top: -1px;position: relative;" >Save</span>
             </button>
           </div>

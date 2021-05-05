@@ -16,6 +16,8 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   _entityId;
   invoiceSubmitState:EsubmitMode;
   isConfirm=false;
+  detailFormvalues:any;
+  displayDetailFormvalues:boolean = false;
   saveDisabled=true;
   constructor(route: ActivatedRoute, private invoiceService: InvoiceDetailsService){
     this._entityId = route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
@@ -38,7 +40,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   }
 
   detailsSave(){
-    // this.invoiceDetailsComponent.saveInvoiceDetails();
+    this.invoiceDetailsComponent.saveInvoiceDetails();
     this.isConfirm = !this.isConfirm;
   }
 
@@ -53,13 +55,16 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     this.invoiceService
     .getInvoicDetails(data)
     .subscribe((response: IInvoiceDetailsItemResponse) => {
-      this.invoiceDetailsComponent.formValues = <IInvoiceDetailsItemDto>response.payload;
-      this.invoiceDetailsComponent.parseProductDetailData(this.invoiceDetailsComponent.formValues.productDetails);
-       console.log(this.invoiceDetailsComponent.parseProductDetailData);
-       this.invoiceDetailsComponent.setOrderDetailsLables(this.invoiceDetailsComponent.formValues.orderDetails);
-       this.invoiceDetailsComponent.setcounterpartyDetailsLables(this.invoiceDetailsComponent.formValues.counterpartyDetails);
-       this.invoiceDetailsComponent.setChipDatas();
-       this.setSubmitMode(response.payload.status.transactionTypeId)
+      this.displayDetailFormvalues = true;
+      this.detailFormvalues = <IInvoiceDetailsItemDto>response.payload;      
+      // this.invoiceDetailsComponent.formValues = <IInvoiceDetailsItemDto>response.payload;
+      // this.invoiceDetailsComponent.parseProductDetailData(this.invoiceDetailsComponent.formValues.productDetails);
+      // //  console.log(this.invoiceDetailsComponent.parseProductDetailData);
+      //  this.invoiceDetailsComponent.setOrderDetailsLables(this.invoiceDetailsComponent.formValues.orderDetails);
+      //  this.invoiceDetailsComponent.setcounterpartyDetailsLables(this.invoiceDetailsComponent.formValues.counterpartyDetails);
+      //  this.invoiceDetailsComponent.setChipDatas();
+        this.setSubmitMode(response.payload.status.transactionTypeId);
+      
     });
   }
 

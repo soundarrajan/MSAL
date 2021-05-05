@@ -27,7 +27,7 @@
 
                         <mat-form-field class="without-search" appearance="legacy">
                             <mat-label>Seller Invoice No.</mat-label>
-                            <input matInput placeholder="000" type="number">
+                            <input [(ngModel)]="formValues.sellerInvoiceNo" name="sellerInvoiceNo" matInput placeholder="000" type="number">
                             <!-- <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error> -->
                         </mat-form-field>
                     </div>
@@ -70,7 +70,7 @@
                     </div> -->
                     <div class="custom-form-field-with-search lightTheme">
                         <div class="d-flex">
-                            <shiptech-st-autosearch-selector [placeholder]="'Payment Terms'" [name]="'Payment Terms'" [masterType]="'paymentTerms'"></shiptech-st-autosearch-selector>
+                            <shiptech-st-autosearch-selector [placeholder]="'Payment Terms'" [name]="'Payment Terms'" [masterType]="'paymentTerms'" [bindValue]="formValues.counterpartyDetails.paymentTerm.name" (onChanged)="AC_valueChanges('paymentterms',$event)"></shiptech-st-autosearch-selector>
                         </div>
                     </div>
                 </div>
@@ -273,7 +273,7 @@
                 <readonly-details [options]="orderDetails"></readonly-details>                
                 <div class="form-fields">
                     <div class="custom-form-field-with-search lightTheme">
-                          <shiptech-st-autosearch-selector [placeholder]="'company'" [name]="'Payment company'" [masterType]="'company'"></shiptech-st-autosearch-selector>
+                          <shiptech-st-autosearch-selector [placeholder]="'company'" [name]="'Payment company'" [masterType]="'company'" (onChanged)="AC_valueChanges('company',$event)" [bindValue]="formValues.orderDetails.paymentCompany.name"></shiptech-st-autosearch-selector>
                     </div>
                     <div id="custom-form-field" class="lightTheme">
                         <mat-form-field class="without-search" appearance="legacy">
@@ -288,7 +288,7 @@
                     </div>
                     <div class="custom-form-field-with-search lightTheme">
                         <div class="d-flex">
-                            <shiptech-st-autosearch-selector [placeholder]="'carrier'" [name]="'Carrier'" [masterType]="'company'"></shiptech-st-autosearch-selector>
+                            <shiptech-st-autosearch-selector [placeholder]="'carrier'" [name]="'Carrier'" [masterType]="'company'" (onChanged)="AC_valueChanges('carrier',$event)" [bindValue]="formValues.orderDetails.carrierCompany.name"></shiptech-st-autosearch-selector>
                         </div>
                     </div>
                 </div>
@@ -319,7 +319,7 @@
                             </div>
                             <div class="custom-form-field-with-search lightTheme">
                                 <div class="d-flex">
-                                    <shiptech-st-autosearch-selector [placeholder]="'customer'" [name]="'Customer'" [masterType]="'company'"></shiptech-st-autosearch-selector>
+                                    <shiptech-st-autosearch-selector [placeholder]="'customer'" [name]="'Customer'" [masterType]="'company'" (onChanged)="AC_valueChanges('customer',$event)"></shiptech-st-autosearch-selector>
                                 </div>
                             </div>
                         </div>
@@ -342,7 +342,7 @@
                                 <div class="search-icon">
                                     <div class="img"></div>
                                 </div> -->
-                                <shiptech-st-autosearch-selector [placeholder]="'payable to'" [name]="'Payable To'" [masterType]="'payableTo'"></shiptech-st-autosearch-selector>
+                                <shiptech-st-autosearch-selector [placeholder]="'payable to'" [name]="'Payable To'" [masterType]="'payableTo'" (onChanged)="AC_valueChanges('payableto',$event)" [bindValue]="formValues.counterpartyDetails.payableTo.name"></shiptech-st-autosearch-selector>
                             </div>
                         </div>
                         <div style="padding-top: 5px;">
