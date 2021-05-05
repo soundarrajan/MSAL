@@ -225,7 +225,8 @@
                       appearance="legacy">
                     <mat-select 
                             [(ngModel)]="additionalCost.value.additionalCost"
-                            (selectionChange)="additionalCost.value.costType = setDefaultCostType(additionalCost.value.additionalCost); 
+                            (selectionChange)="setAdditionalCost($event.value, selectedTabIndex, additionalCost.key);
+                              additionalCost.value.costType = setDefaultCostType(additionalCost.value.additionalCost); 
                               resetUom(selectedTabIndex, additionalCost.key);
                               setIsAllowingNegativeAmmount(selectedTabIndex, additionalCost.key)"
                             [disableOptionCentering]="true"

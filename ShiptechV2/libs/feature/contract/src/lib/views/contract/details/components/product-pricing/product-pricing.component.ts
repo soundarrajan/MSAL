@@ -1088,6 +1088,15 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     return defaultCostType;
   }
 
+  setAdditionalCost(value, key1, key2) {
+    console.log(value);
+    this.formValues.products[key1].additionalCosts[key2].additionalCost = {
+      'id': value.additionalCostid,
+      'name': value.name
+    }
+
+  }
+
   setIsAllowingNegativeAmmount(key1, key2) {
     let additionalCost = this.formValues.products[key1].additionalCosts[key2].additionalCost;
     let findAdditionalCostComponent = _.find(this.additionalCostsComponentTypes, function(obj) {
