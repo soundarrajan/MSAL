@@ -94,7 +94,7 @@ export class PickDateAdapter extends NativeDateAdapter {
     return formattedDate;
   }
 
- 
+
   parse(value) {
     // We have no way using the native JS Date to set the parse format or locale, so we ignore these
     // parameters.
@@ -122,8 +122,8 @@ export class PickDateAdapter extends NativeDateAdapter {
   styleUrls: ['./delivery-product.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  providers: [OrderListGridViewModel, 
-              DialogService, 
+  providers: [OrderListGridViewModel,
+              DialogService,
               ConfirmationService,
               {provide: DateAdapter, useClass: PickDateAdapter},
               {provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS}]
@@ -147,67 +147,67 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
   pumpingRateUom: any;
 
 
-  @Input('finalQuantityRules') set _setFinalQuantityRules(finalQuantityRules) { 
+  @Input('finalQuantityRules') set _setFinalQuantityRules(finalQuantityRules) {
     if (!finalQuantityRules) {
       return;
-    } 
+    }
     this.finalQuantityRules = finalQuantityRules;
   }
 
-  @Input('toleranceLimits') set _setToleranceLimits(toleranceLimits) { 
+  @Input('toleranceLimits') set _setToleranceLimits(toleranceLimits) {
     if (!toleranceLimits) {
       return;
-    } 
+    }
     this.toleranceLimits = toleranceLimits;
   }
 
-  @Input('quantityCategory') set _setQuantityCategory(quantityCategory) { 
+  @Input('quantityCategory') set _setQuantityCategory(quantityCategory) {
     if (!quantityCategory) {
       return;
-    } 
+    }
     this.quantityCategory = quantityCategory;
   }
-  
-  @Input('pumpingRateUom') set _setPumpingRateUom(pumpingRateUom) { 
+
+  @Input('pumpingRateUom') set _setPumpingRateUom(pumpingRateUom) {
     if (!pumpingRateUom) {
       return;
-    } 
+    }
     this.pumpingRateUom = pumpingRateUom;
   }
 
-  @Input('uoms') set _setUoms(uoms) { 
+  @Input('uoms') set _setUoms(uoms) {
     if (!uoms) {
       return;
-    } 
+    }
     this.uoms = uoms;
     this.deliveredQuantityUoms = uoms;
   }
 
-  @Input('uomVolume') set _setUomVolume(uomVolume) { 
+  @Input('uomVolume') set _setUomVolume(uomVolume) {
     if (!uomVolume) {
       return;
-    } 
+    }
     this.uomVolume = uomVolume;
   }
 
-  @Input('uomMass') set _setUomMass(uomMass) { 
+  @Input('uomMass') set _setUomMass(uomMass) {
     if (!uomMass) {
       return;
-    } 
+    }
     this.uomMass = uomMass;
   }
 
-  @Input('conversionInfoData') set _setConversionInfoData(conversionInfoData) { 
+  @Input('conversionInfoData') set _setConversionInfoData(conversionInfoData) {
     if (!conversionInfoData) {
       return;
-    } 
+    }
     this.conversionInfoData = conversionInfoData;
   }
 
-  @Input('buttonClicked') set _setButtonClicked(buttonClicked) { 
+  @Input('buttonClicked') set _setButtonClicked(buttonClicked) {
     if (!buttonClicked) {
       return;
-    } 
+    }
     this.buttonClicked = buttonClicked;
   }
 
@@ -233,10 +233,10 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     this._entityName = value;
     this.gridViewModel.entityName = this.entityName;
   }
-     
+
   @Input() vesselId: number;
   @Input() data;
-  
+
   autocompleteVessel: knownMastersAutocomplete;
   _entityId: number;
   _entityName: string;
@@ -247,17 +247,17 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
   options: any;
   productList: any[];
   private _autocompleteType: any;
-  @Input('formValues') set _setFormValues(formValues) { 
+  @Input('formValues') set _setFormValues(formValues) {
     if (!formValues) {
       return;
-    } 
+    }
     this.formValues = formValues;
   }
 
-  @Input('deliveryProductIndex') set _setDeliveryProductIndex(deliveryProductIndex) { 
+  @Input('deliveryProductIndex') set _setDeliveryProductIndex(deliveryProductIndex) {
     if (!deliveryProductIndex) {
       return;
-    } 
+    }
     this.deliveryProductIndex = deliveryProductIndex;
     if (this.formValues.deliveryProducts[this.deliveryProductIndex]){
       this.deliveryProduct = this.formValues.deliveryProducts[this.deliveryProductIndex];
@@ -286,10 +286,13 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     if (!this.formValues.deliveryProducts[this.deliveryProductIndex].fuelManifoldTemperatureUom) {
       this.formValues.deliveryProducts[this.deliveryProductIndex].fuelManifoldTemperatureUom  = 'Celsius';
     }
+    if (this.formValues.deliveryProducts[this.deliveryProductIndex].deliveredVolume) {
+      this.formValues.deliveryProducts[this.deliveryProductIndex].deliveredVolume = this.quantityFormatValue(this.formValues.deliveryProducts[this.deliveryProductIndex].deliveredVolume);
+    }
     this.setDeliveredQuantityUomList(this.deliveryProductIndex);
   }
 
- 
+
   private eventsSubscription: Subscription;
   @Input() events: Observable<void>;
   @Input() events1: Observable<void>;
@@ -332,7 +335,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
 
   }
 
-  ngOnInit(){  
+  ngOnInit(){
     this.entityName = 'Delivery';
     this.eventsSubscription = this.events.subscribe((data) => this.setDeliveryForm(data));
     this.events1Subscription = this.events1.subscribe((data) => this.setConversionDataInfo(data));
@@ -365,8 +368,8 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     //this.changeDetectorRef.detectChanges();
   }
 
-  
-  
+
+
   getHeaderNameSelector(): string {
     switch (this._autocompleteType) {
       case knownMastersAutocomplete.products:
@@ -398,7 +401,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     this.physicalSupplierList = await this.legacyLookupsDatabase.getPhysicalSupplierList();
   }
 
-  
+
   selectorPhysicalSupplierSelectionChange(
     selection: IDisplayLookupDto
   ): void {
@@ -409,8 +412,8 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
         'id': selection.id,
         'name': selection.name
       };
-      this.formValues.deliveryProducts[this.deliveryProductIndex].physicalSupplier = obj; 
-      this.changeDetectorRef.detectChanges();   
+      this.formValues.deliveryProducts[this.deliveryProductIndex].physicalSupplier = obj;
+      this.changeDetectorRef.detectChanges();
     }
   }
 
@@ -454,7 +457,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
   }
 
   ngAfterViewInit(): void {
-  
+
   }
 
   compareUomObjects(object1: any, object2: any) {
@@ -467,7 +470,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
 
   valueChange(value){
     this.formValues.deliveryProducts[this.deliveryProductIndex].confirmedQuantityAmount  = value;
-  
+
   }
 
   setVarianceQty(qtyToChange, rule) {
@@ -675,7 +678,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     }
 
     const currentFieldValuesProps = Object.keys(currentFieldValues);
-    for (let fieldKey of currentFieldValuesProps) { 
+    for (let fieldKey of currentFieldValuesProps) {
       const fieldVal = currentFieldValues[fieldKey];
       conversionInfo.uomConversionFactors.forEach((factVal, factKey) => {
         if (fieldVal.uom == factVal.sourceUom.name) {
@@ -880,11 +883,11 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
       let beValue = `${moment($event.value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
       if (field == 'pricingEventDate') {
         this.isPricingEventDateInvalid = false;
-      } 
+      }
     } else {
       if (field == 'pricingEventDate') {
         this.isPricingEventDateInvalid = true;
-      } 
+      }
       this.toastr.error('Please enter the correct format');
     }
 
@@ -955,5 +958,5 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
   }
 
 
-  
+
 }

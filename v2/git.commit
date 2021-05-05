@@ -1,9 +1,7 @@
-﻿commit 22c8a172c2537360125b77eff629c53c679b0a6f
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Wed May 5 15:04:08 2021 +0000
+﻿commit 82f63afbdd6cd7d0f2791f29f89016ca1ce06fae
+Author: Edwin Francis <edwin.f@Inatech.com>
+Date:   Wed May 5 21:01:26 2021 +0530
 
-    Merged PR 10427: #29823 - All bunkering plan grid list view based on vessel changes issue has fixed
-    
-    Related work items: #29823
+    Delivered volume quantity uom mandatory validation check for conversion issue fix - 32099. #32099
 
 branch: master
