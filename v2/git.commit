@@ -1,7 +1,9 @@
-﻿commit b95d0daf53dc80d99c96c259eef33c5004bf7b25
-Author: Prabaharan P <prabaharan.p@Inatech.com>
-Date:   Tue May 4 20:57:56 2021 +0530
+﻿commit 5e4ea0e90ed99d92afd1cdf57a70d64b685ebd40
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Wed May 5 09:02:55 2021 +0000
 
-    delivery screen validation bug fixed-27474
+    Merged PR 10403: #32110 - scrubber date null validation issue has fixed
+    
+    Related work items: #32110
 
 branch: master

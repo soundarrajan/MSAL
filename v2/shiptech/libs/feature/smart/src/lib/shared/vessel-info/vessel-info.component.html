@@ -12,7 +12,7 @@
       <tr>
         <td class="label-text">Scrubber Date:</td>
         <td class="value" *ngIf="(bunkerPlanHeaderDetail?.scrubberDate)?.indexOf('0001')==-1">{{bunkerPlanHeaderDetail?.scrubberDate | date: 'dd/MM/yyyy'}}</td>
-        <td class="value" *ngIf="(bunkerPlanHeaderDetail?.scrubberDate)?.indexOf('0001')>-1">N/A</td>
+        <td class="value" *ngIf="((bunkerPlanHeaderDetail?.scrubberDate)?.indexOf('0001')>-1) || !(bunkerPlanHeaderDetail?.scrubberDate)">N/A</td>
         <td class="separator">|</td>
         <td class="label-text">Ownership:</td>
         <td class="value">{{bunkerPlanHeaderDetail?.ownership}}</td>
