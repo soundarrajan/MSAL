@@ -515,6 +515,13 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   }
      
   @Input() vesselId: number;
+  @Input('additionalCostForLocation') set _setAdditionalCostForLocation(additionalCostForLocation) {
+    if (!additionalCostForLocation) {
+      return;
+    }
+    this.additionalCostForLocation = additionalCostForLocation;
+  }
+
 
   @Input('contractProductIndex') set _setContractProductIndex(contractProductIndex) { 
     if (!contractProductIndex) {
@@ -979,6 +986,10 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     return object1 && object2 && object1.id == object2.id;
   }
 
+  compareAdditionalCostObjects(object1: any, object2: any) {
+    return object1 && object2 && object1.additionalCostid == object2.id;
+  }
+
   
   doFiltering(addCostCompTypes, cost, currentCost) {
     var costType = null;
@@ -1075,6 +1086,15 @@ export class ProductPricing extends DeliveryAutocompleteComponent
         }
     });
     return defaultCostType;
+  }
+
+  setAdditionalCost(value, key1, key2) {
+    console.log(value);
+    this.formValues.products[key1].additionalCosts[key2].additionalCost = {
+      'id': value.additionalCostid,
+      'name': value.name
+    }
+
   }
 
   setIsAllowingNegativeAmmount(key1, key2) {
