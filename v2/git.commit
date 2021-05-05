@@ -1,9 +1,7 @@
-﻿commit 0690819713aa14e2c855fcc3d514be538a7b8f66
+﻿commit 08385d9f4925aa33b812cadfcb5a624b80ff9685
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed May 5 11:45:53 2021 +0000
+Date:   Wed May 5 12:38:36 2021 +0000
 
-    Merged PR 10417: Mapped vesselName, port, eta, etb from Shiptech10.Api.Delivery/api/delivery/s...
-    
-    Mapped vesselName, prot, eta, etb from Shiptech10.Api.Delivery/api/delivery/summary
+    Merged PR 10419: Added api/masters/additionalcosts/listforlocation when user select a location
 
 branch: master
