@@ -1,7 +1,9 @@
-﻿commit 08385d9f4925aa33b812cadfcb5a624b80ff9685
+﻿commit f9559f24dbe986be2bb9be6d5c6428ae7d2e34cd
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed May 5 12:38:36 2021 +0000
+Date:   Wed May 5 13:48:20 2021 +0000
 
-    Merged PR 10419: Added api/masters/additionalcosts/listforlocation when user select a location
+    Merged PR 10423: Disabled all the Cost added from the location based on the locationAdditional...
+    
+    Disabled all the Cost added from the location based on the locationAdditionalCostId
 
 branch: master

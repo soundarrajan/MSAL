@@ -1247,7 +1247,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
               extras: this.additionalCostForLocation[locationId][i].extrasPercentage,
               currency: this.additionalCostForLocation[locationId][i].currency,
               comments: this.additionalCostForLocation[locationId][i].costDescription,
-              isFromLocation: true
+              locationAdditionalCostId: this.additionalCostForLocation[locationId][i].locationid
             }
             this.formValues.products[this.selectedTabIndex].additionalCosts.push(additionalCostLine);
 
