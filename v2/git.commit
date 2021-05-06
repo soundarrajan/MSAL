@@ -1,9 +1,9 @@
-﻿commit 3efc28287ad93a03c3f96bfaca15917cf6d8df0e
-Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
-Date:   Wed May 5 15:39:57 2021 +0000
+﻿commit 559ad7ac58c961d4bfde87d0ca2c96ce198d60d0
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Thu May 6 08:31:38 2021 +0000
 
-    Merged PR 10429: To fix save api and lookup binding
+    Merged PR 10443: Fixed defaulting additional cost value
     
-    To fix save api and lookup binding
+    Fixed defaulting additional cost value
 
 branch: master
