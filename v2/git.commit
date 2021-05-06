@@ -1,9 +1,9 @@
-﻿commit ee135b54798bce16f4bea169143a990b7313a5e0
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu May 6 09:08:39 2021 +0000
+﻿commit ca9cf9b44079e5d6ad109e56c643ffea3e8551d5
+Author: Subhashini Vasanthakumar <subhashini.k@inatech.com>
+Date:   Thu May 6 09:37:56 2021 +0000
 
-    Merged PR 10446: Fixed delivery reconMatch
+    Merged PR 10447: added HSFO 0.5 qty for Unpumpables
     
-    Fixed delivery reconMatch
+    added HSFO 0.5 qty for Unpumpables
 
 branch: master
