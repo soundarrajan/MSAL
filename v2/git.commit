@@ -1,9 +1,9 @@
-﻿commit ef463e44e3bdc1131001ffccb1a125bc9f94cce2
+﻿commit 6e1a0f07c4c7894b3a75158f7c8c017f54edc24d
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu May 6 13:29:20 2021 +0000
+Date:   Thu May 6 13:32:43 2021 +0000
 
-    Merged PR 10465: Added pricing on holiday rules section in formula pop-up
+    Merged PR 10466: Fixed ui for conversion factor value
     
-    Added pricing on holiday rules section in formula pop-up
+    Fixed ui for conversion factor value
 
 branch: master
