@@ -155,7 +155,11 @@
                     </div>
                     <div class="block">
                         <div class="title">Vol UOM</div>
-                        <div class="value" *ngIf="formValues.deliveryProducts[deliveryProductIndex].convFactorValue && formValues.deliveryProducts[deliveryProductIndex].convFactorVolumeUom">
+                        <div  class="value conversion-factor-value" 
+                            [matTooltip]="formValues.deliveryProducts[deliveryProductIndex].convFactorValue"
+                            [matTooltipPosition]="'above'"
+                            matTooltipClass="custom-tooltip"
+                            *ngIf="formValues.deliveryProducts[deliveryProductIndex].convFactorValue && formValues.deliveryProducts[deliveryProductIndex].convFactorVolumeUom">
                             {{formValues.deliveryProducts[deliveryProductIndex].convFactorValue}}
                             {{formValues.deliveryProducts[deliveryProductIndex].convFactorVolumeUom.name}}
                         </div>
