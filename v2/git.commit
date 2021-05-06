@@ -1,9 +1,9 @@
-﻿commit e3479033a86f80d52036a2cc445eb394a539b9de
-Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
-Date:   Thu May 6 11:35:36 2021 +0000
+﻿commit ef463e44e3bdc1131001ffccb1a125bc9f94cce2
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Thu May 6 13:29:20 2021 +0000
 
-    Merged PR 10455: Autocomplete API changes in invoice update
+    Merged PR 10465: Added pricing on holiday rules section in formula pop-up
     
-    Autocomplete API changes in invoice update
+    Added pricing on holiday rules section in formula pop-up
 
 branch: master
