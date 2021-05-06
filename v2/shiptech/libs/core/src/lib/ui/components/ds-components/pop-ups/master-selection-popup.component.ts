@@ -17,7 +17,7 @@ import { catchError, map } from 'rxjs/operators';
             <div class="header-btn">
             <button class="blue-button h-25" style="cursor:pointer;" (click)="selectItem();">Select</button>
             <span class="seperator-line"></span>
-            <span class="close" style="cursor:pointer;" [mat-dialog-close]="true"></span>
+            <span class="close" style="cursor:pointer;" (click)="closeDialog()"></span>
             </div>
     </div>
     <mat-dialog-content>
@@ -76,7 +76,7 @@ export class MasterSelectionDialog {
     ];
 
     closeDialog() {
-        this.dialogRef.close();
+        this.dialogRef.close('close');
     }
 
     loadCompanyGridOption(){

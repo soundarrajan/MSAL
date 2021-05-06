@@ -14,6 +14,7 @@ import { InvoiceDetailsService } from '../../../services/invoice-details.service
 import { EsubmitMode } from '../invoice-view.component';
 import { ProductDetailsModalComponent } from './component/product-details-modal/product-details-modal.component';
 import { ToastrService } from 'ngx-toastr';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 
 @Component({
   selector: 'shiptech-invoice-detail',
@@ -29,7 +30,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   private rowData_aggrid_pd = [];
   private rowData_aggrid_ac = [];
   invoiceSubmitMode:EsubmitMode;
-  
+  dateFormat;
   emptyStringVal = '--';
   emptyNumberVal = '00';
   invoice_types =[
@@ -120,7 +121,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   }
 }
   //Default Values - strats
-  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private invoiceService: InvoiceDetailsService,  public dialog: MatDialog,private toastrService: ToastrService,) {
+  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private invoiceService: InvoiceDetailsService,  public dialog: MatDialog,
+    private toastrService: ToastrService,private format: TenantFormattingService) {
     iconRegistry.addSvgIcon('data-picker-gray',sanitizer.bypassSecurityTrustResourceUrl('../../assets/customicons/calendar-dark.svg'));
     this.setupGrid();
   }
@@ -128,6 +130,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.buildProductDetilsGrid();
     this.getCounterPartiesList();
+    this.dateFormat = this.format.dateFormat.replace('DDD', 'E');
+    console.log("dteFormat",this.format.dateFormat.replace('DDD', 'ddd'))
   }
   private setupGrid(){
     this.gridOptions_ac = <GridOptions>{
@@ -476,7 +480,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     this.orderDetails.contents[0].value = orderDetails?.vesselName? orderDetails?.vesselName:this.emptyStringVal;
     this.orderDetails.contents[1].value = orderDetails?.vesselCode? orderDetails?.vesselCode:this.emptyStringVal;
     this.orderDetails.contents[2].value = orderDetails?.portName? orderDetails?.portName:this.emptyStringVal;
-    this.orderDetails.contents[3].value = orderDetails?.eta? orderDetails?.eta:this.emptyStringVal;
+    this.orderDetails.contents[3].value = orderDetails?.eta? moment(orderDetails?.eta).format(this.format.dateFormat.replace('DDD', 'ddd').replace('dd/', 'DD/')):this.emptyStringVal;
 
     this.formValues.orderDetails.frontOfficeComments = this.formValues.orderDetails.frontOfficeComments?.trim() ==''? null :this.formValues.orderDetails.frontOfficeComments;
     this.formValues.backOfficeComments = this.formValues.backOfficeComments?.trim() ==''? null :this.formValues.backOfficeComments;
@@ -554,9 +558,12 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     };
     if(type === 'company'){
       this.formValues.orderDetails.paymentCompany = eventValueObject;
-      this.formValues.orderDetails.paymentCompany.displayName = event.displayName ? event.displayName : event.name ? event.name : null;
+      // this.formValues.orderDetails.paymentCompany.displayName = event.displayName ? event.displayName : event.name ? event.name : null;
+      // this.formValues.orderDetails.paymentCompany.code = event.code ? event.code : '';
     }else if(type === 'carrier'){
       this.formValues.orderDetails.carrierCompany = eventValueObject;
+      // this.formValues.orderDetails.carrierCompany.displayName = event.displayName ? event.displayName : '';
+      // this.formValues.orderDetails.carrierCompany.code = event.code ? event.code : '';
     }else if(type === 'customer'){
       
     }else if(type === 'payableto'){

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild,ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { KnownInvoiceRoutes } from '../../known-invoice.routes';
 import { IInvoiceDetailsItemDto, IInvoiceDetailsItemRequest, IInvoiceDetailsItemResponse } from '../../services/api/dto/invoice-details-item.dto';
@@ -19,7 +19,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   detailFormvalues:any;
   displayDetailFormvalues:boolean = false;
   saveDisabled=true;
-  constructor(route: ActivatedRoute, private invoiceService: InvoiceDetailsService){
+  constructor(route: ActivatedRoute, private invoiceService: InvoiceDetailsService,private changeDetectorRef: ChangeDetectorRef,){
     this._entityId = route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
   }
   selectedTab = 0;
@@ -64,7 +64,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
       //  this.invoiceDetailsComponent.setcounterpartyDetailsLables(this.invoiceDetailsComponent.formValues.counterpartyDetails);
       //  this.invoiceDetailsComponent.setChipDatas();
         this.setSubmitMode(response.payload.status.transactionTypeId);
-      
+        this.changeDetectorRef.detectChanges();
     });
   }
 

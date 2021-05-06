@@ -1,11 +1,9 @@
-﻿commit dac7d4e3b500b421f39acc9c4276844482587ab7
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Thu May 6 10:20:05 2021 +0000
+﻿commit e3479033a86f80d52036a2cc445eb394a539b9de
+Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
+Date:   Thu May 6 11:35:36 2021 +0000
 
-    Merged PR 10450: View all bplan load on click issue resolved
+    Merged PR 10455: Autocomplete API changes in invoice update
     
-    View all bplan load on click issue resolved
-    
-    Related work items: #29823
+    Autocomplete API changes in invoice update
 
 branch: master

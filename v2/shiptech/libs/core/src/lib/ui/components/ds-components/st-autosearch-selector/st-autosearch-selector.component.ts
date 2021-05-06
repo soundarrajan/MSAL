@@ -66,10 +66,12 @@ export class StAutosearchSelectorComponent implements OnInit {
         });
 
         dialogRef.afterClosed().subscribe(result => {
+          if(result != 'close'){
             this.popupOpen = false;
             this.selected = <any>result.data;
             this.onChanged.emit(this.selected);
             this.myControl.setValue(result?.data?.name);
+          }            
         });
   }
 
@@ -87,17 +89,15 @@ export class StAutosearchSelectorComponent implements OnInit {
   getOptionData(){
     var requestParam={};var URL='';
     if(this.masterType == EstAutoSearchType.company){
-      requestParam = {"Payload":{"Filters":[{"ColumnName":"CounterpartyTypes","Value":2}]}}; 
-      URL = 'api/masters/counterparties/listByTypesAutocomplete';
+      requestParam = {"Order":null,"PageFilters":{"Filters":[]},"SortList":{"SortList":[]},"Filters":[],"SearchText":null,"Pagination":{}}; 
+      URL = 'api/masters/companies/list';
     }else if(this.masterType == EstAutoSearchType.carrier){
-      requestParam = {"Payload":{"Filters":[{"ColumnName":"CounterpartyTypes","Value":2}]}}; 
-      URL = 'api/masters/counterparties/listByTypesAutocomplete';
+      requestParam = {"Order":null,"PageFilters":{"Filters":[]},"SortList":{"SortList":[]},"Filters":[],"SearchText":null,"Pagination":{}}; 
+      URL = 'api/masters/companies/list';
     }else if(this.masterType == EstAutoSearchType.paymentTerms){
-      requestParam = {"Order":null,"PageFilters":{"Filters":[]},"SortList":{"SortList":[]},"Filters":[],"SearchText":null,"Pagination":{"Skip":0,"Take":25}}; 
+      requestParam = {"Order":null,"PageFilters":{"Filters":[]},"SortList":{"SortList":[]},"Filters":[],"SearchText":null,"Pagination":{}}; 
       URL = 'api/masters/paymentterm/list';
     }else if(this.masterType == EstAutoSearchType.payableTo){
-      // requestParam = {"Order":null,"PageFilters":{"Filters":[]},"SortList":{"SortList":[]},"Filters":[{"ColumnName":"CounterpartyTypes","Value":"2, 11"}],"SearchText":null,"Pagination":{"Skip":0,"Take":25}}
-      // URL = 'api/masters/counterparties/listByTypes';
       requestParam = {"Payload":{"Filters":[{"ColumnName":"CounterpartyTypes","Value":"2,11"}]}}; 
       URL = 'api/masters/counterparties/listByTypesAutocomplete';
     }
