@@ -17,7 +17,7 @@
                     <div class="badge-header-v2">
                         <span class="label_text" matTooltip={{formValues.createdByUser.displayName}}>Created by: <b>{{formValues.createdByUser.displayName}}</b></span>
                         <span class="border_line"></span>
-                        <span class="label_text" matTooltip={{formValues.createdAt}}>On: <b>{{formValues.createdAt}}</b></span>
+                        <span class="label_text" matTooltip={{formValues.createdAt}}>On: <b>{{formValues.createdAt | date: this.dateFormat}}</b></span>
                     </div>
                 </div>
             </div>            
@@ -288,7 +288,7 @@
                     </div>
                     <div class="custom-form-field-with-search lightTheme">
                         <div class="d-flex">
-                            <shiptech-st-autosearch-selector [placeholder]="'carrier'" [name]="'Carrier'" [masterType]="'company'" (onChanged)="AC_valueChanges('carrier',$event)" [bindValue]="formValues.orderDetails.carrierCompany.name"></shiptech-st-autosearch-selector>
+                            <shiptech-st-autosearch-selector [placeholder]="'carrier'" [name]="'Carrier'" [masterType]="'carrier'" (onChanged)="AC_valueChanges('carrier',$event)" [bindValue]="formValues.orderDetails.carrierCompany.name"></shiptech-st-autosearch-selector>
                         </div>
                     </div>
                 </div>
