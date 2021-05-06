@@ -110,7 +110,7 @@ export class DeliveryApi implements IDeliveryApiService {
       { payload: request }
     ).pipe(
       map((body: any) => body.payload),
-      catchError(() => of('Error, could not load the delivery'))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
 
@@ -123,7 +123,7 @@ export class DeliveryApi implements IDeliveryApiService {
       { payload: request }
     ).pipe(
       map((body: any) => body.payload),
-      catchError(() => of('Error, could not load the related deliveries'))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
 
@@ -136,7 +136,7 @@ export class DeliveryApi implements IDeliveryApiService {
       { payload: request }
     ).pipe(
       map((body: any) => body.payload),
-      catchError(() => of('Error, could not load the related deliveries'))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
 
@@ -149,7 +149,7 @@ export class DeliveryApi implements IDeliveryApiService {
       { payload: request }
     ).pipe(
       map((body: any) => body.payload),
-      catchError(() => of('Error, could not load the related deliveries'))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
 
@@ -161,7 +161,7 @@ export class DeliveryApi implements IDeliveryApiService {
       `${this._apiUrl}/${DeliveryApiPaths.getDeliverySpecParameters()}`, request
     ).pipe(
       map((body: any) => body.payload),
-      catchError(() => of('Error, could not load the related deliveries'))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
 
@@ -173,7 +173,7 @@ export class DeliveryApi implements IDeliveryApiService {
       `${this._apiUrl}/${DeliveryApiPaths.getDeliveryQuantityParameters()}`, request
     ).pipe(
       map((body: any) => body.payload),
-      catchError(() => of('Error, could not load the related deliveries'))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
 
@@ -186,7 +186,7 @@ export class DeliveryApi implements IDeliveryApiService {
       { payload: request }
     ).pipe(
       map((body: any) => body.payload),
-      catchError(() => of('Error, could not load the related deliveries'))
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
 

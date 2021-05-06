@@ -1,9 +1,9 @@
-﻿commit 559ad7ac58c961d4bfde87d0ca2c96ce198d60d0
+﻿commit ee135b54798bce16f4bea169143a990b7313a5e0
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu May 6 08:31:38 2021 +0000
+Date:   Thu May 6 09:08:39 2021 +0000
 
-    Merged PR 10443: Fixed defaulting additional cost value
+    Merged PR 10446: Fixed delivery reconMatch
     
-    Fixed defaulting additional cost value
+    Fixed delivery reconMatch
 
 branch: master

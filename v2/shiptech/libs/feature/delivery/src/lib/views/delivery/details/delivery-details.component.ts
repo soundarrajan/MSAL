@@ -948,7 +948,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     )
     .subscribe((response: any) => {
       if (typeof response == 'string') {
-        this.toastrService.error('An error has occurred!');
+        this.toastrService.error(response);
       } else {
         if (typeof this.formValues.temp == 'undefined') {
           this.formValues.temp = {};
@@ -1077,7 +1077,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     )
     .subscribe((response: any) => {
         if (typeof response == 'string') {
-          this.toastrService.error('An error has occurred!');
+          this.toastrService.error(response);
         } else {
           response.forEach((val, key) => {
             this.relatedDeliveries.forEach((val2, key2) => {
@@ -1435,6 +1435,14 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         if (getColor == 'amber') {
           product.reconMatch = {
             'id': 3
+          }
+        } else if (getColor == 'green') {
+          product.reconMatch = {
+            'id': 1
+          }
+        } else {
+          product.reconMatch = {
+            'id': 2
           }
         }
 
