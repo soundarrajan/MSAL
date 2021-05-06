@@ -76,6 +76,8 @@ export class AllBunkeringPlanComponent implements OnInit {
     this.localService.getBunkerPlanLog(this.requestPayload).subscribe((data)=> {
       console.log('bunker plan Log',data);
       this.bunkerPlanLogDetail = (data?.payload && data?.payload.length)? data.payload: {};
+      let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
+      titleEle.click();
     })
   }
 

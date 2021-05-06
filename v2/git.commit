@@ -1,9 +1,11 @@
-﻿commit ca9cf9b44079e5d6ad109e56c643ffea3e8551d5
-Author: Subhashini Vasanthakumar <subhashini.k@inatech.com>
-Date:   Thu May 6 09:37:56 2021 +0000
+﻿commit dac7d4e3b500b421f39acc9c4276844482587ab7
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Thu May 6 10:20:05 2021 +0000
 
-    Merged PR 10447: added HSFO 0.5 qty for Unpumpables
+    Merged PR 10450: View all bplan load on click issue resolved
     
-    added HSFO 0.5 qty for Unpumpables
+    View all bplan load on click issue resolved
+    
+    Related work items: #29823
 
 branch: master
