@@ -1088,6 +1088,38 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     return defaultCostType;
   }
 
+  setAdditionalCostLine(additionalCost, key1, key2) {
+    let locationId = 0, additionalCostLine;
+    if (this.formValues.products[key1].location) {
+      locationId = this.formValues.products[key1].location.id;
+    }
+    
+    this.additionalCostForLocation[locationId].forEach((v, k) => {
+      if (v.additionalCostid == additionalCost.id) {
+        additionalCostLine = v;
+      }
+    });
+    this.formValues.products[key1].additionalCosts[key2].costType = additionalCostLine.costType;
+    if (additionalCostLine.amount) {
+      this.formValues.products[key1].additionalCosts[key2].amount = this.amountFormatValue(additionalCostLine.amount);
+    } else {
+      this.formValues.products[key1].additionalCosts[key2].amount = null;
+    }
+    this.formValues.products[key1].additionalCosts[key2].uom = additionalCostLine.priceUom;
+    if (additionalCostLine.extrasPercentage) {
+      this.formValues.products[key1].additionalCosts[key2].extras = additionalCostLine.extrasPercentage;
+    } else {
+      this.formValues.products[key1].additionalCosts[key2].extras = null;
+    }
+    if (additionalCostLine.currency) {
+      this.formValues.products[key1].additionalCosts[key2].currency = additionalCostLine.currency;
+    } else {
+      this.formValues.products[key1].additionalCosts[key2].currency = this.generalTenantSettings.tenantFormats.currency;
+    }
+    this.formValues.products[key1].additionalCosts[key2].comments = additionalCostLine.costDescription;
+    console.log(additionalCostLine);
+  }
+
   setAdditionalCost(value, key1, key2) {
     console.log(value);
     this.formValues.products[key1].additionalCosts[key2].additionalCost = {
