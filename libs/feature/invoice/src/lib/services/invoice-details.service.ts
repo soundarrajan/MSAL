@@ -27,8 +27,32 @@ export class InvoiceDetailsService extends BaseStoreService
     return this.api.updateInvoiceItem(gridRequest);
   }
   @ObservableException()
+  approveInvoiceItem( gridRequest : IInvoiceDetailsItemRequest ): Observable<IInvoiceDetailsItemResponse> {
+    return this.api.approveInvoiceItem(gridRequest);
+  }
+  @ObservableException()
   productListOnInvoice( gridRequest :any ): Observable<any> {
     return this.api.productListOnInvoice(gridRequest);
+  }
+  @ObservableException()
+  submitapproval( gridRequest :any ): Observable<any> {
+    return this.api.submitapproval(gridRequest);
+  }
+  @ObservableException()
+  cancelInvoiceItem( gridRequest :any ): Observable<any> {
+    return this.api.cancelInvoiceItem(gridRequest);
+  }
+  @ObservableException()
+  acceptInvoiceItem( gridRequest :any ): Observable<any> {
+    return this.api.acceptInvoiceItem(gridRequest);
+  }
+  @ObservableException()
+  revertInvoiceItem( gridRequest :any ): Observable<any> {
+    return this.api.revertInvoiceItem(gridRequest);
+  }
+  @ObservableException()
+  rejectInvoiceItem( gridRequest :any ): Observable<any> {
+    return this.api.rejectInvoiceItem(gridRequest);
   }
 
   ngOnDestroy(): void {
