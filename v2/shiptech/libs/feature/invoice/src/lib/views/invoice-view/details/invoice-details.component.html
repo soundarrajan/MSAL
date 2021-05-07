@@ -70,7 +70,7 @@
                     </div> -->
                     <div class="custom-form-field-with-search lightTheme">
                         <div class="d-flex">
-                            <shiptech-st-autosearch-selector [placeholder]="'Payment Terms'" [name]="'Payment Terms'" [masterType]="'paymentTerms'" [bindValue]="formValues.counterpartyDetails.paymentTerm.name" (onChanged)="AC_valueChanges('paymentterms',$event)"></shiptech-st-autosearch-selector>
+                            <shiptech-st-autosearch-selector [placeholder]="'Payment Terms'" [name]="'Payment Terms'" [required] = "'true'" [masterType]="'paymentTerms'" [bindValue]="formValues.counterpartyDetails.paymentTerm.name" (onChanged)="AC_valueChanges('paymentterms',$event)"></shiptech-st-autosearch-selector>
                         </div>
                     </div>
                 </div>
@@ -273,7 +273,7 @@
                 <readonly-details [options]="orderDetails"></readonly-details>                
                 <div class="form-fields">
                     <div class="custom-form-field-with-search lightTheme">
-                          <shiptech-st-autosearch-selector [placeholder]="'company'" [name]="'Payment company'" [masterType]="'company'" (onChanged)="AC_valueChanges('company',$event)" [bindValue]="formValues.orderDetails.paymentCompany.name"></shiptech-st-autosearch-selector>
+                          <shiptech-st-autosearch-selector [placeholder]="'company'" [name]="'Payment company'" [required] = "'true'" [masterType]="'company'" (onChanged)="AC_valueChanges('company',$event)" [bindValue]="formValues.orderDetails.paymentCompany.name"></shiptech-st-autosearch-selector>
                     </div>
                     <div id="custom-form-field" class="lightTheme">
                         <mat-form-field class="without-search" appearance="legacy">

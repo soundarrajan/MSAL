@@ -42,7 +42,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
 
   detailsSave(){
     this.invoiceDetailsComponent.saveInvoiceDetails();
-    this.isConfirm = !this.isConfirm;
+    // this.isConfirm = !this.isConfirm;
   }
   invoiceOptions(options){
     this.invoiceDetailsComponent.invoiceOptionSelected(options);

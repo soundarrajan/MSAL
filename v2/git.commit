@@ -1,9 +1,9 @@
-﻿commit 502816b6c59d8abea38254a76d65ee44f76bcdd3
-Author: Padmashree S <padmashree.s@inatech.com>
-Date:   Fri May 7 18:06:57 2021 +0530
+﻿commit 6712d20874b475fb0387dfae33d9cb83b259b71d
+Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
+Date:   Fri May 7 14:58:35 2021 +0000
 
-    Delivery screen - defects fix
+    Merged PR 10513: Validations for Invoice form
     
-    Delivery screen - defects fix
+    Validations for Invoice form
 
 branch: master
