@@ -282,18 +282,49 @@ export class EventBasedContinuous extends DeliveryAutocompleteComponent
 
 
 
-  calendarOptionChange(ob: MatCheckboxChange, object, id, name) {
+
+  calendarOptionChange(ob: MatCheckboxChange, object, id, name, day) {
     console.log("checked: " + ob.checked);
     if (ob.checked) {
-      if (typeof object == 'undefined') {
+      if (typeof object == 'undefined' || !object) {
         object = {
           'id': id,
           'name': name
         }
-        this.changeDetectorRef.detectChanges();
       }
       object.id = id;
       object.name = name;
+      if (day == 'Sunday') {
+        this.formValues.pricingScheduleOptionEventBasedContinuous.sundayHolidayRule = _.cloneDeep(object);
+      } else if (day == 'Monday') {
+        this.formValues.pricingScheduleOptionEventBasedContinuous.mondayHolidayRule = _.cloneDeep(object);
+      } else if (day == 'Tuesday') {
+        this.formValues.pricingScheduleOptionEventBasedContinuous.tuesdayHolidayRule = _.cloneDeep(object);
+      } else if (day == 'Wednesday') {
+        this.formValues.pricingScheduleOptionEventBasedContinuous.wednesdayHolidayRule =  _.cloneDeep(object);
+      } else if (day == 'Thursday') {
+        this.formValues.pricingScheduleOptionEventBasedContinuous.thursdayHolidayRule =  _.cloneDeep(object);
+      } else if (day == 'Friday') {
+        this.formValues.pricingScheduleOptionEventBasedContinuous.fridayHolidayRule =  _.cloneDeep(object);
+      } else if (day == 'Saturday') {
+        this.formValues.pricingScheduleOptionEventBasedContinuous.saturdayHolidayRule =  _.cloneDeep(object);
+      }
+    } else {
+      if (day == 'Sunday') {
+        this.formValues.pricingScheduleOptionEventBasedContinuous.sundayHolidayRule = null;
+      } else if (day == 'Monday') {
+        this.formValues.pricingScheduleOptionEventBasedContinuous.mondayHolidayRule = null;
+      } else if (day == 'Tuesday') {
+        this.formValues.pricingScheduleOptionEventBasedContinuous.tuesdayHolidayRule = null;
+      } else if (day == 'Wednesday') {
+        this.formValues.pricingScheduleOptionEventBasedContinuous.wednesdayHolidayRule =  null;
+      } else if (day == 'Thursday') {
+        this.formValues.pricingScheduleOptionEventBasedContinuous.thursdayHolidayRule =  null;
+      } else if (day == 'Friday') {
+        this.formValues.pricingScheduleOptionEventBasedContinuous.fridayHolidayRule =  null;
+      } else if (day == 'Saturday') {
+        this.formValues.pricingScheduleOptionEventBasedContinuous.saturdayHolidayRule =  null;
+      }
     }
   }
 
