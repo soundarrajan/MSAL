@@ -23,6 +23,12 @@ export namespace InvoiceApiPaths {
   export const getInvoiceItem = () => `api/invoice/get`;
   export const updateInvoiceItem = () => `api/invoice/update`;
   export const productListOnInvoice = () => `api/invoice/deliveriesToBeInvoicedList`;
+  export const submitapproval = () => `api/invoice/submitForApproval`;
+  export const cancelInvoiceItem = () => `api/invoice/cancel`;
+  export const acceptInvoiceItem = () => `api/invoice/accept`;
+  export const revertInvoiceItem = () => `api/invoice/revert`;
+  export const rejectInvoiceItem = () => `api/invoice/reject`;
+  export const approveInvoiceItem = () => `api/invoice/approve`;
 }
 
 @Injectable({
@@ -85,6 +91,59 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
     request ): Observable<any> {
     return this.http.post(
       `${this._apiUrl}/${InvoiceApiPaths.productListOnInvoice()}`, 
+      request );
+  }
+  @ObservableException()
+  approveInvoiceItem(
+    request: IInvoiceDetailsItemRequest
+  ): Observable<IInvoiceDetailsItemResponse> {
+    return this.http.post<IInvoiceDetailsItemResponse>(
+      `${this._apiUrl}/${InvoiceApiPaths.approveInvoiceItem()}`, 
+      request );
+  }
+
+  @ObservableException()
+  submitapproval(
+    request: IInvoiceDetailsItemRequest
+  ): Observable<IInvoiceDetailsItemResponse> {
+    return this.http.post<IInvoiceDetailsItemResponse>(
+      `${this._apiUrl}/${InvoiceApiPaths.submitapproval()}`, 
+      request );
+  }
+
+  @ObservableException()
+  cancelInvoiceItem(
+    request: IInvoiceDetailsItemRequest
+  ): Observable<IInvoiceDetailsItemResponse> {
+    return this.http.post<IInvoiceDetailsItemResponse>(
+      `${this._apiUrl}/${InvoiceApiPaths.cancelInvoiceItem()}`, 
+      request );
+  }
+
+  @ObservableException()
+  acceptInvoiceItem(
+    request: IInvoiceDetailsItemRequest
+  ): Observable<IInvoiceDetailsItemResponse> {
+    return this.http.post<IInvoiceDetailsItemResponse>(
+      `${this._apiUrl}/${InvoiceApiPaths.acceptInvoiceItem()}`, 
+      request );
+  }
+
+  @ObservableException()
+  revertInvoiceItem(
+    request: IInvoiceDetailsItemRequest
+  ): Observable<IInvoiceDetailsItemResponse> {
+    return this.http.post<IInvoiceDetailsItemResponse>(
+      `${this._apiUrl}/${InvoiceApiPaths.revertInvoiceItem()}`, 
+      request );
+  }
+
+  @ObservableException()
+  rejectInvoiceItem(
+    request: IInvoiceDetailsItemRequest
+  ): Observable<IInvoiceDetailsItemResponse> {
+    return this.http.post<IInvoiceDetailsItemResponse>(
+      `${this._apiUrl}/${InvoiceApiPaths.rejectInvoiceItem()}`, 
       request );
   }
 }
