@@ -1,9 +1,7 @@
-﻿commit 6712d20874b475fb0387dfae33d9cb83b259b71d
-Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
-Date:   Fri May 7 14:58:35 2021 +0000
+﻿commit a161e45747dc4c6767aa4321b8fe3a8f6bb51882
+Author: Prabaharan P <prabaharan.p@Inatech.com>
+Date:   Fri May 7 20:41:50 2021 +0530
 
-    Merged PR 10513: Validations for Invoice form
-    
-    Validations for Invoice form
+    Delivery Option Modifiy Enable/Disable with claim UI fixed
 
 branch: master
