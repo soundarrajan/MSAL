@@ -521,15 +521,32 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   }
 
   public saveInvoiceDetails(){
-    // alert("Has to save please wait");
-    let data : any = {
-      Payload: this.formValues
-    };
-    this.invoiceService
-    .updateInvoiceItem(data)
-    .subscribe((response: IInvoiceDetailsItemResponse) => {
-      this.toastrService.success('Invoice updated successfully');
-    });
+    if(!this.formValues.dueDate){
+      this.toastrService.error("Due date is required.")
+      return;      
+    }
+    if(!this.formValues.dueDate){
+      this.toastrService.error("Working due date is required.")
+      return;      
+    }
+    if(!this.formValues.counterpartyDetails.paymentTerm.name){
+      this.toastrService.error("Payment term is required.")
+      return;      
+    }
+    if(!this.formValues.orderDetails.paymentCompany.name){
+      this.toastrService.error("Payment company is required.")
+      return;      
+    }
+
+     alert("Has to save please wait");
+    // let data : any = {
+    //   Payload: this.formValues
+    // };
+    // this.invoiceService
+    // .updateInvoiceItem(data)
+    // .subscribe((response: IInvoiceDetailsItemResponse) => {
+    //   this.toastrService.success('Invoice updated successfully');
+    // });
   }
 
   public openRequest(){
