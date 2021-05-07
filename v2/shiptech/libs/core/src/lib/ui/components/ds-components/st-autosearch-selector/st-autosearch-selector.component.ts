@@ -10,6 +10,7 @@ export namespace MastersApiPaths {
   export const getCompanyList = () => `api/masters/companies/list`;
 }
 
+
 @Component({
   selector: 'shiptech-st-autosearch-selector',
   templateUrl: './st-autosearch-selector.component.html',

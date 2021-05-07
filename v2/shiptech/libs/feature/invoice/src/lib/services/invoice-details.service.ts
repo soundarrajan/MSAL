@@ -26,6 +26,10 @@ export class InvoiceDetailsService extends BaseStoreService
   updateInvoiceItem( gridRequest : IInvoiceDetailsItemRequest ): Observable<IInvoiceDetailsItemResponse> {
     return this.api.updateInvoiceItem(gridRequest);
   }
+  @ObservableException()
+  productListOnInvoice( gridRequest :any ): Observable<any> {
+    return this.api.productListOnInvoice(gridRequest);
+  }
 
   ngOnDestroy(): void {
     super.onDestroy();
