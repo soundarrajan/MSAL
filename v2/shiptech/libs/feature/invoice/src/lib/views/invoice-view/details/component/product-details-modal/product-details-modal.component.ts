@@ -22,9 +22,9 @@ export class ProductDetailsModalComponent implements OnInit {
 
   ngOnInit(): void {
     
-    // console.log("receiveData",this.receiveData.orderId); - this.receiveData.orderId
+    // console.log("receiveData",this.receiveData.orderId); - 98297
     let data : any = {
-      Payload: {"Order":null,"PageFilters":{"Filters":[]},"SortList":{"SortList":[]},"Filters":[{"ColumnName":"Order_Id","Value":98297}],"SearchText":null,"Pagination":{}}
+      Payload: {"Order":null,"PageFilters":{"Filters":[]},"SortList":{"SortList":[]},"Filters":[{"ColumnName":"Order_Id","Value": this.receiveData.orderId}],"SearchText":null,"Pagination":{}}
     };
     this.invoiceService
     .productListOnInvoice(data)

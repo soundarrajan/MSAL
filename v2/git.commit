@@ -1,9 +1,9 @@
-﻿commit 1a4110b2cb151eb195865544fa6dfc8567b9c093
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri May 7 07:47:39 2021 +0000
+﻿commit c58252ee402022b286d69517fb6dcd065efdcbfd
+Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
+Date:   Fri May 7 08:54:27 2021 +0000
 
-    Merged PR 10482: Added pricing holiday section in formula pop-up
+    Merged PR 10486: Product api default value changes
     
-    Added pricing holiday section in formula pop-up
+    Product api default value changes
 
 branch: master
