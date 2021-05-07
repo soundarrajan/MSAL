@@ -5345,7 +5345,7 @@ APP_API.factory('$Api_Service', [
                             apiJSON.Payload.Filters[0].Value = $state.params.requestId;
                         }
 
-                        if($state.current.name == 'masters.documents') {
+                        if($state.current.name == 'masters.documents' || $state.current.name == 'masters.documents-counterparty') {
                             if($state.params.screen_id == 'documenttype') {
                                 // change url
                                 url = `${API.BASE_URL_DATA_MASTERS }/api/masters/documentupload/documentTypelist`;
