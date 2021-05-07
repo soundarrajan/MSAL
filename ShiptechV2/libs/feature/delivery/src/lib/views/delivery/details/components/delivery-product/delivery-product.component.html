@@ -214,7 +214,7 @@
                             (blur)="calculateVarianceAndReconStatus(deliveryProductIndex); calculatePumpingRate(formValues.pumpingDuration, 0)"
                             #bdnQuantityAmountField="ngModel"
                             matInput
-                            [disabled]="formValues.invoiceActiveFlag == true"
+                            [disabled]="formValues.invoiceActiveFlag == true || formValues.claimActiveFlag == true"
                             class="text-ellipsis"
                             autocomplete="off"
                             placeholder="BDN Qty"
@@ -382,7 +382,7 @@
                     <input class="free-text-field"
                             type="text"
                             matInput
-                            [disabled]="formValues.invoiceActiveFlag == true"
+                            [disabled]="formValues.invoiceActiveFlag == true || formValues.claimActiveFlag == true"
                             [(ngModel)]="formValues.deliveryProducts[deliveryProductIndex].product"
                             [matAutocomplete]="auto"
                             placeholder="Product delivered"
@@ -397,7 +397,7 @@
                     </mat-autocomplete>
                 </mat-form-field>
                 <button class="search-icon"
-                    [disabled]="formValues.invoiceActiveFlag == true"
+                    [disabled]="formValues.invoiceActiveFlag == true || formValues.claimActiveFlag == true"
                     [ngClass]="{'search-icon-disabled': formValues.deliveryStatus.name == 'Verified'}"
                     appMasterSelectorTrigger [masterSelector]="masterSelector" #masterSelectorTrigger="masterSelectorTrigger" [header]="getHeaderNameSelector()">
                 <div class="img">
