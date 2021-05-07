@@ -52,31 +52,31 @@
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-              <button mat-menu-item>
+              <button mat-menu-item (click)="invoiceOptions('submitreview')">
                 <mat-icon>assignment</mat-icon>
                 <span>Submit for review</span>
               </button>
-              <button mat-menu-item disabled>
+              <button mat-menu-item (click)="invoiceOptions('submitapprove')">
                 <mat-icon>next_week</mat-icon>
                 <span>Submit for approval</span>
               </button>
-              <button mat-menu-item>
+              <button mat-menu-item (click)="invoiceOptions('cancel')">
                 <mat-icon>backspace</mat-icon>
                 <span>Cancel invoice</span>
               </button>
-              <button mat-menu-item>
+              <button mat-menu-item (click)="invoiceOptions('accept')">
                 <mat-icon>call made</mat-icon>
                 <span>Accept invoice</span>
               </button>
-              <button mat-menu-item>
+              <button mat-menu-item (click)="invoiceOptions('revert')">
                 <mat-icon>redo</mat-icon>
                 <span>Revert invoice</span>
               </button>
-              <button mat-menu-item>
+              <button mat-menu-item (click)="invoiceOptions('reject')">
                 <mat-icon>backspace</mat-icon>
                 <span>Reject invoice</span>
               </button>
-              <button mat-menu-item>
+              <button mat-menu-item (click)="invoiceOptions('create')">
                 <mat-icon>playlist_add</mat-icon>
                 <span>Create invoice</span>
               </button>

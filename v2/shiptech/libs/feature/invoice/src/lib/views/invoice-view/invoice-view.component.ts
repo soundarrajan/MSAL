@@ -44,7 +44,9 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     this.invoiceDetailsComponent.saveInvoiceDetails();
     this.isConfirm = !this.isConfirm;
   }
-
+  invoiceOptions(options){
+    this.invoiceDetailsComponent.invoiceOptionSelected(options);
+  }
   getInvoiceItem() {
     if(!this._entityId)
       return;

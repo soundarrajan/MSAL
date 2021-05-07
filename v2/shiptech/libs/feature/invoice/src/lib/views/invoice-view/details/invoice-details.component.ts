@@ -575,7 +575,67 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     }
     // console.log('type',type,'evnt',event);
   }
-  
+  invoiceOptionSelected(option){
+    if(option == 'submitreview'){
+      console.log(option);
+    }else if(option == 'submitapprove'){
+      let data : any = {
+        Payload: {"id":this.formValues.id}
+      };
+      this.invoiceService
+      .submitapproval(data)
+      .subscribe((response: IInvoiceDetailsItemResponse) => {
+        this.toastrService.success('Invoice submitted for approval successfully');
+      });
+    }else if(option == 'cancel'){
+      let data : any = {
+        Payload: {"id":this.formValues.id}
+      };
+      this.invoiceService
+      .cancelInvoiceItem(data)
+      .subscribe((response: IInvoiceDetailsItemResponse) => {
+        this.toastrService.success('Invoice cancelled successfully');
+      });
+    }else if(option == 'accept'){
+      let data : any = {
+        Payload: {"id":this.formValues.id}
+      };
+      this.invoiceService
+      .acceptInvoiceItem(data)
+      .subscribe((response: IInvoiceDetailsItemResponse) => {
+        this.toastrService.success('Invoice accepted successfully');
+      });
+    }else if(option == 'revert'){
+      let data : any = {
+        Payload: {"id":this.formValues.id}
+      };
+      this.invoiceService
+      .revertInvoiceItem(data)
+      .subscribe((response: IInvoiceDetailsItemResponse) => {
+        this.toastrService.success('Invoice reverted successfully');
+      });
+    }else if(option == 'reject'){
+      let data : any = {
+        Payload: {"id":this.formValues.id}
+      };
+      this.invoiceService
+      .rejectInvoiceItem(data)
+      .subscribe((response: IInvoiceDetailsItemResponse) => {
+        this.toastrService.success('Invoice rejected successfully');
+      });
+    }else if(option == 'create'){
+      console.log(option);
+    }else if(option == 'approve'){
+      let data : any = {
+        Payload: this.formValues
+      };
+      this.invoiceService
+      .approveInvoiceItem(data)
+      .subscribe((response: IInvoiceDetailsItemResponse) => {
+        this.toastrService.success('Invoice approved successfully');
+      });
+    }
+  }
   
 }
 

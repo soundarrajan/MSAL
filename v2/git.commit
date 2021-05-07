@@ -1,9 +1,9 @@
-﻿commit c58252ee402022b286d69517fb6dcd065efdcbfd
+﻿commit e00279fbe30fbc2a4f239ba97d43cb4a5fefe04d
 Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
-Date:   Fri May 7 08:54:27 2021 +0000
+Date:   Fri May 7 12:14:17 2021 +0000
 
-    Merged PR 10486: Product api default value changes
+    Merged PR 10506: To fix api on three dots in the menu
     
-    Product api default value changes
+    To fix api on three dots in the menu
 
 branch: master
