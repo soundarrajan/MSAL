@@ -109,7 +109,97 @@
     <div class="portlet light">
         <div class="portlet-title">
             <span class="caption-subject">
-                Calendar Option And holiday Rules
+                Pricing Day Calendar and Holiday Rules
+            </span>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-3">
+        <span ng-if="!formValues.pricingScheduleOptionEventBasedSimple.sundayHolidayRule" ng-init="formValues.pricingScheduleOptionEventBasedSimple.sundayHolidayRule = options.HolidayRule[1]"></span>
+        <div class="form-group row">
+            <label for="HolidayRuleHolidayRule" class="formula_flat_percentage_label" class="simpleLookupLabel">
+                {{ CM.app_id + '.SUNDAY' | translate }}
+            </label>
+            <div class="input-group form_input form_input_formula_flat_percentage">
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HolidayRule track by item.id" ng-model="formValues.pricingScheduleOptionEventBasedSimple.sundayHolidayRule"></select>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+         <span ng-if="!formValues.pricingScheduleOptionEventBasedSimple.mondayHolidayRule" ng-init="formValues.pricingScheduleOptionEventBasedSimple.mondayHolidayRule = options.HolidayRule[1]"></span>
+        <div class="form-group row">
+            <label for="HolidayRuleHolidayRule" class="formula_flat_percentage_label" class="simpleLookupLabel">
+                {{ CM.app_id + '.MONDAY' | translate }}
+            </label>
+            <div class="input-group form_input form_input_formula_flat_percentage">
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HolidayRule track by item.id" ng-model="formValues.pricingScheduleOptionEventBasedSimple.mondayHolidayRule"></select>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <span ng-if="!formValues.pricingScheduleOptionEventBasedSimple.tuesdayHolidayRule" ng-init="formValues.pricingScheduleOptionEventBasedSimple.tuesdayHolidayRule = options.HolidayRule[1]"></span>
+        <div class="form-group row">
+            <label for="HolidayRuleHolidayRule" class="formula_flat_percentage_label" class="simpleLookupLabel">
+                {{ CM.app_id + '.TUESDAY' | translate }}
+            </label>
+            <div class="input-group form_input form_input_formula_flat_percentage">
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HolidayRule track by item.id" ng-model="formValues.pricingScheduleOptionEventBasedSimple.tuesdayHolidayRule"></select>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+          <span ng-if="!formValues.pricingScheduleOptionEventBasedSimple.wednesdayHolidayRule" ng-init="formValues.pricingScheduleOptionEventBasedSimple.wednesdayHolidayRule = options.HolidayRule[1]"></span>
+        <div class="form-group row">
+            <label for="HolidayRuleHolidayRule" class="formula_flat_percentage_label" class="simpleLookupLabel">
+                {{ CM.app_id + '.WEDNESDAY' | translate }}
+            </label>
+            <div class="input-group form_input form_input_formula_flat_percentage">
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HolidayRule track by item.id" ng-model="formValues.pricingScheduleOptionEventBasedSimple.wednesdayHolidayRule"></select>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+           <span ng-if="!formValues.pricingScheduleOptionEventBasedSimple.thursdayHolidayRule" ng-init="formValues.pricingScheduleOptionEventBasedSimple.thursdayHolidayRule = options.HolidayRule[1]"></span>
+        <div class="form-group row">
+            <label for="HolidayRuleHolidayRule" class="formula_flat_percentage_label" class="simpleLookupLabel">
+                {{ CM.app_id + '.THURSDAY' | translate }}
+            </label>
+            <div class="input-group form_input form_input_formula_flat_percentage">
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HolidayRule track by item.id" ng-model="formValues.pricingScheduleOptionEventBasedSimple.thursdayHolidayRule"></select>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+         <span ng-if="!formValues.pricingScheduleOptionEventBasedSimple.fridayHolidayRule" ng-init="formValues.pricingScheduleOptionEventBasedSimple.fridayHolidayRule = options.HolidayRule[1]"></span>
+        <div class="form-group row">
+            <label for="HolidayRuleHolidayRule" class="formula_flat_percentage_label" class="simpleLookupLabel">
+                {{ CM.app_id + '.FRIDAY' | translate }}
+            </label>
+            <div class="input-group form_input form_input_formula_flat_percentage">
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HolidayRule track by item.id" ng-model="formValues.pricingScheduleOptionEventBasedSimple.fridayHolidayRule"></select>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+         <span ng-if="!formValues.pricingScheduleOptionEventBasedSimple.saturdayHolidayRule" ng-init="formValues.pricingScheduleOptionEventBasedSimple.saturdayHolidayRule = options.HolidayRule[1]"></span>
+        <div class="form-group row">
+            <label for="HolidayRuleHolidayRule" class="formula_flat_percentage_label" class="simpleLookupLabel">
+                {{ CM.app_id + '.SATURDAY' | translate }}
+            </label>
+            <div class="input-group form_input form_input_formula_flat_percentage">
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HolidayRule track by item.id" ng-model="formValues.pricingScheduleOptionEventBasedSimple.saturdayHolidayRule"></select>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="portlet light">
+        <div class="portlet-title">
+            <span class="caption-subject">
+                Event Day Calendar and Holiday Rules
             </span>
         </div>
     </div>
