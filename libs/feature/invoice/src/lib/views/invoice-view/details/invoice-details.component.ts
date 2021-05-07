@@ -372,11 +372,13 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     addButtonElement[0].addEventListener('mouseover', (event) => {
       const dialogRef = this.dialog.open(ProductDetailsModalComponent, {
         width: '600px',
-        data:  {  }
+        data:  { orderId: this.formValues.orderDetails?.order?.id }
       });
   
       dialogRef.afterClosed().subscribe(result => {
-        this.addrow(params);
+        if(result && result != 'close'){
+          this.addrow(params,result);
+        }
       });
       });
       
@@ -386,27 +388,27 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
   }
 
-  addrow(param){
-      console.log('add btn');
+  addrow(param,details){
+    let value = details.data;
+      // console.log('add btn');
+      
       let productdetail = {
-        del_no: {no: 123, order_prod: ''},
-        del_product: '',
-        del_qty: '',
-        est_rate: '',
-        amount1: '',
-        inv_product: '',
-        inv_qty: '',
-        inv_rate: '',
-        amount2: '',
-        recon_status: '',
-        sulpher_content: '',
-        phy_supplier: ''
+        del_no: {no: value.deliveryId, order_prod: value.invoicedProduct.name},
+        del_product: value.product.name,
+        del_qty: value.deliveryQuantity +' '+ value.deliveryQuantityUom.name,
+        est_rate: value.estimatedRate +' '+ value.estimatedRateCurrency.code,
+        amount1: value.estimatedAmount + ' '+ value.estimatedRateCurrency.code,
+        inv_product: value.invoicedProduct.name,
+        inv_qty: value.invoiceQuantity +' '+ value.invoiceQuantityUom.name,
+        inv_rate: value.invoiceRate + ' '+ value.estimatedRateCurrency.code,//invoiceRateCurrency 
+        amount2: value.invoiceComputedAmount + ' '+ value.estimatedRateCurrency.code,
+        recon_status: value.reconStatus ? value.reconStatus.name : '',
+        sulpher_content: value.sulphurContent,
+        phy_supplier: value.physicalSupplierCounterparty.name
       }
-
-    var newItems = [productdetail];
-    param.api.applyTransaction({
-      add: newItems
-    });
+      param.api.applyTransaction({
+      add: [productdetail]
+    });    
   }
 
   addCustomHeaderEventListener_AC(params) {
