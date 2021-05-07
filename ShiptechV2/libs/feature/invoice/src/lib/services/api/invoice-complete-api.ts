@@ -22,6 +22,7 @@ export namespace InvoiceApiPaths {
   export const getInvoicesListExport = () => `api/invoice/export`;
   export const getInvoiceItem = () => `api/invoice/get`;
   export const updateInvoiceItem = () => `api/invoice/update`;
+  export const productListOnInvoice = () => `api/invoice/deliveriesToBeInvoicedList`;
 }
 
 @Injectable({
@@ -76,6 +77,14 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
   ): Observable<IInvoiceDetailsItemResponse> {
     return this.http.post<IInvoiceDetailsItemResponse>(
       `${this._apiUrl}/${InvoiceApiPaths.updateInvoiceItem()}`, 
+      request );
+  }
+
+  @ObservableException()
+  productListOnInvoice(
+    request ): Observable<any> {
+    return this.http.post(
+      `${this._apiUrl}/${InvoiceApiPaths.productListOnInvoice()}`, 
       request );
   }
 }
