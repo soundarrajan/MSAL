@@ -16,6 +16,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   _entityId;
   invoiceSubmitState:EsubmitMode;
   isConfirm=false;
+  isLoading = true;
   detailFormvalues:any;
   displayDetailFormvalues:boolean = false;
   saveDisabled=true;
@@ -56,6 +57,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     .getInvoicDetails(data)
     .subscribe((response: IInvoiceDetailsItemResponse) => {
       this.displayDetailFormvalues = true;
+      this.isLoading = false;
       this.detailFormvalues = <IInvoiceDetailsItemDto>response.payload;      
       // this.invoiceDetailsComponent.formValues = <IInvoiceDetailsItemDto>response.payload;
       // this.invoiceDetailsComponent.parseProductDetailData(this.invoiceDetailsComponent.formValues.productDetails);

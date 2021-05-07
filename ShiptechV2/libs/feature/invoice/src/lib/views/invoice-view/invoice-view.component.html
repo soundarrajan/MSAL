@@ -1,5 +1,6 @@
 <div class="invoice-main-container">
     <div id="custom-tabs-v2">
+      <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
         <mat-tab-group #tabs (selectedIndexChange)="selectedTab = tabs.selectedIndex">
             <mat-tab *ngFor="let item of tabData" [disabled]="item.disabled">
                 <ng-template mat-tab-label>
