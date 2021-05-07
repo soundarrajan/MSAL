@@ -1389,3 +1389,24 @@
     right: 10px;
     text-decoration: underline;
 }
+
+/*** Mat Label disabled - start ***/
+.mat-input-element:disabled{
+  color: #252A32 !important;
+}
+.mat-select-disabled .mat-select-value {
+  color: #252A32 !important;
+}
+.custom-form-field.lightTheme .mat-form-field .mat-form-field-label mat-label {
+  background: #ffffff !important;
+}
+.custom-form-field.lightTheme .mat-form-field.mat-focused .mat-form-field-label mat-label,
+.custom-form-field.lightTheme .mat-form-field.mat-focused .mat-form-field-label .mat-placeholder-required{
+  background: #eeeeee !important;
+}
+.custom-form-field.lightTheme .mat-form-field.mat-form-field-disabled .mat-form-field-label mat-label,
+.custom-form-field.lightTheme .mat-form-field.mat-form-field-disabled .mat-form-field-label .mat-placeholder-required{
+  background: #eeeeee !important;
+}
+
+/*** Mat Label disabled - end ***/
