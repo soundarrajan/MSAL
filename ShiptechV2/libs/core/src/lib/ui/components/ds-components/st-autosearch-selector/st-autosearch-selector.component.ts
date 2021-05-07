@@ -31,6 +31,7 @@ export class StAutosearchSelectorComponent implements OnInit {
     }
   }
   @Input() name:string = 'Select';
+  @Input() required:string = 'false';
   @Input() masterType:EstAutoSearchType;
   @Output() onChanged = new EventEmitter();
   options: any[];
@@ -50,10 +51,16 @@ export class StAutosearchSelectorComponent implements OnInit {
 
   private _filter(value: any): string[] {
     const filterValue = value?.toLowerCase();
-    console.log(value)
     return this.options?.filter(option => option?.name?.toLowerCase().indexOf(filterValue) === 0);
   }
-
+  checkAutoComplete(){    
+    if(this.options){
+      let selectedItem = this.options.filter(x=> { return x.name == this.myControl.value});
+      if(selectedItem.length == 0){
+        this.onChanged.emit({});
+      }
+    }
+  }
   openSearchPopup() {
     this.popupOpen = true;
         const dialogRef = this.dialog.open(MasterSelectionDialog, {
