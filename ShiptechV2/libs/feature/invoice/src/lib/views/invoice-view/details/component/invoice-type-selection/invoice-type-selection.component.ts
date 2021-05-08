@@ -21,7 +21,8 @@ export class InvoiceTypeSelectionComponent implements OnInit {
       {value:1,name:"Pre-claim debit note"},
     ];
   }
- closeDialog(){ alert(this.invoiceType)
+ 
+ closeDialog(){
   this.dialogRef.close('close');
  }
 }
