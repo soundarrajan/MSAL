@@ -37,7 +37,7 @@ export class NavBarApiService
   private _destroy$ = new Subject();
 
   constructor(private appConfig: AppConfig, private http: HttpClient) {
-    
+
   }
 
   @ObservableException()
@@ -56,10 +56,6 @@ export class NavBarApiService
     this._destroy$.complete();
   }
 
- 
-
 }
 
-export const NAV_BAR_API_SERVICE = new InjectionToken<
-INavBarApiService
->('INavBarApiService');
+export const NAV_BAR_API_SERVICE = new InjectionToken<INavBarApiService>('INavBarApiService');
