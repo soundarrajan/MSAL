@@ -29,6 +29,7 @@ export namespace InvoiceApiPaths {
   export const revertInvoiceItem = () => `api/invoice/revert`;
   export const rejectInvoiceItem = () => `api/invoice/reject`;
   export const approveInvoiceItem = () => `api/invoice/approve`;
+  export const submitReview = () => `api/invoice/submitForReview`;
 }
 
 @Injectable({
@@ -146,6 +147,15 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
       `${this._apiUrl}/${InvoiceApiPaths.rejectInvoiceItem()}`, 
       request );
   }
+  @ObservableException()
+  submitReview(
+    request: IInvoiceDetailsItemRequest
+  ): Observable<IInvoiceDetailsItemResponse> {
+    return this.http.post<IInvoiceDetailsItemResponse>(
+      `${this._apiUrl}/${InvoiceApiPaths.submitReview()}`, 
+      request );
+  }
+
 }
 
 export const INVOICE_COMPLETE_API_SERVICE = new InjectionToken<

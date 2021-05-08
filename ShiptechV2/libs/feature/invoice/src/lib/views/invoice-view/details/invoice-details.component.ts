@@ -15,6 +15,7 @@ import { EsubmitMode } from '../invoice-view.component';
 import { ProductDetailsModalComponent } from './component/product-details-modal/product-details-modal.component';
 import { ToastrService } from 'ngx-toastr';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+import { InvoiceTypeSelectionComponent } from './component/invoice-type-selection/invoice-type-selection.component';
 
 @Component({
   selector: 'shiptech-invoice-detail',
@@ -610,7 +611,14 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   }
   invoiceOptionSelected(option){
     if(option == 'submitreview'){
-      console.log(option);
+      let data : any = {
+        Payload: {"id":this.formValues.id}
+      };
+      this.invoiceService
+      .submitReview(data)
+      .subscribe((response: IInvoiceDetailsItemResponse) => {
+        this.toastrService.success('Invoice submitted for approval successfully');
+      });
     }else if(option == 'submitapprove'){
       let data : any = {
         Payload: {"id":this.formValues.id}
@@ -657,7 +665,18 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         this.toastrService.success('Invoice rejected successfully');
       });
     }else if(option == 'create'){
-      console.log(option);
+      const dialogRef = this.dialog.open(InvoiceTypeSelectionComponent, {
+        width: '400px',
+        height: '400px',
+        panelClass: 'popup-grid',
+        data:  { orderId: this.formValues.orderDetails?.order?.id }
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        if(result && result != 'close'){
+          
+        }
+      });
     }else if(option == 'approve'){
       let data : any = {
         Payload: this.formValues

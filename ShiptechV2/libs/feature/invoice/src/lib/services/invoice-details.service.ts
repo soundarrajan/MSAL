@@ -54,6 +54,10 @@ export class InvoiceDetailsService extends BaseStoreService
   rejectInvoiceItem( gridRequest :any ): Observable<any> {
     return this.api.rejectInvoiceItem(gridRequest);
   }
+  @ObservableException()
+  submitReview( gridRequest :any ): Observable<any> {
+    return this.api.submitReview(gridRequest);
+  }
 
   ngOnDestroy(): void {
     super.onDestroy();
