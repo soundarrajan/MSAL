@@ -20,20 +20,32 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   detailFormvalues:any;
   displayDetailFormvalues:boolean = false;
   saveDisabled=true;
-  constructor(route: ActivatedRoute, private invoiceService: InvoiceDetailsService,private changeDetectorRef: ChangeDetectorRef,){
+  tabData: any;
+  navBar: any;
+  reportUrl: string;
+  constructor(private route: ActivatedRoute, private invoiceService: InvoiceDetailsService,private changeDetectorRef: ChangeDetectorRef,){
     this._entityId = route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
+
+    const baseOrigin = new URL(window.location.href).origin;
+    this.tabData = [
+      { disabled: false, name: 'Details' },
+      { disabled: false, name: 'Related Invoices' },
+      { disabled: false, name: 'Documents', url: `${baseOrigin}/#/invoices/invoice/documents/${this._entityId}` },
+      { disabled: false, name: 'Audit Log', url: `${baseOrigin}/#/invoices/invoice/audit/${this._entityId}` },
+      { disabled: false, name: 'Email Log', url: `${baseOrigin}/#/invoices/invoice/email-log/${this._entityId}` },
+    ]
+    this.reportUrl = `${baseOrigin}/#/reports/ordertoinvoice/IID=${this._entityId}`;
   }
+
   selectedTab = 0;
-  tabData = [
-    { disabled: false, name: 'Details' },
-    { disabled: false, name: 'Related Invoices' },
-    { disabled: false, name: 'Documents' },
-    { disabled: false, name: 'Email Log' },
-    { disabled: false, name: 'Seller Rating' },
-    { disabled: false, name: 'Audit Log' }
-  ]
-    
+
   ngOnInit(): void {
+    this.route.data.subscribe(data => {
+      // if (data.invoice) {
+      //   this.formValues = data.invoice;
+      // }
+      this.navBar = data.navBar;
+    });
     this.getInvoiceItem();
   }
 
@@ -50,7 +62,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   getInvoiceItem() {
     if(!this._entityId)
       return;
-    
+
     let data : IInvoiceDetailsItemRequest = {
       Payload: this._entityId
     };
@@ -60,7 +72,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     .subscribe((response: IInvoiceDetailsItemResponse) => {
       this.displayDetailFormvalues = true;
       this.isLoading = false;
-      this.detailFormvalues = <IInvoiceDetailsItemDto>response.payload;      
+      this.detailFormvalues = <IInvoiceDetailsItemDto>response.payload;
       // this.invoiceDetailsComponent.formValues = <IInvoiceDetailsItemDto>response.payload;
       // this.invoiceDetailsComponent.parseProductDetailData(this.invoiceDetailsComponent.formValues.productDetails);
       // //  console.log(this.invoiceDetailsComponent.parseProductDetailData);
