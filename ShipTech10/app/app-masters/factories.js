@@ -888,6 +888,11 @@ APP_MASTERS.factory('Factory_Master', [ '$window', '$http', '$Api_Service', 'API
                 callback(result);
             });
         },
+        getAdditionalCostsForLocation: function(data, callback) {
+            $Api_Service.masters.getAdditionalCostsForLocation(data, (result) => {
+                callback(result);
+            });
+        },
         getSpecForProcurement: function(data, application, callback) {
             $Api_Service.procurement.getSpecForProcurement(data, application, (result) => {
                 callback(result);
@@ -1000,6 +1005,11 @@ APP_MASTERS.factory('Factory_Master', [ '$window', '$http', '$Api_Service', 'API
         },
         contractPlanningGetQuantityAverage: function(data, callback) {
             $Api_Service.request.contractPlanningGetQuantityAverage(data, (result) => {
+                callback(result);
+            });
+        },
+        getRangeTotalAdditionalCosts: function(data, callback) {
+            $Api_Service.procurement.getRangeTotalAdditionalCosts(data, (result) => {
                 callback(result);
             });
         },

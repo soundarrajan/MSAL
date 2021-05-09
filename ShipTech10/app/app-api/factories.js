@@ -10576,6 +10576,31 @@ APP_API.factory('$Api_Service', [
                         }
                     );
                 },
+                getAdditionalCostsForLocation: function(param, callback) {
+                    let apiJSON = param;
+                    var url = `${API.BASE_URL_DATA_MASTERS }/api/masters/additionalcosts/listforlocation`;
+                    $http.post(url, apiJSON).then(
+                        (response) => {
+                            if (response.status == 200) {
+                                var res = new Object();
+                                res.data = response.data;
+                                res.status = true;
+                                callback(res);
+                            } else {
+                                var res = new Object();
+                                res.status = false;
+                                res.message = response.data.ErrorMessage;
+                            }
+                        },
+                        (response) => {
+                            let res = new Object();
+                            res.status = false;
+                            res.message = response.data.ErrorMessage;
+                            callback(res);
+                            console.log('HTTP ERROR while trying to getAdditionalCostsForLocation!');
+                        }
+                    );
+                },
                 specGroupGetByProduct: function(param, callback) {
                     // if (_debug) console.log("$APIService contract.confirm called with the following params:", param);
                     let url = `${API.BASE_URL_DATA_MASTERS }/api/masters/specGroups/getByProduct`;
@@ -10888,6 +10913,31 @@ APP_API.factory('$Api_Service', [
                             }
                             callback(res);
                             console.log('HTTP ERROR while trying to getSellerBlade!');
+                        }
+                    );
+                },
+                getRangeTotalAdditionalCosts: function(param, callback) {
+                    let apiJSON = param;
+                    var url = `${API.BASE_URL_DATA_PROCUREMENT }/api/procurement/order/getRangeTotalAdditionalCosts`;
+                    $http.post(url, apiJSON).then(
+                        (response) => {
+                            if (response.status == 200) {
+                                var res = new Object();
+                                res.data = response.data;
+                                res.status = true;
+                                callback(res);
+                            } else {
+                                var res = new Object();
+                                res.status = false;
+                                res.message = response.data.ErrorMessage;
+                            }
+                        },
+                        (response) => {
+                            let res = new Object();
+                            res.status = false;
+                            res.message = response.data.ErrorMessage;
+                            callback(res);
+                            console.log('HTTP ERROR while trying to getRangeTotalAdditionalCosts!');
                         }
                     );
                 }

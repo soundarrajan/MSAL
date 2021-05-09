@@ -622,6 +622,7 @@
                                                         <div
                                                             class="form_input form_input_{{ $ctrl.portFields.locationName.name }} input-group">
                                                             {{ $ctrl.data.location.name | decodeReadOnly}}
+                                                            <span ng-if="$ctrl.data && $ctrl.data.location" ng-init="$ctrl.selectPort($ctrl.data.location.id, true)"></span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1728,8 +1729,10 @@
                             </tr>
                             </thead>
                             <tbody>
+                                <!-- <tr ng-if="!additionalCost.isDeleted"
+                                    ng-repeat="additionalCost in $ctrl.getAdditionalCosts() | orderBy: '-fakeId' track by $index"> -->
                                 <tr ng-if="!additionalCost.isDeleted"
-                                    ng-repeat="additionalCost in $ctrl.getAdditionalCosts() | orderBy: '-fakeId' track by $index">
+                                    ng-repeat="additionalCost in $ctrl.additionalCostList | orderBy: '-fakeId' track by $index">
 
                                     <td>
 
@@ -1764,7 +1767,7 @@
                                         <!--  cost type -->
                                         <select class="select2 form-control" id="additional_cost_type_{{ $index }}"
                                             name="{{ $ctrl.additionalCostColumns.type.name }}"
-                                            ng-change="$ctrl.costTypeChanged(additionalCost); additionalCost.costLineChanged = true"
+                                            ng-change="$ctrl.costTypeChanged(additionalCost, true); additionalCost.costLineChanged = true"
                                             ng-disabled="(additionalCost.disabled && additionalCost.id > 0) || ($ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id || ['Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) != -1))"
                                             ng-model="additionalCost.costType"
                                             ng-options="costType as costType.name for costType in getAdditionalCostDefaultCostType(additionalCost) | decodeReadOnly track by costType.id"
@@ -1806,12 +1809,13 @@
                                                 format="number:{{ $ctrl.numberPrecision.pricePrecision }}"
                                                 id="additional_cost_price_{{ $index }}"
                                                 name="{{ $ctrl.additionalCostColumns.Price.name }}_{{ $index }}"
-                                                ng-blur="$ctrl.validateAdditionalCostAllowNegative(additionalCost.price,additionalCost.additionalCost.allowNegative, $index, additionalCost.additionalCost)"
+                                                ng-blur="$ctrl.validateAdditionalCostAllowNegative(additionalCost.price,additionalCost.additionalCost.allowNegative, $index, additionalCost.additionalCost); $ctrl.setAdditionalCosts();"
                                                 ng-change="$ctrl.validateAdditionalCostAllowNegative(additionalCost.price,additionalCost.additionalCost.allowNegative, $index, additionalCost.additionalCost)"
                                                 ng-class="$ctrl.validateAdditionalCostAllowNegative(additionalCost.price,additionalCost.additionalCost.allowNegative, $index, additionalCost.additionalCost) ? 'ng-valid' : 'additional_cost_invalid'"
-                                                ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)"
+                                                ng-disabled="((additionalCost.costType.name == 'Range' || additionalCost.costType.name == 'Total' || additionalCost.locationAdditionalCostId > 0) ||
+                                                    $ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id))"
                                                 ng-model="additionalCost.price"
-                                                ng-required="additionalCost.additionalCost" type="text" />
+                                                ng-required="additionalCost.additionalCost && !(additionalCost.costType.name == 'Range' && additionalCost.costType.name == 'Total')" type="text" />
                                             <!-- cost qty uom -->
 
 
@@ -1829,7 +1833,7 @@
 
                                                 <select class="bs-select pull-right uomWidth" id=""
                                                     id="additional_cost_priceUom_{{ $index }}" name=""
-                                                    ng-change="$ctrl.addPriceUomChanged(additionalCost)"
+                                                    ng-change="$ctrl.addPriceUomChanged(additionalCost); $ctrl.setAdditionalCosts();"
                                                     ng-disabled="!$ctrl.additionalCostPriceUomEnabled(additionalCost) || ($ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id || ['Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) != -1))"
                                                     ng-model="additionalCost.priceUom"
                                                     ng-options="item as item.name for item in $ctrl.lists.Uom | decodeReadOnly track by item.id"></select>
@@ -1876,7 +1880,7 @@
                                             ng-model="$ctrl.additionalCostApplicableFor[additionalCost.fakeId]"
                                             ng-options="product as ($ctrl.sumThose(idx,1) +' - '+ product.product.name) | decodeReadOnly for (idx, product) in $ctrl.data.products | aplicableCostForProduct | orderBy : 'productType.id' ">
 
-                                            <option selected value="">
+                                            <option ng-if="!(additionalCost.costType.name == 'Range' || additionalCost.costType.name == 'Total' || additionalCost.locationAdditionalCostId > 0)" selected value="">
                                                 All
                                             </option>
                                         </select>
@@ -1908,7 +1912,9 @@
                                         <input class="form-control"
                                             format="number:{{ $ctrl.numberPrecision.pricePrecision }}"
                                             id="additional_cost_extras_{{ $index }}" max="100"
-                                            ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)"
+                                            ng-disabled="((additionalCost.costType.name == 'Range' || additionalCost.costType.name == 'Total' || additionalCost.locationAdditionalCostId > 0) ||
+                                                $ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id))"
+                                            ng-blur="$ctrl.setAdditionalCosts();"
                                             ng-model="additionalCost.extras" type="text" />
                                     </td>
                                     <td>

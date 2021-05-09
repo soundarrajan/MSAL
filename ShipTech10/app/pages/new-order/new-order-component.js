@@ -251,6 +251,62 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             // })
         }
 
+        ctrl.setAdditionalCostsForLocation = function(isEditMode) {
+            let apiJSON = {
+                Payload: {
+                    Order: null,
+                    Filters: [
+                        {
+                            ColumnName: 'LocationId',
+                            Value: ctrl.data.location.id
+                        }
+                    ],
+                    Pagination: {
+                        Skip: 0,
+                        Take: 25
+                    },
+                    SearchText: null
+                }
+            };
+            Factory_Master.getAdditionalCostsForLocation(apiJSON, function(response) {
+                // After retrieving location-wise ordered additional costs
+                // 1. Delete the old additionalCostLocationId mapped items from existing additional costs
+                // 2. Assign ordered additional cost master list to existing master
+                if(!isEditMode) {
+                    $.each(ctrl.additionalCostList, function (key, additionalCost) {
+                        ctrl.deleteAdditionalCost(additionalCost);
+                    });
+                    addFirstAdditionalCost();
+                }
+                var newArr = [];
+                $.each(response.data.payload, (key0, value0) => {
+                    for(let i = 0; i < ctrl.lists.AdditionalCost.length; i++) {
+                        if(ctrl.lists.AdditionalCost[i].id == value0.additionalCostid) {
+                            let obj = ctrl.lists.AdditionalCost[i];
+                            obj.allowNegative = value0.isAllowingNegativeAmmount;
+                            obj.locationid = value0.locationid;
+                            obj.extras = value0.extrasPercentage;
+                            newArr.push(obj);
+                            break;
+                        }
+                    }
+                });
+                if(newArr.length > 0) {
+                    ctrl.lists.AdditionalCost = newArr;
+                    if(isEditMode) {
+                        // if location is changed then set Additional cost for Range, Total
+                        ctrl.additionalCostList = ctrl.getAdditionalCosts();
+                        let additionalCosts = ctrl.additionalCostList;
+                        if(additionalCosts) {
+                            $.each(additionalCosts, (_, additionalCost) => {
+                                ctrl.setRangeTotalAdditionalCost(additionalCost);
+                            });
+                        }
+                    }
+                }
+            });
+        }
+
         ctrl.changedProductContract = function() {
             function checkDeleted(key) {
                 if(!ctrl.data.products[key].contract || ctrl.data.products[key].contract.id == null) {
@@ -289,7 +345,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 }
                 return true;
             }
-            	return true;
+            return true;
 
 
             if (typeof ctrl.allowNegativeAdditionalCost == 'undefined') {
@@ -872,6 +928,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             if (!additionalCost.costType) {
                 return additionalCost;
             }
+            if (ctrl.defaultValueUom && !additionalCost.priceUom) {
+                additionalCost.priceUom = ctrl.defaultValueUom;
+            }
             switch (additionalCost.costType.id) {
             case COST_TYPE_IDS.UNIT:
                 // if (additionalCost.isAllProductsCost || !productComponent) {
@@ -916,6 +975,20 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     additionalCost.amount = totalAmount * additionalCost.price / 100 || 0;
                 }
                 break;
+            case COST_TYPE_IDS.RANGE:
+                if($scope.fetchedAdditionalCost && $scope.fetchedAdditionalCost.fakeId == additionalCost.fakeId) {
+                    additionalCost.extras = $scope.fetchedAdditionalCost?.extras || 0;
+                    additionalCost.amount = $scope.fetchedAdditionalCost?.amount || 0;
+                    additionalCost.price = 1; // dummy price since price is mandatory
+                }
+                break;
+            case COST_TYPE_IDS.TOTAL:
+                if($scope.fetchedAdditionalCost && $scope.fetchedAdditionalCost.fakeId == additionalCost.fakeId) {
+                    additionalCost.extras = $scope.fetchedAdditionalCost?.extras || 0;
+                    additionalCost.amount = $scope.fetchedAdditionalCost?.amount || 0;
+                    additionalCost.price = 1; // dummy price since price is mandatory
+                }
+                break;
             }
             if (!product) {
                 product = ctrl.data.products[0];
@@ -929,6 +1002,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             additionalCost.extrasAmount = parseFloat(additionalCost.extras) / 100 * parseFloat(additionalCost.amount) || 0;
             additionalCost.totalAmount = parseFloat(additionalCost.amount) + parseFloat(additionalCost.extrasAmount);
             additionalCost.rate = parseFloat(additionalCost.totalAmount) / parseFloat(additionalCost.confirmedQuantity);
+            additionalCost.locationAdditionalCostId = additionalCost.additionalCost.locationid;
             return additionalCost;
         }
 
@@ -1069,8 +1143,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         }
 
         function orderHasAdditionalCosts() {
-            let additionalCosts = ctrl.getAdditionalCosts();
-            return additionalCosts.length;
+            ctrl.additionalCostList = ctrl.getAdditionalCosts();
+            return ctrl.additionalCostList.length;
         }
 
         /**
@@ -1121,6 +1195,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             	ctrl.data.products[0].additionalCosts = [];
             }
             ctrl.data.products[0].additionalCosts.push(newAdditionalCost);
+            ctrl.additionalCostList = ctrl.getAdditionalCosts();
         };
         ctrl.deleteAdditionalCost = function(additionalCost) {
             if (additionalCost.fakeId < 0) {
@@ -1158,6 +1233,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 }
                 product.additionalCosts.push(additionalCost);
             }
+            // if product is changed then set Additional cost for Range, Total
+            ctrl.setRangeTotalAdditionalCost(additionalCost);
+            ctrl.additionalCostList = ctrl.getAdditionalCosts();
         };
 
         /**
@@ -1223,6 +1301,10 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     // console.log(2)
                     // additionalCost.quantityUom = null;
                     additionalCost.quantityUom = ctrl.data.products[0].quantityUom;
+                    if(!($scope.pendingAdditionalCostRequestIds && $scope.pendingAdditionalCostRequestIds.includes(additionalCost.fakeId))) {
+                        // if quantity/quantityUom is changed then set Additional cost for Range, Total
+                        ctrl.setRangeTotalAdditionalCost(additionalCost, true);
+                    }
                     additionalCost = calculateAdditionalCostAmounts(additionalCost, null);
                 }
             }  
@@ -1244,10 +1326,13 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                             // Save product model for "Applicable for", and calculate the confirmedQuantity
                             // based on it.
                             ctrl.additionalCostApplicableFor[additionalCost.fakeId] = ctrl.data.products[i];
-                            additionalCost.confirmedQuantity = ctrl.data.products[i].confirmedQuantity;
+                            additionalCost.confirmedQuantity = convertDecimalSeparatorStringToNumber(ctrl.data.products[i].confirmedQuantity);
                             // console.log(1)
                             additionalCost.quantityUom = ctrl.data.products[i].quantityUom;
-                            //  
+                            if(!($scope.pendingAdditionalCostRequestIds && $scope.pendingAdditionalCostRequestIds.includes(additionalCost.fakeId))) {
+                                // if quantity/quantityUom is changed then set Additional cost for Range, Total
+                                ctrl.setRangeTotalAdditionalCost(additionalCost, true);
+                            }
                             additionalCost = calculateAdditionalCostAmounts(additionalCost, ctrl.data.products[i]);
                         }
                         if (result) {
@@ -1279,9 +1364,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             return result;
         };
 
-
-        
-
         /**
          * Performs certain actions when the users changes the payment company:
          *   - changes the default currency for the entire view, IF ctrl.fixedCurrency is false
@@ -1303,7 +1385,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                         ctrl.data.products[i].amount = calculateProductAmount(ctrl.data.products[i]);
                     }
                     // Update amount and currency in additional costs.
-                    additionalCosts = ctrl.getAdditionalCosts();
+                    ctrl.additionalCostList = ctrl.getAdditionalCosts();
+                    additionalCosts = ctrl.additionalCostList;
                     for (i = 0; i < additionalCosts.length; i++) {
                         additionalCosts[i].currency = ctrl.currency;
                         additionalCosts[i].price = Number(additionalCosts[i].price) * Number(exchangeRate);
@@ -1692,7 +1775,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             });
         };
 
-        ctrl.selectPort = function(locationId) {
+        ctrl.selectPort = function(locationId, isEditMode) {
             let location,
                 productList,
                 agent = {};
@@ -1711,6 +1794,17 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 ctrl.setDefaultValues('location', 'lab', location.defaultLab);
                 ctrl.getAllOrderContractOptions();
             });
+            // On location change fetch additional costs by location-wise order and save to additionalcosts master
+            ctrl.setAdditionalCostsForLocation(isEditMode);
+            // if location is changed then set Additional cost for Range, Total
+            ctrl.additionalCostList = ctrl.getAdditionalCosts();
+            let additionalCosts = ctrl.additionalCostList;
+            if(additionalCosts) {
+                $.each(additionalCosts, (_, additionalCost) => {
+                    ctrl.setRangeTotalAdditionalCost(additionalCost);
+                });
+                // ctrl.additionalCostList = ctrl.getAdditionalCosts();
+            }
         };
 
         ctrl.selectProduct = function(productId, index) {
@@ -1812,6 +1906,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     }, 10);
                 }
             });
+            ctrl.setRangeTotalAdditionalCost(additionalCost);
+            ctrl.additionalCostList = ctrl.getAdditionalCosts();
         };
 
         ctrl.defaultMaxQtyFromConfirmed = function(source, data) {
@@ -1841,6 +1937,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             default:
                 console.log('Error: Confirmed quantity could not be defaulted from defined sources.');
             }
+            ctrl.additionalCostList = ctrl.getAdditionalCosts();
 
             function defaultFromInput(data) {
                 data.confirmedQuantity = data.maxQuantity;
@@ -1960,6 +2057,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             }
             productUomChg(product, isPriceUom);
             ctrl.getAllOrderContractOptions();
+            ctrl.additionalCostList = ctrl.getAdditionalCosts();
         };
 
 
@@ -2646,7 +2744,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             $.each(ctrl.data.products, (pk, pv) => {
                 if (pv.additionalCosts && pv.additionalCosts.length > 0) {
                     $.each(pv.additionalCosts, (ack, acv) => {
-                        if (acv.costType.name == 'Flat') {
+                        if (acv.costType.name == 'Flat' || acv.costType.name == 'Range' || acv.costType.name == 'Total') {
                             acv.priceUom = null;
                         }
                     });
@@ -2895,7 +2993,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
          * Validates Additional Cost non-inputs, (i.e. button dropdowns) and returns array of invalid fields.
          */
         function validateAdditionalCostsNonInputs() {
-            let additionalCosts = ctrl.getAdditionalCosts(),
+            ctrl.additionalCostList = ctrl.getAdditionalCosts();
+            let additionalCosts = ctrl.additionalCostList,
                 compare,
                 product,
                 additionalCost,
@@ -2909,8 +3008,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                             if (additionalCost.additionalCost) {
                                 if (!compare || angular.equals({}, compare)) {
                                     // Special cases:
-                                    // Ommit priceUom check if the cost type isn't "Unit".
-                                    if (nonFields[j] === 'priceUom' && additionalCost.costType && additionalCost.costType.id !== ctrl.COST_TYPE_UNIT_ID) {
+                                    // Omit priceUom check if the cost type isn't "Unit".
+                                    if (nonFields[j] === 'priceUom' && additionalCost.costType && (additionalCost.costType.id !== ctrl.COST_TYPE_UNIT_ID)) {
                                         continue;
                                     }
                                     return [ nonFields[j] ];
@@ -2950,13 +3049,13 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             // Must do this manually, since a programatic change of the
             // cost type property DOES NOT trigger the event - only actual
             // user interaction does.
-            ctrl.costTypeChanged(additionalCost);
+            ctrl.costTypeChanged(additionalCost, true);
         };
 
         /**
          * Empty the priceUom if Cost Type for the Additional Cost is not Unit.
          */
-        ctrl.costTypeChanged = function(additionalCost) {
+        ctrl.costTypeChanged = function(additionalCost, isAdditionalCostNameChanged) {
             if (!additionalCost.costType) {
                 return;
             }
@@ -2990,12 +3089,226 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 additionalCost.disabledApplicableFor = false;
             }
 
+            // Do not show 'All' type in ApplicableFor dropdown for Range, Total.
+            if (additionalCost.costType.name == 'Range' || additionalCost.costType.name == 'Total') {
+                additionalCost.priceUom = null;
+                additionalCost.isAllProductsCost = false;
+                
+            // if cost type is changed then set Additional cost for Range, Total
+                if(isAdditionalCostNameChanged) {
+                    ctrl.setRangeTotalAdditionalCost(additionalCost);
+                    // ctrl.additionalCostList = ctrl.getAdditionalCosts();
+                }
+            }
+            else {
+                ctrl.additionalCostList = ctrl.getAdditionalCostsForConfQty();
+            }
+
             // additionalCost = calculateAdditionalCostAmounts(additionalCost, getProductById(additionalCost.parentProductId));
             // console.log(additionalCost);
 
             // trigger change function
             // addPriceUomChg(additionalCost);
         };
+
+        ctrl.setAdditionalCosts = function() {
+            ctrl.additionalCostList = ctrl.getAdditionalCosts();
+        }
+
+        /**
+         * 
+         * @param {any} additionalCost - The manipulated additional cost row item object
+         */
+        ctrl.setRangeTotalAdditionalCost = function(additionalCost, isFromGetAdditionalCosts) {
+            let additionalCostContainer = ctrl.additionalCostApplicableFor[additionalCost.fakeId];
+            // Do not fetch rangeTotalAdditionalCosts if
+            // 1. product is not selected, 2. location is not selected
+            // 3. additional cost name is not selected
+            // 4. quantity and quantityUom not selected
+            if(!(additionalCostContainer && additionalCost
+                    && additionalCostContainer.product && additionalCostContainer.product.id > 0
+                    && ctrl.data && ctrl.data.location && ctrl.data.location.id > 0
+                    && additionalCost.additionalCost && additionalCost.additionalCost.locationid > 0
+                    // && additionalCost.additionalCost.id > 0
+                    && additionalCost.costType && additionalCost.costType.id > 0
+                    && additionalCost.confirmedQuantity > 0 && additionalCost.quantityUom && additionalCost.quantityUom.id > 0)) {
+                return;
+            }
+            switch (additionalCost.costType.id) {
+                case COST_TYPE_IDS.RANGE || COST_TYPE_IDS.TOTAL:
+                    let apiJSON = {
+                        Payload: {
+                            Order: null,
+                            Filters: [
+                                {
+                                    ColumnName: 'ProductId',
+                                    Value: additionalCostContainer.product.id // 161
+                                },
+                                {
+                                    ColumnName: 'LocationId',
+                                    Value: ctrl.data.location.id // 31
+                                },
+                                {
+                                    ColumnName: 'AdditionalCostId',
+                                    Value: additionalCost.additionalCost.locationid // 25 // additionalCost.additionalCostLocationId
+                                },
+                                {
+                                    ColumnName: 'Qty',
+                                    Value: additionalCost.confirmedQuantity // 20000000
+                                },
+                                {
+                                    ColumnName: 'QtyUomId',
+                                    Value: additionalCost.quantityUom.id // 1
+                                }
+                            ],
+                            Pagination: {
+                                Skip: 0,
+                                Take: 25
+                            },
+                            SearchText: null
+                        }
+                    };
+                    if(!$scope.pendingAdditionalCostRequestIds) {
+                        $scope.pendingAdditionalCostRequestIds = [];
+                    }
+                    if(!$scope.pendingAdditionalCostRequestIds.includes(additionalCost.fakeId)) {
+                        $scope.pendingAdditionalCostRequestIds.push(additionalCost.fakeId);
+                    }
+                    Factory_Master.getRangeTotalAdditionalCosts(apiJSON, function(response) {
+                        // Once any response comes delete the Id from pending list so that it can be called
+                        if($scope.pendingAdditionalCostRequestIds) {
+                            for(let i = 0; i < $scope.pendingAdditionalCostRequestIds.length; i++) {
+                                if($scope.pendingAdditionalCostRequestIds[i] == additionalCost.fakeId) {
+                                    $scope.pendingAdditionalCostRequestIds.splice(i, 1);
+                                }
+                            }
+                        }
+                        if(response && response.data && response.data.payload) {
+                            if(!$scope.fetchedAdditionalCost) {
+                                $scope.fetchedAdditionalCost = {};
+                            }
+                            $scope.fetchedAdditionalCost.fakeId = additionalCost.fakeId;
+                            $scope.fetchedAdditionalCost.amount = response.data.payload.price || 0;
+                            $scope.fetchedAdditionalCost.extras = additionalCost.extras;
+                            
+                            if(!isFromGetAdditionalCosts) {
+                                ctrl.additionalCostList = ctrl.getAdditionalCosts();
+                            }
+                            else {
+                                ctrl.additionalCostList = ctrl.getAdditionalCostsForConfQty();
+                            }
+                        }
+                    });
+                    break;
+            }
+        }
+        
+        /**
+         * Get the additional costs - special function for confirmed Qty change.
+         * @returns {Array} - An array of additionalCosts objects.
+         */
+         ctrl.getAdditionalCostsForConfQty = function() {
+            let additionalCost,
+                result = [];
+            if (!ctrl.data) {
+                return result;
+            }
+            // Set result to the global additional costs array in the DTO,
+            // which contains the "All Products" additional costs.
+            result = ctrl.globalAdditionalCosts;
+            ctrl.additionalCostApplicableFor = {};
+            if (result) {
+                for (let k = 0; k < result.length; k++) {
+                    additionalCost = result[k];
+
+                    if (!additionalCost.fakeId) {
+                        additionalCost.fakeId = -Date.now();
+                    }
+                    // Save product model for "Applicable for", and calculate the confirmedQuantity
+                    // based on it:
+                    ctrl.additionalCostApplicableFor[additionalCost.fakeId] = null;
+                    additionalCost.confirmedQuantity = sumProductConfirmedQuantities(ctrl.data.products);
+                    // TODO: Get the quantityUom of the first product? Or is there a different business logic for this?
+                    // console.log(2)
+                    // additionalCost.quantityUom = null;
+                    additionalCost.quantityUom = ctrl.data.products[0].quantityUom;
+                    additionalCost = calculateAdditionalCostAmounts(additionalCost, null);
+                }
+            }  
+            if (ctrl.data.products) {
+                for (let i = 0; i < ctrl.data.products.length; i++) {
+                    if (ctrl.data.products[i].additionalCosts) {
+                        for (let j = 0; j < ctrl.data.products[i].additionalCosts.length; j++) {
+                            additionalCost = ctrl.data.products[i].additionalCosts[j];
+                            // We need to manage the newly created additionalCost objects in the front-end,
+                            // before they are saved to the server, therefore we need a way to reference
+                            // them before the server gives them an UID.
+                            // We'll use a fakeId field that acts as a temporary UID.
+                            // For objects already existing on the server, it will be equal to their ID field.
+                            // For new objects, we'll make one using a negative timestamp.
+                            if (!additionalCost.fakeId) {
+                                additionalCost.fakeId = -Date.now();
+                            }
+                            additionalCost.parentProductId = ctrl.data.products[i].id;
+                            // Save product model for "Applicable for", and calculate the confirmedQuantity
+                            // based on it.
+                            ctrl.additionalCostApplicableFor[additionalCost.fakeId] = ctrl.data.products[i];
+                            additionalCost.confirmedQuantity = convertDecimalSeparatorStringToNumber(ctrl.data.products[i].confirmedQuantity);
+                            // console.log(1)
+                            additionalCost.quantityUom = ctrl.data.products[i].quantityUom;
+                            additionalCost = calculateAdditionalCostAmounts(additionalCost, ctrl.data.products[i]);
+                        }
+                        if (result) {
+	                        result = result.concat(ctrl.data.products[i].additionalCosts);
+                        }
+                    }
+                }
+            }
+
+            result = $filter('filter')(result, {
+                isDeleted: false
+            });
+
+            ctrl.additionalCosts = result;
+
+            // $.each(result, (addCostKey, additionalCost) => {
+            //     if (ctrl.data.status && (
+            //         // ctrl.data.status.name == 'Confirmed' ||
+            //         ctrl.data.status.name == 'PartiallyDelivered' ||
+            //         ctrl.data.status.name == 'Delivered' ||
+            //         ctrl.data.status.name == 'PartiallyInvoiced' ||
+            //         ctrl.data.status.name == 'Invoiced')) {
+            //        additionalCost.disabled = true;
+            //     }
+            //     ctrl.costTypeChanged(additionalCost);
+            // });
+
+            updateOrderSummary();
+            return result;
+        };
+
+        function convertDecimalSeparatorStringToNumber(number) {
+            var numberToReturn = number;
+            var decimalSeparator, thousandsSeparator;
+            if (typeof number == 'string') {
+                if (number.indexOf(',') != -1 && number.indexOf('.') != -1) {
+                    if (number.indexOf(',') > number.indexOf('.')) {
+                        decimalSeparator = ',';
+                        thousandsSeparator = '.';
+                    } else {
+                        thousandsSeparator = ',';
+                        decimalSeparator = '.';
+                    }
+                    numberToReturn = parseFloat(parseFloat(number.split(decimalSeparator)[0].replace(new RegExp(thousandsSeparator, 'g'), '')) + parseFloat(`0.${number.split(decimalSeparator)[1]}`));
+                } else {
+                    numberToReturn = parseFloat(number);
+                }
+            }
+            if (isNaN(numberToReturn)) {
+                numberToReturn = 0;
+            }
+            return parseFloat(numberToReturn);
+        }
 
         /**
          * Recalculates product amount and total fuel price when product price changes.
@@ -3303,7 +3616,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 }
             });
 
-            // cost types : 1 - Flat; 2 - Unit; 3 - Percent
+            // cost types : 1 - Flat; 2 - Unit; 3 - Percent; 4 - Range; 5 - Total;
             var availableCosts = [];
             if (costType == 1 || costType == 2) {
                 $.each(ctrl.lists.CostType, (_, v) => {
@@ -3315,6 +3628,20 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             if (costType == 3) {
                 $.each(ctrl.lists.CostType, (_, v) => {
                     if (v.id == 3) {
+                        availableCosts.push(v);
+                    }
+                });
+            }
+            if (costType == 4) {
+                $.each(ctrl.lists.CostType, (_, v) => {
+                    if (v.id == 4) {
+                        availableCosts.push(v);
+                    }
+                });
+            }
+            if (costType == 5) {
+                $.each(ctrl.lists.CostType, (_, v) => {
+                    if (v.id == 5) {
                         availableCosts.push(v);
                     }
                 });
@@ -3687,7 +4014,12 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 }
                 productUomChg(ctrl.data.products[idx]);
                 if (!isSameContract) {
-                    $scope.addAdditionalCostByContractProductId(selection.contractProductId, idx);
+                    let additionalInfo = {
+                        productId: selection.product.id,
+                        confirmQty: ctrl.data.products[idx].confirmedQuantity,
+                        confirmQtyUom: ctrl.data.products[idx].quantityUom.id,
+                    };
+                    $scope.addAdditionalCostByContractProductId(selection.contractProductId, idx, additionalInfo);
                 }
             };
             $.each(ctrl.data.products, (key, value) => {
@@ -3747,14 +4079,40 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             console.log(product);
         }
 
-        $scope.addAdditionalCostByContractProductId = function(contractProductId, productIdx) {
+        $scope.addAdditionalCostByContractProductId = function(contractProductId, productIdx, additionalInfo) {
             //     	if (ctrl.data.id) {
             // // applicable only for new order
             //     		return
             //     	}
         	let currentContractProductId = contractProductId
             let currentProductIndex = productIdx
-            orderModel.getContractProductAdditionalCosts(contractProductId).then(function (response) {
+            let apiJSON = {
+                Order: null,
+                Filters: [
+                    {
+                        ColumnName: 'ContractProductId',
+                        Value: 4373// contractProductId
+                    },
+                    {
+                        ColumnName: 'ProductId',
+                        Value: 161 // additionalInfo.productId
+                    },
+                    {
+                        ColumnName: 'ConfirmQty',
+                        Value: 200 // additionalInfo.confirmedQty
+                    },
+                    {
+                        ColumnName: 'ConfirmQtyUom',
+                        Value: 5 // additionalInfo.confirmQtyUom
+                    }
+                ],
+                Pagination: {
+                    Skip: 0,
+                    Take: 25
+                },
+                SearchText: null
+            };
+            orderModel.getContractProductAdditionalCosts(apiJSON).then(function (response) {
                 console.log(response);
                 if (!ctrl.data.products[currentProductIndex].additionalCosts) {
                     ctrl.data.products[currentProductIndex].additionalCosts = []
@@ -3769,6 +4127,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     v.id = 0;
                     ctrl.data.products[currentProductIndex].additionalCosts.push(v)
                 })
+                ctrl.additionalCostList = ctrl.getAdditionalCosts();
             }).catch(function (error) {
             });
         };
