@@ -18,14 +18,14 @@
           <span class="from-to-value m-l-r-5">10/06/20</span>
           <img id="filter-icon" class="m-l-r-5" src="./assets/customicons/datepicker.svg">
         </div> -->
-        <div id="display" class="m-l-r-5">
-          <mat-checkbox class="label noborder" [checked]="true">Display</mat-checkbox>
+        <!-- <div id="display" class="m-l-r-5">
+          <mat-checkbox class="label noborder" [checked]="true" (change)="displayCancelRow($event)">Display</mat-checkbox>
           <span class="value m-l-r-5" style="vertical-align: middle;">Cancelled</span>
-        </div>
+        </div> -->
       </div>
     </div>
     <div>
-      <div class="createReqEnable" style="padding-left:10px;margin-right: 10px;"> Create Request </div>
+      <div class="createReqEnable" style="padding-left:10px;margin-right: 10px;"><a href="javascript:void(0)" (click)="createNewRequest()"> Create Request </a></div>
       <!-- <button matTooltip="Create Request" [matTooltipShowDelay]="500" id="create-btn">
         <img src="./assets/customicons/plus-noborder-denim.svg" alt="create">
         <div class="createReq">Create Request</div>
@@ -34,7 +34,10 @@
   </div>
 
   <div style="height: 94%;width: 100%;">
-    <ag-grid-angular id="requestDetailsgrid" style="width:100%;height:100%" [gridOptions]="gridOptions"
+    <ag-grid-angular 
+    id="requestDetailsgrid" 
+    style="width:100%;height:100%" 
+    [gridOptions]="gridOptions"
       class="ag-theme-balham-dark"></ag-grid-angular>
   </div>
 
