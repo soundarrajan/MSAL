@@ -1,9 +1,7 @@
-﻿commit dc257a884591e5c3cdb10141d05d6654fca47ad5
-Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
-Date:   Mon May 10 13:38:03 2021 +0000
+﻿commit b9e5ccdc62f9aa357ba2dc8c1a089c83ca8f47f4
+Author: Subhashini Vasanthakumar <subhashini.k@inatech.com>
+Date:   Mon May 10 15:47:32 2021 +0000
 
-    Merged PR 10575: To fix API enable based on conditions
-    
-    To fix API enable based on conditions
+    Merged PR 10579: View Audit Log B Plan
 
 branch: master

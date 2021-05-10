@@ -8,6 +8,11 @@ import { Observable, throwError } from 'rxjs';
 import { map, retry, catchError } from 'rxjs/operators';
 import { VesselDataModel, FuelDetails, VesselLocation, RequestDetail } from '../shared/models/vessel.data.model';
 import { BehaviorSubject } from 'rxjs';
+import {
+    IAuditLogRequest,
+    IAuditLogResponse
+  } from '@shiptech/core/services/admin-api/request-response-dtos/audit-log.dto';
+  
 
 export namespace UserRoleApiPaths {
     export const getUserRole = () => `api/BOPS/Roles/GetBOPSRoles`;
@@ -37,6 +42,9 @@ export namespace GetCurrentROBApiPaths {
 export namespace GetProcurementApiPaths {
     export const GetProcurementRequest = () => `api/procurement/request/tableView`;
 }
+export namespace AuditLogApiPaths {
+    export const getAuditLog = () => `api/admin/audit/get`;
+  }
 
 @Injectable({
     providedIn: 'root'
@@ -582,6 +590,14 @@ export class LocalService {
         { payload: request }
       );
     }
+
+    @ObservableException()
+  getAuditLog(request: any): Observable<IAuditLogResponse> {
+    return this.http.post<IAuditLogResponse>(
+      `${this._apiUrlAdmin}/${AuditLogApiPaths.getAuditLog()}`,
+      { payload: request }
+    );
+  }
       
     // bunkerplanId to get plan id for rob, arbitrage details based on vessel change
     @ObservableException()
