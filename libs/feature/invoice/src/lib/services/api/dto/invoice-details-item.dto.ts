@@ -109,7 +109,7 @@ export interface IInvoiceDetailsItemCounterpartyDetails {
 }
 
 export interface IInvoiceDetailsItemPaymentDetails {
-    paymentStatus: string;
+    paymentStatus: any;
     paidAmount: number;
     paidAmountCurrency: string;
     paymentProofReceived: boolean;
