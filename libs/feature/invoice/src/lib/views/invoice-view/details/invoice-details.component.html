@@ -184,8 +184,7 @@
                         <mat-form-field class="without-search" appearance="legacy">
                             <mat-label>Payment Status</mat-label>
                             <mat-select disableOptionCentering>
-                                <mat-option value="Option1">Option1</mat-option>
-                                <mat-option value="Option2">Option2</mat-option>
+                                <mat-option *ngFor="let list of paymentStatusList" [value]="list.id">{{list.name}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
@@ -208,8 +207,7 @@
                         <mat-form-field class="without-search" appearance="legacy">
                             <mat-label>Invoice Status</mat-label>
                             <mat-select>
-                                <mat-option value="Option1">Option1</mat-option>
-                                <mat-option value="Option2">Option2</mat-option>
+                                <mat-option *ngFor="let list of invoiceStatusList" [value]="list.id">{{list.name}}</mat-option>                                
                             </mat-select>
                         </mat-form-field>
                     </div>

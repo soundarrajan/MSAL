@@ -38,6 +38,8 @@ export class LegacyLookupsDatabase extends Dexie {
   >;
   readonly transactionType: Dexie.Table<IDisplayLookupDto, number>;
   readonly invoiceCustomStatus: Dexie.Table<IStatusLookupDto, number>;
+  readonly paymentStatus: Dexie.Table<IStatusLookupDto, number>;
+  readonly invoiceType: Dexie.Table<IStatusLookupDto, number>;
   readonly orderedStatus: Dexie.Table<IStatusLookupDto, number>;
   readonly barge: Dexie.Table<IDisplayLookupDto, number>;
   readonly product: Dexie.Table<IDisplayLookupDto, number>;
@@ -69,6 +71,12 @@ export class LegacyLookupsDatabase extends Dexie {
         index: dto.index
       },
     [nameof<LegacyLookupsDatabase>('invoiceCustomStatus')]: (
+      dto: ColorDisplayLookup
+    ) => <IReconStatusLookupDto>{ ...fromLegacyLookup(dto), code: dto.code },
+    [nameof<LegacyLookupsDatabase>('paymentStatus')]: (
+      dto: ColorDisplayLookup
+    ) => <IReconStatusLookupDto>{ ...fromLegacyLookup(dto), code: dto.code },
+    [nameof<LegacyLookupsDatabase>('invoiceType')]: (
       dto: ColorDisplayLookup
     ) => <IReconStatusLookupDto>{ ...fromLegacyLookup(dto), code: dto.code },
     [nameof<LegacyLookupsDatabase>('orderedStatus')]: (
@@ -124,6 +132,8 @@ export class LegacyLookupsDatabase extends Dexie {
       )]: lookupDashboardSchema,
       [nameof<LegacyLookupsDatabase>('transactionType')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('invoiceCustomStatus')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('paymentStatus')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('invoiceType')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('orderedStatus')]: lookupSchema
     };
   }
@@ -238,6 +248,21 @@ export class LegacyLookupsDatabase extends Dexie {
     return sampleSource;
   }
 
+  async InvoiceCustomStatus(){
+    const db = this.table('invoiceCustomStatus');
+    let InvoiceCustomStatus = await db.toArray();
+    return InvoiceCustomStatus;
+  }
+  async PaymentStatus(){
+    const db = this.table('paymentStatus');
+    let PaymentStatus = await db.toArray();
+    return PaymentStatus;
+  }
+  async InvoiceType(){
+    const db = this.table('invoiceType');
+    let InvoiceType = await db.toArray();
+    return InvoiceType;
+  }
 
   private async ensureVersion(): Promise<any> {
     // TODO: add proper logging

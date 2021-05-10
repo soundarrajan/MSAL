@@ -12,14 +12,7 @@ export class InvoiceTypeSelectionComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<InvoiceTypeSelectionComponent>,@Inject(MAT_DIALOG_DATA) public receiveData: any) {  }
 
   ngOnInit(): void {
-    this.invoiceList =[
-      {value:1,name:"Provisional Invoice"},
-      {value:2,name:"Final Invoice"},
-      {value:3,name:"Credit Note"},
-      {value:4,name:"Debit Note"},
-      {value:5,name:"Pre-claim credit note"},
-      {value:1,name:"Pre-claim debit note"},
-    ];
+    this.invoiceList = this.receiveData.lists;
   }
  
  closeDialog(){
