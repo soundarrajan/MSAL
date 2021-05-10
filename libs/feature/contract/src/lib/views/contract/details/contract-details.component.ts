@@ -139,6 +139,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   selectedTabIndex: number;
   contractConfiguration: any;
   generalConfiguration: any;
+  customerList: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -269,6 +270,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       this.locationList = this.setListFromStaticLists('Location');
       this.additionalCostList = this.setListFromStaticLists('AdditionalCost');
       this.costTypeList = this.setListFromStaticLists('CostType');
+      this.customerList = this.setListFromStaticLists('Customer');
 
       var defaultUom = this.generalTenantSettings.tenantFormats.uom;
       var defaultQuantityType = this.contractualQuantityOptionList[0];

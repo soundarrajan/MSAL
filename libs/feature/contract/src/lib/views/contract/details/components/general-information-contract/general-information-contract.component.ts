@@ -434,6 +434,7 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
   contractConfiguration: any;
   initialCompanyList: any;
   generalConfiguration: any;
+  customerList: any;
   @Input() set autocompleteType(value: string) {
     this._autocompleteType = value;
   }
@@ -532,9 +533,20 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
     this.generalConfiguration = generalConfiguration;
   }
 
+  @Input('customerList') set _setCustomerList(customerList) { 
+    if (!customerList) {
+      return;
+    } 
+    this.customerList = customerList;
+  }
+
+
+
   @Input() eventsSaveButton: Observable<void>;
   eventsSubject2: Subject<any> = new Subject<any>();
   expandAllowedCompanylistPopUp: any = false;
+  expandCustomerListPopUp: any = false;
+  expandCustomer: any = false;
 
   constructor(
     public gridViewModel: OrderListGridViewModel,
@@ -819,6 +831,21 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
       }
     }
     this.formValues.allowedCompanies = _.cloneDeep(allowedCompanyList);
+  }
+
+  saveCustomer() {
+    let customerList = [];
+    for (let i = 0; i <  this.customerList.length; i++) {
+      if ( this.customerList[i].isSelected) {
+        let customer = {
+          'id':  this.customerList[i].id,
+          'name':  this.customerList[i].name
+        }
+        customerList.push(customer);
+      }
+    }
+    this.formValues.customerList = _.cloneDeep(customerList);
+
   }
 
 
