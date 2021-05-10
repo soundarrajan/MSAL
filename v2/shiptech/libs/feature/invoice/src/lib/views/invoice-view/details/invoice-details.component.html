@@ -1,6 +1,6 @@
 <form>
 <!-- Invoice Informaiton -->
-<div class="section1">   
+<div class="section1">
     <div class="row">
         <div class="col-md-6 col-sm-12 col-12 pt-4" style="line-height: 55px; padding: 0px; margin: 0px;">
             <div class="row">
@@ -20,7 +20,7 @@
                         <span class="label_text" matTooltip={{formValues.createdAt}}>On: <b>{{formValues.createdAt | date: this.dateFormat}}</b></span>
                     </div>
                 </div>
-            </div>            
+            </div>
             <div class="row pt-3">
                 <div class="col-md-3">
                     <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
@@ -36,7 +36,7 @@
                     <div id="custom-form-field" class="lightTheme">
                         <mat-form-field class="without-search" appearance="legacy">
                             <mat-label>Invoice Date</mat-label>
-                            <input [(ngModel)]="formValues.invoiceDate" name="invoiceDate" #validToDateField="ngModel" 
+                            <input [(ngModel)]="formValues.invoiceDate" name="invoiceDate" #validToDateField="ngModel"
                             matInput [matDatepicker]="invoiceDate" (focus)="invoiceDate.open()" autocomplete="off" placeholder="Invoice Date" (dateChange)="formValues.invoiceDate = formatDateForBe(formValues.invoiceDate)">
                             <mat-datepicker-toggle matSuffix [for]="invoiceDate">
                                 <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
@@ -75,12 +75,12 @@
                     </div>
                 </div>
             </div>
-            <div class="row pt-3">           
+            <div class="row pt-3">
                     <div class="col-md-3">
                         <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
                             <mat-form-field class="without-search" appearance="legacy">
                                 <mat-label>Invoice Currency Details</mat-label>
-                                <input matInput 
+                                <input matInput
                                 name="invoiceRateCurrencyCode"
                                 [(ngModel)]="formValues.invoiceRateCurrency.code">
                             </mat-form-field>
@@ -116,13 +116,13 @@
                         <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
                             <mat-form-field class="without-search" appearance="legacy">
                                 <mat-label>Document No.</mat-label>
-                                <input matInput 
+                                <input matInput
                                 name="documentNo"
                                 [(ngModel)]="formValues.documentNo">
                             </mat-form-field>
                         </div>
                     </div>
-            </div>           
+            </div>
             <div class="row pt-3">
                 <div class="col-md-3">
                     <div id="custom-form-field" class="lightTheme">
@@ -141,10 +141,10 @@
                     <div id="custom-form-field" class="lightTheme">
                         <mat-form-field class="without-search" appearance="legacy">
                             <mat-label>Payment Date</mat-label>
-                            <input [(ngModel)]="formValues.paymentDate" 
+                            <input [(ngModel)]="formValues.paymentDate"
                             name="paymentDate"
-                            #validToDateField="ngModel" 
-                            matInput 
+                            #validToDateField="ngModel"
+                            matInput
                             [matDatepicker]="paymentDate"
                             (focus)="paymentDate.open()"
                             autocomplete="off"
@@ -162,10 +162,10 @@
                     <div id="custom-form-field" class="lightTheme">
                         <mat-form-field class="without-search" appearance="legacy">
                             <mat-label>Validation Date</mat-label>
-                            <input [(ngModel)]="formValues.accountancyDate" 
+                            <input [(ngModel)]="formValues.accountancyDate"
                             name="accountancyDate"
-                            #validToDateField="ngModel" 
-                            matInput 
+                            #validToDateField="ngModel"
+                            matInput
                             [matDatepicker]="validationDate"
                             (focus)="validationDate.open()"
                             autocomplete="off"
@@ -218,10 +218,10 @@
                     <div id="custom-form-field" class="lightTheme">
                         <mat-form-field class="without-search" appearance="legacy">
                             <mat-label>Accountancy Date</mat-label>
-                            <input [(ngModel)]="formValues.accountancyDate" 
+                            <input [(ngModel)]="formValues.accountancyDate"
                             name="accountancyDate"
-                            #validToDateField="ngModel" 
-                            matInput 
+                            #validToDateField="ngModel"
+                            matInput
                             [matDatepicker]="accountancyDate"
                             (focus)="accountancyDate.open()"
                             autocomplete="off"
@@ -239,25 +239,25 @@
                     <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
                         <mat-form-field class="without-search" appearance="legacy">
                             <mat-label>Account No.</mat-label>
-                            <input matInput 
+                            <input matInput
                             name="accountNumber"
                             [(ngModel)]="formValues.accountNumber">
                         </mat-form-field>
                     </div>
                 </div>
-            </div>  
+            </div>
             <div class="row pt-3">
                 <div class="col-md-3">
                     <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
                         <mat-form-field class="without-search" appearance="legacy">
                             <mat-label>Paid Amount</mat-label>
                             <input matInput
-                            name="paidAmount" 
+                            name="paidAmount"
                             [(ngModel)]="formValues.paymentDetails.paidAmount">
                         </mat-form-field>
                     </div>
                 </div>
-            </div>         
+            </div>
         </div>
     </div>
 </div>
@@ -270,7 +270,7 @@
                 <div class="header-data">Request ID: <span class="request-id">{{formValues.requestInfo.request.id}}</span></div>
             </div>
             <div class="section-content order-details">
-                <readonly-details [options]="orderDetails"></readonly-details>                
+                <readonly-details [options]="orderDetails"></readonly-details>
                 <div class="form-fields">
                     <div class="custom-form-field-with-search lightTheme">
                           <shiptech-st-autosearch-selector [placeholder]="'company'" [name]="'Payment company'" [required] = "'true'" [masterType]="'company'" (onChanged)="AC_valueChanges('company',$event)" [bindValue]="formValues.orderDetails.paymentCompany.name"></shiptech-st-autosearch-selector>
@@ -292,9 +292,9 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="field-textarea">
-                    <textarea rows="4" cols="50" placeholder="Type front office comments here" 
+                    <textarea rows="4" cols="50" placeholder="Type front office comments here"
                     name="frontOfficeComments"
                     [(ngModel)]="formValues.orderDetails.frontOfficeComments"></textarea>
                 </div>
@@ -324,7 +324,7 @@
                             </div>
                         </div>
                         <div class="field-textarea">
-                            <textarea rows="4" cols="50" placeholder="Type back office comments here" 
+                            <textarea rows="4" cols="50" placeholder="Type back office comments here"
                             name="backOfficeComments"
                             [(ngModel)]="formValues.backOfficeComments"></textarea>
                         </div>
@@ -338,7 +338,7 @@
                                     <mat-select disableOptionCentering>
                                         <mat-option value="M A Marina">M A Marina</mat-option>
                                     </mat-select>
-                                </mat-form-field>                            
+                                </mat-form-field>
                                 <div class="search-icon">
                                     <div class="img"></div>
                                 </div> -->
@@ -346,12 +346,12 @@
                             </div>
                         </div>
                         <div style="padding-top: 5px;">
-                            <mat-checkbox class="example-margin" 
+                            <mat-checkbox class="example-margin"
                             name="paymentProofReceived"
                             [(ngModel)]="formValues.paymentDetails.paymentProofReceived">Payment proof received</mat-checkbox>
                         </div>
                         <div class="field-textarea sizing">
-                            <textarea rows="4" cols="50" placeholder="Payment Proof comments" 
+                            <textarea rows="4" cols="50" placeholder="Payment Proof comments"
                             name="paymentDetailscomments"
                             [(ngModel)]="formValues.paymentDetails.comments"></textarea>
                         </div>
@@ -362,7 +362,7 @@
     </div>
 </div>
 <!-- Product Details -->
-<div class="section1 mt-4" style="margin: 0px;">
+<div class="section1 mt-4" style="margin: 0px;" *ngIf="!(formValues.invoiceClaimDetails.length > 0)">
     <div class="match-grid" style="border-bottom: 4px solid #e5e5e5;">
         <div class="title">Product Details</div>
         <div class="agGrid-v2" style="margin: 0">
@@ -388,7 +388,7 @@
       </div>
 </div>
 <!-- Additional Cost Details -->
-<div class="section1 mt-4" style="margin: 0px;">
+<div class="section1 mt-4" style="margin: 0px;" *ngIf="!(formValues.invoiceClaimDetails.length > 0)">
     <div class="match-grid" style="border-bottom: 4px solid #e5e5e5;">
         <div class="title">Additional Costs</div>
         <div class="agGrid-v2" style="margin: 0">
@@ -398,6 +398,19 @@
             </div>
         </div>
       </div>
+</div>
+
+<!-- Claim details -->
+<div class="section1 mt-4" style="margin: 0px;" *ngIf="formValues.invoiceClaimDetails.length > 0">
+  <div class="match-grid" style="border-bottom: 4px solid #e5e5e5;">
+      <div class="title">Claim Details</div>
+      <div class="agGrid-v2" style="margin: 0">
+          <div style="width:100%;height: 250px;">
+              <ag-grid-angular style="width: 100%;height: 100%;" [gridOptions]="gridOptions_claims"
+                  class="ag-theme-material ag-grid-v2 angular-v9 prod-details"></ag-grid-angular>
+          </div>
+      </div>
+    </div>
 </div>
 </form>
 

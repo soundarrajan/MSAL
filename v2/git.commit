@@ -1,7 +1,9 @@
-﻿commit a161e45747dc4c6767aa4321b8fe3a8f6bb51882
-Author: Prabaharan P <prabaharan.p@Inatech.com>
-Date:   Fri May 7 20:41:50 2021 +0530
+﻿commit 64f723c8a0e050b69cda96123323edbf03f55fe7
+Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
+Date:   Sat May 8 12:36:21 2021 +0000
 
-    Delivery Option Modifiy Enable/Disable with claim UI fixed
+    Merged PR 10523:  Inovice type popup on clicking create invoice option
+    
+     Inovice type popup on clicking create invoice option
 
 branch: master

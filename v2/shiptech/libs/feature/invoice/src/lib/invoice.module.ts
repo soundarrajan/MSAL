@@ -48,6 +48,11 @@ import { InvoiceViewComponent } from './views/invoice-view/invoice-view.componen
 import { MainInvoiceComponent } from './views/main-invoice.component';
 import { RelatedInvoiceComponent } from './views/invoice-view/related-invoice/related-invoice.component';
 import { ProductDetailsModalComponent } from './views/invoice-view/details/component/product-details-modal/product-details-modal.component';
+import { NavBarResolver } from './views/invoice-view/details/navbar-route-resolver';
+import { BreadcrumbsModule } from '@shiptech/core/ui/components/breadcrumbs/breadcrumbs.module';
+import { InvoiceDetailsToolbarComponent } from './views/invoice-view/toolbar/invoice-details-toolbar.component';
+import { ClaimDetailsComponent } from './views/invoice-view/details/component/claim-details/claim-details.component'
+import { InvoiceTypeSelectionComponent } from './views/invoice-view/details/component/invoice-type-selection/invoice-type-selection.component';
 
 @NgModule({
   imports: [
@@ -84,7 +89,8 @@ import { ProductDetailsModalComponent } from './views/invoice-view/details/compo
     ButtonModule,
     MessagesModule,
     ExportModule,
-    MasterSelectorModule    
+    MasterSelectorModule,
+    BreadcrumbsModule
   ],
   declarations: [
     MainInvoiceComponent,
@@ -93,11 +99,15 @@ import { ProductDetailsModalComponent } from './views/invoice-view/details/compo
     InvoiceViewComponent,
     InvoiceDetailComponent,
     RelatedInvoiceComponent,
-    ProductDetailsModalComponent
+    ProductDetailsModalComponent,
+    InvoiceDetailsToolbarComponent,
+    ClaimDetailsComponent,
+    InvoiceTypeSelectionComponent
   ],
   providers: [
     ModuleLoggerFactory,
     FeatureInvoiceModuleResolver,
+    NavBarResolver,
     {
       provide: INVOICE_COMPLETE_API_SERVICE,
       useClass: environment.production
@@ -105,11 +115,11 @@ import { ProductDetailsModalComponent } from './views/invoice-view/details/compo
         : InvoiceCompleteApiMock
     },
     InvoiceCompleteService,
-    InvoiceDetailsService,    
+    InvoiceDetailsService,
     DialogService
   ],
   entryComponents:[
-    ProductDetailsModalComponent
+    ProductDetailsModalComponent,InvoiceTypeSelectionComponent
   ]
 })
 export class InvoiceModule {}

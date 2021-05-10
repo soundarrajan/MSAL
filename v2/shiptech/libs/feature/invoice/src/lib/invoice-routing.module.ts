@@ -1,3 +1,4 @@
+import { NavBarResolver } from './views/invoice-view/details/navbar-route-resolver';
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { FeatureInvoiceModuleResolver } from './invoice-route.resolver';
@@ -21,12 +22,12 @@ const routes: Routes = [
       {
         path: KnownInvoiceRoutes.CompleteView,
         component: InvoiceCompleteListComponent,
-        data: { title: 'COMPLETE VIEW LIST', breadcrumb: 'Complete View List' }
+        data: { title: 'Complete View', breadcrumb: 'Complete View List' }
       },
       {
         path: KnownInvoiceRoutes.InvoiceList,
         component: InvoiceListComponent,
-        data: { title: 'INVOICES LIST', breadcrumb: 'Invoices List' }
+        data: { title: 'Invoice List', breadcrumb: 'Invoices List' }
       },
       {
         path: KnownInvoiceRoutes.InvoiceView,
@@ -34,13 +35,18 @@ const routes: Routes = [
           {
             path: `:${KnownInvoiceRoutes.InvoiceIdParam}`,
             component: InvoiceViewComponent,
-            data: { title: 'VIEW INVOICES', breadcrumb: 'View Invoice' }
+            resolve:{
+              // Note: ReportId is expected in child routes in the data.
+              //invoice: InvoiceDetailsRouteResolver,
+              navBar: NavBarResolver
+            },
+            data: { title: 'View Invoice', breadcrumb: 'View Invoice' }
           },
           {
             path: `:${KnownInvoiceRoutes.InvoiceIdParam}/`+KnownInvoiceRoutes.InvoiceDetails,
             component: InvoiceViewComponent,
-            data: { title: 'VIEW INVOICES', breadcrumb: 'View Invoice' }
-          }          
+            data: { title: 'View Invoice', breadcrumb: 'View Invoice' }
+          }
         ],
       }
     ]
