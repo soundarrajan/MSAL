@@ -1,7 +1,9 @@
-﻿commit b9e5ccdc62f9aa357ba2dc8c1a089c83ca8f47f4
-Author: Subhashini Vasanthakumar <subhashini.k@inatech.com>
-Date:   Mon May 10 15:47:32 2021 +0000
+﻿commit 3600cb5178e34ba7a1944a00a0cf2bf34366b010
+Author: udaya kumar s <udayakumar.s@inatech.com>
+Date:   Mon May 10 15:57:48 2021 +0000
 
-    Merged PR 10579: View Audit Log B Plan
+    Merged PR 10580: #Requirement 29982: B plan: View Future Requests ssr filter option has done
+    
+    Related work items: #29982
 
 branch: master

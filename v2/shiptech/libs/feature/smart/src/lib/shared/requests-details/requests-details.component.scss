@@ -3,3 +3,14 @@
         justify-content: space-around;
     }
 }
+.custom-popover.mat-menu-item {
+    height: auto !important;
+    line-height: 25px;
+}
+.custom-popover.mat-menu-item:hover:not([disabled]) {
+    background: none !important;
+}
+
+.cdk-overlay-pane > div.mat-menu-panel > div.mat-menu-content {
+        background: #5B6674 !important;
+}
