@@ -185,7 +185,7 @@
       <input [(ngModel)]="formValues.deliveryDate" 
             matInput 
             [matDatepicker]="deliveryDate"
-            [disabled]="formValues.invoiceActiveFlag == true"
+            [disabled]="formValues.invoiceActiveFlag == true || formValues.claimActiveFlag == true"
             (focus)="deliveryDate.open()"
             autocomplete="off"
             placeholder="Delivery Date"

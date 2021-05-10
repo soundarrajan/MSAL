@@ -492,6 +492,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   expandLocation: any = false;
   expandProduct: any = false;
   bankFilterCtrl: any = new FormControl();
+  additionalCostForLocation: any = [];
   get entityId(): number {
     return this._entityId;
   }
@@ -644,6 +645,10 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     for (let i = 0; i < this.formValues.products.length; i++) {
       if (this.formValues.products[i].product) {
         this.getSpecGroupByProduct(this.formValues.products[i].product.id, this.formValues.products[i].specGroup);
+      }
+      if (this.formValues.products[i].location) {
+        this.getAdditionalCostsPerPort(this.formValues.products[i].location.id);
+
       }
     }
     this.getAdditionalCostsComponentTypes();
@@ -1157,9 +1162,100 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       'name': location.name
     };
     this.selectedLocation = null;
+    this.getAdditionalCostsPerPortOnLocationChanging(location.id);
     // this.changeDetectorRef.detectChanges();
     //this.contractFormSubject.next(this.formValues);
 
+  }
+
+  getAdditionalCostsPerPort(locationId) {
+    if (typeof this.additionalCostForLocation == 'undefined') {
+      this.additionalCostForLocation = [];
+    }
+    if (typeof this.additionalCostForLocation == 'undefined') {
+      this.additionalCostForLocation = [];
+    }
+
+    let payload = {"Payload":
+      {"Order":null,
+      "PageFilters":{"Filters":[]},
+      "SortList":{"SortList":[]},
+      "Filters":[{ColumnName:"LocationId", value: locationId}],
+      "SearchText":null,
+      "Pagination":{"Skip":0,"Take":25}}};
+
+    this.contractService
+    .getAdditionalCostsPerPort(payload)
+    .pipe(
+      finalize(() => {
+      })
+    )
+    .subscribe((response: any) => {
+      if (typeof response == 'string') {
+        this.toastr.error(response);
+      } else {
+        console.log(response);
+        this.additionalCostForLocation[locationId] = response;
+        this.changeDetectorRef.detectChanges();
+      }
+    });
+  }
+
+  getAdditionalCostsPerPortOnLocationChanging(locationId) {
+    if (typeof this.additionalCostForLocation == 'undefined') {
+      this.additionalCostForLocation = [];
+    }
+    if (typeof this.additionalCostForLocation == 'undefined') {
+      this.additionalCostForLocation = [];
+    }
+
+    let payload = {"Payload":
+      {"Order":null,
+      "PageFilters":{"Filters":[]},
+      "SortList":{"SortList":[]},
+      "Filters":[{ColumnName:"LocationId", value: locationId}],
+      "SearchText":null,
+      "Pagination":{"Skip":0,"Take":25}}};
+
+    this.spinner.show();
+    this.contractService
+    .getAdditionalCostsPerPort(payload)
+    .pipe(
+      finalize(() => {
+        this.spinner.hide();
+      })
+    )
+    .subscribe((response: any) => {
+      if (typeof response == 'string') {
+        this.toastr.error(response);
+      } else {
+        console.log(response);
+        this.additionalCostForLocation[locationId] = response;
+        for (let i = 0; i < this.additionalCostForLocation[locationId].length; i++) {
+          if (this.additionalCostForLocation[locationId][i].locationid) {
+            if (!this.formValues.products[this.selectedTabIndex].additionalCosts) {
+              this.formValues.products[this.selectedTabIndex].additionalCosts = [];
+            }
+            let additionalCostLine = {
+              additionalCost: {
+                id: this.additionalCostForLocation[locationId][i].additionalCostid,
+                name: this.additionalCostForLocation[locationId][i].name
+              },
+              costType: this.additionalCostForLocation[locationId][i].costType,
+              amount: this.additionalCostForLocation[locationId][i].amount,
+              uom: this.additionalCostForLocation[locationId][i].priceUom,
+              extras: this.additionalCostForLocation[locationId][i].extrasPercentage,
+              currency: this.additionalCostForLocation[locationId][i].currency,
+              comments: this.additionalCostForLocation[locationId][i].costDescription,
+              locationAdditionalCostId: this.additionalCostForLocation[locationId][i].locationid
+            }
+            this.formValues.products[this.selectedTabIndex].additionalCosts.push(additionalCostLine);
+
+          }
+        }
+        this.changeDetectorRef.detectChanges();
+      }
+    });
   }
 
 

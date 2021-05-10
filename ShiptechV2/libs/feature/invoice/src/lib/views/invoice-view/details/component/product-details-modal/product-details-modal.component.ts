@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { InvoiceDetailsService } from '../../../../../services/invoice-details.service';
 
 @Component({
   selector: 'shiptech-product-details-modal',
@@ -12,22 +13,36 @@ export class ProductDetailsModalComponent implements OnInit {
 
   public searchText:string;
   selectedRow;
+  isLoading:boolean= true;
   public dataSource: MatTableDataSource<any>;
-  public productData:any = [{selected:false, product:'RMG 380', deliveries:1226}, {selected:false, product:'RMK 350', deliveries:12}];
-  constructor(public dialogRef: MatDialogRef<ProductDetailsModalComponent>) { 
+  public productData:any = [];
+  constructor(public dialogRef: MatDialogRef<ProductDetailsModalComponent>,private invoiceService: InvoiceDetailsService,@Inject(MAT_DIALOG_DATA) public receiveData: any) { 
     
   }
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource(this.productData);
+    
+    // console.log("receiveData",this.receiveData.orderId); - 98297
+    let data : any = {
+      Payload: {"Order":null,"PageFilters":{"Filters":[]},"SortList":{"SortList":[]},"Filters":[{"ColumnName":"Order_Id","Value": this.receiveData.orderId}],"SearchText":null,"Pagination":{}}
+    };
+    this.invoiceService
+    .productListOnInvoice(data)
+    .subscribe((response: any) => {
+      this.isLoading = false;
+      response.payload.forEach(row => {
+        this.productData.push({selected:false, product:row.product.name, deliveries:row.order.id, details:row});
+      });
+      this.dataSource = new MatTableDataSource(this.productData);
     this.dataSource.filterPredicate = this.getFilterPredicate();
+    });
   }
 
   radioSelected(element){
     this.selectedRow=element;
 
     console.log(this.selectedRow.product);
-    this.dialogRef.close({data:this.selectedRow.product});
+    this.dialogRef.close({data:this.selectedRow.details});
     
   }
 
@@ -58,15 +73,15 @@ export class ProductDetailsModalComponent implements OnInit {
   }
 
   closeClick(): void {
-    this.dialogRef.close();
+    this.dialogRef.close('close');
   }
 
   raiseClaim() {
-    this.dialogRef.close();
+    this.dialogRef.close('close');
   }
 
   onNoClick(): void {
-    this.dialogRef.close();
+    this.dialogRef.close('close');
   }
   
 }
