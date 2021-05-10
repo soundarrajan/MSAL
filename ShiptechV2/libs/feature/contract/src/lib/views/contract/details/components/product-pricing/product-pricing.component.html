@@ -5,7 +5,7 @@
     </div>
   </div>
   <div class="col-md-12 row no-padding d-flex" style="margin-top: 10px;">
-    <div class="col-md-6 no-padding">
+    <div class="col-md-6 no-padding-left" >
       <div id="custom-contract-btn-toggle-v2">
         <mat-button-toggle-group 
           [disabled]="formValues.status && formValues.status.name == 'Confirmed'" 
@@ -21,25 +21,8 @@
         </mat-button-toggle-group>
       </div>
     </div>
-    <div *ngIf="formValues.products[selectedTabIndex].isFormula" class="contract-details-info col-md-6 no-padding" style="text-align: right;">
-      <span>
-        <a *ngIf="!(formValues.products[selectedTabIndex].formula && formValues.products[selectedTabIndex].formula.name)" class="create-new-formula-icon" (click)="createNewFormulaPopup(selectedTabIndex)"></a>
-      </span>
-      <span *ngIf="!(formValues.products[selectedTabIndex].formula && formValues.products[selectedTabIndex].formula.name)" class="location-contract-info">
-        Create new formula
-      </span>
-      <span *ngIf="formValues.products[selectedTabIndex].formula && formValues.products[selectedTabIndex].formula.name" class="disabled-formula">
-      </span>
-    </div>
-    <div *ngIf="formValues.products[selectedTabIndex].isFormula" class="formula-history col-md-12">
-      <div style="float: right;" >
-        <a class="formula-history-name" (click)="openFormulaHistory(formValues.products[selectedTabIndex].id)">
-          Formula History
-        </a>
-      </div>
-    </div>
-    <div *ngIf="!formValues.products[selectedTabIndex].isFormula" class="contract-details-info col-md-6 no-padding" style="text-align: right;">
-      <div class="custom-form-field product-details" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}" style="width: 50% !important; margin-left: 40px !important;">
+    <div  class="contract-details-info" [ngClass]="{'col-md-6 no-padding': !formValues.products[selectedTabIndex].isFormula, 'col-md-3': formValues.products[selectedTabIndex].isFormula}" style="text-align: right;">
+      <div class="custom-form-field product-details" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme, 'price-fixed': !formValues.products[selectedTabIndex].isFormula, 'formula-description': formValues.products[selectedTabIndex].isFormula}">
         <mat-form-field class="without-search" appearance="legacy">
           <mat-label>Price Precision</mat-label>
           <mat-select 
@@ -54,6 +37,25 @@
             </mat-option>
         </mat-select>
         </mat-form-field>
+      </div>
+    </div>
+    <div *ngIf="formValues.products[selectedTabIndex].isFormula" class="contract-details-info col-md-3" style="padding-right: 0px !important;">
+      <span>
+        <a *ngIf="!(formValues.products[selectedTabIndex].formula && formValues.products[selectedTabIndex].formula.name)" class="create-new-formula-icon" (click)="createNewFormulaPopup(selectedTabIndex)"></a>
+      </span>
+      <span *ngIf="!(formValues.products[selectedTabIndex].formula && formValues.products[selectedTabIndex].formula.name)" class="location-contract-info">
+        Create new formula
+      </span>
+      <span *ngIf="formValues.products[selectedTabIndex].formula && formValues.products[selectedTabIndex].formula.name" class="disabled-formula">
+      </span>
+    </div>
+  </div>
+  <div class="col-md-12 row no-padding d-flex" style="margin-top: 10px;">
+    <div *ngIf="formValues.products[selectedTabIndex].isFormula" class="formula-history col-md-12">
+      <div style="float: right;" >
+        <a class="formula-history-name" (click)="openFormulaHistory(formValues.products[selectedTabIndex].id)">
+          Formula History
+        </a>
       </div>
     </div>
   </div>
