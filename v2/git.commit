@@ -1,9 +1,9 @@
-﻿commit e71f5cf3c79ff60ee9d4a3b325d03bc6a93310d3
-Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
-Date:   Mon May 10 07:41:55 2021 +0000
+﻿commit c5a56835117679e54aef259f8b0e01c0275dbd41
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Mon May 10 10:30:56 2021 +0000
 
-    Merged PR 10550: PaymentStatus, Invoice status and type are from indexed DB
+    Merged PR 10562: Added price precision dropdown when selecting formula type
     
-    PaymentStatus, Invoice status and type are from indexed DB
+    Added price precision dropdown when selecting formula type
 
 branch: master
