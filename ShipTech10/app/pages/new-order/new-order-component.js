@@ -804,18 +804,17 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             
             console.log("Suresh R", ctrl.data)
            
-            ctrl.selectPort(ctrl.data.location.id);
-           $.each(ctrl.data.products, (k, v) => {
-           // v.price =null;
-            v.contract = null;
-            v.formula = null;
-            v.formulaDescription = null;
-            v.contractId = null;
+            ctrl.selectPort(ctrl.data.location.id, true);
+            $.each(ctrl.data.products, (k, v) => {
+                // v.price =null;
+                v.contract = null;
+                v.formula = null;
+                v.formulaDescription = null;
+                v.contractId = null;
 
-            ctrl.productPriceChanged(v);
-            ctrl.changedProductContract();
+                ctrl.productPriceChanged(v);
+                ctrl.changedProductContract();
             });
-
         }
 
         function updatePageTitle() {
@@ -979,14 +978,14 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 if($scope.fetchedAdditionalCost && $scope.fetchedAdditionalCost.fakeId == additionalCost.fakeId) {
                     additionalCost.extras = $scope.fetchedAdditionalCost?.extras || 0;
                     additionalCost.amount = $scope.fetchedAdditionalCost?.amount || 0;
-                    additionalCost.price = 1; // dummy price since price is mandatory
+                    additionalCost.price = additionalCost.amount;
                 }
                 break;
             case COST_TYPE_IDS.TOTAL:
                 if($scope.fetchedAdditionalCost && $scope.fetchedAdditionalCost.fakeId == additionalCost.fakeId) {
                     additionalCost.extras = $scope.fetchedAdditionalCost?.extras || 0;
                     additionalCost.amount = $scope.fetchedAdditionalCost?.amount || 0;
-                    additionalCost.price = 1; // dummy price since price is mandatory
+                    additionalCost.price = additionalCost.amount;
                 }
                 break;
             }

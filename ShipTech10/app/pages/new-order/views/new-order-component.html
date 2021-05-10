@@ -661,6 +661,7 @@
                                                                 ng-click="$ctrl.initLookup($ctrl.portFields.locationName.name, $ctrl.data.location)"
                                                                 ng-model="$ctrl.data.location.name" decode-input-format
                                                                 required />
+                                                            <span ng-if="$ctrl.isEnabledVessel && $ctrl.data && $ctrl.data.location" ng-init="$ctrl.selectPort($ctrl.data.location.id, true)"></span>
                                                             <span ng-if="!$ctrl.isEnabledVessel"
                                                                 class="input-group-addon ng-scope"
                                                                 ng-click="triggerModal('general', 'masters_locationlist', 'Location' ,'location',null,null,null,null);"
