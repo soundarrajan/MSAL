@@ -3127,7 +3127,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             if(!(additionalCostContainer && additionalCost
                     && additionalCostContainer.product && additionalCostContainer.product.id > 0
                     && ctrl.data && ctrl.data.location && ctrl.data.location.id > 0
-                    && additionalCost.additionalCost && additionalCost.additionalCost.locationid > 0
+                    && ((additionalCost.additionalCost && additionalCost.additionalCost.locationid > 0)
+                    || additionalCost.locationAdditionalCostId > 0)
                     // && additionalCost.additionalCost.id > 0
                     && additionalCost.costType && additionalCost.costType.id > 0
                     && additionalCost.confirmedQuantity > 0 && additionalCost.quantityUom && additionalCost.quantityUom.id > 0)) {
@@ -3149,7 +3150,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                                 },
                                 {
                                     ColumnName: 'AdditionalCostId',
-                                    Value: additionalCost.additionalCost.locationid // 25 // additionalCost.additionalCostLocationId
+                                    Value: additionalCost?.additionalCost?.locationid ?? additionalCost?.locationAdditionalCostId // 25 // additionalCost.additionalCostLocationId
                                 },
                                 {
                                     ColumnName: 'Qty',
