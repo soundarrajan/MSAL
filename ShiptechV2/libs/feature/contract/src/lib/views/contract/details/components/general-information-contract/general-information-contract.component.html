@@ -498,6 +498,56 @@
       <div class="value">{{formValues.initialValidTo ? formatDate(formValues.initialValidTo) : ' --/--/---'}}</div>
     </div>
 </div>
+<!-- <div class="col-md-12 d-flex contract-section">
+  <div class="col-md-6 no-padding">
+    <div [ngClass]="{'allowed-companies-container': !expandAllowCompanies, 'allowed-companies-container-expand': expandAllowCompanies}">
+      <div class="allowed-container col-md-12 d-flex">
+        <div class="allowed-list-modal-container">
+          Customer
+        </div>
+        <div *ngIf="!(formValues.status && formValues.status.name == 'Confirmed')" [matMenuTriggerFor]="menu3" class="edit-allow-companies">
+        </div>
+        <div *ngIf="(formValues.status && formValues.status.name == 'Confirmed')" class="edit-allow-companies">
+        </div>
+        <mat-menu #menu3="matMenu" class="allowed-company-modal">
+          <div [ngClass]="{'expand-allowed-company-container': expandCustomerListPopUp}">
+            <div class="col-md-12 header-allowed-company">
+              <div class="allowed-company-header col-md-10 contract-no-padding" >
+                Customer
+              </div>
+              <div class="col-md-2 contract-no-padding expand-allowed-companies"  (click)="$event.stopPropagation();$event.preventDefault();">
+                  <img  [ngClass]="{'expand-company-img': expandCustomerListPopUp}" (click)="expandCustomerListPopUp = !expandCustomerListPopUp;" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
+              </div>
+            </div>
+            <div (click)="$event.stopPropagation();" class="col-md-12 contract-no-padding allowed-company-line"  *ngFor="let customer of customerList">
+              <mat-checkbox [(ngModel)]="customer.isSelected">
+                {{customer.name}}
+              </mat-checkbox>
+            </div>
+            <div class="col-md-12">
+              <button  class="ui-button-info mr-1 btn-i-blue-color" label="Save"
+                pButton
+                (click)="saveCustomer()"
+                style="float:right"
+                type="button"></button>
+            </div>
+          </div>
+        </mat-menu>
+      </div>
+      <div class="allowed-container col-md-12 d-flex">
+        <div class="allowed-list">
+          <ng-container  *ngFor="let customer of formValues.customerList"> 
+            <span class="allow-company">
+              <span class="dot-allow-company">
+              </span>
+              {{customer.name}}
+            </span>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
 <ngx-spinner
   bdColor="rgba(51,51,51,0.8)"
   size="medium"
