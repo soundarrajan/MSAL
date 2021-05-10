@@ -1,9 +1,9 @@
-﻿commit 042ad501db970b78f240c3ed7b06d921e9fba505
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon May 10 13:16:18 2021 +0000
+﻿commit dc257a884591e5c3cdb10141d05d6654fca47ad5
+Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
+Date:   Mon May 10 13:38:03 2021 +0000
 
-    Merged PR 10573: Fixed price precision dropdown
+    Merged PR 10575: To fix API enable based on conditions
     
-    Fixed price precision dropdown
+    To fix API enable based on conditions
 
 branch: master

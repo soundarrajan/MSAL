@@ -40,7 +40,7 @@
           </div>
           <div matTooltip="Approve Invoice" matTooltipShowDelay="500" style="padding-left: 7px;" *ngIf="!isConfirm">
             <button [disabled]="saveDisabled" class="cust-btn blue-button" mat-flat-button>
-                <span style="top: -1px;position: relative;" (click)="detailsSave()">Approve</span>
+                <span style="top: -1px;position: relative;" (click)="invoiceOptions('approve')">Approve</span>
             </button>
           </div>
           <div>
@@ -48,27 +48,27 @@
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-              <button mat-menu-item (click)="invoiceOptions('submitreview')">
+              <button mat-menu-item [disabled]="submitreviewBtn" (click)="invoiceOptions('submitreview')">
                 <mat-icon>assignment</mat-icon>
                 <span>Submit for review</span>
               </button>
-              <button mat-menu-item (click)="invoiceOptions('submitapprove')">
+              <button mat-menu-item [disabled]="submitapproveBtn" (click)="invoiceOptions('submitapprove')">
                 <mat-icon>next_week</mat-icon>
                 <span>Submit for approval</span>
               </button>
-              <button mat-menu-item (click)="invoiceOptions('cancel')">
+              <button mat-menu-item [disabled]="cancelBtn" (click)="invoiceOptions('cancel')">
                 <mat-icon>backspace</mat-icon>
                 <span>Cancel invoice</span>
               </button>
-              <button mat-menu-item (click)="invoiceOptions('accept')">
+              <button mat-menu-item [disabled]="acceptBtn" (click)="invoiceOptions('accept')">
                 <mat-icon>call made</mat-icon>
                 <span>Accept invoice</span>
               </button>
-              <button mat-menu-item (click)="invoiceOptions('revert')">
+              <button mat-menu-item [disabled]="revertBtn" (click)="invoiceOptions('revert')">
                 <mat-icon>redo</mat-icon>
                 <span>Revert invoice</span>
               </button>
-              <button mat-menu-item (click)="invoiceOptions('reject')">
+              <button mat-menu-item [disabled]="rejectBtn" (click)="invoiceOptions('reject')">
                 <mat-icon>backspace</mat-icon>
                 <span>Reject invoice</span>
               </button>
