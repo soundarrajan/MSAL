@@ -538,32 +538,33 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   }
 
   public saveInvoiceDetails(){
-    if(!this.formValues.dueDate){
-      this.toastrService.error("Due date is required.")
-      return;
-    }
-    if(!this.formValues.dueDate){
-      this.toastrService.error("Working due date is required.")
-      return;
-    }
-    if(!this.formValues.counterpartyDetails.paymentTerm.name){
-      this.toastrService.error("Payment term is required.")
-      return;
-    }
-    if(!this.formValues.orderDetails.paymentCompany.name){
-      this.toastrService.error("Payment company is required.")
-      return;
-    }
+    if(!this.formValues.dueDate || !this.formValues.workingDueDate || !this.formValues.counterpartyDetails.paymentTerm.name
+       || !this.formValues.orderDetails.paymentCompany.name){
+        if(!this.formValues.dueDate){
+          this.toastrService.error("Due date is required.");
+        }
+        if(!this.formValues.workingDueDate){
+          this.toastrService.error("Working due date is required.");
+        }
+        if(!this.formValues.counterpartyDetails.paymentTerm.name){
+          this.toastrService.error("Payment term is required.");
+        }
+        if(!this.formValues.orderDetails.paymentCompany.name){
+          this.toastrService.error("Payment company is required.");
+        }
+        return;
+       }
+    
 
-     alert("Has to save please wait");
-    // let data : any = {
-    //   Payload: this.formValues
-    // };
-    // this.invoiceService
-    // .updateInvoiceItem(data)
-    // .subscribe((response: IInvoiceDetailsItemResponse) => {
-    //   this.toastrService.success('Invoice updated successfully');
-    // });
+    //  alert("Has to save please wait");
+    let data : any = {
+      Payload: this.formValues
+    };
+    this.invoiceService
+    .updateInvoiceItem(data)
+    .subscribe((response: IInvoiceDetailsItemResponse) => {
+      this.toastrService.success('Invoice updated successfully');
+    });
   }
 
   public openRequest(){
