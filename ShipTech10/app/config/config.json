@@ -233,7 +233,9 @@
   "COST_TYPE_IDS": {
     "FLAT": 1,
     "UNIT": 2,
-    "PERCENT": 3
+    "PERCENT": 3,
+    "RANGE": 4,
+    "TOTAL": 5
   },
   "COMPONENT_TYPE_IDS": {
     "TAX_COMPONENT": 1,
