@@ -1,9 +1,9 @@
-﻿commit 64f723c8a0e050b69cda96123323edbf03f55fe7
+﻿commit 8beb6b264d692819fab6b21a0a11adbea75248ff
 Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
-Date:   Sat May 8 12:36:21 2021 +0000
+Date:   Mon May 10 04:45:21 2021 +0000
 
-    Merged PR 10523:  Inovice type popup on clicking create invoice option
+    Merged PR 10541: save conditons changed for invoice update
     
-     Inovice type popup on clicking create invoice option
+    save conditons changed for invoice update
 
 branch: master
