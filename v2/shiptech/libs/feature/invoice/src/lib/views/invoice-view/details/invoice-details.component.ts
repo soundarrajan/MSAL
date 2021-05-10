@@ -16,6 +16,7 @@ import { ProductDetailsModalComponent } from './component/product-details-modal/
 import { ToastrService } from 'ngx-toastr';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { InvoiceTypeSelectionComponent } from './component/invoice-type-selection/invoice-type-selection.component';
+import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 
 @Component({
   selector: 'shiptech-invoice-detail',
@@ -111,6 +112,9 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     ],
     hasSeparator: true
   }
+  invoiceStatusList:any;
+  paymentStatusList:any;
+  invoiceTypeList:any;
 // detailFormvalues:any;
 @Input('detailFormvalues') set _detailFormvalues(val) {
   if(val){
@@ -124,7 +128,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 }
   //Default Values - strats
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private invoiceService: InvoiceDetailsService,  public dialog: MatDialog,
-    private toastrService: ToastrService,private format: TenantFormattingService) {
+    private toastrService: ToastrService,private format: TenantFormattingService, private legacyLookupsDatabase: LegacyLookupsDatabase) {
     iconRegistry.addSvgIcon('data-picker-gray',sanitizer.bypassSecurityTrustResourceUrl('../../assets/customicons/calendar-dark.svg'));
     this.setupGrid();
     this.setClaimsDetailsGrid();
@@ -133,8 +137,16 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.buildProductDetilsGrid();
     this.getCounterPartiesList();
+    this.legacyLookupsDatabase.InvoiceCustomStatus().then(list=>{
+      this.invoiceStatusList = list;
+    })
+    this.legacyLookupsDatabase.PaymentStatus().then(list=>{
+      this.paymentStatusList = list;
+    })
+    this.legacyLookupsDatabase.InvoiceType().then(list=>{
+      this.invoiceTypeList = list;
+    })
     this.dateFormat = this.format.dateFormat.replace('DDD', 'E');
-    console.log("dteFormat",this.format.dateFormat.replace('DDD', 'ddd'))
   }
   private setupGrid(){
     this.gridOptions_ac = <GridOptions>{
@@ -670,7 +682,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         width: '400px',
         height: '400px',
         panelClass: 'popup-grid',
-        data:  { orderId: this.formValues.orderDetails?.order?.id }
+        data:  { orderId: this.formValues.orderDetails?.order?.id, lists : this.invoiceTypeList }
       });
   
       dialogRef.afterClosed().subscribe(result => {

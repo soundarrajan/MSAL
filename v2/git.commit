@@ -1,7 +1,9 @@
-﻿commit d1f27936d10a160ab683db7fe181e72e8a91bf8b
-Author: Suresh R <suresh.r@Inatech.com>
-Date:   Mon May 10 10:59:03 2021 +0530
+﻿commit e71f5cf3c79ff60ee9d4a3b325d03bc6a93310d3
+Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
+Date:   Mon May 10 07:41:55 2021 +0000
 
-    Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_git/Shiptech10-UI
+    Merged PR 10550: PaymentStatus, Invoice status and type are from indexed DB
+    
+    PaymentStatus, Invoice status and type are from indexed DB
 
 branch: master
