@@ -1,9 +1,9 @@
-﻿commit 7fea311a676f09dfefdb4a62bf6c39a9bdd96b14
+﻿commit 042ad501db970b78f240c3ed7b06d921e9fba505
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon May 10 12:01:56 2021 +0000
+Date:   Mon May 10 13:16:18 2021 +0000
 
-    Merged PR 10568: Added customer section in contract screen
+    Merged PR 10573: Fixed price precision dropdown
     
-    Added customer section in contract screen
+    Fixed price precision dropdown
 
 branch: master

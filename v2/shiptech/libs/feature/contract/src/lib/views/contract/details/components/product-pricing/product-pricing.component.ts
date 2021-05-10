@@ -1149,7 +1149,7 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   }
 
   formatPrice() {
-    if (!this.formValues.products[this.selectedTabIndex].pricePrecision) {
+    if (this.formValues.products[this.selectedTabIndex].pricePrecision == null) {
       this.formValues.products[this.selectedTabIndex].pricePrecision = this.tenantService.pricePrecision;
     }
   }
