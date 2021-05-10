@@ -40,7 +40,7 @@ body {
   height: 58px;
 }
 
-//PRIME NG COMPONENTS 
+//PRIME NG COMPONENTS
 
 .accordionheader-blue {
 
@@ -164,6 +164,12 @@ shiptech-entity-status {
     font-size: $font-small !important;
     font-family: Roboto !important;
   }
+}
+
+.ui-menuitem-link .ui-menuitem-text {
+  color: $default-textcolor !important;
+  font-size: $font-small !important;
+  font-family: Roboto !important;
 }
 
 //other components
@@ -520,7 +526,7 @@ p-panel {
 .trash-icon {
   background-color: transparent !important;
   border-color: transparent !important;
- 
+
 
 }
 
@@ -548,9 +554,9 @@ p-panel {
   border: 1px solid #C2CAD7 !important;
   border-left: none;
   background-color: #ffffff !important;
-  
+
     color: #345285!important;
-  
+
 }
 .shiptech-searchbox{
   .ui-corner-all{
