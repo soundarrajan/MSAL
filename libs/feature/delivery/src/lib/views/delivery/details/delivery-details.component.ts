@@ -209,7 +209,6 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    debugger;
     this.route.params.pipe(takeUntil(this._destroy$)).subscribe(params => {
       this.entityId = params.deliveryId;
     });
@@ -233,7 +232,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       }
       this.orderNumberOptions = data.orderNumbers;
       if (data.delivery) {
-       
+
         this.formValues = data.delivery;
         if (this.formValues.info.request) {
           this.titleService.setTitle('Delivery' + ' - ' + 'REQ ' + this.formValues.info.request.id + ' - ' + this.formValues.info.vesselName);
@@ -246,7 +245,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         }
         this.setQuantityFormatValues();
         this.decodeFields();
-        
+
       }
       if (typeof this.formValues.feedback == 'undefined' || !this.formValues.feedback) {
         this.formValues.feedback = {};
@@ -447,7 +446,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     let plainNumber = viewValue.replace(/[^\d|\-+|\.+]/g, '');
     return plainNumber;
   }
-  
+
   calculateVarianceAndReconStatus(productIdx) {
     // function called for all quantities, call here calculate final quantity
     this.calculateFinalQuantity(productIdx);
@@ -522,7 +521,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     }
 
     const currentFieldValuesProps = Object.keys(currentFieldValues);
-    for (let fieldKey of currentFieldValuesProps) { 
+    for (let fieldKey of currentFieldValuesProps) {
       const fieldVal = currentFieldValues[fieldKey];
       conversionInfo.uomConversionFactors.forEach((factVal, factKey) => {
         if (fieldVal.uom == factVal.sourceUom.name) {
@@ -855,32 +854,6 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
           this.changeDetectorRef.detectChanges();
         }
       });
-      this.openedScreenLoaders += 1;
-      this.deliveryService
-      .loadOrder(this.formValues.order.id)
-      .pipe(
-        finalize(() => {
-          this.openedScreenLoaders -= 1;
-          if (!this.openedScreenLoaders) {
-            this.isLoading = false;
-          }
-        })
-      )
-      .subscribe((response: any)  => {
-        if (typeof response == 'string') {
-          this.toastrService.error(response);
-        } else {
-          this.formValues.info.vesselName = response.vessel.name;
-          this.formValues.info.locationName = response.location.name;
-          this.formValues.info.eta = response.eta;
-          this.formValues.info.etb = response.etb;
-          this.formValues.temp.orderedProducts = response.products;
-          if (response.surveyorCounterparty) {
-              this.formValues.surveyorName = response.surveyorCounterparty.name;
-          }
-          this.changeDetectorRef.detectChanges();
-        }
-      });
 
   }
 
@@ -959,33 +932,6 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         }
       });
     });
-    this.openedScreenLoaders += 1;
-    this.deliveryService
-    .loadOrder(this.formValues.order.id)
-    .pipe(
-      finalize(() => {
-        this.openedScreenLoaders -= 1;
-        if (!this.openedScreenLoaders) {
-          this.isLoading = false;
-        }
-      })
-    )
-    .subscribe((response: any)  => {
-      if (typeof response == 'string') {
-        this.toastrService.error(response);
-      } else {
-        this.formValues.info.vesselName = response.vessel.name;
-        this.formValues.info.locationName = response.location.name;
-        this.formValues.info.eta = response.eta;
-        this.formValues.info.etb = response.etb;
-        this.formValues.temp.orderedProducts = response.products;
-        if (response.surveyorCounterparty) {
-            this.formValues.surveyorName = response.surveyorCounterparty.name;
-        }
-        this.changeDetectorRef.detectChanges();
-      }
-    });
-    //this.getDeliveryOrderSummary(this.formValues.order.id);
   }
 
   getDeliveryOrderSummary(orderId: number) {
@@ -1002,11 +948,15 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     )
     .subscribe((response: any) => {
       if (typeof response == 'string') {
-        this.toastrService.error('An error has occurred!');
+        this.toastrService.error(response);
       } else {
         if (typeof this.formValues.temp == 'undefined') {
           this.formValues.temp = {};
         }
+        this.formValues.info.vesselName = response.vesselName;
+        this.formValues.info.locationName = response.location;
+        this.formValues.info.eta = response.eta;
+        this.formValues.info.etb = response.etb;
         this.formValues.temp.deliverysummary = response;
         if (!parseFloat(this.entityId)) {
           // new delivery
@@ -1057,7 +1007,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         this.changeDetectorRef.detectChanges();
         this.eventsSubject.next(this.formValues);
       }
-  
+
     });
   }
 
@@ -1110,7 +1060,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  
+
   getRelatedDeliveries(orderId: number) {
     this.relatedDeliveries = [];
     this.openedScreenLoaders += 1;
@@ -1127,7 +1077,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     )
     .subscribe((response: any) => {
         if (typeof response == 'string') {
-          this.toastrService.error('An error has occurred!');
+          this.toastrService.error(response);
         } else {
           response.forEach((val, key) => {
             this.relatedDeliveries.forEach((val2, key2) => {
@@ -1238,7 +1188,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
 
   }
-  
+
   public detectChanges(form: any):void {
     this.formValues = form;
     this.changeDetectorRef.detectChanges();
@@ -1249,9 +1199,9 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   openRaiseClaimDialog(raiseClaimData: any): void {
     const dialogRef = this.dialog.open(RaiseClaimModalComponent, {
       width: '600px',
-      data:  { 
-          availableClaimTypes: raiseClaimData, 
-          deliveryProducts: this.formValues.deliveryProducts, 
+      data:  {
+          availableClaimTypes: raiseClaimData,
+          deliveryProducts: this.formValues.deliveryProducts,
           raiseClaimInfo: this.raiseClaimInfo,
           selectedProductIndex: this.selectedProductIndex,
           formValues: this.formValues,
@@ -1361,7 +1311,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     if (product.qualityParameters) {
       this.getClaimInfo([...product.qualityParameters], product.id);
     }
-  }  
+  }
 
   getClaimInfo(specParams, prodId) {
     this.raiseClaimInfo = {};
@@ -1380,7 +1330,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
- 
+
 
   save() {
     this.setReconMatchIdBasedOnProductVarianceColor();
@@ -1390,8 +1340,8 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     if (hasMandatoryFields) {
       return;
     }
-    this.formValues.deliveryProducts.forEach((deliveryProd, key) => { 
-      if(deliveryProd!=null ){ 
+    this.formValues.deliveryProducts.forEach((deliveryProd, key) => {
+      if(deliveryProd!=null ){
         deliveryProd.qualityParameters.forEach((qualityParameter, key) => {
           if (qualityParameter.isDisplayedInDelivery==true && qualityParameter.isMandatoryInDelivery==true && (qualityParameter.bdnValue==null || qualityParameter.bdnValue=="" || qualityParameter.bdnValue==0)){
             Isvalid=true;
@@ -1476,7 +1426,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  
+
   setReconMatchIdBasedOnProductVarianceColor() {
     this.formValues.deliveryProducts.forEach((product, k) => {
       if (this.formValues.temp.variances) {
@@ -1486,13 +1436,21 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
           product.reconMatch = {
             'id': 3
           }
+        } else if (getColor == 'green') {
+          product.reconMatch = {
+            'id': 1
+          }
+        } else {
+          product.reconMatch = {
+            'id': 2
+          }
         }
 
       }
     });
   }
 
-  
+
   verify() {
     let hasFinalQuantityError = false;
     this.formValues.deliveryProducts.forEach((product, k) => {
@@ -1539,7 +1497,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
                 if (this.formValues.deliveryStatus.name) {
                     this.statusColorCode = this.getColorCodeFromLabels(this.formValues.deliveryStatus, this.scheduleDashboardLabelConfiguration);
                 }
-              } 
+              }
             });
         }
       }, error => {
@@ -1589,7 +1547,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
               }
             })
         }
-        
+
       }, error => {
         this.spinner.hide();
         console.error(error);
@@ -1598,26 +1556,31 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
 
 
   validateRequiredFields() {
-    let requiredFields = 'Please fill in required fields:';
+    let requiredFields = 'Please fill in required fields: ';
     if (!this.formValues.deliveryDate) {
-      requiredFields += ' Delivery Date';
+      requiredFields += 'Delivery Date';
     }
     if (!this.formValues.bdnDate) {
-      requiredFields +=  ' Bdn Date';
+      requiredFields +=  (((requiredFields.indexOf('Delivery'))? ',': '') +' Bdn Date. ');
     }
     if (this.formValues.deliveryProducts) {
       for (let i = 0; i < this.formValues.deliveryProducts.length; i++) {
+        let productFields = '';
         if (!this.formValues.deliveryProducts[i].bdnQuantityAmount) {
-          requiredFields  +=  this.formValues.deliveryProducts[i].product.name+ (i + 1) + ' BDN quantity ' + "\n";
+          productFields = ' BDN Quantity'
+        }
+        if (this.formValues.deliveryProducts[i].deliveredVolume && !this.formValues.deliveryProducts[i].deliveredVolumeUom) {
+          productFields +=  (((productFields === '')? '': ',') + ' Delivered Quantity Uom');
+        }
+        if(productFields != ''){
+          requiredFields  +=  this.formValues.deliveryProducts[i].product.name+ (i + 1) +'-'+ productFields + ".\n";
         }
       }
-    } 
-    
-
+    }
 
     this.buttonClicked = true;
     this.eventsSubject2.next(this.buttonClicked);
-    if (requiredFields != 'Please fill in required fields:') {
+    if (requiredFields != 'Please fill in required fields: ') {
       this.toastrService.error(requiredFields);
       return true;
     }
@@ -1716,7 +1679,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     return decode(_.unescape(modelValue));
   }
 
-  
 
-  
+
+
 }

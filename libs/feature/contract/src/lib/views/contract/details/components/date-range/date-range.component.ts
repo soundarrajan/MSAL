@@ -45,7 +45,7 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { IDeliveryTenantSettings } from 'libs/feature/delivery/src/lib/core/settings/delivery-tenant-settings';
 import { TenantSettingsModuleName } from '@shiptech/core/store/states/tenant/tenant-settings.interface';
-import _ from 'lodash';
+import _, { clone } from 'lodash';
 import { NgxMatDateAdapter, NgxMatDateFormats, NgxMatNativeDateAdapter, NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
 import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/general-tenant-settings.interface';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -405,18 +405,48 @@ export class DateRange extends DeliveryAutocompleteComponent
     }
   }
 
-  calendarOptionChange(ob: MatCheckboxChange, object, id, name) {
+  calendarOptionChange(ob: MatCheckboxChange, object, id, name, day) {
     console.log("checked: " + ob.checked);
     if (ob.checked) {
-      if (typeof object == 'undefined') {
+      if (typeof object == 'undefined' || !object) {
         object = {
           'id': id,
           'name': name
         }
-        this.changeDetectorRef.detectChanges();
       }
       object.id = id;
       object.name = name;
+      if (day == 'Sunday') {
+        this.formValues.pricingScheduleOptionDateRange.sundayHolidayRule = _.cloneDeep(object);
+      } else if (day == 'Monday') {
+        this.formValues.pricingScheduleOptionDateRange.mondayHolidayRule = _.cloneDeep(object);
+      } else if (day == 'Tuesday') {
+        this.formValues.pricingScheduleOptionDateRange.tuesdayHolidayRule = _.cloneDeep(object);
+      } else if (day == 'Wednesday') {
+        this.formValues.pricingScheduleOptionDateRange.wednesdayHolidayRule =  _.cloneDeep(object);
+      } else if (day == 'Thursday') {
+        this.formValues.pricingScheduleOptionDateRange.thursdayHolidayRule =  _.cloneDeep(object);
+      } else if (day == 'Friday') {
+        this.formValues.pricingScheduleOptionDateRange.fridayHolidayRule =  _.cloneDeep(object);
+      } else if (day == 'Saturday') {
+        this.formValues.pricingScheduleOptionDateRange.saturdayHolidayRule =  _.cloneDeep(object);
+      }
+    } else {
+      if (day == 'Sunday') {
+        this.formValues.pricingScheduleOptionDateRange.sundayHolidayRule = null;
+      } else if (day == 'Monday') {
+        this.formValues.pricingScheduleOptionDateRange.mondayHolidayRule = null;
+      } else if (day == 'Tuesday') {
+        this.formValues.pricingScheduleOptionDateRange.tuesdayHolidayRule = null;
+      } else if (day == 'Wednesday') {
+        this.formValues.pricingScheduleOptionDateRange.wednesdayHolidayRule =  null;
+      } else if (day == 'Thursday') {
+        this.formValues.pricingScheduleOptionDateRange.thursdayHolidayRule =  null;
+      } else if (day == 'Friday') {
+        this.formValues.pricingScheduleOptionDateRange.fridayHolidayRule =  null;
+      } else if (day == 'Saturday') {
+        this.formValues.pricingScheduleOptionDateRange.saturdayHolidayRule =  null;
+      }
     }
   }
 

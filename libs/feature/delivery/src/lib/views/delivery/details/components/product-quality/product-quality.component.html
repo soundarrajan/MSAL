@@ -129,7 +129,7 @@
                                 #bdnValueField="ngModel" 
                                 (ngModelChange)="qualityParameter.qualityMatch = setQualityMatch(qualityParameter.bdnValue, qualityParameter.surveyValue, qualityParameter.min, qualityParameter.max)"
                                 matInput 
-                                [disabled]="formValues.invoiceActiveFlag == true"                 
+                                [disabled]="formValues.invoiceActiveFlag == true || formValues.claimActiveFlag == true"                 
                                 (keypress)="keyPressNumber($event);"  
                                 autocomplete="off" 
                                 name="Product_{{ deliveryProductIndex }}_{{ qualityParameter.specParameter.name}}_BDN">

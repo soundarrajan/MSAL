@@ -12,7 +12,7 @@
       <tr>
         <td class="label-text">Scrubber Date:</td>
         <td class="value" *ngIf="(bunkerPlanHeaderDetail?.scrubberDate)?.indexOf('0001')==-1">{{bunkerPlanHeaderDetail?.scrubberDate | date: 'dd/MM/yyyy'}}</td>
-        <td class="value" *ngIf="(bunkerPlanHeaderDetail?.scrubberDate)?.indexOf('0001')>-1">N/A</td>
+        <td class="value" *ngIf="((bunkerPlanHeaderDetail?.scrubberDate)?.indexOf('0001')>-1) || !(bunkerPlanHeaderDetail?.scrubberDate)">N/A</td>
         <td class="separator">|</td>
         <td class="label-text">Ownership:</td>
         <td class="value">{{bunkerPlanHeaderDetail?.ownership}}</td>
@@ -89,15 +89,15 @@
                           </tr>
                           <tr>
                             <th scope="row">MSPS</th>
-                            <td>{{ROBArbitrageData?.mspshsfo? (ROBArbitrageData?.mspshsfo | number : '1.0-0'): 0}}</td>
-                            <td>{{ROBArbitrageData?.mspshsfO05? (ROBArbitrageData?.mspshsfO05 | number : '1.0-0'): 0}}</td>
+                            <td colspan=2>{{ROBArbitrageData?.mspshsfo? (ROBArbitrageData?.mspshsfo | number : '1.0-0'): 0}}</td>
                             <td>{{ROBArbitrageData?.mspsulsfo? (ROBArbitrageData?.mspsulsfo | number : '1.0-0'): 0}}</td>
                             <td>{{ROBArbitrageData?.mspslsdis? (ROBArbitrageData?.mspslsdis | number : '1.0-0'): 0}}</td>
                             <td>{{ROBArbitrageData?.mspsdis? (ROBArbitrageData?.mspsdis | number : '1.0-0'): 0}}</td>
                           </tr>
                           <tr>
                             <th scope="row">Unpumpables</th>
-                            <td colspan=2>{{ROBArbitrageData?.uphsfo? (ROBArbitrageData?.uphsfo | number : '1.0-0'): 0}}</td>
+                            <td>{{ROBArbitrageData?.uphsfo? (ROBArbitrageData?.uphsfo | number : '1.0-0'): 0}}</td>
+                            <td>{{ROBArbitrageData?.uphsfo05? (ROBArbitrageData?.uphsfo05 | number : '1.0-0'): 0}}</td>
                             <td>{{ROBArbitrageData?.upulsfo? (ROBArbitrageData?.upulsfo | number : '1.0-0'): 0}}</td>
                             <td>{{ROBArbitrageData?.uplsdis? (ROBArbitrageData?.uplsdis | number : '1.0-0'): 0}}</td>
                             <td>{{ROBArbitrageData?.upsdis? (ROBArbitrageData?.uphsdis | number : '1.0-0'): 0}}</td>
@@ -258,7 +258,7 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div class="panel-body">
-        <app-bunkering-plan *ngIf="panel.expanded" [isExpanded]="expandBplan"
+        <app-bunkering-plan *ngIf="panel.expanded && loadBplan" [isExpanded]="expandBplan"
           (enableCreateReq)="toggleCreateReq($event)" [planId]="planId" [bPlanType]="bPlanType.curr" [selectedUserRole]="selectedUserRole"
           [currentROBObj]="currentROBObj"
           [vesselRef]="vesselData"
@@ -303,7 +303,7 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div class="panel-body">
-        <app-bunkering-plan [isExpanded]="expandPrevBPlan" *ngIf="panel1.expanded"
+        <app-bunkering-plan [isExpanded]="expandPrevBPlan" *ngIf="panel1.expanded && loadBplan"
           [planId]="prevPlanId" [bPlanType]="bPlanType.prev" 
           [selectedUserRole]="selectedUserRole"
           [currentROBObj]="currentROBObj"

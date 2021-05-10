@@ -530,3 +530,21 @@
   padding-bottom: 10px;
   border-bottom: 1px solid #F1F1F2;
 }
+
+.conversion-factor-value {
+  justify-content: flex-start;
+  align-items: center;
+  text-align: start;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.custom-tooltip {
+  background: linear-gradient(0deg, rgba(158, 158, 158, 0.39), rgba(158, 158, 158, 0.39)), #676C72;
+  border: 1px solid #364150;
+  box-sizing: border-box;
+  border-radius: 4px;
+  color: white;
+  font-size: 14px;
+}
