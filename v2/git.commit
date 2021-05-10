@@ -1,9 +1,7 @@
-﻿commit 8beb6b264d692819fab6b21a0a11adbea75248ff
-Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
-Date:   Mon May 10 04:45:21 2021 +0000
+﻿commit d1f27936d10a160ab683db7fe181e72e8a91bf8b
+Author: Suresh R <suresh.r@Inatech.com>
+Date:   Mon May 10 10:59:03 2021 +0530
 
-    Merged PR 10541: save conditons changed for invoice update
-    
-    save conditons changed for invoice update
+    Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_git/Shiptech10-UI
 
 branch: master
