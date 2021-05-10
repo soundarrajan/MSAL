@@ -70,8 +70,15 @@ export class NotesLogComponent implements OnInit, OnDestroy, OnChanges {
           "collectionName": null
       }
 
-    debugger;
-    this.objNotes.push({id:0,note:'',createdBy:Createon,createdAt: new Date() });
+    if(this.objNotes != undefined){
+      this.objNotes.push({id:0,note:'',createdBy:Createon,createdAt: new Date() });
+    }else
+    {
+      this.objNotes = [];
+      this.objNotes.push({id:0,note:'',createdBy:Createon,createdAt: new Date() });
+
+    }
+    
    
   }
   remove(index):void {
