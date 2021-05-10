@@ -114,11 +114,11 @@ export class StAutosearchSelectorComponent implements OnInit {
     this.mastersListApiService.getList(requestParam,URL)
     .subscribe(
       response =>{
-        console.log(typeof(response.payload));
+        // console.log(typeof(response.payload));
         this.options = response.payload;
       },
       ()=>{
-        console.log("Error")
+        console.log("Autocomplete Invoice Error")
       }
     );    
   }
