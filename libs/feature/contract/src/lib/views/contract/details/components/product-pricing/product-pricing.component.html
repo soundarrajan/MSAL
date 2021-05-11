@@ -22,7 +22,7 @@
       </div>
     </div>
     <div  class="contract-details-info" [ngClass]="{'col-md-6 no-padding': !formValues.products[selectedTabIndex].isFormula, 'col-md-3': formValues.products[selectedTabIndex].isFormula}" style="text-align: right;">
-      <div class="custom-form-field product-details" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme, 'price-fixed': !formValues.products[selectedTabIndex].isFormula, 'formula-description': formValues.products[selectedTabIndex].isFormula}">
+      <div class="custom-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme, 'price-fixed': !formValues.products[selectedTabIndex].isFormula, 'formula-description': formValues.products[selectedTabIndex].isFormula}">
         <mat-form-field class="without-search" appearance="legacy">
           <mat-label>Price Precision</mat-label>
           <mat-select 
