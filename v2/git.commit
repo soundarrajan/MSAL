@@ -1,7 +1,11 @@
-﻿commit c44b2382d7521b9bb061f641ccbad3e281c9acec
-Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Tue May 11 12:25:29 2021 +0530
+﻿commit e1b24567848b4e10823f60f6286ef60fb6a3027c
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Tue May 11 08:17:07 2021 +0000
 
-    UI fixes and add_product branch merge from gokul.
+    Merged PR 10351: Change port_id to location_id for port popup field.
+    
+    Change port_id to location_id for port popup field.
+    
+    Related work items: #29780
 
 branch: master

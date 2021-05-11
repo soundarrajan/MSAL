@@ -31,6 +31,17 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   public etdInTime: any;
   public shiptechPortUrl: string;
   public shiptechOrderUrl: string = "shiptechUrl/#/masters/order";
+  @Input('bplanType') 
+  public set bplanType(v : any) {
+    this.bplanType = v;
+  };
+  @Input('selectedUserRole') 
+  public set selectedUserRole(v : any) {
+    this.selectedUserRole = v;
+  };
+  @Input('editableCell')public set editableCell(v : any) {
+    this.editableCell = v;
+  };
   constructor(public router: Router, public dialog: MatDialog, private elem: ElementRef,private localService:LocalService,private appConfig: AppConfig) {
     this.shiptechPortUrl = this.appConfig.v1.API.BASE_HEADER_FOR_NOTIFICATIONS;
   }
@@ -45,18 +56,175 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     this.isChecked = params.value;
     this.toolTip = params.value;
   //**ETA/ETD date format and days calculation
-    if(this.params?.data) {
-      this.params.data.eta_date = moment(params.data?.eta_date).format("YYYY-MM-DD hh:mm");
-      this.etaInTime = today.getTime() - new Date(params.data?.eta_date).getTime();
-      this.etaDays = (this.etaInTime/(1000 * 3600 * 24)).toFixed(0);
-      this.params.data.etd_date = moment(params.data?.etd_date).format("YYYY-MM-DD hh:mm");
-      this.etdInTime = today.getTime() - new Date(params.data?.etd_date).getTime();
-      this.etdDays = (this.etdInTime/(1000 * 3600 * 24)).toFixed(0);
-    }
+    this.params.data.eta_date = moment(params.data?.eta_date).format("YYYY-MM-DD hh:mm");
+    this.etaInTime = today.getTime() - new Date(params.data?.eta_date).getTime();
+    this.etaDays = (this.etaInTime/(1000 * 3600 * 24)).toFixed(0);
+    this.params.data.etd_date = moment(params.data?.etd_date).format("YYYY-MM-DD hh:mm");
+    this.etdInTime = today.getTime() - new Date(params.data?.etd_date).getTime();
+    this.etdDays = (this.etdInTime/(1000 * 3600 * 24)).toFixed(0);
+    this.setCellClass(params);
+    
   }
 
   refresh(): boolean {
     return false;
+  }
+  setCellClass(params){
+    switch(params.colDef?.field){
+      case 'hsfo_max_lift' :{
+                              var classArray: string[] = [];
+                              let newClass;
+                              if(params.data?.hsfo_max_lift_color === 'G')
+                                newClass = 'aggrid-cell-color darkgreen';
+                              else if(params.data?.hsfo_max_lift_color === 'M')
+                                newClass = 'aggrid-cell-color magenta';
+                              else
+                                newClass = 'aggrid-cell-color brown';
+
+                              classArray.push(newClass);
+                              params.cellClass =  classArray.length > 0 ? classArray : null
+                              break;
+                            }
+      case 'hsfo_estimated_consumption' :{
+                                              var classArray: string[] = [];
+                                              let newClass;
+                                              if(params.data?.hsfo_est_consumption_color === 'G')
+                                                newClass = 'aggrid-cell-color darkgreen';
+                                              else if(params.data?.hsfo_est_consumption_color === 'M')
+                                                newClass = 'aggrid-cell-color magenta';
+                                              else
+                                                newClass = 'aggrid-cell-color brown';
+
+                                              classArray.push(newClass);
+                                            params.cellClass =  classArray.length > 0 ? classArray : null
+                                            break;
+                                      }
+      case 'eca_estimated_consumption' :{
+                                              var classArray: string[] = [];
+                                              let newClass;
+                                              if(params.data?.ulsfo_est_consumption_color === 'G')
+                                                newClass = 'aggrid-cell-color darkgreen';
+                                              else if(params.data?.ulsfo_est_consumption_color === 'M')
+                                                newClass = 'aggrid-cell-color magenta';
+                                              else
+                                                newClass = 'aggrid-cell-color brown';
+
+                                              classArray.push(newClass);
+                                            params.cellClass =  classArray.length > 0 ? classArray : null
+                                            break;
+                                      }
+      case 'ulsfo_max_lift' :{
+                                      var classArray: string[] = [];
+                                      let newClass;
+                                      if(params.data?.ulsfo_max_lift_color === 'G')
+                                        newClass = 'aggrid-cell-color darkgreen';
+                                      else if(params.data?.ulsfo_max_lift_color === 'M')
+                                        newClass = 'aggrid-cell-color magenta';
+                                      else
+                                        newClass = 'aggrid-cell-color brown';
+
+                                      classArray.push(newClass);
+                                    params.cellClass =  classArray.length > 0 ? classArray : null
+                                    break;
+                              }
+      case 'lsdis_max_lift' :{
+                                    var classArray: string[] = [];
+                                    let newClass;
+                                    if(params.data?.lsdis_max_lift_color === 'G')
+                                      newClass = 'aggrid-cell-color darkgreen';
+                                    else if(params.data?.lsdis_max_lift_color === 'M')
+                                      newClass = 'aggrid-cell-color magenta';
+                                    else
+                                      newClass = 'aggrid-cell-color brown';
+
+                                    classArray.push(newClass);
+                                  params.cellClass =  classArray.length > 0 ? classArray : null
+                                  break;
+                            }
+      case 'lsdis_estimated_consumption' : {
+                                                var classArray: string[] = [];
+                                                let newClass;
+                                                if(params.data?.lsdis_est_consumption_color === 'G')
+                                                  newClass = 'aggrid-cell-color darkgreen';
+                                                else if(params.data?.lsdis_est_consumption_color === 'M')
+                                                  newClass = 'aggrid-cell-color magenta';
+                                                else
+                                                  newClass = 'aggrid-cell-color brown';
+
+                                                classArray.push(newClass);
+                                              params.cellClass =  classArray.length > 0 ? classArray : null
+                                              break;
+                                        }
+      case 'hsfo_estimated_lift' :{
+                                    var classArray: string[] = ['pd-6'];
+                                    let newClass;
+                                    if(params.data?.order_id_hsfo && !params.data?.request_id_hsfo){
+                                      newClass = 'aggrid-link-bplan aggrid-red-cell'
+                                      classArray.push(newClass);
+                                    }
+                                    else if(params.data?.request_id_hsfo && !params.data?.order_id_hsfo){
+                                      newClass = 'aggrid-link-bplan aggrid-blue-cell';
+                                      classArray.push(newClass);
+                                    }
+                                    params.cellClass =  classArray.length > 0 ? classArray : null
+                                    break;
+                                  }
+      case 'ulsfo_estimated_lift':{
+                                      var classArray: string[] = ['pd-6'];
+                                      let newClass;
+                                      if(params.data?.order_id_ulsfo && !params.data?.request_id_ulsfo){
+                                        newClass = 'aggrid-link-bplan aggrid-red-cell'
+                                        classArray.push(newClass);
+                                      }
+                                      else if(params.data?.request_id_ulsfo && !params.data?.order_id_ulsfo){
+                                        newClass = 'aggrid-link-bplan aggrid-blue-cell';
+                                        classArray.push(newClass);
+                                      }
+                                      params.cellClass =  classArray.length > 0 ? classArray : null
+                                      break;
+                                  }
+      case 'lsdis_estimated_lift':{
+                                    var classArray: string[] = ['pd-6'];
+                                    let newClass;
+                                    if(params.data?.order_id_lsdis && !params.data?.request_id_lsdis){
+                                      newClass = 'aggrid-link-bplan aggrid-red-cell'
+                                      classArray.push(newClass);
+                                    }
+                                    else if(params.data?.request_id_lsdis && !params.data?.order_id_lsdis){
+                                      newClass = 'aggrid-link-bplan aggrid-blue-cell';
+                                      classArray.push(newClass);
+                                    }
+                                    params.cellClass =  classArray.length > 0 ? classArray : null
+                                    break;
+                                  }
+      case 'hsdis_estimated_lift':{
+                                    var classArray: string[] = ['pd-6'];
+                                        let newClass;
+                                        if(params.data?.order_id_hsdis && !params.data?.request_id_hsdis){
+                                          newClass = 'aggrid-link-bplan aggrid-red-cell'
+                                          classArray.push(newClass);
+                                        }
+                                        else if(params.data?.request_id_hsdis && !params.data?.order_id_hsdis){
+                                          newClass = 'aggrid-link-bplan aggrid-blue-cell';
+                                          classArray.push(newClass);
+                                        }
+                                        params.cellClass =  classArray.length > 0 ? classArray : null
+                                        break;
+                                    }
+      case 'hsfo_safe_port':
+      case 'eca_safe_port':{
+                                var classArray: string[] = [];
+                                let newClass = 'aggrid-cell-color lightgreen'
+                                classArray.push(newClass);
+                                params.cellClass = classArray ;
+                                if(params?.value == 0)
+                                  params.value = '';
+                                params.cellClass =  classArray.length > 0 ? classArray : null
+                                break;
+                            }
+                            
+    }
+    
   }
 
   // @HostListener('document:click', ['$event']) clickout(event) {
