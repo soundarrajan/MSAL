@@ -8,14 +8,45 @@
   <div *ngIf="params.type=='multiple-values'">
     <div *ngIf="params.value" style="display:flex;flex-wrap:wrap;">
       <div *ngFor="let item of params.value" class="aggrid-content-center multiple-text w-auto">
-        <span [matTooltip]="item" class="aggrid-text-resizable">{{item}}</span>
+        <!-- <ng-container *ngIf="toggleTooltip==true"> -->
+          <!-- <ng-container *ngTemplateOutlet="hoverPopup"></ng-container> -->
+        <!-- </ng-container> -->
+        <span class="aggrid-text-resizable" *ngIf="(params?.gridTable)=='future-request'" [matMenuTriggerFor]="popoverTooltip" [matMenuTriggerData]="item" #trigger="matMenuTrigger" (mouseenter)="trigger.openMenu()" (mouseleave)="trigger.closeMenu()">{{item}}</span> <!-- (mouseleave)="trigger.closeMenu()"-->
+        <span [matTooltip]="item" class="aggrid-text-resizable" *ngIf="!(params?.gridTable)">{{item}}</span>
       </div>
     </div>
   </div>
+  <mat-menu #popoverTooltip="matMenu" backdropClass="request-popover" [hasBackdrop]="false">
+    <ng-template matMenuContent let-data="menuData">
+        <div class="custom-popover" mat-menu-item>
+          <div style="color: #5780A6;font-weight: 500;">{{menuData}}</div>
+          <hr>
+          <div class="row">
+            <div class="col-6" style="color: #f4f7fa;">Request Qty</div>
+            <div class="col-6" style="color: #FFFFFF;font-weight: 500;text-align: right;">{{params?.data?.maxQuantity}} {{params?.data?.uomName}}</div>
+          </div>
+          <div class="row">
+            <div class="col-6" style="color: #f4f7fa;">Request Date</div>
+            <div class="col-6" style="color: #FFFFFF;font-weight: 500;text-align: right;">{{params?.data?.requestDate | date: 'dd/MM/yyyy'}}</div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-6" style="color: #f4f7fa;">suggested Qty</div>
+            <div class="col-6" style="color: #FFFFFF;font-weight: 500;text-align: right;">{{params?.data?.suggestedQuantity}} {{params?.data?.uomName}}</div>
+          </div>
+        </div>
+    </ng-template>
+    
+  </mat-menu>
   
   <div *ngIf="params.type=='link'">
     <div matTooltip="{{params.value}}" [ngClass]="params.cellClass">
       <a href="{{shiptechOrderUrl}}/{{params.data?.order_id_vlsfo}}">{{params.value}}</a>
+    </div>
+  </div>
+  <div *ngIf="params.type=='request-link'">
+    <div matTooltip="{{params.value}}" [ngClass]="params.cellClass">
+      <a href="{{params.redirectUrl}}/{{params?.data?.requestId}}">{{params.value}}</a>
     </div>
   </div>
   

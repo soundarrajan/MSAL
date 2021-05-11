@@ -40,14 +40,20 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     this.reportUrl = `${baseOrigin}/#/reports/ordertoinvoice/IID=${this._entityId}`;
   }
 
-  selectedTab = 0;
-
+  selectedTab = 0;  
+  submitreviewBtn:boolean = true;
+  submitapproveBtn:boolean = true;
+  cancelBtn:boolean = true;
+  acceptBtn:boolean = true;
+  revertBtn:boolean = true;
+  rejectBtn:boolean = true;
   ngOnInit(): void {
     this.route.data.subscribe(data => {
       // if (data.invoice) {
       //   this.formValues = data.invoice;
       // }
       this.navBar = data.navBar;
+      console.log("params",data);
     });
     this.getInvoiceItem();
   }
@@ -87,6 +93,21 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
               this.displayDetailFormvalues = true;
               this.isLoading = false;
               this.detailFormvalues = <IInvoiceDetailsItemDto>response.payload;
+              this.detailFormvalues.screenActions.forEach(action => {
+                if(action.name == 'Cancel'){
+                  this.cancelBtn = false;
+                }else if(action.name == "SubmitForReview"){
+                  this.submitapproveBtn = false;
+                }else if(action.name == 'ApproveInvoice'){
+                  this.saveDisabled = false;
+                }else if(action.name == "RejectInvoice"){
+                  this.rejectBtn = false;
+                }else if(action.name == "Revert"){
+                  this.revertBtn = false;
+                }else if(action.name == "Accept"){
+                  this.acceptBtn = false;
+                }
+              });
               this.setSubmitMode(response.payload.status.transactionTypeId);
               this.changeDetectorRef.detectChanges();
             });
@@ -113,6 +134,21 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
               this.displayDetailFormvalues = true;
               this.isLoading = false;
               this.detailFormvalues = <IInvoiceDetailsItemDto>response.payload;
+              this.detailFormvalues.screenActions.forEach(action => {
+                if(action.name == 'Cancel'){
+                  this.cancelBtn = false;
+                }else if(action.name == "SubmitForReview"){
+                  this.submitapproveBtn = false;
+                }else if(action.name == 'ApproveInvoice'){
+                  this.saveDisabled = false;
+                }else if(action.name == "RejectInvoice"){
+                  this.rejectBtn = false;
+                }else if(action.name == "Revert"){
+                  this.revertBtn = false;
+                }else if(action.name == "Accept"){
+                  this.acceptBtn = false;
+                }
+              });
               this.setSubmitMode(response.payload.status.transactionTypeId);
               this.changeDetectorRef.detectChanges();
             });

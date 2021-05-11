@@ -183,7 +183,7 @@
                     <div id="custom-form-field" class="lightTheme">
                         <mat-form-field class="without-search" appearance="legacy">
                             <mat-label>Payment Status</mat-label>
-                            <mat-select disableOptionCentering>
+                            <mat-select disableOptionCentering [(ngModel)]="paymentStatus" name="paymentStatus">
                                 <mat-option *ngFor="let list of paymentStatusList" [value]="list.id">{{list.name}}</mat-option>
                             </mat-select>
                         </mat-form-field>
@@ -206,7 +206,7 @@
                     <div id="custom-form-field" class="lightTheme">
                         <mat-form-field class="without-search" appearance="legacy">
                             <mat-label>Invoice Status</mat-label>
-                            <mat-select>
+                            <mat-select [(ngModel)]="customInvoice" name="customInvoice">
                                 <mat-option *ngFor="let list of invoiceStatusList" [value]="list.id">{{list.name}}</mat-option>                                
                             </mat-select>
                         </mat-form-field>

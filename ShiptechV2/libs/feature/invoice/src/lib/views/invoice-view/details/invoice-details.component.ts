@@ -62,6 +62,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   public gridOptions_claims: GridOptions;
   private rowData_aggrid_pd = [];
   private rowData_aggrid_ac = [];
+  paymentStatus:number=0;
+  customInvoice:number=0;
   invoiceSubmitMode:EsubmitMode;
   dateFormat;
   emptyStringVal = '--';
@@ -158,6 +160,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     this.setOrderDetailsLables(this.formValues.orderDetails);
     this.setcounterpartyDetailsLables(this.formValues.counterpartyDetails);
     this.setChipDatas();
+    this.paymentStatus = this.formValues.paymentDetails?.paymentStatus?.id;
+    this.customInvoice = this.formValues.customStatus?.id;
   }
 }
   //Default Values - strats
@@ -180,6 +184,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     this.legacyLookupsDatabase.InvoiceType().then(list=>{
       this.invoiceTypeList = list;
     })
+    console.log("format",this.format)
     this.dateFormat = this.format.dateFormat.replace('DDD', 'E');
   }
   private setupGrid(){
@@ -604,8 +609,9 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
           this.toastrService.error("Payment company is required.");
         }
         return;
-       }
-    
+      }
+      this.formValues.paymentDetails.paymentStatus.id = this.paymentStatus;
+      this.formValues.customStatus.id = this.customInvoice;
 
     //  alert("Has to save please wait");
     let data : any = {
