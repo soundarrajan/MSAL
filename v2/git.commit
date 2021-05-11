@@ -1,7 +1,9 @@
-﻿commit 17cf598f96761e56748162abc158b85b87aa897f
+﻿commit 1c610da5e7d7b58c11026e5ae89893aad6f81e32
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Tue May 11 15:00:15 2021 +0000
+Date:   Tue May 11 16:05:51 2021 +0000
 
-    Merged PR 10624: Mapped hoilday rules to formulaHolidayRules BE model
+    Merged PR 10625: Fixed error
+    
+    Fixed error
 
 branch: master
