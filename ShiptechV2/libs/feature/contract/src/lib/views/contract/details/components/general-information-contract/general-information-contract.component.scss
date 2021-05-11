@@ -365,7 +365,9 @@
 
 
 .contract-section {
-  margin-top: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px !important;
+
 }
 
 .container-modal {
@@ -682,6 +684,7 @@
   color: #848B9E;
   display: flex;
   align-items: center;
+  min-height: 40px !important;
   .label {
     margin: 0 15px;
   }
