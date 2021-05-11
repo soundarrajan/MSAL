@@ -1,7 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { AGGridCellActionsComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-actions.component';
 import { AGGridCellRendererComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-renderer.component';
 import { GridOptions } from 'ag-grid-community';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+import moment from 'moment';
+import { UrlService } from '@shiptech/core/services/url/url.service';
+import { AppConfig } from '@shiptech/core/config/app-config';
 
 @Component({
   selector: 'shiptech-related-invoice',
@@ -10,49 +14,46 @@ import { GridOptions } from 'ag-grid-community';
 })
 export class RelatedInvoiceComponent implements OnInit {
   public gridOptions_data: GridOptions;
-  rowData_aggrid: any = [
-    {
-      "id": "123",
-      "order-number":"1234",
-      "type":"Final",
-      "date":"12-01-2021",
-      "amount":"120000",
-      "deductions":"1000",
-      "paid":"100000",
-      "status":"Approved"
-  },
-    {
-      "id": "123",
-      "order-number":"1234",
-      "type":"Provisional",
-      "date":"12-01-2021",
-      "amount":"120000",
-      "deductions":"1000",
-      "paid":"100000",
-      "status":"New"
-  },
-    {
-      "id": "123",
-      "order-number":"1234",
-      "type":"Credit",
-      "date":"12-01-2021",
-      "amount":"120000",
-      "deductions":"1000",
-      "paid":"100000",
-      "status":"Approved"
-  },
-    {
-      "id": "123",
-      "order-number":"1234",
-      "type":"Debit",
-      "date":"12-01-2021",
-      "amount":"120000",
-      "deductions":"1000",
-      "paid":"100000",
-      "status":"Reverted"
+  rowData_aggrid: any = [];
+  totalrowData = [];
+  formValues:any;
+  dateFormat:any;
+  @Input('detailFormvalues') set _detailFormvalues(val) {
+    if(val){
+      this.formValues = val;
+      if(this.formValues.relatedInvoices){
+        this.formValues.relatedInvoices.forEach(element => {
+          this.rowData_aggrid.push({
+            "id": element.id,
+            "order-number":element.orderId,
+            "type":element.invoiceType.name,
+            "date":element.invoiceDate ? moment(element.invoiceDate).format(this.dateFormat):'',
+            "amount":element.invoiceAmount,
+            "deductions":element.deductions,
+            "paid":element.paidAmount,
+            "status":element.invoiceStatus.name
+          });
+        });
+        this.formValues.relatedInvoicesSummary.forEach(total => {
+          this.totalrowData.push({
+            "id": "Net Payable",
+            "order-number":total.netPayable,
+            "type":"",
+            "date":"Total",
+            "amount":total.invoiceAmountTotal,
+            "deductions":total.deductionsTotal,
+            "paid":total.paidAmount,
+            "status":""
+          });
+        });
+        if(this.gridOptions_data.api){
+          this.gridOptions_data.api.sizeColumnsToFit(); 
+        }
+      }
+    }
   }
-  ];
-  constructor() {
+  constructor(private format: TenantFormattingService, public urlService:UrlService,public appConfig: AppConfig) {
+    this.dateFormat = this.format.dateFormat.replace('DDD', 'ddd').replace('dd/', 'DD/');
     this.setupGrid();
    }
 
@@ -78,9 +79,10 @@ export class RelatedInvoiceComponent implements OnInit {
       onGridReady: (params) => {
         this.gridOptions_data.api = params.api;
         this.gridOptions_data.columnApi = params.columnApi;
+        this.gridOptions_data.api.setPinnedBottomRowData(this.totalrowData);
         this.gridOptions_data.api.setRowData(this.rowData_aggrid);
         this.gridOptions_data.api.sizeColumnsToFit();  
-        params.api.sizeColumnsToFit();     
+        // params.api.sizeColumnsToFit();     
 
       },
       onFirstDataRendered(params) {
@@ -88,12 +90,12 @@ export class RelatedInvoiceComponent implements OnInit {
       },
 
       onColumnResized: function (params) {
-        if (params.columnApi.getAllDisplayedColumns().length <= 11 && params.type === 'columnResized' && params.finished === true && params.source === 'uiColumnDragged') {
+        if (params.columnApi.getAllDisplayedColumns().length <= 8 && params.type === 'columnResized' && params.finished === true && params.source === 'uiColumnDragged') {
           params.api.sizeColumnsToFit();
         }
       },
       onColumnVisible: function (params) {
-        if (params.columnApi.getAllDisplayedColumns().length <= 11) {
+        if (params.columnApi.getAllDisplayedColumns().length <= 8) {
           params.api.sizeColumnsToFit();
 
         }
@@ -123,13 +125,22 @@ export class RelatedInvoiceComponent implements OnInit {
         cellRendererFramework:AGGridCellRendererComponent, cellRendererParams: function(params) {
           var classArray:string[] =[];
             classArray.push('aggridtextalign-center');
-            let newClass= params.value==='Reverted'?'custom-chip-type1 red-chip':
+            let newClass= params.value==='Reverted' || params.value==='Discrepancy' ?'custom-chip-type1 red-chip':
                           params.value==='Approved'?'custom-chip-type1 mediumgreen':
                           params.value==='New'?'custom-chip-type1 dark':
                           'custom-chip-type1';
                           classArray.push(newClass);
             return {cellClass: classArray.length>0?classArray:null} }}
   ];
-
-
+  onCellClicked(params){
+    if(params.colDef.field === 'id' && !params.rowPinned){
+      this.openEditInvoice(params.data.id)
+    }
+  }
+  openEditInvoice(invoiceId: number): void {
+    window.open(
+      this.urlService.editInvoice(invoiceId),
+      this.appConfig.openLinksInNewTab ? '_blank' : '_self'
+    );
+  }
 }

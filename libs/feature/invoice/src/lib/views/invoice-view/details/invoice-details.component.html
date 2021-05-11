@@ -11,10 +11,13 @@
                             <mat-button-toggle [disabled]="true" *ngFor="let items of invoice_types" [value]="items.value" [checked]="formValues.documentType.internalName == items.value">
                                 <span class="toggle-icon" *ngIf="formValues.documentType.internalName == items.value"></span> {{items.displayName}}
                             </mat-button-toggle>
+                            <mat-button-toggle [disabled]="true" *ngIf="manualtab.length === 0" [value]="formValues.documentType.internalName" [checked]="true">
+                                <span class="toggle-icon" style="margin-right:0px !important"></span> {{formValues.documentType.name}}
+                            </mat-button-toggle>
                         </mat-button-toggle-group>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6" style="padding-left:108px">
                     <div class="badge-header-v2">
                         <span class="label_text" matTooltip={{formValues.createdByUser?.displayName}}>Created by: <b>{{formValues.createdByUser?.displayName}}</b></span>
                         <span class="border_line"></span>
