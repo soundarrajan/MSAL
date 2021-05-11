@@ -89,78 +89,78 @@
 <div class="row">
     <div class="col-md-3">
         <div class="form-group row" >
-            <span ng-if="!formValues.formulaHolidayRules.sundayHolidayRule && formValues.pricingScheduleOptionEventBasedContinuous.period.id == 4" ng-init="formValues.formulaHolidayRules.sundayHolidayRule = options.HolidayRule[0]"></span>
+            <span ng-if="!formValues.pricingScheduleOptionEventBasedContinuous.sundayHolidayRule && formValues.pricingScheduleOptionEventBasedContinuous.period.id == 4" ng-init="formValues.pricingScheduleOptionEventBasedContinuous.sundayHolidayRule = options.HolidayRule[0]"></span>
             <label for="HolidayRuleHolidayRule" class="formula_flat_percentage_label" class="simpleLookupLabel">
                 {{ CM.app_id + '.SUNDAY' | translate }}
             </label>
             <div class="input-group form_input form_input_formula_flat_percentage">
-                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HolidayRule track by item.id" ng-model="formValues.formulaHolidayRules.sundayHolidayRule"></select>
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HolidayRule track by item.id" ng-model="formValues.pricingScheduleOptionEventBasedContinuous.sundayHolidayRule"></select>
             </div>
         </div>
     </div>
     <div class="col-md-3">
-         <span ng-if="!formValues.formulaHolidayRules.mondayHolidayRule && formValues.pricingScheduleOptionEventBasedContinuous.period.id == 4" ng-init="formValues.formulaHolidayRules.mondayHolidayRule = options.HolidayRule[0]"></span>
+         <span ng-if="!formValues.pricingScheduleOptionEventBasedContinuous.mondayHolidayRule && formValues.pricingScheduleOptionEventBasedContinuous.period.id == 4" ng-init="formValues.pricingScheduleOptionEventBasedContinuous.mondayHolidayRule = options.HolidayRule[0]"></span>
         <div class="form-group row" >
             <label for="HolidayRuleHolidayRule" class="formula_flat_percentage_label" class="simpleLookupLabel">
                 {{ CM.app_id + '.MONDAY' | translate }}
             </label>
             <div class="input-group form_input form_input_formula_flat_percentage">
-                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HolidayRule track by item.id" ng-model="formValues.formulaHolidayRules.mondayHolidayRule"></select>
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HolidayRule track by item.id" ng-model="formValues.pricingScheduleOptionEventBasedContinuous.mondayHolidayRule"></select>
             </div>
         </div>
     </div>
     <div class="col-md-3">
-        <span ng-if="!formValues.formulaHolidayRules.tuesdayHolidayRule && formValues.pricingScheduleOptionEventBasedContinuous.period.id == 4" ng-init="formValues.formulaHolidayRules.tuesdayHolidayRule = options.HolidayRule[0]"></span>
+        <span ng-if="!formValues.pricingScheduleOptionEventBasedContinuous.tuesdayHolidayRule && formValues.pricingScheduleOptionEventBasedContinuous.period.id == 4" ng-init="formValues.pricingScheduleOptionEventBasedContinuous.tuesdayHolidayRule = options.HolidayRule[0]"></span>
         <div class="form-group row" >
             <label for="HolidayRuleHolidayRule" class="formula_flat_percentage_label" class="simpleLookupLabel">
                 {{ CM.app_id + '.TUESDAY' | translate }}
             </label>
             <div class="input-group form_input form_input_formula_flat_percentage">
-                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HolidayRule track by item.id" ng-model="formValues.formulaHolidayRules.tuesdayHolidayRule"></select>
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HolidayRule track by item.id" ng-model="formValues.pricingScheduleOptionEventBasedContinuous.tuesdayHolidayRule"></select>
             </div>
         </div>
     </div>
     <div class="col-md-3">
-           <span ng-if="!formValues.formulaHolidayRules.wednesdayHolidayRule && formValues.pricingScheduleOptionEventBasedContinuous.period.id == 4" ng-init="formValues.formulaHolidayRules.wednesdayHolidayRule = options.HolidayRule[0]"></span>
+           <span ng-if="!formValues.pricingScheduleOptionEventBasedContinuous.wednesdayHolidayRule && formValues.pricingScheduleOptionEventBasedContinuous.period.id == 4" ng-init="formValues.pricingScheduleOptionEventBasedContinuous.wednesdayHolidayRule = options.HolidayRule[0]"></span>
         <div class="form-group row" >
             <label for="HolidayRuleHolidayRule" class="formula_flat_percentage_label" class="simpleLookupLabel">
                 {{ CM.app_id + '.WEDNESDAY' | translate }}
             </label>
             <div class="input-group form_input form_input_formula_flat_percentage">
-                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HolidayRule track by item.id" ng-model="formValues.formulaHolidayRules.wednesdayHolidayRule"></select>
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HolidayRule track by item.id" ng-model="formValues.pricingScheduleOptionEventBasedContinuous.wednesdayHolidayRule"></select>
             </div>
         </div>
     </div>
     <div class="col-md-3">
-        <span ng-if="!formValues.formulaHolidayRules.thursdayHolidayRule && formValues.pricingScheduleOptionEventBasedContinuous.period.id == 4" ng-init="formValues.formulaHolidayRules.thursdayHolidayRule = options.HolidayRule[0]"></span>
+        <span ng-if="!formValues.pricingScheduleOptionEventBasedContinuous.thursdayHolidayRule && formValues.pricingScheduleOptionEventBasedContinuous.period.id == 4" ng-init="formValues.pricingScheduleOptionEventBasedContinuous.thursdayHolidayRule = options.HolidayRule[0]"></span>
         <div class="form-group row" >
             <label for="HolidayRuleHolidayRule" class="formula_flat_percentage_label" class="simpleLookupLabel">
                 {{ CM.app_id + '.THURSDAY' | translate }}
             </label>
             <div class="input-group form_input form_input_formula_flat_percentage">
-                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HolidayRule track by item.id" ng-model="formValues.formulaHolidayRules.thursdayHolidayRule"></select>
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HolidayRule track by item.id" ng-model="formValues.pricingScheduleOptionEventBasedContinuous.thursdayHolidayRule"></select>
             </div>
         </div>
     </div>
     <div class="col-md-3">
-          <span ng-if="!formValues.formulaHolidayRules.fridayHolidayRule && formValues.pricingScheduleOptionEventBasedContinuous.period.id == 4" ng-init="formValues.formulaHolidayRules.fridayHolidayRule = options.HolidayRule[0]"></span>
+          <span ng-if="!formValues.pricingScheduleOptionEventBasedContinuous.fridayHolidayRule && formValues.pricingScheduleOptionEventBasedContinuous.period.id == 4" ng-init="formValues.pricingScheduleOptionEventBasedContinuous.fridayHolidayRule = options.HolidayRule[0]"></span>
         <div class="form-group row" >
             <label for="HolidayRuleHolidayRule" class="formula_flat_percentage_label" class="simpleLookupLabel">
                 {{ CM.app_id + '.FRIDAY' | translate }}
             </label>
             <div class="input-group form_input form_input_formula_flat_percentage">
-                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HolidayRule track by item.id" ng-model="formValues.formulaHolidayRules.fridayHolidayRule"></select>
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HolidayRule track by item.id" ng-model="formValues.pricingScheduleOptionEventBasedContinuous.fridayHolidayRule"></select>
             </div>
         </div>
     </div>
     <div class="col-md-3">
-            <span ng-if="!formValues.formulaHolidayRules.saturdayHolidayRule && formValues.pricingScheduleOptionEventBasedContinuous.period.id == 4" ng-init="formValues.formulaHolidayRules.saturdayHolidayRule = options.HolidayRule[0]"></span>
+            <span ng-if="!formValues.pricingScheduleOptionEventBasedContinuous.saturdayHolidayRule && formValues.pricingScheduleOptionEventBasedContinuous.period.id == 4" ng-init="formValues.pricingScheduleOptionEventBasedContinuous.saturdayHolidayRule = options.HolidayRule[0]"></span>
         <div class="form-group row" >
             <label for="HolidayRuleHolidayRule" class="formula_flat_percentage_label" class="simpleLookupLabel">
                 {{ CM.app_id + '.SATURDAY' | translate }}
             </label>
             <div class="input-group form_input form_input_formula_flat_percentage">
-                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HolidayRule track by item.id" ng-model="formValues.formulaHolidayRules.saturdayHolidayRule"></select>
+                <select class="form-control bs-select changeIT" ng-options="item as item.name for item in options.HolidayRule track by item.id" ng-model="formValues.pricingScheduleOptionEventBasedContinuous.saturdayHolidayRule"></select>
             </div>
         </div>
     </div>
