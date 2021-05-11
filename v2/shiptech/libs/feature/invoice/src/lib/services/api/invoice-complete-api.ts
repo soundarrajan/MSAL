@@ -13,7 +13,7 @@ import {
   IGetInvoiceListRequest,
   IGetInvoiceListResponse
 } from './dto/invoice-list-item.dto';
-import { IInvoiceDetailsItemRequest, IInvoiceDetailsItemResponse } from './dto/invoice-details-item.dto';
+import { IInvoiceDetailsItemRequest, IInvoiceDetailsItemResponse,INewInvoiceDetailsItemRequest } from './dto/invoice-details-item.dto';
 
 export namespace InvoiceApiPaths {
   export const getCompletesList = () => `api/invoice/completeViewList`;
@@ -21,6 +21,8 @@ export namespace InvoiceApiPaths {
   export const getCompletesListExport = () => 'api/invoice/exportCompleteView';
   export const getInvoicesListExport = () => `api/invoice/export`;
   export const getInvoiceItem = () => `api/invoice/get`;
+  export const getNewInvoiceItem = () => `api/invoice/newFromDelivery`;
+
   export const updateInvoiceItem = () => `api/invoice/update`;
   export const productListOnInvoice = () => `api/invoice/deliveriesToBeInvoicedList`;
   export const submitapproval = () => `api/invoice/submitForApproval`;
@@ -30,6 +32,7 @@ export namespace InvoiceApiPaths {
   export const rejectInvoiceItem = () => `api/invoice/reject`;
   export const approveInvoiceItem = () => `api/invoice/approve`;
   export const submitReview = () => `api/invoice/submitForReview`;
+
 }
 
 @Injectable({
@@ -73,8 +76,17 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
   getInvoicDetails(
     request: IInvoiceDetailsItemRequest
   ): Observable<IInvoiceDetailsItemResponse> {
+    
     return this.http.post<IInvoiceDetailsItemResponse>(
       `${this._apiUrl}/${InvoiceApiPaths.getInvoiceItem()}`, 
+      request );
+  }
+  getNewInvoicDetails(
+    request: INewInvoiceDetailsItemRequest
+  ): Observable<IInvoiceDetailsItemResponse> {
+    
+    return this.http.post<IInvoiceDetailsItemResponse>(
+      `${this._apiUrl}/${InvoiceApiPaths.getNewInvoiceItem()}`, 
       request );
   }
 

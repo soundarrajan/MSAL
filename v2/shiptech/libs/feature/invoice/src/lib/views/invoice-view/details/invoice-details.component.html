@@ -15,7 +15,7 @@
                 </div>
                 <div class="col-md-6" style="padding-left: 75px; padding-top: 7px;">
                     <div class="badge-header-v2">
-                        <span class="label_text" matTooltip={{formValues.createdByUser.displayName}}>Created by: <b>{{formValues.createdByUser.displayName}}</b></span>
+                        <span class="label_text" matTooltip={{formValues.createdByUser?.displayName}}>Created by: <b>{{formValues.createdByUser?.displayName}}</b></span>
                         <span class="border_line"></span>
                         <span class="label_text" matTooltip={{formValues.createdAt}}>On: <b>{{formValues.createdAt | date: this.dateFormat}}</b></span>
                     </div>
@@ -36,8 +36,8 @@
                     <div id="custom-form-field" class="lightTheme">
                         <mat-form-field class="without-search" appearance="legacy">
                             <mat-label>Invoice Date</mat-label>
-                            <input [(ngModel)]="formValues.invoiceDate" name="invoiceDate" #validToDateField="ngModel"
-                            matInput [matDatepicker]="invoiceDate" (focus)="invoiceDate.open()" autocomplete="off" placeholder="Invoice Date" (dateChange)="formValues.invoiceDate = formatDateForBe(formValues.invoiceDate)">
+                            <input [(ngModel)]="formValues.invoiceDate" name="invoiceDate" #validToDateField="ngModel" 
+                            matInput [matDatepicker]="invoiceDate" (focus)="invoiceDate.open()" autocomplete="off" placeholder="Invoice Date">
                             <mat-datepicker-toggle matSuffix [for]="invoiceDate">
                                 <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
                                 </mat-icon>
@@ -90,7 +90,7 @@
                         <div id="custom-form-field" class="lightTheme">
                             <mat-form-field class="without-search" appearance="legacy">
                                 <mat-label>Due Date</mat-label>
-                                <input [(ngModel)]="formValues.dueDate" name="dueDate" #validToDateField="ngModel" matInput [matDatepicker]="dueDate" (focus)="dueDate.open()" autocomplete="off" placeholder="Due Date" (dateChange)="formValues.dueDate = formatDateForBe(formValues.dueDate)" required>
+                                <input [(ngModel)]="formValues.dueDate" name="dueDate" #validToDateField="ngModel" matInput [matDatepicker]="dueDate" autocomplete="off" placeholder="Due Date" (dateChange)="formatDateForBe(formValues.dueDate)" required>
                                 <mat-datepicker-toggle matSuffix [for]="dueDate">
                                     <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
                                     </mat-icon>
@@ -265,7 +265,7 @@
         <div class="col-md-5">
             <div class="section-header">
                 <div class="header-label">Order Details</div>
-                <div class="header-data">Request ID: <span class="request-id">{{formValues.requestInfo.request.id}}</span></div>
+                <div class="header-data">Request ID: <span class="request-id">{{formValues.requestInfo?.request?.id}}</span></div>
             </div>
             <div class="section-content order-details">
                 <readonly-details [options]="orderDetails"></readonly-details>

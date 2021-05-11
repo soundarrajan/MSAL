@@ -1,9 +1,7 @@
-﻿commit 3600cb5178e34ba7a1944a00a0cf2bf34366b010
-Author: udaya kumar s <udayakumar.s@inatech.com>
-Date:   Mon May 10 15:57:48 2021 +0000
+﻿commit d5c70b7bce18d4c280037678ccddfec7906f160b
+Author: Suresh R <suresh.r@Inatech.com>
+Date:   Tue May 11 06:46:43 2021 +0530
 
-    Merged PR 10580: #Requirement 29982: B plan: View Future Requests ssr filter option has done
-    
-    Related work items: #29982
+    Invoices Changes
 
 branch: master

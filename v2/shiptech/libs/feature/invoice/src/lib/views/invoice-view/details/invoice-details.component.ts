@@ -1,8 +1,15 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconRegistry } from '@angular/material/icon';
+import { forkJoin, Observable, of, ReplaySubject, throwError } from 'rxjs';
+import { catchError, concatMap, map, tap } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { environment } from '@shiptech/environment';
+
+// import { EMPTY$ } from './utils/rxjs-operators';
+import { TenantSettingsApi } from '@shiptech/core/services/tenant-settings/api/tenant-settings-api.service';
+import { TenantSettingsModuleName } from '../../../../../../../core/src/lib/store/states/tenant/tenant-settings.interface';
 import { AGGridCellActionsComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-actions.component';
 import { AGGridCellEditableComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-editable.component';
 import { AGGridCellRendererComponent } from '@shiptech/core/ui/components/ds-components/ag-grid/ag-grid-cell-renderer.component';
@@ -11,17 +18,40 @@ import { GridOptions } from 'ag-grid-community';
 import moment from 'moment';
 import { IInvoiceDetailsItemBaseInfo, IInvoiceDetailsItemCounterpartyDetails,IInvoiceDetailsItemResponse, IInvoiceDetailsItemDto, IInvoiceDetailsItemInvoiceCheck, IInvoiceDetailsItemInvoiceSummary, IInvoiceDetailsItemOrderDetails, IInvoiceDetailsItemPaymentDetails, IInvoiceDetailsItemProductDetails, IInvoiceDetailsItemRequestInfo, IInvoiceDetailsItemStatus } from '../../../services/api/dto/invoice-details-item.dto';
 import { InvoiceDetailsService } from '../../../services/invoice-details.service';
+import { TenantSettingsService } from '../../../../../../../core/src/lib/services/tenant-settings/tenant-settings.service';
 import { EsubmitMode } from '../invoice-view.component';
 import { ProductDetailsModalComponent } from './component/product-details-modal/product-details-modal.component';
 import { ToastrService } from 'ngx-toastr';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { InvoiceTypeSelectionComponent } from './component/invoice-type-selection/invoice-type-selection.component';
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
+// import {MomentDateAdapter} from '@angular/material-moment-adapter';
+import {MomentDateAdapter} from '@angular/material-moment-adapter';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+
+
+  export const MY_FORMATS = {
+    parse: {
+      dateInput: 'LL',
+    },
+    display: {
+      dateInput: 'ddd DD/MM/yyyy HH:mm',
+      monthYearLabel: 'YYYY',
+      dateA11yLabel: 'LL',
+      monthYearA11yLabel: 'YYYY',
+    },
+  };
 
 @Component({
   selector: 'shiptech-invoice-detail',
   templateUrl: './invoice-details.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
+
+    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+  ],
+  
 })
 export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
@@ -121,6 +151,10 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 @Input('detailFormvalues') set _detailFormvalues(val) {
   if(val){
     this.formValues = val;
+    // if(this.formValues.paymentDetails == undefined || this.formValues.paymentDetails == null){
+    //   this.formValues.paymentDetails.paidAmount = 0;
+    //   this.formValues.paymentDetails.paymentProofReceived = false;
+    // }
     this.parseProductDetailData(this.formValues.productDetails);
     //  console.log(this.invoiceDetailsComponent.parseProductDetailData);
     this.setOrderDetailsLables(this.formValues.orderDetails);
@@ -470,6 +504,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       rowHeight: 45,
       animateRows: false,
       masterDetail: true,
+
       onGridReady: (params) => {
         this.gridOptions_data.api = params.api;
         this.gridOptions_data.columnApi = params.columnApi;
@@ -478,6 +513,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         this.addCustomHeaderEventListener(params);
 
       },
+
       onColumnResized: function (params) {
         if (params.columnApi.getAllDisplayedColumns().length <= 9 && params.type === 'columnResized' && params.finished === true && params.source === 'uiColumnDragged') {
           params.api.sizeColumnsToFit();
@@ -504,7 +540,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         inv_qty: value.invoiceQuantity +' '+ value.invoiceQuantityUom.name,
         inv_rate: value.invoiceRate + ' '+ value.invoiceRateCurrency.code,
         amount2: value.invoiceComputedAmount + ' '+ value.invoiceRateCurrency.code,
-        recon_status: value.reconStatus.name,
+        recon_status: value.reconStatus?value.reconStatus.name:'',
         sulpher_content: value.sulphurContent,
         phy_supplier: value.physicalSupplierCounterparty.name
       }
@@ -520,7 +556,10 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
     this.formValues.orderDetails.frontOfficeComments = this.formValues.orderDetails.frontOfficeComments?.trim() ==''? null :this.formValues.orderDetails.frontOfficeComments;
     this.formValues.backOfficeComments = this.formValues.backOfficeComments?.trim() ==''? null :this.formValues.backOfficeComments;
-    this.formValues.paymentDetails.comments = this.formValues.paymentDetails.comments?.trim() ==''? null :this.formValues.paymentDetails.comments;
+    if(this.formValues.paymentDetails != undefined && this.formValues.paymentDetails !=null){
+      this.formValues.paymentDetails.comments = this.formValues.paymentDetails?.comments?.trim() ==''? null :this.formValues.paymentDetails?.comments;
+    }
+   
   }
 
   setcounterpartyDetailsLables(counterpartyDetails){
@@ -543,8 +582,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
   formatDateForBe(value) {
     if (value) {
-      let beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss') }+00:00`;
-      return beValue;
+     let beValue = moment(value).format(this.format.dateFormat.replace('DDD', 'ddd').replace('dd/', 'DD/'))
+      return new Date(beValue);
     } else {
       return null;
     }
