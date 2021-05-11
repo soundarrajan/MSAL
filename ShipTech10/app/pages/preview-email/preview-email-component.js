@@ -847,7 +847,7 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
 	                });
         			return;
         		}
-        		if (ctrl.email.comment.emailTemplate.name.indexOf('ConfirmationToVessel') != -1) {
+        		if (ctrl.email.comment.emailTemplate.name.indexOf('ConfirmationToVessel') != -1 || ctrl.email.comment.emailTemplate.name == "OrderConfirmationSingleEmail") {
 	                orderModel.sendOrderCommand('confirmToAll', ctrl.email.businessId)
 	                .then((response) => {
 	                	window.history.back();
