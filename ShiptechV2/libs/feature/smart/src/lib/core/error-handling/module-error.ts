@@ -2,12 +2,6 @@ import { ErrorCode } from './error-code';
 import { AppError, IAppError } from '@shiptech/core/error-handling/app-error';
 
 export class ModuleError<T = any> extends AppError<T> {
-  //**Error Messages without Parameters */
-  static readonly LoadBunkeringPlanDetailsFailedAction = new ModuleError({
-    code: ErrorCode.LoadBunkeringPlanDetailsFailedAction,
-    message: 'Could not load bunker plan details. Please try again later.'
-  });
-
   
   constructor(appError: Partial<IAppError> = {}) {
     super(appError);

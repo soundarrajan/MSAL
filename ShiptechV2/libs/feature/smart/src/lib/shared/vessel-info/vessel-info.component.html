@@ -219,7 +219,7 @@
                 </span><span [ngClass]="this.statusCurr == undefined?'content': (this.statusCurr =='INVALID'? 'content content_invalid' : 'content content_valid')" style="padding: 3% 16% !important; ">{{this.statusCurr}}</span></div>
               <ng-container *ngIf="panel.expanded">
                 <div class="border-rightside"
-                  style="display: flex;flex: 0 0 44%;justify-content: space-between;padding: 0px 5px;">
+                  style="display: flex;flex: 0 0 40%;justify-content: space-between;padding: 0px 5px;">
                   <!-- <button [disabled]="!enableCreateReq" matTooltip="Create Request" [matTooltipShowDelay]="500"
                     class="create-btn">
                     <img class="disablePlus" src="./assets/customicons/plus-noborder.svg" alt="create">
@@ -234,13 +234,13 @@
                   <button mat-button matTooltip="Import GSIS" [matTooltipShowDelay]="500" class="import-btn">Import
                     GSIS</button>
                 </div>
-                <div style="flex:0 0 33%;display: flex;align-items: center;justify-content: space-around;"
+                <div style="flex:0 0 23%;display: flex;align-items: center;justify-content: space-around;"
                   class="border-rightside">
                   <button mat-button disabled matTooltip="Generate" [matTooltipShowDelay]="500"
                     class="btn">Generate</button>
                   <button mat-button disabled matTooltip="Send" [matTooltipShowDelay]="500" class="btn">Send</button>
                   <button mat-button matTooltip="Save" [matTooltipShowDelay]="500" class="btn savebtn"
-                    (click)="SaveCurrntROB();saveCurrentBPlan($event)">Save</button>
+                    (click)="SaveCurrntROB();saveCurrentBPlan($event)" >Save</button>
                 </div>
                 <div style="flex:0 0 4%;text-align: center;">
                   <div  *ngIf="!expandBplan; else collapseBlock" (click)="toggleBPlan($event)" class="expand-accordion-icon hand"></div>

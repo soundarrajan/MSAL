@@ -12,6 +12,7 @@ import { IBunkeringPlanApiService } from './api/bunkering-plan.api.service.inter
 export namespace BunkeringPlanApiPaths{
     export const getBunkeringPlanDetails = () => `api/BOPS/bunkerplan/getBunkerPlanDetail`;
     export const getBunkeringPlanIdAndStatus = () => `api/BOPS/bunkerplan/getBunkerPlanInitial` ;
+    export const saveBunkeringPlanDetails = () => `api/BOPS/bunkerplan/updateBunkerPlan`;
 }
 
 @Injectable({
@@ -39,6 +40,14 @@ getBunkerPlanIdAndStatus(request: any): Observable<any> {
     { payload: request }
   )
 }
+
+@ObservableException()
+  saveBunkeringPlanDetails(request: any): Observable<any> {
+    return this.http.post<any>(
+      `${this._apiUrl}/${BunkeringPlanApiPaths.saveBunkeringPlanDetails()}`,
+      { payload: request }
+    );
+  }
 }
 
 
