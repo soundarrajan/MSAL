@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, ViewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit,ViewChildren } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconRegistry } from '@angular/material/icon';
 import { forkJoin, Observable, of, ReplaySubject, throwError } from 'rxjs';
@@ -50,7 +50,7 @@ import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/
 
     {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
   ],
-
+  
 })
 export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
@@ -67,9 +67,11 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   customInvoice:number=0;
   invoiceSubmitMode:EsubmitMode;
   dateFormat;
+  isLoading:boolean = false;
+  formSubmitted:boolean = false;
   emptyStringVal = '--';
   emptyNumberVal = '00';
-  @ViewChildren('addProductMenu') addproductMenu;
+  @ViewChildren('addProductMenu') addproductMenu; 
   invoice_types =[
     {
       displayName:'Final',
@@ -77,15 +79,15 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     },
     {
       displayName:'Provisional',
-      value:'Provisional',
+      value:'ProvisionalInvoice',
     },
     {
       displayName:'Credit',
-      value:'Credit',
+      value:'CreditNote',
     },
     {
       displayName:'Debit',
-      value:'Debit',
+      value:'DebitNote',
     },
   ]
 
@@ -186,7 +188,6 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     this.legacyLookupsDatabase.getsInvoiceType().then(list=>{
       this.invoiceTypeList = list;
     })
-    console.log("format",this.format)
     this.dateFormat = this.format.dateFormat.replace('DDD', 'E');
     this.getProductList();
   }
@@ -514,6 +515,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         this.gridOptions_data.api.sizeColumnsToFit();
         this.gridOptions_data.api.setRowData(this.rowData_aggrid_pd);
         // this.addCustomHeaderEventListener(params);
+
       },
 
       onColumnResized: function (params) {
@@ -561,7 +563,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     if(this.formValues.paymentDetails != undefined && this.formValues.paymentDetails !=null){
       this.formValues.paymentDetails.comments = this.formValues.paymentDetails?.comments?.trim() ==''? null :this.formValues.paymentDetails?.comments;
     }
-
+   
   }
 
   setcounterpartyDetailsLables(counterpartyDetails){
@@ -596,6 +598,11 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   }
 
   public saveInvoiceDetails(){
+    this.isLoading = true;
+    if(this.formSubmitted){
+      return;
+    }
+    this.formSubmitted = true;
     if(!this.formValues.dueDate || !this.formValues.workingDueDate || !this.formValues.counterpartyDetails.paymentTerm.name
        || !this.formValues.orderDetails.paymentCompany.name){
         if(!this.formValues.dueDate){
@@ -610,6 +617,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         if(!this.formValues.orderDetails.paymentCompany.name){
           this.toastrService.error("Payment company is required.");
         }
+        this.isLoading = false;
+        this.formSubmitted = false;
         return;
       }
       this.formValues.paymentDetails.paymentStatus.id = this.paymentStatus;
@@ -623,6 +632,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     .updateInvoiceItem(data)
     .subscribe((response: IInvoiceDetailsItemResponse) => {
       this.toastrService.success('Invoice updated successfully');
+      this.isLoading = false;
+      this.formSubmitted = false;
     });
   }
 
@@ -670,6 +681,11 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     // console.log('type',type,'evnt',event);
   }
   invoiceOptionSelected(option){
+    this.isLoading = true;
+    if(this.formSubmitted){
+      return;
+    }
+    this.formSubmitted = true;
     if(option == 'submitreview'){
       let data : any = {
         Payload: {"id":this.formValues.id}
@@ -678,6 +694,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       .submitReview(data)
       .subscribe((response: IInvoiceDetailsItemResponse) => {
         this.toastrService.success('Invoice submitted for approval successfully');
+        this.isLoading = false;
+        this.formSubmitted = false;
       });
     }else if(option == 'submitapprove'){
       let data : any = {
@@ -687,6 +705,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       .submitapproval(data)
       .subscribe((response: IInvoiceDetailsItemResponse) => {
         this.toastrService.success('Invoice submitted for approval successfully');
+        this.isLoading = false;
+        this.formSubmitted = false;
       });
     }else if(option == 'cancel'){
       let data : any = {
@@ -696,6 +716,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       .cancelInvoiceItem(data)
       .subscribe((response: IInvoiceDetailsItemResponse) => {
         this.toastrService.success('Invoice cancelled successfully');
+        this.isLoading = false;
+        this.formSubmitted = false;
       });
     }else if(option == 'accept'){
       let data : any = {
@@ -705,6 +727,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       .acceptInvoiceItem(data)
       .subscribe((response: IInvoiceDetailsItemResponse) => {
         this.toastrService.success('Invoice accepted successfully');
+        this.isLoading = false;
+        this.formSubmitted = false;
       });
     }else if(option == 'revert'){
       let data : any = {
@@ -714,6 +738,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       .revertInvoiceItem(data)
       .subscribe((response: IInvoiceDetailsItemResponse) => {
         this.toastrService.success('Invoice reverted successfully');
+        this.isLoading = false;
+        this.formSubmitted = false;
       });
     }else if(option == 'reject'){
       let data : any = {
@@ -723,18 +749,22 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       .rejectInvoiceItem(data)
       .subscribe((response: IInvoiceDetailsItemResponse) => {
         this.toastrService.success('Invoice rejected successfully');
+        this.isLoading = false;
+        this.formSubmitted = false;
       });
     }else if(option == 'create'){
+      this.isLoading = false;
       const dialogRef = this.dialog.open(InvoiceTypeSelectionComponent, {
         width: '400px',
         height: '400px',
         panelClass: 'popup-grid',
         data:  { orderId: this.formValues.orderDetails?.order?.id, lists : this.invoiceTypeList }
       });
-
+  
       dialogRef.afterClosed().subscribe(result => {
+        this.formSubmitted = false;
         if(result && result != 'close'){
-
+          
         }
       });
     }else if(option == 'approve'){
@@ -745,6 +775,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       .approveInvoiceItem(data)
       .subscribe((response: IInvoiceDetailsItemResponse) => {
         this.toastrService.success('Invoice approved successfully');
+        this.isLoading = false;
+        this.formSubmitted = false;
       });
     }
   }
@@ -768,6 +800,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         this.gridOptions_claims.columnApi = params.columnApi;
         this.gridOptions_claims.api.sizeColumnsToFit();
         this.gridOptions_claims.api.setRowData(this.formValues.invoiceClaimDetails);
+        // this.addCustomHeaderEventListener(params);
       },
       onColumnResized: function (params) {
         if (params.columnApi.getAllDisplayedColumns().length <= 9 && params.type === 'columnResized' && params.finished === true && params.source === 'uiColumnDragged') {
@@ -782,20 +815,18 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       }
     }
   }
-
   getProductList(){
     let data : any = {
       Payload: {"Order":null,"PageFilters":{"Filters":[]},"SortList":{"SortList":[]},"Filters":[{"ColumnName":"Order_Id","Value": this.orderId}],"SearchText":null,"Pagination":{}}
     };
     this.invoiceService
     .productListOnInvoice(data)
-    .subscribe((response: any) => {
+    .subscribe((response: any) => {      
       response.payload.forEach(row => {
         this.productData.push({selected:false, product:row.product.name, deliveries:row.order.id, details:row});
       });
     });
   }
-
   addnewProduct(event){
     console.log(event);
     var itemsToUpdate = [];
@@ -813,6 +844,5 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     });
 
   }
-
 }
 
