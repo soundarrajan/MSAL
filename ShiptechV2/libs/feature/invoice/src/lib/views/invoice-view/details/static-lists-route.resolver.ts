@@ -12,6 +12,7 @@ import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.en
 import { BdnInformationApiService } from '@shiptech/core/delivery-api/bdn-information/bdn-information-api.service';
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 import { KnownInvoiceRoutes } from '../../../known-invoice.routes';
+import { InvoiceDetailsService } from '../../../services/invoice-details.service';
 
 @Injectable()
 export class StaticListsRouteResolver implements Resolve<any> {
@@ -21,6 +22,7 @@ export class StaticListsRouteResolver implements Resolve<any> {
     private router: Router,
     private appErrorHandler: AppErrorHandler,
     private legacyLookupsDatabase: LegacyLookupsDatabase,
+    private invoiceService: InvoiceDetailsService
 
   ) {}
 
@@ -38,7 +40,7 @@ export class StaticListsRouteResolver implements Resolve<any> {
         KnownInvoiceRoutes.InvoiceIdParam
       ]);
     }
-    return  [];
+    return  this.invoiceService.getStaticLists(['Product', 'Uom', 'Currency', 'Supplier']);;
 
   }
 

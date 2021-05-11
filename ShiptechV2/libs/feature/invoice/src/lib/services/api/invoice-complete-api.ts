@@ -1,5 +1,5 @@
 import { Injectable, InjectionToken } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
@@ -14,6 +14,7 @@ import {
   IGetInvoiceListResponse
 } from './dto/invoice-list-item.dto';
 import { IInvoiceDetailsItemRequest, IInvoiceDetailsItemResponse,INewInvoiceDetailsItemRequest } from './dto/invoice-details-item.dto';
+import { catchError, map } from 'rxjs/operators';
 
 export namespace InvoiceApiPaths {
   export const getCompletesList = () => `api/invoice/completeViewList`;
@@ -32,6 +33,8 @@ export namespace InvoiceApiPaths {
   export const rejectInvoiceItem = () => `api/invoice/reject`;
   export const approveInvoiceItem = () => `api/invoice/approve`;
   export const submitReview = () => `api/invoice/submitForReview`;
+  export const getStaticLists = () =>  `api/infrastructure/static/lists`;
+
 
 }
 
@@ -41,6 +44,9 @@ export namespace InvoiceApiPaths {
 export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
   @ApiCallUrl()
   private _apiUrl = this.appConfig.v1.API.BASE_URL_DATA_INVOICES;
+
+  @ApiCallUrl()
+  private _infrastructureApiUrl = this.appConfig.v1.API.BASE_URL_DATA_INFRASTRUCTURE;
 
   constructor(private http: HttpClient, private appConfig: AppConfig) {}
 
@@ -166,6 +172,19 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
     return this.http.post<IInvoiceDetailsItemResponse>(
       `${this._apiUrl}/${InvoiceApiPaths.submitReview()}`, 
       request );
+  }
+
+  @ObservableException()
+  getStaticLists(
+    request: any
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${this._infrastructureApiUrl}/${InvoiceApiPaths.getStaticLists()}`,
+      { Payload: request }
+    ).pipe(
+      map((body: any) => body),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
   }
 
 }

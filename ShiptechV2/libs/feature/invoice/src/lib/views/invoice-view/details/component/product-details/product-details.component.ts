@@ -416,13 +416,72 @@ implements OnInit {
   autocompleteFormula: knownMastersAutocomplete;
   baseOrigin: string;
   autocompletePhysicalSupplier: knownMastersAutocomplete;
+  productList: any;
+  private _autocompleteType: any;
+  _entityName: string;
+  _entityId: number;
+  autocompleteInvoiceProduct: knownMastersAutocomplete;
+  uomList: any;
+  currencyList: any;
+  physicalSupplierList: any;
+  get entityId(): number {
+    return this._entityId;
+  }
+
+  get entityName(): string {
+    return this._entityName;
+  }
+
+  @Input() set entityId(value: number) {
+    this._entityId = value;
+    this.gridViewModel.entityId = this.entityId;
+  }
+
+  @Input() set entityName(value: string) {
+    this._entityName = value;
+    this.gridViewModel.entityName = this.entityName;
+  }
+     
+  @Input() vesselId: number;
   @Input('model') set _setFormValues(formValues) { 
     if (!formValues) {
       return;
     } 
     this.formValues = formValues;
-
   }
+
+  @Input('productList') set _setProductList(productList) { 
+    if (!productList) {
+      return;
+    } 
+    this.productList = productList;
+  }
+
+  @Input('uomList') set _setUomList(uomList) { 
+    if (!uomList) {
+      return;
+    } 
+    this.uomList = uomList;
+  }
+
+  @Input('currencyList') set _setCurrencyList(currencyList) { 
+    if (!currencyList) {
+      return;
+    } 
+    this.currencyList = currencyList;
+  }
+  
+  @Input('physicalSupplierList') set _setPhysicalSupplierList(physicalSupplierList) { 
+    if (!physicalSupplierList) {
+      return;
+    } 
+    this.physicalSupplierList = physicalSupplierList;
+  }
+  
+
+
+
+
   constructor(
     public gridViewModel: OrderListGridViewModel,
     @Inject(VESSEL_MASTERS_API_SERVICE) private mastersApi: IVesselMastersApi,
@@ -443,7 +502,8 @@ implements OnInit {
     sanitizer: DomSanitizer,
     private overlayContainer: OverlayContainer) {
     super(changeDetectorRef);
-    this.autocompletePhysicalSupplier = knownMastersAutocomplete.formula;
+    this.autocompleteInvoiceProduct = knownMastersAutocomplete.products;
+    this.autocompletePhysicalSupplier = knownMastersAutocomplete.physicalSupplier;
     this.dateFormats.display.dateInput = this.format.dateFormat;
     this.dateFormats.parse.dateInput = this.format.dateFormat;
     this.dateTimeFormats.display.dateInput = this.format.dateFormat;
@@ -506,6 +566,102 @@ implements OnInit {
   displayFn(value): string {
     return value && value.name ? value.name : '';
   }
+
+  getHeaderNameSelector(): string {
+    switch (this._autocompleteType) {
+      case knownMastersAutocomplete.physicalSupplier:
+        return knowMastersAutocompleteHeaderName.physicalSupplier;
+      default:
+        return knowMastersAutocompleteHeaderName.physicalSupplier;
+    }
+  }
+
+
+  getHeaderNameSelector1(): string {
+    switch (this._autocompleteType) {
+      case knownMastersAutocomplete.invoiceProduct:
+        return knowMastersAutocompleteHeaderName.invoiceProduct;
+      default:
+        return knowMastersAutocompleteHeaderName.invoiceProduct;
+    }
+  }
+
+  selectorInvoicedProductSelectionChange(
+    selection: IDisplayLookupDto,
+    line
+  ): void {
+    if (selection === null || selection === undefined) {
+      this.formValues.productDetails[line].invoicedProduct = null;
+    } else {
+      const obj = {
+        'id': selection.id,
+        'name': selection.name
+      };
+      this.formValues.productDetails[line].invoicedProduct = obj; 
+      console.log(this.formValues.productDetails[line]);
+      this.changeDetectorRef.detectChanges();   
+    }
+  }
+
+  filterInvoiceProductLine(value) {
+    if (value) {
+      const  filterValue = value.toLowerCase();
+      if (this.productList) {
+        return this.productList.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0)
+          .slice(0, 10);
+      } else {
+        return [];
+      }
+    } else {
+      return [];
+    }
+  }
+
+  selectPhysicalSupplierLine(
+    selection: IDisplayLookupDto,
+    line
+  ): void {
+    if (selection === null || selection === undefined) {
+      this.formValues.productDetails[line].physicalSupplierCounterparty = null;
+    } else {
+      const obj = {
+        'id': selection.id,
+        'name': selection.name
+      };
+      this.formValues.productDetails[line].physicalSupplierCounterparty = obj; 
+      console.log(this.formValues.productDetails[line]);
+      this.changeDetectorRef.detectChanges();   
+    }
+  }
+
+  filterPhysicalSupplierLine(value) {
+    if (value) {
+      const  filterValue = value.toLowerCase();
+      if (this.physicalSupplierList) {
+        return this.physicalSupplierList.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0)
+          .slice(0, 10);
+      } else {
+        return [];
+      }
+    } else {
+      return [];
+    }
+  }
+
+  compareUomObjects(object1: any, object2: any) {
+    return object1 && object2 && object1.id == object2.id;
+  }
+
+  selectInvoiceProductLine(value, line) {
+    this.formValues.productDetails[line].invoicedProduct = value;
+    this.changeDetectorRef.detectChanges(); 
+  }
+
+  selectorPhysicalSupplierSelectionChange(value, line) {
+    this.formValues.productDetails[line].physicalSupplierCounterparty = value;
+    this.changeDetectorRef.detectChanges(); 
+  }
+
 
 
 
