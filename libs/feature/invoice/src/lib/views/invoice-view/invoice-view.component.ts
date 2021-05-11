@@ -96,7 +96,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
                 if(action.name == 'Cancel'){
                   this.cancelBtn = false;
                 }else if(action.name == "SubmitForReview"){
-                  this.submitapproveBtn = false;
+                  this.submitreviewBtn = false;
                 }else if(action.name == 'ApproveInvoice'){
                   this.saveDisabled = false;
                 }else if(action.name == "RejectInvoice"){
@@ -105,6 +105,8 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
                   this.revertBtn = false;
                 }else if(action.name == "Accept"){
                   this.acceptBtn = false;
+                }else if(action.name == "SubmitForApprovalInvoice"){
+                  this.submitapproveBtn = false;
                 }
               });
               this.setSubmitMode(response.payload.status.transactionTypeId);
@@ -137,7 +139,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
                 if(action.name == 'Cancel'){
                   this.cancelBtn = false;
                 }else if(action.name == "SubmitForReview"){
-                  this.submitapproveBtn = false;
+                  this.submitreviewBtn = false;
                 }else if(action.name == 'ApproveInvoice'){
                   this.saveDisabled = false;
                 }else if(action.name == "RejectInvoice"){
@@ -146,6 +148,8 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
                   this.revertBtn = false;
                 }else if(action.name == "Accept"){
                   this.acceptBtn = false;
+                }else if(action.name == "SubmitForApprovalInvoice"){
+                  this.submitapproveBtn = false;
                 }
               });
               this.setSubmitMode(response.payload.status.transactionTypeId);
