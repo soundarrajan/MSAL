@@ -456,7 +456,27 @@ export class CreateNewFormulaModalComponent extends DeliveryAutocompleteComponen
       if (!this.formValues) {
         this.formValues = {
           formulaType: {},
-          isEditable: true
+          isEditable: true,
+          formulaHolidayRules: {
+            sundayHolidayRule: null,
+            mondayHolidayRule: null,
+            tuesdayHolidayRule: null,
+            wednesdayHolidayRule: null,
+            thursdayHolidayRule: null,
+            fridayHolidayRule: null,
+            saturdayHolidayRule: null
+          }
+        };
+      }
+      if (this.formValues && !this.formValues.formulaHolidayRules) {
+        this.formValues.formulaHolidayRules =  {
+          sundayHolidayRule: null,
+          mondayHolidayRule: null,
+          tuesdayHolidayRule: null,
+          wednesdayHolidayRule: null,
+          thursdayHolidayRule: null,
+          fridayHolidayRule: null,
+          saturdayHolidayRule: null
         };
       }
       this.formulaTypeList = data.formulaTypeList;

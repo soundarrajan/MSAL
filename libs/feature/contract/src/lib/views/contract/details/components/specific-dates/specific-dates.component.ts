@@ -451,6 +451,52 @@ export class SpecificDates extends DeliveryAutocompleteComponent
     }
   }
 
+  calendarOptionHolidayRuleChange(ob: MatCheckboxChange, object, id, name, day) {
+    console.log("checked: " + ob.checked);
+    if (ob.checked) {
+      if (typeof object == 'undefined' || !object) {
+        object = {
+          'id': id,
+          'name': name
+        }
+      }
+      object.id = id;
+      object.name = name;
+      if (day == 'Sunday') {
+        this.formValues.formulaHolidayRules.sundayHolidayRule = _.cloneDeep(object);
+      } else if (day == 'Monday') {
+        this.formValues.formulaHolidayRules.mondayHolidayRule = _.cloneDeep(object);
+      } else if (day == 'Tuesday') {
+        this.formValues.formulaHolidayRules.tuesdayHolidayRule = _.cloneDeep(object);
+      } else if (day == 'Wednesday') {
+        this.formValues.formulaHolidayRules.wednesdayHolidayRule =  _.cloneDeep(object);
+      } else if (day == 'Thursday') {
+        this.formValues.formulaHolidayRules.thursdayHolidayRule =  _.cloneDeep(object);
+      } else if (day == 'Friday') {
+        this.formValues.formulaHolidayRules.fridayHolidayRule =  _.cloneDeep(object);
+      } else if (day == 'Saturday') {
+        this.formValues.formulaHolidayRules.saturdayHolidayRule =  _.cloneDeep(object);
+      }
+    } else {
+      if (day == 'Sunday') {
+        this.formValues.formulaHolidayRules.sundayHolidayRule = null;
+      } else if (day == 'Monday') {
+        this.formValues.formulaHolidayRules.mondayHolidayRule = null;
+      } else if (day == 'Tuesday') {
+        this.formValues.formulaHolidayRules.tuesdayHolidayRule = null;
+      } else if (day == 'Wednesday') {
+        this.formValues.formulaHolidayRules.wednesdayHolidayRule =  null;
+      } else if (day == 'Thursday') {
+        this.formValues.formulaHolidayRules.thursdayHolidayRule =  null;
+      } else if (day == 'Friday') {
+        this.formValues.formulaHolidayRules.fridayHolidayRule =  null;
+      } else if (day == 'Saturday') {
+        this.formValues.formulaHolidayRules.saturdayHolidayRule =  null;
+      }
+    }
+  }
+
+
 
 
   addNewSpecificDateLine() {
