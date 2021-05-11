@@ -1,7 +1,8 @@
+import { INewInvoiceDetailsItemRequest } from './../../services/api/dto/invoice-details-item.dto';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild,ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { KnownInvoiceRoutes } from '../../known-invoice.routes';
-import { IInvoiceDetailsItemDto, IInvoiceDetailsItemRequest, IInvoiceDetailsItemResponse,INewInvoiceDetailsItemRequest } from '../../services/api/dto/invoice-details-item.dto';
+import { IInvoiceDetailsItemDto, IInvoiceDetailsItemRequest, IInvoiceDetailsItemResponse } from '../../services/api/dto/invoice-details-item.dto';
 import { InvoiceDetailsService } from '../../services/invoice-details.service';
 
 
@@ -14,7 +15,6 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
 
   @ViewChild("invoiceDetails") invoiceDetailsComponent: any;
   _entityId;
-  invoiceSubmitState:EsubmitMode;
   isConfirm=false;
   isLoading = true;
   detailFormvalues:any;
@@ -23,12 +23,16 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   tabData: any;
   navBar: any;
   reportUrl: string;
-  isNeworEdit: any;
+  selectedTab = 0;
+  submitreviewBtn:boolean = true;
+  submitapproveBtn:boolean = true;
+  cancelBtn:boolean = true;
+  acceptBtn:boolean = true;
+  revertBtn:boolean = true;
+  rejectBtn:boolean = true;
+
   constructor(private route: ActivatedRoute, private invoiceService: InvoiceDetailsService,private changeDetectorRef: ChangeDetectorRef,){
     this._entityId = route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
-    this._entityId = route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
-    this.isNeworEdit =  route.snapshot.params[KnownInvoiceRoutes.InvoiceDetails];
-
     const baseOrigin = new URL(window.location.href).origin;
     this.tabData = [
       { disabled: false, name: 'Details' },
@@ -40,21 +44,20 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     this.reportUrl = `${baseOrigin}/#/reports/ordertoinvoice/IID=${this._entityId}`;
   }
 
-  selectedTab = 0;  
-  submitreviewBtn:boolean = true;
-  submitapproveBtn:boolean = true;
-  cancelBtn:boolean = true;
-  acceptBtn:boolean = true;
-  revertBtn:boolean = true;
-  rejectBtn:boolean = true;
   ngOnInit(): void {
     this.route.data.subscribe(data => {
-      // if (data.invoice) {
-      //   this.formValues = data.invoice;
-      // }
       this.navBar = data.navBar;
+
+      // http://localhost:9016/#/invoices/invoice/edit/0
+      if (localStorage.getItem('invoiceFromDelivery')) {
+        this.isLoading = true;
+        // this.openedScreenLoaders = 0;
+        this.createNewInvoiceFromDelivery();
+      }
+      else{
+        this.getInvoiceItem();
+      }
     });
-    this.getInvoiceItem();
   }
 
   ngOnDestroy(): void {
@@ -67,114 +70,55 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   invoiceOptions(options){
     this.invoiceDetailsComponent.invoiceOptionSelected(options);
   }
+
   getInvoiceItem() {
     if(!this._entityId)
       return;
-    
-   
-    if(this.isNeworEdit != undefined && this.isNeworEdit == 'NewInvoice'){
-      let data : INewInvoiceDetailsItemRequest = {
-        "Payload": {"DeliveryProductIds":[this._entityId],"OrderAdditionalCostIds":[],"InvoiceTypeName":"FinalInvoice"}
-          };
-
-     
-             this.invoiceService
-            .getNewInvoicDetails(data)
-            .subscribe((response: IInvoiceDetailsItemResponse) => {
-              // this.invoiceDetailsComponent.formValues = <IInvoiceDetailsItemDto>response.payload;
-              // this.invoiceDetailsComponent.parseProductDetailData(this.invoiceDetailsComponent.formValues.productDetails);
-             
-              // this.invoiceDetailsComponent.setOrderDetailsLables(this.invoiceDetailsComponent.formValues.orderDetails);
-              // this.invoiceDetailsComponent.setcounterpartyDetailsLables(this.invoiceDetailsComponent.formValues.counterpartyDetails);
-              // this.invoiceDetailsComponent.setChipDatas();
-              // this.setSubmitMode(response.payload.status.transactionTypeId)
-
-              this.displayDetailFormvalues = true;
-              this.isLoading = false;
-              this.detailFormvalues = <IInvoiceDetailsItemDto>response.payload;
-              this.detailFormvalues.screenActions.forEach(action => {
-                if(action.name == 'Cancel'){
-                  this.cancelBtn = false;
-                }else if(action.name == "SubmitForReview"){
-                  this.submitreviewBtn = false;
-                }else if(action.name == 'ApproveInvoice'){
-                  this.saveDisabled = false;
-                }else if(action.name == "RejectInvoice"){
-                  this.rejectBtn = false;
-                }else if(action.name == "Revert"){
-                  this.revertBtn = false;
-                }else if(action.name == "Accept"){
-                  this.acceptBtn = false;
-                }else if(action.name == "SubmitForApprovalInvoice"){
-                  this.submitapproveBtn = false;
-                }
-              });
-              this.setSubmitMode(response.payload.status.transactionTypeId);
-              this.changeDetectorRef.detectChanges();
-            });
-    }
-    else{
-                //       {"Payload":{"DeliveryProductIds":[246559,246560,246558],"OrderAdditionalCostIds":[],"InvoiceTypeName":"FinalInvoice"}}
-                // {"Payload":"246559,246560,246558"} INewInvoiceDetailsItemRequest                                             
-            
-                let data : IInvoiceDetailsItemRequest = {
-                  Payload: this._entityId
-                };
-
-            this.invoiceService
-            .getInvoicDetails(data)
-            .subscribe((response: IInvoiceDetailsItemResponse) => {
-              // this.invoiceDetailsComponent.formValues = <IInvoiceDetailsItemDto>response.payload;
-              // this.invoiceDetailsComponent.parseProductDetailData(this.invoiceDetailsComponent.formValues.productDetails);
-              // console.log(this.invoiceDetailsComponent.parseProductDetailData);
-              // this.invoiceDetailsComponent.setOrderDetailsLables(this.invoiceDetailsComponent.formValues.orderDetails);
-              // this.invoiceDetailsComponent.setcounterpartyDetailsLables(this.invoiceDetailsComponent.formValues.counterpartyDetails);
-              // this.invoiceDetailsComponent.setChipDatas();
-              // this.setSubmitMode(response.payload.status.transactionTypeId);
-
-              this.displayDetailFormvalues = true;
-              this.isLoading = false;
-              this.detailFormvalues = <IInvoiceDetailsItemDto>response.payload;
-              this.detailFormvalues.screenActions.forEach(action => {
-                if(action.name == 'Cancel'){
-                  this.cancelBtn = false;
-                }else if(action.name == "SubmitForReview"){
-                  this.submitreviewBtn = false;
-                }else if(action.name == 'ApproveInvoice'){
-                  this.saveDisabled = false;
-                }else if(action.name == "RejectInvoice"){
-                  this.rejectBtn = false;
-                }else if(action.name == "Revert"){
-                  this.revertBtn = false;
-                }else if(action.name == "Accept"){
-                  this.acceptBtn = false;
-                }else if(action.name == "SubmitForApprovalInvoice"){
-                  this.submitapproveBtn = false;
-                }
-              });
-              this.setSubmitMode(response.payload.status.transactionTypeId);
-              this.changeDetectorRef.detectChanges();
-            });
-
-           
-
-    }
-   
+    let data : IInvoiceDetailsItemRequest = {
+      Payload: this._entityId
+    };
+    this.invoiceService.getInvoicDetails(data)
+      .subscribe((response: IInvoiceDetailsItemResponse) => {
+        this.setScreenActions(response.payload);
+      });
   }
 
-  setSubmitMode(type){
-    // this.setSubmitMode = type == 5? EsubmitMode.
+  createNewInvoiceFromDelivery(){
+    let data = JSON.parse(localStorage.getItem('invoiceFromDelivery'));
+    localStorage.removeItem('invoiceFromDelivery');
+
+    let payloadData : INewInvoiceDetailsItemRequest = {
+      "Payload": data
+    };
+
+    this.invoiceService.getNewInvoicDetails(payloadData)
+      .subscribe((response: IInvoiceDetailsItemResponse) => {
+        this.setScreenActions(response.payload);
+      });
+  }
+
+  setScreenActions(formValues: any){
+    this.displayDetailFormvalues = true;
+    this.isLoading = false;
+    this.detailFormvalues = <IInvoiceDetailsItemDto>formValues;
+        this.detailFormvalues.screenActions.forEach(action => {
+          if(action.name == 'Cancel'){
+            this.cancelBtn = false;
+          }else if(action.name == "SubmitForReview"){
+            this.submitreviewBtn = false;
+          }else if(action.name == 'ApproveInvoice'){
+            this.saveDisabled = false;
+          }else if(action.name == "RejectInvoice"){
+            this.rejectBtn = false;
+          }else if(action.name == "Revert"){
+            this.revertBtn = false;
+          }else if(action.name == "Accept"){
+            this.acceptBtn = false;
+          }else if(action.name == "SubmitForApprovalInvoice"){
+            this.submitapproveBtn = false;
+          }
+        });
+        this.changeDetectorRef.detectChanges();
   }
 
 }
-
-
-
-export enum EsubmitMode{
-  Save = 'save', // for draft
-  Confirm = 'confirm',
-  Approve = 'approve',
-  Disabled = 'disabled'
-
-}
-
