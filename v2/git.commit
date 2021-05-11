@@ -1,9 +1,7 @@
-﻿commit 5aca7ac4f0a5d50137851bfb1dd92c773145e875
-Author: Subhashini Vasanthakumar <subhashini.k@inatech.com>
-Date:   Tue May 11 14:39:19 2021 +0000
+﻿commit 17cf598f96761e56748162abc158b85b87aa897f
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Tue May 11 15:00:15 2021 +0000
 
-    Merged PR 10621: fixed issue with vessel ID
-    
-    fixed issue with vessel ID
+    Merged PR 10624: Mapped hoilday rules to formulaHolidayRules BE model
 
 branch: master
