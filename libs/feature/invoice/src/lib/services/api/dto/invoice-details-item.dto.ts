@@ -226,5 +226,15 @@ export interface IInvoiceDetailsItemResponse {
 export interface IInvoiceDetailsItemRequest {
     Payload: number;
 }
+export interface INewInvoiceDetailsItemRequest {
+    Payload: INewSubInvoiceDetailsItemRequest;
+}
+
+export interface INewSubInvoiceDetailsItemRequest {
+    DeliveryProductIds: any;
+    OrderAdditionalCostIds:any;
+    InvoiceTypeName:string;
+}
+
 
 export type InvoiceFormModel<T> = { [P in keyof T]: [T[P], any?] };

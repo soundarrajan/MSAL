@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild,ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { KnownInvoiceRoutes } from '../../known-invoice.routes';
-import { IInvoiceDetailsItemDto, IInvoiceDetailsItemRequest, IInvoiceDetailsItemResponse } from '../../services/api/dto/invoice-details-item.dto';
+import { IInvoiceDetailsItemDto, IInvoiceDetailsItemRequest, IInvoiceDetailsItemResponse,INewInvoiceDetailsItemRequest } from '../../services/api/dto/invoice-details-item.dto';
 import { InvoiceDetailsService } from '../../services/invoice-details.service';
 
 
@@ -23,8 +23,11 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   tabData: any;
   navBar: any;
   reportUrl: string;
+  isNeworEdit: any;
   constructor(private route: ActivatedRoute, private invoiceService: InvoiceDetailsService,private changeDetectorRef: ChangeDetectorRef,){
     this._entityId = route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
+    this._entityId = route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
+    this.isNeworEdit =  route.snapshot.params[KnownInvoiceRoutes.InvoiceDetails];
 
     const baseOrigin = new URL(window.location.href).origin;
     this.tabData = [
@@ -62,26 +65,62 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   getInvoiceItem() {
     if(!this._entityId)
       return;
+    
+   
+    if(this.isNeworEdit != undefined && this.isNeworEdit == 'NewInvoice'){
+      let data : INewInvoiceDetailsItemRequest = {
+        "Payload": {"DeliveryProductIds":[this._entityId],"OrderAdditionalCostIds":[],"InvoiceTypeName":"FinalInvoice"}
+          };
 
-    let data : IInvoiceDetailsItemRequest = {
-      Payload: this._entityId
-    };
+     
+             this.invoiceService
+            .getNewInvoicDetails(data)
+            .subscribe((response: IInvoiceDetailsItemResponse) => {
+              // this.invoiceDetailsComponent.formValues = <IInvoiceDetailsItemDto>response.payload;
+              // this.invoiceDetailsComponent.parseProductDetailData(this.invoiceDetailsComponent.formValues.productDetails);
+             
+              // this.invoiceDetailsComponent.setOrderDetailsLables(this.invoiceDetailsComponent.formValues.orderDetails);
+              // this.invoiceDetailsComponent.setcounterpartyDetailsLables(this.invoiceDetailsComponent.formValues.counterpartyDetails);
+              // this.invoiceDetailsComponent.setChipDatas();
+              // this.setSubmitMode(response.payload.status.transactionTypeId)
 
-    this.invoiceService
-    .getInvoicDetails(data)
-    .subscribe((response: IInvoiceDetailsItemResponse) => {
-      this.displayDetailFormvalues = true;
-      this.isLoading = false;
-      this.detailFormvalues = <IInvoiceDetailsItemDto>response.payload;
-      // this.invoiceDetailsComponent.formValues = <IInvoiceDetailsItemDto>response.payload;
-      // this.invoiceDetailsComponent.parseProductDetailData(this.invoiceDetailsComponent.formValues.productDetails);
-      // //  console.log(this.invoiceDetailsComponent.parseProductDetailData);
-      //  this.invoiceDetailsComponent.setOrderDetailsLables(this.invoiceDetailsComponent.formValues.orderDetails);
-      //  this.invoiceDetailsComponent.setcounterpartyDetailsLables(this.invoiceDetailsComponent.formValues.counterpartyDetails);
-      //  this.invoiceDetailsComponent.setChipDatas();
-        this.setSubmitMode(response.payload.status.transactionTypeId);
-        this.changeDetectorRef.detectChanges();
-    });
+              this.displayDetailFormvalues = true;
+              this.isLoading = false;
+              this.detailFormvalues = <IInvoiceDetailsItemDto>response.payload;
+              this.setSubmitMode(response.payload.status.transactionTypeId);
+              this.changeDetectorRef.detectChanges();
+            });
+    }
+    else{
+                //       {"Payload":{"DeliveryProductIds":[246559,246560,246558],"OrderAdditionalCostIds":[],"InvoiceTypeName":"FinalInvoice"}}
+                // {"Payload":"246559,246560,246558"} INewInvoiceDetailsItemRequest                                             
+            
+                let data : IInvoiceDetailsItemRequest = {
+                  Payload: this._entityId
+                };
+
+            this.invoiceService
+            .getInvoicDetails(data)
+            .subscribe((response: IInvoiceDetailsItemResponse) => {
+              // this.invoiceDetailsComponent.formValues = <IInvoiceDetailsItemDto>response.payload;
+              // this.invoiceDetailsComponent.parseProductDetailData(this.invoiceDetailsComponent.formValues.productDetails);
+              // console.log(this.invoiceDetailsComponent.parseProductDetailData);
+              // this.invoiceDetailsComponent.setOrderDetailsLables(this.invoiceDetailsComponent.formValues.orderDetails);
+              // this.invoiceDetailsComponent.setcounterpartyDetailsLables(this.invoiceDetailsComponent.formValues.counterpartyDetails);
+              // this.invoiceDetailsComponent.setChipDatas();
+              // this.setSubmitMode(response.payload.status.transactionTypeId);
+
+              this.displayDetailFormvalues = true;
+              this.isLoading = false;
+              this.detailFormvalues = <IInvoiceDetailsItemDto>response.payload;
+              this.setSubmitMode(response.payload.status.transactionTypeId);
+              this.changeDetectorRef.detectChanges();
+            });
+
+           
+
+    }
+   
   }
 
   setSubmitMode(type){
