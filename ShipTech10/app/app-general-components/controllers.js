@@ -3882,7 +3882,6 @@
                 } else {
                     $rootScope.isCommentsSection = false;
                 }
-                console.log($rootScope.isCommentsSection);
             });
 
 
@@ -3927,38 +3926,12 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                 return String.fromCharCode(dec);
             });
         };
-														 
-				   
-																								 
-								  
-											  
-					
-				 
-																  
-								  
-				  
-														   
-																													 
-																											 
-						  
-
-
-					
-				  
-			   
-		
-
+						
         $rootScope.$on("formValues", function(event, payload) {
 			 
             if (payload) {
-				 
-										   
+				 	   
                 $scope.formValues = payload;
-																			   
-															
-							 
-																									  
-				  
                 if ($scope.formValues.documentType && $state.params.path[2].uisref.split(".")[1] == "documents") {
                     $scope.formValues.documentType = null;
                 } 
@@ -4141,6 +4114,19 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                                 toastr.error("Error occured");
                             });
                             break;
+                        case "invoice_split_view":
+	                        console.log($rootScope.selectedInvoices);
+	                        var selectedInvoicesIds = []; 
+	                        $.each($rootScope.selectedInvoices, (k,v) => {
+	                        	selectedInvoicesIds.push(v.id);
+	                        })
+	                        if (selectedInvoicesIds.length == 0 ) {
+	                        	toastr.error("Please select at least one invoice");
+	                        	return;
+	                        }
+	                        selectedInvoicesIds = selectedInvoicesIds.join(',');
+	                        window.open(`/v2/invoice/split-view?invoices=${selectedInvoicesIds}`, "_blank");
+                            break;                            
                     }
                     //eval('Factory_General_Components.' + ajax_method + '(function(callback){if(callback) {$location.path($state.$current.url.prefix + $state.params.screen_id);}})');
                     break;

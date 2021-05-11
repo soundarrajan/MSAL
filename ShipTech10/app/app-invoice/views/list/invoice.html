@@ -1,7 +1,7 @@
 ﻿<span ng-controller="Controller_Invoice as CI" ng-init="setPageTitle()"></span>
 <general-header actions="{
     primary: [
-
+		{label: 'Review', special: true, type: 'custom', method : 'invoice_split_view'}
     ],
     secondary: [],
     search: true,

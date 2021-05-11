@@ -1089,6 +1089,27 @@ Number(function() {
                                 $(Elements.table[Elements.settings[table_id].table]).jqGrid.Ascensys.selectedRowData = allRowData;
                             };
                         }
+                        if (scope.app == 'invoices' && table_id == 'flat_invoices_app_invoice_list') {
+                            Elements.settings[table_id].source.onSelectRow = function(rowid, status, e) {
+                                let allRowData = Elements.settings[table_id].source.datastr[rowid - 1];
+                                if (!$rootScope.selectedInvoices) {
+                                	$rootScope.selectedInvoices = [];
+                                }
+                                if (status == true) {
+                                	$rootScope.selectedInvoices.push(allRowData);
+                                } else {
+                                	$.each($rootScope.selectedInvoices, (k,v) => {
+                                		if (v) {
+	                                		if (v.id == allRowData.id) {
+	                                			$rootScope.selectedInvoices.splice(k,1);
+	                                		}
+                                		}
+                                	})
+                                    // allRowData = null;
+                                }
+                                console.log($rootScope.selectedInvoices);
+                            };
+                        }
 
                         /* RADIO SELECT */
                         /* transactions to be invoiced*/

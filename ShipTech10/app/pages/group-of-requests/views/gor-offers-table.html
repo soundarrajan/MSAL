@@ -296,7 +296,7 @@
                             <b tooltip tooltip-trigger="hover" data-original-title="{{location[0].portRestrictionComments | decodeReadOnly}}">
                             {{location[0].location.name | decodeReadOnly}} 
                         	{{location[0].optionId ?  (" - " +  location[0].optionId) : '' | decodeReadOnly}} 
-                        	- {{location[0].terminal.name | decodeReadOnly}}</b>
+                        	{{location[0].terminal ? ( " - " + location[0].terminal.name) : ''  | decodeReadOnly}}</b>
                         </div>
                     </form>
                 </th>
