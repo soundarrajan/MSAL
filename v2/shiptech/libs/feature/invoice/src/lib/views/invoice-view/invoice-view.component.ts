@@ -53,7 +53,6 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
       //   this.formValues = data.invoice;
       // }
       this.navBar = data.navBar;
-      console.log("params",data);
     });
     this.getInvoiceItem();
   }
