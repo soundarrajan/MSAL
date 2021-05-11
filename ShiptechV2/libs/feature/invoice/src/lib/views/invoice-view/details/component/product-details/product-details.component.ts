@@ -503,5 +503,10 @@ implements OnInit {
     }
   }
 
+  displayFn(value): string {
+    return value && value.name ? value.name : '';
+  }
+
+
 
 }

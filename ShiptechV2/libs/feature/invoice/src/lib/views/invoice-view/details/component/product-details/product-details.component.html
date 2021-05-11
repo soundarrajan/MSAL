@@ -20,8 +20,8 @@
         <td class="padding" style="width: 200px;">
           <b>Estd. Rate</b>
         </td>
-        <td class="padding" style="width:15%">
-          <b>Extra%</b>
+        <td class="padding" style="width: 200px;">
+          <b>Invoice Product</b>
         </td>
         <td class="padding" style="width:15%">
           <b>Currency</b>
@@ -77,9 +77,30 @@
                 </div>
               </div>
             </td>
-            <td  style="width:15%">
-            
-            </td> 
+            <td  style="width: 200px">
+              <div class="custom-form-field-invoice invoice-product-details-product" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+                <div class="d-flex">
+                  <mat-form-field class="with-search" 
+                    appearance="legacy">
+                    <input class="free-text-field" 
+                            type="text"
+                            matInput 
+                            [(ngModel)]="formValues.seller"
+                            [matAutocomplete]="auto"
+                            autocomplete="off"
+                            required>
+                    <mat-autocomplete #auto="matAutocomplete" 
+                                      class="darkPanelAuto"
+                                      [displayWith]="displayFn">
+                        <mat-option *ngFor="let option of []"
+                              [value]="option">
+                            {{option.name}}
+                        </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                </div>
+              </div>
+            </td>
             <td style="width:15%">
              
             </td>
