@@ -56,6 +56,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { ProductDetailsComponent } from './views/invoice-view/details/component/product-details/product-details.component';
 import { PanelModule } from 'primeng/panel';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { StaticListsRouteResolver } from './views/invoice-view/details/static-lists-route.resolver';
 
 @NgModule({
   imports: [
@@ -123,7 +124,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     InvoiceCompleteService,
     InvoiceDetailsService,
     DialogService,
-    DecimalPipe
+    DecimalPipe,
+    StaticListsRouteResolver
   ],
   entryComponents:[
     InvoiceTypeSelectionComponent
