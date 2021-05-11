@@ -1,9 +1,7 @@
-﻿commit 1c610da5e7d7b58c11026e5ae89893aad6f81e32
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Tue May 11 16:05:51 2021 +0000
+﻿commit ed0f9222df06ac99d12b12098fd4c5f2eaeb1da4
+Author: Edwin Francis <edwin.f@Inatech.com>
+Date:   Tue May 11 21:51:41 2021 +0530
 
-    Merged PR 10625: Fixed error
-    
-    Fixed error
+    Create invoice from delivery screen with invoice id param as 0. And Code review updates.
 
 branch: master
