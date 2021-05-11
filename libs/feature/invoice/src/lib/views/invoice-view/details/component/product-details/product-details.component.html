@@ -1,0 +1,96 @@
+<div class="header-product-details col-md-12 no-padding" style="margin-top: 10px;">
+  Product details
+</div>
+<div class="col-md-12 d-flex no-padding">
+  <table class="invoice-product-details-table table table-stripped table-hover" style="width:100%">
+    <thead>
+      <tr>
+        <td class="padding" style="width: 30px;">
+          <a class="add-icon"></a>
+        </td>
+        <td class="padding" style="width: 250px">
+          <b>Delivery No. / Ordered Product</b>
+        </td>
+        <td class="padding" style="width: 200px" class="delivery-product-header"> 
+          <b>Deliv. Product</b>
+        </td>
+        <td class="padding" style="width: 200px">
+          <b>Deliv. Qty</b>
+        </td>
+        <td class="padding" style="width: 200px;">
+          <b>Estd. Rate</b>
+        </td>
+        <td class="padding" style="width:15%">
+          <b>Extra%</b>
+        </td>
+        <td class="padding" style="width:15%">
+          <b>Currency</b>
+        </td>
+        <td class="padding" style="width:15%">
+          <b>Comment</b>
+        </td>
+      </tr>
+    </thead>
+    <tbody>
+        <ng-container  *ngFor="let productDetail of formValues.productDetails | keyvalue : originalOrder">
+          <tr *ngIf="!productDetail.value.isDeleted">
+            <td class="padding" style="padding-left: 0px  !important; padding-right: 0px  !important;">
+              <a class="remove-icon" style="margin-left: 10px;"></a>
+            </td>
+            <td class="padding" style="width: 250px">
+              <div class="delivery-number-container">
+                <div class="delivery-number-link-container">
+                    <a *ngIf="productDetail.value.deliveryId" class="delivery-number-link" href="{{openDeliveryLink(productDetail.value.deliveryId)}}" target="_blank">
+                      {{productDetail.value.deliveryId}}
+                    </a>
+                </div>
+                <div class="ordered-product" 
+                  [matTooltip]="productDetail.value.orderedProduct.name"
+                  [matTooltipPosition]="'above'"
+                  matTooltipClass="custom-tooltip">
+                  {{productDetail.value.orderedProduct.name}}
+                </div>
+              </div>
+            </td> 
+            <td class="padding-left-column" style="width: 200px" > 
+              <div  class="non-editable-container">
+                {{productDetail.value.product.name}}
+              </div>
+            </td>
+            <td  style="width: 200px">
+              <div  class="non-editable-container">
+                <div style="float: left;"> 
+                  {{quantityFormatValue(productDetail.value.deliveryQuantity)}}
+                </div>
+                <div style="float: right;">
+                  {{productDetail.value.deliveryQuantityUom.name}}
+                </div>
+              </div>
+            </td>
+            <td  style="width: 200px">
+              <div  class="non-editable-container">
+                <div style="float: left;"> 
+                  {{amountFormatValue(productDetail.value.estimatedRate)}}
+                </div>
+                <div style="float: right;">
+                  {{productDetail.value.estimatedRateCurrency.code}}
+                </div>
+              </div>
+            </td>
+            <td  style="width:15%">
+            
+            </td> 
+            <td style="width:15%">
+             
+            </td>
+            <td  style="width:15%">
+             
+            </td> 
+            <td style="width:15%">
+              
+            </td>
+          </tr>
+        </ng-container>
+    </tbody>
+  </table>
+</div>
