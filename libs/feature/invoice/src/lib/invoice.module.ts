@@ -47,11 +47,12 @@ import { InvoiceDetailComponent } from './views/invoice-view/details/invoice-det
 import { InvoiceViewComponent } from './views/invoice-view/invoice-view.component';
 import { MainInvoiceComponent } from './views/main-invoice.component';
 import { RelatedInvoiceComponent } from './views/invoice-view/related-invoice/related-invoice.component';
-import { ProductDetailsModalComponent } from './views/invoice-view/details/component/product-details-modal/product-details-modal.component';
+import { AddProductDetailsComponent} from './views/invoice-view/details/component/add-product/add-product.component';
 import { NavBarResolver } from './views/invoice-view/details/navbar-route-resolver';
 import { BreadcrumbsModule } from '@shiptech/core/ui/components/breadcrumbs/breadcrumbs.module';
 import { InvoiceDetailsToolbarComponent } from './views/invoice-view/toolbar/invoice-details-toolbar.component';
 import { InvoiceTypeSelectionComponent } from './views/invoice-view/details/component/invoice-type-selection/invoice-type-selection.component';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   imports: [
@@ -89,7 +90,8 @@ import { InvoiceTypeSelectionComponent } from './views/invoice-view/details/comp
     MessagesModule,
     ExportModule,
     MasterSelectorModule,
-    BreadcrumbsModule
+    BreadcrumbsModule,
+    MatMenuModule
   ],
   declarations: [
     MainInvoiceComponent,
@@ -98,7 +100,7 @@ import { InvoiceTypeSelectionComponent } from './views/invoice-view/details/comp
     InvoiceViewComponent,
     InvoiceDetailComponent,
     RelatedInvoiceComponent,
-    ProductDetailsModalComponent,
+    AddProductDetailsComponent,
     InvoiceDetailsToolbarComponent,
     InvoiceTypeSelectionComponent
   ],
@@ -117,7 +119,7 @@ import { InvoiceTypeSelectionComponent } from './views/invoice-view/details/comp
     DialogService
   ],
   entryComponents:[
-    ProductDetailsModalComponent,InvoiceTypeSelectionComponent
+    InvoiceTypeSelectionComponent
   ]
 })
 export class InvoiceModule {}
