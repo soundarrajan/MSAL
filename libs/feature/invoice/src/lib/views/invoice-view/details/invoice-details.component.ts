@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit,ViewChildren } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconRegistry } from '@angular/material/icon';
-import { forkJoin, Observable, of, ReplaySubject, throwError } from 'rxjs';
-import { catchError, concatMap, map, tap } from 'rxjs/operators';
+import { forkJoin, Observable, of, ReplaySubject, Subject, throwError } from 'rxjs';
+import { catchError, concatMap, map, takeUntil, tap } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '@shiptech/environment';
@@ -151,6 +151,15 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   invoiceStatusList:any;
   paymentStatusList:any;
   invoiceTypeList:any;
+  staticLists: any;
+  uomList: any;
+  productList: any;
+  entityId: number;
+  private _destroy$ = new Subject();
+  entityName: string;
+  currencyList: any;
+  physicalSupplierList: any;
+
 // detailFormvalues:any;
 @Input('detailFormvalues') set _detailFormvalues(val) {
   if(val){
@@ -170,13 +179,26 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 }
   //Default Values - strats
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private invoiceService: InvoiceDetailsService,  public dialog: MatDialog,
-    private toastrService: ToastrService,private format: TenantFormattingService, private legacyLookupsDatabase: LegacyLookupsDatabase) {
+    private toastrService: ToastrService,private format: TenantFormattingService, private legacyLookupsDatabase: LegacyLookupsDatabase,
+    private route: ActivatedRoute) {
     iconRegistry.addSvgIcon('data-picker-gray',sanitizer.bypassSecurityTrustResourceUrl('../../assets/customicons/calendar-dark.svg'));
     this.setupGrid();
     this.setClaimsDetailsGrid();
   }
 
   ngOnInit(): void {
+    this.entityName = 'Invoice';
+    this.route.params.pipe(takeUntil(this._destroy$)).subscribe(params => {
+      this.entityId = parseFloat(params.contractId);
+    });
+    this.route.data.subscribe(data => {
+      this.staticLists = data.staticLists;
+      this.uomList = this.setListFromStaticLists('Uom');
+      this.productList = this.setListFromStaticLists('Product');
+      this.currencyList = this.setListFromStaticLists('Currency');
+      this.physicalSupplierList = this.setListFromStaticLists('Supplier');
+
+    });
     this.buildProductDetilsGrid();
     this.getCounterPartiesList();
     this.legacyLookupsDatabase.getInvoiceCustomStatus().then(list=>{
@@ -191,6 +213,16 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     this.dateFormat = this.format.dateFormat.replace('DDD', 'E');
     this.getProductList();
   }
+  
+  setListFromStaticLists(name) {
+    let findList = _.find(this.staticLists, function(object) {
+      return object.name == name;
+    });
+    if (findList != -1) {
+      return findList?.items;
+    }
+  }
+
   private setupGrid(){
     this.gridOptions_ac = <GridOptions>{
       defaultColDef: {

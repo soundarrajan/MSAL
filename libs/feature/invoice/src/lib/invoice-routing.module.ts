@@ -48,6 +48,13 @@ const routes: Routes = [
           {
             path: `:${KnownInvoiceRoutes.InvoiceIdParam}/:${KnownInvoiceRoutes.InvoiceDetails}`,
             component: InvoiceViewComponent,
+            resolve:{
+              // Note: ReportId is expected in child routes in the data.
+              //invoice: InvoiceDetailsRouteResolver,
+              navBar: NavBarResolver,
+              staticLists: StaticListsRouteResolver,
+              
+            },
             data: { title: 'View Invoice', breadcrumb: 'View Invoice' }
           }
         ],
