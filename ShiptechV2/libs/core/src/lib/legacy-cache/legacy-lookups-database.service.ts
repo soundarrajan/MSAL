@@ -173,7 +173,7 @@ export class LegacyLookupsDatabase extends Dexie {
     return bargeList;
   }
 
-  
+
   async getClaimTypeTable(){
     const db = this.table('claimType');
     let claimTypeList = await db.toArray();
@@ -211,7 +211,7 @@ export class LegacyLookupsDatabase extends Dexie {
     return qualityMatchList;
   }
 
-  
+
   async getDeliveryFeedbackList(){
     const db = this.table('deliveryFeedback');
     let deliveryFeedbackList = await db.toArray();
@@ -248,17 +248,17 @@ export class LegacyLookupsDatabase extends Dexie {
     return sampleSource;
   }
 
-  async InvoiceCustomStatus(){
+  async getInvoiceCustomStatus(){
     const db = this.table('invoiceCustomStatus');
     let InvoiceCustomStatus = await db.toArray();
     return InvoiceCustomStatus;
   }
-  async PaymentStatus(){
+  async getPaymentStatus(){
     const db = this.table('paymentStatus');
     let PaymentStatus = await db.toArray();
     return PaymentStatus;
   }
-  async InvoiceType(){
+  async getsInvoiceType(){
     const db = this.table('invoiceType');
     let InvoiceType = await db.toArray();
     return InvoiceType;
