@@ -12,6 +12,9 @@ import { LoginViewComponent } from './login-view/login-view.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AuthenticationModule } from '@shiptech/core/authentication/authentication.module';
+import { NgxsModule } from '@ngxs/store';
+import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
+import { SaveBunkeringPlanState} from '../lib/store/bunker-plan/bunkering-plan.state'
 
 @NgModule({
   declarations: [
@@ -28,6 +31,10 @@ import { AuthenticationModule } from '@shiptech/core/authentication/authenticati
     MatFormFieldModule,
     MatInputModule,
     CommonModule,
+    NgxsModule.forFeature([
+      SaveBunkeringPlanState
+    ]),
+    NgxsResetPluginModule.forRoot()
   ],
   providers: [
     {

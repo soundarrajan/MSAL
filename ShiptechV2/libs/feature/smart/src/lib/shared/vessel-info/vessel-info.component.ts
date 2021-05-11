@@ -27,7 +27,6 @@ export class VesselInfoComponent implements OnInit {
   @Output() changeVessel = new EventEmitter();
   @Output() onDefaultViewChange = new EventEmitter();
   @Output() dontSendPlanReminder = new EventEmitter();
-  @Output() currentBPlanSave = new EventEmitter();
   currentROBObj = {'3.5 QTY': null, '0.5 QTY': null, 'ULSFO': null, 'LSDIS': null, 'HSDIS': null, }
   public enableCreateReq: boolean = false;
   public expandBplan: boolean = false;
@@ -129,10 +128,10 @@ export class VesselInfoComponent implements OnInit {
     /* This service only for Test purpose only. 
     need to build request payload by using column, value based on BE update*/
     let payload = this.currentROBObj;
-    this.localService.updateROBArbitrageChanges(payload).subscribe((data)=> {
-      console.log('bunker plan header',data);
-      this.ROBArbitrageData = (data?.payload && data?.payload.length)? data.payload[0]: {};
-    })
+    // this.localService.updateROBArbitrageChanges(payload).subscribe((data)=> {
+    //   console.log('bunker plan header',data);
+    //   this.ROBArbitrageData = (data?.payload && data?.payload.length)? data.payload[0]: {};
+    // })
   }
 
   public loadBunkerPlanDetails(event){
@@ -239,7 +238,7 @@ export class VesselInfoComponent implements OnInit {
     this.currentBplan.gridChanged = false;
     this.localService.setBunkerPlanState(false);
     event.stopPropagation();
-    this.currentBPlanSave.emit();
+    this.currentBplan.toggleSave();
   }
 
   getVoyageDetail(selectedPort) {

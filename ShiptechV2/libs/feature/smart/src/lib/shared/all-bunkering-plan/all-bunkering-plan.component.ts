@@ -40,15 +40,9 @@ export class AllBunkeringPlanComponent implements OnInit {
     for (let i = 0; i < 20; i++) {
       this.countArray.push({ expanded: false });
     }
-  // this.loadBunkeringPlanDetails();
    this.loadBunkerPlanHistory(this.vesselData);
   }
   
-  public loadBunkeringPlanDetails(){
-    let Id = this.vesselData?.vesselId? this.vesselData.vesselId :348;
-    let req = { shipId : Id ,  planStatus : 'A' }
-    this.loadAllBunkeringPlan(req);
-  }
 
   onFromToDateChange(event) {
     console.log('selected date', event);
@@ -81,25 +75,6 @@ export class AllBunkeringPlanComponent implements OnInit {
     })
   }
 
-  loadAllBunkeringPlan(request){
-    this.bunkerPlanService.getBunkerPlanIdAndStatus(request).subscribe((data)=>{
-      console.log('bunker plan Id and status details', data);
-      this.allBunkerPlanIds = (data.payload && data.payload.length)? data.payload : '';
-      if(this.allBunkerPlanIds == '' ){
-        const dialogRef = this.dialog.open(NoDataComponent, {
-          panelClass: ['confirmation-popup']
-        });
-      }
-      else{
-        this.allBunkerPlanIds.forEach(bplan => {
-          bplan.planDate = moment(bplan?.planDate).format('DD/MM/YYYY');
-          bplan.isPlanInvalid = bplan?.isPlanInvalid ==='N'? 'VALID' : 'INVALID';
-        });
-      }
-     
-    })
-   
-  }
 
 }
 import {
