@@ -1,9 +1,7 @@
-﻿commit c579186db2733878ae36937b619eb6b15bada95f
-Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
-Date:   Tue May 11 06:13:28 2021 +0000
+﻿commit c44b2382d7521b9bb061f641ccbad3e281c9acec
+Author: Edwin Francis <edwin.f@Inatech.com>
+Date:   Tue May 11 12:25:29 2021 +0530
 
-    Merged PR 10592: Merged file
-    
-    Merged file
+    UI fixes and add_product branch merge from gokul.
 
 branch: master
