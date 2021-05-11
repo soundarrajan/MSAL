@@ -49,7 +49,7 @@
                         <span class="input-group-addon"> {{ item.quantityUomName ? item.quantityUomName : '-' }}</span>
                     </td>
                     <td>
-                        {{ item.offerPrice | number:item.pricePrecison ? item.pricePrecison : $ctrl.tenantSettings.defaultValues.pricePrecision }}
+                        {{ item.offerPrice | number:item.pricePrecision ? item.pricePrecision : $ctrl.tenantSettings.defaultValues.pricePrecision }}
                     </td>
                     <td>
                         {{ item.confirmedQuantity * (item.conversionFactorToUomOfPriceFromContract ? item.conversionFactorToUomOfPriceFromContract * item.offerPrice : item.offerPrice)| number:3 }}
