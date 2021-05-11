@@ -1,5 +1,5 @@
 import { AgGridModule } from '@ag-grid-community/angular';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthenticationModule } from '@shiptech/core/authentication/authentication.module';
@@ -53,6 +53,9 @@ import { BreadcrumbsModule } from '@shiptech/core/ui/components/breadcrumbs/brea
 import { InvoiceDetailsToolbarComponent } from './views/invoice-view/toolbar/invoice-details-toolbar.component';
 import { InvoiceTypeSelectionComponent } from './views/invoice-view/details/component/invoice-type-selection/invoice-type-selection.component';
 import { MatMenuModule } from '@angular/material/menu';
+import { ProductDetailsComponent } from './views/invoice-view/details/component/product-details/product-details.component';
+import { PanelModule } from 'primeng/panel';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   imports: [
@@ -91,7 +94,9 @@ import { MatMenuModule } from '@angular/material/menu';
     ExportModule,
     MasterSelectorModule,
     BreadcrumbsModule,
-    MatMenuModule
+    MatMenuModule,
+    PanelModule,
+    MatTooltipModule
   ],
   declarations: [
     MainInvoiceComponent,
@@ -102,7 +107,8 @@ import { MatMenuModule } from '@angular/material/menu';
     RelatedInvoiceComponent,
     AddProductDetailsComponent,
     InvoiceDetailsToolbarComponent,
-    InvoiceTypeSelectionComponent
+    InvoiceTypeSelectionComponent,
+    ProductDetailsComponent
   ],
   providers: [
     ModuleLoggerFactory,
@@ -116,7 +122,8 @@ import { MatMenuModule } from '@angular/material/menu';
     },
     InvoiceCompleteService,
     InvoiceDetailsService,
-    DialogService
+    DialogService,
+    DecimalPipe
   ],
   entryComponents:[
     InvoiceTypeSelectionComponent
