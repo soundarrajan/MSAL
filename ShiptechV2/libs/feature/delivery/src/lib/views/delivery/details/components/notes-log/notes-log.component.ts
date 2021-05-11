@@ -52,8 +52,6 @@ export class NotesLogComponent implements OnInit, OnDestroy, OnChanges {
     //this.User = [];
     this.User = this.store.selectSnapshot(UserProfileState.user);
     this.objNotes  = this.DeliveryNotes;
-    console.log("0000000000this.User",this.User);
-    console.log("0000000000this.User",this.objNotes);
 
   }
 
@@ -82,7 +80,6 @@ export class NotesLogComponent implements OnInit, OnDestroy, OnChanges {
    
   }
   remove(index):void {
-debugger;
 this.objNotes.splice(index,1);
   }
 

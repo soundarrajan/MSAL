@@ -4,7 +4,7 @@ import { BaseStoreService } from "@shiptech/core/services/base-store.service";
 import { ObservableException } from "@shiptech/core/utils/decorators/observable-exception.decorator";
 import { Observable } from "rxjs";
 import { ModuleLoggerFactory } from "../core/logging/module-logger-factory";
-import { IInvoiceDetailsItemRequest, IInvoiceDetailsItemResponse } from "./api/dto/invoice-details-item.dto";
+import { IInvoiceDetailsItemRequest, IInvoiceDetailsItemResponse,INewInvoiceDetailsItemRequest } from "./api/dto/invoice-details-item.dto";
 import { InvoiceCompleteApi } from "./api/invoice-complete-api";
 
 @Injectable()
@@ -19,9 +19,14 @@ export class InvoiceDetailsService extends BaseStoreService
   }
 
   @ObservableException()
+
   getInvoicDetails( gridRequest : IInvoiceDetailsItemRequest ): Observable<IInvoiceDetailsItemResponse> {
     return this.api.getInvoicDetails(gridRequest);
   }
+  getNewInvoicDetails( gridRequest : INewInvoiceDetailsItemRequest ): Observable<IInvoiceDetailsItemResponse> {
+    return this.api.getNewInvoicDetails(gridRequest);
+  }
+
   @ObservableException()
   updateInvoiceItem( gridRequest : IInvoiceDetailsItemRequest ): Observable<IInvoiceDetailsItemResponse> {
     return this.api.updateInvoiceItem(gridRequest);
@@ -58,6 +63,8 @@ export class InvoiceDetailsService extends BaseStoreService
   submitReview( gridRequest :any ): Observable<any> {
     return this.api.submitReview(gridRequest);
   }
+
+  
 
   ngOnDestroy(): void {
     super.onDestroy();
