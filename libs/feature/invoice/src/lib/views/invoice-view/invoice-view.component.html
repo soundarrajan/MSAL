@@ -9,7 +9,7 @@
                 <ng-template mat-tab-label styleClass="shiptech-tab">
                     <span class="ui-menuitem-text" *ngIf="!item.url">{{item.name}}</span>
                     <a *ngIf="item.url" class="ui-menuitem-link ui-corner-all" href="{{item.url}}">
-                      <span class="ui-menuitem-text">{{item.name}}</span>
+                      <span class="ui-menuitem-text" style="color:#333">{{item.name}}</span>
                     </a>
                 </ng-template>
                 <ng-container>

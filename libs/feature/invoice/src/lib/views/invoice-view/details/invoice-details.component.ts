@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit,ViewChildren } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconRegistry } from '@angular/material/icon';
 import { forkJoin, Observable, of, ReplaySubject, throwError } from 'rxjs';
@@ -20,7 +20,6 @@ import { IInvoiceDetailsItemBaseInfo, IInvoiceDetailsItemCounterpartyDetails,IIn
 import { InvoiceDetailsService } from '../../../services/invoice-details.service';
 import { TenantSettingsService } from '../../../../../../../core/src/lib/services/tenant-settings/tenant-settings.service';
 import { EsubmitMode } from '../invoice-view.component';
-import { ProductDetailsModalComponent } from './component/product-details-modal/product-details-modal.component';
 import { ToastrService } from 'ngx-toastr';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { InvoiceTypeSelectionComponent } from './component/invoice-type-selection/invoice-type-selection.component';
@@ -57,17 +56,22 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
   //Default Values - strats
   public _entityId = null;
+  orderId: number;
   public gridOptions_data: GridOptions;
   public gridOptions_ac: GridOptions;
   public gridOptions_claims: GridOptions;
   private rowData_aggrid_pd = [];
   private rowData_aggrid_ac = [];
+  public productData:any = [];
   paymentStatus:number=0;
   customInvoice:number=0;
   invoiceSubmitMode:EsubmitMode;
   dateFormat;
+  isLoading:boolean = false;
+  formSubmitted:boolean = false;
   emptyStringVal = '--';
   emptyNumberVal = '00';
+  @ViewChildren('addProductMenu') addproductMenu; 
   invoice_types =[
     {
       displayName:'Final',
@@ -75,15 +79,15 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     },
     {
       displayName:'Provisional',
-      value:'Provisional',
+      value:'ProvisionalInvoice',
     },
     {
       displayName:'Credit',
-      value:'Credit',
+      value:'CreditNote',
     },
     {
       displayName:'Debit',
-      value:'Debit',
+      value:'DebitNote',
     },
   ]
 
@@ -175,17 +179,17 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.buildProductDetilsGrid();
     this.getCounterPartiesList();
-    this.legacyLookupsDatabase.InvoiceCustomStatus().then(list=>{
+    this.legacyLookupsDatabase.getInvoiceCustomStatus().then(list=>{
       this.invoiceStatusList = list;
     })
-    this.legacyLookupsDatabase.PaymentStatus().then(list=>{
+    this.legacyLookupsDatabase.getPaymentStatus().then(list=>{
       this.paymentStatusList = list;
     })
-    this.legacyLookupsDatabase.InvoiceType().then(list=>{
+    this.legacyLookupsDatabase.getsInvoiceType().then(list=>{
       this.invoiceTypeList = list;
     })
-    console.log("format",this.format)
     this.dateFormat = this.format.dateFormat.replace('DDD', 'E');
+    this.getProductList();
   }
   private setupGrid(){
     this.gridOptions_ac = <GridOptions>{
@@ -435,7 +439,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   };
 
   addCustomHeaderEventListener(params) {
-    let addButtonElement = document.getElementsByClassName('add-btn');
+    /*let addButtonElement = document.getElementsByClassName('add-btn');
     if(addButtonElement && addButtonElement.length > 0){
       addButtonElement[0].addEventListener('mouseover', (event) => {
         const dialogRef = this.dialog.open(ProductDetailsModalComponent, {
@@ -453,7 +457,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       addButtonElement[0].addEventListener('click', (event) => {
         // this.addrow(params);
       });
-    }
+    }*/
   }
 
   addrow(param,details){
@@ -510,7 +514,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         this.gridOptions_data.columnApi = params.columnApi;
         this.gridOptions_data.api.sizeColumnsToFit();
         this.gridOptions_data.api.setRowData(this.rowData_aggrid_pd);
-        this.addCustomHeaderEventListener(params);
+        // this.addCustomHeaderEventListener(params);
 
       },
 
@@ -594,6 +598,11 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   }
 
   public saveInvoiceDetails(){
+    this.isLoading = true;
+    if(this.formSubmitted){
+      return;
+    }
+    this.formSubmitted = true;
     if(!this.formValues.dueDate || !this.formValues.workingDueDate || !this.formValues.counterpartyDetails.paymentTerm.name
        || !this.formValues.orderDetails.paymentCompany.name){
         if(!this.formValues.dueDate){
@@ -608,6 +617,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         if(!this.formValues.orderDetails.paymentCompany.name){
           this.toastrService.error("Payment company is required.");
         }
+        this.isLoading = false;
+        this.formSubmitted = false;
         return;
       }
       this.formValues.paymentDetails.paymentStatus.id = this.paymentStatus;
@@ -621,6 +632,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     .updateInvoiceItem(data)
     .subscribe((response: IInvoiceDetailsItemResponse) => {
       this.toastrService.success('Invoice updated successfully');
+      this.isLoading = false;
+      this.formSubmitted = false;
     });
   }
 
@@ -668,6 +681,11 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     // console.log('type',type,'evnt',event);
   }
   invoiceOptionSelected(option){
+    this.isLoading = true;
+    if(this.formSubmitted){
+      return;
+    }
+    this.formSubmitted = true;
     if(option == 'submitreview'){
       let data : any = {
         Payload: {"id":this.formValues.id}
@@ -676,6 +694,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       .submitReview(data)
       .subscribe((response: IInvoiceDetailsItemResponse) => {
         this.toastrService.success('Invoice submitted for approval successfully');
+        this.isLoading = false;
+        this.formSubmitted = false;
       });
     }else if(option == 'submitapprove'){
       let data : any = {
@@ -685,6 +705,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       .submitapproval(data)
       .subscribe((response: IInvoiceDetailsItemResponse) => {
         this.toastrService.success('Invoice submitted for approval successfully');
+        this.isLoading = false;
+        this.formSubmitted = false;
       });
     }else if(option == 'cancel'){
       let data : any = {
@@ -694,6 +716,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       .cancelInvoiceItem(data)
       .subscribe((response: IInvoiceDetailsItemResponse) => {
         this.toastrService.success('Invoice cancelled successfully');
+        this.isLoading = false;
+        this.formSubmitted = false;
       });
     }else if(option == 'accept'){
       let data : any = {
@@ -703,6 +727,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       .acceptInvoiceItem(data)
       .subscribe((response: IInvoiceDetailsItemResponse) => {
         this.toastrService.success('Invoice accepted successfully');
+        this.isLoading = false;
+        this.formSubmitted = false;
       });
     }else if(option == 'revert'){
       let data : any = {
@@ -712,6 +738,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       .revertInvoiceItem(data)
       .subscribe((response: IInvoiceDetailsItemResponse) => {
         this.toastrService.success('Invoice reverted successfully');
+        this.isLoading = false;
+        this.formSubmitted = false;
       });
     }else if(option == 'reject'){
       let data : any = {
@@ -721,8 +749,11 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       .rejectInvoiceItem(data)
       .subscribe((response: IInvoiceDetailsItemResponse) => {
         this.toastrService.success('Invoice rejected successfully');
+        this.isLoading = false;
+        this.formSubmitted = false;
       });
     }else if(option == 'create'){
+      this.isLoading = false;
       const dialogRef = this.dialog.open(InvoiceTypeSelectionComponent, {
         width: '400px',
         height: '400px',
@@ -731,6 +762,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       });
   
       dialogRef.afterClosed().subscribe(result => {
+        this.formSubmitted = false;
         if(result && result != 'close'){
           
         }
@@ -743,6 +775,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       .approveInvoiceItem(data)
       .subscribe((response: IInvoiceDetailsItemResponse) => {
         this.toastrService.success('Invoice approved successfully');
+        this.isLoading = false;
+        this.formSubmitted = false;
       });
     }
   }
@@ -766,7 +800,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         this.gridOptions_claims.columnApi = params.columnApi;
         this.gridOptions_claims.api.sizeColumnsToFit();
         this.gridOptions_claims.api.setRowData(this.formValues.invoiceClaimDetails);
-        this.addCustomHeaderEventListener(params);
+        // this.addCustomHeaderEventListener(params);
       },
       onColumnResized: function (params) {
         if (params.columnApi.getAllDisplayedColumns().length <= 9 && params.type === 'columnResized' && params.finished === true && params.source === 'uiColumnDragged') {
@@ -781,6 +815,34 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       }
     }
   }
+  getProductList(){
+    let data : any = {
+      Payload: {"Order":null,"PageFilters":{"Filters":[]},"SortList":{"SortList":[]},"Filters":[{"ColumnName":"Order_Id","Value": this.orderId}],"SearchText":null,"Pagination":{}}
+    };
+    this.invoiceService
+    .productListOnInvoice(data)
+    .subscribe((response: any) => {      
+      response.payload.forEach(row => {
+        this.productData.push({selected:false, product:row.product.name, deliveries:row.order.id, details:row});
+      });
+    });
+  }
+  addnewProduct(event){
+    console.log(event);
+    var itemsToUpdate = [];
+    this.gridOptions_data.api.forEachNodeAfterFilterAndSort(function (rowNode, index) {
+      if (index >= 1) {
+        return;
+      }
+      var data = rowNode.data;
 
+      // data.price = Math.floor(Math.random() * 20000 + 20000);
+      itemsToUpdate.push(data);
+    });
+    this.gridOptions_data.api.applyTransaction({
+      update: itemsToUpdate
+    });
+
+  }
 }
 

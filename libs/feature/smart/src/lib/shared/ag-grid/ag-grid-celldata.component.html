@@ -56,29 +56,18 @@
   
   
   <div *ngIf="params.type=='edit'">
-    <div [matTooltip]="inp.value"><input #inp [ngClass]="params.cellClass" [value]=params.value
-        (keydown)="triggerChangeEvent()"></div>
+    <div [matTooltip]="inp.value"><input #inp disabled [ngClass]="params.cellClass" [value]=params.value></div>
   </div>
-  <div *ngIf="params.type=='edit-safe-port'">
-    <div [matTooltip]="inp.value"><input #inp [ngClass]="params.cellClass" [value]=params.valueFormatted
-        (keydown)="triggerChangeEvent()"></div>
-  </div>
+
 
   <div class="cons" *ngIf="params.type=='edit-cons'">
     <div [matTooltip]="inp.value"><input #inp  [ngClass]="params.cellClass" [value]=params.value (change)="consUpdatedEvent(params,inp.value)"
         (keydown)="triggerChangeEvent()"></div>
   </div>
 
-  <div class= "soa"*ngIf="params.type=='edit-soa'">
-    <div matTooltip="{{params.value}}" [ngClass]="params.cellClass">
-      {{params.value}}</div>
-  </div>
   
   <div *ngIf="params.type=='edit-disabled'">
     <div [matTooltip]="inp.value"><input #inp disabled [ngClass]="params.cellClass" [value]=params.value></div>
-  </div>
-  <div *ngIf="params.type=='edit-disabled-safe-port'">
-    <div [matTooltip]="inp.value"><input #inp disabled [ngClass]="params.cellClass" [value]=params.valueFormatted></div>
   </div>
   
   <div *ngIf="params.type=='disable-with-popup'">

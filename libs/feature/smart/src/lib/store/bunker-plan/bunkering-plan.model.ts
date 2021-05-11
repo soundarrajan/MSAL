@@ -1,72 +1,31 @@
-export class BunkeringPlanDetailsModel {
-  operAck : boolean;
-  portCode : string;
-  
-  hsfoMaxLift : number;
-  hsfoEstdSoa : number;
-  hsfoEstdCons : number;
-  hsfoConfPlanLift : number;
-  hsfoSafePort : number;
-  
-  ecaEstdCons : number;
-  ecaSafePort : number;
-  
-  ulsfoMaxLift : number;
-  ulsfoEstdSoa : number;
-  ulsfoConfPlanLift : number;
-  
-  lsdisMaxLift : number;
-  lsdisEstdSoa : number;
-  lsdisEstdCons : number;
-  lsdisConfPlanLift : number;
-  lsdisSafePort : number;
+  export class ISaveBunkeringPlan{
+    plan_id: string;
+    detail_no: number;
+    port_id: string;
+    service_code: string;
+    operator_ack: any;
+    hsfo_max_lift: number;
+    hsfo_estimated_consumption: number;
+    hsfo_safe_port: number;
+    eca_estimated_consumption: number;
+    eca_safe_port: number;
+    ulsfo_max_lift: number;
+    lsdis_max_lift: number;
+    lsdis_estimated_consumption: number;
+    lsdis_safe_port: number;
+    hsfo_min_sod: number;
+    eca_min_sod: number;
+    min_sod: number;
+    max_sod: number;
+    hsdis_estimated_lift: number;
+    business_address: string;
+    is_min_soa: any;
+    min_soa_comment: string;
+    min_sod_comment: string;
+    hsfo_sod_comment: string;
+    eca_sod_comment: string;
+    max_sod_comment: string;
 
-  totalMinSod : number;
-  totalMinSodPort : string;
-  totalMinSodComments : string;
-  minHsfoSod : number;
-  minHsfoSodPort : string;
-  minHsfoSodComment : string;
-  minEcaBunkerSod : number;
-  minEcaBunkerSodPort : string;
-  minEcaBunkerSodComment : string; 
-  totalMaxSod : number;
-  totalMaxSodPort : string;
-  totalMaxSodComment : string;    
-  hsdisConfReqLift : number;
-  businessAddress : string;
-  minSoa : boolean;
-  minSoaPort : string;
-  minSoaComment : string;
-  reqCreated : boolean;
-  confirmedByVessel : boolean;
-  confirmedByBox : boolean;
-  
-    constructor(props: Partial<IBunkeringPlanDetailsState> = {}) {
-      const  decodeHtmlEntity = function(str) {
-        return str.replace(/&#(\d+);/g, function(match, dec) {
-            return String.fromCharCode(dec);
-        });
-      };
-    //   if (props) {
-    //     props.comment = props.comment ? decodeHtmlEntity(_.unescape(props.comment)) : '';
-    //   }
-    //   if (props.vesselResponse) {
-    //     props.vesselResponse.sludge.description = props.vesselResponse.sludge.description ? decodeHtmlEntity(_.unescape(props.vesselResponse.sludge.description)) : '';
-    //     props.vesselResponse.bunker.description = props.vesselResponse.bunker.description ? decodeHtmlEntity(_.unescape(props.vesselResponse.bunker.description)) : '';
-    //   }
-    //   if (props.uoms){
-    //     for (let i = 0; i < props.uoms.length; i++) {
-    //       props.uoms[i].name =  decodeHtmlEntity(_.unescape(props.uoms[i].name));
-    //       props.uoms[i].displayName = decodeHtmlEntity(_.unescape(props.uoms[i].displayName));
-    //     }
-    //   }
-    //   if (props.vessel) {
-    //     props.vessel.name = decodeHtmlEntity(_.unescape(props.vessel.name));
-    //   }
-      Object.assign(this, props);
-    }
-  
   }
+
   
-  export interface IBunkeringPlanDetailsState extends BunkeringPlanDetailsModel {}

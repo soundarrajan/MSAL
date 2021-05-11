@@ -1,26 +1,20 @@
-import { IBunkeringPlanDetailsInterface } from '../../services/api/dto/bunkering-plan-details.interface';
 
-export class LoadBunkeringPlanDetailsAction {
-    static readonly type = '[Bunkering.Plan.Details] Load Bunkering Plan Details';
-  
-    constructor(public vesselImo: number) {}
-  
-    
-}
-  
-export class LoadBunkeringPlanDetailsSuccessfulAction {
-    static readonly type = '[Bunkering.Plan.Details] Load Bunkering Plan Details Successful';
-  
-    constructor(
-      public bunkeringPlanDetails: IBunkeringPlanDetailsInterface
-    ) {}
-  
-}
+import { ISaveBunkeringPlan } from './bunkering-plan.model';
 
-export class LoadBunkeringPlanDetailsFailedAction {
-    static readonly type = '[Bunkering.Plan.Details] Load Bunkering Plan Details Failed';
   
-    constructor() {}
-  
-    
+export class SaveBunkeringPlanAction{
+  static readonly type = '[BplanData] Save' ;
+
+  constructor(public payload: ISaveBunkeringPlan[]){
+
   }
+}
+
+
+export class UpdateBunkeringPlanAction{
+  static readonly type = '[BplanData] Test' ;
+
+  constructor(public payload: any, public type: string, public detail_no: number){
+
+  }
+}
