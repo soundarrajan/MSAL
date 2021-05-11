@@ -95,6 +95,7 @@ export class RequestsDetailsComponent implements OnInit {
         return "ServiceName";
         
       case "port":
+      case "locationName":
         return "LocationName";
 
       case "eta":
@@ -289,10 +290,43 @@ export class RequestsDetailsComponent implements OnInit {
     })
 
   }
+  generateSortModel(params, requestPayload) {
+      const columnSortSchema = {
+        "columnValue": "requestid",
+        "sortIndex": 1,
+        "isComputedColumn": false,
+        "sortParameter": 1,
+        "col": "requestname"
+      }
+      return new Promise(async (resolve)=> {
+      // generate sort model based on grid filter
+      let columnSortReq = [];
+      let sortModel = params?.request?.sortModel;
+      if(sortModel.length>0) {
+        sortModel.forEach(async (sortCol, index) => {
+          let columnName = await this.mapColumnValue(sortCol.colId);
+          let sortColModel = Object.assign({}, columnSortSchema);
+          sortColModel.col = columnName.toLowerCase();
+          sortColModel.columnValue = columnName.toLowerCase();
+          sortColModel.sortIndex = index+1;
+          sortColModel.sortParameter = (sortCol?.sort=="asc")? 1: 2;
+          columnSortReq.push(sortColModel);
+          if(sortModel.length == index+1) {
+            requestPayload.Payload.SortList.SortList = columnSortReq;
+            resolve(requestPayload);
+          }
+        });
+      } else {
+        resolve(requestPayload);
+      }
+    })
+
+  }
 
   dataSource: any = {
     getRows: async (params: any) => {
       let requestPayload = await this.generateFilterModel(params);
+          requestPayload = await this.generateSortModel(params, requestPayload);
 
       this.localService.getOutstandRequestData(requestPayload).subscribe(response => {
           params.successCallback(
