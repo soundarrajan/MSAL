@@ -151,6 +151,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   invoiceStatusList:any;
   paymentStatusList:any;
   invoiceTypeList:any;
+  manualtab:any;
 // detailFormvalues:any;
 @Input('detailFormvalues') set _detailFormvalues(val) {
   if(val){
@@ -166,6 +167,10 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     this.setChipDatas();
     this.paymentStatus = this.formValues.paymentDetails?.paymentStatus?.id;
     this.customInvoice = this.formValues.customStatus?.id;
+    this.manualtab = this.invoice_types.filter(x=>{ return x.value === this.formValues.documentType?.internalName});    
+    if(this.manualtab.length == 0){
+      this.invoice_types.pop();
+    }
   }
 }
   //Default Values - strats
