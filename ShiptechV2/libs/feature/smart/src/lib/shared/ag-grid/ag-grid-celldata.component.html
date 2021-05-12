@@ -137,14 +137,14 @@
       <div class="input">
         <div>{{params.column.colDef.headerName}}</div>
         <mat-form-field appearance="fill">
-          <input matInput #inpt id="inputValue" [value]="params.value" (keyup)="onEditCell()"
+          <input matInput #inpt id="inputValue" [value]="params.value" (keyup)="onEditCell(inpt.value,cmnt.value)"
             (click)="$event.stopPropagation();">
         </mat-form-field>
       </div>
       <div class="comments">
         <div>Comments</div>
         <mat-form-field appearance="fill">
-          <textarea matInput #cmnt [value]="getComments(params.colDef?.field)" (keyup)="onEditCell()"
+          <textarea matInput #cmnt [value]="getComments(params.colDef?.field)" (keyup)="onEditCell(inpt.value,cmnt.value)"
             (click)="$event.stopPropagation();"></textarea>
         </mat-form-field>
       </div>
@@ -234,14 +234,14 @@
       <div class="input">
         <div>
           <span class="checkbox-title">Min SOA</span>
-          <mat-checkbox #chk class="checkbox" [(ngModel)]="isChecked"  (click)="onCheckboxClick($event)">
+          <mat-checkbox #chk class="checkbox" [(ngModel)]="isChecked"  (click)="onCheckboxClick(chk.value,cmnt.value)">
           </mat-checkbox>
         </div>
       </div>
       <div class="comments">
         <div>Comments</div>
         <mat-form-field appearance="fill">
-          <textarea matInput #cmnt [value]="getComments(params.colDef?.field)" (keyup)="onEditCell()"
+          <textarea matInput #cmnt [value]="getComments(params.colDef?.field)" (keyup)="onEditCell(chk.value,cmnt.value)"
             (click)="$event.stopPropagation();"></textarea>
         </mat-form-field>
       </div>

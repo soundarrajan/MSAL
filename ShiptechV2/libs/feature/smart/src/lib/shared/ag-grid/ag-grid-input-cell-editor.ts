@@ -2,6 +2,7 @@ import {Component, ViewContainerRef, ViewChild, AfterViewInit,Input} from '@angu
 import {ICellEditorAngularComp} from '@ag-grid-community/angular';
 import { Store } from '@ngxs/store';
 import { UpdateBunkeringPlanAction } from '../../store/bunker-plan/bunkering-plan.action';
+import { SaveBunkeringPlanState } from '../../store/bunker-plan/bunkering-plan.state';
 
 const KEY_BACKSPACE = 8;
 const KEY_DELETE = 46;
@@ -74,14 +75,28 @@ export class AgGridInputCellEditor implements ICellEditorAngularComp {
     }
   
     getValue(): any {
-      this.store.dispatch(new UpdateBunkeringPlanAction(this.value, this.params.colDef?.field, this.params.data?.detail_no));
+      let isSafePortRestricted;
+      
       if(this.params.colDef?.field == 'hsfo_safe_port'|| this.params.colDef?.field =='eca_safe_port' ||this.params.colDef?.field =='lsdis_safe_port'){
+        isSafePortRestricted = this.checkSafePortRestriction(this.params?.colDef?.field, this.params?.data?.detail_no);
+        if(isSafePortRestricted === 'Y')
+          this.value = 0;
         if(this.value == 0)
+        {
+          this.store.dispatch(new UpdateBunkeringPlanAction(this.value, this.params.colDef?.field, this.params.data?.detail_no));
           return '';
+        }
+          
       }
+        this.store.dispatch(new UpdateBunkeringPlanAction(this.value, this.params.colDef?.field, this.params.data?.detail_no));
         return this.value;
     }
-  
+    
+    checkSafePortRestriction(field,detail_no){
+      let dataFromStore = this.store.selectSnapshot(SaveBunkeringPlanState.getSaveBunkeringPlanData);
+      let isSafePortValueExists = dataFromStore.findIndex(data=> data[field] != 0 && data.detail_no != detail_no) === -1?'N':'Y';
+      return isSafePortValueExists;
+    }
     isCancelBeforeStart(): boolean {
       return this.cancelBeforeStart;
     }
