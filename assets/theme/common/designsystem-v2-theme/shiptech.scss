@@ -1457,18 +1457,18 @@
 }
 
 .more-button-options{
-  position: absolute;
-  z-index: 1;
-  margin: 0px 270px;
-  border: 1px solid #364150;
-  background: #364150;
-  color: #ffffff;
-  border-radius: 4px;
-  width: 150px;
-  line-height: 20px;
-  padding: 12px 40px 12px 10px;
-  height: 170px;
-  float: right;
+    position: absolute;
+    z-index: 1;
+    margin: 0px 253px;
+    border: 1px solid #364150;
+    background: #364150;
+    color: #ffffff;
+    border-radius: 4px;
+    width: 165px;
+    line-height: 20px;
+    padding: 12px 40px 12px 10px;
+    height: 203px;
+    float: right;
 
   .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
       border-color: #ffffff;
@@ -1476,6 +1476,10 @@
   
   .mat-radio-button.mat-accent .mat-radio-inner-circle {
       background-color: #ffffff;
+  }
+
+  .inv-radio-group{
+    line-height: 30px;
   }
 }
 

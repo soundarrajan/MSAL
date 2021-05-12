@@ -18,9 +18,8 @@
                         <div class="more-button-options" *ngIf="showMoreButtons">
                             <span>Invoice Type</span>
                             <mat-radio-group
-                                aria-labelledby="example-radio-group-label"
-                                class="example-radio-group">
-                                <mat-radio-button class="example-radio-button" *ngFor="let inv of more_invoice_types" [value]="inv">
+                                class="inv-radio-group">
+                                <mat-radio-button *ngFor="let inv of more_invoice_types" [value]="inv">
                                     {{inv.displayName}}
                                 </mat-radio-button>
                             </mat-radio-group>
