@@ -1,9 +1,9 @@
-﻿commit 1cfbfbebb35b5a999349861968e9e1b0c3e1808c
+﻿commit 55ff21fcfd12da7b1c8ad4a1170ab6cc21afea04
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed May 12 13:43:44 2021 +0000
+Date:   Wed May 12 14:18:07 2021 +0000
 
-    Merged PR 10660: Made isMtmFormula equals with false when user copy a contract
+    Merged PR 10664: Fixed autocomplete in product details section from invoice screen
     
-    Made isMtmFormula equals with false when user copy a contract
+    Fixed autocomplete in product details section from invoice screen
 
 branch: master
