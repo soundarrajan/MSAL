@@ -280,6 +280,7 @@ angular.module('shiptech.components').controller('ConfirmOrderDialogController',
                     item.totalPrice = pv.price;
                     item.productId = pv.id;
                     item.productType = pv.productType;
+                    item.pricePrecision = pv.pricePrecision;
                     item.requestProductId = pv.requestProductId;
                     item.conversionFactorToUomOfPriceFromContract = pv.conversionFactorToUomOfPriceFromContract;
                     item.physicalSupplierName = _.get(pv, 'physicalSupplier.name');
