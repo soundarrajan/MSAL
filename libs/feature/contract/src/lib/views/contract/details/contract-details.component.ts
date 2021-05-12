@@ -384,6 +384,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
             });
             v.formula = null;
             v.mtmFormula = null;
+            v.isMtmFormula = false;
             v.price = null;
             v.mtmPrice = null;
           });
