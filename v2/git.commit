@@ -1,7 +1,9 @@
-﻿commit 5b8a3c285c28627ea82182029c5b6bafa8e2b6ea
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed May 12 09:41:42 2021 +0000
+﻿commit 17251c04d094fe48ecb8b2cb606625984b35998a
+Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
+Date:   Wed May 12 10:50:41 2021 +0000
 
-    Merged PR 10637: Added invoice product details section
+    Merged PR 10640: Additional cost partial completion
+    
+    Additional cost partial completion
 
 branch: master
