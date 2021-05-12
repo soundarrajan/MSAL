@@ -878,7 +878,13 @@ implements OnInit {
   }
 
 
-
+  removeProductDetailLine(key) {
+    if (this.formValues.productDetails[key].id) {
+      this.formValues.productDetails[key].isDeleted = true;
+    } else {
+      this.formValues.productDetails.splice(key, 1);
+    }
+  }
 
 
 }
