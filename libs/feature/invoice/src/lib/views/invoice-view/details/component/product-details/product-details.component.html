@@ -29,7 +29,7 @@
           <td class="padding" style="max-width: initial;min-width: 200px;">
             <b>Invoice Qty</b>
           </td>
-          <td class="padding" style="max-width: initial;min-width: 200px;">
+          <td class="padding" style="max-width: initial;min-width: 300px;">
             <b>Invoice Rate</b>
           </td>
           <td class="padding" style="max-width: initial;min-width: 200px;">
@@ -174,11 +174,22 @@
                 </div>
               </div>
             </td>
-            <td  style="max-width: initial;min-width: 200px" class="select-container">
+            <td  style="max-width: initial;min-width: 300px" class="select-container">
               <div class="dotted-container">
-                <div class="custom-form-field-invoice black-container" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}" style="width: 200px;">
+                <div class="custom-form-field-invoice black-container" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}" style="width: 300px;">
                   <div class="split-field">
-                    <mat-form-field class="without-search long-label-field" style="width: 64%;border: none;" appearance="legacy">
+                    <mat-form-field style="width: 33%"
+                      appearance="legacy">
+                      <mat-select disableRipple
+                        [(ngModel)]="productDetail.value.invoiceRateCurrency"
+                        (ngModelChange)="invoiceConvertUom('product', productDetail.key)"
+                        [compareWith]="compareUomObjects"
+                        [disableOptionCentering]="true"
+                        panelClass="general-information-select-container">
+                        <mat-option *ngFor="let option of currencyList" [value]="option">{{option.code}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="without-search long-label-field" style="width: 33%;border: none;" appearance="legacy">
                       <input matInput 
                         autocomplete="off"
                         [(ngModel)]="productDetail.value.invoiceRate"
@@ -186,15 +197,15 @@
                         (ngModelChange)="invoiceConvertUom('product', productDetail.key)" 
                         >
                     </mat-form-field>
-                    <mat-form-field style="width: 36%"
+                    <mat-form-field style="width: 33%"
                         appearance="legacy">
                         <mat-select disableRipple
-                          [(ngModel)]="productDetail.value.invoiceRateCurrency"
+                          [(ngModel)]="productDetail.value.invoiceRateUom"
                           (ngModelChange)="invoiceConvertUom('product', productDetail.key)"
                           [compareWith]="compareUomObjects"
                           [disableOptionCentering]="true"
                           panelClass="general-information-select-container">
-                          <mat-option *ngFor="let option of currencyList" [value]="option">{{option.name}}</mat-option>
+                          <mat-option *ngFor="let option of uomList" [value]="option">{{option.name}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                   </div>
@@ -207,7 +218,7 @@
                   {{amountFormatValue(productDetail.value.invoiceAmount)}}
                 </div>
                 <div style="float: right;">
-                  {{productDetail.value.invoiceRateCurrency.name}}
+                  {{productDetail.value.invoiceRateCurrency.code}}
                 </div>
               </div>
 
@@ -341,8 +352,8 @@
                     </td>
                     <td style="max-width: initial; min-width: 100px;" class="padding-line">
                         <div class="contract-link-container">
-                            <a *ngIf="productDetail.value.contractProductId" class="contract-link" href="{{openContractLink(productDetail.value.contractProductId)}}" target="_blank">
-                              {{productDetail.value.contractProductId}}
+                            <a *ngIf="productDetail.value.contract" class="contract-link" href="{{openContractLink(productDetail.value.contract.id)}}" target="_blank">
+                              {{productDetail.value.contract.id}}
                             </a>
                         </div>
                     </td>
