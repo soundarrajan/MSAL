@@ -212,7 +212,7 @@ div.component-viewer-nav-content
 /************************************************* COMPONENTS *************************************************/
 // <!-- Form Field start-->
 #custom-form-field {
-  margin: 0px 20px;
+  //margin: 0px 20px;
   border-radius: 4px;
   &.darkTheme {
     .mat-form-field {
@@ -244,7 +244,7 @@ div.component-viewer-nav-content
         }
       }
       box-sizing: border-box;
-      height: 40px;
+      height: 45px;
       font-style: normal;
       font-weight: normal;
       font-size: 14px;
@@ -333,7 +333,7 @@ div.component-viewer-nav-content
         }
       }
       box-sizing: border-box;
-      height: 40px;
+      height: 45px;
       font-style: normal;
       font-weight: normal;
       font-size: 14px;
@@ -403,7 +403,7 @@ div.component-viewer-nav-content
 // <!-- Button Toggle Start-->
 #custom-btn-toggle-v2 {
   background: #ffffff;
-  margin: 0px 20px;
+  //margin: 0px 20px;
   .mat-button-toggle-group-appearance-standard {
     border: none;
   }
