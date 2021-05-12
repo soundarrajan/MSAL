@@ -478,3 +478,17 @@ th, td {
 .black-container .mat-form-field {
   color: white !important;
 }
+
+.nestead-table {
+  position: relative; 
+  left: 40px !important;
+}
+
+.custom-hardcoded-table {
+  overflow: auto;
+}
+
+.custom-hardcoded-table table.table-body {
+  min-width: 900px;
+  display: table!important;
+}

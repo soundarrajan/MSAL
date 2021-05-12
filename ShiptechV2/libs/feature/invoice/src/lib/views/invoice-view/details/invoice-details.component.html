@@ -1,5 +1,5 @@
-<form>
-    <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
+
+
 <!-- Invoice Informaiton -->
 <div class="section1">
     <div class="row">
@@ -29,7 +29,6 @@
                         <mat-form-field class="without-search" appearance="legacy">
                             <mat-label>Seller Invoice No.</mat-label>
                             <input [(ngModel)]="formValues.sellerInvoiceNo" name="sellerInvoiceNo" matInput placeholder="000" type="number">
-                            <!-- <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error> -->
                         </mat-form-field>
                     </div>
                 </div>
@@ -61,14 +60,6 @@
                      </div>
                 </div>
                 <div class="col-md-3">
-                    <!-- <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
-                        <mat-form-field class="without-search" appearance="legacy">
-                            <mat-label>Payment Terms</mat-label>
-                            <input matInput
-                            name="paymentTerm"
-                             [(ngModel)]="formValues.counterpartyDetails.paymentTerm.name" required>
-                        </mat-form-field>
-                    </div> -->
                     <div class="custom-form-field-with-search lightTheme">
                         <div class="d-flex">
                             <shiptech-st-autosearch-selector [placeholder]="'Payment Terms'" [name]="'Payment Terms'" [required] = "'true'" [masterType]="'paymentTerms'" [bindValue]="formValues.counterpartyDetails.paymentTerm.name" (onChanged)="AC_valueChanges('paymentterms',$event)"></shiptech-st-autosearch-selector>
@@ -332,15 +323,6 @@
                     <div class="col-md-5 pd-0" style="margin: -10px 0px; line-height: 35px;">
                         <div class="custom-form-field-with-search lightTheme">
                             <div class="d-flex">
-                                <!-- <mat-form-field class="without-search" appearance="legacy">
-                                    <mat-label>Payable To</mat-label>
-                                    <mat-select disableOptionCentering>
-                                        <mat-option value="M A Marina">M A Marina</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                                <div class="search-icon">
-                                    <div class="img"></div>
-                                </div> -->
                                 <shiptech-st-autosearch-selector [placeholder]="'payable to'" [name]="'Payable To'" [masterType]="'payableTo'" (onChanged)="AC_valueChanges('payableto',$event)" [bindValue]="formValues.counterpartyDetails.payableTo.name"></shiptech-st-autosearch-selector>
                             </div>
                         </div>
@@ -361,7 +343,7 @@
     </div>
 </div>
 <!-- Product Details -->
-<div class="container-fluid-invoice">
+<div class="container-fluid-invoice" style="padding-left: 10px;padding-right: 10px;">
     <div class="row m-b-4">
       <div class="col-12">
         <p-panel [showHeader]="false">
@@ -395,16 +377,4 @@
 </div>
 
 <!-- Claim details -->
-<div class="section1 mt-4" style="margin: 0px;" *ngIf="formValues.invoiceClaimDetails.length > 0">
-  <div class="match-grid" style="border-bottom: 4px solid #e5e5e5;">
-      <div class="title">Claim Details</div>
-      <div class="agGrid-v2" style="margin: 0">
-          <div style="width:100%;height: 250px;">
-              <ag-grid-angular style="width: 100%;height: 100%;" [gridOptions]="gridOptions_claims"
-                  class="ag-theme-material ag-grid-v2 angular-v9 prod-details"></ag-grid-angular>
-          </div>
-      </div>
-    </div>
-</div>
-</form>
 

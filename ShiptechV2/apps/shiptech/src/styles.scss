@@ -34,3 +34,12 @@
 .ui-dialog-visible {
     z-index: 1000000 !important;
 }
+
+.mat-tab-body.mat-tab-body-active  {
+    overflow-y: unset !important;
+    overflow-x: unset !important;  
+}
+
+.mat-tab-body-content {
+    overflow: unset !important;
+}
