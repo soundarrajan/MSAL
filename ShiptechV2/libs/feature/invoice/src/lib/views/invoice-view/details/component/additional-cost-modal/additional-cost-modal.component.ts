@@ -23,7 +23,12 @@ export class AdditionalCostModalComponent implements OnInit {
   ngOnInit(): void {
 
   }
-
+  addNewAdditionalCostLine(){
+    console.log("add additional cost")
+  }
+  removeAdditionalCostLine(){
+    console.log("remove additional cost")
+  }
   radioSelected(element){
     this.selectedRow=element;
     console.log(this.selectedRow.product);
