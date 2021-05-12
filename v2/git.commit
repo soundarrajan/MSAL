@@ -1,9 +1,9 @@
-﻿commit 7704566b93f976ccec72138d2ea010fe27d6ce66
+﻿commit 274beddb450aa9ceae399f95034168de5009c97c
 Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
-Date:   Wed May 12 08:13:38 2021 +0000
+Date:   Wed May 12 08:43:40 2021 +0000
 
-    Merged PR 10633: Additonal cost view only
+    Merged PR 10636: Build error fixed
     
-    Additonal cost view only
+    Build error fixed
 
 branch: master
