@@ -898,7 +898,7 @@ export class ProductPricing extends DeliveryAutocompleteComponent
       const filterValue = this.formValues.products[this.selectedTabIndex].formula.name ? this.formValues.products[this.selectedTabIndex].formula.name.toLowerCase() : this.formValues.products[this.selectedTabIndex].formula.toLowerCase();
       console.log(filterValue);
       if (this.contractFormulaList) {
-        return this.contractFormulaList.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0)
+        return this.contractFormulaList.filter(option => option.name.toLowerCase().includes(filterValue))
           .slice(0, 10);
       } else {
         return [];
