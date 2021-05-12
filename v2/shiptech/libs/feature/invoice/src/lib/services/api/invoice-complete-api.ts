@@ -35,6 +35,9 @@ export namespace InvoiceApiPaths {
   export const submitReview = () => `api/invoice/submitForReview`;
   export const getStaticLists = () =>  `api/infrastructure/static/lists`;
   export const getUomConversionFactor = () =>  `api/masters/uoms/convertQuantity`;
+  export const calculateProductRecon = () =>  `api/recon/invoiceproduct`;
+
+  
 
 
 }
@@ -51,6 +54,9 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
 
   @ApiCallUrl()
   private _masterUrl = this.appConfig.v1.API.BASE_URL_DATA_MASTERS;
+
+  @ApiCallUrl()
+  private _reconUrl = this.appConfig.v1.API.BASE_URL_DATA_RECON;
 
   constructor(private http: HttpClient, private appConfig: AppConfig) {}
 
@@ -198,6 +204,20 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
     return this.http.post<any>(
       `${this._masterUrl}/${InvoiceApiPaths.getUomConversionFactor()}`,
       request
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
+  }
+
+  
+  @ObservableException()
+  calculateProductRecon(
+    request: any
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${this._reconUrl}/${InvoiceApiPaths.calculateProductRecon()}`,
+      {payload: request}
     ).pipe(
       map((body: any) => body),
       catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))

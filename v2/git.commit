@@ -1,9 +1,9 @@
-﻿commit 17251c04d094fe48ecb8b2cb606625984b35998a
-Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
-Date:   Wed May 12 10:50:41 2021 +0000
+﻿commit ba2cc217b03cd2a56a7f5afe527752c676fb1440
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Wed May 12 11:55:04 2021 +0000
 
-    Merged PR 10640: Additional cost partial completion
+    Merged PR 10642: Added partial amount calcultation for product details
     
-    Additional cost partial completion
+    Added partial amount calcultation for product details
 
 branch: master
