@@ -12,11 +12,21 @@
                                 <mat-button-toggle [disabled]="true" *ngFor="let items of invoice_types" [value]="items.value" [checked]="formValues.documentType.internalName == items.value">
                                     <span class="toggle-icon" *ngIf="formValues.documentType.internalName == items.value"></span> {{items.displayName}}
                                 </mat-button-toggle>
-                                <div class="more-dots"></div>
+                                <div class="more-dots" (click)="openMoreButtons($event)"></div>
                             </mat-button-toggle-group>
                         </div>
+                        <div class="more-button-options" *ngIf="showMoreButtons">
+                            <span>Invoice Type</span>
+                            <mat-radio-group
+                                aria-labelledby="example-radio-group-label"
+                                class="example-radio-group">
+                                <mat-radio-button class="example-radio-button" *ngFor="let inv of more_invoice_types" [value]="inv">
+                                    {{inv.displayName}}
+                                </mat-radio-button>
+                            </mat-radio-group>
+                        </div>
                     </div>
-                    <div class="col-md-6" style="padding: 0px 50px;">
+                    <div class="col-md-6" style="padding: 0px 35px;">
                         <div class="badge-header-v2">
                             <span class="label_text" matTooltip={{formValues.createdByUser?.displayName}}>Created by: <b>{{formValues.createdByUser?.displayName}}</b></span>
                             <span class="border_line"></span>
