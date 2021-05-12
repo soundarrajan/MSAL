@@ -105,6 +105,7 @@ import { QuantityTenantFormatDirective } from './views/invoice-view/details/comp
 import { AmountTenantFormatDirective } from './views/invoice-view/details/component/directives/amount-tenant-format.directive';
 import { PriceTenantFormatDirective } from './views/invoice-view/details/component/directives/price-tenant-format.directive';
 import { NumberOnlyDirective } from './views/invoice-view/details/component/directives/number-only.directive';
+import { ClaimDetailsComponent } from './views/invoice-view/details/component/claim-details/claim-details.component';
 
 @NgModule({
   imports: [
@@ -216,7 +217,8 @@ import { NumberOnlyDirective } from './views/invoice-view/details/component/dire
     AmountTenantFormatDirective,
     PriceTenantFormatDirective,
     NumberOnlyDirective,
-    AdditionalCostModalComponent
+    AdditionalCostModalComponent,
+    ClaimDetailsComponent
   ],
   exports: [
     QuantityTenantFormatDirective,
