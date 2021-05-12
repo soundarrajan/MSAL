@@ -372,23 +372,27 @@
         </div>
     </div>
     <!-- Product Details -->
-    <div class="section1 mt-4" style="margin: 0px;" *ngIf="!(formValues.invoiceClaimDetails.length > 0)">
-        <div class="match-grid" style="border-bottom: 4px solid #e5e5e5;">
-            <div class="title">Product Details</div>
-            <div class="agGrid-v2" style="margin: 0">
-                <div style="width:100%;height: 250px;position: relative;">
-                    <ag-grid-angular style="width: 100%;height: 100%;" [gridOptions]="gridOptions_data"
-                        class="ag-theme-material ag-grid-v2 angular-v9 prod-details"></ag-grid-angular>
-                        <button class="grid-add-btn" [matMenuTriggerFor]="addProductMenu" aria-label="Example icon-button with a menu">
-                            <div class="add-btn"></div>
-                        </button>
-                        <mat-menu #addProductMenu="matMenu" class="add-menu-container">
-                          <shiptech-add-product [productData]="productData" (onSelected)="addnewProduct($event)"  (click)="$event.stopPropagation()"></shiptech-add-product>
-                        </mat-menu>
-                </div>
+    <div class="container-fluid-invoice" style="padding-left: 10px;padding-right: 10px;">
+        <div class="row m-b-4">
+        <div class="col-12">
+            <p-panel [showHeader]="false">
+            <div fxLayout="row">
+                <shiptech-invoice-product-details
+                    [model]="formValues"
+                    [productList]="productList"
+                    [uomList]="uomList"
+                    [currencyList]="currencyList"
+                    [physicalSupplierList]="physicalSupplierList"
+                    [entityId]="entityId"
+                    class="col-12"
+                    style="padding-left: 0px; padding-right: 0px;">
+                </shiptech-invoice-product-details>  
             </div>
-          </div>
+            </p-panel>
+        </div>
+        </div>
     </div>
+
     <!-- Additional Cost Details -->
     <div class="section1 mt-4" style="margin: 0px;" *ngIf="!(formValues.invoiceClaimDetails.length > 0)">
         <div class="match-grid" style="border-bottom: 4px solid #e5e5e5;">

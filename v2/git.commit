@@ -1,9 +1,7 @@
-﻿commit 274beddb450aa9ceae399f95034168de5009c97c
-Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
-Date:   Wed May 12 08:43:40 2021 +0000
+﻿commit 5b8a3c285c28627ea82182029c5b6bafa8e2b6ea
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Wed May 12 09:41:42 2021 +0000
 
-    Merged PR 10636: Build error fixed
-    
-    Build error fixed
+    Merged PR 10637: Added invoice product details section
 
 branch: master

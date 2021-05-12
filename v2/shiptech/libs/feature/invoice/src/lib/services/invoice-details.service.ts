@@ -64,6 +64,23 @@ export class InvoiceDetailsService extends BaseStoreService
     return this.api.submitReview(gridRequest);
   }
 
+   /**
+ * @param payload = False 
+ */
+  @ObservableException()
+  getStaticLists(payload: any): Observable<unknown> {
+    return this.api.getStaticLists(payload);
+  }
+
+
+    /**
+ * @param payload  
+ */
+  @ObservableException()
+  getUomConversionFactor(payload: any): Observable<unknown> {
+    return this.api.getUomConversionFactor(payload);
+  }
+   
   
 
   ngOnDestroy(): void {
