@@ -69,9 +69,32 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   dateFormat;
   isLoading:boolean = false;
   formSubmitted:boolean = false;
+  showMoreButtons: boolean = false;
   emptyStringVal = '--';
   emptyNumberVal = '00';
   @ViewChildren('addProductMenu') addproductMenu;
+  more_invoice_types = [
+    {
+      displayName:'Final',
+      value:'FinalInvoice'
+    },
+    {
+      displayName:'Provisional',
+      value:'ProvisionalInvoice'
+    },
+    {
+      displayName:'Credit',
+      value:'CreditNote'
+    },
+    {
+      displayName:'Debit',
+      value:'DebitNote'
+    },
+    {
+      displayName:'Pre-claim',
+      value:'Pre-claim'
+    }
+  ];
   invoice_types =[
     {
       displayName:'Final',
@@ -175,7 +198,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     this.setChipDatas();
     this.paymentStatus = this.formValues.paymentDetails?.paymentStatus?.id;
     this.customInvoice = this.formValues.customStatus?.id;
-    this.manualtab = this.invoice_types.filter(x=>{ return x.value === this.formValues.documentType?.internalName});    
+    this.manualtab = this.invoice_types.filter(x=>{ return x.value === this.formValues.documentType?.internalName});
     if(this.manualtab.length == 0){
       this.invoice_types.pop();
     }
@@ -183,8 +206,9 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 }
   //Default Values - strats
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private invoiceService: InvoiceDetailsService,  public dialog: MatDialog,
-    private toastrService: ToastrService,private format: TenantFormattingService, private legacyLookupsDatabase: LegacyLookupsDatabase,  private route: ActivatedRoute) {
-    iconRegistry.addSvgIcon('data-picker-gray',sanitizer.bypassSecurityTrustResourceUrl('../../assets/customicons/calendar-dark.svg'));
+    private toastrService: ToastrService,private format: TenantFormattingService, private legacyLookupsDatabase: LegacyLookupsDatabase,
+    private route: ActivatedRoute) {
+    iconRegistry.addSvgIcon('data-picker-gray',sanitizer.bypassSecurityTrustResourceUrl('./../../assets/customicons/calendar-dark.svg'));
     this.setupGrid();
     this.setClaimsDetailsGrid();
   }
@@ -656,8 +680,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         this.formSubmitted = false;
         return;
       }
-      this.formValues.paymentDetails.paymentStatus.id = this.paymentStatus;
-      this.formValues.customStatus.id = this.customInvoice;
+      this.formValues.paymentDetails.paymentStatus = { id: this.paymentStatus };
+      this.formValues.customStatus = { id: this.customInvoice };
 
     //  alert("Has to save please wait");
     let data : any = {
@@ -879,5 +903,10 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     });
 
   }
+
+  openMoreButtons($event){
+      this.showMoreButtons = !this.showMoreButtons;
+  }
+  
 }
 

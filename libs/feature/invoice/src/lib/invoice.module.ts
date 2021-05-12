@@ -52,6 +52,7 @@ import { NavBarResolver } from './views/invoice-view/details/navbar-route-resolv
 import { BreadcrumbsModule } from '@shiptech/core/ui/components/breadcrumbs/breadcrumbs.module';
 import { InvoiceDetailsToolbarComponent } from './views/invoice-view/toolbar/invoice-details-toolbar.component';
 import { InvoiceTypeSelectionComponent } from './views/invoice-view/details/component/invoice-type-selection/invoice-type-selection.component';
+import { AdditionalCostModalComponent } from './views/invoice-view/details/component/additional-cost-modal/additional-cost-modal.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { ProductDetailsComponent } from './views/invoice-view/details/component/product-details/product-details.component';
 import { PanelModule } from 'primeng/panel';
@@ -104,7 +105,6 @@ import { QuantityTenantFormatDirective } from './views/invoice-view/details/comp
 import { AmountTenantFormatDirective } from './views/invoice-view/details/component/directives/amount-tenant-format.directive';
 import { PriceTenantFormatDirective } from './views/invoice-view/details/component/directives/price-tenant-format.directive';
 import { NumberOnlyDirective } from './views/invoice-view/details/component/directives/number-only.directive';
-import { AdditionalCostModalComponent } from './views/invoice-view/details/component/additional-cost-modal/additional-cost-modal.component';
 
 @NgModule({
   imports: [
