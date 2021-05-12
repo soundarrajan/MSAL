@@ -53,7 +53,7 @@
         <ng-container  *ngFor="let productDetail of formValues.productDetails | keyvalue : originalOrder">
           <tr *ngIf="!productDetail.value.isDeleted">
             <td class="padding" style="padding-left: 0px  !important; padding-right: 0px  !important;">
-              <a class="remove-icon" style="margin-left: 10px;"></a>
+              <a class="remove-icon" style="margin-left: 10px;" (click)="removeProductDetailLine(productDetail.key)"></a>
             </td>
             <td class="padding" style="max-width: initial;min-width: 250px">
               <div class="delivery-number-container">
@@ -290,7 +290,7 @@
               </span>
             </td>
           </tr>
-          <tr *ngIf="productDetailsExpandArray[productDetail.key]">
+          <tr *ngIf="!productDetail.value.isDeleted && productDetailsExpandArray[productDetail.key]">
             <td colspan="12"> 
               <table class="table-body invoice-product-details-table" style="position: relative; left: 40px !important;">
                 <thead>
