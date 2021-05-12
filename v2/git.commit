@@ -1,9 +1,9 @@
-﻿commit 9faa346751cfef39b4235a271d144cc90daa1119
-Author: Padmashree S <padmashree.s@inatech.com>
-Date:   Wed May 12 13:35:10 2021 +0530
+﻿commit 7704566b93f976ccec72138d2ea010fe27d6ce66
+Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
+Date:   Wed May 12 08:13:38 2021 +0000
 
-    invoice- scroll issue fixed
+    Merged PR 10633: Additonal cost view only
     
-    invoice- scroll issue fixed
+    Additonal cost view only
 
 branch: master

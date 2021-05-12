@@ -18,9 +18,8 @@
                         <div class="more-button-options" *ngIf="showMoreButtons">
                             <span>Invoice Type</span>
                             <mat-radio-group
-                                aria-labelledby="example-radio-group-label"
-                                class="example-radio-group">
-                                <mat-radio-button class="example-radio-button" *ngFor="let inv of more_invoice_types" [value]="inv">
+                                class="inv-radio-group">
+                                <mat-radio-button *ngFor="let inv of more_invoice_types" [value]="inv">
                                     {{inv.displayName}}
                                 </mat-radio-button>
                             </mat-radio-group>
@@ -394,12 +393,13 @@
     <div class="section1 mt-4" style="margin: 0px;" *ngIf="!(formValues.invoiceClaimDetails.length > 0)">
         <div class="match-grid" style="border-bottom: 4px solid #e5e5e5;">
             <div class="title">Additional Costs</div>
-            <div class="agGrid-v2" style="margin: 0">
-                <div style="width:100%;height: 250px;">
-                    <ag-grid-angular style="width: 100%;height: 100%;" [gridOptions]="gridOptions_ac"
-                        class="ag-theme-material ag-grid-v2 angular-v9 add-cost"></ag-grid-angular>
-                </div>
+            <!-- <div class="agGrid-v2" style="margin: 0">
+            <div style="width:100%;height: 250px;">
+                <ag-grid-angular style="width: 100%;height: 100%;" [gridOptions]="gridOptions_ac"
+                    class="ag-theme-material ag-grid-v2 angular-v9 add-cost"></ag-grid-angular>
             </div>
+        </div> -->
+        <shiptech-additional-cost-modal [formValues]="formValues.costDetails"></shiptech-additional-cost-modal>
           </div>
     </div>
     
