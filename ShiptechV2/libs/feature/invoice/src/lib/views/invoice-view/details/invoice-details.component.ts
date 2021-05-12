@@ -624,8 +624,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         this.formSubmitted = false;
         return;
       }
-      this.formValues.paymentDetails.paymentStatus = this.paymentStatus;
-      this.formValues.customStatus = this.customInvoice;
+      this.formValues.paymentDetails.paymentStatus = { id: this.paymentStatus };
+      this.formValues.customStatus = { id: this.customInvoice };
 
     //  alert("Has to save please wait");
     let data : any = {
