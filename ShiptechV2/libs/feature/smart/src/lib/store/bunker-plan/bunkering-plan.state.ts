@@ -1,12 +1,13 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Injectable } from '@angular/core';
-import { ISaveBunkeringPlan } from './bunkering-plan.model';
-import { SaveBunkeringPlanAction, UpdateBunkeringPlanAction } from './bunkering-plan.action';
+import { SaveBunkeringPlanModel, CurrentROBModel } from './bunkering-plan.model';
+import { SaveBunkeringPlanAction, UpdateBunkeringPlanAction, SaveCurrentROBAction, UpdateCurrentROBAction } from './bunkering-plan.action';
+import { values } from 'lodash';
 
 
 
 export class SaveBunkeringPlanStateModel{
-  BPlanData : ISaveBunkeringPlan[];
+  BPlanData : SaveBunkeringPlanModel[];
 }
 
 @State <SaveBunkeringPlanStateModel>({
@@ -20,7 +21,7 @@ export class SaveBunkeringPlanStateModel{
 export class SaveBunkeringPlanState{
 
   @Selector([SaveBunkeringPlanState])
-  static getSaveBunkeringPlanData(state: SaveBunkeringPlanStateModel):ISaveBunkeringPlan[]{
+  static getSaveBunkeringPlanData(state: SaveBunkeringPlanStateModel):SaveBunkeringPlanModel[]{
     return state?.BPlanData
   }
 
@@ -140,5 +141,44 @@ export class SaveBunkeringPlanState{
 }
 
 
+export class SaveCurrentROBStateModel{
+  CurrentROBObj : CurrentROBModel;
+}
 
+@State <SaveCurrentROBStateModel>({
+  name : 'SaveCurrentROBObj',
+  defaults : {
+    CurrentROBObj: {'3.5 QTY': null, '0.5 QTY': null, 'ULSFO': null, 'LSDIS': null, 'HSDIS': null}
+  }
+})
+
+@Injectable()
+export class SaveCurrentROBState{
+
+  @Selector([SaveCurrentROBState])
+  static saveCurrentROB(state: SaveCurrentROBStateModel ):CurrentROBModel{
+    return state?.CurrentROBObj;
+  }
+
+  @Action(SaveCurrentROBAction)
+  saveCurrentROB({getState, patchState}: StateContext<SaveCurrentROBStateModel>, {payload}:SaveCurrentROBAction){
+    const state = getState();
+    patchState({
+      ...state,
+      CurrentROBObj : payload
+    })
+  }
+
+  @Action(UpdateCurrentROBAction)
+  updateCurrentROB({getState, patchState}: StateContext<SaveCurrentROBStateModel>, {value, column}:UpdateCurrentROBAction){
+    const state = getState();
+    let CurrentROBObjData = JSON.parse(JSON.stringify(state.CurrentROBObj));
+    CurrentROBObjData[column] = value;
+    patchState({
+      ...state,
+      CurrentROBObj : CurrentROBObjData
+    })
+  }
+
+}
 

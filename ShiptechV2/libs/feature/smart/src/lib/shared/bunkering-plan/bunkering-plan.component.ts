@@ -8,7 +8,7 @@ import { BunkeringPlanColmGroupLabels, BunkeringPlanColumnsLabels } from './view
 import { LocalService } from '../../services/local-service.service';
 import { BunkeringPlanService } from '../../services/bunkering-plan.service';
 import { SaveBunkeringPlanAction,UpdateBunkeringPlanAction } from '../../store/bunker-plan/bunkering-plan.action';
-import { SaveBunkeringPlanState} from '../../store/bunker-plan/bunkering-plan.state';
+import { SaveBunkeringPlanState,SaveCurrentROBState} from '../../store/bunker-plan/bunkering-plan.state';
 import { NoDataComponent } from '../no-data-popup/no-data-popup.component';
 import { MatDialogRef,MatDialog } from '@angular/material/dialog';
 import { Select } from '@ngxs/store';
@@ -21,7 +21,7 @@ import { Observable,BehaviorSubject } from 'rxjs';
   styleUrls: ['./bunkering-plan.component.scss']
 })
 export class BunkeringPlanComponent implements OnInit {
-
+  
   public gridOptions: GridOptions;
   public colResizeDefault;
   public rowCount: Number;
@@ -52,15 +52,16 @@ export class BunkeringPlanComponent implements OnInit {
   };
   @Input('bPlanType') bPlanType;
   @Input('selectedUserRole')selectedUserRole;
-  @Input('currentROBObj') currentROBObj;
-  @Select(UserProfileState.username) username$: Observable<string>;
-  private _username$: BehaviorSubject<string>;
+  @Input('scrubberReady') scrubberReady;
+  public hsfoHeader : any;
+  // @Select(UserProfileState.username) username$: Observable<string>;
+  // private _username$: BehaviorSubject<string>;
   constructor(private bplanService: BunkeringPlanService, private localService: LocalService, private store: Store,
               public dialog: MatDialog) 
     {   
     // this._username$ = new BehaviorSubject<string>('');
     // this.username$.subscribe(onchange:{this._username$ in })
-
+      this.hsfoHeader= this.scrubberReady
     this.gridOptions = <GridOptions>{
       columnDefs: this.columnDefs,
       enableColResize: false,
@@ -143,7 +144,7 @@ export class BunkeringPlanComponent implements OnInit {
           cellClass: ['dark-cell aggrid-content-center'], headerClass: [' aggrid-colum-splitter-left aggrid-text-align-c']
         },
         {
-          headerName: BunkeringPlanColmGroupLabels.Hsfo,
+          headerName:  BunkeringPlanColmGroupLabels.Hsfo,
           headerTooltip: BunkeringPlanColmGroupLabels.Hsfo,
           marryChildren: true,
           resizable: false,
@@ -167,7 +168,9 @@ export class BunkeringPlanComponent implements OnInit {
               cellEditorParams : (params) =>{return {type: 'edit',context: { componentParent: this }}}
             },
             { headerName: BunkeringPlanColumnsLabels.HsfoEstdSoa, headerTooltip: BunkeringPlanColumnsLabels.HsfoEstdSoa, field: 'hsfo_soa', width: 50,
-              cellClass: ['aggrid-content-right '], headerClass: ['aggrid-colum-splitter-left'] 
+              cellClass: ['aggrid-content-right '], headerClass: ['aggrid-colum-splitter-left'] , 
+              cellRendererFramework : AGGridCellDataComponent,
+              cellRendererParams : (params) =>{return {type: 'soa-hsfo',context: { componentParent: this }}} 
             },
             {
               headerName: BunkeringPlanColumnsLabels.HsfoEstdCons, headerTooltip: BunkeringPlanColumnsLabels.HsfoEstdCons, field: 'hsfo_estimated_consumption', width: 50,
@@ -358,10 +361,10 @@ export class BunkeringPlanComponent implements OnInit {
     {
       headerClass: ['cell-border-bottom'],
       children: [
-        { headerName: BunkeringPlanColumnsLabels.TotalMinSod, headerTooltip: BunkeringPlanColumnsLabels.TotalMinSod, field: 'min_sod', width: 55, cellRendererFramework: AGGridCellDataComponent, cellClass:params=>{if (this.bPlanType == 'C') return 'aggrid-blue-editable-cell editable'; else return 'aggrid-blue-editable-cell ag-cell' } , cellRendererParams: { type: 'edit-with-popup', cellClass: 'aggrid-cell-color white', context: { componentParent: this } } },
-        { headerName: BunkeringPlanColumnsLabels.MinHsfoSod, headerTooltip: BunkeringPlanColumnsLabels.MinHsfoSod, field: 'hsfo_min_sod', width: 55, cellRendererFramework: AGGridCellDataComponent, cellRendererParams: { type: 'edit-with-popup', cellClass: 'aggrid-cell-color white', context: { componentParent: this } }, cellClass:params=>{if (this.bPlanType == 'C') return 'aggrid-blue-editable-cell editable'; else return 'aggrid-blue-editable-cell ag-cell' } , headerClass: ['aggrid-colum-splitter-left'] },
-        { headerName: BunkeringPlanColumnsLabels.MinEcaBunkerSod, headerTooltip:  BunkeringPlanColumnsLabels.MinEcaBunkerSod, field: 'eca_min_sod', width: 55, cellRendererFramework: AGGridCellDataComponent,cellRendererParams: { type: 'edit-with-popup', cellClass: 'aggrid-cell-color white', context: { componentParent: this } }, cellClass:params=>{if (this.bPlanType == 'C') return 'aggrid-blue-editable-cell editable'; else return 'aggrid-blue-editable-cell ag-cell' } , headerClass: ['aggrid-colum-splitter-left'] },
-        { headerName: BunkeringPlanColumnsLabels.TotalMaxSod, headerTooltip:  BunkeringPlanColumnsLabels.TotalMaxSod, field: 'max_sod', width: 55, cellRendererFramework: AGGridCellDataComponent,cellRendererParams: { type: 'edit-with-popup', cellClass: 'aggrid-cell-color white', context: { componentParent: this } }, cellClass:params=>{if (this.bPlanType == 'C') return 'aggrid-blue-editable-cell editable'; else return 'aggrid-blue-editable-cell ag-cell' } , headerClass: ['aggrid-colum-splitter-left'] },
+        { headerName: BunkeringPlanColumnsLabels.TotalMinSod, headerTooltip: BunkeringPlanColumnsLabels.TotalMinSod, field: 'min_sod', width: 55, cellRendererFramework: AGGridCellDataComponent, cellClass:params=>{if (this.bPlanType == 'C') return 'aggrid-blue-editable-cell editable'; else return 'aggrid-blue-editable-cell ag-cell' } , cellRendererParams: params=>{ return {type: this.bPlanType == 'C' ?'edit-with-popup':'disable-with-popup', cellClass: 'aggrid-cell-color white', context: { componentParent: this } }}},
+        { headerName: BunkeringPlanColumnsLabels.MinHsfoSod, headerTooltip: BunkeringPlanColumnsLabels.MinHsfoSod, field: 'hsfo_min_sod', width: 55, cellRendererFramework: AGGridCellDataComponent, cellRendererParams: params=>{ return {type: this.bPlanType == 'C' ?'edit-with-popup':'disable-with-popup', cellClass: 'aggrid-cell-color white', context: { componentParent: this } }}, cellClass:params=>{if (this.bPlanType == 'C') return 'aggrid-blue-editable-cell editable'; else return 'aggrid-blue-editable-cell ag-cell' } , headerClass: ['aggrid-colum-splitter-left'] },
+        { headerName: BunkeringPlanColumnsLabels.MinEcaBunkerSod, headerTooltip:  BunkeringPlanColumnsLabels.MinEcaBunkerSod, field: 'eca_min_sod', width: 55, cellRendererFramework: AGGridCellDataComponent,cellRendererParams: params=>{ return {type: this.bPlanType == 'C' ?'edit-with-popup':'disable-with-popup', cellClass: 'aggrid-cell-color white', context: { componentParent: this } }}, cellClass:params=>{if (this.bPlanType == 'C') return 'aggrid-blue-editable-cell editable'; else return 'aggrid-blue-editable-cell ag-cell' } , headerClass: ['aggrid-colum-splitter-left'] },
+        { headerName: BunkeringPlanColumnsLabels.TotalMaxSod, headerTooltip:  BunkeringPlanColumnsLabels.TotalMaxSod, field: 'max_sod', width: 55, cellRendererFramework: AGGridCellDataComponent,cellRendererParams: params=>{ return {type: this.bPlanType == 'C' ?'edit-with-popup':'disable-with-popup', cellClass: 'aggrid-cell-color white', context: { componentParent: this } }}, cellClass:params=>{if (this.bPlanType == 'C') return 'aggrid-blue-editable-cell editable'; else return 'aggrid-blue-editable-cell ag-cell' } , headerClass: ['aggrid-colum-splitter-left'] },
         { headerName: BunkeringPlanColumnsLabels.HsdisConfReqLift, headerTooltip: BunkeringPlanColumnsLabels.HsdisConfReqLift, field: 'hsdis_estimated_lift', width: 50, 
           headerClass: ['aggrid-colum-splitter-left'],
           cellClass:['aggrid-content-right'] ,
@@ -377,12 +380,12 @@ export class BunkeringPlanComponent implements OnInit {
         },
 
         {
-          headerName: BunkeringPlanColumnsLabels.MinSoa, headerTooltip: BunkeringPlanColumnsLabels.MinSoa, field: "isMinSoa",
+          headerName: BunkeringPlanColumnsLabels.MinSoa, headerTooltip: BunkeringPlanColumnsLabels.MinSoa, field: "is_min_soa",
           resizable: false,
           width: 40,
           cellClass: 'checkbox-center aggrid-content-center',
           cellRendererFramework: AGGridCellDataComponent, 
-          cellRendererParams: (params)=>{ return { type: this.bPlanType == 'C' ? 'checkbox-with-popup': 'checkbox-with-popup' , cellClass: ['aggrid-dark-checkbox'], context: { componentParent: this } }}, 
+          cellRendererParams: (params)=>{ return { type: this.bPlanType == 'C' ? 'checkbox-with-popup': 'checkbox-disabled' , cellClass: ['aggrid-dark-checkbox'], context: { componentParent: this } }}, 
           headerClass: ['aggrid-colum-splitter-left']
         }
       ]
@@ -395,6 +398,13 @@ export class BunkeringPlanComponent implements OnInit {
       this.bplanService.getBunkeringPlanDetails(req).subscribe((data)=> {
         console.log('bunker plan details',data);
         this.rowData = this.latestPlanId == null ?[]:(data.payload && data.payload.length)? data.payload: [];
+        if(this.rowData.length == 0){
+          const dialogRef = this.dialog.open(NoDataComponent, {
+            width: '350px',
+            panelClass: 'confirmation-popup',
+            data: {message : 'Plan details not available'}
+          });
+        }
         this.bPlanData = this.rowData;   
         this.latestPlanId = '';
         this.loadBplan.emit(false);
@@ -464,18 +474,21 @@ export class BunkeringPlanComponent implements OnInit {
     this.gridChanged = false;
     // let idFromStore = this.store.selectSnapshot(SaveBunkeringPlanState.getUpdateBunkeringPlanData)
     // console.log('id from store', idFromStore);
-    let dataFromStore = this.store.selectSnapshot(SaveBunkeringPlanState.getSaveBunkeringPlanData)
+    let dataFromStore = this.store.selectSnapshot(SaveBunkeringPlanState.getSaveBunkeringPlanData);
+    let currentROBObj = this.store.selectSnapshot(SaveCurrentROBState.saveCurrentROB);
     console.log('data from store', dataFromStore);
+
     
     let req = {
+       action : "save",
        user_id : "default@inatech.com",//this.username$ ,
        ship_id: this.vesselData?.vesselId,
        plan_id: this.latestPlanId,
-       hsfo_current_stock: this.currentROBObj['3.5 QTY'] ? this.currentROBObj['3.5 QTY']: 0,
-       vlsfo_current_stock: this.currentROBObj['0.5 QTY']? this.currentROBObj['0.5 QTY']: 0,
-       ulsfo_current_stock: this.currentROBObj?.ULSFO,
-       lsdis_current_stock: this.currentROBObj?.LSDIS,
-       hsdis_current_stock: this.currentROBObj?.HSDIS,
+       hsfo_current_stock: currentROBObj['3.5 QTY'] ? currentROBObj['3.5 QTY']: 0,
+       vlsfo_current_stock: currentROBObj['0.5 QTY']? currentROBObj['0.5 QTY']: 0,
+       ulsfo_current_stock: currentROBObj?.ULSFO,
+       lsdis_current_stock: currentROBObj?.LSDIS,
+       hsdis_current_stock: currentROBObj?.HSDIS,
        plan_details: dataFromStore,
        is_vessel_role_played: this.selectedUserRole == 1 ? 1 : 0, 
        generate_new_plan: 1,
@@ -490,6 +503,7 @@ export class BunkeringPlanComponent implements OnInit {
           const dialogRef = this.dialog.open(NoDataComponent, {
             width: '350px',
             panelClass: 'confirmation-popup',
+            data : {message: 'Plan Details updated successfully'}
           });
         }
       })
