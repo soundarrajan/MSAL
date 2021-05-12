@@ -1,9 +1,9 @@
-﻿commit 0bc339cd86d366030de28d9b9bb8a4d53731ffcd
+﻿commit f35f00d2a513f189e9638090e139195fa4626d4d
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed May 12 12:22:14 2021 +0000
+Date:   Wed May 12 12:39:19 2021 +0000
 
-    Merged PR 10649: Added removing product details
+    Merged PR 10654: Fixed 'Error retrieving icon :data-picker-gray! Http failure response' error...
     
-    Added removing product details
+    Fixed 'Error retrieving icon :data-picker-gray! Http failure response' error when load invoice page
 
 branch: master

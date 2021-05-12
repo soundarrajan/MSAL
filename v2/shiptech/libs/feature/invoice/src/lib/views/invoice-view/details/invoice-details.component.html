@@ -51,10 +51,10 @@
                                 <input [(ngModel)]="formValues.invoiceDate" name="invoiceDate" #validToDateField="ngModel" 
                                 matInput [matDatepicker]="invoiceDate" (focus)="invoiceDate.open()" autocomplete="off" placeholder="Invoice Date">
                                 <mat-datepicker-toggle matSuffix [for]="invoiceDate">
-                                    <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
+                                    <mat-icon matDatepickerToggleIcon class="icon-date">
                                     </mat-icon>
                                 </mat-datepicker-toggle>
-                                <mat-datepicker #invoiceDate></mat-datepicker>
+                                <mat-datepicker #invoiceDate ></mat-datepicker>
                             </mat-form-field>
                          </div>
                     </div>
@@ -64,7 +64,7 @@
                                 <mat-label>Received Date</mat-label>
                                 <input [(ngModel)]="formValues.receivedDate" name="receivedDate" #validToDateField="ngModel" matInput [matDatepicker]="receivedDate" (focus)="receivedDate.open()" autocomplete="off" placeholder="Received Date" (dateChange)="formValues.receivedDate = formatDateForBe(formValues.receivedDate)">
                                 <mat-datepicker-toggle matSuffix [for]="receivedDate">
-                                    <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
+                                    <mat-icon matDatepickerToggleIcon class="icon-date">
                                     </mat-icon>
                                 </mat-datepicker-toggle>
                                 <mat-datepicker #receivedDate></mat-datepicker>
@@ -104,7 +104,7 @@
                                     <mat-label>Due Date</mat-label>
                                     <input [(ngModel)]="formValues.dueDate" name="dueDate" #validToDateField="ngModel" matInput [matDatepicker]="dueDate" autocomplete="off" placeholder="Due Date" (dateChange)="formatDateForBe(formValues.dueDate)" required>
                                     <mat-datepicker-toggle matSuffix [for]="dueDate">
-                                        <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
+                                        <mat-icon matDatepickerToggleIcon class="icon-date">
                                         </mat-icon>
                                     </mat-datepicker-toggle>
                                     <mat-datepicker #dueDate></mat-datepicker>
@@ -117,7 +117,7 @@
                                     <mat-label>Working due date</mat-label>
                                     <input [(ngModel)]="formValues.workingDueDate" name="workingDueDate" #validToDateField="ngModel" matInput [matDatepicker]="workingDueDate" (focus)="workingDueDate.open()" autocomplete="off" placeholder="Working Due Date" (dateChange)="formValues.workingDueDate = formatDateForBe(formValues.workingDueDate)" required>
                                     <mat-datepicker-toggle matSuffix [for]="workingDueDate">
-                                        <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
+                                        <mat-icon matDatepickerToggleIcon class="icon-date">
                                         </mat-icon>
                                     </mat-datepicker-toggle>
                                     <mat-datepicker #workingDueDate></mat-datepicker>
@@ -142,7 +142,7 @@
                                 <mat-label>Seller Due Date</mat-label>
                                 <input [(ngModel)]="formValues.sellerDueDate" name="sellerDueDate" #validToDateField="ngModel" matInput [matDatepicker]="sellerDueDate" (focus)="sellerDueDate.open()" autocomplete="off" placeholder="Seller Due Date" (dateChange)="formValues.sellerDueDate = formatDateForBe(formValues.sellerDueDate)">
                                 <mat-datepicker-toggle matSuffix [for]="sellerDueDate">
-                                    <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
+                                    <mat-icon matDatepickerToggleIcon class="icon-date">
                                     </mat-icon>
                                 </mat-datepicker-toggle>
                                 <mat-datepicker #sellerDueDate></mat-datepicker>
@@ -163,7 +163,7 @@
                                 placeholder="Payment Date"
                                 (dateChange)="formValues.paymentDate = formatDateForBe(formValues.paymentDate)">
                                 <mat-datepicker-toggle matSuffix [for]="paymentDate">
-                                    <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
+                                    <mat-icon matDatepickerToggleIcon class="icon-date">
                                     </mat-icon>
                                 </mat-datepicker-toggle>
                                 <mat-datepicker #paymentDate></mat-datepicker>
@@ -184,7 +184,7 @@
                                 placeholder="Validation Date"
                                 (dateChange)="formValues.accountancyDate = formatDateForBe(formValues.accountancyDate)">
                                 <mat-datepicker-toggle matSuffix [for]="validationDate">
-                                    <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
+                                    <mat-icon matDatepickerToggleIcon class="icon-date">
                                     </mat-icon>
                                 </mat-datepicker-toggle>
                                 <mat-datepicker #validationDate></mat-datepicker>
@@ -238,7 +238,7 @@
                                 placeholder="Accountancy Date"
                                 (dateChange)="formValues.accountancyDate = formatDateForBe(formValues.accountancyDate)">
                                 <mat-datepicker-toggle matSuffix [for]="accountancyDate">
-                                    <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
+                                    <mat-icon matDatepickerToggleIcon class="icon-date">
                                     </mat-icon>
                               </mat-datepicker-toggle>
                               <mat-datepicker #accountancyDate></mat-datepicker>
@@ -290,7 +290,7 @@
                                 <mat-label>Delivery Date</mat-label>
                                 <input matInput [matDatepicker]="pickerDD" (focus)="pickerDD.open()">
                                 <mat-datepicker-toggle matSuffix [for]="pickerDD">
-                                    <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
+                                    <mat-icon matDatepickerToggleIcon class="icon-date">
                                     </mat-icon>
                                 </mat-datepicker-toggle>
                                 <mat-datepicker #pickerDD></mat-datepicker>

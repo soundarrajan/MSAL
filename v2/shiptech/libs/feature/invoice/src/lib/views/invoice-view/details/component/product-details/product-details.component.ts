@@ -734,6 +734,13 @@ implements OnInit {
     };
     if (toUomId == fromUomId) {
       conversionFactor = 1;
+      this.formValues.productDetails[currentRowIndex].invoiceAmount = this.convertDecimalSeparatorStringToNumber(this.formValues.productDetails[currentRowIndex].invoiceQuantity) * (this.convertDecimalSeparatorStringToNumber(this.formValues.productDetails[currentRowIndex].invoiceRate) * conversionFactor);
+      this.formValues.productDetails[currentRowIndex].difference = parseFloat(this.formValues.productDetails[currentRowIndex].invoiceAmount) - parseFloat(this.formValues.productDetails[currentRowIndex].estimatedAmount);
+      this.calculateGrand(this.formValues);
+      if (this.formValues.productDetails[currentRowIndex]) {
+        this.calculateProductRecon(this.formValues.productDetails[currentRowIndex]);
+      }
+
     }
     if (!productId || !toUomId || !fromUomId) {
         return;
