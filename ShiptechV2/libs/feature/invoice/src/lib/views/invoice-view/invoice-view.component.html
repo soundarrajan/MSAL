@@ -14,11 +14,17 @@
                 </ng-template>
                 <ng-container>
                     <div *ngIf="item.name=='Details'" class="details">
+
+                        <!-- Invoice Detail Component -->
                         <shiptech-invoice-detail *ngIf="displayDetailFormvalues" #invoiceDetails [detailFormvalues]='detailFormvalues'></shiptech-invoice-detail>
                     </div>
-                    <div *ngIf="item.name=='Related Invoices'" class="custom-tab-container">
-                      <shiptech-related-invoice></shiptech-related-invoice>
+                    <div *ngIf="item.name =='Related Invoices'" class="custom-tab-container">
+                      <shiptech-related-invoice *ngIf="selectedTab == 1" #invoiceDetails [detailFormvalues]='detailFormvalues'></shiptech-related-invoice>
                     </div>
+                    <!-- <div *ngIf="item.name=='Documents'" class="custom-tab-container"> Tab container 3</div>
+                    <div *ngIf="item.name=='Email Log'" class="custom-tab-container"> Tab container 4</div>
+                    <div *ngIf="item.name=='Seller Rating'" class="custom-tab-container"> Tab container 5</div>
+                    <div *ngIf="item.name=='Audit Log'" class="custom-tab-container"> Tab container 6</div> -->
                 </ng-container>
             </mat-tab>
             <span>--</span>

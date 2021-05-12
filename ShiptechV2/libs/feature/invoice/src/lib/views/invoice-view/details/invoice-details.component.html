@@ -1,380 +1,410 @@
-
-
-<!-- Invoice Informaiton -->
-<div class="section1">
-    <div class="row">
-        <div class="col-md-6 col-sm-12 col-12 pt-4" style="line-height: 55px; padding: 0px; margin: 0px;">
-            <div class="row">
-                <div class="col-md-6">
-                    <div id="custom-btn-toggle-v2">
-                        <mat-button-toggle-group #btnToggle (change)="formValues.documentType.internalName = $event.value">
-                            <mat-button-toggle [disabled]="true" *ngFor="let items of invoice_types" [value]="items.value" [checked]="formValues.documentType.internalName == items.value">
-                                <span class="toggle-icon" *ngIf="formValues.documentType.internalName == items.value"></span> {{items.displayName}}
-                            </mat-button-toggle>
-                        </mat-button-toggle-group>
+<div class="invoice-details-component">
+    <form>
+        <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
+    <!-- Invoice Informaiton -->
+    <div class="section1">
+        <div class="row">
+            <div class="col-md-6 col-sm-12 col-12 pt-4" style="line-height: 55px; padding: 0px 20px; margin: 0px;">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div id="custom-btn-toggle-v2">
+                            <mat-button-toggle-group #btnToggle (change)="formValues.documentType.internalName = $event.value" style="padding-right: 35px; background-color: #e0e1e4;">
+                                <mat-button-toggle [disabled]="true" *ngFor="let items of invoice_types" [value]="items.value" [checked]="formValues.documentType.internalName == items.value">
+                                    <span class="toggle-icon" *ngIf="formValues.documentType.internalName == items.value"></span> {{items.displayName}}
+                                </mat-button-toggle>
+                                <div class="more-dots"></div>
+                            </mat-button-toggle-group>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="badge-header-v2">
-                        <span class="label_text" matTooltip={{formValues.createdByUser?.displayName}}>Created by: <b>{{formValues.createdByUser?.displayName}}</b></span>
-                        <span class="border_line"></span>
-                        <span class="label_text" matTooltip={{formValues.createdAt}}>On: <b>{{formValues.createdAt | date: this.dateFormat}}</b></span>
-                    </div>
-                </div>
-            </div>
-            <div class="row pt-3">
-                <div class="col-md-3">
-                    <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
-
-                        <mat-form-field class="without-search" appearance="legacy">
-                            <mat-label>Seller Invoice No.</mat-label>
-                            <input [(ngModel)]="formValues.sellerInvoiceNo" name="sellerInvoiceNo" matInput placeholder="000" type="number">
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div id="custom-form-field" class="lightTheme">
-                        <mat-form-field class="without-search" appearance="legacy">
-                            <mat-label>Invoice Date</mat-label>
-                            <input [(ngModel)]="formValues.invoiceDate" name="invoiceDate" #validToDateField="ngModel" 
-                            matInput [matDatepicker]="invoiceDate" (focus)="invoiceDate.open()" autocomplete="off" placeholder="Invoice Date">
-                            <mat-datepicker-toggle matSuffix [for]="invoiceDate">
-                                <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
-                                </mat-icon>
-                            </mat-datepicker-toggle>
-                            <mat-datepicker #invoiceDate></mat-datepicker>
-                        </mat-form-field>
-                     </div>
-                </div>
-                <div class="col-md-3">
-                    <div id="custom-form-field" class="lightTheme">
-                        <mat-form-field class="without-search" appearance="legacy">
-                            <mat-label>Received Date</mat-label>
-                            <input [(ngModel)]="formValues.receivedDate" name="receivedDate" #validToDateField="ngModel" matInput [matDatepicker]="receivedDate" (focus)="receivedDate.open()" autocomplete="off" placeholder="Received Date" (dateChange)="formValues.receivedDate = formatDateForBe(formValues.receivedDate)">
-                            <mat-datepicker-toggle matSuffix [for]="receivedDate">
-                                <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
-                                </mat-icon>
-                            </mat-datepicker-toggle>
-                            <mat-datepicker #receivedDate></mat-datepicker>
-                        </mat-form-field>
-                     </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="custom-form-field-with-search lightTheme">
-                        <div class="d-flex">
-                            <shiptech-st-autosearch-selector [placeholder]="'Payment Terms'" [name]="'Payment Terms'" [required] = "'true'" [masterType]="'paymentTerms'" [bindValue]="formValues.counterpartyDetails.paymentTerm.name" (onChanged)="AC_valueChanges('paymentterms',$event)"></shiptech-st-autosearch-selector>
+                    <div class="col-md-6" style="padding: 0px 50px;">
+                        <div class="badge-header-v2">
+                            <span class="label_text" matTooltip={{formValues.createdByUser?.displayName}}>Created by: <b>{{formValues.createdByUser?.displayName}}</b></span>
+                            <span class="border_line"></span>
+                            <span class="label_text" matTooltip={{formValues.createdAt}}>On: <b>{{formValues.createdAt | date: this.dateFormat}}</b></span>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row pt-3">
+                <div class="row pt-3">
                     <div class="col-md-3">
                         <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
+    
                             <mat-form-field class="without-search" appearance="legacy">
-                                <mat-label>Invoice Currency Details</mat-label>
-                                <input matInput
-                                name="invoiceRateCurrencyCode"
-                                [(ngModel)]="formValues.invoiceRateCurrency.code">
+                                <mat-label>Seller Invoice No.</mat-label>
+                                <input [(ngModel)]="formValues.sellerInvoiceNo" name="sellerInvoiceNo" matInput placeholder="000" type="number">
+                                <!-- <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error> -->
                             </mat-form-field>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div id="custom-form-field" class="lightTheme">
                             <mat-form-field class="without-search" appearance="legacy">
-                                <mat-label>Due Date</mat-label>
-                                <input [(ngModel)]="formValues.dueDate" name="dueDate" #validToDateField="ngModel" matInput [matDatepicker]="dueDate" autocomplete="off" placeholder="Due Date" (dateChange)="formatDateForBe(formValues.dueDate)" required>
-                                <mat-datepicker-toggle matSuffix [for]="dueDate">
+                                <mat-label>Invoice Date</mat-label>
+                                <input [(ngModel)]="formValues.invoiceDate" name="invoiceDate" #validToDateField="ngModel" 
+                                matInput [matDatepicker]="invoiceDate" (focus)="invoiceDate.open()" autocomplete="off" placeholder="Invoice Date">
+                                <mat-datepicker-toggle matSuffix [for]="invoiceDate">
                                     <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
                                     </mat-icon>
                                 </mat-datepicker-toggle>
-                                <mat-datepicker #dueDate></mat-datepicker>
+                                <mat-datepicker #invoiceDate></mat-datepicker>
                             </mat-form-field>
                          </div>
                     </div>
                     <div class="col-md-3">
                         <div id="custom-form-field" class="lightTheme">
                             <mat-form-field class="without-search" appearance="legacy">
-                                <mat-label>Working due date</mat-label>
-                                <input [(ngModel)]="formValues.workingDueDate" name="workingDueDate" #validToDateField="ngModel" matInput [matDatepicker]="workingDueDate" (focus)="workingDueDate.open()" autocomplete="off" placeholder="Working Due Date" (dateChange)="formValues.workingDueDate = formatDateForBe(formValues.workingDueDate)" required>
-                                <mat-datepicker-toggle matSuffix [for]="workingDueDate">
+                                <mat-label>Received Date</mat-label>
+                                <input [(ngModel)]="formValues.receivedDate" name="receivedDate" #validToDateField="ngModel" matInput [matDatepicker]="receivedDate" (focus)="receivedDate.open()" autocomplete="off" placeholder="Received Date" (dateChange)="formValues.receivedDate = formatDateForBe(formValues.receivedDate)">
+                                <mat-datepicker-toggle matSuffix [for]="receivedDate">
                                     <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
                                     </mat-icon>
                                 </mat-datepicker-toggle>
-                                <mat-datepicker #workingDueDate></mat-datepicker>
+                                <mat-datepicker #receivedDate></mat-datepicker>
                             </mat-form-field>
                          </div>
                     </div>
                     <div class="col-md-3">
-                        <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
+                        <!-- <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
                             <mat-form-field class="without-search" appearance="legacy">
-                                <mat-label>Document No.</mat-label>
+                                <mat-label>Payment Terms</mat-label>
                                 <input matInput
-                                name="documentNo"
-                                [(ngModel)]="formValues.documentNo">
+                                name="paymentTerm"
+                                 [(ngModel)]="formValues.counterpartyDetails.paymentTerm.name" required>
                             </mat-form-field>
-                        </div>
-                    </div>
-            </div>
-            <div class="row pt-3">
-                <div class="col-md-3">
-                    <div id="custom-form-field" class="lightTheme">
-                        <mat-form-field class="without-search" appearance="legacy">
-                            <mat-label>Seller Due Date</mat-label>
-                            <input [(ngModel)]="formValues.sellerDueDate" name="sellerDueDate" #validToDateField="ngModel" matInput [matDatepicker]="sellerDueDate" (focus)="sellerDueDate.open()" autocomplete="off" placeholder="Seller Due Date" (dateChange)="formValues.sellerDueDate = formatDateForBe(formValues.sellerDueDate)">
-                            <mat-datepicker-toggle matSuffix [for]="sellerDueDate">
-                                <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
-                                </mat-icon>
-                            </mat-datepicker-toggle>
-                            <mat-datepicker #sellerDueDate></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div id="custom-form-field" class="lightTheme">
-                        <mat-form-field class="without-search" appearance="legacy">
-                            <mat-label>Payment Date</mat-label>
-                            <input [(ngModel)]="formValues.paymentDate"
-                            name="paymentDate"
-                            #validToDateField="ngModel"
-                            matInput
-                            [matDatepicker]="paymentDate"
-                            (focus)="paymentDate.open()"
-                            autocomplete="off"
-                            placeholder="Payment Date"
-                            (dateChange)="formValues.paymentDate = formatDateForBe(formValues.paymentDate)">
-                            <mat-datepicker-toggle matSuffix [for]="paymentDate">
-                                <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
-                                </mat-icon>
-                            </mat-datepicker-toggle>
-                            <mat-datepicker #paymentDate></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div id="custom-form-field" class="lightTheme">
-                        <mat-form-field class="without-search" appearance="legacy">
-                            <mat-label>Validation Date</mat-label>
-                            <input [(ngModel)]="formValues.accountancyDate"
-                            name="accountancyDate"
-                            #validToDateField="ngModel"
-                            matInput
-                            [matDatepicker]="validationDate"
-                            (focus)="validationDate.open()"
-                            autocomplete="off"
-                            placeholder="Validation Date"
-                            (dateChange)="formValues.accountancyDate = formatDateForBe(formValues.accountancyDate)">
-                            <mat-datepicker-toggle matSuffix [for]="validationDate">
-                                <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
-                                </mat-icon>
-                            </mat-datepicker-toggle>
-                            <mat-datepicker #validationDate></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div id="custom-form-field" class="lightTheme">
-                        <mat-form-field class="without-search" appearance="legacy">
-                            <mat-label>Payment Status</mat-label>
-                            <mat-select disableOptionCentering [(ngModel)]="paymentStatus" name="paymentStatus">
-                                <mat-option *ngFor="let list of paymentStatusList" [value]="list.id">{{list.name}}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-sm-12" style="line-height: 54px;">
-            <div class="row" style="padding-left: 15px;">
-                <div id="custom-btn-toggle-v2">
-                    <div class="chip-container">
-                         <div *ngFor="let cData of chipData">
-                             <m-chip [info]="cData"></m-chip>
-                         </div>
-                    </div>
-                 </div>
-            </div>
-            <div class="row pt-4">
-                <div class="col-md-3">
-                    <div id="custom-form-field" class="lightTheme">
-                        <mat-form-field class="without-search" appearance="legacy">
-                            <mat-label>Invoice Status</mat-label>
-                            <mat-select [(ngModel)]="customInvoice" name="customInvoice">
-                                <mat-option *ngFor="let list of invoiceStatusList" [value]="list.id">{{list.name}}</mat-option>                                
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div id="custom-form-field" class="lightTheme">
-                        <mat-form-field class="without-search" appearance="legacy">
-                            <mat-label>Accountancy Date</mat-label>
-                            <input [(ngModel)]="formValues.accountancyDate"
-                            name="accountancyDate"
-                            #validToDateField="ngModel"
-                            matInput
-                            [matDatepicker]="accountancyDate"
-                            (focus)="accountancyDate.open()"
-                            autocomplete="off"
-                            placeholder="Accountancy Date"
-                            (dateChange)="formValues.accountancyDate = formatDateForBe(formValues.accountancyDate)">
-                            <mat-datepicker-toggle matSuffix [for]="accountancyDate">
-                                <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
-                                </mat-icon>
-                          </mat-datepicker-toggle>
-                          <mat-datepicker #accountancyDate></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
-                        <mat-form-field class="without-search" appearance="legacy">
-                            <mat-label>Account No.</mat-label>
-                            <input matInput
-                            name="accountNumber"
-                            [(ngModel)]="formValues.accountNumber">
-                        </mat-form-field>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3">
-                    <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
-                        <mat-form-field class="without-search" appearance="legacy">
-                            <mat-label>Paid Amount</mat-label>
-                            <input matInput
-                            name="paidAmount"
-                            [(ngModel)]="formValues.paymentDetails.paidAmount">
-                        </mat-form-field>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Order and Counterparty Details -->
-<div class="section1 mt-4">
-    <div class="row">
-        <div class="col-md-5">
-            <div class="section-header">
-                <div class="header-label">Order Details</div>
-                <div class="header-data">Request ID: <span class="request-id">{{formValues.requestInfo?.request?.id}}</span></div>
-            </div>
-            <div class="section-content order-details">
-                <readonly-details [options]="orderDetails"></readonly-details>
-                <div class="form-fields">
-                    <div class="custom-form-field-with-search lightTheme">
-                          <shiptech-st-autosearch-selector [placeholder]="'company'" [name]="'Payment company'" [required] = "'true'" [masterType]="'company'" (onChanged)="AC_valueChanges('company',$event)" [bindValue]="formValues.orderDetails.paymentCompany.name"></shiptech-st-autosearch-selector>
-                    </div>
-                    <div id="custom-form-field" class="lightTheme">
-                        <mat-form-field class="without-search" appearance="legacy">
-                            <mat-label>Delivery Date</mat-label>
-                            <input matInput [matDatepicker]="pickerDD" (focus)="pickerDD.open()">
-                            <mat-datepicker-toggle matSuffix [for]="pickerDD">
-                                <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
-                                </mat-icon>
-                            </mat-datepicker-toggle>
-                            <mat-datepicker #pickerDD></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-                    <div class="custom-form-field-with-search lightTheme">
-                        <div class="d-flex">
-                            <shiptech-st-autosearch-selector [placeholder]="'carrier'" [name]="'Carrier'" [masterType]="'carrier'" (onChanged)="AC_valueChanges('carrier',$event)" [bindValue]="formValues.orderDetails.carrierCompany.name"></shiptech-st-autosearch-selector>
+                        </div> -->
+                        <div class="custom-form-field-with-search lightTheme" style="margin-top: 8px !important;">
+                            <div class="d-flex">
+                                <shiptech-st-autosearch-selector [placeholder]="'Payment Terms'" [name]="'Payment Terms'" [required] = "'true'" [masterType]="'paymentTerms'" [bindValue]="formValues.counterpartyDetails.paymentTerm.name" (onChanged)="AC_valueChanges('paymentterms',$event)"></shiptech-st-autosearch-selector>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="field-textarea">
-                    <textarea rows="4" cols="50" placeholder="Type front office comments here"
-                    name="frontOfficeComments"
-                    [(ngModel)]="formValues.orderDetails.frontOfficeComments"></textarea>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-7">
-            <div class="section-header">
-                <div class="header-label">Counterparty Details</div>
-            </div>
-            <div class="section-content order-details">
-                <div class="row" style="margin: 0px;">
-                    <div class="col-md-6 pd-0">
-                        <readonly-details [options]="counterpartyDetails"></readonly-details>
-                        <div class="form-fields" style="margin: 0px -15px;">
-                            <div id="custom-form-field" class="lightTheme">
+                <div class="row pt-3">
+                        <div class="col-md-3">
+                            <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
                                 <mat-form-field class="without-search" appearance="legacy">
-                                    <mat-label>Bank account no.</mat-label>
-                                    <mat-select disableOptionCentering>
-                                        <mat-option value="YS Marine">YS Marine</mat-option>
-                                    </mat-select>
+                                    <mat-label>Invoice Currency Details</mat-label>
+                                    <input matInput
+                                    name="invoiceRateCurrencyCode"
+                                    [(ngModel)]="formValues.invoiceRateCurrency.code">
                                 </mat-form-field>
                             </div>
-                            <div class="custom-form-field-with-search lightTheme">
-                                <div class="d-flex">
-                                    <shiptech-st-autosearch-selector [placeholder]="'customer'" [name]="'Customer'" [masterType]="'company'" (onChanged)="AC_valueChanges('customer',$event)"></shiptech-st-autosearch-selector>
-                                </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div id="custom-form-field" class="lightTheme">
+                                <mat-form-field class="without-search" appearance="legacy">
+                                    <mat-label>Due Date</mat-label>
+                                    <input [(ngModel)]="formValues.dueDate" name="dueDate" #validToDateField="ngModel" matInput [matDatepicker]="dueDate" autocomplete="off" placeholder="Due Date" (dateChange)="formatDateForBe(formValues.dueDate)" required>
+                                    <mat-datepicker-toggle matSuffix [for]="dueDate">
+                                        <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
+                                        </mat-icon>
+                                    </mat-datepicker-toggle>
+                                    <mat-datepicker #dueDate></mat-datepicker>
+                                </mat-form-field>
+                             </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div id="custom-form-field" class="lightTheme">
+                                <mat-form-field class="without-search" appearance="legacy">
+                                    <mat-label>Working due date</mat-label>
+                                    <input [(ngModel)]="formValues.workingDueDate" name="workingDueDate" #validToDateField="ngModel" matInput [matDatepicker]="workingDueDate" (focus)="workingDueDate.open()" autocomplete="off" placeholder="Working Due Date" (dateChange)="formValues.workingDueDate = formatDateForBe(formValues.workingDueDate)" required>
+                                    <mat-datepicker-toggle matSuffix [for]="workingDueDate">
+                                        <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
+                                        </mat-icon>
+                                    </mat-datepicker-toggle>
+                                    <mat-datepicker #workingDueDate></mat-datepicker>
+                                </mat-form-field>
+                             </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
+                                <mat-form-field class="without-search" appearance="legacy">
+                                    <mat-label>Document No.</mat-label>
+                                    <input matInput
+                                    name="documentNo"
+                                    [(ngModel)]="formValues.documentNo">
+                                </mat-form-field>
                             </div>
                         </div>
-                        <div class="field-textarea">
-                            <textarea rows="4" cols="50" placeholder="Type back office comments here"
-                            name="backOfficeComments"
-                            [(ngModel)]="formValues.backOfficeComments"></textarea>
+                </div>
+                <div class="row pt-3">
+                    <div class="col-md-3">
+                        <div id="custom-form-field" class="lightTheme">
+                            <mat-form-field class="without-search" appearance="legacy">
+                                <mat-label>Seller Due Date</mat-label>
+                                <input [(ngModel)]="formValues.sellerDueDate" name="sellerDueDate" #validToDateField="ngModel" matInput [matDatepicker]="sellerDueDate" (focus)="sellerDueDate.open()" autocomplete="off" placeholder="Seller Due Date" (dateChange)="formValues.sellerDueDate = formatDateForBe(formValues.sellerDueDate)">
+                                <mat-datepicker-toggle matSuffix [for]="sellerDueDate">
+                                    <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
+                                    </mat-icon>
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #sellerDueDate></mat-datepicker>
+                            </mat-form-field>
                         </div>
                     </div>
-                    <span class="seperator-line"></span>
-                    <div class="col-md-5 pd-0" style="margin: -10px 0px; line-height: 35px;">
-                        <div class="custom-form-field-with-search lightTheme">
-                            <div class="d-flex">
-                                <shiptech-st-autosearch-selector [placeholder]="'payable to'" [name]="'Payable To'" [masterType]="'payableTo'" (onChanged)="AC_valueChanges('payableto',$event)" [bindValue]="formValues.counterpartyDetails.payableTo.name"></shiptech-st-autosearch-selector>
-                            </div>
+                    <div class="col-md-3">
+                        <div id="custom-form-field" class="lightTheme">
+                            <mat-form-field class="without-search" appearance="legacy">
+                                <mat-label>Payment Date</mat-label>
+                                <input [(ngModel)]="formValues.paymentDate"
+                                name="paymentDate"
+                                #validToDateField="ngModel"
+                                matInput
+                                [matDatepicker]="paymentDate"
+                                (focus)="paymentDate.open()"
+                                autocomplete="off"
+                                placeholder="Payment Date"
+                                (dateChange)="formValues.paymentDate = formatDateForBe(formValues.paymentDate)">
+                                <mat-datepicker-toggle matSuffix [for]="paymentDate">
+                                    <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
+                                    </mat-icon>
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #paymentDate></mat-datepicker>
+                            </mat-form-field>
                         </div>
-                        <div style="padding-top: 5px;">
-                            <mat-checkbox class="example-margin"
-                            name="paymentProofReceived"
-                            [(ngModel)]="formValues.paymentDetails.paymentProofReceived">Payment proof received</mat-checkbox>
+                    </div>
+                    <div class="col-md-3">
+                        <div id="custom-form-field" class="lightTheme">
+                            <mat-form-field class="without-search" appearance="legacy">
+                                <mat-label>Validation Date</mat-label>
+                                <input [(ngModel)]="formValues.accountancyDate"
+                                name="accountancyDate"
+                                #validToDateField="ngModel"
+                                matInput
+                                [matDatepicker]="validationDate"
+                                (focus)="validationDate.open()"
+                                autocomplete="off"
+                                placeholder="Validation Date"
+                                (dateChange)="formValues.accountancyDate = formatDateForBe(formValues.accountancyDate)">
+                                <mat-datepicker-toggle matSuffix [for]="validationDate">
+                                    <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
+                                    </mat-icon>
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #validationDate></mat-datepicker>
+                            </mat-form-field>
                         </div>
-                        <div class="field-textarea sizing">
-                            <textarea rows="4" cols="50" placeholder="Payment Proof comments"
-                            name="paymentDetailscomments"
-                            [(ngModel)]="formValues.paymentDetails.comments"></textarea>
+                    </div>
+                    <div class="col-md-3">
+                        <div id="custom-form-field" class="lightTheme">
+                            <mat-form-field class="without-search" appearance="legacy">
+                                <mat-label>Payment Status</mat-label>
+                                <mat-select disableOptionCentering [(ngModel)]="paymentStatus" name="paymentStatus">
+                                    <mat-option *ngFor="let list of paymentStatusList" [value]="list.id">{{list.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12" style="line-height: 55px; margin: 3px -12px;">
+                <div class="row" style="padding-left: 15px;">
+                    <div id="custom-btn-toggle-v2">
+                        <div class="chip-container">
+                             <div *ngFor="let cData of chipData">
+                                 <m-chip [info]="cData"></m-chip>
+                             </div>
+                        </div>
+                     </div>
+                </div>
+                <div class="row pt-3">
+                    <div class="col-md-3">
+                        <div id="custom-form-field" class="lightTheme">
+                            <mat-form-field class="without-search" appearance="legacy">
+                                <mat-label>Invoice Status</mat-label>
+                                <mat-select [(ngModel)]="customInvoice" name="customInvoice">
+                                    <mat-option *ngFor="let list of invoiceStatusList" [value]="list.id">{{list.name}}</mat-option>                                
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div id="custom-form-field" class="lightTheme">
+                            <mat-form-field class="without-search" appearance="legacy">
+                                <mat-label>Accountancy Date</mat-label>
+                                <input [(ngModel)]="formValues.accountancyDate"
+                                name="accountancyDate"
+                                #validToDateField="ngModel"
+                                matInput
+                                [matDatepicker]="accountancyDate"
+                                (focus)="accountancyDate.open()"
+                                autocomplete="off"
+                                placeholder="Accountancy Date"
+                                (dateChange)="formValues.accountancyDate = formatDateForBe(formValues.accountancyDate)">
+                                <mat-datepicker-toggle matSuffix [for]="accountancyDate">
+                                    <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
+                                    </mat-icon>
+                              </mat-datepicker-toggle>
+                              <mat-datepicker #accountancyDate></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
+                            <mat-form-field class="without-search" appearance="legacy">
+                                <mat-label>Account No.</mat-label>
+                                <input matInput
+                                name="accountNumber"
+                                [(ngModel)]="formValues.accountNumber">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="row pt-3">
+                    <div class="col-md-3">
+                        <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
+                            <mat-form-field class="without-search" appearance="legacy">
+                                <mat-label>Paid Amount</mat-label>
+                                <input matInput
+                                name="paidAmount"
+                                [(ngModel)]="formValues.paymentDetails.paidAmount">
+                            </mat-form-field>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<!-- Product Details -->
-<div class="container-fluid-invoice" style="padding-left: 10px;padding-right: 10px;">
-    <div class="row m-b-4">
-      <div class="col-12">
-        <p-panel [showHeader]="false">
-          <div fxLayout="row">
-            <shiptech-invoice-product-details
-                [model]="formValues"
-                [productList]="productList"
-                [uomList]="uomList"
-                [currencyList]="currencyList"
-                [physicalSupplierList]="physicalSupplierList"
-                [entityId]="entityId"
-                class="col-12"
-                style="padding-left: 0px; padding-right: 0px;">
-            </shiptech-invoice-product-details>  
-          </div>
-        </p-panel>
-      </div>
-    </div>
-</div>
-<!-- Additional Cost Details -->
-<div class="section1 mt-4" style="margin: 0px;" *ngIf="!(formValues.invoiceClaimDetails.length > 0)">
-    <div class="match-grid" style="border-bottom: 4px solid #e5e5e5;">
-        <div class="title">Additional Costs</div>
-        <div class="agGrid-v2" style="margin: 0">
-            <div style="width:100%;height: 250px;">
-                <ag-grid-angular style="width: 100%;height: 100%;" [gridOptions]="gridOptions_ac"
-                    class="ag-theme-material ag-grid-v2 angular-v9 add-cost"></ag-grid-angular>
+    <!-- Order and Counterparty Details -->
+    <div class="section1 mt-4">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="section-header">
+                    <div class="header-label">Order Details</div>
+                    <div class="header-data">Request ID: <span class="request-id">{{formValues.requestInfo?.request?.id}}</span></div>
+                </div>
+                <div class="section-content order-details">
+                    <readonly-details [options]="orderDetails"></readonly-details>
+                    <div class="form-fields">
+                        <div class="custom-form-field-with-search lightTheme" style="margin: 15px 0px;">
+                              <shiptech-st-autosearch-selector [placeholder]="'company'" [name]="'Payment company'" [required] = "'true'" [masterType]="'company'" (onChanged)="AC_valueChanges('company',$event)" [bindValue]="formValues.orderDetails.paymentCompany.name"></shiptech-st-autosearch-selector>
+                        </div>
+                        <div id="custom-form-field" class="lightTheme">
+                            <mat-form-field class="without-search" appearance="legacy">
+                                <mat-label>Delivery Date</mat-label>
+                                <input matInput [matDatepicker]="pickerDD" (focus)="pickerDD.open()">
+                                <mat-datepicker-toggle matSuffix [for]="pickerDD">
+                                    <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'">
+                                    </mat-icon>
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #pickerDD></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="custom-form-field-with-search lightTheme" style="margin: 15px 0px;">
+                            <div class="d-flex">
+                                <shiptech-st-autosearch-selector [placeholder]="'carrier'" [name]="'Carrier'" [masterType]="'carrier'" (onChanged)="AC_valueChanges('carrier',$event)" [bindValue]="formValues.orderDetails.carrierCompany.name"></shiptech-st-autosearch-selector>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="field-textarea">
+                        <textarea rows="4" cols="50" placeholder="Type front office comments here"
+                        name="frontOfficeComments"
+                        [(ngModel)]="formValues.orderDetails.frontOfficeComments"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="section-header">
+                    <div class="header-label">Counterparty Details</div>
+                </div>
+                <div class="section-content order-details">
+                    <div class="row" style="margin: 0px;">
+                        <div class="col-md-6 pd-0">
+                            <readonly-details [options]="counterpartyDetails"></readonly-details>
+                            <div class="form-fields" style="margin: 0px -15px;">
+                                <div id="custom-form-field" class="lightTheme">
+                                    <mat-form-field class="without-search" appearance="legacy">
+                                        <mat-label>Bank account no.</mat-label>
+                                        <mat-select disableOptionCentering>
+                                            <mat-option value="YS Marine">YS Marine</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="custom-form-field-with-search lightTheme" style="margin: 15px 0px;">
+                                    <div class="d-flex">
+                                        <shiptech-st-autosearch-selector [placeholder]="'customer'" [name]="'Customer'" [masterType]="'company'" (onChanged)="AC_valueChanges('customer',$event)"></shiptech-st-autosearch-selector>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field-textarea">
+                                <textarea rows="4" cols="50" placeholder="Type back office comments here"
+                                name="backOfficeComments"
+                                [(ngModel)]="formValues.backOfficeComments"></textarea>
+                            </div>
+                        </div>
+                        <span class="seperator-line"></span>
+                        <div class="col-md-5 pd-0" style="margin: -10px 0px; line-height: 35px;">
+                            <div class="custom-form-field-with-search lightTheme" style="margin: 15px 0px;">
+                                <div class="d-flex">
+                                    <!-- <mat-form-field class="without-search" appearance="legacy">
+                                        <mat-label>Payable To</mat-label>
+                                        <mat-select disableOptionCentering>
+                                            <mat-option value="M A Marina">M A Marina</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <div class="search-icon">
+                                        <div class="img"></div>
+                                    </div> -->
+                                    <shiptech-st-autosearch-selector [placeholder]="'payable to'" [name]="'Payable To'" [masterType]="'payableTo'" (onChanged)="AC_valueChanges('payableto',$event)" [bindValue]="formValues.counterpartyDetails.payableTo.name"></shiptech-st-autosearch-selector>
+                                </div>
+                            </div>
+                            <div style="padding-top: 5px;">
+                                <mat-checkbox class="example-margin"
+                                name="paymentProofReceived"
+                                [(ngModel)]="formValues.paymentDetails.paymentProofReceived">Payment proof received</mat-checkbox>
+                            </div>
+                            <div class="field-textarea sizing">
+                                <textarea rows="4" cols="50" placeholder="Payment Proof comments"
+                                name="paymentDetailscomments"
+                                [(ngModel)]="formValues.paymentDetails.comments"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-      </div>
+    </div>
+    <!-- Product Details -->
+    <div class="section1 mt-4" style="margin: 0px;" *ngIf="!(formValues.invoiceClaimDetails.length > 0)">
+        <div class="match-grid" style="border-bottom: 4px solid #e5e5e5;">
+            <div class="title">Product Details</div>
+            <div class="agGrid-v2" style="margin: 0">
+                <div style="width:100%;height: 250px;position: relative;">
+                    <ag-grid-angular style="width: 100%;height: 100%;" [gridOptions]="gridOptions_data"
+                        class="ag-theme-material ag-grid-v2 angular-v9 prod-details"></ag-grid-angular>
+                        <button class="grid-add-btn" [matMenuTriggerFor]="addProductMenu" aria-label="Example icon-button with a menu">
+                            <div class="add-btn"></div>
+                        </button>
+                        <mat-menu #addProductMenu="matMenu" class="add-menu-container">
+                          <shiptech-add-product [productData]="productData" (onSelected)="addnewProduct($event)"  (click)="$event.stopPropagation()"></shiptech-add-product>
+                        </mat-menu>
+                </div>
+            </div>
+          </div>
+    </div>
+    <!-- Additional Cost Details -->
+    <div class="section1 mt-4" style="margin: 0px;" *ngIf="!(formValues.invoiceClaimDetails.length > 0)">
+        <div class="match-grid" style="border-bottom: 4px solid #e5e5e5;">
+            <div class="title">Additional Costs</div>
+            <div class="agGrid-v2" style="margin: 0">
+                <div style="width:100%;height: 250px;">
+                    <ag-grid-angular style="width: 100%;height: 100%;" [gridOptions]="gridOptions_ac"
+                        class="ag-theme-material ag-grid-v2 angular-v9 add-cost"></ag-grid-angular>
+                </div>
+            </div>
+          </div>
+    </div>
+    
+    <!-- Claim details -->
+    <div class="section1 mt-4" style="margin: 0px;" *ngIf="formValues.invoiceClaimDetails.length > 0">
+      <div class="match-grid" style="border-bottom: 4px solid #e5e5e5;">
+          <div class="title">Claim Details</div>
+          <div class="agGrid-v2" style="margin: 0">
+              <div style="width:100%;height: 250px;">
+                  <ag-grid-angular style="width: 100%;height: 100%;" [gridOptions]="gridOptions_claims"
+                      class="ag-theme-material ag-grid-v2 angular-v9 prod-details"></ag-grid-angular>
+              </div>
+          </div>
+        </div>
+    </div>
+    </form>
 </div>
-
-<!-- Claim details -->
 
