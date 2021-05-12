@@ -943,7 +943,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
       const filterValue = this.formValues.products[this.selectedTabIndex].physicalSuppliers[0].name ? this.formValues.products[this.selectedTabIndex].physicalSuppliers[0].name.toLowerCase() : this.formValues.products[this.selectedTabIndex].physicalSuppliers[0].toLowerCase();
       console.log(filterValue);
       if (this.physicalSupplierList) {
-        return this.physicalSupplierList.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0)
+        return this.physicalSupplierList.filter(option => option.name.toLowerCase().includes(filterValue))
           .slice(0, 10);
       } else {
         return [];
