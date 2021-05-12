@@ -1,9 +1,10 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import { LocalService } from '../../services/local-service.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { WarningComponent } from '../../shared/warning/warning.component';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { VesselInfoComponent} from '../../shared/vessel-info/vessel-info.component';
 
 @Component({
   selector: 'app-vessel-details',
@@ -12,6 +13,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 })
 export class VesselDetailsComponent implements OnInit {
 
+  @ViewChild(VesselInfoComponent) vesselInfo;
   @Output() closeBPlan = new EventEmitter();
   @Output() changeVessel = new EventEmitter();
   public bunkerUserRole = [];
@@ -85,11 +87,13 @@ export class VesselDetailsComponent implements OnInit {
   loadBunkerPlan(event) {
     this.previousUserRole = this.selectedUserRole;
     this.selectedUserRole = event.value;
+    // this.vesselInfo.changedUser();
     console.log(this.selectedRole);
     this.LoadBunkerPlanByRole();
   }
 
   LoadBunkerPlanByRole() {
+    // this.vesselInfo.changedUser();
     var _this = this;
     const confirmMessage = this.selectedUserRole?.name == 'Vessel'? 'Are you sure to switch your role to Vessel?' : 'Are you sure to switch your role to Operator?'
     console.log('LoadBunkerPlanByRole service', this.selectedUserRole);
@@ -115,7 +119,7 @@ export class VesselDetailsComponent implements OnInit {
       }
     });
 
-
+    
 
   }
 
