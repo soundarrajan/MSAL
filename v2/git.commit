@@ -1,9 +1,11 @@
-﻿commit 55ff21fcfd12da7b1c8ad4a1170ab6cc21afea04
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed May 12 14:18:07 2021 +0000
+﻿commit 768730ac35b0c34810100c67a5a0898e696551dc
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Wed May 12 14:55:50 2021 +0000
 
-    Merged PR 10664: Fixed autocomplete in product details section from invoice screen
+    Merged PR 10667: Field Popup and generate current Bplan
     
-    Fixed autocomplete in product details section from invoice screen
+    Field Popup and generate current Bplan
+    
+    Related work items: #29780
 
 branch: master

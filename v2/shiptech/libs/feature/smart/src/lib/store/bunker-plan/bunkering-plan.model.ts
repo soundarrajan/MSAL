@@ -1,4 +1,4 @@
-  export class ISaveBunkeringPlan{
+  export class SaveBunkeringPlanModel{
     plan_id: string;
     detail_no: number;
     port_id: string;
@@ -28,4 +28,11 @@
 
   }
 
+  export class CurrentROBModel{
+    '3.5 QTY': number;
+    '0.5 QTY': number;
+    'ULSFO': number;
+    'LSDIS': number;
+    'HSDIS': number;
+  }
   

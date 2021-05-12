@@ -6,7 +6,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatInput } from '@angular/material/input';
 import { LocalService } from '../../services/local-service.service';
+import { BunkeringPlanService } from '../../services/bunkering-plan.service';
+import { Store } from '@ngxs/store';
+import { Observable } from 'rxjs'
 import moment  from 'moment';
+import { SaveBunkeringPlanAction,UpdateBunkeringPlanAction } from "../../store/bunker-plan/bunkering-plan.action";
 const today = new Date();
 
 @Component({
@@ -31,6 +35,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   public etdInTime: any;
   public shiptechPortUrl: string;
   public shiptechOrderUrl: string = "shiptechUrl/#/masters/order";
+  public _changeCurrentROBObj$: any;
   @Input('bplanType') 
   public set bplanType(v : any) {
     this.bplanType = v;
@@ -42,12 +47,14 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   @Input('editableCell')public set editableCell(v : any) {
     this.editableCell = v;
   };
-  constructor(public router: Router, public dialog: MatDialog, private elem: ElementRef,private localService:LocalService,private appConfig: AppConfig) {
+  constructor(public router: Router, public dialog: MatDialog, private elem: ElementRef,private localService:LocalService,private appConfig: AppConfig, 
+              private bunkerPlanService:BunkeringPlanService,private store: Store ) {
     this.shiptechPortUrl = this.appConfig.v1.API.BASE_HEADER_FOR_NOTIFICATIONS;
   }
 
   ngOnInit() {
     this.localService.themeChange.subscribe(value => this.theme = value);
+    this.bunkerPlanService._changeCurrentROBObj$.subscribe(res => this._changeCurrentROBObj$ = res)
   }
 
   agInit(params: any): void {
@@ -275,12 +282,19 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     this.enableSave = false;
 
   }
-  toggleMenuInput(event, data) {//onenter
-    // if (this.menuData.comments && this.menuData.comments != '') {
-    //   this.inputMenuTrigger.openMenu();
-    //   var overlay = document.querySelector('.cdk-overlay-container');
-    //   overlay.classList.add('removeOverlay');
-    // }
+  toggleMenuInput(column) {//onenter
+    let commentType;
+    switch(column){
+      case 'eca_min_sod': {commentType = 'eca_sod_comment'; break;}
+      case 'hsfo_min_sod':{commentType = 'hsfo_sod_comment'; break;}
+      case 'max_sod': {commentType = 'max_sod_comment'; break;}
+      case 'min_sod': {commentType = 'min_sod_comment'; break;}
+    }
+    if (this.params.data[commentType] && this.params.data[commentType] != '') {
+      this.inputMenuTrigger.openMenu();
+      var overlay = document.querySelector('.cdk-overlay-container');
+      overlay.classList.add('removeOverlay');
+    }
   }
 
   toggleMenu2Input() {//onleave
@@ -300,20 +314,24 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
 
   }
 
-  toggleMenuCheckbox(event) {//onenter
-    // if (this.menuData.comments && this.menuData.comments != '') {
-    //   var overlay = document.querySelector('.cdk-overlay-container');
-    //   if (overlay)
-    //     overlay.classList.add('removeOverlay');
-    //   this.inputMenuTrigger.openMenu();
-    // }
-    // if ((event.pageY + 201 > (window.innerHeight + event.offsetY))) {
-    //   setTimeout(() => {
-    //     const panels = document.querySelector('.edit-checkbox-menu');
-    //     if (panels)
-    //       panels.classList.add('hover-popup-pos');
-    //   }, 0);
-    // }
+  toggleMenuCheckbox(event,params) {//onenter
+    if(params?.colDef?.field == 'is_min_soa'){
+      let comments = params?.data?.min_soa_comment;
+
+      if (comments && comments != '') {
+        var overlay = document.querySelector('.cdk-overlay-container');
+        if (overlay)
+          overlay.classList.add('removeOverlay');
+        this.inputMenuTrigger.openMenu();
+      }
+      if ((event.pageY + 201 > (window.innerHeight + event.offsetY))) {
+        setTimeout(() => {
+          const panels = document.querySelector('.edit-checkbox-menu');
+          if (panels)
+            panels.classList.add('hover-popup-pos');
+        }, 0);
+      }
+    }
   }
 
   toggleMenu2Checkbox() {//onleave
@@ -343,6 +361,17 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     }
 
   }
+  getComments(column){
+    let commentType;
+    switch(column){
+      case 'eca_min_sod': {commentType = 'eca_sod_comment'; break;}
+      case 'hsfo_min_sod':{commentType = 'hsfo_sod_comment'; break;}
+      case 'max_sod': {commentType = 'max_sod_comment'; break;}
+      case 'min_sod': {commentType = 'min_sod_comment'; break}
+      case 'is_min_soa': {commentType = 'min_soa_comment'; break;}
+    }
+      return this.params.data[commentType];
+  }
   portClicked(param) {
     this.params.context.componentParent.portClicked(param);
   }
@@ -366,25 +395,22 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     else
       this.enableSave = false;
   }
-
-  saveInput(value) {
-    if (this.menuData.value != value || this.menuData.comments != this.usercomments) {
-      this.showInfoIcon = true;
-      this.menuData.value = value;
-      this.menuData.comments = this.usercomments;
-    }
-    this.menuClick = false;
-    this.enableSave = false;
-    var overlay = document.querySelector('.cdk-overlay-container');
-    overlay.classList.remove('removeOverlay');
-    this.inputMenuTrigger.closeMenu();
-    this.triggerChangeEvent();
+  saveUserComment(comment){
+    this.usercomments = comment;
   }
-  saveCheckbox() {
-    if (this.menuData.value != this.isChecked || this.menuData.comments != this.usercomments) {
+
+  saveInput(value,params,column) {
+    let commentType;
+    switch(column){
+      case 'eca_min_sod': {commentType = 'eca_sod_comment'; break;}
+      case 'hsfo_min_sod':{commentType = 'hsfo_sod_comment'; break;}
+      case 'max_sod': {commentType = 'max_sod_comment'; break;}
+      case 'min_sod': {commentType = 'min_sod_comment'; break;}
+    }
+    if (params.value != value || this.params?.data[commentType] != this.usercomments) {
       this.showInfoIcon = true;
-      this.menuData.value = this.isChecked;
-      this.menuData.comments = this.usercomments;
+      this.params.value = value;
+      this.params.data[commentType] = this.usercomments;
     }
     this.menuClick = false;
     this.enableSave = false;
@@ -392,6 +418,34 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     overlay.classList.remove('removeOverlay');
     this.inputMenuTrigger.closeMenu();
     this.triggerChangeEvent();
+    // Update store with Field popup value
+    this.store.dispatch(new UpdateBunkeringPlanAction(this.params?.value, this.params?.colDef?.field, this.params.data?.detail_no))
+    // Update store with Field popup comment
+    this.store.dispatch(new UpdateBunkeringPlanAction(this.params?.data[commentType], commentType, this.params.data?.detail_no))
+  }
+  saveCheckbox(params) {
+    let comments;
+    let column = params?.colDef?.field;
+    if(column == 'is_min_soa'){
+        let commentType = 'min_soa_comment';
+        comments = params?.data?.min_soa_comment; 
+      if (params.value != this.isChecked || comments != this.usercomments) {
+        this.showInfoIcon = true;
+        this.params.value = this.isChecked == true? 1:0;
+        if(this.params?.data)
+        this.params.data[commentType] = this.usercomments;
+      }
+      this.menuClick = false;
+      this.enableSave = false;
+      var overlay = document.querySelector('.cdk-overlay-container');
+      overlay.classList.remove('removeOverlay');
+      this.inputMenuTrigger.closeMenu();
+      this.triggerChangeEvent();
+      // Update store with Field popup value
+      this.store.dispatch(new UpdateBunkeringPlanAction(this.params?.value, this.params?.colDef?.field, this.params.data?.detail_no))
+      // Update store with Field popup comment
+      this.store.dispatch(new UpdateBunkeringPlanAction(this.params?.data[commentType], commentType, this.params.data?.detail_no))
+    }
   }
   cancel() {
     var overlay = document.querySelector('.cdk-overlay-container');
@@ -414,6 +468,10 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
 
   consUpdatedEvent(params,value){
     this.params.context.componentParent.consUpdatedEvent(params,value);
+  }
+
+  updateSOA(value){
+    this.params.data.hsfo_soa = 4444;
   }
 }
 @Component({
