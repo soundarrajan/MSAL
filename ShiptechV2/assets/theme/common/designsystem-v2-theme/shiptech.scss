@@ -12,7 +12,13 @@
     padding: 0px !important;
   }
 .invoice-main-container{
-    background-color: red;
+    //background-color: red;
+    .mat-tab-body{
+      height:auto;
+      .mat-tab-body-content{
+        overflow: visible;
+      }
+    }
     .details{
         .section1{
             padding-top: 10px;
