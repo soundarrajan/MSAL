@@ -1,9 +1,9 @@
-﻿commit d070a89e2bbb7686ad5767a297a0037fd5b5197a
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed May 12 15:05:19 2021 +0000
+﻿commit ab30f513dc47c6affa7beb7e2ffb27b72fbc7c1e
+Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
+Date:   Wed May 12 15:25:29 2021 +0000
 
-    Merged PR 10668: Made details null when add new product in contract, fixed formula autocomplet...
+    Merged PR 10669: Additional cost changes
     
-    Made details null when add new product in contract, fixed formula autocomplete searching
+    Additional cost changes
 
 branch: master

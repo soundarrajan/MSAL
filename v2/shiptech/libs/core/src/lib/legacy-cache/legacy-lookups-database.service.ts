@@ -273,7 +273,11 @@ export class LegacyLookupsDatabase extends Dexie {
     let AdditionalCost = await db.toArray();
     return AdditionalCost;
   }
-
+  async getCurrencyTable(){
+    const db = this.table('currency');
+    let currencyList = await db.toArray();
+    return currencyList;
+  }
   private async ensureVersion(): Promise<any> {
     // TODO: add proper logging
     // Note: We're doing a different db versioning strategy. Whenever a table is added or deleted the version will Change automatically
