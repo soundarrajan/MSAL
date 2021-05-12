@@ -8,7 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
             <span class="chip-circle"></span>
             <span>{{info.Title}}</span>
           </div>
-          <div class="data" [ngClass]="{'tile-2': info.Title === 'Status' || info.Title === 'Estimated Total' || info.Title === 'Total Difference' || info.Title === 'Net Payable' ||  info.Title === 'Deductions' }" >{{info.Data}}</div>
+          <div class="data" [ngClass]="{'tile-2': info.Title === 'Status' }" >{{info.Data}}</div>
         </div>
     </div>
     `,
