@@ -1,9 +1,9 @@
-﻿commit 5636ca60ebe0d603de175e39ddfb762d3731b0e3
-Author: Subhashini Vasanthakumar <subhashini.k@inatech.com>
-Date:   Wed May 12 07:21:51 2021 +0000
+﻿commit 9faa346751cfef39b4235a271d144cc90daa1119
+Author: Padmashree S <padmashree.s@inatech.com>
+Date:   Wed May 12 13:35:10 2021 +0530
 
-    Merged PR 10632: added formatting  _ View Audit Log
+    invoice- scroll issue fixed
     
-    added formatting
+    invoice- scroll issue fixed
 
 branch: master
