@@ -68,9 +68,32 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   dateFormat;
   isLoading:boolean = false;
   formSubmitted:boolean = false;
+  showMoreButtons: boolean = false;
   emptyStringVal = '--';
   emptyNumberVal = '00';
   @ViewChildren('addProductMenu') addproductMenu;
+  more_invoice_types = [
+    {
+      displayName:'Final',
+      value:'FinalInvoice'
+    },
+    {
+      displayName:'Provisional',
+      value:'ProvisionalInvoice'
+    },
+    {
+      displayName:'Credit',
+      value:'CreditNote'
+    },
+    {
+      displayName:'Debit',
+      value:'DebitNote'
+    },
+    {
+      displayName:'Pre-claim',
+      value:'Pre-claim'
+    }
+  ];
   invoice_types =[
     {
       displayName:'Final',
@@ -847,5 +870,10 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     });
 
   }
+
+  openMoreButtons($event){
+      this.showMoreButtons = !this.showMoreButtons;
+  }
+  
 }
 
