@@ -74,6 +74,8 @@ export class AuditLogComponent implements OnInit {
      this.localService.getAuditLog(requestPayload).subscribe((data: any) => {
      this.rowData = data.payload;
      console.log(this.rowData);
+     let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
+     titleEle.click();
     });
   }
 
@@ -89,13 +91,13 @@ export class AuditLogComponent implements OnInit {
   }
 
   public columnDefs = [
-    { headerName: 'Entity Name', headerTooltip: 'Entity Name', field: 'fieldName',width:160 ,cellClass:['font-bold aggrid-content-c']},
+    { headerName: 'Entity Name', headerTooltip: 'Entity Name', field:'static', valueFormatter: params => { return'Bunker Plan'; }, width:160 ,cellClass:['font-bold aggrid-content-c']},
     { headerName: 'Event Type', field: 'transactionType', headerTooltip: 'Event Type',width:160,cellClass:['aggrid-content-c']  },
     { headerName: 'Field Name', field: 'fieldName', headerTooltip: 'Field Name',width:160,cellClass:['aggrid-content-c']   },
     { headerName: 'New Value', headerTooltip: 'New Value', field: 'newValue',cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'] },
     { headerName: 'Old Value', headerTooltip: 'Old Value', field: 'oldValue',cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'] },
     { headerName: 'User Name', headerTooltip: 'User Name', field: 'modifiedBy.name',cellClass:['aggrid-content-c'],width:160  },
-    { headerName: 'Date', headerTooltip: 'Date', field: 'date',valueFormatter: this.dateFormatter,cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'] }
+    { headerName: 'Date', headerTooltip: 'Date', field: 'date',valueFormatter: params => {return moment(params.value).format('MM/DD/YYYY HH:mm');}, width:160,cellClass:['aggrid-content-c']  }
   ];
 
   public rowData = [];
