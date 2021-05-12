@@ -29,6 +29,9 @@
           <td class="padding" style="max-width: initial;min-width: 200px;">
             <b>Invoice Rate</b>
           </td>
+          <td class="padding" style="max-width: initial;min-width: 200px;">
+            <b>Amount</b>
+          </td>
           <td class="padding" style="max-width: initial;min-width: 150px;">
             <b>Recon Status</b>
           </td>
@@ -178,6 +181,17 @@
                   </div>
                 </div>
               </div>
+            </td>
+            <td class="padding" style="max-width: initial;min-width: 200px;">
+              <div class="dotted-container black-container amount-container">
+                <div style="float: left;">
+                  {{productDetail.value.invoiceAmount}}
+                </div>
+                <div style="float: right;">
+                  {{productDetail.value.invoiceRateCurrency.name}}
+                </div>
+              </div>
+
             </td>
             <td style="max-width: initial;min-width: 150px;" class="padding-left-column">
               <span  *ngIf="productDetail.value.reconStatus && productDetail.value.reconStatus.id == '2'"  class="product-details-table-data-false">
