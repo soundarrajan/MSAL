@@ -1,9 +1,7 @@
-﻿commit 4e80cf4ad604706ca95b810190852a9bf0e0ae83
-Author: Padmashree S <padmashree.s@inatech.com>
-Date:   Wed May 12 11:37:52 2021 +0530
+﻿commit 258c8705f3b158d289f3e45d5b4ef2500c4db7cd
+Author: Edwin Francis <edwin.f@Inatech.com>
+Date:   Wed May 12 12:19:36 2021 +0530
 
-    Invoice screen - details section UI change
-    
-    Invoice screen - details section UI change
+    Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_git/Shiptech10-UI
 
 branch: master
