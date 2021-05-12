@@ -1,8 +1,9 @@
+import { IInvoiceDetailsItemRequest } from './../../../services/api/dto/invoice-details-item.dto';
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit,ViewChildren } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconRegistry } from '@angular/material/icon';
-import { forkJoin, Observable, of, ReplaySubject, Subject, throwError } from 'rxjs';
-import { catchError, concatMap, map, takeUntil, tap } from 'rxjs/operators';
+import { forkJoin, Observable, of, ReplaySubject, throwError } from 'rxjs';
+import { catchError, concatMap, map, tap } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '@shiptech/environment';
@@ -19,7 +20,6 @@ import moment from 'moment';
 import { IInvoiceDetailsItemBaseInfo, IInvoiceDetailsItemCounterpartyDetails,IInvoiceDetailsItemResponse, IInvoiceDetailsItemDto, IInvoiceDetailsItemInvoiceCheck, IInvoiceDetailsItemInvoiceSummary, IInvoiceDetailsItemOrderDetails, IInvoiceDetailsItemPaymentDetails, IInvoiceDetailsItemProductDetails, IInvoiceDetailsItemRequestInfo, IInvoiceDetailsItemStatus } from '../../../services/api/dto/invoice-details-item.dto';
 import { InvoiceDetailsService } from '../../../services/invoice-details.service';
 import { TenantSettingsService } from '../../../../../../../core/src/lib/services/tenant-settings/tenant-settings.service';
-import { EsubmitMode } from '../invoice-view.component';
 import { ToastrService } from 'ngx-toastr';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { InvoiceTypeSelectionComponent } from './component/invoice-type-selection/invoice-type-selection.component';
@@ -50,7 +50,7 @@ import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/
 
     {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
   ],
-  
+
 })
 export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
@@ -65,13 +65,12 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   public productData:any = [];
   paymentStatus:number=0;
   customInvoice:number=0;
-  invoiceSubmitMode:EsubmitMode;
   dateFormat;
   isLoading:boolean = false;
   formSubmitted:boolean = false;
   emptyStringVal = '--';
   emptyNumberVal = '00';
-  @ViewChildren('addProductMenu') addproductMenu; 
+  @ViewChildren('addProductMenu') addproductMenu;
   invoice_types =[
     {
       displayName:'Final',
@@ -151,23 +150,14 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   invoiceStatusList:any;
   paymentStatusList:any;
   invoiceTypeList:any;
-  staticLists: any;
-  uomList: any;
-  productList: any;
-  entityId: number;
-  private _destroy$ = new Subject();
-  entityName: string;
-  currencyList: any;
-  physicalSupplierList: any;
-
+  manualtab:any;
 // detailFormvalues:any;
 @Input('detailFormvalues') set _detailFormvalues(val) {
   if(val){
     this.formValues = val;
-    // if(this.formValues.paymentDetails == undefined || this.formValues.paymentDetails == null){
-    //   this.formValues.paymentDetails.paidAmount = 0;
-    //   this.formValues.paymentDetails.paymentProofReceived = false;
-    // }
+    if(!this.formValues.paymentDetails){
+      this.formValues.paymentDetails = <IInvoiceDetailsItemPaymentDetails>{};
+    }
     this.parseProductDetailData(this.formValues.productDetails);
     //  console.log(this.invoiceDetailsComponent.parseProductDetailData);
     this.setOrderDetailsLables(this.formValues.orderDetails);
@@ -175,30 +165,21 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     this.setChipDatas();
     this.paymentStatus = this.formValues.paymentDetails?.paymentStatus?.id;
     this.customInvoice = this.formValues.customStatus?.id;
+    this.manualtab = this.invoice_types.filter(x=>{ return x.value === this.formValues.documentType?.internalName});    
+    if(this.manualtab.length == 0){
+      this.invoice_types.pop();
+    }
   }
 }
   //Default Values - strats
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private invoiceService: InvoiceDetailsService,  public dialog: MatDialog,
-    private toastrService: ToastrService,private format: TenantFormattingService, private legacyLookupsDatabase: LegacyLookupsDatabase,
-    private route: ActivatedRoute) {
+    private toastrService: ToastrService,private format: TenantFormattingService, private legacyLookupsDatabase: LegacyLookupsDatabase) {
     iconRegistry.addSvgIcon('data-picker-gray',sanitizer.bypassSecurityTrustResourceUrl('../../assets/customicons/calendar-dark.svg'));
     this.setupGrid();
     this.setClaimsDetailsGrid();
   }
 
   ngOnInit(): void {
-    this.entityName = 'Invoice';
-    this.route.params.pipe(takeUntil(this._destroy$)).subscribe(params => {
-      this.entityId = parseFloat(params.contractId);
-    });
-    this.route.data.subscribe(data => {
-      this.staticLists = data.staticLists;
-      this.uomList = this.setListFromStaticLists('Uom');
-      this.productList = this.setListFromStaticLists('Product');
-      this.currencyList = this.setListFromStaticLists('Currency');
-      this.physicalSupplierList = this.setListFromStaticLists('Supplier');
-
-    });
     this.buildProductDetilsGrid();
     this.getCounterPartiesList();
     this.legacyLookupsDatabase.getInvoiceCustomStatus().then(list=>{
@@ -213,16 +194,6 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     this.dateFormat = this.format.dateFormat.replace('DDD', 'E');
     this.getProductList();
   }
-  
-  setListFromStaticLists(name) {
-    let findList = _.find(this.staticLists, function(object) {
-      return object.name == name;
-    });
-    if (findList != -1) {
-      return findList?.items;
-    }
-  }
-
   private setupGrid(){
     this.gridOptions_ac = <GridOptions>{
       defaultColDef: {
@@ -595,7 +566,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     if(this.formValues.paymentDetails != undefined && this.formValues.paymentDetails !=null){
       this.formValues.paymentDetails.comments = this.formValues.paymentDetails?.comments?.trim() ==''? null :this.formValues.paymentDetails?.comments;
     }
-   
+
   }
 
   setcounterpartyDetailsLables(counterpartyDetails){
@@ -792,11 +763,11 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         panelClass: 'popup-grid',
         data:  { orderId: this.formValues.orderDetails?.order?.id, lists : this.invoiceTypeList }
       });
-  
+
       dialogRef.afterClosed().subscribe(result => {
         this.formSubmitted = false;
         if(result && result != 'close'){
-          
+
         }
       });
     }else if(option == 'approve'){
@@ -853,7 +824,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     };
     this.invoiceService
     .productListOnInvoice(data)
-    .subscribe((response: any) => {      
+    .subscribe((response: any) => {
       response.payload.forEach(row => {
         this.productData.push({selected:false, product:row.product.name, deliveries:row.order.id, details:row});
       });
