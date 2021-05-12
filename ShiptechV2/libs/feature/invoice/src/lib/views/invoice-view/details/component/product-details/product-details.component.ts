@@ -426,6 +426,7 @@ implements OnInit {
   currencyList: any;
   physicalSupplierList: any;
   type: any;
+  @Output() amountChanged: EventEmitter<any> = new EventEmitter<any>();
   get entityId(): number {
     return this._entityId;
   }
@@ -557,6 +558,9 @@ implements OnInit {
   }
 
   amountFormatValue(value) {
+    if (typeof value == 'undefined') {
+      return null;
+    }
     let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
     let number = parseFloat(plainNumber);
     if (isNaN(number)) {
@@ -714,6 +718,7 @@ implements OnInit {
   }
 
   getUomConversionFactor(ProductId, Quantity, FromUomId, ToUomId, contractProductId, orderProductId, currentRowIndex) {
+    let conversionFactor = 1;
     let productId = ProductId;
     let quantity = Quantity;
     let fromUomId = FromUomId;
@@ -729,7 +734,7 @@ implements OnInit {
       }
     };
     if (toUomId == fromUomId) {
-      return 1;
+      conversionFactor = 1;
     }
     if (!productId || !toUomId || !fromUomId) {
         return;
@@ -748,11 +753,19 @@ implements OnInit {
           this.toastr.error(result);
         } else {
           console.log(result);
-         
-        }
-     });
+          conversionFactor = result;
+          this.formValues.productDetails[currentRowIndex].invoiceAmount = this.convertDecimalSeparatorStringToNumber(this.formValues.productDetails[currentRowIndex].invoiceQuantity) * (this.convertDecimalSeparatorStringToNumber(this.formValues.productDetails[currentRowIndex].invoiceRate) * conversionFactor);
+          this.formValues.productDetails[currentRowIndex].difference = parseFloat(this.formValues.productDetails[currentRowIndex].invoiceAmount) - parseFloat(this.formValues.productDetails[currentRowIndex].estimatedAmount);
+          this.calculateGrand(this.formValues);
+          if (this.formValues.productDetails[currentRowIndex]) {
+            this.calculateProductRecon(this.formValues.productDetails[currentRowIndex]);
+          }
 
-};
+
+        }
+    });
+
+  };
 
   calculateGrand(formValues) {
     if (!formValues.invoiceSummary) {
@@ -764,67 +777,106 @@ implements OnInit {
     formValues.invoiceSummary.estimatedAmountGrandTotal = this.calculateInvoiceEstimatedGrandTotal(formValues);
     formValues.invoiceSummary.totalDifference = this.convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.invoiceAmountGrandTotal) - this.convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.estimatedAmountGrandTotal);
     formValues.invoiceSummary.netPayable = this.convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.invoiceAmountGrandTotal) - this.convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.deductions);
-
+    this.changeDetectorRef.detectChanges();
+    this.amountChanged.emit(true);
     console.log(formValues);
-}
+  }
 
-calculateInvoiceGrandTotal(formValues) {
-  let grandTotal = 0;
-  formValues.productDetails.forEach((v, k) => {
-      if (!v.isDeleted && typeof v.invoiceAmount != 'undefined') {
-          grandTotal = grandTotal + this.convertDecimalSeparatorStringToNumber(v.invoiceAmount);
-      }
-  });
-  formValues.costDetails.forEach((v, k) => {
-      if (!v.isDeleted) {
-          if (typeof v.invoiceTotalAmount != 'undefined') {
-              grandTotal = grandTotal + this.convertDecimalSeparatorStringToNumber(v.invoiceTotalAmount);
-          }
-      }
-  });
-  return grandTotal;
-}
-
-calculateInvoiceEstimatedGrandTotal(formValues) {
-  let grandTotal = 0;
-  formValues.productDetails.forEach((v, k) => {
-    if (!v.isDeleted && typeof v.estimatedAmount != 'undefined') {
-      grandTotal = grandTotal + v.estimatedAmount;
-    }
-  });
-  
-  formValues.costDetails.forEach((v, k) => {
-    if (!v.isDeleted) {
-      if (typeof v.estimatedAmount != 'undefined') {
-          grandTotal = grandTotal + v.estimatedAmount;
-      }
-    }
-  });
-  return grandTotal;
-}
-
-convertDecimalSeparatorStringToNumber(number) {
-  var numberToReturn = number;
-  var decimalSeparator, thousandsSeparator;
-  if (typeof number == 'string') {
-      if (number.indexOf(',') != -1 && number.indexOf('.') != -1) {
-        if (number.indexOf(',') > number.indexOf('.')) {
-          decimalSeparator = ',';
-          thousandsSeparator = '.';
-        } else {
-          thousandsSeparator = ',';
-          decimalSeparator = '.';
+  calculateInvoiceGrandTotal(formValues) {
+    let grandTotal = 0;
+    formValues.productDetails.forEach((v, k) => {
+        if (!v.isDeleted && typeof v.invoiceAmount != 'undefined') {
+            grandTotal = grandTotal + this.convertDecimalSeparatorStringToNumber(v.invoiceAmount);
         }
-        numberToReturn = parseFloat(number.split(decimalSeparator)[0].replace(new RegExp(thousandsSeparator, 'g'), '')) + parseFloat(`0.${number.split(decimalSeparator)[1]}`);
-      } else {
-        numberToReturn = parseFloat(number);
+    });
+    formValues.costDetails.forEach((v, k) => {
+        if (!v.isDeleted) {
+            if (typeof v.invoiceTotalAmount != 'undefined') {
+                grandTotal = grandTotal + this.convertDecimalSeparatorStringToNumber(v.invoiceTotalAmount);
+            }
+        }
+    });
+    return grandTotal;
+  }
+
+  calculateInvoiceEstimatedGrandTotal(formValues) {
+    let grandTotal = 0;
+    formValues.productDetails.forEach((v, k) => {
+      if (!v.isDeleted && typeof v.estimatedAmount != 'undefined') {
+        grandTotal = grandTotal + v.estimatedAmount;
       }
+    });
+    
+    formValues.costDetails.forEach((v, k) => {
+      if (!v.isDeleted) {
+        if (typeof v.estimatedAmount != 'undefined') {
+            grandTotal = grandTotal + v.estimatedAmount;
+        }
+      }
+    });
+    return grandTotal;
   }
-  if (isNaN(numberToReturn)) {
-    numberToReturn = 0;
+
+  convertDecimalSeparatorStringToNumber(number) {
+    var numberToReturn = number;
+    var decimalSeparator, thousandsSeparator;
+    if (typeof number == 'string') {
+        if (number.indexOf(',') != -1 && number.indexOf('.') != -1) {
+          if (number.indexOf(',') > number.indexOf('.')) {
+            decimalSeparator = ',';
+            thousandsSeparator = '.';
+          } else {
+            thousandsSeparator = ',';
+            decimalSeparator = '.';
+          }
+          numberToReturn = parseFloat(number.split(decimalSeparator)[0].replace(new RegExp(thousandsSeparator, 'g'), '')) + parseFloat(`0.${number.split(decimalSeparator)[1]}`);
+        } else {
+          numberToReturn = parseFloat(number);
+        }
+    }
+    if (isNaN(numberToReturn)) {
+      numberToReturn = 0;
+    }
+    return parseFloat(numberToReturn);
   }
-  return parseFloat(numberToReturn);
-}
+
+  calculateProductRecon(product) {
+    if (!product.invoiceRateCurrency || !product.estimatedRateCurrency) {
+      return false;
+    }
+    if (!product.invoiceRateCurrency.id || !product.estimatedRateCurrency.id) {
+      return false;
+    }
+    this.invoiceService
+    .calculateProductRecon(product)
+    .pipe(
+        finalize(() => {
+
+        })
+    )
+    .subscribe((result: any) => {
+        if (typeof result == 'string') {
+          this.spinner.hide();
+          this.toastr.error(result);
+        } else {
+          var obj;
+          if (result.data == 1) {
+            obj = {
+              id: 1,
+              name: 'Matched'
+            };
+          } else {
+            obj = {
+              id: 2,
+              name: 'Unmatched'
+            };
+          }
+          product.reconStatus = obj;
+          this.changeDetectorRef.detectChanges();
+        }
+    });
+
+  }
 
 
 

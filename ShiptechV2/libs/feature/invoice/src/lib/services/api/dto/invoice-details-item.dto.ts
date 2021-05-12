@@ -163,6 +163,7 @@ export interface IInvoiceDetailsItemProductDetails {
     orderProductId: number
     contractProductId: number;
     sapInvoiceAmount: number;
+    invoiceAmount: number;
     id: number
     isDeleted: boolean;
     modulePathUrl: string;
