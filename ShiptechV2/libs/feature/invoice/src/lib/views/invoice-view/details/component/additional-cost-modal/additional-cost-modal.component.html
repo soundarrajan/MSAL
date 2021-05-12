@@ -1,24 +1,85 @@
-<mat-dialog-content>
-
-    <div class="custom-form-field-with-search lightTheme">
-      <div class="d-flex">
-        <mat-form-field class="without-search" appearance="legacy">
-          <mat-label>Search</mat-label>
-          <input matInput name="search" [(ngModel)]="searchText">
-        </mat-form-field>                            
-        <div class="search-icon" (click)="applyFilter()">
-          <div class="img"></div>
-        </div>
-    </div>
+<div class="col-md-12 d-flex no-padding">
+    <table class="product-additional-costs-table table table-stripped table-hover" style="width:100%">
+      <thead>
+        <tr>
+          <td class="padding" style="width: 30px;">
+            <a class="add-icon" (click)="addNewAdditionalCostLine()"></a>
+          </td>
+          <td class="padding" style="width:15%">
+            <b>Item</b>
+          </td>
+          <td class="padding" style="width:15%">
+            <b>Cost Type</b>
+          </td>
+          <td class="padding" style="width:15%">
+            <b>% of</b>
+          </td>
+          <td class="padding" style="width:15%">
+            <b>Inv. Qty.</b>
+          </td>
+          <td class="padding" style="width:15%">
+            <b>Inv. Rate</b>
+          </td>
+          <td class="padding" style="width:15%">
+            <b>Amount</b>
+          </td>
+          <td class="padding" style="width:15%">
+            <b>Extra (%)</b>
+          </td>
+          <td class="padding" style="width:15%">
+            <b>Extra Amount</b>
+          </td>
+          <td class="padding" style="width:15%">
+            <b>Total Amount</b>
+          </td>
+          <td class="padding blue-bg" style="width:15%">
+            <b>BDN Qty</b>
+          </td>
+          <td class="padding blue-bg" style="width:15%">
+            <b>Est. Rate</b>
+          </td>
+          <td class="padding blue-bg" style="width:15%">
+            <b>Amount</b>
+          </td>
+          <td class="padding blue-bg" style="width:15%">
+            <b>Extra (%)</b>
+          </td>
+          <td class="padding blue-bg" style="width:15%">
+            <b>Extra Amount</b>
+          </td>
+          <td class="padding blue-bg" style="width:15%">
+            <b>Total Amount</b>
+          </td>
+          <td class="padding" style="width:15%">
+            <b>Diff.</b>
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+          <ng-container>
+            <tr *ngFor="let costs of additionalCost">              
+              <td class="padding" style="padding-left: 0px  !important; padding-right: 0px  !important;">
+                <a class="remove-icon" style="margin-left: 10px;" (click)="removeAdditionalCostLine()"></a>
+              </td>              
+              <td>{{costs.costName.name}}</td>
+              <td>{{costs.costType.name}}</td>
+              <td>4</td>
+              <td>{{costs.invoiceQuantity}} {{costs.invoiceQuantityUom.name}}</td>
+              <td>{{costs.invoiceRateCurrency.code}}{{costs.invoiceRate}} {{costs.invoiceRateUom.name}}</td>
+              <td>{{costs.invoiceRateCurrency.code}}{{costs.amountInOrderCurrency}}</td>
+              <td>{{costs.invoiceExtras}}</td>
+              <td>{{costs.invoiceExtrasAmount}}</td>
+              <td>{{costs.amountInOrderCurrency + costs.invoiceExtrasAmount}}</td>
+              <td>{{costs.deliveryQuantityUom ? costs.deliveryQuantityUom.name : ''}} {{costs.deliveryQuantity}}</td>
+              <td>{{costs.invoiceRateCurrency.code}} {{costs.estimatedRate}} {{costs.estimatedRateUom ? costs.estimatedRateUom.name : ''}}</td>
+              <!-- <td>{{costs.invoiceRateCurrency.code}} {{costs.estimatedRate}}</td> -->
+              <td>{{costs.invoiceRateCurrency.code}} {{costs.estimatedAmount}}</td>           
+              <td>{{costs.estimatedExtras}}</td>
+              <td>{{costs.estimatedExtrasAmount}}</td>
+              <td>{{costs.estimatedAmount + costs.estimatedExtrasAmount}}</td>
+              <td>{{(costs.amountInOrderCurrency + costs.invoiceExtrasAmount) - (costs.estimatedAmount + costs.estimatedExtrasAmount)}}</td>
+            </tr>
+          </ng-container>
+      </tbody>
+    </table>
   </div>
-
-  <mat-list>
-    <mat-list-item *ngFor="let cost of costData">
-      <mat-radio-button matLine>{{cost.costType}}</mat-radio-button>
-    </mat-list-item>
-    </mat-list>
-</mat-dialog-content>
-<!-- <mat-dialog-actions>
-  <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button [mat-dialog-close]="true">Delete</button>
-</mat-dialog-actions> -->

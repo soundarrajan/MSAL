@@ -52,6 +52,7 @@ import { NavBarResolver } from './views/invoice-view/details/navbar-route-resolv
 import { BreadcrumbsModule } from '@shiptech/core/ui/components/breadcrumbs/breadcrumbs.module';
 import { InvoiceDetailsToolbarComponent } from './views/invoice-view/toolbar/invoice-details-toolbar.component';
 import { InvoiceTypeSelectionComponent } from './views/invoice-view/details/component/invoice-type-selection/invoice-type-selection.component';
+import { AdditionalCostModalComponent } from './views/invoice-view/details/component/additional-cost-modal/additional-cost-modal.component';
 import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
@@ -102,7 +103,8 @@ import { MatMenuModule } from '@angular/material/menu';
     RelatedInvoiceComponent,
     AddProductDetailsComponent,
     InvoiceDetailsToolbarComponent,
-    InvoiceTypeSelectionComponent
+    InvoiceTypeSelectionComponent,
+    AdditionalCostModalComponent
   ],
   providers: [
     ModuleLoggerFactory,
