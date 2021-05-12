@@ -85,7 +85,7 @@ export class AGGridCellEditableComponent implements ICellRendererAngularComp {
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, public dialog: MatDialog) {
     iconRegistry.addSvgIcon(
       'data-picker-gray',
-      sanitizer.bypassSecurityTrustResourceUrl('../assets/customicons/calendar-dark.svg'));
+      sanitizer.bypassSecurityTrustResourceUrl('./../assets/customicons/calendar-dark.svg'));
   }
 
   ngOnInit() {

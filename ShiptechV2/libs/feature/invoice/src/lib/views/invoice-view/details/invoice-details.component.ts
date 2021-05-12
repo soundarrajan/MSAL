@@ -165,7 +165,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     this.setChipDatas();
     this.paymentStatus = this.formValues.paymentDetails?.paymentStatus?.id;
     this.customInvoice = this.formValues.customStatus?.id;
-    this.manualtab = this.invoice_types.filter(x=>{ return x.value === this.formValues.documentType?.internalName});    
+    this.manualtab = this.invoice_types.filter(x=>{ return x.value === this.formValues.documentType?.internalName});
     if(this.manualtab.length == 0){
       this.invoice_types.pop();
     }
@@ -174,7 +174,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   //Default Values - strats
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private invoiceService: InvoiceDetailsService,  public dialog: MatDialog,
     private toastrService: ToastrService,private format: TenantFormattingService, private legacyLookupsDatabase: LegacyLookupsDatabase) {
-    iconRegistry.addSvgIcon('data-picker-gray',sanitizer.bypassSecurityTrustResourceUrl('../../assets/customicons/calendar-dark.svg'));
+    iconRegistry.addSvgIcon('data-picker-gray',sanitizer.bypassSecurityTrustResourceUrl('./../../assets/customicons/calendar-dark.svg'));
     this.setupGrid();
     this.setClaimsDetailsGrid();
   }
@@ -624,8 +624,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         this.formSubmitted = false;
         return;
       }
-      this.formValues.paymentDetails.paymentStatus.id = this.paymentStatus;
-      this.formValues.customStatus.id = this.customInvoice;
+      this.formValues.paymentDetails.paymentStatus = this.paymentStatus;
+      this.formValues.customStatus = this.customInvoice;
 
     //  alert("Has to save please wait");
     let data : any = {
