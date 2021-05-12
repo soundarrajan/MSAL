@@ -82,6 +82,14 @@ export class InvoiceDetailsService extends BaseStoreService
   }
    
   
+    /**
+ * @param payload  
+ */
+  @ObservableException()
+  calculateProductRecon(payload: any): Observable<unknown> {
+    return this.api.calculateProductRecon(payload);
+  }
+  
 
   ngOnDestroy(): void {
     super.onDestroy();

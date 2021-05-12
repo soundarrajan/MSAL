@@ -372,6 +372,7 @@
         </div>
     </div>
     <!-- Product Details -->
+    {{formValues.invoiceSummary.invoiceAmountGrandTotal}}
     <div class="container-fluid-invoice" style="padding-left: 10px;padding-right: 10px;">
         <div class="row m-b-4">
         <div class="col-12">
@@ -384,6 +385,7 @@
                     [currencyList]="currencyList"
                     [physicalSupplierList]="physicalSupplierList"
                     [entityId]="entityId"
+                    (amountChanged)="updateAmountValues($event)"
                     class="col-12"
                     style="padding-left: 0px; padding-right: 0px;">
                 </shiptech-invoice-product-details>  
