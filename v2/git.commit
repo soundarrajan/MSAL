@@ -1,9 +1,9 @@
-﻿commit 29e648b776bbbd74d0e639ca92d31c13d51eb700
+﻿commit 1cfbfbebb35b5a999349861968e9e1b0c3e1808c
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed May 12 13:26:34 2021 +0000
+Date:   Wed May 12 13:43:44 2021 +0000
 
-    Merged PR 10657: Fixed formula validation after user copy the contract
+    Merged PR 10660: Made isMtmFormula equals with false when user copy a contract
     
-    Fixed formula validation after user copy the contract
+    Made isMtmFormula equals with false when user copy a contract
 
 branch: master
