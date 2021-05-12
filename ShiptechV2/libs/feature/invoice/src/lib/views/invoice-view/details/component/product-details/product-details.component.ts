@@ -534,11 +534,11 @@ implements OnInit {
   }
 
   openDeliveryLink(deliveryId) {
-    return `${this.baseOrigin}/v2/delivery/delivery${deliveryId}/details`;
+    return `${this.baseOrigin}/v2/delivery/delivery/${deliveryId}/details`;
   }
 
   openContractLink(contractId) {
-    return `${this.baseOrigin}/v2/contracts/contract${contractId}/details`;
+    return `${this.baseOrigin}/v2/contracts/contract/${contractId}/details`;
 
   }
 
