@@ -477,7 +477,7 @@ implements OnInit {
     } 
     this.physicalSupplierList = physicalSupplierList;
   }
-  
+  productDetailsExpandArray = [];
 
 
 
@@ -531,6 +531,11 @@ implements OnInit {
 
   openDeliveryLink(deliveryId) {
     return `${this.baseOrigin}/v2/delivery/delivery${deliveryId}/details`;
+  }
+
+  openContractLink(contractId) {
+    return `${this.baseOrigin}/v2/contracts/contract${contractId}/details`;
+
   }
 
   quantityFormatValue(value) {
@@ -662,6 +667,25 @@ implements OnInit {
     this.changeDetectorRef.detectChanges(); 
   }
 
+  formatDate(date?: any) {
+    if (date) {    
+      let currentFormat = this.format.dateFormat;
+      let hasDayOfWeek;
+      if (currentFormat.startsWith('DDD ')) {
+          hasDayOfWeek = true;
+          currentFormat = currentFormat.split('DDD ')[1];
+      }
+      currentFormat = currentFormat.replace(/d/g, 'D');
+      currentFormat = currentFormat.replace(/y/g, 'Y');
+      currentFormat = currentFormat.replace(/HH:mm/g, '');
+      let elem = moment(date, 'YYYY-MM-DDTHH:mm:ss');
+      let formattedDate = moment(elem).format(currentFormat);
+      if (hasDayOfWeek) {
+        formattedDate = `${moment(date).format('ddd') } ${ formattedDate}`;
+      }
+      return formattedDate;
+    }
+  }
 
 
 

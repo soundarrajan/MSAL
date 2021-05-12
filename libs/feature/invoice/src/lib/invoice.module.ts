@@ -100,6 +100,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSliderModule } from '@angular/material/slider';
 import { StaticListsRouteResolver } from './views/invoice-view/details/static-lists-route.resolver';
+import { QuantityTenantFormatDirective } from './views/invoice-view/details/component/directives/quantity-tenant-format.directive';
+import { AmountTenantFormatDirective } from './views/invoice-view/details/component/directives/amount-tenant-format.directive';
+import { PriceTenantFormatDirective } from './views/invoice-view/details/component/directives/price-tenant-format.directive';
+import { NumberOnlyDirective } from './views/invoice-view/details/component/directives/number-only.directive';
 
 @NgModule({
   imports: [
@@ -206,7 +210,19 @@ import { StaticListsRouteResolver } from './views/invoice-view/details/static-li
     AddProductDetailsComponent,
     InvoiceDetailsToolbarComponent,
     InvoiceTypeSelectionComponent,
-    ProductDetailsComponent
+    ProductDetailsComponent,
+    QuantityTenantFormatDirective,
+    AmountTenantFormatDirective,
+    PriceTenantFormatDirective,
+    NumberOnlyDirective
+  ],
+  exports: [
+    QuantityTenantFormatDirective,
+    NumberOnlyDirective,
+    AmountTenantFormatDirective,
+    PriceTenantFormatDirective
+   // PSpinnerDisableKeysSpinDirective,
+    //PSpinnerTenantFormatDirective
   ],
   providers: [
     ModuleLoggerFactory,
