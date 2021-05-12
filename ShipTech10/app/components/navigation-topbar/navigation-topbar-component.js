@@ -180,7 +180,7 @@ angular.module('shiptech').controller('NavigationTopBarController', [ '$rootScop
                     {
                         id: 'invoices',
                         displayName : 'Invoices',
-                        url: typeof payload != 'undefined' && payload.invoiceId ? `#/invoices/invoice/edit/${ payload.invoiceId}` : '',
+                        url: typeof payload != 'undefined' && payload.invoiceId ? `v2/invoices/edit/${ payload.invoiceId}` : '',
                         entityId : typeof payload != 'undefined' && payload.invoiceId ? payload.invoiceId : '',
                         indexStatus : null,
                         hidden : false

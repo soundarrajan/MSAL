@@ -2,6 +2,6 @@
 	<span ng-init="rowObj=  grid.appScope.fVal().formValues.relatedInvoices[rowRenderIndex]">
 
 		<a href="#/invoices/claim/edit/{{ MODEL_COL_FIELD}}" ng-if="rowObj.isClaimSybtype">{{ MODEL_COL_FIELD}}</a>
-		<a href="#/invoices/invoice/edit/{{ MODEL_COL_FIELD}}" ng-if="!rowObj.isClaimSybtype">{{ MODEL_COL_FIELD}}</a>
+		<a href="v2/invoices/edit/{{ MODEL_COL_FIELD}}" ng-if="!rowObj.isClaimSybtype">{{ MODEL_COL_FIELD}}</a>
 	</span>
 </div>

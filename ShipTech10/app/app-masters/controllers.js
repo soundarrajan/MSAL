@@ -744,7 +744,8 @@
 	            InvoiceTypeName: invoiceType,
 	        };
 	        localStorage.setItem('invoiceFromDelivery', angular.toJson(data));
-	        window.open(`/#/${ vm.app_id }/` + 'invoice' + '/edit/', '_blank');
+	        // window.open(`/#/${ vm.app_id }/` + 'invoice' + '/edit/', '_blank');
+            window.open(`/v2/${ vm.app_id }/` + 'edit/0', "_blank");
 	    };
 
         vm.checkLabelsHeight = function() {
