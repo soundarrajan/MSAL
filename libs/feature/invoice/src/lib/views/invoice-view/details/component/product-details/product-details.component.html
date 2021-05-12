@@ -1,49 +1,49 @@
 <div class="header-product-details col-md-12 no-padding" style="margin-top: 10px;">
   Product details
 </div>
-<div class="col-md-12 d-flex no-padding">
-  <table class="invoice-product-details-table table table-stripped table-hover">
-    <thead>
-      <tr>
-        <td class="padding" style="width: 30px;">
-          <a class="add-icon"></a>
-        </td>
-        <td class="padding" style="width: 250px">
-          <b>Delivery No. / Ordered Product</b>
-        </td>
-        <td class="padding" style="width: 200px" class="delivery-product-header"> 
-          <b>Deliv. Product</b>
-        </td>
-        <td class="padding" style="width: 200px">
-          <b>Deliv. Qty</b>
-        </td>
-        <td class="padding" style="width: 200px;">
-          <b>Estd. Rate</b>
-        </td>
-        <td class="padding" style="width: 200px;">
-          <b>Invoice Product</b>
-        </td>
-        <td class="padding" style="width: 200px;">
-          <b>Invoice Qty</b>
-        </td>
-        <td class="padding" style="width: 200px;">
-          <b>Invoice Rate</b>
-        </td>
-        <td class="padding" style="width: 150px;">
-          <b>Recon Status</b>
-        </td>
-        <td class="padding" style="width: 150px;">
-          <b>Sulpher Content</b>
-        </td>
-        <td class="padding" style="width: 200px;">
-          <b>Phy. Supplier</b>
-        </td>
-        <td class="padding" style="width: 20px;">
-          <b></b>
-        </td>
-      </tr>
-    </thead>
-    <tbody>
+<div class="custom-hardcoded-table admin" style="min-height: 250px;">
+  <table class="table-body invoice-product-details-table">
+      <thead>
+        <tr>
+          <td class="padding" style="width: 30px;">
+            <a class="add-icon"></a>
+          </td>
+          <td class="padding" style="width: 250px">
+            <b>Delivery No. / Ordered Product</b>
+          </td>
+          <td class="padding" style="width: 200px" class="delivery-product-header"> 
+            <b>Deliv. Product</b>
+          </td>
+          <td class="padding" style="width: 200px">
+            <b>Deliv. Qty</b>
+          </td>
+          <td class="padding" style="width: 200px;">
+            <b>Estd. Rate</b>
+          </td>
+          <td class="padding" style="width: 200px;">
+            <b>Invoice Product</b>
+          </td>
+          <td class="padding" style="width: 200px;">
+            <b>Invoice Qty</b>
+          </td>
+          <td class="padding" style="width: 200px;">
+            <b>Invoice Rate</b>
+          </td>
+          <td class="padding" style="width: 150px;">
+            <b>Recon Status</b>
+          </td>
+          <td class="padding" style="width: 150px;">
+            <b>Sulpher Content</b>
+          </td>
+          <td class="padding" style="width: 200px;">
+            <b>Phy. Supplier</b>
+          </td>
+          <td class="padding" style="width: 20px;">
+            <b></b>
+          </td>
+        </tr>
+      </thead>
+      <tbody ng-repeat="(key, value) in formValues.vesselProducts track by $index" ng-init="$rowIndex = $index" ng-if="!value.isDeleted">
         <ng-container  *ngFor="let productDetail of formValues.productDetails | keyvalue : originalOrder">
           <tr *ngIf="!productDetail.value.isDeleted">
             <td class="padding" style="padding-left: 0px  !important; padding-right: 0px  !important;">
@@ -248,7 +248,31 @@
               <a class="remove-icon" style="margin-left: 10px;" (click)="productDetail.value.expand = !productDetail.value.expand"></a>
             </td>
           </tr>
+          <tr *ngIf="productDetail.value.expand">
+            <td colspan="12"> 
+              <table class="nestead-table">
+                <thead>
+                  <tr>
+                    <td style="max-width: initial; min-width: 50px;"></td>
+                    <td style="max-width: initial; min-width: 50px;" class="padding"><span class="insert" ng-click="addnewTankDetail($rowIndex);"></span></td>
+                    <td style="max-width: initial; min-width: 220px;" class="padding"><b>Tank Name</b></td>
+                    <td style="max-width: initial; min-width: 300px;" class="padding"><b>Tank Type</b></td>
+                    <td style="max-width: initial; min-width: 200px;" class="padding"><b>Capacity (m3)</b></td>
+                    <td style="max-width: initial; min-width: 100px;" class="padding"><b>Active</b></td>
+                    <td style="max-width: initial; min-width: 250px;" class="padding"><b>Comments</b></td>
+                  </tr>
+                </thead>
+                <tbody>			
+                  <tr >
+                    <td style="max-width: initial; min-width: 50px;"></td>							
+                    <td style="max-width: initial; min-width: 50px;"><span class="remove" style="display: block;pointer-events: all; opacity: 1" ></span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
         </ng-container>
-    </tbody>
+
+      </tbody>
   </table>
 </div>
