@@ -1,5 +1,5 @@
 import { IInvoiceDetailsItemRequest } from './../../../services/api/dto/invoice-details-item.dto';
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit,ViewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, Input, OnDestroy, OnInit,ViewChildren } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconRegistry } from '@angular/material/icon';
 import { forkJoin, Observable, of, ReplaySubject, Subject, throwError } from 'rxjs';
@@ -28,6 +28,7 @@ import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookup
 import {MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import _ from 'lodash';
+import { DecimalPipe } from '@angular/common';
 
 
   export const MY_FORMATS = {
@@ -71,7 +72,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   formSubmitted:boolean = false;
   showMoreButtons: boolean = false;
   emptyStringVal = '--';
-  emptyNumberVal = '00';
+  emptyNumberVal = '';
   @ViewChildren('addProductMenu') addproductMenu;
   more_invoice_types = [
     {
@@ -183,6 +184,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   currencyList: any;
   productList: any;
   physicalSupplierList: any;
+  amountFormat: string;
 
 // detailFormvalues:any;
 @Input('detailFormvalues') set _detailFormvalues(val) {
@@ -202,12 +204,16 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     if(this.manualtab.length == 0){
       this.invoice_types.pop();
     }
+    this.setInvoiceAmount();
   }
 }
   //Default Values - strats
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private invoiceService: InvoiceDetailsService,  public dialog: MatDialog,
     private toastrService: ToastrService,private format: TenantFormattingService, private legacyLookupsDatabase: LegacyLookupsDatabase,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    @Inject(DecimalPipe) private _decimalPipe,
+    private tenantService: TenantFormattingService,) {
+    this.amountFormat = '1.' + this.tenantService.amountPrecision + '-' + this.tenantService.amountPrecision;
     iconRegistry.addSvgIcon('data-picker-gray',sanitizer.bypassSecurityTrustResourceUrl('./../../assets/customicons/calendar-dark.svg'));
     this.setupGrid();
     this.setClaimsDetailsGrid();
@@ -239,6 +245,18 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     })
     this.dateFormat = this.format.dateFormat.replace('DDD', 'E');
     this.getProductList();
+  }
+
+  setInvoiceAmount() {
+    this.formValues.productDetails.forEach((v, k) => {
+      if (v.sapInvoiceAmount) {
+        v.invoiceAmount = v.sapInvoiceAmount;
+      } else {
+        v.invoiceAmount = v.invoiceComputedAmount;
+      }
+    });
+
+    console.log(this.formValues.productDetails);
   }
 
     
@@ -634,13 +652,13 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     var ivs =  this.formValues.invoiceSummary;
     this.chipData[0].Data = this.formValues.id?.toString();
     this.chipData[1].Data = this.formValues.status.displayName? this.formValues.status.displayName : this.emptyStringVal;
-    this.chipData[2].Data = this.formValues.invoiceTotalPrice? this.formValues.invoiceTotalPrice?.toString():this.emptyNumberVal;
-    this.chipData[3].Data = ivs?.estimatedAmountGrandTotal? ivs?.estimatedAmountGrandTotal.toString():this.emptyNumberVal;
-    this.chipData[4].Data = ivs?.totalDifference? ivs?.totalDifference?.toString():this.emptyNumberVal;
-    this.chipData[5].Data = ivs?.provisionalInvoiceNo? ivs?.provisionalInvoiceNo?.toString():this.emptyNumberVal;
-    this.chipData[6].Data = ivs?.provisionalInvoiceAmount? ivs?.provisionalInvoiceAmount?.toString(): this.emptyNumberVal;
-    this.chipData[7].Data = ivs?.deductions? ivs?.deductions?.toString() : this.emptyNumberVal;
-    this.chipData[8].Data = ivs?.netPayable? ivs?.netPayable?.toString() : this.emptyNumberVal;
+    this.chipData[2].Data = ivs.invoiceAmountGrandTotal? this.amountFormatValue(ivs.invoiceAmountGrandTotal?.toString()) : this.emptyNumberVal;
+    this.chipData[3].Data = ivs?.estimatedAmountGrandTotal? this.amountFormatValue(ivs?.estimatedAmountGrandTotal.toString()) : this.emptyNumberVal;
+    this.chipData[4].Data = ivs?.totalDifference? this.amountFormatValue(ivs?.totalDifference?.toString()) : this.emptyNumberVal;
+    this.chipData[5].Data = ivs?.provisionalInvoiceNo? this.amountFormatValue(ivs?.provisionalInvoiceNo?.toString()) : this.emptyNumberVal;
+    this.chipData[6].Data = ivs?.provisionalInvoiceAmount? this.amountFormatValue(ivs?.provisionalInvoiceAmount?.toString()): this.emptyNumberVal;
+    this.chipData[7].Data = ivs?.deductions? this.amountFormatValue(ivs?.deductions?.toString()) : this.emptyNumberVal;
+    this.chipData[8].Data = ivs?.netPayable? this.amountFormatValue(ivs?.netPayable?.toString()) : this.emptyNumberVal;
   }
 
   formatDateForBe(value) {
@@ -907,8 +925,33 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   openMoreButtons($event){
       this.showMoreButtons = !this.showMoreButtons;
   }
+
+  amountFormatValue(value) {
+    if (typeof value == 'undefined') {
+      return null;
+    }
+    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    let number = parseFloat(plainNumber);
+    if (isNaN(number)) {
+      return null;
+    }
+    if (plainNumber) {
+      if(this.tenantService.amountPrecision == 0) {
+        return plainNumber;
+      } else {
+        return this._decimalPipe.transform(plainNumber, this.amountFormat);
+      }
+    }
+  }
+
+
+  public updateAmountValues(changes: any):void {
+    this.setChipDatas();
+  } 
+
   changedAdditonalcost(event){
     this.formValues.costDetails = event;
   }
+  
 }
 
