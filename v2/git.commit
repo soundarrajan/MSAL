@@ -1,7 +1,9 @@
-﻿commit 351c36dafa99f82b77e2074e7d3a4b3dae040132
-Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Wed May 12 12:28:43 2021 +0530
+﻿commit 5636ca60ebe0d603de175e39ddfb762d3731b0e3
+Author: Subhashini Vasanthakumar <subhashini.k@inatech.com>
+Date:   Wed May 12 07:21:51 2021 +0000
 
-    Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_git/Shiptech10-UI
+    Merged PR 10632: added formatting  _ View Audit Log
+    
+    added formatting
 
 branch: master
