@@ -1442,9 +1442,37 @@
 
 .more-dots{
   position: absolute;
+  cursor: pointer;
   right: 10px;
   top: 18px;
   width: 20px;
   height: 5px;
   content:url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjEiIGhlaWdodD0iNiIgdmlld0JveD0iMCAwIDIxIDYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxlbGxpcHNlIGN4PSIyLjM4NTQxIiBjeT0iMi43ODg5NyIgcng9IjIuMzg1NDEiIHJ5PSIyLjQyNjY2IiBmaWxsPSIjODQ4QjlFIi8+CjxlbGxpcHNlIGN4PSIxMC4wMDY1IiBjeT0iMi43ODg5NyIgcng9IjIuMzg1NDEiIHJ5PSIyLjQyNjY2IiBmaWxsPSIjODQ4QjlFIi8+CjxlbGxpcHNlIGN4PSIxNy42Mjc2IiBjeT0iMi43ODg5NyIgcng9IjIuMzg1NDEiIHJ5PSIyLjQyNjY2IiBmaWxsPSIjODQ4QjlFIi8+Cjwvc3ZnPgo=");
+}
+
+.more-button-options{
+  position: absolute;
+  z-index: 1;
+  margin: 0px 270px;
+  border: 1px solid #364150;
+  background: #364150;
+  color: #ffffff;
+  border-radius: 4px;
+  width: 150px;
+  line-height: 20px;
+  padding: 12px 40px 12px 10px;
+  height: 170px;
+  float: right;
+
+  .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+      border-color: #ffffff;
+  }
+  
+  .mat-radio-button.mat-accent .mat-radio-inner-circle {
+      background-color: #ffffff;
+  }
+}
+
+.mat-tab-body-content {
+  overflow: hidden;
 }

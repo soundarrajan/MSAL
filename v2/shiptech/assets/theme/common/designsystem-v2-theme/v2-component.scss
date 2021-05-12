@@ -438,6 +438,9 @@ div.component-viewer-nav-content
       z-index: 1;
     }
   }
+  .mat-button-toggle-disabled .mat-button-toggle-button {
+    cursor: pointer;
+  }
 }
 // <!-- Button Toggle End-->
 
@@ -824,7 +827,9 @@ div.component-viewer-nav-content
     color: #96cf55;
   }
   .border_line {
-    padding-right: 10px;
+    padding-right: 5px;
+    height: 30px;
+    margin: -10px 10px;
     border-right: 1px solid #252a32;
   }
 }
