@@ -1,9 +1,9 @@
-﻿commit 676d783da0153cd031045750750aa902981375c6
+﻿commit 29e648b776bbbd74d0e639ca92d31c13d51eb700
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed May 12 13:14:17 2021 +0000
+Date:   Wed May 12 13:26:34 2021 +0000
 
-    Merged PR 10656: Fixed contract id from product details table
+    Merged PR 10657: Fixed formula validation after user copy the contract
     
-    Fixed contract id from product details table
+    Fixed formula validation after user copy the contract
 
 branch: master
