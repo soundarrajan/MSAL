@@ -259,7 +259,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     console.log(this.formValues.productDetails);
   }
 
-    
+
   setListFromStaticLists(name) {
     let findList = _.find(this.staticLists, function(object) {
       return object.name == name;
@@ -698,8 +698,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         this.formSubmitted = false;
         return;
       }
-      this.formValues.paymentDetails.paymentStatus = { id: this.paymentStatus };
-      this.formValues.customStatus = { id: this.customInvoice };
+      // this.formValues.paymentDetails.paymentStatus = { id: this.paymentStatus };
+      // this.formValues.customStatus = { id: this.customInvoice };
 
     //  alert("Has to save please wait");
     let data : any = {
@@ -947,11 +947,11 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
   public updateAmountValues(changes: any):void {
     this.setChipDatas();
-  } 
+  }
 
   changedAdditonalcost(event){
     this.formValues.costDetails = event;
   }
-  
+
 }
 
