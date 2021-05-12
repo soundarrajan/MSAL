@@ -86,6 +86,8 @@ export class VesselInfoComponent implements OnInit {
         let bunkerPlanId = (data?.payload && data?.payload.length)? (data.payload)[0].planId: null;
         this.localService.loadROBArbitrage(bunkerPlanId).subscribe((data)=> {
           this.ROBArbitrageData = (data?.payload && data?.payload.length)? data.payload[0]: {};
+          let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
+          titleEle.click();
         })
       })
   }
