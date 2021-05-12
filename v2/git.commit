@@ -1,9 +1,9 @@
-﻿commit f35f00d2a513f189e9638090e139195fa4626d4d
+﻿commit 676d783da0153cd031045750750aa902981375c6
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed May 12 12:39:19 2021 +0000
+Date:   Wed May 12 13:14:17 2021 +0000
 
-    Merged PR 10654: Fixed 'Error retrieving icon :data-picker-gray! Http failure response' error...
+    Merged PR 10656: Fixed contract id from product details table
     
-    Fixed 'Error retrieving icon :data-picker-gray! Http failure response' error when load invoice page
+    Fixed contract id from product details table
 
 branch: master
