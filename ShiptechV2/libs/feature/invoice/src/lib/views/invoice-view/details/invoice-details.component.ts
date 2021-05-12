@@ -46,6 +46,7 @@ import { DecimalPipe } from '@angular/common';
 @Component({
   selector: 'shiptech-invoice-detail',
   templateUrl: './invoice-details.component.html',
+  styleUrls: ['./invoice-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
@@ -214,7 +215,6 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     @Inject(DecimalPipe) private _decimalPipe,
     private tenantService: TenantFormattingService,) {
     this.amountFormat = '1.' + this.tenantService.amountPrecision + '-' + this.tenantService.amountPrecision;
-    iconRegistry.addSvgIcon('data-picker-gray',sanitizer.bypassSecurityTrustResourceUrl('./../../assets/customicons/calendar-dark.svg'));
     this.setupGrid();
     this.setClaimsDetailsGrid();
   }
