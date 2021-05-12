@@ -400,7 +400,10 @@ th, td {
 .dotted-container-qty {
   background-color: #364150 !important;
 }
-
+.amount-container {
+  background-color: #364150 !important;
+  color: white;
+}
 .dotted-container-pricing-date {
   border: 1px dashed #A5A5A5;
   box-sizing: border-box;
@@ -513,4 +516,8 @@ th, td {
 .padding-line {
   padding-left: 10px;
   padding-right: 10px;
+}
+
+.amount-container {
+  color: white !important;
 }
