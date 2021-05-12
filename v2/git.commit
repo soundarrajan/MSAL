@@ -1,11 +1,9 @@
-﻿commit 768730ac35b0c34810100c67a5a0898e696551dc
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Wed May 12 14:55:50 2021 +0000
+﻿commit d070a89e2bbb7686ad5767a297a0037fd5b5197a
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Wed May 12 15:05:19 2021 +0000
 
-    Merged PR 10667: Field Popup and generate current Bplan
+    Merged PR 10668: Made details null when add new product in contract, fixed formula autocomplet...
     
-    Field Popup and generate current Bplan
-    
-    Related work items: #29780
+    Made details null when add new product in contract, fixed formula autocomplete searching
 
 branch: master

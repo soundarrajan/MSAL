@@ -861,18 +861,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     console.log(this.formValues);
     let emptyProductObj = {
       id: 0,
-      details: [
-        {
-          contractualQuantityOption: {
-              id: 1,
-              name: 'TotalContractualQuantity',
-              code: '',
-              collectionName: null
-          },
-          id: 0,
-          uom : this.generalTenantSettings.tenantFormats.uom
-        }
-      ],
+      details: null,
       additionalCosts: [],
       fixedPrice: true,
       mtmFixed: false,
