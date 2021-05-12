@@ -21,6 +21,9 @@
             <b>Estd. Rate</b>
           </td>
           <td class="padding" style="max-width: initial;min-width: 200px;">
+            <b>Amount</b>
+          </td>
+          <td class="padding" style="max-width: initial;min-width: 200px;">
             <b>Invoice Product</b>
           </td>
           <td class="padding" style="max-width: initial;min-width: 200px;">
@@ -86,6 +89,16 @@
               <div  class="non-editable-container">
                 <div style="float: left;"> 
                   {{quantityFormatValue(productDetail.value.estimatedRate)}}
+                </div>
+                <div style="float: right;">
+                  {{productDetail.value.estimatedRateCurrency.code}}
+                </div>
+              </div>
+            </td>
+            <td  style="max-width: initial;min-width: 200px">
+              <div  class="non-editable-container">
+                <div style="float: left;"> 
+                  {{amountFormatValue(productDetail.value.estimatedAmount)}}
                 </div>
                 <div style="float: right;">
                   {{productDetail.value.estimatedRateCurrency.code}}
