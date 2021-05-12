@@ -948,6 +948,10 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   public updateAmountValues(changes: any):void {
     this.setChipDatas();
   } 
+
+  changedAdditonalcost(event){
+    this.formValues.costDetails = event;
+  }
   
 }
 
