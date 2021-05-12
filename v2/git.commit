@@ -1,9 +1,9 @@
-﻿commit ba2cc217b03cd2a56a7f5afe527752c676fb1440
+﻿commit 6c60438d08b679139d8faffe1b035807c4ef844e
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed May 12 11:55:04 2021 +0000
+Date:   Wed May 12 12:06:02 2021 +0000
 
-    Merged PR 10642: Added partial amount calcultation for product details
+    Merged PR 10646: Fixed amount calculation
     
-    Added partial amount calcultation for product details
+    Fixed amount calculation
 
 branch: master
