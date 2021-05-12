@@ -694,9 +694,8 @@ implements OnInit {
     }
   }
 
-  invoiceConvertUom(type, value, rowIndex) {
+  invoiceConvertUom(type, rowIndex) {
     console.log(type);
-    console.log(value);
     console.log(rowIndex);
     let currentRowIndex = rowIndex;
     this.calculateGrand(this.formValues);
