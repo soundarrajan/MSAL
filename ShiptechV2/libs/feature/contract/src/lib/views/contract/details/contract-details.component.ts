@@ -462,7 +462,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
         var keyno = key + 1;
         this.toastr.error(`Please select a valid location for product ${ keyno }.`);
         notValidLocation = true;
-      } else if (val.isFormula == true && typeof val.formula != 'object') {
+      } else if (val.isFormula == true && (typeof val.formula != 'object' || !val.formula)) {
         var keyno = key + 1;
         this.toastr.error(`Please select a valid Formula for Product ${ keyno }.`);
         notValidLocation = true;
