@@ -5,6 +5,8 @@
   font-size: 14px;
   line-height: 16px;
   color: #252A32;
+  padding-left: 0px !important;
+  margin-bottom: 15px !important;
 }
 
 .invoice-product-details-table {
@@ -87,7 +89,7 @@
   margin-right: 15px;
 }
 
-.delivery-number-link {
+.delivery-number-link, .contract-link {
   font-family: Roboto;
   font-style: normal;
   font-weight: 500;
@@ -96,7 +98,7 @@
   color: #00AAE2;
 }
 
-.delivery-number-link:focus, .delivery-number-link:hover {
+.delivery-number-link:focus, .delivery-number-link:hover,  .contract-link:focus,  .contract-link:hover {
   color: #068ab6;
   text-decoration: underline;
 }
@@ -399,6 +401,13 @@ th, td {
   background-color: #364150 !important;
 }
 
+.dotted-container-pricing-date {
+  border: 1px dashed #A5A5A5;
+  box-sizing: border-box;
+  position: relative;
+  height: 30px !important;
+  padding: 5px !important;
+}
 
 .general-information-select-container.mat-select-panel {
   min-width: calc(100% + 12px) !important;
@@ -491,4 +500,17 @@ th, td {
 .custom-hardcoded-table table.table-body {
   min-width: 900px;
   display: table!important;
+}
+
+.expand-icon-for-product-details::before {
+  content: url(../../../../../../../../../../assets/layout/images/pages/expand.svg);
+}
+
+.collapse-icon-for-product-details::before {
+  content: url(../../../../../../../../../../assets/layout/images/pages/collapse.svg);
+}
+
+.padding-line {
+  padding-left: 10px;
+  padding-right: 10px;
 }

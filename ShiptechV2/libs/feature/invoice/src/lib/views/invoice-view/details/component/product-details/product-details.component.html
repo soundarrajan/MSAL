@@ -5,40 +5,40 @@
   <table class="table-body invoice-product-details-table">
       <thead>
         <tr>
-          <td class="padding" style="width: 30px;">
+          <td class="padding" style="max-width: initial;min-width: 30px;">
             <a class="add-icon"></a>
           </td>
-          <td class="padding" style="width: 250px">
+          <td class="padding" style="max-width: initial;min-width: 250px">
             <b>Delivery No. / Ordered Product</b>
           </td>
-          <td class="padding" style="width: 200px" class="delivery-product-header"> 
+          <td class="padding" style="max-width: initial;min-width: 200px" class="delivery-product-header"> 
             <b>Deliv. Product</b>
           </td>
-          <td class="padding" style="width: 200px">
+          <td class="padding" style="max-width: initial;min-width: 200px">
             <b>Deliv. Qty</b>
           </td>
-          <td class="padding" style="width: 200px;">
+          <td class="padding" style="max-width: initial;min-width: 200px;">
             <b>Estd. Rate</b>
           </td>
-          <td class="padding" style="width: 200px;">
+          <td class="padding" style="max-width: initial;min-width: 200px;">
             <b>Invoice Product</b>
           </td>
-          <td class="padding" style="width: 200px;">
+          <td class="padding" style="max-width: initial;min-width: 200px;">
             <b>Invoice Qty</b>
           </td>
-          <td class="padding" style="width: 200px;">
+          <td class="padding" style="max-width: initial;min-width: 200px;">
             <b>Invoice Rate</b>
           </td>
-          <td class="padding" style="width: 150px;">
+          <td class="padding" style="max-width: initial;min-width: 150px;">
             <b>Recon Status</b>
           </td>
-          <td class="padding" style="width: 150px;">
+          <td class="padding" style="max-width: initial;min-width: 150px;">
             <b>Sulpher Content</b>
           </td>
-          <td class="padding" style="width: 200px;">
+          <td class="padding" style="max-width: initial;min-width: 200px;">
             <b>Phy. Supplier</b>
           </td>
-          <td class="padding" style="width: 20px;">
+          <td class="padding" style="max-width: initial;min-width: 30px;">
             <b></b>
           </td>
         </tr>
@@ -49,7 +49,7 @@
             <td class="padding" style="padding-left: 0px  !important; padding-right: 0px  !important;">
               <a class="remove-icon" style="margin-left: 10px;"></a>
             </td>
-            <td class="padding" style="width: 250px">
+            <td class="padding" style="max-width: initial;min-width: 250px">
               <div class="delivery-number-container">
                 <div class="delivery-number-link-container">
                     <a *ngIf="productDetail.value.deliveryId" class="delivery-number-link" href="{{openDeliveryLink(productDetail.value.deliveryId)}}" target="_blank">
@@ -64,12 +64,12 @@
                 </div>
               </div>
             </td> 
-            <td class="padding-left-column" style="width: 200px" > 
+            <td class="padding-left-column" style="max-width: initial;min-width: 200px" > 
               <div  class="non-editable-container">
                 {{productDetail.value.product.name}}
               </div>
             </td>
-            <td  style="width: 200px">
+            <td  style="max-width: initial;min-width: 200px">
               <div  class="non-editable-container">
                 <div style="float: left;"> 
                   {{quantityFormatValue(productDetail.value.deliveryQuantity)}}
@@ -79,17 +79,17 @@
                 </div>
               </div>
             </td>
-            <td  style="width: 200px">
+            <td  style="max-width: initial;min-width: 200px">
               <div  class="non-editable-container">
                 <div style="float: left;"> 
-                  {{amountFormatValue(productDetail.value.estimatedRate)}}
+                  {{quantityFormatValue(productDetail.value.estimatedRate)}}
                 </div>
                 <div style="float: right;">
                   {{productDetail.value.estimatedRateCurrency.code}}
                 </div>
               </div>
             </td>
-            <td  style="width: 200px" class="padding-left-column">
+            <td  style="max-width: initial;min-width: 200px" class="padding-left-column">
               <div class="dotted-container black-container">
                 <div class="custom-form-field-invoice invoice-product-details-product" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
                   <div class="d-flex">
@@ -131,13 +131,14 @@
                 </div>
               </div>
             </td>
-            <td  style="width: 200px" class="select-container">
+            <td  style="max-width: initial;min-width: 200px" class="select-container">
               <div class="dotted-container black-container">
                 <div class="custom-form-field-invoice" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}" style="width: 200px;">
                   <div class="split-field">
                     <mat-form-field class="without-search long-label-field" style="width: 64%;border: none;" appearance="legacy">
                       <input matInput 
                         [(ngModel)]="productDetail.value.invoiceQuantity"
+                        quantityFormat
                         >
                     </mat-form-field>
                     <mat-form-field style="width: 36%"
@@ -154,19 +155,20 @@
                 </div>
               </div>
             </td>
-            <td  style="width: 200px" class="select-container">
+            <td  style="max-width: initial;min-width: 200px" class="select-container">
               <div class="dotted-container">
                 <div class="custom-form-field-invoice black-container" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}" style="width: 200px;">
                   <div class="split-field">
                     <mat-form-field class="without-search long-label-field" style="width: 64%;border: none;" appearance="legacy">
                       <input matInput 
-                        [(ngModel)]="productDetail.value.estimatedRate"
+                        [(ngModel)]="productDetail.value.invoiceRate"
+                        quantityFormat
                         >
                     </mat-form-field>
                     <mat-form-field style="width: 36%"
                         appearance="legacy">
                         <mat-select disableRipple
-                          [(ngModel)]="productDetail.value.estimatedRateCurrency"
+                          [(ngModel)]="productDetail.value.invoiceRateCurrency"
                           [compareWith]="compareUomObjects"
                           [disableOptionCentering]="true"
                           panelClass="general-information-select-container">
@@ -177,7 +179,7 @@
                 </div>
               </div>
             </td>
-            <td style="width: 150px;" class="padding-left-column">
+            <td style="max-width: initial;min-width: 150px;" class="padding-left-column">
               <span  *ngIf="productDetail.value.reconStatus && productDetail.value.reconStatus.id == '2'"  class="product-details-table-data-false">
                 <b>
                   {{productDetail.value.reconStatus.name}}
@@ -189,7 +191,7 @@
                   </b>
               </span>
             </td>
-            <td style="width: 150px;" class="padding-left-column">
+            <td style="max-width: initial;min-width: 150px;" class="padding-left-column">
               <div class="dotted-container-sulpher">
                 <div class="custom-form-field-invoice" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}" style="width: 200px;">
                   <div class="split-field">
@@ -202,7 +204,7 @@
                 </div>
               </div>
             </td>
-            <td  style="width: 200px" class="padding-left-column">
+            <td  style="max-width: initial;min-width: 200px" class="padding-left-column">
               <div class="dotted-container-supplier">
                 <div class="custom-form-field-invoice invoice-product-details-product physical-supplier" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
                   <div class="d-flex">
@@ -244,28 +246,92 @@
                 </div>
               </div>
             </td>
-            <td class="padding" style="padding-left: 0px  !important; padding-right: 0px  !important;">
-              <a class="remove-icon" style="margin-left: 10px;" (click)="productDetail.value.expand = !productDetail.value.expand"></a>
+            <td class="padding" style="max-width: initial;min-width: 30px; padding-left: 0px  !important; padding-right: 0px  !important;">
+              <span *ngIf="productDetailsExpandArray[productDetail.key]" (click)="productDetailsExpandArray[productDetail.key] = !productDetailsExpandArray[productDetail.key]">
+                <a class="expand-icon-for-product-details">
+                </a>
+              </span>
+              <span  *ngIf="!productDetailsExpandArray[productDetail.key]" (click)="productDetailsExpandArray[productDetail.key] = !productDetailsExpandArray[productDetail.key]">
+                <a class="collapse-icon-for-product-details">
+                </a>
+              </span>
             </td>
           </tr>
-          <tr *ngIf="productDetail.value.expand">
+          <tr *ngIf="productDetailsExpandArray[productDetail.key]">
             <td colspan="12"> 
-              <table class="nestead-table">
+              <table class="table-body invoice-product-details-table" style="position: relative; left: 40px !important;">
                 <thead>
                   <tr>
-                    <td style="max-width: initial; min-width: 50px;"></td>
-                    <td style="max-width: initial; min-width: 50px;" class="padding"><span class="insert" ng-click="addnewTankDetail($rowIndex);"></span></td>
-                    <td style="max-width: initial; min-width: 220px;" class="padding"><b>Tank Name</b></td>
-                    <td style="max-width: initial; min-width: 300px;" class="padding"><b>Tank Type</b></td>
-                    <td style="max-width: initial; min-width: 200px;" class="padding"><b>Capacity (m3)</b></td>
-                    <td style="max-width: initial; min-width: 100px;" class="padding"><b>Active</b></td>
-                    <td style="max-width: initial; min-width: 250px;" class="padding"><b>Comments</b></td>
+                    <td style="max-width: initial; min-width: 250px;" class="padding">
+                      <b>Pricing event Date</b>
+                    </td>
+                    <td style="max-width: initial; min-width: 300px;" class="padding">
+                      <b>Pricing schedule</b>
+                    </td>
+                    <td style="max-width: initial; min-width: 200px;" class="padding">
+                      <b>Confirm Qty</b>
+                    </td>
+                    <td style="max-width: initial; min-width: 100px;" class="padding">
+                      <b>Agreement</b>
+                    </td>
+                    <td style="max-width: initial; min-width: 100px;" class="padding">
+                      <b>Contract</b>
+                    </td>
+                    <td style="max-width: initial; min-width: 200px;" class="padding">
+                      <b>Inv Amt in order cur.</b>
+                    </td>
+                    <td style="max-width: initial; min-width: 200px;" class="padding">
+                      <b>Invoice Description</b>
+                    </td>
                   </tr>
                 </thead>
                 <tbody>			
                   <tr >
-                    <td style="max-width: initial; min-width: 50px;"></td>							
-                    <td style="max-width: initial; min-width: 50px;"><span class="remove" style="display: block;pointer-events: all; opacity: 1" ></span></td>
+                    <td style="max-width: initial; min-width: 250px;" class="padding-line">
+                      <div class="dotted-container-pricing-date">
+                        {{productDetail.value.pricingDate ? formatDate(productDetail.value.pricingDate) : ''}}
+                      </div>
+                    </td>
+                    <td style="max-width: initial; min-width: 300px;" class="padding-line">
+                      <span>
+                        {{productDetail.value.pricingScheduleName ? productDetail.value.pricingScheduleName : ''}}
+                      </span>
+                    </td>
+                    <td  style="max-width: initial; min-width: 200px;" class="padding-line">
+                      <span>
+                        {{quantityFormatValue(productDetail.value.confirmedQuantity)}}
+                        {{productDetail.value.confirmedQuantityUom.name}}
+                      </span>
+                    </td>
+                    <td style="max-width: initial; min-width: 100px;" class="padding-line">
+                      <span>{{productDetail.value.agreementType.name}}</span>
+                    </td>
+                    <td style="max-width: initial; min-width: 100px;" class="padding-line">
+                        <div class="contract-link-container">
+                            <a *ngIf="productDetail.value.contractProductId" class="contract-link" href="{{openContractLink(productDetail.value.contractProductId)}}" target="_blank">
+                              {{productDetail.value.contractProductId}}
+                            </a>
+                        </div>
+                    </td>
+                    <td style="max-width: initial; min-width: 200px;" class="padding-line">
+                      <span>
+                        {{amountFormatValue(productDetail.value.amountInOrder)}}
+                      </span>
+                    </td>
+                    <td style="max-width: initial; min-width: 200px;" class="padding">
+                      <div class="dotted-container-sulpher">
+                        <div class="custom-form-field-invoice" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}" style="width: 200px;">
+                          <div class="split-field">
+                            <mat-form-field class="without-search long-label-field" style="width: 100%;border: none;" appearance="legacy">
+                              <input matInput 
+                                [(ngModel)]="productDetail.value.description"
+                                >
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    
                   </tr>
                 </tbody>
               </table>
