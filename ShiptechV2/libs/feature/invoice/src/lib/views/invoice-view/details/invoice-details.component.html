@@ -12,11 +12,20 @@
                                 <mat-button-toggle [disabled]="true" *ngFor="let items of invoice_types" [value]="items.value" [checked]="formValues.documentType.internalName == items.value">
                                     <span class="toggle-icon" *ngIf="formValues.documentType.internalName == items.value"></span> {{items.displayName}}
                                 </mat-button-toggle>
-                                <div class="more-dots"></div>
+                                <div class="more-dots" (click)="openMoreButtons($event)"></div>
                             </mat-button-toggle-group>
                         </div>
+                        <div class="more-button-options" *ngIf="showMoreButtons">
+                            <span>Invoice Type</span>
+                            <mat-radio-group
+                                class="inv-radio-group">
+                                <mat-radio-button *ngFor="let inv of more_invoice_types" [value]="inv">
+                                    {{inv.displayName}}
+                                </mat-radio-button>
+                            </mat-radio-group>
+                        </div>
                     </div>
-                    <div class="col-md-6" style="padding: 0px 50px;">
+                    <div class="col-md-6" style="padding: 0px 35px;">
                         <div class="badge-header-v2">
                             <span class="label_text" matTooltip={{formValues.createdByUser?.displayName}}>Created by: <b>{{formValues.createdByUser?.displayName}}</b></span>
                             <span class="border_line"></span>
@@ -388,12 +397,13 @@
     <div class="section1 mt-4" style="margin: 0px;" *ngIf="!(formValues.invoiceClaimDetails.length > 0)">
         <div class="match-grid" style="border-bottom: 4px solid #e5e5e5;">
             <div class="title">Additional Costs</div>
-            <div class="agGrid-v2" style="margin: 0">
-                <div style="width:100%;height: 250px;">
-                    <ag-grid-angular style="width: 100%;height: 100%;" [gridOptions]="gridOptions_ac"
-                        class="ag-theme-material ag-grid-v2 angular-v9 add-cost"></ag-grid-angular>
-                </div>
+            <!-- <div class="agGrid-v2" style="margin: 0">
+            <div style="width:100%;height: 250px;">
+                <ag-grid-angular style="width: 100%;height: 100%;" [gridOptions]="gridOptions_ac"
+                    class="ag-theme-material ag-grid-v2 angular-v9 add-cost"></ag-grid-angular>
             </div>
+        </div> -->
+        <shiptech-additional-cost-modal [formValues]="formValues.costDetails"></shiptech-additional-cost-modal>
           </div>
     </div>
     
