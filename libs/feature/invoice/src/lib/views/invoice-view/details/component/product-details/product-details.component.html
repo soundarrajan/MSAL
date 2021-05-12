@@ -154,6 +154,8 @@
                     <mat-form-field class="without-search long-label-field" style="width: 64%;border: none;" appearance="legacy">
                       <input matInput 
                         [(ngModel)]="productDetail.value.invoiceQuantity"
+                        autocomplete="off"
+                        (keypress)="invoiceConvertUom('product', $event.target.value, productDetail.key)" 
                         quantityFormat
                         >
                     </mat-form-field>
@@ -177,6 +179,7 @@
                   <div class="split-field">
                     <mat-form-field class="without-search long-label-field" style="width: 64%;border: none;" appearance="legacy">
                       <input matInput 
+                        autocomplete="off"
                         [(ngModel)]="productDetail.value.invoiceRate"
                         quantityFormat
                         >

@@ -59,6 +59,7 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { OVERLAY_KEYBOARD_DISPATCHER_PROVIDER_FACTORY } from '@angular/cdk/overlay/dispatchers/overlay-keyboard-dispatcher';
 import { throws } from 'assert';
 import { DeliveryAutocompleteComponent } from '../delivery-autocomplete/delivery-autocomplete.component';
+import { InvoiceDetailsService } from 'libs/feature/invoice/src/lib/services/invoice-details.service';
 
 
 
@@ -424,6 +425,7 @@ implements OnInit {
   uomList: any;
   currencyList: any;
   physicalSupplierList: any;
+  type: any;
   get entityId(): number {
     return this._entityId;
   }
@@ -500,7 +502,8 @@ implements OnInit {
     @Inject(DecimalPipe) private _decimalPipe,
     private tenantService: TenantFormattingService,
     sanitizer: DomSanitizer,
-    private overlayContainer: OverlayContainer) {
+    private overlayContainer: OverlayContainer,
+    private invoiceService: InvoiceDetailsService) {
     super(changeDetectorRef);
     this.autocompleteInvoiceProduct = knownMastersAutocomplete.products;
     this.autocompletePhysicalSupplier = knownMastersAutocomplete.physicalSupplier;
@@ -686,6 +689,144 @@ implements OnInit {
       return formattedDate;
     }
   }
+
+  invoiceConvertUom(type, value, rowIndex) {
+    console.log(type);
+    console.log(value);
+    console.log(rowIndex);
+    let currentRowIndex = rowIndex;
+    this.calculateGrand(this.formValues);
+    this.type = type;
+    if (this.type == 'product') {
+        let product = this.formValues.productDetails[currentRowIndex];
+        if (typeof product.product != 'undefined' && typeof product.invoiceQuantityUom != 'undefined' && typeof product.invoiceRateUom !== 'undefined') {
+            if (product.invoiceQuantityUom == null || product.invoiceRateUom == null /* || typeof(product.invoiceAmount) == 'undefined'*/) {
+                return;
+            };
+            this.getUomConversionFactor(product.product.id, 1, product.invoiceQuantityUom.id, product.invoiceRateUom.id, product.contractProductId, product.orderProductId ? product.orderProductId : product.id, currentRowIndex);
+
+           
+        }
+        // recalculatePercentAdditionalCosts(formValues);
+    }
+
+
+  }
+
+  getUomConversionFactor(ProductId, Quantity, FromUomId, ToUomId, contractProductId, orderProductId, currentRowIndex) {
+    let productId = ProductId;
+    let quantity = Quantity;
+    let fromUomId = FromUomId;
+    let toUomId = ToUomId;
+    let data = {
+      Payload: {
+        ProductId: productId,
+        OrderProductId: orderProductId,
+        Quantity: quantity,
+        FromUomId: fromUomId,
+        ToUomId: toUomId,
+        ContractProductId: contractProductId ? contractProductId : null
+      }
+    };
+    if (toUomId == fromUomId) {
+      return 1;
+    }
+    if (!productId || !toUomId || !fromUomId) {
+        return;
+    }
+
+    this.invoiceService
+    .getUomConversionFactor(data)
+    .pipe(
+        finalize(() => {
+
+        })
+    )
+    .subscribe((result: any) => {
+        if (typeof result == 'string') {
+          this.spinner.hide();
+          this.toastr.error(result);
+        } else {
+          console.log(result);
+         
+        }
+     });
+
+};
+
+  calculateGrand(formValues) {
+    if (!formValues.invoiceSummary) {
+        formValues.invoiceSummary = {};
+    }
+    // formValues.invoiceSummary.provisionalInvoiceAmount = $scope.calculateprovisionalInvoiceAmount(formValues){}
+    formValues.invoiceSummary.invoiceAmountGrandTotal = this.calculateInvoiceGrandTotal(formValues);
+    formValues.invoiceSummary.invoiceAmountGrandTotal -= formValues.invoiceSummary.provisionalInvoiceAmount;
+    formValues.invoiceSummary.estimatedAmountGrandTotal = this.calculateInvoiceEstimatedGrandTotal(formValues);
+    formValues.invoiceSummary.totalDifference = this.convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.invoiceAmountGrandTotal) - this.convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.estimatedAmountGrandTotal);
+    formValues.invoiceSummary.netPayable = this.convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.invoiceAmountGrandTotal) - this.convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.deductions);
+
+    console.log(formValues);
+}
+
+calculateInvoiceGrandTotal(formValues) {
+  let grandTotal = 0;
+  formValues.productDetails.forEach((v, k) => {
+      if (!v.isDeleted && typeof v.invoiceAmount != 'undefined') {
+          grandTotal = grandTotal + this.convertDecimalSeparatorStringToNumber(v.invoiceAmount);
+      }
+  });
+  formValues.costDetails.forEach((v, k) => {
+      if (!v.isDeleted) {
+          if (typeof v.invoiceTotalAmount != 'undefined') {
+              grandTotal = grandTotal + this.convertDecimalSeparatorStringToNumber(v.invoiceTotalAmount);
+          }
+      }
+  });
+  return grandTotal;
+}
+
+calculateInvoiceEstimatedGrandTotal(formValues) {
+  let grandTotal = 0;
+  formValues.productDetails.forEach((v, k) => {
+    if (!v.isDeleted && typeof v.estimatedAmount != 'undefined') {
+      grandTotal = grandTotal + v.estimatedAmount;
+    }
+  });
+  
+  formValues.costDetails.forEach((v, k) => {
+    if (!v.isDeleted) {
+      if (typeof v.estimatedAmount != 'undefined') {
+          grandTotal = grandTotal + v.estimatedAmount;
+      }
+    }
+  });
+  return grandTotal;
+}
+
+convertDecimalSeparatorStringToNumber(number) {
+  var numberToReturn = number;
+  var decimalSeparator, thousandsSeparator;
+  if (typeof number == 'string') {
+      if (number.indexOf(',') != -1 && number.indexOf('.') != -1) {
+        if (number.indexOf(',') > number.indexOf('.')) {
+          decimalSeparator = ',';
+          thousandsSeparator = '.';
+        } else {
+          thousandsSeparator = ',';
+          decimalSeparator = '.';
+        }
+        numberToReturn = parseFloat(number.split(decimalSeparator)[0].replace(new RegExp(thousandsSeparator, 'g'), '')) + parseFloat(`0.${number.split(decimalSeparator)[1]}`);
+      } else {
+        numberToReturn = parseFloat(number);
+      }
+  }
+  if (isNaN(numberToReturn)) {
+    numberToReturn = 0;
+  }
+  return parseFloat(numberToReturn);
+}
+
+
 
 
 
