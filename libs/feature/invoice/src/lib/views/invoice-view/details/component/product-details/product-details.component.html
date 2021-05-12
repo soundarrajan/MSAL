@@ -155,7 +155,7 @@
                       <input matInput 
                         [(ngModel)]="productDetail.value.invoiceQuantity"
                         autocomplete="off"
-                        (keypress)="invoiceConvertUom('product', $event.target.value, productDetail.key)" 
+                        (ngModelChange)="invoiceConvertUom('product', productDetail.key)" 
                         quantityFormat
                         >
                     </mat-form-field>
@@ -163,6 +163,7 @@
                         appearance="legacy">
                         <mat-select disableRipple
                           [(ngModel)]="productDetail.value.invoiceQuantityUom"
+                          (ngModelChange)="invoiceConvertUom('product', productDetail.key)" 
                           [compareWith]="compareUomObjects"
                           [disableOptionCentering]="true"
                           panelClass="general-information-select-container">
@@ -182,13 +183,14 @@
                         autocomplete="off"
                         [(ngModel)]="productDetail.value.invoiceRate"
                         quantityFormat
-                        (keypress)="invoiceConvertUom('product', $event.target.value, productDetail.key)" 
+                        (ngModelChange)="invoiceConvertUom('product', productDetail.key)" 
                         >
                     </mat-form-field>
                     <mat-form-field style="width: 36%"
                         appearance="legacy">
                         <mat-select disableRipple
                           [(ngModel)]="productDetail.value.invoiceRateCurrency"
+                          (ngModelChange)="invoiceConvertUom('product', productDetail.key)"
                           [compareWith]="compareUomObjects"
                           [disableOptionCentering]="true"
                           panelClass="general-information-select-container">
