@@ -258,10 +258,10 @@
                               type="text"
                               matInput 
                               [(ngModel)]="productDetail.value.physicalSupplierCounterparty"
-                              [matAutocomplete]="auto"
+                              [matAutocomplete]="auto1"
                               autocomplete="off"
                               required>
-                      <mat-autocomplete #auto="matAutocomplete" 
+                      <mat-autocomplete #auto1="matAutocomplete" 
                               class="darkPanelAuto"
                               [displayWith]="displayFn"
                               (optionSelected)="selectPhysicalSupplierLine($event.option.value, productDetail.key)">
