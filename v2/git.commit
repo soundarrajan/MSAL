@@ -1,7 +1,9 @@
-﻿commit ed0f9222df06ac99d12b12098fd4c5f2eaeb1da4
-Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Tue May 11 21:51:41 2021 +0530
+﻿commit 4e80cf4ad604706ca95b810190852a9bf0e0ae83
+Author: Padmashree S <padmashree.s@inatech.com>
+Date:   Wed May 12 11:37:52 2021 +0530
 
-    Create invoice from delivery screen with invoice id param as 0. And Code review updates.
+    Invoice screen - details section UI change
+    
+    Invoice screen - details section UI change
 
 branch: master
