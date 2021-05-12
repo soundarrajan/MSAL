@@ -40,6 +40,7 @@ export class LegacyLookupsDatabase extends Dexie {
   readonly invoiceCustomStatus: Dexie.Table<IStatusLookupDto, number>;
   readonly paymentStatus: Dexie.Table<IStatusLookupDto, number>;
   readonly invoiceType: Dexie.Table<IStatusLookupDto, number>;
+  readonly additionalCost: Dexie.Table<IStatusLookupDto, number>;
   readonly orderedStatus: Dexie.Table<IStatusLookupDto, number>;
   readonly barge: Dexie.Table<IDisplayLookupDto, number>;
   readonly product: Dexie.Table<IDisplayLookupDto, number>;
@@ -80,6 +81,9 @@ export class LegacyLookupsDatabase extends Dexie {
       dto: ColorDisplayLookup
     ) => <IReconStatusLookupDto>{ ...fromLegacyLookup(dto), code: dto.code },
     [nameof<LegacyLookupsDatabase>('orderedStatus')]: (
+      dto: ColorDisplayLookup
+    ) => <IReconStatusLookupDto>{ ...fromLegacyLookup(dto), code: dto.code },
+    [nameof<LegacyLookupsDatabase>('additionalCost')]: (
       dto: ColorDisplayLookup
     ) => <IReconStatusLookupDto>{ ...fromLegacyLookup(dto), code: dto.code }
   };
@@ -134,7 +138,8 @@ export class LegacyLookupsDatabase extends Dexie {
       [nameof<LegacyLookupsDatabase>('invoiceCustomStatus')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('paymentStatus')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('invoiceType')]: lookupSchema,
-      [nameof<LegacyLookupsDatabase>('orderedStatus')]: lookupSchema
+      [nameof<LegacyLookupsDatabase>('orderedStatus')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('additionalCost')]: lookupSchema
     };
   }
 
@@ -262,6 +267,11 @@ export class LegacyLookupsDatabase extends Dexie {
     const db = this.table('invoiceType');
     let InvoiceType = await db.toArray();
     return InvoiceType;
+  }
+  async getAdditionalCost(){
+    const db = this.table('additionalCost');
+    let AdditionalCost = await db.toArray();
+    return AdditionalCost;
   }
 
   private async ensureVersion(): Promise<any> {

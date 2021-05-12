@@ -907,6 +907,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   openMoreButtons($event){
       this.showMoreButtons = !this.showMoreButtons;
   }
-  
+  changedAdditonalcost(event){
+    this.formValues.costDetails = event;
+  }
 }
 

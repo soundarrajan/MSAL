@@ -56,13 +56,41 @@
         </tr>
       </thead>
       <tbody>
-          <ng-container>
-            <tr *ngFor="let costs of additionalCost">              
+          <ng-container *ngFor="let costs of additionalCost;let i= index;">
+            <tr *ngIf="!costs.isDeleted">              
               <td class="padding" style="padding-left: 0px  !important; padding-right: 0px  !important;">
-                <a class="remove-icon" style="margin-left: 10px;" (click)="removeAdditionalCostLine()"></a>
+                <a class="remove-icon" style="margin-left: 10px;" (click)="removeAdditionalCostLine(i)"></a>
               </td>              
-              <td>{{costs.costName.name}}</td>
-              <td>{{costs.costType.name}}</td>
+              <td>
+                <div class="custom-form-field conversion-factor-info">
+                  <mat-form-field name="costName" class="without-search conversion-factor-dropdown-component">
+                    <mat-select 
+                            [(ngModel)]="costs.costName.id"
+                            (selectionChange)="costNameChange()"
+                            [disableOptionCentering]="true"
+                            panelClass="general-information-select-container">
+                        <mat-option *ngFor="let option of  costNames" [value]="option.id">
+                            {{option.name}}
+                        </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </td>
+              <td>
+                <div class="custom-form-field conversion-factor-info">
+                  <mat-form-field name="costType" class="without-search conversion-factor-dropdown-component">
+                    <mat-select 
+                            [(ngModel)]="costs.costType.id"
+                            (selectionChange)="costNameChange()"
+                            [disableOptionCentering]="true"
+                            panelClass="general-information-select-container">
+                        <mat-option *ngFor="let option of costType" [value]="option.id">
+                            {{option.name}}
+                        </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </td>
               <td>4</td>
               <td>{{costs.invoiceQuantity}} {{costs.invoiceQuantityUom.name}}</td>
               <td>{{costs.invoiceRateCurrency.code}}{{costs.invoiceRate}} {{costs.invoiceRateUom.name}}</td>
