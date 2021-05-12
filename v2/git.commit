@@ -1,9 +1,9 @@
-﻿commit ab30f513dc47c6affa7beb7e2ffb27b72fbc7c1e
-Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
-Date:   Wed May 12 15:25:29 2021 +0000
+﻿commit bce25e02b0a91f07fd535d8f82491b02d39b98be
+Author: Padmashree S <padmashree.s@inatech.com>
+Date:   Wed May 12 21:55:53 2021 +0530
 
-    Merged PR 10669: Additional cost changes
+    Dropdown UI fix - delivery :: Bug 31506
     
-    Additional cost changes
+    Dropdown UI fix - delivery :: Bug 31506
 
 branch: master
