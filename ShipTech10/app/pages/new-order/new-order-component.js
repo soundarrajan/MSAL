@@ -122,6 +122,15 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     }
                     if(v.name == 'pretest' && ctrl.procurementSettings.fieldVisibility.isPreTestHidden) {
                         ctrl.productColumns[k].visible = false;
+                    }
+                    if (v.name == 'productCategory' ) {
+                        if(ctrl.procurementSettings.request.isRequestProductCategoryHidden != undefined && ctrl.procurementSettings.request.isRequestProductCategoryHidden == true){
+                        ctrl.productColumns[k].visible = false;
+                    }
+                    else
+                       {
+                        ctrl.productColumns[k].visible = true;
+                       }
                     }                    
                 });
 

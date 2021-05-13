@@ -558,6 +558,15 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                                     b.visible = true;
                                 }
                             }
+                            if (b.name == 'ProductCategory') {
+                                if(ctrl.requestTenantSettings.isRequestProductCategoryHidden != undefined && ctrl.requestTenantSettings.isRequestProductCategoryHidden == true){
+                                    b.visible = false;
+                                }
+                                else
+                                {
+                                    b.visible = true;
+                                }
+                            }
 
                         });
                         
