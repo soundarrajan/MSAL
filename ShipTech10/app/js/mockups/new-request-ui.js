@@ -126,6 +126,13 @@
                         "sortable": false
                     },
                     {
+                        "name": "ProductCategory",
+                        "caption": "PAGES.NEW_REQUEST.PRODUCT_CATEGORY",
+                        "visible": true,
+                        "alwaysVisible": true,
+                        "sortable": false
+                    },
+                    {
                         "name": "SpecGroup",
                         "caption": "PAGES.NEW_REQUEST.SPEC_GROUP",
                         "visible": true,

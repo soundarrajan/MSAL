@@ -121,6 +121,7 @@
                   "BASE_UOM": "Base Uom",
                   "PRODUCT": "Product",
                   "SPEC_GROUP": "Spec. group",
+                  "PRODUCT_CATEGORY": "Category",
                   "ROB_ON_ARRIVAL": "RoB on Arrival",
                   "DELIVERY_OPTION": "Delivery Option",
                   "MIN_QTY": "Min Qty",
