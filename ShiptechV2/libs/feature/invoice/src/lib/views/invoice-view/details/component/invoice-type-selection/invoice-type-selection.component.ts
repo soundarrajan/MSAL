@@ -18,4 +18,7 @@ export class InvoiceTypeSelectionComponent implements OnInit {
  closeDialog(){
   this.dialogRef.close('close');
  }
+ closeSelectedDialog(){
+  this.dialogRef.close(this.invoiceType);
+ }
 }
