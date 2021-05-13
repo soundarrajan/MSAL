@@ -860,9 +860,12 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   getProductList(){
     let data : any = {"Order":null,"PageFilters":{"Filters":[]},"SortList":{"SortList":[]},"Filters":[{"ColumnName":"Order_Id","Value": this.orderId}],"SearchText":null,"Pagination":{}}
     this.invoiceService.productListOnInvoice(data).subscribe((response: any) => {
-      response.payload.forEach(row => {
-        this.productData.push({selected:false, product:row.product.name, deliveries:row.order.id, details:row});
-      });
+      if (response.payload) {
+        response.payload.forEach(row => {
+          this.productData.push({selected:false, product:row.product.name, deliveries:row.order.id, details:row});
+        });
+      }
+
     });
   }
 
