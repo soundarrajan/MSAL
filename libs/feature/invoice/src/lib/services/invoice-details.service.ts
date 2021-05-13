@@ -20,52 +20,73 @@ export class InvoiceDetailsService extends BaseStoreService
 
   @ObservableException()
 
-  getInvoicDetails( gridRequest : IInvoiceDetailsItemRequest ): Observable<IInvoiceDetailsItemResponse> {
-    return this.api.getInvoicDetails(gridRequest);
+  getInvoicDetails(invoiceId: number): Observable<IInvoiceDetailsItemResponse> {
+    return this.api.getInvoicDetails(invoiceId);
   }
-  getNewInvoicDetails( gridRequest : INewInvoiceDetailsItemRequest ): Observable<IInvoiceDetailsItemResponse> {
-    return this.api.getNewInvoicDetails(gridRequest);
+  getNewInvoicDetails(invoiceFromDelivery : any): Observable<IInvoiceDetailsItemResponse> {
+    return this.api.getNewInvoicDetails(invoiceFromDelivery);
+  }
+
+     /**
+   * Save invoice
+   *  @param formValues
+   */
+  @ObservableException()
+  saveInvoice(formValues: any): Observable<unknown>  {
+      return this.api.createInvoice(formValues);
+  }
+
+  /**
+   * Update invoice
+   *  @param formValues
+   */
+  @ObservableException()
+  updateInvoice(formValues: any): Observable<IInvoiceDetailsItemResponse> {
+    return this.api.updateInvoice(formValues);
   }
 
   @ObservableException()
-  updateInvoiceItem( gridRequest : IInvoiceDetailsItemRequest ): Observable<IInvoiceDetailsItemResponse> {
-    return this.api.updateInvoiceItem(gridRequest);
+  approveInvoiceItem(formValues: any): Observable<IInvoiceDetailsItemResponse> {
+    return this.api.approveInvoiceItem(formValues);
   }
+
   @ObservableException()
-  approveInvoiceItem( gridRequest : IInvoiceDetailsItemRequest ): Observable<IInvoiceDetailsItemResponse> {
-    return this.api.approveInvoiceItem(gridRequest);
+  productListOnInvoice(pageFilters: any): Observable<any> {
+    return this.api.productListOnInvoice(pageFilters);
   }
+
   @ObservableException()
-  productListOnInvoice( gridRequest :any ): Observable<any> {
-    return this.api.productListOnInvoice(gridRequest);
+  submitapproval(invoiceId: number): Observable<any> {
+    return this.api.submitapproval(invoiceId);
   }
+
   @ObservableException()
-  submitapproval( gridRequest :any ): Observable<any> {
-    return this.api.submitapproval(gridRequest);
+  cancelInvoiceItem(invoiceId: number): Observable<any> {
+    return this.api.cancelInvoiceItem(invoiceId);
   }
+
   @ObservableException()
-  cancelInvoiceItem( gridRequest :any ): Observable<any> {
-    return this.api.cancelInvoiceItem(gridRequest);
+  acceptInvoiceItem(invoiceId: number): Observable<any> {
+    return this.api.acceptInvoiceItem(invoiceId);
   }
+
   @ObservableException()
-  acceptInvoiceItem( gridRequest :any ): Observable<any> {
-    return this.api.acceptInvoiceItem(gridRequest);
+  revertInvoiceItem(invoiceId: number): Observable<any> {
+    return this.api.revertInvoiceItem(invoiceId);
   }
+
   @ObservableException()
-  revertInvoiceItem( gridRequest :any ): Observable<any> {
-    return this.api.revertInvoiceItem(gridRequest);
+  rejectInvoiceItem(invoiceId: number): Observable<any> {
+    return this.api.rejectInvoiceItem(invoiceId);
   }
+
   @ObservableException()
-  rejectInvoiceItem( gridRequest :any ): Observable<any> {
-    return this.api.rejectInvoiceItem(gridRequest);
-  }
-  @ObservableException()
-  submitReview( gridRequest :any ): Observable<any> {
-    return this.api.submitReview(gridRequest);
+  submitForReview(invoiceId: number): Observable<any> {
+    return this.api.submitForReview(invoiceId);
   }
 
    /**
- * @param payload = False 
+ * @param payload = False
  */
   @ObservableException()
   getStaticLists(payload: any): Observable<unknown> {
@@ -74,22 +95,22 @@ export class InvoiceDetailsService extends BaseStoreService
 
 
     /**
- * @param payload  
+ * @param payload
  */
   @ObservableException()
   getUomConversionFactor(payload: any): Observable<unknown> {
     return this.api.getUomConversionFactor(payload);
   }
-   
-  
+
+
     /**
- * @param payload  
+ * @param payload
  */
   @ObservableException()
   calculateProductRecon(payload: any): Observable<unknown> {
     return this.api.calculateProductRecon(payload);
   }
-  
+
 
   ngOnDestroy(): void {
     super.onDestroy();

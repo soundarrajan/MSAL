@@ -3,7 +3,6 @@
 </shiptech-invoice-details-toolbar>
 <div class="invoice-main-container">
     <div id="custom-tabs-v2">
-      <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
         <mat-tab-group #tabs (selectedIndexChange)="selectedTab = tabs.selectedIndex">
             <mat-tab *ngFor="let item of tabData" [disabled]="item.disabled">
                 <ng-template mat-tab-label styleClass="shiptech-tab">
@@ -82,3 +81,10 @@
         </div>
     </div>
 </div>
+
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-spin-clockwise-fade">
+</ngx-spinner>

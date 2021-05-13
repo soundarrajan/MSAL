@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { KnownInvoiceRoutes } from '../../known-invoice.routes';
 import { IInvoiceDetailsItemDto, IInvoiceDetailsItemRequest, IInvoiceDetailsItemResponse } from '../../services/api/dto/invoice-details-item.dto';
 import { InvoiceDetailsService } from '../../services/invoice-details.service';
-
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'shiptech-invoice-view',
@@ -16,7 +16,6 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   @ViewChild("invoiceDetails") invoiceDetailsComponent: any;
   _entityId;
   isConfirm=false;
-  isLoading = true;
   detailFormvalues:any;
   displayDetailFormvalues:boolean = false;
   saveDisabled=true;
@@ -31,7 +30,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   revertBtn:boolean = true;
   rejectBtn:boolean = true;
 
-  constructor(private route: ActivatedRoute, private invoiceService: InvoiceDetailsService,private changeDetectorRef: ChangeDetectorRef,){
+  constructor(private route: ActivatedRoute, private invoiceService: InvoiceDetailsService,private changeDetectorRef: ChangeDetectorRef,private spinner: NgxSpinnerService,){
     this._entityId = route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
     const baseOrigin = new URL(window.location.href).origin;
     this.tabData = [
@@ -45,12 +44,11 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.spinner.show();
     this.route.data.subscribe(data => {
       this.navBar = data.navBar;
-
       // http://localhost:9016/#/invoices/invoice/edit/0
       if (localStorage.getItem('invoiceFromDelivery')) {
-        this.isLoading = true;
         // this.openedScreenLoaders = 0;
         this.createNewInvoiceFromDelivery();
       }
@@ -72,14 +70,11 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   }
 
   getInvoiceItem() {
-    if(!this._entityId)
+    if(!this._entityId || this._entityId == 0)
       return;
-    let data : IInvoiceDetailsItemRequest = {
-      Payload: this._entityId
-    };
-    this.invoiceService.getInvoicDetails(data)
-      .subscribe((response: IInvoiceDetailsItemResponse) => {
-        this.setScreenActions(response.payload);
+    this.invoiceService.getInvoicDetails(this._entityId)
+      .subscribe((response: any) => {
+        this.setScreenActions(response);
       });
   }
 
@@ -87,19 +82,15 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     let data = JSON.parse(localStorage.getItem('invoiceFromDelivery'));
     localStorage.removeItem('invoiceFromDelivery');
 
-    let payloadData : INewInvoiceDetailsItemRequest = {
-      "Payload": data
-    };
-
-    this.invoiceService.getNewInvoicDetails(payloadData)
+    this.invoiceService.getNewInvoicDetails(data)
       .subscribe((response: IInvoiceDetailsItemResponse) => {
-        this.setScreenActions(response.payload);
+        this.setScreenActions(response);
       });
   }
 
   setScreenActions(formValues: any){
     this.displayDetailFormvalues = true;
-    this.isLoading = false;
+    this.spinner.hide();
     this.detailFormvalues = <IInvoiceDetailsItemDto>formValues;
         this.detailFormvalues.screenActions.forEach(action => {
           if(action.name == 'Cancel'){

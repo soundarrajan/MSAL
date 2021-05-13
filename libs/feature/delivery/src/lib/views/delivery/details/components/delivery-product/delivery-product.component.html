@@ -476,7 +476,7 @@
                             [compareWith]="compareUomObjects"
                             [disabled]="formValues.deliveryStatus.name == 'Verified'"
                             [disableOptionCentering]="true"
-                            panelClass="delivery-product-select-container">
+                            panelClass="delivery-product-select-container cust-select">
                         <mat-option *ngFor="let uom of deliveredQuantityUoms" [value]="uom">{{uom.name}}</mat-option>
                     </mat-select>
                 </mat-form-field>
