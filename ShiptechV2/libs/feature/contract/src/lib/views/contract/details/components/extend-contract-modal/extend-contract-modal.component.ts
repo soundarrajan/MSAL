@@ -453,7 +453,7 @@ export class ExtendContractModalComponent implements OnInit{
   }
 
   sendExtendContractData() {
-    this.spinner.show();
+    //this.spinner.show();
     this.contractService
     .extendContract(this.formValues)
     .pipe(
