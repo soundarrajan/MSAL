@@ -1,6 +1,5 @@
 <div class="invoice-details-component">
     <form>
-        <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
     <!-- Invoice Informaiton -->
     <div class="section1">
         <div class="row">
@@ -423,3 +422,9 @@
     </form>
 </div>
 
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-spin-clockwise-fade">
+</ngx-spinner>
