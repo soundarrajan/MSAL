@@ -1,7 +1,9 @@
-﻿commit a7237a99f0030a10e2601b6bd3a3668e913e91ed
-Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Thu May 13 18:55:59 2021 +0530
+﻿commit d86f340d4bf7cfd73ed495efa0d64a59826cf641
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Thu May 13 13:49:54 2021 +0000
 
-    Merged latest changes.
+    Merged PR 10708: Removed  black background when i click on extend in contract screen
+    
+    Removed  black background when i click on extend in contract screen
 
 branch: master
