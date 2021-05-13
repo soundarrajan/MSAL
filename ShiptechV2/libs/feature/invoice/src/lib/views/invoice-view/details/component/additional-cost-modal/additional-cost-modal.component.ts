@@ -110,11 +110,13 @@ export class AdditionalCostModalComponent implements OnInit {
     let sumvalue = +event;
     this.additionalCost[index].amountInOrderCurrency =  this.additionalCost[index].costType.id == 2 ? sumvalue * this.additionalCost[index].invoiceQuantity : sumvalue;     
     this.additionalCost[index].invoiceExtrasAmount = this.additionalCost[index].costType.id == 2 ? this.additionalCost[index].amountInOrderCurrency * this.additionalCost[index].invoiceExtras/100 : this.additionalCost[index].amountInOrderCurrency * this.additionalCost[index].invoiceExtras/100;
+    this.additionalCost[index].invoiceTotalAmount = this.additionalCost[index].amountInOrderCurrency + this.additionalCost[index].invoiceExtrasAmount;
     this.changedAdditonalCostEmit();
   }
   extraAmount(event,index){    
     let sumValue = +event;
     this.additionalCost[index].invoiceExtrasAmount = this.additionalCost[index].costType.id == 2 ? this.additionalCost[index].amountInOrderCurrency * this.additionalCost[index].invoiceExtras/100 : this.additionalCost[index].amountInOrderCurrency * this.additionalCost[index].invoiceExtras/100;
+    this.additionalCost[index].invoiceTotalAmount = this.additionalCost[index].amountInOrderCurrency + this.additionalCost[index].invoiceExtrasAmount;
     // alert(index);
     this.changedAdditonalCostEmit();
   }
