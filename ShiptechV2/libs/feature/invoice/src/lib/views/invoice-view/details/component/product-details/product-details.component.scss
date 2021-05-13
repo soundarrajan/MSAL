@@ -522,3 +522,102 @@ th, td {
   color: white !important;
   padding: 10px;
 }
+
+
+.select-product-container .search-product-container {
+  height: 40px;
+  border: 1px solid #FFFFFF;
+  box-sizing: border-box;
+  border-radius: 4px;
+  display: inline-flex;
+}
+
+.search-product-input {
+  position: relative;
+  height: 40px;
+  width: 90% !important;
+  float: right;
+  color: white !important;
+}
+
+.search-product-input::placeholder {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #A5A5A5;
+}
+
+.search-product-lookup::before {
+  content: url(../../../../../../../../../../assets/layout/images/pages/search.svg);
+}
+
+.search-product-lookup {
+  width: 15%;
+  padding: 12px;
+
+}
+
+.search-product-container, .product-header, .products-in-order, .products-type, .header-container-product{
+  padding-right: unset !important;
+  padding-left: unset  !important;
+}
+
+.header-container-product{
+  display: inline-flex;
+}
+
+.select-product-container {
+  background-color: #364150 !important;
+  padding: 15px  !important;
+  min-width: 311px !important;
+  width: fit-content;
+  max-width: unset !important;
+  max-height: fit-content;
+  position: relative;
+}
+
+.search-product-input {
+  position: relative;
+  height: 40px;
+  width: 90% !important;
+  float: right;
+  color: white !important;
+}
+
+.select-product-container .search-product-container {
+  height: 40px;
+  border: 1px solid #FFFFFF;
+  box-sizing: border-box;
+  border-radius: 4px;
+  display: inline-flex;
+}
+
+.search-product-input::placeholder {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #A5A5A5;
+}
+
+.search-product-lookup::before {
+  content: url(../../../../../../../../../../assets/layout/images/pages/search.svg);
+}
+
+.search-product-lookup {
+  width: 15%;
+  padding: 12px;
+
+}
+
+.search-product-container, .product-header, .products-in-order, .products-type, .header-container-product{
+  padding-right: unset !important;
+  padding-left: unset  !important;
+}
+
+.header-container-product{
+  display: inline-flex;
+}
