@@ -16,7 +16,7 @@ export interface IInvoiceDetailsItemDto {
     accountancyDate: Date | string;
     invoiceRateCurrency?: IInvoiceDetailsItemBaseInfo;
     backOfficeComments: any;
-	customStatus: any;
+	  customStatus: any;
     status?: IInvoiceDetailsItemStatus;
     reconStatus?: IInvoiceDetailsItemStatus;
     deliveryDate: Date | string;
@@ -24,14 +24,14 @@ export interface IInvoiceDetailsItemDto {
     workflowId: string;
     invoiceChecks?: IInvoiceDetailsItemInvoiceCheck[];
     invoiceAmount: number;
-	invoiceTotalPrice: number;
+	  invoiceTotalPrice: number;
     createdByUser?:  IInvoiceDetailsItemBaseInfo;
     createdAt: Date | string;
     invoiceDate: Date | string;
     lastModifiedByUser?: IInvoiceDetailsItemBaseInfo;
     lastModifiedAt: Date | string;
     relatedInvoices: any;
-	relatedInvoicesSummary: any[];
+	  relatedInvoicesSummary: any[];
     orderDetails?: IInvoiceDetailsItemOrderDetails;
     counterpartyDetails: IInvoiceDetailsItemCounterpartyDetails;
     paymentDetails?: IInvoiceDetailsItemPaymentDetails;
@@ -76,14 +76,14 @@ export interface IInvoiceDetailsItemInvoiceCheck {
 }
 
 export interface IInvoiceDetailsItemOrderDetails {
-    products: any;
-    order: IInvoiceDetailsItemBaseInfo;
-    orderDate: Date | string;
-    carrierCompany: IInvoiceDetailsItemBaseInfo;
-    orderCarrierCompany: IInvoiceDetailsItemBaseInfo;
-    paymentCompany: IInvoiceDetailsItemBaseInfo;
-    orderPaymentCompany: IInvoiceDetailsItemBaseInfo;
-    vesselName: string;
+  products: any;
+  order: IInvoiceDetailsItemBaseInfo;
+  orderDate: Date | string;
+  carrierCompany: IInvoiceDetailsItemBaseInfo;
+  orderCarrierCompany: IInvoiceDetailsItemBaseInfo;
+  paymentCompany: IInvoiceDetailsItemBaseInfo;
+  orderPaymentCompany: IInvoiceDetailsItemBaseInfo;
+  vesselName: string;
 	vesselId: number;
 	vesselCode: string;
 	portName: string;
@@ -93,8 +93,8 @@ export interface IInvoiceDetailsItemOrderDetails {
 	traderName: string;
 	frontOfficeComments: string;
 	modulePathUrl: string;
-    clientIpAddress: string;
-    userAction: any;
+  clientIpAddress: string;
+  userAction: any;
 }
 
 export interface IInvoiceDetailsItemCounterpartyDetails {
@@ -103,7 +103,7 @@ export interface IInvoiceDetailsItemCounterpartyDetails {
     brokerName?: string;
     paymentTerm?: IInvoiceDetailsItemBaseInfo;
     orderPaymentTerm?: IInvoiceDetailsItemBaseInfo;
-	modulePathUrl?: string;
+	  modulePathUrl?: string;
     clientIpAddress?: string;
     userAction?: any;
 }
@@ -114,7 +114,7 @@ export interface IInvoiceDetailsItemPaymentDetails {
     paidAmountCurrency: string;
     paymentProofReceived: boolean;
     comments: string;
-	modulePathUrl: string;
+	  modulePathUrl: string;
     clientIpAddress: string;
     userAction: any;
 }
@@ -133,7 +133,7 @@ export interface IInvoiceDetailsItemProductDetails {
     estimatedRate: number;
     currency: IInvoiceDetailsItemBaseInfo;
     estimatedRateUom: IInvoiceDetailsItemBaseInfo;
-    estimatedRateCurrency: IInvoiceDetailsItemBaseInfo; 
+    estimatedRateCurrency: IInvoiceDetailsItemBaseInfo;
     estimatedAmount: number;
     agreementType: IInvoiceDetailsItemBaseInfo;
     orderProductPricingDate: Date | string;
@@ -209,19 +209,7 @@ export interface IInvoiceDetailsItemBaseInfo {
     userAction?: any;
 }
 
-export interface IInvoiceDetailsItemResponse {
-    payload: IInvoiceDetailsItemDto;
-    deletedCount: number;
-	modifiedCount: number;
-	matchedCount: number;
-	isAcknowledged: boolean;
-	isModifiedCountAvailable: boolean;
-	upsertedId: number;
-	status: number;
-	isSuccess: boolean;
-	message: string;
-	error: any;
-	errorMessage: string;
+export interface IInvoiceDetailsItemResponse extends IInvoiceDetailsItemBaseInfo {
 }
 
 export interface IInvoiceDetailsItemRequest {
@@ -236,6 +224,5 @@ export interface INewSubInvoiceDetailsItemRequest {
     OrderAdditionalCostIds:any;
     InvoiceTypeName:string;
 }
-
 
 export type InvoiceFormModel<T> = { [P in keyof T]: [T[P], any?] };
