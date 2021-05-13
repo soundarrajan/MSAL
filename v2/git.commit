@@ -1,11 +1,9 @@
-﻿commit 6e89278610fe531df5dd6a0ee7e34ff607dd33a5
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Wed May 12 23:23:55 2021 +0000
+﻿commit 09ef80c1c8f85e66aebce1b75060aadbc4b8868c
+Author: Padmashree S <padmashree.s@inatech.com>
+Date:   Thu May 13 12:07:27 2021 +0530
 
-    Merged PR 10672: Safe Port Restriction
+    delivery- dropdown UI fix
     
-    Safe Port Restriction
-    
-    Related work items: #29818
+    delivery- dropdown UI fix
 
 branch: master
