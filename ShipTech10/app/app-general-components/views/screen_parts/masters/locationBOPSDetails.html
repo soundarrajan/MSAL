@@ -51,7 +51,7 @@
 						Pilot Time out (hrs) <span  class="orange-txt "> * </span>
 					</label>
 					<div class="form_input" style="width:calc(100% - 200px)">
-						<input type="number" class="form-control" format="number:0" name="pilotOutTime" id="pilotOutTime" ng-model="formValues.pilotOutTime" ng-required="true">
+						<input type="number" class="form-control" format="number:0" name="pilotOutTime" id="pilotOutTime" ng-model="formValues.pilotOutTime" ng-if="isLocationBopsDetailsVisible()" ng-required="true">
 					</div>				
 				</div>					
 			</div>
