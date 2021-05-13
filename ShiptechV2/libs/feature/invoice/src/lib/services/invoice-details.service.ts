@@ -111,7 +111,6 @@ export class InvoiceDetailsService extends BaseStoreService
     return this.api.calculateProductRecon(payload);
   }
 
-<<<<<<< HEAD
      /**
  * @param payload  
  */
@@ -120,8 +119,6 @@ export class InvoiceDetailsService extends BaseStoreService
     return this.api.addTransaction(payload);
   }
   
-=======
->>>>>>> d86f340d4bf7cfd73ed495efa0d64a59826cf641
 
 
 
