@@ -356,6 +356,7 @@
                   "EXCHANGE_RATE": "Exchange Rate",
                   "MANUAL_PRICING_DATE_OVERRIDE": "Manual Pricing Date Override",
                   "ROB_ON_ARRIVAL": "RoB on Arrival",
+                  "PRODUCT_CATEGORY": "Category",
                   "ROUND_VOYAGE_CONSUMPTION": "Round voyage consumption"
             },
             "ORDER_LIST": {

@@ -1517,6 +1517,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 workflowId: null,
                 specGroup: null,
                 specGroups: [],
+                productCategory: null,
                 deliveryOption: ctrl.defaultDeliveryOption,
                 robOnArrival: null,
                 minQuantity: null,

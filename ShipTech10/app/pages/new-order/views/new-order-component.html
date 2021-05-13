@@ -1279,6 +1279,12 @@
                                                 ng-required="false" />
                                         </div>
                                     </td>
+                                    <td style="max-width: 250px;min-width: 150px">
+                                        <select class="form-control" id="product_productCategory_{{ $index }}"
+                                            ng-disabled="$ctrl.disabledProduct[product.id]"
+                                            ng-model="product.productCategory"
+                                            ng-options="productCategory as productCategory.name for productCategory in $ctrl.lists.ProductCategory track by productCategory.id"></select>
+                                    </td>                                   
                                     <td style="max-width: initial; min-width: 200px;">
                                         <select class="form-control pull-left" id="product_specGroup_{{ $index }}"
                                             ng-class="{'border-red-thunderbird' : ($ctrl.hasMissingSpecGroup && product.status.name != 'Cancelled' && !product.specGroup)}"
