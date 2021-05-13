@@ -1,7 +1,7 @@
-﻿commit 0fe0f2f850d2e7b8f3f04774018e3581ab4e5177
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu May 13 14:44:10 2021 +0000
+﻿commit 675a7703e34b8a3be1fcf7352fbd68603404e57c
+Author: Edwin Francis <edwin.f@Inatech.com>
+Date:   Thu May 13 22:25:33 2021 +0530
 
-    Merged PR 10709: Added other delivery transactions to the current invoice, made deducations as editable field
+    Invoice creation fixes.
 
 branch: master
