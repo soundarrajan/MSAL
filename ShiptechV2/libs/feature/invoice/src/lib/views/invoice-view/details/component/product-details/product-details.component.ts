@@ -433,7 +433,8 @@ implements OnInit {
   selectedProductLine: any;
   productSearch: any;
   filteredProductOptions: Observable<string[]>;
-  @ViewChild('menuTrigger') trigger: MatMenuTrigger;
+  @ViewChild('productMenuTrigger') productMenuTrigger: MatMenuTrigger;
+
 
   get entityId(): number {
     return this._entityId;
@@ -900,9 +901,12 @@ implements OnInit {
     } else {
       this.formValues.productDetails.splice(key, 1);
     }
+    this.productDetailsExpandArray[key] =  false;
   }
 
   addTransaction() {
+    this.productMenuTrigger.closeMenu();
+    this.deliveriesToBeInvoicedList = [];
     let payload = {"Payload":
         {"Order":null,
         "PageFilters":
@@ -921,9 +925,9 @@ implements OnInit {
         this.spinner.hide();
         this.toastr.error(result);
       } else {
-        console.log(result);
         this.deliveriesToBeInvoicedList = result;
-        this.trigger.openMenu();
+        this.productMenuTrigger.openMenu();
+        this.changeDetectorRef.detectChanges();
       }
 
     });
@@ -932,8 +936,116 @@ implements OnInit {
 
   searchProducts(value: string): void {
     let filterProducts = this.deliveriesToBeInvoicedList.filter((option) => option.product.name.toLowerCase().includes(value));
-    console.log(filterProducts);
     this.deliveriesToBeInvoicedList = [ ... filterProducts];
+    this.changeDetectorRef.detectChanges();
+  }
+
+  addTransactionsInInvoice(rowData) {
+    console.log(rowData);
+    let transactionstobeinvoiced_dtRow;
+    if (rowData.costName) {
+      let transaction_type = 'cost';
+      rowData.product.productId = rowData.product.id;
+      transactionstobeinvoiced_dtRow = {
+        product: rowData.product,
+        costName: rowData.costName,
+        costType: rowData.costType,
+        orderAdditionalCostId: rowData.orderAdditionalCostId,
+        deliveryProductId: rowData.deliveryProductId,
+        deliveryQuantity: rowData.deliveryQuantity,
+        deliveryQuantityUom: rowData.deliveryQuantityUom,
+        estimatedAmount: rowData.estimatedAmount,
+        estimatedAmountCurrency: rowData.estimatedAmountCurrency,
+        estimatedRate: rowData.estimatedRate,
+        estimatedRateCurrency: rowData.estimatedRateCurrency,
+        invoiceRateCurrency: this.formValues.invoiceRateCurrency,
+        estimatedRateUom: rowData.estimatedRateUom,
+        sulphurContent: rowData.sulphurContent,
+        pricingDate: rowData.pricingDate,
+        isDeleted: rowData.isDeleted,
+        invoiceAmount: rowData.invoiceAmount,
+        invoiceTotalAmount: rowData.invoiceTotalAmount,
+        estimatedTotalAmount: rowData.estimatedTotalAmount,
+        invoiceQuantityUom: rowData.invoiceQuantityUom,
+        invoiceRateUom: rowData.invoiceRateUom,
+        estimatedExtras: rowData.estimatedExtra,
+        estimatedExtrasAmount: rowData.estimatedExtraAmount
+      };
+    }
+
+    if (rowData.delivery) {
+      rowData.product.productId = rowData.product.id;
+      transactionstobeinvoiced_dtRow = {
+        amountInInvoice: '',
+        deliveryNo: rowData.delivery.name,
+        agreementType: rowData.agreementType,
+        deliveryProductId: rowData.deliveryProductId,
+        invoicedProduct: rowData.invoicedProduct,
+        orderedProduct: rowData.orderedProduct,
+        confirmedQuantity: rowData.confirmedQuantity,
+        confirmedQuantityUom: rowData.confirmedQuantityUom,
+        deliveryQuantity: rowData.deliveryQuantity,
+        deliveryQuantityUom: rowData.confirmedQuantityUom,
+        deliveryMFM: rowData.deliveryMFM,
+        sulphurContent: rowData.sulphurContent,
+        difference: '',
+        estimatedAmount: rowData.estimatedAmount,
+        estimatedAmountCurrency: rowData.estimatedRateCurrency,
+        estimatedRate: rowData.estimatedRate,
+        estimatedRateCurrency: rowData.estimatedRateCurrency,
+        invoiceAmount: '',
+        invoiceAmountCurrency: {},
+        invoiceQuantity: '',
+        invoiceQuantityUom: {},
+        invoiceRate: '',
+        invoiceRateUom: rowData.invoiceRateUom,
+        invoiceRateCurrency: this.formValues.invoiceRateCurrency,
+        isDeleted: rowData.isDeleted,
+        pricingDate: rowData.pricingDate,
+        product: rowData.product,
+        physicalSupplierCounterparty: rowData.physicalSupplierCounterparty,
+        estimatedRateUom: rowData.estimatedRateUom,
+        pricingScheduleName: rowData.pricingScheduleName,
+        reconStatus: {
+          id: 1,
+          name: 'Matched',
+          code: '',
+          collectionName: null
+        }
+      };
+    }
+
+    let alreadyExists = false;
+    if (rowData.costName) {
+      alreadyExists = false;
+      this.formValues.costDetails.forEach((val, idx) => {
+        if (rowData.orderAdditionalCostId == val.orderAdditionalCostId) {
+          alreadyExists = true;
+        }
+      });
+      if (!alreadyExists) {
+        this.formValues.costDetails.push(transactionstobeinvoiced_dtRow);
+      } else {
+        this.toastr.error('Selected cost already exists');
+      }
+    }
+
+    if (rowData.delivery) {
+      alreadyExists = false;
+      this.formValues.productDetails.forEach((val, idx) => {
+        if (rowData.deliveryProductId == val.deliveryProductId && !val.isDeleted) {
+          alreadyExists = true;
+        }
+      });
+      if (!alreadyExists) {
+        transactionstobeinvoiced_dtRow.invoiceQuantity = transactionstobeinvoiced_dtRow.deliveryQuantity;
+        transactionstobeinvoiced_dtRow.invoiceQuantityUom = transactionstobeinvoiced_dtRow.deliveryQuantityUom;
+        this.formValues.productDetails.push(transactionstobeinvoiced_dtRow);
+      } else {
+        this.toastr.error('Selected product already exists');
+      }
+    }
+    this.selectedProductLine = null;
     this.changeDetectorRef.detectChanges();
   }
 
