@@ -426,6 +426,8 @@ implements OnInit {
   currencyList: any;
   physicalSupplierList: any;
   type: any;
+  expandAddTransactionListPopUp: boolean =  false;
+  displayedColumns: string[] = ['product', 'productType'];
   @Output() amountChanged: EventEmitter<any> = new EventEmitter<any>();
   get entityId(): number {
     return this._entityId;
@@ -891,6 +893,31 @@ implements OnInit {
     } else {
       this.formValues.productDetails.splice(key, 1);
     }
+  }
+
+  addTransaction() {
+    let payload = {"Payload":
+        {"Order":null,
+        "PageFilters":
+            {"Filters":[]},
+        "SortList":{"SortList":[]},"Filters":[{"ColumnName":"Order_Id","Value": this.formValues.orderDetails ? this.formValues.orderDetails.order.id : ''}],"SearchText":null,"Pagination":{"Skip":0,"Take":999999}}};
+    this.invoiceService
+    .addTransaction(payload)
+    .pipe(
+        finalize(() => {
+
+        })
+    )
+    .subscribe((result: any) => {
+      if (typeof result == 'string') {
+        this.spinner.hide();
+        this.toastr.error(result);
+      } else {
+        console.log(result);
+      }
+
+    });
+    
   }
 
 
