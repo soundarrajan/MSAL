@@ -231,9 +231,9 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
   ): Observable<any> {
     return this.http.post<any>(
       `${this._apiUrl}/${InvoiceApiPaths.addTransaction()}`,
-      {payload: request}
+      request
     ).pipe(
-      map((body: any) => body),
+      map((body: any) => body.payload),
       catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }

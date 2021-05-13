@@ -621,3 +621,54 @@ th, td {
 .header-container-product{
   display: inline-flex;
 }
+
+.select-product-container .mat-table {
+  background-color: #364150 !important;
+  box-shadow: unset !important;
+}
+
+.select-product-container th.mat-header-cell {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: #FFFFFF;
+}
+
+.select-product-container tr.mat-row, .select-product-container tr.mat-header-row  {
+  height: 30px ;
+}
+
+.select-product-container th.mat-header-cell:first-of-type, .select-product-container td.mat-cell:first-of-type{
+  padding-left: unset;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #FFFFFF;
+}
+
+.select-product-container td.mat-cell:last-of-type, .select-product-container th.mat-header-cell:last-of-type {
+  padding-right: unset;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #FFFFFF;
+}
+
+.select-product-container td.mat-cell, .select-product-container th.mat-header-cell {
+  border-bottom-style: unset;
+}
+
+
+.select-product-container .mat-radio-outer-circle {
+  color: #FFFFFF;
+}
+
+.expand-allowed-company-container {
+  width: 50vw !important;
+}
