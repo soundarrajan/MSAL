@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { KnownInvoiceRoutes } from '../../known-invoice.routes';
 import { IInvoiceDetailsItemDto, IInvoiceDetailsItemRequest, IInvoiceDetailsItemResponse } from '../../services/api/dto/invoice-details-item.dto';
 import { InvoiceDetailsService } from '../../services/invoice-details.service';
-
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'shiptech-invoice-view',
@@ -16,7 +16,6 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   @ViewChild("invoiceDetails") invoiceDetailsComponent: any;
   _entityId;
   isConfirm=false;
-  isLoading = true;
   detailFormvalues:any;
   displayDetailFormvalues:boolean = false;
   saveDisabled=true;
@@ -31,7 +30,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   revertBtn:boolean = true;
   rejectBtn:boolean = true;
 
-  constructor(private route: ActivatedRoute, private invoiceService: InvoiceDetailsService,private changeDetectorRef: ChangeDetectorRef,){
+  constructor(private route: ActivatedRoute, private invoiceService: InvoiceDetailsService,private changeDetectorRef: ChangeDetectorRef,private spinner: NgxSpinnerService,){
     this._entityId = route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
     const baseOrigin = new URL(window.location.href).origin;
     this.tabData = [
@@ -45,12 +44,12 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.spinner.show();
     this.route.data.subscribe(data => {
       this.navBar = data.navBar;
 
       // http://localhost:9016/#/invoices/invoice/edit/0
-      if (localStorage.getItem('invoiceFromDelivery')) {
-        this.isLoading = true;
+      if (localStorage.getItem('invoiceFromDelivery')) {        
         // this.openedScreenLoaders = 0;
         this.createNewInvoiceFromDelivery();
       }
@@ -99,7 +98,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
 
   setScreenActions(formValues: any){
     this.displayDetailFormvalues = true;
-    this.isLoading = false;
+    this.spinner.hide();
     this.detailFormvalues = <IInvoiceDetailsItemDto>formValues;
         this.detailFormvalues.screenActions.forEach(action => {
           if(action.name == 'Cancel'){

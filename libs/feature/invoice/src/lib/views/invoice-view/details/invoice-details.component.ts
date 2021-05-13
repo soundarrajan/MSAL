@@ -29,7 +29,7 @@ import {MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import _ from 'lodash';
 import { DecimalPipe } from '@angular/common';
-
+import { NgxSpinnerService } from 'ngx-spinner';
 
   export const MY_FORMATS = {
     parse: {
@@ -69,7 +69,6 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   paymentStatus:number=0;
   customInvoice:number=0;
   dateFormat;
-  isLoading:boolean = false;
   formSubmitted:boolean = false;
   showMoreButtons: boolean = false;
   emptyStringVal = '--';
@@ -211,7 +210,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   //Default Values - strats
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private invoiceService: InvoiceDetailsService,  public dialog: MatDialog,
     private toastrService: ToastrService,private format: TenantFormattingService, private legacyLookupsDatabase: LegacyLookupsDatabase,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute,private spinner: NgxSpinnerService,
     @Inject(DecimalPipe) private _decimalPipe,
     private tenantService: TenantFormattingService,) {
     this.amountFormat = '1.' + this.tenantService.amountPrecision + '-' + this.tenantService.amountPrecision;
@@ -675,7 +674,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   }
 
   public saveInvoiceDetails(){
-    this.isLoading = true;
+    this.spinner.show();
     if(this.formSubmitted){
       return;
     }
@@ -694,8 +693,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         if(!this.formValues.orderDetails.paymentCompany.name){
           this.toastrService.error("Payment company is required.");
         }
-        this.isLoading = false;
         this.formSubmitted = false;
+        this.spinner.hide();
         return;
       }
       this.formValues.paymentDetails.paymentStatus = { id: this.paymentStatus };
@@ -709,8 +708,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     .updateInvoiceItem(data)
     .subscribe((response: IInvoiceDetailsItemResponse) => {
       this.toastrService.success('Invoice updated successfully');
-      this.isLoading = false;
       this.formSubmitted = false;
+      this.spinner.hide();
     });
   }
 
@@ -758,7 +757,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     // console.log('type',type,'evnt',event);
   }
   invoiceOptionSelected(option){
-    this.isLoading = true;
+    this.spinner.show();
     if(this.formSubmitted){
       return;
     }
@@ -771,8 +770,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       .submitReview(data)
       .subscribe((response: IInvoiceDetailsItemResponse) => {
         this.toastrService.success('Invoice submitted for approval successfully');
-        this.isLoading = false;
         this.formSubmitted = false;
+        this.spinner.hide();
       });
     }else if(option == 'submitapprove'){
       let data : any = {
@@ -782,8 +781,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       .submitapproval(data)
       .subscribe((response: IInvoiceDetailsItemResponse) => {
         this.toastrService.success('Invoice submitted for approval successfully');
-        this.isLoading = false;
         this.formSubmitted = false;
+        this.spinner.hide();
       });
     }else if(option == 'cancel'){
       let data : any = {
@@ -793,8 +792,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       .cancelInvoiceItem(data)
       .subscribe((response: IInvoiceDetailsItemResponse) => {
         this.toastrService.success('Invoice cancelled successfully');
-        this.isLoading = false;
         this.formSubmitted = false;
+        this.spinner.hide();
       });
     }else if(option == 'accept'){
       let data : any = {
@@ -804,8 +803,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       .acceptInvoiceItem(data)
       .subscribe((response: IInvoiceDetailsItemResponse) => {
         this.toastrService.success('Invoice accepted successfully');
-        this.isLoading = false;
         this.formSubmitted = false;
+        this.spinner.hide();
       });
     }else if(option == 'revert'){
       let data : any = {
@@ -815,8 +814,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       .revertInvoiceItem(data)
       .subscribe((response: IInvoiceDetailsItemResponse) => {
         this.toastrService.success('Invoice reverted successfully');
-        this.isLoading = false;
         this.formSubmitted = false;
+        this.spinner.hide();
       });
     }else if(option == 'reject'){
       let data : any = {
@@ -826,11 +825,11 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       .rejectInvoiceItem(data)
       .subscribe((response: IInvoiceDetailsItemResponse) => {
         this.toastrService.success('Invoice rejected successfully');
-        this.isLoading = false;
         this.formSubmitted = false;
+        this.spinner.hide();        
       });
     }else if(option == 'create'){
-      this.isLoading = false;
+      this.spinner.hide();
       const dialogRef = this.dialog.open(InvoiceTypeSelectionComponent, {
         width: '400px',
         height: '400px',
@@ -841,7 +840,10 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       dialogRef.afterClosed().subscribe(result => {
         this.formSubmitted = false;
         if(result && result != 'close'){
-
+          let createinvoice = this.invoiceTypeList.filter(x=>{return x.id === result});
+          this.formValues.id = 0;
+          this.formValues.documentType.id = createinvoice[0].id;
+          this.formValues.documentType.name = createinvoice[0].name;
         }
       });
     }else if(option == 'approve'){
@@ -852,8 +854,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       .approveInvoiceItem(data)
       .subscribe((response: IInvoiceDetailsItemResponse) => {
         this.toastrService.success('Invoice approved successfully');
-        this.isLoading = false;
         this.formSubmitted = false;
+        this.spinner.hide();
       });
     }
   }

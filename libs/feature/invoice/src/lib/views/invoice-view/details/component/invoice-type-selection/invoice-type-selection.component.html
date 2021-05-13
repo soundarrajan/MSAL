@@ -8,12 +8,12 @@
 </div>
 <mat-dialog-content>
 <mat-radio-group  [(ngModel)]="invoiceType">
-    <mat-radio-button *ngFor="let type of invoiceList" [value]="type.value" style="width:100%;line-height:30px;">{{type.name}}</mat-radio-button>
+    <mat-radio-button *ngFor="let type of invoiceList" [value]="type.id" style="width:100%;line-height:30px;">{{type.name}}</mat-radio-button>
     
 </mat-radio-group>
     
 </mat-dialog-content>
 <mat-dialog-actions>
 <button class='blue-button' style="width:20%" (click)="closeDialog()">Cancel</button>
-<button class='blue-button' style="margin-left:10px;width:35%" (click)="closeDialog()">Create Invoice</button>
+<button class='blue-button' style="margin-left:10px;width:35%" (click)="closeSelectedDialog()">Create Invoice</button>
 </mat-dialog-actions>
