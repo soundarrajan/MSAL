@@ -29,6 +29,7 @@ import { MaterialModule } from '@shiptech/core/ui/material.module';
 import { UIModule } from '@shiptech/core/ui/ui.module';
 import { environment } from '@shiptech/environment';
 import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
+import { NgxSpinnerModule } from "ngx-spinner";
 import { ButtonModule } from 'primeng/button';
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { MessagesModule } from 'primeng/messages';
@@ -105,7 +106,7 @@ import { QuantityTenantFormatDirective } from './views/invoice-view/details/comp
 import { AmountTenantFormatDirective } from './views/invoice-view/details/component/directives/amount-tenant-format.directive';
 import { PriceTenantFormatDirective } from './views/invoice-view/details/component/directives/price-tenant-format.directive';
 import { NumberOnlyDirective } from './views/invoice-view/details/component/directives/number-only.directive';
-import { NgxSpinnerModule } from "ngx-spinner";
+import { ClaimDetailsComponent } from './views/invoice-view/details/component/claim-details/claim-details.component';
 
 @NgModule({
   imports: [
@@ -218,7 +219,8 @@ import { NgxSpinnerModule } from "ngx-spinner";
     AmountTenantFormatDirective,
     PriceTenantFormatDirective,
     NumberOnlyDirective,
-    AdditionalCostModalComponent
+    AdditionalCostModalComponent,
+    ClaimDetailsComponent
   ],
   exports: [
     QuantityTenantFormatDirective,

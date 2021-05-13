@@ -47,9 +47,8 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     this.spinner.show();
     this.route.data.subscribe(data => {
       this.navBar = data.navBar;
-
       // http://localhost:9016/#/invoices/invoice/edit/0
-      if (localStorage.getItem('invoiceFromDelivery')) {        
+      if (localStorage.getItem('invoiceFromDelivery')) {
         // this.openedScreenLoaders = 0;
         this.createNewInvoiceFromDelivery();
       }
@@ -71,14 +70,11 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   }
 
   getInvoiceItem() {
-    if(!this._entityId)
+    if(!this._entityId || this._entityId == 0)
       return;
-    let data : IInvoiceDetailsItemRequest = {
-      Payload: this._entityId
-    };
-    this.invoiceService.getInvoicDetails(data)
-      .subscribe((response: IInvoiceDetailsItemResponse) => {
-        this.setScreenActions(response.payload);
+    this.invoiceService.getInvoicDetails(this._entityId)
+      .subscribe((response: any) => {
+        this.setScreenActions(response);
       });
   }
 
@@ -86,13 +82,9 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     let data = JSON.parse(localStorage.getItem('invoiceFromDelivery'));
     localStorage.removeItem('invoiceFromDelivery');
 
-    let payloadData : INewInvoiceDetailsItemRequest = {
-      "Payload": data
-    };
-
-    this.invoiceService.getNewInvoicDetails(payloadData)
+    this.invoiceService.getNewInvoicDetails(data)
       .subscribe((response: IInvoiceDetailsItemResponse) => {
-        this.setScreenActions(response.payload);
+        this.setScreenActions(response);
       });
   }
 

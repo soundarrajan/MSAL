@@ -24,6 +24,7 @@ export namespace InvoiceApiPaths {
   export const getInvoiceItem = () => `api/invoice/get`;
   export const getNewInvoiceItem = () => `api/invoice/newFromDelivery`;
 
+  export const createInvoiceItem = () => `api/invoice/create`;
   export const updateInvoiceItem = () => `api/invoice/update`;
   export const productListOnInvoice = () => `api/invoice/deliveriesToBeInvoicedList`;
   export const submitapproval = () => `api/invoice/submitForApproval`;
@@ -32,13 +33,13 @@ export namespace InvoiceApiPaths {
   export const revertInvoiceItem = () => `api/invoice/revert`;
   export const rejectInvoiceItem = () => `api/invoice/reject`;
   export const approveInvoiceItem = () => `api/invoice/approve`;
-  export const submitReview = () => `api/invoice/submitForReview`;
+  export const submitForReview = () => `api/invoice/submitForReview`;
   export const getStaticLists = () =>  `api/infrastructure/static/lists`;
   export const getUomConversionFactor = () =>  `api/masters/uoms/convertQuantity`;
   export const calculateProductRecon = () =>  `api/recon/invoiceproduct`;
   export const addTransaction = () =>  `api/invoice/deliveriesToBeInvoicedList`;
 
-  
+
 
 
 }
@@ -91,98 +92,159 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
 
   @ObservableException()
   getInvoicDetails(
-    request: IInvoiceDetailsItemRequest
+    request: any
   ): Observable<IInvoiceDetailsItemResponse> {
-    
+
     return this.http.post<IInvoiceDetailsItemResponse>(
-      `${this._apiUrl}/${InvoiceApiPaths.getInvoiceItem()}`, 
-      request );
+      `${this._apiUrl}/${InvoiceApiPaths.getInvoiceItem()}`,
+      { payload: request }
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
   }
+
   getNewInvoicDetails(
-    request: INewInvoiceDetailsItemRequest
+    request: any
   ): Observable<IInvoiceDetailsItemResponse> {
-    
+
     return this.http.post<IInvoiceDetailsItemResponse>(
-      `${this._apiUrl}/${InvoiceApiPaths.getNewInvoiceItem()}`, 
-      request );
+      `${this._apiUrl}/${InvoiceApiPaths.getNewInvoiceItem()}`,
+      { payload: request }
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
   }
 
   @ObservableException()
-  updateInvoiceItem(
-    request: IInvoiceDetailsItemRequest
+  createInvoice(
+    request: any
   ): Observable<IInvoiceDetailsItemResponse> {
     return this.http.post<IInvoiceDetailsItemResponse>(
-      `${this._apiUrl}/${InvoiceApiPaths.updateInvoiceItem()}`, 
-      request );
+      `${this._apiUrl}/${InvoiceApiPaths.createInvoiceItem()}`,
+      { payload: request }
+    ).pipe(
+      map((body: any) => body.upsertedId),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
+  }
+
+  @ObservableException()
+  updateInvoice(
+    request: any
+  ): Observable<IInvoiceDetailsItemResponse> {
+    return this.http.post<IInvoiceDetailsItemResponse>(
+      `${this._apiUrl}/${InvoiceApiPaths.updateInvoiceItem()}`,
+      { payload: request }
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
   }
 
   @ObservableException()
   productListOnInvoice(
-    request ): Observable<any> {
-    return this.http.post(
-      `${this._apiUrl}/${InvoiceApiPaths.productListOnInvoice()}`, 
-      request );
+    request: any
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${this._apiUrl}/${InvoiceApiPaths.productListOnInvoice()}`,
+      { payload: request }
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
   }
+
   @ObservableException()
   approveInvoiceItem(
-    request: IInvoiceDetailsItemRequest
+    request: any
   ): Observable<IInvoiceDetailsItemResponse> {
     return this.http.post<IInvoiceDetailsItemResponse>(
-      `${this._apiUrl}/${InvoiceApiPaths.approveInvoiceItem()}`, 
-      request );
+      `${this._apiUrl}/${InvoiceApiPaths.approveInvoiceItem()}`,
+      { payload: request }
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
   }
 
   @ObservableException()
   submitapproval(
-    request: IInvoiceDetailsItemRequest
+    request: any
   ): Observable<IInvoiceDetailsItemResponse> {
     return this.http.post<IInvoiceDetailsItemResponse>(
-      `${this._apiUrl}/${InvoiceApiPaths.submitapproval()}`, 
-      request );
+      `${this._apiUrl}/${InvoiceApiPaths.submitapproval()}`,
+      { payload: request }
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
   }
 
   @ObservableException()
   cancelInvoiceItem(
-    request: IInvoiceDetailsItemRequest
+    request: any
   ): Observable<IInvoiceDetailsItemResponse> {
     return this.http.post<IInvoiceDetailsItemResponse>(
-      `${this._apiUrl}/${InvoiceApiPaths.cancelInvoiceItem()}`, 
-      request );
+      `${this._apiUrl}/${InvoiceApiPaths.cancelInvoiceItem()}`,
+      { payload: request }
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
   }
 
   @ObservableException()
   acceptInvoiceItem(
-    request: IInvoiceDetailsItemRequest
+    request: any
   ): Observable<IInvoiceDetailsItemResponse> {
     return this.http.post<IInvoiceDetailsItemResponse>(
-      `${this._apiUrl}/${InvoiceApiPaths.acceptInvoiceItem()}`, 
-      request );
+      `${this._apiUrl}/${InvoiceApiPaths.acceptInvoiceItem()}`,
+      { payload: request }
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
   }
 
   @ObservableException()
   revertInvoiceItem(
-    request: IInvoiceDetailsItemRequest
+    request: any
   ): Observable<IInvoiceDetailsItemResponse> {
     return this.http.post<IInvoiceDetailsItemResponse>(
-      `${this._apiUrl}/${InvoiceApiPaths.revertInvoiceItem()}`, 
-      request );
+      `${this._apiUrl}/${InvoiceApiPaths.revertInvoiceItem()}`,
+      { payload: request }
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
   }
 
   @ObservableException()
   rejectInvoiceItem(
-    request: IInvoiceDetailsItemRequest
+    request: any
   ): Observable<IInvoiceDetailsItemResponse> {
     return this.http.post<IInvoiceDetailsItemResponse>(
-      `${this._apiUrl}/${InvoiceApiPaths.rejectInvoiceItem()}`, 
-      request );
+      `${this._apiUrl}/${InvoiceApiPaths.rejectInvoiceItem()}`,
+      { payload: request }
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
   }
+
   @ObservableException()
-  submitReview(
-    request: IInvoiceDetailsItemRequest
+  submitForReview(
+    request: any
   ): Observable<IInvoiceDetailsItemResponse> {
     return this.http.post<IInvoiceDetailsItemResponse>(
-      `${this._apiUrl}/${InvoiceApiPaths.submitReview()}`, 
-      request );
+      `${this._apiUrl}/${InvoiceApiPaths.submitForReview()}`,
+      { payload: request }
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
   }
 
   @ObservableException()
@@ -211,7 +273,7 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
     );
   }
 
-  
+
   @ObservableException()
   calculateProductRecon(
     request: any
