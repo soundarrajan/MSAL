@@ -1,9 +1,9 @@
-﻿commit 09ef80c1c8f85e66aebce1b75060aadbc4b8868c
-Author: Padmashree S <padmashree.s@inatech.com>
-Date:   Thu May 13 12:07:27 2021 +0530
+﻿commit fb4d3c3a739db2e1dcfae7bd6c952cc1bea5dd3f
+Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
+Date:   Thu May 13 07:54:22 2021 +0000
 
-    delivery- dropdown UI fix
+    Merged PR 10687: Spinner added to details invoice
     
-    delivery- dropdown UI fix
+    Spinner added to details invoice
 
 branch: master
