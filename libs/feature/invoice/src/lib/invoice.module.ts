@@ -105,6 +105,7 @@ import { QuantityTenantFormatDirective } from './views/invoice-view/details/comp
 import { AmountTenantFormatDirective } from './views/invoice-view/details/component/directives/amount-tenant-format.directive';
 import { PriceTenantFormatDirective } from './views/invoice-view/details/component/directives/price-tenant-format.directive';
 import { NumberOnlyDirective } from './views/invoice-view/details/component/directives/number-only.directive';
+import { NgxSpinnerModule } from "ngx-spinner";
 
 @NgModule({
   imports: [
@@ -200,6 +201,7 @@ import { NumberOnlyDirective } from './views/invoice-view/details/component/dire
     OverlayModule,
     PortalModule,
     ScrollingModule,
+    NgxSpinnerModule
   ],
   declarations: [
     MainInvoiceComponent,
