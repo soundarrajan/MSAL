@@ -427,8 +427,14 @@ implements OnInit {
   physicalSupplierList: any;
   type: any;
   expandAddTransactionListPopUp: boolean =  false;
-  displayedColumns: string[] = ['product', 'productType'];
+  displayedColumns: string[] = ['product', 'delivery'];
   @Output() amountChanged: EventEmitter<any> = new EventEmitter<any>();
+  deliveriesToBeInvoicedList: any = [];
+  selectedProductLine: any;
+  productSearch: any;
+  filteredProductOptions: Observable<string[]>;
+  @ViewChild('menuTrigger') trigger: MatMenuTrigger;
+
   get entityId(): number {
     return this._entityId;
   }
@@ -526,6 +532,7 @@ implements OnInit {
   ngOnInit(): void {
 
   }
+
 
   originalOrder = (a: KeyValue<number, any>, b: KeyValue<number, any>): number => {
     return 0;
@@ -901,12 +908,13 @@ implements OnInit {
         "PageFilters":
             {"Filters":[]},
         "SortList":{"SortList":[]},"Filters":[{"ColumnName":"Order_Id","Value": this.formValues.orderDetails ? this.formValues.orderDetails.order.id : ''}],"SearchText":null,"Pagination":{"Skip":0,"Take":999999}}};
+    this.spinner.show();
     this.invoiceService
     .addTransaction(payload)
     .pipe(
-        finalize(() => {
-
-        })
+      finalize(() => {
+        this.spinner.hide();
+      })
     )
     .subscribe((result: any) => {
       if (typeof result == 'string') {
@@ -914,11 +922,21 @@ implements OnInit {
         this.toastr.error(result);
       } else {
         console.log(result);
+        this.deliveriesToBeInvoicedList = result;
+        this.trigger.openMenu();
       }
 
     });
     
   }
+
+  searchProducts(value: string): void {
+    let filterProducts = this.deliveriesToBeInvoicedList.filter((option) => option.product.name.toLowerCase().includes(value));
+    console.log(filterProducts);
+    this.deliveriesToBeInvoicedList = [ ... filterProducts];
+    this.changeDetectorRef.detectChanges();
+  }
+
 
 
 }
