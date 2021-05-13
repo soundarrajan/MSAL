@@ -8,7 +8,27 @@ import { Component, OnInit, Input } from '@angular/core';
             <span class="chip-circle"></span>
             <span>{{info.Title}}</span>
           </div>
-          <div class="data" [ngClass]="{'tile-2': info.Title === 'Status' }" >{{info.Data}}</div>
+          <div *ngIf="info.Title !== 'Deductions'" class="data" [ngClass]="{'tile-2': info.Title === 'Status' }"    
+              [matTooltip]="info.Data"
+              [matTooltipPosition]="'above'"
+              matTooltipClass="custom-tooltip">{{info.Data}}</div>
+          <div *ngIf="info.Title === 'Deductions'" class="data deduction-container" [ngClass]="{'tile-2': info.Title === 'Status' }"    
+              [matTooltip]="'Deductions'"
+              [matTooltipPosition]="'above'"
+              matTooltipClass="custom-tooltip"> 
+                <div>
+                  <input matInput 
+
+                    [(ngModel)]="formValues.invoiceSummary.deductions"
+                    class="deduction-input"
+                    autocomplete="off"
+                    amountFormat>
+                </div>
+                <div>
+                  {{formValues.invoiceRateCurrency.code}}
+                </div>
+              
+          </div>
         </div>
     </div>
     `,
@@ -49,11 +69,30 @@ import { Component, OnInit, Input } from '@angular/core';
               .tile-8{
                 float: right;
               }
+              .data {
+                justify-content: flex-start;
+                align-items: center;
+                text-align: start;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+              }
+              .custom-tooltip {
+                background: linear-gradient(0deg, rgba(158, 158, 158, 0.39), rgba(158, 158, 158, 0.39)), #676C72;
+                border: 1px solid #364150;
+                box-sizing: border-box;
+                border-radius: 4px;
+                color: white;
+                font-size: 14px;
+              }
+              .deduction-container {
+                display: inline-flex;
+              }
             `]
   })
   export class MasterChip {
   @Input('info') info;
-
+  @Input('formValues') formValues;
   constructor(){
 
   }
