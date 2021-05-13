@@ -1,9 +1,7 @@
-﻿commit d86f340d4bf7cfd73ed495efa0d64a59826cf641
+﻿commit 0fe0f2f850d2e7b8f3f04774018e3581ab4e5177
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Thu May 13 13:49:54 2021 +0000
+Date:   Thu May 13 14:44:10 2021 +0000
 
-    Merged PR 10708: Removed  black background when i click on extend in contract screen
-    
-    Removed  black background when i click on extend in contract screen
+    Merged PR 10709: Added other delivery transactions to the current invoice, made deducations as editable field
 
 branch: master

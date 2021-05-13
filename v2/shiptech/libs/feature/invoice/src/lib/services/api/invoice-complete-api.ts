@@ -37,6 +37,7 @@ export namespace InvoiceApiPaths {
   export const getStaticLists = () =>  `api/infrastructure/static/lists`;
   export const getUomConversionFactor = () =>  `api/masters/uoms/convertQuantity`;
   export const calculateProductRecon = () =>  `api/recon/invoiceproduct`;
+  export const addTransaction = () =>  `api/invoice/deliveriesToBeInvoicedList`;
 
 
 
@@ -282,6 +283,19 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
       {payload: request}
     ).pipe(
       map((body: any) => body),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
+  }
+
+  @ObservableException()
+  addTransaction(
+    request: any
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${this._apiUrl}/${InvoiceApiPaths.addTransaction()}`,
+      request
+    ).pipe(
+      map((body: any) => body.payload),
       catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
