@@ -650,15 +650,13 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     var ivs =  this.formValues.invoiceSummary;
     this.chipData[0].Data = this.formValues.id?.toString();
     this.chipData[1].Data = this.formValues.status.displayName? this.formValues.status.displayName : this.emptyStringVal;
-    if(ivs){
-      this.chipData[2].Data = ivs.invoiceAmountGrandTotal? this.amountFormatValue(ivs.invoiceAmountGrandTotal?.toString()) : this.emptyNumberVal;
-      this.chipData[3].Data = ivs?.estimatedAmountGrandTotal? this.amountFormatValue(ivs?.estimatedAmountGrandTotal.toString()) : this.emptyNumberVal;
-      this.chipData[4].Data = ivs?.totalDifference? this.amountFormatValue(ivs?.totalDifference?.toString()) : this.emptyNumberVal;
-      this.chipData[5].Data = ivs?.provisionalInvoiceNo? this.amountFormatValue(ivs?.provisionalInvoiceNo?.toString()) : this.emptyNumberVal;
-      this.chipData[6].Data = ivs?.provisionalInvoiceAmount? this.amountFormatValue(ivs?.provisionalInvoiceAmount?.toString()): this.emptyNumberVal;
-      this.chipData[7].Data = ivs?.deductions? this.amountFormatValue(ivs?.deductions?.toString()) : this.emptyNumberVal;
-      this.chipData[8].Data = ivs?.netPayable? this.amountFormatValue(ivs?.netPayable?.toString()) : this.emptyNumberVal;
-      }
+    this.chipData[2].Data = ivs.invoiceAmountGrandTotal? this.amountFormatValue(ivs.invoiceAmountGrandTotal?.toString()) + ' ' + this.formValues.invoiceRateCurrency.code : this.emptyNumberVal + ' ' + this.formValues.invoiceRateCurrency.code;
+    this.chipData[3].Data = ivs?.estimatedAmountGrandTotal? this.amountFormatValue(ivs?.estimatedAmountGrandTotal.toString()) + ' ' + this.formValues.invoiceRateCurrency.code : this.emptyNumberVal + ' ' + this.formValues.invoiceRateCurrency.code;
+    this.chipData[4].Data = ivs?.totalDifference? this.amountFormatValue(ivs?.totalDifference?.toString()) + ' ' + this.formValues.invoiceRateCurrency.code : this.emptyNumberVal;
+    this.chipData[5].Data = ivs?.provisionalInvoiceNo? this.amountFormatValue(ivs?.provisionalInvoiceNo?.toString()): this.emptyNumberVal;
+    this.chipData[6].Data = ivs?.provisionalInvoiceAmount? this.amountFormatValue(ivs?.provisionalInvoiceAmount?.toString()) + ' ' + this.formValues.invoiceRateCurrency.code  : this.emptyNumberVal;
+    this.chipData[7].Data = ivs?.deductions? this.amountFormatValue(ivs?.deductions?.toString()) + ' ' + this.formValues.invoiceRateCurrency.code  : this.emptyNumberVal + ' ' + this.formValues.invoiceRateCurrency.code ;
+    this.chipData[8].Data = ivs?.netPayable? this.amountFormatValue(ivs?.netPayable?.toString()) + ' ' + this.formValues.invoiceRateCurrency.code  : this.emptyNumberVal + ' ' + this.formValues.invoiceRateCurrency.code ;
   }
 
   formatDateForBe(value) {
@@ -862,9 +860,12 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   getProductList(){
     let data : any = {"Order":null,"PageFilters":{"Filters":[]},"SortList":{"SortList":[]},"Filters":[{"ColumnName":"Order_Id","Value": this.orderId}],"SearchText":null,"Pagination":{}}
     this.invoiceService.productListOnInvoice(data).subscribe((response: any) => {
-      response.payload.forEach(row => {
-        this.productData.push({selected:false, product:row.product.name, deliveries:row.order.id, details:row});
-      });
+      if (response.payload) {
+        response.payload.forEach(row => {
+          this.productData.push({selected:false, product:row.product.name, deliveries:row.order.id, details:row});
+        });
+      }
+
     });
   }
 

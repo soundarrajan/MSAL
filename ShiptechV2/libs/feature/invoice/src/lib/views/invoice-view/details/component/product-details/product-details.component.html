@@ -6,7 +6,53 @@
       <thead>
         <tr>
           <td class="padding" style="max-width: initial;min-width: 30px;">
-            <a class="add-icon"></a>
+            <div  #menuTrigger="matMenuTrigger"  [matMenuTriggerFor]="productMenu"
+            #productMenuTrigger="matMenuTrigger" (click)="addTransaction()">
+              <a class="add-icon"></a>
+            </div>
+            <mat-menu #productMenu="matMenu" class="select-product-container">
+              <div [ngClass]="{'expand-allowed-company-container': expandAddTransactionListPopUp}">
+                <div class="col-md-12 header-container-product">
+                  <div class="search-product-container col-md-10">
+                    <span class="search-product-lookup" (click)="$event.stopPropagation();$event.preventDefault();searchProducts(productSearch)">
+                    </span>
+                    <input matInput 
+                      (click)="$event.stopPropagation();$event.preventDefault();"
+                      [(ngModel)]="productSearch"
+                      (input)="searchProducts($event.target.value)"
+                      placeholder="Search all and select a product"
+                      class="search-product-input">
+                  </div>
+                  <div class="col-md-2">
+                      <img [ngClass]="{'expand-img': expandAddTransactionListPopUp}" (click)="expandAddTransactionListPopUp = !expandAddTransactionListPopUp; $event.stopPropagation();$event.preventDefault();" alt="Shiptech"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
+                  </div>
+                </div>
+                {{selectedProductLine}}
+                <table *ngIf="deliveriesToBeInvoicedList && deliveriesToBeInvoicedList.length" class="delivery-products-pop-up col-md-12 no-padding" mat-table [dataSource]="deliveriesToBeInvoicedList">
+                  <!-- Product Column -->
+                  <ng-container matColumnDef="product">
+                    <th mat-header-cell *matHeaderCellDef> Product </th>
+                    <td mat-cell *matCellDef="let element"> 
+                      <mat-radio-group  [(ngModel)]="selectedProductLine" (ngModelChange)="addTransactionsInInvoice(selectedProductLine)">
+                        <mat-radio-button [value]="element">   
+                          {{element.product.name}} 
+                        </mat-radio-button>
+                      </mat-radio-group>
+                    </td>
+                  </ng-container>
+        
+                  <!-- Product type Column -->
+                  <ng-container matColumnDef="delivery">
+                    <th mat-header-cell *matHeaderCellDef> Related deliveries </th>
+                    <td mat-cell *matCellDef="let element"> 
+                      {{element.delivery ? element.delivery.id : ''}} 
+                    </td>
+                  </ng-container>
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+              </div>
+            </mat-menu>
           </td>
           <td class="padding" style="max-width: initial;min-width: 250px">
             <b>Delivery No. / Ordered Product</b>
@@ -360,6 +406,7 @@
                     <td style="max-width: initial; min-width: 200px;" class="padding-line">
                       <span>
                         {{amountFormatValue(productDetail.value.amountInOrder)}}
+                        {{productDetail.value.estimatedRateCurrency.code}}
                       </span>
                     </td>
                     <td style="max-width: initial; min-width: 200px;" class="padding">
@@ -386,3 +433,11 @@
       </tbody>
   </table>
 </div>
+
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-spin-clockwise-fade">
+</ngx-spinner>
+
