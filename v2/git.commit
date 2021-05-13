@@ -1,9 +1,9 @@
-﻿commit fb4d3c3a739db2e1dcfae7bd6c952cc1bea5dd3f
+﻿commit 552df7e94311ca37c8e8f248badf0114a14399c5
 Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
-Date:   Thu May 13 07:54:22 2021 +0000
+Date:   Thu May 13 12:01:27 2021 +0000
 
-    Merged PR 10687: Spinner added to details invoice
+    Merged PR 10698: Date picker to retain values and additional cost values update
     
-    Spinner added to details invoice
+    Date picker to retain values and additional cost values update
 
 branch: master

@@ -61,7 +61,7 @@
                         <div id="custom-form-field" class="lightTheme">
                             <mat-form-field class="without-search" appearance="legacy">
                                 <mat-label>Received Date</mat-label>
-                                <input [(ngModel)]="formValues.receivedDate" name="receivedDate" #validToDateField="ngModel" matInput [matDatepicker]="receivedDate" (focus)="receivedDate.open()" autocomplete="off" placeholder="Received Date" (dateChange)="formValues.receivedDate = formatDateForBe(formValues.receivedDate)">
+                                <input [(ngModel)]="formValues.receivedDate" name="receivedDate" #validToDateField="ngModel" matInput [matDatepicker]="receivedDate" (focus)="receivedDate.open()" autocomplete="off" placeholder="Received Date" (dateChange)="formatDateForBe(formValues.receivedDate)">
                                 <mat-datepicker-toggle matSuffix [for]="receivedDate">
                                     <mat-icon matDatepickerToggleIcon class="icon-date">
                                     </mat-icon>
@@ -114,7 +114,7 @@
                             <div id="custom-form-field" class="lightTheme">
                                 <mat-form-field class="without-search" appearance="legacy">
                                     <mat-label>Working due date</mat-label>
-                                    <input [(ngModel)]="formValues.workingDueDate" name="workingDueDate" #validToDateField="ngModel" matInput [matDatepicker]="workingDueDate" (focus)="workingDueDate.open()" autocomplete="off" placeholder="Working Due Date" (dateChange)="formValues.workingDueDate = formatDateForBe(formValues.workingDueDate)" required>
+                                    <input [(ngModel)]="formValues.workingDueDate" name="workingDueDate" #validToDateField="ngModel" matInput [matDatepicker]="workingDueDate" autocomplete="off" placeholder="Working Due Date" (dateChange)="formatDateForBe(formValues.workingDueDate)" required>
                                     <mat-datepicker-toggle matSuffix [for]="workingDueDate">
                                         <mat-icon matDatepickerToggleIcon class="icon-date">
                                         </mat-icon>
@@ -139,7 +139,7 @@
                         <div id="custom-form-field" class="lightTheme">
                             <mat-form-field class="without-search" appearance="legacy">
                                 <mat-label>Seller Due Date</mat-label>
-                                <input [(ngModel)]="formValues.sellerDueDate" name="sellerDueDate" #validToDateField="ngModel" matInput [matDatepicker]="sellerDueDate" (focus)="sellerDueDate.open()" autocomplete="off" placeholder="Seller Due Date" (dateChange)="formValues.sellerDueDate = formatDateForBe(formValues.sellerDueDate)">
+                                <input [(ngModel)]="formValues.sellerDueDate" name="sellerDueDate" #validToDateField="ngModel" matInput [matDatepicker]="sellerDueDate" autocomplete="off" placeholder="Seller Due Date" (dateChange)="formatDateForBe(formValues.sellerDueDate)">
                                 <mat-datepicker-toggle matSuffix [for]="sellerDueDate">
                                     <mat-icon matDatepickerToggleIcon class="icon-date">
                                     </mat-icon>
@@ -160,7 +160,7 @@
                                 (focus)="paymentDate.open()"
                                 autocomplete="off"
                                 placeholder="Payment Date"
-                                (dateChange)="formValues.paymentDate = formatDateForBe(formValues.paymentDate)">
+                                (dateChange)="formatDateForBe(formValues.paymentDate)">
                                 <mat-datepicker-toggle matSuffix [for]="paymentDate">
                                     <mat-icon matDatepickerToggleIcon class="icon-date">
                                     </mat-icon>
@@ -181,7 +181,7 @@
                                 (focus)="validationDate.open()"
                                 autocomplete="off"
                                 placeholder="Validation Date"
-                                (dateChange)="formValues.accountancyDate = formatDateForBe(formValues.accountancyDate)">
+                                (dateChange)="formatDateForBe(formValues.accountancyDate)">
                                 <mat-datepicker-toggle matSuffix [for]="validationDate">
                                     <mat-icon matDatepickerToggleIcon class="icon-date">
                                     </mat-icon>
@@ -235,7 +235,7 @@
                                 (focus)="accountancyDate.open()"
                                 autocomplete="off"
                                 placeholder="Accountancy Date"
-                                (dateChange)="formValues.accountancyDate = formatDateForBe(formValues.accountancyDate)">
+                                (dateChange)="formatDateForBe(formValues.accountancyDate)">
                                 <mat-datepicker-toggle matSuffix [for]="accountancyDate">
                                     <mat-icon matDatepickerToggleIcon class="icon-date">
                                     </mat-icon>
