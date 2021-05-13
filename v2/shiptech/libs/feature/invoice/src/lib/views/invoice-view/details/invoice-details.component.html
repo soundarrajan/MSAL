@@ -35,7 +35,7 @@
                 <div class="row pt-3">
                     <div class="col-md-3">
                         <div id="custom-form-field"  class="custom-form-field" class="lightTheme">
-    
+
                             <mat-form-field class="without-search" appearance="legacy">
                                 <mat-label>Seller Invoice No.</mat-label>
                                 <input [(ngModel)]="formValues.sellerInvoiceNo" name="sellerInvoiceNo" matInput placeholder="000" type="number">
@@ -47,7 +47,7 @@
                         <div id="custom-form-field" class="lightTheme">
                             <mat-form-field class="without-search" appearance="legacy">
                                 <mat-label>Invoice Date</mat-label>
-                                <input [(ngModel)]="formValues.invoiceDate" name="invoiceDate" #validToDateField="ngModel" 
+                                <input [(ngModel)]="formValues.invoiceDate" name="invoiceDate" #validToDateField="ngModel"
                                 matInput [matDatepicker]="invoiceDate" (focus)="invoiceDate.open()" autocomplete="off" placeholder="Invoice Date">
                                 <mat-datepicker-toggle matSuffix [for]="invoiceDate">
                                     <mat-icon matDatepickerToggleIcon class="icon-date">
@@ -194,8 +194,8 @@
                         <div id="custom-form-field" class="lightTheme">
                             <mat-form-field class="without-search" appearance="legacy">
                                 <mat-label>Payment Status</mat-label>
-                                <mat-select disableOptionCentering [(ngModel)]="paymentStatus" name="paymentStatus">
-                                    <mat-option *ngFor="let list of paymentStatusList" [value]="list.id">{{list.name}}</mat-option>
+                                <mat-select disableOptionCentering [(ngModel)]="formValues.paymentDetails.paymentStatus" name="paymentStatus">
+                                    <mat-option *ngFor="let list of paymentStatusList" [value]="list">{{list.name}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
@@ -217,8 +217,8 @@
                         <div id="custom-form-field" class="lightTheme">
                             <mat-form-field class="without-search" appearance="legacy">
                                 <mat-label>Invoice Status</mat-label>
-                                <mat-select [(ngModel)]="customInvoice" name="customInvoice">
-                                    <mat-option *ngFor="let list of invoiceStatusList" [value]="list.id">{{list.name}}</mat-option>                                
+                                <mat-select [(ngModel)]="formValues.customStatus" name="customInvoice">
+                                    <mat-option *ngFor="let list of invoiceStatusList" [value]="list">{{list.name}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
@@ -301,7 +301,7 @@
                             </div>
                         </div>
                     </div>
-    
+
                     <div class="field-textarea">
                         <textarea rows="4" cols="50" placeholder="Type front office comments here"
                         name="frontOfficeComments"
@@ -377,6 +377,7 @@
             <p-panel [showHeader]="false">
             <div fxLayout="row">
                 <shiptech-invoice-product-details
+                    *ngIf="!(formValues.invoiceClaimDetails.length > 0)"
                     [model]="formValues"
                     [productList]="productList"
                     [uomList]="uomList"
@@ -386,7 +387,15 @@
                     (amountChanged)="updateAmountValues($event)"
                     class="col-12"
                     style="padding-left: 0px; padding-right: 0px;">
-                </shiptech-invoice-product-details>  
+                </shiptech-invoice-product-details>
+                <shiptech-invoice-claim-details
+                    *ngIf="formValues.invoiceClaimDetails.length > 0"
+                    [model]="formValues"
+                    [currencyList]="currencyList"
+                    (amountChanged)="updateAmountValues($event)"
+                    class="col-12"
+                    style="padding-left: 0px; padding-right: 0px;">
+                </shiptech-invoice-claim-details>
             </div>
             </p-panel>
         </div>
@@ -405,19 +414,6 @@
         </div> -->
         <shiptech-additional-cost-modal [formValues]="formValues" (changedAdditonalcost)='changedAdditonalcost($event)'></shiptech-additional-cost-modal>
           </div>
-    </div>
-    
-    <!-- Claim details -->
-    <div class="section1 mt-4" style="margin: 0px;" *ngIf="formValues.invoiceClaimDetails.length > 0">
-      <div class="match-grid" style="border-bottom: 4px solid #e5e5e5;">
-          <div class="title">Claim Details</div>
-          <div class="agGrid-v2" style="margin: 0">
-              <div style="width:100%;height: 250px;">
-                  <ag-grid-angular style="width: 100%;height: 100%;" [gridOptions]="gridOptions_claims"
-                      class="ag-theme-material ag-grid-v2 angular-v9 prod-details"></ag-grid-angular>
-              </div>
-          </div>
-        </div>
     </div>
     </form>
 </div>
