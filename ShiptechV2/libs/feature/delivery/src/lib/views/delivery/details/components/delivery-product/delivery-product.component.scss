@@ -40,6 +40,9 @@
   right: 60px;
   padding-top: 10px;
   padding-bottom: 10px;
+  &.cust-select{
+    right: 0px !important;
+  }
 }
 
 .delivery-product-select-container .mat-option {

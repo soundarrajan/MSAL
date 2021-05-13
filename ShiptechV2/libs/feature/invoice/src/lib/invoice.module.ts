@@ -29,6 +29,7 @@ import { MaterialModule } from '@shiptech/core/ui/material.module';
 import { UIModule } from '@shiptech/core/ui/ui.module';
 import { environment } from '@shiptech/environment';
 import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
+import { NgxSpinnerModule } from "ngx-spinner";
 import { ButtonModule } from 'primeng/button';
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { MessagesModule } from 'primeng/messages';
@@ -201,6 +202,7 @@ import { ClaimDetailsComponent } from './views/invoice-view/details/component/cl
     OverlayModule,
     PortalModule,
     ScrollingModule,
+    NgxSpinnerModule
   ],
   declarations: [
     MainInvoiceComponent,

@@ -1,3 +1,5 @@
+import { KnownInvoiceRoutes } from './../../../known-invoice.routes';
+import { KnownPrimaryRoutes } from './../../../../../../../core/src/lib/enums/known-modules-routes.enum';
 import { IInvoiceDetailsItemRequest } from './../../../services/api/dto/invoice-details-item.dto';
 import { ChangeDetectionStrategy, Component, Inject, Input, OnDestroy, OnInit,ViewChildren } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -5,7 +7,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { forkJoin, Observable, of, ReplaySubject, Subject, throwError } from 'rxjs';
 import { catchError, concatMap, map, takeUntil, tap } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '@shiptech/environment';
 
 // import { EMPTY$ } from './utils/rxjs-operators';
@@ -29,7 +31,7 @@ import {MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import _ from 'lodash';
 import { DecimalPipe } from '@angular/common';
-
+import { NgxSpinnerService } from 'ngx-spinner';
 
   export const MY_FORMATS = {
     parse: {
@@ -58,7 +60,6 @@ import { DecimalPipe } from '@angular/common';
 export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
   //Default Values - strats
-  public _entityId = null;
   orderId: number;
   public gridOptions_data: GridOptions;
   public gridOptions_ac: GridOptions;
@@ -69,7 +70,6 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   paymentStatus:number=0;
   customInvoice:number=0;
   dateFormat;
-  isLoading:boolean = false;
   formSubmitted:boolean = false;
   showMoreButtons: boolean = false;
   emptyStringVal = '--';
@@ -199,8 +199,6 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     this.setOrderDetailsLables(this.formValues.orderDetails);
     this.setcounterpartyDetailsLables(this.formValues.counterpartyDetails);
     this.setChipDatas();
-    this.paymentStatus = this.formValues.paymentDetails?.paymentStatus?.id;
-    this.customInvoice = this.formValues.customStatus?.id;
     this.manualtab = this.invoice_types.filter(x=>{ return x.value === this.formValues.documentType?.internalName});
     if(this.manualtab.length == 0){
       this.invoice_types.pop();
@@ -209,11 +207,11 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   }
 }
   //Default Values - strats
-  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private invoiceService: InvoiceDetailsService,  public dialog: MatDialog,
+  constructor(private router: Router,iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private invoiceService: InvoiceDetailsService,  public dialog: MatDialog,
     private toastrService: ToastrService,private format: TenantFormattingService, private legacyLookupsDatabase: LegacyLookupsDatabase,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute,private spinner: NgxSpinnerService,
     @Inject(DecimalPipe) private _decimalPipe,
-    private tenantService: TenantFormattingService,) {
+    private tenantService: TenantFormattingService) {
     this.amountFormat = '1.' + this.tenantService.amountPrecision + '-' + this.tenantService.amountPrecision;
     this.setupGrid();
     this.setClaimsDetailsGrid();
@@ -222,7 +220,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.entityName = 'Invoice';
     this.route.params.pipe(takeUntil(this._destroy$)).subscribe(params => {
-      this.entityId = parseFloat(params.contractId);
+      this.entityId = parseFloat(params.invoiceId);
     });
     this.route.data.subscribe(data => {
       this.staticLists = data.staticLists;
@@ -652,13 +650,15 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     var ivs =  this.formValues.invoiceSummary;
     this.chipData[0].Data = this.formValues.id?.toString();
     this.chipData[1].Data = this.formValues.status.displayName? this.formValues.status.displayName : this.emptyStringVal;
-    this.chipData[2].Data = ivs.invoiceAmountGrandTotal? this.amountFormatValue(ivs.invoiceAmountGrandTotal?.toString()) : this.emptyNumberVal;
-    this.chipData[3].Data = ivs?.estimatedAmountGrandTotal? this.amountFormatValue(ivs?.estimatedAmountGrandTotal.toString()) : this.emptyNumberVal;
-    this.chipData[4].Data = ivs?.totalDifference? this.amountFormatValue(ivs?.totalDifference?.toString()) : this.emptyNumberVal;
-    this.chipData[5].Data = ivs?.provisionalInvoiceNo? this.amountFormatValue(ivs?.provisionalInvoiceNo?.toString()) : this.emptyNumberVal;
-    this.chipData[6].Data = ivs?.provisionalInvoiceAmount? this.amountFormatValue(ivs?.provisionalInvoiceAmount?.toString()): this.emptyNumberVal;
-    this.chipData[7].Data = ivs?.deductions? this.amountFormatValue(ivs?.deductions?.toString()) : this.emptyNumberVal;
-    this.chipData[8].Data = ivs?.netPayable? this.amountFormatValue(ivs?.netPayable?.toString()) : this.emptyNumberVal;
+    if(ivs){
+      this.chipData[2].Data = ivs.invoiceAmountGrandTotal? this.amountFormatValue(ivs.invoiceAmountGrandTotal?.toString()) : this.emptyNumberVal;
+      this.chipData[3].Data = ivs?.estimatedAmountGrandTotal? this.amountFormatValue(ivs?.estimatedAmountGrandTotal.toString()) : this.emptyNumberVal;
+      this.chipData[4].Data = ivs?.totalDifference? this.amountFormatValue(ivs?.totalDifference?.toString()) : this.emptyNumberVal;
+      this.chipData[5].Data = ivs?.provisionalInvoiceNo? this.amountFormatValue(ivs?.provisionalInvoiceNo?.toString()) : this.emptyNumberVal;
+      this.chipData[6].Data = ivs?.provisionalInvoiceAmount? this.amountFormatValue(ivs?.provisionalInvoiceAmount?.toString()): this.emptyNumberVal;
+      this.chipData[7].Data = ivs?.deductions? this.amountFormatValue(ivs?.deductions?.toString()) : this.emptyNumberVal;
+      this.chipData[8].Data = ivs?.netPayable? this.amountFormatValue(ivs?.netPayable?.toString()) : this.emptyNumberVal;
+      }
   }
 
   formatDateForBe(value) {
@@ -675,7 +675,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   }
 
   public saveInvoiceDetails(){
-    this.isLoading = true;
+    this.spinner.show();
     if(this.formSubmitted){
       return;
     }
@@ -694,30 +694,40 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         if(!this.formValues.orderDetails.paymentCompany.name){
           this.toastrService.error("Payment company is required.");
         }
-        this.isLoading = false;
         this.formSubmitted = false;
+        this.spinner.hide();
         return;
-      }
-      // this.formValues.paymentDetails.paymentStatus = { id: this.paymentStatus };
-      // this.formValues.customStatus = { id: this.customInvoice };
+    }
 
-    //  alert("Has to save please wait");
-    let data : any = {
-      Payload: this.formValues
-    };
-    this.invoiceService
-    .updateInvoiceItem(data)
-    .subscribe((response: IInvoiceDetailsItemResponse) => {
-      this.toastrService.success('Invoice updated successfully');
-      this.isLoading = false;
-      this.formSubmitted = false;
-    });
+    if (this.entityId == 0) {
+      this.spinner.show();
+      this.invoiceService.saveInvoice(this.formValues).subscribe((result: any) => {
+          this.entityId = result;
+          this.handleServiceResponse(result, 'Invoice saved successfully.')
+      });
+    }
+    else{
+      this.spinner.show();
+      this.invoiceService.updateInvoice(this.formValues).subscribe((result: any) => {
+          this.handleServiceResponse(result, 'Invoice updated successfully.')
+      });
+    }
   }
 
   public openRequest(){
     //https://bvt.shiptech.com/#/edit-request/89053
   }
 
+  handleServiceResponse(result: any, successMsg: string){
+      this.spinner.hide();
+      this.formSubmitted = false;
+      if (typeof result == 'string') {
+        this.toastrService.error(result);
+      } else {
+        this.toastrService.success(successMsg);
+        this.router.navigate([KnownPrimaryRoutes.Invoices,`${KnownInvoiceRoutes.InvoiceView}`,this.entityId]).then(() => { });
+    }
+  }
 
   getCounterPartiesList(){
 
@@ -726,6 +736,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   onModelChanged(evt){
 
   }
+
   AC_valueChanges(type,event){
     let eventValueObject = {
       "id": event.id ? event.id : null,
@@ -757,80 +768,43 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     }
     // console.log('type',type,'evnt',event);
   }
+
   invoiceOptionSelected(option){
-    this.isLoading = true;
     if(this.formSubmitted){
       return;
     }
+    this.spinner.show();
     this.formSubmitted = true;
     if(option == 'submitreview'){
-      let data : any = {
-        Payload: {"id":this.formValues.id}
-      };
-      this.invoiceService
-      .submitReview(data)
-      .subscribe((response: IInvoiceDetailsItemResponse) => {
-        this.toastrService.success('Invoice submitted for approval successfully');
-        this.isLoading = false;
-        this.formSubmitted = false;
+      this.invoiceService.submitForReview(this.formValues.id).subscribe((result: any) => {
+        this.handleServiceResponse(result, 'Invoice submitted for approval successfully.');
       });
-    }else if(option == 'submitapprove'){
-      let data : any = {
-        Payload: {"id":this.formValues.id}
-      };
-      this.invoiceService
-      .submitapproval(data)
-      .subscribe((response: IInvoiceDetailsItemResponse) => {
-        this.toastrService.success('Invoice submitted for approval successfully');
-        this.isLoading = false;
-        this.formSubmitted = false;
+    } else if(option == 'submitapprove'){
+      this.invoiceService.submitapproval(this.formValues.id).subscribe((result: any) => {
+        this.handleServiceResponse(result, 'Invoice submitted for approval successfully.');
       });
-    }else if(option == 'cancel'){
-      let data : any = {
-        Payload: {"id":this.formValues.id}
-      };
-      this.invoiceService
-      .cancelInvoiceItem(data)
-      .subscribe((response: IInvoiceDetailsItemResponse) => {
-        this.toastrService.success('Invoice cancelled successfully');
-        this.isLoading = false;
-        this.formSubmitted = false;
+    } else if(option == 'cancel'){
+      this.invoiceService.cancelInvoiceItem(this.formValues.id).subscribe((result: any) => {
+        this.handleServiceResponse(result, 'Invoice cancelled successfully.');
       });
-    }else if(option == 'accept'){
-      let data : any = {
-        Payload: {"id":this.formValues.id}
-      };
-      this.invoiceService
-      .acceptInvoiceItem(data)
-      .subscribe((response: IInvoiceDetailsItemResponse) => {
-        this.toastrService.success('Invoice accepted successfully');
-        this.isLoading = false;
-        this.formSubmitted = false;
+    } else if(option == 'accept'){
+      this.invoiceService.acceptInvoiceItem(this.formValues.id).subscribe((result: any) => {
+        this.handleServiceResponse(result, 'Invoice accepted successfully.');
       });
-    }else if(option == 'revert'){
-      let data : any = {
-        Payload: {"id":this.formValues.id}
-      };
-      this.invoiceService
-      .revertInvoiceItem(data)
-      .subscribe((response: IInvoiceDetailsItemResponse) => {
-        this.toastrService.success('Invoice reverted successfully');
-        this.isLoading = false;
-        this.formSubmitted = false;
+    } else if(option == 'revert'){
+      this.invoiceService.revertInvoiceItem(this.formValues.id).subscribe((result: any) => {
+        this.handleServiceResponse(result, 'Invoice reverted successfully.');
       });
     }else if(option == 'reject'){
-      let data : any = {
-        Payload: {"id":this.formValues.id}
-      };
-      this.invoiceService
-      .rejectInvoiceItem(data)
-      .subscribe((response: IInvoiceDetailsItemResponse) => {
-        this.toastrService.success('Invoice rejected successfully');
-        this.isLoading = false;
-        this.formSubmitted = false;
+      this.invoiceService.rejectInvoiceItem(this.formValues.id).subscribe((result: any) => {
+        this.handleServiceResponse(result, 'Invoice rejected successfully.')
       });
-    }else if(option == 'create'){
-      this.isLoading = false;
+    } else if(option == 'approve'){
+      this.invoiceService.approveInvoiceItem(this.formValues).subscribe((result: any) => {
+        this.handleServiceResponse(result, 'Invoice approved successfully.')
+      });
+    } else if(option == 'create'){
+      this.spinner.hide();
       const dialogRef = this.dialog.open(InvoiceTypeSelectionComponent, {
         width: '400px',
         height: '400px',
@@ -841,19 +815,11 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       dialogRef.afterClosed().subscribe(result => {
         this.formSubmitted = false;
         if(result && result != 'close'){
-
+          let createinvoice = this.invoiceTypeList.filter(x=>{return x.id === result});
+          this.formValues.id = this.entityId = 0;
+          this.formValues.documentType.id = createinvoice[0].id;
+          this.formValues.documentType.name = createinvoice[0].name;
         }
-      });
-    }else if(option == 'approve'){
-      let data : any = {
-        Payload: this.formValues
-      };
-      this.invoiceService
-      .approveInvoiceItem(data)
-      .subscribe((response: IInvoiceDetailsItemResponse) => {
-        this.toastrService.success('Invoice approved successfully');
-        this.isLoading = false;
-        this.formSubmitted = false;
       });
     }
   }
@@ -892,18 +858,16 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       }
     }
   }
+
   getProductList(){
-    let data : any = {
-      Payload: {"Order":null,"PageFilters":{"Filters":[]},"SortList":{"SortList":[]},"Filters":[{"ColumnName":"Order_Id","Value": this.orderId}],"SearchText":null,"Pagination":{}}
-    };
-    this.invoiceService
-    .productListOnInvoice(data)
-    .subscribe((response: any) => {
+    let data : any = {"Order":null,"PageFilters":{"Filters":[]},"SortList":{"SortList":[]},"Filters":[{"ColumnName":"Order_Id","Value": this.orderId}],"SearchText":null,"Pagination":{}}
+    this.invoiceService.productListOnInvoice(data).subscribe((response: any) => {
       response.payload.forEach(row => {
         this.productData.push({selected:false, product:row.product.name, deliveries:row.order.id, details:row});
       });
     });
   }
+
   addnewProduct(event){
     console.log(event);
     var itemsToUpdate = [];
