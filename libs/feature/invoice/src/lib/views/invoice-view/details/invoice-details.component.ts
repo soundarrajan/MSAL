@@ -1,5 +1,5 @@
 import { IInvoiceDetailsItemRequest } from './../../../services/api/dto/invoice-details-item.dto';
-import { ChangeDetectionStrategy, Component, Inject, Input, OnDestroy, OnInit,ViewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, Input, OnDestroy, OnInit,ViewChildren, ChangeDetectorRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconRegistry } from '@angular/material/icon';
 import { forkJoin, Observable, of, ReplaySubject, Subject, throwError } from 'rxjs';
@@ -210,7 +210,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   //Default Values - strats
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private invoiceService: InvoiceDetailsService,  public dialog: MatDialog,
     private toastrService: ToastrService,private format: TenantFormattingService, private legacyLookupsDatabase: LegacyLookupsDatabase,
-    private route: ActivatedRoute,private spinner: NgxSpinnerService,
+    private route: ActivatedRoute,private spinner: NgxSpinnerService,private changeDetectorRef: ChangeDetectorRef,
     @Inject(DecimalPipe) private _decimalPipe,
     private tenantService: TenantFormattingService,) {
     this.amountFormat = '1.' + this.tenantService.amountPrecision + '-' + this.tenantService.amountPrecision;
@@ -953,7 +953,78 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
   changedAdditonalcost(event){
     this.formValues.costDetails = event;
+    this.calculateGrand(this.formValues);
   }
-  
+  calculateGrand(formValues) {
+    if (!formValues.invoiceSummary) {
+      formValues.invoiceSummary = null;
+    }
+    // formValues.invoiceSummary.provisionalInvoiceAmount = $scope.calculateprovisionalInvoiceAmount(formValues){}
+    formValues.invoiceSummary.invoiceAmountGrandTotal = this.calculateInvoiceGrandTotal(formValues);
+    formValues.invoiceSummary.invoiceAmountGrandTotal -= formValues.invoiceSummary.provisionalInvoiceAmount;
+    formValues.invoiceSummary.estimatedAmountGrandTotal = this.calculateInvoiceEstimatedGrandTotal(formValues);
+    formValues.invoiceSummary.totalDifference = this.convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.invoiceAmountGrandTotal) - this.convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.estimatedAmountGrandTotal);
+    formValues.invoiceSummary.netPayable = formValues.invoiceSummary.invoiceAmountGrandTotal - formValues.invoiceSummary.deductions;    
+    //console.log(formValues);
+    this.changeDetectorRef.detectChanges();
+    this.setChipDatas();
+  }
+  calculateInvoiceGrandTotal(formValues) {
+    let grandTotal = 0;
+    formValues.productDetails.forEach((v, k) => {
+        if (!v.isDeleted && typeof v.invoiceAmount != 'undefined') {
+            grandTotal = grandTotal + this.convertDecimalSeparatorStringToNumber(v.invoiceAmount);
+        }
+    });
+    formValues.costDetails.forEach((v, k) => {
+        if (!v.isDeleted) {
+            if (typeof v.invoiceTotalAmount != 'undefined') {
+                grandTotal = grandTotal + this.convertDecimalSeparatorStringToNumber(v.invoiceTotalAmount);
+            }
+        }
+    });
+    return grandTotal;
+  }
+
+  calculateInvoiceEstimatedGrandTotal(formValues) {
+    let grandTotal = 0;
+    formValues.productDetails.forEach((v, k) => {
+      if (!v.isDeleted && typeof v.estimatedAmount != 'undefined') {
+        grandTotal = grandTotal + v.estimatedAmount;
+      }
+    });
+    
+    formValues.costDetails.forEach((v, k) => {
+      if (!v.isDeleted) {
+        if (typeof v.estimatedAmount != 'undefined') {
+            grandTotal = grandTotal + v.estimatedAmount;
+        }
+      }
+    });
+    return grandTotal;
+  }
+
+  convertDecimalSeparatorStringToNumber(number) {
+    var numberToReturn = number;
+    var decimalSeparator, thousandsSeparator;
+    if (typeof number == 'string') {
+        if (number.indexOf(',') != -1 && number.indexOf('.') != -1) {
+          if (number.indexOf(',') > number.indexOf('.')) {
+            decimalSeparator = ',';
+            thousandsSeparator = '.';
+          } else {
+            thousandsSeparator = ',';
+            decimalSeparator = '.';
+          }
+          numberToReturn = parseFloat(number.split(decimalSeparator)[0].replace(new RegExp(thousandsSeparator, 'g'), '')) + parseFloat(`0.${number.split(decimalSeparator)[1]}`);
+        } else {
+          numberToReturn = parseFloat(number);
+        }
+    }
+    if (isNaN(numberToReturn)) {
+      numberToReturn = 0;
+    }
+    return parseFloat(numberToReturn);
+  }
 }
 
