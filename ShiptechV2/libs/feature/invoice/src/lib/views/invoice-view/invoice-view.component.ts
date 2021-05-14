@@ -9,6 +9,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { MatDialog } from '@angular/material/dialog';
 import { CurrencyConvertorModalComponent } from './details/component/currency-convertor-modal/currency-convertor-modal.component';
 import _ from 'lodash';
+import { finalize } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'shiptech-invoice-view',
@@ -41,7 +43,8 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   private _destroy$ = new Subject();
 
   constructor(private route: ActivatedRoute, private invoiceService: InvoiceDetailsService,private changeDetectorRef: ChangeDetectorRef,private spinner: NgxSpinnerService,
-    public dialog: MatDialog){
+    public dialog: MatDialog,
+    private toastr: ToastrService){
     this._entityId = route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
     this.tabData = [
       { disabled: false, name: 'Details' },
@@ -151,27 +154,85 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     } else {
       this.invoiceDetailsComponent.roeDisabled = false;
     }
-    const dialogRef = this.dialog.open(CurrencyConvertorModalComponent, {
-      width: '50%',
-      data:  { formValues: this.detailFormvalues, currencyList: this.currencyList,
-        convertedAmount: this.invoiceDetailsComponent.convertedAmount,
-        conversionTo: this.invoiceDetailsComponent.conversionTo,
-        conversionRoe: this.invoiceDetailsComponent.conversionRoe,
-        roeDisabled: this.invoiceDetailsComponent.roeDisabled
-      }
-    });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
-      if (result) {
-        this.invoiceDetailsComponent.convertedAmount = this.convertDecimalSeparatorStringToNumber(result.convertedAmount);
-        this.invoiceDetailsComponent.conversionTo = result.conversionTo;
-        this.invoiceDetailsComponent.conversionRoe = result.conversionRoe;
-        this.invoiceDetailsComponent.roeDisabled = result.roeDisabled;
-      }
-      console.log(this.invoiceDetailsComponent);
-    });
+    this.computeInvoiceTotalConversion(this.invoiceDetailsComponent.conversionRoe, this.invoiceDetailsComponent.conversionTo);
+
   }
+
+  computeInvoiceTotalConversion(conversionRoe, conversionTo) {
+    if (this.invoiceDetailsComponent.formValues.invoiceRateCurrency.id == this.invoiceDetailsComponent.conversionTo.id) {
+      this.invoiceDetailsComponent.roeDisabled = true;
+      this.invoiceDetailsComponent.conversionRoe = 1;
+    } else {
+      this.invoiceDetailsComponent.roeDisabled = false;
+    }
+    this.changeDetectorRef.detectChanges();
+    if (!conversionRoe || !conversionTo /* || !$scope.formValues.invoiceSummary*/) {
+      return false;
+    }
+    if (typeof this.invoiceDetailsComponent.changedFromCurrency == 'undefined') {
+      this.invoiceDetailsComponent.changedFromCurrency = false;
+    }
+
+    if (!this.invoiceDetailsComponent.formValues.invoiceSummary) {
+      return;
+    }
+
+    let payloadData = {
+      Amount : this.invoiceDetailsComponent.formValues.invoiceSummary.invoiceAmountGrandTotal,
+      CurrencyId: this.invoiceDetailsComponent.formValues.invoiceRateCurrency.id,
+      ROE: conversionRoe,
+      ToCurrencyId: conversionTo.id,
+      CompanyId: this.invoiceDetailsComponent.formValues.orderDetails.carrierCompany.id,
+      GetROE:  this.invoiceDetailsComponent.changedFromCurrency
+    };
+
+    this.invoiceService
+    .computeInvoiceTotalConversion(payloadData)
+    .pipe(
+        finalize(() => {
+
+        })
+    )
+    .subscribe((result: any) => {
+      if (typeof result == 'string') {
+        this.toastr.error(result);
+      } else {
+        if (this.invoiceDetailsComponent.changedFromCurrency && !result.getROE) {
+          this.toastr.warning('There is no conversion rate available for current selection');
+        } else {
+          this.invoiceDetailsComponent.convertedAmount = result.convertedAmount;
+          this.invoiceDetailsComponent.conversionRoe = result.roe;
+          const dialogRef = this.dialog.open(CurrencyConvertorModalComponent, {
+            width: '50%',
+            data:  { formValues: this.detailFormvalues, currencyList: this.currencyList,
+              convertedAmount: this.invoiceDetailsComponent.convertedAmount,
+              conversionTo: this.invoiceDetailsComponent.conversionTo,
+              conversionRoe: this.invoiceDetailsComponent.conversionRoe,
+              roeDisabled: this.invoiceDetailsComponent.roeDisabled
+            }
+          });
+      
+          dialogRef.afterClosed().subscribe(result => {
+            console.log(result);
+            if (result) {
+              this.invoiceDetailsComponent.convertedAmount = this.convertDecimalSeparatorStringToNumber(result.convertedAmount);
+              this.invoiceDetailsComponent.conversionTo = result.conversionTo;
+              this.invoiceDetailsComponent.conversionRoe = result.conversionRoe;
+              this.invoiceDetailsComponent.roeDisabled = result.roeDisabled;
+            }
+            console.log(this.invoiceDetailsComponent);
+          });
+          this.changeDetectorRef.detectChanges();
+
+        }
+      }
+    });
+    this.invoiceDetailsComponent.changedFromCurrency = false;
+    this.changeDetectorRef.detectChanges();
+
+  }
+
 
   convertDecimalSeparatorStringToNumber(number) {
     var numberToReturn = number;
