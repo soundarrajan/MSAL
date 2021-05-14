@@ -1,3 +1,4 @@
+import { Subject } from 'rxjs';
 import { INewInvoiceDetailsItemRequest } from './../../services/api/dto/invoice-details-item.dto';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild,ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -37,40 +38,50 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   formValues: any;
   staticLists: any;
   currencyList: any;
+  private _destroy$ = new Subject();
 
   constructor(private route: ActivatedRoute, private invoiceService: InvoiceDetailsService,private changeDetectorRef: ChangeDetectorRef,private spinner: NgxSpinnerService,
     public dialog: MatDialog){
     this._entityId = route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
-    const baseOrigin = new URL(window.location.href).origin;
     this.tabData = [
       { disabled: false, name: 'Details' },
       { disabled: false, name: 'Related Invoices' },
-      { disabled: false, name: 'Documents', url: `${baseOrigin}/#/invoices/invoice/documents/${this._entityId}` },
-      { disabled: false, name: 'Audit Log', url: `${baseOrigin}/#/invoices/invoice/audit/${this._entityId}` },
-      { disabled: false, name: 'Email Log', url: `${baseOrigin}/#/invoices/invoice/email-log/${this._entityId}` },
+      { disabled: false, name: 'Documents', url: `#` },
+      { disabled: false, name: 'Audit Log', url: `#` },
+      { disabled: false, name: 'Email Log', url: `#` },
     ]
-    this.reportUrl = `${baseOrigin}/#/reports/ordertoinvoice/IID=${this._entityId}`;
   }
 
   ngOnInit(): void {
     this.spinner.show();
     this.route.data.subscribe(data => {
-      this.navBar = data.navBar; 
+      this.navBar = data.navBar;
       this.staticLists = data.staticLists;
       this.currencyList = this.setListFromStaticLists('Currency');
       this._entityId = this.route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
       // http://localhost:9016/#/invoices/invoice/edit/0
       if (localStorage.getItem('invoiceFromDelivery')) {
-        // this.openedScreenLoaders = 0;
+        // Create new invoice from delivery list // http://localhost:9016/#/invoices/invoice/edit/0
         this.createNewInvoiceFromDelivery();
       }
       else{
+        // edit an existing invoice
+        this._entityId = this.route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
+        if(parseFloat(this._entityId) && this._entityId > 0) {
+          const baseOrigin = new URL(window.location.href).origin;
+          this.tabData[2].url = `${baseOrigin}/#/invoices/invoice/documents/${this._entityId}`;
+          this.tabData[3].url = `${baseOrigin}/#/invoices/invoice/audit/${this._entityId}`;
+          this.tabData[4].url = `${baseOrigin}/#/invoices/invoice/email-log/${this._entityId}`;
+          this.reportUrl = `${baseOrigin}/#/reports/ordertoinvoice/IID=${this._entityId}`;
+        }
         this.getInvoiceItem();
       }
     });
   }
 
   ngOnDestroy(): void {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
   setListFromStaticLists(name) {
@@ -143,7 +154,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(CurrencyConvertorModalComponent, {
       width: '50%',
       data:  { formValues: this.detailFormvalues, currencyList: this.currencyList,
-        convertedAmount: this.invoiceDetailsComponent.convertedAmount, 
+        convertedAmount: this.invoiceDetailsComponent.convertedAmount,
         conversionTo: this.invoiceDetailsComponent.conversionTo,
         conversionRoe: this.invoiceDetailsComponent.conversionRoe,
         roeDisabled: this.invoiceDetailsComponent.roeDisabled
