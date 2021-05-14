@@ -6,7 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIconRegistry } from '@angular/material/icon';
 import { forkJoin, Observable, of, ReplaySubject, Subject, throwError } from 'rxjs';
 import { catchError, concatMap, map, takeUntil, tap } from 'rxjs/operators';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '@shiptech/environment';
 
@@ -186,11 +186,18 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   productList: any;
   physicalSupplierList: any;
   amountFormat: string;
+  convertedAmount: any;
+  conversionTo: any;
+  conversionRoe: any;
+  roeDisabled: boolean = false;
 
 // detailFormvalues:any;
 @Input('detailFormvalues') set _detailFormvalues(val) {
   if(val){
     this.formValues = val;
+    if (this.formValues.invoiceRateCurrency) {
+      this.conversionTo = this.formValues.invoiceRateCurrency;
+    }
     if(!this.formValues.paymentDetails){
       this.formValues.paymentDetails = <IInvoiceDetailsItemPaymentDetails>{};
     }
@@ -204,6 +211,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       this.invoice_types.pop();
     }
     this.setInvoiceAmount();
+    this.setTitle();
   }
 }
   //Default Values - strats
@@ -211,7 +219,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     private toastrService: ToastrService,private format: TenantFormattingService, private legacyLookupsDatabase: LegacyLookupsDatabase,
     private route: ActivatedRoute,private spinner: NgxSpinnerService,private changeDetectorRef: ChangeDetectorRef,
     @Inject(DecimalPipe) private _decimalPipe,
-    private tenantService: TenantFormattingService) {
+    private tenantService: TenantFormattingService,
+    private titleService: Title) {
     this.amountFormat = '1.' + this.tenantService.amountPrecision + '-' + this.tenantService.amountPrecision;
     this.setupGrid();
     this.setClaimsDetailsGrid();
@@ -245,6 +254,33 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     this.getProductList();
   }
 
+  setTitle() {
+    // 1.if request available, use request id
+    if(this.formValues.requestInfo) {
+      if(this.formValues.requestInfo.request) {
+        let title = `Invoice - ${ this.formValues.requestInfo.request.name } - ${ this.formValues.requestInfo.vesselName}`;
+        this.titleService.setTitle(title);
+        return;
+      }
+    }
+
+    // 2. else use order id
+    if(this.formValues.orderDetails) {
+      if(this.formValues.orderDetails.order) {
+        let invoiceTitle = `Invoice - ${ this.formValues.orderDetails.order.name } - ${ this.formValues.orderDetails.vesselName}`;
+        this.titleService.setTitle(invoiceTitle);
+        return;
+      }
+    }
+
+    // 3. use invoice name
+    if(this.formValues.id) {
+      let invoiceTitle = `Invoice - INV${ this.formValues.id } - ${ this.formValues.orderDetails.vesselName}`;
+      this.titleService.setTitle(invoiceTitle);
+    }
+
+  }
+
   setInvoiceAmount() {
     this.formValues.productDetails.forEach((v, k) => {
       if (v.sapInvoiceAmount) {
@@ -266,6 +302,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       return findList?.items;
     }
   }
+
   private setupGrid(){
     this.gridOptions_ac = <GridOptions>{
       defaultColDef: {
