@@ -1,7 +1,7 @@
-﻿commit d658571df5538123069e80a1c8fc74ce93c8d431
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri May 14 12:02:49 2021 +0000
+﻿commit b1c518b6b765aeb47be5332eb5935b85bab00d4b
+Author: Edwin Francis <edwin.f@Inatech.com>
+Date:   Fri May 14 18:03:16 2021 +0530
 
-    Merged PR 10713: Added invoice title with request and location codes and  currency conversion factors popup
+    Create new invoice fixes.
 
 branch: master
