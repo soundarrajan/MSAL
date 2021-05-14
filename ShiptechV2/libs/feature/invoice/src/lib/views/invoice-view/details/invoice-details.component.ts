@@ -697,7 +697,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         return;
     }
 
-    if (this.entityId == 0) {
+    if (!parseFloat(this.entityId.toString()) || this.entityId == 0) {
       this.spinner.show();
       this.invoiceService.saveInvoice(this.formValues).subscribe((result: any) => {
           this.entityId = result;
@@ -860,12 +860,11 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   getProductList(){
     let data : any = {"Order":null,"PageFilters":{"Filters":[]},"SortList":{"SortList":[]},"Filters":[{"ColumnName":"Order_Id","Value": this.orderId}],"SearchText":null,"Pagination":{}}
     this.invoiceService.productListOnInvoice(data).subscribe((response: any) => {
-      if (response.payload) {
-        response.payload.forEach(row => {
+      if(response){
+        response.forEach(row => {
           this.productData.push({selected:false, product:row.product.name, deliveries:row.order.id, details:row});
         });
       }
-
     });
   }
 
