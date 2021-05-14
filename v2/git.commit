@@ -1,7 +1,7 @@
-﻿commit a15f3aea7c050d3f9dfde906d8a48166f2f94cc0
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri May 14 08:09:16 2021 +0000
+﻿commit a85ee2008abd253bd39954612bb47218db35cb00
+Author: Edwin Francis <edwin.f@Inatech.com>
+Date:   Fri May 14 15:04:14 2021 +0530
 
-    Merged PR 10711: Disabled formula editing for copied contracts until they are saved
+    New invoice creation fix - handle invoice summary empty.
 
 branch: master
