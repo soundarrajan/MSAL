@@ -112,7 +112,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
 
   createNewInvoiceFromDelivery(){
     let data = JSON.parse(localStorage.getItem('invoiceFromDelivery'));
-    localStorage.removeItem('invoiceFromDelivery');
+    //localStorage.removeItem('invoiceFromDelivery');
 
     this.invoiceService.getNewInvoicDetails(data)
       .subscribe((response: IInvoiceDetailsItemResponse) => {

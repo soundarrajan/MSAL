@@ -5,7 +5,7 @@ import { ChangeDetectionStrategy, Component, Inject, Input, OnDestroy, OnInit,Vi
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconRegistry } from '@angular/material/icon';
 import { forkJoin, Observable, of, ReplaySubject, Subject, throwError } from 'rxjs';
-import { catchError, concatMap, map, takeUntil, tap } from 'rxjs/operators';
+import { catchError, concatMap, finalize, map, takeUntil, tap } from 'rxjs/operators';
 import { DomSanitizer, Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '@shiptech/environment';
@@ -190,6 +190,9 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   conversionTo: any;
   conversionRoe: any;
   roeDisabled: boolean = false;
+  type: string;
+  eventsSubject5: Subject<any> = new Subject<any>();
+
 
 // detailFormvalues:any;
 @Input('detailFormvalues') set _detailFormvalues(val) {
@@ -213,6 +216,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     }
     this.setInvoiceAmount();
     this.setTitle();
+    this.summaryCalculationsForProductDetails();
   }
 }
   //Default Values - strats
@@ -221,7 +225,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,private spinner: NgxSpinnerService,private changeDetectorRef: ChangeDetectorRef,
     @Inject(DecimalPipe) private _decimalPipe,
     private tenantService: TenantFormattingService,
-    private titleService: Title) {
+    private titleService: Title,
+    private toastr: ToastrService) {
     this.amountFormat = '1.' + this.tenantService.amountPrecision + '-' + this.tenantService.amountPrecision;
     this.setupGrid();
     this.setClaimsDetailsGrid();
@@ -240,6 +245,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       this.physicalSupplierList = this.setListFromStaticLists('Supplier');
       this.entityId = this.route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
     });
+
+
     this.buildProductDetilsGrid();
     this.getCounterPartiesList();
     this.legacyLookupsDatabase.getInvoiceCustomStatus().then(list=>{
@@ -253,6 +260,137 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     })
     this.dateFormat = this.format.dateFormat.replace('DDD', 'E');
     this.getProductList();
+  }
+
+  summaryCalculationsForProductDetails() {
+    if (this.formValues.productDetails) {
+      for (let i = 0; i < this.formValues.productDetails.length; i++) {
+        this.invoiceConvertUom('product', i);
+      }
+    }
+  }
+
+
+  invoiceConvertUom(type, rowIndex) {
+    console.log(type);
+    console.log(rowIndex);
+    let currentRowIndex = rowIndex;
+    this.calculateGrand(this.formValues);
+    this.type = type;
+    if (this.type == 'product') {
+        let product = this.formValues.productDetails[currentRowIndex];
+        if (typeof product.product != 'undefined' && typeof product.invoiceQuantityUom != 'undefined' && typeof product.invoiceRateUom !== 'undefined') {
+            if (product.invoiceQuantityUom == null || product.invoiceRateUom == null /* || typeof(product.invoiceAmount) == 'undefined'*/) {
+                return;
+            };
+            this.getUomConversionFactor(product.product.id, 1, product.invoiceQuantityUom.id, product.invoiceRateUom.id, product.contractProductId, product.orderProductId ? product.orderProductId : product.id, currentRowIndex);
+            this.changeDetectorRef.detectChanges();
+            this.eventsSubject5.next(this.formValues);
+           
+        }
+        // recalculatePercentAdditionalCosts(formValues);
+    }
+
+
+  }
+
+  getUomConversionFactor(ProductId, Quantity, FromUomId, ToUomId, contractProductId, orderProductId, currentRowIndex) {
+    let conversionFactor = 1;
+    let productId = ProductId;
+    let quantity = Quantity;
+    let fromUomId = FromUomId;
+    let toUomId = ToUomId;
+    let data = {
+      Payload: {
+        ProductId: productId,
+        OrderProductId: orderProductId,
+        Quantity: quantity,
+        FromUomId: fromUomId,
+        ToUomId: toUomId,
+        ContractProductId: contractProductId ? contractProductId : null
+      }
+    };
+    if (toUomId == fromUomId) {
+      conversionFactor = 1;
+      this.formValues.productDetails[currentRowIndex].invoiceAmount = this.convertDecimalSeparatorStringToNumber(this.formValues.productDetails[currentRowIndex].invoiceQuantity) * (this.convertDecimalSeparatorStringToNumber(this.formValues.productDetails[currentRowIndex].invoiceRate) * conversionFactor);
+      this.formValues.productDetails[currentRowIndex].difference = this.formValues.productDetails[currentRowIndex].invoiceAmount - this.formValues.productDetails[currentRowIndex].estimatedAmount;
+      this.calculateGrand(this.formValues);
+      if (this.formValues.productDetails[currentRowIndex]) {
+        this.calculateProductRecon(this.formValues.productDetails[currentRowIndex]);
+        this.changeDetectorRef.detectChanges();
+      }
+
+    }
+    if (!productId || !toUomId || !fromUomId) {
+        return;
+    }
+
+    this.invoiceService
+    .getUomConversionFactor(data)
+    .pipe(
+        finalize(() => {
+
+        })
+    )
+    .subscribe((result: any) => {
+        if (typeof result == 'string') {
+          this.spinner.hide();
+          this.toastr.error(result);
+        } else {
+          console.log(result);
+          conversionFactor = result;
+          this.formValues.productDetails[currentRowIndex].invoiceAmount = this.convertDecimalSeparatorStringToNumber(this.formValues.productDetails[currentRowIndex].invoiceQuantity) * (this.convertDecimalSeparatorStringToNumber(this.formValues.productDetails[currentRowIndex].invoiceRate) * conversionFactor);
+          this.formValues.productDetails[currentRowIndex].difference = this.formValues.productDetails[currentRowIndex].invoiceAmount - this.formValues.productDetails[currentRowIndex].estimatedAmount;
+          this.calculateGrand(this.formValues);
+          if (this.formValues.productDetails[currentRowIndex]) {
+            this.calculateProductRecon(this.formValues.productDetails[currentRowIndex]);
+            this.changeDetectorRef.detectChanges();
+          }
+
+
+        }
+    });
+
+  };
+
+
+
+  calculateProductRecon(product) {
+    if (!product.invoiceRateCurrency || !product.estimatedRateCurrency) {
+      return false;
+    }
+    if (!product.invoiceRateCurrency.id || !product.estimatedRateCurrency.id) {
+      return false;
+    }
+    this.invoiceService
+    .calculateProductRecon(product)
+    .pipe(
+        finalize(() => {
+
+        })
+    )
+    .subscribe((result: any) => {
+        if (typeof result == 'string') {
+          this.spinner.hide();
+          this.toastr.error(result);
+        } else {
+          var obj;
+          if (result.data == 1) {
+            obj = {
+              id: 1,
+              name: 'Matched'
+            };
+          } else {
+            obj = {
+              id: 2,
+              name: 'Unmatched'
+            };
+          }
+          product.reconStatus = obj;
+          this.changeDetectorRef.detectChanges();
+        }
+    });
+
   }
 
   setTitle() {
@@ -281,6 +419,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     }
 
   }
+
+
 
   setInvoiceAmount() {
     let totalInvoiceAmount: any;
