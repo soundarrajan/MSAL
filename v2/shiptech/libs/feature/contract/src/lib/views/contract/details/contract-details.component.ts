@@ -61,6 +61,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   eventsSubject2: Subject<any> = new Subject<any>();
   eventsSubject3: Subject<any> = new Subject<any>();
   eventsSubject4: Subject<any> = new Subject<any>();
+  eventsSubject5: Subject<any> = new Subject<any>();
   anyChanges: boolean;
   deliverySettings: IDeliveryTenantSettings;
   finalQuantityRules: any[];
@@ -140,6 +141,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   contractConfiguration: any;
   generalConfiguration: any;
   customerList: any;
+  entityCopied: boolean =  false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -382,7 +384,6 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
                 v1.contractProductId = 0;
               }
             });
-            v.formula = null;
             v.mtmFormula = null;
             v.isMtmFormula = false;
             v.price = null;
@@ -394,9 +395,10 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
           this.formValues.summary.copiedContract = true;
           this.formValues.createdBy = null;
           this.formValues.hasInvoicedOrder = false;
+          this.entityCopied = true;
+          this.eventsSubject5.next(true);
           console.log(this.formValues);
           this.changeDetectorRef.detectChanges();
-          this.toastr.info('Formula and MTM Formula was reset for all products');
           this.toastr.success('Entity copied');
         }
      });
@@ -605,6 +607,8 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     }
 
     let id = this.entityId;
+    this.entityCopied = false;
+    this.eventsSubject5.next(false);
     if (!id) {
       this.spinner.show();
       this.contractService
