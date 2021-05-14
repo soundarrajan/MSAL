@@ -216,7 +216,9 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     }
     this.setInvoiceAmount();
     this.setTitle();
-    this.summaryCalculationsForProductDetails();
+    if (!this.entityId) {
+      this.summaryCalculationsForProductDetails();
+    }
   }
 }
   //Default Values - strats
