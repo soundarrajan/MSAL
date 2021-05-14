@@ -198,6 +198,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     if (this.formValues.invoiceRateCurrency) {
       this.conversionTo = this.formValues.invoiceRateCurrency;
     }
+    this.entityId = val.id;
     if(!this.formValues.paymentDetails){
       this.formValues.paymentDetails = <IInvoiceDetailsItemPaymentDetails>{};
     }
@@ -237,7 +238,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       this.productList = this.setListFromStaticLists('Product');
       this.currencyList = this.setListFromStaticLists('Currency');
       this.physicalSupplierList = this.setListFromStaticLists('Supplier');
-
+      this.entityId = this.route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
     });
     this.buildProductDetilsGrid();
     this.getCounterPartiesList();
@@ -282,14 +283,16 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   }
 
   setInvoiceAmount() {
+    let totalInvoiceAmount: any;
     this.formValues.productDetails.forEach((v, k) => {
       if (v.sapInvoiceAmount) {
         v.invoiceAmount = v.sapInvoiceAmount;
       } else {
         v.invoiceAmount = v.invoiceComputedAmount;
       }
+      totalInvoiceAmount += v.invoiceAmount;
     });
-
+    this.formValues.invoiceAmount = totalInvoiceAmount;
     console.log(this.formValues.productDetails);
   }
 
@@ -737,7 +740,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         return;
     }
 
-    if (!parseFloat(this.entityId.toString()) || this.entityId == 0) {
+    if (!parseFloat(this.formValues?.id?.toString()) || this.formValues.id == 0) {
       this.spinner.show();
       this.invoiceService.saveInvoice(this.formValues).subscribe((result: any) => {
           this.entityId = result;
