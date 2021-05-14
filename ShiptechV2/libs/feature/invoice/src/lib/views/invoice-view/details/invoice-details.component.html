@@ -385,6 +385,7 @@
                     [physicalSupplierList]="physicalSupplierList"
                     [entityId]="entityId"
                     (amountChanged)="updateAmountValues($event)"
+                    [eventsFormValues]="eventsSubject5.asObservable()"
                     class="col-12"
                     style="padding-left: 0px; padding-right: 0px;">
                 </shiptech-invoice-product-details>

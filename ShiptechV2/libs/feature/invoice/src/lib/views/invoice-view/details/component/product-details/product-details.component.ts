@@ -434,6 +434,7 @@ implements OnInit {
   productSearch: any;
   filteredProductOptions: Observable<string[]>;
   @ViewChild('productMenuTrigger') productMenuTrigger: MatMenuTrigger;
+  eventsFormValuesSubscription: any;
 
 
   get entityId(): number {
@@ -490,6 +491,7 @@ implements OnInit {
     this.physicalSupplierList = physicalSupplierList;
   }
   productDetailsExpandArray = [];
+  @Input() eventsFormValues: Observable<void>;
 
 
 
@@ -531,7 +533,12 @@ implements OnInit {
   }
 
   ngOnInit(): void {
+    this.eventsFormValuesSubscription = this.eventsFormValues.subscribe((data) => this.setFormValues(data));
 
+  }
+
+  setFormValues(data) {
+    this.formValues = this.formValues;
   }
 
 
