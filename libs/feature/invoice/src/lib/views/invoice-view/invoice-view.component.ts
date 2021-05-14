@@ -47,6 +47,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     this.spinner.show();
     this.route.data.subscribe(data => {
       this.navBar = data.navBar;
+      this._entityId = this.route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
       // http://localhost:9016/#/invoices/invoice/edit/0
       if (localStorage.getItem('invoiceFromDelivery')) {
         // this.openedScreenLoaders = 0;

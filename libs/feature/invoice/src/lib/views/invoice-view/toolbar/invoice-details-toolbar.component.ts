@@ -264,6 +264,6 @@ export class InvoiceDetailsToolbarComponent
         ),
         takeUntil(this._destroy$)
       )
-      .subscribe(() => (this.tabMenu.activeItem = undefined));
+      .subscribe(() => (this.tabMenu? this.tabMenu.activeItem = undefined: null));
   }
 }
