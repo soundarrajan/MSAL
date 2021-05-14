@@ -118,6 +118,15 @@ export class InvoiceDetailsService extends BaseStoreService
   addTransaction(payload: any): Observable<unknown> {
     return this.api.addTransaction(payload);
   }
+
+      /**
+ * @param payload  
+ */
+  @ObservableException()
+  computeInvoiceTotalConversion(payload: any): Observable<unknown> {
+    return this.api.computeInvoiceTotalConversion(payload);
+  }
+
   
 
 
