@@ -541,6 +541,15 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     this.uomList = uomList;
   }
 
+  
+  @Input('entityCopied') set _setEntityCopied(entityCopied) {
+    if (!entityCopied) {
+      return;
+    }
+    this.entityCopied = entityCopied;
+  }
+
+
   @Input('formulaTypeList') set _setFormulaTypeList(formulaTypeList) { 
     if (!formulaTypeList) {
       return;
@@ -748,6 +757,8 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   isMenuOpen = true;
   @Input() events: Observable<void>;
   @Input() eventsSaveButton: Observable<void>;
+  @Input() eventsEntityCopied: Observable<void>;
+
   priceFormat: any;
 
 
@@ -791,7 +802,14 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     this.entityName = 'Contract';
     this.eventsSubscription = this.events.subscribe((data) => this.setContractForm(data));
     this.eventsSaveButtonSubscription = this.eventsSaveButton.subscribe((data) => this.setRequiredFields(data))
+    this.eventsEntityCopiedSubscription = this.eventsEntityCopied.subscribe((data) => this.setEntityCopied(data));
+
   }
+
+  setEntityCopied(data) {
+    this.entityCopied = data;
+
+ }
 
   setContractForm(form) {
     this.formValues = form;
@@ -934,6 +952,9 @@ export class ProductPricing extends DeliveryAutocompleteComponent
       if (typeof response == 'string') {
         this.toastr.error(response);
       } else {
+        if (this.entityCopied) {
+          response.isEditable = false;
+        }
         const dialogRef = this.dialog.open(CreateNewFormulaModalComponent, {
           width: '80%',
           data:  {
