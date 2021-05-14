@@ -5,6 +5,9 @@ import { KnownInvoiceRoutes } from '../../known-invoice.routes';
 import { IInvoiceDetailsItemDto, IInvoiceDetailsItemRequest, IInvoiceDetailsItemResponse } from '../../services/api/dto/invoice-details-item.dto';
 import { InvoiceDetailsService } from '../../services/invoice-details.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { MatDialog } from '@angular/material/dialog';
+import { CurrencyConvertorModalComponent } from './details/component/currency-convertor-modal/currency-convertor-modal.component';
+import _ from 'lodash';
 
 @Component({
   selector: 'shiptech-invoice-view',
@@ -30,8 +33,13 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   acceptBtn:boolean = true;
   revertBtn:boolean = true;
   rejectBtn:boolean = true;
+  email: any;
+  formValues: any;
+  staticLists: any;
+  currencyList: any;
 
-  constructor(private route: ActivatedRoute, private invoiceService: InvoiceDetailsService,private changeDetectorRef: ChangeDetectorRef,private spinner: NgxSpinnerService,){
+  constructor(private route: ActivatedRoute, private invoiceService: InvoiceDetailsService,private changeDetectorRef: ChangeDetectorRef,private spinner: NgxSpinnerService,
+    public dialog: MatDialog){
     this._entityId = route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
     const baseOrigin = new URL(window.location.href).origin;
     this.tabData = [
@@ -47,7 +55,9 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.spinner.show();
     this.route.data.subscribe(data => {
-      this.navBar = data.navBar;
+      this.navBar = data.navBar; 
+      this.staticLists = data.staticLists;
+      this.currencyList = this.setListFromStaticLists('Currency');
       this._entityId = this.route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
       // http://localhost:9016/#/invoices/invoice/edit/0
       if (localStorage.getItem('invoiceFromDelivery')) {
@@ -61,6 +71,15 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+  }
+
+  setListFromStaticLists(name) {
+    let findList = _.find(this.staticLists, function(object) {
+      return object.name == name;
+    });
+    if (findList != -1) {
+      return findList?.items;
+    }
   }
 
   detailsSave(){
@@ -113,5 +132,59 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
         });
         this.changeDetectorRef.detectChanges();
   }
+
+  openCurrencyConversionPopUp() {
+    if (this.invoiceDetailsComponent.conversionTo.id == this.invoiceDetailsComponent.formValues.invoiceRateCurrency.id) {
+      this.invoiceDetailsComponent.conversionRoe = 1;
+      this.invoiceDetailsComponent.roeDisabled = true;
+    } else {
+      this.invoiceDetailsComponent.roeDisabled = false;
+    }
+    const dialogRef = this.dialog.open(CurrencyConvertorModalComponent, {
+      width: '50%',
+      data:  { formValues: this.detailFormvalues, currencyList: this.currencyList,
+        convertedAmount: this.invoiceDetailsComponent.convertedAmount, 
+        conversionTo: this.invoiceDetailsComponent.conversionTo,
+        conversionRoe: this.invoiceDetailsComponent.conversionRoe,
+        roeDisabled: this.invoiceDetailsComponent.roeDisabled
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      if (result) {
+        this.invoiceDetailsComponent.convertedAmount = this.convertDecimalSeparatorStringToNumber(result.convertedAmount);
+        this.invoiceDetailsComponent.conversionTo = result.conversionTo;
+        this.invoiceDetailsComponent.conversionRoe = result.conversionRoe;
+        this.invoiceDetailsComponent.roeDisabled = result.roeDisabled;
+      }
+      console.log(this.invoiceDetailsComponent);
+    });
+  }
+
+  convertDecimalSeparatorStringToNumber(number) {
+    var numberToReturn = number;
+    var decimalSeparator, thousandsSeparator;
+    if (typeof number == 'string') {
+        if (number.indexOf(',') != -1 && number.indexOf('.') != -1) {
+          if (number.indexOf(',') > number.indexOf('.')) {
+            decimalSeparator = ',';
+            thousandsSeparator = '.';
+          } else {
+            thousandsSeparator = ',';
+            decimalSeparator = '.';
+          }
+          numberToReturn = parseFloat(number.split(decimalSeparator)[0].replace(new RegExp(thousandsSeparator, 'g'), '')) + parseFloat(`0.${number.split(decimalSeparator)[1]}`);
+        } else {
+          numberToReturn = parseFloat(number);
+        }
+    }
+    if (isNaN(numberToReturn)) {
+      numberToReturn = 0;
+    }
+    return parseFloat(numberToReturn);
+  }
+
+
 
 }
