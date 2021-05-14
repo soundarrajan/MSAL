@@ -1,7 +1,7 @@
-﻿commit b1c518b6b765aeb47be5332eb5935b85bab00d4b
-Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Fri May 14 18:03:16 2021 +0530
+﻿commit 2acc84c9550ac775809d95a9dadd281fed6fec35
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Fri May 14 13:51:12 2021 +0000
 
-    Create new invoice fixes.
+    Merged PR 10714: Added currency conversion factors popup
 
 branch: master
