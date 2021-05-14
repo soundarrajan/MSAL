@@ -1,7 +1,7 @@
-﻿commit a85ee2008abd253bd39954612bb47218db35cb00
-Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Fri May 14 15:04:14 2021 +0530
+﻿commit d658571df5538123069e80a1c8fc74ce93c8d431
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Fri May 14 12:02:49 2021 +0000
 
-    New invoice creation fix - handle invoice summary empty.
+    Merged PR 10713: Added invoice title with request and location codes and  currency conversion factors popup
 
 branch: master

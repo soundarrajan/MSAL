@@ -107,6 +107,7 @@ import { AmountTenantFormatDirective } from './views/invoice-view/details/compon
 import { PriceTenantFormatDirective } from './views/invoice-view/details/component/directives/price-tenant-format.directive';
 import { NumberOnlyDirective } from './views/invoice-view/details/component/directives/number-only.directive';
 import { ClaimDetailsComponent } from './views/invoice-view/details/component/claim-details/claim-details.component';
+import { CurrencyConvertorModalComponent } from './views/invoice-view/details/component/currency-convertor-modal/currency-convertor-modal.component';
 
 @NgModule({
   imports: [
@@ -220,7 +221,8 @@ import { ClaimDetailsComponent } from './views/invoice-view/details/component/cl
     PriceTenantFormatDirective,
     NumberOnlyDirective,
     AdditionalCostModalComponent,
-    ClaimDetailsComponent
+    ClaimDetailsComponent,
+    CurrencyConvertorModalComponent
   ],
   exports: [
     QuantityTenantFormatDirective,
@@ -247,7 +249,8 @@ import { ClaimDetailsComponent } from './views/invoice-view/details/component/cl
     StaticListsRouteResolver
   ],
   entryComponents:[
-    InvoiceTypeSelectionComponent
+    InvoiceTypeSelectionComponent,
+    CurrencyConvertorModalComponent
   ]
 })
 export class InvoiceModule {}

@@ -1,0 +1,95 @@
+
+<div class="row col-md-12 currency-convertor-modal-top ">
+  <div class="col-md-6 currency-convertor-modal-header"> 
+    Currency Convertor
+  </div>
+  <div class="col-md-6">
+    <button class="close-button" type="button" mat-raised-button (click)="closeModal()">
+      Close
+    </button>    
+  </div>
+</div>
+
+<div mat-dialog-content>
+  <div  class="col-md-12 d-flex convertor-line">
+    <div class="custom-form-field-currency-convertor" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+      <mat-form-field class="without-search" 
+        appearance="legacy">
+        <mat-label>Amount</mat-label>
+        <input matInput
+            [(ngModel)]="formValues.invoiceSummary.invoiceAmountGrandTotal"
+            placeholder="Amount"
+            autocomplete="off"
+            [disabled]="true"
+            amountFormat>
+        </mat-form-field>
+    </div>
+    <div class="custom-form-field-currency-convertor" 
+      [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+      <mat-form-field class="without-search" 
+        appearance="legacy">
+        <mat-label>Currency</mat-label>
+        <mat-select 
+            [(ngModel)]="formValues.invoiceRateCurrency"
+            [disableOptionCentering]="true"
+            panelClass="currency-convertor-select-container"
+            [compareWith]="compareUomObjects"
+            placeholder="Currency"
+            [disabled]="true">
+            <mat-option *ngFor="let option of currencyList" [value]="option">
+                {{option.name}}
+            </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="convert-img"></div>
+    <div class="custom-form-field-currency-convertor" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+      <mat-form-field class="without-search" 
+        appearance="legacy">
+        <mat-label>Amount</mat-label>
+        <input matInput
+            [(ngModel)]="convertedAmount"
+            placeholder="Amount"
+            autocomplete="off"
+            [disabled]="true"
+            amountFormat>
+        </mat-form-field>
+    </div>
+    <div class="custom-form-field-currency-convertor" 
+      [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+      <mat-form-field class="without-search" 
+        appearance="legacy">
+        <mat-label>Currency</mat-label>
+        <mat-select 
+            [(ngModel)]="conversionTo"
+            (ngModelChange)="changedFromCurrency = true ; computeInvoiceTotalConversion(conversionRoe, conversionTo)"
+            [disableOptionCentering]="true"
+            panelClass="currency-convertor-select-container"
+            [compareWith]="compareUomObjects"
+            placeholder="Currency">
+            <mat-option *ngFor="let option of currencyList" [value]="option">
+                {{option.name}}
+            </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div  class="col-md-12 d-flex convertor-line" style="margin-top: 10px !important;">
+    <div class="custom-form-field-currency-convertor" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+      <mat-form-field class="without-search" 
+        appearance="legacy">
+        <mat-label>ROE</mat-label>
+        <input matInput
+            [(ngModel)]="conversionRoe"
+            (blur)="computeInvoiceTotalConversion(conversionRoe, conversionTo)"
+            placeholder="ROE"
+            autocomplete="off"
+            [disabled]="roeDisabled">
+        </mat-form-field>
+    </div>
+  </div>
+</div>
+
+<div mat-dialog-actions style="display: none;">
+  <button mat-button cdkFocusInitial>Yes</button>
+</div>
