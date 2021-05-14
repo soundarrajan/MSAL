@@ -9,6 +9,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'shiptech-invoice-view',
   templateUrl: './invoice-view.component.html',
+  styleUrls: ['./invoice-view.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InvoiceViewComponent implements OnInit, OnDestroy {

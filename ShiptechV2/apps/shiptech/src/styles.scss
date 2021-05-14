@@ -43,3 +43,14 @@
 // .mat-tab-body-content {
 //     overflow: unset !important;
 // }
+
+.mat-menu-panel.invoice-mat-menu-panel {
+    background: #364150 !important;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25) !important;
+    border-radius: 3px !important;
+
+    .mat-menu-item  {
+        padding-left: 5px !important;
+        padding-right: 30px !important;
+    }
+}
