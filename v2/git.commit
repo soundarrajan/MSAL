@@ -1,9 +1,7 @@
-﻿commit 705a31a43bddb0f8acdc523bac2f445e10e124de
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri May 14 14:22:16 2021 +0000
+﻿commit d8fa2723f2f1ccb681557a4e8fac94d97e84a8f3
+Author: Edwin Francis <edwin.f@Inatech.com>
+Date:   Sun May 16 20:57:18 2021 +0530
 
-    Merged PR 10715: Fixed currency convertor pop-up
-    
-    Fixed currency convertor pop-up
+    Invoice detail change after an action performed.
 
 branch: master

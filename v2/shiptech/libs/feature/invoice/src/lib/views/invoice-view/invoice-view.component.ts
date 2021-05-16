@@ -212,7 +212,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
               roeDisabled: this.invoiceDetailsComponent.roeDisabled
             }
           });
-      
+
           dialogRef.afterClosed().subscribe(result => {
             console.log(result);
             if (result) {
@@ -257,6 +257,10 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     return parseFloat(numberToReturn);
   }
 
-
+  getInvoiceDetailsChanged(){
+    this.spinner.show();
+    this.displayDetailFormvalues = false;
+    this.getInvoiceItem();
+  }
 
 }
