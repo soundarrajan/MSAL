@@ -15,7 +15,9 @@
                     <div *ngIf="item.name=='Details'" class="details">
 
                         <!-- Invoice Detail Component -->
-                        <shiptech-invoice-detail *ngIf="displayDetailFormvalues" #invoiceDetails [detailFormvalues]='detailFormvalues'></shiptech-invoice-detail>
+                        <shiptech-invoice-detail *ngIf="displayDetailFormvalues" #invoiceDetails
+                        [detailFormvalues]='detailFormvalues'
+                        (onInvoiceDetailsChanged)="getInvoiceDetailsChanged()"></shiptech-invoice-detail>
                     </div>
                     <div *ngIf="item.name =='Related Invoices'" class="custom-tab-container">
                       <shiptech-related-invoice *ngIf="selectedTab == 1" #invoiceDetails [detailFormvalues]='detailFormvalues'></shiptech-related-invoice>

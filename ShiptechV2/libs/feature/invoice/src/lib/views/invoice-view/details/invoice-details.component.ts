@@ -1,7 +1,7 @@
 import { KnownInvoiceRoutes } from './../../../known-invoice.routes';
 import { KnownPrimaryRoutes } from './../../../../../../../core/src/lib/enums/known-modules-routes.enum';
 import { IInvoiceDetailsItemRequest } from './../../../services/api/dto/invoice-details-item.dto';
-import { ChangeDetectionStrategy, Component, Inject, Input, OnDestroy, OnInit,ViewChildren, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, Input, OnDestroy, OnInit, ViewChildren, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconRegistry } from '@angular/material/icon';
 import { forkJoin, Observable, of, ReplaySubject, Subject, throwError } from 'rxjs';
@@ -221,6 +221,9 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     }
   }
 }
+
+@Output() onInvoiceDetailsChanged = new EventEmitter<any>();
+
   //Default Values - strats
   constructor(private router: Router,iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private invoiceService: InvoiceDetailsService,  public dialog: MatDialog,
     private toastrService: ToastrService,private format: TenantFormattingService, private legacyLookupsDatabase: LegacyLookupsDatabase,
@@ -288,7 +291,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
             this.getUomConversionFactor(product.product.id, 1, product.invoiceQuantityUom.id, product.invoiceRateUom.id, product.contractProductId, product.orderProductId ? product.orderProductId : product.id, currentRowIndex);
             this.changeDetectorRef.detectChanges();
             this.eventsSubject5.next(this.formValues);
-           
+
         }
         // recalculatePercentAdditionalCosts(formValues);
     }
@@ -909,6 +912,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       } else {
         this.toastrService.success(successMsg);
         this.router.navigate([KnownPrimaryRoutes.Invoices,`${KnownInvoiceRoutes.InvoiceView}`,this.entityId]).then(() => { });
+        this.onInvoiceDetailsChanged.emit(true);
+        this.changeDetectorRef.detectChanges();
     }
   }
 
