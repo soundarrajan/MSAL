@@ -28,6 +28,9 @@ angular.module('shiptech').controller('ContractSelectDialogController', [ '$scop
             ctrl.checkboxes[index] = true;
             ctrl.selectedRow = row;
         };
+        ctrl.refreshData = () => {
+        	return ctrl.data;
+        }
         ctrl.$onChanges = function(changes) {
             if (changes.filters.isFirstChange()) {
                 return false;
@@ -43,14 +46,16 @@ angular.module('shiptech').controller('ContractSelectDialogController', [ '$scop
             ctrl.refreshedSelectDialog = false;
             ctrl.toggleSelection(null, null);
             selectContractModel.getSuggestedContracts(null, null, ctrl.filters).then((server_data) => {
-                ctrl.refreshedSelectDialog = true;
                 ctrl.selectedCheckbox = null;
                 ctrl.selectedRow = null;
                 ctrl.toggleSelection(null, null);
 
                 // destroyDataTable();
                 screenLoader.finishLoading();
-                ctrl.data = server_data.payload;
+                $timeout(()=>{
+	                ctrl.data = server_data.payload;
+	                ctrl.refreshedSelectDialog = true;
+                })
                 $('contract-select-dialog').css({
                     top: '0',
                     marginTop: '15px',

@@ -10,9 +10,9 @@
         </div>
         <div class="col-md-6 caption-subject">Select Contract</div>
     </div>
-    <div class="portlet-body st-contract-select-dialog" ng-if="$ctrl.refreshedSelectDialog" style="overflow: auto;">
+    <div class="portlet-body st-contract-select-dialog" ng-if="$ctrl.refreshedSelectDialog" ng-init="listData = $ctrl.refreshData()" style="overflow: auto;">
         <table class="table table-striped table-hover table-bordered"
-                id="contract_select">
+                id="contract_select" >
             <thead>
                 <tr>
                     <th ng-if="column.caption != 'PAGES.SELECT_CONTRACT.ADD_COST'" id="generatedThId103" ng-repeat="column in $ctrl.ui.contracts.columns">
@@ -21,7 +21,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="row in $ctrl.data track by $index">
+                <tr ng-repeat="row in listData track by $index">
                         <td>
                             <label class="mt-checkbox mt-checkbox-outline">
                                 <input type="checkbox" ng-change="$ctrl.toggleSelection($index, row)" ng-model="$ctrl.checkboxes[$index]">
@@ -31,7 +31,7 @@
                         <td><a href="#/contracts/contract/edit/{{row.id1}}" target="_blank" class="link-underline-light"><!-- Contract  -->{{row.id1}}</a></td>
                         <td>{{row.contractName}}</td>
                         <td><span ng-controller="Controller_Master as CM"> {{CM.formatDateTime(row.validTo , null, 'default')}}</span></td>
-                        <td>{{row.fixedPrice | number:$ctrl.tenantSettings.defaultValues.pricePrecision}}</td>
+                        <td>{{row.fixedPrice | number: (row.pricePrecision ? row.pricePrecision : $ctrl.tenantSettings.defaultValues.pricePrecision) }}</td>
                         <td>{{row.formula}}</td>
                         <td>{{row.seller.name}}</td>
                         <td>{{row.location.name}}</td>

@@ -4171,10 +4171,12 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             let selectContract = function(idx, selection, changeContractAutocomplete) {
                 ctrl.data.products[idx].contractProductId = selection.contractProductId;
                 ctrl.data.products[idx].priceUom = selection.uom;
+                ctrl.data.products[idx].pricePrecision = selection.pricePrecision;
                 ctrl.data.products[idx].contract = angular.copy(selection.contract);
                 if ((changeContract || changeContractAutocomplete) && !isQuantityUom) { 
                     ctrl.data.products[idx].price = angular.copy(selection.price);
                 }  
+                ctrl.recomputeProductPricePrecision(idx);
                 ctrl.data.products[idx].formula = angular.copy(selection.formula);
                 ctrl.data.products[idx].agreementType = selection.contractAgreementType ?
                     angular.copy(selection.contractAgreementType) : ctrl.defaultContractAgreementType;

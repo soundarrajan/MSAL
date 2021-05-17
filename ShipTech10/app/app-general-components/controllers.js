@@ -2070,6 +2070,7 @@
                     if (
                     	(options.gid == "flat_orders_list" && options.colModel.name == "price")
                     	|| (options.gid == "flat_orders_delivery_list" && options.colModel.name == "unitPrice")	
+                    	|| (options.gid == "flat_select_contract" && options.colModel.name == "price")	
                     	|| (options.gid == "flat_invoices_app_deliveries_list" && options.colModel.name == "estimatedRate")	
                     	|| (options.gid == "flat_invoices_app_deliveries_list" && options.colModel.name == "price")	
                     	|| (options.gid == "flat_invoices_app_invoice_list" && options.colModel.name == "orderPrice")	
@@ -4125,7 +4126,7 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
 	                        	return;
 	                        }
 	                        selectedInvoicesIds = selectedInvoicesIds.join(',');
-	                        window.open(`/v2/invoice/split-view?invoices=${selectedInvoicesIds}`, "_blank");
+	                        window.open(`/v2/invoice/split-view/${selectedInvoicesIds}`, "_blank");
                             break;                            
                     }
                     //eval('Factory_General_Components.' + ajax_method + '(function(callback){if(callback) {$location.path($state.$current.url.prefix + $state.params.screen_id);}})');
