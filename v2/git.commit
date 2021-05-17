@@ -1,7 +1,7 @@
-﻿commit b6c77ee21486430cfacb05dd52afb116cbc087fd
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon May 17 13:36:30 2021 +0000
+﻿commit 89261106aa41293c127be699f735b3609acb0e8c
+Author: Edwin Francis <edwin.f@Inatech.com>
+Date:   Mon May 17 22:08:46 2021 +0530
 
-    Merged PR 10742: Fixed problems with defaulting of costs in the Contract page
+    Minor ui fix - claim details.
 
 branch: master
