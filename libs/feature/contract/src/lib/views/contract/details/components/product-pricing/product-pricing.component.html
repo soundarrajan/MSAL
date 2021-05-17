@@ -214,6 +214,7 @@
         </tr>
       </thead>
       <tbody>
+        
           <ng-container  *ngFor="let additionalCost of formValues.products[selectedTabIndex].additionalCosts | keyvalue : originalOrder">
             <tr *ngIf="!additionalCost.value.isDeleted">
               <td class="padding" style="padding-left: 0px  !important; padding-right: 0px  !important;">
