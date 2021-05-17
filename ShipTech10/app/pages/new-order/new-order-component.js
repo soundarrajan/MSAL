@@ -3328,7 +3328,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 return;
             }
             switch (additionalCost.costType.id) {
-                case COST_TYPE_IDS.RANGE || COST_TYPE_IDS.TOTAL:
+                case  COST_TYPE_IDS.TOTAL : case  COST_TYPE_IDS.RANGE :
                     let apiJSON = {
                         Payload: {
                             Order: null,
