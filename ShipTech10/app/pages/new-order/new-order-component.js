@@ -83,62 +83,59 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 	}
                 }
 
-
-                if (ctrl.data) {
-                	if (ctrl.data.customerConfiguration) {
-		        		if (ctrl.data.customerConfiguration.sendSingleEmail) {
-			                if (v.process == 'Order Confirmation Single Email') {
+				if (ctrl.customerConfiguration) {
+	        		if (ctrl.customerConfiguration.sendSingleEmail) {
+		                if (v.process == 'Order Confirmation Single Email') {
+		            		ctrl.confirmToVesselManual = false;
+		                	if (v.emailType.name == 'Manual') {
+		                		// to vessel
+		                		ctrl.confirmToVesselManual = true;
+		                		ctrl.confirmToVesselTemplate = v.template;
+		                		// to labs
+								ctrl.orderConfirmationEmailToLabs = v.emailType;
+								ctrl.emailToLabsTemplate = v.template;
+		                		// to surveyor
+			                    ctrl.orderConfirmationEmailToSurveyor = v.emailType;
+			            		ctrl.emailToSurveyorTemplate = v.template;								
+		                	}
+		                }                	
+	        		}                	
+	        		if (ctrl.customerConfiguration.customerMailConfiguration.name == "Maersk Line") {
+		                if (v.process == 'Maersk Line Order Spot Confirmation To Seller Email') {
+		            		ctrl.confirmToSellerManual = false;
+		                	if (v.emailType.name == 'Manual') {
+		                		ctrl.confirmToSellerManual = true;
+		                		ctrl.confirmToSellerTemplate = v.template;
+		                	}
+		                }			                
+		                if (v.process == 'Maersk Line Order Contract Confirmation To Seller Email') {
+		            		ctrl.confirmToSellerContractManual = false;
+		                	if (v.emailType.name == 'Manual') {
+		                		ctrl.confirmToSellerContractManual = true;
+		                		ctrl.confirmToSellerContractTemplate = v.template;
+		                	}
+		                }	        			
+		                if (v.process == 'Maersk Line Spot Order Confirmation to Vessel Email') {
+		                	if (ctrl.confirmToVesselTemplate.name != "OrderConfirmationSingleEmail") {
 			            		ctrl.confirmToVesselManual = false;
 			                	if (v.emailType.name == 'Manual') {
-			                		// to vessel
 			                		ctrl.confirmToVesselManual = true;
 			                		ctrl.confirmToVesselTemplate = v.template;
-			                		// to labs
-									ctrl.orderConfirmationEmailToLabs = v.emailType;
-									ctrl.emailToLabsTemplate = v.template;
-			                		// to surveyor
-				                    ctrl.orderConfirmationEmailToSurveyor = v.emailType;
-				            		ctrl.emailToSurveyorTemplate = v.template;								
 			                	}
-			                }                	
-		        		}                	
-		        		if (ctrl.data.customerConfiguration.customerMailConfiguration.name == "Maersk Line") {
-			                if (v.process == 'Maersk Line Order Spot Confirmation To Seller Email') {
-			            		ctrl.confirmToSellerManual = false;
-			                	if (v.emailType.name == 'Manual') {
-			                		ctrl.confirmToSellerManual = true;
-			                		ctrl.confirmToSellerTemplate = v.template;
-			                	}
-			                }			                
-			                if (v.process == 'Maersk Line Order Contract Confirmation To Seller Email') {
-			            		ctrl.confirmToSellerContractManual = false;
-			                	if (v.emailType.name == 'Manual') {
-			                		ctrl.confirmToSellerContractManual = true;
-			                		ctrl.confirmToSellerContractTemplate = v.template;
-			                	}
-			                }	        			
-			                if (v.process == 'Maersk Line Spot Order Confirmation to Vessel Email') {
-			                	if (ctrl.confirmToVesselTemplate.name != "OrderConfirmationSingleEmail") {
-				            		ctrl.confirmToVesselManual = false;
-				                	if (v.emailType.name == 'Manual') {
-				                		ctrl.confirmToVesselManual = true;
-				                		ctrl.confirmToVesselTemplate = v.template;
-				                	}
-			                	}
-			                }
-			                if (v.process == 'Maersk Line Spot Order Confirmation to Lab Email') {
-			                	if (ctrl.orderConfirmationEmailToLabs.name != "OrderConfirmationSingleEmail") {
-			                		ctrl.orderConfirmationEmailToLabs = v.template;
-			                	}
-			                }
-			                if (v.process == 'Maersk Line Spot Order Confirmation to Surveyor Email') {
-			                	if (ctrl.emailToSurveyorTemplate.name != "OrderConfirmationSingleEmail") {
-			                		ctrl.emailToSurveyorTemplate = v.template;
-			                	}
-			        		}                	
+		                	}
 		                }
-                	}
-                }
+		                if (v.process == 'Maersk Line Spot Order Confirmation to Lab Email') {
+		                	if (ctrl.orderConfirmationEmailToLabs.name != "OrderConfirmationSingleEmail") {
+		                		ctrl.orderConfirmationEmailToLabs = v.template;
+		                	}
+		                }
+		                if (v.process == 'Maersk Line Spot Order Confirmation to Surveyor Email') {
+		                	if (ctrl.emailToSurveyorTemplate.name != "OrderConfirmationSingleEmail") {
+		                		ctrl.emailToSurveyorTemplate = v.template;
+		                	}
+		        		}                	
+	                }
+            	}
             });
             // console.log( ctrl.orderConfirmationEmailToLabs)
         });
@@ -773,65 +770,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             }
 
 
-            if (ctrl.emailConfiguration) {
-            	if (ctrl.data.customerConfiguration) {
-	        		if (ctrl.data.customerConfiguration.sendSingleEmail || ctrl.data.customerConfiguration.customerMailConfiguration.name == "Maersk Line") {
-		                $.each(ctrl.emailConfiguration, (k, v) => {
-			                if (ctrl.data.customerConfiguration.customerMailConfiguration.name == "Maersk Line") {
-				                if (v.process == 'Maersk Line Order Spot Confirmation To Seller Email') {
-				            		ctrl.confirmToSellerManual = false;
-				                	if (v.emailType.name == 'Manual') {
-				                		ctrl.confirmToSellerManual = true;
-				                		ctrl.confirmToSellerTemplate = v.template;
-				                	}
-				                }	
-				                if (v.process == 'Maersk Line Order Contract Confirmation To Seller Email') {
-				            		ctrl.confirmToSellerContractManual = false;
-				                	if (v.emailType.name == 'Manual') {
-				                		ctrl.confirmToSellerContractManual = true;
-				                		ctrl.confirmToSellerContractTemplate = v.template;
-				                	}
-				                }			                	                	
-				                if (v.process == 'Maersk Line Spot Order Confirmation to Vessel Email') {
-				                	if (ctrl.confirmToVesselTemplate.name != "OrderConfirmationSingleEmail") {
-					            		ctrl.confirmToVesselManual = false;
-					                	if (v.emailType.name == 'Manual') {
-					                		ctrl.confirmToVesselManual = true;
-					                		ctrl.confirmToVesselTemplate = v.template;
-					                	}
-				                	}
-				                }
-				                if (v.process == 'Maersk Line Spot Order Confirmation to Lab Email') {
-				                	if (ctrl.orderConfirmationEmailToLabs.name != "OrderConfirmationSingleEmail") {
-				                		ctrl.orderConfirmationEmailToLabs = v.template;
-				                	}
-				                }
-				                if (v.process == 'Maersk Line Spot Order Confirmation to Surveyor Email') {
-				                	if (ctrl.emailToSurveyorTemplate.name != "OrderConfirmationSingleEmail") {
-				                		ctrl.emailToSurveyorTemplate = v.template;
-				                	}
-				        		} 
-			                }
-			                if (ctrl.data.customerConfiguration.sendSingleEmail) {
-				                if (v.process == 'Order Confirmation Single Email') {
-				            		ctrl.confirmToVesselManual = false;
-				                	if (v.emailType.name == 'Manual') {
-				                		// to vessel
-				                		ctrl.confirmToVesselManual = true;
-				                		ctrl.confirmToVesselTemplate = v.template;
-				                		// to labs
-										ctrl.orderConfirmationEmailToLabs = v.emailType;
-										ctrl.emailToLabsTemplate = v.template;
-				                		// to surveyor
-					                    ctrl.orderConfirmationEmailToSurveyor = v.emailType;
-					            		ctrl.emailToSurveyorTemplate = v.template;	
-				                	}
-				                }                	
-			                }
-		                })
-	        		}                	
-        		}                	
-            }
+            ctrl.getCustomerConfiguration();
+            
 
             addFirstAdditionalCost();
             updatePageTitle(); // this is for page title
@@ -849,6 +789,73 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             ctrl.setIsVerifiedBool();
             ctrl.defaultMaxQtyFromConfirmed('init');
         }
+
+        ctrl.getCustomerConfiguration = () => {
+            orderModel.getCustomerConfiguration(ctrl.data.id)
+            .then((response) => {
+            	ctrl.customerConfiguration = response.payload;
+				if (ctrl.emailConfiguration) {
+					if (ctrl.customerConfiguration) {
+						if (ctrl.customerConfiguration.sendSingleEmail || ctrl.customerConfiguration.customerMailConfiguration.name == "Maersk Line") {
+				            $.each(ctrl.emailConfiguration, (k, v) => {
+				                if (ctrl.customerConfiguration.customerMailConfiguration.name == "Maersk Line") {
+					                if (v.process == 'Maersk Line Order Spot Confirmation To Seller Email') {
+					            		ctrl.confirmToSellerManual = false;
+					                	if (v.emailType.name == 'Manual') {
+					                		ctrl.confirmToSellerManual = true;
+					                		ctrl.confirmToSellerTemplate = v.template;
+					                	}
+					                }	
+					                if (v.process == 'Maersk Line Order Contract Confirmation To Seller Email') {
+					            		ctrl.confirmToSellerContractManual = false;
+					                	if (v.emailType.name == 'Manual') {
+					                		ctrl.confirmToSellerContractManual = true;
+					                		ctrl.confirmToSellerContractTemplate = v.template;
+					                	}
+					                }			                	                	
+					                if (v.process == 'Maersk Line Spot Order Confirmation to Vessel Email') {
+					                	if (ctrl.confirmToVesselTemplate.name != "OrderConfirmationSingleEmail") {
+						            		ctrl.confirmToVesselManual = false;
+						                	if (v.emailType.name == 'Manual') {
+						                		ctrl.confirmToVesselManual = true;
+						                		ctrl.confirmToVesselTemplate = v.template;
+						                	}
+					                	}
+					                }
+					                if (v.process == 'Maersk Line Spot Order Confirmation to Lab Email') {
+					                	if (ctrl.orderConfirmationEmailToLabs.name != "OrderConfirmationSingleEmail") {
+					                		ctrl.orderConfirmationEmailToLabs = v.template;
+					                	}
+					                }
+					                if (v.process == 'Maersk Line Spot Order Confirmation to Surveyor Email') {
+					                	if (ctrl.emailToSurveyorTemplate.name != "OrderConfirmationSingleEmail") {
+					                		ctrl.emailToSurveyorTemplate = v.template;
+					                	}
+					        		} 
+				                }
+				                if (ctrl.customerConfiguration.sendSingleEmail) {
+					                if (v.process == 'Order Confirmation Single Email') {
+					            		ctrl.confirmToVesselManual = false;
+					                	if (v.emailType.name == 'Manual') {
+					                		// to vessel
+					                		ctrl.confirmToVesselManual = true;
+					                		ctrl.confirmToVesselTemplate = v.template;
+					                		// to labs
+											ctrl.orderConfirmationEmailToLabs = v.emailType;
+											ctrl.emailToLabsTemplate = v.template;
+					                		// to surveyor
+						                    ctrl.orderConfirmationEmailToSurveyor = v.emailType;
+						            		ctrl.emailToSurveyorTemplate = v.template;	
+					                	}
+					                }                	
+				                }
+				            })
+						}                	
+					}                	
+				}            	
+            });
+        }
+
 
         /**
          * Initializes the products and additional costs datatable.
@@ -2433,13 +2440,13 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 					    return email.productTypeGroup.id === minProductTypeId && email.process.indexOf('Confirmation to Lab') != -1;
         			}
                 });
-        		if (ctrl.data.customerConfiguration) {
-	        		if (ctrl.data.customerConfiguration.customerMailConfiguration.name == "Maersk Line") {
+        		if (ctrl.customerConfiguration) {
+	        		if (ctrl.customerConfiguration.customerMailConfiguration.name == "Maersk Line") {
 	        			foundEmailTemplates = _.filter(foundEmailTemplates, (email) => {
 						    return email.process.indexOf('Maersk') != -1;
 		                });		        		
 	        		}
-	        		if (ctrl.data.customerConfiguration.sendSingleEmail) {
+	        		if (ctrl.customerConfiguration.sendSingleEmail) {
 	        			foundEmailTemplates = _.filter(ctrl.emailConfiguration, (email) => {
 						    return email.process.indexOf('Order Confirmation Single Email') != -1;
 		                });
@@ -2477,13 +2484,13 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         			}
                 });
                 console.log(foundEmailTemplates);
-        		if (ctrl.data.customerConfiguration) {
-	        		if (ctrl.data.customerConfiguration.customerMailConfiguration.name == "Maersk Line") {
+        		if (ctrl.customerConfiguration) {
+	        		if (ctrl.customerConfiguration.customerMailConfiguration.name == "Maersk Line") {
 	        			foundEmailTemplates = _.filter(foundEmailTemplates, (email) => {
 						    return email.process.indexOf('Maersk') != -1;
 		                });		        		
 	        		}
-	        		if (ctrl.data.customerConfiguration.sendSingleEmail) {
+	        		if (ctrl.customerConfiguration.sendSingleEmail) {
 	        			foundEmailTemplates = _.filter(ctrl.emailConfiguration, (email) => {
 						    return email.process.indexOf('Order Confirmation Single Email') != -1;
 		                });
@@ -2526,8 +2533,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 	                });
             		console.log(foundEmailTemplates);
                     window.orderDetails = ctrl;
-	        		if (ctrl.data.customerConfiguration) {
-		        		if (ctrl.data.customerConfiguration.customerMailConfiguration.name == "Maersk Line") {
+	        		if (ctrl.customerConfiguration) {
+		        		if (ctrl.customerConfiguration.customerMailConfiguration.name == "Maersk Line") {
 		        			foundEmailTemplates = _.filter(foundEmailTemplates, (email) => {
 							    return email.process.indexOf('Maersk') != -1;
 			                });		        		
@@ -2604,13 +2611,13 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 					    return email.process.indexOf('Contract') == -1;
                     });
         		}
-        		if (ctrl.data.customerConfiguration) {
-	        		if (ctrl.data.customerConfiguration.customerMailConfiguration.name == "Maersk Line") {
+        		if (ctrl.customerConfiguration) {
+	        		if (ctrl.customerConfiguration.customerMailConfiguration.name == "Maersk Line") {
 	        			defaultTemplate = _.filter(ctrl.emailConfiguration, (email) => {
 						    return email.process.indexOf('Maersk Line Spot Order Confirmation to Vessel Email') != -1;
 		                });		        		
 	        		}
-	        		if (ctrl.data.customerConfiguration.sendSingleEmail) {
+	        		if (ctrl.customerConfiguration.sendSingleEmail) {
 	        			defaultTemplate = _.filter(ctrl.emailConfiguration, (email) => {
 						    return email.process.indexOf('Order Confirmation Single Email') != -1;
 		                });

@@ -46,6 +46,7 @@ angular.module('shiptech.models')
                 getFormulaDetails : { method: 'POST', params: { verb: 'getFormulaDetails' } },
                 mailPreviewConfirmToSeller : { method: 'POST', params: { verb: 'mailPreviewConfirmToSeller' } },
                 cancelOrderProduct : { method: 'POST', params: { verb: 'cancelOrderProduct' } },
+                getCustomerConfiguration : { method: 'POST', params: { verb: 'getOrderCustomerConfiguration' } },
                 getExistingOrders : { method: 'POST', params: { verb: 'getExistingOrders' },
                 },
             });

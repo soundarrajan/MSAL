@@ -431,6 +431,13 @@ angular.module('shiptech.models').factory('orderModel', [ '$q', 'orderResource',
             });
         }
 
+        function getCustomerConfiguration(data) {
+   		    payload = payloadDataModel.create(data);
+            return orderResource.getCustomerConfiguration(payload).$promise.then((data) => {
+                return data;
+            });
+        }
+
         // return public model API
         return {
             getTemplates: getTemplates,
@@ -458,6 +465,7 @@ angular.module('shiptech.models').factory('orderModel', [ '$q', 'orderResource',
             getContractProductAdditionalCosts: getContractProductAdditionalCosts,
             getOrderConfirmationEmailTemplate: getOrderConfirmationEmailTemplate,
             checkIfOrderCanBeCreatedUsingSelectedContract : checkIfOrderCanBeCreatedUsingSelectedContract,
+            getCustomerConfiguration : getCustomerConfiguration,
             getExistingOrders : getExistingOrders
         };
     }
