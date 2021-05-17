@@ -1279,7 +1279,7 @@
                                                 ng-required="false" />
                                         </div>
                                     </td>
-                                    <td style="max-width: 250px;min-width: 150px">
+                                    <td  ng-if="!$ctrl.procurementSettings.request.isRequestProductCategoryHidden" style="max-width: 250px;min-width: 150px">
                                         <select class="form-control" id="product_productCategory_{{ $index }}"
                                             ng-disabled="$ctrl.disabledProduct[product.id]"
                                             ng-model="product.productCategory"
