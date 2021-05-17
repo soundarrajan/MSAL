@@ -40,6 +40,7 @@ export namespace InvoiceApiPaths {
   export const addTransaction = () =>  `api/invoice/deliveriesToBeInvoicedList`;
   export const totalConversion = () =>  `api/invoice/totalConversion`;
   export const getAdditionalCostsComponentTypes = () =>  `api/masters/additionalcosts/listApps`;
+  export const getApplyForList = () =>  `api/invoice/getApplicableProducts`;
 
 
 
@@ -329,6 +330,19 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
     );
   }
 
+
+  @ObservableException()
+  getApplyForList(
+    request: any
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${this._apiUrl}/${InvoiceApiPaths.getApplyForList()}`,
+      {Payload: request}
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
+  }
 }
 
 export const INVOICE_COMPLETE_API_SERVICE = new InjectionToken<

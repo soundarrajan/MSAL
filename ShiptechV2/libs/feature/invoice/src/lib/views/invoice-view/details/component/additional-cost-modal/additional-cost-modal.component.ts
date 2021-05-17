@@ -18,6 +18,7 @@ import { finalize } from 'rxjs/operators';
 })
 
 export class AdditionalCostModalComponent implements OnInit {
+  switchTheme: any;
   additionalCost : any;
   productDetails : any;
   @Output() changedAdditonalcost = new EventEmitter();
@@ -32,9 +33,12 @@ export class AdditionalCostModalComponent implements OnInit {
   costTypeList: any;
   EnableBargeCostDetails: boolean;
   amountFormat: string;
+  applyForList: any;
   @Input('formValues') set _formValues(val){
     this.formValues = val;
+    this.getApplyForList();
     this.getAdditionalCostsComponentTypes();
+
   }
 
   @Input('uomList') set _setUomList(uomList) { 
@@ -151,6 +155,26 @@ export class AdditionalCostModalComponent implements OnInit {
       } else {
         this.formValues.costDetailssComponentTypes = response;
         this.changeDetectorRef.detectChanges();
+      }
+    });
+  }
+
+  getApplyForList() {
+    this.invoiceService
+    .getApplyForList(this.formValues?.orderDetails?.order.id)
+    .pipe(
+      finalize(() => {
+        //this.spinner.hide();
+      })
+    )
+    .subscribe((response: any) => {
+      if (typeof response == 'string') {
+        this.toastr.error(response);
+      } else {
+        console.log(response);
+        this.applyForList = response;
+        this.changeDetectorRef.detectChanges();
+
       }
     });
   }
