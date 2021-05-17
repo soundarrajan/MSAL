@@ -127,6 +127,16 @@ export class InvoiceDetailsService extends BaseStoreService
     return this.api.computeInvoiceTotalConversion(payload);
   }
 
+       /**
+ * @param payload  
+ */
+  @ObservableException()
+  getAdditionalCostsComponentTypes(payload: any): Observable<unknown> {
+    return this.api.getAdditionalCostsComponentTypes(payload);
+  }
+
+
+  
   
 
 
