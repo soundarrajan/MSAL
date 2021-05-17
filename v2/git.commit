@@ -1,7 +1,7 @@
-﻿commit d8fa2723f2f1ccb681557a4e8fac94d97e84a8f3
+﻿commit ba5ed2f1cc7af674e98ebef9740a460065fd0bf3
 Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Sun May 16 20:57:18 2021 +0530
+Date:   Mon May 17 15:11:14 2021 +0530
 
-    Invoice detail change after an action performed.
+    Delivery mandatory symbol and data bind fix. #31648
 
 branch: master

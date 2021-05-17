@@ -287,12 +287,13 @@
                         <div id="custom-form-field" class="lightTheme">
                             <mat-form-field class="without-search" appearance="legacy">
                                 <mat-label>Delivery Date</mat-label>
-                                <input matInput [matDatepicker]="pickerDD" (focus)="pickerDD.open()">
-                                <mat-datepicker-toggle matSuffix [for]="pickerDD">
+                                <input [(ngModel)]="formValues.deliveryDate" name="deliveryDate" #validToDateField="ngModel"
+                                matInput [matDatepicker]="deliveryDate" (focus)="deliveryDate.open()" autocomplete="off" placeholder="Delivery Date" required>
+                                <mat-datepicker-toggle matSuffix [for]="deliveryDate">
                                     <mat-icon matDatepickerToggleIcon class="icon-date">
                                     </mat-icon>
                                 </mat-datepicker-toggle>
-                                <mat-datepicker #pickerDD></mat-datepicker>
+                                <mat-datepicker #deliveryDate></mat-datepicker>
                             </mat-form-field>
                         </div>
                         <div class="custom-form-field-with-search lightTheme" style="margin: 15px 0px;">
