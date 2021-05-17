@@ -1,7 +1,7 @@
-﻿commit 89261106aa41293c127be699f735b3609acb0e8c
-Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Mon May 17 22:08:46 2021 +0530
+﻿commit 6c9294a2502cb4021648e57848198e3dcf147e55
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Mon May 17 17:23:58 2021 +0000
 
-    Minor ui fix - claim details.
+    Merged PR 10745: Replaced physicalSuppliers with physicalSupplier model in contract screen
 
 branch: master
