@@ -9955,7 +9955,11 @@ $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
         }
 
         $scope.deleteVesselProductTank = function(vpKey, vptKey) {
-            $scope.formValues.vesselProducts[vpKey].vesselProductTanks[vptKey].isDeleted = true;
+            if($scope.formValues.vesselProducts[vpKey].vesselProductTanks[vptKey].id!=undefined){
+                $scope.formValues.vesselProducts[vpKey].vesselProductTanks[vptKey].isDeleted = true;
+            }else{
+                $scope.formValues.vesselProducts[vpKey].vesselProductTanks.splice(vptKey, 1);             
+            }           
         }
 
         $scope.addnewLocationProduct = () => {
