@@ -1,5 +1,5 @@
 
-import { IConversionInfoResponseDto, IDeliveryDetailsDto, IDeliveryInfoForOrderDto, IDeliveryOrderSummaryDto, IDeliveryQuantityParametersDto, IDeliverySpecParametersDto, IOrderDto } from '../dto/delivery-details.dto';
+import { IConversionInfoResponseDto, IDeliveryDetailsDto, IDeliveryInfoForOrderDto, IDeliveryOrderSummaryDto, IDeliveryQuantityParametersDto, IDeliverySpecParametersDto, IOrderDto,IDeliveryNotesDetailsDto } from '../dto/delivery-details.dto';
 import { IQcReportDetailsDto } from '../dto/qc-report-details.dto';
 import { IBaseDeliveryRequest, IBaseDeliveryResponse } from './request-response.delivery.model';
 
@@ -15,6 +15,11 @@ export interface IDeliveryInfoForOrderRequest extends IBaseDeliveryRequest {
   id: number;
 }
 
+
+export interface IDeliveryNotesDetailsResponse  extends IBaseDeliveryResponse, IDeliveryNotesDetailsDto {
+   
+  }
+ 
 
 export interface IDeliveryInfoForOrderResponse
   extends IBaseDeliveryResponse,
