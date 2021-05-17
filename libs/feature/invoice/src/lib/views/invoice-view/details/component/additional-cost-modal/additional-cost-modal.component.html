@@ -44,6 +44,7 @@
                     <mat-form-field class="without-search dotted-form-field" appearance="legacy">
                       <mat-select 
                           [(ngModel)]="additionalCost.value.costType"
+                          (ngModelChange)="invoiceConvertUom('cost', additionalCost.key)"
                           [compareWith]="compareUomObjects"
                           [disableOptionCentering]="true"
                           panelClass="general-information-select-container">
