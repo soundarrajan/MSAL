@@ -1,7 +1,7 @@
-﻿commit a4c4571d84b38abf6ea5ab165d47c7fe823a2c8d
+﻿commit b6c77ee21486430cfacb05dd52afb116cbc087fd
 Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon May 17 13:24:49 2021 +0000
+Date:   Mon May 17 13:36:30 2021 +0000
 
-    Merged PR 10741: Defaulted est.rate currency and uom when user adding a new additional cost. Fixed removing of additional cost line
+    Merged PR 10742: Fixed problems with defaulting of costs in the Contract page
 
 branch: master

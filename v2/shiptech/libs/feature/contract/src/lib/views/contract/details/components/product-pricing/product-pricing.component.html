@@ -214,6 +214,7 @@
         </tr>
       </thead>
       <tbody>
+
           <ng-container  *ngFor="let additionalCost of formValues.products[selectedTabIndex].additionalCosts | keyvalue : originalOrder">
             <tr *ngIf="!additionalCost.value.isDeleted">
               <td class="padding" style="padding-left: 0px  !important; padding-right: 0px  !important;">
@@ -228,9 +229,8 @@
                     <mat-select 
                             [(ngModel)]="additionalCost.value.additionalCost"
                             (selectionChange)="setAdditionalCost($event.value, selectedTabIndex, additionalCost.key);
-                              setAdditionalCostLine(additionalCost.value.additionalCost, selectedTabIndex, additionalCost.key); 
-                              resetUom(selectedTabIndex, additionalCost.key);
-                              setIsAllowingNegativeAmmount(selectedTabIndex, additionalCost.key)"
+                            additionalCost.value.costType = setDefaultCostType(additionalCost.value.additionalCost);                              resetUom(selectedTabIndex, additionalCost.key);
+                            setIsAllowingNegativeAmmount(selectedTabIndex, additionalCost.key)"
                             [disableOptionCentering]="true"
                             panelClass="general-information-select-container"
                             [compareWith]="compareAdditionalCostObjects"
