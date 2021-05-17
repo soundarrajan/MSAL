@@ -32,22 +32,22 @@
           <td class="padding" style="width:15%">
             <b>Total Amount</b>
           </td>
-          <td class="padding blue-bg" style="width:30%">
+          <td class="padding" style="width:30%">
             <b>BDN Qty</b>
           </td>
-          <td class="padding blue-bg" style="width:45%">
+          <td class="padding" style="width:45%">
             <b>Est. Rate</b>
           </td>
-          <td class="padding blue-bg" style="width:30%">
+          <td class="padding" style="width:30%">
             <b>Amount</b>
           </td>
-          <td class="padding blue-bg" style="width:15%">
+          <td class="padding" style="width:15%">
             <b>Extra (%)</b>
           </td>
-          <td class="padding blue-bg" style="width:15%">
+          <td class="padding" style="width:15%">
             <b>Extra Amount</b>
           </td>
-          <td class="padding blue-bg" style="width:15%">
+          <td class="padding" style="width:15%">
             <b>Total Amount</b>
           </td>
           <td class="padding" style="width:15%">
@@ -56,36 +56,37 @@
         </tr>
       </thead>
       <tbody>
-          <ng-container *ngFor="let costs of additionalCost;let i= index;">
-            <tr *ngIf="!costs.isDeleted">              
+          <ng-container  *ngFor="let additionalCost of formValues.costDetails | keyvalue : originalOrder">
+            <tr *ngIf="!additionalCost.value.isDeleted">              
               <td class="padding" style="padding-left: 0px  !important; padding-right: 0px  !important;">
-                <a class="remove-icon" style="margin-left: 10px;" (click)="removeAdditionalCostLine(i)"></a>
+                <a class="remove-icon" style="margin-left: 10px;"  (click)="removeAdditionalCostLine(additionalCost.key)"></a>
               </td>              
-              <td>
+              <td style="width:15%">
                 <div>
-                  <mat-form-field name="costName">
+                  <mat-form-field>
                     <mat-select 
-                            [(ngModel)]="costs.costName.id"
-                            (selectionChange)="costNameChange()"
-                            [disableOptionCentering]="true"
-                            panelClass="general-information-select-container">
-                        <mat-option *ngFor="let option of  costNames" [value]="option.id">
-                            {{option.name}}
+                        [(ngModel)]="additionalCost.value.costName"
+                        (ngModelChange)="additionalCost.value.costType = setDefaultCostType(additionalCost.value.costName)"
+                        [compareWith]="compareUomObjects"
+                        [disableOptionCentering]="true"
+                        panelClass="general-information-select-container">
+                        <mat-option *ngFor="let option of  costNames" [value]="option">
+                          {{option.name}}
                         </mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>
               </td>
-              <td>
+              <td style="width:15%">
                 <div>
-                  <mat-form-field name="costType">
+                  <mat-form-field>
                     <mat-select 
-                            [(ngModel)]="costs.costType.id"
-                            (selectionChange)="costNameChange()"
-                            [disableOptionCentering]="true"
-                            panelClass="general-information-select-container">
-                        <mat-option *ngFor="let option of costType" [value]="option.id">
-                            {{option.name}}
+                        [(ngModel)]="additionalCost.value.costType"
+                        [compareWith]="compareUomObjects"
+                        [disableOptionCentering]="true"
+                        panelClass="general-information-select-container">
+                        <mat-option *ngFor="let option of  filterCostTypesByAdditionalCost(additionalCost.value.costName ? additionalCost.value.costName.id : 0, 0)" [value]="option">
+                          {{option.name}}
                         </mat-option>
                     </mat-select>
                   </mat-form-field>
@@ -94,13 +95,13 @@
               <td>
                 <mat-form-field name="invProduct">                    
                      <mat-select 
-                            [(ngModel)]="costs.associatedOrderProduct"
-                            [disabled]="costs.associatedOrderProduct == 'All' ? false :true"
-                            (selectionChange)="costNameChange()"
-                            [disableOptionCentering]="true"
-                            panelClass="general-information-select-container">
-                        <mat-option *ngFor="let option of productDetails" [value]="option.id">
-                            {{option.name}}
+                          [(ngModel)]="additionalCost.value.associatedOrderProduct"
+                          [disabled]="additionalCost.value.associatedOrderProduct == 'All' ? false :true"
+                          (selectionChange)="costNameChange()"
+                          [disableOptionCentering]="true"
+                          panelClass="general-information-select-container">
+                         <mat-option *ngFor="let option of productDetails" [value]="option.id">
+                          {{option.name}}
                         </mat-option>
                     </mat-select> 
                     
@@ -109,17 +110,19 @@
               <td>
                 <div style="width:50%;float:left">
                   <mat-form-field name="invQty">
-                    <input matInput type="text" name="invQtyNumber" [(ngModel)]="costs.invoiceQuantity">                    
+                    <input matInput type="text" name="invQtyNumber" 
+                      [(ngModel)]="additionalCost.value.invoiceQuantity"
+                      quantityFormat>                    
                   </mat-form-field>
                 </div>
                 <div style="width:48%;float:left">
                   <mat-form-field name="invQtyUOM">                    
                     <mat-select 
-                            [(ngModel)]="costs.invoiceQuantityUom.id"
-                            (selectionChange)="costNameChange()"
-                            [disableOptionCentering]="true"
-                            panelClass="general-information-select-container">
-                        <mat-option *ngFor="let option of uomNames" [value]="option.id">
+                        [(ngModel)]="additionalCost.value.invoiceQuantityUom"
+                        [compareWith]="compareUomObjects"
+                        [disableOptionCentering]="true"
+                        panelClass="general-information-select-container">
+                        <mat-option *ngFor="let option of uomList" [value]="option">
                             {{option.name}}
                         </mat-option>
                     </mat-select>
@@ -130,12 +133,12 @@
                   <div style="width:30%;float:left">
                     <mat-form-field name="invRateCurrency">                    
                       <mat-select 
-                              [(ngModel)]="costs.invoiceRateCurrency.id"
-                              [disabled]="true"
-                              (selectionChange)="costNameChange()"
-                              [disableOptionCentering]="true"
-                              panelClass="general-information-select-container">
-                          <mat-option *ngFor="let option of currencyNames" [value]="option.id">
+                          [(ngModel)]="additionalCost.value.invoiceRateCurrency"
+                          [disabled]="true"
+                          [compareWith]="compareUomObjects"
+                          [disableOptionCentering]="true"
+                          panelClass="general-information-select-container">
+                          <mat-option *ngFor="let option of currencyNames" [value]="option">
                               {{option.name}}
                           </mat-option>
                       </mat-select>
@@ -143,17 +146,20 @@
                   </div>
                   <div style="width:38%;float:left;margin-right:2%">
                   <mat-form-field name="invRate">
-                    <input matInput type="text" name="invRateNumber" [(ngModel)]="costs.invoiceRate" (ngModelChange)="invoiceRateChange($event,i)">                    
+                    <input matInput type="text" name="invRateNumber" 
+                        [(ngModel)]="additionalCost.value.invoiceRate" 
+                        (ngModelChange)="invoiceRateChange($event, additionalCost.key)"
+                        amountFormat>                    
                   </mat-form-field>
                 </div>
-                <div style="width:30%;float:left" *ngIf="costs.costType.id == 2">
+                <div style="width:30%;float:left" *ngIf="additionalCost.value.costType && additionalCost.value.costType.id == 2">
                   <mat-form-field name="invRateUOM">                    
                     <mat-select 
-                            [(ngModel)]="costs.invoiceRateUom.id"
-                            (selectionChange)="costNameChange()"
-                            [disableOptionCentering]="true"
-                            panelClass="general-information-select-container">
-                        <mat-option *ngFor="let option of uomNames" [value]="option.id">
+                          [(ngModel)]="additionalCost.value.invoiceRateUom"
+                          [compareWith]="compareUomObjects"
+                          [disableOptionCentering]="true"
+                          panelClass="general-information-select-container">
+                        <mat-option *ngFor="let option of uomList" [value]="option">
                             {{option.name}}
                         </mat-option>
                     </mat-select>
@@ -163,19 +169,24 @@
               <td>
                 <div style="width:40%;float:left;line-height: 50px;background-color: #eee;
                 padding-left: 5px;">                  
-                  {{costs.invoiceRateCurrency.code}}
+                  {{additionalCost.value.invoiceRateCurrency.code}}
                 </div>
                 <div style="width:38%;float:left;margin-right:2%;">
-                  
                 <mat-form-field name="invAmount">
-                  <input matInput type="text" [disabled]="true" name="invAmountNumber" [(ngModel)]="costs.amountInOrderCurrency">                    
+                  <input matInput type="text" 
+                    [disabled]="true" name="invAmountNumber"
+                    [(ngModel)]="additionalCost.value.amountInOrderCurrency"
+                    amountFormat>                    
                 </mat-form-field>
               </div>
               </td>
               <td>
                 <div>
                   <mat-form-field name="invExtra">
-                    <input matInput type="text" name="invExtraNumber" [(ngModel)]="costs.invoiceExtras" (ngModelChange)="extraAmount($event,i)">                    
+                    <input matInput type="text" name="invExtraNumber" 
+                      [(ngModel)]="additionalCost.value.invoiceExtras" 
+                      (ngModelChange)="extraAmount($event, additionalCost.key)"
+                      amountFormat>                    
                   </mat-form-field>
                 </div>
               </td>
@@ -184,71 +195,88 @@
                   <!-- {{ costs.costType.id == 2 ? (costs.invoiceRate * costs.invoiceQuantity)* costs.invoiceExtras/100 : costs.invoiceRate * costs.invoiceExtras/100     
                   }} -->
                   <mat-form-field name="invExtraAmt">
-                    <input matInput type="text" [disabled]="true" name="invExtraAmtNumber" [(ngModel)]="costs.invoiceExtrasAmount">                    
+                    <input matInput type="text" [disabled]="true" name="invExtraAmtNumber" 
+                        [(ngModel)]="additionalCost.value.invoiceExtrasAmount"
+                        amountFormat>                    
                   </mat-form-field>
                 </div>
               </td>
               <td>
                 <div style="line-height: 50px;background-color: #eee;padding-left: 5px;">
-                  {{costs.invoiceTotalAmount}}
+                  {{amountFormatValue(additionalCost.value.invoiceTotalAmount)}}
                 </div>
               </td>
               <td>
                 <div style="width:40%;float:left;line-height: 50px;background-color: #eee;
                 padding-left: 5px;">
-                  {{costs.deliveryQuantityUom ? costs.deliveryQuantityUom.name : ''}}
+                  {{additionalCost.value.deliveryQuantityUom ? additionalCost.value.deliveryQuantityUom.name : ''}}
                 </div>
                 <div style="width:40%;float:left;">
                   <mat-form-field name="delQty">
-                    <input matInput type="text" [disabled]="true" name="delQtyNumber" [(ngModel)]="costs.deliveryQuantity">                    
+                    <input matInput type="text" [disabled]="true" name="delQtyNumber" 
+                      [(ngModel)]="additionalCost.value.deliveryQuantity"
+                      quantityFormat>                    
                   </mat-form-field>
                 </div>
               </td>
               <td>
                 <div style="width:30%;float:left;line-height: 50px;background-color: #eee;
                 padding-left: 5px;">
-                  {{costs.invoiceRateCurrency.code}}
+                  {{additionalCost.value.invoiceRateCurrency.code}}
                 </div>
                 <div style="width:38%;float:left;margin: 0 1% 0 1%;">
                   <mat-form-field name="estRate">
-                    <input matInput type="text" [disabled]="true" name="estRateNumber" [(ngModel)]="costs.estimatedRate">                    
+                    <input matInput type="text" [disabled]="true" name="estRateNumber" 
+                        [(ngModel)]="additionalCost.value.estimatedRate">                    
                   </mat-form-field>
                 </div>
                 <div style="width:30%;float:left;line-height: 50px;background-color: #eee;
                 padding-left: 5px;">
-                  {{costs.estimatedRateUom ? costs.estimatedRateUom.name : ''}}
+                  {{additionalCost.value.estimatedRateUom ? additionalCost.value.estimatedRateUom.name : ''}}
                 </div>
               </td>
               
               <td> 
                 <div style="width:40%;float:left;line-height: 50px;background-color: #eee;
                 padding-left: 5px;">
-                  {{costs.invoiceRateCurrency.code}}
+                  {{additionalCost.value.invoiceRateCurrency.code}}
                 </div>
                 <div style="width:40%;float:left;">
                   <mat-form-field name="estAmt">
-                    <input matInput type="text" [disabled]="true" name="estAmtNumber" [(ngModel)]="costs.estimatedAmount">                    
+                    <input matInput type="text" 
+                        [disabled]="true" 
+                        name="estAmtNumber" 
+                        [(ngModel)]="additionalCost.value.estimatedAmount"
+                        amountFormat>                    
                   </mat-form-field>
                 </div>
               </td>           
               <td>
                 <mat-form-field name="estExtra">
-                  <input matInput type="text" [disabled]="true" name="estExtraNumber" [(ngModel)]="costs.estimatedExtras">                    
+                  <input matInput type="text" 
+                      [disabled]="true" 
+                      name="estExtraNumber" 
+                      [(ngModel)]="additionalCost.value.estimatedExtras"
+                      amountFormat>                    
                 </mat-form-field>
               </td>
               <td>
                 <mat-form-field name="estExtraAmt">
-                  <input matInput type="text" [disabled]="true" name="estExtraAmtNumber" [(ngModel)]="costs.estimatedExtrasAmount">                    
+                  <input matInput type="text" 
+                      [disabled]="true" 
+                      name="estExtraAmtNumber" 
+                      [(ngModel)]="additionalCost.value.estimatedExtrasAmount"
+                      amountFormat>                    
                 </mat-form-field>
               </td>
               <td>
                 <div style="line-height: 50px;background-color: #eee;padding-left: 5px;">
-                  {{costs.estimatedAmount + costs.estimatedExtrasAmount}}
+                  {{amountFormatValue(additionalCost.value.estimatedAmount + additionalCost.value.estimatedExtrasAmount)}}
                 </div>
               </td>
               <td>
                 <div style="line-height: 50px;background-color: #eee;padding-left: 5px;">
-                  {{costs.costType.id == 2 ? (costs.invoiceTotalAmount) - (costs.estimatedAmount + costs.estimatedExtrasAmount) : costs.difference}}
+                  {{additionalCost.value.costType && additionalCost.value.costType.id == 2 ? amountFormatValue((additionalCost.value.invoiceTotalAmount) - (additionalCost.value.estimatedAmount + additionalCost.value.estimatedExtrasAmount)) : amountFormatValue(additionalCost.value.difference)}}
                 </div>                
               </td>
             </tr>

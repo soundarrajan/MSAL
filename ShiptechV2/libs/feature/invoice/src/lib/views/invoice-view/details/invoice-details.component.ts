@@ -192,6 +192,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   roeDisabled: boolean = false;
   type: string;
   eventsSubject5: Subject<any> = new Subject<any>();
+  costTypeList: any;
 
 
 // detailFormvalues:any;
@@ -248,6 +249,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       this.productList = this.setListFromStaticLists('Product');
       this.currencyList = this.setListFromStaticLists('Currency');
       this.physicalSupplierList = this.setListFromStaticLists('Supplier');
+      this.costTypeList = this.setListFromStaticLists('CostType');
+
       this.entityId = this.route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
     });
 

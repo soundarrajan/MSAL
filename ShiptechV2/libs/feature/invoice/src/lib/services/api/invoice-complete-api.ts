@@ -39,6 +39,7 @@ export namespace InvoiceApiPaths {
   export const calculateProductRecon = () =>  `api/recon/invoiceproduct`;
   export const addTransaction = () =>  `api/invoice/deliveriesToBeInvoicedList`;
   export const totalConversion = () =>  `api/invoice/totalConversion`;
+  export const getAdditionalCostsComponentTypes = () =>  `api/masters/additionalcosts/listApps`;
 
 
 
@@ -308,6 +309,20 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
     return this.http.post<any>(
       `${this._apiUrl}/${InvoiceApiPaths.totalConversion()}`,
       {payload: request}
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
+  }
+
+  
+  @ObservableException()
+  getAdditionalCostsComponentTypes(
+    request: any
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${this._masterUrl}/${InvoiceApiPaths.getAdditionalCostsComponentTypes()}`,
+      {Payload: request}
     ).pipe(
       map((body: any) => body.payload),
       catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
