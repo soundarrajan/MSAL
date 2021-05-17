@@ -73,7 +73,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
         if(parseFloat(this._entityId) && this._entityId > 0) {
           const baseOrigin = new URL(window.location.href).origin;
           this.tabData[2].url = `${baseOrigin}/#/invoices/invoice/documents/${this._entityId}`;
-          this.tabData[3].url = `${baseOrigin}/#/invoices/invoice/audit/${this._entityId}`;
+          this.tabData[3].url = `${baseOrigin}/#/invoices/invoice/audit-log/${this._entityId}`;
           this.tabData[4].url = `${baseOrigin}/#/invoices/invoice/email-log/${this._entityId}`;
           this.reportUrl = `${baseOrigin}/#/reports/ordertoinvoice/IID=${this._entityId}`;
         }
