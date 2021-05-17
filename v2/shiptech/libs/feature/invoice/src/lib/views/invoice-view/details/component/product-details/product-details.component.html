@@ -95,7 +95,7 @@
           </td>
         </tr>
       </thead>
-      <tbody ng-repeat="(key, value) in formValues.vesselProducts track by $index" ng-init="$rowIndex = $index" ng-if="!value.isDeleted">
+      <tbody>
         <ng-container  *ngFor="let productDetail of formValues.productDetails | keyvalue : originalOrder">
           <tr *ngIf="!productDetail.value.isDeleted">
             <td class="padding" style="padding-left: 0px  !important; padding-right: 0px  !important;">

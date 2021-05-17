@@ -1,7 +1,7 @@
-﻿commit ba5ed2f1cc7af674e98ebef9740a460065fd0bf3
-Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Mon May 17 15:11:14 2021 +0530
+﻿commit a4c4571d84b38abf6ea5ab165d47c7fe823a2c8d
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Mon May 17 13:24:49 2021 +0000
 
-    Delivery mandatory symbol and data bind fix. #31648
+    Merged PR 10741: Defaulted est.rate currency and uom when user adding a new additional cost. Fixed removing of additional cost line
 
 branch: master
