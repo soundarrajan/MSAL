@@ -577,10 +577,6 @@ export class ProductDetails extends DeliveryAutocompleteComponent
       return;
     }
     this.formValues = formValues;
-    if (formValues.products[this.selectedTabIndex] && !formValues.products[this.selectedTabIndex].physicalSuppliers)  {
-      this.formValues.products[this.selectedTabIndex].physicalSuppliers = {};
-    }
-
 
   }
 
@@ -781,7 +777,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
       mtmFixed: true,
       specGroup: null,
       dealDate: null,
-      physicalSuppliers: {},
+      physicalSupplier: null,
       allowedProducts: [],
       allowedLocations: []
     };
@@ -939,8 +935,8 @@ export class ProductDetails extends DeliveryAutocompleteComponent
 
 
   filterPhysicalSupplierList() {
-    if (this.formValues.products[this.selectedTabIndex].physicalSuppliers) {
-      const filterValue = this.formValues.products[this.selectedTabIndex].physicalSuppliers.name ? this.formValues.products[this.selectedTabIndex].physicalSuppliers.name.toLowerCase() : this.formValues.products[this.selectedTabIndex].physicalSuppliers.toLowerCase();
+    if (this.formValues.products[this.selectedTabIndex].physicalSupplier) {
+      const filterValue = this.formValues.products[this.selectedTabIndex].physicalSupplier.name ? this.formValues.products[this.selectedTabIndex].physicalSupplier.name.toLowerCase() : this.formValues.products[this.selectedTabIndex].physicalSupplier.toLowerCase();
       console.log(filterValue);
       if (this.physicalSupplierList) {
         return this.physicalSupplierList.filter(option => option.name.toLowerCase().includes(filterValue))
@@ -957,13 +953,13 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     selection: IDisplayLookupDto
   ): void {
     if (selection === null || selection === undefined) {
-      this.formValues.products[this.selectedTabIndex].physicalSuppliers = '';
+      this.formValues.products[this.selectedTabIndex].physicalSupplier = '';
     } else {
       const obj = {
         'id': selection.id,
         'name': selection.name
       };
-      this.formValues.products[this.selectedTabIndex].physicalSuppliers = obj;
+      this.formValues.products[this.selectedTabIndex].physicalSupplier = obj;
       this.changeDetectorRef.detectChanges();
       console.log(this.formValues.products[this.selectedTabIndex]);
     }
