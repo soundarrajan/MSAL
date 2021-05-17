@@ -578,7 +578,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     }
     this.formValues = formValues;
     if (formValues.products[this.selectedTabIndex] && !formValues.products[this.selectedTabIndex].physicalSuppliers)  {
-      this.formValues.products[this.selectedTabIndex].physicalSuppliers = [];
+      this.formValues.products[this.selectedTabIndex].physicalSuppliers = {};
     }
 
 
@@ -781,7 +781,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
       mtmFixed: true,
       specGroup: null,
       dealDate: null,
-      physicalSuppliers: [],
+      physicalSuppliers: {},
       allowedProducts: [],
       allowedLocations: []
     };
@@ -939,8 +939,8 @@ export class ProductDetails extends DeliveryAutocompleteComponent
 
 
   filterPhysicalSupplierList() {
-    if (this.formValues.products[this.selectedTabIndex].physicalSuppliers[0]) {
-      const filterValue = this.formValues.products[this.selectedTabIndex].physicalSuppliers[0].name ? this.formValues.products[this.selectedTabIndex].physicalSuppliers[0].name.toLowerCase() : this.formValues.products[this.selectedTabIndex].physicalSuppliers[0].toLowerCase();
+    if (this.formValues.products[this.selectedTabIndex].physicalSuppliers) {
+      const filterValue = this.formValues.products[this.selectedTabIndex].physicalSuppliers.name ? this.formValues.products[this.selectedTabIndex].physicalSuppliers.name.toLowerCase() : this.formValues.products[this.selectedTabIndex].physicalSuppliers.toLowerCase();
       console.log(filterValue);
       if (this.physicalSupplierList) {
         return this.physicalSupplierList.filter(option => option.name.toLowerCase().includes(filterValue))
@@ -957,13 +957,13 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     selection: IDisplayLookupDto
   ): void {
     if (selection === null || selection === undefined) {
-      this.formValues.products[this.selectedTabIndex].physicalSuppliers[0] = '';
+      this.formValues.products[this.selectedTabIndex].physicalSuppliers = '';
     } else {
       const obj = {
         'id': selection.id,
         'name': selection.name
       };
-      this.formValues.products[this.selectedTabIndex].physicalSuppliers[0] = obj;
+      this.formValues.products[this.selectedTabIndex].physicalSuppliers = obj;
       this.changeDetectorRef.detectChanges();
       console.log(this.formValues.products[this.selectedTabIndex]);
     }
