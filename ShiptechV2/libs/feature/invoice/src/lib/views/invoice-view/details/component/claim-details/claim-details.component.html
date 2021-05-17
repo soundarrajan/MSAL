@@ -70,23 +70,20 @@
               <div class="dotted-container">
                 <div class="custom-form-field-invoice" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}" style="width: 250px;">
                   <div class="split-field">
-                    <mat-form-field class="without-search" style="width: 64%;border: none;" appearance="legacy">
+                    <mat-form-field class="without-search long-label-field" style="width: 74%;border: none;" appearance="legacy">
                       <input matInput
                         [(ngModel)]="claimDetail.value.invoiceAmount"
                         (ngModelChange)="invoiceAmountChange(claimDetail.key)"
                         autocomplete="off"
-                        quantityFormat>
+                        amountFormat>
                     </mat-form-field>
-                    <!-- <div appearance="legacy">
-                        <span>{{claimDetail.value.invoiceAmountCurrency.code}}</span>
-                    </div> -->
-                    <mat-form-field style="width: 36%"
+                    <mat-form-field style="width: 26%"
                         appearance="legacy" aria-disabled="true">
                         <mat-select disableRipple
                           [(ngModel)]="claimDetail.value.invoiceAmountCurrency.id"
                           [disableOptionCentering]="true"
-                          panelClass="general-information-select-container">
-                          <mat-option *ngFor="let option of currencyList" [value]="option.id">{{option.name}}</mat-option>
+                          panelClass="general-information-select-container" disabled>
+                          <mat-option *ngFor="let option of currencyList" [value]="option.id">{{option.code}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                   </div>
