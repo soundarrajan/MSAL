@@ -337,6 +337,61 @@ export class AdditionalCostModalComponent implements OnInit {
     }
   }
 
+  invoiceConvertUom(type, rowIndex) {
+    console.log(type);
+    console.log(rowIndex);
+    let currentRowIndex = rowIndex;
+    this.calculateGrand(this.formValues);
+  }
+
+ calculateGrand(formValues) {
+    if (!formValues.invoiceSummary) {
+        formValues.invoiceSummary = {};
+    }
+    // formValues.invoiceSummary.provisionalInvoiceAmount = $scope.calculateprovisionalInvoiceAmount(formValues)
+    formValues.invoiceSummary.invoiceAmountGrandTotal = this.calculateInvoiceGrandTotal(formValues) - formValues.invoiceSummary.provisionalInvoiceAmount;
+    formValues.invoiceSummary.estimatedAmountGrandTotal = this.calculateInvoiceEstimatedGrandTotal(formValues);
+    formValues.invoiceSummary.totalDifference = formValues.invoiceSummary.invoiceAmountGrandTotal - formValues.invoiceSummary.estimatedAmountGrandTotal;
+    formValues.invoiceSummary.netPayable = formValues.invoiceSummary.invoiceAmountGrandTotal - formValues.invoiceSummary.deductions;
+  }
+
+  calculateInvoiceGrandTotal(formValues) {
+    let grandTotal = 0;
+    formValues.productDetails.forEach((v, k) => {
+      if (!v.isDeleted && typeof v.invoiceAmount != 'undefined') {
+        grandTotal = grandTotal + v.invoiceAmount;
+      }
+    });
+
+    formValues.costDetails.forEach((v, k) => {
+      if (!v.isDeleted) {
+        if (typeof v.invoiceTotalAmount != 'undefined') {
+          grandTotal = grandTotal + v.invoiceTotalAmount;
+        }
+      }
+    });
+    return grandTotal;
+  };
+
+
+  calculateInvoiceEstimatedGrandTotal(formValues) {
+    let grandTotal = 0;
+    formValues.productDet.forEach((v, k) => {
+      if (!v.isDeleted && typeof v.estimatedAmount != 'undefined') {
+        grandTotal = grandTotal + v.estimatedAmount;
+      }
+    });
+
+    formValues.costDetails.forEach((v, k) => {
+      if (!v.isDeleted) {
+        if (typeof v.estimatedAmount != 'undefined') {
+          grandTotal = grandTotal + v.estimatedAmount;
+        }
+      }
+    });
+    return grandTotal;
+  };
+
 
 
 }
