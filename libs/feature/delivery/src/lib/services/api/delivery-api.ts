@@ -56,7 +56,7 @@ import {
   IVesselToWatchResponse
 } from './request-response/vessel-to-watch.request-response';
 import { IDeliveryApiService } from './delivery.api.service.interface';
-import { IDeliveryConversionInfoResponse, IDeliveryDetailsRequest, IDeliveryDetailsResponse, IDeliveryInfoForOrderResponse, IDeliveryOrderSummaryResponse, IDeliveryQuantityParametersResponse, IDeliverySpecParametersResponse, IOrderResponse } from './request-response/delivery-by-id.request-response';
+import { IDeliveryConversionInfoResponse, IDeliveryDetailsRequest, IDeliveryDetailsResponse,IDeliveryNotesDetailsResponse, IDeliveryInfoForOrderResponse, IDeliveryOrderSummaryResponse, IDeliveryQuantityParametersResponse, IDeliverySpecParametersResponse, IOrderResponse } from './request-response/delivery-by-id.request-response';
 import { catchError, map } from 'rxjs/operators';
 
 export namespace DeliveryApiPaths {
@@ -68,6 +68,7 @@ export namespace DeliveryApiPaths {
   export const getDeliveryQuantityParameters = () => `api/delivery/getDeliveryQuantityParameters`;
   export const getConversionInfo = () => `api/delivery/getConversionInfo`;
   export const saveDelivery = () =>  `api/delivery/create`;
+  export const saveNotesDelivery = () =>  `api/delivery/autosave`;
   export const updateDelivery = () =>  `api/delivery/update`;
   export const verifyDelivery = () =>  `api/delivery/verify`;
   export const revertVerifyDelivery = () =>  `api/delivery/revert`;
@@ -202,6 +203,21 @@ export class DeliveryApi implements IDeliveryApiService {
       catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
+
+  @ObservableException()
+  saveNotesDelivery(
+    request: any
+  ): Observable<IDeliveryNotesDetailsResponse> {
+    return this.http.post<IDeliveryNotesDetailsResponse>(
+      `${this._apiUrl}/${DeliveryApiPaths.saveNotesDelivery()}`,
+      { payload: request }
+    ).pipe(
+      map((body: any) => body.upsertedId),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
+  }
+
+
 
   @ObservableException()
   updateDelivery(

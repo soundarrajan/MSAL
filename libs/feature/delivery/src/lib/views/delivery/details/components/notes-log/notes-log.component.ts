@@ -13,8 +13,11 @@ import {
   EventEmitter,
   Input
 } from '@angular/core';
+import { QcReportService } from '../../../../../services/qc-report.service';
+import { IDeliveryNotesDetailsResponse } from '../../../../../services/api/request-response/delivery-by-id.request-response';
+  //  .././../../../../request-response/delivery-by-id.request-response
 // import { NotesLogGridViewModel } from './view-model/notes-log-grid.view-model';
-import { IQcEventsLogItemState } from '../../../../../store/report/details/qc-events-log-state.model';
+// import { IQcEventsLogItemState } from '../../../../../store/report/details/qc-events-log-state.model';
 import { Select } from '@ngxs/store';
 import { NotesService } from '../../../../../services/notes.service';
 import { Observable, Subject } from 'rxjs';
@@ -34,11 +37,13 @@ import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-
 export class NotesLogComponent implements OnInit, OnDestroy, OnChanges {
   @Select(UserProfileState.username) username$: Observable<string>;
   @Input('DeliveryNotes') DeliveryNotes: any;
+  @Input('id') DeliveryId: any;
   @Input() test: string;
   @Output() ChangedValue = new EventEmitter<any>();
 
   private _destroy$ = new Subject();
   objNotes: any = [];
+  MainobjNotes: any = [];
   User: any = [];
   constructor(
     private store: Store,
@@ -49,13 +54,45 @@ export class NotesLogComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit(): void {
-    //this.User = [];
     this.User = this.store.selectSnapshot(UserProfileState.user);
     this.objNotes  = this.DeliveryNotes;
-
+    Object.assign(this.MainobjNotes, this.DeliveryNotes);
   }
 
   ngOnChanges(changes: SimpleChanges) {
+  }
+  update(item: IDeliveryNotesDetailsResponse, newNoteDetails: string): void {
+    if(this.DeliveryId != undefined && this.DeliveryId != null && item.id != 0){
+      item.note = newNoteDetails;
+      // let payload = {
+      //   // "deliveryId":234735,
+      //   "DeliveryId":234735,
+      //   "DeliveryNotes":{
+      //     "DeliveryId":234735,
+      //     "Note":"ok test sure",
+      //     "CreatedBy":{"id":165,"name":"suresh.r@inatech.com","internalName":"",
+      //     "displayName":"Suresh","code":"","collectionName":null,"customNonMandatoryAttribute1":"","isDeleted":false,"modulePathUrl":null,
+      //     "clientIpAddress":null,"userAction":null},
+      //     "CreatedAt":"2021-05-17T18:17:44.947Z",
+      //     "LastModifiedAt":"2021-05-17T18:17:44.947Z",
+      //     "id":11,
+      //     "isDeleted":false,
+      //     "modulePathUrl":null,
+      //     "clientIpAddress":null,"userAction":null
+
+      //   },
+      //   }
+
+      let payload = {
+        "DeliveryId":this.DeliveryId,
+        "DeliveryNotes":item
+        }
+      this.detailsService
+      .saveDeliveryInfo(payload)
+     .subscribe((result: any) => {
+         
+      });
+    }
   }
 
   add(): void {
@@ -70,29 +107,34 @@ export class NotesLogComponent implements OnInit, OnDestroy, OnChanges {
 
     if(this.objNotes != undefined){
       this.objNotes.push({id:0,note:'',createdBy:Createon,createdAt: new Date() });
+      this.MainobjNotes.push({id:0,note:'',createdBy:Createon,createdAt: new Date() });
     }else
     {
       this.objNotes = [];
       this.objNotes.push({id:0,note:'',createdBy:Createon,createdAt: new Date() });
+      this.MainobjNotes.push({id:0,note:'',createdBy:Createon,createdAt: new Date() });
 
     }
     
    
   }
-  remove(index):void {
-this.objNotes.splice(index,1);
+  remove(item, index):void {
+    debugger;
+    
+
+    if(item.id != 0){
+      this.MainobjNotes[index].isDeleted = true;
+      this.objNotes.splice(index,1);
+    }else{
+      this.objNotes.splice(index,1);
+      this.MainobjNotes.splice(index,1);
+    }
+
   }
 
   @HostListener('document:click', ['$event'])
   clickout(event) {
-    this.ChangedValue.emit(this.objNotes);
-    // if(this.eRef.nativeElement.contains(event.target)) {
-    //   if (event.target.innerHTML === 'Reset Filter' || event.target.innerHTML === 'Apply Filter') {
-    //     const test = document.querySelectorAll<HTMLElement>('.ag-menu');
-    //     test[0].style.display = 'none';
-    //   }
-     
-    // }
+    this.ChangedValue.emit(this.MainobjNotes);
   }
 
   ngOnDestroy(): void {

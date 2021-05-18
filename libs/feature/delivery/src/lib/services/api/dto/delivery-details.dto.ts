@@ -21,6 +21,17 @@ export interface IDeliveryDetailsDto {
   hasSentEmail?: boolean;
   emailTransactionTypeId: number;
 }
+export interface IDeliveryNotesDetailsDto {
+  createdOn: Date | string;
+  createdBy: IDisplayLookupDto;
+  note: string;
+  id: number;
+  DeliveryId: number;
+}
+
+
+    
+
 
 export interface IQcReportProductTypeDto {
   id: number;
