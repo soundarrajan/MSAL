@@ -20,7 +20,7 @@
     position: relative;
     top: -8px;
 }
-  
+
 .accept-invoice {
     position: relative;
     top: -4px;
@@ -35,4 +35,10 @@
     position: relative;
     top: -5px;
     width: 15px;
+}
+
+button{
+  &:disabled{
+    color: grey !important;
+  }
 }
