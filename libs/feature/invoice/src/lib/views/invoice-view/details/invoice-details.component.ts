@@ -970,7 +970,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     this.formSubmitted = true;
     if(option == 'submitreview'){
       this.invoiceService.submitForReview(this.formValues.id).subscribe((result: any) => {
-        this.handleServiceResponse(result, 'Invoice submitted for approval successfully.');
+        this.handleServiceResponse(result, 'Invoice submitted for review successfully.');
       });
     } else if(option == 'submitapprove'){
       this.invoiceService.submitapproval(this.formValues.id).subscribe((result: any) => {
