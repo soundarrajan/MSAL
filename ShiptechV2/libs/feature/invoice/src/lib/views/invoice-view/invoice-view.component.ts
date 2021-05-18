@@ -169,6 +169,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     var deductions = 0;
 
     data.invoiceSummary.netPayable = invoiceAmountGrandTotal - deductions;
+    let deliveryProductIds = [];
     data.productDetails.forEach((v, k) => {
         v.id = 0;
         // v.invoiceQuantity = null;
@@ -179,38 +180,71 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
         v.invoiceAmount = null;
         v.reconStatus = null;
         v.amountInInvoice = null;
+        v.pricingDate = v.orderProductPricingDate;
+        deliveryProductIds.push(v.deliveryProductId);
     });
+
+    if (data.costDetails) {
+      data.costDetails.forEach((v, k) => {
+        v.id = 0
+        v.invoiceRate = null;
+        v.invoiceExtras = null;
+        v.description = null;
+        v.invoiceAmount = null;
+        if (v.product) {
+          if (v.product.id != -1) {
+            if (v.product.id != v.deliveryProductId) {
+              v.product.productId = v.product.id;
+              v.product.id = v.deliveryProductId;
+            }
+          }
+        } else {
+          v.product = {
+            id : -1,
+          };
+        }
+      });
+    }
     data.counterpartyDetails.paymentTerm = data.counterpartyDetails.orderPaymentTerm;
     data.deliveryDate = data.orderDeliveryDate;
     data.orderDetails.carrierCompany = data.orderDetails.orderCarrierCompany;
     data.orderDetails.paymentCompany = data.orderDetails.orderPaymentCompany;
 
     this.displayDetailFormvalues = false;
-    this.setScreenActions(data);
+    this.spinner.show();
+    let requestPayload = { DeliveryProductIds: deliveryProductIds, OrderId: data.orderDetails.order.id };
+    this.invoiceService.getFinalInvoiceDueDates(requestPayload).subscribe((response: any) => {
+      if(response){
+        data.dueDate = response.dueDate;
+        data.paymentDate = response.paymentDate;
+        data.workingDueDate = response.workingDueDate;
+      }
+      this.setScreenActions(data);
+    });
   }
 
   setScreenActions(formValues: any){
     this.displayDetailFormvalues = true;
     this.spinner.hide();
     this.detailFormvalues = <IInvoiceDetailsItemDto>formValues;
-        this.detailFormvalues.screenActions.forEach(action => {
-          if(action.name == 'Cancel'){
-            this.cancelBtn = false;
-          }else if(action.name == "SubmitForReview"){
-            this.submitreviewBtn = false;
-          }else if(action.name == 'ApproveInvoice'){
-            this.saveDisabled = false;
-          }else if(action.name == "RejectInvoice"){
-            this.rejectBtn = false;
-          }else if(action.name == "Revert"){
-            this.revertBtn = false;
-          }else if(action.name == "Accept"){
-            this.acceptBtn = false;
-          }else if(action.name == "SubmitForApprovalInvoice"){
-            this.submitapproveBtn = false;
-          }
-        });
-        this.changeDetectorRef.detectChanges();
+    this.detailFormvalues.screenActions.forEach(action => {
+      if(action.name == 'Cancel'){
+        this.cancelBtn = false;
+      }else if(action.name == "SubmitForReview"){
+        this.submitreviewBtn = false;
+      }else if(action.name == 'ApproveInvoice'){
+        this.saveDisabled = false;
+      }else if(action.name == "RejectInvoice"){
+        this.rejectBtn = false;
+      }else if(action.name == "Revert"){
+        this.revertBtn = false;
+      }else if(action.name == "Accept"){
+        this.acceptBtn = false;
+      }else if(action.name == "SubmitForApprovalInvoice"){
+        this.submitapproveBtn = false;
+      }
+    });
+    this.changeDetectorRef.detectChanges();
   }
 
   openCurrencyConversionPopUp() {
