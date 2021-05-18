@@ -19,10 +19,11 @@ export class InvoiceDetailsService extends BaseStoreService
   }
 
   @ObservableException()
-
   getInvoicDetails(invoiceId: number): Observable<IInvoiceDetailsItemResponse> {
     return this.api.getInvoicDetails(invoiceId);
   }
+
+  @ObservableException()
   getNewInvoicDetails(invoiceFromDelivery : any): Observable<IInvoiceDetailsItemResponse> {
     return this.api.getNewInvoicDetails(invoiceFromDelivery);
   }
@@ -127,7 +128,7 @@ export class InvoiceDetailsService extends BaseStoreService
     return this.api.computeInvoiceTotalConversion(payload);
   }
 
-       /**
+  /**
  * @param payload
  */
   @ObservableException()
@@ -135,11 +136,10 @@ export class InvoiceDetailsService extends BaseStoreService
     return this.api.getAdditionalCostsComponentTypes(payload);
   }
 
-
-
-
-
-
+  @ObservableException()
+  getFinalInvoiceDueDates(payload: any): Observable<IInvoiceDetailsItemResponse> {
+    return this.api.getFinalInvoiceDueDates(payload);
+  }
 
   ngOnDestroy(): void {
     super.onDestroy();
