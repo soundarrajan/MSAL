@@ -1,7 +1,7 @@
-﻿commit 86d608741a4b208b23927e9f96ecc7623cbc6b71
+﻿commit 424155d7423cb01ae4f7a852e5a713175bcdda88
 Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Tue May 18 18:47:48 2021 +0530
+Date:   Tue May 18 19:25:55 2021 +0530
 
-    Create invoice from provisional to final changes and disable more action buttons style.
+    Submit for approval - send entire invoice payload for claim with held amount logic in backend.
 
 branch: master
