@@ -173,11 +173,11 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
 
   @ObservableException()
   submitapproval(
-    request: number
+    request: any
   ): Observable<IInvoiceDetailsItemResponse> {
     return this.http.post<IInvoiceDetailsItemResponse>(
       `${this._apiUrl}/${InvoiceApiPaths.submitapproval()}`,
-      { payload: { id: request }}
+      { payload: request }
     ).pipe(
       map((body: any) => body.payload),
       catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))

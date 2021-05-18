@@ -56,8 +56,8 @@ export class InvoiceDetailsService extends BaseStoreService
   }
 
   @ObservableException()
-  submitapproval(invoiceId: number): Observable<any> {
-    return this.api.submitapproval(invoiceId);
+  submitapproval(payload: any): Observable<any> {
+    return this.api.submitapproval(payload);
   }
 
   @ObservableException()
@@ -112,7 +112,7 @@ export class InvoiceDetailsService extends BaseStoreService
   }
 
      /**
- * @param payload  
+ * @param payload
  */
   @ObservableException()
   addTransaction(payload: any): Observable<unknown> {
@@ -120,7 +120,7 @@ export class InvoiceDetailsService extends BaseStoreService
   }
 
       /**
- * @param payload  
+ * @param payload
  */
   @ObservableException()
   computeInvoiceTotalConversion(payload: any): Observable<unknown> {
@@ -128,7 +128,7 @@ export class InvoiceDetailsService extends BaseStoreService
   }
 
        /**
- * @param payload  
+ * @param payload
  */
   @ObservableException()
   getAdditionalCostsComponentTypes(payload: any): Observable<unknown> {
@@ -136,8 +136,8 @@ export class InvoiceDetailsService extends BaseStoreService
   }
 
 
-  
-  
+
+
 
 
 
