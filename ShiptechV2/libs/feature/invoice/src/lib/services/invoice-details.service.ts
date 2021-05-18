@@ -111,6 +111,15 @@ export class InvoiceDetailsService extends BaseStoreService
     return this.api.calculateProductRecon(payload);
   }
 
+      /**
+ * @param payload
+ */
+  @ObservableException()
+  calculateCostRecon(payload: any): Observable<unknown> {
+    return this.api.calculateCostRecon(payload);
+  }
+
+
      /**
  * @param payload  
  */

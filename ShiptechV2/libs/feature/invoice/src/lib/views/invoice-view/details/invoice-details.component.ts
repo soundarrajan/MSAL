@@ -193,6 +193,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   type: string;
   eventsSubject5: Subject<any> = new Subject<any>();
   costTypeList: any;
+  eventsSubject: Subject<any> = new Subject<any>();
+
 
 
 // detailFormvalues:any;
@@ -1179,6 +1181,11 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       numberToReturn = 0;
     }
     return parseFloat(numberToReturn);
+  }
+
+  updateCostDetails(data) {
+    console.log(data);
+    this.eventsSubject.next(this.formValues);
   }
 }
 
