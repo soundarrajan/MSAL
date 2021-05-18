@@ -1148,7 +1148,6 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         grandTotal = grandTotal + v.estimatedAmount;
       }
     });
-
     formValues.costDetails.forEach((v, k) => {
       if (!v.isDeleted) {
         if (typeof v.estimatedAmount != 'undefined') {
