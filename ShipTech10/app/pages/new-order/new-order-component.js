@@ -4279,26 +4279,25 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             // // applicable only for new order
             //     		return
             //     	}
-        	let currentContractProductId = contractProductId
             let currentProductIndex = productIdx
             let apiJSON = {
                 Order: null,
                 Filters: [
                     {
                         ColumnName: 'ContractProductId',
-                        Value: 4373// contractProductId
+                        Value: contractProductId
                     },
                     {
                         ColumnName: 'ProductId',
-                        Value: 161 // additionalInfo.productId
+                        Value: additionalInfo.productId
                     },
                     {
                         ColumnName: 'ConfirmQty',
-                        Value: 200 // additionalInfo.confirmedQty
+                        Value: additionalInfo.confirmQty
                     },
                     {
                         ColumnName: 'ConfirmQtyUom',
-                        Value: 5 // additionalInfo.confirmQtyUom
+                        Value: additionalInfo.confirmQtyUom
                     }
                 ],
                 Pagination: {
