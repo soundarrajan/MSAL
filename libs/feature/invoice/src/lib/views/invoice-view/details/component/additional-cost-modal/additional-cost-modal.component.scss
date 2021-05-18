@@ -371,14 +371,6 @@
   text-overflow: ellipsis;
 }
 
-.custom-tooltip {
-  background: linear-gradient(0deg, rgba(158, 158, 158, 0.39), rgba(158, 158, 158, 0.39)), #676C72;
-  border: 1px solid #364150;
-  box-sizing: border-box;
-  border-radius: 4px;
-  color: white;
-  font-size: 14px;
-}
 
 .border_line {
   border-right: 1px solid #252a32;
@@ -932,4 +924,8 @@ th, td {
 
 .padding-line {
   padding: 10px !important;
+}
+
+.first-select-container {
+  padding-left: 10px !important;
 }

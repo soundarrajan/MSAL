@@ -14,6 +14,33 @@
           <td class="padding" style="max-width: initial;min-width: 200px" >
             <b>% of</b>
           </td>
+          <td class="padding" style="max-width: initial;min-width: 200px" >
+            <b>Bdn Qty</b>
+          </td>
+          <td class="padding" style="max-width: initial;min-width: 200px" >
+            <b>Estd. Rate</b>
+          </td>
+          <td class="padding" style="max-width: initial;min-width: 200px" >
+            <b>Amount</b>
+          </td>
+          <td class="padding" style="max-width: initial;min-width: 200px" >
+            <b>Extra%</b>
+          </td>
+          <td class="padding" style="max-width: initial;min-width: 200px" >
+            <b>Extra Amt</b>
+          </td>
+          <td class="padding" style="max-width: initial;min-width: 200px" >
+            <b>Total</b>
+          </td>
+          <td class="padding" style="max-width: initial;min-width: 200px" >
+            <b>Invoice Qty</b>
+          </td>
+          <td class="padding" style="max-width: initial;min-width: 300px;">
+            <b>Invoice Rate</b>
+          </td>
+          <td class="padding" style="max-width: initial;min-width: 300px;">
+            <b>Amount</b>
+          </td>
         </tr>
       </thead>
       <tbody>
@@ -61,7 +88,7 @@
                     <mat-form-field class="without-search dotted-form-field" appearance="legacy">
                       <mat-select 
                           [(ngModel)]="additionalCost.value.product"
-                          [compareWith]="compareUomObjects"
+                          [compareWith]="compareProductObjects"
                           [disableOptionCentering]="true"
                           panelClass="general-information-select-container">
                           <mat-option *ngFor="let option of  applyForList" [value]="option">
@@ -69,6 +96,153 @@
                           </mat-option>
                       </mat-select>
                     </mat-form-field>
+                </div>
+              </td>
+              <td class="padding-left-column" style="max-width: initial;min-width: 200px" >
+                <div  class="non-editable-container">
+                  <div style="float: left;"> 
+                    {{quantityFormatValue(additionalCost.value.deliveryQuantity)}}
+                  </div>
+                  <div style="float: right;">
+                    {{additionalCost.value.deliveryQuantityUom ? additionalCost.value.deliveryQuantityUom.name : ''}}
+                  </div>
+                </div>
+              </td>
+              <td class="padding" style="max-width: initial;min-width: 200px" >
+                <div  class="non-editable-container">
+                  <div style="float: left;"> 
+                    {{quantityFormatValue(additionalCost.value.estimatedRate)}}
+                  </div>
+                  <div style="float: right;">
+                    {{formValues.invoiceRateCurrency.code}} / {{additionalCost.value.estimatedRateUom ? additionalCost.value.estimatedRateUom.name : ''}}
+                  </div>
+                </div>
+              </td>
+              <td class="padding" style="max-width: initial;min-width: 200px" >
+                <div  class="non-editable-container">
+                  <div style="float: left;"> 
+                    {{amountFormatValue(additionalCost.value.estimatedAmount)}}
+                  </div>
+                  <div style="float: right;">
+                    {{formValues.invoiceRateCurrency.code}}
+                  </div>
+                </div>
+              </td>
+              <td class="padding" style="max-width: initial;min-width: 200px" >
+                <div  class="non-editable-container">
+                  {{amountFormatValue(additionalCost.value.estimatedExtras)}}
+                </div>
+              </td>
+              <td class="padding" style="max-width: initial;min-width: 200px" >
+                <div  class="non-editable-container">
+                  {{amountFormatValue(additionalCost.value.estimatedExtrasAmount)}}
+                </div>
+              </td>
+              <td  style="max-width: initial;min-width: 200px" >
+                <div  class="non-editable-container">
+                  {{amountFormatValue(additionalCost.value.estimatedTotalAmount)}}
+                </div>
+              </td>
+              <td  style="max-width: initial;min-width: 200px" class="select-container first-select-container">
+                <div class="dotted-container black-container">
+                  <div class="custom-form-field-invoice" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}" style="width: 200px;">
+                    <div class="split-field">
+                      <mat-form-field class="without-search long-label-field" style="width: 64%;border: none;" appearance="legacy">
+                        <input matInput 
+                          [(ngModel)]="additionalCost.value.invoiceQuantity"
+                          autocomplete="off"
+                          (ngModelChange)="invoiceConvertUom('cost', additionalCost.key)" 
+                          quantityFormat
+                          >
+                      </mat-form-field>
+                      <mat-form-field style="width: 36%"
+                          appearance="legacy">
+                          <mat-select disableRipple
+                            [(ngModel)]="additionalCost.value.invoiceQuantityUom"
+                            (ngModelChange)="invoiceConvertUom('cost', additionalCost.key)" 
+                            [compareWith]="compareUomObjects"
+                            [disableOptionCentering]="true"
+                            panelClass="general-information-select-container">
+                            <mat-option *ngFor="let uom of uomList" [value]="uom">{{uom.name}}</mat-option>
+                          </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td  style="max-width: initial;min-width: 300px" class="select-container">
+                <div class="dotted-container" *ngIf="additionalCost.value.costType && additionalCost.value.costType.name == 'Unit'">
+                  <div class="custom-form-field-invoice black-container" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}" style="width: 300px;">
+                    <div class="split-field">
+                      <mat-form-field style="width: 33%"
+                        appearance="legacy">
+                        <mat-select disableRipple
+                          [(ngModel)]="additionalCost.value.invoiceRateCurrency"
+                          (ngModelChange)="invoiceConvertUom('cost', additionalCost.key)"
+                          [compareWith]="compareUomObjects"
+                          [disableOptionCentering]="true"
+                          [disabled]="true"
+                          panelClass="general-information-select-container">
+                          <mat-option *ngFor="let option of currencyList" [value]="option">{{option.code}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <mat-form-field class="without-search long-label-field" style="width: 33%;border: none;" appearance="legacy">
+                        <input matInput 
+                          autocomplete="off"
+                          [(ngModel)]="additionalCost.value.invoiceRate"
+                          quantityFormat
+                          (ngModelChange)="invoiceConvertUom('cost', additionalCost.key)" 
+                          >
+                      </mat-form-field>
+                      <mat-form-field style="width: 33%"
+                          appearance="legacy">
+                          <mat-select disableRipple
+                            [(ngModel)]="additionalCost.value.invoiceRateUom"
+                            (ngModelChange)="invoiceConvertUom('cost', additionalCost.key)"
+                            [compareWith]="compareUomObjects"
+                            [disableOptionCentering]="true"
+                            panelClass="general-information-select-container">
+                            <mat-option *ngFor="let option of uomList" [value]="option">{{option.name}}</mat-option>
+                          </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <div class="dotted-container" *ngIf="additionalCost.value.costType && additionalCost.value.costType.name != 'Unit'">
+                  <div class="custom-form-field-invoice" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}" style="width: 200px;">
+                    <div class="split-field">
+                      <mat-form-field style="width: 33%"
+                        appearance="legacy">
+                        <mat-select disableRipple
+                          [(ngModel)]="additionalCost.value.invoiceRateCurrency"
+                          (ngModelChange)="invoiceConvertUom('cost', additionalCost.key)"
+                          [compareWith]="compareUomObjects"
+                          [disableOptionCentering]="true"
+                          [disabled]="true"
+                          panelClass="general-information-select-container">
+                          <mat-option *ngFor="let option of currencyList" [value]="option">{{option.code}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <mat-form-field class="without-search long-label-field" style="width: 64%;border: none;" appearance="legacy">
+                        <input matInput 
+                          [(ngModel)]="additionalCost.value.invoiceRate"
+                          autocomplete="off"
+                          (ngModelChange)="invoiceConvertUom('cost', additionalCost.key)" 
+                          quantityFormat
+                          >
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td class="padding" style="max-width: initial;min-width: 300px;">
+                <div class="dotted-container black-container amount-container">
+                  <div style="float: left;">
+                    {{amountFormatValue(additionalCost.value.invoiceAmount)}}
+                  </div>
+                  <div style="float: right;">
+                    {{additionalCost.value.invoiceRateCurrency.code}}
+                  </div>
                 </div>
               </td>
             </tr>

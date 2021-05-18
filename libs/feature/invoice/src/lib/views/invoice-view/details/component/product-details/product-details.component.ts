@@ -429,6 +429,8 @@ implements OnInit {
   expandAddTransactionListPopUp: boolean =  false;
   displayedColumns: string[] = ['product', 'delivery'];
   @Output() amountChanged: EventEmitter<any> = new EventEmitter<any>();
+  @Output() costDetailsChanged: EventEmitter<any> = new EventEmitter<any>();
+
   deliveriesToBeInvoicedList: any = [];
   selectedProductLine: any;
   productSearch: any;
@@ -1032,6 +1034,7 @@ implements OnInit {
       });
       if (!alreadyExists) {
         this.formValues.costDetails.push(transactionstobeinvoiced_dtRow);
+        this.costDetailsChanged.emit(true);
       } else {
         this.toastr.error('Selected cost already exists');
       }
