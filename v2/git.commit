@@ -1,7 +1,9 @@
-﻿commit aa9627da1f7c7d8b88fc8683d799b2c6dbe16594
-Author: Suresh R <suresh.r@Inatech.com>
-Date:   Tue May 18 12:16:50 2021 +0530
+﻿commit 33d8a860d2d05755e528d69b1ac5ef87de0c7e12
+Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
+Date:   Tue May 18 07:45:50 2021 +0000
 
-    32294-Delivery Notes
+    Merged PR 10760: Editable fields conditions on invoice screen
+    
+    Editable fields conditions on invoice screen
 
 branch: master
