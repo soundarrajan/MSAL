@@ -35,13 +35,13 @@
             <a [href]="reportUrl" class="link-text">Back Office Report</a>
           </div>
           <div matTooltip="Save" matTooltipShowDelay="500" style="padding-left: 7px;" *ngIf="!isConfirm">
-            <button  class="cust-btn blue-button mat-button-base" (click)="detailsSave()" mat-flat-button>
+            <button class="cust-btn blue-button mat-button-base" (click)="detailsSave()" mat-flat-button>
                 <span style="top: -1px;position: relative;" >Save</span>
             </button>
           </div>
           <div matTooltip="Approve Invoice" matTooltipShowDelay="500" style="padding-left: 7px;" *ngIf="!isConfirm">
-            <button [disabled]="saveDisabled" class="cust-btn blue-button" mat-flat-button>
-                <span style="top: -1px;position: relative;" (click)="invoiceOptions('approve')">Approve</span>
+            <button [disabled]="saveDisabled" class="cust-btn blue-button" (click)="invoiceOptions('approve')" mat-flat-button>
+                <span style="top: -1px;position: relative;" >Approve</span>
             </button>
           </div>
           <div>
