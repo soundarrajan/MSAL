@@ -1,9 +1,11 @@
-﻿commit 33d8a860d2d05755e528d69b1ac5ef87de0c7e12
-Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
-Date:   Tue May 18 07:45:50 2021 +0000
+﻿commit 24fe9159ea0d0a004c1b4bf31cbdedad00d3f05b
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Tue May 18 07:56:03 2021 +0000
 
-    Merged PR 10760: Editable fields conditions on invoice screen
+    Merged PR 10761: Create Request Link and Port Master Link
     
-    Editable fields conditions on invoice screen
+    Create Request Link and Port Master Link
+    
+    Related work items: #32194, #32196, #32235
 
 branch: master

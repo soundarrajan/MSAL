@@ -3,6 +3,9 @@ import {ICellEditorAngularComp} from '@ag-grid-community/angular';
 import { Store } from '@ngxs/store';
 import { UpdateBunkeringPlanAction } from '../../store/bunker-plan/bunkering-plan.action';
 import { SaveBunkeringPlanState } from '../../store/bunker-plan/bunkering-plan.state';
+import { NoDataComponent } from '../../shared/no-data-popup/no-data-popup.component';
+import { MatDialogRef,MatDialog } from '@angular/material/dialog';
+
 
 const KEY_BACKSPACE = 8;
 const KEY_DELETE = 46;
@@ -12,8 +15,8 @@ const KEY_TAB = 9;
 @Component({
     selector: 'aggrid-cell-data',
     template: ` <div *ngIf="params.type=='edit'">
-    <div [matTooltip]="input.value"><input #input [ngClass]="params.cellClass" [(ngModel)]=value
-        (keydown)="triggerChangeEvent();onKeyDown($event)"></div>
+    <div [matTooltip]="input.value" (click)="restrictionForPrevBplan($event)"><input #input [ngClass]="params.cellClass" [(ngModel)]=value
+        (keydown)="triggerChangeEvent();onKeyDown($event)" ></div>
   </div>`
 })
 export class AgGridInputCellEditor implements ICellEditorAngularComp {
@@ -24,6 +27,7 @@ export class AgGridInputCellEditor implements ICellEditorAngularComp {
     public isChecked;
     private cancelBeforeStart: boolean = false;
     public highlightAllOnFocus: boolean = true;
+    public dialogRef: MatDialogRef<NoDataComponent>;
     @Input('bplanType') 
     public set bplanType(v : any) {
       this.bplanType = v;
@@ -34,7 +38,7 @@ export class AgGridInputCellEditor implements ICellEditorAngularComp {
     };
 
     @ViewChild('input', {read: ViewContainerRef}) public input: any;
-    constructor(private store: Store){
+    constructor(private store: Store, public dialog: MatDialog){
 
     }
 
@@ -79,13 +83,20 @@ export class AgGridInputCellEditor implements ICellEditorAngularComp {
       
       if(this.params.colDef?.field == 'hsfo_safe_port'|| this.params.colDef?.field =='eca_safe_port' ||this.params.colDef?.field =='lsdis_safe_port'){
         isSafePortRestricted = this.checkSafePortRestriction(this.params?.colDef?.field, this.params?.data?.detail_no);
-        if(isSafePortRestricted === 'Y')
-          this.value = 0;
-        if(this.value == 0)
-        {
-          this.store.dispatch(new UpdateBunkeringPlanAction(this.value, this.params.colDef?.field, this.params.data?.detail_no));
-          return '';
-        }
+          if(isSafePortRestricted === 'Y'){
+            this.value = 0;
+            const dialogRef = this.dialog.open(NoDataComponent, {
+              width: '350px',
+              panelClass: 'confirmation-popup',
+              data : {message: 'You should enter only one safe port value for each product type'}
+            });
+          }
+          
+          if(this.value == 0)
+          {
+            this.store.dispatch(new UpdateBunkeringPlanAction(this.value, this.params.colDef?.field, this.params.data?.detail_no));
+            return '';
+          }
           
       }
         this.store.dispatch(new UpdateBunkeringPlanAction(this.value, this.params.colDef?.field, this.params.data?.detail_no));
@@ -120,7 +131,16 @@ export class AgGridInputCellEditor implements ICellEditorAngularComp {
         if (event.preventDefault) event.preventDefault();
       }
     }
-  
+    
+    restrictionForPrevBplan(event){
+      if(this.bplanType =='P'){
+        const dialogRef = this.dialog.open(NoDataComponent, {
+          width: '350px',
+          panelClass: 'confirmation-popup',
+          data : {message: 'A new Plan exists for this vessel. Cannot update an old Plan'}
+        });
+      }
+    }
     // dont use afterGuiAttached for post gui events - hook into ngAfterViewInit instead for this
     ngAfterViewInit() {
       window.setTimeout(() => {
