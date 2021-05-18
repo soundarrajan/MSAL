@@ -45,14 +45,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute, private invoiceService: InvoiceDetailsService,private changeDetectorRef: ChangeDetectorRef,private spinner: NgxSpinnerService,
     public dialog: MatDialog,
     private toastr: ToastrService){
-    this._entityId = route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
-    this.tabData = [
-      { disabled: false, name: 'Details' },
-      { disabled: false, name: 'Related Invoices' },
-      { disabled: false, name: 'Documents', url: `#` },
-      { disabled: false, name: 'Audit Log', url: `#` },
-      { disabled: false, name: 'Email Log', url: `#` },
-    ]
+      this.getTabDataLinks();
   }
 
   ngOnInit(): void {
@@ -67,16 +60,13 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
         // Create new invoice from delivery list // http://localhost:9016/#/invoices/invoice/edit/0
         this.createNewInvoiceFromDelivery();
       }
+      else if (localStorage.getItem('createInvoice')) {
+        this.getTabDataLinks();
+        this.createNewInvoiceType();
+      }
       else{
         // edit an existing invoice
-        this._entityId = this.route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
-        if(parseFloat(this._entityId) && this._entityId > 0) {
-          const baseOrigin = new URL(window.location.href).origin;
-          this.tabData[2].url = `${baseOrigin}/#/invoices/invoice/documents/${this._entityId}`;
-          this.tabData[3].url = `${baseOrigin}/#/invoices/invoice/audit-log/${this._entityId}`;
-          this.tabData[4].url = `${baseOrigin}/#/invoices/invoice/email-log/${this._entityId}`;
-          this.reportUrl = `${baseOrigin}/#/reports/ordertoinvoice/IID=${this._entityId}`;
-        }
+        this.getTabDataLinks();
         this.getInvoiceItem();
       }
     });
@@ -85,6 +75,26 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this._destroy$.next();
     this._destroy$.complete();
+  }
+
+  getTabDataLinks()
+  {
+    this._entityId = this.route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
+    this.tabData = [
+      { disabled: false, name: 'Details' },
+      { disabled: false, name: 'Related Invoices' },
+      { disabled: false, name: 'Documents', url: `#` },
+      { disabled: false, name: 'Audit Log', url: `#` },
+      { disabled: false, name: 'Email Log', url: `#` },
+    ];
+
+    if(parseFloat(this._entityId) && this._entityId > 0) {
+      const baseOrigin = new URL(window.location.href).origin;
+      this.tabData[2].url = `${baseOrigin}/#/invoices/invoice/documents/${this._entityId}`;
+      this.tabData[3].url = `${baseOrigin}/#/invoices/invoice/audit-log/${this._entityId}`;
+      this.tabData[4].url = `${baseOrigin}/#/invoices/invoice/email-log/${this._entityId}`;
+      this.reportUrl = `${baseOrigin}/#/reports/ordertoinvoice/IID=${this._entityId}`;
+    }
   }
 
   setListFromStaticLists(name) {
@@ -121,6 +131,62 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
       .subscribe((response: IInvoiceDetailsItemResponse) => {
         this.setScreenActions(response);
       });
+  }
+
+  createNewInvoiceType(){
+    let data = JSON.parse(localStorage.getItem('createInvoice'));
+    localStorage.removeItem('createInvoice');
+
+    data.invoiceSummary.provisionalInvoiceAmount = data.invoiceSummary.invoiceAmountGrandTotal;
+    data.id = 0;
+    data.invoiceDetails = null;
+    data.documentNo = null;
+    data.dueDate = null;
+    //data.invoiceDate = `${moment(new Date()).format('YYYY-MM-DDTHH:mm:ss').split('T')[0] }T00:00:00`;
+    data.invoiceSummary.deductions = null;
+    // data.paymentDate = null;
+    data.accountNumber = null;
+    data.paymentDetails.paidAmount = null;
+    data.paymentDetails = null;
+    data.invoiceDetails = null;
+    data.sellerInvoiceNo = null;
+    data.receivedDate = null;
+    data.manualDueDate = null;
+    data.sellerInvoiceDate = null;
+    data.sellerDueDate = null;
+    data.approvedDate = null;
+    // data.invoiceRateCurrency = null;
+    data.backOfficeComments = null;
+    data.invoiceSummary.invoiceAmountGrandTotal = null;
+    data.invoiceSummary.estimatedAmountGrandTotal = null;
+    data.invoiceSummary.totalDifference = null;
+    data.status = {};
+    data.customStatus = null;
+    // data.invoiceSummary.provisionalInvoiceNo = entity_id;
+    data.accountancyDate = null;
+    data.paymentDetails = {};
+    var invoiceAmountGrandTotal = 0;
+    var deductions = 0;
+
+    data.invoiceSummary.netPayable = invoiceAmountGrandTotal - deductions;
+    data.productDetails.forEach((v, k) => {
+        v.id = 0;
+        // v.invoiceQuantity = null;
+        v.invoiceRate = 0;
+        v.description = null;
+        // v.invoiceRateCurrency = null;
+        v.pricingDate = null;
+        v.invoiceAmount = null;
+        v.reconStatus = null;
+        v.amountInInvoice = null;
+    });
+    data.counterpartyDetails.paymentTerm = data.counterpartyDetails.orderPaymentTerm;
+    data.deliveryDate = data.orderDeliveryDate;
+    data.orderDetails.carrierCompany = data.orderDetails.orderCarrierCompany;
+    data.orderDetails.paymentCompany = data.orderDetails.orderPaymentCompany;
+
+    this.displayDetailFormvalues = false;
+    this.setScreenActions(data);
   }
 
   setScreenActions(formValues: any){
@@ -167,7 +233,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
       this.invoiceDetailsComponent.roeDisabled = false;
     }
     this.changeDetectorRef.detectChanges();
-    if (!conversionRoe || !conversionTo /* || !$scope.formValues.invoiceSummary*/) {
+    if (!conversionRoe || !conversionTo /* || !this.formValues.invoiceSummary*/) {
       return false;
     }
     if (typeof this.invoiceDetailsComponent.changedFromCurrency == 'undefined') {

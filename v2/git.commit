@@ -1,9 +1,7 @@
-﻿commit 1b4f84820a1d3331679329c2efcf07520c2c4139
-Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
-Date:   Tue May 18 12:01:31 2021 +0000
+﻿commit 86d608741a4b208b23927e9f96ecc7623cbc6b71
+Author: Edwin Francis <edwin.f@Inatech.com>
+Date:   Tue May 18 18:47:48 2021 +0530
 
-    Merged PR 10773: Search input for the autocomplete popup
-    
-    Search input for the autocomplete popup
+    Create invoice from provisional to final changes and disable more action buttons style.
 
 branch: master
