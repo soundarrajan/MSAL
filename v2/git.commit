@@ -1,7 +1,7 @@
-﻿commit 6c9294a2502cb4021648e57848198e3dcf147e55
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Mon May 17 17:23:58 2021 +0000
+﻿commit e26d7ad642a7558e5aa66e1e717dbf0f9fb68f78
+Author: Suresh R <suresh.r@Inatech.com>
+Date:   Tue May 18 03:15:05 2021 +0530
 
-    Merged PR 10745: Replaced physicalSuppliers with physicalSupplier model in contract screen
+    32292,32293,32294,32296
 
 branch: master
