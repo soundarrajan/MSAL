@@ -2,7 +2,7 @@
   <div class="custom-form-field lookup-delivery-container d-flex" [ngClass]="{'darkTheme':false,'lightTheme':true}">
     <mat-form-field class="with-search">
       <mat-label>{{name}}</mat-label>
-      <input class="free-text-field" type="text" [required]='required' placeholder="{{placeholder}}" aria-label="name" matInput [formControl]="myControl" [matAutocomplete]="auto" (blur)="checkAutoComplete()">
+      <input class="free-text-field" type="text" [required]='required' placeholder="{{placeholder}}" [readonly]='disabled' aria-label="name" matInput [formControl]="myControl" [matAutocomplete]="auto" (blur)="checkAutoComplete()">
       <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" class="" (optionSelected)="selectedEvent($event)">
         <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
           {{option.name}}
