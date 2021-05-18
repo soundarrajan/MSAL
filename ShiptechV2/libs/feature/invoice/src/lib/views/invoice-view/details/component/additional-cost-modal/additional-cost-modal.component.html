@@ -82,6 +82,7 @@
                   <mat-form-field>
                     <mat-select 
                         [(ngModel)]="additionalCost.value.costType"
+                        [disabled]="additionalCost.value.isOrderCost"
                         [compareWith]="compareUomObjects"
                         [disableOptionCentering]="true"
                         panelClass="general-information-select-container">
@@ -96,7 +97,7 @@
                 <mat-form-field name="invProduct">                    
                      <mat-select 
                           [(ngModel)]="additionalCost.value.associatedOrderProduct"
-                          [disabled]="additionalCost.value.associatedOrderProduct == 'All' ? false :true"
+                          [disabled]="additionalCost.value.isOrderCost"
                           (selectionChange)="costNameChange()"
                           [disableOptionCentering]="true"
                           panelClass="general-information-select-container">

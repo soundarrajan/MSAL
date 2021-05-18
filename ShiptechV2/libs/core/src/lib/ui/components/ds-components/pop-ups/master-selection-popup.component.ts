@@ -15,6 +15,11 @@ import { catchError, map } from 'rxjs/operators';
         <div class="header">
             <div class="title">{{data?.dialog_header}}</div>
             <div class="header-btn">
+            <input type="text" placeholder="Search" [(ngModel)]="searchedValue" class="search-box" style="height:30px">
+            <button class="searchButton" type="submit" (click)="onSearch()">
+            <i class="fa fa-search"></i>
+            </button>
+            <button class="blue-button h-25" style="cursor:pointer;" (click)="searchedValue = ''">Clear</button>
             <button class="blue-button h-25" style="cursor:pointer;" (click)="selectItem();">Select</button>
             <span class="seperator-line"></span>
             <span class="close" style="cursor:pointer;" (click)="closeDialog()"></span>
@@ -33,9 +38,11 @@ import { catchError, map } from 'rxjs/operators';
 export class MasterSelectionDialog {
     public dialog_gridOptions: GridOptions;
     public rowCount: Number;
+    public searchedValue: string = '';
     _apiUrl;
     constructor(private http: HttpClient, private appConfig: AppConfig, public dialogRef: MatDialogRef<MasterSelectionDialog>, @Optional() @Inject(MAT_DIALOG_DATA) public data: ImasterSelectionPopData) {
         this._apiUrl = this.appConfig.v1.API.BASE_URL_DATA_MASTERS; 
+        // this.loadSelectedTypes(data.selectionType);
         if(data.selectionType == EstAutoSearchType.company || data.selectionType == EstAutoSearchType.carrier){
             this.loadCompanyGridOption();
         }else if(data.selectionType == EstAutoSearchType.paymentTerms){
@@ -58,27 +65,39 @@ export class MasterSelectionDialog {
             return params.value?.toFixed(4);
     }
 
-    private rowData = [
-        // {
-        //     id:'123',
-        //     name:'test',
-        //     parent:{name:'test'},
-        //     currency:{name:'dolor'},
-        //     uom:{name:'BLL'},
-        //     createdBy:{name:'gokul'},
-        //     createdOn:'12/12/12:10:20',
-        //     lastModifiedBy:{name:'test'},
-        //     lastModifiedOn:'12/12/12:00:20',
-        //     isDeleted:false,
-        //     code:'ANE-23'
-        // }
-        
-    ];
+    private rowData = [];
 
     closeDialog() {
         this.dialogRef.close('close');
     }
-
+    onSearch(){
+        this.loadSelectedTypes(this.data.selectionType)
+    }
+    loadSelectedTypes(selectionType){
+        this.rowData = [];
+        if(selectionType == EstAutoSearchType.company || selectionType == EstAutoSearchType.carrier){
+            let payload = {"Order":null,"PageFilters":{"Filters":[]},"SortList":{"SortList":[]},"Filters":[],"SearchText":this.searchedValue,"Pagination":{"Skip":0,"Take":25}};
+            this.getCompanyList(payload).subscribe((data: any) => {
+                this.rowData = data.payload;
+                if(data.payload)
+                    this.dialog_gridOptions.api.setRowData(this.rowData);
+            });
+        }else if(selectionType == EstAutoSearchType.paymentTerms){
+            let payload = {"Order":null,"PageFilters":{"Filters":[]},"SortList":{"SortList":[]},"Filters":[],"SearchText":this.searchedValue,"Pagination":{"Skip":0,"Take":25}};
+            this.getPaymentTermList(payload).subscribe((data: any) => {
+                this.rowData = data.payload;
+                if(data.payload)
+                    this.dialog_gridOptions.api.setRowData(this.rowData);
+            });
+        }else if(selectionType == EstAutoSearchType.payableTo){
+            let payload = {"Order":null,"PageFilters":{"Filters":[]},"SortList":{"SortList":[]},"Filters":[{"ColumnName":"CounterpartyTypes","Value":"2, 11"}],"SearchText":this.searchedValue,"Pagination":{"Skip":0,"Take":25}};
+            this.getPayableToList(payload).subscribe((data: any) => {
+                this.rowData = data.payload;
+                if(data.payload)
+                    this.dialog_gridOptions.api.setRowData(this.rowData);
+            });
+        }
+    }
     loadCompanyGridOption(){
         this.companyColumnDefs = [
             { headerName: "ID", headerTooltip: "ID", field: "id", width: 50,cellClass: ["aggridtextalign-left"] },
@@ -276,21 +295,11 @@ export class MasterSelectionDialog {
 
   selectItem(){
     let selectedNodes = this.dialog_gridOptions.api.getSelectedNodes();
-    // let selectedNodes = {
-    //     id:'123',
-    //     name:'test',
-    //     parent:{name:'test'},
-    //     currency:{name:'dolor'},
-    //     uom:{name:'BLL'},
-    //     createdBy:{name:'gokul'},
-    //     createdOn:'12/12/12:10:20',
-    //     lastModifiedBy:{name:'test'},
-    //     lastModifiedOn:'12/12/12:00:20',
-    //     isDeleted:false,
-    //     code:'ANE-23'
-    //     }
-    console.log(selectedNodes[0]);
-    this.dialogRef.close(selectedNodes[0]);
+    if(selectedNodes.length){
+        this.dialogRef.close(selectedNodes[0]);
+    }else{
+        this.dialogRef.close('close')
+    }
     
   }
 
