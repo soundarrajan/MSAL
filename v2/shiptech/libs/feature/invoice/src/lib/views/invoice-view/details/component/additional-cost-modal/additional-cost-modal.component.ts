@@ -153,6 +153,14 @@ export class AdditionalCostModalComponent implements OnInit {
         this.changeDetectorRef.detectChanges();
       }
     });
+    this.productDetails = [{id:'All',name:"All"}];
+    this.formValues.productDetails.forEach(element => {
+      if(element.product){
+        // element.product.forEach(product => {
+          this.productDetails.push({id:element.product.id+'',name:element.product.name})
+        // });
+      }
+    });
   }
 
   costNameChange(){

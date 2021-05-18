@@ -1,11 +1,9 @@
-﻿commit 24fe9159ea0d0a004c1b4bf31cbdedad00d3f05b
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Tue May 18 07:56:03 2021 +0000
+﻿commit 1b4f84820a1d3331679329c2efcf07520c2c4139
+Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
+Date:   Tue May 18 12:01:31 2021 +0000
 
-    Merged PR 10761: Create Request Link and Port Master Link
+    Merged PR 10773: Search input for the autocomplete popup
     
-    Create Request Link and Port Master Link
-    
-    Related work items: #32194, #32196, #32235
+    Search input for the autocomplete popup
 
 branch: master
