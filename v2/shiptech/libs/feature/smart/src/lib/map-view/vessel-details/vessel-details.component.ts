@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Subject } from 'rxjs';
 import { LocalService } from '../../services/local-service.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { WarningComponent } from '../../shared/warning/warning.component';
@@ -27,6 +28,7 @@ export class VesselDetailsComponent implements OnInit {
   public enableSelection: boolean;
   public theme:boolean=true;
   selectedRole: any;
+  changeUserRole: Subject<void> = new Subject<void>();
   constructor(private localService: LocalService, public dialog: MatDialog) { }
 
   ngOnInit() {
@@ -87,13 +89,11 @@ export class VesselDetailsComponent implements OnInit {
   loadBunkerPlan(event) {
     this.previousUserRole = this.selectedUserRole;
     this.selectedUserRole = event.value;
-    // this.vesselInfo.changedUser();
     console.log(this.selectedRole);
     this.LoadBunkerPlanByRole();
   }
 
   LoadBunkerPlanByRole() {
-    // this.vesselInfo.changedUser();
     var _this = this;
     const confirmMessage = this.selectedUserRole?.name == 'Vessel'? 'Are you sure to switch your role to Vessel?' : 'Are you sure to switch your role to Operator?'
     console.log('LoadBunkerPlanByRole service', this.selectedUserRole);
@@ -117,6 +117,7 @@ export class VesselDetailsComponent implements OnInit {
           titleEle.click();
         }, 500);
       }
+      this.changeUserRole.next(this.selectedUserRole);
     });
 
     

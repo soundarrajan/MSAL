@@ -7,7 +7,7 @@ import { Store } from '@ngxs/store';
 import { BunkeringPlanColmGroupLabels, BunkeringPlanColumnsLabels } from './view-model/bunkering-plan.column';
 import { LocalService } from '../../services/local-service.service';
 import { BunkeringPlanService } from '../../services/bunkering-plan.service';
-import { SaveBunkeringPlanAction,UpdateBunkeringPlanAction } from '../../store/bunker-plan/bunkering-plan.action';
+import { SaveBunkeringPlanAction,UpdateBunkeringPlanAction,UpdateBplanTypeAction } from '../../store/bunker-plan/bunkering-plan.action';
 import { SaveBunkeringPlanState,SaveCurrentROBState} from '../../store/bunker-plan/bunkering-plan.state';
 import { NoDataComponent } from '../no-data-popup/no-data-popup.component';
 import { MatDialogRef,MatDialog } from '@angular/material/dialog';
@@ -33,6 +33,7 @@ export class BunkeringPlanComponent implements OnInit {
   vesselData: any;
   latestPlanId: any;
   public editableCell : boolean;
+  public type : any;
   public dialogRef: MatDialogRef<NoDataComponent>;
   @Output() enableCreateReq = new EventEmitter();
   @Output() voyage_detail = new EventEmitter();
@@ -50,18 +51,30 @@ export class BunkeringPlanComponent implements OnInit {
     this.vesselData = v;
     this.loadBunkeringPlanDetails();
   };
-  @Input('bPlanType') bPlanType;
+  @Input('bPlanType') 
+  public set bPlanType(v : any){
+    this.type = v;
+    this.store.dispatch(new UpdateBplanTypeAction(this.type));
+  };
   @Input('selectedUserRole')selectedUserRole;
-  @Input('scrubberReady') scrubberReady;
+  @Input('scrubberReady') 
+  public set scrubberReady(v : any){
+    if(v == 'Y')
+      this.hsfoHeader = 'HSFO';
+    else 
+      this.hsfoHeader = 'VLSFO';
+  }
   public hsfoHeader : any;
+  public headerNames : BunkeringPlanColmGroupLabels;
   // @Select(UserProfileState.username) username$: Observable<string>;
   // private _username$: BehaviorSubject<string>;
   constructor(private bplanService: BunkeringPlanService, private localService: LocalService, private store: Store,
               public dialog: MatDialog) 
     {   
+      
     // this._username$ = new BehaviorSubject<string>('');
     // this.username$.subscribe(onchange:{this._username$ in })
-      this.hsfoHeader= this.scrubberReady
+    this.headerNames = this.hsfoHeader ;
     this.gridOptions = <GridOptions>{
       columnDefs: this.columnDefs,
       enableColResize: false,
@@ -100,15 +113,12 @@ export class BunkeringPlanComponent implements OnInit {
       },
       onGridSizeChanged: function (params) {
         params.api.sizeColumnsToFit();
-      },
-      refreshGrid: ($event) =>{
-        this.gridOptions.api.refreshInMemoryRowModel();
       }
     };
   }
   
   ngOnInit() {
-    this.editableCell = (this.bPlanType == 'C'&& this.selectedUserRole?.id === 1) ? true : false;
+    this.editableCell = (this.type == 'C'&& this.selectedUserRole?.id === 1) ? true : false;
   }
   
   columnDefs = [
@@ -129,7 +139,7 @@ export class BunkeringPlanComponent implements OnInit {
           headerClass: ['aggrid-text-align-c '],
           cellRendererFramework: AGGridCellDataComponent,
           cellRendererParams: (params)=>{
-            return {type: 'checkbox', cellClass: this.bPlanType == 'C'?['aggrid-white-checkbox'] :['custom-check-box readonly aggrid-left-ribbon  aggrid-content-center'], context: { componentParent: this } }
+            return {type: 'checkbox', cellClass: this.type == 'C'?['aggrid-white-checkbox'] :['custom-check-box readonly aggrid-left-ribbon  aggrid-content-center'], context: { componentParent: this } }
           }
         },
         {
@@ -139,7 +149,7 @@ export class BunkeringPlanComponent implements OnInit {
               return params.rowIndex == params.api?.rowModel?.rowsToDisplay?.length -1 ;
             }
           },cellRendererParams: (params) =>{
-           return { type: this.bPlanType == 'C'?'port' : 'port-readOnly', context: { componentParent: this } } 
+           return { type: this.type == 'C'?'port' : 'port-readOnly', context: { componentParent: this } } 
           },
           cellClass: ['dark-cell aggrid-content-center'], headerClass: [' aggrid-colum-splitter-left aggrid-text-align-c']
         },
@@ -148,15 +158,19 @@ export class BunkeringPlanComponent implements OnInit {
           headerTooltip: BunkeringPlanColmGroupLabels.Hsfo,
           marryChildren: true,
           resizable: false,
+          valueFormatter : (params) =>{ return this.hsfoHeader},
           headerClass: ['aggrid-columgroup-splitter-left aggrid-text-align-c '],
           children: [
             {
               headerName: BunkeringPlanColumnsLabels.HsfoMaxLift, field: 'hsfo_max_lift', headerTooltip: BunkeringPlanColumnsLabels.HsfoMaxLift, width: 50,
               cellClass: (params)=>{
-                if (this.editableCell) 
-                  return 'aggrid-green-editable-cell editable'; 
+                let cellClass = '';
+                if (this.type == 'C') 
+                  cellClass = 'aggrid-green-editable-cell editable';                   
                 else 
-                  return 'aggrid-green-editable-cell ag-cell' 
+                  cellClass = 'aggrid-green-editable-cell ag-cell'; 
+                return cellClass
+
               },
               headerClass: ['aggrid-colum-splitter-left'],
               cellRendererParams: (params) => {             
@@ -175,7 +189,7 @@ export class BunkeringPlanComponent implements OnInit {
             {
               headerName: BunkeringPlanColumnsLabels.HsfoEstdCons, headerTooltip: BunkeringPlanColumnsLabels.HsfoEstdCons, field: 'hsfo_estimated_consumption', width: 50,
               cellClass: (params)=>{
-                if (this.editableCell) 
+                if (this.type == 'C') 
                   return 'aggrid-green-editable-cell editable'; 
                 else 
                   return 'aggrid-green-editable-cell ag-cell' 
@@ -199,7 +213,7 @@ export class BunkeringPlanComponent implements OnInit {
             {
               headerName: BunkeringPlanColumnsLabels.HsfoSafePort, headerTooltip: BunkeringPlanColumnsLabels.HsfoSafePort, field: 'hsfo_safe_port', width: 50, 
               cellClass: (params)=>{
-                if (this.editableCell) 
+                if (this.type == 'C') 
                   return 'aggrid-green-editable-cell editable'; 
                 else 
                   return 'aggrid-green-editable-cell ag-cell' 
@@ -229,7 +243,7 @@ export class BunkeringPlanComponent implements OnInit {
             {
               headerName: BunkeringPlanColumnsLabels.EcaEstdCons, headerTooltip: BunkeringPlanColumnsLabels.EcaEstdCons, field: 'eca_estimated_consumption', width: 50, 
               cellClass: (params)=>{
-                if (this.editableCell) 
+                if (this.type == 'C') 
                   return 'aggrid-green-editable-cell editable'; 
                 else 
                   return 'aggrid-green-editable-cell ag-cell' 
@@ -246,7 +260,7 @@ export class BunkeringPlanComponent implements OnInit {
             {
               headerName: BunkeringPlanColumnsLabels.EcaSafePort, headerTooltip: BunkeringPlanColumnsLabels.EcaSafePort, field: 'eca_safe_port', width: 50, 
               cellClass: (params)=>{
-                if (this.editableCell) 
+                if (this.type == 'C') 
                   return 'aggrid-green-editable-cell editable'; 
                 else 
                   return 'aggrid-green-editable-cell ag-cell' 
@@ -270,7 +284,7 @@ export class BunkeringPlanComponent implements OnInit {
             {
               headerName: BunkeringPlanColumnsLabels.UlsfoMaxLift, field: 'ulsfo_max_lift', headerTooltip: BunkeringPlanColumnsLabels.UlsfoMaxLift, width: 50,
               cellClass: (params)=>{
-                if (this.editableCell) 
+                if (this.type == 'C') 
                   return 'aggrid-green-editable-cell editable'; 
                 else 
                   return 'aggrid-green-editable-cell ag-cell' 
@@ -306,7 +320,7 @@ export class BunkeringPlanComponent implements OnInit {
             {
               headerName: BunkeringPlanColumnsLabels.LsdisMaxLift, field: 'lsdis_max_lift', headerTooltip: BunkeringPlanColumnsLabels.LsdisMaxLift, width: 50, 
               cellClass: (params)=>{
-                if (this.editableCell) 
+                if (this.type == 'C') 
                   return 'aggrid-green-editable-cell editable'; 
                 else 
                   return 'aggrid-green-editable-cell ag-cell' 
@@ -325,7 +339,7 @@ export class BunkeringPlanComponent implements OnInit {
             {
               headerName: BunkeringPlanColumnsLabels.LsdisEstdCons, headerTooltip: BunkeringPlanColumnsLabels.LsdisEstdCons, field: 'lsdis_estimated_consumption', width: 50,
               cellClass: (params)=>{
-                if (this.editableCell) 
+                if (this.type == 'C') 
                   return 'aggrid-green-editable-cell editable'; 
                 else 
                   return 'aggrid-green-editable-cell ag-cell' 
@@ -352,7 +366,7 @@ export class BunkeringPlanComponent implements OnInit {
               editable : true,
               valueFormatter: (params)=> {return params.value == 0? '':params.value ;},
               cellEditorFramework : AgGridInputCellEditor,  
-              cellEditorParams : (params) =>{return {type: 'edit',context: { componentParent: this }}}
+              cellEditorParams : (params) =>{return {type: 'edit',context: { componentParent: this }, cellClass: 'aggrid-blue-editable-cell aggrid-columgroup-splitter  aggrid-content-right'}}
             },
           ]
         },
@@ -361,10 +375,10 @@ export class BunkeringPlanComponent implements OnInit {
     {
       headerClass: ['cell-border-bottom'],
       children: [
-        { headerName: BunkeringPlanColumnsLabels.TotalMinSod, headerTooltip: BunkeringPlanColumnsLabels.TotalMinSod, field: 'min_sod', width: 55, cellRendererFramework: AGGridCellDataComponent, cellClass:params=>{if (this.bPlanType == 'C') return 'aggrid-blue-editable-cell editable'; else return 'aggrid-blue-editable-cell ag-cell' } , cellRendererParams: params=>{ return {type: this.bPlanType == 'C' ?'edit-with-popup':'disable-with-popup', cellClass: 'aggrid-cell-color white', context: { componentParent: this } }}},
-        { headerName: BunkeringPlanColumnsLabels.MinHsfoSod, headerTooltip: BunkeringPlanColumnsLabels.MinHsfoSod, field: 'hsfo_min_sod', width: 55, cellRendererFramework: AGGridCellDataComponent, cellRendererParams: params=>{ return {type: this.bPlanType == 'C' ?'edit-with-popup':'disable-with-popup', cellClass: 'aggrid-cell-color white', context: { componentParent: this } }}, cellClass:params=>{if (this.bPlanType == 'C') return 'aggrid-blue-editable-cell editable'; else return 'aggrid-blue-editable-cell ag-cell' } , headerClass: ['aggrid-colum-splitter-left'] },
-        { headerName: BunkeringPlanColumnsLabels.MinEcaBunkerSod, headerTooltip:  BunkeringPlanColumnsLabels.MinEcaBunkerSod, field: 'eca_min_sod', width: 55, cellRendererFramework: AGGridCellDataComponent,cellRendererParams: params=>{ return {type: this.bPlanType == 'C' ?'edit-with-popup':'disable-with-popup', cellClass: 'aggrid-cell-color white', context: { componentParent: this } }}, cellClass:params=>{if (this.bPlanType == 'C') return 'aggrid-blue-editable-cell editable'; else return 'aggrid-blue-editable-cell ag-cell' } , headerClass: ['aggrid-colum-splitter-left'] },
-        { headerName: BunkeringPlanColumnsLabels.TotalMaxSod, headerTooltip:  BunkeringPlanColumnsLabels.TotalMaxSod, field: 'max_sod', width: 55, cellRendererFramework: AGGridCellDataComponent,cellRendererParams: params=>{ return {type: this.bPlanType == 'C' ?'edit-with-popup':'disable-with-popup', cellClass: 'aggrid-cell-color white', context: { componentParent: this } }}, cellClass:params=>{if (this.bPlanType == 'C') return 'aggrid-blue-editable-cell editable'; else return 'aggrid-blue-editable-cell ag-cell' } , headerClass: ['aggrid-colum-splitter-left'] },
+        { headerName: BunkeringPlanColumnsLabels.TotalMinSod, headerTooltip: BunkeringPlanColumnsLabels.TotalMinSod, field: 'min_sod', width: 55, cellRendererFramework: AGGridCellDataComponent, cellClass:params=>{if (this.type == 'C') return 'aggrid-blue-editable-cell editable'; else return 'aggrid-blue-editable-cell ag-cell' } , cellRendererParams: params=>{ return {type: this.type == 'C' ?'edit-with-popup':'disable-with-popup', cellClass: 'aggrid-cell-color white', context: { componentParent: this } }}},
+        { headerName: BunkeringPlanColumnsLabels.MinHsfoSod, headerTooltip: BunkeringPlanColumnsLabels.MinHsfoSod, field: 'hsfo_min_sod', width: 55, cellRendererFramework: AGGridCellDataComponent, cellRendererParams: params=>{ return {type: this.type == 'C' ?'edit-with-popup':'disable-with-popup', cellClass: 'aggrid-cell-color white', context: { componentParent: this } }}, cellClass:params=>{if (this.type == 'C') return 'aggrid-blue-editable-cell editable'; else return 'aggrid-blue-editable-cell ag-cell' } , headerClass: ['aggrid-colum-splitter-left'] },
+        { headerName: BunkeringPlanColumnsLabels.MinEcaBunkerSod, headerTooltip:  BunkeringPlanColumnsLabels.MinEcaBunkerSod, field: 'eca_min_sod', width: 55, cellRendererFramework: AGGridCellDataComponent,cellRendererParams: params=>{ return {type: this.type == 'C' ?'edit-with-popup':'disable-with-popup', cellClass: 'aggrid-cell-color white', context: { componentParent: this } }}, cellClass:params=>{if (this.type == 'C') return 'aggrid-blue-editable-cell editable'; else return 'aggrid-blue-editable-cell ag-cell' } , headerClass: ['aggrid-colum-splitter-left'] },
+        { headerName: BunkeringPlanColumnsLabels.TotalMaxSod, headerTooltip:  BunkeringPlanColumnsLabels.TotalMaxSod, field: 'max_sod', width: 55, cellRendererFramework: AGGridCellDataComponent,cellRendererParams: params=>{ return {type: this.type == 'C' ?'edit-with-popup':'disable-with-popup', cellClass: 'aggrid-cell-color white', context: { componentParent: this } }}, cellClass:params=>{if (this.type == 'C') return 'aggrid-blue-editable-cell editable'; else return 'aggrid-blue-editable-cell ag-cell' } , headerClass: ['aggrid-colum-splitter-left'] },
         { headerName: BunkeringPlanColumnsLabels.HsdisConfReqLift, headerTooltip: BunkeringPlanColumnsLabels.HsdisConfReqLift, field: 'hsdis_estimated_lift', width: 50, 
           headerClass: ['aggrid-colum-splitter-left'],
           cellClass:['aggrid-content-right'] ,
@@ -376,7 +390,7 @@ export class BunkeringPlanComponent implements OnInit {
           headerClass: ['aggrid-colum-splitter-left'],
           editable : true,
           cellEditorFramework : AgGridInputCellEditor,  
-          cellEditorParams : (params) =>{return {type: 'edit',context: { componentParent: this }}} 
+          cellEditorParams : (params) =>{return {type: 'edit-business-address',context: { componentParent: this }, cellClass: 'text-ellipsis editable'}} 
         },
 
         {
@@ -385,7 +399,7 @@ export class BunkeringPlanComponent implements OnInit {
           width: 40,
           cellClass: 'checkbox-center aggrid-content-center',
           cellRendererFramework: AGGridCellDataComponent, 
-          cellRendererParams: (params)=>{ return { type: this.bPlanType == 'C' ? 'checkbox-with-popup': 'checkbox-disabled' , cellClass: ['aggrid-dark-checkbox'], context: { componentParent: this } }}, 
+          cellRendererParams: (params)=>{ return { type: this.type == 'C' ? 'checkbox-with-popup': 'checkbox-disabled' , cellClass: ['aggrid-dark-checkbox'], context: { componentParent: this } }}, 
           headerClass: ['aggrid-colum-splitter-left']
         }
       ]
@@ -410,7 +424,7 @@ export class BunkeringPlanComponent implements OnInit {
         this.loadBplan.emit(false);
         let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
         titleEle.click();
-        if(this.bPlanType == 'C')
+        if(this.type == 'C')
         this.addBplanToStore(this.bPlanData);
       })
       
@@ -496,8 +510,9 @@ export class BunkeringPlanComponent implements OnInit {
        send_plan: 1, 
     }
     console.log('Request', req);
-    this.checkBunkerPlanValidations();
-    this.bplanService.saveBunkeringPlanDetails(req).subscribe((data)=> {
+    let isHardValidated = this.checkBunkerPlanValidations(dataFromStore);
+    if(isHardValidated === 0){
+      this.bplanService.saveBunkeringPlanDetails(req).subscribe((data)=> {
         console.log('Save status',data);
         if(data?.isSuccess == true){
           const dialogRef = this.dialog.open(NoDataComponent, {
@@ -507,15 +522,116 @@ export class BunkeringPlanComponent implements OnInit {
           });
         }
       })
+    }
+    
   }
 
-  checkBunkerPlanValidations(){
+  checkBunkerPlanValidations(data){
+    let isHardValidation = 0;
+    //business address validation
+    let isValidBusinessAddress = data.findIndex(data => data?.business_address=='' && data?.operator_ack == 1) == -1? 'Y':'N'
+    if(isValidBusinessAddress == 'N'){
+      let id = data.findIndex(data => data?.business_address=='' && data?.operator_ack == 1)
+      let port_id = data[id].port_id;
+      const dialogRef = this.dialog.open(NoDataComponent, {
+        width: '350px',
+        panelClass: 'confirmation-popup',
+        data : {message: 'Please select/enter a valid Business Address for port',id: port_id}
+      });
+      isHardValidation = 1;
+      return isHardValidation;
+    }
+    // max SOD validation : Total max SOD< Total min SOD 
+    let isValidMaxSod = data.findIndex(data => data?.max_sod < data?.min_sod) == -1 ? 'Y':'N';
+    if(isValidMaxSod == 'N'){
+      let id = data.findIndex(data => data?.max_sod < data?.min_sod)
+      let port_id = data[id].port_id;
+      const dialogRef = this.dialog.open(NoDataComponent, {
+        width: '350px',
+        panelClass: 'confirmation-popup',
+        data : {message: 'The Total Max SOD cannot be smaller than Total min SOD for port',id: port_id }
+      });
+      isHardValidation = 1;
+      return isHardValidation;
+    }
+    // // min ECA bunker SOD validation : ECA Min SOD + HSFO Min SOD > Total Max SOD
+    // let isValidMinEcaSod = data.findIndex(data => (data?.eca_min_sod + data?.hsfo_min_sod) > data?.max_sod) == -1 ? 'Y':'N';
+    // if(isValidMinEcaSod == 'N'){
+    //   let id = data.findIndex(data => (data?.eca_min_sod + data?.hsfo_min_sod) > data?.max_sod);
+    //   let port_id = data[id].port_id;
+    //   const dialogRef = this.dialog.open(NoDataComponent, {
+    //     width: '350px',
+    //     panelClass: 'confirmation-popup',
+    //     data : {message: 'The sum min ECA bunker SOD and minimum HSFO SOD cannot exceed the Total Max SOD for port',id: port_id}
+    //   });
+    //   isHardValidation = 1;
+    //   return isHardValidation;
+    // }
+    //ECA est cons. validation : ECA Est consumption < LSDIS Est consumption
+    let isValidEcaEstCons = data.findIndex(data => data?.eca_estimated_consumption < data?.lsdis_estimated_consumption) == -1 ? 'Y':'N';
+    if(isValidEcaEstCons == 'N'){
+      let id = data.findIndex(data => data?.eca_estimated_consumption < data?.lsdis_estimated_consumption)
+      let port_id = data[id].port_id;
+      const dialogRef = this.dialog.open(NoDataComponent, {
+        width: '350px',
+        panelClass: 'confirmation-popup',
+        data : {message: 'The ECA Estimated Consumption should not be smaller than LSDIS Estimated Consumption for port ', id: port_id}
+      });
+      isHardValidation = 1;
+      return isHardValidation;
+    }
+    // HSFO SOD validation : HSFO SOD > HSFO tank capacity
+    // let isValidHsfoSod = data.findIndex(data => data?.hsfo_min_sod > data?.hsfo_max_lift) == -1 ? 'Y':'N'; //clarify
+    // if(isValidHsfoSod =='N'){
+    //   let id = data.findIndex(data => data?.hsfo_min_sod > data?.hsfo_max_lift) //clarify
+    //   let port_id = data[id].port_id;
+    //   const dialogRef = this.dialog.open(NoDataComponent, {
+    //     width: '350px',
+    //     panelClass: 'confirmation-popup',
+    //     data : {message: 'The minimum HSFO SOD cannot exceed the Total HSFO tank capacity for port ', id: port_id}
+    //   });
+    //   isHardValidation = 1;
+    //   return isHardValidation;
+    // }
+    //ECA min SOD validation : ECA Min SOD > Vessel ECA tank capacity
+    // let isValidEcaMinSod = data.findIndex(data => data?.eca_min_sod > data?.hsfo_max_lift) == -1 ? 'Y':'N'; //clarify
+    // if(isValidEcaMinSod == 'N'){
+    //   let id = data.findIndex(data => data?.eca_min_sod > data?.hsfo_max_lift)//clarify
+    //   let port_id = data[id].port_id;
+    //   const dialogRef = this.dialog.open(NoDataComponent, {
+    //     width: '350px',
+    //     panelClass: 'confirmation-popup',
+    //     data : {message: 'The minimum ECA bunker SOD cannot exceed the Total ULSFO and LSDIS tank capacity for port ', id: port_id}
+    //   });
+    //   isHardValidation = 1;
+    //   return isHardValidation;
+    // }
+    //Stock validation : Stock > Tank Capacity
 
+    return isHardValidation;
+  }
+
+  triggerRefreshGrid(role){
+    if(role?.id == 1 && this.type == 'C')
+      this.editableCell = true;
+    else
+      this.editableCell = false;
+      
+     
+      this.selectedUserRole = role?.id;
+      var event = {force : true}
+      if(this.type == 'C')
+        this.gridOptions.api.refreshCells(event);
   }
   triggerChangeEvent() {
     this.gridChanged = true;
     this.localService.setBunkerPlanState(this.gridChanged);
   }
+  // setHeaderNames(params) {
+  //   var columnDefs = this.gridOptions.api.getColumnDef(params.colDef);
+  //   columnDefs.headerName = this.hsfoHeader;
+  //   this.columnDefs = columnDefs;
+  // }
   consUpdatedEvent(params,value){
     let hsfoSoaElement = document.getElementsByClassName('soa');
     let data = params.data;
@@ -525,12 +641,5 @@ export class BunkeringPlanComponent implements OnInit {
     // this.gridOptions.api.applyTransaction({
     //   update: [data]
     // })
-  }
-  refreshGrid($event){
-    var params = {
-      force: true,
-      // suppressFlash: isSuppressFlashSelected(),
-    };
-    this.gridOptions.api.refreshCells(params);
   }
 }

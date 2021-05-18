@@ -1,7 +1,13 @@
-﻿commit 97ee6b97a5f8eb65a1431ef5a7599f545a74093a
-Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Tue May 18 22:44:39 2021 +0530
+﻿commit 2dce503e99e563b885de6eaba8429771d5f89fe3
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Tue May 18 22:48:14 2021 +0000
 
-    Final invoice due date fetch and load.
+    Merged PR 10780: Bug Fixes
+    
+    Bug Fixes
+    
+    Cherry picked from !10779
+    
+    Related work items: #32194, #32196, #32206, #32229, #32235, #32270, #32382
 
 branch: master
