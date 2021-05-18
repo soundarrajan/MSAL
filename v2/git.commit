@@ -1,7 +1,7 @@
-﻿commit 424155d7423cb01ae4f7a852e5a713175bcdda88
+﻿commit 97ee6b97a5f8eb65a1431ef5a7599f545a74093a
 Author: Edwin Francis <edwin.f@Inatech.com>
-Date:   Tue May 18 19:25:55 2021 +0530
+Date:   Tue May 18 22:44:39 2021 +0530
 
-    Submit for approval - send entire invoice payload for claim with held amount logic in backend.
+    Final invoice due date fetch and load.
 
 branch: master

@@ -23,6 +23,7 @@ export namespace InvoiceApiPaths {
   export const getInvoicesListExport = () => `api/invoice/export`;
   export const getInvoiceItem = () => `api/invoice/get`;
   export const getNewInvoiceItem = () => `api/invoice/newFromDelivery`;
+  export const getFinalInvoiceDueDates = () => `/api/invoice/finalInvoiceDueDates`;
 
   export const createInvoiceItem = () => `api/invoice/create`;
   export const updateInvoiceItem = () => `api/invoice/update`;
@@ -106,6 +107,7 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
     );
   }
 
+  @ObservableException()
   getNewInvoicDetails(
     request: any
   ): Observable<IInvoiceDetailsItemResponse> {
@@ -323,6 +325,20 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
     return this.http.post<any>(
       `${this._masterUrl}/${InvoiceApiPaths.getAdditionalCostsComponentTypes()}`,
       {Payload: request}
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
+  }
+
+  @ObservableException()
+  getFinalInvoiceDueDates(
+    request: any
+  ): Observable<IInvoiceDetailsItemResponse> {
+
+    return this.http.post<IInvoiceDetailsItemResponse>(
+      `${this._apiUrl}/${InvoiceApiPaths.getFinalInvoiceDueDates()}`,
+      { payload: request }
     ).pipe(
       map((body: any) => body.payload),
       catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
