@@ -32,6 +32,7 @@ export class StAutosearchSelectorComponent implements OnInit {
   }
   @Input() name:string = 'Select';
   @Input() required:string = 'false';
+  @Input() disabled:boolean = false;
   @Input() masterType:EstAutoSearchType;
   @Output() onChanged = new EventEmitter();
   options: any[];
@@ -62,25 +63,28 @@ export class StAutosearchSelectorComponent implements OnInit {
     }
   }
   openSearchPopup() {
-    this.popupOpen = true;
-        const dialogRef = this.dialog.open(MasterSelectionDialog, {
-            width: '90%',
-            height: '90%',
-            panelClass: 'popup-grid',
-            data:<ImasterSelectionPopData>{
-              dialog_header: 'Select '+this.name,
-              selectionType: this.masterType
-            }
-        });
+    if(!this.disabled){
+      this.popupOpen = true;
+      const dialogRef = this.dialog.open(MasterSelectionDialog, {
+          width: '90%',
+          height: '90%',
+          panelClass: 'popup-grid',
+          data:<ImasterSelectionPopData>{
+            dialog_header: 'Select '+this.name,
+            selectionType: this.masterType
+          }
+      });
 
-        dialogRef.afterClosed().subscribe(result => {
-          if(result != 'close'){
-            this.popupOpen = false;
-            this.selected = <any>result.data;
-            this.onChanged.emit(this.selected);
-            this.myControl.setValue(result?.data?.name);
-          }            
-        });
+      dialogRef.afterClosed().subscribe(result => {
+        if(result != 'close'){
+          this.popupOpen = false;
+          this.selected = <any>result.data;
+          this.onChanged.emit(this.selected);
+          this.myControl.setValue(result?.data?.name);
+        }            
+      });
+    }
+    
   }
 
   selectedEvent(evt){
