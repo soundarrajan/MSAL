@@ -1,7 +1,7 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { SaveBunkeringPlanModel, CurrentROBModel } from './bunkering-plan.model';
-import { SaveBunkeringPlanAction, UpdateBunkeringPlanAction, SaveCurrentROBAction, UpdateCurrentROBAction } from './bunkering-plan.action';
+import { SaveBunkeringPlanAction, UpdateBunkeringPlanAction, SaveCurrentROBAction, UpdateCurrentROBAction, UpdateBplanTypeAction } from './bunkering-plan.action';
 import { values } from 'lodash';
 
 
@@ -182,3 +182,30 @@ export class SaveCurrentROBState{
 
 }
 
+export class UpdateBplanTypeStateModel{
+  BplanType : string;
+}
+
+@State <UpdateBplanTypeStateModel>({
+  name : 'GetBplanType',
+  defaults : {
+    BplanType: ''
+  }
+})
+@Injectable()
+export class UpdateBplanTypeState{
+
+  @Selector([UpdateBplanTypeState])
+  static getBplanType(state: UpdateBplanTypeStateModel ):string{
+    return state?.BplanType;
+  }
+
+  @Action(UpdateBplanTypeAction)
+  saveCurrentROB({getState, patchState}: StateContext<UpdateBplanTypeStateModel>, {value}:UpdateBplanTypeAction){
+    const state = getState();
+    patchState({
+      ...state,
+      BplanType : value
+    })
+  }
+}
