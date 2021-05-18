@@ -175,11 +175,11 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
 
   @ObservableException()
   submitapproval(
-    request: any
+    request: number
   ): Observable<IInvoiceDetailsItemResponse> {
     return this.http.post<IInvoiceDetailsItemResponse>(
       `${this._apiUrl}/${InvoiceApiPaths.submitapproval()}`,
-      { payload: request }
+      { payload: { id: request }}
     ).pipe(
       map((body: any) => body.payload),
       catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
@@ -188,11 +188,11 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
 
   @ObservableException()
   cancelInvoiceItem(
-    request: any
+    request: number
   ): Observable<IInvoiceDetailsItemResponse> {
     return this.http.post<IInvoiceDetailsItemResponse>(
       `${this._apiUrl}/${InvoiceApiPaths.cancelInvoiceItem()}`,
-      { payload: request }
+      { payload: { id: request }}
     ).pipe(
       map((body: any) => body.payload),
       catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
@@ -201,11 +201,11 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
 
   @ObservableException()
   acceptInvoiceItem(
-    request: any
+    request: number
   ): Observable<IInvoiceDetailsItemResponse> {
     return this.http.post<IInvoiceDetailsItemResponse>(
       `${this._apiUrl}/${InvoiceApiPaths.acceptInvoiceItem()}`,
-      { payload: request }
+      { payload: { id: request }}
     ).pipe(
       map((body: any) => body.payload),
       catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
@@ -214,11 +214,11 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
 
   @ObservableException()
   revertInvoiceItem(
-    request: any
+    request: number
   ): Observable<IInvoiceDetailsItemResponse> {
     return this.http.post<IInvoiceDetailsItemResponse>(
       `${this._apiUrl}/${InvoiceApiPaths.revertInvoiceItem()}`,
-      { payload: request }
+      { payload: { id: request }}
     ).pipe(
       map((body: any) => body.payload),
       catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
@@ -227,11 +227,11 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
 
   @ObservableException()
   rejectInvoiceItem(
-    request: any
+    request: number
   ): Observable<IInvoiceDetailsItemResponse> {
     return this.http.post<IInvoiceDetailsItemResponse>(
       `${this._apiUrl}/${InvoiceApiPaths.rejectInvoiceItem()}`,
-      { payload: request }
+      { payload: { id: request }}
     ).pipe(
       map((body: any) => body.payload),
       catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
@@ -240,11 +240,11 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
 
   @ObservableException()
   submitForReview(
-    request: any
+    request: number
   ): Observable<IInvoiceDetailsItemResponse> {
     return this.http.post<IInvoiceDetailsItemResponse>(
       `${this._apiUrl}/${InvoiceApiPaths.submitForReview()}`,
-      { payload: request }
+      { payload: { id: request }}
     ).pipe(
       map((body: any) => body.payload),
       catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
@@ -330,7 +330,7 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
     );
   }
 
-  
+
   @ObservableException()
   getAdditionalCostsComponentTypes(
     request: any

@@ -4,7 +4,6 @@ import { BunkeringPlanService } from '../../services/bunkering-plan.service';
 import { CommentsComponent } from '../comments/comments.component';
 import { BunkeringPlanComponent } from '../bunkering-plan/bunkering-plan.component';
 import { WarningComponent } from '../warning/warning.component';
-import { AppConfig } from '@shiptech/core/config/app-config';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
@@ -65,7 +64,7 @@ export class VesselInfoComponent implements OnInit {
   public changeSelectedUser : boolean = false;
  
 
-  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private localService: LocalService, public dialog: MatDialog, private bunkerPlanService : BunkeringPlanService,private appConfig: AppConfig, 
+  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private localService: LocalService, public dialog: MatDialog, private bunkerPlanService : BunkeringPlanService,
               private store: Store) {
     iconRegistry.addSvgIcon(
       'info-icon',
@@ -322,7 +321,7 @@ export class VesselInfoComponent implements OnInit {
         const dialogRef = this.dialog.open(NoDataComponent, {
           width: '350px',
           panelClass: 'confirmation-popup',
-          data: {message : 'Please wait, a new plan is getting generated for vessel ', ship_id: req.ship_id}
+          data: {message : 'Please wait, a new plan is getting generated for vessel ', id: req.ship_id}
         });
         
       }
@@ -341,15 +340,20 @@ export class VesselInfoComponent implements OnInit {
   createRequest() {
     let _this = this;
     console.log('selectedPort', this.selectedPort);
-    this.selectedPort.forEach((port, index) => {
+    let baseOrigin = new URL(window.location.href).origin;
+    if(this.selectedPort.length > 1){
+      this.selectedPort.forEach((port, index) => {
         if(port.voyage_detail_id) {
-          let voyageId = (port.voyage_detail_id).toString();
-          _this.shiptechRequestUrl.replace('shiptechUrl',_this.appConfig.v1.API.BASE_HEADER_FOR_NOTIFICATIONS)
-          _this.shiptechRequestUrl.replace('{{voyage_detail_id}}', voyageId);
+          //let voyageId = (port.voyage_detail_id).toString();
+          _this.shiptechRequestUrl = baseOrigin +'/#/new-request/'+port.voyage_detail_id
           window.open(_this.shiptechRequestUrl, "_blank");
         }
     });
-    window.open(_this.appConfig.v1.API.BASE_HEADER_FOR_NOTIFICATIONS, "_blank");
+    }
+    else if(this.selectedPort.length == 1){
+      let url = baseOrigin +'/#/new-request/'+ this.selectedPort.voyage_detail_id;
+      window.open(url, "_blank");
+    }      
   }
   
 

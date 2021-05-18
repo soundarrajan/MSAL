@@ -64,28 +64,9 @@ export class NotesLogComponent implements OnInit, OnDestroy, OnChanges {
   update(item: IDeliveryNotesDetailsResponse, newNoteDetails: string): void {
     if(this.DeliveryId != undefined && this.DeliveryId != null && item.id != 0){
       item.note = newNoteDetails;
-      // let payload = {
-      //   // "deliveryId":234735,
-      //   "DeliveryId":234735,
-      //   "DeliveryNotes":{
-      //     "DeliveryId":234735,
-      //     "Note":"ok test sure",
-      //     "CreatedBy":{"id":165,"name":"suresh.r@inatech.com","internalName":"",
-      //     "displayName":"Suresh","code":"","collectionName":null,"customNonMandatoryAttribute1":"","isDeleted":false,"modulePathUrl":null,
-      //     "clientIpAddress":null,"userAction":null},
-      //     "CreatedAt":"2021-05-17T18:17:44.947Z",
-      //     "LastModifiedAt":"2021-05-17T18:17:44.947Z",
-      //     "id":11,
-      //     "isDeleted":false,
-      //     "modulePathUrl":null,
-      //     "clientIpAddress":null,"userAction":null
-
-      //   },
-      //   }
-
       let payload = {
         "DeliveryId":this.DeliveryId,
-        "DeliveryNotes":item
+        "DeliveryNotes":[item]
         }
       this.detailsService
       .saveDeliveryInfo(payload)
