@@ -28,7 +28,7 @@ import { catchError, map } from 'rxjs/operators';
     <mat-dialog-content>
         <ag-grid-angular id="tradelistgrid" style="height: calc(100vh - 193px);"
             [gridOptions]="dialog_gridOptions"  
-            class="ag-theme-material angular-v9">
+            class="ag-theme-material">
         </ag-grid-angular> 
         <app-footer-v2 class="footer-popup" [id]="'inv-report-popup'"  [singleGrid]="true" [doublePagination]="true" [rowCount]="rowCount" [maxSize]="7"></app-footer-v2>  
     </mat-dialog-content>
