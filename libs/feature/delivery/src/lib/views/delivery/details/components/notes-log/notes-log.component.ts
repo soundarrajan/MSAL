@@ -62,7 +62,7 @@ export class NotesLogComponent implements OnInit, OnDestroy, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
   }
   update(item: IDeliveryNotesDetailsResponse, newNoteDetails: string): void {
-    if(this.DeliveryId != undefined && this.DeliveryId != null && item.id != 0){
+    if(this.DeliveryId != undefined && this.DeliveryId != null){
       item.note = newNoteDetails;
       let payload = {
         "DeliveryId":this.DeliveryId,
@@ -91,6 +91,7 @@ export class NotesLogComponent implements OnInit, OnDestroy, OnChanges {
       this.MainobjNotes.push({id:0,note:'',createdBy:Createon,createdAt: new Date() });
     }else
     {
+      debugger;
       this.objNotes = [];
       this.objNotes.push({id:0,note:'',createdBy:Createon,createdAt: new Date() });
       this.MainobjNotes.push({id:0,note:'',createdBy:Createon,createdAt: new Date() });
@@ -100,9 +101,6 @@ export class NotesLogComponent implements OnInit, OnDestroy, OnChanges {
    
   }
   remove(item, index):void {
-    debugger;
-    
-
     if(item.id != 0){
       this.MainobjNotes[index].isDeleted = true;
       this.objNotes.splice(index,1);
@@ -115,6 +113,12 @@ export class NotesLogComponent implements OnInit, OnDestroy, OnChanges {
 
   @HostListener('document:click', ['$event'])
   clickout(event) {
+    this.MainobjNotes.forEach((key,index) => {
+      if(key.id == 0){
+        this.MainobjNotes[index] = this.objNotes[index];
+      }
+     
+    });
     this.ChangedValue.emit(this.MainobjNotes);
   }
 
