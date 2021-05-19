@@ -1242,28 +1242,6 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       } else {
         console.log(response);
         this.additionalCostForLocation[locationId] = response;
-        for (let i = 0; i < this.additionalCostForLocation[locationId].length; i++) {
-          if (this.additionalCostForLocation[locationId][i].locationid) {
-            if (!this.formValues.products[this.selectedTabIndex].additionalCosts) {
-              this.formValues.products[this.selectedTabIndex].additionalCosts = [];
-            }
-            let additionalCostLine = {
-              additionalCost: {
-                id: this.additionalCostForLocation[locationId][i].additionalCostid,
-                name: this.additionalCostForLocation[locationId][i].name
-              },
-              costType: this.additionalCostForLocation[locationId][i].costType,
-              amount: this.additionalCostForLocation[locationId][i].amount,
-              uom: this.additionalCostForLocation[locationId][i].priceUom,
-              extras: this.additionalCostForLocation[locationId][i].extrasPercentage,
-              currency: this.additionalCostForLocation[locationId][i].currency,
-              comments: this.additionalCostForLocation[locationId][i].costDescription,
-              locationAdditionalCostId: this.additionalCostForLocation[locationId][i].locationid
-            }
-            this.formValues.products[this.selectedTabIndex].additionalCosts.push(additionalCostLine);
-
-          }
-        }
         this.changeDetectorRef.detectChanges();
       }
     });
