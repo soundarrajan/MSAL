@@ -1138,6 +1138,9 @@ export class ProductPricing extends DeliveryAutocompleteComponent
       this.formValues.products[key1].additionalCosts[key2].currency = this.generalTenantSettings.tenantFormats.currency;
     }
     this.formValues.products[key1].additionalCosts[key2].comments = additionalCostLine.costDescription;
+
+     this.formValues.products[key1].additionalCosts[key2].locationAdditionalCostId = additionalCostLine.locationid;
+
     console.log(additionalCostLine);
   }
 
