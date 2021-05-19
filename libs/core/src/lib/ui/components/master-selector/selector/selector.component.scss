@@ -43,7 +43,8 @@
 }
 
 .filter-name {
-  max-width: 15% !important;
+  width: 120px;
+  float: left;
 }
 
 .btn-select {
@@ -74,18 +75,22 @@
 }
 
 .header-container {
-  padding-bottom: 1.5em;
-  justify-content: space-between;
+  padding-bottom: 10px;
+  //justify-content: space-between;
   border-bottom: 1px solid #dce3eb;
-  margin: 5px 0 1.5em 0;
-
+  margin: 5px 0 5px 0;
+  align-items: center;
+  position: relative;
+  bottom: 5px;
   .header-title-container {
     padding: 0;
-
+    float: left;
     .header-title {
-      font-weight: 500;
-      color: #252529;
-      font-size: 21px;
+      font-family: Roboto;
+      font-weight: normal;
+      font-size: 16px;
+      color: #333333;
+      margin-right: 15px;
     }
   }
 
@@ -93,7 +98,10 @@
   .close-button {
     float: right;
     color: #65656a;
-
+    position: absolute;
+    right: 0;
+    top: -10px;
+    content:url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgZmlsdGVyPSJ1cmwoI2ZpbHRlcjBfaSkiPgo8cGF0aCBkPSJNMC4wMTM0MzM1IDguMDAxMjhDMC4wMTcyMDU1IDMuNTgyNSAzLjYwMjc2IDAuMDA2NjA4NDQgOC4wMjE1MyAwLjAxNDc1OTVMMTEuOTgxNSAwLjAyMjA2NDJDMTYuMzk5MyAwLjAzMDIxMzUgMTkuOTc3MiAzLjYxNzc2IDE5Ljk3MzQgOC4wMzU1NEwxOS45NyAxMS45OTg3QzE5Ljk2NjIgMTYuNDE3NSAxNi4zODA3IDE5Ljk5MzQgMTEuOTYxOSAxOS45ODUyTDguMDAxOTMgMTkuOTc3OUMzLjU4NDE2IDE5Ljk2OTggMC4wMDYyNzkxOCAxNi4zODIyIDAuMDEwMDUwNCAxMS45NjQ1TDAuMDEzNDMzNSA4LjAwMTI4WiIgZmlsbD0iI0ZBRkFGQiIvPgo8L2c+CjxwYXRoIGQ9Ik0xNC4wMDgyIDUuNjY0MTdDMTMuNjU4OSA1LjMxNTExIDEzLjA5MjggNS4zMTUxMSAxMi43NDM3IDUuNjY0MTdMOS44MTIyOSA4LjU5NTQxTDYuOTIzNjEgNS43MDY2MUM2LjU3NDQzIDUuMzU3NTUgNi4wMDg0IDUuMzU3NTUgNS42NTkxIDUuNzA2NjFDNS4zMDk5MiA2LjA1NTkxIDUuMzA5OTIgNi42MjE5NCA1LjY1OTEgNi45NzExMkw4LjU0Nzc4IDkuODU5OEw1LjcwMTU0IDEyLjcwNkM1LjM1MjM2IDEzLjA1NTMgNS4zNTIzNiAxMy42MjE0IDUuNzAxNTQgMTMuOTcwNUM1Ljg3NjE5IDE0LjE0NTEgNi4xMDQ5NiAxNC4yMzIzIDYuMzMzODUgMTQuMjMyM0M2LjU2MjYzIDE0LjIzMjMgNi43OTE1MiAxNC4xNDUxIDYuOTY2MTcgMTMuOTcwNUw5LjgxMjI5IDExLjEyNDRMMTIuNzAxIDE0LjAxMzFDMTIuODc1NiAxNC4xODc2IDEzLjEwNDQgMTQuMjc0OSAxMy4zMzMzIDE0LjI3NDlDMTMuNTYyMSAxNC4yNzQ5IDEzLjc5MDkgMTQuMTg3NiAxMy45NjU2IDE0LjAxMzFDMTQuMzE0OCAxMy42NjM4IDE0LjMxNDggMTMuMDk3OCAxMy45NjU2IDEyLjc0ODZMMTEuMDc2OSA5Ljg1OTkyTDE0LjAwODIgNi45Mjg2OEMxNC4zNTczIDYuNTc5MzggMTQuMzU3MyA2LjAxMzM1IDE0LjAwODIgNS42NjQxN1oiIGZpbGw9IiM3NzkxQTgiLz4KPGRlZnM+CjxmaWx0ZXIgaWQ9ImZpbHRlcjBfaSIgeD0iMC4wMTAwMDk4IiB5PSIwLjAxNDc0IiB3aWR0aD0iMTkuOTYzMyIgaGVpZ2h0PSIyMS45NzA1IiBmaWx0ZXJVbml0cz0idXNlclNwYWNlT25Vc2UiIGNvbG9yLWludGVycG9sYXRpb24tZmlsdGVycz0ic1JHQiI+CjxmZUZsb29kIGZsb29kLW9wYWNpdHk9IjAiIHJlc3VsdD0iQmFja2dyb3VuZEltYWdlRml4Ii8+CjxmZUJsZW5kIG1vZGU9Im5vcm1hbCIgaW49IlNvdXJjZUdyYXBoaWMiIGluMj0iQmFja2dyb3VuZEltYWdlRml4IiByZXN1bHQ9InNoYXBlIi8+CjxmZUNvbG9yTWF0cml4IGluPSJTb3VyY2VBbHBoYSIgdHlwZT0ibWF0cml4IiB2YWx1ZXM9IjAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDEyNyAwIiByZXN1bHQ9ImhhcmRBbHBoYSIvPgo8ZmVPZmZzZXQgZHk9IjIiLz4KPGZlR2F1c3NpYW5CbHVyIHN0ZERldmlhdGlvbj0iMiIvPgo8ZmVDb21wb3NpdGUgaW4yPSJoYXJkQWxwaGEiIG9wZXJhdG9yPSJhcml0aG1ldGljIiBrMj0iLTEiIGszPSIxIi8+CjxmZUNvbG9yTWF0cml4IHR5cGU9Im1hdHJpeCIgdmFsdWVzPSIwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwLjI1IDAiLz4KPGZlQmxlbmQgbW9kZT0ibm9ybWFsIiBpbjI9InNoYXBlIiByZXN1bHQ9ImVmZmVjdDFfaW5uZXJTaGFkb3ciLz4KPC9maWx0ZXI+CjwvZGVmcz4KPC9zdmc+Cg==');
     .cl-content {
       padding-top: 5px;
     }
@@ -102,4 +110,75 @@
   .close-button:hover {
     color: #252529;
   }
+}
+
+#shared-master-selector-grid{
+  .ag-header{
+    border: none;
+  }
+  .ag-status-bar{
+    display:none;
+  }
+}
+
+.pager{
+  float:left;
+  position: relative;
+  bottom: 5px;
+//.ui-inputwrapper-filled{
+  .ui-spinner{
+  .ui-spinner-input{
+    border: none;
+    width: 35px;
+    border-bottom: 2px solid #74CDEA;
+    color: #BDBDBD;
+    /* line-height: 10px; */
+    height: 20px;
+    margin-left: 4px;
+  }
+}
+//}
+}
+
+.popupFooter{
+    border: 1px solid #dce3eb;
+    border-top: none;
+    margin-top: 0 !important;
+    padding: 10px 0px 5px;
+    margin: 0;
+}
+
+.controlButons{
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 18px;
+  button{
+    width: 104px;
+    height: 25.69px;
+    border-radius: 3px !important;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    color: #FFFFFF;
+    border:none;
+    margin-left: 8px;
+    span{
+      padding:0 !important;
+    }
+    &.blue-button{
+      background: #00AAE2;
+    }
+    &.grey-button{
+      background: #BDBDBD;
+      //border: none;
+      &:active,&:hover{
+        background: #BDBDBD;
+        border: none;
+      }
+    }
+  }
+}
+
+.ui-dialog .ui-dialog-content{
+  overflow-y: visible !important;
 }

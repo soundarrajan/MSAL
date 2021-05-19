@@ -7,7 +7,7 @@ import {
   Output
 } from '@angular/core';
 import { SelectItem } from 'primeng/api';
-
+import { MatSelect } from '@angular/material/select';
 export interface IPageSizeOption {
   size: number;
   name: string;
@@ -42,4 +42,5 @@ export class PageSizeSelectorComponent implements OnInit {
   compareFn(optionOne: IPageSizeOption, optionTwo: IPageSizeOption): boolean {
     return optionOne.size === optionTwo.size;
   }
+  
 }

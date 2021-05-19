@@ -1,18 +1,20 @@
-<div class="row mt-2">
-  <div class="col-md-6">
+<div class="popupFooter row mt-2" style="font-weight: 500;color: #828282;">
+  <div class="col-md-7">
     Showing {{((page - 1) * size) + 1}}
     to {{page * size > count ?  count : page * size }} of {{count}} entries
   </div>
-  <div class="col-md-6">
-    <div style="float:right">
-      <span class="f-s-10">Page</span>
+  <div class="col-md-5" style="display: flex;justify-content: flex-end">
+    <ng-content></ng-content>
+    <div style="float:right;width: 165px;position:relative;top:4px;margin-left:20px;">
+      <span class="f-s-10" style="float:left;font-weight: 500;color: #828282;font-size:14px;">Go to Page</span>
       <app-ag-paging style="width: 150px;" [pagerLeftArrowIcon]="'fa fa-chevron-left'"
                      [pagerRightArrowIcon]="'fa fa-chevron-right'" [count]="count" [page]="page"
                      [size]="size" [useInputAsPageSelect]="true" (pageChange)="onPageChange($event.page)">
       </app-ag-paging>
-      <span class="f-s-10">
+      <!-- <span class="f-s-10">
         of {{ totalPages }}
-      </span>
+      </span> -->
+      
     </div>
   </div>
 </div>
