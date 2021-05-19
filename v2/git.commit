@@ -1,11 +1,9 @@
-﻿commit 8b7151183b195a24312ab8f2285de1409606f868
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Wed May 19 11:39:16 2021 +0000
+﻿commit ce7a4eeec825351853f0b689bf14892022f65720
+Author: Pravin Kumar Seenivasan <pravinkumar.s@Inatech.com>
+Date:   Wed May 19 12:55:55 2021 +0000
 
-    Merged PR 10796: Proceed button changed to Save in Field popup
+    Merged PR 10799: Updated the UI for selecting the checkbox after get API
     
-    Proceed button changed to Save in Field popup
-    
-    Related work items: #32409
+    Related work items: #29839
 
 branch: master
