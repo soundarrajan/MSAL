@@ -52,7 +52,9 @@ export class AdditionalCostModalComponent implements OnInit {
   filterCostNames: any[];
   @Input('formValues') set _formValues(val){
     this.formValues = val;
-    this.formatAdditionalCosts();
+    if (this.formValues.id) {
+      this.formatAdditionalCosts();
+    }
     this.getApplyForList();
     this.getAdditionalCostsComponentTypes();
 
@@ -624,14 +626,14 @@ export class AdditionalCostModalComponent implements OnInit {
     let grandTotal = 0;
     formValues.productDetails.forEach((v, k) => {
       if (!v.isDeleted && typeof v.estimatedAmount != 'undefined') {
-        grandTotal = grandTotal + this.convertDecimalSeparatorStringToNumber(v.estimatedAmount);
+        grandTotal = grandTotal + v.estimatedAmount;
       }
     });
 
     formValues.costDetails.forEach((v, k) => {
       if (!v.isDeleted) {
         if (typeof v.estimatedAmount != 'undefined') {
-          grandTotal = grandTotal + this.convertDecimalSeparatorStringToNumber(v.estimatedAmount);
+          grandTotal = grandTotal + v.estimatedAmount;
         }
       }
     });

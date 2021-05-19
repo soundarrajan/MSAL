@@ -831,14 +831,14 @@ implements OnInit {
     let grandTotal = 0;
     formValues.productDetails.forEach((v, k) => {
       if (!v.isDeleted && typeof v.estimatedAmount != 'undefined') {
-        grandTotal = grandTotal + this.convertDecimalSeparatorStringToNumber(v.estimatedAmount);
+        grandTotal = grandTotal + v.estimatedAmount;
       }
     });
     
     formValues.costDetails.forEach((v, k) => {
       if (!v.isDeleted) {
         if (typeof v.estimatedAmount != 'undefined') {
-            grandTotal = grandTotal + this.convertDecimalSeparatorStringToNumber(v.estimatedAmount);
+            grandTotal = grandTotal + v.estimatedAmount;
         }
       }
     });
