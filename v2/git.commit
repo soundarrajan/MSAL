@@ -1,7 +1,11 @@
-﻿commit a0211c32a2f9824343822bfcdb4c44688f8d2a70
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Wed May 19 13:50:45 2021 +0000
+﻿commit 3ae4ec7f9b94aef848584bbac33e1936342180cd
+Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
+Date:   Wed May 19 14:02:41 2021 +0000
 
-    Merged PR 10803: Fixed problems with defaulting of costs in the Contract page
+    Merged PR 10804: to fix #26715 - save/update bvt fix
+    
+    to fix #26715 - save/update bvt fix
+    
+    Related work items: #26715
 
 branch: master
