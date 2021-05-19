@@ -32,6 +32,7 @@ import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/
 import _ from 'lodash';
 import { DecimalPipe } from '@angular/common';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/general-tenant-settings.interface';
 
   export const MY_FORMATS = {
     parse: {
@@ -207,6 +208,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   applyForList: any;
 
 
+  bankAccountNumbers: any;
+  visibilityConfigs:any;
 
 // detailFormvalues:any;
 @Input('detailFormvalues') set _detailFormvalues(val) {
@@ -241,7 +244,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
   //Default Values - strats
   constructor(private router: Router,iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private invoiceService: InvoiceDetailsService,  public dialog: MatDialog,
-    private toastrService: ToastrService,private format: TenantFormattingService, private legacyLookupsDatabase: LegacyLookupsDatabase,
+    private toastrService: ToastrService,private format: TenantFormattingService, private tenantSetting:TenantSettingsService, private legacyLookupsDatabase: LegacyLookupsDatabase,
     private route: ActivatedRoute,private spinner: NgxSpinnerService,private changeDetectorRef: ChangeDetectorRef,
     @Inject(DecimalPipe) private _decimalPipe,
     private tenantService: TenantFormattingService,
@@ -253,7 +256,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.entityName = 'Invoice';
+    this.entityName = 'Invoice';    
     this.route.params.pipe(takeUntil(this._destroy$)).subscribe(params => {
       this.entityId = parseFloat(params.invoiceId);
     });
@@ -264,11 +267,11 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       this.currencyList = this.setListFromStaticLists('Currency');
       this.physicalSupplierList = this.setListFromStaticLists('Supplier');
       this.costTypeList = this.setListFromStaticLists('CostType');
-
       this.entityId = this.route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
     });
-
-
+    
+    this.tenantConfiguration();
+    this.getBankAccountNumber();
     this.buildProductDetilsGrid();
     this.getCounterPartiesList();
     this.legacyLookupsDatabase.getInvoiceCustomStatus().then(list=>{
@@ -499,6 +502,24 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
   }
 
+  tenantConfiguration(){
+    this.invoiceService
+    .getTenantConfiguration(false)
+    .subscribe((result: any) => {
+      this.visibilityConfigs = result.invoiceConfiguration.fieldVisibility;            
+      // console.log('tenenatConfigs',this.visibilityConfigs);  
+    });
+  }
+getBankAccountNumber(){
+  let counterPartyId = this.formValues.counterpartyDetails.payableTo.id;
+  this.invoiceService
+    .getBankAccountNumber(counterPartyId)
+    .subscribe((result: any) => {
+        // console.log(result);
+        this.bankAccountNumbers = result;
+        this.changeDetectorRef.detectChanges();      
+    });
+}
 
   invoiceConvertUom(type, rowIndex) {
     console.log(type);
@@ -662,7 +683,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       totalInvoiceAmount += v.invoiceAmount;
     });
     this.formValues.invoiceAmount = totalInvoiceAmount;
-    console.log(this.formValues.productDetails);
+    // console.log(this.formValues.productDetails);
   }
 
 
@@ -1210,6 +1231,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
     }else if(type === 'payableto'){
       this.formValues.counterpartyDetails.payableTo = eventValueObject;
+      this.formValues.counterpartyDetails.counterpartyBankAccount.id = null;
+      this.getBankAccountNumber();
     }else if(type === 'paymentterms'){
       this.formValues.counterpartyDetails.paymentTerm = eventValueObject;
     }

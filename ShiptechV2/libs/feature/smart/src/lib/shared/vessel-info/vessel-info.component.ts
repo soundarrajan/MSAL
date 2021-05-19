@@ -342,11 +342,9 @@ export class VesselInfoComponent implements OnInit {
     let baseOrigin = new URL(window.location.href).origin;
     if(this.selectedPort.length > 1){
       this.selectedPort.forEach((port, index) => {
-        if(port.voyage_detail_id) {
-          //let voyageId = (port.voyage_detail_id).toString();
           _this.shiptechRequestUrl = `${baseOrigin}/#/new-request/${port.voyage_detail_id}`
           window.open(_this.shiptechRequestUrl, "_blank");
-        }
+
     });
     }
     else if(this.selectedPort.length == 1){

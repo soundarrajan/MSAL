@@ -24,7 +24,6 @@ export namespace InvoiceApiPaths {
   export const getInvoiceItem = () => `api/invoice/get`;
   export const getNewInvoiceItem = () => `api/invoice/newFromDelivery`;
   export const getFinalInvoiceDueDates = () => `/api/invoice/finalInvoiceDueDates`;
-
   export const createInvoiceItem = () => `api/invoice/create`;
   export const updateInvoiceItem = () => `api/invoice/update`;
   export const productListOnInvoice = () => `api/invoice/deliveriesToBeInvoicedList`;
@@ -43,10 +42,8 @@ export namespace InvoiceApiPaths {
   export const getAdditionalCostsComponentTypes = () =>  `api/masters/additionalcosts/listApps`;
   export const getApplyForList = () =>  `api/invoice/getApplicableProducts`;
   export const calculateCostRecon = () =>  `/api/recon/invoicecost`;
-
-
-
-
+  export const getBankAccountNumber = () =>  `/api/invoice/getAccountNumberCounterpartylist`;
+  export const getTenantConfiguration = () => `api/admin/tenantConfiguration/get`;
 }
 
 @Injectable({
@@ -64,6 +61,9 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
 
   @ApiCallUrl()
   private _reconUrl = this.appConfig.v1.API.BASE_URL_DATA_RECON;
+
+  @ApiCallUrl()
+  private _adminApiUrl = this.appConfig.v1.API.BASE_URL_DATA_ADMIN;
 
   constructor(private http: HttpClient, private appConfig: AppConfig) {}
 
@@ -356,6 +356,32 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
       { payload: request }
     ).pipe(
       map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
+  }
+  @ObservableException()
+  getBankAccountNumber(
+    request: any
+  ): Observable<IInvoiceDetailsItemResponse> {
+
+    return this.http.post<IInvoiceDetailsItemResponse>(
+      `${this._apiUrl}/${InvoiceApiPaths.getBankAccountNumber()}`,
+      { payload: request }
+    ).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
+  }
+  
+  @ObservableException()
+  getTenantConfiguration(
+    request: any
+  ): Observable<any> {
+    return this.http.post<IInvoiceDetailsItemResponse>(
+      `${this._adminApiUrl}/${InvoiceApiPaths.getTenantConfiguration()}`,
+      { payload: request }
+    ).pipe(
+      map((body: any) => body),
       catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
