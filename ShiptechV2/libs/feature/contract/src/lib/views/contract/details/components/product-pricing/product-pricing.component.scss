@@ -227,7 +227,8 @@
 }
 
 .location-contract-info {
-  margin-right: 20px;
+  //margin-right: 20px;
+  font-weight: normal !important;
 }
 
 
@@ -365,6 +366,9 @@
   box-sizing: border-box;
   border-radius: 4px;
   margin-top: 15px;
+  .custom-form-field.lightTheme .mat-form-field.without-search{
+    border: 1px solid #a5a5a5;
+  }
 }
 
 .product-details-table thead tr {
@@ -463,9 +467,9 @@
 
 .create-new-formula-icon {
   width: 25px;
-  height: 25px;
-  position: relative;
-  top: 11px;
+  height: 14px;
+  //position: relative;
+  //top: 11px;
 }
 
 
@@ -515,6 +519,9 @@
   box-sizing: border-box;
   border-radius: 4px;
   margin-top: 15px;
+  .custom-form-field.lightTheme .mat-form-field.without-search{
+    border: 1px solid #a5a5a5;
+  }
 }
 
 .product-additional-costs-table thead tr {
@@ -611,18 +618,18 @@
 }
 
 .formula-history {
-  display: inline-block;
+  display: flex;
 }
 
 .formula-history-name {
   text-shadow: none;
-  color: #337ab7;
-  font-weight: 700;
-  font-size: 18px;
+  font-weight: normal;
+  font-size: 14px;
+  color: #252A32;
 }
 
 .formula-history-name:focus, .formula-history-name:hover {
-  color: #23527c;
+  color: #252A32;
   text-decoration: underline;
 }
 
@@ -652,10 +659,23 @@
 }
 
 .price-fixed {
-  width: 50% !important; 
-  margin-left: 40px !important;
+  width: 25% !important; 
+  margin-bottom: 10px;
 }
 
 .formula-description {
   width: 100% !important;
+}
+
+
+.divider{
+  border-left: 1.5px solid #252A32;
+  height: 26px;
+  margin: 0 10px;
+}
+
+.formula-icon{
+  float:left;
+  margin-right: 5px;
+  content:url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTguMzgwOTggNC40NDQ0NlY4Ljg4ODg3TDExLjY0MTkgMTEuMTQ2N0wxMi4xOTA1IDEwLjA2NjdMOS41MjM4NCA4LjIyMjIxVjQuNDQ0NDZIOC4zODA5OFoiIGZpbGw9IiMzNjQxNTAiLz4KPHBhdGggZD0iTTkuMTM5MDQgMEM1LjM0ODU3IDAgMi4yODU3MSAzLjU4MjIxIDIuMjg1NzEgOEgwTDIuOTY3NjEgMTEuNDYyMkwzLjAyMDkzIDExLjU5MTFMNi4wOTUyNSA4SDMuODA5NTRDMy44MDk1NCA0LjU2NDQ2IDYuMTk4MTEgMS43Nzc3OSA5LjE0Mjg2IDEuNzc3NzlDMTIuMDg3NiAxLjc3Nzc5IDE0LjQ3NjIgNC41NjQ0NiAxNC40NzYyIDhDMTQuNDc2MiAxMS40MzU1IDEyLjA4NzYgMTQuMjIyMiA5LjE0Mjg2IDE0LjIyMjJDNy42Njg1NyAxNC4yMjIyIDYuMzM5MDQgMTMuNTIgNS4zNzUyNSAxMi4zOTU1TDQuMjk3MTQgMTMuNjUzM0M1LjUzNTI1IDE1LjEwMjIgNy4yNDU3MSAxNiA5LjEzOTA0IDE2QzEyLjkyOTUgMTYgMTYgMTIuNDE3OCAxNiA4QzE2IDMuNTgyMjEgMTIuOTI5NSAwIDkuMTM5MDQgMFoiIGZpbGw9IiMzNjQxNTAiLz4KPC9zdmc+Cg==');
 }
