@@ -423,7 +423,8 @@
             [uomList]="uomList"
             [currencyList]="currencyList"
             [costTypeList]="costTypeList"
-            (changedAdditonalcost)='changedAdditonalcost($event)'
+            (changedAdditonalcost)="changedAdditonalcost($event)"
+            (amountChanged)="updateAmountValues($event)"
             [events]="eventsSubject.asObservable()"></shiptech-additional-cost-modal>
           </div>
     </div>

@@ -23,6 +23,7 @@ export class AdditionalCostModalComponent implements OnInit {
   additionalCost : any;
   productDetails : any;
   @Output() changedAdditonalcost = new EventEmitter();
+  displayedColumns: string[] =  ['name'];
   formValues: any;
   generalTenantSettings: any;
   adminConfiguration: any;
@@ -43,6 +44,10 @@ export class AdditionalCostModalComponent implements OnInit {
   cost: any;
   product: any;
   eventsSubscription: any;
+  expandAddTransactionListPopUp: any;
+  selectedProductLine: any;
+  costType: any;
+  costDetailsComponentTypes: any;
   @Input('formValues') set _formValues(val){
     this.formValues = val;
     this.getApplyForList();
@@ -77,7 +82,9 @@ export class AdditionalCostModalComponent implements OnInit {
   currencyNames:any;
   public searchText:string;
   selectedRow;
-  public costType:any = [{id:1, name: "Flat"},{id:2, name: "Unit"}];
+  selectedAdditionalLine: any;
+  @Output() amountChanged: EventEmitter<any> = new EventEmitter<any>();
+
   newCostItem={
     amountInInvoiceCurrency: 0,
     amountInOrderCurrency: 0,
@@ -172,18 +179,11 @@ export class AdditionalCostModalComponent implements OnInit {
       if (typeof response == 'string') {
         this.toastr.error(response);
       } else {
-        this.formValues.costDetailssComponentTypes = response;
+        this.costDetailsComponentTypes = response;
         this.changeDetectorRef.detectChanges();
       }
     });
-    this.productDetails = [{id:'All',name:"All"}];
-    this.formValues.productDetails.forEach(element => {
-      if(element.product){
-        // element.product.forEach(product => {
-          this.productDetails.push({id:element.product.id+'',name:element.product.name})
-        // });
-      }
-    });
+
   }
 
   getApplyForList() {
@@ -199,7 +199,13 @@ export class AdditionalCostModalComponent implements OnInit {
         this.toastr.error(response);
       } else {
         console.log(response);
-        this.applyForList = response;
+        this.applyForList = [];
+        for (let i = 0; i < response.length; i++) {
+          this.applyForList.push({
+            'id': response[i].productId,
+            'name': response[i].name
+          });
+        }
         this.changeDetectorRef.detectChanges();
 
       }
@@ -250,12 +256,17 @@ export class AdditionalCostModalComponent implements OnInit {
   }
 
   compareProductObjects(object1: any, object2: any) {
-    return object1 && object2 && object1.productId == object2.productId;
+    if (!object2 && !object1.id) {
+      return 1;
+    }
+    return object1 && object2 && (object1.id == object2.id);
+   
+
   }
 
   setDefaultCostType(additionalCost) {
     let defaultCostType;
-    this.formValues.costDetailssComponentTypes.forEach((v, k) => {
+    this.costDetailsComponentTypes.forEach((v, k) => {
         if (v.id == additionalCost.id) {
             defaultCostType = v.costType;
         }
@@ -311,31 +322,48 @@ export class AdditionalCostModalComponent implements OnInit {
        
     var currentCost = cost;
     // return doFiltering(vm.additionalCostsComponentTypes, currentCost);
-    if(this.formValues.costDetailssComponentTypes === undefined) {
+    if(this.costDetailsComponentTypes === undefined) {
         // this.getAdditionalCostsComponentTypes((additionalCostsComponentTypes) => {
         //     return doFiltering(additionalCostsComponentTypes);
         // });
     }else{
-        return this.doFiltering(this.formValues.costDetailssComponentTypes, 0, currentCost);
+        return this.doFiltering(this.costDetailsComponentTypes, 0, currentCost);
     }
   }
 
 
-  addNewAdditionalCostLine(){
+  addCostDetail(selected){
     if (!this.formValues.costDetails) {
       this.formValues.costDetails = [];
     }
+    let isTaxComponent = false;
+    this.costDetailsComponentTypes.forEach((v, k) => {
+      if (v.id == selected.id) {
+        if (v.componentType) {
+            if (v.componentType.id == 1) {
+                isTaxComponent = true;
+            }
+        }
+      }
+    });
     let newLine = {
-      costName: null,
+      costName: {
+        id: selected.id,
+        name: selected.name,
+        code: selected.code,
+        collectionName: null,
+      },
       invoiceQuantity: null,
       invoiceQuantityUom: this.generalTenantSettings.tenantFormats.uom,
       invoiceRate: null,
+      invoiceRateUom: this.generalTenantSettings.tenantFormats.uom,
       invoiceRateCurrency: this.formValues.invoiceRateCurrency,
       product: {
           id: -1,
           name: 'All',
           deliveryProductId: null
-      }
+      },
+      isTaxComponent: isTaxComponent
     }
     this.formValues.costDetails.push(newLine);
     this.changeDetectorRef.detectChanges();
@@ -419,12 +447,13 @@ export class AdditionalCostModalComponent implements OnInit {
     } else {
       quantityUom = null;
     }
-    if (this.costType.name == 'Percent' || this.costType.name == 'Flat') {
-      rateUom = quantityUom;
+    if (this.costType) {
+      if (this.costType.name == 'Percent' || this.costType.name == 'Flat') {
+        rateUom = quantityUom;
+      }
     }
 
-
-    if (this.costType.name == 'Flat') {
+    if (this.costType && this.costType.name == 'Flat') {
       this.formValues.costDetails[rowIndex].invoiceAmount = this.cost.invoiceRate;
       this.formValues.costDetails[rowIndex].invoiceExtrasAmount = this.formValues.costDetails[rowIndex].invoiceExtras / 100 * this.formValues.costDetails[rowIndex].invoiceAmount;
       this.formValues.costDetails[rowIndex].invoiceTotalAmount = parseFloat(this.formValues.costDetails[rowIndex].invoiceExtrasAmount) + parseFloat(this.formValues.costDetails[rowIndex].invoiceAmount);
@@ -454,7 +483,26 @@ export class AdditionalCostModalComponent implements OnInit {
       return;
     }
     if (toUomId == fromUomId) {
-      return;
+      let result = 1;
+      if (this.costType) {
+        if (this.costType.name == 'Unit') {
+          this.formValues.costDetails[rowIndex].invoiceAmount = result * this.cost.invoiceRate * this.cost.invoiceQuantity;
+        }
+
+        this.formValues.costDetails[rowIndex].invoiceExtrasAmount = this.formValues.costDetails[rowIndex].invoiceExtras / 100 * this.formValues.costDetails[rowIndex].invoiceAmount;
+        this.formValues.costDetails[rowIndex].invoiceTotalAmount = parseFloat(this.formValues.costDetails[rowIndex].invoiceExtrasAmount) + parseFloat(this.formValues.costDetails[rowIndex].invoiceAmount);
+        this.formValues.costDetails[rowIndex].difference = parseFloat(this.formValues.costDetails[rowIndex].invoiceTotalAmount) - parseFloat(this.formValues.costDetails[rowIndex].estimatedTotalAmount);
+
+        this.formValues.costDetails[rowIndex].deliveryProductId = this.formValues.costDetails[rowIndex].product.deliveryProductId ? this.formValues.costDetails[rowIndex].product.deliveryProductId : this.formValues.costDetails[rowIndex].deliveryProductId;
+        console.log('-----------------------', this.formValues.costDetails[rowIndex].deliveryProductId);
+        // calculate grandTotal
+        if (this.cost) {
+          this.calculateCostRecon(rowIndex);
+        }
+        this.calculateGrand(this.formValues);
+        this.changeDetectorRef.detectChanges();
+
+    }
     }
     this.invoiceService
     .getUomConversionFactor(data)
@@ -484,6 +532,7 @@ export class AdditionalCostModalComponent implements OnInit {
               this.calculateCostRecon(rowIndex);
             }
             this.calculateGrand(this.formValues);
+            this.changeDetectorRef.detectChanges();
 
         }
 
@@ -537,6 +586,8 @@ export class AdditionalCostModalComponent implements OnInit {
     formValues.invoiceSummary.estimatedAmountGrandTotal = this.calculateInvoiceEstimatedGrandTotal(formValues);
     formValues.invoiceSummary.totalDifference = formValues.invoiceSummary.invoiceAmountGrandTotal - formValues.invoiceSummary.estimatedAmountGrandTotal;
     formValues.invoiceSummary.netPayable = formValues.invoiceSummary.invoiceAmountGrandTotal - formValues.invoiceSummary.deductions;
+    this.changeDetectorRef.detectChanges();
+    this.amountChanged.emit(true);
   }
 
   calculateInvoiceGrandTotal(formValues) {
@@ -577,7 +628,7 @@ export class AdditionalCostModalComponent implements OnInit {
   };
 
   quantityFormatValue(value) {
-    if (typeof value == 'undefined') {
+    if (typeof value == 'undefined' || value == null) {
       return null;
     }
     let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
@@ -610,6 +661,21 @@ export class AdditionalCostModalComponent implements OnInit {
         return this._decimalPipe.transform(plainNumber, this.amountFormat);
       }
     }
+  }
+
+  triggerChangeFieldsAppSpecific(name, key) {
+    if (name == 'costType') {
+      if (this.formValues.costDetails.length > 0) {
+        if (this.formValues.costDetails[key]) {
+          if (this.formValues.costDetails[key].costType.name == 'Flat') {
+            this.formValues.costDetails[key].invoiceQuantity = this.quantityFormatValue(1);
+          } else {
+            this.formValues.costDetails[key].invoiceQuantity = '';
+          }
+        }
+      }
+    }
+
   }
 
 
