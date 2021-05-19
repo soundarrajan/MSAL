@@ -1,7 +1,7 @@
-﻿commit 95a4552d9ee93eb66e8247973f2e9b4d87fad18c
-Author: Soundar <soundarrajan.s@inatech.com>
-Date:   Wed May 19 18:52:19 2021 +0530
+﻿commit 4618c6f7f6156ecfe7733e48bc7af3cbb63ca34e
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Wed May 19 13:35:19 2021 +0000
 
-    Merge branch 'master' of https://dev.azure.com/inatech/Shiptech10/_git/Shiptech10-UI
+    Merged PR 10802: Added additional cost section in new invoice screen
 
 branch: master

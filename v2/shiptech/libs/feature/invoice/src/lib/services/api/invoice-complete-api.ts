@@ -40,6 +40,8 @@ export namespace InvoiceApiPaths {
   export const addTransaction = () =>  `api/invoice/deliveriesToBeInvoicedList`;
   export const totalConversion = () =>  `api/invoice/totalConversion`;
   export const getAdditionalCostsComponentTypes = () =>  `api/masters/additionalcosts/listApps`;
+  export const getApplyForList = () =>  `api/invoice/getApplicableProducts`;
+  export const calculateCostRecon = () =>  `/api/recon/invoicecost`;
   export const getBankAccountNumber = () =>  `/api/invoice/getAccountNumberCounterpartylist`;
   export const getTenantConfiguration = () => `api/admin/tenantConfiguration/get`;
 }
@@ -292,6 +294,19 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
   }
 
   @ObservableException()
+  calculateCostRecon(
+    request: any
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${this._reconUrl}/${InvoiceApiPaths.calculateCostRecon()}`,
+      {payload: request}
+    ).pipe(
+      map((body: any) => body),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
+  }
+
+  @ObservableException()
   addTransaction(
     request: any
   ): Observable<any> {
@@ -367,6 +382,19 @@ export class InvoiceCompleteApi implements IInvoiceCompleteApiService {
       { payload: request }
     ).pipe(
       map((body: any) => body),
+      catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
+    );
+  }
+
+  @ObservableException()
+  getApplyForList(
+    request: any
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${this._apiUrl}/${InvoiceApiPaths.getApplyForList()}`,
+      {Payload: request}
+    ).pipe(
+      map((body: any) => body.payload),
       catchError((body: any) => of(body.error.ErrorMessage && body.error.Reference ? body.error.ErrorMessage + ' ' + body.error.Reference : body.error.errorMessage + ' ' + body.error.reference))
     );
   }
