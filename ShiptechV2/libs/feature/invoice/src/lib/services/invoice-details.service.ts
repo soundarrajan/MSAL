@@ -140,7 +140,17 @@ export class InvoiceDetailsService extends BaseStoreService
   getFinalInvoiceDueDates(payload: any): Observable<IInvoiceDetailsItemResponse> {
     return this.api.getFinalInvoiceDueDates(payload);
   }
-
+  @ObservableException()
+  getBankAccountNumber(counterPartyId: number): Observable<IInvoiceDetailsItemResponse> {
+    return this.api.getBankAccountNumber(counterPartyId);
+  }
+  /**
+ * @param payload = False 
+ */
+  @ObservableException()
+  getTenantConfiguration(payload: boolean): Observable<IInvoiceDetailsItemResponse> {
+    return this.api.getTenantConfiguration(payload);
+  }
   ngOnDestroy(): void {
     super.onDestroy();
   }

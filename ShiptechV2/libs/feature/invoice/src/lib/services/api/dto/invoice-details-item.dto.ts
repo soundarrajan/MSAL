@@ -100,10 +100,11 @@ export interface IInvoiceDetailsItemOrderDetails {
 export interface IInvoiceDetailsItemCounterpartyDetails {
     sellerName?: string;
     payableTo?: IInvoiceDetailsItemBaseInfo;
+    counterpartyBankAccount?: IInvoiceDetailsItemBaseInfo;
     brokerName?: string;
     paymentTerm?: IInvoiceDetailsItemBaseInfo;
     orderPaymentTerm?: IInvoiceDetailsItemBaseInfo;
-	  modulePathUrl?: string;
+	modulePathUrl?: string;
     clientIpAddress?: string;
     userAction?: any;
 }
