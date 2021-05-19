@@ -48,7 +48,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   constructor(public router: Router, public dialog: MatDialog, private elem: ElementRef,private localService:LocalService, 
               private bunkerPlanService:BunkeringPlanService,private store: Store ) {
     this.shiptechUrl =  new URL(window.location.href).origin;;
-    this.shiptechPortUrl = `${this.shiptechUrl}/#/masters/locations/edit/`
+    this.shiptechPortUrl = `${this.shiptechUrl}/#/masters/location/edit/`
   }
 
   ngOnInit() {
