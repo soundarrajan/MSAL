@@ -976,13 +976,16 @@ implements OnInit {
         pricingDate: rowData.pricingDate,
         isDeleted: rowData.isDeleted,
         invoiceAmount: rowData.invoiceAmount,
+        invoiceQuantity: rowData.deliveryQuantity,
         invoiceTotalAmount: rowData.invoiceTotalAmount,
         estimatedTotalAmount: rowData.estimatedTotalAmount,
+        // new on 30.08.2018
         invoiceQuantityUom: rowData.invoiceQuantityUom,
         invoiceRateUom: rowData.invoiceRateUom,
         estimatedExtras: rowData.estimatedExtra,
+        // invoiceExtras: rowData.estimatedExtra,
         estimatedExtrasAmount: rowData.estimatedExtraAmount
-      };
+    };
     }
 
     if (rowData.delivery) {
