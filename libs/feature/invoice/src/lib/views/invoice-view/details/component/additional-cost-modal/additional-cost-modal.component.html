@@ -3,7 +3,7 @@
       <thead>
         <tr>
           <td class="padding" style="width: 30px;">
-            <div  #menuTrigger="matMenuTrigger"  [matMenuTriggerFor]="additionalCostMenu">
+            <div  #menuTrigger="matMenuTrigger"  [matMenuTriggerFor]="additionalCostMenu" (click)="additionalSearch = null; searchCostName('')">
               <a class="add-icon"></a>
             </div>
             <mat-menu #additionalCostMenu="matMenu" class="select-product-container">
@@ -14,6 +14,8 @@
                     </span>
                     <input matInput 
                       (click)="$event.stopPropagation();$event.preventDefault();"
+                      [(ngModel)]="additionalSearch"
+                      (input)="searchCostName($event.target.value)"
                       placeholder="Type Additional Cost"
                       class="search-product-input">
                   </div>
