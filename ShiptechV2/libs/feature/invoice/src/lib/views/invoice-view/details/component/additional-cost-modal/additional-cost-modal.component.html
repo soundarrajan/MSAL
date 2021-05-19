@@ -124,6 +124,7 @@
                     <mat-form-field class="without-search dotted-form-field" appearance="legacy">
                       <mat-select 
                           [(ngModel)]="additionalCost.value.product"
+                          (ngModelChange)="changeProduct(additionalCost.value.product, additionalCost.key)"
                           [compareWith]="compareProductObjects"
                           [disableOptionCentering]="true"
                           panelClass="general-information-select-container">

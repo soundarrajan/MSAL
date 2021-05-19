@@ -358,11 +358,7 @@ export class AdditionalCostModalComponent implements OnInit {
       invoiceRate: null,
       invoiceRateUom: this.generalTenantSettings.tenantFormats.uom,
       invoiceRateCurrency: this.formValues.invoiceRateCurrency,
-      product: {
-          id: -1,
-          name: 'All',
-          deliveryProductId: null
-      },
+      product: null,
       isTaxComponent: isTaxComponent
     }
     this.formValues.costDetails.push(newLine);
@@ -676,6 +672,13 @@ export class AdditionalCostModalComponent implements OnInit {
       }
     }
 
+  }
+
+  changeProduct(value, key) {
+    console.log(value, key);
+    if (value && !value.id) {
+      this.formValues.costDetails[key].product = null;
+    }
   }
 
 
