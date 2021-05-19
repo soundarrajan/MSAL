@@ -471,6 +471,12 @@ export class BunkeringPlanComponent implements OnInit {
       this.selectedPort.push(selectedport);
       this.voyage_detail.emit(this.selectedPort);
     }
+    else{
+      this.selectedPort.forEach((value,index)=>{
+        if(params?.param?.data?.detail_no)
+          if(value.detail_no == params.param.data.detail_no) this.selectedPort.splice(index,1);
+    });
+    }
     if ((this.rowData.filter(element => element.createReqFlag == true)).length > 0)
       this.enableCreateReq.emit(true);
     else

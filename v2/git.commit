@@ -1,11 +1,11 @@
-﻿commit 2223762a4cff89e628e1bdbddbfa9511942b1aa0
-Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
-Date:   Wed May 19 11:00:47 2021 +0000
+﻿commit 8b7151183b195a24312ab8f2285de1409606f868
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Wed May 19 11:39:16 2021 +0000
 
-    Merged PR 10793: To fix #26715
+    Merged PR 10796: Proceed button changed to Save in Field popup
     
-    To fix #26715
+    Proceed button changed to Save in Field popup
     
-    Related work items: #26715
+    Related work items: #32409
 
 branch: master
