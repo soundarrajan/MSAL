@@ -419,6 +419,7 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
   searchCompanyModel: any;
   expandCompanyPopUp: boolean = false;
   expandAllowCompanies: boolean = false;
+  expandAllowCustomer: boolean = false;
   expandCompanylistPopUp: boolean = false;
   agreementTypeList: any;
   paymentTermList: any;

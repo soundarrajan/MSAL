@@ -1,11 +1,9 @@
-﻿commit 23e59574a5c8149616dac6959c69e0a1ba5c851e
-Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
-Date:   Wed May 19 14:53:07 2021 +0000
+﻿commit 6a8427e4a9a7fa47826a6e03cc3cd0d8a7cdc85c
+Author: Pravin Kumar Seenivasan <pravinkumar.s@Inatech.com>
+Date:   Wed May 19 15:06:09 2021 +0000
 
-    Merged PR 10806: Filter icon is shown now
+    Merged PR 10807: Updated UI
     
-    Filter icon is shown now
-    
-    Related work items: #26715
+    Related work items: #29839
 
 branch: master
