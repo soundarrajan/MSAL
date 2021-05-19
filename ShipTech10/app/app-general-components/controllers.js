@@ -1366,7 +1366,7 @@
                         element = var_bind(":css_formatting", "danger lowercase", element);
                     }
                     if (cellValue == "WithinTolerance") {
-                        element = var_bind(":content", "Within Tolerance ", element);
+                        element = var_bind(":content", "WithinTolerance ", element);
                         element = var_bind(":css_formatting", "amber lowercase", element);
                     }
                     if (cellValue == "" || cellValue == null) {
