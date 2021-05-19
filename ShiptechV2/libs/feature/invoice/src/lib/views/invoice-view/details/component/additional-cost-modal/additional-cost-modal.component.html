@@ -104,12 +104,13 @@
               <td  style="max-width: initial;min-width: 150px" class="padding-line" >
                 <div  class="custom-form-field-additional-cost"
                   [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                    <mat-form-field class="without-search dotted-form-field" appearance="legacy">
+                    <mat-form-field class="without-search dotted-form-field product-field" appearance="legacy">
                       <mat-select 
                           [(ngModel)]="additionalCost.value.costType"
                           (ngModelChange)="triggerChangeFieldsAppSpecific('costType', additionalCost.key);invoiceConvertUom('cost', additionalCost.key)"
                           [compareWith]="compareUomObjects"
                           [disableOptionCentering]="true"
+                          [disabled]="additionalCost.value.orderAdditionalCostId || (formValues.status && (formValues.status.name == 'Cancelled' || formValues.status.name == 'Approved' ))"
                           panelClass="general-information-select-container">
                           <mat-option *ngFor="let option of  filterCostTypesByAdditionalCost(additionalCost.value.costName ? additionalCost.value.costName.id : 0, 0)" [value]="option">
                             {{option.name}}
@@ -121,12 +122,12 @@
               <td  style="max-width: initial;min-width: 200px" class="padding-line" >
                 <div  class="custom-form-field-additional-cost"
                   [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
-                    <mat-form-field class="without-search dotted-form-field" appearance="legacy">
+                    <mat-form-field class="without-search dotted-form-field product-field" appearance="legacy">
                       <mat-select 
                           [(ngModel)]="additionalCost.value.product"
-                          (ngModelChange)="changeProduct(additionalCost.value.product, additionalCost.key)"
                           [compareWith]="compareProductObjects"
                           [disableOptionCentering]="true"
+                          [disabled]="additionalCost.value.orderAdditionalCostId || (formValues.status && (formValues.status.name == 'Cancelled' || formValues.status.name == 'Approved' ))"
                           panelClass="general-information-select-container">
                           <mat-option *ngFor="let option of  applyForList" [value]="option">
                             {{option.name}}
@@ -247,12 +248,26 @@
                 </div>
               </td>
               <td class="padding" style="max-width: initial;min-width: 300px;">
-                <div class="dotted-container black-container amount-container">
+                <div class="dotted-container black-container amount-container" *ngIf="additionalCost.value.costType && additionalCost.value.costType.name != 'Percent'">
                   <div style="float: left;">
                     {{amountFormatValue(additionalCost.value.invoiceAmount)}}
                   </div>
                   <div style="float: right;">
                     {{additionalCost.value.invoiceRateCurrency.code}}
+                  </div>
+                </div>
+                <div class="dotted-container black-container" *ngIf="additionalCost.value.costType && additionalCost.value.costType.name == 'Percent'">
+                  <div class="custom-form-field-invoice" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}" style="width: 300px;">
+                    <div class="split-field">
+                      <mat-form-field class="without-search long-label-field" style="width: 100%;border: none;" appearance="legacy">
+                        <input matInput 
+                          [(ngModel)]="additionalCost.value.invoiceAmount"
+                          autocomplete="off"
+                          (ngModelChange)="invoiceConvertUom('cost', additionalCost.key)" 
+                          quantityFormat
+                          >
+                      </mat-form-field>
+                    </div>
                   </div>
                 </div>
               </td>
