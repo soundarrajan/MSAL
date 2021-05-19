@@ -1,11 +1,9 @@
-﻿commit 3ae4ec7f9b94aef848584bbac33e1936342180cd
-Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
-Date:   Wed May 19 14:02:41 2021 +0000
+﻿commit 20ef283eed32e280864b3f7267e31f9eb927b9a5
+Author: Pravin Kumar Seenivasan <pravinkumar.s@Inatech.com>
+Date:   Wed May 19 14:12:55 2021 +0000
 
-    Merged PR 10804: to fix #26715 - save/update bvt fix
+    Merged PR 10805: Updated the UI with More section
     
-    to fix #26715 - save/update bvt fix
-    
-    Related work items: #26715
+    Related work items: #29839
 
 branch: master
