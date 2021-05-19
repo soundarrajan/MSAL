@@ -32,6 +32,7 @@ import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/
 import _ from 'lodash';
 import { DecimalPipe } from '@angular/common';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/general-tenant-settings.interface';
 
   export const MY_FORMATS = {
     parse: {
@@ -78,41 +79,45 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   more_invoice_types = [
     {
       displayName:'Final',
-      value:'FinalInvoice'
+      value:2
     },
     {
       displayName:'Provisional',
-      value:'ProvisionalInvoice'
+      value:1
     },
     {
       displayName:'Credit',
-      value:'CreditNote'
+      value:4
     },
     {
       displayName:'Debit',
-      value:'DebitNote'
+      value:5
     },
     {
-      displayName:'Pre-claim',
-      value:'Pre-claim'
+      displayName:'Pre-claim Credit Note',
+      value:6
+    },
+    {
+      displayName:'Pre-claim Debit Note',
+      value:7
     }
   ];
   invoice_types =[
     {
       displayName:'Final',
-      value:'FinalInvoice',
+      value:2,
     },
     {
       displayName:'Provisional',
-      value:'ProvisionalInvoice',
+      value:1,
     },
     {
       displayName:'Credit',
-      value:'CreditNote',
+      value:4,
     },
     {
       displayName:'Debit',
-      value:'DebitNote',
+      value:5
     },
   ]
 
@@ -193,7 +198,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   type: string;
   eventsSubject5: Subject<any> = new Subject<any>();
   costTypeList: any;
-
+  bankAccountNumbers: any;
+  visibilityConfigs:any;
 
 // detailFormvalues:any;
 @Input('detailFormvalues') set _detailFormvalues(val) {
@@ -211,7 +217,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     this.setOrderDetailsLables(this.formValues.orderDetails);
     this.setcounterpartyDetailsLables(this.formValues.counterpartyDetails);
     this.setChipDatas();
-    this.manualtab = this.invoice_types.filter(x=>{ return x.value === this.formValues.documentType?.internalName});
+    this.manualtab = this.invoice_types.filter(x=>{ return x.value === this.formValues.documentType?.id});
     if(this.manualtab.length == 0){
       this.invoice_types.pop();
     }
@@ -227,7 +233,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
   //Default Values - strats
   constructor(private router: Router,iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private invoiceService: InvoiceDetailsService,  public dialog: MatDialog,
-    private toastrService: ToastrService,private format: TenantFormattingService, private legacyLookupsDatabase: LegacyLookupsDatabase,
+    private toastrService: ToastrService,private format: TenantFormattingService, private tenantSetting:TenantSettingsService, private legacyLookupsDatabase: LegacyLookupsDatabase,
     private route: ActivatedRoute,private spinner: NgxSpinnerService,private changeDetectorRef: ChangeDetectorRef,
     @Inject(DecimalPipe) private _decimalPipe,
     private tenantService: TenantFormattingService,
@@ -239,7 +245,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.entityName = 'Invoice';
+    this.entityName = 'Invoice';    
     this.route.params.pipe(takeUntil(this._destroy$)).subscribe(params => {
       this.entityId = parseFloat(params.invoiceId);
     });
@@ -250,11 +256,11 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       this.currencyList = this.setListFromStaticLists('Currency');
       this.physicalSupplierList = this.setListFromStaticLists('Supplier');
       this.costTypeList = this.setListFromStaticLists('CostType');
-
       this.entityId = this.route.snapshot.params[KnownInvoiceRoutes.InvoiceIdParam];
     });
-
-
+    
+    this.tenantConfiguration();
+    this.getBankAccountNumber();
     this.buildProductDetilsGrid();
     this.getCounterPartiesList();
     this.legacyLookupsDatabase.getInvoiceCustomStatus().then(list=>{
@@ -277,7 +283,24 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       }
     }
   }
-
+  tenantConfiguration(){
+    this.invoiceService
+    .getTenantConfiguration(false)
+    .subscribe((result: any) => {
+      this.visibilityConfigs = result.invoiceConfiguration.fieldVisibility;            
+      // console.log('tenenatConfigs',this.visibilityConfigs);  
+    });
+  }
+getBankAccountNumber(){
+  let counterPartyId = this.formValues.counterpartyDetails.payableTo.id;
+  this.invoiceService
+    .getBankAccountNumber(counterPartyId)
+    .subscribe((result: any) => {
+        // console.log(result);
+        this.bankAccountNumbers = result;
+        this.changeDetectorRef.detectChanges();      
+    });
+}
 
   invoiceConvertUom(type, rowIndex) {
     console.log(type);
@@ -441,7 +464,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       totalInvoiceAmount += v.invoiceAmount;
     });
     this.formValues.invoiceAmount = totalInvoiceAmount;
-    console.log(this.formValues.productDetails);
+    // console.log(this.formValues.productDetails);
   }
 
 
@@ -837,7 +860,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   setChipDatas(){
     var ivs =  this.formValues.invoiceSummary;
     this.chipData[0].Data = this.formValues.id?.toString();
-    this.chipData[1].Data = this.formValues.status.displayName? this.formValues.status.displayName : this.emptyStringVal;
+    this.chipData[1].Data = this.formValues.status?.displayName? this.formValues.status.displayName : this.emptyStringVal;
     if(ivs){
       this.chipData[2].Data = ivs.invoiceAmountGrandTotal? this.amountFormatValue(ivs.invoiceAmountGrandTotal?.toString()) + ' ' + this.formValues.invoiceRateCurrency.code : this.emptyNumberVal + ' ' + this.formValues.invoiceRateCurrency.code;
       this.chipData[3].Data = ivs?.estimatedAmountGrandTotal? this.amountFormatValue(ivs?.estimatedAmountGrandTotal.toString()) + ' ' + this.formValues.invoiceRateCurrency.code : this.emptyNumberVal + ' ' + this.formValues.invoiceRateCurrency.code;
@@ -954,6 +977,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
     }else if(type === 'payableto'){
       this.formValues.counterpartyDetails.payableTo = eventValueObject;
+      this.formValues.counterpartyDetails.counterpartyBankAccount.id = null;
+      this.getBankAccountNumber();
     }else if(type === 'paymentterms'){
       this.formValues.counterpartyDetails.paymentTerm = eventValueObject;
     }
@@ -968,10 +993,10 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     this.formSubmitted = true;
     if(option == 'submitreview'){
       this.invoiceService.submitForReview(this.formValues.id).subscribe((result: any) => {
-        this.handleServiceResponse(result, 'Invoice submitted for approval successfully.');
+        this.handleServiceResponse(result, 'Invoice submitted for review successfully.');
       });
     } else if(option == 'submitapprove'){
-      this.invoiceService.submitapproval(this.formValues.id).subscribe((result: any) => {
+      this.invoiceService.submitapproval(this.formValues).subscribe((result: any) => {
         this.handleServiceResponse(result, 'Invoice submitted for approval successfully.');
       });
     } else if(option == 'cancel'){
@@ -1010,6 +1035,10 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
           this.formValues.id = this.entityId = 0;
           this.formValues.documentType.id = createinvoice[0].id;
           this.formValues.documentType.name = createinvoice[0].name;
+
+          localStorage.setItem('createInvoice', JSON.stringify(this.formValues));
+          this.router.navigate([KnownPrimaryRoutes.Invoices,`${KnownInvoiceRoutes.InvoiceView}`,0]).then(() => { });
+          this.changeDetectorRef.detectChanges();
         }
       });
     }

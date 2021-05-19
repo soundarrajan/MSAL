@@ -153,6 +153,14 @@ export class AdditionalCostModalComponent implements OnInit {
         this.changeDetectorRef.detectChanges();
       }
     });
+    this.productDetails = [{id:'All',name:"All"}];
+    this.formValues.productDetails.forEach(element => {
+      if(element.product){
+        // element.product.forEach(product => {
+          this.productDetails.push({id:element.product.id+'',name:element.product.name})
+        // });
+      }
+    });
   }
 
   costNameChange(){
@@ -296,7 +304,7 @@ export class AdditionalCostModalComponent implements OnInit {
   }
 
   amountFormatValue(value) {
-    if (typeof value == 'undefined') {
+    if (typeof value == 'undefined' || !value) {
       return null;
     }
     let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');

@@ -591,6 +591,9 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
     //this.eventsSubscription = this.events.subscribe((data) => this.setDeliveryForm(data));
     //this.eventsSaveButtonSubscription = this.eventsSaveButton.subscribe((data) => this.setRequiredFields(data))
     //this.eventsSubject.next();
+    if (this.formValues.customers) {
+      this.selectedCustomers();
+    }
   }
 
   setRequiredFields(data) {
@@ -623,6 +626,18 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
     console.log(this.companyList);
 
     
+  }
+  selectedCustomers() {
+    this.formValues.customers.forEach((customer, k) => {
+      let findCustomerIndex = _.findIndex(this.customerList, function(object: any) {
+        return object.id == customer.id;
+      });
+      if (findCustomerIndex != -1 && this.customerList) {
+        this.customerList[findCustomerIndex].isSelected = true;
+      }
+    });
+    this.changeDetectorRef.detectChanges();
+    console.log(this.customerList);    
   }
 
   formatDate(date?: any) {
@@ -834,18 +849,27 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
   }
 
   saveCustomer() {
-    let customerList = [];
-    for (let i = 0; i <  this.customerList.length; i++) {
-      if ( this.customerList[i].isSelected) {
+    let customersList = [];
+    let customerList = this.customerList;
+    for (let i = 0; i <  customerList.length; i++) {
+      if ( customerList[i].isSelected) {
         let customer = {
-          'id':  this.customerList[i].id,
-          'name':  this.customerList[i].name
+          'id':  customerList[i].id,
+          'name':  customerList[i].name,
+          'internalName':  customerList[i].internalName,
+          'displayName':  customerList[i].displayName,
+          'code':  customerList[i].code,
+          'collectionName':  customerList[i].collectionName,
+          'customNonMandatoryAttribute1':  customerList[i].customNonMandatoryAttribute1,
+          'isDeleted':  customerList[i].isDeleted,
+          'modulePathUrl':  customerList[i].modulePathUrl,
+          'clientIpAddress':  customerList[i].clientIpAddress,
+          'userAction':  customerList[i].userAction
         }
-        customerList.push(customer);
+        customersList.push(customer);
       }
     }
-    this.formValues.customerList = _.cloneDeep(customerList);
-
+    this.formValues.customers = _.cloneDeep(customersList);
   }
 
 

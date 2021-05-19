@@ -41,7 +41,7 @@
   
   <div *ngIf="params.type=='link'">
     <div matTooltip="{{params.value}}" [ngClass]="params.cellClass">
-      <a href="{{shiptechOrderUrl}}/{{params.data?.order_id_vlsfo}}">{{params.value}}</a>
+      <a (click)="redirectionUrl(params)" style="color: white;">{{params.value}}</a>
     </div>
   </div>
   <div *ngIf="params.type=='request-link'">
@@ -75,7 +75,7 @@
   </div>
   
   <div *ngIf="params.type=='disable-with-popup'">
-    <div (mouseenter)="!menuClick  && toggleMenuInput(params.colDef?.field);" (click)="toggleMenu3Input($event)"
+    <div (mouseenter)="!menuClick  && toggleMenuInput(params.colDef?.field);" (click)="toggleMenu3Input($event);restrictionForPrevBplan($event)"
       (mouseleave)="!menuClick  && toggleMenu2Input();" (menuClosed)="toggleMenu1Input($event);">
       <input disabled style="z-index: 1050;" [matMenuTriggerFor]="inputDisabledMenu" [matMenuTriggerData]="params.value"
         #inputMenuTrigger="matMenuTrigger" [ngClass]="params.cellClass" [value]="params.value">
@@ -89,7 +89,7 @@
     <div class="edit-input-menu" [ngClass]="{'light-theme':!theme}">
       <div class="row header">
         <div>
-          Port of {{params.data?.port_id}} ({{params.data?.port_id}})
+          Port of {{params.data?.location_name}} ({{params.data?.port_id}})
         </div>
         <div class="line"></div>
         <div (click)="cancel()">
@@ -127,7 +127,7 @@
     <div class="edit-input-menu" [ngClass]="{'light-theme':!theme}">
       <div class="row header">
         <div>
-          Port of {{params.data?.port_id}} ({{params.data?.port_id}})
+          Port of {{params.data?.location_name}} ({{params.data?.port_id}})
         </div>
         <div class="line"></div>
         <div (click)="cancel()">
@@ -151,7 +151,7 @@
       <div class="actions">
         <button mat-button class="cancel" (click)="cancel()">CANCEL</button>
         <button mat-raised-button [disabled]="!enableSave" [ngClass]="{'active':enableSave}" class="save"
-          (click)="saveUserComment(cmnt.value);saveInput(inpt.value,params,params.colDef?.field)">Proceed</button>
+          (click)="saveUserComment(cmnt.value);saveInput(inpt.value,params,params.colDef?.field)">Save</button>
       </div>
       </div>
     </ng-template>
@@ -176,7 +176,7 @@
     <div id="edit-checkbox-menu" [ngClass]="{'light-theme':!theme}">
       <div class="row header">
         <div>
-          Port of {{params.data?.port_id}} ({{params.data?.port_id}})
+          Port of {{params.data?.location_name}} ({{params.data?.port_id}})
         </div>
         <div class="line"></div>
         <div (click)="cancel()">
@@ -224,7 +224,7 @@
     <div id="edit-checkbox-menu" [ngClass]="{'light-theme':!theme}">
       <div class="row header">
         <div>
-          Port of {{params.data?.port_id}} ({{params.data?.port_id}})
+          Port of {{params.data?.location_name}} ({{params.data?.port_id}})
         </div>
         <div class="line"></div>
         <div (click)="cancel()">
@@ -248,7 +248,7 @@
       <div class="actions">
         <button mat-button class="cancel" (click)="cancel()">CANCEL</button>
         <button mat-raised-button [disabled]="!enableSave" [ngClass]="{'active':enableSave}" class="save"
-          (click)="saveUserComment(cmnt.value);saveCheckbox(params)">Proceed</button>
+          (click)="saveUserComment(cmnt.value);saveCheckbox(params)">Save</button>
       </div>
       </div>
     </ng-template>
@@ -287,7 +287,7 @@
       <div class="info_popup" [ngClass]="{'light-theme':!theme}">
         <div class="row info-header">
           <div>
-            Port of {{params.data.port_id}} ({{params.data.port_id}})
+            Port of {{params.data.location_name}} ({{params.data.port_id}})
           </div>
           <div *ngIf="params.data?.redelivery_port">
             <ul style="padding-right:65px;padding-left:10px; margin: 3px 4px 6px;">
@@ -372,7 +372,7 @@
         </div>
         <div class="line"></div>
         <div class="row info-footer">
-          <a href="{{shiptechPortUrl}}/#/masters/locations/{{params.data?.location_id}}" target="_blank" rel="noopener"> Link to Port Master </a>
+          <a href="{{shiptechPortUrl}}{{params.data?.location_id}}" target="_blank" rel="noopener"> Link to Port Master </a>
         </div>
       </div>
     </ng-template>
