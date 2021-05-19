@@ -50,6 +50,7 @@ export class AdditionalCostModalComponent implements OnInit {
   costDetailsComponentTypes: any;
   @Input('formValues') set _formValues(val){
     this.formValues = val;
+    this.formatAdditionalCosts();
     this.getApplyForList();
     this.getAdditionalCostsComponentTypes();
 
@@ -84,6 +85,7 @@ export class AdditionalCostModalComponent implements OnInit {
   selectedRow;
   selectedAdditionalLine: any;
   @Output() amountChanged: EventEmitter<any> = new EventEmitter<any>();
+  @Output() additionalCostRemoved: EventEmitter<any> = new EventEmitter<any>();
 
   newCostItem={
     amountInInvoiceCurrency: 0,
@@ -251,13 +253,7 @@ export class AdditionalCostModalComponent implements OnInit {
   }
 
   compareProductObjects(object1: any, object2: any) {
-    if (!object1.productId && !object2) {
-      return 1;
-    }
-    if (!object1.productId && object2.id == -1) {
-      return 1;
-    }
-    return object1 && object2 && (object1.productId == object2.id);
+    return object1 && object2 && object1.productId == object2.productId;
    
 
   }
@@ -370,8 +366,17 @@ export class AdditionalCostModalComponent implements OnInit {
   }
 
   removeAdditionalCostLine(key) {
+    if (this.formValues.status) {
+      if (this.formValues.status.name == 'Approved') {
+        if (this.formValues.costDetails[key].id) {
+          this.toastr.info('You cannot delete product if invoice status is Approved');
+          return;
+        }
+      }
+    }
     if (this.formValues.costDetails[key].id) {
       this.formValues.costDetails[key].isDeleted = true;
+      this.additionalCostRemoved.emit(true);
     } else {
       this.formValues.costDetails.splice(key, 1);
     }
@@ -701,6 +706,18 @@ export class AdditionalCostModalComponent implements OnInit {
       }
     }
 
+  }
+
+  formatAdditionalCosts() {
+    for (let i = 0; i < this.formValues.costDetails.length; i++) {
+      if (this.formValues.costDetails[i].product && this.formValues.costDetails[i].product.id) {
+        this.formValues.costDetails[i].product.productId = this.formValues.costDetails[i].product.id;
+      } else {
+        this.formValues.costDetails[i].product = {
+          'productId': null
+        };
+      }
+    }
   }
 
 

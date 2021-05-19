@@ -912,17 +912,31 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   }
 
   setAdditionalCostLine() {
-    for (let i = 0; i < this.formValues.costDetails.length; i++) {
-      if (this.formValues.costDetails[i].product && !this.formValues.costDetails[i].product.id) {
-        this.formValues.costDetails[i].product = null;
-      } else if (this.formValues.costDetails[i].product && this.formValues.costDetails[i].product.id) {
-        let obj = {
-          'id': this.formValues.costDetails[i].product.productId,
-          'name': this.formValues.costDetails[i].product.name
-        };
-        this.formValues.costDetails[i].product = obj;
-      }
+    let validCostDetails = [];
+    if (this.formValues.costDetails.length > 0) {
+      this.formValues.costDetails.forEach((v,k ) => {
+        if (typeof v.product != 'undefined' && v.product != null) {
+          if (v.product.id == -1) {
+            v.product = null;
+            v.deliveryProductId = null;
+          } else {
+            if (v.product.productId) {
+                v.product.id = v.product.productId;
+            }
+            if (v.product.deliveryProductId) {
+              v.deliveryProductId = v.product.deliveryProductId;
+            }
+            v.isAllProductsCost = false;
+          }
+        }
+        if (Boolean(v.id) && !(v.id == 0 && v.isDeleted) || !v.Id && !v.isDeleted) {
+          // v.isDeleted = false;
+          validCostDetails.push(v);
+        }
+      });
     }
+    console.log(validCostDetails);
+    this.formValues.costDetails = _.cloneDeep(validCostDetails);
 
     this.changeDetectorRef.detectChanges();
   }
@@ -990,6 +1004,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     }
     this.spinner.show();
     this.formSubmitted = true;
+    this.setAdditionalCostLine();
     if(option == 'submitreview'){
       this.invoiceService.submitForReview(this.formValues.id).subscribe((result: any) => {
         this.handleServiceResponse(result, 'Invoice submitted for review successfully.');
@@ -1212,6 +1227,11 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   updateCostDetails(data) {
     console.log(data);
     this.eventsSubject.next(this.formValues);
+  }
+
+  additionalCostRemovedLine(data) {
+    console.log(data);
+    this.saveInvoiceDetails();
   }
 }
 

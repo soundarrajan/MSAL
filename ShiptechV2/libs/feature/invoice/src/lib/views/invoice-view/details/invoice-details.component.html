@@ -425,6 +425,7 @@
             [costTypeList]="costTypeList"
             (changedAdditonalcost)="changedAdditonalcost($event)"
             (amountChanged)="updateAmountValues($event)"
+            (additionalCostRemoved)="additionalCostRemovedLine($event)"
             [events]="eventsSubject.asObservable()"></shiptech-additional-cost-modal>
           </div>
     </div>
