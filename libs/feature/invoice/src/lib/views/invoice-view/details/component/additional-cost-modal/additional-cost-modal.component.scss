@@ -937,3 +937,11 @@ th, td {
 .other-field {
   width: 66% !important;
 }
+
+.product-field .mat-input-element:disabled {
+  color: #252A32 !important;
+}
+
+.product-field.mat-form-field-disabled {
+  background-color: #EEEEEE !important;
+}

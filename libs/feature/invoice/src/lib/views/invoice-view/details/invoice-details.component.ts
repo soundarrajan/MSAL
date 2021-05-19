@@ -894,6 +894,8 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
         return;
     }
 
+    this.setAdditionalCostLine();
+
     if (!parseFloat(this.formValues?.id?.toString()) || this.formValues.id == 0) {
       this.spinner.show();
       this.invoiceService.saveInvoice(this.formValues).subscribe((result: any) => {
@@ -907,6 +909,22 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
           this.handleServiceResponse(result, 'Invoice updated successfully.')
       });
     }
+  }
+
+  setAdditionalCostLine() {
+    for (let i = 0; i < this.formValues.costDetails.length; i++) {
+      if (this.formValues.costDetails[i].product && !this.formValues.costDetails[i].product.id) {
+        this.formValues.costDetails[i].product = null;
+      } else if (this.formValues.costDetails[i].product && this.formValues.costDetails[i].product.id) {
+        let obj = {
+          'id': this.formValues.costDetails[i].product.productId,
+          'name': this.formValues.costDetails[i].product.name
+        };
+        this.formValues.costDetails[i].product = obj;
+      }
+    }
+
+    this.changeDetectorRef.detectChanges();
   }
 
   public openRequest(){

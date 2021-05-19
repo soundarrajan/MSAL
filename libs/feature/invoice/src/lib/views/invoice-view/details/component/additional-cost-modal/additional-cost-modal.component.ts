@@ -199,13 +199,8 @@ export class AdditionalCostModalComponent implements OnInit {
         this.toastr.error(response);
       } else {
         console.log(response);
-        this.applyForList = [];
-        for (let i = 0; i < response.length; i++) {
-          this.applyForList.push({
-            'id': response[i].productId,
-            'name': response[i].name
-          });
-        }
+        console.log(response);
+        this.applyForList = response;
         this.changeDetectorRef.detectChanges();
 
       }
@@ -256,10 +251,13 @@ export class AdditionalCostModalComponent implements OnInit {
   }
 
   compareProductObjects(object1: any, object2: any) {
-    if (!object2 && !object1.id) {
+    if (!object1.productId && !object2) {
       return 1;
     }
-    return object1 && object2 && (object1.id == object2.id);
+    if (!object1.productId && object2.id == -1) {
+      return 1;
+    }
+    return object1 && object2 && (object1.productId == object2.id);
    
 
   }
@@ -358,10 +356,15 @@ export class AdditionalCostModalComponent implements OnInit {
       invoiceRate: null,
       invoiceRateUom: this.generalTenantSettings.tenantFormats.uom,
       invoiceRateCurrency: this.formValues.invoiceRateCurrency,
-      product: null,
+      product: {
+        id: -1,
+        name: 'All',
+        deliveryProductId: null
+      },
       isTaxComponent: isTaxComponent
     }
     this.formValues.costDetails.push(newLine);
+    this.invoiceConvertUom('cost', this.formValues.costDetails.length - 1);
     this.changeDetectorRef.detectChanges();
     console.log()
   }
@@ -394,27 +397,29 @@ export class AdditionalCostModalComponent implements OnInit {
       this.old_costType = this.formValues.costDetails[currentRowIndex].costType;
       if (this.old_product == -1) {
         this.formValues.costDetails[currentRowIndex].isAllProductsCost = true;
-        if (typeof this.dtMasterSource.applyFor == 'undefined') {
-            this.invoiceService
-            .getApplyForList(this.formValues?.orderDetails?.order.id)
-            .pipe(
-              finalize(() => {
-                //this.spinner.hide();
-              })
-            )
-            .subscribe((response: any) => {
-              if (typeof response == 'string') {
-                this.toastr.error(response);
-              } else {
-                console.log(response);
-                this.calculate(this.old_cost, response[1].id, this.old_costType, rowIndex);
-              }
-            });
+        if (typeof this.applyForList == 'undefined') {
+          this.invoiceService
+          .getApplyForList(this.formValues?.orderDetails?.order.id)
+          .pipe(
+            finalize(() => {
+              //this.spinner.hide();
+            })
+          )
+          .subscribe((response: any) => {
+            if (typeof response == 'string') {
+              this.toastr.error(response);
+            } else {
+              console.log(response);
+              this.calculate(this.old_cost, response[1].id, this.old_costType, rowIndex);
+            }
+          });
         } else {
-          if (!this.dtMasterSource.applyFor[1]) {
-            return;
+          if (this.formValues.productDetails[0]) {
+            if (!this.formValues.productDetails[0].invoicedProduct) {
+              return;
+            }
           }
-          this.calculate(this.old_cost, this.dtMasterSource.applyFor[1].id, this.old_costType, rowIndex);
+          this.calculate(this.old_cost, this.formValues.productDetails[0] ? this.formValues.productDetails[0].invoicedProduct.id : null, this.old_costType, rowIndex);
         }
       } else {
         this.calculate(this.old_cost, this.old_product, this.old_costType, rowIndex);
@@ -578,10 +583,11 @@ export class AdditionalCostModalComponent implements OnInit {
         formValues.invoiceSummary = {};
     }
     // formValues.invoiceSummary.provisionalInvoiceAmount = $scope.calculateprovisionalInvoiceAmount(formValues)
-    formValues.invoiceSummary.invoiceAmountGrandTotal = this.calculateInvoiceGrandTotal(formValues) - formValues.invoiceSummary.provisionalInvoiceAmount;
+    formValues.invoiceSummary.invoiceAmountGrandTotal = this.calculateInvoiceGrandTotal(formValues);
+    formValues.invoiceSummary.invoiceAmountGrandTotal -= formValues.invoiceSummary.provisionalInvoiceAmount;
     formValues.invoiceSummary.estimatedAmountGrandTotal = this.calculateInvoiceEstimatedGrandTotal(formValues);
-    formValues.invoiceSummary.totalDifference = formValues.invoiceSummary.invoiceAmountGrandTotal - formValues.invoiceSummary.estimatedAmountGrandTotal;
-    formValues.invoiceSummary.netPayable = formValues.invoiceSummary.invoiceAmountGrandTotal - formValues.invoiceSummary.deductions;
+    formValues.invoiceSummary.totalDifference = this.convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.invoiceAmountGrandTotal) - this.convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.estimatedAmountGrandTotal);
+    formValues.invoiceSummary.netPayable = this.convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.invoiceAmountGrandTotal) - this.convertDecimalSeparatorStringToNumber(formValues.invoiceSummary.deductions);
     this.changeDetectorRef.detectChanges();
     this.amountChanged.emit(true);
   }
@@ -590,14 +596,14 @@ export class AdditionalCostModalComponent implements OnInit {
     let grandTotal = 0;
     formValues.productDetails.forEach((v, k) => {
       if (!v.isDeleted && typeof v.invoiceAmount != 'undefined') {
-        grandTotal = grandTotal + v.invoiceAmount;
+        grandTotal = grandTotal + this.convertDecimalSeparatorStringToNumber(v.invoiceAmount);
       }
     });
 
     formValues.costDetails.forEach((v, k) => {
       if (!v.isDeleted) {
         if (typeof v.invoiceTotalAmount != 'undefined') {
-          grandTotal = grandTotal + v.invoiceTotalAmount;
+          grandTotal = grandTotal + this.convertDecimalSeparatorStringToNumber(v.invoiceTotalAmount);
         }
       }
     });
@@ -609,19 +615,42 @@ export class AdditionalCostModalComponent implements OnInit {
     let grandTotal = 0;
     formValues.productDetails.forEach((v, k) => {
       if (!v.isDeleted && typeof v.estimatedAmount != 'undefined') {
-        grandTotal = grandTotal + v.estimatedAmount;
+        grandTotal = grandTotal + this.convertDecimalSeparatorStringToNumber(v.estimatedAmount);
       }
     });
 
     formValues.costDetails.forEach((v, k) => {
       if (!v.isDeleted) {
         if (typeof v.estimatedAmount != 'undefined') {
-          grandTotal = grandTotal + v.estimatedAmount;
+          grandTotal = grandTotal + this.convertDecimalSeparatorStringToNumber(v.estimatedAmount);
         }
       }
     });
     return grandTotal;
   };
+
+  convertDecimalSeparatorStringToNumber(number) {
+    var numberToReturn = number;
+    var decimalSeparator, thousandsSeparator;
+    if (typeof number == 'string') {
+        if (number.indexOf(',') != -1 && number.indexOf('.') != -1) {
+          if (number.indexOf(',') > number.indexOf('.')) {
+            decimalSeparator = ',';
+            thousandsSeparator = '.';
+          } else {
+            thousandsSeparator = ',';
+            decimalSeparator = '.';
+          }
+          numberToReturn = parseFloat(number.split(decimalSeparator)[0].replace(new RegExp(thousandsSeparator, 'g'), '')) + parseFloat(`0.${number.split(decimalSeparator)[1]}`);
+        } else {
+          numberToReturn = parseFloat(number);
+        }
+    }
+    if (isNaN(numberToReturn)) {
+      numberToReturn = 0;
+    }
+    return parseFloat(numberToReturn);
+  }
 
   quantityFormatValue(value) {
     if (typeof value == 'undefined' || value == null) {
@@ -672,13 +701,6 @@ export class AdditionalCostModalComponent implements OnInit {
       }
     }
 
-  }
-
-  changeProduct(value, key) {
-    console.log(value, key);
-    if (value && !value.id) {
-      this.formValues.costDetails[key].product = null;
-    }
   }
 
 
