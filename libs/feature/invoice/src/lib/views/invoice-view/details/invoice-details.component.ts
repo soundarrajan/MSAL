@@ -206,8 +206,6 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   old_product: any;
   old_costType: any;
   applyForList: any;
-
-
   bankAccountNumbers: any;
   visibilityConfigs:any;
 
@@ -221,6 +219,9 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     this.entityId = val.id;
     if(!this.formValues.paymentDetails){
       this.formValues.paymentDetails = <IInvoiceDetailsItemPaymentDetails>{};
+    }
+    if(!this.formValues.counterpartyDetails.counterpartyBankAccount){
+      this.formValues.counterpartyDetails.counterpartyBankAccount = <IInvoiceDetailsItemBaseInfo>{};
     }
     this.parseProductDetailData(this.formValues.productDetails);
     //  console.log(this.invoiceDetailsComponent.parseProductDetailData);
@@ -256,7 +257,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.entityName = 'Invoice';    
+    this.entityName = 'Invoice';  
     this.route.params.pipe(takeUntil(this._destroy$)).subscribe(params => {
       this.entityId = parseFloat(params.invoiceId);
     });
@@ -273,7 +274,6 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
     this.tenantConfiguration();
     this.getBankAccountNumber();
     this.buildProductDetilsGrid();
-    this.getCounterPartiesList();
     this.legacyLookupsDatabase.getInvoiceCustomStatus().then(list=>{
       this.invoiceStatusList = list;
     })
@@ -294,7 +294,6 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
       }
     }
   }
-
   summaryCalculationsForCostDetails() {
     if (this.formValues.costDetails) {
       for (let i = 0; i < this.formValues.costDetails.length; i++) {
@@ -501,12 +500,11 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
 
 
   }
-
   tenantConfiguration(){
     this.invoiceService
     .getTenantConfiguration(false)
     .subscribe((result: any) => {
-      this.visibilityConfigs = result.invoiceConfiguration.fieldVisibility;            
+      this.visibilityConfigs = result.invoiceConfiguration.fieldVisibility;           
       // console.log('tenenatConfigs',this.visibilityConfigs);  
     });
   }
@@ -619,7 +617,7 @@ getBankAccountNumber(){
 
         })
     )
-    .subscribe((result: any) => {
+    .subscribe((result: any) => {      
         if (typeof result == 'string') {
           this.spinner.hide();
           this.toastr.error(result);
@@ -1129,19 +1127,21 @@ getBankAccountNumber(){
         this.spinner.hide();
         return;
     }
-
     this.setAdditionalCostLine();
-
+    let valuesForm = _.cloneDeep(this.formValues);//avoid error on ngModel of bankAccount
+    if(this.formValues.counterpartyDetails.counterpartyBankAccount.id == undefined || this.formValues.counterpartyDetails.counterpartyBankAccount.id == 0){
+      valuesForm.counterpartyDetails.counterpartyBankAccount = null;
+    }
     if (!parseFloat(this.formValues?.id?.toString()) || this.formValues.id == 0) {
-      this.spinner.show();
-      this.invoiceService.saveInvoice(this.formValues).subscribe((result: any) => {
+      // this.spinner.show();
+      this.invoiceService.saveInvoice(valuesForm).subscribe((result: any) => {
           this.entityId = result;
           this.handleServiceResponse(result, 'Invoice saved successfully.')
       });
     }
     else{
-      this.spinner.show();
-      this.invoiceService.updateInvoice(this.formValues).subscribe((result: any) => {
+      // this.spinner.show();
+      this.invoiceService.updateInvoice(valuesForm).subscribe((result: any) => {
           this.handleServiceResponse(result, 'Invoice updated successfully.')
       });
     }
@@ -1179,7 +1179,6 @@ getBankAccountNumber(){
 
     this.changeDetectorRef.detectChanges();
   }
-
   public openRequest(){
     //https://bvt.shiptech.com/#/edit-request/89053
   }
@@ -1195,10 +1194,6 @@ getBankAccountNumber(){
         this.onInvoiceDetailsChanged.emit(true);
         this.changeDetectorRef.detectChanges();
     }
-  }
-
-  getCounterPartiesList(){
-
   }
 
   onModelChanged(evt){
@@ -1231,7 +1226,7 @@ getBankAccountNumber(){
 
     }else if(type === 'payableto'){
       this.formValues.counterpartyDetails.payableTo = eventValueObject;
-      this.formValues.counterpartyDetails.counterpartyBankAccount.id = null;
+      this.formValues.counterpartyDetails.counterpartyBankAccount.id = 0;
       this.getBankAccountNumber();
     }else if(type === 'paymentterms'){
       this.formValues.counterpartyDetails.paymentTerm = eventValueObject;
@@ -1464,8 +1459,7 @@ getBankAccountNumber(){
     }
     return parseFloat(numberToReturn);
   }
-
-  updateCostDetails(data) {
+    updateCostDetails(data) {
     console.log(data);
     this.eventsSubject.next(this.formValues);
   }
