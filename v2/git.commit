@@ -1,9 +1,11 @@
-﻿commit 6a8427e4a9a7fa47826a6e03cc3cd0d8a7cdc85c
-Author: Pravin Kumar Seenivasan <pravinkumar.s@Inatech.com>
-Date:   Wed May 19 15:06:09 2021 +0000
+﻿commit 3b6b87b3928f3803afeb50b701c3693b51b43ae1
+Author: Divya Premachandran <divya.p@Inatech.com>
+Date:   Wed May 19 22:06:15 2021 +0000
 
-    Merged PR 10807: Updated UI
+    Merged PR 10810: Min SOA checkbox bug
     
-    Related work items: #29839
+    Min SOA checkbox bug
+    
+    Related work items: #32409
 
 branch: master

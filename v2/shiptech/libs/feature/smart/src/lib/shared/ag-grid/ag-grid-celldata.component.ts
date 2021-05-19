@@ -393,18 +393,24 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   triggerChangeEvent() {
     this.params.context.componentParent.triggerChangeEvent();
   }
-  onCheckboxClick(check,comment) {
-    if (comment != "")
+  onCheckboxClick(event){
+    event.stopPropagation();
+  }
+  onEditCheckboxComment(value,comment,event) {
+    if(value == true && comment!="")
       this.enableSave = true;
-    if(check == false && comment =="")
+    else if (value == false && comment =="") //check for checkbox value
       this.enableSave = true;
     else
       this.enableSave = false;
+      event.stopPropagation();
   }
   onEditCell(value,comment) {
-    if (comment!= "")
+    if (comment!= "" && value !="")
       this.enableSave = true;
-    else if(value == "" || value == false && comment =="")
+    else if(value == ""&& comment =="")
+      this.enableSave = true;
+    else if(value == 0 && comment =="")
       this.enableSave = true;
     else
       this.enableSave = false;
