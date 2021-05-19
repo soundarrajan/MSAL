@@ -1,11 +1,11 @@
-﻿commit 2607269043d02d3a4f81ad59000af3029b1147af
-Author: Pravin Kumar Seenivasan <pravinkumar.s@Inatech.com>
-Date:   Wed May 19 09:47:57 2021 +0000
+﻿commit 2223762a4cff89e628e1bdbddbfa9511942b1aa0
+Author: Rajapandian Soundrapandian <rajapandian.s@inatech.com>
+Date:   Wed May 19 11:00:47 2021 +0000
 
-    Merged PR 10790: Updated the Contracts UI with new field Customer
+    Merged PR 10793: To fix #26715
     
-    Updated the Customers UI
+    To fix #26715
     
-    Related work items: #29839
+    Related work items: #26715
 
 branch: master
