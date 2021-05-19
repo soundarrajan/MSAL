@@ -150,6 +150,16 @@ export class InvoiceDetailsService extends BaseStoreService
     return this.api.getFinalInvoiceDueDates(payload);
   }
 
+    /**
+ * @param payload
+ */
+  @ObservableException()
+  getApplyForList(payload: any): Observable<unknown> {
+    return this.api.getApplyForList(payload);
+  }
+   
+
+
   ngOnDestroy(): void {
     super.onDestroy();
   }
