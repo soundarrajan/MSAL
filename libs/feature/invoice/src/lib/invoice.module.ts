@@ -45,6 +45,7 @@ import { InvoiceCompleteListComponent } from './views/invoice-complete-list/invo
 import { InvoiceListComponent } from './views/invoice-list/invoice-list.component';
 import { InvoiceDetailComponent } from './views/invoice-view/details/invoice-details.component';
 import { InvoiceViewComponent } from './views/invoice-view/invoice-view.component';
+import { InvoiceSplitviewComponent } from './views/split-view/invoice-splitview.component';
 import { MainInvoiceComponent } from './views/main-invoice.component';
 import { RelatedInvoiceComponent } from './views/invoice-view/related-invoice/related-invoice.component';
 import { ProductDetailsModalComponent } from './views/invoice-view/details/component/product-details-modal/product-details-modal.component';
@@ -52,6 +53,7 @@ import { NavBarResolver } from './views/invoice-view/details/navbar-route-resolv
 import { BreadcrumbsModule } from '@shiptech/core/ui/components/breadcrumbs/breadcrumbs.module';
 import { InvoiceDetailsToolbarComponent } from './views/invoice-view/toolbar/invoice-details-toolbar.component';
 import { InvoiceTypeSelectionComponent } from './views/invoice-view/details/component/invoice-type-selection/invoice-type-selection.component';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @NgModule({
   imports: [
@@ -89,18 +91,20 @@ import { InvoiceTypeSelectionComponent } from './views/invoice-view/details/comp
     MessagesModule,
     ExportModule,
     MasterSelectorModule,
-    BreadcrumbsModule
+    BreadcrumbsModule,
+    PdfViewerModule
   ],
   declarations: [
     MainInvoiceComponent,
     InvoiceListComponent,
     InvoiceCompleteListComponent,
     InvoiceViewComponent,
+    InvoiceSplitviewComponent,
     InvoiceDetailComponent,
     RelatedInvoiceComponent,
     ProductDetailsModalComponent,
     InvoiceDetailsToolbarComponent,
-    InvoiceTypeSelectionComponent
+    InvoiceTypeSelectionComponent,
   ],
   providers: [
     ModuleLoggerFactory,
