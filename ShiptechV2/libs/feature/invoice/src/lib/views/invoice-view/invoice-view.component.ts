@@ -136,7 +136,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   createNewInvoiceType(){
     let data = JSON.parse(localStorage.getItem('createInvoice'));
     localStorage.removeItem('createInvoice');
-
+    data.invoiceSummary.provisionalInvoiceNo = data.id;
     data.invoiceSummary.provisionalInvoiceAmount = data.invoiceSummary.invoiceAmountGrandTotal;
     data.id = 0;
     data.invoiceDetails = null;
@@ -162,7 +162,6 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     data.invoiceSummary.totalDifference = null;
     data.status = {};
     data.customStatus = null;
-    // data.invoiceSummary.provisionalInvoiceNo = entity_id;
     data.accountancyDate = null;
     data.paymentDetails = {};
     var invoiceAmountGrandTotal = 0;

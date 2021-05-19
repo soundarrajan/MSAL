@@ -231,6 +231,7 @@
                         (ngModelChange)="invoiceConvertUom('product', productDetail.key)"
                         [compareWith]="compareUomObjects"
                         [disableOptionCentering]="true"
+                        [disabled]="true"
                         panelClass="general-information-select-container">
                         <mat-option *ngFor="let option of currencyList" [value]="option">{{option.code}}</mat-option>
                       </mat-select>
@@ -267,7 +268,6 @@
                   {{productDetail.value.invoiceRateCurrency.code}}
                 </div>
               </div>
-
             </td>
             <td style="max-width: initial;min-width: 150px;" class="padding-left-column">
               <span  *ngIf="productDetail.value.reconStatus && productDetail.value.reconStatus.id == '2'"  class="product-details-table-data-false">
