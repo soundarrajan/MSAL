@@ -1,11 +1,11 @@
-﻿commit acd02dc11feec5e86ab64189ebe045a9b4650c71
-Author: Divya Premachandran <divya.p@Inatech.com>
-Date:   Wed May 19 09:00:17 2021 +0000
+﻿commit 2607269043d02d3a4f81ad59000af3029b1147af
+Author: Pravin Kumar Seenivasan <pravinkumar.s@Inatech.com>
+Date:   Wed May 19 09:47:57 2021 +0000
 
-    Merged PR 10786: Link to port master url change
+    Merged PR 10790: Updated the Contracts UI with new field Customer
     
-    Link to port master url change
+    Updated the Customers UI
     
-    Related work items: #32235
+    Related work items: #29839
 
 branch: master
