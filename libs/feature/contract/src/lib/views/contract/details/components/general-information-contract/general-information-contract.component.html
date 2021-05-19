@@ -500,7 +500,7 @@
 </div>
 <div class="col-md-12 d-flex contract-section">
   <div class="col-md-6 no-padding">
-    <div [ngClass]="{'allowed-companies-container': !expandAllowCompanies, 'allowed-companies-container-expand': expandAllowCompanies}">
+    <div [ngClass]="{'allowed-companies-container': !expandAllowCustomer, 'allowed-companies-container-expand': expandAllowCustomer}">
       <div class="allowed-container col-md-12 d-flex">
         <div class="allowed-list-modal-container">
           Customer
@@ -544,7 +544,7 @@
             </span>
           </ng-container>
         </div>
-        <div class="more-button" (click)="expandAllowCompanies = !expandAllowCompanies" >
+        <div class="more-button" (click)="expandAllowCustomer = !expandAllowCustomer" >
           ...more
         </div>
       </div>
