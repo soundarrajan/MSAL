@@ -764,7 +764,7 @@ th, td {
 
 .amount-container {
   color: white !important;
-  padding: 10px;
+  padding-top: 15px;
 }
 
 
@@ -928,4 +928,12 @@ th, td {
 
 .first-select-container {
   padding-left: 10px !important;
+}
+
+.unit-field {
+  width: 33% !important;
+}
+
+.other-field {
+  width: 66% !important;
 }
