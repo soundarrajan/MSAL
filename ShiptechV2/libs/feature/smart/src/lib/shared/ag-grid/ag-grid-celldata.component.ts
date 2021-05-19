@@ -1,5 +1,4 @@
 import { Component, ViewChild, ElementRef, Input } from "@angular/core";
-import { AppConfig } from '@shiptech/core/config/app-config';
 import { Router } from '@angular/router';
 import { ICellRendererAngularComp } from '@ag-grid-community/angular';
 import { MatDialog } from '@angular/material/dialog';
@@ -11,6 +10,8 @@ import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs'
 import moment  from 'moment';
 import { SaveBunkeringPlanAction,UpdateBunkeringPlanAction } from "../../store/bunker-plan/bunkering-plan.action";
+import { UpdateBplanTypeState } from "../../store/bunker-plan/bunkering-plan.state";
+import { NoDataComponent } from '../no-data-popup/no-data-popup.component';
 const today = new Date();
 
 @Component({
@@ -34,12 +35,9 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   public etdDays: any;
   public etdInTime: any;
   public shiptechPortUrl: string;
-  public shiptechOrderUrl: string = "shiptechUrl/#/masters/order";
+  public shiptechUrl: string ;
   public _changeCurrentROBObj$: any;
-  @Input('bplanType') 
-  public set bplanType(v : any) {
-    this.bplanType = v;
-  };
+  public bplanType: any;
   @Input('selectedUserRole') 
   public set selectedUserRole(v : any) {
     this.selectedUserRole = v;
@@ -47,9 +45,10 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   @Input('editableCell')public set editableCell(v : any) {
     this.editableCell = v;
   };
-  constructor(public router: Router, public dialog: MatDialog, private elem: ElementRef,private localService:LocalService,private appConfig: AppConfig, 
+  constructor(public router: Router, public dialog: MatDialog, private elem: ElementRef,private localService:LocalService, 
               private bunkerPlanService:BunkeringPlanService,private store: Store ) {
-    this.shiptechPortUrl = this.appConfig.v1.API.BASE_HEADER_FOR_NOTIFICATIONS;
+    this.shiptechUrl =  new URL(window.location.href).origin;;
+    this.shiptechPortUrl = `${this.shiptechUrl}/#/masters/locations/edit/`
   }
 
   ngOnInit() {
@@ -284,16 +283,26 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   }
   toggleMenuInput(column) {//onenter
     let commentType;
-    switch(column){
+    this.bplanType = this.store.selectSnapshot(UpdateBplanTypeState.getBplanType);
+    switch(column){ //get respective comment fields 
       case 'eca_min_sod': {commentType = 'eca_sod_comment'; break;}
       case 'hsfo_min_sod':{commentType = 'hsfo_sod_comment'; break;}
       case 'max_sod': {commentType = 'max_sod_comment'; break;}
       case 'min_sod': {commentType = 'min_sod_comment'; break;}
     }
     if (this.params.data[commentType] && this.params.data[commentType] != '') {
-      this.inputMenuTrigger.openMenu();
-      var overlay = document.querySelector('.cdk-overlay-container');
-      overlay.classList.add('removeOverlay');
+      if(this.bplanType =='C'){
+        this.inputMenuTrigger.openMenu();
+        var overlay = document.querySelector('.cdk-overlay-container');
+        overlay.classList.add('removeOverlay');
+      }
+      else if(this.params.value !=0 || this.params.data[commentType] != ''){ 
+        //dont display popup for prev bplan or view all bplan if value = 0 and no comments exist
+        this.inputMenuTrigger.openMenu();
+        var overlay = document.querySelector('.cdk-overlay-container');
+        overlay.classList.add('removeOverlay');
+      }
+      
     }
   }
 
@@ -306,12 +315,14 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   }
 
   toggleMenu3Input(event) { //onclick
-    this.menuClick = true;
-    this.inputMenuTrigger.openMenu();
-    if (document.getElementById('inputValue')) {
-      document.getElementById('inputValue').focus();
+    this.bplanType = this.store.selectSnapshot(UpdateBplanTypeState.getBplanType);
+    if(this.bplanType != 'P'){
+      this.menuClick = true;
+      this.inputMenuTrigger.openMenu();
+      if (document.getElementById('inputValue')) {
+        document.getElementById('inputValue').focus();
+      }
     }
-
   }
 
   toggleMenuCheckbox(event,params) {//onenter
@@ -467,6 +478,72 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     panels.forEach((element) => {
       element.classList.remove('clicked');
     });
+  }
+  restrictionForPrevBplan(event){
+    this.bplanType = this.store.selectSnapshot(UpdateBplanTypeState.getBplanType);
+    if(this.bplanType =='P'){
+      const dialogRef = this.dialog.open(NoDataComponent, {
+        width: '350px',
+        panelClass: 'confirmation-popup',
+        data : {message: 'A new Plan exists for this vessel. Cannot update an old Plan'}
+      });
+    }
+  }
+  redirectionUrl(params){
+    if(params?.colDef?.field){
+      let url;
+      switch(params.colDef.field){
+        case 'hsfo_estimated_lift' : { 
+                                          if(params.data?.order_id_hsfo && !params.data?.request_id_hsfo)
+                                            url = `${this.shiptechUrl}/#/edit-order/${params.data.order_id_hsfo}`;
+                                          
+                                          else if(params.data?.request_id_hsfo && !params.data?.order_id_hsfo)
+                                            url = `${this.shiptechUrl}/#/edit-request/${params.data.request_id_hsfo}`
+                                          
+                                          else
+                                            url = `/`
+                                        
+                                          break;
+                                     }
+        case 'ulsfo_estimated_lift' : { if(params.data?.order_id_ulsfo && !params.data?.request_id_ulsfo)
+                                          url = `${this.shiptechUrl}/#/edit-order/${params.data.order_id_ulsfo}`;
+                                        
+                                        else if(params.data?.request_id_ulsfo && !params.data?.order_id_ulsfo)
+                                          url = `${this.shiptechUrl}/#/edit-request/${params.data.request_id_ulsfo}`
+                                        
+                                        else
+                                          url = `/`
+                                      
+                                        break;
+                                      }
+        case 'lsdis_estimated_lift': {  if(params.data?.order_id_lsdis && !params.data?.request_id_lsdis)
+                                          url = `${this.shiptechUrl}/#/edit-order/${params.data.order_id_lsdis}`;
+                                        
+                                        else if(params.data?.request_id_lsdis && !params.data?.order_id_lsdis)
+                                          url = `${this.shiptechUrl}/#/edit-request/${params.data.request_id_lsdis}`
+                                        
+                                        else
+                                          url = `/`
+                                      
+                                        break;
+                                      }
+        case 'hsdis_estimated_lift': {  if(params.data?.order_id_hsdis && !params.data?.request_id_hsdis)
+                                          url = `${this.shiptechUrl}/#/edit-order/${params.data.order_id_hsdis}`;
+                                        
+                                        else if(params.data?.request_id_hsdis && !params.data?.order_id_hsdis)
+                                          url = `${this.shiptechUrl}/#/edit-request/${params.data.request_id_hsdis}`
+                                        
+                                        else
+                                          url = `/`
+                                      
+                                        break;
+                                      }
+      
+      }
+
+      if(url != '/')
+        window.open(url, "_blank");
+    }
   }
 
   consUpdatedEvent(params,value){

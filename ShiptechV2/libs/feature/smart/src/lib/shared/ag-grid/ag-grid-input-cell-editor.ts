@@ -15,8 +15,12 @@ const KEY_TAB = 9;
 @Component({
     selector: 'aggrid-cell-data',
     template: ` <div *ngIf="params.type=='edit'">
-    <div [matTooltip]="input.value" (click)="restrictionForPrevBplan($event)"><input #input [ngClass]="params.cellClass" [(ngModel)]=value
+    <div [matTooltip]="input.value"><input #input [ngClass]="params.cellClass" [(ngModel)]="value"
         (keydown)="triggerChangeEvent();onKeyDown($event)" ></div>
+  </div>
+  <div *ngIf="params.type=='edit-business-address'">
+    <div [matTooltip]="input.value"><input #input [ngClass]="params.cellClass" [(ngModel)]="value"
+        (keydown)="triggerChangeEvent();" ></div>
   </div>`
 })
 export class AgGridInputCellEditor implements ICellEditorAngularComp {
@@ -132,16 +136,7 @@ export class AgGridInputCellEditor implements ICellEditorAngularComp {
       }
     }
     
-    restrictionForPrevBplan(event){
-      if(this.bplanType =='P'){
-        const dialogRef = this.dialog.open(NoDataComponent, {
-          width: '350px',
-          panelClass: 'confirmation-popup',
-          data : {message: 'A new Plan exists for this vessel. Cannot update an old Plan'}
-        });
-      }
-    }
-    // dont use afterGuiAttached for post gui events - hook into ngAfterViewInit instead for this
+     // dont use afterGuiAttached for post gui events - hook into ngAfterViewInit instead for this
     ngAfterViewInit() {
       window.setTimeout(() => {
         this.input.element.nativeElement.focus();

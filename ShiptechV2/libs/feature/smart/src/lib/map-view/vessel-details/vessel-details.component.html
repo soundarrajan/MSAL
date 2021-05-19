@@ -22,6 +22,7 @@
             [vesselList]="vesselList" 
             [vesselData]="vesselData" 
             [selectedUserRole]="selectedUserRole"
+            [changeRole]="this.changeUserRole.asObservable()"
             (onDefaultViewChange)="onDefaultViewChange($event)" 
             (dontSendPlanReminder)="dontSendPlanReminder($event)" 
             (changeVessel)="vesselChange($event)"
