@@ -34,3 +34,11 @@ export class UpdateCurrentROBAction{
 
   }
 }
+
+export class UpdateBplanTypeAction{
+  static readonly type = '[Bplan Type] Update';
+  
+  constructor(public value: string){
+
+  }
+}

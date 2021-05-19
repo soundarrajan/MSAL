@@ -7,9 +7,9 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div id="custom-btn-toggle-v2">
-                            <mat-button-toggle-group #btnToggle (change)="formValues.documentType.internalName = $event.value" style="padding-right: 35px; background-color: #e0e1e4;">
-                                <mat-button-toggle [disabled]="true" *ngFor="let items of invoice_types" [value]="items.value" [checked]="formValues.documentType.internalName == items.value">
-                                    <span class="toggle-icon" *ngIf="formValues.documentType.internalName == items.value"></span> {{items.displayName}}
+                            <mat-button-toggle-group #btnToggle (change)="formValues.documentType.id = $event.value" style="padding-right: 35px; background-color: #e0e1e4;">
+                                <mat-button-toggle [disabled]="true" *ngFor="let items of invoice_types" [value]="items.value" [checked]="formValues.documentType.id == items.value">
+                                    <span class="toggle-icon" *ngIf="formValues.documentType.id == items.value"></span> {{items.displayName}}
                                 </mat-button-toggle>
                                 <div class="more-dots" (click)="openMoreButtons($event)"></div>
                             </mat-button-toggle-group>
@@ -355,7 +355,7 @@
                                     <div class="search-icon">
                                         <div class="img"></div>
                                     </div> -->
-                                    <shiptech-st-autosearch-selector [placeholder]="'payable to'" [name]="'Payable To'" [masterType]="'payableTo'" (onChanged)="AC_valueChanges('payableto',$event)" [bindValue]="formValues.counterpartyDetails.payableTo.name"></shiptech-st-autosearch-selector>
+                                    <shiptech-st-autosearch-selector [placeholder]="'payable to'" [name]="'Payable To'" [masterType]="'payableTo'" (onChanged)="AC_valueChanges('payableto',$event)" [bindValue]="formValues.counterpartyDetails.payableTo?.name"></shiptech-st-autosearch-selector>
                                 </div>
                             </div>
                             <div style="padding-top: 5px;">
@@ -418,8 +418,8 @@
                     class="ag-theme-material ag-grid-v2 angular-v9 add-cost"></ag-grid-angular>
             </div>
         </div> -->
-        <shiptech-additional-cost-modal 
-            [formValues]="formValues" 
+        <shiptech-additional-cost-modal
+            [formValues]="formValues"
             [uomList]="uomList"
             [currencyList]="currencyList"
             [costTypeList]="costTypeList"
